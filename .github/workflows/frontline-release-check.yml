@@ -39,3 +39,36 @@ jobs:
           echo "no_strict_regression=${{ github.event.inputs.no_strict_regression }}"
           echo "force_autopilot=${{ github.event.inputs.force_autopilot }}"
           echo "trigger_input_mode=${{ github.event.inputs.trigger_input_mode }}"
+
+      - name: Build gate snapshot outputs
+        run: |
+          mkdir -p artifacts/gate_snapshot
+          cat > artifacts/gate_snapshot/frontline_gate_snapshot.json <<'EOF'
+          {
+            "workflow": "Frontline Release Check",
+            "run_id": "${{ github.run_id }}",
+            "run_number": "${{ github.run_number }}",
+            "sha": "${{ github.sha }}",
+            "ref": "${{ github.ref }}",
+            "trigger": {
+              "tag": "${{ github.event.inputs.tag }}",
+              "smoke_only": "${{ github.event.inputs.smoke_only }}",
+              "no_strict_regression": "${{ github.event.inputs.no_strict_regression }}",
+              "force_autopilot": "${{ github.event.inputs.force_autopilot }}",
+              "trigger_input_mode": "${{ github.event.inputs.trigger_input_mode }}"
+            }
+          }
+          EOF
+          {
+            echo "ACT=frontline-release-check SRC=workflow_dispatch TAG=${{ github.event.inputs.tag || 'none' }} D=0 GS=READY G=t/d/g"
+            echo "run_id=${{ github.run_id }}"
+            echo "sha=${{ github.sha }}"
+            echo "ref=${{ github.ref }}"
+          } > artifacts/gate_snapshot/frontline_gate_snapshot.txt
+
+      - name: Upload gate snapshot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontline-gate-snapshot-${{ github.run_id }}
+          path: artifacts/gate_snapshot
+          if-no-files-found: error
