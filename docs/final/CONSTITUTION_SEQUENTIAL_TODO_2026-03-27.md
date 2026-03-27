@@ -39,4 +39,4 @@
 - local: `DONE/GO`
 - remote: `READY:workflow_dispatch_available`
 - dss: `PASS/PASS`
-- latest unified cycle tag: `command_center_followup_20260327_j`
+- latest unified cycle tag: `command_center_followup_20260327_k_ext3`
