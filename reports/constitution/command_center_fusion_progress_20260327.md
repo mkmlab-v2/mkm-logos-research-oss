@@ -6,7 +6,7 @@
 - Continue DSS/apocrypha expansion loops.
 - Hold compression/restoration gate at 100% restoration.
 
-## Latest Execution (cycle O_ext3)
+## Latest Execution (cycle P_ext3)
 
 1. Restoration gate re-check
    - Command: `python scripts/run_restoration_regression_20260327.py`
@@ -17,9 +17,9 @@
    - Result: `dss_priority_cycle=OK`, executed `1`
 
 3. Unified frontline consolidation
-   - Command: `python projects/dss-4d-ingest/run_unified_frontline_cycle.py --tag command_center_followup_20260327_o_ext3 --apocrypha-manifest pilot_manifest_ext3_hebrew_priority.json --auto-base-tag`
+   - Command: `python projects/dss-4d-ingest/run_unified_frontline_cycle.py --tag command_center_followup_20260327_p_ext3 --apocrypha-manifest pilot_manifest_ext3_hebrew_priority.json --auto-base-tag`
    - Result: `overall_status=PASS`
-   - Artifact: `projects/dss-4d-ingest/outputs/unified_frontline_cycle_report_command_center_followup_20260327_o_ext3.json`
+   - Artifact: `projects/dss-4d-ingest/outputs/unified_frontline_cycle_report_command_center_followup_20260327_p_ext3.json`
 
 4. Command center refresh
    - Command: `python scripts/show_command_center_status.py --compact`
@@ -31,7 +31,7 @@
 - `local`: `DONE/GO`
 - `remote`: `READY:workflow_dispatch_available`
 - `dss`: `PASS/PASS`
-- latest cycle tag: `command_center_followup_20260327_o_ext3` (ext3 readiness maintained)
+- latest cycle tag: `command_center_followup_20260327_p_ext3` (ext3 readiness maintained)
 
 ## Scope Lock (DSS + Apocrypha Only)
 
