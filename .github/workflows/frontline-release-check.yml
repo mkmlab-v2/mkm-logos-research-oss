@@ -1,0 +1,41 @@
+name: Frontline Release Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Run tag"
+        required: false
+        type: string
+      smoke_only:
+        description: "Run smoke-only path"
+        required: false
+        default: "true"
+        type: string
+      no_strict_regression:
+        description: "Skip strict regression gate"
+        required: false
+        default: "true"
+        type: string
+      force_autopilot:
+        description: "Force autopilot mode"
+        required: false
+        default: "true"
+        type: string
+      trigger_input_mode:
+        description: "Trigger mode"
+        required: false
+        default: "manual"
+        type: string
+
+jobs:
+  remote-ready-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo dispatch inputs
+        run: |
+          echo "tag=${{ github.event.inputs.tag }}"
+          echo "smoke_only=${{ github.event.inputs.smoke_only }}"
+          echo "no_strict_regression=${{ github.event.inputs.no_strict_regression }}"
+          echo "force_autopilot=${{ github.event.inputs.force_autopilot }}"
+          echo "trigger_input_mode=${{ github.event.inputs.trigger_input_mode }}"
