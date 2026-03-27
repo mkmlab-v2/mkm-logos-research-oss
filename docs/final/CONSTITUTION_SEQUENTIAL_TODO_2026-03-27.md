@@ -27,7 +27,7 @@
 5. [x] Update operation notes (this document + progress report)
    - output artifacts updated
 
-6. [ ] Scheduler verification for recurring sequential loop
+6. [x] Scheduler verification for recurring sequential loop
    - check registration and health:
      - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/register_dss_insight_priority_task.ps1 -DryRun`
      - `python scripts/summarize_constitution_scheduler_health.py`
@@ -39,4 +39,4 @@
 - local: `DONE/GO`
 - remote: `READY:workflow_dispatch_available`
 - dss: `PASS/PASS`
-- latest unified cycle tag: `command_center_followup_20260327_e`
+- latest unified cycle tag: `command_center_followup_20260327_f`

@@ -1,0 +1,112 @@
+{
+  "generated_at": "2026-03-27T19:06:28",
+  "tag": "command_center_followup_20260327_f",
+  "overall_status": "PASS",
+  "runs": {
+    "dss": {
+      "command": "C:\\Python311\\python.exe run_dss_ci_smoke.py --manifest dss_ci_manifest_tf4.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "[PASS] tf_feature_map.default.json extracted_tokens=200\n[PASS] tf_feature_map.example.release.json extracted_tokens=200\nreport: outputs\\tf_feature_map_smoke_report.json\nwrote 200 records to outputs\\dss_tokens_tf_raw_ci_smoke_manifest_tf4.ndjson\nwrote 200 rows to outputs\\mt_alignment_map_ci_smoke_manifest_tf4.tsv (mode=identity)\nwrote perturbed map to outputs\\mt_alignment_map_ci_smoke_manifest_tf4_perturbed.tsv rows=200 every_n=3 shift=1 mode=swap_with_next\nwrote 200 records to outputs\\dss_tokens_ci_smoke_manifest_tf4.ndjson\nrecords=200\nsha256=72470b7c9bdd54910b469a040a2ae64700be218a62f92769c79e5dc98aa2a197\nstatus=PASS total=200 aligned=200 aligned_ratio=1.000000 max_abs_delta_seen=790\nreport: outputs\\mt_alignment_smoke_report_ci_smoke_manifest_tf4.json\nwrote delta report to outputs\\delta_distribution_report_ci_smoke_manifest_tf4.json\naligned=200/200 p95=510 p99=620 suggested_max_abs_delta=775\nwrote dss ci summary to outputs\\dss_ci_smoke_summary_ci_smoke_manifest_tf4.md\n[step] C:\\Python311\\python.exe smoke_check_tf_feature_maps.py --tf-loc C:\\workspace\\data\\etcbc-dss\\tf\\1.9 --max-tokens 200 --min-tokens 1\n[step] C:\\Python311\\python.exe ingest_etcbc_dss.py --tf-loc C:\\workspace\\data\\etcbc-dss\\tf\\1.9 --tf-feature-map tf_feature_map.default.json --max-tokens 200 --dataset-version dss-ci-smoke-manifest --out outputs/dss_tokens_tf_raw_ci_smoke_manifest_tf4.ndjson\n[step] C:\\Python311\\python.exe generate_mt_alignment_map_from_ndjson.py --ndjson outputs/dss_tokens_tf_raw_ci_smoke_manifest_tf4.ndjson --mt-ref tf.smoke.ref --mode identity --out outputs/mt_alignment_map_ci_smoke_manifest_tf4.tsv\n[step] C:\\Python311\\python.exe perturb_mt_alignment_map.py --in outputs/mt_alignment_map_ci_smoke_manifest_tf4.tsv --out outputs/mt_alignment_map_ci_smoke_manifest_tf4_perturbed.tsv --every-n 3 --mode swap_with_next\n[step] C:\\Python311\\python.exe ingest_etcbc_dss.py --tf-loc C:\\workspace\\data\\etcbc-dss\\tf\\1.9 --tf-feature-map tf_feature_map.default.json --max-tokens 200 --mt-map outputs/mt_alignment_map_ci_smoke_manifest_tf4_perturbed.tsv --dataset-version dss-ci-smoke-manifest --out outputs/dss_tokens_ci_smoke_manifest_tf4.ndjson\n[step] C:\\Python311\\python.exe verify_dss_output.py --ndjson outputs/dss_tokens_ci_smoke_manifest_tf4.ndjson\n[step] C:\\Python311\\python.exe smoke_check_mt_alignment.py --ndjson outputs/dss_tokens_ci_smoke_manifest_tf4.ndjson --min-aligned-ratio 1.0 --max-abs-delta 1006 --min-nonzero-delta-ratio 0.05 --report-out outputs/mt_alignment_smoke_report_ci_smoke_manifest_tf4.json\n[step] C:\\Python311\\python.exe report_delta_distribution.py --ndjson outputs/dss_tokens_ci_smoke_manifest_tf4.ndjson --out outputs/delta_distribution_report_ci_smoke_manifest_tf4.json\n[step] C:\\Python311\\python.exe summarize_dss_ci_smoke.py --tag ci_smoke_manifest_tf4 --out outputs/dss_ci_smoke_summary_ci_smoke_manifest_tf4.md\n[done] ndjson: outputs/dss_tokens_ci_smoke_manifest_tf4.ndjson\n[done] verify_dss_output: PASS\n[done] mt smoke report: outputs/mt_alignment_smoke_report_ci_smoke_manifest_tf4.json\n[done] delta report: outputs/delta_distribution_report_ci_smoke_manifest_tf4.json\n[done] max_abs_delta used: 1006\n[done] max_abs_delta source: C:\\workspace\\projects\\dss-4d-ingest\\outputs\\delta_threshold_calibration_delta_smoke_tf2.json\n[done] mt_map_mode: perturbed\n[done] min_nonzero_delta_ratio: 0.05\n[done] summary: outputs/dss_ci_smoke_summary_ci_smoke_manifest_tf4.md"
+    },
+    "apocrypha": {
+      "command": "C:\\Python311\\python.exe run_apocrypha_pilot.py --manifest pilot_manifest_ext2.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "wrote 91 raw records to outputs\\apocrypha_raw_pilot_manifest_ext2_sefaria.jsonl\nwrote 87 raw records to outputs\\apocrypha_raw_pilot_manifest_ext2_url.jsonl\nwrote 166 deduped records to outputs\\apocrypha_raw_pilot_manifest_ext2_merged_deduped.jsonl\nwrote stats to outputs\\apocrypha_dedupe_stats_pilot_manifest_ext2.json\nwrote 2712 token records to outputs\\apocrypha_tokens_pilot_manifest_ext2.ndjson\nwrote 2712 weighted token records to outputs\\apocrypha_tokens_pilot_manifest_ext2_weighted.ndjson\nOK: verified 2712 records\nwrote quality report to outputs\\apocrypha_quality_report_pilot_manifest_ext2.json\nPASS: wrote gate decision to outputs\\apocrypha_gate_decision_pilot_manifest_ext2.json\nwrote markdown summary to outputs\\apocrypha_pilot_summary_pilot_manifest_ext2.md\n[step] C:\\Python311\\python.exe collect_apocrypha_sources.py --provider sefaria --works-json pilot_works_apocrypha_extended.json --dataset-version apocrypha-pilot-manifest-ext2 --out outputs/apocrypha_raw_pilot_manifest_ext2_sefaria.jsonl\n[step] C:\\Python311\\python.exe collect_apocrypha_url_texts.py --sources-json pilot_url_sources_apocrypha.json --dataset-version apocrypha-pilot-manifest-ext2 --out outputs/apocrypha_raw_pilot_manifest_ext2_url.jsonl\n[step] C:\\Python311\\python.exe dedupe_apocrypha_raw.py --in outputs/apocrypha_raw_pilot_manifest_ext2_merged.jsonl --out outputs/apocrypha_raw_pilot_manifest_ext2_merged_deduped.jsonl --stats-out outputs/apocrypha_dedupe_stats_pilot_manifest_ext2.json\n[step] C:\\Python311\\python.exe ingest_apocrypha_tokens.py --raw outputs/apocrypha_raw_pilot_manifest_ext2_merged_deduped.jsonl --out outputs/apocrypha_tokens_pilot_manifest_ext2.ndjson --dataset-version apocrypha-pilot-manifest-ext2\n[step] C:\\Python311\\python.exe annotate_apocrypha_confidence.py --in outputs/apocrypha_tokens_pilot_manifest_ext2.ndjson --out outputs/apocrypha_tokens_pilot_manifest_ext2_weighted.ndjson --canon-weight 1.0\n[step] C:\\Python311\\python.exe verify_apocrypha_weighted.py --ndjson outputs/apocrypha_tokens_pilot_manifest_ext2_weighted.ndjson\n[step] C:\\Python311\\python.exe report_apocrypha_quality.py --in outputs/apocrypha_tokens_pilot_manifest_ext2_weighted.ndjson --out outputs/apocrypha_quality_report_pilot_manifest_ext2.json\n[step] C:\\Python311\\python.exe judge_apocrypha_gate.py --quality-report outputs/apocrypha_quality_report_pilot_manifest_ext2.json --dedupe-stats outputs/apocrypha_dedupe_stats_pilot_manifest_ext2.json --min-total-tokens 1500 --min-effective-weight 0.3 --max-duplicate-ratio 0.2 --min-work-count 2 --min-hebrew-primary-tokens 200 --out outputs/apocrypha_gate_decision_pilot_manifest_ext2.json --min-source-count 2 --max-translation-proxy-ratio 0.95\n[step] C:\\Python311\\python.exe summarize_apocrypha_pilot.py --tag pilot_manifest_ext2 --out outputs/apocrypha_pilot_summary_pilot_manifest_ext2.md\n[done] gate report: outputs/apocrypha_gate_decision_pilot_manifest_ext2.json\n[done] summary report: outputs/apocrypha_pilot_summary_pilot_manifest_ext2.md\n[done] decision: PASS"
+    },
+    "joint_gate": {
+      "command": "C:\\Python311\\python.exe run_joint_frontline_gate.py --tag command_center_followup_20260327_f_joint",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "overall_status=PASS\nreport=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\joint_frontline_gate_report_command_center_followup_20260327_f_joint.json"
+    },
+    "fusion_join_gate": {
+      "command": "C:\\Python311\\python.exe judge_fusion_join_quality.py --dss-ndjson outputs/dss_tokens_ci_smoke_manifest_tf4.ndjson --apocrypha-ndjson outputs/apocrypha_tokens_pilot_manifest_ext2_weighted.ndjson --min-overlap-tokens 5 --min-overlap-ratio-dss 0.005 --out outputs/fusion_join_quality_command_center_followup_20260327_f.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "status=PASS\nreport=outputs\\fusion_join_quality_command_center_followup_20260327_f.json"
+    },
+    "insight_brief": {
+      "command": "C:\\Python311\\python.exe summarize_dss_apocrypha_insights.py --tag command_center_followup_20260327_f --unified-cycle-json C:\\workspace\\projects\\dss-4d-ingest\\outputs\\_tmp_unified_cycle_pre_insight_command_center_followup_20260327_f.json --fusion-quality-json outputs/fusion_join_quality_command_center_followup_20260327_f.json --apocrypha-quality-json outputs/apocrypha_quality_report_pilot_manifest_ext2.json --joint-gate-json outputs/joint_frontline_gate_report_command_center_followup_20260327_f_joint.json --out-json outputs/dss_apocrypha_insight_brief_command_center_followup_20260327_f.json --out-md outputs/dss_apocrypha_insight_brief_command_center_followup_20260327_f.md",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "pilot_insight_ready=True\nauthority_ready=False\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\dss_apocrypha_insight_brief_command_center_followup_20260327_f.json\nmd=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\dss_apocrypha_insight_brief_command_center_followup_20260327_f.md"
+    },
+    "authority_readiness": {
+      "command": "C:\\Python311\\python.exe evaluate_authority_readiness.py --tag command_center_followup_20260327_f --insight-brief-json outputs/dss_apocrypha_insight_brief_command_center_followup_20260327_f.json --min-hebrew-primary-tokens 500 --max-translation-proxy-ratio 0.8 --min-fusion-overlap-ratio-dss 0.02 --out-json outputs/authority_readiness_command_center_followup_20260327_f.json --out-md outputs/authority_readiness_command_center_followup_20260327_f.md",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "status=BLOCKED\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\authority_readiness_command_center_followup_20260327_f.json\nmd=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\authority_readiness_command_center_followup_20260327_f.md"
+    },
+    "apocrypha_hebrew_priority_plan": {
+      "command": "C:\\Python311\\python.exe plan_apocrypha_hebrew_priority.py --tag command_center_followup_20260327_f --authority-readiness-json outputs/authority_readiness_command_center_followup_20260327_f.json --insight-brief-json outputs/dss_apocrypha_insight_brief_command_center_followup_20260327_f.json --next-manifest pilot_manifest_ext3_hebrew_priority.json --out-json outputs/apocrypha_hebrew_priority_plan_command_center_followup_20260327_f.json --out-md outputs/apocrypha_hebrew_priority_plan_command_center_followup_20260327_f.md",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "recommended_next_manifest=pilot_manifest_ext3_hebrew_priority.json\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\apocrypha_hebrew_priority_plan_command_center_followup_20260327_f.json\nmd=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\apocrypha_hebrew_priority_plan_command_center_followup_20260327_f.md"
+    },
+    "authority_readiness_delta": {
+      "command": "C:\\Python311\\python.exe compare_authority_readiness_delta.py --base-json C:\\workspace\\projects\\dss-4d-ingest\\outputs\\authority_readiness_command_center_followup_20260327_e.json --new-json outputs/authority_readiness_command_center_followup_20260327_f.json --base-tag command_center_followup_20260327_e --new-tag command_center_followup_20260327_f --out-json outputs/authority_readiness_delta_command_center_followup_20260327_e_vs_command_center_followup_20260327_f.json --out-md outputs/authority_readiness_delta_command_center_followup_20260327_e_vs_command_center_followup_20260327_f.md",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "improvement_detected=False\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\authority_readiness_delta_command_center_followup_20260327_e_vs_command_center_followup_20260327_f.json\nmd=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\authority_readiness_delta_command_center_followup_20260327_e_vs_command_center_followup_20260327_f.md"
+    },
+    "symbol_pattern_rank": {
+      "command": "C:\\Python311\\python.exe rank_apocrypha_symbol_patterns.py --in-ndjson outputs/apocrypha_tokens_pilot_manifest_ext2_weighted.ndjson --tag command_center_followup_20260327_f --top-k 20 --hebrew-only --out-json outputs/apocrypha_symbol_patterns_command_center_followup_20260327_f.json --out-md outputs/apocrypha_symbol_patterns_command_center_followup_20260327_f.md",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "unique_tokens=218\nkept_rows=266\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\apocrypha_symbol_patterns_command_center_followup_20260327_f.json\nmd=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\apocrypha_symbol_patterns_command_center_followup_20260327_f.md"
+    },
+    "fusion_topn": {
+      "command": "C:\\Python311\\python.exe summarize_fusion_insight_topn.py --tag command_center_followup_20260327_f --symbol-rank-json outputs/apocrypha_symbol_patterns_command_center_followup_20260327_f.json --fusion-quality-json outputs/fusion_join_quality_command_center_followup_20260327_f.json --top-n 10 --out-json outputs/dss_apocrypha_fusion_topn_command_center_followup_20260327_f.json --out-md outputs/dss_apocrypha_fusion_topn_command_center_followup_20260327_f.md",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "weight_overlap_count=4\nnumeric_overlap_count=4\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\dss_apocrypha_fusion_topn_command_center_followup_20260327_f.json\nmd=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\dss_apocrypha_fusion_topn_command_center_followup_20260327_f.md"
+    },
+    "rule_candidates": {
+      "command": "C:\\Python311\\python.exe generate_fusion_rule_candidates.py --tag command_center_followup_20260327_f --fusion-topn-json outputs/dss_apocrypha_fusion_topn_command_center_followup_20260327_f.json --insight-brief-json outputs/dss_apocrypha_insight_brief_command_center_followup_20260327_f.json --max-rules 10 --out-json outputs/fusion_rule_candidates_command_center_followup_20260327_f.json --out-md outputs/fusion_rule_candidates_command_center_followup_20260327_f.md",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "rules_generated=4\nauthority_ready=False\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\fusion_rule_candidates_command_center_followup_20260327_f.json\nmd=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\fusion_rule_candidates_command_center_followup_20260327_f.md"
+    },
+    "rule_candidate_score": {
+      "command": "C:\\Python311\\python.exe score_fusion_rule_candidates.py --tag command_center_followup_20260327_f --candidates-json outputs/fusion_rule_candidates_command_center_followup_20260327_f.json --fusion-topn-json outputs/dss_apocrypha_fusion_topn_command_center_followup_20260327_f.json --out-json outputs/fusion_rule_candidate_score_command_center_followup_20260327_f.json --out-md outputs/fusion_rule_candidate_score_command_center_followup_20260327_f.md",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "status=PASS\npilot_score=0.609673\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\fusion_rule_candidate_score_command_center_followup_20260327_f.json\nmd=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\fusion_rule_candidate_score_command_center_followup_20260327_f.md"
+    },
+    "rule_score_gate": {
+      "command": "C:\\Python311\\python.exe judge_fusion_rule_score_gate.py --score-json outputs/fusion_rule_candidate_score_command_center_followup_20260327_f.json --min-pilot-score 0.55 --min-rule-count 2 --min-overlap-tokens 3 --out-json outputs/fusion_rule_score_gate_command_center_followup_20260327_f.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "status=PASS\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\fusion_rule_score_gate_command_center_followup_20260327_f.json"
+    },
+    "regression_gate": {
+      "command": "C:\\Python311\\python.exe judge_unified_cycle_regression.py --base-tag command_center_followup_20260327_e --new-tag command_center_followup_20260327_f --out outputs/unified_cycle_regression_command_center_followup_20260327_e_vs_command_center_followup_20260327_f.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "status=PASS\nreport=outputs\\unified_cycle_regression_command_center_followup_20260327_e_vs_command_center_followup_20260327_f.json"
+    }
+  },
+  "notes": {
+    "dss_manifest": "dss_ci_manifest_tf4.json",
+    "apocrypha_manifest": "pilot_manifest_ext2.json",
+    "joint_gate_tag": "command_center_followup_20260327_f_joint",
+    "authority_delta_report_json": "outputs/authority_readiness_delta_command_center_followup_20260327_e_vs_command_center_followup_20260327_f.json",
+    "authority_recommended_action": "widen_hebrew_primary_sources"
+  }
+}
