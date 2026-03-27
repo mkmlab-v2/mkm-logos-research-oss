@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/master_codebook_dual_track.schema.json",
+  "title": "Master Codebook Dual Track Schema",
+  "description": "Separates immutable runtime lookup SSOT from fine-tuning training data.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "codebook_id",
+    "lookup",
+    "training",
+    "hybrid_experiment",
+    "governance"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "codebook_id": {
+      "type": "string",
+      "minLength": 3
+    },
+    "created_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lookup": {
+      "type": "object",
+      "required": ["ssot_locked", "entries"],
+      "additionalProperties": false,
+      "properties": {
+        "ssot_locked": {"type": "boolean", "const": true},
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["lookup_id", "domain", "input_key", "canonical_output", "source_refs", "status"],
+            "additionalProperties": false,
+            "properties": {
+              "lookup_id": {"type": "string", "minLength": 1},
+              "domain": {"type": "string", "enum": ["constitution", "compression", "ops", "other"]},
+              "input_key": {"type": "string", "minLength": 1},
+              "canonical_output": {"type": "object", "minProperties": 1, "additionalProperties": true},
+              "source_refs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+              "status": {"type": "string", "enum": ["active", "deprecated", "blocked"]}
+            }
+          }
+        }
+      }
+    },
+    "training": {
+      "type": "object",
+      "required": ["enabled", "records"],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {"type": "boolean", "default": false},
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["training_id", "lookup_id_ref", "prompt", "response", "split", "quality_gate_passed"],
+            "additionalProperties": false,
+            "properties": {
+              "training_id": {"type": "string", "minLength": 1},
+              "lookup_id_ref": {"type": "string"},
+              "prompt": {"type": "string", "minLength": 1},
+              "response": {"type": "string", "minLength": 1},
+              "split": {"type": "string", "enum": ["train", "validation", "test"]},
+              "quality_gate_passed": {"type": "boolean"},
+              "notes": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "hybrid_experiment": {
+      "type": "object",
+      "required": ["enabled", "quaternion_transition_enabled", "threshold_gate_enabled"],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {"type": "boolean", "default": false},
+        "quaternion_transition_enabled": {"type": "boolean", "default": false},
+        "threshold_gate_enabled": {"type": "boolean", "default": false},
+        "params": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "threshold_t": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0},
+            "decay_d": {"type": ["number", "null"], "minimum": 0.0, "maximum": 1.0},
+            "gain_g": {"type": ["number", "null"], "minimum": 0.0}
+          }
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "required": ["literal_restoration_rate_required", "off_by_default_policy", "promotion_rules"],
+      "additionalProperties": false,
+      "properties": {
+        "literal_restoration_rate_required": {"type": "number", "const": 100.0},
+        "off_by_default_policy": {"type": "boolean", "const": true},
+        "promotion_rules": {
+          "type": "object",
+          "required": ["require_min_recall_non_degradation", "require_brier_non_degradation", "require_ci_stability"],
+          "additionalProperties": false,
+          "properties": {
+            "require_min_recall_non_degradation": {"type": "boolean", "const": true},
+            "require_brier_non_degradation": {"type": "boolean", "const": true},
+            "require_ci_stability": {"type": "boolean", "const": true}
+          }
+        }
+      }
+    }
+  }
+}

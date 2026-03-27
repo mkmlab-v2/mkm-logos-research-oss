@@ -1,0 +1,56 @@
+{
+  "schema_version": "v1.0.0",
+  "codebook_id": "master-codebook-20260327",
+  "created_at_utc": "2026-03-27T00:00:00Z",
+  "lookup": {
+    "ssot_locked": true,
+    "entries": [
+      {
+        "lookup_id": "constitution.parent_map.ty",
+        "domain": "constitution",
+        "input_key": "TY",
+        "canonical_output": {
+          "parent_name": "TY",
+          "description": "Core parent mapping, immutable at runtime."
+        },
+        "source_refs": [
+          "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+        ],
+        "status": "active"
+      }
+    ]
+  },
+  "training": {
+    "enabled": false,
+    "records": [
+      {
+        "training_id": "train.constitution.ty.0001",
+        "lookup_id_ref": "constitution.parent_map.ty",
+        "prompt": "Classify this sample into a parent family.",
+        "response": "TY",
+        "split": "train",
+        "quality_gate_passed": true,
+        "notes": "Training track only. Does not override lookup output."
+      }
+    ]
+  },
+  "hybrid_experiment": {
+    "enabled": false,
+    "quaternion_transition_enabled": false,
+    "threshold_gate_enabled": false,
+    "params": {
+      "threshold_t": null,
+      "decay_d": null,
+      "gain_g": null
+    }
+  },
+  "governance": {
+    "literal_restoration_rate_required": 100.0,
+    "off_by_default_policy": true,
+    "promotion_rules": {
+      "require_min_recall_non_degradation": true,
+      "require_brier_non_degradation": true,
+      "require_ci_stability": true
+    }
+  }
+}

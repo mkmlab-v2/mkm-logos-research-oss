@@ -1,0 +1,24 @@
+{"sample_id":"real.constitution.0001","lookup_id_ref":"constitution.parent_map.ty","prompt":"체질 입력 TY를 코드북 기준 부모군으로 정규화해줘.","response_expected":"TY"}
+{"sample_id":"real.constitution.0002","lookup_id_ref":"constitution.parent_map.ty","prompt":"Given TY sample, return canonical parent family only.","response_expected":"TY"}
+{"sample_id":"real.constitution.0003","lookup_id_ref":"constitution.parent_map.ty","prompt":"임상 메모의 TY 분류를 표준 부모 라벨로 매핑.","response_expected":"TY"}
+{"sample_id":"real.constitution.0004","lookup_id_ref":"constitution.parent_map.ty","prompt":"TY를 불변 SSOT 기준 parent label로 바꿔줘.","response_expected":"TY"}
+{"sample_id":"real.constitution.0005","lookup_id_ref":"constitution.parent_map.ty","prompt":"체질 코드 TY의 canonical 출력값을 반환.","response_expected":"TY"}
+{"sample_id":"real.constitution.0006","lookup_id_ref":"constitution.parent_map.ty","prompt":"Normalize constitution key TY into immutable parent family.","response_expected":"TY"}
+{"sample_id":"real.compression.0001","lookup_id_ref":"compression.core.zlib_lossless","prompt":"운영 코어에서 100% 복원 보장되는 압축 전략은?","response_expected":"zlib_lossless_core"}
+{"sample_id":"real.compression.0002","lookup_id_ref":"compression.core.zlib_lossless","prompt":"Which runtime compression is approved for literal restoration 100%?","response_expected":"zlib_lossless_core"}
+{"sample_id":"real.compression.0003","lookup_id_ref":"compression.core.zlib_lossless","prompt":"복원률 우선 정책에서 표준 코어를 반환해줘.","response_expected":"zlib_lossless_core"}
+{"sample_id":"real.compression.0004","lookup_id_ref":"compression.core.zlib_lossless","prompt":"CI 게이트 기준 lossless core를 선택해.","response_expected":"zlib_lossless_core"}
+{"sample_id":"real.compression.0005","lookup_id_ref":"compression.core.zlib_lossless","prompt":"압축/복원 SSOT에서 운영 기본 전략은 무엇인가?","response_expected":"zlib_lossless_core"}
+{"sample_id":"real.compression.0006","lookup_id_ref":"compression.core.zlib_lossless","prompt":"Return the canonical runtime lossless compression strategy.","response_expected":"zlib_lossless_core"}
+{"sample_id":"real.ops.0001","lookup_id_ref":"ops.policy.off_by_default","prompt":"Quaternion/threshold gate의 기본 정책을 알려줘.","response_expected":"off_by_default=true"}
+{"sample_id":"real.ops.0002","lookup_id_ref":"ops.policy.off_by_default","prompt":"실험 기능은 기본 활성화인가?","response_expected":"off_by_default=true"}
+{"sample_id":"real.ops.0003","lookup_id_ref":"ops.policy.off_by_default","prompt":"What is the default risk policy for hybrid experiment flags?","response_expected":"off_by_default=true"}
+{"sample_id":"real.ops.0004","lookup_id_ref":"ops.policy.off_by_default","prompt":"운영 정책상 quaternion 기본값을 확인해줘.","response_expected":"off_by_default=true"}
+{"sample_id":"real.ops.0005","lookup_id_ref":"ops.policy.off_by_default","prompt":"threshold gate 기본값은 OFF인가?","response_expected":"off_by_default=true"}
+{"sample_id":"real.ops.0006","lookup_id_ref":"ops.policy.off_by_default","prompt":"Return policy state for default experiment enablement.","response_expected":"off_by_default=true"}
+{"sample_id":"real.other.0001","lookup_id_ref":"other.guardian.mode.hybrid","prompt":"no1kmedi 권장 모델 라우팅 모드는?","response_expected":"MODEL_PROVIDER=hybrid"}
+{"sample_id":"real.other.0002","lookup_id_ref":"other.guardian.mode.hybrid","prompt":"클라우드 장애 시 로컬 fallback 가능한 모드 선택.","response_expected":"MODEL_PROVIDER=hybrid"}
+{"sample_id":"real.other.0003","lookup_id_ref":"other.guardian.mode.hybrid","prompt":"Which provider mode routes Vertex first and falls back to local?","response_expected":"MODEL_PROVIDER=hybrid"}
+{"sample_id":"real.other.0004","lookup_id_ref":"other.guardian.mode.hybrid","prompt":"운영 복원력 기준 기본 라우팅 값을 반환해.","response_expected":"MODEL_PROVIDER=hybrid"}
+{"sample_id":"real.other.0005","lookup_id_ref":"other.guardian.mode.hybrid","prompt":"추천되는 guardian provider configuration key/value?","response_expected":"MODEL_PROVIDER=hybrid"}
+{"sample_id":"real.other.0006","lookup_id_ref":"other.guardian.mode.hybrid","prompt":"Vertex 우선, 실패 시 local 자동전환 모드를 알려줘.","response_expected":"MODEL_PROVIDER=hybrid"}
