@@ -25,28 +25,39 @@ gh run list -R mkmlab-v2/mkm-destiny-ai-41e38ec6 --workflow "Master Codebook Tra
 ## 결과 기록
 
 - guardian gate:
-  - run_id:
-  - conclusion:
-  - url:
+  - run_id: `23647646169`
+  - conclusion: `failure`
+  - url: `https://github.com/mkmlab-v2/mkm-destiny-ai-41e38ec6/actions/runs/23647646169`
 - smoke gate:
-  - run_id:
-  - conclusion:
-  - url:
+  - run_id: `23647647632`
+  - conclusion: `failure`
+  - url: `https://github.com/mkmlab-v2/mkm-destiny-ai-41e38ec6/actions/runs/23647647632`
 
 ---
 
 ## 판정
 
-- decision: `GO` / `HOLD`
+- decision: `HOLD`
 - 근거:
-  - guardian:
-  - smoke:
+  - guardian: 스크립트 경로 누락으로 실행 실패
+  - smoke: 스크립트 경로 누락으로 실행 실패
 
 ---
 
 ## 실패 시 요약
 
-- failing workflow:
-- failing job:
+- failing workflow: `no1kmedi Guardian Contract Gate`
+- failing job: `guardian-contract-gate`
 - 핵심 에러 1~3줄:
+  - `python: can't open file ... scripts/validate_no1kmedi_guardian_contracts.py`
+  - `Process completed with exit code 2`
 - 재시도/수정 계획:
+  - 메인 저장소 default branch에 `scripts/validate_no1kmedi_guardian_contracts.py` 파일 동기화 후 재실행
+
+- failing workflow: `Master Codebook Training Smoke Gate`
+- failing job: `training-smoke-gate`
+- 핵심 에러 1~3줄:
+  - `python: can't open file ... scripts/run_master_codebook_training_smoke.py`
+  - `Process completed with exit code 2`
+- 재시도/수정 계획:
+  - 메인 저장소 default branch에 `scripts/run_master_codebook_training_smoke.py` 파일 동기화 후 재실행

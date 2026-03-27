@@ -148,3 +148,7 @@
 - 2026-03-27: Cycle 6 결과 수집 템플릿 생성
   - `docs/final/MFH_REMOTE_CI_CYCLE6_RESULTS_2026-03-27.md`
   - 포함: run_id/url/conclusion 기록 슬롯 + GO/HOLD 판정 + 실패 요약 템플릿
+- 2026-03-27: Cycle 6 원격 실행 결과 수집 완료 (HOLD)
+  - guardian run: `23647646169` (failure)
+  - smoke run: `23647647632` (failure)
+  - 공통 실패 원인: 원격 default branch에서 `scripts/*.py` 대상 파일 미존재 (`can't open file`)
