@@ -77,3 +77,9 @@
 - Delta JSON: `reports/constitution/candidate_rules_delta_h_vs_h_ext3_20260327.json`
 - Delta Markdown: `reports/constitution/candidate_rules_delta_h_vs_h_ext3_20260327.md`
 - Verdict: `PROMOTION_READY` (all 3 rules: `PILOT -> CANDIDATE_FOR_PROMOTION`)
+
+## Full-Eval Verification (post-promotion)
+
+- Command: `python scripts/run_fusion_intake_cycle.py --workload full_eval --skip-sync`
+- Result: `intake_cycle=OK`, `completion_status=DONE`, `health=HEALTHY`, `gate=GO`
+- Interpretation: promoted candidates execute without gate regression in current operating lane.
