@@ -100,12 +100,12 @@ python scripts/generate_component_status_report.py --log-file /tmp/oos_with_trac
 
 - repo: `mkmlab-v2/mkm-destiny-ai-41e38ec6`
 - workflow: `Frontline Release Check`
-- latest run id: `23643997731`
+- latest run id: `23644250060`
 - conclusion: `success`
-- URL: `https://github.com/mkmlab-v2/mkm-destiny-ai-41e38ec6/actions/runs/23643997731`
+- URL: `https://github.com/mkmlab-v2/mkm-destiny-ai-41e38ec6/actions/runs/23644250060`
 
 재확인:
 
 ```powershell
-gh run view 23643997731 --repo mkmlab-v2/mkm-destiny-ai-41e38ec6 --json status,conclusion,workflowName,url
+gh run view 23644250060 --repo mkmlab-v2/mkm-destiny-ai-41e38ec6 --json status,conclusion,workflowName,url
 ```
