@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-03-27T18:40:41",
+  "insight_status": "READY",
+  "plan_count": 3,
+  "execution_budget": 0,
+  "dry_run": false,
+  "refresh_output": "dss_insight_status=READY candidate_count=4 age_h=0.002 external_dss_fusion_needed=false notebooklm_required=false quaternion_eval_recommended=false top_rules=fusion_overlap_token_priority_01,fusion_overlap_token_priority_02,fusion_overlap_token_priority_04",
+  "priorities": [
+    {
+      "priority": 1,
+      "rule_id": "fusion_overlap_token_priority_01",
+      "token": "עולם",
+      "score": 1.0,
+      "confidence": "high",
+      "recommended_action": "apply_in_next_full_eval",
+      "suggested_command": "py scripts/run_fusion_intake_cycle.py --workload full_eval --skip-sync"
+    },
+    {
+      "priority": 2,
+      "rule_id": "fusion_overlap_token_priority_02",
+      "token": "כל",
+      "score": 0.55274,
+      "confidence": "medium",
+      "recommended_action": "stage_ab_eval",
+      "suggested_command": "py scripts/run_fusion_intake_cycle.py --workload embedding_batch --skip-sync"
+    },
+    {
+      "priority": 3,
+      "rule_id": "fusion_overlap_token_priority_04",
+      "token": "אל",
+      "score": 0.513699,
+      "confidence": "low",
+      "recommended_action": "watchlist_only",
+      "suggested_command": "py scripts/show_dss_apocrypha_insight_status.py --compact"
+    }
+  ],
+  "executions": [],
+  "executed_count": 0,
+  "status": "OK"
+}

@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-03-27T18:46:50",
+  "command_center_status": "GO",
+  "local": {
+    "completion_status": "DONE",
+    "gate": "GO",
+    "next_action": "none",
+    "suggested_command": "none"
+  },
+  "remote": {
+    "dispatch_status": "READY",
+    "dispatch_reason": "workflow_dispatch_available",
+    "repo": "mkmlab-v2/mkm-destiny-ai-41e38ec6",
+    "workflow_path": ".github/workflows/frontline-release-check.yml",
+    "suggested_command": "gh workflow run \".github/workflows/frontline-release-check.yml\" -R mkmlab-v2/mkm-destiny-ai-41e38ec6 -f tag=ci_signal_contract_20260327 -f smoke_only=true -f no_strict_regression=true -f force_autopilot=true -f trigger_input_mode=manual"
+  },
+  "dss": {
+    "release_status": "PASS",
+    "frontline_overall_status": "PASS",
+    "recommended_action": "widen_hebrew_primary_sources",
+    "latest_tag": "command_center_auto_evidence",
+    "compact_signal": "ACT=`collect_more_evidence` SRC=`cycle_notes` TAG=`local_smoke_signal_contract` D=`UNKNOWN` GS=`READY` G=`0.2/0.5/1.0`"
+  }
+}

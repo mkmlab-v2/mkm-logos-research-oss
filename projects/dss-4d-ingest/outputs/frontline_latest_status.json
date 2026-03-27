@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-03-27T18:46:47",
+  "latest_cycle_tag": "command_center_followup_20260327_e",
+  "latest_cycle_report": "outputs\\unified_frontline_cycle_report_command_center_followup_20260327_e.json",
+  "overall_status": "PASS",
+  "runs": {
+    "dss": "PASS",
+    "apocrypha": "PASS",
+    "joint_gate": "PASS",
+    "regression_gate": "PASS"
+  }
+}
