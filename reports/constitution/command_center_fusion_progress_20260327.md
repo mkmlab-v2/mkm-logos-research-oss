@@ -83,3 +83,10 @@
 - Command: `python scripts/run_fusion_intake_cycle.py --workload full_eval --skip-sync`
 - Result: `intake_cycle=OK`, `completion_status=DONE`, `health=HEALTHY`, `gate=GO`
 - Interpretation: promoted candidates execute without gate regression in current operating lane.
+
+## Embedding-Batch A/B Verification
+
+- Command: `python scripts/run_fusion_intake_cycle.py --workload embedding_batch --skip-sync`
+- Result: `intake_cycle=OK`, `completion_status=DONE`, `health=HEALTHY`, `gate=GO`
+- Report: `reports/constitution/promoted_candidates_ab_verification_20260327.md`
+- Interpretation: `stage_ab_eval` path also passes without degradation, confirming dual-path stability (`full_eval` + `embedding_batch`).
