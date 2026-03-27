@@ -53,3 +53,10 @@
 - Scheduler health summary executed:
   - `python scripts/summarize_constitution_scheduler_health.py`
 - Result: `health=OK`, recurring constitution tasks in `Ready` state.
+
+## Candidate Rule Export (cycle F)
+
+- Export JSON: `reports/constitution/candidate_rules_export_command_center_followup_20260327_f.json`
+- Export Markdown: `reports/constitution/candidate_rules_export_command_center_followup_20260327_f.md`
+- Conversion policy: `docs/final/INSIGHT_TO_CANDIDATE_RULE_CONVERSION_RULES_2026-03-27.md`
+- Promotion state: `PILOT` (authority readiness remains `BLOCKED`)
