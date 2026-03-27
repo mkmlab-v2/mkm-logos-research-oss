@@ -1,0 +1,31 @@
+name: Master Codebook Training Smoke Gate
+
+on:
+  pull_request:
+    paths:
+      - "scripts/generate_multidomain_training_codebook.py"
+      - "scripts/export_codebook_training_jsonl.py"
+      - "scripts/validate_master_codebook_schema.py"
+      - "scripts/report_training_jsonl_distribution.py"
+      - "scripts/validate_training_jsonl_quality.py"
+      - "scripts/run_master_codebook_training_smoke.py"
+      - "scripts/validate_master_codebook_real_samples.py"
+      - "docs/final/master_codebook_dual_track.schema.json"
+      - "docs/final/master_codebook_dual_track.template.json"
+      - "data/constitution/master_codebook_real_validation_samples.jsonl"
+  workflow_dispatch:
+
+jobs:
+  training-smoke-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run master codebook training smoke
+        run: python scripts/run_master_codebook_training_smoke.py --count 500 --prefix ci_smoke

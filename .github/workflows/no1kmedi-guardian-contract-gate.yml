@@ -1,0 +1,26 @@
+name: no1kmedi Guardian Contract Gate
+
+on:
+  pull_request:
+    paths:
+      - "projects/no1kmedi/src/app/api/guardian/**"
+      - "projects/no1kmedi/src/lib/ai-provider.ts"
+      - "projects/no1kmedi/src/lib/vertex-gemini.ts"
+      - "projects/no1kmedi/src/lib/local-llm.ts"
+      - "scripts/validate_no1kmedi_guardian_contracts.py"
+  workflow_dispatch:
+
+jobs:
+  guardian-contract-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate no1kmedi guardian contracts
+        run: python scripts/validate_no1kmedi_guardian_contracts.py
