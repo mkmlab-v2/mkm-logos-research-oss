@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-03-27T19:39:45+09:00",
+  "base_cycle": "command_center_followup_20260327_h",
+  "new_cycle": "command_center_followup_20260327_h_ext3",
+  "summary": {
+    "rule_count_base": 3,
+    "rule_count_new": 3,
+    "added": 0,
+    "removed": 0,
+    "changed": 3,
+    "score_delta": 0.0,
+    "promotion_state_changed": true
+  },
+  "details": {
+    "added_rules": [],
+    "removed_rules": [],
+    "changed_rules": [
+      {
+        "rule_id": "fusion_overlap_tok_עולם",
+        "change": "promotion_state",
+        "from": "PILOT",
+        "to": "CANDIDATE_FOR_PROMOTION"
+      },
+      {
+        "rule_id": "fusion_overlap_tok_כל",
+        "change": "promotion_state",
+        "from": "PILOT",
+        "to": "CANDIDATE_FOR_PROMOTION"
+      },
+      {
+        "rule_id": "fusion_overlap_tok_אל",
+        "change": "promotion_state",
+        "from": "PILOT",
+        "to": "CANDIDATE_FOR_PROMOTION"
+      }
+    ]
+  },
+  "blocker_recovery": {
+    "hebrew_primary_tokens": {
+      "from": 266,
+      "to": 1024
+    },
+    "translation_proxy_ratio": {
+      "from": 0.901917,
+      "to": 0.718759
+    }
+  },
+  "verdict": "PROMOTION_READY"
+}

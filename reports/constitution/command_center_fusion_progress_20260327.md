@@ -31,7 +31,7 @@
 - `local`: `DONE/GO`
 - `remote`: `READY:workflow_dispatch_available`
 - `dss`: `PASS/PASS`
-- latest cycle tag: `command_center_followup_20260327_h`
+- latest cycle tag: `command_center_followup_20260327_h` (ext3 readiness recalculated)
 
 ## Next Action
 
@@ -66,3 +66,14 @@
 - Delta JSON: `reports/constitution/candidate_rules_delta_g_vs_h_20260327.json`
 - Delta Markdown: `reports/constitution/candidate_rules_delta_g_vs_h_20260327.md`
 - Verdict: `NO_DELTA` (rule set/score/promotion state unchanged)
+
+## Hebrew-Priority Breakthrough (H_ext3)
+
+- Manifest executed: `pilot_manifest_ext3_hebrew_priority.json`
+- Quality report: `projects/dss-4d-ingest/outputs/apocrypha_quality_report_pilot_manifest_ext3_hebrew_priority.json`
+- Authority readiness: `projects/dss-4d-ingest/outputs/authority_readiness_command_center_followup_20260327_h_ext3.json` (`READY`)
+- Export JSON: `reports/constitution/candidate_rules_export_command_center_followup_20260327_h_ext3.json`
+- Export Markdown: `reports/constitution/candidate_rules_export_command_center_followup_20260327_h_ext3.md`
+- Delta JSON: `reports/constitution/candidate_rules_delta_h_vs_h_ext3_20260327.json`
+- Delta Markdown: `reports/constitution/candidate_rules_delta_h_vs_h_ext3_20260327.md`
+- Verdict: `PROMOTION_READY` (all 3 rules: `PILOT -> CANDIDATE_FOR_PROMOTION`)

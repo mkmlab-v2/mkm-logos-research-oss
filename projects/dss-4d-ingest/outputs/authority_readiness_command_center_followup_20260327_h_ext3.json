@@ -1,0 +1,20 @@
+{
+  "status": "READY",
+  "checks": {
+    "pilot_insight_ready": true,
+    "hebrew_primary_tokens": true,
+    "translation_proxy_ratio": true,
+    "fusion_overlap_ratio_dss": true
+  },
+  "thresholds": {
+    "min_hebrew_primary_tokens": 500,
+    "max_translation_proxy_ratio": 0.8,
+    "min_fusion_overlap_ratio_dss": 0.02
+  },
+  "metrics": {
+    "hebrew_primary_tokens": 1024,
+    "translation_proxy_ratio": 0.718759,
+    "fusion_overlap_ratio_dss": 0.043478
+  },
+  "blocked_reasons": []
+}

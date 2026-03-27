@@ -1,0 +1,65 @@
+{
+  "conversion_rules_version": "2026-03-27",
+  "generated_at": "2026-03-27T19:39:30+09:00",
+  "cycle_tag": "command_center_followup_20260327_h_ext3",
+  "authority_readiness": "READY",
+  "promotion_state_default": "CANDIDATE_FOR_PROMOTION",
+  "score": {
+    "pilot_score": 0.609673,
+    "avg_confidence": 0.675,
+    "weighted_overlap_factor": 0.43478,
+    "rule_count_factor": 0.8
+  },
+  "blocker_metrics": {
+    "hebrew_primary_tokens": 1024,
+    "translation_proxy_ratio": 0.718759,
+    "fusion_overlap_ratio_dss": 0.043478
+  },
+  "rules": [
+    {
+      "rule_id": "fusion_overlap_tok_עולם",
+      "trigger_token": "עולם",
+      "action": "apply_in_next_full_eval",
+      "score": 1.0,
+      "priority": 1,
+      "promotion_state": "CANDIDATE_FOR_PROMOTION",
+      "risk": "low",
+      "evidence": [
+        "projects/dss-4d-ingest/outputs/fusion_rule_candidates_command_center_followup_20260327_h.json",
+        "projects/dss-4d-ingest/outputs/fusion_rule_candidate_score_command_center_followup_20260327_h.json",
+        "projects/dss-4d-ingest/outputs/apocrypha_quality_report_pilot_manifest_ext3_hebrew_priority.json",
+        "projects/dss-4d-ingest/outputs/authority_readiness_command_center_followup_20260327_h_ext3.json"
+      ]
+    },
+    {
+      "rule_id": "fusion_overlap_tok_כל",
+      "trigger_token": "כל",
+      "action": "stage_ab_eval",
+      "score": 0.55274,
+      "priority": 2,
+      "promotion_state": "CANDIDATE_FOR_PROMOTION",
+      "risk": "medium",
+      "evidence": [
+        "projects/dss-4d-ingest/outputs/fusion_rule_candidates_command_center_followup_20260327_h.json",
+        "projects/dss-4d-ingest/outputs/fusion_rule_candidate_score_command_center_followup_20260327_h.json",
+        "projects/dss-4d-ingest/outputs/apocrypha_quality_report_pilot_manifest_ext3_hebrew_priority.json",
+        "projects/dss-4d-ingest/outputs/authority_readiness_command_center_followup_20260327_h_ext3.json"
+      ]
+    },
+    {
+      "rule_id": "fusion_overlap_tok_אל",
+      "trigger_token": "אל",
+      "action": "watchlist_only",
+      "score": 0.513699,
+      "priority": 3,
+      "promotion_state": "CANDIDATE_FOR_PROMOTION",
+      "risk": "low",
+      "evidence": [
+        "projects/dss-4d-ingest/outputs/fusion_rule_candidates_command_center_followup_20260327_h.json",
+        "projects/dss-4d-ingest/outputs/fusion_rule_candidate_score_command_center_followup_20260327_h.json",
+        "projects/dss-4d-ingest/outputs/apocrypha_quality_report_pilot_manifest_ext3_hebrew_priority.json",
+        "projects/dss-4d-ingest/outputs/authority_readiness_command_center_followup_20260327_h_ext3.json"
+      ]
+    }
+  ]
+}

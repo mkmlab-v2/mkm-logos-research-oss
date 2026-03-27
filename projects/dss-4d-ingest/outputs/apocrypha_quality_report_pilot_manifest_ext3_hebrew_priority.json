@@ -1,0 +1,28 @@
+{
+  "total_tokens": 3641,
+  "lineage_tier_counts": {
+    "A_HEBREW_PRIMARY": 1024,
+    "C_TRANSLATION_PROXY": 2617
+  },
+  "script_counts": {
+    "hebrew": 1024,
+    "other": 2617
+  },
+  "work_counts": {
+    "Ben_Sira": 814,
+    "Jubilees": 2281,
+    "1_Enoch": 546
+  },
+  "lang_counts": {
+    "he": 1024,
+    "en": 2617
+  },
+  "source_counts": {
+    "SEFARIA_API": 3095,
+    "URL_TEXT": 546
+  },
+  "effective_weight_avg_by_tier": {
+    "A_HEBREW_PRIMARY": 1.0,
+    "C_TRANSLATION_PROXY": 0.329201
+  }
+}
