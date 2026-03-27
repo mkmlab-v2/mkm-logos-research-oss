@@ -38,6 +38,12 @@
 - Current execution scope is locked to DSS/apocrypha frontline.
 - Medical/finance composite fronts are intentionally excluded until this frontline closes.
 
+## Closeout Decision
+
+- frontline status: `CLOSED`
+- operating mode: `MAINTENANCE_ONLY`
+- closeout brief: `docs/final/DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md`
+
 ## Regression Recovery Note (cycle K -> K_ext3)
 
 - `command_center_followup_20260327_k` failed (`joint_gate: PASS -> FAIL`, `overall: PASS -> FAIL`).

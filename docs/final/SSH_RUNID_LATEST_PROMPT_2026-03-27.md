@@ -104,6 +104,10 @@ python scripts/generate_component_status_report.py --log-file /tmp/oos_with_trac
 - conclusion: `success`
 - URL: `https://github.com/mkmlab-v2/mkm-destiny-ai-41e38ec6/actions/runs/23647102407`
 
+Frontline 상태:
+- `CLOSED` (maintenance only)
+- 근거 문서: `docs/final/DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md`
+
 재확인:
 
 ```powershell
