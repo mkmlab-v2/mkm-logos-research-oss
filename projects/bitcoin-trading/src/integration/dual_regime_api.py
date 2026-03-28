@@ -64,9 +64,9 @@ def _apply_logos_resonance_to_cap(
         sys.path.insert(0, root)
     try:
         from tools.core.logos_encoder_gpu import (  # noqa: WPS433 — runtime import after path fix
-            LogosEncoder,
             apply_logos_resonance_to_risk_cap,
             calculate_resonance,
+            get_logos_encoder,
             _TORCH_AVAILABLE,
         )
     except Exception as exc:  # pragma: no cover - wrong cwd
@@ -78,7 +78,7 @@ def _apply_logos_resonance_to_cap(
     try:
         import torch
 
-        enc = LogosEncoder()
+        enc = get_logos_encoder()
         dev = "cuda" if torch.cuda.is_available() else "cpu"
         logos_emb = enc.encode_text_to_logos_embedding(manuscript, device=dev)
         market_t = torch.tensor(
