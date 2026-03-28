@@ -40,12 +40,16 @@ models/**
 memory/metrics/*.jsonl
 projects/agi/venv_agi/**
 scripts/sse2_pure_essence/output/**
-projects/no1kmedi/.next/**
 pocketbase/pocketbase.exe
 scripts/de440.bsp.download
 
 # Node / frontend dependencies (never track workspace-wide)
 **/node_modules/
+
+# Git 정화: 빌드·산출물 격리 (로컬 보존, 추적 제외)
+**/tsconfig.tsbuildinfo
+**/backtest_results/
+projects/**/.next/
 
 # Local scratch temp (dot-prefixed)
 .tmp/
@@ -53,7 +57,6 @@ scripts/de440.bsp.download
 # Local generated artifacts (do not track)
 projects/bitcoin-trading/.venv/
 projects/bitcoin-trading/.pm2-win/
-projects/bitcoin-trading/backtest_results/*.json
 mkmlife-home-*.png
 tmp/
 tmp_*.css
