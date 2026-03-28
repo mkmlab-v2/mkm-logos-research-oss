@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://workspace.local/schemas/MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json",
+  "title": "Myeongri fusion decision ledger line (JSONL)",
+  "description": "One JSON object per line in projects/bitcoin-trading/memory/v2/ledger/myeongri_decision_ledger_YYYYMMDD.jsonl. Writer: append_myeongri_decision_ledger() in ops/v2/memory/decision_ledger.py. Code uses spelling MYEONGRI; manifest label MYEONGNI_FUSION_DECISION_JSON_SCHEMA is the SSOT name for this artifact.",
+  "type": "object",
+  "required": ["ts_utc", "fact_lock"],
+  "additionalProperties": true,
+  "properties": {
+    "slice_id": {
+      "type": "string",
+      "description": "Fusion slice identifier (e.g. regime or gate slice)."
+    },
+    "run_id": {
+      "type": "string",
+      "description": "Run correlation id."
+    },
+    "decision_id": {
+      "type": "string",
+      "description": "Decision id; may match run_id."
+    },
+    "ledger_join_key": {
+      "type": "string",
+      "description": "Field name used to join ledger rows (e.g. run_id)."
+    },
+    "stub": {
+      "description": "Optional stub or cycle tag (string or boolean in experiments).",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "boolean" }
+      ]
+    },
+    "ts_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp; defaulted by append_myeongri_decision_ledger if omitted before write."
+    },
+    "fact_lock": {
+      "type": "object",
+      "description": "Caller-supplied or build_fact_lock(project_root) snapshot; error stub if unavailable.",
+      "additionalProperties": true
+    }
+  }
+}
