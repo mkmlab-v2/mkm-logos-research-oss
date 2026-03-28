@@ -14,12 +14,15 @@ TEST_FILES=(
   "tests/test_dual_regime_api_smoke.py"
 )
 
-if command -v python3 >/dev/null 2>&1; then
+# Prefer project .venv (WSL PEP 668–safe local pytest). GitHub Actions uses setup-python + pip; no .venv there.
+if [ -x "${BT_ROOT}/.venv/bin/python" ]; then
+  PY="${BT_ROOT}/.venv/bin/python"
+elif command -v python3 >/dev/null 2>&1; then
   PY=python3
 elif command -v python >/dev/null 2>&1; then
   PY=python
 else
-  echo "error: python3 or python not found" >&2
+  echo "error: python3 or python not found (optional: python3 -m venv .venv && .venv/bin/pip install pytest)" >&2
   exit 127
 fi
 
