@@ -1,0 +1,67 @@
+# Cursor: track multi-chat SSOT only (rest stays local/untracked noise)
+.cursor/**
+!.cursor/current_work_status.md
+
+# 워크스페이스 루트 - 민감 정보·로컬 설정
+.env
+.env.backup*
+.env.local
+scripts/.env.jema12_alert
+
+# Pre-pull backup folders (local untracked file backup)
+_pre_pull_backup_*/
+
+# Logs (MCP/서비스 잠금 방지)
+logs/
+
+# Local secret vault (master key, encrypted secrets)
+.vault/
+secrets/
+
+# Python bytecode (VPS pull 시 .pyc 커밋 방지)
+__pycache__/
+# Local prophecy market quote cache (KOSPI/BTC snapshots)
+cache/prophecy_market_snapshot.json
+*.pyc
+*.pyo
+
+# Local RAG MCP test index
+rag_server/.test_rag_idx/
+
+# Large artifacts excluded for GitHub push
+models/**
+**/*.gguf
+**/*.safetensors
+**/checkpoint-*/**
+**/optimizer.pt
+**/*.pt
+**/*.dll
+**/*.bsp
+memory/metrics/*.jsonl
+projects/agi/venv_agi/**
+scripts/sse2_pure_essence/output/**
+projects/no1kmedi/.next/**
+pocketbase/pocketbase.exe
+scripts/de440.bsp.download
+
+# Node / frontend dependencies (never track workspace-wide)
+**/node_modules/
+
+# Local scratch temp (dot-prefixed)
+.tmp/
+
+# Local generated artifacts (do not track)
+projects/bitcoin-trading/.venv/
+projects/bitcoin-trading/.pm2-win/
+projects/bitcoin-trading/backtest_results/*.json
+mkmlife-home-*.png
+tmp/
+tmp_*.css
+tmp_*.html
+staging/
+
+# Local workspace mirrors / personal artifacts
+projects/mkm-lab-workspace-v2/
+projects/mkm/no1kmedi-clinic/
+athena_vault_theory.mkm-vault
+utf8
