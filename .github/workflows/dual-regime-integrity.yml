@@ -2,7 +2,8 @@ name: Dual Regime Integrity (Fact-Lock)
 
 on:
   push:
-    branches: [main, master, develop, ci/autopsy-verify]
+    # Include chore/** so feature/WIP branches (e.g. chore/wip-isolated-*) run CI without opening a PR.
+    branches: [main, master, develop, ci/autopsy-verify, "chore/**"]
     paths:
       - "projects/bitcoin-trading/**"
       - "data/regimes/**"
@@ -34,7 +35,7 @@ jobs:
         run: python -m pip install --upgrade pip pytest
 
       - name: Run Dual Regime API smoke / Fact-Lock tests
-        run: python -m pytest projects/bitcoin-trading/tests/test_dual_regime_api_smoke.py -v --tb=short
+        run: bash projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.sh
 
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()

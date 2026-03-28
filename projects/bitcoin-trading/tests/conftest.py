@@ -19,7 +19,14 @@ def pytest_runtest_logreport(report: Any) -> None:
     if report.when != "call":
         return
     nodeid = getattr(report, "nodeid", "") or ""
-    if "dual_regime" not in nodeid and "regime_integrity" not in nodeid:
+    if not any(
+        tag in nodeid
+        for tag in (
+            "dual_regime",
+            "regime_integrity",
+            "fusion_slice_gate",
+        )
+    ):
         return
     duration = getattr(report, "duration", None)
     _REGIME_CASES.append(
