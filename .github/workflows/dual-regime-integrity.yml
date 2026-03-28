@@ -9,6 +9,7 @@ on:
       - "data/regimes/**"
       - "projects/bitcoin-trading/tests/**"
       - "pytest.ini"
+      - ".gitattributes"
       - ".github/workflows/dual-regime-integrity.yml"
   pull_request:
     paths:
@@ -16,6 +17,7 @@ on:
       - "data/regimes/**"
       - "projects/bitcoin-trading/tests/**"
       - "pytest.ini"
+      - ".gitattributes"
       - ".github/workflows/dual-regime-integrity.yml"
   workflow_dispatch:
 
