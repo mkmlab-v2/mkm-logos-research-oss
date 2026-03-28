@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# P0 Step 4: scoped pytest bundle (prophecy / dual-regime alignment).
+# SSOT: docs/final/P0_COMMERCIALIZATION_TRACKER.md — Linux/macOS/CI twin of run_prophecy_alignment_pytest.ps1
+# Do not run full-repo pytest from here; keep the file list explicit.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BT_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
+cd "${BT_ROOT}"
+
+# Fact-Lock SSOT: dual-regime smoke (13 cases). CI: .github/workflows/dual-regime-integrity.yml
+TEST_FILES=(
+  "tests/test_dual_regime_api_smoke.py"
+)
+
+if command -v python3 >/dev/null 2>&1; then
+  PY=python3
+elif command -v python >/dev/null 2>&1; then
+  PY=python
+else
+  echo "error: python3 or python not found" >&2
+  exit 127
+fi
+
+exec "${PY}" -m pytest "${TEST_FILES[@]}" -v --tb=short
