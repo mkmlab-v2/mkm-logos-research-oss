@@ -1,0 +1,2 @@
+# Bash/WSL/CI: avoid CRLF breaking shebang and line continuations
+*.sh text eol=lf
