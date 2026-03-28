@@ -79,8 +79,8 @@ def test_forced_watch_inputs_match_bench_script() -> None:
         },
     )
 
-    # TEMP: intentional mismatch to verify CI autopsy artifacts (revert to 0.5 after verification).
-    assert ctx.risk_multiplier_cap == 0.6
+    # SSOT: data/regimes/regime_fusion_policy.json global.risk_multiplier_max (0.5)
+    assert ctx.risk_multiplier_cap == 0.5
     triggered = ctx.risk_multiplier_cap < 1.0
     assert triggered is True
     assert ctx.resonance_count == 0
