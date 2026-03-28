@@ -1,0 +1,11 @@
+{
+  "global": {
+    "risk_multiplier_min": 0.5,
+    "risk_multiplier_max": 1.2,
+    "psi_thresholds": {
+      "warning": 0.6,
+      "crisis": 0.8
+    },
+    "hypothesis_trigger_allowed": false
+  }
+}

@@ -1,0 +1,54 @@
+name: Dual Regime Integrity (Fact-Lock)
+
+on:
+  push:
+    branches: [main, master, develop, ci/autopsy-verify]
+    paths:
+      - "projects/bitcoin-trading/**"
+      - "data/regimes/**"
+      - "projects/bitcoin-trading/tests/**"
+      - "pytest.ini"
+      - ".github/workflows/dual-regime-integrity.yml"
+  pull_request:
+    paths:
+      - "projects/bitcoin-trading/**"
+      - "data/regimes/**"
+      - "projects/bitcoin-trading/tests/**"
+      - "pytest.ini"
+      - ".github/workflows/dual-regime-integrity.yml"
+  workflow_dispatch:
+
+jobs:
+  dual-regime-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pytest
+        run: python -m pip install --upgrade pip pytest
+
+      - name: Run Dual Regime API smoke / Fact-Lock tests
+        run: python -m pytest projects/bitcoin-trading/tests/test_dual_regime_api_smoke.py -v --tb=short
+
+      - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regime-integrity-report
+          path: backtest_results/REGIME_INTEGRITY_REPORT.json
+          if-no-files-found: ignore
+
+      # Passive: on failure, preserve full backtest_results for autopsy (logs, dumps, JSON).
+      - name: Upload backtest_results (failure autopsy)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backtest-results-autopsy
+          path: backtest_results/
+          if-no-files-found: ignore
