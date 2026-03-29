@@ -1,0 +1,20 @@
+# Cursor indexing slim-down (mirrors heavy paths from .gitignore; code stays on disk)
+
+**/node_modules/
+**/backtest_results/
+logs/
+**/.venv/
+**/.pm2-win/
+**/.next/
+**/dist/
+models/
+**/*.gguf
+**/*.safetensors
+**/checkpoint-*/
+tmp/
+.tmp/
+memory/metrics/
+rag_server/.test_rag_idx/
+projects/bitcoin-trading/.venv/
+**/coverage/
+**/*.egg-info/
