@@ -50,9 +50,11 @@
 | 항목 | 값 |
 |------|-----|
 | **브랜치** | `main` |
-| **HEAD (full)** | `a6e8ea87d19c68ff76e8f8164a3b6ed8d7cc17a2` |
-| **HEAD (short)** | `a6e8ea87d1` |
-| **SSOT 커밋** | `a6e8ea87d1 docs(battleboard): Handoff SSOT lines match repository tip` |
+| **HEAD (full)** | `b99b30a1c385a8806f0a96450b53cadb29e14402` |
+| **HEAD (short)** | `b99b30a1c3` |
+| **SSOT 커밋** | `b99b30a1c3 docs(battleboard): Handoff HEAD rows match git rev-parse HEAD (tip commit)` |
+
+> **팁**: Handoff 행만 갱신하는 커밋을 내면, 커밋 직후 `git rev-parse HEAD`는 **새 객체 해시**가 되어 표의 `HEAD (full)`과 한 커밋 차이가 날 수 있다. 완전 일치가 필요하면 해당 커밋 직후 표를 한 번 더 맞추거나, 검증은 `git rev-parse HEAD`를 SSOT로 둔다.
 | **작업트리** | **SSOT 화이트리스트 경로는 커밋됨** — 루트에 실험·미추적 트리(`projects/*` 일부, `.tmp/` 등)는 그대로 **??**; 전황판 Handoff 갱신 후 이 표의 HEAD는 **`git rev-parse HEAD`와 반드시 일치**시킬 것 (문서만 바꿀 때는 일반 커밋 권장, 반복 `--amend` 지양) |
 
 **수정됨 (M)**  
