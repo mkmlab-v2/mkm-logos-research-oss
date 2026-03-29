@@ -132,8 +132,8 @@ function Show-DiagDashboard {
             default { 'Gray' }
         }
         Write-Host "=== $bucket ===" -ForegroundColor $color
-        $sub = $rows | Where-Object { $_.Category -eq $bucket }
-        if (-not $sub -or $sub.Count -eq 0) {
+        $sub = @($rows | Where-Object { $_.Category -eq $bucket })
+        if ($sub.Count -eq 0) {
             Write-Host "  (none matched)" -ForegroundColor DarkGray
             Write-Host ""
             continue
