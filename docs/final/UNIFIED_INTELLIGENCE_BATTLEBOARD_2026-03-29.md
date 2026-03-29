@@ -49,9 +49,9 @@
 | 항목 | 값 |
 |------|-----|
 | **브랜치** | `main` |
-| **HEAD (full)** | `63acc53bf2acabddc7302b3c7e8caf73df601d79` |
-| **HEAD (short)** | `63acc53bf2` |
-| **SSOT 커밋 (integrity_guard·golden ACTUAL + 전황판 Handoff)** | `63acc53bf2` — `docs: battleboard Handoff tip eb28895b4c` (integrity_guard·golden ACTUAL 스냅샷·ci 전환 등은 이전 커밋 히스토리 참조) |
+| **HEAD (full)** | `d039476d29ba3640e97d182bce3b2ec0e7e12601` |
+| **HEAD (short)** | `d039476d29` |
+| **SSOT 커밋 (integrity_guard·golden ACTUAL + 전황판 Handoff)** | `d039476d29` — `docs: battleboard Handoff sync to 63acc53bf2` (integrity_guard·golden ACTUAL 스냅샷·ci 전환 등은 이전 커밋 히스토리 참조) |
 | **작업트리** | **SSOT 화이트리스트 경로는 커밋됨** — 루트에 실험·미추적 트리(`projects/*` 일부, `.tmp/` 등)는 그대로 **??**; 전황판 Handoff 갱신 후 이 표의 HEAD는 **`git rev-parse HEAD`와 반드시 일치**시킬 것 (문서만 바꿀 때는 일반 커밋 권장, 반복 `--amend` 지양) |
 
 **수정됨 (M)**  
