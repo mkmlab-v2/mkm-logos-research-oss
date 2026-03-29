@@ -55,8 +55,10 @@ def test_nearest_neighbors_top1():
     if len(texts) < 3:
         pytest.skip("need at least 3 verses")
     enc = LogosEncoder()
-    corpus = enc.encode_texts_batch_to_logos_embeddings(texts)
-    q = enc.encode_texts_batch_to_logos_embeddings([texts[0]])
+    # CPU keeps batch vs single-query encodings aligned; GPU top-k can differ on ties / fp noise.
+    dev = "cpu"
+    corpus = enc.encode_texts_batch_to_logos_embeddings(texts, device=dev)
+    q = enc.encode_texts_batch_to_logos_embeddings([texts[0]], device=dev)
     vals, idx = nearest_logos_neighbors(q.squeeze(0), corpus, k=3)
     assert vals.shape[0] == 3
     assert idx.shape[0] == 3
