@@ -50,9 +50,9 @@
 | 항목 | 값 |
 |------|-----|
 | **브랜치** | `main` |
-| **HEAD (full)** | `c429b24d7cf163513562ddc00df5720b6cbd7f51` |
-| **HEAD (short)** | `c429b24d7c` |
-| **SSOT 커밋** | `c429b24d7c docs(battleboard): record integrity_lock k=6866, 1574, 149; sync Handoff HEAD; neutral Next` |
+| **HEAD (full)** | `f7deb26f7a848666cf44c6a8c5bb8c2bd35099b2` |
+| **HEAD (short)** | `f7deb26f7a` |
+| **SSOT 커밋** | `f7deb26f7a docs: battleboard Handoff sync HEAD c429b24d7c` |
 | **작업트리** | **SSOT 화이트리스트 경로는 커밋됨** — 루트에 실험·미추적 트리(`projects/*` 일부, `.tmp/` 등)는 그대로 **??**; 전황판 Handoff 갱신 후 이 표의 HEAD는 **`git rev-parse HEAD`와 반드시 일치**시킬 것 (문서만 바꿀 때는 일반 커밋 권장, 반복 `--amend` 지양) |
 
 **수정됨 (M)**  
