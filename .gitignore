@@ -87,3 +87,4 @@ projects/code-pack-marketplace/
 
 # Root accidental probe output (one-line JSON); keep local only
 /utf8
+/tmp_verify_report.json
