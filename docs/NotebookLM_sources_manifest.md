@@ -210,6 +210,18 @@ https://ko.wikipedia.org/wiki/%EC%82%AC%EC%A3%BC%EB%AA%85%EB%A6%AC%ED%95%99
 | *(URL)* The Dead Sea Scrolls | 외부 DSS |
 | *(URL)* The Dead Sea Scrolls - Explore the Archive | 아카이브 탐색 |
 
+**`source_add` 로컬 파일 확정 (2026-03-29, `Test-Path` 전부 True)** — NotebookLM MCP `source_type: file` 시 `file_path` 예시:
+
+| # | `file_path` (Windows) |
+|---|------------------------|
+| 1 | `C:\workspace\docs\final\CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` |
+| 2 | `C:\workspace\docs\final\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md` |
+| 3 | `C:\workspace\docs\final\LOGOS_NOTEBOOK_META_GUIDE.md` |
+| 4 | `C:\workspace\docs\final\LOGOS_RISK_BRIDGE_v1.md` |
+| 5 | `C:\workspace\docs\final\NOTEBOOKLM_DSS_APOCRYPHA_BUNDLE_NOTE_command_center_followup_20260327_f.md` |
+
+위 5개는 **MD·SSOT**로 DSS Fusion 노트와 정합; **JSONL**은 업로드 실패 가능성이 있어 본 노트의 직접 소스로는 권장하지 않음.
+
 **원시 코퍼스** (`data/logos/manuscripts/*.jsonl`)는 노트에 직접 붙이기 어려울 수 있음 → 필요 시 **MD/TXT 청크** 또는 **PDF**로 내보낸 뒤 `source_add file`.
 
 ---
