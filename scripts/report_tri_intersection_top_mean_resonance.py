@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from argparse import Namespace
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -89,12 +90,36 @@ def _parse_args() -> argparse.Namespace:
     )
     p.add_argument("--top-n", type=int, default=100, help="How many verses to keep (default 100)")
     p.add_argument(
+        "--exclude-verse-prefix",
+        action="append",
+        default=[],
+        metavar="PREFIX",
+        help="Exclude verse ids starting with this prefix (repeatable). Example: --exclude-verse-prefix apo:",
+    )
+    p.add_argument(
+        "--canon-only",
+        action="store_true",
+        help="Shorthand: exclude apo: and dss: (Hebrew Bible + no apocrypha/DSS in id prefix).",
+    )
+    p.add_argument(
         "--output",
         type=Path,
         default=None,
         help="Output JSON (default: backtest_results/TRI_MEAN_RESONANCE_TOP{n}_*.json)",
     )
     return p.parse_args()
+
+
+def _excluded_prefixes(args: Namespace) -> List[str]:
+    if args.canon_only:
+        return ["apo:", "dss:"]
+    return list(args.exclude_verse_prefix or [])
+
+
+def _passes_prefix_filters(verse_id: str, prefixes: List[str]) -> bool:
+    if not prefixes:
+        return True
+    return not any(verse_id.startswith(p) for p in prefixes)
 
 
 def main() -> int:
@@ -119,6 +144,14 @@ def main() -> int:
     verse_ids: List[str] = list(triple_block.get("verse_ids") or [])
     if not verse_ids:
         raise SystemExit("empty verse_ids for triple")
+
+    excl = _excluded_prefixes(args)
+    triple_raw_n = len(verse_ids)
+    if excl:
+        verse_ids = [v for v in verse_ids if _passes_prefix_filters(v, excl)]
+    triple_filtered_n = len(verse_ids)
+    if not verse_ids:
+        raise SystemExit("no verses left after prefix filters")
 
     m_bear = _cosine_map(bear_p)
     m_bull = _cosine_map(bull_p)
@@ -152,11 +185,10 @@ def main() -> int:
 
     out_path = args.output
     if out_path is None:
-        out_path = (
-            root
-            / "backtest_results"
-            / f"TRI_MEAN_RESONANCE_TOP{int(args.top_n)}_{args.triple_key.replace('|', '_')}.json"
-        )
+        tag = args.triple_key.replace("|", "_")
+        if excl:
+            tag += "_EXCL_" + "_".join(p.replace(":", "") for p in excl)
+        out_path = root / "backtest_results" / f"TRI_MEAN_RESONANCE_TOP{int(args.top_n)}_{tag}.json"
 
     payload: Dict[str, Any] = {
         "schema": "tri_intersection_mean_resonance_report_v1",
@@ -165,6 +197,7 @@ def main() -> int:
             "triple_key": args.triple_key,
             "mean_resonance_tri": "mean(cosine_to_regime_fingerprint_4d over bear, bull, sideways probes)",
             "rank_order": "descending mean_resonance_tri",
+            "exclude_verse_prefixes": excl,
         },
         "inputs": {
             "intersection": str(inter_path.resolve()),
@@ -172,7 +205,8 @@ def main() -> int:
             "bull_pump": str(bull_p.resolve()),
             "sideways_accumulation": str(side_p.resolve()),
         },
-        "triple_verse_count": len(verse_ids),
+        "triple_verse_count_raw": triple_raw_n,
+        "triple_verse_count_after_filter": triple_filtered_n,
         "ranked_count": len(rows),
         "missing_in_any_probe": len(missing),
         "top_n": int(args.top_n),
