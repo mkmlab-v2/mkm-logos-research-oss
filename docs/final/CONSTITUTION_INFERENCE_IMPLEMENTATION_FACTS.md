@@ -31,6 +31,18 @@
 | 명리 전용 ledger 접두어 | `projects/bitcoin-trading/ops/v2/memory/decision_ledger.py` | `MYEONGRI_LEDGER_PREFIX`, `append_myeongri_decision_ledger` |
 | Fact-lock 스냅샷 | `projects/bitcoin-trading/ops/v2/memory/fact_lock_snapshot.py` | `trading_config` 내 `myeongri` 서브셋 + 정책 해시 |
 
+### 3.1 16-상태 실험 JSONL (B-track, Fact-Lock)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| JSON Schema | `docs/final/MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json` | `state_id` 1–16; 선택 필드 `consistency_rate`, `self_contradiction_rate` (각 0–1) |
+| Ledger·검증 CLI | `scripts/myeongni_16_state_experiment_ledger.py` | `append_*`, `validate-sample --path …` |
+| 정본 예시 데이터 | `data/myeongni/myeongni_16_state_experiment_v1.jsonl` | 운영 적재 전 참조 |
+| 샘플 (동일 스키마) | `data/myeongni/myeongni_16_state_experiment_v1.sample.jsonl` | 스텁·가설 티어 B용 |
+| 단위 테스트 | `tests/test_myeongni_16_state_experiment_ledger.py` | 스키마 검증·rate 구간 |
+
+**Fact-Lock**: 16상태 확장 가설은 **트레이딩 엔진 합선 전** 본 JSONL·스키마로만 기록; `dual_regime_api.py`와의 연결은 별도 승인·PR에서 명시한다.
+
 ---
 
 ## 4. 코드북 템플릿 (Dual-track)
@@ -103,4 +115,4 @@
 
 ---
 
-**상태**: 초기 SSOT 고정 (2026-03-29). §6 NotebookLM→vault 표·§8 추가 (2026-03-29). §8 작전지휘부·OPS_ONEPAGE 갭·§9 UFT 경로 (2026-03-29). 경로가 바뀌면 본 파일을 먼저 수정한다.
+**상태**: 초기 SSOT 고정 (2026-03-29). §6 NotebookLM→vault 표·§8 추가 (2026-03-29). §8 작전지휘부·OPS_ONEPAGE 갭·§9 UFT 경로 (2026-03-29). §3.1 16-상태 실험 JSONL·경로 팩트 (2026-03-29). 경로가 바뀌면 본 파일을 먼저 수정한다.

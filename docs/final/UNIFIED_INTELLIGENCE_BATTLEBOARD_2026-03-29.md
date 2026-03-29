@@ -39,3 +39,27 @@
 - Logos 근원 선행: `.cursor/rules/logos-first-pipeline.mdc`
 
 **상태**: Fact-Lock 완료 (2026-03-29) — Master Probe 검증 스크립트·테스트는 `c887d27d6f`에 기록됨; 수치·해시 추가 변경 시 위 슬롯만 갱신.
+
+---
+
+## Handoff (다른 AI / 병렬 창)
+
+**최종 갱신**: 2026-03-29 (로컬 `git status` 기준)
+
+| 항목 | 값 |
+|------|-----|
+| **브랜치** | `main` |
+| **HEAD (full)** | `c5cfc1a77c26fe44e043d61303abb377d954318e` |
+| **HEAD (short)** | `c5cfc1a77c` |
+| **SSOT 커밋 (dual regime + 문서·매니페스트·동기화 스크립트 + 전황판 Handoff)** | `c5cfc1a77c` — `feat(bitcoin-trading): dual regime API smoke tests and docs sync` (Master Probe JSON `16_STATE_MASTER_PROBE_v1.json`는 이전 커밋 `45563f4` 등에 정본으로 이미 포함) |
+| **작업트리** | **SSOT 화이트리스트 경로는 커밋됨** — 루트에 실험·미추적 트리(`projects/*` 일부, `.tmp/` 등)는 그대로 **??**; 전황판만 편집 후 amend 시 이 표의 HEAD 해시는 **최종 `git rev-parse HEAD`와 일치시킬 것** |
+
+**수정됨 (M)**  
+없음 (위 HEAD에 반영됨; 전황판 본 파일만 amend 직전에 잠깐 M일 수 있음)
+
+**추적 안 됨 (??)**  
+`docs/external_research/`, `docs/final/MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json`, 여러 `projects/*`, 스크립트 일괄(`append_btrack_*`, `sweep_logos_regime_topk_btc_ext.py`, `verify_master_probe_state5.py` 등), `tests/test_myeongni_16_state_experiment_ledger.py`
+
+**Next**  
+- **[A]** SSOT만 유지: `git checkout -- <파일>` 또는 실험 파일은 브랜치·stash로 분리.  
+- **[B]** 실험선 포함 커밋: 화이트리스트 확정 후 `git add`·커밋 (동일 파일 동시 편집 주의).

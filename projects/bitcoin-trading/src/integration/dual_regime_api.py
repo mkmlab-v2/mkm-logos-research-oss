@@ -2,6 +2,10 @@
 
 Bench/smoke callers: ``evaluate_dual_regime_and_market_shock``.
 Policy SSOT: ``data/regimes/regime_fusion_policy.json`` (workspace-relative).
+
+B-track 16-state experiment (JSONL / schema) does **not** feed risk caps unless
+explicitly wired elsewhere; ``get_myeongni_16_state_experiment_ssot`` only
+surfaces paths for observability and HTTP metadata.
 """
 
 from __future__ import annotations
@@ -127,6 +131,29 @@ def get_biblical_hypothesis_status(workspace_root: Path) -> dict[str, Any]:
     return {
         "hypothesis_trigger_allowed": bool(g.get("hypothesis_trigger_allowed", False)),
         "policy_path": str(_policy_path(workspace_root)),
+    }
+
+
+def get_myeongni_16_state_experiment_ssot(workspace_root: Path) -> dict[str, Any]:
+    """Read-only B-track Fact-Lock paths (schema, ledger CLI, JSONL).
+
+    Does not read ledger contents or alter ``evaluate_dual_regime_and_market_shock``.
+    Align with ``docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`` §3.1.
+    """
+    root = workspace_root.resolve()
+    schema = root / "docs" / "final" / "MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json"
+    ledger_cli = root / "scripts" / "myeongni_16_state_experiment_ledger.py"
+    jsonl = root / "data" / "myeongni" / "myeongni_16_state_experiment_v1.jsonl"
+    sample_jsonl = root / "data" / "myeongni" / "myeongni_16_state_experiment_v1.sample.jsonl"
+    return {
+        "schema_path": str(schema),
+        "ledger_cli_path": str(ledger_cli),
+        "jsonl_path": str(jsonl),
+        "sample_jsonl_path": str(sample_jsonl),
+        "schema_exists": schema.is_file(),
+        "ledger_cli_exists": ledger_cli.is_file(),
+        "jsonl_exists": jsonl.is_file(),
+        "sample_jsonl_exists": sample_jsonl.is_file(),
     }
 
 

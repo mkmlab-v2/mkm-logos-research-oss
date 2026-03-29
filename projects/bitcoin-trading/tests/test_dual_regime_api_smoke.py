@@ -24,6 +24,7 @@ from src.integration.dual_regime_api import (  # noqa: E402
     _policy_path,
     _stress_score,
     evaluate_dual_regime_and_market_shock,
+    get_myeongni_16_state_experiment_ssot,
 )
 
 
@@ -251,3 +252,34 @@ def test_risk_multiplier_max_when_zero_stress() -> None:
         context_metrics={"fear_greed_index": 0.0},
     )
     assert out.risk_multiplier_cap == pytest.approx(rmax, rel=0, abs=1e-9)
+
+
+# ---------------------------------------------------------------------------
+# 5) B-track 16-state SSOT paths (read-only observability; no cap wiring)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.regime_integrity
+def test_myeongni_16_state_experiment_ssot_paths_resolve() -> None:
+    """``get_myeongni_16_state_experiment_ssot`` returns workspace-relative Fact-Lock paths."""
+    workspace_root = _workspace_root()
+    out = get_myeongni_16_state_experiment_ssot(workspace_root)
+
+    assert set(out.keys()) == {
+        "schema_path",
+        "ledger_cli_path",
+        "jsonl_path",
+        "sample_jsonl_path",
+        "schema_exists",
+        "ledger_cli_exists",
+        "jsonl_exists",
+        "sample_jsonl_exists",
+    }
+    for k in ("schema_exists", "ledger_cli_exists", "jsonl_exists", "sample_jsonl_exists"):
+        assert isinstance(out[k], bool)
+
+    root = workspace_root.resolve()
+    assert Path(out["schema_path"]) == root / "docs" / "final" / "MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json"
+    assert Path(out["ledger_cli_path"]) == root / "scripts" / "myeongni_16_state_experiment_ledger.py"
+    assert Path(out["jsonl_path"]) == root / "data" / "myeongni" / "myeongni_16_state_experiment_v1.jsonl"
+    assert Path(out["sample_jsonl_path"]) == root / "data" / "myeongni" / "myeongni_16_state_experiment_v1.sample.jsonl"
