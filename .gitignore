@@ -25,6 +25,9 @@ cache/prophecy_market_snapshot.json
 *.pyc
 *.pyo
 
+# Python packaging metadata (local editable-install artifacts; do not track)
+**/*.egg-info/
+
 # Local RAG MCP test index
 rag_server/.test_rag_idx/
 
