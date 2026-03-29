@@ -8,12 +8,16 @@
   - Does NOT install PM2; on Windows use Task Scheduler to call this script, or pm2 if you already use it.
   - Example (short dev run, from repo root in PowerShell):
       .\scripts\run_gpu_job_windows.ps1 -SkipTempCheck -PyArgs @('--ks','100','--limit','50')
-  - Example (full sweep — long):
+  - Example (full sweep — long; writes checkpoint in backtest_results, auto-resumes if interrupted):
       .\scripts\run_gpu_job_windows.ps1 -PyArgs @()
+  - Discard old checkpoint and run all ks from scratch:
+      .\scripts\run_gpu_job_windows.ps1 -PyArgs @('--fresh')
 
 .NOTES
   Real training entrypoints in this repo are scripts like sweep_logos_regime_topk_btc_ext.py
   and bench_logos_gpu_corpus.py — there is no scripts/train_logos_resonance.py.
+  sweep_logos_regime_topk_btc_ext: default is full ks list (no early stop). Checkpoint file:
+  backtest_results/<prefix>_SWEEP_CHECKPOINT.json — same command line after a crash resumes remaining k.
 #>
 param(
     [string]$PythonScript = "scripts\sweep_logos_regime_topk_btc_ext.py",
