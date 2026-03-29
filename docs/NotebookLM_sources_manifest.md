@@ -126,9 +126,9 @@
 | A (팩트) | `31e6d45a-4a0e-40e6-a010-9c03a6ec1239` | 표 ID와 일치 (`notebook_get` 2026-03-29 검증). **계정·프로필 전환 시** UI 또는 `notebook_get`으로 재확인 |
 | B (통찰) | `af639d3e-b455-4f3f-8e25-47f58d962c60` | 동일 |
 
-**MCP 검증 (2026-03-29, 현재 계정)**: `notebook_get` 성공 — A 제목 `만세력·사주_AI_A_제품 (MKM Fact-Lock)`, 소스 7개; B 제목 `만세력·사주_AI_B_연구 (MKM Abstract)`, 소스 **3**개.
+**MCP 검증 (2026-03-29, 현재 계정)**: `notebook_get` 성공 — A 제목 `만세력·사주_AI_A_제품 (MKM Fact-Lock)`, 소스 7개; B 제목 `만세력·사주_AI_B_연구 (MKM Abstract)`, 소스 **11**개(파일 소스 3 + Wikipedia URL 8; `source_add` 일괄 반영).
 
-**클라우드 소스 제목 (실측, `notebook_get`과 동일)** — 카운트 A=7·B=3:
+**클라우드 소스 제목 (실측, `notebook_get`과 동일)** — 카운트 A=7·B=11:
 
 | 노트북 | 소스 제목 (표시명) |
 |--------|-------------------|
@@ -142,12 +142,60 @@
 | B | `MANSE_SAJU_AI_RESEARCH_SYNTHESIS_2026-03-29.md` |
 | B | `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` |
 | B | `AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md` |
+| B | *(Wikipedia)* Four Pillars of Destiny |
+| B | *(Wikipedia)* Korean calendar |
+| B | *(Wikipedia)* Sexagenary cycle |
+| B | *(Wikipedia)* Lunisolar calendar |
+| B | *(Wikipedia)* Chinese calendar |
+| B | *(Wikipedia)* 사주 |
+| B | *(Wikipedia)* 만세력 |
+| B | *(Wikipedia)* 사주명리학 |
+
+**B — Wikipedia URL SSOT (`source_add` 2026-03-29)** — 통찰·참고 전용; 본선 OOF·A와 무단 합선 금지.
+
+```
+https://en.wikipedia.org/wiki/Four_Pillars_of_Destiny
+https://en.wikipedia.org/wiki/Korean_calendar
+https://en.wikipedia.org/wiki/Sexagenary_cycle
+https://en.wikipedia.org/wiki/Lunisolar_calendar
+https://en.wikipedia.org/wiki/Chinese_calendar
+https://ko.wikipedia.org/wiki/%EC%82%AC%EC%A3%BC
+https://ko.wikipedia.org/wiki/%EB%A7%8C%EC%84%B8%EB%A0%A5
+https://ko.wikipedia.org/wiki/%EC%82%AC%EC%A3%BC%EB%AA%85%EB%A6%AC%ED%95%99
+```
 
 **명리 스키마 B 반영 (2026-03-29)**: SSOT는 `docs/final/MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json`. 파일 소스 `source_add`가 실패한 경우 **`source_type: text`**로 본문 전체 업로드 가능 — B에 `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` 제목으로 등록됨(`source_id` `77ae458c-259f-4e92-ad12-ae5e2bd650f8`). 구현·경로 팩트는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6과 정합 유지.
 
 **소스 경로 SSOT**: 워크스페이스에 `docs/작전지휘부/CURSOR_CHAT_NOTEBOOKLM_COMMAND_BRIDGE_2026-03-28.md`가 **있을 때** 해당 MD의 `[FACT] 만세력·사주 이원 노트` 블록을 우선. **없으면** 본 매니페스트 **A/B 궤적** 표와 사용자가 지정한 경로만 사용. **`scripts/push_manse_saju_notebooklm_from_manifest.ps1`는 존재하지 않음** (벌크 푸시 스크립트 금지).
 
 **갱신 절차**: `notebook_get` → 갱신할 파일 `Test-Path` → MCP `source_add`(`source_type: file`, `file_path`, `wait: true`).
+
+---
+
+## DSS Fusion Sources (DSS + 외경)
+
+**역할**: DSS·외경(Apocrypha) 번들·리스크·구현 팩트를 한 노트에 모음. **JSONL**은 NotebookLM 파일 업로드가 실패할 수 있으므로 **`docs/final/*.md`** 위주로 `source_add`.
+
+| 항목 | 값 |
+|------|-----|
+| **제목** | DSS Fusion Sources 2026-03-26 |
+| **notebook_id** | `2b2eeff1-1bac-424c-9128-59d0f0946908` |
+| **URL** | `https://notebooklm.google.com/notebook/2b2eeff1-1bac-424c-9128-59d0f0946908` |
+
+**`notebook_get` 검증 (2026-03-29)**: `source_count` **8**.
+
+| 소스 제목 (표시명) | 비고 |
+|-------------------|------|
+| `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | 구현 팩트 SSOT |
+| `DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md` | DSS·외경 프론트라인 클로즈아웃 |
+| `LOGOS_NOTEBOOK_META_GUIDE.md` | 노트북 메타 가이드 |
+| `LOGOS_RISK_BRIDGE_v1.md` | 리스크 브리지 |
+| `NOTEBOOKLM_DSS_APOCRYPHA_BUNDLE_NOTE_command_center_followup_20260327_f.md` | 번들 노트 |
+| *(URL)* GitHub - ETCBC/dss … | Abegg/TF 참조 |
+| *(URL)* The Dead Sea Scrolls | 외부 DSS |
+| *(URL)* The Dead Sea Scrolls - Explore the Archive | 아카이브 탐색 |
+
+**원시 코퍼스** (`data/logos/manuscripts/*.jsonl`)는 노트에 직접 붙이기 어려울 수 있음 → 필요 시 **MD/TXT 청크** 또는 **PDF**로 내보낸 뒤 `source_add file`.
 
 ---
 
@@ -158,4 +206,4 @@
 
 ---
 
-**상태**: A 궤적 · Logos-Insight 표(wide_20 JSON/CSV 포함) · 이제마 B 분리 · 작전지휘부 229 소스·wipe 정책 · 만세력·사주 A/B `notebook_get` 검증 완료(표 ID 일치; B 소스 3개·명리 스키마·외부 참조 랜드스케이프 반영) · OPS_ONEPAGE Gap 기록 정책 (2026-03-29)
+**상태**: A 궤적 · Logos-Insight 표(wide_20 JSON/CSV 포함) · 이제마 B 분리 · 작전지휘부 229 소스·wipe 정책 · 만세력·사주 A/B `notebook_get` 검증 완료(표 ID 일치; B 소스 11개=파일 3+위키 8·명리 스키마·외부 참조 랜드스케이프·Wikipedia `source_add` 반영) · **DSS Fusion** 노트(`2b2eeff1-…`) 소스 8개 검증 · OPS_ONEPAGE Gap 기록 정책 (2026-03-29)

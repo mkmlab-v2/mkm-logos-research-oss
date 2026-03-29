@@ -52,9 +52,10 @@ function Test-IsTradingCommandLine {
     param([string]$CommandLine)
     if ([string]::IsNullOrWhiteSpace($CommandLine)) { return $false }
     $c = $CommandLine
-    # Project directory on disk (any slash style)
+    # Path segment .../projects/bitcoin-trading/... (avoid loose "projects" + "bitcoin-trading" anywhere in string)
+    if ($c -match '(?i)projects[\\/]bitcoin-trading(?:[\\/]|"|$)') { return $true }
+    # Directory name bitcoin-trading with path separators (not substring inside other tokens)
     if ($c -match '(?i)[\\/]bitcoin-trading[\\/]') { return $true }
-    if ($c -match '(?i)projects[\\/][^"''\s]*bitcoin-trading') { return $true }
     # Explicit module paths (avoid matching unrelated "dual_regime" substrings)
     if ($c -match '(?i)dual_regime_api(\.py)?') { return $true }
     if ($c -match '(?i)integration[\\/]dual_regime') { return $true }
