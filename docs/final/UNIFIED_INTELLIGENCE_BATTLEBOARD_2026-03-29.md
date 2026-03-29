@@ -49,9 +49,9 @@
 | 항목 | 값 |
 |------|-----|
 | **브랜치** | `main` |
-| **HEAD (full)** | `16a5e8fd2ef673818a817a18af2f81d47e06f96b` |
-| **HEAD (short)** | `16a5e8fd2e` |
-| **SSOT 커밋** | `16a5e8fd2e docs: battleboard Handoff rows match HEAD b9d7222c6e` |
+| **HEAD (full)** | `b5b56a79e51ee8b79dad23e155ef52a923ba2682` |
+| **HEAD (short)** | `b5b56a79e5` |
+| **SSOT 커밋** | `b5b56a79e5 docs: battleboard Handoff rows match HEAD b9d7222c6e` |
 | **작업트리** | **SSOT 화이트리스트 경로는 커밋됨** — 루트에 실험·미추적 트리(`projects/*` 일부, `.tmp/` 등)는 그대로 **??**; 전황판 Handoff 갱신 후 이 표의 HEAD는 **`git rev-parse HEAD`와 반드시 일치**시킬 것 (문서만 바꿀 때는 일반 커밋 권장, 반복 `--amend` 지양) |
 
 **수정됨 (M)**  
