@@ -1,0 +1,42 @@
+[
+  {
+    "k": 3500,
+    "intersection_report": "C:\\workspace\\backtest_results\\sweep_kmin_expansion\\LOGOS_RESONANCE_BTC_EXT_INTERSECTION_TOP3500.json",
+    "summary": {
+      "any_pairwise_non_empty": true,
+      "any_triple_non_empty": false,
+      "all_four_non_empty": false
+    },
+    "count_all_four": 0
+  },
+  {
+    "k": 4000,
+    "intersection_report": "C:\\workspace\\backtest_results\\sweep_kmin_expansion\\LOGOS_RESONANCE_BTC_EXT_INTERSECTION_TOP4000.json",
+    "summary": {
+      "any_pairwise_non_empty": true,
+      "any_triple_non_empty": false,
+      "all_four_non_empty": false
+    },
+    "count_all_four": 0
+  },
+  {
+    "k": 5000,
+    "intersection_report": "C:\\workspace\\backtest_results\\sweep_kmin_expansion\\LOGOS_RESONANCE_BTC_EXT_INTERSECTION_TOP5000.json",
+    "summary": {
+      "any_pairwise_non_empty": true,
+      "any_triple_non_empty": true,
+      "all_four_non_empty": false
+    },
+    "count_all_four": 0
+  },
+  {
+    "k": 7500,
+    "intersection_report": "C:\\workspace\\backtest_results\\sweep_kmin_expansion\\LOGOS_RESONANCE_BTC_EXT_INTERSECTION_TOP7500.json",
+    "summary": {
+      "any_pairwise_non_empty": true,
+      "any_triple_non_empty": true,
+      "all_four_non_empty": true
+    },
+    "count_all_four": 1771
+  }
+]

@@ -195,7 +195,7 @@
         "chunk_id": "nl_chunk_0042",
         "line_start": 120,
         "line_end": 198,
-        "sha256": "2c26b46b68ffc68ff99b453c1d3041340e0ee8b8e7e70c87c831a9b5e25d2e0",
+        "sha256": "03cac0864aa3f1b8faf569d718604384e2dc13a274182fa3369402103f668e25",
         "rules_version": "MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json@1",
         "expected_parent": "P2",
         "confidence_score": 0.76,
