@@ -49,6 +49,7 @@ scripts/de440.bsp.download
 # Git 정화: 빌드·산출물 격리 (로컬 보존, 추적 제외)
 **/tsconfig.tsbuildinfo
 **/backtest_results/
+**/dist/
 projects/**/.next/
 
 # Local scratch temp (dot-prefixed)
