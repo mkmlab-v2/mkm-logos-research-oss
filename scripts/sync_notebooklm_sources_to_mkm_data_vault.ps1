@@ -66,6 +66,7 @@ if (-not $WhatIf) {
 # Keep in sync with docs/NotebookLM_sources_manifest.md (A/B/Logos/Ijeoma blocks).
 $SourceFiles = @(
     "docs\NotebookLM_sources_manifest.md",
+    "docs\final\AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md",
     "docs\final\CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
     "docs\final\master_codebook_dual_track.template.json",
     "data\regimes\regime_fusion_policy.json",
@@ -102,7 +103,8 @@ $SourceFiles = @(
     "data\corpus\ijeoma\_inventory\IJEOMA_MASTER_MANIFEST_DRAFT_2026-03-29.json",
     "data\corpus\ijeoma\_inventory\IJEOMA_CHUNK_TABLE_2026-03-29.jsonl",
     "data\corpus\ijeoma\_inventory\IJEOMA_CORPUS_INVENTORY_2026-03-28.json",
-    "data\corpus\ijeoma\_inventory\hwp_com_export_report.json"
+    "data\corpus\ijeoma\_inventory\hwp_com_export_report.json",
+    "data\corpus\ijeoma\e_drive_mirror\donguisusebowon_mastery_report.md"
 )
 
 $SourceDirs = @(

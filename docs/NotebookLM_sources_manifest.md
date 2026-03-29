@@ -49,6 +49,7 @@
 | `data/corpus/ijeoma/_inventory/IJEOMA_INSIGHT_UNITS_SASANG_FOUR_SAMPLE_2026-03-29.json` | 사상 사본 샘플(JSON) |
 | `data/corpus/ijeoma/_inventory/IJEOMA_CODEBOOK_INDEX_DRAFT_2026-03-29.json` | 코드북 인덱스 초안 |
 | `data/corpus/ijeoma/e_drive_mirror/donguisusebowon_mastery_report.md` | 동의보감 마스터리 보고서(NotebookLM 소스) |
+| `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | §8 A/B 분리·구현 팩트 SSOT; 이제마 B 노트북 그라운딩(환각 방지·행동 근거) |
 
 ### 마스터·청크·인벤토리 (대용량·선택)
 
