@@ -29,6 +29,7 @@
 |------|------------------|------|
 | DSS / Qumran | `docs/final/DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md` | Creative-Lock; frontline closeout SSOT |
 | 명리·융합 의사결정 | `docs/final/MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` | SSOT; B 노트북에는 동명 텍스트 소스로 반영(`MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json`). A와 역할 분리 |
+| AI·명리·만세 외부 참조 | `docs/final/AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md` | 타 서비스·RAG·LLM 패턴 정리(참고만); 본선 OOF·A와 무단 합선 금지 |
 | 한의 원전·프록시 | *(별도 자료)* | 코퍼스 B — `KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` 준수 |
 
 ---
@@ -47,6 +48,7 @@
 | `data/corpus/ijeoma/_inventory/IJEOMA_INSIGHT_UNITS_XINGMING_SAMPLE_2026-03-29.json` | 통찰 단위 샘플(JSON) |
 | `data/corpus/ijeoma/_inventory/IJEOMA_INSIGHT_UNITS_SASANG_FOUR_SAMPLE_2026-03-29.json` | 사상 사본 샘플(JSON) |
 | `data/corpus/ijeoma/_inventory/IJEOMA_CODEBOOK_INDEX_DRAFT_2026-03-29.json` | 코드북 인덱스 초안 |
+| `data/corpus/ijeoma/e_drive_mirror/donguisusebowon_mastery_report.md` | 동의보감 마스터리 보고서(NotebookLM 소스) |
 
 ### 마스터·청크·인벤토리 (대용량·선택)
 
@@ -123,9 +125,9 @@
 | A (팩트) | `31e6d45a-4a0e-40e6-a010-9c03a6ec1239` | 표 ID와 일치 (`notebook_get` 2026-03-29 검증). **계정·프로필 전환 시** UI 또는 `notebook_get`으로 재확인 |
 | B (통찰) | `af639d3e-b455-4f3f-8e25-47f58d962c60` | 동일 |
 
-**MCP 검증 (2026-03-29, 현재 계정)**: `notebook_get` 성공 — A 제목 `만세력·사주_AI_A_제품 (MKM Fact-Lock)`, 소스 7개; B 제목 `만세력·사주_AI_B_연구 (MKM Abstract)`, 소스 **2**개.
+**MCP 검증 (2026-03-29, 현재 계정)**: `notebook_get` 성공 — A 제목 `만세력·사주_AI_A_제품 (MKM Fact-Lock)`, 소스 7개; B 제목 `만세력·사주_AI_B_연구 (MKM Abstract)`, 소스 **3**개.
 
-**클라우드 소스 제목 (실측, `notebook_get`과 동일)** — 카운트 A=7·B=2:
+**클라우드 소스 제목 (실측, `notebook_get`과 동일)** — 카운트 A=7·B=3:
 
 | 노트북 | 소스 제목 (표시명) |
 |--------|-------------------|
@@ -138,6 +140,7 @@
 | A | `OPERATIONS_SSOT.md` |
 | B | `MANSE_SAJU_AI_RESEARCH_SYNTHESIS_2026-03-29.md` |
 | B | `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` |
+| B | `AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md` |
 
 **명리 스키마 B 반영 (2026-03-29)**: SSOT는 `docs/final/MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json`. 파일 소스 `source_add`가 실패한 경우 **`source_type: text`**로 본문 전체 업로드 가능 — B에 `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` 제목으로 등록됨(`source_id` `77ae458c-259f-4e92-ad12-ae5e2bd650f8`). 구현·경로 팩트는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6과 정합 유지.
 
