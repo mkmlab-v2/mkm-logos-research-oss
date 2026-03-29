@@ -216,9 +216,9 @@ https://ko.wikipedia.org/wiki/%EC%82%AC%EC%A3%BC%EB%AA%85%EB%A6%AC%ED%95%99
 
 ## 차기 작업 (Gap)
 
-- **이제마 B**: 위 표 + `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §8.  
-- **명리**: SSOT `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json`는 B에 동기화됨. 본선 OOF·실매매 트리거 자동 연동은 **헌법·팩트 문서에서 명시된 구현 경로가 있을 때만** — 스키마만으로 자동 합선하지 않음.
+- **이제마 B**: Source-Boost 3종 `source_add` 반영·`notebook_get` B=14 확인 후 — 통찰 품질·중복 소스 점검, 필요 시 Vault `sync_notebooklm_sources_to_mkm_data_vault.ps1`. `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §8·B 표와 정합 유지.  
+- **명리**: SSOT `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json`는 B에 동기화됨; MD 스키마 초안은 `data/corpus/ijeoma/schemas/myeongni_fusion_schema_v2_draft.md`(B 노트 등록)와 `docs/final/myeongni_fusion_schema_v2_draft.md`(미러). 본선 OOF·실매매 트리거 자동 연동은 **헌법·팩트 문서에서 명시된 구현 경로가 있을 때만** — 스키마만으로 자동 합선하지 않음.
 
 ---
 
-**상태**: A 궤적 · Logos-Insight 표(wide_20 JSON/CSV 포함) · 이제마 B 분리 · 작전지휘부 229 소스·wipe 정책 · 만세력·사주 A/B `notebook_get` 검증 완료(표 ID 일치; B 소스 11개=파일 3+위키 8·명리 스키마·외부 참조 랜드스케이프·Wikipedia `source_add` 반영) · **DSS Fusion** 노트(`2b2eeff1-…`) 소스 8개 검증 · OPS_ONEPAGE Gap 기록 정책 (2026-03-29)
+**상태**: A 궤적 · Logos-Insight 표(wide_20 JSON/CSV 포함) · 이제마 B 분리 · 작전지휘부 229 소스·wipe 정책 · 만세력·사주 A/B `notebook_get` 검증 완료(표 ID 일치; **B 소스 14개=파일 6+위키 8**·Source-Boost 3종·명리 스키마·외부 참조 랜드스케이프·Wikipedia 반영) · **DSS Fusion** 노트(`2b2eeff1-…`) 소스 8개 검증 · OPS_ONEPAGE Gap 기록 정책 (2026-03-29)
