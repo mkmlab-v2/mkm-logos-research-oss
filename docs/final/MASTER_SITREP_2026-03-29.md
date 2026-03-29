@@ -13,7 +13,7 @@
 * **제3 전선 (융합 철학 및 규칙)**: `GREEN` (승격됨)
   * **Fact-Lock**: 전 범위 스캔 완료 및 게마트리아 하드코딩 원천 배제 실측 증명 (`src/strategy/**`, `ops/v2` — `gematria` / `게마트리아` 매치 0건).
 * **제4 전선 (통합 테스트 및 검증)**: `GREEN`
-  * `projects/bitcoin-trading/tests/test_dual_regime_api_smoke.py` 정렬 번들 실행 완료 (**13 passed**; 로컬 재측정 ~0.06s). `test_fusion_slice_gate.py`는 현재 워크스페이스 트리에 없음 — 동일 13케이스는 스모크 모듈에 집중.
+  * `projects/bitcoin-trading/tests/test_dual_regime_api_smoke.py` 정렬 번들 실행 완료 (**14 passed**; 로컬 재측정 ~0.06s). `test_fusion_slice_gate.py`는 현재 워크스페이스 트리에 없음 — 스모크 모듈에 집중.
 
 ---
 
