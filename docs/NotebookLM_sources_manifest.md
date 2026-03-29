@@ -157,4 +157,4 @@
 
 ---
 
-**상태**: A 궤적 · Logos-Insight 표(wide_20 JSON/CSV 포함) · 이제마 B 분리 · 작전지휘부 229 소스·wipe 정책 · 만세력·사주 A/B `notebook_get` 검증 완료(표 ID 일치; B 소스 2개·명리 스키마 텍스트 반영) · OPS_ONEPAGE Gap 기록 정책 (2026-03-29)
+**상태**: A 궤적 · Logos-Insight 표(wide_20 JSON/CSV 포함) · 이제마 B 분리 · 작전지휘부 229 소스·wipe 정책 · 만세력·사주 A/B `notebook_get` 검증 완료(표 ID 일치; B 소스 3개·명리 스키마·외부 참조 랜드스케이프 반영) · OPS_ONEPAGE Gap 기록 정책 (2026-03-29)
