@@ -27,12 +27,20 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parent.parent
 
 
-def _sha256_file(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as fp:
-        for chunk in iter(lambda: fp.read(1 << 20), b""):
-            h.update(chunk)
-    return h.hexdigest()
+def _sha256_utf8_newlines_normalized(path: Path) -> str:
+    """SHA-256 of UTF-8 text with CRLF/LF normalized to LF (matches Linux CI vs Windows checkout)."""
+    raw = path.read_bytes()
+    if raw.startswith(b"\xef\xbb\xbf"):
+        raw = raw[3:]
+    text = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _read_utf8_newlines_normalized(path: Path) -> str:
+    raw = path.read_bytes()
+    if raw.startswith(b"\xef\xbb\xbf"):
+        raw = raw[3:]
+    return raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -63,7 +71,7 @@ def main() -> int:
     if not inter_path.is_file():
         return _fail(f"intersection file missing: {inter_path}")
 
-    got_hash = _sha256_file(inter_path)
+    got_hash = _sha256_utf8_newlines_normalized(inter_path)
     if got_hash != inter_meta["sha256"]:
         return _fail(
             f"intersection SHA256 mismatch: expected {inter_meta['sha256']}, got {got_hash}"
@@ -98,8 +106,8 @@ def main() -> int:
     if not golden_path.is_file():
         return _fail(f"golden snapshot missing: {golden_path}")
 
-    actual_hash = _sha256_file(actual_path)
-    golden_hash = _sha256_file(golden_path)
+    actual_hash = _sha256_utf8_newlines_normalized(actual_path)
+    golden_hash = _sha256_utf8_newlines_normalized(golden_path)
     if actual_hash != golden_hash:
         return _fail(
             f"ACTUAL vs golden SHA256 differ: actual={actual_hash}, golden={golden_hash}"
@@ -109,9 +117,11 @@ def main() -> int:
             f"golden file SHA256 mismatch lock: expected {mp['golden_sha256']}, got {golden_hash}"
         )
 
-    # Byte-for-byte (redundant if hashes match)
-    if actual_path.read_bytes() != golden_path.read_bytes():
-        return _fail("ACTUAL and golden bytes differ despite matching hashes (unexpected)")
+    # Text identity after newline normalization (redundant if hashes match)
+    if _read_utf8_newlines_normalized(actual_path) != _read_utf8_newlines_normalized(
+        golden_path
+    ):
+        return _fail("ACTUAL and golden text differ after newline normalization (unexpected)")
 
     # --- Master probe verifier subprocess ---
     verify_script = root / "scripts" / "verify_master_probe_all_states.py"

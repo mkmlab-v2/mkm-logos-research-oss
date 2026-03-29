@@ -12,7 +12,7 @@
   },
   "intersection": {
     "relative_path": "backtest_results/sweep_kmin_refine/LOGOS_RESONANCE_BTC_EXT_INTERSECTION_TOP6866.json",
-    "sha256": "b27373a60060c45a53d13f0cff4057cea196d0091c5bc509cb564618df7e8405",
+    "sha256": "c3ad84f9ad69f98ae9983244b76e41c2bc1be170a3c6866807912c7b971d879d",
     "count_all_four": 1574,
     "intersection_list_length": 1574
   },
@@ -20,7 +20,7 @@
     "default_probe_relative_path": "data/myeongni/16_STATE_MASTER_PROBE_v1.json",
     "actual_relative_path": "data/myeongni/MASTER_PROBE_v1_ACTUAL.json",
     "golden_relative_path": "tests/snapshots/MASTER_PROBE_v1_ACTUAL.golden.json",
-    "golden_sha256": "26a31765f267bcfaa0f202cca153d2be5bfaf2f21cf68f8cff8b27a62bcc5d8d",
+    "golden_sha256": "111671beac0e8aaf786c1b03170647bacb981ae9a9e500eaaadbb51d753ae1c6",
     "checks_total_expected": 149,
     "all_pass_expected": true
   }
