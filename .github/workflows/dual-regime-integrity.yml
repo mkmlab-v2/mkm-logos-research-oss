@@ -2,21 +2,10 @@ name: Dual Regime Integrity (Fact-Lock)
 
 on:
   push:
+    # No paths filter: every push to these branches runs Fact-Lock so main tip cannot
+    # advance (e.g. docs/battleboard only) without a matching workflow run.
     # Include chore/** so feature/WIP branches (e.g. chore/wip-isolated-*) run CI without opening a PR.
     branches: [main, master, develop, ci/autopsy-verify, "chore/**"]
-    paths:
-      - "projects/bitcoin-trading/**"
-      - "data/regimes/**"
-      - "projects/bitcoin-trading/tests/**"
-      - "pytest.ini"
-      - ".gitattributes"
-      - ".github/workflows/dual-regime-integrity.yml"
-      # Golden lock (45563d4bfd): k=6866, 1574 intersection, 149 master probes
-      - "scripts/integrity_guard.py"
-      - "scripts/verify_master_probe_all_states.py"
-      - "tests/snapshots/**"
-      - "backtest_results/sweep_kmin_refine/**"
-      - "data/myeongni/**"
   pull_request:
     paths:
       - "projects/bitcoin-trading/**"
@@ -30,6 +19,8 @@ on:
       - "tests/snapshots/**"
       - "backtest_results/sweep_kmin_refine/**"
       - "data/myeongni/**"
+      # Docs-only PRs (battleboard, manifests) also trigger Fact-Lock
+      - "docs/**"
   workflow_dispatch:
 
 jobs:
