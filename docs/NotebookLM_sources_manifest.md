@@ -30,7 +30,7 @@
 | DSS / Qumran | `docs/final/DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md` | Creative-Lock; frontline closeout SSOT |
 | 명리·융합 의사결정 | `docs/final/MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` | SSOT; B 노트북에는 동명 텍스트 소스로 반영(`MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json`). A와 역할 분리 |
 | AI·명리·만세 외부 참조 | `docs/final/AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md` | 타 서비스·RAG·LLM 패턴 정리(참고만); 본선 OOF·A와 무단 합선 금지 |
-| 한의 원전·프록시 | *(별도 자료)* | 코퍼스 B — `KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` 준수 |
+| 한의 원전·프록시 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` · `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §8 | 코퍼스 B 분리·승격 경계; 별도 handoff MD 미작성 시 본 문서가 SSOT |
 
 ---
 
@@ -40,21 +40,28 @@
 
 **인벤토리 기준일**: 2026-03-29 (`data/corpus/ijeoma/_inventory` 등).
 
-### B용 소스 (NotebookLM·Vault 동기화 시)
+### B 핵심 파일 (NotebookLM file 소스 6) — Vault 동기화 + NotebookLM `source_add` 권장
+
+워크스페이스에 존재. **Source-Boost (2026-03-29)**: 아래 3개를 B 노트북에 `source_add`(file, `wait: true`) 완료 → **`notebook_get` 기준 B = 파일 소스 6 + Wikipedia URL 8 = 총 14**.
+
+| # | 경로 | NotebookLM `source_id` (ingested) | 비고 |
+|---|------|-----------------------------------|------|
+| 1 | `data/corpus/ijeoma/originals/jeokcheonsu_core_logic_chunk.md` | `1b40f632-3a46-4fc2-9570-64f8c585817e` | 《적천수》맥락·일간 강약 스캐폴드(B-only; A·OOF 자동 합선 금지) |
+| 2 | `data/corpus/ijeoma/schemas/myeongni_fusion_schema_v2_draft.md` | `cab11051-b771-4698-8ef3-70fb556a19d0` | JSON 스키마 v2 초안 MD(B 노트북에 업로드한 경로; SSOT) |
+| 3 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` | `24123e98-0a14-4a4c-9a4f-fbe7a53c198c` | B 전용 추론 경계 |
+| 4 | `docs/final/myeongni_fusion_schema_v2_draft.md` | — | (2)와 동일 초안의 **문서 미러**; NotebookLM에는 **(2)만** 올려 중복 방지 |
+| 5 | `docs/final/MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` | (기존 B 등록) | 명리 융합 의사결정 JSON; B에 동명 파일 소스로 기존 반영 |
+| 6 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | — | §8 A/B 분리·구현 팩트; A 노트와 역할 구분 유지 |
+
+### B 보조·인벤토리 (NotebookLM·Vault 동기화 시)
 
 | 경로 | 비고 |
 |------|------|
-| `data/corpus/ijeoma/originals/jeokcheonsu_core_logic_chunk.md` | Source-Boost: 적천수 맥락·일간 강약 스캐폴드(B·OOF 비합선); **Pending Ingest** → 반영 후 제거 |
-| `data/corpus/ijeoma/schemas/myeongni_fusion_schema_v2_draft.md` | Source-Boost: MYEONGNI 융합 JSON 스키마 MD 설명(v2 DRAFT 표시); **Pending Ingest** → 반영 후 제거 |
-| `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` | Source-Boost: B 전용 추론 경계(본 FACTS § 포인터); **Pending Ingest** → 반영 후 제거 |
 | `data/corpus/ijeoma/_inventory/IJEOMA_NOTEBOOKLM_QUERY_SET_2026-03-29.md` | 쿼리 세트 |
 | `data/corpus/ijeoma/_inventory/IJEOMA_INSIGHT_UNITS_XINGMING_SAMPLE_2026-03-29.json` | 통찰 단위 샘플(JSON) |
 | `data/corpus/ijeoma/_inventory/IJEOMA_INSIGHT_UNITS_SASANG_FOUR_SAMPLE_2026-03-29.json` | 사상 사본 샘플(JSON) |
 | `data/corpus/ijeoma/_inventory/IJEOMA_CODEBOOK_INDEX_DRAFT_2026-03-29.json` | 코드북 인덱스 초안 |
 | `data/corpus/ijeoma/e_drive_mirror/donguisusebowon_mastery_report.md` | 동의보감 마스터리 보고서(NotebookLM 소스) |
-| `data/corpus/ijeoma/originals/jeokcheonsu_core_logic_chunk.md` | 《적천수》맥락 일간 강약 판별 **운영 추출**(B; 원문 전문 비대체) |
-| `docs/final/myeongni_fusion_schema_v2_draft.md` | `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` 사람 읽는 초안(NotebookLM) |
-| `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | §8 A/B 분리·구현 팩트 SSOT; 이제마 B 노트북 그라운딩(환각 방지·행동 근거) |
 
 ### 마스터·청크·인벤토리 (대용량·선택)
 
@@ -131,9 +138,9 @@
 | A (팩트) | `31e6d45a-4a0e-40e6-a010-9c03a6ec1239` | 표 ID와 일치 (`notebook_get` 2026-03-29 검증). **계정·프로필 전환 시** UI 또는 `notebook_get`으로 재확인 |
 | B (통찰) | `af639d3e-b455-4f3f-8e25-47f58d962c60` | 동일 |
 
-**MCP 검증 (2026-03-29, 현재 계정)**: `notebook_get` 성공 — A 제목 `만세력·사주_AI_A_제품 (MKM Fact-Lock)`, 소스 7개; B 제목 `만세력·사주_AI_B_연구 (MKM Abstract)`, 소스 **11**개(파일 소스 3 + Wikipedia URL 8; `source_add` 일괄 반영). **B 파일 소스 확장 목표(2026-03-29)**: 아래 2개를 `source_add`하면 **파일 5개 + URL 8 = 총 13** (워크스페이스 반영 후 `notebook_get`으로 재확인).
+**MCP 검증 (2026-03-29, 현재 계정)**: `notebook_get` 성공 — A 제목 `만세력·사주_AI_A_제품 (MKM Fact-Lock)`, 소스 **7**개; B 제목 `만세력·사주_AI_B_연구 (MKM Abstract)`, 소스 **14**개(**파일 소스 6** + Wikipedia URL 8). **Source-Boost ([A] 경로, 2026-03-29)**: `jeokcheonsu_core_logic_chunk.md`, `myeongni_fusion_schema_v2_draft.md`, `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md`를 `source_add`(file, `wait: true`) 반영 후 **`notebook_get`으로 재확인** — B 총 14.
 
-**클라우드 소스 제목 (실측, `notebook_get`과 동일)** — 카운트 A=7·B=11(파일 3 + URL 8); **+2 파일 추가 시** B=13:
+**클라우드 소스 제목 (실측, `notebook_get`과 동일)** — 카운트 A=7·B=14(파일 6 + URL 8):
 
 | 노트북 | 소스 제목 (표시명) |
 |--------|-------------------|
@@ -147,6 +154,9 @@
 | B | `MANSE_SAJU_AI_RESEARCH_SYNTHESIS_2026-03-29.md` |
 | B | `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` |
 | B | `AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md` |
+| B | `jeokcheonsu_core_logic_chunk.md` |
+| B | `myeongni_fusion_schema_v2_draft.md` |
+| B | `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` |
 | B | *(Wikipedia)* Four Pillars of Destiny |
 | B | *(Wikipedia)* Korean calendar |
 | B | *(Wikipedia)* Sexagenary cycle |
@@ -155,8 +165,6 @@
 | B | *(Wikipedia)* 사주 |
 | B | *(Wikipedia)* 만세력 |
 | B | *(Wikipedia)* 사주명리학 |
-| B | *(워크스페이스 반영 후 `source_add` 예정)* `jeokcheonsu_core_logic_chunk.md` |
-| B | *(워크스페이스 반영 후 `source_add` 예정)* `myeongni_fusion_schema_v2_draft.md` |
 
 **B — Wikipedia URL SSOT (`source_add` 2026-03-29)** — 통찰·참고 전용; 본선 OOF·A와 무단 합선 금지.
 
