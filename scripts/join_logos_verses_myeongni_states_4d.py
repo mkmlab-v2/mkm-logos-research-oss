@@ -14,6 +14,9 @@ Inputs:
 Uses scipy linear_sum_assignment to **maximize** sum of cosines (cost = negative cosine).
 
 B-track / research only. Not a trading signal. Do not merge into A-track OOF without explicit SSOT.
+
+Default output: docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json (tracked snapshot).
+Re-run after changing ranked TOP16 or probe vectors; CI does not recompute this unless a workflow step is added.
 """
 
 from __future__ import annotations
@@ -173,7 +176,12 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument(
         "--output",
         type=Path,
-        default=root / "data" / "myeongni" / "LOGOS_STATE_MAPPING_V1.json",
+        default=root
+        / "docs"
+        / "final"
+        / "artifacts"
+        / "LOGOS_STATE_MAPPING_V1.json",
+        help="Tracked artifact path under docs/final/artifacts/ (override if needed)",
     )
     return p.parse_args()
 
@@ -187,13 +195,19 @@ def main() -> int:
         output_path=args.output,
     )
     path = doc.pop("_output_path", "")
+    tsum = doc["total_cosine_sum"]
+    mmean = doc["mean_cosine_per_pair"]
+    print(
+        f"LOGOS_STATE_JOIN: total_cosine_sum={tsum:.12f} mean_cosine_per_pair={mmean:.12f}",
+        flush=True,
+    )
     print(
         json.dumps(
             {
                 "ok": True,
                 "output": path,
-                "total_cosine_sum": doc["total_cosine_sum"],
-                "mean_cosine_per_pair": doc["mean_cosine_per_pair"],
+                "total_cosine_sum": tsum,
+                "mean_cosine_per_pair": mmean,
                 "state_1_verse": next(
                     (a["verse_id"] for a in doc["assignments"] if a["state_id"] == 1),
                     None,

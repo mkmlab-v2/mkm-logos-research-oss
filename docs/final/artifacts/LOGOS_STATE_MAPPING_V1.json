@@ -1,0 +1,96 @@
+{
+  "schema": "logos_myeongni_state_join_v1",
+  "generated_at_utc": "2026-03-29T23:46:34.666244+00:00",
+  "method": "max_sum_cosine_assignment_scipy_linear_sum_assignment",
+  "disclaimer": "B-track research; not trading SSOT; not semantic destiny mapping.",
+  "sources": {
+    "ranked_json": "C:\\workspace\\backtest_results\\sweep_kmin_refine\\LOGOS_RESONANCE_BTC_EXT_ABSOLUTE_TOP16.json",
+    "probe_json": "C:\\workspace\\data\\myeongni\\16_STATE_MASTER_PROBE_v1.json",
+    "verse_pipeline_json": "C:\\workspace\\data\\logos\\verse_4pipeline_full_31102.json"
+  },
+  "rank_field_used": "mean_cosine",
+  "assignments": [
+    {
+      "state_id": 1,
+      "verse_id": "Lev.21.4",
+      "cosine_state_verse": 0.8844948408659528
+    },
+    {
+      "state_id": 2,
+      "verse_id": "1Chr.3.7",
+      "cosine_state_verse": 0.8828563307837973
+    },
+    {
+      "state_id": 3,
+      "verse_id": "Ps.27.10",
+      "cosine_state_verse": 0.8916641582204682
+    },
+    {
+      "state_id": 4,
+      "verse_id": "Exod.20.15",
+      "cosine_state_verse": 0.9128241298154541
+    },
+    {
+      "state_id": 5,
+      "verse_id": "Ezra.2.45",
+      "cosine_state_verse": 0.887217046787541
+    },
+    {
+      "state_id": 6,
+      "verse_id": "Neh.7.56",
+      "cosine_state_verse": 0.8840062434950721
+    },
+    {
+      "state_id": 7,
+      "verse_id": "Ps.36.1",
+      "cosine_state_verse": 0.8652539376870311
+    },
+    {
+      "state_id": 8,
+      "verse_id": "1Chr.8.31",
+      "cosine_state_verse": 0.8918286568102501
+    },
+    {
+      "state_id": 9,
+      "verse_id": "Josh.15.22",
+      "cosine_state_verse": 0.8908834892148219
+    },
+    {
+      "state_id": 10,
+      "verse_id": "Ps.4.6",
+      "cosine_state_verse": 0.8743530074631081
+    },
+    {
+      "state_id": 11,
+      "verse_id": "Ps.5.2",
+      "cosine_state_verse": 0.8819627094665754
+    },
+    {
+      "state_id": 12,
+      "verse_id": "Deut.5.19",
+      "cosine_state_verse": 0.9004777599345882
+    },
+    {
+      "state_id": 13,
+      "verse_id": "1Chr.14.6",
+      "cosine_state_verse": 0.8729091289690197
+    },
+    {
+      "state_id": 14,
+      "verse_id": "Gen.49.19",
+      "cosine_state_verse": 0.880703850162617
+    },
+    {
+      "state_id": 15,
+      "verse_id": "Ezra.2.49",
+      "cosine_state_verse": 0.8903498708683849
+    },
+    {
+      "state_id": 16,
+      "verse_id": "Ezra.2.54",
+      "cosine_state_verse": 0.8641566899890079
+    }
+  ],
+  "total_cosine_sum": 14.15594185053369,
+  "mean_cosine_per_pair": 0.8847463656583556
+}
