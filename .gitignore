@@ -67,6 +67,9 @@ tmp_*.css
 tmp_*.html
 staging/
 
+# Local docs/code exports (large Cursor/chat-style trees; do not bulk-commit)
+docs/code/
+
 # Local workspace mirrors / personal artifacts
 projects/mkm-lab-workspace-v2/
 projects/mkm/no1kmedi-clinic/

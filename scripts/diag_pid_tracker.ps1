@@ -8,7 +8,7 @@
 
   Buckets:
   - Memory: command line matches athena_memory_server (MCP memory server hosts UFT-heavy paths)
-  - Trading: bitcoin-trading or dual_regime
+  - Trading: command line references projects/.../bitcoin-trading path, or dual_regime_api / integration/dual_regime (reduces false positives vs bare "dual_regime" text)
   - Other: other Python/py invocations under WorkspaceRoot or matching mcp-servers / tools
 
 .PARAMETER Watch
@@ -48,6 +48,19 @@ function Test-LooksLikePythonCommandLine {
     return $CommandLine -match '(?i)(pythonw?\.exe|py\.exe)(\s|")'
 }
 
+function Test-IsTradingCommandLine {
+    param([string]$CommandLine)
+    if ([string]::IsNullOrWhiteSpace($CommandLine)) { return $false }
+    $c = $CommandLine
+    # Project directory on disk (any slash style)
+    if ($c -match '(?i)[\\/]bitcoin-trading[\\/]') { return $true }
+    if ($c -match '(?i)projects[\\/][^"''\s]*bitcoin-trading') { return $true }
+    # Explicit module paths (avoid matching unrelated "dual_regime" substrings)
+    if ($c -match '(?i)dual_regime_api(\.py)?') { return $true }
+    if ($c -match '(?i)integration[\\/]dual_regime') { return $true }
+    return $false
+}
+
 function Get-DiagCategory {
     param(
         [string]$CommandLine,
@@ -56,7 +69,7 @@ function Get-DiagCategory {
     if ([string]::IsNullOrWhiteSpace($CommandLine)) { return 'Other' }
     $c = $CommandLine
     if ($c -match '(?i)athena_memory_server') { return 'Memory' }
-    if ($c -match '(?i)bitcoin-trading|dual_regime') { return 'Trading' }
+    if (Test-IsTradingCommandLine -CommandLine $c) { return 'Trading' }
     return 'Other'
 }
 
@@ -86,7 +99,7 @@ function Get-TrackedProcessRows {
         $cl = $p.CommandLine
         if ([string]::IsNullOrWhiteSpace($cl)) { continue }
 
-        $hasKeyScript = $cl -match '(?i)athena_memory_server|bitcoin-trading|dual_regime'
+        $hasKeyScript = ($cl -match '(?i)athena_memory_server') -or (Test-IsTradingCommandLine -CommandLine $cl)
         $hasMcpPath = $cl -match '(?i)mcp-servers'
         $underRoot = $cl -match $rootPattern
         $isPy = Test-LooksLikePythonCommandLine -CommandLine $cl
