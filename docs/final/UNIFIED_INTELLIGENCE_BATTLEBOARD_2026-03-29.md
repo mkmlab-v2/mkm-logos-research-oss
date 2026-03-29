@@ -22,6 +22,7 @@
 | **Vault `sync_notebooklm_sources_to_mkm_data_vault.ps1` exit** | `0` — `copied=45` `skipped=0` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` |
 | **관련 pytest 스코프** | `py -m pytest tests/test_logos_layered_search.py -q` → exit `0` (2 passed, ~2s) |
 | **Master Probe 전수 검증 (Fact-Lock)** | `py scripts/verify_master_probe_all_states.py` → exit `0` (149/149 Pass, reproducibility 100%) |
+| **CI golden lock (intersection + k)** | `tests/snapshots/integrity_lock.json`: `k_top=6866` (per-regime), four-way intersection `count_all_four=1574` / list length 1574; `scripts/integrity_guard.py`가 이 값과 해시를 검증 |
 | **Master Probe pytest** | `py -m pytest tests/test_verify_master_probe_all_states.py -q` → exit `0` |
 
 ---
@@ -49,17 +50,17 @@
 | 항목 | 값 |
 |------|-----|
 | **브랜치** | `main` |
-| **HEAD (full)** | `ed574885c5549f0e0fda3cb0ad73851411b5adfd` |
-| **HEAD (short)** | `ed574885c5` |
-| **SSOT 커밋** | `ed574885c5 docs: battleboard Handoff sync HEAD ce8fd0ada2` |
+| **HEAD (full)** | `348b702fc97674a1fce58630eec43f6524177693` |
+| **HEAD (short)** | `348b702fc9` |
+| **SSOT 커밋** | `348b702fc9 docs: battleboard Handoff sync HEAD ed574885c5` |
 | **작업트리** | **SSOT 화이트리스트 경로는 커밋됨** — 루트에 실험·미추적 트리(`projects/*` 일부, `.tmp/` 등)는 그대로 **??**; 전황판 Handoff 갱신 후 이 표의 HEAD는 **`git rev-parse HEAD`와 반드시 일치**시킬 것 (문서만 바꿀 때는 일반 커밋 권장, 반복 `--amend` 지양) |
 
 **수정됨 (M)**  
 없음 (위 HEAD에 반영됨; 전황판만 편집 직후에는 잠깐 M일 수 있음 → 커밋으로 정리)
 
 **추적 안 됨 (??)**  
-`docs/external_research/`, `docs/final/MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json`, 여러 `projects/*`, 스크립트 일괄(`append_btrack_*`, `sweep_logos_regime_topk_btc_ext.py`, `verify_master_probe_state5.py` 등), `tests/test_myeongni_16_state_experiment_ledger.py`
+`docs/external_research/`, 여러 `projects/*`, 스크립트 일괄(`append_btrack_*`, `sweep_logos_regime_topk_btc_ext.py`, `verify_master_probe_state5.py` 등) — `MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json`·`tests/test_myeongni_16_state_experiment_ledger.py` 등은 main에 이미 추적됨.
 
 **Next**  
-- **[A]** SSOT만 유지: `git checkout -- <파일>` 또는 실험 파일은 브랜치·stash로 분리.  
-- **[B]** 실험선 포함 커밋: 화이트리스트 확정 후 `git add`·커밋 (동일 파일 동시 편집 주의).
+- SSOT만 유지: 실험 파일은 브랜치·stash로 분리하거나 `git restore`로 정리.  
+- 실험선을 커밋할 때는 화이트리스트 확정 후 `git add`·커밋 (동일 파일 동시 편집 주의).
