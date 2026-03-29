@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://workspace.local/schemas/MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json",
+  "title": "Myeongni 16-state B-track experiment line (JSONL)",
+  "description": "B-track (NotebookLM / hypothesis) artifact only. Does NOT replace production myeongri fusion ledger. Relationship to MYEONGNI_FUSION_DECISION_JSON_SCHEMA: same optional stub; add hypothesis_tier=B and boundary_ack=true to acknowledge A/B separation and fact_lock discipline; join to ledger later via run_id/decision_id/ledger_join_key when promoting. Verse/Logos and regime/finance pipelines stay separate per workspace rules.",
+  "type": "object",
+  "required": ["ts_utc", "hypothesis_tier", "boundary_ack", "stub"],
+  "additionalProperties": true,
+  "properties": {
+    "experiment_id": {
+      "type": "string",
+      "description": "Stable id for this experiment batch (e.g. exp_16state_v1)."
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "enum": ["B"],
+      "description": "NotebookLM / B-track hypothesis layer only."
+    },
+    "boundary_ack": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true: acknowledges A-track vs B-track boundary and no auto-merge with verse/ledger."
+    },
+    "stub": {
+      "description": "Experiment stub marker; aligns with MYEONGNI_FUSION_DECISION_JSON_SCHEMA.stub usage.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "boolean" }
+      ]
+    },
+    "ts_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp for this line."
+    },
+    "state_id": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16,
+      "description": "4→16 expansion slot (research mapping only until validated)."
+    },
+    "mapping_target": {
+      "type": "string",
+      "enum": ["bull", "bear", "sideways"],
+      "description": "BTC-style regime label for research mapping only; not a live trading trigger."
+    },
+    "vector_4d": {
+      "type": "object",
+      "additionalProperties": { "type": "number" },
+      "description": "Optional S-L-K-M hypothesis placeholder."
+    },
+    "lambda_resonance": {
+      "type": "number",
+      "description": "Optional hypothesis scalar; not verified production signal."
+    },
+    "run_id": {
+      "type": "string",
+      "description": "Optional correlation id; may align with fusion ledger run_id."
+    },
+    "decision_id": {
+      "type": "string",
+      "description": "Optional; future join to MYEONGNI fusion ledger line."
+    },
+    "ledger_join_key": {
+      "type": "string",
+      "description": "Optional join field name or value for promoted rows."
+    },
+    "fact_lock": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional; if present, same meaning as MYEONGNI_FUSION_DECISION_JSON_SCHEMA.fact_lock."
+    },
+    "note": {
+      "type": "string",
+      "description": "Short provenance or scope note (e.g. B-track only)."
+    },
+    "consistency_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional 0..1: higher = fewer internal contradictions across 16-state hypothesis vs base 4-state mapping."
+    },
+    "self_contradiction_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional 0..1: higher = more detected self-contradiction in B-track narrative vs structured slots (inverse emphasis to consistency_rate; use one or both with clear methodology)."
+    }
+  }
+}
