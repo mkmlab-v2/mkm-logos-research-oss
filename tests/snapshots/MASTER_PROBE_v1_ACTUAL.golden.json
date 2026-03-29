@@ -1,0 +1,252 @@
+{
+  "master_probe_version": "1",
+  "kind": "16_STATE_MASTER_PROBE",
+  "title": "B-track 16-state coordinate + B-17 audit contract (single-page)",
+  "generated_at_utc": "2026-03-29T03:55:04.551041+00:00",
+  "source_audit_path": "data\\myeongni\\myeongni_16_state_experiment_20260329.jsonl",
+  "source_line_count": 16,
+  "coverage_summary": {
+    "states_with_audit": 16,
+    "state_ids_present": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "states_total": 16
+  },
+  "coordinate_system": {
+    "state_dimension": 16,
+    "vector_axes": [
+      "S",
+      "L",
+      "K",
+      "M"
+    ],
+    "mapping_target_enum": [
+      "bull",
+      "bear",
+      "sideways"
+    ],
+    "divine_centroid_reference": "measurement anchor 0.25 per axis; observations may deviate (workspace IC)."
+  },
+  "audit_contract": {
+    "layers": [
+      "Provenance",
+      "Integrity",
+      "Evidence"
+    ],
+    "fields": {
+      "schema_version": "Audit bundle version (e.g. B-17_v1).",
+      "source_work": "Pointer to corpus/manifest row or work id.",
+      "chunk_id": "NotebookLM or chunk id for replay.",
+      "line_start": "Inclusive line in source chunk (integer).",
+      "line_end": "Inclusive line in source chunk (integer).",
+      "sha256": "Content hash for integrity replay.",
+      "rules_version": "Schema or constitution ref used when stamping.",
+      "expected_parent": "Hypothesis tier / parent slot (P1–P3 etc.).",
+      "confidence_score": "0..1 confidence in this state's audit stamp.",
+      "edition_or_url": "Human-readable edition or URL (verify before production).",
+      "license_note": "Licensing or research-only note."
+    },
+    "meaning": {
+      "Provenance": "Where the claim came from (traceable source_work + chunk).",
+      "Integrity": "Tamper-evident binding (sha256, line range, rules_version).",
+      "Evidence": "What supports the coordinate (confidence, expected_parent)."
+    }
+  },
+  "states": [
+    {
+      "state_id": 1,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.42,
+        "L": 0.21,
+        "K": 0.42,
+        "M": 0.2
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 2,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.58,
+        "L": 0.17,
+        "K": 0.6,
+        "M": 0.15
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 3,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.75,
+        "L": 0.12,
+        "K": 0.77,
+        "M": 0.1
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 4,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.92,
+        "L": 0.08,
+        "K": 0.95,
+        "M": 0.05
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 5,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.85,
+        "L": 0.15,
+        "K": 0.88,
+        "M": 0.12
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 6,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.78,
+        "L": 0.22,
+        "K": 0.8,
+        "M": 0.2
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 7,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.7,
+        "L": 0.3,
+        "K": 0.73,
+        "M": 0.27
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 8,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.63,
+        "L": 0.37,
+        "K": 0.66,
+        "M": 0.34
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 9,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.56,
+        "L": 0.44,
+        "K": 0.59,
+        "M": 0.41
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 10,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.49,
+        "L": 0.52,
+        "K": 0.52,
+        "M": 0.49
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 11,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.41,
+        "L": 0.59,
+        "K": 0.44,
+        "M": 0.56
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 12,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.34,
+        "L": 0.66,
+        "K": 0.37,
+        "M": 0.63
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 13,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.27,
+        "L": 0.73,
+        "K": 0.3,
+        "M": 0.7
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 14,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.19,
+        "L": 0.8,
+        "K": 0.22,
+        "M": 0.78
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 15,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.12,
+        "L": 0.88,
+        "K": 0.15,
+        "M": 0.85
+      },
+      "coverage": "audited"
+    },
+    {
+      "state_id": 16,
+      "mapping_target": null,
+      "vector_4d": {
+        "S": 0.05,
+        "L": 0.95,
+        "K": 0.08,
+        "M": 0.92
+      },
+      "coverage": "audited"
+    }
+  ],
+  "usage": {
+    "inject_as": "Single JSON context for NotebookLM or local RAG; not a trading trigger.",
+    "boundary": "B-track hypothesis only; verse/Logos and production ledger stay separate until promoted."
+  }
+}
