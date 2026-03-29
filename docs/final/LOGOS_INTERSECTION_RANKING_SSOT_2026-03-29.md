@@ -22,5 +22,6 @@
 - `scripts/refine_top_1_percent_logos.py`
 - 예: `py scripts/refine_top_1_percent_logos.py` (기본 `mean`, 상위 약 1%)
 - 예: `py scripts/refine_top_1_percent_logos.py --strategy min`
+- (선택, B-track) `scripts/join_logos_verses_myeongni_states_4d.py` — 상위 16구절과 명리 16상 `vector_4d`의 **합의 최대 코사인 배정**(랭킹 1위≠state 1 고정 아님). 산출: `data/myeongni/LOGOS_STATE_MAPPING_V1.json`
 
 생성 JSON은 `**/backtest_results/` 규칙상 저장소에 올리지 않을 수 있음; SSOT는 **스크립트 + 본 문서**이며, 숫자 리포트는 필요 시 `docs/final` 요약만 별도 반영한다.
