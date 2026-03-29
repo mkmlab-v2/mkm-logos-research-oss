@@ -61,7 +61,7 @@
 없음 (위 HEAD에 반영됨; 전황판만 편집 직후에는 잠깐 M일 수 있음 → 커밋으로 정리)
 
 **추적 안 됨 (??)**  
-`docs/external_research/`, 여러 `projects/*`, 스크립트 일괄(`append_btrack_*`, `sweep_logos_regime_topk_btc_ext.py`, `verify_master_probe_state5.py` 등) — `MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json`·`tests/test_myeongni_16_state_experiment_ledger.py` 등은 main에 이미 추적됨.
+`docs/external_research/`·레짐/Logos/명리 보조 스크립트 묶음은 **main 추적 완료** (2026-03-29 Workspace-Purge). 로컬 다앱·랜딩 트리는 `.gitignore`의 `projects/*` 블록 — `git status`에 미표시.
 
 **Next**  
 - SSOT만 유지: 실험 파일은 브랜치·stash로 분리하거나 `git restore`로 정리.  
