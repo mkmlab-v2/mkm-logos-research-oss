@@ -13,6 +13,7 @@
     .\scripts\run_nightly_ops.ps1 -VaultWhatIf
 
 .NOTES
+  On success, writes logs/nightly_ops_last_run.json (gitignored) for backup_workspace_mirror.ps1 -RequireNightlyPass.
   Schedule via Task Scheduler if desired. Agent sessions may end; this script keeps running on the PC.
 #>
 param(
@@ -68,6 +69,21 @@ if ($VaultSync -or $VaultWhatIf) {
 }
 
 $elapsed = (Get-Date) - $start
+$sec = [math]::Round($elapsed.TotalSeconds, 2)
+
+# Fact-lock marker for downstream automation (logs/ is gitignored)
+$logDir = Join-Path $RepoRoot 'logs'
+New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+$marker = [ordered]@{
+    schema           = 'nightly_ops_last_run_v1'
+    ok               = $true
+    finished_at_utc  = (Get-Date).ToUniversalTime().ToString('o')
+    duration_sec     = $sec
+    machine          = $env:COMPUTERNAME
+    repo_root        = $RepoRoot
+}
+($marker | ConvertTo-Json -Depth 3) | Set-Content -Encoding utf8 (Join-Path $logDir 'nightly_ops_last_run.json')
+
 Write-Host ""
-Write-Host ">>> nightly_ops OK ($([math]::Round($elapsed.TotalSeconds,1))s)" -ForegroundColor Green
+Write-Host ">>> nightly_ops OK (${sec}s) | wrote logs/nightly_ops_last_run.json" -ForegroundColor Green
 exit 0
