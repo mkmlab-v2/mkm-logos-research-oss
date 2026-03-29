@@ -19,6 +19,9 @@ on:
       - "tests/snapshots/**"
       - "backtest_results/sweep_kmin_refine/**"
       - "data/myeongni/**"
+      - "docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json"
+      - "scripts/join_logos_verses_myeongni_states_4d.py"
+      - "tests/test_logos_state_mapping_v1_snapshot.py"
       # Docs-only PRs (battleboard, manifests) also trigger Fact-Lock
       - "docs/**"
   workflow_dispatch:
@@ -43,6 +46,9 @@ jobs:
 
       - name: Run Dual Regime API smoke / Fact-Lock tests
         run: bash projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.sh
+
+      - name: Logos–Myeongni state mapping snapshot (tracked artifact, no verse pipeline on runner)
+        run: python -m pytest tests/test_logos_state_mapping_v1_snapshot.py -q --tb=short
 
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()
