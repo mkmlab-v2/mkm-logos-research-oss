@@ -107,7 +107,7 @@
 
 ## 작전지휘부(Ops) NotebookLM 메모 (2026-03-29)
 
-- **NotebookLM**: 노트북명 `작전지휘부 Ops20260318`, ID `347e5cbe-0ade-4615-9aac-8747d4fa644e`, 소스 **216**개 (`notebook_get` 기준, `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §8과 동기화).
+- **NotebookLM**: 노트북명 `작전지휘부 Ops20260318`, ID `347e5cbe-0ade-4615-9aac-8747d4fa644e`, 소스 **229**개 (`notebook_get` 2026-03-29; §8·타 문서와 수치 불일치 시 본 행 우선).
 - **전체 wipe**: **기본 금지**. 소스 대량 삭제는 사용자가 **명시적으로 재구축·전체 재업로드**를 요청한 경우에만 수행.
 - **`OPS_ONEPAGE_STATUS_LATEST.md`**: 워크스페이스 `docs/final/OPS_ONEPAGE_STATUS_LATEST.md`는 **미존재**할 수 있음. NotebookLM에는 소스 **제목**으로만 존재할 수 있음. 새 MD 남발 대신 `docs/final/` 기존 SITREP·본 매니페스트에 **Gap 한 줄** 기록.
 - **로컬 브리지 문서**: `docs/작전지휘부/` 등 경로는 **Vault·다른 머신에만** 있을 수 있음. `source_add` 전 **파일 존재 확인** 필수.
@@ -154,4 +154,4 @@
 
 ---
 
-**상태**: A 궤적 · Logos-Insight 표(wide_20 JSON/CSV 포함) · 이제마 B 분리 · 작전지휘부 216 소스·wipe 정책 · 만세력·사주 A/B `notebook_get` 검증 완료(표 ID 일치; B 소스 2개·명리 스키마 텍스트 반영) · OPS_ONEPAGE Gap 기록 정책 (2026-03-29)
+**상태**: A 궤적 · Logos-Insight 표(wide_20 JSON/CSV 포함) · 이제마 B 분리 · 작전지휘부 229 소스·wipe 정책 · 만세력·사주 A/B `notebook_get` 검증 완료(표 ID 일치; B 소스 2개·명리 스키마 텍스트 반영) · OPS_ONEPAGE Gap 기록 정책 (2026-03-29)
