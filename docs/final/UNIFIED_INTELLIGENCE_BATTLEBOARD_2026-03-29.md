@@ -50,12 +50,12 @@
 | 항목 | 값 |
 |------|-----|
 | **브랜치** | `main` |
-| **HEAD (full)** | `b99b30a1c385a8806f0a96450b53cadb29e14402` |
-| **HEAD (short)** | `b99b30a1c3` |
-| **SSOT 커밋** | `b99b30a1c3 docs(battleboard): Handoff HEAD rows match git rev-parse HEAD (tip commit)` |
+| **Handoff 기록 커밋 (full)** | `f998b1a48ed6166d6bf791df962745d2a03f7b46` |
+| **Handoff 기록 커밋 (short)** | `f998b1a48e` |
+| **SSOT 한 줄** | `f998b1a48e docs(battleboard): Handoff note after Workspace-Purge (tracked scripts, ignored projects)` |
+| **작업트리** | 화이트리스트 경로는 커밋됨. 실험 트리는 `.gitignore`의 `projects/*` 등으로 **미표시**될 수 있음 — 로컬은 `git status`로 확인. |
 
-> **팁**: Handoff 행만 갱신하는 커밋을 내면, 커밋 직후 `git rev-parse HEAD`는 **새 객체 해시**가 되어 표의 `HEAD (full)`과 한 커밋 차이가 날 수 있다. 완전 일치가 필요하면 해당 커밋 직후 표를 한 번 더 맞추거나, 검증은 `git rev-parse HEAD`를 SSOT로 둔다.
-| **작업트리** | **SSOT 화이트리스트 경로는 커밋됨** — 루트에 실험·미추적 트리(`projects/*` 일부, `.tmp/` 등)는 그대로 **??**; 전황판 Handoff 갱신 후 이 표의 HEAD는 **`git rev-parse HEAD`와 반드시 일치**시킬 것 (문서만 바꿀 때는 일반 커밋 권장, 반복 `--amend` 지양) |
+> **운영 규칙 (융합)**: 저장소 **진짜 팁**은 항상 터미널의 `git rev-parse HEAD`가 SSOT. 위 표의 해시는 “이 Handoff 블록을 마지막으로 맞춘 커밋”이며, Handoff만 수정하는 커밋을 내면 그 직후 새 객체 해시가 생기므로 **표는 최신 팁보다 한 커밋 늦을 수 있음(정상)**. 매번 표를 최신 `HEAD`에 맞출 필요는 없고, 필요할 때만 갱신하면 된다. 완전 일치가 필요하면 해당 커밋 직후 표를 한 번 더 고치거나, 검증은 `git rev-parse HEAD`만 보면 된다.
 
 **수정됨 (M)**  
 없음 (위 HEAD에 반영됨; 전황판만 편집 직후에는 잠깐 M일 수 있음 → 커밋으로 정리)
