@@ -85,6 +85,15 @@ athena_vault_theory.mkm-vault
 # Nested repository (separate origin); do not track as subtree
 projects/code-pack-marketplace/
 
+# Local experimental site / multi-app trees (not main SSOT; use per-project repos or remove a line to track)
+projects/a-codeai-landing/
+projects/compression-api-landing/
+projects/jema12/
+projects/mkm/
+projects/mkmlab-company-website/
+projects/mkmlife.com/
+projects/system-monitoring/
+
 # Root accidental probe output (one-line JSON); keep local only
 /utf8
 /tmp_verify_report.json
