@@ -49,13 +49,13 @@
 | 항목 | 값 |
 |------|-----|
 | **브랜치** | `main` |
-| **HEAD (full)** | `c5cfc1a77c26fe44e043d61303abb377d954318e` |
-| **HEAD (short)** | `c5cfc1a77c` |
-| **SSOT 커밋 (dual regime + 문서·매니페스트·동기화 스크립트 + 전황판 Handoff)** | `c5cfc1a77c` — `feat(bitcoin-trading): dual regime API smoke tests and docs sync` (Master Probe JSON `16_STATE_MASTER_PROBE_v1.json`는 이전 커밋 `45563f4` 등에 정본으로 이미 포함) |
-| **작업트리** | **SSOT 화이트리스트 경로는 커밋됨** — 루트에 실험·미추적 트리(`projects/*` 일부, `.tmp/` 등)는 그대로 **??**; 전황판만 편집 후 amend 시 이 표의 HEAD 해시는 **최종 `git rev-parse HEAD`와 일치시킬 것** |
+| **HEAD (full)** | `e322197d8ab87dbd36f81be99618ed5814532dd3` |
+| **HEAD (short)** | `e322197d8a` |
+| **SSOT 커밋 (integrity_guard·golden ACTUAL + 전황판 Handoff)** | `e322197d8a` — `ci: integrity_guard + golden ACTUAL snapshot (45563d4bfd k=6866 1574/149)` (dual regime·Master Probe·문서 동기화 등은 이전 커밋 히스토리에 존재) |
+| **작업트리** | **SSOT 화이트리스트 경로는 커밋됨** — 루트에 실험·미추적 트리(`projects/*` 일부, `.tmp/` 등)는 그대로 **??**; 전황판 Handoff 갱신 후 이 표의 HEAD는 **`git rev-parse HEAD`와 반드시 일치**시킬 것 (문서만 바꿀 때는 일반 커밋 권장, 반복 `--amend` 지양) |
 
 **수정됨 (M)**  
-없음 (위 HEAD에 반영됨; 전황판 본 파일만 amend 직전에 잠깐 M일 수 있음)
+없음 (위 HEAD에 반영됨; 전황판만 편집 직후에는 잠깐 M일 수 있음 → 커밋으로 정리)
 
 **추적 안 됨 (??)**  
 `docs/external_research/`, `docs/final/MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json`, 여러 `projects/*`, 스크립트 일괄(`append_btrack_*`, `sweep_logos_regime_topk_btc_ext.py`, `verify_master_probe_state5.py` 등), `tests/test_myeongni_16_state_experiment_ledger.py`
