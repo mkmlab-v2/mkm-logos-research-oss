@@ -28,10 +28,11 @@
   - `local=DONE/GO`
   - `remote=READY:workflow_dispatch_available`
   - `dss=PASS/PASS`
-- 최신 원격 run pointer:
+- 최신 원격 run pointer(참고 스냅샷):
   - workflow: `Frontline Release Check`
   - run id: `23647102407`
   - url: `https://github.com/mkmlab-v2/mkm-destiny-ai-41e38ec6/actions/runs/23647102407`
+- **2026-03-29 갱신 (Fact-Lock)**: `main` ↔ `origin` 푸시 완료 후 원격에서 **Guardian / Smoke / Dual Regime Integrity / Frontline Release Check** 네 워크플로가 **모두 Success** (`23699819562`, `23699819948`, `23699895072`, `23699895436`). 상세 URL은 `docs/final/MFH_REMOTE_CI_CYCLE6_RESULTS_2026-03-27.md` §2026-03-29 복구 표 참조.
 
 ---
 
@@ -40,8 +41,8 @@
 - handoff 문서: `docs/final/MFH_REMOTE_CI_HANDOFF_2026-03-27.md`
 - 원격 workflow 조회 결과:
   - 존재 확인: `Frontline Release Check`
-  - 미확인: `no1kmedi Guardian Contract Gate`, `Master Codebook Training Smoke Gate`
-- 판정: guardian/smoke run URL 2건은 현재 저장소에서 회수 불가(워크플로우 미등록 또는 미동기화 상태).
+  - Cycle 6 이후: `no1kmedi Guardian Contract Gate`, `Master Codebook Training Smoke Gate`는 `workflow_dispatch`로 실행 기록 확보(실 run URL·run id는 `docs/final/MFH_REMOTE_CI_CYCLE6_RESULTS_2026-03-27.md` 참조).
+- 판정: **푸시 완료 및 게이트 재실행 성공** — `main`에 스크립트 동기화 후 위 두 gate를 재실행하여 **Pass/Success**로 종결. 이전 **HOLD**(원격 default에 검증 스크립트 미동기화로 인한 실패)는 동기화·재실행으로 해소된 상태로 기록한다.
 
 ---
 
@@ -57,8 +58,8 @@
 
 ## 잔여 리스크
 
-- guardian/smoke 원격 CI 증거 URL 2건 부재
-- 보조 전선 워크플로우 파일이 원격 default branch에 노출되지 않았을 가능성
+- **2026-03-29**: Guardian·Smoke·Dual Regime·Frontline 네 게이트가 원격에서 **일괄 Success**로 기록됨(`MFH_REMOTE_CI_CYCLE6_RESULTS_2026-03-27.md` 표). 이전 HOLD(스크립트 미동기화) 및 “전체 스위트 미확인” 추측은 **해소·Fact-Locked**.
+- **운영**: 이후 회귀(푸시 실패·워크플로 변경 등) 시 동일 네 게이트 또는 지휘 지정 워크플로로 재확인. 주기 점검은 `workflow_dispatch`/push 훅 정책에 따름.
 
 ---
 

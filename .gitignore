@@ -74,4 +74,16 @@ docs/code/
 projects/mkm-lab-workspace-v2/
 projects/mkm/no1kmedi-clinic/
 athena_vault_theory.mkm-vault
-utf8
+
+# Git hygiene (auto): secrets, test coverage, VS Code extension compile out, nested clone
+**/.env.production
+**/coverage/
+**/theory_reflection_status.json
+.tmp_sefaria_probe.py
+# VS Code extensions: compiled extension host output (large JS/maps)
+**/extensions/**/out/
+# Nested repository (separate origin); do not track as subtree
+projects/code-pack-marketplace/
+
+# Root accidental probe output (one-line JSON); keep local only
+/utf8

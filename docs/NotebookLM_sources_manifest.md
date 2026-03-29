@@ -44,11 +44,16 @@
 
 | 경로 | 비고 |
 |------|------|
+| `data/corpus/ijeoma/originals/jeokcheonsu_core_logic_chunk.md` | Source-Boost: 적천수 맥락·일간 강약 스캐폴드(B·OOF 비합선); **Pending Ingest** → 반영 후 제거 |
+| `data/corpus/ijeoma/schemas/myeongni_fusion_schema_v2_draft.md` | Source-Boost: MYEONGNI 융합 JSON 스키마 MD 설명(v2 DRAFT 표시); **Pending Ingest** → 반영 후 제거 |
+| `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` | Source-Boost: B 전용 추론 경계(본 FACTS § 포인터); **Pending Ingest** → 반영 후 제거 |
 | `data/corpus/ijeoma/_inventory/IJEOMA_NOTEBOOKLM_QUERY_SET_2026-03-29.md` | 쿼리 세트 |
 | `data/corpus/ijeoma/_inventory/IJEOMA_INSIGHT_UNITS_XINGMING_SAMPLE_2026-03-29.json` | 통찰 단위 샘플(JSON) |
 | `data/corpus/ijeoma/_inventory/IJEOMA_INSIGHT_UNITS_SASANG_FOUR_SAMPLE_2026-03-29.json` | 사상 사본 샘플(JSON) |
 | `data/corpus/ijeoma/_inventory/IJEOMA_CODEBOOK_INDEX_DRAFT_2026-03-29.json` | 코드북 인덱스 초안 |
 | `data/corpus/ijeoma/e_drive_mirror/donguisusebowon_mastery_report.md` | 동의보감 마스터리 보고서(NotebookLM 소스) |
+| `data/corpus/ijeoma/originals/jeokcheonsu_core_logic_chunk.md` | 《적천수》맥락 일간 강약 판별 **운영 추출**(B; 원문 전문 비대체) |
+| `docs/final/myeongni_fusion_schema_v2_draft.md` | `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` 사람 읽는 초안(NotebookLM) |
 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | §8 A/B 분리·구현 팩트 SSOT; 이제마 B 노트북 그라운딩(환각 방지·행동 근거) |
 
 ### 마스터·청크·인벤토리 (대용량·선택)
@@ -126,9 +131,9 @@
 | A (팩트) | `31e6d45a-4a0e-40e6-a010-9c03a6ec1239` | 표 ID와 일치 (`notebook_get` 2026-03-29 검증). **계정·프로필 전환 시** UI 또는 `notebook_get`으로 재확인 |
 | B (통찰) | `af639d3e-b455-4f3f-8e25-47f58d962c60` | 동일 |
 
-**MCP 검증 (2026-03-29, 현재 계정)**: `notebook_get` 성공 — A 제목 `만세력·사주_AI_A_제품 (MKM Fact-Lock)`, 소스 7개; B 제목 `만세력·사주_AI_B_연구 (MKM Abstract)`, 소스 **11**개(파일 소스 3 + Wikipedia URL 8; `source_add` 일괄 반영).
+**MCP 검증 (2026-03-29, 현재 계정)**: `notebook_get` 성공 — A 제목 `만세력·사주_AI_A_제품 (MKM Fact-Lock)`, 소스 7개; B 제목 `만세력·사주_AI_B_연구 (MKM Abstract)`, 소스 **11**개(파일 소스 3 + Wikipedia URL 8; `source_add` 일괄 반영). **B 파일 소스 확장 목표(2026-03-29)**: 아래 2개를 `source_add`하면 **파일 5개 + URL 8 = 총 13** (워크스페이스 반영 후 `notebook_get`으로 재확인).
 
-**클라우드 소스 제목 (실측, `notebook_get`과 동일)** — 카운트 A=7·B=11:
+**클라우드 소스 제목 (실측, `notebook_get`과 동일)** — 카운트 A=7·B=11(파일 3 + URL 8); **+2 파일 추가 시** B=13:
 
 | 노트북 | 소스 제목 (표시명) |
 |--------|-------------------|
@@ -150,6 +155,8 @@
 | B | *(Wikipedia)* 사주 |
 | B | *(Wikipedia)* 만세력 |
 | B | *(Wikipedia)* 사주명리학 |
+| B | *(워크스페이스 반영 후 `source_add` 예정)* `jeokcheonsu_core_logic_chunk.md` |
+| B | *(워크스페이스 반영 후 `source_add` 예정)* `myeongni_fusion_schema_v2_draft.md` |
 
 **B — Wikipedia URL SSOT (`source_add` 2026-03-29)** — 통찰·참고 전용; 본선 OOF·A와 무단 합선 금지.
 
