@@ -1,17 +1,17 @@
 {
   "schema": "entry16_source_hunt_summary_v1",
   "source_log": "docs/final/artifacts/entry16_source_hunt_log.jsonl",
-  "total_sources": 10,
+  "total_sources": 11,
   "confidence_counts": {
     "med": 5,
-    "low": 5
+    "low": 6
   },
   "witness_counts": {
     "no": 2,
-    "unknown": 8
+    "unknown": 9
   },
   "access_mode_counts": {
-    "public": 10
+    "public": 11
   },
   "has_direct_witness": false,
   "next_gate": "keep_missing_anchor_until_source_update"

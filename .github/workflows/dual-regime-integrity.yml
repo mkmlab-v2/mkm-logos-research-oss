@@ -26,7 +26,9 @@ on:
       - "docs/final/artifacts/SASANG_CROSS_REF_DRAFT.json"
       - "docs/final/CROSS_REF_DRAFT_V2_DOCUMENT.schema.json"
       - "scripts/join_logos_verses_myeongni_states_4d.py"
+      - "scripts/add_entry16_source_and_rejudge.py"
       - "tests/test_logos_state_mapping_v1_snapshot.py"
+      - "tests/test_add_entry16_source_and_rejudge.py"
       - "tests/test_cross_ref_dss_schema.py"
       - "tests/test_entry16_source_hunt_log.py"
       - "tests/test_entry16_source_hunt_summary.py"
@@ -64,6 +66,9 @@ jobs:
 
       - name: Logos–Myeongni state mapping snapshot (tracked artifact, no verse pipeline on runner)
         run: python -m pytest tests/test_logos_state_mapping_v1_snapshot.py -q --tb=short
+
+      - name: ENTRY_16 source-ingest helper contract
+        run: python -m pytest tests/test_add_entry16_source_and_rejudge.py -q --tb=short
 
       - name: CROSS_REF draft vs LOGOS_STATE_MAPPING (canonical_ref join Fact-Lock)
         run: python -m pytest tests/test_cross_ref_dss_schema.py -q --tb=short

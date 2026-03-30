@@ -16,6 +16,7 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 # Workspace-root Fact-Lock (logos snapshot + CROSS_REF join); mirrors CI steps after prophecy bundle.
 Set-Location -LiteralPath $workspaceRoot
 & py -m pytest `
+    'tests/test_add_entry16_source_and_rejudge.py' `
     'tests/test_logos_state_mapping_v1_snapshot.py' `
     'tests/test_cross_ref_dss_schema.py' `
     'tests/test_entry16_source_hunt_log.py' `
