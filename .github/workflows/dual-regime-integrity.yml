@@ -17,6 +17,9 @@ on:
       - "scripts/integrity_guard.py"
       - "scripts/sync_btrack_phase3_snapshot_json_fence.py"
       - "scripts/run_fact_lock_bundle.ps1"
+      - "scripts/run_p1_ab_bundle.ps1"
+      - "scripts/run_p1_efficiency_ab.py"
+      - "scripts/report_p1_final_selection.py"
       - "scripts/verify_master_probe_all_states.py"
       - "tests/snapshots/**"
       - "backtest_results/sweep_kmin_refine/**"
@@ -26,6 +29,10 @@ on:
       - "docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json"
       - "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json"
       - "docs/final/artifacts/SASANG_CROSS_REF_DRAFT.json"
+      - "docs/final/artifacts/MULTILENS_P1_AB_EFFICIENCY_V1.json"
+      - "docs/final/artifacts/MULTILENS_P1_AB_INTENSITY_V1.json"
+      - "docs/final/artifacts/MULTILENS_P1_AB_BALANCED_V1.json"
+      - "docs/final/artifacts/MULTILENS_P1_AB_FINAL_SELECTION_V1.json"
       - "docs/final/CROSS_REF_DRAFT_V2_DOCUMENT.schema.json"
       - "scripts/join_logos_verses_myeongni_states_4d.py"
       - "scripts/add_entry16_source_and_rejudge.py"
@@ -115,6 +122,8 @@ on:
       - "tests/test_w3_batch_aux_consistency.py"
       - "tests/test_w4_promotion_decision_aux_section.py"
       - "tests/test_w4_promotion_doc_audit.py"
+      - "tests/test_build_state_sasang_ops_bundle.py"
+      - "scripts/build_state_sasang_ops_bundle.py"
       - "docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json"
       - "docs/final/MYEONGRI_INSIGHT_SSOT.md"
       # Docs-only PRs (battleboard, manifests) also trigger Fact-Lock
@@ -276,6 +285,7 @@ jobs:
             tests/test_w3_batch_aux_consistency.py \
             tests/test_w4_promotion_decision_aux_section.py \
             tests/test_w4_promotion_doc_audit.py \
+            tests/test_build_state_sasang_ops_bundle.py \
             -q --tb=short
 
       - name: Myeongni 16-state transition report contract
@@ -298,6 +308,13 @@ jobs:
 
       - name: Ultra compression artifacts and active-profile consistency contract
         run: python -m pytest tests/test_ultra_compression_artifacts.py -q --tb=short
+
+      - name: P1 A/B profiles + final selection bundle
+        run: |
+          python scripts/run_p1_efficiency_ab.py --profile efficiency_first
+          python scripts/run_p1_efficiency_ab.py --profile intensity_first
+          python scripts/run_p1_efficiency_ab.py --profile balanced
+          python scripts/report_p1_final_selection.py
 
       - name: B-Track verified baseline regression check
         run: python scripts/check_btrack_regression.py
@@ -351,6 +368,18 @@ jobs:
           path: |
             reports/constitution/btrack_pilot/btrack_fusion_gate_latest.json
             reports/constitution/btrack_pilot/fusion_gate_risk_log.jsonl
+          if-no-files-found: ignore
+
+      - name: Upload P1 A/B selection artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p1-ab-selection-artifacts
+          path: |
+            docs/final/artifacts/MULTILENS_P1_AB_EFFICIENCY_V1.json
+            docs/final/artifacts/MULTILENS_P1_AB_INTENSITY_V1.json
+            docs/final/artifacts/MULTILENS_P1_AB_BALANCED_V1.json
+            docs/final/artifacts/MULTILENS_P1_AB_FINAL_SELECTION_V1.json
           if-no-files-found: ignore
 
       # Passive: on failure, preserve full backtest_results for autopsy (logs, dumps, JSON).
