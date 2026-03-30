@@ -1,0 +1,33 @@
+{
+  "schema": "myeongni_fusion_interface_stub_v1",
+  "version": "1.0.0",
+  "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+  "insight_ssot": "docs/final/MYEONGRI_INSIGHT_SSOT.md",
+  "myeongri_stream_outputs": {
+    "description": "Fields 명리 측이 융합 스트림에 넘길 수 있는 것 (비트리거; 레짐 캡 합선 아님).",
+    "myeongri_gapja": {
+      "type": "string|null",
+      "example": "갑자",
+      "note": "2글자 갑자; L3 ProphecyStack 등과 정합 시 사용."
+    },
+    "state_id": {
+      "type": "integer|null",
+      "minimum": 1,
+      "maximum": 16
+    },
+    "experiment_id": { "type": "string|null" },
+    "run_id": { "type": "string|null" },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "description": "짧은 서술; 트리거 아님."
+    }
+  },
+  "fusion_stream_expectations": {
+    "description": "융합 중간레이어 SSOT가 요구 시 명시.",
+    "lens_weights": "융합 스트림 소유; 본 스텁에 수치 고정 없음.",
+    "lens_active_conditions": "string|null",
+    "fusion_engine_version": "string"
+  },
+  "boundary_ack": "명리 출력은 B-track·관측·합의 입력용. A-track 실매매·OOF·dual_regime 캡 자동 합선 금지 — Promotion Loop·별도 PR."
+}

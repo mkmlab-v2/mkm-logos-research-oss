@@ -138,6 +138,66 @@
       "state_candidate_id": 13,
       "rationale": "[HYPO] 금화교역(金火交易) 상전이 벤치: 1Chr.14.6의 '상태'를 에스겔 1:4의 불꽃 환상 및 1QM의 에너지 충돌 서사와 구조적으로 연결. 학계의 비평을 넘어선 '상태 함수' 대칭성 실험용.",
       "note": "NL v2.1 cross_notebook_query (Apocrypha/DSS/Phase3, 3/3): 관측 요지 — 정렬은 가능하나 반증으로 (1) 희년서 364일 논지의 분리주의·정치 동기 가능성, (2) DSS/히브리 원어에 금화교역 상응 형이상학 어휘 부재, (3) 1Chr.14.6 행정·연대기 맥락과 묵시 텍스트 병치 시 False equivalence 위험. 주요 취약점: 맥락 오염(Context contamination)·제2성전기 이원론 vs 동양 순환 은유의 존재론적 비호환. [HYPO] 승격 보류; A-track·실매매·OOF 자동 합선 금지."
+    },
+    {
+      "entry_id": "ENTRY_12",
+      "canonical_ref": "Ps.4.6",
+      "satellite_ref": "11Q5 (Great Psalms Scroll) — Psalms; J.A. Sanders, DJD IV (Oxford: Clarendon, 1965); MT Ps.4 parallel — verify col/line mapping",
+      "source_id": "11Q5 (Great Psalms Scroll) — Psalms; J.A. Sanders, DJD IV (Oxford: Clarendon, 1965); MT Ps.4 parallel — verify col/line mapping",
+      "corpus_type": "dss",
+      "link_type": "lexical",
+      "confidence": null,
+      "artifact_path": null,
+      "state_candidate_id": 10,
+      "rationale": "B-Track DSS: 시편 큐믈란 증거(11Q5)와 MT Ps.4 구절의 어휘·서사 정렬 벤치. A-Track: cosine state 10 앵커 Ps.4.6 — 음성학·트리거 아님."
+    },
+    {
+      "entry_id": "ENTRY_13",
+      "canonical_ref": "Ps.5.2",
+      "satellite_ref": "11Q5 — Ps.5; DJD IV (Sanders, 1965); liturgical address layer — verify to MT Ps.5.2",
+      "source_id": "11Q5 — Ps.5; DJD IV (Sanders, 1965); liturgical address layer — verify to MT Ps.5.2",
+      "corpus_type": "dss",
+      "link_type": "lexical",
+      "confidence": null,
+      "artifact_path": null,
+      "state_candidate_id": 11,
+      "rationale": "B-Track DSS: 시편 5장 DSS 평행. A-Track: state 11 앵커 Ps.5.2 — 예배·호소 담론만 병치(벤치)."
+    },
+    {
+      "entry_id": "ENTRY_14",
+      "canonical_ref": "Deut.5.19",
+      "satellite_ref": "4QDeut — Deuteronomy Qumran witnesses; DJD XIV (E. Ulrich, 1994ff.); Decalogue / theft — verify frag to Deut.5.19",
+      "source_id": "4QDeut — Deuteronomy Qumran witnesses; DJD XIV (E. Ulrich, 1994ff.); Decalogue / theft — verify frag to Deut.5.19",
+      "corpus_type": "dss",
+      "link_type": "lexical",
+      "confidence": null,
+      "artifact_path": null,
+      "state_candidate_id": 12,
+      "rationale": "B-Track DSS: 신명기 십계·금기 병렬. A-Track: state 12 앵커 Deut.5.19 — 규범 메타만(윤리 트리거 아님)."
+    },
+    {
+      "entry_id": "ENTRY_15",
+      "canonical_ref": "Gen.49.19",
+      "satellite_ref": "4QGen — Genesis Qumran; Gen.49 Jacob blessings; DJD XII (Oxford: Clarendon); Gad oracle — verify fragment alignment to Gen.49.19",
+      "source_id": "4QGen — Genesis Qumran; Gen.49 Jacob blessings; DJD XII (Oxford: Clarendon); Gad oracle — verify fragment alignment to Gen.49.19",
+      "corpus_type": "dss",
+      "link_type": "thematic",
+      "confidence": null,
+      "artifact_path": null,
+      "state_candidate_id": 14,
+      "rationale": "B-Track DSS: 창49 족장 축복 서사. A-Track: state 14 앵커 Gen.49.19 — 지리·군사 은유는 벤치 라벨일 뿐 가격 인과 아님."
+    },
+    {
+      "entry_id": "ENTRY_16",
+      "canonical_ref": "Ezra.2.54",
+      "satellite_ref": "Ezra–Nehemiah text-history; 4Q Ezra-type witnesses / LXX Ezra traditions — cross-bench: returnee name-list; verify witness to Ezra.2.54",
+      "source_id": "Ezra–Nehemiah text-history; 4Q Ezra-type witnesses / LXX Ezra traditions — cross-bench: returnee name-list; verify witness to Ezra.2.54",
+      "corpus_type": "dss",
+      "link_type": "thematic",
+      "confidence": null,
+      "artifact_path": null,
+      "state_candidate_id": 16,
+      "rationale": "B-Track DSS/역본: 바벨론 귀환 명단 코호트. A-Track: state 16 앵커 Ezra.2.54 — 인구·스냅샷 메타만 병치(벤치)."
     }
   ]
 }

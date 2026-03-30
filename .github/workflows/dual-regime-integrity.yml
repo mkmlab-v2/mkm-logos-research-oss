@@ -27,6 +27,9 @@ on:
       - "tests/test_logos_state_mapping_v1_snapshot.py"
       - "tests/test_cross_ref_dss_schema.py"
       - "tests/test_sasang_cross_ref_draft.py"
+      - "tests/test_myeongni_insight_observation_log.py"
+      - "docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json"
+      - "docs/final/MYEONGRI_INSIGHT_SSOT.md"
       # Docs-only PRs (battleboard, manifests) also trigger Fact-Lock
       - "docs/**"
   workflow_dispatch:
@@ -60,6 +63,9 @@ jobs:
 
       - name: SASANG CROSS_REF draft (ijeoma chunk ↔ LOGOS bench Fact-Lock)
         run: python -m pytest tests/test_sasang_cross_ref_draft.py -q --tb=short
+
+      - name: Myeongni insight observation JSONL + fusion interface stub (§3.3)
+        run: python -m pytest tests/test_myeongni_insight_observation_log.py -q --tb=short
 
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()
