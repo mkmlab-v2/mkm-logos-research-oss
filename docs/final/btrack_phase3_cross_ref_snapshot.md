@@ -102,8 +102,8 @@
     {
       "entry_id": "ENTRY_08",
       "canonical_ref": "Neh.7.56",
-      "satellite_ref": "4Q319 (4QOtot) | loc=fragment/sigla=4QOtot, plate=Pls X-XIII, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=partial_anchor_verified (sigla+plates)",
-      "source_id": "4Q319 (4QOtot) | loc=fragment/sigla=4QOtot, plate=Pls X-XIII, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=partial_anchor_verified (sigla+plates)",
+      "satellite_ref": "4Q319 (4QOtot) | loc=fragment/sigla=TBD, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=verify fragment sigla",
+      "source_id": "4Q319 (4QOtot) | loc=fragment/sigla=TBD, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=verify fragment sigla",
       "corpus_type": "dss",
       "link_type": "temporal",
       "confidence": null,
@@ -126,8 +126,8 @@
     {
       "entry_id": "ENTRY_10",
       "canonical_ref": "Josh.15.22",
-      "satellite_ref": "CD-A I-II (+4Q266-273) | loc=4QDamascus Document (4Q266-273) witnesses -> DJD XVIII plates I–XLII; mapping to CD-A ch. I-II line anchor remains TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=partial_anchor_verified (plates)",
-      "source_id": "CD-A I-II (+4Q266-273) | loc=4QDamascus Document (4Q266-273) witnesses -> DJD XVIII plates I–XLII; mapping to CD-A ch. I-II line anchor remains TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=partial_anchor_verified (plates)",
+      "satellite_ref": "CD-A I-II (+4Q266-273) | loc=CD-A I-II, 4Q266-273 frag/line=TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=add chapter/line anchors",
+      "source_id": "CD-A I-II (+4Q266-273) | loc=CD-A I-II, 4Q266-273 frag/line=TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=add chapter/line anchors",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
@@ -177,8 +177,8 @@
     {
       "entry_id": "ENTRY_14",
       "canonical_ref": "Deut.5.19",
-      "satellite_ref": "4QDeut (a-q) | loc=DJD XIV Deuteronomy witnesses (Pls I-XXXI); Deut.5.19 fragment/line remains TBD | refs=DJD XIV (Ulrich et al. 1995) | status=partial_anchor_verified (witness-set+plates)",
-      "source_id": "4QDeut (a-q) | loc=DJD XIV Deuteronomy witnesses (Pls I-XXXI); Deut.5.19 fragment/line remains TBD | refs=DJD XIV (Ulrich et al. 1995) | status=partial_anchor_verified (witness-set+plates)",
+      "satellite_ref": "4QDeut | loc=Deut.5.19 fragment/line=TBD | refs=DJD XIV (Ulrich et al.) | status=missing_anchor_until_source_update",
+      "source_id": "4QDeut | loc=Deut.5.19 fragment/line=TBD | refs=DJD XIV (Ulrich et al.) | status=missing_anchor_until_source_update",
       "corpus_type": "dss",
       "link_type": "lexical",
       "confidence": null,
@@ -231,9 +231,9 @@ ENTRY_04 | link_type=temporal | source_id=Jubilees 6:29-38 + 364-day notes (btra
 
 ENTRY_05 | link_type=thematic | source_id=1QS IX 10-11 (Community Rule; Eng. citation in btrack_dss_1QS_sectarian_context.md) | state_candidate_id=3 | corpus=dss | theme=복수 메시아·규율 공동체 가설 | rationale=B-Track DSS: 예언자와 아론·이스라엘의 기름부음 받은 자에 대한 기대. A-Track 비유 후보(가설): 규율·언약 공동체·장기 신념 — HODL 담론은 비유일 뿐 자동 트리거 금지.
 
-ENTRY_06 | link_type=thematic | source_id=1QpHab (1Q15) | loc=col.VII, line=TBD | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill) | status=verify col/line | state_candidate_id=4 | corpus=dss | theme=페셔·위기 재독 | rationale=B-Track DSS: 하바국 해석(페셔)의 ‘위기를 성경으로 재독’ 레이어. A-Track 비유 후보(가설): 규범·도덕 프레임(칠선 언약 맥락)과 시장 서사 병치 — geometry/trigger 아님; Fact-Lock 벤치만.
+ENTRY_06 | link_type=thematic | source_id=1QpHab (1Q15) | loc=col.VII, line=TBD | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill) | status=partial_anchor_verified (column) | state_candidate_id=4 | corpus=dss | theme=페셔·위기 재독 | rationale=B-Track DSS: 하바국 해석(페셔)의 ‘위기를 성경으로 재독’ 레이어. A-Track 비유 후보(가설): 규범·도덕 프레임(칠선 언약 맥락)과 시장 서사 병치 — geometry/trigger 아님; Fact-Lock 벤치만.
 
-ENTRY_07 | link_type=temporal | source_id=11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD | refs=Yadin 1977, DJD XXIII | status=verify col range/line | state_candidate_id=5 | corpus=dss | theme=성전·절기 규범 | rationale=B-Track DSS: 성전·절기 일정 규범 텍스트. A-Track 대비: Ezra 명단 행은 ‘복귀 코호트’ 스냅샷 — 달력 DSS와 주제만 병치(벤치); 인과·트리거 금지.
+ENTRY_07 | link_type=temporal | source_id=11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD | refs=Yadin 1977, DJD XXIII | status=partial_anchor_verified (column-range) | state_candidate_id=5 | corpus=dss | theme=성전·절기 규범 | rationale=B-Track DSS: 성전·절기 일정 규범 텍스트. A-Track 대비: Ezra 명단 행은 ‘복귀 코호트’ 스냅샷 — 달력 DSS와 주제만 병치(벤치); 인과·트리거 금지.
 
 ENTRY_08 | link_type=temporal | source_id=4Q319 (4QOtot) | loc=fragment/sigla=4QOtot, plate=Pls X-XIII, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=partial_anchor_verified (sigla+plates) | state_candidate_id=6 | corpus=dss | theme=제사장 주기·신호 | rationale=B-Track DSS: 제사장 주기·신호 표류. A-Track 대비: Nehemiah 복귀자 명단 행 — 인구/재건 흐름과 ‘주기 신호’ 담론만 병치(벤치).
 
