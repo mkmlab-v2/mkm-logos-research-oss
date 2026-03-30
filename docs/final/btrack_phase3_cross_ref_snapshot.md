@@ -126,14 +126,15 @@
     {
       "entry_id": "ENTRY_10",
       "canonical_ref": "Josh.15.22",
-      "satellite_ref": "CD-A I-II (+4Q266-273) | loc=4QDamascus Document (4Q266-273) witnesses -> DJD XVIII plates I–XLII; mapping to CD-A ch. I-II line anchor remains TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=partial_anchor_verified (plates)",
-      "source_id": "CD-A I-II (+4Q266-273) | loc=4QDamascus Document (4Q266-273) witnesses -> DJD XVIII plates I–XLII; mapping to CD-A ch. I-II line anchor remains TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=partial_anchor_verified (plates)",
+      "satellite_ref": "CD-A I-II (+4Q266-273) | loc=4QDamascus Document witnesses -> DJD XVIII plates I–XLII; 4Q267 frg.2 line 4 attests boundary-language (מסיגי גבול), but direct CD-A I-II line crosswalk remains TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996), Qumran-Digital 4Q267 transcription (2023-10-25) | status=partial_anchor_verified (plates+line)",
+      "source_id": "CD-A I-II (+4Q266-273) | loc=4QDamascus Document witnesses -> DJD XVIII plates I–XLII; 4Q267 frg.2 line 4 attests boundary-language (מסיגי גבול), but direct CD-A I-II line crosswalk remains TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996), Qumran-Digital 4Q267 transcription (2023-10-25) | status=partial_anchor_verified (plates+line)",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 9,
-      "rationale": "B-Track DSS: 공동체의 언약·지경 담론. A-Track 대비: 여호수아 지파 경계 점과 ‘땅·경계’ 메타만 병치 — 지리≠가격."
+      "rationale": "B-Track DSS: 공동체의 언약·지경 담론. A-Track 대비: 여호수아 지파 경계 점과 ‘땅·경계’ 메타만 병치 — 지리≠가격.",
+      "note": "Bench policy: thematic(경계/지경) 후보. 승격 조건=CD-A I-II와 4Q266-273의 직접 line crosswalk 확보. 반증 훅=경계 어휘가 일반 도덕 문맥으로만 남아 Josh.15.22 지경 메타와 구조 정합이 약해지는 경우. Local evidence (2026-03-30): Qumran-Digital 4Q267 frg.2 line 4에서 'מסיגי גבול' 확인되어 line evidence는 partial 반영, CD-A I-II 직결 line은 미확정."
     },
     {
       "entry_id": "ENTRY_11",
