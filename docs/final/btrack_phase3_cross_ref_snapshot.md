@@ -114,8 +114,8 @@
     {
       "entry_id": "ENTRY_09",
       "canonical_ref": "Ps.36.1",
-      "satellite_ref": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=partial_anchor_verified (frag+col)",
-      "source_id": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=partial_anchor_verified (frag+col)",
+      "satellite_ref": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=verify frag/col",
+      "source_id": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=verify frag/col",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
@@ -243,14 +243,14 @@ ENTRY_10 | link_type=thematic | source_id=CD-A I-II (+4Q266-273) | loc=4QDamascu
 
 ENTRY_11 | link_type=analogy_bench | canonical_ref=1Chr.14.6 | source_id=1QM.1.1 | state_candidate_id=13 | corpus=dss | theme=상전이 벤치([HYPO]) | rationale=[HYPO] 금화교역 상전이 벤치; note=NL v2.1 반증·맥락 오염 요지(SSOT JSON 전문).
 
-ENTRY_12 | link_type=lexical | canonical_ref=Ps.4.6 | source_id=11Q5 | loc=Psalm witness -> MT Ps.4.6, col/line=TBD | refs=DJD IV (Sanders 1965) | status=verify col/line mapping | state_candidate_id=10 | corpus=dss | theme=시편 DSS·MT 정렬
+ENTRY_12 | link_type=lexical | canonical_ref=Ps.4.6 | source_id=11Q5 | loc=Psalm witness -> MT Ps.4.6, col/line=TBD | refs=DJD IV (Sanders 1965) | status=missing_anchor_until_source_update | state_candidate_id=10 | corpus=dss | theme=시편 DSS·MT 정렬
 
-ENTRY_13 | link_type=lexical | canonical_ref=Ps.5.2 | source_id=11Q5 | loc=Psalm witness -> MT Ps.5.2, col/line=TBD | refs=DJD IV (Sanders 1965) | status=verify Ps.5 mapping | state_candidate_id=11 | corpus=dss | theme=시편 5장
+ENTRY_13 | link_type=lexical | canonical_ref=Ps.5.2 | source_id=11Q5 | loc=Psalm witness -> MT Ps.5.2, col/line=TBD | refs=DJD IV (Sanders 1965) | status=missing_anchor_until_source_update | state_candidate_id=11 | corpus=dss | theme=시편 5장
 
 ENTRY_14 | link_type=lexical | canonical_ref=Deut.5.19 | source_id=4QDeut (a-q) | loc=DJD XIV Deuteronomy witnesses (Pls I-XXXI); Deut.5.19 fragment/line remains TBD | refs=DJD XIV (Ulrich et al. 1995) | status=partial_anchor_verified (witness-set+plates) | state_candidate_id=12 | corpus=dss | theme=신명 십계
 
-ENTRY_15 | link_type=thematic | canonical_ref=Gen.49.19 | source_id=4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=verify Gad-oracle alignment | state_candidate_id=14 | corpus=dss | theme=창49 가드
+ENTRY_15 | link_type=thematic | canonical_ref=Gen.49.19 | source_id=4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=missing_anchor_until_source_update | state_candidate_id=14 | corpus=dss | theme=창49 가드
 
-ENTRY_16 | link_type=thematic | canonical_ref=Ezra.2.54 | source_id=Ezra-Neh witnesses | loc=Ezra.2.54 list anchor=TBD | refs=4Q Ezra-type + LXX Ezra traditions | status=verify returnee list witness | state_candidate_id=16 | corpus=dss | theme=귀환 명단
+ENTRY_16 | link_type=thematic | canonical_ref=Ezra.2.54 | source_id=Ezra-Neh witnesses | loc=Ezra.2.54 list anchor=TBD | refs=4Q Ezra-type + LXX Ezra traditions | status=missing_anchor_until_source_update | state_candidate_id=16 | corpus=dss | theme=귀환 명단
 
 공통 경고: disclaimer 필드 — A-Track SSOT 아님; 엔진이 기본 로드 금지; Sefaria/Charles 등은 프록시 표준(정본 아님); 후보(candidate)·벤치만 기록.
