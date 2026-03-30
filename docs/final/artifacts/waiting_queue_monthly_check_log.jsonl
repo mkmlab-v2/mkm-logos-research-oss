@@ -1,1 +1,3 @@
 ﻿{"bundle_test":"skipped","checked_at_utc":"2026-03-30T10:24:09.4145785+00:00","runner":"scripts/run_waiting_queue_monthly_check.ps1","bundle_mode":"skip_bundle","cross_ref_test":"pass"}
+{"bundle_test":"pass","checked_at_utc":"2026-03-30T10:30:04.3310441+00:00","runner":"scripts/run_waiting_queue_monthly_check.ps1","bundle_mode":"full_bundle","cross_ref_test":"pass"}
+{"bundle_mode":"skip_bundle","bundle_test":"skipped","runner":"scripts/run_waiting_queue_monthly_check.ps1","source_hunt_summary_path":"C:\\workspace\\docs\\final\\artifacts\\entry16_source_hunt_summary.json","cross_ref_test":"pass","checked_at_utc":"2026-03-30T10:31:47.2892421+00:00","source_hunt_summary":"pass"}

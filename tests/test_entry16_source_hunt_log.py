@@ -56,3 +56,15 @@ def test_entry16_source_hunt_log_contract() -> None:
             f"row[{i}] invalid access_mode"
         )
         datetime.fromisoformat(str(row["last_checked_utc"]).replace("Z", "+00:00"))
+
+
+def test_entry16_source_hunt_no_duplicate_source_url() -> None:
+    rows = list(_rows(_LOG))
+    urls = [str(r["source_url"]).strip() for r in rows]
+    assert len(urls) == len(set(urls)), "source_url must be unique per row"
+
+
+def test_entry16_source_hunt_has_at_least_one_negative_or_unknown_witness() -> None:
+    rows = list(_rows(_LOG))
+    values = {str(r["ezra_2_54_direct_witness"]).strip() for r in rows}
+    assert values & {"no", "unknown"}, "log must include unresolved/negative witness evidence"
