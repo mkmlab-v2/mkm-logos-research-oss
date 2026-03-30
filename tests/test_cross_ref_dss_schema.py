@@ -223,3 +223,17 @@ def test_waiting_queue_entries_keep_explicit_open_source_gap_markers() -> None:
         row = next(e for e in doc["entries"] if e.get("entry_id") == eid)
         sat = str(row.get("satellite_ref", ""))
         assert marker in sat, f"{eid} must retain waiting-queue marker: {marker}"
+
+
+def test_waiting_queue_entries_keep_expected_status_levels() -> None:
+    """Waiting-queue entries must keep current status levels until new evidence appears."""
+    doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
+    expected = {
+        "ENTRY_07": "status=partial_anchor_verified (column-range)",
+        "ENTRY_08": "status=partial_anchor_verified (sigla+plates)",
+        "ENTRY_16": "status=missing_anchor_until_source_update",
+    }
+    for eid, marker in expected.items():
+        row = next(e for e in doc["entries"] if e.get("entry_id") == eid)
+        sat = str(row.get("satellite_ref", ""))
+        assert marker in sat, f"{eid} must retain waiting-queue status marker: {marker}"
