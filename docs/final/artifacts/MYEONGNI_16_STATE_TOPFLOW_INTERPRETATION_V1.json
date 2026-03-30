@@ -1,0 +1,19 @@
+{
+  "schema": "myeongni_16_state_topflow_interpretation_v1",
+  "source_topflows_report": "docs/final/artifacts/MYEONGNI_16_STATE_TOPFLOWS_V1.json",
+  "one_line_interpretation": "current dominant transition is state 3 -> 11 (count=1, p=1.000); B-track interpretation only.",
+  "global_top5_flows": [
+    {
+      "from_state": 3,
+      "to_state": 11,
+      "count": 1,
+      "probability": 1.0
+    }
+  ],
+  "quality_gate": {
+    "sufficient_for_signal": false,
+    "current_stage": "bootstrap_insufficient_rows",
+    "min_rows_for_signal": 30
+  },
+  "boundary_note": "B-track only. Do not auto-merge into A-track trading triggers or risk caps."
+}

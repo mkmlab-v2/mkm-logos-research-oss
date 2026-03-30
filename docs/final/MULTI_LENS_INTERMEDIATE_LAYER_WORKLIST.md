@@ -56,7 +56,7 @@
 | 4.7 | 월간 점검 스크립트 옵션(`-SkipBundle`) 운용 규칙 명시 | [x] | 정기 점검=기본(번들 포함), 이벤트 직후 1차 확인=옵션 허용 |
 | 4.8 | 월간 점검 실행 로그(JSONL) 누적 운영 | [x] | `docs/final/artifacts/waiting_queue_monthly_check_log.jsonl`에 skip/full 1회 이상 기록 |
 | 4.9 | 월간 점검 후 ENTRY16 summary 계약 테스트 유지 | [x] | `tests/test_entry16_source_hunt_summary.py`로 출력 계약 고정 |
-| 4.10 | ENTRY16 승격 게이트 리포트/계약 테스트 유지 | [x] | `scripts/evaluate_entry16_promotion_gate.py` + `tests/test_entry16_promotion_gate.py` |
+| 4.10 | ENTRY16 승격 게이트 리포트/계약 테스트 유지 (Direct + Proxy Manual 경로) | [x] | `scripts/evaluate_entry16_promotion_gate.py` + `tests/test_entry16_promotion_gate.py` |
 
 ---
 
@@ -85,4 +85,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fac
 
 ---
 
-**상태**: 내부 작업 완료 잠금 (2026-03-30). 재개 트리거는 `ENTRY_07/08/16` 외부 판본 업데이트 이벤트로 제한한다.
+**상태**: 내부 작업 완료 잠금 (2026-03-30, ENTRY_16 Proxy Manual 승인 반영). 재개 트리거는 `ENTRY_07/08/16` 외부 판본 업데이트 이벤트로 제한한다.

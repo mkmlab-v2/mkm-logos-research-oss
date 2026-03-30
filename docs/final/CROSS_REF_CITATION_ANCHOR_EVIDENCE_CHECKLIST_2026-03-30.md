@@ -71,6 +71,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_wai
 
 - 즉시 완료선: 현재 확보 가능한 open-source 근거까지 모두 반영
 - 최종 완료선: 대기 큐(ENTRY_07/08/16) 해소 후 `verified_anchor` 승격
+- 운영 승인선(ENTRY_16): `decision=promote_proxy_candidate_manual`이면 Direct 부재 사실을 유지한 채 **Proxy 수동승인 종료** 가능
 - `tests/test_cross_ref_dss_schema.py` 그린
 - `btrack_phase3_cross_ref_snapshot.md` 코드펜스 재동기화 완료
 
@@ -135,6 +136,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_wai
 - 판정:
   - `decision=keep_locked` -> 대기 큐 유지
   - `decision=promote_candidate` -> 수동 리뷰 PR로 승격 절차 시작
+  - `decision=promote_proxy_candidate_manual` -> 직접 witness 부재를 명시한 Proxy 경로 수동 승인 PR 시작
 
 ### 7) 완료 선언 업데이트
 

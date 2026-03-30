@@ -30,6 +30,14 @@ def main() -> int:
         for r in rows
         if str(r.get("line_anchor", "")).strip().lower() not in {"", "unknown", "none (catalog-level)", "none (image metadata only)", "none (contents-level only)"}
     ]
+    proxy_candidate_rows = [
+        r
+        for r in rows
+        if (
+            str(r.get("ezra_2_54_direct_witness", "")).strip() in {"no", "unknown"}
+            and "proxy_for_ezra_2_54" in str(r.get("extant_verses_claim", "")).lower()
+        )
+    ]
     has_direct_witness = witness.get("yes", 0) > 0
     if has_direct_witness:
         recommendation = "prepare_manual_promotion_review"
@@ -47,6 +55,7 @@ def main() -> int:
         "access_mode_counts": dict(modes),
         "has_direct_witness": has_direct_witness,
         "direct_anchor_like_count": len(direct_anchor_like_rows),
+        "proxy_anchor_candidate_count": len(proxy_candidate_rows),
         "next_gate": (
             "promote_entry16_candidate"
             if has_direct_witness
