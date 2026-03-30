@@ -168,8 +168,8 @@
     {
       "entry_id": "ENTRY_14",
       "canonical_ref": "Deut.5.19",
-      "satellite_ref": "4QDeut | loc=Deut.5.19 fragment/line=TBD | refs=DJD XIV (Ulrich et al.) | status=missing_anchor_until_source_update",
-      "source_id": "4QDeut | loc=Deut.5.19 fragment/line=TBD | refs=DJD XIV (Ulrich et al.) | status=missing_anchor_until_source_update",
+      "satellite_ref": "4QDeut (a-q) | loc=DJD XIV Deuteronomy witnesses (Pls I-XXXI); Deut.5.19 fragment/line remains TBD | refs=DJD XIV (Ulrich et al. 1995) | status=partial_anchor_verified (witness-set+plates)",
+      "source_id": "4QDeut (a-q) | loc=DJD XIV Deuteronomy witnesses (Pls I-XXXI); Deut.5.19 fragment/line remains TBD | refs=DJD XIV (Ulrich et al. 1995) | status=partial_anchor_verified (witness-set+plates)",
       "corpus_type": "dss",
       "link_type": "lexical",
       "confidence": null,
