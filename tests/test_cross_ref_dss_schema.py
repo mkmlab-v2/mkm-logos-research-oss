@@ -113,6 +113,8 @@ def test_entry_16_anchor_gate_locked_until_evidence_update() -> None:
         )
         assert "no extant DSS witness for Ezra.2.54 list" in sat
         assert "Qumran-Digital 4Q117 transcription (2024-07-30)" in sat
+        # Keep explicit currently-attested Ezra coverage to prevent silent scope drift.
+        assert "Esr 4:2-6, 4:9-11, 5:17, 6:1-6" in sat
 
 
 def test_entry_14_partial_anchor_verified_gate() -> None:
