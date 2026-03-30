@@ -41,9 +41,22 @@
 
 ---
 
+## 외부 판본 대기 큐 (운영 전환)
+
+| Entry | 대기 사유 | 재시도 트리거 | 처리 방식 |
+|---|---|---|---|
+| ENTRY_07 | 11Q19 `cols.XLVI-XLVII` 공개 line-level 전사 부재 | 공개 전사/신판/DB 업데이트에서 line 제공 | `line=<...>` 갱신 후 `status=verified_anchor` 검토 |
+| ENTRY_08 | 4Q319 공개 line 전사 부재(plate/sigla만 확인) | DJD 보강판/공개 전사에서 fragment-line 제공 | `frag/sigla/line` 3요소 정식화 |
+| ENTRY_16 | Ezra.2.54 DSS 직접 witness 부재 | 비-DSS witness(LXX/비평판)에서 list anchor 확보 | `missing_anchor` 해제 여부 별도 PR 판단 |
+
+- 운영 규칙: 대기 큐 항목은 **주간 재탐색 금지**, 새 근거 소스가 생긴 경우에만 재시도한다.
+- 근거 반영 순서: SSOT JSON -> 스냅샷 fence sync -> `pytest tests/test_cross_ref_dss_schema.py`.
+
+---
+
 ## 완료 판정
 
-- 10개 엔트리 모두 `TBD` 제거
-- `status=verified_anchor` 표기
+- 즉시 완료선: 현재 확보 가능한 open-source 근거까지 모두 반영
+- 최종 완료선: 대기 큐(ENTRY_07/08/16) 해소 후 `verified_anchor` 승격
 - `tests/test_cross_ref_dss_schema.py` 그린
 - `btrack_phase3_cross_ref_snapshot.md` 코드펜스 재동기화 완료
