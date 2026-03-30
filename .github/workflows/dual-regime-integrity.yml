@@ -123,6 +123,7 @@ on:
       - "tests/test_w4_promotion_decision_aux_section.py"
       - "tests/test_w4_promotion_doc_audit.py"
       - "tests/test_build_state_sasang_ops_bundle.py"
+      - "tests/test_report_p1_final_selection.py"
       - "scripts/build_state_sasang_ops_bundle.py"
       - "docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json"
       - "docs/final/MYEONGRI_INSIGHT_SSOT.md"
@@ -315,6 +316,9 @@ jobs:
           python scripts/run_p1_efficiency_ab.py --profile intensity_first
           python scripts/run_p1_efficiency_ab.py --profile balanced
           python scripts/report_p1_final_selection.py
+
+      - name: P1 final selection contract
+        run: python -m pytest tests/test_report_p1_final_selection.py -q --tb=short
 
       - name: B-Track verified baseline regression check
         run: python scripts/check_btrack_regression.py
