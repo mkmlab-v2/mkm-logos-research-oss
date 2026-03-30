@@ -26,6 +26,7 @@ Set-Location -LiteralPath $workspaceRoot
     'tests/test_btrack_phase3_snapshot_sync.py' `
     'tests/test_sasang_cross_ref_draft.py' `
     'tests/test_myeongni_16_state_transition_report.py' `
+    'tests/test_myeongni_16_state_topflows_report.py' `
     'tests/test_myeongni_insight_observation_log.py' `
     -q --tb=short
 exit $LASTEXITCODE

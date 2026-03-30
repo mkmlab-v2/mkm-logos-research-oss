@@ -1,0 +1,145 @@
+{
+  "schema": "myeongni_16_state_topflows_v1",
+  "source_transition_report": "docs/final/artifacts/MYEONGNI_16_STATE_TRANSITION_V1.json",
+  "state_flow_summary": [
+    {
+      "state_id": 1,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 2,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 3,
+      "outbound_top3": [
+        {
+          "from_state": 3,
+          "to_state": 11,
+          "count": 1,
+          "probability": 1.0
+        }
+      ],
+      "inbound_top3": [],
+      "outbound_total_count": 1,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 4,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 5,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 6,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 7,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 8,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 9,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 10,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 11,
+      "outbound_top3": [],
+      "inbound_top3": [
+        {
+          "from_state": 3,
+          "to_state": 11,
+          "count": 1,
+          "probability": 1.0
+        }
+      ],
+      "outbound_total_count": 0,
+      "inbound_total_count": 1
+    },
+    {
+      "state_id": 12,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 13,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 14,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 15,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    },
+    {
+      "state_id": 16,
+      "outbound_top3": [],
+      "inbound_top3": [],
+      "outbound_total_count": 0,
+      "inbound_total_count": 0
+    }
+  ],
+  "global_top5_flows": [
+    {
+      "from_state": 3,
+      "to_state": 11,
+      "count": 1,
+      "probability": 1.0
+    }
+  ],
+  "quality": {
+    "sufficient_for_signal": false,
+    "min_rows_for_signal": 30,
+    "current_stage": "bootstrap_insufficient_rows"
+  }
+}
