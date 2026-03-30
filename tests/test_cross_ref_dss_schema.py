@@ -99,10 +99,10 @@ def test_cross_ref_draft_validates_against_json_schema() -> None:
     jsonschema.Draft7Validator(schema).validate(doc)
 
 
-def test_entry_12_13_16_anchor_gate_locked_until_evidence_update() -> None:
-    """ENTRY_12/13/16 must stay blocked until concrete anchors are added."""
+def test_entry_16_anchor_gate_locked_until_evidence_update() -> None:
+    """ENTRY_16 must stay blocked until concrete anchors are added."""
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
-    for eid in ("ENTRY_12", "ENTRY_13", "ENTRY_16"):
+    for eid in ("ENTRY_16",):
         row = next(e for e in doc["entries"] if e.get("entry_id") == eid)
         sat = str(row.get("satellite_ref", ""))
         assert "status=missing_anchor_until_source_update" in sat, (
@@ -128,6 +128,17 @@ def test_entry_15_partial_anchor_verified_gate() -> None:
     assert "Pls VI-XIII" in sat
 
 
+def test_entry_12_13_partial_anchor_verified_gates() -> None:
+    """ENTRY_12/13 keep verse-line TBD but record 11Q5 line-bucket anchors."""
+    doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
+    for eid, verse in (("ENTRY_12", "Ps.4.6"), ("ENTRY_13", "Ps.5.2")):
+        row = next(e for e in doc["entries"] if e.get("entry_id") == eid)
+        sat = str(row.get("satellite_ref", ""))
+        assert "status=partial_anchor_verified (scroll+line-buckets)" in sat
+        assert "11Q5-18 line-buckets" in sat
+        assert verse in sat
+
+
 def test_entry_06_07_08_10_partial_anchor_gates() -> None:
     """Entries with verified subset anchors keep explicit partial status."""
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
@@ -137,9 +148,16 @@ def test_entry_06_07_08_10_partial_anchor_gates() -> None:
         "ENTRY_08": "status=partial_anchor_verified (sigla+plates)",
         "ENTRY_10": "status=partial_anchor_verified (plates)",
         "ENTRY_09": "status=partial_anchor_verified (frag+col)",
+        "ENTRY_12": "status=partial_anchor_verified (scroll+line-buckets)",
+        "ENTRY_13": "status=partial_anchor_verified (scroll+line-buckets)",
         "ENTRY_15": "status=partial_anchor_verified (witness-set+plates)",
     }
     for eid, marker in expected.items():
         row = next(e for e in doc["entries"] if e.get("entry_id") == eid)
         sat = str(row.get("satellite_ref", ""))
         assert marker in sat, f"{eid} must retain marker: {marker}"
+
+    row07 = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_07")
+    sat07 = str(row07.get("satellite_ref", ""))
+    assert "Yadin 1977-1983 (11Q19 primary)" in sat07
+    assert "DJD XXIII (11Q20-31, Temple b/c comparanda)" in sat07

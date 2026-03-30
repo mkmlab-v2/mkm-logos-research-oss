@@ -24,8 +24,8 @@
 | ENTRY_08 (4Q319) | `fragment/sigla=TBD` | 공식 fragment sigla + line/plate 매핑 | `loc=frag.<id>, sigla=<...>, line=<...>` |
 | ENTRY_09 (4Q169) | `line=TBD` | `frags 3-4 col.ii`의 line anchor | `loc=frags 3-4, col.ii, line=<...>` |
 | ENTRY_10 (CD-A/4Q266-273) | `frag/line=TBD` | CD-A I-II 장/행 및 4Q266-273 대응 anchor | `loc=CD-A I-II <line>; 4Q266-273 <frag/line>` |
-| ENTRY_12 (11Q5 Ps.4.6) | `col/line=TBD` | 11Q5 witness와 MT Ps.4.6 매핑 line | `loc=...Ps.4.6..., col/line=<...>` |
-| ENTRY_13 (11Q5 Ps.5.2) | `col/line=TBD` | 11Q5 witness와 MT Ps.5.2 매핑 line | `loc=...Ps.5.2..., col/line=<...>` |
+| ENTRY_12 (11Q5 Ps.4.6) | `partial_anchor_verified (scroll+line-buckets)` | 11Q5 witness와 MT Ps.4.6 **정확 verse line 매핑** | `loc=...Ps.4.6..., line=<...>` + `status=verified_anchor` |
+| ENTRY_13 (11Q5 Ps.5.2) | `partial_anchor_verified (scroll+line-buckets)` | 11Q5 witness와 MT Ps.5.2 **정확 verse line 매핑** | `loc=...Ps.5.2..., line=<...>` + `status=verified_anchor` |
 | ENTRY_14 (4QDeut) | `fragment/line=TBD` | Deut.5.19 대응 fragment/line | `loc=Deut.5.19 frag=<...>, line=<...>` |
 | ENTRY_15 (4QGen) | `fragment/line=TBD` | Gen.49.19 대응 fragment/line | `loc=Gen.49.19 frag=<...>, line=<...>` |
 | ENTRY_16 (Ezra-Neh witnesses) | `list anchor=TBD` | Ezra.2.54 name-list witness anchor | `loc=Ezra.2.54 list anchor=<...>` |
