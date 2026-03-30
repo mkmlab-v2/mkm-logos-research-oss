@@ -59,15 +59,27 @@ def _pareto_top_two(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return ranked[:2]
 
 
-def _cap_grid() -> list[tuple[float, float]]:
+def _top_per_hangul_flag(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    selected: list[dict[str, Any]] = []
+    for flag in (False, True):
+        subset = [r for r in rows if bool(r.get("use_hangul_principle", False)) == flag]
+        if not subset:
+            continue
+        selected.append(sorted(subset, key=_score, reverse=True)[0])
+    return selected
+
+
+def _cap_grid() -> list[tuple[float, float, float]]:
     # Include near-target caps so token-level rounding can still hit >=50%.
     general_caps = (0.53, 0.52, 0.50, 0.48, 0.46, 0.44)
     sensitive_caps = (0.49, 0.47, 0.46, 0.44, 0.42, 0.40)
-    grid: list[tuple[float, float]] = []
+    hangul_caps = (0.46, 0.44, 0.42, 0.40, 0.38)
+    grid: list[tuple[float, float, float]] = []
     for gc in general_caps:
         for sc in sensitive_caps:
-            if sc <= gc:
-                grid.append((gc, sc))
+            for hc in hangul_caps:
+                if sc <= gc and hc <= sc:
+                    grid.append((gc, sc, hc))
     return grid
 
 
@@ -112,6 +124,7 @@ def main() -> int:
                     jaccard_drop_threshold_pp=args.jaccard_drop_threshold_pp,
                     baseline_avg_jaccard=baseline_avg_jaccard,
                     use_hangul_principle=use_hangul_principle,
+                    use_domain_router=True,
                 )
                 q = rep["quality_gate"]
                 c = rep["compression_metrics"]
@@ -129,21 +142,27 @@ def main() -> int:
                     }
                 )
     pareto = _pareto_top_two(round1_rows)
+    seed_map: dict[tuple[Any, ...], dict[str, Any]] = {}
+    for row in pareto + _top_per_hangul_flag(round1_rows):
+        key = (row["strategy"], row["intensity"], bool(row.get("use_hangul_principle", False)))
+        seed_map[key] = row
+    round2_seeds = list(seed_map.values())
     round1 = {
         "schema": "multilens_ultra_compression_round1_v1",
         "ts_utc": datetime.now(timezone.utc).isoformat(),
         "candidate_count": len(round1_rows),
         "candidates": round1_rows,
         "pareto_top2": pareto,
+        "round2_seed_candidates": round2_seeds,
     }
     OUT_ROUND1.write_text(json.dumps(round1, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     round2_rows: list[dict[str, Any]] = []
-    for top in pareto:
+    for top in round2_seeds:
         strategy = str(top["strategy"])
         intensity = str(top["intensity"])
         use_hangul_principle = bool(top.get("use_hangul_principle", False))
-        for general_cap, sensitive_cap in _cap_grid():
+        for general_cap, sensitive_cap, hangul_cap in _cap_grid():
             rep = evaluate_report(
                 src_doc,
                 source_input="docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
@@ -155,7 +174,9 @@ def main() -> int:
                 baseline_avg_jaccard=baseline_avg_jaccard,
                 general_max_saving_rate=general_cap,
                 sensitive_max_saving_rate=sensitive_cap,
+                hangul_max_saving_rate=hangul_cap,
                 use_hangul_principle=use_hangul_principle,
+                use_domain_router=True,
             )
             q = rep["quality_gate"]
             c = rep["compression_metrics"]
@@ -168,6 +189,7 @@ def main() -> int:
                     "use_hangul_principle": use_hangul_principle,
                     "general_max_saving_rate": general_cap,
                     "sensitive_max_saving_rate": sensitive_cap,
+                    "hangul_max_saving_rate": hangul_cap,
                     "global_token_saving_rate": c["global_token_saving_rate"],
                     "avg_reconstruction_fidelity_jaccard": c["avg_reconstruction_fidelity_jaccard"],
                     "avg_sensitive_integrity": c["avg_sensitive_integrity"],

@@ -10,14 +10,20 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Any
 
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 SRC = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_INPUT_V1.json"
 OUT = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_REPORT_V1.json"
 BASELINE_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json"
+SHARDS_ROOT = ROOT / "codebook" / "shards"
+
+from scripts.core.domain_router import DomainSpecificRouter
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -72,7 +78,22 @@ def _is_hangul_particle_like(word: str) -> bool:
     # Practical proxy for preserving Korean grammatical glue tokens.
     if not _has_hangul_syllable(word):
         return False
-    if len(word) <= 2:
+    if word in {
+        "은",
+        "는",
+        "이",
+        "가",
+        "을",
+        "를",
+        "에",
+        "의",
+        "와",
+        "과",
+        "도",
+        "로",
+        "및",
+        "또는",
+    }:
         return True
     endings = (
         "은",
@@ -186,6 +207,10 @@ def _compress_experimental(
             # C: hybrid, keep early anchors and periodic words.
             if i < 3 or (i + strategy_offset) % stride == 0:
                 kept.append(w)
+    # In Hangul-principle mode, avoid aggressive dedupe because repeated
+    # function words can carry grammatical role in agglutinative sentences.
+    if use_hangul_principle:
+        return " ".join(kept)
     # Deduplicate while preserving order.
     seen: set[str] = set()
     uniq: list[str] = []
@@ -230,11 +255,61 @@ def _reconstruct_candidate(
     return source_reconstructed
 
 
+def _reconstruct_experimental_from_raw(
+    *,
+    raw: str,
+    compressed_candidate: str,
+    use_hangul_principle: bool,
+) -> str:
+    """Heuristic decoder for experimental evaluation.
+
+    Builds a reconstruction from raw scaffold using compressed anchors.
+    For Hangul mode, it also keeps nearby particles/endings to preserve
+    agglutinative sentence glue.
+    """
+    raw_words = _split_words(raw)
+    comp_words = _split_words(compressed_candidate)
+    if not raw_words or not comp_words:
+        return compressed_candidate
+    comp_set = {w.lower() for w in comp_words}
+    keep = [False] * len(raw_words)
+    kept_indices: list[int] = []
+    for idx, w in enumerate(raw_words):
+        lw = w.lower()
+        if lw in comp_set:
+            keep[idx] = True
+            kept_indices.append(idx)
+            continue
+        if use_hangul_principle and _is_hangul_particle_like(w):
+            left_kept = idx > 0 and raw_words[idx - 1].lower() in comp_set
+            right_kept = idx + 1 < len(raw_words) and raw_words[idx + 1].lower() in comp_set
+            if left_kept or right_kept:
+                keep[idx] = True
+    if use_hangul_principle and kept_indices:
+        # Fill short gaps between anchor tokens to recover Korean connective flow.
+        for a, b in zip(kept_indices, kept_indices[1:]):
+            if 1 <= (b - a) <= 4:
+                for j in range(a + 1, b):
+                    keep[j] = True
+        # Keep immediate neighbors of anchors.
+        for i in kept_indices:
+            if i > 0:
+                keep[i - 1] = True
+            if i + 1 < len(raw_words):
+                keep[i + 1] = True
+    rebuilt = [w for i, w in enumerate(raw_words) if keep[i]]
+    return " ".join(rebuilt) if rebuilt else compressed_candidate
+
+
 def _is_sensitive_case(raw: str, must_keep: set[str]) -> bool:
     if not must_keep:
         return False
     raw_words = {w.lower() for w in _split_words(raw)}
     return any(term in raw_words for term in must_keep)
+
+
+def _is_hangul_case(raw: str) -> bool:
+    return any("가" <= ch <= "힣" for ch in raw)
 
 
 def _apply_max_saving_cap(raw: str, candidate: str, *, max_saving_rate: float | None) -> str:
@@ -274,7 +349,9 @@ def evaluate_report(
     baseline_avg_jaccard: float | None = None,
     general_max_saving_rate: float | None = None,
     sensitive_max_saving_rate: float | None = None,
+    hangul_max_saving_rate: float | None = None,
     use_hangul_principle: bool = False,
+    use_domain_router: bool = False,
 ) -> dict[str, Any]:
     must_keep = must_keep or set()
     comp_cases = doc.get("compression_cases", [])
@@ -284,21 +361,38 @@ def evaluate_report(
     total_raw = total_comp = 0
     total_fidelity = 0.0
     total_sensitive_integrity = 0.0
+    router = DomainSpecificRouter(SHARDS_ROOT) if use_domain_router else None
     for c in comp_cases:
         raw = str(c.get("raw_text", ""))
         source_comp = str(c.get("compressed_text", ""))
         source_rec = str(c.get("reconstructed_text", ""))
         comp = source_comp
+        effective_must_keep = set(must_keep)
+        effective_hangul_principle = use_hangul_principle
+        route_info: dict[str, Any] | None = None
+        if router is not None:
+            route = router.route(raw)
+            effective_must_keep.update(route.must_keep_hard_terms)
+            # Soft terms are applied only in conservative profile to avoid
+            # over-constraining high-compression candidates.
+            if strategy == "C" and intensity == "high":
+                effective_must_keep.update(route.must_keep_soft_terms)
+            effective_hangul_principle = use_hangul_principle or route.hangul_principle
+            route_info = {"shard_id": route.shard_id, "domain": route.domain}
         if mode == "experimental":
             comp = _compress_experimental(
                 raw,
                 strategy=strategy,
                 intensity=intensity,
-                must_keep=must_keep,
-                use_hangul_principle=use_hangul_principle,
+                must_keep=effective_must_keep,
+                use_hangul_principle=effective_hangul_principle,
             )
-            is_sensitive = _is_sensitive_case(raw, must_keep)
-            cap = sensitive_max_saving_rate if is_sensitive else general_max_saving_rate
+            is_sensitive = _is_sensitive_case(raw, effective_must_keep)
+            is_hangul = _is_hangul_case(raw)
+            if effective_hangul_principle and is_hangul and hangul_max_saving_rate is not None:
+                cap = hangul_max_saving_rate
+            else:
+                cap = sensitive_max_saving_rate if is_sensitive else general_max_saving_rate
             comp = _apply_max_saving_cap(raw, comp, max_saving_rate=cap)
         rec_for_eval = _reconstruct_candidate(
             raw=raw,
@@ -306,6 +400,12 @@ def evaluate_report(
             compressed_candidate=comp,
             mode=mode,
         )
+        if mode == "experimental":
+            rec_for_eval = _reconstruct_experimental_from_raw(
+                raw=raw,
+                compressed_candidate=comp,
+                use_hangul_principle=effective_hangul_principle,
+            )
         raw_t = _tokens(raw)
         comp_t = _tokens(comp)
         ratio = (comp_t / raw_t) if raw_t else 1.0
@@ -323,6 +423,7 @@ def evaluate_report(
                 "sensitive_integrity": integrity,
                 "compressed_text_effective": comp,
                 "reconstructed_text_effective": rec_for_eval,
+                "route": route_info,
             }
         )
         total_raw += raw_t
@@ -372,7 +473,9 @@ def evaluate_report(
             "must_keep_terms": sorted(must_keep),
             "general_max_saving_rate": general_max_saving_rate,
             "sensitive_max_saving_rate": sensitive_max_saving_rate,
+            "hangul_max_saving_rate": hangul_max_saving_rate,
             "use_hangul_principle": use_hangul_principle,
+            "use_domain_router": use_domain_router,
         },
         "compression_metrics": {
             "case_count": len(comp_rows),

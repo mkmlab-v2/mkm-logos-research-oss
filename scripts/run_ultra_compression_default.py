@@ -30,10 +30,13 @@ def main() -> int:
     intensity = str(selected.get("intensity", "extreme"))
     general_max_saving_rate = selected.get("general_max_saving_rate")
     sensitive_max_saving_rate = selected.get("sensitive_max_saving_rate")
+    hangul_max_saving_rate = selected.get("hangul_max_saving_rate")
     if general_max_saving_rate is not None:
         general_max_saving_rate = float(general_max_saving_rate)
     if sensitive_max_saving_rate is not None:
         sensitive_max_saving_rate = float(sensitive_max_saving_rate)
+    if hangul_max_saving_rate is not None:
+        hangul_max_saving_rate = float(hangul_max_saving_rate)
     baseline_avg_jaccard = float(
         baseline_doc.get("compression_metrics", {}).get("avg_reconstruction_fidelity_jaccard", 0.0)
     )
@@ -50,6 +53,8 @@ def main() -> int:
         baseline_avg_jaccard=baseline_avg_jaccard,
         general_max_saving_rate=general_max_saving_rate,
         sensitive_max_saving_rate=sensitive_max_saving_rate,
+        hangul_max_saving_rate=hangul_max_saving_rate,
+        use_domain_router=True,
     )
     report["active_profile"] = {
         "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
@@ -57,6 +62,7 @@ def main() -> int:
         "intensity": intensity,
         "general_max_saving_rate": general_max_saving_rate,
         "sensitive_max_saving_rate": sensitive_max_saving_rate,
+        "hangul_max_saving_rate": hangul_max_saving_rate,
     }
     ACTIVE_REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {ACTIVE_REPORT}")
