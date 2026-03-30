@@ -114,8 +114,8 @@
     {
       "entry_id": "ENTRY_09",
       "canonical_ref": "Ps.36.1",
-      "satellite_ref": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=verify frag/col",
-      "source_id": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=verify frag/col",
+      "satellite_ref": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=partial_anchor_verified (frag+col)",
+      "source_id": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=partial_anchor_verified (frag+col)",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
