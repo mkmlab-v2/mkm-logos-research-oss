@@ -1,0 +1,44 @@
+{
+  "schema": "w3_falsification_precheck_v1",
+  "generated_at_utc": "2026-03-31T00:00:00Z",
+  "status": "precheck_pass",
+  "track": "B-track",
+  "input_refs": {
+    "w3_input": "docs/final/artifacts/W3_PILOT_MIN_INPUT_V1.json",
+    "w3_compute_spec": "docs/final/artifacts/W3_RESONANCE_COMPUTE_SPEC_V1.json"
+  },
+  "checks": [
+    {
+      "id": "chk_context_contamination",
+      "title": "Context contamination",
+      "result": "pass",
+      "note": "No cross-domain hard merge into A-track or trading trigger paths."
+    },
+    {
+      "id": "chk_false_equivalence",
+      "title": "False equivalence",
+      "result": "pass",
+      "note": "No claim that symbolic alignment implies deterministic truth."
+    },
+    {
+      "id": "chk_numeric_metaphor",
+      "title": "Numeric metaphor misuse",
+      "result": "pass",
+      "note": "No standalone numeric coincidence is promoted as final inference."
+    },
+    {
+      "id": "chk_notice_integrity",
+      "title": "Notice integrity",
+      "result": "pass",
+      "note": "Personal lane keeps non-medical and non-deterministic notices."
+    }
+  ],
+  "w3_compute_entry": {
+    "allowed": true,
+    "conditions": [
+      "Use [HYPO] marker in all rationale fields",
+      "Emit falsification_flags per output item",
+      "Keep geo_event_ref excluded from computation"
+    ]
+  }
+}

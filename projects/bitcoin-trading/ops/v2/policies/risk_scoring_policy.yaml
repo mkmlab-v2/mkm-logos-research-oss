@@ -1,0 +1,17 @@
+risk_scoring:
+  max_items: 3
+  base_no_risk_score: 20
+  rules:
+    watchdog_high: 95
+    watchdog_medium: 70
+    sentinel_blocked: 90
+    policy_drift_present: 80
+    cost_budget_breach: 75
+    heartbeat_aging: 65
+    incident_not_healthy: 60
+  thresholds:
+    heartbeat_aging_minutes: 10
+  mode_guardrail:
+    force_shadow_score_threshold: 70
+    block_execute_score_threshold: 85
+    attach_incident_on_override: true

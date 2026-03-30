@@ -1,0 +1,373 @@
+openapi: 3.0.3
+info:
+  title: MKM Token Compression API (stub v1)
+  version: "1.0.0"
+  description: |
+    HTTP data contract for compress/expand. Stub: scripts/compression_token_api_stub.py
+    (domain router envelope only; no full multilens evaluate_report in-process unless a future flag wires it).
+    Alignment with bench SSOT: default eval input path may be named in EvalContext (documentation only in stub).
+    Auth, rate limits, SLA: out of scope v1.
+    Versioning rule: bump PATCH for docs/examples only, MINOR for backward-compatible
+    additive fields, MAJOR for required field changes/removals or behavior-breaking changes.
+servers:
+  - url: http://127.0.0.1:8010
+    description: Local stub (example port)
+paths:
+  /v1/compress:
+    post:
+      operationId: compressText
+      summary: Route text and return compression envelope (stub echoes original_text)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompressRequest"
+            examples:
+              mode_none:
+                summary: Router-only mode (no hydration)
+                value:
+                  text: "bible test hangul 테스트"
+                  client_request_id: "req-none-001"
+              mode_decision_fallback:
+                summary: Hydrate from decision artifact
+                value:
+                  text: "compression hydration test 텍스트"
+                  client_request_id: "req-decision-001"
+                  eval_context:
+                    hydrate_metrics: true
+                    runner_hint: "decision_lock"
+              mode_live:
+                summary: Hydrate via live evaluate_report first
+                value:
+                  text: "live eval hydration path 성능 테스트"
+                  client_request_id: "req-live-001"
+                  eval_context:
+                    hydrate_metrics: true
+                    hydrate_live_eval: true
+                    runner_hint: "active_default"
+                  hydration_hints:
+                    atom_ids: ["atom:x", "atom:y"]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompressResponse"
+              examples:
+                mode_none:
+                  summary: Router-only response
+                  value:
+                    api_contract_version: "1.0.0"
+                    schema_version: token_compression_stub_v1
+                    shard_id: zone_c_hangul
+                    domain: hangul
+                    router_only: true
+                    original_text: "bible test hangul 테스트"
+                    client_request_id: "req-none-001"
+                    compression_metrics: null
+                    integrity_flags:
+                      hangul_principle: true
+                      hard_keep_count: 3
+                      soft_keep_count: 5
+                      metrics_mode: none
+                mode_decision_fallback:
+                  summary: Decision artifact hydration response
+                  value:
+                    api_contract_version: "1.0.0"
+                    schema_version: token_compression_stub_v1
+                    shard_id: zone_d_ssot
+                    domain: ssot
+                    router_only: true
+                    original_text: "compression hydration test 텍스트"
+                    client_request_id: "req-decision-001"
+                    eval_context_echo:
+                      hydrate_metrics: true
+                      runner_hint: decision_lock
+                    compression_metrics:
+                      bytes_in: 40
+                      bytes_out: 19
+                      token_in: 5
+                      token_out: 2
+                      savings_ratio: 0.5316
+                    integrity_flags:
+                      hangul_principle: false
+                      hard_keep_count: 2
+                      soft_keep_count: 3
+                      hydration_metrics_source: decision_selected_candidate
+                      metrics_mode: decision_fallback
+                mode_live:
+                  summary: Live evaluate_report hydration response
+                  value:
+                    api_contract_version: "1.0.0"
+                    schema_version: token_compression_stub_v1
+                    shard_id: zone_c_hangul
+                    domain: hangul
+                    router_only: true
+                    original_text: "live eval hydration path 성능 테스트"
+                    client_request_id: "req-live-001"
+                    eval_context_echo:
+                      hydrate_metrics: true
+                      hydrate_live_eval: true
+                      runner_hint: active_default
+                    compression_metrics:
+                      bytes_in: 45
+                      bytes_out: 21
+                      token_in: 7
+                      token_out: 3
+                      savings_ratio: 0.57
+                    integrity_flags:
+                      hangul_principle: true
+                      hard_keep_count: 3
+                      soft_keep_count: 5
+                      hydration_metrics_source: live_evaluate_report
+                      hydration_live_eval_elapsed_ms: 42.7
+                      metrics_mode: live
+  /v1/expand:
+    post:
+      operationId: expandPayload
+      summary: Reverse CompressResponse-compatible payload to plain text (lossless for stub)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExpandRequest"
+            examples:
+              from_none_mode:
+                summary: Expand payload from router-only compress response
+                value:
+                  payload:
+                    api_contract_version: "1.0.0"
+                    schema_version: token_compression_stub_v1
+                    shard_id: zone_c_hangul
+                    domain: hangul
+                    router_only: true
+                    original_text: "bible test hangul 테스트"
+                    compression_metrics: null
+                    integrity_flags:
+                      metrics_mode: none
+              from_decision_fallback_mode:
+                summary: Expand payload from decision-based hydrated response
+                value:
+                  payload:
+                    api_contract_version: "1.0.0"
+                    schema_version: token_compression_stub_v1
+                    shard_id: zone_d_ssot
+                    domain: ssot
+                    router_only: true
+                    original_text: "compression hydration test 텍스트"
+                    compression_metrics:
+                      bytes_in: 40
+                      bytes_out: 19
+                      token_in: 5
+                      token_out: 2
+                      savings_ratio: 0.5316
+                    integrity_flags:
+                      hydration_metrics_source: decision_selected_candidate
+                      metrics_mode: decision_fallback
+              from_live_mode:
+                summary: Expand payload from live-eval hydrated response
+                value:
+                  payload:
+                    api_contract_version: "1.0.0"
+                    schema_version: token_compression_stub_v1
+                    shard_id: zone_c_hangul
+                    domain: hangul
+                    router_only: true
+                    original_text: "live eval hydration path 성능 테스트"
+                    compression_metrics:
+                      bytes_in: 45
+                      bytes_out: 21
+                      token_in: 7
+                      token_out: 3
+                      savings_ratio: 0.57
+                    integrity_flags:
+                      hydration_metrics_source: live_evaluate_report
+                      hydration_live_eval_elapsed_ms: 42.7
+                      metrics_mode: live
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExpandResponse"
+              examples:
+                from_none_mode:
+                  summary: Expanded text from none mode payload
+                  value:
+                    text: "bible test hangul 테스트"
+                    api_contract_version: "1.0.0"
+                    integrity_flags:
+                      stub_expand: true
+                      lossless_echo: true
+                from_decision_fallback_mode:
+                  summary: Expanded text from decision fallback payload
+                  value:
+                    text: "compression hydration test 텍스트"
+                    api_contract_version: "1.0.0"
+                    integrity_flags:
+                      stub_expand: true
+                      lossless_echo: true
+                from_live_mode:
+                  summary: Expanded text from live mode payload
+                  value:
+                    text: "live eval hydration path 성능 테스트"
+                    api_contract_version: "1.0.0"
+                    integrity_flags:
+                      stub_expand: true
+                      lossless_echo: true
+  /health:
+    get:
+      operationId: health
+      summary: Liveness
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+components:
+  schemas:
+    EvalContext:
+      type: object
+      description: |
+        Optional correlation with offline multilens inputs (FACT-LOCK §6.1).
+        Stub echoes this object; when hydrate_metrics=true it may attach estimated metrics from decision artifact.
+      properties:
+        eval_input_relative_path:
+          type: string
+          description: |
+            Repo-relative path, e.g. docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json
+        runner_hint:
+          type: string
+          description: Correlates with bench runners, e.g. active_default, full_bench, decision_lock
+        notes:
+          type: string
+        hydrate_metrics:
+          type: boolean
+          description: |
+            If true, server tries to hydrate compression_metrics from
+            MULTILENS_ULTRA_COMPRESSION_DECISION_V1 selected_candidate saving ratio.
+        hydrate_live_eval:
+          type: boolean
+          description: |
+            If true with hydrate_metrics=true, server tries live evaluate_report first,
+            then falls back to decision-based estimate on failure.
+    CompressionMetrics:
+      type: object
+      description: |
+        Populated when compressor/eval runs; in stub may be estimated from decision artifact when hydrate_metrics=true.
+      nullable: true
+      properties:
+        bytes_in:
+          type: integer
+          minimum: 0
+        bytes_out:
+          type: integer
+          minimum: 0
+        token_in:
+          type: integer
+          minimum: 0
+          description: Token proxy count on input text (same tokenizer heuristic as evaluation script).
+        token_out:
+          type: integer
+          minimum: 0
+          description: Token proxy count on compressed text/effective output.
+        savings_ratio:
+          type: number
+          description: Unit agreed with report_multilens_performance_eval (e.g. 0..1 or percent); document in implementation.
+    HydrationHints:
+      type: object
+      description: Reserved for symbol/atom join (Master Codebook V1 keys); not applied in stub.
+      properties:
+        atom_ids:
+          type: array
+          items:
+            type: string
+          description: Stable atom_id from master atoms / codebook export when client pre-resolved symbols.
+    CompressRequest:
+      type: object
+      required: [text]
+      properties:
+        text:
+          type: string
+        locale:
+          type: string
+          description: Optional BCP-47 hint (stub may ignore)
+        client_request_id:
+          type: string
+          description: Idempotency / tracing; echoed in response when present
+        eval_context:
+          $ref: "#/components/schemas/EvalContext"
+        hydration_hints:
+          $ref: "#/components/schemas/HydrationHints"
+    CompressResponse:
+      type: object
+      required:
+        - api_contract_version
+        - schema_version
+        - shard_id
+        - domain
+        - integrity_flags
+      properties:
+        api_contract_version:
+          type: string
+          description: Semver for this OpenAPI HTTP shape; bump when required response keys change
+          example: "1.0.0"
+        schema_version:
+          type: string
+          example: token_compression_stub_v1
+        shard_id:
+          type: string
+        domain:
+          type: string
+        router_only:
+          type: boolean
+          description: True when full compressor was not invoked
+        original_text:
+          type: string
+        client_request_id:
+          type: string
+          description: Present if sent on request
+        eval_context_echo:
+          $ref: "#/components/schemas/EvalContext"
+        compression_metrics:
+          $ref: "#/components/schemas/CompressionMetrics"
+        integrity_flags:
+          type: object
+          additionalProperties: true
+          description: Runtime hydration and routing diagnostics.
+          example:
+            hangul_principle: true
+            hard_keep_count: 3
+            soft_keep_count: 5
+            metrics_mode: live
+            hydration_metrics_source: live_evaluate_report
+            hydration_live_eval_elapsed_ms: 42.7
+    ExpandRequest:
+      type: object
+      required: [payload]
+      properties:
+        payload:
+          type: object
+          description: Prior CompressResponse or compatible map (must include original_text for stub)
+    ExpandResponse:
+      type: object
+      required: [text, integrity_flags]
+      properties:
+        text:
+          type: string
+        api_contract_version:
+          type: string
+          example: "1.0.0"
+        integrity_flags:
+          type: object
+          additionalProperties: true

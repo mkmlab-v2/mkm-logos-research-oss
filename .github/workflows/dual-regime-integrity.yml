@@ -21,6 +21,8 @@ on:
       - "tests/snapshots/**"
       - "backtest_results/sweep_kmin_refine/**"
       - "data/myeongni/**"
+      - "docs/final/openapi_token_compression_stub_v1.yaml"
+      - "scripts/compression_token_api_stub.py"
       - "docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json"
       - "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json"
       - "docs/final/artifacts/SASANG_CROSS_REF_DRAFT.json"
@@ -36,6 +38,28 @@ on:
       - "scripts/run_ultra_compression_default.py"
       - "scripts/check_btrack_regression.py"
       - "scripts/lock_btrack_verified_baseline.py"
+      - "scripts/build_btrack_dss_enriched_from_docs.py"
+      - "scripts/build_btrack_symbol_promotion_lanes.py"
+      - "scripts/evaluate_btrack_symbol_lane_gate.py"
+      - "scripts/run_btrack_symbol_lane_gate.py"
+      - "scripts/run_btrack_symbol_lane_gate_and_lock.py"
+      - "scripts/lock_btrack_symbol_lane_baseline.py"
+      - "scripts/check_btrack_symbol_lane_regression.py"
+      - "scripts/report_btrack_symbol_source_split.py"
+      - "scripts/extract_btrack_symbol_candidates.py"
+      - "scripts/curate_btrack_symbol_candidates.py"
+      - "scripts/join_symbol_vector_4d.py"
+      - "scripts/report_symbol_gematria_alignment.py"
+      - "scripts/report_gematria_4d_uplift_ab.py"
+      - "scripts/check_gematria_4d_gate.py"
+      - "scripts/run_gematria_4d_gate.py"
+      - "scripts/run_deut32_cee_pilot.py"
+      - "scripts/run_deut32_cee_stability_sweep.py"
+      - "scripts/run_btrack_fusion_gate.py"
+      - "scripts/build_symbol_vectors_from_verse_distilled.py"
+      - "scripts/report_symbol_gematria_alignment.py"
+      - "scripts/report_symbol_allowlist_ab_bench.py"
+      - "scripts/run_symbol_two_phase_mode.py"
       - "scripts/build_v3_input_from_question_logs.py"
       - "scripts/report_v3_pipeline_performance.py"
       - "scripts/run_v3_measured_pipeline.py"
@@ -51,20 +75,77 @@ on:
       - "tests/test_multilens_performance_eval_report.py"
       - "tests/test_multilens_performance_eval_report_v2.py"
       - "tests/test_ultra_compression_artifacts.py"
+      - "tests/test_run_deut32_cee_pilot.py"
+      - "tests/test_run_deut32_cee_stability_sweep.py"
+      - "tests/test_run_btrack_fusion_gate.py"
       - "tests/test_cross_ref_dss_schema.py"
       - "tests/test_entry16_source_hunt_log.py"
       - "tests/test_entry16_source_hunt_summary.py"
       - "tests/test_entry16_promotion_gate.py"
       - "tests/test_waiting_queue_monthly_check_log.py"
+      - "tests/test_fact_lock_lexicon_gate.py"
+      - "tests/test_master_atoms_corpus_split.py"
+      - "tests/test_morphhb_wlc_index.py"
+      - "tests/test_step_tbesh_audit.py"
+      - "tests/test_lexicon_coverage_v2_report.py"
+      - "tests/test_morphhb_match_by_corpus_report.py"
+      - "tests/test_canon_unmatched_morphhb_top100_audit.py"
+      - "tests/test_resolve_morphhb_multi_deterministic.py"
+      - "tests/test_export_master_codebook_v1.py"
+      - "tests/test_compression_token_api_stub.py"
+      - "tests/fixtures/morphhb/**"
+      - "tests/fixtures/external_lexicon/MANIFEST.min.json"
+      - "scripts/build_morphhb_form_to_lemma_index.py"
+      - "scripts/map_master_atoms_morphhb_seed.py"
+      - "scripts/report_master_atoms_corpus_split.py"
+      - "scripts/audit_atoms_step_lexicon.py"
+      - "scripts/report_lexicon_coverage_v2.py"
+      - "scripts/report_morphhb_match_by_corpus.py"
+      - "scripts/audit_canon_unmatched_morphhb_top100.py"
+      - "scripts/resolve_morphhb_multi_deterministic.py"
+      - "scripts/export_master_codebook_v1.py"
+      - "tests/test_btrack_symbol_lane_regression.py"
       - "tests/test_v3_operational_measured_pipeline.py"
       - "tests/test_btrack_phase3_snapshot_sync.py"
       - "tests/test_sasang_cross_ref_draft.py"
       - "tests/test_myeongni_insight_observation_log.py"
+      - "tests/test_w3_resonance_compute.py"
+      - "tests/test_w3_notice_integrity.py"
+      - "tests/test_w3_aux_adapter_contract.py"
+      - "tests/test_w3_batch_aux_consistency.py"
+      - "tests/test_w4_promotion_decision_aux_section.py"
+      - "tests/test_w4_promotion_doc_audit.py"
       - "docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json"
       - "docs/final/MYEONGRI_INSIGHT_SSOT.md"
       # Docs-only PRs (battleboard, manifests) also trigger Fact-Lock
       - "docs/**"
   workflow_dispatch:
+    inputs:
+      symbol_gate_threshold:
+        description: "Two-phase symbol gate threshold (resonance_rate_random)"
+        required: false
+        default: "0.85"
+        type: string
+      fusion_max_cee_risk_band:
+        description: "Fusion gate max allowed CEE risk band"
+        required: false
+        default: "critical_thin"
+        type: choice
+        options:
+          - stable
+          - medium
+          - high_thin
+          - critical_thin
+      fusion_enforce_thin_streak:
+        description: "Enforce thin-margin streak as hard fail"
+        required: false
+        default: false
+        type: boolean
+      token_api_live_ratio_blocking:
+        description: "Enable blocking gate for token API live_ratio"
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   dual-regime-integrity:
@@ -79,7 +160,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install pytest and jsonschema
-        run: python -m pip install --upgrade pip pytest jsonschema
+        run: python -m pip install --upgrade pip pytest jsonschema fastapi httpx pyyaml
 
       - name: Integrity guard (golden lock k=6866, 1574 intersection, 149 probes)
         run: python scripts/integrity_guard.py
@@ -108,6 +189,72 @@ jobs:
       - name: Waiting-queue monthly check log contract
         run: python -m pytest tests/test_waiting_queue_monthly_check_log.py -q --tb=short
 
+      - name: FACT-LOCK lexicon manifest fixture + seed summary shape (when present)
+        run: python -m pytest tests/test_fact_lock_lexicon_gate.py -q --tb=short
+
+      - name: Lexicon rails (corpus split, morphhb WLC index, TBESH audit, coverage v2)
+        run: |
+          python -m pytest \
+            tests/test_master_atoms_corpus_split.py \
+            tests/test_morphhb_wlc_index.py \
+            tests/test_step_tbesh_audit.py \
+            tests/test_lexicon_coverage_v2_report.py \
+            tests/test_morphhb_match_by_corpus_report.py \
+            tests/test_canon_unmatched_morphhb_top100_audit.py \
+            tests/test_resolve_morphhb_multi_deterministic.py \
+            tests/test_export_master_codebook_v1.py \
+            -q --tb=short
+
+      - name: Token API stub contract (core)
+        run: python -m pytest tests/test_compression_token_api_stub.py -q --tb=short -k "not openapi_"
+
+      - name: Token API OpenAPI parity (golden examples)
+        run: python -m pytest tests/test_compression_token_api_stub.py -q --tb=short -k "openapi_compress_examples_parity or openapi_expand_examples_parity"
+
+      - name: Token API hydration mix snapshot
+        run: python scripts/report_token_api_hydration_mix.py
+
+      - name: Token API hydration trend snapshot
+        run: python scripts/report_token_api_hydration_trend.py
+
+      - name: Ultra compression KPI summary snapshot
+        run: python scripts/report_ultra_compression_kpi_summary.py
+
+      - name: Ultra compression KPI summary contract
+        run: python -m pytest tests/test_ultra_compression_kpi_summary.py -q --tb=short
+
+      - name: Token API hydration trend contract
+        run: python -m pytest tests/test_token_api_hydration_trend.py -q --tb=short
+
+      - name: Token API live_ratio gate (warning)
+        run: python scripts/check_token_api_live_ratio_gate.py --mode warning --target-live-ratio 0.70 --arming-floor-ratio 0.60 --arming-success-rate 0.80 --arming-window-rows 10
+
+      - name: Token API live_ratio gate (conditional blocking)
+        if: ${{ vars.TOKEN_API_LIVE_RATIO_BLOCKING == 'true' || github.event.inputs.token_api_live_ratio_blocking == 'true' }}
+        run: python scripts/check_token_api_live_ratio_gate.py --mode block --target-live-ratio 0.70 --arming-floor-ratio 0.60 --arming-success-rate 0.80 --arming-window-rows 10
+
+      - name: Upload Token API parity debug bundle (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: token-api-parity-debug
+          path: |
+            docs/final/openapi_token_compression_stub_v1.yaml
+            tests/test_compression_token_api_stub.py
+            scripts/compression_token_api_stub.py
+            docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json
+            docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json
+            reports/constitution/btrack_pilot/token_api_parity_debug_latest.json
+            reports/constitution/btrack_pilot/token_api_hydration_mix_latest.json
+            reports/constitution/btrack_pilot/token_api_hydration_mix_log.jsonl
+            reports/constitution/btrack_pilot/token_api_hydration_trend_latest.json
+            reports/constitution/btrack_pilot/token_api_live_ratio_gate_latest.json
+            reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json
+          if-no-files-found: ignore
+
+      - name: B-Track symbol lane regression artifact contract
+        run: python -m pytest tests/test_btrack_symbol_lane_regression.py -q --tb=short
+
       - name: V3 operational measured pipeline contract
         run: python -m pytest tests/test_v3_operational_measured_pipeline.py -q --tb=short
 
@@ -119,6 +266,17 @@ jobs:
 
       - name: Myeongni insight observation JSONL + fusion interface stub (§3.3)
         run: python -m pytest tests/test_myeongni_insight_observation_log.py -q --tb=short
+
+      - name: W3/W4 aux non-gating consistency and document audit
+        run: |
+          python -m pytest \
+            tests/test_w3_resonance_compute.py \
+            tests/test_w3_notice_integrity.py \
+            tests/test_w3_aux_adapter_contract.py \
+            tests/test_w3_batch_aux_consistency.py \
+            tests/test_w4_promotion_decision_aux_section.py \
+            tests/test_w4_promotion_doc_audit.py \
+            -q --tb=short
 
       - name: Myeongni 16-state transition report contract
         run: python -m pytest tests/test_myeongni_16_state_transition_report.py -q --tb=short
@@ -144,12 +302,55 @@ jobs:
       - name: B-Track verified baseline regression check
         run: python scripts/check_btrack_regression.py
 
+      - name: B-Track symbol lane gate check
+        run: python scripts/run_btrack_symbol_lane_gate.py --include-shared-vault
+
+      - name: B-Track symbol lane regression check
+        run: python scripts/check_btrack_symbol_lane_regression.py
+
+      - name: Resolve fusion gate policy
+        run: |
+          MAX_BAND="${{ vars.FUSION_MAX_CEE_RISK_BAND || github.event.inputs.fusion_max_cee_risk_band || 'critical_thin' }}"
+          ENFORCE_STREAK="${{ vars.FUSION_ENFORCE_THIN_STREAK || github.event.inputs.fusion_enforce_thin_streak || 'false' }}"
+          echo "FUSION_MAX_CEE_RISK_BAND_EFFECTIVE=${MAX_BAND}" >> "$GITHUB_ENV"
+          echo "FUSION_ENFORCE_THIN_STREAK_EFFECTIVE=${ENFORCE_STREAK}" >> "$GITHUB_ENV"
+          echo "Fusion policy: max_band=${MAX_BAND}, enforce_thin_streak=${ENFORCE_STREAK}"
+
+      - name: B-Track fusion gate (Gematria-4D + CEE)
+        run: |
+          EXTRA_ARGS=""
+          if [ "${{ env.FUSION_ENFORCE_THIN_STREAK_EFFECTIVE }}" = "true" ]; then
+            EXTRA_ARGS="--enforce-thin-margin-streak"
+          fi
+          python scripts/run_btrack_fusion_gate.py \
+            --max-cee-risk-band "${{ env.FUSION_MAX_CEE_RISK_BAND_EFFECTIVE }}" \
+            ${EXTRA_ARGS}
+
+      - name: Resolve symbol gate threshold
+        run: |
+          THRESH="${{ vars.SYMBOL_GATE_THRESHOLD || github.event.inputs.symbol_gate_threshold || '0.85' }}"
+          echo "SYMBOL_GATE_THRESHOLD_EFFECTIVE=${THRESH}" >> "$GITHUB_ENV"
+          echo "Using symbol gate threshold: ${THRESH}"
+
+      - name: Symbol two-phase mode gate (strict)
+        run: python scripts/run_symbol_two_phase_mode.py --strict-exit --gate-threshold "${{ env.SYMBOL_GATE_THRESHOLD_EFFECTIVE }}"
+
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: regime-integrity-report
           path: backtest_results/REGIME_INTEGRITY_REPORT.json
+          if-no-files-found: ignore
+
+      - name: Upload Fusion Gate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fusion-gate-artifacts
+          path: |
+            reports/constitution/btrack_pilot/btrack_fusion_gate_latest.json
+            reports/constitution/btrack_pilot/fusion_gate_risk_log.jsonl
           if-no-files-found: ignore
 
       # Passive: on failure, preserve full backtest_results for autopsy (logs, dumps, JSON).

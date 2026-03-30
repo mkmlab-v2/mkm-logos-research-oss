@@ -1,0 +1,23 @@
+{
+  "schema": "btrack_symbol_lanes_v1",
+  "generated_at_utc": "2026-03-30T19:01:19Z",
+  "input_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_latest.jsonl",
+  "lanes": {
+    "dss_priority": {
+      "count": 10,
+      "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_dss_priority_latest.jsonl"
+    },
+    "mixed": {
+      "count": 7,
+      "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_mixed_latest.jsonl"
+    },
+    "apocrypha_priority": {
+      "count": 10,
+      "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_apocrypha_priority_latest.jsonl"
+    }
+  },
+  "policy": {
+    "dss_priority_rule": "dss_only OR (mixed AND dss_count>=dss_min_count)",
+    "dss_min_count": 1
+  }
+}

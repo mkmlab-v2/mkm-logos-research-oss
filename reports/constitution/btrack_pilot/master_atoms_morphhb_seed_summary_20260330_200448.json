@@ -1,0 +1,24 @@
+{
+  "rail_id": "rail_morphhb",
+  "generated_at_utc": "2026-03-30T20:04:48.236523+00:00",
+  "inputs": {
+    "atoms": "C:\\workspace\\reports\\constitution\\btrack_pilot\\original_language_master_atoms_latest.jsonl",
+    "morphhb_index": "C:\\workspace\\reports\\constitution\\btrack_pilot\\morphhb_norm_to_lemma_index_latest.json"
+  },
+  "atoms_total": 41769,
+  "hebrew_atoms": 22913,
+  "matched_hebrew": 13032,
+  "unmatched_hebrew": 9881,
+  "ambiguous_hebrew": 1925,
+  "no_strong_hint_hebrew": 16,
+  "skipped_non_hebrew": 18856,
+  "coverage": {
+    "hebrew": {
+      "matched_any_wlc_row": 13032,
+      "unmatched": 9881,
+      "ambiguous_morphhb": 1925,
+      "matched_no_strong_digit_in_lemma": 16,
+      "fraction_of_hebrew_atoms": 0.56876
+    }
+  }
+}

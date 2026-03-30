@@ -1,0 +1,31 @@
+{
+  "shard_id": "zone_h_legacy",
+  "domain": "legacy",
+  "routing_keywords": [
+    "legacy",
+    "v1",
+    "v2",
+    "backward",
+    "compat",
+    "migration",
+    "old",
+    "archive"
+  ],
+  "must_keep_hard_terms": [
+    "legacy",
+    "migration",
+    "compat"
+  ],
+  "must_keep_soft_terms": [
+    "archive",
+    "v1",
+    "v2"
+  ],
+  "guard_tokens": [
+    "must",
+    "cannot",
+    "keep",
+    "safe"
+  ],
+  "hangul_principle": false
+}

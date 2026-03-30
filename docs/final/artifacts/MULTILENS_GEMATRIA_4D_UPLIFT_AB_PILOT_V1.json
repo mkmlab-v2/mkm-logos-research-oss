@@ -1,0 +1,58 @@
+{
+  "schema": "multilens_gematria_4d_uplift_ab_v1",
+  "ts_utc": "2026-03-30T17:28:06.019932+00:00",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_GEMATRIA_PILOT_V1.json",
+  "profile": {
+    "strategy": "A",
+    "intensity": "extreme"
+  },
+  "ab_config": {
+    "off": {
+      "include_gematria_metadata": false,
+      "include_gematria_4d_bridge": false
+    },
+    "on": {
+      "include_gematria_metadata": true,
+      "include_gematria_4d_bridge": true,
+      "include_cee_core": true
+    },
+    "on_policy": {
+      "apply_gematria_4d_bridge_policy": true
+    }
+  },
+  "metrics_off": {
+    "global_token_saving_rate": 0.7560975609756098,
+    "avg_reconstruction_fidelity_jaccard": 0.5185185185185185,
+    "avg_sensitive_integrity": 1.0
+  },
+  "metrics_on": {
+    "global_token_saving_rate": 0.5853658536585367,
+    "avg_reconstruction_fidelity_jaccard": 0.8796296296296297,
+    "avg_sensitive_integrity": 1.0
+  },
+  "deltas_on_minus_off": {
+    "global_token_saving_rate": -0.1707317073170731,
+    "avg_reconstruction_fidelity_jaccard": 0.36111111111111116,
+    "avg_sensitive_integrity": 0.0
+  },
+  "quality_gate_off": {
+    "compression_ok": true,
+    "fusion_ok": true,
+    "ultra_saving_50_ok": true,
+    "jaccard_drop_pp": 12.134001347516799,
+    "jaccard_guardrail_ok": false,
+    "sensitive_integrity_ok": true,
+    "note": "Heuristic B-track gate; not an A-track trading performance metric."
+  },
+  "quality_gate_on": {
+    "compression_ok": true,
+    "fusion_ok": true,
+    "ultra_saving_50_ok": true,
+    "jaccard_drop_pp": 0.0,
+    "jaccard_guardrail_ok": true,
+    "sensitive_integrity_ok": true,
+    "note": "Heuristic B-track gate; not an A-track trading performance metric."
+  },
+  "uplift_claim_supported": true,
+  "note": "Current bridge is metadata-layer; non-zero uplift requires separate algorithmic integration proof."
+}

@@ -36,7 +36,12 @@ class DomainSpecificRouter:
             keys = {str(k).lower() for k in shard.get("routing_keywords", [])}
             score = sum(1 for k in keys if k in words)
             scored.append((score, shard))
-        _, best = max(scored, key=lambda x: x[0]) if scored else (0, self._default_shard())
+        if not scored:
+            best = self._default_shard()
+        else:
+            best_score, best = max(scored, key=lambda x: x[0])
+            if best_score <= 0:
+                best = self._preferred_default_shard()
         return ShardRoute(
             shard_id=str(best.get("shard_id", "zone_d_ssot")),
             domain=str(best.get("domain", "ssot")),
@@ -59,6 +64,12 @@ class DomainSpecificRouter:
             except Exception:
                 continue
         return out or [self._default_shard()]
+
+    def _preferred_default_shard(self) -> dict:
+        for s in self._shards:
+            if str(s.get("shard_id", "")).lower() == "zone_d_ssot":
+                return s
+        return self._default_shard()
 
     @staticmethod
     def _default_shard() -> dict:

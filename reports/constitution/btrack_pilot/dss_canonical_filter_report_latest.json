@@ -1,0 +1,6 @@
+{
+  "schema": "dss_canonical_filter_report_v1",
+  "input_rows": 64,
+  "kept_rows": 33,
+  "output_path": "C:\\workspace\\data\\logos\\manuscripts\\dss_parsed_enriched_canonical_only.jsonl"
+}

@@ -1,0 +1,131 @@
+{
+  "schema": "w2_dual_lane_template_v1",
+  "generated_at_utc": "2026-03-31T00:00:00Z",
+  "status": "draft_template",
+  "track": "B-track",
+  "inherits_from": "docs/final/artifacts/W1_INPUT_CONTRACT_FREEZE.json",
+  "ssot_refs": {
+    "constitution_inference": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+    "myeongri_insight": "docs/final/MYEONGRI_INSIGHT_SSOT.md",
+    "w1_freeze_contract": "docs/final/artifacts/W1_INPUT_CONTRACT_FREEZE.json",
+    "w1_freeze_checklist": "docs/final/artifacts/W1_FREEZE_CHECKLIST.json"
+  },
+  "global_rules": {
+    "hypothesis_marker_required": "[HYPO]",
+    "rationale_required": true,
+    "btrack_only": true,
+    "core_overwrite_forbidden": true,
+    "promotion_required_for_atrack": true
+  },
+  "lanes": {
+    "macro_lane": {
+      "description": "Pure alignment lane for myeongri cycle and Logos symbols without geopolitics in calculation.",
+      "required_fields": [
+        "state_id",
+        "myeongri_cycle",
+        "logos_symbol_ref",
+        "resonance_score",
+        "rationale"
+      ],
+      "optional_fields": [
+        "run_id",
+        "confidence",
+        "canonical_ref"
+      ],
+      "field_contract": {
+        "state_id": {
+          "type": "integer",
+          "constraints": "1..16"
+        },
+        "myeongri_cycle": {
+          "type": "string",
+          "constraints": "non-empty cycle key"
+        },
+        "logos_symbol_ref": {
+          "type": "string",
+          "constraints": "non-empty symbol reference"
+        },
+        "resonance_score": {
+          "type": "number_or_null",
+          "constraints": "normalized 0..1 when present"
+        },
+        "rationale": {
+          "type": "string",
+          "constraints": "must include [HYPO]"
+        }
+      },
+      "geo_event_ref": {
+        "mode": "optional_reserved",
+        "default": null,
+        "calculation_participation": false,
+        "note": "Reserved only; not used in W2/W3 scoring."
+      }
+    },
+    "personal_lane": {
+      "description": "Personal scenario lane with strict non-medical and non-deterministic notices.",
+      "required_fields": [
+        "sasang_type",
+        "personal_run_id",
+        "energy_match_idx",
+        "scenario_desc",
+        "rationale",
+        "non_medical_notice",
+        "non_deterministic_notice"
+      ],
+      "optional_fields": [
+        "state_candidate_id",
+        "confidence",
+        "canonical_ref"
+      ],
+      "field_contract": {
+        "sasang_type": {
+          "type": "string",
+          "constraints": "W1 enum_v1 or promoted v2 enum only"
+        },
+        "personal_run_id": {
+          "type": "string",
+          "constraints": "non-empty id"
+        },
+        "energy_match_idx": {
+          "type": "number_or_null",
+          "constraints": "normalized 0..1 when present"
+        },
+        "scenario_desc": {
+          "type": "string",
+          "constraints": "non-empty narrative; no deterministic verdict"
+        },
+        "rationale": {
+          "type": "string",
+          "constraints": "must include [HYPO]"
+        },
+        "non_medical_notice": {
+          "type": "string",
+          "constraints": "must be present and non-empty"
+        },
+        "non_deterministic_notice": {
+          "type": "string",
+          "constraints": "must be present and non-empty"
+        }
+      }
+    }
+  },
+  "guardrails": {
+    "forbidden_outputs": [
+      "clinical diagnosis",
+      "deterministic fate judgment",
+      "A-track final truth wording"
+    ],
+    "required_notices": {
+      "hypothesis": "[HYPO] 본 결과는 가설 기반 분석입니다.",
+      "non_medical": "[NON-MEDICAL] 본 시나리오는 의료 판단을 대체하지 않습니다.",
+      "non_deterministic": "[NON-DETERMINISTIC] 본 결과는 결정론적 예측이 아닙니다."
+    }
+  },
+  "w3_entry_conditions": [
+    "macro_lane required_fields are all defined with constraints",
+    "geo_event_ref stays optional_reserved and excluded from scoring",
+    "personal_lane includes non_medical_notice and non_deterministic_notice as required",
+    "all rationale fields require [HYPO]",
+    "gate readiness note is documented"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "mvp-three-bots-contract",
+  "version": "1.0.0",
+  "bots": {
+    "athena": {
+      "input": ["watchdog_assessment", "brain_sync_assessment"],
+      "output": ["decision", "reason", "requires_human_approval"]
+    },
+    "watchdog": {
+      "input": ["scheduler_ready", "kill_switch_on", "heartbeat_age_min", "status_running"],
+      "output": ["risk_level", "action_hint", "issues"]
+    },
+    "brain_sync": {
+      "input": ["brain_sync_latest_md", "latest_kpi_json"],
+      "output": ["sync_fresh", "note_path", "summary"]
+    }
+  },
+  "decision_enum": [
+    "KEEP_RUNNING",
+    "REQUEST_RESTART",
+    "PAUSE_WITH_KILL_SWITCH"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "multilens_performance_eval_input_v1",
+  "description": "Small pilot set containing Hebrew/Greek tokens for gematria-4D bridge sensitivity check.",
+  "compression_cases": [
+    {
+      "id": "gmp_001",
+      "raw_text": "בראשית Ἀρχή alignment requires strict evidence traceability and manual review boundary.",
+      "compressed_text": "בראשית Ἀρχή alignment strict traceability manual boundary.",
+      "reconstructed_text": "בראשית and Ἀρχή alignment requires strict evidence traceability with manual review boundary."
+    },
+    {
+      "id": "gmp_002",
+      "raw_text": "אלהים λόγος state transition must keep direct witness markers and policy constraints.",
+      "compressed_text": "אלהים λόγος transition keep direct witness and policy constraints.",
+      "reconstructed_text": "אלהים λόγος state transition must preserve direct witness markers and policy constraints."
+    },
+    {
+      "id": "gmp_003",
+      "raw_text": "ἀλήθεια אמת governance note cannot drop trigger words in conservative gate states.",
+      "compressed_text": "ἀλήθεια אמת note cannot drop trigger words in conservative states.",
+      "reconstructed_text": "ἀλήθεια אמת governance note cannot drop trigger words for conservative gate states."
+    },
+    {
+      "id": "gmp_004",
+      "raw_text": "שָׁלוֹם χάρις cadence should preserve boundary and evidence terms for replay.",
+      "compressed_text": "שָׁלוֹם χάρις preserve boundary and evidence for replay.",
+      "reconstructed_text": "שָׁלוֹם χάρις cadence should preserve boundary and evidence terms for replay."
+    },
+    {
+      "id": "gmp_005",
+      "raw_text": "יהוה κύριος policy path needs strict direct evidence and manual gating notes.",
+      "compressed_text": "יהוה κύριος policy needs strict direct evidence and manual gating.",
+      "reconstructed_text": "יהוה κύριος policy path needs strict direct evidence and manual gating notes."
+    },
+    {
+      "id": "gmp_006",
+      "raw_text": "דבר θεός bridge experiment should retain state and boundary anchors under compression.",
+      "compressed_text": "דבר θεός bridge retain state and boundary anchors.",
+      "reconstructed_text": "דבר θεός bridge experiment should retain state and boundary anchors during compression."
+    }
+  ],
+  "fusion_answer_cases": [
+    {
+      "id": "gmp_fus_001",
+      "question": "3축으로 요약해줘",
+      "answer": "명리 state와 bible logos 근거를 사상의학 체질 제약과 함께 요약합니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["요약", "체질"]
+    }
+  ]
+}

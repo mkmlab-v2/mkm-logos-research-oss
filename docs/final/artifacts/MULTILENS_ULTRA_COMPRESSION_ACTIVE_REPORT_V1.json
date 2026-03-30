@@ -16,12 +16,21 @@
     "sensitive_max_saving_rate": 0.5,
     "hangul_max_saving_rate": 0.48,
     "use_hangul_principle": false,
-    "use_domain_router": true
+    "use_domain_router": true,
+    "include_gematria_metadata": true,
+    "include_gematria_4d_bridge": true,
+    "include_cee_core": true,
+    "apply_gematria_4d_bridge_policy": false,
+    "bridge_score_weights": null,
+    "use_contextual_generator_v2": false,
+    "use_contextual_generator_v3": false,
+    "use_contextual_generator_v4": false,
+    "use_contextual_generator_v5_codec": false
   },
   "compression_metrics": {
     "case_count": 40,
-    "global_token_saving_rate": 0.5189873417721519,
-    "avg_reconstruction_fidelity_jaccard": 0.8553059886235198,
+    "global_token_saving_rate": 0.5316455696202531,
+    "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
     "avg_sensitive_integrity": 1.0,
     "cases": [
       {
@@ -37,6 +46,82 @@
         "route": {
           "shard_id": "zone_b_timing",
           "domain": "timing"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_001",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_b_timing",
+              "domain": "timing"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -52,6 +137,82 @@
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_002",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -60,13 +221,89 @@
         "compressed_tokens": 7,
         "token_saving_rate": 0.5882352941176471,
         "compression_ratio": 0.4117647058823529,
-        "reconstruction_fidelity_jaccard": 1.0,
+        "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
         "compressed_text_effective": "track Compression should footprint safety caveats boundary",
-        "reconstructed_text_effective": "Compression should reduce token footprint while preserving safety caveats especially B track boundary notes",
+        "reconstructed_text_effective": "Compression should footprint safety caveats track boundary",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_003",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -82,6 +319,82 @@
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_004",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -97,6 +410,82 @@
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_005",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -105,13 +494,89 @@
         "compressed_tokens": 8,
         "token_saving_rate": 0.5555555555555556,
         "compression_ratio": 0.4444444444444444,
-        "reconstruction_fidelity_jaccard": 1.0,
+        "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
         "compressed_text_effective": "manual must never direct witness evidence Proxy anchors",
-        "reconstructed_text_effective": "Proxy anchors can support manual review but they must never be mislabeled as direct witness evidence",
+        "reconstructed_text_effective": "Proxy anchors manual must never direct witness evidence",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_006",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -127,6 +592,82 @@
         "route": {
           "shard_id": "zone_b_timing",
           "domain": "timing"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_007",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_b_timing",
+              "domain": "timing"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -135,13 +676,89 @@
         "compressed_tokens": 7,
         "token_saving_rate": 0.6111111111111112,
         "compression_ratio": 0.3888888888888889,
-        "reconstruction_fidelity_jaccard": 0.9285714285714286,
+        "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
         "compressed_text_effective": "Myeongri Bible Sasang All tri should timing",
-        "reconstructed_text_effective": "All tri lens answers should include Myeongri timing Bible alignment and Sasang constitution",
+        "reconstructed_text_effective": "All tri should Myeongri timing Bible Sasang",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_008",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -150,13 +767,89 @@
         "compressed_tokens": 8,
         "token_saving_rate": 0.6190476190476191,
         "compression_ratio": 0.38095238095238093,
-        "reconstruction_fidelity_jaccard": 1.0,
+        "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "Fact Lock the and between and CI tests",
-        "reconstructed_text_effective": "Fact Lock tests protect the codebook from drift and keep contracts aligned between docs scripts and CI",
+        "compressed_text_effective": "Fact Lock the and between CI tests protect",
+        "reconstructed_text_effective": "Fact Lock tests protect the and between and CI",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_009",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -165,13 +858,89 @@
         "compressed_tokens": 6,
         "token_saving_rate": 0.5714285714285714,
         "compression_ratio": 0.42857142857142855,
-        "reconstruction_fidelity_jaccard": 1.0,
+        "reconstruction_fidelity_jaccard": 0.46153846153846156,
         "sensitive_integrity": 1.0,
         "compressed_text_effective": "Performance reporting operational from quality false",
-        "reconstructed_text_effective": "Performance reporting should separate operational stability from predictive quality to avoid false confidence",
+        "reconstructed_text_effective": "Performance reporting operational from quality false",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_010",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -185,38 +954,266 @@
         "compressed_text_effective": "소양인에게는 열이 위로 보충과 안정이 운동은 시간에 한다 치밀",
         "reconstructed_text_effective": "소양인에게는 열이 위로 치밀 때 수분 보충과 호흡 안정이 먼저이고 무리한 운동은 저녁 시간에 피해야 한다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_011",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_g_health",
+              "domain": "health"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
         "id": "cmp2_012",
         "raw_tokens": 17,
-        "compressed_tokens": 9,
-        "token_saving_rate": 0.47058823529411764,
-        "compression_ratio": 0.5294117647058824,
-        "reconstruction_fidelity_jaccard": 0.75,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.5294117647058824,
+        "compression_ratio": 0.47058823529411764,
+        "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "소음인의 피로는 겉으로 보여도 속한이 동반되는 경우가 식사와 약해",
-        "reconstructed_text_effective": "소음인의 피로는 겉으로 약해 보여도 속한이 동반되는 경우가 많아서 따뜻한 식사와 규칙",
+        "compressed_text_effective": "소음인의 피로는 보여도 많아서 수면을 지켜야 한다 겉으로",
+        "reconstructed_text_effective": "소음인의 피로는 겉으로 보여도 많아서 수면을 지켜야 한다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_012",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
         "id": "cmp2_013",
         "raw_tokens": 18,
-        "compressed_tokens": 9,
-        "token_saving_rate": 0.5,
-        "compression_ratio": 0.5,
-        "reconstruction_fidelity_jaccard": 0.8823529411764706,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.5555555555555556,
+        "compression_ratio": 0.4444444444444444,
+        "reconstruction_fidelity_jaccard": 0.47058823529411764,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "태음인은 변동이 작아도 부종이 섭취를 걷기를 한다 체중 먼저",
-        "reconstructed_text_effective": "태음인은 체중 변동이 작아도 부종이 먼저 나타날 염분 섭취를 낮추고 아침 걷기를 꾸준히 유지해야 한다",
+        "compressed_text_effective": "태음인은 체중 부종이 있으니 아침 유지해야 한다 변동이",
+        "reconstructed_text_effective": "태음인은 체중 변동이 부종이 있으니 아침 유지해야 한다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_013",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -225,13 +1222,89 @@
         "compressed_tokens": 9,
         "token_saving_rate": 0.47058823529411764,
         "compression_ratio": 0.5294117647058824,
-        "reconstruction_fidelity_jaccard": 0.8125,
+        "reconstruction_fidelity_jaccard": 0.625,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "태양인은 건조감이 심해지는 계절에 시간이 불안이 커지므로 노출을 수면",
-        "reconstructed_text_effective": "태양인은 건조감이 심해지는 계절에 수면 시간이 짧아지면 불안이 커지므로 취침 정보 노출을 줄여야",
+        "compressed_text_effective": "태양인은 건조감이 심해지는 계절에 수면 시간이 불안이 커지므로 짧아지면",
+        "reconstructed_text_effective": "태양인은 건조감이 심해지는 계절에 수면 시간이 짧아지면 불안이 커지므로 취침",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_014",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_g_health",
+              "domain": "health"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -247,6 +1320,82 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_015",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -262,6 +1411,82 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_016",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -277,6 +1502,82 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_017",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -287,26 +1588,178 @@
         "compression_ratio": 0.5294117647058824,
         "reconstruction_fidelity_jaccard": 1.0,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "소양인의 패턴은 카페인과 부족이 증폭되므로 제한과 고정이 필요하다 과열",
+        "compressed_text_effective": "소양인의 패턴은 카페인과 수면 부족이 증폭되므로 제한과 고정이 과열",
         "reconstructed_text_effective": "소양인의 과열 패턴은 카페인과 수면 부족이 겹칠 때 증폭되므로 오후 카페인 제한과 취침 루틴 고정이 필요하다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_018",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_g_health",
+              "domain": "health"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
         "id": "cmp2_019",
         "raw_tokens": 18,
-        "compressed_tokens": 9,
-        "token_saving_rate": 0.5,
-        "compression_ratio": 0.5,
-        "reconstruction_fidelity_jaccard": 0.8235294117647058,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.5555555555555556,
+        "compression_ratio": 0.4444444444444444,
+        "reconstruction_fidelity_jaccard": 0.47058823529411764,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "소음인의 불편은 일정과 음식이 함께 완충과 유지가 핵심이다 위장",
-        "reconstructed_text_effective": "소음인의 위장 불편은 급한 일정과 찬 음식이 함께 올 일정 완충과 온식 유지가 핵심이다",
+        "compressed_text_effective": "소음인의 위장 일정과 올 일정 유지가 핵심이다 불편은",
+        "reconstructed_text_effective": "소음인의 위장 불편은 일정과 올 일정 유지가 핵심이다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_019",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -320,23 +1773,175 @@
         "compressed_text_effective": "태음인의 답답함은 수치보다 정체와 저강도 유산소를 한다 호흡 체중",
         "reconstructed_text_effective": "태음인의 호흡 답답함은 체중 수치보다 순환 정체와 연관될 수 있어서 저강도 유산소를 끊기지 않게 유지해야 한다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_020",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_g_health",
+              "domain": "health"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
         "id": "cmp2_021",
         "raw_tokens": 20,
-        "compressed_tokens": 10,
-        "token_saving_rate": 0.5,
-        "compression_ratio": 0.5,
-        "reconstruction_fidelity_jaccard": 1.0,
+        "compressed_tokens": 9,
+        "token_saving_rate": 0.55,
+        "compression_ratio": 0.45,
+        "reconstruction_fidelity_jaccard": 0.47368421052631576,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "태양인의 저하는 부족과 노출이 두드러지므로 사이에 휴식을 한다 집중 수분",
-        "reconstructed_text_effective": "태양인의 집중 저하는 수분 부족과 과도한 화면 노출이 동반될 때 두드러지므로 작업 블록 사이에 눈 휴식을 반드시 넣어야 한다",
+        "compressed_text_effective": "태양인의 집중 부족과 동반될 때 블록 반드시 넣어야 한다",
+        "reconstructed_text_effective": "태양인의 집중 부족과 동반될 때 블록 반드시 넣어야 한다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_021",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -352,6 +1957,82 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_022",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -367,51 +2048,355 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_023",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
         "id": "cmp2_024",
         "raw_tokens": 18,
-        "compressed_tokens": 9,
-        "token_saving_rate": 0.5,
-        "compression_ratio": 0.5,
-        "reconstruction_fidelity_jaccard": 1.0,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.5555555555555556,
+        "compression_ratio": 0.4444444444444444,
+        "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "고유명사와 체질명은 하나로도 해석이 단계에서 검사를 한다 복원 오탈자",
-        "reconstructed_text_effective": "고유명사와 체질명은 오탈자 하나로도 해석이 바뀔 수 있어 복원 단계에서 원문 대조 검사를 반드시 수행해야 한다",
+        "compressed_text_effective": "고유명사와 체질명은 해석이 복원 검사를 수행해야 한다 오탈자",
+        "reconstructed_text_effective": "고유명사와 체질명은 오탈자 해석이 복원 검사를 수행해야 한다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_024",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
         "id": "cmp2_025",
         "raw_tokens": 18,
-        "compressed_tokens": 9,
-        "token_saving_rate": 0.5,
-        "compression_ratio": 0.5,
-        "reconstruction_fidelity_jaccard": 0.875,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.5555555555555556,
+        "compression_ratio": 0.4444444444444444,
+        "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "도메인에서는 절약률보다 안정성을 정책을 한다 민감 복원 임계치 토큰",
-        "reconstructed_text_effective": "민감 도메인에서는 토큰 절약률보다 복원 안정성을 우선해야 하며 임계치 위반 롤백 정책을 적용해야 한다",
+        "compressed_text_effective": "민감 도메인에서는 복원 임계치 롤백 적용해야 한다 토큰",
+        "reconstructed_text_effective": "민감 도메인에서는 토큰 복원 임계치 롤백 적용해야 한다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_025",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
         "id": "cmp2_026",
         "raw_tokens": 18,
-        "compressed_tokens": 9,
-        "token_saving_rate": 0.5,
-        "compression_ratio": 0.5,
-        "reconstruction_fidelity_jaccard": 1.0,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.5555555555555556,
+        "compression_ratio": 0.4444444444444444,
+        "reconstruction_fidelity_jaccard": 0.47058823529411764,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "사전이 결과가 일시적으로 보여도 실패가 있다 체질별 금칙 변환",
-        "reconstructed_text_effective": "체질별 금칙 변환 사전이 비어 있으면 압축 결과가 일시적으로 좋아 보여도 실제 복원 실패가 누적될 수 있다",
+        "compressed_text_effective": "체질별 금칙 비어 일시적으로 복원 수 있다 변환",
+        "reconstructed_text_effective": "체질별 금칙 변환 비어 일시적으로 복원 수 있다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_026",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -427,6 +2412,82 @@
         "route": {
           "shard_id": "zone_c_hangul",
           "domain": "hangul"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_027",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -442,21 +2503,173 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_028",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
         "id": "cmp2_029",
         "raw_tokens": 15,
-        "compressed_tokens": 8,
-        "token_saving_rate": 0.4666666666666667,
-        "compression_ratio": 0.5333333333333333,
-        "reconstruction_fidelity_jaccard": 1.0,
+        "compressed_tokens": 7,
+        "token_saving_rate": 0.5333333333333333,
+        "compression_ratio": 0.4666666666666667,
+        "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "명리와 사상의학을 함께 때는 신호와 제약을 감사가 해석할",
-        "reconstructed_text_effective": "명리와 사상의학을 함께 해석할 때는 시간축 신호와 체질축 제약을 분리 기록해야 추후 감사가 가능해진다",
+        "compressed_text_effective": "명리와 사상의학을 때는 체질축 제약을 감사가 가능해진다",
+        "reconstructed_text_effective": "명리와 사상의학을 때는 체질축 제약을 감사가 가능해진다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_029",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -472,6 +2685,82 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_030",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -487,6 +2776,82 @@
         "route": {
           "shard_id": "zone_c_hangul",
           "domain": "hangul"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_031",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -502,6 +2867,82 @@
         "route": {
           "shard_id": "zone_c_hangul",
           "domain": "hangul"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_032",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -517,6 +2958,82 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_033",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -532,6 +3049,82 @@
         "route": {
           "shard_id": "zone_c_hangul",
           "domain": "hangul"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_034",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -547,6 +3140,82 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_035",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -562,6 +3231,82 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_036",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -577,6 +3322,82 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_037",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -592,21 +3413,173 @@
         "route": {
           "shard_id": "zone_c_hangul",
           "domain": "hangul"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_038",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
         "id": "cmp2_039",
         "raw_tokens": 20,
-        "compressed_tokens": 10,
-        "token_saving_rate": 0.5,
-        "compression_ratio": 0.5,
-        "reconstruction_fidelity_jaccard": 1.0,
+        "compressed_tokens": 9,
+        "token_saving_rate": 0.55,
+        "compression_ratio": 0.45,
+        "reconstruction_fidelity_jaccard": 0.47368421052631576,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "로그에는 목록을 없이도 지점을 찾을 있다 복원 파이프라인 원문 감사",
-        "reconstructed_text_effective": "복원 파이프라인 감사 로그에는 원문 대비 누락 토큰 목록을 남겨야 재학습 없이도 규칙 수정 지점을 빠르게 찾을 수 있다",
+        "compressed_text_effective": "복원 파이프라인 원문 목록을 남겨야 규칙 찾을 수 있다",
+        "reconstructed_text_effective": "복원 파이프라인 원문 목록을 남겨야 규칙 찾을 수 있다",
         "route": {
-          "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_039",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_d_ssot",
+              "domain": "ssot"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       },
       {
@@ -622,6 +3595,82 @@
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm"
+        },
+        "gematria_metadata": {
+          "raw_combined_sum": 0,
+          "compressed_combined_sum": 0,
+          "reconstructed_combined_sum": 0,
+          "raw_hebrew_sum": 0,
+          "raw_greek_sum": 0,
+          "compressed_hebrew_sum": 0,
+          "compressed_greek_sum": 0,
+          "reconstructed_hebrew_sum": 0,
+          "reconstructed_greek_sum": 0,
+          "raw_hebrew_chars": 0,
+          "raw_greek_chars": 0,
+          "compressed_hebrew_chars": 0,
+          "compressed_greek_chars": 0,
+          "reconstructed_hebrew_chars": 0,
+          "reconstructed_greek_chars": 0
+        },
+        "gematria_4d_bridge": {
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "state16": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+        },
+        "gematria_4d_bridge_policy_applied": false,
+        "cee_core": {
+          "schema": "cee_logic_core_v1",
+          "case_id": "cmp2_040",
+          "corpus_type": "canonical",
+          "gematria_metadata": {
+            "raw_combined_sum": 0,
+            "compressed_combined_sum": 0,
+            "reconstructed_combined_sum": 0,
+            "raw_hebrew_sum": 0,
+            "raw_greek_sum": 0,
+            "compressed_hebrew_sum": 0,
+            "compressed_greek_sum": 0,
+            "reconstructed_hebrew_sum": 0,
+            "reconstructed_greek_sum": 0,
+            "raw_hebrew_chars": 0,
+            "raw_greek_chars": 0,
+            "compressed_hebrew_chars": 0,
+            "compressed_greek_chars": 0,
+            "reconstructed_hebrew_chars": 0,
+            "reconstructed_greek_chars": 0
+          },
+          "vector_4d": {
+            "S": 0.245,
+            "L": 0.245,
+            "K": 0.245,
+            "M": 0.265
+          },
+          "vector_sum": 1.0,
+          "sep_target": 0.25,
+          "lambda_deviation": 0.007500000000000007,
+          "state_id": 3,
+          "distance_to_state16": 0.010000000000000009,
+          "metadata_post_it": {
+            "lane": "A-track",
+            "balance_band": "near_sep_0_25",
+            "note": "numeric-bias-reduced (not hallucination-free)"
+          },
+          "metadata": {
+            "route": {
+              "shard_id": "zone_a_scm",
+              "domain": "scm"
+            },
+            "mode": "experimental",
+            "strategy": "A",
+            "intensity": "extreme"
+          }
         }
       }
     ]
@@ -702,6 +3751,23 @@
     "jaccard_guardrail_ok": true,
     "sensitive_integrity_ok": true,
     "note": "Heuristic B-track gate; not an A-track trading performance metric."
+  },
+  "cee_shadow_summary": {
+    "enabled": true,
+    "case_count": 40,
+    "avg_lambda_deviation": 0.007500000000000007,
+    "max_lambda_deviation": 0.007500000000000007,
+    "min_lambda_deviation": 0.007500000000000007,
+    "state16_distribution": {
+      "3": 40
+    },
+    "balance_band_distribution": {
+      "near_sep_0_25": 40
+    },
+    "lane_distribution": {
+      "A-track": 40
+    },
+    "note": "Shadow-mode telemetry only; does not change compression gate decisions."
   },
   "active_profile": {
     "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",

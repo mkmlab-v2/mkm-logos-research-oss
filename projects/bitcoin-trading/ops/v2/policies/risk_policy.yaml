@@ -1,0 +1,6 @@
+risk_policy:
+  heartbeat_stale_minutes: 15
+  max_drawdown_limit: -0.22
+  pause_on_kill_switch: true
+  require_human_approval_for_execute: true
+  auto_kill_switch_on_sentinel_block: true

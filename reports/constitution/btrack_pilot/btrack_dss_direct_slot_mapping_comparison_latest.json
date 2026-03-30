@@ -1,0 +1,31 @@
+{
+  "schema": "btrack_dss_direct_slot_mapping_comparison_v1",
+  "generated_at_utc": "2026-03-30T17:42:15Z",
+  "full_kpi": {
+    "dss_row_count": 64,
+    "slot_count": 16,
+    "mapped_slot_count": 16,
+    "slot_coverage_rate": 1.0,
+    "traceability_rate": 1.0,
+    "mean_confidence_boost": 0.809188,
+    "mean_confidence_boost_base": 0.02625,
+    "target_mean_confidence_boost": 0.8,
+    "target_mean_confidence_boost_ok": true
+  },
+  "canonical_kpi": {
+    "dss_row_count": 33,
+    "slot_count": 16,
+    "mapped_slot_count": 16,
+    "slot_coverage_rate": 1.0,
+    "traceability_rate": 1.0,
+    "mean_confidence_boost": 0.801585,
+    "mean_confidence_boost_base": 0.02625,
+    "target_mean_confidence_boost": 0.8,
+    "target_mean_confidence_boost_ok": true
+  },
+  "delta": {
+    "mean_confidence_boost": -0.007603000000000026,
+    "traceability_rate": 0.0,
+    "slot_coverage_rate": 0.0
+  }
+}

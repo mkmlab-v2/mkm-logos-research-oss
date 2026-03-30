@@ -10,6 +10,14 @@
 - **포함**: 저장소 내 실제 파일 경로, 스모크/단위 테스트에서 참조되는 심볼.
 - **제외**: 다른 브랜치·미커밋 로컬 전용 파일·외부 Vault만 존재하는 산출물 (경로만 “확인 필요”로 표기).
 
+### 1.2 압축·해석 파이프라인 Fact-Lock (혼선 방지 SSOT)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| Compression Interpretation Fact-Lock | `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` | 12AI(파일럿)·코드북 샤드·압축 엔진·다중렌즈 역할 분리, 16상 연동 상태(미완) 고정 |
+| Master codebook lexicon V1 export | `scripts/export_master_codebook_v1.py` | 아톰+Strong+MorphHB 시드 조인 산출; 루브릭은 동 COMPRESSION 문서 §9 |
+| State16 Insertion Contract | `docs/final/STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md` | 16상 인터페이스 삽입 지점/입출력/오류/단계적 게이트 명세 (런타임 강제 아님) |
+
 ### 1.1 엔지니어링 정체성 (Multi-Lens · 단일 방정식 비단정)
 
 **폐기(선언·단정 금지):** 성경·명리·시장·외경·DSS 등을 **물리 만물이론(TOE)급 단일 방정식**으로 이미 합선·구현했다는 서술. 기획서·NotebookLM·수사만으로 **“통일장 완성”**을 코드에 대입하지 않는다.
@@ -26,7 +34,9 @@
 
 | 항목 | 경로 | 비고 |
 |------|------|------|
-| HTTP/진입점 | `projects/bitcoin-trading/src/integration/dual_regime_api.py` | FastAPI 앱, `/dual-regime` 등 |
+| Dual-regime 평가 모듈 | `projects/bitcoin-trading/src/integration/dual_regime_api.py` | `evaluate_dual_regime_and_market_shock` 등 Python API; **이 파일 단독으로는 FastAPI 앱이 아니다** (HTTP 래퍼는 별도 서비스/스크립트에 둔다). |
+| 토큰 압축 API (스텁 v1) | `scripts/compression_token_api_stub.py` | FastAPI: `POST /v1/compress`, `POST /v1/expand`, `GET /health`. 응답에 `api_contract_version`; 선택 `eval_context` 에코·`compression_metrics`는 라우터 전용 시 null. **전체 multilens 압축 엔진 미호출**. |
+| OpenAPI (압축 스텁) | `docs/final/openapi_token_compression_stub_v1.yaml` | HTTP 계약(SSOT); EvalContext·HydrationHints·CompressionMetrics 스키마 포함. 상용 SLA·인증은 범위 외. |
 | 정책 SSOT | `data/regimes/regime_fusion_policy.json` | 워크스페이스 상대 경로로 로드 |
 | 보조 정책 | `data/regimes/dual_regime_policy.json` | 존재 확인됨 |
 | 레짐 맵 | `data/regimes/regime_map.json` | 존재 확인됨 |

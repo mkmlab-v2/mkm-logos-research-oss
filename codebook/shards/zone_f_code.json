@@ -1,0 +1,33 @@
+{
+  "shard_id": "zone_f_code",
+  "domain": "code",
+  "routing_keywords": [
+    "function",
+    "class",
+    "api",
+    "endpoint",
+    "schema",
+    "pytest",
+    "json",
+    "traceback"
+  ],
+  "must_keep_hard_terms": [
+    "api",
+    "endpoint",
+    "schema",
+    "json"
+  ],
+  "must_keep_soft_terms": [
+    "function",
+    "class",
+    "pytest",
+    "traceback"
+  ],
+  "guard_tokens": [
+    "must",
+    "cannot",
+    "error",
+    "fix"
+  ],
+  "hangul_principle": false
+}

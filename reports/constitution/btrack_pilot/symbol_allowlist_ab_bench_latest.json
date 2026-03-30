@@ -1,0 +1,54 @@
+{
+  "schema": "symbol_allowlist_ab_bench_v1",
+  "generated_at_utc": "2026-03-30T17:09:27Z",
+  "variants": {
+    "allowlist_on": {
+      "tag": "allowlist_on",
+      "artifacts": {
+        "symbols_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_summary_allowlist_on.json",
+        "vector_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_vectors_summary_allowlist_on.json",
+        "alignment": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_gematria_alignment_test_allowlist_on.json",
+        "alignment_nonzero": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_gematria_alignment_test_nonzero_allowlist_on.json"
+      },
+      "metrics": {
+        "symbols_after_filter": 813,
+        "top_k": 300,
+        "curated_count": 20,
+        "vector_coverage_rate": 1.0,
+        "resonance_rate_random": 1.0,
+        "avg_cosine_random": 0.92967,
+        "resonance_rate_nonzero": 1.0,
+        "avg_cosine_nonzero": 0.92967
+      }
+    },
+    "allowlist_off": {
+      "tag": "allowlist_off",
+      "artifacts": {
+        "symbols_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_summary_allowlist_off.json",
+        "vector_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_vectors_summary_allowlist_off.json",
+        "alignment": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_gematria_alignment_test_allowlist_off.json",
+        "alignment_nonzero": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_gematria_alignment_test_nonzero_allowlist_off.json"
+      },
+      "metrics": {
+        "symbols_after_filter": 6902,
+        "top_k": 300,
+        "curated_count": 26,
+        "vector_coverage_rate": 0.11,
+        "resonance_rate_random": 0.12,
+        "avg_cosine_random": 0.733809,
+        "resonance_rate_nonzero": 0.65,
+        "avg_cosine_nonzero": 0.837279
+      }
+    }
+  },
+  "comparison": {
+    "delta_symbols_after_filter": -6089.0,
+    "delta_curated_count": -6.0,
+    "delta_vector_coverage_rate": 0.89,
+    "delta_resonance_rate_random": 0.88,
+    "delta_avg_cosine_random": 0.19586099999999995,
+    "delta_resonance_rate_nonzero": 0.35,
+    "delta_avg_cosine_nonzero": 0.092391
+  },
+  "note": "Positive deltas mean allowlist_on performed higher than allowlist_off."
+}

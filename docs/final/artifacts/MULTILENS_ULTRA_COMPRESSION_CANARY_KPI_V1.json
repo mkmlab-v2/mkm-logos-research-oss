@@ -1,0 +1,32 @@
+{
+  "schema": "multilens_ultra_compression_canary_kpi_v1",
+  "ts_utc": "2026-03-30T16:39:00.400054+00:00",
+  "input_artifacts": {
+    "decision": "C:/workspace/docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+    "active": "C:/workspace/docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
+  },
+  "traffic_percent": 10,
+  "observed": {
+    "global_token_saving_rate": 0.5316455696202531,
+    "jaccard_drop_pp": 0.0,
+    "avg_sensitive_integrity": 1.0,
+    "failure_rate_delta_pp": 0.0,
+    "p95_latency_delta_pct": 0.0
+  },
+  "thresholds": {
+    "saving_rate_min": 0.5,
+    "jaccard_drop_pp_max": 1.5,
+    "sensitive_integrity_min": 0.999,
+    "failure_rate_delta_pp_max": 0.3,
+    "p95_latency_delta_pct_max": 15.0
+  },
+  "checks": {
+    "saving_rate_ok": true,
+    "jaccard_drop_ok": true,
+    "sensitive_integrity_ok": true,
+    "failure_rate_ok": true,
+    "p95_latency_ok": true
+  },
+  "rollback": false,
+  "rollback_reasons": []
+}

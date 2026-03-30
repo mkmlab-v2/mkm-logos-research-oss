@@ -1,0 +1,97 @@
+{
+  "schema": "btc_ext_live_deep_operational_readiness_v1",
+  "generated_at_utc": "2026-03-30T22:38:59.234318+00:00",
+  "sources": {
+    "gpu_bench": "backtest_results/LOGOS_GPU_BENCH_v2.json",
+    "live_deep_sweep": "backtest_results/LOGOS_RESONANCE_BTC_EXT_LIVE_DEEP_SWEEP_SUMMARY.json",
+    "regime_probe_pattern": "backtest_results/LOGOS_RESONANCE_BTC_EXT_PROBE_REGIME_<regime>_TOP500.json"
+  },
+  "gpu": {
+    "device": "cuda",
+    "cuda_available": true,
+    "verses_encoded": 15000,
+    "items_per_second_wall": 23022.4555,
+    "peak_cuda_memory_mb": 9.7227
+  },
+  "live_deep_sweep": {
+    "rows": [
+      {
+        "k": 500,
+        "intersection_report": "C:\\workspace\\backtest_results\\LOGOS_RESONANCE_BTC_EXT_LIVE_DEEP_INTERSECTION_TOP500.json",
+        "summary": {
+          "any_pairwise_non_empty": true,
+          "any_triple_non_empty": false,
+          "all_four_non_empty": false,
+          "relaxed_non_empty": false
+        },
+        "count_all_four": 0
+      },
+      {
+        "k": 1000,
+        "intersection_report": "C:\\workspace\\backtest_results\\LOGOS_RESONANCE_BTC_EXT_LIVE_DEEP_INTERSECTION_TOP1000.json",
+        "summary": {
+          "any_pairwise_non_empty": true,
+          "any_triple_non_empty": false,
+          "all_four_non_empty": false,
+          "relaxed_non_empty": false
+        },
+        "count_all_four": 0
+      },
+      {
+        "k": 2000,
+        "intersection_report": "C:\\workspace\\backtest_results\\LOGOS_RESONANCE_BTC_EXT_LIVE_DEEP_INTERSECTION_TOP2000.json",
+        "summary": {
+          "any_pairwise_non_empty": true,
+          "any_triple_non_empty": true,
+          "all_four_non_empty": false,
+          "relaxed_non_empty": false
+        },
+        "count_all_four": 0
+      }
+    ],
+    "any_pairwise_non_empty": true,
+    "any_triple_non_empty": true,
+    "any_all_four_non_empty": false,
+    "count_all_four_total": 0
+  },
+  "regime_probes_top500": {
+    "bull_pump": {
+      "path": "C:/workspace/backtest_results/LOGOS_RESONANCE_BTC_EXT_PROBE_REGIME_bull_pump_TOP500.json",
+      "verses_scanned": 34633,
+      "top_k": 500,
+      "hit_count": 500,
+      "top1_verse_id": "Matt.1.6",
+      "top1_cosine_to_regime_fingerprint_4d": 0.117897
+    },
+    "bear_trend": {
+      "path": "C:/workspace/backtest_results/LOGOS_RESONANCE_BTC_EXT_PROBE_REGIME_bear_trend_TOP500.json",
+      "verses_scanned": 34633,
+      "top_k": 500,
+      "hit_count": 500,
+      "top1_verse_id": "1Thess.5.16",
+      "top1_cosine_to_regime_fingerprint_4d": 0.087205
+    },
+    "capitulation": {
+      "path": "C:/workspace/backtest_results/LOGOS_RESONANCE_BTC_EXT_PROBE_REGIME_capitulation_TOP500.json",
+      "verses_scanned": 34633,
+      "top_k": 500,
+      "hit_count": 500,
+      "top1_verse_id": "Exod.20.14",
+      "top1_cosine_to_regime_fingerprint_4d": -0.269052
+    },
+    "sideways_accumulation": {
+      "path": "C:/workspace/backtest_results/LOGOS_RESONANCE_BTC_EXT_PROBE_REGIME_sideways_accumulation_TOP500.json",
+      "verses_scanned": 34633,
+      "top_k": 500,
+      "hit_count": 500,
+      "top1_verse_id": "Matt.24.25",
+      "top1_cosine_to_regime_fingerprint_4d": -0.034229
+    }
+  },
+  "operational_recommendation": {
+    "primary_mode": "relaxed_2of4_or_3of4",
+    "all_four_mode": "research_only",
+    "rationale": "all-four remains zero in LIVE_DEEP sweep while pairwise/triple intersections are non-empty."
+  },
+  "note": "B-track evidence summary only; no A-track promotion or deterministic claim."
+}

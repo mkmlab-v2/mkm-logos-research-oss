@@ -1,0 +1,15 @@
+{
+  "schema": "token_api_hydration_trend_v1",
+  "ts_utc": "2026-03-30T22:33:15.797728+00:00",
+  "window_days": 7,
+  "log_path": "reports/constitution/btrack_pilot/token_api_hydration_mix_log.jsonl",
+  "row_count_total": 3,
+  "row_count_window": 3,
+  "latest_live_ratio": 0.3333333333333333,
+  "avg_live_ratio_7d": 0.3333333333333333,
+  "latest_metrics_mode_counts": {
+    "none": 1,
+    "decision_fallback": 1,
+    "live": 1
+  }
+}

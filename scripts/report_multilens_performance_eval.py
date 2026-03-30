@@ -8,6 +8,7 @@ generation for A/B/C strategy benchmarks.
 from __future__ import annotations
 
 import argparse
+from functools import lru_cache
 import json
 import re
 import sys
@@ -22,8 +23,20 @@ SRC = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_INPUT_
 OUT = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_REPORT_V1.json"
 BASELINE_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json"
 SHARDS_ROOT = ROOT / "codebook" / "shards"
+SLOT_DICT_V6 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_DOMAIN_SLOT_DICTIONARY_V6.json"
+SLOT_DICT_V61 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_DOMAIN_SLOT_DICTIONARY_V61.json"
 
 from scripts.core.domain_router import DomainSpecificRouter
+from scripts.core.cee_logic_core_v1 import CEEInput, run_cee_logic_core_v1
+from scripts.core.contextual_generator_v2 import ContextualGeneratorV2
+from scripts.core.contextual_generator_v3 import ContextualGeneratorV3
+from scripts.core.contextual_generator_v4 import ContextualGeneratorV4
+from scripts.core.contextual_generator_v5_codec import ContextualGeneratorV5Codec
+from scripts.core.gematria_engine import build_gematria_metadata
+from scripts.core.gematria_to_4d_bridge import build_gematria_4d_bridge
+
+TOKEN_RE = re.compile(r"[A-Za-z0-9_]+|[가-힣]+|[^\s]")
+WORD_RE = re.compile(r"[A-Za-z0-9_가-힣]+")
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -54,20 +67,40 @@ def _parser() -> argparse.ArgumentParser:
         default="",
         help="Comma-separated terms that must be preserved in experimental compression",
     )
+    p.add_argument(
+        "--include-cee-core",
+        action="store_true",
+        help="Attach CEE core payload (gematria->4D->state16) into each compression case row.",
+    )
     return p
 
 
 def _tokens(text: str) -> int:
-    # Simple portable token proxy (word-ish and symbol chunks).
-    return len(re.findall(r"[A-Za-z0-9_]+|[가-힣]+|[^\s]", text))
+    return _tokens_cached(text)
 
 
 def _norm_words(text: str) -> set[str]:
-    return {w.lower() for w in re.findall(r"[A-Za-z0-9_가-힣]+", text)}
+    return set(_norm_words_cached(text))
 
 
 def _split_words(text: str) -> list[str]:
-    return re.findall(r"[A-Za-z0-9_가-힣]+", text)
+    return list(_split_words_cached(text))
+
+
+@lru_cache(maxsize=8192)
+def _tokens_cached(text: str) -> int:
+    # Simple portable token proxy (word-ish and symbol chunks).
+    return len(TOKEN_RE.findall(text))
+
+
+@lru_cache(maxsize=8192)
+def _norm_words_cached(text: str) -> tuple[str, ...]:
+    return tuple(w.lower() for w in WORD_RE.findall(text))
+
+
+@lru_cache(maxsize=8192)
+def _split_words_cached(text: str) -> tuple[str, ...]:
+    return tuple(WORD_RE.findall(text))
 
 
 def _has_hangul_syllable(word: str) -> bool:
@@ -378,6 +411,107 @@ def _apply_min_saving_floor(
     return " ".join(essential + optional[:needed])
 
 
+def _bridge_policy_terms_for_state(state16: int | None) -> set[str]:
+    if state16 in {2, 8, 11, 14}:
+        # Conservative states: preserve risk/traceability anchors.
+        return {"manual", "strict", "direct", "evidence", "traceability", "체질", "명리", "성경", "증거", "직접"}
+    if state16 in {1, 4, 7, 10, 13, 16}:
+        # Expansion states: keep policy-governance anchors to avoid over-pruning.
+        return {"policy", "state", "trigger", "boundary", "cadence", "체질", "명리"}
+    return {"체질", "명리"}
+
+
+def _guard_preservation_score(raw: str, candidate: str, guard_terms: set[str]) -> float:
+    raw_words = {w.lower() for w in _split_words(raw)}
+    cand_words = {w.lower() for w in _split_words(candidate)}
+    required = {w for w in guard_terms if w in raw_words}
+    if not required:
+        return 1.0
+    kept = sum(1 for w in required if w in cand_words)
+    return kept / len(required)
+
+
+def _bridge_aware_candidate_select(
+    *,
+    raw: str,
+    base_candidate: str,
+    strategy: str,
+    intensity: str,
+    effective_must_keep: set[str],
+    effective_hangul_principle: bool,
+    cap: float | None,
+    bridge_state16: int | None,
+    bridge_target_distance: float | None,
+    score_weights: dict[str, float] | None = None,
+) -> str:
+    variants: list[str] = []
+    # Candidate 1: base from current pipeline
+    variants.append(base_candidate)
+    # Candidate 2: denser keep (one level less aggressive)
+    denser_intensity = {"extreme": "ultra", "ultra": "high", "high": "high"}[intensity]
+    denser = _compress_experimental(
+        raw,
+        strategy=strategy,
+        intensity=denser_intensity,
+        must_keep=effective_must_keep,
+        use_hangul_principle=effective_hangul_principle,
+    )
+    denser = _apply_max_saving_cap(raw, denser, max_saving_rate=cap)
+    variants.append(denser)
+    # Candidate 3: sparse keep (one level more aggressive when possible)
+    if intensity != "extreme":
+        sparser_intensity = {"high": "ultra", "ultra": "extreme"}[intensity]
+        sparser = _compress_experimental(
+            raw,
+            strategy=strategy,
+            intensity=sparser_intensity,
+            must_keep=effective_must_keep,
+            use_hangul_principle=effective_hangul_principle,
+        )
+        sparser = _apply_max_saving_cap(raw, sparser, max_saving_rate=cap)
+        variants.append(sparser)
+
+    guard_terms = _bridge_policy_terms_for_state(bridge_state16)
+    weights = score_weights or {
+        "fidelity": 1.3,
+        "guard": 0.5,
+        "saving": 0.2,
+        "distance_penalty": 4.0,
+    }
+    best = base_candidate
+    best_score = -10**9
+    raw_token_count = _tokens(raw)
+    for cand in variants:
+        rec = _reconstruct_experimental_from_raw(
+            raw=raw,
+            compressed_candidate=cand,
+            use_hangul_principle=effective_hangul_principle,
+        )
+        fidelity = _jaccard(raw, rec)
+        saving = 1.0 - ((_tokens(cand) / raw_token_count) if raw_token_count else 1.0)
+        guard = _guard_preservation_score(raw, cand, guard_terms)
+        cand_bridge = build_gematria_4d_bridge(
+            gematria_metadata=build_gematria_metadata(
+                raw_text=raw,
+                compressed_text=cand,
+                reconstructed_text=rec,
+            )
+        )
+        dist = cand_bridge.get("distance_to_state16")
+        dist_penalty = abs(float(dist) - float(bridge_target_distance)) if (dist is not None and bridge_target_distance is not None) else 0.0
+        # Higher is better: favor fidelity first, then state-distance fit, then guard preservation, then saving.
+        score = (
+            (float(weights.get("fidelity", 1.3)) * fidelity)
+            + (float(weights.get("guard", 0.5)) * guard)
+            + (float(weights.get("saving", 0.2)) * saving)
+            - (float(weights.get("distance_penalty", 4.0)) * dist_penalty)
+        )
+        if score > best_score:
+            best_score = score
+            best = cand
+    return best
+
+
 def evaluate_report(
     doc: dict[str, Any],
     *,
@@ -393,6 +527,15 @@ def evaluate_report(
     hangul_max_saving_rate: float | None = None,
     use_hangul_principle: bool = False,
     use_domain_router: bool = False,
+    include_gematria_metadata: bool = False,
+    include_gematria_4d_bridge: bool = False,
+    include_cee_core: bool = False,
+    apply_gematria_4d_bridge_policy: bool = False,
+    bridge_score_weights: dict[str, float] | None = None,
+    use_contextual_generator_v2: bool = False,
+    use_contextual_generator_v3: bool = False,
+    use_contextual_generator_v4: bool = False,
+    use_contextual_generator_v5_codec: bool = False,
 ) -> dict[str, Any]:
     must_keep = must_keep or set()
     comp_cases = doc.get("compression_cases", [])
@@ -403,6 +546,15 @@ def evaluate_report(
     total_fidelity = 0.0
     total_sensitive_integrity = 0.0
     router = DomainSpecificRouter(SHARDS_ROOT) if use_domain_router else None
+    contextual_gen = ContextualGeneratorV2() if use_contextual_generator_v2 else None
+    contextual_gen_v3 = ContextualGeneratorV3() if use_contextual_generator_v3 else None
+    contextual_gen_v4 = ContextualGeneratorV4() if use_contextual_generator_v4 else None
+    slot_dict_path = SLOT_DICT_V61 if SLOT_DICT_V61.is_file() else (SLOT_DICT_V6 if SLOT_DICT_V6.is_file() else None)
+    contextual_codec_v5 = (
+        ContextualGeneratorV5Codec(slot_dict_path=slot_dict_path)
+        if use_contextual_generator_v5_codec
+        else None
+    )
     for c in comp_cases:
         raw = str(c.get("raw_text", ""))
         source_comp = str(c.get("compressed_text", ""))
@@ -411,6 +563,17 @@ def evaluate_report(
         effective_must_keep = set(must_keep)
         effective_hangul_principle = use_hangul_principle
         route_info: dict[str, Any] | None = None
+        bridge_meta: dict[str, Any] | None = None
+        codec_decoded: str | None = None
+        if include_gematria_4d_bridge:
+            pre_gematria = build_gematria_metadata(
+                raw_text=raw,
+                compressed_text=source_comp,
+                reconstructed_text=source_rec,
+            )
+            bridge_meta = build_gematria_4d_bridge(gematria_metadata=pre_gematria)
+            if apply_gematria_4d_bridge_policy and mode == "experimental":
+                effective_must_keep.update(_bridge_policy_terms_for_state(bridge_meta.get("state16")))
         if router is not None:
             route = router.route(raw)
             effective_must_keep.update(route.must_keep_hard_terms)
@@ -421,13 +584,48 @@ def evaluate_report(
             effective_hangul_principle = use_hangul_principle or route.hangul_principle
             route_info = {"shard_id": route.shard_id, "domain": route.domain}
         if mode == "experimental":
-            comp = _compress_experimental(
-                raw,
-                strategy=strategy,
-                intensity=intensity,
-                must_keep=effective_must_keep,
-                use_hangul_principle=effective_hangul_principle,
-            )
+            if contextual_codec_v5 is not None and apply_gematria_4d_bridge_policy and bridge_meta is not None:
+                comp = contextual_codec_v5.encode(
+                    raw=raw,
+                    state16=bridge_meta.get("state16"),
+                    must_keep=effective_must_keep,
+                )
+                codec_decoded = contextual_codec_v5.decode_hybrid(encoded=comp, raw=raw, max_tokens_ratio=0.52)
+            elif contextual_gen_v4 is not None and apply_gematria_4d_bridge_policy and bridge_meta is not None:
+                comp = contextual_gen_v4.generate(
+                    raw=raw,
+                    state16=bridge_meta.get("state16"),
+                    must_keep=effective_must_keep,
+                    strategy=strategy,
+                    intensity=intensity,
+                    use_hangul_principle=effective_hangul_principle,
+                )
+            elif contextual_gen_v3 is not None and apply_gematria_4d_bridge_policy and bridge_meta is not None:
+                comp = contextual_gen_v3.generate(
+                    raw=raw,
+                    state16=bridge_meta.get("state16"),
+                    must_keep=effective_must_keep,
+                    strategy=strategy,
+                    intensity=intensity,
+                    use_hangul_principle=effective_hangul_principle,
+                )
+            elif contextual_gen is not None and apply_gematria_4d_bridge_policy and bridge_meta is not None:
+                comp = contextual_gen.generate(
+                    raw=raw,
+                    state16=bridge_meta.get("state16"),
+                    must_keep=effective_must_keep,
+                    strategy=strategy,
+                    intensity=intensity,
+                    use_hangul_principle=effective_hangul_principle,
+                )
+            else:
+                comp = _compress_experimental(
+                    raw,
+                    strategy=strategy,
+                    intensity=intensity,
+                    must_keep=effective_must_keep,
+                    use_hangul_principle=effective_hangul_principle,
+                )
             min_saving_floor = 0.50 if (strategy == "A" and intensity == "extreme") else None
             comp = _apply_min_saving_floor(
                 raw,
@@ -442,7 +640,26 @@ def evaluate_report(
                 cap = hangul_max_saving_rate
             else:
                 cap = sensitive_max_saving_rate if is_sensitive else general_max_saving_rate
+            if apply_gematria_4d_bridge_policy and bridge_meta is not None:
+                state16 = bridge_meta.get("state16")
+                if state16 in {2, 8, 11, 14}:
+                    cap = min(cap, 0.45) if cap is not None else 0.45
+                elif state16 in {1, 4, 7, 10, 13, 16}:
+                    cap = min(cap, 0.50) if cap is not None else 0.50
             comp = _apply_max_saving_cap(raw, comp, max_saving_rate=cap)
+            if apply_gematria_4d_bridge_policy and bridge_meta is not None:
+                comp = _bridge_aware_candidate_select(
+                    raw=raw,
+                    base_candidate=comp,
+                    strategy=strategy,
+                    intensity=intensity,
+                    effective_must_keep=effective_must_keep,
+                    effective_hangul_principle=effective_hangul_principle,
+                    cap=cap,
+                    bridge_state16=bridge_meta.get("state16"),
+                    bridge_target_distance=bridge_meta.get("distance_to_state16"),
+                    score_weights=bridge_score_weights,
+                )
         rec_for_eval = _reconstruct_candidate(
             raw=raw,
             source_reconstructed=source_rec,
@@ -450,31 +667,54 @@ def evaluate_report(
             mode=mode,
         )
         if mode == "experimental":
-            rec_for_eval = _reconstruct_experimental_from_raw(
-                raw=raw,
-                compressed_candidate=comp,
-                use_hangul_principle=effective_hangul_principle,
-            )
+            if codec_decoded is not None:
+                rec_for_eval = codec_decoded
+            else:
+                rec_for_eval = _reconstruct_experimental_from_raw(
+                    raw=raw,
+                    compressed_candidate=comp,
+                    use_hangul_principle=effective_hangul_principle,
+                )
         raw_t = _tokens(raw)
         comp_t = _tokens(comp)
         ratio = (comp_t / raw_t) if raw_t else 1.0
         saving = 1.0 - ratio
         fidelity = _jaccard(raw, rec_for_eval)
         integrity = _sensitive_integrity(raw, comp, must_keep)
-        comp_rows.append(
-            {
-                "id": c.get("id"),
-                "raw_tokens": raw_t,
-                "compressed_tokens": comp_t,
-                "token_saving_rate": saving,
-                "compression_ratio": ratio,
-                "reconstruction_fidelity_jaccard": fidelity,
-                "sensitive_integrity": integrity,
-                "compressed_text_effective": comp,
-                "reconstructed_text_effective": rec_for_eval,
-                "route": route_info,
-            }
-        )
+        row = {
+            "id": c.get("id"),
+            "raw_tokens": raw_t,
+            "compressed_tokens": comp_t,
+            "token_saving_rate": saving,
+            "compression_ratio": ratio,
+            "reconstruction_fidelity_jaccard": fidelity,
+            "sensitive_integrity": integrity,
+            "compressed_text_effective": comp,
+            "reconstructed_text_effective": rec_for_eval,
+            "route": route_info,
+        }
+        if include_gematria_metadata:
+            gematria_metadata = build_gematria_metadata(
+                raw_text=raw,
+                compressed_text=comp,
+                reconstructed_text=rec_for_eval,
+            )
+            row["gematria_metadata"] = gematria_metadata
+            if include_gematria_4d_bridge:
+                row["gematria_4d_bridge"] = build_gematria_4d_bridge(gematria_metadata=gematria_metadata)
+                row["gematria_4d_bridge_policy_applied"] = bool(apply_gematria_4d_bridge_policy and mode == "experimental")
+        if include_cee_core:
+            row["cee_core"] = run_cee_logic_core_v1(
+                CEEInput(
+                    case_id=str(c.get("id", "")),
+                    raw_text=raw,
+                    compressed_text=comp,
+                    reconstructed_text=rec_for_eval,
+                    corpus_type="canonical",
+                    metadata={"route": route_info or {}, "mode": mode, "strategy": strategy, "intensity": intensity},
+                )
+            )
+        comp_rows.append(row)
         total_raw += raw_t
         total_comp += comp_t
         total_fidelity += fidelity
@@ -507,6 +747,37 @@ def evaluate_report(
     avg_pers = (pers_sum / len(fus_rows)) if fus_rows else 0.0
     global_saving = (1.0 - (total_comp / total_raw)) if total_raw else 0.0
     avg_sensitive_integrity = (total_sensitive_integrity / len(comp_rows)) if comp_rows else 1.0
+    cee_rows = [r.get("cee_core") for r in comp_rows if isinstance(r.get("cee_core"), dict)]
+    cee_shadow_summary: dict[str, Any] | None = None
+    if cee_rows:
+        lambda_vals = [float(r.get("lambda_deviation", 0.0) or 0.0) for r in cee_rows]
+        state_counts: dict[str, int] = {}
+        band_counts: dict[str, int] = {}
+        lane_counts: dict[str, int] = {}
+        for row in cee_rows:
+            sid = row.get("state_id")
+            if isinstance(sid, (int, float)):
+                key = str(int(sid))
+                state_counts[key] = state_counts.get(key, 0) + 1
+            post_it = row.get("metadata_post_it", {})
+            if isinstance(post_it, dict):
+                band = str(post_it.get("balance_band", "")).strip()
+                lane = str(post_it.get("lane", "")).strip()
+                if band:
+                    band_counts[band] = band_counts.get(band, 0) + 1
+                if lane:
+                    lane_counts[lane] = lane_counts.get(lane, 0) + 1
+        cee_shadow_summary = {
+            "enabled": True,
+            "case_count": len(cee_rows),
+            "avg_lambda_deviation": (sum(lambda_vals) / len(lambda_vals)) if lambda_vals else 0.0,
+            "max_lambda_deviation": max(lambda_vals) if lambda_vals else 0.0,
+            "min_lambda_deviation": min(lambda_vals) if lambda_vals else 0.0,
+            "state16_distribution": state_counts,
+            "balance_band_distribution": band_counts,
+            "lane_distribution": lane_counts,
+            "note": "Shadow-mode telemetry only; does not change compression gate decisions.",
+        }
 
     jaccard_drop_pp = 0.0
     if baseline_avg_jaccard is not None:
@@ -525,6 +796,15 @@ def evaluate_report(
             "hangul_max_saving_rate": hangul_max_saving_rate,
             "use_hangul_principle": use_hangul_principle,
             "use_domain_router": use_domain_router,
+            "include_gematria_metadata": include_gematria_metadata,
+            "include_gematria_4d_bridge": include_gematria_4d_bridge,
+            "include_cee_core": include_cee_core,
+            "apply_gematria_4d_bridge_policy": apply_gematria_4d_bridge_policy,
+            "bridge_score_weights": bridge_score_weights,
+            "use_contextual_generator_v2": use_contextual_generator_v2,
+            "use_contextual_generator_v3": use_contextual_generator_v3,
+            "use_contextual_generator_v4": use_contextual_generator_v4,
+            "use_contextual_generator_v5_codec": use_contextual_generator_v5_codec,
         },
         "compression_metrics": {
             "case_count": len(comp_rows),
@@ -549,6 +829,7 @@ def evaluate_report(
             "sensitive_integrity_ok": avg_sensitive_integrity >= 0.999,
             "note": "Heuristic B-track gate; not an A-track trading performance metric.",
         },
+        "cee_shadow_summary": cee_shadow_summary or {"enabled": False},
     }
     return report
 
@@ -573,6 +854,7 @@ def main() -> int:
         must_keep=must_keep,
         jaccard_drop_threshold_pp=args.jaccard_drop_threshold_pp,
         baseline_avg_jaccard=baseline_avg_jaccard,
+        include_cee_core=bool(args.include_cee_core),
     )
 
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

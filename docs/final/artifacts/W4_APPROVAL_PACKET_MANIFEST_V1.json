@@ -1,0 +1,63 @@
+{
+  "schema": "w4_approval_packet_manifest_v1",
+  "generated_at_utc": "2026-03-30T22:46:53Z",
+  "packet_root": "docs/final/artifacts",
+  "required_files_count": 9,
+  "all_required_files_exist": true,
+  "files": [
+    {
+      "file": "docs/final/artifacts/W4_PROMOTION_DECISION_FINAL.md",
+      "exists": true,
+      "size_bytes": 2538,
+      "sha256": "336cd31837d0b1ef5bde70121d104885691fcb39fcff46717cab3d2111ea3553"
+    },
+    {
+      "file": "docs/final/artifacts/W4_PROMOTION_DECISION_DRAFT.json",
+      "exists": true,
+      "size_bytes": 1984,
+      "sha256": "806afd62609eb7424773f1db3efbb9e78005433f2f631bb5bf9255b096c300f3"
+    },
+    {
+      "file": "docs/final/artifacts/W4_APPROVAL_PACKET_INDEX_V1.md",
+      "exists": true,
+      "size_bytes": 1259,
+      "sha256": "c9afc7e649049c06309641e3ad0027243d46fd81440c78af7b7014dd30f819e2"
+    },
+    {
+      "file": "docs/final/artifacts/W3_MULTI_BATCH_STABILITY_SUMMARY_V1.json",
+      "exists": true,
+      "size_bytes": 1060,
+      "sha256": "1bf626537ccaa71f439aba5e686c707c0115bfbe4a752e32207152774d03792e"
+    },
+    {
+      "file": "docs/final/artifacts/W3_GATE_THRESHOLD_SWEEP_V1.json",
+      "exists": true,
+      "size_bytes": 859,
+      "sha256": "4ec9ef28260152359912da49d0d3816587988a0dc11a8d531c21ef765f222d4c"
+    },
+    {
+      "file": "docs/final/artifacts/W3_K_SWEEP_500_1000_2000_V1.json",
+      "exists": true,
+      "size_bytes": 1418,
+      "sha256": "6f6bc3faaab16aff51c67f235967721216fcbf7fd46bf958aafb018f509c72e4"
+    },
+    {
+      "file": "docs/final/artifacts/W3_RESONANCE_BATCH_RESULT_V4.json",
+      "exists": true,
+      "size_bytes": 7230,
+      "sha256": "2e0971c2973c08c1522606841b3e849f64ca42c9d08fd0620624d4f5533cad26"
+    },
+    {
+      "file": "docs/final/artifacts/W3_RESONANCE_COMPUTE_SPEC_V1.json",
+      "exists": true,
+      "size_bytes": 1943,
+      "sha256": "f29a93a147e829c4029dab0910a6b1ea74330f705142a6a5f49eedf9ac7eb137"
+    },
+    {
+      "file": "docs/final/artifacts/W2_GATE_READINESS_NOTE.json",
+      "exists": true,
+      "size_bytes": 2559,
+      "sha256": "31c975e9f9209aa8854fe21c8bc2b12a24c5eb44981e3f8f03e0d302733b3002"
+    }
+  ]
+}

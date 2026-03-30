@@ -11,6 +11,7 @@ $logPath = "C:\workspace\docs\final\artifacts\waiting_queue_monthly_check_log.js
 $sourceHuntSummaryPath = "C:\workspace\docs\final\artifacts\entry16_source_hunt_summary.json"
 $promotionGatePath = "C:\workspace\docs\final\artifacts\entry16_promotion_gate.json"
 $btrackGatePath = "C:\workspace\reports\constitution\btrack_pilot\btrack_promotion_gate_anchor_verified_only_latest.json"
+$symbolLaneGatePath = "C:\workspace\reports\constitution\btrack_pilot\symbol_lane_gate_latest.json"
 $checkedAtObj = [DateTimeOffset]::UtcNow
 $checkedAt = $checkedAtObj.ToString("o")
 $nextMonthlyDue = $checkedAtObj.AddDays(30).ToString("yyyy-MM-dd")
@@ -50,6 +51,12 @@ if ($LASTEXITCODE -ne 0) {
     throw "B-Track verified gate+lock failed with exit code $LASTEXITCODE"
 }
 
+Write-Host "[waiting-queue-check] Running B-Track symbol lane gate..."
+py scripts/run_btrack_symbol_lane_gate_and_lock.py
+if ($LASTEXITCODE -ne 0) {
+    throw "B-Track symbol lane gate+lock failed with exit code $LASTEXITCODE"
+}
+
 @{
     checked_at_utc = $checkedAt
     bundle_mode = $bundleMode
@@ -61,6 +68,8 @@ if ($LASTEXITCODE -ne 0) {
     promotion_gate_path = $promotionGatePath
     btrack_verified_gate = "pass"
     btrack_verified_gate_path = $btrackGatePath
+    btrack_symbol_lane_gate = "pass"
+    btrack_symbol_lane_gate_path = $symbolLaneGatePath
     next_monthly_due_date = $nextMonthlyDue
     horizon_t30_date = $horizonT30
     horizon_t90_date = $horizonT90

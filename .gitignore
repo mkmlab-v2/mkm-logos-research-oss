@@ -97,6 +97,11 @@ projects/system-monitoring/
 # Root-level sibling/duplicate app tree (local mirror; not main SSOT)
 mkmlab-hq-bitcoin-trading/
 
+# Morphhb WLC normalized-form index (~15MB); rebuild: py scripts/build_morphhb_form_to_lemma_index.py — Vault push via push_local_artifacts_to_vault.ps1 optional
+reports/constitution/btrack_pilot/morphhb_norm_to_lemma_index_latest.json
+# Large lexicon codebook export (~12MB compact JSON); regenerate: py scripts/export_master_codebook_v1.py
+reports/constitution/btrack_pilot/master_codebook_lexicon_v1_*_rows_latest.json
+
 # Root accidental probe output (one-line JSON); keep local only
 /utf8
 /tmp_verify_report.json

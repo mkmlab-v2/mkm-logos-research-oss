@@ -1,5 +1,5 @@
 param(
-    [string]$PythonExe = "py -3"
+    [string]$PythonExe = "py"
 )
 
 Set-StrictMode -Version Latest
@@ -12,9 +12,12 @@ if (-not (Test-Path -LiteralPath $scriptPath)) {
 
 Write-Host "[btrack] Running one-shot gate+lock workflow..."
 
-# Support either "py -3" (default) or full python executable path.
-if ($PythonExe -eq "py -3") {
-    py -3 $scriptPath
+# Prefer Windows launcher (py -3), fallback to direct python when unavailable.
+if ($PythonExe -eq "py") {
+    & py -3 $scriptPath
+    if ($LASTEXITCODE -eq 2) {
+        & python $scriptPath
+    }
 } else {
     & $PythonExe $scriptPath
 }

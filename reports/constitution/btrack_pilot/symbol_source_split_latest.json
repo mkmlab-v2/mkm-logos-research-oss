@@ -1,0 +1,256 @@
+{
+  "schema": "btrack_symbol_source_split_v1",
+  "generated_at_utc": "2026-03-30T19:01:19Z",
+  "input_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_latest.jsonl",
+  "summary": {
+    "total_curated_symbols": 20,
+    "counts": {
+      "dss_only": 3,
+      "apocrypha_only": 10,
+      "mixed": 7,
+      "unknown": 0
+    },
+    "ratios": {
+      "dss_only": 0.15,
+      "apocrypha_only": 0.5,
+      "mixed": 0.35,
+      "unknown": 0.0
+    },
+    "score_mass": {
+      "dss_only": 48.535458,
+      "apocrypha_only": 377.103017,
+      "mixed": 378.091382,
+      "unknown": 0.0
+    }
+  },
+  "top_preview_by_bucket": {
+    "dss_only": [
+      {
+        "symbol": "בני אלהים",
+        "score_tfidf_like": 16.178486,
+        "term_freq": 2,
+        "doc_freq": 2,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 0
+        },
+        "bucket": "dss_only"
+      },
+      {
+        "symbol": "עמים",
+        "score_tfidf_like": 16.178486,
+        "term_freq": 2,
+        "doc_freq": 2,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 0
+        },
+        "bucket": "dss_only"
+      },
+      {
+        "symbol": "עליון עמים",
+        "score_tfidf_like": 16.178486,
+        "term_freq": 2,
+        "doc_freq": 2,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 0
+        },
+        "bucket": "dss_only"
+      }
+    ],
+    "apocrypha_only": [
+      {
+        "symbol": "שלום",
+        "score_tfidf_like": 155.19347,
+        "term_freq": 26,
+        "doc_freq": 24,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 26
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "חסד",
+        "score_tfidf_like": 49.758897,
+        "term_freq": 7,
+        "doc_freq": 7,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 7
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "חכמה",
+        "score_tfidf_like": 30.31367,
+        "term_freq": 4,
+        "doc_freq": 4,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 4
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "משפט",
+        "score_tfidf_like": 30.31367,
+        "term_freq": 4,
+        "doc_freq": 4,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 4
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "צדק",
+        "score_tfidf_like": 23.404683,
+        "term_freq": 3,
+        "doc_freq": 3,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 3
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "ברית",
+        "score_tfidf_like": 23.404683,
+        "term_freq": 3,
+        "doc_freq": 3,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 3
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "יראת אלהים",
+        "score_tfidf_like": 16.178486,
+        "term_freq": 2,
+        "doc_freq": 2,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 2
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "לו משפט",
+        "score_tfidf_like": 16.178486,
+        "term_freq": 2,
+        "doc_freq": 2,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 2
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "יהודה שלום",
+        "score_tfidf_like": 16.178486,
+        "term_freq": 2,
+        "doc_freq": 2,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 2
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "ברית שלום",
+        "score_tfidf_like": 16.178486,
+        "term_freq": 2,
+        "doc_freq": 2,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 2
+        },
+        "bucket": "apocrypha_only"
+      }
+    ],
+    "mixed": [
+      {
+        "symbol": "בני",
+        "score_tfidf_like": 129.009993,
+        "term_freq": 21,
+        "doc_freq": 20,
+        "source_mix": {
+          "dss": 4,
+          "apocrypha": 17
+        },
+        "bucket": "mixed"
+      },
+      {
+        "symbol": "ישראל",
+        "score_tfidf_like": 79.474873,
+        "term_freq": 12,
+        "doc_freq": 12,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 10
+        },
+        "bucket": "mixed"
+      },
+      {
+        "symbol": "עליון",
+        "score_tfidf_like": 55.925047,
+        "term_freq": 8,
+        "doc_freq": 8,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 6
+        },
+        "bucket": "mixed"
+      },
+      {
+        "symbol": "אלהים",
+        "score_tfidf_like": 50.693617,
+        "term_freq": 7,
+        "doc_freq": 6,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 5
+        },
+        "bucket": "mixed"
+      },
+      {
+        "symbol": "גבול",
+        "score_tfidf_like": 23.404683,
+        "term_freq": 3,
+        "doc_freq": 3,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 1
+        },
+        "bucket": "mixed"
+      },
+      {
+        "symbol": "בני ישראל",
+        "score_tfidf_like": 23.404683,
+        "term_freq": 3,
+        "doc_freq": 3,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 1
+        },
+        "bucket": "mixed"
+      },
+      {
+        "symbol": "נחלה",
+        "score_tfidf_like": 16.178486,
+        "term_freq": 2,
+        "doc_freq": 2,
+        "source_mix": {
+          "dss": 1,
+          "apocrypha": 1
+        },
+        "bucket": "mixed"
+      }
+    ],
+    "unknown": []
+  },
+  "warning": "If dss_only and mixed counts remain near zero, extraction is source-imbalanced. Increase DSS corpus rows before promotion decisions."
+}

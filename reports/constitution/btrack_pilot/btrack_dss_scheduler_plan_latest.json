@@ -1,0 +1,24 @@
+{
+  "schema": "btrack_dss_scheduler_plan_v1",
+  "generated_at_utc": "2026-03-30T17:46:06Z",
+  "task_name": "MKM12_DSS_Slot_Mapping_Refresh",
+  "schedule": "DAILY",
+  "time": "03:30",
+  "python_exe": "C:\\Python311\\python.exe",
+  "refresh_script": "C:\\workspace\\scripts\\ops\\run_dss_slot_mapping_refresh.py",
+  "planned_command": [
+    "schtasks",
+    "/Create",
+    "/F",
+    "/TN",
+    "MKM12_DSS_Slot_Mapping_Refresh",
+    "/SC",
+    "DAILY",
+    "/ST",
+    "03:30",
+    "/TR",
+    "\"C:\\Python311\\python.exe\" \"C:\\workspace\\scripts\\ops\\run_dss_slot_mapping_refresh.py\" --confidence-mode v2"
+  ],
+  "applied": false,
+  "planned_only": true
+}

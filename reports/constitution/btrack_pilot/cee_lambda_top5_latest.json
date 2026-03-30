@@ -1,0 +1,48 @@
+{
+  "schema": "cee_lambda_top5_v1",
+  "generated_at_utc": "2026-03-30T17:17:51Z",
+  "input_active_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+  "sample_count": 40,
+  "unique_lambda_values": [
+    0.0075
+  ],
+  "low_variance_flag": true,
+  "top5": [
+    {
+      "id": "cmp2_001",
+      "lambda_deviation": 0.007500000000000007,
+      "state_id": 3,
+      "balance_band": "near_sep_0_25",
+      "lane_hits": []
+    },
+    {
+      "id": "cmp2_002",
+      "lambda_deviation": 0.007500000000000007,
+      "state_id": 3,
+      "balance_band": "near_sep_0_25",
+      "lane_hits": []
+    },
+    {
+      "id": "cmp2_003",
+      "lambda_deviation": 0.007500000000000007,
+      "state_id": 3,
+      "balance_band": "near_sep_0_25",
+      "lane_hits": []
+    },
+    {
+      "id": "cmp2_004",
+      "lambda_deviation": 0.007500000000000007,
+      "state_id": 3,
+      "balance_band": "near_sep_0_25",
+      "lane_hits": []
+    },
+    {
+      "id": "cmp2_005",
+      "lambda_deviation": 0.007500000000000007,
+      "state_id": 3,
+      "balance_band": "near_sep_0_25",
+      "lane_hits": []
+    }
+  ],
+  "interpretation_note": "All cases share same lambda_deviation; ranking is non-discriminative."
+}

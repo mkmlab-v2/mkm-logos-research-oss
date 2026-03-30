@@ -1,0 +1,46 @@
+{
+  "schema": "symbol_two_phase_mode_run_v1",
+  "generated_at_utc": "2026-03-30T17:09:27Z",
+  "phase_explore": {
+    "variant": "allowlist_off",
+    "metrics": {
+      "symbols_after_filter": 6902,
+      "top_k": 300,
+      "curated_count": 26,
+      "vector_coverage_rate": 0.11,
+      "resonance_rate_random": 0.12,
+      "avg_cosine_random": 0.733809,
+      "resonance_rate_nonzero": 0.65,
+      "avg_cosine_nonzero": 0.837279
+    },
+    "purpose": "maximize candidate diversity before strict binding"
+  },
+  "phase_binding": {
+    "variant": "allowlist_on",
+    "metrics": {
+      "symbols_after_filter": 813,
+      "top_k": 300,
+      "curated_count": 20,
+      "vector_coverage_rate": 1.0,
+      "resonance_rate_random": 1.0,
+      "avg_cosine_random": 0.92967,
+      "resonance_rate_nonzero": 1.0,
+      "avg_cosine_nonzero": 0.92967
+    },
+    "purpose": "enforce vector-connectable symbols and resonance gate"
+  },
+  "decision": {
+    "select_binding_variant": "allowlist_on",
+    "reason": "binding stage prioritizes high vector coverage and resonance gate pass",
+    "gate": {
+      "target_resonance_rate_gte": 1.01,
+      "actual_resonance_rate_random": 1.0,
+      "pass": false
+    }
+  },
+  "artifacts": {
+    "ab_bench": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_allowlist_ab_bench_latest.json",
+    "explore_alignment": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_gematria_alignment_test_allowlist_off.json",
+    "binding_alignment": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_gematria_alignment_test_allowlist_on.json"
+  }
+}

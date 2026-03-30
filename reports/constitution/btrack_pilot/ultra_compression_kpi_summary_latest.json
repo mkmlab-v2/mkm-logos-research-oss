@@ -1,0 +1,48 @@
+{
+  "schema": "ultra_compression_kpi_summary_v1",
+  "ts_utc": "2026-03-30T22:23:31.231527+00:00",
+  "sources": {
+    "round2": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json",
+    "decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+    "active": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "hydration_mix": "reports/constitution/btrack_pilot/token_api_hydration_mix_latest.json"
+  },
+  "decision": {
+    "go_no_go": "GO",
+    "rollout_policy": "global_default",
+    "selected_candidate": {
+      "strategy": "A",
+      "intensity": "extreme",
+      "global_token_saving_rate": 0.5316455696202531,
+      "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_drop_pp": 0.0
+    }
+  },
+  "active_kpi": {
+    "global_token_saving_rate": 0.5316455696202531,
+    "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
+    "avg_sensitive_integrity": 1.0,
+    "jaccard_drop_pp": 0.0,
+    "jaccard_guardrail_ok": true,
+    "ultra_saving_50_ok": true,
+    "sensitive_integrity_ok": true
+  },
+  "performance": {
+    "bench_total_elapsed_ms": 1260.806,
+    "round2_elapsed_ms": 725.845,
+    "round2_full_grid_count": 332,
+    "round2_evaluated_count": 27,
+    "round2_pruned_by_saving_count": 35,
+    "round2_pruned_by_bound_count": 270
+  },
+  "api_hydration_mix": {
+    "total_examples": 3,
+    "metrics_mode_counts": {
+      "none": 1,
+      "decision_fallback": 1,
+      "live": 1
+    },
+    "live_ratio": 0.3333333333333333
+  }
+}

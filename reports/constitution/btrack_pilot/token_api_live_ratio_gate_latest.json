@@ -1,0 +1,18 @@
+{
+  "schema": "token_api_live_ratio_gate_v1",
+  "ts_utc": "2026-03-30T22:33:15.937863+00:00",
+  "mode": "block",
+  "status": "blocking_not_armed",
+  "target_live_ratio": 0.7,
+  "latest_live_ratio": 0.3333333333333333,
+  "arming": {
+    "armed": false,
+    "floor_ratio": 0.6,
+    "success_rate_required": 0.8,
+    "window_rows_required": 10,
+    "window_rows_observed": 3,
+    "window_success_rate_observed": 0.0
+  },
+  "source_trend": "reports/constitution/btrack_pilot/token_api_hydration_trend_latest.json",
+  "source_log": "reports/constitution/btrack_pilot/token_api_hydration_mix_log.jsonl"
+}

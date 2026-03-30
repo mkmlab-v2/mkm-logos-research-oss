@@ -1,0 +1,23 @@
+{
+  "schema": "master_atoms_step_audit_summary_v1",
+  "rail_id": "rail_step_audit",
+  "generated_at_utc": "2026-03-30T19:42:23.944194+00:00",
+  "inputs": {
+    "tbesh": "C:\\workspace\\vault\\external_lexicon\\sources\\stepbible-data\\Lexicons\\TBESH - Translators Brief lexicon of Extended Strongs for Hebrew - STEPBible.org CC BY.txt",
+    "atoms": "C:\\workspace\\reports\\constitution\\btrack_pilot\\original_language_master_atoms_latest.jsonl"
+  },
+  "tbesh_norm_keys": 6432,
+  "hebrew_atoms": 22913,
+  "matched": 5243,
+  "unmatched": 17670,
+  "ambiguous": 1442,
+  "coverage": {
+    "hebrew": {
+      "matched_any_tbesh_row": 5243,
+      "unmatched": 17670,
+      "ambiguous_norm": 1442,
+      "fraction_of_hebrew_atoms": 0.228822
+    }
+  },
+  "note": "Audit-only join on TBESH Hebrew column after NFKD strip; not lemma disambiguation."
+}

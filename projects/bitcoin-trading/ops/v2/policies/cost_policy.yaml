@@ -1,0 +1,6 @@
+cost_policy:
+  max_daily_runs: 300
+  max_daily_estimated_tokens: 250000
+  max_daily_estimated_cost_usd: 25.0
+  degrade_to_shadow_on_breach: true
+  block_execute_on_breach: true

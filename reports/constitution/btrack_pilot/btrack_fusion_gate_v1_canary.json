@@ -1,0 +1,54 @@
+{
+  "schema": "btrack_fusion_gate_v1",
+  "decision": "pass",
+  "thresholds": {
+    "min_resonance_rate": 0.8,
+    "min_mean_axis_pearson": -0.2,
+    "min_saving_delta": -0.2,
+    "min_cee_consensus_rate": 0.6,
+    "min_cee_mean_margin": 0.001,
+    "min_master_atoms": 10000,
+    "min_master_hebrew_atoms": 5000,
+    "min_master_greek_atoms": 3000,
+    "master_atoms_lemma_mode": "normalized_form_v1",
+    "max_cee_risk_band": "critical_thin",
+    "thin_margin_threshold": 0.01,
+    "thin_margin_streak_limit": 10,
+    "enforce_thin_margin_streak": false
+  },
+  "metrics": {
+    "gematria_resonance_rate": 1.0,
+    "gematria_mean_axis_pearson": 1.0,
+    "gematria_saving_delta_on_minus_off": -0.12798874824191275,
+    "cee_pilot_winner": "sons_of_israel",
+    "cee_pilot_lambda_margin": 0.00165,
+    "cee_consensus_winner": "sons_of_god",
+    "cee_consensus_rate": 0.666667,
+    "cee_mean_lambda_margin": 0.001267,
+    "cee_margin_risk_band": "high_thin",
+    "cee_thin_margin_streak": 1,
+    "cee_thin_margin_streak_alert": false,
+    "recommended_action": "collect_more_evidence",
+    "master_atoms_unique": 41751,
+    "master_atoms_by_lang": {
+      "greek": 13982,
+      "hebrew": 22913,
+      "other": 4856
+    },
+    "master_atoms_lemma_method": "normalized_form_v1"
+  },
+  "risk_log_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\fusion_gate_risk_log_v1_canary.jsonl",
+  "evidence_todo_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\fusion_gate_evidence_todo_v1_canary.json",
+  "failures": [],
+  "guardrail": {
+    "preferred_terms": [
+      "우세 가설",
+      "provisional",
+      "추가 검증 필요"
+    ],
+    "forbidden_terms": [
+      "정답 확정",
+      "final accept"
+    ]
+  }
+}

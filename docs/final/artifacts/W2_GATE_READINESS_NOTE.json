@@ -1,0 +1,68 @@
+{
+  "schema": "w2_gate_readiness_note_v1",
+  "generated_at_utc": "2026-03-31T00:00:00Z",
+  "template_ref": "docs/final/artifacts/W2_DUAL_LANE_TEMPLATE_V1.json",
+  "scope": "W2 preflight only; no W3 resonance extraction executed",
+  "gate_checks": [
+    {
+      "gate_id": "gate_sasang_contract",
+      "path": "tests/test_sasang_cross_ref_draft.py",
+      "alignment": "pass",
+      "notes": [
+        "W2 personal_lane keeps sasang_type as explicit field.",
+        "W2 requires [HYPO] in rationale to remain bench-only."
+      ]
+    },
+    {
+      "gate_id": "gate_myeongri_insight_contract",
+      "path": "tests/test_myeongni_insight_observation_log.py",
+      "alignment": "pass",
+      "notes": [
+        "W2 template enforces non-empty rationale and hypothesis framing.",
+        "W2 preserves B-track usage and does not alter fusion interface contract."
+      ]
+    },
+    {
+      "gate_id": "gate_multi_corpus_isolation",
+      "path": "tests/test_multi_corpus_isolation_policy.py",
+      "alignment": "pass",
+      "notes": [
+        "W2 is artifact-only under docs/final/artifacts and does not overwrite core datasets.",
+        "Macro geopolitics is reserved-only and excluded from scoring to avoid scope contamination."
+      ]
+    },
+    {
+      "gate_id": "gate_cross_ref_contract",
+      "path": "tests/test_cross_ref_dss_schema.py",
+      "alignment": "pass",
+      "notes": [
+        "W2 keeps canonical_ref and state_candidate_id as compatible optional fields.",
+        "Cross-ref output remains independent B-track artifact by policy."
+      ]
+    }
+  ],
+  "risk_controls": {
+    "personal_overinterpretation": {
+      "status": "mitigated",
+      "control": "non_medical_notice and non_deterministic_notice are mandatory in personal_lane"
+    },
+    "domain_short_circuit": {
+      "status": "mitigated",
+      "control": "btrack_only=true and core_overwrite_forbidden=true"
+    },
+    "promotion_misjudgment": {
+      "status": "mitigated",
+      "control": "W2 does not claim promotion; W3 entry conditions require gate-readiness completion first"
+    }
+  },
+  "w3_entry_conditions": [
+    "All four gate_checks report alignment=pass",
+    "macro_lane has no scoring dependency on geo_event_ref",
+    "personal_lane notices are present and non-empty",
+    "Template keeps [HYPO] marker requirement for rationale"
+  ],
+  "w3_entry_decision": {
+    "status": "ready",
+    "reason": "W2 contract and gate readiness are documented; proceed to controlled W3 pilot."
+  }
+}

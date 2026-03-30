@@ -1,0 +1,102 @@
+{
+  "schema": "multilens_gematria_4d_bridge_weight_sweep_v1",
+  "ts_utc": "2026-03-30T17:28:24.627109+00:00",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "profile": {
+    "strategy": "A",
+    "intensity": "extreme"
+  },
+  "target": {
+    "saving_min": 0.5,
+    "fidelity_min": 0.75,
+    "jaccard_drop_threshold_pp": 1.5
+  },
+  "grid_size": 192,
+  "pass_count": 0,
+  "best_candidate": {
+    "weights": {
+      "fidelity": 0.8,
+      "guard": 0.2,
+      "saving": 0.4,
+      "distance_penalty": 0.5
+    },
+    "global_token_saving_rate": 0.3642756680731364,
+    "avg_reconstruction_fidelity_jaccard": 0.4222840188707062,
+    "avg_sensitive_integrity": 1.0,
+    "jaccard_guardrail_ok": false,
+    "sensitive_integrity_ok": true,
+    "joint_target_ok": false
+  },
+  "top5": [
+    {
+      "weights": {
+        "fidelity": 0.8,
+        "guard": 0.2,
+        "saving": 0.4,
+        "distance_penalty": 0.5
+      },
+      "global_token_saving_rate": 0.3642756680731364,
+      "avg_reconstruction_fidelity_jaccard": 0.4222840188707062,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_guardrail_ok": false,
+      "sensitive_integrity_ok": true,
+      "joint_target_ok": false
+    },
+    {
+      "weights": {
+        "fidelity": 0.8,
+        "guard": 0.2,
+        "saving": 0.4,
+        "distance_penalty": 1.0
+      },
+      "global_token_saving_rate": 0.3642756680731364,
+      "avg_reconstruction_fidelity_jaccard": 0.4222840188707062,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_guardrail_ok": false,
+      "sensitive_integrity_ok": true,
+      "joint_target_ok": false
+    },
+    {
+      "weights": {
+        "fidelity": 0.8,
+        "guard": 0.2,
+        "saving": 0.4,
+        "distance_penalty": 2.0
+      },
+      "global_token_saving_rate": 0.3642756680731364,
+      "avg_reconstruction_fidelity_jaccard": 0.4222840188707062,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_guardrail_ok": false,
+      "sensitive_integrity_ok": true,
+      "joint_target_ok": false
+    },
+    {
+      "weights": {
+        "fidelity": 0.8,
+        "guard": 0.2,
+        "saving": 0.4,
+        "distance_penalty": 4.0
+      },
+      "global_token_saving_rate": 0.3642756680731364,
+      "avg_reconstruction_fidelity_jaccard": 0.4222840188707062,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_guardrail_ok": false,
+      "sensitive_integrity_ok": true,
+      "joint_target_ok": false
+    },
+    {
+      "weights": {
+        "fidelity": 0.8,
+        "guard": 0.2,
+        "saving": 0.6,
+        "distance_penalty": 0.5
+      },
+      "global_token_saving_rate": 0.3642756680731364,
+      "avg_reconstruction_fidelity_jaccard": 0.4222840188707062,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_guardrail_ok": false,
+      "sensitive_integrity_ok": true,
+      "joint_target_ok": false
+    }
+  ]
+}

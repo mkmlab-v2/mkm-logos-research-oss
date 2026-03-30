@@ -13,7 +13,7 @@ import json
 from datetime import datetime, timezone
 from itertools import combinations
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Sequence, Set
+from typing import Any, Dict, List, Mapping, Sequence, Set, Tuple
 
 
 def _workspace_root() -> Path:
@@ -31,6 +31,25 @@ def _verse_ids_from_report(path: Path) -> List[str]:
     return out
 
 
+def _verse_cosine_map_from_report(path: Path) -> Dict[str, float]:
+    """Load verse_id -> cosine_to_regime_fingerprint_4d map from probe report."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    hits = data.get("hits") or []
+    out: Dict[str, float] = {}
+    for h in hits:
+        vid = h.get("verse_id")
+        if vid is None:
+            continue
+        vid_s = str(vid).strip()
+        if not vid_s:
+            continue
+        c = h.get("cosine_to_regime_fingerprint_4d")
+        if c is None:
+            continue
+        out[vid_s] = float(c)
+    return out
+
+
 def _fmt_pair(a: str, b: str) -> str:
     x, y = sorted((a, b))
     return f"{x}|{y}"
@@ -44,6 +63,8 @@ def build_intersection(
     *,
     regime_to_path: Mapping[str, Path],
     distinctive: bool = True,
+    relaxed_min_regimes: int = 3,
+    relaxed_min_cosine: float = 0.0,
 ) -> Dict[str, Any]:
     regime_ids = tuple(sorted(regime_to_path.keys()))
     if len(regime_ids) != 4:
@@ -51,6 +72,7 @@ def build_intersection(
 
     sets: Dict[str, Set[str]] = {}
     ordered_lists: Dict[str, List[str]] = {}
+    cosine_maps: Dict[str, Dict[str, float]] = {}
     for rid in regime_ids:
         p = regime_to_path[rid]
         if not p.is_file():
@@ -58,6 +80,7 @@ def build_intersection(
         lst = _verse_ids_from_report(p)
         ordered_lists[rid] = lst
         sets[rid] = set(lst)
+        cosine_maps[rid] = _verse_cosine_map_from_report(p)
 
     source_reports = {rid: str(regime_to_path[rid].resolve()) for rid in regime_ids}
     counts = {rid: len(ordered_lists[rid]) for rid in regime_ids}
@@ -79,6 +102,29 @@ def build_intersection(
         inter = sets[a] & sets[b] & sets[c]
         triple_out[key] = {"count": len(inter), "verse_ids": sorted(inter)}
 
+    # Relaxed gate: require presence in >=N regimes with cosine >= threshold.
+    min_n = max(1, min(int(relaxed_min_regimes), len(regime_ids)))
+    all_verse_ids: Set[str] = set()
+    for rid in regime_ids:
+        all_verse_ids |= sets[rid]
+
+    relaxed_hits: List[Tuple[str, int, float]] = []
+    for vid in all_verse_ids:
+        qualified_regimes = 0
+        cosines: List[float] = []
+        for rid in regime_ids:
+            cmap = cosine_maps.get(rid, {})
+            c = cmap.get(vid)
+            if c is None:
+                continue
+            if c >= float(relaxed_min_cosine):
+                qualified_regimes += 1
+                cosines.append(float(c))
+        if qualified_regimes >= min_n and cosines:
+            relaxed_hits.append((vid, qualified_regimes, min(cosines)))
+    relaxed_hits.sort(key=lambda x: (-x[1], -x[2], x[0]))
+    relaxed_ids = [x[0] for x in relaxed_hits]
+
     out: Dict[str, Any] = {
         "schema": "logos_regime_verse_intersection_v1",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -87,6 +133,12 @@ def build_intersection(
         "regime_key_order": list(regime_ids),
         "intersection_all_four_verse_ids": all_four_sorted,
         "count_all_four": len(all_four_sorted),
+        "relaxed_gate": {
+            "min_regimes": min_n,
+            "min_cosine_to_regime_fingerprint_4d": float(relaxed_min_cosine),
+            "count": len(relaxed_ids),
+            "verse_ids": relaxed_ids,
+        },
         "pairwise": pairwise_out,
         "triple": triple_out,
     }
@@ -110,6 +162,7 @@ def build_intersection(
         ),
         "any_triple_non_empty": any(triple_out[k]["count"] > 0 for k in triple_out),
         "all_four_non_empty": len(all_four_sorted) > 0,
+        "relaxed_non_empty": len(relaxed_ids) > 0,
     }
     return out
 
@@ -155,6 +208,18 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="Omit distinctive_topk_only_in_regime (smaller JSON).",
     )
+    p.add_argument(
+        "--relaxed-min-regimes",
+        type=int,
+        default=3,
+        help="Relaxed gate: minimum number of regimes that must pass cosine threshold (default: 3).",
+    )
+    p.add_argument(
+        "--relaxed-min-cosine",
+        type=float,
+        default=0.0,
+        help="Relaxed gate: minimum cosine_to_regime_fingerprint_4d per regime (default: 0.0).",
+    )
     return p.parse_args()
 
 
@@ -166,7 +231,12 @@ def main() -> int:
         "bear_trend": args.bear,
         "capitulation": args.capitulation,
     }
-    doc = build_intersection(regime_to_path=regime_to_path, distinctive=not args.no_distinctive)
+    doc = build_intersection(
+        regime_to_path=regime_to_path,
+        distinctive=not args.no_distinctive,
+        relaxed_min_regimes=args.relaxed_min_regimes,
+        relaxed_min_cosine=args.relaxed_min_cosine,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
     s = doc["summary"]
@@ -179,6 +249,8 @@ def main() -> int:
                 "any_triple": s["any_triple_non_empty"],
                 "all_four": s["all_four_non_empty"],
                 "count_all_four": doc["count_all_four"],
+                "relaxed_non_empty": s["relaxed_non_empty"],
+                "count_relaxed": int(doc.get("relaxed_gate", {}).get("count", 0)),
             },
             indent=2,
         )

@@ -1,0 +1,21 @@
+{
+  "schema": "master_atoms_morphhb_seed_summary_v1",
+  "rail_id": "rail_morphhb",
+  "generated_at_utc": "2026-03-30T19:15:01.322961+00:00",
+  "inputs": {
+    "atoms": "C:\\workspace\\reports\\constitution\\btrack_pilot\\original_language_master_atoms_latest.jsonl",
+    "morphhb_index": "C:\\workspace\\reports\\constitution\\btrack_pilot\\morphhb_wlc_norm_to_strongs_index_latest.json"
+  },
+  "hebrew_atoms": 22913,
+  "matched": 13035,
+  "unmatched": 9878,
+  "ambiguous": 1922,
+  "coverage": {
+    "hebrew": {
+      "matched_any_candidate": 13035,
+      "unmatched": 9878,
+      "ambiguous_keys": 1922,
+      "fraction_of_hebrew_atoms": 0.568891
+    }
+  }
+}

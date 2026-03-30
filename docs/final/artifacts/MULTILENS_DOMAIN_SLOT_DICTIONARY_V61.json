@@ -1,0 +1,75 @@
+{
+  "schema": "multilens_domain_slot_dictionary_v61",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "failure_case_count": 29,
+  "slots": {
+    "S1": [
+      "regime",
+      "state",
+      "state_id",
+      "명리",
+      "전이",
+      "전이가"
+    ],
+    "S2": [
+      "boundary",
+      "cadence",
+      "caps",
+      "gate",
+      "policy",
+      "trigger"
+    ],
+    "S3": [
+      "direct",
+      "evidence",
+      "traceability",
+      "witness",
+      "원문",
+      "증거",
+      "해시"
+    ],
+    "S4": [
+      "manual",
+      "review",
+      "reviews",
+      "strict",
+      "검토",
+      "검토를",
+      "수동",
+      "엄격"
+    ],
+    "S5": [
+      "sasang",
+      "사상의학",
+      "소양",
+      "소양인에게는",
+      "소양인의",
+      "소음",
+      "소음인의",
+      "체질",
+      "체질과",
+      "체질명",
+      "태양",
+      "태양인은",
+      "태양인의",
+      "태음",
+      "태음인은",
+      "태음인의"
+    ],
+    "S6": [
+      "bible",
+      "logos",
+      "성경",
+      "시편",
+      "원어"
+    ],
+    "S7": [
+      "compression",
+      "fidelity",
+      "jaccard",
+      "saving",
+      "token",
+      "복원"
+    ]
+  }
+}

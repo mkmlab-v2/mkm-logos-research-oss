@@ -1,0 +1,21 @@
+{
+  "schema": "multilens_gematria_4d_bridge_eval_v1",
+  "ts_utc": "2026-03-30T16:53:11.161931+00:00",
+  "source_report": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+  "run_config": {
+    "include_gematria_metadata": true,
+    "include_gematria_4d_bridge": true
+  },
+  "coverage": {
+    "case_count": 40,
+    "gematria_metadata_cases": 40,
+    "gematria_4d_bridge_cases": 40,
+    "state16_mapped_cases": 40
+  },
+  "bridge_metrics": {
+    "avg_distance_to_state16": 0.010000000000000009,
+    "max_distance_to_state16": 0.010000000000000009,
+    "min_distance_to_state16": 0.010000000000000009
+  },
+  "note": "Coverage and distance only; this is not an accuracy uplift proof."
+}

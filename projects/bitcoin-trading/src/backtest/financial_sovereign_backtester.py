@@ -1,0 +1,760 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+🏛️ Financial Sovereign Upgrade 블랙박스 백테스트 시스템
+
+과거 시점에서 Financial Sovereign Harness와 명리 컨트롤러 Phase 2가 통합된
+비트코인 자동매매 시스템의 성능을 검증합니다.
+
+핵심 특징:
+1. 블랙박스 테스트: 실제 전략 클래스 사용 (내부 로직 숨김)
+2. 과거 데이터 재현: 실제 시장 조건 재현
+3. Financial Sovereign Harness 통합: Signal ID 생성 및 검증
+4. 명리 컨트롤러 Phase 2 통합: 타이밍 판단 및 신뢰도 조정
+5. 성능 지표 수집: 수익률, 승률, 최대 낙폭 등
+
+작성일: 2026-02-14
+"""
+
+import sys
+from pathlib import Path
+from typing import Dict, List, Any, Optional, Tuple
+from datetime import datetime, timedelta
+import pandas as pd
+import numpy as np
+import json
+import logging
+import yaml
+
+# 경로 설정
+workspace_root = Path(__file__).parent.parent.parent.parent
+bitcoin_trading_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(workspace_root))
+sys.path.insert(0, str(workspace_root / "scripts"))
+sys.path.insert(0, str(bitcoin_trading_root))
+sys.path.insert(0, str(bitcoin_trading_root / "src"))
+
+# 로깅 설정
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# 전략 클래스 import
+STRATEGY_AVAILABLE = False
+try:
+    from src.strategy.crypto_nitro_live_strategy import CryptoNitroLiveStrategy
+    STRATEGY_AVAILABLE = True
+except ImportError:
+    try:
+        from strategy.crypto_nitro_live_strategy import CryptoNitroLiveStrategy
+        STRATEGY_AVAILABLE = True
+    except ImportError as e:
+        STRATEGY_AVAILABLE = False
+        logger.warning(f"⚠️ CryptoNitroLiveStrategy를 import할 수 없습니다: {e}")
+
+# Financial Sovereign Harness import
+HARNESS_AVAILABLE = False
+try:
+    from tools.core.financial_sovereign_harness import FinancialSovereignHarness
+    HARNESS_AVAILABLE = True
+except ImportError:
+    try:
+        import sys
+        tools_path = workspace_root / "tools" / "core"
+        if tools_path.exists():
+            sys.path.insert(0, str(tools_path.parent.parent))
+        from tools.core.financial_sovereign_harness import FinancialSovereignHarness
+        HARNESS_AVAILABLE = True
+    except ImportError as e:
+        HARNESS_AVAILABLE = False
+        logger.warning(f"⚠️ FinancialSovereignHarness를 import할 수 없습니다: {e}")
+
+
+class FinancialSovereignBacktester:
+    """
+    🏛️ Financial Sovereign Upgrade 블랙박스 백테스트 시스템
+    
+    과거 데이터를 사용하여 통합된 시스템의 성능을 검증합니다.
+    """
+    
+    def __init__(
+        self,
+        symbol: str = "BTCUSDT",
+        initial_capital: float = 10000.0,
+        leverage: int = 2,
+        commission_rate: float = 0.001,  # 0.1% 수수료
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+        data_file: Optional[str] = None,  # 과거 데이터 파일 경로
+        calibration_mode: bool = False,  # True: harness 미생성, 전략 경량 모드(4D/PhaseSpace/Historical 스킵)
+    ):
+        """
+        Args:
+            symbol: 거래 심볼
+            initial_capital: 초기 자본
+            leverage: 레버리지
+            commission_rate: 거래 수수료율
+            start_date: 백테스트 시작 날짜
+            end_date: 백테스트 종료 날짜
+            data_file: 과거 데이터 파일 경로 (CSV 또는 JSON)
+            calibration_mode: 캘리브레이션용 경량 모드 (harness 미생성, 전략은 backtest_calibration=True)
+        """
+        if not STRATEGY_AVAILABLE:
+            raise ImportError("CryptoNitroLiveStrategy를 사용할 수 없습니다.")
+        
+        self.symbol = symbol
+        self.initial_capital = initial_capital
+        self.leverage = leverage
+        self.commission_rate = commission_rate
+        self.start_date = start_date
+        self.end_date = end_date
+        self.data_file = data_file
+        self.calibration_mode = calibration_mode
+        
+        # 백테스트 상태
+        self.capital = initial_capital
+        self.position = 0.0  # 포지션 크기 (BTC)
+        self.position_value = 0.0  # 포지션 가치 (USDT)
+        self.entry_price = 0.0
+        self.position_side = None  # "LONG" or "SHORT"
+        
+        # 거래 기록
+        self.trades = []
+        self.equity_curve = []
+        self.signals = []
+        
+        # 성능 지표
+        self.total_trades = 0
+        self.winning_trades = 0
+        self.losing_trades = 0
+        self.total_pnl = 0.0
+        self.max_drawdown = 0.0
+        self.peak_capital = initial_capital
+        
+        # Financial Sovereign Harness 통합 (calibration_mode면 스킵)
+        self.harness = None
+        if not calibration_mode and HARNESS_AVAILABLE:
+            try:
+                codebook_path = bitcoin_trading_root / "data" / "backtest_signal_codebook.json"
+                codebook_path.parent.mkdir(parents=True, exist_ok=True)
+                self.harness = FinancialSovereignHarness(codebook_path=str(codebook_path))
+                logger.info("✅ Financial Sovereign Harness 초기화 완료 (백테스트용)")
+            except Exception as e:
+                logger.warning(f"⚠️ Financial Sovereign Harness 초기화 실패: {e}")
+        
+        # 전략 초기화 (블랙박스) — calibration_mode면 경량 모드(4D/PhaseSpace/Historical 스킵)
+        self.strategy = CryptoNitroLiveStrategy(
+            symbol=symbol,
+            initial_capital=initial_capital,
+            leverage=leverage,
+            use_great_trunk_filter=True,
+            binance_client=None,  # 백테스트에서는 실제 API 불필요
+            backtest_calibration=calibration_mode,
+        )
+        
+        logger.info(f"✅ Financial Sovereign Backtester 초기화 완료")
+        logger.info(f"   초기 자본: ${initial_capital:,.2f}")
+        logger.info(f"   레버리지: {leverage}x")
+        logger.info(f"   수수료율: {commission_rate:.2%}")
+    
+    def download_historical_data(
+        self,
+        months: int = 6,
+        interval: str = "1d"
+    ) -> pd.DataFrame:
+        """
+        Binance에서 과거 데이터 자동 다운로드
+        
+        Args:
+            months: 다운로드할 개월 수
+            interval: 시간 간격 ("1m", "5m", "15m", "1h", "4h", "1d" 등)
+        
+        Returns:
+            가격 데이터 DataFrame
+        """
+        logger.info("📥 Binance에서 과거 데이터 다운로드 중...")
+        logger.info(f"   심볼: {self.symbol}")
+        logger.info(f"   간격: {interval}")
+        logger.info(f"   기간: 최근 {months}개월")
+        
+        try:
+            import requests
+            from datetime import timedelta
+            
+            # Binance 공개 API 엔드포인트 (API 키 불필요)
+            url = "https://api.binance.com/api/v3/klines"
+            
+            # 날짜 범위 계산
+            end_date = self.end_date if self.end_date else datetime.now()
+            start_date = self.start_date if self.start_date else (end_date - timedelta(days=months * 30))
+            
+            # 시작 시간 (밀리초)
+            start_time = int(start_date.timestamp() * 1000)
+            end_time = int(end_date.timestamp() * 1000)
+            
+            all_klines = []
+            current_start = start_time
+            limit = 1000  # Binance API 최대 제한
+            
+            logger.info(f"   시작: {start_date.strftime('%Y-%m-%d')}")
+            logger.info(f"   종료: {end_date.strftime('%Y-%m-%d')}")
+            
+            # 배치로 데이터 다운로드
+            while current_start < end_time:
+                params = {
+                    'symbol': self.symbol,
+                    'interval': interval,
+                    'startTime': current_start,
+                    'endTime': end_time,
+                    'limit': limit
+                }
+                
+                response = requests.get(url, params=params, timeout=30)
+                response.raise_for_status()
+                klines = response.json()
+                
+                if not klines:
+                    break
+                
+                all_klines.extend(klines)
+                
+                # 다음 배치 시작 시간 (마지막 캔들의 종료 시간 + 1ms)
+                current_start = klines[-1][6] + 1  # close_time + 1ms
+                
+                # 진행 상황 출력
+                progress = (current_start - start_time) / (end_time - start_time) * 100
+                print(f"   진행: {progress:.1f}% ({len(all_klines)}개 캔들)", end='\r')
+                
+                # API Rate Limit 방지 (0.1초 대기)
+                import time
+                time.sleep(0.1)
+            
+            logger.info("")  # 줄바꿈
+            
+            if not all_klines:
+                logger.error("❌ 데이터를 다운로드할 수 없습니다.")
+                return pd.DataFrame()
+            
+            # DataFrame 생성
+            df = pd.DataFrame(all_klines, columns=[
+                'timestamp', 'open', 'high', 'low', 'close', 'volume',
+                'close_time', 'quote_volume', 'trades', 'taker_buy_base',
+                'taker_buy_quote', 'ignore'
+            ])
+            
+            # 날짜 컬럼 변환
+            df['date'] = pd.to_datetime(df['timestamp'], unit='ms')
+            df.set_index('date', inplace=True)
+            
+            # 숫자 형식 변환
+            for col in ['open', 'high', 'low', 'close', 'volume', 'quote_volume']:
+                df[col] = df[col].astype(float)
+            
+            # 중복 제거 및 정렬
+            df = df.drop_duplicates(subset=['timestamp'])
+            df = df.sort_index()
+            
+            # 날짜 필터링
+            if self.start_date:
+                df = df[df.index >= self.start_date]
+            if self.end_date:
+                df = df[df.index <= self.end_date]
+            
+            logger.info(f"✅ 데이터 다운로드 완료: {len(df)}개 캔들")
+            logger.info(f"   기간: {df.index[0]} ~ {df.index[-1]}")
+            logger.info(f"   가격 범위: ${df['low'].min():.2f} ~ ${df['high'].max():.2f}")
+            
+            # 데이터 저장 (선택적)
+            data_dir = bitcoin_trading_root / "data"
+            data_dir.mkdir(parents=True, exist_ok=True)
+            data_file = data_dir / f"{self.symbol}_{interval}_historical.csv"
+            df.to_csv(data_file)
+            logger.info(f"💾 데이터 저장: {data_file}")
+            
+            return df
+            
+        except Exception as e:
+            logger.error(f"❌ 데이터 다운로드 실패: {e}")
+            return pd.DataFrame()
+    
+    def load_historical_data(self, data_file: Optional[str] = None) -> pd.DataFrame:
+        """
+        과거 데이터 로드 (파일이 없으면 자동 다운로드)
+        
+        Args:
+            data_file: 데이터 파일 경로 (None이면 기본 경로 사용)
+        
+        Returns:
+            가격 데이터 DataFrame
+        """
+        if data_file is None:
+            data_file = self.data_file
+        
+        if data_file is None:
+            # 기본 데이터 파일 경로
+            data_file = bitcoin_trading_root / "data" / "historical_btc_data.csv"
+        
+        data_path = Path(data_file)
+        
+        # 파일이 없으면 자동 다운로드 (요청 기간 기반)
+        if not data_path.exists():
+            logger.info(f"📥 데이터 파일이 없습니다. 자동 다운로드를 시작합니다...")
+            months = 6
+            if self.start_date and self.end_date and self.end_date > self.start_date:
+                days = max(30, (self.end_date - self.start_date).days)
+                months = max(1, int(np.ceil(days / 30)))
+            return self.download_historical_data(months=months, interval="1d")
+        
+        try:
+            # CSV 파일 로드
+            df = pd.read_csv(data_path)
+            
+            # 날짜 컬럼 변환
+            if 'timestamp' in df.columns:
+                df['date'] = pd.to_datetime(df['timestamp'], unit='ms')
+            elif 'date' in df.columns:
+                df['date'] = pd.to_datetime(df['date'])
+            else:
+                logger.error("❌ 날짜 컬럼을 찾을 수 없습니다. 자동 다운로드를 시도합니다...")
+                return self.download_historical_data(months=6, interval="1d")
+            
+            df.set_index('date', inplace=True)
+            
+            # 필수 컬럼 확인
+            required_columns = ['open', 'high', 'low', 'close', 'volume']
+            missing_columns = [col for col in required_columns if col not in df.columns]
+            if missing_columns:
+                logger.error(f"❌ 필수 컬럼이 없습니다: {missing_columns}. 자동 다운로드를 시도합니다...")
+                return self.download_historical_data(months=6, interval="1d")
+            
+            # 날짜 필터링
+            if self.start_date:
+                df = df[df.index >= self.start_date]
+            if self.end_date:
+                df = df[df.index <= self.end_date]
+            
+            logger.info(f"✅ 과거 데이터 로드 완료: {len(df)}개 캔들")
+            logger.info(f"   기간: {df.index[0]} ~ {df.index[-1]}")
+            
+            return df
+            
+        except Exception as e:
+            logger.error(f"❌ 데이터 로드 실패: {e}. 자동 다운로드를 시도합니다...")
+            months = 6
+            if self.start_date and self.end_date and self.end_date > self.start_date:
+                days = max(30, (self.end_date - self.start_date).days)
+                months = max(1, int(np.ceil(days / 30)))
+            return self.download_historical_data(months=months, interval="1d")
+    
+    def run_backtest(self, historical_data: pd.DataFrame) -> Dict[str, Any]:
+        """
+        백테스트 실행
+        
+        Args:
+            historical_data: 과거 가격 데이터
+        
+        Returns:
+            백테스트 결과
+        """
+        if len(historical_data) == 0:
+            logger.error("❌ 과거 데이터가 없습니다.")
+            return {}
+        
+        logger.info("=" * 80)
+        logger.info("🏛️ Financial Sovereign Upgrade 블랙박스 백테스트 시작")
+        logger.info("=" * 80)
+        
+        # 백테스트 루프 — 시점 t까지의 봉만 전략에 전달 (미래 봉 누설 방지)
+        # 이전 구현은 전체 히스토리를 유지한 채 iloc[-1]만 덮어써 지표/신호가 왜곡되거나
+        # 거래가 사실상 발생하지 않는 경우가 있었음.
+        for idx, (timestamp, row) in enumerate(historical_data.iterrows()):
+            current_price = float(row["close"])
+            current_time = timestamp if isinstance(timestamp, datetime) else pd.to_datetime(timestamp)
+
+            self.strategy.price_data = historical_data.iloc[: idx + 1].copy()
+            
+            # 🏛️ 블랙박스: 전략 클래스의 calculate_trading_signal 호출
+            try:
+                signal_data = self.strategy.calculate_trading_signal(
+                    current_price=current_price,
+                    current_time=current_time
+                )
+            except Exception as e:
+                logger.warning(f"⚠️ 신호 생성 실패: {e}")
+                signal_data = {
+                    "signal": "HOLD",
+                    "confidence": 0.0,
+                    "leverage_multiplier": 1.0
+                }
+            
+            signal = signal_data.get("signal", "HOLD")
+            confidence = signal_data.get("confidence", 0.0)
+            signal_id = signal_data.get("signal_id")
+            
+            # 신호 기록
+            self.signals.append({
+                "timestamp": current_time,
+                "signal": signal,
+                "confidence": confidence,
+                "price": current_price,
+                "signal_id": signal_id
+            })
+            
+            # 🏛️ Financial Sovereign Harness: 신호 검증 (거래 실행 전)
+            if self.harness and signal_id and signal != "HOLD":
+                try:
+                    expected_signal = {
+                        "signal": signal,
+                        "confidence": confidence,
+                        "price": current_price
+                    }
+                    
+                    verified_signal = self.harness.verify_signal(
+                        signal_id=signal_id,
+                        expected_signal=expected_signal
+                    )
+                    
+                    if not verified_signal.is_valid:
+                        logger.warning(
+                            f"⚠️ 헌법 제3조 위반: 신호 검증 실패 (Signal ID: {signal_id})"
+                        )
+                        logger.warning(f"   오류: {verified_signal.error_message}")
+                        logger.warning("   거래 실행 중단 (100% Literal Restoration 보장)")
+                        signal = "HOLD"  # 검증 실패 시 거래 중단
+                except Exception as e:
+                    logger.warning(f"⚠️ 신호 검증 실패: {e}, 거래 계속 진행 (Fallback)")
+            
+            # 거래 실행
+            if signal != "HOLD" and confidence >= self.strategy.min_confidence:
+                self._execute_trade(
+                    signal=signal,
+                    price=current_price,
+                    confidence=confidence,
+                    timestamp=current_time,
+                    signal_data=signal_data
+                )
+            
+            # 자산 업데이트
+            self._update_equity(current_price)
+
+            # 🛡️ 리스크 관리: TP/SL 조건 만족 시 포지션 청산
+            # (calibration_mode에서도 스윕 안정화를 위해 활성화)
+            try:
+                stop_loss_ratio = float(getattr(self.strategy, "stop_loss_ratio", 0.02) or 0.02)
+                take_profit_ratio = float(getattr(self.strategy, "take_profit_ratio", 0.04) or 0.04)
+
+                if self.position_side == "LONG" and self.entry_price > 0:
+                    move_ratio = (current_price - self.entry_price) / self.entry_price
+                    if move_ratio <= -stop_loss_ratio or move_ratio >= take_profit_ratio:
+                        self._close_position(price=current_price, timestamp=current_time)
+
+                elif self.position_side == "SHORT" and self.entry_price > 0:
+                    move_ratio = (self.entry_price - current_price) / self.entry_price
+                    if move_ratio <= -stop_loss_ratio or move_ratio >= take_profit_ratio:
+                        self._close_position(price=current_price, timestamp=current_time)
+            except Exception as e:
+                logger.debug(f"TP/SL close check failed(무시): {e}")
+
+            # 진행 상황 로깅 (100개 캔들마다)
+            if (idx + 1) % 100 == 0:
+                progress = (idx + 1) / len(historical_data) * 100
+                logger.info(
+                    f"📊 진행 상황: {progress:.1f}% "
+                    f"(자산: ${self.capital + self.position_value:,.2f}, "
+                    f"거래: {self.total_trades}회)"
+                )
+        
+        # 백테스트 종료 시점에 미청산 포지션을 청산해 승패/수수료가 누락되지 않게 함
+        if self.position != 0 and self.position_side in ("LONG", "SHORT"):
+            last_row = historical_data.iloc[-1]
+            last_price = float(last_row["close"])
+            last_ts = historical_data.index[-1]
+            last_time = last_ts if isinstance(last_ts, datetime) else pd.to_datetime(last_ts)
+            self._close_position(price=last_price, timestamp=last_time)
+
+        # 최종 결과 계산
+        final_capital = self.capital + self.position_value
+        total_return = (final_capital - self.initial_capital) / self.initial_capital
+        
+        result = {
+            "initial_capital": self.initial_capital,
+            "final_capital": final_capital,
+            "total_return": total_return,
+            "total_trades": self.total_trades,
+            "winning_trades": self.winning_trades,
+            "losing_trades": self.losing_trades,
+            "win_rate": self.winning_trades / self.total_trades if self.total_trades > 0 else 0.0,
+            "max_drawdown": self.max_drawdown,
+            "total_pnl": self.total_pnl,
+            "signals_count": len(self.signals),
+            "trades": self.trades[-100:] if len(self.trades) > 100 else self.trades  # 최근 100개만
+        }
+        
+        logger.info("=" * 80)
+        logger.info("🏛️ 백테스트 완료")
+        logger.info("=" * 80)
+        logger.info(f"초기 자본: ${self.initial_capital:,.2f}")
+        logger.info(f"최종 자산: ${final_capital:,.2f}")
+        logger.info(f"총 수익률: {total_return:.2%}")
+        logger.info(f"총 거래 횟수: {self.total_trades}회")
+        logger.info(f"승률: {result['win_rate']:.2%}")
+        logger.info(f"최대 낙폭: {self.max_drawdown:.2%}")
+        
+        return result
+
+    def get_signals_dataframe(self) -> pd.DataFrame:
+        """
+        백테스트 실행 후 기록된 신호를 DataFrame으로 반환 (VectorBT 등 외부 백테스트용).
+        index=timestamp, columns=['close','signal'].
+        """
+        if not self.signals:
+            return pd.DataFrame(columns=["close", "signal"])
+        timestamps = [s["timestamp"] for s in self.signals]
+        if hasattr(timestamps[0], "tzinfo") and timestamps[0].tzinfo is None:
+            timestamps = [pd.Timestamp(t) for t in timestamps]
+        return pd.DataFrame(
+            {
+                "close": [s["price"] for s in self.signals],
+                "signal": [s["signal"] for s in self.signals],
+            },
+            index=pd.DatetimeIndex(timestamps),
+        )
+
+    def _execute_trade(
+        self,
+        signal: str,
+        price: float,
+        confidence: float,
+        timestamp: datetime,
+        signal_data: Dict[str, Any]
+    ):
+        """
+        거래 실행 (백테스트)
+        
+        Args:
+            signal: 매매 신호 (BUY, SELL)
+            price: 현재 가격
+            confidence: 신뢰도
+            timestamp: 타임스탬프
+            signal_data: 신호 데이터
+        """
+        # 포지션 크기: 자본 30% × BTC-6 레짐 multiplier (0.2~1.5 구간 반영)
+        leverage_mult = float(signal_data.get("leverage_multiplier", 1.0))
+        min_mul = float(getattr(self.strategy, "risk_multiplier_min", 0.5) or 0.5)
+        max_mul = float(getattr(self.strategy, "risk_multiplier_max", 1.2) or 1.2)
+        leverage_mult = max(min_mul, min(max_mul, leverage_mult))
+        position_size_usdt = self.capital * 0.3 * leverage_mult
+        position_size_btc = position_size_usdt / price
+        
+        # 수수료 계산
+        commission = position_size_usdt * self.commission_rate
+        
+        if signal == "BUY" and self.position_side != "LONG":
+            # 롱 포지션 오픈
+            if self.position_side == "SHORT":
+                # 기존 숏 포지션 청산
+                self._close_position(price, timestamp)
+            
+            # 롱 포지션 오픈
+            self.position = position_size_btc
+            self.position_value = position_size_usdt
+            self.entry_price = price
+            self.position_side = "LONG"
+            self.capital -= (position_size_usdt + commission)
+            
+            self.trades.append({
+                "timestamp": timestamp,
+                "action": "OPEN_LONG",
+                "price": price,
+                "size": position_size_btc,
+                "value": position_size_usdt,
+                "commission": commission,
+                "confidence": confidence,
+                "signal_id": signal_data.get("signal_id")
+            })
+            self.total_trades += 1
+            
+        elif signal == "SELL" and self.position_side != "SHORT":
+            # 숏 포지션 오픈
+            if self.position_side == "LONG":
+                # 기존 롱 포지션 청산
+                self._close_position(price, timestamp)
+            
+            # 숏 포지션 오픈
+            self.position = position_size_btc
+            self.position_value = position_size_usdt
+            self.entry_price = price
+            self.position_side = "SHORT"
+            self.capital -= (position_size_usdt + commission)
+            
+            self.trades.append({
+                "timestamp": timestamp,
+                "action": "OPEN_SHORT",
+                "price": price,
+                "size": position_size_btc,
+                "value": position_size_usdt,
+                "commission": commission,
+                "confidence": confidence,
+                "signal_id": signal_data.get("signal_id")
+            })
+            self.total_trades += 1
+    
+    def _close_position(self, price: float, timestamp: datetime):
+        """
+        포지션 청산
+        
+        Args:
+            price: 청산 가격
+            timestamp: 타임스탬프
+        """
+        if self.position == 0:
+            return
+        
+        # 손익 계산
+        if self.position_side == "LONG":
+            pnl = (price - self.entry_price) * self.position * self.leverage
+        else:  # SHORT
+            pnl = (self.entry_price - price) * self.position * self.leverage
+        
+        # 수수료/자본 업데이트 스케일 보정
+        # position_value은 _update_equity에서 레버리지 기반 마크투마켓으로 덮어써질 수 있어
+        # 잦은 청산(TP/SL)에서 회계 스케일이 폭주할 수 있음.
+        # 여기서는 청산 시점의 레버리지 포지션가가 아니라, 포지션 진입 명목가를 기준으로 계산한다.
+        position_notional_usdt = float(self.position * self.entry_price)
+        commission = position_notional_usdt * self.commission_rate
+
+        # 순 손익
+        net_pnl = pnl - commission
+
+        # 자본 업데이트: 마진(명목가) + 손익(순)
+        self.capital += position_notional_usdt + net_pnl
+        self.total_pnl += net_pnl
+        
+        # 거래 기록
+        self.trades.append({
+            "timestamp": timestamp,
+            "action": f"CLOSE_{self.position_side}",
+            "price": price,
+            "entry_price": self.entry_price,
+            "size": self.position,
+            "pnl": pnl,
+            "net_pnl": net_pnl,
+            "commission": commission
+        })
+        
+        # 승패 기록
+        if net_pnl > 0:
+            self.winning_trades += 1
+        else:
+            self.losing_trades += 1
+        
+        # 포지션 초기화
+        self.position = 0.0
+        self.position_value = 0.0
+        self.entry_price = 0.0
+        self.position_side = None
+    
+    def _update_equity(self, current_price: float):
+        """
+        자산 업데이트 (낙폭 계산 포함)
+        
+        Args:
+            current_price: 현재 가격
+        """
+        # 포지션 가치 계산
+        if self.position > 0:
+            if self.position_side == "LONG":
+                self.position_value = self.position * current_price * self.leverage
+            else:  # SHORT
+                self.position_value = self.position * (2 * self.entry_price - current_price) * self.leverage
+        
+        # 총 자산
+        total_equity = self.capital + self.position_value
+        
+        # 자산 곡선 기록
+        self.equity_curve.append(total_equity)
+        
+        # 최대 자산 업데이트
+        if total_equity > self.peak_capital:
+            self.peak_capital = total_equity
+        
+        # 최대 낙폭 계산
+        if self.peak_capital > 0:
+            drawdown = (self.peak_capital - total_equity) / self.peak_capital
+            if drawdown > self.max_drawdown:
+                self.max_drawdown = drawdown
+    
+    def save_results(self, output_file: Optional[str] = None):
+        """
+        백테스트 결과 저장
+        
+        Args:
+            output_file: 출력 파일 경로
+        """
+        if output_file is None:
+            output_file = bitcoin_trading_root / "data" / "backtest_results.json"
+        
+        output_path = Path(output_file)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        results = {
+            "backtest_date": datetime.now().isoformat(),
+            "initial_capital": self.initial_capital,
+            "final_capital": self.capital + self.position_value,
+            "total_return": (self.capital + self.position_value - self.initial_capital) / self.initial_capital,
+            "total_trades": self.total_trades,
+            "winning_trades": self.winning_trades,
+            "losing_trades": self.losing_trades,
+            "win_rate": self.winning_trades / self.total_trades if self.total_trades > 0 else 0.0,
+            "max_drawdown": self.max_drawdown,
+            "total_pnl": self.total_pnl,
+            "signals_count": len(self.signals),
+            "trades": self.trades[-100:] if len(self.trades) > 100 else self.trades
+        }
+        
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(results, f, ensure_ascii=False, indent=2, default=str)
+        
+        logger.info(f"✅ 백테스트 결과 저장 완료: {output_path}")
+
+
+if __name__ == "__main__":
+    # 백테스트 실행 예시
+    logger.info("=" * 80)
+    logger.info("🏛️ Financial Sovereign Upgrade 블랙박스 백테스트")
+    logger.info("=" * 80)
+    
+    # 백테스트 기간 설정 (최근 6개월)
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=180)  # 6개월
+    
+    backtester = FinancialSovereignBacktester(
+        symbol="BTCUSDT",
+        initial_capital=10000.0,
+        leverage=2,
+        commission_rate=0.001,
+        start_date=start_date,
+        end_date=end_date
+    )
+    
+    # 과거 데이터 자동 수집 및 로드
+    logger.info("📥 과거 데이터 자동 수집 중...")
+    historical_data = backtester.load_historical_data()
+    
+    if len(historical_data) > 0:
+        logger.info(f"✅ 데이터 준비 완료: {len(historical_data)}개 캔들")
+        
+        # 백테스트 실행
+        results = backtester.run_backtest(historical_data)
+        
+        # 결과 저장
+        backtester.save_results()
+        
+        logger.info("=" * 80)
+        logger.info("✅ 백테스트 완료!")
+        logger.info("=" * 80)
+    else:
+        logger.error("❌ 과거 데이터를 수집할 수 없습니다.")
+

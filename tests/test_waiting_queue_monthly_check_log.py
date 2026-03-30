@@ -74,3 +74,15 @@ def test_waiting_queue_has_deadline_fields_in_recent_rows() -> None:
         value = str(latest.get(key, "")).strip()
         assert value, f"missing {key}"
         datetime.fromisoformat(value)
+
+
+def test_waiting_queue_has_symbol_lane_gate_fields_in_recent_rows() -> None:
+    rows = list(_rows(_LOG))
+    candidates = [r for r in rows if "btrack_symbol_lane_gate" in r or "btrack_symbol_lane_gate_path" in r]
+    assert candidates, "at least one log row must include symbol lane gate fields"
+
+    latest = candidates[-1]
+    assert latest.get("btrack_symbol_lane_gate") == "pass"
+    assert str(latest.get("btrack_symbol_lane_gate_path", "")).endswith(
+        "reports\\constitution\\btrack_pilot\\symbol_lane_gate_latest.json"
+    )

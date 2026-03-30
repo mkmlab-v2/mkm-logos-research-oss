@@ -55,6 +55,9 @@ def main() -> int:
         sensitive_max_saving_rate=sensitive_max_saving_rate,
         hangul_max_saving_rate=hangul_max_saving_rate,
         use_domain_router=True,
+        include_gematria_metadata=True,
+        include_gematria_4d_bridge=True,
+        include_cee_core=True,
     )
     report["active_profile"] = {
         "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",

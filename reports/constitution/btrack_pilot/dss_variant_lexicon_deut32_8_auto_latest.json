@@ -1,0 +1,42 @@
+{
+  "schema": "dss_variant_lexicon_deut32_8_auto_v1",
+  "generated_at_utc": "2026-03-30T18:07:40Z",
+  "target": "Deut.32:8",
+  "input_dss_enriched": "C:\\workspace\\data\\logos\\manuscripts\\dss_parsed_enriched.jsonl",
+  "term_map": {
+    "god": {
+      "dss_weight": 0.044118,
+      "doc_support": 3,
+      "doc_total": 68,
+      "example_source_doc": "docs\\final\\btrack_dss_1QM_col1_excerpt.md",
+      "method": "dss_enriched_unique_source_doc_frequency"
+    },
+    "sons": {
+      "dss_weight": 0.044118,
+      "doc_support": 3,
+      "doc_total": 68,
+      "example_source_doc": "docs\\final\\btrack_dss_1QM_col1_excerpt.md",
+      "method": "dss_enriched_unique_source_doc_frequency"
+    },
+    "israel": {
+      "dss_weight": 0.044118,
+      "doc_support": 3,
+      "doc_total": 68,
+      "example_source_doc": "docs\\final\\btrack_dss_1QS_pure_discipline.md",
+      "method": "dss_enriched_unique_source_doc_frequency"
+    }
+  },
+  "stats": {
+    "total_docs": 68,
+    "tokens_with_support": 3,
+    "min_source_doc_support": 2
+  },
+  "boundaries": {
+    "fact": [
+      "Token weights are derived from observed enriched DSS snippets."
+    ],
+    "hypothesis": [
+      "Coverage depends on current enriched snippet set and may be sparse."
+    ]
+  }
+}

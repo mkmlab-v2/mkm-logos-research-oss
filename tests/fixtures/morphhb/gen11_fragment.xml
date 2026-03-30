@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osis xmlns="http://www.bibletechnologies.net/2003/OSIS/namespace">
+  <osisText xml:lang="he">
+    <div type="book" osisID="Gen">
+      <chapter osisID="Gen.1">
+        <verse osisID="Gen.1.1">
+          <w lemma="b/7225" n="1.0" morph="HR/Ncfsa" id="01xeN">בְּ/רֵאשִׁ֖ית</w>
+          <w lemma="1254 a" morph="HVqp3ms" id="01Nvk">בָּרָ֣א</w>
+          <w lemma="430" n="1" morph="HNcmpa" id="01TyA">אֱלֹהִ֑ים</w>
+        </verse>
+      </chapter>
+    </div>
+  </osisText>
+</osis>

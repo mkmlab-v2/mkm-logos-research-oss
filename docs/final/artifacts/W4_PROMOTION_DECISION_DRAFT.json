@@ -1,0 +1,59 @@
+{
+  "schema": "w4_promotion_decision_draft_v1",
+  "generated_at_utc": "2026-03-31T00:00:00Z",
+  "status": "draft_with_w3_batch_pass",
+  "track": "B-track",
+  "refs": {
+    "p0_tracker": "docs/final/P0_COMMERCIALIZATION_TRACKER.md",
+    "w3_result": "docs/final/artifacts/W3_RESONANCE_RESULT_V1.json",
+    "w3_precheck": "docs/final/artifacts/W3_FALSIFICATION_PRECHECK.json",
+    "w3_batch_summary": "docs/final/artifacts/W3_BATCH_EXPANSION_SUMMARY_V1.json"
+  },
+  "decision": {
+    "go_no_go": "go_candidate",
+    "decision_reason": "Deterministic weighted W3 compute, anti-false-equivalence threshold gate, and notice consistency checks are implemented; current pilot run passes configured gates."
+  },
+  "gate_snapshot": {
+    "schema_validation": "pass",
+    "enum_consistency": "pass",
+    "falsification_check_passed": "pass",
+    "boundary_rules_passed": "pass"
+  },
+  "promotion_constraints": {
+    "atrack_promotion_allowed": false,
+    "requires_explicit_approval": true,
+    "forbidden_without_approval": [
+      "A-track merge",
+      "trading trigger integration",
+      "deterministic public claims"
+    ]
+  },
+  "backlog_if_no_go": [
+    {
+      "id": "bg_001",
+      "title": "Refine scoring trace component weights",
+      "status": "done"
+    },
+    {
+      "id": "bg_002",
+      "title": "Strengthen falsification flags sensitivity",
+      "status": "done"
+    },
+    {
+      "id": "bg_003",
+      "title": "Expand personal lane notice consistency checks",
+      "status": "done"
+    },
+    {
+      "id": "bg_004",
+      "title": "Implement deterministic W3 compute pipeline (replace manual pilot scoring)",
+      "status": "done"
+    },
+    {
+      "id": "bg_005",
+      "title": "Add anti-false-equivalence threshold gate for promotion",
+      "status": "done"
+    }
+  ],
+  "note": "GO_CANDIDATE is provisional and scoped to current B-track runs only. Final promotion still requires explicit approval."
+}

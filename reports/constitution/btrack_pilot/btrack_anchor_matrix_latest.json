@@ -1,0 +1,369 @@
+{
+  "schema": "btrack_anchor_matrix_v1",
+  "generated_at_utc": "2026-03-30T16:48:37Z",
+  "counts": {
+    "rows": 14,
+    "verified_rows": 14
+  },
+  "inputs": {
+    "pair_before": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_pair_details_latest.jsonl",
+    "pair_after": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_pair_details_anchor_verified_only_latest.jsonl"
+  },
+  "impact_summary": {
+    "avg_confidence_delta_gain": 0.234164,
+    "avg_snr_delta_gain": 0.166415,
+    "avg_jaccard_gate_flags_before_vs_after": 0.392857
+  },
+  "rows": [
+    {
+      "state_id": 1,
+      "entry_id": "ENTRY_01",
+      "canonical_ref": "Lev.21.4",
+      "satellite_ref": "1QM 1:1-7 (War Scroll, Col.1)",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.075865,
+        "snr_delta_b_minus_a": -0.053105
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.014135,
+        "snr_delta_b_minus_a": 0.016895
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.09,
+        "snr_delta_gain": 0.07,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    },
+    {
+      "state_id": 3,
+      "entry_id": "ENTRY_05",
+      "canonical_ref": "Ps.27.10",
+      "satellite_ref": "1QS IX 10-11 (Community Rule; Eng. citation in btrack_dss_1QS_sectarian_context.md)",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.268799,
+        "snr_delta_b_minus_a": -0.188159
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.0,
+        "snr_delta_b_minus_a": 0.0
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.268799,
+        "snr_delta_gain": 0.188159,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    },
+    {
+      "state_id": 4,
+      "entry_id": "ENTRY_06",
+      "canonical_ref": "Exod.20.15",
+      "satellite_ref": "1QpHab (1Q15) | loc=col.VII, line=1-17 (Qumran-Digital transcription table) | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill), Qumran-Digital 1QpHab transcription (2024-04-29) | status=partial_anchor_verified (column+line-range)",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.479262,
+        "snr_delta_b_minus_a": -0.335483
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.0,
+        "snr_delta_b_minus_a": 0.0
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.479262,
+        "snr_delta_gain": 0.335483,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    },
+    {
+      "state_id": 5,
+      "entry_id": "ENTRY_07",
+      "canonical_ref": "Ezra.2.45",
+      "satellite_ref": "11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD (public line-level transcription unavailable in consulted open sources) | refs=Yadin 1977-1983 (11Q19 primary); DJD XXIII (11Q20-31, Temple b/c comparanda) | status=partial_anchor_verified (column-range)",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.350217,
+        "snr_delta_b_minus_a": -0.245152
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.0,
+        "snr_delta_b_minus_a": 0.0
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.350217,
+        "snr_delta_gain": 0.245152,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    },
+    {
+      "state_id": 6,
+      "entry_id": "ENTRY_08",
+      "canonical_ref": "Neh.7.56",
+      "satellite_ref": "4Q319 (4QOtot) | loc=fragment/sigla=4QOtot, plate=Pls X-XIII, line=TBD (public line transcription unavailable in consulted open sources) | refs=DJD XXI (Talmon et al. 2001), IAA 4Q319 archive page | status=partial_anchor_verified (sigla+plates)",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.400686,
+        "snr_delta_b_minus_a": -0.28048
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.0,
+        "snr_delta_b_minus_a": 0.0
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.400686,
+        "snr_delta_gain": 0.28048,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    },
+    {
+      "state_id": 7,
+      "entry_id": "ENTRY_09",
+      "canonical_ref": "Ps.36.1",
+      "satellite_ref": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=1-12 | refs=DJD V (Allegro 1968), DSS Study Edition (Brill), Qumran-Digital 4Q169 transcription (2025-03-11) | status=partial_anchor_verified (frag+col+line-range)",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.090101,
+        "snr_delta_b_minus_a": -0.063071
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": -0.000101,
+        "snr_delta_b_minus_a": 0.006929
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.09,
+        "snr_delta_gain": 0.07,
+        "jaccard_gate_flags_before_vs_after": 0.5
+      }
+    },
+    {
+      "state_id": 8,
+      "entry_id": "ENTRY_04",
+      "canonical_ref": "1Chr.8.31",
+      "satellite_ref": "Jubilees 6:29-38 + 364-day notes (btrack_apocrypha_jubilees_ch6_excerpt_charles.md; btrack_apocrypha_jubilees_calendar_364.md)",
+      "corpus_type": "pseudepigrapha",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.075861,
+        "snr_delta_b_minus_a": -0.053103
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.014139,
+        "snr_delta_b_minus_a": 0.016897
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.09,
+        "snr_delta_gain": 0.07,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    },
+    {
+      "state_id": 9,
+      "entry_id": "ENTRY_10",
+      "canonical_ref": "Josh.15.22",
+      "satellite_ref": "CD-A I-II (+4Q266-273) | loc=4QDamascus Document witnesses -> DJD XVIII plates I–XLII; 4Q267 frg.2 line 4 attests boundary-language (מסיגי גבול), but direct CD-A I-II line crosswalk remains TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996), Qumran-Digital 4Q267 transcription (2023-10-25) | status=partial_anchor_verified (plates+line)",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.078584,
+        "snr_delta_b_minus_a": -0.055009
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.011416,
+        "snr_delta_b_minus_a": 0.014991
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.09,
+        "snr_delta_gain": 0.07,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    },
+    {
+      "state_id": 10,
+      "entry_id": "ENTRY_12",
+      "canonical_ref": "Ps.4.6",
+      "satellite_ref": "11Q5 | loc=etcbc linesSort-2020-07-14: 11Q5-18 line-buckets sampled (1-9); MT Ps.4.6 direct verse mapping line remains TBD (not exposed in consulted public 11Q5 transcription) | refs=DJD IV (Sanders 1965), etcbc-dss log, Qumran-Digital 11Q5 transcription (2025-03-11) | status=partial_anchor_verified (scroll+line-buckets)",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.110588,
+        "snr_delta_b_minus_a": -0.077411
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": -0.020588,
+        "snr_delta_b_minus_a": -0.007411
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.09,
+        "snr_delta_gain": 0.07,
+        "jaccard_gate_flags_before_vs_after": 1.0
+      }
+    },
+    {
+      "state_id": 11,
+      "entry_id": "ENTRY_13",
+      "canonical_ref": "Ps.5.2",
+      "satellite_ref": "11Q5 | loc=etcbc linesSort-2020-07-14: 11Q5-18 line-buckets sampled (1-9); MT Ps.5.2 direct verse mapping line remains TBD (not exposed in consulted public 11Q5 transcription) | refs=DJD IV (Sanders 1965), etcbc-dss log, Qumran-Digital 11Q5 transcription (2025-03-11) | status=partial_anchor_verified (scroll+line-buckets)",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.158584,
+        "snr_delta_b_minus_a": -0.111009
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.0,
+        "snr_delta_b_minus_a": 0.0
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.158584,
+        "snr_delta_gain": 0.111009,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    },
+    {
+      "state_id": 13,
+      "entry_id": "ENTRY_11",
+      "canonical_ref": "1Chr.14.6",
+      "satellite_ref": "1QM.1.1",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.330101,
+        "snr_delta_b_minus_a": -0.231071
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.0,
+        "snr_delta_b_minus_a": 0.0
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.330101,
+        "snr_delta_gain": 0.231071,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    },
+    {
+      "state_id": 14,
+      "entry_id": "ENTRY_15",
+      "canonical_ref": "Gen.49.19",
+      "satellite_ref": "4QGen (b-k) | loc=DJD XII Genesis witnesses (Pls VI-XIII); chapter witness confirms Gen.49.1-8 (4Q1/4Q5), but Gen.49.19 direct fragment/line remains TBD | refs=DJD XII (Ulrich et al. 1994), DSSEnglishBible Gen49 page | status=partial_anchor_verified (witness-set+plates+chapter-range)",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.161164,
+        "snr_delta_b_minus_a": -0.112815
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.0,
+        "snr_delta_b_minus_a": 0.0
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.161164,
+        "snr_delta_gain": 0.112815,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    },
+    {
+      "state_id": 15,
+      "entry_id": "ENTRY_02",
+      "canonical_ref": "Ezra.2.49",
+      "satellite_ref": "1Enoch 10:4-6 (Charles / Wikisource ch.10)",
+      "corpus_type": "apocrypha",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.280217,
+        "snr_delta_b_minus_a": -0.196152
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.0,
+        "snr_delta_b_minus_a": 0.0
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.280217,
+        "snr_delta_gain": 0.196152,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    },
+    {
+      "state_id": 16,
+      "entry_id": "ENTRY_16",
+      "canonical_ref": "Ezra.2.54",
+      "satellite_ref": "Ezra-Neh witnesses | loc=no extant DSS witness for Ezra.2.54 list (4Q117 attests Esr 4:2-6, 4:9-11, 5:17, 6:1-6 only); list anchor remains TBD | refs=Qumran-Digital 4Q117 transcription (2024-07-30), LXX Ezra traditions | status=missing_anchor_until_source_update",
+      "corpus_type": "dss",
+      "anchor_status": "verified",
+      "anchor_strength": 0.85,
+      "confidence_boost": 0.03,
+      "snr_boost": 0.03,
+      "evidence_ref": "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json",
+      "delta_before": {
+        "confidence_delta_b_minus_a": -0.399262,
+        "snr_delta_b_minus_a": -0.279483
+      },
+      "delta_after": {
+        "confidence_delta_b_minus_a": 0.0,
+        "snr_delta_b_minus_a": 0.0
+      },
+      "state_delta": {
+        "confidence_delta_gain": 0.399262,
+        "snr_delta_gain": 0.279483,
+        "jaccard_gate_flags_before_vs_after": 0.333333
+      }
+    }
+  ]
+}

@@ -379,8 +379,8 @@
 - Ohaeng 기반 그래프 탐색
 - 인과관계 체인 쿼리
 
-**Phase 5.3: Agentic Swarm 통합**
-- 12 AI 에이전트 오행 분류
+**Phase 5.3: Agentic Swarm 통합 (historical training note)**
+- 12 AI 에이전트 오행 분류 (고정 런타임 강제 규칙 아님; 현재 Cursor 작업 라우팅은 위험/복잡도 기준 동적 선택)
 - 재귀적 자정작용 (최대 3회)
 - 오행 상생/상극 원리 기반 상호작용
 - Quad-Fusion 통합

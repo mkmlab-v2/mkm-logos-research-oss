@@ -1,0 +1,4250 @@
+{
+  "schema": "symbol_gematria_alignment_test_v1",
+  "generated_at_utc": "2026-03-30T17:09:27Z",
+  "inputs": {
+    "input_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_with_vectors_allowlist_off.jsonl",
+    "sample_mode": "random",
+    "sampling_pool_size": 300,
+    "requested_sample_size": 100,
+    "effective_sample_size": 100,
+    "seed": 42,
+    "resonance_threshold_cosine": 0.85
+  },
+  "summary": {
+    "avg_distance_symbol_vs_gematria_4d": 0.479434,
+    "min_distance_symbol_vs_gematria_4d": 0.168079,
+    "max_distance_symbol_vs_gematria_4d": 0.582306,
+    "avg_cosine_symbol_vs_gematria_4d": 0.733809,
+    "resonance_rate": 0.12,
+    "resonance_count": 12,
+    "state16_match_count_when_both_present": 0,
+    "vector_source_histogram": {
+      "heuristic_score_source_mix_v1": 87,
+      "input_vector_4d": 13
+    },
+    "axis_pearson": {
+      "S": 0.014587,
+      "L": 0.021634,
+      "K": 0.654797,
+      "M": 0.489179
+    },
+    "mean_axis_pearson": 0.295049
+  },
+  "policy_gate": {
+    "target_resonance_rate_gte": 0.85,
+    "pass": false,
+    "note": "Pilot gate for symbol-gematria bridge alignment only; not production trading gate."
+  },
+  "boundaries": {
+    "fact": [
+      "Gematria values are computed by scripts/core/gematria_engine.py.",
+      "Gematria-to-4D bridge is computed by scripts/core/gematria_to_4d_bridge.py."
+    ],
+    "hypothesis": [
+      "When input rows lack vector_4d, symbol vectors are estimated by heuristic_score_source_mix_v1.",
+      "This report validates bridge alignment in B-track pilot scope only."
+    ]
+  },
+  "cases": [
+    {
+      "symbol": "take",
+      "rank": 58,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1425552669684788,
+        "L": 0.2016905049765187,
+        "K": 0.0,
+        "M": 0.6557542280550025
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.474431,
+      "cosine_symbol_vs_gematria_4d": 0.736268,
+      "resonant": false
+    },
+    {
+      "symbol": "went",
+      "rank": 13,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.12090525894860533,
+        "L": 0.31853399501695173,
+        "K": 0.0,
+        "M": 0.560560746034443
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.410107,
+      "cosine_symbol_vs_gematria_4d": 0.780687,
+      "resonant": false
+    },
+    {
+      "symbol": "לָהֶם",
+      "rank": 141,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.16156029310125325,
+        "L": 0.13161342458076372,
+        "K": 0.0,
+        "M": 0.7068262823179831
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 75,
+        "compressed_combined_sum": 75,
+        "reconstructed_combined_sum": 75,
+        "raw_hebrew_sum": 75,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 75,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 75,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 3,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 3,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 3,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.2525,
+          "L": 0.2525,
+          "K": 0.2525,
+          "M": 0.24249999999999994
+        },
+        "state16": 6,
+        "distance_to_state16": 0.008660254037844378,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.549762,
+      "cosine_symbol_vs_gematria_4d": 0.666016,
+      "resonant": false
+    },
+    {
+      "symbol": "behold",
+      "rank": 126,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15181304951631705,
+        "L": 0.14087615160084238,
+        "K": 0.0,
+        "M": 0.7073107988828407
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.524585,
+      "cosine_symbol_vs_gematria_4d": 0.702816,
+      "resonant": false
+    },
+    {
+      "symbol": "hundred",
+      "rank": 115,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14422854413638142,
+        "L": 0.1496525418625844,
+        "K": 0.0,
+        "M": 0.7061189140010341
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.523313,
+      "cosine_symbol_vs_gematria_4d": 0.703646,
+      "resonant": false
+    },
+    {
+      "symbol": "words",
+      "rank": 72,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14294948252705073,
+        "L": 0.1856211298458928,
+        "K": 0.0,
+        "M": 0.6714293876270565
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.48903,
+      "cosine_symbol_vs_gematria_4d": 0.726374,
+      "resonant": false
+    },
+    {
+      "symbol": "hath",
+      "rank": 53,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.16400827891552444,
+        "L": 0.20182637594444777,
+        "K": 0.0,
+        "M": 0.6341653451400278
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.452473,
+      "cosine_symbol_vs_gematria_4d": 0.75145,
+      "resonant": false
+    },
+    {
+      "symbol": "joy",
+      "rank": 280,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.17796124836250313,
+        "L": 0.08698142144454923,
+        "K": 0.0,
+        "M": 0.7350573301929476
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.557174,
+      "cosine_symbol_vs_gematria_4d": 0.681867,
+      "resonant": false
+    },
+    {
+      "symbol": "judas",
+      "rank": 45,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.13177673475708712,
+        "L": 0.22414596614928473,
+        "K": 0.0,
+        "M": 0.6440772990936282
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.46581,
+      "cosine_symbol_vs_gematria_4d": 0.742108,
+      "resonant": false
+    },
+    {
+      "symbol": "whom",
+      "rank": 217,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15373915199446675,
+        "L": 0.10407183837707319,
+        "K": 0.0,
+        "M": 0.7421890096284601
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.562071,
+      "cosine_symbol_vs_gematria_4d": 0.678873,
+      "resonant": false
+    },
+    {
+      "symbol": "one",
+      "rank": 17,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.12074075462416155,
+        "L": 0.3101626949180069,
+        "K": 0.0,
+        "M": 0.5690965504578315
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.414953,
+      "cosine_symbol_vs_gematria_4d": 0.777297,
+      "resonant": false
+    },
+    {
+      "symbol": "men",
+      "rank": 16,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.12161130268243597,
+        "L": 0.3123989867200633,
+        "K": 0.0,
+        "M": 0.5659897105975008
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.41278,
+      "cosine_symbol_vs_gematria_4d": 0.778834,
+      "resonant": false
+    },
+    {
+      "symbol": "things",
+      "rank": 48,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14600639570214763,
+        "L": 0.21843635241791565,
+        "K": 0.0,
+        "M": 0.6355572518799367
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.455898,
+      "cosine_symbol_vs_gematria_4d": 0.749011,
+      "resonant": false
+    },
+    {
+      "symbol": "where",
+      "rank": 112,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14681631481602486,
+        "L": 0.14968884335718924,
+        "K": 0.0,
+        "M": 0.7034948418267858
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.520603,
+      "cosine_symbol_vs_gematria_4d": 0.705417,
+      "resonant": false
+    },
+    {
+      "symbol": "neither",
+      "rank": 120,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14465117952893625,
+        "L": 0.14748134618052455,
+        "K": 0.0,
+        "M": 0.7078674742905391
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.525106,
+      "cosine_symbol_vs_gematria_4d": 0.702479,
+      "resonant": false
+    },
+    {
+      "symbol": "well",
+      "rank": 259,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15637034721259377,
+        "L": 0.09305198616695619,
+        "K": 0.0,
+        "M": 0.75057766662045
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.571624,
+      "cosine_symbol_vs_gematria_4d": 0.672923,
+      "resonant": false
+    },
+    {
+      "symbol": "israel",
+      "rank": 14,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1308930394687189,
+        "L": 0.3134289627867198,
+        "K": 0.0,
+        "M": 0.5556779977445614
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.402767,
+      "cosine_symbol_vs_gematria_4d": 0.786037,
+      "resonant": false
+    },
+    {
+      "symbol": "high",
+      "rank": 102,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14066864288604491,
+        "L": 0.15598814268373057,
+        "K": 0.0,
+        "M": 0.7033432144302245
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.520555,
+      "cosine_symbol_vs_gematria_4d": 0.705445,
+      "resonant": false
+    },
+    {
+      "symbol": "burnt",
+      "rank": 293,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.16512878631417274,
+        "L": 0.08428582134867851,
+        "K": 0.0,
+        "M": 0.7505853923371487
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.572736,
+      "cosine_symbol_vs_gematria_4d": 0.672206,
+      "resonant": false
+    },
+    {
+      "symbol": "rest",
+      "rank": 215,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15843136208076647,
+        "L": 0.10404333168118286,
+        "K": 0.0,
+        "M": 0.7375253062380507
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.557376,
+      "cosine_symbol_vs_gematria_4d": 0.681806,
+      "resonant": false
+    },
+    {
+      "symbol": "earth",
+      "rank": 113,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14422854413638142,
+        "L": 0.1496525418625844,
+        "K": 0.0,
+        "M": 0.7061189140010341
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.523313,
+      "cosine_symbol_vs_gematria_4d": 0.703646,
+      "resonant": false
+    },
+    {
+      "symbol": "slew",
+      "rank": 230,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14976925574959057,
+        "L": 0.10138446550245668,
+        "K": 0.0,
+        "M": 0.7488462787479528
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.569058,
+      "cosine_symbol_vs_gematria_4d": 0.67453,
+      "resonant": false
+    },
+    {
+      "symbol": "how",
+      "rank": 143,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15101651090341162,
+        "L": 0.13165506230538326,
+        "K": 0.0,
+        "M": 0.7173284267912052
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.535076,
+      "cosine_symbol_vs_gematria_4d": 0.696019,
+      "resonant": false
+    },
+    {
+      "symbol": "כִּי",
+      "rank": 4,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.18591720920166246,
+        "L": 0.20111745974855053,
+        "K": 0.39265399500660497,
+        "M": 0.22031133604318193
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 30,
+        "compressed_combined_sum": 30,
+        "reconstructed_combined_sum": 30,
+        "raw_hebrew_sum": 30,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 30,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 30,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 2,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 2,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 2,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.248,
+          "L": 0.248,
+          "K": 0.248,
+          "M": 0.256
+        },
+        "state16": 9,
+        "distance_to_state16": 0.006928203230275515,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.168079,
+      "cosine_symbol_vs_gematria_4d": 0.947777,
+      "resonant": true
+    },
+    {
+      "symbol": "tobiyyah",
+      "rank": 82,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1882646049698799,
+        "L": 0.1676722727647413,
+        "K": 0.0,
+        "M": 0.6440631222653788
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.461424,
+      "cosine_symbol_vs_gematria_4d": 0.745255,
+      "resonant": false
+    },
+    {
+      "symbol": "tower",
+      "rank": 291,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15210995405942213,
+        "L": 0.08734027564346739,
+        "K": 0.0,
+        "M": 0.7605497702971106
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.582306,
+      "cosine_symbol_vs_gematria_4d": 0.666369,
+      "resonant": false
+    },
+    {
+      "symbol": "given",
+      "rank": 175,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1503194742416649,
+        "L": 0.11955736515596281,
+        "K": 0.0,
+        "M": 0.7301231606023724
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.548694,
+      "cosine_symbol_vs_gematria_4d": 0.68731,
+      "resonant": false
+    },
+    {
+      "symbol": "cried",
+      "rank": 278,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1516283127587928,
+        "L": 0.09023012344724314,
+        "K": 0.0,
+        "M": 0.7581415637939639
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.579556,
+      "cosine_symbol_vs_gematria_4d": 0.668052,
+      "resonant": false
+    },
+    {
+      "symbol": "according",
+      "rank": 80,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14954184622485905,
+        "L": 0.17629409292536657,
+        "K": 0.0,
+        "M": 0.6741640608497743
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.491195,
+      "cosine_symbol_vs_gematria_4d": 0.72493,
+      "resonant": false
+    },
+    {
+      "symbol": "see",
+      "rank": 111,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14681631481602486,
+        "L": 0.14968884335718924,
+        "K": 0.0,
+        "M": 0.7034948418267858
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.520603,
+      "cosine_symbol_vs_gematria_4d": 0.705417,
+      "resonant": false
+    },
+    {
+      "symbol": "honour",
+      "rank": 173,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.17257491773665193,
+        "L": 0.11682247981831062,
+        "K": 0.0,
+        "M": 0.7106026024450374
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.529397,
+      "cosine_symbol_vs_gematria_4d": 0.699651,
+      "resonant": false
+    },
+    {
+      "symbol": "inhabitants",
+      "rank": 294,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.16512878631417274,
+        "L": 0.08428582134867851,
+        "K": 0.0,
+        "M": 0.7505853923371487
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.572736,
+      "cosine_symbol_vs_gematria_4d": 0.672206,
+      "resonant": false
+    },
+    {
+      "symbol": "עוד",
+      "rank": 288,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.18431306619163357,
+        "L": 0.18892871368357053,
+        "K": 0.4191667782602499,
+        "M": 0.20759144186454606
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 80,
+        "compressed_combined_sum": 80,
+        "reconstructed_combined_sum": 80,
+        "raw_hebrew_sum": 80,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 80,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 80,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 3,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 3,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 3,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.253,
+          "L": 0.253,
+          "K": 0.253,
+          "M": 0.241
+        },
+        "state16": 6,
+        "distance_to_state16": 0.008246211251235327,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.19378,
+      "cosine_symbol_vs_gematria_4d": 0.932645,
+      "resonant": true
+    },
+    {
+      "symbol": "judith",
+      "rank": 195,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15614133434181932,
+        "L": 0.11194616093090268,
+        "K": 0.0,
+        "M": 0.731912504727278
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.551028,
+      "cosine_symbol_vs_gematria_4d": 0.685819,
+      "resonant": false
+    },
+    {
+      "symbol": "host",
+      "rank": 50,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1329577030512376,
+        "L": 0.2178958644044847,
+        "K": 0.0,
+        "M": 0.6491464325442777
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.46998,
+      "cosine_symbol_vs_gematria_4d": 0.739261,
+      "resonant": false
+    },
+    {
+      "symbol": "pass",
+      "rank": 184,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15085483491989607,
+        "L": 0.11705552502766715,
+        "K": 0.0,
+        "M": 0.7320896400524368
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.550846,
+      "cosine_symbol_vs_gematria_4d": 0.685944,
+      "resonant": false
+    },
+    {
+      "symbol": "two",
+      "rank": 177,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1467429017074186,
+        "L": 0.11954258975548841,
+        "K": 0.0,
+        "M": 0.733714508537093
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.55237,
+      "cosine_symbol_vs_gematria_4d": 0.684986,
+      "resonant": false
+    },
+    {
+      "symbol": "demetrius",
+      "rank": 136,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14989703545867017,
+        "L": 0.13630755759528146,
+        "K": 0.0,
+        "M": 0.7137954069460484
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.53132,
+      "cosine_symbol_vs_gematria_4d": 0.698445,
+      "resonant": false
+    },
+    {
+      "symbol": "כל",
+      "rank": 23,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.1815877187065623,
+        "L": 0.18625529597527854,
+        "K": 0.42144708859810276,
+        "M": 0.21070989672005636
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 50,
+        "compressed_combined_sum": 50,
+        "reconstructed_combined_sum": 50,
+        "raw_hebrew_sum": 50,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 50,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 50,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 2,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 2,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 2,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "state16": 9,
+        "distance_to_state16": 0.0,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.199202,
+      "cosine_symbol_vs_gematria_4d": 0.928987,
+      "resonant": true
+    },
+    {
+      "symbol": "כאשר",
+      "rank": 236,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15501133171133136,
+        "L": 0.09863781190077699,
+        "K": 0.0,
+        "M": 0.7463508563878917
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 521,
+        "compressed_combined_sum": 521,
+        "reconstructed_combined_sum": 521,
+        "raw_hebrew_sum": 521,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 521,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 521,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 4,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 4,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 4,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.2466,
+          "L": 0.2466,
+          "K": 0.2466,
+          "M": 0.2602
+        },
+        "state16": 3,
+        "distance_to_state16": 0.00816823114266486,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.57222,
+      "cosine_symbol_vs_gematria_4d": 0.667884,
+      "resonant": false
+    },
+    {
+      "symbol": "country",
+      "rank": 64,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.13782575037425424,
+        "L": 0.1927348906650824,
+        "K": 0.0,
+        "M": 0.6694393589606634
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.487662,
+      "cosine_symbol_vs_gematria_4d": 0.727281,
+      "resonant": false
+    },
+    {
+      "symbol": "thus",
+      "rank": 194,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15614133434181932,
+        "L": 0.11194616093090268,
+        "K": 0.0,
+        "M": 0.731912504727278
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.551028,
+      "cosine_symbol_vs_gematria_4d": 0.685819,
+      "resonant": false
+    },
+    {
+      "symbol": "time",
+      "rank": 41,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1333516611727607,
+        "L": 0.2288795245227316,
+        "K": 0.0,
+        "M": 0.6377688143045077
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.460116,
+      "cosine_symbol_vs_gematria_4d": 0.746029,
+      "resonant": false
+    },
+    {
+      "symbol": "returned",
+      "rank": 151,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14828902544024442,
+        "L": 0.12927726087651373,
+        "K": 0.0,
+        "M": 0.7224337136832419
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.540384,
+      "cosine_symbol_vs_gematria_4d": 0.692611,
+      "resonant": false
+    },
+    {
+      "symbol": "ויאמר",
+      "rank": 186,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1471593435503985,
+        "L": 0.11704393869760905,
+        "K": 0.0,
+        "M": 0.7357967177519924
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 257,
+        "compressed_combined_sum": 257,
+        "reconstructed_combined_sum": 257,
+        "raw_hebrew_sum": 257,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 257,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 257,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 5,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 5,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 5,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.2505,
+          "L": 0.2505,
+          "K": 0.2505,
+          "M": 0.24849999999999994
+        },
+        "state16": 9,
+        "distance_to_state16": 0.001732050807568927,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.573322,
+      "cosine_symbol_vs_gematria_4d": 0.655816,
+      "resonant": false
+    },
+    {
+      "symbol": "gathered",
+      "rank": 148,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14473159796529084,
+        "L": 0.131610412208255,
+        "K": 0.0,
+        "M": 0.7236579898264541
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.541575,
+      "cosine_symbol_vs_gematria_4d": 0.691852,
+      "resonant": false
+    },
+    {
+      "symbol": "again",
+      "rank": 266,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15115367323113718,
+        "L": 0.09307796061317694,
+        "K": 0.0,
+        "M": 0.7557683661556859
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.576859,
+      "cosine_symbol_vs_gematria_4d": 0.669709,
+      "resonant": false
+    },
+    {
+      "symbol": "altar",
+      "rank": 181,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15474373209724251,
+        "L": 0.11705046979808688,
+        "K": 0.0,
+        "M": 0.7282057981046707
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.546902,
+      "cosine_symbol_vs_gematria_4d": 0.688441,
+      "resonant": false
+    },
+    {
+      "symbol": "came",
+      "rank": 18,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.12140575687054209,
+        "L": 0.30704116695320455,
+        "K": 0.0,
+        "M": 0.5715530761762533
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.416082,
+      "cosine_symbol_vs_gematria_4d": 0.776521,
+      "resonant": false
+    },
+    {
+      "symbol": "against",
+      "rank": 12,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.12474178643840102,
+        "L": 0.3220877915579754,
+        "K": 0.0,
+        "M": 0.5531704220036235
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.404316,
+      "cosine_symbol_vs_gematria_4d": 0.78482,
+      "resonant": false
+    },
+    {
+      "symbol": "priest",
+      "rank": 170,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14633135771753433,
+        "L": 0.12201185369479414,
+        "K": 0.0,
+        "M": 0.7316567885876716
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.550141,
+      "cosine_symbol_vs_gematria_4d": 0.686397,
+      "resonant": false
+    },
+    {
+      "symbol": "peace",
+      "rank": 59,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.16523097042538817,
+        "L": 0.19478991877205204,
+        "K": 0.0,
+        "M": 0.6399791108025598
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.457732,
+      "cosine_symbol_vs_gematria_4d": 0.747805,
+      "resonant": false
+    },
+    {
+      "symbol": "friends",
+      "rank": 198,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14800748767906735,
+        "L": 0.11195507392559587,
+        "K": 0.0,
+        "M": 0.7400374383953368
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.55928,
+      "cosine_symbol_vs_gematria_4d": 0.680633,
+      "resonant": false
+    },
+    {
+      "symbol": "יהודה",
+      "rank": 75,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.1813587162595518,
+        "L": 0.18583056853300603,
+        "K": 0.4291807107288609,
+        "M": 0.20363000447858123
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 30,
+        "compressed_combined_sum": 30,
+        "reconstructed_combined_sum": 30,
+        "raw_hebrew_sum": 30,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 30,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 30,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 5,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 5,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 5,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.248,
+          "L": 0.248,
+          "K": 0.248,
+          "M": 0.256
+        },
+        "state16": 9,
+        "distance_to_state16": 0.006928203230275515,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.209464,
+      "cosine_symbol_vs_gematria_4d": 0.922118,
+      "resonant": true
+    },
+    {
+      "symbol": "man",
+      "rank": 21,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.12921671023571302,
+        "L": 0.2934320312642926,
+        "K": 0.0,
+        "M": 0.5773512584999944
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.416341,
+      "cosine_symbol_vs_gematria_4d": 0.776474,
+      "resonant": false
+    },
+    {
+      "symbol": "sword",
+      "rank": 219,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15373915199446675,
+        "L": 0.10407183837707319,
+        "K": 0.0,
+        "M": 0.7421890096284601
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.562071,
+      "cosine_symbol_vs_gematria_4d": 0.678873,
+      "resonant": false
+    },
+    {
+      "symbol": "heard",
+      "rank": 60,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1346002410871011,
+        "L": 0.2013719028832,
+        "K": 0.0,
+        "M": 0.6640278560296988
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.483053,
+      "cosine_symbol_vs_gematria_4d": 0.730381,
+      "resonant": false
+    },
+    {
+      "symbol": "br small",
+      "rank": 222,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14932019712458539,
+        "L": 0.10407881725248769,
+        "K": 0.0,
+        "M": 0.7466009856229269
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.566549,
+      "cosine_symbol_vs_gematria_4d": 0.676089,
+      "resonant": false
+    },
+    {
+      "symbol": "day",
+      "rank": 26,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.45602318623175975,
+        "L": 0.20937389982919785,
+        "K": 0.17541460661066036,
+        "M": 0.1591883073283821
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.248673,
+      "cosine_symbol_vs_gematria_4d": 0.893993,
+      "resonant": true
+    },
+    {
+      "symbol": "saw",
+      "rank": 98,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1403209225327956,
+        "L": 0.1580744648032264,
+        "K": 0.0,
+        "M": 0.7016046126639779
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.518809,
+      "cosine_symbol_vs_gematria_4d": 0.706587,
+      "resonant": false
+    },
+    {
+      "symbol": "side",
+      "rank": 295,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.16512878631417274,
+        "L": 0.08428582134867851,
+        "K": 0.0,
+        "M": 0.7505853923371487
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.572736,
+      "cosine_symbol_vs_gematria_4d": 0.672206,
+      "resonant": false
+    },
+    {
+      "symbol": "year",
+      "rank": 117,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15292021920542792,
+        "L": 0.1475511184718699,
+        "K": 0.0,
+        "M": 0.6995286623227023
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.516542,
+      "cosine_symbol_vs_gematria_4d": 0.708078,
+      "resonant": false
+    },
+    {
+      "symbol": "left",
+      "rank": 163,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1492833627057394,
+        "L": 0.12447325115823119,
+        "K": 0.0,
+        "M": 0.7262433861360296
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.54448,
+      "cosine_symbol_vs_gematria_4d": 0.689992,
+      "resonant": false
+    },
+    {
+      "symbol": "silver",
+      "rank": 214,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14887700484125255,
+        "L": 0.10673797095248476,
+        "K": 0.0,
+        "M": 0.7443850242062627
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.564084,
+      "cosine_symbol_vs_gematria_4d": 0.677626,
+      "resonant": false
+    },
+    {
+      "symbol": "life",
+      "rank": 94,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1473847079074334,
+        "L": 0.15820657214408246,
+        "K": 0.0,
+        "M": 0.6944087199484842
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.51135,
+      "cosine_symbol_vs_gematria_4d": 0.711496,
+      "resonant": false
+    },
+    {
+      "symbol": "hand",
+      "rank": 42,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14069686599159079,
+        "L": 0.22616723704625077,
+        "K": 0.0,
+        "M": 0.6331358969621584
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.454734,
+      "cosine_symbol_vs_gematria_4d": 0.749788,
+      "resonant": false
+    },
+    {
+      "symbol": "judea",
+      "rank": 95,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1473847079074334,
+        "L": 0.15820657214408246,
+        "K": 0.0,
+        "M": 0.6944087199484842
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.51135,
+      "cosine_symbol_vs_gematria_4d": 0.711496,
+      "resonant": false
+    },
+    {
+      "symbol": "eyes",
+      "rank": 91,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.16708619389861007,
+        "L": 0.15814263843392626,
+        "K": 0.0,
+        "M": 0.6747711676674637
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.49148,
+      "cosine_symbol_vs_gematria_4d": 0.724747,
+      "resonant": false
+    },
+    {
+      "symbol": "good",
+      "rank": 54,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1428820292353613,
+        "L": 0.20682155565498156,
+        "K": 0.0,
+        "M": 0.6502964151096572
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.469429,
+      "cosine_symbol_vs_gematria_4d": 0.739686,
+      "resonant": false
+    },
+    {
+      "symbol": "ואת",
+      "rank": 172,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15803172111438404,
+        "L": 0.11953755379128875,
+        "K": 0.0,
+        "M": 0.7224307250943272
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 407,
+        "compressed_combined_sum": 407,
+        "reconstructed_combined_sum": 407,
+        "raw_hebrew_sum": 407,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 407,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 407,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 3,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 3,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 3,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.2453,
+          "L": 0.2453,
+          "K": 0.2453,
+          "M": 0.2641
+        },
+        "state16": 3,
+        "distance_to_state16": 0.00943822017119754,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.541914,
+      "cosine_symbol_vs_gematria_4d": 0.690803,
+      "resonant": false
+    },
+    {
+      "symbol": "איש",
+      "rank": 69,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.1838602023992491,
+        "L": 0.1869556777670588,
+        "K": 0.4211109854477422,
+        "M": 0.20807313438594988
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 311,
+        "compressed_combined_sum": 311,
+        "reconstructed_combined_sum": 311,
+        "raw_hebrew_sum": 311,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 311,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 311,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 3,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 3,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 3,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.2458,
+          "L": 0.2458,
+          "K": 0.2458,
+          "M": 0.26260000000000006
+        },
+        "state16": 3,
+        "distance_to_state16": 0.008699425268372642,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.2025,
+      "cosine_symbol_vs_gematria_4d": 0.92645,
+      "resonant": true
+    },
+    {
+      "symbol": "דבר",
+      "rank": 180,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.19255239080016193,
+        "L": 0.1945055633472311,
+        "K": 0.4067830410916363,
+        "M": 0.20615900476097057
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 206,
+        "compressed_combined_sum": 206,
+        "reconstructed_combined_sum": 206,
+        "raw_hebrew_sum": 206,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 206,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 206,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 3,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 3,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 3,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.2454,
+          "L": 0.2454,
+          "K": 0.2454,
+          "M": 0.26380000000000003
+        },
+        "state16": 3,
+        "distance_to_state16": 0.009269304181005187,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.186414,
+      "cosine_symbol_vs_gematria_4d": 0.936575,
+      "resonant": true
+    },
+    {
+      "symbol": "flesh",
+      "rank": 274,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1516283127587928,
+        "L": 0.09023012344724314,
+        "K": 0.0,
+        "M": 0.7581415637939639
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.579556,
+      "cosine_symbol_vs_gematria_4d": 0.668052,
+      "resonant": false
+    },
+    {
+      "symbol": "היהודים",
+      "rank": 166,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14592457860429167,
+        "L": 0.12445252837424997,
+        "K": 0.0,
+        "M": 0.7296228930214583
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 80,
+        "compressed_combined_sum": 80,
+        "reconstructed_combined_sum": 80,
+        "raw_hebrew_sum": 80,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 80,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 80,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 7,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 7,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 7,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.253,
+          "L": 0.253,
+          "K": 0.253,
+          "M": 0.241
+        },
+        "state16": 6,
+        "distance_to_state16": 0.008246211251235327,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.575109,
+      "cosine_symbol_vs_gematria_4d": 0.647373,
+      "resonant": false
+    },
+    {
+      "symbol": "up",
+      "rank": 19,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1215942528210055,
+        "L": 0.29938549565039696,
+        "K": 0.0,
+        "M": 0.5790202515285976
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.4205,
+      "cosine_symbol_vs_gematria_4d": 0.773435,
+      "resonant": false
+    },
+    {
+      "symbol": "enemies",
+      "rank": 156,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14878126863067706,
+        "L": 0.12688887093050033,
+        "K": 0.0,
+        "M": 0.7243298604388225
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.542418,
+      "cosine_symbol_vs_gematria_4d": 0.69131,
+      "resonant": false
+    },
+    {
+      "symbol": "sarah",
+      "rank": 238,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.21633656576795582,
+        "L": 0.09138642377458554,
+        "K": 0.0,
+        "M": 0.6922770104574586
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.516729,
+      "cosine_symbol_vs_gematria_4d": 0.707745,
+      "resonant": false
+    },
+    {
+      "symbol": "jerusalem",
+      "rank": 44,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1330325507652288,
+        "L": 0.22422591182973328,
+        "K": 0.0,
+        "M": 0.6427415374050379
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.464416,
+      "cosine_symbol_vs_gematria_4d": 0.743072,
+      "resonant": false
+    },
+    {
+      "symbol": "himself",
+      "rank": 137,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14395793977994292,
+        "L": 0.13625236132034257,
+        "K": 0.0,
+        "M": 0.7197896988997146
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.537489,
+      "cosine_symbol_vs_gematria_4d": 0.694472,
+      "resonant": false
+    },
+    {
+      "symbol": "cast",
+      "rank": 187,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15543104023026086,
+        "L": 0.11451407383972596,
+        "K": 0.0,
+        "M": 0.7300548859300132
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.548954,
+      "cosine_symbol_vs_gematria_4d": 0.687136,
+      "resonant": false
+    },
+    {
+      "symbol": "simon",
+      "rank": 63,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.13951631482945367,
+        "L": 0.19279846420101812,
+        "K": 0.0,
+        "M": 0.6676852209695283
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.485831,
+      "cosine_symbol_vs_gematria_4d": 0.728521,
+      "resonant": false
+    },
+    {
+      "symbol": "אֵין",
+      "rank": 235,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.1799111846861836,
+        "L": 0.1801574744641283,
+        "K": 0.43342679077073054,
+        "M": 0.20650455007895765
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 61,
+        "compressed_combined_sum": 61,
+        "reconstructed_combined_sum": 61,
+        "raw_hebrew_sum": 61,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 61,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 61,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 3,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 3,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 3,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.2511,
+          "L": 0.2511,
+          "K": 0.2511,
+          "M": 0.24670000000000003
+        },
+        "state16": 9,
+        "distance_to_state16": 0.003810511776651495,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.212036,
+      "cosine_symbol_vs_gematria_4d": 0.920741,
+      "resonant": true
+    },
+    {
+      "symbol": "ever",
+      "rank": 119,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.20849647850687267,
+        "L": 0.1369215540878295,
+        "K": 0.0,
+        "M": 0.6545819674052978
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.474144,
+      "cosine_symbol_vs_gematria_4d": 0.73644,
+      "resonant": false
+    },
+    {
+      "symbol": "told",
+      "rank": 241,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15022437832373237,
+        "L": 0.09865373005760582,
+        "K": 0.0,
+        "M": 0.7511218916186618
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.571611,
+      "cosine_symbol_vs_gematria_4d": 0.672947,
+      "resonant": false
+    },
+    {
+      "symbol": "המלך",
+      "rank": 70,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.130954546982317,
+        "L": 0.19060687784625419,
+        "K": 0.4940001875023223,
+        "M": 0.18443838766910658
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 95,
+        "compressed_combined_sum": 95,
+        "reconstructed_combined_sum": 95,
+        "raw_hebrew_sum": 95,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 95,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 95,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 4,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 4,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 4,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.2545,
+          "L": 0.2545,
+          "K": 0.2545,
+          "M": 0.23649999999999993
+        },
+        "state16": 6,
+        "distance_to_state16": 0.009110433579144327,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.281809,
+      "cosine_symbol_vs_gematria_4d": 0.872048,
+      "resonant": true
+    },
+    {
+      "symbol": "holy",
+      "rank": 164,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14592457860429167,
+        "L": 0.12445252837424997,
+        "K": 0.0,
+        "M": 0.7296228930214583
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.547948,
+      "cosine_symbol_vs_gematria_4d": 0.687789,
+      "resonant": false
+    },
+    {
+      "symbol": "עד",
+      "rank": 264,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.18260423735394457,
+        "L": 0.18412991686984873,
+        "K": 0.4269445516717906,
+        "M": 0.206321294104416
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 74,
+        "compressed_combined_sum": 74,
+        "reconstructed_combined_sum": 74,
+        "raw_hebrew_sum": 74,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 74,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 74,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 2,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 2,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 2,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.2524,
+          "L": 0.2524,
+          "K": 0.2524,
+          "M": 0.2427999999999999
+        },
+        "state16": 9,
+        "distance_to_state16": 0.008313843876330705,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.203295,
+      "cosine_symbol_vs_gematria_4d": 0.926559,
+      "resonant": true
+    },
+    {
+      "symbol": "thousand men",
+      "rank": 273,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15708800598745645,
+        "L": 0.09019863198931458,
+        "K": 0.0,
+        "M": 0.7527133620232289
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.574092,
+      "cosine_symbol_vs_gematria_4d": 0.671396,
+      "resonant": false
+    },
+    {
+      "symbol": "small",
+      "rank": 57,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.21432045793949323,
+        "L": 0.18684296840604042,
+        "K": 0.0,
+        "M": 0.5988365736544663
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.41928,
+      "cosine_symbol_vs_gematria_4d": 0.774835,
+      "resonant": false
+    },
+    {
+      "symbol": "death",
+      "rank": 176,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1467429017074186,
+        "L": 0.11954258975548841,
+        "K": 0.0,
+        "M": 0.733714508537093
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.55237,
+      "cosine_symbol_vs_gematria_4d": 0.684986,
+      "resonant": false
+    },
+    {
+      "symbol": "set",
+      "rank": 84,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.5054538191215463,
+        "L": 0.2266477328688093,
+        "K": 0.13778354415262933,
+        "M": 0.13011490385701516
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.31283,
+      "cosine_symbol_vs_gematria_4d": 0.845327,
+      "resonant": false
+    },
+    {
+      "symbol": "yet",
+      "rank": 197,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15196409861577867,
+        "L": 0.11195979871404335,
+        "K": 0.0,
+        "M": 0.736076102670178
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.555241,
+      "cosine_symbol_vs_gematria_4d": 0.683165,
+      "resonant": false
+    },
+    {
+      "symbol": "ולא",
+      "rank": 199,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1614708886480525,
+        "L": 0.10930574326396851,
+        "K": 0.0,
+        "M": 0.7292233680879789
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 37,
+        "compressed_combined_sum": 37,
+        "reconstructed_combined_sum": 37,
+        "raw_hebrew_sum": 37,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 37,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 37,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 3,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 3,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 3,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.2487,
+          "L": 0.2487,
+          "K": 0.2487,
+          "M": 0.2539
+        },
+        "state16": 9,
+        "distance_to_state16": 0.004503332099679089,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.561091,
+      "cosine_symbol_vs_gematria_4d": 0.668965,
+      "resonant": false
+    },
+    {
+      "symbol": "son",
+      "rank": 15,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.16057988703417717,
+        "L": 0.3023454907907033,
+        "K": 0.0,
+        "M": 0.5370746221751195
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.380085,
+      "cosine_symbol_vs_gematria_4d": 0.802595,
+      "resonant": false
+    },
+    {
+      "symbol": "strength",
+      "rank": 249,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15068577567402297,
+        "L": 0.09588534595586219,
+        "K": 0.0,
+        "M": 0.7534288783701149
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.574211,
+      "cosine_symbol_vs_gematria_4d": 0.67134,
+      "resonant": false
+    },
+    {
+      "symbol": "but",
+      "rank": 9,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.4867621851647369,
+        "L": 0.2179787916458563,
+        "K": 0.15201330419716808,
+        "M": 0.1432457189922388
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.287489,
+      "cosine_symbol_vs_gematria_4d": 0.864958,
+      "resonant": true
+    },
+    {
+      "symbol": "put",
+      "rank": 81,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.14077773304609462,
+        "L": 0.1780396876986089,
+        "K": 0.0,
+        "M": 0.6811825792552965
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.498577,
+      "cosine_symbol_vs_gematria_4d": 0.719967,
+      "resonant": false
+    },
+    {
+      "symbol": "כָּל",
+      "rank": 103,
+      "vector_source": "input_vector_4d",
+      "vector_4d_symbol": {
+        "S": 0.18101732516543426,
+        "L": 0.1855456217739771,
+        "K": 0.42363686387811345,
+        "M": 0.2098001891824752
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 50,
+        "compressed_combined_sum": 50,
+        "reconstructed_combined_sum": 50,
+        "raw_hebrew_sum": 50,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 50,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 50,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 2,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 2,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 2,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "state16": 9,
+        "distance_to_state16": 0.0,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.20169,
+      "cosine_symbol_vs_gematria_4d": 0.927392,
+      "resonant": true
+    },
+    {
+      "symbol": "round about",
+      "rank": 279,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.1516283127587928,
+        "L": 0.09023012344724314,
+        "K": 0.0,
+        "M": 0.7581415637939639
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.579556,
+      "cosine_symbol_vs_gematria_4d": 0.668052,
+      "resonant": false
+    },
+    {
+      "symbol": "wrote",
+      "rank": 290,
+      "vector_source": "heuristic_score_source_mix_v1",
+      "vector_4d_symbol": {
+        "S": 0.15210995405942213,
+        "L": 0.08734027564346739,
+        "K": 0.0,
+        "M": 0.7605497702971106
+      },
+      "gematria_metadata": {
+        "raw_combined_sum": 0,
+        "compressed_combined_sum": 0,
+        "reconstructed_combined_sum": 0,
+        "raw_hebrew_sum": 0,
+        "raw_greek_sum": 0,
+        "compressed_hebrew_sum": 0,
+        "compressed_greek_sum": 0,
+        "reconstructed_hebrew_sum": 0,
+        "reconstructed_greek_sum": 0,
+        "raw_hebrew_chars": 0,
+        "raw_greek_chars": 0,
+        "compressed_hebrew_chars": 0,
+        "compressed_greek_chars": 0,
+        "reconstructed_hebrew_chars": 0,
+        "reconstructed_greek_chars": 0
+      },
+      "gematria_4d_bridge": {
+        "vector_4d": {
+          "S": 0.245,
+          "L": 0.245,
+          "K": 0.245,
+          "M": 0.265
+        },
+        "state16": 3,
+        "distance_to_state16": 0.010000000000000009,
+        "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+      },
+      "distance_symbol_vs_gematria_4d": 0.582306,
+      "cosine_symbol_vs_gematria_4d": 0.666369,
+      "resonant": false
+    }
+  ]
+}

@@ -1,0 +1,1517 @@
+{
+  "schema": "canon_unmatched_morphhb_top_audit_v1",
+  "generated_at_utc": "2026-03-30T20:05:11.588692+00:00",
+  "inputs": {
+    "atoms": "C:\\workspace\\reports\\constitution\\btrack_pilot\\original_language_master_atoms_latest.jsonl",
+    "morphhb_seed": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_atoms_morphhb_seed_latest.jsonl"
+  },
+  "filter": {
+    "lang": "hebrew",
+    "match_method": "morphhb_unmatched",
+    "exclusive_pattern": "canon_decode_only",
+    "sort_key": "occurrences_desc"
+  },
+  "canon_unmatched_count": 5437,
+  "top_n": 100,
+  "rows": [
+    {
+      "atom_id": "hebrew::ך",
+      "normalized_form": "ך",
+      "occurrences": 16704,
+      "source_ref_count": 4246,
+      "surface_form_count": 31,
+      "sample_surface_forms": [
+        "ך",
+        "ךְ",
+        "ךְ֒",
+        "ךְ֙",
+        "ךְ֩"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מ",
+      "normalized_form": "מ",
+      "occurrences": 12762,
+      "source_ref_count": 5011,
+      "surface_form_count": 33,
+      "sample_surface_forms": [
+        "מ",
+        "מְ",
+        "מִ",
+        "מִ֘",
+        "מִ֝"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ם",
+      "normalized_form": "ם",
+      "occurrences": 7842,
+      "source_ref_count": 2818,
+      "surface_form_count": 5,
+      "sample_surface_forms": [
+        "ם",
+        "ם֒",
+        "ם֙",
+        "ם֩",
+        "ם֮"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::כם",
+      "normalized_form": "כם",
+      "occurrences": 5294,
+      "source_ref_count": 1490,
+      "surface_form_count": 36,
+      "sample_surface_forms": [
+        "כֶ֑ם",
+        "כֶ֔ם",
+        "כֶ֕ם",
+        "כֶ֖ם",
+        "כֶ֗ם"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::נו",
+      "normalized_form": "נו",
+      "occurrences": 4304,
+      "source_ref_count": 1386,
+      "surface_form_count": 28,
+      "sample_surface_forms": [
+        "נ֛וּ",
+        "נ֣וּ",
+        "נ֤וּ",
+        "נ֥וֹ",
+        "נ֫וּ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ני",
+      "normalized_form": "ני",
+      "occurrences": 2618,
+      "source_ref_count": 1068,
+      "surface_form_count": 23,
+      "sample_surface_forms": [
+        "נִ֔י",
+        "נִ֕י",
+        "נִ֖י",
+        "נִ֛י",
+        "נִ֣י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::עמ",
+      "normalized_form": "עמ",
+      "occurrences": 2016,
+      "source_ref_count": 933,
+      "surface_form_count": 96,
+      "sample_surface_forms": [
+        "עִ֝מְּ",
+        "עִ֠מְּ",
+        "עִ֨מָּ",
+        "עִ֭מּ",
+        "עִ֭מְּ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::אדנ",
+      "normalized_form": "אדנ",
+      "occurrences": 1264,
+      "source_ref_count": 585,
+      "surface_form_count": 59,
+      "sample_surface_forms": [
+        "אֲ֝דֹנָ",
+        "אֲ֝דֹנָ֗",
+        "אֲ֭דֹנָ",
+        "אֲֽדֹנָ",
+        "אֲֽדֹנָ֗"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::שמ",
+      "normalized_form": "שמ",
+      "occurrences": 1154,
+      "source_ref_count": 541,
+      "surface_form_count": 84,
+      "sample_surface_forms": [
+        "שְׁ֫מ֥",
+        "שְׁמ",
+        "שְׁמ֑",
+        "שְׁמ֔",
+        "שְׁמ֖"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::בנ",
+      "normalized_form": "בנ",
+      "occurrences": 938,
+      "source_ref_count": 369,
+      "surface_form_count": 92,
+      "sample_surface_forms": [
+        "בְנ",
+        "בְנ֑",
+        "בְנ֔",
+        "בְנ֖",
+        "בְנ֗"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ממ",
+      "normalized_form": "ממ",
+      "occurrences": 796,
+      "source_ref_count": 369,
+      "surface_form_count": 28,
+      "sample_surface_forms": [
+        "מִ֝מֶּ֗",
+        "מִ֠מֶּ",
+        "מִ֫מֶּ֥",
+        "מִ֭מְּ",
+        "מִ֭מֶּ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ן",
+      "normalized_form": "ן",
+      "occurrences": 690,
+      "source_ref_count": 295,
+      "surface_form_count": 5,
+      "sample_surface_forms": [
+        "ן",
+        "ן֒",
+        "ן֙",
+        "ן֩",
+        "ן֮"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ארצ",
+      "normalized_form": "ארצ",
+      "occurrences": 538,
+      "source_ref_count": 258,
+      "surface_form_count": 49,
+      "sample_surface_forms": [
+        "אֶרְצֵ֔",
+        "אַ֔רְצָ",
+        "אַ֖רְצָ",
+        "אַ֛רְצָ",
+        "אַ֜רְצָ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מלכ",
+      "normalized_form": "מלכ",
+      "occurrences": 530,
+      "source_ref_count": 218,
+      "surface_form_count": 38,
+      "sample_surface_forms": [
+        "מִלְכִּ",
+        "מַ֝לְכִּ֗",
+        "מַלְכּ֑",
+        "מַלְכּ֔",
+        "מַלְכּ֛"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::לוים",
+      "normalized_form": "לוים",
+      "occurrences": 500,
+      "source_ref_count": 223,
+      "surface_form_count": 20,
+      "sample_surface_forms": [
+        "לְוִיִּ֑ם",
+        "לְוִיִּ֔ם",
+        "לְוִיִּ֖ם",
+        "לְוִיִּ֗ם",
+        "לְוִיִּ֛ם"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::הנ",
+      "normalized_form": "הנ",
+      "occurrences": 478,
+      "source_ref_count": 235,
+      "surface_form_count": 25,
+      "sample_surface_forms": [
+        "הִ֠נְ",
+        "הִנְ",
+        "הִנּ֣",
+        "הִנּ֤",
+        "הִנְּ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::אבתי",
+      "normalized_form": "אבתי",
+      "occurrences": 394,
+      "source_ref_count": 183,
+      "surface_form_count": 29,
+      "sample_surface_forms": [
+        "אֲ֭בֹתֶי",
+        "אֲ֭בֹתָי",
+        "אֲבֹ֣תֵי",
+        "אֲבֹ֨תֵי",
+        "אֲבֹֽתֵי"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::אמ",
+      "normalized_form": "אמ",
+      "occurrences": 370,
+      "source_ref_count": 170,
+      "surface_form_count": 40,
+      "sample_surface_forms": [
+        "אִ֝מּ֗",
+        "אִ֝מְּ",
+        "אִ֝מִּ֗",
+        "אִ֠מּ",
+        "אִ֠מֶּ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::פנ",
+      "normalized_form": "פנ",
+      "occurrences": 346,
+      "source_ref_count": 160,
+      "surface_form_count": 30,
+      "sample_surface_forms": [
+        "פְנָֽ",
+        "פָ֠נַ",
+        "פָנֵֽ",
+        "פָנַ",
+        "פָנַ֔"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::עינ",
+      "normalized_form": "עינ",
+      "occurrences": 318,
+      "source_ref_count": 156,
+      "surface_form_count": 49,
+      "sample_surface_forms": [
+        "עֵ֝ינִ֗",
+        "עֵ֝ינַ֗",
+        "עֵ֣ינְ",
+        "עֵ֭ינַ",
+        "עֵֽינְ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::דרכ",
+      "normalized_form": "דרכ",
+      "occurrences": 304,
+      "source_ref_count": 149,
+      "surface_form_count": 74,
+      "sample_surface_forms": [
+        "דְרָכֶ֥",
+        "דְרָכַ",
+        "דְרָכַ֗",
+        "דְרָכַ֤",
+        "דְרָכַ֥"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::אפ",
+      "normalized_form": "אפ",
+      "occurrences": 284,
+      "source_ref_count": 140,
+      "surface_form_count": 38,
+      "sample_surface_forms": [
+        "אַ֝פְּ",
+        "אַ֫פּ֥",
+        "אַ֭פּ",
+        "אַפּ",
+        "אַפּ֑"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ש",
+      "normalized_form": "ש",
+      "occurrences": 284,
+      "source_ref_count": 113,
+      "surface_form_count": 15,
+      "sample_surface_forms": [
+        "ש",
+        "שְׁ",
+        "שֶׁ",
+        "שֶׁ֝",
+        "שֶׁ֣"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::תוכ",
+      "normalized_form": "תוכ",
+      "occurrences": 268,
+      "source_ref_count": 128,
+      "surface_form_count": 35,
+      "sample_surface_forms": [
+        "ת֘וֹכֵ֤",
+        "ת֣וֹכְ",
+        "תּֽוֹכְ",
+        "תּוֹכ",
+        "תּוֹכ֑"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מו",
+      "normalized_form": "מו",
+      "occurrences": 238,
+      "source_ref_count": 102,
+      "surface_form_count": 4,
+      "sample_surface_forms": [
+        "מו",
+        "מוֹ",
+        "מוֹ֙",
+        "מוּ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::אינ",
+      "normalized_form": "אינ",
+      "occurrences": 202,
+      "source_ref_count": 96,
+      "surface_form_count": 29,
+      "sample_surface_forms": [
+        "אֵ֠ינֶ",
+        "אֵ֨ינְ",
+        "אֵ֫ינֵ֥",
+        "אֵ֫ינֶ֥",
+        "אֵֽינְ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::עונ",
+      "normalized_form": "עונ",
+      "occurrences": 194,
+      "source_ref_count": 96,
+      "surface_form_count": 40,
+      "sample_surface_forms": [
+        "עֲוֺ֘נִ֤",
+        "עֲוֺ֣נְ",
+        "עֲוֺ֫נִ֥",
+        "עֲוֺֽנִ",
+        "עֲוֺנ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::אזני",
+      "normalized_form": "אזני",
+      "occurrences": 172,
+      "source_ref_count": 79,
+      "surface_form_count": 33,
+      "sample_surface_forms": [
+        "אָ֭זְנֶי",
+        "אָזְנִ֑י",
+        "אָזְנִ֕י",
+        "אָזְנֵ֑י",
+        "אָזְנֵ֖י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ימ",
+      "normalized_form": "ימ",
+      "occurrences": 172,
+      "source_ref_count": 81,
+      "surface_form_count": 30,
+      "sample_surface_forms": [
+        "יַמָּ֑",
+        "יַמָּ֔",
+        "יַמָּ֥",
+        "יָ֑מָּ",
+        "יָ֔מָּ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ימינ",
+      "normalized_form": "ימינ",
+      "occurrences": 156,
+      "source_ref_count": 76,
+      "surface_form_count": 38,
+      "sample_surface_forms": [
+        "יְ֝מִֽינְ",
+        "יְ֝מִינ֗",
+        "יְמִ֣ינְ",
+        "יְמִֽינְ",
+        "יְמִינ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::שביעי",
+      "normalized_form": "שביעי",
+      "occurrences": 152,
+      "source_ref_count": 72,
+      "surface_form_count": 15,
+      "sample_surface_forms": [
+        "שְּׁבִיעִ֑י",
+        "שְּׁבִיעִ֔י",
+        "שְּׁבִיעִ֕י",
+        "שְּׁבִיעִ֖י",
+        "שְּׁבִיעִ֗י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::הי",
+      "normalized_form": "הי",
+      "occurrences": 150,
+      "source_ref_count": 57,
+      "surface_form_count": 5,
+      "sample_surface_forms": [
+        "הִֽי",
+        "הִי",
+        "הִי֙",
+        "הִי֩",
+        "הי"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::אזנ",
+      "normalized_form": "אזנ",
+      "occurrences": 140,
+      "source_ref_count": 68,
+      "surface_form_count": 28,
+      "sample_surface_forms": [
+        "אֲזֵנֶ֑",
+        "אָ֝זְנְ",
+        "אָ֝זְנִ֗",
+        "אָ֭זְנ",
+        "אָ֭זְנָ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::דמ",
+      "normalized_form": "דמ",
+      "occurrences": 136,
+      "source_ref_count": 63,
+      "surface_form_count": 34,
+      "sample_surface_forms": [
+        "דָמ֔",
+        "דָמ֖",
+        "דָמְ",
+        "דָמִ",
+        "דָמִ֑"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::צאנ",
+      "normalized_form": "צאנ",
+      "occurrences": 136,
+      "source_ref_count": 61,
+      "surface_form_count": 31,
+      "sample_surface_forms": [
+        "צֹֽאנְ",
+        "צֹאנ",
+        "צֹאנ֑",
+        "צֹאנ֔",
+        "צֹאנ֖"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::יבן",
+      "normalized_form": "יבן",
+      "occurrences": 132,
+      "source_ref_count": 64,
+      "surface_form_count": 19,
+      "sample_surface_forms": [
+        "יִ֗בֶן",
+        "יָבֵ֔ן",
+        "יָבֵ֣ן",
+        "יִּ֖בֶן",
+        "יִּ֛בֶן"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::בנותי",
+      "normalized_form": "בנותי",
+      "occurrences": 130,
+      "source_ref_count": 49,
+      "surface_form_count": 36,
+      "sample_surface_forms": [
+        "בְנ֣וֹתֵי",
+        "בְנֽוֹתֵי",
+        "בְנוֹתֵ֧י",
+        "בְנוֹתֵי",
+        "בְנוֹתֶ֑י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::יתנ",
+      "normalized_form": "יתנ",
+      "occurrences": 130,
+      "source_ref_count": 64,
+      "surface_form_count": 30,
+      "sample_surface_forms": [
+        "יִ֭תְּנֵ",
+        "יִתְּנֵ֔",
+        "יִתְּנֵ֜",
+        "יִתְּנֵ֣",
+        "יִתְּנֵ֥"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::פ",
+      "normalized_form": "פ",
+      "occurrences": 126,
+      "source_ref_count": 62,
+      "surface_form_count": 25,
+      "sample_surface_forms": [
+        "פ",
+        "פִ",
+        "פִ֑",
+        "פִ֔",
+        "פִ֖"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::בינ",
+      "normalized_form": "בינ",
+      "occurrences": 116,
+      "source_ref_count": 43,
+      "surface_form_count": 22,
+      "sample_surface_forms": [
+        "בֵֽינְ",
+        "בֵינְ",
+        "בֵינֵֽ",
+        "בֵינֶ֑",
+        "בֵינֶ֔"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::יכ",
+      "normalized_form": "יכ",
+      "occurrences": 114,
+      "source_ref_count": 56,
+      "surface_form_count": 29,
+      "sample_surface_forms": [
+        "יַכְּ",
+        "יַכֵּ֥",
+        "יַכֶּ֔",
+        "יַכֶּ֖",
+        "יַכֶּ֗"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מנצח",
+      "normalized_form": "מנצח",
+      "occurrences": 112,
+      "source_ref_count": 56,
+      "surface_form_count": 9,
+      "sample_surface_forms": [
+        "מְנַצֵּ֖חַ",
+        "מְנַצֵּ֗חַ",
+        "מְנַצֵּ֣חַ",
+        "מְנַצֵּ֤חַ",
+        "מְנַצֵּ֥ח"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מצותי",
+      "normalized_form": "מצותי",
+      "occurrences": 112,
+      "source_ref_count": 56,
+      "surface_form_count": 22,
+      "sample_surface_forms": [
+        "מִ֝צְוֺתֶ֗י",
+        "מִ֭צְוֺתֶי",
+        "מִצְוֺתֶ֑י",
+        "מִצְוֺתֶ֔י",
+        "מִצְוֺתֶ֗י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::לשונ",
+      "normalized_form": "לשונ",
+      "occurrences": 102,
+      "source_ref_count": 51,
+      "surface_form_count": 32,
+      "sample_surface_forms": [
+        "לְ֝שׁוֹנ֗",
+        "לְ֝שׁוֹנִ֗",
+        "לְ֝שׁוֹנָ֗",
+        "לְ֭שׁוֹנִ",
+        "לְשׁ֫וֹנִ֥"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מקומ",
+      "normalized_form": "מקומ",
+      "occurrences": 98,
+      "source_ref_count": 48,
+      "surface_form_count": 31,
+      "sample_surface_forms": [
+        "מְקוֹמ",
+        "מְקוֹמ֑",
+        "מְקוֹמ֔",
+        "מְקוֹמ֖",
+        "מְקוֹמ֛"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::קרבנ",
+      "normalized_form": "קרבנ",
+      "occurrences": 98,
+      "source_ref_count": 48,
+      "surface_form_count": 21,
+      "sample_surface_forms": [
+        "קָ֠רְבָּנָ",
+        "קָרְבַּנְ",
+        "קָרְבָּנ",
+        "קָרְבָּנ֑",
+        "קָרְבָּנ֔"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::לחמ",
+      "normalized_form": "לחמ",
+      "occurrences": 96,
+      "source_ref_count": 47,
+      "surface_form_count": 28,
+      "sample_surface_forms": [
+        "לְחֻמָ֖",
+        "לַ֭חְמ",
+        "לַ֭חְמִ",
+        "לַחְמ",
+        "לַחְמ֑"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::אתנ",
+      "normalized_form": "אתנ",
+      "occurrences": 94,
+      "source_ref_count": 45,
+      "surface_form_count": 24,
+      "sample_surface_forms": [
+        "אֲתֹ֣נְ",
+        "אֲתֹֽנְ",
+        "אֲתֹנ֑",
+        "אֲתֹנ֔",
+        "אֶ֨תְּנֵ֔"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::צפונ",
+      "normalized_form": "צפונ",
+      "occurrences": 92,
+      "source_ref_count": 43,
+      "surface_form_count": 19,
+      "sample_surface_forms": [
+        "צְפוּנְ",
+        "צְפוּנִ֑",
+        "צָפ֑וֹנָ",
+        "צָפ֔וֹנָ",
+        "צָפ֖וֹנָ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ישתחו",
+      "normalized_form": "ישתחו",
+      "occurrences": 90,
+      "source_ref_count": 45,
+      "surface_form_count": 14,
+      "sample_surface_forms": [
+        "יִשְׁתַּ֨חוּ֙",
+        "יִּשְׁתַּ֕חוּ",
+        "יִּשְׁתַּ֖חוּ",
+        "יִּשְׁתַּ֣חוּ",
+        "יִּשְׁתַּ֤חוּ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::כפ",
+      "normalized_form": "כפ",
+      "occurrences": 90,
+      "source_ref_count": 44,
+      "surface_form_count": 30,
+      "sample_surface_forms": [
+        "כַפּ",
+        "כַפּ֖",
+        "כַפּ֗",
+        "כַפּ֜",
+        "כַפּ֥"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::קדמ",
+      "normalized_form": "קדמ",
+      "occurrences": 86,
+      "source_ref_count": 42,
+      "surface_form_count": 23,
+      "sample_surface_forms": [
+        "קֳדָמַ",
+        "קֳדָמַ֑",
+        "קֳדָמַ֖",
+        "קֳדָמָ֑",
+        "קִדְּמֻ֖"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::נתנ",
+      "normalized_form": "נתנ",
+      "occurrences": 84,
+      "source_ref_count": 42,
+      "surface_form_count": 23,
+      "sample_surface_forms": [
+        "נְתָ֨נְ",
+        "נְתָנ֔",
+        "נְתָנ֖",
+        "נְתָנ֞",
+        "נְתָנ֣"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::חתי",
+      "normalized_form": "חתי",
+      "occurrences": 80,
+      "source_ref_count": 39,
+      "surface_form_count": 14,
+      "sample_surface_forms": [
+        "חִתִּ֑י",
+        "חִתִּ֔י",
+        "חִתִּ֖י",
+        "חִתִּ֗י",
+        "חִתִּ֛י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::כספ",
+      "normalized_form": "כספ",
+      "occurrences": 76,
+      "source_ref_count": 37,
+      "surface_form_count": 25,
+      "sample_surface_forms": [
+        "כַסְפּ֔",
+        "כַסְפּ֖",
+        "כַסְפִּ֣",
+        "כַסְפֶּ֔",
+        "כַסְפָּ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::בטנ",
+      "normalized_form": "בטנ",
+      "occurrences": 72,
+      "source_ref_count": 36,
+      "surface_form_count": 26,
+      "sample_surface_forms": [
+        "בִ֫טְנָ֥",
+        "בִטְנ֑",
+        "בִטְנ֗",
+        "בִטְנְ",
+        "בִטְנִ֑"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::יברכ",
+      "normalized_form": "יברכ",
+      "occurrences": 72,
+      "source_ref_count": 36,
+      "surface_form_count": 18,
+      "sample_surface_forms": [
+        "יְ֝בָרְכֵ֗",
+        "יְבָ֣רֲכֵ֔",
+        "יְבָ֨רֲכֵ֜",
+        "יְבָֽרֶכְ",
+        "יְבָרְכֵ֑"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ארא",
+      "normalized_form": "ארא",
+      "occurrences": 66,
+      "source_ref_count": 33,
+      "surface_form_count": 24,
+      "sample_surface_forms": [
+        "אְרָֽא",
+        "אֵ֑רֶא",
+        "אֵ֔רֶא",
+        "אֵ֕רֶא",
+        "אֵ֖רֶא"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ארכ",
+      "normalized_form": "ארכ",
+      "occurrences": 66,
+      "source_ref_count": 32,
+      "surface_form_count": 16,
+      "sample_surface_forms": [
+        "אָרְכּ",
+        "אָרְכּ֔",
+        "אָרְכּ֖",
+        "אָרְכּ֗",
+        "אָרְכּ֛"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ביני",
+      "normalized_form": "ביני",
+      "occurrences": 66,
+      "source_ref_count": 29,
+      "surface_form_count": 14,
+      "sample_surface_forms": [
+        "בֵ֣ינֵי",
+        "בֵֽינֵי",
+        "בֵינֵ֔י",
+        "בֵינֵ֣י",
+        "בֵינֵי"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::כמ",
+      "normalized_form": "כמ",
+      "occurrences": 66,
+      "source_ref_count": 30,
+      "surface_form_count": 18,
+      "sample_surface_forms": [
+        "כָמֹ",
+        "כָמֹ֔",
+        "כָמֹ֖",
+        "כָמֹ֗",
+        "כָמֹ֛"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ענ",
+      "normalized_form": "ענ",
+      "occurrences": 66,
+      "source_ref_count": 31,
+      "surface_form_count": 17,
+      "sample_surface_forms": [
+        "עֲ֝נֵ֗",
+        "עֲ֭נֵ",
+        "עֲנֵ֑",
+        "עֲנֵ֔",
+        "עֲנֵ֣"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::פלשתי",
+      "normalized_form": "פלשתי",
+      "occurrences": 66,
+      "source_ref_count": 28,
+      "surface_form_count": 12,
+      "sample_surface_forms": [
+        "פְּלִשְׁתִּ֔י",
+        "פְּלִשְׁתִּ֖י",
+        "פְּלִשְׁתִּ֗י",
+        "פְּלִשְׁתִּ֛י",
+        "פְּלִשְׁתִּ֜י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::כלת",
+      "normalized_form": "כלת",
+      "occurrences": 64,
+      "source_ref_count": 32,
+      "surface_form_count": 26,
+      "sample_surface_forms": [
+        "כִלַּ֖תּ",
+        "כַלָּת֖",
+        "כַלָּת֣",
+        "כַלָּתֵ֤",
+        "כַלָּתָ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::לכ",
+      "normalized_form": "לכ",
+      "occurrences": 64,
+      "source_ref_count": 31,
+      "surface_form_count": 13,
+      "sample_surface_forms": [
+        "לְכָ",
+        "לְכָ֔",
+        "לְכָ֕",
+        "לְכָ֖",
+        "לְכָ֗"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::דרתי",
+      "normalized_form": "דרתי",
+      "occurrences": 62,
+      "source_ref_count": 31,
+      "surface_form_count": 9,
+      "sample_surface_forms": [
+        "דֹֽרֹתָ֑י",
+        "דֹרֹ֖תֵי",
+        "דֹרֹ֣תֵי",
+        "דֹרֹ֨תֵי",
+        "דֹרֹֽתֵי"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מחרת",
+      "normalized_form": "מחרת",
+      "occurrences": 62,
+      "source_ref_count": 31,
+      "surface_form_count": 12,
+      "sample_surface_forms": [
+        "מָֽחֳרָתָ֑",
+        "מָחֳרַת֮",
+        "מָּֽחֳרַ֥ת",
+        "מָּחֳרַ֣ת",
+        "מָּחֳרַ֤ת"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מינ",
+      "normalized_form": "מינ",
+      "occurrences": 62,
+      "source_ref_count": 18,
+      "surface_form_count": 13,
+      "sample_surface_forms": [
+        "מִֽינֵ",
+        "מִינ֔",
+        "מִינֵ֑",
+        "מִינֵ֔",
+        "מִינֵ֗"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ערכ",
+      "normalized_form": "ערכ",
+      "occurrences": 62,
+      "source_ref_count": 27,
+      "surface_form_count": 11,
+      "sample_surface_forms": [
+        "עֶ֨רְכְּ",
+        "עֶרְכָ֥",
+        "עֶרְכּ֑",
+        "עֶרְכּ֗",
+        "עֶרְכְּ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ימנית",
+      "normalized_form": "ימנית",
+      "occurrences": 60,
+      "source_ref_count": 16,
+      "surface_form_count": 6,
+      "sample_surface_forms": [
+        "יְמָנִ֑ית",
+        "יְמָנִ֔ית",
+        "יְמָנִ֛ית",
+        "יְמָנִֽית",
+        "יְמָנִית֙"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מקמ",
+      "normalized_form": "מקמ",
+      "occurrences": 58,
+      "source_ref_count": 29,
+      "surface_form_count": 11,
+      "sample_surface_forms": [
+        "מְקֹמ֑",
+        "מְקֹמ֔",
+        "מְקֹמ֖",
+        "מְקֹמָ",
+        "מְקֹמָֽ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::יענ",
+      "normalized_form": "יענ",
+      "occurrences": 56,
+      "source_ref_count": 28,
+      "surface_form_count": 22,
+      "sample_surface_forms": [
+        "יְעַנְּ",
+        "יְעַנֵּ֑",
+        "יְעַנֵּ֔",
+        "יְעַנֶּ֔",
+        "יְעַנֶּֽ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מצרימ",
+      "normalized_form": "מצרימ",
+      "occurrences": 56,
+      "source_ref_count": 28,
+      "surface_form_count": 6,
+      "sample_surface_forms": [
+        "מִצְרַ֔יְמָ",
+        "מִצְרַ֖יְמָ",
+        "מִצְרַ֨יְמָ",
+        "מִצְרָ֑יְמָ",
+        "מִצְרָֽיְמָ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::תהר",
+      "normalized_form": "תהר",
+      "occurrences": 56,
+      "source_ref_count": 28,
+      "surface_form_count": 10,
+      "sample_surface_forms": [
+        "תַּ֑הַר",
+        "תַּ֖הַר",
+        "תַּ֛הַר",
+        "תַּ֣הַר",
+        "תַּ֤הַר"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::חלמ",
+      "normalized_form": "חלמ",
+      "occurrences": 54,
+      "source_ref_count": 23,
+      "surface_form_count": 17,
+      "sample_surface_forms": [
+        "חֲלֹמ",
+        "חֲלֹמ֑",
+        "חֲלֹמ֔",
+        "חֲלֹמ֖",
+        "חֲלֹמִ֑"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::חנ",
+      "normalized_form": "חנ",
+      "occurrences": 54,
+      "source_ref_count": 24,
+      "surface_form_count": 15,
+      "sample_surface_forms": [
+        "חִנּ֔",
+        "חַנַּ֥",
+        "חָ֝נֵּ֗",
+        "חָ֫נֵּ֥",
+        "חָנֵּ֑"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::יומ",
+      "normalized_form": "יומ",
+      "occurrences": 54,
+      "source_ref_count": 27,
+      "surface_form_count": 13,
+      "sample_surface_forms": [
+        "י֭וֹמ",
+        "יוֹמ",
+        "יוֹמ֑",
+        "יוֹמ֔",
+        "יוֹמ֖"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ינח",
+      "normalized_form": "ינח",
+      "occurrences": 54,
+      "source_ref_count": 27,
+      "surface_form_count": 25,
+      "sample_surface_forms": [
+        "יַֽנְחֵ֥",
+        "יַנְחֵ֨",
+        "יַנְחֵֽ",
+        "יַנְחֶ֑",
+        "יַנְחֶֽ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מצו",
+      "normalized_form": "מצו",
+      "occurrences": 54,
+      "source_ref_count": 27,
+      "surface_form_count": 5,
+      "sample_surface_forms": [
+        "מְצַוְּ",
+        "מְצַוֶּ",
+        "מְצַוֶּ֑",
+        "מְצַוֶּֽ",
+        "מצו"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::שמיני",
+      "normalized_form": "שמיני",
+      "occurrences": 54,
+      "source_ref_count": 26,
+      "surface_form_count": 11,
+      "sample_surface_forms": [
+        "שְּׁמִינִ֑י",
+        "שְּׁמִינִ֔י",
+        "שְּׁמִינִ֖י",
+        "שְּׁמִינִ֗י",
+        "שְּׁמִינִ֛י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::תנ",
+      "normalized_form": "תנ",
+      "occurrences": 54,
+      "source_ref_count": 26,
+      "surface_form_count": 11,
+      "sample_surface_forms": [
+        "תְנֵ֣",
+        "תְּֽנָ",
+        "תְּנֵ֣",
+        "תְּנֶ֥",
+        "תְּנָ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ברכ",
+      "normalized_form": "ברכ",
+      "occurrences": 52,
+      "source_ref_count": 26,
+      "surface_form_count": 18,
+      "sample_surface_forms": [
+        "בֵ֣רַכְ",
+        "בֵֽרֲכֶ֑",
+        "בֵֽרַכְ",
+        "בֵרֲכ֖",
+        "בֵרַכְ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::חוצ",
+      "normalized_form": "חוצ",
+      "occurrences": 52,
+      "source_ref_count": 26,
+      "surface_form_count": 10,
+      "sample_surface_forms": [
+        "ח֑וּצָ",
+        "ח֔וּצָ",
+        "ח֖וּצָ",
+        "ח֗וּצָ",
+        "ח֛וּצָ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::נשארים",
+      "normalized_form": "נשארים",
+      "occurrences": 52,
+      "source_ref_count": 24,
+      "surface_form_count": 14,
+      "sample_surface_forms": [
+        "נִּשְׁאָרִ֑ים",
+        "נִּשְׁאָרִ֔ים",
+        "נִּשְׁאָרִ֖ים",
+        "נִּשְׁאָרִ֗ים",
+        "נִּשְׁאָרִ֛ים"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::פרזי",
+      "normalized_form": "פרזי",
+      "occurrences": 52,
+      "source_ref_count": 26,
+      "surface_form_count": 14,
+      "sample_surface_forms": [
+        "פְּרִזִּ֑י",
+        "פְּרִזִּ֔י",
+        "פְּרִזִּ֖י",
+        "פְּרִזִּ֗י",
+        "פְּרִזִּ֛י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::תבה",
+      "normalized_form": "תבה",
+      "occurrences": 52,
+      "source_ref_count": 24,
+      "surface_form_count": 7,
+      "sample_surface_forms": [
+        "תֵּבָ֑ה",
+        "תֵּבָ֔ה",
+        "תֵּבָ֖ה",
+        "תֵּבָ֗ה",
+        "תֵּבָֽה"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::חוי",
+      "normalized_form": "חוי",
+      "occurrences": 50,
+      "source_ref_count": 25,
+      "surface_form_count": 10,
+      "sample_surface_forms": [
+        "חִוִּ֑י",
+        "חִוִּ֔י",
+        "חִוִּ֖י",
+        "חִוִּ֗י",
+        "חִוִּ֣י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::נותרים",
+      "normalized_form": "נותרים",
+      "occurrences": 50,
+      "source_ref_count": 24,
+      "surface_form_count": 15,
+      "sample_surface_forms": [
+        "נּ֣וֹתָרִ֔ים",
+        "נּֽוֹתָרִ֖ים",
+        "נּֽוֹתָרִֽים",
+        "נּֽוֹתָרִים֒",
+        "נּֽוֹתָרִים֙"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::נעורי",
+      "normalized_form": "נעורי",
+      "occurrences": 50,
+      "source_ref_count": 24,
+      "surface_form_count": 20,
+      "sample_surface_forms": [
+        "נְעוּרֵ֫י",
+        "נְעוּרֵי",
+        "נְעוּרֶ֑י",
+        "נְעוּרֶ֔י",
+        "נְעוּרֶ֖י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::שכמ",
+      "normalized_form": "שכמ",
+      "occurrences": 50,
+      "source_ref_count": 25,
+      "surface_form_count": 17,
+      "sample_surface_forms": [
+        "שְׁכֶ֑מָ",
+        "שְׁכֶ֔מָ",
+        "שְׁכֶֽמָ",
+        "שִׁ֭כְמִ",
+        "שִׁכְמ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::טפ",
+      "normalized_form": "טפ",
+      "occurrences": 48,
+      "source_ref_count": 24,
+      "surface_form_count": 12,
+      "sample_surface_forms": [
+        "טַ֨פְּ",
+        "טַפְּ",
+        "טַפֵּ֖",
+        "טַפֵּ֣",
+        "טַפֵּ֨"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::יריעה",
+      "normalized_form": "יריעה",
+      "occurrences": 48,
+      "source_ref_count": 14,
+      "surface_form_count": 6,
+      "sample_surface_forms": [
+        "יְרִיעָ֔ה",
+        "יְרִיעָ֖ה",
+        "יְרִיעָ֣ה",
+        "יְרִיעָֽה",
+        "יְרִיעָה֙"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::פו",
+      "normalized_form": "פו",
+      "occurrences": 48,
+      "source_ref_count": 13,
+      "surface_form_count": 9,
+      "sample_surface_forms": [
+        "פּ֑וֹ",
+        "פּ֔וֹ",
+        "פּ֖וֹ",
+        "פּ֛וֹ",
+        "פּ֣וֹ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ראת",
+      "normalized_form": "ראת",
+      "occurrences": 48,
+      "source_ref_count": 24,
+      "surface_form_count": 19,
+      "sample_surface_forms": [
+        "רְאֹ֑ת",
+        "רְאֹ֛ת",
+        "רְאֹ֣ת",
+        "רְאֹ֥ת",
+        "רְאֹֽתְ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::ינס",
+      "normalized_form": "ינס",
+      "occurrences": 46,
+      "source_ref_count": 22,
+      "surface_form_count": 12,
+      "sample_surface_forms": [
+        "יְנַסֵּ֖",
+        "יָּ֑נָס",
+        "יָּ֕נָס",
+        "יָּ֖נָס",
+        "יָּ֣נָס"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::עצמ",
+      "normalized_form": "עצמ",
+      "occurrences": 46,
+      "source_ref_count": 23,
+      "surface_form_count": 21,
+      "sample_surface_forms": [
+        "עֲ֭צָמַ",
+        "עֲצָמַ֔",
+        "עֲצָמַ֖",
+        "עֲצָמַ֗",
+        "עֲצָמַ֥"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::רחמי",
+      "normalized_form": "רחמי",
+      "occurrences": 46,
+      "source_ref_count": 23,
+      "surface_form_count": 16,
+      "sample_surface_forms": [
+        "רַ֝חֲמֶ֗י",
+        "רַֽחֲמָ֔י",
+        "רַחֲמֵ֥י",
+        "רַחֲמֶ֑י",
+        "רַחֲמֶ֖י"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::מעש",
+      "normalized_form": "מעש",
+      "occurrences": 44,
+      "source_ref_count": 21,
+      "surface_form_count": 17,
+      "sample_surface_forms": [
+        "מַ֝עֲשֵׂ֗",
+        "מַעֲשֵׂ",
+        "מַעֲשֵׂ֑",
+        "מַעֲשֵׂ֔",
+        "מַעֲשֵׂ֖"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::נסכי",
+      "normalized_form": "נסכי",
+      "occurrences": 44,
+      "source_ref_count": 22,
+      "surface_form_count": 4,
+      "sample_surface_forms": [
+        "נְסִֽכֵי",
+        "נְסָכֶֽי",
+        "נִסְכֵּי",
+        "נסכי"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    },
+    {
+      "atom_id": "hebrew::קומ",
+      "normalized_form": "קומ",
+      "occurrences": 44,
+      "source_ref_count": 22,
+      "surface_form_count": 14,
+      "sample_surface_forms": [
+        "ק֖וּמָ",
+        "ק֗וּמָ",
+        "ק֘וּמָ֤",
+        "ק֚וּמָ",
+        "ק֣וּמָ"
+      ],
+      "exclusive_pattern": "canon_decode_only"
+    }
+  ],
+  "note": "Observational sample; causes require manual/blind review (normalization vs rare form vs WLC gap)."
+}

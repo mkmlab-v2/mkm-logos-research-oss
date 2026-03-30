@@ -1,0 +1,26 @@
+{
+  "schema": "btrack_dss_confidence_calibration_v1",
+  "generated_at_utc": "2026-03-30T17:42:16Z",
+  "confidence_mode": "v2",
+  "confidence_params": {
+    "traceable_floor": 0.75,
+    "non_traceable_floor": 0.68,
+    "match_weight": 0.23,
+    "anchor_weight": 0.05
+  },
+  "target_mean_confidence_boost": 0.8,
+  "full": {
+    "mean_confidence_boost": 0.809188,
+    "mean_confidence_boost_base": 0.02625,
+    "target_ok": true
+  },
+  "canonical_only": {
+    "mean_confidence_boost": 0.801585,
+    "mean_confidence_boost_base": 0.02625,
+    "target_ok": true
+  },
+  "decision": {
+    "promote_v2": true,
+    "note": "promote only if both full and canonical meet target"
+  }
+}

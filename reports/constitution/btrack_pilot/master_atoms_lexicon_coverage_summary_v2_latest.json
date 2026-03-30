@@ -1,0 +1,84 @@
+{
+  "schema": "master_atoms_lexicon_coverage_summary_v2",
+  "generated_at_utc": "2026-03-30T20:04:49.512548+00:00",
+  "inputs": {
+    "atoms": "C:\\workspace\\reports\\constitution\\btrack_pilot\\original_language_master_atoms_latest.jsonl",
+    "external_lexicon_manifest": {
+      "path": "C:\\workspace\\vault\\external_lexicon\\MANIFEST.json",
+      "sha256": "e6cc02de271bb4ac2f39c2dc16e0c34b0132befe6d4d82e6241d6ff198057769",
+      "schema": "external_lexicon_manifest_v1",
+      "generated_at_utc": "2026-03-30T18:54:46Z"
+    },
+    "morphhb_index": "C:\\workspace\\reports\\constitution\\btrack_pilot\\morphhb_norm_to_lemma_index_latest.json",
+    "strongs_greek_xml": "C:\\workspace\\vault\\external_lexicon\\sources\\openscriptures-strongs\\greek\\StrongsGreekDictionaryXML_1.4\\strongsgreek.xml",
+    "strongs_hebrew_xml": "C:\\workspace\\vault\\external_lexicon\\sources\\openscriptures-strongs\\hebrew\\StrongHebrewG.xml",
+    "tbesh": "C:\\workspace\\vault\\external_lexicon\\sources\\stepbible-data\\Lexicons\\TBESH - Translators Brief lexicon of Extended Strongs for Hebrew - STEPBible.org CC BY.txt"
+  },
+  "precedence": [
+    "rail_strongs_seed",
+    "rail_morphhb",
+    "rail_step_audit"
+  ],
+  "by_rail": {
+    "rail_strongs_seed": {
+      "rail_id": "rail_strongs_seed",
+      "coverage": {
+        "greek": {
+          "matched_any_of_one_or_more_candidates": 1816,
+          "unmatched": 12166,
+          "ambiguous_keys": 18,
+          "fraction_of_greek_atoms": 0.129881
+        },
+        "hebrew": {
+          "matched_any_of_one_or_more_candidates": 5071,
+          "unmatched": 17842,
+          "ambiguous_keys": 1392,
+          "fraction_of_hebrew_atoms": 0.221315
+        }
+      },
+      "source_summary_ref": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_atoms_lexicon_seed_summary_latest.json"
+    },
+    "rail_morphhb": {
+      "rail_id": "rail_morphhb",
+      "coverage": {
+        "hebrew": {
+          "matched_any_wlc_row": 13032,
+          "unmatched": 9881,
+          "ambiguous_morphhb": 0,
+          "matched_no_strong_digit_in_lemma": 16,
+          "fraction_of_hebrew_atoms": 0.56876
+        }
+      },
+      "source_summary_ref": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_atoms_morphhb_seed_summary_latest.json"
+    },
+    "rail_step_audit": {
+      "rail_id": "rail_step_audit",
+      "coverage": {
+        "hebrew": {
+          "matched_any_tbesh_row": 5243,
+          "unmatched": 17670,
+          "ambiguous_norm": 1442,
+          "fraction_of_hebrew_atoms": 0.228822
+        }
+      },
+      "source_summary_ref": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_atoms_step_audit_summary_latest.json",
+      "note": "Audit-only join on TBESH Hebrew column after NFKD strip; not lemma disambiguation."
+    }
+  },
+  "corpus_buckets_ref": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_atoms_corpus_split_summary_latest.json",
+  "corpus_split_snapshot": {
+    "atoms_total": 41769,
+    "by_bucket_presence": {
+      "apocrypha": 11129,
+      "canon_decode": 32614,
+      "dss": 477
+    },
+    "by_exclusive_pattern": {
+      "apocrypha_only": 8687,
+      "canon_decode_only": 30348,
+      "dss_only": 291,
+      "mixed_multi_bucket": 2443
+    }
+  },
+  "note": "Do not sum fractions across rails; each rail has its own matcher semantics."
+}

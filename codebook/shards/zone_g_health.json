@@ -1,0 +1,33 @@
+{
+  "shard_id": "zone_g_health",
+  "domain": "health",
+  "routing_keywords": [
+    "건강",
+    "수면",
+    "식사",
+    "호흡",
+    "피로",
+    "증상",
+    "회복",
+    "체온"
+  ],
+  "must_keep_hard_terms": [
+    "건강",
+    "수면",
+    "식사",
+    "증상"
+  ],
+  "must_keep_soft_terms": [
+    "호흡",
+    "피로",
+    "회복",
+    "체온"
+  ],
+  "guard_tokens": [
+    "금지",
+    "필수",
+    "주의",
+    "회복"
+  ],
+  "hangul_principle": true
+}

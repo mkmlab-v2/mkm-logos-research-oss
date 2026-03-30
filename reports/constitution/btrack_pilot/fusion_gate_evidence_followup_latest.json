@@ -1,0 +1,80 @@
+{
+  "schema": "fusion_gate_evidence_followup_v1",
+  "generated_at_utc": "2026-03-30T17:55:33Z",
+  "todo_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\fusion_gate_evidence_todo_v2_canary.json",
+  "todo_risk_band": "high_thin",
+  "todo_thin_margin_streak": 1,
+  "success": true,
+  "steps": [
+    {
+      "command": [
+        "C:\\Python311\\python.exe",
+        "scripts/build_btrack_dss_enriched_from_docs.py"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "OK: dss enriched jsonl built\nout=C:\\workspace\\data\\logos\\manuscripts\\dss_parsed_enriched.jsonl\ndocs=7\nrows=64\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": [
+        "C:\\Python311\\python.exe",
+        "scripts/extract_btrack_symbol_candidates.py",
+        "--top-k",
+        "1000"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "OK: symbol candidates extracted\nout=C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_latest.jsonl\nsummary=C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_summary_latest.json\ntop_k=815 total_docs=3592\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": [
+        "C:\\Python311\\python.exe",
+        "scripts/curate_btrack_symbol_candidates.py",
+        "--top-k",
+        "200",
+        "--min-dss-quota",
+        "20",
+        "--min-curated-count",
+        "20"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "OK: curated symbol candidates written\nout=C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_latest.jsonl\nsummary=C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_summary_latest.json\ncurated_count=20\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": [
+        "C:\\Python311\\python.exe",
+        "scripts/build_deut32_dss_lexicon_from_enriched.py",
+        "--min-source-doc-support",
+        "2"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "OK: auto DSS lexicon generated\nout=C:\\workspace\\reports\\constitution\\btrack_pilot\\dss_variant_lexicon_deut32_8_auto_latest.json\ntokens_with_support=3 total_docs=64\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": [
+        "C:\\Python311\\python.exe",
+        "scripts/report_semantic_gap_analysis.py",
+        "--dss-lexicon",
+        "reports/constitution/btrack_pilot/dss_variant_lexicon_deut32_8_auto_latest.json",
+        "--per-token-cap-ratio",
+        "0.35"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "OK: semantic gap analysis generated\nout=C:\\workspace\\reports\\constitution\\btrack_pilot\\semantic_gap_analysis_v1.json\nwinner=sons_of_god margin=0.060358\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": [
+        "C:\\Python311\\python.exe",
+        "scripts/run_btrack_fusion_gate.py",
+        "--max-cee-risk-band",
+        "critical_thin"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "reports\\constitution\\btrack_pilot\\original_language_master_atoms_latest.jsonl\nsummary=C:\\workspace\\reports\\constitution\\btrack_pilot\\original_language_master_atoms_summary_latest.json\nunique_atoms=41751\nMaster atoms health check\n- thresholds: unique>=10000, hebrew>=5000, greek>=3000\n- unique_master_atoms: 41751\n- hebrew_atoms: 22913\n- greek_atoms: 13982\nRESULT: PASS\n[run] C:\\Python311\\python.exe scripts/run_gematria_4d_gate.py --min-resonance-rate 0.8 --min-mean-axis-pearson -0.2 --min-saving-delta -0.2\n[run] C:\\Python311\\python.exe scripts/run_deut32_cee_pilot.py\n[run] C:\\Python311\\python.exe scripts/run_deut32_cee_stability_sweep.py\n[run] C:\\Python311\\python.exe scripts/core/build_original_language_master_atoms.py --lemma-mode normalized_form_v1\n[run] C:\\Python311\\python.exe scripts/check_master_atoms_health.py --min-unique-atoms 10000 --min-hebrew-atoms 5000 --min-greek-atoms 3000\nfusion_decision=pass\nout=C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_fusion_gate_latest.json\n",
+      "stderr_tail": ""
+    }
+  ]
+}

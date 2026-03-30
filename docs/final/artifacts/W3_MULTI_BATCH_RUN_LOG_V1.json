@@ -1,0 +1,42 @@
+{
+  "schema": "w3_multi_batch_run_log_v1",
+  "generated_at_utc": "2026-03-30T22:45:58Z",
+  "runs": [
+    {
+      "variant": "V1",
+      "input": "C:/workspace/docs/final/artifacts/W3_PILOT_BATCH_INPUT_V1.json",
+      "output": "C:/workspace/docs/final/artifacts/W3_RESONANCE_BATCH_RESULT_V1.json",
+      "top_n_count": 5,
+      "promotion_gate_passed": true,
+      "false_equivalence_risk_count": 0,
+      "deterministic_wording_risk_count": 0
+    },
+    {
+      "variant": "V2",
+      "input": "C:/workspace/docs/final/artifacts/W3_PILOT_BATCH_INPUT_V2.json",
+      "output": "C:/workspace/docs/final/artifacts/W3_RESONANCE_BATCH_RESULT_V2.json",
+      "top_n_count": 5,
+      "promotion_gate_passed": true,
+      "false_equivalence_risk_count": 0,
+      "deterministic_wording_risk_count": 0
+    },
+    {
+      "variant": "V3",
+      "input": "C:/workspace/docs/final/artifacts/W3_PILOT_BATCH_INPUT_V3.json",
+      "output": "C:/workspace/docs/final/artifacts/W3_RESONANCE_BATCH_RESULT_V3.json",
+      "top_n_count": 5,
+      "promotion_gate_passed": true,
+      "false_equivalence_risk_count": 0,
+      "deterministic_wording_risk_count": 0
+    },
+    {
+      "variant": "V4",
+      "input": "C:/workspace/docs/final/artifacts/W3_PILOT_BATCH_INPUT_V4.json",
+      "output": "C:/workspace/docs/final/artifacts/W3_RESONANCE_BATCH_RESULT_V4.json",
+      "top_n_count": 5,
+      "promotion_gate_passed": true,
+      "false_equivalence_risk_count": 0,
+      "deterministic_wording_risk_count": 0
+    }
+  ]
+}

@@ -14,9 +14,17 @@
 - 한의 원전·코호트: `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` (라벨 A vs 원전 B 혼선 금지).
 - NotebookLM 소스: `docs/NotebookLM_sources_manifest.md`.
 
+## 12AI vs 코드북 도메인
+
+- **12AI**는 Cursor 작업 라우팅용 **오케스트레이션 라벨**이다. 코드북 **도메인·샤드 개수**(파일럿 4존부터 확장 등)와 **1:1로 묶지 않는다.**
+- 복잡·고위험 작업만 전문 서브에이전트로 분산하며, 보통 **2~4** 범위가 권장이다. 상세: `.cursor/skills/auto-12ai-routing/SKILL.md`.
+
 ## 경로
 
 - 작업 루트: `C:/workspace` (Windows). Python 실행은 `py` 권장.
+- 공유 SSOT 확인 경로(1순위): `G:\공유 드라이브\MKM_DATA_VAULT\vault\btrack_artifacts_verified` (미존재 시 `...\vault` 하위 경로 확인).
+- B-track 핵심 산출물 승격(로컬 `reports/...` → G:): `scripts/push_local_artifacts_to_vault.ps1`
+- 어휘·코퍼스 FACT-LOCK 계약: `docs/final/MASTER_Linguistic_Contract_2026.md` — 외부 사전 스테이징 `C:\workspace\vault\external_lexicon` → G: `...\vault\external_lexicon`: `scripts/setup/fetch_external_lexicons.ps1` (수신·MANIFEST) 후 `scripts/push_external_lexicon_to_vault.ps1` (승격)
 
 ## SSH Cursor · VPS 실매매 (전제)
 

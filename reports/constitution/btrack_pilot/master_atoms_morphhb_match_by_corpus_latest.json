@@ -1,0 +1,44 @@
+{
+  "schema": "master_atoms_morphhb_match_by_corpus_v1",
+  "generated_at_utc": "2026-03-30T20:05:11.060478+00:00",
+  "inputs": {
+    "atoms": "C:\\workspace\\reports\\constitution\\btrack_pilot\\original_language_master_atoms_latest.jsonl",
+    "morphhb_seed": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_atoms_morphhb_seed_latest.jsonl",
+    "source_basename_to_bucket": {
+      "verse_decoded_v2.jsonl": "canon_decode",
+      "dss_parsed_enriched.jsonl": "dss",
+      "apocrypha_std.jsonl": "apocrypha"
+    }
+  },
+  "hebrew_rows_in_morphhb_seed": 22913,
+  "by_match_method": {
+    "morphhb_unmatched": 9881,
+    "morphhb_wlc": 13016,
+    "morphhb_wlc_no_strong": 16
+  },
+  "by_exclusive_pattern": {
+    "apocrypha_only": 4279,
+    "canon_decode_only": 16366,
+    "dss_only": 2,
+    "mixed_multi_bucket": 2266
+  },
+  "crosstab_match_method_x_exclusive_pattern": {
+    "morphhb_unmatched": {
+      "apocrypha_only": 4277,
+      "canon_decode_only": 5437,
+      "dss_only": 2,
+      "mixed_multi_bucket": 165
+    },
+    "morphhb_wlc": {
+      "apocrypha_only": 2,
+      "canon_decode_only": 10915,
+      "mixed_multi_bucket": 2099
+    },
+    "morphhb_wlc_multi": {},
+    "morphhb_wlc_no_strong": {
+      "canon_decode_only": 14,
+      "mixed_multi_bucket": 2
+    }
+  },
+  "note": "exclusive_pattern from report_master_atoms_corpus_split rules; Hebrew-only rows from morphhb seed."
+}

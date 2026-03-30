@@ -1,0 +1,76 @@
+{
+  "schema": "multilens_domain_slot_dictionary_v6",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "slots": {
+    "S1": [
+      "state",
+      "should",
+      "함께",
+      "압축",
+      "있다",
+      "조사",
+      "먼저",
+      "유지해야"
+    ],
+    "S2": [
+      "policy",
+      "trigger",
+      "gate",
+      "boundary",
+      "토큰",
+      "한글",
+      "문장",
+      "bootstrap"
+    ],
+    "S3": [
+      "evidence",
+      "원문",
+      "witness",
+      "traceability",
+      "but",
+      "track",
+      "direct",
+      "so"
+    ],
+    "S4": [
+      "manual",
+      "review",
+      "strict",
+      "reviews",
+      "proxy",
+      "quality",
+      "from",
+      "수분"
+    ],
+    "S5": [
+      "사상의학",
+      "체질",
+      "소음인의",
+      "호흡",
+      "보여도",
+      "규칙",
+      "체중",
+      "있으니"
+    ],
+    "S6": [
+      "낮추고",
+      "수면",
+      "취침",
+      "축이",
+      "된다",
+      "제약을",
+      "우선",
+      "임계치를"
+    ],
+    "S7": [
+      "복원",
+      "compression",
+      "token",
+      "반드시",
+      "의미",
+      "핵심",
+      "있어",
+      "수행해야"
+    ]
+  }
+}

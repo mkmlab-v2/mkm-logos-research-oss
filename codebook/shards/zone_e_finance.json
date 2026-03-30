@@ -1,0 +1,32 @@
+{
+  "shard_id": "zone_e_finance",
+  "domain": "finance",
+  "routing_keywords": [
+    "risk",
+    "volatility",
+    "drawdown",
+    "position",
+    "leverage",
+    "stoploss",
+    "slippage",
+    "pnl"
+  ],
+  "must_keep_hard_terms": [
+    "risk",
+    "drawdown",
+    "position",
+    "leverage"
+  ],
+  "must_keep_soft_terms": [
+    "stoploss",
+    "slippage",
+    "pnl"
+  ],
+  "guard_tokens": [
+    "must",
+    "cannot",
+    "without",
+    "strict"
+  ],
+  "hangul_principle": false
+}
