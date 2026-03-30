@@ -251,6 +251,13 @@ https://ko.wikipedia.org/wiki/%EC%82%AC%EC%A3%BC%EB%AA%85%EB%A6%AC%ED%95%99
 
 **격벽**: 본 절은 **NotebookLM·연구 워크플로** 안내. 정경 31,102 파이프라인·A-Track 실매매 코드와 **자동 합선 없음** (`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 멀티 코퍼스 표와 동일).
 
+**MCP 자동 생성 노트 (2026-03-30, `notebook_create` + `source_add`)**
+
+| 노트 제목 | `notebook_id` | URL | 초기 `source_count` (MCP 직후) |
+|-----------|---------------|-----|--------------------------------|
+| B-Track DSS-only (Qumran) 2026-03-30 | `3839cf65-d97c-465c-a252-7ca9441af201` | `https://notebooklm.google.com/notebook/3839cf65-d97c-465c-a252-7ca9441af201` | 5 (scope 텍스트 + closeout MD + LOGOS_NOTEBOOK_META_GUIDE + LOGOS_RISK_BRIDGE + deadseascrolls.org.il URL) |
+| B-Track Apocrypha-only 2026-03-30 | `17ab44ab-0f62-4714-99ac-12688a469597` | `https://notebooklm.google.com/notebook/17ab44ab-0f62-4714-99ac-12688a469597` | 4 (scope 텍스트 + AI-Logos 서지 MD + LOGOS_NOTEBOOK_META_GUIDE + Book of Enoch Wikipedia URL) |
+
 ---
 
 ## DSS Fusion Sources (DSS + 외경)
