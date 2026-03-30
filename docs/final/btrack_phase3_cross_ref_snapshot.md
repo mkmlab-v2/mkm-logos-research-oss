@@ -231,26 +231,26 @@ ENTRY_04 | link_type=temporal | source_id=Jubilees 6:29-38 + 364-day notes (btra
 
 ENTRY_05 | link_type=thematic | source_id=1QS IX 10-11 (Community Rule; Eng. citation in btrack_dss_1QS_sectarian_context.md) | state_candidate_id=3 | corpus=dss | theme=복수 메시아·규율 공동체 가설 | rationale=B-Track DSS: 예언자와 아론·이스라엘의 기름부음 받은 자에 대한 기대. A-Track 비유 후보(가설): 규율·언약 공동체·장기 신념 — HODL 담론은 비유일 뿐 자동 트리거 금지.
 
-ENTRY_06 | link_type=thematic | source_id=1QpHab (1Q15) col.VII — St.Mark’s I plates + DSS Study Edition (verify col/line) | state_candidate_id=4 | corpus=dss | theme=페셔·위기 재독 | rationale=B-Track DSS: 하바국 해석(페셔)의 ‘위기를 성경으로 재독’ 레이어. A-Track 비유 후보(가설): 규범·도덕 프레임(칠선 언약 맥락)과 시장 서사 병치 — geometry/trigger 아님; Fact-Lock 벤치만.
+ENTRY_06 | link_type=thematic | source_id=1QpHab (1Q15) | loc=col.VII, line=TBD | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill) | status=verify col/line | state_candidate_id=4 | corpus=dss | theme=페셔·위기 재독 | rationale=B-Track DSS: 하바국 해석(페셔)의 ‘위기를 성경으로 재독’ 레이어. A-Track 비유 후보(가설): 규범·도덕 프레임(칠선 언약 맥락)과 시장 서사 병치 — geometry/trigger 아님; Fact-Lock 벤치만.
 
-ENTRY_07 | link_type=temporal | source_id=11QT (11Q19) XLVI–XLVII — Yadin 1977; cf. DJD XXIII (verify col) | state_candidate_id=5 | corpus=dss | theme=성전·절기 규범 | rationale=B-Track DSS: 성전·절기 일정 규범 텍스트. A-Track 대비: Ezra 명단 행은 ‘복귀 코호트’ 스냅샷 — 달력 DSS와 주제만 병치(벤치); 인과·트리거 금지.
+ENTRY_07 | link_type=temporal | source_id=11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD | refs=Yadin 1977, DJD XXIII | status=verify col range/line | state_candidate_id=5 | corpus=dss | theme=성전·절기 규범 | rationale=B-Track DSS: 성전·절기 일정 규범 텍스트. A-Track 대비: Ezra 명단 행은 ‘복귀 코호트’ 스냅샷 — 달력 DSS와 주제만 병치(벤치); 인과·트리거 금지.
 
-ENTRY_08 | link_type=temporal | source_id=4Q319 — DJD XXI Talmon Calendrical Texts (verify sigla) | state_candidate_id=6 | corpus=dss | theme=제사장 주기·신호 | rationale=B-Track DSS: 제사장 주기·신호 표류. A-Track 대비: Nehemiah 복귀자 명단 행 — 인구/재건 흐름과 ‘주기 신호’ 담론만 병치(벤치).
+ENTRY_08 | link_type=temporal | source_id=4Q319 (4QOtot) | loc=fragment/sigla=TBD, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=verify fragment sigla | state_candidate_id=6 | corpus=dss | theme=제사장 주기·신호 | rationale=B-Track DSS: 제사장 주기·신호 표류. A-Track 대비: Nehemiah 복귀자 명단 행 — 인구/재건 흐름과 ‘주기 신호’ 담론만 병치(벤치).
 
-ENTRY_09 | link_type=thematic | source_id=4Q169 (4QpNah) — DJD V Allegro 1968; DSS Study Edition (verify frag/col) | state_candidate_id=7 | corpus=dss | theme=나훔 페셔·악행 귀속 | rationale=B-Track DSS: 나훔 페셔의 악행 귀속·심판 화법. A-Track 대비: 시36 ‘악인의 죄’ 서사와 주제 병치 — 수치/심리 트리거 아님.
+ENTRY_09 | link_type=thematic | source_id=4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=verify frag/col | state_candidate_id=7 | corpus=dss | theme=나훔 페셔·악행 귀속 | rationale=B-Track DSS: 나훔 페셔의 악행 귀속·심판 화법. A-Track 대비: 시36 ‘악인의 죄’ 서사와 주제 병치 — 수치/심리 트리거 아님.
 
-ENTRY_10 | link_type=thematic | source_id=CD-A — Charlesworth PTSDSSP 1995; 4Q266–273 DJD XVIII | state_candidate_id=9 | corpus=dss | theme=언약·지경·유배 | rationale=B-Track DSS: 공동체의 언약·지경 담론. A-Track 대비: 여호수아 지파 경계 점과 ‘땅·경계’ 메타만 병치 — 지리≠가격.
+ENTRY_10 | link_type=thematic | source_id=CD-A I-II (+4Q266-273) | loc=CD-A I-II, 4Q266-273 frag/line=TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=add chapter/line anchors | state_candidate_id=9 | corpus=dss | theme=언약·지경·유배 | rationale=B-Track DSS: 공동체의 언약·지경 담론. A-Track 대비: 여호수아 지파 경계 점과 ‘땅·경계’ 메타만 병치 — 지리≠가격.
 
 ENTRY_11 | link_type=analogy_bench | canonical_ref=1Chr.14.6 | source_id=1QM.1.1 | state_candidate_id=13 | corpus=dss | theme=상전이 벤치([HYPO]) | rationale=[HYPO] 금화교역 상전이 벤치; note=NL v2.1 반증·맥락 오염 요지(SSOT JSON 전문).
 
-ENTRY_12 | link_type=lexical | canonical_ref=Ps.4.6 | source_id=11Q5 DJD IV | state_candidate_id=10 | corpus=dss | theme=시편 DSS·MT 정렬
+ENTRY_12 | link_type=lexical | canonical_ref=Ps.4.6 | source_id=11Q5 | loc=Psalm witness -> MT Ps.4.6, col/line=TBD | refs=DJD IV (Sanders 1965) | status=verify col/line mapping | state_candidate_id=10 | corpus=dss | theme=시편 DSS·MT 정렬
 
-ENTRY_13 | link_type=lexical | canonical_ref=Ps.5.2 | source_id=11Q5 DJD IV | state_candidate_id=11 | corpus=dss | theme=시편 5장
+ENTRY_13 | link_type=lexical | canonical_ref=Ps.5.2 | source_id=11Q5 | loc=Psalm witness -> MT Ps.5.2, col/line=TBD | refs=DJD IV (Sanders 1965) | status=verify Ps.5 mapping | state_candidate_id=11 | corpus=dss | theme=시편 5장
 
-ENTRY_14 | link_type=lexical | canonical_ref=Deut.5.19 | source_id=4QDeut DJD XIV | state_candidate_id=12 | corpus=dss | theme=신명 십계
+ENTRY_14 | link_type=lexical | canonical_ref=Deut.5.19 | source_id=4QDeut | loc=Deut.5.19 fragment/line=TBD | refs=DJD XIV (Ulrich et al.) | status=verify Decalogue fragment | state_candidate_id=12 | corpus=dss | theme=신명 십계
 
-ENTRY_15 | link_type=thematic | canonical_ref=Gen.49.19 | source_id=4QGen DJD XII | state_candidate_id=14 | corpus=dss | theme=창49 가드
+ENTRY_15 | link_type=thematic | canonical_ref=Gen.49.19 | source_id=4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=verify Gad-oracle alignment | state_candidate_id=14 | corpus=dss | theme=창49 가드
 
-ENTRY_16 | link_type=thematic | canonical_ref=Ezra.2.54 | source_id=Ezra-Neh witnesses | state_candidate_id=16 | corpus=dss | theme=귀환 명단
+ENTRY_16 | link_type=thematic | canonical_ref=Ezra.2.54 | source_id=Ezra-Neh witnesses | loc=Ezra.2.54 list anchor=TBD | refs=4Q Ezra-type + LXX Ezra traditions | status=verify returnee list witness | state_candidate_id=16 | corpus=dss | theme=귀환 명단
 
 공통 경고: disclaimer 필드 — A-Track SSOT 아님; 엔진이 기본 로드 금지; Sefaria/Charles 등은 프록시 표준(정본 아님); 후보(candidate)·벤치만 기록.
