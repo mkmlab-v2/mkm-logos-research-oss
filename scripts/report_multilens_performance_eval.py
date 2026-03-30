@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 from pathlib import Path
@@ -11,6 +12,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_INPUT_V1.json"
 OUT = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_REPORT_V1.json"
+
+
+def _parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(description="Generate multi-lens performance evaluation report.")
+    p.add_argument("--input", default=str(SRC), help="Input JSON spec path")
+    p.add_argument("--output", default=str(OUT), help="Output report path")
+    return p
 
 
 def _tokens(text: str) -> int:
@@ -43,7 +51,10 @@ def _axis_hit(answer: str, axis: str) -> bool:
 
 
 def main() -> int:
-    doc = json.loads(SRC.read_text(encoding="utf-8"))
+    args = _parser().parse_args()
+    src = Path(args.input).resolve()
+    out = Path(args.output).resolve()
+    doc = json.loads(src.read_text(encoding="utf-8"))
     comp_cases = doc.get("compression_cases", [])
     fus_cases = doc.get("fusion_answer_cases", [])
 
@@ -102,7 +113,7 @@ def main() -> int:
 
     report = {
         "schema": "multilens_performance_eval_report_v1",
-        "source_input": str(SRC.relative_to(ROOT)).replace("\\", "/"),
+        "source_input": str(src.relative_to(ROOT)).replace("\\", "/"),
         "compression_metrics": {
             "case_count": len(comp_rows),
             "global_token_saving_rate": global_saving,
@@ -123,8 +134,8 @@ def main() -> int:
         },
     }
 
-    OUT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"WROTE: {OUT}")
+    out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"WROTE: {out}")
     return 0
 
 

@@ -1,0 +1,164 @@
+{
+  "schema": "multilens_performance_eval_report_v1",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "compression_metrics": {
+    "case_count": 10,
+    "global_token_saving_rate": 0.3595505617977528,
+    "avg_reconstruction_fidelity_jaccard": 0.5830482791202606,
+    "cases": [
+      {
+        "id": "cmp2_001",
+        "raw_tokens": 25,
+        "compressed_tokens": 18,
+        "token_saving_rate": 0.28,
+        "compression_ratio": 0.72,
+        "reconstruction_fidelity_jaccard": 0.6666666666666666
+      },
+      {
+        "id": "cmp2_002",
+        "raw_tokens": 19,
+        "compressed_tokens": 11,
+        "token_saving_rate": 0.42105263157894735,
+        "compression_ratio": 0.5789473684210527,
+        "reconstruction_fidelity_jaccard": 0.631578947368421
+      },
+      {
+        "id": "cmp2_003",
+        "raw_tokens": 17,
+        "compressed_tokens": 12,
+        "token_saving_rate": 0.2941176470588235,
+        "compression_ratio": 0.7058823529411765,
+        "reconstruction_fidelity_jaccard": 0.47368421052631576
+      },
+      {
+        "id": "cmp2_004",
+        "raw_tokens": 16,
+        "compressed_tokens": 9,
+        "token_saving_rate": 0.4375,
+        "compression_ratio": 0.5625,
+        "reconstruction_fidelity_jaccard": 0.3181818181818182
+      },
+      {
+        "id": "cmp2_005",
+        "raw_tokens": 15,
+        "compressed_tokens": 11,
+        "token_saving_rate": 0.2666666666666667,
+        "compression_ratio": 0.7333333333333333,
+        "reconstruction_fidelity_jaccard": 0.5625
+      },
+      {
+        "id": "cmp2_006",
+        "raw_tokens": 18,
+        "compressed_tokens": 11,
+        "token_saving_rate": 0.38888888888888884,
+        "compression_ratio": 0.6111111111111112,
+        "reconstruction_fidelity_jaccard": 0.6666666666666666
+      },
+      {
+        "id": "cmp2_007",
+        "raw_tokens": 15,
+        "compressed_tokens": 9,
+        "token_saving_rate": 0.4,
+        "compression_ratio": 0.6,
+        "reconstruction_fidelity_jaccard": 0.47058823529411764
+      },
+      {
+        "id": "cmp2_008",
+        "raw_tokens": 18,
+        "compressed_tokens": 13,
+        "token_saving_rate": 0.2777777777777778,
+        "compression_ratio": 0.7222222222222222,
+        "reconstruction_fidelity_jaccard": 0.5882352941176471
+      },
+      {
+        "id": "cmp2_009",
+        "raw_tokens": 21,
+        "compressed_tokens": 13,
+        "token_saving_rate": 0.38095238095238093,
+        "compression_ratio": 0.6190476190476191,
+        "reconstruction_fidelity_jaccard": 0.6666666666666666
+      },
+      {
+        "id": "cmp2_010",
+        "raw_tokens": 14,
+        "compressed_tokens": 7,
+        "token_saving_rate": 0.5,
+        "compression_ratio": 0.5,
+        "reconstruction_fidelity_jaccard": 0.7857142857142857
+      }
+    ]
+  },
+  "fusion_metrics": {
+    "case_count": 10,
+    "avg_axis_coverage": 1.0,
+    "avg_personalization_coverage": 0.7333333333333334,
+    "all_cases_fusion_possible": true,
+    "cases": [
+      {
+        "id": "fus2_001",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 0.3333333333333333,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_002",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 0.3333333333333333,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_003",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 0.6666666666666666,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_004",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 0.6666666666666666,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_005",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 0.3333333333333333,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_006",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 1.0,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_007",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 1.0,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_008",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 1.0,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_009",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 1.0,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_010",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 1.0,
+        "fusion_answer_possible": true
+      }
+    ]
+  },
+  "quality_gate": {
+    "compression_ok": true,
+    "fusion_ok": true,
+    "note": "Heuristic B-track gate; not an A-track trading performance metric."
+  }
+}

@@ -39,6 +39,7 @@ on:
       - "tests/test_myeongni_16_state_topflow_interpretation_report.py"
       - "tests/test_myeongni_topflow_integrated_report.py"
       - "tests/test_multilens_performance_eval_report.py"
+      - "tests/test_multilens_performance_eval_report_v2.py"
       - "tests/test_cross_ref_dss_schema.py"
       - "tests/test_entry16_source_hunt_log.py"
       - "tests/test_entry16_source_hunt_summary.py"
@@ -118,6 +119,9 @@ jobs:
 
       - name: Multi-lens performance evaluation report contract
         run: python -m pytest tests/test_multilens_performance_eval_report.py -q --tb=short
+
+      - name: Multi-lens performance evaluation report V2 contract
+        run: python -m pytest tests/test_multilens_performance_eval_report_v2.py -q --tb=short
 
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()

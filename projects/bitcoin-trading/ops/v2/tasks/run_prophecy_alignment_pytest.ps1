@@ -30,6 +30,7 @@ Set-Location -LiteralPath $workspaceRoot
     'tests/test_myeongni_16_state_topflow_interpretation_report.py' `
     'tests/test_myeongni_topflow_integrated_report.py' `
     'tests/test_multilens_performance_eval_report.py' `
+    'tests/test_multilens_performance_eval_report_v2.py' `
     'tests/test_myeongni_insight_observation_log.py' `
     -q --tb=short
 exit $LASTEXITCODE

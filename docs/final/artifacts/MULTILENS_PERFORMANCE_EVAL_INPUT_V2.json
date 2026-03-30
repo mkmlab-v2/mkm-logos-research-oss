@@ -1,0 +1,138 @@
+{
+  "schema": "multilens_performance_eval_input_v1",
+  "description": "Expanded B-track evaluation input with broader coverage.",
+  "compression_cases": [
+    {
+      "id": "cmp2_001",
+      "raw_text": "State 3 to 11 dominates in bootstrap data, but this is read-only analysis and cannot trigger A-track policy shifts.",
+      "compressed_text": "State 3->11 dominates bootstrap; read-only, no A-track trigger.",
+      "reconstructed_text": "In bootstrap data, state 3 to 11 is dominant, and this remains read-only without A-track policy trigger."
+    },
+    {
+      "id": "cmp2_002",
+      "raw_text": "ENTRY_16 direct witness is unresolved, so the gate requires manual proxy policy review with strict evidence traceability.",
+      "compressed_text": "ENTRY_16 direct unresolved; manual proxy review with strict traceability.",
+      "reconstructed_text": "Because ENTRY_16 direct witness is unresolved, manual proxy policy review is used with strict traceability."
+    },
+    {
+      "id": "cmp2_003",
+      "raw_text": "Compression should reduce token footprint while preserving safety caveats, especially B-track boundary notes.",
+      "compressed_text": "Reduce tokens, preserve safety caveats and B-track boundary.",
+      "reconstructed_text": "Token footprint is reduced while safety caveats and B-track boundary notes are preserved."
+    },
+    {
+      "id": "cmp2_004",
+      "raw_text": "A strong report references source artifacts explicitly so that future reviews can reproduce every claim.",
+      "compressed_text": "Strong report cites artifacts for reproducible future review.",
+      "reconstructed_text": "A strong report explicitly cites source artifacts to keep claims reproducible for future review."
+    },
+    {
+      "id": "cmp2_005",
+      "raw_text": "Weekly noise should not override monthly governance cadence unless external evidence updates are confirmed.",
+      "compressed_text": "Weekly noise cannot override monthly cadence without confirmed external updates.",
+      "reconstructed_text": "Monthly governance cadence should remain unless confirmed external evidence updates appear."
+    },
+    {
+      "id": "cmp2_006",
+      "raw_text": "Proxy anchors can support manual review, but they must never be mislabeled as direct witness evidence.",
+      "compressed_text": "Proxy supports manual review; never label it direct witness.",
+      "reconstructed_text": "Proxy anchors support manual review and must not be mislabeled as direct witness evidence."
+    },
+    {
+      "id": "cmp2_007",
+      "raw_text": "Interpretation quality improves as state rows accumulate beyond bootstrap thresholds in the transition matrix.",
+      "compressed_text": "Quality rises when state rows exceed bootstrap threshold.",
+      "reconstructed_text": "Transition interpretation quality increases once state rows accumulate beyond bootstrap threshold."
+    },
+    {
+      "id": "cmp2_008",
+      "raw_text": "All tri-lens answers should include Myeongri timing, Bible alignment, and Sasang constitution constraints.",
+      "compressed_text": "Tri-lens answers require Myeongri, Bible, and Sasang constraints.",
+      "reconstructed_text": "Each tri-lens answer includes Myeongri timing, Bible alignment, and Sasang constitution constraints."
+    },
+    {
+      "id": "cmp2_009",
+      "raw_text": "Fact-Lock tests protect the codebook from drift and keep contracts aligned between docs, scripts, and CI.",
+      "compressed_text": "Fact-Lock prevents drift across docs, scripts, and CI.",
+      "reconstructed_text": "Fact-Lock tests protect against drift and keep contracts aligned across docs, scripts, and CI."
+    },
+    {
+      "id": "cmp2_010",
+      "raw_text": "Performance reporting should separate operational stability from predictive quality to avoid false confidence.",
+      "compressed_text": "Separate operational stability from predictive quality.",
+      "reconstructed_text": "Performance reporting separates operational stability from predictive quality to avoid false confidence."
+    }
+  ],
+  "fusion_answer_cases": [
+    {
+      "id": "fus2_001",
+      "question": "내 체질과 현재 상태를 함께 보려면?",
+      "answer": "명리 state 흐름을 먼저 확인하고 성경 정렬 근거를 교차 검토한 뒤, 사상의학 체질 부담을 낮추는 방향으로 해석합니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["내", "현재", "체질"]
+    },
+    {
+      "id": "fus2_002",
+      "question": "지금 신호를 3축으로 설명해줘",
+      "answer": "명리에서는 전이 state를 보고, 성경 축에서는 Logos 근거를 확인하며, 사상의학 축에서는 체질 안전 여지를 함께 봅니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["지금", "신호", "체질"]
+    },
+    {
+      "id": "fus2_003",
+      "question": "개인화된 리스크 관점으로 요약해줘",
+      "answer": "명리 타이밍과 성경 정렬을 참고하되 사상의학 체질 제약을 우선 반영해 리스크를 보수적으로 요약합니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["개인화", "요약", "체질"]
+    },
+    {
+      "id": "fus2_004",
+      "question": "내 상황에 맞춰 판단 근거를 알려줘",
+      "answer": "명리 상태값, 성경 축의 기준 구절, 사상의학 체질 조건을 함께 사용해 내 상황에 맞춘 판단 근거를 제시합니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["내", "상황", "맞춰"]
+    },
+    {
+      "id": "fus2_005",
+      "question": "오늘은 공격적으로 가도 돼?",
+      "answer": "명리 state 관점과 성경 정렬 신호를 보더라도 사상의학 체질 안정성을 우선해야 하므로 보수적 접근이 낫습니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["오늘", "공격적", "체질"]
+    },
+    {
+      "id": "fus2_006",
+      "question": "내게 맞는 해석 순서를 제안해줘",
+      "answer": "명리 타이밍 확인, 성경 정렬 점검, 사상의학 체질 적합성 검토 순서가 내게 맞는 기본 절차입니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["내게", "맞는", "체질"]
+    },
+    {
+      "id": "fus2_007",
+      "question": "상태 전이와 건강 축을 같이 말해줘",
+      "answer": "명리 전이 상태를 기준으로 성경 축에서 의미를 교차 확인하고 사상의학 체질에서 건강 부담을 함께 반영합니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["상태", "건강", "체질"]
+    },
+    {
+      "id": "fus2_008",
+      "question": "내 질문에 3축이 다 들어갔는지 확인해줘",
+      "answer": "명리, 성경, 사상의학 세 축을 모두 포함했고 내 질문 맥락에 맞춰 체질 요소를 분리해 설명했습니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["내", "질문", "체질"]
+    },
+    {
+      "id": "fus2_009",
+      "question": "지금은 관망이 나을까?",
+      "answer": "명리 state 전이와 성경 정렬은 해석 신호를 주지만 사상의학 체질 안정성을 고려하면 지금은 관망이 더 적절합니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["지금", "관망", "체질"]
+    },
+    {
+      "id": "fus2_010",
+      "question": "개인 맞춤형 결론을 한 줄로 줘",
+      "answer": "명리 전이 신호를 성경 정렬로 검증하고 사상의학 체질 제약을 반영해 개인 맞춤형으로 보수적 결론을 제시합니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["개인", "맞춤형", "체질"]
+    }
+  ]
+}
