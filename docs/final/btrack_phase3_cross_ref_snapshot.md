@@ -177,15 +177,15 @@
     {
       "entry_id": "ENTRY_14",
       "canonical_ref": "Deut.5.19",
-      "satellite_ref": "4QDeut (a-q) | loc=DJD XIV Deuteronomy witnesses (Pls I-XXXI); Deut.5.19 fragment/line remains TBD | refs=DJD XIV (Ulrich et al. 1995) | status=partial_anchor_verified (witness-set+plates)",
-      "source_id": "4QDeut (a-q) | loc=DJD XIV Deuteronomy witnesses (Pls I-XXXI); Deut.5.19 fragment/line remains TBD | refs=DJD XIV (Ulrich et al. 1995) | status=partial_anchor_verified (witness-set+plates)",
+      "satellite_ref": "4QDeut (a-q) | loc=DJD XIV Deuteronomy witnesses (Pls I-XXXI); 4Q129 frg.1R line 9 preserves Decalogue sequence incl. Deut.5.19 (לא תגנוב); direct DJD fragment-line crosswalk remains TBD | refs=DJD XIV (Ulrich et al. 1995), Qumran-Digital 4Q129 transcription (2024-07-30) | status=partial_anchor_verified (witness-set+plates+line)",
+      "source_id": "4QDeut (a-q) | loc=DJD XIV Deuteronomy witnesses (Pls I-XXXI); 4Q129 frg.1R line 9 preserves Decalogue sequence incl. Deut.5.19 (לא תגנוב); direct DJD fragment-line crosswalk remains TBD | refs=DJD XIV (Ulrich et al. 1995), Qumran-Digital 4Q129 transcription (2024-07-30) | status=partial_anchor_verified (witness-set+plates+line)",
       "corpus_type": "dss",
       "link_type": "lexical",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 12,
       "rationale": "B-Track DSS: 신명기 십계·금기 병렬. A-Track: state 12 앵커 Deut.5.19 — 규범 메타만(윤리 트리거 아님).",
-      "note": "Bench policy: lexical/규범 정렬 후보. 승격 조건=4QDeut fragment가 Deut.5.19 금기 문맥에 직접 대응. 반증 훅=fragment 위치 불확정 또는 십계 일반 규범으로만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/sigla anchor 부재 확인."
+      "note": "Bench policy: lexical/규범 정렬 후보. 승격 조건=4QDeut fragment가 Deut.5.19 금기 문맥에 직접 대응. 반증 훅=fragment 위치 불확정 또는 십계 일반 규범으로만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/sigla anchor 부재 확인. Local evidence (2026-03-30): Qumran-Digital 4Q129 전사에서 frg.1R line 9에 Decalogue 구문(לא תרצח/לא תנאף/לא תגנוב)이 확인되어 Deut.5.19 line anchor를 partial로 상향."
     },
     {
       "entry_id": "ENTRY_15",

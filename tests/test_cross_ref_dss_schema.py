@@ -120,8 +120,9 @@ def test_entry_14_partial_anchor_verified_gate() -> None:
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
     row = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_14")
     sat = str(row.get("satellite_ref", ""))
-    assert "status=partial_anchor_verified (witness-set+plates)" in sat
+    assert "status=partial_anchor_verified (witness-set+plates+line)" in sat
     assert "Pls I-XXXI" in sat
+    assert "4Q129 frg.1R line 9" in sat
 
 
 def test_entry_15_partial_anchor_verified_gate() -> None:
