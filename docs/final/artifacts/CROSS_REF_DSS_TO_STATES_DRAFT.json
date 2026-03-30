@@ -1,7 +1,7 @@
 {
   "schema": "cross_ref_dss_to_states_draft_v2",
   "disclaimer": "B-Track parallel-corpus draft only; not A-Track SSOT; trading engine must not load this path by default.",
-  "generated_at_utc": "2026-03-30T12:00:00+00:00",
+  "generated_at_utc": "2026-03-30T18:30:00+00:00",
   "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §4.5",
   "canonical_join_ssot": "docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json",
   "canonical_join_note": "canonical_ref = verse_id for the same state_id as state_candidate_id (cosine assignment snapshot); not independent thematic exegesis.",
@@ -12,7 +12,7 @@
       "satellite_ref": "1QM 1:1-7 (War Scroll, Col.1)",
       "source_id": "1QM 1:1-7 (War Scroll, Col.1)",
       "corpus_type": "dss",
-      "link_type": "analogy_bench",
+      "link_type": "thematic",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 1,
@@ -24,7 +24,7 @@
       "satellite_ref": "1Enoch 10:4-6 (Charles / Wikisource ch.10)",
       "source_id": "1Enoch 10:4-6 (Charles / Wikisource ch.10)",
       "corpus_type": "apocrypha",
-      "link_type": "analogy_bench",
+      "link_type": "thematic",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 15,
@@ -36,7 +36,7 @@
       "satellite_ref": "1Enoch 10:7 (Charles / Wikisource ch.10)",
       "source_id": "1Enoch 10:7 (Charles / Wikisource ch.10)",
       "corpus_type": "apocrypha",
-      "link_type": "analogy_bench",
+      "link_type": "thematic",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 2,
@@ -65,6 +65,18 @@
       "artifact_path": null,
       "state_candidate_id": 3,
       "rationale": "B-Track DSS: 예언자와 아론·이스라엘의 기름부음 받은 자에 대한 기대. A-Track 비유 후보(가설): 규율·언약 공동체·장기 신념 — HODL 담론은 비유일 뿐 자동 트리거 금지."
+    },
+    {
+      "entry_id": "ENTRY_06",
+      "canonical_ref": "Exod.20.15",
+      "satellite_ref": "1QpHab col.VII (Pesher Habakkuk; crisis interpretation layer — scholarly citation TBD)",
+      "source_id": "1QpHab col.VII (Pesher Habakkuk; crisis interpretation layer — scholarly citation TBD)",
+      "corpus_type": "dss",
+      "link_type": "thematic",
+      "confidence": null,
+      "artifact_path": null,
+      "state_candidate_id": 4,
+      "rationale": "B-Track DSS: 하바국 해석(페셔)의 ‘위기를 성경으로 재독’ 레이어. A-Track 비유 후보(가설): 규범·도덕 프레임(칠선 언약 맥락)과 시장 서사 병치 — geometry/trigger 아님; Fact-Lock 벤치만."
     }
   ]
 }
