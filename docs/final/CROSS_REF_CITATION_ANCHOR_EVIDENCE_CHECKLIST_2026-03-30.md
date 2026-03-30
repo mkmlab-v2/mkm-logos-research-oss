@@ -32,12 +32,12 @@
 
 ---
 
-## 실행 순서 (권장)
+## 실행 순서 (권장, 현재 상태 반영)
 
-1. `High` 우선: ENTRY_08, ENTRY_10, ENTRY_14
-2. `Med` 우선: ENTRY_06, ENTRY_07, ENTRY_09
-3. 나머지 lexical/thematic witness: ENTRY_12, ENTRY_13, ENTRY_15, ENTRY_16
-4. 각 배치마다 SSOT 수정 -> `py scripts/sync_btrack_phase3_snapshot_json_fence.py --apply` -> pytest
+1. `유지/검증` 우선: ENTRY_06, ENTRY_09, ENTRY_10, ENTRY_14, ENTRY_15
+2. `정밀화` 우선: ENTRY_12, ENTRY_13 (verse-line 직접 매핑)
+3. `외부 소스 대기`: ENTRY_07, ENTRY_08, ENTRY_16 (대기 큐 규칙 적용)
+4. 변경 배치마다 SSOT 수정 -> `py scripts/sync_btrack_phase3_snapshot_json_fence.py --apply` -> pytest
 
 ---
 
