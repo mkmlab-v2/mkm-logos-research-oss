@@ -88,6 +88,25 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_wai
 - 신규 근거를 `docs/final/artifacts/entry16_source_hunt_log.jsonl` 등 관련 로그에 append
 - 원칙: URL/판본/fragment/line/접근 방식(public/private)을 누락 없이 기록
 
+```powershell
+# ENTRY_16 신규 소스 1건 추가 + summary/gate 자동 재판정
+Set-Location C:\workspace
+py scripts/add_entry16_source_and_rejudge.py `
+  --source-url "https://example.org/source" `
+  --source-title "Example source title" `
+  --publisher-or-host "Example host" `
+  --resource-type "transcription_line_anchor" `
+  --djd-volume "DJD XVI" `
+  --page-range "p.291-293" `
+  --fragment-sigla "4Q117 frg.1" `
+  --line-anchor "frg.1 lines 1-6" `
+  --extant-verses-claim "Esr 4:2-6 attested; Esr 2:54 not shown" `
+  --witness "no" `
+  --evidence-quote "line table confirms Esr 4:2-6 block only" `
+  --confidence "med" `
+  --access-mode "public"
+```
+
 ### 3) SSOT 앵커 치환
 
 - 파일: `docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json`
