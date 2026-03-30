@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://workspace.local/schemas/CROSS_REF_DRAFT_V2_DOCUMENT.schema.json",
+  "title": "CROSS_REF B-track draft document (v2)",
+  "description": "Aligns with CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §4.5. Not an A-track SSOT.",
+  "type": "object",
+  "required": ["schema", "disclaimer", "entries"],
+  "additionalProperties": true,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "cross_ref_dss_to_states_draft_v2"
+    },
+    "disclaimer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "constitution_ref": {
+      "type": "string"
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/crossRefEntry"
+      }
+    }
+  },
+  "definitions": {
+    "crossRefEntry": {
+      "type": "object",
+      "required": [
+        "entry_id",
+        "satellite_ref",
+        "corpus_type",
+        "link_type",
+        "state_candidate_id",
+        "rationale"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "entry_id": {
+          "type": "string",
+          "pattern": "^ENTRY_[0-9]{2}$",
+          "description": "Stable row id e.g. ENTRY_01"
+        },
+        "canonical_ref": {
+          "type": ["string", "null"]
+        },
+        "satellite_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_id": {
+          "type": "string"
+        },
+        "corpus_type": {
+          "type": "string",
+          "enum": ["dss", "apocrypha", "pseudepigrapha", "myeongni_probe"]
+        },
+        "link_type": {
+          "type": "string",
+          "enum": ["thematic", "lexical", "geometric", "temporal", "analogy_bench"]
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "artifact_path": {
+          "type": ["string", "null"]
+        },
+        "state_candidate_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

@@ -14,8 +14,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 _ROOT = Path(__file__).resolve().parents[1]
 _DRAFT = _ROOT / "docs" / "final" / "artifacts" / "CROSS_REF_DSS_TO_STATES_DRAFT.json"
+_SCHEMA = _ROOT / "docs" / "final" / "CROSS_REF_DRAFT_V2_DOCUMENT.schema.json"
 
 _CORPUS = frozenset({"dss", "apocrypha", "pseudepigrapha", "myeongni_probe"})
 _LINKS = frozenset(
@@ -63,3 +66,12 @@ def test_cross_ref_dss_draft_entry_rows_contract() -> None:
         assert "rationale" in row and str(row["rationale"]).strip(), (
             f"entries[{i}].rationale required (non-empty string)"
         )
+
+
+def test_cross_ref_draft_validates_against_json_schema() -> None:
+    """Draft-07 validation via jsonschema (dev/CI dependency)."""
+    jsonschema = pytest.importorskip("jsonschema")
+    assert _SCHEMA.is_file(), f"missing schema: {_SCHEMA}"
+    schema = json.loads(_SCHEMA.read_text(encoding="utf-8"))
+    doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
+    jsonschema.Draft7Validator(schema).validate(doc)
