@@ -1,0 +1,34 @@
+{
+  "schema": "multilens_performance_eval_input_v1",
+  "description": "B-track evaluation input for token savings, compression-reconstruction fidelity, and tri-lens fusion answer quality.",
+  "compression_cases": [
+    {
+      "id": "cmp_001",
+      "raw_text": "State 3 to 11 transition appears in the current B-track snapshot. This is an analysis-only signal and must not auto-merge into A-track trading triggers.",
+      "compressed_text": "B-track snapshot: state 3->11 transition. Analysis-only; no A-track auto-merge.",
+      "reconstructed_text": "The B-track snapshot shows a state 3 to 11 transition and it remains analysis-only, without automatic merge into A-track triggers."
+    },
+    {
+      "id": "cmp_002",
+      "raw_text": "ENTRY_16 still has no direct Ezra 2:54 witness. The current gate policy allows proxy manual review but keeps direct-witness requirements explicit.",
+      "compressed_text": "ENTRY_16 direct witness absent; proxy manual review allowed; direct requirement unchanged.",
+      "reconstructed_text": "ENTRY_16 has no direct Ezra 2:54 witness, and proxy manual review is available while direct witness requirements stay explicit."
+    }
+  ],
+  "fusion_answer_cases": [
+    {
+      "id": "fus_001",
+      "question": "개인 상태를 기준으로 오늘 해석해줘",
+      "answer": "명리 관점에서 현재는 state 3에서 11로 전이되는 구간입니다. 성경 축에서는 시편 계열의 정렬 근거를 참고하되 A-track 트리거로 쓰지 않습니다. 사상의학 축에서는 체질 반응을 보수적으로 해석해 과도한 처방 결정을 피합니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["현재", "개인", "체질"]
+    },
+    {
+      "id": "fus_002",
+      "question": "내 상황에 맞게 3축 융합 답변이 가능한가?",
+      "answer": "명리 상태값과 성경 정렬 근거를 함께 보되, 사상의학 체질 조건으로 최종 해석 강도를 조절합니다.",
+      "required_axes": ["myeongri", "bible", "sasang"],
+      "personalization_signals": ["내", "상황", "체질"]
+    }
+  ]
+}
