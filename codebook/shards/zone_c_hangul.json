@@ -1,0 +1,37 @@
+{
+  "shard_id": "zone_c_hangul",
+  "domain": "hangul",
+  "routing_keywords": [
+    "한글",
+    "창제",
+    "훈민정음",
+    "초성",
+    "중성",
+    "종성",
+    "조사",
+    "어미"
+  ],
+  "must_keep_hard_terms": [
+    "한글",
+    "창제",
+    "훈민정음",
+    "초성",
+    "중성",
+    "종성"
+  ],
+  "must_keep_soft_terms": [
+    "조사",
+    "어미"
+  ],
+  "guard_tokens": [
+    "은",
+    "는",
+    "이",
+    "가",
+    "을",
+    "를",
+    "에",
+    "의"
+  ],
+  "hangul_principle": true
+}

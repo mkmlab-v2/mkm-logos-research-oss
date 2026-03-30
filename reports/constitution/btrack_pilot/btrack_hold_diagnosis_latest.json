@@ -1,0 +1,58 @@
+{
+  "schema": "btrack_hold_diagnosis_v1",
+  "generated_at_utc": "2026-03-30T15:24:01Z",
+  "input_details": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_pair_details_latest.jsonl",
+  "counts": {
+    "total_pairs": 16,
+    "stable_near_zero_pairs": 5
+  },
+  "worst_confidence_deltas": [
+    {
+      "key": "STATE_04",
+      "delta": -0.4792620000000001
+    },
+    {
+      "key": "STATE_06",
+      "delta": -0.400686
+    },
+    {
+      "key": "STATE_16",
+      "delta": -0.399262
+    },
+    {
+      "key": "STATE_05",
+      "delta": -0.350217
+    },
+    {
+      "key": "STATE_13",
+      "delta": -0.330101
+    }
+  ],
+  "worst_snr_deltas": [
+    {
+      "key": "STATE_04",
+      "delta": -0.335483
+    },
+    {
+      "key": "STATE_06",
+      "delta": -0.28047999999999995
+    },
+    {
+      "key": "STATE_16",
+      "delta": -0.2794829999999999
+    },
+    {
+      "key": "STATE_05",
+      "delta": -0.24515200000000004
+    },
+    {
+      "key": "STATE_13",
+      "delta": -0.23107100000000003
+    }
+  ],
+  "remediation": [
+    "Prioritize satellite anchor upgrades for worst 5 states before promotion.",
+    "Keep A-track frozen; run state-specific recalibration only on B-track.",
+    "Re-run gate after anchor and confidence calibration updates."
+  ]
+}

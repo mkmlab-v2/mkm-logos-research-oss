@@ -1,0 +1,29 @@
+{
+  "shard_id": "zone_d_ssot",
+  "domain": "ssot",
+  "routing_keywords": [
+    "source",
+    "artifact",
+    "ssot",
+    "fact-lock",
+    "governance",
+    "policy"
+  ],
+  "must_keep_hard_terms": [
+    "source",
+    "artifact",
+    "ssot"
+  ],
+  "must_keep_soft_terms": [
+    "governance",
+    "policy"
+  ],
+  "guard_tokens": [
+    "must",
+    "cannot",
+    "without",
+    "strict",
+    "traceability"
+  ],
+  "hangul_principle": false
+}

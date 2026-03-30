@@ -1,0 +1,10 @@
+{"id":"rt_001","ts_utc":"2026-03-30T14:00:00Z","question":"내 체질과 현재 상태를 함께 보려면?","answer":"명리 state 흐름을 먼저 확인하고 성경 정렬 근거를 교차 검토한 뒤, 사상의학 체질 부담을 낮추는 방향으로 해석합니다.","source":"runtime_sample","tags":["personalized","tri-lens"]}
+{"id":"rt_002","ts_utc":"2026-03-30T14:00:05Z","question":"지금 신호를 3축으로 설명해줘","answer":"명리에서는 전이 state를 보고 성경 축 Logos 근거를 확인하며 사상의학 체질 안전 여지를 함께 봅니다.","source":"runtime_sample","tags":["tri-lens","state"]}
+{"id":"rt_003","ts_utc":"2026-03-30T14:00:10Z","question":"개인화된 리스크 관점으로 요약해줘","answer":"명리 타이밍과 성경 정렬을 참고하되 사상의학 체질 제약을 우선 반영해 보수적으로 요약합니다.","source":"runtime_sample","tags":["personalized","risk"]}
+{"id":"rt_004","ts_utc":"2026-03-30T14:00:15Z","question":"내 상황에 맞춰 판단 근거를 알려줘","answer":"명리 상태값, 성경 축 기준 구절, 사상의학 체질 조건을 함께 사용해 내 상황에 맞춘 판단 근거를 제시합니다.","source":"runtime_sample","tags":["personalized","evidence"]}
+{"id":"rt_005","ts_utc":"2026-03-30T14:00:20Z","question":"오늘은 공격적으로 가도 돼?","answer":"명리 state 관점과 성경 정렬 신호를 보더라도 사상의학 체질 안정성을 우선해야 하므로 보수적 접근이 낫습니다.","source":"runtime_sample","tags":["risk","timing"]}
+{"id":"rt_006","ts_utc":"2026-03-30T14:00:25Z","question":"내게 맞는 해석 순서를 제안해줘","answer":"명리 타이밍 확인, 성경 정렬 점검, 사상의학 체질 적합성 검토 순서가 기본 절차입니다.","source":"runtime_sample","tags":["process","personalized"]}
+{"id":"rt_007","ts_utc":"2026-03-30T14:00:30Z","question":"상태 전이와 건강 축을 같이 말해줘","answer":"명리 전이 상태를 기준으로 성경 축에서 의미를 교차 확인하고 사상의학 체질에서 건강 부담을 함께 반영합니다.","source":"runtime_sample","tags":["state","health"]}
+{"id":"rt_008","ts_utc":"2026-03-30T14:00:35Z","question":"내 질문에 3축이 다 들어갔는지 확인해줘","answer":"명리, 성경, 사상의학 세 축을 모두 포함했고 질문 맥락에 맞춰 체질 요소를 분리해 설명했습니다.","source":"runtime_sample","tags":["tri-lens","check"]}
+{"id":"rt_009","ts_utc":"2026-03-30T14:00:40Z","question":"지금은 관망이 나을까?","answer":"명리 state 전이와 성경 정렬은 해석 신호를 주지만 사상의학 체질 안정성을 고려하면 지금은 관망이 더 적절합니다.","source":"runtime_sample","tags":["timing","risk"]}
+{"id":"rt_010","ts_utc":"2026-03-30T14:00:45Z","question":"개인 맞춤형 결론을 한 줄로 줘","answer":"명리 전이 신호를 성경 정렬로 검증하고 사상의학 체질 제약을 반영해 개인 맞춤형으로 보수적 결론을 제시합니다.","source":"runtime_sample","tags":["personalized","summary"]}

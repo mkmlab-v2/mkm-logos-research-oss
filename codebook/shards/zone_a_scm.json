@@ -1,0 +1,36 @@
+{
+  "shard_id": "zone_a_scm",
+  "domain": "scm",
+  "routing_keywords": [
+    "사상의학",
+    "체질",
+    "태양인",
+    "태음인",
+    "소양인",
+    "소음인",
+    "증상",
+    "처방"
+  ],
+  "must_keep_hard_terms": [
+    "사상의학",
+    "체질",
+    "태양인",
+    "태음인",
+    "소양인",
+    "소음인"
+  ],
+  "must_keep_soft_terms": [
+    "증상",
+    "처방",
+    "금칙",
+    "단위"
+  ],
+  "guard_tokens": [
+    "금지",
+    "필수",
+    "주의",
+    "직접",
+    "증거"
+  ],
+  "hangul_principle": true
+}

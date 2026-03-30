@@ -1,0 +1,29 @@
+{
+  "shard_id": "zone_b_timing",
+  "domain": "timing",
+  "routing_keywords": [
+    "명리",
+    "state",
+    "state_id",
+    "전이",
+    "타이밍",
+    "월간",
+    "주간"
+  ],
+  "must_keep_hard_terms": [
+    "명리",
+    "state",
+    "state_id"
+  ],
+  "must_keep_soft_terms": [
+    "전이",
+    "타이밍"
+  ],
+  "guard_tokens": [
+    "manual",
+    "strict",
+    "traceability",
+    "readonly"
+  ],
+  "hangul_principle": false
+}

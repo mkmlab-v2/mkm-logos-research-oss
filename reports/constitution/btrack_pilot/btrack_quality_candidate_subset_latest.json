@@ -1,0 +1,26 @@
+{
+  "schema": "btrack_quality_report_v1",
+  "generated_at_utc": "2026-03-30T15:29:57Z",
+  "inputs": {
+    "a_track": "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\a_track_eval_candidate_subset.jsonl",
+    "b_track": "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\b_track_eval_candidate_subset.jsonl"
+  },
+  "counts": {
+    "a_rows": 7,
+    "b_rows": 7,
+    "aligned_pairs": 7,
+    "direction_compared": 7,
+    "confidence_compared": 7,
+    "snr_compared": 7
+  },
+  "metrics": {
+    "reproducibility_match_rate": 1.0,
+    "resolution_confidence_delta_b_minus_a": -0.019817571428571403,
+    "contamination_snr_delta_b_minus_a": -0.015872285714285655
+  },
+  "interpretation": {
+    "reproducibility": "higher is better",
+    "resolution": ">= 0 means B-track confidence does not degrade on average",
+    "contamination": ">= 0 means B-track SNR does not degrade on average"
+  }
+}
