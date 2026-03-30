@@ -207,3 +207,19 @@ def test_entry_06_07_08_10_partial_anchor_gates() -> None:
     sat06 = str(row06.get("satellite_ref", ""))
     assert "line=1-17" in sat06
     assert "Qumran-Digital 1QpHab transcription (2024-04-29)" in sat06
+
+
+def test_waiting_queue_entries_keep_explicit_open_source_gap_markers() -> None:
+    """Waiting-queue entries must keep explicit gap markers until new sources appear."""
+    doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
+    checks = {
+        "ENTRY_07": "public line-level transcription unavailable in consulted open sources",
+        "ENTRY_08": "public line transcription unavailable in consulted open sources",
+        "ENTRY_12": "not exposed in consulted public 11Q5 transcription",
+        "ENTRY_13": "not exposed in consulted public 11Q5 transcription",
+        "ENTRY_16": "no extant DSS witness for Ezra.2.54 list",
+    }
+    for eid, marker in checks.items():
+        row = next(e for e in doc["entries"] if e.get("entry_id") == eid)
+        sat = str(row.get("satellite_ref", ""))
+        assert marker in sat, f"{eid} must retain waiting-queue marker: {marker}"
