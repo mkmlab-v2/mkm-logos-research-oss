@@ -18,5 +18,6 @@ Set-Location -LiteralPath $workspaceRoot
 & py -m pytest `
     'tests/test_logos_state_mapping_v1_snapshot.py' `
     'tests/test_cross_ref_dss_schema.py' `
+    'tests/test_sasang_cross_ref_draft.py' `
     -q --tb=short
 exit $LASTEXITCODE

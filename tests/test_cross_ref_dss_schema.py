@@ -5,7 +5,7 @@
 
 """Smoke-test docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json contract.
 
-§4.5-aligned rows: entry_id, satellite_ref, corpus_type, link_type, state_candidate_id, rationale.
+§4.5-aligned rows: entry_id, satellite_ref, corpus_type, link_type, state_candidate_id, rationale; optional `note` (bench meta).
 Legacy ``source_id`` retained for human diff. Does not validate verse pipeline or trading logic.
 """
 
@@ -55,7 +55,7 @@ def test_cross_ref_dss_draft_entry_rows_contract() -> None:
     assert _LOGOS_ASSIGN.is_file(), f"missing: {_LOGOS_ASSIGN}"
     by_state = _state_id_to_verse_id()
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
-    assert len(doc["entries"]) == 10
+    assert len(doc["entries"]) == 11
     for i, row in enumerate(doc["entries"]):
         assert isinstance(row, dict), f"entries[{i}] must be object"
         eid = row.get("entry_id")
@@ -81,6 +81,13 @@ def test_cross_ref_dss_draft_entry_rows_contract() -> None:
         assert "rationale" in row and str(row["rationale"]).strip(), (
             f"entries[{i}].rationale required (non-empty string)"
         )
+        note = row.get("note")
+        assert note is None or (isinstance(note, str) and note.strip()), f"entries[{i}].note must be non-empty if present"
+
+    e11 = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_11")
+    assert "note" in e11 and "NL v2.1" in e11["note"] and "[HYPO]" in e11["note"], (
+        "ENTRY_11 must retain NL v2.1 bench note block (ISOLATE_AND_REFINE)"
+    )
 
 
 def test_cross_ref_draft_validates_against_json_schema() -> None:

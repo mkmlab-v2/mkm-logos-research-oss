@@ -32,4 +32,4 @@ ec=$?
 if [ "$ec" -ne 0 ]; then exit "$ec"; fi
 
 cd "${WORKSPACE_ROOT}"
-exec "${PY}" -m pytest tests/test_logos_state_mapping_v1_snapshot.py tests/test_cross_ref_dss_schema.py -q --tb=short
+exec "${PY}" -m pytest tests/test_logos_state_mapping_v1_snapshot.py tests/test_cross_ref_dss_schema.py tests/test_sasang_cross_ref_draft.py -q --tb=short

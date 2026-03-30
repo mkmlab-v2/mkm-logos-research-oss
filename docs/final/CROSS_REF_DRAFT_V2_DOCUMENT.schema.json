@@ -92,6 +92,10 @@
         "rationale": {
           "type": "string",
           "minLength": 1
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional bench meta: NL query summary, falsification classes, bulkhead (e.g. [HYPO] promotion hold)."
         }
       }
     }

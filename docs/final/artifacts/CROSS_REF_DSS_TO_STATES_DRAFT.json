@@ -1,6 +1,6 @@
 {
   "schema": "cross_ref_dss_to_states_draft_v2",
-  "disclaimer": "B-Track parallel-corpus draft only; not A-Track SSOT; trading engine must not load this path by default.",
+  "disclaimer": "B-Track parallel-corpus draft only; not A-Track SSOT; trading engine must not load this path by default. Source standard (proxies, not autographs): bulk apocrypha in-repo uses Sefaria-tagged JSONL (`data/logos/manuscripts/apocrypha_std.jsonl`, per-row `source`). Excerpt MDs may cite R.H. Charles, Charlesworth, Wikisource, or similar. DSS `satellite_ref` lines are thematic alignment notes and do not assert Oxford/DJD diplomatic text unless that edition is explicitly named there. Acquisition of closed-licence critical editions (e.g. DJD) is out of scope for this draft.",
   "generated_at_utc": "2026-03-30T22:00:00+00:00",
   "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §4.5",
   "canonical_join_ssot": "docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json",
@@ -69,8 +69,8 @@
     {
       "entry_id": "ENTRY_06",
       "canonical_ref": "Exod.20.15",
-      "satellite_ref": "1QpHab col.VII (Pesher Habakkuk; crisis interpretation layer — scholarly citation TBD)",
-      "source_id": "1QpHab col.VII (Pesher Habakkuk; crisis interpretation layer — scholarly citation TBD)",
+      "satellite_ref": "1QpHab (1Q15) col.VII — Pesher Habakkuk; plates: The Dead Sea Scrolls of St. Mark's Monastery I (New Haven: ASOR, 1950); trans./lineation: e.g. García Martínez & Tigchelaar, The Dead Sea Scrolls Study Edition (Brill) — verify col/line against chosen edition",
+      "source_id": "1QpHab (1Q15) col.VII — Pesher Habakkuk; plates: The Dead Sea Scrolls of St. Mark's Monastery I (New Haven: ASOR, 1950); trans./lineation: e.g. García Martínez & Tigchelaar, The Dead Sea Scrolls Study Edition (Brill) — verify col/line against chosen edition",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
@@ -81,8 +81,8 @@
     {
       "entry_id": "ENTRY_07",
       "canonical_ref": "Ezra.2.45",
-      "satellite_ref": "11QT XLVI-XLVII (Temple Scroll; festival/calendar layer — academic edition TBD)",
-      "source_id": "11QT XLVI-XLVII (Temple Scroll; festival/calendar layer — academic edition TBD)",
+      "satellite_ref": "11QT (11Q19) cols.XLVI–XLVII — Temple Scroll; Yadin, The Temple Scroll (Jerusalem: Israel Exploration Society, 1977); cf. DJD XXIII (11Q19); festival/calendar layer — verify col range to edition",
+      "source_id": "11QT (11Q19) cols.XLVI–XLVII — Temple Scroll; Yadin, The Temple Scroll (Jerusalem: Israel Exploration Society, 1977); cf. DJD XXIII (11Q19); festival/calendar layer — verify col range to edition",
       "corpus_type": "dss",
       "link_type": "temporal",
       "confidence": null,
@@ -93,8 +93,8 @@
     {
       "entry_id": "ENTRY_08",
       "canonical_ref": "Neh.7.56",
-      "satellite_ref": "4Q319 (Otot / priestly cycle signal text — edition siglum TBD)",
-      "source_id": "4Q319 (Otot / priestly cycle signal text — edition siglum TBD)",
+      "satellite_ref": "4Q319 (4QOtot) — priestly cycle / Otot; DJD XXI: S. Talmon et al., Calendrical Texts (Oxford: Clarendon, 2001); verify fragment sigla to plate",
+      "source_id": "4Q319 (4QOtot) — priestly cycle / Otot; DJD XXI: S. Talmon et al., Calendrical Texts (Oxford: Clarendon, 2001); verify fragment sigla to plate",
       "corpus_type": "dss",
       "link_type": "temporal",
       "confidence": null,
@@ -105,8 +105,8 @@
     {
       "entry_id": "ENTRY_09",
       "canonical_ref": "Ps.36.1",
-      "satellite_ref": "4Q169 frags 3-4 ii (Nahum Pesher; ‘planner of evil’ discourse — transcription TBD)",
-      "source_id": "4Q169 frags 3-4 ii (Nahum Pesher; ‘planner of evil’ discourse — transcription TBD)",
+      "satellite_ref": "4Q169 (4QpNah) frags 3–4 col.ii — Pesher Nahum; editio princeps DJD V (J.M. Allegro, Oxford: Clarendon, 1968); modern trans. e.g. DSS Study Edition (Brill) — verify frag/col to edition; ‘planner of evil’ discourse (bench label)",
+      "source_id": "4Q169 (4QpNah) frags 3–4 col.ii — Pesher Nahum; editio princeps DJD V (J.M. Allegro, Oxford: Clarendon, 1968); modern trans. e.g. DSS Study Edition (Brill) — verify frag/col to edition; ‘planner of evil’ discourse (bench label)",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
@@ -117,14 +117,27 @@
     {
       "entry_id": "ENTRY_10",
       "canonical_ref": "Josh.15.22",
-      "satellite_ref": "CD-A I-II (Damascus Document; ‘land’ / exile–return framing — bench citation TBD)",
-      "source_id": "CD-A I-II (Damascus Document; ‘land’ / exile–return framing — bench citation TBD)",
+      "satellite_ref": "CD-A I–II (Damascus Document, Cairo Geniza ms A); J.H. Charlesworth, The Damascus Document (Tübingen: Mohr, PTSDSSP 1995); Qumran parallels 4Q266–273 — DJD XVIII (Baumgarten, 1996) — bench: land/exile–return framing",
+      "source_id": "CD-A I–II (Damascus Document, Cairo Geniza ms A); J.H. Charlesworth, The Damascus Document (Tübingen: Mohr, PTSDSSP 1995); Qumran parallels 4Q266–273 — DJD XVIII (Baumgarten, 1996) — bench: land/exile–return framing",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 9,
       "rationale": "B-Track DSS: 공동체의 언약·지경 담론. A-Track 대비: 여호수아 지파 경계 점과 ‘땅·경계’ 메타만 병치 — 지리≠가격."
+    },
+    {
+      "entry_id": "ENTRY_11",
+      "canonical_ref": "1Chr.14.6",
+      "satellite_ref": "1QM.1.1",
+      "source_id": "1QM.1.1",
+      "corpus_type": "dss",
+      "link_type": "analogy_bench",
+      "confidence": 0.82,
+      "artifact_path": "docs/final/btrack_phase3_cross_ref_snapshot.md",
+      "state_candidate_id": 13,
+      "rationale": "[HYPO] 금화교역(金火交易) 상전이 벤치: 1Chr.14.6의 '상태'를 에스겔 1:4의 불꽃 환상 및 1QM의 에너지 충돌 서사와 구조적으로 연결. 학계의 비평을 넘어선 '상태 함수' 대칭성 실험용.",
+      "note": "NL v2.1 cross_notebook_query (Apocrypha/DSS/Phase3, 3/3): 관측 요지 — 정렬은 가능하나 반증으로 (1) 희년서 364일 논지의 분리주의·정치 동기 가능성, (2) DSS/히브리 원어에 금화교역 상응 형이상학 어휘 부재, (3) 1Chr.14.6 행정·연대기 맥락과 묵시 텍스트 병치 시 False equivalence 위험. 주요 취약점: 맥락 오염(Context contamination)·제2성전기 이원론 vs 동양 순환 은유의 존재론적 비호환. [HYPO] 승격 보류; A-track·실매매·OOF 자동 합선 금지."
     }
   ]
 }

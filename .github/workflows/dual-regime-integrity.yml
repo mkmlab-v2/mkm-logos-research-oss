@@ -21,10 +21,12 @@ on:
       - "data/myeongni/**"
       - "docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json"
       - "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json"
+      - "docs/final/artifacts/SASANG_CROSS_REF_DRAFT.json"
       - "docs/final/CROSS_REF_DRAFT_V2_DOCUMENT.schema.json"
       - "scripts/join_logos_verses_myeongni_states_4d.py"
       - "tests/test_logos_state_mapping_v1_snapshot.py"
       - "tests/test_cross_ref_dss_schema.py"
+      - "tests/test_sasang_cross_ref_draft.py"
       # Docs-only PRs (battleboard, manifests) also trigger Fact-Lock
       - "docs/**"
   workflow_dispatch:
@@ -55,6 +57,9 @@ jobs:
 
       - name: CROSS_REF draft vs LOGOS_STATE_MAPPING (canonical_ref join Fact-Lock)
         run: python -m pytest tests/test_cross_ref_dss_schema.py -q --tb=short
+
+      - name: SASANG CROSS_REF draft (ijeoma chunk ↔ LOGOS bench Fact-Lock)
+        run: python -m pytest tests/test_sasang_cross_ref_draft.py -q --tb=short
 
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()
