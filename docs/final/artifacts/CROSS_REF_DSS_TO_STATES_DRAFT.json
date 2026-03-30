@@ -1,30 +1,66 @@
 {
-  "schema": "cross_ref_dss_to_states_draft_v1",
+  "schema": "cross_ref_dss_to_states_draft_v2",
   "disclaimer": "B-Track parallel-corpus draft only; not A-Track SSOT; trading engine must not load this path by default.",
-  "generated_at_utc": "2026-03-30T18:00:00+00:00",
+  "generated_at_utc": "2026-03-30T12:00:00+00:00",
+  "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §4.5",
   "entries": [
     {
+      "entry_id": "ENTRY_01",
+      "canonical_ref": null,
+      "satellite_ref": "1QM 1:1-7 (War Scroll, Col.1)",
       "source_id": "1QM 1:1-7 (War Scroll, Col.1)",
+      "corpus_type": "dss",
+      "link_type": "analogy_bench",
+      "confidence": null,
+      "artifact_path": null,
       "state_candidate_id": 1,
       "rationale": "B-Track DSS: 빛의 아들들 vs 벨리알·키팀·언약 위반자의 개전 서사. A-Track 비유 후보(가설): 극단적 방향성·돌파 국면 — dual_regime·리스크 캡과 무관."
     },
     {
+      "entry_id": "ENTRY_02",
+      "canonical_ref": null,
+      "satellite_ref": "1Enoch 10:4-6 (Charles / Wikisource ch.10)",
       "source_id": "1Enoch 10:4-6 (Charles / Wikisource ch.10)",
+      "corpus_type": "apocrypha",
+      "link_type": "analogy_bench",
+      "confidence": null,
+      "artifact_path": null,
       "state_candidate_id": 15,
       "rationale": "B-Track Apocrypha: 아자젤 결박·어둠·대심판의 불. A-Track 비유 후보(가설): 청산·극단 공포(Capitulation) — State 16 후보와 인접 축으로 별도 행 구분 가능."
     },
     {
+      "entry_id": "ENTRY_03",
+      "canonical_ref": null,
+      "satellite_ref": "1Enoch 10:7 (Charles / Wikisource ch.10)",
       "source_id": "1Enoch 10:7 (Charles / Wikisource ch.10)",
+      "corpus_type": "apocrypha",
+      "link_type": "analogy_bench",
+      "confidence": null,
+      "artifact_path": null,
       "state_candidate_id": 2,
       "rationale": "B-Track Apocrypha: 타락한 땅의 치유 선포·멸망 방지. A-Track 비유 후보(가설): 심판 국면 이후 질서·반등 서사(V·전환) — 확정 신호 아님."
     },
     {
+      "entry_id": "ENTRY_04",
+      "canonical_ref": null,
+      "satellite_ref": "Jubilees 6 (364-day calendar; summary per Wikipedia + scholarly check TBD)",
       "source_id": "Jubilees 6 (364-day calendar; summary per Wikipedia + scholarly check TBD)",
+      "corpus_type": "pseudepigrapha",
+      "link_type": "analogy_bench",
+      "confidence": null,
+      "artifact_path": null,
       "state_candidate_id": 8,
       "rationale": "B-Track Apocrypha: 364일·분기·음력과의 긴장, 정해진 절기 질서. A-Track 비유 후보(가설): 하드코딩된 반감기·주기 신뢰·저변동 인내 — 횡보·매집 담론과 병치 가능."
     },
     {
+      "entry_id": "ENTRY_05",
+      "canonical_ref": null,
+      "satellite_ref": "1QS IX 10-11 (Community Rule; Eng. citation in btrack_dss_1QS_sectarian_context.md)",
       "source_id": "1QS IX 10-11 (Community Rule; Eng. citation in btrack_dss_1QS_sectarian_context.md)",
+      "corpus_type": "dss",
+      "link_type": "analogy_bench",
+      "confidence": null,
+      "artifact_path": null,
       "state_candidate_id": 3,
       "rationale": "B-Track DSS: 예언자와 아론·이스라엘의 기름부음 받은 자에 대한 기대. A-Track 비유 후보(가설): 규율·언약 공동체·장기 신념 — HODL 담론은 비유일 뿐 자동 트리거 금지."
     }
