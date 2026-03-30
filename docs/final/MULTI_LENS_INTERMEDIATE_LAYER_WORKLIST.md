@@ -58,7 +58,7 @@
 | # | 작업 | 상태 | 비고 |
 |---|------|------|------|
 | 5.1 | `CROSS_REF` JSON → `btrack_phase3_cross_ref_snapshot.md` 코드펜스 덤프 | [x] | `scripts/sync_btrack_phase3_snapshot_json_fence.py` |
-| 5.2 | `multi_corpus_policy` / 격벽 테스트 — 위성 코퍼스 추가 시 확장 | ☐ | `tests/test_multi_corpus_isolation_policy.py` |
+| 5.2 | `multi_corpus_policy` / 격벽 테스트 — 위성 코퍼스 추가 시 확장 | [ ] | `tests/test_multi_corpus_isolation_policy.py`; 증거 수집표: `docs/final/CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md` |
 
 ---
 

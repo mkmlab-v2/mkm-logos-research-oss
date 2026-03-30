@@ -151,67 +151,67 @@
     {
       "entry_id": "ENTRY_12",
       "canonical_ref": "Ps.4.6",
-      "satellite_ref": "11Q5 | loc=Psalm witness -> MT Ps.4.6, col/line=TBD | refs=DJD IV (Sanders 1965) | status=verify col/line mapping",
-      "source_id": "11Q5 | loc=Psalm witness -> MT Ps.4.6, col/line=TBD | refs=DJD IV (Sanders 1965) | status=verify col/line mapping",
+      "satellite_ref": "11Q5 | loc=Psalm witness -> MT Ps.4.6, col/line=TBD | refs=DJD IV (Sanders 1965) | status=missing_anchor_until_source_update",
+      "source_id": "11Q5 | loc=Psalm witness -> MT Ps.4.6, col/line=TBD | refs=DJD IV (Sanders 1965) | status=missing_anchor_until_source_update",
       "corpus_type": "dss",
       "link_type": "lexical",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 10,
       "rationale": "B-Track DSS: 시편 큐믈란 증거(11Q5)와 MT Ps.4 구절의 어휘·서사 정렬 벤치. A-Track: cosine state 10 앵커 Ps.4.6 — 음성학·트리거 아님.",
-      "note": "Bench policy: lexical 정렬 후보. 승격 조건=11Q5 col/line↔MT Ps.4.6 매핑 확인 + 비정경 해석 레이어 미주입. 반증 훅=열/행 매핑 불일치 또는 단순 어휘 중복만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류."
+      "note": "Bench policy: lexical 정렬 후보. 승격 조건=11Q5 col/line↔MT Ps.4.6 매핑 확인 + 비정경 해석 레이어 미주입. 반증 훅=열/행 매핑 불일치 또는 단순 어휘 중복만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/col-line 'missing anchor' 확인."
     },
     {
       "entry_id": "ENTRY_13",
       "canonical_ref": "Ps.5.2",
-      "satellite_ref": "11Q5 | loc=Psalm witness -> MT Ps.5.2, col/line=TBD | refs=DJD IV (Sanders 1965) | status=verify Ps.5 mapping",
-      "source_id": "11Q5 | loc=Psalm witness -> MT Ps.5.2, col/line=TBD | refs=DJD IV (Sanders 1965) | status=verify Ps.5 mapping",
+      "satellite_ref": "11Q5 | loc=Psalm witness -> MT Ps.5.2, col/line=TBD | refs=DJD IV (Sanders 1965) | status=missing_anchor_until_source_update",
+      "source_id": "11Q5 | loc=Psalm witness -> MT Ps.5.2, col/line=TBD | refs=DJD IV (Sanders 1965) | status=missing_anchor_until_source_update",
       "corpus_type": "dss",
       "link_type": "lexical",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 11,
       "rationale": "B-Track DSS: 시편 5장 DSS 평행. A-Track: state 11 앵커 Ps.5.2 — 예배·호소 담론만 병치(벤치).",
-      "note": "Bench policy: lexical 정렬 후보. 승격 조건=11Q5 Ps.5 witness가 MT Ps.5.2 호출 구조와 합치. 반증 훅=예배 문체 일반론으로 환원되어 state 11 특이성이 사라지는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류."
+      "note": "Bench policy: lexical 정렬 후보. 승격 조건=11Q5 Ps.5 witness가 MT Ps.5.2 호출 구조와 합치. 반증 훅=예배 문체 일반론으로 환원되어 state 11 특이성이 사라지는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/col-line 'missing anchor' 확인."
     },
     {
       "entry_id": "ENTRY_14",
       "canonical_ref": "Deut.5.19",
-      "satellite_ref": "4QDeut | loc=Deut.5.19 fragment/line=TBD | refs=DJD XIV (Ulrich et al.) | status=verify Decalogue fragment",
-      "source_id": "4QDeut | loc=Deut.5.19 fragment/line=TBD | refs=DJD XIV (Ulrich et al.) | status=verify Decalogue fragment",
+      "satellite_ref": "4QDeut | loc=Deut.5.19 fragment/line=TBD | refs=DJD XIV (Ulrich et al.) | status=missing_anchor_until_source_update",
+      "source_id": "4QDeut | loc=Deut.5.19 fragment/line=TBD | refs=DJD XIV (Ulrich et al.) | status=missing_anchor_until_source_update",
       "corpus_type": "dss",
       "link_type": "lexical",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 12,
       "rationale": "B-Track DSS: 신명기 십계·금기 병렬. A-Track: state 12 앵커 Deut.5.19 — 규범 메타만(윤리 트리거 아님).",
-      "note": "Bench policy: lexical/규범 정렬 후보. 승격 조건=4QDeut fragment가 Deut.5.19 금기 문맥에 직접 대응. 반증 훅=fragment 위치 불확정 또는 십계 일반 규범으로만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류."
+      "note": "Bench policy: lexical/규범 정렬 후보. 승격 조건=4QDeut fragment가 Deut.5.19 금기 문맥에 직접 대응. 반증 훅=fragment 위치 불확정 또는 십계 일반 규범으로만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/sigla anchor 부재 확인."
     },
     {
       "entry_id": "ENTRY_15",
       "canonical_ref": "Gen.49.19",
-      "satellite_ref": "4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=verify Gad-oracle alignment",
-      "source_id": "4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=verify Gad-oracle alignment",
+      "satellite_ref": "4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=missing_anchor_until_source_update",
+      "source_id": "4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=missing_anchor_until_source_update",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 14,
       "rationale": "B-Track DSS: 창49 족장 축복 서사. A-Track: state 14 앵커 Gen.49.19 — 지리·군사 은유는 벤치 라벨일 뿐 가격 인과 아님.",
-      "note": "Bench policy: thematic 후보. 승격 조건=4QGen witness에서 Gad oracle 대응 구간 확인 + 은유를 상태 메타로만 제한. 반증 훅=군사/지리 비유를 실증 인과로 오독하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류."
+      "note": "Bench policy: thematic 후보. 승격 조건=4QGen witness에서 Gad oracle 대응 구간 확인 + 은유를 상태 메타로만 제한. 반증 훅=군사/지리 비유를 실증 인과로 오독하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/col-line 'missing anchor' 확인."
     },
     {
       "entry_id": "ENTRY_16",
       "canonical_ref": "Ezra.2.54",
-      "satellite_ref": "Ezra-Neh witnesses | loc=Ezra.2.54 list anchor=TBD | refs=4Q Ezra-type + LXX Ezra traditions | status=verify returnee list witness",
-      "source_id": "Ezra-Neh witnesses | loc=Ezra.2.54 list anchor=TBD | refs=4Q Ezra-type + LXX Ezra traditions | status=verify returnee list witness",
+      "satellite_ref": "Ezra-Neh witnesses | loc=Ezra.2.54 list anchor=TBD | refs=4Q Ezra-type + LXX Ezra traditions | status=missing_anchor_until_source_update",
+      "source_id": "Ezra-Neh witnesses | loc=Ezra.2.54 list anchor=TBD | refs=4Q Ezra-type + LXX Ezra traditions | status=missing_anchor_until_source_update",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 16,
       "rationale": "B-Track DSS/역본: 바벨론 귀환 명단 코호트. A-Track: state 16 앵커 Ezra.2.54 — 인구·스냅샷 메타만 병치(벤치).",
-      "note": "Bench policy: thematic(코호트 스냅샷) 후보. 승격 조건=Ezra-Nehemiah witness 계열에서 이름목록/귀환 코호트 대응 확인. 반증 훅=텍스트 전승 불확정으로 witness 연결이 붕괴하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류."
+      "note": "Bench policy: thematic(코호트 스냅샷) 후보. 승격 조건=Ezra-Nehemiah witness 계열에서 이름목록/귀환 코호트 대응 확인. 반증 훅=텍스트 전승 불확정으로 witness 연결이 붕괴하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 witness anchor 'missing' 확인."
     }
   ]
 }
