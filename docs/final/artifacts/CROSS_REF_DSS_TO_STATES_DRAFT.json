@@ -93,14 +93,15 @@
     {
       "entry_id": "ENTRY_08",
       "canonical_ref": "Neh.7.56",
-      "satellite_ref": "4Q319 (4QOtot) | loc=fragment/sigla=4QOtot, plate=Pls X-XIII, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=partial_anchor_verified (sigla+plates)",
-      "source_id": "4Q319 (4QOtot) | loc=fragment/sigla=4QOtot, plate=Pls X-XIII, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=partial_anchor_verified (sigla+plates)",
+      "satellite_ref": "4Q319 (4QOtot) | loc=fragment/sigla=4QOtot, plate=Pls X-XIII, line=TBD (public line transcription unavailable in consulted open sources) | refs=DJD XXI (Talmon et al. 2001), IAA 4Q319 archive page | status=partial_anchor_verified (sigla+plates)",
+      "source_id": "4Q319 (4QOtot) | loc=fragment/sigla=4QOtot, plate=Pls X-XIII, line=TBD (public line transcription unavailable in consulted open sources) | refs=DJD XXI (Talmon et al. 2001), IAA 4Q319 archive page | status=partial_anchor_verified (sigla+plates)",
       "corpus_type": "dss",
       "link_type": "temporal",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 6,
-      "rationale": "B-Track DSS: 제사장 주기·신호 표류. A-Track 대비: Nehemiah 복귀자 명단 행 — 인구/재건 흐름과 ‘주기 신호’ 담론만 병치(벤치)."
+      "rationale": "B-Track DSS: 제사장 주기·신호 표류. A-Track 대비: Nehemiah 복귀자 명단 행 — 인구/재건 흐름과 ‘주기 신호’ 담론만 병치(벤치).",
+      "note": "Bench policy: temporal(주기/신호) 후보. 승격 조건=4Q319 fragment별 line anchor 확보 + Neh.7.56 명단형 메타와의 병치 규칙 유지. 반증 훅=달력 표식을 직접 인과 트리거로 오독하는 경우. Local evidence (2026-03-30): DJD XXI에서 4QOtot의 plate 범위(Pls X-XIII) 확인, IAA 공개 아카이브 페이지에서는 line 전사가 제공되지 않아 line anchor는 TBD 유지."
     },
     {
       "entry_id": "ENTRY_09",

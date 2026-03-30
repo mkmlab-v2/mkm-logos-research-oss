@@ -176,6 +176,11 @@ def test_entry_06_07_08_10_partial_anchor_gates() -> None:
     assert "4Q267 frg.2 line 4" in sat10
     assert "Qumran-Digital 4Q267 transcription (2023-10-25)" in sat10
 
+    row08 = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_08")
+    sat08 = str(row08.get("satellite_ref", ""))
+    assert "public line transcription unavailable in consulted open sources" in sat08
+    assert "IAA 4Q319 archive page" in sat08
+
     row06 = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_06")
     sat06 = str(row06.get("satellite_ref", ""))
     assert "line=1-17" in sat06
