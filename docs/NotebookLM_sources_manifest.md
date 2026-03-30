@@ -257,7 +257,7 @@ https://ko.wikipedia.org/wiki/%EC%82%AC%EC%A3%BC%EB%AA%85%EB%A6%AC%ED%95%99
 |-----------|---------------|-----|----------------------------------------|
 | B-Track DSS-only (Qumran) 2026-03-30 | `3839cf65-d97c-465c-a252-7ca9441af201` | `https://notebooklm.google.com/notebook/3839cf65-d97c-465c-a252-7ca9441af201` | **7** — 기존 5 + arXiv `2411.10668`(잉크/양피) · `2010.14476`(1QIsaa 필적) |
 | B-Track Apocrypha-only 2026-03-30 | `17ab44ab-0f62-4714-99ac-12688a469597` | `https://notebooklm.google.com/notebook/17ab44ab-0f62-4714-99ac-12688a469597` | **8** — 위 6 + 로컬 MD `btrack_apocrypha_1enoch_ch10_excerpt.md`(Wikisource Charles) · `btrack_apocrypha_jubilees_calendar_364.md`(364일 요약) MCP `source_add`(2026-03-30) |
-| B-Track Phase3 Contrast (exports only) 2026-03-30 | `aced4a3e-6ece-4770-b46d-46e1454da893` | `https://notebooklm.google.com/notebook/aced4a3e-6ece-4770-b46d-46e1454da893` | **1** — 1·2단계 내보내기 요약 붙여 넣어 대조; 사용법·추천 질문 텍스트 소스 |
+| B-Track Phase3 Contrast (exports only) 2026-03-30 | `aced4a3e-6ece-4770-b46d-46e1454da893` | `https://notebooklm.google.com/notebook/aced4a3e-6ece-4770-b46d-46e1454da893` | **2** — 사용법 텍스트 + `docs/final/btrack_phase3_cross_ref_snapshot.md`(평문 ENTRY·도킹 송환; JSON 코드펜스는 NL 인덱싱 약함) MCP `source_add` 갱신(2026-03-30) |
 
 ---
 
