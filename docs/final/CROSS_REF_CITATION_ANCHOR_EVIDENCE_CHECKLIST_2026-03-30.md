@@ -73,3 +73,65 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_wai
 - 최종 완료선: 대기 큐(ENTRY_07/08/16) 해소 후 `verified_anchor` 승격
 - `tests/test_cross_ref_dss_schema.py` 그린
 - `btrack_phase3_cross_ref_snapshot.md` 코드펜스 재동기화 완료
+
+---
+
+## 완료 SOP (외부 소스 업데이트 시 즉시 실행)
+
+### 1) 트리거 확인
+
+- 트리거: 월간 정기 점검일 또는 외부 소스 업데이트 공지 수신
+- 대상: `ENTRY_07`, `ENTRY_08`, `ENTRY_16` 우선 재평가
+
+### 2) 증거 수집 기록
+
+- 신규 근거를 `docs/final/artifacts/entry16_source_hunt_log.jsonl` 등 관련 로그에 append
+- 원칙: URL/판본/fragment/line/접근 방식(public/private)을 누락 없이 기록
+
+### 3) SSOT 앵커 치환
+
+- 파일: `docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json`
+- 필드: `source_id`, `satellite_ref`를 동일 문자열로 갱신
+- 목표 포맷: `loc=<...> | refs=<...> | status=verified_anchor`
+
+### 4) 스냅샷 동기화
+
+```powershell
+Set-Location C:\workspace
+py scripts/sync_btrack_phase3_snapshot_json_fence.py --apply
+```
+
+### 5) 게이트 검증
+
+```powershell
+Set-Location C:\workspace
+py -m pytest tests/test_cross_ref_dss_schema.py -q --tb=short
+py -m pytest tests/test_entry16_source_hunt_summary.py tests/test_entry16_promotion_gate.py tests/test_waiting_queue_monthly_check_log.py -q --tb=short
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_waiting_queue_monthly_check.ps1 -SkipBundle
+```
+
+### 6) ENTRY_16 승격 판정
+
+- 파일: `docs/final/artifacts/entry16_promotion_gate.json`
+- 판정:
+  - `decision=keep_locked` -> 대기 큐 유지
+  - `decision=promote_candidate` -> 수동 리뷰 PR로 승격 절차 시작
+
+### 7) 완료 선언 업데이트
+
+- `ENTRY_07/08/16` 모두 `verified_anchor`가 되면 본 체크리스트의 완료 판정을 "최종 완료선 충족"으로 갱신
+- 동시에 `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 상태를 최종 완료로 동기화
+
+### 운영 Runbook 체크리스트 (스크립트/로그 1:1 대조)
+
+- 콘솔에 `[waiting-queue-check] Running CROSS_REF schema gates...` 출력 확인
+- `-SkipBundle` 미사용 시 `[waiting-queue-check] Running full prophecy alignment bundle...` 출력 확인
+- `[waiting-queue-check] Generating ENTRY_16 source-hunt summary...` 출력 확인
+- `[waiting-queue-check] Evaluating ENTRY_16 promotion gate...` 출력 확인
+- 로그 파일 `docs/final/artifacts/waiting_queue_monthly_check_log.jsonl` 최신 행에 아래 키 존재 확인:
+  - `checked_at_utc`, `bundle_mode`, `cross_ref_test`, `bundle_test`, `runner`
+  - `source_hunt_summary`, `source_hunt_summary_path`
+  - `promotion_gate`, `promotion_gate_path`
+- 아티팩트 파일 존재 확인:
+  - `docs/final/artifacts/entry16_source_hunt_summary.json`
+  - `docs/final/artifacts/entry16_promotion_gate.json`
