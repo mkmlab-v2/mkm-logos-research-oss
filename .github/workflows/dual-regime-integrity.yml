@@ -36,6 +36,9 @@ on:
       - "scripts/run_ultra_compression_default.py"
       - "scripts/check_btrack_regression.py"
       - "scripts/lock_btrack_verified_baseline.py"
+      - "scripts/build_v3_input_from_question_logs.py"
+      - "scripts/report_v3_pipeline_performance.py"
+      - "scripts/run_v3_measured_pipeline.py"
       - "scripts/hooks/token-circuit-breaker.py"
       - "data/logos/btrack_pilot/**"
       - "reports/constitution/btrack_pilot/**"
@@ -53,6 +56,7 @@ on:
       - "tests/test_entry16_source_hunt_summary.py"
       - "tests/test_entry16_promotion_gate.py"
       - "tests/test_waiting_queue_monthly_check_log.py"
+      - "tests/test_v3_operational_measured_pipeline.py"
       - "tests/test_btrack_phase3_snapshot_sync.py"
       - "tests/test_sasang_cross_ref_draft.py"
       - "tests/test_myeongni_insight_observation_log.py"
@@ -103,6 +107,9 @@ jobs:
 
       - name: Waiting-queue monthly check log contract
         run: python -m pytest tests/test_waiting_queue_monthly_check_log.py -q --tb=short
+
+      - name: V3 operational measured pipeline contract
+        run: python -m pytest tests/test_v3_operational_measured_pipeline.py -q --tb=short
 
       - name: B-Track Phase3 snapshot fence matches CROSS_REF SSOT
         run: python -m pytest tests/test_btrack_phase3_snapshot_sync.py -q --tb=short
