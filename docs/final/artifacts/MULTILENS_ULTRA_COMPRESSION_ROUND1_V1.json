@@ -1,6 +1,6 @@
 {
   "schema": "multilens_ultra_compression_round1_v1",
-  "ts_utc": "2026-03-30T15:41:08.217133+00:00",
+  "ts_utc": "2026-03-30T15:50:17.543526+00:00",
   "candidate_count": 18,
   "candidates": [
     {
@@ -51,10 +51,10 @@
       "strategy": "A",
       "intensity": "extreme",
       "use_hangul_principle": false,
-      "global_token_saving_rate": 0.39099859353023914,
-      "avg_reconstruction_fidelity_jaccard": 0.9485574229691878,
+      "global_token_saving_rate": 0.5654008438818565,
+      "avg_reconstruction_fidelity_jaccard": 0.852763971816797,
       "jaccard_drop_pp": 0.0,
-      "ultra_saving_50_ok": false,
+      "ultra_saving_50_ok": true,
       "jaccard_guardrail_ok": true,
       "sensitive_integrity_ok": true
     },
@@ -62,10 +62,10 @@
       "strategy": "A",
       "intensity": "extreme",
       "use_hangul_principle": true,
-      "global_token_saving_rate": 0.39099859353023914,
-      "avg_reconstruction_fidelity_jaccard": 1.0,
+      "global_token_saving_rate": 0.5654008438818565,
+      "avg_reconstruction_fidelity_jaccard": 0.9032121510885057,
       "jaccard_drop_pp": 0.0,
-      "ultra_saving_50_ok": false,
+      "ultra_saving_50_ok": true,
       "jaccard_guardrail_ok": true,
       "sensitive_integrity_ok": true
     },
@@ -207,10 +207,10 @@
       "strategy": "A",
       "intensity": "extreme",
       "use_hangul_principle": false,
-      "global_token_saving_rate": 0.39099859353023914,
-      "avg_reconstruction_fidelity_jaccard": 0.9485574229691878,
+      "global_token_saving_rate": 0.5654008438818565,
+      "avg_reconstruction_fidelity_jaccard": 0.852763971816797,
       "jaccard_drop_pp": 0.0,
-      "ultra_saving_50_ok": false,
+      "ultra_saving_50_ok": true,
       "jaccard_guardrail_ok": true,
       "sensitive_integrity_ok": true
     },
@@ -218,10 +218,10 @@
       "strategy": "A",
       "intensity": "extreme",
       "use_hangul_principle": true,
-      "global_token_saving_rate": 0.39099859353023914,
-      "avg_reconstruction_fidelity_jaccard": 1.0,
+      "global_token_saving_rate": 0.5654008438818565,
+      "avg_reconstruction_fidelity_jaccard": 0.9032121510885057,
       "jaccard_drop_pp": 0.0,
-      "ultra_saving_50_ok": false,
+      "ultra_saving_50_ok": true,
       "jaccard_guardrail_ok": true,
       "sensitive_integrity_ok": true
     }
@@ -231,10 +231,10 @@
       "strategy": "A",
       "intensity": "extreme",
       "use_hangul_principle": false,
-      "global_token_saving_rate": 0.39099859353023914,
-      "avg_reconstruction_fidelity_jaccard": 0.9485574229691878,
+      "global_token_saving_rate": 0.5654008438818565,
+      "avg_reconstruction_fidelity_jaccard": 0.852763971816797,
       "jaccard_drop_pp": 0.0,
-      "ultra_saving_50_ok": false,
+      "ultra_saving_50_ok": true,
       "jaccard_guardrail_ok": true,
       "sensitive_integrity_ok": true
     },
@@ -242,10 +242,10 @@
       "strategy": "A",
       "intensity": "extreme",
       "use_hangul_principle": true,
-      "global_token_saving_rate": 0.39099859353023914,
-      "avg_reconstruction_fidelity_jaccard": 1.0,
+      "global_token_saving_rate": 0.5654008438818565,
+      "avg_reconstruction_fidelity_jaccard": 0.9032121510885057,
       "jaccard_drop_pp": 0.0,
-      "ultra_saving_50_ok": false,
+      "ultra_saving_50_ok": true,
       "jaccard_guardrail_ok": true,
       "sensitive_integrity_ok": true
     }
