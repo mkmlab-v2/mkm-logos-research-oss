@@ -17,6 +17,7 @@
 | 우선순위 | 경로 (워크스페이스 기준) | 비고 |
 |----------|--------------------------|------|
 | P0 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | 헌법 추론 구현 SSOT |
+| P0 | `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` | 압축-해석 파이프라인 Fact-Lock SSOT |
 | P0 | `docs/final/master_codebook_dual_track.template.json` | 듀얼 트랙 코드북 템플릿 |
 | P1 | `data/regimes/regime_fusion_policy.json` | 레짐 퓨전 정책 |
 | P1 | `data/regimes/regime_map.json` | 1차 레짐 맵 |

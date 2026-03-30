@@ -68,6 +68,7 @@ $SourceFiles = @(
     "docs\NotebookLM_sources_manifest.md",
     "docs\final\AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md",
     "docs\final\CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+    "docs\final\COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
     "docs\final\master_codebook_dual_track.template.json",
     "data\regimes\regime_fusion_policy.json",
     "data\regimes\regime_map.json",

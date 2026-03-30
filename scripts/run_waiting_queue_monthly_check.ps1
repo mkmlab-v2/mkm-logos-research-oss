@@ -10,6 +10,7 @@ Set-Location $workspace
 $logPath = "C:\workspace\docs\final\artifacts\waiting_queue_monthly_check_log.jsonl"
 $sourceHuntSummaryPath = "C:\workspace\docs\final\artifacts\entry16_source_hunt_summary.json"
 $promotionGatePath = "C:\workspace\docs\final\artifacts\entry16_promotion_gate.json"
+$btrackGatePath = "C:\workspace\reports\constitution\btrack_pilot\btrack_promotion_gate_anchor_verified_only_latest.json"
 $checkedAtObj = [DateTimeOffset]::UtcNow
 $checkedAt = $checkedAtObj.ToString("o")
 $nextMonthlyDue = $checkedAtObj.AddDays(30).ToString("yyyy-MM-dd")
@@ -43,6 +44,12 @@ if ($LASTEXITCODE -ne 0) {
     throw "ENTRY_16 promotion gate evaluation failed with exit code $LASTEXITCODE"
 }
 
+Write-Host "[waiting-queue-check] Running B-Track verified gate+lock..."
+& "C:\workspace\scripts\run_btrack_gate_and_lock.ps1"
+if ($LASTEXITCODE -ne 0) {
+    throw "B-Track verified gate+lock failed with exit code $LASTEXITCODE"
+}
+
 @{
     checked_at_utc = $checkedAt
     bundle_mode = $bundleMode
@@ -52,6 +59,8 @@ if ($LASTEXITCODE -ne 0) {
     source_hunt_summary_path = $sourceHuntSummaryPath
     promotion_gate = "pass"
     promotion_gate_path = $promotionGatePath
+    btrack_verified_gate = "pass"
+    btrack_verified_gate_path = $btrackGatePath
     next_monthly_due_date = $nextMonthlyDue
     horizon_t30_date = $horizonT30
     horizon_t90_date = $horizonT90
