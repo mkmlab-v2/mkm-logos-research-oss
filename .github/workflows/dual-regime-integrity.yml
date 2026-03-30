@@ -28,6 +28,7 @@ on:
       - "scripts/join_logos_verses_myeongni_states_4d.py"
       - "tests/test_logos_state_mapping_v1_snapshot.py"
       - "tests/test_cross_ref_dss_schema.py"
+      - "tests/test_btrack_phase3_snapshot_sync.py"
       - "tests/test_sasang_cross_ref_draft.py"
       - "tests/test_myeongni_insight_observation_log.py"
       - "docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json"
@@ -62,6 +63,9 @@ jobs:
 
       - name: CROSS_REF draft vs LOGOS_STATE_MAPPING (canonical_ref join Fact-Lock)
         run: python -m pytest tests/test_cross_ref_dss_schema.py -q --tb=short
+
+      - name: B-Track Phase3 snapshot fence matches CROSS_REF SSOT
+        run: python -m pytest tests/test_btrack_phase3_snapshot_sync.py -q --tb=short
 
       - name: SASANG CROSS_REF draft (ijeoma chunk ↔ LOGOS bench Fact-Lock)
         run: python -m pytest tests/test_sasang_cross_ref_draft.py -q --tb=short
