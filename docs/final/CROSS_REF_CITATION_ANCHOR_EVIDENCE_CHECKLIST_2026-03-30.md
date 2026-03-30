@@ -53,6 +53,14 @@
 - 근거 반영 순서: SSOT JSON -> 스냅샷 fence sync -> `pytest tests/test_cross_ref_dss_schema.py`.
 - 점검 주기(권장): 월 1회 또는 소스 업데이트 공지 발생 시 즉시.
 
+### 월간 점검 실행 템플릿
+
+```powershell
+Set-Location C:\workspace
+py -m pytest tests/test_cross_ref_dss_schema.py -q --tb=short
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1
+```
+
 ---
 
 ## 완료 판정
