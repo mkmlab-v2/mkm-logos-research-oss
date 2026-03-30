@@ -10,7 +10,7 @@ BT_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 WORKSPACE_ROOT="$(cd "${BT_ROOT}/../.." && pwd)"
 cd "${BT_ROOT}"
 
-# Fact-Lock SSOT: dual-regime smoke (13 cases). CI: .github/workflows/dual-regime-integrity.yml
+# Fact-Lock SSOT: dual-regime smoke (14 cases). CI: .github/workflows/dual-regime-integrity.yml
 TEST_FILES=(
   "tests/test_dual_regime_api_smoke.py"
 )

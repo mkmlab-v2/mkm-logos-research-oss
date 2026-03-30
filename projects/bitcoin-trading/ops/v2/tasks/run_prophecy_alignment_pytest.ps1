@@ -5,9 +5,10 @@
 $ErrorActionPreference = 'Stop'
 
 $btRoot = (Get-Item -LiteralPath $PSScriptRoot).Parent.Parent.Parent.FullName
-$workspaceRoot = (Get-Item -LiteralPath $btRoot).Parent.FullName
+# bitcoin-trading -> projects -> repo root (matches run_prophecy_alignment_pytest.sh: BT_ROOT/../..)
+$workspaceRoot = (Get-Item -LiteralPath $btRoot).Parent.Parent.FullName
 
-# Fact-Lock SSOT: dual-regime smoke (13 cases). CI: .github/workflows/dual-regime-integrity.yml
+# Fact-Lock SSOT: dual-regime smoke (14 cases). CI: .github/workflows/dual-regime-integrity.yml
 Set-Location -LiteralPath $btRoot
 & py -m pytest 'tests/test_dual_regime_api_smoke.py' -v --tb=short
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
