@@ -29,6 +29,7 @@ on:
       - "tests/test_logos_state_mapping_v1_snapshot.py"
       - "tests/test_cross_ref_dss_schema.py"
       - "tests/test_entry16_source_hunt_log.py"
+      - "tests/test_waiting_queue_monthly_check_log.py"
       - "tests/test_btrack_phase3_snapshot_sync.py"
       - "tests/test_sasang_cross_ref_draft.py"
       - "tests/test_myeongni_insight_observation_log.py"
@@ -67,6 +68,9 @@ jobs:
 
       - name: ENTRY_16 source-hunt log contract
         run: python -m pytest tests/test_entry16_source_hunt_log.py -q --tb=short
+
+      - name: Waiting-queue monthly check log contract
+        run: python -m pytest tests/test_waiting_queue_monthly_check_log.py -q --tb=short
 
       - name: B-Track Phase3 snapshot fence matches CROSS_REF SSOT
         run: python -m pytest tests/test_btrack_phase3_snapshot_sync.py -q --tb=short

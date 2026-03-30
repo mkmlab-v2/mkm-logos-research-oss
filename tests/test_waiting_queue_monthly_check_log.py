@@ -1,0 +1,48 @@
+# @MKM12-METADATA
+# Type: Logic
+# Purpose: Validate waiting-queue monthly check log JSONL contract.
+# Keywords: waiting-queue, monthly-check, jsonl, ops
+
+from __future__ import annotations
+
+import json
+from datetime import datetime
+from pathlib import Path
+
+
+_ROOT = Path(__file__).resolve().parents[1]
+_LOG = _ROOT / "docs" / "final" / "artifacts" / "waiting_queue_monthly_check_log.jsonl"
+
+
+def _rows(path: Path):
+    for line in path.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if s:
+            yield json.loads(s.lstrip("\ufeff"))
+
+
+def test_waiting_queue_log_exists_and_has_rows() -> None:
+    assert _LOG.is_file(), f"missing log: {_LOG}"
+    rows = list(_rows(_LOG))
+    assert rows, "waiting queue monthly check log must not be empty"
+
+
+def test_waiting_queue_log_row_contract() -> None:
+    rows = list(_rows(_LOG))
+    for i, row in enumerate(rows):
+        for key in ("checked_at_utc", "bundle_mode", "cross_ref_test", "runner"):
+            assert key in row, f"row[{i}] missing key: {key}"
+            assert str(row[key]).strip(), f"row[{i}] empty value: {key}"
+
+        datetime.fromisoformat(str(row["checked_at_utc"]).replace("Z", "+00:00"))
+        assert row["bundle_mode"] in {"skip_bundle", "full_bundle"}, f"row[{i}] invalid bundle_mode"
+        assert row["cross_ref_test"] == "pass", f"row[{i}] cross_ref_test must be pass"
+        assert str(row["runner"]) == "scripts/run_waiting_queue_monthly_check.ps1", (
+            f"row[{i}] runner mismatch"
+        )
+
+        bundle_test = str(row.get("bundle_test", ""))
+        if row["bundle_mode"] == "skip_bundle":
+            assert bundle_test in {"skipped", "pass"}, f"row[{i}] invalid skip bundle_test"
+        else:
+            assert bundle_test == "pass", f"row[{i}] full bundle_test must be pass"
