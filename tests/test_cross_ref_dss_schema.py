@@ -108,6 +108,8 @@ def test_entry_16_anchor_gate_locked_until_evidence_update() -> None:
         assert "status=missing_anchor_until_source_update" in sat, (
             f"{eid} must stay locked with missing_anchor gate in satellite_ref"
         )
+        assert "no extant DSS witness for Ezra.2.54 list" in sat
+        assert "Qumran-Digital 4Q117 transcription (2024-07-30)" in sat
 
 
 def test_entry_14_partial_anchor_verified_gate() -> None:

@@ -28,7 +28,7 @@
 | ENTRY_13 (11Q5 Ps.5.2) | `partial_anchor_verified (scroll+line-buckets)` | 11Q5 witness와 MT Ps.5.2 **정확 verse line 매핑** | `loc=...Ps.5.2..., line=<...>` + `status=verified_anchor` |
 | ENTRY_14 (4QDeut) | `fragment/line=TBD` | Deut.5.19 대응 fragment/line | `loc=Deut.5.19 frag=<...>, line=<...>` |
 | ENTRY_15 (4QGen) | `fragment/line=TBD` | Gen.49.19 대응 fragment/line | `loc=Gen.49.19 frag=<...>, line=<...>` |
-| ENTRY_16 (Ezra-Neh witnesses) | `list anchor=TBD` | Ezra.2.54 name-list witness anchor (missing: 로컬 align-*.txt에서 `Ezra', '2'` 매핑 미탐지) | `loc=Ezra.2.54 list anchor=<...>` |
+| ENTRY_16 (Ezra-Neh witnesses) | `missing_anchor_until_source_update` (no extant DSS for Ezra.2.54) | 비-DSS witness(LXX/기타) 기준 name-list 대응 anchor 확정 | `loc=Ezra.2.54 list anchor=<...>` |
 
 ---
 
