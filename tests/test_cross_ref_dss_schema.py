@@ -116,6 +116,10 @@ def test_entry_16_anchor_gate_locked_until_evidence_update() -> None:
         assert "Qumran-Digital 4Q117 transcription (2024-07-30)" in sat
         # Keep explicit currently-attested Ezra coverage to prevent silent scope drift.
         assert "Esr 4:2-6, 4:9-11, 5:17, 6:1-6" in sat
+        note = str(row.get("note", ""))
+        # Lock both NotebookLM evidence sources in note chain.
+        assert "source=c72898ab-b0b2-4875-a856-59c39a166875" in note
+        assert "source=21de583e-bfc2-4294-9e25-7a1678f624c2" in note
 
 
 def test_entry_16_local_align_still_lacks_ezra2_mapping() -> None:
@@ -155,6 +159,8 @@ def test_entry_12_13_partial_anchor_verified_gates() -> None:
         sat = str(row.get("satellite_ref", ""))
         assert "status=partial_anchor_verified (scroll+line-buckets)" in sat
         assert "11Q5-18 line-buckets" in sat
+        assert "not exposed in consulted public 11Q5 transcription" in sat
+        assert "Qumran-Digital 11Q5 transcription (2025-03-11)" in sat
         assert verse in sat
 
 

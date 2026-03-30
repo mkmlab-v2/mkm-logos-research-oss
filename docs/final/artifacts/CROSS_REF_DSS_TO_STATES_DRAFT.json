@@ -146,28 +146,28 @@
     {
       "entry_id": "ENTRY_12",
       "canonical_ref": "Ps.4.6",
-      "satellite_ref": "11Q5 | loc=etcbc linesSort-2020-07-14: 11Q5-18 line-buckets sampled (1-9); MT Ps.4.6 verse mapping line remains TBD | refs=DJD IV (Sanders 1965), etcbc-dss log | status=partial_anchor_verified (scroll+line-buckets)",
-      "source_id": "11Q5 | loc=etcbc linesSort-2020-07-14: 11Q5-18 line-buckets sampled (1-9); MT Ps.4.6 verse mapping line remains TBD | refs=DJD IV (Sanders 1965), etcbc-dss log | status=partial_anchor_verified (scroll+line-buckets)",
+      "satellite_ref": "11Q5 | loc=etcbc linesSort-2020-07-14: 11Q5-18 line-buckets sampled (1-9); MT Ps.4.6 direct verse mapping line remains TBD (not exposed in consulted public 11Q5 transcription) | refs=DJD IV (Sanders 1965), etcbc-dss log, Qumran-Digital 11Q5 transcription (2025-03-11) | status=partial_anchor_verified (scroll+line-buckets)",
+      "source_id": "11Q5 | loc=etcbc linesSort-2020-07-14: 11Q5-18 line-buckets sampled (1-9); MT Ps.4.6 direct verse mapping line remains TBD (not exposed in consulted public 11Q5 transcription) | refs=DJD IV (Sanders 1965), etcbc-dss log, Qumran-Digital 11Q5 transcription (2025-03-11) | status=partial_anchor_verified (scroll+line-buckets)",
       "corpus_type": "dss",
       "link_type": "lexical",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 10,
       "rationale": "B-Track DSS: 시편 큐믈란 증거(11Q5)와 MT Ps.4 구절의 어휘·서사 정렬 벤치. A-Track: cosine state 10 앵커 Ps.4.6 — 음성학·트리거 아님.",
-      "note": "Bench policy: lexical 정렬 후보. 승격 조건=11Q5 col/line↔MT Ps.4.6 매핑 확인 + 비정경 해석 레이어 미주입. 반증 훅=열/행 매핑 불일치 또는 단순 어휘 중복만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/col-line 'missing anchor' 확인. Local evidence (2026-03-30): etcbc-dss log linesSort-2020-07-14에서 11Q5-18 line-bucket 표기가 확인되어 partial_anchor로 상향(정경 verse line 매핑은 미완)."
+      "note": "Bench policy: lexical 정렬 후보. 승격 조건=11Q5 col/line↔MT Ps.4.6 매핑 확인 + 비정경 해석 레이어 미주입. 반증 훅=열/행 매핑 불일치 또는 단순 어휘 중복만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/col-line 'missing anchor' 확인. Local evidence (2026-03-30): etcbc-dss log linesSort-2020-07-14에서 11Q5-18 line-bucket 표기가 확인되어 partial_anchor로 상향(정경 verse line 매핑은 미완). Open-source check (Qumran-Digital 11Q5, 2025-03-11)에서도 Ps.4.6 direct verse mapping line은 노출되지 않음."
     },
     {
       "entry_id": "ENTRY_13",
       "canonical_ref": "Ps.5.2",
-      "satellite_ref": "11Q5 | loc=etcbc linesSort-2020-07-14: 11Q5-18 line-buckets sampled (1-9); MT Ps.5.2 verse mapping line remains TBD | refs=DJD IV (Sanders 1965), etcbc-dss log | status=partial_anchor_verified (scroll+line-buckets)",
-      "source_id": "11Q5 | loc=etcbc linesSort-2020-07-14: 11Q5-18 line-buckets sampled (1-9); MT Ps.5.2 verse mapping line remains TBD | refs=DJD IV (Sanders 1965), etcbc-dss log | status=partial_anchor_verified (scroll+line-buckets)",
+      "satellite_ref": "11Q5 | loc=etcbc linesSort-2020-07-14: 11Q5-18 line-buckets sampled (1-9); MT Ps.5.2 direct verse mapping line remains TBD (not exposed in consulted public 11Q5 transcription) | refs=DJD IV (Sanders 1965), etcbc-dss log, Qumran-Digital 11Q5 transcription (2025-03-11) | status=partial_anchor_verified (scroll+line-buckets)",
+      "source_id": "11Q5 | loc=etcbc linesSort-2020-07-14: 11Q5-18 line-buckets sampled (1-9); MT Ps.5.2 direct verse mapping line remains TBD (not exposed in consulted public 11Q5 transcription) | refs=DJD IV (Sanders 1965), etcbc-dss log, Qumran-Digital 11Q5 transcription (2025-03-11) | status=partial_anchor_verified (scroll+line-buckets)",
       "corpus_type": "dss",
       "link_type": "lexical",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 11,
       "rationale": "B-Track DSS: 시편 5장 DSS 평행. A-Track: state 11 앵커 Ps.5.2 — 예배·호소 담론만 병치(벤치).",
-      "note": "Bench policy: lexical 정렬 후보. 승격 조건=11Q5 Ps.5 witness가 MT Ps.5.2 호출 구조와 합치. 반증 훅=예배 문체 일반론으로 환원되어 state 11 특이성이 사라지는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/col-line 'missing anchor' 확인. Local evidence (2026-03-30): etcbc-dss log linesSort-2020-07-14에서 11Q5-18 line-bucket 표기가 확인되어 partial_anchor로 상향(정경 verse line 매핑은 미완)."
+      "note": "Bench policy: lexical 정렬 후보. 승격 조건=11Q5 Ps.5 witness가 MT Ps.5.2 호출 구조와 합치. 반증 훅=예배 문체 일반론으로 환원되어 state 11 특이성이 사라지는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/col-line 'missing anchor' 확인. Local evidence (2026-03-30): etcbc-dss log linesSort-2020-07-14에서 11Q5-18 line-bucket 표기가 확인되어 partial_anchor로 상향(정경 verse line 매핑은 미완). Open-source check (Qumran-Digital 11Q5, 2025-03-11)에서도 Ps.5.2 direct verse mapping line은 노출되지 않음."
     },
     {
       "entry_id": "ENTRY_14",
