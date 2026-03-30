@@ -69,8 +69,8 @@
     {
       "entry_id": "ENTRY_06",
       "canonical_ref": "Exod.20.15",
-      "satellite_ref": "1QpHab (1Q15) | loc=col.VII, line=TBD | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill) | status=verify col/line",
-      "source_id": "1QpHab (1Q15) | loc=col.VII, line=TBD | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill) | status=verify col/line",
+      "satellite_ref": "1QpHab (1Q15) | loc=col.VII, line=TBD | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill) | status=partial_anchor_verified (column)",
+      "source_id": "1QpHab (1Q15) | loc=col.VII, line=TBD | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill) | status=partial_anchor_verified (column)",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
@@ -81,8 +81,8 @@
     {
       "entry_id": "ENTRY_07",
       "canonical_ref": "Ezra.2.45",
-      "satellite_ref": "11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD | refs=Yadin 1977, DJD XXIII | status=verify col range/line",
-      "source_id": "11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD | refs=Yadin 1977, DJD XXIII | status=verify col range/line",
+      "satellite_ref": "11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD | refs=Yadin 1977, DJD XXIII | status=partial_anchor_verified (column-range)",
+      "source_id": "11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD | refs=Yadin 1977, DJD XXIII | status=partial_anchor_verified (column-range)",
       "corpus_type": "dss",
       "link_type": "temporal",
       "confidence": null,

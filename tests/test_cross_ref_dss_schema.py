@@ -117,3 +117,18 @@ def test_entry_14_partial_anchor_verified_gate() -> None:
     sat = str(row.get("satellite_ref", ""))
     assert "status=partial_anchor_verified (witness-set+plates)" in sat
     assert "Pls I-XXXI" in sat
+
+
+def test_entry_06_07_08_10_partial_anchor_gates() -> None:
+    """Entries with verified subset anchors keep explicit partial status."""
+    doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
+    expected = {
+        "ENTRY_06": "status=partial_anchor_verified (column)",
+        "ENTRY_07": "status=partial_anchor_verified (column-range)",
+        "ENTRY_08": "status=partial_anchor_verified (sigla+plates)",
+        "ENTRY_10": "status=partial_anchor_verified (plates)",
+    }
+    for eid, marker in expected.items():
+        row = next(e for e in doc["entries"] if e.get("entry_id") == eid)
+        sat = str(row.get("satellite_ref", ""))
+        assert marker in sat, f"{eid} must retain marker: {marker}"
