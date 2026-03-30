@@ -257,7 +257,7 @@ https://ko.wikipedia.org/wiki/%EC%82%AC%EC%A3%BC%EB%AA%85%EB%A6%AC%ED%95%99
 |-----------|---------------|-----|----------------------------------------|
 | B-Track DSS-only (Qumran) 2026-03-30 | `3839cf65-d97c-465c-a252-7ca9441af201` | `https://notebooklm.google.com/notebook/3839cf65-d97c-465c-a252-7ca9441af201` | **`notebook_get` 실측 10** (2026-03-30) — 스코프·메타·리스크·DSS 아카이브 URL·arXiv 2건·`btrack_dss_1QM_col1_excerpt.md`·`btrack_dss_1QS_sectarian_context.md`·`btrack_dss_1QS_pure_discipline.md` |
 | B-Track Apocrypha-only 2026-03-30 | `17ab44ab-0f62-4714-99ac-12688a469597` | `https://notebooklm.google.com/notebook/17ab44ab-0f62-4714-99ac-12688a469597` | **`notebook_get` 실측 10** (2026-03-30) — 동일; **`btrack_apocrypha_jubilees_calendar_364.md` NL 재동기화**(구 소스 삭제 후 최신 로컬 재`source_add`, 2026-03-30)로 Charlesworth·1에녹 72–82 병치 문단 인덱스 확인 |
-| B-Track Phase3 Contrast (exports only) 2026-03-30 | `aced4a3e-6ece-4770-b46d-46e1454da893` | `https://notebooklm.google.com/notebook/aced4a3e-6ece-4770-b46d-46e1454da893` | **2** — 사용법 텍스트 + `docs/final/btrack_phase3_cross_ref_snapshot.md`(평문 ENTRY·도킹 송환; JSON 코드펜스는 NL 인덱싱 약함) MCP `source_add` 갱신(2026-03-30) |
+| B-Track Phase3 Contrast (exports only) 2026-03-30 | `aced4a3e-6ece-4770-b46d-46e1454da893` | `https://notebooklm.google.com/notebook/aced4a3e-6ece-4770-b46d-46e1454da893` | **`notebook_get` 실측 2** — `Phase3 — 사용법…` + **`btrack_phase3_cross_ref_snapshot.md` 재동기화**(구 `cc37772c…` 삭제 → 신 `4a76d12a…`, ENTRY_01–10·`generated_at_utc` JSON 정합, 2026-03-30) |
 
 ---
 
