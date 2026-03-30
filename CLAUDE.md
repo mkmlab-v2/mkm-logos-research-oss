@@ -6,7 +6,7 @@
 
 - **TITAN**: 루트 `.cursorrules` 최상단 — 자율 기동, **이항 선택([A]/[B]) 강요 금지**, 고위험만 승인 요청.
 - **중앙 지휘부 규칙**: `.cursor/rules/sovereign-central-command.mdc` (`alwaysApply`).
-- **코드/추론 “구현 여부”**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 를 호출 가능한 `.py`와 대조한다.
+- **코드/추론 “구현 여부”**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 를 호출 가능한 `.py`와 대조한다. **Multi-Lens·TOE 비단정**은 동 문서 §1.1.
 
 ## 환경
 
