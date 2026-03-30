@@ -181,15 +181,15 @@
     {
       "entry_id": "ENTRY_15",
       "canonical_ref": "Gen.49.19",
-      "satellite_ref": "4QGen (b-k) | loc=DJD XII Genesis witnesses (Pls VI-XIII); Gen.49.19 fragment/line remains TBD | refs=DJD XII (Ulrich et al. 1994) | status=partial_anchor_verified (witness-set+plates)",
-      "source_id": "4QGen (b-k) | loc=DJD XII Genesis witnesses (Pls VI-XIII); Gen.49.19 fragment/line remains TBD | refs=DJD XII (Ulrich et al. 1994) | status=partial_anchor_verified (witness-set+plates)",
+      "satellite_ref": "4QGen (b-k) | loc=DJD XII Genesis witnesses (Pls VI-XIII); chapter witness confirms Gen.49.1-8 (4Q1/4Q5), but Gen.49.19 direct fragment/line remains TBD | refs=DJD XII (Ulrich et al. 1994), DSSEnglishBible Gen49 page | status=partial_anchor_verified (witness-set+plates+chapter-range)",
+      "source_id": "4QGen (b-k) | loc=DJD XII Genesis witnesses (Pls VI-XIII); chapter witness confirms Gen.49.1-8 (4Q1/4Q5), but Gen.49.19 direct fragment/line remains TBD | refs=DJD XII (Ulrich et al. 1994), DSSEnglishBible Gen49 page | status=partial_anchor_verified (witness-set+plates+chapter-range)",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 14,
       "rationale": "B-Track DSS: 창49 족장 축복 서사. A-Track: state 14 앵커 Gen.49.19 — 지리·군사 은유는 벤치 라벨일 뿐 가격 인과 아님.",
-      "note": "Bench policy: thematic 후보. 승격 조건=4QGen witness에서 Gad oracle 대응 구간 확인 + 은유를 상태 메타로만 제한. 반증 훅=군사/지리 비유를 실증 인과로 오독하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/col-line 'missing anchor' 확인."
+      "note": "Bench policy: thematic 후보. 승격 조건=4QGen witness에서 Gad oracle 대응 구간 확인 + 은유를 상태 메타로만 제한. 반증 훅=군사/지리 비유를 실증 인과로 오독하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/col-line 'missing anchor' 확인. Local evidence (2026-03-30): 공개 전사/번역 집계에서 Gen.49는 4Q1/4Q5 기준 49.1-8까지만 확인되어 Gen.49.19 직접 witness는 미확정."
     },
     {
       "entry_id": "ENTRY_16",

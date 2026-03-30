@@ -125,12 +125,13 @@ def test_entry_14_partial_anchor_verified_gate() -> None:
 
 
 def test_entry_15_partial_anchor_verified_gate() -> None:
-    """ENTRY_15 keeps Gen.49.19 line TBD but records DJD XII witness+plates."""
+    """ENTRY_15 keeps Gen.49.19 line TBD but records witness+plates+chapter range."""
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
     row = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_15")
     sat = str(row.get("satellite_ref", ""))
-    assert "status=partial_anchor_verified (witness-set+plates)" in sat
+    assert "status=partial_anchor_verified (witness-set+plates+chapter-range)" in sat
     assert "Pls VI-XIII" in sat
+    assert "Gen.49.1-8 (4Q1/4Q5)" in sat
 
 
 def test_entry_12_13_partial_anchor_verified_gates() -> None:
@@ -155,7 +156,7 @@ def test_entry_06_07_08_10_partial_anchor_gates() -> None:
         "ENTRY_09": "status=partial_anchor_verified (frag+col)",
         "ENTRY_12": "status=partial_anchor_verified (scroll+line-buckets)",
         "ENTRY_13": "status=partial_anchor_verified (scroll+line-buckets)",
-        "ENTRY_15": "status=partial_anchor_verified (witness-set+plates)",
+        "ENTRY_15": "status=partial_anchor_verified (witness-set+plates+chapter-range)",
     }
     for eid, marker in expected.items():
         row = next(e for e in doc["entries"] if e.get("entry_id") == eid)
