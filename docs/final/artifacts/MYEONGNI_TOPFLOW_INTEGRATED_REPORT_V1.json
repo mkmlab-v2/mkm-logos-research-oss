@@ -1,0 +1,25 @@
+{
+  "schema": "myeongni_topflow_integrated_report_v1",
+  "generated_at_utc": "2026-03-30T13:59:18.741037Z",
+  "sources": {
+    "topflow_interpretation": "docs/final/artifacts/MYEONGNI_16_STATE_TOPFLOW_INTERPRETATION_V1.json",
+    "entry16_gate": "docs/final/artifacts/entry16_promotion_gate.json"
+  },
+  "core_readout": {
+    "one_line": "current dominant transition is state 3 -> 11 (count=1, p=1.000); B-track interpretation only.",
+    "dominant_flow": {
+      "from_state": 3,
+      "to_state": 11,
+      "count": 1,
+      "probability": 1.0
+    },
+    "quality_stage": "bootstrap_insufficient_rows",
+    "entry16_gate_decision": "promote_proxy_candidate_manual"
+  },
+  "operational_call": "analysis_read_only_continue",
+  "guardrails": [
+    "B-track only",
+    "no auto-merge into A-track trading triggers",
+    "ENTRY_16 direct witness remains unresolved unless explicitly updated"
+  ]
+}

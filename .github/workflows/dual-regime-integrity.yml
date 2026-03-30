@@ -30,11 +30,13 @@ on:
       - "scripts/report_myeongni_16_state_transition.py"
       - "scripts/report_myeongni_16_state_topflows.py"
       - "scripts/report_myeongni_16_state_topflow_interpretation.py"
+      - "scripts/report_myeongni_topflow_integrated_snapshot.py"
       - "tests/test_logos_state_mapping_v1_snapshot.py"
       - "tests/test_add_entry16_source_and_rejudge.py"
       - "tests/test_myeongni_16_state_transition_report.py"
       - "tests/test_myeongni_16_state_topflows_report.py"
       - "tests/test_myeongni_16_state_topflow_interpretation_report.py"
+      - "tests/test_myeongni_topflow_integrated_report.py"
       - "tests/test_cross_ref_dss_schema.py"
       - "tests/test_entry16_source_hunt_log.py"
       - "tests/test_entry16_source_hunt_summary.py"
@@ -108,6 +110,9 @@ jobs:
 
       - name: Myeongni 16-state topflow interpretation contract
         run: python -m pytest tests/test_myeongni_16_state_topflow_interpretation_report.py -q --tb=short
+
+      - name: Myeongni integrated topflow report contract
+        run: python -m pytest tests/test_myeongni_topflow_integrated_report.py -q --tb=short
 
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()
