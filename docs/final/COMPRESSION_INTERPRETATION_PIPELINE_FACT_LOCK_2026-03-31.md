@@ -70,7 +70,7 @@ Use these artifacts as runtime truth, not chat memory.
 - **Default eval input**: `docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json`; **baseline report**: `MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json`.
 - **Active profile runner (light, ~seconds)**: `py scripts/run_ultra_compression_default.py` — reads `MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json`, runs `evaluate_report` with `use_domain_router=True` (4-zone pilot), rewrites `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`.
 - **Full grid bench (heavy)**: `py scripts/run_ultra_compression_bench.py` — round1 sweeps strategies `A|B|C`, intensities `high|ultra|extreme`, hangul flag; round2 sweeps cap grid on pareto seeds; emits `MULTILENS_ULTRA_COMPRESSION_ROUND1_V1.json`, `ROUND2`, `DECISION`, `BASELINE_LOCK`. Not required on every commit.
-- **Master codebook lexicon V1** (`export_master_codebook_v1.py`) is **not** wired into the compression router path; ultra metrics remain defined by multilens eval inputs until an explicit integration milestone.
+- **Master codebook lexicon V1**: `scripts/core/master_codebook_lexicon_v1_bridge.py` resolves `reports/constitution/btrack_pilot/master_codebook_lexicon_v1_*_rows_latest.json` (or an explicit path) and, when `use_master_codebook_lexicon_v1=True` in `evaluate_report`, **union-matches** Unicode word tokens of each case’s `raw_text` against export `normalized_form` values to extend **must_keep** (metadata under `route.master_codebook_lexicon_v1`). Reproduce export: `py scripts/export_master_codebook_v1.py`. This is **lexicon rail join only** (no 4D vectors, no replacement of domain shard JSON policy).
 
 ## 7) Terminology lock (anti-confusion)
 

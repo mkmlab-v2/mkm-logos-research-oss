@@ -174,6 +174,7 @@ def main() -> int:
             hangul_max_saving_rate=float(c["hangul_max_saving_rate"]),
             use_hangul_principle=bool(c["use_hangul_principle"]),
             use_domain_router=True,
+            use_master_codebook_lexicon_v1=True,
             include_gematria_metadata=True,
             include_gematria_4d_bridge=True,
             include_cee_core=True,

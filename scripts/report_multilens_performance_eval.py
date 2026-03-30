@@ -27,6 +27,10 @@ SLOT_DICT_V6 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_DOMAIN_SLOT_DI
 SLOT_DICT_V61 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_DOMAIN_SLOT_DICTIONARY_V61.json"
 
 from scripts.core.domain_router import DomainSpecificRouter
+from scripts.core.master_codebook_lexicon_v1_bridge import (
+    resolve_latest_codebook_path,
+    lexicon_hits_for_text,
+)
 from scripts.core.cee_logic_core_v1 import CEEInput, run_cee_logic_core_v1
 from scripts.core.contextual_generator_v2 import ContextualGeneratorV2
 from scripts.core.contextual_generator_v3 import ContextualGeneratorV3
@@ -527,6 +531,8 @@ def evaluate_report(
     hangul_max_saving_rate: float | None = None,
     use_hangul_principle: bool = False,
     use_domain_router: bool = False,
+    use_master_codebook_lexicon_v1: bool = False,
+    master_codebook_lexicon_path: Path | str | None = None,
     include_gematria_metadata: bool = False,
     include_gematria_4d_bridge: bool = False,
     include_cee_core: bool = False,
@@ -583,6 +589,22 @@ def evaluate_report(
                 effective_must_keep.update(route.must_keep_soft_terms)
             effective_hangul_principle = use_hangul_principle or route.hangul_principle
             route_info = {"shard_id": route.shard_id, "domain": route.domain}
+        if use_master_codebook_lexicon_v1:
+            cb_path = resolve_latest_codebook_path(
+                explicit=master_codebook_lexicon_path,
+            )
+            if route_info is None:
+                route_info = {}
+            if cb_path is None:
+                route_info["master_codebook_lexicon_v1"] = {
+                    "status": "skipped",
+                    "reason": "export_not_found",
+                    "hint": "py scripts/export_master_codebook_v1.py",
+                }
+            else:
+                hits, meta = lexicon_hits_for_text(raw, cb_path)
+                effective_must_keep.update(hits)
+                route_info["master_codebook_lexicon_v1"] = meta
         if mode == "experimental":
             if contextual_codec_v5 is not None and apply_gematria_4d_bridge_policy and bridge_meta is not None:
                 comp = contextual_codec_v5.encode(
@@ -796,6 +818,10 @@ def evaluate_report(
             "hangul_max_saving_rate": hangul_max_saving_rate,
             "use_hangul_principle": use_hangul_principle,
             "use_domain_router": use_domain_router,
+            "use_master_codebook_lexicon_v1": use_master_codebook_lexicon_v1,
+            "master_codebook_lexicon_path": str(master_codebook_lexicon_path)
+            if master_codebook_lexicon_path
+            else None,
             "include_gematria_metadata": include_gematria_metadata,
             "include_gematria_4d_bridge": include_gematria_4d_bridge,
             "include_cee_core": include_cee_core,

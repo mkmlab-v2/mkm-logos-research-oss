@@ -111,6 +111,9 @@ on:
       - "scripts/audit_canon_unmatched_morphhb_top100.py"
       - "scripts/resolve_morphhb_multi_deterministic.py"
       - "scripts/export_master_codebook_v1.py"
+      - "scripts/core/master_codebook_lexicon_v1_bridge.py"
+      - "tests/test_master_codebook_lexicon_v1_bridge.py"
+      - "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md"
       - "tests/test_btrack_symbol_lane_regression.py"
       - "tests/test_v3_operational_measured_pipeline.py"
       - "tests/test_btrack_phase3_snapshot_sync.py"
@@ -308,7 +311,9 @@ jobs:
         run: python -m pytest tests/test_multilens_performance_eval_report_v2.py -q --tb=short
 
       - name: Ultra compression artifacts and active-profile consistency contract
-        run: python -m pytest tests/test_ultra_compression_artifacts.py -q --tb=short
+        run: |
+          python -m pytest tests/test_ultra_compression_artifacts.py -q --tb=short
+          python -m pytest tests/test_master_codebook_lexicon_v1_bridge.py -q --tb=short
 
       - name: P1 A/B profiles + final selection bundle
         run: |

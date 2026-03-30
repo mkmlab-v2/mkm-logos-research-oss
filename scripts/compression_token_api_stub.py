@@ -183,6 +183,7 @@ def _live_eval_metrics(text: str) -> tuple[CompressionMetrics | None, float]:
             sensitive_max_saving_rate=float(sensitive_cap) if sensitive_cap is not None else None,
             hangul_max_saving_rate=float(hangul_cap) if hangul_cap is not None else None,
             use_domain_router=True,
+            use_master_codebook_lexicon_v1=True,
         )
         comp_block = report.get("compression_metrics", {})
         ratio = float(comp_block.get("global_token_saving_rate", 0.0))
