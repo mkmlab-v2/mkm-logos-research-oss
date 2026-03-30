@@ -63,6 +63,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_wai
 - 빠른 점검(번들 생략):  
   `powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_waiting_queue_monthly_check.ps1 -SkipBundle`
 - 운영 권장: 월간 정기 점검은 **번들 포함(기본값)**, 소스 업데이트 직후 1차 확인은 `-SkipBundle` 허용.
+- 실행 로그: `docs/final/artifacts/waiting_queue_monthly_check_log.jsonl` 에 JSONL append.
 
 ---
 
