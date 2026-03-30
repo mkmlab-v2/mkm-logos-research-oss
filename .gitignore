@@ -94,6 +94,9 @@ projects/mkmlab-company-website/
 projects/mkmlife.com/
 projects/system-monitoring/
 
+# Root-level sibling/duplicate app tree (local mirror; not main SSOT)
+mkmlab-hq-bitcoin-trading/
+
 # Root accidental probe output (one-line JSON); keep local only
 /utf8
 /tmp_verify_report.json
