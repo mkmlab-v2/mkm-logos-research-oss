@@ -7,6 +7,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BT_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
+WORKSPACE_ROOT="$(cd "${BT_ROOT}/../.." && pwd)"
 cd "${BT_ROOT}"
 
 # Fact-Lock SSOT: dual-regime smoke (13 cases). CI: .github/workflows/dual-regime-integrity.yml
@@ -26,4 +27,9 @@ else
   exit 127
 fi
 
-exec "${PY}" -m pytest "${TEST_FILES[@]}" -v --tb=short
+"${PY}" -m pytest "${TEST_FILES[@]}" -v --tb=short
+ec=$?
+if [ "$ec" -ne 0 ]; then exit "$ec"; fi
+
+cd "${WORKSPACE_ROOT}"
+exec "${PY}" -m pytest tests/test_logos_state_mapping_v1_snapshot.py tests/test_cross_ref_dss_schema.py -q --tb=short
