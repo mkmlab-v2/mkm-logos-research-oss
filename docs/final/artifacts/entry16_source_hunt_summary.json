@@ -14,5 +14,7 @@
     "public": 11
   },
   "has_direct_witness": false,
-  "next_gate": "keep_missing_anchor_until_source_update"
+  "direct_anchor_like_count": 2,
+  "next_gate": "keep_missing_anchor_until_source_update",
+  "action_recommendation": "pause_hunting_until_new_primary_source"
 }

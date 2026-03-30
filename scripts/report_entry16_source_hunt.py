@@ -25,6 +25,18 @@ def main() -> int:
     conf = Counter(str(r.get("confidence", "")).strip() for r in rows)
     witness = Counter(str(r.get("ezra_2_54_direct_witness", "")).strip() for r in rows)
     modes = Counter(str(r.get("access_mode", "")).strip() for r in rows)
+    direct_anchor_like_rows = [
+        r
+        for r in rows
+        if str(r.get("line_anchor", "")).strip().lower() not in {"", "unknown", "none (catalog-level)", "none (image metadata only)", "none (contents-level only)"}
+    ]
+    has_direct_witness = witness.get("yes", 0) > 0
+    if has_direct_witness:
+        recommendation = "prepare_manual_promotion_review"
+    elif len(rows) >= 10:
+        recommendation = "pause_hunting_until_new_primary_source"
+    else:
+        recommendation = "continue_public_source_hunt"
 
     summary = {
         "schema": "entry16_source_hunt_summary_v1",
@@ -33,12 +45,14 @@ def main() -> int:
         "confidence_counts": dict(conf),
         "witness_counts": dict(witness),
         "access_mode_counts": dict(modes),
-        "has_direct_witness": witness.get("yes", 0) > 0,
+        "has_direct_witness": has_direct_witness,
+        "direct_anchor_like_count": len(direct_anchor_like_rows),
         "next_gate": (
             "promote_entry16_candidate"
-            if witness.get("yes", 0) > 0
+            if has_direct_witness
             else "keep_missing_anchor_until_source_update"
         ),
+        "action_recommendation": recommendation,
     }
     OUT.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {OUT}")

@@ -85,4 +85,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fac
 
 ---
 
-**상태**: 초안 고정 (2026-03-30). 체크박스는 PR·지휘관 확인 시 ☑로 갱신한다.
+**상태**: 내부 작업 완료 잠금 (2026-03-30). 재개 트리거는 `ENTRY_07/08/16` 외부 판본 업데이트 이벤트로 제한한다.

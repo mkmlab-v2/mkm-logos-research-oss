@@ -151,6 +151,15 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_wai
   - `checked_at_utc`, `bundle_mode`, `cross_ref_test`, `bundle_test`, `runner`
   - `source_hunt_summary`, `source_hunt_summary_path`
   - `promotion_gate`, `promotion_gate_path`
+  - `next_monthly_due_date`, `horizon_t30_date`, `horizon_t90_date`
 - 아티팩트 파일 존재 확인:
   - `docs/final/artifacts/entry16_source_hunt_summary.json`
   - `docs/final/artifacts/entry16_promotion_gate.json`
+
+### 완료 잠금 규칙 (반복 작업 중단)
+
+- 아래 둘 다 만족하면 "내부 작업 완료"로 잠금하고 신규 개선 작업을 중단한다.
+  - 저장소 검증 번들 그린 유지 (`run_fact_lock_bundle.ps1` 또는 동등)
+  - 대기 큐 운영 루프(월간 점검 + 로그 기록) 정상
+- 잠금 이후 재개 조건은 **외부 소스 이벤트**로 제한한다.
+  - 재개 트리거: `ENTRY_07/08/16` 관련 공개 전사/판본 업데이트 또는 직접 witness 증거 확보
