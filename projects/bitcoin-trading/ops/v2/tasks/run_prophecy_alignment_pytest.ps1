@@ -20,6 +20,7 @@ Set-Location -LiteralPath $workspaceRoot
     'tests/test_cross_ref_dss_schema.py' `
     'tests/test_entry16_source_hunt_log.py' `
     'tests/test_entry16_source_hunt_summary.py' `
+    'tests/test_entry16_promotion_gate.py' `
     'tests/test_waiting_queue_monthly_check_log.py' `
     'tests/test_btrack_phase3_snapshot_sync.py' `
     'tests/test_sasang_cross_ref_draft.py' `

@@ -46,3 +46,19 @@ def test_waiting_queue_log_row_contract() -> None:
             assert bundle_test in {"skipped", "pass"}, f"row[{i}] invalid skip bundle_test"
         else:
             assert bundle_test == "pass", f"row[{i}] full bundle_test must be pass"
+
+
+def test_waiting_queue_has_entry16_gate_fields_in_recent_rows() -> None:
+    rows = list(_rows(_LOG))
+    candidates = [r for r in rows if "promotion_gate" in r or "promotion_gate_path" in r]
+    assert candidates, "at least one log row must include promotion gate fields"
+
+    latest = candidates[-1]
+    assert latest.get("source_hunt_summary") == "pass"
+    assert str(latest.get("source_hunt_summary_path", "")).endswith(
+        "docs\\final\\artifacts\\entry16_source_hunt_summary.json"
+    )
+    assert latest.get("promotion_gate") == "pass"
+    assert str(latest.get("promotion_gate_path", "")).endswith(
+        "docs\\final\\artifacts\\entry16_promotion_gate.json"
+    )

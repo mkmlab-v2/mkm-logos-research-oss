@@ -39,7 +39,7 @@
 | # | 작업 | 상태 | 비고 |
 |---|------|------|------|
 | 3.1 | `.github/workflows/dual-regime-integrity.yml` — dual-regime + workspace + myeongni 순서 | [x] | `integrity_guard` 포함 |
-| 3.2 | `run_prophecy_alignment_pytest.ps1` / `.sh` — **CI 워크스페이스 테스트와 동일 목록** | [x] | logos + CROSS_REF + ENTRY16 source-hunt + SASANG + myeongni insight |
+| 3.2 | `run_prophecy_alignment_pytest.ps1` / `.sh` — **CI 워크스페이스 테스트와 동일 목록** | [x] | logos + CROSS_REF + ENTRY16 source-hunt(log+summary) + SASANG + myeongni insight |
 
 ---
 
@@ -55,6 +55,8 @@
 | 4.6 | 월간 점검 명령 템플릿 고정 | [x] | 체크리스트에 Windows 실행 템플릿 추가 |
 | 4.7 | 월간 점검 스크립트 옵션(`-SkipBundle`) 운용 규칙 명시 | [x] | 정기 점검=기본(번들 포함), 이벤트 직후 1차 확인=옵션 허용 |
 | 4.8 | 월간 점검 실행 로그(JSONL) 누적 운영 | [x] | `docs/final/artifacts/waiting_queue_monthly_check_log.jsonl`에 skip/full 1회 이상 기록 |
+| 4.9 | 월간 점검 후 ENTRY16 summary 계약 테스트 유지 | [x] | `tests/test_entry16_source_hunt_summary.py`로 출력 계약 고정 |
+| 4.10 | ENTRY16 승격 게이트 리포트/계약 테스트 유지 | [x] | `scripts/evaluate_entry16_promotion_gate.py` + `tests/test_entry16_promotion_gate.py` |
 
 ---
 

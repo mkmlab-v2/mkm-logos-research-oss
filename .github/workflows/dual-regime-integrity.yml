@@ -30,6 +30,7 @@ on:
       - "tests/test_cross_ref_dss_schema.py"
       - "tests/test_entry16_source_hunt_log.py"
       - "tests/test_entry16_source_hunt_summary.py"
+      - "tests/test_entry16_promotion_gate.py"
       - "tests/test_waiting_queue_monthly_check_log.py"
       - "tests/test_btrack_phase3_snapshot_sync.py"
       - "tests/test_sasang_cross_ref_draft.py"
@@ -72,6 +73,9 @@ jobs:
 
       - name: ENTRY_16 source-hunt summary contract
         run: python -m pytest tests/test_entry16_source_hunt_summary.py -q --tb=short
+
+      - name: ENTRY_16 promotion gate contract
+        run: python -m pytest tests/test_entry16_promotion_gate.py -q --tb=short
 
       - name: Waiting-queue monthly check log contract
         run: python -m pytest tests/test_waiting_queue_monthly_check_log.py -q --tb=short

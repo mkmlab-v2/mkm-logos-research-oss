@@ -1,0 +1,14 @@
+{
+  "schema": "entry16_promotion_gate_v1",
+  "source_summary": "docs/final/artifacts/entry16_source_hunt_summary.json",
+  "decision": "keep_locked",
+  "status": "missing_anchor_until_source_update",
+  "has_direct_witness": false,
+  "witness_yes_count": 0,
+  "required_evidence": [
+    "djd_or_equivalent_primary_source",
+    "fragment_col_line_anchor_for_ezra_2_54",
+    "citation_reproducibility_notes"
+  ],
+  "rationale": "no direct witness anchor for Ezra 2:54 yet"
+}
