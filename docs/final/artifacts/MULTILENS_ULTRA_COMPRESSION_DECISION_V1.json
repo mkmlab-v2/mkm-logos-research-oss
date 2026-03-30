@@ -1,0 +1,51 @@
+{
+  "schema": "multilens_ultra_compression_decision_v1",
+  "ts_utc": "2026-03-30T15:19:15.526866+00:00",
+  "target": {
+    "saving_rate": 0.5,
+    "jaccard_drop_threshold_pp": 1.5
+  },
+  "baseline": {
+    "global_token_saving_rate": 0.3595505617977528,
+    "avg_reconstruction_fidelity_jaccard": 0.5830482791202606
+  },
+  "selected_candidate": {
+    "strategy": "A",
+    "intensity": "extreme",
+    "use_hangul_principle": false,
+    "general_max_saving_rate": 0.53,
+    "sensitive_max_saving_rate": 0.49,
+    "global_token_saving_rate": 0.5,
+    "avg_reconstruction_fidelity_jaccard": 0.575754417151476,
+    "avg_sensitive_integrity": 1.0,
+    "jaccard_drop_pp": 0.7293861968784565,
+    "canary_gate_ok": true
+  },
+  "go_no_go": "GO",
+  "rollout_policy": "global_default",
+  "canary_policy": {
+    "traffic_percent": 10,
+    "monitoring_metrics": [
+      "global_token_saving_rate",
+      "jaccard_drop_pp",
+      "avg_sensitive_integrity",
+      "failure_rate_delta_pp",
+      "p95_latency_delta_pct"
+    ],
+    "thresholds": {
+      "saving_rate_min": 0.5,
+      "jaccard_drop_pp_max": 1.5,
+      "sensitive_integrity_min": 0.999,
+      "failure_rate_delta_pp_max": 0.3,
+      "p95_latency_delta_pct_max": 15.0
+    },
+    "auto_rollback_when_any": [
+      "global_token_saving_rate < saving_rate_min",
+      "jaccard_drop_pp > jaccard_drop_pp_max",
+      "avg_sensitive_integrity < sensitive_integrity_min",
+      "failure_rate_delta_pp > failure_rate_delta_pp_max",
+      "p95_latency_delta_pct > p95_latency_delta_pct_max"
+    ]
+  },
+  "notes": "If NO_GO, keep baseline and apply domain-variable compression caps."
+}

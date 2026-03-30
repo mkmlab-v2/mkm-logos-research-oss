@@ -32,6 +32,9 @@ on:
       - "scripts/report_myeongni_16_state_topflow_interpretation.py"
       - "scripts/report_myeongni_topflow_integrated_snapshot.py"
       - "scripts/report_multilens_performance_eval.py"
+      - "scripts/run_ultra_compression_bench.py"
+      - "scripts/run_ultra_compression_default.py"
+      - "scripts/hooks/token-circuit-breaker.py"
       - "tests/test_logos_state_mapping_v1_snapshot.py"
       - "tests/test_add_entry16_source_and_rejudge.py"
       - "tests/test_myeongni_16_state_transition_report.py"
@@ -40,6 +43,7 @@ on:
       - "tests/test_myeongni_topflow_integrated_report.py"
       - "tests/test_multilens_performance_eval_report.py"
       - "tests/test_multilens_performance_eval_report_v2.py"
+      - "tests/test_ultra_compression_artifacts.py"
       - "tests/test_cross_ref_dss_schema.py"
       - "tests/test_entry16_source_hunt_log.py"
       - "tests/test_entry16_source_hunt_summary.py"
@@ -122,6 +126,9 @@ jobs:
 
       - name: Multi-lens performance evaluation report V2 contract
         run: python -m pytest tests/test_multilens_performance_eval_report_v2.py -q --tb=short
+
+      - name: Ultra compression artifacts and active-profile consistency contract
+        run: python -m pytest tests/test_ultra_compression_artifacts.py -q --tb=short
 
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()

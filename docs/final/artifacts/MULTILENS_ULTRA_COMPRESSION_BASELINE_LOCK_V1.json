@@ -1,0 +1,12 @@
+{
+  "schema": "multilens_ultra_compression_baseline_lock_v1",
+  "ts_utc": "2026-03-30T15:19:15.493585+00:00",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "baseline_report": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json",
+  "baseline_global_token_saving_rate": 0.3595505617977528,
+  "baseline_avg_reconstruction_fidelity_jaccard": 0.5830482791202606,
+  "targets": {
+    "saving_target": 0.5,
+    "jaccard_drop_threshold_pp": 1.5
+  }
+}

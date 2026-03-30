@@ -1,0 +1,220 @@
+{
+  "schema": "multilens_performance_eval_report_v1",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "run_config": {
+    "mode": "experimental",
+    "strategy": "A",
+    "intensity": "extreme",
+    "must_keep_terms": [
+      "bible",
+      "myeongri",
+      "sasang",
+      "사상의학",
+      "체질"
+    ],
+    "general_max_saving_rate": 0.53,
+    "sensitive_max_saving_rate": 0.49
+  },
+  "compression_metrics": {
+    "case_count": 10,
+    "global_token_saving_rate": 0.5,
+    "avg_reconstruction_fidelity_jaccard": 0.575754417151476,
+    "avg_sensitive_integrity": 1.0,
+    "cases": [
+      {
+        "id": "cmp2_001",
+        "raw_tokens": 25,
+        "compressed_tokens": 13,
+        "token_saving_rate": 0.48,
+        "compression_ratio": 0.52,
+        "reconstruction_fidelity_jaccard": 0.6190476190476191,
+        "sensitive_integrity": 1.0,
+        "compressed_text_effective": "State 3 dominates but is read only cannot trigger A track policy shifts",
+        "reconstructed_text_effective": "State 3 dominates but is read only cannot trigger A track policy shifts"
+      },
+      {
+        "id": "cmp2_002",
+        "raw_tokens": 19,
+        "compressed_tokens": 11,
+        "token_saving_rate": 0.42105263157894735,
+        "compression_ratio": 0.5789473684210527,
+        "reconstruction_fidelity_jaccard": 0.6470588235294118,
+        "sensitive_integrity": 1.0,
+        "compressed_text_effective": "ENTRY_16 direct witness unresolved requires manual policy review strict evidence traceability",
+        "reconstructed_text_effective": "ENTRY_16 direct witness unresolved requires manual policy review strict evidence traceability"
+      },
+      {
+        "id": "cmp2_003",
+        "raw_tokens": 17,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.5294117647058824,
+        "compression_ratio": 0.47058823529411764,
+        "reconstruction_fidelity_jaccard": 0.5714285714285714,
+        "sensitive_integrity": 1.0,
+        "compressed_text_effective": "Compression should footprint safety caveats track boundary notes",
+        "reconstructed_text_effective": "Compression should footprint safety caveats track boundary notes"
+      },
+      {
+        "id": "cmp2_004",
+        "raw_tokens": 16,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.5,
+        "compression_ratio": 0.5,
+        "reconstruction_fidelity_jaccard": 0.5333333333333333,
+        "sensitive_integrity": 1.0,
+        "compressed_text_effective": "A strong source so that reproduce every claim",
+        "reconstructed_text_effective": "A strong source so that reproduce every claim"
+      },
+      {
+        "id": "cmp2_005",
+        "raw_tokens": 15,
+        "compressed_tokens": 9,
+        "token_saving_rate": 0.4,
+        "compression_ratio": 0.6,
+        "reconstruction_fidelity_jaccard": 0.6428571428571429,
+        "sensitive_integrity": 1.0,
+        "compressed_text_effective": "Weekly noise not override cadence unless evidence are confirmed",
+        "reconstructed_text_effective": "Weekly noise not override cadence unless evidence are confirmed"
+      },
+      {
+        "id": "cmp2_006",
+        "raw_tokens": 18,
+        "compressed_tokens": 9,
+        "token_saving_rate": 0.5,
+        "compression_ratio": 0.5,
+        "reconstruction_fidelity_jaccard": 0.5625,
+        "sensitive_integrity": 1.0,
+        "compressed_text_effective": "Proxy anchors manual must never as direct witness evidence",
+        "reconstructed_text_effective": "Proxy anchors manual must never as direct witness evidence"
+      },
+      {
+        "id": "cmp2_007",
+        "raw_tokens": 15,
+        "compressed_tokens": 7,
+        "token_saving_rate": 0.5333333333333333,
+        "compression_ratio": 0.4666666666666667,
+        "reconstruction_fidelity_jaccard": 0.5,
+        "sensitive_integrity": 1.0,
+        "compressed_text_effective": "Interpretation quality state beyond bootstrap transition matrix",
+        "reconstructed_text_effective": "Interpretation quality state beyond bootstrap transition matrix"
+      },
+      {
+        "id": "cmp2_008",
+        "raw_tokens": 18,
+        "compressed_tokens": 9,
+        "token_saving_rate": 0.5,
+        "compression_ratio": 0.5,
+        "reconstruction_fidelity_jaccard": 0.6428571428571429,
+        "sensitive_integrity": 1.0,
+        "compressed_text_effective": "All tri should Myeongri timing Bible Sasang constitution constraints",
+        "reconstructed_text_effective": "All tri should Myeongri timing Bible Sasang constitution constraints"
+      },
+      {
+        "id": "cmp2_009",
+        "raw_tokens": 21,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.6190476190476191,
+        "compression_ratio": 0.38095238095238093,
+        "reconstruction_fidelity_jaccard": 0.5,
+        "sensitive_integrity": 1.0,
+        "compressed_text_effective": "Fact Lock the and between CI tests protect",
+        "reconstructed_text_effective": "Fact Lock the and between CI tests protect"
+      },
+      {
+        "id": "cmp2_010",
+        "raw_tokens": 14,
+        "compressed_tokens": 7,
+        "token_saving_rate": 0.5,
+        "compression_ratio": 0.5,
+        "reconstruction_fidelity_jaccard": 0.5384615384615384,
+        "sensitive_integrity": 1.0,
+        "compressed_text_effective": "Performance reporting operational from quality false confidence",
+        "reconstructed_text_effective": "Performance reporting operational from quality false confidence"
+      }
+    ]
+  },
+  "fusion_metrics": {
+    "case_count": 10,
+    "avg_axis_coverage": 1.0,
+    "avg_personalization_coverage": 0.7333333333333334,
+    "all_cases_fusion_possible": true,
+    "cases": [
+      {
+        "id": "fus2_001",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 0.3333333333333333,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_002",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 0.3333333333333333,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_003",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 0.6666666666666666,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_004",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 0.6666666666666666,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_005",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 0.3333333333333333,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_006",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 1.0,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_007",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 1.0,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_008",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 1.0,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_009",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 1.0,
+        "fusion_answer_possible": true
+      },
+      {
+        "id": "fus2_010",
+        "axis_coverage": 1.0,
+        "personalization_coverage": 1.0,
+        "fusion_answer_possible": true
+      }
+    ]
+  },
+  "quality_gate": {
+    "compression_ok": true,
+    "fusion_ok": true,
+    "ultra_saving_50_ok": true,
+    "jaccard_drop_pp": 0.7293861968784565,
+    "jaccard_guardrail_ok": true,
+    "sensitive_integrity_ok": true,
+    "note": "Heuristic B-track gate; not an A-track trading performance metric."
+  },
+  "active_profile": {
+    "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+    "strategy": "A",
+    "intensity": "extreme",
+    "general_max_saving_rate": 0.53,
+    "sensitive_max_saving_rate": 0.49
+  }
+}
