@@ -166,7 +166,7 @@ def test_entry_06_07_08_10_partial_anchor_gates() -> None:
         "ENTRY_07": "status=partial_anchor_verified (column-range)",
         "ENTRY_08": "status=partial_anchor_verified (sigla+plates)",
         "ENTRY_10": "status=partial_anchor_verified (plates+line)",
-        "ENTRY_09": "status=partial_anchor_verified (frag+col)",
+        "ENTRY_09": "status=partial_anchor_verified (frag+col+line-range)",
         "ENTRY_12": "status=partial_anchor_verified (scroll+line-buckets)",
         "ENTRY_13": "status=partial_anchor_verified (scroll+line-buckets)",
         "ENTRY_15": "status=partial_anchor_verified (witness-set+plates+chapter-range)",
@@ -186,6 +186,11 @@ def test_entry_06_07_08_10_partial_anchor_gates() -> None:
     sat10 = str(row10.get("satellite_ref", ""))
     assert "4Q267 frg.2 line 4" in sat10
     assert "Qumran-Digital 4Q267 transcription (2023-10-25)" in sat10
+
+    row09 = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_09")
+    sat09 = str(row09.get("satellite_ref", ""))
+    assert "line=1-12" in sat09
+    assert "Qumran-Digital 4Q169 transcription (2025-03-11)" in sat09
 
     row08 = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_08")
     sat08 = str(row08.get("satellite_ref", ""))

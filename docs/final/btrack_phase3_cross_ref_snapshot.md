@@ -116,14 +116,15 @@
     {
       "entry_id": "ENTRY_09",
       "canonical_ref": "Ps.36.1",
-      "satellite_ref": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=partial_anchor_verified (frag+col)",
-      "source_id": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=partial_anchor_verified (frag+col)",
+      "satellite_ref": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=1-12 | refs=DJD V (Allegro 1968), DSS Study Edition (Brill), Qumran-Digital 4Q169 transcription (2025-03-11) | status=partial_anchor_verified (frag+col+line-range)",
+      "source_id": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=1-12 | refs=DJD V (Allegro 1968), DSS Study Edition (Brill), Qumran-Digital 4Q169 transcription (2025-03-11) | status=partial_anchor_verified (frag+col+line-range)",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 7,
-      "rationale": "B-Track DSS: 나훔 페셔의 악행 귀속·심판 화법. A-Track 대비: 시36 ‘악인의 죄’ 서사와 주제 병치 — 수치/심리 트리거 아님."
+      "rationale": "B-Track DSS: 나훔 페셔의 악행 귀속·심판 화법. A-Track 대비: 시36 ‘악인의 죄’ 서사와 주제 병치 — 수치/심리 트리거 아님.",
+      "note": "Bench policy: thematic(심판/악행 귀속) 후보. 승격 조건=DJD 표기 기준 line crosswalk의 직접 대조 완료. 반증 훅=페셔 정치-역사 문맥을 시편 심리 문맥과 직접 동일시하는 경우. Local evidence (2026-03-30): Qumran-Digital 4Q169 전사에서 frgs 3-4 col.ii line 1-12 연속 구간 확인."
     },
     {
       "entry_id": "ENTRY_10",
