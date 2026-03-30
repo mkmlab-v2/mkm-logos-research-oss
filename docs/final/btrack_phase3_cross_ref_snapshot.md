@@ -190,8 +190,8 @@
     {
       "entry_id": "ENTRY_15",
       "canonical_ref": "Gen.49.19",
-      "satellite_ref": "4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=missing_anchor_until_source_update",
-      "source_id": "4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=missing_anchor_until_source_update",
+      "satellite_ref": "4QGen (b-k) | loc=DJD XII Genesis witnesses (Pls VI-XIII); Gen.49.19 fragment/line remains TBD | refs=DJD XII (Ulrich et al. 1994) | status=partial_anchor_verified (witness-set+plates)",
+      "source_id": "4QGen (b-k) | loc=DJD XII Genesis witnesses (Pls VI-XIII); Gen.49.19 fragment/line remains TBD | refs=DJD XII (Ulrich et al. 1994) | status=partial_anchor_verified (witness-set+plates)",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
@@ -249,7 +249,7 @@ ENTRY_13 | link_type=lexical | canonical_ref=Ps.5.2 | source_id=11Q5 | loc=Psalm
 
 ENTRY_14 | link_type=lexical | canonical_ref=Deut.5.19 | source_id=4QDeut (a-q) | loc=DJD XIV Deuteronomy witnesses (Pls I-XXXI); Deut.5.19 fragment/line remains TBD | refs=DJD XIV (Ulrich et al. 1995) | status=partial_anchor_verified (witness-set+plates) | state_candidate_id=12 | corpus=dss | theme=신명 십계
 
-ENTRY_15 | link_type=thematic | canonical_ref=Gen.49.19 | source_id=4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=missing_anchor_until_source_update | state_candidate_id=14 | corpus=dss | theme=창49 가드
+ENTRY_15 | link_type=thematic | canonical_ref=Gen.49.19 | source_id=4QGen (b-k) | loc=DJD XII Genesis witnesses (Pls VI-XIII); Gen.49.19 fragment/line remains TBD | refs=DJD XII (Ulrich et al. 1994) | status=partial_anchor_verified (witness-set+plates) | state_candidate_id=14 | corpus=dss | theme=창49 가드
 
 ENTRY_16 | link_type=thematic | canonical_ref=Ezra.2.54 | source_id=Ezra-Neh witnesses | loc=Ezra.2.54 list anchor=TBD | refs=4Q Ezra-type + LXX Ezra traditions | status=missing_anchor_until_source_update | state_candidate_id=16 | corpus=dss | theme=귀환 명단
 

@@ -181,8 +181,8 @@
     {
       "entry_id": "ENTRY_15",
       "canonical_ref": "Gen.49.19",
-      "satellite_ref": "4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=missing_anchor_until_source_update",
-      "source_id": "4QGen | loc=Gen.49.19 fragment/line=TBD | refs=DJD XII | status=missing_anchor_until_source_update",
+      "satellite_ref": "4QGen (b-k) | loc=DJD XII Genesis witnesses (Pls VI-XIII); Gen.49.19 fragment/line remains TBD | refs=DJD XII (Ulrich et al. 1994) | status=partial_anchor_verified (witness-set+plates)",
+      "source_id": "4QGen (b-k) | loc=DJD XII Genesis witnesses (Pls VI-XIII); Gen.49.19 fragment/line remains TBD | refs=DJD XII (Ulrich et al. 1994) | status=partial_anchor_verified (witness-set+plates)",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
