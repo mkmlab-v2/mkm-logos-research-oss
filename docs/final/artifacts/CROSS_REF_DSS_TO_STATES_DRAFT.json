@@ -3,10 +3,12 @@
   "disclaimer": "B-Track parallel-corpus draft only; not A-Track SSOT; trading engine must not load this path by default.",
   "generated_at_utc": "2026-03-30T12:00:00+00:00",
   "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §4.5",
+  "canonical_join_ssot": "docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json",
+  "canonical_join_note": "canonical_ref = verse_id for the same state_id as state_candidate_id (cosine assignment snapshot); not independent thematic exegesis.",
   "entries": [
     {
       "entry_id": "ENTRY_01",
-      "canonical_ref": null,
+      "canonical_ref": "Lev.21.4",
       "satellite_ref": "1QM 1:1-7 (War Scroll, Col.1)",
       "source_id": "1QM 1:1-7 (War Scroll, Col.1)",
       "corpus_type": "dss",
@@ -18,7 +20,7 @@
     },
     {
       "entry_id": "ENTRY_02",
-      "canonical_ref": null,
+      "canonical_ref": "Ezra.2.49",
       "satellite_ref": "1Enoch 10:4-6 (Charles / Wikisource ch.10)",
       "source_id": "1Enoch 10:4-6 (Charles / Wikisource ch.10)",
       "corpus_type": "apocrypha",
@@ -30,7 +32,7 @@
     },
     {
       "entry_id": "ENTRY_03",
-      "canonical_ref": null,
+      "canonical_ref": "1Chr.3.7",
       "satellite_ref": "1Enoch 10:7 (Charles / Wikisource ch.10)",
       "source_id": "1Enoch 10:7 (Charles / Wikisource ch.10)",
       "corpus_type": "apocrypha",
@@ -42,7 +44,7 @@
     },
     {
       "entry_id": "ENTRY_04",
-      "canonical_ref": null,
+      "canonical_ref": "1Chr.8.31",
       "satellite_ref": "Jubilees 6 (364-day calendar; summary per Wikipedia + scholarly check TBD)",
       "source_id": "Jubilees 6 (364-day calendar; summary per Wikipedia + scholarly check TBD)",
       "corpus_type": "pseudepigrapha",
@@ -54,7 +56,7 @@
     },
     {
       "entry_id": "ENTRY_05",
-      "canonical_ref": null,
+      "canonical_ref": "Ps.27.10",
       "satellite_ref": "1QS IX 10-11 (Community Rule; Eng. citation in btrack_dss_1QS_sectarian_context.md)",
       "source_id": "1QS IX 10-11 (Community Rule; Eng. citation in btrack_dss_1QS_sectarian_context.md)",
       "corpus_type": "dss",

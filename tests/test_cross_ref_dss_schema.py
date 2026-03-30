@@ -19,6 +19,7 @@ import pytest
 _ROOT = Path(__file__).resolve().parents[1]
 _DRAFT = _ROOT / "docs" / "final" / "artifacts" / "CROSS_REF_DSS_TO_STATES_DRAFT.json"
 _SCHEMA = _ROOT / "docs" / "final" / "CROSS_REF_DRAFT_V2_DOCUMENT.schema.json"
+_LOGOS_ASSIGN = _ROOT / "docs" / "final" / "artifacts" / "LOGOS_STATE_MAPPING_V1.json"
 
 _CORPUS = frozenset({"dss", "apocrypha", "pseudepigrapha", "myeongni_probe"})
 _LINKS = frozenset(
@@ -32,23 +33,38 @@ _LINKS = frozenset(
 )
 
 
+def _state_id_to_verse_id() -> dict[int, str]:
+    logos = json.loads(_LOGOS_ASSIGN.read_text(encoding="utf-8"))
+    out: dict[int, str] = {}
+    for a in logos["assignments"]:
+        out[int(a["state_id"])] = str(a["verse_id"])
+    return out
+
+
 def test_cross_ref_dss_draft_exists_and_top_level_schema() -> None:
     assert _DRAFT.is_file(), f"missing tracked artifact: {_DRAFT}"
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
     assert doc.get("schema") == "cross_ref_dss_to_states_draft_v2"
     assert "disclaimer" in doc and str(doc["disclaimer"]).strip()
+    assert doc.get("canonical_join_ssot") == "docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json"
     assert "entries" in doc
     assert isinstance(doc["entries"], list)
 
 
 def test_cross_ref_dss_draft_entry_rows_contract() -> None:
+    assert _LOGOS_ASSIGN.is_file(), f"missing: {_LOGOS_ASSIGN}"
+    by_state = _state_id_to_verse_id()
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
     assert len(doc["entries"]) == 5
     for i, row in enumerate(doc["entries"]):
         assert isinstance(row, dict), f"entries[{i}] must be object"
         eid = row.get("entry_id")
         assert isinstance(eid, str) and eid.startswith("ENTRY_"), f"entries[{i}].entry_id"
-        assert row.get("canonical_ref") is None, f"entries[{i}]: canonical_ref TBD until A-Track link"
+        sid = row["state_candidate_id"]
+        exp_verse = by_state[int(sid)]
+        assert row.get("canonical_ref") == exp_verse, (
+            f"entries[{i}].canonical_ref must match LOGOS_STATE_MAPPING_V1 for state_id={sid}"
+        )
         sat = row.get("satellite_ref")
         assert isinstance(sat, str) and sat.strip(), f"entries[{i}].satellite_ref required"
         assert "source_id" in row and row["source_id"] == sat, f"entries[{i}].source_id mirrors satellite_ref"
@@ -60,7 +76,6 @@ def test_cross_ref_dss_draft_entry_rows_contract() -> None:
         assert cf is None or (isinstance(cf, (int, float)) and 0.0 <= float(cf) <= 1.0), (
             f"entries[{i}].confidence"
         )
-        sid = row["state_candidate_id"]
         assert isinstance(sid, int), f"entries[{i}].state_candidate_id must be int"
         assert 1 <= sid <= 16, f"entries[{i}].state_candidate_id out of range 1–16"
         assert "rationale" in row and str(row["rationale"]).strip(), (
