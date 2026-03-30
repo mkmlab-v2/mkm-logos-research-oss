@@ -1,6 +1,6 @@
 {
   "schema": "multilens_p1_ab_efficiency_v1",
-  "ts_utc": "2026-03-30T22:52:07.024349+00:00",
+  "ts_utc": "2026-03-30T22:59:28.448659+00:00",
   "profile": "efficiency_first",
   "source_refs": {
     "input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
@@ -18,7 +18,7 @@
   "summary": {
     "candidate_count": 12,
     "passing_count": 2,
-    "elapsed_ms": 418.74
+    "elapsed_ms": 350.073
   },
   "best_candidate": {
     "strategy": "A",

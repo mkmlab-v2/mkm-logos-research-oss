@@ -45,7 +45,7 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--profile",
         choices=("efficiency_first", "intensity_first", "balanced"),
-        default="efficiency_first",
+        default="balanced",
         help="Ranking profile for best candidate selection",
     )
     p.add_argument(

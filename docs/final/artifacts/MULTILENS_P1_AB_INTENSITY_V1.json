@@ -1,6 +1,6 @@
 {
   "schema": "multilens_p1_ab_intensity_v1",
-  "ts_utc": "2026-03-30T22:51:58.456247+00:00",
+  "ts_utc": "2026-03-30T22:59:28.957385+00:00",
   "profile": "intensity_first",
   "source_refs": {
     "input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
@@ -18,7 +18,7 @@
   "summary": {
     "candidate_count": 12,
     "passing_count": 2,
-    "elapsed_ms": 338.406
+    "elapsed_ms": 386.721
   },
   "best_candidate": {
     "strategy": "A",
