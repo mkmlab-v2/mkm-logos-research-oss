@@ -20,7 +20,7 @@
 | Entry | 현재 상태 | 필요한 증거 | 완료 조건 |
 |------|-----------|------------|----------|
 | ENTRY_06 (1QpHab) | `partial_anchor_verified (column+line-range)` | col.VII line 1-17 확정 후, canonical(Exod.20.15) 대응 line 정밀화 | `loc=col.VII, line=<n-m>` + 필요 시 `status=verified_anchor` |
-| ENTRY_07 (11QT) | `line=TBD` | `cols.XLVI-XLVII`의 실제 line/segment | `loc=cols.XLVI-XLVII, line=<...>` 치환 |
+| ENTRY_07 (11QT) | `partial_anchor_verified (column-range)` | 공개 소스 line-level 전사 확보(현재 부재) | `loc=cols.XLVI-XLVII, line=<...>` 치환 |
 | ENTRY_08 (4Q319) | `partial_anchor_verified (sigla+plates)` | 공개 소스 line 전사 부재 상태에서 fragment별 line anchor 확보 | `loc=frag.<id>, sigla=<...>, line=<...>` |
 | ENTRY_09 (4Q169) | `line=TBD` | `frags 3-4 col.ii`의 line anchor | `loc=frags 3-4, col.ii, line=<...>` |
 | ENTRY_10 (CD-A/4Q266-273) | `partial_anchor_verified (plates+line)` | CD-A I-II ↔ 4Q266-273 직접 crosswalk line 확정 | `loc=CD-A I-II <line>; 4Q266-273 <frag/line>` |

@@ -90,14 +90,15 @@
     {
       "entry_id": "ENTRY_07",
       "canonical_ref": "Ezra.2.45",
-      "satellite_ref": "11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD | refs=Yadin 1977-1983 (11Q19 primary); DJD XXIII (11Q20-31, Temple b/c comparanda) | status=partial_anchor_verified (column-range)",
-      "source_id": "11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD | refs=Yadin 1977-1983 (11Q19 primary); DJD XXIII (11Q20-31, Temple b/c comparanda) | status=partial_anchor_verified (column-range)",
+      "satellite_ref": "11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD (public line-level transcription unavailable in consulted open sources) | refs=Yadin 1977-1983 (11Q19 primary); DJD XXIII (11Q20-31, Temple b/c comparanda) | status=partial_anchor_verified (column-range)",
+      "source_id": "11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD (public line-level transcription unavailable in consulted open sources) | refs=Yadin 1977-1983 (11Q19 primary); DJD XXIII (11Q20-31, Temple b/c comparanda) | status=partial_anchor_verified (column-range)",
       "corpus_type": "dss",
       "link_type": "temporal",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 5,
-      "rationale": "B-Track DSS: 성전·절기 일정 규범 텍스트. A-Track 대비: Ezra 명단 행은 ‘복귀 코호트’ 스냅샷 — 달력 DSS와 주제만 병치(벤치); 인과·트리거 금지."
+      "rationale": "B-Track DSS: 성전·절기 일정 규범 텍스트. A-Track 대비: Ezra 명단 행은 ‘복귀 코호트’ 스냅샷 — 달력 DSS와 주제만 병치(벤치); 인과·트리거 금지.",
+      "note": "Bench policy: temporal(성전/절기) 후보. 승격 조건=11Q19 cols.XLVI-XLVII의 공개 line 전사 확보 + Ezra.2.45와의 병치 규칙 유지. 반증 훅=절기 규범을 복귀 명단의 직접 인과로 해석하는 경우. Local evidence (2026-03-30): consulted open sources에서 column 표기(XLVI-XLVII)는 확인되나 line-level 전사는 확인되지 않아 line anchor는 TBD 유지."
     },
     {
       "entry_id": "ENTRY_08",
