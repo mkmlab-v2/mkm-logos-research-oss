@@ -20,6 +20,7 @@ _ROOT = Path(__file__).resolve().parents[1]
 _DRAFT = _ROOT / "docs" / "final" / "artifacts" / "CROSS_REF_DSS_TO_STATES_DRAFT.json"
 _SCHEMA = _ROOT / "docs" / "final" / "CROSS_REF_DRAFT_V2_DOCUMENT.schema.json"
 _LOGOS_ASSIGN = _ROOT / "docs" / "final" / "artifacts" / "LOGOS_STATE_MAPPING_V1.json"
+_ETCBC_ALIGN = _ROOT / "data" / "etcbc-dss" / "log" / "align-2020-07-14.txt"
 
 _CORPUS = frozenset({"dss", "apocrypha", "pseudepigrapha", "myeongni_probe"})
 _LINKS = frozenset(
@@ -117,6 +118,15 @@ def test_entry_16_anchor_gate_locked_until_evidence_update() -> None:
         assert "Esr 4:2-6, 4:9-11, 5:17, 6:1-6" in sat
 
 
+def test_entry_16_local_align_still_lacks_ezra2_mapping() -> None:
+    """Fact-lock for ENTRY_16: local align file must not show Ezra chapter 2 mapping yet."""
+    assert _ETCBC_ALIGN.is_file(), f"missing expected local align file: {_ETCBC_ALIGN}"
+    txt = _ETCBC_ALIGN.read_text(encoding="utf-8", errors="ignore")
+    assert "('Ezra', '2'" not in txt, (
+        "Local align now includes Ezra chapter 2 mapping; update ENTRY_16 anchor status and tests."
+    )
+
+
 def test_entry_14_partial_anchor_verified_gate() -> None:
     """ENTRY_14 keeps fragment line TBD but records DJD XIV witness+plates."""
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
@@ -170,6 +180,7 @@ def test_entry_06_07_08_10_partial_anchor_gates() -> None:
     sat07 = str(row07.get("satellite_ref", ""))
     assert "Yadin 1977-1983 (11Q19 primary)" in sat07
     assert "DJD XXIII (11Q20-31, Temple b/c comparanda)" in sat07
+    assert "public line-level transcription unavailable in consulted open sources" in sat07
 
     row10 = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_10")
     sat10 = str(row10.get("satellite_ref", ""))
