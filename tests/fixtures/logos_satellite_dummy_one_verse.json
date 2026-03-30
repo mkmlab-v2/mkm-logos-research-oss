@@ -1,0 +1,12 @@
+{
+  "schema": "logos_satellite_dummy_v1",
+  "verses": [
+    {
+      "corpus_type": "apocrypha",
+      "tradition": "pseudepigrapha",
+      "ref": "1En_1:1_dummy",
+      "text": "DUMMY — not canonical; §4 B-track smoke only.",
+      "vector_4d": { "S": 0.01, "L": 0.02, "K": 0.03, "M": 0.04 }
+    }
+  ]
+}

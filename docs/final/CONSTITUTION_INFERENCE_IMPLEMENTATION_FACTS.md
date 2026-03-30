@@ -53,7 +53,40 @@
 
 ---
 
-## 4. 코드북 템플릿 (Dual-track)
+## 4. Multi-Corpus Isolation Policy (평행 코퍼스)
+
+**목적**: 정경(Logos 코어) SSOT와 사해(DSS)·70인역(LXX)·외경 등 **다른 전통**을 코드·데이터에서 혼동하지 않도록 격벽을 문서로 고정한다. 구절 간 유사도·교차 분석은 **참고 지표**일 수 있으나, 레짐·실매매 **트리거**로의 승격은 본 문서·코드북·PR에서만 허용한다.
+
+### 4.1 레이어 정의
+
+| 구분 | 역할 | 비고 |
+|------|------|------|
+| **Core (A-track)** | MT 기반 정경 31,102 구절 파이프라인 | SSOT: `data/logos/verse_4pipeline_full_31102.json` (§3.2) |
+| **Satellites (B-track)** | DSS, LXX, 외경/위경 등 | **별도 파일·별 인덱스**; 코어와 row-level merge 금지 |
+
+### 4.2 메타데이터·실행 격벽 (정책)
+
+- 위성 코퍼스 레코드에는 출처 식별 필드를 강제한다 (예: `corpus_type` — `canonical` / `dss` / `apocrypha` / `pseudepigrapha`; `tradition` — `MT` / `LXX` / `Qumran` 등).
+- 교차 분석·CLI는 **명시 옵션**(예: `--include-satellites`)이 없으면 **canonical만** 대상으로 한다.
+
+### 4.3 단방향 산출물 (비침습)
+
+- 위성 텍스트에서 16상·거리 등을 **측정**한 결과는 `LOGOS_STATE_MAPPING_V1.json` 등 코어 스냅샷을 **덮어쓰지 않고**, `CROSS_REF_*` 형태의 **독립 관측 리포트**로만 둔다.
+- B-track 관측을 `dual_regime_api`·실매매 경로에 합선하려면 **별도 승인·PR**에서 명시한다 (§3.2·§8 Promotion Loop와 동일 취지).
+
+### 4.4 구현 상태
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| 격벽 헬퍼 (canonical default guard) | `tests/multi_corpus_policy.py` | `iter_canonical_only`, `cross_ref_artifact_name` (CI 추적용; `tools/` 로컬 제외와 무관) |
+| 위성 더미 (B-track 스모크) | `tests/fixtures/logos_satellite_dummy_one_verse.json` | 단일 구절; 코어와 병합 시 기본 가드에서 제외 |
+| 단위 테스트 | `tests/test_multi_corpus_isolation_policy.py` | §4 정책 회귀 |
+
+- DSS/LXX 등 전용 `verse_4pipeline_*.json` 또는 별 인덱스 **운영 경로**가 생기면 **본 표에 행을 추가**한다.
+
+---
+
+## 5. 코드북 템플릿 (Dual-track)
 
 | 항목 | 경로 | 비고 |
 |------|------|------|
@@ -61,16 +94,17 @@
 
 ---
 
-## 5. 테스트 (저장소 기준)
+## 6. 테스트 (저장소 기준)
 
 | 항목 | 경로 |
 |------|------|
 | Dual-regime 스모크 | `projects/bitcoin-trading/tests/test_dual_regime_api_smoke.py` |
 | Logos–명리 매핑 스냅샷 | `tests/test_logos_state_mapping_v1_snapshot.py` |
+| §4 평행 코퍼스 격벽 | `tests/test_multi_corpus_isolation_policy.py` |
 
 ---
 
-## 6. 데이터 부재 / 확인 필요 (단정 금지)
+## 7. 데이터 부재 / 확인 필요 (단정 금지)
 
 **확인됨 (명리 융합 스키마 SSOT)**:
 
@@ -80,7 +114,7 @@
 
 - **`test_fusion_slice_gate.py`**: `projects/bitcoin-trading` 하위에서 미발견.
 
-**NotebookLM → 공유 vault 미러(구현 확인됨)** — §6 “미확인” 목록과 혼동 금지:
+**NotebookLM → 공유 vault 미러(구현 확인됨)** — §7 “미확인” 목록과 혼동 금지:
 
 | 항목 | 경로 | 비고 |
 |------|------|------|
@@ -93,7 +127,7 @@
 
 ---
 
-## 7. Promotion Loop (연구 → 제품)
+## 8. Promotion Loop (연구 → 제품)
 
 1. **B(연구)** NotebookLM·노트에서 가설 도출.
 2. **지휘관**이 스키마/코드북 반영 승인.
@@ -101,21 +135,21 @@
 
 ---
 
-## 8. NotebookLM 매니페스트·이제마 B 인벤토리 (저장소 확인됨)
+## 9. NotebookLM 매니페스트·이제마 B 인벤토리 (저장소 확인됨)
 
-공유 vault(`G:\…\vault\notebooklm_sources\`)로의 파일 미러·스크립트 호출 관계는 **§6 표**에 고정한다.
+공유 vault(`G:\…\vault\notebooklm_sources\`)로의 파일 미러·스크립트 호출 관계는 **§7 표**에 고정한다.
 
 | 항목 | 경로 | 비고 |
 |------|------|------|
 | 소스 목록 SSOT | `docs/NotebookLM_sources_manifest.md` | `## 이제마_B_Track` — 동기화 후보·미배치·근접 참조 표 |
 | 인벤토리 디렉터리 | `data/corpus/ijeoma/_inventory/` | 개별 파일명은 **매니페스트 표와 동일**하게 유지·갱신 |
-| 한의 원전 인수인계(문서명) | `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` | **현재 스냅샷에 해당 파일명 없음** — A/B 분리 원칙은 매니페스트 §이제마_B_Track 문단으로 인용 |
+| 한의 원전 인수인계(문서명) | `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` | **현재 스냅샷에 해당 파일명 없음** — A/B 분리 원칙은 `docs/NotebookLM_sources_manifest.md` §이제마_B_Track 문단으로 인용 |
 | 작전지휘부 NotebookLM | ID `347e5cbe-0ade-4615-9aac-8747d4fa644e` | 2026-03-29 `notebook_get`: `source_count` 216 |
 | `OPS_ONEPAGE_STATUS_LATEST.md` | — | NotebookLM 소스 **제목**으로 존재 가능; 워크스페이스 `docs/final/OPS_ONEPAGE_STATUS_LATEST.md` **미존재** — vault 미러에는 동기화 대상에 포함되지 않을 수 있음. 상세는 `docs/NotebookLM_sources_manifest.md` §작전지휘부 |
 
 ---
 
-## 9. 통일장(UFT) 엔진 (경로 팩트만)
+## 10. 통일장(UFT) 엔진 (경로 팩트만)
 
 | 항목 | 경로 | 비고 |
 |------|------|------|
@@ -124,4 +158,4 @@
 
 ---
 
-**상태**: 초기 SSOT 고정 (2026-03-29). §6 NotebookLM→vault 표·§8 추가 (2026-03-29). §8 작전지휘부·OPS_ONEPAGE 갭·§9 UFT 경로 (2026-03-29). §3.1 16-상태 실험 JSONL·경로 팩트 (2026-03-29). 경로가 바뀌면 본 파일을 먼저 수정한다.
+**상태**: 초기 SSOT 고정 (2026-03-29). §7 NotebookLM→vault 표·§9 추가 (2026-03-29). §9 작전지휘부·OPS_ONEPAGE 갭·§10 UFT 경로 (2026-03-29). §3.1 16-상태 실험 JSONL·경로 팩트 (2026-03-29). **§4 평행 코퍼스 격벽 정책** (2026-03-30). `tests/multi_corpus_policy.py`·격벽 테스트 (2026-03-30). 경로가 바뀌면 본 파일을 먼저 수정한다.

@@ -39,7 +39,7 @@
 ## 4. 구현 앵커
 
 - Writer: `append_myeongri_decision_ledger()` — `projects/bitcoin-trading/ops/v2/memory/decision_ledger.py`
-- 구현·경로 **팩트**: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6과 정합 유지.
+- 구현·경로 **팩트**: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §7과 정합 유지.
 
 ---
 

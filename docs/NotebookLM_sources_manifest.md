@@ -26,7 +26,7 @@
 | P1 | `data/myeongni/myeongni_16_state_experiment_20260329.jsonl` | 명리 16-State 실험 **정본** JSONL (2026-03-29; `state_id` 1–16) |
 | P1 | `data/myeongni/16_STATE_MASTER_PROBE_v1.json` | **Master Probe v1** 집계 SSOT (16/16 coverage; NotebookLM/RAG·격벽) |
 
-**확인**: Vault·로컬 경로 정합은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6 참조.
+**확인**: Vault·로컬 경로 정합은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §7 참조.
 
 ### 명리 16-State Master Probe (2026-03-29 정본)
 
@@ -59,7 +59,7 @@
 | AI·명리·만세 외부 참조 | `docs/final/AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md` | 타 서비스·RAG·LLM 패턴 정리(참고만); 본선 OOF·A와 무단 합선 금지 |
 | AI-Logos 외부 연구 (arXiv·Kaggle) | `docs/external_research/AI-Logos_Research_Bibliography_2026.md` | B-only; **Confirmed URL** 서지·TBD 분리; 작전 **LeWorld-Enlightenment**; A·본선 자동 합선 금지 |
 | Logos 교집합 랭킹 SSOT | `docs/final/LOGOS_INTERSECTION_RANKING_SSOT_2026-03-29.md` | `mean`/`min` 지표·경로; λ(편향)와 기호 분리; 본선·실매매 자동 합선 금지 |
-| 한의 원전·프록시 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` · `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §8 | 코퍼스 B 분리·승격 경계; 별도 handoff MD 미작성 시 본 문서가 SSOT |
+| 한의 원전·프록시 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` · `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §9 | 코퍼스 B 분리·승격 경계; 별도 handoff MD 미작성 시 본 문서가 SSOT |
 
 ---
 
@@ -80,7 +80,7 @@
 | 3 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` | `24123e98-0a14-4a4c-9a4f-fbe7a53c198c` | B 전용 추론 경계 |
 | 4 | `docs/final/myeongni_fusion_schema_v2_draft.md` | — | (2)와 동일 초안의 **문서 미러**; NotebookLM에는 **(2)만** 올려 중복 방지 |
 | 5 | `docs/final/MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` | (기존 B 등록) | 명리 융합 의사결정 JSON; B에 동명 파일 소스로 기존 반영 |
-| 6 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | — | §8 A/B 분리·구현 팩트; A 노트와 역할 구분 유지 |
+| 6 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | — | §9 A/B 분리·구현 팩트; A 노트와 역할 구분 유지 |
 
 ### B 보조·인벤토리 (NotebookLM·Vault 동기화 시)
 
@@ -229,7 +229,7 @@ https://ko.wikipedia.org/wiki/%EB%A7%8C%EC%84%B8%EB%A0%A5
 https://ko.wikipedia.org/wiki/%EC%82%AC%EC%A3%BC%EB%AA%85%EB%A6%AC%ED%95%99
 ```
 
-**명리 스키마 B 반영 (2026-03-29)**: SSOT는 `docs/final/MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json`. 파일 소스 `source_add`가 실패한 경우 **`source_type: text`**로 본문 전체 업로드 가능 — B에 `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` 제목으로 등록됨(`source_id` `77ae458c-259f-4e92-ad12-ae5e2bd650f8`). 구현·경로 팩트는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6과 정합 유지.
+**명리 스키마 B 반영 (2026-03-29)**: SSOT는 `docs/final/MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json`. 파일 소스 `source_add`가 실패한 경우 **`source_type: text`**로 본문 전체 업로드 가능 — B에 `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` 제목으로 등록됨(`source_id` `77ae458c-259f-4e92-ad12-ae5e2bd650f8`). 구현·경로 팩트는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §7과 정합 유지.
 
 **소스 경로 SSOT**: 워크스페이스에 `docs/작전지휘부/CURSOR_CHAT_NOTEBOOKLM_COMMAND_BRIDGE_2026-03-28.md`가 **있을 때** 해당 MD의 `[FACT] 만세력·사주 이원 노트` 블록을 우선. **없으면** 본 매니페스트 **A/B 궤적** 표와 사용자가 지정한 경로만 사용. **`scripts/push_manse_saju_notebooklm_from_manifest.ps1`는 존재하지 않음** (벌크 푸시 스크립트 금지).
 
@@ -283,7 +283,7 @@ https://ko.wikipedia.org/wiki/%EC%82%AC%EC%A3%BC%EB%AA%85%EB%A6%AC%ED%95%99
 - **B — AI-Logos 번들**: ✅ `source_add`(URL 5 + file 서지) 반영·**`notebook_get` B=21** 확인(2026-03-29; Deep Past Kaggle URL 추가). ✅ 서지에 **arXiv 2407.12013(Enoch)**·**deeppast.org** Confirmed 반영(2026-03-29). ✅ Deep Past **Kaggle 대회 URL**: 서지 `AI-Logos_Research_Bibliography_2026.md` + **NotebookLM URL 소스** `f0cbb85f-b5bf-4ec5-b958-4c690d282a01` (`source_add`, 2026-03-29). ✅ **Operation [B] 장부**: 매니페스트에 B 노트 **21개 전체** `source_id`·`title` 실측 표 박제(2026-03-29).
 - **B — `notebook_query` (노트 `af639d3e-b455-4f3f-8e25-47f58d962c60`)**: Q1/Q2 Gap 유지. ✅ **후속 적층 질의**(LeWM 초록 ↔ DSS 세그멘테이션·필적 식별 대조, 사실/가설 표·비유 한계) `conversation_id` **`deb0fc0c-5e20-4041-a917-0fe240f0b2bb`**로 실행·응답 수신(2026-03-29); 인용 소스 ID: `794cf83b-…`(LeWM), `f4a61719-…`(2411.10668), `0939abb4-…`(1QIsaa).
 - **Logos BTC 공명**: canon-only **BULL/BEAR/SIDEWAYS FULL** 산출물은 본 매니페스트 Logos 표에 등록됨. **Ancient-expanded**(`--ancient-resonance`)는 별도 파일명으로 실행·등록(캐논 FULL 시리즈와 혼선 금지).
-- **이제마 B**: Source-Boost·AI-Logos 번들·Deep Past Kaggle URL 반영·`notebook_get` B=21 확인 후 — 통찰 품질·중복 소스 점검, 필요 시 Vault `sync_notebooklm_sources_to_mkm_data_vault.ps1`. `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §8·B 표와 정합 유지.  
+- **이제마 B**: Source-Boost·AI-Logos 번들·Deep Past Kaggle URL 반영·`notebook_get` B=21 확인 후 — 통찰 품질·중복 소스 점검, 필요 시 Vault `sync_notebooklm_sources_to_mkm_data_vault.ps1`. `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §9·B 표와 정합 유지.  
 - **명리**: SSOT `MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json`는 B에 동기화됨; MD 스키마 초안은 `data/corpus/ijeoma/schemas/myeongni_fusion_schema_v2_draft.md`(B 노트 등록)와 `docs/final/myeongni_fusion_schema_v2_draft.md`(미러). 본선 OOF·실매매 트리거 자동 연동은 **헌법·팩트 문서에서 명시된 구현 경로가 있을 때만** — 스키마만으로 자동 합선하지 않음.
 - **Master Probe (2026-03-29)**: ✅ 매니페스트 **A 궤적** 및 **§명리 16-State Master Probe**에 `data/myeongni/16_STATE_MASTER_PROBE_v1.json`·`data/myeongni/myeongni_16_state_experiment_20260329.jsonl` 경로·격벽·검증 질의 SSOT 박제. 차기(선택): 대상 노트북에 `source_add`(file)로 JSON 주입 후 본문 §검증 질의로 권위 응답 확인.
 
