@@ -20,8 +20,11 @@ on:
       - "backtest_results/sweep_kmin_refine/**"
       - "data/myeongni/**"
       - "docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json"
+      - "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json"
+      - "docs/final/CROSS_REF_DRAFT_V2_DOCUMENT.schema.json"
       - "scripts/join_logos_verses_myeongni_states_4d.py"
       - "tests/test_logos_state_mapping_v1_snapshot.py"
+      - "tests/test_cross_ref_dss_schema.py"
       # Docs-only PRs (battleboard, manifests) also trigger Fact-Lock
       - "docs/**"
   workflow_dispatch:
@@ -38,8 +41,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install pytest
-        run: python -m pip install --upgrade pip pytest
+      - name: Install pytest and jsonschema
+        run: python -m pip install --upgrade pip pytest jsonschema
 
       - name: Integrity guard (golden lock k=6866, 1574 intersection, 149 probes)
         run: python scripts/integrity_guard.py
@@ -49,6 +52,9 @@ jobs:
 
       - name: Logos–Myeongni state mapping snapshot (tracked artifact, no verse pipeline on runner)
         run: python -m pytest tests/test_logos_state_mapping_v1_snapshot.py -q --tb=short
+
+      - name: CROSS_REF draft vs LOGOS_STATE_MAPPING (canonical_ref join Fact-Lock)
+        run: python -m pytest tests/test_cross_ref_dss_schema.py -q --tb=short
 
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()
