@@ -51,6 +51,7 @@
 | 4.2 | A-track·실매매·트레이딩 로더 — **본 경로 기본 로드 금지** (CONSTITUTION §4·§8) | [x] | 정책 문서; 승격 시 PR |
 | 4.3 | NotebookLM / vault — **중복 소스 제거**, `docs/NotebookLM_sources_manifest.md` 준수 | [x] | `-WhatIf` 점검: 중복 0건 (2026-03-30) |
 | 4.4 | `ENTRY_07/08/16` 외부 판본 대기 큐 운영 전환 | [x] | `docs/final/CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md`의 "외부 판본 대기 큐" 섹션 참조 |
+| 4.5 | 대기 큐 모니터링 주기 고정(월 1회/소스 공지 이벤트) | [x] | 대기 큐 재시도는 신규 근거 소스 등장 시에만 실행 |
 
 ---
 

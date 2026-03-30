@@ -51,6 +51,7 @@
 
 - 운영 규칙: 대기 큐 항목은 **주간 재탐색 금지**, 새 근거 소스가 생긴 경우에만 재시도한다.
 - 근거 반영 순서: SSOT JSON -> 스냅샷 fence sync -> `pytest tests/test_cross_ref_dss_schema.py`.
+- 점검 주기(권장): 월 1회 또는 소스 업데이트 공지 발생 시 즉시.
 
 ---
 
