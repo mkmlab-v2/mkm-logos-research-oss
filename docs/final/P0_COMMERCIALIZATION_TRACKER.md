@@ -15,7 +15,7 @@
 | 1 | 최신 상황: `docs/final/MASTER_SITREP_2026-03-29.md` (또는 당일 SITREP) |
 | 2 | 스테이징·승격: `projects/bitcoin-trading/docs/final/STAGING_TO_PRODUCTION_PROMOTION_CHECKLIST_2026-03-25.md` |
 | 3 | 실행 규칙·갭: `projects/bitcoin-trading/docs/final/PROPHECY_ALIGNMENT_GAP_MATRIX_2026-03-24.md`, `EXECUTABLE_PROPHECY_RULES_SSOT_2026-03-25.md` |
-| 4 | 정렬 pytest 번들(Windows): `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` — **터미널에서는 `py` 사용** (`python` 금지 규칙과 일치). |
+| 4 | 정렬 pytest 번들(Windows): `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` — **터미널에서는 `py` 사용** (`python` 금지 규칙과 일치). **직렬 게이트**: 1단계 `bitcoin-trading` 내 dual-regime 스모크(현재 14케이스)가 실패하면 2단계 워크스페이스 루트 Fact-Lock(logos snapshot + CROSS_REF)은 실행되지 않는다. |
 | 5 | 보급 루틴(해당 시): `scripts/titan-sync.ps1` (레포 루트 기준) |
 
 ## 검증 게이트 (Bench)

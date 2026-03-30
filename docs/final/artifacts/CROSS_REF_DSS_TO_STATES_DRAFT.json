@@ -1,7 +1,7 @@
 {
   "schema": "cross_ref_dss_to_states_draft_v2",
   "disclaimer": "B-Track parallel-corpus draft only; not A-Track SSOT; trading engine must not load this path by default.",
-  "generated_at_utc": "2026-03-30T18:30:00+00:00",
+  "generated_at_utc": "2026-03-30T22:00:00+00:00",
   "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §4.5",
   "canonical_join_ssot": "docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json",
   "canonical_join_note": "canonical_ref = verse_id for the same state_id as state_candidate_id (cosine assignment snapshot); not independent thematic exegesis.",
@@ -77,6 +77,54 @@
       "artifact_path": null,
       "state_candidate_id": 4,
       "rationale": "B-Track DSS: 하바국 해석(페셔)의 ‘위기를 성경으로 재독’ 레이어. A-Track 비유 후보(가설): 규범·도덕 프레임(칠선 언약 맥락)과 시장 서사 병치 — geometry/trigger 아님; Fact-Lock 벤치만."
+    },
+    {
+      "entry_id": "ENTRY_07",
+      "canonical_ref": "Ezra.2.45",
+      "satellite_ref": "11QT XLVI-XLVII (Temple Scroll; festival/calendar layer — academic edition TBD)",
+      "source_id": "11QT XLVI-XLVII (Temple Scroll; festival/calendar layer — academic edition TBD)",
+      "corpus_type": "dss",
+      "link_type": "temporal",
+      "confidence": null,
+      "artifact_path": null,
+      "state_candidate_id": 5,
+      "rationale": "B-Track DSS: 성전·절기 일정 규범 텍스트. A-Track 대비: Ezra 명단 행은 ‘복귀 코호트’ 스냅샷 — 달력 DSS와 주제만 병치(벤치); 인과·트리거 금지."
+    },
+    {
+      "entry_id": "ENTRY_08",
+      "canonical_ref": "Neh.7.56",
+      "satellite_ref": "4Q319 (Otot / priestly cycle signal text — edition siglum TBD)",
+      "source_id": "4Q319 (Otot / priestly cycle signal text — edition siglum TBD)",
+      "corpus_type": "dss",
+      "link_type": "temporal",
+      "confidence": null,
+      "artifact_path": null,
+      "state_candidate_id": 6,
+      "rationale": "B-Track DSS: 제사장 주기·신호 표류. A-Track 대비: Nehemiah 복귀자 명단 행 — 인구/재건 흐름과 ‘주기 신호’ 담론만 병치(벤치)."
+    },
+    {
+      "entry_id": "ENTRY_09",
+      "canonical_ref": "Ps.36.1",
+      "satellite_ref": "4Q169 frags 3-4 ii (Nahum Pesher; ‘planner of evil’ discourse — transcription TBD)",
+      "source_id": "4Q169 frags 3-4 ii (Nahum Pesher; ‘planner of evil’ discourse — transcription TBD)",
+      "corpus_type": "dss",
+      "link_type": "thematic",
+      "confidence": null,
+      "artifact_path": null,
+      "state_candidate_id": 7,
+      "rationale": "B-Track DSS: 나훔 페셔의 악행 귀속·심판 화법. A-Track 대비: 시36 ‘악인의 죄’ 서사와 주제 병치 — 수치/심리 트리거 아님."
+    },
+    {
+      "entry_id": "ENTRY_10",
+      "canonical_ref": "Josh.15.22",
+      "satellite_ref": "CD-A I-II (Damascus Document; ‘land’ / exile–return framing — bench citation TBD)",
+      "source_id": "CD-A I-II (Damascus Document; ‘land’ / exile–return framing — bench citation TBD)",
+      "corpus_type": "dss",
+      "link_type": "thematic",
+      "confidence": null,
+      "artifact_path": null,
+      "state_candidate_id": 9,
+      "rationale": "B-Track DSS: 공동체의 언약·지경 담론. A-Track 대비: 여호수아 지파 경계 점과 ‘땅·경계’ 메타만 병치 — 지리≠가격."
     }
   ]
 }

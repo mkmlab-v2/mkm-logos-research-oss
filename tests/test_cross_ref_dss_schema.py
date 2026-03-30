@@ -55,7 +55,7 @@ def test_cross_ref_dss_draft_entry_rows_contract() -> None:
     assert _LOGOS_ASSIGN.is_file(), f"missing: {_LOGOS_ASSIGN}"
     by_state = _state_id_to_verse_id()
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
-    assert len(doc["entries"]) == 6
+    assert len(doc["entries"]) == 10
     for i, row in enumerate(doc["entries"]):
         assert isinstance(row, dict), f"entries[{i}] must be object"
         eid = row.get("entry_id")
