@@ -49,7 +49,7 @@
 |---|------|------|------|
 | 4.1 | B-track `note`·`[HYPO]` — ENTRY_11 패턴 유지 | [x] | `CROSS_REF`·NL 반증 박제 |
 | 4.2 | A-track·실매매·트레이딩 로더 — **본 경로 기본 로드 금지** (CONSTITUTION §4·§8) | [x] | 정책 문서; 승격 시 PR |
-| 4.3 | NotebookLM / vault — **중복 소스 제거**, `docs/NotebookLM_sources_manifest.md` 준수 | [ ] | 도구: `scripts/notebooklm_dedupe_sources_by_title.ps1` (`nlm` 전제) |
+| 4.3 | NotebookLM / vault — **중복 소스 제거**, `docs/NotebookLM_sources_manifest.md` 준수 | [x] | `-WhatIf` 점검: 중복 0건 (2026-03-30) |
 
 ---
 
