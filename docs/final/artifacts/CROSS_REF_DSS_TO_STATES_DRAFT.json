@@ -117,8 +117,8 @@
     {
       "entry_id": "ENTRY_10",
       "canonical_ref": "Josh.15.22",
-      "satellite_ref": "CD-A I-II (+4Q266-273) | loc=CD-A I-II, 4Q266-273 frag/line=TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=add chapter/line anchors",
-      "source_id": "CD-A I-II (+4Q266-273) | loc=CD-A I-II, 4Q266-273 frag/line=TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=add chapter/line anchors",
+      "satellite_ref": "CD-A I-II (+4Q266-273) | loc=4QDamascus Document (4Q266-273) witnesses -> DJD XVIII plates I–XLII; mapping to CD-A ch. I-II line anchor remains TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=partial_anchor_verified (plates)",
+      "source_id": "CD-A I-II (+4Q266-273) | loc=4QDamascus Document (4Q266-273) witnesses -> DJD XVIII plates I–XLII; mapping to CD-A ch. I-II line anchor remains TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=partial_anchor_verified (plates)",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
