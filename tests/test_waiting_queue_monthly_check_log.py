@@ -62,3 +62,15 @@ def test_waiting_queue_has_entry16_gate_fields_in_recent_rows() -> None:
     assert str(latest.get("promotion_gate_path", "")).endswith(
         "docs\\final\\artifacts\\entry16_promotion_gate.json"
     )
+
+
+def test_waiting_queue_has_deadline_fields_in_recent_rows() -> None:
+    rows = list(_rows(_LOG))
+    candidates = [r for r in rows if "next_monthly_due_date" in r and "horizon_t90_date" in r]
+    assert candidates, "at least one log row must include deadline fields"
+
+    latest = candidates[-1]
+    for key in ("next_monthly_due_date", "horizon_t30_date", "horizon_t90_date"):
+        value = str(latest.get(key, "")).strip()
+        assert value, f"missing {key}"
+        datetime.fromisoformat(value)

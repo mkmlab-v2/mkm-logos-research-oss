@@ -10,7 +10,11 @@ Set-Location $workspace
 $logPath = "C:\workspace\docs\final\artifacts\waiting_queue_monthly_check_log.jsonl"
 $sourceHuntSummaryPath = "C:\workspace\docs\final\artifacts\entry16_source_hunt_summary.json"
 $promotionGatePath = "C:\workspace\docs\final\artifacts\entry16_promotion_gate.json"
-$checkedAt = [DateTimeOffset]::UtcNow.ToString("o")
+$checkedAtObj = [DateTimeOffset]::UtcNow
+$checkedAt = $checkedAtObj.ToString("o")
+$nextMonthlyDue = $checkedAtObj.AddDays(30).ToString("yyyy-MM-dd")
+$horizonT30 = $checkedAtObj.AddDays(30).ToString("yyyy-MM-dd")
+$horizonT90 = $checkedAtObj.AddDays(90).ToString("yyyy-MM-dd")
 $bundleMode = if ($SkipBundle) { "skip_bundle" } else { "full_bundle" }
 
 Write-Host "[waiting-queue-check] Running CROSS_REF schema gates..."
@@ -48,6 +52,9 @@ if ($LASTEXITCODE -ne 0) {
     source_hunt_summary_path = $sourceHuntSummaryPath
     promotion_gate = "pass"
     promotion_gate_path = $promotionGatePath
+    next_monthly_due_date = $nextMonthlyDue
+    horizon_t30_date = $horizonT30
+    horizon_t90_date = $horizonT90
     runner = "scripts/run_waiting_queue_monthly_check.ps1"
 } | ConvertTo-Json -Compress | Add-Content -LiteralPath $logPath -Encoding utf8
 
