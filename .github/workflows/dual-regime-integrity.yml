@@ -27,8 +27,10 @@ on:
       - "docs/final/CROSS_REF_DRAFT_V2_DOCUMENT.schema.json"
       - "scripts/join_logos_verses_myeongni_states_4d.py"
       - "scripts/add_entry16_source_and_rejudge.py"
+      - "scripts/report_myeongni_16_state_transition.py"
       - "tests/test_logos_state_mapping_v1_snapshot.py"
       - "tests/test_add_entry16_source_and_rejudge.py"
+      - "tests/test_myeongni_16_state_transition_report.py"
       - "tests/test_cross_ref_dss_schema.py"
       - "tests/test_entry16_source_hunt_log.py"
       - "tests/test_entry16_source_hunt_summary.py"
@@ -93,6 +95,9 @@ jobs:
 
       - name: Myeongni insight observation JSONL + fusion interface stub (§3.3)
         run: python -m pytest tests/test_myeongni_insight_observation_log.py -q --tb=short
+
+      - name: Myeongni 16-state transition report contract
+        run: python -m pytest tests/test_myeongni_16_state_transition_report.py -q --tb=short
 
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()

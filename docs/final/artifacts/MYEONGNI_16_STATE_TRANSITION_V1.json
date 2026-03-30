@@ -1,0 +1,26 @@
+{
+  "schema": "myeongni_16_state_transition_report_v1",
+  "source_log": "data/myeongni/myeongni_16_state_experiment_v1.jsonl",
+  "total_rows": 2,
+  "state_rows": 2,
+  "transition_count": 1,
+  "unique_states_observed": [
+    3,
+    11
+  ],
+  "counts_matrix": {
+    "state_3": {
+      "state_11": 1
+    }
+  },
+  "probability_matrix": {
+    "state_3": {
+      "state_11": 1.0
+    }
+  },
+  "quality": {
+    "sufficient_for_signal": false,
+    "min_rows_for_signal": 30,
+    "current_stage": "bootstrap_insufficient_rows"
+  }
+}
