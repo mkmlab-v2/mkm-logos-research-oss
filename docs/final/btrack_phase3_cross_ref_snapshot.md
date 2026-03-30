@@ -78,8 +78,8 @@
     {
       "entry_id": "ENTRY_06",
       "canonical_ref": "Exod.20.15",
-      "satellite_ref": "1QpHab (1Q15) col.VII — Pesher Habakkuk; plates: The Dead Sea Scrolls of St. Mark's Monastery I (New Haven: ASOR, 1950); trans./lineation: e.g. García Martínez & Tigchelaar, The Dead Sea Scrolls Study Edition (Brill) — verify col/line against chosen edition",
-      "source_id": "1QpHab (1Q15) col.VII — Pesher Habakkuk; plates: The Dead Sea Scrolls of St. Mark's Monastery I (New Haven: ASOR, 1950); trans./lineation: e.g. García Martínez & Tigchelaar, The Dead Sea Scrolls Study Edition (Brill) — verify col/line against chosen edition",
+      "satellite_ref": "1QpHab (1Q15) | loc=col.VII, line=TBD | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill) | status=verify col/line",
+      "source_id": "1QpHab (1Q15) | loc=col.VII, line=TBD | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill) | status=verify col/line",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
@@ -90,8 +90,8 @@
     {
       "entry_id": "ENTRY_07",
       "canonical_ref": "Ezra.2.45",
-      "satellite_ref": "11QT (11Q19) cols.XLVI–XLVII — Temple Scroll; Yadin, The Temple Scroll (Jerusalem: Israel Exploration Society, 1977); cf. DJD XXIII (11Q19); festival/calendar layer — verify col range to edition",
-      "source_id": "11QT (11Q19) cols.XLVI–XLVII — Temple Scroll; Yadin, The Temple Scroll (Jerusalem: Israel Exploration Society, 1977); cf. DJD XXIII (11Q19); festival/calendar layer — verify col range to edition",
+      "satellite_ref": "11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD | refs=Yadin 1977, DJD XXIII | status=verify col range/line",
+      "source_id": "11QT (11Q19) | loc=cols.XLVI-XLVII, line=TBD | refs=Yadin 1977, DJD XXIII | status=verify col range/line",
       "corpus_type": "dss",
       "link_type": "temporal",
       "confidence": null,
@@ -102,8 +102,8 @@
     {
       "entry_id": "ENTRY_08",
       "canonical_ref": "Neh.7.56",
-      "satellite_ref": "4Q319 (4QOtot) — priestly cycle / Otot; DJD XXI: S. Talmon et al., Calendrical Texts (Oxford: Clarendon, 2001); verify fragment sigla to plate",
-      "source_id": "4Q319 (4QOtot) — priestly cycle / Otot; DJD XXI: S. Talmon et al., Calendrical Texts (Oxford: Clarendon, 2001); verify fragment sigla to plate",
+      "satellite_ref": "4Q319 (4QOtot) | loc=fragment/sigla=TBD, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=verify fragment sigla",
+      "source_id": "4Q319 (4QOtot) | loc=fragment/sigla=TBD, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=verify fragment sigla",
       "corpus_type": "dss",
       "link_type": "temporal",
       "confidence": null,
@@ -114,8 +114,8 @@
     {
       "entry_id": "ENTRY_09",
       "canonical_ref": "Ps.36.1",
-      "satellite_ref": "4Q169 (4QpNah) frags 3–4 col.ii — Pesher Nahum; editio princeps DJD V (J.M. Allegro, Oxford: Clarendon, 1968); modern trans. e.g. DSS Study Edition (Brill) — verify frag/col to edition; ‘planner of evil’ discourse (bench label)",
-      "source_id": "4Q169 (4QpNah) frags 3–4 col.ii — Pesher Nahum; editio princeps DJD V (J.M. Allegro, Oxford: Clarendon, 1968); modern trans. e.g. DSS Study Edition (Brill) — verify frag/col to edition; ‘planner of evil’ discourse (bench label)",
+      "satellite_ref": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=verify frag/col",
+      "source_id": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=verify frag/col",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
@@ -126,8 +126,8 @@
     {
       "entry_id": "ENTRY_10",
       "canonical_ref": "Josh.15.22",
-      "satellite_ref": "CD-A I–II (Damascus Document, Cairo Geniza ms A); J.H. Charlesworth, The Damascus Document (Tübingen: Mohr, PTSDSSP 1995); Qumran parallels 4Q266–273 — DJD XVIII (Baumgarten, 1996) — bench: land/exile–return framing",
-      "source_id": "CD-A I–II (Damascus Document, Cairo Geniza ms A); J.H. Charlesworth, The Damascus Document (Tübingen: Mohr, PTSDSSP 1995); Qumran parallels 4Q266–273 — DJD XVIII (Baumgarten, 1996) — bench: land/exile–return framing",
+      "satellite_ref": "CD-A I-II (+4Q266-273) | loc=CD-A I-II, 4Q266-273 frag/line=TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=add chapter/line anchors",
+      "source_id": "CD-A I-II (+4Q266-273) | loc=CD-A I-II, 4Q266-273 frag/line=TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=add chapter/line anchors",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
@@ -146,7 +146,7 @@
       "artifact_path": "docs/final/btrack_phase3_cross_ref_snapshot.md",
       "state_candidate_id": 13,
       "rationale": "[HYPO] 금화교역(金火交易) 상전이 벤치: 1Chr.14.6의 '상태'를 에스겔 1:4의 불꽃 환상 및 1QM의 에너지 충돌 서사와 구조적으로 연결. 학계의 비평을 넘어선 '상태 함수' 대칭성 실험용.",
-      "note": "NL v2.1 cross_notebook_query (Apocrypha/DSS/Phase3, 3/3): 관측 요지 — 정렬은 가능하나 반증으로 (1) 희년서 364일 논지의 분리주의·정치 동기 가능성, (2) DSS/히브리 원어에 금화교역 상응 형이상학 어휘 부재, (3) 1Chr.14.6 행정·연대기 맥락과 묵시 텍스트 병치 시 False equivalence 위험. 주요 취약점: 맥락 오염(Context contamination)·제2성전기 이원론 vs 동양 순환 은유의 존재론적 비호환. [HYPO] 승격 보류; A-track·실매매·OOF 자동 합선 금지."
+      "note": "NL v2.1 cross_notebook_query (Apocrypha/DSS/Phase3, 3/3): 관측 요지 — 정렬은 가능하나 반증으로 (1) 희년서 364일 논지의 분리주의·정치 동기 가능성, (2) DSS/히브리 원어에 금화교역 상응 형이상학 어휘 부재, (3) 1Chr.14.6 행정·연대기 맥락과 묵시 텍스트 병치 시 False equivalence 위험. 주요 취약점: 맥락 오염(Context contamination)·제2성전기 이원론 vs 동양 순환 은유의 존재론적 비호환. [HYPO] 승격 보류; A-track·실매매·OOF 자동 합선 금지. NL 2026-03-30 notebook_query 보강: (a) 반증 3종 분류=맥락 오염/존재론적 동치 오류/숫자 은유, (b) 인용 정밀도 감사=1QpHab·11QT(Med), 4Q319·CD-A(High), 열·행·fragment/sigla 보강 필요. Source: 5a0ac312-d9a1-4065-82c1-49455ad0a420 (btrack_phase3_cross_ref_snapshot.md)."
     },
     {
       "entry_id": "ENTRY_12",
@@ -158,7 +158,8 @@
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 10,
-      "rationale": "B-Track DSS: 시편 큐믈란 증거(11Q5)와 MT Ps.4 구절의 어휘·서사 정렬 벤치. A-Track: cosine state 10 앵커 Ps.4.6 — 음성학·트리거 아님."
+      "rationale": "B-Track DSS: 시편 큐믈란 증거(11Q5)와 MT Ps.4 구절의 어휘·서사 정렬 벤치. A-Track: cosine state 10 앵커 Ps.4.6 — 음성학·트리거 아님.",
+      "note": "Bench policy: lexical 정렬 후보. 승격 조건=11Q5 col/line↔MT Ps.4.6 매핑 확인 + 비정경 해석 레이어 미주입. 반증 훅=열/행 매핑 불일치 또는 단순 어휘 중복만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류."
     },
     {
       "entry_id": "ENTRY_13",
@@ -170,7 +171,8 @@
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 11,
-      "rationale": "B-Track DSS: 시편 5장 DSS 평행. A-Track: state 11 앵커 Ps.5.2 — 예배·호소 담론만 병치(벤치)."
+      "rationale": "B-Track DSS: 시편 5장 DSS 평행. A-Track: state 11 앵커 Ps.5.2 — 예배·호소 담론만 병치(벤치).",
+      "note": "Bench policy: lexical 정렬 후보. 승격 조건=11Q5 Ps.5 witness가 MT Ps.5.2 호출 구조와 합치. 반증 훅=예배 문체 일반론으로 환원되어 state 11 특이성이 사라지는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류."
     },
     {
       "entry_id": "ENTRY_14",
@@ -182,7 +184,8 @@
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 12,
-      "rationale": "B-Track DSS: 신명기 십계·금기 병렬. A-Track: state 12 앵커 Deut.5.19 — 규범 메타만(윤리 트리거 아님)."
+      "rationale": "B-Track DSS: 신명기 십계·금기 병렬. A-Track: state 12 앵커 Deut.5.19 — 규범 메타만(윤리 트리거 아님).",
+      "note": "Bench policy: lexical/규범 정렬 후보. 승격 조건=4QDeut fragment가 Deut.5.19 금기 문맥에 직접 대응. 반증 훅=fragment 위치 불확정 또는 십계 일반 규범으로만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류."
     },
     {
       "entry_id": "ENTRY_15",
@@ -194,7 +197,8 @@
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 14,
-      "rationale": "B-Track DSS: 창49 족장 축복 서사. A-Track: state 14 앵커 Gen.49.19 — 지리·군사 은유는 벤치 라벨일 뿐 가격 인과 아님."
+      "rationale": "B-Track DSS: 창49 족장 축복 서사. A-Track: state 14 앵커 Gen.49.19 — 지리·군사 은유는 벤치 라벨일 뿐 가격 인과 아님.",
+      "note": "Bench policy: thematic 후보. 승격 조건=4QGen witness에서 Gad oracle 대응 구간 확인 + 은유를 상태 메타로만 제한. 반증 훅=군사/지리 비유를 실증 인과로 오독하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류."
     },
     {
       "entry_id": "ENTRY_16",
@@ -206,7 +210,8 @@
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 16,
-      "rationale": "B-Track DSS/역본: 바벨론 귀환 명단 코호트. A-Track: state 16 앵커 Ezra.2.54 — 인구·스냅샷 메타만 병치(벤치)."
+      "rationale": "B-Track DSS/역본: 바벨론 귀환 명단 코호트. A-Track: state 16 앵커 Ezra.2.54 — 인구·스냅샷 메타만 병치(벤치).",
+      "note": "Bench policy: thematic(코호트 스냅샷) 후보. 승격 조건=Ezra-Nehemiah witness 계열에서 이름목록/귀환 코호트 대응 확인. 반증 훅=텍스트 전승 불확정으로 witness 연결이 붕괴하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류."
     }
   ]
 }
