@@ -1,22 +1,22 @@
 {
   "schema": "entry16_source_hunt_summary_v1",
   "source_log": "docs/final/artifacts/entry16_source_hunt_log.jsonl",
-  "total_sources": 13,
+  "total_sources": 14,
   "confidence_counts": {
     "med": 5,
     "low": 6,
-    "high": 2
+    "high": 3
   },
   "witness_counts": {
-    "no": 4,
+    "no": 5,
     "unknown": 9
   },
   "access_mode_counts": {
     "public": 11,
-    "institutional": 2
+    "institutional": 3
   },
   "has_direct_witness": false,
-  "direct_anchor_like_count": 4,
+  "direct_anchor_like_count": 5,
   "next_gate": "keep_missing_anchor_until_source_update",
   "action_recommendation": "pause_hunting_until_new_primary_source"
 }

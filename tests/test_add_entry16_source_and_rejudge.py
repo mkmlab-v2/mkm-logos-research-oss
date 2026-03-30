@@ -48,7 +48,9 @@ def _base_argv() -> list[str]:
 
 def test_dry_run_does_not_write_log(tmp_path: Path, monkeypatch, capsys) -> None:
     log_path = tmp_path / "entry16_source_hunt_log.jsonl"
+    summary_path = tmp_path / "entry16_source_hunt_summary.json"
     monkeypatch.setattr(cli, "LOG", log_path)
+    monkeypatch.setattr(cli, "SUMMARY", summary_path)
     monkeypatch.setattr(sys, "argv", _base_argv() + ["--dry-run"])
 
     rc = cli.main()
@@ -61,10 +63,12 @@ def test_dry_run_does_not_write_log(tmp_path: Path, monkeypatch, capsys) -> None
 
 def test_duplicate_url_raises_system_exit(tmp_path: Path, monkeypatch) -> None:
     log_path = tmp_path / "entry16_source_hunt_log.jsonl"
+    summary_path = tmp_path / "entry16_source_hunt_summary.json"
     existing = {"source_url": "https://example.org/new-source"}
     log_path.write_text(json.dumps(existing) + "\n", encoding="utf-8")
 
     monkeypatch.setattr(cli, "LOG", log_path)
+    monkeypatch.setattr(cli, "SUMMARY", summary_path)
     monkeypatch.setattr(sys, "argv", _base_argv())
 
     try:
@@ -72,4 +76,23 @@ def test_duplicate_url_raises_system_exit(tmp_path: Path, monkeypatch) -> None:
         assert False, "expected SystemExit for duplicate URL"
     except SystemExit as e:
         assert "duplicate source_url" in str(e)
+
+
+def test_pause_guard_blocks_public_unknown_without_override(tmp_path: Path, monkeypatch) -> None:
+    log_path = tmp_path / "entry16_source_hunt_log.jsonl"
+    summary_path = tmp_path / "entry16_source_hunt_summary.json"
+    summary_path.write_text(
+        json.dumps({"action_recommendation": "pause_hunting_until_new_primary_source"}),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(cli, "LOG", log_path)
+    monkeypatch.setattr(cli, "SUMMARY", summary_path)
+    monkeypatch.setattr(sys, "argv", _base_argv() + ["--dry-run"])
+
+    try:
+        cli.main()
+        assert False, "expected SystemExit for paused ingest"
+    except SystemExit as e:
+        assert "public no/unknown source ingest is paused" in str(e)
 

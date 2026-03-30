@@ -13,12 +13,22 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 LOG = ROOT / "docs" / "final" / "artifacts" / "entry16_source_hunt_log.jsonl"
+SUMMARY = ROOT / "docs" / "final" / "artifacts" / "entry16_source_hunt_summary.json"
 SUMMARY_SCRIPT = ROOT / "scripts" / "report_entry16_source_hunt.py"
 GATE_SCRIPT = ROOT / "scripts" / "evaluate_entry16_promotion_gate.py"
 
 ALLOWED_WITNESS = {"yes", "no", "unknown"}
 ALLOWED_CONF = {"high", "med", "low"}
 ALLOWED_ACCESS = {"public", "login", "institutional", "paywalled"}
+_PLACEHOLDER_ANCHORS = {
+    "",
+    "unknown",
+    "none",
+    "none (catalog-level)",
+    "none (image metadata only)",
+    "none (contents-level only)",
+    "frg.1 (line exact tbd for ezra 2:54)",
+}
 
 
 def _iso_now() -> str:
@@ -53,6 +63,7 @@ def _build_parser() -> argparse.ArgumentParser:
     p.add_argument("--access-mode", required=True, choices=sorted(ALLOWED_ACCESS))
     p.add_argument("--last-checked-utc", default="")
     p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--override-pause", action="store_true")
     return p
 
 
@@ -80,6 +91,33 @@ def main() -> int:
         "access_mode": args.access_mode.strip(),
         "last_checked_utc": (args.last_checked_utc.strip() or _iso_now()),
     }
+
+    if SUMMARY.exists():
+        try:
+            summary = json.loads(SUMMARY.read_text(encoding="utf-8"))
+            is_paused = summary.get("action_recommendation") == "pause_hunting_until_new_primary_source"
+            if (
+                is_paused
+                and row["access_mode"] == "public"
+                and row["ezra_2_54_direct_witness"] in {"no", "unknown"}
+                and not args.override_pause
+            ):
+                raise SystemExit(
+                    "public no/unknown source ingest is paused; provide primary evidence or pass --override-pause"
+                )
+        except json.JSONDecodeError:
+            pass
+
+    if row["ezra_2_54_direct_witness"] == "yes":
+        line_anchor = row["line_anchor"].strip().lower()
+        if line_anchor in _PLACEHOLDER_ANCHORS or "tbd" in line_anchor:
+            raise SystemExit("witness=yes requires concrete fragment col/line anchor (no placeholder/TBD)")
+        combined_text = f'{row["extant_verses_claim"]} {row["evidence_quote"]}'.lower()
+        if ("2:54" not in combined_text) and ("2,54" not in combined_text):
+            raise SystemExit("witness=yes requires explicit Ezra 2:54 mention in claim or quote")
+        if len(row["evidence_quote"].strip()) < 20:
+            raise SystemExit("witness=yes requires reproducible evidence_quote (>=20 chars)")
+
     if args.dry_run:
         print(json.dumps(row, ensure_ascii=False, indent=2))
         print("DRY-RUN: no file updates")

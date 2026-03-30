@@ -68,3 +68,26 @@ def test_entry16_source_hunt_has_at_least_one_negative_or_unknown_witness() -> N
     rows = list(_rows(_LOG))
     values = {str(r["ezra_2_54_direct_witness"]).strip() for r in rows}
     assert values & {"no", "unknown"}, "log must include unresolved/negative witness evidence"
+
+
+def test_entry16_yes_witness_rows_require_concrete_anchor() -> None:
+    rows = list(_rows(_LOG))
+    yes_rows = [r for r in rows if str(r.get("ezra_2_54_direct_witness", "")).strip() == "yes"]
+    for i, row in enumerate(yes_rows):
+        line_anchor = str(row.get("line_anchor", "")).strip().lower()
+        assert line_anchor not in {
+            "",
+            "unknown",
+            "none",
+            "none (catalog-level)",
+            "none (image metadata only)",
+            "none (contents-level only)",
+        }, f"yes-row[{i}] must include concrete line anchor"
+        assert "tbd" not in line_anchor, f"yes-row[{i}] line_anchor must not be TBD"
+        combined_text = f'{row.get("extant_verses_claim", "")} {row.get("evidence_quote", "")}'.lower()
+        assert ("2:54" in combined_text) or ("2,54" in combined_text), (
+            f"yes-row[{i}] must explicitly mention Ezra 2:54"
+        )
+        assert len(str(row.get("evidence_quote", "")).strip()) >= 20, (
+            f"yes-row[{i}] evidence_quote too short for reproducibility"
+        )
