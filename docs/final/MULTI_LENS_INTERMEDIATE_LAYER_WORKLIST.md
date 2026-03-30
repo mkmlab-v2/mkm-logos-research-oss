@@ -20,7 +20,7 @@
 | 1.1 | `docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json` 행 수·`canonical_ref` ↔ `LOGOS_STATE_MAPPING_V1` | [x] | 회귀: `tests/test_cross_ref_dss_schema.py` |
 | 1.2 | `docs/final/CROSS_REF_DRAFT_V2_DOCUMENT.schema.json` + jsonschema 검증 | [x] | 동일 테스트 내 `test_cross_ref_draft_validates_against_json_schema` |
 | 1.3 | `docs/final/btrack_phase3_cross_ref_snapshot.md` — SSOT와 동일 ENTRY·코드펜스 | [x] | 백틱·`disclaimer` 많을 때 **닫는 펜스**만으로 자르지 말 것 |
-| 1.4 | 대규모 수정 시: **JSON을 SSOT로 편집 → MD 반영** (또는 추후 `scripts/` 덤프 스크립트) | [ ] | 드리프트 방지 습관 |
+| 1.4 | 대규모 수정 시: **JSON을 SSOT로 편집 → 스냅샷 펜스 갱신** | [x] | `py scripts/sync_btrack_phase3_snapshot_json_fence.py --apply` 후 `pytest tests/test_cross_ref_dss_schema.py` |
 
 ---
 
@@ -30,7 +30,7 @@
 |---|------|------|------|
 | 2.1 | `docs/final/artifacts/SASANG_CROSS_REF_DRAFT.json` + 청크 테이블 조인 | [x] | `tests/test_sasang_cross_ref_draft.py` |
 | 2.2 | `data/myeongni/insight_observation_log*.jsonl` + `MYEONGNI_FUSION_INTERFACE_STUB.json` | [x] | `tests/test_myeongni_insight_observation_log.py` (파일 추적은 팀 정책) |
-| 2.3 | `docs/final/MYEONGRI_INSIGHT_SSOT.md` — §1.2 대운·절기 테이블 경로 **한 줄** (확정 시) | [ ] | 미확정 시 `[HYPO]`만 |
+| 2.3 | `docs/final/MYEONGRI_INSIGHT_SSOT.md` — §1.2 대운·세운 테이블 표 | [x] | 확정 경로는 표 첫 행에 추후 기입; 미확정은 `—`·`[HYPO]` |
 
 ---
 
@@ -49,7 +49,7 @@
 |---|------|------|------|
 | 4.1 | B-track `note`·`[HYPO]` — ENTRY_11 패턴 유지 | [x] | `CROSS_REF`·NL 반증 박제 |
 | 4.2 | A-track·실매매·트레이딩 로더 — **본 경로 기본 로드 금지** (CONSTITUTION §4·§8) | [x] | 정책 문서; 승격 시 PR |
-| 4.3 | NotebookLM / vault — **중복 소스 제거**, `docs/NotebookLM_sources_manifest.md` 준수 | [ ] | |
+| 4.3 | NotebookLM / vault — **중복 소스 제거**, `docs/NotebookLM_sources_manifest.md` 준수 | [ ] | 도구: `scripts/notebooklm_dedupe_sources_by_title.ps1` (`nlm` 전제) |
 
 ---
 
@@ -57,7 +57,7 @@
 
 | # | 작업 | 상태 | 비고 |
 |---|------|------|------|
-| 5.1 | `CROSS_REF` JSON → `btrack_phase3_cross_ref_snapshot.md` 코드펜스 덤프 스크립트 | ☐ | 백틱 깨짐 방지용 |
+| 5.1 | `CROSS_REF` JSON → `btrack_phase3_cross_ref_snapshot.md` 코드펜스 덤프 | [x] | `scripts/sync_btrack_phase3_snapshot_json_fence.py` |
 | 5.2 | `multi_corpus_policy` / 격벽 테스트 — 위성 코퍼스 추가 시 확장 | ☐ | `tests/test_multi_corpus_isolation_policy.py` |
 
 ---
@@ -67,9 +67,12 @@
 저장소 루트에서:
 
 ```powershell
-Set-Location C:\workspace\projects\bitcoin-trading
-& .\ops\v2\tasks\run_prophecy_alignment_pytest.ps1
+# CI와 유사 순서(Windows): integrity_guard → prophecy 번들
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fact_lock_bundle.ps1
 ```
+
+번들만(스모크+Fact-Lock, integrity 생략 시 `-SkipIntegrityGuard`):  
+`Set-Location C:\workspace\projects\bitcoin-trading` 후 `.\ops\v2\tasks\run_prophecy_alignment_pytest.ps1`.
 
 `dual-regime-integrity`와 동일한 워크스페이스 테스트를 포함하려면 위 스크립트가 **최신**인지 확인한다 (`CONSTITUTION` §6 표).
 
