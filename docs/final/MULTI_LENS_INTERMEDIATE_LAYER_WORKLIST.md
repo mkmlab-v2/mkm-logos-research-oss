@@ -1,0 +1,78 @@
+# 중간 레이어 다중 렌즈 — 작업 리스트 (B-track 정합)
+
+**작성일**: 2026-03-30  
+**상위 SSOT**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` (Multi-Lens·격벽·TOE 비단정)  
+**목적**: 단일 “통합장 완성”이 아니라, **렌즈별 격벽을 유지한 채** 아티팩트·테스트·문서·CI가 **같은 사실**을 가리키게 만드는 **중간 레이어** 정합 절차를 정리한다.
+
+---
+
+## 완료 정의 (이 문서의 “끝”)
+
+- **여기서 끝**: B-track 벤치·가설·관측이 **저장소 경로·pytest·CI**로 재현 가능하고, **실매매·OOF·A-track 자동 합선**이 없다.
+- **여기서 끝 아님**: 상용 승격, 처방 엔진 합선, 단일 수학적 TOE 선언 — **Promotion Loop·별도 PR** 영역.
+
+---
+
+## Phase 1 — CROSS_REF (정경 ↔ 위성 ↔ `state_id`)
+
+| # | 작업 | 상태 | 비고 |
+|---|------|------|------|
+| 1.1 | `docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json` 행 수·`canonical_ref` ↔ `LOGOS_STATE_MAPPING_V1` | [x] | 회귀: `tests/test_cross_ref_dss_schema.py` |
+| 1.2 | `docs/final/CROSS_REF_DRAFT_V2_DOCUMENT.schema.json` + jsonschema 검증 | [x] | 동일 테스트 내 `test_cross_ref_draft_validates_against_json_schema` |
+| 1.3 | `docs/final/btrack_phase3_cross_ref_snapshot.md` — SSOT와 동일 ENTRY·코드펜스 | [x] | 백틱·`disclaimer` 많을 때 **닫는 펜스**만으로 자르지 말 것 |
+| 1.4 | 대규모 수정 시: **JSON을 SSOT로 편집 → MD 반영** (또는 추후 `scripts/` 덤프 스크립트) | [ ] | 드리프트 방지 습관 |
+
+---
+
+## Phase 2 — 사상·명리 벤치 (Timing / Vessel)
+
+| # | 작업 | 상태 | 비고 |
+|---|------|------|------|
+| 2.1 | `docs/final/artifacts/SASANG_CROSS_REF_DRAFT.json` + 청크 테이블 조인 | [x] | `tests/test_sasang_cross_ref_draft.py` |
+| 2.2 | `data/myeongni/insight_observation_log*.jsonl` + `MYEONGNI_FUSION_INTERFACE_STUB.json` | [x] | `tests/test_myeongni_insight_observation_log.py` (파일 추적은 팀 정책) |
+| 2.3 | `docs/final/MYEONGRI_INSIGHT_SSOT.md` — §1.2 대운·절기 테이블 경로 **한 줄** (확정 시) | [ ] | 미확정 시 `[HYPO]`만 |
+
+---
+
+## Phase 3 — CI · 로컬 번들 (Fact-Lock)
+
+| # | 작업 | 상태 | 비고 |
+|---|------|------|------|
+| 3.1 | `.github/workflows/dual-regime-integrity.yml` — dual-regime + workspace + myeongni 순서 | [x] | `integrity_guard` 포함 |
+| 3.2 | `run_prophecy_alignment_pytest.ps1` / `.sh` — **CI 워크스페이스 테스트와 동일 목록** | [x] | logos + CROSS_REF + SASANG + myeongni insight |
+
+---
+
+## Phase 4 — 운영 · Promotion 경계
+
+| # | 작업 | 상태 | 비고 |
+|---|------|------|------|
+| 4.1 | B-track `note`·`[HYPO]` — ENTRY_11 패턴 유지 | [x] | `CROSS_REF`·NL 반증 박제 |
+| 4.2 | A-track·실매매·트레이딩 로더 — **본 경로 기본 로드 금지** (CONSTITUTION §4·§8) | [x] | 정책 문서; 승격 시 PR |
+| 4.3 | NotebookLM / vault — **중복 소스 제거**, `docs/NotebookLM_sources_manifest.md` 준수 | [ ] | |
+
+---
+
+## Phase 5 — 선택 (자동화)
+
+| # | 작업 | 상태 | 비고 |
+|---|------|------|------|
+| 5.1 | `CROSS_REF` JSON → `btrack_phase3_cross_ref_snapshot.md` 코드펜스 덤프 스크립트 | ☐ | 백틱 깨짐 방지용 |
+| 5.2 | `multi_corpus_policy` / 격벽 테스트 — 위성 코퍼스 추가 시 확장 | ☐ | `tests/test_multi_corpus_isolation_policy.py` |
+
+---
+
+## 한 번에 돌리는 명령 (Windows)
+
+저장소 루트에서:
+
+```powershell
+Set-Location C:\workspace\projects\bitcoin-trading
+& .\ops\v2\tasks\run_prophecy_alignment_pytest.ps1
+```
+
+`dual-regime-integrity`와 동일한 워크스페이스 테스트를 포함하려면 위 스크립트가 **최신**인지 확인한다 (`CONSTITUTION` §6 표).
+
+---
+
+**상태**: 초안 고정 (2026-03-30). 체크박스는 PR·지휘관 확인 시 ☑로 갱신한다.
