@@ -34,7 +34,11 @@ on:
       - "scripts/report_multilens_performance_eval.py"
       - "scripts/run_ultra_compression_bench.py"
       - "scripts/run_ultra_compression_default.py"
+      - "scripts/check_btrack_regression.py"
+      - "scripts/lock_btrack_verified_baseline.py"
       - "scripts/hooks/token-circuit-breaker.py"
+      - "data/logos/btrack_pilot/**"
+      - "reports/constitution/btrack_pilot/**"
       - "tests/test_logos_state_mapping_v1_snapshot.py"
       - "tests/test_add_entry16_source_and_rejudge.py"
       - "tests/test_myeongni_16_state_transition_report.py"
@@ -129,6 +133,9 @@ jobs:
 
       - name: Ultra compression artifacts and active-profile consistency contract
         run: python -m pytest tests/test_ultra_compression_artifacts.py -q --tb=short
+
+      - name: B-Track verified baseline regression check
+        run: python scripts/check_btrack_regression.py
 
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()

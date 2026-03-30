@@ -71,9 +71,9 @@ def _top_per_hangul_flag(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def _cap_grid() -> list[tuple[float, float, float]]:
     # Include near-target caps so token-level rounding can still hit >=50%.
-    general_caps = (0.53, 0.52, 0.50, 0.48, 0.46, 0.44)
-    sensitive_caps = (0.49, 0.47, 0.46, 0.44, 0.42, 0.40)
-    hangul_caps = (0.46, 0.44, 0.42, 0.40, 0.38)
+    general_caps = (0.54, 0.53, 0.52, 0.50, 0.48, 0.46, 0.44)
+    sensitive_caps = (0.50, 0.49, 0.47, 0.46, 0.44, 0.42, 0.40)
+    hangul_caps = (0.48, 0.46, 0.44, 0.42, 0.40, 0.38)
     grid: list[tuple[float, float, float]] = []
     for gc in general_caps:
         for sc in sensitive_caps:

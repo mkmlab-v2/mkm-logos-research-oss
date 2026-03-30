@@ -337,6 +337,47 @@ def _apply_max_saving_cap(raw: str, candidate: str, *, max_saving_rate: float | 
     return " ".join(out)
 
 
+def _apply_min_saving_floor(
+    raw: str,
+    candidate: str,
+    *,
+    min_saving_rate: float | None,
+    must_keep_terms: set[str],
+    use_hangul_principle: bool,
+) -> str:
+    """Trim non-critical tokens until a minimum saving floor is met."""
+    if min_saving_rate is None:
+        return candidate
+    raw_words = _split_words(raw)
+    cand_words = _split_words(candidate)
+    raw_t = len(raw_words)
+    if raw_t <= 0:
+        return candidate
+    target_comp_tokens = int((1.0 - min_saving_rate) * raw_t)
+    if target_comp_tokens < 1:
+        target_comp_tokens = 1
+    if len(cand_words) <= target_comp_tokens:
+        return candidate
+
+    must_keep = {w.lower() for w in must_keep_terms}
+    essential: list[str] = []
+    optional: list[str] = []
+    for w in cand_words:
+        lw = w.lower()
+        is_essential = lw in must_keep or _is_guard_token(w)
+        if use_hangul_principle and _is_hangul_particle_like(w):
+            is_essential = True
+        if is_essential:
+            essential.append(w)
+        else:
+            optional.append(w)
+
+    if len(essential) >= target_comp_tokens:
+        return " ".join(essential[:target_comp_tokens])
+    needed = target_comp_tokens - len(essential)
+    return " ".join(essential + optional[:needed])
+
+
 def evaluate_report(
     doc: dict[str, Any],
     *,
@@ -385,6 +426,14 @@ def evaluate_report(
                 strategy=strategy,
                 intensity=intensity,
                 must_keep=effective_must_keep,
+                use_hangul_principle=effective_hangul_principle,
+            )
+            min_saving_floor = 0.50 if (strategy == "A" and intensity == "extreme") else None
+            comp = _apply_min_saving_floor(
+                raw,
+                comp,
+                min_saving_rate=min_saving_floor,
+                must_keep_terms=effective_must_keep,
                 use_hangul_principle=effective_hangul_principle,
             )
             is_sensitive = _is_sensitive_case(raw, effective_must_keep)
