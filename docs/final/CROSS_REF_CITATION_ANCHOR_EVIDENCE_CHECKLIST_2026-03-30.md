@@ -57,8 +57,7 @@
 
 ```powershell
 Set-Location C:\workspace
-py -m pytest tests/test_cross_ref_dss_schema.py -q --tb=short
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_waiting_queue_monthly_check.ps1
 ```
 
 ---
