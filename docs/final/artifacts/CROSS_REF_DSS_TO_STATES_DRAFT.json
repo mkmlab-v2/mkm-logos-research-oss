@@ -202,7 +202,7 @@
       "artifact_path": null,
       "state_candidate_id": 16,
       "rationale": "B-Track DSS/역본: 바벨론 귀환 명단 코호트. A-Track: state 16 앵커 Ezra.2.54 — 인구·스냅샷 메타만 병치(벤치).",
-      "note": "Bench policy: thematic(코호트 스냅샷) 후보. 승격 조건=Ezra-Nehemiah witness 계열에서 이름목록/귀환 코호트 대응 확인. 반증 훅=텍스트 전승 불확정으로 witness 연결이 붕괴하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 witness anchor 'missing' 확인."
+      "note": "Bench policy: thematic(코호트 스냅샷) 후보. 승격 조건=Ezra-Nehemiah witness 계열에서 이름목록/귀환 코호트 대응 확인. 반증 훅=텍스트 전승 불확정으로 witness 연결이 붕괴하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 witness anchor 'missing' 확인. Local evidence (2026-03-30): data/etcbc-dss/log/align-*.txt에서 `Ezra`는 일부 `4Q117`(주로 Ezra 4–6)로 매핑 확인되었으나, `Ezra', '2'` 또는 Ezra 2(=ch.2) 매핑은 전 파일에서 미탐지. 따라서 Ezra.2.54 list anchor는 현재 로컬 근거 부재로 유지."
     }
   ]
 }
