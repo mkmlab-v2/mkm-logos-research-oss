@@ -44,9 +44,27 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--decision", default=str(DECISION_V1), help="Decision V1 path")
     p.add_argument(
         "--profile",
-        choices=("efficiency_first", "intensity_first"),
+        choices=("efficiency_first", "intensity_first", "balanced"),
         default="efficiency_first",
         help="Ranking profile for best candidate selection",
+    )
+    p.add_argument(
+        "--balanced-w-saving",
+        type=float,
+        default=0.45,
+        help="balanced profile: weight on global_token_saving_rate",
+    )
+    p.add_argument(
+        "--balanced-w-fidelity",
+        type=float,
+        default=0.45,
+        help="balanced profile: weight on avg_reconstruction_fidelity_jaccard",
+    )
+    p.add_argument(
+        "--balanced-w-drop-penalty",
+        type=float,
+        default=0.10,
+        help="balanced profile: weight on normalized jaccard_drop_pp (0..1 vs gate max)",
     )
     p.add_argument("--output", default="", help="Output JSON path (optional)")
     return p
@@ -98,6 +116,25 @@ def _score_efficiency_first(row: dict[str, Any]) -> tuple[float, float]:
 
 def _score_intensity_first(row: dict[str, Any]) -> tuple[float, float]:
     return (float(row["global_token_saving_rate"]), -float(row["jaccard_drop_pp"]))
+
+
+def _attach_balanced_composite(
+    rows: list[dict[str, Any]],
+    *,
+    jaccard_drop_pp_max: float,
+    w_saving: float,
+    w_fidelity: float,
+    w_drop_penalty: float,
+) -> None:
+    denom = max(float(jaccard_drop_pp_max), 1e-9)
+    for r in rows:
+        nd = min(float(r["jaccard_drop_pp"]) / denom, 1.0)
+        r["balanced_composite"] = round(
+            float(w_saving) * float(r["global_token_saving_rate"])
+            + float(w_fidelity) * float(r["avg_reconstruction_fidelity_jaccard"])
+            - float(w_drop_penalty) * nd,
+            9,
+        )
 
 
 def main() -> int:
@@ -158,14 +195,30 @@ def main() -> int:
         results.append(row)
 
     passing = [r for r in results if r["gate_ok"]]
-    score_fn = _score_efficiency_first if args.profile == "efficiency_first" else _score_intensity_first
-    ranked = sorted(passing or results, key=score_fn, reverse=True)
+    if args.profile == "efficiency_first":
+        ranked = sorted(passing or results, key=_score_efficiency_first, reverse=True)
+    elif args.profile == "intensity_first":
+        ranked = sorted(passing or results, key=_score_intensity_first, reverse=True)
+    else:
+        _attach_balanced_composite(
+            results,
+            jaccard_drop_pp_max=jaccard_drop_pp_max,
+            w_saving=args.balanced_w_saving,
+            w_fidelity=args.balanced_w_fidelity,
+            w_drop_penalty=args.balanced_w_drop_penalty,
+        )
+        ranked = sorted(
+            passing or results,
+            key=lambda r: float(r["balanced_composite"]),
+            reverse=True,
+        )
     best = ranked[0] if ranked else None
-    schema = (
-        "multilens_p1_ab_efficiency_v1"
-        if args.profile == "efficiency_first"
-        else "multilens_p1_ab_intensity_v1"
-    )
+    if args.profile == "efficiency_first":
+        schema = "multilens_p1_ab_efficiency_v1"
+    elif args.profile == "intensity_first":
+        schema = "multilens_p1_ab_intensity_v1"
+    else:
+        schema = "multilens_p1_ab_balanced_v1"
     out_doc = {
         "schema": schema,
         "ts_utc": datetime.now(timezone.utc).isoformat(),
@@ -191,19 +244,34 @@ def main() -> int:
         "best_candidate": best,
         "candidates": results,
     }
-    default_output = OUT_EFFICIENCY_V1 if args.profile == "efficiency_first" else OUT_INTENSITY_V1
+    if args.profile == "balanced":
+        out_doc["balanced_weights"] = {
+            "w_saving": args.balanced_w_saving,
+            "w_fidelity": args.balanced_w_fidelity,
+            "w_drop_penalty": args.balanced_w_drop_penalty,
+            "normalized_drop_divisor": jaccard_drop_pp_max,
+            "formula": "w_saving*saving + w_fidelity*avg_jaccard - w_drop_penalty*min(drop_pp/divisor,1)",
+        }
+    default_output = (
+        OUT_EFFICIENCY_V1
+        if args.profile == "efficiency_first"
+        else (OUT_INTENSITY_V1 if args.profile == "intensity_first" else OUT_BALANCED_V1)
+    )
     out_path = Path(args.output).resolve() if args.output else default_output
     out_path.write_text(json.dumps(out_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {out_path}")
     if best:
-        print(
+        line = [
             "BEST:",
             best["strategy"],
             best["intensity"],
             f"saving={best['global_token_saving_rate']:.6f}",
             f"drop_pp={best['jaccard_drop_pp']:.6f}",
             f"gate_ok={best['gate_ok']}",
-        )
+        ]
+        if args.profile == "balanced" and "balanced_composite" in best:
+            line.append(f"composite={best['balanced_composite']:.6f}")
+        print(*line)
     return 0
 
 
