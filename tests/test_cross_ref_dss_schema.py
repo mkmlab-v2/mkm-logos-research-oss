@@ -143,7 +143,7 @@ def test_entry_06_07_08_10_partial_anchor_gates() -> None:
     """Entries with verified subset anchors keep explicit partial status."""
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
     expected = {
-        "ENTRY_06": "status=partial_anchor_verified (column)",
+        "ENTRY_06": "status=partial_anchor_verified (column+line-range)",
         "ENTRY_07": "status=partial_anchor_verified (column-range)",
         "ENTRY_08": "status=partial_anchor_verified (sigla+plates)",
         "ENTRY_10": "status=partial_anchor_verified (plates)",
@@ -161,3 +161,8 @@ def test_entry_06_07_08_10_partial_anchor_gates() -> None:
     sat07 = str(row07.get("satellite_ref", ""))
     assert "Yadin 1977-1983 (11Q19 primary)" in sat07
     assert "DJD XXIII (11Q20-31, Temple b/c comparanda)" in sat07
+
+    row06 = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_06")
+    sat06 = str(row06.get("satellite_ref", ""))
+    assert "line=1-17" in sat06
+    assert "Qumran-Digital 1QpHab transcription (2024-04-29)" in sat06

@@ -69,8 +69,8 @@
     {
       "entry_id": "ENTRY_06",
       "canonical_ref": "Exod.20.15",
-      "satellite_ref": "1QpHab (1Q15) | loc=col.VII, line=TBD | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill) | status=partial_anchor_verified (column)",
-      "source_id": "1QpHab (1Q15) | loc=col.VII, line=TBD | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill) | status=partial_anchor_verified (column)",
+      "satellite_ref": "1QpHab (1Q15) | loc=col.VII, line=1-17 (Qumran-Digital transcription table) | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill), Qumran-Digital 1QpHab transcription (2024-04-29) | status=partial_anchor_verified (column+line-range)",
+      "source_id": "1QpHab (1Q15) | loc=col.VII, line=1-17 (Qumran-Digital transcription table) | refs=St.Mark's I (ASOR 1950), DSS Study Edition (Brill), Qumran-Digital 1QpHab transcription (2024-04-29) | status=partial_anchor_verified (column+line-range)",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,

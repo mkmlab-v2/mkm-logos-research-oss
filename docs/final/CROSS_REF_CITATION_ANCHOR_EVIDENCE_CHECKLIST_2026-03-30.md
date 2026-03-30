@@ -19,7 +19,7 @@
 
 | Entry | 현재 상태 | 필요한 증거 | 완료 조건 |
 |------|-----------|------------|----------|
-| ENTRY_06 (1QpHab) | `line=TBD` | 선택 판본 기준 `col.VII` 정확한 line 범위 | `loc=col.VII, line=<n-m>`로 치환 |
+| ENTRY_06 (1QpHab) | `partial_anchor_verified (column+line-range)` | col.VII line 1-17 확정 후, canonical(Exod.20.15) 대응 line 정밀화 | `loc=col.VII, line=<n-m>` + 필요 시 `status=verified_anchor` |
 | ENTRY_07 (11QT) | `line=TBD` | `cols.XLVI-XLVII`의 실제 line/segment | `loc=cols.XLVI-XLVII, line=<...>` 치환 |
 | ENTRY_08 (4Q319) | `fragment/sigla=TBD` | 공식 fragment sigla + line/plate 매핑 | `loc=frag.<id>, sigla=<...>, line=<...>` |
 | ENTRY_09 (4Q169) | `line=TBD` | `frags 3-4 col.ii`의 line anchor | `loc=frags 3-4, col.ii, line=<...>` |
