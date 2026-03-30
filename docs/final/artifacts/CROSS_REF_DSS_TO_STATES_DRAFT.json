@@ -93,8 +93,8 @@
     {
       "entry_id": "ENTRY_08",
       "canonical_ref": "Neh.7.56",
-      "satellite_ref": "4Q319 (4QOtot) | loc=fragment/sigla=TBD, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=verify fragment sigla",
-      "source_id": "4Q319 (4QOtot) | loc=fragment/sigla=TBD, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=verify fragment sigla",
+      "satellite_ref": "4Q319 (4QOtot) | loc=fragment/sigla=4QOtot, plate=Pls X-XIII, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=partial_anchor_verified (sigla+plates)",
+      "source_id": "4Q319 (4QOtot) | loc=fragment/sigla=4QOtot, plate=Pls X-XIII, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=partial_anchor_verified (sigla+plates)",
       "corpus_type": "dss",
       "link_type": "temporal",
       "confidence": null,

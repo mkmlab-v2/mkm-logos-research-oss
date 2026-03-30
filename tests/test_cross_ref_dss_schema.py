@@ -97,3 +97,14 @@ def test_cross_ref_draft_validates_against_json_schema() -> None:
     schema = json.loads(_SCHEMA.read_text(encoding="utf-8"))
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
     jsonschema.Draft7Validator(schema).validate(doc)
+
+
+def test_entry_12_to_16_anchor_gate_locked_until_evidence_update() -> None:
+    """ENTRY_12-16 must stay blocked until concrete anchors are added."""
+    doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
+    for eid in ("ENTRY_12", "ENTRY_13", "ENTRY_14", "ENTRY_15", "ENTRY_16"):
+        row = next(e for e in doc["entries"] if e.get("entry_id") == eid)
+        sat = str(row.get("satellite_ref", ""))
+        assert "status=missing_anchor_until_source_update" in sat, (
+            f"{eid} must stay locked with missing_anchor gate in satellite_ref"
+        )
