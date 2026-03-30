@@ -127,6 +127,7 @@ def test_entry_06_07_08_10_partial_anchor_gates() -> None:
         "ENTRY_07": "status=partial_anchor_verified (column-range)",
         "ENTRY_08": "status=partial_anchor_verified (sigla+plates)",
         "ENTRY_10": "status=partial_anchor_verified (plates)",
+        "ENTRY_09": "status=partial_anchor_verified (frag+col)",
     }
     for eid, marker in expected.items():
         row = next(e for e in doc["entries"] if e.get("entry_id") == eid)

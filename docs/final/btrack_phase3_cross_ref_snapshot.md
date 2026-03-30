@@ -114,8 +114,8 @@
     {
       "entry_id": "ENTRY_09",
       "canonical_ref": "Ps.36.1",
-      "satellite_ref": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=verify frag/col",
-      "source_id": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=verify frag/col",
+      "satellite_ref": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=partial_anchor_verified (frag+col)",
+      "source_id": "4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=partial_anchor_verified (frag+col)",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
@@ -237,7 +237,7 @@ ENTRY_07 | link_type=temporal | source_id=11QT (11Q19) | loc=cols.XLVI-XLVII, li
 
 ENTRY_08 | link_type=temporal | source_id=4Q319 (4QOtot) | loc=fragment/sigla=4QOtot, plate=Pls X-XIII, line=TBD | refs=DJD XXI (Talmon et al. 2001) | status=partial_anchor_verified (sigla+plates) | state_candidate_id=6 | corpus=dss | theme=제사장 주기·신호 | rationale=B-Track DSS: 제사장 주기·신호 표류. A-Track 대비: Nehemiah 복귀자 명단 행 — 인구/재건 흐름과 ‘주기 신호’ 담론만 병치(벤치).
 
-ENTRY_09 | link_type=thematic | source_id=4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=verify frag/col | state_candidate_id=7 | corpus=dss | theme=나훔 페셔·악행 귀속 | rationale=B-Track DSS: 나훔 페셔의 악행 귀속·심판 화법. A-Track 대비: 시36 ‘악인의 죄’ 서사와 주제 병치 — 수치/심리 트리거 아님.
+ENTRY_09 | link_type=thematic | source_id=4Q169 (4QpNah) | loc=frags 3-4, col.ii, line=TBD | refs=DJD V (Allegro 1968), DSS Study Edition (Brill) | status=partial_anchor_verified (frag+col) | state_candidate_id=7 | corpus=dss | theme=나훔 페셔·악행 귀속 | rationale=B-Track DSS: 나훔 페셔의 악행 귀속·심판 화법. A-Track 대비: 시36 ‘악인의 죄’ 서사와 주제 병치 — 수치/심리 트리거 아님.
 
 ENTRY_10 | link_type=thematic | source_id=CD-A I-II (+4Q266-273) | loc=4QDamascus Document (4Q266-273) witnesses -> DJD XVIII plates I–XLII; mapping to CD-A ch. I-II line anchor remains TBD | refs=Charlesworth PTSDSSP 1995, DJD XVIII (Baumgarten 1996) | status=partial_anchor_verified (plates) | state_candidate_id=9 | corpus=dss | theme=언약·지경·유배 | rationale=B-Track DSS: 공동체의 언약·지경 담론. A-Track 대비: 여호수아 지파 경계 점과 ‘땅·경계’ 메타만 병치 — 지리≠가격.
 
