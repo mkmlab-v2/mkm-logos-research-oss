@@ -1,0 +1,11 @@
+{
+  "schema": "btrack_promotion_gate_v1",
+  "generated_at_utc": "2026-03-30T15:30:00Z",
+  "thresholds": {
+    "reproducibility_match_rate_min": 0.8,
+    "resolution_confidence_delta_min": -0.05,
+    "contamination_snr_delta_min": -0.05
+  },
+  "decision": "pending",
+  "notes": "Candidate subset gate for partial promotion only; full-track gate remains strict at >=0."
+}
