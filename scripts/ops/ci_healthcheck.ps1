@@ -2,7 +2,9 @@ param(
     [string]$WorkflowName = "Dual Regime Integrity (Fact-Lock)",
     [int]$Limit = 10,
     [switch]$WatchLatest,
-    [switch]$ShowFailedLog
+    [switch]$ShowFailedLog,
+    [switch]$RunNumericNearMissGateCheck,
+    [switch]$ApproveNumericNearMiss
 )
 
 $ErrorActionPreference = "Stop"
@@ -40,6 +42,20 @@ if ([string]::IsNullOrWhiteSpace($runId)) {
 
 Write-Section "Latest run"
 gh run view $runId --json status,conclusion,url,workflowName,displayTitle
+
+if ($RunNumericNearMissGateCheck) {
+    $gateScript = "scripts/ops/run_numeric_near_miss_gate_check.ps1"
+    if (-not (Test-Path -LiteralPath $gateScript)) {
+        throw "Numeric near-miss gate script not found: $gateScript"
+    }
+    Write-Section "Numeric near-miss gate check"
+    if ($ApproveNumericNearMiss) {
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $gateScript -ApproveNumericNearMiss
+    }
+    else {
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $gateScript
+    }
+}
 
 if ($WatchLatest) {
     Write-Section "Watch latest run"
