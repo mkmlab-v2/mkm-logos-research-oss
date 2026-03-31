@@ -106,6 +106,9 @@ reports/constitution/btrack_pilot/gha_run_*/
 # Local RAG guardrail run artifacts (regenerable snapshots)
 reports/constitution/btrack_pilot/rag_*.json
 reports/constitution/btrack_pilot/rag_*.jsonl
+# Local Slack delivery snapshots/logs (regenerable)
+reports/constitution/btrack_pilot/fact_safe_slack_delivery_*.json
+reports/constitution/btrack_pilot/fact_safe_slack_delivery_*.jsonl
 
 # Root accidental probe output (one-line JSON); keep local only
 /utf8
