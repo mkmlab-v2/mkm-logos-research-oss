@@ -1,6 +1,7 @@
 param(
     [switch]$SkipBundle,
-    [double]$OverlapDriftAlertThreshold = -0.05
+    [double]$OverlapDriftAlertThreshold = -0.05,
+    [switch]$SkipNightWatchmanHarness
 )
 
 $ErrorActionPreference = "Stop"
@@ -166,6 +167,8 @@ $prophecyCoreDecision = $null
 $prophecyCoreScore = $null
 $prophecyKShieldCandidate = $null
 $prophecyKShieldMdd = $null
+$kShieldMetadataGuard = "pass"
+$kShieldMetadataReason = $null
 if (Test-Path -LiteralPath $monthlyProphecyPath) {
     try {
         $prophecyObj = Get-Content -LiteralPath $monthlyProphecyPath -Encoding utf8 | ConvertFrom-Json
@@ -188,13 +191,27 @@ if (Test-Path -LiteralPath $monthlyProphecyPath) {
             $priceOutputLockGuard = "fail"
             $priceOutputLockReason = "missing_core_decision"
         }
+        if ([string]::IsNullOrWhiteSpace($prophecyKShieldCandidate)) {
+            $kShieldMetadataGuard = "fail"
+            $kShieldMetadataReason = "missing_k_shield_candidate"
+        }
+        if ($null -eq $prophecyKShieldMdd) {
+            $kShieldMetadataGuard = "fail"
+            if ([string]::IsNullOrWhiteSpace($kShieldMetadataReason)) {
+                $kShieldMetadataReason = "missing_k_shield_candidate_max_drawdown_pct"
+            }
+        }
     } catch {
         $priceOutputLockGuard = "fail"
         $priceOutputLockReason = "price_output_lock_parse_error"
+        $kShieldMetadataGuard = "fail"
+        $kShieldMetadataReason = "k_shield_metadata_parse_error"
     }
 } else {
     $priceOutputLockGuard = "fail"
     $priceOutputLockReason = "price_output_lock_file_missing"
+    $kShieldMetadataGuard = "fail"
+    $kShieldMetadataReason = "k_shield_metadata_file_missing"
 }
 
 Write-Host "[waiting-queue-check] Building Fact-Safe multi-lens brief..."
@@ -241,11 +258,15 @@ if ($LASTEXITCODE -ne 0) {
     throw "Cost watch monitor build failed with exit code $LASTEXITCODE"
 }
 
-Write-Host "[waiting-queue-check] Running Night Watchman harness guard..."
-powershell -ExecutionPolicy Bypass -File "C:\workspace\scripts\night_watchman_harness_v1.ps1" `
-    -ConfigPath "C:\workspace\scripts\configs\night_watchman_harness_v1.json"
-if ($LASTEXITCODE -ne 0) {
-    throw "Night Watchman harness guard failed with exit code $LASTEXITCODE"
+if ($SkipNightWatchmanHarness) {
+    Write-Host "[waiting-queue-check] Skipping Night Watchman harness guard by flag."
+} else {
+    Write-Host "[waiting-queue-check] Running Night Watchman harness guard..."
+    powershell -ExecutionPolicy Bypass -File "C:\workspace\scripts\night_watchman_harness_v1.ps1" `
+        -ConfigPath "C:\workspace\scripts\configs\night_watchman_harness_v1.json"
+    if ($LASTEXITCODE -ne 0) {
+        throw "Night Watchman harness guard failed with exit code $LASTEXITCODE"
+    }
 }
 
 $highReliabilityDecision = $null
@@ -297,6 +318,8 @@ if ($overlapDriftAlert -and ($highReliabilityDecision -eq "PASS")) {
     prophecy_core_score = $prophecyCoreScore
     prophecy_k_shield_candidate = $prophecyKShieldCandidate
     prophecy_k_shield_candidate_max_drawdown_pct = $prophecyKShieldMdd
+    k_shield_metadata_guard = $kShieldMetadataGuard
+    k_shield_metadata_reason = $kShieldMetadataReason
     monthly_prophecy_path = $monthlyProphecyPath
     runtime_risk_profile_path = $runtimeRiskProfilePath
     next_monthly_due_date = $nextMonthlyDue
@@ -317,6 +340,9 @@ if ($overlapDriftAlert -and ($highReliabilityDecision -eq "PASS")) {
 
 if ($priceOutputLockGuard -ne "pass") {
     throw "Price output lock guard failed: $priceOutputLockReason"
+}
+if ($kShieldMetadataGuard -ne "pass") {
+    throw "K-shield metadata guard failed: $kShieldMetadataReason"
 }
 
 Write-Host "[waiting-queue-check] Broadcasting Fact-Safe summary..."
