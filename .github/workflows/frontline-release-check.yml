@@ -32,6 +32,14 @@ jobs:
   remote-ready-check:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Echo dispatch inputs
         run: |
           echo "tag=${{ github.event.inputs.tag }}"
@@ -39,6 +47,9 @@ jobs:
           echo "no_strict_regression=${{ github.event.inputs.no_strict_regression }}"
           echo "force_autopilot=${{ github.event.inputs.force_autopilot }}"
           echo "trigger_input_mode=${{ github.event.inputs.trigger_input_mode }}"
+
+      - name: RAG TurboQuant canary rollback flag gate
+        run: python scripts/check_rag_canary_rollback_flag.py
 
       - name: Build gate snapshot outputs
         run: |

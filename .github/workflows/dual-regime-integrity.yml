@@ -14,7 +14,9 @@ on:
       - "pytest.ini"
       - ".gitattributes"
       - ".github/workflows/dual-regime-integrity.yml"
+      - ".github/workflows/rag-guardrail-stack-smoke.yml"
       - "scripts/integrity_guard.py"
+      - "scripts/run_rag_guardrail_stack_smoke.py"
       - "scripts/sync_btrack_phase3_snapshot_json_fence.py"
       - "scripts/run_fact_lock_bundle.ps1"
       - "scripts/run_p1_ab_bundle.ps1"
@@ -44,7 +46,9 @@ on:
       - "scripts/run_ultra_compression_bench.py"
       - "scripts/run_ultra_compression_default.py"
       - "scripts/check_btrack_regression.py"
+      - "scripts/check_rag_canary_rollback_flag.py"
       - "scripts/lock_btrack_verified_baseline.py"
+      - "reports/constitution/btrack_pilot/rag_canary_rollback_flag_latest.json"
       - "scripts/build_btrack_dss_enriched_from_docs.py"
       - "scripts/build_btrack_symbol_promotion_lanes.py"
       - "scripts/evaluate_btrack_symbol_lane_gate.py"
@@ -171,6 +175,9 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+
+      - name: Preflight RAG guardrail stack smoke
+        run: python scripts/run_rag_guardrail_stack_smoke.py
 
       - name: Install pytest and jsonschema
         run: python -m pip install --upgrade pip pytest jsonschema fastapi httpx pyyaml
@@ -327,6 +334,9 @@ jobs:
 
       - name: B-Track verified baseline regression check
         run: python scripts/check_btrack_regression.py
+
+      - name: RAG TurboQuant canary rollback flag gate
+        run: python scripts/check_rag_canary_rollback_flag.py
 
       - name: B-Track symbol lane gate + lock + regression check
         run: python scripts/run_btrack_symbol_lane_gate_and_lock.py --include-shared-vault --profile-tag stable --baseline-out reports/constitution/btrack_pilot/btrack_symbol_lane_baseline_lock_stable_latest.json

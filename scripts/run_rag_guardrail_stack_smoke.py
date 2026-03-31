@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import json
+import subprocess
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+
+def _run(cmd: str, cwd: Path) -> dict[str, Any]:
+    t0 = time.perf_counter()
+    p = subprocess.run(cmd, cwd=str(cwd), shell=True, capture_output=True, text=True)
+    dt = time.perf_counter() - t0
+    return {
+        "command": cmd,
+        "exit_code": p.returncode,
+        "elapsed_sec": round(dt, 4),
+        "stdout_tail": p.stdout[-800:],
+        "stderr_tail": p.stderr[-800:],
+        "ok": p.returncode == 0,
+    }
+
+
+def main() -> int:
+    root = Path(__file__).resolve().parents[1]
+    out = root / "reports" / "constitution" / "btrack_pilot" / "rag_guardrail_stack_smoke_latest.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+
+    checks = [
+        _run("python scripts/enforce_backend_fact_engine_quantization_guard.py --scan-dir projects/bitcoin-trading/src --scan-dir scripts --skip-regex \"/scripts/run_rag_turboquant_poc_template.py\"", root),
+        _run("python scripts/run_rag_turboquant_guarded_sweep.py --cwd . --runs 1", root),
+        _run("python scripts/run_rag_turboquant_canary_monitor.py --cwd . --iterations 1 --interval-sec 0", root),
+        _run("python scripts/check_rag_canary_rollback_flag.py", root),
+    ]
+
+    overall_ok = all(c["ok"] for c in checks)
+    payload = {
+        "schema": "rag_guardrail_stack_smoke_v1",
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "overall_ok": overall_ok,
+        "checks": checks,
+    }
+    out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"WROTE: {out}")
+    return 0 if overall_ok else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
