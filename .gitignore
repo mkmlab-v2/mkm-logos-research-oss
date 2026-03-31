@@ -105,3 +105,4 @@ reports/constitution/btrack_pilot/master_codebook_lexicon_v1_*_rows_latest.json
 # Root accidental probe output (one-line JSON); keep local only
 /utf8
 /tmp_verify_report.json
+.aider*
