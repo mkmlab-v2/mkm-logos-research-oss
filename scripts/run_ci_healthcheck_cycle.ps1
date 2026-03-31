@@ -22,7 +22,8 @@ $logPath = Join-Path $logDir "ci_healthcheck_cycle_${ts}.log"
 "[$((Get-Date).ToString('s'))] Starting ci_healthcheck cycle (limit=$Limit)" | Out-File -FilePath $logPath -Encoding utf8
 
 try {
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $healthcheck -Limit $Limit -ShowFailedLog *>&1 | Tee-Object -FilePath $logPath -Append
+    # Do not force failed-log extraction here; in-progress runs can make gh return non-zero.
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $healthcheck -Limit $Limit *>&1 | Tee-Object -FilePath $logPath -Append
     "[$((Get-Date).ToString('s'))] Completed OK" | Out-File -FilePath $logPath -Append -Encoding utf8
 }
 catch {
