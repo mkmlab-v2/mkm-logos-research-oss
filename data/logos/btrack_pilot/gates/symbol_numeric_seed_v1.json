@@ -1,0 +1,36 @@
+{
+  "schema": "symbol_numeric_seed_v1",
+  "note": "Operational numeric-symbol seed map for fact-safe symbol injection. Heuristic guide only.",
+  "symbols": [
+    {
+      "symbol": "7",
+      "label": "completeness_cycle",
+      "category": "numerical",
+      "priority": "high"
+    },
+    {
+      "symbol": "12",
+      "label": "governance_order",
+      "category": "numerical",
+      "priority": "high"
+    },
+    {
+      "symbol": "40",
+      "label": "testing_refinement",
+      "category": "numerical",
+      "priority": "high"
+    },
+    {
+      "symbol": "70",
+      "label": "nations_fullset",
+      "category": "numerical",
+      "priority": "medium"
+    },
+    {
+      "symbol": "144000",
+      "label": "sealed_remnant_marker",
+      "category": "numerical",
+      "priority": "medium"
+    }
+  ]
+}

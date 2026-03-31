@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_GATE_TEMPLATE = ROOT / "data" / "logos" / "btrack_pilot" / "gates" / "symbol_lane_gate_template.json"
+DEFAULT_NUMERIC_TEMPLATE = ROOT / "data" / "logos" / "btrack_pilot" / "gates" / "symbol_numeric_seed_v1.json"
 
 
 def _run(cmd: list[str]) -> None:
@@ -70,6 +71,11 @@ def main() -> int:
         default="stable",
         help="Output profile tag (e.g. stable, exploratory).",
     )
+    ap.add_argument(
+        "--numeric-template",
+        default=str(DEFAULT_NUMERIC_TEMPLATE),
+        help="Numeric symbol seed template for injection coverage report.",
+    )
     args = ap.parse_args()
     py = args.python
     tag = str(args.profile_tag).strip() or "stable"
@@ -88,6 +94,7 @@ def main() -> int:
     abc_jsonl = _tag_path("reports/constitution/btrack_pilot/symbol_candidates_abc_labeled_latest.jsonl", tag)
     abc_summary = _tag_path("reports/constitution/btrack_pilot/symbol_candidates_abc_summary_latest.json", tag)
     c_queue_jsonl = _tag_path("reports/constitution/btrack_pilot/symbol_c_validation_queue_latest.jsonl", tag)
+    numeric_report_json = _tag_path("reports/constitution/btrack_pilot/symbol_numeric_injection_latest.json", tag)
 
     dss_cmd = [py, "scripts/build_btrack_dss_enriched_from_docs.py"]
     if args.include_shared_vault:
@@ -125,6 +132,18 @@ def main() -> int:
             curated_jsonl,
             "--out-summary",
             curated_summary,
+        ]
+    )
+    _run(
+        [
+            py,
+            "scripts/report_symbol_numeric_injection.py",
+            "--input-jsonl",
+            curated_jsonl,
+            "--numeric-template",
+            str(args.numeric_template),
+            "--out-json",
+            numeric_report_json,
         ]
     )
     _run([py, "scripts/report_btrack_symbol_source_split.py", "--in-jsonl", curated_jsonl, "--out-json", source_split_json])
