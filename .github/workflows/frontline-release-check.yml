@@ -27,6 +27,16 @@ on:
         required: false
         default: "manual"
         type: string
+      enable_vllm_canary_gate:
+        description: "Enable vLLM canary repeat + rollback gate"
+        required: false
+        default: "false"
+        type: string
+      vllm_base_url:
+        description: "vLLM OpenAI-compatible base URL"
+        required: false
+        default: "http://127.0.0.1:8000"
+        type: string
 
 jobs:
   remote-ready-check:
@@ -47,6 +57,22 @@ jobs:
           echo "no_strict_regression=${{ github.event.inputs.no_strict_regression }}"
           echo "force_autopilot=${{ github.event.inputs.force_autopilot }}"
           echo "trigger_input_mode=${{ github.event.inputs.trigger_input_mode }}"
+          echo "enable_vllm_canary_gate=${{ github.event.inputs.enable_vllm_canary_gate }}"
+          echo "vllm_base_url=${{ github.event.inputs.vllm_base_url }}"
+
+      - name: vLLM canary repeat (optional)
+        if: ${{ github.event.inputs.enable_vllm_canary_gate == 'true' }}
+        run: |
+          python scripts/run_vllm_ab_canary_repeat.py \
+            --base-url "${{ github.event.inputs.vllm_base_url }}" \
+            --baseline-model "mkm12-lite" \
+            --candidate-model "mkm12-accelerated" \
+            --runs 10 \
+            --allow-unavailable
+
+      - name: Emit rollback flag from vLLM canary (optional)
+        if: ${{ github.event.inputs.enable_vllm_canary_gate == 'true' }}
+        run: python scripts/emit_vllm_canary_rollback_flag.py
 
       - name: RAG TurboQuant canary rollback flag gate
         run: python scripts/check_rag_canary_rollback_flag.py
