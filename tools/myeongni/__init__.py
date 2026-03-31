@@ -1,5 +1,16 @@
 """Myeongni / manseryeok helpers (B-track, Fact-Safe metadata)."""
 
+from .btrack_bench_paths import (
+    BENCH_DIR,
+    CANONICAL_A_TRACK_EVAL,
+    CANONICAL_BENCH_POINTER,
+    CANONICAL_B_TRACK_EVAL,
+    CROSS_REF_BOOTSTRAP_A_TRACK_EVAL,
+    CROSS_REF_BOOTSTRAP_B_TRACK_EVAL,
+    DIRECT_A_TRACK_EVAL,
+    DIRECT_B_TRACK_EVAL,
+    MANSERYEOK_SCOPE_MANIFEST,
+)
 from .manseryeok_provenance import (
     BENCH_SCOPE_MANIFEST_RELPATH,
     BENCH_SCOPE_REF_CROSS_REF_BOOTSTRAP_V1,
@@ -23,11 +34,20 @@ from .manseryeok_provenance import (
 )
 
 __all__ = [
+    "BENCH_DIR",
     "BENCH_SCOPE_MANIFEST_RELPATH",
     "BENCH_SCOPE_REF_CROSS_REF_BOOTSTRAP_V1",
     "BENCH_SCOPE_REF_DIRECT_V1",
     "BENCH_SCOPE_REF_OBSERVED_V1",
+    "CANONICAL_A_TRACK_EVAL",
+    "CANONICAL_BENCH_POINTER",
+    "CANONICAL_B_TRACK_EVAL",
+    "CROSS_REF_BOOTSTRAP_A_TRACK_EVAL",
+    "CROSS_REF_BOOTSTRAP_B_TRACK_EVAL",
+    "DIRECT_A_TRACK_EVAL",
+    "DIRECT_B_TRACK_EVAL",
     "MANSE_PRECISION_RUNTIME_POINTER_RELPATH",
+    "MANSERYEOK_SCOPE_MANIFEST",
     "approx_stub_pipeline_metadata",
     "btrack_myeongni_16_state_stream_scope",
     "btrack_pilot_bench_scope",
