@@ -250,7 +250,7 @@ jobs:
 
       - name: Upload Token API parity debug bundle (on failure)
         if: failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: token-api-parity-debug
           path: |
@@ -362,7 +362,7 @@ jobs:
 
       - name: Upload REGIME_INTEGRITY_REPORT.json (artifact)
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: regime-integrity-report
           path: backtest_results/REGIME_INTEGRITY_REPORT.json
@@ -370,7 +370,7 @@ jobs:
 
       - name: Upload Fusion Gate artifacts
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: fusion-gate-artifacts
           path: |
@@ -380,7 +380,7 @@ jobs:
 
       - name: Upload P1 A/B selection artifacts
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: p1-ab-selection-artifacts
           path: |
@@ -393,7 +393,7 @@ jobs:
       # Passive: on failure, preserve full backtest_results for autopsy (logs, dumps, JSON).
       - name: Upload backtest_results (failure autopsy)
         if: failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: backtest-results-autopsy
           path: backtest_results/
