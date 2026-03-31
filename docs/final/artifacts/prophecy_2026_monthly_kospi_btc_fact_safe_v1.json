@@ -1,0 +1,222 @@
+{
+  "schema": "prophecy_2026_monthly_kospi_btc_fact_safe_v1",
+  "generated_at_utc": "2026-03-31T06:36:56Z",
+  "meta": {
+    "engine_id": "V2_Precision_MCP",
+    "boundary_rule": "observatory_ephemeris_v1",
+    "reliability_badge": "LOW",
+    "high_reliability_decision": "HOLD",
+    "gate_reason": "low_badge_forced_hold",
+    "raw_high_reliability_gate": "PASS",
+    "overlap_drift_alert": false,
+    "btc_backtest_best_period": "2024-01-01..2024-12-31",
+    "btc_backtest_best_net_return_pct": 242.819158,
+    "btc_backtest_best_profit_factor": 1.28926
+  },
+  "months": [
+    {
+      "month": 1,
+      "phase": "기준선/탐색",
+      "kospi": {
+        "up_pct": 30,
+        "neutral_pct": 36,
+        "down_pct": 34,
+        "direction": "방어하방"
+      },
+      "btc": {
+        "up_pct": 29,
+        "neutral_pct": 36,
+        "down_pct": 35,
+        "direction": "방어하방"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    },
+    {
+      "month": 2,
+      "phase": "기준선/탐색",
+      "kospi": {
+        "up_pct": 30,
+        "neutral_pct": 36,
+        "down_pct": 34,
+        "direction": "방어하방"
+      },
+      "btc": {
+        "up_pct": 29,
+        "neutral_pct": 36,
+        "down_pct": 35,
+        "direction": "방어하방"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    },
+    {
+      "month": 3,
+      "phase": "기준선/탐색",
+      "kospi": {
+        "up_pct": 30,
+        "neutral_pct": 36,
+        "down_pct": 34,
+        "direction": "방어하방"
+      },
+      "btc": {
+        "up_pct": 29,
+        "neutral_pct": 36,
+        "down_pct": 35,
+        "direction": "방어하방"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    },
+    {
+      "month": 4,
+      "phase": "압박/방어",
+      "kospi": {
+        "up_pct": 20,
+        "neutral_pct": 34,
+        "down_pct": 46,
+        "direction": "방어하방"
+      },
+      "btc": {
+        "up_pct": 19,
+        "neutral_pct": 34,
+        "down_pct": 47,
+        "direction": "방어하방"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    },
+    {
+      "month": 5,
+      "phase": "압박/방어",
+      "kospi": {
+        "up_pct": 20,
+        "neutral_pct": 34,
+        "down_pct": 46,
+        "direction": "방어하방"
+      },
+      "btc": {
+        "up_pct": 19,
+        "neutral_pct": 34,
+        "down_pct": 47,
+        "direction": "방어하방"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    },
+    {
+      "month": 6,
+      "phase": "압박/방어",
+      "kospi": {
+        "up_pct": 20,
+        "neutral_pct": 34,
+        "down_pct": 46,
+        "direction": "방어하방"
+      },
+      "btc": {
+        "up_pct": 19,
+        "neutral_pct": 34,
+        "down_pct": 47,
+        "direction": "방어하방"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    },
+    {
+      "month": 7,
+      "phase": "재정비/경쟁",
+      "kospi": {
+        "up_pct": 29,
+        "neutral_pct": 35,
+        "down_pct": 36,
+        "direction": "방어하방"
+      },
+      "btc": {
+        "up_pct": 28,
+        "neutral_pct": 35,
+        "down_pct": 37,
+        "direction": "방어하방"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    },
+    {
+      "month": 8,
+      "phase": "재정비/경쟁",
+      "kospi": {
+        "up_pct": 29,
+        "neutral_pct": 35,
+        "down_pct": 36,
+        "direction": "방어하방"
+      },
+      "btc": {
+        "up_pct": 28,
+        "neutral_pct": 35,
+        "down_pct": 37,
+        "direction": "방어하방"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    },
+    {
+      "month": 9,
+      "phase": "재정비/경쟁",
+      "kospi": {
+        "up_pct": 29,
+        "neutral_pct": 35,
+        "down_pct": 36,
+        "direction": "방어하방"
+      },
+      "btc": {
+        "up_pct": 28,
+        "neutral_pct": 35,
+        "down_pct": 37,
+        "direction": "방어하방"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    },
+    {
+      "month": 10,
+      "phase": "성과 회수/정리",
+      "kospi": {
+        "up_pct": 34,
+        "neutral_pct": 34,
+        "down_pct": 32,
+        "direction": "완만상방"
+      },
+      "btc": {
+        "up_pct": 33,
+        "neutral_pct": 34,
+        "down_pct": 33,
+        "direction": "중립"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    },
+    {
+      "month": 11,
+      "phase": "성과 회수/정리",
+      "kospi": {
+        "up_pct": 34,
+        "neutral_pct": 34,
+        "down_pct": 32,
+        "direction": "완만상방"
+      },
+      "btc": {
+        "up_pct": 33,
+        "neutral_pct": 34,
+        "down_pct": 33,
+        "direction": "중립"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    },
+    {
+      "month": 12,
+      "phase": "성과 회수/정리",
+      "kospi": {
+        "up_pct": 34,
+        "neutral_pct": 34,
+        "down_pct": 32,
+        "direction": "완만상방"
+      },
+      "btc": {
+        "up_pct": 33,
+        "neutral_pct": 34,
+        "down_pct": 33,
+        "direction": "중립"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+    }
+  ]
+}
