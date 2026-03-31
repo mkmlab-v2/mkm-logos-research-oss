@@ -6,31 +6,36 @@
       "symbol": "7",
       "label": "completeness_cycle",
       "category": "numerical",
-      "priority": "high"
+      "priority": "high",
+      "aliases": ["seven", "שבע", "שבעה"]
     },
     {
       "symbol": "12",
       "label": "governance_order",
       "category": "numerical",
-      "priority": "high"
+      "priority": "high",
+      "aliases": ["twelve", "שנים עשר", "שתים עשרה"]
     },
     {
       "symbol": "40",
       "label": "testing_refinement",
       "category": "numerical",
-      "priority": "high"
+      "priority": "high",
+      "aliases": ["forty", "ארבעים"]
     },
     {
       "symbol": "70",
       "label": "nations_fullset",
       "category": "numerical",
-      "priority": "medium"
+      "priority": "medium",
+      "aliases": ["seventy", "שבעים"]
     },
     {
       "symbol": "144000",
       "label": "sealed_remnant_marker",
       "category": "numerical",
-      "priority": "medium"
+      "priority": "medium",
+      "aliases": ["one hundred forty four thousand", "144,000", "מאה ארבעים וארבעה אלף", "אלף"]
     }
   ]
 }

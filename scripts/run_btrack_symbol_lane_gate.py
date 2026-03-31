@@ -76,6 +76,11 @@ def main() -> int:
         default=str(DEFAULT_NUMERIC_TEMPLATE),
         help="Numeric symbol seed template for injection coverage report.",
     )
+    ap.add_argument(
+        "--approve-numeric-near-miss",
+        action="store_true",
+        help="Enable numeric near-miss promotion candidate export (requires explicit approval).",
+    )
     args = ap.parse_args()
     py = args.python
     tag = str(args.profile_tag).strip() or "stable"
@@ -95,6 +100,7 @@ def main() -> int:
     abc_summary = _tag_path("reports/constitution/btrack_pilot/symbol_candidates_abc_summary_latest.json", tag)
     c_queue_jsonl = _tag_path("reports/constitution/btrack_pilot/symbol_c_validation_queue_latest.jsonl", tag)
     numeric_report_json = _tag_path("reports/constitution/btrack_pilot/symbol_numeric_injection_latest.json", tag)
+    numeric_promotion_json = _tag_path("reports/constitution/btrack_pilot/numeric_promotion_candidates_latest.json", tag)
 
     dss_cmd = [py, "scripts/build_btrack_dss_enriched_from_docs.py"]
     if args.include_shared_vault:
@@ -140,10 +146,25 @@ def main() -> int:
             "scripts/report_symbol_numeric_injection.py",
             "--input-jsonl",
             curated_jsonl,
+            "--raw-jsonl",
+            cand_jsonl,
             "--numeric-template",
             str(args.numeric_template),
             "--out-json",
             numeric_report_json,
+        ]
+    )
+    approval_flag = "approve_numeric_near_miss=true" if args.approve_numeric_near_miss else ""
+    _run(
+        [
+            py,
+            "scripts/build_symbol_numeric_promotion_candidates.py",
+            "--input-json",
+            numeric_report_json,
+            "--out-json",
+            numeric_promotion_json,
+            "--approval-flag",
+            approval_flag,
         ]
     )
     _run([py, "scripts/report_btrack_symbol_source_split.py", "--in-jsonl", curated_jsonl, "--out-json", source_split_json])

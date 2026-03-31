@@ -30,6 +30,11 @@ def main() -> int:
     ap.add_argument("--extract-min-df", type=int, default=2, help="Forwarded to gate runner.")
     ap.add_argument("--curate-top-k", type=int, default=200, help="Forwarded to gate runner.")
     ap.add_argument("--curate-min-count", type=int, default=200, help="Forwarded to gate runner.")
+    ap.add_argument(
+        "--approve-numeric-near-miss",
+        action="store_true",
+        help="Forwarded approval flag for numeric near-miss promotion export.",
+    )
     ap.add_argument("--profile-tag", default="stable", help="Output profile tag forwarded to gate runner.")
     ap.add_argument(
         "--gate-template",
@@ -62,6 +67,8 @@ def main() -> int:
     ]
     if args.include_shared_vault:
         gate_cmd.append("--include-shared-vault")
+    if args.approve_numeric_near_miss:
+        gate_cmd.append("--approve-numeric-near-miss")
     _run(gate_cmd)
     _run(
         [
