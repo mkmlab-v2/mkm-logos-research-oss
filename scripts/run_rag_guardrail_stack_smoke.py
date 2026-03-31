@@ -32,8 +32,28 @@ def main() -> int:
         _run("python scripts/enforce_backend_fact_engine_quantization_guard.py --scan-dir projects/bitcoin-trading/src --scan-dir scripts --skip-regex \"/scripts/run_rag_turboquant_poc_template.py\"", root),
         _run("python scripts/run_rag_turboquant_guarded_sweep.py --cwd . --runs 1", root),
         _run("python scripts/run_rag_turboquant_canary_monitor.py --cwd . --iterations 1 --interval-sec 0", root),
-        _run("python scripts/check_rag_canary_rollback_flag.py", root),
     ]
+
+    # Align smoke behavior with canary workflow:
+    # always emit rollback-flag artifact before running the gate check.
+    monitor_report = (
+        root / "reports" / "constitution" / "btrack_pilot" / "rag_canary_monitor_latest.json"
+    )
+    rollback_flag = (
+        root / "reports" / "constitution" / "btrack_pilot" / "rag_canary_rollback_flag_latest.json"
+    )
+    if monitor_report.exists():
+        monitor_doc = json.loads(monitor_report.read_text(encoding="utf-8"))
+        all_passed = bool(monitor_doc.get("guardrail_status", {}).get("all_passed", False))
+        flag_doc = {
+            "schema": "rag_turboquant_canary_rollback_flag_v1",
+            "should_rollback": (not all_passed),
+            "reason": "guardrail_failed" if not all_passed else "healthy",
+            "source_report": "reports/constitution/btrack_pilot/rag_canary_monitor_latest.json",
+        }
+        rollback_flag.write_text(json.dumps(flag_doc, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    checks.append(_run("python scripts/check_rag_canary_rollback_flag.py", root))
 
     overall_ok = all(c["ok"] for c in checks)
     payload = {
