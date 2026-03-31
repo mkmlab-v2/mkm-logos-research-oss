@@ -110,6 +110,12 @@ if ($LASTEXITCODE -ne 0) {
     throw "Fact-Safe multi-lens brief build failed with exit code $LASTEXITCODE"
 }
 
+Write-Host "[waiting-queue-check] Broadcasting Fact-Safe summary..."
+py scripts/broadcast_fact_safe_multilens_brief.py
+if ($LASTEXITCODE -ne 0) {
+    throw "Fact-Safe broadcast build failed with exit code $LASTEXITCODE"
+}
+
 $highReliabilityDecision = $null
 if (Test-Path -LiteralPath $highReliabilityGatePath) {
     try {
