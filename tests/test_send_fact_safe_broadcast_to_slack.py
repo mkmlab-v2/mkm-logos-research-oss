@@ -25,6 +25,7 @@ def test_build_slack_text_contains_core_fields():
     text = build_slack_text(
         {
             "ts_utc": "2026-03-31T00:00:00Z",
+            "next_month_risk_hint": "4월 선행 리스크: 압박/방어 구간",
             "reliability_badge": "LOW",
             "high_reliability_decision": "HOLD",
             "gate_reason": "low_badge_forced_hold",
@@ -36,6 +37,7 @@ def test_build_slack_text_contains_core_fields():
         }
     )
     assert "Fact-Safe Monthly Broadcast" in text
+    assert "next_month_risk_hint: 4월 선행 리스크: 압박/방어 구간" in text
     assert "reliability_badge: LOW" in text
 
 

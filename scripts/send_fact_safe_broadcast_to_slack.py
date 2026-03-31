@@ -65,10 +65,13 @@ def _load_env_from_dotenv(path: Path) -> None:
 
 
 def build_slack_text(payload: dict) -> str:
+    next_hint = payload.get("next_month_risk_hint")
+    hint_line = f"- next_month_risk_hint: {next_hint}" if next_hint else "- next_month_risk_hint: unavailable"
     return "\n".join(
         [
             ":shield: *Fact-Safe Monthly Broadcast*",
             f"- generated_at_utc: {payload.get('ts_utc')}",
+            hint_line,
             f"- reliability_badge: {payload.get('reliability_badge')}",
             f"- high_reliability_decision: {payload.get('high_reliability_decision')}",
             f"- gate_reason: {payload.get('gate_reason')}",
