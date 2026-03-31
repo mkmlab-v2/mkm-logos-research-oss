@@ -91,3 +91,54 @@ def test_main_writes_status_when_payload_missing(tmp_path: Path, monkeypatch):
     assert len(lines) == 1
     logged = json.loads(lines[0])
     assert logged["reason"] == "invalid_or_missing_payload"
+
+
+def test_main_dry_run_persists_k_shield_status_fields(tmp_path: Path, monkeypatch):
+    payload = tmp_path / "payload.json"
+    payload.write_text(
+        json.dumps(
+            {
+                "ts_utc": "2026-03-31T00:00:00Z",
+                "price_output_locked": True,
+                "lock_reason": "low_or_hold_mode_price_output_forbidden",
+                "reliability_badge": "MID",
+                "high_reliability_decision": "PASS",
+                "gate_reason": "monthly_check_gate",
+                "core_score": 0.0,
+                "core_decision": "HOLD",
+                "core_reason": "score_inside_locked_band",
+                "k_shield_candidate_name": "k_shield_h1_soft",
+                "k_shield_candidate_max_drawdown_pct": 8.285629,
+                "net": "-2.8",
+                "net_source": "exchange_snapshot_24h",
+                "history_samples": "28",
+                "history_net_delta": "-24.2",
+                "overlap_drift_alert": False,
+                "overlap_drift_alert_threshold": -0.05,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    status = tmp_path / "status.json"
+    status_log = tmp_path / "status_log.jsonl"
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "prog",
+            "--input",
+            str(payload),
+            "--status-out",
+            str(status),
+            "--status-log-out",
+            str(status_log),
+            "--dry-run",
+        ],
+    )
+    rc = main()
+    assert rc == 0
+    doc = json.loads(status.read_text(encoding="utf-8"))
+    assert doc["status"] == "skipped"
+    assert doc["reason"] == "dry_run"
+    assert doc["k_shield_candidate_name"] == "k_shield_h1_soft"
+    assert doc["k_shield_candidate_max_drawdown_pct"] == 8.285629
