@@ -22,6 +22,8 @@
 ## 경로
 
 - 작업 루트: `C:/workspace` (Windows). Python 실행은 `py` 권장.
+- **B-track 파일럿 벤치 SSOT:** `data/logos/btrack_pilot/bench/CANONICAL_BENCH_POINTER_V1.json` — 공식 의도 벤치는 포인터의 `canonical_builder_script`가 갱신하는 `a_track_eval.jsonl` / `b_track_eval.jsonl` 슬롯이다. direct·cross_ref 부트스트랩 빌더는 기본적으로 `*_direct_v1.jsonl` / `*_cross_ref_bootstrap_v1.jsonl`에 쓰며 canonical을 덮어쓰지 않는다. 경로 상수: `tools/myeongni/btrack_bench_paths.py`.
+- **만세력 정밀(제2계층) SSOT 포인터:** `docs/final/MANSE_PRECISION_RUNTIME_POINTER_V1.json` — 에이전트 공식 배선은 Path B(MCP stdio, `athena-manseryeok`); 배치는 동일 엔진·per-row MCP 금지는 포인터 참조; 구현 팩트 표는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §3.4.
 - 공유 SSOT 확인 경로(1순위): `G:\공유 드라이브\MKM_DATA_VAULT\vault\btrack_artifacts_verified` (미존재 시 `...\vault` 하위 경로 확인).
 - B-track 핵심 산출물 승격(로컬 `reports/...` → G:): `scripts/push_local_artifacts_to_vault.ps1`
 - 어휘·코퍼스 FACT-LOCK 계약: `docs/final/MASTER_Linguistic_Contract_2026.md` — 외부 사전 스테이징 `C:\workspace\vault\external_lexicon` → G: `...\vault\external_lexicon`: `scripts/setup/fetch_external_lexicons.ps1` (수신·MANIFEST) 후 `scripts/push_external_lexicon_to_vault.ps1` (승격)

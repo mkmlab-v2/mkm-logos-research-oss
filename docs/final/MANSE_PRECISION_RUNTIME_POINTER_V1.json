@@ -1,0 +1,34 @@
+{
+  "schema": "manse_precision_runtime_pointer_v1",
+  "updated_note": "Layer-2 precision: official agent wiring is Path B (MCP stdio, athena-manseryeok). Batch/CI uses same engine via colocated mkm-life or batched calls—not per-row MCP.",
+  "workspace_scan_utc": "2026-03-31",
+  "official_wiring": {
+    "agent_precision_path": "B",
+    "transport": "mcp_stdio",
+    "summary": "Cursor agents resolve precision saju via MCP server athena-manseryeok (stdio); not in-process import in this workspace."
+  },
+  "mkm_life": {
+    "expected_relative_path": "projects/mkm/mkm-life",
+    "present_in_c_workspace": false,
+    "http_env_hint": "MANSERYEOK_REMOTE_CALC_URL",
+    "batch_note": "Share the same numerical engine as MCP: import from colocated mkm-life or one batched HTTP/service call; do not spawn MCP stdio once per benchmark row."
+  },
+  "cursor_mcp": {
+    "server_identifier": "project-0-workspace-athena-manseryeok",
+    "server_name": "athena-manseryeok",
+    "tools": [
+      "calculate_saju",
+      "verify_saju_date"
+    ],
+    "note": "MCP tool descriptors live under the Cursor project mcps folder (machine-local); verify with Cursor MCP settings if tools fail to load."
+  },
+  "provenance_helpers": {
+    "python_module": "tools/myeongni/manseryeok_provenance.py",
+    "bench_paths": "tools/myeongni/btrack_bench_paths.py"
+  },
+  "cross_ref": [
+    "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+    "docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json",
+    "AGENTS.md"
+  ]
+}
