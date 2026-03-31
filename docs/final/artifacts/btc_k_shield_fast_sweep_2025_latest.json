@@ -1,0 +1,133 @@
+{
+  "schema": "btc_k_shield_fast_sweep_v2",
+  "generated_at_utc": "2026-03-31T12:33:01Z",
+  "period": "2025-01-01..2025-12-31",
+  "rows": [
+    {
+      "name": "baseline_h3",
+      "config": {
+        "warmup": 30,
+        "horizon": 3,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0,
+        "slippage_bps_round_trip": 5.0,
+        "max_position_fraction": 0.2,
+        "daily_loss_cap_pct": 1.5,
+        "skip_if_vol_shock_pct": 8.0
+      },
+      "metrics": {
+        "sample_count": 317,
+        "win_rate": 0.425868,
+        "net_return_pct": -16.59583,
+        "avg_trade_return_pct": -0.052353,
+        "profit_factor": 0.800345,
+        "max_drawdown_pct": 21.580708,
+        "max_loss_streak": 12,
+        "skipped_vol_shock": 14,
+        "skipped_daily_loss_cap": 0
+      },
+      "score": -29.858671
+    },
+    {
+      "name": "k_shield_h3_soft",
+      "config": {
+        "warmup": 30,
+        "horizon": 3,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0,
+        "slippage_bps_round_trip": 5.0,
+        "max_position_fraction": 0.15,
+        "daily_loss_cap_pct": 1.2,
+        "skip_if_vol_shock_pct": 6.5
+      },
+      "metrics": {
+        "sample_count": 308,
+        "win_rate": 0.415584,
+        "net_return_pct": -18.058718,
+        "avg_trade_return_pct": -0.058632,
+        "profit_factor": 0.70021,
+        "max_drawdown_pct": 19.281488,
+        "max_loss_streak": 12,
+        "skipped_vol_shock": 23,
+        "skipped_daily_loss_cap": 0
+      },
+      "score": -29.982858
+    },
+    {
+      "name": "baseline_h1",
+      "config": {
+        "warmup": 20,
+        "horizon": 1,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0,
+        "slippage_bps_round_trip": 5.0,
+        "max_position_fraction": 0.2,
+        "daily_loss_cap_pct": 1.5,
+        "skip_if_vol_shock_pct": 8.0
+      },
+      "metrics": {
+        "sample_count": 340,
+        "win_rate": 0.447059,
+        "net_return_pct": -8.670295,
+        "avg_trade_return_pct": -0.025501,
+        "profit_factor": 0.842043,
+        "max_drawdown_pct": 11.230964,
+        "max_loss_streak": 8,
+        "skipped_vol_shock": 3,
+        "skipped_daily_loss_cap": 0
+      },
+      "score": -13.444851
+    },
+    {
+      "name": "k_shield_h1_soft",
+      "config": {
+        "warmup": 20,
+        "horizon": 1,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0,
+        "slippage_bps_round_trip": 5.0,
+        "max_position_fraction": 0.15,
+        "daily_loss_cap_pct": 1.2,
+        "skip_if_vol_shock_pct": 6.5
+      },
+      "metrics": {
+        "sample_count": 338,
+        "win_rate": 0.446746,
+        "net_return_pct": -6.383742,
+        "avg_trade_return_pct": -0.018887,
+        "profit_factor": 0.840615,
+        "max_drawdown_pct": 8.285629,
+        "max_loss_streak": 8,
+        "skipped_vol_shock": 5,
+        "skipped_daily_loss_cap": 0
+      },
+      "score": -8.80917
+    }
+  ],
+  "best_by_balanced_score": {
+    "name": "k_shield_h1_soft",
+    "config": {
+      "warmup": 20,
+      "horizon": 1,
+      "stride": 1,
+      "fee_bps_round_trip": 8.0,
+      "slippage_bps_round_trip": 5.0,
+      "max_position_fraction": 0.15,
+      "daily_loss_cap_pct": 1.2,
+      "skip_if_vol_shock_pct": 6.5
+    },
+    "metrics": {
+      "sample_count": 338,
+      "win_rate": 0.446746,
+      "net_return_pct": -6.383742,
+      "avg_trade_return_pct": -0.018887,
+      "profit_factor": 0.840615,
+      "max_drawdown_pct": 8.285629,
+      "max_loss_streak": 8,
+      "skipped_vol_shock": 5,
+      "skipped_daily_loss_cap": 0
+    },
+    "score": -8.80917
+  },
+  "note": "Balanced score = net + 5*PF - 0.8*MDD"
+}
