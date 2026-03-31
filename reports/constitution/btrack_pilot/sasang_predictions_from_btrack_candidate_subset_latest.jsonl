@@ -1,0 +1,7 @@
+{"sample_id": "STATE_01", "predicted_parent": "SY", "confidence": 0.894135, "prediction_source": "btrack_eval_converter_v1"}
+{"sample_id": "STATE_02", "predicted_parent": "SY", "confidence": 0.728137, "prediction_source": "btrack_eval_converter_v1"}
+{"sample_id": "STATE_07", "predicted_parent": "SE", "confidence": 0.619899, "prediction_source": "btrack_eval_converter_v1"}
+{"sample_id": "STATE_08", "predicted_parent": "SE", "confidence": 0.674139, "prediction_source": "btrack_eval_converter_v1"}
+{"sample_id": "STATE_09", "predicted_parent": "SE", "confidence": 0.711416, "prediction_source": "btrack_eval_converter_v1"}
+{"sample_id": "STATE_10", "predicted_parent": "SE", "confidence": 0.719412, "prediction_source": "btrack_eval_converter_v1"}
+{"sample_id": "STATE_12", "predicted_parent": "TE", "confidence": 0.674139, "prediction_source": "btrack_eval_converter_v1"}

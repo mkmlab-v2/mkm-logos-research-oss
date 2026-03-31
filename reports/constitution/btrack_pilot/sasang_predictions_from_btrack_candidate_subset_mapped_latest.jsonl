@@ -1,0 +1,7 @@
+{"sample_id": "SYN_00001", "predicted_parent": "SY", "confidence": 0.894135, "prediction_source": "btrack_eval_converter_v1", "mapping_from_sample_id": "STATE_01"}
+{"sample_id": "SYN_00002", "predicted_parent": "SY", "confidence": 0.728137, "prediction_source": "btrack_eval_converter_v1", "mapping_from_sample_id": "STATE_02"}
+{"sample_id": "SYN_00078", "predicted_parent": "SE", "confidence": 0.619899, "prediction_source": "btrack_eval_converter_v1", "mapping_from_sample_id": "STATE_07"}
+{"sample_id": "SYN_00260", "predicted_parent": "SE", "confidence": 0.674139, "prediction_source": "btrack_eval_converter_v1", "mapping_from_sample_id": "STATE_08"}
+{"sample_id": "SYN_00364", "predicted_parent": "SE", "confidence": 0.711416, "prediction_source": "btrack_eval_converter_v1", "mapping_from_sample_id": "STATE_09"}
+{"sample_id": "SYN_00368", "predicted_parent": "SE", "confidence": 0.719412, "prediction_source": "btrack_eval_converter_v1", "mapping_from_sample_id": "STATE_10"}
+{"sample_id": "SYN_00003", "predicted_parent": "TE", "confidence": 0.674139, "prediction_source": "btrack_eval_converter_v1", "mapping_from_sample_id": "STATE_12"}

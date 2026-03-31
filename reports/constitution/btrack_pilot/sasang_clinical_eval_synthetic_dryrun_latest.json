@@ -1,0 +1,210 @@
+{
+  "schema": "sasang_clinical_eval_v1",
+  "generated_at_utc": "2026-03-31T03:04:27Z",
+  "inputs": {
+    "cohort_path": "C:\\workspace\\data\\constitution\\korean_cohort\\real_cohort.synthetic.v1.jsonl",
+    "predictions_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_predictions_synthetic_dryrun_latest.jsonl"
+  },
+  "diagnostics": {
+    "cohort_rows": 1000,
+    "prediction_rows": 1000,
+    "cohort_rows_invalid": 0,
+    "prediction_rows_invalid": 0,
+    "paired_rows": 1000,
+    "cohort_only_rows": 0,
+    "prediction_only_rows": 0
+  },
+  "labels": [
+    "TY",
+    "SY",
+    "TE",
+    "SE"
+  ],
+  "confusion_matrix": {
+    "rows_truth_cols_pred": [
+      [
+        249,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        313,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        426,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        12
+      ]
+    ],
+    "label_order": [
+      "TY",
+      "SY",
+      "TE",
+      "SE"
+    ]
+  },
+  "metrics": {
+    "accuracy": 1.0,
+    "precision_macro": 1.0,
+    "recall_macro": 1.0,
+    "f1_macro": 1.0,
+    "precision_micro": 1.0,
+    "recall_micro": 1.0,
+    "f1_micro": 1.0,
+    "per_class": {
+      "TY": {
+        "tp": 249,
+        "fp": 0,
+        "fn": 0,
+        "tn": 751,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "fpr_one_vs_rest": 0.0
+      },
+      "SY": {
+        "tp": 313,
+        "fp": 0,
+        "fn": 0,
+        "tn": 687,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "fpr_one_vs_rest": 0.0
+      },
+      "TE": {
+        "tp": 426,
+        "fp": 0,
+        "fn": 0,
+        "tn": 574,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "fpr_one_vs_rest": 0.0
+      },
+      "SE": {
+        "tp": 12,
+        "fp": 0,
+        "fn": 0,
+        "tn": 988,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "fpr_one_vs_rest": 0.0
+      }
+    },
+    "confidence": {
+      "available": true,
+      "count": 1000,
+      "brier_score": 0.04539950000000016,
+      "ece": 0.21194999999999817,
+      "bins": [
+        {
+          "bin": 0,
+          "lo": 0.0,
+          "hi": 0.1,
+          "count": 0,
+          "acc": null,
+          "conf": null,
+          "abs_gap": null
+        },
+        {
+          "bin": 1,
+          "lo": 0.1,
+          "hi": 0.2,
+          "count": 0,
+          "acc": null,
+          "conf": null,
+          "abs_gap": null
+        },
+        {
+          "bin": 2,
+          "lo": 0.2,
+          "hi": 0.3,
+          "count": 0,
+          "acc": null,
+          "conf": null,
+          "abs_gap": null
+        },
+        {
+          "bin": 3,
+          "lo": 0.3,
+          "hi": 0.4,
+          "count": 0,
+          "acc": null,
+          "conf": null,
+          "abs_gap": null
+        },
+        {
+          "bin": 4,
+          "lo": 0.4,
+          "hi": 0.5,
+          "count": 0,
+          "acc": null,
+          "conf": null,
+          "abs_gap": null
+        },
+        {
+          "bin": 5,
+          "lo": 0.5,
+          "hi": 0.6,
+          "count": 0,
+          "acc": null,
+          "conf": null,
+          "abs_gap": null
+        },
+        {
+          "bin": 6,
+          "lo": 0.6,
+          "hi": 0.7,
+          "count": 0,
+          "acc": null,
+          "conf": null,
+          "abs_gap": null
+        },
+        {
+          "bin": 7,
+          "lo": 0.7,
+          "hi": 0.8,
+          "count": 712,
+          "acc": 1.0,
+          "conf": 0.7777949438202266,
+          "abs_gap": 0.22220505617977337
+        },
+        {
+          "bin": 8,
+          "lo": 0.8,
+          "hi": 0.9,
+          "count": 288,
+          "acc": 1.0,
+          "conf": 0.8134027777777794,
+          "abs_gap": 0.18659722222222064
+        },
+        {
+          "bin": 9,
+          "lo": 0.9,
+          "hi": 1.0,
+          "count": 0,
+          "acc": null,
+          "conf": null,
+          "abs_gap": null
+        }
+      ]
+    }
+  },
+  "notes": [
+    "This report is for evaluation only; not a diagnosis engine.",
+    "Clinical validity depends on cohort quality and label governance."
+  ]
+}

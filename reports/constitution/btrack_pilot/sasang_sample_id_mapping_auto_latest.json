@@ -1,0 +1,49 @@
+{
+  "schema": "sasang_sample_id_mapping_auto_v1",
+  "note": "Heuristic auto mapping for evaluation plumbing; not clinical identity linkage.",
+  "count": 7,
+  "items": [
+    {
+      "prediction_sample_id": "STATE_01",
+      "cohort_sample_id": "SYN_00001",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_fallback"
+    },
+    {
+      "prediction_sample_id": "STATE_02",
+      "cohort_sample_id": "SYN_00002",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_fallback"
+    },
+    {
+      "prediction_sample_id": "STATE_07",
+      "cohort_sample_id": "SYN_00078",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_fallback"
+    },
+    {
+      "prediction_sample_id": "STATE_08",
+      "cohort_sample_id": "SYN_00260",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_fallback"
+    },
+    {
+      "prediction_sample_id": "STATE_09",
+      "cohort_sample_id": "SYN_00364",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_fallback"
+    },
+    {
+      "prediction_sample_id": "STATE_10",
+      "cohort_sample_id": "SYN_00368",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_fallback"
+    },
+    {
+      "prediction_sample_id": "STATE_12",
+      "cohort_sample_id": "SYN_00003",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_fallback"
+    }
+  ]
+}

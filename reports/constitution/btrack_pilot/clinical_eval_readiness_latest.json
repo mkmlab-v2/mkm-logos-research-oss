@@ -1,0 +1,31 @@
+{
+  "schema": "clinical_eval_readiness_v2",
+  "generated_at_utc": "2026-03-31T02:57:18Z",
+  "status": "ready_for_clinical_eval_inputs",
+  "evaluator_script": {
+    "path": "scripts/evaluate_sasang_clinical_metrics.py",
+    "available": true,
+    "metrics": [
+      "accuracy",
+      "precision_macro/micro",
+      "recall_macro/micro",
+      "f1_macro/micro",
+      "fpr_one_vs_rest",
+      "brier_score",
+      "ece"
+    ]
+  },
+  "inputs_available": {
+    "cohort_gt_template": true,
+    "cohort_synthetic": true,
+    "predictions_file_available": false
+  },
+  "blockers": [
+    "Predictions JSONL (sample_id, predicted_parent, confidence) not provided yet."
+  ],
+  "next_required_actions": [
+    "Provide predictions file at reports/constitution/btrack_pilot/sasang_predictions_latest.jsonl or pass --predictions path.",
+    "Use real cohort GT labels (not synthetic placeholder) for final clinical-style judgment.",
+    "Run: py scripts/evaluate_sasang_clinical_metrics.py --cohort <gt.jsonl> --predictions <pred.jsonl> --out reports/constitution/btrack_pilot/sasang_clinical_eval_latest.json"
+  ]
+}
