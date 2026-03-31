@@ -1,22 +1,22 @@
 {
   "schema": "btrack_quality_report_v1",
-  "generated_at_utc": "2026-03-30T15:23:14Z",
+  "generated_at_utc": "2026-03-31T02:50:16Z",
   "inputs": {
     "a_track": "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\a_track_eval.jsonl",
     "b_track": "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\b_track_eval.jsonl"
   },
   "counts": {
-    "a_rows": 16,
-    "b_rows": 16,
-    "aligned_pairs": 16,
-    "direction_compared": 16,
-    "confidence_compared": 16,
-    "snr_compared": 16
+    "a_rows": 64,
+    "b_rows": 64,
+    "aligned_pairs": 64,
+    "direction_compared": 64,
+    "confidence_compared": 64,
+    "snr_compared": 64
   },
   "metrics": {
     "reproducibility_match_rate": 1.0,
-    "resolution_confidence_delta_b_minus_a": -0.21168843750000002,
-    "contamination_snr_delta_b_minus_a": -0.14818187499999996
+    "resolution_confidence_delta_b_minus_a": 0.02512500000000001,
+    "contamination_snr_delta_b_minus_a": 0.02406249999999999
   },
   "interpretation": {
     "reproducibility": "higher is better",
