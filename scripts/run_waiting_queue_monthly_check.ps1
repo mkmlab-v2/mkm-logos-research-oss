@@ -104,22 +104,16 @@ if ($LASTEXITCODE -ne 0) {
     throw "High-reliability mode gate failed with exit code $LASTEXITCODE"
 }
 
+Write-Host "[waiting-queue-check] Running BTC time-machine backtest (fact-safe evidence)..."
+py scripts/run_btc_time_machine_fact_safe_backtest.py --start 2025-01-01 --end 2025-12-31
+if ($LASTEXITCODE -ne 0) {
+    throw "BTC time-machine fact-safe backtest failed with exit code $LASTEXITCODE"
+}
+
 Write-Host "[waiting-queue-check] Building Fact-Safe multi-lens brief..."
 py scripts/build_fact_safe_multilens_brief.py --engine-id V2_Precision_MCP
 if ($LASTEXITCODE -ne 0) {
     throw "Fact-Safe multi-lens brief build failed with exit code $LASTEXITCODE"
-}
-
-Write-Host "[waiting-queue-check] Broadcasting Fact-Safe summary..."
-py scripts/broadcast_fact_safe_multilens_brief.py
-if ($LASTEXITCODE -ne 0) {
-    throw "Fact-Safe broadcast build failed with exit code $LASTEXITCODE"
-}
-
-Write-Host "[waiting-queue-check] Sending Fact-Safe summary to Slack (if webhook configured)..."
-py scripts/send_fact_safe_broadcast_to_slack.py
-if ($LASTEXITCODE -ne 0) {
-    throw "Fact-Safe Slack send failed with exit code $LASTEXITCODE"
 }
 
 $highReliabilityDecision = $null
@@ -172,6 +166,12 @@ Write-Host "[waiting-queue-check] Broadcasting Fact-Safe summary..."
 py scripts/broadcast_fact_safe_multilens_brief.py --strict-required
 if ($LASTEXITCODE -ne 0) {
     throw "Fact-Safe broadcast build failed with exit code $LASTEXITCODE"
+}
+
+Write-Host "[waiting-queue-check] Sending Fact-Safe summary to Slack (if webhook configured)..."
+py scripts/send_fact_safe_broadcast_to_slack.py
+if ($LASTEXITCODE -ne 0) {
+    throw "Fact-Safe Slack send failed with exit code $LASTEXITCODE"
 }
 
 Write-Host "[waiting-queue-check] Wrote log: $logPath"

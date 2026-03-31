@@ -1,0 +1,22 @@
+{
+  "schema": "btc_time_machine_fact_safe_backtest_v1",
+  "generated_at_utc": "2026-03-31T06:05:06Z",
+  "method": "causal_walk_forward_no_future_leak",
+  "symbol": "BTCUSDT",
+  "start": "2025-01-01",
+  "end": "2025-12-31",
+  "bars": 364,
+  "config": {
+    "warmup": 30,
+    "horizon": 3,
+    "stride": 1,
+    "fee_bps_round_trip": 8.0
+  },
+  "metrics": {
+    "sample_count": 331,
+    "win_rate": 0.450151,
+    "net_return_pct": 3.31875,
+    "avg_trade_return_pct": 0.010026,
+    "profit_factor": 1.007583
+  }
+}
