@@ -1,5 +1,6 @@
 param(
-    [switch]$SkipBundle
+    [switch]$SkipBundle,
+    [double]$OverlapDriftAlertThreshold = -0.05
 )
 
 $ErrorActionPreference = "Stop"
@@ -10,6 +11,9 @@ Set-Location $workspace
 $logPath = "C:\workspace\docs\final\artifacts\waiting_queue_monthly_check_log.jsonl"
 $sourceHuntSummaryPath = "C:\workspace\docs\final\artifacts\entry16_source_hunt_summary.json"
 $promotionGatePath = "C:\workspace\docs\final\artifacts\entry16_promotion_gate.json"
+$decisionLockPath = "C:\workspace\docs\final\artifacts\entry16_manual_promotion_decision_lock_latest.json"
+$highReliabilityGatePath = "C:\workspace\docs\final\artifacts\high_reliability_mode_gate_latest.json"
+$symbolLaneProfileComparePath = "C:\workspace\reports\constitution\btrack_pilot\symbol_lane_profile_compare_latest.json"
 $btrackGatePath = "C:\workspace\reports\constitution\btrack_pilot\btrack_promotion_gate_anchor_verified_only_latest.json"
 $symbolLaneGatePath = "C:\workspace\reports\constitution\btrack_pilot\symbol_lane_gate_latest.json"
 $checkedAtObj = [DateTimeOffset]::UtcNow
@@ -57,6 +61,72 @@ if ($LASTEXITCODE -ne 0) {
     throw "B-Track symbol lane gate+lock failed with exit code $LASTEXITCODE"
 }
 
+Write-Host "[waiting-queue-check] Building symbol lane profile compare..."
+py scripts/report_symbol_lane_profile_compare.py
+if ($LASTEXITCODE -ne 0) {
+    throw "Symbol lane profile compare failed with exit code $LASTEXITCODE"
+}
+
+$topOverlapRate = $null
+if (Test-Path -LiteralPath $symbolLaneProfileComparePath) {
+    try {
+        $slObj = Get-Content -LiteralPath $symbolLaneProfileComparePath -Encoding utf8 | ConvertFrom-Json
+        $topOverlapRate = $slObj.c_queue_delta.top_overlap_rate
+    } catch {
+        $topOverlapRate = $null
+    }
+}
+
+$deltaVsPrevOverlap = $null
+if (Test-Path -LiteralPath $logPath) {
+    try {
+        $prevLines = Get-Content -LiteralPath $logPath -Encoding utf8
+        if ($prevLines.Count -gt 0) {
+            $prevObj = ($prevLines[-1] | ConvertFrom-Json)
+            $prevTop = $prevObj.top_overlap_rate
+            if (($null -ne $topOverlapRate) -and ($null -ne $prevTop)) {
+                $deltaVsPrevOverlap = [double]$topOverlapRate - [double]$prevTop
+            }
+        }
+    } catch {
+        $deltaVsPrevOverlap = $null
+    }
+}
+
+$overlapDriftAlert = $false
+if ($null -ne $deltaVsPrevOverlap) {
+    $overlapDriftAlert = ([double]$deltaVsPrevOverlap -le [double]$OverlapDriftAlertThreshold)
+}
+
+Write-Host "[waiting-queue-check] Evaluating high-reliability mode gate..."
+py scripts/report_high_reliability_mode_gate.py
+if ($LASTEXITCODE -ne 0) {
+    throw "High-reliability mode gate failed with exit code $LASTEXITCODE"
+}
+
+Write-Host "[waiting-queue-check] Building Fact-Safe multi-lens brief..."
+py scripts/build_fact_safe_multilens_brief.py --engine-id V2_Precision_MCP
+if ($LASTEXITCODE -ne 0) {
+    throw "Fact-Safe multi-lens brief build failed with exit code $LASTEXITCODE"
+}
+
+$highReliabilityDecision = $null
+if (Test-Path -LiteralPath $highReliabilityGatePath) {
+    try {
+        $hrObj = Get-Content -LiteralPath $highReliabilityGatePath -Encoding utf8 | ConvertFrom-Json
+        $highReliabilityDecision = [string]$hrObj.decision
+    } catch {
+        $highReliabilityDecision = "parse_error"
+    }
+}
+
+$highReliabilityDecisionEffective = $highReliabilityDecision
+$highReliabilityGateEffective = "pass"
+if ($overlapDriftAlert -and ($highReliabilityDecision -eq "PASS")) {
+    $highReliabilityDecisionEffective = "HOLD"
+    $highReliabilityGateEffective = "hold_by_overlap_drift"
+}
+
 @{
     checked_at_utc = $checkedAt
     bundle_mode = $bundleMode
@@ -66,10 +136,20 @@ if ($LASTEXITCODE -ne 0) {
     source_hunt_summary_path = $sourceHuntSummaryPath
     promotion_gate = "pass"
     promotion_gate_path = $promotionGatePath
+    decision_lock_ref = if (Test-Path -LiteralPath $decisionLockPath) { $decisionLockPath } else { $null }
     btrack_verified_gate = "pass"
     btrack_verified_gate_path = $btrackGatePath
     btrack_symbol_lane_gate = "pass"
     btrack_symbol_lane_gate_path = $symbolLaneGatePath
+    symbol_lane_profile_compare_path = $symbolLaneProfileComparePath
+    top_overlap_rate = $topOverlapRate
+    delta_vs_prev_overlap = $deltaVsPrevOverlap
+    overlap_drift_alert = $overlapDriftAlert
+    overlap_drift_alert_threshold = $OverlapDriftAlertThreshold
+    high_reliability_gate = $highReliabilityGateEffective
+    high_reliability_gate_path = $highReliabilityGatePath
+    high_reliability_decision = $highReliabilityDecisionEffective
+    high_reliability_decision_raw = $highReliabilityDecision
     next_monthly_due_date = $nextMonthlyDue
     horizon_t30_date = $horizonT30
     horizon_t90_date = $horizonT90

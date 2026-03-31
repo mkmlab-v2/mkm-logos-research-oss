@@ -75,6 +75,7 @@ def main() -> int:
     status = _safe_json(STATUS_FILE)
     hb_age = _heartbeat_age_minutes()
 
+    exchange_24h = status.get("exchange_snapshot_24h") if isinstance(status.get("exchange_snapshot_24h"), dict) else {}
     snapshot = {
         "ts_utc": now.isoformat(),
         "scheduler_ready": _task_is_ready(),
@@ -86,6 +87,12 @@ def main() -> int:
         "status_symbol": status.get("symbol"),
         "status_testnet": status.get("testnet"),
         "status_enable_trading": status.get("enable_trading"),
+        "exchange_snapshot_24h_available": exchange_24h.get("available"),
+        "exchange_snapshot_24h_fills_count": exchange_24h.get("fills_count"),
+        "exchange_snapshot_24h_realized_pnl": exchange_24h.get("realized_pnl"),
+        "exchange_snapshot_24h_commission": exchange_24h.get("commission"),
+        "exchange_snapshot_24h_funding_fee": exchange_24h.get("funding_fee"),
+        "exchange_snapshot_24h_net": exchange_24h.get("net"),
         "watchdog": _watchdog_counters(log_text),
     }
 
