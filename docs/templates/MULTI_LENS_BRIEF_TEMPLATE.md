@@ -34,6 +34,7 @@
 | `engine_id` | `V1_Approx_Stub` / `V2_Precision_MCP` |
 | `boundary_rule` | 예: `observatory_ephemeris_v1` |
 | `high_reliability_decision` | `PASS` / `HOLD` |
+| `gate_reason` | `low_badge_forced_hold` / `monthly_check_gate` / `badge_policy_default` |
 | `reliability_badge` | `LOW` / `MID` / `HIGH` |
 
 `[FACT]` **경고(근사 엔진):** `engine_id=V1_Approx_Stub`이면 아래 문구를 강제 삽입한다.  

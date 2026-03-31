@@ -1,11 +1,12 @@
 # Fact-Safe Multi-Lens Brief
 
 ## 메타 고정 헤더
-- generated_at_utc: 2026-03-31T05:20:13.972507+00:00
+- generated_at_utc: 2026-03-31T05:30:40Z
 - engine_id: V2_Precision_MCP
 - boundary_rule: observatory_ephemeris_v1
 - reliability_badge: LOW
 - high_reliability_decision: HOLD
+- gate_reason: low_badge_forced_hold
 
 ## 제1~4장 사전 예측 근거 (Pre-Execution)
 - [FACT] 실물 레짐 베이스라인: waiting queue/verified gate/overlap drift 결과를 기준으로 보수 운영.
@@ -28,3 +29,4 @@
 - reliability_badge: LOW
 - high_reliability_decision_raw(monthly_check): PASS
 - high_reliability_decision_effective: HOLD
+- gate_reason: low_badge_forced_hold

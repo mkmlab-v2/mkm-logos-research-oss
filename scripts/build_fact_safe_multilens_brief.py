@@ -28,6 +28,12 @@ class ReliabilityDecision:
     decision: str
 
 
+@dataclass(frozen=True)
+class GateDecision:
+    decision: str
+    reason: str
+
+
 def compute_reliability_badge(engine_id: str, samples: int, net_delta: float) -> ReliabilityDecision:
     if engine_id == "V1_Approx_Stub" or samples < 10:
         return ReliabilityDecision(badge="LOW", decision="HOLD")
@@ -81,11 +87,34 @@ def _latest_waiting_log() -> dict[str, Any]:
         return {}
 
 
-def _kpi_history_stats() -> tuple[int, float, float | None]:
-    kpi_path = _latest_kpi_jsonl()
-    if kpi_path is None:
-        return 0, 0.0, None
-    rows = _tail_jsonl(kpi_path)
+def _collect_recent_kpi_rows(days: int = 7, max_points: int = 3000) -> list[dict[str, Any]]:
+    paths = sorted(ROOT.glob(str(DEFAULT_KPI_JSONL.relative_to(ROOT))), reverse=True)
+    if not paths:
+        return []
+    cutoff = datetime.now(timezone.utc).timestamp() - days * 24 * 60 * 60
+    rows: list[dict[str, Any]] = []
+    for path in paths:
+        if len(rows) >= max_points:
+            break
+        for row in reversed(_tail_jsonl(path, limit=2000)):
+            ts = row.get("ts_utc")
+            if not isinstance(ts, str):
+                continue
+            try:
+                ts_epoch = datetime.fromisoformat(ts.replace("Z", "+00:00")).timestamp()
+            except Exception:
+                continue
+            if ts_epoch < cutoff:
+                continue
+            rows.append(row)
+            if len(rows) >= max_points:
+                break
+    rows.reverse()
+    return rows
+
+
+def _kpi_history_stats(days: int = 7) -> tuple[int, float, float | None]:
+    rows = _collect_recent_kpi_rows(days=days)
     net_series: list[float] = []
     fills_series: list[float] = []
     for row in rows:
@@ -104,24 +133,27 @@ def _kpi_history_stats() -> tuple[int, float, float | None]:
     return len(rows), net_delta, avg_net_per_fill
 
 
+def resolve_gate_decision(reliability: ReliabilityDecision, high_reliability_from_ops: str) -> GateDecision:
+    # Reliability LOW is always HOLD by contract.
+    if reliability.badge == "LOW":
+        return GateDecision(decision="HOLD", reason="low_badge_forced_hold")
+    if high_reliability_from_ops in {"PASS", "HOLD"}:
+        return GateDecision(decision=high_reliability_from_ops, reason="monthly_check_gate")
+    return GateDecision(decision=reliability.decision, reason="badge_policy_default")
+
+
 def build_report(engine_id: str, boundary_rule: str) -> str:
     status = _safe_json(DEFAULT_STATUS)
     snapshot = status.get("exchange_snapshot_24h") if isinstance(status.get("exchange_snapshot_24h"), dict) else {}
     waiting = _latest_waiting_log()
 
-    samples, net_delta, avg_net_per_fill = _kpi_history_stats()
+    samples, net_delta, avg_net_per_fill = _kpi_history_stats(days=7)
     reliability = compute_reliability_badge(engine_id=engine_id, samples=samples, net_delta=net_delta)
 
-    # Reliability LOW is always HOLD by contract; otherwise monthly gate can override.
     high_reliability_from_ops = str(waiting.get("high_reliability_decision") or "").upper()
-    if reliability.badge == "LOW":
-        gate = "HOLD"
-    elif high_reliability_from_ops in {"PASS", "HOLD"}:
-        gate = high_reliability_from_ops
-    else:
-        gate = reliability.decision
+    gate = resolve_gate_decision(reliability, high_reliability_from_ops)
 
-    now_utc = datetime.now(timezone.utc).isoformat()
+    now_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     warning = ""
     if engine_id == "V1_Approx_Stub":
         warning = (
@@ -136,7 +168,8 @@ def build_report(engine_id: str, boundary_rule: str) -> str:
         f"- engine_id: {engine_id}\n"
         f"- boundary_rule: {boundary_rule}\n"
         f"- reliability_badge: {reliability.badge}\n"
-        f"- high_reliability_decision: {gate}\n\n"
+        f"- high_reliability_decision: {gate.decision}\n"
+        f"- gate_reason: {gate.reason}\n\n"
         f"{warning}"
         "## 제1~4장 사전 예측 근거 (Pre-Execution)\n"
         "- [FACT] 실물 레짐 베이스라인: waiting queue/verified gate/overlap drift 결과를 기준으로 보수 운영.\n"
@@ -156,7 +189,8 @@ def build_report(engine_id: str, boundary_rule: str) -> str:
         "## 운영 게이트 결론\n"
         f"- reliability_badge: {reliability.badge}\n"
         f"- high_reliability_decision_raw(monthly_check): {waiting.get('high_reliability_decision_raw')}\n"
-        f"- high_reliability_decision_effective: {gate}\n"
+        f"- high_reliability_decision_effective: {gate.decision}\n"
+        f"- gate_reason: {gate.reason}\n"
     )
 
 
