@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 LANE_GATE = ROOT / "reports" / "constitution" / "btrack_pilot" / "symbol_lane_gate_latest.json"
 LANE_SUMMARY = ROOT / "reports" / "constitution" / "btrack_pilot" / "symbol_lane_summary_latest.json"
 GATE_TEMPLATE = ROOT / "data" / "logos" / "btrack_pilot" / "gates" / "symbol_lane_gate_template.json"
-OUT = ROOT / "reports" / "constitution" / "btrack_pilot" / "btrack_symbol_lane_baseline_lock_latest.json"
+OUT = ROOT / "reports" / "constitution" / "btrack_pilot" / "btrack_symbol_lane_baseline_lock_stable_latest.json"
 
 
 def _abs(path_str: str) -> Path:

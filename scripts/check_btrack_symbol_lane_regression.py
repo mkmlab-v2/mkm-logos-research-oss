@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
-BASELINE = ROOT / "reports" / "constitution" / "btrack_pilot" / "btrack_symbol_lane_baseline_lock_latest.json"
+BASELINE = ROOT / "reports" / "constitution" / "btrack_pilot" / "btrack_symbol_lane_baseline_lock_stable_latest.json"
 LANE_GATE = ROOT / "reports" / "constitution" / "btrack_pilot" / "symbol_lane_gate_latest.json"
 
 

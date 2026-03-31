@@ -65,6 +65,10 @@ def main() -> int:
     ap.add_argument("--in-jsonl", default=str(IN_JSONL))
     ap.add_argument("--out-dir", default=str(OUT_DIR))
     ap.add_argument("--dss-min-count", type=int, default=1)
+    ap.add_argument("--out-dss-jsonl", default="")
+    ap.add_argument("--out-mixed-jsonl", default="")
+    ap.add_argument("--out-apocrypha-jsonl", default="")
+    ap.add_argument("--out-summary-json", default="")
     args = ap.parse_args()
 
     in_path = _abs(args.in_jsonl)
@@ -102,10 +106,10 @@ def main() -> int:
     mixed_lane.sort(key=sort_key, reverse=True)
     apocrypha_priority.sort(key=sort_key, reverse=True)
 
-    dss_path = out_dir / "symbol_lane_dss_priority_latest.jsonl"
-    mixed_path = out_dir / "symbol_lane_mixed_latest.jsonl"
-    apo_path = out_dir / "symbol_lane_apocrypha_priority_latest.jsonl"
-    summary_path = out_dir / "symbol_lane_summary_latest.json"
+    dss_path = _abs(args.out_dss_jsonl) if args.out_dss_jsonl else (out_dir / "symbol_lane_dss_priority_latest.jsonl")
+    mixed_path = _abs(args.out_mixed_jsonl) if args.out_mixed_jsonl else (out_dir / "symbol_lane_mixed_latest.jsonl")
+    apo_path = _abs(args.out_apocrypha_jsonl) if args.out_apocrypha_jsonl else (out_dir / "symbol_lane_apocrypha_priority_latest.jsonl")
+    summary_path = _abs(args.out_summary_json) if args.out_summary_json else (out_dir / "symbol_lane_summary_latest.json")
 
     _write_jsonl(dss_path, dss_priority)
     _write_jsonl(mixed_path, mixed_lane)
