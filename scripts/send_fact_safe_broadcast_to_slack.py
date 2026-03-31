@@ -42,6 +42,25 @@ def _append_status_log(path: Path, status: dict) -> None:
         fp.write(json.dumps(status, ensure_ascii=False) + "\n")
 
 
+def _compute_fallback_streak(path: Path, current_is_fallback: bool) -> int:
+    if not current_is_fallback:
+        return 0
+    streak = 1
+    if not path.exists():
+        return streak
+    lines = [x for x in path.read_text(encoding="utf-8", errors="ignore").splitlines() if x.strip()]
+    for line in reversed(lines):
+        try:
+            row = json.loads(line)
+        except Exception:
+            continue
+        if bool(row.get("net_source_fallback_alert")):
+            streak += 1
+            continue
+        break
+    return streak
+
+
 def _load_env_from_dotenv(path: Path) -> None:
     if not path.exists():
         return
@@ -65,17 +84,40 @@ def _load_env_from_dotenv(path: Path) -> None:
 
 
 def build_slack_text(payload: dict) -> str:
+    locked = bool(payload.get("price_output_locked"))
+    lock_reason = payload.get("lock_reason")
     next_hint = payload.get("next_month_risk_hint")
     hint_line = f"- next_month_risk_hint: {next_hint}" if next_hint else "- next_month_risk_hint: unavailable"
+    mode_line = f":no_entry: *LOCKED_MODE* ({lock_reason})" if locked else ":unlock: *UNLOCKED_MODE*"
+    net_source = str(payload.get("net_source") or "unknown")
+    net_source_alert = (
+        ":warning: *NET_SOURCE_FALLBACK_ACTIVE*"
+        if net_source not in {"exchange_snapshot_24h", "unknown"}
+        else ":white_check_mark: *NET_SOURCE_PRIMARY*"
+    )
+    fallback_streak = int(payload.get("net_source_fallback_streak") or 0)
+    fallback_escalated = bool(payload.get("net_source_fallback_escalated"))
+    fallback_streak_line = (
+        f":rotating_light: *NET_SOURCE_FALLBACK_STREAK={fallback_streak}*"
+        if fallback_escalated
+        else f"- net_source_fallback_streak: {fallback_streak}"
+    )
     return "\n".join(
         [
             ":shield: *Fact-Safe Monthly Broadcast*",
+            mode_line,
+            net_source_alert,
+            fallback_streak_line,
             f"- generated_at_utc: {payload.get('ts_utc')}",
             hint_line,
             f"- reliability_badge: {payload.get('reliability_badge')}",
             f"- high_reliability_decision: {payload.get('high_reliability_decision')}",
             f"- gate_reason: {payload.get('gate_reason')}",
+            f"- core_score: {payload.get('core_score')}",
+            f"- core_decision: {payload.get('core_decision')}",
+            f"- core_reason: {payload.get('core_reason')}",
             f"- net: {payload.get('net')}",
+            f"- net_source: {payload.get('net_source')}",
             f"- history_samples: {payload.get('history_samples')}",
             f"- history_net_delta: {payload.get('history_net_delta')}",
             (
@@ -149,7 +191,21 @@ def main() -> int:
         "dry_run": bool(args.dry_run),
         "sent": False,
         "channel": None,
+        "price_output_locked": payload.get("price_output_locked"),
+        "lock_reason": payload.get("lock_reason"),
+        "net_source": payload.get("net_source"),
+        "net_source_fallback_alert": str(payload.get("net_source") or "") not in {"", "exchange_snapshot_24h", "unknown"},
+        "core_score": payload.get("core_score"),
+        "core_decision": payload.get("core_decision"),
+        "core_reason": payload.get("core_reason"),
     }
+    status["net_source_fallback_streak"] = _compute_fallback_streak(
+        status_log_out, bool(status["net_source_fallback_alert"])
+    )
+    status["net_source_fallback_escalated"] = bool(status["net_source_fallback_streak"] >= 3)
+    payload_with_status = dict(payload)
+    payload_with_status["net_source_fallback_streak"] = status["net_source_fallback_streak"]
+    payload_with_status["net_source_fallback_escalated"] = status["net_source_fallback_escalated"]
     if not payload:
         print(f"WARNING: broadcast payload missing or invalid: {args.input}")
         status["status"] = "skipped"
@@ -158,7 +214,7 @@ def main() -> int:
         _append_status_log(status_log_out, status)
         return 0
 
-    text = build_slack_text(payload)
+    text = build_slack_text(payload_with_status)
     print(text)
     if args.dry_run:
         print("DRY RUN: Slack message not sent.")

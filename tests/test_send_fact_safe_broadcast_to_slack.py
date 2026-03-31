@@ -26,10 +26,16 @@ def test_build_slack_text_contains_core_fields():
         {
             "ts_utc": "2026-03-31T00:00:00Z",
             "next_month_risk_hint": "4월 선행 리스크: 압박/방어 구간",
+            "price_output_locked": True,
+            "lock_reason": "low_or_hold_mode_price_output_forbidden",
             "reliability_badge": "LOW",
             "high_reliability_decision": "HOLD",
             "gate_reason": "low_badge_forced_hold",
+            "core_score": 0.25,
+            "core_decision": "HOLD",
+            "core_reason": "score_inside_locked_band",
             "net": "1.23",
+            "net_source": "kpi_history_fallback",
             "history_samples": "1",
             "history_net_delta": "0.0",
             "overlap_drift_alert": False,
@@ -37,8 +43,24 @@ def test_build_slack_text_contains_core_fields():
         }
     )
     assert "Fact-Safe Monthly Broadcast" in text
+    assert "LOCKED_MODE" in text
     assert "next_month_risk_hint: 4월 선행 리스크: 압박/방어 구간" in text
     assert "reliability_badge: LOW" in text
+    assert "core_decision: HOLD" in text
+    assert "net_source: kpi_history_fallback" in text
+    assert "NET_SOURCE_FALLBACK_ACTIVE" in text
+
+
+def test_build_slack_text_shows_escalation_when_streak_high():
+    text = build_slack_text(
+        {
+            "price_output_locked": False,
+            "net_source": "kpi_history_fallback",
+            "net_source_fallback_streak": 4,
+            "net_source_fallback_escalated": True,
+        }
+    )
+    assert "NET_SOURCE_FALLBACK_STREAK=4" in text
 
 
 def test_load_env_from_dotenv_strips_inline_comment_and_quotes(tmp_path: Path):
@@ -66,23 +88,3 @@ def test_main_writes_status_when_payload_missing(tmp_path: Path, monkeypatch):
     assert len(lines) == 1
     logged = json.loads(lines[0])
     assert logged["reason"] == "invalid_or_missing_payload"
-from scripts.send_fact_safe_broadcast_to_slack import build_slack_text
-
-
-def test_build_slack_text_contains_core_fields():
-    payload = {
-        "ts_utc": "2026-03-31T05:34:07Z",
-        "reliability_badge": "LOW",
-        "high_reliability_decision": "HOLD",
-        "gate_reason": "low_badge_forced_hold",
-        "net": "21.41",
-        "history_samples": "12",
-        "history_net_delta": "-0.3",
-        "overlap_drift_alert": False,
-        "overlap_drift_alert_threshold": -0.05,
-    }
-    text = build_slack_text(payload)
-    assert "Fact-Safe Monthly Broadcast" in text
-    assert "reliability_badge: LOW" in text
-    assert "high_reliability_decision: HOLD" in text
-    assert "gate_reason: low_badge_forced_hold" in text

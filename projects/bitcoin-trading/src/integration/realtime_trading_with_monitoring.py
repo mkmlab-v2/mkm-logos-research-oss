@@ -15,6 +15,9 @@ import asyncio
 import logging
 from typing import Dict, Any, Optional
 from datetime import datetime
+import json
+from pathlib import Path
+import sys
 import pandas as pd
 import numpy as np
 
@@ -24,6 +27,13 @@ from src.risk.risk_manager import RiskManager
 from src.risk.risk_guardian import RiskGuardian
 from src.integration.unified_trading_monitor import UnifiedTradingMonitor
 from src.integration.compression_trading_bridge import CompressionTradingBridge
+try:
+    from scripts.core.mkm12_singular_core import CoreInput, compute_core_score
+except ModuleNotFoundError:
+    workspace_root = Path(__file__).resolve().parents[4]
+    if str(workspace_root) not in sys.path:
+        sys.path.insert(0, str(workspace_root))
+    from core.mkm12_singular_core import CoreInput, compute_core_score
 
 logging.basicConfig(
     level=logging.INFO,
@@ -132,6 +142,12 @@ class RealtimeTradingWithMonitoring:
         
         # 실행 상태
         self.running = False
+        self.signal_total_count = 0
+        self.singular_action_counts = {"BUY": 0, "SELL": 0, "LOCKED": 0}
+        self.last_signal_summary: Dict[str, Any] = {}
+        log_dir = Path(__file__).resolve().parents[2] / "logs"
+        log_dir.mkdir(parents=True, exist_ok=True)
+        self.state_file = log_dir / "trading_state.json"
         
         # 🏛️ 레짐 엔진 (SSOT 230751, Sensor/Logic용)
         self._prophecy_stack = None
@@ -426,6 +442,25 @@ class RealtimeTradingWithMonitoring:
                 f"📊 통합 분석 결과: {integrated_signal} "
                 f"(신뢰도: {integrated_confidence:.2%}, 경고: {warning_level})"
             )
+            result["mkm_singular_core"] = self._derive_singular_core(result)
+            core_decision = str(result["mkm_singular_core"].get("decision") or "HOLD").upper()
+            if core_decision == "HOLD":
+                integrated_signal = "HOLD"
+                integrated_confidence = min(integrated_confidence, 0.49)
+                result["integrated_signal"] = integrated_signal
+                result["integrated_confidence"] = integrated_confidence
+                logger.warning(
+                    "🔒 Singular core HOLD override (score=%.2f, reason=%s)",
+                    float(result["mkm_singular_core"].get("score", 0.0)),
+                    str(result["mkm_singular_core"].get("reason") or "unknown"),
+                )
+            self._update_singular_core_state(
+                result=result,
+                integrated_signal=integrated_signal,
+                integrated_confidence=integrated_confidence,
+                warning_level=warning_level,
+                current_price=current_price,
+            )
             
             # ----- 🏛️ [Action] 방어 모드 시 신규 매수 차단 (Observation Only면 미적용) -----
             if getattr(self, "_regime_defense_mode", False):
@@ -445,9 +480,11 @@ class RealtimeTradingWithMonitoring:
             # 거래 실행 (활성화된 경우)
             if self.enable_trading and integrated_signal in ["BUY", "SELL"]:
                 if integrated_confidence < MIN_CONFIDENCE:
+                    self._save_state()
                     return
                 if warning_level == "CRITICAL":
                     logger.warning("🚨 CRITICAL 경고: 거래 중단")
+                    self._save_state()
                     return
                 # Phase 1 방어망: 반대 신호 시 선청산 후 진입
                 pos = self._get_position()
@@ -457,9 +494,90 @@ class RealtimeTradingWithMonitoring:
                         logger.info(f"🔄 반대 신호 선청산: {side} → {integrated_signal} 진입 예정")
                         self._close_position(side)
                 await self._execute_trade(integrated_signal, integrated_confidence)
+            self._save_state()
         
         except Exception as e:
             logger.error(f"❌ 통합 분석 처리 오류: {e}")
+            self._save_state()
+
+    def _derive_singular_core(self, result: Dict[str, Any]) -> Dict[str, Any]:
+        state = (result.get("predicted_state") or result.get("vector_4d") or {}) if isinstance(result, dict) else {}
+        core = compute_core_score(
+            CoreInput(
+                s=float(state.get("S", 0.5)),
+                l=float(state.get("L", 0.5)),
+                k=float(state.get("K", 0.5)),
+                m=float(state.get("M", 0.5)),
+            )
+        )
+        decision = str(core.get("decision") or "HOLD")
+        action = "LOCKED"
+        if decision == "PASS_LONG":
+            action = "BUY"
+        elif decision == "PASS_SHORT":
+            action = "SELL"
+        return {
+            "decision": "HOLD" if decision == "HOLD" else "PASS",
+            "score": float(core.get("score_grid", 0.0)),
+            "score_raw": float(core.get("score_raw", 0.0)),
+            "reason": str(core.get("reason") or "unknown"),
+            "contract_version": str(core.get("contract_version") or "unknown"),
+            "action": action,
+        }
+
+    def _update_singular_core_state(
+        self,
+        result: Dict[str, Any],
+        integrated_signal: str,
+        integrated_confidence: float,
+        warning_level: str,
+        current_price: float,
+    ) -> None:
+        singular_core = result.get("mkm_singular_core") if isinstance(result, dict) else {}
+        raw_action = (
+            (singular_core or {}).get("action")
+            if isinstance(singular_core, dict)
+            else None
+        )
+        action = str(raw_action or integrated_signal or "LOCKED").upper()
+        if action in ("HOLD", "LOW"):
+            action = "LOCKED"
+        if action not in ("BUY", "SELL", "LOCKED"):
+            action = "LOCKED"
+
+        self.signal_total_count += 1
+        self.singular_action_counts[action] = self.singular_action_counts.get(action, 0) + 1
+        self.last_signal_summary = {
+            "timestamp": datetime.now().isoformat(timespec="seconds"),
+            "symbol": self.symbol,
+            "integrated_signal": integrated_signal,
+            "integrated_confidence": round(float(integrated_confidence), 6),
+            "warning_level": warning_level,
+            "singular_action": action,
+            "singular_decision": str((singular_core or {}).get("decision") or "HOLD"),
+            "singular_score": float((singular_core or {}).get("score") or 0.0),
+            "price": round(float(current_price), 2),
+            "regime_defense_mode": bool(getattr(self, "_regime_defense_mode", False)),
+            "regime_id": getattr(self, "_last_regime_id", "unknown"),
+        }
+
+    def _save_state(self) -> None:
+        try:
+            state = {
+                "timestamp": datetime.now().isoformat(timespec="seconds"),
+                "symbol": self.symbol,
+                "running": self.running,
+                "enable_trading": self.enable_trading,
+                "signal_total_count": self.signal_total_count,
+                "singular_action_counts": self.singular_action_counts,
+                "last_signal_summary": self.last_signal_summary,
+            }
+            self.state_file.write_text(
+                json.dumps(state, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+        except Exception as e:
+            logger.debug(f"상태 저장 실패: {e}")
     
     async def _execute_trade(self, signal: str, confidence: float):
         """거래 실행"""
@@ -596,11 +714,25 @@ class RealtimeTradingWithMonitoring:
     
     def get_status(self) -> Dict[str, Any]:
         """상태 조회"""
+        total = int(self.signal_total_count or 0)
+        buy = int(self.singular_action_counts.get("BUY", 0) or 0)
+        sell = int(self.singular_action_counts.get("SELL", 0) or 0)
+        locked = int(self.singular_action_counts.get("LOCKED", 0) or 0)
         status = {
             "running": self.running,
             "price_history_size": len(self.price_history),
             "monitoring_enabled": self.monitor.enable_monitoring,
             "trading_enabled": self.enable_trading,
+            "mkm_singular_core": {
+                "total_signals": total,
+                "buy_count": buy,
+                "sell_count": sell,
+                "locked_count": locked,
+                "locked_ratio": (locked / total) if total > 0 else None,
+                "buy_ratio": (buy / total) if total > 0 else None,
+                "sell_ratio": (sell / total) if total > 0 else None,
+                "last_signal_summary": self.last_signal_summary or None,
+            },
             "risk_manager": {
                 "daily_pnl": self.risk_manager.daily_pnl,
                 "can_trade": self.risk_manager.can_trade(),

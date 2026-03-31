@@ -106,6 +106,11 @@ class BitcoinTradingDaemon:
         self.heartbeat_file = PROJECT_ROOT / "memory" / "trading_daemon_heartbeat.txt"
         self.stop_file = PROJECT_ROOT / "memory" / "STOP.txt"
         self.trader_state_file = PROJECT_ROOT / "logs" / "trading_state.json"
+        self.risk_profile_candidates = [
+            PROJECT_ROOT / "memory" / "v2" / "risk" / "risk_profile_fact_safe_latest.json",
+            PROJECT_ROOT / "memory" / "v2" / "risk" / "risk_profile_latest.json",
+            PROJECT_ROOT / "memory" / "risk_profile_latest.json",
+        ]
         
         # Alert Manager 초기화 (중요 이벤트 알림용)
         try:
@@ -163,12 +168,66 @@ class BitcoinTradingDaemon:
                 "testnet": self.testnet,
                 "enable_trading": self.enable_trading,
                 "exchange_snapshot_24h": exchange_snapshot,
+                "risk_profile": self._load_risk_profile_metadata(),
+                "mkm_singular_core": self._load_mkm_singular_core_status(),
             }
             
             with open(self.status_file, 'w', encoding='utf-8') as f:
                 json.dump(status, f, indent=2, ensure_ascii=False)
         except Exception as e:
             logger.error(f"❌ 상태 저장 실패: {e}")
+
+    def _load_mkm_singular_core_status(self) -> Dict[str, Any]:
+        """
+        Read MKM singular-core counters from active engine status first.
+        Fallback is empty block for KPI compatibility.
+        """
+        default = {
+            "total_signals": 0,
+            "buy_count": 0,
+            "sell_count": 0,
+            "locked_count": 0,
+            "locked_ratio": None,
+            "buy_ratio": None,
+            "sell_ratio": None,
+            "last_signal_summary": None,
+        }
+        try:
+            if self.engine:
+                engine_status = self.engine.get_status()
+                mkm = engine_status.get("mkm_singular_core") if isinstance(engine_status, dict) else None
+                if isinstance(mkm, dict):
+                    return {**default, **mkm}
+        except Exception:
+            pass
+        return default
+
+    def _load_risk_profile_metadata(self) -> Dict[str, Any]:
+        """Read-only metadata for MKM risk governor profile."""
+        for p in self.risk_profile_candidates:
+            if p.exists():
+                try:
+                    profile = json.loads(p.read_text(encoding="utf-8"))
+                    return {
+                        "status": "loaded",
+                        "path": str(p),
+                        "schema_version": profile.get("schema_version"),
+                        "generated_at": profile.get("generated_at"),
+                        "expires_at": profile.get("expires_at"),
+                        "singular_core_decision": (
+                            (profile.get("singular_core") or {}).get("core_decision")
+                            if isinstance(profile.get("singular_core"), dict)
+                            else None
+                        ),
+                        "singular_core_score": (
+                            (profile.get("singular_core") or {}).get("core_score")
+                            if isinstance(profile.get("singular_core"), dict)
+                            else None
+                        ),
+                    }
+                except Exception as e:
+                    return {"status": "invalid", "path": str(p), "error": str(e)}
+        return {"status": "not_found"}
 
     def _build_exchange_trade_snapshot(self) -> Dict[str, Any]:
         """Build lightweight 24h fills snapshot from exchange API."""

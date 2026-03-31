@@ -660,6 +660,9 @@ class CryptoNitroLiveTrader:
         self.running = False
         self.trades_count = 0
         self.total_pnl = 0.0
+        self.signal_total_count = 0
+        self.singular_action_counts = {"BUY": 0, "SELL": 0, "LOCKED": 0}
+        self.last_signal_summary: Dict[str, Any] = {}
         
         # 거래 이력 저장
         self.trades_history = []
@@ -701,9 +704,107 @@ class CryptoNitroLiveTrader:
         # 운영자 설정 오버라이드 (trading_config.yaml > trading)
         self.config_check_interval_seconds: Optional[int] = None
         self.config_max_trades_per_day: Optional[int] = None
+        # MKM Risk Governor (read-only)
+        self.risk_profile: Dict[str, Any] = {}
+        self.risk_profile_status: str = "not_loaded"
+        self.config_slippage_cap_bps: Optional[float] = None
+        self.config_maker_only_level: Optional[str] = None
+        self.config_kill_switch_threshold: Optional[float] = None
+        self.config_singular_core_decision: str = "UNKNOWN"
+        self.config_singular_core_score: float = 0.0
+
+        self._load_risk_profile()
         
         logger.info("✅ Crypto-Nitro Live Trader 초기화 완료")
-    
+
+    def _load_risk_profile(self):
+        """
+        Load MKM risk governor profile (read-only).
+        Never creates orders directly; only constrains risk parameters.
+        """
+        candidates = [
+            Path(__file__).parent.parent.parent / "memory" / "v2" / "risk" / "risk_profile_fact_safe_latest.json",
+            Path(__file__).parent.parent.parent / "memory" / "v2" / "risk" / "risk_profile_latest.json",
+            Path(__file__).parent.parent.parent / "memory" / "risk_profile_latest.json",
+        ]
+        profile = None
+        profile_path = None
+        for p in candidates:
+            if p.exists():
+                profile_path = p
+                try:
+                    profile = json.loads(p.read_text(encoding="utf-8"))
+                    break
+                except Exception:
+                    profile = None
+                    break
+        if not profile:
+            self.risk_profile_status = "not_found_or_invalid"
+            return
+
+        try:
+            # Minimal v0.1 validation + hard bounds
+            schema_version = str(profile.get("schema_version", "")).strip()
+            if not schema_version.startswith("risk_profile_v0.1"):
+                self.risk_profile_status = "invalid_schema"
+                return
+
+            expires_at = profile.get("expires_at")
+            if expires_at:
+                try:
+                    exp = datetime.fromisoformat(str(expires_at).replace("Z", "+00:00"))
+                    if exp.tzinfo is not None:
+                        now_aware = datetime.now(exp.tzinfo)
+                        if now_aware > exp:
+                            self.risk_profile_status = "expired"
+                            return
+                except Exception:
+                    pass
+
+            self.risk_profile = profile
+            self.risk_profile_status = "loaded"
+
+            mt = profile.get("max_trades_per_day")
+            if mt is not None:
+                self.config_max_trades_per_day = max(1, min(200, int(mt)))
+
+            mps = profile.get("max_position_size")
+            if mps is not None:
+                mps_val = max(0.01, min(0.30, float(mps)))
+                self.risk_manager.max_position_size = mps_val
+
+            mo = str(profile.get("maker_only_level", "")).strip().lower()
+            if mo in ("strict", "preferred", "flex"):
+                self.config_maker_only_level = mo
+
+            sc = profile.get("slippage_cap_bps")
+            if sc is not None:
+                self.config_slippage_cap_bps = max(1.0, min(30.0, float(sc)))
+
+            ks = profile.get("kill_switch_threshold")
+            if ks is not None:
+                self.config_kill_switch_threshold = max(0.005, min(0.10, float(ks)))
+                self.risk_manager.max_daily_loss = min(self.risk_manager.max_daily_loss, self.config_kill_switch_threshold)
+
+            singular_core = profile.get("singular_core") if isinstance(profile.get("singular_core"), dict) else {}
+            self.config_singular_core_decision = str(singular_core.get("core_decision") or "UNKNOWN").upper()
+            self.config_singular_core_score = float(singular_core.get("core_score") or 0.0)
+
+            logger.info(
+                "🛡️ risk_profile 로드(%s): max_trades=%s, max_position_size=%.2f, maker_only=%s, slippage_bps=%s, kill_switch=%.3f, core_decision=%s, core_score=%.2f",
+                profile_path,
+                self.config_max_trades_per_day,
+                self.risk_manager.max_position_size,
+                self.config_maker_only_level,
+                self.config_slippage_cap_bps,
+                self.risk_manager.max_daily_loss,
+                self.config_singular_core_decision,
+                self.config_singular_core_score,
+            )
+        except Exception as e:
+            self.risk_profile_status = f"invalid:{e}"
+            logger.warning("⚠️ risk_profile 적용 실패: %s", e)
+
     async def start_trading(
         self,
         interval_seconds: int = 300,  # 5분마다 체크 (최적화 로직으로 자동 조정됨)
@@ -760,6 +861,44 @@ class CryptoNitroLiveTrader:
                 old_max_trades,
                 max_trades_per_day,
             )
+
+        if self.config_singular_core_decision == "HOLD":
+            old_max_trades = max_trades_per_day
+            max_trades_per_day = max(1, min(max_trades_per_day, 3))
+            self.risk_manager.max_position_size = min(self.risk_manager.max_position_size, 0.03)
+            self.risk_manager.max_daily_loss = min(self.risk_manager.max_daily_loss, 0.015)
+            logger.warning(
+                "🛡️ singular core HOLD 강제: max_trades %d회 → %d회, max_position_size=%.2f, daily_loss_cap=%.3f",
+                old_max_trades,
+                max_trades_per_day,
+                self.risk_manager.max_position_size,
+                self.risk_manager.max_daily_loss,
+            )
+
+        # MKM Risk Governor shadow/apply (read-only parameter injection)
+        if self.config_maker_only_level in ("strict", "preferred"):
+            if hasattr(self.binance, "maker_only"):
+                self.binance.maker_only = True
+            logger.info("🛡️ risk_profile 적용: maker_only 강제(True), level=%s", self.config_maker_only_level)
+
+        if self.config_slippage_cap_bps is not None and self.enhanced_risk_manager is not None:
+            slippage_ratio = float(self.config_slippage_cap_bps) / 10000.0
+            if hasattr(self.enhanced_risk_manager, "max_slippage"):
+                self.enhanced_risk_manager.max_slippage = slippage_ratio
+            logger.info(
+                "🛡️ risk_profile 적용: max_slippage=%.4f%% (%s bps)",
+                slippage_ratio * 100.0,
+                self.config_slippage_cap_bps,
+            )
+
+        logger.info(
+            "🛰️ risk_profile shadow status=%s, max_trades=%s, max_position_size=%.2f, daily_loss_cap=%.3f, core_decision=%s",
+            self.risk_profile_status,
+            max_trades_per_day,
+            self.risk_manager.max_position_size,
+            self.risk_manager.max_daily_loss,
+            self.config_singular_core_decision,
+        )
         
         if self.running:
             logger.warning("⚠️ 이미 실행 중입니다.")
@@ -979,6 +1118,28 @@ class CryptoNitroLiveTrader:
                     signal = signal_data.get("signal", "HOLD")
                     confidence = signal_data.get("confidence", 0.0)
                     leverage_multiplier = signal_data.get("leverage_multiplier", 1.0)
+                    singular_core = signal_data.get("mkm_singular_core") or {}
+                    singular_action = str(singular_core.get("action", "LOCKED")).upper()
+                    if singular_action not in ("BUY", "SELL", "LOCKED"):
+                        singular_action = "LOCKED"
+                    self.signal_total_count += 1
+                    self.singular_action_counts[singular_action] = (
+                        self.singular_action_counts.get(singular_action, 0) + 1
+                    )
+                    self.last_signal_summary = {
+                        "ts": datetime.now().isoformat(),
+                        "signal": signal,
+                        "confidence": confidence,
+                        "singular_action": singular_action,
+                        "singular_vector": singular_core.get("vector"),
+                        "singular_raw": singular_core.get("raw"),
+                    }
+                    # Gate/message contract: always carry explicit gate_reason + level.
+                    gate_reason = str(signal_data.get("gate_reason", "unspecified")).strip() or "unspecified"
+                    signal_level = "LOW" if (signal == "HOLD" or confidence < 0.6) else ("MID" if confidence < 0.75 else "HIGH")
+                    signal_data["gate_reason"] = gate_reason
+                    signal_data["signal_level"] = signal_level
+                    signal_data["price_output_locked"] = signal_level == "LOW"
 
                     # 🏛️ BTC-6 Regime Fusion → RiskManager 반영 (설계 §7: risk_multiplier 전달)
                     # leverage_multiplier 0.2~1.5 → macro_risk_level 1.0~0.0 (위기 시 포지션/일일손실 한도 축소)
@@ -1027,15 +1188,37 @@ class CryptoNitroLiveTrader:
                             else:
                                 logger.debug("✅ SBSC 검증 통과 (검증 점수: N/A)")
                     
-                    # HOLD 신호는 스킵
+                    # Hard guard: regime/market shock always forces HOLD (no directional execution).
+                    try:
+                        drp = signal_data.get("dual_regime_protection") if isinstance(signal_data, dict) else None
+                        market_shock_confirmed = bool((drp or {}).get("market_shock_confirmed")) or bool(signal_data.get("market_shock_confirmed"))
+                    except Exception:
+                        market_shock_confirmed = False
+                    if market_shock_confirmed and signal in ("BUY", "SELL"):
+                        signal = "HOLD"
+                        confidence = min(confidence, 0.59)
+                        signal_data["signal"] = "HOLD"
+                        signal_data["confidence"] = confidence
+                        signal_data["signal_level"] = "LOW"
+                        signal_data["price_output_locked"] = True
+                        signal_data["gate_reason"] = "market_shock_hardguard_hold"
+                        gate_reason = "market_shock_hardguard_hold"
+                        signal_level = "LOW"
+
+                    # HOLD/LOW 신호는 가격 수치 출력 없이 스킵
                     if signal == "HOLD":
-                        logger.debug(f"신호: HOLD (신뢰도: {confidence:.2%})")
+                        logger.info("신호: HOLD (신뢰도: %.2f, level=%s, gate_reason=%s, price_locked=true)", confidence, signal_level, gate_reason)
                         await asyncio.sleep(interval_seconds)
                         continue
                     
                     # 신뢰도 확인 (최소 0.6 이상)
                     if confidence < 0.6:
-                        logger.debug(f"신뢰도 부족: {confidence:.2%} < 0.6")
+                        signal_data["signal_level"] = "LOW"
+                        signal_data["price_output_locked"] = True
+                        if gate_reason == "unspecified":
+                            signal_data["gate_reason"] = "low_confidence_hold"
+                            gate_reason = "low_confidence_hold"
+                        logger.info("신뢰도 부족: %.2f < 0.6 (level=LOW, gate_reason=%s, price_locked=true)", confidence, gate_reason)
                         await asyncio.sleep(interval_seconds)
                         continue
                     
@@ -1061,7 +1244,14 @@ class CryptoNitroLiveTrader:
                     
                     # 실전 매매 실행 (재시도 로직 포함)
                     if self.enable_live_trading:
-                        logger.info(f"📊 매매 신호: {signal} (신뢰도: {confidence:.2%}, 가상 레버리지: {leverage_multiplier:.2f}배)")
+                        logger.info(
+                            "📊 매매 신호: %s (신뢰도: %.2f, level=%s, gate_reason=%s, 가상 레버리지: %.2f배)",
+                            signal,
+                            confidence,
+                            signal_level,
+                            gate_reason,
+                            leverage_multiplier,
+                        )
                         cited = signal_data.get("cited_trading_wisdom") or []
                         if cited:
                             logger.debug("trading_wisdom 참조: %s", cited)
@@ -1111,6 +1301,15 @@ class CryptoNitroLiveTrader:
                                     ),
                                 )
                                 verdict = oracle_result.get("verdict", "APPROVE")
+                                # Contracted gate fields from Oracle Gateway
+                                og_gate_level = str(oracle_result.get("gate_level", signal_data.get("signal_level", "MID"))).upper()
+                                og_gate_reason = str(oracle_result.get("gate_reason", signal_data.get("gate_reason", "oracle_default")))
+                                og_price_lock = bool(oracle_result.get("price_lock", og_gate_level == "LOW"))
+                                signal_data["signal_level"] = og_gate_level
+                                signal_data["gate_reason"] = og_gate_reason
+                                signal_data["price_output_locked"] = og_price_lock
+                                signal_level = og_gate_level
+                                gate_reason = og_gate_reason
                                 if verdict == "REJECT":
                                     logger.info("🔴 Oracle Gateway REJECT: 주문 스킵")
                                     await asyncio.sleep(interval_seconds)
@@ -2106,7 +2305,8 @@ class CryptoNitroLiveTrader:
                         # 🏛️ 최신 통합 모듈 결과
                         "fact_check": signal_data.get("fact_check") if signal_data else None,
                         "quaternion_insight": signal_data.get("quaternion_insight") if signal_data else None,
-                        "sbsc_verification": signal_data.get("sbsc_verification") if signal_data else None
+                        "sbsc_verification": signal_data.get("sbsc_verification") if signal_data else None,
+                        "logos_timeline_overlay": signal_data.get("logos_timeline_overlay") if signal_data else None,
                     }
                     if signal_data:
                         trade_result["omni_oracle_request"] = signal_data.get("omni_oracle_request")
@@ -2154,6 +2354,7 @@ class CryptoNitroLiveTrader:
                         "fact_check": signal_data.get("fact_check") if signal_data else None,
                         "quaternion_insight": signal_data.get("quaternion_insight") if signal_data else None,
                         "sbsc_verification": signal_data.get("sbsc_verification") if signal_data else None,
+                        "logos_timeline_overlay": signal_data.get("logos_timeline_overlay") if signal_data else None,
                         # 🔥 양방향 매매 전략 결과
                         "bidirectional_strategy": bidirectional_result
                     }
@@ -2313,6 +2514,9 @@ class CryptoNitroLiveTrader:
                 "running": self.running,
                 "trades_count": self.trades_count,
                 "total_pnl": self.total_pnl,
+                "signal_total_count": self.signal_total_count,
+                "singular_action_counts": self.singular_action_counts,
+                "last_signal_summary": self.last_signal_summary,
                 "circuit_breaker_state": self.circuit_breaker_state,
                 "safe_mode": self.safe_mode,
                 "last_price_update": self.last_price_update.isoformat() if hasattr(self, 'last_price_update') else None,
