@@ -16,7 +16,7 @@ WATCHDOG_LOG = MEMORY_DIR / "watchdog_direct.log"
 HEARTBEAT_FILE = MEMORY_DIR / "trading_daemon_heartbeat.txt"
 STOP_FILE = MEMORY_DIR / "STOP.txt"
 STATUS_FILE = MEMORY_DIR / "trading_daemon_status.json"
-TASK_NAME = "Bitcoin-Direct-Watchdog-5min"
+TASK_NAMES = ("Bitcoin-KPI-Snapshot-30min", "Bitcoin-KPI-Snapshot-5min")
 
 
 def _read_text(path: Path) -> str:
@@ -35,9 +35,12 @@ def _safe_json(path: Path) -> dict:
 
 
 def _task_is_ready() -> bool:
-    cmd = ["schtasks", "/Query", "/TN", TASK_NAME]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
-    return proc.returncode == 0 and "Ready" in proc.stdout
+    for task_name in TASK_NAMES:
+        cmd = ["schtasks", "/Query", "/TN", task_name]
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        if proc.returncode == 0 and "Ready" in proc.stdout:
+            return True
+    return False
 
 
 def _heartbeat_age_minutes() -> float | None:
