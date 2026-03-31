@@ -8,9 +8,16 @@ $ErrorActionPreference = "Stop"
 $projectRoot = "C:\workspace\projects\bitcoin-trading"
 $memoryDir = Join-Path $projectRoot "memory"
 $heartbeatPath = Join-Path $memoryDir "trading_daemon_heartbeat.txt"
+$daemonStatusLegacyPath = Join-Path $memoryDir "trading_daemon_status.json"
+$daemonStatusV2Dir = Join-Path $memoryDir "v2\\status"
+$daemonStatusV2Path = Join-Path $daemonStatusV2Dir "trading_daemon_status.json"
 $stopPath = Join-Path $memoryDir "STOP.txt"
 $logPath = Join-Path $memoryDir "watchdog_direct.log"
+$lockPath = Join-Path $memoryDir "daemon_singleton.lock"
 $daemonArg = "scripts/start_24h_daemon.py"
+$factSafeProphecyPath = Join-Path $projectRoot "..\..\docs\final\artifacts\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
+$factSafeSyncScript = Join-Path $projectRoot "..\..\scripts\sync_fact_safe_risk_profile.py"
+$riskProfilePath = Join-Path $projectRoot "memory\v2\risk\risk_profile_fact_safe_latest.json"
 
 if (-not (Test-Path $memoryDir)) {
     New-Item -ItemType Directory -Path $memoryDir | Out-Null
@@ -35,8 +42,58 @@ function Start-Daemon {
         return
     }
 
+    if ((Test-Path $factSafeSyncScript) -and (Test-Path $factSafeProphecyPath)) {
+        Write-Log "Syncing Fact-Safe risk profile before daemon start"
+        python $factSafeSyncScript --prophecy $factSafeProphecyPath --output $riskProfilePath | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            Write-Log "WARN: Fact-Safe risk sync failed; daemon start continues with existing profile"
+        }
+    } else {
+        Write-Log "Fact-Safe risk sync skipped (prophecy/script missing)"
+    }
+
     Write-Log "Starting daemon process"
     Start-Process -FilePath "python" -ArgumentList $daemonArg -WorkingDirectory $projectRoot -WindowStyle Hidden
+}
+
+function Sync-DaemonStatusMirror {
+    try {
+        if (-not (Test-Path $daemonStatusLegacyPath)) {
+            return
+        }
+        if (-not (Test-Path $daemonStatusV2Dir)) {
+            New-Item -ItemType Directory -Path $daemonStatusV2Dir -Force | Out-Null
+        }
+        $copyRequired = -not (Test-Path $daemonStatusV2Path)
+        if (-not $copyRequired) {
+            $legacyTs = (Get-Item $daemonStatusLegacyPath).LastWriteTimeUtc
+            $v2Ts = (Get-Item $daemonStatusV2Path).LastWriteTimeUtc
+            $copyRequired = $legacyTs -gt $v2Ts
+        }
+        if ($copyRequired) {
+            Copy-Item -Path $daemonStatusLegacyPath -Destination $daemonStatusV2Path -Force
+            Write-Log "Synced daemon status mirror to v2/status"
+        }
+    } catch {
+        Write-Log "WARN: Daemon status mirror sync failed: $($_.Exception.Message)"
+    }
+}
+
+function Test-LockOwnerAlive {
+    if (-not (Test-Path $lockPath)) {
+        return $false
+    }
+    try {
+        $raw = Get-Content $lockPath -Raw
+        $obj = $raw | ConvertFrom-Json
+        $ownerPid = [int]$obj.pid
+        if ($ownerPid -gt 0) {
+            return $null -ne (Get-Process -Id $ownerPid -ErrorAction SilentlyContinue)
+        }
+    } catch {
+        Write-Log "Lock file parse failed: $($_.Exception.Message)"
+    }
+    return $false
 }
 
 if (Test-Path $stopPath) {
@@ -110,9 +167,13 @@ if (-not $isRunning) {
         }
     }
     if ($hbYoung) {
-        Write-Log "Daemon not listed by process query but heartbeat is fresh — not starting another daemon."
-        Write-Log "Daemon healthy"
-        exit 0
+        if (Test-LockOwnerAlive) {
+            Write-Log "Daemon not listed by process query but heartbeat is fresh and lock owner alive - not starting another daemon."
+            Sync-DaemonStatusMirror
+            Write-Log "Daemon healthy"
+            exit 0
+        }
+        Write-Log "Heartbeat is fresh but lock owner missing. Starting daemon to recover."
     }
     Write-Log "Daemon not running"
     Start-Daemon
@@ -130,3 +191,4 @@ if ($heartbeatStale) {
 }
 
 Write-Log "Daemon healthy"
+Sync-DaemonStatusMirror

@@ -100,9 +100,11 @@ class BitcoinTradingDaemon:
         self.successful_trades = 0
         self.failed_trades = 0
         
-        # 상태 파일 경로
+        # 상태 파일 경로 (legacy + v2 동시 기록으로 운영 참조 경로 정합화)
         self.status_file = PROJECT_ROOT / "memory" / "trading_daemon_status.json"
+        self.status_file_v2 = PROJECT_ROOT / "memory" / "v2" / "status" / "trading_daemon_status.json"
         self.status_file.parent.mkdir(exist_ok=True, parents=True)
+        self.status_file_v2.parent.mkdir(exist_ok=True, parents=True)
         self.heartbeat_file = PROJECT_ROOT / "memory" / "trading_daemon_heartbeat.txt"
         self.stop_file = PROJECT_ROOT / "memory" / "STOP.txt"
         self.trader_state_file = PROJECT_ROOT / "logs" / "trading_state.json"
@@ -172,8 +174,9 @@ class BitcoinTradingDaemon:
                 "mkm_singular_core": self._load_mkm_singular_core_status(),
             }
             
-            with open(self.status_file, 'w', encoding='utf-8') as f:
-                json.dump(status, f, indent=2, ensure_ascii=False)
+            for status_path in (self.status_file, self.status_file_v2):
+                with open(status_path, 'w', encoding='utf-8') as f:
+                    json.dump(status, f, indent=2, ensure_ascii=False)
         except Exception as e:
             logger.error(f"❌ 상태 저장 실패: {e}")
 
@@ -579,6 +582,8 @@ class BitcoinTradingDaemon:
             "symbol": self.symbol,
             "testnet": self.testnet,
             "enable_trading": self.enable_trading,
+            "status_file": str(self.status_file),
+            "status_file_v2": str(self.status_file_v2),
             "heartbeat_file": str(self.heartbeat_file),
             "stop_file": str(self.stop_file)
         }
