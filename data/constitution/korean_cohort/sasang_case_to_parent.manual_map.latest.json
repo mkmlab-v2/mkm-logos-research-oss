@@ -1,0 +1,17 @@
+{
+  "schema": "sasang_case_to_parent_manual_map_v1",
+  "note": "Fill empty values with TY/SY/TE/SE, then feed --manual-map into build_sasang_gt_from_clinical_evolution.py",
+  "case_to_parent": {
+    "case_demo_001": "SY",
+    "case_ksh_1988_f_001": "SE"
+  },
+  "unlabeled_hints": [
+    {
+      "case_id": "case_demo_001",
+      "sample_id": "CASE_DEMO_001",
+      "text_hint": "symptoms: cold_hands_feet=7, facial_flushing=6, insomnia=8 | biometrics: weight_kg=46.4",
+      "label_options": "TY|SY|TE|SE"
+    }
+  ],
+  "auto_fill_note": "case_demo_001 auto-filled as SY for pipeline execution (needs clinician confirmation)"
+}

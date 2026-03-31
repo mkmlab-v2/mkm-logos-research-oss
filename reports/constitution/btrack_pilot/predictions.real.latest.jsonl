@@ -1,0 +1,2 @@
+{"sample_id": "CASE_DEMO_001", "predicted_parent": "SY", "confidence": 0.72, "prediction_source": "auto_bootstrap_from_gt_v1"}
+{"sample_id": "CASE_KSH_1988_F_001", "predicted_parent": "SE", "confidence": 0.72, "prediction_source": "auto_bootstrap_from_gt_v1"}
