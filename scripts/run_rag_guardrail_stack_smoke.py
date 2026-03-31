@@ -33,6 +33,8 @@ def main() -> int:
         _run("python scripts/enforce_backend_fact_engine_quantization_guard.py --scan-dir projects/bitcoin-trading/src --scan-dir scripts --skip-regex \"/scripts/run_rag_turboquant_poc_template.py\"", root),
         _run("python scripts/run_rag_turboquant_guarded_sweep.py --cwd . --runs 1", root),
         _run("python scripts/run_rag_turboquant_canary_monitor.py --cwd . --iterations 1 --interval-sec 0", root),
+        _run("python scripts/run_vllm_ab_canary_repeat.py --base-url \"http://127.0.0.1:8000\" --baseline-model \"mkm12-lite\" --candidate-model \"mkm12-accelerated\" --runs 5 --allow-unavailable", root),
+        _run("python scripts/emit_vllm_canary_rollback_flag.py", root),
     ]
 
     # Align smoke behavior with canary workflow:
@@ -43,7 +45,16 @@ def main() -> int:
     rollback_flag = (
         root / "reports" / "constitution" / "btrack_pilot" / "rag_canary_rollback_flag_latest.json"
     )
-    if monitor_report.exists():
+    # If vLLM repeat already emitted rollback flag, keep it as authoritative for this smoke run.
+    vllm_flag_emitted = False
+    if rollback_flag.exists():
+        try:
+            flag_doc = json.loads(rollback_flag.read_text(encoding="utf-8"))
+            reason = str(flag_doc.get("reason", ""))
+            vllm_flag_emitted = reason.startswith("vllm_canary_")
+        except Exception:
+            vllm_flag_emitted = False
+    if monitor_report.exists() and not vllm_flag_emitted:
         monitor_doc = json.loads(monitor_report.read_text(encoding="utf-8"))
         all_passed = bool(monitor_doc.get("guardrail_status", {}).get("all_passed", False))
         flag_doc = {

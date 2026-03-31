@@ -1,0 +1,80 @@
+name: vLLM Canary Repeat
+
+on:
+  workflow_dispatch:
+    inputs:
+      vllm_base_url:
+        description: "vLLM OpenAI-compatible base URL"
+        required: false
+        default: "http://127.0.0.1:8000"
+        type: string
+      baseline_model:
+        description: "Baseline model id"
+        required: false
+        default: "mkm12-lite"
+        type: string
+      candidate_model:
+        description: "Candidate model id"
+        required: false
+        default: "mkm12-accelerated"
+        type: string
+      runs:
+        description: "Canary repeat runs"
+        required: false
+        default: "10"
+        type: string
+  schedule:
+    - cron: "15 * * * *"
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Resolve inputs
+        run: |
+          BASE_URL="${{ github.event.inputs.vllm_base_url || vars.VLLM_BASE_URL || 'http://127.0.0.1:8000' }}"
+          BASELINE="${{ github.event.inputs.baseline_model || vars.VLLM_BASELINE_MODEL || 'mkm12-lite' }}"
+          CANDIDATE="${{ github.event.inputs.candidate_model || vars.VLLM_CANDIDATE_MODEL || 'mkm12-accelerated' }}"
+          RUNS="${{ github.event.inputs.runs || vars.VLLM_CANARY_RUNS || '10' }}"
+          echo "VLLM_BASE_URL_EFFECTIVE=${BASE_URL}" >> "$GITHUB_ENV"
+          echo "VLLM_BASELINE_MODEL_EFFECTIVE=${BASELINE}" >> "$GITHUB_ENV"
+          echo "VLLM_CANDIDATE_MODEL_EFFECTIVE=${CANDIDATE}" >> "$GITHUB_ENV"
+          echo "VLLM_CANARY_RUNS_EFFECTIVE=${RUNS}" >> "$GITHUB_ENV"
+          echo "base_url=${BASE_URL}"
+          echo "baseline=${BASELINE}"
+          echo "candidate=${CANDIDATE}"
+          echo "runs=${RUNS}"
+
+      - name: Run vLLM canary repeat
+        run: |
+          python scripts/run_vllm_ab_canary_repeat.py \
+            --base-url "${{ env.VLLM_BASE_URL_EFFECTIVE }}" \
+            --baseline-model "${{ env.VLLM_BASELINE_MODEL_EFFECTIVE }}" \
+            --candidate-model "${{ env.VLLM_CANDIDATE_MODEL_EFFECTIVE }}" \
+            --runs "${{ env.VLLM_CANARY_RUNS_EFFECTIVE }}" \
+            --allow-unavailable
+
+      - name: Emit rollback flag from vLLM canary
+        run: python scripts/emit_vllm_canary_rollback_flag.py
+
+      - name: Enforce rollback gate
+        run: python scripts/check_rag_canary_rollback_flag.py
+
+      - name: Upload vLLM canary artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vllm-canary-repeat-${{ github.run_id }}
+          path: |
+            reports/constitution/btrack_pilot/vllm_ab_canary_repeat_latest.json
+            reports/constitution/btrack_pilot/vllm_ab_canary_run_*.json
+            reports/constitution/btrack_pilot/rag_canary_rollback_flag_latest.json
+          if-no-files-found: ignore

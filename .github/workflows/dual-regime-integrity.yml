@@ -114,6 +114,11 @@ on:
       - "scripts/core/master_codebook_lexicon_v1_bridge.py"
       - "tests/test_master_codebook_lexicon_v1_bridge.py"
       - "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md"
+      - ".github/workflows/vllm-canary-repeat.yml"
+      - "scripts/run_vllm_ab_benchmark_template.py"
+      - "scripts/run_vllm_ab_model_sweep.py"
+      - "scripts/run_vllm_ab_canary_repeat.py"
+      - "scripts/emit_vllm_canary_rollback_flag.py"
       - "tests/test_btrack_symbol_lane_regression.py"
       - "tests/test_v3_operational_measured_pipeline.py"
       - "tests/test_btrack_phase3_snapshot_sync.py"
@@ -156,6 +161,11 @@ on:
         type: boolean
       token_api_live_ratio_blocking:
         description: "Enable blocking gate for token API live_ratio"
+        required: false
+        default: false
+        type: boolean
+      approve_numeric_near_miss:
+        description: "Enable numeric near-miss promotion export (manual approval only)"
         required: false
         default: false
         type: boolean
@@ -329,7 +339,16 @@ jobs:
         run: python scripts/check_btrack_regression.py
 
       - name: B-Track symbol lane gate + lock + regression check
-        run: python scripts/run_btrack_symbol_lane_gate_and_lock.py --include-shared-vault --profile-tag stable --baseline-out reports/constitution/btrack_pilot/btrack_symbol_lane_baseline_lock_stable_latest.json
+        run: |
+          EXTRA_ARGS=""
+          if [ "${{ github.event.inputs.approve_numeric_near_miss }}" = "true" ]; then
+            EXTRA_ARGS="--approve-numeric-near-miss"
+          fi
+          python scripts/run_btrack_symbol_lane_gate_and_lock.py \
+            --include-shared-vault \
+            --profile-tag stable \
+            --baseline-out reports/constitution/btrack_pilot/btrack_symbol_lane_baseline_lock_stable_latest.json \
+            ${EXTRA_ARGS}
 
       - name: Resolve fusion gate policy
         run: |

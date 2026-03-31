@@ -28,4 +28,6 @@ jobs:
             reports/constitution/btrack_pilot/rag_turboquant_guarded_sweep_latest.json
             reports/constitution/btrack_pilot/rag_canary_monitor_latest.json
             reports/constitution/btrack_pilot/rag_canary_rollback_flag_latest.json
+            reports/constitution/btrack_pilot/vllm_ab_canary_repeat_latest.json
+            reports/constitution/btrack_pilot/vllm_ab_canary_run_*.json
           if-no-files-found: ignore
