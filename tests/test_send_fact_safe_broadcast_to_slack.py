@@ -34,6 +34,8 @@ def test_build_slack_text_contains_core_fields():
             "core_score": 0.25,
             "core_decision": "HOLD",
             "core_reason": "score_inside_locked_band",
+            "k_shield_candidate_name": "k_shield_h1_soft",
+            "k_shield_candidate_max_drawdown_pct": 8.285629,
             "net": "1.23",
             "net_source": "kpi_history_fallback",
             "history_samples": "1",
@@ -47,6 +49,7 @@ def test_build_slack_text_contains_core_fields():
     assert "next_month_risk_hint: 4월 선행 리스크: 압박/방어 구간" in text
     assert "reliability_badge: LOW" in text
     assert "core_decision: HOLD" in text
+    assert "k_shield_candidate: k_shield_h1_soft" in text
     assert "net_source: kpi_history_fallback" in text
     assert "NET_SOURCE_FALLBACK_ACTIVE" in text
 

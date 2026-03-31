@@ -114,6 +114,10 @@ def _monthly_outlook_for_now() -> dict:
         "core_decision": meta.get("core_decision"),
         "core_reason": meta.get("core_reason"),
         "core_contract_version": meta.get("core_contract_version"),
+        "k_shield_candidate_name": meta.get("k_shield_candidate_name"),
+        "k_shield_candidate_net_return_pct": meta.get("k_shield_candidate_net_return_pct"),
+        "k_shield_candidate_profit_factor": meta.get("k_shield_candidate_profit_factor"),
+        "k_shield_candidate_max_drawdown_pct": meta.get("k_shield_candidate_max_drawdown_pct"),
     }
 
 
@@ -177,6 +181,12 @@ def main() -> int:
     payload["core_contract_version"] = (
         payload["monthly_outlook"].get("core_contract_version") if payload["monthly_outlook"] else None
     )
+    payload["k_shield_candidate_name"] = (
+        payload["monthly_outlook"].get("k_shield_candidate_name") if payload["monthly_outlook"] else None
+    )
+    payload["k_shield_candidate_max_drawdown_pct"] = (
+        payload["monthly_outlook"].get("k_shield_candidate_max_drawdown_pct") if payload["monthly_outlook"] else None
+    )
     missing_required = [k for k in REQUIRED_BRIEF_KEYS if not payload.get(k)]
     payload["required_keys_complete"] = len(missing_required) == 0
     payload["missing_required_keys"] = missing_required
@@ -202,6 +212,8 @@ def main() -> int:
         f"- core_score: {payload.get('core_score')}",
         f"- core_decision: {payload.get('core_decision')}",
         f"- core_reason: {payload.get('core_reason')}",
+        f"- k_shield_candidate_name: {payload.get('k_shield_candidate_name')}",
+        f"- k_shield_candidate_max_drawdown_pct: {payload.get('k_shield_candidate_max_drawdown_pct')}",
         (
             f"- monthly_outlook: {payload['monthly_outlook'].get('month')}월 "
             f"(phase={payload['monthly_outlook'].get('phase')}, "

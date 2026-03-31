@@ -116,6 +116,8 @@ def build_slack_text(payload: dict) -> str:
             f"- core_score: {payload.get('core_score')}",
             f"- core_decision: {payload.get('core_decision')}",
             f"- core_reason: {payload.get('core_reason')}",
+            f"- k_shield_candidate: {payload.get('k_shield_candidate_name')}",
+            f"- k_shield_candidate_max_drawdown_pct: {payload.get('k_shield_candidate_max_drawdown_pct')}",
             f"- net: {payload.get('net')}",
             f"- net_source: {payload.get('net_source')}",
             f"- history_samples: {payload.get('history_samples')}",
@@ -198,6 +200,8 @@ def main() -> int:
         "core_score": payload.get("core_score"),
         "core_decision": payload.get("core_decision"),
         "core_reason": payload.get("core_reason"),
+        "k_shield_candidate_name": payload.get("k_shield_candidate_name"),
+        "k_shield_candidate_max_drawdown_pct": payload.get("k_shield_candidate_max_drawdown_pct"),
     }
     status["net_source_fallback_streak"] = _compute_fallback_streak(
         status_log_out, bool(status["net_source_fallback_alert"])
