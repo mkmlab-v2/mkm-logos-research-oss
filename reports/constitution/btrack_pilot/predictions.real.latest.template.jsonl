@@ -1,0 +1,4 @@
+{"sample_id":"REAL_000001","predicted_parent":"TY","confidence":0.8123,"prediction_source":"sasang_runtime_v1"}
+{"sample_id":"REAL_000002","predicted_parent":"SY","confidence":0.7345,"prediction_source":"sasang_runtime_v1"}
+{"sample_id":"REAL_000003","predicted_parent":"TE","confidence":0.6891,"prediction_source":"sasang_runtime_v1"}
+{"sample_id":"REAL_000004","predicted_parent":"SE","confidence":0.7762,"prediction_source":"sasang_runtime_v1"}
