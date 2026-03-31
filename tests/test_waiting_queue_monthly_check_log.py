@@ -86,3 +86,17 @@ def test_waiting_queue_has_symbol_lane_gate_fields_in_recent_rows() -> None:
     assert str(latest.get("btrack_symbol_lane_gate_path", "")).endswith(
         "reports\\constitution\\btrack_pilot\\symbol_lane_gate_latest.json"
     )
+
+
+def test_waiting_queue_has_k_shield_metadata_fields_in_recent_rows() -> None:
+    rows = list(_rows(_LOG))
+    candidates = [
+        r
+        for r in rows
+        if "prophecy_k_shield_candidate" in r or "prophecy_k_shield_candidate_max_drawdown_pct" in r
+    ]
+    assert candidates, "at least one log row must include k-shield metadata fields"
+
+    latest = candidates[-1]
+    assert str(latest.get("prophecy_k_shield_candidate", "")).strip(), "missing prophecy_k_shield_candidate"
+    assert latest.get("prophecy_k_shield_candidate_max_drawdown_pct") is not None
