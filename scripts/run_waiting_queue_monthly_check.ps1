@@ -164,6 +164,8 @@ $prophecyReliabilityBadge = $null
 $prophecyDecision = $null
 $prophecyCoreDecision = $null
 $prophecyCoreScore = $null
+$prophecyKShieldCandidate = $null
+$prophecyKShieldMdd = $null
 if (Test-Path -LiteralPath $monthlyProphecyPath) {
     try {
         $prophecyObj = Get-Content -LiteralPath $monthlyProphecyPath -Encoding utf8 | ConvertFrom-Json
@@ -173,6 +175,8 @@ if (Test-Path -LiteralPath $monthlyProphecyPath) {
         $prophecyDecision = ([string]$prophecyObj.meta.high_reliability_decision).ToUpper()
         $prophecyCoreDecision = ([string]$prophecyObj.meta.core_decision).ToUpper()
         $prophecyCoreScore = $prophecyObj.meta.core_score
+        $prophecyKShieldCandidate = [string]$prophecyObj.meta.k_shield_candidate_name
+        $prophecyKShieldMdd = $prophecyObj.meta.k_shield_candidate_max_drawdown_pct
         $requiresLock = ($prophecyReliabilityBadge -eq "LOW" -or $prophecyDecision -eq "HOLD")
         if ($requiresLock -and (-not $priceOutputLocked)) {
             $priceOutputLockGuard = "fail"
@@ -291,6 +295,8 @@ if ($overlapDriftAlert -and ($highReliabilityDecision -eq "PASS")) {
     prophecy_high_reliability_decision = $prophecyDecision
     prophecy_core_decision = $prophecyCoreDecision
     prophecy_core_score = $prophecyCoreScore
+    prophecy_k_shield_candidate = $prophecyKShieldCandidate
+    prophecy_k_shield_candidate_max_drawdown_pct = $prophecyKShieldMdd
     monthly_prophecy_path = $monthlyProphecyPath
     runtime_risk_profile_path = $runtimeRiskProfilePath
     next_monthly_due_date = $nextMonthlyDue

@@ -26,6 +26,7 @@ OUT_MD = ART_DIR / "prophecy_2026_monthly_kospi_btc_fact_safe_v1.md"
 GATE_JSON = ART_DIR / "high_reliability_mode_gate_latest.json"
 WAITING_LOG = ART_DIR / "waiting_queue_monthly_check_log.jsonl"
 BTC_SWEEP = ART_DIR / "btc_time_machine_sweep_latest.json"
+K_SHIELD_SWEEP = ART_DIR / "btc_k_shield_fast_sweep_2025_latest.json"
 KPI_JSONL_GLOB = ROOT / "projects" / "bitcoin-trading" / "memory" / "kpi" / "kpi_snapshot_*.jsonl"
 
 
@@ -226,6 +227,7 @@ def generate() -> dict[str, Any]:
     gate = _safe_json(GATE_JSON)
     waiting = _latest_jsonl(WAITING_LOG)
     sweep = _safe_json(BTC_SWEEP)
+    k_shield_sweep = _safe_json(K_SHIELD_SWEEP)
 
     engine_id = "V2_Precision_MCP"
     samples_7d, net_delta_7d = _kpi_history_stats(days=7)
@@ -235,6 +237,13 @@ def generate() -> dict[str, Any]:
     base_gate_reason = "low_badge_forced_hold" if reliability_badge == "LOW" else "monthly_check_gate"
     best = sweep.get("best") if isinstance(sweep.get("best"), dict) else {}
     best_metrics = best.get("metrics") if isinstance(best.get("metrics"), dict) else {}
+    k_shield_best = (
+        k_shield_sweep.get("best_by_balanced_score")
+        if isinstance(k_shield_sweep.get("best_by_balanced_score"), dict)
+        else {}
+    )
+    k_shield_best_name = k_shield_best.get("name") if isinstance(k_shield_best, dict) else None
+    k_shield_best_metrics = k_shield_best.get("metrics") if isinstance(k_shield_best.get("metrics"), dict) else {}
     btc_backtest_bias = "NEUTRAL"
     if float(best_metrics.get("net_return_pct") or 0.0) > 0 and float(best_metrics.get("profit_factor") or 0.0) >= 1.0:
         btc_backtest_bias = "CAUTION_UP"
@@ -327,6 +336,10 @@ def generate() -> dict[str, Any]:
             "btc_backtest_best_period": best.get("period"),
             "btc_backtest_best_net_return_pct": best_metrics.get("net_return_pct"),
             "btc_backtest_best_profit_factor": best_metrics.get("profit_factor"),
+            "k_shield_candidate_name": k_shield_best_name,
+            "k_shield_candidate_net_return_pct": k_shield_best_metrics.get("net_return_pct"),
+            "k_shield_candidate_profit_factor": k_shield_best_metrics.get("profit_factor"),
+            "k_shield_candidate_max_drawdown_pct": k_shield_best_metrics.get("max_drawdown_pct"),
             "core_score": core.get("score_grid"),
             "core_score_raw": core.get("score_raw"),
             "core_decision": core_decision,
@@ -358,6 +371,9 @@ def to_markdown(doc: dict[str, Any]) -> str:
         f"- price_output_locked: {meta.get('price_output_locked')}",
         f"- lock_reason: {meta.get('lock_reason')}",
         f"- btc_backtest_best_period: {meta.get('btc_backtest_best_period')}",
+        f"- k_shield_candidate_name: {meta.get('k_shield_candidate_name')}",
+        f"- k_shield_candidate_net_return_pct: {meta.get('k_shield_candidate_net_return_pct')}",
+        f"- k_shield_candidate_max_drawdown_pct: {meta.get('k_shield_candidate_max_drawdown_pct')}",
         f"- core_score: {meta.get('core_score')}",
         f"- core_decision: {meta.get('core_decision')}",
         f"- core_reason: {meta.get('core_reason')}",

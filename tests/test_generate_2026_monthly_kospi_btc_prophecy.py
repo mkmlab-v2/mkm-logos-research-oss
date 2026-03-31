@@ -36,6 +36,7 @@ def test_generate_sets_price_lock_in_hold_mode(tmp_path):
         assert doc["meta"]["lock_reason"] == "low_or_hold_mode_price_output_forbidden"
         assert doc["meta"]["core_decision"] in {"HOLD", "PASS_LONG", "PASS_SHORT"}
         assert "core_contract_version" in doc["meta"]
+        assert "k_shield_candidate_name" in doc["meta"]
         assert "risk_profile" in doc
         assert doc["risk_profile"]["mode"] == "LOCKED_MODE"
         assert doc["risk_profile"]["position_scale_cap"] <= 0.2
