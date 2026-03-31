@@ -1,0 +1,31 @@
+name: RAG Guardrail Stack Smoke
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run guardrail stack smoke
+        run: python scripts/run_rag_guardrail_stack_smoke.py
+
+      - name: Upload smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rag-guardrail-stack-smoke-${{ github.run_id }}
+          path: |
+            reports/constitution/btrack_pilot/rag_guardrail_stack_smoke_latest.json
+            reports/constitution/btrack_pilot/rag_turboquant_guarded_sweep_latest.json
+            reports/constitution/btrack_pilot/rag_canary_monitor_latest.json
+            reports/constitution/btrack_pilot/rag_canary_rollback_flag_latest.json
+          if-no-files-found: ignore

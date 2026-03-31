@@ -1,0 +1,60 @@
+name: RAG TurboQuant Canary Monitor
+
+on:
+  schedule:
+    # Hourly UTC
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  canary-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run canary monitor (short hourly window)
+        run: |
+          python scripts/run_rag_turboquant_canary_monitor.py \
+            --cwd . \
+            --iterations 3 \
+            --interval-sec 0 \
+            --traffic-percent 10 \
+            --out-json reports/constitution/btrack_pilot/rag_canary_monitor_latest.json \
+            --out-log reports/constitution/btrack_pilot/rag_canary_monitor_log.jsonl
+
+      - name: Evaluate canary guardrail status
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          p = Path("reports/constitution/btrack_pilot/rag_canary_monitor_latest.json")
+          d = json.loads(p.read_text(encoding="utf-8"))
+          ok = bool(d.get("guardrail_status", {}).get("all_passed", False))
+          flag = {
+            "schema": "rag_turboquant_canary_rollback_flag_v1",
+            "should_rollback": (not ok),
+            "reason": "guardrail_failed" if not ok else "healthy",
+            "source_report": str(p.as_posix()),
+          }
+          out = Path("reports/constitution/btrack_pilot/rag_canary_rollback_flag_latest.json")
+          out.write_text(json.dumps(flag, ensure_ascii=False, indent=2), encoding="utf-8")
+          print(f"WROTE: {out}")
+          if not ok:
+            raise SystemExit("Canary guardrail failed; rollback flag raised.")
+
+      - name: Upload canary artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rag-turboquant-canary-artifacts
+          path: |
+            reports/constitution/btrack_pilot/rag_canary_monitor_latest.json
+            reports/constitution/btrack_pilot/rag_canary_monitor_log.jsonl
+            reports/constitution/btrack_pilot/rag_canary_rollback_flag_latest.json
+          if-no-files-found: ignore
