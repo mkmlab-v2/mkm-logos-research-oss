@@ -1,0 +1,241 @@
+{
+  "schema": "btc_time_machine_sweep_v1",
+  "generated_at_utc": "2026-03-31T06:20:54Z",
+  "symbol": "BTCUSDT",
+  "rows": [
+    {
+      "period": "2024-01-01..2024-12-31",
+      "bars": 365,
+      "config": {
+        "warmup": 30,
+        "horizon": 7,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 328,
+        "win_rate": 0.551829,
+        "net_return_pct": 242.819158,
+        "avg_trade_return_pct": 0.740302,
+        "profit_factor": 1.28926
+      },
+      "score": 143.100469
+    },
+    {
+      "period": "2024-01-01..2024-12-31",
+      "bars": 365,
+      "config": {
+        "warmup": 30,
+        "horizon": 3,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 332,
+        "win_rate": 0.53012,
+        "net_return_pct": 107.395395,
+        "avg_trade_return_pct": 0.32348,
+        "profit_factor": 1.190134
+      },
+      "score": 74.220237
+    },
+    {
+      "period": "2025-01-01..2025-12-31",
+      "bars": 364,
+      "config": {
+        "warmup": 30,
+        "horizon": 7,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 327,
+        "win_rate": 0.501529,
+        "net_return_pct": 101.579133,
+        "avg_trade_return_pct": 0.31064,
+        "profit_factor": 1.171282
+      },
+      "score": 70.787676
+    },
+    {
+      "period": "2024-01-01..2024-12-31",
+      "bars": 365,
+      "config": {
+        "warmup": 20,
+        "horizon": 3,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 342,
+        "win_rate": 0.51462,
+        "net_return_pct": 86.274254,
+        "avg_trade_return_pct": 0.252264,
+        "profit_factor": 1.14633
+      },
+      "score": 63.166627
+    },
+    {
+      "period": "2026-01-01..2026-12-31",
+      "bars": 90,
+      "config": {
+        "warmup": 20,
+        "horizon": 3,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 67,
+        "win_rate": 0.492537,
+        "net_return_pct": 15.26522,
+        "avg_trade_return_pct": 0.227839,
+        "profit_factor": 1.121201
+      },
+      "score": 24.43999
+    },
+    {
+      "period": "2026-01-01..2026-12-31",
+      "bars": 90,
+      "config": {
+        "warmup": 20,
+        "horizon": 1,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 69,
+        "win_rate": 0.521739,
+        "net_return_pct": 9.362673,
+        "avg_trade_return_pct": 0.135691,
+        "profit_factor": 1.125974
+      },
+      "score": 21.848467
+    },
+    {
+      "period": "2024-01-01..2024-12-31",
+      "bars": 365,
+      "config": {
+        "warmup": 20,
+        "horizon": 1,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 344,
+        "win_rate": 0.488372,
+        "net_return_pct": 3.670703,
+        "avg_trade_return_pct": 0.010671,
+        "profit_factor": 1.010666
+      },
+      "score": 20.265732
+    },
+    {
+      "period": "2025-01-01..2025-12-31",
+      "bars": 364,
+      "config": {
+        "warmup": 30,
+        "horizon": 3,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 331,
+        "win_rate": 0.450151,
+        "net_return_pct": 3.31875,
+        "avg_trade_return_pct": 0.010026,
+        "profit_factor": 1.007583
+      },
+      "score": 19.546715
+    },
+    {
+      "period": "2026-01-01..2026-12-31",
+      "bars": 90,
+      "config": {
+        "warmup": 30,
+        "horizon": 7,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 53,
+        "win_rate": 0.490566,
+        "net_return_pct": 5.157511,
+        "avg_trade_return_pct": 0.097312,
+        "profit_factor": 1.050041
+      },
+      "score": 18.514826
+    },
+    {
+      "period": "2026-01-01..2026-12-31",
+      "bars": 90,
+      "config": {
+        "warmup": 30,
+        "horizon": 3,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 57,
+        "win_rate": 0.45614,
+        "net_return_pct": -25.328662,
+        "avg_trade_return_pct": -0.444362,
+        "profit_factor": 0.795442
+      },
+      "score": 0.421489
+    },
+    {
+      "period": "2025-01-01..2025-12-31",
+      "bars": 364,
+      "config": {
+        "warmup": 20,
+        "horizon": 3,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 341,
+        "win_rate": 0.442815,
+        "net_return_pct": -46.115865,
+        "avg_trade_return_pct": -0.135237,
+        "profit_factor": 0.902825
+      },
+      "score": -6.191532
+    },
+    {
+      "period": "2025-01-01..2025-12-31",
+      "bars": 364,
+      "config": {
+        "warmup": 20,
+        "horizon": 1,
+        "stride": 1,
+        "fee_bps_round_trip": 8.0
+      },
+      "metrics": {
+        "sample_count": 343,
+        "win_rate": 0.460641,
+        "net_return_pct": -52.909241,
+        "avg_trade_return_pct": -0.154254,
+        "profit_factor": 0.818652
+      },
+      "score": -10.231691
+    }
+  ],
+  "best": {
+    "period": "2024-01-01..2024-12-31",
+    "bars": 365,
+    "config": {
+      "warmup": 30,
+      "horizon": 7,
+      "stride": 1,
+      "fee_bps_round_trip": 8.0
+    },
+    "metrics": {
+      "sample_count": 328,
+      "win_rate": 0.551829,
+      "net_return_pct": 242.819158,
+      "avg_trade_return_pct": 0.740302,
+      "profit_factor": 1.28926
+    },
+    "score": 143.100469
+  }
+}

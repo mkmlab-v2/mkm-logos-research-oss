@@ -21,6 +21,7 @@ DEFAULT_STATUS = ROOT / "projects" / "bitcoin-trading" / "memory" / "trading_dae
 DEFAULT_KPI_JSONL = ROOT / "projects" / "bitcoin-trading" / "memory" / "kpi" / "kpi_snapshot_*.jsonl"
 DEFAULT_WAITING_LOG = ROOT / "docs" / "final" / "artifacts" / "waiting_queue_monthly_check_log.jsonl"
 DEFAULT_BT_BACKTEST = ROOT / "docs" / "final" / "artifacts" / "btc_time_machine_fact_safe_backtest_latest.json"
+DEFAULT_BT_SWEEP = ROOT / "docs" / "final" / "artifacts" / "btc_time_machine_sweep_latest.json"
 
 
 @dataclass(frozen=True)
@@ -168,11 +169,37 @@ def _load_backtest_evidence() -> dict[str, Any]:
     }
 
 
+def _load_backtest_sweep() -> dict[str, Any]:
+    if not DEFAULT_BT_SWEEP.exists():
+        return {}
+    try:
+        doc = json.loads(DEFAULT_BT_SWEEP.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    if not isinstance(doc, dict):
+        return {}
+    best = doc.get("best")
+    if not isinstance(best, dict):
+        return {}
+    metrics = best.get("metrics") if isinstance(best.get("metrics"), dict) else {}
+    return {
+        "available": True,
+        "path": str(DEFAULT_BT_SWEEP),
+        "period": best.get("period"),
+        "score": best.get("score"),
+        "sample_count": metrics.get("sample_count"),
+        "win_rate": metrics.get("win_rate"),
+        "net_return_pct": metrics.get("net_return_pct"),
+        "profit_factor": metrics.get("profit_factor"),
+    }
+
+
 def build_report(engine_id: str, boundary_rule: str) -> str:
     status = _safe_json(DEFAULT_STATUS)
     snapshot = status.get("exchange_snapshot_24h") if isinstance(status.get("exchange_snapshot_24h"), dict) else {}
     waiting = _latest_waiting_log()
     backtest = _load_backtest_evidence()
+    sweep = _load_backtest_sweep()
 
     samples, net_delta, avg_net_per_fill = _kpi_history_stats(days=7)
     reliability = compute_reliability_badge(engine_id=engine_id, samples=samples, net_delta=net_delta)
@@ -217,7 +244,12 @@ def build_report(engine_id: str, boundary_rule: str) -> str:
         f"- backtest_sample_count: {backtest.get('sample_count')}\n"
         f"- backtest_win_rate: {backtest.get('win_rate')}\n"
         f"- backtest_net_return_pct: {backtest.get('net_return_pct')}\n"
-        f"- backtest_profit_factor: {backtest.get('profit_factor')}\n\n"
+        f"- backtest_profit_factor: {backtest.get('profit_factor')}\n"
+        f"- backtest_sweep_available: {sweep.get('available', False)}\n"
+        f"- backtest_sweep_best_period: {sweep.get('period')}\n"
+        f"- backtest_sweep_best_sample_count: {sweep.get('sample_count')}\n"
+        f"- backtest_sweep_best_net_return_pct: {sweep.get('net_return_pct')}\n"
+        f"- backtest_sweep_best_profit_factor: {sweep.get('profit_factor')}\n\n"
         "## 운영 게이트 결론\n"
         f"- reliability_badge: {reliability.badge}\n"
         f"- high_reliability_decision_raw(monthly_check): {waiting.get('high_reliability_decision_raw')}\n"

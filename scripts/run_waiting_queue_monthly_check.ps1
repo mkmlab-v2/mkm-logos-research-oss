@@ -16,6 +16,8 @@ $highReliabilityGatePath = "C:\workspace\docs\final\artifacts\high_reliability_m
 $symbolLaneProfileComparePath = "C:\workspace\reports\constitution\btrack_pilot\symbol_lane_profile_compare_latest.json"
 $btrackGatePath = "C:\workspace\reports\constitution\btrack_pilot\btrack_promotion_gate_anchor_verified_only_latest.json"
 $symbolLaneGatePath = "C:\workspace\reports\constitution\btrack_pilot\symbol_lane_gate_latest.json"
+$slackDeliveryStatusPath = "C:\workspace\reports\constitution\btrack_pilot\fact_safe_slack_delivery_latest.json"
+$slackDeliveryLogPath = "C:\workspace\reports\constitution\btrack_pilot\fact_safe_slack_delivery_log.jsonl"
 $checkedAtObj = [DateTimeOffset]::UtcNow
 $checkedAt = $checkedAtObj.ToString("o")
 $nextMonthlyDue = $checkedAtObj.AddDays(30).ToString("yyyy-MM-dd")
@@ -110,6 +112,12 @@ if ($LASTEXITCODE -ne 0) {
     throw "BTC time-machine fact-safe backtest failed with exit code $LASTEXITCODE"
 }
 
+Write-Host "[waiting-queue-check] Running BTC time-machine sweep (evidence scaling)..."
+py scripts/run_btc_time_machine_backtest_sweep.py
+if ($LASTEXITCODE -ne 0) {
+    throw "BTC time-machine sweep failed with exit code $LASTEXITCODE"
+}
+
 Write-Host "[waiting-queue-check] Building Fact-Safe multi-lens brief..."
 py scripts/build_fact_safe_multilens_brief.py --engine-id V2_Precision_MCP
 if ($LASTEXITCODE -ne 0) {
@@ -159,6 +167,8 @@ if ($overlapDriftAlert -and ($highReliabilityDecision -eq "PASS")) {
     next_monthly_due_date = $nextMonthlyDue
     horizon_t30_date = $horizonT30
     horizon_t90_date = $horizonT90
+    slack_delivery_status_path = $slackDeliveryStatusPath
+    slack_delivery_log_path = $slackDeliveryLogPath
     runner = "scripts/run_waiting_queue_monthly_check.ps1"
 } | ConvertTo-Json -Compress | Add-Content -LiteralPath $logPath -Encoding utf8
 
