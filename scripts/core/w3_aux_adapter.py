@@ -27,6 +27,15 @@ def _clamp01(value: float) -> float:
     return max(0.0, min(1.0, float(value)))
 
 
+# Aligns batch/NotebookLM aliases to CI enum tokens (tae_yang-style).
+_SASANG_TYPE_ALIASES: dict[str, str] = {
+    "soeum": "so_eum",
+    "soyang": "so_yang",
+    "taeeum": "tae_eum",
+    "taeyang": "tae_yang",
+}
+
+
 def compute_aux_macro_signal(*, state_id: int, logos_ref: str, cycle: str) -> AuxMacroSignal:
     """Compute macro auxiliary signal without side effects.
 
@@ -48,12 +57,20 @@ def compute_aux_macro_signal(*, state_id: int, logos_ref: str, cycle: str) -> Au
 
 def compute_aux_personal_signal(*, sasang_type: str, state_candidate_id: int | None) -> AuxPersonalSignal:
     """Compute personal auxiliary signal without side effects."""
-    st = (sasang_type or "").strip().lower()
+    raw = (sasang_type or "").strip().lower()
+    st = _SASANG_TYPE_ALIASES.get(raw, raw)
     taeyang = st == "tae_yang"
     sid = int(state_candidate_id) if state_candidate_id is not None else 0
     # Guard score grows when taeyang profile is matched with its pilot anchor.
     anchor_match = 1.0 if sid == 13 else (0.6 if sid in {8, 4} else 0.3)
-    base = 0.45 if taeyang else 0.35
+    base_by_type: dict[str, float] = {
+        "tae_yang": 0.45,
+        "so_eum": 0.38,
+        "so_yang": 0.37,
+        "tae_eum": 0.37,
+        "meta_yin_yang_change": 0.34,
+    }
+    base = base_by_type.get(st, 0.35)
     bomyeong_guard_score = _clamp01(base + (0.4 * anchor_match))
     taeyang_risk_flag = taeyang and sid == 13
     return AuxPersonalSignal(

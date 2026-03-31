@@ -25,9 +25,12 @@
       "primary_id": "sasang_type",
       "enum_v1": [
         "tae_yang",
-        "meta_yin_yang_change"
+        "meta_yin_yang_change",
+        "so_eum",
+        "so_yang",
+        "tae_eum"
       ],
-      "expansion_policy": "New enum values are allowed only in v2 schema."
+      "expansion_policy": "Additional values require tests/test_sasang_cross_ref_draft.py _SASANG_TYPES + w3_aux_adapter alias map; document in IMPLEMENTATION_FACTS when promoting to A-track."
     },
     "logos": {
       "primary_id": "canonical_ref",
