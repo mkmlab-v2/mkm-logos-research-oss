@@ -1,0 +1,4 @@
+{"sample_id":"REAL_000001","text":"[실데이터 입력] 환자 서술/문진 텍스트","expected_parent":"TY","cohort":"REAL_CLINICAL_COHORT_V1","annotation_version":"v1","label_source":"clinician_consensus"}
+{"sample_id":"REAL_000002","text":"[실데이터 입력] 환자 서술/문진 텍스트","expected_parent":"SY","cohort":"REAL_CLINICAL_COHORT_V1","annotation_version":"v1","label_source":"clinician_consensus"}
+{"sample_id":"REAL_000003","text":"[실데이터 입력] 환자 서술/문진 텍스트","expected_parent":"TE","cohort":"REAL_CLINICAL_COHORT_V1","annotation_version":"v1","label_source":"clinician_consensus"}
+{"sample_id":"REAL_000004","text":"[실데이터 입력] 환자 서술/문진 텍스트","expected_parent":"SE","cohort":"REAL_CLINICAL_COHORT_V1","annotation_version":"v1","label_source":"clinician_consensus"}
