@@ -29,6 +29,7 @@ def main() -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
 
     checks = [
+        _run("python scripts/check_top_level_word_artifacts.py", root),
         _run("python scripts/enforce_backend_fact_engine_quantization_guard.py --scan-dir projects/bitcoin-trading/src --scan-dir scripts --skip-regex \"/scripts/run_rag_turboquant_poc_template.py\"", root),
         _run("python scripts/run_rag_turboquant_guarded_sweep.py --cwd . --runs 1", root),
         _run("python scripts/run_rag_turboquant_canary_monitor.py --cwd . --iterations 1 --interval-sec 0", root),
