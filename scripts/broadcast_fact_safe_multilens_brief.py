@@ -81,7 +81,35 @@ def _monthly_outlook_for_now() -> dict:
         "phase": hit.get("phase"),
         "kospi_direction": kospi.get("direction"),
         "btc_direction": btc.get("direction"),
+        "kospi_down_pct": kospi.get("down_pct"),
+        "btc_down_pct": btc.get("down_pct"),
     }
+
+
+def _next_month_risk_hint() -> str | None:
+    if not MONTHLY_PROPHECY_JSON.exists():
+        return None
+    try:
+        doc = json.loads(MONTHLY_PROPHECY_JSON.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    rows = doc.get("months")
+    if not isinstance(rows, list) or not rows:
+        return None
+    month_now = datetime.now(timezone.utc).month
+    next_month = month_now + 1 if month_now < 12 else 1
+    hit = next((r for r in rows if isinstance(r, dict) and r.get("month") == next_month), None)
+    if not isinstance(hit, dict):
+        return None
+    phase = hit.get("phase")
+    kospi = hit.get("kospi") if isinstance(hit.get("kospi"), dict) else {}
+    btc = hit.get("btc") if isinstance(hit.get("btc"), dict) else {}
+    kd = kospi.get("down_pct")
+    bd = btc.get("down_pct")
+    direction = f"KOSPI={kospi.get('direction')}, BTC={btc.get('direction')}"
+    if isinstance(kd, int) and isinstance(bd, int):
+        return f"{next_month}월 선행 리스크: {phase} 구간, 하방확률(KOSPI/BTC)={kd}/{bd}, 방향={direction}"
+    return f"{next_month}월 선행 리스크: {phase} 구간, 방향={direction}"
 
 
 def main() -> int:
@@ -104,6 +132,7 @@ def main() -> int:
         "overlap_drift_alert_threshold": waiting.get("overlap_drift_alert_threshold"),
     }
     payload["monthly_outlook"] = _monthly_outlook_for_now()
+    payload["next_month_risk_hint"] = _next_month_risk_hint()
     missing_required = [k for k in REQUIRED_BRIEF_KEYS if not payload.get(k)]
     payload["required_keys_complete"] = len(missing_required) == 0
     payload["missing_required_keys"] = missing_required
@@ -127,6 +156,7 @@ def main() -> int:
             if payload["monthly_outlook"]
             else "- monthly_outlook: unavailable"
         ),
+        f"- next_month_risk_hint: {payload.get('next_month_risk_hint') or 'unavailable'}",
         "",
         "## 3-line summary",
         f"1) Reliability badge is {payload['reliability_badge']} with gate {payload['high_reliability_decision']}.",
