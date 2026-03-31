@@ -1,0 +1,5 @@
+{
+  "min_stable_tasks": 20,
+  "min_exploratory_tasks": 20,
+  "min_overlap_rate": 0.5
+}

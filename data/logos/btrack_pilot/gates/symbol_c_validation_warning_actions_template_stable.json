@@ -1,0 +1,39 @@
+{
+  "recommended_actions": [
+    {
+      "id": "stable-verify-latest-gates",
+      "priority": "P2",
+      "owner": "unassigned",
+      "status": "pending",
+      "action": "Confirm latest stable alert fields and ensure minimum gates remain satisfied."
+    },
+    {
+      "id": "stable-review-overlap-baseline",
+      "priority": "P2",
+      "owner": "unassigned",
+      "status": "pending",
+      "action": "Review top overlap and task counts against baseline snapshot for unexpected drift."
+    },
+    {
+      "id": "stable-check-compare-before-threshold-change",
+      "priority": "P3",
+      "owner": "unassigned",
+      "status": "pending",
+      "action": "If any degradation appears, inspect queue_compare_json before changing thresholds."
+    },
+    {
+      "id": "stable-watch-strict-signals",
+      "priority": "P3",
+      "owner": "unassigned",
+      "status": "pending",
+      "action": "Keep strict warnings in watch mode and continue daily archive/prune maintenance."
+    },
+    {
+      "id": "stable-rerun-after-adjustments",
+      "priority": "P2",
+      "owner": "unassigned",
+      "status": "pending",
+      "action": "Re-run run_symbol_lane_dual_compare.ps1 after any threshold/template adjustment."
+    }
+  ]
+}

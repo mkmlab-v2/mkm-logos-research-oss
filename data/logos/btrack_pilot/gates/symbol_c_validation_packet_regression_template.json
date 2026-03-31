@@ -1,0 +1,5 @@
+{
+  "max_stable_task_drop": 5,
+  "max_exploratory_task_drop": 5,
+  "max_overlap_rate_drop": 0.2
+}

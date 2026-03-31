@@ -1,0 +1,6 @@
+{
+  "min_latest_overlap_rate": 0.7,
+  "min_latest_stable_tasks": 40,
+  "min_latest_exploratory_tasks": 40,
+  "consecutive_negative_overlap_delta_limit": 2
+}

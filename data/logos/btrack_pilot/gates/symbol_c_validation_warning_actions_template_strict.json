@@ -1,0 +1,39 @@
+{
+  "recommended_actions": [
+    {
+      "id": "strict-classify-root-cause",
+      "priority": "P1",
+      "owner": "unassigned",
+      "status": "pending",
+      "action": "Review strict alert failures and classify root cause (data drift vs threshold mismatch)."
+    },
+    {
+      "id": "strict-review-top10-shared-c",
+      "priority": "P1",
+      "owner": "unassigned",
+      "status": "pending",
+      "action": "Open checklist_stable_json and checklist_exploratory_json; prioritize top 10 shared C candidates."
+    },
+    {
+      "id": "strict-verify-overlap-degradation",
+      "priority": "P1",
+      "owner": "unassigned",
+      "status": "pending",
+      "action": "Compare queue_compare_json overlap metrics against baseline to verify degradation pattern."
+    },
+    {
+      "id": "strict-corrective-curation",
+      "priority": "P1",
+      "owner": "unassigned",
+      "status": "pending",
+      "action": "If degradation is confirmed, tighten source filtering or improve curation quality before next run."
+    },
+    {
+      "id": "strict-rerun-until-pass",
+      "priority": "P1",
+      "owner": "unassigned",
+      "status": "pending",
+      "action": "Re-run run_symbol_lane_dual_compare.ps1 and confirm strict profile returns pass."
+    }
+  ]
+}

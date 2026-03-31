@@ -1,0 +1,37 @@
+{
+  "schema": "btrack_symbol_lane_gate_template_v1",
+  "profile": "exploratory_min_df1",
+  "note": "Exploratory profile for low-DF expansion; stable production gate remains symbol_lane_gate_template.json",
+  "thresholds_by_lane": {
+    "dss_priority": {
+      "min_count": 3,
+      "min_avg_score": 28.0,
+      "min_dss_presence_rate": 1.0,
+      "min_avg_dss_ratio": 0.02,
+      "max_contamination_rate": 0.6
+    },
+    "mixed": {
+      "min_count": 4,
+      "min_avg_score": 52.0,
+      "min_dss_presence_rate": 1.0,
+      "min_avg_dss_ratio": 0.01,
+      "max_contamination_rate": 0.7
+    },
+    "apocrypha_priority": {
+      "min_count": 10,
+      "min_avg_score": 35.0,
+      "min_dss_presence_rate": 0.0,
+      "min_avg_dss_ratio": 0.0,
+      "max_contamination_rate": 0.7
+    }
+  },
+  "contamination_terms": [
+    "against",
+    "great",
+    "men",
+    "son",
+    "hand",
+    "until",
+    "two"
+  ]
+}

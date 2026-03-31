@@ -1,0 +1,8 @@
+{
+  "default_due_hours": 168,
+  "priority_due_hours": {
+    "P1": 24,
+    "P2": 72,
+    "P3": 120
+  }
+}
