@@ -116,6 +116,12 @@ if ($LASTEXITCODE -ne 0) {
     throw "Fact-Safe broadcast build failed with exit code $LASTEXITCODE"
 }
 
+Write-Host "[waiting-queue-check] Sending Fact-Safe summary to Slack (if webhook configured)..."
+py scripts/send_fact_safe_broadcast_to_slack.py
+if ($LASTEXITCODE -ne 0) {
+    throw "Fact-Safe Slack send failed with exit code $LASTEXITCODE"
+}
+
 $highReliabilityDecision = $null
 if (Test-Path -LiteralPath $highReliabilityGatePath) {
     try {
@@ -161,6 +167,12 @@ if ($overlapDriftAlert -and ($highReliabilityDecision -eq "PASS")) {
     horizon_t90_date = $horizonT90
     runner = "scripts/run_waiting_queue_monthly_check.ps1"
 } | ConvertTo-Json -Compress | Add-Content -LiteralPath $logPath -Encoding utf8
+
+Write-Host "[waiting-queue-check] Broadcasting Fact-Safe summary..."
+py scripts/broadcast_fact_safe_multilens_brief.py --strict-required
+if ($LASTEXITCODE -ne 0) {
+    throw "Fact-Safe broadcast build failed with exit code $LASTEXITCODE"
+}
 
 Write-Host "[waiting-queue-check] Wrote log: $logPath"
 Write-Host "[waiting-queue-check] Completed successfully."
