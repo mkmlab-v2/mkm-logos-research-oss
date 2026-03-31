@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import re
+import argparse
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -20,6 +21,13 @@ WAITING_LOG = ROOT / "docs" / "final" / "artifacts" / "waiting_queue_monthly_che
 OUT_DIR = ROOT / "projects" / "bitcoin-trading" / "memory" / "v2" / "briefs"
 OUT_MD = OUT_DIR / "fact_safe_multilens_broadcast_latest.md"
 OUT_JSON = OUT_DIR / "fact_safe_multilens_broadcast_latest.json"
+MONTHLY_PROPHECY_JSON = ROOT / "docs" / "final" / "artifacts" / "prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
+REQUIRED_BRIEF_KEYS = [
+    "reliability_badge",
+    "high_reliability_decision",
+    "gate_reason",
+    "net",
+]
 
 
 def _extract(md: str, key: str) -> str | None:
@@ -42,7 +50,42 @@ def _latest_waiting_log() -> dict:
         return {}
 
 
+def _parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Build Fact-Safe broadcast payload from latest brief artifacts.")
+    parser.add_argument(
+        "--strict-required",
+        action="store_true",
+        help="Fail when required brief keys are missing.",
+    )
+    return parser.parse_args()
+
+
+def _monthly_outlook_for_now() -> dict:
+    if not MONTHLY_PROPHECY_JSON.exists():
+        return {}
+    try:
+        doc = json.loads(MONTHLY_PROPHECY_JSON.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    rows = doc.get("months")
+    if not isinstance(rows, list):
+        return {}
+    month_now = datetime.now(timezone.utc).month
+    hit = next((r for r in rows if isinstance(r, dict) and r.get("month") == month_now), None)
+    if not isinstance(hit, dict):
+        return {}
+    kospi = hit.get("kospi") if isinstance(hit.get("kospi"), dict) else {}
+    btc = hit.get("btc") if isinstance(hit.get("btc"), dict) else {}
+    return {
+        "month": month_now,
+        "phase": hit.get("phase"),
+        "kospi_direction": kospi.get("direction"),
+        "btc_direction": btc.get("direction"),
+    }
+
+
 def main() -> int:
+    args = _parse_args()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     now_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     brief = FACT_SAFE_BRIEF.read_text(encoding="utf-8", errors="ignore") if FACT_SAFE_BRIEF.exists() else ""
@@ -60,6 +103,10 @@ def main() -> int:
         "overlap_drift_alert": waiting.get("overlap_drift_alert"),
         "overlap_drift_alert_threshold": waiting.get("overlap_drift_alert_threshold"),
     }
+    payload["monthly_outlook"] = _monthly_outlook_for_now()
+    missing_required = [k for k in REQUIRED_BRIEF_KEYS if not payload.get(k)]
+    payload["required_keys_complete"] = len(missing_required) == 0
+    payload["missing_required_keys"] = missing_required
 
     lines = [
         "# Fact-Safe Broadcast (Latest)",
@@ -72,6 +119,14 @@ def main() -> int:
         f"- history_samples: {payload['history_samples']}",
         f"- history_net_delta: {payload['history_net_delta']}",
         f"- overlap_drift_alert: {payload['overlap_drift_alert']} (threshold={payload['overlap_drift_alert_threshold']})",
+        (
+            f"- monthly_outlook: {payload['monthly_outlook'].get('month')}월 "
+            f"(phase={payload['monthly_outlook'].get('phase')}, "
+            f"KOSPI={payload['monthly_outlook'].get('kospi_direction')}, "
+            f"BTC={payload['monthly_outlook'].get('btc_direction')})"
+            if payload["monthly_outlook"]
+            else "- monthly_outlook: unavailable"
+        ),
         "",
         "## 3-line summary",
         f"1) Reliability badge is {payload['reliability_badge']} with gate {payload['high_reliability_decision']}.",
@@ -81,6 +136,9 @@ def main() -> int:
     ]
     OUT_MD.write_text("\n".join(lines), encoding="utf-8")
     OUT_JSON.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if args.strict_required and missing_required:
+        print(f"Missing required keys: {', '.join(missing_required)}")
+        return 1
     print(str(OUT_MD))
     return 0
 

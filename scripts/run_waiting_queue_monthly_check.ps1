@@ -118,6 +118,12 @@ if ($LASTEXITCODE -ne 0) {
     throw "BTC time-machine sweep failed with exit code $LASTEXITCODE"
 }
 
+Write-Host "[waiting-queue-check] Generating 2026 monthly KOSPI/BTC prophecy (fact-safe)..."
+py scripts/generate_2026_monthly_kospi_btc_prophecy.py
+if ($LASTEXITCODE -ne 0) {
+    throw "2026 monthly KOSPI/BTC prophecy generation failed with exit code $LASTEXITCODE"
+}
+
 Write-Host "[waiting-queue-check] Building Fact-Safe multi-lens brief..."
 py scripts/build_fact_safe_multilens_brief.py --engine-id V2_Precision_MCP
 if ($LASTEXITCODE -ne 0) {
