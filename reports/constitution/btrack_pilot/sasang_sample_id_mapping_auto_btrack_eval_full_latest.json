@@ -1,0 +1,390 @@
+{
+  "schema": "sasang_sample_id_mapping_auto_v1",
+  "count": 64,
+  "items": [
+    {
+      "prediction_sample_id": "ENTRY_01_obs1",
+      "cohort_sample_id": "SYN_00001",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_01_obs2",
+      "cohort_sample_id": "SYN_00002",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_01_obs3",
+      "cohort_sample_id": "SYN_00004",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_01_obs4",
+      "cohort_sample_id": "SYN_00005",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_02_obs1",
+      "cohort_sample_id": "SYN_00003",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_02_obs2",
+      "cohort_sample_id": "SYN_00006",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_02_obs3",
+      "cohort_sample_id": "SYN_00007",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_02_obs4",
+      "cohort_sample_id": "SYN_00009",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_03_obs1",
+      "cohort_sample_id": "SYN_00008",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_03_obs2",
+      "cohort_sample_id": "SYN_00012",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_03_obs3",
+      "cohort_sample_id": "SYN_00017",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_03_obs4",
+      "cohort_sample_id": "SYN_00018",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_04_obs1",
+      "cohort_sample_id": "SYN_00078",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_04_obs2",
+      "cohort_sample_id": "SYN_00260",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_04_obs3",
+      "cohort_sample_id": "SYN_00364",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_04_obs4",
+      "cohort_sample_id": "SYN_00368",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_05_obs1",
+      "cohort_sample_id": "SYN_00022",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_05_obs2",
+      "cohort_sample_id": "SYN_00027",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_05_obs3",
+      "cohort_sample_id": "SYN_00030",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_05_obs4",
+      "cohort_sample_id": "SYN_00031",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_06_obs1",
+      "cohort_sample_id": "SYN_00032",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_06_obs2",
+      "cohort_sample_id": "SYN_00035",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_06_obs3",
+      "cohort_sample_id": "SYN_00044",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_06_obs4",
+      "cohort_sample_id": "SYN_00047",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_07_obs1",
+      "cohort_sample_id": "SYN_00051",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_07_obs2",
+      "cohort_sample_id": "SYN_00053",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_07_obs3",
+      "cohort_sample_id": "SYN_00054",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_07_obs4",
+      "cohort_sample_id": "SYN_00055",
+      "predicted_parent": "SY",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_08_obs1",
+      "cohort_sample_id": "SYN_00429",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_08_obs2",
+      "cohort_sample_id": "SYN_00451",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_08_obs3",
+      "cohort_sample_id": "SYN_00454",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_08_obs4",
+      "cohort_sample_id": "SYN_00641",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_09_obs1",
+      "cohort_sample_id": "SYN_00772",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_09_obs2",
+      "cohort_sample_id": "SYN_00777",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_09_obs3",
+      "cohort_sample_id": "SYN_00790",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_09_obs4",
+      "cohort_sample_id": "SYN_00921",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_10_obs1",
+      "cohort_sample_id": "SYN_00010",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_10_obs2",
+      "cohort_sample_id": "SYN_00011",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_10_obs3",
+      "cohort_sample_id": "SYN_00013",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_10_obs4",
+      "cohort_sample_id": "SYN_00014",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_11_obs1",
+      "cohort_sample_id": "SYN_00015",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_11_obs2",
+      "cohort_sample_id": "SYN_00016",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_11_obs3",
+      "cohort_sample_id": "SYN_00020",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_11_obs4",
+      "cohort_sample_id": "SYN_00023",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_12_obs1",
+      "cohort_sample_id": "SYN_00019",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_12_obs2",
+      "cohort_sample_id": "SYN_00021",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_12_obs3",
+      "cohort_sample_id": "SYN_00024",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_12_obs4",
+      "cohort_sample_id": "SYN_00025",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_13_obs1",
+      "cohort_sample_id": "SYN_00026",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_13_obs2",
+      "cohort_sample_id": "SYN_00028",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_13_obs3",
+      "cohort_sample_id": "SYN_00029",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_13_obs4",
+      "cohort_sample_id": "SYN_00033",
+      "predicted_parent": "SE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_14_obs1",
+      "cohort_sample_id": "SYN_00034",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_14_obs2",
+      "cohort_sample_id": "SYN_00036",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_14_obs3",
+      "cohort_sample_id": "SYN_00038",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_14_obs4",
+      "cohort_sample_id": "SYN_00040",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_15_obs1",
+      "cohort_sample_id": "SYN_00041",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_15_obs2",
+      "cohort_sample_id": "SYN_00042",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_15_obs3",
+      "cohort_sample_id": "SYN_00043",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_15_obs4",
+      "cohort_sample_id": "SYN_00046",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_16_obs1",
+      "cohort_sample_id": "SYN_00049",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_16_obs2",
+      "cohort_sample_id": "SYN_00052",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_16_obs3",
+      "cohort_sample_id": "SYN_00057",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    },
+    {
+      "prediction_sample_id": "ENTRY_16_obs4",
+      "cohort_sample_id": "SYN_00058",
+      "predicted_parent": "TE",
+      "mapping_policy": "parent_first_then_global_fallback"
+    }
+  ]
+}
