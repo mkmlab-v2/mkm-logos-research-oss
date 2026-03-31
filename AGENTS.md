@@ -23,7 +23,7 @@
 
 - 작업 루트: `C:/workspace` (Windows). Python 실행은 `py` 권장.
 - **B-track 파일럿 벤치 SSOT:** `data/logos/btrack_pilot/bench/CANONICAL_BENCH_POINTER_V1.json` — 공식 의도 벤치는 포인터의 `canonical_builder_script`가 갱신하는 `a_track_eval.jsonl` / `b_track_eval.jsonl` 슬롯이다. direct·cross_ref 부트스트랩 빌더는 기본적으로 `*_direct_v1.jsonl` / `*_cross_ref_bootstrap_v1.jsonl`에 쓰며 canonical을 덮어쓰지 않는다. 경로 상수: `tools/myeongni/btrack_bench_paths.py`.
-- **Git 로컬 exclude 주의:** `.git/info/exclude`에 `tools/` 한 줄로 디렉터리 전체를 막으면 `tools/myeongni` 모듈이 조용히 제외된다. 해당 패턴이 있으면 `tools/*`로 바꾼 뒤 `!tools/myeongni/` · `!tools/myeongni/**` 예외를 추가하거나, `tools/` 항목을 제거한다(원격 `.gitignore`에는 루트 `tools/` 무시 규칙이 없음).
+- **Git 로컬 exclude 주의:** `.git/info/exclude`에 `tools/`·`scripts/` 등으로 디렉터리 **전체**를 막으면 하위 추적 파일이 조용히 제외된다. 필요 시 `tools/*` + `!tools/myeongni/**`, `scripts/*` + `!scripts/**`처럼 내용만 막고 트리는 예외로 되돌리거나, 해당 줄을 제거한다(원격 `.gitignore`에는 루트 `tools/`·`scripts/` 무시 규칙이 없음).
 - **만세력 정밀(제2계층) SSOT 포인터:** `docs/final/MANSE_PRECISION_RUNTIME_POINTER_V1.json` — 에이전트 공식 배선은 Path B(MCP stdio, `athena-manseryeok`); 배치는 동일 엔진·per-row MCP 금지는 포인터 참조; 구현 팩트 표는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §3.4.
 - 공유 SSOT 확인 경로(1순위): `G:\공유 드라이브\MKM_DATA_VAULT\vault\btrack_artifacts_verified` (미존재 시 `...\vault` 하위 경로 확인).
 - B-track 핵심 산출물 승격(로컬 `reports/...` → G:): `scripts/push_local_artifacts_to_vault.ps1`
