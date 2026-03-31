@@ -14,8 +14,8 @@ Write-Host "[btrack] Running one-shot gate+lock workflow..."
 
 # Prefer Windows launcher (py -3), fallback to direct python when unavailable.
 if ($PythonExe -eq "py") {
-    & py -3 $scriptPath
-    if ($LASTEXITCODE -eq 2) {
+    & py $scriptPath
+    if ($LASTEXITCODE -ne 0) {
         & python $scriptPath
     }
 } else {

@@ -1,0 +1,31 @@
+{
+  "schema": "high_reliability_mode_gate_v1",
+  "generated_at_utc": "2026-03-31T04:22:32Z",
+  "inputs": {
+    "quality_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_quality_anchor_verified_only_latest.json",
+    "btrack_gate_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
+    "entry16_gate_report": "C:\\workspace\\docs\\final\\artifacts\\entry16_promotion_gate.json",
+    "entry16_decision_lock": "C:\\workspace\\docs\\final\\artifacts\\entry16_manual_promotion_decision_lock_latest.json"
+  },
+  "thresholds": {
+    "reproducibility_min": 0.9,
+    "resolution_min": 0.0,
+    "contamination_min": 0.0
+  },
+  "metrics_snapshot": {
+    "reproducibility_match_rate": 1.0,
+    "resolution_confidence_delta_b_minus_a": 0.0007048124999999988,
+    "contamination_snr_delta_b_minus_a": 0.0024308750000000268
+  },
+  "checks": {
+    "btrack_gate_pass": true,
+    "reproducibility_gte_threshold": true,
+    "resolution_non_negative": true,
+    "contamination_non_negative": true,
+    "entry16_candidate_ready": true,
+    "entry16_lock_approved": true,
+    "entry16_dss_fact_lock_kept": true
+  },
+  "decision": "PASS",
+  "operational_mode": "high_reliability_enabled_with_fact_lock"
+}

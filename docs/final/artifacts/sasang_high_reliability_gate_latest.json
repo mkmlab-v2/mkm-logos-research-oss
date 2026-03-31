@@ -1,0 +1,33 @@
+{
+  "schema": "sasang_high_reliability_gate_v1",
+  "generated_at_utc": "2026-03-31T04:22:29Z",
+  "inputs": {
+    "ops_gate": "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
+    "clinical_eval": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_clinical_eval_from_btrack_eval_full_mapped_latest.json"
+  },
+  "thresholds": {
+    "min_paired_rows": 64,
+    "min_recall_macro": 0.65,
+    "max_ece": 0.2,
+    "max_brier": 0.25
+  },
+  "snapshot": {
+    "paired_rows": 64,
+    "recall_macro": 0.7,
+    "ece": 0.11618750000000003,
+    "brier_score": 0.15625050000000001
+  },
+  "checks": {
+    "ops_gate_pass": true,
+    "paired_rows_gte_threshold": true,
+    "recall_macro_gte_threshold": true,
+    "ece_lte_threshold": true,
+    "brier_lte_threshold": true
+  },
+  "decision": "PASS",
+  "mode": "sasang_high_reliability_enabled",
+  "notes": [
+    "This gate is operational quality control, not a medical diagnosis claim.",
+    "Final clinical validity still depends on verified real-world GT and governance approval."
+  ]
+}
