@@ -28,6 +28,15 @@ powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\register_direct
 powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\ensure_daemon_running.ps1
 powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\register_kpi_snapshot_task.ps1
 powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\register_brain_sync_task.ps1
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\register_logos_timeline_anchor_task.ps1
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\register_logos_timeline_tradition_calibration_task.ps1
+```
+
+## Fast Waiting-Queue Verification (Observability)
+
+```powershell
+cd C:\workspace
+powershell -ExecutionPolicy Bypass -File .\projects\bitcoin-trading\ops\windows-rehearsal\run_waiting_queue_verify_fast.ps1
 ```
 
 ## 30-Second Health Check
