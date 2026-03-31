@@ -328,11 +328,8 @@ jobs:
       - name: B-Track verified baseline regression check
         run: python scripts/check_btrack_regression.py
 
-      - name: B-Track symbol lane gate check
-        run: python scripts/run_btrack_symbol_lane_gate.py --include-shared-vault
-
-      - name: B-Track symbol lane regression check
-        run: python scripts/check_btrack_symbol_lane_regression.py
+      - name: B-Track symbol lane gate + lock + regression check
+        run: python scripts/run_btrack_symbol_lane_gate_and_lock.py --include-shared-vault --profile-tag stable --baseline-out reports/constitution/btrack_pilot/btrack_symbol_lane_baseline_lock_stable_latest.json
 
       - name: Resolve fusion gate policy
         run: |
