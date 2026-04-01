@@ -124,6 +124,51 @@ def _stress_score(
     return max(0.0, min(1.0, raw))
 
 
+def _normalize_state_id(state_id: Any) -> int | None:
+    """Normalize optional state id to 1..16, else None."""
+    try:
+        sid = int(state_id)
+    except (TypeError, ValueError):
+        return None
+    if 1 <= sid <= 16:
+        return sid
+    return None
+
+
+def _apply_myeongni_state_defensive_clamp(
+    *,
+    cap: float,
+    state_id: Any,
+    policy_global: Mapping[str, Any],
+    risk_multiplier_min: float,
+    risk_multiplier_max: float,
+) -> tuple[float, str | None]:
+    """Apply optional state clamp that can only tighten risk (never loosen)."""
+    enabled = bool(policy_global.get("myeongni_state_defensive_clamp_enabled", False))
+    if not enabled:
+        return cap, None
+
+    sid = _normalize_state_id(state_id)
+    if sid is None:
+        return cap, "state_clamp_skip=invalid_state_id"
+
+    cap_map = policy_global.get("myeongni_state_risk_cap_map")
+    mapped = cap_map.get(str(sid)) if isinstance(cap_map, Mapping) else None
+    raw_state_cap = mapped if mapped is not None else policy_global.get("myeongni_state_risk_cap_default")
+    if raw_state_cap is None:
+        return cap, "state_clamp_skip=no_state_cap"
+    try:
+        state_cap = float(raw_state_cap)
+    except (TypeError, ValueError):
+        return cap, "state_clamp_skip=invalid_state_cap"
+
+    bounded_state_cap = max(risk_multiplier_min, min(risk_multiplier_max, state_cap))
+    clamped = min(cap, bounded_state_cap)
+    if clamped < cap:
+        return clamped, f"state_clamp=on;state_id={sid};state_cap={bounded_state_cap:.4f}"
+    return cap, f"state_clamp=on;state_id={sid};state_cap_noop={bounded_state_cap:.4f}"
+
+
 def get_biblical_hypothesis_status(workspace_root: Path) -> dict[str, Any]:
     """Optional helper: surface whether hypothesis-only biblical triggers are allowed."""
     policy = _load_policy(workspace_root)
@@ -157,6 +202,28 @@ def get_myeongni_16_state_experiment_ssot(workspace_root: Path) -> dict[str, Any
     }
 
 
+def get_fused_week_contract_ssot(workspace_root: Path) -> dict[str, Any]:
+    """Read-only helper exposing fused week contract latest snapshot path/content."""
+    path = workspace_root / "docs" / "final" / "artifacts" / "fused_paper_cycle_weekly_latest.json"
+    payload: dict[str, Any] = {}
+    if path.is_file():
+        try:
+            obj = json.loads(path.read_text(encoding="utf-8"))
+            if isinstance(obj, dict):
+                payload = obj
+        except Exception:
+            payload = {}
+    return {
+        "schema": "fused_week_contract_ssot_v1",
+        "path": str(path),
+        "exists": path.is_file(),
+        "week_contract": payload.get("week_contract"),
+        "decision": payload.get("decision"),
+        "toe_score": payload.get("toe_score"),
+        "generated_at_utc": payload.get("generated_at_utc"),
+    }
+
+
 def evaluate_dual_regime_and_market_shock(
     *,
     as_of: datetime,
@@ -167,6 +234,7 @@ def evaluate_dual_regime_and_market_shock(
     context_metrics: Mapping[str, float] | None = None,
     logos_manuscript_text: str | None = None,
     logos_adjustment_strength: float = 0.12,
+    state_id: int | None = None,
 ) -> DualRegimeContext:
     """Combine PSI, auxiliary bible-risk, and context into a risk cap and shock flags.
 
@@ -203,6 +271,14 @@ def evaluate_dual_regime_and_market_shock(
             strength=float(logos_adjustment_strength),
         )
 
+    cap, state_segment = _apply_myeongni_state_defensive_clamp(
+        cap=cap,
+        state_id=state_id,
+        policy_global=g,
+        risk_multiplier_min=rmin,
+        risk_multiplier_max=rmax,
+    )
+
     shock = psi_score >= crisis and stress >= 0.55
     veto = psi_score >= crisis and bible_risk_score >= 1.0 and (context_metrics or {})
 
@@ -214,6 +290,8 @@ def evaluate_dual_regime_and_market_shock(
     ]
     if logos_segments:
         parts.extend(logos_segments)
+    if state_segment:
+        parts.append(state_segment)
     interpretation = "dual_regime: " + "; ".join(parts)
 
     return DualRegimeContext(

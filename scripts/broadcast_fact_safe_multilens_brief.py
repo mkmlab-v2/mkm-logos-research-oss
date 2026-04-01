@@ -22,6 +22,7 @@ OUT_DIR = ROOT / "projects" / "bitcoin-trading" / "memory" / "v2" / "briefs"
 OUT_MD = OUT_DIR / "fact_safe_multilens_broadcast_latest.md"
 OUT_JSON = OUT_DIR / "fact_safe_multilens_broadcast_latest.json"
 MONTHLY_PROPHECY_JSON = ROOT / "docs" / "final" / "artifacts" / "prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
+TRINITY_SCORING_DISTRIBUTION_JSON = ROOT / "docs" / "final" / "artifacts" / "trinity_scoring_distribution_latest.json"
 REQUIRED_BRIEF_KEYS = [
     "reliability_badge",
     "high_reliability_decision",
@@ -147,6 +148,55 @@ def _next_month_risk_hint() -> str | None:
     return f"{next_month}월 선행 리스크: {phase} 구간, 방향={direction}"
 
 
+def _dual_regime_state_advisory() -> dict:
+    if not TRINITY_SCORING_DISTRIBUTION_JSON.exists():
+        return {}
+    try:
+        doc = json.loads(TRINITY_SCORING_DISTRIBUTION_JSON.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    block = doc.get("dual_regime_state")
+    if not isinstance(block, dict):
+        return {}
+    advisory = block.get("advisory")
+    all_stats = block.get("all")
+    if not isinstance(advisory, dict):
+        advisory = {}
+    if not isinstance(all_stats, dict):
+        all_stats = {}
+    return {
+        "decision": advisory.get("decision"),
+        "reason": advisory.get("reason"),
+        "sample_size": all_stats.get("sample_size"),
+        "top_source": all_stats.get("top_source"),
+        "clamp_rate": all_stats.get("clamp_rate"),
+    }
+
+
+def _auto_hold_override_advisory() -> dict:
+    if not TRINITY_SCORING_DISTRIBUTION_JSON.exists():
+        return {}
+    try:
+        doc = json.loads(TRINITY_SCORING_DISTRIBUTION_JSON.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    block = doc.get("auto_hold_overrides")
+    if not isinstance(block, dict):
+        return {}
+    advisory = block.get("advisory")
+    all_stats = block.get("all")
+    if not isinstance(advisory, dict):
+        advisory = {}
+    if not isinstance(all_stats, dict):
+        all_stats = {}
+    return {
+        "decision": advisory.get("decision"),
+        "reason": advisory.get("reason"),
+        "count": all_stats.get("count"),
+        "top_trigger": all_stats.get("top_trigger"),
+    }
+
+
 def main() -> int:
     args = _parse_args()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -166,6 +216,8 @@ def main() -> int:
         "history_net_delta": _extract(brief, "history net_delta"),
         "overlap_drift_alert": waiting.get("overlap_drift_alert"),
         "overlap_drift_alert_threshold": waiting.get("overlap_drift_alert_threshold"),
+        "regime_switch_advisory": waiting.get("regime_switch_advisory"),
+        "regime_switch_advisory_reason": waiting.get("regime_switch_advisory_reason"),
     }
     payload["monthly_outlook"] = _monthly_outlook_for_now()
     payload["next_month_risk_hint"] = _next_month_risk_hint()
@@ -187,6 +239,8 @@ def main() -> int:
     payload["k_shield_candidate_max_drawdown_pct"] = (
         payload["monthly_outlook"].get("k_shield_candidate_max_drawdown_pct") if payload["monthly_outlook"] else None
     )
+    payload["dual_regime_state_advisory"] = _dual_regime_state_advisory()
+    payload["auto_hold_override_advisory"] = _auto_hold_override_advisory()
     missing_required = [k for k in REQUIRED_BRIEF_KEYS if not payload.get(k)]
     payload["required_keys_complete"] = len(missing_required) == 0
     payload["missing_required_keys"] = missing_required
@@ -204,6 +258,8 @@ def main() -> int:
         f"- net: {payload['net']}",
         f"- history_samples: {payload['history_samples']}",
         f"- history_net_delta: {payload['history_net_delta']}",
+        f"- regime_switch_advisory: {payload.get('regime_switch_advisory')}",
+        f"- regime_switch_advisory_reason: {payload.get('regime_switch_advisory_reason')}",
         f"- overlap_drift_alert: {payload['overlap_drift_alert']} (threshold={payload['overlap_drift_alert_threshold']})",
         f"- price_output_locked: {payload.get('price_output_locked')}",
         f"- lock_reason: {payload.get('lock_reason')}",
@@ -214,6 +270,8 @@ def main() -> int:
         f"- core_reason: {payload.get('core_reason')}",
         f"- k_shield_candidate_name: {payload.get('k_shield_candidate_name')}",
         f"- k_shield_candidate_max_drawdown_pct: {payload.get('k_shield_candidate_max_drawdown_pct')}",
+        f"- dual_regime_state_advisory: {payload.get('dual_regime_state_advisory')}",
+        f"- auto_hold_override_advisory: {payload.get('auto_hold_override_advisory')}",
         (
             f"- monthly_outlook: {payload['monthly_outlook'].get('month')}월 "
             f"(phase={payload['monthly_outlook'].get('phase')}, "

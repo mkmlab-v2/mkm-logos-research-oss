@@ -102,14 +102,47 @@ def build_slack_text(payload: dict) -> str:
         if fallback_escalated
         else f"- net_source_fallback_streak: {fallback_streak}"
     )
-    return "\n".join(
+    regime_switch_advisory = str(payload.get("regime_switch_advisory") or "").strip().lower()
+    regime_switch_alert_line = (
+        ":warning: *REGIME_SWITCH_REVIEW_REQUIRED*"
+        if regime_switch_advisory == "review_switch_profile"
+        else None
+    )
+    dual_state_advisory = payload.get("dual_regime_state_advisory")
+    dual_state_alert_line = None
+    dual_state_tight_line = None
+    if isinstance(dual_state_advisory, dict):
+        dual_decision = str(dual_state_advisory.get("decision") or "").strip().lower()
+        if dual_decision == "state_signal_not_wired":
+            dual_state_alert_line = ":warning: *DUAL_REGIME_STATE_SIGNAL_NOT_WIRED*"
+        elif dual_decision == "state_clamp_high_tight_mode":
+            dual_state_tight_line = ":rotating_light: *DUAL_REGIME_CLAMP_HIGH_TIGHT_MODE* (consider extra size reduction)"
+    override_advisory = payload.get("auto_hold_override_advisory")
+    override_skew_line = None
+    if isinstance(override_advisory, dict):
+        override_decision = str(override_advisory.get("decision") or "").strip().lower()
+        if override_decision == "override_skew_net_source_fallback":
+            override_skew_line = ":warning: *AUTO_HOLD_OVERRIDE_SKEW_NET_SOURCE_FALLBACK*"
+        elif override_decision == "override_skew_dual_regime_state_clamp":
+            override_skew_line = ":rotating_light: *AUTO_HOLD_OVERRIDE_SKEW_DUAL_REGIME_STATE_CLAMP* (review over-tight strategy controls)"
+    lines = [
+        ":shield: *Fact-Safe Monthly Broadcast*",
+        mode_line,
+        net_source_alert,
+        fallback_streak_line,
+        f"- generated_at_utc: {payload.get('ts_utc')}",
+        hint_line,
+    ]
+    if regime_switch_alert_line:
+        lines.append(regime_switch_alert_line)
+    if dual_state_alert_line:
+        lines.append(dual_state_alert_line)
+    if dual_state_tight_line:
+        lines.append(dual_state_tight_line)
+    if override_skew_line:
+        lines.append(override_skew_line)
+    lines.extend(
         [
-            ":shield: *Fact-Safe Monthly Broadcast*",
-            mode_line,
-            net_source_alert,
-            fallback_streak_line,
-            f"- generated_at_utc: {payload.get('ts_utc')}",
-            hint_line,
             f"- reliability_badge: {payload.get('reliability_badge')}",
             f"- high_reliability_decision: {payload.get('high_reliability_decision')}",
             f"- gate_reason: {payload.get('gate_reason')}",
@@ -118,6 +151,10 @@ def build_slack_text(payload: dict) -> str:
             f"- core_reason: {payload.get('core_reason')}",
             f"- k_shield_candidate: {payload.get('k_shield_candidate_name')}",
             f"- k_shield_candidate_max_drawdown_pct: {payload.get('k_shield_candidate_max_drawdown_pct')}",
+            f"- regime_switch_advisory: {payload.get('regime_switch_advisory')}",
+            f"- regime_switch_advisory_reason: {payload.get('regime_switch_advisory_reason')}",
+            f"- dual_regime_state_advisory: {payload.get('dual_regime_state_advisory')}",
+            f"- auto_hold_override_advisory: {payload.get('auto_hold_override_advisory')}",
             f"- net: {payload.get('net')}",
             f"- net_source: {payload.get('net_source')}",
             f"- history_samples: {payload.get('history_samples')}",
@@ -128,6 +165,7 @@ def build_slack_text(payload: dict) -> str:
             ),
         ]
     )
+    return "\n".join(lines)
 
 
 def post_to_slack(webhook_url: str, text: str) -> None:
@@ -202,6 +240,15 @@ def main() -> int:
         "core_reason": payload.get("core_reason"),
         "k_shield_candidate_name": payload.get("k_shield_candidate_name"),
         "k_shield_candidate_max_drawdown_pct": payload.get("k_shield_candidate_max_drawdown_pct"),
+        "regime_switch_advisory": payload.get("regime_switch_advisory"),
+        "regime_switch_advisory_reason": payload.get("regime_switch_advisory_reason"),
+        "dual_regime_state_advisory": payload.get("dual_regime_state_advisory"),
+        "auto_hold_override_advisory": payload.get("auto_hold_override_advisory"),
+        "auto_hold_override_advisory_decision": (
+            (payload.get("auto_hold_override_advisory") or {}).get("decision")
+            if isinstance(payload.get("auto_hold_override_advisory"), dict)
+            else None
+        ),
     }
     status["net_source_fallback_streak"] = _compute_fallback_streak(
         status_log_out, bool(status["net_source_fallback_alert"])

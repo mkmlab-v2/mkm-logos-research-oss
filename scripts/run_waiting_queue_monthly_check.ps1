@@ -1,7 +1,20 @@
 param(
     [switch]$SkipBundle,
     [double]$OverlapDriftAlertThreshold = -0.05,
-    [switch]$SkipNightWatchmanHarness
+    [switch]$SkipNightWatchmanHarness,
+    [switch]$SkipBtrackGates,
+    [string]$CloseReturnPct = "",
+    [string]$PredictedBand = "DOWN_STRONG",
+    [string]$HypothesisMetric = "KOSPI_D1_RETURN_PCT",
+    [string]$MarketVenue = "KRX",
+    [string]$HitThresholdPct = "",
+    [string]$FailThresholdPct = "",
+    [string]$SecondaryHypothesisMetric = "",
+    [string]$SecondaryMarketVenue = "",
+    [string]$SecondaryCloseReturnPct = "",
+    [string]$SecondaryPredictedBand = "DOWN_STRONG",
+    [string]$SecondaryHitThresholdPct = "",
+    [string]$SecondaryFailThresholdPct = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -16,16 +29,36 @@ $decisionLockPath = "C:\workspace\docs\final\artifacts\entry16_manual_promotion_
 $highReliabilityGatePath = "C:\workspace\docs\final\artifacts\high_reliability_mode_gate_latest.json"
 $monthlyProphecyPath = "C:\workspace\docs\final\artifacts\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
 $runtimeRiskProfilePath = "C:\workspace\projects\bitcoin-trading\memory\v2\risk\risk_profile_fact_safe_latest.json"
+$riskProfileSourceName = [string]$env:RISK_PROFILE_SOURCE_NAME
+$riskProfileModeName = [string]$env:RISK_PROFILE_MODE_NAME
+# Preserve source/mode from existing runtime profile when env overrides are absent (n8n metadata guard).
+if (([string]::IsNullOrWhiteSpace($riskProfileSourceName) -or [string]::IsNullOrWhiteSpace($riskProfileModeName)) -and (Test-Path -LiteralPath $runtimeRiskProfilePath)) {
+    try {
+        $existingProfile = Get-Content -LiteralPath $runtimeRiskProfilePath -Raw -Encoding utf8 | ConvertFrom-Json
+        if ([string]::IsNullOrWhiteSpace($riskProfileSourceName) -and -not [string]::IsNullOrWhiteSpace([string]$existingProfile.source)) {
+            $riskProfileSourceName = [string]$existingProfile.source
+        }
+        if ([string]::IsNullOrWhiteSpace($riskProfileModeName) -and -not [string]::IsNullOrWhiteSpace([string]$existingProfile.mode)) {
+            $riskProfileModeName = [string]$existingProfile.mode
+        }
+    } catch {
+    }
+}
 $symbolLaneProfileComparePath = "C:\workspace\reports\constitution\btrack_pilot\symbol_lane_profile_compare_latest.json"
 $btrackGatePath = "C:\workspace\reports\constitution\btrack_pilot\btrack_promotion_gate_anchor_verified_only_latest.json"
 $symbolLaneGatePath = "C:\workspace\reports\constitution\btrack_pilot\symbol_lane_gate_latest.json"
 $slackDeliveryStatusPath = "C:\workspace\reports\constitution\btrack_pilot\fact_safe_slack_delivery_latest.json"
 $slackDeliveryLogPath = "C:\workspace\reports\constitution\btrack_pilot\fact_safe_slack_delivery_log.jsonl"
 $costWatchMonitorPath = "C:\workspace\docs\final\artifacts\cost_watch_monitor_latest.json"
+$regimeSwitchReportPath = "C:\workspace\docs\final\artifacts\btc_time_machine_regime_switch_backtest_latest.json"
 $billingEvidencePath = "C:\workspace\docs\final\artifacts\billing_evidence_latest.json"
 $hallucinationEvalPath = "C:\workspace\docs\final\artifacts\hallucination_grounding_eval_latest.json"
+$weeklyReliabilitySnapshotPath = "C:\workspace\docs\final\artifacts\trinity_weekly_reliability_snapshot_latest.json"
+$scoringDistributionPath = "C:\workspace\docs\final\artifacts\trinity_scoring_distribution_latest.json"
 $expandedDatasetPath = "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_dataset_expanded_latest.jsonl"
 $highSampleRepeatPath = "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_canary_repeat_high_sample_latest.json"
+$billingInvoiceFromEnvPath = "C:\workspace\docs\final\artifacts\billing_invoice_from_env_latest.json"
+$latestKpiPath = "C:\workspace\projects\bitcoin-trading\memory\kpi\latest_kpi.json"
 $inputUsdPer1k = 0.0
 $outputUsdPer1k = 0.0
 if ($env:FACT_SAFE_INPUT_USD_PER_1K_TOKENS) {
@@ -79,22 +112,30 @@ if ($LASTEXITCODE -ne 0) {
     throw "ENTRY_16 promotion gate evaluation failed with exit code $LASTEXITCODE"
 }
 
-Write-Host "[waiting-queue-check] Running B-Track verified gate+lock..."
-& "C:\workspace\scripts\run_btrack_gate_and_lock.ps1"
-if ($LASTEXITCODE -ne 0) {
-    throw "B-Track verified gate+lock failed with exit code $LASTEXITCODE"
-}
+$btrackVerifiedGateStatus = "pass"
+$btrackSymbolLaneGateStatus = "pass"
+if ($SkipBtrackGates) {
+    $btrackVerifiedGateStatus = "skipped"
+    $btrackSymbolLaneGateStatus = "skipped"
+    Write-Host "[waiting-queue-check] Skipping B-Track gate workflows by flag."
+} else {
+    Write-Host "[waiting-queue-check] Running B-Track verified gate+lock..."
+    & "C:\workspace\scripts\run_btrack_gate_and_lock.ps1"
+    if ($LASTEXITCODE -ne 0) {
+        throw "B-Track verified gate+lock failed with exit code $LASTEXITCODE"
+    }
 
-Write-Host "[waiting-queue-check] Running B-Track symbol lane gate..."
-py scripts/run_btrack_symbol_lane_gate_and_lock.py
-if ($LASTEXITCODE -ne 0) {
-    throw "B-Track symbol lane gate+lock failed with exit code $LASTEXITCODE"
-}
+    Write-Host "[waiting-queue-check] Running B-Track symbol lane gate..."
+    py scripts/run_btrack_symbol_lane_gate_and_lock.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "B-Track symbol lane gate+lock failed with exit code $LASTEXITCODE"
+    }
 
-Write-Host "[waiting-queue-check] Building symbol lane profile compare..."
-py scripts/report_symbol_lane_profile_compare.py
-if ($LASTEXITCODE -ne 0) {
-    throw "Symbol lane profile compare failed with exit code $LASTEXITCODE"
+    Write-Host "[waiting-queue-check] Building symbol lane profile compare..."
+    py scripts/report_symbol_lane_profile_compare.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "Symbol lane profile compare failed with exit code $LASTEXITCODE"
+    }
 }
 
 $topOverlapRate = $null
@@ -140,8 +181,8 @@ if ($LASTEXITCODE -ne 0) {
     throw "BTC time-machine fact-safe backtest failed with exit code $LASTEXITCODE"
 }
 
-Write-Host "[waiting-queue-check] Running BTC time-machine sweep (evidence scaling)..."
-py scripts/run_btc_time_machine_backtest_sweep.py
+Write-Host "[waiting-queue-check] Running BTC time-machine sweep (evidence scaling, 2025-2026 only for speed)..."
+py scripts/run_btc_time_machine_backtest_sweep.py --periods "2025-01-01:2025-12-31,2026-01-01:2026-12-31"
 if ($LASTEXITCODE -ne 0) {
     throw "BTC time-machine sweep failed with exit code $LASTEXITCODE"
 }
@@ -153,7 +194,14 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "[waiting-queue-check] Syncing trinity risk governor to runtime risk_profile..."
-py scripts/sync_fact_safe_risk_profile.py --prophecy $monthlyProphecyPath --output $runtimeRiskProfilePath
+$syncArgs = @("scripts/sync_fact_safe_risk_profile.py", "--prophecy", $monthlyProphecyPath, "--output", $runtimeRiskProfilePath)
+if (-not [string]::IsNullOrWhiteSpace($riskProfileSourceName)) {
+    $syncArgs += @("--source", $riskProfileSourceName)
+}
+if (-not [string]::IsNullOrWhiteSpace($riskProfileModeName)) {
+    $syncArgs += @("--mode", $riskProfileModeName)
+}
+py @syncArgs
 if ($LASTEXITCODE -ne 0) {
     throw "Fact-Safe risk profile sync failed with exit code $LASTEXITCODE"
 }
@@ -167,6 +215,7 @@ $prophecyCoreDecision = $null
 $prophecyCoreScore = $null
 $prophecyKShieldCandidate = $null
 $prophecyKShieldMdd = $null
+$prophecyScoringRule = $null
 $kShieldMetadataGuard = "pass"
 $kShieldMetadataReason = $null
 if (Test-Path -LiteralPath $monthlyProphecyPath) {
@@ -180,6 +229,7 @@ if (Test-Path -LiteralPath $monthlyProphecyPath) {
         $prophecyCoreScore = $prophecyObj.meta.core_score
         $prophecyKShieldCandidate = [string]$prophecyObj.meta.k_shield_candidate_name
         $prophecyKShieldMdd = $prophecyObj.meta.k_shield_candidate_max_drawdown_pct
+        $prophecyScoringRule = $prophecyObj.meta.scoring_rule
         $requiresLock = ($prophecyReliabilityBadge -eq "LOW" -or $prophecyDecision -eq "HOLD")
         if ($requiresLock -and (-not $priceOutputLocked)) {
             $priceOutputLockGuard = "fail"
@@ -214,14 +264,190 @@ if (Test-Path -LiteralPath $monthlyProphecyPath) {
     $kShieldMetadataReason = "k_shield_metadata_file_missing"
 }
 
+$closeReturnPctValue = $null
+if (-not [string]::IsNullOrWhiteSpace($CloseReturnPct)) {
+    try {
+        $closeReturnPctValue = [double]$CloseReturnPct
+    } catch {
+        throw "Invalid -CloseReturnPct value. Provide numeric percent return (e.g. -0.92)."
+    }
+}
+$hypothesisHitThreshold = -0.8
+$hypothesisFailThreshold = 1.5
+if ($null -ne $prophecyScoringRule) {
+    if ($null -ne $prophecyScoringRule.hit_threshold_pct) {
+        $hypothesisHitThreshold = [double]$prophecyScoringRule.hit_threshold_pct
+    }
+    if ($null -ne $prophecyScoringRule.fail_threshold_pct) {
+        $hypothesisFailThreshold = [double]$prophecyScoringRule.fail_threshold_pct
+    }
+}
+if (-not [string]::IsNullOrWhiteSpace($HitThresholdPct)) {
+    try {
+        $hypothesisHitThreshold = [double]$HitThresholdPct
+    } catch {
+        throw "Invalid -HitThresholdPct value."
+    }
+}
+if (-not [string]::IsNullOrWhiteSpace($FailThresholdPct)) {
+    try {
+        $hypothesisFailThreshold = [double]$FailThresholdPct
+    } catch {
+        throw "Invalid -FailThresholdPct value."
+    }
+}
+$metricToSuffix = {
+    param([string]$metricName)
+    $m = [string]$metricName
+    if ($m -match "KOSPI") {
+        return "kospi"
+    }
+    if ($m -match "BTC_BINANCE|BINANCE_BTC|BTC") {
+        return "btc_binance"
+    }
+    $slug = $m.ToLower() -replace "[^a-z0-9]+", "_"
+    $slug = $slug.Trim("_")
+    if ([string]::IsNullOrWhiteSpace($slug)) {
+        return "unknown"
+    }
+    return $slug
+}
+$postCloseEvalDecision = "PENDING_CLOSE"
+$postCloseBandHit = $null
+if ($null -ne $closeReturnPctValue) {
+    if ([double]$closeReturnPctValue -le [double]$hypothesisHitThreshold) {
+        $postCloseEvalDecision = "HIT"
+    } elseif ([double]$closeReturnPctValue -ge [double]$hypothesisFailThreshold) {
+        $postCloseEvalDecision = "FAIL"
+    } else {
+        $postCloseEvalDecision = "NEUTRAL_DRAW"
+    }
+    $normalizedBand = [string]$PredictedBand
+    if ([string]::IsNullOrWhiteSpace($normalizedBand)) {
+        $normalizedBand = "DOWN_STRONG"
+    }
+    $normalizedBand = $normalizedBand.Trim().ToUpper()
+    if ($normalizedBand -eq "DOWN_STRONG") {
+        $postCloseBandHit = ($postCloseEvalDecision -eq "HIT")
+    } elseif ($normalizedBand -eq "UP_STRONG") {
+        $postCloseBandHit = ($postCloseEvalDecision -eq "FAIL")
+    } else {
+        $postCloseBandHit = $null
+    }
+}
+$primarySuffix = & $metricToSuffix $HypothesisMetric
+
+$secondaryCloseReturnPctValue = $null
+if (-not [string]::IsNullOrWhiteSpace($SecondaryCloseReturnPct)) {
+    try {
+        $secondaryCloseReturnPctValue = [double]$SecondaryCloseReturnPct
+    } catch {
+        throw "Invalid -SecondaryCloseReturnPct value."
+    }
+}
+$secondaryHitThreshold = $hypothesisHitThreshold
+$secondaryFailThreshold = $hypothesisFailThreshold
+if (-not [string]::IsNullOrWhiteSpace($SecondaryHitThresholdPct)) {
+    try {
+        $secondaryHitThreshold = [double]$SecondaryHitThresholdPct
+    } catch {
+        throw "Invalid -SecondaryHitThresholdPct value."
+    }
+}
+if (-not [string]::IsNullOrWhiteSpace($SecondaryFailThresholdPct)) {
+    try {
+        $secondaryFailThreshold = [double]$SecondaryFailThresholdPct
+    } catch {
+        throw "Invalid -SecondaryFailThresholdPct value."
+    }
+}
+$secondaryPostCloseEvalDecision = "PENDING_CLOSE"
+$secondaryPostCloseBandHit = $null
+if ($null -ne $secondaryCloseReturnPctValue) {
+    if ([double]$secondaryCloseReturnPctValue -le [double]$secondaryHitThreshold) {
+        $secondaryPostCloseEvalDecision = "HIT"
+    } elseif ([double]$secondaryCloseReturnPctValue -ge [double]$secondaryFailThreshold) {
+        $secondaryPostCloseEvalDecision = "FAIL"
+    } else {
+        $secondaryPostCloseEvalDecision = "NEUTRAL_DRAW"
+    }
+    $secondaryBand = [string]$SecondaryPredictedBand
+    if ([string]::IsNullOrWhiteSpace($secondaryBand)) {
+        $secondaryBand = "DOWN_STRONG"
+    }
+    $secondaryBand = $secondaryBand.Trim().ToUpper()
+    if ($secondaryBand -eq "DOWN_STRONG") {
+        $secondaryPostCloseBandHit = ($secondaryPostCloseEvalDecision -eq "HIT")
+    } elseif ($secondaryBand -eq "UP_STRONG") {
+        $secondaryPostCloseBandHit = ($secondaryPostCloseEvalDecision -eq "FAIL")
+    } else {
+        $secondaryPostCloseBandHit = $null
+    }
+}
+$secondarySuffix = $null
+if (-not [string]::IsNullOrWhiteSpace($SecondaryHypothesisMetric)) {
+    $secondarySuffix = & $metricToSuffix $SecondaryHypothesisMetric
+}
+
+# Build 5-business-day reliability preview using existing log + current decision.
+$recentEvalDecisions = @()
+if (Test-Path -LiteralPath $logPath) {
+    try {
+        $prevRows = Get-Content -LiteralPath $logPath -Encoding utf8
+        foreach ($line in $prevRows) {
+            if ([string]::IsNullOrWhiteSpace($line)) {
+                continue
+            }
+            try {
+                $obj = $line | ConvertFrom-Json
+                $decision = [string]$obj.post_close_eval_decision
+                if (-not [string]::IsNullOrWhiteSpace($decision)) {
+                    $recentEvalDecisions += $decision.ToUpper()
+                }
+            } catch {
+            }
+        }
+    } catch {
+    }
+}
+if (-not [string]::IsNullOrWhiteSpace($postCloseEvalDecision)) {
+    $recentEvalDecisions += $postCloseEvalDecision.ToUpper()
+}
+$recentEvalWindow = @($recentEvalDecisions | Select-Object -Last 5)
+$weeklyHitCount = (@($recentEvalWindow | Where-Object { $_ -eq "HIT" })).Count
+$weeklyFailCount = (@($recentEvalWindow | Where-Object { $_ -eq "FAIL" })).Count
+$weeklyNeutralDrawCount = (@($recentEvalWindow | Where-Object { $_ -eq "NEUTRAL_DRAW" })).Count
+$weeklyPendingCount = (@($recentEvalWindow | Where-Object { $_ -eq "PENDING_CLOSE" })).Count
+$weeklyWindowCount = $recentEvalWindow.Count
+$weeklyHitRate = if ($weeklyWindowCount -gt 0) { [math]::Round(($weeklyHitCount / $weeklyWindowCount), 4) } else { $null }
+$weeklyFailRate = if ($weeklyWindowCount -gt 0) { [math]::Round(($weeklyFailCount / $weeklyWindowCount), 4) } else { $null }
+$weeklyNeutralDrawRate = if ($weeklyWindowCount -gt 0) { [math]::Round(($weeklyNeutralDrawCount / $weeklyWindowCount), 4) } else { $null }
+if (-not [string]::IsNullOrWhiteSpace($SecondaryHypothesisMetric) -and -not [string]::IsNullOrWhiteSpace($secondaryPostCloseEvalDecision)) {
+    $recentEvalDecisions += $secondaryPostCloseEvalDecision.ToUpper()
+}
+
 Write-Host "[waiting-queue-check] Building Fact-Safe multi-lens brief..."
 py scripts/build_fact_safe_multilens_brief.py --engine-id V2_Precision_MCP
 if ($LASTEXITCODE -ne 0) {
     throw "Fact-Safe multi-lens brief build failed with exit code $LASTEXITCODE"
 }
 
+Write-Host "[waiting-queue-check] Emit billing invoice stub from env (.env / FACT_SAFE_INVOICE_*)..."
+py scripts/emit_billing_invoice_from_env.py
+if ($LASTEXITCODE -ne 0) {
+    throw "Emit billing invoice from env failed with exit code $LASTEXITCODE"
+}
+
+$billingInvoiceArg = @()
+$billingInvoiceEffectivePath = $null
+if (Test-Path -LiteralPath $billingInvoiceFromEnvPath) {
+    $billingInvoiceArg = @("--invoice-input", $billingInvoiceFromEnvPath)
+    $billingInvoiceEffectivePath = $billingInvoiceFromEnvPath
+    Write-Host "[waiting-queue-check] Billing evidence will use invoice file: $billingInvoiceFromEnvPath"
+}
+
 Write-Host "[waiting-queue-check] Building billing evidence snapshot..."
-py scripts/report_billing_evidence_from_vllm.py --output $billingEvidencePath --period-label waiting_queue_monthly_check --input-usd-per-1k-tokens $inputUsdPer1k --output-usd-per-1k-tokens $outputUsdPer1k
+py scripts/report_billing_evidence_from_vllm.py --output $billingEvidencePath --period-label waiting_queue_monthly_check --input-usd-per-1k-tokens $inputUsdPer1k --output-usd-per-1k-tokens $outputUsdPer1k @billingInvoiceArg
 if ($LASTEXITCODE -ne 0) {
     throw "Billing evidence build failed with exit code $LASTEXITCODE"
 }
@@ -258,6 +484,12 @@ if ($LASTEXITCODE -ne 0) {
     throw "Cost watch monitor build failed with exit code $LASTEXITCODE"
 }
 
+Write-Host "[waiting-queue-check] Running BTC regime-switch comparison (read-only sensor)..."
+py scripts/run_btc_time_machine_regime_switch_backtest.py
+if ($LASTEXITCODE -ne 0) {
+    throw "BTC regime-switch comparison failed with exit code $LASTEXITCODE"
+}
+
 if ($SkipNightWatchmanHarness) {
     Write-Host "[waiting-queue-check] Skipping Night Watchman harness guard by flag."
 } else {
@@ -286,7 +518,114 @@ if ($overlapDriftAlert -and ($highReliabilityDecision -eq "PASS")) {
     $highReliabilityGateEffective = "hold_by_overlap_drift"
 }
 
-@{
+$regimeSwitchRule = $null
+$regimeSwitchDeltaNet = $null
+$regimeSwitchDeltaPf = $null
+$regimeSwitchDeltaWorstMdd = $null
+$regimeSwitchAdvisory = "sensor_unavailable"
+$regimeSwitchAdvisoryReason = "report_missing_or_parse_error"
+if (Test-Path -LiteralPath $regimeSwitchReportPath) {
+    try {
+        $regimeObj = Get-Content -LiteralPath $regimeSwitchReportPath -Encoding utf8 | ConvertFrom-Json
+        $regimeSwitchRule = [string]$regimeObj.regime_switch.rule
+        $regimeSwitchDeltaNet = $regimeObj.delta_regime_switch_minus_base.net_return_pct_sum
+        $regimeSwitchDeltaPf = $regimeObj.delta_regime_switch_minus_base.profit_factor_weighted_by_samples
+        $regimeSwitchDeltaWorstMdd = $regimeObj.delta_regime_switch_minus_base.max_drawdown_pct_worst_year
+        $hasAllRegimeDeltas = ($null -ne $regimeSwitchDeltaNet) -and ($null -ne $regimeSwitchDeltaPf) -and ($null -ne $regimeSwitchDeltaWorstMdd)
+        if ($hasAllRegimeDeltas) {
+            $deltaNetPos = ([double]$regimeSwitchDeltaNet -gt 0.0)
+            $deltaPfPos = ([double]$regimeSwitchDeltaPf -gt 0.0)
+            $deltaMddImproved = ([double]$regimeSwitchDeltaWorstMdd -lt 0.0)
+            if ($deltaNetPos -and $deltaPfPos -and $deltaMddImproved) {
+                $regimeSwitchAdvisory = "prefer_switch_profile"
+                $regimeSwitchAdvisoryReason = "delta_positive_net_pf_and_lower_mdd"
+            } elseif (([double]$regimeSwitchDeltaNet -lt 0.0) -or ([double]$regimeSwitchDeltaPf -lt 0.0) -or ([double]$regimeSwitchDeltaWorstMdd -gt 0.0)) {
+                $regimeSwitchAdvisory = "review_switch_profile"
+                $regimeSwitchAdvisoryReason = "at_least_one_delta_degraded"
+            } else {
+                $regimeSwitchAdvisory = "mixed_signal_keep_observe"
+                $regimeSwitchAdvisoryReason = "delta_direction_not_unanimous"
+            }
+        } else {
+            $regimeSwitchAdvisory = "sensor_unavailable"
+            $regimeSwitchAdvisoryReason = "delta_fields_incomplete"
+        }
+    } catch {
+        $regimeSwitchRule = "parse_error"
+        $regimeSwitchAdvisory = "sensor_unavailable"
+        $regimeSwitchAdvisoryReason = "report_parse_error"
+    }
+}
+
+$costWatchClaimHallucination = $null
+$costWatchClaimMargin = $null
+$costWatchBlockingReasons = $null
+$costWatchBillingAuditReady = $null
+$costWatchBillingSourceTier = $null
+if (Test-Path -LiteralPath $costWatchMonitorPath) {
+    try {
+        $cwObj = Get-Content -LiteralPath $costWatchMonitorPath -Encoding utf8 | ConvertFrom-Json
+        $costWatchClaimHallucination = $cwObj.claim_guardrails.can_claim_hallucination_zero
+        $costWatchClaimMargin = $cwObj.claim_guardrails.can_claim_margin_uplift_50
+        $costWatchBlockingReasons = $cwObj.claim_guardrails.blocking_reasons
+        $costWatchBillingAuditReady = $cwObj.billing.invoice_audit_ready
+        $costWatchBillingSourceTier = [string]$cwObj.billing.source_tier
+    } catch {
+        $costWatchBlockingReasons = @("cost_watch_parse_error")
+    }
+}
+
+$dualRegimeStateKpi = $null
+$dualRegimeStateSource = $null
+$dualRegimeStatePresent = $null
+$dualRegimeStateClampCount = $null
+$dualRegimeStateSampleCount = $null
+$dualRegimeStateClampRatio = $null
+if (Test-Path -LiteralPath $latestKpiPath) {
+    try {
+        $kpiObj = Get-Content -LiteralPath $latestKpiPath -Encoding utf8 | ConvertFrom-Json
+        $dk = $kpiObj.dual_regime_state_kpi
+        if ($null -ne $dk) {
+            $dualRegimeStateKpi = $dk
+            $dualRegimeStateSource = [string]$dk.state_id_source
+            $dualRegimeStatePresent = [bool]$dk.state_id_present
+            if ($null -ne $dk.clamp_count) {
+                $dualRegimeStateClampCount = [int]$dk.clamp_count
+            } elseif ($null -ne $dk.signal_registry_clamped) {
+                $dualRegimeStateClampCount = if ([bool]$dk.signal_registry_clamped) { 1 } else { 0 }
+            }
+            if ($null -ne $dk.sample_count) {
+                $dualRegimeStateSampleCount = [int]$dk.sample_count
+            } else {
+                $dualRegimeStateSampleCount = 1
+            }
+            if (($null -ne $dualRegimeStateClampCount) -and ($null -ne $dualRegimeStateSampleCount) -and ($dualRegimeStateSampleCount -gt 0)) {
+                $dualRegimeStateClampRatio = [math]::Round(($dualRegimeStateClampCount / $dualRegimeStateSampleCount), 6)
+            }
+        }
+    } catch {
+    }
+}
+
+$dualRegimeAlertLevel = "insufficient_data"
+$dualRegimeAlertReason = "state_kpi_missing"
+if (($null -ne $dualRegimeStateSampleCount) -and ($dualRegimeStateSampleCount -gt 0)) {
+    if (($dualRegimeStateSource -eq "none") -and (-not [bool]$dualRegimeStatePresent)) {
+        $dualRegimeAlertLevel = "state_signal_not_wired"
+        $dualRegimeAlertReason = "top_source_none_and_state_missing"
+    } elseif (($null -ne $dualRegimeStateClampRatio) -and ([double]$dualRegimeStateClampRatio -ge 0.6)) {
+        $dualRegimeAlertLevel = "state_clamp_high_tight_mode"
+        $dualRegimeAlertReason = "clamp_ratio_ge_0.6"
+    } elseif (($null -ne $dualRegimeStateClampRatio) -and ([double]$dualRegimeStateClampRatio -ge 0.3)) {
+        $dualRegimeAlertLevel = "state_clamp_active_review_thresholds"
+        $dualRegimeAlertReason = "clamp_ratio_ge_0.3"
+    } else {
+        $dualRegimeAlertLevel = "state_clamp_stable"
+        $dualRegimeAlertReason = "clamp_ratio_lt_0.3"
+    }
+}
+
+$logRow = @{
     checked_at_utc = $checkedAt
     bundle_mode = $bundleMode
     cross_ref_test = "pass"
@@ -296,9 +635,9 @@ if ($overlapDriftAlert -and ($highReliabilityDecision -eq "PASS")) {
     promotion_gate = "pass"
     promotion_gate_path = $promotionGatePath
     decision_lock_ref = if (Test-Path -LiteralPath $decisionLockPath) { $decisionLockPath } else { $null }
-    btrack_verified_gate = "pass"
+    btrack_verified_gate = $btrackVerifiedGateStatus
     btrack_verified_gate_path = $btrackGatePath
-    btrack_symbol_lane_gate = "pass"
+    btrack_symbol_lane_gate = $btrackSymbolLaneGateStatus
     btrack_symbol_lane_gate_path = $symbolLaneGatePath
     symbol_lane_profile_compare_path = $symbolLaneProfileComparePath
     top_overlap_rate = $topOverlapRate
@@ -318,6 +657,30 @@ if ($overlapDriftAlert -and ($highReliabilityDecision -eq "PASS")) {
     prophecy_core_score = $prophecyCoreScore
     prophecy_k_shield_candidate = $prophecyKShieldCandidate
     prophecy_k_shield_candidate_max_drawdown_pct = $prophecyKShieldMdd
+    hypothesis_hit_threshold_pct = $hypothesisHitThreshold
+    hypothesis_fail_threshold_pct = $hypothesisFailThreshold
+    hypothesis_metric = $HypothesisMetric
+    market_venue = $MarketVenue
+    predicted_band = $PredictedBand
+    close_return_pct = $closeReturnPctValue
+    post_close_eval_decision = $postCloseEvalDecision
+    post_close_band_hit = $postCloseBandHit
+    hypothesis_metric_secondary = if ([string]::IsNullOrWhiteSpace($SecondaryHypothesisMetric)) { $null } else { $SecondaryHypothesisMetric }
+    market_venue_secondary = if ([string]::IsNullOrWhiteSpace($SecondaryMarketVenue)) { $null } else { $SecondaryMarketVenue }
+    hypothesis_hit_threshold_pct_secondary = if ([string]::IsNullOrWhiteSpace($SecondaryHypothesisMetric)) { $null } else { $secondaryHitThreshold }
+    hypothesis_fail_threshold_pct_secondary = if ([string]::IsNullOrWhiteSpace($SecondaryHypothesisMetric)) { $null } else { $secondaryFailThreshold }
+    predicted_band_secondary = if ([string]::IsNullOrWhiteSpace($SecondaryHypothesisMetric)) { $null } else { $SecondaryPredictedBand }
+    close_return_pct_secondary = $secondaryCloseReturnPctValue
+    post_close_eval_decision_secondary = if ([string]::IsNullOrWhiteSpace($SecondaryHypothesisMetric)) { $null } else { $secondaryPostCloseEvalDecision }
+    post_close_band_hit_secondary = if ([string]::IsNullOrWhiteSpace($SecondaryHypothesisMetric)) { $null } else { $secondaryPostCloseBandHit }
+    weekly_reliability_window = $weeklyWindowCount
+    weekly_reliability_hit = $weeklyHitCount
+    weekly_reliability_fail = $weeklyFailCount
+    weekly_reliability_neutral_draw = $weeklyNeutralDrawCount
+    weekly_reliability_pending = $weeklyPendingCount
+    weekly_reliability_hit_rate = $weeklyHitRate
+    weekly_reliability_fail_rate = $weeklyFailRate
+    weekly_reliability_neutral_draw_rate = $weeklyNeutralDrawRate
     k_shield_metadata_guard = $kShieldMetadataGuard
     k_shield_metadata_reason = $kShieldMetadataReason
     monthly_prophecy_path = $monthlyProphecyPath
@@ -328,6 +691,7 @@ if ($overlapDriftAlert -and ($highReliabilityDecision -eq "PASS")) {
     slack_delivery_status_path = $slackDeliveryStatusPath
     slack_delivery_log_path = $slackDeliveryLogPath
     billing_evidence_path = $billingEvidencePath
+    billing_invoice_from_env_path = $billingInvoiceEffectivePath
     hallucination_eval_path = $hallucinationEvalPath
     high_sample_vllm_eval_enabled = $enableHighSampleVllmEval
     high_sample_cases = $highSampleCases
@@ -335,8 +699,146 @@ if ($overlapDriftAlert -and ($highReliabilityDecision -eq "PASS")) {
     high_sample_dataset_path = if ($enableHighSampleVllmEval) { $expandedDatasetPath } else { $null }
     high_sample_repeat_path = if ($enableHighSampleVllmEval) { $highSampleRepeatPath } else { $null }
     cost_watch_monitor_path = $costWatchMonitorPath
+    cost_watch_claim_hallucination_zero = $costWatchClaimHallucination
+    cost_watch_claim_margin_uplift_50 = $costWatchClaimMargin
+    cost_watch_blocking_reasons = $costWatchBlockingReasons
+    cost_watch_billing_invoice_audit_ready = $costWatchBillingAuditReady
+    cost_watch_billing_source_tier = $costWatchBillingSourceTier
+    regime_switch_report_path = $regimeSwitchReportPath
+    regime_switch_rule = $regimeSwitchRule
+    regime_switch_delta_net_return_pct_sum = $regimeSwitchDeltaNet
+    regime_switch_delta_profit_factor_weighted = $regimeSwitchDeltaPf
+    regime_switch_delta_max_drawdown_pct_worst_year = $regimeSwitchDeltaWorstMdd
+    regime_switch_advisory = $regimeSwitchAdvisory
+    regime_switch_advisory_reason = $regimeSwitchAdvisoryReason
+    dual_regime_state_source = $dualRegimeStateSource
+    dual_regime_state_present = $dualRegimeStatePresent
+    dual_regime_state_clamp_count = $dualRegimeStateClampCount
+    dual_regime_state_sample_count = $dualRegimeStateSampleCount
+    dual_regime_state_clamp_ratio = $dualRegimeStateClampRatio
+    dual_regime_alert_level = $dualRegimeAlertLevel
+    dual_regime_alert_reason = $dualRegimeAlertReason
+    dual_regime_state_kpi = $dualRegimeStateKpi
     runner = "scripts/run_waiting_queue_monthly_check.ps1"
-} | ConvertTo-Json -Compress | Add-Content -LiteralPath $logPath -Encoding utf8
+}
+$logRow["close_return_pct_$primarySuffix"] = $closeReturnPctValue
+$logRow["post_close_eval_decision_$primarySuffix"] = $postCloseEvalDecision
+$logRow["post_close_band_hit_$primarySuffix"] = $postCloseBandHit
+if (-not [string]::IsNullOrWhiteSpace($secondarySuffix)) {
+    $logRow["close_return_pct_$secondarySuffix"] = $secondaryCloseReturnPctValue
+    $logRow["post_close_eval_decision_$secondarySuffix"] = $secondaryPostCloseEvalDecision
+    $logRow["post_close_band_hit_$secondarySuffix"] = $secondaryPostCloseBandHit
+}
+$logRow | ConvertTo-Json -Compress | Add-Content -LiteralPath $logPath -Encoding utf8
+
+Write-Host "[waiting-queue-check] Building fused calibration-30 report..."
+py scripts/report_fused_paper_cycle_calibration_30.py --log-path $logPath
+if ($LASTEXITCODE -ne 0) {
+    throw "Fused calibration-30 report build failed with exit code $LASTEXITCODE"
+}
+
+$weeklySnapshot = @{
+    generated_at_utc = ([DateTimeOffset]::UtcNow).ToString("o")
+    schema = "trinity_weekly_reliability_snapshot_v1"
+    source_log_path = $logPath
+    hypothesis_metric = $HypothesisMetric
+    market_venue = $MarketVenue
+    hit_threshold_pct = $hypothesisHitThreshold
+    fail_threshold_pct = $hypothesisFailThreshold
+    window_size = $weeklyWindowCount
+    hit = $weeklyHitCount
+    fail = $weeklyFailCount
+    neutral_draw = $weeklyNeutralDrawCount
+    pending_close = $weeklyPendingCount
+    hit_rate = $weeklyHitRate
+    fail_rate = $weeklyFailRate
+    neutral_draw_rate = $weeklyNeutralDrawRate
+    latest_post_close_eval_decision = $postCloseEvalDecision
+    latest_close_return_pct = $closeReturnPctValue
+    primary_metric_suffix = $primarySuffix
+    secondary_metric_suffix = $secondarySuffix
+    latest_post_close_eval_decision_secondary = if ([string]::IsNullOrWhiteSpace($SecondaryHypothesisMetric)) { $null } else { $secondaryPostCloseEvalDecision }
+    latest_close_return_pct_secondary = $secondaryCloseReturnPctValue
+    dual_regime_state_source = $dualRegimeStateSource
+    dual_regime_state_present = $dualRegimeStatePresent
+    dual_regime_state_clamp_count = $dualRegimeStateClampCount
+    dual_regime_state_sample_count = $dualRegimeStateSampleCount
+    dual_regime_state_clamp_ratio = $dualRegimeStateClampRatio
+    dual_regime_alert_level = $dualRegimeAlertLevel
+    dual_regime_alert_reason = $dualRegimeAlertReason
+}
+$weeklySnapshot | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $weeklyReliabilitySnapshotPath -Encoding utf8
+
+Write-Host "[waiting-queue-check] Building trinity scoring distribution snapshot..."
+py scripts/report_trinity_scoring_distribution.py --log-path $logPath --output $scoringDistributionPath --metric $HypothesisMetric
+if ($LASTEXITCODE -ne 0) {
+    throw "Trinity scoring distribution build failed with exit code $LASTEXITCODE"
+}
+
+# Hysteresis gate: only escalate when the same override skew advisory persists.
+$overrideSkewDecision = $null
+$overrideSkewReason = $null
+$overrideSkewStreak = 0
+if (Test-Path -LiteralPath $scoringDistributionPath) {
+    try {
+        $distObj = Get-Content -LiteralPath $scoringDistributionPath -Encoding utf8 | ConvertFrom-Json
+        $overrideSkewDecision = [string]$distObj.auto_hold_overrides.advisory.decision
+        $overrideSkewReason = [string]$distObj.auto_hold_overrides.advisory.reason
+    } catch {
+        $overrideSkewDecision = $null
+        $overrideSkewReason = "distribution_parse_error"
+    }
+}
+if ($overrideSkewDecision -in @("override_skew_net_source_fallback", "override_skew_dual_regime_state_clamp")) {
+    $overrideSkewStreakThreshold = 3
+    if ($env:FACT_SAFE_OVERRIDE_SKEW_STREAK_THRESHOLD) {
+        try {
+            $overrideSkewStreakThreshold = [int]$env:FACT_SAFE_OVERRIDE_SKEW_STREAK_THRESHOLD
+        } catch {
+            $overrideSkewStreakThreshold = 3
+        }
+    }
+    if ($overrideSkewStreakThreshold -lt 1) {
+        $overrideSkewStreakThreshold = 1
+    }
+    $overrideSkewStreak = 1
+    if (Test-Path -LiteralPath $logPath) {
+        try {
+            $prevRows = Get-Content -LiteralPath $logPath -Encoding utf8
+            for ($idx = $prevRows.Count - 1; $idx -ge 0; $idx--) {
+                $line = $prevRows[$idx]
+                if ([string]::IsNullOrWhiteSpace($line)) { continue }
+                try {
+                    $obj = $line | ConvertFrom-Json
+                    $prevDecision = [string]$obj.override_skew_decision
+                    if ($prevDecision -eq $overrideSkewDecision) {
+                        $overrideSkewStreak += 1
+                        continue
+                    }
+                } catch {
+                }
+                break
+            }
+        } catch {
+        }
+    }
+    if ($overrideSkewStreak -ge $overrideSkewStreakThreshold) {
+        @{
+            checked_at_utc = ([DateTimeOffset]::UtcNow).ToString("o")
+            auto_hold_promotion = $true
+            high_reliability_decision_override = "HOLD"
+            override_reason = "override_skew_hysteresis_streak_ge_threshold"
+            override_trigger_type = "override_skew_advisory"
+            override_priority = 80
+            override_skew_decision = $overrideSkewDecision
+            override_skew_reason = $overrideSkewReason
+            override_skew_streak = $overrideSkewStreak
+            override_skew_streak_threshold = $overrideSkewStreakThreshold
+            runner = "scripts/run_waiting_queue_monthly_check.ps1"
+        } | ConvertTo-Json -Compress | Add-Content -LiteralPath $logPath -Encoding utf8
+        throw "Auto HOLD promotion triggered: override skew hysteresis decision=$overrideSkewDecision streak=$overrideSkewStreak threshold=$overrideSkewStreakThreshold"
+    }
+}
 
 if ($priceOutputLockGuard -ne "pass") {
     throw "Price output lock guard failed: $priceOutputLockReason"
@@ -369,6 +871,8 @@ if (Test-Path -LiteralPath $slackDeliveryStatusPath) {
                 auto_hold_promotion = $true
                 high_reliability_decision_override = "HOLD"
                 override_reason = "net_source_fallback_streak_escalated"
+                override_trigger_type = "net_source_fallback"
+                override_priority = 100
                 net_source_fallback_streak = $fallbackStreak
                 slack_delivery_status_path = $slackDeliveryStatusPath
                 runner = "scripts/run_waiting_queue_monthly_check.ps1"
@@ -380,6 +884,22 @@ if (Test-Path -LiteralPath $slackDeliveryStatusPath) {
             throw
         }
     }
+}
+
+# Auto HOLD promotion on persistent high-tight dual regime clamp mode.
+if ($dualRegimeAlertLevel -eq "state_clamp_high_tight_mode") {
+    @{
+        checked_at_utc = ([DateTimeOffset]::UtcNow).ToString("o")
+        auto_hold_promotion = $true
+        high_reliability_decision_override = "HOLD"
+        override_reason = "dual_regime_state_clamp_high_tight_mode"
+        override_trigger_type = "dual_regime_state_clamp"
+        override_priority = 90
+        dual_regime_alert_level = $dualRegimeAlertLevel
+        dual_regime_alert_reason = $dualRegimeAlertReason
+        runner = "scripts/run_waiting_queue_monthly_check.ps1"
+    } | ConvertTo-Json -Compress | Add-Content -LiteralPath $logPath -Encoding utf8
+    throw "Auto HOLD promotion triggered: dual regime clamp high-tight mode"
 }
 
 Write-Host "[waiting-queue-check] Wrote log: $logPath"
