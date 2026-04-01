@@ -1,4 +1,5 @@
 from scripts.build_fact_safe_multilens_brief import (
+    _latest_kpi_exchange_snapshot,
     compute_reliability_badge,
     resolve_gate_decision,
 )
@@ -40,3 +41,13 @@ def test_gate_reason_monthly_check_when_not_low():
     gate = resolve_gate_decision(badge, "HOLD")
     assert gate.decision == "HOLD"
     assert gate.reason == "monthly_check_gate"
+
+
+def test_latest_kpi_exchange_snapshot_none_when_no_rows(monkeypatch):
+    monkeypatch.setattr(
+        "scripts.build_fact_safe_multilens_brief._collect_recent_kpi_rows",
+        lambda days=7, max_points=3000: [],
+    )
+    net, fills = _latest_kpi_exchange_snapshot(days=7)
+    assert net is None
+    assert fills is None

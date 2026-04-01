@@ -30,6 +30,8 @@ def test_logos_state_mapping_v1_exists_and_schema() -> None:
     assert _ART.is_file(), f"missing tracked artifact: {_ART}"
     doc = json.loads(_ART.read_text(encoding="utf-8"))
     assert doc.get("schema") == "logos_myeongni_state_join_v1"
+    if "manseryeok_scope" in doc:
+        assert doc["manseryeok_scope"].get("manseryeok_applicable") is False
     assert "assignments" in doc
     assert len(doc["assignments"]) == 16
     ids = [a["state_id"] for a in doc["assignments"]]

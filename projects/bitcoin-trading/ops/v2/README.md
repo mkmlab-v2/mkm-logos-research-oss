@@ -43,6 +43,55 @@ Operational check:
 powershell -ExecutionPolicy Bypass -File .\ops\v2\reports\check_ops_health.ps1
 ```
 
+## Waiting Queue (BTC Primary)
+
+Primary runbook (Windows rehearsal ops):
+- `projects/bitcoin-trading/ops/windows-rehearsal/WAITING_QUEUE_DUAL_BTC_RUNBOOK.md`
+
+Key scripts:
+- BTC primary daily wrapper: `projects/bitcoin-trading/ops/windows-rehearsal/run_waiting_queue_btc_binance_daily.ps1`
+- BTC daily task register: `projects/bitcoin-trading/ops/windows-rehearsal/register_waiting_queue_btc_binance_daily_task.ps1`
+- Promote BTC primary / disable dual: `projects/bitcoin-trading/ops/windows-rehearsal/promote_btc_binance_daily_primary.ps1`
+- Re-enable dual backup lane: `projects/bitcoin-trading/ops/windows-rehearsal/enable_dual_market_daily_task.ps1`
+- Fused SOP runner/register: `projects/bitcoin-trading/ops/windows-rehearsal/run_fused_quant_pixel_sop.ps1`, `projects/bitcoin-trading/ops/windows-rehearsal/register_fused_quant_pixel_sop_task.ps1`
+- Fused SOP live register: `projects/bitcoin-trading/ops/windows-rehearsal/register_fused_quant_pixel_sop_live_task.ps1`
+- Fused SOP mode switch (dry/live mutex): `projects/bitcoin-trading/ops/windows-rehearsal/switch_fused_quant_pixel_mode.ps1`
+- Daily 1-page brief template: `projects/bitcoin-trading/ops/windows-rehearsal/DAILY_EXECUTION_INSIGHT_BRIEF_TEMPLATE.md`
+
+3-step quick ops:
+```powershell
+# 1) Promote BTC primary lane
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\promote_btc_binance_daily_primary.ps1
+# 2) Inject daily return (optional; if omitted -> PENDING_CLOSE)
+setx DAILY_BTC_BINANCE_D1_RETURN_PCT -1.24
+# 3) Verify scheduler status
+schtasks /Query /TN "Bitcoin-WaitingQueue-BTCBinance-Daily" /FO LIST
+# 4) Run once immediately (manual trigger)
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\run_waiting_queue_btc_binance_daily.ps1
+```
+
+Notes:
+- If `DAILY_BTC_BINANCE_D1_RETURN_PCT` is not set, wrapper tries Binance 24h API (`BTCUSDT`) first.
+- If API fetch fails, scoring falls back to `PENDING_CLOSE` safely.
+
+Fused SOP daily auto task (safe default: Night Watchman dry-run):
+```powershell
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\register_fused_quant_pixel_sop_task.ps1 -StartTime 09:25 -Phase1Mode weekly_lite -RunPhase2 -NightWatchmanDecision PASS
+```
+
+Fused SOP live alert task (sends Night Watchman live alert):
+```powershell
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\register_fused_quant_pixel_sop_live_task.ps1 -StartTime 09:35 -Phase1Mode weekly_lite -RunPhase2 -NightWatchmanDecision PASS
+```
+
+Switch mode (mutual exclusion):
+```powershell
+# default-safe mode
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\switch_fused_quant_pixel_mode.ps1 -Mode dry
+# live alert mode
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\switch_fused_quant_pixel_mode.ps1 -Mode live
+```
+
 One-shot digest + health check:
 
 ```powershell

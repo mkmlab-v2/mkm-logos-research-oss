@@ -5,7 +5,7 @@ PGAE Oracle Gateway: PMI-Nitro 주문 실행 직전 14B 검증
 
 - 입력: signal, price, confidence, leverage_multiplier, signal_data
 - 예언 컨텍스트 로드 후 14B에 "APPROVE / REDUCE / REJECT" 판단 요청
-- 출력: {"verdict": "APPROVE"|"REDUCE"|"REJECT", "multiplier": float}
+- 출력: {"verdict": "...", "multiplier": float, "gate_level": "LOW|MID|HIGH", "gate_reason": str, "price_lock": bool}
 - REDUCE 시 multiplier(0.0~1.0)를 포지션 크기에 적용
 
 14B 자연어 본문의 가격·수치 주장은 AGENTS.md 기준 Tier 3(단독 근거 금지).
@@ -36,8 +36,40 @@ def _inference_failure_verdict(loader: Any) -> Dict[str, Any]:
     except Exception:
         pass
     if mode == "reject":
-        return {"verdict": "REJECT", "multiplier": 0.0}
-    return {"verdict": "APPROVE", "multiplier": 1.0}
+        return {
+            "verdict": "REJECT",
+            "multiplier": 0.0,
+            "gate_level": "LOW",
+            "gate_reason": "inference_failure_reject_policy",
+            "price_lock": True,
+        }
+    return {
+        "verdict": "APPROVE",
+        "multiplier": 1.0,
+        "gate_level": "MID",
+        "gate_reason": "inference_failure_approve_policy",
+        "price_lock": False,
+    }
+
+
+def _build_gate_contract(signal: str, confidence: float, signal_data: Dict[str, Any], verdict: str) -> Dict[str, Any]:
+    shock = bool((signal_data.get("dual_regime_protection") or {}).get("market_shock_confirmed")) or bool(
+        signal_data.get("market_shock_confirmed")
+    )
+    if signal == "HOLD" or confidence < 0.6 or shock:
+        level = "LOW"
+    elif confidence < 0.75:
+        level = "MID"
+    else:
+        level = "HIGH"
+    reason = "oracle_verdict_" + str(verdict).lower()
+    if shock:
+        reason = "market_shock_hardguard_hold"
+    return {
+        "gate_level": level,
+        "gate_reason": reason,
+        "price_lock": bool(level == "LOW"),
+    }
 DEFAULT_CONFIG = WORKSPACE_ROOT / "projects" / "bitcoin-trading" / "config" / "trading_config.yaml"
 METRICS_DIR = WORKSPACE_ROOT / "memory" / "metrics" / "trading"
 
@@ -109,6 +141,9 @@ def _log_oracle_kpi(
             "oracle": {
                 "verdict": oracle_result.get("verdict", "APPROVE"),
                 "multiplier": oracle_result.get("multiplier", 1.0),
+                "gate_level": oracle_result.get("gate_level", "MID"),
+                "gate_reason": oracle_result.get("gate_reason", "oracle_default"),
+                "price_lock": bool(oracle_result.get("price_lock", False)),
                 "raw_response_preview": (oracle_raw_response or "")[:160],
             },
         }
@@ -190,7 +225,13 @@ def oracle_gateway_verify(
         - REDUCE: multiplier(0.0~1.0)를 leverage_multiplier에 곱해 실행
         - REJECT: 주문 스킵
     """
-    result: Dict[str, Any] = {"verdict": "APPROVE", "multiplier": 1.0}
+    result: Dict[str, Any] = {
+        "verdict": "APPROVE",
+        "multiplier": 1.0,
+        "gate_level": "MID",
+        "gate_reason": "oracle_default",
+        "price_lock": False,
+    }
     loader: Optional[Any] = None
 
     # 14B 호출 경로 로드
@@ -202,10 +243,12 @@ def oracle_gateway_verify(
         call_path = loader.get_14b_4d_native_call_path()
     except Exception as e:
         logger.debug("Oracle Gateway: ConfigLoader 실패, APPROVE 통과: %s", e)
+        result.update(_build_gate_contract(signal, confidence, signal_data, result["verdict"]))
         return result
 
     if not call_path:
         logger.debug("Oracle Gateway: 14B 비활성화, APPROVE 통과")
+        result.update(_build_gate_contract(signal, confidence, signal_data, result["verdict"]))
         return result
 
     # get_14b_advisory import
@@ -213,6 +256,7 @@ def oracle_gateway_verify(
         from src.llm.llm_14b_advisory import get_14b_advisory
     except ImportError:
         logger.debug("Oracle Gateway: get_14b_advisory import 실패, APPROVE 통과")
+        result.update(_build_gate_contract(signal, confidence, signal_data, result["verdict"]))
         return result
 
     # 예언 컨텍스트 로드
@@ -257,6 +301,7 @@ def oracle_gateway_verify(
         else:
             logger.warning("Oracle Gateway: 14B 호출 실패, APPROVE 통과: %s", e)
         _log_oracle_kpi(prophecy, oracle_raw_response=None, oracle_result=result)
+        result.update(_build_gate_contract(signal, confidence, signal_data, result["verdict"]))
         return result
 
     if not raw or not isinstance(raw, str):
@@ -266,6 +311,7 @@ def oracle_gateway_verify(
         else:
             logger.debug("Oracle Gateway: 14B 응답 없음, APPROVE 통과")
         _log_oracle_kpi(prophecy, oracle_raw_response=None, oracle_result=result)
+        result.update(_build_gate_contract(signal, confidence, signal_data, result["verdict"]))
         return result
 
     raw_upper = raw.strip().upper()
@@ -276,6 +322,7 @@ def oracle_gateway_verify(
         result["multiplier"] = 0.0
         logger.info("🔴 Oracle Gateway: REJECT - %s", raw[:80])
         _log_oracle_kpi(prophecy, oracle_raw_response=raw, oracle_result=result)
+        result.update(_build_gate_contract(signal, confidence, signal_data, result["verdict"]))
         return result
 
     # REDUCE + multiplier 파싱
@@ -299,4 +346,5 @@ def oracle_gateway_verify(
     result["multiplier"] = 1.0
     logger.info("🟢 Oracle Gateway: APPROVE - %s", raw[:80])
     _log_oracle_kpi(prophecy, oracle_raw_response=raw, oracle_result=result)
+    result.update(_build_gate_contract(signal, confidence, signal_data, result["verdict"]))
     return result

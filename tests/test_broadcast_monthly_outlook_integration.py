@@ -9,6 +9,10 @@ def test_monthly_outlook_shape():
     assert "month" in out
     assert "kospi_direction" in out
     assert "btc_direction" in out
+    assert "price_output_locked" in out
+    assert "lock_reason" in out
+    assert "risk_profile_mode" in out
+    assert "risk_position_scale_cap" in out
 
 
 def test_next_month_risk_hint_shape():

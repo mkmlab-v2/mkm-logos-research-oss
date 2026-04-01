@@ -37,6 +37,15 @@ def test_generate_sets_price_lock_in_hold_mode(tmp_path):
         assert doc["meta"]["core_decision"] in {"HOLD", "PASS_LONG", "PASS_SHORT"}
         assert "core_contract_version" in doc["meta"]
         assert "k_shield_candidate_name" in doc["meta"]
+        assert doc["meta"]["engine_scope"] == "monthly_prophecy_generation_only"
+        assert doc["meta"]["myeongri_verification_engine"] == "project-0-workspace-athena-manseryeok.verify_saju_date"
+        assert doc["meta"]["calendar_source_type"] == "external_standard_required"
+        assert doc["meta"]["calendar_source_name"] == "standard_rabbinic_calendar"
+        assert doc["meta"]["decision_driver_policy"] == "prefer_observed_lever_over_symbolic_lens"
+        assert doc["meta"]["scoring_rule"]["labels"]["neutral_draw"] == "NEUTRAL_DRAW"
+        assert doc["meta"]["scoring_rule"]["hit_threshold_pct"] == -0.8
+        assert doc["meta"]["scoring_rule"]["fail_threshold_pct"] == 1.5
+        assert len(doc["meta"]["observed_lever_priority"]) >= 3
         assert "risk_profile" in doc
         assert doc["risk_profile"]["mode"] == "LOCKED_MODE"
         assert doc["risk_profile"]["position_scale_cap"] <= 0.2

@@ -217,6 +217,13 @@ class BitcoinTradingDaemon:
                         "schema_version": profile.get("schema_version"),
                         "generated_at": profile.get("generated_at"),
                         "expires_at": profile.get("expires_at"),
+                        "source": profile.get("source"),
+                        "mode": profile.get("mode"),
+                        "is_n8n_source": (
+                            "n8n" in str(profile.get("source", "")).lower()
+                            or "n8n" in str(profile.get("mode", "")).lower()
+                        ),
+                        "freshness": self._risk_profile_freshness(profile),
                         "singular_core_decision": (
                             (profile.get("singular_core") or {}).get("core_decision")
                             if isinstance(profile.get("singular_core"), dict)
@@ -231,6 +238,28 @@ class BitcoinTradingDaemon:
                 except Exception as e:
                     return {"status": "invalid", "path": str(p), "error": str(e)}
         return {"status": "not_found"}
+
+    def _risk_profile_freshness(self, profile: Dict[str, Any]) -> Dict[str, Any]:
+        max_age_minutes = 60
+        try:
+            max_age_minutes = max(10, int(os.getenv("RISK_PROFILE_MAX_AGE_MINUTES", "60")))
+        except (TypeError, ValueError):
+            max_age_minutes = 60
+        generated_at = profile.get("generated_at")
+        if not generated_at:
+            return {"has_generated_at": False, "is_fresh": None, "age_minutes": None, "max_age_minutes": max_age_minutes}
+        try:
+            gen = datetime.fromisoformat(str(generated_at).replace("Z", "+00:00"))
+            now_ref = datetime.now(gen.tzinfo) if gen.tzinfo is not None else datetime.now()
+            age_minutes = max(0.0, (now_ref - gen).total_seconds() / 60.0)
+            return {
+                "has_generated_at": True,
+                "is_fresh": age_minutes <= float(max_age_minutes),
+                "age_minutes": round(age_minutes, 3),
+                "max_age_minutes": max_age_minutes,
+            }
+        except Exception:
+            return {"has_generated_at": True, "is_fresh": None, "age_minutes": None, "max_age_minutes": max_age_minutes}
 
     def _build_exchange_trade_snapshot(self) -> Dict[str, Any]:
         """Build lightweight 24h fills snapshot from exchange API."""
