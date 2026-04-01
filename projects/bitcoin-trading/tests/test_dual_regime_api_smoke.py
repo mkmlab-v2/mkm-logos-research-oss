@@ -283,3 +283,78 @@ def test_myeongni_16_state_experiment_ssot_paths_resolve() -> None:
     assert Path(out["ledger_cli_path"]) == root / "scripts" / "myeongni_16_state_experiment_ledger.py"
     assert Path(out["jsonl_path"]) == root / "data" / "myeongni" / "myeongni_16_state_experiment_v1.jsonl"
     assert Path(out["sample_jsonl_path"]) == root / "data" / "myeongni" / "myeongni_16_state_experiment_v1.sample.jsonl"
+
+
+# ---------------------------------------------------------------------------
+# 6) Optional state_id defensive clamp (defaults preserve legacy behavior)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.regime_integrity
+def test_state_id_none_preserves_legacy_behavior() -> None:
+    """No state_id wiring should keep cap/flags identical."""
+    workspace_root = _workspace_root()
+    kwargs = dict(
+        as_of=datetime(2026, 3, 29, 12, 0, 0),
+        vector_4d={"S": 0.25, "L": 0.25, "K": 0.25, "M": 0.25},
+        psi_score=0.82,
+        bible_risk_score=0.4,
+        workspace_root=workspace_root,
+        context_metrics={"liquidity_stress": 0.7},
+    )
+    baseline = evaluate_dual_regime_and_market_shock(**kwargs)
+    with_none = evaluate_dual_regime_and_market_shock(**kwargs, state_id=None)
+
+    assert with_none.risk_multiplier_cap == pytest.approx(baseline.risk_multiplier_cap, rel=0, abs=1e-9)
+    assert with_none.market_shock_confirmed is baseline.market_shock_confirmed
+    assert with_none.veto_triggered is baseline.veto_triggered
+    assert with_none.resonance_count == baseline.resonance_count
+
+
+@pytest.mark.regime_integrity
+def test_invalid_state_id_is_ignored_when_clamp_disabled_by_default() -> None:
+    """Invalid state_id should not perturb baseline when policy keys are absent/disabled."""
+    workspace_root = _workspace_root()
+    kwargs = dict(
+        as_of=datetime(2026, 3, 29, 12, 0, 0),
+        vector_4d={"S": 0.25, "L": 0.25, "K": 0.25, "M": 0.25},
+        psi_score=0.74,
+        bible_risk_score=0.2,
+        workspace_root=workspace_root,
+        context_metrics={"fear_greed_index": 0.55},
+    )
+    baseline = evaluate_dual_regime_and_market_shock(**kwargs)
+    invalid = evaluate_dual_regime_and_market_shock(**kwargs, state_id=99)
+    assert invalid.risk_multiplier_cap == pytest.approx(baseline.risk_multiplier_cap, rel=0, abs=1e-9)
+
+
+@pytest.mark.regime_integrity
+def test_valid_state_id_clamp_tightens_only_when_enabled(monkeypatch: pytest.MonkeyPatch) -> None:
+    """state_id clamp can reduce cap but must never increase cap."""
+    workspace_root = _workspace_root()
+    g = _load_global_policy()
+
+    custom = {
+        "global": {
+            **g,
+            "myeongni_state_defensive_clamp_enabled": True,
+            "myeongni_state_risk_cap_map": {"7": 0.65, "8": 1.25},
+        }
+    }
+    monkeypatch.setattr("src.integration.dual_regime_api._load_policy", lambda _root: custom)
+
+    kwargs = dict(
+        as_of=datetime(2026, 3, 29, 12, 0, 0),
+        vector_4d={"S": 0.25, "L": 0.25, "K": 0.25, "M": 0.25},
+        psi_score=0.5,
+        bible_risk_score=0.0,
+        workspace_root=workspace_root,
+        context_metrics={"fear_greed_index": 0.0},
+    )
+    baseline = evaluate_dual_regime_and_market_shock(**kwargs)
+    tight = evaluate_dual_regime_and_market_shock(**kwargs, state_id=7)
+    noop = evaluate_dual_regime_and_market_shock(**kwargs, state_id=8)
+
+    assert tight.risk_multiplier_cap == pytest.approx(min(baseline.risk_multiplier_cap, 0.65), rel=0, abs=1e-9)
+    assert noop.risk_multiplier_cap == pytest.approx(baseline.risk_multiplier_cap, rel=0, abs=1e-9)
+    assert tight.risk_multiplier_cap <= baseline.risk_multiplier_cap

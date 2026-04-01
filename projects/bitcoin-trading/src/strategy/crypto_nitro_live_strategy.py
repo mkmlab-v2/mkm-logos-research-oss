@@ -9,6 +9,7 @@ Crypto-Nitro v1.6 실전 매매 전략
 """
 import sys
 import os
+import json
 from pathlib import Path
 from typing import Dict, Optional, Any, Tuple
 from datetime import datetime
@@ -41,6 +42,46 @@ sys.path.insert(0, str(workspace_root))
 scripts_path = workspace_root / "scripts"
 if scripts_path.exists():
     sys.path.insert(0, str(scripts_path))
+
+
+def _resolve_state_id_with_source(signal_data: Dict[str, Any]) -> Tuple[Optional[int], str]:
+    """Resolve a normalized state_id with deterministic source priority.
+
+    SSOT source priority:
+    1) risk_assessment.myeongni_state_id
+    2) signal_data.state_id
+    3) risk_assessment.state_id
+    4) risk_assessment.jema12_trinity.myeongni_state_id
+    5) risk_assessment.jema12_trinity.state_id
+    """
+
+    if not isinstance(signal_data, dict):
+        return None, "none"
+
+    risk_assessment = signal_data.get("risk_assessment", {})
+    if not isinstance(risk_assessment, dict):
+        risk_assessment = {}
+    trinity_meta = risk_assessment.get("jema12_trinity", {})
+    if not isinstance(trinity_meta, dict):
+        trinity_meta = {}
+
+    candidates = [
+        ("risk_assessment.myeongni_state_id", risk_assessment.get("myeongni_state_id")),
+        ("signal_data.state_id", signal_data.get("state_id")),
+        ("risk_assessment.state_id", risk_assessment.get("state_id")),
+        ("risk_assessment.jema12_trinity.myeongni_state_id", trinity_meta.get("myeongni_state_id")),
+        ("risk_assessment.jema12_trinity.state_id", trinity_meta.get("state_id")),
+    ]
+    for source, value in candidates:
+        try:
+            if value is None:
+                continue
+            sid = int(value)
+            if 1 <= sid <= 16:
+                return sid, source
+        except (TypeError, ValueError):
+            continue
+    return None, "none"
 
 # BTC-6 Regime Fusion adapter (risk multiplier skeleton, always-neutral 1.0 for now)
 try:
@@ -308,6 +349,29 @@ class CryptoNitroLiveStrategy:
             backtest_calibration: 백테스트 캘리브레이션용 경량 모드 (Bitcoin4DMapper/PhaseSpace/Harness/Historical 스킵)
         """
         self.backtest_calibration = backtest_calibration
+        self._logos_timeline_cache: Optional[Dict[str, Any]] = None
+        self._logos_timeline_cache_mtime_ns: Optional[int] = None
+        self._logos_timeline_path = (
+            workspace_root
+            / "reports"
+            / "constitution"
+            / "btrack_pilot"
+            / "logos_timeline_anchor_v1_latest.json"
+        )
+        self._logos_timeline_calibration_path = (
+            workspace_root
+            / "reports"
+            / "constitution"
+            / "btrack_pilot"
+            / "logos_timeline_tradition_calibration_latest.json"
+        )
+        self._logos_timeline_calibration_cache: Optional[Dict[str, Any]] = None
+        self._logos_timeline_calibration_cache_mtime_ns: Optional[int] = None
+        self._logos_timeline_tradition = str(
+            os.getenv("LOGOS_TIMELINE_TRADITION", "harmonized")
+        ).strip().lower()
+        if self._logos_timeline_tradition not in ("harmonized", "mt", "lxx"):
+            self._logos_timeline_tradition = "harmonized"
         # Crypto-Nitro 엔진이 없어도 작동하도록 선택적 처리
         # 주의: CryptoNitroBacktest는 모듈 레벨 변수이므로 로컬 변수로 재할당하지 않음
         if not CRYPTO_NITRO_AVAILABLE:
@@ -877,6 +941,8 @@ class CryptoNitroLiveStrategy:
         ):
             return base_multiplier
 
+        state_id, state_id_source = _resolve_state_id_with_source(signal_data)
+
         try:
             ctx: DualRegimeContext = evaluate_dual_regime_and_market_shock(
                 as_of=current_time,
@@ -884,25 +950,22 @@ class CryptoNitroLiveStrategy:
                 psi_score=float(psi_score),
                 bible_risk_score=float(biblical_risk),
                 workspace_root=workspace_root,
-                policy_path=None,
+                state_id=state_id,
             )
         except Exception as e:  # pragma: no cover - 방어적 처리
             logger.debug("dual_regime_protection: evaluate_dual_regime_and_market_shock 오류(무시): %s", e)
             return base_multiplier
 
-        dual_trigger = bool(ctx.bible_regime_triggered and ctx.market_shock_confirmed)
+        dual_trigger = bool(ctx.market_shock_confirmed and float(biblical_risk) >= 1.0)
         signal_data.setdefault("risk_assessment", {})
         signal_data["risk_assessment"]["dual_regime_context"] = {
-            "as_of": ctx.as_of.isoformat(),
-            "bible_regime_triggered": ctx.bible_regime_triggered,
             "market_shock_confirmed": ctx.market_shock_confirmed,
-            "psi_score": ctx.psi_score,
-            "features": ctx.features,
-            "violated_rules": ctx.violated_rules,
             "resonance_count": getattr(ctx, "resonance_count", 0),
             "veto_triggered": getattr(ctx, "veto_triggered", False),
             "risk_multiplier_cap": getattr(ctx, "risk_multiplier_cap", 1.0),
             "interpretation": getattr(ctx, "interpretation", "none"),
+            "state_id": state_id,
+            "state_id_source": state_id_source,
         }
 
         # 공명 또는 실물 우선 veto가 있으면 즉시 하향 캡 적용 (증폭 금지)
@@ -929,8 +992,7 @@ class CryptoNitroLiveStrategy:
             signal_data["risk_assessment"]["dual_regime_night_block"] = True
 
         logger.info(
-            "🔐 Dual Regime Protection 발동: bible_trigger=%s market_shock=%s mul=%.3f→%.3f night_block=%s",
-            ctx.bible_regime_triggered,
+            "🔐 Dual Regime Protection 발동: market_shock=%s mul=%.3f→%.3f night_block=%s",
             ctx.market_shock_confirmed,
             base_multiplier,
             protected_mul,
@@ -1109,6 +1171,143 @@ class CryptoNitroLiveStrategy:
         except Exception as e:
             logger.error(f"❌ NVT Ratio 계산 실패: {e}")
             return 50.0  # 기본값
+
+    def _load_logos_timeline_cache(self) -> Optional[Dict[str, Any]]:
+        """Load timeline anchor JSON with file-change auto-reload."""
+        try:
+            if not self._logos_timeline_path.is_file():
+                return None
+            stat = self._logos_timeline_path.stat()
+            mtime_ns = int(stat.st_mtime_ns)
+            if (
+                self._logos_timeline_cache is not None
+                and self._logos_timeline_cache_mtime_ns == mtime_ns
+            ):
+                return self._logos_timeline_cache
+            self._logos_timeline_cache = json.loads(
+                self._logos_timeline_path.read_text(encoding="utf-8")
+            )
+            self._logos_timeline_cache_mtime_ns = mtime_ns
+            return self._logos_timeline_cache
+        except Exception as e:
+            logger.debug("logos timeline cache load 실패(무시): %s", e)
+            return None
+
+    @staticmethod
+    def _bce_to_astronomical_year(year_bce: int) -> int:
+        # BCE to astronomical year conversion: 1 BCE => 0, 2 BCE => -1
+        return 1 - int(year_bce)
+
+    def _load_logos_timeline_calibration(self) -> Optional[Dict[str, Any]]:
+        try:
+            if not self._logos_timeline_calibration_path.is_file():
+                return None
+            stat = self._logos_timeline_calibration_path.stat()
+            mtime_ns = int(stat.st_mtime_ns)
+            if (
+                self._logos_timeline_calibration_cache is not None
+                and self._logos_timeline_calibration_cache_mtime_ns == mtime_ns
+            ):
+                return self._logos_timeline_calibration_cache
+            self._logos_timeline_calibration_cache = json.loads(
+                self._logos_timeline_calibration_path.read_text(encoding="utf-8")
+            )
+            self._logos_timeline_calibration_cache_mtime_ns = mtime_ns
+            return self._logos_timeline_calibration_cache
+        except Exception as e:
+            logger.debug("logos timeline calibration load 실패(무시): %s", e)
+            return None
+
+    def _logos_timeline_calibration_multiplier(self, regime_id: str) -> float:
+        doc = self._load_logos_timeline_calibration()
+        if not doc:
+            return 1.0
+        try:
+            multipliers = doc.get("multipliers", {})
+            base = multipliers.get("base_by_tradition", {})
+            by_regime = multipliers.get("by_tradition_regime", {})
+            trad = self._logos_timeline_tradition
+            m_base = float(base.get(trad, 1.0) or 1.0)
+            m_regime = float(
+                ((by_regime.get(trad, {}) if isinstance(by_regime.get(trad, {}), dict) else {})).get(
+                    regime_id or "unknown", 1.0
+                )
+                or 1.0
+            )
+            return max(0.85, min(1.15, m_base * m_regime))
+        except Exception:
+            return 1.0
+
+    def _build_logos_timeline_overlay(
+        self,
+        *,
+        as_of: datetime,
+        regime_id: str,
+    ) -> Optional[Dict[str, Any]]:
+        """Build non-blocking, risk-neutral timeline context for logging/reporting only."""
+        doc = self._load_logos_timeline_cache()
+        if not doc:
+            return None
+        anchors = doc.get("anchors")
+        if not isinstance(anchors, list) or not anchors:
+            return None
+
+        current_year = int(as_of.year)
+        candidates = []
+        calibration_multiplier = self._logos_timeline_calibration_multiplier(regime_id)
+        for a in anchors:
+            try:
+                y0_bce = int(a.get("window_start_year_bce"))
+                y1_bce = int(a.get("window_end_year_bce"))
+                start_astro = self._bce_to_astronomical_year(y0_bce)
+                end_astro = self._bce_to_astronomical_year(y1_bce)
+                center = int((start_astro + end_astro) / 2)
+                width = abs(start_astro - end_astro)
+                base_conf = float(a.get("confidence", 0.5) or 0.5)
+                profiles = a.get("tradition_profiles", {})
+                if isinstance(profiles, dict):
+                    base_conf = float(
+                        profiles.get(self._logos_timeline_tradition, base_conf) or base_conf
+                    )
+
+                # 70y macro resonance proxy: smaller phase distance => stronger overlap score.
+                phase = abs((current_year - center) % 70)
+                phase_dist = min(phase, 70 - phase)
+                phase_score = max(0.0, 1.0 - (phase_dist / 35.0))
+                raw_overlap = max(0.0, min(1.0, base_conf * 0.7 + phase_score * 0.3))
+                overlap = round(max(0.0, min(1.0, raw_overlap * calibration_multiplier)), 4)
+
+                candidates.append(
+                    {
+                        "anchor_id": a.get("anchor_id"),
+                        "label": a.get("label"),
+                        "event_type": a.get("event_type"),
+                        "cycle_tags": a.get("cycle_tags", []),
+                        "window_width_years": width,
+                        "phase_distance_y70": int(phase_dist),
+                        "overlap_score": overlap,
+                    }
+                )
+            except Exception:
+                continue
+
+        if not candidates:
+            return None
+
+        candidates.sort(
+            key=lambda x: (-float(x.get("overlap_score", 0.0)), int(x.get("phase_distance_y70", 999)))
+        )
+        top3 = candidates[:3]
+        return {
+            "schema": doc.get("schema", "logos_timeline_anchor_v1"),
+            "method": "read_only_overlap_proxy",
+            "risk_mode": "no_trade_impact",
+            "tradition_profile": self._logos_timeline_tradition,
+            "calibration_multiplier": round(calibration_multiplier, 4),
+            "as_of_year_ce": current_year,
+            "regime_id": regime_id or "unknown",
+            "top_overlaps": top3,
+        }
     
     def calculate_trading_signal(
         self,
@@ -2389,6 +2588,14 @@ class CryptoNitroLiveStrategy:
                     cited_trading_wisdom = get_cited_trading_wisdom(limit=2)
                 except Exception as e:
                     logger.debug(f"trading_wisdom 참조 로드 스킵: {e}")
+
+            logos_timeline_overlay = self._build_logos_timeline_overlay(
+                as_of=current_time,
+                regime_id=current_regime_id_result.get("regime_id", "unknown"),
+            )
+            if logos_timeline_overlay and signal_data is not None:
+                signal_data["logos_timeline_overlay"] = logos_timeline_overlay
+
             result = {
                 "signal": final_signal,  # 다중 확인 후 최종 신호
                 "confidence": final_confidence,
@@ -2424,6 +2631,8 @@ class CryptoNitroLiveStrategy:
                 "and_gate_reason": signal_data.get("and_gate_reason"),
                 # 레짐 기반 MR 허용 플래그 (로그/향후 트렌드 vs MR 분기용)
                 "use_mean_reversion": signal_data.get("use_mean_reversion", False),
+                # Logos timeline overlay: read-only 보조 레이어 (매매 신호/리스크 미반영)
+                "logos_timeline_overlay": logos_timeline_overlay,
             }
             
             return result
