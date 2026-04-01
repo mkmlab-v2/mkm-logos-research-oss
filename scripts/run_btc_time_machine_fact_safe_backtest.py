@@ -34,6 +34,10 @@ class BacktestConfig:
     horizon: int
     stride: int
     fee_bps_round_trip: float
+    slippage_bps_round_trip: float = 5.0
+    max_position_fraction: float = 0.2
+    daily_loss_cap_pct: float = 1.5
+    skip_if_vol_shock_pct: float = 8.0
 
 
 def _z_now() -> str:
@@ -61,16 +65,44 @@ def run_backtest(df: pd.DataFrame, cfg: BacktestConfig) -> dict[str, Any]:
         }
 
     trades: list[float] = []
+    skipped_vol_shock = 0
+    skipped_daily_loss_cap = 0
+    daily_pnl: dict[str, float] = {}
+    equity = 1.0
+    peak_equity = 1.0
+    max_drawdown = 0.0
+    max_loss_streak = 0
+    loss_streak = 0
     for i in range(cfg.warmup, len(df) - cfg.horizon, cfg.stride):
         hist = df["close"].iloc[i - cfg.warmup : i + 1]
         direction = _signal_from_past(hist)
         entry = float(df["close"].iloc[i])
         exit_ = float(df["close"].iloc[i + cfg.horizon])
         raw_ret = (exit_ - entry) / entry
+        if abs(raw_ret) * 100.0 >= cfg.skip_if_vol_shock_pct:
+            skipped_vol_shock += 1
+            continue
         signed = direction * raw_ret
         fee = cfg.fee_bps_round_trip / 10_000.0
-        net_ret = signed - fee
+        slippage = cfg.slippage_bps_round_trip / 10_000.0
+        net_ret = (signed - fee - slippage) * cfg.max_position_fraction
+        day_key = str(df.index[i].date()) if hasattr(df.index[i], "date") else f"bar-{i}"
+        day_realized = daily_pnl.get(day_key, 0.0)
+        daily_loss_cap = cfg.daily_loss_cap_pct / 100.0
+        if day_realized <= -daily_loss_cap and net_ret < 0:
+            skipped_daily_loss_cap += 1
+            continue
+        daily_pnl[day_key] = day_realized + net_ret
         trades.append(net_ret)
+        equity *= 1.0 + net_ret
+        peak_equity = max(peak_equity, equity)
+        drawdown = (peak_equity - equity) / peak_equity if peak_equity > 0 else 0.0
+        max_drawdown = max(max_drawdown, drawdown)
+        if net_ret < 0:
+            loss_streak += 1
+            max_loss_streak = max(max_loss_streak, loss_streak)
+        else:
+            loss_streak = 0
 
     if not trades:
         return {
@@ -79,6 +111,10 @@ def run_backtest(df: pd.DataFrame, cfg: BacktestConfig) -> dict[str, Any]:
             "net_return_pct": 0.0,
             "avg_trade_return_pct": 0.0,
             "profit_factor": None,
+            "max_drawdown_pct": 0.0,
+            "max_loss_streak": 0,
+            "skipped_vol_shock": skipped_vol_shock,
+            "skipped_daily_loss_cap": skipped_daily_loss_cap,
         }
 
     wins = [x for x in trades if x > 0]
@@ -94,6 +130,10 @@ def run_backtest(df: pd.DataFrame, cfg: BacktestConfig) -> dict[str, Any]:
         "net_return_pct": round(net_return * 100.0, 6),
         "avg_trade_return_pct": round((net_return / len(trades)) * 100.0, 6),
         "profit_factor": round(profit_factor, 6) if profit_factor is not None else None,
+        "max_drawdown_pct": round(max_drawdown * 100.0, 6),
+        "max_loss_streak": int(max_loss_streak),
+        "skipped_vol_shock": skipped_vol_shock,
+        "skipped_daily_loss_cap": skipped_daily_loss_cap,
     }
 
 
@@ -106,6 +146,10 @@ def main() -> int:
     parser.add_argument("--horizon", type=int, default=3)
     parser.add_argument("--stride", type=int, default=1)
     parser.add_argument("--fee-bps-round-trip", type=float, default=8.0)
+    parser.add_argument("--slippage-bps-round-trip", type=float, default=5.0)
+    parser.add_argument("--max-position-fraction", type=float, default=0.2)
+    parser.add_argument("--daily-loss-cap-pct", type=float, default=1.5)
+    parser.add_argument("--skip-if-vol-shock-pct", type=float, default=8.0)
     parser.add_argument("--csv", default="")
     parser.add_argument("--output", default=str(DEFAULT_OUT))
     args = parser.parse_args()
@@ -124,6 +168,10 @@ def main() -> int:
         horizon=args.horizon,
         stride=args.stride,
         fee_bps_round_trip=args.fee_bps_round_trip,
+        slippage_bps_round_trip=args.slippage_bps_round_trip,
+        max_position_fraction=args.max_position_fraction,
+        daily_loss_cap_pct=args.daily_loss_cap_pct,
+        skip_if_vol_shock_pct=args.skip_if_vol_shock_pct,
     )
     metrics = run_backtest(df, cfg)
 
@@ -140,6 +188,10 @@ def main() -> int:
             "horizon": cfg.horizon,
             "stride": cfg.stride,
             "fee_bps_round_trip": cfg.fee_bps_round_trip,
+            "slippage_bps_round_trip": cfg.slippage_bps_round_trip,
+            "max_position_fraction": cfg.max_position_fraction,
+            "daily_loss_cap_pct": cfg.daily_loss_cap_pct,
+            "skip_if_vol_shock_pct": cfg.skip_if_vol_shock_pct,
         },
         "metrics": metrics,
     }

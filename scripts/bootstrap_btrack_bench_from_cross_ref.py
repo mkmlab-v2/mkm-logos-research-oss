@@ -7,6 +7,9 @@ This generates synthetic-but-traceable A/B paired eval rows from:
 
 Goal: quickly build 30-100 aligned pairs for pilot gating without touching
 production A-track artifacts.
+
+Default outputs use …_cross_ref_bootstrap_v1.jsonl so they do not overwrite the
+canonical bench; see CANONICAL_BENCH_POINTER_V1.json in the same bench folder.
 """
 
 from __future__ import annotations
@@ -14,14 +17,26 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from tools.myeongni.btrack_bench_paths import (
+    CROSS_REF_BOOTSTRAP_A_TRACK_EVAL,
+    CROSS_REF_BOOTSTRAP_B_TRACK_EVAL,
+)
+from tools.myeongni.manseryeok_provenance import (
+    BENCH_SCOPE_REF_CROSS_REF_BOOTSTRAP_V1,
+    btrack_pilot_bench_scope,
+    upsert_bench_manseryeok_scope_manifest,
+)
 DEFAULT_CROSS_REF = ROOT / "docs" / "final" / "artifacts" / "CROSS_REF_DSS_TO_STATES_DRAFT.json"
 DEFAULT_MAPPING = ROOT / "docs" / "final" / "artifacts" / "LOGOS_STATE_MAPPING_V1.json"
-DEFAULT_A_OUT = ROOT / "data" / "logos" / "btrack_pilot" / "bench" / "a_track_eval.jsonl"
-DEFAULT_B_OUT = ROOT / "data" / "logos" / "btrack_pilot" / "bench" / "b_track_eval.jsonl"
+DEFAULT_A_OUT = ROOT / CROSS_REF_BOOTSTRAP_A_TRACK_EVAL
+DEFAULT_B_OUT = ROOT / CROSS_REF_BOOTSTRAP_B_TRACK_EVAL
 
 
 def _abs(path_str: str) -> Path:
@@ -91,6 +106,15 @@ def main() -> int:
         return 3
 
     scenario_offsets = [0.00, 0.02, -0.01, 0.01, -0.02]
+    scope = btrack_pilot_bench_scope(
+        build_script="bootstrap_btrack_bench_from_cross_ref.py",
+        source_note=(
+            "Synthetic pilot rows from CROSS_REF + LOGOS_STATE_MAPPING cosine; "
+            "not observatory manse / pillar output."
+        ),
+    )
+    upsert_bench_manseryeok_scope_manifest(ROOT, BENCH_SCOPE_REF_CROSS_REF_BOOTSTRAP_V1, scope)
+
     a_rows: list[dict[str, Any]] = []
     b_rows: list[dict[str, Any]] = []
 
@@ -129,6 +153,7 @@ def main() -> int:
                 "synthetic_pilot": True,
                 "link_type": link_type,
                 "corpus_type": corpus_type,
+                "manseryeok_scope_ref": BENCH_SCOPE_REF_CROSS_REF_BOOTSTRAP_V1,
             }
 
             a_rows.append(

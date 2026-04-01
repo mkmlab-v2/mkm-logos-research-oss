@@ -1,5 +1,10 @@
 {
   "schema": "myeongni_16_state_topflows_v1",
+  "manseryeok_scope": {
+    "manseryeok_pillar_calc_applicable": false,
+    "artifact_domain": "myeongni_16_state_experiment_stream",
+    "manseryeok_scope_note": "Derived from B-track experiment JSONL state_id sequences. If 간지·출생일시 is joined later, attach myeongni_row_provenance per row."
+  },
   "source_transition_report": "docs/final/artifacts/MYEONGNI_16_STATE_TRANSITION_V1.json",
   "state_flow_summary": [
     {

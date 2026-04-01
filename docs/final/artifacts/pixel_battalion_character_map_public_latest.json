@@ -1,0 +1,208 @@
+{
+  "version": "v1",
+  "generated_at": "2026-03-31",
+  "generator": "project-0-workspace-aistudio-mcp.generate_content",
+  "model": "gemini-3.1-flash-image-preview",
+  "style_lock": {
+    "pixel_style": "16-bit retro pixel art",
+    "edges": "clean hard pixel edges",
+    "anti_aliasing": false,
+    "composition": "1:1 centered full-body sprite",
+    "pose": "idle stance",
+    "palette_limit": 24,
+    "silhouette": "bold high-contrast",
+    "background": "transparent or plain dark",
+    "readability_target": "64x64",
+    "forbidden": [
+      "blur",
+      "realism",
+      "painterly texture"
+    ]
+  },
+  "pilot_characters": [
+    {
+      "code": "THE_SOVEREIGN_DRAGON",
+      "label": "The Sovereign (Dragon)",
+      "role": "Command Conductor",
+      "colors": [
+        "white",
+        "black",
+        "imperial red"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774951700015_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774951700015_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774951700015_1.png"
+    },
+    {
+      "code": "LENS-01",
+      "label": "Strategic Analyst",
+      "role": "Strategic Analyst",
+      "colors": [
+        "cyan",
+        "navy",
+        "silver"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774951706373_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774951706373_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774951706373_1.png"
+    },
+    {
+      "code": "LENS-02",
+      "label": "Logos Archivist",
+      "role": "Logos Archivist",
+      "colors": [
+        "amber",
+        "charcoal",
+        "ivory"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774954662935_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774954662935_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774954662935_1.png"
+    },
+    {
+      "code": "LENS-03",
+      "label": "Chronos Navigator",
+      "role": "Chronos Navigator",
+      "colors": [
+        "violet",
+        "black",
+        "gold"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774954940598_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774954940598_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774954940598_1.png"
+    },
+    {
+      "code": "LENS-04",
+      "label": "Regime Sentinel",
+      "role": "Regime Sentinel",
+      "colors": [
+        "crimson",
+        "slate",
+        "steel"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774955152838_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774955152838_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955152838_1.png"
+    },
+    {
+      "code": "LENS-05",
+      "label": "Quant Engineer",
+      "role": "Quant Engineer",
+      "colors": [
+        "lime",
+        "graphite",
+        "white"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774955172444_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774955172444_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955172444_1.png"
+    },
+    {
+      "code": "LENS-06",
+      "label": "Risk Guardian",
+      "role": "Risk Guardian",
+      "colors": [
+        "orange",
+        "black",
+        "titanium"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774955383271_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774955383271_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955383271_1.png"
+    },
+    {
+      "code": "LENS-07",
+      "label": "Signal Alchemist",
+      "role": "Signal Alchemist",
+      "colors": [
+        "magenta",
+        "midnight blue",
+        "neon teal"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774955517797_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774955517797_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955517797_1.png"
+    },
+    {
+      "code": "LENS-08",
+      "label": "Data Medic",
+      "role": "Data Medic",
+      "colors": [
+        "mint",
+        "white",
+        "cobalt"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774955571752_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774955571752_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955571752_1.png"
+    },
+    {
+      "code": "LENS-09",
+      "label": "Oracle Liaison",
+      "role": "Oracle Liaison",
+      "colors": [
+        "indigo",
+        "pearl",
+        "gold"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774955701037_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774955701037_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955701037_1.png"
+    },
+    {
+      "code": "LENS-10",
+      "label": "Fusion Architect",
+      "role": "Fusion Architect",
+      "colors": [
+        "royal blue",
+        "copper",
+        "smoke gray"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774955721480_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774955721480_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955721480_1.png"
+    },
+    {
+      "code": "LENS-11",
+      "label": "Stability Marshal",
+      "role": "Stability Marshal",
+      "colors": [
+        "forest green",
+        "obsidian",
+        "brass"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774955748157_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774955748157_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955748157_1.png"
+    },
+    {
+      "code": "LENS-12",
+      "label": "Command Conductor",
+      "role": "Command Conductor",
+      "colors": [
+        "white",
+        "black",
+        "imperial red"
+      ],
+      "image_path": "C:/workspace/assets/generated/pixel_battalion/refined/generated_image_1774955778951_1.png",
+      "status": "generated",
+      "image_filename": "generated_image_1774955778951_1.png",
+      "image_url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955778951_1.png"
+    }
+  ],
+  "next_batch_plan": [],
+  "public_base_url": "https://assets.jemaai.cloud/pixel_battalion/refined"
+}

@@ -1,0 +1,202 @@
+openapi: 3.0.3
+info:
+  title: MKM Token Compression API (v2 draft — Trust Packet)
+  version: "0.1.0-draft"
+  description: |
+    **Reference implementation (experimental stub):** `scripts/compression_token_api_v2_stub.py` — `POST /v2/compress`,
+    `POST /v2/expand`, `GET /health` (e.g. uvicorn on port 8011). Uses `GlobalPivotCompressionPipeline` in
+    simulation-oriented mode; not a production SLA.
+
+    Purpose: compress returns a structured `compression_packet` (compressed text + residual metadata for reassembly)
+    and expand consumes that packet — not a v1-style echo of raw text only.
+
+    Design goals (see docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md §11):
+    - Stateless server: the packet (including residuals) is returned to the client; persistence and key management
+      are the client's responsibility. TLS in transit; treat packet as sensitive data.
+    - `packet_format_version` allows engine evolution without breaking old clients.
+    - `loss_profile` separates semantic general text vs code-equivalence KPIs (Phase 3 roadmap).
+
+    Current production-like stub remains: docs/final/openapi_token_compression_stub_v1.yaml (POST /v1/*).
+
+    Versioning: bump draft `info.version` until first implementation; then align `api_contract_version` inside
+    packets with MINOR/MAJOR rules agreed for v2.
+servers:
+  - url: http://127.0.0.1:8011
+    description: Local v2 stub (example — same app can be deployed elsewhere)
+paths:
+  /v2/compress:
+    post:
+      operationId: compressTextV2
+      summary: Compress text and return a Trust Packet (stub implementation)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompressRequestV2"
+            example:
+              text: "Example document body for compression."
+              loss_profile: semantic_general
+              client_request_id: "req-v2-001"
+      responses:
+        "200":
+          description: OK (draft schema)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompressResponseV2"
+        "501":
+          description: Reserved (not used by current stub)
+  /v2/expand:
+    post:
+      operationId: expandPacketV2
+      summary: Reconstruct text from a Trust Packet only (stub implementation)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExpandRequestV2"
+            example:
+              compression_packet:
+                packet_format_version: "trust_packet.0.1"
+                api_contract_version: "2.0.0-draft"
+                loss_profile: semantic_general
+                compressed_text: "…"
+                residual_meta:
+                  placeholder_map: {}
+                router_meta:
+                  shard_id: zone_d_ssot
+                  domain: ssot
+      responses:
+        "200":
+          description: OK (draft schema)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExpandResponseV2"
+        "501":
+          description: Reserved (not used by current stub)
+  /health:
+    get:
+      operationId: healthV2
+      summary: Liveness (optional shared with v1)
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    LossProfile:
+      type: string
+      description: |
+        Selects evaluation KPIs and allowed transforms. `code_equivalent` implies build/parse equivalence goals,
+        not headline token savings.
+      enum:
+        - lossless_text
+        - semantic_general
+        - code_equivalent
+    ResidualMeta:
+      type: object
+      description: |
+        Opaque-to-contract structure for reassembly (token maps, immutable fragments, hashes). Exact keys are
+        engine-specific; clients must store the whole object and return it to expand unchanged.
+      additionalProperties: true
+    RouterMeta:
+      type: object
+      description: Echo of routing outcome for client-side logging and A/B routing.
+      additionalProperties: true
+      properties:
+        shard_id:
+          type: string
+        domain:
+          type: string
+    CompressionPacket:
+      type: object
+      required:
+        - packet_format_version
+        - api_contract_version
+        - loss_profile
+        - compressed_text
+        - residual_meta
+      properties:
+        packet_format_version:
+          type: string
+          description: Logical packet layout version (e.g. trust_packet.0.1).
+          example: "trust_packet.0.1"
+        api_contract_version:
+          type: string
+          description: Semver for this HTTP JSON shape (may track OpenAPI info.version after stabilization).
+          example: "2.0.0-draft"
+        loss_profile:
+          $ref: "#/components/schemas/LossProfile"
+        compressed_text:
+          type: string
+          description: Short form produced by the compression engine for LLM or storage.
+        residual_meta:
+          $ref: "#/components/schemas/ResidualMeta"
+        router_meta:
+          $ref: "#/components/schemas/RouterMeta"
+        content_fingerprint:
+          type: string
+          description: Optional stable hash of original input for client-side dedup/verification (algorithm TBD).
+    CompressRequestV2:
+      type: object
+      required: [text, loss_profile]
+      properties:
+        text:
+          type: string
+        loss_profile:
+          $ref: "#/components/schemas/LossProfile"
+        locale:
+          type: string
+          description: Optional BCP-47 hint
+        client_request_id:
+          type: string
+        notes:
+          type: string
+          description: Optional correlation string; not used for compression logic in v2 draft.
+    CompressResponseV2:
+      type: object
+      required: [compression_packet, integrity_flags]
+      properties:
+        compression_packet:
+          $ref: "#/components/schemas/CompressionPacket"
+        compression_metrics:
+          $ref: "#/components/schemas/CompressionMetricsV2"
+        integrity_flags:
+          type: object
+          additionalProperties: true
+          description: Diagnostics (latency_ms, engine_id, warnings).
+    CompressionMetricsV2:
+      type: object
+      nullable: true
+      description: Optional token/byte proxies — same spirit as v1; nullable when engine does not compute.
+      properties:
+        token_in:
+          type: integer
+          minimum: 0
+        token_out:
+          type: integer
+          minimum: 0
+        savings_ratio:
+          type: number
+    ExpandRequestV2:
+      type: object
+      required: [compression_packet]
+      properties:
+        compression_packet:
+          $ref: "#/components/schemas/CompressionPacket"
+    ExpandResponseV2:
+      type: object
+      required: [text, integrity_flags]
+      properties:
+        text:
+          type: string
+          description: Reconstructed text per loss_profile guarantees (documented per engine release).
+        api_contract_version:
+          type: string
+          example: "2.0.0-draft"
+        integrity_flags:
+          type: object
+          additionalProperties: true
+          description: e.g. reassembly_ok, warnings, jaccard_proxy

@@ -24,11 +24,17 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Sequence, Tuple
 
 import numpy as np
+
+_WS = Path(__file__).resolve().parent.parent
+if str(_WS) not in sys.path:
+    sys.path.insert(0, str(_WS))
+from tools.myeongni.manseryeok_provenance import logos_myeongni_state_join_scope
 
 try:
     from scipy.optimize import linear_sum_assignment
@@ -135,6 +141,7 @@ def run_assignment(
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "method": "max_sum_cosine_assignment_scipy_linear_sum_assignment",
         "disclaimer": "B-track research; not trading SSOT; not semantic destiny mapping.",
+        "manseryeok_scope": logos_myeongni_state_join_scope(),
         "sources": {
             "ranked_json": str(ranked_path.resolve()),
             "probe_json": str(probe_path.resolve()),

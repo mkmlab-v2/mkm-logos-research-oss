@@ -4,10 +4,14 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from tools.myeongni.manseryeok_provenance import btrack_myeongni_16_state_stream_scope
 SRC = ROOT / "docs" / "final" / "artifacts" / "MYEONGNI_16_STATE_TOPFLOWS_V1.json"
 OUT = ROOT / "docs" / "final" / "artifacts" / "MYEONGNI_16_STATE_TOPFLOW_INTERPRETATION_V1.json"
 
@@ -29,6 +33,7 @@ def main() -> int:
 
     report = {
         "schema": "myeongni_16_state_topflow_interpretation_v1",
+        "manseryeok_scope": btrack_myeongni_16_state_stream_scope(),
         "source_topflows_report": str(SRC.relative_to(ROOT)).replace("\\", "/"),
         "one_line_interpretation": one_liner,
         "global_top5_flows": global_flows,

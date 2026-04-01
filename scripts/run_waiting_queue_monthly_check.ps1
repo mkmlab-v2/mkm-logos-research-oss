@@ -55,9 +55,22 @@ $billingEvidencePath = "C:\workspace\docs\final\artifacts\billing_evidence_lates
 $hallucinationEvalPath = "C:\workspace\docs\final\artifacts\hallucination_grounding_eval_latest.json"
 $weeklyReliabilitySnapshotPath = "C:\workspace\docs\final\artifacts\trinity_weekly_reliability_snapshot_latest.json"
 $scoringDistributionPath = "C:\workspace\docs\final\artifacts\trinity_scoring_distribution_latest.json"
+$fusedCalibrationScriptPath = "C:\workspace\scripts\report_fused_paper_cycle_calibration_30.py"
 $expandedDatasetPath = "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_dataset_expanded_latest.jsonl"
 $highSampleRepeatPath = "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_canary_repeat_high_sample_latest.json"
 $billingInvoiceFromEnvPath = "C:\workspace\docs\final\artifacts\billing_invoice_from_env_latest.json"
+$billingInvoiceFromEnvScriptPath = "C:\workspace\scripts\emit_billing_invoice_from_env.py"
+$billingEvidenceScriptPath = "C:\workspace\scripts\report_billing_evidence_from_vllm.py"
+$hallucinationEvalScriptPath = "C:\workspace\scripts\report_hallucination_grounding_eval.py"
+$costWatchScriptPath = "C:\workspace\scripts\report_cost_watch_monitor.py"
+$regimeSwitchScriptPath = "C:\workspace\scripts\run_btc_time_machine_regime_switch_backtest.py"
+$dailySitrepPath = "C:\workspace\docs\final\artifacts\waiting_queue_daily_sitrep_latest.txt"
+$softFailNotes = New-Object System.Collections.Generic.List[string]
+
+function Add-SoftFailNote([string]$message) {
+    $softFailNotes.Add($message) | Out-Null
+    Write-Host "[waiting-queue-check][WARN] $message"
+}
 $latestKpiPath = "C:\workspace\projects\bitcoin-trading\memory\kpi\latest_kpi.json"
 $inputUsdPer1k = 0.0
 $outputUsdPer1k = 0.0
@@ -433,9 +446,13 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "[waiting-queue-check] Emit billing invoice stub from env (.env / FACT_SAFE_INVOICE_*)..."
-py scripts/emit_billing_invoice_from_env.py
-if ($LASTEXITCODE -ne 0) {
-    throw "Emit billing invoice from env failed with exit code $LASTEXITCODE"
+if (Test-Path -LiteralPath $billingInvoiceFromEnvScriptPath) {
+    py scripts/emit_billing_invoice_from_env.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "Emit billing invoice from env failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "billing invoice env emitter missing; skipped"
 }
 
 $billingInvoiceArg = @()
@@ -447,15 +464,23 @@ if (Test-Path -LiteralPath $billingInvoiceFromEnvPath) {
 }
 
 Write-Host "[waiting-queue-check] Building billing evidence snapshot..."
-py scripts/report_billing_evidence_from_vllm.py --output $billingEvidencePath --period-label waiting_queue_monthly_check --input-usd-per-1k-tokens $inputUsdPer1k --output-usd-per-1k-tokens $outputUsdPer1k @billingInvoiceArg
-if ($LASTEXITCODE -ne 0) {
-    throw "Billing evidence build failed with exit code $LASTEXITCODE"
+if (Test-Path -LiteralPath $billingEvidenceScriptPath) {
+    py scripts/report_billing_evidence_from_vllm.py --output $billingEvidencePath --period-label waiting_queue_monthly_check --input-usd-per-1k-tokens $inputUsdPer1k --output-usd-per-1k-tokens $outputUsdPer1k @billingInvoiceArg
+    if ($LASTEXITCODE -ne 0) {
+        throw "Billing evidence build failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "billing evidence script missing; skipped"
 }
 
 Write-Host "[waiting-queue-check] Building hallucination grounding eval snapshot..."
-py scripts/report_hallucination_grounding_eval.py --output $hallucinationEvalPath --target-lane candidate --input-glob "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_canary_run_*.json"
-if ($LASTEXITCODE -ne 0) {
-    throw "Hallucination grounding eval build failed with exit code $LASTEXITCODE"
+if (Test-Path -LiteralPath $hallucinationEvalScriptPath) {
+    py scripts/report_hallucination_grounding_eval.py --output $hallucinationEvalPath --target-lane candidate --input-glob "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_canary_run_*.json"
+    if ($LASTEXITCODE -ne 0) {
+        throw "Hallucination grounding eval build failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "hallucination eval script missing; skipped"
 }
 
 if ($enableHighSampleVllmEval) {
@@ -479,15 +504,23 @@ if ($enableHighSampleVllmEval) {
 }
 
 Write-Host "[waiting-queue-check] Building cost watch monitor snapshot..."
-py scripts/report_cost_watch_monitor.py --output $costWatchMonitorPath --billing-input $billingEvidencePath --hallucination-input $hallucinationEvalPath
-if ($LASTEXITCODE -ne 0) {
-    throw "Cost watch monitor build failed with exit code $LASTEXITCODE"
+if (Test-Path -LiteralPath $costWatchScriptPath) {
+    py scripts/report_cost_watch_monitor.py --output $costWatchMonitorPath --billing-input $billingEvidencePath --hallucination-input $hallucinationEvalPath
+    if ($LASTEXITCODE -ne 0) {
+        throw "Cost watch monitor build failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "cost watch monitor script missing; skipped"
 }
 
 Write-Host "[waiting-queue-check] Running BTC regime-switch comparison (read-only sensor)..."
-py scripts/run_btc_time_machine_regime_switch_backtest.py
-if ($LASTEXITCODE -ne 0) {
-    throw "BTC regime-switch comparison failed with exit code $LASTEXITCODE"
+if (Test-Path -LiteralPath $regimeSwitchScriptPath) {
+    py scripts/run_btc_time_machine_regime_switch_backtest.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "BTC regime-switch comparison failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "regime switch backtest script missing; skipped"
 }
 
 if ($SkipNightWatchmanHarness) {
@@ -732,9 +765,13 @@ if (-not [string]::IsNullOrWhiteSpace($secondarySuffix)) {
 $logRow | ConvertTo-Json -Compress | Add-Content -LiteralPath $logPath -Encoding utf8
 
 Write-Host "[waiting-queue-check] Building fused calibration-30 report..."
-py scripts/report_fused_paper_cycle_calibration_30.py --log-path $logPath
-if ($LASTEXITCODE -ne 0) {
-    throw "Fused calibration-30 report build failed with exit code $LASTEXITCODE"
+if (Test-Path -LiteralPath $fusedCalibrationScriptPath) {
+    py scripts/report_fused_paper_cycle_calibration_30.py --log-path $logPath
+    if ($LASTEXITCODE -ne 0) {
+        throw "Fused calibration-30 report build failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "fused calibration script missing; skipped"
 }
 
 $weeklySnapshot = @{
@@ -903,4 +940,15 @@ if ($dualRegimeAlertLevel -eq "state_clamp_high_tight_mode") {
 }
 
 Write-Host "[waiting-queue-check] Wrote log: $logPath"
+if ($softFailNotes.Count -gt 0) {
+    $sitrep = @()
+    $sitrep += ("[{0}] waiting_queue_daily soft-fail summary" -f ([DateTimeOffset]::UtcNow.ToString("o")))
+    foreach ($n in $softFailNotes) {
+        $sitrep += ("- WARN: {0}" -f $n)
+    }
+    $sitrep += "- policy: soft-fail (non-core optional tasks)"
+    $sitrep += ""
+    Add-Content -LiteralPath $dailySitrepPath -Value ($sitrep -join [Environment]::NewLine) -Encoding utf8
+    Write-Host "[waiting-queue-check] Soft-fail notes written: $dailySitrepPath"
+}
 Write-Host "[waiting-queue-check] Completed successfully."

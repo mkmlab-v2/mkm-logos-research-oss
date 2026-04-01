@@ -135,6 +135,19 @@ def _kpi_history_stats(days: int = 7) -> tuple[int, float, float | None]:
     return len(rows), net_delta, avg_net_per_fill
 
 
+def _latest_kpi_exchange_snapshot(days: int = 7) -> tuple[float | None, float | None]:
+    rows = _collect_recent_kpi_rows(days=days)
+    if not rows:
+        return None, None
+    latest = rows[-1]
+    net = latest.get("exchange_snapshot_24h_net")
+    fills = latest.get("exchange_snapshot_24h_fills_count")
+    return (
+        float(net) if isinstance(net, (int, float)) else None,
+        float(fills) if isinstance(fills, (int, float)) else None,
+    )
+
+
 def resolve_gate_decision(reliability: ReliabilityDecision, high_reliability_from_ops: str) -> GateDecision:
     # Reliability LOW is always HOLD by contract.
     if reliability.badge == "LOW":
@@ -202,6 +215,11 @@ def build_report(engine_id: str, boundary_rule: str) -> str:
     sweep = _load_backtest_sweep()
 
     samples, net_delta, avg_net_per_fill = _kpi_history_stats(days=7)
+    kpi_latest_net, kpi_latest_fills = _latest_kpi_exchange_snapshot(days=7)
+    snapshot_net = snapshot.get("net")
+    snapshot_fills = snapshot.get("fills_count")
+    net_for_report = snapshot_net if isinstance(snapshot_net, (int, float)) else kpi_latest_net
+    fills_for_report = snapshot_fills if isinstance(snapshot_fills, (int, float)) else kpi_latest_fills
     reliability = compute_reliability_badge(engine_id=engine_id, samples=samples, net_delta=net_delta)
 
     high_reliability_from_ops = str(waiting.get("high_reliability_decision") or "").upper()
@@ -232,11 +250,12 @@ def build_report(engine_id: str, boundary_rule: str) -> str:
         "- [HYPO][NON-MEDICAL] 사상 방어선: 의료/법률/실거래 트리거로 단정 금지.\n\n"
         "## 제5장 사후 실행 성과 (Post-Execution Evidence)\n"
         f"- exchange_snapshot_24h.available: {snapshot.get('available')}\n"
-        f"- fills_count: {snapshot.get('fills_count')}\n"
+        f"- fills_count: {fills_for_report}\n"
         f"- realized_pnl: {snapshot.get('realized_pnl')}\n"
         f"- commission: {snapshot.get('commission')}\n"
         f"- funding_fee: {snapshot.get('funding_fee')}\n"
-        f"- net: {snapshot.get('net')}\n"
+        f"- net: {net_for_report}\n"
+        f"- net_source: {'exchange_snapshot_24h' if isinstance(snapshot_net, (int, float)) else 'kpi_history_fallback'}\n"
         f"- history samples: {samples}\n"
         f"- history net_delta: {round(net_delta, 8)}\n"
         f"- history avg_net_per_fill_latest: {round(avg_net_per_fill, 8) if avg_net_per_fill is not None else None}\n"

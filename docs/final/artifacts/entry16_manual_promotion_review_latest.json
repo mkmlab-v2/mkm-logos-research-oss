@@ -1,0 +1,45 @@
+{
+  "schema": "entry16_manual_promotion_review_v1",
+  "generated_at_utc": "2026-03-31T04:05:17Z",
+  "inputs": {
+    "gate": "C:\\workspace\\docs\\final\\artifacts\\entry16_promotion_gate.json",
+    "summary": "C:\\workspace\\docs\\final\\artifacts\\entry16_source_hunt_summary.json"
+  },
+  "gate_snapshot": {
+    "decision": "promote_candidate",
+    "status": "candidate_ready_for_manual_review",
+    "has_direct_witness": true,
+    "witness_yes_count": 3,
+    "proxy_anchor_candidate_count": 1,
+    "required_evidence": [
+      "djd_or_equivalent_primary_source",
+      "fragment_col_line_anchor_for_ezra_2_54",
+      "citation_reproducibility_notes"
+    ],
+    "rationale": "direct witness exists in source-hunt summary"
+  },
+  "summary_snapshot": {
+    "total_sources": 19,
+    "witness_counts": {
+      "no": 7,
+      "unknown": 9,
+      "yes": 3
+    },
+    "confidence_counts": {
+      "med": 8,
+      "low": 6,
+      "high": 5
+    },
+    "next_gate": "promote_entry16_candidate",
+    "action_recommendation": "prepare_manual_promotion_review"
+  },
+  "manual_review_checklist": {
+    "gate_promote_candidate": true,
+    "status_candidate_ready": true,
+    "has_direct_witness": true,
+    "witness_yes_count_gte_1": true,
+    "source_total_gte_10": true
+  },
+  "recommendation": "approve_manual_promotion_review",
+  "note": "DSS direct witness gap is still fact-locked for Ezra 2:54; manual review promotion here means candidate approval with non-DSS support, not removal of DSS missing-anchor constraints."
+}

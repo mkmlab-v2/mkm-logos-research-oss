@@ -1,0 +1,10 @@
+{
+  "schema": "virtual_acceleration_gate_v1",
+  "generated_at_utc": "2026-03-31T18:10:45Z",
+  "source": "C:\\workspace\\docs\\final\\artifacts\\btc_time_machine_sweep_latest.json",
+  "pf_threshold": 1.05,
+  "best_profit_factor": 1.060385,
+  "best_sample_count": 67,
+  "best_period": "2026-01-01..2026-12-31",
+  "decision": "ACTIVE_CANDIDATE"
+}

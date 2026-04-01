@@ -12,16 +12,20 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from statistics import mean
 from typing import Any
 
-
 ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_A = ROOT / "data" / "logos" / "btrack_pilot" / "bench" / "a_track_eval.jsonl"
-DEFAULT_B = ROOT / "data" / "logos" / "btrack_pilot" / "bench" / "b_track_eval.jsonl"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from tools.myeongni.btrack_bench_paths import CANONICAL_A_TRACK_EVAL, CANONICAL_B_TRACK_EVAL
+
+DEFAULT_A = ROOT / CANONICAL_A_TRACK_EVAL
+DEFAULT_B = ROOT / CANONICAL_B_TRACK_EVAL
 DEFAULT_REPORT = ROOT / "reports" / "constitution" / "btrack_pilot" / "btrack_quality_latest.json"
 DEFAULT_DETAILS = ROOT / "reports" / "constitution" / "btrack_pilot" / "btrack_pair_details_latest.jsonl"
 
@@ -45,6 +49,17 @@ def _first_str(row: dict[str, Any], keys: tuple[str, ...]) -> str | None:
         v = row.get(k)
         if isinstance(v, str) and v.strip():
             return v.strip()
+    return None
+
+
+def _first_key_like(row: dict[str, Any], keys: tuple[str, ...]) -> str | None:
+    """Return a stable key string for id-like fields (accepts str/int/float)."""
+    for k in keys:
+        v = row.get(k)
+        if isinstance(v, str) and v.strip():
+            return v.strip()
+        if isinstance(v, (int, float)):
+            return str(int(v)) if isinstance(v, float) and v.is_integer() else str(v)
     return None
 
 
@@ -76,7 +91,7 @@ def _infer_direction(row: dict[str, Any]) -> str | None:
 
 
 def _row_key(row: dict[str, Any], fallback_index: int) -> str:
-    primary = _first_str(
+    primary = _first_key_like(
         row,
         (
             "query_id",
@@ -114,6 +129,17 @@ def load_rows(path: Path) -> dict[str, EvalRow]:
     return out
 
 
+def _state_key(row: EvalRow) -> str | None:
+    v = row.raw.get("state_id")
+    if isinstance(v, int):
+        return str(v)
+    if isinstance(v, float):
+        return str(int(v)) if v.is_integer() else str(v)
+    if isinstance(v, str) and v.strip():
+        return v.strip()
+    return None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Collect B-Track quality metrics from paired A/B JSONL")
     ap.add_argument("--a", dest="a_path", default=str(DEFAULT_A), help="A-track JSONL path")
@@ -137,6 +163,25 @@ def main() -> int:
     a_rows = load_rows(a_path)
     b_rows = load_rows(b_path)
     keys = sorted(set(a_rows) & set(b_rows))
+    alignment_mode = "primary_key"
+
+    if not keys:
+        a_by_state: dict[str, EvalRow] = {}
+        b_by_state: dict[str, EvalRow] = {}
+        for row in a_rows.values():
+            sk = _state_key(row)
+            if sk:
+                a_by_state[sk] = row
+        for row in b_rows.values():
+            sk = _state_key(row)
+            if sk:
+                b_by_state[sk] = row
+        state_keys = sorted(set(a_by_state) & set(b_by_state))
+        if state_keys:
+            a_rows = a_by_state
+            b_rows = b_by_state
+            keys = state_keys
+            alignment_mode = "state_id_fallback"
 
     if not keys:
         print("ERROR: no aligned keys between A and B inputs")
@@ -203,6 +248,7 @@ def main() -> int:
             "confidence_compared": len(confidence_deltas),
             "snr_compared": len(snr_deltas),
         },
+        "alignment_mode": alignment_mode,
         "metrics": {
             "reproducibility_match_rate": reproducibility,
             "resolution_confidence_delta_b_minus_a": resolution_delta,

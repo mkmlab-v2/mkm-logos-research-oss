@@ -31,3 +31,14 @@ The following lines are lexical witness hints for the pilot corpus builder.
 
 - Use this note for pilot lexical enrichment only.
 - Keep final decision as provisional unless direct line-level witness is verified.
+
+---
+
+## 문서 라벨 규칙 (Fact-Safe)
+
+| 라벨 | 의미 | 사용 기준 |
+|------|------|-----------|
+| `[FACT]` | 외부 검증 완료 사실 | 사본 행·DJD·공식 카탈로그로 역추적 가능 |
+| `[HYPO]` | 파일럿·보조 토큰 | 본 노트의 witness hint; 최종 잠정 |
+| `[VISION]` | 전략·로드맵 문장 | 풍부화 목표; 현재 결정으로 단정 금지 |
+| `[NON-MEDICAL]` | 비의료 고지 | 건강·체질 관련 문구 포함 시 필수 |

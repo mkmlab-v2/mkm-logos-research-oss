@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""FastAPI stub: domain router envelope only (FACT-LOCK alignment with openapi_token_compression_stub_v1.yaml).
+"""FastAPI stub: domain router + optional hydration (FACT-LOCK: openapi_token_compression_stub_v1.yaml, COMPRESSION_* §10).
 
 Run: uvicorn scripts.compression_token_api_stub:app --host 127.0.0.1 --port 8010
 
-Full token metrics require multilens eval (see run_ultra_compression_default.py).
+When eval_context.hydrate_metrics and hydrate_live_eval are true, calls evaluate_report; on exception sets
+integrity_flags hydration_live_eval_failed and may fall back to decision-based estimates.
 """
 
 from __future__ import annotations
@@ -155,7 +156,7 @@ def _estimate_hydrated_metrics(text: str) -> CompressionMetrics | None:
     return _estimate_metrics_from_text(text, ratio)
 
 
-def _live_eval_metrics(text: str) -> tuple[CompressionMetrics | None, float]:
+def _live_eval_metrics(text: str) -> tuple[CompressionMetrics | None, float, str | None]:
     selected = _decision_selected_profile()
     strategy = str(selected.get("strategy", "A"))
     intensity = str(selected.get("intensity", "extreme"))
@@ -212,9 +213,9 @@ def _live_eval_metrics(text: str) -> tuple[CompressionMetrics | None, float]:
             token_out=token_out,
             savings_ratio=max(0.0, min(1.0, ratio)),
         )
-        return metrics, round((perf_counter() - t0) * 1000.0, 3)
-    except Exception:
-        return None, round((perf_counter() - t0) * 1000.0, 3)
+        return metrics, round((perf_counter() - t0) * 1000.0, 3), None
+    except Exception as exc:
+        return None, round((perf_counter() - t0) * 1000.0, 3), type(exc).__name__
 
 
 @app.get("/health")
@@ -236,8 +237,11 @@ def compress(body: CompressRequest) -> CompressResponse:
     metrics_mode = "none"
     if body.eval_context is not None and bool(body.eval_context.hydrate_metrics):
         if bool(body.eval_context.hydrate_live_eval):
-            metrics, latency_ms = _live_eval_metrics(body.text)
+            metrics, latency_ms, live_err = _live_eval_metrics(body.text)
             flags["hydration_live_eval_elapsed_ms"] = latency_ms
+            if live_err:
+                flags["hydration_live_eval_failed"] = True
+                flags["hydration_live_eval_error_class"] = live_err
             if metrics is not None:
                 flags["hydration_metrics_source"] = "live_evaluate_report"
                 metrics_mode = "live"
@@ -250,9 +254,12 @@ def compress(body: CompressRequest) -> CompressResponse:
                 metrics_mode = "decision_fallback"
     if body.eval_context is not None and bool(body.eval_context.hydrate_shadow_compare):
         # Non-invasive shadow: evaluate live path for observability only.
-        shadow_metrics, shadow_latency_ms = _live_eval_metrics(body.text)
+        shadow_metrics, shadow_latency_ms, shadow_err = _live_eval_metrics(body.text)
         flags["shadow_mode"] = "enabled"
         flags["shadow_elapsed_ms"] = shadow_latency_ms
+        if shadow_err:
+            flags["shadow_live_eval_failed"] = True
+            flags["shadow_live_eval_error_class"] = shadow_err
         if shadow_metrics is not None:
             flags["shadow_metrics_mode"] = "live"
             flags["shadow_savings_ratio"] = shadow_metrics.savings_ratio

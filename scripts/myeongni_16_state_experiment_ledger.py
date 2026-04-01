@@ -14,6 +14,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+_ROOT = Path(__file__).resolve().parent.parent
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+from tools.myeongni.manseryeok_provenance import enrich_record_optional_solar_provenance
+
 WORKSPACE_DATA_REL = Path("data/myeongni")
 LEDGER_PREFIX = "myeongni_16_state_experiment"
 SAMPLE_REL = WORKSPACE_DATA_REL / "myeongni_16_state_experiment_v1.sample.jsonl"
@@ -122,6 +127,18 @@ def main(argv: list[str] | None = None) -> int:
 
     p_app = sub.add_parser("append", help="Append one record from --json string")
     p_app.add_argument("--json", required=True, help="JSON object string")
+    p_app.add_argument(
+        "--solar-month",
+        type=int,
+        default=None,
+        help="With --solar-day, embed manseryeok_provenance (B-track optional)",
+    )
+    p_app.add_argument("--solar-day", type=int, default=None)
+    p_app.add_argument(
+        "--engine-precise",
+        action="store_true",
+        help="If set with solar date, use precision-engine placeholder metadata instead of approx stub",
+    )
 
     args = p.parse_args(argv)
     root = _workspace_root()
@@ -148,6 +165,16 @@ def main(argv: list[str] | None = None) -> int:
         if not isinstance(obj, dict):
             print("JSON must be an object", file=sys.stderr)
             return 1
+        sm, sd = args.solar_month, args.solar_day
+        if (sm is None) ^ (sd is None):
+            print("--solar-month and --solar-day must be set together or both omitted", file=sys.stderr)
+            return 1
+        obj = enrich_record_optional_solar_provenance(
+            obj,
+            solar_month=sm,
+            solar_day=sd,
+            engine_is_approx=not args.engine_precise,
+        )
         try:
             out = append_myeongni_16_state_experiment(root, obj)
         except ValueError as e:

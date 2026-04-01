@@ -1,0 +1,44 @@
+{
+  "schema": "fused_paper_cycle_weekly_v1",
+  "generated_at_utc": "2026-04-01T12:36:47Z",
+  "week_contract": {
+    "schema": "fused_week_contract_v1",
+    "generated_at_utc": "2026-04-01T12:36:47Z",
+    "signals": {
+      "chronos": {
+        "value": 0.25,
+        "source": "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+        "timestamp": "2026-04-01T07:47:56Z",
+        "quality_flag": "ok"
+      },
+      "macro": {
+        "value": "HEALTHY",
+        "source": "C:\\workspace\\docs\\final\\artifacts\\regime_watch_runtime_health_latest.json",
+        "timestamp": "2026-04-01T12:33:03Z",
+        "quality_flag": "ok"
+      },
+      "sentiment": {
+        "value": "safe",
+        "source": "C:\\workspace\\docs\\final\\artifacts\\regime_watch_profile_calibration_latest.json",
+        "timestamp": "2026-03-31T20:15:22Z",
+        "quality_flag": "ok"
+      },
+      "anomaly": {
+        "value": "NORMAL",
+        "source": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
+        "timestamp": "2026-04-01T07:47:49.9248812+00:00",
+        "quality_flag": "ok"
+      }
+    }
+  },
+  "toe_score": 0.585,
+  "decision": "HOLD",
+  "decision_reason": "price_output_locked_true",
+  "latest_post_close_eval_decision": "PENDING_CLOSE",
+  "latest_checked_at_utc": "2026-04-01T07:47:49.9248812+00:00",
+  "risk_signals": {
+    "price_output_locked": true,
+    "dual_regime_alert_level": null,
+    "high_reliability_decision": "PASS"
+  }
+}

@@ -4,11 +4,15 @@
 from __future__ import annotations
 
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from tools.myeongni.manseryeok_provenance import btrack_myeongni_16_state_stream_scope
 TOPFLOW = ROOT / "docs" / "final" / "artifacts" / "MYEONGNI_16_STATE_TOPFLOW_INTERPRETATION_V1.json"
 ENTRY16_GATE = ROOT / "docs" / "final" / "artifacts" / "entry16_promotion_gate.json"
 OUT = ROOT / "docs" / "final" / "artifacts" / "MYEONGNI_TOPFLOW_INTEGRATED_REPORT_V1.json"
@@ -29,6 +33,7 @@ def main() -> int:
     report = {
         "schema": "myeongni_topflow_integrated_report_v1",
         "generated_at_utc": _now_iso(),
+        "manseryeok_scope": btrack_myeongni_16_state_stream_scope(),
         "sources": {
             "topflow_interpretation": str(TOPFLOW.relative_to(ROOT)).replace("\\", "/"),
             "entry16_gate": str(ENTRY16_GATE.relative_to(ROOT)).replace("\\", "/"),

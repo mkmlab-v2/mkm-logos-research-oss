@@ -1,0 +1,49 @@
+{
+  "schema": "logos_timeline_quality_gate_v1",
+  "generated_at_utc": "2026-04-01T13:01:27Z",
+  "inputs": {
+    "calibration": "C:\\workspace\\reports\\constitution\\btrack_pilot\\logos_timeline_tradition_calibration_latest.json",
+    "anchor": "C:\\workspace\\reports\\constitution\\btrack_pilot\\logos_timeline_anchor_v1_latest.json"
+  },
+  "thresholds": {
+    "min_sample_total": 90,
+    "min_effective_nonzero_samples": 24,
+    "min_traditions_covered": 3,
+    "min_anchor_count": 6,
+    "max_proxy_share": 0.75,
+    "max_unknown_regime_share": 0.6
+  },
+  "snapshot": {
+    "sample_count_total": 105,
+    "sample_count_by_tradition": {
+      "harmonized": 35,
+      "mt": 35,
+      "lxx": 35
+    },
+    "traditions_covered": 3,
+    "effective_nonzero_samples": 35,
+    "proxy_pnl_samples": 1,
+    "proxy_share": 0.028571,
+    "anchor_count": 6,
+    "regime_total": 9,
+    "unknown_regime_count": 0,
+    "unknown_regime_share": 0.0,
+    "base_dispersion_l1": 0.02033333
+  },
+  "checks": {
+    "hard": {
+      "calibration_schema_ok": true,
+      "anchor_schema_ok": true,
+      "sample_total_gte_threshold": true,
+      "effective_nonzero_gte_threshold": true,
+      "traditions_covered_gte_threshold": true,
+      "anchor_count_gte_threshold": true
+    },
+    "warning": {
+      "proxy_share_lte_threshold": true,
+      "unknown_regime_share_lte_threshold": true
+    }
+  },
+  "decision": "PASS",
+  "mode": "logos_timeline_quality_ready"
+}

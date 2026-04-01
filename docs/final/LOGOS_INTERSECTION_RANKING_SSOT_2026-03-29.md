@@ -25,3 +25,16 @@
 - (선택, B-track) `scripts/join_logos_verses_myeongni_states_4d.py` — 상위 16구절과 명리 16상 `vector_4d`의 **합의 최대 코사인 배정**(랭킹 1위≠state 1 고정 아님). 산출(추적 권장): `docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json`
 
 생성 JSON은 `**/backtest_results/` 규칙상 저장소에 올리지 않을 수 있음; SSOT는 **스크립트 + 본 문서**이며, 숫자 리포트는 필요 시 `docs/final` 요약만 별도 반영한다.
+
+---
+
+## 문서 라벨 규칙 (Fact-Safe)
+
+| 라벨 | 의미 | 사용 기준 |
+|------|------|-----------|
+| `[FACT]` | 랭킹·경로·명명 고정 | 지표 표(`mean`/`min`), 스크립트 경로, 교집합 JSON 상대 경로; λ(0.25)와의 비혼동 규칙 |
+| `[HYPO]` | 조인·배정 해석 | `join_logos_verses_myeongni_states_4d.py`의 합의 배정·“1위≠state 1” — 실험 가설층 |
+| `[VISION]` | 로컬 재실행·승격 | 파이프라인 재실행 후 승격은 `CONSTITUTION`·A 궤적 별도 기록 |
+| `[NON-MEDICAL]` | 비의료 고지 | 명리 조인은 **의료 판단·체질 처방 주장 아님**; B-track 연구 격벽 유지 |
+
+대외 인용 시 수치는 `출처 JSON/스크립트 + 셋 구성(k_top·교집합 ID 수) + 지표 필드명(mean_cosine|min_cosine)`을 한 줄에 적는다.

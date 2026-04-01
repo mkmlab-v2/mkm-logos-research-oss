@@ -1,0 +1,23 @@
+{
+  "schema": "slack_advisory_history_v1",
+  "generated_at_utc": "2026-04-01T12:05:41.321839+00:00",
+  "log_path": "reports\\constitution\\btrack_pilot\\fact_safe_slack_delivery_log.jsonl",
+  "window_days": 30,
+  "rows_total": 43,
+  "rows_in_window": 43,
+  "sent_count": 34,
+  "dry_run_count": 9,
+  "net_source_fallback_alert_count": 0,
+  "dual_regime_state_advisory_decision_counts": {
+    "unknown": 41,
+    "insufficient_data": 2
+  },
+  "auto_hold_override_advisory_decision_counts": {
+    "unknown": 41,
+    "insufficient_data": 2
+  },
+  "auto_hold_override_advisory_decision_key_counts": {
+    "unknown": 41,
+    "insufficient_data": 2
+  }
+}

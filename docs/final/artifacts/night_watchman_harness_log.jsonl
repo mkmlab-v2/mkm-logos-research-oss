@@ -1,0 +1,1208 @@
+﻿{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+                     {
+                         "check":  "risk_fused_pressure_stability",
+                         "reason":  "no_pass_baseline_snapshot"
+                     },
+                     {
+                         "check":  "risk_position_scale_cap_stability",
+                         "reason":  "no_pass_baseline_snapshot"
+                     },
+                     {
+                         "check":  "risk_daily_loss_cap_stability",
+                         "reason":  "no_pass_baseline_snapshot"
+                     },
+                     {
+                         "check":  "meta_net_delta_7d_stability",
+                         "reason":  "no_pass_baseline_snapshot"
+                     }
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  null,
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T09:51:37Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+                     {
+                         "check":  "risk_fused_pressure_stability",
+                         "reason":  "baseline_missing_or_invalid_json",
+                         "file":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_095312\\files\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
+                     },
+                     {
+                         "check":  "risk_position_scale_cap_stability",
+                         "reason":  "baseline_missing_or_invalid_json",
+                         "file":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_095312\\files\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
+                     },
+                     {
+                         "check":  "risk_daily_loss_cap_stability",
+                         "reason":  "baseline_missing_or_invalid_json",
+                         "file":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_095312\\files\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
+                     },
+                     {
+                         "check":  "meta_net_delta_7d_stability",
+                         "reason":  "baseline_missing_or_invalid_json",
+                         "file":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_095312\\files\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
+                     }
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_095312",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T09:55:24Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_095524",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T09:55:51Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1_drill_hold.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_095552",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "drill_force_hold",
+                           "reason":  "decision_not_allowed",
+                           "file":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
+                           "json_path":  "decision",
+                           "actual":  "pass",
+                           "allowed":  [
+                                           "force_hold_for_drill"
+                                       ]
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:02:22Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_095552",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:02:36Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_100236",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:04:20Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1_drill_hold.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_100420",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "drill_force_hold",
+                           "reason":  "decision_not_allowed",
+                           "file":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
+                           "json_path":  "decision",
+                           "actual":  "pass",
+                           "allowed":  [
+                                           "force_hold_for_drill"
+                                       ]
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:04:37Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_100420",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:04:37Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_100437",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:06:10Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1_drill_hold.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_100610",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "drill_force_hold",
+                           "reason":  "decision_not_allowed",
+                           "file":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
+                           "json_path":  "decision",
+                           "actual":  "pass",
+                           "allowed":  [
+                                           "force_hold_for_drill"
+                                       ]
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:09:44Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_100610",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:09:45Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1_drill_hold.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_100610",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "drill_force_hold",
+                           "reason":  "decision_not_allowed",
+                           "file":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
+                           "json_path":  "decision",
+                           "actual":  "pass",
+                           "allowed":  [
+                                           "force_hold_for_drill"
+                                       ]
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:11:31Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_100610",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:11:32Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_100610",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:13:10Z"
+}
+
+{
+    "rollback_details":  [
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\risk\\risk_profile_fact_safe_latest.json",
+                                 "restored":  true
+                             }
+                         ],
+    "rollback_performed":  true,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_101310",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "risk_position_scale_cap_stability",
+                           "reason":  "abs_delta_threshold_exceeded",
+                           "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                           "json_path":  "risk_profile.position_scale_cap",
+                           "current":  0.2,
+                           "baseline":  0.6048,
+                           "abs_delta":  0.4048,
+                           "max_abs_delta":  0.2
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:58:19Z"
+}
+
+{
+    "rollback_details":  [
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\risk\\risk_profile_fact_safe_latest.json",
+                                 "restored":  true
+                             }
+                         ],
+    "rollback_performed":  true,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_101310",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "meta_net_delta_7d_stability",
+                           "reason":  "abs_delta_threshold_exceeded",
+                           "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                           "json_path":  "meta.net_delta_7d",
+                           "current":  -24.45246851,
+                           "baseline":  -25.24979959,
+                           "abs_delta":  0.7973310799999993,
+                           "max_abs_delta":  0.3
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T10:59:26Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_101310",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T11:00:14Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_110014",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T11:08:28Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_110828",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T11:42:52Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1_drill_hold.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_110828",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "drill_force_hold",
+                           "reason":  "decision_not_allowed",
+                           "file":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
+                           "json_path":  "decision",
+                           "actual":  "pass",
+                           "allowed":  [
+                                           "force_hold_for_drill"
+                                       ]
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T11:42:52Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_114252",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T11:42:53Z"
+}
+
+{
+    "rollback_details":  [
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\risk\\risk_profile_fact_safe_latest.json",
+                                 "restored":  true
+                             }
+                         ],
+    "rollback_performed":  true,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1_drill_hold.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_114252",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "drill_force_hold",
+                           "reason":  "decision_not_allowed",
+                           "file":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
+                           "json_path":  "decision",
+                           "actual":  "pass",
+                           "allowed":  [
+                                           "force_hold_for_drill"
+                                       ]
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:03:54Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_114252",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:03:56Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_120356",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:04:03Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_120403",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:06:14Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1_drill_hold.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_120614",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "drill_force_hold",
+                           "reason":  "decision_not_allowed",
+                           "file":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
+                           "json_path":  "decision",
+                           "actual":  "pass",
+                           "allowed":  [
+                                           "force_hold_for_drill"
+                                       ]
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:10:37Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_120614",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:10:39Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_120614",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:11:13Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_121113",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:33:02Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_123302",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:35:08Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_123508",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:48:37Z"
+}
+
+{
+    "rollback_details":  [
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\risk\\risk_profile_fact_safe_latest.json",
+                                 "restored":  true
+                             }
+                         ],
+    "rollback_performed":  true,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1_drill_hold.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_124837",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "drill_force_hold",
+                           "reason":  "decision_not_allowed",
+                           "file":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
+                           "json_path":  "decision",
+                           "actual":  "pass",
+                           "allowed":  [
+                                           "force_hold_for_drill"
+                                       ]
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:51:45Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_124837",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:51:47Z"
+}
+
+{
+    "rollback_details":  [
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\risk\\risk_profile_fact_safe_latest.json",
+                                 "restored":  true
+                             }
+                         ],
+    "rollback_performed":  true,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1_drill_hold.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_125147",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "drill_force_hold",
+                           "reason":  "decision_not_allowed",
+                           "file":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
+                           "json_path":  "decision",
+                           "actual":  "pass",
+                           "allowed":  [
+                                           "force_hold_for_drill"
+                                       ]
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:54:45Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_125147",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T12:54:49Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_125449",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T13:16:28Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_131628",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T13:18:47Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1_drill_hold.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_131847",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "drill_force_hold",
+                           "reason":  "decision_not_allowed",
+                           "file":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
+                           "json_path":  "decision",
+                           "actual":  "pass",
+                           "allowed":  [
+                                           "force_hold_for_drill"
+                                       ]
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T13:18:47Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_131847",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T13:18:50Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_131847",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T13:29:44Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_132944",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T13:30:05Z"
+}
+
+{
+    "rollback_details":  [
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\risk\\risk_profile_fact_safe_latest.json",
+                                 "restored":  true
+                             }
+                         ],
+    "rollback_performed":  true,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_133005",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "meta_net_delta_7d_stability",
+                           "reason":  "abs_delta_threshold_exceeded",
+                           "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                           "json_path":  "meta.net_delta_7d",
+                           "current":  -13.66679244,
+                           "baseline":  -24.24999962,
+                           "abs_delta":  10.58320718,
+                           "max_abs_delta":  2
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T13:34:38Z"
+}
+
+{
+    "rollback_details":  [
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\risk\\risk_profile_fact_safe_latest.json",
+                                 "restored":  true
+                             }
+                         ],
+    "rollback_performed":  true,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_133005",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "meta_net_delta_7d_stability",
+                           "reason":  "abs_delta_threshold_exceeded",
+                           "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                           "json_path":  "meta.net_delta_7d",
+                           "current":  -13.53127025,
+                           "baseline":  -24.24999962,
+                           "abs_delta":  10.71872937,
+                           "max_abs_delta":  2
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T17:40:02Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_133005",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T17:40:03Z"
+}
+
+{
+    "rollback_details":  [
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\risk\\risk_profile_fact_safe_latest.json",
+                                 "restored":  true
+                             }
+                         ],
+    "rollback_performed":  true,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_174003",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "meta_net_delta_7d_stability",
+                           "reason":  "abs_delta_threshold_exceeded",
+                           "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                           "json_path":  "meta.net_delta_7d",
+                           "current":  -21.43769066,
+                           "baseline":  -24.24999962,
+                           "abs_delta":  2.8123089599999993,
+                           "max_abs_delta":  2
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T19:20:45Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_174003",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T19:55:03Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_195503",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T19:56:03Z"
+}
+
+{
+    "rollback_details":  [
+
+                         ],
+    "rollback_performed":  false,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_195604",
+    "locked_mode":  false,
+    "violations":  [
+
+                   ],
+    "decision":  "PASS",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-03-31T22:47:40Z"
+}
+
+{
+    "rollback_details":  [
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
+                                 "restored":  true
+                             },
+                             {
+                                 "file":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\risk\\risk_profile_fact_safe_latest.json",
+                                 "restored":  true
+                             }
+                         ],
+    "rollback_performed":  true,
+    "warnings":  [
+
+                 ],
+    "config_path":  "C:\\workspace\\scripts\\configs\\night_watchman_harness_v1.json",
+    "baseline_snapshot":  "C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness\\history\\pass\\20260331_224740",
+    "locked_mode":  true,
+    "violations":  [
+                       {
+                           "check":  "meta_net_delta_7d_stability",
+                           "reason":  "abs_delta_threshold_exceeded",
+                           "file":  "C:\\workspace\\docs\\final\\artifacts\\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+                           "json_path":  "meta.net_delta_7d",
+                           "current":  -21.449323,
+                           "baseline":  -24.24999962,
+                           "abs_delta":  2.8006766200000008,
+                           "max_abs_delta":  2
+                       }
+                   ],
+    "decision":  "HOLD",
+    "schema":  "night_watchman_harness_v1",
+    "checked_at_utc":  "2026-04-01T12:56:49Z"
+}
+

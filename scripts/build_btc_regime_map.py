@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Mapping, MutableMapping, Sequence
 
 _WORKSPACE_ROOT = Path(__file__).resolve().parents[1]
-_DEFAULT_QUAD = _WORKSPACE_ROOT / "data" / "quad_fusion_training" / "quad_fusion_result_20260308_230751.json"
+_DEFAULT_QUAD = _WORKSPACE_ROOT / "data" / "quad_fusion_training" / "quad_fusion_result_20260401_125917.json"
 _DEFAULT_OUT = _WORKSPACE_ROOT / "data" / "regimes" / "btc_regime_map.json"
 
 # Default year bundles (BTC-style labels on global Quad-Fusion yearly composites).

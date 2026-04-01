@@ -1,15 +1,17 @@
 {
   "schema": "btrack_dss_4d_projection_v1",
-  "generated_at_utc": "2026-03-30T17:35:45Z",
+  "generated_at_utc": "2026-03-31T02:49:50Z",
   "source_input": "data/logos/manuscripts/dss_parsed_enriched.jsonl",
   "fact": {
-    "input_row_count": 64,
-    "projected_row_count": 64,
+    "input_row_count": 72,
+    "projected_row_count": 72,
     "state16_coverage_rate": 1.0,
-    "avg_distance_to_state16": 0.009989,
+    "avg_distance_to_state16": 0.009789,
     "top_state16_distribution": {
-      "3": 63,
-      "2": 1
+      "3": 68,
+      "9": 2,
+      "2": 1,
+      "6": 1
     }
   },
   "hypo": {
@@ -159,7 +161,7 @@
     },
     {
       "id": "dss_enriched_0011",
-      "source_doc": "docs\\final\\btrack_dss_1QS_pure_discipline.md",
+      "source_doc": "docs\\final\\btrack_dss_1QM_col1_excerpt.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
       "vector_4d": {
@@ -169,7 +171,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "B Track Pure — 1QS 공동체 규율 (시장·암호화폐 없음) 사본 : 1QS (Community Rule / Manual of Discipline, Cave 1) 목적 : 외부(에녹서적 심판·우주적 붕괴 담론)와 구별하여, 쿰란 언약 공동체가 내부에서 유지하는 질서 를 문헌·2차 문헌에 근거해 정리한다."
+      "text_excerpt": "문서 라벨 규칙 (Fact Safe) | 라벨 | 의미 | 사용 기준 | | | | | | | 외부 검증 완료 사실 | 인용 출처(PBS·번역본 페이지)로 역추적 가능 | | | 내부 가설·실험 해석 | 키워드 요약; 정본 판단은 별도 | | | 전략·로드맵 문장 | 목표 기술, 현재 사실로 단정 금지 | | | 비의료 "
     },
     {
       "id": "dss_enriched_0012",
@@ -183,7 +185,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "1차 출처 요약 (영문 위키백과 Community Rule, 접근·인용 편의) 원문 전체 번역은 Vermes·García Martínez·DSS 학술판과 대조할 것."
+      "text_excerpt": "B Track Pure — 1QS 공동체 규율 (시장·암호화폐 없음) 사본 : 1QS (Community Rule / Manual of Discipline, Cave 1) 목적 : 외부(에녹서적 심판·우주적 붕괴 담론)와 구별하여, 쿰란 언약 공동체가 내부에서 유지하는 질서 를 문헌·2차 문헌에 근거해 정리한다."
     },
     {
       "id": "dss_enriched_0013",
@@ -197,7 +199,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "출처: 이원론·천사 군단 Community Rule texts contain dualistic writings … They talk of War between Angel of Evil, represented as Darkness or Satan and the Son(s) of the Israelite God, repres"
+      "text_excerpt": "1차 출처 요약 (영문 위키백과 Community Rule, 접근·인용 편의) 원문 전체 번역은 Vermes·García Martínez·DSS 학술판과 대조할 것."
     },
     {
       "id": "dss_enriched_0014",
@@ -211,7 +213,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "순례·몰입(연구자 해석과 유적) Most noteworthy is the concern in 1QS for ritual purity by immersion and the discovery of nearly ten mikva'ot (ritual baths) at Qumran."
+      "text_excerpt": "출처: 이원론·천사 군단 Community Rule texts contain dualistic writings … They talk of War between Angel of Evil, represented as Darkness or Satan and the Son(s) of the Israelite God, repres"
     },
     {
       "id": "dss_enriched_0015",
@@ -225,7 +227,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "메시아 기대 (영문 인용 요지, IX 10–11) The text reads: '..."
+      "text_excerpt": "순례·몰입(연구자 해석과 유적) Most noteworthy is the concern in 1QS for ritual purity by immersion and the discovery of nearly ten mikva'ot (ritual baths) at Qumran."
     },
     {
       "id": "dss_enriched_0016",
@@ -239,7 +241,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "until the prophet comes and the anointed of Aaron and of Israel'."
+      "text_excerpt": "메시아 기대 (영문 인용 요지, IX 10–11) The text reads: '..."
     },
     {
       "id": "dss_enriched_0017",
@@ -253,7 +255,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "… the Qumran community expected (at least) two messiah figures, one of whom ('the messiah of Aaron') is characterized as a high priest and the other ('the messiah of Israel') as a "
+      "text_excerpt": "until the prophet comes and the anointed of Aaron and of Israel'."
     },
     {
       "id": "dss_enriched_0018",
@@ -267,10 +269,24 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "문헌 관계(내부 규율의 “구체 장”으로 자주 인용되는 구간) Steudel(2012) 등에 따르면 다마스쿠스 문서는 1QS V–VII 구절을 밀접하게 따르는 전개를 포함한다는 비교 문헌학적 주장이 있다(세부는 논문·정본 대조)."
+      "text_excerpt": "… the Qumran community expected (at least) two messiah figures, one of whom ('the messiah of Aaron') is characterized as a high priest and the other ('the messiah of Israel') as a "
     },
     {
       "id": "dss_enriched_0019",
+      "source_doc": "docs\\final\\btrack_dss_1QS_pure_discipline.md",
+      "state16": 3,
+      "distance_to_state16": 0.010000000000000009,
+      "vector_4d": {
+        "S": 0.245,
+        "L": 0.245,
+        "K": 0.245,
+        "M": 0.265
+      },
+      "gematria_raw_combined_sum": 0,
+      "text_excerpt": "문헌 관계(내부 규율의 “구체 장”으로 자주 인용되는 구간) Steudel(2012) 등에 따르면 다마스쿠스 문서는 1QS V–VII 구절을 밀접하게 따르는 전개를 포함한다는 비교 문헌학적 주장이 있다(세부는 논문·정본 대조)."
+    },
+    {
+      "id": "dss_enriched_0020",
       "source_doc": "docs\\final\\btrack_dss_1QS_pure_discipline.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -284,7 +300,21 @@
       "text_excerpt": "순수 키워드 (한글 메모) 빛 / 어둠(천사 군단 서사와의 정합) 몰입·의식적 순결(미크바와의 병치는 해석) 예언자·아론·이스라엘의 메시아 대기 (미래 완성) יחד (Yahad) vs עדה (edah) 용어 대비(CD·1QSa와의 관계 — 위키 요약) CD·1QS 상호 수정·대화 가설(VIII–IX) 주의 본 파일은 "
     },
     {
-      "id": "dss_enriched_0020",
+      "id": "dss_enriched_0021",
+      "source_doc": "docs\\final\\btrack_dss_1QS_pure_discipline.md",
+      "state16": 3,
+      "distance_to_state16": 0.010000000000000009,
+      "vector_4d": {
+        "S": 0.245,
+        "L": 0.245,
+        "K": 0.245,
+        "M": 0.265
+      },
+      "gematria_raw_combined_sum": 0,
+      "text_excerpt": "문서 라벨 규칙 (Fact Safe) | 라벨 | 의미 | 사용 기준 | | | | | | | 외부 검증 완료 사실 | 위키·정식 번역·디지털 사본으로 역추적 가능 | | | 내부 가설·실험 해석 | B Track 요약·키워드; 대외 합의 미완료 | | | 전략·로드맵 문장 | 목표 기술, 현재 사실로 단정 금지 | | "
+    },
+    {
+      "id": "dss_enriched_0022",
       "source_doc": "docs\\final\\btrack_dss_1QS_sectarian_context.md",
       "state16": 3,
       "distance_to_state16": 0.009269304181005187,
@@ -298,7 +328,7 @@
       "text_excerpt": "B Track DSS — 1QS (Community Rule) 맥락·핵심 인용 사본 : 1QS (Cave 1; Manual of Discipline / סרך היחד) 역할 : DSS only 노트에서 공동체 규율·이원론·메시아 기대 를 문헌적으로 붙잡기 위한 요약 노트."
     },
     {
-      "id": "dss_enriched_0021",
+      "id": "dss_enriched_0023",
       "source_doc": "docs\\final\\btrack_dss_1QS_sectarian_context.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -312,7 +342,7 @@
       "text_excerpt": "학술 맥락 (요약) 쿰란 문헌의 대표적 교파적(sectarian) 문서로 분류되며, 1QM·1QpHab·Hodayot·CD 등과 함께 공동체 신학을 이해하는 기준 텍스트로 쓰인다."
     },
     {
-      "id": "dss_enriched_0022",
+      "id": "dss_enriched_0024",
       "source_doc": "docs\\final\\btrack_dss_1QS_sectarian_context.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -326,7 +356,7 @@
       "text_excerpt": "이원론 : 악의 천사(어둠)와 이스라엘 신의 아들들(빛) 대립 서술이 1QM 등과 연결된다는 해석이 일반적이다."
     },
     {
-      "id": "dss_enriched_0023",
+      "id": "dss_enriched_0025",
       "source_doc": "docs\\final\\btrack_dss_1QS_sectarian_context.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -340,7 +370,7 @@
       "text_excerpt": "메시아 기대 : 학자들이 자주 인용하는 구절은 1QS IX 10–11 부근으로, 예언자와 아론·이스라엘의 기름부음 받은 자(메시아 복수)에 대한 기대가 드러난다는 독해가 있다."
     },
     {
-      "id": "dss_enriched_0024",
+      "id": "dss_enriched_0026",
       "source_doc": "docs\\final\\btrack_dss_1QS_sectarian_context.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -354,7 +384,7 @@
       "text_excerpt": "영어 인용 (위키백과 Community Rule 문서에 인용된 번역 요지) \"..."
     },
     {
-      "id": "dss_enriched_0025",
+      "id": "dss_enriched_0027",
       "source_doc": "docs\\final\\btrack_dss_1QS_sectarian_context.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -368,7 +398,7 @@
       "text_excerpt": "until the prophet comes and the anointed of Aaron and of Israel\" (전후 문맥·히브리어 정본은 Vermes 등 정식 번역본·디지털 사본 이미지와 대조할 것.) 디지털 사본 Israel Museum / Leon Levy DSS Digital Library 등에서 1QS 이미"
     },
     {
-      "id": "dss_enriched_0026",
+      "id": "dss_enriched_0028",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -382,7 +412,7 @@
       "text_excerpt": "B Track DSS Direct Witness Note — Deut 32:8 (Pilot) Status: research note for pilot enrichment only."
     },
     {
-      "id": "dss_enriched_0027",
+      "id": "dss_enriched_0029",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -396,7 +426,7 @@
       "text_excerpt": "Boundary: this file is not a critical edition and does not claim final textual reconstruction."
     },
     {
-      "id": "dss_enriched_0028",
+      "id": "dss_enriched_0030",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -410,7 +440,7 @@
       "text_excerpt": "Target Variant Frame Reference: (variant debate frame) Competing readings (research labels): (bene elohim family) (bene yisrael family) Direct Witness Tokens (for enriched DSS sign"
     },
     {
-      "id": "dss_enriched_0029",
+      "id": "dss_enriched_0031",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -424,7 +454,7 @@
       "text_excerpt": "1) DSS/Qumran witness note: sons and god lexical family appears in debate records for this verse context."
     },
     {
-      "id": "dss_enriched_0030",
+      "id": "dss_enriched_0032",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -438,7 +468,7 @@
       "text_excerpt": "2) DSS/Qumran witness note: sons and israel lexical family appears in medieval transmission context."
     },
     {
-      "id": "dss_enriched_0031",
+      "id": "dss_enriched_0033",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -452,7 +482,7 @@
       "text_excerpt": "3) Witness scope marker: divine allocation across nations appears in Deut 32:8 debate summaries."
     },
     {
-      "id": "dss_enriched_0032",
+      "id": "dss_enriched_0034",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -466,7 +496,7 @@
       "text_excerpt": "4) Witness scope marker: inheritance boundary language is tied to nation ordering in this context."
     },
     {
-      "id": "dss_enriched_0033",
+      "id": "dss_enriched_0035",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -480,7 +510,7 @@
       "text_excerpt": "5) Context marker: heaven/divine council framing is discussed in sons_of_god interpretations."
     },
     {
-      "id": "dss_enriched_0034",
+      "id": "dss_enriched_0036",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -494,7 +524,7 @@
       "text_excerpt": "6) Context marker: tribes/nation counting frame is discussed in sons_of_israel interpretations."
     },
     {
-      "id": "dss_enriched_0035",
+      "id": "dss_enriched_0037",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 2,
       "distance_to_state16": 0.009999999999999995,
@@ -508,7 +538,7 @@
       "text_excerpt": "7) Hebrew token hint: בני אלהים / בני ישראל / עליון / עמים / נחלה / גבול."
     },
     {
-      "id": "dss_enriched_0036",
+      "id": "dss_enriched_0038",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -522,7 +552,63 @@
       "text_excerpt": "8) Evidence control: 4QDeut witness references require source level line verification before final lock."
     },
     {
-      "id": "dss_enriched_0037",
+      "id": "dss_enriched_0039",
+      "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
+      "state16": 9,
+      "distance_to_state16": 0.0010392304845413321,
+      "vector_4d": {
+        "S": 0.2497,
+        "L": 0.2497,
+        "K": 0.2497,
+        "M": 0.2509
+      },
+      "gematria_raw_combined_sum": 148,
+      "text_excerpt": "9) 4QDeut lexical witness note: בני אלהים appears with nation allocation framing in Deut 32:8 textual criticism discussions tied to Qumran evidence records."
+    },
+    {
+      "id": "dss_enriched_0040",
+      "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
+      "state16": 6,
+      "distance_to_state16": 0.009616652224137096,
+      "vector_4d": {
+        "S": 0.2548,
+        "L": 0.2548,
+        "K": 0.2548,
+        "M": 0.23559999999999992
+      },
+      "gematria_raw_combined_sum": 603,
+      "text_excerpt": "10) 4QDeut lexical witness note: בני ישראל appears as the medieval aligned reading family in comparative apparatus, requiring line level manuscript citation before lock."
+    },
+    {
+      "id": "dss_enriched_0041",
+      "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
+      "state16": 9,
+      "distance_to_state16": 0.004849742261192851,
+      "vector_4d": {
+        "S": 0.2514,
+        "L": 0.2514,
+        "K": 0.2514,
+        "M": 0.24580000000000002
+      },
+      "gematria_raw_combined_sum": 367,
+      "text_excerpt": "11) 4QDeut context witness note: עליון / עמים / גבול language cluster is repeatedly cited when mapping allocation and boundary semantics in this verse neighborhood."
+    },
+    {
+      "id": "dss_enriched_0042",
+      "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
+      "state16": 3,
+      "distance_to_state16": 0.010000000000000009,
+      "vector_4d": {
+        "S": 0.245,
+        "L": 0.245,
+        "K": 0.245,
+        "M": 0.265
+      },
+      "gematria_raw_combined_sum": 0,
+      "text_excerpt": "12) Qumran evidence marker: direct witness handling must preserve manuscript line provenance so sons/god/israel token families are traceable to source documents."
+    },
+    {
+      "id": "dss_enriched_0043",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -536,7 +622,7 @@
       "text_excerpt": "Guardrails Use this note for pilot lexical enrichment only."
     },
     {
-      "id": "dss_enriched_0038",
+      "id": "dss_enriched_0044",
       "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -550,92 +636,8 @@
       "text_excerpt": "Keep final decision as provisional unless direct line level witness is verified."
     },
     {
-      "id": "dss_enriched_0039",
-      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
-      "state16": 3,
-      "distance_to_state16": 0.010000000000000009,
-      "vector_4d": {
-        "S": 0.245,
-        "L": 0.245,
-        "K": 0.245,
-        "M": 0.265
-      },
-      "gematria_raw_combined_sum": 0,
-      "text_excerpt": "CROSS_REF Citation Anchor Evidence Checklist (B Track) 작성일 : 2026 03 30 대상 SSOT : 목적 : ENTRY_06~10, ENTRY_12~16의 / 를 실제 판본 근거로 치환해 단계까지 끌어올린다."
-    },
-    {
-      "id": "dss_enriched_0040",
-      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
-      "state16": 3,
-      "distance_to_state16": 0.010000000000000009,
-      "vector_4d": {
-        "S": 0.245,
-        "L": 0.245,
-        "K": 0.245,
-        "M": 0.265
-      },
-      "gematria_raw_combined_sum": 0,
-      "text_excerpt": "공통 규칙 B track 전용: A track/실매매/OOF 자동 합선 금지."
-    },
-    {
-      "id": "dss_enriched_0041",
-      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
-      "state16": 3,
-      "distance_to_state16": 0.010000000000000009,
-      "vector_4d": {
-        "S": 0.245,
-        "L": 0.245,
-        "K": 0.245,
-        "M": 0.265
-      },
-      "gematria_raw_combined_sum": 0,
-      "text_excerpt": "작업 대상 | Entry | 현재 상태 | 필요한 증거 | 완료 조건 | | | | | | | ENTRY_06 (1QpHab) | | col.VII line 1 17 확정 후, canonical(Exod.20.15) 대응 line 정밀화 | + 필요 시 | | ENTRY_07 (11QT) | | 공개 소스 line lev"
-    },
-    {
-      "id": "dss_enriched_0042",
-      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
-      "state16": 3,
-      "distance_to_state16": 0.010000000000000009,
-      "vector_4d": {
-        "S": 0.245,
-        "L": 0.245,
-        "K": 0.245,
-        "M": 0.265
-      },
-      "gematria_raw_combined_sum": 0,
-      "text_excerpt": "우선: ENTRY_06, ENTRY_09, ENTRY_10, ENTRY_14, ENTRY_15 2."
-    },
-    {
-      "id": "dss_enriched_0043",
-      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
-      "state16": 3,
-      "distance_to_state16": 0.010000000000000009,
-      "vector_4d": {
-        "S": 0.245,
-        "L": 0.245,
-        "K": 0.245,
-        "M": 0.265
-      },
-      "gematria_raw_combined_sum": 0,
-      "text_excerpt": "우선: ENTRY_12, ENTRY_13 (verse line 직접 매핑) 3."
-    },
-    {
-      "id": "dss_enriched_0044",
-      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
-      "state16": 3,
-      "distance_to_state16": 0.010000000000000009,
-      "vector_4d": {
-        "S": 0.245,
-        "L": 0.245,
-        "K": 0.245,
-        "M": 0.265
-      },
-      "gematria_raw_combined_sum": 0,
-      "text_excerpt": ": ENTRY_07, ENTRY_08, ENTRY_16 (대기 큐 규칙 적용) 4."
-    },
-    {
       "id": "dss_enriched_0045",
-      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
+      "source_doc": "docs\\final\\btrack_dss_deut_raw.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
       "vector_4d": {
@@ -645,7 +647,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "변경 배치마다 SSOT 수정 pytest 외부 판본 대기 큐 (운영 전환) | Entry | 대기 사유 | 재시도 트리거 | 처리 방식 | | | | | | | ENTRY_07 | 11Q19 공개 line level 전사 부재 | 공개 전사/신판/DB 업데이트에서 line 제공 | 갱신 후 검토 | | ENTRY_08 |"
+      "text_excerpt": "문서 라벨 규칙 (Fact Safe) | 라벨 | 의미 | 사용 기준 | | | | | | | 외부 검증 완료 사실 | 사본 행·DJD·공식 카탈로그로 역추적 가능 | | | 파일럿·보조 토큰 | 본 노트의 witness hint; 최종 잠정 | | | 전략·로드맵 문장 | 풍부화 목표; 현재 결정으로 단정 금지 | | "
     },
     {
       "id": "dss_enriched_0046",
@@ -659,7 +661,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "월간 점검 실행 템플릿 `` ` powershell NoProfile ExecutionPolicy Bypass File C:\\workspace\\scripts\\run_waiting_queue_monthly_check.ps1 SkipBundle SkipBundle docs/final/artifacts/waiting_queue"
+      "text_excerpt": "CROSS_REF Citation Anchor Evidence Checklist (B Track) 작성일 : 2026 03 30 대상 SSOT : 목적 : ENTRY_06~10, ENTRY_12~16의 / 를 실제 판본 근거로 치환해 단계까지 끌어올린다."
     },
     {
       "id": "dss_enriched_0047",
@@ -673,7 +675,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "| status=verified_anchor ` ` ` ` docs/final/artifacts/entry16_promotion_gate.json decision=keep_locked decision=promote_candidate decision=promote_proxy_candidate_manual ENTRY_07/0"
+      "text_excerpt": "공통 규칙 B track 전용: A track/실매매/OOF 자동 합선 금지."
     },
     {
       "id": "dss_enriched_0048",
@@ -687,7 +689,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "SkipBundle [waiting queue check] Running full prophecy alignment bundle..."
+      "text_excerpt": "작업 대상 | Entry | 현재 상태 | 필요한 증거 | 완료 조건 | | | | | | | ENTRY_06 (1QpHab) | | col.VII line 1 17 확정 후, canonical(Exod.20.15) 대응 line 정밀화 | + 필요 시 | | ENTRY_07 (11QT) | | 공개 소스 line lev"
     },
     {
       "id": "dss_enriched_0049",
@@ -701,7 +703,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "[waiting queue check] Generating ENTRY_16 source hunt summary..."
+      "text_excerpt": "우선: ENTRY_06, ENTRY_09, ENTRY_10, ENTRY_14, ENTRY_15 2."
     },
     {
       "id": "dss_enriched_0050",
@@ -715,7 +717,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "[waiting queue check] Evaluating ENTRY_16 promotion gate..."
+      "text_excerpt": "우선: ENTRY_12, ENTRY_13 (verse line 직접 매핑) 3."
     },
     {
       "id": "dss_enriched_0051",
@@ -729,11 +731,11 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "docs/final/artifacts/waiting_queue_monthly_check_log.jsonl checked_at_utc bundle_mode cross_ref_test bundle_test runner source_hunt_summary source_hunt_summary_path promotion_gate "
+      "text_excerpt": ": ENTRY_07, ENTRY_08, ENTRY_16 (대기 큐 규칙 적용) 4."
     },
     {
       "id": "dss_enriched_0052",
-      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
       "vector_4d": {
@@ -743,11 +745,11 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "DSS/Apocrypha Frontline Closeout (2026 03 27) 문서 메타 날짜: 2026 03 27 범위: DSS + Apocrypha frontline ( stable lane) 기준 SSOT: Executive One Liner DSS/외경 전선은 안정 레인에서 연속 PASS/GO를 확보했으며, 본"
+      "text_excerpt": "변경 배치마다 SSOT 수정 pytest 외부 판본 대기 큐 (운영 전환) | Entry | 대기 사유 | 재시도 트리거 | 처리 방식 | | | | | | | ENTRY_07 | 11Q19 공개 line level 전사 부재 | 공개 전사/신판/DB 업데이트에서 line 제공 | 갱신 후 검토 | | ENTRY_08 |"
     },
     {
       "id": "dss_enriched_0053",
-      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
       "vector_4d": {
@@ -757,11 +759,11 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "[FACT] 종료 증거 패키지 최종 실행 태그: 최신 frontline 리포트: 최신 command center 상태: 최신 원격 run pointer(참고 스냅샷): workflow: run id: url: 2026 03 29 갱신 (Fact Lock) : ↔ 푸시 완료 후 원격에서 Guardian / Smoke / D"
+      "text_excerpt": "월간 점검 실행 템플릿 `` ` powershell NoProfile ExecutionPolicy Bypass File C:\\workspace\\scripts\\run_waiting_queue_monthly_check.ps1 SkipBundle SkipBundle docs/final/artifacts/waiting_queue"
     },
     {
       "id": "dss_enriched_0054",
-      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
       "vector_4d": {
@@ -771,11 +773,11 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "[FACT] Med/Fin 보조 전선 CI 증거 상태 handoff 문서: 원격 workflow 조회 결과: 존재 확인: Cycle 6 이후: , 는 로 실행 기록 확보(실 run URL·run id는 참조)."
+      "text_excerpt": "| status=verified_anchor ` ` ` ` docs/final/artifacts/entry16_promotion_gate.json decision=keep_locked decision=promote_candidate decision=promote_proxy_candidate_manual ENTRY_07/0"
     },
     {
       "id": "dss_enriched_0055",
-      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
       "vector_4d": {
@@ -785,11 +787,11 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "판정: 푸시 완료 및 게이트 재실행 성공 — 에 스크립트 동기화 후 위 두 gate를 재실행하여 Pass/Success 로 종결."
+      "text_excerpt": "SkipBundle [waiting queue check] Running full prophecy alignment bundle..."
     },
     {
       "id": "dss_enriched_0056",
-      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
       "vector_4d": {
@@ -799,11 +801,11 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "이전 HOLD (원격 default에 검증 스크립트 미동기화로 인한 실패)는 동기화·재실행으로 해소된 상태로 기록한다."
+      "text_excerpt": "[waiting queue check] Generating ENTRY_16 source hunt summary..."
     },
     {
       "id": "dss_enriched_0057",
-      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
       "vector_4d": {
@@ -813,11 +815,11 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "[STRAT] 최종 판정 frontline execution: CLOSED 운영 상태: GO 모드 전환: maintenance only 기본 운영: 실행 중지(신규 cycle 생성 금지) 예외 실행: 회귀 신호 또는 지휘 승인 시 1회성 점검 cycle만 수행 잔여 리스크 2026 03 29 : Guardian·Smoke"
+      "text_excerpt": "[waiting queue check] Evaluating ENTRY_16 promotion gate..."
     },
     {
       "id": "dss_enriched_0058",
-      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "source_doc": "docs\\final\\CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
       "vector_4d": {
@@ -827,7 +829,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "이전 HOLD(스크립트 미동기화) 및 “전체 스위트 미확인” 추측은 해소·Fact Locked ."
+      "text_excerpt": "docs/final/artifacts/waiting_queue_monthly_check_log.jsonl checked_at_utc bundle_mode cross_ref_test bundle_test runner source_hunt_summary source_hunt_summary_path promotion_gate "
     },
     {
       "id": "dss_enriched_0059",
@@ -841,7 +843,7 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "운영 : 이후 회귀(푸시 실패·워크플로 변경 등) 시 동일 네 게이트 또는 지휘 지정 워크플로로 재확인."
+      "text_excerpt": "DSS/Apocrypha Frontline Closeout (2026 03 27) 문서 메타 날짜: 2026 03 27 범위: DSS + Apocrypha frontline ( stable lane) 기준 SSOT: Executive One Liner DSS/외경 전선은 안정 레인에서 연속 PASS/GO를 확보했으며, 본"
     },
     {
       "id": "dss_enriched_0060",
@@ -855,10 +857,122 @@
         "M": 0.265
       },
       "gematria_raw_combined_sum": 0,
-      "text_excerpt": "재개 조건 아래 중 하나라도 발생 시 frontline을 일시 재개한다."
+      "text_excerpt": "[FACT] 종료 증거 패키지 최종 실행 태그: 최신 frontline 리포트: 최신 command center 상태: 최신 원격 run pointer(참고 스냅샷): workflow: run id: url: 2026 03 29 갱신 (Fact Lock) : ↔ 푸시 완료 후 원격에서 Guardian / Smoke / D"
     },
     {
       "id": "dss_enriched_0061",
+      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "state16": 3,
+      "distance_to_state16": 0.010000000000000009,
+      "vector_4d": {
+        "S": 0.245,
+        "L": 0.245,
+        "K": 0.245,
+        "M": 0.265
+      },
+      "gematria_raw_combined_sum": 0,
+      "text_excerpt": "[FACT] Med/Fin 보조 전선 CI 증거 상태 handoff 문서: 원격 workflow 조회 결과: 존재 확인: Cycle 6 이후: , 는 로 실행 기록 확보(실 run URL·run id는 참조)."
+    },
+    {
+      "id": "dss_enriched_0062",
+      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "state16": 3,
+      "distance_to_state16": 0.010000000000000009,
+      "vector_4d": {
+        "S": 0.245,
+        "L": 0.245,
+        "K": 0.245,
+        "M": 0.265
+      },
+      "gematria_raw_combined_sum": 0,
+      "text_excerpt": "판정: 푸시 완료 및 게이트 재실행 성공 — 에 스크립트 동기화 후 위 두 gate를 재실행하여 Pass/Success 로 종결."
+    },
+    {
+      "id": "dss_enriched_0063",
+      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "state16": 3,
+      "distance_to_state16": 0.010000000000000009,
+      "vector_4d": {
+        "S": 0.245,
+        "L": 0.245,
+        "K": 0.245,
+        "M": 0.265
+      },
+      "gematria_raw_combined_sum": 0,
+      "text_excerpt": "이전 HOLD (원격 default에 검증 스크립트 미동기화로 인한 실패)는 동기화·재실행으로 해소된 상태로 기록한다."
+    },
+    {
+      "id": "dss_enriched_0064",
+      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "state16": 3,
+      "distance_to_state16": 0.010000000000000009,
+      "vector_4d": {
+        "S": 0.245,
+        "L": 0.245,
+        "K": 0.245,
+        "M": 0.265
+      },
+      "gematria_raw_combined_sum": 0,
+      "text_excerpt": "[STRAT] 최종 판정 frontline execution: CLOSED 운영 상태: GO 모드 전환: maintenance only 기본 운영: 실행 중지(신규 cycle 생성 금지) 예외 실행: 회귀 신호 또는 지휘 승인 시 1회성 점검 cycle만 수행 잔여 리스크 2026 03 29 : Guardian·Smoke"
+    },
+    {
+      "id": "dss_enriched_0065",
+      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "state16": 3,
+      "distance_to_state16": 0.010000000000000009,
+      "vector_4d": {
+        "S": 0.245,
+        "L": 0.245,
+        "K": 0.245,
+        "M": 0.265
+      },
+      "gematria_raw_combined_sum": 0,
+      "text_excerpt": "이전 HOLD(스크립트 미동기화) 및 “전체 스위트 미확인” 추측은 해소·Fact Locked ."
+    },
+    {
+      "id": "dss_enriched_0066",
+      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "state16": 3,
+      "distance_to_state16": 0.010000000000000009,
+      "vector_4d": {
+        "S": 0.245,
+        "L": 0.245,
+        "K": 0.245,
+        "M": 0.265
+      },
+      "gematria_raw_combined_sum": 0,
+      "text_excerpt": "운영 : 이후 회귀(푸시 실패·워크플로 변경 등) 시 동일 네 게이트 또는 지휘 지정 워크플로로 재확인."
+    },
+    {
+      "id": "dss_enriched_0067",
+      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "state16": 3,
+      "distance_to_state16": 0.010000000000000009,
+      "vector_4d": {
+        "S": 0.245,
+        "L": 0.245,
+        "K": 0.245,
+        "M": 0.265
+      },
+      "gematria_raw_combined_sum": 0,
+      "text_excerpt": "재개 조건 아래 중 하나라도 발생 시 frontline을 일시 재개한다."
+    },
+    {
+      "id": "dss_enriched_0068",
+      "source_doc": "docs\\final\\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
+      "state16": 3,
+      "distance_to_state16": 0.010000000000000009,
+      "vector_4d": {
+        "S": 0.245,
+        "L": 0.245,
+        "K": 0.245,
+        "M": 0.265
+      },
+      "gematria_raw_combined_sum": 0,
+      "text_excerpt": "가 에서 로 하락 라벨 정합 규칙 (Fact Safe) 본 문서의 사실 진술은 로 표기한다(원격 run id/URL/아티팩트로 역추적 가능)."
+    },
+    {
+      "id": "dss_enriched_0069",
       "source_doc": "docs\\final\\NOTEBOOKLM_DSS_APOCRYPHA_BUNDLE_NOTE_command_center_followup_20260327_f.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -872,7 +986,7 @@
       "text_excerpt": "NotebookLM Bundle Note command_center_followup_20260327_f [BundleID] dss_apocrypha_command_center_followup_20260327_f_20260327_1908 [CycleTag] command_center_followup_20260327_f [G"
     },
     {
-      "id": "dss_enriched_0062",
+      "id": "dss_enriched_0070",
       "source_doc": "docs\\final\\NOTEBOOKLM_DSS_APOCRYPHA_BUNDLE_NOTE_command_center_followup_20260327_f.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -886,7 +1000,7 @@
       "text_excerpt": "Command center remains and the recommended DSS action is ."
     },
     {
-      "id": "dss_enriched_0063",
+      "id": "dss_enriched_0071",
       "source_doc": "docs\\final\\NOTEBOOKLM_DSS_APOCRYPHA_BUNDLE_NOTE_command_center_followup_20260327_f.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,
@@ -900,7 +1014,7 @@
       "text_excerpt": "Insight priority loop continues in executable state ( , single action executed)."
     },
     {
-      "id": "dss_enriched_0064",
+      "id": "dss_enriched_0072",
       "source_doc": "docs\\final\\NOTEBOOKLM_DSS_APOCRYPHA_BUNDLE_NOTE_command_center_followup_20260327_f.md",
       "state16": 3,
       "distance_to_state16": 0.010000000000000009,

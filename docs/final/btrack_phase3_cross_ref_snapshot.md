@@ -207,15 +207,15 @@
     {
       "entry_id": "ENTRY_16",
       "canonical_ref": "Ezra.2.54",
-      "satellite_ref": "Ezra-Neh witnesses | loc=no extant DSS witness for Ezra.2.54 list (4Q117 attests Esr 4:2-6, 4:9-11, 5:17, 6:1-6 only); list anchor remains TBD | refs=Qumran-Digital 4Q117 transcription (2024-07-30), LXX Ezra traditions | status=missing_anchor_until_source_update",
-      "source_id": "Ezra-Neh witnesses | loc=no extant DSS witness for Ezra.2.54 list (4Q117 attests Esr 4:2-6, 4:9-11, 5:17, 6:1-6 only); list anchor remains TBD | refs=Qumran-Digital 4Q117 transcription (2024-07-30), LXX Ezra traditions | status=missing_anchor_until_source_update",
+      "satellite_ref": "Ezra-Neh witnesses | loc=no extant DSS witness for Ezra.2.54 list (4Q117 attests Esr 4:2-6, 4:9-11, 5:17, 6:1-6 only); non-DSS LXX witness anchors Ezra 2:54 at verse/chapter level (manual review candidate) | refs=Qumran-Digital 4Q117 transcription (2024-07-30), BlueLetterBible LXX Ezra 2:54, BibleHub Swete LXX Ezra 2 | status=missing_anchor_until_source_update",
+      "source_id": "Ezra-Neh witnesses | loc=no extant DSS witness for Ezra.2.54 list (4Q117 attests Esr 4:2-6, 4:9-11, 5:17, 6:1-6 only); non-DSS LXX witness anchors Ezra 2:54 at verse/chapter level (manual review candidate) | refs=Qumran-Digital 4Q117 transcription (2024-07-30), BlueLetterBible LXX Ezra 2:54, BibleHub Swete LXX Ezra 2 | status=missing_anchor_until_source_update",
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
       "artifact_path": null,
       "state_candidate_id": 16,
       "rationale": "B-Track DSS/역본: 바벨론 귀환 명단 코호트. A-Track: state 16 앵커 Ezra.2.54 — 인구·스냅샷 메타만 병치(벤치).",
-      "note": "Bench policy: thematic(코호트 스냅샷) 후보. 승격 조건=Ezra-Nehemiah witness 계열에서 이름목록/귀환 코호트 대응 확인. 반증 훅=텍스트 전승 불확정으로 witness 연결이 붕괴하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 witness anchor 'missing' 확인. Local evidence (2026-03-30): data/etcbc-dss/log/align-*.txt에서 `Ezra`는 일부 `4Q117`(주로 Ezra 4–6)로 매핑 확인되었으나, `Ezra', '2'` 또는 Ezra 2(=ch.2) 매핑은 전 파일에서 미탐지. NL notebook_query(2026-03-30, source=c72898ab-b0b2-4875-a856-59c39a166875): 4Q117 extant = Esr 4:2-6, 4:9-11, 5:17, 6:1-6; Ezra 2:54 direct witness = No. NL notebook_query(2026-03-30, source=21de583e-bfc2-4294-9e25-7a1678f624c2 official archive): fragment/plate 메타만 제공되고 verse-level extant 범위는 미기재, Ezra 2:54 direct witness 확인 불가(No). 따라서 Ezra.2.54 list anchor는 현재 부재로 유지."
+      "note": "Bench policy: thematic(코호트 스냅샷) 후보. 승격 조건=Ezra-Nehemiah witness 계열에서 이름목록/귀환 코호트 대응 확인. 반증 훅=텍스트 전승 불확정으로 witness 연결이 붕괴하는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, false equivalence 경고로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 witness anchor 'missing' 확인. Local evidence (2026-03-30): data/etcbc-dss/log/align-*.txt에서 `Ezra`는 일부 `4Q117`(주로 Ezra 4–6)로 매핑 확인되었으나, `Ezra', '2'` 또는 Ezra 2(=ch.2) 매핑은 전 파일에서 미탐지. NL notebook_query(2026-03-30, source=c72898ab-b0b2-4875-a856-59c39a166875): 4Q117 extant = Esr 4:2-6, 4:9-11, 5:17, 6:1-6; Ezra 2:54 direct witness = No. NL notebook_query(2026-03-30, source=21de583e-bfc2-4294-9e25-7a1678f624c2 official archive): fragment/plate 메타만 제공되고 verse-level extant 범위는 미기재, Ezra 2:54 direct witness 확인 불가(No). Manual gate refresh (2026-03-31): entry16_promotion_gate decision=promote_candidate, has_direct_witness=true, witness_yes_count=3, status=candidate_ready_for_manual_review. 운영 해석: DSS direct 부재 Fact는 유지하고, 비-DSS LXX witness를 보조 앵커로 승격 후보(manual review) 상태로 관리."
     }
   ]
 }
@@ -258,3 +258,18 @@ ENTRY_15 | link_type=thematic | canonical_ref=Gen.49.19 | source_id=4QGen (b-k) 
 ENTRY_16 | link_type=thematic | canonical_ref=Ezra.2.54 | source_id=Ezra-Neh witnesses | loc=Ezra.2.54 list anchor=TBD | refs=4Q Ezra-type + LXX Ezra traditions | status=missing_anchor_until_source_update | state_candidate_id=16 | corpus=dss | theme=귀환 명단
 
 공통 경고: disclaimer 필드 — A-Track SSOT 아님; 엔진이 기본 로드 금지; Sefaria/Charles 등은 프록시 표준(정본 아님); 후보(candidate)·벤치만 기록.
+
+---
+
+## 문서 라벨 규칙 (Fact-Safe)
+
+| 라벨 | 의미 | 사용 기준 |
+|------|------|-----------|
+| `[FACT]` | SSOT·검증 가능 진술 | `artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json` 및 명명된 판본·판면 참조와 일치 |
+| `[HYPO]` | 테마 정렬·A-Track 비유 후보 | JSON `rationale`, ENTRY 평문의 **가설** 문구; 자동 트리거 아님 |
+| `[VISION]` | 전략·로드맵 문장 | Phase3 인덱싱·벤치 목표; 본선 결정으로 단정 금지 |
+| `[NON-MEDICAL]` | 비의료 고지 | 건강·체질 관련 문구 포함 시 필수 |
+
+### 수치·연대 표기 (Tier 1 재사용)
+
+학술 수치를 인용할 때는 `출처 + 셋 구성 + 지표 정의`를 한 줄에 함께 쓴다(본 스냅샷의 DSS–정경 병치 행과 별개).

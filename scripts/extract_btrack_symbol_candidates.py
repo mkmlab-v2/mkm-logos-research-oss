@@ -22,6 +22,7 @@ DEFAULT_OUT = ROOT / "reports" / "constitution" / "btrack_pilot" / "symbol_candi
 DEFAULT_SUMMARY = ROOT / "reports" / "constitution" / "btrack_pilot" / "symbol_candidates_summary_latest.json"
 
 WORD_RE = re.compile(r"[A-Za-z]+|[0-9]+|[\u0370-\u03FF]+|[\u0590-\u05FF]+")
+NUMERIC_SYMBOL_KEEP = {"7", "12", "40", "70", "144000"}
 
 STOPWORDS_EN = {
     "the", "and", "of", "to", "in", "is", "with", "for", "that", "on", "as", "be",
@@ -69,6 +70,9 @@ def _tokenize(text: str) -> list[str]:
     toks = [m.group(0).lower() for m in WORD_RE.finditer(text)]
     out: list[str] = []
     for t in toks:
+        if t in NUMERIC_SYMBOL_KEEP:
+            out.append(t)
+            continue
         if len(t) < 2:
             continue
         if re.fullmatch(r"[a-z]+", t) and t in STOPWORDS_EN:

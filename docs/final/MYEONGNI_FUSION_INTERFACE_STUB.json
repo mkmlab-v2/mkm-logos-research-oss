@@ -29,5 +29,15 @@
     "lens_active_conditions": "string|null",
     "fusion_engine_version": "string"
   },
-  "boundary_ack": "명리 출력은 B-track·관측·합의 입력용. A-track 실매매·OOF·dual_regime 캡 자동 합선 금지 — Promotion Loop·별도 PR."
+  "boundary_ack": "명리 출력은 B-track·관측·합의 입력용. A-track 실매매·OOF·dual_regime 캡 자동 합선 금지 — Promotion Loop·별도 PR.",
+  "manseryeok_provenance": {
+    "description": "간지·출생일시가 스트림에 들어갈 때 선택적으로 첨부. Python: tools/myeongni/manseryeok_provenance.py (approx_stub_pipeline_metadata, myeongni_row_provenance, tag_excluded_from_jaccard_heuristic).",
+    "optional_fields": {
+      "manseryeok_model": "static_month_day_approx_v3 | mcp_calculate_saju | remote_lunisolar | …",
+      "jeolgi_uncertainty": "boundary_days_high_risk | ephemeris_definition_ssot_required | …",
+      "excluded_from_jaccard": "근사 엔진·절기 경계 근처 표본을 기둥-Jaccard 류 지표에서 제외할 때 true",
+      "solar_month": "integer|null",
+      "solar_day": "integer|null"
+    }
+  }
 }

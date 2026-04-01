@@ -1,6 +1,11 @@
 {
   "schema": "multilens_p1_ab_final_selection_v1",
-  "ts_utc": "2026-03-30T23:05:25.106634+00:00",
+  "ts_utc": "2026-03-30T23:44:11.283355+00:00",
+  "manseryeok_scope": {
+    "manseryeok_applicable": false,
+    "jaccard_metric_domain": "compression_token_reconstruction",
+    "manseryeok_scope_note": "multilens_p1_ab_* reports: avg_reconstruction_fidelity_jaccard measures compressed vs baseline token overlap — not pillar or manse agreement. Do not merge approx_stub_pipeline_metadata() into these scores as if manse-derived."
+  },
   "source_refs": {
     "efficiency": "docs/final/artifacts/MULTILENS_P1_AB_EFFICIENCY_V1.json",
     "intensity": "docs/final/artifacts/MULTILENS_P1_AB_INTENSITY_V1.json",
@@ -12,7 +17,7 @@
       "schema": "multilens_p1_ab_efficiency_v1",
       "profile": "efficiency_first",
       "candidate_count": 12,
-      "passing_count": 2,
+      "passing_count": 0,
       "saving_rate_min": 0.5,
       "jaccard_drop_pp_max": 1.5,
       "sensitive_integrity_min": 0.999,
@@ -20,11 +25,11 @@
         "strategy": "A",
         "intensity": "extreme",
         "use_hangul_principle": false,
-        "global_token_saving_rate": 0.5316455696202531,
-        "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
+        "global_token_saving_rate": 0.5274261603375527,
+        "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
         "jaccard_drop_pp": 0.0,
-        "avg_sensitive_integrity": 1.0,
-        "gate_ok": true,
+        "avg_sensitive_integrity": 0.9916666666666668,
+        "gate_ok": false,
         "balanced_composite": null
       }
     },
@@ -33,7 +38,7 @@
       "schema": "multilens_p1_ab_intensity_v1",
       "profile": "intensity_first",
       "candidate_count": 12,
-      "passing_count": 2,
+      "passing_count": 0,
       "saving_rate_min": 0.5,
       "jaccard_drop_pp_max": 1.5,
       "sensitive_integrity_min": 0.999,
@@ -41,11 +46,11 @@
         "strategy": "A",
         "intensity": "extreme",
         "use_hangul_principle": false,
-        "global_token_saving_rate": 0.5316455696202531,
-        "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
+        "global_token_saving_rate": 0.5274261603375527,
+        "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
         "jaccard_drop_pp": 0.0,
-        "avg_sensitive_integrity": 1.0,
-        "gate_ok": true,
+        "avg_sensitive_integrity": 0.9916666666666668,
+        "gate_ok": false,
         "balanced_composite": null
       }
     },
@@ -54,7 +59,7 @@
       "schema": "multilens_p1_ab_balanced_v1",
       "profile": "balanced",
       "candidate_count": 12,
-      "passing_count": 2,
+      "passing_count": 0,
       "saving_rate_min": 0.5,
       "jaccard_drop_pp_max": 1.5,
       "sensitive_integrity_min": 0.999,
@@ -62,12 +67,12 @@
         "strategy": "A",
         "intensity": "extreme",
         "use_hangul_principle": true,
-        "global_token_saving_rate": 0.5189873417721519,
-        "avg_reconstruction_fidelity_jaccard": 0.8982095250380857,
+        "global_token_saving_rate": 0.5147679324894514,
+        "avg_reconstruction_fidelity_jaccard": 0.8706675082313629,
         "jaccard_drop_pp": 0.0,
-        "avg_sensitive_integrity": 1.0,
-        "gate_ok": true,
-        "balanced_composite": 0.63773859
+        "avg_sensitive_integrity": 0.9916666666666668,
+        "gate_ok": false,
+        "balanced_composite": 0.623445948
       },
       "balanced_weights": {
         "w_saving": 0.45,
@@ -79,34 +84,27 @@
     }
   ],
   "selection": {
-    "winner_profile": "balanced",
-    "reason": "balanced gate_ok and composite-driven anchor",
+    "winner_profile": "efficiency_first",
+    "reason": "no gate_ok winner; highest saving fallback",
     "winner": {
-      "profile_name": "balanced",
-      "schema": "multilens_p1_ab_balanced_v1",
-      "profile": "balanced",
+      "profile_name": "efficiency_first",
+      "schema": "multilens_p1_ab_efficiency_v1",
+      "profile": "efficiency_first",
       "candidate_count": 12,
-      "passing_count": 2,
+      "passing_count": 0,
       "saving_rate_min": 0.5,
       "jaccard_drop_pp_max": 1.5,
       "sensitive_integrity_min": 0.999,
       "best_candidate": {
         "strategy": "A",
         "intensity": "extreme",
-        "use_hangul_principle": true,
-        "global_token_saving_rate": 0.5189873417721519,
-        "avg_reconstruction_fidelity_jaccard": 0.8982095250380857,
+        "use_hangul_principle": false,
+        "global_token_saving_rate": 0.5274261603375527,
+        "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
         "jaccard_drop_pp": 0.0,
-        "avg_sensitive_integrity": 1.0,
-        "gate_ok": true,
-        "balanced_composite": 0.63773859
-      },
-      "balanced_weights": {
-        "w_saving": 0.45,
-        "w_fidelity": 0.45,
-        "w_drop_penalty": 0.1,
-        "normalized_drop_divisor": 1.5,
-        "formula": "w_saving*saving + w_fidelity*avg_jaccard - w_drop_penalty*min(drop_pp/divisor,1)"
+        "avg_sensitive_integrity": 0.9916666666666668,
+        "gate_ok": false,
+        "balanced_composite": null
       }
     }
   }

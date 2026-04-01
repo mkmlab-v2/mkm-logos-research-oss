@@ -1,6 +1,11 @@
 {
   "schema": "myeongni_topflow_integrated_report_v1",
-  "generated_at_utc": "2026-03-30T13:59:18.741037Z",
+  "generated_at_utc": "2026-03-30T23:54:17.376337Z",
+  "manseryeok_scope": {
+    "manseryeok_pillar_calc_applicable": false,
+    "artifact_domain": "myeongni_16_state_experiment_stream",
+    "manseryeok_scope_note": "Derived from B-track experiment JSONL state_id sequences. If 간지·출생일시 is joined later, attach myeongni_row_provenance per row."
+  },
   "sources": {
     "topflow_interpretation": "docs/final/artifacts/MYEONGNI_16_STATE_TOPFLOW_INTERPRETATION_V1.json",
     "entry16_gate": "docs/final/artifacts/entry16_promotion_gate.json"

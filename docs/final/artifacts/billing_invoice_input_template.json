@@ -1,0 +1,9 @@
+{
+  "schema": "billing_invoice_input_v1",
+  "period_label": "YYYY-MM",
+  "api_cost_usd": 0.0,
+  "invoice_provenance": "provider_file",
+  "provider": "your-provider-name",
+  "invoice_id": "invoice-or-statement-id",
+  "note": "Fill with real invoice-exported amount. invoice_provenance must stay provider_file for audit-tier margin claims. Keep local/private."
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "hallucination_grounding_eval_v1",
+  "ts_utc": "2026-04-01T12:57:53.448746+00:00",
+  "source_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_benchmark_auto_latest.json",
+  "source_reports": [
+    "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_benchmark_auto_latest.json",
+    "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_run_01.json",
+    "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_run_02.json",
+    "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_run_03.json",
+    "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_run_04.json",
+    "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_run_05.json",
+    "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_run_06.json",
+    "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_run_07.json",
+    "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_run_08.json",
+    "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_run_09.json",
+    "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_run_10.json"
+  ],
+  "source_report_count": 11,
+  "target_lane": "candidate",
+  "sample_count": 1002,
+  "quality_pass_count": 1002,
+  "quality_fail_count": 0,
+  "quality_pass_rate": 1.0,
+  "hallucination_proxy_rate": 0.0,
+  "min_sample_for_zero_claim": 1000,
+  "zero_claim_eligible": true,
+  "note": "Proxy metric from expected-substring grounding checks, not a full factuality audit."
+}

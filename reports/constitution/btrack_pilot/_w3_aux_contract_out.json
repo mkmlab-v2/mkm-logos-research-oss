@@ -1,6 +1,6 @@
 {
   "schema": "w3_resonance_result_v1",
-  "generated_at_utc": "2026-03-30T22:49:47Z",
+  "generated_at_utc": "2026-03-31T00:01:31Z",
   "status": "computed_pilot",
   "track": "B-track",
   "refs": {
@@ -10,7 +10,7 @@
     "template": "docs/final/artifacts/W2_DUAL_LANE_TEMPLATE_V1.json"
   },
   "run_meta": {
-    "run_id": "w3_compute_run_20260330_224947",
+    "run_id": "w3_compute_run_20260331_000131",
     "compute_status": "executed_deterministic",
     "aux_adapter_version": "w3_aux_adapter_v1",
     "top_n_count": 2,

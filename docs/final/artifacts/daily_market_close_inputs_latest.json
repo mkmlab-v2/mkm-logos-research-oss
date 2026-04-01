@@ -1,0 +1,7 @@
+{
+  "schema": "daily_market_close_inputs_v1",
+  "generated_at_utc": "2026-04-01T13:00:00Z",
+  "notes": "Set daily close return percentages before strict daily tasks run.",
+  "kospi_d1_return_pct": -0.5,
+  "btc_binance_d1_return_pct": -1.1
+}

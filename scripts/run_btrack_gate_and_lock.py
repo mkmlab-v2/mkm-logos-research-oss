@@ -88,6 +88,9 @@ def main() -> int:
                 args.sasang_clinical_report,
             ]
         )
+    _run([py, "scripts/report_logos_timeline_quality_gate.py"])
+    _run([py, "scripts/report_myeongni_transition_quality_gate.py"])
+    _run([py, "scripts/report_trinity_track_quality.py"])
 
     # 5) Lock baseline and run regression check.
     _run([py, "scripts/lock_btrack_verified_baseline.py"])

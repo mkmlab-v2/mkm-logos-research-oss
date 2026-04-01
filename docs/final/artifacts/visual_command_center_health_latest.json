@@ -1,0 +1,23 @@
+{
+  "schema": "visual_command_center_health_v1",
+  "checked_at_utc": "2026-03-31T18:10:46Z",
+  "healthy": true,
+  "checks": {
+    "task_health_check": {
+      "exit_code": 0,
+      "stdout": "C Drive PowerShell environment loaded!\nWorking directory: C:\\workspace\nAvailable commands: ws, py, pip, gs, ga, gc, gp, gl, dev, build, mcp-start, mcp-test\nNight Watchman harness task health: C:\\workspace\\docs\\final\\artifacts\\night_watchman_harness_task_health_latest.json",
+      "stderr": ""
+    },
+    "virtual_acceleration_cycle": {
+      "exit_code": 0,
+      "stdout": "C Drive PowerShell environment loaded!\nWorking directory: C:\\workspace\nAvailable commands: ws, py, pip, gs, ga, gc, gp, gl, dev, build, mcp-start, mcp-test\n[virtual-acceleration] syncing pilot character map...\nUpdated rows: 13\nC:\\workspace\\docs\\final\\artifacts\\pixel_battalion_character_map_pilot.json\n[virtual-acceleration] building public character map...\nC:\\workspace\\docs\\final\\artifacts\\pixel_battalion_character_map_public_latest.json\n[virtual-acceleration] running sweep...\nC:\\workspace\\docs\\final\\artifacts\\btc_time_machine_sweep_latest.json\n[virtual-acceleration] evaluating gate...\n:crossed_swords: *Virtual Acceleration Gate*\n- decision: ACTIVE_CANDIDATE\n- best_profit_factor: 1.060385 (threshold=1.05)\n- best_sample_count: 67\n- best_period: 2026-01-01..2026-12-31\n- artifact: C:\\workspace\\docs\\final\\artifacts\\virtual_acceleration_gate_latest.json\n[virtual-acceleration] cycle completed.",
+      "stderr": ""
+    }
+  },
+  "artifacts_summary": {
+    "harness_decision": "PASS",
+    "virtual_gate_decision": "ACTIVE_CANDIDATE",
+    "virtual_gate_pf": 1.060385,
+    "public_base_url": "http://148.230.97.246:8088/pixel_battalion/pilot"
+  }
+}

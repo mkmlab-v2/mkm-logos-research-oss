@@ -1,0 +1,94 @@
+{
+  "schema": "pixel_battalion_cdn_verify_v1",
+  "checked_at_utc": "2026-04-01T16:58:22Z",
+  "map_path": "C:\\workspace\\docs\\final\\artifacts\\pixel_battalion_character_map_public_latest.json",
+  "total": 13,
+  "ok_count": 13,
+  "fail_count": 0,
+  "verify_options": {
+    "url_retries": 3,
+    "url_retry_delay_sec": 8.0,
+    "rounds": 3,
+    "round_sleep_sec": 20.0
+  },
+  "results": [
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774951700015_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774951706373_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774954662935_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774954940598_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955152838_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955172444_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955383271_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955517797_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955571752_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955701037_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955721480_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955748157_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    },
+    {
+      "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955778951_1.png",
+      "ok": true,
+      "http_status": 200,
+      "error": null
+    }
+  ]
+}

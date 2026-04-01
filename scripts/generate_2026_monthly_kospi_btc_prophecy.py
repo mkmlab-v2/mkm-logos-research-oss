@@ -29,6 +29,30 @@ BTC_SWEEP = ART_DIR / "btc_time_machine_sweep_latest.json"
 K_SHIELD_SWEEP = ART_DIR / "btc_k_shield_fast_sweep_2025_latest.json"
 KPI_JSONL_GLOB = ROOT / "projects" / "bitcoin-trading" / "memory" / "kpi" / "kpi_snapshot_*.jsonl"
 
+SCORING_RULE = {
+    "label": "trinity_daily_hypothesis_v1",
+    "target_metric": "KOSPI_D1_RETURN_PCT",
+    "target_condition": "return_pct <= -0.8",
+    "falsification_condition": "return_pct >= +1.5",
+    "hit_threshold_pct": -0.8,
+    "fail_threshold_pct": 1.5,
+    "neutral_draw_range_open": (-0.8, 1.5),
+    "labels": {
+        "hit": "HIT",
+        "fail": "FAIL",
+        "neutral_draw": "NEUTRAL_DRAW",
+    },
+    "neutral_draw_policy": "exclude_from_win_loss; keep_or_small_penalty_weight",
+}
+
+OBSERVED_LEVER_PRIORITY = [
+    "overnight_global_risk",
+    "usdkrw_fx",
+    "rates_front_end",
+    "semiconductor_news",
+    "foreign_institutional_flow",
+]
+
 
 def _z_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -223,6 +247,10 @@ def _adjust_for_hold(up: int, neutral: int, down: int, hold_mode: bool) -> tuple
     return up2, neutral, down2
 
 
+def _scoring_rule() -> dict[str, Any]:
+    return dict(SCORING_RULE)
+
+
 def generate() -> dict[str, Any]:
     gate = _safe_json(GATE_JSON)
     waiting = _latest_jsonl(WAITING_LOG)
@@ -317,12 +345,17 @@ def generate() -> dict[str, Any]:
     risk_profile_now["core_reason"] = core.get("reason")
     risk_profile_now["core_contract_version"] = core.get("contract_version")
 
+    scoring_rule = _scoring_rule()
     return {
         "schema": "prophecy_2026_monthly_kospi_btc_fact_safe_v1",
         "generated_at_utc": _z_now(),
         "meta": {
             "engine_id": engine_id,
+            "engine_scope": "monthly_prophecy_generation_only",
             "boundary_rule": "observatory_ephemeris_v1",
+            "myeongri_verification_engine": "project-0-workspace-athena-manseryeok.verify_saju_date",
+            "calendar_source_type": "external_standard_required",
+            "calendar_source_name": "standard_rabbinic_calendar",
             "reliability_badge": reliability_badge,
             "high_reliability_decision": effective_gate,
             "gate_reason": gate_reason,
@@ -345,6 +378,12 @@ def generate() -> dict[str, Any]:
             "core_decision": core_decision,
             "core_reason": core.get("reason"),
             "core_contract_version": core.get("contract_version"),
+            "scoring_rule": scoring_rule,
+            "hypothesis_target_metric": scoring_rule["target_metric"],
+            "hypothesis_target_condition": scoring_rule["target_condition"],
+            "hypothesis_falsification_condition": scoring_rule["falsification_condition"],
+            "observed_lever_priority": OBSERVED_LEVER_PRIORITY,
+            "decision_driver_policy": "prefer_observed_lever_over_symbolic_lens",
         },
         "risk_profile": risk_profile_now,
         "months": months,
@@ -364,7 +403,11 @@ def to_markdown(doc: dict[str, Any]) -> str:
         "## 메타 고정",
         f"- generated_at_utc: {doc.get('generated_at_utc')}",
         f"- engine_id: {meta.get('engine_id')}",
+        f"- engine_scope: {meta.get('engine_scope')}",
         f"- boundary_rule: {meta.get('boundary_rule')}",
+        f"- myeongri_verification_engine: {meta.get('myeongri_verification_engine')}",
+        f"- calendar_source_type: {meta.get('calendar_source_type')}",
+        f"- calendar_source_name: {meta.get('calendar_source_name')}",
         f"- reliability_badge: {meta.get('reliability_badge')}",
         f"- high_reliability_decision: {meta.get('high_reliability_decision')}",
         f"- gate_reason: {meta.get('gate_reason')}",
@@ -377,6 +420,15 @@ def to_markdown(doc: dict[str, Any]) -> str:
         f"- core_score: {meta.get('core_score')}",
         f"- core_decision: {meta.get('core_decision')}",
         f"- core_reason: {meta.get('core_reason')}",
+        f"- hypothesis_target_condition: {meta.get('hypothesis_target_condition')}",
+        f"- hypothesis_falsification_condition: {meta.get('hypothesis_falsification_condition')}",
+        f"- observed_lever_priority: {meta.get('observed_lever_priority')}",
+        "",
+        "## 채점 규칙 (HIT/FAIL/NEUTRAL_DRAW)",
+        f"- target_metric: {meta.get('scoring_rule', {}).get('target_metric')}",
+        f"- HIT: return_pct <= {meta.get('scoring_rule', {}).get('hit_threshold_pct')}",
+        f"- FAIL: return_pct >= {meta.get('scoring_rule', {}).get('fail_threshold_pct')}",
+        "- NEUTRAL_DRAW: HIT/FAIL 사이 구간(승패 미반영)",
         "",
         "## Risk Profile (Trinity Governor)",
         f"- mode: {doc.get('risk_profile', {}).get('mode')}",

@@ -1,0 +1,27 @@
+{
+  "schema": "mkm_toe_normalization_spec_v1",
+  "generated_at_utc": "2026-04-01T10:45:14Z",
+  "range_target": [
+    0.0,
+    1.0
+  ],
+  "scaling_method": {
+    "default": "minmax_by_feature",
+    "fallback_when_constant": 0.5
+  },
+  "winsorization": {
+    "enabled": true,
+    "lower_pct": 0.02,
+    "upper_pct": 0.98,
+    "note": "Small-sample yearly data; bounds are spec-level for Stage2 consistency."
+  },
+  "missing_policy": {
+    "numeric": "impute_zero_then_flag",
+    "flag_column_suffix": "_is_imputed"
+  },
+  "outlier_policy": {
+    "method": "bounded_clip_after_minmax",
+    "lower_bound": 0.0,
+    "upper_bound": 1.0
+  }
+}

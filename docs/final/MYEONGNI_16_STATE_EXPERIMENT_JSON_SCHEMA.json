@@ -85,6 +85,11 @@
       "minimum": 0,
       "maximum": 1,
       "description": "Optional 0..1: higher = more detected self-contradiction in B-track narrative vs structured slots (inverse emphasis to consistency_rate; use one or both with clear methodology)."
+    },
+    "manseryeok_provenance": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional Fact-Safe block from tools/myeongni/manseryeok_provenance.py (e.g. myeongni_row_provenance) when a solar date is attached via ledger CLI."
     }
   }
 }

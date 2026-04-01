@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Build A/B pilot bench from observed workspace logs (distribution bootstrap).
 
+Default outputs are the *canonical* bench paths (a_track_eval.jsonl / b_track_eval.jsonl);
+see data/logos/btrack_pilot/bench/CANONICAL_BENCH_POINTER_V1.json. Other bench builders
+write suffixed files so they do not overwrite this slot.
+
 This script uses observed records only (no external random priors):
   - data/myeongni/myeongni_16_state_audit_v1.jsonl
   - data/myeongni/insight_observation_log.jsonl
@@ -11,15 +15,25 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from tools.myeongni.btrack_bench_paths import CANONICAL_A_TRACK_EVAL, CANONICAL_B_TRACK_EVAL
+from tools.myeongni.manseryeok_provenance import (
+    BENCH_SCOPE_MANIFEST_RELPATH,
+    BENCH_SCOPE_REF_OBSERVED_V1,
+    btrack_pilot_bench_scope,
+    upsert_bench_manseryeok_scope_manifest,
+)
 AUDIT_LOG = ROOT / "data" / "myeongni" / "myeongni_16_state_audit_v1.jsonl"
 INSIGHT_LOG = ROOT / "data" / "myeongni" / "insight_observation_log.jsonl"
 CROSS_REF = ROOT / "docs" / "final" / "artifacts" / "CROSS_REF_DSS_TO_STATES_DRAFT.json"
-A_OUT = ROOT / "data" / "logos" / "btrack_pilot" / "bench" / "a_track_eval.jsonl"
-B_OUT = ROOT / "data" / "logos" / "btrack_pilot" / "bench" / "b_track_eval.jsonl"
+A_OUT = ROOT / CANONICAL_A_TRACK_EVAL
+B_OUT = ROOT / CANONICAL_B_TRACK_EVAL
 
 
 def _abs(path_str: str) -> Path:
@@ -116,6 +130,15 @@ def main() -> int:
 
     # Bootstrap count per entry.
     scenarios = max(1, args.target_pairs // len(entries))
+    scope = btrack_pilot_bench_scope(
+        build_script="build_btrack_bench_from_observed_logs.py",
+        source_note=(
+            "Sources: audit JSONL + insight_observation_log + CROSS_REF_DSS_TO_STATES_DRAFT; "
+            "bootstrap SNR only — not 절기·명식 엔진."
+        ),
+    )
+    upsert_bench_manseryeok_scope_manifest(ROOT, BENCH_SCOPE_REF_OBSERVED_V1, scope)
+
     a_rows: list[dict[str, Any]] = []
     b_rows: list[dict[str, Any]] = []
 
@@ -154,6 +177,7 @@ def main() -> int:
                 "observed_distribution_bootstrap": True,
                 "link_type": link_type,
                 "corpus_type": corpus_type,
+                "manseryeok_scope_ref": BENCH_SCOPE_REF_OBSERVED_V1,
             }
             a_rows.append({**common, "track": "A", "confidence": round(a_conf, 6), "snr": round(a_snr, 6)})
             b_rows.append({**common, "track": "B", "confidence": round(b_conf, 6), "snr": round(b_snr, 6)})
@@ -168,6 +192,7 @@ def main() -> int:
             fb.write(json.dumps(row, ensure_ascii=False) + "\n")
 
     print("OK: observed-log bootstrap bench generated")
+    print(f"manseryeok_manifest={ROOT / BENCH_SCOPE_MANIFEST_RELPATH}")
     print(f"a_out={a_out} rows={len(a_rows)}")
     print(f"b_out={b_out} rows={len(b_rows)}")
     print(f"observed_confidence_count={len(observed)}")

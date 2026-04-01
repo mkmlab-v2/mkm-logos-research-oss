@@ -1,6 +1,6 @@
 {
   "schema": "btrack_symbol_lane_gate_result_v1",
-  "generated_at_utc": "2026-03-30T19:01:19Z",
+  "generated_at_utc": "2026-03-31T02:07:49Z",
   "inputs": {
     "lane_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_summary_latest.json",
     "gate_template": "C:\\workspace\\data\\logos\\btrack_pilot\\gates\\symbol_lane_gate_template.json"
@@ -10,7 +10,7 @@
       "input_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_dss_priority_latest.jsonl",
       "metrics": {
         "count": 10.0,
-        "avg_score_tfidf_like": 42.662684,
+        "avg_score_tfidf_like": 42.669575,
         "avg_dss_ratio": 0.572619,
         "dss_presence_rate": 1.0,
         "contamination_rate": 0.0
@@ -35,7 +35,7 @@
       "input_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_mixed_latest.jsonl",
       "metrics": {
         "count": 7.0,
-        "avg_score_tfidf_like": 54.013055,
+        "avg_score_tfidf_like": 54.021946,
         "avg_dss_ratio": 0.389456,
         "dss_presence_rate": 1.0,
         "contamination_rate": 0.0
@@ -59,8 +59,8 @@
     "apocrypha_priority": {
       "input_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_apocrypha_priority_latest.jsonl",
       "metrics": {
-        "count": 10.0,
-        "avg_score_tfidf_like": 37.710302,
+        "count": 190.0,
+        "avg_score_tfidf_like": 84.810999,
         "avg_dss_ratio": 0.0,
         "dss_presence_rate": 0.0,
         "contamination_rate": 0.0

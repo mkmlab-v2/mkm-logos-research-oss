@@ -32,10 +32,17 @@
 | :--- | :--- |
 | `generated_at_utc` | `YYYY-MM-DDTHH:MM:SSZ` |
 | `engine_id` | `V1_Approx_Stub` / `V2_Precision_MCP` |
+| `engine_scope` | 예: `monthly_prophecy_generation_only` |
+| `myeongri_verification_engine` | 예: `project-0-workspace-athena-manseryeok.verify_saju_date` |
+| `calendar_source_type` | `external_standard_required` |
+| `calendar_source_name` | 예: `standard_rabbinic_calendar` |
 | `boundary_rule` | 예: `observatory_ephemeris_v1` |
 | `high_reliability_decision` | `PASS` / `HOLD` |
 | `gate_reason` | `low_badge_forced_hold` / `monthly_check_gate` / `badge_policy_default` |
 | `reliability_badge` | `LOW` / `MID` / `HIGH` |
+| `hypothesis_target_condition` | 예: `return_pct <= -0.8` |
+| `hypothesis_falsification_condition` | 예: `return_pct >= +1.5` |
+| `observed_lever_priority` | 예: `overnight_global_risk,...` |
 
 `[FACT]` **경고(근사 엔진):** `engine_id=V1_Approx_Stub`이면 아래 문구를 강제 삽입한다.  
 `- 수치 불일치 가능성 경고: 절입/경계 규칙 차이로 외부 만세력·서비스와 결과가 다를 수 있음.`
@@ -46,12 +53,26 @@
 - `MID`: `engine_id == V2_Precision_MCP` 이고 `10 <= samples <= 49`
 - `HIGH`: `engine_id == V2_Precision_MCP` 이고 `samples >= 50` 이며 `net_delta > 0`
 - `high_reliability_decision`: `LOW -> HOLD`, `MID/HIGH -> PASS`
+- `LOW/HOLD`에서는 가격 수치(지수 포인트/자산 가격) 단정 출력 금지. 확률/리스크 시나리오만 허용.
 
 ### 사전/사후 분리 계약 (고정)
 
 - **사전 예측 근거(Pre-Execution):** 제1~제4장(HYPO/FACT) 해석 블록만 기록
 - **사후 실행 성과(Post-Execution):** `exchange_snapshot_24h` 및 KPI 히스토리 통찰만 기록
 - 동일 문단에서 사전 근거와 사후 성과를 혼합해 단정 문장으로 연결하지 않는다.
+
+### B-Track 채점 규칙 (고정)
+
+- `HIT`: `close_return_pct <= -0.8`
+- `FAIL`: `close_return_pct >= +1.5`
+- `NEUTRAL_DRAW`: `-0.8 < close_return_pct < +1.5`
+- `NEUTRAL_DRAW`는 승패 집계 미반영(유지 또는 소폭 감점)으로 로그에 명시한다.
+
+### 일일 운영 루틴 (출처-반증-판정)
+
+- **장 시작 전:** `calendar_source_name`, `myeongri_verification_engine`, 관측 레버 우선순위 기록
+- **장 마감 후:** `close_return_pct`, `predicted_band`, `post_close_eval_decision` 기록
+- **주간 집계:** `HIT/FAIL/NEUTRAL_DRAW` 5영업일 누적 비율과 렌즈 가중치 변경 근거 기록
 
 ---
 

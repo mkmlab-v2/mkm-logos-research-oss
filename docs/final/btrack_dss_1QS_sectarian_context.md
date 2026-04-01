@@ -19,3 +19,14 @@
 
 Israel Museum / Leon Levy DSS Digital Library 등에서 1QS 이미지·전사본 확인 가능:  
 https://www.deadseascrolls.org.il/explore-the-archive
+
+---
+
+## 문서 라벨 규칙 (Fact-Safe)
+
+| 라벨 | 의미 | 사용 기준 |
+|------|------|-----------|
+| `[FACT]` | 외부 검증 완료 사실 | 아카이브 URL·인용 구절 출처로 역추적 가능 |
+| `[HYPO]` | 내부 가설·실험 해석 | 학술 맥락 요약; 세부는 정본 대조 필요 |
+| `[VISION]` | 전략·로드맵 문장 | 목표 기술, 현재 사실로 단정 금지 |
+| `[NON-MEDICAL]` | 비의료 고지 | 건강·체질 관련 문구 포함 시 필수 |

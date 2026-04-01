@@ -1,25 +1,25 @@
 {
   "schema": "btrack_symbol_source_split_v1",
-  "generated_at_utc": "2026-03-30T19:01:19Z",
+  "generated_at_utc": "2026-03-31T02:07:49Z",
   "input_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_latest.jsonl",
   "summary": {
-    "total_curated_symbols": 20,
+    "total_curated_symbols": 200,
     "counts": {
       "dss_only": 3,
-      "apocrypha_only": 10,
+      "apocrypha_only": 190,
       "mixed": 7,
       "unknown": 0
     },
     "ratios": {
-      "dss_only": 0.15,
-      "apocrypha_only": 0.5,
-      "mixed": 0.35,
+      "dss_only": 0.015,
+      "apocrypha_only": 0.95,
+      "mixed": 0.035,
       "unknown": 0.0
     },
     "score_mass": {
-      "dss_only": 48.535458,
-      "apocrypha_only": 377.103017,
-      "mixed": 378.091382,
+      "dss_only": 48.542127,
+      "apocrypha_only": 16114.089844,
+      "mixed": 378.153623,
       "unknown": 0.0
     }
   },
@@ -27,7 +27,7 @@
     "dss_only": [
       {
         "symbol": "בני אלהים",
-        "score_tfidf_like": 16.178486,
+        "score_tfidf_like": 16.180709,
         "term_freq": 2,
         "doc_freq": 2,
         "source_mix": {
@@ -38,7 +38,7 @@
       },
       {
         "symbol": "עמים",
-        "score_tfidf_like": 16.178486,
+        "score_tfidf_like": 16.180709,
         "term_freq": 2,
         "doc_freq": 2,
         "source_mix": {
@@ -49,7 +49,7 @@
       },
       {
         "symbol": "עליון עמים",
-        "score_tfidf_like": 16.178486,
+        "score_tfidf_like": 16.180709,
         "term_freq": 2,
         "doc_freq": 2,
         "source_mix": {
@@ -61,8 +61,173 @@
     ],
     "apocrypha_only": [
       {
+        "symbol": "אֶת",
+        "score_tfidf_like": 454.523478,
+        "term_freq": 96,
+        "doc_freq": 85,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 96
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "אֲשֶׁר",
+        "score_tfidf_like": 443.621742,
+        "term_freq": 93,
+        "doc_freq": 82,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 93
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "עַל",
+        "score_tfidf_like": 416.683884,
+        "term_freq": 86,
+        "doc_freq": 76,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 86
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "איש",
+        "score_tfidf_like": 339.953224,
+        "term_freq": 68,
+        "doc_freq": 65,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 68
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "המלך",
+        "score_tfidf_like": 339.953224,
+        "term_freq": 68,
+        "doc_freq": 65,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 68
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "יהודה",
+        "score_tfidf_like": 325.947674,
+        "term_freq": 65,
+        "doc_freq": 64,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 65
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "לו",
+        "score_tfidf_like": 271.206058,
+        "term_freq": 51,
+        "doc_freq": 47,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 51
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "כָּל",
+        "score_tfidf_like": 267.12388,
+        "term_freq": 51,
+        "doc_freq": 51,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 51
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "כן",
+        "score_tfidf_like": 201.796125,
+        "term_freq": 36,
+        "doc_freq": 35,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 36
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "גַּם",
+        "score_tfidf_like": 200.313084,
+        "term_freq": 35,
+        "doc_freq": 31,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 35
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "דבר",
+        "score_tfidf_like": 193.543616,
+        "term_freq": 34,
+        "doc_freq": 32,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 34
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "אִם",
+        "score_tfidf_like": 188.58016,
+        "term_freq": 32,
+        "doc_freq": 26,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 32
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "העיר",
+        "score_tfidf_like": 178.404369,
+        "term_freq": 31,
+        "doc_freq": 30,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 31
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "אֵין",
+        "score_tfidf_like": 160.133499,
+        "term_freq": 27,
+        "doc_freq": 25,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 27
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
+        "symbol": "אֵלֶּה",
+        "score_tfidf_like": 159.11451,
+        "term_freq": 27,
+        "doc_freq": 26,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 27
+        },
+        "bucket": "apocrypha_only"
+      },
+      {
         "symbol": "שלום",
-        "score_tfidf_like": 155.19347,
+        "score_tfidf_like": 155.222367,
         "term_freq": 26,
         "doc_freq": 24,
         "source_mix": {
@@ -72,101 +237,46 @@
         "bucket": "apocrypha_only"
       },
       {
-        "symbol": "חסד",
-        "score_tfidf_like": 49.758897,
-        "term_freq": 7,
-        "doc_freq": 7,
+        "symbol": "אך",
+        "score_tfidf_like": 153.22138,
+        "term_freq": 26,
+        "doc_freq": 26,
         "source_mix": {
           "dss": 0,
-          "apocrypha": 7
+          "apocrypha": 26
         },
         "bucket": "apocrypha_only"
       },
       {
-        "symbol": "חכמה",
-        "score_tfidf_like": 30.31367,
-        "term_freq": 4,
-        "doc_freq": 4,
+        "symbol": "יד",
+        "score_tfidf_like": 148.271758,
+        "term_freq": 25,
+        "doc_freq": 25,
         "source_mix": {
           "dss": 0,
-          "apocrypha": 4
+          "apocrypha": 25
         },
         "bucket": "apocrypha_only"
       },
       {
-        "symbol": "משפט",
-        "score_tfidf_like": 30.31367,
-        "term_freq": 4,
-        "doc_freq": 4,
+        "symbol": "עד",
+        "score_tfidf_like": 148.271758,
+        "term_freq": 25,
+        "doc_freq": 25,
         "source_mix": {
           "dss": 0,
-          "apocrypha": 4
+          "apocrypha": 25
         },
         "bucket": "apocrypha_only"
       },
       {
-        "symbol": "צדק",
-        "score_tfidf_like": 23.404683,
-        "term_freq": 3,
-        "doc_freq": 3,
+        "symbol": "היה",
+        "score_tfidf_like": 148.271758,
+        "term_freq": 25,
+        "doc_freq": 25,
         "source_mix": {
           "dss": 0,
-          "apocrypha": 3
-        },
-        "bucket": "apocrypha_only"
-      },
-      {
-        "symbol": "ברית",
-        "score_tfidf_like": 23.404683,
-        "term_freq": 3,
-        "doc_freq": 3,
-        "source_mix": {
-          "dss": 0,
-          "apocrypha": 3
-        },
-        "bucket": "apocrypha_only"
-      },
-      {
-        "symbol": "יראת אלהים",
-        "score_tfidf_like": 16.178486,
-        "term_freq": 2,
-        "doc_freq": 2,
-        "source_mix": {
-          "dss": 0,
-          "apocrypha": 2
-        },
-        "bucket": "apocrypha_only"
-      },
-      {
-        "symbol": "לו משפט",
-        "score_tfidf_like": 16.178486,
-        "term_freq": 2,
-        "doc_freq": 2,
-        "source_mix": {
-          "dss": 0,
-          "apocrypha": 2
-        },
-        "bucket": "apocrypha_only"
-      },
-      {
-        "symbol": "יהודה שלום",
-        "score_tfidf_like": 16.178486,
-        "term_freq": 2,
-        "doc_freq": 2,
-        "source_mix": {
-          "dss": 0,
-          "apocrypha": 2
-        },
-        "bucket": "apocrypha_only"
-      },
-      {
-        "symbol": "ברית שלום",
-        "score_tfidf_like": 16.178486,
-        "term_freq": 2,
-        "doc_freq": 2,
-        "source_mix": {
-          "dss": 0,
-          "apocrypha": 2
+          "apocrypha": 25
         },
         "bucket": "apocrypha_only"
       }
@@ -174,7 +284,7 @@
     "mixed": [
       {
         "symbol": "בני",
-        "score_tfidf_like": 129.009993,
+        "score_tfidf_like": 129.033333,
         "term_freq": 21,
         "doc_freq": 20,
         "source_mix": {
@@ -185,7 +295,7 @@
       },
       {
         "symbol": "ישראל",
-        "score_tfidf_like": 79.474873,
+        "score_tfidf_like": 79.48821,
         "term_freq": 12,
         "doc_freq": 12,
         "source_mix": {
@@ -196,7 +306,7 @@
       },
       {
         "symbol": "עליון",
-        "score_tfidf_like": 55.925047,
+        "score_tfidf_like": 55.933938,
         "term_freq": 8,
         "doc_freq": 8,
         "source_mix": {
@@ -207,7 +317,7 @@
       },
       {
         "symbol": "אלהים",
-        "score_tfidf_like": 50.693617,
+        "score_tfidf_like": 50.701397,
         "term_freq": 7,
         "doc_freq": 6,
         "source_mix": {
@@ -218,7 +328,7 @@
       },
       {
         "symbol": "גבול",
-        "score_tfidf_like": 23.404683,
+        "score_tfidf_like": 23.408018,
         "term_freq": 3,
         "doc_freq": 3,
         "source_mix": {
@@ -229,7 +339,7 @@
       },
       {
         "symbol": "בני ישראל",
-        "score_tfidf_like": 23.404683,
+        "score_tfidf_like": 23.408018,
         "term_freq": 3,
         "doc_freq": 3,
         "source_mix": {
@@ -240,7 +350,7 @@
       },
       {
         "symbol": "נחלה",
-        "score_tfidf_like": 16.178486,
+        "score_tfidf_like": 16.180709,
         "term_freq": 2,
         "doc_freq": 2,
         "source_mix": {

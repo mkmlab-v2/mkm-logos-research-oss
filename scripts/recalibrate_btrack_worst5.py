@@ -8,11 +8,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
-IN_B = ROOT / "data" / "logos" / "btrack_pilot" / "bench" / "b_track_eval.jsonl"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from tools.myeongni.btrack_bench_paths import CANONICAL_B_TRACK_EVAL
+
+IN_B = ROOT / CANONICAL_B_TRACK_EVAL
 DIAG = ROOT / "reports" / "constitution" / "btrack_pilot" / "btrack_hold_diagnosis_latest.json"
 OUT_B = ROOT / "data" / "logos" / "btrack_pilot" / "bench" / "b_track_eval_recalibrated.jsonl"
 

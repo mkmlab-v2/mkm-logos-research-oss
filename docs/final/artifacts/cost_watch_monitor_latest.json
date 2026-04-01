@@ -1,0 +1,61 @@
+{
+  "schema": "cost_watch_monitor_v1",
+  "ts_utc": "2026-04-01T12:57:53.539922+00:00",
+  "sources": {
+    "compression_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "vllm_canary_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_repeat_latest.json",
+    "turboquant_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\rag_turboquant_poc_latest.json",
+    "hallucination_input": "C:\\workspace\\docs\\final\\artifacts\\hallucination_grounding_eval_latest.json",
+    "billing_input": "C:\\workspace\\docs\\final\\artifacts\\billing_evidence_latest.json"
+  },
+  "compression": {
+    "status": "ok",
+    "global_token_saving_rate": 0.5274261603375527,
+    "case_count": 40,
+    "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
+    "avg_sensitive_integrity": 0.9916666666666668
+  },
+  "vllm_canary": {
+    "status": "ok",
+    "stable": true,
+    "go_rate": 0.9,
+    "valid_runs": 10,
+    "total_runs": 10,
+    "p95_latency_delta_pct_mean": -8.103896873011811,
+    "quality_delta_mean": 0.0
+  },
+  "turboquant_poc": {
+    "status": "ok",
+    "query_speedup_x": 1.0841,
+    "build_speedup_x": 1.1948,
+    "evidence_tier": "candidate_real_benchmark",
+    "synthetic_command_detected": false
+  },
+  "hallucination_eval": {
+    "status": "ok",
+    "sample_count": 1002,
+    "quality_pass_rate": 1.0,
+    "hallucination_proxy_rate": 0.0,
+    "zero_claim_eligible": true,
+    "min_sample_for_zero_claim": 1000
+  },
+  "billing": {
+    "status": "ok",
+    "period_label": "waiting_queue_monthly_check",
+    "api_cost_usd": 0.0807,
+    "input_tokens": 90,
+    "output_tokens": 112,
+    "pricing_configured": false,
+    "source_tier": "invoice_audit",
+    "invoice_provenance": "provider_file",
+    "invoice_audit_ready": true
+  },
+  "claim_guardrails": {
+    "can_claim_hallucination_zero": true,
+    "can_claim_margin_uplift_50": false,
+    "blocking_reasons": [
+      "billing_pricing_not_configured"
+    ]
+  },
+  "note": "This monitor is evidence-join only. It does not certify margin uplift without real billing data."
+}

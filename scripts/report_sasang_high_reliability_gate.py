@@ -41,6 +41,12 @@ def main() -> int:
     ap.add_argument("--ops-gate", default=str(DEFAULT_OPS_GATE))
     ap.add_argument("--clinical", default=str(DEFAULT_CLINICAL))
     ap.add_argument("--out", default=str(DEFAULT_OUT))
+    ap.add_argument(
+        "--profile",
+        choices=("standard", "strict"),
+        default="standard",
+        help="Gate profile: standard (default) or strict.",
+    )
     ap.add_argument("--min-paired-rows", type=int, default=64)
     ap.add_argument("--min-recall-macro", type=float, default=0.65)
     ap.add_argument("--max-ece", type=float, default=0.20)
@@ -58,6 +64,17 @@ def main() -> int:
     ops = _jread(ops_path)
     clinical = _jread(clinical_path)
 
+    # Strict mode tightens calibration/recall gates for higher-confidence operation.
+    min_paired_rows = int(args.min_paired_rows)
+    min_recall_macro = float(args.min_recall_macro)
+    max_ece = float(args.max_ece)
+    max_brier = float(args.max_brier)
+    if args.profile == "strict":
+        min_paired_rows = max(min_paired_rows, 128)
+        min_recall_macro = max(min_recall_macro, 0.75)
+        max_ece = min(max_ece, 0.10)
+        max_brier = min(max_brier, 0.15)
+
     paired_rows = int(clinical.get("diagnostics", {}).get("paired_rows", 0) or 0)
     recall_macro = _f(clinical.get("metrics", {}).get("recall_macro"))
     ece = _f(clinical.get("metrics", {}).get("confidence", {}).get("ece"))
@@ -65,10 +82,16 @@ def main() -> int:
 
     checks = {
         "ops_gate_pass": str(ops.get("decision", "")).upper() == "PASS",
-        "paired_rows_gte_threshold": paired_rows >= args.min_paired_rows,
-        "recall_macro_gte_threshold": recall_macro is not None and recall_macro >= args.min_recall_macro,
-        "ece_lte_threshold": ece is not None and ece <= args.max_ece,
-        "brier_lte_threshold": brier is not None and brier <= args.max_brier,
+        "paired_rows_gte_threshold": paired_rows >= min_paired_rows,
+        "recall_macro_gte_threshold": recall_macro is not None and recall_macro >= min_recall_macro,
+        "ece_lte_threshold": ece is not None and ece <= max_ece,
+        "brier_lte_threshold": brier is not None and brier <= max_brier,
+    }
+    gaps = {
+        "paired_rows_shortfall": max(0, min_paired_rows - paired_rows),
+        "recall_macro_shortfall": max(0.0, min_recall_macro - (recall_macro if recall_macro is not None else 0.0)),
+        "ece_excess": max(0.0, (ece if ece is not None else 1.0) - max_ece),
+        "brier_excess": max(0.0, (brier if brier is not None else 1.0) - max_brier),
     }
 
     decision = "PASS" if all(checks.values()) else "HOLD"
@@ -76,11 +99,12 @@ def main() -> int:
         "schema": "sasang_high_reliability_gate_v1",
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "inputs": {"ops_gate": str(ops_path), "clinical_eval": str(clinical_path)},
+        "profile": args.profile,
         "thresholds": {
-            "min_paired_rows": args.min_paired_rows,
-            "min_recall_macro": args.min_recall_macro,
-            "max_ece": args.max_ece,
-            "max_brier": args.max_brier,
+            "min_paired_rows": min_paired_rows,
+            "min_recall_macro": min_recall_macro,
+            "max_ece": max_ece,
+            "max_brier": max_brier,
         },
         "snapshot": {
             "paired_rows": paired_rows,
@@ -89,6 +113,7 @@ def main() -> int:
             "brier_score": brier,
         },
         "checks": checks,
+        "gaps": gaps,
         "decision": decision,
         "mode": "sasang_high_reliability_enabled" if decision == "PASS" else "sasang_high_reliability_hold",
         "notes": [

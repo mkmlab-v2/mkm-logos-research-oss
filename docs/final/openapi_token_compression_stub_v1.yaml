@@ -3,9 +3,14 @@ info:
   title: MKM Token Compression API (stub v1)
   version: "1.0.0"
   description: |
-    HTTP data contract for compress/expand. Stub: scripts/compression_token_api_stub.py
-    (domain router envelope only; no full multilens evaluate_report in-process unless a future flag wires it).
-    Alignment with bench SSOT: default eval input path may be named in EvalContext (documentation only in stub).
+    HTTP data contract for compress/expand. Implementation: scripts/compression_token_api_stub.py.
+    Facts for external pilots (see docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md §10):
+    - POST /v1/compress: domain router (shard/policy) always runs on real code. compression_metrics is null
+      unless eval_context.hydrate_metrics is true; when hydrate_live_eval is true, the server runs the same
+      evaluate_report path as multilens benches first, with decision-artifact fallback on failure
+      (integrity_flags may include hydration_live_eval_failed).
+    - POST /v1/expand: stub returns original_text from the payload unchanged (lossless echo); not a residual/patch
+      reconstruction pipeline. Treat submitted text as sensitive for logging and partner agreements.
     Auth, rate limits, SLA: out of scope v1.
     Versioning rule: bump PATCH for docs/examples only, MINOR for backward-compatible
     additive fields, MAJOR for required field changes/removals or behavior-breaking changes.
@@ -16,7 +21,7 @@ paths:
   /v1/compress:
     post:
       operationId: compressText
-      summary: Route text and return compression envelope (stub echoes original_text)
+      summary: Route text and return compression envelope (original_text echoed; optional hydrated metrics)
       requestBody:
         required: true
         content:
@@ -127,7 +132,7 @@ paths:
   /v1/expand:
     post:
       operationId: expandPayload
-      summary: Reverse CompressResponse-compatible payload to plain text (lossless for stub)
+      summary: Echo original_text from payload (stub; not patch-based reconstruction)
       requestBody:
         required: true
         content:
@@ -260,7 +265,8 @@ components:
           type: boolean
           description: |
             If true with hydrate_metrics=true, server tries live evaluate_report first,
-            then falls back to decision-based estimate on failure.
+            then falls back to decision-based estimate on failure. On exception, integrity_flags may set
+            hydration_live_eval_failed=true and hydration_live_eval_error_class to the exception type name.
     CompressionMetrics:
       type: object
       description: |
@@ -344,7 +350,10 @@ components:
         integrity_flags:
           type: object
           additionalProperties: true
-          description: Runtime hydration and routing diagnostics.
+          description: |
+            Runtime hydration and routing diagnostics. Common keys: metrics_mode (none|live|decision_fallback),
+            hydration_metrics_source, hydration_live_eval_elapsed_ms, hydration_live_eval_failed (bool),
+            hydration_live_eval_error_class (string, when live path raised).
           example:
             hangul_principle: true
             hard_keep_count: 3
@@ -371,3 +380,5 @@ components:
         integrity_flags:
           type: object
           additionalProperties: true
+          description: |
+            stub_expand and lossless_echo indicate echo-only behavior (no patch reconstruction). Treat echoed text under partner privacy rules.

@@ -1,31 +1,31 @@
 {
   "schema": "btrack_symbol_lane_baseline_lock_v1",
-  "locked_at_utc": "2026-03-30T18:16:25Z",
+  "locked_at_utc": "2026-03-31T01:46:06Z",
   "inputs": {
     "lane_gate": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_gate_latest.json",
     "lane_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_summary_latest.json",
-    "gate_template": "C:\\workspace\\data\\logos\\btrack_pilot\\gates\\symbol_lane_gate_template.json"
+    "gate_template": "C:\\workspace\\data\\logos\\btrack_pilot\\gates\\symbol_lane_gate_template_exploratory.json"
   },
   "input_hashes": {
-    "lane_gate_sha256": "4ad1178dd6645cf6f9b539e3a0930cdc8bac69b5868692c7e17b4e6ea49be9fb",
-    "lane_summary_sha256": "a6f98b9142c0945e43da2b29f596ef261aa571ab2e19e6a88a0c7f8c4d2f19ef",
-    "gate_template_sha256": "4290ef5e8299e222c313991a3887c10151b403539eeb12a46bd93a4fcc8c0d47"
+    "lane_gate_sha256": "182b11ae24cdda8efc046aac732dde45d12aad27702bbb40210fe618bde5bf64",
+    "lane_summary_sha256": "b1aa2a95e30985c0069e096632725a8e09bad938ec9319b955eb1298bff5414c",
+    "gate_template_sha256": "82ee14e8b98d829e957ab5a56c26d7ebf99e9c2b12aca139e0df7a31068b71b0"
   },
   "baseline_decision": "pass",
   "baseline_lane_metrics": {
     "dss_priority": {
-      "count": 10.0,
-      "avg_score_tfidf_like": 42.662684,
-      "avg_dss_ratio": 0.572619
+      "count": 17.0,
+      "avg_score_tfidf_like": 28.598029,
+      "avg_dss_ratio": 0.748599
     },
     "mixed": {
       "count": 7.0,
-      "avg_score_tfidf_like": 54.013055,
+      "avg_score_tfidf_like": 54.021946,
       "avg_dss_ratio": 0.389456
     },
     "apocrypha_priority": {
-      "count": 10.0,
-      "avg_score_tfidf_like": 37.710302,
+      "count": 183.0,
+      "avg_score_tfidf_like": 86.392795,
       "avg_dss_ratio": 0.0
     }
   },

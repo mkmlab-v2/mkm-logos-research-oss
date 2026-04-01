@@ -21,6 +21,11 @@ THEME_TERMS = {
     "water", "bread", "life", "death", "sabbath", "jubilee",
     "יהוה", "אלהים", "אור", "חכמה", "ברית", "צדק", "שלום", "קדש", "משפט", "חסד",
 }
+NUMERIC_SYMBOL_THEMES = {"7", "12", "40", "70", "144000"}
+NUMERIC_TEXT_THEMES = {
+    "seven", "twelve", "forty", "seventy",
+    "שבע", "שבעה", "שבעים", "שנים עשר", "שתים עשרה", "ארבעים",
+}
 
 DROP_TERMS = {
     "now", "upon", "but", "me", "thee", "up", "out", "one", "man", "day", "go", "br",
@@ -50,11 +55,27 @@ def _iter_jsonl(path: Path):
 
 
 def _is_theme_symbol(sym: str) -> bool:
+    if sym in NUMERIC_SYMBOL_THEMES:
+        return True
+    if sym in NUMERIC_TEXT_THEMES:
+        return True
     if sym in THEME_TERMS:
         return True
     if " " in sym:
         parts = sym.split()
-        return any(p in THEME_TERMS for p in parts)
+        return any(
+            (p in THEME_TERMS) or (p in NUMERIC_SYMBOL_THEMES) or (p in NUMERIC_TEXT_THEMES)
+            for p in parts
+        )
+    return False
+
+
+def _is_numeric_theme_symbol(sym: str) -> bool:
+    if sym in NUMERIC_SYMBOL_THEMES or sym in NUMERIC_TEXT_THEMES:
+        return True
+    if " " in sym:
+        parts = sym.split()
+        return any((p in NUMERIC_SYMBOL_THEMES) or (p in NUMERIC_TEXT_THEMES) for p in parts)
     return False
 
 
@@ -105,6 +126,14 @@ def main() -> int:
             continue
         curated.append(row)
 
+    # Soft-boost numeric symbols so low-frequency numeric expressions survive top-k truncation.
+    curated.sort(
+        key=lambda r: (
+            1 if _is_numeric_theme_symbol(str(r.get("symbol", "")).strip().lower()) else 0,
+            float(r.get("score_tfidf_like", 0.0) or 0.0),
+        ),
+        reverse=True,
+    )
     # Preserve high-value theme symbols first, then enforce DSS quota to reduce source bias.
     curated = curated[: args.top_k]
     curated_keys = {str(r.get("symbol", "")).strip().lower() for r in curated}

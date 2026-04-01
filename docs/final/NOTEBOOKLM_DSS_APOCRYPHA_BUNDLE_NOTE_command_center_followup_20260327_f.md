@@ -37,3 +37,14 @@
 ## Next Command
 
 `py scripts/run_dss_insight_priority_cycle.py --max-actions 1`
+
+---
+
+## 문서 라벨 규칙 (Fact-Safe)
+
+| 라벨 | 의미 | 사용 기준 |
+|------|------|-----------|
+| `[FACT]` | 외부 검증 완료 사실 | Evidence Files·JSON/리포트 경로로 역추적 가능 |
+| `[HYPO]` | 잠정 가설·파일럿 규칙 | Candidate Rules, 승격·권위 게이트 미통과 시 |
+| `[VISION]` | 전략·로드맵 문장 | 권장 액션, 목표 상태; 현재 성능으로 단정 금지 |
+| `[NON-MEDICAL]` | 비의료 고지 | 건강·체질 관련 문구 포함 시 필수 |

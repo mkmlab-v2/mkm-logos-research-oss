@@ -1,0 +1,31 @@
+{
+  "schema": "trinity_track_quality_report_v1",
+  "generated_at_utc": "2026-04-01T13:01:27Z",
+  "tracks": {
+    "logos": {
+      "status": "PASS",
+      "source": "C:\\workspace\\docs\\final\\artifacts\\logos_timeline_quality_gate_latest.json",
+      "schema": "logos_timeline_quality_gate_v1"
+    },
+    "sasang": {
+      "status": "PASS",
+      "source": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_latest.json",
+      "schema": "sasang_high_reliability_gate_v1"
+    },
+    "myeongni": {
+      "status": "PASS",
+      "source": "C:\\workspace\\docs\\final\\artifacts\\myeongni_transition_quality_gate_latest.json",
+      "schema": "myeongni_transition_quality_gate_v1"
+    }
+  },
+  "summary": {
+    "pass_count": 3,
+    "warn_count": 0,
+    "hold_count": 0,
+    "overall_decision": "PASS",
+    "report_mode": "report_only"
+  },
+  "recommended_actions": [
+    "All three tracks satisfy current report-only quality thresholds."
+  ]
+}

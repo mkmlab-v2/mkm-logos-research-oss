@@ -34,6 +34,44 @@
 
 **규칙**: `149 passed` / `13 passed` 등 **건수 주장**은 로컬 재실행 또는 CI 아티팩트 없이 보고하지 않는다.
 
+## 운영 브리프 자동화 (월간 체크)
+
+- 러너: `scripts/run_waiting_queue_monthly_check.ps1`
+- 생성 순서(팩트락):
+  1) `fact_safe_multilens_brief_latest.md` 생성
+  2) 월간 체크 로그 JSONL append
+  3) `fact_safe_multilens_broadcast_latest.md/.json` 생성 (`--strict-required`)
+- 브로드캐스트 필수 필드: `reliability_badge`, `high_reliability_decision`, `gate_reason`, `net`
+- 최신 브로드캐스트 산출물:
+  - `projects/bitcoin-trading/memory/v2/briefs/fact_safe_multilens_broadcast_latest.md`
+  - `projects/bitcoin-trading/memory/v2/briefs/fact_safe_multilens_broadcast_latest.json`
+
+### 2026-04-01 운영 업데이트 (BTC 주력 자동화)
+
+- **주력 라인**: BTC Binance 일일 채점 태스크 활성 (`Bitcoin-WaitingQueue-BTCBinance-Daily`).
+- **채점 표준**: `HIT/FAIL/NEUTRAL_DRAW/PENDING_CLOSE` 고정. `PENDING_CLOSE`는 데이터 결손으로 처리.
+- **자동 주입 정책**: `DAILY_BTC_BINANCE_D1_RETURN_PCT` 환경변수 우선, 미설정 시 Binance 24h API 조회, 실패 시 `PENDING_CLOSE`.
+- **주간 분포 산출물**:
+  - `docs/final/artifacts/trinity_weekly_reliability_snapshot_latest.json`
+  - `docs/final/artifacts/trinity_scoring_distribution_latest.json`
+- **운영 런북(도메인 계획)**:
+  - `projects/bitcoin-trading/ops/windows-rehearsal/WAITING_QUEUE_DUAL_BTC_RUNBOOK.md`
+  - `projects/bitcoin-trading/ops/windows-rehearsal/DAILY_EXECUTION_INSIGHT_BRIEF_TEMPLATE.md`
+- **융합 SOP(Quant → Pixel/NightWatchman)**:
+  - 러너: `projects/bitcoin-trading/ops/windows-rehearsal/run_fused_quant_pixel_sop.ps1`
+  - dry 태스크: `Bitcoin-Fused-QuantPixel-SOP-Daily`
+  - live 태스크: `Bitcoin-Fused-QuantPixel-SOP-Live-Daily`
+  - 모드 스위치: `projects/bitcoin-trading/ops/windows-rehearsal/switch_fused_quant_pixel_mode.ps1`
+
+## TurboQuant PoC 보고 규칙
+
+- 러너 템플릿: `scripts/run_rag_turboquant_poc_template.py`
+- 산출물: `reports/constitution/btrack_pilot/rag_turboquant_poc_latest.json`
+- 팩트락 필드:
+  - `synthetic_command_detected`
+  - `evidence_tier` (`synthetic_smoke` / `candidate_real_benchmark`)
+- **규칙**: `synthetic_smoke` 결과는 파이프라인 검증 용도로만 사용하고, 상용 마진/처리량 수치 근거로 승격하지 않는다.
+
 ## Logos 4D 레짐 공명 (SSOT, 워크스페이스 상대 경로)
 
 **프로브**: `scripts/logos_vector_resonance_probe.py` — `--rank-by-regime`, `--regime-map data/regimes/regime_map_btc_ext.json`, `--top-k 100`.

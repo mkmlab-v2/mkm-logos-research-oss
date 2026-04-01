@@ -1,0 +1,14 @@
+{
+  "schema": "n8n_telegram_delivery_evidence_v1",
+  "generated_at_utc": "2026-04-01T10:44:41Z",
+  "workflow_id": "Jema12_3Agent_Regime_Watch_v5_3_compat_bridge",
+  "execution_id": "110",
+  "execution_status": "success",
+  "execution_mode": "webhook",
+  "execution_started_at": "2026-04-01T10:40:38.376Z",
+  "notify_nodes_executed": {
+    "Notify Slack (HOLD pending)": 1,
+    "Notify Slack (HOLD executed)": 1
+  },
+  "passed": true
+}

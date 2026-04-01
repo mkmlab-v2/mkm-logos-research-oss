@@ -59,6 +59,10 @@ projects/**/.next/
 .tmp/
 
 # Local generated artifacts (do not track)
+# Night Watchman harness history trees and large one-off exports (regenerable; avoid repo bloat)
+docs/final/artifacts/night_watchman_harness/
+docs/final/artifacts/pixel_battalion_refined_upload.zip
+docs/final/artifacts/mkm_toe_training_dataset_v*.csv
 projects/bitcoin-trading/.venv/
 projects/bitcoin-trading/.pm2-win/
 mkmlife-home-*.png
@@ -69,6 +73,19 @@ staging/
 
 # Local docs/code exports (large Cursor/chat-style trees; do not bulk-commit)
 docs/code/
+
+# Local bulk trees (currently no tracked files here; keeps git status readable)
+api-services/
+assets/
+athena_vault_infrastructure/
+memory/
+projects/bitcoin-trading/memory/
+docs/docs/
+docs/reports/
+
+# Root data corpus: ignore untracked bulk only; paths already tracked under data/ stay tracked.
+# To promote a new file: git add -f path
+/data/
 
 # Local workspace mirrors / personal artifacts
 projects/mkm-lab-workspace-v2/

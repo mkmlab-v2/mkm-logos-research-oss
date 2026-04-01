@@ -1,0 +1,30 @@
+{
+  "schema": "btc_time_machine_fact_safe_backtest_v1",
+  "generated_at_utc": "2026-03-31T17:55:26Z",
+  "method": "causal_walk_forward_no_future_leak",
+  "symbol": "BTCUSDT",
+  "start": "2025-01-01",
+  "end": "2025-12-31",
+  "bars": 364,
+  "config": {
+    "warmup": 30,
+    "horizon": 3,
+    "stride": 1,
+    "fee_bps_round_trip": 8.0,
+    "slippage_bps_round_trip": 5.0,
+    "max_position_fraction": 0.2,
+    "daily_loss_cap_pct": 1.5,
+    "skip_if_vol_shock_pct": 8.0
+  },
+  "metrics": {
+    "sample_count": 317,
+    "win_rate": 0.425868,
+    "net_return_pct": -16.59583,
+    "avg_trade_return_pct": -0.052353,
+    "profit_factor": 0.800345,
+    "max_drawdown_pct": 21.580708,
+    "max_loss_streak": 12,
+    "skipped_vol_shock": 14,
+    "skipped_daily_loss_cap": 0
+  }
+}

@@ -5,11 +5,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from tools.myeongni.manseryeok_provenance import multilens_p1_compression_scope
 ART = ROOT / "docs" / "final" / "artifacts"
 
 EFF = ART / "MULTILENS_P1_AB_EFFICIENCY_V1.json"
@@ -106,6 +111,7 @@ def main() -> int:
     out_doc = {
         "schema": "multilens_p1_ab_final_selection_v1",
         "ts_utc": datetime.now(timezone.utc).isoformat(),
+        "manseryeok_scope": multilens_p1_compression_scope(),
         "source_refs": {
             "efficiency": "docs/final/artifacts/MULTILENS_P1_AB_EFFICIENCY_V1.json",
             "intensity": "docs/final/artifacts/MULTILENS_P1_AB_INTENSITY_V1.json",

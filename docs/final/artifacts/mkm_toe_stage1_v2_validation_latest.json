@@ -1,0 +1,12 @@
+{
+  "schema": "mkm_toe_stage1_v2_validation_v1",
+  "generated_at_utc": "2026-04-01T10:47:30Z",
+  "row_count": 25,
+  "checks": {
+    "leakage_check": "PASS",
+    "null_policy_check": "PASS",
+    "drift_check": "PASS",
+    "reproducibility_check": "PASS"
+  },
+  "decision": "PASS"
+}

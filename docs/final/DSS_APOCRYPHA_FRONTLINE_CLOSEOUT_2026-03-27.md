@@ -69,3 +69,12 @@
   1. `command_center_status != GO`
   2. `joint_gate` 회귀 감지
   3. `authority_readiness`가 `READY`에서 `BLOCKED`로 하락
+
+---
+
+## 라벨 정합 규칙 (Fact-Safe)
+
+- 본 문서의 사실 진술은 `[FACT]`로 표기한다(원격 run id/URL/아티팩트로 역추적 가능).
+- 운영 가설·잠정 판단은 `[HYPO]`로 표기한다.
+- 전략·권고·로드맵은 `[VISION]`으로 표기한다.
+- 건강·체질 관련 표현이 포함될 경우 `[NON-MEDICAL]` 고지를 병기한다.

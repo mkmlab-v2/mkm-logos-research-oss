@@ -1,0 +1,147 @@
+{
+  "schema": "btc_time_machine_regime_switch_backtest_v1",
+  "generated_at_utc": "2026-04-01T12:57:55Z",
+  "years": [
+    2024,
+    2025,
+    2026
+  ],
+  "profiles": {
+    "base_h3": {
+      "warmup": 30,
+      "horizon": 3,
+      "stride": 1,
+      "fee_bps_round_trip": 8.0,
+      "slippage_bps_round_trip": 5.0,
+      "max_position_fraction": 0.2,
+      "daily_loss_cap_pct": 1.5,
+      "skip_if_vol_shock_pct": 8.0
+    },
+    "k_shield_h1_soft": {
+      "warmup": 20,
+      "horizon": 1,
+      "stride": 1,
+      "fee_bps_round_trip": 8.0,
+      "slippage_bps_round_trip": 5.0,
+      "max_position_fraction": 0.15,
+      "daily_loss_cap_pct": 1.2,
+      "skip_if_vol_shock_pct": 6.5
+    }
+  },
+  "single_profile_base_h3": {
+    "per_year": [
+      {
+        "year": 2024,
+        "profile": "base_h3",
+        "metrics": {
+          "sample_count": 298,
+          "win_rate": 0.52349,
+          "net_return_pct": 5.575665,
+          "avg_trade_return_pct": 0.01871,
+          "profit_factor": 1.065581,
+          "max_drawdown_pct": 14.923423,
+          "max_loss_streak": 9,
+          "skipped_vol_shock": 34,
+          "skipped_daily_loss_cap": 0
+        }
+      },
+      {
+        "year": 2025,
+        "profile": "base_h3",
+        "metrics": {
+          "sample_count": 317,
+          "win_rate": 0.425868,
+          "net_return_pct": -16.59583,
+          "avg_trade_return_pct": -0.052353,
+          "profit_factor": 0.800345,
+          "max_drawdown_pct": 21.580708,
+          "max_loss_streak": 12,
+          "skipped_vol_shock": 14,
+          "skipped_daily_loss_cap": 0
+        }
+      },
+      {
+        "year": 2026,
+        "profile": "base_h3",
+        "metrics": {
+          "sample_count": 55,
+          "win_rate": 0.454545,
+          "net_return_pct": -6.131508,
+          "avg_trade_return_pct": -0.111482,
+          "profit_factor": 0.715811,
+          "max_drawdown_pct": 12.905503,
+          "max_loss_streak": 5,
+          "skipped_vol_shock": 3,
+          "skipped_daily_loss_cap": 0
+        }
+      }
+    ],
+    "aggregate": {
+      "sample_count_total": 670,
+      "net_return_pct_sum": -17.151673,
+      "profit_factor_weighted_by_samples": 0.911376,
+      "max_drawdown_pct_worst_year": 21.580708
+    }
+  },
+  "regime_switch": {
+    "rule": "year<=2024:base_h3, year>=2025:k_shield_h1_soft",
+    "per_year": [
+      {
+        "year": 2024,
+        "profile": "base_h3",
+        "metrics": {
+          "sample_count": 298,
+          "win_rate": 0.52349,
+          "net_return_pct": 5.575665,
+          "avg_trade_return_pct": 0.01871,
+          "profit_factor": 1.065581,
+          "max_drawdown_pct": 14.923423,
+          "max_loss_streak": 9,
+          "skipped_vol_shock": 34,
+          "skipped_daily_loss_cap": 0
+        }
+      },
+      {
+        "year": 2025,
+        "profile": "k_shield_h1_soft",
+        "metrics": {
+          "sample_count": 338,
+          "win_rate": 0.446746,
+          "net_return_pct": -6.383742,
+          "avg_trade_return_pct": -0.018887,
+          "profit_factor": 0.840615,
+          "max_drawdown_pct": 8.285629,
+          "max_loss_streak": 8,
+          "skipped_vol_shock": 5,
+          "skipped_daily_loss_cap": 0
+        }
+      },
+      {
+        "year": 2026,
+        "profile": "k_shield_h1_soft",
+        "metrics": {
+          "sample_count": 67,
+          "win_rate": 0.507463,
+          "net_return_pct": -0.547697,
+          "avg_trade_return_pct": -0.008175,
+          "profit_factor": 0.944022,
+          "max_drawdown_pct": 3.261855,
+          "max_loss_streak": 3,
+          "skipped_vol_shock": 3,
+          "skipped_daily_loss_cap": 0
+        }
+      }
+    ],
+    "aggregate": {
+      "sample_count_total": 703,
+      "net_return_pct_sum": -1.355774,
+      "profit_factor_weighted_by_samples": 0.945833,
+      "max_drawdown_pct_worst_year": 14.923423
+    }
+  },
+  "delta_regime_switch_minus_base": {
+    "net_return_pct_sum": 15.795899,
+    "profit_factor_weighted_by_samples": 0.034457,
+    "max_drawdown_pct_worst_year": -6.657285
+  }
+}

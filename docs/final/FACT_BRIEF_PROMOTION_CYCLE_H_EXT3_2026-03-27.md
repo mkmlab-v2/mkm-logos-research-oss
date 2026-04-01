@@ -93,3 +93,16 @@
   - `reports/constitution/promoted_candidates_ab_verification_20260327.md`
 - 비교표/요약표:
   - `reports/constitution/candidate_rules_delta_h_vs_h_ext3_20260327.md`
+
+---
+
+## 문서 라벨 규칙 (Fact-Safe)
+
+| 라벨 | 의미 | 본 문서 대응 |
+|------|------|----------------|
+| `[FACT]` | 근거 있는 완료 진술 | 상단 `[FACT]` 절·체크된 항목; JSON/리포트 경로로 역추적 |
+| `[HYPO]` | 측정 가능 가설 | `[HYPO]` 절 H1/H2; 실패·성공 기준 명시됨 |
+| `[VISION]` | 전략·방향 | `[STRAT]` S1–S3와 동급 **목표 문장**; 구현 완료 선언으로 읽지 않음 |
+| `[NON-MEDICAL]` | 비의료 고지 | `health != HEALTHY` 등은 **인테이크 시스템 건강 상태** 지표이며 의료 의미 아님 |
+
+본 Brief는 이미 `[FACT]`/`[HYPO]`/`[STRAT]`를 쓰므로, 대외 요약 시 `[STRAT]` 블록만 `[VISION]`으로 읽어도 된다.

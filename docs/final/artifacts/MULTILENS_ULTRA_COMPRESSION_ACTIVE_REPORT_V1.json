@@ -17,6 +17,8 @@
     "hangul_max_saving_rate": 0.48,
     "use_hangul_principle": false,
     "use_domain_router": true,
+    "use_master_codebook_lexicon_v1": true,
+    "master_codebook_lexicon_path": null,
     "include_gematria_metadata": true,
     "include_gematria_4d_bridge": true,
     "include_cee_core": true,
@@ -29,9 +31,9 @@
   },
   "compression_metrics": {
     "case_count": 40,
-    "global_token_saving_rate": 0.5316455696202531,
-    "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
-    "avg_sensitive_integrity": 1.0,
+    "global_token_saving_rate": 0.5274261603375527,
+    "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
+    "avg_sensitive_integrity": 0.9916666666666668,
     "cases": [
       {
         "id": "cmp2_001",
@@ -41,11 +43,32 @@
         "compression_ratio": 0.44,
         "reconstruction_fidelity_jaccard": 0.5238095238095238,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "State read only cannot trigger A track policy 3 dominates to",
-        "reconstructed_text_effective": "State 3 to dominates read only cannot trigger A track policy",
+        "compressed_text_effective": "State to in but this is read only and cannot 3",
+        "reconstructed_text_effective": "State 3 to in but this is read only and cannot",
         "route": {
           "shard_id": "zone_b_timing",
-          "domain": "timing"
+          "domain": "timing",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 13,
+            "hits_sample": [
+              "and",
+              "but",
+              "cannot",
+              "in",
+              "is",
+              "only",
+              "policy",
+              "read",
+              "state",
+              "this",
+              "to",
+              "track",
+              "trigger"
+            ]
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -116,7 +139,28 @@
           "metadata": {
             "route": {
               "shard_id": "zone_b_timing",
-              "domain": "timing"
+              "domain": "timing",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 13,
+                "hits_sample": [
+                  "and",
+                  "but",
+                  "cannot",
+                  "in",
+                  "is",
+                  "only",
+                  "policy",
+                  "read",
+                  "state",
+                  "this",
+                  "to",
+                  "track",
+                  "trigger"
+                ]
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -127,16 +171,36 @@
       {
         "id": "cmp2_002",
         "raw_tokens": 19,
-        "compressed_tokens": 8,
-        "token_saving_rate": 0.5789473684210527,
-        "compression_ratio": 0.42105263157894735,
-        "reconstruction_fidelity_jaccard": 0.47058823529411764,
+        "compressed_tokens": 9,
+        "token_saving_rate": 0.5263157894736843,
+        "compression_ratio": 0.47368421052631576,
+        "reconstruction_fidelity_jaccard": 0.5294117647058824,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "direct witness manual policy strict evidence traceability ENTRY_16",
-        "reconstructed_text_effective": "ENTRY_16 direct witness manual policy strict evidence traceability",
+        "compressed_text_effective": "direct witness is so the gate manual proxy ENTRY_16",
+        "reconstructed_text_effective": "ENTRY_16 direct witness is so the gate manual proxy",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 12,
+            "hits_sample": [
+              "direct",
+              "evidence",
+              "gate",
+              "is",
+              "manual",
+              "policy",
+              "proxy",
+              "so",
+              "strict",
+              "the",
+              "with",
+              "witness"
+            ]
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -207,7 +271,27 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 12,
+                "hits_sample": [
+                  "direct",
+                  "evidence",
+                  "gate",
+                  "is",
+                  "manual",
+                  "policy",
+                  "proxy",
+                  "so",
+                  "strict",
+                  "the",
+                  "with",
+                  "witness"
+                ]
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -223,11 +307,25 @@
         "compression_ratio": 0.4117647058823529,
         "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "track Compression should footprint safety caveats boundary",
-        "reconstructed_text_effective": "Compression should footprint safety caveats track boundary",
+        "compressed_text_effective": "should token while safety track boundary Compression",
+        "reconstructed_text_effective": "Compression should token while safety track boundary",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 6,
+            "hits_sample": [
+              "boundary",
+              "safety",
+              "should",
+              "token",
+              "track",
+              "while"
+            ]
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -298,7 +396,21 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 6,
+                "hits_sample": [
+                  "boundary",
+                  "safety",
+                  "should",
+                  "token",
+                  "track",
+                  "while"
+                ]
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -314,11 +426,30 @@
         "compression_ratio": 0.5,
         "reconstruction_fidelity_jaccard": 0.5333333333333333,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "A source strong so that reproduce every report",
-        "reconstructed_text_effective": "A strong report source so that reproduce every",
+        "compressed_text_effective": "A strong report references source artifacts so explicitly",
+        "reconstructed_text_effective": "A strong report references source artifacts explicitly so",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 11,
+            "hits_sample": [
+              "artifacts",
+              "can",
+              "claim",
+              "every",
+              "future",
+              "references",
+              "report",
+              "so",
+              "source",
+              "strong",
+              "that"
+            ]
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -389,7 +520,26 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 11,
+                "hits_sample": [
+                  "artifacts",
+                  "can",
+                  "claim",
+                  "every",
+                  "future",
+                  "references",
+                  "report",
+                  "so",
+                  "source",
+                  "strong",
+                  "that"
+                ]
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -405,11 +555,28 @@
         "compression_ratio": 0.4666666666666667,
         "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "not unless evidence Weekly noise override cadence",
-        "reconstructed_text_effective": "Weekly noise not override cadence unless evidence",
+        "compressed_text_effective": "noise should not monthly governance unless evidence",
+        "reconstructed_text_effective": "noise should not monthly governance unless evidence",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 9,
+            "hits_sample": [
+              "are",
+              "confirmed",
+              "evidence",
+              "governance",
+              "monthly",
+              "noise",
+              "not",
+              "should",
+              "unless"
+            ]
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -480,7 +647,24 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 9,
+                "hits_sample": [
+                  "are",
+                  "confirmed",
+                  "evidence",
+                  "governance",
+                  "monthly",
+                  "noise",
+                  "not",
+                  "should",
+                  "unless"
+                ]
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -496,11 +680,32 @@
         "compression_ratio": 0.4444444444444444,
         "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "manual must never direct witness evidence Proxy anchors",
-        "reconstructed_text_effective": "Proxy anchors manual must never direct witness evidence",
+        "compressed_text_effective": "Proxy can support manual but they must never",
+        "reconstructed_text_effective": "Proxy can support manual but they must never",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 13,
+            "hits_sample": [
+              "as",
+              "be",
+              "but",
+              "can",
+              "direct",
+              "evidence",
+              "manual",
+              "must",
+              "never",
+              "proxy",
+              "support",
+              "they",
+              "witness"
+            ]
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -571,7 +776,28 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 13,
+                "hits_sample": [
+                  "as",
+                  "be",
+                  "but",
+                  "can",
+                  "direct",
+                  "evidence",
+                  "manual",
+                  "must",
+                  "never",
+                  "proxy",
+                  "support",
+                  "they",
+                  "witness"
+                ]
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -587,11 +813,25 @@
         "compression_ratio": 0.4666666666666667,
         "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "Interpretation quality state beyond bootstrap transition matrix",
-        "reconstructed_text_effective": "Interpretation quality state beyond bootstrap transition matrix",
+        "compressed_text_effective": "Interpretation as state beyond in the quality",
+        "reconstructed_text_effective": "Interpretation quality as state beyond in the",
         "route": {
           "shard_id": "zone_b_timing",
-          "domain": "timing"
+          "domain": "timing",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 6,
+            "hits_sample": [
+              "as",
+              "beyond",
+              "in",
+              "interpretation",
+              "state",
+              "the"
+            ]
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -662,7 +902,21 @@
           "metadata": {
             "route": {
               "shard_id": "zone_b_timing",
-              "domain": "timing"
+              "domain": "timing",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 6,
+                "hits_sample": [
+                  "as",
+                  "beyond",
+                  "in",
+                  "interpretation",
+                  "state",
+                  "the"
+                ]
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -677,12 +931,25 @@
         "token_saving_rate": 0.6111111111111112,
         "compression_ratio": 0.3888888888888889,
         "reconstruction_fidelity_jaccard": 0.5,
-        "sensitive_integrity": 1.0,
-        "compressed_text_effective": "Myeongri Bible Sasang All tri should timing",
-        "reconstructed_text_effective": "All tri should Myeongri timing Bible Sasang",
+        "sensitive_integrity": 0.6666666666666666,
+        "compressed_text_effective": "All lens should Myeongri Bible alignment and",
+        "reconstructed_text_effective": "All lens should Myeongri Bible alignment and",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 5,
+            "hits_sample": [
+              "alignment",
+              "all",
+              "and",
+              "lens",
+              "should"
+            ]
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -753,7 +1020,20 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 5,
+                "hits_sample": [
+                  "alignment",
+                  "all",
+                  "and",
+                  "lens",
+                  "should"
+                ]
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -764,16 +1044,38 @@
       {
         "id": "cmp2_009",
         "raw_tokens": 21,
-        "compressed_tokens": 8,
-        "token_saving_rate": 0.6190476190476191,
-        "compression_ratio": 0.38095238095238093,
-        "reconstruction_fidelity_jaccard": 0.5,
+        "compressed_tokens": 9,
+        "token_saving_rate": 0.5714285714285714,
+        "compression_ratio": 0.42857142857142855,
+        "reconstruction_fidelity_jaccard": 0.5625,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "Fact Lock the and between CI tests protect",
-        "reconstructed_text_effective": "Fact Lock tests protect the and between and CI",
+        "compressed_text_effective": "Fact Lock tests protect the from and keep codebook",
+        "reconstructed_text_effective": "Fact Lock tests protect the codebook from and keep and",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 14,
+            "hits_sample": [
+              "aligned",
+              "and",
+              "between",
+              "ci",
+              "contracts",
+              "docs",
+              "fact",
+              "from",
+              "keep",
+              "lock",
+              "protect",
+              "scripts",
+              "tests",
+              "the"
+            ]
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -844,7 +1146,29 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 14,
+                "hits_sample": [
+                  "aligned",
+                  "and",
+                  "between",
+                  "ci",
+                  "contracts",
+                  "docs",
+                  "fact",
+                  "from",
+                  "keep",
+                  "lock",
+                  "protect",
+                  "scripts",
+                  "tests",
+                  "the"
+                ]
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -855,16 +1179,29 @@
       {
         "id": "cmp2_010",
         "raw_tokens": 14,
-        "compressed_tokens": 6,
-        "token_saving_rate": 0.5714285714285714,
-        "compression_ratio": 0.42857142857142855,
-        "reconstruction_fidelity_jaccard": 0.46153846153846156,
+        "compressed_tokens": 7,
+        "token_saving_rate": 0.5,
+        "compression_ratio": 0.5,
+        "reconstruction_fidelity_jaccard": 0.5384615384615384,
         "sensitive_integrity": 1.0,
-        "compressed_text_effective": "Performance reporting operational from quality false",
-        "reconstructed_text_effective": "Performance reporting operational from quality false",
+        "compressed_text_effective": "should separate from to confidence Performance reporting",
+        "reconstructed_text_effective": "Performance reporting should separate from to confidence",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 5,
+            "hits_sample": [
+              "confidence",
+              "from",
+              "separate",
+              "should",
+              "to"
+            ]
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -935,7 +1272,20 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 5,
+                "hits_sample": [
+                  "confidence",
+                  "from",
+                  "separate",
+                  "should",
+                  "to"
+                ]
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -955,7 +1305,14 @@
         "reconstructed_text_effective": "소양인에게는 열이 위로 치밀 때 수분 보충과 호흡 안정이 먼저이고 무리한 운동은 저녁 시간에 피해야 한다",
         "route": {
           "shard_id": "zone_g_health",
-          "domain": "health"
+          "domain": "health",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -1026,7 +1383,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_g_health",
-              "domain": "health"
+              "domain": "health",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -1046,7 +1410,14 @@
         "reconstructed_text_effective": "소음인의 피로는 겉으로 보여도 많아서 수면을 지켜야 한다",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -1117,7 +1488,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -1137,7 +1515,14 @@
         "reconstructed_text_effective": "태음인은 체중 변동이 부종이 있으니 아침 유지해야 한다",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -1208,7 +1593,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -1228,7 +1620,14 @@
         "reconstructed_text_effective": "태양인은 건조감이 심해지는 계절에 수면 시간이 짧아지면 불안이 커지므로 취침",
         "route": {
           "shard_id": "zone_g_health",
-          "domain": "health"
+          "domain": "health",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -1299,7 +1698,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_g_health",
-              "domain": "health"
+              "domain": "health",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -1319,7 +1725,14 @@
         "reconstructed_text_effective": "사상의학 해석에서는 같은 두통이라도 체질과 시간대가 다르면 원인 축이 달라지므로",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -1390,7 +1803,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -1410,7 +1830,14 @@
         "reconstructed_text_effective": "명리 상태 전이가 불안정한 주간에는 사상의학 체질 제약을 우선 적용하고 공격적 의사결정은 관망으로",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -1481,7 +1908,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -1501,7 +1935,14 @@
         "reconstructed_text_effective": "성경 정렬 신호가 강하더라도 체질 부담 지표가 임계치를 넘으면 해석 강도를 낮추고 회복 루틴을 먼저",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -1572,7 +2013,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -1592,7 +2040,14 @@
         "reconstructed_text_effective": "소양인의 과열 패턴은 카페인과 수면 부족이 겹칠 때 증폭되므로 오후 카페인 제한과 취침 루틴 고정이 필요하다",
         "route": {
           "shard_id": "zone_g_health",
-          "domain": "health"
+          "domain": "health",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -1663,7 +2118,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_g_health",
-              "domain": "health"
+              "domain": "health",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -1683,7 +2145,14 @@
         "reconstructed_text_effective": "소음인의 위장 불편은 일정과 올 일정 유지가 핵심이다",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -1754,7 +2223,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -1774,7 +2250,14 @@
         "reconstructed_text_effective": "태음인의 호흡 답답함은 체중 수치보다 순환 정체와 연관될 수 있어서 저강도 유산소를 끊기지 않게 유지해야 한다",
         "route": {
           "shard_id": "zone_g_health",
-          "domain": "health"
+          "domain": "health",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -1845,7 +2328,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_g_health",
-              "domain": "health"
+              "domain": "health",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -1865,7 +2355,14 @@
         "reconstructed_text_effective": "태양인의 집중 부족과 동반될 때 블록 반드시 넣어야 한다",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -1936,7 +2433,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -1956,7 +2460,14 @@
         "reconstructed_text_effective": "체질 판정이 애매한 경우에는 확정 라벨을 서두르지 말고 반응 로그를 2주 뒤 보수적으로 분류해야 한다",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -2027,7 +2538,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -2047,7 +2565,14 @@
         "reconstructed_text_effective": "사상의학 문맥에서 숫자와 단위는 의미 축을 바꾸는 핵심 요소이므로 압축",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -2118,7 +2643,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -2138,7 +2670,14 @@
         "reconstructed_text_effective": "고유명사와 체질명은 오탈자 해석이 복원 검사를 수행해야 한다",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -2209,7 +2748,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -2229,7 +2775,14 @@
         "reconstructed_text_effective": "민감 도메인에서는 토큰 복원 임계치 롤백 적용해야 한다",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -2300,7 +2853,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -2320,7 +2880,14 @@
         "reconstructed_text_effective": "체질별 금칙 변환 비어 일시적으로 복원 수 있다",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -2391,7 +2958,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -2411,7 +2985,14 @@
         "reconstructed_text_effective": "한글 조사와 어미는 문장 논리의 연결부이므로 과도하게 삭제하면 원인과 처방의 방향성이",
         "route": {
           "shard_id": "zone_c_hangul",
-          "domain": "hangul"
+          "domain": "hangul",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -2482,7 +3063,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_c_hangul",
-              "domain": "hangul"
+              "domain": "hangul",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -2502,7 +3090,14 @@
         "reconstructed_text_effective": "사상의학 설명문은 짧은 기능어가 맥락을 지탱하므로 극단 압축에서는 조사",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -2573,7 +3168,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -2593,7 +3195,14 @@
         "reconstructed_text_effective": "명리와 사상의학을 때는 체질축 제약을 감사가 가능해진다",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -2664,7 +3273,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -2684,7 +3300,14 @@
         "reconstructed_text_effective": "체질 경계군에서는 강한 단정 문장을 피하고 조건부 표현을 유지해야 과잉 처방 리스크를 낮출 수 있다",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -2755,7 +3378,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -2775,7 +3405,14 @@
         "reconstructed_text_effective": "원전 인용 문구는 조사 하나가 원문 의미를 바꿀 해시 비교와 육안 검토를 함께 수행해야 한다",
         "route": {
           "shard_id": "zone_c_hangul",
-          "domain": "hangul"
+          "domain": "hangul",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -2846,7 +3483,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_c_hangul",
-              "domain": "hangul"
+              "domain": "hangul",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -2866,7 +3510,14 @@
         "reconstructed_text_effective": "한글 창제 원리 기반 보존 규칙은 복원 안전망으로 쓰되 일반 도메인에는 가변 적용하여 절약률 손실을 통제해야 한다",
         "route": {
           "shard_id": "zone_c_hangul",
-          "domain": "hangul"
+          "domain": "hangul",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -2937,7 +3588,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_c_hangul",
-              "domain": "hangul"
+              "domain": "hangul",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -2957,7 +3615,14 @@
         "reconstructed_text_effective": "사상의학 질문 응답에서는 체질명 증상 시간 조건의 세 축이 모두 개인화 정확도가 유지된다",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -3028,7 +3693,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -3048,7 +3720,14 @@
         "reconstructed_text_effective": "복원 점검 시 자카드 지표만으로 충분하지 않으므로 조사 누락률과 문장 기능어 보존률을 추가로 관찰해야 한다",
         "route": {
           "shard_id": "zone_c_hangul",
-          "domain": "hangul"
+          "domain": "hangul",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -3119,7 +3798,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_c_hangul",
-              "domain": "hangul"
+              "domain": "hangul",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -3139,7 +3825,14 @@
         "reconstructed_text_effective": "체질 상담 로그는 동일 표현 반복이 잦아 압축에 유리하지만 반복 삭제가 핵심 않도록 제한을 둬야 한다",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -3210,7 +3903,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -3230,7 +3930,14 @@
         "reconstructed_text_effective": "사상의학 도메인 카나리에서는 실패율 상승보다도 오판 위험 문장 비율을 우선 모니터링하는 편이 실제 피해를 줄인다",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -3301,7 +4008,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -3321,7 +4035,14 @@
         "reconstructed_text_effective": "체질 제약이 큰 사용자에게는 절약률 50 고정 목표보다 복원 정확도 임계치를 먼저 만족시키는 정책이 더",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -3392,7 +4113,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -3412,7 +4140,14 @@
         "reconstructed_text_effective": "한글 문장에서 조사 보존은 토큰 비용을 조금 늘려도 의미 왜곡을 줄이는 효과가 있어 민감 영역에서는 비용",
         "route": {
           "shard_id": "zone_c_hangul",
-          "domain": "hangul"
+          "domain": "hangul",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -3483,7 +4218,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_c_hangul",
-              "domain": "hangul"
+              "domain": "hangul",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -3503,7 +4245,14 @@
         "reconstructed_text_effective": "복원 파이프라인 원문 목록을 남겨야 규칙 찾을 수 있다",
         "route": {
           "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "domain": "ssot",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -3574,7 +4323,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_d_ssot",
-              "domain": "ssot"
+              "domain": "ssot",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -3594,7 +4350,14 @@
         "reconstructed_text_effective": "최종 운영에서는 일반 도메인과 사상의학 도메인의 압축 캡을 분리해 동일 모델이라도 정책 계층으로 위험을 제어해야",
         "route": {
           "shard_id": "zone_a_scm",
-          "domain": "scm"
+          "domain": "scm",
+          "master_codebook_lexicon_v1": {
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
+          }
         },
         "gematria_metadata": {
           "raw_combined_sum": 0,
@@ -3665,7 +4428,14 @@
           "metadata": {
             "route": {
               "shard_id": "zone_a_scm",
-              "domain": "scm"
+              "domain": "scm",
+              "master_codebook_lexicon_v1": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
+              }
             },
             "mode": "experimental",
             "strategy": "A",
@@ -3749,7 +4519,7 @@
     "ultra_saving_50_ok": true,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
-    "sensitive_integrity_ok": true,
+    "sensitive_integrity_ok": false,
     "note": "Heuristic B-track gate; not an A-track trading performance metric."
   },
   "cee_shadow_summary": {

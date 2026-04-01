@@ -3,6 +3,11 @@
   "generated_at_utc": "2026-03-29T23:46:34.666244+00:00",
   "method": "max_sum_cosine_assignment_scipy_linear_sum_assignment",
   "disclaimer": "B-track research; not trading SSOT; not semantic destiny mapping.",
+  "manseryeok_scope": {
+    "manseryeok_applicable": false,
+    "artifact_domain": "verse_4d_to_myeongni_state_vector_cosine_assignment",
+    "manseryeok_scope_note": "Assignments maximize cosine between ranked verse 4D and 16_STATE_MASTER_PROBE vectors. No individual 출생 명식·절입·시주 is embedded; do not read as 만세력 정밀 결과."
+  },
   "sources": {
     "ranked_json": "C:\\workspace\\backtest_results\\sweep_kmin_refine\\LOGOS_RESONANCE_BTC_EXT_ABSOLUTE_TOP16.json",
     "probe_json": "C:\\workspace\\data\\myeongni\\16_STATE_MASTER_PROBE_v1.json",

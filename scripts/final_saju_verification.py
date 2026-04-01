@@ -61,6 +61,28 @@ def calculate_saju_manual(year: int, month: int, day: int, hour: int = 0) -> dic
     3. AI 추측 완전 배제
     """
     target_date = datetime(year, month, day)
+    gt_year_pillar = None
+    gt_month_pillar = None
+    gt_day_pillar = None
+    gt_source = None
+
+    # Ground Truth DB 우선: tools/get_manser.py (MKM_Temporal_Vault)
+    try:
+        from tools.get_manser import get_exact_ganji
+
+        gt = get_exact_ganji(f"{year}-{month:02d}-{day:02d}")
+        if gt.get("success"):
+            ganji = gt.get("ganji", {})
+            y = ganji.get("year")
+            m = ganji.get("month")
+            d = ganji.get("day")
+            if y and m and d:
+                gt_year_pillar = y
+                gt_month_pillar = m
+                gt_day_pillar = d
+                gt_source = gt.get("source", "MKM_Temporal_Vault")
+    except Exception:
+        pass
     
     # 가장 가까운 검증된 기준일 사용
     best_base = None
@@ -81,34 +103,35 @@ def calculate_saju_manual(year: int, month: int, day: int, hour: int = 0) -> dic
     if day_idx < 0:
         day_idx += 60
     day_pillar = GAPJA[day_idx]
-    
-    # 연주 계산 (1984년 = 갑자년 기준)
-    base_year = 1984
-    base_gapja_idx = 0  # 갑자
-    year_diff = year - base_year
-    year_idx = (base_gapja_idx + year_diff) % 60
-    if year_idx < 0:
-        year_idx += 60
-    year_pillar = GAPJA[year_idx]
-    
-    # 월주 계산 (간단한 방법 - 정확한 계산은 24절기 필요)
-    # 12월 = 자월 (대략)
-    month_idx = (month - 1) % 12
-    month_ji = JIJI[month_idx]
-    
-    # 연간에 따른 월간 계산
-    year_gan_idx = year_idx % 10
-    # 월간 계산 공식 (간단 버전)
-    month_gan_idx = (year_gan_idx * 2 + month) % 10
-    month_gan = CHEONGAN[month_gan_idx]
-    month_pillar = month_gan + month_ji
-    
-    # 시주 계산 (간단한 방법)
+
+    # 연/월/일은 Ground Truth가 있으면 우선 적용
+    if gt_year_pillar and gt_month_pillar and gt_day_pillar:
+        year_pillar = gt_year_pillar
+        month_pillar = gt_month_pillar
+        day_pillar = gt_day_pillar
+    else:
+        # Fallback: 로컬 계산
+        base_year = 1984
+        base_gapja_idx = 0  # 갑자
+        year_diff = year - base_year
+        year_idx = (base_gapja_idx + year_diff) % 60
+        if year_idx < 0:
+            year_idx += 60
+        year_pillar = GAPJA[year_idx]
+
+        month_idx = (month - 1) % 12
+        month_ji = JIJI[month_idx]
+        year_gan_idx = year_idx % 10
+        month_gan_idx = (year_gan_idx * 2 + month) % 10
+        month_gan = CHEONGAN[month_gan_idx]
+        month_pillar = month_gan + month_ji
+
+    # 시주 계산
     hour_ji_idx = ((hour + 1) // 2) % 12  # 자시=0, 축시=1, ...
     hour_ji = JIJI[hour_ji_idx]
-    
+
     # 일간에 따른 시간간 계산
-    day_gan_idx = day_idx % 10
+    day_gan_idx = CHEONGAN.index(day_pillar[0]) if day_pillar and day_pillar[0] in CHEONGAN else (day_idx % 10)
     hour_gan_idx = (day_gan_idx * 2 + (hour + 1) // 2) % 10
     hour_gan = CHEONGAN[hour_gan_idx]
     hour_pillar = hour_gan + hour_ji
@@ -123,6 +146,7 @@ def calculate_saju_manual(year: int, month: int, day: int, hour: int = 0) -> dic
         "base_date": best_base["date"].strftime("%Y-%m-%d"),
         "base_gapja": best_base["gapja"],
         "days_diff": days_diff,
+        "ground_truth_source": gt_source,
         "calculation_method": "manual_verified",
         "verified": True
     }

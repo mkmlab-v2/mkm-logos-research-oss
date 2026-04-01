@@ -86,6 +86,7 @@ Use these artifacts as runtime truth, not chat memory.
   - `docs/NotebookLM_sources_manifest.md`
   - `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`
   - `docs/final/openapi_token_compression_stub_v1.yaml` (when compression API contract changes)
+  - `docs/final/openapi_token_compression_v2_draft.yaml` (when Trust Packet / v2 draft contract changes; §11)
 
 ## 9) Master Codebook V1 (lexicon rail snapshot) — completion rubric
 
@@ -97,11 +98,41 @@ Use these artifacts as runtime truth, not chat memory.
 
 ### 9.1 Token API data contract (hydration SSOT)
 
-- **Canonical spec**: `docs/final/openapi_token_compression_stub_v1.yaml` — `api_contract_version` (HTTP shape semver), optional `eval_context` (paths/hints aligned with §6.1 inputs such as `MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json`), optional `hydration_hints.atom_ids` for future symbol↔row join (Master Codebook V1 `atom_id`; **no 4D vectors in this contract**).
+- **v2 draft (Trust Packet, not implemented):** `docs/final/openapi_token_compression_v2_draft.yaml` — see §11.
+- **Canonical spec (current stub):** `docs/final/openapi_token_compression_stub_v1.yaml` — `api_contract_version` (HTTP shape semver), optional `eval_context` (paths/hints aligned with §6.1 inputs such as `MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json`), optional `hydration_hints.atom_ids` for future symbol↔row join (Master Codebook V1 `atom_id`; **no 4D vectors in this contract**).
 - **Stub**: `scripts/compression_token_api_stub.py`; `compression_metrics` can be populated by live eval (`metrics_mode=live`) or decision fallback (`metrics_mode=decision_fallback`).
 - **Version bump rule**: PATCH=docs/examples only, MINOR=additive backward-compatible fields, MAJOR=required field change/removal or behavior-breaking contract change.
 - **Hydration mix monitor**: `py scripts/report_token_api_hydration_mix.py` → `reports/constitution/btrack_pilot/token_api_hydration_mix_latest.json` (tracks `metrics_mode` counts and `live_ratio`).
 - **KPI summary snapshot**: `py scripts/report_ultra_compression_kpi_summary.py` → `reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json` (decision/quality/perf/hydration in one JSON).
 - **3-mode demo runner (PowerShell)**: `pwsh -File scripts/demo_token_api_modes.ps1` (none/decision_fallback/live + expand roundtrip).
 
-Status: Fact-Lock active (2026-03-31).
+## 10) External pilot communication (single-page fact-lock)
+
+Use this section (plus `docs/final/openapi_token_compression_stub_v1.yaml` info block) as the **only** agreed talking points for pilots/partners. Do not duplicate a separate long narrative doc.
+
+- **POST /v1/compress**: Domain router (`scripts/core/domain_router.py` + shard JSON) **always** runs on real code. `compression_metrics` is absent unless `eval_context.hydrate_metrics` is true. When `hydrate_live_eval` is true, the stub calls `evaluate_report` (same family as multilens benches); on exception it may set `integrity_flags.hydration_live_eval_failed` and fall back to decision-artifact estimates when available.
+- **POST /v1/expand**: **Echo** of `original_text` from the payload (`stub_expand`, `lossless_echo`); not a residual/patch decompressor. Partners must not assume lossless “telegram decode” semantics beyond echo; treat submitted text as sensitive for logging.
+- **Multi-lens / 16-state**: Multi-lens remains a **validation/eval** layer in the bench path, not “the compressor.” Myeongri / 16-state is **not** a mandatory runtime wire in this HTTP stub (see §4).
+
+Onboarding checklist for pilots: (1) default compress returns **router + flags only** unless hydration flags are set; (2) cite **bench JSON artifacts** for savings numbers, not illustrative UI demos; (3) never claim “production SaaS” for this stub without separate auth/SLA scope.
+
+## 11) HTTP v2 (planned): Trust Packet API contract & SLA boundaries
+
+**Status:** OpenAPI draft + **experimental FastAPI stub** (`scripts/compression_token_api_v2_stub.py`, e.g. port 8011). Uses `GlobalPivotCompressionPipeline` for packet payload — **not** a committed production SLA; v1 stub remains the default for light pilots.
+
+**SSOT file:** `docs/final/openapi_token_compression_v2_draft.yaml` (`info.version` tracks draft iterations).
+
+**Intent:** Move from v1 “compress envelope + expand echo” to a **single round-trip artifact** — `compression_packet` — that carries `compressed_text` and structured `residual_meta` so `POST /v2/expand` can reassemble using the same packet (wire `GlobalPivotCompressionPipeline`-class logic when implemented). v1 stub remains the reference for current pilots.
+
+**Principles (fact-locked for future implementation):**
+
+1. **Packet versioning:** Every packet includes `packet_format_version` and `api_contract_version` so older clients and engines remain distinguishable.
+2. **Loss profile:** Request/response use `loss_profile` (`lossless_text` | `semantic_general` | `code_equivalent`) so marketing does not confuse “token savings” with “build equivalence” for code.
+3. **Stateless server:** Default assumption — **no server-side storage** of full originals; the client holds `compression_packet` (still **sensitive** — TLS + client key discipline). Deviations require explicit product tier and legal review.
+4. **SLA boundary:** Auth, rate limits, retention, regional deployment — **out of scope** until a separate operations doc references this contract.
+
+**Phase alignment (roadmap, not implemented):** Phase 1 = packet schema + compress response shape; Phase 2 = expand input = packet only + reassembly; Phase 3 = strict mode routing (`code_equivalent` ↔ `CodingBinaryNitroCompressor` path) isolated from general semantic path.
+
+**Change control:** When changing v2 behavior, update this section, `openapi_token_compression_v2_draft.yaml`, and the stub module; keep v1 stub for regression until deprecation policy is written.
+
+Status: Fact-Lock active (2026-03-31); §11 stub implementation noted (2026-04-01).

@@ -1,10 +1,10 @@
 {
   "schema": "multilens_ultra_compression_decision_v1",
-  "ts_utc": "2026-03-30T20:26:41.915805+00:00",
+  "ts_utc": "2026-03-31T05:37:59.592492+00:00",
   "perf": {
-    "total_elapsed_ms": 1260.806,
+    "total_elapsed_ms": 7972.044,
     "round1_candidate_count": 18,
-    "round2_candidate_count": 27
+    "round2_candidate_count": 108
   },
   "target": {
     "saving_rate": 0.5,
@@ -21,14 +21,14 @@
     "general_max_saving_rate": 0.54,
     "sensitive_max_saving_rate": 0.5,
     "hangul_max_saving_rate": 0.48,
-    "global_token_saving_rate": 0.5316455696202531,
-    "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
-    "avg_sensitive_integrity": 1.0,
+    "global_token_saving_rate": 0.5274261603375527,
+    "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
+    "avg_sensitive_integrity": 0.9916666666666668,
     "jaccard_drop_pp": 0.0,
-    "canary_gate_ok": true
+    "canary_gate_ok": false
   },
-  "go_no_go": "GO",
-  "rollout_policy": "global_default",
+  "go_no_go": "NO_GO",
+  "rollout_policy": "domain_variable_cap",
   "canary_policy": {
     "traffic_percent": 10,
     "monitoring_metrics": [

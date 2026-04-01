@@ -1,0 +1,17 @@
+{
+  "schema": "fused_paper_cycle_4w_v1",
+  "generated_at_utc": "2026-04-01T12:36:47Z",
+  "window_size": 28,
+  "decision_counts": {
+    "ACTIVE": 0,
+    "NEUTRAL": 0,
+    "HOLD": 1
+  },
+  "flip_count": 0,
+  "flap_alert": false,
+  "pending_close_count": 7,
+  "pending_close_rate": 0.25,
+  "current_weekly_decision": "HOLD",
+  "current_toe_score": 0.585,
+  "gate_recommendation": "HOLD"
+}

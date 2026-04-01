@@ -1,6 +1,6 @@
 {
   "schema": "sasang_clinical_eval_v1",
-  "generated_at_utc": "2026-03-31T04:04:57Z",
+  "generated_at_utc": "2026-03-31T04:12:20Z",
   "inputs": {
     "cohort_path": "C:\\workspace\\data\\constitution\\korean_cohort\\gt_cohort.real.latest.jsonl",
     "predictions_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\predictions.real.latest.jsonl"

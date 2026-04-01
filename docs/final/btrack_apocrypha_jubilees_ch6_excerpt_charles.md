@@ -33,3 +33,18 @@
 37 For there will be those who will assuredly make observations of the moon—how (it) disturbs the seasons and comes in from year to year ten days too soon.
 
 38 For this reason the years will come upon them when they will disturb (the order), and make an abominable (day) the day of testimony, and an unclean day a feast day, and they will confound all the days, the holy with the unclean, and the unclean day with the holy; for they will go wrong as to the months and sabbaths and feasts and jubilees. For this reason I command and testify to thee that thou mayst testify to them; for after thy death thy children will disturb (them), so that they will not make the year three hundred and sixty-four days only, and for this reason they will go wrong as to the new moons and seasons and sabbaths and festivals, and they will eat all kinds of blood with all kinds of flesh.
+
+---
+
+## 문서 라벨 규칙 (Fact-Safe)
+
+| 라벨 | 의미 | 사용 기준 |
+|------|------|-----------|
+| `[FACT]` | 외부 검증 완료 사실 | 원문/DOI/공식 페이지로 역추적 가능 |
+| `[HYPO]` | 내부 가설·실험 해석 | B-Track 내부 해석, 대외 합의 미완료 |
+| `[VISION]` | 전략·로드맵 문장 | 목표 기술, 현재 사실로 단정 금지 |
+| `[NON-MEDICAL]` | 비의료 고지 | 건강·체질 관련 문구 포함 시 필수 |
+
+### 수치 표기 규칙 (Tier 1 재사용)
+
+수치 제시 시 `출처 + 셋 구성 + 지표 정의`를 한 줄에 함께 표기한다.

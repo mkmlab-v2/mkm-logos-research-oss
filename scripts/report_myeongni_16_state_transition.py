@@ -4,12 +4,16 @@
 from __future__ import annotations
 
 import json
+import sys
 from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from tools.myeongni.manseryeok_provenance import btrack_myeongni_16_state_stream_scope
 SRC = ROOT / "data" / "myeongni" / "myeongni_16_state_experiment_v1.jsonl"
 OUT = ROOT / "docs" / "final" / "artifacts" / "MYEONGNI_16_STATE_TRANSITION_V1.json"
 
@@ -53,6 +57,7 @@ def main() -> int:
 
     summary = {
         "schema": "myeongni_16_state_transition_report_v1",
+        "manseryeok_scope": btrack_myeongni_16_state_stream_scope(),
         "source_log": str(SRC.relative_to(ROOT)).replace("\\", "/"),
         "total_rows": len(rows_sorted),
         "state_rows": len(observed_states),

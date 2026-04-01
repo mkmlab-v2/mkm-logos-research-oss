@@ -1,0 +1,45 @@
+{
+  "schema": "myeongni_transition_quality_gate_v1",
+  "generated_at_utc": "2026-04-01T13:01:27Z",
+  "inputs": {
+    "transition_report": "C:\\workspace\\docs\\final\\artifacts\\MYEONGNI_16_STATE_TRANSITION_V1.json"
+  },
+  "thresholds": {
+    "min_state_rows": 30,
+    "min_transition_count": 20,
+    "min_unique_states": 6
+  },
+  "snapshot": {
+    "state_rows": 50,
+    "transition_count": 49,
+    "unique_states_count": 16,
+    "unique_states_observed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "sufficient_for_signal": true
+  },
+  "checks": {
+    "schema_ok": true,
+    "state_rows_gte_threshold": true,
+    "transition_count_gte_threshold": true,
+    "unique_states_gte_threshold": true,
+    "source_quality_flag_true": true
+  },
+  "decision": "PASS",
+  "mode": "myeongni_transition_ready"
+}

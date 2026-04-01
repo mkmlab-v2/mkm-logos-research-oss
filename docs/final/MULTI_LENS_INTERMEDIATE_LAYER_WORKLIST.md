@@ -86,3 +86,16 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fac
 ---
 
 **상태**: 내부 작업 완료 잠금 (2026-03-30, ENTRY_16 Proxy Manual 승인 반영). 재개 트리거는 `ENTRY_07/08/16` 외부 판본 업데이트 이벤트로 제한한다.
+
+---
+
+## 문서 라벨 규칙 (Fact-Safe)
+
+| 라벨 | 의미 | 사용 기준 |
+|------|------|-----------|
+| `[FACT]` | 재현·추적 가능한 진술 | 표의 경로·워크플로·pytest·CI·아티팩트로 검증된 항목; 잠금·완료 일자가 근거와 함께 기록됨 |
+| `[HYPO]` | B-track 벤치·가설 | `CROSS_REF` rationale, 명리·사상 초안 필드, 미확정 표기(`—`, TBD); 승격·합선 전까지 단정 금지 |
+| `[VISION]` | 경계·로드맵 | **여기서 끝 아님** 구간, Promotion Loop·상용 승격; 목표이지 현재 구현 단정 아님 |
+| `[NON-MEDICAL]` | 비의료 고지 | 명리·사상·체질 문맥이 Phase 표에 포함되므로, 대외 인용 시 의료 효능·진단 주장과 분리 |
+
+본 작업 리스트의 Phase 표는 위 라벨로 읽는다: `[x]` 체크와 테스트·경로가 붙은 행은 `[FACT]`에 가깝고, 격벽·승격 경계 문장은 `[VISION]`, 위성 코퍼스·테이블 미기입은 `[HYPO]`다.

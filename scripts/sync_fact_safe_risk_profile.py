@@ -28,7 +28,21 @@ def _safe_json(path: Path) -> dict[str, Any]:
     return obj if isinstance(obj, dict) else {}
 
 
-def _derive_profile(risk_profile: dict[str, Any], now: datetime) -> dict[str, Any]:
+def _would_downgrade_n8n_metadata(existing: dict[str, Any], new_source: str) -> bool:
+    """True if existing profile is n8n-tagged but new_source would drop the n8n.* prefix."""
+    old_src = str(existing.get("source") or "").strip()
+    if not old_src.startswith("n8n."):
+        return False
+    new_src = str(new_source or "").strip()
+    return not new_src.startswith("n8n.")
+
+
+def _derive_profile(
+    risk_profile: dict[str, Any],
+    now: datetime,
+    source_name: str,
+    mode_name: str,
+) -> dict[str, Any]:
     mode = str(risk_profile.get("mode") or "LOCKED_MODE").upper()
     core_decision = str(risk_profile.get("core_decision") or "HOLD").upper()
     core_score = float(risk_profile.get("core_score") or 0.0)
@@ -44,8 +58,8 @@ def _derive_profile(risk_profile: dict[str, Any], now: datetime) -> dict[str, An
             "schema_version": "risk_profile_v0.1",
             "generated_at": now.isoformat(timespec="seconds"),
             "expires_at": (now + timedelta(hours=12)).isoformat(timespec="seconds"),
-            "source": "fact_safe_prophecy.trinity_governor",
-            "mode": "shadow",
+            "source": source_name,
+            "mode": mode_name,
             "max_trades_per_day": 5,
             "max_position_size": 0.03,
             "maker_only_level": "strict",
@@ -70,8 +84,8 @@ def _derive_profile(risk_profile: dict[str, Any], now: datetime) -> dict[str, An
         "schema_version": "risk_profile_v0.1",
         "generated_at": now.isoformat(timespec="seconds"),
         "expires_at": (now + timedelta(hours=12)).isoformat(timespec="seconds"),
-        "source": "fact_safe_prophecy.trinity_governor",
-        "mode": "shadow",
+        "source": source_name,
+        "mode": mode_name,
         "max_trades_per_day": max_trades,
         "max_position_size": max_position_size,
         "maker_only_level": "preferred",
@@ -91,6 +105,22 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Sync Fact-Safe prophecy risk profile to trader risk profile.")
     ap.add_argument("--prophecy", default=str(DEFAULT_PROPHECY))
     ap.add_argument("--output", default=str(DEFAULT_OUT))
+    ap.add_argument(
+        "--source",
+        default="fact_safe_prophecy.trinity_governor",
+        help="risk_profile source identifier (use n8n.* convention for n8n pipelines)",
+    )
+    ap.add_argument("--mode", default="shadow")
+    ap.add_argument(
+        "--n8n-source",
+        action="store_true",
+        help="Shortcut for source=n8n.regime_watch.v5 and mode=n8n_shadow",
+    )
+    ap.add_argument(
+        "--allow-metadata-downgrade",
+        action="store_true",
+        help="Allow replacing n8n-tagged source with non-n8n metadata (intentional local/Fact-Safe override).",
+    )
     args = ap.parse_args()
 
     doc = _safe_json(Path(args.prophecy))
@@ -99,8 +129,23 @@ def main() -> int:
         raise SystemExit("Missing risk_profile in prophecy artifact.")
 
     now = datetime.now(timezone.utc)
-    out_doc = _derive_profile(risk_profile=risk_profile, now=now)
+    source_name = str(args.source or "fact_safe_prophecy.trinity_governor").strip()
+    mode_name = str(args.mode or "shadow").strip()
+    if args.n8n_source:
+        source_name = "n8n.regime_watch.v5"
+        mode_name = "n8n_shadow"
+
     out_path = Path(args.output)
+    existing_out = _safe_json(out_path)
+    if _would_downgrade_n8n_metadata(existing_out, source_name) and not args.allow_metadata_downgrade:
+        raise SystemExit(
+            "Refusing to overwrite n8n-tagged risk profile with non-n8n source/mode "
+            f"(existing source={existing_out.get('source')!r}, new source={source_name!r}). "
+            "Use --n8n-source or pass --source/--mode under the n8n.* namespace, "
+            "or pass --allow-metadata-downgrade to force."
+        )
+
+    out_doc = _derive_profile(risk_profile=risk_profile, now=now, source_name=source_name, mode_name=mode_name)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(out_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(str(out_path))

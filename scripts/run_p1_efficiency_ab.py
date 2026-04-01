@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.report_multilens_performance_eval import evaluate_report
+from tools.myeongni.manseryeok_provenance import multilens_p1_compression_scope
 
 INPUT_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json"
 BASELINE_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json"
@@ -224,6 +225,7 @@ def main() -> int:
         "schema": schema,
         "ts_utc": datetime.now(timezone.utc).isoformat(),
         "profile": args.profile,
+        "manseryeok_scope": multilens_p1_compression_scope(),
         "source_refs": {
             "input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
             "baseline": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json",

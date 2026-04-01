@@ -1,6 +1,6 @@
 {
   "schema": "multilens_ultra_compression_baseline_lock_v1",
-  "ts_utc": "2026-03-30T20:26:40.665769+00:00",
+  "ts_utc": "2026-03-31T05:37:51.625933+00:00",
   "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
   "baseline_report": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json",
   "baseline_global_token_saving_rate": 0.23628691983122363,

@@ -1,15 +1,15 @@
 {
   "schema": "entry16_promotion_gate_v1",
   "source_summary": "docs/final/artifacts/entry16_source_hunt_summary.json",
-  "decision": "promote_proxy_candidate_manual",
-  "status": "proxy_candidate_ready_for_manual_review",
-  "has_direct_witness": false,
-  "witness_yes_count": 0,
+  "decision": "promote_candidate",
+  "status": "candidate_ready_for_manual_review",
+  "has_direct_witness": true,
+  "witness_yes_count": 3,
   "proxy_anchor_candidate_count": 1,
   "required_evidence": [
     "djd_or_equivalent_primary_source",
     "fragment_col_line_anchor_for_ezra_2_54",
     "citation_reproducibility_notes"
   ],
-  "rationale": "direct witness absent; thematic proxy anchor candidate exists for manual policy review"
+  "rationale": "direct witness exists in source-hunt summary"
 }

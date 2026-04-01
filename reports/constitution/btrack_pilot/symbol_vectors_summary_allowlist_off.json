@@ -1,6 +1,6 @@
 {
   "schema": "symbol_vectors_from_verse_distilled_summary_v1",
-  "generated_at_utc": "2026-03-30T17:09:26Z",
+  "generated_at_utc": "2026-03-31T06:12:11Z",
   "inputs": {
     "symbols_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_allowlist_off.jsonl",
     "verses_a_jsonl": "C:\\workspace\\data\\logos\\verse_distilled_11_1.jsonl",

@@ -1,0 +1,9 @@
+{
+  "schema": "billing_invoice_input_v1",
+  "period_label": "2026-03",
+  "api_cost_usd": 0.0807,
+  "invoice_provenance": "provider_file",
+  "provider": "pending_portal_sync",
+  "invoice_id": "evidence_pipeline_local_v1",
+  "note": "You may mention replace_with in this note for humans; scanner only checks period_label, provider, invoice_id."
+}

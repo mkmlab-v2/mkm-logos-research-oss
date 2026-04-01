@@ -1,132 +1,132 @@
 {
   "schema": "btrack_symbol_candidates_curated_v1",
-  "generated_at_utc": "2026-03-30T22:15:58Z",
+  "generated_at_utc": "2026-03-31T02:07:49Z",
   "input_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_latest.jsonl",
   "output_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_latest.jsonl",
-  "curated_count": 240,
-  "dss_backed_count": 17,
-  "min_dss_quota": 120,
-  "min_curated_count": 240,
+  "curated_count": 200,
+  "dss_backed_count": 10,
+  "min_dss_quota": 20,
+  "min_curated_count": 200,
   "top10_preview": [
     {
       "rank": 19,
       "symbol": "שלום",
-      "score_tfidf_like": 155.19347,
+      "score_tfidf_like": 155.222367,
       "term_freq": 26,
       "doc_freq": 24,
       "source_mix": {
         "dss": 0,
         "apocrypha": 26
       },
-      "generated_at_utc": "2026-03-30T22:15:58Z"
+      "generated_at_utc": "2026-03-31T02:07:49Z"
     },
     {
       "rank": 135,
       "symbol": "אלהים",
-      "score_tfidf_like": 50.693617,
+      "score_tfidf_like": 50.701397,
       "term_freq": 7,
       "doc_freq": 6,
       "source_mix": {
         "dss": 2,
         "apocrypha": 5
       },
-      "generated_at_utc": "2026-03-30T22:15:58Z"
+      "generated_at_utc": "2026-03-31T02:07:49Z"
     },
     {
       "rank": 144,
       "symbol": "חסד",
-      "score_tfidf_like": 49.758897,
+      "score_tfidf_like": 49.766677,
       "term_freq": 7,
       "doc_freq": 7,
       "source_mix": {
         "dss": 0,
         "apocrypha": 7
       },
-      "generated_at_utc": "2026-03-30T22:15:58Z"
+      "generated_at_utc": "2026-03-31T02:07:49Z"
     },
     {
       "rank": 262,
       "symbol": "חכמה",
-      "score_tfidf_like": 30.31367,
+      "score_tfidf_like": 30.318116,
       "term_freq": 4,
       "doc_freq": 4,
       "source_mix": {
         "dss": 0,
         "apocrypha": 4
       },
-      "generated_at_utc": "2026-03-30T22:15:58Z"
+      "generated_at_utc": "2026-03-31T02:07:49Z"
     },
     {
       "rank": 292,
       "symbol": "משפט",
-      "score_tfidf_like": 30.31367,
+      "score_tfidf_like": 30.318116,
       "term_freq": 4,
       "doc_freq": 4,
       "source_mix": {
         "dss": 0,
         "apocrypha": 4
       },
-      "generated_at_utc": "2026-03-30T22:15:58Z"
+      "generated_at_utc": "2026-03-31T02:07:49Z"
     },
     {
       "rank": 358,
       "symbol": "צדק",
-      "score_tfidf_like": 23.404683,
+      "score_tfidf_like": 23.408018,
       "term_freq": 3,
       "doc_freq": 3,
       "source_mix": {
         "dss": 0,
         "apocrypha": 3
       },
-      "generated_at_utc": "2026-03-30T22:15:58Z"
+      "generated_at_utc": "2026-03-31T02:07:49Z"
     },
     {
       "rank": 421,
       "symbol": "ברית",
-      "score_tfidf_like": 23.404683,
+      "score_tfidf_like": 23.408018,
       "term_freq": 3,
       "doc_freq": 3,
       "source_mix": {
         "dss": 0,
         "apocrypha": 3
       },
-      "generated_at_utc": "2026-03-30T22:15:58Z"
+      "generated_at_utc": "2026-03-31T02:07:49Z"
     },
     {
-      "rank": 483,
+      "rank": 470,
       "symbol": "בני אלהים",
-      "score_tfidf_like": 16.178486,
+      "score_tfidf_like": 16.180709,
       "term_freq": 2,
       "doc_freq": 2,
       "source_mix": {
         "dss": 2,
         "apocrypha": 0
       },
-      "generated_at_utc": "2026-03-30T22:15:58Z"
+      "generated_at_utc": "2026-03-31T02:07:49Z"
     },
     {
-      "rank": 548,
+      "rank": 535,
       "symbol": "יראת אלהים",
-      "score_tfidf_like": 16.178486,
+      "score_tfidf_like": 16.180709,
       "term_freq": 2,
       "doc_freq": 2,
       "source_mix": {
         "dss": 0,
         "apocrypha": 2
       },
-      "generated_at_utc": "2026-03-30T22:15:58Z"
+      "generated_at_utc": "2026-03-31T02:07:49Z"
     },
     {
-      "rank": 679,
+      "rank": 666,
       "symbol": "לו משפט",
-      "score_tfidf_like": 16.178486,
+      "score_tfidf_like": 16.180709,
       "term_freq": 2,
       "doc_freq": 2,
       "source_mix": {
         "dss": 0,
         "apocrypha": 2
       },
-      "generated_at_utc": "2026-03-30T22:15:58Z"
+      "generated_at_utc": "2026-03-31T02:07:49Z"
     }
   ],
   "note": "Theme-term curation with DSS quota to reduce corpus-source bias."

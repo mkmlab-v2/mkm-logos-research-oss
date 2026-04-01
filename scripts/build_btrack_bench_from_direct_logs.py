@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Build A/B bench from direct in-workspace logs (no synthetic uplift model).
 
+Default outputs are *suffixed* (…/a_track_eval_direct_v1.jsonl) so they do not
+overwrite the canonical bench; see data/logos/btrack_pilot/bench/CANONICAL_BENCH_POINTER_V1.json.
+
 A-track source:
   data/myeongni/myeongni_16_state_audit_v1.jsonl
     - uses per-state observed confidence from consistency_rate / audit.confidence_score
@@ -15,14 +18,27 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import sys
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from tools.myeongni.btrack_bench_paths import (
+    DIRECT_A_TRACK_EVAL,
+    DIRECT_B_TRACK_EVAL,
+)
+from tools.myeongni.manseryeok_provenance import (
+    BENCH_SCOPE_MANIFEST_RELPATH,
+    BENCH_SCOPE_REF_DIRECT_V1,
+    btrack_pilot_bench_scope,
+    upsert_bench_manseryeok_scope_manifest,
+)
 AUDIT_LOG = ROOT / "data" / "myeongni" / "myeongni_16_state_audit_v1.jsonl"
 BTRACK_LOG = ROOT / "data" / "myeongni" / "myeongni_16_state_experiment_20260329.jsonl"
-A_OUT = ROOT / "data" / "logos" / "btrack_pilot" / "bench" / "a_track_eval.jsonl"
-B_OUT = ROOT / "data" / "logos" / "btrack_pilot" / "bench" / "b_track_eval.jsonl"
+A_OUT = ROOT / DIRECT_A_TRACK_EVAL
+B_OUT = ROOT / DIRECT_B_TRACK_EVAL
 
 
 def _abs(path_str: str) -> Path:
@@ -125,6 +141,15 @@ def main() -> int:
         print("ERROR: no overlapping state_id between A/B direct logs")
         return 3
 
+    scope = btrack_pilot_bench_scope(
+        build_script="build_btrack_bench_from_direct_logs.py",
+        source_note=(
+            "Sources: myeongni_16_state_audit_v1.jsonl + myeongni_16_state_experiment_*.jsonl "
+            "(vector_4d / consistency); no birth datetime pipeline."
+        ),
+    )
+    upsert_bench_manseryeok_scope_manifest(ROOT, BENCH_SCOPE_REF_DIRECT_V1, scope)
+
     a_rows: list[dict[str, Any]] = []
     b_rows: list[dict[str, Any]] = []
     for sid in states:
@@ -139,6 +164,7 @@ def main() -> int:
             "direction": _direction(sid),
             "source": "build_btrack_bench_from_direct_logs",
             "direct_logs": True,
+            "manseryeok_scope_ref": BENCH_SCOPE_REF_DIRECT_V1,
         }
         a_rows.append({**common, "track": "A", "confidence": round(a_conf, 6), "snr": round(a_snr, 6)})
         b_rows.append({**common, "track": "B", "confidence": round(b_conf, 6), "snr": round(b_snr, 6)})
@@ -153,6 +179,7 @@ def main() -> int:
             fb.write(json.dumps(row, ensure_ascii=False) + "\n")
 
     print("OK: direct-log A/B bench generated")
+    print(f"manseryeok_manifest={ROOT / BENCH_SCOPE_MANIFEST_RELPATH}")
     print(f"a_out={a_out} rows={len(a_rows)}")
     print(f"b_out={b_out} rows={len(b_rows)}")
     return 0

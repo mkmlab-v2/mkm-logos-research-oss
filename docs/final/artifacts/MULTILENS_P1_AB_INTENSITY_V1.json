@@ -1,7 +1,12 @@
 {
   "schema": "multilens_p1_ab_intensity_v1",
-  "ts_utc": "2026-03-30T22:59:28.957385+00:00",
+  "ts_utc": "2026-03-30T23:44:10.140290+00:00",
   "profile": "intensity_first",
+  "manseryeok_scope": {
+    "manseryeok_applicable": false,
+    "jaccard_metric_domain": "compression_token_reconstruction",
+    "manseryeok_scope_note": "multilens_p1_ab_* reports: avg_reconstruction_fidelity_jaccard measures compressed vs baseline token overlap — not pillar or manse agreement. Do not merge approx_stub_pipeline_metadata() into these scores as if manse-derived."
+  },
   "source_refs": {
     "input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
     "baseline": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json",
@@ -17,8 +22,8 @@
   },
   "summary": {
     "candidate_count": 12,
-    "passing_count": 2,
-    "elapsed_ms": 386.721
+    "passing_count": 0,
+    "elapsed_ms": 953.779
   },
   "best_candidate": {
     "strategy": "A",
@@ -27,11 +32,11 @@
     "general_max_saving_rate": 0.54,
     "sensitive_max_saving_rate": 0.5,
     "hangul_max_saving_rate": 0.48,
-    "global_token_saving_rate": 0.5316455696202531,
-    "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
-    "avg_sensitive_integrity": 1.0,
+    "global_token_saving_rate": 0.5274261603375527,
+    "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
+    "avg_sensitive_integrity": 0.9916666666666668,
     "jaccard_drop_pp": 0.0,
-    "gate_ok": true
+    "gate_ok": false
   },
   "candidates": [
     {
@@ -41,11 +46,11 @@
       "general_max_saving_rate": 0.54,
       "sensitive_max_saving_rate": 0.5,
       "hangul_max_saving_rate": 0.48,
-      "global_token_saving_rate": 0.5316455696202531,
-      "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
-      "avg_sensitive_integrity": 1.0,
+      "global_token_saving_rate": 0.5274261603375527,
+      "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
+      "avg_sensitive_integrity": 0.9916666666666668,
       "jaccard_drop_pp": 0.0,
-      "gate_ok": true
+      "gate_ok": false
     },
     {
       "strategy": "A",
@@ -54,9 +59,9 @@
       "general_max_saving_rate": 0.52,
       "sensitive_max_saving_rate": 0.49,
       "hangul_max_saving_rate": 0.45999999999999996,
-      "global_token_saving_rate": 0.4992967651195499,
-      "avg_reconstruction_fidelity_jaccard": 0.7068865378472577,
-      "avg_sensitive_integrity": 1.0,
+      "global_token_saving_rate": 0.49507735583684953,
+      "avg_reconstruction_fidelity_jaccard": 0.7120204664186864,
+      "avg_sensitive_integrity": 0.9916666666666668,
       "jaccard_drop_pp": 0.0,
       "gate_ok": false
     },
@@ -67,9 +72,9 @@
       "general_max_saving_rate": 0.5,
       "sensitive_max_saving_rate": 0.48,
       "hangul_max_saving_rate": 0.44,
-      "global_token_saving_rate": 0.4978902953586498,
-      "avg_reconstruction_fidelity_jaccard": 0.7068865378472577,
-      "avg_sensitive_integrity": 1.0,
+      "global_token_saving_rate": 0.49367088607594933,
+      "avg_reconstruction_fidelity_jaccard": 0.7120204664186864,
+      "avg_sensitive_integrity": 0.9916666666666668,
       "jaccard_drop_pp": 0.0,
       "gate_ok": false
     },
@@ -80,8 +85,8 @@
       "general_max_saving_rate": 0.54,
       "sensitive_max_saving_rate": 0.5,
       "hangul_max_saving_rate": 0.48,
-      "global_token_saving_rate": 0.3642756680731364,
-      "avg_reconstruction_fidelity_jaccard": 0.8068498806405152,
+      "global_token_saving_rate": 0.32208157524613223,
+      "avg_reconstruction_fidelity_jaccard": 0.8544320962190545,
       "avg_sensitive_integrity": 1.0,
       "jaccard_drop_pp": 0.0,
       "gate_ok": false
@@ -93,8 +98,8 @@
       "general_max_saving_rate": 0.52,
       "sensitive_max_saving_rate": 0.49,
       "hangul_max_saving_rate": 0.45999999999999996,
-      "global_token_saving_rate": 0.360056258790436,
-      "avg_reconstruction_fidelity_jaccard": 0.8110439595878838,
+      "global_token_saving_rate": 0.31926863572433195,
+      "avg_reconstruction_fidelity_jaccard": 0.857063675166423,
       "avg_sensitive_integrity": 1.0,
       "jaccard_drop_pp": 0.0,
       "gate_ok": false
@@ -106,8 +111,8 @@
       "general_max_saving_rate": 0.5,
       "sensitive_max_saving_rate": 0.48,
       "hangul_max_saving_rate": 0.44,
-      "global_token_saving_rate": 0.360056258790436,
-      "avg_reconstruction_fidelity_jaccard": 0.8110439595878838,
+      "global_token_saving_rate": 0.31926863572433195,
+      "avg_reconstruction_fidelity_jaccard": 0.857063675166423,
       "avg_sensitive_integrity": 1.0,
       "jaccard_drop_pp": 0.0,
       "gate_ok": false
@@ -119,8 +124,8 @@
       "general_max_saving_rate": 0.54,
       "sensitive_max_saving_rate": 0.5,
       "hangul_max_saving_rate": 0.48,
-      "global_token_saving_rate": 0.42334739803094235,
-      "avg_reconstruction_fidelity_jaccard": 0.7810419324612436,
+      "global_token_saving_rate": 0.37412095639943743,
+      "avg_reconstruction_fidelity_jaccard": 0.83664841543905,
       "avg_sensitive_integrity": 1.0,
       "jaccard_drop_pp": 0.0,
       "gate_ok": false
@@ -132,8 +137,8 @@
       "general_max_saving_rate": 0.52,
       "sensitive_max_saving_rate": 0.49,
       "hangul_max_saving_rate": 0.45999999999999996,
-      "global_token_saving_rate": 0.4135021097046413,
-      "avg_reconstruction_fidelity_jaccard": 0.7896477761144945,
+      "global_token_saving_rate": 0.3656821378340366,
+      "avg_reconstruction_fidelity_jaccard": 0.843691759092301,
       "avg_sensitive_integrity": 1.0,
       "jaccard_drop_pp": 0.0,
       "gate_ok": false
@@ -145,8 +150,8 @@
       "general_max_saving_rate": 0.5,
       "sensitive_max_saving_rate": 0.48,
       "hangul_max_saving_rate": 0.44,
-      "global_token_saving_rate": 0.4135021097046413,
-      "avg_reconstruction_fidelity_jaccard": 0.7896477761144945,
+      "global_token_saving_rate": 0.3656821378340366,
+      "avg_reconstruction_fidelity_jaccard": 0.843691759092301,
       "avg_sensitive_integrity": 1.0,
       "jaccard_drop_pp": 0.0,
       "gate_ok": false
@@ -158,11 +163,11 @@
       "general_max_saving_rate": 0.54,
       "sensitive_max_saving_rate": 0.5,
       "hangul_max_saving_rate": 0.48,
-      "global_token_saving_rate": 0.5189873417721519,
-      "avg_reconstruction_fidelity_jaccard": 0.8982095250380857,
-      "avg_sensitive_integrity": 1.0,
+      "global_token_saving_rate": 0.5147679324894514,
+      "avg_reconstruction_fidelity_jaccard": 0.8706675082313629,
+      "avg_sensitive_integrity": 0.9916666666666668,
       "jaccard_drop_pp": 0.0,
-      "gate_ok": true
+      "gate_ok": false
     },
     {
       "strategy": "A",
@@ -171,9 +176,9 @@
       "general_max_saving_rate": 0.52,
       "sensitive_max_saving_rate": 0.49,
       "hangul_max_saving_rate": 0.45999999999999996,
-      "global_token_saving_rate": 0.4866385372714487,
-      "avg_reconstruction_fidelity_jaccard": 0.9042879564106346,
-      "avg_sensitive_integrity": 1.0,
+      "global_token_saving_rate": 0.4824191279887482,
+      "avg_reconstruction_fidelity_jaccard": 0.8752753513686178,
+      "avg_sensitive_integrity": 0.9916666666666668,
       "jaccard_drop_pp": 0.0,
       "gate_ok": false
     },
@@ -184,9 +189,9 @@
       "general_max_saving_rate": 0.5,
       "sensitive_max_saving_rate": 0.48,
       "hangul_max_saving_rate": 0.44,
-      "global_token_saving_rate": 0.4852320675105485,
-      "avg_reconstruction_fidelity_jaccard": 0.9042879564106346,
-      "avg_sensitive_integrity": 1.0,
+      "global_token_saving_rate": 0.4810126582278481,
+      "avg_reconstruction_fidelity_jaccard": 0.8752753513686178,
+      "avg_sensitive_integrity": 0.9916666666666668,
       "jaccard_drop_pp": 0.0,
       "gate_ok": false
     }
