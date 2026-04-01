@@ -28,8 +28,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install google-genai
-        run: pip install --upgrade google-genai
+      - name: Install dependencies
+        run: pip install --upgrade google-genai pytest
 
       - name: Script check (no API key)
         run: python scripts/gemini_multimodal_batch.py check
