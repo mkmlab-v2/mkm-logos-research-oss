@@ -1,0 +1,368 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+배치/CI용 Gemini 멀티모달 호출 — Cursor `aistudio-mcp`의 generate_content와 동일한 전술 축을
+google-genai SDK로 재현한다 (IDE 밖 실행·스케줄러·파이프라인 편입).
+
+의존성: pip install google-genai
+인증: 환경 변수 GEMINI_API_KEY 또는 GOOGLE_API_KEY (Client 기본 동작과 동일)
+
+예:
+  py scripts/gemini_multimodal_batch.py check
+  py scripts/gemini_multimodal_batch.py research --file paper.pdf --prompt "요약해 줘" --timeout 600
+  py scripts/gemini_multimodal_batch.py image --prompt "pixel character, flat vector" --out-dir ./out
+  py scripts/gemini_multimodal_batch.py crosscheck --file chart.png --meta "BTC 4h Binance 2026-04-01Z"
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import mimetypes
+import os
+import sys
+from pathlib import Path
+from typing import Iterable, List, Optional
+
+from google import genai
+from google.genai import types
+
+MAX_FILES = 10
+
+DEFAULT_MODEL_RESEARCH = "gemini-2.5-flash"
+DEFAULT_MODEL_IMAGE = "gemini-2.5-flash-image-preview"
+
+# HTTP 전체 타임아웃(초). 미설정 시 SDK 기본에 맡겨 장시간 대기처럼 보일 수 있음.
+DEFAULT_TIMEOUT_RESEARCH_S = 900
+DEFAULT_TIMEOUT_IMAGE_S = 300
+DEFAULT_TIMEOUT_CROSSCHECK_S = 900
+
+
+def _api_key() -> Optional[str]:
+    return os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+
+
+def _mime_for_path(path: Path) -> str:
+    mime, _ = mimetypes.guess_type(str(path))
+    if mime:
+        return mime
+    suf = path.suffix.lower()
+    fallback = {
+        ".md": "text/markdown",
+        ".json": "application/json",
+        ".csv": "text/csv",
+    }
+    return fallback.get(suf, "application/octet-stream")
+
+
+def _file_parts(paths: Iterable[Path]) -> List[types.Part]:
+    parts: List[types.Part] = []
+    for p in paths:
+        if not p.is_file():
+            raise FileNotFoundError(f"파일 없음: {p}")
+        data = p.read_bytes()
+        parts.append(types.Part.from_bytes(data=data, mime_type=_mime_for_path(p)))
+    return parts
+
+
+def _build_tools(
+    *,
+    google_search: bool,
+    code_execution: bool,
+) -> List[types.Tool]:
+    tools: List[types.Tool] = []
+    if google_search:
+        tools.append(types.Tool(google_search=types.GoogleSearch()))
+    if code_execution:
+        tools.append(types.Tool(code_execution=types.ToolCodeExecution()))
+    return tools
+
+
+def _thinking_config(budget: int) -> Optional[types.ThinkingConfig]:
+    if budget == 0:
+        return None
+    return types.ThinkingConfig(thinking_budget=budget)
+
+
+def _make_client(api_key: str, timeout_sec: int) -> genai.Client:
+    http = types.HttpOptions(timeout=timeout_sec)
+    return genai.Client(api_key=api_key, http_options=http)
+
+
+def _call_generate(client: genai.Client, **kwargs):
+    try:
+        return client.models.generate_content(**kwargs)
+    except Exception as e:
+        msg = str(e).lower()
+        if "timeout" in msg or "timed out" in msg:
+            print(
+                "요청 시간 초과(HTTP timeout). --timeout 값을 늘리거나, "
+                "thinking/검색/코드 실행을 줄여 재시도하세요.",
+                file=sys.stderr,
+            )
+        raise
+
+
+def cmd_research(ns: argparse.Namespace) -> int:
+    paths = [Path(p) for p in ns.file]
+    if len(paths) > MAX_FILES:
+        print(f"파일은 최대 {MAX_FILES}개까지.", file=sys.stderr)
+        return 2
+
+    parts: List[types.Part] = [types.Part.from_text(text=ns.prompt)]
+    parts.extend(_file_parts(paths))
+
+    tools = _build_tools(google_search=ns.google_search, code_execution=ns.code_execution)
+    cfg = types.GenerateContentConfig(
+        system_instruction=ns.system or None,
+        temperature=ns.temperature,
+        tools=tools or None,
+        thinking_config=_thinking_config(ns.thinking_budget),
+    )
+
+    client = _make_client(_api_key() or "", ns.timeout)
+    resp = _call_generate(
+        client,
+        model=ns.model,
+        contents=parts,
+        config=cfg,
+    )
+    print(resp.text or "")
+    return 0
+
+
+def _save_image_parts(resp: genai.types.GenerateContentResponse, out_dir: Path) -> List[Path]:
+    out_dir.mkdir(parents=True, exist_ok=True)
+    saved: List[Path] = []
+    idx = 0
+    cands = resp.candidates or []
+    for cand in cands:
+        content = cand.content
+        if not content or not content.parts:
+            continue
+        for part in content.parts:
+            if not part.inline_data or not part.inline_data.data:
+                continue
+            mime = part.inline_data.mime_type or "image/png"
+            ext = ".png" if "png" in mime else ".jpg" if "jpeg" in mime or "jpg" in mime else ".bin"
+            idx += 1
+            name = f"gemini_image_{idx}{ext}"
+            path = out_dir / name
+            path.write_bytes(part.inline_data.data)
+            saved.append(path)
+    return saved
+
+
+def cmd_image(ns: argparse.Namespace) -> int:
+    modalities: List[types.Modality] = (
+        [types.Modality.IMAGE]
+        if ns.only_image
+        else [types.Modality.TEXT, types.Modality.IMAGE]
+    )
+    img_cfg = types.ImageConfig(
+        aspect_ratio=ns.aspect_ratio,
+        output_mime_type=ns.output_mime,
+    )
+    cfg = types.GenerateContentConfig(
+        system_instruction=ns.system or None,
+        temperature=ns.temperature,
+        response_modalities=modalities,
+        image_config=img_cfg,
+    )
+
+    client = _make_client(_api_key() or "", ns.timeout)
+    resp = _call_generate(
+        client,
+        model=ns.model,
+        contents=ns.prompt,
+        config=cfg,
+    )
+
+    if ns.out_dir:
+        out = Path(ns.out_dir)
+        paths = _save_image_parts(resp, out)
+        for p in paths:
+            print(str(p.resolve()))
+        if not ns.only_image and (resp.text or "").strip():
+            print("\n--- text ---\n")
+            print(resp.text)
+        return 0
+
+    # data URI 스타일: 콘솔에는 메타만 (base64 전체는 토큰·로그 폭주 방지)
+    print(json.dumps({"text": resp.text, "candidates": len(resp.candidates or [])}, ensure_ascii=False))
+    return 0
+
+
+def cmd_crosscheck(ns: argparse.Namespace) -> int:
+    paths = [Path(p) for p in ns.file]
+    if len(paths) > MAX_FILES:
+        print(f"파일은 최대 {MAX_FILES}개까지.", file=sys.stderr)
+        return 2
+
+    meta = ns.meta or ""
+    body = (
+        f"{ns.prompt}\n\n"
+        f"[캡처 메타데이터 — 모델이 과신하지 않도록 반드시 참고]\n{meta}"
+    )
+    parts: List[types.Part] = [types.Part.from_text(text=body)]
+    parts.extend(_file_parts(paths))
+
+    tools = _build_tools(google_search=True, code_execution=False)
+    cfg = types.GenerateContentConfig(
+        system_instruction=ns.system or None,
+        temperature=ns.temperature,
+        tools=tools,
+        thinking_config=_thinking_config(ns.thinking_budget),
+    )
+
+    client = _make_client(_api_key() or "", ns.timeout)
+    resp = _call_generate(
+        client,
+        model=ns.model,
+        contents=parts,
+        config=cfg,
+    )
+    print(resp.text or "")
+    return 0
+
+
+def cmd_check(_ns: argparse.Namespace) -> int:
+    """키·네트워크 없이 SDK·임포트만 검증."""
+    import importlib.util
+
+    spec = importlib.util.find_spec("google.genai")
+    ok = spec is not None
+    print("google.genai:", "OK" if ok else "MISSING")
+    if not ok:
+        return 2
+    key = _api_key()
+    print("GEMINI_API_KEY/GOOGLE_API_KEY:", "set" if key else "not set (배치 호출 전에 설정)")
+    tiny = Path(os.environ.get("TEMP", ".")) / "gemini_batch_mime_probe.txt"
+    tiny.write_text("ok", encoding="utf-8")
+    try:
+        m = _mime_for_path(tiny)
+        print(f"mime probe ({tiny.name}): {m}")
+    finally:
+        try:
+            tiny.unlink()
+        except OSError:
+            pass
+    print("CLI: py scripts/gemini_multimodal_batch.py {research,image,crosscheck} --help")
+    return 0
+
+
+def _parser() -> argparse.ArgumentParser:
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument(
+        "--timeout",
+        type=int,
+        default=None,
+        metavar="SEC",
+        help="HTTP 전체 타임아웃(초). 서브커맨드별 기본값 사용 시 생략 가능",
+    )
+
+    p = argparse.ArgumentParser(
+        description="Gemini 멀티모달 배치 (aistudio-mcp generate_content 전술 대응)",
+    )
+    sub = p.add_subparsers(dest="command", required=True)
+
+    pr = sub.add_parser(
+        "research",
+        parents=[common],
+        help="PDF/이미지 등 + 검색 + (선택) 코드 실행 + thinking",
+    )
+    pr.add_argument(
+        "--model",
+        default=DEFAULT_MODEL_RESEARCH,
+        help=f"모델 id (기본 {DEFAULT_MODEL_RESEARCH})",
+    )
+    pr.add_argument("--file", "-f", action="append", default=[], required=True, help="입력 파일 경로 (여러 번 가능)")
+    pr.add_argument("--prompt", "-p", required=True)
+    pr.add_argument("--system", "-s", default=None)
+    pr.add_argument("--temperature", type=float, default=0.2)
+    pr.add_argument("--google-search", action="store_true", help="Google Search 도구")
+    pr.add_argument("--code-execution", action="store_true", help="코드 실행 도구")
+    pr.add_argument(
+        "--thinking-budget",
+        type=int,
+        default=-1,
+        help="-1=무제한(모델 지원 시), 0=끔",
+    )
+    pr.set_defaults(func=cmd_research, _timeout_default=DEFAULT_TIMEOUT_RESEARCH_S)
+
+    pi = sub.add_parser(
+        "image",
+        parents=[common],
+        help="이미지 생성 (저장 시 base64를 콘솔에 안 뿌림)",
+    )
+    pi.add_argument("--prompt", "-p", required=True)
+    pi.add_argument("--system", "-s", default=None)
+    pi.add_argument("--temperature", type=float, default=0.2)
+    pi.add_argument(
+        "--model",
+        default=DEFAULT_MODEL_IMAGE,
+        help=f"기본: {DEFAULT_MODEL_IMAGE}",
+    )
+    pi.add_argument("--only-image", action="store_true", help="응답 모달리티 IMAGE 위주")
+    pi.add_argument("--out-dir", "-o", default=None, help="저장 디렉터리 (지정 시 PNG 등으로 기록)")
+    pi.add_argument("--aspect-ratio", default=None, help="예: 1:1, 16:9 (모델/플랜 지원 시)")
+    pi.add_argument("--output-mime", default="image/png", help="image/png 등")
+    pi.set_defaults(func=cmd_image, _timeout_default=DEFAULT_TIMEOUT_IMAGE_S)
+
+    pc = sub.add_parser(
+        "crosscheck",
+        parents=[common],
+        help="비전 + Google Search 교차 검증 (차트 등)",
+    )
+    pc.add_argument(
+        "--model",
+        default=DEFAULT_MODEL_RESEARCH,
+        help=f"모델 id (기본 {DEFAULT_MODEL_RESEARCH})",
+    )
+    pc.add_argument("--file", "-f", action="append", default=[], required=True)
+    pc.add_argument(
+        "--prompt",
+        "-p",
+        default=(
+            "이미지에 보이는 차트 구조를 설명하고, Google 검색으로 확인한 최근 매크로 뉴스와 "
+            "모순이 있으면 지적하라. 불확실하면 불확실로 표시하라."
+        ),
+    )
+    pc.add_argument("--system", "-s", default=None)
+    pc.add_argument("--meta", "-m", default="", help="심볼·타임프레임·캡처 시각 등")
+    pc.add_argument("--temperature", type=float, default=0.2)
+    pc.add_argument("--thinking-budget", type=int, default=-1)
+    pc.set_defaults(func=cmd_crosscheck, _timeout_default=DEFAULT_TIMEOUT_CROSSCHECK_S)
+
+    pch = sub.add_parser("check", help="SDK·환경 로컬 점검 (API 호출 없음)")
+    pch.set_defaults(func=cmd_check)
+
+    return p
+
+
+def main(argv: Optional[List[str]] = None) -> int:
+    args = _parser().parse_args(argv)
+
+    if args.command == "check":
+        return int(args.func(args))
+
+    if not _api_key():
+        print("GEMINI_API_KEY 또는 GOOGLE_API_KEY 가 필요합니다.", file=sys.stderr)
+        return 2
+
+    td = getattr(args, "_timeout_default", 600)
+    if args.timeout is None:
+        args.timeout = td
+
+    try:
+        return int(args.func(args))
+    except KeyboardInterrupt:
+        print("중단됨.", file=sys.stderr)
+        return 130
+    except Exception as e:
+        print(f"오류: {e}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
