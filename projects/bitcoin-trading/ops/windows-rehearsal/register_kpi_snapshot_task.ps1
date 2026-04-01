@@ -4,6 +4,10 @@ $taskName = "Bitcoin-KPI-Snapshot-30min"
 $projectRoot = "C:\workspace\projects\bitcoin-trading"
 $runner = Join-Path $projectRoot "ops\windows-rehearsal\run_kpi_snapshot.ps1"
 
+# Ops Local LLM canary gate hook control (run_kpi_snapshot.ps1):
+# - default: enabled
+# - disable: set user/system env `OPS_LOCAL_LLM_CANARY_GATE_ON_KPI=0`
+
 if (-not (Test-Path $runner)) {
     throw "KPI runner wrapper not found: $runner"
 }

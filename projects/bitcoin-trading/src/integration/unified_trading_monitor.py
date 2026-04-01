@@ -90,6 +90,15 @@ except ImportError as e:
     MARKET_INDICATOR_MONITOR_AVAILABLE = False
     print(f"⚠️ MarketIndicatorMonitor를 import할 수 없습니다. 시장 지표 모니터링 비활성화: {e}")
 
+# Public event bridge (optional): sanitized outbound feed for public dashboard.
+try:
+    from src.integration.public_event_bridge import PublicEventBridge, build_public_event
+    PUBLIC_EVENT_BRIDGE_AVAILABLE = True
+except ImportError:
+    PublicEventBridge = None
+    build_public_event = None
+    PUBLIC_EVENT_BRIDGE_AVAILABLE = False
+
 # COMPONENTS_AVAILABLE: MKM12BitcoinStrategy만 필수, 나머지는 선택적
 COMPONENTS_AVAILABLE = MKM12_STRATEGY_AVAILABLE
 
@@ -98,6 +107,30 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+PUBLIC_METRICS_SNAPSHOT_PATH = (
+    WORKSPACE_ROOT
+    / "projects"
+    / "bitcoin-trading"
+    / "memory"
+    / "v2"
+    / "public"
+    / "public_trading_metrics_latest.json"
+)
+DAEMON_STATUS_PATH = (
+    WORKSPACE_ROOT
+    / "projects"
+    / "bitcoin-trading"
+    / "memory"
+    / "trading_daemon_status.json"
+)
+FUSED_WEEKLY_CONTRACT_PATH = (
+    WORKSPACE_ROOT
+    / "docs"
+    / "final"
+    / "artifacts"
+    / "fused_paper_cycle_weekly_latest.json"
+)
 
 
 class UnifiedTradingMonitor:
@@ -131,6 +164,13 @@ class UnifiedTradingMonitor:
         self.symbol = symbol
         self.enable_monitoring = enable_monitoring
         self.enable_trading = enable_trading
+        self.enable_public_event_bridge = str(os.getenv("PUBLIC_EVENT_BRIDGE_ENABLED", "true")).strip().lower() in {
+            "1",
+            "true",
+            "yes",
+            "on",
+        }
+        self.public_event_bridge = None
         
         # 🚀 Intelligence Refinery v2.0 초기화 (뉴스 정제용)
         self.intelligence_refinery = None
@@ -201,6 +241,15 @@ class UnifiedTradingMonitor:
         except Exception as e:
             logger.warning(f"⚠️ AlertManager 초기화 실패: {e}. Telegram 알림 비활성화")
             self.alert_manager = None
+
+        # 🌐 Public Event Bridge 초기화 (옵션)
+        if self.enable_public_event_bridge and PUBLIC_EVENT_BRIDGE_AVAILABLE and PublicEventBridge is not None:
+            try:
+                self.public_event_bridge = PublicEventBridge()
+                logger.info("✅ Public Event Bridge 초기화 완료 (sanitized public feed)")
+            except Exception as e:
+                logger.warning(f"⚠️ Public Event Bridge 초기화 실패: {e}")
+                self.public_event_bridge = None
         
         # 🔮 예언 묵시록 예측기 초기화
         self.apocalypse_predictor = None
@@ -222,6 +271,126 @@ class UnifiedTradingMonitor:
         self.alert_history = []
         
         logger.info("✅ 통합 실전 거래 모니터링 시스템 초기화 완료")
+
+    def _load_public_trading_metrics(self) -> Dict[str, Any]:
+        """
+        Best-effort public metrics loader.
+        Priority:
+        1) Explicit snapshot file for public broadcast fields
+        2) Daemon status 24h exchange snapshot fallback
+        """
+        metrics: Dict[str, Any] = {}
+        snapshot_path = Path(
+            os.getenv(
+                "PUBLIC_TRADING_METRICS_PATH",
+                str(PUBLIC_METRICS_SNAPSHOT_PATH),
+            )
+        )
+        try:
+            if snapshot_path.is_file():
+                payload = json.loads(snapshot_path.read_text(encoding="utf-8"))
+                if isinstance(payload, dict):
+                    for k in (
+                        "position_symbol",
+                        "position_side",
+                        "position_size",
+                        "unrealized_pnl_usdt",
+                        "realized_24h_usdt",
+                        "pnl_24h_type",
+                        "balance_total_usdt",
+                        "balance_available_usdt",
+                    ):
+                        if k in payload:
+                            metrics[k] = payload.get(k)
+        except Exception as e:
+            logger.debug("public metrics snapshot read skipped: %s", e)
+
+        if "realized_24h_usdt" not in metrics:
+            try:
+                if DAEMON_STATUS_PATH.is_file():
+                    ds = json.loads(DAEMON_STATUS_PATH.read_text(encoding="utf-8"))
+                    if isinstance(ds, dict):
+                        ex24 = ds.get("exchange_snapshot_24h") or {}
+                        if isinstance(ex24, dict):
+                            net = ex24.get("net")
+                            realized = ex24.get("realized_pnl")
+                            commission = ex24.get("commission")
+                            funding = ex24.get("funding_fee")
+                            metrics["realized_24h_usdt"] = net if net is not None else 0.0
+                            if funding and not realized and not commission:
+                                metrics["pnl_24h_type"] = "FUNDING_FEE"
+                            elif realized:
+                                metrics["pnl_24h_type"] = "REALIZED_PNL"
+                            elif commission:
+                                metrics["pnl_24h_type"] = "COMMISSION"
+                            else:
+                                metrics.setdefault("pnl_24h_type", "NONE")
+                        metrics.setdefault("position_symbol", ds.get("symbol"))
+            except Exception as e:
+                logger.debug("daemon status metrics fallback skipped: %s", e)
+
+        return metrics
+
+    def _load_fused_week_contract_snapshot(self) -> Dict[str, Any]:
+        """Best-effort loader for fused paper-cycle week contract."""
+        try:
+            if not FUSED_WEEKLY_CONTRACT_PATH.is_file():
+                return {"available": False, "reason": "missing_file"}
+            payload = json.loads(FUSED_WEEKLY_CONTRACT_PATH.read_text(encoding="utf-8"))
+            if not isinstance(payload, dict):
+                return {"available": False, "reason": "invalid_payload"}
+            week_contract = payload.get("week_contract") if isinstance(payload.get("week_contract"), dict) else {}
+            signals = week_contract.get("signals") if isinstance(week_contract.get("signals"), dict) else {}
+            quality = {
+                name: (
+                    str(sig.get("quality_flag")) if isinstance(sig, dict) else "missing"
+                )
+                for name, sig in signals.items()
+            }
+            return {
+                "available": True,
+                "generated_at_utc": payload.get("generated_at_utc"),
+                "decision": payload.get("decision"),
+                "decision_reason": payload.get("decision_reason"),
+                "toe_score": payload.get("toe_score"),
+                "quality_flags": quality,
+            }
+        except Exception as e:
+            return {"available": False, "reason": f"load_error:{type(e).__name__}"}
+
+    async def _publish_public_event(
+        self,
+        integrated_signal: str,
+        integrated_confidence: float,
+        warning_level: str,
+        strategy_result: Dict[str, Any],
+    ) -> None:
+        if not self.public_event_bridge or not build_public_event:
+            return
+        try:
+            if not getattr(self.public_event_bridge, "_running", False):
+                await self.public_event_bridge.start()
+
+            # Character fallback mapping for MVP.
+            character_id = (
+                strategy_result.get("active_character_id")
+                or strategy_result.get("character_id")
+                or {
+                    "BUY": "dragon_quant",
+                    "SELL": "tiger_shield",
+                    "HOLD": "ox_guard",
+                }.get(integrated_signal, "ox_guard")
+            )
+            public_event = build_public_event(
+                signal=integrated_signal,
+                confidence=integrated_confidence,
+                risk_level=warning_level,
+                active_character_id=str(character_id),
+                metrics=self._load_public_trading_metrics(),
+            )
+            self.public_event_bridge.publish_nowait(public_event)
+        except Exception as e:
+            logger.warning(f"⚠️ Public Event 발행 실패(무시): {e}")
     
     async def analyze_with_monitoring(
         self,
@@ -251,8 +420,10 @@ class UnifiedTradingMonitor:
             "warning_level": "NORMAL",
             "primary_regime": None,
             "secondary_biblical_regime": None,
-            "divine_distance": None
+            "divine_distance": None,
+            "fused_week_contract": None,
         }
+        result["fused_week_contract"] = self._load_fused_week_contract_snapshot()
         
         # 🔮 예언 묵시록 시나리오 업데이트 (일일 1회 또는 필요 시)
         apocalypse_scenarios = self._update_apocalypse_scenarios(price_data, current_price)
@@ -380,6 +551,14 @@ class UnifiedTradingMonitor:
         result["integrated_confidence"] = integrated_confidence
         
         logger.info(f"   통합 신호: {integrated_signal} (신뢰도: {integrated_confidence:.2%})")
+
+        # 🌐 Publish sanitized public event for dashboard/streaming surfaces.
+        await self._publish_public_event(
+            integrated_signal=integrated_signal,
+            integrated_confidence=integrated_confidence,
+            warning_level=result.get("warning_level", "WARNING"),
+            strategy_result=strategy_result,
+        )
         
         # 📱 Telegram 통찰 리포트 전송 (각종 지표 포함)
         if self.alert_manager:
@@ -394,6 +573,13 @@ class UnifiedTradingMonitor:
                     if compression_analysis:
                         indicators["compression_ratio"] = compression_analysis.get("compression_ratio")
                         indicators["sentiment"] = compression_analysis.get("sentiment_label")
+
+                fused_contract = result.get("fused_week_contract") or {}
+                if isinstance(fused_contract, dict) and fused_contract.get("available"):
+                    indicators["fused_toe_score"] = fused_contract.get("toe_score")
+                    indicators["fused_weekly_decision"] = fused_contract.get("decision")
+                    indicators["fused_weekly_decision_reason"] = fused_contract.get("decision_reason")
+                    indicators["fused_quality_flags"] = fused_contract.get("quality_flags")
                 
                 # 뉴스 신뢰도 (Intelligence Refinery 결과)
                 if result.get("news_confidence") is not None:
@@ -493,6 +679,9 @@ class UnifiedTradingMonitor:
                         indicators=indicators,
                         apocalypse_insight=apocalypse_insight,
                         call_path_14b=call_path_14b,
+                        gate_level=("LOW" if integrated_signal == "HOLD" or integrated_confidence < 0.6 else "MID"),
+                        gate_reason=("monitor_low_confidence_or_hold" if integrated_signal == "HOLD" or integrated_confidence < 0.6 else "monitor_signal_active"),
+                        price_lock=(integrated_signal == "HOLD" or integrated_confidence < 0.6),
                     )
             except Exception as e:
                 logger.warning(f"⚠️ Telegram 통찰 리포트 전송 실패: {e}")

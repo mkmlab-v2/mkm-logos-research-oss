@@ -582,17 +582,30 @@ class CryptoNitroLiveTrader:
                             # 손절/익절 비율도 맞춰준다 (없으면 RiskManager 기본값 유지)
                             self.risk_manager.stop_loss_ratio = rm_conf.get('stop_loss_ratio', self.risk_manager.stop_loss_ratio)
                             self.risk_manager.take_profit_ratio = rm_conf.get('take_profit_ratio', self.risk_manager.take_profit_ratio)
+                            self.config_risk_per_trade = max(
+                                0.001,
+                                min(0.03, float(rm_conf.get("risk_per_trade", self.config_risk_per_trade)))
+                            )
+                            self.config_max_consecutive_failures_hard_gate = max(
+                                1,
+                                min(10, int(rm_conf.get(
+                                    "max_consecutive_failures_hard_gate",
+                                    self.config_max_consecutive_failures_hard_gate,
+                                )))
+                            )
 
                             logger.info(
                                 "✅ 리스크 관리 설정 적용 (파일: %s): "
                                 "max_position_size=%.1f%%, max_drawdown=%.1f%%, max_daily_loss=%.1f%%, "
-                                "stop_loss=%.1f%%, take_profit=%.1f%%",
+                                "stop_loss=%.1f%%, take_profit=%.1f%%, risk_per_trade=%.2f%%, hard_gate_failures=%d",
                                 config_path,
                                 max_pos_size * 100,
                                 self.risk_manager.max_drawdown * 100,
                                 self.risk_manager.max_daily_loss * 100,
                                 self.risk_manager.stop_loss_ratio * 100,
                                 self.risk_manager.take_profit_ratio * 100,
+                                self.config_risk_per_trade * 100,
+                                self.config_max_consecutive_failures_hard_gate,
                             )
                         else:
                             logger.warning(f"⚠️ 설정 파일에 risk_management 섹션이 없습니다: {config_path}")
@@ -704,6 +717,8 @@ class CryptoNitroLiveTrader:
         # 운영자 설정 오버라이드 (trading_config.yaml > trading)
         self.config_check_interval_seconds: Optional[int] = None
         self.config_max_trades_per_day: Optional[int] = None
+        self.config_risk_per_trade: float = 0.0075
+        self.config_max_consecutive_failures_hard_gate: int = 3
         # MKM Risk Governor (read-only)
         self.risk_profile: Dict[str, Any] = {}
         self.risk_profile_status: str = "not_loaded"
@@ -712,6 +727,15 @@ class CryptoNitroLiveTrader:
         self.config_kill_switch_threshold: Optional[float] = None
         self.config_singular_core_decision: str = "UNKNOWN"
         self.config_singular_core_score: float = 0.0
+        self.risk_profile_pipeline_status: Dict[str, Any] = {
+            "source": None,
+            "mode": None,
+            "generated_at": None,
+            "expires_at": None,
+            "is_n8n_source": False,
+            "is_fresh": None,
+            "age_minutes": None,
+        }
 
         self._load_risk_profile()
         
@@ -750,6 +774,15 @@ class CryptoNitroLiveTrader:
                 return
 
             expires_at = profile.get("expires_at")
+            generated_at = profile.get("generated_at")
+            source = str(profile.get("source", "")).strip()
+            mode = str(profile.get("mode", "")).strip()
+            generated_dt = None
+            if generated_at:
+                try:
+                    generated_dt = datetime.fromisoformat(str(generated_at).replace("Z", "+00:00"))
+                except Exception:
+                    generated_dt = None
             if expires_at:
                 try:
                     exp = datetime.fromisoformat(str(expires_at).replace("Z", "+00:00"))
@@ -761,8 +794,43 @@ class CryptoNitroLiveTrader:
                 except Exception:
                     pass
 
+            max_age_minutes = 60
+            try:
+                max_age_minutes = max(10, int(os.getenv("RISK_PROFILE_MAX_AGE_MINUTES", "60")))
+            except (TypeError, ValueError):
+                max_age_minutes = 60
+            age_minutes = None
+            is_fresh = None
+            if generated_dt is not None:
+                try:
+                    now_ref = datetime.now(generated_dt.tzinfo) if generated_dt.tzinfo is not None else datetime.now()
+                    age_minutes = max(0.0, (now_ref - generated_dt).total_seconds() / 60.0)
+                    is_fresh = age_minutes <= float(max_age_minutes)
+                except Exception:
+                    age_minutes = None
+                    is_fresh = None
+            if is_fresh is False:
+                self.risk_profile_status = "stale"
+                logger.warning(
+                    "⚠️ risk_profile stale: age=%.1f min > max=%d min (source=%s, mode=%s)",
+                    age_minutes if age_minutes is not None else -1.0,
+                    max_age_minutes,
+                    source or "unknown",
+                    mode or "unknown",
+                )
+                return
+
             self.risk_profile = profile
             self.risk_profile_status = "loaded"
+            self.risk_profile_pipeline_status = {
+                "source": source or None,
+                "mode": mode or None,
+                "generated_at": str(generated_at) if generated_at is not None else None,
+                "expires_at": str(expires_at) if expires_at is not None else None,
+                "is_n8n_source": ("n8n" in source.lower()) or ("n8n" in mode.lower()),
+                "is_fresh": is_fresh,
+                "age_minutes": round(age_minutes, 3) if age_minutes is not None else None,
+            }
 
             mt = profile.get("max_trades_per_day")
             if mt is not None:
@@ -791,8 +859,11 @@ class CryptoNitroLiveTrader:
             self.config_singular_core_score = float(singular_core.get("core_score") or 0.0)
 
             logger.info(
-                "🛡️ risk_profile 로드(%s): max_trades=%s, max_position_size=%.2f, maker_only=%s, slippage_bps=%s, kill_switch=%.3f, core_decision=%s, core_score=%.2f",
+                "🛡️ risk_profile 로드(%s): source=%s, mode=%s, age_min=%s, max_trades=%s, max_position_size=%.2f, maker_only=%s, slippage_bps=%s, kill_switch=%.3f, core_decision=%s, core_score=%.2f",
                 profile_path,
+                self.risk_profile_pipeline_status.get("source"),
+                self.risk_profile_pipeline_status.get("mode"),
+                self.risk_profile_pipeline_status.get("age_minutes"),
                 self.config_max_trades_per_day,
                 self.risk_manager.max_position_size,
                 self.config_maker_only_level,
@@ -1651,6 +1722,78 @@ class CryptoNitroLiveTrader:
         logger.debug(f"🧠 수량적 추론 결과 (JSON): {json.dumps(reasoning_result, indent=2, ensure_ascii=False)}")
         
         return round(position_size, 8)  # 8자리 반올림
+
+    def _passes_hard_risk_gate(self, balance: float) -> bool:
+        """Block order placement when runtime guardrails are violated."""
+        try:
+            failure_count = int(self.circuit_breaker_state.get("failure_count", 0))
+        except Exception:
+            failure_count = 0
+        if failure_count >= self.config_max_consecutive_failures_hard_gate:
+            logger.warning(
+                "🛑 하드게이트 차단: 연속 실패 %d회 >= 한도 %d회",
+                failure_count,
+                self.config_max_consecutive_failures_hard_gate,
+            )
+            return False
+
+        daily_loss_ratio = abs(self.risk_manager.daily_pnl) / max(balance, 1e-9) if self.risk_manager.daily_pnl < 0 else 0.0
+        if daily_loss_ratio >= self.risk_manager.max_daily_loss * 0.9:
+            logger.warning(
+                "🛑 하드게이트 차단: 일일 손실률 %.2f%% (한도 %.2f%%의 90%% 이상)",
+                daily_loss_ratio * 100.0,
+                self.risk_manager.max_daily_loss * 100.0,
+            )
+            return False
+        return True
+
+    def _apply_dynamic_notional_cap(
+        self,
+        requested_position_size: float,
+        price: float,
+        balance: float,
+        confidence: float,
+        signal_data: Optional[Dict[str, Any]],
+    ) -> float:
+        """Scale down requested size by risk budget, volatility, and confidence."""
+        if requested_position_size <= 0:
+            return 0.0
+
+        requested_notional = requested_position_size * price
+        stop_loss = max(float(getattr(self.risk_manager, "stop_loss_ratio", 0.01) or 0.01), 0.001)
+        risk_budget = balance * self.config_risk_per_trade
+        max_notional_by_risk = risk_budget / stop_loss
+        max_notional_by_ratio = balance * self.risk_manager.max_position_size
+
+        realized_volatility = 0.0
+        if isinstance(signal_data, dict):
+            realized_volatility = float(signal_data.get("realized_volatility", signal_data.get("volatility_24h", 0.0)) or 0.0)
+        if realized_volatility >= 0.06:
+            vol_multiplier = 0.5
+        elif realized_volatility >= 0.04:
+            vol_multiplier = 0.7
+        else:
+            vol_multiplier = 1.0
+
+        confidence_multiplier = max(0.8, min(1.1, 0.8 + float(confidence) * 0.3))
+        allowed_notional = min(
+            max_notional_by_ratio,
+            max_notional_by_risk * vol_multiplier * confidence_multiplier,
+        )
+        if requested_notional <= allowed_notional:
+            return requested_position_size
+
+        logger.info(
+            "🛡️ 동적 사이징 캡 적용: 요청 %.2f USDT -> 허용 %.2f USDT "
+            "(risk_per_trade=%.2f%%, stop_loss=%.2f%%, vol=%.4f, conf=%.2f)",
+            requested_notional,
+            allowed_notional,
+            self.config_risk_per_trade * 100.0,
+            stop_loss * 100.0,
+            realized_volatility,
+            confidence,
+        )
+        return max(0.0, allowed_notional / max(price, 1e-9))
     
     async def execute_live_trade(
         self,
@@ -1793,6 +1936,28 @@ class CryptoNitroLiveTrader:
             
             if not self.risk_manager.check_daily_loss_limit():
                 logger.error("❌ 일일 손실 한도 초과, 거래 취소")
+                return None
+            try:
+                failure_count = int(self.circuit_breaker_state.get("failure_count", 0))
+            except Exception:
+                failure_count = 0
+            if failure_count >= self.config_max_consecutive_failures_hard_gate:
+                logger.warning(
+                    "🛑 하드게이트 차단: 연속 실패 %d회 >= 한도 %d회",
+                    failure_count,
+                    self.config_max_consecutive_failures_hard_gate,
+                )
+                return None
+            daily_loss_ratio = abs(self.risk_manager.daily_pnl) / max(balance, 1e-9) if self.risk_manager.daily_pnl < 0 else 0.0
+            if daily_loss_ratio >= self.risk_manager.max_daily_loss * 0.9:
+                logger.warning(
+                    "🛑 하드게이트 차단: 일일 손실률 %.2f%% (한도 %.2f%%의 90%% 이상)",
+                    daily_loss_ratio * 100.0,
+                    self.risk_manager.max_daily_loss * 100.0,
+                )
+                return None
+            if not self._passes_hard_risk_gate(balance):
+                logger.warning("🛑 하드 리스크 게이트로 거래 취소")
                 return None
             
             # 🏛️ 0.25 회귀 알고리즘 적용 (자산 배분 균형 유지)
@@ -2175,8 +2340,48 @@ class CryptoNitroLiveTrader:
                     )
                 position_size = round(position_size_usdt / price, 8)  # BTC 수량으로 변환 (8자리 반올림)
             
+            # 🧠 수량적 추론 경로를 포함해 최종 단계에서 동적 리스크 캡 적용
+            if position_size > 0:
+                position_size = self._apply_dynamic_notional_cap(
+                    requested_position_size=position_size,
+                    price=price,
+                    balance=balance,
+                    confidence=confidence,
+                    signal_data=signal_data,
+                )
+
             # 🧠 수량적 추론이 적용되지 않은 경로의 경우에도 최종 검증
             if position_size > 0:
+                requested_notional = position_size * price
+                stop_loss = max(float(getattr(self.risk_manager, "stop_loss_ratio", 0.01) or 0.01), 0.001)
+                risk_budget = balance * self.config_risk_per_trade
+                max_notional_by_risk = risk_budget / stop_loss
+                max_notional_by_ratio = balance * self.risk_manager.max_position_size
+                realized_volatility = float(signal_data.get("realized_volatility", signal_data.get("volatility_24h", 0.0)) or 0.0) if isinstance(signal_data, dict) else 0.0
+                if realized_volatility >= 0.06:
+                    vol_multiplier = 0.5
+                elif realized_volatility >= 0.04:
+                    vol_multiplier = 0.7
+                else:
+                    vol_multiplier = 1.0
+                confidence_multiplier = max(0.8, min(1.1, 0.8 + float(confidence) * 0.3))
+                allowed_notional = min(
+                    max_notional_by_ratio,
+                    max_notional_by_risk * vol_multiplier * confidence_multiplier,
+                )
+                if requested_notional > allowed_notional:
+                    logger.info(
+                        "🛡️ 동적 사이징 캡 적용: 요청 %.2f USDT -> 허용 %.2f USDT "
+                        "(risk_per_trade=%.2f%%, stop_loss=%.2f%%, vol=%.4f, conf=%.2f)",
+                        requested_notional,
+                        allowed_notional,
+                        self.config_risk_per_trade * 100.0,
+                        stop_loss * 100.0,
+                        realized_volatility,
+                        confidence,
+                    )
+                    position_size = max(0.0, allowed_notional / max(price, 1e-9))
+
                 # 최소 주문 금액 재확인 및 조정
                 min_order_value = 100.0
                 position_value_check = position_size * price

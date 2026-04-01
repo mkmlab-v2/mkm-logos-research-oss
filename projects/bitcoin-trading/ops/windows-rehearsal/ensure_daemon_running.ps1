@@ -18,6 +18,24 @@ $daemonArg = "scripts/start_24h_daemon.py"
 $factSafeProphecyPath = Join-Path $projectRoot "..\..\docs\final\artifacts\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
 $factSafeSyncScript = Join-Path $projectRoot "..\..\scripts\sync_fact_safe_risk_profile.py"
 $riskProfilePath = Join-Path $projectRoot "memory\v2\risk\risk_profile_fact_safe_latest.json"
+$riskProfileSourceName = [string]$env:RISK_PROFILE_SOURCE_NAME
+$riskProfileModeName = [string]$env:RISK_PROFILE_MODE_NAME
+
+# If env overrides are absent, preserve source/mode from existing profile
+# so watchdog restarts do not unintentionally downgrade n8n-tagged pipeline metadata.
+if (([string]::IsNullOrWhiteSpace($riskProfileSourceName) -or [string]::IsNullOrWhiteSpace($riskProfileModeName)) -and (Test-Path $riskProfilePath)) {
+    try {
+        $existingProfile = Get-Content $riskProfilePath -Raw | ConvertFrom-Json
+        if ([string]::IsNullOrWhiteSpace($riskProfileSourceName) -and -not [string]::IsNullOrWhiteSpace([string]$existingProfile.source)) {
+            $riskProfileSourceName = [string]$existingProfile.source
+        }
+        if ([string]::IsNullOrWhiteSpace($riskProfileModeName) -and -not [string]::IsNullOrWhiteSpace([string]$existingProfile.mode)) {
+            $riskProfileModeName = [string]$existingProfile.mode
+        }
+    } catch {
+        # keep defaults when profile parse fails
+    }
+}
 
 if (-not (Test-Path $memoryDir)) {
     New-Item -ItemType Directory -Path $memoryDir | Out-Null
@@ -44,7 +62,14 @@ function Start-Daemon {
 
     if ((Test-Path $factSafeSyncScript) -and (Test-Path $factSafeProphecyPath)) {
         Write-Log "Syncing Fact-Safe risk profile before daemon start"
-        python $factSafeSyncScript --prophecy $factSafeProphecyPath --output $riskProfilePath | Out-Null
+        $syncArgs = @($factSafeSyncScript, "--prophecy", $factSafeProphecyPath, "--output", $riskProfilePath)
+        if (-not [string]::IsNullOrWhiteSpace($riskProfileSourceName)) {
+            $syncArgs += @("--source", $riskProfileSourceName)
+        }
+        if (-not [string]::IsNullOrWhiteSpace($riskProfileModeName)) {
+            $syncArgs += @("--mode", $riskProfileModeName)
+        }
+        py @syncArgs | Out-Null
         if ($LASTEXITCODE -ne 0) {
             Write-Log "WARN: Fact-Safe risk sync failed; daemon start continues with existing profile"
         }
@@ -53,7 +78,7 @@ function Start-Daemon {
     }
 
     Write-Log "Starting daemon process"
-    Start-Process -FilePath "python" -ArgumentList $daemonArg -WorkingDirectory $projectRoot -WindowStyle Hidden
+    Start-Process -FilePath "py" -ArgumentList $daemonArg -WorkingDirectory $projectRoot -WindowStyle Hidden
 }
 
 function Sync-DaemonStatusMirror {

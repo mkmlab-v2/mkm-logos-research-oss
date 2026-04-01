@@ -149,6 +149,10 @@ TARGET_VECTOR = {
 
 # 프랙탈 보정 계수 (99.07% 자기 유사성)
 FRACTAL_CORRECTION = 0.9907
+MKM_SINGULAR_GRID = 0.25
+MKM_SINGULAR_ACTION_THRESHOLD = 0.5
+# 정규화된 4D 벡터(sum=1)에서도 게이트가 작동하도록 감도 보정
+MKM_SINGULAR_GAIN = 2.0
 
 
 class MKM12BitcoinStrategy:
@@ -1455,10 +1459,75 @@ class MKM12BitcoinStrategy:
                 logger.debug(f"⏸️ 신뢰도 부족: {confidence:.2%} < 0.52 (아테나 최종 임계값), 신호 {final_signal} → HOLD")
                 return 'HOLD'
             
+            # MKM12 Singular Core (단일 집계 코어) 최종 게이트
+            # - 기존 멀티 소스 신호는 유지하되, 마지막 액션은 단일 벡터 게이트가 결정한다.
+            # - 0.25 그리드 양자화 후 |vector| < 0.75 구간은 LOCKED(HOLD) 처리한다.
+            singular_core = self._compute_mkm_singular_core(analysis_result)
+            analysis_result["mkm_singular_core"] = singular_core
+            singular_action = singular_core.get("action", "LOCKED")
+
+            # 단일 코어가 잠금이면 무조건 HOLD
+            if singular_action == "LOCKED":
+                logger.info(
+                    "🔒 MKM Singular Core LOCKED: vector=%.2f raw=%.4f",
+                    singular_core.get("vector", 0.0),
+                    singular_core.get("raw", 0.0),
+                )
+                return "HOLD"
+
+            # 단일 코어와 기존 신호가 충돌하면 HOLD (노이즈 차단)
+            if final_signal in ("BUY", "SELL") and final_signal != singular_action:
+                logger.warning(
+                    "⚠️ MKM Singular Core 충돌 잠금: base=%s singular=%s",
+                    final_signal,
+                    singular_action,
+                )
+                return "HOLD"
+
+            # 기존 로직이 HOLD이고 단일 코어만 액션을 제시하면 신뢰도 기준 충족 시 채택
+            if final_signal == "HOLD" and confidence >= 0.52:
+                return singular_action
+
             return final_signal
         except Exception as e:
             logger.error(f"❌ 신호 생성 실패: {e}")
             return 'HOLD'
+
+    def _compute_mkm_singular_core(self, analysis_result: Dict[str, Any]) -> Dict[str, float]:
+        """
+        MKM12 단일 집계 코어 계산.
+
+        출력:
+        - raw: 연속값 (-1.0 ~ 1.0)
+        - vector: 0.25 단위 양자화 값
+        - action: BUY / SELL / LOCKED
+        """
+        try:
+            weights = {"S": 0.4, "L": 0.3, "K": 0.15, "M": 0.15}
+            state = analysis_result.get("predicted_state") or analysis_result.get("vector_4d") or TARGET_VECTOR
+
+            # 0.25 기준 중심화 후 가중 합산
+            centered = sum(
+                weights[key] * (float(state.get(key, 0.25)) - 0.25)
+                for key in ("S", "L", "K", "M")
+            )
+            raw = max(-1.0, min(1.0, (centered / 0.25) * MKM_SINGULAR_GAIN))
+
+            # 0.25 그리드 양자화
+            quantized = round(raw / MKM_SINGULAR_GRID) * MKM_SINGULAR_GRID
+            quantized = max(-1.0, min(1.0, quantized))
+
+            if quantized >= MKM_SINGULAR_ACTION_THRESHOLD:
+                action = "BUY"
+            elif quantized <= -MKM_SINGULAR_ACTION_THRESHOLD:
+                action = "SELL"
+            else:
+                action = "LOCKED"
+
+            return {"raw": raw, "vector": quantized, "action": action}
+        except Exception as e:
+            logger.warning(f"⚠️ MKM Singular Core 계산 실패: {e}")
+            return {"raw": 0.0, "vector": 0.0, "action": "LOCKED"}
     
     def _apply_divine_centroid_correction(
         self,

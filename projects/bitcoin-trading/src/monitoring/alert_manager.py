@@ -11,6 +11,7 @@
 import os
 import asyncio
 import logging
+import json
 from typing import Dict, Optional, Any, List
 from datetime import datetime
 from pathlib import Path
@@ -21,6 +22,13 @@ try:
 except ImportError:
     get_14b_advisory = None
     LLM_14B_AVAILABLE = False
+
+try:
+    from src.llm.local_ops_llm import LocalOpsLlmClient
+    LOCAL_OPS_LLM_AVAILABLE = True
+except ImportError:
+    LocalOpsLlmClient = None  # type: ignore
+    LOCAL_OPS_LLM_AVAILABLE = False
 
 try:
     from src.integration.prophecy_sync import load_prophecy_context
@@ -69,6 +77,10 @@ class AlertManager:
         self.telegram_bot_token = telegram_bot_token or os.getenv("TELEGRAM_BOT_TOKEN")
         self.telegram_chat_id = telegram_chat_id or os.getenv("TELEGRAM_CHAT_ID")
         self.enable_telegram = enable_telegram and REQUESTS_AVAILABLE
+        # Alert policy mode:
+        # - trade_status_only(default): Telegram sends only trade/performance and limited system status.
+        # - full: Telegram sends all alert types.
+        self.alert_mode = str(os.getenv("TELEGRAM_ALERT_MODE", "trade_status_only")).strip().lower()
         
         if self.enable_telegram and (not self.telegram_bot_token or not self.telegram_chat_id):
             logger.warning("⚠️ Telegram 환경 변수 없음 (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)")
@@ -79,8 +91,137 @@ class AlertManager:
         self.alert_history: List[Dict[str, Any]] = []
         self.alert_history_file = Path("projects/bitcoin-trading/logs/alert_history.jsonl")
         self.alert_history_file.parent.mkdir(parents=True, exist_ok=True)
+        self.alert_state_file = self.alert_history_file.parent / "telegram_alert_state.json"
+        self.trade_alert_cooldown_seconds = int(os.getenv("TELEGRAM_TRADE_ALERT_COOLDOWN_SECONDS", "90"))
+        self.trade_alert_price_band_bps = float(os.getenv("TELEGRAM_TRADE_ALERT_PRICE_BAND_BPS", "5"))  # 5 bps
+        self.ops_local_llm = LocalOpsLlmClient.from_env() if LOCAL_OPS_LLM_AVAILABLE and LocalOpsLlmClient else None
+        self.ops_local_llm_rollout_stage = self._resolve_ops_local_llm_rollout_stage()
+        self.ops_local_llm_target_types = {"system", "critical", "vps_health"}
+        if self.ops_local_llm_rollout_stage == "stage2":
+            self.ops_local_llm_target_types.add("risk")
         
         logger.info(f"✅ Alert Manager 초기화 완료 (Telegram: {'활성화' if self.enable_telegram else '비활성화'})")
+        logger.info("🧩 Ops Local LLM rollout stage: %s", self.ops_local_llm_rollout_stage)
+
+    def _resolve_ops_local_llm_rollout_stage(self) -> str:
+        """
+        Determine local LLM rollout stage.
+        - stage1(default): system/critical/vps_health only
+        - stage2: +risk formatting
+        - auto: derive from canary gate artifact PASS->stage2 else stage1
+        """
+        mode = str(os.getenv("OPS_LOCAL_LLM_ROLLOUT_MODE", "stage1")).strip().lower()
+        if mode != "auto":
+            return "stage2" if mode == "stage2" else "stage1"
+        gate_path_raw = os.getenv("OPS_LOCAL_LLM_CANARY_GATE_PATH", "").strip()
+        candidates: list[Path] = []
+        if gate_path_raw:
+            candidates.append(Path(gate_path_raw))
+        else:
+            # Support both workspace-root and bitcoin-trading-root executions.
+            candidates.extend(
+                [
+                    Path("reports/ops_local_llm_canary_gate_latest.json"),
+                    Path("projects/bitcoin-trading/reports/ops_local_llm_canary_gate_latest.json"),
+                ]
+            )
+        try:
+            gate_path = next((p for p in candidates if p.is_file()), None)
+            if gate_path is None:
+                return "stage1"
+            payload = json.loads(gate_path.read_text(encoding="utf-8"))
+            decision = str(payload.get("decision", "")).strip().upper()
+            return "stage2" if decision == "PASS" else "stage1"
+        except Exception:
+            return "stage1"
+
+    def _should_send_telegram(self, alert_type: str, metadata: Dict[str, Any]) -> bool:
+        if not self.enable_telegram:
+            return False
+        if self.alert_mode == "full":
+            return True
+        # Default policy: concise delivery for trading operations.
+        if alert_type in ("trade", "performance"):
+            return True
+        if alert_type == "system":
+            status = str(metadata.get("status", "")).upper()
+            return status in {"STARTED", "STOPPED"}
+        # risk/critical/vps_health/trading_insights are logged but not pushed to Telegram by default.
+        return False
+
+    def _can_send_daily_performance(self) -> bool:
+        """Allow performance alert once per day (local date)."""
+        try:
+            if not self.alert_state_file.is_file():
+                return True
+            import json
+            state = json.loads(self.alert_state_file.read_text(encoding="utf-8"))
+            last = str(state.get("last_performance_sent_date", "")).strip()
+            today = datetime.now().strftime("%Y-%m-%d")
+            return last != today
+        except Exception:
+            return True
+
+    def _mark_daily_performance_sent(self) -> None:
+        try:
+            import json
+            today = datetime.now().strftime("%Y-%m-%d")
+            payload = {"last_performance_sent_date": today}
+            self.alert_state_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        except Exception:
+            pass
+
+    def _load_alert_state(self) -> Dict[str, Any]:
+        try:
+            if not self.alert_state_file.is_file():
+                return {}
+            import json
+            data = json.loads(self.alert_state_file.read_text(encoding="utf-8"))
+            return data if isinstance(data, dict) else {}
+        except Exception:
+            return {}
+
+    def _save_alert_state(self, state: Dict[str, Any]) -> None:
+        try:
+            import json
+            self.alert_state_file.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+        except Exception:
+            pass
+
+    def _should_send_trade_alert(self, side: str, symbol: str, price: float) -> bool:
+        state = self._load_alert_state()
+        last = state.get("last_trade_alert") if isinstance(state.get("last_trade_alert"), dict) else {}
+        now = datetime.now()
+        last_ts_raw = str(last.get("timestamp", "")).strip()
+        last_ts = None
+        try:
+            if last_ts_raw:
+                last_ts = datetime.fromisoformat(last_ts_raw)
+        except Exception:
+            last_ts = None
+        if (
+            last_ts is not None
+            and str(last.get("side")) == side
+            and str(last.get("symbol")) == symbol
+            and float(last.get("price", 0.0)) > 0
+        ):
+            elapsed = (now - last_ts).total_seconds()
+            last_price = float(last.get("price"))
+            band = self.trade_alert_price_band_bps / 10000.0
+            rel_diff = abs(price - last_price) / last_price
+            if elapsed <= self.trade_alert_cooldown_seconds and rel_diff <= band:
+                return False
+        return True
+
+    def _mark_trade_alert_sent(self, side: str, symbol: str, price: float) -> None:
+        state = self._load_alert_state()
+        state["last_trade_alert"] = {
+            "timestamp": datetime.now().isoformat(timespec="seconds"),
+            "side": side,
+            "symbol": symbol,
+            "price": price,
+        }
+        self._save_alert_state(state)
     
     async def send_telegram(self, message: str, parse_mode: str = "Markdown") -> bool:
         """
@@ -140,15 +281,7 @@ class AlertManager:
         emoji = "🟢" if side == "BUY" else "🔴"
         pnl_text = f"\n💰 손익: {pnl:+.2f} USDT" if pnl is not None else ""
         
-        message = f"""
-{emoji} *거래 실행*
-
-*{side}* {symbol}
-📊 수량: {quantity:.6f}
-💵 가격: ${price:,.2f}{pnl_text}
-
-⏰ {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-"""
+        message = f"{emoji} 체결 {side} {symbol} | 수량 {quantity:.6f} | 가격 ${price:,.2f}{pnl_text} | {datetime.now().strftime('%m-%d %H:%M:%S')}"
         
         await self._send_and_log("trade", message, {
             "side": side,
@@ -222,7 +355,15 @@ class AlertManager:
         }
         
         emoji = status_emojis.get(status, "ℹ️")
-        error_text = f"\n\n🐛 *에러 상세:*\n```\n{error_detail}\n```" if error_detail else ""
+        summary_line = ""
+        if error_detail and self.ops_local_llm is not None:
+            try:
+                summary = self.ops_local_llm.summarize_error(error_detail)
+                if summary:
+                    summary_line = f"\n\n🧭 *에러 요약:* {summary}"
+            except Exception as e:
+                logger.debug("ops local llm summarize skip: %s", e)
+        error_text = f"{summary_line}\n\n🐛 *에러 상세:*\n```\n{error_detail}\n```" if error_detail else ""
         
         alert_message = f"""
 {emoji} *시스템 상태: {status}*
@@ -302,15 +443,50 @@ class AlertManager:
             metadata: 메타데이터
         """
         # Telegram 전송
-        success = await self.send_telegram(message)
+        success = False
+        suppressed = False
+        rendered_message = message
+        local_llm_applied = False
+        if self.ops_local_llm is not None and alert_type in self.ops_local_llm_target_types:
+            try:
+                candidate = self.ops_local_llm.format_ops_tone(message, alert_type)
+                if candidate:
+                    rendered_message = candidate
+                    local_llm_applied = candidate != message
+            except Exception as e:
+                logger.debug("ops local llm format skip: %s", e)
+        if self._should_send_telegram(alert_type, metadata):
+            if alert_type == "performance":
+                if not self._can_send_daily_performance():
+                    suppressed = True
+                else:
+                    success = await self.send_telegram(rendered_message)
+                    if success:
+                        self._mark_daily_performance_sent()
+            elif alert_type == "trade":
+                side = str(metadata.get("side", ""))
+                symbol = str(metadata.get("symbol", ""))
+                price = float(metadata.get("price", 0.0) or 0.0)
+                if price > 0 and self._should_send_trade_alert(side, symbol, price):
+                    success = await self.send_telegram(rendered_message)
+                    if success:
+                        self._mark_trade_alert_sent(side, symbol, price)
+                else:
+                    suppressed = True
+            else:
+                success = await self.send_telegram(rendered_message)
+        else:
+            suppressed = True
         
         # 알림 이력 저장
         alert_record = {
             "timestamp": datetime.now().isoformat(),
             "type": alert_type,
-            "message": message,
+            "message": rendered_message,
             "metadata": metadata,
-            "telegram_sent": success
+            "telegram_sent": success,
+            "telegram_suppressed": suppressed,
+            "ops_local_llm_applied": local_llm_applied,
         }
         
         self.alert_history.append(alert_record)
@@ -428,6 +604,9 @@ class AlertManager:
         indicators: Dict[str, Any],
         apocalypse_insight: Optional[Dict[str, Any]] = None,
         call_path_14b: Optional[Dict[str, Any]] = None,
+        gate_level: Optional[str] = None,
+        gate_reason: Optional[str] = None,
+        price_lock: Optional[bool] = None,
     ):
         """
         🚀 각종 지표 참조한 통찰 리포트 (신규 추가)
@@ -455,6 +634,10 @@ class AlertManager:
             "HOLD": "⏸️"
         }
         emoji = signal_emoji.get(signal, "ℹ️")
+        effective_gate_level = (gate_level or ("LOW" if signal == "HOLD" or confidence < 0.6 else "MID")).upper()
+        effective_gate_reason = gate_reason or "unspecified"
+        effective_price_lock = bool(price_lock) or effective_gate_level == "LOW" or signal == "HOLD"
+        price_text = "LOCKED (LOW/HOLD)" if effective_price_lock else f"${current_price:,.2f}"
         
         # 기본 정보
         message_parts = [
@@ -462,7 +645,9 @@ class AlertManager:
             "",
             f"*신호:* {signal}",
             f"*신뢰도:* {confidence:.1%}",
-            f"*현재 가격:* ${current_price:,.2f}",
+            f"*현재 가격:* {price_text}",
+            f"*게이트 레벨:* {effective_gate_level}",
+            f"*게이트 사유:* {effective_gate_reason}",
             ""
         ]
         
@@ -488,6 +673,29 @@ class AlertManager:
         if indicators.get("news_confidence") is not None:
             news_conf = indicators.get("news_confidence", 0.0)
             message_parts.append(f"  • 뉴스 신뢰도: {news_conf:.1%}")
+
+        if indicators.get("fused_toe_score") is not None:
+            toe_score = indicators.get("fused_toe_score", 0.0)
+            message_parts.append(f"  • Fused TOE Score: {float(toe_score):.3f}")
+
+        if indicators.get("fused_weekly_decision"):
+            fused_decision = indicators.get("fused_weekly_decision")
+            fused_reason = indicators.get("fused_weekly_decision_reason", "")
+            reason_text = f" ({fused_reason})" if fused_reason else ""
+            message_parts.append(f"  • Fused Weekly: {fused_decision}{reason_text}")
+
+        if indicators.get("fused_quality_flags"):
+            qf = indicators.get("fused_quality_flags")
+            if isinstance(qf, dict):
+                compact_flags = ", ".join(f"{k}:{v}" for k, v in qf.items())
+                message_parts.append(f"  • Fused Quality: {compact_flags}")
+                # Compact one-line fused status for rapid ops scanning.
+                toe_value = indicators.get("fused_toe_score")
+                toe_text = f"{float(toe_value):.3f}" if toe_value is not None else "n/a"
+                fused_decision = indicators.get("fused_weekly_decision", "n/a")
+                quality_ok = all(str(v).lower() == "ok" for v in qf.values()) if qf else False
+                q_text = "ok" if quality_ok else "degraded"
+                message_parts.append(f"  • FUSED: {fused_decision} | TOE {toe_text} | Q {q_text}")
         
         # 🚀 해역증 지수 (아테나 작전 지침 융합)
         if indicators.get("hae_yeok_index") is not None:
@@ -610,7 +818,10 @@ class AlertManager:
         await self._send_and_log("trading_insights", message, {
             "signal": signal,
             "confidence": confidence,
-            "current_price": current_price,
+            "current_price": None if effective_price_lock else current_price,
+            "price_output_locked": effective_price_lock,
+            "gate_level": effective_gate_level,
+            "gate_reason": effective_gate_reason,
             "indicators": indicators,
             "apocalypse_insight": apocalypse_insight
         })
