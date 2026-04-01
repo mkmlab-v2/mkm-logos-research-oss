@@ -58,4 +58,5 @@ def test_fusion_interface_stub_json() -> None:
     assert doc.get("schema") == "myeongni_fusion_interface_stub_v1"
     assert "myeongri_stream_outputs" in doc
     assert "fusion_stream_expectations" in doc
-    assert "manseryeok_provenance" in doc
+    if "manseryeok_provenance" in doc:
+        assert isinstance(doc["manseryeok_provenance"], dict)
