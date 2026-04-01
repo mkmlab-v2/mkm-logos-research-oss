@@ -159,10 +159,10 @@ def cmd_image(ns: argparse.Namespace) -> int:
         if ns.only_image
         else [types.Modality.TEXT, types.Modality.IMAGE]
     )
-    img_cfg = types.ImageConfig(
-        aspect_ratio=ns.aspect_ratio,
-        output_mime_type=ns.output_mime,
-    )
+    # Gemini API(google-genai) 경로에서는 ImageConfig.output_mime_type 등 일부 필드가 거절될 수 있음.
+    img_cfg: Optional[types.ImageConfig] = None
+    if ns.aspect_ratio:
+        img_cfg = types.ImageConfig(aspect_ratio=ns.aspect_ratio)
     cfg = types.GenerateContentConfig(
         system_instruction=ns.system or None,
         temperature=ns.temperature,
@@ -306,7 +306,6 @@ def _parser() -> argparse.ArgumentParser:
     pi.add_argument("--only-image", action="store_true", help="응답 모달리티 IMAGE 위주")
     pi.add_argument("--out-dir", "-o", default=None, help="저장 디렉터리 (지정 시 PNG 등으로 기록)")
     pi.add_argument("--aspect-ratio", default=None, help="예: 1:1, 16:9 (모델/플랜 지원 시)")
-    pi.add_argument("--output-mime", default="image/png", help="image/png 등")
     pi.set_defaults(func=cmd_image, _timeout_default=DEFAULT_TIMEOUT_IMAGE_S)
 
     pc = sub.add_parser(
