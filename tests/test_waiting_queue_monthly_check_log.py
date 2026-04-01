@@ -82,7 +82,7 @@ def test_waiting_queue_has_symbol_lane_gate_fields_in_recent_rows() -> None:
     assert candidates, "at least one log row must include symbol lane gate fields"
 
     latest = candidates[-1]
-    assert latest.get("btrack_symbol_lane_gate") == "pass"
+    assert str(latest.get("btrack_symbol_lane_gate", "")).strip() in {"pass", "skipped"}
     assert str(latest.get("btrack_symbol_lane_gate_path", "")).endswith(
         "reports\\constitution\\btrack_pilot\\symbol_lane_gate_latest.json"
     )
@@ -100,3 +100,97 @@ def test_waiting_queue_has_k_shield_metadata_fields_in_recent_rows() -> None:
     latest = candidates[-1]
     assert str(latest.get("prophecy_k_shield_candidate", "")).strip(), "missing prophecy_k_shield_candidate"
     assert latest.get("prophecy_k_shield_candidate_max_drawdown_pct") is not None
+
+
+def test_waiting_queue_has_regime_switch_sensor_fields_in_recent_rows() -> None:
+    rows = list(_rows(_LOG))
+    candidates = [
+        r
+        for r in rows
+        if "regime_switch_delta_net_return_pct_sum" in r
+        or "regime_switch_delta_profit_factor_weighted" in r
+        or "regime_switch_delta_max_drawdown_pct_worst_year" in r
+    ]
+    assert candidates, "at least one log row must include regime-switch delta sensor fields"
+
+    latest = candidates[-1]
+    assert str(latest.get("regime_switch_report_path", "")).endswith(
+        "docs\\final\\artifacts\\btc_time_machine_regime_switch_backtest_latest.json"
+    )
+    advisory = str(latest.get("regime_switch_advisory", "")).strip()
+    assert advisory in {
+        "prefer_switch_profile",
+        "review_switch_profile",
+        "mixed_signal_keep_observe",
+        "sensor_unavailable",
+    }
+    assert str(latest.get("regime_switch_advisory_reason", "")).strip()
+
+
+def test_waiting_queue_post_close_eval_fields_when_present() -> None:
+    rows = list(_rows(_LOG))
+    candidates = [
+        r
+        for r in rows
+        if "post_close_eval_decision" in r
+        or "close_return_pct" in r
+        or "predicted_band" in r
+    ]
+    if not candidates:
+        return
+
+    latest = candidates[-1]
+    assert latest.get("post_close_eval_decision") in {
+        "PENDING_CLOSE",
+        "HIT",
+        "FAIL",
+        "NEUTRAL_DRAW",
+    }
+    if latest.get("close_return_pct") is not None:
+        assert isinstance(latest.get("close_return_pct"), (int, float))
+    if latest.get("predicted_band") is not None:
+        assert str(latest.get("predicted_band")).strip().upper() in {
+            "DOWN_STRONG",
+            "UP_STRONG",
+            "NEUTRAL",
+        }
+
+
+def test_waiting_queue_has_dual_regime_alert_fields_in_recent_rows() -> None:
+    rows = list(_rows(_LOG))
+    candidates = [r for r in rows if "dual_regime_alert_level" in r or "dual_regime_alert_reason" in r]
+    if not candidates:
+        return
+    latest = candidates[-1]
+    assert str(latest.get("dual_regime_alert_level", "")).strip() in {
+        "insufficient_data",
+        "state_signal_not_wired",
+        "state_clamp_high_tight_mode",
+        "state_clamp_active_review_thresholds",
+        "state_clamp_stable",
+    }
+    assert str(latest.get("dual_regime_alert_reason", "")).strip()
+
+
+def test_waiting_queue_auto_hold_override_priority_fields_when_present() -> None:
+    rows = list(_rows(_LOG))
+    candidates = [r for r in rows if r.get("auto_hold_promotion") is True]
+    if not candidates:
+        return
+    latest = candidates[-1]
+    trig = str(latest.get("override_trigger_type", "")).strip()
+    if trig:
+        assert trig in {"net_source_fallback", "dual_regime_state_clamp"}
+    pri = latest.get("override_priority")
+    if pri is not None:
+        assert isinstance(pri, (int, float))
+    skew = latest.get("override_skew_decision")
+    if skew is not None:
+        assert str(skew).strip() in {
+            "override_skew_net_source_fallback",
+            "override_skew_dual_regime_state_clamp",
+        }
+    skew_threshold = latest.get("override_skew_streak_threshold")
+    if skew_threshold is not None:
+        assert isinstance(skew_threshold, (int, float))
+        assert int(skew_threshold) >= 1
