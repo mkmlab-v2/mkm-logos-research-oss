@@ -1,6 +1,7 @@
 # Constitution / Inference — 구현 팩트 (SSOT)
 
 **작성일**: 2026-03-29  
+**최종 갱신**: 2026-04-03 — §13.1 Windows Phase 1 체인·리포트 SSOT·`AGENTS.md` 운영/연구 레인 포인터 추가.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
 
 ---
@@ -318,6 +319,8 @@
 
 **상태**: 초기 SSOT 고정 (2026-03-29). §7 NotebookLM→vault 표·§9 추가 (2026-03-29). §9 작전지휘부·OPS_ONEPAGE 갭·§10 UFT 경로 (2026-03-29). §3.1 16-상태 실험 JSONL·경로 팩트 (2026-03-29). **§4 평행 코퍼스 격벽 정책** (2026-03-30). `tests/multi_corpus_policy.py`·격벽 테스트 (2026-03-30). **§2.1 dual-regime 하이브리드·16상 미연동 팩트** (2026-03-30). **§1.1 Multi-Lens·TOE 비단정** (2026-03-30). **§4.5 CROSS_REF 데이터 계약·Prior 비고정** (2026-03-30). `CROSS_REF_DSS_TO_STATES_DRAFT.json` v2·테스트 정합 (2026-03-30). `CROSS_REF_DRAFT_V2_DOCUMENT.schema.json`·jsonschema 검증 (2026-03-30). CROSS_REF `canonical_ref` ↔ `LOGOS_STATE_MAPPING_V1` 정합 (2026-03-30). ENTRY_06 DSS 페셔·`run_prophecy_alignment_pytest.ps1` 워크스페이스 Fact-Lock (2026-03-30). **CROSS_REF 초안 16행** (LOGOS `state_id` 1–16 전수·ENTRY_11 `analogy_bench`·ENTRY_12–16 DSS 보강)·`link_type`(thematic/temporal/analogy_bench/lexical) 분류·`P0_COMMERCIALIZATION_TRACKER` Step4 직렬 게이트 (2026-03-30). 경로가 바뀌면 본 파일을 먼저 수정한다. **§4.5** `note` 행·스키마 선택 필드·ENTRY_11 NL v2.1 반증 박제 (2026-03-30). **`SASANG_CROSS_REF_DRAFT.json`**·`test_sasang_cross_ref_draft.py`·`run_prophecy_alignment_pytest` 번들·CI 단계 (2026-03-30). **§3.3** `MYEONGRI_INSIGHT_SSOT.md`·관측 JSONL·`MYEONGNI_FUSION_INTERFACE_STUB.json`·`test_myeongni_insight_observation_log.py` (2026-03-30). **§4.6** `MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md`·`run_prophecy_alignment_pytest` 번들에 명리 통찰 테스트 포함 (2026-03-30). **ENTRY_16 소스 헌트 로그/요약/승격 게이트 계약 아티팩트·테스트·CI 번들 편입** (`docs/final/artifacts/entry16_source_hunt_log.jsonl`, `docs/final/artifacts/entry16_source_hunt_summary.json`, `docs/final/artifacts/entry16_promotion_gate.json`, `tests/test_entry16_source_hunt_log.py`, `tests/test_entry16_source_hunt_summary.py`, `tests/test_entry16_promotion_gate.py`, 로컬/CI 번들) (2026-03-30). **§11 P1 A/B balanced 운영 앵커·최종 선정 리포트 경로 고정** (2026-03-30). **§12 Fact-Safe 라벨 상호 참조** 추가: 본 헌법=경로·테스트 중심 SSOT, `[FACT]`/`[HYPO]`/`[VISION]`/`[NON-MEDICAL]` 템플릿은 `MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 등과 동일 패턴, 외부 Tier1 수치 한 줄 규칙은 `docs/external_research/AI-Logos_Research_Bibliography_2026.md` (2026-03-31). **§13** Chronos KOSPI baseline·매매 단일화·Public Event Gateway 호출 경로 표 보강; `ensure_public_event_gateway.ps1` 중복 블록 제거 (2026-04-02). `public_event_gateway.py` 중복 제거·`nginx_public_event_gateway.conf.example` 추가 (2026-04-02).
 
+**상태 보강 (2026-04-03):** **§13.1** Windows Phase 1 체인·`ops_phase1_chain_report_latest.json`·`verify_constitution_gates.ps1`/`constitution_gates_v1.json`/`constitution_gates_result_latest.json`·`automation_registry.json`의 `\Bitcoin-Ops-Fusion-Cycle-Auto`·루트 `AGENTS.md` 운영 자동화 vs MKM Study 연구 레인.
+
 ---
 
 ## 12. Fact-Safe 라벨 (상호 참조)
@@ -352,5 +355,31 @@
 | Compression stub ensure + 등록 | `projects/bitcoin-trading/ops/windows-rehearsal/ensure_compression_stub.ps1`, `projects/bitcoin-trading/ops/windows-rehearsal/register_compression_stub_task.ps1` | `/health` 8010 런타임 보정 및 일일 ensure 태스크 등록. |
 | Ops health overview 태스크 등록 | `projects/bitcoin-trading/ops/windows-rehearsal/register_ops_health_overview_task.ps1` | 일일 `Ops-Health-Overview-Daily` 등록(재생성 안전). |
 | Public Event Gateway (MVP, 로컬 HTTP) | `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_event_gateway.py` | 기본 포트 8788; `GET /api/public-events/latest`, `POST /api/public-events/ingest`. 기동·헬스: `projects/bitcoin-trading/ops/windows-rehearsal/ensure_public_event_gateway.ps1`. **공개 도메인(jemaai.cloud 등):** nginx 예시 `nginx_public_event_gateway.conf.example` → `proxy_pass` 대상은 게이트웨이 호스트(`127.0.0.1:8788`). POST는 `X-Public-Event-Token` = `PUBLIC_EVENT_GATEWAY_TOKEN`. **스펙·경계 확정:** `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`. **ingest 예시:** `jemaai-cloud-mvp/examples/public_event_ingest_minimal.v1.json`. **정적 폴링 UI:** `jemaai-cloud-mvp/public_showroom_poll.html` (`?api=` 로 Base URL). **Gemini 경고 정리 힌트:** `scripts/print_gemini_env_hygiene_hint.ps1`. |
+| Showroom static bundle | `projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1` | `docs/final/artifacts/showroom_public_bundle_v1.json` — `public_event.v1` + `public_ui`(`showroom_public_ui_v1`, ASCII 토큰) + 검증 `scripts/validate_showroom_public_bundle.py`. 한글 UI는 HTML에서 매핑. |
+| Showroom 정적 배포(로컬/스테이징 복사) | `projects/bitcoin-trading/ops/windows-rehearsal/deploy_showroom_static.ps1` | `-WebRoot` 또는 `JEMAAI_WEB_ROOT` → `public_showroom_poll.html`·`showroom_public_bundle_v1.json` 복사. 본선 nginx는 수동. |
+| 퓨전 후 ingest POST(선택) | `run_ops_fusion_cycle.ps1` + `publish_showroom_public_event.ps1` | User/Process `SHOWROOM_PUBLISH_INGEST=1`일 때만 7단계 실행. `SHOWROOM_INGEST_URL`·`PUBLIC_EVENT_GATEWAY_TOKEN`. |
+
+### 13.1 Phase 1 체인·레지스트리 (Windows, 관측·게이트)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| Phase 1 통합 체인 | `projects/bitcoin-trading/ops/windows-rehearsal/run_ops_phase1_chain.ps1` | 스냅샷 → 퓨전 상태 검증 → 옵션 `verify_all_green`; `-Strict`·`-IncludeVerifyAllGreen`·`-SkipFusionStatusCheck`·`-IncludeConstitutionGates`·`-SkipOpsAlarm`. 설정 시 `OPS_ALARM_WEBHOOK_URL`(User/Process): 체인 예외 시 `kind=failure` POST; 성공 시 `shared_vault_reachability=warning`이면 `kind=shared_vault_warning`(끄려면 `OPS_ALARM_SKIP_SHARED_VAULT_WARNING=1`). 페이로드: JSON `event`,`kind`,`message`,`report_path`,`ts_utc` |
+| 헌법 게이트 (3중) | `projects/bitcoin-trading/ops/windows-rehearsal/verify_constitution_gates.ps1` | (1) `ops_phase1_chain_report_latest.json`의 `overall_chain_ok` (2) `reconcile_automation_registry.ps1` 무드리프트 exit 0 (3) `risk_profile_fact_safe_latest.json`의 `source`/`mode`가 `constitution_gates_v1.json`의 `allowed_risk_combinations`에 포함; `-SkipPhase1Report` 등 개별 스킵 가능 |
+| 헌법 게이트 allowlist | `projects/bitcoin-trading/ops/windows-rehearsal/constitution_gates_v1.json` | 정책 변경 시 `allowed_risk_combinations` 편집 |
+| 헌법 게이트 결과 SSOT | `projects/bitcoin-trading/memory/v2/ops/constitution_gates_result_latest.json` | `schema constitution_gates_result_v1`; `all_ok`·`checks[]` |
+| 환경 스냅샷 | `projects/bitcoin-trading/ops/windows-rehearsal/collect_ops_environment_snapshot.ps1` → `projects/bitcoin-trading/memory/v2/ops/ops_environment_snapshot_latest.json` | 계정·`C:\workspace`·`G:` 프로브·주요 태스크 Logon Mode |
+| 퓨전 사이클 상태 검증 | `projects/bitcoin-trading/ops/windows-rehearsal/verify_ops_fusion_cycle_status.ps1` | `docs/final/artifacts/ops_fusion_cycle_status_latest.json`의 `overall_ok` 또는 C2/Trinity 보조 판정 |
+| 융합 사이클 러너 | `projects/bitcoin-trading/ops/windows-rehearsal/run_ops_fusion_cycle.ps1` | 산출 `ops_fusion_cycle_status_latest.json`(`schema ops_fusion_cycle_status_v2`, `overall_ok`·`overall_ok_reason`) 후 **showroom 번들 생성·검증**(`build_showroom_display_bundle.ps1`, `validate_showroom_public_bundle.py`) |
+| 올그린 게이트 | `projects/bitcoin-trading/ops/windows-rehearsal/verify_all_green.ps1` | 단계에 `verify_ops_fusion_cycle_status` 포함 후 `reconcile_automation_registry` |
+| 레지스트리 reconcile | `projects/bitcoin-trading/ops/windows-rehearsal/reconcile_automation_registry.ps1` | 기본 콘솔은 한 줄 요약만; 전체 JSON은 `automation_registry_reconcile_latest.json`. 디버그 시 `-ShowJson` |
+| Phase 1 운영 준비 점검 | `projects/bitcoin-trading/ops/windows-rehearsal/verify_ops_phase1_operational_readiness.ps1` | 태스크 존재·`Task To Run`에 `IncludeConstitutionGates`·리포트 신선도·`OPS_ALARM_WEBHOOK_URL`; 산출 `ops_phase1_readiness_latest.json`; 엄격 시 `-Strict` |
+| OPS 알림 웹훅 스모크 | `projects/bitcoin-trading/ops/windows-rehearsal/smoke_ops_phase1_webhook.ps1` | User `OPS_ALARM_WEBHOOK_URL`로 `kind=smoke_test` POST(미설정 시 exit 0 스킵) |
+| 자동화 레지스트리 | `projects/bitcoin-trading/ops/windows-rehearsal/automation_registry.json` | `\Bitcoin-Ops-Fusion-Cycle-Auto` 등 Task Scheduler 기대 상태; `reconcile_automation_registry.ps1 -Enforce` |
+| Phase 1 리포트 SSOT | `projects/bitcoin-trading/memory/v2/ops/ops_phase1_chain_report_latest.json` | `schema ops_phase1_chain_report_v1`; `scope_note`: 운영 런북·게이트만, 헌법 자동 해석·자율 전략 변경 아님. `shared_vault_reachability`: 스냅샷 기준 `ok` \| `warning` \| `unknown`(G:·공유 vault 경로); **경고만, `overall_chain_ok` 비판정** |
+| 일일 체인 태스크 등록 | `projects/bitcoin-trading/ops/windows-rehearsal/register_ops_phase1_chain_task.ps1` | 기본 `\Bitcoin-Ops-Phase1-Chain-Daily` 매일 08:30; **`-IncludeConstitutionGates` 기본 포함**(`-ExcludeConstitutionGates`로 끔). **본선 PC**에서 실행·`schtasks /Query`로 확인 |
+| Phase 1 일일 원클릭 | `projects/bitcoin-trading/ops/windows-rehearsal/bootstrap_ops_phase1_daily.ps1` | `sync_required_env_to_user.ps1` → `register_ops_phase1_chain_task.ps1` 순서; `-SkipEnvSync` / `-SkipTaskRegister` / `-ExcludeConstitutionGates` / `-IncludeReadiness` / `-IncludeWebhookSmoke`. 동기화: `.env`에 `OPS_ALARM_WEBHOOK_URL` 없으면 User `N8N_WEBHOOK_URL`로 **자동 미러** |
+| 에이전트 레인 분리 | 루트 `AGENTS.md` — **운영 자동화 vs 연구 레인** | MKM Study·본선 OOF·실매매 **자동 합선 금지** 방향; 브리핑 전용 필드는 레포 산출물 근거 없이 SSOT 삼지 않음 |
+
+**§13.1 범위:** 위 경로는 **관측·스케줄·게이트·JSON 리포트**만 해당한다. 헌법·백서·사업계획서를 LLM이 매 실행마다 해석해 본선 코드·실거래 파라미터를 바꾸는 **자율 추론 루프는 본 절에 포함되지 않음**(상단 목적·§1.1 Multi-Lens·NotebookLM 격벽과 동일 선상에서 “구현 단정 금지”).
 
 **운영 원칙**: 실행 트리거는 관측 지표·로그 기반으로 유지하고, 성경/명리/사상 렌즈는 브리핑·가설 계층으로 분리한다.

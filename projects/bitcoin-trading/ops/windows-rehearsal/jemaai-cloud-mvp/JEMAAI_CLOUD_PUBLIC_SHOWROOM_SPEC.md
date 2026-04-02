@@ -68,9 +68,20 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 
 (`jemaai-cloud-mvp` 디렉터리에서 상대 경로 기준.)
 
-- **정적 쇼룸 샘플**: `public_showroom_poll.html` — `GET .../latest` 폴링·표시.
+- **정적 쇼룸 샘플**: `public_showroom_poll.html` — `GET .../latest` 폴링·표시. 하단 **Information** 섹션에 `data-disclaimer-ref="jemaai_showroom_v1"` 고지 고정(본 문서 §3 면책과 정합).
 
-### 4.2 Gemini 환경 (GOOGLE_API_KEY 레거시 경고 정리)
+### 4.2 Showroom bundle (레포 자동화, v1)
+
+- **빌더:** `projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1` — C2·퓨전·런타임 헬스에서 `public-event.v1` 페이로드 + `observability` 메타를 합성한다.
+- **산출:** `docs/final/artifacts/showroom_public_bundle_v1.json` (SSOT), `jemaai-cloud-mvp/showroom_public_bundle_v1.json` (웹 루트 배포본과 동기화).
+- **검증:** `scripts/validate_showroom_public_bundle.py` — 필수 키·면책 ref·공개 레인 민감 토큰 차단.
+- **퓨전 사이클:** `run_ops_fusion_cycle.ps1` 종료 시 빌드·검증을 함께 수행한다.
+- **게이트웨이 반영(선택):** `publish_showroom_public_event.ps1`로 ingest POST. 퓨전 사이클과 함께 쓰려면 `SHOWROOM_PUBLISH_INGEST=1`(User/Process).
+- **정적 파일 복사(선택):** `deploy_showroom_static.ps1` — `-WebRoot` 또는 `JEMAAI_WEB_ROOT`에 HTML·JSON 복사 후 본선에서 nginx reload.
+- **`public_ui` (`showroom_public_ui_v1`):** ASCII 기계값만(방향·램프·융합·수익률 유무). 한글 카피는 `public_showroom_poll.html`에서 매핑한다(PS 인코딩 이슈 회피).
+- **방향 소스:** 환경 `SHOWROOM_DIRECTION_SOURCE=c2|account` 미설정 시 **auto** — `public_trading_metrics_latest.json`에 `position_side`가 있으면 `account`(롱/숏 추상만), 없으면 `c2`.
+
+### 4.3 Gemini 환경 (GOOGLE_API_KEY 레거시 경고 정리)
 
 `GEMINI_API_KEY`만 쓸 때 사용자 환경의 **`GOOGLE_API_KEY`** 가 남아 있으면 중복 경고가 날 수 있다 → 사용자 환경에서 제거. 힌트: `scripts/print_gemini_env_hygiene_hint.ps1` (레포 루트 `scripts`).
 

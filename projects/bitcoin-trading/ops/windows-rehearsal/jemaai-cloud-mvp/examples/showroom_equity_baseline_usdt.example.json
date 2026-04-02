@@ -1,0 +1,4 @@
+{
+  "baseline_usdt": 1400.0,
+  "note": "Optional manual override. Copy to projects/bitcoin-trading/memory/v2/ops/showroom_equity_baseline_usdt.local.json on the ops host. If omitted, build_showroom_display_bundle.ps1 uses showroom_equity_baseline_auto.json (first-seen balance). Public JSON never prints wallet amounts."
+}

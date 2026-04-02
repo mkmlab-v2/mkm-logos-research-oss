@@ -29,3 +29,8 @@ location = /public_showroom_poll.html {
     alias /var/www/jemaai/public_showroom_poll.html;
 }
 
+location = /showroom_public_bundle_v1.json {
+    alias /var/www/jemaai/showroom_public_bundle_v1.json;
+    add_header Cache-Control "no-store" always;
+}
+

@@ -18,15 +18,53 @@
       --bubble-fg:#112338;
       --bubble-border:#28425e;
     }
-    body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--fg); margin: 0; padding: 1rem; max-width: 40rem; }
-    h1 { font-size: 1.1rem; margin: 0 0 0.5rem; }
-    .sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+    body {
+      font-family: system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(43, 76, 124, 0.25), transparent 42%),
+        radial-gradient(circle at 85% 15%, rgba(216, 178, 95, 0.15), transparent 38%),
+        linear-gradient(180deg, var(--bg) 0%, #070d18 100%);
+      color: var(--fg);
+      margin: 0;
+      padding: 1.25rem;
+    }
+    h1 { font-size: 1.45rem; margin: 0 0 0.35rem; letter-spacing: 0.2px; }
+    .sub { color: var(--muted); font-size: 0.9rem; margin: 0; }
+    .shell { max-width: 1160px; margin: 0 auto; }
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid #25354a;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(13, 24, 40, 0.95), rgba(10, 18, 30, 0.85));
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+      margin-bottom: 0.9rem;
+    }
+    .hero .brand { display:flex; flex-direction:column; gap:0.3rem; }
+    .hero .stamp { font-size: 0.72rem; color: #9fb7cc; letter-spacing: 1px; }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(290px, 0.9fr);
+      gap: 0.9rem;
+      align-items: start;
+    }
+    .panel {
+      border: 1px solid #25354a;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(12, 20, 33, 0.95), rgba(10, 17, 27, 0.9));
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+      padding: 0.9rem;
+    }
+    .panel-title { font-size: 0.82rem; color: #93acc2; margin: 0 0 0.5rem; letter-spacing: 0.4px; text-transform: uppercase; }
     .row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
     .badge { font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 999px; background: #1a222d; border: 1px solid #2b3846; color: var(--fg); }
     .badge.warn { border-color: rgba(233, 168, 0, 0.55); }
     .badge.ok { border-color: rgba(108, 191, 108, 0.55); }
     .badge.err { border-color: rgba(232, 93, 76, 0.6); }
-    .ticker { background:#0f1419; border: 1px dashed #2b3846; border-radius: 12px; padding: 0.75rem; margin: 0.75rem 0 1rem; }
+    .ticker { background:#0f1419; border: 1px dashed #355071; border-radius: 12px; padding: 0.8rem; margin: 0.55rem 0 0.8rem; }
     .ticker .tline { font-size: 0.9rem; color: var(--fg); margin: 0; white-space: pre-wrap; word-break: break-word; }
     .stage { background:#0b1117; border: 1px solid #2b3846; border-radius: 12px; padding: 0.75rem; margin: 0 0 0.75rem; }
     .stage-wrap { position: relative; }
@@ -60,7 +98,7 @@
       transform: translateX(-50%) rotate(45deg);
     }
     .stage-meta { margin-top: 0.45rem; font-size: 0.78rem; color: var(--muted); }
-    .chat { background:#0b1117; border: 1px solid #2b3846; border-radius: 12px; padding: 0.75rem; }
+    .chat { background:#0b1117; border: 1px solid #2b3846; border-radius: 12px; padding: 0.75rem; margin-top: 0.8rem; }
     .chat pre { background: transparent; padding: 0; margin: 0; white-space: pre-wrap; }
     .stage {
       margin: 0.75rem 0 1rem;
@@ -85,54 +123,174 @@
     .mode-idle { filter: saturate(1); }
     .mode-defend { filter: saturate(1.25); transform: translateY(-1px); }
     .mode-attack { filter: saturate(1.6); transform: translateY(-2px); }
-    pre { background: #1a222d; padding: 0.75rem; border-radius: 8px; overflow: auto; font-size: 0.8rem; white-space: pre-wrap; word-break: break-all; }
+    pre { background: #111a27; padding: 0.75rem; border-radius: 8px; overflow: auto; font-size: 0.8rem; white-space: pre-wrap; word-break: break-all; border: 1px solid #2a3f58; }
     .err { color: #e85d4c; }
     .ok { color: #6cbf6c; }
     label { font-size: 0.75rem; color: var(--muted); }
     input, select { width: 100%; padding: 0.4rem; margin: 0.25rem 0 0.75rem; background: #1a222d; border: 1px solid #333; color: var(--fg); border-radius: 6px; box-sizing: border-box; }
     .lang-wrap { min-width: 132px; flex: 1; }
+    .compact { margin: 0; }
+    .right-stack { display: grid; gap: 0.9rem; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    @media (max-width: 920px) {
+      .layout { grid-template-columns: 1fr; }
+      .hero { flex-direction: column; align-items: flex-start; }
+    }
+    .info-disclaimer {
+      margin-top: 0.9rem;
+      border-color: #2f4a66;
+      background: linear-gradient(180deg, rgba(11, 18, 30, 0.98), rgba(8, 14, 24, 0.95));
+    }
+    .info-disclaimer .info-body { font-size: 0.86rem; line-height: 1.55; color: var(--fg); }
+    .info-disclaimer .info-body p { margin: 0 0 0.55rem; }
+    .info-disclaimer .info-list {
+      margin: 0.35rem 0 0 1.15rem;
+      padding: 0;
+      list-style: decimal;
+    }
+    .info-disclaimer .info-list li { margin-bottom: 0.5rem; padding-left: 0.25rem; }
+    .info-disclaimer .info-muted {
+      margin: 0.65rem 0 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .info-disclaimer .info-ref { font-family: ui-monospace, monospace; font-size: 0.72rem; }
+    .snapshot-strip { margin-bottom: 0.9rem; }
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin-top: 0.45rem;
+    }
+    @media (max-width: 720px) {
+      .snapshot-grid { grid-template-columns: 1fr; }
+    }
+    .snap-cell {
+      border: 1px solid #2b3f56;
+      border-radius: 10px;
+      padding: 0.55rem 0.65rem;
+      background: linear-gradient(180deg, rgba(14, 22, 36, 0.98), rgba(9, 15, 26, 0.92));
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .snap-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+    .snap-val { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1.05rem; color: var(--accent); }
+    .snap-val.lamp-green { color: #6cbf6c; }
+    .snap-val.lamp-yellow { color: #e9a800; }
+    .snap-val.lamp-red { color: #e85d4c; }
+    .snap-footnote { margin-top: 0.55rem; line-height: 1.45; max-width: 72ch; }
+    .snap-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+    .snap-val.small { font-size: 0.88rem; color: var(--fg); line-height: 1.35; font-family: system-ui, sans-serif; }
+    .snap-val.snap-em { font-size: 1.12rem; color: #f0f4f8; font-weight: 600; }
+    .snap-return-pos { color: #7dcea0; }
+    .snap-return-neg { color: #f1948a; }
+    .snap-cell.snap-span { grid-column: 1 / -1; }
   </style>
 </head>
 <body>
-  <h1>Public Showroom - Latest Poll</h1>
-  <p class="sub">Default base URL is pinned to HTTPS API endpoint. Local fallback: <code>http://127.0.0.1:8788</code></p>
-
-  <div class="row">
-    <div class="badge ok" id="modeBadge">MODE: Idle</div>
-    <div class="badge warn" id="riskBadge">RISK: WARNING</div>
-    <div class="badge" id="dirBadge">DIR: HOLD</div>
-    <div class="lang-wrap">
-      <label for="langMode">Dialogue</label>
-      <select id="langMode">
-        <option value="HYBRID">HYBRID</option>
-        <option value="KR">KR</option>
-        <option value="EN">EN</option>
-      </select>
+  <div class="shell">
+    <div class="hero">
+      <div class="brand">
+        <div class="stamp">JEMAAI.CLOUD LIVE ENGINE</div>
+        <h1>Public Showroom</h1>
+        <p class="sub">Default base URL is pinned to HTTPS API endpoint. Local fallback: <code>http://127.0.0.1:8788</code></p>
+      </div>
+      <div class="row">
+        <div class="badge ok" id="modeBadge">MODE: Idle</div>
+        <div class="badge warn" id="riskBadge">RISK: WARNING</div>
+        <div class="badge" id="dirBadge">DIR: HOLD</div>
+      </div>
     </div>
-  </div>
 
-  <div class="ticker anim mode-idle" id="tickerBox">
-    <p class="tline" id="tickerText">loading ticker...</p>
-  </div>
-
-  <div class="stage">
-    <label for="pixelStage" style="display:block; margin-bottom:0.35rem;">픽셀 캐릭터 스테이지 (v1)</label>
-    <div class="stage-wrap">
-      <canvas id="pixelStage" width="256" height="144"></canvas>
-      <div class="bubble-layer" id="bubbleLayer"></div>
+    <div class="panel snapshot-strip" id="showroomSnapshotStrip">
+      <div class="panel-title" id="showroomSnapshotTitle">공개 투자 현황 요약</div>
+      <p class="sub compact" id="showroomSnapshotCaption">지연 스냅샷 · 투자 권유 아님 — 정적 번들 <code class="mono">showroom_public_bundle_v1.json</code></p>
+      <div class="snapshot-grid" id="showroomSnapshotGrid">loading…</div>
+      <p class="sub compact snap-footnote" id="showroomSnapshotFoot"></p>
+      <p class="sub compact mono" id="showroomSnapshotMeta"></p>
     </div>
-    <div class="stage-meta" id="stageMeta">character=unknown_guard | mode=Idle</div>
-  </div>
 
-  <div class="chat">
-    <label for="chatOut" style="display:block; margin-bottom:0.25rem;">가상 채팅 (예능 반응)</label>
-    <pre id="chatOut">loading chat...</pre>
-  </div>
+    <div class="layout">
+      <div class="panel">
+        <div class="panel-title">Live Ticker</div>
+        <div class="ticker anim mode-idle" id="tickerBox">
+          <p class="tline" id="tickerText">loading ticker...</p>
+        </div>
 
-  <label for="base">GET Base (no trailing slash)</label>
-  <input id="base" type="text" value="https://api.jemaai.cloud" autocomplete="off" />
-  <p id="status" class="sub"></p>
-  <pre id="out">loading...</pre>
+        <div class="stage">
+          <label for="pixelStage" style="display:block; margin-bottom:0.35rem;">픽셀 캐릭터 스테이지 (v1)</label>
+          <div class="stage-wrap">
+            <canvas id="pixelStage" width="256" height="144"></canvas>
+            <div class="bubble-layer" id="bubbleLayer"></div>
+          </div>
+          <div class="stage-meta mono" id="stageMeta">character=unknown_guard | mode=Idle</div>
+        </div>
+
+        <div class="chat">
+          <label for="chatOut" style="display:block; margin-bottom:0.25rem;">가상 채팅 (예능 반응)</label>
+          <pre id="chatOut">loading chat...</pre>
+        </div>
+      </div>
+
+      <div class="right-stack">
+        <div class="panel">
+          <div class="panel-title">Controls</div>
+          <div class="lang-wrap">
+            <label for="langMode">Dialogue</label>
+            <select id="langMode">
+              <option value="HYBRID">HYBRID</option>
+              <option value="KR">KR</option>
+              <option value="EN">EN</option>
+            </select>
+          </div>
+          <label for="base">GET Base (no trailing slash)</label>
+          <input id="base" type="text" value="https://api.jemaai.cloud" autocomplete="off" />
+          <p id="status" class="sub compact"></p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Latest Payload (Whitelisted)</div>
+          <pre id="out">loading...</pre>
+        </div>
+      </div>
+    </div>
+
+    <section
+      class="panel info-disclaimer"
+      id="showroom-information"
+      data-disclaimer-ref="jemaai_showroom_v1"
+      aria-label="Information and disclaimer"
+    >
+      <div class="panel-title">Information</div>
+      <div class="info-body">
+        <p>
+          이 페이지는 공개 쇼룸(폴링 데모)이며, <code class="mono">GET /api/public-events/latest</code>로 수신한
+          <strong>화이트리스트 필드만</strong> 표시합니다. 실시간·무지연을 의미하지 않습니다.
+        </p>
+        <ol class="info-list">
+          <li><strong>투자 권유 없음:</strong> 투자 자문·매매 권유·수익 보장을 제공하지 않습니다.</li>
+          <li>
+            <strong>데이터 성격:</strong> 관측·시각화·실험 목적이며, 지연·스냅샷일 수 있습니다.
+            과거·현재의 표시가 미래 수익이나 결과를 담보하지 않습니다.
+          </li>
+          <li>
+            <strong>운영 분리:</strong> 실매매·집행 로직과 동일하다고 보지 않습니다. 내부 운영 단계(예: 권장 스테이지
+            <code class="mono">S1_SHADOW</code>)와 공개 표시는 별도이며, 내부 모니터에서 쓰이는 지표명(예:
+            <code class="mono">unified_score_balanced</code>)이 이 화면에 직접 나타나지 않을 수 있습니다.
+          </li>
+          <li>
+            <strong>면책:</strong> 본 정보를 바탕으로 한 판단과 그 결과에 대한 책임은 이용자에게 있습니다.
+            법적 검토가 필요하면 전문가 자문을 받으십시오.
+          </li>
+        </ol>
+        <p class="info-muted">
+          <span class="info-ref">disclaimer_ref=jemaai_showroom_v1</span>
+          — <code class="mono">exploratory_only</code> 원칙에 맞춘 No Hype 고지입니다.
+        </p>
+      </div>
+    </section>
+  </div>
   <script>
     const params = new URLSearchParams(location.search);
     const defaultBase = params.get("api") || "https://api.jemaai.cloud";
@@ -148,6 +306,7 @@
       frame: 0,
       lastTs: 0,
       charId: "unknown_guard",
+      actionStep: "-",
       pulse: 0,
       bubbles: [],
       actors: [],
@@ -178,6 +337,7 @@
       bear_shield: { archetype: "defender", accent: "#ffc96c", eye: "#f4f8ff" }
     };
     let characterProfiles = { ...fallbackProfiles };
+    let actionBookSteps = [];
     const spriteCache = {};
     let activeSpriteUrl = "";
 
@@ -185,7 +345,8 @@
       if (!url) return null;
       if (!spriteCache[url]) {
         const img = new Image();
-        img.crossOrigin = "anonymous";
+        // Do not set crossOrigin: assets.jemaai.cloud (hcdn) does not send CORS; anonymous mode blocks load.
+        // Display-only drawImage works without CORS when crossOrigin is omitted.
         img.src = url;
         spriteCache[url] = img;
       }
@@ -214,6 +375,70 @@
       } catch (e) {
         // Keep fallback profiles.
       }
+    }
+
+    async function loadActionBook() {
+      const buildFallback = () => {
+        const axes = [
+          { p: "S", axis: "surge", kr: "상승 시나리오", en: "Surge scenario" },
+          { p: "C", axis: "crash", kr: "하락 시나리오", en: "Crash scenario" },
+          { p: "W", axis: "warning", kr: "경보 시나리오", en: "Warning scenario" },
+          { p: "R", axis: "recovery", kr: "회복 시나리오", en: "Recovery scenario" }
+        ];
+        const out = [];
+        for (const a of axes) {
+          for (let i = 1; i <= 10; i += 1) {
+            out.push({
+              id: `${a.p}${i}`,
+              axis: a.axis,
+              lines: {
+                KR: `${a.kr} ${i}단계`,
+                EN: `${a.en} step ${i}`
+              }
+            });
+          }
+        }
+        return out;
+      };
+      try {
+        const resp = await fetch("./action_book_v1.json", { cache: "no-store" });
+        if (!resp.ok) {
+          actionBookSteps = buildFallback();
+          return;
+        }
+        const payload = await resp.json();
+        if (payload && Array.isArray(payload.steps)) {
+          actionBookSteps = payload.steps.slice();
+          return;
+        }
+        actionBookSteps = buildFallback();
+      } catch (e) {
+        actionBookSteps = buildFallback();
+      }
+    }
+
+    function pickActionStep(obj, mode, actorId, eventId) {
+      if (!actionBookSteps.length) return null;
+      const risk = String(obj.risk_level || "").toUpperCase();
+      const dir = directionFromEvent(obj);
+      let prefix = "R";
+      if (risk === "WARNING") prefix = "W";
+      else if (dir === "bear") prefix = "C";
+      else if (mode === "Attack" || dir === "bull") prefix = "S";
+      const raw = String(eventId || actorId || "0");
+      let hash = 0;
+      for (let i = 0; i < raw.length; i += 1) hash = ((hash << 5) - hash + raw.charCodeAt(i)) | 0;
+      const idx = Math.abs(hash % 10) + 1;
+      const id = `${prefix}${idx}`;
+      return actionBookSteps.find((s) => String(s.id || "").toUpperCase() === id) || null;
+    }
+
+    function actionLine(step, langMode) {
+      if (!step || !step.lines) return "";
+      if (langMode === "KR") return String(step.lines.KR || step.lines.EN || "");
+      if (langMode === "EN") return String(step.lines.EN || step.lines.KR || "");
+      const both = [step.lines.EN, step.lines.KR].filter(Boolean);
+      return String(both[Math.floor(Math.random() * both.length)] || "");
     }
 
     function profileFromCharacterId(rawId) {
@@ -631,7 +856,7 @@
         stageState.bubbles = stageState.bubbles.slice(-3);
       }
       renderBubbles();
-      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | theme=${theme} | sprite=${spriteInfo.name} | lang=${stageState.lang} | quality=${stageState.quality} | fps=${stageState.fpsEma.toFixed(1)}`;
+      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | theme=${theme} | step=${stageState.actionStep} | sprite=${spriteInfo.name} | lang=${stageState.lang} | quality=${stageState.quality} | fps=${stageState.fpsEma.toFixed(1)}`;
       requestAnimationFrame(drawStage);
     }
 
@@ -677,6 +902,143 @@
       for (const l of lines.slice(0, 2)) chatLines.push(l);
       while (chatLines.length > chatMax) chatLines.shift();
       document.getElementById("chatOut").textContent = chatLines.join("\n");
+    }
+
+    function escapeHtml(s) {
+      if (s == null) return "";
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    /** Korean copy for public_ui tokens (the JSON bundle stays ASCII-only). */
+    const SHOWROOM_UI_KO = {
+      dir: { long: "상방 쏠림 (추상)", short: "하방 쏠림 (추상)", flat: "중립 · 관망" },
+      src: { account: "계좌 스냅샷(방향만)", c2: "리스크 가드 기준", auto_account: "자동: 계좌", auto_c2: "자동: 가드" },
+      lamp: { GREEN: "안전 구간", YELLOW: "주의", RED: "경고", UNKNOWN: "확인 필요" },
+      fusionOk: (ok) => (ok ? "융합 점검 통과" : "융합 점검 필요"),
+      returnLine: (pct, has, mode) => {
+        if (has && typeof pct === "number" && !Number.isNaN(pct)) {
+          const sign = pct > 0 ? "+" : "";
+          const tail = mode && String(mode).indexOf("auto") === 0
+            ? " (자동 기준선·지연)"
+            : " (지연 스냅샷)";
+          return sign + pct.toFixed(2) + "% 기준 대비" + tail;
+        }
+        return "계좌 스냅샷 없음 — 메트릭 갱신 후 다시 빌드";
+      },
+      unrealizedLine: (pct, has) => {
+        if (has && typeof pct === "number" && !Number.isNaN(pct)) {
+          const sign = pct > 0 ? "+" : "";
+          return sign + pct.toFixed(3) + "% 계좌 대비 (미실현, 금액 미표시)";
+        }
+        return "—";
+      },
+      scoreLine: (v) => (v != null && !Number.isNaN(Number(v)) ? "모델 관측 점수: " + Number(v).toFixed(5) : "모델 관측 점수: —"),
+      guardLine: (lamp) => "리스크 가드: " + (SHOWROOM_UI_KO.lamp[lamp] || SHOWROOM_UI_KO.lamp.UNKNOWN)
+    };
+
+    async function loadShowroomBundle() {
+      const grid = document.getElementById("showroomSnapshotGrid");
+      const meta = document.getElementById("showroomSnapshotMeta");
+      const foot = document.getElementById("showroomSnapshotFoot");
+      const cap = document.getElementById("showroomSnapshotCaption");
+      const titleEl = document.getElementById("showroomSnapshotTitle");
+      if (!grid || !meta) return;
+      const bases = [];
+      try {
+        bases.push(new URL("showroom_public_bundle_v1.json", window.location.href).href);
+      } catch (e) {}
+      bases.push("https://jemaai.cloud/showroom_public_bundle_v1.json");
+      let lastErr = "";
+      for (const u of bases) {
+        try {
+          const r = await fetch(u, { cache: "no-store" });
+          if (!r.ok) {
+            lastErr = "HTTP " + r.status;
+            continue;
+          }
+          const bundle = await r.json();
+          const o = bundle.observability || {};
+          const pe = bundle.public_event_v1 || {};
+          const dm = pe.delayed_metrics || {};
+          const delaySec = (dm.delay_seconds != null) ? dm.delay_seconds : "—";
+          const asOf = o.snapshot_as_of_utc || bundle.generated_at_utc || "";
+          const pui = bundle.public_ui;
+          if (pui && typeof pui === "object" && pui.schema === "showroom_public_ui_v1") {
+            if (titleEl) titleEl.textContent = "공개 투자 현황 요약";
+            if (cap) cap.textContent = "지연 스냅샷 · 투자 권유 아님 · 내부 코드명 비표시";
+            if (foot) foot.textContent = "방향은 추상 신호이며 실제 체결·레버리지·수량과 다를 수 있습니다.";
+            const dKey = String(pui.direction_abstract || "flat").toLowerCase();
+            const dirText = SHOWROOM_UI_KO.dir[dKey] || SHOWROOM_UI_KO.dir.flat;
+            const srcKey = String(pui.direction_source || "c2");
+            const srcText = SHOWROOM_UI_KO.src[srcKey] || srcKey;
+            const lamp = String(pui.c2_lamp || "UNKNOWN").toUpperCase();
+            const pnlNum = dm.pnl_pct_vs_start;
+            const hasRet = (typeof pnlNum === "number");
+            const bm = pui.baseline_mode || "";
+            const retText = SHOWROOM_UI_KO.returnLine(pnlNum, hasRet, bm);
+            let retTint = "";
+            if (typeof pnlNum === "number") {
+              retTint = pnlNum < 0 ? " snap-return-neg" : (pnlNum > 0 ? " snap-return-pos" : "");
+            }
+            const uPct = pui.unrealized_pnl_pct_of_equity;
+            const hasU = (typeof uPct === "number");
+            const uText = SHOWROOM_UI_KO.unrealizedLine(uPct, hasU);
+            let uTint = "";
+            if (typeof uPct === "number") {
+              uTint = uPct < 0 ? " snap-return-neg" : (uPct > 0 ? " snap-return-pos" : "");
+            }
+            grid.innerHTML = ""
+              + "<div class=\"snap-cell\">"
+              + "<span class=\"snap-label\">방향 (추상 · 수량·가격 없음)</span>"
+              + "<span class=\"snap-val snap-em\">" + escapeHtml(dirText) + "</span>"
+              + "<span class=\"snap-sub\">표시 기준: " + escapeHtml(srcText) + " · 의도 지연 약 " + escapeHtml(String(delaySec)) + "s</span>"
+              + "</div>"
+              + "<div class=\"snap-cell\">"
+              + "<span class=\"snap-label\">기준 대비 누적 수익률</span>"
+              + "<span class=\"snap-val snap-em" + retTint + "\">" + escapeHtml(retText) + "</span>"
+              + "</div>"
+              + "<div class=\"snap-cell\">"
+              + "<span class=\"snap-label\">미실현 손익률 (계좌 대비 %)</span>"
+              + "<span class=\"snap-val snap-em" + uTint + "\">" + escapeHtml(uText) + "</span>"
+              + "</div>"
+              + "<div class=\"snap-cell\">"
+              + "<span class=\"snap-label\">리스크 / 융합 점검</span>"
+              + "<span class=\"snap-val small\">" + escapeHtml(SHOWROOM_UI_KO.guardLine(lamp)) + "</span>"
+              + "<span class=\"snap-val small\">" + escapeHtml(SHOWROOM_UI_KO.fusionOk(pui.ops_fusion_ok === true)) + "</span>"
+              + "</div>"
+              + "<div class=\"snap-cell snap-span\">"
+              + "<span class=\"snap-label\">관측</span>"
+              + "<span class=\"snap-val small\">" + escapeHtml(SHOWROOM_UI_KO.scoreLine(pui.unified_score_balanced)) + "</span>"
+              + "</div>";
+          } else {
+            const score = o.unified_score_balanced;
+            const lamp = o.c2_signal_lamp || "—";
+            let fusion = "—";
+            if (o.ops_fusion_overall_ok === true) fusion = "OK";
+            if (o.ops_fusion_overall_ok === false) fusion = "NO";
+            const lampCls = "snap-val lamp-" + String(lamp).toLowerCase();
+            if (foot) foot.textContent = "";
+            grid.innerHTML = ""
+              + "<div class=\"snap-cell\"><span class=\"snap-label\">관측 점수</span>"
+              + "<span class=\"snap-val\">" + (score != null ? Number(score).toFixed(5) : "—") + "</span></div>"
+              + "<div class=\"snap-cell\"><span class=\"snap-label\">가드</span>"
+              + "<span class=\"" + lampCls + "\">" + String(lamp) + "</span></div>"
+              + "<div class=\"snap-cell\"><span class=\"snap-label\">융합</span>"
+              + "<span class=\"snap-val\">" + fusion + "</span></div>";
+          }
+          meta.textContent = "기준 시각: " + asOf + " · schema: " + (bundle.schema || "") + " · " + u;
+          return;
+        } catch (e) {
+          lastErr = String(e);
+        }
+      }
+      grid.innerHTML = "<span class=\"err\">static bundle unavailable — " + (lastErr || "unknown") + "</span>";
+      meta.textContent = "Deploy showroom_public_bundle_v1.json next to this HTML (see nginx snippet).";
+      if (foot) foot.textContent = "";
     }
 
     async function tick() {
@@ -728,11 +1090,14 @@
           const tiger = stageState.actors.find((a) => a.id === "tiger_shield") || stageState.actors[1] || mainActor;
           const d = directionFromEvent(obj);
           const kind = mode === "Attack" ? "attack" : (mode === "Defend" ? "defend" : (d === "bull" ? "bull" : (d === "bear" ? "bear" : "idle")));
+          const step = pickActionStep(obj, mode, focusActor.id, obj.event_id);
+          stageState.actionStep = step ? String(step.id) : "-";
+          const stepLine = actionLine(step, stageState.lang);
           if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
-            addBubble(focusActor, speak("warning", focusActor.id));
+            addBubble(focusActor, stepLine || speak("warning", focusActor.id));
             addBubble(tiger, speak("defend", "tiger_shield"));
           } else {
-            addBubble(focusActor, speak(kind, focusActor.id));
+            addBubble(focusActor, stepLine || speak(kind, focusActor.id));
             if (Math.random() > 0.45) addBubble(tiger, speak(kind, "tiger_shield"));
           }
           if (obj.abstract_reason) {
@@ -749,8 +1114,13 @@
     }
     requestAnimationFrame(drawStage);
     loadCharacterProfiles();
+    loadActionBook();
+    loadShowroomBundle();
     tick();
-    setInterval(tick, POLL_MS);
+    setInterval(() => {
+      tick();
+      loadShowroomBundle();
+    }, POLL_MS);
     document.getElementById("base").addEventListener("change", tick);
     document.getElementById("langMode").addEventListener("change", () => {
       stageState.lang = document.getElementById("langMode").value || "HYBRID";
