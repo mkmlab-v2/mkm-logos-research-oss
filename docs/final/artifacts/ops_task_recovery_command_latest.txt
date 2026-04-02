@@ -1,4 +1,4 @@
-[2026-04-02T13:13:24.4989160+00:00] Standard recovery command
+[2026-04-02T13:40:04.1313326+00:00] Standard recovery command
 powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\register_all_ops_tasks.ps1"
 Alert channel status: fatal_ready=True; slack=False; telegram=True
 

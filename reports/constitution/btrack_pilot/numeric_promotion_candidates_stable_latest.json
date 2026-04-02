@@ -1,6 +1,6 @@
 {
   "schema": "numeric_promotion_candidates_v1",
-  "generated_at_utc": "2026-04-02T13:15:12Z",
+  "generated_at_utc": "2026-04-02T13:53:28Z",
   "input_json": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_numeric_injection_stable_latest.json",
   "approval": {
     "required_flag": "approve_numeric_near_miss=true",

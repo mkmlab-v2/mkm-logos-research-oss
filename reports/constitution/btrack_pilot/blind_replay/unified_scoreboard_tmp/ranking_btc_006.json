@@ -1,6 +1,6 @@
 {
   "schema": "blind_replay_profile_ranking_v1",
-  "generated_at_utc": "2026-04-02T13:13:36Z",
+  "generated_at_utc": "2026-04-02T13:54:35Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "input": {
@@ -16,6 +16,15 @@
       "matched": 80,
       "hit": 39,
       "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_D_latest.jsonl"
+    },
+    {
+      "profile": "DS",
+      "hit_rate": 0.4875,
+      "balanced_accuracy": 0.439496,
+      "coverage_rate": 1.0,
+      "matched": 80,
+      "hit": 39,
+      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_DS_latest.jsonl"
     },
     {
       "profile": "A",

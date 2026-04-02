@@ -1,6 +1,6 @@
 ﻿{
     "schema":  "fatal_alert_config_status_v1",
-    "checked_at_utc":  "2026-04-02T13:13:24.3197861+00:00",
+    "checked_at_utc":  "2026-04-02T13:40:03.9641635+00:00",
     "fatal_alert_ready":  true,
     "channels":  {
                      "slack":  {

@@ -1,6 +1,6 @@
 {
   "schema": "aegis_unified_scoreboard_v1_1",
-  "generated_at_utc": "2026-04-02T13:13:46Z",
+  "generated_at_utc": "2026-04-02T13:53:03Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "inputs": {
@@ -62,25 +62,25 @@
           "matched_mean": 80
         },
         "KOSPI": {
-          "hit_rate_mean": 0.454545,
-          "balanced_accuracy_mean": 0.315188,
+          "hit_rate_mean": 0.469697,
+          "balanced_accuracy_mean": 0.325941,
           "matched_mean": 66
         }
       },
       "baseline_7_3": {
-        "mu_balanced": 0.361397,
-        "sigma_balanced": 0.030251,
-        "unified_score_balanced": 0.356859,
-        "mu_hit": 0.443488,
-        "sigma_hit": 0.007238,
-        "unified_score_hit": 0.442403
+        "mu_balanced": 0.364623,
+        "sigma_balanced": 0.025323,
+        "unified_score_balanced": 0.360824,
+        "mu_hit": 0.448034,
+        "sigma_hit": 0.014182,
+        "unified_score_hit": 0.445907
       },
       "shadow_6_4": {
-        "mu_balanced": 0.354796,
-        "sigma_balanced": 0.03234,
-        "unified_score_balanced": 0.349945
+        "mu_balanced": 0.359097,
+        "sigma_balanced": 0.027072,
+        "unified_score_balanced": 0.355036
       },
-      "delta_7_3_minus_6_4_balanced": 0.006915
+      "delta_7_3_minus_6_4_balanced": 0.005788
     },
     {
       "profile": "A",
@@ -179,25 +179,25 @@
         "matched_mean": 80
       },
       "KOSPI": {
-        "hit_rate_mean": 0.454545,
-        "balanced_accuracy_mean": 0.315188,
+        "hit_rate_mean": 0.469697,
+        "balanced_accuracy_mean": 0.325941,
         "matched_mean": 66
       }
     },
     "baseline_7_3": {
-      "mu_balanced": 0.361397,
-      "sigma_balanced": 0.030251,
-      "unified_score_balanced": 0.356859,
-      "mu_hit": 0.443488,
-      "sigma_hit": 0.007238,
-      "unified_score_hit": 0.442403
+      "mu_balanced": 0.364623,
+      "sigma_balanced": 0.025323,
+      "unified_score_balanced": 0.360824,
+      "mu_hit": 0.448034,
+      "sigma_hit": 0.014182,
+      "unified_score_hit": 0.445907
     },
     "shadow_6_4": {
-      "mu_balanced": 0.354796,
-      "sigma_balanced": 0.03234,
-      "unified_score_balanced": 0.349945
+      "mu_balanced": 0.359097,
+      "sigma_balanced": 0.027072,
+      "unified_score_balanced": 0.355036
     },
-    "delta_7_3_minus_6_4_balanced": 0.006915
+    "delta_7_3_minus_6_4_balanced": 0.005788
   },
   "note": "Unified profile scoreboard for BTC-first operating mode."
 }

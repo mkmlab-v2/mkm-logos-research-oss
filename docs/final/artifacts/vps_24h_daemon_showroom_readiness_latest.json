@@ -1,6 +1,6 @@
 {
   "schema": "vps_24h_daemon_showroom_readiness_v1",
-  "generated_at_utc": "2026-04-02T13:19:54.097066+00:00",
+  "generated_at_utc": "2026-04-02T13:38:15.485677+00:00",
   "paths": {
     "daemon_main": "C:\\workspace\\projects\\bitcoin-trading\\src\\daemon\\bitcoin_trading_daemon.py",
     "daemon_start_24h": "C:\\workspace\\projects\\bitcoin-trading\\scripts\\start_24h_daemon.py",

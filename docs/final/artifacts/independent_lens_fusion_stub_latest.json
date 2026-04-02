@@ -1,7 +1,7 @@
 {
   "schema": "independent_lens_fusion_stub_v0",
   "version": "0.1.0",
-  "ts_utc": "2026-04-02T13:19:32Z",
+  "ts_utc": "2026-04-02T13:53:33Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "mode": "observation_only",
@@ -13,7 +13,7 @@
       "confidence": 0.75,
       "direction_sign": "bear",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-04-02T13:19:32Z",
+      "artifact_ts_utc": "2026-04-02T13:53:33Z",
       "schema": "myeongni_independent_lens_v0"
     },
     {
@@ -23,7 +23,7 @@
       "confidence": 0.553333,
       "direction_sign": "bear",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-04-02T13:19:32Z",
+      "artifact_ts_utc": "2026-04-02T13:53:33Z",
       "schema": "sasang_independent_lens_v0"
     },
     {
@@ -33,7 +33,7 @@
       "confidence": 0.2,
       "direction_sign": "neutral",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\logos_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-04-02T13:19:32Z",
+      "artifact_ts_utc": "2026-04-02T13:53:33Z",
       "schema": "logos_independent_lens_v0"
     }
   ],

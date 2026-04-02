@@ -1,6 +1,6 @@
 {
   "schema": "btrack_symbol_candidates_curated_v1",
-  "generated_at_utc": "2026-04-02T13:15:11Z",
+  "generated_at_utc": "2026-04-02T13:53:28Z",
   "input_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_stable_latest.jsonl",
   "output_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_stable_latest.jsonl",
   "curated_count": 200,
@@ -18,7 +18,7 @@
         "dss": 0,
         "apocrypha": 3
       },
-      "generated_at_utc": "2026-04-02T13:15:11Z"
+      "generated_at_utc": "2026-04-02T13:53:28Z"
     },
     {
       "rank": 567,
@@ -30,7 +30,7 @@
         "dss": 0,
         "apocrypha": 2
       },
-      "generated_at_utc": "2026-04-02T13:15:11Z"
+      "generated_at_utc": "2026-04-02T13:53:28Z"
     },
     {
       "rank": 19,
@@ -42,7 +42,7 @@
         "dss": 0,
         "apocrypha": 26
       },
-      "generated_at_utc": "2026-04-02T13:15:11Z"
+      "generated_at_utc": "2026-04-02T13:53:28Z"
     },
     {
       "rank": 135,
@@ -54,7 +54,7 @@
         "dss": 2,
         "apocrypha": 5
       },
-      "generated_at_utc": "2026-04-02T13:15:11Z"
+      "generated_at_utc": "2026-04-02T13:53:28Z"
     },
     {
       "rank": 144,
@@ -66,7 +66,7 @@
         "dss": 0,
         "apocrypha": 7
       },
-      "generated_at_utc": "2026-04-02T13:15:11Z"
+      "generated_at_utc": "2026-04-02T13:53:28Z"
     },
     {
       "rank": 262,
@@ -78,7 +78,7 @@
         "dss": 0,
         "apocrypha": 4
       },
-      "generated_at_utc": "2026-04-02T13:15:11Z"
+      "generated_at_utc": "2026-04-02T13:53:28Z"
     },
     {
       "rank": 292,
@@ -90,7 +90,7 @@
         "dss": 0,
         "apocrypha": 4
       },
-      "generated_at_utc": "2026-04-02T13:15:11Z"
+      "generated_at_utc": "2026-04-02T13:53:28Z"
     },
     {
       "rank": 358,
@@ -102,7 +102,7 @@
         "dss": 0,
         "apocrypha": 3
       },
-      "generated_at_utc": "2026-04-02T13:15:11Z"
+      "generated_at_utc": "2026-04-02T13:53:28Z"
     },
     {
       "rank": 421,
@@ -114,7 +114,7 @@
         "dss": 0,
         "apocrypha": 3
       },
-      "generated_at_utc": "2026-04-02T13:15:11Z"
+      "generated_at_utc": "2026-04-02T13:53:28Z"
     },
     {
       "rank": 470,
@@ -126,7 +126,7 @@
         "dss": 2,
         "apocrypha": 0
       },
-      "generated_at_utc": "2026-04-02T13:15:11Z"
+      "generated_at_utc": "2026-04-02T13:53:28Z"
     }
   ],
   "note": "Theme-term curation with DSS quota to reduce corpus-source bias."

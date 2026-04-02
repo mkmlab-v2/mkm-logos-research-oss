@@ -1,6 +1,6 @@
 {
   "schema": "trinity_scoring_distribution_v1",
-  "generated_at_utc": "2026-04-02T13:19:53.146647+00:00",
+  "generated_at_utc": "2026-04-02T13:53:35.955680+00:00",
   "log_path": "docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
   "metric": "BTC_BINANCE_D1_RETURN_PCT",
   "windows": {
@@ -32,43 +32,41 @@
   "dual_regime_state": {
     "d5": {
       "sample_size": 5,
-      "state_id_present_count": 4,
-      "state_id_present_rate": 0.8,
+      "state_id_present_count": 5,
+      "state_id_present_rate": 1.0,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "myeongni_independent_lens": 4,
-        "none": 1
+        "myeongni_independent_lens": 5
       },
       "top_source": "myeongni_independent_lens"
     },
     "d10": {
       "sample_size": 10,
-      "state_id_present_count": 4,
-      "state_id_present_rate": 0.4,
+      "state_id_present_count": 10,
+      "state_id_present_rate": 1.0,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "none": 6,
-        "myeongni_independent_lens": 4
+        "myeongni_independent_lens": 10
       },
-      "top_source": "none"
+      "top_source": "myeongni_independent_lens"
     },
     "all": {
-      "sample_size": 21,
-      "state_id_present_count": 4,
-      "state_id_present_rate": 0.1905,
+      "sample_size": 32,
+      "state_id_present_count": 15,
+      "state_id_present_rate": 0.4688,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
         "none": 17,
-        "myeongni_independent_lens": 4
+        "myeongni_independent_lens": 15
       },
       "top_source": "none"
     },
     "advisory": {
-      "decision": "state_signal_not_wired",
-      "reason": "top_source_none_and_present_rate_low",
+      "decision": "state_clamp_stable",
+      "reason": "clamp_rate_lt_0.3",
       "thresholds": {
         "present_rate_low": 0.2,
         "clamp_rate_warn": 0.3,
@@ -106,5 +104,5 @@
     }
   },
   "latest_decision": "HIT",
-  "total_filtered_rows": 21
+  "total_filtered_rows": 32
 }
