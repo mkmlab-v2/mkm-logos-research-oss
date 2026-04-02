@@ -111,6 +111,19 @@
   - live 태스크: `Bitcoin-Fused-QuantPixel-SOP-Live-Daily`
   - 모드 스위치: `projects/bitcoin-trading/ops/windows-rehearsal/switch_fused_quant_pixel_mode.ps1`
 
+### 2026-04-02 최신 반영 (운영/연구 분리 커밋)
+
+- **Ops 헬스 오케스트레이션 강화**:
+  - `projects/bitcoin-trading/ops/windows-rehearsal/build_ops_health_overview.ps1` (v3): 스케줄 타임 검증, fused mutex, compression stub, prophecy pytest 상태까지 집계.
+  - 태스크 등록 스크립트: `register_all_ops_tasks.ps1`, `register_compression_stub_task.ps1`, `register_ops_health_overview_task.ps1`.
+  - 보조 ensure: `projects/bitcoin-trading/ops/windows-rehearsal/ensure_compression_stub.ps1`.
+- **B-track 튜닝 확장(격리)**:
+  - `scripts/tune_blind_replay_proxy_profile_d.py`: `--param-space v1|v2` 추가, 출력 메타에 `param_space` 기록.
+  - 기존 KOSPI floor 목적함수 제약(`--kospi-floor`, `--kospi-floor-penalty`) 유지.
+- **검증 팩트**:
+  - `scripts/check_vps_showroom_readiness.py` 실행 결과 `go_no_go: GO` 확인.
+  - `build_ops_health_overview.ps1` 실행 결과 `overall_ok=true` 확인.
+
 ## TurboQuant PoC 보고 규칙
 
 - 러너 템플릿: `scripts/run_rag_turboquant_poc_template.py`
