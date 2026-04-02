@@ -67,6 +67,9 @@ $regimeSwitchScriptPath = "C:\workspace\scripts\run_btc_time_machine_regime_swit
 $lensMyeongniScriptPath = "C:\workspace\scripts\run_lens_myeongni.py"
 $lensSasangScriptPath = "C:\workspace\scripts\run_lens_sasang.py"
 $lensLogosScriptPath = "C:\workspace\scripts\run_lens_logos.py"
+$lensFusionStubScriptPath = "C:\workspace\scripts\report_independent_lens_fusion_stub_v0.py"
+$lensShadowGateScriptPath = "C:\workspace\scripts\report_independent_lens_shadow_gate.py"
+$insightScoreboardScriptPath = "C:\workspace\scripts\build_insight_effectiveness_scoreboard.py"
 $dailySitrepPath = "C:\workspace\docs\final\artifacts\waiting_queue_daily_sitrep_latest.txt"
 $softFailNotes = New-Object System.Collections.Generic.List[string]
 
@@ -541,6 +544,22 @@ if (Test-Path -LiteralPath $lensLogosScriptPath) {
 } else {
     Add-SoftFailNote "run_lens_logos.py missing; skipped"
 }
+if (Test-Path -LiteralPath $lensFusionStubScriptPath) {
+    py scripts/report_independent_lens_fusion_stub_v0.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "report_independent_lens_fusion_stub_v0.py failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "report_independent_lens_fusion_stub_v0.py missing; skipped"
+}
+if (Test-Path -LiteralPath $lensShadowGateScriptPath) {
+    py scripts/report_independent_lens_shadow_gate.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "report_independent_lens_shadow_gate.py failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "report_independent_lens_shadow_gate.py missing; skipped"
+}
 
 Write-Host "[waiting-queue-check] Running BTC regime-switch comparison (read-only sensor)..."
 if (Test-Path -LiteralPath $regimeSwitchScriptPath) {
@@ -968,6 +987,16 @@ if ($dualRegimeAlertLevel -eq "state_clamp_high_tight_mode") {
         runner = "scripts/run_waiting_queue_monthly_check.ps1"
     } | ConvertTo-Json -Compress | Add-Content -LiteralPath $logPath -Encoding utf8
     throw "Auto HOLD promotion triggered: dual regime clamp high-tight mode"
+}
+
+Write-Host "[waiting-queue-check] Building insight effectiveness scoreboard..."
+if (Test-Path -LiteralPath $insightScoreboardScriptPath) {
+    py $insightScoreboardScriptPath
+    if ($LASTEXITCODE -ne 0) {
+        throw "Insight effectiveness scoreboard build failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "insight effectiveness scoreboard script missing; skipped"
 }
 
 Write-Host "[waiting-queue-check] Wrote log: $logPath"
