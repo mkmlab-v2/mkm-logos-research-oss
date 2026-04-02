@@ -942,6 +942,7 @@ class CryptoNitroLiveStrategy:
             return base_multiplier
 
         state_id, state_id_source = _resolve_state_id_with_source(signal_data)
+        gate_profile = str(os.getenv("DUAL_REGIME_GATE_PROFILE", "")).strip().lower() or None
 
         try:
             ctx: DualRegimeContext = evaluate_dual_regime_and_market_shock(
@@ -951,6 +952,7 @@ class CryptoNitroLiveStrategy:
                 bible_risk_score=float(biblical_risk),
                 workspace_root=workspace_root,
                 state_id=state_id,
+                gate_profile=gate_profile,
             )
         except Exception as e:  # pragma: no cover - 방어적 처리
             logger.debug("dual_regime_protection: evaluate_dual_regime_and_market_shock 오류(무시): %s", e)
@@ -966,6 +968,7 @@ class CryptoNitroLiveStrategy:
             "interpretation": getattr(ctx, "interpretation", "none"),
             "state_id": state_id,
             "state_id_source": state_id_source,
+            "gate_profile": gate_profile or "balanced",
         }
 
         # 공명 또는 실물 우선 veto가 있으면 즉시 하향 캡 적용 (증폭 금지)
