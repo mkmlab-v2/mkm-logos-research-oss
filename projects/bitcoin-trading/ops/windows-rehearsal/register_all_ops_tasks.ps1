@@ -18,8 +18,9 @@ $registerDual = Join-Path $opsDir "register_waiting_queue_dual_market_daily_task
 $registerBtc = Join-Path $opsDir "register_waiting_queue_btc_binance_daily_task.ps1"
 $registerHealth = Join-Path $opsDir "register_fatal_alert_healthcheck_task.ps1"
 $registerJemaaiE2E = Join-Path $opsDir "register_jemaai_public_event_e2e_smoke_task.ps1"
+$checkAlertConfig = Join-Path $opsDir "check_fatal_alert_config.ps1"
 
-foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerJemaaiE2E)) {
+foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerJemaaiE2E, $checkAlertConfig)) {
     if (-not (Test-Path -LiteralPath $script)) {
         throw "Required register script missing: $script"
     }
@@ -68,12 +69,30 @@ if ($LASTEXITCODE -ne 0) {
     throw "Jemaai public-event e2e smoke task registration failed"
 }
 
+$alertStatusPath = "C:\workspace\docs\final\artifacts\fatal_alert_config_status_latest.json"
+& powershell -NoProfile -ExecutionPolicy Bypass -File $checkAlertConfig -OutPath $alertStatusPath
+if ($LASTEXITCODE -ne 0) {
+    throw "Fatal alert config check failed"
+}
+
+$alertSummary = "unknown"
+try {
+    $cfg = Get-Content -LiteralPath $alertStatusPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $slackReady = [bool]$cfg.channels.slack.ready
+    $telegramReady = [bool]$cfg.channels.telegram.ready
+    $fatalReady = [bool]$cfg.fatal_alert_ready
+    $alertSummary = "fatal_ready=$fatalReady; slack=$slackReady; telegram=$telegramReady"
+} catch {
+    $alertSummary = "fatal_ready=unknown (status parse failed)"
+}
+
 $recoveryCommand = "powershell -NoProfile -ExecutionPolicy Bypass -File `"C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\register_all_ops_tasks.ps1`""
 $stamp = ([DateTimeOffset]::UtcNow).ToString("o")
 $artifactPath = "C:\workspace\docs\final\artifacts\ops_task_recovery_command_latest.txt"
 $artifact = @(
     "[$stamp] Standard recovery command",
     $recoveryCommand,
+    "Alert channel status: $alertSummary",
     ""
 )
 Set-Content -LiteralPath $artifactPath -Value ($artifact -join [Environment]::NewLine) -Encoding utf8
@@ -81,5 +100,6 @@ Set-Content -LiteralPath $artifactPath -Value ($artifact -join [Environment]::Ne
 Write-Host "Recovery command:"
 Write-Host $recoveryCommand
 Write-Host "Recovery command artifact: $artifactPath"
+Write-Host "Alert channel status: $alertSummary"
 Write-Host "OK all ops tasks registered"
 exit 0
