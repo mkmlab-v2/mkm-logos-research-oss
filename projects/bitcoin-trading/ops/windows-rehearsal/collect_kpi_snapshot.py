@@ -20,6 +20,9 @@ STOP_FILE = MEMORY_DIR / "STOP.txt"
 STATUS_FILE = MEMORY_DIR / "trading_daemon_status.json"
 TRADER_STATE_FILE = PROJECT_ROOT / "logs" / "trading_state.json"
 RISK_PROFILE_FILE = PROJECT_ROOT / "memory" / "v2" / "risk" / "risk_profile_fact_safe_latest.json"
+MYEONGNI_LENS_LATEST = (
+    WORKSPACE_ROOT / "docs" / "final" / "artifacts" / "myeongni_independent_lens_latest.json"
+)
 LOGOS_TIMELINE_ANCHOR = (
     WORKSPACE_ROOT / "reports" / "constitution" / "btrack_pilot" / "logos_timeline_anchor_v1_latest.json"
 )
@@ -227,6 +230,23 @@ def _extract_dual_regime_state_kpi(status: dict, trader_state: dict) -> dict:
         state_id_norm = None
 
     state_source = str(dual_ctx.get("state_id_source") or "none")
+
+    # Fallback: if daemon/runtime summary does not expose state_id yet,
+    # borrow B-track's latest independent-lens state to avoid dead "none"
+    # wiring in downstream observability reports.
+    if state_id_norm is None:
+        lens = _safe_json(MYEONGNI_LENS_LATEST)
+        stream = lens.get("myeongri_stream_outputs") if isinstance(lens, dict) else {}
+        if isinstance(stream, dict):
+            lens_state_id = stream.get("state_id")
+            try:
+                lens_state_norm = int(lens_state_id) if lens_state_id is not None else None
+            except Exception:
+                lens_state_norm = None
+            if lens_state_norm is not None and 1 <= lens_state_norm <= 16:
+                state_id_norm = lens_state_norm
+                state_source = "myeongni_independent_lens"
+
     clamped = bool(risk_assessment.get("signal_registry_clamped", False))
     cap = risk_assessment.get("signal_registry_cap")
     try:

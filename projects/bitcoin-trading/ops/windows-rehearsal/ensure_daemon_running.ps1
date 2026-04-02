@@ -51,7 +51,12 @@ function Get-DaemonProcesses {
     # Do not filter Win32_Process.Name='python.exe' here: some shells report differently;
     # match by script path in CommandLine only.
     Get-CimInstance Win32_Process |
-        Where-Object { $_.CommandLine -and ($_.CommandLine -match 'start_24h_daemon\.py') }
+        Where-Object {
+            $_.CommandLine -and
+            ($_.CommandLine -match 'start_24h_daemon\.py') -and
+            # Exclude launcher wrapper process (py.exe) to avoid false duplicate detection.
+            ($_.Name -ne 'py.exe')
+        }
 }
 
 function Start-Daemon {
@@ -104,6 +109,31 @@ function Sync-DaemonStatusMirror {
     }
 }
 
+function Update-RuntimeProbe([bool]$isRunning, [bool]$heartbeatStale, [bool]$lockOwnerAlive, [int]$daemonCount) {
+    $statusPaths = @($daemonStatusLegacyPath, $daemonStatusV2Path)
+    foreach ($statusPath in $statusPaths) {
+        if (-not (Test-Path $statusPath)) {
+            continue
+        }
+        try {
+            $obj = Get-Content $statusPath -Raw | ConvertFrom-Json
+            if ($null -eq $obj) { continue }
+            $probe = [ordered]@{
+                ts_utc = (Get-Date).ToUniversalTime().ToString("o")
+                source = "ensure_daemon_running.ps1"
+                daemon_process_count = $daemonCount
+                daemon_process_running = $isRunning
+                heartbeat_stale = $heartbeatStale
+                lock_owner_alive = $lockOwnerAlive
+            }
+            $obj | Add-Member -NotePropertyName "runtime_probe" -NotePropertyValue $probe -Force
+            $obj | ConvertTo-Json -Depth 12 | Set-Content -Path $statusPath -Encoding UTF8
+        } catch {
+            Write-Log "WARN: runtime_probe update failed for $statusPath : $($_.Exception.Message)"
+        }
+    }
+}
+
 function Test-LockOwnerAlive {
     if (-not (Test-Path $lockPath)) {
         return $false
@@ -116,7 +146,13 @@ function Test-LockOwnerAlive {
             return $null -ne (Get-Process -Id $ownerPid -ErrorAction SilentlyContinue)
         }
     } catch {
-        Write-Log "Lock file parse failed: $($_.Exception.Message)"
+        $msg = $_.Exception.Message
+        if ($msg -match 'locked a portion of the file' -or $msg -match 'cannot access the file') {
+            # Locked-by-owner is a healthy signal for strong singleton lock.
+            Write-Log "Lock file is actively held by running daemon (owner lock in place)."
+            return $true
+        }
+        Write-Log "Lock file parse failed: $msg"
     }
     return $false
 }
@@ -143,6 +179,7 @@ if (Test-Path $stopPath) {
         Write-Log "Stopped daemon PID=$($p.ProcessId) due to kill switch"
     }
     Stop-DirectDaemonCopies
+    Update-RuntimeProbe -isRunning $false -heartbeatStale $true -lockOwnerAlive $false -daemonCount 0
     exit 0
 }
 
@@ -176,6 +213,7 @@ if ($daemonProcs.Count -gt 1) {
 }
 $isRunning = $daemonProcs.Count -gt 0
 $heartbeatStale = $true
+$lockOwnerAlive = Test-LockOwnerAlive
 
 if (Test-Path $heartbeatPath) {
     try {
@@ -209,15 +247,17 @@ if (-not $isRunning) {
         }
     }
     if ($hbYoung) {
-        if (Test-LockOwnerAlive) {
+        if ($lockOwnerAlive) {
             Write-Log "Daemon not listed by process query but heartbeat is fresh and lock owner alive - not starting another daemon."
             Sync-DaemonStatusMirror
+            Update-RuntimeProbe -isRunning $isRunning -heartbeatStale $heartbeatStale -lockOwnerAlive $lockOwnerAlive -daemonCount $daemonProcs.Count
             Write-Log "Daemon healthy"
             exit 0
         }
         Write-Log "Heartbeat is fresh but lock owner missing. Starting daemon to recover."
     }
     Write-Log "Daemon not running"
+    Update-RuntimeProbe -isRunning $false -heartbeatStale $heartbeatStale -lockOwnerAlive $lockOwnerAlive -daemonCount $daemonProcs.Count
     Start-Daemon
     exit 0
 }
@@ -228,9 +268,11 @@ if ($heartbeatStale) {
         Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
         Write-Log "Stopped stale daemon PID=$($p.ProcessId)"
     }
+    Update-RuntimeProbe -isRunning $true -heartbeatStale $true -lockOwnerAlive $lockOwnerAlive -daemonCount $daemonProcs.Count
     Start-Daemon
     exit 0
 }
 
 Write-Log "Daemon healthy"
 Sync-DaemonStatusMirror
+Update-RuntimeProbe -isRunning $isRunning -heartbeatStale $heartbeatStale -lockOwnerAlive $lockOwnerAlive -daemonCount $daemonProcs.Count
