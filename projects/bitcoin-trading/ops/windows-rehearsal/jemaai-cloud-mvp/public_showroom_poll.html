@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>jemaai ??public showroom (poll)</title>
+  <title>jemaai public showroom (poll)</title>
   <style>
     :root { --bg:#0f1419; --fg:#e8ecf0; --muted:#8b98a5; --accent:#c9a227; }
     body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--fg); margin: 0; padding: 1rem; max-width: 40rem; }
@@ -17,8 +17,8 @@
   </style>
 </head>
 <body>
-  <h1>?⑤벀而???곤폍 ??latest ??彛?/h1>
-  <p class="sub">Polling UI ??Base URL??濡쒖뺄濡?媛뺤젣(湲곕낯媛??⑸땲?? 湲곕낯: <code>http://127.0.0.1:8788</code></p>
+  <h1>Public Showroom - Latest Poll</h1>
+  <p class="sub">Default base URL is pinned to HTTPS API endpoint. Local fallback: <code>http://127.0.0.1:8788</code></p>
   <label for="base">GET Base (no trailing slash)</label>
   <input id="base" type="text" value="https://api.jemaai.cloud" autocomplete="off" />
   <p id="status" class="sub"></p>
@@ -46,7 +46,7 @@
           out.textContent = text;
           return;
         }
-        st.innerHTML = '<span class="ok">ok</span> ' + new Date().toISOString();
+        st.innerHTML = '<span class="ok">ok</span> - ' + new Date().toISOString();
         out.textContent = JSON.stringify(obj, null, 2);
       } catch (e) {
         st.innerHTML = '<span class="err">network error</span>';
