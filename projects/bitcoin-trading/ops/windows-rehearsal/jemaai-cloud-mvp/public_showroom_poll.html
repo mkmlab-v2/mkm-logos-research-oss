@@ -5,7 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>jemaai public showroom (poll)</title>
   <style>
-    :root { --bg:#0f1419; --fg:#e8ecf0; --muted:#8b98a5; --accent:#c9a227; }
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    :root {
+      --bg:#0b1220;
+      --bg2:#101a2f;
+      --fg:#e8ecf0;
+      --muted:#8b98a5;
+      --accent:#d8b25f;
+      --tile-a:#102038;
+      --tile-b:#0d1a2f;
+      --bubble-bg:rgba(236, 242, 248, 0.96);
+      --bubble-fg:#112338;
+      --bubble-border:#28425e;
+    }
     body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--fg); margin: 0; padding: 1rem; max-width: 40rem; }
     h1 { font-size: 1.1rem; margin: 0 0 0.5rem; }
     .sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
@@ -17,11 +29,49 @@
     .ticker { background:#0f1419; border: 1px dashed #2b3846; border-radius: 12px; padding: 0.75rem; margin: 0.75rem 0 1rem; }
     .ticker .tline { font-size: 0.9rem; color: var(--fg); margin: 0; white-space: pre-wrap; word-break: break-word; }
     .stage { background:#0b1117; border: 1px solid #2b3846; border-radius: 12px; padding: 0.75rem; margin: 0 0 0.75rem; }
+    .stage-wrap { position: relative; }
     .stage canvas { width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; background: #0a0f14; border-radius: 8px; border: 1px solid #1d2a38; }
+    .bubble-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .bubble {
+      position: absolute;
+      background: var(--bubble-bg);
+      color: var(--bubble-fg);
+      border: 1px solid var(--bubble-border);
+      border-radius: 7px;
+      padding: 2px 6px;
+      font-size: 10px;
+      line-height: 1.2;
+      white-space: nowrap;
+      transform: translate(-50%, -100%);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+      font-family: "Press Start 2P", monospace;
+      letter-spacing: -0.3px;
+    }
+    .bubble::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -5px;
+      width: 8px;
+      height: 8px;
+      background: var(--bubble-bg);
+      border-right: 1px solid var(--bubble-border);
+      border-bottom: 1px solid var(--bubble-border);
+      transform: translateX(-50%) rotate(45deg);
+    }
     .stage-meta { margin-top: 0.45rem; font-size: 0.78rem; color: var(--muted); }
     .chat { background:#0b1117; border: 1px solid #2b3846; border-radius: 12px; padding: 0.75rem; }
     .chat pre { background: transparent; padding: 0; margin: 0; white-space: pre-wrap; }
-    .stage { margin: 0.75rem 0 1rem; padding: 0.75rem; border: 1px solid #2b3846; border-radius: 12px; background: radial-gradient(circle at 50% 10%, #1a222d, #0b1117); }
+    .stage {
+      margin: 0.75rem 0 1rem;
+      padding: 0.75rem;
+      border: 1px solid #2b3846;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 50% 10%, #1a222d, #0b1117),
+        repeating-linear-gradient(0deg, transparent 0 15px, rgba(129,153,183,0.05) 15px 16px),
+        repeating-linear-gradient(90deg, transparent 0 15px, rgba(129,153,183,0.05) 15px 16px);
+    }
     .sprite-wrap { display:flex; align-items:center; gap:0.75rem; }
     .sprite { width: 96px; height: 96px; image-rendering: pixelated; object-fit: contain; border: 1px solid #2b3846; border-radius: 8px; background: #0f1419; }
     .sprite-meta { font-size: 0.8rem; color: var(--muted); }
@@ -39,7 +89,8 @@
     .err { color: #e85d4c; }
     .ok { color: #6cbf6c; }
     label { font-size: 0.75rem; color: var(--muted); }
-    input { width: 100%; padding: 0.4rem; margin: 0.25rem 0 0.75rem; background: #1a222d; border: 1px solid #333; color: var(--fg); border-radius: 6px; box-sizing: border-box; }
+    input, select { width: 100%; padding: 0.4rem; margin: 0.25rem 0 0.75rem; background: #1a222d; border: 1px solid #333; color: var(--fg); border-radius: 6px; box-sizing: border-box; }
+    .lang-wrap { min-width: 132px; flex: 1; }
   </style>
 </head>
 <body>
@@ -50,6 +101,14 @@
     <div class="badge ok" id="modeBadge">MODE: Idle</div>
     <div class="badge warn" id="riskBadge">RISK: WARNING</div>
     <div class="badge" id="dirBadge">DIR: HOLD</div>
+    <div class="lang-wrap">
+      <label for="langMode">Dialogue</label>
+      <select id="langMode">
+        <option value="HYBRID">HYBRID</option>
+        <option value="KR">KR</option>
+        <option value="EN">EN</option>
+      </select>
+    </div>
   </div>
 
   <div class="ticker anim mode-idle" id="tickerBox">
@@ -58,7 +117,10 @@
 
   <div class="stage">
     <label for="pixelStage" style="display:block; margin-bottom:0.35rem;">픽셀 캐릭터 스테이지 (v1)</label>
-    <canvas id="pixelStage" width="256" height="144"></canvas>
+    <div class="stage-wrap">
+      <canvas id="pixelStage" width="256" height="144"></canvas>
+      <div class="bubble-layer" id="bubbleLayer"></div>
+    </div>
     <div class="stage-meta" id="stageMeta">character=unknown_guard | mode=Idle</div>
   </div>
 
@@ -87,7 +149,11 @@
       lastTs: 0,
       charId: "unknown_guard",
       pulse: 0,
+      bubbles: [],
+      actors: [],
+      lang: "HYBRID"
     };
+    const MAIN_CHARACTER_ID = "dragon_quant";
     const spriteByMode = {
       Idle: {
         name: "The Sovereign (Dragon)",
@@ -182,6 +248,123 @@
       p(9, 6, 1, 2, profile.accent || color);
     }
 
+    function ensureActors() {
+      if (stageState.actors.length) return;
+      stageState.actors = [
+        { id: MAIN_CHARACTER_ID, x: 128, y: 78, tx: 128, ty: 78, jitter: 0, major: true },
+        { id: "tiger_shield", x: 72, y: 88, tx: 72, ty: 88, jitter: 0, major: true },
+        { id: "ox_guard", x: 178, y: 92, tx: 178, ty: 92, jitter: 0, major: false },
+        { id: "rabbit_scalper", x: 44, y: 94, tx: 44, ty: 94, jitter: 0, major: false }
+      ];
+    }
+
+    function directionFromEvent(obj) {
+      const dir = String(obj.public_signal_direction || "").toUpperCase();
+      const abs = String(obj.direction_abstract || "").toLowerCase();
+      if (dir === "BUY" || dir === "LONG" || abs === "long" || abs === "bull") return "bull";
+      if (dir === "SELL" || dir === "SHORT" || abs === "short" || abs === "bear") return "bear";
+      return "flat";
+    }
+
+    function speak(kind, emphasis) {
+      const mode = stageState.lang;
+      const table = {
+        bull: {
+          KR: ["가즈아!!", "상승 기류 포착!", "오늘 회식은 도토리다!"],
+          EN: ["TO THE MOON!", "Uptrend locked!", "Momentum online!"]
+        },
+        bear: {
+          KR: ["살려줘!", "일단 튀어!", "비명이 들린다.."],
+          EN: ["RUN!", "This is chaos!", "Fall back!"]
+        },
+        warning: {
+          KR: ["전원 방어!", "성소로 모여라!", "기도합시다.."],
+          EN: ["Hold the line!", "Gather center!", "Defensive posture!"]
+        },
+        attack: {
+          KR: ["풀매수 타격!", "돌격!", "기회를 놓치지 마라!"],
+          EN: ["Charge now!", "Strike window!", "Push formation!"]
+        },
+        defend: {
+          KR: ["요새를 사수하라", "버티면 승리한다", "단단히 무장해"],
+          EN: ["Fortify now.", "Shield up.", "Stay disciplined."]
+        },
+        idle: {
+          KR: ["정찰 중...", "관측 유지", "호흡 정리 중"],
+          EN: ["Scanning...", "Holding formation.", "Awaiting signal."]
+        }
+      };
+      const pack = table[kind] || table.idle;
+      const pool = mode === "KR" ? pack.KR : (mode === "EN" ? pack.EN : [...pack.EN, ...pack.KR]);
+      const base = pool[Math.floor(Math.random() * pool.length)];
+      return emphasis ? `${base} [${emphasis}]` : base;
+    }
+
+    function addBubble(actor, text) {
+      if (!actor || !text) return;
+      stageState.bubbles.push({
+        actorId: actor.id,
+        text,
+        ttlMs: actor.major ? 3600 : 2500
+      });
+      if (stageState.bubbles.length > 6) stageState.bubbles.shift();
+    }
+
+    function updateBubbles(dt) {
+      stageState.bubbles = stageState.bubbles
+        .map((b) => ({ ...b, ttlMs: b.ttlMs - dt }))
+        .filter((b) => b.ttlMs > 0);
+    }
+
+    function renderBubbles() {
+      const layer = document.getElementById("bubbleLayer");
+      if (!layer) return;
+      layer.innerHTML = "";
+      const byId = {};
+      stageState.actors.forEach((a) => { byId[a.id] = a; });
+      stageState.bubbles.forEach((b) => {
+        const actor = byId[b.actorId];
+        if (!actor) return;
+        const div = document.createElement("div");
+        div.className = "bubble";
+        div.textContent = b.text;
+        const px = (actor.x / 256) * 100;
+        const py = ((actor.y - 18) / 144) * 100;
+        div.style.left = `${Math.max(3, Math.min(97, px))}%`;
+        div.style.top = `${Math.max(10, Math.min(96, py))}%`;
+        layer.appendChild(div);
+      });
+    }
+
+    function applyCrowdBehavior(obj, mode, dt) {
+      const risk = String(obj.risk_level || "WARNING").toUpperCase();
+      const dirLabel = directionFromEvent(obj);
+      const speed = Math.min(1, dt * 0.006);
+      for (const actor of stageState.actors) {
+        if (risk === "WARNING") {
+          actor.tx = 128 + (actor.major ? 0 : (Math.random() * 20 - 10));
+          actor.ty = 78 + (actor.major ? 0 : (Math.random() * 12 - 6));
+        } else if (dirLabel === "bear") {
+          actor.tx = 20 + Math.random() * 216;
+          actor.ty = 92 + Math.random() * 20;
+        } else if (mode === "Attack") {
+          actor.tx = (dirLabel === "bull" ? 214 : 42) + (actor.major ? 0 : (Math.random() * 10 - 5));
+          actor.ty = 74 + (Math.random() * 16 - 8);
+        } else if (mode === "Defend") {
+          actor.tx = actor.major ? 128 : actor.tx;
+          actor.ty = actor.major ? 78 : actor.ty;
+          actor.jitter = Math.sin(stageState.pulse * 2.8 + actor.x) * 1.6;
+        } else {
+          actor.tx += Math.sin(stageState.pulse + actor.x * 0.01) * 0.8;
+          actor.ty += Math.cos(stageState.pulse * 0.8 + actor.y * 0.02) * 0.6;
+        }
+        actor.tx = Math.max(16, Math.min(236, actor.tx));
+        actor.ty = Math.max(62, Math.min(124, actor.ty));
+        actor.x += (actor.tx - actor.x) * speed;
+        actor.y += (actor.ty - actor.y) * speed;
+      }
+    }
+
     function drawStage(ts) {
       const canvas = document.getElementById("pixelStage");
       const meta = document.getElementById("stageMeta");
@@ -195,6 +378,7 @@
       stageState.pulse += dt * 0.004;
       stageState.frame += dt;
 
+      ensureActors();
       const obj = stageState.obj || {};
       const mode = stageState.mode || "Idle";
       const risk = String(obj.risk_level || "WARNING").toUpperCase();
@@ -207,8 +391,14 @@
       activeSpriteUrl = spriteInfo.url;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#0a0f14";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // 16x16 tile backdrop for retro-MMO feel.
+      for (let ty = 0; ty < canvas.height; ty += 16) {
+        for (let tx = 0; tx < canvas.width; tx += 16) {
+          const even = (((tx / 16) + (ty / 16)) % 2) === 0;
+          ctx.fillStyle = even ? "#102038" : "#0d1a2f";
+          ctx.fillRect(tx, ty, 16, 16);
+        }
+      }
 
       const wave = Math.sin(stageState.pulse);
       const bob = mode === "Attack" ? Math.sin(stageState.pulse * 1.9) * 4 : Math.sin(stageState.pulse * 1.2) * 2;
@@ -219,6 +409,8 @@
         const y = 110 + i * 8 + Math.sin(stageState.pulse + i) * 2;
         ctx.fillRect(0, y, canvas.width, 2);
       }
+
+      applyCrowdBehavior(obj, mode, dt);
 
       if (mode === "Defend") {
         ctx.strokeStyle = risk === "WARNING" ? "rgba(255, 188, 79, 0.80)" : "rgba(135, 225, 165, 0.70)";
@@ -260,7 +452,17 @@
         drawPixelCharacter(ctx, 106, 56 + bob, 4, charColor, eyeShift, profile);
       }
 
-      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | sprite=${spriteInfo.name}`;
+      for (const actor of stageState.actors) {
+        const p = profileFromCharacterId(actor.id);
+        const c = colorFromCharacterId(actor.id);
+        const shift = mode === "Attack" ? (wave > 0 ? 1 : 0) : 0;
+        const yBob = (directionFromEvent(obj) === "bull" ? Math.abs(Math.sin(stageState.pulse * 2.4 + actor.x * 0.1)) * 4 : 0);
+        drawPixelCharacter(ctx, Math.round(actor.x - 10), Math.round(actor.y - 14 - yBob + actor.jitter), 2, c, shift, p);
+      }
+
+      updateBubbles(dt);
+      renderBubbles();
+      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | sprite=${spriteInfo.name} | lang=${stageState.lang}`;
       requestAnimationFrame(drawStage);
     }
 
@@ -328,6 +530,7 @@
         }
 
         // 예능형 표시 계층: 민감값 금지(whitelist only) & 상태 매핑만 수행
+        ensureActors();
         const mode = modeFromEvent(obj);
         const modeBadge = document.getElementById("modeBadge");
         const riskBadge = document.getElementById("riskBadge");
@@ -345,10 +548,25 @@
         stageState.obj = obj;
         stageState.mode = mode;
         stageState.charId = String(obj.active_character_id || "unknown_guard");
+        stageState.lang = document.getElementById("langMode").value || "HYBRID";
 
         if (obj.event_id && obj.event_id !== lastEventId) {
           lastEventId = obj.event_id;
           pushChat(obj);
+          const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
+          const tiger = stageState.actors.find((a) => a.id === "tiger_shield") || stageState.actors[1] || mainActor;
+          const d = directionFromEvent(obj);
+          const kind = mode === "Attack" ? "attack" : (mode === "Defend" ? "defend" : (d === "bull" ? "bull" : (d === "bear" ? "bear" : "idle")));
+          if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
+            addBubble(mainActor, speak("warning", "Dragon"));
+            addBubble(tiger, speak("defend", "Tiger"));
+          } else {
+            addBubble(mainActor, speak(kind, "Dragon"));
+            if (Math.random() > 0.45) addBubble(tiger, speak(kind, "Tiger"));
+          }
+          if (obj.abstract_reason) {
+            addBubble(mainActor, String(obj.abstract_reason).slice(0, 42));
+          }
         }
 
         st.innerHTML = '<span class="ok">ok</span> - ' + new Date().toISOString();
@@ -359,10 +577,14 @@
       }
     }
     requestAnimationFrame(drawStage);
-    loadCharacterProfiles().finally(() => {
-      tick();
-      setInterval(tick, POLL_MS);
-      document.getElementById("base").addEventListener("change", tick);
+    loadCharacterProfiles();
+    tick();
+    setInterval(tick, POLL_MS);
+    document.getElementById("base").addEventListener("change", tick);
+    document.getElementById("langMode").addEventListener("change", () => {
+      stageState.lang = document.getElementById("langMode").value || "HYBRID";
+      const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
+      addBubble(mainActor, speak("idle", "Dragon"));
     });
   </script>
 </body>
