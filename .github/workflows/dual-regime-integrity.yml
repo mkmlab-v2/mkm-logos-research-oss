@@ -86,6 +86,12 @@ on:
       - "tests/test_run_deut32_cee_stability_sweep.py"
       - "tests/test_run_btrack_fusion_gate.py"
       - "tests/test_cross_ref_dss_schema.py"
+      - "tests/test_b_track_hypothesis_inventory.py"
+      - "docs/final/B_TRACK_HYPOTHESIS_INVENTORY_SCHEMA.json"
+      - "docs/final/artifacts/B_TRACK_HYPOTHESIS_INVENTORY_V1.json"
+      - "scripts/validate_b_track_hypothesis_inventory.py"
+      - "scripts/write_b_track_hypothesis_artifacts_once.py"
+      - "scripts/sync_b_track_hypothesis_inventory.py"
       - "tests/test_entry16_source_hunt_log.py"
       - "tests/test_entry16_source_hunt_summary.py"
       - "tests/test_entry16_promotion_gate.py"
@@ -199,6 +205,9 @@ jobs:
 
       - name: CROSS_REF draft vs LOGOS_STATE_MAPPING (canonical_ref join Fact-Lock)
         run: python -m pytest tests/test_cross_ref_dss_schema.py -q --tb=short
+
+      - name: B-track Hypothesis Inventory schema
+        run: python -m pytest tests/test_b_track_hypothesis_inventory.py -q --tb=short
 
       - name: ENTRY_16 source-hunt log contract
         run: python -m pytest tests/test_entry16_source_hunt_log.py -q --tb=short

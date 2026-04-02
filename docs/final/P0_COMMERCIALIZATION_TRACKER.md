@@ -15,7 +15,7 @@
 | 1 | 최신 상황: `docs/final/MASTER_SITREP_2026-03-29.md` (또는 당일 SITREP) |
 | 2 | 스테이징·승격: `projects/bitcoin-trading/docs/final/STAGING_TO_PRODUCTION_PROMOTION_CHECKLIST_2026-03-25.md` |
 | 3 | 실행 규칙·갭: `projects/bitcoin-trading/docs/final/PROPHECY_ALIGNMENT_GAP_MATRIX_2026-03-24.md`, `EXECUTABLE_PROPHECY_RULES_SSOT_2026-03-25.md` |
-| 4 | 정렬 pytest 번들(Windows): `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` — **터미널에서는 `py` 사용** (`python` 금지 규칙과 일치). **직렬 게이트**: 1단계 `bitcoin-trading` 내 dual-regime 스모크(현재 14케이스)가 실패하면 2단계 워크스페이스 루트 Fact-Lock(logos snapshot + CROSS_REF + SASANG + 명리 통찰 JSONL 스텁)은 실행되지 않는다. 절차 표: `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md`. |
+| 4 | 정렬 pytest 번들(Windows): `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` — **터미널에서는 `py` 사용** (`python` 금지 규칙과 일치). **직렬 게이트**: 1단계 `bitcoin-trading` 내 dual-regime 스모크 + `test_multilens_marginal_utility_harness_v1.py`가 실패하면 2단계 워크스페이스 루트 Fact-Lock(logos snapshot + CROSS_REF + SASANG + 명리 통찰 JSONL + **Thin V2 / 시장 어댑터** 등 명시 목록)은 실행되지 않는다. 건수·버전은 로컬 실행 로그로 확인. 절차 표: `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md`. |
 | 5 | 보급 루틴(해당 시): `scripts/titan-sync.ps1` (레포 루트 기준) |
 
 ## 검증 게이트 (Bench)
@@ -27,9 +27,8 @@
 
 다음은 **이 트래커 작성 시점**에 로컬 트리를 점검한 결과다. 브랜치·동기화 후에는 다시 확인한다.
 
-- **현재 본선(2026-03-29 점검)**: `tests/test_dual_regime_api_smoke.py`만 존재. `test_fusion_slice_gate.py`는 미존재(문서 오인용 경로 정리: `MASTER_SITREP_2026-03-29.md` 반영).
-- Step 4 스크립트 `ops/v2/tasks/run_prophecy_alignment_pytest.ps1`는 위 스모크 파일만 명시 실행한다.
-- `projects/bitcoin-trading/tests/` 아래 **본선 `test_*.py`가 트리에 없을 수 있다** (문서·SITREP에 인용된 경로와 불일치 가능).
+- **Step 4 스크립트** `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`: (1) `bitcoin-trading`에서 `test_dual_regime_api_smoke.py` + `test_multilens_marginal_utility_harness_v1.py` → 실패 시 종료; (2) 워크스페이스 루트에서 Step 4에 명시된 `tests/test_*.py` 목록만 실행(logos snapshot·CROSS_REF·ENTRY16·명리·만세 포인터·multilens Thin 등). `test_fusion_slice_gate.py` 등 문서·SITREP 전용 경로는 스크립트에 없으면 게이트에 포함되지 않는다.
+- **수집 건수 예시(2026-04-02 로컬, 참고용)**: 1단계 19개·2단계 75개 — 목록 변경 시 달라지므로 **고정 수치로 SSOT 삼지 말고** 실행 로그로 확인한다.
 - 프로젝트 루트에서 무분별 `py -m pytest -q` 시, `scripts/run_forced_watch_alert_test.py` 등이 수집되어 **수집 단계에서 실패**할 수 있다. 게이트 실행은 **정렬 스크립트 또는 문서에 명시된 파일 목록**으로 제한한다.
 
 **규칙**: `149 passed` / `13 passed` 등 **건수 주장**은 로컬 재실행 또는 CI 아티팩트 없이 보고하지 않는다.
@@ -45,6 +44,38 @@
 - 최신 브로드캐스트 산출물:
   - `projects/bitcoin-trading/memory/v2/briefs/fact_safe_multilens_broadcast_latest.md`
   - `projects/bitcoin-trading/memory/v2/briefs/fact_safe_multilens_broadcast_latest.json`
+
+### 주간·월간 SOP (권장 고정, 2026-04)
+
+| 주기 | 러너 | 비고 |
+|------|------|------|
+| **주간** | `scripts/run_fact_lock_bundle.ps1` | 머지 직후에도 1회 권장. `integrity_guard` + `run_prophecy_alignment_pytest.ps1`와 동일 체인. Multilens P1 주기 갱신 시 동일 스크립트에 `-IncludeP1AB`. |
+| **jemaai.cloud 점검 (로컬)** | `scripts/run_jemaai_cloud_completion_chain.ps1` | Fact-Lock·Thin·BTC 앵커·P1(기본)·jemaai MVP 경로 일괄; P1 생략은 `-SkipP1AB`. VPS/nginx는 별도. |
+| **월간** | `scripts/run_waiting_queue_monthly_check.ps1` | 브리프·로그·브로드캐스트·(설정 시) Slack. `waiting_queue_monthly_check_log.jsonl`이 팩트 SSOT. |
+| **캘린더(운영자)** | 위 두 스크립트 전체 경로를 OS 캘린더·작업 스케줄러 등에 반복 등록 | 레포가 알림을 대신하지 않음; Strategy B로 소프트 스킵 구간은 로그 WARN으로만 남음. |
+
+### Chronos-Forward KOSPI (산출물 포인터)
+
+- 러너: `scripts/run_chronos_forward_kospi_baseline.ps1` (장시간·에이전트 한계 회피: `-Detached`).
+- SSOT: `data/chronos_forward_training/training_result.json`, `data/chronos_forward_training/holdout_2026_result.json` — 완료율·방향일치·오차 등 **수치는 JSON 필드가 팩트**이며, 본 트래커에 숫자를 고정 복사하지 않는다.
+- 월간 브리프의 KOSPI/BTC 월간 예측 산출물은 `docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.*` 등 별도 아티팩트.
+
+### 소프트 스킵 이행 확정 (권장 B · 2026-04)
+
+**채택:** **권장 B — 핵심 파이프라인 우선.** 주간 `run_fact_lock_bundle.ps1` + 월간 `run_waiting_queue_monthly_check.ps1`가 **exit 0**이면 본선 운영 상태로 본다. 아래 구간은 **레포에 스크립트가 없어 WARN·스킵되는 저우선 공백**이며, **시스템 장애나 코어 오염이 아니다.** 보고 시 **“게이트 미연결 / 미구현 구간”**으로 서술한다. **전략 A(전부 복구)**는 기본 목표로 두지 않는다.
+
+**부분 복구 (전략 A를 쓸 때):** 과금·감사·대외 증빙·쇼룸 운영 등 **요구가 생길 때만** 해당 파일만 추가·연결한다.
+
+| 구간 | B 이행 시 상태 |
+|------|------------------|
+| B-Track 후단 3스크립트 (`report_logos_timeline_quality_gate.py` 등) | `run_btrack_gate_and_lock.py`가 **파일 없으면 스킵** — 풀 게이트 연결은 미진행 |
+| Night Watchman harness (`scripts/night_watchman_harness_v1.ps1`) | 월간 러너가 **파일 없으면 스킵** — 필요 시 스크립트 복구 또는 `-SkipNightWatchmanHarness`를 스케줄에 명시 |
+| Billing·cost·regime-switch·fused calibration 등 | **파일 없으면 스킵** — 상용 과금 증빙 필요 시에만 스크립트 추가 검토 |
+
+**심볼 레인 프로필 비교 (`symbol_lane_profile_compare_latest.json`)**
+
+- `dss_delta_count` 등은 **stable vs exploratory 추출 파라미터 차이**로 발생할 수 있다. **시장 구조 변화 단정 금지.**
+- 의미 있는 비교: `run_btrack_symbol_lane_gate.py --profile-tag exploratory`에 stable과 다른 `--extract-top-k` / `--extract-min-df` / `--curate-top-k`를 준 뒤 `report_symbol_lane_profile_compare.py` 실행. CLI 한 줄을 런북에 남길 것.
 
 ### 2026-04-01 운영 업데이트 (BTC 주력 자동화)
 

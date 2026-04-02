@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://workspace.local/schemas/B_TRACK_HYPOTHESIS_INVENTORY_SCHEMA.json",
+  "title": "B-Track Hypothesis Inventory (document)",
+  "description": "Machine-readable B-track hypotheses; see CONSTITUTION §4.5.1.",
+  "type": "object",
+  "required": [
+    "schema",
+    "disclaimer",
+    "constitution_ref",
+    "entries"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "b_track_hypothesis_inventory_v1"
+    },
+    "disclaimer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "constitution_ref": {
+      "type": "string"
+    },
+    "inventory_schema_path": {
+      "type": "string"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/hypothesis_entry"
+      }
+    }
+  },
+  "definitions": {
+    "hypothesis_entry": {
+      "type": "object",
+      "required": [
+        "hypothesis_id",
+        "hypothesis_tier",
+        "boundary_ack",
+        "pillar",
+        "ontology_layer",
+        "lens_family",
+        "title",
+        "falsification_condition",
+        "promotion_status"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "hypothesis_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "created_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "hypothesis_tier": {
+          "type": "string",
+          "enum": [
+            "B"
+          ]
+        },
+        "boundary_ack": {
+          "type": "boolean",
+          "const": true
+        },
+        "pillar": {
+          "type": "string",
+          "enum": [
+            "gematria_root",
+            "state_resonance",
+            "semantic_trigger",
+            "structural_fractal"
+          ]
+        },
+        "ontology_layer": {
+          "type": "string",
+          "enum": [
+            "source_program",
+            "human_lens_east",
+            "human_lens_west",
+            "unspecified"
+          ]
+        },
+        "lens_family": {
+          "type": "string",
+          "enum": [
+            "none",
+            "myeongni",
+            "sasang",
+            "ijeoma",
+            "mixed"
+          ]
+        },
+        "equivalence_claim": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string"
+        },
+        "falsification_condition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "promotion_status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "bench_only",
+            "superseded",
+            "retired"
+          ]
+        },
+        "target_state_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "cross_links": {
+          "type": "array"
+        },
+        "gematria_provenance": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "fractal_analogy": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

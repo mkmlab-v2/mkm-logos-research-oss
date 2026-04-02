@@ -5,6 +5,22 @@
 
 **Vault 동기화**: `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`가 이 표를 `notebooklm_sources/`로 복사(SSOT 반영). 공유 Vault 루트는 환경의 `MKM_VAULT_ROOT` 또는 스크립트 `-VaultRoot`로 지정.
 
+### Vault 동기화 — 로컬 부재 Skip (정상, 2026-04)
+
+아래 경로는 스크립트의 복사 목록에 있으나 **최소 클론·본 저장소 트리에 없을 수 있다**. 부재 시 동기화는 건너뛰며(스크립트는 해당 7개를 **optional**로 처리해 WARNING 대신 회색 한 줄만 출력), **오류가 아니다**.
+
+| 경로 | 비고 |
+|------|------|
+| `projects/bitcoin-trading/ops/v2/memory/decision_ledger.py` | 현재 원격 인덱스에 없음 — VPS/별도 배포 트리에 있을 수 있음 |
+| `projects/bitcoin-trading/ops/v2/memory/fact_lock_snapshot.py` | 동일 |
+| `projects/bitcoin-trading/ops/windows-rehearsal/WAITING_QUEUE_DUAL_BTC_RUNBOOK.md` | 동일 |
+| `projects/bitcoin-trading/ops/windows-rehearsal/DAILY_EXECUTION_INSIGHT_BRIEF_TEMPLATE.md` | 동일 |
+| `backtest_results/LOGOS_RESONANCE_BTC_BULL_FULL.json` | `backtest_results/`는 `.gitignore` — 로컬 생성·역수입 시에만 존재 |
+| `backtest_results/LOGOS_RESONANCE_BTC_BEAR_FULL.json` | 동일 |
+| `backtest_results/LOGOS_RESONANCE_BTC_SIDEWAYS_FULL.json` | 동일 |
+
+**권장**: 일상 운영은 부재를 **무시**해도 됨(`copied`만으로 미러 성공 판단). 목록에서 경로를 **삭제(Prune)** 하지 않는 한, 나중에 파일이 생기면 **같은 스크립트가 자동으로 포함**한다.
+
 ### Unified-Intelligence — 메인 지휘 (2026-03-29)
 
 - **통합 전황판 (A1 16-State + Logos Phase 1 + Git 슬롯)**: `docs/final/UNIFIED_INTELLIGENCE_BATTLEBOARD_2026-03-29.md`

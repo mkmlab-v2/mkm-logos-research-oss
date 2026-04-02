@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://workspace.local/schemas/SASANG_DYNAMICS_REGIME_MAPPING_JSON_SCHEMA.json",
+  "title": "Sasang dynamics — regime hypothesis mapping (B-track JSONL)",
+  "description": "B-track observation and research only. Not medical diagnosis, not a live trading signal. Does not auto-bind to dual_regime_api or order paths. Korean medical canon: label cohort A vs canon/proxy B must not be auto-merged with production classifiers (see workspace handoff). Machine-readables are neutral 0..1 proxies; human_readable is optional educational copy, separated from execution fields.",
+  "type": "object",
+  "required": [
+    "ts_utc",
+    "hypothesis_tier",
+    "boundary_ack",
+    "stub",
+    "a_track_autobind_forbidden",
+    "machine_readables"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "ts_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp for this line."
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "enum": ["B"],
+      "description": "B-track hypothesis layer only."
+    },
+    "boundary_ack": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must acknowledge A-track vs B-track and corpus separation."
+    },
+    "stub": {
+      "description": "Stub marker; aligns with other B-track ledgers.",
+      "oneOf": [{ "type": "string" }, { "type": "boolean" }]
+    },
+    "a_track_autobind_forbidden": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true: no automatic wiring to live trading, dual_regime_api, or position sizing."
+    },
+    "sasang_lens_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Schema/lens contract version (e.g. v1.0.0)."
+    },
+    "machine_readables": {
+      "type": "object",
+      "required": [
+        "heat_proxy",
+        "cold_proxy",
+        "volatility_rarefaction_proxy"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "heat_proxy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Neutral proxy for expansion / yang-leaning market energy (not a clinical label)."
+        },
+        "cold_proxy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Neutral proxy for contraction / yin-leaning market energy."
+        },
+        "volatility_rarefaction_proxy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Neutral proxy for tail / rarefaction-style risk (not a diagnosis)."
+        }
+      }
+    },
+    "regime_hypothesis": {
+      "type": "string",
+      "enum": [
+        "expansion",
+        "contraction",
+        "phase_transition",
+        "extreme_tail",
+        "neutral"
+      ],
+      "description": "Quant-facing regime hypothesis label; research only."
+    },
+    "human_readable": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional Korean/educational copy; keep separate from machine_readables.",
+      "properties": {
+        "diagnosis_label": { "type": "string" },
+        "prescription_note": { "type": "string" }
+      }
+    },
+    "corpus_tier_note": {
+      "type": "string",
+      "description": "Optional provenance note for canon vs label cohort boundary."
+    },
+    "mapping_target": {
+      "type": "string",
+      "enum": ["bull", "bear", "sideways"],
+      "description": "Optional coarse market analogy; not a trigger."
+    },
+    "run_id": { "type": "string" },
+    "ledger_join_key": { "type": "string" },
+    "note": { "type": "string" }
+  }
+}
