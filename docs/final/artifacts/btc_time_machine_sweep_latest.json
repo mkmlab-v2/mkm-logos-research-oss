@@ -1,6 +1,6 @@
 {
   "schema": "btc_time_machine_sweep_v1",
-  "generated_at_utc": "2026-04-02T14:01:22Z",
+  "generated_at_utc": "2026-04-02T14:08:31Z",
   "symbol": "BTCUSDT",
   "periods": [
     "2025-01-01..2025-12-31",
@@ -28,9 +28,9 @@
       "metrics": {
         "sample_count": 69,
         "win_rate": 0.536232,
-        "net_return_pct": 1.158193,
-        "avg_trade_return_pct": 0.016785,
-        "profit_factor": 1.08918,
+        "net_return_pct": 1.13088,
+        "avg_trade_return_pct": 0.01639,
+        "profit_factor": 1.087077,
         "max_drawdown_pct": 4.284865,
         "max_loss_streak": 3,
         "skipped_vol_shock": 2,
@@ -38,7 +38,7 @@
       },
       "eligible_for_best": true,
       "vol_shock_skip_rate_pct": 2.816901,
-      "score": 13.394388
+      "score": 13.361067
     },
     {
       "period": "2026-01-01..2026-12-31",
@@ -56,9 +56,9 @@
       "metrics": {
         "sample_count": 68,
         "win_rate": 0.529412,
-        "net_return_pct": -0.094416,
-        "avg_trade_return_pct": -0.001388,
-        "profit_factor": 0.990307,
+        "net_return_pct": -0.1149,
+        "avg_trade_return_pct": -0.00169,
+        "profit_factor": 0.988204,
         "max_drawdown_pct": 3.222543,
         "max_loss_streak": 3,
         "skipped_vol_shock": 3,
@@ -66,7 +66,7 @@
       },
       "eligible_for_best": true,
       "vol_shock_skip_rate_pct": 4.225352,
-      "score": 12.207317
+      "score": 12.135009
     },
     {
       "period": "2026-01-01..2026-12-31",
@@ -84,9 +84,9 @@
       "metrics": {
         "sample_count": 64,
         "win_rate": 0.484375,
-        "net_return_pct": -2.272713,
-        "avg_trade_return_pct": -0.035511,
-        "profit_factor": 0.897059,
+        "net_return_pct": -2.300564,
+        "avg_trade_return_pct": -0.035946,
+        "profit_factor": 0.895798,
         "max_drawdown_pct": 12.543426,
         "max_loss_streak": 5,
         "skipped_vol_shock": 5,
@@ -94,7 +94,7 @@
       },
       "eligible_for_best": true,
       "vol_shock_skip_rate_pct": 7.246377,
-      "score": 1.346744
+      "score": 1.296381
     },
     {
       "period": "2025-01-01..2025-12-31",
@@ -168,9 +168,9 @@
       "metrics": {
         "sample_count": 56,
         "win_rate": 0.464286,
-        "net_return_pct": -6.355686,
-        "avg_trade_return_pct": -0.113494,
-        "profit_factor": 0.707519,
+        "net_return_pct": -6.383538,
+        "avg_trade_return_pct": -0.113992,
+        "profit_factor": 0.706237,
         "max_drawdown_pct": 13.075388,
         "max_loss_streak": 5,
         "skipped_vol_shock": 3,
@@ -178,7 +178,7 @@
       },
       "eligible_for_best": true,
       "vol_shock_skip_rate_pct": 5.084746,
-      "score": -6.776862
+      "score": -6.827855
     },
     {
       "period": "2026-01-01..2026-12-31",
@@ -196,9 +196,9 @@
       "metrics": {
         "sample_count": 48,
         "win_rate": 0.416667,
-        "net_return_pct": -9.469689,
-        "avg_trade_return_pct": -0.197285,
-        "profit_factor": 0.521856,
+        "net_return_pct": -9.496722,
+        "avg_trade_return_pct": -0.197848,
+        "profit_factor": 0.520491,
         "max_drawdown_pct": 13.27693,
         "max_loss_streak": 9,
         "skipped_vol_shock": 7,
@@ -206,7 +206,7 @@
       },
       "eligible_for_best": false,
       "vol_shock_skip_rate_pct": 12.727273,
-      "score": -16.425168
+      "score": -16.478283
     },
     {
       "period": "2025-01-01..2025-12-31",
@@ -309,9 +309,9 @@
     "metrics": {
       "sample_count": 69,
       "win_rate": 0.536232,
-      "net_return_pct": 1.158193,
-      "avg_trade_return_pct": 0.016785,
-      "profit_factor": 1.08918,
+      "net_return_pct": 1.13088,
+      "avg_trade_return_pct": 0.01639,
+      "profit_factor": 1.087077,
       "max_drawdown_pct": 4.284865,
       "max_loss_streak": 3,
       "skipped_vol_shock": 2,
@@ -319,6 +319,6 @@
     },
     "eligible_for_best": true,
     "vol_shock_skip_rate_pct": 2.816901,
-    "score": 13.394388
+    "score": 13.361067
   }
 }

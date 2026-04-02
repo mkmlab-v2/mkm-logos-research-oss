@@ -1,67 +1,67 @@
 {
   "schema": "blind_replay_profile_ranking_v1",
-  "generated_at_utc": "2026-04-02T13:57:24Z",
+  "generated_at_utc": "2026-04-02T14:10:49Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "input": {
-    "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_btc_s80_cfg5_w45_h10_s2_seed48.jsonl",
-    "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_btc_s80_cfg5_w45_h10_s2_seed48.jsonl"
+    "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_btc_s80_cfg2_w45_h10_s5_seed48.jsonl",
+    "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_btc_s80_cfg2_w45_h10_s5_seed48.jsonl"
   },
   "profiles": [
     {
-      "profile": "A",
-      "hit_rate": 0.4625,
-      "balanced_accuracy": 0.433316,
-      "coverage_rate": 1.0,
-      "matched": 80,
-      "hit": 37,
-      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
-    },
-    {
-      "profile": "C",
-      "hit_rate": 0.45,
-      "balanced_accuracy": 0.397074,
-      "coverage_rate": 1.0,
-      "matched": 80,
-      "hit": 36,
-      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
-    },
-    {
-      "profile": "B",
-      "hit_rate": 0.45,
-      "balanced_accuracy": 0.396279,
-      "coverage_rate": 1.0,
-      "matched": 80,
-      "hit": 36,
-      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
-    },
-    {
       "profile": "D",
-      "hit_rate": 0.4,
-      "balanced_accuracy": 0.361038,
+      "hit_rate": 0.4375,
+      "balanced_accuracy": 0.395507,
       "coverage_rate": 1.0,
       "matched": 80,
-      "hit": 32,
+      "hit": 35,
       "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_D_latest.jsonl"
     },
     {
       "profile": "DS",
+      "hit_rate": 0.4375,
+      "balanced_accuracy": 0.395507,
+      "coverage_rate": 1.0,
+      "matched": 80,
+      "hit": 35,
+      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_DS_latest.jsonl"
+    },
+    {
+      "profile": "B",
+      "hit_rate": 0.425,
+      "balanced_accuracy": 0.387173,
+      "coverage_rate": 1.0,
+      "matched": 80,
+      "hit": 34,
+      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+    },
+    {
+      "profile": "A",
       "hit_rate": 0.4,
-      "balanced_accuracy": 0.361038,
+      "balanced_accuracy": 0.348537,
       "coverage_rate": 1.0,
       "matched": 80,
       "hit": 32,
-      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_DS_latest.jsonl"
+      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+    },
+    {
+      "profile": "C",
+      "hit_rate": 0.4125,
+      "balanced_accuracy": 0.334901,
+      "coverage_rate": 1.0,
+      "matched": 80,
+      "hit": 33,
+      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
     }
   ],
   "best_profile": {
-    "profile": "A",
-    "hit_rate": 0.4625,
-    "balanced_accuracy": 0.433316,
+    "profile": "D",
+    "hit_rate": 0.4375,
+    "balanced_accuracy": 0.395507,
     "coverage_rate": 1.0,
     "matched": 80,
-    "hit": 37,
-    "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+    "hit": 35,
+    "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_D_latest.jsonl"
   },
   "note": "Profile sweep for B-track blind replay only. No live binding."
 }

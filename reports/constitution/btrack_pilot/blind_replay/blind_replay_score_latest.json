@@ -1,6 +1,6 @@
 {
   "schema": "blind_historical_replay_score_v1",
-  "generated_at_utc": "2026-04-02T13:57:35Z",
+  "generated_at_utc": "2026-04-02T14:10:58Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "input": {
@@ -74,7 +74,7 @@
       "truth": "UP_STRONG",
       "pred": "UP_STRONG",
       "is_hit": true,
-      "confidence_0_1": 0.5333
+      "confidence_0_1": 0.8667
     },
     {
       "sample_id": "BR_00007",

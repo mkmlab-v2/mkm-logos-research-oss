@@ -1,48 +1,66 @@
 {
   "schema": "blind_replay_profile_ranking_v1",
-  "generated_at_utc": "2026-04-02T12:07:37Z",
+  "generated_at_utc": "2026-04-02T14:09:09Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "input": {
-    "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_historical_btcusdt_1d_cfg6_w60_h10_s2_seed45.jsonl",
-    "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_historical_btcusdt_1d_cfg6_w60_h10_s2_seed45.jsonl"
+    "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_kospi_s80_cfg6_w60_h10_s2_seed50.jsonl",
+    "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_kospi_s80_cfg6_w60_h10_s2_seed50.jsonl"
   },
   "profiles": [
     {
       "profile": "A",
-      "hit_rate": 0.4,
-      "balanced_accuracy": 0.323118,
+      "hit_rate": 0.6875,
+      "balanced_accuracy": 0.433333,
       "coverage_rate": 1.0,
-      "matched": 60,
-      "hit": 24,
+      "matched": 16,
+      "hit": 11,
       "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
     },
     {
       "profile": "B",
-      "hit_rate": 0.383333,
-      "balanced_accuracy": 0.312366,
+      "hit_rate": 0.6875,
+      "balanced_accuracy": 0.433333,
       "coverage_rate": 1.0,
-      "matched": 60,
-      "hit": 23,
+      "matched": 16,
+      "hit": 11,
       "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
     },
     {
       "profile": "C",
-      "hit_rate": 0.383333,
-      "balanced_accuracy": 0.312366,
+      "hit_rate": 0.6875,
+      "balanced_accuracy": 0.433333,
       "coverage_rate": 1.0,
-      "matched": 60,
-      "hit": 23,
+      "matched": 16,
+      "hit": 11,
       "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+    },
+    {
+      "profile": "D",
+      "hit_rate": 0.5625,
+      "balanced_accuracy": 0.3,
+      "coverage_rate": 1.0,
+      "matched": 16,
+      "hit": 9,
+      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_D_latest.jsonl"
+    },
+    {
+      "profile": "DS",
+      "hit_rate": 0.5625,
+      "balanced_accuracy": 0.3,
+      "coverage_rate": 1.0,
+      "matched": 16,
+      "hit": 9,
+      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_DS_latest.jsonl"
     }
   ],
   "best_profile": {
     "profile": "A",
-    "hit_rate": 0.4,
-    "balanced_accuracy": 0.323118,
+    "hit_rate": 0.6875,
+    "balanced_accuracy": 0.433333,
     "coverage_rate": 1.0,
-    "matched": 60,
-    "hit": 24,
+    "matched": 16,
+    "hit": 11,
     "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
   },
   "note": "Profile sweep for B-track blind replay only. No live binding."

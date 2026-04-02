@@ -1,17 +1,17 @@
 {
   "schema": "blind_replay_profile_ranking_v1",
-  "generated_at_utc": "2026-04-02T13:57:23Z",
+  "generated_at_utc": "2026-04-02T14:10:48Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "input": {
-    "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_btc_s80_cfg5_w45_h10_s2_seed47.jsonl",
-    "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_btc_s80_cfg5_w45_h10_s2_seed47.jsonl"
+    "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_btc_s80_cfg2_w45_h10_s5_seed47.jsonl",
+    "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_btc_s80_cfg2_w45_h10_s5_seed47.jsonl"
   },
   "profiles": [
     {
       "profile": "D",
       "hit_rate": 0.5,
-      "balanced_accuracy": 0.433333,
+      "balanced_accuracy": 0.453453,
       "coverage_rate": 1.0,
       "matched": 80,
       "hit": 40,
@@ -20,44 +20,44 @@
     {
       "profile": "DS",
       "hit_rate": 0.5,
-      "balanced_accuracy": 0.433333,
+      "balanced_accuracy": 0.453453,
       "coverage_rate": 1.0,
       "matched": 80,
       "hit": 40,
       "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_DS_latest.jsonl"
     },
     {
-      "profile": "A",
-      "hit_rate": 0.4875,
-      "balanced_accuracy": 0.405556,
-      "coverage_rate": 1.0,
-      "matched": 80,
-      "hit": 39,
-      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
-    },
-    {
-      "profile": "C",
-      "hit_rate": 0.5,
-      "balanced_accuracy": 0.395322,
-      "coverage_rate": 1.0,
-      "matched": 80,
-      "hit": 40,
-      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
-    },
-    {
       "profile": "B",
       "hit_rate": 0.475,
-      "balanced_accuracy": 0.377778,
+      "balanced_accuracy": 0.388889,
       "coverage_rate": 1.0,
       "matched": 80,
       "hit": 38,
       "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+    },
+    {
+      "profile": "A",
+      "hit_rate": 0.45,
+      "balanced_accuracy": 0.370871,
+      "coverage_rate": 1.0,
+      "matched": 80,
+      "hit": 36,
+      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+    },
+    {
+      "profile": "C",
+      "hit_rate": 0.4625,
+      "balanced_accuracy": 0.333333,
+      "coverage_rate": 1.0,
+      "matched": 80,
+      "hit": 37,
+      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
     }
   ],
   "best_profile": {
     "profile": "D",
     "hit_rate": 0.5,
-    "balanced_accuracy": 0.433333,
+    "balanced_accuracy": 0.453453,
     "coverage_rate": 1.0,
     "matched": 80,
     "hit": 40,

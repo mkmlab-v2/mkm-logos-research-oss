@@ -1,32 +1,32 @@
 {
   "schema": "trinity_scoring_distribution_v1",
-  "generated_at_utc": "2026-04-02T14:01:24.200355+00:00",
+  "generated_at_utc": "2026-04-02T14:08:33.573504+00:00",
   "log_path": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
-  "metric": "BTC_BINANCE_D1_RETURN_PCT",
+  "metric": "KOSPI_D1_RETURN_PCT",
   "windows": {
     "d5": {
       "sample_size": 5,
-      "hit": 5,
+      "hit": 0,
       "fail": 0,
       "neutral_draw": 0,
-      "pending_close": 0,
-      "hit_rate": 1.0,
+      "pending_close": 5,
+      "hit_rate": 0.0,
       "fail_rate": 0.0,
       "neutral_draw_rate": 0.0,
-      "pending_close_rate": 0.0,
-      "advisory": "signal_stable_keep_thresholds"
+      "pending_close_rate": 1.0,
+      "advisory": "mixed_keep_observe"
     },
     "d10": {
       "sample_size": 10,
-      "hit": 10,
+      "hit": 0,
       "fail": 0,
       "neutral_draw": 0,
-      "pending_close": 0,
-      "hit_rate": 1.0,
+      "pending_close": 10,
+      "hit_rate": 0.0,
       "fail_rate": 0.0,
       "neutral_draw_rate": 0.0,
-      "pending_close_rate": 0.0,
-      "advisory": "signal_stable_keep_thresholds"
+      "pending_close_rate": 1.0,
+      "advisory": "mixed_keep_observe"
     }
   },
   "dual_regime_state": {
@@ -53,16 +53,16 @@
       "top_source": "myeongni_independent_lens"
     },
     "all": {
-      "sample_size": 35,
-      "state_id_present_count": 18,
-      "state_id_present_rate": 0.5143,
+      "sample_size": 39,
+      "state_id_present_count": 10,
+      "state_id_present_rate": 0.2564,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "myeongni_independent_lens": 18,
-        "none": 17
+        "none": 29,
+        "myeongni_independent_lens": 10
       },
-      "top_source": "myeongni_independent_lens"
+      "top_source": "none"
     },
     "advisory": {
       "decision": "state_clamp_stable",
@@ -103,6 +103,6 @@
       }
     }
   },
-  "latest_decision": "HIT",
-  "total_filtered_rows": 35
+  "latest_decision": "PENDING_CLOSE",
+  "total_filtered_rows": 39
 }

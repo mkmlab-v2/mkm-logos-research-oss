@@ -1,6 +1,6 @@
 {
   "schema": "btrack_symbol_lane_gate_result_v1",
-  "generated_at_utc": "2026-04-02T13:59:15Z",
+  "generated_at_utc": "2026-04-02T14:08:27Z",
   "inputs": {
     "lane_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_summary_stable_latest.json",
     "gate_template": "C:\\workspace\\data\\logos\\btrack_pilot\\gates\\symbol_lane_gate_template.json"

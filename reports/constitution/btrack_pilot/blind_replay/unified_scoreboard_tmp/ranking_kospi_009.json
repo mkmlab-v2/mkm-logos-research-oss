@@ -1,6 +1,6 @@
 {
   "schema": "blind_replay_profile_ranking_v1",
-  "generated_at_utc": "2026-04-02T13:57:34Z",
+  "generated_at_utc": "2026-04-02T14:10:58Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "input": {
@@ -37,20 +37,20 @@
     },
     {
       "profile": "A",
-      "hit_rate": 0.393939,
-      "balanced_accuracy": 0.273858,
+      "hit_rate": 0.409091,
+      "balanced_accuracy": 0.284274,
       "coverage_rate": 1.0,
       "matched": 66,
-      "hit": 26,
+      "hit": 27,
       "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
     },
     {
       "profile": "B",
-      "hit_rate": 0.393939,
-      "balanced_accuracy": 0.273858,
+      "hit_rate": 0.409091,
+      "balanced_accuracy": 0.284274,
       "coverage_rate": 1.0,
       "matched": 66,
-      "hit": 26,
+      "hit": 27,
       "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
     }
   ],

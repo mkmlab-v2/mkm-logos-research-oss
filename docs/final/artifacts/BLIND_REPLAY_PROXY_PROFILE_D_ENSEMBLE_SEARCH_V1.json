@@ -1,6 +1,6 @@
 {
   "schema": "blind_replay_proxy_profile_d_ensemble_search_v1",
-  "generated_at_utc": "2026-04-02T13:57:02Z",
+  "generated_at_utc": "2026-04-02T14:10:30Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "inputs": {
@@ -14,7 +14,7 @@
       "C:\\workspace\\docs\\final\\artifacts\\BLIND_REPLAY_PROXY_PROFILE_D_PARAMS_V2_seed20260511.json",
       "C:\\workspace\\docs\\final\\artifacts\\BLIND_REPLAY_PROXY_PROFILE_D_PARAMS_V3_seed20260521.json"
     ],
-    "candidate_count_unique": 21
+    "candidate_count_unique": 24
   },
   "objective": {
     "w_btc": 0.7,
@@ -22,146 +22,223 @@
     "kappa": 0.15
   },
   "diversity_min_l2": 0.22,
-  "baseline_canonical_best": 0.362864,
+  "baseline_canonical_best": 0.373955,
   "best": {
     "kind": "blend2",
     "members": [
-      5,
-      9
+      3,
+      15
     ],
     "weights": [
-      0.75,
-      0.25
+      0.5,
+      0.5
     ],
     "params": {
-      "r_bonus": 0.06235,
-      "band_l": 0.0648,
-      "band_s": 0.072225,
-      "v_penalty": 0.205375,
-      "m_myeongni": 1.3373,
-      "d_sasang": 0.194825,
-      "m_logos": 2.174275,
-      "band_m": 0.0839,
-      "m_sasang": 0.706575,
-      "d_myeongni": 0.29395
+      "wick_bias_weight": 0.0962,
+      "trend_bonus": 0.15235,
+      "band_m": 0.06625,
+      "r_bonus": 0.08165,
+      "band_l": 0.07175,
+      "m_myeongni": 2.89225,
+      "band_s": 0.0724,
+      "m_sasang": 0.94545,
+      "regime_shift_weight": 0.1591,
+      "m_logos": 1.82305,
+      "v_penalty": 0.2074,
+      "d_sasang": 0.22675,
+      "d_myeongni": 0.33735
     },
-    "btc_balanced_accuracy_mean": 0.381201,
+    "btc_balanced_accuracy_mean": 0.414997,
     "kospi_balanced_accuracy_mean": 0.325941,
-    "unified_score_balanced": 0.360824
+    "unified_score_balanced": 0.382159
   },
   "top20": [
     {
       "kind": "blend2",
       "members": [
-        5,
-        9
+        3,
+        15
       ],
       "weights": [
-        0.75,
-        0.25
+        0.5,
+        0.5
       ],
       "params": {
-        "r_bonus": 0.06235,
-        "band_l": 0.0648,
-        "band_s": 0.072225,
-        "v_penalty": 0.205375,
-        "m_myeongni": 1.3373,
-        "d_sasang": 0.194825,
-        "m_logos": 2.174275,
-        "band_m": 0.0839,
-        "m_sasang": 0.706575,
-        "d_myeongni": 0.29395
+        "wick_bias_weight": 0.0962,
+        "trend_bonus": 0.15235,
+        "band_m": 0.06625,
+        "r_bonus": 0.08165,
+        "band_l": 0.07175,
+        "m_myeongni": 2.89225,
+        "band_s": 0.0724,
+        "m_sasang": 0.94545,
+        "regime_shift_weight": 0.1591,
+        "m_logos": 1.82305,
+        "v_penalty": 0.2074,
+        "d_sasang": 0.22675,
+        "d_myeongni": 0.33735
       },
-      "btc_balanced_accuracy_mean": 0.381201,
+      "btc_balanced_accuracy_mean": 0.414997,
       "kospi_balanced_accuracy_mean": 0.325941,
-      "unified_score_balanced": 0.360824
+      "unified_score_balanced": 0.382159
     },
     {
-      "kind": "blend2",
+      "kind": "blend3",
       "members": [
         0,
-        5
+        3,
+        7
       ],
       "weights": [
-        0.75,
-        0.25
+        0.3,
+        0.5,
+        0.2
       ],
       "params": {
-        "r_bonus": 0.078476,
-        "band_l": 0.082747,
-        "band_s": 0.064284,
-        "v_penalty": 0.141574,
-        "m_myeongni": 1.3529,
-        "d_sasang": 0.173855,
-        "m_logos": 2.42887,
-        "band_m": 0.083608,
-        "m_sasang": 0.947392,
-        "d_myeongni": 0.288234
+        "wick_bias_weight": 0.11579,
+        "trend_bonus": 0.15358,
+        "band_m": 0.05499,
+        "r_bonus": 0.08778,
+        "band_l": 0.08651,
+        "m_myeongni": 2.61556,
+        "band_s": 0.06361,
+        "m_sasang": 1.04519,
+        "regime_shift_weight": 0.20281,
+        "m_logos": 2.17269,
+        "v_penalty": 0.08804,
+        "d_sasang": 0.18567,
+        "d_myeongni": 0.26569
       },
-      "btc_balanced_accuracy_mean": 0.379249,
+      "btc_balanced_accuracy_mean": 0.414261,
       "kospi_balanced_accuracy_mean": 0.325941,
-      "unified_score_balanced": 0.359592
+      "unified_score_balanced": 0.381694
     },
     {
       "kind": "blend2",
       "members": [
-        3,
-        5
+        2,
+        3
       ],
       "weights": [
         0.25,
         0.75
       ],
       "params": {
-        "r_bonus": 0.069575,
-        "band_l": 0.07,
-        "band_s": 0.062325,
-        "v_penalty": 0.17795,
-        "m_myeongni": 1.2855,
-        "d_sasang": 0.163625,
-        "m_logos": 2.197525,
-        "band_m": 0.078725,
-        "m_sasang": 0.732275,
-        "d_myeongni": 0.27405
+        "wick_bias_weight": 0.128975,
+        "trend_bonus": 0.175625,
+        "band_m": 0.049475,
+        "r_bonus": 0.08545,
+        "band_l": 0.080375,
+        "m_myeongni": 2.486575,
+        "band_s": 0.078475,
+        "m_sasang": 1.0542,
+        "regime_shift_weight": 0.200975,
+        "m_logos": 2.022575,
+        "v_penalty": 0.11955,
+        "d_sasang": 0.225025,
+        "d_myeongni": 0.313525
       },
-      "btc_balanced_accuracy_mean": 0.379249,
+      "btc_balanced_accuracy_mean": 0.414158,
       "kospi_balanced_accuracy_mean": 0.325941,
-      "unified_score_balanced": 0.359592
+      "unified_score_balanced": 0.381629
+    },
+    {
+      "kind": "blend2",
+      "members": [
+        1,
+        3
+      ],
+      "weights": [
+        0.75,
+        0.25
+      ],
+      "params": {
+        "wick_bias_weight": 0.0659,
+        "trend_bonus": 0.186275,
+        "band_m": 0.04695,
+        "r_bonus": 0.083125,
+        "band_l": 0.08825,
+        "m_myeongni": 2.04675,
+        "band_s": 0.079725,
+        "m_sasang": 1.049325,
+        "regime_shift_weight": 0.087625,
+        "m_logos": 2.236,
+        "v_penalty": 0.04435,
+        "d_sasang": 0.1021,
+        "d_myeongni": 0.36165
+      },
+      "btc_balanced_accuracy_mean": 0.413818,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.381414
+    },
+    {
+      "kind": "blend3",
+      "members": [
+        1,
+        3,
+        6
+      ],
+      "weights": [
+        0.3,
+        0.5,
+        0.2
+      ],
+      "params": {
+        "wick_bias_weight": 0.08732,
+        "trend_bonus": 0.17239,
+        "band_m": 0.05248,
+        "r_bonus": 0.08205,
+        "band_l": 0.08142,
+        "m_myeongni": 2.20344,
+        "band_s": 0.07263,
+        "m_sasang": 1.03555,
+        "regime_shift_weight": 0.14233,
+        "m_logos": 2.09902,
+        "v_penalty": 0.10038,
+        "d_sasang": 0.17388,
+        "d_myeongni": 0.31056
+      },
+      "btc_balanced_accuracy_mean": 0.413404,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.381153
+    },
+    {
+      "kind": "blend3",
+      "members": [
+        1,
+        3,
+        7
+      ],
+      "weights": [
+        0.3,
+        0.5,
+        0.2
+      ],
+      "params": {
+        "wick_bias_weight": 0.08732,
+        "trend_bonus": 0.17239,
+        "band_m": 0.05394,
+        "r_bonus": 0.07839,
+        "band_l": 0.08486,
+        "m_myeongni": 2.41612,
+        "band_s": 0.07417,
+        "m_sasang": 1.07927,
+        "regime_shift_weight": 0.14233,
+        "m_logos": 2.2134,
+        "v_penalty": 0.06902,
+        "d_sasang": 0.192,
+        "d_myeongni": 0.31162
+      },
+      "btc_balanced_accuracy_mean": 0.413404,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.381153
     },
     {
       "kind": "blend3",
       "members": [
         0,
         1,
-        5
-      ],
-      "weights": [
-        0.2,
-        0.3,
-        0.5
-      ],
-      "params": {
-        "r_bonus": 0.070817,
-        "band_l": 0.068916,
-        "band_s": 0.065136,
-        "v_penalty": 0.189656,
-        "m_myeongni": 1.31449,
-        "d_sasang": 0.175731,
-        "m_logos": 2.055879,
-        "band_m": 0.083492,
-        "m_sasang": 0.701205,
-        "d_myeongni": 0.289449
-      },
-      "btc_balanced_accuracy_mean": 0.379249,
-      "kospi_balanced_accuracy_mean": 0.325941,
-      "unified_score_balanced": 0.359592
-    },
-    {
-      "kind": "blend3",
-      "members": [
-        0,
-        3,
-        5
+        3
       ],
       "weights": [
         0.3333,
@@ -169,111 +246,30 @@
         0.3333
       ],
       "params": {
-        "r_bonus": 0.080745,
-        "band_l": 0.077843,
-        "band_s": 0.059559,
-        "v_penalty": 0.163611,
-        "m_myeongni": 1.403967,
-        "d_sasang": 0.151002,
-        "m_logos": 2.268398,
-        "band_m": 0.08317,
-        "m_sasang": 0.924541,
-        "d_myeongni": 0.277515
+        "wick_bias_weight": 0.1027,
+        "trend_bonus": 0.1652,
+        "band_m": 0.0474,
+        "r_bonus": 0.092467,
+        "band_l": 0.088733,
+        "m_myeongni": 2.3352,
+        "band_s": 0.067767,
+        "m_sasang": 1.004533,
+        "regime_shift_weight": 0.169333,
+        "m_logos": 2.1617,
+        "v_penalty": 0.073233,
+        "d_sasang": 0.115267,
+        "d_myeongni": 0.3019
       },
-      "btc_balanced_accuracy_mean": 0.379249,
+      "btc_balanced_accuracy_mean": 0.41328,
       "kospi_balanced_accuracy_mean": 0.325941,
-      "unified_score_balanced": 0.359592
+      "unified_score_balanced": 0.381075
     },
     {
       "kind": "blend3",
       "members": [
         0,
         3,
-        5
-      ],
-      "weights": [
-        0.2,
-        0.3,
-        0.5
-      ],
-      "params": {
-        "r_bonus": 0.076277,
-        "band_l": 0.074706,
-        "band_s": 0.060666,
-        "v_penalty": 0.169346,
-        "m_myeongni": 1.35658,
-        "d_sasang": 0.156051,
-        "m_logos": 2.240049,
-        "band_m": 0.081392,
-        "m_sasang": 0.847635,
-        "d_myeongni": 0.276129
-      },
-      "btc_balanced_accuracy_mean": 0.379249,
-      "kospi_balanced_accuracy_mean": 0.325941,
-      "unified_score_balanced": 0.359592
-    },
-    {
-      "kind": "blend3",
-      "members": [
-        0,
-        5,
-        9
-      ],
-      "weights": [
-        0.3,
-        0.5,
-        0.2
-      ],
-      "params": {
-        "r_bonus": 0.06921,
-        "band_l": 0.071499,
-        "band_s": 0.070093,
-        "v_penalty": 0.18581,
-        "m_myeongni": 1.37666,
-        "d_sasang": 0.188262,
-        "m_logos": 2.263248,
-        "band_m": 0.085403,
-        "m_sasang": 0.822617,
-        "d_myeongni": 0.294913
-      },
-      "btc_balanced_accuracy_mean": 0.379249,
-      "kospi_balanced_accuracy_mean": 0.325941,
-      "unified_score_balanced": 0.359592
-    },
-    {
-      "kind": "blend3",
-      "members": [
-        1,
-        3,
-        5
-      ],
-      "weights": [
-        0.2,
-        0.3,
-        0.5
-      ],
-      "params": {
-        "r_bonus": 0.07521,
-        "band_l": 0.06894,
-        "band_s": 0.06063,
-        "v_penalty": 0.19384,
-        "m_myeongni": 1.37124,
-        "d_sasang": 0.15467,
-        "m_logos": 2.03367,
-        "band_m": 0.08305,
-        "m_sasang": 0.75893,
-        "d_myeongni": 0.27928
-      },
-      "btc_balanced_accuracy_mean": 0.379249,
-      "kospi_balanced_accuracy_mean": 0.325941,
-      "unified_score_balanced": 0.359592
-    },
-    {
-      "kind": "blend3",
-      "members": [
-        1,
-        5,
-        13
+        19
       ],
       "weights": [
         0.3333,
@@ -281,109 +277,123 @@
         0.3333
       ],
       "params": {
-        "r_bonus": 0.060867,
-        "band_l": 0.059233,
-        "band_s": 0.077467,
-        "v_penalty": 0.159733,
-        "m_myeongni": 1.446167,
-        "d_sasang": 0.1802,
-        "m_logos": 1.7968,
-        "band_m": 0.088033,
-        "m_sasang": 1.032167,
-        "d_myeongni": 0.300767
+        "wick_bias_weight": 0.112567,
+        "trend_bonus": 0.142933,
+        "band_m": 0.054,
+        "r_bonus": 0.0817,
+        "band_l": 0.083533,
+        "m_myeongni": 2.5205,
+        "band_s": 0.0648,
+        "m_sasang": 1.010767,
+        "regime_shift_weight": 0.187967,
+        "m_logos": 2.102967,
+        "v_penalty": 0.132767,
+        "d_sasang": 0.1743,
+        "d_myeongni": 0.268533
       },
-      "btc_balanced_accuracy_mean": 0.379249,
+      "btc_balanced_accuracy_mean": 0.413219,
       "kospi_balanced_accuracy_mean": 0.325941,
-      "unified_score_balanced": 0.359592
-    },
-    {
-      "kind": "blend3",
-      "members": [
-        1,
-        5,
-        13
-      ],
-      "weights": [
-        0.3,
-        0.5,
-        0.2
-      ],
-      "params": {
-        "r_bonus": 0.06253,
-        "band_l": 0.06161,
-        "band_s": 0.0729,
-        "v_penalty": 0.17379,
-        "m_myeongni": 1.36787,
-        "d_sasang": 0.18013,
-        "m_logos": 1.8957,
-        "band_m": 0.08501,
-        "m_sasang": 0.8634,
-        "d_myeongni": 0.29452
-      },
-      "btc_balanced_accuracy_mean": 0.379249,
-      "kospi_balanced_accuracy_mean": 0.325941,
-      "unified_score_balanced": 0.359592
-    },
-    {
-      "kind": "blend3",
-      "members": [
-        3,
-        5,
-        9
-      ],
-      "weights": [
-        0.3,
-        0.5,
-        0.2
-      ],
-      "params": {
-        "r_bonus": 0.07307,
-        "band_l": 0.06864,
-        "band_s": 0.06557,
-        "v_penalty": 0.20224,
-        "m_myeongni": 1.44074,
-        "d_sasang": 0.16651,
-        "m_logos": 2.13785,
-        "band_m": 0.08579,
-        "m_sasang": 0.83599,
-        "d_myeongni": 0.28632
-      },
-      "btc_balanced_accuracy_mean": 0.379249,
-      "kospi_balanced_accuracy_mean": 0.325941,
-      "unified_score_balanced": 0.359592
-    },
-    {
-      "kind": "blend2",
-      "members": [
-        3,
-        11
-      ],
-      "weights": [
-        0.5,
-        0.5
-      ],
-      "params": {
-        "r_bonus": 0.0739,
-        "band_l": 0.0744,
-        "band_s": 0.0765,
-        "v_penalty": 0.2334,
-        "m_myeongni": 1.67045,
-        "d_sasang": 0.168,
-        "m_logos": 2.1054,
-        "band_m": 0.0961,
-        "m_sasang": 1.27065,
-        "d_myeongni": 0.28235
-      },
-      "btc_balanced_accuracy_mean": 0.384432,
-      "kospi_balanced_accuracy_mean": 0.315188,
-      "unified_score_balanced": 0.358899
+      "unified_score_balanced": 0.381036
     },
     {
       "kind": "blend3",
       "members": [
         0,
         3,
-        11
+        15
+      ],
+      "weights": [
+        0.2,
+        0.3,
+        0.5
+      ],
+      "params": {
+        "wick_bias_weight": 0.10278,
+        "trend_bonus": 0.14023,
+        "band_m": 0.06867,
+        "r_bonus": 0.09053,
+        "band_l": 0.07609,
+        "m_myeongni": 2.86477,
+        "band_s": 0.0659,
+        "m_sasang": 0.93935,
+        "regime_shift_weight": 0.1646,
+        "m_logos": 1.86567,
+        "v_penalty": 0.20148,
+        "d_sasang": 0.17405,
+        "d_myeongni": 0.32765
+      },
+      "btc_balanced_accuracy_mean": 0.41311,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380967
+    },
+    {
+      "kind": "blend3",
+      "members": [
+        0,
+        3,
+        18
+      ],
+      "weights": [
+        0.2,
+        0.3,
+        0.5
+      ],
+      "params": {
+        "wick_bias_weight": 0.10278,
+        "trend_bonus": 0.14023,
+        "band_m": 0.06987,
+        "r_bonus": 0.08998,
+        "band_l": 0.08294,
+        "m_myeongni": 2.97582,
+        "band_s": 0.07725,
+        "m_sasang": 1.328,
+        "regime_shift_weight": 0.1646,
+        "m_logos": 2.03717,
+        "v_penalty": 0.15253,
+        "d_sasang": 0.16415,
+        "d_myeongni": 0.2921
+      },
+      "btc_balanced_accuracy_mean": 0.41311,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380967
+    },
+    {
+      "kind": "blend3",
+      "members": [
+        0,
+        3,
+        19
+      ],
+      "weights": [
+        0.2,
+        0.3,
+        0.5
+      ],
+      "params": {
+        "wick_bias_weight": 0.10278,
+        "trend_bonus": 0.14023,
+        "band_m": 0.05712,
+        "r_bonus": 0.07258,
+        "band_l": 0.08074,
+        "m_myeongni": 2.49777,
+        "band_s": 0.0681,
+        "m_sasang": 1.0318,
+        "regime_shift_weight": 0.1646,
+        "m_logos": 2.10332,
+        "v_penalty": 0.15098,
+        "d_sasang": 0.19855,
+        "d_myeongni": 0.27575
+      },
+      "btc_balanced_accuracy_mean": 0.41311,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380967
+    },
+    {
+      "kind": "blend3",
+      "members": [
+        3,
+        15,
+        18
       ],
       "weights": [
         0.3333,
@@ -391,161 +401,154 @@
         0.3333
       ],
       "params": {
-        "r_bonus": 0.077445,
-        "band_l": 0.07891,
-        "band_s": 0.072126,
-        "v_penalty": 0.199011,
-        "m_myeongni": 1.584733,
-        "d_sasang": 0.168636,
-        "m_logos": 2.234364,
-        "band_m": 0.092803,
-        "m_sasang": 1.200608,
-        "d_myeongni": 0.285482
+        "wick_bias_weight": 0.0908,
+        "trend_bonus": 0.141567,
+        "band_m": 0.075633,
+        "r_bonus": 0.084067,
+        "band_l": 0.074867,
+        "m_myeongni": 3.047567,
+        "band_s": 0.0782,
+        "m_sasang": 1.1907,
+        "regime_shift_weight": 0.1394,
+        "m_logos": 1.886933,
+        "v_penalty": 0.205867,
+        "d_sasang": 0.2011,
+        "d_myeongni": 0.3317
       },
-      "btc_balanced_accuracy_mean": 0.384432,
-      "kospi_balanced_accuracy_mean": 0.315188,
-      "unified_score_balanced": 0.358899
-    },
-    {
-      "kind": "blend2",
-      "members": [
-        0,
-        1
-      ],
-      "weights": [
-        0.75,
-        0.25
-      ],
-      "params": {
-        "r_bonus": 0.083201,
-        "band_l": 0.080722,
-        "band_s": 0.063334,
-        "v_penalty": 0.160849,
-        "m_myeongni": 1.431625,
-        "d_sasang": 0.16818,
-        "m_logos": 2.23432,
-        "band_m": 0.088282,
-        "m_sasang": 0.949642,
-        "d_myeongni": 0.295684
-      },
-      "btc_balanced_accuracy_mean": 0.383452,
-      "kospi_balanced_accuracy_mean": 0.315188,
-      "unified_score_balanced": 0.35828
-    },
-    {
-      "kind": "blend2",
-      "members": [
-        3,
-        10
-      ],
-      "weights": [
-        0.75,
-        0.25
-      ],
-      "params": {
-        "r_bonus": 0.087,
-        "band_l": 0.072425,
-        "band_s": 0.06125,
-        "v_penalty": 0.208875,
-        "m_myeongni": 1.583325,
-        "d_sasang": 0.1475,
-        "m_logos": 1.933325,
-        "band_m": 0.0916,
-        "m_sasang": 1.10635,
-        "d_myeongni": 0.274575
-      },
-      "btc_balanced_accuracy_mean": 0.383452,
-      "kospi_balanced_accuracy_mean": 0.315188,
-      "unified_score_balanced": 0.35828
-    },
-    {
-      "kind": "blend2",
-      "members": [
-        4,
-        10
-      ],
-      "weights": [
-        0.25,
-        0.75
-      ],
-      "params": {
-        "r_bonus": 0.061625,
-        "band_l": 0.064775,
-        "band_s": 0.089075,
-        "v_penalty": 0.217425,
-        "m_myeongni": 1.762025,
-        "d_sasang": 0.27035,
-        "m_logos": 1.79435,
-        "band_m": 0.101625,
-        "m_sasang": 1.1635,
-        "d_myeongni": 0.29885
-      },
-      "btc_balanced_accuracy_mean": 0.383452,
-      "kospi_balanced_accuracy_mean": 0.315188,
-      "unified_score_balanced": 0.35828
+      "btc_balanced_accuracy_mean": 0.41311,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380967
     },
     {
       "kind": "blend3",
       "members": [
-        0,
-        1,
-        13
-      ],
-      "weights": [
-        0.3,
-        0.5,
-        0.2
-      ],
-      "params": {
-        "r_bonus": 0.073581,
-        "band_l": 0.066209,
-        "band_s": 0.071053,
-        "v_penalty": 0.1756,
-        "m_myeongni": 1.50333,
-        "d_sasang": 0.170852,
-        "m_logos": 1.816168,
-        "band_m": 0.091873,
-        "m_sasang": 1.000957,
-        "d_myeongni": 0.304693
-      },
-      "btc_balanced_accuracy_mean": 0.383452,
-      "kospi_balanced_accuracy_mean": 0.315188,
-      "unified_score_balanced": 0.35828
-    },
-    {
-      "kind": "blend3",
-      "members": [
-        0,
         3,
-        10
+        18,
+        19
       ],
       "weights": [
-        0.3,
-        0.5,
-        0.2
+        0.3333,
+        0.3333,
+        0.3333
       ],
       "params": {
-        "r_bonus": 0.085221,
-        "band_l": 0.076479,
-        "band_s": 0.063183,
-        "v_penalty": 0.18767,
-        "m_myeongni": 1.52796,
-        "d_sasang": 0.159232,
-        "m_logos": 2.086918,
-        "band_m": 0.090393,
-        "m_sasang": 1.092727,
-        "d_myeongni": 0.280873
+        "wick_bias_weight": 0.0908,
+        "trend_bonus": 0.141567,
+        "band_m": 0.067933,
+        "r_bonus": 0.0721,
+        "band_l": 0.077967,
+        "m_myeongni": 2.8029,
+        "band_s": 0.079667,
+        "m_sasang": 1.252333,
+        "regime_shift_weight": 0.1394,
+        "m_logos": 2.045367,
+        "v_penalty": 0.1722,
+        "d_sasang": 0.217433,
+        "d_myeongni": 0.2971
       },
-      "btc_balanced_accuracy_mean": 0.383452,
-      "kospi_balanced_accuracy_mean": 0.315188,
-      "unified_score_balanced": 0.35828
+      "btc_balanced_accuracy_mean": 0.41311,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380967
     },
     {
       "kind": "blend3",
       "members": [
         1,
         3,
-        11
+        15
+      ],
+      "weights": [
+        0.3333,
+        0.3333,
+        0.3333
+      ],
+      "params": {
+        "wick_bias_weight": 0.080933,
+        "trend_bonus": 0.163833,
+        "band_m": 0.060533,
+        "r_bonus": 0.083233,
+        "band_l": 0.0786,
+        "m_myeongni": 2.543567,
+        "band_s": 0.075067,
+        "m_sasang": 0.987,
+        "regime_shift_weight": 0.120767,
+        "m_logos": 1.989767,
+        "v_penalty": 0.1453,
+        "d_sasang": 0.165,
+        "d_myeongni": 0.354167
+      },
+      "btc_balanced_accuracy_mean": 0.412362,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380495
+    },
+    {
+      "kind": "blend3",
+      "members": [
+        1,
+        3,
+        15
+      ],
+      "weights": [
+        0.2,
+        0.3,
+        0.5
+      ],
+      "params": {
+        "wick_bias_weight": 0.0838,
+        "trend_bonus": 0.15277,
+        "band_m": 0.06797,
+        "r_bonus": 0.08427,
+        "band_l": 0.07499,
+        "m_myeongni": 2.73181,
+        "band_s": 0.07294,
+        "m_sasang": 0.96207,
+        "regime_shift_weight": 0.12428,
+        "m_logos": 1.89281,
+        "v_penalty": 0.1888,
+        "d_sasang": 0.17827,
+        "d_myeongni": 0.35827
+      },
+      "btc_balanced_accuracy_mean": 0.412362,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380495
+    },
+    {
+      "kind": "blend3",
+      "members": [
+        1,
+        3,
+        18
+      ],
+      "weights": [
+        0.2,
+        0.3,
+        0.5
+      ],
+      "params": {
+        "wick_bias_weight": 0.0838,
+        "trend_bonus": 0.15277,
+        "band_m": 0.06917,
+        "r_bonus": 0.08372,
+        "band_l": 0.08184,
+        "m_myeongni": 2.84286,
+        "band_s": 0.08429,
+        "m_sasang": 1.35072,
+        "regime_shift_weight": 0.12428,
+        "m_logos": 2.06431,
+        "v_penalty": 0.13985,
+        "d_sasang": 0.16837,
+        "d_myeongni": 0.32272
+      },
+      "btc_balanced_accuracy_mean": 0.412255,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380428
+    },
+    {
+      "kind": "blend3",
+      "members": [
+        3,
+        15,
+        19
       ],
       "weights": [
         0.3,
@@ -553,46 +556,114 @@
         0.2
       ],
       "params": {
-        "r_bonus": 0.08254,
-        "band_l": 0.07101,
-        "band_s": 0.06405,
-        "v_penalty": 0.22467,
-        "m_myeongni": 1.60223,
-        "d_sasang": 0.14532,
-        "m_logos": 1.90257,
-        "band_m": 0.09304,
-        "m_sasang": 1.02489,
-        "d_myeongni": 0.28412
+        "wick_bias_weight": 0.08972,
+        "trend_bonus": 0.13941,
+        "band_m": 0.07193,
+        "r_bonus": 0.07781,
+        "band_l": 0.07187,
+        "m_myeongni": 2.84299,
+        "band_s": 0.07116,
+        "m_sasang": 0.96581,
+        "regime_shift_weight": 0.13546,
+        "m_logos": 1.85757,
+        "v_penalty": 0.22452,
+        "d_sasang": 0.21369,
+        "d_myeongni": 0.33825
       },
-      "btc_balanced_accuracy_mean": 0.383452,
-      "kospi_balanced_accuracy_mean": 0.315188,
-      "unified_score_balanced": 0.35828
+      "btc_balanced_accuracy_mean": 0.412255,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380428
+    },
+    {
+      "kind": "blend3",
+      "members": [
+        3,
+        18,
+        19
+      ],
+      "weights": [
+        0.3,
+        0.5,
+        0.2
+      ],
+      "params": {
+        "wick_bias_weight": 0.08972,
+        "trend_bonus": 0.13941,
+        "band_m": 0.07313,
+        "r_bonus": 0.07726,
+        "band_l": 0.07872,
+        "m_myeongni": 2.95404,
+        "band_s": 0.08251,
+        "m_sasang": 1.35446,
+        "regime_shift_weight": 0.13546,
+        "m_logos": 2.02907,
+        "v_penalty": 0.17557,
+        "d_sasang": 0.20379,
+        "d_myeongni": 0.3027
+      },
+      "btc_balanced_accuracy_mean": 0.412255,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380428
+    },
+    {
+      "kind": "blend3",
+      "members": [
+        1,
+        3,
+        6
+      ],
+      "weights": [
+        0.3333,
+        0.3333,
+        0.3333
+      ],
+      "params": {
+        "wick_bias_weight": 0.080933,
+        "trend_bonus": 0.163833,
+        "band_m": 0.059033,
+        "r_bonus": 0.0857,
+        "band_l": 0.082267,
+        "m_myeongni": 2.0405,
+        "band_s": 0.0688,
+        "m_sasang": 1.054067,
+        "regime_shift_weight": 0.120767,
+        "m_logos": 2.123967,
+        "v_penalty": 0.106733,
+        "d_sasang": 0.140933,
+        "d_myeongni": 0.311367
+      },
+      "btc_balanced_accuracy_mean": 0.412254,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380427
     },
     {
       "kind": "blend2",
       "members": [
         0,
-        10
+        3
       ],
       "weights": [
         0.75,
         0.25
       ],
       "params": {
-        "r_bonus": 0.077351,
-        "band_l": 0.079572,
-        "band_s": 0.072558,
-        "v_penalty": 0.167799,
-        "m_myeongni": 1.423125,
-        "d_sasang": 0.20188,
-        "m_logos": 2.24682,
-        "band_m": 0.090632,
-        "m_sasang": 1.072917,
-        "d_myeongni": 0.296059
+        "wick_bias_weight": 0.137075,
+        "trend_bonus": 0.13925,
+        "band_m": 0.049575,
+        "r_bonus": 0.1066,
+        "band_l": 0.092375,
+        "m_myeongni": 2.54535,
+        "band_s": 0.053325,
+        "m_sasang": 0.964125,
+        "regime_shift_weight": 0.238825,
+        "m_logos": 2.134225,
+        "v_penalty": 0.0919,
+        "d_sasang": 0.086275,
+        "d_myeongni": 0.246825
       },
-      "btc_balanced_accuracy_mean": 0.383357,
-      "kospi_balanced_accuracy_mean": 0.315188,
-      "unified_score_balanced": 0.358221
+      "btc_balanced_accuracy_mean": 0.412145,
+      "kospi_balanced_accuracy_mean": 0.325941,
+      "unified_score_balanced": 0.380358
     }
   ]
 }
