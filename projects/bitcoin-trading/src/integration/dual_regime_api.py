@@ -30,6 +30,32 @@ class DualRegimeContext:
     market_shock_confirmed: bool
 
 
+def _select_gate_profile(
+    *,
+    policy: Mapping[str, Any],
+    gate_profile: str | None,
+) -> dict[str, Any]:
+    """Resolve gate profile from policy with safe fallback."""
+    g = policy.get("global") or {}
+    profiles = g.get("gate_profiles") if isinstance(g.get("gate_profiles"), Mapping) else {}
+    default_name = str(g.get("default_gate_profile", "balanced")).strip().lower()
+    requested = (str(gate_profile).strip().lower() if gate_profile else default_name)
+    selected = profiles.get(requested) if isinstance(profiles, Mapping) else None
+    if not isinstance(selected, Mapping):
+        selected = profiles.get(default_name) if isinstance(profiles, Mapping) else None
+    if not isinstance(selected, Mapping):
+        # Backward-compatible fallback to global flat keys.
+        selected = {
+            "risk_multiplier_min": g.get("risk_multiplier_min", 0.5),
+            "risk_multiplier_max": g.get("risk_multiplier_max", 1.2),
+            "psi_thresholds": g.get("psi_thresholds", {"warning": 0.6, "crisis": 0.8}),
+            "shock_stress_threshold": g.get("shock_stress_threshold", 0.55),
+            "veto_bible_risk_threshold": g.get("veto_bible_risk_threshold", 1.0),
+            "veto_requires_context": g.get("veto_requires_context", True),
+        }
+    return {"name": requested, "config": dict(selected)}
+
+
 def _policy_path(workspace_root: Path) -> Path:
     return workspace_root / "data" / "regimes" / "regime_fusion_policy.json"
 
@@ -235,6 +261,7 @@ def evaluate_dual_regime_and_market_shock(
     logos_manuscript_text: str | None = None,
     logos_adjustment_strength: float = 0.12,
     state_id: int | None = None,
+    gate_profile: str | None = None,
 ) -> DualRegimeContext:
     """Combine PSI, auxiliary bible-risk, and context into a risk cap and shock flags.
 
@@ -243,10 +270,17 @@ def evaluate_dual_regime_and_market_shock(
     _ = as_of  # timestamp reserved for future Chronos / regime_map lookups
     policy = _load_policy(workspace_root)
     g = policy.get("global") or {}
-    rmin = float(g.get("risk_multiplier_min", 0.5))
-    rmax = float(g.get("risk_multiplier_max", 1.2))
-    warn = float((g.get("psi_thresholds") or {}).get("warning", 0.6))
-    crisis = float((g.get("psi_thresholds") or {}).get("crisis", 0.8))
+    gate = _select_gate_profile(policy=policy, gate_profile=gate_profile)
+    gate_cfg = gate["config"]
+
+    rmin = float(gate_cfg.get("risk_multiplier_min", g.get("risk_multiplier_min", 0.5)))
+    rmax = float(gate_cfg.get("risk_multiplier_max", g.get("risk_multiplier_max", 1.2)))
+    psi_cfg = gate_cfg.get("psi_thresholds") if isinstance(gate_cfg.get("psi_thresholds"), Mapping) else {}
+    warn = float(psi_cfg.get("warning", (g.get("psi_thresholds") or {}).get("warning", 0.6)))
+    crisis = float(psi_cfg.get("crisis", (g.get("psi_thresholds") or {}).get("crisis", 0.8)))
+    shock_stress_threshold = float(gate_cfg.get("shock_stress_threshold", 0.55))
+    veto_bible_risk_threshold = float(gate_cfg.get("veto_bible_risk_threshold", 1.0))
+    veto_requires_context = bool(gate_cfg.get("veto_requires_context", True))
 
     # Resonance: count how many 4D axes are "active" (deviation from neutral 0.25)
     resonance_count = 0
@@ -279,10 +313,13 @@ def evaluate_dual_regime_and_market_shock(
         risk_multiplier_max=rmax,
     )
 
-    shock = psi_score >= crisis and stress >= 0.55
-    veto = psi_score >= crisis and bible_risk_score >= 1.0 and (context_metrics or {})
+    has_context = bool(context_metrics or {})
+    context_ok = has_context if veto_requires_context else True
+    shock = psi_score >= crisis and stress >= shock_stress_threshold
+    veto = psi_score >= crisis and bible_risk_score >= veto_bible_risk_threshold and context_ok
 
     parts = [
+        f"gate_profile={gate['name']}",
         f"PSI={psi_score:.2f} (warn>{warn:.2f}, crisis>{crisis:.2f})",
         f"bible_risk={bible_risk_score:.2f}",
         f"stress={stress:.2f}",

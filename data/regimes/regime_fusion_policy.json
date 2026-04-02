@@ -2,6 +2,42 @@
   "global": {
     "risk_multiplier_min": 0.5,
     "risk_multiplier_max": 1.2,
+    "default_gate_profile": "balanced",
+    "gate_profiles": {
+      "conservative": {
+        "risk_multiplier_min": 0.45,
+        "risk_multiplier_max": 0.95,
+        "psi_thresholds": {
+          "warning": 0.55,
+          "crisis": 0.75
+        },
+        "shock_stress_threshold": 0.5,
+        "veto_bible_risk_threshold": 0.8,
+        "veto_requires_context": true
+      },
+      "balanced": {
+        "risk_multiplier_min": 0.5,
+        "risk_multiplier_max": 1.2,
+        "psi_thresholds": {
+          "warning": 0.6,
+          "crisis": 0.8
+        },
+        "shock_stress_threshold": 0.55,
+        "veto_bible_risk_threshold": 1.0,
+        "veto_requires_context": true
+      },
+      "aggressive": {
+        "risk_multiplier_min": 0.65,
+        "risk_multiplier_max": 1.35,
+        "psi_thresholds": {
+          "warning": 0.65,
+          "crisis": 0.88
+        },
+        "shock_stress_threshold": 0.62,
+        "veto_bible_risk_threshold": 1.15,
+        "veto_requires_context": true
+      }
+    },
     "myeongni_state_defensive_clamp_enabled": true,
     "myeongni_state_risk_cap_default": 1.0,
     "myeongni_state_risk_cap_map": {
