@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-04-02T12:00:00+00:00",
+  "active_character_id": "demo_guard",
+  "risk_level": "INFO",
+  "public_signal_direction": "HOLD",
+  "abstract_reason": "Whitelist demo — no orders, balances, or API keys.",
+  "schema_version": "public-event.v1",
+  "event_id": "example-20260402-001",
+  "source": "n8n_bridge_whitelist",
+  "system_status": "online",
+  "active_strategies_count": 3,
+  "delayed_metrics": {
+    "delay_seconds": 180,
+    "pnl_pct_vs_start": 2.5,
+    "as_of_utc": "2026-04-02T11:57:00+00:00"
+  },
+  "direction_abstract": "flat",
+  "disclaimer_ref": "jemaai_showroom_v1",
+  "last_ok_utc": "2026-04-02T11:57:30+00:00"
+}

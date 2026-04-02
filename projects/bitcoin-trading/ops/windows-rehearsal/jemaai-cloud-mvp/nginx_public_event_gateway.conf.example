@@ -1,0 +1,15 @@
+# Example: include inside an existing server { } block on the VPS (e.g. jemaai.cloud or
+# events.jemaai.cloud). TLS is assumed at nginx; upstream is the Windows host running
+# projects/bitcoin-trading/ops/windows-rehearsal/ensure_public_event_gateway.ps1
+# (default listen 0.0.0.0:8788 — use SSH tunnel, Tailscale, or LAN IP if nginx is remote).
+#
+# Match POST header X-Public-Event-Token to env PUBLIC_EVENT_GATEWAY_TOKEN on the gateway process.
+
+location /api/public-events/ {
+    proxy_pass http://127.0.0.1:8788;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}

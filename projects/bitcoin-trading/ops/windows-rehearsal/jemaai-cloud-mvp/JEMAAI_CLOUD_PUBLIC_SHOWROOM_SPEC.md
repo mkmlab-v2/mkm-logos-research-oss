@@ -34,22 +34,43 @@
 
 ---
 
-## 3. 지휘관 결정(경계선) — 스펙 확정 전 체크
+## 3. 지휘관 결정(경계선) — **확정값 (2026-04)**
 
-| 결정 항목 | 권장 방향 |
-|-----------|-----------|
-| **지연** | 공개 PnL·상태는 1~5분 지연 또는 “최근 스냅샷 시각” 명시 |
-| **금액 vs 수익률** | 공개는 **%·테마** 위주; 절대 금액은 비공개 또는 모호화 |
-| **장애 시** | 마지막 값 고정보다 `system_status=maintenance` + `last_ok_utc` 권장 |
-| **면책** | 기준 자산·기간·갱신 주기를 UI 또는 `disclaimer_ref`로 고정 |
+공개 쇼룸·ingest·프론트가 **동일 숫자·문구**를 쓰도록 고정. 변경 시 본 절 개정일 또는 `schema_version`을 올린다.
+
+| 결정 항목 | 확정 |
+|-----------|------|
+| **지연(의도)** | 실시간 대비 **최소 120초(2분)**, **기본 180초(3분)**, **상한 300초(5분)**. `delayed_metrics.delay_seconds`는 이 구간에서만. 공개 UI에 “실시간” 표현 **금지**. |
+| **스냅샷 시각** | `delayed_metrics.as_of_utc`(권장, ISO8601 UTC)와 `timestamp`로 기준 시각 항상 표기 가능. |
+| **금액 vs 수익률** | 공개: **%·방향·테마만** (`pnl_pct_vs_start`, `direction_abstract`). **절대 통화 금액·노셔널·잔고·거래소 UID·API 키**는 ingest·UI **금지**. |
+| **장애 시** | `system_status`: `online` \| `degraded` \| `maintenance`. 장애 시 **마지막 유효 페이로드 유지** + **`last_ok_utc`(ISO8601 UTC)** 필수. |
+| **면책** | `disclaimer_ref` 고정: **`jemaai_showroom_v1`**. UI 하단에 과거 성과·지연·비투자조언 문구 고정. |
 
 ---
 
 ## 4. 운영 연결
 
 - **인입**: n8n·브릿지가 **필터링된** JSON만 `ingest`로 POST (`X-Public-Event-Token` = `PUBLIC_EVENT_GATEWAY_TOKEN`).
-- **조회**: 프론트는 `GET /api/public-events/latest` 폴링(또는 별도 WS는 프록시 뒤에서만).
-- **실매매 엔진**은 이 게이트웨이와 **직접 동일 프로세스로 묶지 않는다** — 항상 **추출·지연·화이트리스트** 레이어를 경유.
+- **조회**: 프론트는 `GET /api/public-events/latest` **폴링 권장 15~60초**(공개 지연과 합산 시 체감 지연 증가). WS는 프록시 뒤에서만.
+- **실매매 엔진**은 이 게이트웨이와 **동일 프로세스로 직접 묶지 않는다** — **추출·지연·화이트리스트** 경유.
+
+### 4.1 n8n·배치 브릿지 (민감값 제거 후)
+
+- 워크플로 끝에 **화이트리스트** Function: 허용 키만 통과. 주문·잔고·키·원시 시세 **금지**.
+- **예시 JSON**: `examples/public_event_ingest_minimal.v1.json`
+- **curl (로컬)** — 토큰은 환경변수만:
+
+```text
+curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Type: application/json" -H "X-Public-Event-Token: %PUBLIC_EVENT_GATEWAY_TOKEN%" -d "@examples/public_event_ingest_minimal.v1.json"
+```
+
+(`jemaai-cloud-mvp` 디렉터리에서 상대 경로 기준.)
+
+- **정적 쇼룸 샘플**: `public_showroom_poll.html` — `GET .../latest` 폴링·표시.
+
+### 4.2 Gemini 환경 (GOOGLE_API_KEY 레거시 경고 정리)
+
+`GEMINI_API_KEY`만 쓸 때 사용자 환경의 **`GOOGLE_API_KEY`** 가 남아 있으면 중복 경고가 날 수 있다 → 사용자 환경에서 제거. 힌트: `scripts/print_gemini_env_hygiene_hint.ps1` (레포 루트 `scripts`).
 
 ---
 
