@@ -180,7 +180,38 @@ def _eval_one_run(params: dict[str, float], public_rows: list[dict[str, Any]], t
     return (sum(parts) / len(parts)) if parts else 0.0
 
 
-def _sample_params(rng: random.Random) -> dict[str, float]:
+def _sample_params(rng: random.Random, space: str = "v1") -> dict[str, float]:
+    s = str(space or "v1").strip().lower()
+    if s == "v3":
+        # v3: stronger logos emphasis and tighter asymmetric bands (momentum/sasang).
+        return {
+            "m_myeongni": round(rng.uniform(1.15, 3.3), 4),
+            "d_myeongni": round(rng.uniform(0.2, 1.35), 4),
+            "m_sasang": round(rng.uniform(0.55, 1.75), 4),
+            "d_sasang": round(rng.uniform(0.02, 0.58), 4),
+            "v_penalty": round(rng.uniform(0.015, 0.24), 4),
+            "m_logos": round(rng.uniform(1.9, 3.3), 4),
+            "r_bonus": round(rng.uniform(0.04, 0.36), 4),
+            "band_m": round(rng.uniform(0.022, 0.082), 4),
+            "band_s": round(rng.uniform(0.028, 0.088), 4),
+            "band_l": round(rng.uniform(0.04, 0.11), 4),
+        }
+    if s == "v2":
+        # v2: tighten neutral bands, strengthen logos momentum, and relax over-penalization.
+        return {
+            "m_myeongni": round(rng.uniform(1.2, 3.4), 4),
+            "d_myeongni": round(rng.uniform(0.25, 1.4), 4),
+            "m_sasang": round(rng.uniform(0.6, 1.9), 4),
+            "d_sasang": round(rng.uniform(0.02, 0.6), 4),
+            "v_penalty": round(rng.uniform(0.02, 0.28), 4),
+            "m_logos": round(rng.uniform(1.4, 2.9), 4),
+            "r_bonus": round(rng.uniform(0.04, 0.34), 4),
+            "band_m": round(rng.uniform(0.028, 0.095), 4),
+            "band_s": round(rng.uniform(0.038, 0.105), 4),
+            "band_l": round(rng.uniform(0.038, 0.105), 4),
+        }
+    if s != "v1":
+        raise ValueError(f"Unknown param space: {space} (use v1/v2/v3)")
     return {
         "m_myeongni": round(rng.uniform(1.3, 3.2), 4),
         "d_myeongni": round(rng.uniform(0.3, 1.3), 4),
@@ -223,6 +254,7 @@ def main() -> int:
         help="Penalty coefficient for max(0, kospi_floor - kospi_bal).",
     )
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)
+    ap.add_argument("--param-space", default="v1", help="Parameter sampling space: v1 or v2")
     args = ap.parse_args()
 
     btc_runs = _load_seed_runs(args.btc_grid)
@@ -236,7 +268,7 @@ def main() -> int:
     weights = {"BTC": float(args.w_btc), "KOSPI": float(args.w_kospi)}
 
     for i in range(1, int(args.iters) + 1):
-        params = _sample_params(rng)
+        params = _sample_params(rng, str(args.param_space))
         btc_bal = sum(_eval_one_run(params, pub, truth) for pub, truth in btc_runs) / len(btc_runs)
         kospi_bal = sum(_eval_one_run(params, pub, truth) for pub, truth in kospi_runs) / len(kospi_runs)
         btc_buckets = [_eval_one_run_bucketed(params, pub, truth) for pub, truth in btc_runs]
@@ -292,6 +324,7 @@ def main() -> int:
             "kospi_seed_runs": len(kospi_runs),
             "iters": int(args.iters),
             "seed": int(args.seed),
+            "param_space": str(args.param_space),
         },
         "objective": {
             "w_btc": float(args.w_btc),
