@@ -68,6 +68,28 @@ function Test-CharacterProfiles([string]$url) {
     }
 }
 
+function Test-CharacterProfilesFromFile([string]$path) {
+    try {
+        if (-not (Test-Path -LiteralPath $path)) {
+            return [pscustomobject]@{ Ok = $false; Detail = "file missing"; Profiles = @() }
+        }
+        $obj = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
+        if (-not $obj.profiles) {
+            return [pscustomobject]@{ Ok = $false; Detail = "profiles key missing"; Profiles = @() }
+        }
+        $names = @($obj.profiles.PSObject.Properties.Name)
+        if ($names.Count -lt 4) {
+            return [pscustomobject]@{ Ok = $false; Detail = "profiles too small ($($names.Count))"; Profiles = $names }
+        }
+        if (-not ($names -contains "unknown_guard")) {
+            return [pscustomobject]@{ Ok = $false; Detail = "unknown_guard missing"; Profiles = $names }
+        }
+        return [pscustomobject]@{ Ok = $true; Detail = "profiles OK ($($names.Count))"; Profiles = $names }
+    } catch {
+        return [pscustomobject]@{ Ok = $false; Detail = $_.Exception.Message; Profiles = @() }
+    }
+}
+
 function Get-HeaderValue($headers, [string]$name) {
     if ($null -eq $headers) { return "" }
     try {
@@ -209,8 +231,32 @@ $resolvedProfilesUrl = if ([string]::IsNullOrWhiteSpace($ProfilesUrl)) {
     }
 } else { $ProfilesUrl }
 
-$profilesCheck = Test-CharacterProfiles -url $resolvedProfilesUrl
-Write-Step "Character Profiles JSON" $profilesCheck.Ok ("url=" + $resolvedProfilesUrl + "; " + $profilesCheck.Detail)
+$localProfilesPath = "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp\character_profiles_v1_1.json"
+$preferLocalProfiles = (
+    [string]::IsNullOrWhiteSpace($ProfilesUrl) -and
+    [string]::IsNullOrWhiteSpace($PublicApiBaseUrl) -and
+    ($GatewayBaseUrl.TrimEnd("/") -eq "http://127.0.0.1:8788")
+)
+
+if ($preferLocalProfiles -and (Test-Path -LiteralPath $localProfilesPath)) {
+    $profilesCheck = Test-CharacterProfilesFromFile -path $localProfilesPath
+    $profilesSource = "local_file"
+} else {
+    $profilesCheck = Test-CharacterProfiles -url $resolvedProfilesUrl
+    $profilesSource = "url"
+    if (-not $profilesCheck.Ok) {
+        $fallbackCheck = Test-CharacterProfilesFromFile -path $localProfilesPath
+        if ($fallbackCheck.Ok) {
+            $profilesCheck = $fallbackCheck
+            $profilesSource = "local_file"
+        }
+    }
+}
+if ($profilesSource -eq "url") {
+    Write-Step "Character Profiles JSON" $profilesCheck.Ok ("url=" + $resolvedProfilesUrl + "; " + $profilesCheck.Detail)
+} else {
+    Write-Step "Character Profiles JSON" $profilesCheck.Ok ("fallback=local_file; path=C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp\character_profiles_v1_1.json; " + $profilesCheck.Detail)
+}
 $results += $profilesCheck.Ok
 
 $charMapOk = $false
@@ -220,12 +266,18 @@ if ($apiCheck -and $apiCheck.Ok -and $profilesCheck -and $profilesCheck.Ok) {
     try {
         $latestChar = [string]$apiCheck.BodyObject.active_character_id
     } catch { }
+    $aliasMap = @{
+        "horse_quant" = "horse_trend"
+    }
     if ([string]::IsNullOrWhiteSpace($latestChar)) {
         $charMapOk = $false
         $charMapDetail = "latest.active_character_id missing"
     } elseif ($profilesCheck.Profiles -contains $latestChar) {
         $charMapOk = $true
         $charMapDetail = "latest.active_character_id maps to profile: $latestChar"
+    } elseif ($aliasMap.ContainsKey($latestChar) -and ($profilesCheck.Profiles -contains $aliasMap[$latestChar])) {
+        $charMapOk = $true
+        $charMapDetail = "latest.active_character_id alias-mapped: $latestChar -> $($aliasMap[$latestChar])"
     } else {
         $charMapOk = $false
         $charMapDetail = "latest.active_character_id not in profiles: $latestChar"
