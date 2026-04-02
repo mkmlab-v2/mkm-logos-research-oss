@@ -1,0 +1,11 @@
+{
+  "schema": "compression_alarm_thresholds_v1",
+  "version": "2026-04-03",
+  "description": "If active_kpi from ultra_compression_kpi_summary_latest.json violates any bound, optional webhook fires (see scripts/run_compression_automation_chain.ps1). Set null to skip a check.",
+  "min_avg_reconstruction_fidelity_jaccard": 0.4,
+  "min_global_token_saving_rate": null,
+  "min_avg_sensitive_integrity": 0.8,
+  "alarm_if_jaccard_guardrail_false": true,
+  "alarm_if_sensitive_integrity_ok_false": false,
+  "alarm_if_go_no_go_no_go": false
+}

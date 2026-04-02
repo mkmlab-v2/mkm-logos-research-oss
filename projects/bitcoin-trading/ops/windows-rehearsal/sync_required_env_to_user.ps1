@@ -9,7 +9,8 @@ $keys = @(
   "PUBLIC_EVENT_GATEWAY_TOKEN",
   "N8N_ALL_GREEN_WEBHOOK_URL",
   "N8N_WEBHOOK_URL",
-  "OPS_ALARM_WEBHOOK_URL"
+  "OPS_ALARM_WEBHOOK_URL",
+  "COMPRESSION_KPI_ALARM_WEBHOOK_URL"
 )
 
 if (-not (Test-Path -LiteralPath $envFile)) {
@@ -50,6 +51,15 @@ if ([string]::IsNullOrWhiteSpace($opsAlarmCur)) {
   if (-not [string]::IsNullOrWhiteSpace($mirror)) {
     [Environment]::SetEnvironmentVariable("OPS_ALARM_WEBHOOK_URL", $mirror, "User")
     Write-Host "MIRROR_USER:OPS_ALARM_WEBHOOK_URL<=N8N_WEBHOOK_URL"
+  }
+}
+
+$compAlarmCur = [Environment]::GetEnvironmentVariable("COMPRESSION_KPI_ALARM_WEBHOOK_URL", "User")
+if ([string]::IsNullOrWhiteSpace($compAlarmCur)) {
+  $mirrorOps = [Environment]::GetEnvironmentVariable("OPS_ALARM_WEBHOOK_URL", "User")
+  if (-not [string]::IsNullOrWhiteSpace($mirrorOps)) {
+    [Environment]::SetEnvironmentVariable("COMPRESSION_KPI_ALARM_WEBHOOK_URL", $mirrorOps, "User")
+    Write-Host "MIRROR_USER:COMPRESSION_KPI_ALARM_WEBHOOK_URL<=OPS_ALARM_WEBHOOK_URL"
   }
 }
 

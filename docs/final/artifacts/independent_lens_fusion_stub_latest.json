@@ -1,7 +1,7 @@
 {
   "schema": "independent_lens_fusion_stub_v0",
   "version": "0.1.0",
-  "ts_utc": "2026-04-02T19:06:41Z",
+  "ts_utc": "2026-04-02T19:58:05Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "mode": "observation_only",

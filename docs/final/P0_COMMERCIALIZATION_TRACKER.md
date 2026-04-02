@@ -21,7 +21,15 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 | Vault·NotebookLM 미러 | `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1` 성공 + Vault `notebooklm_sources/_LAST_SYNC.txt` |
 | Windows Phase 1 ops | `projects/bitcoin-trading/memory/v2/ops/ops_phase1_chain_report_latest.json`의 `ts_utc` |
 | 경로 스모크(로컬) | `scripts/verify_p0_constitution_gate_paths.ps1` — 핵심 파일 존재만 점검 |
-| 자동 헬스 체인 | `scripts/run_workspace_automation_health.ps1` — 스모크 → (Vault 마운트 시) NL 미러 → Phase1 readiness → reconcile(드리프트 시 기본 WARN, `-StrictReconcile`로 실패) |
+| 자동 헬스 체인 | `scripts/run_workspace_automation_health.ps1` — 스모크 → (Vault 마운트 시) NL 미러 → Phase1 readiness → reconcile(드리프트 시 기본 WARN, `-StrictReconcile`로 실패); 압축 KPI까지 한 번에: `-IncludeCompressionKpi` (`-SkipHydrationMix`·`-SkipCompressionAlarm` 선택) |
+
+### 압축·복원 자동화 체인 (상용 전제·최소 개입)
+
+- **한 줄 실행:** `scripts/run_compression_automation_chain.ps1`  
+  - `run_ultra_compression_default.py` → `report_ultra_compression_kpi_summary.py` → `report_token_api_hydration_mix.py` (`-SkipHydrationMix`로 마지막 생략 가능).
+- **산출물 SSOT:** `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`, `reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json`, `reports/constitution/btrack_pilot/token_api_hydration_mix_latest.json`.
+- **KPI 임계치·n8n 알람:** `docs/final/artifacts/compression_alarm_thresholds_v1.json` — 체인 종료 시 `scripts/send_compression_kpi_alarm_if_needed.ps1`가 위반 시 `COMPRESSION_KPI_ALARM_WEBHOOK_URL`(없으면 `OPS_ALARM_WEBHOOK_URL`)로 POST; `-SkipCompressionAlarm`로 생략.
+- **Fact-Lock:** 상용 SLA·무손실 단정은 `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` — 스텁만으로 프로덕션 SaaS 주장 금지; 임계치·게이트는 레포·CI에서 확정 후 기록.
 
 ## 순서
 

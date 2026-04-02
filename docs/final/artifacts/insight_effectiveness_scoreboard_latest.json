@@ -1,6 +1,6 @@
 {
   "schema": "insight_effectiveness_scoreboard_v1",
-  "generated_at_utc": "2026-04-02T19:07:04Z",
+  "generated_at_utc": "2026-04-02T20:03:48Z",
   "sources": {
     "fused_history_path": "C:\\workspace\\docs\\final\\artifacts\\fused_paper_cycle_decision_history.jsonl",
     "scoring_distribution_path": "C:\\workspace\\docs\\final\\artifacts\\trinity_scoring_distribution_latest.json",
