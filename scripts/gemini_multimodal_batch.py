@@ -248,6 +248,11 @@ def cmd_check(_ns: argparse.Namespace) -> int:
     else:
         print("active_key_source: none (배치 호출 전에 설정)")
     print("combined:", "set" if key else "not set")
+    if g and o:
+        print(
+            "hint: GEMINI만 사용 시 사용자 환경 변수의 GOOGLE_API_KEY(레거시)를 비우면 "
+            "google-genai 경고가 줄어듦",
+        )
     tiny = Path(os.environ.get("TEMP", ".")) / "gemini_batch_mime_probe.txt"
     tiny.write_text("ok", encoding="utf-8")
     try:

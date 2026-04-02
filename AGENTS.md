@@ -48,6 +48,12 @@
 
 **CI**: `.github/workflows/gemini-multimodal-batch-cli.yml` — 키 없이 `check` + `pytest tests/test_gemini_multimodal_batch_cli.py`.
 
+**권장 경로(운영 고정)**: 배치 이미지 저장은 `reports/gemini_batch/out/` (`image --out-dir ...`). PDF·원본 드롭은 작업별로 `reports/gemini_batch/in/` 등 하위에 두고, 대용량·민감 파일은 Git에 올리지 않는다.
+
+**환경 변수**: `GEMINI_API_KEY`만 쓸 경우 **사용자 환경 변수의 `GOOGLE_API_KEY`(레거시)** 를 비우면 google-genai 경고가 줄어든다.
+
+**월간 브리프(선택)**: `scripts/run_waiting_queue_monthly_check.ps1` — `docs/final/P0_COMMERCIALIZATION_TRACKER.md` 월간 루틴. 산출물·JSONL·로그 **대량 갱신**·**장시간** 가능하므로 **필요 시 수동 실행**; 자동 스케줄은 지휘관 환경에 맞게 별도 설정.
+
 ## Logos 메타·리추얼 (12AI: Logos Sage 메타데이터 / 격벽)
 
 - **레지스트리 SSOT:** `data/logos/meta/manifest.json` — `VERSE_MAPPING_RITUAL_*` 등 리추얼 메타 경로·`role_tags`·`is_quant_isolated`.
