@@ -44,6 +44,15 @@ function Test-ApiLatest([string]$baseUrl) {
     return [pscustomobject]@{ Ok = $true; Detail = "latest OK"; Headers = $r.Headers }
 }
 
+function Get-HeaderValue($headers, [string]$name) {
+    if ($null -eq $headers) { return "" }
+    try {
+        return [string]$headers[$name]
+    } catch {
+        return ""
+    }
+}
+
 function Test-UrlStatus([string]$url) {
     try {
         $r = Invoke-WebRequest -Uri $url -Method GET -UseBasicParsing -TimeoutSec 8
@@ -88,7 +97,19 @@ try {
     Write-Step "Nginx/API Mapping" $apiCheck.Ok ("base=" + $apiBase + "; " + $apiCheck.Detail)
     $results += $apiCheck.Ok
 } catch {
-    Write-Step "Nginx/API Mapping" $false $_.Exception.Message
+    $serverHeader = ""
+    try {
+        $serverHeader = [string]$_.Exception.Response.Headers["Server"]
+    } catch { }
+    $platformHeader = ""
+    try {
+        $platformHeader = [string]$_.Exception.Response.Headers["platform"]
+    } catch { }
+    $hint = ""
+    if ($serverHeader -match "hcdn" -or $platformHeader -match "hostinger") {
+        $hint = " (hint: domain appears to terminate at Hostinger/CDN, not this VPS nginx)"
+    }
+    Write-Step "Nginx/API Mapping" $false ($_.Exception.Message + $hint)
     $results += $false
 }
 
