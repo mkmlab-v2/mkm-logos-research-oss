@@ -16,8 +16,21 @@
     .badge.err { border-color: rgba(232, 93, 76, 0.6); }
     .ticker { background:#0f1419; border: 1px dashed #2b3846; border-radius: 12px; padding: 0.75rem; margin: 0.75rem 0 1rem; }
     .ticker .tline { font-size: 0.9rem; color: var(--fg); margin: 0; white-space: pre-wrap; word-break: break-word; }
+    .stage { background:#0b1117; border: 1px solid #2b3846; border-radius: 12px; padding: 0.75rem; margin: 0 0 0.75rem; }
+    .stage canvas { width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; background: #0a0f14; border-radius: 8px; border: 1px solid #1d2a38; }
+    .stage-meta { margin-top: 0.45rem; font-size: 0.78rem; color: var(--muted); }
     .chat { background:#0b1117; border: 1px solid #2b3846; border-radius: 12px; padding: 0.75rem; }
     .chat pre { background: transparent; padding: 0; margin: 0; white-space: pre-wrap; }
+    .stage { margin: 0.75rem 0 1rem; padding: 0.75rem; border: 1px solid #2b3846; border-radius: 12px; background: radial-gradient(circle at 50% 10%, #1a222d, #0b1117); }
+    .sprite-wrap { display:flex; align-items:center; gap:0.75rem; }
+    .sprite { width: 96px; height: 96px; image-rendering: pixelated; object-fit: contain; border: 1px solid #2b3846; border-radius: 8px; background: #0f1419; }
+    .sprite-meta { font-size: 0.8rem; color: var(--muted); }
+    .sprite-anim-idle { animation: bob 1.8s ease-in-out infinite; }
+    .sprite-anim-defend { animation: shake 0.5s ease-in-out infinite; }
+    .sprite-anim-attack { animation: pulse 0.45s ease-in-out infinite; }
+    @keyframes bob { 0%{transform:translateY(0)} 50%{transform:translateY(-3px)} 100%{transform:translateY(0)} }
+    @keyframes shake { 0%{transform:translateX(0)} 25%{transform:translateX(-1px)} 50%{transform:translateX(1px)} 75%{transform:translateX(-1px)} 100%{transform:translateX(0)} }
+    @keyframes pulse { 0%{transform:scale(1)} 50%{transform:scale(1.06)} 100%{transform:scale(1)} }
     .anim { transition: transform 250ms ease, filter 250ms ease; }
     .mode-idle { filter: saturate(1); }
     .mode-defend { filter: saturate(1.25); transform: translateY(-1px); }
@@ -43,6 +56,12 @@
     <p class="tline" id="tickerText">loading ticker...</p>
   </div>
 
+  <div class="stage">
+    <label for="pixelStage" style="display:block; margin-bottom:0.35rem;">픽셀 캐릭터 스테이지 (v0)</label>
+    <canvas id="pixelStage" width="256" height="144"></canvas>
+    <div class="stage-meta" id="stageMeta">character=unknown_guard | mode=Idle</div>
+  </div>
+
   <div class="chat">
     <label for="chatOut" style="display:block; margin-bottom:0.25rem;">가상 채팅 (예능 반응)</label>
     <pre id="chatOut">loading chat...</pre>
@@ -61,6 +80,147 @@
     const chatLines = [];
     const chatMax = 10;
     let lastEventId = null;
+    const stageState = {
+      obj: {},
+      mode: "Idle",
+      frame: 0,
+      lastTs: 0,
+      charId: "unknown_guard",
+      pulse: 0,
+    };
+    const spriteByMode = {
+      Idle: {
+        name: "The Sovereign (Dragon)",
+        url: "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774951700015_1.png"
+      },
+      Defend: {
+        name: "Risk Guardian",
+        url: "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955383271_1.png"
+      },
+      Attack: {
+        name: "Signal Alchemist",
+        url: "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955517797_1.png"
+      }
+    };
+    const spriteCache = {};
+    let activeSpriteUrl = "";
+
+    function getSpriteImage(url) {
+      if (!url) return null;
+      if (!spriteCache[url]) {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = url;
+        spriteCache[url] = img;
+      }
+      return spriteCache[url];
+    }
+
+    function colorFromCharacterId(rawId) {
+      const id = String(rawId || "unknown_guard");
+      let hash = 2166136261;
+      for (let i = 0; i < id.length; i += 1) {
+        hash ^= id.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+      }
+      const hue = Math.abs(hash) % 360;
+      return `hsl(${hue} 70% 58%)`;
+    }
+
+    function drawPixelCharacter(ctx, x, y, scale, color, eyeShift) {
+      const p = (dx, dy, w = 1, h = 1, c = color) => {
+        ctx.fillStyle = c;
+        ctx.fillRect(x + dx * scale, y + dy * scale, w * scale, h * scale);
+      };
+      p(3, 0, 6, 1);
+      p(2, 1, 8, 1);
+      p(1, 2, 10, 1);
+      p(1, 3, 10, 6);
+      p(2, 9, 8, 1);
+      p(3, 10, 6, 1);
+      p(0, 4, 1, 3);
+      p(10, 4, 1, 3);
+      p(4 + eyeShift, 4, 1, 1, "#f6fbff");
+      p(7 + eyeShift, 4, 1, 1, "#f6fbff");
+      p(4 + eyeShift, 5, 1, 1, "#0a0f14");
+      p(7 + eyeShift, 5, 1, 1, "#0a0f14");
+      p(5, 7, 2, 1, "#0a0f14");
+      p(4, 11, 1, 2, color);
+      p(7, 11, 1, 2, color);
+      p(2, 11, 1, 3, color);
+      p(8, 11, 1, 3, color);
+    }
+
+    function drawStage(ts) {
+      const canvas = document.getElementById("pixelStage");
+      const meta = document.getElementById("stageMeta");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      if (!stageState.lastTs) stageState.lastTs = ts;
+      const dt = ts - stageState.lastTs;
+      stageState.lastTs = ts;
+      stageState.pulse += dt * 0.004;
+      stageState.frame += dt;
+
+      const obj = stageState.obj || {};
+      const mode = stageState.mode || "Idle";
+      const risk = String(obj.risk_level || "WARNING").toUpperCase();
+      const dir = String(obj.public_signal_direction || "HOLD").toUpperCase();
+      const charId = String(obj.active_character_id || "unknown_guard");
+      const charColor = colorFromCharacterId(charId);
+      const spriteInfo = spriteByMode[mode] || spriteByMode.Idle;
+      const spriteImg = getSpriteImage(spriteInfo.url);
+      activeSpriteUrl = spriteInfo.url;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0a0f14";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const wave = Math.sin(stageState.pulse);
+      const bob = mode === "Attack" ? Math.sin(stageState.pulse * 1.9) * 4 : Math.sin(stageState.pulse * 1.2) * 2;
+      const eyeShift = mode === "Attack" && dir !== "HOLD" ? (wave > 0 ? 1 : 0) : 0;
+
+      ctx.fillStyle = "rgba(120,180,255,0.10)";
+      for (let i = 0; i < 4; i += 1) {
+        const y = 110 + i * 8 + Math.sin(stageState.pulse + i) * 2;
+        ctx.fillRect(0, y, canvas.width, 2);
+      }
+
+      if (mode === "Defend") {
+        ctx.strokeStyle = risk === "WARNING" ? "rgba(255, 188, 79, 0.80)" : "rgba(135, 225, 165, 0.70)";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(128, 78 + bob, 38 + wave * 2, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      if (mode === "Attack") {
+        ctx.fillStyle = "rgba(255, 120, 120, 0.55)";
+        const dirSign = (dir === "BUY" || dir === "LONG") ? 1 : -1;
+        for (let i = 0; i < 4; i += 1) {
+          const sx = 128 + (i * 18 + (stageState.frame * 0.04) % 22) * dirSign;
+          const sy = 56 + i * 9;
+          ctx.fillRect(sx, sy, 10, 2);
+        }
+      }
+
+      if (spriteImg && spriteImg.complete && spriteImg.naturalWidth > 0) {
+        const w = 72;
+        const h = 72;
+        const x = Math.floor((canvas.width - w) / 2);
+        const y = Math.floor(44 + bob);
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(spriteImg, x, y, w, h);
+      } else {
+        // Fallback while image is loading
+        drawPixelCharacter(ctx, 106, 56 + bob, 4, charColor, eyeShift);
+      }
+
+      meta.textContent = `character=${spriteInfo.name} | mode=${mode} | risk=${risk} | dir=${dir} | src=${activeSpriteUrl}`;
+      requestAnimationFrame(drawStage);
+    }
 
     function modeFromEvent(obj) {
       const sys = (obj.system_status || "").toLowerCase();
@@ -140,6 +300,9 @@
 
         tickerBox.classList.remove("mode-idle", "mode-defend", "mode-attack");
         tickerBox.classList.add(mode === "Idle" ? "mode-idle" : (mode === "Defend" ? "mode-defend" : "mode-attack"));
+        stageState.obj = obj;
+        stageState.mode = mode;
+        stageState.charId = String(obj.active_character_id || "unknown_guard");
 
         if (obj.event_id && obj.event_id !== lastEventId) {
           lastEventId = obj.event_id;
@@ -153,6 +316,7 @@
         out.textContent = String(e);
       }
     }
+    requestAnimationFrame(drawStage);
     tick();
     setInterval(tick, POLL_MS);
     document.getElementById("base").addEventListener("change", tick);
