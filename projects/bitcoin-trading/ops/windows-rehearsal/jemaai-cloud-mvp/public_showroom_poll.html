@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
@@ -20,12 +20,12 @@
   <h1>?⑤벀而???곤폍 ??latest ??彛?/h1>
   <p class="sub">Polling UI ??Base URL??濡쒖뺄濡?媛뺤젣(湲곕낯媛??⑸땲?? 湲곕낯: <code>http://127.0.0.1:8788</code></p>
   <label for="base">GET Base (no trailing slash)</label>
-  <input id="base" type="text" value="http://api.jemaai.cloud" autocomplete="off" />
+  <input id="base" type="text" value="https://api.jemaai.cloud" autocomplete="off" />
   <p id="status" class="sub"></p>
   <pre id="out">loading...</pre>
   <script>
     const params = new URLSearchParams(location.search);
-    const defaultBase = params.get("api") || "http://api.jemaai.cloud";
+    const defaultBase = params.get("api") || "https://api.jemaai.cloud";
     document.getElementById("base").value = defaultBase;
     const POLL_MS = 20000;
     async function tick() {
