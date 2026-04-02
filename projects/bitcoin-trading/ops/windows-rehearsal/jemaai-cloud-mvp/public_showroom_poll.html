@@ -266,8 +266,18 @@
       return "flat";
     }
 
-    function speak(kind, emphasis) {
+    function themeFromEvent(obj, mode) {
+      const risk = String(obj.risk_level || "").toUpperCase();
+      const d = directionFromEvent(obj);
+      if (risk === "WARNING" || mode === "Defend") return "sanctuary";
+      if (d === "bear") return "storm";
+      if (d === "bull" || mode === "Attack") return "festival";
+      return "night";
+    }
+
+    function speak(kind, actorId) {
       const mode = stageState.lang;
+      const actor = String(actorId || "").toLowerCase();
       const table = {
         bull: {
           KR: ["가즈아!!", "상승 기류 포착!", "오늘 회식은 도토리다!"],
@@ -294,10 +304,24 @@
           EN: ["Scanning...", "Holding formation.", "Awaiting signal."]
         }
       };
+      const actorTone = {
+        dragon_quant: {
+          KR: ["지휘 유지. 대형을 정렬한다.", "작전 통제 중. 신호를 고정한다."],
+          EN: ["Command holds. Keep formation.", "Operational lock acquired."]
+        },
+        tiger_shield: {
+          KR: ["선봉 준비 완료!", "돌격 각이 보인다!"],
+          EN: ["Vanguard ready!", "I see the strike angle!"]
+        }
+      };
       const pack = table[kind] || table.idle;
-      const pool = mode === "KR" ? pack.KR : (mode === "EN" ? pack.EN : [...pack.EN, ...pack.KR]);
+      let pool = mode === "KR" ? pack.KR : (mode === "EN" ? pack.EN : [...pack.EN, ...pack.KR]);
+      if (actorTone[actor]) {
+        const tones = mode === "KR" ? actorTone[actor].KR : (mode === "EN" ? actorTone[actor].EN : [...actorTone[actor].EN, ...actorTone[actor].KR]);
+        pool = [...tones, ...pool];
+      }
       const base = pool[Math.floor(Math.random() * pool.length)];
-      return emphasis ? `${base} [${emphasis}]` : base;
+      return base;
     }
 
     function addBubble(actor, text) {
@@ -391,11 +415,20 @@
       activeSpriteUrl = spriteInfo.url;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const theme = themeFromEvent(obj, mode);
       // 16x16 tile backdrop for retro-MMO feel.
       for (let ty = 0; ty < canvas.height; ty += 16) {
         for (let tx = 0; tx < canvas.width; tx += 16) {
           const even = (((tx / 16) + (ty / 16)) % 2) === 0;
-          ctx.fillStyle = even ? "#102038" : "#0d1a2f";
+          if (theme === "festival") {
+            ctx.fillStyle = even ? "#1f3a2f" : "#173226";
+          } else if (theme === "storm") {
+            ctx.fillStyle = even ? "#22172e" : "#1a1326";
+          } else if (theme === "sanctuary") {
+            ctx.fillStyle = even ? "#2b2414" : "#221d11";
+          } else {
+            ctx.fillStyle = even ? "#102038" : "#0d1a2f";
+          }
           ctx.fillRect(tx, ty, 16, 16);
         }
       }
@@ -404,7 +437,15 @@
       const bob = mode === "Attack" ? Math.sin(stageState.pulse * 1.9) * 4 : Math.sin(stageState.pulse * 1.2) * 2;
       const eyeShift = mode === "Attack" && dir !== "HOLD" ? (wave > 0 ? 1 : 0) : 0;
 
-      ctx.fillStyle = "rgba(120,180,255,0.10)";
+      if (theme === "festival") {
+        ctx.fillStyle = "rgba(122, 255, 174, 0.10)";
+      } else if (theme === "storm") {
+        ctx.fillStyle = "rgba(162, 128, 255, 0.10)";
+      } else if (theme === "sanctuary") {
+        ctx.fillStyle = "rgba(255, 219, 128, 0.09)";
+      } else {
+        ctx.fillStyle = "rgba(120,180,255,0.10)";
+      }
       for (let i = 0; i < 4; i += 1) {
         const y = 110 + i * 8 + Math.sin(stageState.pulse + i) * 2;
         ctx.fillRect(0, y, canvas.width, 2);
@@ -462,7 +503,7 @@
 
       updateBubbles(dt);
       renderBubbles();
-      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | sprite=${spriteInfo.name} | lang=${stageState.lang}`;
+      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | theme=${theme} | sprite=${spriteInfo.name} | lang=${stageState.lang}`;
       requestAnimationFrame(drawStage);
     }
 
@@ -558,11 +599,11 @@
           const d = directionFromEvent(obj);
           const kind = mode === "Attack" ? "attack" : (mode === "Defend" ? "defend" : (d === "bull" ? "bull" : (d === "bear" ? "bear" : "idle")));
           if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
-            addBubble(mainActor, speak("warning", "Dragon"));
-            addBubble(tiger, speak("defend", "Tiger"));
+            addBubble(mainActor, speak("warning", "dragon_quant"));
+            addBubble(tiger, speak("defend", "tiger_shield"));
           } else {
-            addBubble(mainActor, speak(kind, "Dragon"));
-            if (Math.random() > 0.45) addBubble(tiger, speak(kind, "Tiger"));
+            addBubble(mainActor, speak(kind, "dragon_quant"));
+            if (Math.random() > 0.45) addBubble(tiger, speak(kind, "tiger_shield"));
           }
           if (obj.abstract_reason) {
             addBubble(mainActor, String(obj.abstract_reason).slice(0, 42));
@@ -584,7 +625,7 @@
     document.getElementById("langMode").addEventListener("change", () => {
       stageState.lang = document.getElementById("langMode").value || "HYBRID";
       const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
-      addBubble(mainActor, speak("idle", "Dragon"));
+      addBubble(mainActor, speak("idle", "dragon_quant"));
     });
   </script>
 </body>
