@@ -9,7 +9,8 @@
 
 param(
     [switch]$IncludeP1AB,
-    [switch]$IncludeJemaaiCloudChecks
+    [switch]$IncludeJemaaiCloudChecks,
+    [switch]$IncludeJemaaiE2ESmoke
 )
 
 $ErrorActionPreference = "Stop"
@@ -64,6 +65,16 @@ if ($IncludeJemaaiCloudChecks) {
         Write-Host "  OK: $p" -ForegroundColor DarkGray
     }
     Write-Host "jemaai.cloud: deploy nginx `location` from nginx_public_event_gateway.conf.example; run ensure_public_event_gateway.ps1 on host; set PUBLIC_EVENT_GATEWAY_TOKEN. See JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md." -ForegroundColor Green
+}
+
+if ($IncludeJemaaiE2ESmoke) {
+    Write-Host "=== [6] jemaai.cloud public-event E2E smoke ===" -ForegroundColor Cyan
+    $smokeScript = Join-Path $workspaceRoot "projects\bitcoin-trading\ops\windows-rehearsal\run_jemaai_public_event_e2e_smoke.ps1"
+    if (-not (Test-Path -LiteralPath $smokeScript)) {
+        throw "jemaai.cloud E2E smoke: missing $smokeScript"
+    }
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $smokeScript -ApiBaseUrl "https://api.jemaai.cloud"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
 Write-Host "=== autopilot chain OK ===" -ForegroundColor Green

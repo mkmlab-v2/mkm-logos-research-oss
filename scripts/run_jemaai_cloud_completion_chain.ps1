@@ -8,7 +8,8 @@
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_jemaai_cloud_completion_chain.ps1 -SkipP1AB
 
 param(
-    [switch]$SkipP1AB
+    [switch]$SkipP1AB,
+    [switch]$IncludeE2ESmoke
 )
 
 $ErrorActionPreference = "Stop"
@@ -19,7 +20,10 @@ $autoArgs = @("-File", (Join-Path $workspaceRoot "scripts\run_workspace_autopilo
 if (-not $SkipP1AB) {
     $autoArgs += "-IncludeP1AB"
 }
+if ($IncludeE2ESmoke) {
+    $autoArgs += "-IncludeJemaaiE2ESmoke"
+}
 
-Write-Host "=== jemaai.cloud completion chain (autopilot + jemaai checks$(if (-not $SkipP1AB) { ' + P1 A/B' })) ===" -ForegroundColor Cyan
+Write-Host "=== jemaai.cloud completion chain (autopilot + jemaai checks$(if (-not $SkipP1AB) { ' + P1 A/B' })$(if ($IncludeE2ESmoke) { ' + E2E smoke' })) ===" -ForegroundColor Cyan
 & powershell -NoProfile -ExecutionPolicy Bypass @autoArgs
 exit $LASTEXITCODE
