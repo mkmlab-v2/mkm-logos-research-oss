@@ -55,6 +55,9 @@ scripts/de440.bsp.download
 **/dist/
 projects/**/.next/
 
+# Local Hugging Face / embedding cache (e.g. HF_HOME under workspace)
+.cache/
+
 # Local scratch temp (dot-prefixed)
 .tmp/
 

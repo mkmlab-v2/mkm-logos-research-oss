@@ -1,0 +1,45 @@
+{
+  "schema": "sasang_encoder_smoke_v1",
+  "generated_at_utc": "2026-04-02T20:35:35Z",
+  "purpose": "Research smoke — prototype cosine classifier; not clinical OOF SSOT.",
+  "caveats": [
+    "Synthetic cohorts may repeat identical `text` lines; duplicates can land in both train and test and inflate metrics.",
+    "If Hugging Face download fails with errno 28, set HF_HOME (and TRANSFORMERS_CACHE) to a disk with free space."
+  ],
+  "inputs": {
+    "cohort_path": "C:\\workspace\\data\\constitution\\korean_cohort\\real_cohort.synthetic.v1.jsonl",
+    "test_ratio": 0.2,
+    "seed": 42,
+    "max_samples": null
+  },
+  "runs": [
+    {
+      "status": "ok",
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "f1_macro": 0.5336956949860177,
+      "accuracy": 0.64,
+      "n_train": 800,
+      "n_test": 200,
+      "train_encode_seconds": 4.108,
+      "infer_encode_seconds": 0.06,
+      "predictions_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_encoder_smoke_predictions_sentence-transformers__all-MiniLM-L6-v2.jsonl"
+    },
+    {
+      "status": "ok",
+      "model": "jhgan/ko-sroberta-multitask",
+      "f1_macro": 1.0,
+      "accuracy": 1.0,
+      "n_train": 800,
+      "n_test": 200,
+      "train_encode_seconds": 4.3,
+      "infer_encode_seconds": 0.094,
+      "predictions_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_encoder_smoke_predictions_jhgan__ko-sroberta-multitask.jsonl"
+    }
+  ],
+  "comparison": {
+    "macro_f1_delta_model2_minus_model1": 0.46630430501398235,
+    "model1": "sentence-transformers/all-MiniLM-L6-v2",
+    "model2": "jhgan/ko-sroberta-multitask",
+    "note": "Positive delta means second model higher macro-F1 on this split."
+  }
+}
