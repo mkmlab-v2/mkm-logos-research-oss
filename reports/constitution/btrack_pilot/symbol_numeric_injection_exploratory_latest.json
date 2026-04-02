@@ -1,0 +1,108 @@
+{
+  "schema": "symbol_numeric_injection_report_v1",
+  "generated_at_utc": "2026-04-01T19:06:34Z",
+  "inputs": {
+    "curated_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_exploratory_latest.jsonl",
+    "raw_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_exploratory_latest.jsonl",
+    "numeric_template": "C:\\workspace\\data\\logos\\btrack_pilot\\gates\\symbol_numeric_seed_v1.json"
+  },
+  "stats": {
+    "curated_count": 200,
+    "numeric_seed_count": 5,
+    "matched_count": 2,
+    "coverage_rate": 0.4,
+    "near_miss_scan_rows": 461
+  },
+  "matches": [
+    {
+      "symbol": "144000",
+      "matched_candidate": "אלף",
+      "label": "sealed_remnant_marker",
+      "category": "numerical",
+      "priority": "medium",
+      "score_tfidf_like": 123.864692,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 20
+      }
+    },
+    {
+      "symbol": "40",
+      "matched_candidate": "ארבעים",
+      "label": "testing_refinement",
+      "category": "numerical",
+      "priority": "high",
+      "score_tfidf_like": 23.408018,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 3
+      }
+    }
+  ],
+  "missing_symbols": [
+    "7",
+    "12",
+    "70"
+  ],
+  "near_miss_candidates": {
+    "7": [
+      {
+        "candidate": "נשבע",
+        "score_tfidf_like": 23.408018,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 3
+        },
+        "reason": "Contains Hebrew root 'שבע' but may be oath/verb form, not confirmed numeral."
+      }
+    ],
+    "70": [
+      {
+        "candidate": "נשבע",
+        "score_tfidf_like": 23.408018,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 3
+        },
+        "reason": "Contains Hebrew seven-family token but lacks explicit canonical seventy form."
+      }
+    ]
+  },
+  "p1_manual_review_queue": [
+    {
+      "id": "numeric-near-miss-7-נשבע",
+      "priority": "P1",
+      "status": "pending_manual_review",
+      "seed_symbol": "7",
+      "candidate": "נשבע",
+      "reason": "Contains Hebrew root 'שבע' but may be oath/verb form, not confirmed numeral.",
+      "score_tfidf_like": 23.408018,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 3
+      },
+      "promotion_guard": "approve_numeric_near_miss=true required",
+      "created_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "id": "numeric-near-miss-70-נשבע",
+      "priority": "P1",
+      "status": "pending_manual_review",
+      "seed_symbol": "70",
+      "candidate": "נשבע",
+      "reason": "Contains Hebrew seven-family token but lacks explicit canonical seventy form.",
+      "score_tfidf_like": 23.408018,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 3
+      },
+      "promotion_guard": "approve_numeric_near_miss=true required",
+      "created_at_utc": "2026-04-01T19:06:34Z"
+    }
+  ],
+  "promotion_policy": {
+    "near_miss_auto_promotion": false,
+    "required_approval_flag": "approve_numeric_near_miss=true"
+  },
+  "note": "Numeric symbol injection report is an operational seed match, not doctrinal certainty."
+}

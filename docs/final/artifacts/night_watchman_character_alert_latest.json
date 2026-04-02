@@ -1,9 +1,9 @@
 {
   "schema": "night_watchman_character_alert_v1",
-  "utc": "2026-04-01T16:58:22Z",
+  "utc": "2026-04-02T02:59:43Z",
   "decision": "PASS",
-  "dry_run": false,
+  "dry_run": true,
   "character_count": 13,
   "public_base_url": "https://assets.jemaai.cloud/pixel_battalion/refined",
-  "webhook_sent": true
+  "webhook_sent": false
 }

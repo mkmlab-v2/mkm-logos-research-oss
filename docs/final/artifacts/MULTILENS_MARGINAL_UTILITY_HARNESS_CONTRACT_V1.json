@@ -1,0 +1,26 @@
+{
+  "schema": "multilens_marginal_utility_harness_contract_v1",
+  "schema_version": "1.0.0",
+  "scope": "dual_regime_defense_only",
+  "description": "Marginal utility of optional lens inputs via ablation on evaluate_dual_regime_and_market_shock. Not a unified PnL table across domains.",
+  "policy_ssot_workspace_relative": "data/regimes/regime_fusion_policy.json",
+  "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+  "forbidden_merge": {
+    "medicine_sasang_to_live_trading": "Do not wire Korean medicine / Sasang cohort B into A-track execution or this harness; see KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md",
+    "note": "medicine_lens is not_tracked_in_harness_v1"
+  },
+  "medicine_lens": "not_tracked_in_harness_v1",
+  "ablation_modes": {
+    "full": "All inputs as specified in scenario row (baseline for deltas).",
+    "no_logos": "logos_manuscript_text omitted (Logos resonance cap bridge off).",
+    "no_bible_stress": "bible_risk_score forced to 0 (auxiliary stress input ablation; not a trading signal).",
+    "no_myeongni_state": "state_id omitted (16-state defensive clamp not applied)."
+  },
+  "metrics": {
+    "risk_cap_delta": "ablation.risk_multiplier_cap minus full.risk_multiplier_cap",
+    "veto_delta": "ablation.veto_triggered XOR full — reported as boolean flip count per row",
+    "shock_delta": "ablation.market_shock_confirmed XOR full",
+    "resonance_count": "Echoed from DualRegimeContext for audit"
+  },
+  "runner_script": "scripts/eval_multilens_marginal_utility_v1.py"
+}

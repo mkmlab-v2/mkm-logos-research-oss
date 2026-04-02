@@ -1,0 +1,48 @@
+{
+  "schema": "multilens_eval_harness_v2_thin_contract_v1",
+  "schema_version": "1.0.0",
+  "purpose": "Same-calendar-day, per-lens observation slots before any A-track fusion. Not MoE weights in production; template for reproducible comparison.",
+  "dataset_intent": "SSOT: curated_dates_v1.intent — repro_bench_grid_v1 = demo/regression grid only; real-market feature linkage is a separate roadmap and must not be inferred from overlap filenames alone.",
+  "future_adapter_note": "Production OHLC/FGI (or other) feeds may emit dual_regime_inputs-shaped JSON and B-track JSONL lines; keep adapter outputs in a distinct path/version label and preserve this contract's air-gap from A-track fusion.",
+  "market_adapter_v1": {
+    "script": "scripts/multilens_dual_regime_market_adapter_v1.py",
+    "default_output": "data/multilens_eval/dual_regime_market_adapter_v1.json",
+    "feeds": ["Binance spot klines 1d (close)", "Alternative.me FGI"],
+    "bible_risk_score": "Forced 0.0 in v1 (market-only; no biblical layer inferred from price)."
+  },
+  "parent_contract_v1": "docs/final/artifacts/MULTILENS_MARGINAL_UTILITY_HARNESS_CONTRACT_V1.json",
+  "forbidden": {
+    "a_track_auto_fusion": "Do not promote to live sizing without Promotion Loop (CONSTITUTION §8).",
+    "single_pnl_score_for_all_lenses": "Each lens may use different scoreable metrics; do not force one PnL column."
+  },
+  "lens_slots": {
+    "logos_dual_regime": {
+      "description": "Inputs to evaluate_dual_regime_and_market_shock or ablation rows; optional logos_manuscript_text.",
+      "record_fields": ["risk_multiplier_cap", "market_shock_confirmed", "veto_triggered", "interpretation_snippet"]
+    },
+    "myeongni_b_track": {
+      "description": "Optional state_id / JSONL line ref; does not drive cap without policy (CONSTITUTION §2.1).",
+      "record_fields": ["state_id", "ledger_ref", "note"]
+    },
+    "sasang_b_track": {
+      "description": "SASANG_DYNAMICS_REGIME_MAPPING JSONL line matching date (ts_utc day).",
+      "record_fields": ["machine_readables", "regime_hypothesis", "a_track_autobind_forbidden"]
+    }
+  },
+  "curated_dates_path": "data/multilens_eval/curated_dates_v1.json",
+  "optional_overlap_samples": {
+    "sasang_jsonl": "data/multilens_eval/sasang_curated_overlap_v1.jsonl",
+    "myeongni_jsonl": "data/multilens_eval/myeongni_curated_overlap_v1.jsonl",
+    "dual_regime_inputs_json": "data/multilens_eval/dual_regime_curated_overlap_v1.json"
+  },
+  "runner_script": "scripts/eval_multilens_harness_v2_thin.py",
+  "cli_flags": {
+    "populate_default_samples": "Merge overlap JSONL into report rows by calendar date (YYYY-MM-DD from ts_utc)"
+  },
+  "report_summary_when_populated": {
+    "risk_multiplier_cap_stats": "min/max/mean/n over rows with logos_dual_regime.risk_multiplier_cap",
+    "mapping_target_sasang_myeongni": "agreement_count, rows_with_both, agreement_rate when both lenses expose mapping_target",
+    "dual_regime_flags": "market_shock_confirmed_count, veto_triggered_count",
+    "fully_populated_rows": "rows with all three lens slots non-null"
+  }
+}

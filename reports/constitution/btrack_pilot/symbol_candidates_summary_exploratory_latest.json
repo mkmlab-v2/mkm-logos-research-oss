@@ -1,0 +1,140 @@
+{
+  "schema": "btrack_symbol_candidates_v1",
+  "generated_at_utc": "2026-04-01T19:06:34Z",
+  "inputs": {
+    "dss": "C:\\workspace\\data\\logos\\manuscripts\\dss_parsed_enriched.jsonl",
+    "apocrypha": "C:\\workspace\\data\\logos\\manuscripts\\apocrypha_std.jsonl"
+  },
+  "stats": {
+    "total_docs": 3600,
+    "unique_symbols_before_filter": 47685,
+    "unique_symbols_after_df_filter": 3580,
+    "unique_symbols_after_filter": 461,
+    "top_k": 461,
+    "min_df": 3,
+    "allowlist_tokens": 133879
+  },
+  "top10_preview": [
+    {
+      "rank": 1,
+      "symbol": "כִּי",
+      "score_tfidf_like": 766.448072,
+      "term_freq": 191,
+      "doc_freq": 176,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 191
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 2,
+      "symbol": "כל",
+      "score_tfidf_like": 569.958409,
+      "term_freq": 129,
+      "doc_freq": 117,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 129
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 3,
+      "symbol": "לֹא",
+      "score_tfidf_like": 538.61838,
+      "term_freq": 120,
+      "doc_freq": 109,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 120
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 4,
+      "symbol": "אֶת",
+      "score_tfidf_like": 454.523478,
+      "term_freq": 96,
+      "doc_freq": 85,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 96
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 5,
+      "symbol": "אֲשֶׁר",
+      "score_tfidf_like": 443.621742,
+      "term_freq": 93,
+      "doc_freq": 82,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 93
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 6,
+      "symbol": "עַל",
+      "score_tfidf_like": 416.683884,
+      "term_freq": 86,
+      "doc_freq": 76,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 86
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 7,
+      "symbol": "איש",
+      "score_tfidf_like": 339.953224,
+      "term_freq": 68,
+      "doc_freq": 65,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 68
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 8,
+      "symbol": "המלך",
+      "score_tfidf_like": 339.953224,
+      "term_freq": 68,
+      "doc_freq": 65,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 68
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 9,
+      "symbol": "יהודה",
+      "score_tfidf_like": 325.947674,
+      "term_freq": 65,
+      "doc_freq": 64,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 65
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 10,
+      "symbol": "לו",
+      "score_tfidf_like": 271.206058,
+      "term_freq": 51,
+      "doc_freq": 47,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 51
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    }
+  ],
+  "output_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_exploratory_latest.jsonl"
+}

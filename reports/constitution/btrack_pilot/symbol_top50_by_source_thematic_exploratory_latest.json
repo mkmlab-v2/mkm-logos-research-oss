@@ -1,0 +1,805 @@
+{
+  "schema": "btrack_symbol_top_by_source_thematic_v1",
+  "generated_at_utc": "2026-04-01T19:06:35Z",
+  "generated_from": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_exploratory_latest.jsonl",
+  "stopwords_file": "C:\\workspace\\data\\logos\\btrack_pilot\\gates\\symbol_stopwords_v1.json",
+  "counts": {
+    "raw": 200,
+    "filtered_in": 163,
+    "dss_only": 0,
+    "mixed": 6,
+    "apocrypha_only": 50
+  },
+  "top_k": 50,
+  "top": {
+    "dss_only": [],
+    "mixed": [
+      {
+        "rank": 28,
+        "symbol": "בני",
+        "score_tfidf_like": 129.033333,
+        "term_freq": 21,
+        "doc_freq": 20,
+        "source_mix": {
+          "dss": 4,
+          "apocrypha": 17
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 9,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 64,
+        "symbol": "ישראל",
+        "score_tfidf_like": 79.48821,
+        "term_freq": 12,
+        "doc_freq": 12,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 10
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 10,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 120,
+        "symbol": "עליון",
+        "score_tfidf_like": 55.933938,
+        "term_freq": 8,
+        "doc_freq": 8,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 6
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 11,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 135,
+        "symbol": "אלהים",
+        "score_tfidf_like": 50.701397,
+        "term_freq": 7,
+        "doc_freq": 6,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 5
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 3,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 311,
+        "symbol": "גבול",
+        "score_tfidf_like": 23.408018,
+        "term_freq": 3,
+        "doc_freq": 3,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 1
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 12,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 312,
+        "symbol": "בני ישראל",
+        "score_tfidf_like": 23.408018,
+        "term_freq": 3,
+        "doc_freq": 3,
+        "source_mix": {
+          "dss": 2,
+          "apocrypha": 1
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 13,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      }
+    ],
+    "apocrypha_only": [
+      {
+        "rank": 8,
+        "symbol": "המלך",
+        "score_tfidf_like": 339.953224,
+        "term_freq": 68,
+        "doc_freq": 65,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 68
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 18,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 9,
+        "symbol": "יהודה",
+        "score_tfidf_like": 325.947674,
+        "term_freq": 65,
+        "doc_freq": 64,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 65
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 19,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 14,
+        "symbol": "דבר",
+        "score_tfidf_like": 193.543616,
+        "term_freq": 34,
+        "doc_freq": 32,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 34
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 24,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 16,
+        "symbol": "העיר",
+        "score_tfidf_like": 178.404369,
+        "term_freq": 31,
+        "doc_freq": 30,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 31
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 26,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 19,
+        "symbol": "שלום",
+        "score_tfidf_like": 155.222367,
+        "term_freq": 26,
+        "doc_freq": 24,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 26
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 2,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 21,
+        "symbol": "יד",
+        "score_tfidf_like": 148.271758,
+        "term_freq": 25,
+        "doc_freq": 25,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 25
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 30,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 27,
+        "symbol": "הנה",
+        "score_tfidf_like": 133.176398,
+        "term_freq": 22,
+        "doc_freq": 22,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 22
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 36,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 33,
+        "symbol": "אלף",
+        "score_tfidf_like": 123.864692,
+        "term_freq": 20,
+        "doc_freq": 19,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 20
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 41,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 37,
+        "symbol": "חרב",
+        "score_tfidf_like": 112.401502,
+        "term_freq": 18,
+        "doc_freq": 18,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 18
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 45,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 38,
+        "symbol": "ארץ",
+        "score_tfidf_like": 108.04781,
+        "term_freq": 17,
+        "doc_freq": 16,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 17
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 46,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 39,
+        "symbol": "נפשו",
+        "score_tfidf_like": 107.076117,
+        "term_freq": 17,
+        "doc_freq": 17,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 17
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 47,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 40,
+        "symbol": "לְמַעַן",
+        "score_tfidf_like": 107.076117,
+        "term_freq": 17,
+        "doc_freq": 17,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 17
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 48,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 43,
+        "symbol": "בית",
+        "score_tfidf_like": 102.66205,
+        "term_freq": 16,
+        "doc_freq": 15,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 16
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 51,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 45,
+        "symbol": "רוּחַ",
+        "score_tfidf_like": 97.21375,
+        "term_freq": 15,
+        "doc_freq": 14,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 15
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 53,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 46,
+        "symbol": "מאות",
+        "score_tfidf_like": 97.21375,
+        "term_freq": 15,
+        "doc_freq": 14,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 15
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 54,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 48,
+        "symbol": "רע",
+        "score_tfidf_like": 96.245672,
+        "term_freq": 15,
+        "doc_freq": 15,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 15
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 56,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 49,
+        "symbol": "אחרי",
+        "score_tfidf_like": 96.245672,
+        "term_freq": 15,
+        "doc_freq": 15,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 15
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 57,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 51,
+        "symbol": "טוב",
+        "score_tfidf_like": 91.698733,
+        "term_freq": 14,
+        "doc_freq": 13,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 14
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 59,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 53,
+        "symbol": "רְשָׁעִים",
+        "score_tfidf_like": 90.732833,
+        "term_freq": 14,
+        "doc_freq": 14,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 14
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 61,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 54,
+        "symbol": "הדבר",
+        "score_tfidf_like": 90.732833,
+        "term_freq": 14,
+        "doc_freq": 14,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 14
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 62,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 55,
+        "symbol": "האלה",
+        "score_tfidf_like": 90.732833,
+        "term_freq": 14,
+        "doc_freq": 14,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 14
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 63,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 56,
+        "symbol": "חָכְמָה",
+        "score_tfidf_like": 86.112228,
+        "term_freq": 13,
+        "doc_freq": 12,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 13
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 64,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 57,
+        "symbol": "אַךְ",
+        "score_tfidf_like": 85.148824,
+        "term_freq": 13,
+        "doc_freq": 13,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 13
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 65,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 58,
+        "symbol": "הזה",
+        "score_tfidf_like": 85.148824,
+        "term_freq": 13,
+        "doc_freq": 13,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 13
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 66,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 59,
+        "symbol": "אלף איש",
+        "score_tfidf_like": 85.148824,
+        "term_freq": 13,
+        "doc_freq": 13,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 13
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 67,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 60,
+        "symbol": "אלפים",
+        "score_tfidf_like": 81.492859,
+        "term_freq": 12,
+        "doc_freq": 10,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 12
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 68,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 62,
+        "symbol": "קול",
+        "score_tfidf_like": 80.448723,
+        "term_freq": 12,
+        "doc_freq": 11,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 12
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 70,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 63,
+        "symbol": "אַחֲרֵי",
+        "score_tfidf_like": 80.448723,
+        "term_freq": 12,
+        "doc_freq": 11,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 12
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 71,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 65,
+        "symbol": "מה",
+        "score_tfidf_like": 79.48821,
+        "term_freq": 12,
+        "doc_freq": 12,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 12
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 72,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 66,
+        "symbol": "פני",
+        "score_tfidf_like": 79.48821,
+        "term_freq": 12,
+        "doc_freq": 12,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 12
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 73,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 68,
+        "symbol": "חי",
+        "score_tfidf_like": 79.48821,
+        "term_freq": 12,
+        "doc_freq": 12,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 12
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 75,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 69,
+        "symbol": "אף",
+        "score_tfidf_like": 79.48821,
+        "term_freq": 12,
+        "doc_freq": 12,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 12
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 76,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 70,
+        "symbol": "למען",
+        "score_tfidf_like": 79.48821,
+        "term_freq": 12,
+        "doc_freq": 12,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 12
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 77,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 71,
+        "symbol": "עִם",
+        "score_tfidf_like": 79.48821,
+        "term_freq": 12,
+        "doc_freq": 12,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 12
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 78,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 72,
+        "symbol": "מעל",
+        "score_tfidf_like": 76.909165,
+        "term_freq": 11,
+        "doc_freq": 8,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 11
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 79,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 73,
+        "symbol": "מִן",
+        "score_tfidf_like": 74.701787,
+        "term_freq": 11,
+        "doc_freq": 10,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 11
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 80,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 74,
+        "symbol": "לה",
+        "score_tfidf_like": 74.701787,
+        "term_freq": 11,
+        "doc_freq": 10,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 11
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 81,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 75,
+        "symbol": "חיל",
+        "score_tfidf_like": 73.744662,
+        "term_freq": 11,
+        "doc_freq": 11,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 11
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 82,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 76,
+        "symbol": "אחד",
+        "score_tfidf_like": 73.744662,
+        "term_freq": 11,
+        "doc_freq": 11,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 11
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 83,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 77,
+        "symbol": "עשה",
+        "score_tfidf_like": 73.744662,
+        "term_freq": 11,
+        "doc_freq": 11,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 11
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 84,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 78,
+        "symbol": "אַתָּה",
+        "score_tfidf_like": 73.744662,
+        "term_freq": 11,
+        "doc_freq": 11,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 11
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 85,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 79,
+        "symbol": "אלוהי",
+        "score_tfidf_like": 73.744662,
+        "term_freq": 11,
+        "doc_freq": 11,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 11
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 86,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 80,
+        "symbol": "מְעַט",
+        "score_tfidf_like": 69.917423,
+        "term_freq": 10,
+        "doc_freq": 8,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 10
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 87,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 81,
+        "symbol": "אֶחָד",
+        "score_tfidf_like": 68.863818,
+        "term_freq": 10,
+        "doc_freq": 9,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 10
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 88,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 82,
+        "symbol": "טוֹב",
+        "score_tfidf_like": 68.863818,
+        "term_freq": 10,
+        "doc_freq": 9,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 10
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 89,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 83,
+        "symbol": "דָּבָר",
+        "score_tfidf_like": 68.863818,
+        "term_freq": 10,
+        "doc_freq": 9,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 10
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 90,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 84,
+        "symbol": "אוֹר",
+        "score_tfidf_like": 68.863818,
+        "term_freq": 10,
+        "doc_freq": 9,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 10
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 91,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 85,
+        "symbol": "רוח",
+        "score_tfidf_like": 67.910716,
+        "term_freq": 10,
+        "doc_freq": 10,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 10
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 92,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 86,
+        "symbol": "רַבִּים",
+        "score_tfidf_like": 67.910716,
+        "term_freq": 10,
+        "doc_freq": 10,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 10
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 93,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      },
+      {
+        "rank": 87,
+        "symbol": "בְּנֵי",
+        "score_tfidf_like": 67.910716,
+        "term_freq": 10,
+        "doc_freq": 10,
+        "source_mix": {
+          "dss": 0,
+          "apocrypha": 10
+        },
+        "generated_at_utc": "2026-04-01T19:06:34Z",
+        "curated_rank": 94,
+        "curated_at_utc": "2026-04-01T19:06:34Z"
+      }
+    ]
+  }
+}

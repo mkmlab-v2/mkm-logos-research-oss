@@ -1,0 +1,9 @@
+{
+  "schema": "sasang_independent_lens_v0_contract_meta_v1",
+  "artifact_schema": "sasang_independent_lens_v0",
+  "version": "0.1.0",
+  "purpose": "Sasang B-track dynamics JSONL tail → numeric lens output; not medical or trading trigger.",
+  "default_output_path": "docs/final/artifacts/sasang_independent_lens_latest.json",
+  "runner": "scripts/run_lens_sasang.py",
+  "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §3.5"
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "btrack_symbol_lane_profile_compare_v1",
+  "generated_at_utc": "2026-04-02T02:59:38Z",
+  "inputs": {
+    "stable_gate": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_gate_stable_latest.json",
+    "exploratory_gate": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_gate_exploratory_latest.json",
+    "stable_thematic": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_top50_by_source_thematic_stable_latest.json",
+    "exploratory_thematic": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_top50_by_source_thematic_exploratory_latest.json",
+    "stable_c_queue": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_c_validation_queue_stable_latest.jsonl",
+    "exploratory_c_queue": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_c_validation_queue_exploratory_latest.jsonl",
+    "exploratory_profile_used_stable_mirror": false
+  },
+  "decisions": {
+    "stable": "pass",
+    "exploratory": "pass"
+  },
+  "dss_priority_delta": {
+    "stable_count": 10.0,
+    "exploratory_count": 6.0,
+    "delta_count": -4.0,
+    "stable_avg_dss_ratio": 0.572619,
+    "exploratory_avg_dss_ratio": 0.371032,
+    "delta_avg_dss_ratio": -0.201587
+  },
+  "thematic_volume_delta": {
+    "stable_raw": 200,
+    "exploratory_raw": 200,
+    "delta_raw": 0,
+    "stable_filtered_in": 163,
+    "exploratory_filtered_in": 163,
+    "delta_filtered_in": 0
+  },
+  "c_queue_delta": {
+    "stable_count": 50,
+    "exploratory_count": 50,
+    "delta_count": 0,
+    "stable_avg_score": 163.537925,
+    "exploratory_avg_score": 163.537925,
+    "delta_avg_score": 0.0,
+    "top_overlap_k": 20,
+    "top_overlap_count": 20,
+    "top_overlap_rate": 1.0
+  }
+}

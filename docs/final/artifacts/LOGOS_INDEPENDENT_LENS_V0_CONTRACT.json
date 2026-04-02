@@ -1,0 +1,10 @@
+{
+  "schema": "logos_independent_lens_v0_contract_meta_v1",
+  "artifact_schema": "logos_independent_lens_v0",
+  "version": "0.1.0",
+  "purpose": "Verse 4D batch (Logos root) → numeric lens output; no regime/KOSPI in same runner per Logos First.",
+  "default_output_path": "docs/final/artifacts/logos_independent_lens_latest.json",
+  "default_batch_input": "data/logos/4lens_batch_sample.json",
+  "runner": "scripts/run_lens_logos.py",
+  "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md (Logos 격벽)"
+}

@@ -1,0 +1,562 @@
+{
+  "schema": "multilens_eval_v2_thin_report_v1",
+  "workspace_root": "C:\\workspace",
+  "dataset_intent": "repro_bench_grid_v1",
+  "dataset_intent_note": "Overlap JSONL/JSON under data/multilens_eval/*_curated_overlap_* are fixed demo grids for harness regression and spot-checks, not live market-feature pipelines. Optional future OHLC/FGI adapters feed the same slots without reusing this intent label.",
+  "window_label": "2022_crypto_stress_sample",
+  "asset_focus": "BTC_USD_daily_context",
+  "notes": "Illustrative calendar anchors for hand-filled B-track rows; not trading signals. Expand only after metrics contract is frozen.",
+  "contract": {
+    "schema": "multilens_eval_harness_v2_thin_contract_v1",
+    "schema_version": "1.0.0",
+    "purpose": "Same-calendar-day, per-lens observation slots before any A-track fusion. Not MoE weights in production; template for reproducible comparison.",
+    "dataset_intent": "SSOT: curated_dates_v1.intent — repro_bench_grid_v1 = demo/regression grid only; real-market feature linkage is a separate roadmap and must not be inferred from overlap filenames alone.",
+    "future_adapter_note": "Production OHLC/FGI (or other) feeds may emit dual_regime_inputs-shaped JSON and B-track JSONL lines; keep adapter outputs in a distinct path/version label and preserve this contract's air-gap from A-track fusion.",
+    "market_adapter_v1": {
+      "script": "scripts/multilens_dual_regime_market_adapter_v1.py",
+      "default_output": "data/multilens_eval/dual_regime_market_adapter_v1.json",
+      "feeds": [
+        "Binance spot klines 1d (close)",
+        "Alternative.me FGI"
+      ],
+      "bible_risk_score": "Forced 0.0 in v1 (market-only; no biblical layer inferred from price)."
+    },
+    "parent_contract_v1": "docs/final/artifacts/MULTILENS_MARGINAL_UTILITY_HARNESS_CONTRACT_V1.json",
+    "forbidden": {
+      "a_track_auto_fusion": "Do not promote to live sizing without Promotion Loop (CONSTITUTION §8).",
+      "single_pnl_score_for_all_lenses": "Each lens may use different scoreable metrics; do not force one PnL column."
+    },
+    "lens_slots": {
+      "logos_dual_regime": {
+        "description": "Inputs to evaluate_dual_regime_and_market_shock or ablation rows; optional logos_manuscript_text.",
+        "record_fields": [
+          "risk_multiplier_cap",
+          "market_shock_confirmed",
+          "veto_triggered",
+          "interpretation_snippet"
+        ]
+      },
+      "myeongni_b_track": {
+        "description": "Optional state_id / JSONL line ref; does not drive cap without policy (CONSTITUTION §2.1).",
+        "record_fields": [
+          "state_id",
+          "ledger_ref",
+          "note"
+        ]
+      },
+      "sasang_b_track": {
+        "description": "SASANG_DYNAMICS_REGIME_MAPPING JSONL line matching date (ts_utc day).",
+        "record_fields": [
+          "machine_readables",
+          "regime_hypothesis",
+          "a_track_autobind_forbidden"
+        ]
+      }
+    },
+    "curated_dates_path": "data/multilens_eval/curated_dates_v1.json",
+    "optional_overlap_samples": {
+      "sasang_jsonl": "data/multilens_eval/sasang_curated_overlap_v1.jsonl",
+      "myeongni_jsonl": "data/multilens_eval/myeongni_curated_overlap_v1.jsonl",
+      "dual_regime_inputs_json": "data/multilens_eval/dual_regime_curated_overlap_v1.json"
+    },
+    "runner_script": "scripts/eval_multilens_harness_v2_thin.py",
+    "cli_flags": {
+      "populate_default_samples": "Merge overlap JSONL into report rows by calendar date (YYYY-MM-DD from ts_utc)"
+    },
+    "report_summary_when_populated": {
+      "risk_multiplier_cap_stats": "min/max/mean/n over rows with logos_dual_regime.risk_multiplier_cap",
+      "mapping_target_sasang_myeongni": "agreement_count, rows_with_both, agreement_rate when both lenses expose mapping_target",
+      "dual_regime_flags": "market_shock_confirmed_count, veto_triggered_count",
+      "fully_populated_rows": "rows with all three lens slots non-null"
+    }
+  },
+  "contract_ref": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_EVAL_HARNESS_V2_THIN_CONTRACT.json",
+  "curated_ref": "C:\\workspace\\data\\multilens_eval\\curated_dates_v1.json",
+  "row_count": 10,
+  "rows": [
+    {
+      "calendar_date": "2022-01-01",
+      "lens_outputs": {
+        "logos_dual_regime": {
+          "risk_multiplier_cap": 0.9732887068815336,
+          "resonance_count": 1,
+          "veto_triggered": false,
+          "market_shock_confirmed": false,
+          "interpretation": "dual_regime: PSI=0.68 (warn>0.60, crisis>0.80); bible_risk=0.00; stress=0.32; cap=0.97; state_clamp_skip=invalid_state_id",
+          "inputs_ref": "dual_regime_curated_overlap_v1"
+        },
+        "myeongni_b_track": {
+          "experiment_id": "exp_multilens_curated_v1",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": true,
+          "ts_utc": "2022-01-01T12:00:00.000Z",
+          "state_id": 4,
+          "mapping_target": "sideways",
+          "vector_4d": {
+            "S": 0.24,
+            "L": 0.26,
+            "K": 0.25,
+            "M": 0.25
+          },
+          "note": "multilens_eval full grid"
+        },
+        "sasang_b_track": {
+          "ts_utc": "2022-01-01T12:00:00+00:00",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": "curated_20220101",
+          "a_track_autobind_forbidden": true,
+          "sasang_lens_version": "v1.0.0",
+          "machine_readables": {
+            "heat_proxy": 0.42,
+            "cold_proxy": 0.38,
+            "volatility_rarefaction_proxy": 0.3
+          },
+          "regime_hypothesis": "neutral",
+          "mapping_target": "sideways",
+          "note": "multilens_eval full grid"
+        }
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-03-01",
+      "lens_outputs": {
+        "logos_dual_regime": {
+          "risk_multiplier_cap": 0.8886074604987889,
+          "resonance_count": 1,
+          "veto_triggered": false,
+          "market_shock_confirmed": false,
+          "interpretation": "dual_regime: PSI=0.67 (warn>0.60, crisis>0.80); bible_risk=0.00; stress=0.44; cap=0.89; state_clamp_skip=invalid_state_id",
+          "inputs_ref": "dual_regime_curated_overlap_v1"
+        },
+        "myeongni_b_track": {
+          "experiment_id": "exp_multilens_curated_v1",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": true,
+          "ts_utc": "2022-03-01T12:00:00.000Z",
+          "state_id": 5,
+          "mapping_target": "bull",
+          "vector_4d": {
+            "S": 0.27,
+            "L": 0.23,
+            "K": 0.25,
+            "M": 0.25
+          },
+          "note": "multilens_eval full grid"
+        },
+        "sasang_b_track": {
+          "ts_utc": "2022-03-01T12:00:00+00:00",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": "curated_20220301",
+          "a_track_autobind_forbidden": true,
+          "sasang_lens_version": "v1.0.0",
+          "machine_readables": {
+            "heat_proxy": 0.5,
+            "cold_proxy": 0.3,
+            "volatility_rarefaction_proxy": 0.4
+          },
+          "regime_hypothesis": "expansion",
+          "mapping_target": "bull",
+          "note": "multilens_eval full grid"
+        }
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-05-09",
+      "lens_outputs": {
+        "logos_dual_regime": {
+          "risk_multiplier_cap": 0.8924173477284825,
+          "resonance_count": 4,
+          "veto_triggered": false,
+          "market_shock_confirmed": false,
+          "interpretation": "dual_regime: PSI=0.81 (warn>0.60, crisis>0.80); bible_risk=0.00; stress=0.44; cap=0.89; state_clamp_skip=invalid_state_id",
+          "inputs_ref": "dual_regime_curated_overlap_v1"
+        },
+        "myeongni_b_track": {
+          "experiment_id": "exp_multilens_curated_v1",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": true,
+          "ts_utc": "2022-05-09T12:00:00.000Z",
+          "state_id": 9,
+          "mapping_target": "bear",
+          "vector_4d": {
+            "S": 0.2,
+            "L": 0.3,
+            "K": 0.25,
+            "M": 0.25
+          },
+          "note": "curated overlap; B-track only"
+        },
+        "sasang_b_track": {
+          "ts_utc": "2022-05-09T12:00:00+00:00",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": "curated_overlap_20220509",
+          "a_track_autobind_forbidden": true,
+          "sasang_lens_version": "v1.0.0",
+          "machine_readables": {
+            "heat_proxy": 0.55,
+            "cold_proxy": 0.25,
+            "volatility_rarefaction_proxy": 0.45
+          },
+          "regime_hypothesis": "phase_transition",
+          "mapping_target": "bear",
+          "note": "multilens_eval curated anchor; B-track only"
+        }
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-06-13",
+      "lens_outputs": {
+        "logos_dual_regime": {
+          "risk_multiplier_cap": 0.8349082480367471,
+          "resonance_count": 4,
+          "veto_triggered": false,
+          "market_shock_confirmed": false,
+          "interpretation": "dual_regime: PSI=0.88 (warn>0.60, crisis>0.80); bible_risk=0.00; stress=0.52; cap=0.83; state_clamp_skip=invalid_state_id",
+          "inputs_ref": "dual_regime_curated_overlap_v1"
+        },
+        "myeongni_b_track": {
+          "experiment_id": "exp_multilens_curated_v1",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": true,
+          "ts_utc": "2022-06-13T12:00:00.000Z",
+          "state_id": 12,
+          "mapping_target": "bear",
+          "vector_4d": {
+            "S": 0.22,
+            "L": 0.28,
+            "K": 0.26,
+            "M": 0.24
+          },
+          "note": "curated overlap; B-track only"
+        },
+        "sasang_b_track": {
+          "ts_utc": "2022-06-13T12:00:00+00:00",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": "curated_overlap_20220613",
+          "a_track_autobind_forbidden": true,
+          "sasang_lens_version": "v1.0.0",
+          "machine_readables": {
+            "heat_proxy": 0.3,
+            "cold_proxy": 0.45,
+            "volatility_rarefaction_proxy": 0.6
+          },
+          "regime_hypothesis": "contraction",
+          "mapping_target": "bear",
+          "note": "multilens_eval curated anchor"
+        }
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-06-18",
+      "lens_outputs": {
+        "logos_dual_regime": {
+          "risk_multiplier_cap": 0.8488287495061407,
+          "resonance_count": 4,
+          "veto_triggered": false,
+          "market_shock_confirmed": false,
+          "interpretation": "dual_regime: PSI=0.88 (warn>0.60, crisis>0.80); bible_risk=0.00; stress=0.50; cap=0.85; state_clamp_skip=invalid_state_id",
+          "inputs_ref": "dual_regime_curated_overlap_v1"
+        },
+        "myeongni_b_track": {
+          "experiment_id": "exp_multilens_curated_v1",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": true,
+          "ts_utc": "2022-06-18T12:00:00.000Z",
+          "state_id": 13,
+          "mapping_target": "bear",
+          "vector_4d": {
+            "S": 0.21,
+            "L": 0.29,
+            "K": 0.25,
+            "M": 0.25
+          },
+          "note": "multilens_eval full grid"
+        },
+        "sasang_b_track": {
+          "ts_utc": "2022-06-18T12:00:00+00:00",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": "curated_20220618",
+          "a_track_autobind_forbidden": true,
+          "sasang_lens_version": "v1.0.0",
+          "machine_readables": {
+            "heat_proxy": 0.35,
+            "cold_proxy": 0.4,
+            "volatility_rarefaction_proxy": 0.55
+          },
+          "regime_hypothesis": "contraction",
+          "mapping_target": "bear",
+          "note": "multilens_eval full grid"
+        }
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-09-13",
+      "lens_outputs": {
+        "logos_dual_regime": {
+          "risk_multiplier_cap": 0.976050186166033,
+          "resonance_count": 1,
+          "veto_triggered": false,
+          "market_shock_confirmed": false,
+          "interpretation": "dual_regime: PSI=0.63 (warn>0.60, crisis>0.80); bible_risk=0.00; stress=0.32; cap=0.98; state_clamp_skip=invalid_state_id",
+          "inputs_ref": "dual_regime_curated_overlap_v1"
+        },
+        "myeongni_b_track": {
+          "experiment_id": "exp_multilens_curated_v1",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": true,
+          "ts_utc": "2022-09-13T12:00:00.000Z",
+          "state_id": 8,
+          "mapping_target": "sideways",
+          "vector_4d": {
+            "S": 0.25,
+            "L": 0.25,
+            "K": 0.25,
+            "M": 0.25
+          },
+          "note": "multilens_eval full grid"
+        },
+        "sasang_b_track": {
+          "ts_utc": "2022-09-13T12:00:00+00:00",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": "curated_20220913",
+          "a_track_autobind_forbidden": true,
+          "sasang_lens_version": "v1.0.0",
+          "machine_readables": {
+            "heat_proxy": 0.33,
+            "cold_proxy": 0.42,
+            "volatility_rarefaction_proxy": 0.5
+          },
+          "regime_hypothesis": "phase_transition",
+          "mapping_target": "sideways",
+          "note": "multilens_eval full grid"
+        }
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-11-09",
+      "lens_outputs": {
+        "logos_dual_regime": {
+          "risk_multiplier_cap": 0.833938755064442,
+          "resonance_count": 2,
+          "veto_triggered": false,
+          "market_shock_confirmed": false,
+          "interpretation": "dual_regime: PSI=0.81 (warn>0.60, crisis>0.80); bible_risk=0.00; stress=0.52; cap=0.83; state_clamp_skip=invalid_state_id",
+          "inputs_ref": "dual_regime_curated_overlap_v1"
+        },
+        "myeongni_b_track": {
+          "experiment_id": "exp_multilens_curated_v1",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": true,
+          "ts_utc": "2022-11-09T12:00:00.000Z",
+          "state_id": 15,
+          "mapping_target": "bear",
+          "vector_4d": {
+            "S": 0.19,
+            "L": 0.31,
+            "K": 0.25,
+            "M": 0.25
+          },
+          "note": "multilens_eval full grid"
+        },
+        "sasang_b_track": {
+          "ts_utc": "2022-11-09T12:00:00+00:00",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": "curated_20221109",
+          "a_track_autobind_forbidden": true,
+          "sasang_lens_version": "v1.0.0",
+          "machine_readables": {
+            "heat_proxy": 0.28,
+            "cold_proxy": 0.48,
+            "volatility_rarefaction_proxy": 0.58
+          },
+          "regime_hypothesis": "extreme_tail",
+          "mapping_target": "bear",
+          "note": "multilens_eval full grid"
+        }
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-12-30",
+      "lens_outputs": {
+        "logos_dual_regime": {
+          "risk_multiplier_cap": 1.1118,
+          "resonance_count": 1,
+          "veto_triggered": false,
+          "market_shock_confirmed": false,
+          "interpretation": "dual_regime: PSI=0.48 (warn>0.60, crisis>0.80); bible_risk=0.00; stress=0.13; cap=1.11; state_clamp_skip=invalid_state_id",
+          "inputs_ref": "dual_regime_curated_overlap_v1"
+        },
+        "myeongni_b_track": {
+          "experiment_id": "exp_multilens_curated_v1",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": true,
+          "ts_utc": "2022-12-30T12:00:00.000Z",
+          "state_id": 6,
+          "mapping_target": "sideways",
+          "vector_4d": {
+            "S": 0.23,
+            "L": 0.27,
+            "K": 0.25,
+            "M": 0.25
+          },
+          "note": "multilens_eval full grid"
+        },
+        "sasang_b_track": {
+          "ts_utc": "2022-12-30T12:00:00+00:00",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": "curated_20221230",
+          "a_track_autobind_forbidden": true,
+          "sasang_lens_version": "v1.0.0",
+          "machine_readables": {
+            "heat_proxy": 0.38,
+            "cold_proxy": 0.36,
+            "volatility_rarefaction_proxy": 0.44
+          },
+          "regime_hypothesis": "neutral",
+          "mapping_target": "sideways",
+          "note": "multilens_eval full grid"
+        }
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2023-01-15",
+      "lens_outputs": {
+        "logos_dual_regime": {
+          "risk_multiplier_cap": 1.0362,
+          "resonance_count": 2,
+          "veto_triggered": false,
+          "market_shock_confirmed": false,
+          "interpretation": "dual_regime: PSI=0.48 (warn>0.60, crisis>0.80); bible_risk=0.00; stress=0.23; cap=1.04; state_clamp_skip=invalid_state_id",
+          "inputs_ref": "dual_regime_curated_overlap_v1"
+        },
+        "myeongni_b_track": {
+          "experiment_id": "exp_multilens_curated_v1",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": true,
+          "ts_utc": "2023-01-15T12:00:00.000Z",
+          "state_id": 3,
+          "mapping_target": "sideways",
+          "vector_4d": {
+            "S": 0.26,
+            "L": 0.24,
+            "K": 0.25,
+            "M": 0.25
+          },
+          "note": "multilens_eval full grid"
+        },
+        "sasang_b_track": {
+          "ts_utc": "2023-01-15T12:00:00+00:00",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": "curated_overlap_20230115",
+          "a_track_autobind_forbidden": true,
+          "sasang_lens_version": "v1.0.0",
+          "machine_readables": {
+            "heat_proxy": 0.4,
+            "cold_proxy": 0.35,
+            "volatility_rarefaction_proxy": 0.35
+          },
+          "regime_hypothesis": "neutral",
+          "mapping_target": "sideways",
+          "note": "multilens_eval curated anchor"
+        }
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2023-03-10",
+      "lens_outputs": {
+        "logos_dual_regime": {
+          "risk_multiplier_cap": 0.8967714283384858,
+          "resonance_count": 2,
+          "veto_triggered": false,
+          "market_shock_confirmed": false,
+          "interpretation": "dual_regime: PSI=0.72 (warn>0.60, crisis>0.80); bible_risk=0.00; stress=0.43; cap=0.90; state_clamp_skip=invalid_state_id",
+          "inputs_ref": "dual_regime_curated_overlap_v1"
+        },
+        "myeongni_b_track": {
+          "experiment_id": "exp_multilens_curated_v1",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": true,
+          "ts_utc": "2023-03-10T12:00:00.000Z",
+          "state_id": 2,
+          "mapping_target": "bull",
+          "vector_4d": {
+            "S": 0.28,
+            "L": 0.22,
+            "K": 0.25,
+            "M": 0.25
+          },
+          "note": "multilens_eval full grid"
+        },
+        "sasang_b_track": {
+          "ts_utc": "2023-03-10T12:00:00+00:00",
+          "hypothesis_tier": "B",
+          "boundary_ack": true,
+          "stub": "curated_20230310",
+          "a_track_autobind_forbidden": true,
+          "sasang_lens_version": "v1.0.0",
+          "machine_readables": {
+            "heat_proxy": 0.45,
+            "cold_proxy": 0.32,
+            "volatility_rarefaction_proxy": 0.4
+          },
+          "regime_hypothesis": "expansion",
+          "mapping_target": "bull",
+          "note": "multilens_eval full grid"
+        }
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    }
+  ],
+  "populate_meta": {
+    "sasang_jsonl": "C:\\workspace\\data\\multilens_eval\\sasang_curated_overlap_v1.jsonl",
+    "myeongni_jsonl": "C:\\workspace\\data\\multilens_eval\\myeongni_curated_overlap_v1.jsonl",
+    "dual_regime_inputs_json": "C:\\workspace\\data\\multilens_eval\\dual_regime_market_adapter_v1.json"
+  },
+  "summary": {
+    "risk_multiplier_cap_stats": {
+      "min": 0.833938755064442,
+      "max": 1.1118,
+      "mean": 0.9292810882220653,
+      "n": 10
+    },
+    "mapping_target_sasang_myeongni": {
+      "agreement_count": 10,
+      "rows_with_both": 10,
+      "agreement_rate": 1.0
+    },
+    "dual_regime_flags": {
+      "market_shock_confirmed_count": 0,
+      "veto_triggered_count": 0
+    },
+    "fully_populated_rows": 10,
+    "total_rows": 10
+  }
+}

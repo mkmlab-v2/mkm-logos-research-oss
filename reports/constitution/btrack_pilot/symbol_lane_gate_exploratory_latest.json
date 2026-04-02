@@ -1,0 +1,86 @@
+{
+  "schema": "btrack_symbol_lane_gate_result_v1",
+  "generated_at_utc": "2026-04-01T19:06:35Z",
+  "inputs": {
+    "lane_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_summary_exploratory_latest.json",
+    "gate_template": "C:\\workspace\\data\\logos\\btrack_pilot\\gates\\symbol_lane_gate_template.json"
+  },
+  "lanes": {
+    "dss_priority": {
+      "input_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_dss_priority_exploratory_latest.jsonl",
+      "metrics": {
+        "count": 6.0,
+        "avg_score_tfidf_like": 60.328819,
+        "avg_dss_ratio": 0.371032,
+        "dss_presence_rate": 1.0,
+        "contamination_rate": 0.0
+      },
+      "thresholds": {
+        "min_count": 3,
+        "min_avg_score": 40.0,
+        "min_dss_presence_rate": 1.0,
+        "min_avg_dss_ratio": 0.02,
+        "max_contamination_rate": 0.6
+      },
+      "checks": {
+        "count_ok": true,
+        "avg_score_ok": true,
+        "dss_presence_ok": true,
+        "avg_dss_ratio_ok": true,
+        "contamination_ok": true
+      },
+      "decision": "pass"
+    },
+    "mixed": {
+      "input_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_mixed_exploratory_latest.jsonl",
+      "metrics": {
+        "count": 6.0,
+        "avg_score_tfidf_like": 60.328819,
+        "avg_dss_ratio": 0.371032,
+        "dss_presence_rate": 1.0,
+        "contamination_rate": 0.0
+      },
+      "thresholds": {
+        "min_count": 4,
+        "min_avg_score": 52.0,
+        "min_dss_presence_rate": 1.0,
+        "min_avg_dss_ratio": 0.01,
+        "max_contamination_rate": 0.7
+      },
+      "checks": {
+        "count_ok": true,
+        "avg_score_ok": true,
+        "dss_presence_ok": true,
+        "avg_dss_ratio_ok": true,
+        "contamination_ok": true
+      },
+      "decision": "pass"
+    },
+    "apocrypha_priority": {
+      "input_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_apocrypha_priority_exploratory_latest.jsonl",
+      "metrics": {
+        "count": 194.0,
+        "avg_score_tfidf_like": 84.37772,
+        "avg_dss_ratio": 0.0,
+        "dss_presence_rate": 0.0,
+        "contamination_rate": 0.0
+      },
+      "thresholds": {
+        "min_count": 10,
+        "min_avg_score": 35.0,
+        "min_dss_presence_rate": 0.0,
+        "min_avg_dss_ratio": 0.0,
+        "max_contamination_rate": 0.7
+      },
+      "checks": {
+        "count_ok": true,
+        "avg_score_ok": true,
+        "dss_presence_ok": true,
+        "avg_dss_ratio_ok": true,
+        "contamination_ok": true
+      },
+      "decision": "pass"
+    }
+  },
+  "decision": "pass"
+}

@@ -1,0 +1,133 @@
+{
+  "schema": "btrack_symbol_candidates_curated_v1",
+  "generated_at_utc": "2026-04-01T19:06:34Z",
+  "input_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_exploratory_latest.jsonl",
+  "output_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_exploratory_latest.jsonl",
+  "curated_count": 200,
+  "dss_backed_count": 6,
+  "min_dss_quota": 20,
+  "min_curated_count": 200,
+  "top10_preview": [
+    {
+      "rank": 425,
+      "symbol": "ארבעים",
+      "score_tfidf_like": 23.408018,
+      "term_freq": 3,
+      "doc_freq": 3,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 3
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 19,
+      "symbol": "שלום",
+      "score_tfidf_like": 155.222367,
+      "term_freq": 26,
+      "doc_freq": 24,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 26
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 135,
+      "symbol": "אלהים",
+      "score_tfidf_like": 50.701397,
+      "term_freq": 7,
+      "doc_freq": 6,
+      "source_mix": {
+        "dss": 2,
+        "apocrypha": 5
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 144,
+      "symbol": "חסד",
+      "score_tfidf_like": 49.766677,
+      "term_freq": 7,
+      "doc_freq": 7,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 7
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 261,
+      "symbol": "חכמה",
+      "score_tfidf_like": 30.318116,
+      "term_freq": 4,
+      "doc_freq": 4,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 4
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 291,
+      "symbol": "משפט",
+      "score_tfidf_like": 30.318116,
+      "term_freq": 4,
+      "doc_freq": 4,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 4
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 352,
+      "symbol": "צדק",
+      "score_tfidf_like": 23.408018,
+      "term_freq": 3,
+      "doc_freq": 3,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 3
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 415,
+      "symbol": "ברית",
+      "score_tfidf_like": 23.408018,
+      "term_freq": 3,
+      "doc_freq": 3,
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 3
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 28,
+      "symbol": "בני",
+      "score_tfidf_like": 129.033333,
+      "term_freq": 21,
+      "doc_freq": 20,
+      "source_mix": {
+        "dss": 4,
+        "apocrypha": 17
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    },
+    {
+      "rank": 64,
+      "symbol": "ישראל",
+      "score_tfidf_like": 79.48821,
+      "term_freq": 12,
+      "doc_freq": 12,
+      "source_mix": {
+        "dss": 2,
+        "apocrypha": 10
+      },
+      "generated_at_utc": "2026-04-01T19:06:34Z"
+    }
+  ],
+  "note": "Theme-term curation with DSS quota to reduce corpus-source bias."
+}

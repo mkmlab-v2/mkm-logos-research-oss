@@ -144,3 +144,17 @@
 - WARN: cost watch monitor script missing; skipped
 - policy: soft-fail (non-core optional tasks)
 
+[2026-04-02T02:33:39.6843312+00:00] waiting_queue_daily soft-fail summary
+- WARN: billing invoice env emitter missing; skipped
+- WARN: billing evidence script missing; skipped
+- WARN: hallucination eval script missing; skipped
+- WARN: cost watch monitor script missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-02T02:34:11.8165923+00:00] waiting_queue_daily soft-fail summary
+- WARN: billing invoice env emitter missing; skipped
+- WARN: billing evidence script missing; skipped
+- WARN: hallucination eval script missing; skipped
+- WARN: cost watch monitor script missing; skipped
+- policy: soft-fail (non-core optional tasks)
+

@@ -1,0 +1,41 @@
+{
+  "schema": "btrack_symbol_lane_baseline_lock_v1",
+  "locked_at_utc": "2026-04-02T02:59:38Z",
+  "inputs": {
+    "lane_gate": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_gate_stable_latest.json",
+    "lane_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_summary_stable_latest.json",
+    "gate_template": "C:\\workspace\\data\\logos\\btrack_pilot\\gates\\symbol_lane_gate_template.json"
+  },
+  "input_hashes": {
+    "lane_gate_sha256": "1e1b03a27f2b7d8162ad1db98893638c8ac32e8b16564ab50f68f73b867e6d05",
+    "lane_summary_sha256": "fc2fcb227cdcf767fe46f4787ed9a4dc8fd989c5eed1f8871e470e2012002f9b",
+    "gate_template_sha256": "4290ef5e8299e222c313991a3887c10151b403539eeb12a46bd93a4fcc8c0d47"
+  },
+  "baseline_decision": "pass",
+  "baseline_lane_metrics": {
+    "dss_priority": {
+      "count": 10.0,
+      "avg_score_tfidf_like": 42.669575,
+      "avg_dss_ratio": 0.572619
+    },
+    "mixed": {
+      "count": 7.0,
+      "avg_score_tfidf_like": 54.021946,
+      "avg_dss_ratio": 0.389456
+    },
+    "apocrypha_priority": {
+      "count": 190.0,
+      "avg_score_tfidf_like": 84.561905,
+      "avg_dss_ratio": 0.0
+    }
+  },
+  "regression_policy": {
+    "require_decision": "pass",
+    "require_lane_decision": "pass",
+    "dss_priority_count_min": 3,
+    "mixed_count_min": 4,
+    "apocrypha_count_min": 10,
+    "dss_priority_avg_dss_ratio_min": 0.02,
+    "mixed_avg_dss_ratio_min": 0.01
+  }
+}

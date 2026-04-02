@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<!-- SYNC: data/sasang/sasang_dynamics_regime_mapping_v1.sample.jsonl 변경 시 아래 SASANG_SAMPLE_SNAPSHOT 배열을 동일하게 맞출 것. 실매매/봇 미연결. -->
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>사상 동역학 B-Track 대시보드 V1.2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --panel: #151b24;
+      --text: #e8ecf0;
+      --muted: #8b98a5;
+      --accent: #c9a227;
+      --heat: #e85d4c;
+      --cold: #4a9fd4;
+      --rare: #9b7ed9;
+      --radius: 12px;
+      --cell-dim: rgba(255,255,255,0.04);
+      --cell-hi: rgba(201, 162, 39, 0.35);
+      --cell-border-hi: rgba(201, 162, 39, 0.9);
+    }
+    @keyframes matrixPulse {
+      0%, 100% { box-shadow: 0 0 12px rgba(201, 162, 39, 0.25); }
+      50% { box-shadow: 0 0 28px rgba(201, 162, 39, 0.55); }
+    }
+    @keyframes cardFlash {
+      0% { box-shadow: inset 0 0 0 rgba(201, 162, 39, 0); }
+      35% { box-shadow: inset 0 0 24px rgba(201, 162, 39, 0.12); }
+      100% { box-shadow: inset 0 0 0 rgba(201, 162, 39, 0); }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Literata", Georgia, serif;
+      background: radial-gradient(ellipse 120% 80% at 50% -15%, #1a2838 0%, var(--bg) 50%);
+      color: var(--text);
+      padding: 1.25rem;
+      line-height: 1.45;
+    }
+    .dashboard {
+      max-width: 52rem;
+      margin: 0 auto;
+      min-height: 750px;
+      display: flex;
+      flex-direction: column;
+    }
+    h1 {
+      font-size: 1.28rem;
+      font-weight: 600;
+      margin: 0 0 0.2rem;
+      letter-spacing: -0.02em;
+    }
+    .sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .card {
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 1rem 1.15rem;
+      margin-bottom: 0.85rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+    .card.proxy-card.flash {
+      animation: cardFlash 0.65s ease-out 1;
+    }
+    label.lbl {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.65rem;
+    }
+    .btn {
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: #0d1218;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease, transform 0.18s ease;
+    }
+    .btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 14px rgba(201, 162, 39, 0.12);
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn.active {
+      border-color: var(--cell-border-hi);
+      background: rgba(201, 162, 39, 0.12);
+      color: #f0e6c8;
+      box-shadow: 0 0 18px rgba(201, 162, 39, 0.22);
+    }
+    .btn-manual { border-style: dashed; }
+    select.scen {
+      width: 100%;
+      padding: 0.5rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: #0d1218;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+    @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 0.65rem;
+    }
+    .slider-row:last-child { margin-bottom: 0; }
+    .slider-row .klabel {
+      width: 7.5rem;
+      flex-shrink: 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.25;
+    }
+    .slider-row .klabel strong {
+      display: block;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.03em;
+      margin-top: 0.15rem;
+    }
+    .heat strong { color: var(--heat); }
+    .cold strong { color: var(--cold); }
+    .rare strong { color: var(--rare); }
+    input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent);
+      min-width: 0;
+    }
+    .val {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      width: 2.8rem;
+      text-align: right;
+      color: var(--accent);
+    }
+    .bars {
+      display: flex;
+      gap: 0.45rem;
+      height: 100px;
+      align-items: flex-end;
+      margin-top: 0.45rem;
+      padding: 0.35rem 0;
+    }
+    .bar {
+      flex: 1;
+      border-radius: 6px 6px 2px 2px;
+      min-height: 4px;
+      transition: height 0.38s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+    .bar.heat { background: linear-gradient(180deg, var(--heat), #8a2e24); }
+    .bar.cold { background: linear-gradient(180deg, var(--cold), #2d5a7a); }
+    .bar.rare { background: linear-gradient(180deg, var(--rare), #5c4a8a); }
+    .matrix-wrap { margin-top: 0.35rem; }
+    .matrix {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      max-width: 16rem;
+    }
+    .cell {
+      aspect-ratio: 1.15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: var(--cell-dim);
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .cell.highlight {
+      background: var(--cell-hi);
+      border-color: var(--cell-border-hi);
+      animation: matrixPulse 2.4s ease-in-out infinite;
+    }
+    dl.meta {
+      margin: 0;
+      display: grid;
+      gap: 0.3rem;
+      font-size: 0.86rem;
+    }
+    dl.meta dt {
+      color: var(--muted);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    dl.meta dd { margin: 0 0 0.4rem; }
+    .pill {
+      display: inline-block;
+      padding: 0.15rem 0.45rem;
+      border-radius: 6px;
+      background: rgba(201, 162, 39, 0.15);
+      color: var(--accent);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.74rem;
+    }
+    .matrix-note {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      max-width: 18rem;
+      line-height: 1.35;
+    }
+    footer {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: auto;
+      padding-top: 1rem;
+      max-width: 48rem;
+    }
+    button.reset {
+      margin-top: 0.35rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      color: var(--text);
+      font-family: inherit;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    button.reset:hover { border-color: var(--accent); color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <h1>사상 동역학 B-Track 대시보드 V1.2</h1>
+    <p class="sub">벤치·교육 전용 · SSOT 스냅샷 동기화: <code>data/sasang/sasang_dynamics_regime_mapping_v1.sample.jsonl</code></p>
+
+    <div class="card">
+      <span class="lbl">시나리오 (4대 쇼크 + 사용자)</span>
+      <div class="btn-row" id="shockButtons">
+        <button type="button" class="btn" data-idx="2" data-id="ftx">FTX 사태</button>
+        <button type="button" class="btn" data-idx="3" data-id="covid">COVID 쇼크</button>
+        <button type="button" class="btn" data-idx="4" data-id="lehman">리먼 사태</button>
+        <button type="button" class="btn" data-idx="5" data-id="imf">1997 IMF 외환위기</button>
+        <button type="button" class="btn btn-manual" data-id="manual">사용자 조작</button>
+      </div>
+      <label class="lbl" for="scenario">전체 행 선택 (CI 샘플 포함)</label>
+      <select class="scen" id="scenario"></select>
+      <button type="button" class="reset" id="reset">선택 행 베이스라인으로 되돌리기</button>
+    </div>
+
+    <div class="grid-2">
+      <div class="card proxy-card" id="proxyCard">
+        <span class="lbl">프록시 (0–1) · 전환 시 보간</span>
+        <div id="sliders"></div>
+        <div class="bars" aria-hidden="true">
+          <div class="bar heat" id="barHeat"></div>
+          <div class="bar cold" id="barCold"></div>
+          <div class="bar rare" id="barRare"></div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="lbl">2×2 사상 매트릭스 (교육용 시각화)</span>
+        <div class="matrix-wrap">
+          <div class="matrix" id="matrix" aria-label="사상 사분면">
+            <div class="cell" data-q="tae_yang">태양</div>
+            <div class="cell" data-q="so_yang">소양</div>
+            <div class="cell" data-q="tae_eum">태음</div>
+            <div class="cell" data-q="so_eum">소음</div>
+          </div>
+          <p class="matrix-note" id="matrixNote">시나리오 버튼 선택 시 벤치 매핑에 따라 칸이 강조됩니다. 「사용자 조작」에서는 강조가 해제됩니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="lbl">진단·메타 (JSONL 필드)</span>
+      <dl class="meta" id="meta"></dl>
+    </div>
+
+    <footer>
+      V1.2: CSS 글로우·막대 easing·시나리오 전환 시 프록시 숫자 보간. WebGL 미사용. hypothesis_tier B · A-track autobind 금지. 매트릭스 강조는 데모용. 슬라이더는 로컬 시뮬레이션만(파일 미저장).
+    </footer>
+  </div>
+
+  <script>
+    const SASANG_SAMPLE_SNAPSHOT = [
+      {"ts_utc": "2026-04-02T12:00:00+00:00", "hypothesis_tier": "B", "boundary_ack": true, "stub": "sasang_regime_v1_sample", "a_track_autobind_forbidden": true, "sasang_lens_version": "v1.0.0", "machine_readables": {"heat_proxy": 0.35, "cold_proxy": 0.4, "volatility_rarefaction_proxy": 0.25}, "regime_hypothesis": "phase_transition", "human_readable": {"diagnosis_label": "교육용: 위상 전환 구간 (예시)", "prescription_note": "관측 전용; 실매매 트리거 아님"}, "corpus_tier_note": "B-track observation; do not merge label cohort A with canon proxy B for OOF", "mapping_target": "sideways", "note": "sample line for CI validation"},
+      {"ts_utc": "2026-04-02T12:01:00+00:00", "hypothesis_tier": "B", "boundary_ack": true, "stub": true, "a_track_autobind_forbidden": true, "sasang_lens_version": "v1.0.0", "machine_readables": {"heat_proxy": 0.2, "cold_proxy": 0.15, "volatility_rarefaction_proxy": 0.95}, "regime_hypothesis": "extreme_tail", "mapping_target": "bear", "note": "high rarefaction proxy example"},
+      {"ts_utc": "2022-11-09T18:00:00+00:00", "hypothesis_tier": "B", "boundary_ack": true, "stub": "hypothesis_extreme_ftx_nov2022", "a_track_autobind_forbidden": true, "sasang_lens_version": "v1.0.0", "machine_readables": {"heat_proxy": 0.08, "cold_proxy": 0.72, "volatility_rarefaction_proxy": 0.96}, "regime_hypothesis": "extreme_tail", "mapping_target": "bear", "human_readable": {"diagnosis_label": "B-track 가설: 2022.11 FTX·암호화폐 연쇄 신용경색 (극단 꼬리)", "prescription_note": "관측·벤치 전용; 실매매 트리거 아님"}, "corpus_tier_note": "B-track historical shock; not label cohort A", "note": "extreme_tail: CEX·스테이블 코인 신뢰 붕괴 구간"},
+      {"ts_utc": "2020-03-16T13:30:00+00:00", "hypothesis_tier": "B", "boundary_ack": true, "stub": "hypothesis_extreme_covid_mar2020", "a_track_autobind_forbidden": true, "sasang_lens_version": "v1.0.0", "machine_readables": {"heat_proxy": 0.12, "cold_proxy": 0.55, "volatility_rarefaction_proxy": 0.92}, "regime_hypothesis": "phase_transition", "mapping_target": "bear", "human_readable": {"diagnosis_label": "B-track 가설: 2020.03 글로벌 유동성 쇼크 (COVID-19)", "prescription_note": "관측·벤치 전용"}, "corpus_tier_note": "B-track historical shock", "note": "phase_transition: VIX·크로스자산 동시 급락"},
+      {"ts_utc": "2008-09-15T14:00:00+00:00", "hypothesis_tier": "B", "boundary_ack": true, "stub": "hypothesis_extreme_lehman_sep2008", "a_track_autobind_forbidden": true, "sasang_lens_version": "v1.0.0", "machine_readables": {"heat_proxy": 0.18, "cold_proxy": 0.68, "volatility_rarefaction_proxy": 0.88}, "regime_hypothesis": "contraction", "mapping_target": "bear", "human_readable": {"diagnosis_label": "B-track 가설: 2008.09 리먼·금융 시스템 수축", "prescription_note": "관측·벤치 전용"}, "corpus_tier_note": "B-track historical shock", "note": "contraction: 은행·신용 스프레드 폭발"},
+      {"ts_utc": "1997-07-02T05:00:00+00:00", "hypothesis_tier": "B", "boundary_ack": true, "stub": "hypothesis_extreme_asia_fx_imf_jul1997", "a_track_autobind_forbidden": true, "sasang_lens_version": "v1.0.0", "machine_readables": {"heat_proxy": 0.14, "cold_proxy": 0.62, "volatility_rarefaction_proxy": 0.9}, "regime_hypothesis": "phase_transition", "mapping_target": "bear", "human_readable": {"diagnosis_label": "B-track 가설: 1997.07 아시아 외환위기·고정환 붕괴·IMF 연쇄 (태국 바트 플로트 직후)", "prescription_note": "관측·벤치 전용"}, "corpus_tier_note": "B-track historical shock; Asia EM FX regime break", "note": "phase_transition: 단기자본 유출·디페그·리스크오프 확산"}
+    ];
+
+    const STUB_TO_QUADRANT = {
+      hypothesis_extreme_ftx_nov2022: "tae_yang",
+      hypothesis_extreme_covid_mar2020: "so_eum",
+      hypothesis_extreme_lehman_sep2008: "tae_eum",
+      hypothesis_extreme_asia_fx_imf_jul1997: "so_eum"
+    };
+
+    const KEYS = [
+      { key: "heat_proxy", ko: "시장 열기 · 탐욕", mono: "heat_proxy", cls: "heat" },
+      { key: "cold_proxy", ko: "시장 냉기 · 공포", mono: "cold_proxy", cls: "cold" },
+      { key: "volatility_rarefaction_proxy", ko: "희소성 · 극단 변동", mono: "volatility_rarefaction_proxy", cls: "rare" }
+    ];
+
+    let manualMode = false;
+    let baseline = { heat_proxy: 0, cold_proxy: 0, volatility_rarefaction_proxy: 0 };
+    let proxyAnimGen = 0;
+    let lastMrForAnim = { heat_proxy: 0, cold_proxy: 0, volatility_rarefaction_proxy: 0 };
+    const sliders = {};
+
+    function animateProxyValues(fromM, toM, ms, onDone) {
+      proxyAnimGen += 1;
+      const gen = proxyAnimGen;
+      const t0 = performance.now();
+      function step(t) {
+        if (gen !== proxyAnimGen) return;
+        const u = Math.min(1, (t - t0) / ms);
+        const ease = 1 - (1 - u) * (1 - u);
+        KEYS.forEach(({ key }) => {
+          const v = fromM[key] + (toM[key] - fromM[key]) * ease;
+          sliders[key].value = String(v);
+          sliders[key].nextElementSibling.textContent = v.toFixed(2);
+        });
+        setBars({
+          heat_proxy: Number(sliders.heat_proxy.value),
+          cold_proxy: Number(sliders.cold_proxy.value),
+          volatility_rarefaction_proxy: Number(sliders.volatility_rarefaction_proxy.value)
+        });
+        if (u < 1) {
+          requestAnimationFrame(step);
+        } else if (onDone) {
+          onDone();
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function scenarioTitle(r, i) {
+      if (r.stub === "hypothesis_extreme_ftx_nov2022") return "FTX 2022-11 (extreme_tail)";
+      if (r.stub === "hypothesis_extreme_covid_mar2020") return "COVID 2020-03 (phase_transition)";
+      if (r.stub === "hypothesis_extreme_lehman_sep2008") return "Lehman 2008-09 (contraction)";
+      if (r.stub === "hypothesis_extreme_asia_fx_imf_jul1997") return "Asia FX / IMF 1997-07 (phase_transition)";
+      if (r.stub === true || r.stub === "sasang_regime_v1_sample") return `CI sample ${i + 1}`;
+      return String(r.stub).slice(0, 40);
+    }
+
+    function setMatrixHighlight(stub) {
+      document.querySelectorAll(".cell").forEach((el) => el.classList.remove("highlight"));
+      const note = document.getElementById("matrixNote");
+      if (manualMode) {
+        note.textContent = "「사용자 조작」: 매트릭스 강조 없음. 슬라이더로 프록시만 탐색합니다.";
+        return;
+      }
+      const sid = typeof stub === "string" ? stub : "";
+      const q = STUB_TO_QUADRANT[sid];
+      if (q) {
+        const el = document.querySelector(`.cell[data-q="${q}"]`);
+        if (el) el.classList.add("highlight");
+        const names = { tae_yang: "태양", so_yang: "소양", tae_eum: "태음", so_eum: "소음" };
+        note.textContent = `벤치 시각화 강조: ${names[q]} (${q}). JSONL regime_hypothesis·mapping_target과 별개의 UI 레이어입니다.`;
+      } else {
+        note.textContent = "이 행은 4대 쇼크 사전 매핑 없음 — 드롭다운의 CI/기타 샘플입니다.";
+      }
+    }
+
+    function setBars(mr) {
+      const h = (v) => `${Math.max(4, v * 100)}%`;
+      document.getElementById("barHeat").style.height = h(mr.heat_proxy);
+      document.getElementById("barCold").style.height = h(mr.cold_proxy);
+      document.getElementById("barRare").style.height = h(mr.volatility_rarefaction_proxy);
+    }
+
+    function renderMeta(r, extraHtml) {
+      const hr = r.human_readable || {};
+      const stub = typeof r.stub === "string" ? r.stub : JSON.stringify(r.stub);
+      document.getElementById("meta").innerHTML = `
+        <dt>ts_utc</dt><dd>${r.ts_utc}</dd>
+        <dt>stub</dt><dd><span class="pill">${stub}</span></dd>
+        <dt>regime_hypothesis</dt><dd><span class="pill">${r.regime_hypothesis || "—"}</span></dd>
+        <dt>mapping_target</dt><dd><span class="pill">${r.mapping_target || "—"}</span></dd>
+        <dt>진단 라벨</dt><dd>${hr.diagnosis_label || "—"}</dd>
+        <dt>note</dt><dd>${r.note || "—"}</dd>
+        ${extraHtml || ""}
+      `;
+    }
+
+    function syncFromRecord(r) {
+      manualMode = false;
+      const mr = r.machine_readables;
+      baseline = { ...mr };
+      const fromM = {
+        heat_proxy: Number(sliders.heat_proxy.value),
+        cold_proxy: Number(sliders.cold_proxy.value),
+        volatility_rarefaction_proxy: Number(sliders.volatility_rarefaction_proxy.value)
+      };
+      const needAnim =
+        Math.abs(fromM.heat_proxy - mr.heat_proxy) > 0.001 ||
+        Math.abs(fromM.cold_proxy - mr.cold_proxy) > 0.001 ||
+        Math.abs(fromM.volatility_rarefaction_proxy - mr.volatility_rarefaction_proxy) > 0.001;
+      const proxyCard = document.getElementById("proxyCard");
+      if (needAnim) {
+        proxyCard.classList.remove("flash");
+        void proxyCard.offsetWidth;
+        proxyCard.classList.add("flash");
+        animateProxyValues(fromM, mr, 420, () => {
+          lastMrForAnim = { ...mr };
+        });
+      } else {
+        KEYS.forEach(({ key }) => {
+          sliders[key].value = mr[key];
+          sliders[key].nextElementSibling.textContent = Number(mr[key]).toFixed(2);
+        });
+        setBars(mr);
+        lastMrForAnim = { ...mr };
+      }
+      const stub = typeof r.stub === "string" ? r.stub : "";
+      setMatrixHighlight(stub);
+      renderMeta(r);
+      document.querySelectorAll("#shockButtons .btn").forEach((b) => b.classList.remove("active"));
+      const idx = SASANG_SAMPLE_SNAPSHOT.indexOf(r);
+      if (idx >= 2 && idx <= 5) {
+        const b = document.querySelector(`#shockButtons .btn[data-idx="${idx}"]`);
+        if (b) b.classList.add("active");
+      }
+    }
+
+    function enterManualMode() {
+      manualMode = true;
+      document.querySelectorAll("#shockButtons .btn").forEach((b) => b.classList.remove("active"));
+      document.querySelector('#shockButtons [data-id="manual"]').classList.add("active");
+      setMatrixHighlight(null);
+      const r = SASANG_SAMPLE_SNAPSHOT[Number(document.getElementById("scenario").value)] || SASANG_SAMPLE_SNAPSHOT[0];
+      const mr = {
+        heat_proxy: Number(sliders.heat_proxy.value),
+        cold_proxy: Number(sliders.cold_proxy.value),
+        volatility_rarefaction_proxy: Number(sliders.volatility_rarefaction_proxy.value)
+      };
+      renderMeta(r, `<dt>모드</dt><dd>사용자 조작 — 현재 프록시: heat=${mr.heat_proxy.toFixed(2)}, cold=${mr.cold_proxy.toFixed(2)}, rare=${mr.volatility_rarefaction_proxy.toFixed(2)}</dd>`);
+    }
+
+    function init() {
+      const sel = document.getElementById("scenario");
+      SASANG_SAMPLE_SNAPSHOT.forEach((r, i) => {
+        const o = document.createElement("option");
+        o.value = String(i);
+        o.textContent = scenarioTitle(r, i);
+        sel.appendChild(o);
+      });
+
+      const host = document.getElementById("sliders");
+      KEYS.forEach(({ key, ko, mono, cls }) => {
+        const wrap = document.createElement("div");
+        wrap.className = "slider-row";
+        const lab = document.createElement("div");
+        lab.className = "klabel " + cls;
+        lab.innerHTML = `${ko}<strong>${mono}</strong>`;
+        const input = document.createElement("input");
+        input.type = "range";
+        input.min = "0";
+        input.max = "1";
+        input.step = "0.01";
+        const val = document.createElement("span");
+        val.className = "val";
+        val.textContent = "0.00";
+        input.addEventListener("input", () => {
+          val.textContent = Number(input.value).toFixed(2);
+          setBars({
+            heat_proxy: Number(sliders.heat_proxy.value),
+            cold_proxy: Number(sliders.cold_proxy.value),
+            volatility_rarefaction_proxy: Number(sliders.volatility_rarefaction_proxy.value)
+          });
+          if (!manualMode) enterManualMode();
+          else {
+            const r = SASANG_SAMPLE_SNAPSHOT[Number(document.getElementById("scenario").value)] || SASANG_SAMPLE_SNAPSHOT[0];
+            const mr = {
+              heat_proxy: Number(sliders.heat_proxy.value),
+              cold_proxy: Number(sliders.cold_proxy.value),
+              volatility_rarefaction_proxy: Number(sliders.volatility_rarefaction_proxy.value)
+            };
+            renderMeta(r, `<dt>모드</dt><dd>사용자 조작 — 현재 프록시: heat=${mr.heat_proxy.toFixed(2)}, cold=${mr.cold_proxy.toFixed(2)}, rare=${mr.volatility_rarefaction_proxy.toFixed(2)}</dd>`);
+          }
+        });
+        wrap.appendChild(lab);
+        wrap.appendChild(input);
+        wrap.appendChild(val);
+        host.appendChild(wrap);
+        sliders[key] = input;
+      });
+
+      document.querySelectorAll("#shockButtons .btn[data-idx]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const idx = Number(btn.dataset.idx);
+          sel.value = String(idx);
+          syncFromRecord(SASANG_SAMPLE_SNAPSHOT[idx]);
+        });
+      });
+      document.querySelector('#shockButtons [data-id="manual"]').addEventListener("click", () => {
+        enterManualMode();
+      });
+
+      sel.addEventListener("change", () => {
+        const idx = Number(sel.value);
+        syncFromRecord(SASANG_SAMPLE_SNAPSHOT[idx]);
+      });
+
+      document.getElementById("reset").addEventListener("click", () => {
+        manualMode = false;
+        syncFromRecord(SASANG_SAMPLE_SNAPSHOT[Number(sel.value)]);
+      });
+
+      syncFromRecord(SASANG_SAMPLE_SNAPSHOT[2]);
+      sel.value = "2";
+    }
+
+    init();
+  </script>
+</body>
+</html>

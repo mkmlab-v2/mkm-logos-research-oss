@@ -1,0 +1,141 @@
+{
+  "schema": "multilens_eval_v2_thin_report_v1",
+  "workspace_root": "C:\\workspace",
+  "window_label": "2022_crypto_stress_sample",
+  "asset_focus": "BTC_USD_daily_context",
+  "notes": "Illustrative calendar anchors for hand-filled B-track rows; not trading signals. Expand only after metrics contract is frozen.",
+  "contract": {
+    "schema": "multilens_eval_harness_v2_thin_contract_v1",
+    "schema_version": "1.0.0",
+    "purpose": "Same-calendar-day, per-lens observation slots before any A-track fusion. Not MoE weights in production; template for reproducible comparison.",
+    "parent_contract_v1": "docs/final/artifacts/MULTILENS_MARGINAL_UTILITY_HARNESS_CONTRACT_V1.json",
+    "forbidden": {
+      "a_track_auto_fusion": "Do not promote to live sizing without Promotion Loop (CONSTITUTION §8).",
+      "single_pnl_score_for_all_lenses": "Each lens may use different scoreable metrics; do not force one PnL column."
+    },
+    "lens_slots": {
+      "logos_dual_regime": {
+        "description": "Inputs to evaluate_dual_regime_and_market_shock or ablation rows; optional logos_manuscript_text.",
+        "record_fields": [
+          "risk_multiplier_cap",
+          "market_shock_confirmed",
+          "veto_triggered",
+          "interpretation_snippet"
+        ]
+      },
+      "myeongni_b_track": {
+        "description": "Optional state_id / JSONL line ref; does not drive cap without policy (CONSTITUTION §2.1).",
+        "record_fields": [
+          "state_id",
+          "ledger_ref",
+          "note"
+        ]
+      },
+      "sasang_b_track": {
+        "description": "SASANG_DYNAMICS_REGIME_MAPPING JSONL line matching date (ts_utc day).",
+        "record_fields": [
+          "machine_readables",
+          "regime_hypothesis",
+          "a_track_autobind_forbidden"
+        ]
+      }
+    },
+    "curated_dates_path": "data/multilens_eval/curated_dates_v1.json",
+    "runner_script": "scripts/eval_multilens_harness_v2_thin.py"
+  },
+  "contract_ref": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_EVAL_HARNESS_V2_THIN_CONTRACT.json",
+  "curated_ref": "C:\\workspace\\data\\multilens_eval\\curated_dates_v1.json",
+  "row_count": 10,
+  "rows": [
+    {
+      "calendar_date": "2022-01-01",
+      "lens_outputs": {
+        "logos_dual_regime": null,
+        "myeongni_b_track": null,
+        "sasang_b_track": null
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-03-01",
+      "lens_outputs": {
+        "logos_dual_regime": null,
+        "myeongni_b_track": null,
+        "sasang_b_track": null
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-05-09",
+      "lens_outputs": {
+        "logos_dual_regime": null,
+        "myeongni_b_track": null,
+        "sasang_b_track": null
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-06-13",
+      "lens_outputs": {
+        "logos_dual_regime": null,
+        "myeongni_b_track": null,
+        "sasang_b_track": null
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-06-18",
+      "lens_outputs": {
+        "logos_dual_regime": null,
+        "myeongni_b_track": null,
+        "sasang_b_track": null
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-09-13",
+      "lens_outputs": {
+        "logos_dual_regime": null,
+        "myeongni_b_track": null,
+        "sasang_b_track": null
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-11-09",
+      "lens_outputs": {
+        "logos_dual_regime": null,
+        "myeongni_b_track": null,
+        "sasang_b_track": null
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2022-12-30",
+      "lens_outputs": {
+        "logos_dual_regime": null,
+        "myeongni_b_track": null,
+        "sasang_b_track": null
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2023-01-15",
+      "lens_outputs": {
+        "logos_dual_regime": null,
+        "myeongni_b_track": null,
+        "sasang_b_track": null
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    },
+    {
+      "calendar_date": "2023-03-10",
+      "lens_outputs": {
+        "logos_dual_regime": null,
+        "myeongni_b_track": null,
+        "sasang_b_track": null
+      },
+      "fill_protocol": "manual_or_adapter; same date key across lenses"
+    }
+  ]
+}

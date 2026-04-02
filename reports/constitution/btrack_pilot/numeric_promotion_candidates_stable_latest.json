@@ -1,0 +1,16 @@
+{
+  "schema": "numeric_promotion_candidates_v1",
+  "generated_at_utc": "2026-04-02T02:59:38Z",
+  "input_json": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_numeric_injection_stable_latest.json",
+  "approval": {
+    "required_flag": "approve_numeric_near_miss=true",
+    "provided_flag": "",
+    "approved": false
+  },
+  "stats": {
+    "manual_review_queue_count": 4,
+    "promotion_candidate_count": 0
+  },
+  "promotion_candidates": [],
+  "note": "Near-miss candidates are exported only when explicit approval flag is provided."
+}

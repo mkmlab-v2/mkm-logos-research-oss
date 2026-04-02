@@ -1,0 +1,284 @@
+{
+  "schema": "btrack_symbol_abc_label_v1",
+  "generated_at_utc": "2026-04-02T02:59:38Z",
+  "mode": "single",
+  "profile_tag": "stable",
+  "inputs": {
+    "single_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_stable_latest.jsonl"
+  },
+  "counts": {
+    "A": 14,
+    "B": 6,
+    "C": 180
+  },
+  "total_symbols": 200,
+  "output_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_abc_labeled_stable_latest.jsonl",
+  "c_queue": {
+    "output_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_c_validation_queue_stable_latest.jsonl",
+    "count": 50,
+    "top_k": 50
+  },
+  "top_preview": [
+    {
+      "symbol": "שלום",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 155.222367,
+      "source_bucket": "apocrypha_only",
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 26
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "ישראל",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 79.48821,
+      "source_bucket": "mixed",
+      "source_mix": {
+        "dss": 2,
+        "apocrypha": 10
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "רוח",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 67.910716,
+      "source_bucket": "apocrypha_only",
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 10
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "אלהים",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 50.701397,
+      "source_bucket": "mixed",
+      "source_mix": {
+        "dss": 2,
+        "apocrypha": 5
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "חסד",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 49.766677,
+      "source_bucket": "apocrypha_only",
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 7
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "ירושלים",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 49.766677,
+      "source_bucket": "apocrypha_only",
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 7
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "מלחמה",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 43.45834,
+      "source_bucket": "apocrypha_only",
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 6
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "מלך",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 43.45834,
+      "source_bucket": "apocrypha_only",
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 6
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "חכמה",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 30.318116,
+      "source_bucket": "apocrypha_only",
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 4
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "משפט",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 30.318116,
+      "source_bucket": "apocrypha_only",
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 4
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "צדק",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 23.408018,
+      "source_bucket": "apocrypha_only",
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 3
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "ברית",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 23.408018,
+      "source_bucket": "apocrypha_only",
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 3
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "בני ישראל",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 23.408018,
+      "source_bucket": "mixed",
+      "source_mix": {
+        "dss": 2,
+        "apocrypha": 1
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "שמים",
+      "grade": "A",
+      "grade_reason": "scholarly_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 16.180709,
+      "source_bucket": "apocrypha_only",
+      "source_mix": {
+        "dss": 0,
+        "apocrypha": 2
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "עליון",
+      "grade": "B",
+      "grade_reason": "our_theory_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 55.933938,
+      "source_bucket": "mixed",
+      "source_mix": {
+        "dss": 2,
+        "apocrypha": 6
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "גבול",
+      "grade": "B",
+      "grade_reason": "our_theory_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 23.408018,
+      "source_bucket": "mixed",
+      "source_mix": {
+        "dss": 2,
+        "apocrypha": 1
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "בני אלהים",
+      "grade": "B",
+      "grade_reason": "our_theory_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 16.180709,
+      "source_bucket": "dss_only",
+      "source_mix": {
+        "dss": 2,
+        "apocrypha": 0
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "עמים",
+      "grade": "B",
+      "grade_reason": "our_theory_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 16.180709,
+      "source_bucket": "dss_only",
+      "source_mix": {
+        "dss": 2,
+        "apocrypha": 0
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "עליון עמים",
+      "grade": "B",
+      "grade_reason": "our_theory_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 16.180709,
+      "source_bucket": "dss_only",
+      "source_mix": {
+        "dss": 2,
+        "apocrypha": 0
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    },
+    {
+      "symbol": "נחלה",
+      "grade": "B",
+      "grade_reason": "our_theory_anchor_term",
+      "profile_tag": "stable",
+      "score_tfidf_like": 16.180709,
+      "source_bucket": "mixed",
+      "source_mix": {
+        "dss": 1,
+        "apocrypha": 1
+      },
+      "generated_at_utc": "2026-04-02T02:59:38Z"
+    }
+  ],
+  "note": "A/B/C are heuristic operational labels, not doctrinal certainty."
+}

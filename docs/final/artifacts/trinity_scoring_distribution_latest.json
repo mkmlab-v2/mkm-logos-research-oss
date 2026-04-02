@@ -1,6 +1,6 @@
 {
   "schema": "trinity_scoring_distribution_v1",
-  "generated_at_utc": "2026-04-02T02:10:13.488226+00:00",
+  "generated_at_utc": "2026-04-02T02:59:43.961937+00:00",
   "log_path": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
   "metric": "KOSPI_D1_RETURN_PCT",
   "windows": {
@@ -20,12 +20,12 @@
       "sample_size": 10,
       "hit": 0,
       "fail": 0,
-      "neutral_draw": 1,
-      "pending_close": 9,
+      "neutral_draw": 0,
+      "pending_close": 10,
       "hit_rate": 0.0,
       "fail_rate": 0.0,
-      "neutral_draw_rate": 0.1,
-      "pending_close_rate": 0.9,
+      "neutral_draw_rate": 0.0,
+      "pending_close_rate": 1.0,
       "advisory": "mixed_keep_observe"
     }
   },
@@ -53,13 +53,13 @@
       "top_source": "none"
     },
     "all": {
-      "sample_size": 21,
+      "sample_size": 27,
       "state_id_present_count": 0,
       "state_id_present_rate": 0.0,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "none": 21
+        "none": 27
       },
       "top_source": "none"
     },
@@ -103,5 +103,5 @@
     }
   },
   "latest_decision": "PENDING_CLOSE",
-  "total_filtered_rows": 21
+  "total_filtered_rows": 27
 }

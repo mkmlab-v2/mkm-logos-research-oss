@@ -1,0 +1,192 @@
+{
+  "schema": "b_track_hypothesis_inventory_v1",
+  "disclaimer": "B-Track hypothesis inventory only; not A-track SSOT; trading engine must not load by default. Rows are [HYPO] unless promoted via §8; cross_links are thematic joins, not ontological identity.",
+  "generated_at_utc": "2026-04-02T16:00:00+00:00",
+  "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §4.5.1",
+  "inventory_schema_path": "docs/final/B_TRACK_HYPOTHESIS_INVENTORY_SCHEMA.json",
+  "entries": [
+    {
+      "hypothesis_id": "HYP_GEM_ROOT_0001",
+      "created_utc": "2026-04-02T12:00:00+00:00",
+      "hypothesis_tier": "B",
+      "boundary_ack": true,
+      "pillar": "gematria_root",
+      "ontology_layer": "source_program",
+      "lens_family": "none",
+      "equivalence_claim": false,
+      "title": "[HYPO] Verse numeric roots encode thematic structure for B-track interpretation only",
+      "summary": "Gematria-derived features are source-program signals; they are not ontological identity with human-lens states or trading execution paths.",
+      "falsification_condition": "Controlled ablation on held-out verse slices shows no stable thematic clustering beyond permutation baselines while structure claims are asserted.",
+      "cross_links": [
+        {
+          "target_artifact": "CROSS_REF_DSS_TO_STATES_DRAFT",
+          "entry_ids": ["ENTRY_01", "ENTRY_06"],
+          "join_note": "thematic: DSS↔state draft rows for interpretive motifs; not identity between gematria roots and satellite line anchors."
+        }
+      ],
+      "promotion_status": "draft"
+    },
+    {
+      "hypothesis_id": "HYP_GEM_ROOT_0002",
+      "created_utc": "2026-04-02T14:30:00+00:00",
+      "hypothesis_tier": "B",
+      "boundary_ack": true,
+      "pillar": "gematria_root",
+      "ontology_layer": "source_program",
+      "lens_family": "none",
+      "equivalence_claim": false,
+      "title": "[HYPO] Book-to-book numeric feature distributions stay comparable under fixed pipeline versioning",
+      "summary": "Cross-corpus gematria statistics are compared only for B-track thematic reports; they do not license A-track or live-market identity mapping.",
+      "falsification_condition": "Same pipeline version yields incompatible or random-ranked book-level statistics versus documented baselines on frozen fixtures.",
+      "cross_links": [
+        {
+          "target_artifact": "CROSS_REF_DSS_TO_STATES_DRAFT",
+          "entry_ids": ["ENTRY_02", "ENTRY_16"],
+          "join_note": "thematic: Ezra/Neh cohort-list bench rows; book-level stats are orthogonal to entry_id row identity."
+        }
+      ],
+      "promotion_status": "draft"
+    },
+    {
+      "hypothesis_id": "HYP_STATE_RES_0001",
+      "created_utc": "2026-04-02T14:30:00+00:00",
+      "hypothesis_tier": "B",
+      "boundary_ack": true,
+      "pillar": "state_resonance",
+      "ontology_layer": "human_lens_east",
+      "lens_family": "sasang",
+      "equivalence_claim": false,
+      "title": "[HYPO] Sasang-style state labels align with verse clusters only as thematic overlays",
+      "summary": "State resonance is a human-lens East reading aid; it is not asserted as causal for markets or as A-track ground truth.",
+      "falsification_condition": "Blinded relabeling removes cluster coherence relative to label-free controls while strong resonance claims remain.",
+      "cross_links": [
+        {
+          "target_artifact": "SASANG_CROSS_REF_DRAFT",
+          "entry_ids": ["SASANG_ENTRY_01", "SASANG_ENTRY_02", "SASANG_ENTRY_03"],
+          "join_note": "thematic: sasang↔chunk↔state_candidate_id hypothesis rows; four-constitution theory is not numerically identical to 16-state space."
+        },
+        {
+          "target_artifact": "CROSS_REF_DSS_TO_STATES_DRAFT",
+          "entry_ids": ["ENTRY_11"],
+          "join_note": "thematic: ENTRY_11 analogy_bench pilot anchor (state 13); overlay only, not clinical or cosine truth."
+        }
+      ],
+      "promotion_status": "draft"
+    },
+    {
+      "hypothesis_id": "HYP_STATE_RES_0002",
+      "created_utc": "2026-04-02T14:30:00+00:00",
+      "hypothesis_tier": "B",
+      "boundary_ack": true,
+      "pillar": "state_resonance",
+      "ontology_layer": "human_lens_east",
+      "lens_family": "myeongni",
+      "equivalence_claim": false,
+      "title": "[HYPO] Myeongni timing overlays on verse windows are interpretive scaffolds, not execution triggers",
+      "summary": "Chronological overlays remain bench-only unless promoted; no default wiring to dual_regime or trading.",
+      "falsification_condition": "Independent calendar shuffles produce indistinguishable overlay fit versus claimed timing structure on fixed windows.",
+      "cross_links": [
+        {
+          "target_artifact": "CROSS_REF_DSS_TO_STATES_DRAFT",
+          "entry_ids": ["ENTRY_04", "ENTRY_07", "ENTRY_08", "ENTRY_11"],
+          "join_note": "thematic: calendar/temple/temporal and analogy_bench rows; myeongni scaffolding is not a dual_regime or live trigger."
+        }
+      ],
+      "promotion_status": "draft"
+    },
+    {
+      "hypothesis_id": "HYP_SEM_TRIG_0001",
+      "created_utc": "2026-04-02T14:30:00+00:00",
+      "hypothesis_tier": "B",
+      "boundary_ack": true,
+      "pillar": "semantic_trigger",
+      "ontology_layer": "human_lens_west",
+      "lens_family": "none",
+      "equivalence_claim": false,
+      "title": "[HYPO] Lexical trigger sets surface recurring motifs without claiming verse-to-market isomorphism",
+      "summary": "Semantic triggers are Western-lens or general-linguistic tags for B-track search; they stay separate from Logos purity gates where required.",
+      "falsification_condition": "Trigger lists show no lift over frequency-matched shams on held-out text while motif claims persist.",
+      "cross_links": [
+        {
+          "target_artifact": "CROSS_REF_DSS_TO_STATES_DRAFT",
+          "entry_ids": ["ENTRY_12", "ENTRY_13", "ENTRY_14"],
+          "join_note": "thematic: lexical link_type rows; word-level alignment is bench metadata, not market isomorphism."
+        }
+      ],
+      "promotion_status": "draft"
+    },
+    {
+      "hypothesis_id": "HYP_SEM_TRIG_0002",
+      "created_utc": "2026-04-02T14:30:00+00:00",
+      "hypothesis_tier": "B",
+      "boundary_ack": true,
+      "pillar": "semantic_trigger",
+      "ontology_layer": "unspecified",
+      "lens_family": "ijeoma",
+      "equivalence_claim": false,
+      "title": "[HYPO] Ijeoma-aligned keyword bridges are labeling aids, not ontological merges with other tracks",
+      "summary": "Cross-lingual bridges remain [HYPO] rows until reviewed; they do not substitute verified B-track eval slots.",
+      "falsification_condition": "Bridge table errors or contradictions exceed agreed QA thresholds on spot audits while bridges stay in active use.",
+      "cross_links": [
+        {
+          "target_artifact": "SASANG_CROSS_REF_DRAFT",
+          "entry_ids": ["SASANG_ENTRY_01", "SASANG_ENTRY_02", "SASANG_ENTRY_03", "SASANG_ENTRY_04", "SASANG_ENTRY_05"],
+          "join_note": "thematic: ijeoma chunk table joins as drafted; labeling aids only, not OOF or A-track auto-merge."
+        },
+        {
+          "target_artifact": "CROSS_REF_DSS_TO_STATES_DRAFT",
+          "entry_ids": ["ENTRY_11"],
+          "join_note": "thematic: shared pilot anchor for state 13; bridge rows do not assert identity across corpora."
+        }
+      ],
+      "promotion_status": "draft"
+    },
+    {
+      "hypothesis_id": "HYP_STRUCT_FRAC_0001",
+      "created_utc": "2026-04-02T14:30:00+00:00",
+      "hypothesis_tier": "B",
+      "boundary_ack": true,
+      "pillar": "structural_fractal",
+      "ontology_layer": "unspecified",
+      "lens_family": "none",
+      "equivalence_claim": false,
+      "title": "[HYPO] Self-similarity statistics on verse-derived graphs are descriptive only at B-track scope",
+      "summary": "Fractal-like measures do not imply physical or market scaling laws; charts are for exploration and documentation.",
+      "falsification_condition": "Null models reproduce claimed scaling exponents within confidence intervals on fixed graph fixtures.",
+      "cross_links": [
+        {
+          "target_artifact": "CROSS_REF_DSS_TO_STATES_DRAFT",
+          "entry_ids": ["ENTRY_10", "ENTRY_11"],
+          "join_note": "thematic: boundary/community vs analogy_bench narratives; graph statistics remain descriptive, not causal scaling proof."
+        }
+      ],
+      "promotion_status": "draft"
+    },
+    {
+      "hypothesis_id": "HYP_STRUCT_FRAC_0002",
+      "created_utc": "2026-04-02T14:30:00+00:00",
+      "hypothesis_tier": "B",
+      "boundary_ack": true,
+      "pillar": "structural_fractal",
+      "ontology_layer": "unspecified",
+      "lens_family": "mixed",
+      "equivalence_claim": false,
+      "title": "[HYPO] Multi-resolution summaries may co-use lenses without asserting a single unified ontology",
+      "summary": "Mixed lens_family marks parallel metaphors; joins are thematic unless cross_links are explicitly reviewed.",
+      "falsification_condition": "Required separation tests show unintended dependency between lens pipelines that should be isolated under the constitution.",
+      "cross_links": [
+        {
+          "target_artifact": "CROSS_REF_DSS_TO_STATES_DRAFT",
+          "entry_ids": ["ENTRY_11"],
+          "join_note": "thematic: analogy_bench row as multi-resolution metaphor anchor; not a unified ontology claim."
+        },
+        {
+          "target_artifact": "SASANG_CROSS_REF_DRAFT",
+          "entry_ids": ["SASANG_ENTRY_01"],
+          "join_note": "thematic: single pilot sasang row paired for mixed-lens documentation; not equivalence across domains."
+        }
+      ],
+      "promotion_status": "draft"
+    }
+  ]
+}
