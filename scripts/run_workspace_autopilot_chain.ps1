@@ -1,0 +1,70 @@
+# One-shot ops chain (local): P0 Fact-Lock bundle -> Sasang JSONL validate -> BTC Multilens smoke -> contract pytest subset.
+# Optional: -IncludeP1AB (Multilens P1 A/B + final selection after core Fact-Lock).
+# Optional: -IncludeJemaaiCloudChecks (verify jemaai.cloud MVP paths + nginx example; no VPS deploy).
+# No live trading. Network required for step 3 (Binance + FGI).
+#
+# Usage:
+#   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_workspace_autopilot_chain.ps1
+#   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_workspace_autopilot_chain.ps1 -IncludeP1AB -IncludeJemaaiCloudChecks
+
+param(
+    [switch]$IncludeP1AB,
+    [switch]$IncludeJemaaiCloudChecks
+)
+
+$ErrorActionPreference = "Stop"
+$workspaceRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
+Set-Location -LiteralPath $workspaceRoot
+
+$flArgs = @()
+if ($IncludeP1AB) {
+    $flArgs += "-IncludeP1AB"
+}
+
+Write-Host "=== [1/4] run_fact_lock_bundle.ps1 $(if ($IncludeP1AB) { '(+P1 A/B)' }) ===" -ForegroundColor Cyan
+& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $workspaceRoot "scripts\run_fact_lock_bundle.ps1") @flArgs
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "=== [2/4] sasang validate-sample (sample + btc_anchor) ===" -ForegroundColor Cyan
+& py (Join-Path $workspaceRoot "scripts\sasang_dynamics_regime_mapping_ledger.py") @("validate-sample")
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py (Join-Path $workspaceRoot "scripts\sasang_dynamics_regime_mapping_ledger.py") @(
+    "validate-sample", "--path", (Join-Path $workspaceRoot "data\sasang\sasang_dynamics_regime_mapping_v1.btc_anchor_smoke.jsonl")
+)
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "=== [3/4] run_btc_anchor_multilens_smoke.ps1 ===" -ForegroundColor Cyan
+& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $workspaceRoot "scripts\run_btc_anchor_multilens_smoke.ps1")
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "=== [4/4] pytest (sasang ledger + multilens thin) ===" -ForegroundColor Cyan
+& py -m pytest @(
+    (Join-Path $workspaceRoot "tests\test_sasang_dynamics_regime_mapping_ledger.py"),
+    (Join-Path $workspaceRoot "tests\test_multilens_eval_harness_v2_thin.py"),
+    "-q", "--tb=short"
+)
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+if ($IncludeJemaaiCloudChecks) {
+    Write-Host "=== [5] jemaai.cloud MVP path checks (no deploy) ===" -ForegroundColor Cyan
+    $mvp = Join-Path $workspaceRoot "projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp"
+    $check = @(
+        (Join-Path $mvp "JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md"),
+        (Join-Path $mvp "public_event_gateway.py"),
+        (Join-Path $mvp "nginx_public_event_gateway.conf.example"),
+        (Join-Path $mvp "examples\public_event_ingest_minimal.v1.json"),
+        (Join-Path $mvp "public_showroom_poll.html"),
+        (Join-Path $workspaceRoot "projects\bitcoin-trading\ops\windows-rehearsal\ensure_public_event_gateway.ps1"),
+        (Join-Path $workspaceRoot "scripts\print_gemini_env_hygiene_hint.ps1")
+    )
+    foreach ($p in $check) {
+        if (-not (Test-Path -LiteralPath $p)) {
+            throw "jemaai.cloud readiness: missing $p"
+        }
+        Write-Host "  OK: $p" -ForegroundColor DarkGray
+    }
+    Write-Host "jemaai.cloud: deploy nginx `location` from nginx_public_event_gateway.conf.example; run ensure_public_event_gateway.ps1 on host; set PUBLIC_EVENT_GATEWAY_TOKEN. See JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md." -ForegroundColor Green
+}
+
+Write-Host "=== autopilot chain OK ===" -ForegroundColor Green
+exit 0
