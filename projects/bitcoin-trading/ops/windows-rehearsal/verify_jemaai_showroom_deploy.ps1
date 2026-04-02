@@ -1,6 +1,7 @@
 param(
     [string]$GatewayBaseUrl = "http://127.0.0.1:8788",
     [string]$PublicApiBaseUrl = "",
+    [string]$ProfilesUrl = "",
     [string]$ExpectedOrigin = "",
     [string]$PollHtmlPath = "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp\public_showroom_poll.html",
     [string]$N8nHeaderJsonPath = "",
@@ -41,7 +42,30 @@ function Test-ApiLatest([string]$baseUrl) {
             return [pscustomobject]@{ Ok = $false; Detail = "Missing key: $k"; Headers = $r.Headers }
         }
     }
-    return [pscustomobject]@{ Ok = $true; Detail = "latest OK"; Headers = $r.Headers }
+    return [pscustomobject]@{ Ok = $true; Detail = "latest OK"; Headers = $r.Headers; BodyObject = $obj }
+}
+
+function Test-CharacterProfiles([string]$url) {
+    try {
+        $r = Invoke-JsonGet -url $url
+        if ($r.StatusCode -lt 200 -or $r.StatusCode -ge 300) {
+            return [pscustomobject]@{ Ok = $false; Detail = "HTTP $($r.StatusCode)"; Profiles = @() }
+        }
+        $obj = $r.Body | ConvertFrom-Json -ErrorAction Stop
+        if (-not $obj.profiles) {
+            return [pscustomobject]@{ Ok = $false; Detail = "profiles key missing"; Profiles = @() }
+        }
+        $names = @($obj.profiles.PSObject.Properties.Name)
+        if ($names.Count -lt 4) {
+            return [pscustomobject]@{ Ok = $false; Detail = "profiles too small ($($names.Count))"; Profiles = $names }
+        }
+        if (-not ($names -contains "unknown_guard")) {
+            return [pscustomobject]@{ Ok = $false; Detail = "unknown_guard missing"; Profiles = $names }
+        }
+        return [pscustomobject]@{ Ok = $true; Detail = "profiles OK ($($names.Count))"; Profiles = $names }
+    } catch {
+        return [pscustomobject]@{ Ok = $false; Detail = $_.Exception.Message; Profiles = @() }
+    }
 }
 
 function Get-HeaderValue($headers, [string]$name) {
@@ -174,6 +198,41 @@ if ($apiCheck -and $apiCheck.Headers) {
 }
 Write-Step "CORS / Origin" $corsOk $corsDetail
 $results += $corsOk
+
+# 3.5) Profiles JSON and latest character_id mapping integrity
+$profilesCheck = $null
+$resolvedProfilesUrl = if ([string]::IsNullOrWhiteSpace($ProfilesUrl)) {
+    if (-not [string]::IsNullOrWhiteSpace($PublicApiBaseUrl)) {
+        $PublicApiBaseUrl.TrimEnd("/") + "/character_profiles_v1_1.json"
+    } else {
+        $GatewayBaseUrl.TrimEnd("/") + "/character_profiles_v1_1.json"
+    }
+} else { $ProfilesUrl }
+
+$profilesCheck = Test-CharacterProfiles -url $resolvedProfilesUrl
+Write-Step "Character Profiles JSON" $profilesCheck.Ok ("url=" + $resolvedProfilesUrl + "; " + $profilesCheck.Detail)
+$results += $profilesCheck.Ok
+
+$charMapOk = $false
+$charMapDetail = "API check unavailable"
+if ($apiCheck -and $apiCheck.Ok -and $profilesCheck -and $profilesCheck.Ok) {
+    $latestChar = ""
+    try {
+        $latestChar = [string]$apiCheck.BodyObject.active_character_id
+    } catch { }
+    if ([string]::IsNullOrWhiteSpace($latestChar)) {
+        $charMapOk = $false
+        $charMapDetail = "latest.active_character_id missing"
+    } elseif ($profilesCheck.Profiles -contains $latestChar) {
+        $charMapOk = $true
+        $charMapDetail = "latest.active_character_id maps to profile: $latestChar"
+    } else {
+        $charMapOk = $false
+        $charMapDetail = "latest.active_character_id not in profiles: $latestChar"
+    }
+}
+Write-Step "Latest Character Mapping" $charMapOk $charMapDetail
+$results += $charMapOk
 
 # 4) Polling UI base URL
 $baseOk = $false
