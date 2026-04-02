@@ -64,6 +64,9 @@ $billingEvidenceScriptPath = "C:\workspace\scripts\report_billing_evidence_from_
 $hallucinationEvalScriptPath = "C:\workspace\scripts\report_hallucination_grounding_eval.py"
 $costWatchScriptPath = "C:\workspace\scripts\report_cost_watch_monitor.py"
 $regimeSwitchScriptPath = "C:\workspace\scripts\run_btc_time_machine_regime_switch_backtest.py"
+$lensMyeongniScriptPath = "C:\workspace\scripts\run_lens_myeongni.py"
+$lensSasangScriptPath = "C:\workspace\scripts\run_lens_sasang.py"
+$lensLogosScriptPath = "C:\workspace\scripts\run_lens_logos.py"
 $dailySitrepPath = "C:\workspace\docs\final\artifacts\waiting_queue_daily_sitrep_latest.txt"
 $softFailNotes = New-Object System.Collections.Generic.List[string]
 
@@ -513,6 +516,32 @@ if (Test-Path -LiteralPath $costWatchScriptPath) {
     Add-SoftFailNote "cost watch monitor script missing; skipped"
 }
 
+Write-Host "[waiting-queue-check] Independent lens v0 snapshots (myeongni, sasang, logos)..."
+if (Test-Path -LiteralPath $lensMyeongniScriptPath) {
+    py scripts/run_lens_myeongni.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "run_lens_myeongni.py failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "run_lens_myeongni.py missing; skipped"
+}
+if (Test-Path -LiteralPath $lensSasangScriptPath) {
+    py scripts/run_lens_sasang.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "run_lens_sasang.py failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "run_lens_sasang.py missing; skipped"
+}
+if (Test-Path -LiteralPath $lensLogosScriptPath) {
+    py scripts/run_lens_logos.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "run_lens_logos.py failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "run_lens_logos.py missing; skipped"
+}
+
 Write-Host "[waiting-queue-check] Running BTC regime-switch comparison (read-only sensor)..."
 if (Test-Path -LiteralPath $regimeSwitchScriptPath) {
     py scripts/run_btc_time_machine_regime_switch_backtest.py
@@ -525,6 +554,8 @@ if (Test-Path -LiteralPath $regimeSwitchScriptPath) {
 
 if ($SkipNightWatchmanHarness) {
     Write-Host "[waiting-queue-check] Skipping Night Watchman harness guard by flag."
+} elseif (-not (Test-Path -LiteralPath "C:\workspace\scripts\night_watchman_harness_v1.ps1")) {
+    Add-SoftFailNote "Night Watchman harness script missing; skipped"
 } else {
     Write-Host "[waiting-queue-check] Running Night Watchman harness guard..."
     powershell -ExecutionPolicy Bypass -File "C:\workspace\scripts\night_watchman_harness_v1.ps1" `

@@ -1,69 +1,7 @@
 {
   "schema": "night_watchman_harness_config_v1",
-  "history_root": "docs/final/artifacts/night_watchman_harness/history",
-  "lock_file": "docs/final/artifacts/night_watchman_harness_lock_latest.json",
-  "status_log_file": "docs/final/artifacts/night_watchman_harness_log.jsonl",
-  "alerts": {
-    "enabled": true,
-    "webhook_env_var": "FACT_SAFE_SLACK_WEBHOOK_URL",
-    "headline": ":rotating_light: [Night Watchman Harness] POLICY VIOLATION (HOLD)"
-  },
-  "rollback_targets": [
-    "docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
-    "docs/final/artifacts/high_reliability_mode_gate_latest.json",
-    "projects/bitcoin-trading/memory/v2/risk/risk_profile_fact_safe_latest.json"
-  ],
-  "checks": {
-    "required_decisions": [
-      {
-        "name": "high_reliability_gate_pass",
-        "file": "docs/final/artifacts/high_reliability_mode_gate_latest.json",
-        "json_path": "decision",
-        "allowed_values": [
-          "PASS"
-        ]
-      },
-      {
-        "name": "btrack_promotion_gate_pass",
-        "file": "reports/constitution/btrack_pilot/btrack_promotion_gate_anchor_verified_only_latest.json",
-        "json_path": "decision",
-        "allowed_values": [
-          "pass"
-        ]
-      }
-    ],
-    "lock_contract": {
-      "name": "prophecy_low_or_hold_requires_lock",
-      "file": "docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
-      "badge_path": "meta.reliability_badge",
-      "decision_path": "meta.high_reliability_decision",
-      "locked_path": "meta.price_output_locked"
-    },
-    "numeric_drift": [
-      {
-        "name": "risk_fused_pressure_stability",
-        "file": "docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
-        "json_path": "risk_profile.fused_risk_pressure",
-        "max_abs_delta": 0.2
-      },
-      {
-        "name": "risk_position_scale_cap_stability",
-        "file": "docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
-        "json_path": "risk_profile.position_scale_cap",
-        "max_abs_delta": 0.5
-      },
-      {
-        "name": "risk_daily_loss_cap_stability",
-        "file": "docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
-        "json_path": "risk_profile.daily_loss_cap_pct",
-        "max_abs_delta": 0.5
-      },
-      {
-        "name": "meta_net_delta_7d_stability",
-        "file": "docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
-        "json_path": "meta.net_delta_7d",
-        "max_abs_delta": 2.0
-      }
-    ]
-  }
+  "description": "Pixel Battalion public map build + dry-run Slack alert; see PIXEL_BATTALION_NIGHT_WATCHMAN_CHECKLIST.md",
+  "build_public_map_script": "scripts/build_pixel_battalion_public_map.py",
+  "send_alert_script": "scripts/send_night_watchman_character_alert.py",
+  "lock_output": "docs/final/artifacts/night_watchman_harness_lock_latest.json"
 }

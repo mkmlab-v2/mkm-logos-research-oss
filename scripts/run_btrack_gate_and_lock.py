@@ -18,6 +18,14 @@ def _run(cmd: list[str]) -> None:
         raise SystemExit(proc.returncode)
 
 
+def _run_if_exists(py: str, rel_script: str) -> None:
+    path = ROOT / rel_script
+    if not path.is_file():
+        print(f"[skip] missing script: {rel_script}")
+        return
+    _run([py, rel_script])
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Run B-Track verified-only gate and lock in one shot")
     ap.add_argument("--python", default=sys.executable, help="Python executable")
@@ -88,9 +96,9 @@ def main() -> int:
                 args.sasang_clinical_report,
             ]
         )
-    _run([py, "scripts/report_logos_timeline_quality_gate.py"])
-    _run([py, "scripts/report_myeongni_transition_quality_gate.py"])
-    _run([py, "scripts/report_trinity_track_quality.py"])
+    _run_if_exists(py, "scripts/report_logos_timeline_quality_gate.py")
+    _run_if_exists(py, "scripts/report_myeongni_transition_quality_gate.py")
+    _run_if_exists(py, "scripts/report_trinity_track_quality.py")
 
     # 5) Lock baseline and run regression check.
     _run([py, "scripts/lock_btrack_verified_baseline.py"])

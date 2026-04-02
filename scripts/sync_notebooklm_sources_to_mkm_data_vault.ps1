@@ -27,6 +27,10 @@
 
   If -VaultRoot is omitted and the default path fails (e.g. script read as non-UTF8), set env MKM_VAULT_ROOT
   to the vault folder or pass -VaultRoot explicitly. Save this file as UTF-8 with BOM for Korean defaults on Windows PowerShell 5.1.
+
+.NOTES
+  Paths listed in $OptionalMissingRel may be absent in a minimal clone (not in git, VPS-only, or under .gitignore);
+  those skips use Write-Host instead of Write-Warning. See docs/NotebookLM_sources_manifest.md.
 #>
 param(
     [string]$WorkspaceRoot = (Split-Path -Parent $PSScriptRoot),
@@ -123,6 +127,17 @@ $SourceDirs = @(
     "data\logos\aruljohn_kjv"
 )
 
+# Same strings as $SourceFiles; absent in many clones — document in NotebookLM_sources_manifest.md
+$OptionalMissingRel = [string[]]@(
+    "projects\bitcoin-trading\ops\v2\memory\decision_ledger.py",
+    "projects\bitcoin-trading\ops\v2\memory\fact_lock_snapshot.py",
+    "projects\bitcoin-trading\ops\windows-rehearsal\WAITING_QUEUE_DUAL_BTC_RUNBOOK.md",
+    "projects\bitcoin-trading\ops\windows-rehearsal\DAILY_EXECUTION_INSIGHT_BRIEF_TEMPLATE.md",
+    "backtest_results\LOGOS_RESONANCE_BTC_BULL_FULL.json",
+    "backtest_results\LOGOS_RESONANCE_BTC_BEAR_FULL.json",
+    "backtest_results\LOGOS_RESONANCE_BTC_SIDEWAYS_FULL.json"
+)
+
 $copied = 0
 $skipped = 0
 
@@ -135,7 +150,11 @@ foreach ($rel in $SourceFiles) {
         if ($Strict) {
             throw "Missing source (Strict): $src"
         }
-        Write-Warning "Skip missing: $rel"
+        if ($OptionalMissingRel -contains $rel) {
+            Write-Host "Skip optional (not in workspace): $rel" -ForegroundColor DarkGray
+        } else {
+            Write-Warning "Skip missing: $rel"
+        }
         $skipped++
         continue
     }
@@ -202,4 +221,4 @@ if ($WhatIf) {
 $stampPath = Join-Path $destRoot "_LAST_SYNC.txt"
 Write-Utf8NoBom -Path $stampPath -Text $stampText
 
-Write-Host "NotebookLM vault mirror OK -> $destRoot (copied=$copied skipped=$skipped)"
+Write-Host "NotebookLM vault mirror OK -> $destRoot (copied=$copied skipped=$skipped; optional-absent uses gray line, unexpected absent uses WARNING)"

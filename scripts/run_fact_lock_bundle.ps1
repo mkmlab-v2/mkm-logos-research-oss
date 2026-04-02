@@ -5,7 +5,7 @@
 .DESCRIPTION
   1. `py scripts/integrity_guard.py` (CI 첫 단계)
   2. `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`
-     — dual-regime 스모크(14) 후 워크스페이스 루트에서 Logos 스냅샷·CROSS_REF·SASANG·명리 insight 테스트
+     — dual-regime 스모크 + multilens marginal(V1) 후 워크스페이스 루트 Fact-Lock(Thin V2·시장 어댑터 등 명시 목록)
 
   테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다.
 

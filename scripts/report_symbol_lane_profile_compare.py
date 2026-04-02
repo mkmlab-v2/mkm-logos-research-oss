@@ -90,10 +90,22 @@ def main() -> int:
     expl_c_queue_path = _abs(args.exploratory_c_queue)
     out_path = _abs(args.out_json)
 
-    for p in (stable_gate_path, expl_gate_path, stable_thematic_path, expl_thematic_path, stable_c_queue_path, expl_c_queue_path):
+    exploratory_mirror = False
+    for p in (stable_gate_path, stable_thematic_path, stable_c_queue_path):
         if not p.is_file():
-            print(f"ERROR: missing file: {p}")
+            print(f"ERROR: missing stable file: {p}")
             return 2
+    if not all(
+        p.is_file()
+        for p in (expl_gate_path, expl_thematic_path, expl_c_queue_path)
+    ):
+        exploratory_mirror = True
+        expl_gate_path = stable_gate_path
+        expl_thematic_path = stable_thematic_path
+        expl_c_queue_path = stable_c_queue_path
+        print(
+            "[warn] exploratory lane artifacts missing; using stable paths as mirror (delta will be 0)."
+        )
 
     stable_gate = _jread(stable_gate_path)
     expl_gate = _jread(expl_gate_path)
@@ -126,6 +138,7 @@ def main() -> int:
             "exploratory_thematic": str(expl_thematic_path),
             "stable_c_queue": str(stable_c_queue_path),
             "exploratory_c_queue": str(expl_c_queue_path),
+            "exploratory_profile_used_stable_mirror": exploratory_mirror,
         },
         "decisions": {
             "stable": stable_gate.get("decision"),

@@ -121,6 +121,20 @@ function Test-LockOwnerAlive {
     return $false
 }
 
+function Stop-DirectDaemonCopies {
+    # bitcoin_trading_daemon.py bypasses start_24h_singleton.lock — remove strays each watchdog pass.
+    $stopDirect = Join-Path $PSScriptRoot "stop_direct_bitcoin_trading_daemon_copies.ps1"
+    if (-not (Test-Path $stopDirect)) {
+        Write-Log "WARN: stop_direct_bitcoin_trading_daemon_copies.ps1 missing; skip direct-daemon cleanup"
+        return
+    }
+    try {
+        & $stopDirect
+    } catch {
+        Write-Log "WARN: Stop-DirectDaemonCopies failed: $($_.Exception.Message)"
+    }
+}
+
 if (Test-Path $stopPath) {
     Write-Log "STOP.txt exists. Ensuring daemon is not running."
     $procs = Get-DaemonProcesses
@@ -128,8 +142,11 @@ if (Test-Path $stopPath) {
         Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
         Write-Log "Stopped daemon PID=$($p.ProcessId) due to kill switch"
     }
+    Stop-DirectDaemonCopies
     exit 0
 }
+
+Stop-DirectDaemonCopies
 
 $daemonProcs = Get-DaemonProcesses
 # If multiple daemons exist (manual restart + watchdog, etc.), keep the newest only.

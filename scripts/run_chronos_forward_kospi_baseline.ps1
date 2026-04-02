@@ -5,47 +5,43 @@
 #   - Mode both        -> training run, then holdout 2026 run
 #
 # Default period: tools/prophecy/chronos_forward_trainer.py ChronosForwardTrainer defaults.
+#
+# Recommended: long runs — use -Detached so the job survives Cursor/agent terminal limits:
+#   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_chronos_forward_kospi_baseline.ps1 -Mode both -Detached
 
 param(
     [ValidateSet("training", "holdout2026", "both")]
     [string]$Mode = "both",
     [int]$SaveInterval = 50,
-    [switch]$Quiet
+    [switch]$Quiet,
+    [switch]$Detached
 )
 
 $ErrorActionPreference = "Stop"
 $workspace = "C:\workspace"
+$pyScript = Join-Path $workspace "scripts\run_chronos_forward_kospi_baseline.py"
 Set-Location $workspace
 
-$vf = if ($Quiet) { "False" } else { "True" }
-
-function Invoke-TrainingOnly {
-    $cmd = "from tools.prophecy.chronos_forward_trainer import ChronosForwardTrainer; t=ChronosForwardTrainer(); t.run_training(save_interval=$SaveInterval, verbose=$vf)"
-    py -c $cmd
-    if ($LASTEXITCODE -ne 0) { throw "Chronos-Forward training baseline failed" }
+if ($Detached) {
+    $self = Join-Path $PSScriptRoot "run_chronos_forward_kospi_baseline.ps1"
+    $childArgs = @(
+        "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $self,
+        "-Mode", $Mode, "-SaveInterval", $SaveInterval
+    )
+    if ($Quiet) { $childArgs += "-Quiet" }
+    $exe = if (Get-Command pwsh -ErrorAction SilentlyContinue) { "pwsh" } else { "powershell" }
+    Start-Process -FilePath $exe -ArgumentList $childArgs -WorkingDirectory $workspace
+    Write-Host "[chronos-baseline] Detached pwsh started (Mode=$Mode). Watch: data/chronos_forward_training/training_result.json / holdout_2026_result.json"
+    exit 0
 }
 
-function Invoke-Holdout2026 {
-    $cmd = "from tools.prophecy.chronos_forward_trainer import ChronosForwardTrainer; t=ChronosForwardTrainer(); t.run_training(save_interval=$SaveInterval, verbose=$vf, holdout_year=2026)"
-    py -c $cmd
-    if ($LASTEXITCODE -ne 0) { throw "Chronos-Forward holdout 2026 baseline failed" }
-}
+$pyArgs = @($pyScript, "--mode", $Mode, "--save-interval", "$SaveInterval")
+if ($Quiet) { $pyArgs += "--quiet" }
 
-switch ($Mode) {
-    "training" {
-        Write-Host "[chronos-baseline] Mode=training -> training_result.json"
-        Invoke-TrainingOnly
-    }
-    "holdout2026" {
-        Write-Host "[chronos-baseline] Mode=holdout2026 -> holdout_2026_result.json"
-        Invoke-Holdout2026
-    }
-    "both" {
-        Write-Host "[chronos-baseline] Mode=both: training then holdout2026"
-        Invoke-TrainingOnly
-        Invoke-Holdout2026
-    }
-}
+Write-Host "[chronos-baseline] Mode=$Mode -> py $($pyArgs -join ' ')"
+
+py @pyArgs
+if ($LASTEXITCODE -ne 0) { throw "Chronos-Forward KOSPI baseline failed (exit $LASTEXITCODE)" }
 
 Write-Host "[chronos-baseline] OK"
 exit 0

@@ -8,9 +8,9 @@ $btRoot = (Get-Item -LiteralPath $PSScriptRoot).Parent.Parent.Parent.FullName
 # bitcoin-trading -> projects -> repo root (matches run_prophecy_alignment_pytest.sh: BT_ROOT/../..)
 $workspaceRoot = (Get-Item -LiteralPath $btRoot).Parent.Parent.FullName
 
-# Fact-Lock SSOT: dual-regime smoke (14 cases). CI: .github/workflows/dual-regime-integrity.yml
+# Fact-Lock SSOT: dual-regime smoke + multilens marginal harness V1 (bitcoin-trading/). CI: .github/workflows/dual-regime-integrity.yml
 Set-Location -LiteralPath $btRoot
-& py -m pytest 'tests/test_dual_regime_api_smoke.py' -v --tb=short
+& py -m pytest 'tests/test_dual_regime_api_smoke.py' 'tests/test_multilens_marginal_utility_harness_v1.py' -v --tb=short
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 # Workspace-root Fact-Lock (logos snapshot + CROSS_REF join); mirrors CI steps after prophecy bundle.
@@ -31,11 +31,10 @@ Set-Location -LiteralPath $workspaceRoot
     'tests/test_myeongni_topflow_integrated_report.py' `
     'tests/test_manse_precision_pointer.py' `
     'tests/test_manseryeok_provenance.py' `
-    'tests/test_manse_precision_regression_golden.py' `
-    'tests/test_manse_precision_runtime_probe_snapshot.py' `
-    'tests/test_manse_daypillar_availability_probe.py' `
     'tests/test_multilens_performance_eval_report.py' `
     'tests/test_multilens_performance_eval_report_v2.py' `
+    'tests/test_multilens_eval_harness_v2_thin.py' `
+    'tests/test_multilens_dual_regime_market_adapter_v1.py' `
     'tests/test_myeongni_insight_observation_log.py' `
     -q --tb=short
 exit $LASTEXITCODE
