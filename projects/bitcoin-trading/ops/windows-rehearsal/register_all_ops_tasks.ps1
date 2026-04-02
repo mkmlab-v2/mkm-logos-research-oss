@@ -4,6 +4,7 @@ param(
     [string]$DualMarketStartTime = "09:10",
     [string]$BtcBinanceStartTime = "09:15",
     [string]$JemaaiE2EStartTime = "09:35",
+    [string]$BlindReplayStartTime = "10:05",
     [string]$HealthcheckStartTime = "09:05",
     [ValidateSet("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")]
     [string]$HealthcheckWeeklyDay = "MON"
@@ -18,9 +19,10 @@ $registerDual = Join-Path $opsDir "register_waiting_queue_dual_market_daily_task
 $registerBtc = Join-Path $opsDir "register_waiting_queue_btc_binance_daily_task.ps1"
 $registerHealth = Join-Path $opsDir "register_fatal_alert_healthcheck_task.ps1"
 $registerJemaaiE2E = Join-Path $opsDir "register_jemaai_public_event_e2e_smoke_task.ps1"
+$registerBlindReplay = Join-Path $opsDir "register_blind_replay_multi_seed_task.ps1"
 $checkAlertConfig = Join-Path $opsDir "check_fatal_alert_config.ps1"
 
-foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerJemaaiE2E, $checkAlertConfig)) {
+foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerJemaaiE2E, $registerBlindReplay, $checkAlertConfig)) {
     if (-not (Test-Path -LiteralPath $script)) {
         throw "Required register script missing: $script"
     }
@@ -67,6 +69,17 @@ if (-not [string]::IsNullOrWhiteSpace($JemaaiE2EStartTime)) {
 & powershell @jemaaiArgs
 if ($LASTEXITCODE -ne 0) {
     throw "Jemaai public-event e2e smoke task registration failed"
+}
+
+$blindArgs = @(
+    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerBlindReplay
+)
+if (-not [string]::IsNullOrWhiteSpace($BlindReplayStartTime)) {
+    $blindArgs += @("-StartTime", $BlindReplayStartTime)
+}
+& powershell @blindArgs
+if ($LASTEXITCODE -ne 0) {
+    throw "Blind replay multi-seed task registration failed"
 }
 
 $alertStatusPath = "C:\workspace\docs\final\artifacts\fatal_alert_config_status_latest.json"
