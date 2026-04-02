@@ -32,6 +32,22 @@
 - B-track 핵심 산출물 승격(로컬 `reports/...` → G:): `scripts/push_local_artifacts_to_vault.ps1`
 - 어휘·코퍼스 FACT-LOCK 계약: `docs/final/MASTER_Linguistic_Contract_2026.md` — 외부 사전 스테이징 `C:\workspace\vault\external_lexicon` → G: `...\vault\external_lexicon`: `scripts/setup/fetch_external_lexicons.ps1` (수신·MANIFEST) 후 `scripts/push_external_lexicon_to_vault.ps1` (승격)
 
+## Gemini 멀티모달: MCP vs 배치 CLI (교전 수칙)
+
+**목적**: 대화형(MCP)과 자동화(배치)의 **역할 분리**와 **비용·지연 통제**. 동일 질문을 MCP와 배치로 **중복 호출하지 않는다.**
+
+| 상황 | 사용 |
+|------|------|
+| Cursor 안에서 즉시 판단, 파일 첨부·멀티턴, 에이전트가 도구로 호출 | **Google AI Studio MCP** (`aistudio-mcp`, `generate_content` 계열) |
+| 스케줄러·CI·디스크에 결과 저장·재현·키 없는 회귀 | **`scripts/gemini_multimodal_batch.py`** (`research` / `image` / `crosscheck` / `check`). 래퍼: `scripts/Invoke-GeminiMultimodalBatch.ps1` |
+| SDK·환경만 점검(API 호출 없음) | `py scripts/gemini_multimodal_batch.py check` |
+
+**화력 통제(배치·MCP 공통)**: Google Search·코드 실행·Thinking(또는 장시간 추론)은 **기본 전부 켜지 말 것**. 배치에서는 `--google-search` / `--code-execution` / `--thinking-budget`를 **필요할 때만** 지정한다. 장시간·대용량 입력은 `--timeout`으로 상한을 둔다.
+
+**인증**: `GEMINI_API_KEY`(우선)·`GOOGLE_API_KEY`. 키는 저장소·채팅에 넣지 않는다.
+
+**CI**: `.github/workflows/gemini-multimodal-batch-cli.yml` — 키 없이 `check` + `pytest tests/test_gemini_multimodal_batch_cli.py`.
+
 ## Logos 메타·리추얼 (12AI: Logos Sage 메타데이터 / 격벽)
 
 - **레지스트리 SSOT:** `data/logos/meta/manifest.json` — `VERSE_MAPPING_RITUAL_*` 등 리추얼 메타 경로·`role_tags`·`is_quant_isolated`.

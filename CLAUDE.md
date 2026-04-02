@@ -20,3 +20,4 @@
 
 - 상용화·작업 순서: `docs/final/P0_COMMERCIALIZATION_TRACKER.md` (해당 작업 시).
 - 에이전트 역할 요약: 루트 `AGENTS.md`.
+- **Gemini MCP vs 배치 CLI 라우팅·비용 통제**: 루트 `AGENTS.md` 섹션 **「Gemini 멀티모달: MCP vs 배치 CLI」**.
