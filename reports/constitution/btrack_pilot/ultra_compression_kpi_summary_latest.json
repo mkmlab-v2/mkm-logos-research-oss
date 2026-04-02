@@ -1,6 +1,6 @@
 {
   "schema": "ultra_compression_kpi_summary_v1",
-  "ts_utc": "2026-03-30T22:23:31.231527+00:00",
+  "ts_utc": "2026-04-02T18:24:48.475404+00:00",
   "sources": {
     "round2": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json",
     "decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
@@ -8,33 +8,33 @@
     "hydration_mix": "reports/constitution/btrack_pilot/token_api_hydration_mix_latest.json"
   },
   "decision": {
-    "go_no_go": "GO",
-    "rollout_policy": "global_default",
+    "go_no_go": "NO_GO",
+    "rollout_policy": "domain_variable_cap",
     "selected_candidate": {
       "strategy": "A",
       "intensity": "extreme",
-      "global_token_saving_rate": 0.5316455696202531,
-      "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
-      "avg_sensitive_integrity": 1.0,
+      "global_token_saving_rate": 0.5274261603375527,
+      "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
+      "avg_sensitive_integrity": 0.9916666666666668,
       "jaccard_drop_pp": 0.0
     }
   },
   "active_kpi": {
-    "global_token_saving_rate": 0.5316455696202531,
-    "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
-    "avg_sensitive_integrity": 1.0,
+    "global_token_saving_rate": 0.5274261603375527,
+    "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
+    "avg_sensitive_integrity": 0.9916666666666668,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
     "ultra_saving_50_ok": true,
-    "sensitive_integrity_ok": true
+    "sensitive_integrity_ok": false
   },
   "performance": {
-    "bench_total_elapsed_ms": 1260.806,
-    "round2_elapsed_ms": 725.845,
+    "bench_total_elapsed_ms": 7972.044,
+    "round2_elapsed_ms": 6639.684,
     "round2_full_grid_count": 332,
-    "round2_evaluated_count": 27,
-    "round2_pruned_by_saving_count": 35,
-    "round2_pruned_by_bound_count": 270
+    "round2_evaluated_count": 108,
+    "round2_pruned_by_saving_count": 224,
+    "round2_pruned_by_bound_count": 0
   },
   "api_hydration_mix": {
     "total_examples": 3,

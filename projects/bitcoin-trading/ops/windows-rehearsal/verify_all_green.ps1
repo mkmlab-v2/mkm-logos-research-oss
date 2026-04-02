@@ -21,6 +21,10 @@ $steps = @(
         cmd = @("powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", (Join-Path $ops "verify_jemaai_showroom_deploy.ps1"), "-GatewayBaseUrl", "http://127.0.0.1:8788", "-AutoFixLocal")
     },
     @{
+        name = "verify_ops_fusion_cycle_status"
+        cmd = @("powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", (Join-Path $ops "verify_ops_fusion_cycle_status.ps1"))
+    },
+    @{
         name = "reconcile_automation_registry"
         cmd = @("powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", (Join-Path $ops "reconcile_automation_registry.ps1"))
     }

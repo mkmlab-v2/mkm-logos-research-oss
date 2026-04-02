@@ -1,0 +1,8 @@
+{
+  "schema": "constitution_gates_v1",
+  "version": "2026-04-03",
+  "description": "Allowed risk profile source/mode pairs for no-short-circuit gate (research vs live). Edit allowed_risk_combinations when policy changes.",
+  "allowed_risk_combinations": [
+    { "source": "n8n.regime_watch.v5", "mode": "n8n_shadow" }
+  ]
+}

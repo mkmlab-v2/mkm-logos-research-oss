@@ -8,6 +8,21 @@
 2. **Bench(모의·테스트) 기본**: 실거래·라이브 실행 전환은 **명시적 지시**가 있을 때만.
 3. **팩트 SSOT**: 통과 건수·경로는 **실행 로그** 또는 **트래킹된 파일**이 없으면 인용하지 않는다.
 
+### 증거 경로 빠른 참조 (게이트 통과·감사 시)
+
+NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 “통과”를 기록한다.
+
+| 구분 | 증거로 삼을 경로·산출물 |
+|------|-------------------------|
+| 헌법·에이전트 포인터 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`, 루트 `AGENTS.md`, `CLAUDE.md` |
+| P0 순서 자체 | 본 파일(`P0_COMMERCIALIZATION_TRACKER.md`) + Step 표의 링크 파일 존재 |
+| 정렬 pytest 게이트 | `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` **exit 0** 로그 또는 CI 아티팩트 |
+| 월간 브리프 | `docs/final/artifacts/waiting_queue_monthly_check_log.jsonl` 등 **append 로그** (`run_waiting_queue_monthly_check.ps1`) |
+| Vault·NotebookLM 미러 | `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1` 성공 + Vault `notebooklm_sources/_LAST_SYNC.txt` |
+| Windows Phase 1 ops | `projects/bitcoin-trading/memory/v2/ops/ops_phase1_chain_report_latest.json`의 `ts_utc` |
+| 경로 스모크(로컬) | `scripts/verify_p0_constitution_gate_paths.ps1` — 핵심 파일 존재만 점검 |
+| 자동 헬스 체인 | `scripts/run_workspace_automation_health.ps1` — 스모크 → (Vault 마운트 시) NL 미러 → Phase1 readiness → reconcile(드리프트 시 기본 WARN, `-StrictReconcile`로 실패) |
+
 ## 순서
 
 | Step | 내용 |

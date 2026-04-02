@@ -1,0 +1,13 @@
+﻿{
+    "schema":  "ops_fusion_cycle_status_v2",
+    "generated_at_utc":  "2026-04-02T19:07:04.4564940+00:00",
+    "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/run_ops_fusion_cycle.ps1",
+    "phase1_mode":  "weekly_lite",
+    "c2_guardrail_status_path":  "C:\\workspace\\docs\\final\\artifacts\\c2_aegis_guardrail_status_latest.json",
+    "trinity_btc_distribution_path":  "C:\\workspace\\docs\\final\\artifacts\\trinity_scoring_distribution_btc_latest.json",
+    "c2_status":  "GREEN_HOLD",
+    "c2_delta_vs_baseline":  0.0,
+    "c2_structural_break_alert":  false,
+    "overall_ok":  true,
+    "overall_ok_reason":  "c2_green_or_yellow_no_structural_break"
+}

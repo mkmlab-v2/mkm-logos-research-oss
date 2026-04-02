@@ -1,6 +1,6 @@
 {
   "schema": "automation_registry_v1",
-  "version": "2026-04-02",
+  "version": "2026-04-03",
   "description": "Single source of truth for core runtime tasks and expected state.",
   "tasks": [
     {
@@ -31,6 +31,12 @@
       "name": "\\Bitcoin-Guardrails-Fast-Verify-30min",
       "expected_status": "Ready",
       "owner": "runtime",
+      "criticality": "high"
+    },
+    {
+      "name": "\\Bitcoin-Ops-Fusion-Cycle-Auto",
+      "expected_status": "Ready",
+      "owner": "ops_fusion",
       "criticality": "high"
     },
     {

@@ -1,0 +1,169 @@
+<section class="jema12-live-portal" aria-label="12AI live portal">
+  <div class="portal-card">
+    <p class="kicker">JEMA12 COMMAND</p>
+    <p class="live-status" id="opsStatusLine">
+      <span class="dot dot-gray" id="opsStatusDot" aria-hidden="true"></span>
+      <span id="opsStatusText">운영 상태 확인 중...</span>
+    </p>
+    <h2>12AI LIVE 쇼룸</h2>
+    <p class="desc">브랜드 허브에서 실시간 전장으로 즉시 이동합니다.</p>
+    <a
+      class="cta-btn"
+      href="https://api.jemaai.cloud/public_showroom_poll.html"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      실시간 전장 입장하기
+      <span aria-hidden="true">↗</span>
+    </a>
+    <p class="sub">Live Engine: jemaai.cloud / Brand Hub: jema12.com</p>
+  </div>
+</section>
+
+<style>
+  .jema12-live-portal {
+    --bg: #0b1220;
+    --bg-soft: #121d32;
+    --line: #2f426c;
+    --txt: #eef3ff;
+    --muted: #9fb2d9;
+    --accent: #7ee081;
+    --accent-2: #ffd36c;
+    max-width: 560px;
+    margin: 24px auto;
+    padding: 0 16px;
+    font-family: "Segoe UI", "Noto Sans KR", sans-serif;
+  }
+
+  .jema12-live-portal .portal-card {
+    background: linear-gradient(180deg, var(--bg-soft), var(--bg));
+    color: var(--txt);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    position: relative;
+  }
+
+  .jema12-live-portal .portal-card::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1px dashed rgba(126, 224, 129, 0.35);
+    border-radius: 10px;
+    pointer-events: none;
+  }
+
+  .jema12-live-portal .kicker {
+    margin: 0 0 6px;
+    color: var(--accent-2);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .jema12-live-portal h2 {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.2;
+  }
+
+  .jema12-live-portal .live-status {
+    margin: 0 0 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #c9d7f2;
+  }
+
+  .jema12-live-portal .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    display: inline-block;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35) inset;
+  }
+
+  .jema12-live-portal .dot-green { background: #45db67; }
+  .jema12-live-portal .dot-yellow { background: #ffd36c; }
+  .jema12-live-portal .dot-red { background: #ff6f6f; }
+  .jema12-live-portal .dot-gray { background: #7f95bf; }
+
+  .jema12-live-portal .desc {
+    margin: 10px 0 16px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .jema12-live-portal .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #08120a;
+    font-weight: 700;
+    background: linear-gradient(180deg, #9df3a0, var(--accent));
+    border: 2px solid #5bbb61;
+    border-radius: 10px;
+    padding: 11px 14px;
+    box-shadow: 0 5px 0 #3c8b45;
+    transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
+  }
+
+  .jema12-live-portal .cta-btn:hover {
+    filter: brightness(1.03);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 0 #3c8b45;
+  }
+
+  .jema12-live-portal .cta-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 #3c8b45;
+  }
+
+  .jema12-live-portal .sub {
+    margin: 12px 0 0;
+    color: #7f95bf;
+    font-size: 12px;
+  }
+</style>
+
+<script>
+  (function () {
+    // Public status fallback: use live endpoint that is already exposed.
+    const STATUS_URL = "https://api.jemaai.cloud/api/public-events/latest";
+    const dot = document.getElementById("opsStatusDot");
+    const text = document.getElementById("opsStatusText");
+    if (!dot || !text) return;
+
+    const setState = (kind, label) => {
+      dot.classList.remove("dot-green", "dot-yellow", "dot-red", "dot-gray");
+      dot.classList.add(kind);
+      text.textContent = label;
+    };
+
+    fetch(STATUS_URL, { cache: "no-store" })
+      .then((r) => {
+        if (!r.ok) throw new Error("status fetch failed");
+        return r.json();
+      })
+      .then((j) => {
+        const hasEvent = !!(j && (j.event_id || j.timestamp || j.risk_level));
+        const risk = String((j && j.risk_level) || "").toUpperCase();
+        if (hasEvent && risk !== "WARNING") {
+          setState("dot-green", "운영 정상 (LIVE)");
+        } else if (hasEvent && risk === "WARNING") {
+          setState("dot-yellow", "운영 주의 (경보 모드)");
+        } else if (!hasEvent) {
+          setState("dot-red", "운영 경보 (점검 필요)");
+        } else {
+          setState("dot-yellow", "운영 주의 (부분 저하)");
+        }
+      })
+      .catch(() => {
+        setState("dot-gray", "운영 상태 미확인");
+      });
+  })();
+</script>

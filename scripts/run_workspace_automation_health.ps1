@@ -1,0 +1,77 @@
+param(
+    [string]$WorkspaceRoot = "C:\workspace",
+    [switch]$SkipVaultMirror,
+    [switch]$SkipPhase1Readiness,
+    [switch]$StrictPhase1Readiness,
+    [switch]$StrictReconcile
+)
+
+$ErrorActionPreference = "Stop"
+$root = $WorkspaceRoot
+
+function Step([string]$Name, [scriptblock]$Block) {
+    Write-Host ""
+    Write-Host "=== $Name ===" -ForegroundColor Cyan
+    & $Block
+    if ($LASTEXITCODE -ne 0) {
+        throw "Step failed: $Name (exit $LASTEXITCODE)"
+    }
+}
+
+try {
+    Step "P0 / CONSTITUTION paths" {
+        & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\verify_p0_constitution_gate_paths.ps1") -WorkspaceRoot $root
+    }
+
+    if (-not $SkipVaultMirror) {
+        $vault = $env:MKM_VAULT_ROOT
+        if ([string]::IsNullOrWhiteSpace($vault)) {
+            $vault = "G:\공유 드라이브\MKM_DATA_VAULT\vault"
+        } else {
+            $vault = $vault.Trim().TrimEnd('\')
+        }
+        if (Test-Path -LiteralPath $vault) {
+            Step "NotebookLM vault mirror" {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\sync_notebooklm_sources_to_mkm_data_vault.ps1")
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== NotebookLM vault mirror ===" -ForegroundColor Yellow
+            Write-Host "SKIP: Vault not mounted ($vault)"
+        }
+    }
+
+    if (-not $SkipPhase1Readiness) {
+        $ops = Join-Path $root "projects\bitcoin-trading\ops\windows-rehearsal"
+        $vr = Join-Path $ops "verify_ops_phase1_operational_readiness.ps1"
+        if (Test-Path -LiteralPath $vr) {
+            Step "Phase 1 operational readiness" {
+                if ($StrictPhase1Readiness) {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $vr -Strict
+                } else {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $vr
+                }
+            }
+        }
+    }
+
+    Write-Host ""
+    Write-Host "=== Automation registry reconcile ===" -ForegroundColor Cyan
+    $rec = Join-Path $root "projects\bitcoin-trading\ops\windows-rehearsal\reconcile_automation_registry.ps1"
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $rec
+    $re = $LASTEXITCODE
+    if ($re -ne 0) {
+        $msg = "reconcile_automation_registry exit $re (scheduler drift?)"
+        if ($StrictReconcile) { throw $msg }
+        Write-Host "WARN: $msg" -ForegroundColor Yellow
+    }
+
+    Write-Host ""
+    Write-Host "[run_workspace_automation_health] ALL OK" -ForegroundColor Green
+    exit 0
+}
+catch {
+    Write-Host $_.Exception.Message -ForegroundColor Red
+    exit 1
+}

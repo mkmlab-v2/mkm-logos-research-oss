@@ -1,29 +1,29 @@
 {
   "schema": "fused_paper_cycle_calibration_30_v1",
-  "generated_at_utc": "2026-04-02T14:08:33Z",
+  "generated_at_utc": "2026-04-02T19:07:03Z",
   "source_log_path": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
   "window_size": 30,
   "sample_size": 30,
   "counts": {
-    "HIT": 21,
+    "HIT": 19,
     "FAIL": 0,
     "NEUTRAL_DRAW": 0,
-    "PENDING_CLOSE": 9
+    "PENDING_CLOSE": 11
   },
   "rates": {
-    "hit_rate_raw": 0.7,
+    "hit_rate_raw": 0.6333333333333333,
     "fail_rate_raw": 0.0,
     "neutral_draw_rate_raw": 0.0,
-    "pending_close_rate_raw": 0.3,
+    "pending_close_rate_raw": 0.36666666666666664,
     "resolved_only_hit_rate": 1.0
   },
   "data_quality": {
-    "close_return_missing_count": 9,
+    "close_return_missing_count": 11,
     "close_return_missing_non_pending_count": 0,
     "hold_reason_missing_count": 0
   },
   "close_return_stats": {
-    "sample_count": 21,
+    "sample_count": 19,
     "mean_pct": -1.1,
     "min_pct": -1.1,
     "max_pct": -1.1

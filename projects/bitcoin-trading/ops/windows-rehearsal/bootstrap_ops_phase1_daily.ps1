@@ -1,0 +1,54 @@
+param(
+    [switch]$SkipEnvSync,
+    [switch]$SkipTaskRegister,
+    [switch]$ExcludeConstitutionGates,
+    [switch]$IncludeReadiness,
+    [switch]$IncludeWebhookSmoke
+)
+
+$ErrorActionPreference = "Stop"
+$ops = "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal"
+
+if (-not $SkipEnvSync) {
+    $sync = Join-Path $ops "sync_required_env_to_user.ps1"
+    Write-Host "=== OPS: sync .env -> User env (OPS_ALARM_WEBHOOK_URL, N8N_*, ...) ==="
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $sync
+    if ($LASTEXITCODE -ne 0) {
+        throw "sync_required_env_to_user failed"
+    }
+}
+
+if (-not $SkipTaskRegister) {
+    $reg = Join-Path $ops "register_ops_phase1_chain_task.ps1"
+    Write-Host "=== OPS: register daily Phase 1 task (constitution gates on by default) ==="
+    if ($ExcludeConstitutionGates) {
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $reg -ExcludeConstitutionGates
+    }
+    else {
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $reg
+    }
+    if ($LASTEXITCODE -ne 0) {
+        throw "register_ops_phase1_chain_task failed"
+    }
+}
+
+if ($IncludeReadiness) {
+    $vr = Join-Path $ops "verify_ops_phase1_operational_readiness.ps1"
+    Write-Host "=== OPS: operational readiness (task TR, report age, alarm URL) ==="
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $vr
+    if ($LASTEXITCODE -ne 0) {
+        throw "verify_ops_phase1_operational_readiness failed"
+    }
+}
+
+if ($IncludeWebhookSmoke) {
+    $sm = Join-Path $ops "smoke_ops_phase1_webhook.ps1"
+    Write-Host "=== OPS: smoke POST to OPS_ALARM_WEBHOOK_URL ==="
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $sm
+    if ($LASTEXITCODE -ne 0) {
+        throw "smoke_ops_phase1_webhook failed"
+    }
+}
+
+Write-Host "[bootstrap_ops_phase1_daily] Done."
+exit 0

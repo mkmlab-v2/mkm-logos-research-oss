@@ -120,7 +120,14 @@ $SourceFiles = @(
     "data\corpus\ijeoma\_inventory\IJEOMA_CHUNK_TABLE_2026-03-29.jsonl",
     "data\corpus\ijeoma\_inventory\IJEOMA_CORPUS_INVENTORY_2026-03-28.json",
     "data\corpus\ijeoma\_inventory\hwp_com_export_report.json",
-    "data\corpus\ijeoma\e_drive_mirror\donguisusebowon_mastery_report.md"
+    "data\corpus\ijeoma\e_drive_mirror\donguisusebowon_mastery_report.md",
+    "docs\final\artifacts\BLIND_REPLAY_PROXY_PROFILE_D_PARAMS_V1.json",
+    "docs\final\artifacts\BLIND_REPLAY_PROXY_PROFILE_D_ENSEMBLE_SEARCH_V1.json",
+    "docs\final\artifacts\aegis_unified_scoreboard_abcds_latest.json",
+    "docs\final\artifacts\aegis_unified_scoreboard_btc90_k010_latest.json",
+    "docs\final\artifacts\BLIND_REPLAY_C1_ARTIFACT_BUNDLE_2026-04-02.md",
+    "reports\constitution\btrack_pilot\blind_replay\blind_replay_dataset_grid_btc_s80_latest.json",
+    "reports\constitution\btrack_pilot\blind_replay\blind_replay_dataset_grid_kospi_s80_latest.json"
 )
 
 $SourceDirs = @(

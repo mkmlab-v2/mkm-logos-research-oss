@@ -1,7 +1,8 @@
 param(
     [string]$RegistryPath = "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\automation_registry.json",
     [string]$OutputPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\automation_registry_reconcile_latest.json",
-    [switch]$Enforce
+    [switch]$Enforce,
+    [switch]$ShowJson
 )
 
 $ErrorActionPreference = "Stop"
@@ -124,8 +125,10 @@ if ($parent -and -not (Test-Path -LiteralPath $parent)) {
 }
 $json = $payload | ConvertTo-Json -Depth 8
 Set-Content -LiteralPath $OutputPath -Value $json -Encoding UTF8
-Write-Host $json
-Write-Host ("Saved reconcile report: {0}" -f $OutputPath)
+if ($ShowJson) {
+    Write-Host $json
+}
+Write-Host ("[reconcile] all_ok={0} drift_count={1} critical_drift={2} saved={3}" -f $allOk, $driftCount, $criticalDrift, $OutputPath)
 
 if (-not $allOk) { exit 1 }
 exit 0

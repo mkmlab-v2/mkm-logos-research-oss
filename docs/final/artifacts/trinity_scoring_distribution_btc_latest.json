@@ -1,6 +1,6 @@
 {
   "schema": "trinity_scoring_distribution_v1",
-  "generated_at_utc": "2026-04-02T14:08:34.360677+00:00",
+  "generated_at_utc": "2026-04-02T19:07:04.445314+00:00",
   "log_path": "docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
   "metric": "BTC_BINANCE_D1_RETURN_PCT",
   "windows": {
@@ -53,13 +53,13 @@
       "top_source": "myeongni_independent_lens"
     },
     "all": {
-      "sample_size": 38,
-      "state_id_present_count": 21,
-      "state_id_present_rate": 0.5526,
+      "sample_size": 74,
+      "state_id_present_count": 57,
+      "state_id_present_rate": 0.7703,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "myeongni_independent_lens": 21,
+        "myeongni_independent_lens": 57,
         "none": 17
       },
       "top_source": "myeongni_independent_lens"
@@ -104,5 +104,5 @@
     }
   },
   "latest_decision": "HIT",
-  "total_filtered_rows": 38
+  "total_filtered_rows": 74
 }

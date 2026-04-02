@@ -6,7 +6,10 @@ $keys = @(
   "BINANCE_API_SECRET",
   "PUBLIC_EVENT_BRIDGE_WEBHOOK_URL",
   "PUBLIC_EVENT_BRIDGE_TOKEN",
-  "PUBLIC_EVENT_GATEWAY_TOKEN"
+  "PUBLIC_EVENT_GATEWAY_TOKEN",
+  "N8N_ALL_GREEN_WEBHOOK_URL",
+  "N8N_WEBHOOK_URL",
+  "OPS_ALARM_WEBHOOK_URL"
 )
 
 if (-not (Test-Path -LiteralPath $envFile)) {
@@ -32,6 +35,21 @@ foreach ($k in $keys) {
   }
   else {
     Write-Host "SKIP_MISSING_IN_DOTENV:$k"
+  }
+}
+
+$opsAlarmCur = [Environment]::GetEnvironmentVariable("OPS_ALARM_WEBHOOK_URL", "User")
+if ([string]::IsNullOrWhiteSpace($opsAlarmCur)) {
+  $mirror = $null
+  if ($map.ContainsKey("N8N_WEBHOOK_URL") -and -not [string]::IsNullOrWhiteSpace($map["N8N_WEBHOOK_URL"])) {
+    $mirror = $map["N8N_WEBHOOK_URL"].Trim()
+  }
+  if ([string]::IsNullOrWhiteSpace($mirror)) {
+    $mirror = [Environment]::GetEnvironmentVariable("N8N_WEBHOOK_URL", "User")
+  }
+  if (-not [string]::IsNullOrWhiteSpace($mirror)) {
+    [Environment]::SetEnvironmentVariable("OPS_ALARM_WEBHOOK_URL", $mirror, "User")
+    Write-Host "MIRROR_USER:OPS_ALARM_WEBHOOK_URL<=N8N_WEBHOOK_URL"
   }
 }
 

@@ -70,6 +70,10 @@ $lensLogosScriptPath = "C:\workspace\scripts\run_lens_logos.py"
 $lensFusionStubScriptPath = "C:\workspace\scripts\report_independent_lens_fusion_stub_v0.py"
 $lensShadowGateScriptPath = "C:\workspace\scripts\report_independent_lens_shadow_gate.py"
 $insightScoreboardScriptPath = "C:\workspace\scripts\build_insight_effectiveness_scoreboard.py"
+$c2GuardrailScriptPath = "C:\workspace\scripts\check_c2_aegis_guardrail.py"
+$c2GuardrailPath = "C:\workspace\docs\final\artifacts\C2_AEGIS_BASELINE_GUARDRAIL_V1.json"
+$c2CurrentScoreboardPath = "C:\workspace\docs\final\artifacts\aegis_unified_scoreboard_btc90_k010_latest.json"
+$c2GuardrailStatusPath = "C:\workspace\docs\final\artifacts\c2_aegis_guardrail_status_latest.json"
 $dailySitrepPath = "C:\workspace\docs\final\artifacts\waiting_queue_daily_sitrep_latest.txt"
 $softFailNotes = New-Object System.Collections.Generic.List[string]
 
@@ -997,6 +1001,16 @@ if (Test-Path -LiteralPath $insightScoreboardScriptPath) {
     }
 } else {
     Add-SoftFailNote "insight effectiveness scoreboard script missing; skipped"
+}
+
+Write-Host "[waiting-queue-check] Running C2 Aegis baseline guardrail check..."
+if (Test-Path -LiteralPath $c2GuardrailScriptPath) {
+    py $c2GuardrailScriptPath --guardrail $c2GuardrailPath --current $c2CurrentScoreboardPath --out $c2GuardrailStatusPath
+    if ($LASTEXITCODE -ne 0) {
+        throw "C2 Aegis guardrail check failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "C2 Aegis guardrail script missing; skipped"
 }
 
 Write-Host "[waiting-queue-check] Wrote log: $logPath"

@@ -1,4 +1,5 @@
 // n8n Function node template: public-event.v1 whitelist + character id normalization
+// Apply: n8n → open workflow → Function node → replace code with this file → wire to HTTP Request POST https://api.jemaai.cloud/api/public-events/ingest (header X-Public-Event-Token).
 // Input: item.json (raw internal payload)
 // Output: sanitized payload only (safe for POST /api/public-events/ingest)
 

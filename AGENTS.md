@@ -8,7 +8,7 @@
    - 실무 해석 고정: 명시적 STOP/승인 필요 예외(파괴적 삭제·실거래·비용 유발·비가역 근본 변경) 외에는 파일 편집/터미널/검증을 자율 연속 수행한다.
    - 모호성 처리 고정: 저위험 모호성은 질문 대신 합리적 기본값으로 구현/검증 후 사후 보고한다.
 2. **`.cursor/rules/sovereign-central-command.mdc`** — Vault·NotebookLM·보안·운영(3문장 요약 + **§4 마무리**). §4에서 **폐지**: “Next Action 2가지”, `[A]`/`[B]`·a/b 강요. **대체**: TITAN 마무리 또는 고위험 시 **승인 범위만** 명시(루트 `.cursorrules`와 동일 방향).
-3. **구현 팩트(환각 차단)**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — 기획·NotebookLM만 보고 “이미 구현” 단정 금지.
+3. **구현 팩트(환각 차단)**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — 기획·NotebookLM만 보고 “이미 구현” 단정 금지. P0·헌법 핵심 경로 존재 여부: `scripts/verify_p0_constitution_gate_paths.ps1`.
 4. **정체성 (Multi-Lens):** 단일 TOE·통일장 “완성” 선언 금지 — §1.1. 레짐·로고스·명리·외경은 **격벽·교차 참고** (§2.1·§4).
 5. **Cursor Cloud Sandbox · 본선 분리:** Cloud Agent/Sandbox는 검증·병렬 가속 전용; 실매매·프로덕션 쓰기·실키 주입은 로컬/VPS 본선과 분리. 상세 `.cursor/rules/cursor-cloud-sandbox-boundary.mdc`.
 
@@ -16,6 +16,14 @@
 
 - 한의 원전·코호트: `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` (라벨 A vs 원전 B 혼선 금지).
 - NotebookLM 소스: `docs/NotebookLM_sources_manifest.md`.
+
+## 운영 자동화 vs 연구 레인
+
+- **본선 OPS** (`projects/bitcoin-trading/ops/windows-rehearsal`, `verify_all_green`, `automation_registry.json`): **관측·스케줄·게이트** 전용. 헌법·백서를 LLM이 매 실행마다 해석해 본선을 바꾸는 **자율 전략 엔진**으로 단정하지 않는다. 구현 여부는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 호출 가능 스크립트로만 말한다.
+- **Phase 1 통합 리포트 SSOT**: `projects/bitcoin-trading/memory/v2/ops/ops_phase1_chain_report_latest.json` — **exit_code·타임스탬프·산출 경로** 중심. 브리핑 전용 필드(예: `go_no_go`)는 **레포 산출물에 없으면** 근거 없는 수치로 쓰지 않는다.
+- **헌법 게이트(옵션)**: `run_ops_phase1_chain.ps1 -IncludeConstitutionGates` → `verify_constitution_gates.ps1` → `projects/bitcoin-trading/memory/v2/ops/constitution_gates_result_latest.json`; allowlist `constitution_gates_v1.json`. 상세 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §13.1.
+- **Phase 1 일일 원클릭**: `projects/bitcoin-trading/ops/windows-rehearsal/bootstrap_ops_phase1_daily.ps1` — User 환경 동기화 후 `\Bitcoin-Ops-Phase1-Chain-Daily` 등록(헌법 게이트 기본 켬). 점검·웹훅 스모크: `-IncludeReadiness`, `-IncludeWebhookSmoke`.
+- **MKM Study**(예: `projects/mkm/mkm-study`): **연구·프로토타입·학습** 레인. 실매매·본선 OOF·올그린 게이트와 **자동 합선하지 않는다** (NotebookLM·A/B 격벽과 동일 방향).
 
 ## 12AI vs 코드북 도메인
 

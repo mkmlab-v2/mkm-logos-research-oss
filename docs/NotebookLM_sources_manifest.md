@@ -324,6 +324,7 @@ https://ko.wikipedia.org/wiki/%EC%82%AC%EC%A3%BC%EB%AA%85%EB%A6%AC%ED%95%99
 
 ## 차기 작업 (Gap)
 
+- **Blind Replay C.1 (2026-04-02)**: ✅ Phase C.1 피처 확장 산출물 반영 완료 — `BLIND_REPLAY_PROXY_PROFILE_D_PARAMS_V1.json`, `BLIND_REPLAY_PROXY_PROFILE_D_ENSEMBLE_SEARCH_V1.json`, `aegis_unified_scoreboard_abcds_latest.json`, `blind_replay_dataset_grid_btc_s80_latest.json`, `blind_replay_dataset_grid_kospi_s80_latest.json`를 NotebookLM 동기화 스크립트 복사 목록에 추가.
 - **B — AI-Logos 번들**: ✅ `source_add`(URL 5 + file 서지) 반영·**`notebook_get` B=21** 확인(2026-03-29; Deep Past Kaggle URL 추가). ✅ 서지에 **arXiv 2407.12013(Enoch)**·**deeppast.org** Confirmed 반영(2026-03-29). ✅ Deep Past **Kaggle 대회 URL**: 서지 `AI-Logos_Research_Bibliography_2026.md` + **NotebookLM URL 소스** `f0cbb85f-b5bf-4ec5-b958-4c690d282a01` (`source_add`, 2026-03-29). ✅ **Operation [B] 장부**: 매니페스트에 B 노트 **21개 전체** `source_id`·`title` 실측 표 박제(2026-03-29).
 - **B — `notebook_query` (노트 `af639d3e-b455-4f3f-8e25-47f58d962c60`)**: Q1/Q2 Gap 유지. ✅ **후속 적층 질의**(LeWM 초록 ↔ DSS 세그멘테이션·필적 식별 대조, 사실/가설 표·비유 한계) `conversation_id` **`deb0fc0c-5e20-4041-a917-0fe240f0b2bb`**로 실행·응답 수신(2026-03-29); 인용 소스 ID: `794cf83b-…`(LeWM), `f4a61719-…`(2411.10668), `0939abb4-…`(1QIsaa).
 - **Logos BTC 공명**: canon-only **BULL/BEAR/SIDEWAYS FULL** 산출물은 본 매니페스트 Logos 표에 등록됨. **Ancient-expanded**(`--ancient-resonance`)는 별도 파일명으로 실행·등록(캐논 FULL 시리즈와 혼선 금지).

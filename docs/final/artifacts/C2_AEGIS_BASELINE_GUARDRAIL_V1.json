@@ -1,0 +1,25 @@
+{
+  "schema": "c2_aegis_baseline_guardrail_v1",
+  "generated_at_utc": "2026-04-02T00:00:00Z",
+  "exploratory_only": true,
+  "a_track_binding_forbidden": true,
+  "baseline": {
+    "profile": "D",
+    "unified_score_balanced": 0.40342,
+    "weights": {
+      "w_btc": 0.9,
+      "w_kospi": 0.1,
+      "kappa": 0.1
+    },
+    "source_artifact": "docs/final/artifacts/aegis_unified_scoreboard_btc90_k010_latest.json"
+  },
+  "thresholds": {
+    "warn_drop_abs": 0.005,
+    "alert_drop_abs": 0.02,
+    "recover_gain_abs": 0.005
+  },
+  "policy": {
+    "mode": "monitor_only",
+    "note": "C2 guardrail for comparative monitoring; do not auto-bind to A-track."
+  }
+}

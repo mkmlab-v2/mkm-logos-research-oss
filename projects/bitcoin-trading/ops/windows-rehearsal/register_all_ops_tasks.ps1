@@ -7,9 +7,12 @@ param(
     [string]$JemaaiE2EStartTime = "09:35",
     [string]$BlindReplayStartTime = "10:05",
     [string]$OpsHealthOverviewStartTime = "10:10",
+    [string]$OpsWeeklyDigestStartTime = "10:20",
     [string]$HealthcheckStartTime = "09:05",
     [ValidateSet("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")]
-    [string]$HealthcheckWeeklyDay = "MON"
+    [string]$HealthcheckWeeklyDay = "MON",
+    [ValidateSet("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")]
+    [string]$OpsWeeklyDigestDay = "MON"
 )
 
 $ErrorActionPreference = "Stop"
@@ -24,9 +27,10 @@ $registerCompressionStub = Join-Path $opsDir "register_compression_stub_task.ps1
 $registerJemaaiE2E = Join-Path $opsDir "register_jemaai_public_event_e2e_smoke_task.ps1"
 $registerBlindReplay = Join-Path $opsDir "register_blind_replay_multi_seed_task.ps1"
 $registerOpsOverview = Join-Path $opsDir "register_ops_health_overview_task.ps1"
+$registerOpsWeeklyDigest = Join-Path $opsDir "register_ops_weekly_digest_task.ps1"
 $checkAlertConfig = Join-Path $opsDir "check_fatal_alert_config.ps1"
 
-foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerCompressionStub, $registerJemaaiE2E, $registerBlindReplay, $registerOpsOverview, $checkAlertConfig)) {
+foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerCompressionStub, $registerJemaaiE2E, $registerBlindReplay, $registerOpsOverview, $registerOpsWeeklyDigest, $checkAlertConfig)) {
     if (-not (Test-Path -LiteralPath $script)) {
         throw "Required register script missing: $script"
     }
@@ -106,6 +110,16 @@ if (-not [string]::IsNullOrWhiteSpace($OpsHealthOverviewStartTime)) {
 & powershell @opsOverviewArgs
 if ($LASTEXITCODE -ne 0) {
     throw "Ops health overview task registration failed"
+}
+
+$opsWeeklyDigestArgs = @(
+    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerOpsWeeklyDigest,
+    "-StartTime", $OpsWeeklyDigestStartTime,
+    "-WeeklyDay", $OpsWeeklyDigestDay
+)
+& powershell @opsWeeklyDigestArgs
+if ($LASTEXITCODE -ne 0) {
+    throw "Ops weekly digest task registration failed"
 }
 
 $alertStatusPath = "C:\workspace\docs\final\artifacts\fatal_alert_config_status_latest.json"

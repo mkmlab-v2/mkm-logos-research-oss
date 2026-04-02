@@ -45,6 +45,29 @@ NotebookLM 지휘부 질의 결과를 우선순위 그대로 실행.
 - compression_stub_health.ok: `true`
 - prophecy_alignment_pytest.ok: `true`
 
+## Final QA Snapshot (2026-04-02 23:00)
+
+- live_showroom_hook_check: `pass`
+- lang_switch: `true`
+- quality_meta: `true`
+- fps_meta: `true`
+- theme_logic: `true`
+- crowd_behavior: `true`
+- bubbles: `true`
+- actor_profiles: `true`
+- auto_quality: `true`
+
+## 7-Day Plan Execution Snapshot (Fact-Only)
+
+- Day1 (ops stability): executed, readiness=`GO`
+- Day2 (fused SOP guardrail): executed, mode=`weekly_lite`, result=`pass`
+- Day3 (BTC metric lock): executed, metric=`BTC_BINANCE_D1_RETURN_PCT`, latest_decision=`HIT`
+- Day4 (broadcast strict fields): executed, required fields present=`true`
+- Day5 (NotebookLM↔Vault sync): executed, copied=`53`, skipped=`7`
+- Day6 (brand-engine boundary): executed, boundary_ok=`true`
+- Day7 (weekly rehearsal): executed, go_no_go=`HOLD`, recommended_stage=`S1_SHADOW`, showroom readiness=`GO`
+- Final ops signal: overall_ok=`true`, degraded=`false`
+
 ## Auto Snapshot (2026-04-02 22:56:45)
 
 - schema: `ops_health_overview_v3`

@@ -1,0 +1,40 @@
+{
+  "schema": "c2_aegis_guardrail_status_v1",
+  "generated_at_utc": "2026-04-02T19:07:04Z",
+  "exploratory_only": true,
+  "a_track_binding_forbidden": true,
+  "inputs": {
+    "guardrail": "C:\\workspace\\docs\\final\\artifacts\\C2_AEGIS_BASELINE_GUARDRAIL_V1.json",
+    "current": "C:\\workspace\\docs\\final\\artifacts\\aegis_unified_scoreboard_btc90_k010_latest.json"
+  },
+  "baseline": {
+    "profile": "D",
+    "unified_score_balanced": 0.40342
+  },
+  "current": {
+    "profile": "D",
+    "unified_score_balanced": 0.40342
+  },
+  "delta_vs_baseline": 0.0,
+  "status": "GREEN_HOLD",
+  "thresholds": {
+    "warn_drop_abs": 0.005,
+    "alert_drop_abs": 0.02,
+    "recover_gain_abs": 0.005
+  },
+  "structural_break_rule": {
+    "lookback_days": 14,
+    "yellow_count_threshold": 3,
+    "red_count_threshold": 1,
+    "ace_change_threshold": 3
+  },
+  "structural_break_window_stats": {
+    "window_event_count": 37,
+    "yellow_count": 0,
+    "red_count": 0,
+    "ace_change_count": 0
+  },
+  "structural_break_alert": false,
+  "structural_break_reasons": [],
+  "note": "C2 comparative guardrail status (monitor-only)."
+}

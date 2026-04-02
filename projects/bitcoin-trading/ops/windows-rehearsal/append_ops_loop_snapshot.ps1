@@ -42,7 +42,10 @@ if (Test-Path -LiteralPath $BaselinePath) {
 
 $delta = @()
 foreach ($k in $curr.Keys) {
-    $before = if ($null -ne $prev -and $prev.Contains($k)) { [string]$prev[$k] } else { "<unset>" }
+    $before = "<unset>"
+    if ($null -ne $prev -and $null -ne $prev[$k]) {
+        $before = [string]$prev[$k]
+    }
     $after = [string]$curr[$k]
     if ($before -ne $after) {
         $delta += "- ``$k``: ``$before`` -> ``$after``"
