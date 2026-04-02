@@ -61,6 +61,11 @@
 
 - **픽셀 부대 · Night Watchman 마감 점검:** `scripts/PIXEL_BATTALION_NIGHT_WATCHMAN_CHECKLIST.md` — Hostinger/CDN, `PIXEL_BATTALION_BASE_URL`, `build_pixel_battalion_public_map.py`, `send_night_watchman_character_alert.py` 검증 순서.
 
+## jemaai.cloud · 공개 쇼룸 vs 실매매 관제
+
+- **하이브리드 대시보드 스펙(SSOT):** `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` — 공개(전광판) vs 비공개(조종실), `public-event.v1` 필드·경계선.
+- **MVP 게이트웨이:** `public_event_gateway.py` — `GET/POST` 경로·토큰은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 동 디렉터리 nginx 예시 참고.
+
 ## SSH Cursor · VPS 실매매 (전제)
 
 - **SSH로 연 원격 폴더**를 열면 그쪽 `AGENTS.md` / `.cursor/rules`가 적용된다. 로컬 `C:/workspace`와 동시에 쓰면 **git 동기화**로 규칙을 맞춘다.
