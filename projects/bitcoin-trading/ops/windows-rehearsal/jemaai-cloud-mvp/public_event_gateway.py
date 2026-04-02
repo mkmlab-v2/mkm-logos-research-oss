@@ -42,7 +42,14 @@ _ALLOWED_CHARACTER_IDS = {
     "bear_shield",
 }
 
-WORKSPACE_ROOT = Path(__file__).resolve().parents[4]
+# If this file is deployed outside the repo tree (e.g., /opt/jemaai), fall back safely.
+_self = Path(__file__).resolve()
+_fallback_root = _self.parent
+try:
+    _repo_root = _self.parents[4]
+except IndexError:
+    _repo_root = _fallback_root
+WORKSPACE_ROOT = Path(os.getenv("PUBLIC_EVENT_GATEWAY_WORKSPACE_ROOT", str(_repo_root)))
 DEFAULT_STATE_PATH = WORKSPACE_ROOT / "projects" / "bitcoin-trading" / "memory" / "v2" / "public" / "public_event_latest.json"
 STATE_PATH = Path(os.getenv("PUBLIC_EVENT_GATEWAY_STATE_PATH", str(DEFAULT_STATE_PATH)))
 
