@@ -1,0 +1,17 @@
+{
+  "schema": "independent_lens_fusion_stub_v0_contract_meta_v1",
+  "artifact_schema": "independent_lens_fusion_stub_v0",
+  "version": "0.1.0",
+  "purpose": "Read-only comparison between independent lens outputs before any real fusion policy.",
+  "runner": "scripts/report_independent_lens_fusion_stub_v0.py",
+  "default_output_path": "docs/final/artifacts/independent_lens_fusion_stub_latest.json",
+  "required_input_artifacts": [
+    "docs/final/artifacts/myeongni_independent_lens_latest.json",
+    "docs/final/artifacts/sasang_independent_lens_latest.json",
+    "docs/final/artifacts/logos_independent_lens_latest.json"
+  ],
+  "forbidden": {
+    "a_track_auto_fusion": true,
+    "live_sizing_trigger": true
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "independent_lens_shadow_gate_v1_contract_meta_v1",
+  "artifact_schema": "independent_lens_shadow_gate_v1",
+  "version": "1.0.0",
+  "purpose": "Keep independent lens fusion in shadow mode with minimum observation windows before any policy discussion.",
+  "runner": "scripts/report_independent_lens_shadow_gate.py",
+  "default_output_path": "docs/final/artifacts/independent_lens_shadow_gate_latest.json",
+  "default_history_path": "docs/final/artifacts/independent_lens_fusion_shadow_history.jsonl",
+  "hard_rules": {
+    "decision": "KEEP_OBSERVATION_ONLY",
+    "allow_a_track_binding": false
+  }
+}
