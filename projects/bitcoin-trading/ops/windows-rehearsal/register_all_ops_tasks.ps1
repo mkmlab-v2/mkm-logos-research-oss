@@ -3,6 +3,7 @@ param(
     [switch]$HealthcheckDryRun,
     [string]$DualMarketStartTime = "09:10",
     [string]$BtcBinanceStartTime = "09:15",
+    [string]$JemaaiE2EStartTime = "09:35",
     [string]$HealthcheckStartTime = "09:05",
     [ValidateSet("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")]
     [string]$HealthcheckWeeklyDay = "MON"
@@ -16,8 +17,9 @@ $opsDir = Join-Path $projectRoot "ops\windows-rehearsal"
 $registerDual = Join-Path $opsDir "register_waiting_queue_dual_market_daily_task.ps1"
 $registerBtc = Join-Path $opsDir "register_waiting_queue_btc_binance_daily_task.ps1"
 $registerHealth = Join-Path $opsDir "register_fatal_alert_healthcheck_task.ps1"
+$registerJemaaiE2E = Join-Path $opsDir "register_jemaai_public_event_e2e_smoke_task.ps1"
 
-foreach ($script in @($registerDual, $registerBtc, $registerHealth)) {
+foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerJemaaiE2E)) {
     if (-not (Test-Path -LiteralPath $script)) {
         throw "Required register script missing: $script"
     }
@@ -53,6 +55,17 @@ if (-not $HealthcheckDryRun) {
 & powershell @healthArgs
 if ($LASTEXITCODE -ne 0) {
     throw "Fatal alert healthcheck task registration failed"
+}
+
+$jemaaiArgs = @(
+    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerJemaaiE2E
+)
+if (-not [string]::IsNullOrWhiteSpace($JemaaiE2EStartTime)) {
+    $jemaaiArgs += @("-StartTime", $JemaaiE2EStartTime)
+}
+& powershell @jemaaiArgs
+if ($LASTEXITCODE -ne 0) {
+    throw "Jemaai public-event e2e smoke task registration failed"
 }
 
 $recoveryCommand = "powershell -NoProfile -ExecutionPolicy Bypass -File `"C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\register_all_ops_tasks.ps1`""

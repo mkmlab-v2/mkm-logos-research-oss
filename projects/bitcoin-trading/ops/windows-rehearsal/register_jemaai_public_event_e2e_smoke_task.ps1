@@ -1,7 +1,11 @@
+param(
+    [string]$StartTime = "09:35"
+)
+
 $ErrorActionPreference = "Stop"
 
 $taskName = "Jemaai-PublicEvent-E2E-Smoke"
-$startTime = "09:35"
+$startTime = $StartTime
 $opsRoot = "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal"
 $smokeScript = Join-Path $opsRoot "run_jemaai_public_event_e2e_smoke_with_alert.ps1"
 $assertScript = Join-Path $opsRoot "assert_task_target_exists.ps1"
