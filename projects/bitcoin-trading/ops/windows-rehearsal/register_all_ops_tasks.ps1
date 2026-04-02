@@ -3,8 +3,10 @@ param(
     [switch]$HealthcheckDryRun,
     [string]$DualMarketStartTime = "09:10",
     [string]$BtcBinanceStartTime = "09:15",
+    [string]$CompressionStubStartTime = "09:00",
     [string]$JemaaiE2EStartTime = "09:35",
     [string]$BlindReplayStartTime = "10:05",
+    [string]$OpsHealthOverviewStartTime = "10:10",
     [string]$HealthcheckStartTime = "09:05",
     [ValidateSet("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")]
     [string]$HealthcheckWeeklyDay = "MON"
@@ -18,11 +20,13 @@ $opsDir = Join-Path $projectRoot "ops\windows-rehearsal"
 $registerDual = Join-Path $opsDir "register_waiting_queue_dual_market_daily_task.ps1"
 $registerBtc = Join-Path $opsDir "register_waiting_queue_btc_binance_daily_task.ps1"
 $registerHealth = Join-Path $opsDir "register_fatal_alert_healthcheck_task.ps1"
+$registerCompressionStub = Join-Path $opsDir "register_compression_stub_task.ps1"
 $registerJemaaiE2E = Join-Path $opsDir "register_jemaai_public_event_e2e_smoke_task.ps1"
 $registerBlindReplay = Join-Path $opsDir "register_blind_replay_multi_seed_task.ps1"
+$registerOpsOverview = Join-Path $opsDir "register_ops_health_overview_task.ps1"
 $checkAlertConfig = Join-Path $opsDir "check_fatal_alert_config.ps1"
 
-foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerJemaaiE2E, $registerBlindReplay, $checkAlertConfig)) {
+foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerCompressionStub, $registerJemaaiE2E, $registerBlindReplay, $registerOpsOverview, $checkAlertConfig)) {
     if (-not (Test-Path -LiteralPath $script)) {
         throw "Required register script missing: $script"
     }
@@ -60,6 +64,17 @@ if ($LASTEXITCODE -ne 0) {
     throw "Fatal alert healthcheck task registration failed"
 }
 
+$compressionArgs = @(
+    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerCompressionStub
+)
+if (-not [string]::IsNullOrWhiteSpace($CompressionStubStartTime)) {
+    $compressionArgs += @("-StartTime", $CompressionStubStartTime)
+}
+& powershell @compressionArgs
+if ($LASTEXITCODE -ne 0) {
+    throw "Compression stub ensure task registration failed"
+}
+
 $jemaaiArgs = @(
     "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerJemaaiE2E
 )
@@ -80,6 +95,17 @@ if (-not [string]::IsNullOrWhiteSpace($BlindReplayStartTime)) {
 & powershell @blindArgs
 if ($LASTEXITCODE -ne 0) {
     throw "Blind replay multi-seed task registration failed"
+}
+
+$opsOverviewArgs = @(
+    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerOpsOverview
+)
+if (-not [string]::IsNullOrWhiteSpace($OpsHealthOverviewStartTime)) {
+    $opsOverviewArgs += @("-StartTime", $OpsHealthOverviewStartTime)
+}
+& powershell @opsOverviewArgs
+if ($LASTEXITCODE -ne 0) {
+    throw "Ops health overview task registration failed"
 }
 
 $alertStatusPath = "C:\workspace\docs\final\artifacts\fatal_alert_config_status_latest.json"
