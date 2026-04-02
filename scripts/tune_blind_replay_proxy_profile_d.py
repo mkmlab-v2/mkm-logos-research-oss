@@ -210,6 +210,18 @@ def main() -> int:
         default=0.0,
         help="Additional penalty * max(0, low_bal - high_bal) across assets.",
     )
+    ap.add_argument(
+        "--kospi-floor",
+        type=float,
+        default=0.0,
+        help="Minimum acceptable KOSPI balanced accuracy before extra penalty.",
+    )
+    ap.add_argument(
+        "--kospi-floor-penalty",
+        type=float,
+        default=0.0,
+        help="Penalty coefficient for max(0, kospi_floor - kospi_bal).",
+    )
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)
     args = ap.parse_args()
 
@@ -236,9 +248,15 @@ def main() -> int:
         low_high_gap_penalty = (
             max(0.0, btc_low_mean - btc_high_mean) + max(0.0, kospi_low_mean - kospi_high_mean)
         ) / 2.0
+        kospi_floor_gap_penalty = max(0.0, float(args.kospi_floor) - kospi_bal)
         mu = (weights["BTC"] * btc_bal + weights["KOSPI"] * kospi_bal) / (weights["BTC"] + weights["KOSPI"])
         sigma = _weighted_sigma({"BTC": btc_bal, "KOSPI": kospi_bal}, weights)
-        score = mu - float(args.kappa) * sigma - float(args.high_vol_penalty) * low_high_gap_penalty
+        score = (
+            mu
+            - float(args.kappa) * sigma
+            - float(args.high_vol_penalty) * low_high_gap_penalty
+            - float(args.kospi_floor_penalty) * kospi_floor_gap_penalty
+        )
         row = {
             "iter": i,
             "params": params,
@@ -249,6 +267,7 @@ def main() -> int:
             "kospi_low_balanced_accuracy_mean": round(kospi_low_mean, 6),
             "kospi_high_balanced_accuracy_mean": round(kospi_high_mean, 6),
             "low_high_gap_penalty": round(low_high_gap_penalty, 6),
+            "kospi_floor_gap_penalty": round(kospi_floor_gap_penalty, 6),
             "unified_score_balanced": round(score, 6),
             "mu_balanced": round(mu, 6),
             "sigma_balanced": round(sigma, 6),
@@ -279,6 +298,8 @@ def main() -> int:
             "w_kospi": float(args.w_kospi),
             "kappa": float(args.kappa),
             "high_vol_penalty": float(args.high_vol_penalty),
+            "kospi_floor": float(args.kospi_floor),
+            "kospi_floor_penalty": float(args.kospi_floor_penalty),
         },
         "best": best,
         "top20": top,
