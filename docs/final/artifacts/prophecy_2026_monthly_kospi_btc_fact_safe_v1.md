@@ -2,18 +2,18 @@
 
 ## 3문장 요약
 1) 본 문서는 확정 예언이 아닌 월별 확률 시나리오다.
-2) 현재 신뢰도 배지/게이트는 MID / HOLD다.
+2) 현재 신뢰도 배지/게이트는 HIGH / HOLD다.
 3) HOLD 모드에서는 방어 가중치가 자동 적용된다.
 
 ## 메타 고정
-- generated_at_utc: 2026-04-01T16:58:17Z
+- generated_at_utc: 2026-04-02T02:10:12Z
 - engine_id: V2_Precision_MCP
 - engine_scope: monthly_prophecy_generation_only
 - boundary_rule: observatory_ephemeris_v1
 - myeongri_verification_engine: project-0-workspace-athena-manseryeok.verify_saju_date
 - calendar_source_type: external_standard_required
 - calendar_source_name: standard_rabbinic_calendar
-- reliability_badge: MID
+- reliability_badge: HIGH
 - high_reliability_decision: HOLD
 - gate_reason: monthly_check_gate|core_forced_hold
 - price_output_locked: True

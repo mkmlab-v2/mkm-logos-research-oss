@@ -1,10 +1,10 @@
 # Fact-Safe Multi-Lens Brief
 
 ## 메타 고정 헤더
-- generated_at_utc: 2026-04-01T16:58:18Z
+- generated_at_utc: 2026-04-02T02:10:13Z
 - engine_id: V2_Precision_MCP
 - boundary_rule: observatory_ephemeris_v1
-- reliability_badge: MID
+- reliability_badge: HIGH
 - high_reliability_decision: PASS
 - gate_reason: monthly_check_gate
 
@@ -19,11 +19,11 @@
 - fills_count: 0
 - realized_pnl: 0.0
 - commission: 0.0
-- funding_fee: -0.01818283
-- net: -0.01818283
+- funding_fee: 0.01982546
+- net: 0.01982546
 - net_source: exchange_snapshot_24h
-- history samples: 44
-- history net_delta: 0.01792271
+- history samples: 155
+- history net_delta: 0.055931
 - history avg_net_per_fill_latest: None
 - backtest_available: True
 - backtest_sample_count: 317
@@ -32,12 +32,12 @@
 - backtest_profit_factor: 0.800345
 - backtest_sweep_available: True
 - backtest_sweep_best_period: 2026-01-01..2026-12-31
-- backtest_sweep_best_sample_count: 68
-- backtest_sweep_best_net_return_pct: 0.426506
-- backtest_sweep_best_profit_factor: 1.032377
+- backtest_sweep_best_sample_count: 69
+- backtest_sweep_best_net_return_pct: 0.897386
+- backtest_sweep_best_profit_factor: 1.069098
 
 ## 운영 게이트 결론
-- reliability_badge: MID
+- reliability_badge: HIGH
 - high_reliability_decision_raw(monthly_check): PASS
 - high_reliability_decision_effective: PASS
 - gate_reason: monthly_check_gate
