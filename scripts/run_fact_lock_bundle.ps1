@@ -38,6 +38,7 @@ $ErrorActionPreference = 'Stop'
 $workspaceRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $prophecyBundle = Join-Path $workspaceRoot 'projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1'
 $p1AbBundle = Join-Path $workspaceRoot 'scripts\run_p1_ab_bundle.ps1'
+$insightScoreboardScript = Join-Path $workspaceRoot 'scripts\build_insight_effectiveness_scoreboard.py'
 
 if (-not (Test-Path -LiteralPath $prophecyBundle)) {
     throw "Bundle script not found: $prophecyBundle"
@@ -65,6 +66,17 @@ if ($IncludeP1AB) {
     }
     Write-Host '== Fact-Lock: run_p1_ab_bundle.ps1 ==' -ForegroundColor Cyan
     & powershell -NoProfile -ExecutionPolicy Bypass -File $p1AbBundle
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if (-not (Test-Path -LiteralPath $insightScoreboardScript)) {
+    throw "Insight scoreboard script not found: $insightScoreboardScript"
+}
+Write-Host '== Fact-Lock: build_insight_effectiveness_scoreboard.py ==' -ForegroundColor Cyan
+& py $insightScoreboardScript
+if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
