@@ -54,6 +54,23 @@
 | **월간** | `scripts/run_waiting_queue_monthly_check.ps1` | 브리프·로그·브로드캐스트·(설정 시) Slack. `waiting_queue_monthly_check_log.jsonl`이 팩트 SSOT. |
 | **캘린더(운영자)** | 위 두 스크립트 전체 경로를 OS 캘린더·작업 스케줄러 등에 반복 등록 | 레포가 알림을 대신하지 않음; Strategy B로 소프트 스킵 구간은 로그 WARN으로만 남음. |
 
+### Phase B — 픽셀 미디어/예능 방송 (법적·기술적 격벽 고정)
+
+**목표**: `jemaai.cloud` 공개 쇼룸(전광판)은 “투자 리딩”이 아닌 **알고리즘 관찰 예능**으로 포지셔닝하여 대중 트래픽을 확보한다.
+
+**법적 방어선(문구 고정)**:
+- 공개 UI는 “매매 지시/권유”가 아니라 **상태 관찰(관측 로그 시각화)**만 제공한다.
+- 민감값(금액/노셔널/잔고/실거래 체결가/거래소 UID 등)은 공개 UI에 표시하지 않는다.
+
+**기술적 격벽(데이터 계약 고정)**:
+- 공개 프론트는 `public-event.v1` 화이트리스트 필드만 읽는다.
+- 실거래 데이터는 직접 송출하지 않고, 반드시 `X-Public-Event-Token` 기반 ingest → `public_event_gateway`의 `latest`를 통해서만 **허용 필드**가 표시된다.
+
+**UI/UX 목표(렌더링 규격 고정)**:
+- `Ticker`: 지연 의도/상태 배지/방향 테마/장애 상태(`online|degraded|maintenance`)를 요약 표시.
+- `가상 채팅`: 리스크/방향/상태 모드에 따른 “예능 반응”만 생성(민감값 사용 금지).
+- `상태 모드`: `Idle / Defend / Attack`을 `risk_level`/`system_status`/`public_signal_direction` 조합으로 매핑하여 캐릭터(픽셀 애니메이션)의 연출 상태로 사용.
+
 ### Chronos-Forward KOSPI (산출물 포인터)
 
 - 러너: `scripts/run_chronos_forward_kospi_baseline.ps1` (장시간·에이전트 한계 회피: `-Detached`).
