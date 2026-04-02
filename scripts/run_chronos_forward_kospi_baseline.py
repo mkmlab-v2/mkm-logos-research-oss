@@ -21,8 +21,8 @@ if str(ROOT) not in sys.path:
 from tools.prophecy.chronos_forward_trainer import ChronosForwardTrainer  # noqa: E402
 
 
-def _run(save_interval: int, verbose: bool, holdout_year: Optional[int]) -> None:
-    trainer = ChronosForwardTrainer()
+def _run(save_interval: int, verbose: bool, holdout_year: Optional[int], use_gpu: bool) -> None:
+    trainer = ChronosForwardTrainer(use_gpu=use_gpu)
     trainer.run_training(
         save_interval=save_interval,
         verbose=verbose,
@@ -40,16 +40,22 @@ def main() -> int:
     )
     p.add_argument("--save-interval", type=int, default=50, dest="save_interval")
     p.add_argument("--quiet", action="store_true", help="set verbose=False on trainer")
+    p.add_argument(
+        "--use-gpu",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Use GPU acceleration path when available (default: true).",
+    )
     args = p.parse_args()
     verbose = not args.quiet
 
     if args.mode == "training":
-        _run(args.save_interval, verbose, None)
+        _run(args.save_interval, verbose, None, args.use_gpu)
     elif args.mode == "holdout2026":
-        _run(args.save_interval, verbose, 2026)
+        _run(args.save_interval, verbose, 2026, args.use_gpu)
     else:
-        _run(args.save_interval, verbose, None)
-        _run(args.save_interval, verbose, 2026)
+        _run(args.save_interval, verbose, None, args.use_gpu)
+        _run(args.save_interval, verbose, 2026, args.use_gpu)
     return 0
 
 
