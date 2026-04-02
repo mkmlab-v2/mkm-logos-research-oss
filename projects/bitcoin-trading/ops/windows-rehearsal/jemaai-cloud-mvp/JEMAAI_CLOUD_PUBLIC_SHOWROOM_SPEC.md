@@ -59,6 +59,7 @@
 - 워크플로 끝에 **화이트리스트** Function: 허용 키만 통과. 주문·잔고·키·원시 시세 **금지**.
 - **예시 JSON**: `examples/public_event_ingest_minimal.v1.json`
 - **n8n Function 템플릿**: `examples/n8n_public_event_whitelist_function.js` (ID 정규화 + 지연/리스크 안전값 고정)
+- **E2E 스모크(운영 직전)**: `..\run_jemaai_public_event_e2e_smoke.ps1` (profiles endpoint + ingest→latest ID 정규화 검증)
 - **curl (로컬)** — 토큰은 환경변수만:
 
 ```text
