@@ -52,4 +52,4 @@ foreach ($f in $files) {
     }
 }
 
-Write-Host "[deploy-showroom] Done. On Linux nginx host: copy to /var/www/jemaai/ and `nginx -t && systemctl reload nginx` (see nginx_snippets/jemaai_showroom_ui.conf)."
+Write-Host "[deploy-showroom] Done. On Linux nginx host: copy to /var/www/jemaai/ then run: nginx -t ; systemctl reload nginx (see nginx_snippets/jemaai_showroom_ui.conf)."

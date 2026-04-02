@@ -358,6 +358,7 @@
 | Showroom static bundle | `projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1` | `docs/final/artifacts/showroom_public_bundle_v1.json` — `public_event.v1` + `public_ui`(`showroom_public_ui_v1`, ASCII 토큰) + 검증 `scripts/validate_showroom_public_bundle.py`. 한글 UI는 HTML에서 매핑. |
 | Showroom 정적 배포(로컬/스테이징 복사) | `projects/bitcoin-trading/ops/windows-rehearsal/deploy_showroom_static.ps1` | `-WebRoot` 또는 `JEMAAI_WEB_ROOT` → `public_showroom_poll.html`·`showroom_public_bundle_v1.json` 복사. 본선 nginx는 수동. |
 | 퓨전 후 ingest POST(선택) | `run_ops_fusion_cycle.ps1` + `publish_showroom_public_event.ps1` | User/Process `SHOWROOM_PUBLISH_INGEST=1`일 때만 7단계 실행. `SHOWROOM_INGEST_URL`·`PUBLIC_EVENT_GATEWAY_TOKEN`. |
+| 쇼룸 체인 로컬 검증 | `projects/bitcoin-trading/ops/windows-rehearsal/verify_showroom_bundle_chain.ps1` | 빌드(옵션 `-SkipBuild`)→`validate_showroom_public_bundle.py`→`pytest`; `-WithStagingCopy` 시 `.showroom_staging/`에 정적 복사 테스트. CI: `.github/workflows/showroom-bundle-validate.yml`. |
 
 ### 13.1 Phase 1 체인·레지스트리 (Windows, 관측·게이트)
 

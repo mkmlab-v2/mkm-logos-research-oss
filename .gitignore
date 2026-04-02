@@ -131,3 +131,6 @@ reports/constitution/btrack_pilot/fact_safe_slack_delivery_*.jsonl
 /utf8
 /tmp_verify_report.json
 .aider*
+
+# Local showroom deploy staging (verify_showroom_bundle_chain.ps1 -WithStagingCopy)
+projects/bitcoin-trading/ops/windows-rehearsal/.showroom_staging/
