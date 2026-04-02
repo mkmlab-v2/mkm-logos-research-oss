@@ -57,7 +57,7 @@
   </div>
 
   <div class="stage">
-    <label for="pixelStage" style="display:block; margin-bottom:0.35rem;">픽셀 캐릭터 스테이지 (v0)</label>
+    <label for="pixelStage" style="display:block; margin-bottom:0.35rem;">픽셀 캐릭터 스테이지 (v1)</label>
     <canvas id="pixelStage" width="256" height="144"></canvas>
     <div class="stage-meta" id="stageMeta">character=unknown_guard | mode=Idle</div>
   </div>
@@ -102,6 +102,13 @@
         url: "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955517797_1.png"
       }
     };
+    const fallbackProfiles = {
+      demo_guard: { archetype: "guardian", accent: "#6ccf95", eye: "#f6fbff" },
+      unknown_guard: { archetype: "guardian", accent: "#77c6ff", eye: "#f6fbff" },
+      bull_alpha: { archetype: "attacker", accent: "#ff8f80", eye: "#fff2d9" },
+      bear_shield: { archetype: "defender", accent: "#ffc96c", eye: "#f4f8ff" }
+    };
+    let characterProfiles = { ...fallbackProfiles };
     const spriteCache = {};
     let activeSpriteUrl = "";
 
@@ -127,7 +134,28 @@
       return `hsl(${hue} 70% 58%)`;
     }
 
-    function drawPixelCharacter(ctx, x, y, scale, color, eyeShift) {
+    async function loadCharacterProfiles() {
+      try {
+        const resp = await fetch("./character_profiles_v1_1.json", { cache: "no-store" });
+        if (!resp.ok) return;
+        const payload = await resp.json();
+        if (payload && payload.profiles && typeof payload.profiles === "object") {
+          characterProfiles = { ...fallbackProfiles, ...payload.profiles };
+        }
+      } catch (e) {
+        // Keep fallback profiles.
+      }
+    }
+
+    function profileFromCharacterId(rawId) {
+      const id = String(rawId || "unknown_guard").toLowerCase();
+      if (characterProfiles[id]) return characterProfiles[id];
+      if (id.includes("bull") || id.includes("attack")) return characterProfiles.bull_alpha;
+      if (id.includes("bear") || id.includes("shield") || id.includes("guard")) return characterProfiles.bear_shield;
+      return characterProfiles.unknown_guard;
+    }
+
+    function drawPixelCharacter(ctx, x, y, scale, color, eyeShift, profile) {
       const p = (dx, dy, w = 1, h = 1, c = color) => {
         ctx.fillStyle = c;
         ctx.fillRect(x + dx * scale, y + dy * scale, w * scale, h * scale);
@@ -140,8 +168,8 @@
       p(3, 10, 6, 1);
       p(0, 4, 1, 3);
       p(10, 4, 1, 3);
-      p(4 + eyeShift, 4, 1, 1, "#f6fbff");
-      p(7 + eyeShift, 4, 1, 1, "#f6fbff");
+      p(4 + eyeShift, 4, 1, 1, profile.eye || "#f6fbff");
+      p(7 + eyeShift, 4, 1, 1, profile.eye || "#f6fbff");
       p(4 + eyeShift, 5, 1, 1, "#0a0f14");
       p(7 + eyeShift, 5, 1, 1, "#0a0f14");
       p(5, 7, 2, 1, "#0a0f14");
@@ -149,6 +177,9 @@
       p(7, 11, 1, 2, color);
       p(2, 11, 1, 3, color);
       p(8, 11, 1, 3, color);
+      // Shoulder accent to differentiate character profiles.
+      p(1, 6, 1, 2, profile.accent || color);
+      p(9, 6, 1, 2, profile.accent || color);
     }
 
     function drawStage(ts) {
@@ -170,6 +201,7 @@
       const dir = String(obj.public_signal_direction || "HOLD").toUpperCase();
       const charId = String(obj.active_character_id || "unknown_guard");
       const charColor = colorFromCharacterId(charId);
+      const profile = profileFromCharacterId(charId);
       const spriteInfo = spriteByMode[mode] || spriteByMode.Idle;
       const spriteImg = getSpriteImage(spriteInfo.url);
       activeSpriteUrl = spriteInfo.url;
@@ -196,6 +228,16 @@
         ctx.stroke();
       }
 
+      if (risk === "WARNING") {
+        // Sweat particles for elevated risk.
+        ctx.fillStyle = "rgba(119, 198, 255, 0.85)";
+        for (let i = 0; i < 3; i += 1) {
+          const sx = 98 + i * 12 + Math.sin(stageState.pulse + i) * 2;
+          const sy = 56 + (i % 2) * 6 + Math.abs(Math.sin(stageState.pulse * 1.6 + i)) * 5;
+          ctx.fillRect(sx, sy, 2, 3);
+        }
+      }
+
       if (mode === "Attack") {
         ctx.fillStyle = "rgba(255, 120, 120, 0.55)";
         const dirSign = (dir === "BUY" || dir === "LONG") ? 1 : -1;
@@ -215,10 +257,10 @@
         ctx.drawImage(spriteImg, x, y, w, h);
       } else {
         // Fallback while image is loading
-        drawPixelCharacter(ctx, 106, 56 + bob, 4, charColor, eyeShift);
+        drawPixelCharacter(ctx, 106, 56 + bob, 4, charColor, eyeShift, profile);
       }
 
-      meta.textContent = `character=${spriteInfo.name} | mode=${mode} | risk=${risk} | dir=${dir} | src=${activeSpriteUrl}`;
+      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | sprite=${spriteInfo.name}`;
       requestAnimationFrame(drawStage);
     }
 
@@ -317,9 +359,11 @@
       }
     }
     requestAnimationFrame(drawStage);
-    tick();
-    setInterval(tick, POLL_MS);
-    document.getElementById("base").addEventListener("change", tick);
+    loadCharacterProfiles().finally(() => {
+      tick();
+      setInterval(tick, POLL_MS);
+      document.getElementById("base").addEventListener("change", tick);
+    });
   </script>
 </body>
 </html>

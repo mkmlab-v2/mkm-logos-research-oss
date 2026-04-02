@@ -1,0 +1,27 @@
+{
+  "version": "v1.1",
+  "updated_at_utc": "2026-04-02T00:00:00Z",
+  "default_profile_id": "unknown_guard",
+  "profiles": {
+    "rat_arbitrage": { "archetype": "기민한 차익거래", "eye": "#00FFFF", "accent": "#C0C0C0", "point": "narrow" },
+    "ox_guard": { "archetype": "우직한 하방방어", "eye": "#FFBF00", "accent": "#8B4513", "point": "broad" },
+    "tiger_shield": { "archetype": "맹렬한 위기돌파", "eye": "#FF4500", "accent": "#2F4F4F", "point": "sharp" },
+    "rabbit_scalper": { "archetype": "단기 변동성사냥", "eye": "#FF69B4", "accent": "#FFFFFF", "point": "narrow" },
+    "dragon_quant": { "archetype": "전천후 마스터", "eye": "#FFD700", "accent": "#800080", "point": "broad" },
+    "snake_hedger": { "archetype": "냉혹한 리스크헤저", "eye": "#32CD32", "accent": "#006400", "point": "sharp" },
+    "horse_trend": { "archetype": "추세추종 기수", "eye": "#FF0000", "accent": "#8B0000", "point": "broad" },
+    "sheep_yield": { "archetype": "안정적 이자농부", "eye": "#ADD8E6", "accent": "#F5F5DC", "point": "narrow" },
+    "monkey_momentum": { "archetype": "광기의 모멘텀", "eye": "#FFFF00", "accent": "#FFA500", "point": "sharp" },
+    "rooster_oracle": { "archetype": "명리 기반 관측", "eye": "#8A2BE2", "accent": "#FFD700", "point": "narrow" },
+    "dog_sentinel": { "archetype": "로고스 규율감시", "eye": "#1E90FF", "accent": "#A9A9A9", "point": "broad" },
+    "pig_accumulator": { "archetype": "무한축적 가치투자", "eye": "#FF1493", "accent": "#FFC0CB", "point": "broad" },
+    "demo_guard": { "archetype": "훈련용 방패병", "eye": "#00FF00", "accent": "#555555", "point": "broad" },
+    "unknown_guard": { "archetype": "신원미상 용병", "eye": "#FFFFFF", "accent": "#333333", "point": "narrow" },
+    "bull_alpha": { "archetype": "공세형 알파", "eye": "#FFF2D9", "accent": "#FF8F80", "point": "sharp" },
+    "bear_shield": { "archetype": "방어형 실드", "eye": "#F4F8FF", "accent": "#FFC96C", "point": "broad" }
+  },
+  "routing_hints": {
+    "bull_or_attack": "bull_alpha",
+    "bear_or_shield_or_guard": "bear_shield"
+  }
+}

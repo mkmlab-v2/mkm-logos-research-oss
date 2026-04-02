@@ -23,6 +23,24 @@ HOST = os.getenv("PUBLIC_EVENT_GATEWAY_HOST", "0.0.0.0")
 PORT = int(os.getenv("PUBLIC_EVENT_GATEWAY_PORT", "8788"))
 API_TOKEN = os.getenv("PUBLIC_EVENT_GATEWAY_TOKEN", "").strip()
 ALLOW_ORIGIN = os.getenv("PUBLIC_EVENT_GATEWAY_ALLOW_ORIGIN", "*")
+_ALLOWED_CHARACTER_IDS = {
+    "rat_arbitrage",
+    "ox_guard",
+    "tiger_shield",
+    "rabbit_scalper",
+    "dragon_quant",
+    "snake_hedger",
+    "horse_trend",
+    "sheep_yield",
+    "monkey_momentum",
+    "rooster_oracle",
+    "dog_sentinel",
+    "pig_accumulator",
+    "demo_guard",
+    "unknown_guard",
+    "bull_alpha",
+    "bear_shield",
+}
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_STATE_PATH = WORKSPACE_ROOT / "projects" / "bitcoin-trading" / "memory" / "v2" / "public" / "public_event_latest.json"
@@ -74,6 +92,19 @@ def _is_valid_event(payload: Dict[str, Any]) -> bool:
         "source",
     ]
     return all(k in payload for k in required)
+
+
+def _sanitize_character_id(raw: Any) -> str:
+    cid = str(raw or "").strip().lower()
+    if not cid:
+        return "unknown_guard"
+    if cid in _ALLOWED_CHARACTER_IDS:
+        return cid
+    if "bull" in cid or "attack" in cid:
+        return "bull_alpha"
+    if "bear" in cid or "shield" in cid or "guard" in cid:
+        return "bear_shield"
+    return "unknown_guard"
 
 
 class PublicEventHandler(BaseHTTPRequestHandler):
@@ -133,6 +164,8 @@ class PublicEventHandler(BaseHTTPRequestHandler):
         if not data or not _is_valid_event(data):
             self._send_json(400, {"ok": False, "error": "invalid_payload"})
             return
+        # Guardrail: normalize active_character_id to whitelisted/public-safe IDs.
+        data["active_character_id"] = _sanitize_character_id(data.get("active_character_id"))
 
         with _state_lock:
             global _latest_event
