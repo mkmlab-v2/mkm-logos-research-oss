@@ -109,7 +109,7 @@ $results += $tokenOk
 
 # 3) CORS allow-origin
 $corsOk = $false
-$corsDetail = "Expected origin not provided; skipped strict compare."
+$corsDetail = "API check unavailable; could not read CORS header."
 if ($apiCheck -and $apiCheck.Headers) {
     $allowOrigin = [string]$apiCheck.Headers["Access-Control-Allow-Origin"]
     if ([string]::IsNullOrWhiteSpace($ExpectedOrigin)) {
