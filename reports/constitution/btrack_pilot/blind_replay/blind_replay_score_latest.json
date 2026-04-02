@@ -1,0 +1,109 @@
+{
+  "schema": "blind_historical_replay_score_v1",
+  "generated_at_utc": "2026-04-02T13:13:46Z",
+  "exploratory_only": true,
+  "a_track_binding_forbidden": true,
+  "input": {
+    "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_kospi_s80_cfg4_w30_h5_s1_seed50.jsonl",
+    "prediction_source": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_D_latest.jsonl",
+    "public_dataset": null
+  },
+  "counts": {
+    "answer_key_total": 66,
+    "predictions_total": 66,
+    "matched": 66,
+    "hit": 30,
+    "miss": 36,
+    "unresolved": 0
+  },
+  "metrics": {
+    "hit_rate": 0.454545,
+    "coverage_rate": 1.0,
+    "balanced_accuracy": 0.315188
+  },
+  "per_label": {
+    "total": {
+      "DOWN_STRONG": 31,
+      "UP_STRONG": 32,
+      "NEUTRAL": 3
+    },
+    "hit": {
+      "DOWN_STRONG": 8,
+      "UP_STRONG": 22,
+      "NEUTRAL": 0
+    }
+  },
+  "samples_preview": [
+    {
+      "sample_id": "BR_00001",
+      "truth": "DOWN_STRONG",
+      "pred": "NEUTRAL",
+      "is_hit": false,
+      "confidence_0_1": 0.2
+    },
+    {
+      "sample_id": "BR_00002",
+      "truth": "DOWN_STRONG",
+      "pred": "DOWN_STRONG",
+      "is_hit": true,
+      "confidence_0_1": 0.95
+    },
+    {
+      "sample_id": "BR_00003",
+      "truth": "NEUTRAL",
+      "pred": "UP_STRONG",
+      "is_hit": false,
+      "confidence_0_1": 0.95
+    },
+    {
+      "sample_id": "BR_00004",
+      "truth": "UP_STRONG",
+      "pred": "UP_STRONG",
+      "is_hit": true,
+      "confidence_0_1": 0.95
+    },
+    {
+      "sample_id": "BR_00005",
+      "truth": "NEUTRAL",
+      "pred": "DOWN_STRONG",
+      "is_hit": false,
+      "confidence_0_1": 0.95
+    },
+    {
+      "sample_id": "BR_00006",
+      "truth": "UP_STRONG",
+      "pred": "UP_STRONG",
+      "is_hit": true,
+      "confidence_0_1": 0.5333
+    },
+    {
+      "sample_id": "BR_00007",
+      "truth": "DOWN_STRONG",
+      "pred": "UP_STRONG",
+      "is_hit": false,
+      "confidence_0_1": 0.95
+    },
+    {
+      "sample_id": "BR_00008",
+      "truth": "UP_STRONG",
+      "pred": "UP_STRONG",
+      "is_hit": true,
+      "confidence_0_1": 0.95
+    },
+    {
+      "sample_id": "BR_00009",
+      "truth": "DOWN_STRONG",
+      "pred": "UP_STRONG",
+      "is_hit": false,
+      "confidence_0_1": 0.95
+    },
+    {
+      "sample_id": "BR_00010",
+      "truth": "DOWN_STRONG",
+      "pred": "UP_STRONG",
+      "is_hit": false,
+      "confidence_0_1": 0.95
+    }
+  ],
+  "note": "Exploratory benchmark only. Do not promote to live trigger path."
+}

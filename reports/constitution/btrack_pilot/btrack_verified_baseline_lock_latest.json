@@ -1,14 +1,14 @@
 {
   "schema": "btrack_verified_baseline_lock_v1",
-  "locked_at_utc": "2026-04-02T02:59:35Z",
+  "locked_at_utc": "2026-04-02T13:15:09Z",
   "inputs": {
     "quality_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_quality_anchor_verified_only_latest.json",
     "gate_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
     "verified_slots": "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\btrack_anchor_evidence_slots_verified.jsonl"
   },
   "input_hashes": {
-    "quality_report_sha256": "c2622b84a485f43ee5bfc940636c9ba729c2577ff196aa8ffe1833b31ebce138",
-    "gate_report_sha256": "3efa9aba2bea47a76034d66d5fad246926fc31c11f9ef4c9f20eb000ce19b5c6",
+    "quality_report_sha256": "826619237e7ec98650eedd69e091b6f75f0ecc8d9f2a84ef23e38be91568046e",
+    "gate_report_sha256": "20d28c879af8bfd734f68452202dcfe3b1b55d4981c90c61e4da92447140d318",
     "verified_slots_sha256": "f0f3e5d06a02a837a2afa0e3e8e1e2cb5c33497d476575f14b93ab58f482e796"
   },
   "baseline_metrics": {

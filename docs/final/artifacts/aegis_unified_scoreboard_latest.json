@@ -1,0 +1,173 @@
+{
+  "schema": "aegis_unified_scoreboard_v1_1",
+  "generated_at_utc": "2026-04-02T11:53:38Z",
+  "exploratory_only": true,
+  "a_track_binding_forbidden": true,
+  "inputs": {
+    "btc_grid": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_dataset_grid_btc_s80_latest.json",
+    "kospi_grid": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_dataset_grid_kospi_s80_latest.json",
+    "btc_best_config_tag": "cfg5_w45_h10_s2",
+    "btc_dataset_id": "btc_s80",
+    "kospi_best_config_tag": "cfg4_w30_h5_s1",
+    "kospi_dataset_id": "kospi_s80",
+    "btc_seeds": [
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50
+    ],
+    "kospi_seeds": [
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50
+    ],
+    "profiles": [
+      "A",
+      "B",
+      "C"
+    ]
+  },
+  "weights": {
+    "baseline_7_3": {
+      "BTC": 0.7,
+      "KOSPI": 0.3
+    },
+    "shadow_6_4": {
+      "BTC": 0.6,
+      "KOSPI": 0.4
+    },
+    "kappa": 0.15
+  },
+  "ranking": [
+    {
+      "profile": "A",
+      "asset_metrics": {
+        "BTC": {
+          "hit_rate_mean": 0.4475,
+          "balanced_accuracy_mean": 0.374976,
+          "matched_mean": 80
+        },
+        "KOSPI": {
+          "hit_rate_mean": 0.393939,
+          "balanced_accuracy_mean": 0.273858,
+          "matched_mean": 66
+        }
+      },
+      "baseline_7_3": {
+        "mu_balanced": 0.344641,
+        "sigma_balanced": 0.046338,
+        "unified_score_balanced": 0.33769,
+        "mu_hit": 0.431432,
+        "sigma_hit": 0.024545,
+        "unified_score_hit": 0.42775
+      },
+      "shadow_6_4": {
+        "mu_balanced": 0.334529,
+        "sigma_balanced": 0.049538,
+        "unified_score_balanced": 0.327098
+      },
+      "delta_7_3_minus_6_4_balanced": 0.010592
+    },
+    {
+      "profile": "C",
+      "asset_metrics": {
+        "BTC": {
+          "hit_rate_mean": 0.44875,
+          "balanced_accuracy_mean": 0.355619,
+          "matched_mean": 80
+        },
+        "KOSPI": {
+          "hit_rate_mean": 0.424242,
+          "balanced_accuracy_mean": 0.294691,
+          "matched_mean": 66
+        }
+      },
+      "baseline_7_3": {
+        "mu_balanced": 0.337341,
+        "sigma_balanced": 0.027921,
+        "unified_score_balanced": 0.333152,
+        "mu_hit": 0.441398,
+        "sigma_hit": 0.011231,
+        "unified_score_hit": 0.439713
+      },
+      "shadow_6_4": {
+        "mu_balanced": 0.331248,
+        "sigma_balanced": 0.029849,
+        "unified_score_balanced": 0.326771
+      },
+      "delta_7_3_minus_6_4_balanced": 0.006382
+    },
+    {
+      "profile": "B",
+      "asset_metrics": {
+        "BTC": {
+          "hit_rate_mean": 0.4425,
+          "balanced_accuracy_mean": 0.36039,
+          "matched_mean": 80
+        },
+        "KOSPI": {
+          "hit_rate_mean": 0.393939,
+          "balanced_accuracy_mean": 0.273858,
+          "matched_mean": 66
+        }
+      },
+      "baseline_7_3": {
+        "mu_balanced": 0.334431,
+        "sigma_balanced": 0.039654,
+        "unified_score_balanced": 0.328482,
+        "mu_hit": 0.427932,
+        "sigma_hit": 0.022253,
+        "unified_score_hit": 0.424594
+      },
+      "shadow_6_4": {
+        "mu_balanced": 0.325777,
+        "sigma_balanced": 0.042392,
+        "unified_score_balanced": 0.319419
+      },
+      "delta_7_3_minus_6_4_balanced": 0.009064
+    }
+  ],
+  "ace_profile": {
+    "profile": "A",
+    "asset_metrics": {
+      "BTC": {
+        "hit_rate_mean": 0.4475,
+        "balanced_accuracy_mean": 0.374976,
+        "matched_mean": 80
+      },
+      "KOSPI": {
+        "hit_rate_mean": 0.393939,
+        "balanced_accuracy_mean": 0.273858,
+        "matched_mean": 66
+      }
+    },
+    "baseline_7_3": {
+      "mu_balanced": 0.344641,
+      "sigma_balanced": 0.046338,
+      "unified_score_balanced": 0.33769,
+      "mu_hit": 0.431432,
+      "sigma_hit": 0.024545,
+      "unified_score_hit": 0.42775
+    },
+    "shadow_6_4": {
+      "mu_balanced": 0.334529,
+      "sigma_balanced": 0.049538,
+      "unified_score_balanced": 0.327098
+    },
+    "delta_7_3_minus_6_4_balanced": 0.010592
+  },
+  "note": "Unified profile scoreboard for BTC-first operating mode."
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "blind_historical_replay_manifest_v1",
+  "generated_at_utc": "2026-04-02T12:07:36Z",
+  "exploratory_only": true,
+  "a_track_binding_forbidden": true,
+  "input_csv": "C:\\workspace\\data\\external\\historical_btcusdt_1d.csv",
+  "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_20260402_120736.jsonl",
+  "private_answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_20260402_120736.jsonl",
+  "sample_count": 60,
+  "window_bars": 60,
+  "horizon_bars": 10,
+  "stride": 2,
+  "leakage_controls": {
+    "date_masking": true,
+    "asset_name_masking": true,
+    "absolute_price_removed": true,
+    "evaluation_separated_by_private_key": true
+  },
+  "note": "B-track isolated experiment only; do not connect to live trigger path."
+}

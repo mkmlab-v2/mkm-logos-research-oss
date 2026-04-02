@@ -1,0 +1,54 @@
+{
+  "schema": "insight_effectiveness_scoreboard_v1",
+  "generated_at_utc": "2026-04-02T13:19:33Z",
+  "sources": {
+    "fused_history_path": "C:\\workspace\\docs\\final\\artifacts\\fused_paper_cycle_decision_history.jsonl",
+    "scoring_distribution_path": "C:\\workspace\\docs\\final\\artifacts\\trinity_scoring_distribution_latest.json",
+    "shadow_gate_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_shadow_gate_latest.json"
+  },
+  "thresholds": {
+    "pending_close_rate_max": 0.3,
+    "monthly_hit_rate_min": 0.55,
+    "state_present_rate_min": 0.2,
+    "required_consecutive_months": 2
+  },
+  "latest_window_snapshot": {
+    "counts": {
+      "HIT": 8,
+      "FAIL": 0,
+      "NEUTRAL_DRAW": 2,
+      "PENDING_CLOSE": 20
+    },
+    "pending_close_rate_raw": 0.6666666666666666,
+    "hit_rate_resolved_plus_neutral": 0.8,
+    "resolved_plus_neutral_n": 10,
+    "hit_rate_resolved_plus_neutral_wilson95": {
+      "lower": 0.49015684672072335,
+      "upper": 0.9433190520193067
+    }
+  },
+  "monthly_hit_rate_trace": [
+    {
+      "month_tag": "2026-04",
+      "hit_rate_resolved_plus_neutral": 0.8,
+      "sample_size": 30
+    }
+  ],
+  "state_signal_snapshot": {
+    "state_present_rate_all": 0.1905,
+    "advisory_decision": "state_signal_not_wired"
+  },
+  "shadow_gate_snapshot": {
+    "decision": "KEEP_OBSERVATION_ONLY",
+    "weekly_cycles_observed": 8,
+    "monthly_cycles_observed": 1
+  },
+  "checks": {
+    "pending_close_rate_ok": false,
+    "monthly_hit_rate_two_months_ok": false,
+    "state_signal_wired_ok": false
+  },
+  "is_promotion_ready": false,
+  "promotion_status": "KEEP_OBSERVATION_ONLY",
+  "note": "Daily machine verdict for B-track to A-track promotion readiness."
+}

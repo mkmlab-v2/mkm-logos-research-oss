@@ -1,14 +1,14 @@
 {
   "schema": "btrack_symbol_lane_baseline_lock_v1",
-  "locked_at_utc": "2026-04-02T02:59:38Z",
+  "locked_at_utc": "2026-04-02T13:15:12Z",
   "inputs": {
     "lane_gate": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_gate_stable_latest.json",
     "lane_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_summary_stable_latest.json",
     "gate_template": "C:\\workspace\\data\\logos\\btrack_pilot\\gates\\symbol_lane_gate_template.json"
   },
   "input_hashes": {
-    "lane_gate_sha256": "1e1b03a27f2b7d8162ad1db98893638c8ac32e8b16564ab50f68f73b867e6d05",
-    "lane_summary_sha256": "fc2fcb227cdcf767fe46f4787ed9a4dc8fd989c5eed1f8871e470e2012002f9b",
+    "lane_gate_sha256": "49246fb93a5e513be827e2e2150a0e94fa781cbb72d5ffc2f34407757d29834a",
+    "lane_summary_sha256": "862fb74903f516a3c49b926e2318b0237a41329b2882be0647d85dfb8fa1e7a8",
     "gate_template_sha256": "4290ef5e8299e222c313991a3887c10151b403539eeb12a46bd93a4fcc8c0d47"
   },
   "baseline_decision": "pass",

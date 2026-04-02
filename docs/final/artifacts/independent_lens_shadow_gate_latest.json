@@ -1,0 +1,30 @@
+{
+  "schema": "independent_lens_shadow_gate_v1",
+  "ts_utc": "2026-04-02T13:19:32Z",
+  "month_tag": "2026-04",
+  "policy": {
+    "a_track_binding": "forbidden",
+    "recommended_mode": "observation_only",
+    "min_weekly_cycles": 8,
+    "min_monthly_cycles": 2
+  },
+  "history": {
+    "weekly_cycles_observed": 8,
+    "monthly_cycles_observed": 1,
+    "history_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_shadow_history.jsonl"
+  },
+  "latest_consensus": {
+    "available_count": 3,
+    "agreement_rate": 0.666667,
+    "conflict_count": 1,
+    "consensus_sign": "bear",
+    "consensus_score": -0.476829,
+    "consensus_confidence": 0.501111
+  },
+  "decision": "KEEP_OBSERVATION_ONLY",
+  "allow_a_track_binding": false,
+  "blockers": [
+    "monthly_cycles_lt_2"
+  ],
+  "note": "Shadow gate only; this file must not be used as direct live trading trigger."
+}

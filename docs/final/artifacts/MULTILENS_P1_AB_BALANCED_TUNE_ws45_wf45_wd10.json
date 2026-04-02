@@ -1,0 +1,219 @@
+{
+  "schema": "multilens_p1_ab_balanced_v1",
+  "ts_utc": "2026-04-02T12:08:53.587009+00:00",
+  "profile": "balanced",
+  "manseryeok_scope": {
+    "manseryeok_applicable": false,
+    "jaccard_metric_domain": "compression_token_reconstruction",
+    "manseryeok_scope_note": "multilens_p1_ab_* reports: avg_reconstruction_fidelity_jaccard measures compressed vs baseline token overlap — not pillar or manse agreement. Do not merge approx_stub_pipeline_metadata() into these scores as if manse-derived."
+  },
+  "source_refs": {
+    "input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+    "baseline": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json",
+    "decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
+  },
+  "gate_contract": {
+    "saving_rate_min": 0.5,
+    "jaccard_drop_pp_max": 1.5,
+    "sensitive_integrity_min": 0.999
+  },
+  "baseline": {
+    "avg_reconstruction_fidelity_jaccard": 0.6398585319936865
+  },
+  "summary": {
+    "candidate_count": 12,
+    "passing_count": 0,
+    "elapsed_ms": 989.627
+  },
+  "best_candidate": {
+    "strategy": "A",
+    "intensity": "extreme",
+    "use_hangul_principle": true,
+    "general_max_saving_rate": 0.54,
+    "sensitive_max_saving_rate": 0.5,
+    "hangul_max_saving_rate": 0.48,
+    "global_token_saving_rate": 0.5147679324894514,
+    "avg_reconstruction_fidelity_jaccard": 0.8706675082313629,
+    "avg_sensitive_integrity": 0.9916666666666668,
+    "jaccard_drop_pp": 0.0,
+    "gate_ok": false,
+    "balanced_composite": 0.623445948
+  },
+  "candidates": [
+    {
+      "strategy": "A",
+      "intensity": "extreme",
+      "use_hangul_principle": false,
+      "general_max_saving_rate": 0.54,
+      "sensitive_max_saving_rate": 0.5,
+      "hangul_max_saving_rate": 0.48,
+      "global_token_saving_rate": 0.5274261603375527,
+      "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
+      "avg_sensitive_integrity": 0.9916666666666668,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.549914067
+    },
+    {
+      "strategy": "A",
+      "intensity": "extreme",
+      "use_hangul_principle": false,
+      "general_max_saving_rate": 0.52,
+      "sensitive_max_saving_rate": 0.49,
+      "hangul_max_saving_rate": 0.45999999999999996,
+      "global_token_saving_rate": 0.49507735583684953,
+      "avg_reconstruction_fidelity_jaccard": 0.7120204664186864,
+      "avg_sensitive_integrity": 0.9916666666666668,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.54319402
+    },
+    {
+      "strategy": "A",
+      "intensity": "extreme",
+      "use_hangul_principle": false,
+      "general_max_saving_rate": 0.5,
+      "sensitive_max_saving_rate": 0.48,
+      "hangul_max_saving_rate": 0.44,
+      "global_token_saving_rate": 0.49367088607594933,
+      "avg_reconstruction_fidelity_jaccard": 0.7120204664186864,
+      "avg_sensitive_integrity": 0.9916666666666668,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.542561109
+    },
+    {
+      "strategy": "A",
+      "intensity": "ultra",
+      "use_hangul_principle": false,
+      "general_max_saving_rate": 0.54,
+      "sensitive_max_saving_rate": 0.5,
+      "hangul_max_saving_rate": 0.48,
+      "global_token_saving_rate": 0.32208157524613223,
+      "avg_reconstruction_fidelity_jaccard": 0.8544320962190545,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.529431152
+    },
+    {
+      "strategy": "A",
+      "intensity": "ultra",
+      "use_hangul_principle": false,
+      "general_max_saving_rate": 0.52,
+      "sensitive_max_saving_rate": 0.49,
+      "hangul_max_saving_rate": 0.45999999999999996,
+      "global_token_saving_rate": 0.31926863572433195,
+      "avg_reconstruction_fidelity_jaccard": 0.857063675166423,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.52934954
+    },
+    {
+      "strategy": "A",
+      "intensity": "ultra",
+      "use_hangul_principle": false,
+      "general_max_saving_rate": 0.5,
+      "sensitive_max_saving_rate": 0.48,
+      "hangul_max_saving_rate": 0.44,
+      "global_token_saving_rate": 0.31926863572433195,
+      "avg_reconstruction_fidelity_jaccard": 0.857063675166423,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.52934954
+    },
+    {
+      "strategy": "B",
+      "intensity": "extreme",
+      "use_hangul_principle": false,
+      "general_max_saving_rate": 0.54,
+      "sensitive_max_saving_rate": 0.5,
+      "hangul_max_saving_rate": 0.48,
+      "global_token_saving_rate": 0.37412095639943743,
+      "avg_reconstruction_fidelity_jaccard": 0.83664841543905,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.544846217
+    },
+    {
+      "strategy": "B",
+      "intensity": "extreme",
+      "use_hangul_principle": false,
+      "general_max_saving_rate": 0.52,
+      "sensitive_max_saving_rate": 0.49,
+      "hangul_max_saving_rate": 0.45999999999999996,
+      "global_token_saving_rate": 0.3656821378340366,
+      "avg_reconstruction_fidelity_jaccard": 0.843691759092301,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.544218254
+    },
+    {
+      "strategy": "B",
+      "intensity": "extreme",
+      "use_hangul_principle": false,
+      "general_max_saving_rate": 0.5,
+      "sensitive_max_saving_rate": 0.48,
+      "hangul_max_saving_rate": 0.44,
+      "global_token_saving_rate": 0.3656821378340366,
+      "avg_reconstruction_fidelity_jaccard": 0.843691759092301,
+      "avg_sensitive_integrity": 1.0,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.544218254
+    },
+    {
+      "strategy": "A",
+      "intensity": "extreme",
+      "use_hangul_principle": true,
+      "general_max_saving_rate": 0.54,
+      "sensitive_max_saving_rate": 0.5,
+      "hangul_max_saving_rate": 0.48,
+      "global_token_saving_rate": 0.5147679324894514,
+      "avg_reconstruction_fidelity_jaccard": 0.8706675082313629,
+      "avg_sensitive_integrity": 0.9916666666666668,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.623445948
+    },
+    {
+      "strategy": "A",
+      "intensity": "extreme",
+      "use_hangul_principle": true,
+      "general_max_saving_rate": 0.52,
+      "sensitive_max_saving_rate": 0.49,
+      "hangul_max_saving_rate": 0.45999999999999996,
+      "global_token_saving_rate": 0.4824191279887482,
+      "avg_reconstruction_fidelity_jaccard": 0.8752753513686178,
+      "avg_sensitive_integrity": 0.9916666666666668,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.610962516
+    },
+    {
+      "strategy": "A",
+      "intensity": "extreme",
+      "use_hangul_principle": true,
+      "general_max_saving_rate": 0.5,
+      "sensitive_max_saving_rate": 0.48,
+      "hangul_max_saving_rate": 0.44,
+      "global_token_saving_rate": 0.4810126582278481,
+      "avg_reconstruction_fidelity_jaccard": 0.8752753513686178,
+      "avg_sensitive_integrity": 0.9916666666666668,
+      "jaccard_drop_pp": 0.0,
+      "gate_ok": false,
+      "balanced_composite": 0.610329604
+    }
+  ],
+  "balanced_weights": {
+    "w_saving": 0.45,
+    "w_fidelity": 0.45,
+    "w_drop_penalty": 0.1,
+    "normalized_drop_divisor": 1.5,
+    "formula": "w_saving*saving + w_fidelity*avg_jaccard - w_drop_penalty*min(drop_pp/divisor,1)"
+  }
+}

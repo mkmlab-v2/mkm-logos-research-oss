@@ -1,0 +1,1597 @@
+{
+  "schema": "blind_replay_dataset_grid_v1",
+  "generated_at_utc": "2026-04-02T11:42:17Z",
+  "exploratory_only": true,
+  "a_track_binding_forbidden": true,
+  "input_csv": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\btcusdt_1d_2018_2026.csv",
+  "sample_size": 40,
+  "seeds": [
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50
+  ],
+  "profiles": [
+    "A",
+    "B",
+    "C"
+  ],
+  "ranking_policy": {
+    "min_matched": 20,
+    "sort_priority": [
+      "eligible_seed_rate",
+      "eligible_best_profile_balanced_accuracy_mean",
+      "eligible_best_profile_hit_rate_mean"
+    ]
+  },
+  "configs": [
+    {
+      "config_tag": "cfg2_w45_h10_s5",
+      "window_bars": 45,
+      "horizon_bars": 10,
+      "stride": 5,
+      "seeds": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "seed_runs": [
+        {
+          "seed": 48,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed48.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed48.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.475,
+            "balanced_accuracy": 0.471055,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 19,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.458333,
+          "avg_balanced_accuracy_profiles": 0.460473
+        },
+        {
+          "seed": 45,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed45.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed45.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.525,
+            "balanced_accuracy": 0.450439,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 21,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.525,
+          "avg_balanced_accuracy_profiles": 0.450439
+        },
+        {
+          "seed": 50,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed50.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed50.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.525,
+            "balanced_accuracy": 0.447619,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 21,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.516667,
+          "avg_balanced_accuracy_profiles": 0.425397
+        },
+        {
+          "seed": 47,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed47.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed47.jsonl",
+          "best_profile": {
+            "profile": "B",
+            "hit_rate": 0.5,
+            "balanced_accuracy": 0.435185,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 20,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.483333,
+          "avg_balanced_accuracy_profiles": 0.401235
+        },
+        {
+          "seed": 43,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed43.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed43.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.45,
+            "balanced_accuracy": 0.42924,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 18,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.441667,
+          "avg_balanced_accuracy_profiles": 0.398051
+        },
+        {
+          "seed": 49,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed49.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed49.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.45,
+            "balanced_accuracy": 0.419993,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 18,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.441667,
+          "avg_balanced_accuracy_profiles": 0.40412
+        },
+        {
+          "seed": 46,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed46.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed46.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.4,
+            "balanced_accuracy": 0.394152,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 16,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.408333,
+          "avg_balanced_accuracy_profiles": 0.387329
+        },
+        {
+          "seed": 42,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed42.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed42.jsonl",
+          "best_profile": {
+            "profile": "B",
+            "hit_rate": 0.525,
+            "balanced_accuracy": 0.386997,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 21,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.516667,
+          "avg_balanced_accuracy_profiles": 0.381149
+        },
+        {
+          "seed": 44,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed44.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed44.jsonl",
+          "best_profile": {
+            "profile": "B",
+            "hit_rate": 0.4,
+            "balanced_accuracy": 0.374339,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 16,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.383333,
+          "avg_balanced_accuracy_profiles": 0.354277
+        },
+        {
+          "seed": 41,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed41.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed41.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.4,
+            "balanced_accuracy": 0.30719,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 16,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.383333,
+          "avg_balanced_accuracy_profiles": 0.293392
+        }
+      ],
+      "representative_best": {
+        "seed": 48,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed48.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed48.jsonl",
+        "best_profile": {
+          "profile": "C",
+          "hit_rate": 0.475,
+          "balanced_accuracy": 0.471055,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 19,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.458333,
+        "avg_balanced_accuracy_profiles": 0.460473
+      },
+      "best_profile_hit_rate_mean": 0.465,
+      "best_profile_hit_rate_std": 0.050249,
+      "best_profile_balanced_accuracy_mean": 0.411621,
+      "best_profile_balanced_accuracy_std": 0.045253,
+      "ranking_min_matched": 20,
+      "eligible_seed_runs": 10,
+      "eligible_seed_rate": 1.0,
+      "representative_best_eligible": {
+        "seed": 48,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed48.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed48.jsonl",
+        "best_profile": {
+          "profile": "C",
+          "hit_rate": 0.475,
+          "balanced_accuracy": 0.471055,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 19,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.458333,
+        "avg_balanced_accuracy_profiles": 0.460473
+      },
+      "eligible_best_profile_hit_rate_mean": 0.465,
+      "eligible_best_profile_hit_rate_std": 0.050249,
+      "eligible_best_profile_balanced_accuracy_mean": 0.411621,
+      "eligible_best_profile_balanced_accuracy_std": 0.045253
+    },
+    {
+      "config_tag": "cfg5_w45_h10_s2",
+      "window_bars": 45,
+      "horizon_bars": 10,
+      "stride": 2,
+      "seeds": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "seed_runs": [
+        {
+          "seed": 46,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed46.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed46.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.55,
+            "balanced_accuracy": 0.467982,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 22,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.55,
+          "avg_balanced_accuracy_profiles": 0.452704
+        },
+        {
+          "seed": 47,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed47.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed47.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.55,
+            "balanced_accuracy": 0.464693,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 22,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.55,
+          "avg_balanced_accuracy_profiles": 0.434137
+        },
+        {
+          "seed": 50,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed50.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed50.jsonl",
+          "best_profile": {
+            "profile": "B",
+            "hit_rate": 0.475,
+            "balanced_accuracy": 0.42193,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 19,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.466667,
+          "avg_balanced_accuracy_profiles": 0.398611
+        },
+        {
+          "seed": 48,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed48.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed48.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.425,
+            "balanced_accuracy": 0.420915,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 17,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.416667,
+          "avg_balanced_accuracy_profiles": 0.383006
+        },
+        {
+          "seed": 49,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed49.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed49.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.4,
+            "balanced_accuracy": 0.415966,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 16,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.391667,
+          "avg_balanced_accuracy_profiles": 0.360411
+        },
+        {
+          "seed": 41,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed41.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed41.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.45,
+            "balanced_accuracy": 0.399471,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 18,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.433333,
+          "avg_balanced_accuracy_profiles": 0.377425
+        },
+        {
+          "seed": 45,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed45.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed45.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.525,
+            "balanced_accuracy": 0.390873,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 21,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.525,
+          "avg_balanced_accuracy_profiles": 0.390873
+        },
+        {
+          "seed": 42,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed42.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed42.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.425,
+            "balanced_accuracy": 0.373545,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 17,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.408333,
+          "avg_balanced_accuracy_profiles": 0.341799
+        },
+        {
+          "seed": 44,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed44.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed44.jsonl",
+          "best_profile": {
+            "profile": "B",
+            "hit_rate": 0.425,
+            "balanced_accuracy": 0.367105,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 17,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.416667,
+          "avg_balanced_accuracy_profiles": 0.344883
+        },
+        {
+          "seed": 43,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed43.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed43.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.35,
+            "balanced_accuracy": 0.265795,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 14,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.333333,
+          "avg_balanced_accuracy_profiles": 0.252723
+        }
+      ],
+      "representative_best": {
+        "seed": 46,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed46.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed46.jsonl",
+        "best_profile": {
+          "profile": "A",
+          "hit_rate": 0.55,
+          "balanced_accuracy": 0.467982,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 22,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.55,
+        "avg_balanced_accuracy_profiles": 0.452704
+      },
+      "best_profile_hit_rate_mean": 0.4575,
+      "best_profile_hit_rate_std": 0.063295,
+      "best_profile_balanced_accuracy_mean": 0.398828,
+      "best_profile_balanced_accuracy_std": 0.054629,
+      "ranking_min_matched": 20,
+      "eligible_seed_runs": 10,
+      "eligible_seed_rate": 1.0,
+      "representative_best_eligible": {
+        "seed": 46,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg5_w45_h10_s2_seed46.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg5_w45_h10_s2_seed46.jsonl",
+        "best_profile": {
+          "profile": "A",
+          "hit_rate": 0.55,
+          "balanced_accuracy": 0.467982,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 22,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.55,
+        "avg_balanced_accuracy_profiles": 0.452704
+      },
+      "eligible_best_profile_hit_rate_mean": 0.4575,
+      "eligible_best_profile_hit_rate_std": 0.063295,
+      "eligible_best_profile_balanced_accuracy_mean": 0.398828,
+      "eligible_best_profile_balanced_accuracy_std": 0.054629
+    },
+    {
+      "config_tag": "cfg4_w30_h5_s1",
+      "window_bars": 30,
+      "horizon_bars": 5,
+      "stride": 1,
+      "seeds": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "seed_runs": [
+        {
+          "seed": 46,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed46.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed46.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.5,
+            "balanced_accuracy": 0.462963,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 20,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.491667,
+          "avg_balanced_accuracy_profiles": 0.455093
+        },
+        {
+          "seed": 48,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed48.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed48.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.475,
+            "balanced_accuracy": 0.433796,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 19,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.458333,
+          "avg_balanced_accuracy_profiles": 0.409105
+        },
+        {
+          "seed": 47,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed47.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed47.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.5,
+            "balanced_accuracy": 0.419799,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 20,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.5,
+          "avg_balanced_accuracy_profiles": 0.419799
+        },
+        {
+          "seed": 41,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed41.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed41.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.425,
+            "balanced_accuracy": 0.411111,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 17,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.408333,
+          "avg_balanced_accuracy_profiles": 0.38642
+        },
+        {
+          "seed": 45,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed45.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed45.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.45,
+            "balanced_accuracy": 0.40404,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 18,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.441667,
+          "avg_balanced_accuracy_profiles": 0.391694
+        },
+        {
+          "seed": 49,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed49.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed49.jsonl",
+          "best_profile": {
+            "profile": "B",
+            "hit_rate": 0.425,
+            "balanced_accuracy": 0.39059,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 17,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.408333,
+          "avg_balanced_accuracy_profiles": 0.373631
+        },
+        {
+          "seed": 43,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed43.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed43.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.375,
+            "balanced_accuracy": 0.337963,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 15,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.375,
+          "avg_balanced_accuracy_profiles": 0.337963
+        },
+        {
+          "seed": 44,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed44.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed44.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.375,
+            "balanced_accuracy": 0.337037,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 15,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.366667,
+          "avg_balanced_accuracy_profiles": 0.324691
+        },
+        {
+          "seed": 42,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed42.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed42.jsonl",
+          "best_profile": {
+            "profile": "B",
+            "hit_rate": 0.4,
+            "balanced_accuracy": 0.296296,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 16,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.383333,
+          "avg_balanced_accuracy_profiles": 0.283951
+        },
+        {
+          "seed": 50,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed50.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed50.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.375,
+            "balanced_accuracy": 0.286184,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 15,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.375,
+          "avg_balanced_accuracy_profiles": 0.286184
+        }
+      ],
+      "representative_best": {
+        "seed": 46,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed46.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed46.jsonl",
+        "best_profile": {
+          "profile": "C",
+          "hit_rate": 0.5,
+          "balanced_accuracy": 0.462963,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 20,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.491667,
+        "avg_balanced_accuracy_profiles": 0.455093
+      },
+      "best_profile_hit_rate_mean": 0.43,
+      "best_profile_hit_rate_std": 0.04717,
+      "best_profile_balanced_accuracy_mean": 0.377978,
+      "best_profile_balanced_accuracy_std": 0.05692,
+      "ranking_min_matched": 20,
+      "eligible_seed_runs": 10,
+      "eligible_seed_rate": 1.0,
+      "representative_best_eligible": {
+        "seed": 46,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg4_w30_h5_s1_seed46.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg4_w30_h5_s1_seed46.jsonl",
+        "best_profile": {
+          "profile": "C",
+          "hit_rate": 0.5,
+          "balanced_accuracy": 0.462963,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 20,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.491667,
+        "avg_balanced_accuracy_profiles": 0.455093
+      },
+      "eligible_best_profile_hit_rate_mean": 0.43,
+      "eligible_best_profile_hit_rate_std": 0.04717,
+      "eligible_best_profile_balanced_accuracy_mean": 0.377978,
+      "eligible_best_profile_balanced_accuracy_std": 0.05692
+    },
+    {
+      "config_tag": "cfg6_w60_h10_s2",
+      "window_bars": 60,
+      "horizon_bars": 10,
+      "stride": 2,
+      "seeds": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "seed_runs": [
+        {
+          "seed": 45,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed45.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed45.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.55,
+            "balanced_accuracy": 0.431373,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 22,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.55,
+          "avg_balanced_accuracy_profiles": 0.431373
+        },
+        {
+          "seed": 43,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed43.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed43.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.55,
+            "balanced_accuracy": 0.402692,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 22,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.533333,
+          "avg_balanced_accuracy_profiles": 0.39303
+        },
+        {
+          "seed": 42,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed42.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed42.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.475,
+            "balanced_accuracy": 0.401307,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 19,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.475,
+          "avg_balanced_accuracy_profiles": 0.401307
+        },
+        {
+          "seed": 46,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed46.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed46.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.5,
+            "balanced_accuracy": 0.380482,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 20,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.466667,
+          "avg_balanced_accuracy_profiles": 0.357091
+        },
+        {
+          "seed": 41,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed41.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed41.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.525,
+            "balanced_accuracy": 0.377193,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 21,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.525,
+          "avg_balanced_accuracy_profiles": 0.377193
+        },
+        {
+          "seed": 47,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed47.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed47.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.4,
+            "balanced_accuracy": 0.360939,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 16,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.383333,
+          "avg_balanced_accuracy_profiles": 0.305384
+        },
+        {
+          "seed": 48,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed48.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed48.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.425,
+            "balanced_accuracy": 0.346154,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 17,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.408333,
+          "avg_balanced_accuracy_profiles": 0.335043
+        },
+        {
+          "seed": 50,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed50.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed50.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.375,
+            "balanced_accuracy": 0.330357,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 15,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.375,
+          "avg_balanced_accuracy_profiles": 0.330357
+        },
+        {
+          "seed": 49,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed49.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed49.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.4,
+            "balanced_accuracy": 0.302808,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 16,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.383333,
+          "avg_balanced_accuracy_profiles": 0.285714
+        },
+        {
+          "seed": 44,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed44.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed44.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.275,
+            "balanced_accuracy": 0.252381,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 11,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.241667,
+          "avg_balanced_accuracy_profiles": 0.220635
+        }
+      ],
+      "representative_best": {
+        "seed": 45,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed45.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed45.jsonl",
+        "best_profile": {
+          "profile": "A",
+          "hit_rate": 0.55,
+          "balanced_accuracy": 0.431373,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 22,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.55,
+        "avg_balanced_accuracy_profiles": 0.431373
+      },
+      "best_profile_hit_rate_mean": 0.4475,
+      "best_profile_hit_rate_std": 0.084001,
+      "best_profile_balanced_accuracy_mean": 0.358569,
+      "best_profile_balanced_accuracy_std": 0.050241,
+      "ranking_min_matched": 20,
+      "eligible_seed_runs": 10,
+      "eligible_seed_rate": 1.0,
+      "representative_best_eligible": {
+        "seed": 45,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg6_w60_h10_s2_seed45.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg6_w60_h10_s2_seed45.jsonl",
+        "best_profile": {
+          "profile": "A",
+          "hit_rate": 0.55,
+          "balanced_accuracy": 0.431373,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 22,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.55,
+        "avg_balanced_accuracy_profiles": 0.431373
+      },
+      "eligible_best_profile_hit_rate_mean": 0.4475,
+      "eligible_best_profile_hit_rate_std": 0.084001,
+      "eligible_best_profile_balanced_accuracy_mean": 0.358569,
+      "eligible_best_profile_balanced_accuracy_std": 0.050241
+    },
+    {
+      "config_tag": "cfg3_w60_h10_s5",
+      "window_bars": 60,
+      "horizon_bars": 10,
+      "stride": 5,
+      "seeds": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "seed_runs": [
+        {
+          "seed": 46,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed46.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed46.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.525,
+            "balanced_accuracy": 0.463492,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 21,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.5,
+          "avg_balanced_accuracy_profiles": 0.411111
+        },
+        {
+          "seed": 44,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed44.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed44.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.525,
+            "balanced_accuracy": 0.444662,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 21,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.508333,
+          "avg_balanced_accuracy_profiles": 0.432317
+        },
+        {
+          "seed": 48,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed48.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed48.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.475,
+            "balanced_accuracy": 0.416667,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 19,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.441667,
+          "avg_balanced_accuracy_profiles": 0.348766
+        },
+        {
+          "seed": 43,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed43.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed43.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.45,
+            "balanced_accuracy": 0.362963,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 18,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.433333,
+          "avg_balanced_accuracy_profiles": 0.350617
+        },
+        {
+          "seed": 45,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed45.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed45.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.4,
+            "balanced_accuracy": 0.353408,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 16,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.4,
+          "avg_balanced_accuracy_profiles": 0.353408
+        },
+        {
+          "seed": 47,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed47.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed47.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.5,
+            "balanced_accuracy": 0.340741,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 20,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.5,
+          "avg_balanced_accuracy_profiles": 0.340741
+        },
+        {
+          "seed": 49,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed49.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed49.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.45,
+            "balanced_accuracy": 0.32381,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 18,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.45,
+          "avg_balanced_accuracy_profiles": 0.32381
+        },
+        {
+          "seed": 41,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed41.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed41.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.35,
+            "balanced_accuracy": 0.301587,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 14,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.35,
+          "avg_balanced_accuracy_profiles": 0.301587
+        },
+        {
+          "seed": 42,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed42.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed42.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.375,
+            "balanced_accuracy": 0.296296,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 15,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.375,
+          "avg_balanced_accuracy_profiles": 0.296296
+        },
+        {
+          "seed": 50,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed50.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed50.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.35,
+            "balanced_accuracy": 0.271062,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 14,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.35,
+          "avg_balanced_accuracy_profiles": 0.271062
+        }
+      ],
+      "representative_best": {
+        "seed": 46,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed46.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed46.jsonl",
+        "best_profile": {
+          "profile": "C",
+          "hit_rate": 0.525,
+          "balanced_accuracy": 0.463492,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 21,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.5,
+        "avg_balanced_accuracy_profiles": 0.411111
+      },
+      "best_profile_hit_rate_mean": 0.44,
+      "best_profile_hit_rate_std": 0.06442,
+      "best_profile_balanced_accuracy_mean": 0.357469,
+      "best_profile_balanced_accuracy_std": 0.061756,
+      "ranking_min_matched": 20,
+      "eligible_seed_runs": 10,
+      "eligible_seed_rate": 1.0,
+      "representative_best_eligible": {
+        "seed": 46,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg3_w60_h10_s5_seed46.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg3_w60_h10_s5_seed46.jsonl",
+        "best_profile": {
+          "profile": "C",
+          "hit_rate": 0.525,
+          "balanced_accuracy": 0.463492,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 21,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.5,
+        "avg_balanced_accuracy_profiles": 0.411111
+      },
+      "eligible_best_profile_hit_rate_mean": 0.44,
+      "eligible_best_profile_hit_rate_std": 0.06442,
+      "eligible_best_profile_balanced_accuracy_mean": 0.357469,
+      "eligible_best_profile_balanced_accuracy_std": 0.061756
+    },
+    {
+      "config_tag": "cfg1_w30_h5_s3",
+      "window_bars": 30,
+      "horizon_bars": 5,
+      "stride": 3,
+      "seeds": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "seed_runs": [
+        {
+          "seed": 50,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed50.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed50.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.45,
+            "balanced_accuracy": 0.395833,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 18,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.45,
+          "avg_balanced_accuracy_profiles": 0.395833
+        },
+        {
+          "seed": 45,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed45.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed45.jsonl",
+          "best_profile": {
+            "profile": "B",
+            "hit_rate": 0.425,
+            "balanced_accuracy": 0.386364,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 17,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.408333,
+          "avg_balanced_accuracy_profiles": 0.372054
+        },
+        {
+          "seed": 43,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed43.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed43.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.4,
+            "balanced_accuracy": 0.366667,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 16,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.4,
+          "avg_balanced_accuracy_profiles": 0.366667
+        },
+        {
+          "seed": 41,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed41.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed41.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.475,
+            "balanced_accuracy": 0.361111,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 19,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.475,
+          "avg_balanced_accuracy_profiles": 0.361111
+        },
+        {
+          "seed": 44,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed44.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed44.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.375,
+            "balanced_accuracy": 0.325926,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 15,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.358333,
+          "avg_balanced_accuracy_profiles": 0.31358
+        },
+        {
+          "seed": 49,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed49.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed49.jsonl",
+          "best_profile": {
+            "profile": "C",
+            "hit_rate": 0.4,
+            "balanced_accuracy": 0.322222,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 16,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.383333,
+          "avg_balanced_accuracy_profiles": 0.307407
+        },
+        {
+          "seed": 46,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed46.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed46.jsonl",
+          "best_profile": {
+            "profile": "B",
+            "hit_rate": 0.4,
+            "balanced_accuracy": 0.303728,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 16,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.391667,
+          "avg_balanced_accuracy_profiles": 0.296784
+        },
+        {
+          "seed": 48,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed48.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed48.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.375,
+            "balanced_accuracy": 0.285714,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 15,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.375,
+          "avg_balanced_accuracy_profiles": 0.285714
+        },
+        {
+          "seed": 47,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed47.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed47.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.3,
+            "balanced_accuracy": 0.27619,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 12,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.291667,
+          "avg_balanced_accuracy_profiles": 0.268783
+        },
+        {
+          "seed": 42,
+          "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed42.jsonl",
+          "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed42.jsonl",
+          "best_profile": {
+            "profile": "A",
+            "hit_rate": 0.3,
+            "balanced_accuracy": 0.26953,
+            "coverage_rate": 1.0,
+            "matched": 40,
+            "hit": 12,
+            "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+          },
+          "avg_hit_rate_profiles": 0.283333,
+          "avg_balanced_accuracy_profiles": 0.250648
+        }
+      ],
+      "representative_best": {
+        "seed": 50,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed50.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed50.jsonl",
+        "best_profile": {
+          "profile": "A",
+          "hit_rate": 0.45,
+          "balanced_accuracy": 0.395833,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 18,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.45,
+        "avg_balanced_accuracy_profiles": 0.395833
+      },
+      "best_profile_hit_rate_mean": 0.39,
+      "best_profile_hit_rate_std": 0.053852,
+      "best_profile_balanced_accuracy_mean": 0.329329,
+      "best_profile_balanced_accuracy_std": 0.043703,
+      "ranking_min_matched": 20,
+      "eligible_seed_runs": 10,
+      "eligible_seed_rate": 1.0,
+      "representative_best_eligible": {
+        "seed": 50,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg1_w30_h5_s3_seed50.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg1_w30_h5_s3_seed50.jsonl",
+        "best_profile": {
+          "profile": "A",
+          "hit_rate": 0.45,
+          "balanced_accuracy": 0.395833,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 18,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.45,
+        "avg_balanced_accuracy_profiles": 0.395833
+      },
+      "eligible_best_profile_hit_rate_mean": 0.39,
+      "eligible_best_profile_hit_rate_std": 0.053852,
+      "eligible_best_profile_balanced_accuracy_mean": 0.329329,
+      "eligible_best_profile_balanced_accuracy_std": 0.043703
+    }
+  ],
+  "best_config": {
+    "config_tag": "cfg2_w45_h10_s5",
+    "window_bars": 45,
+    "horizon_bars": 10,
+    "stride": 5,
+    "seeds": [
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50
+    ],
+    "seed_runs": [
+      {
+        "seed": 48,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed48.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed48.jsonl",
+        "best_profile": {
+          "profile": "C",
+          "hit_rate": 0.475,
+          "balanced_accuracy": 0.471055,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 19,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.458333,
+        "avg_balanced_accuracy_profiles": 0.460473
+      },
+      {
+        "seed": 45,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed45.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed45.jsonl",
+        "best_profile": {
+          "profile": "A",
+          "hit_rate": 0.525,
+          "balanced_accuracy": 0.450439,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 21,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.525,
+        "avg_balanced_accuracy_profiles": 0.450439
+      },
+      {
+        "seed": 50,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed50.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed50.jsonl",
+        "best_profile": {
+          "profile": "A",
+          "hit_rate": 0.525,
+          "balanced_accuracy": 0.447619,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 21,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.516667,
+        "avg_balanced_accuracy_profiles": 0.425397
+      },
+      {
+        "seed": 47,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed47.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed47.jsonl",
+        "best_profile": {
+          "profile": "B",
+          "hit_rate": 0.5,
+          "balanced_accuracy": 0.435185,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 20,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.483333,
+        "avg_balanced_accuracy_profiles": 0.401235
+      },
+      {
+        "seed": 43,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed43.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed43.jsonl",
+        "best_profile": {
+          "profile": "A",
+          "hit_rate": 0.45,
+          "balanced_accuracy": 0.42924,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 18,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.441667,
+        "avg_balanced_accuracy_profiles": 0.398051
+      },
+      {
+        "seed": 49,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed49.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed49.jsonl",
+        "best_profile": {
+          "profile": "A",
+          "hit_rate": 0.45,
+          "balanced_accuracy": 0.419993,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 18,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.441667,
+        "avg_balanced_accuracy_profiles": 0.40412
+      },
+      {
+        "seed": 46,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed46.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed46.jsonl",
+        "best_profile": {
+          "profile": "A",
+          "hit_rate": 0.4,
+          "balanced_accuracy": 0.394152,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 16,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_A_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.408333,
+        "avg_balanced_accuracy_profiles": 0.387329
+      },
+      {
+        "seed": 42,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed42.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed42.jsonl",
+        "best_profile": {
+          "profile": "B",
+          "hit_rate": 0.525,
+          "balanced_accuracy": 0.386997,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 21,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.516667,
+        "avg_balanced_accuracy_profiles": 0.381149
+      },
+      {
+        "seed": 44,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed44.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed44.jsonl",
+        "best_profile": {
+          "profile": "B",
+          "hit_rate": 0.4,
+          "balanced_accuracy": 0.374339,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 16,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_B_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.383333,
+        "avg_balanced_accuracy_profiles": 0.354277
+      },
+      {
+        "seed": 41,
+        "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed41.jsonl",
+        "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed41.jsonl",
+        "best_profile": {
+          "profile": "C",
+          "hit_rate": 0.4,
+          "balanced_accuracy": 0.30719,
+          "coverage_rate": 1.0,
+          "matched": 40,
+          "hit": 16,
+          "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+        },
+        "avg_hit_rate_profiles": 0.383333,
+        "avg_balanced_accuracy_profiles": 0.293392
+      }
+    ],
+    "representative_best": {
+      "seed": 48,
+      "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed48.jsonl",
+      "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed48.jsonl",
+      "best_profile": {
+        "profile": "C",
+        "hit_rate": 0.475,
+        "balanced_accuracy": 0.471055,
+        "coverage_rate": 1.0,
+        "matched": 40,
+        "hit": 19,
+        "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+      },
+      "avg_hit_rate_profiles": 0.458333,
+      "avg_balanced_accuracy_profiles": 0.460473
+    },
+    "best_profile_hit_rate_mean": 0.465,
+    "best_profile_hit_rate_std": 0.050249,
+    "best_profile_balanced_accuracy_mean": 0.411621,
+    "best_profile_balanced_accuracy_std": 0.045253,
+    "ranking_min_matched": 20,
+    "eligible_seed_runs": 10,
+    "eligible_seed_rate": 1.0,
+    "representative_best_eligible": {
+      "seed": 48,
+      "public_dataset": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_public_cfg2_w45_h10_s5_seed48.jsonl",
+      "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_cfg2_w45_h10_s5_seed48.jsonl",
+      "best_profile": {
+        "profile": "C",
+        "hit_rate": 0.475,
+        "balanced_accuracy": 0.471055,
+        "coverage_rate": 1.0,
+        "matched": 40,
+        "hit": 19,
+        "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+      },
+      "avg_hit_rate_profiles": 0.458333,
+      "avg_balanced_accuracy_profiles": 0.460473
+    },
+    "eligible_best_profile_hit_rate_mean": 0.465,
+    "eligible_best_profile_hit_rate_std": 0.050249,
+    "eligible_best_profile_balanced_accuracy_mean": 0.411621,
+    "eligible_best_profile_balanced_accuracy_std": 0.045253
+  },
+  "note": "Dataset-ablation report for B-track blind replay only."
+}

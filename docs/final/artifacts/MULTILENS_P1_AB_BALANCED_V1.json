@@ -1,6 +1,6 @@
 {
   "schema": "multilens_p1_ab_balanced_v1",
-  "ts_utc": "2026-04-02T02:11:01.123966+00:00",
+  "ts_utc": "2026-04-02T12:08:31.749922+00:00",
   "profile": "balanced",
   "manseryeok_scope": {
     "manseryeok_applicable": false,
@@ -23,7 +23,7 @@
   "summary": {
     "candidate_count": 12,
     "passing_count": 0,
-    "elapsed_ms": 916.106
+    "elapsed_ms": 861.122
   },
   "best_candidate": {
     "strategy": "A",

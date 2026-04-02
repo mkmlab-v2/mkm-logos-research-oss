@@ -1,0 +1,42 @@
+{
+  "schema": "blind_replay_regime_conditional_selection_v1",
+  "generated_at_utc": "2026-04-02T12:33:02Z",
+  "exploratory_only": true,
+  "a_track_binding_forbidden": true,
+  "source_report": "C:\\workspace\\docs\\final\\artifacts\\blind_replay_regime_split_benchmark_latest.json",
+  "weights": {
+    "w_btc": 0.7,
+    "w_kospi": 0.3,
+    "kappa": 0.15
+  },
+  "policy": {
+    "BTC": {
+      "LOW_VOL": "A",
+      "HIGH_VOL": "A"
+    },
+    "KOSPI": {
+      "LOW_VOL": "C",
+      "HIGH_VOL": "C"
+    }
+  },
+  "static_baseline": {
+    "single_profile_per_asset": {
+      "BTC": "A",
+      "KOSPI": "C"
+    },
+    "asset_balanced_accuracy_mean": {
+      "BTC": 0.371011,
+      "KOSPI": 0.311988
+    },
+    "unified_score_balanced": 0.349247
+  },
+  "conditional_simulation": {
+    "asset_balanced_accuracy_mean": {
+      "BTC": 0.371011,
+      "KOSPI": 0.311988
+    },
+    "unified_score_balanced": 0.349247
+  },
+  "delta_conditional_minus_static": 0.0,
+  "note": "Regime-conditional profile selection from LOW/HIGH volatility split benchmark."
+}

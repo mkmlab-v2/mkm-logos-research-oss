@@ -1,0 +1,110 @@
+{
+  "schema": "trinity_scoring_distribution_v1",
+  "generated_at_utc": "2026-04-02T13:19:53.146647+00:00",
+  "log_path": "docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
+  "metric": "BTC_BINANCE_D1_RETURN_PCT",
+  "windows": {
+    "d5": {
+      "sample_size": 5,
+      "hit": 5,
+      "fail": 0,
+      "neutral_draw": 0,
+      "pending_close": 0,
+      "hit_rate": 1.0,
+      "fail_rate": 0.0,
+      "neutral_draw_rate": 0.0,
+      "pending_close_rate": 0.0,
+      "advisory": "signal_stable_keep_thresholds"
+    },
+    "d10": {
+      "sample_size": 10,
+      "hit": 10,
+      "fail": 0,
+      "neutral_draw": 0,
+      "pending_close": 0,
+      "hit_rate": 1.0,
+      "fail_rate": 0.0,
+      "neutral_draw_rate": 0.0,
+      "pending_close_rate": 0.0,
+      "advisory": "signal_stable_keep_thresholds"
+    }
+  },
+  "dual_regime_state": {
+    "d5": {
+      "sample_size": 5,
+      "state_id_present_count": 4,
+      "state_id_present_rate": 0.8,
+      "clamp_count": 0,
+      "clamp_rate": 0.0,
+      "source_counts": {
+        "myeongni_independent_lens": 4,
+        "none": 1
+      },
+      "top_source": "myeongni_independent_lens"
+    },
+    "d10": {
+      "sample_size": 10,
+      "state_id_present_count": 4,
+      "state_id_present_rate": 0.4,
+      "clamp_count": 0,
+      "clamp_rate": 0.0,
+      "source_counts": {
+        "none": 6,
+        "myeongni_independent_lens": 4
+      },
+      "top_source": "none"
+    },
+    "all": {
+      "sample_size": 21,
+      "state_id_present_count": 4,
+      "state_id_present_rate": 0.1905,
+      "clamp_count": 0,
+      "clamp_rate": 0.0,
+      "source_counts": {
+        "none": 17,
+        "myeongni_independent_lens": 4
+      },
+      "top_source": "none"
+    },
+    "advisory": {
+      "decision": "state_signal_not_wired",
+      "reason": "top_source_none_and_present_rate_low",
+      "thresholds": {
+        "present_rate_low": 0.2,
+        "clamp_rate_warn": 0.3,
+        "clamp_rate_high": 0.6
+      }
+    }
+  },
+  "auto_hold_overrides": {
+    "d5": {
+      "count": 0,
+      "trigger_counts": {},
+      "priority_counts": {},
+      "top_trigger": null
+    },
+    "d10": {
+      "count": 0,
+      "trigger_counts": {},
+      "priority_counts": {},
+      "top_trigger": null
+    },
+    "all": {
+      "count": 0,
+      "trigger_counts": {},
+      "priority_counts": {},
+      "top_trigger": null
+    },
+    "advisory": {
+      "decision": "insufficient_data",
+      "reason": "count_lt_3",
+      "top_trigger_ratio": null,
+      "thresholds": {
+        "minimum_count": 3,
+        "skew_ratio": 0.7
+      }
+    }
+  },
+  "latest_decision": "HIT",
+  "total_filtered_rows": 21
+}

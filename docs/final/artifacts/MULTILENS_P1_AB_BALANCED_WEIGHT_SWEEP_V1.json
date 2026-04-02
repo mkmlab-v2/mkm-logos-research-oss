@@ -1,0 +1,93 @@
+{
+  "schema": "multilens_p1_balanced_weight_sweep_v1",
+  "rows": [
+    {
+      "w_saving": 0.35,
+      "w_fidelity": 0.55,
+      "w_drop_penalty": 0.1,
+      "ok": true,
+      "gate_ok": false,
+      "saving": 0.5147679324894514,
+      "drop_pp": 0.0,
+      "composite": 0.659035906,
+      "path": "c:\\workspace\\docs\\final\\artifacts\\MULTILENS_P1_AB_BALANCED_TUNE_ws35_wf55_wd10.json"
+    },
+    {
+      "w_saving": 0.4,
+      "w_fidelity": 0.5,
+      "w_drop_penalty": 0.1,
+      "ok": true,
+      "gate_ok": false,
+      "saving": 0.5147679324894514,
+      "drop_pp": 0.0,
+      "composite": 0.641240927,
+      "path": "c:\\workspace\\docs\\final\\artifacts\\MULTILENS_P1_AB_BALANCED_TUNE_ws40_wf50_wd10.json"
+    },
+    {
+      "w_saving": 0.45,
+      "w_fidelity": 0.45,
+      "w_drop_penalty": 0.1,
+      "ok": true,
+      "gate_ok": false,
+      "saving": 0.5147679324894514,
+      "drop_pp": 0.0,
+      "composite": 0.623445948,
+      "path": "c:\\workspace\\docs\\final\\artifacts\\MULTILENS_P1_AB_BALANCED_TUNE_ws45_wf45_wd10.json"
+    },
+    {
+      "w_saving": 0.5,
+      "w_fidelity": 0.4,
+      "w_drop_penalty": 0.1,
+      "ok": true,
+      "gate_ok": false,
+      "saving": 0.5147679324894514,
+      "drop_pp": 0.0,
+      "composite": 0.60565097,
+      "path": "c:\\workspace\\docs\\final\\artifacts\\MULTILENS_P1_AB_BALANCED_TUNE_ws50_wf40_wd10.json"
+    },
+    {
+      "w_saving": 0.4,
+      "w_fidelity": 0.45,
+      "w_drop_penalty": 0.15,
+      "ok": true,
+      "gate_ok": false,
+      "saving": 0.5147679324894514,
+      "drop_pp": 0.0,
+      "composite": 0.597707552,
+      "path": "c:\\workspace\\docs\\final\\artifacts\\MULTILENS_P1_AB_BALANCED_TUNE_ws40_wf45_wd15.json"
+    },
+    {
+      "w_saving": 0.55,
+      "w_fidelity": 0.35,
+      "w_drop_penalty": 0.1,
+      "ok": true,
+      "gate_ok": false,
+      "saving": 0.5147679324894514,
+      "drop_pp": 0.0,
+      "composite": 0.587855991,
+      "path": "c:\\workspace\\docs\\final\\artifacts\\MULTILENS_P1_AB_BALANCED_TUNE_ws55_wf35_wd10.json"
+    },
+    {
+      "w_saving": 0.45,
+      "w_fidelity": 0.4,
+      "w_drop_penalty": 0.15,
+      "ok": true,
+      "gate_ok": false,
+      "saving": 0.5147679324894514,
+      "drop_pp": 0.0,
+      "composite": 0.579912573,
+      "path": "c:\\workspace\\docs\\final\\artifacts\\MULTILENS_P1_AB_BALANCED_TUNE_ws45_wf40_wd15.json"
+    }
+  ],
+  "best": {
+    "w_saving": 0.35,
+    "w_fidelity": 0.55,
+    "w_drop_penalty": 0.1,
+    "ok": true,
+    "gate_ok": false,
+    "saving": 0.5147679324894514,
+    "drop_pp": 0.0,
+    "composite": 0.659035906,
+    "path": "c:\\workspace\\docs\\final\\artifacts\\MULTILENS_P1_AB_BALANCED_TUNE_ws35_wf55_wd10.json"
+  }
+}

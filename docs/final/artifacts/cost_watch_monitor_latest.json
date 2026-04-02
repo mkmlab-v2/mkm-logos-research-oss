@@ -1,6 +1,6 @@
 {
   "schema": "cost_watch_monitor_v1",
-  "ts_utc": "2026-04-02T02:59:42.805233+00:00",
+  "ts_utc": "2026-04-02T13:19:32.183306+00:00",
   "sources": {
     "compression_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
     "vllm_canary_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_repeat_latest.json",
