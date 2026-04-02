@@ -44,6 +44,19 @@ function Test-ApiLatest([string]$baseUrl) {
     return [pscustomobject]@{ Ok = $true; Detail = "latest OK"; Headers = $r.Headers }
 }
 
+function Test-UrlStatus([string]$url) {
+    try {
+        $r = Invoke-WebRequest -Uri $url -Method GET -UseBasicParsing -TimeoutSec 8
+        return [pscustomobject]@{ Url = $url; StatusCode = [int]$r.StatusCode; Ok = $true; Error = "" }
+    } catch {
+        $statusCode = $null
+        try {
+            $statusCode = $_.Exception.Response.StatusCode.value__
+        } catch { }
+        return [pscustomobject]@{ Url = $url; StatusCode = $statusCode; Ok = $false; Error = $_.Exception.Message }
+    }
+}
+
 function Test-LocalPort8788 {
     try {
         $listen = Get-NetTCPConnection -LocalPort 8788 -State Listen -ErrorAction SilentlyContinue
@@ -77,6 +90,24 @@ try {
 } catch {
     Write-Step "Nginx/API Mapping" $false $_.Exception.Message
     $results += $false
+}
+
+if (-not $apiCheck.Ok) {
+    # Extra probes: sometimes nginx location differs only by trailing slash / path prefix.
+    $altPaths = @(
+        "/api/public-events/latest/",
+        "/api/public-events/",
+        "/public-events/latest",
+        "/public-events/",
+        "/api/public-events/latest?x=1"
+    )
+    Write-Host "[probe] Trying alternative endpoint paths to narrow nginx mapping mismatch..." -ForegroundColor DarkCyan
+    foreach ($p in $altPaths) {
+        $probeUrl = $apiBase.TrimEnd("/") + $p
+        $s = Test-UrlStatus -url $probeUrl
+        $tag = if ($s.Ok) { "OK" } else { "ERR" }
+        Write-Host ("  [{0}] {1} -> {2}" -f $tag, $p, $s.StatusCode) -ForegroundColor DarkGray
+    }
 }
 
 # 2) Auth token present for n8n payload path
