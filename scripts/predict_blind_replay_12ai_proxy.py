@@ -35,7 +35,34 @@ REQUIRED_KEYS = {
     "band_m",
     "band_s",
     "band_l",
+    "trend_bonus",
+    "regime_shift_weight",
+    "wick_bias_weight",
 }
+
+DEFAULT_PARAM_VALUES: dict[str, float] = {
+    "m_myeongni": 2.0,
+    "d_myeongni": 0.9,
+    "m_sasang": 1.1,
+    "d_sasang": 0.3,
+    "v_penalty": 0.18,
+    "m_logos": 1.6,
+    "r_bonus": 0.18,
+    "band_m": 0.065,
+    "band_s": 0.085,
+    "band_l": 0.075,
+    "trend_bonus": 0.12,
+    "regime_shift_weight": 0.10,
+    "wick_bias_weight": 0.08,
+}
+
+
+def _with_defaults(params: dict[str, float]) -> dict[str, float]:
+    out = dict(DEFAULT_PARAM_VALUES)
+    for k, v in params.items():
+        if k in out:
+            out[k] = float(v)
+    return out
 
 
 def _utc_now() -> str:
@@ -70,7 +97,7 @@ def _sign_from_score(score: float, neutral_band: float = 0.08) -> str:
 def _profile_params(profile: str) -> dict[str, float]:
     p = profile.strip().upper()
     if p == "A":
-        return {
+        return _with_defaults({
             "m_myeongni": 2.6,
             "d_myeongni": 1.0,
             "m_sasang": 1.3,
@@ -81,9 +108,12 @@ def _profile_params(profile: str) -> dict[str, float]:
             "band_m": 0.08,
             "band_s": 0.10,
             "band_l": 0.09,
-        }
+            "trend_bonus": 0.10,
+            "regime_shift_weight": 0.08,
+            "wick_bias_weight": 0.05,
+        })
     if p == "B":
-        return {
+        return _with_defaults({
             "m_myeongni": 2.2,
             "d_myeongni": 0.8,
             "m_sasang": 1.2,
@@ -94,9 +124,12 @@ def _profile_params(profile: str) -> dict[str, float]:
             "band_m": 0.07,
             "band_s": 0.09,
             "band_l": 0.08,
-        }
+            "trend_bonus": 0.12,
+            "regime_shift_weight": 0.10,
+            "wick_bias_weight": 0.07,
+        })
     if p == "C":
-        return {
+        return _with_defaults({
             "m_myeongni": 1.8,
             "d_myeongni": 0.6,
             "m_sasang": 1.0,
@@ -107,7 +140,10 @@ def _profile_params(profile: str) -> dict[str, float]:
             "band_m": 0.06,
             "band_s": 0.08,
             "band_l": 0.07,
-        }
+            "trend_bonus": 0.14,
+            "regime_shift_weight": 0.12,
+            "wick_bias_weight": 0.10,
+        })
     if p == "D":
         if PROFILE_D_PARAMS_PATH.is_file():
             try:
@@ -115,23 +151,11 @@ def _profile_params(profile: str) -> dict[str, float]:
                 best = doc.get("best") if isinstance(doc, dict) else {}
                 params = (best or {}).get("params") if isinstance(best, dict) else {}
                 if isinstance(params, dict):
-                    if REQUIRED_KEYS.issubset(set(params.keys())):
-                        return {k: float(params[k]) for k in REQUIRED_KEYS}
+                    return _with_defaults({k: float(v) for k, v in params.items() if k in DEFAULT_PARAM_VALUES})
             except Exception:
                 pass
         # Fallback D baseline if tuned params artifact is missing.
-        return {
-            "m_myeongni": 2.0,
-            "d_myeongni": 0.9,
-            "m_sasang": 1.1,
-            "d_sasang": 0.3,
-            "v_penalty": 0.18,
-            "m_logos": 1.6,
-            "r_bonus": 0.18,
-            "band_m": 0.065,
-            "band_s": 0.085,
-            "band_l": 0.075,
-        }
+        return dict(DEFAULT_PARAM_VALUES)
     if p == "DS":
         # Soft-ensemble: weighted average of top-2 blend candidates from ensemble search artifact.
         if PROFILE_D_ENSEMBLE_PATH.is_file():
@@ -142,14 +166,19 @@ def _profile_params(profile: str) -> dict[str, float]:
                 for row in top[:2]:
                     params = row.get("params") if isinstance(row, dict) else {}
                     score = float((row or {}).get("unified_score_balanced") or 0.0)
-                    if isinstance(params, dict) and REQUIRED_KEYS.issubset(set(params.keys())):
-                        picked.append((max(0.0, score), {k: float(params[k]) for k in REQUIRED_KEYS}))
+                    if isinstance(params, dict):
+                        picked.append(
+                            (
+                                max(0.0, score),
+                                _with_defaults({k: float(v) for k, v in params.items() if k in DEFAULT_PARAM_VALUES}),
+                            )
+                        )
                 if len(picked) >= 2:
                     total_w = sum(max(1e-6, x[0]) for x in picked)
-                    return {
+                    return _with_defaults({
                         k: sum((max(1e-6, w) / total_w) * pmap[k] for w, pmap in picked)
-                        for k in REQUIRED_KEYS
-                    }
+                        for k in DEFAULT_PARAM_VALUES
+                    })
                 if len(picked) == 1:
                     return picked[0][1]
             except Exception:
@@ -179,15 +208,23 @@ def main() -> int:
         v = float(feat.get("volatility_index") or 0.0)
         d = float(feat.get("drawdown_index") or 0.0)
         rp = float(feat.get("range_spread_index") or 0.0)
+        trend = float(feat.get("trend_consistency") or 0.0)
+        vshift = float(feat.get("vol_regime_shift") or 0.0)
+        wick = float(feat.get("wick_bias_index") or 0.0)
 
         # Lens-style proxy scores
-        score_myeongni = (params["m_myeongni"] * m) + (params["d_myeongni"] * d)
+        score_myeongni = (
+            (params["m_myeongni"] * m)
+            + (params["d_myeongni"] * d)
+            + (params["trend_bonus"] * trend)
+            - (params["regime_shift_weight"] * max(0.0, vshift))
+        )
         score_sasang = (params["m_sasang"] * m) + (params["d_sasang"] * d) - (
             params["v_penalty"] * max(0.0, v - 0.12)
-        )
+        ) - (params["wick_bias_weight"] * wick)
         score_logos = (params["m_logos"] * m) + (
             params["r_bonus"] * (0.25 - min(0.25, abs(rp - 0.25)))
-        )
+        ) + (0.5 * params["trend_bonus"] * trend)
 
         sign_m = _sign_from_score(score_myeongni, neutral_band=params["band_m"])
         sign_s = _sign_from_score(score_sasang, neutral_band=params["band_s"])

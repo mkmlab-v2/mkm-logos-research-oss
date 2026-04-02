@@ -105,12 +105,33 @@ def _build_features(window: list[Row]) -> dict[str, float]:
     range_spread = _safe_ratio(max(closes) - min(closes), max(min(closes), 1e-9))
     volume_z_last = _zscore(vols)[-1] if vols else 0.0
     drawdown = _safe_ratio(closes[-1] - max(closes), max(closes) if closes else 1.0)
+    # Phase C.1 features: regime shift and candle-shape pressure
+    short = abs_rets[-5:] if len(abs_rets) >= 5 else abs_rets
+    long = abs_rets[-20:] if len(abs_rets) >= 20 else abs_rets
+    short_vol = (sum(short) / len(short)) if short else 0.0
+    long_vol = (sum(long) / len(long)) if long else 0.0
+    vol_regime_shift = _safe_ratio(short_vol - long_vol, max(long_vol, 1e-9))
+    last_n = rets[-10:] if len(rets) >= 10 else rets
+    non_zero = [x for x in last_n if abs(x) > 1e-12]
+    pos = len([x for x in non_zero if x > 0])
+    neg = len([x for x in non_zero if x < 0])
+    trend_consistency = _safe_ratio(abs(pos - neg), len(non_zero)) if non_zero else 0.0
+    wick_bias_vals: list[float] = []
+    for r in window[-10:] if len(window) >= 10 else window:
+        candle_range = max(r.high - r.low, 1e-9)
+        upper_wick = max(0.0, r.high - max(r.open, r.close))
+        lower_wick = max(0.0, min(r.open, r.close) - r.low)
+        wick_bias_vals.append(_safe_ratio(upper_wick - lower_wick, candle_range))
+    wick_bias = (sum(wick_bias_vals) / len(wick_bias_vals)) if wick_bias_vals else 0.0
     return {
         "volatility_index": round(vol_idx, 6),
         "momentum_index": round(momentum, 6),
         "range_spread_index": round(range_spread, 6),
         "volume_pressure_z": round(volume_z_last, 6),
         "drawdown_index": round(drawdown, 6),
+        "vol_regime_shift": round(vol_regime_shift, 6),
+        "trend_consistency": round(trend_consistency, 6),
+        "wick_bias_index": round(wick_bias, 6),
     }
 
 
@@ -137,6 +158,9 @@ def _prompt_text(features: dict[str, float], horizon: int) -> str:
         f"- RangeSpreadIndex: {features['range_spread_index']}\n"
         f"- VolumePressureZ: {features['volume_pressure_z']}\n"
         f"- DrawdownIndex: {features['drawdown_index']}\n"
+        f"- VolRegimeShift: {features['vol_regime_shift']}\n"
+        f"- TrendConsistency: {features['trend_consistency']}\n"
+        f"- WickBiasIndex: {features['wick_bias_index']}\n"
         "Return only JSON with keys: direction_sign, confidence_0_1, rationale_short."
     )
 

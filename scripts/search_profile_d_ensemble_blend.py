@@ -27,6 +27,14 @@ REQUIRED = {
     "band_m",
     "band_s",
     "band_l",
+    "trend_bonus",
+    "regime_shift_weight",
+    "wick_bias_weight",
+}
+DEFAULTS = {
+    "trend_bonus": 0.12,
+    "regime_shift_weight": 0.10,
+    "wick_bias_weight": 0.08,
 }
 
 
@@ -119,9 +127,26 @@ def _eval_one_run(params: dict[str, float], public_rows: list[dict[str, Any]], t
         v = float(feat.get("volatility_index") or 0.0)
         d = float(feat.get("drawdown_index") or 0.0)
         rp = float(feat.get("range_spread_index") or 0.0)
-        sm = (params["m_myeongni"] * m) + (params["d_myeongni"] * d)
-        ss = (params["m_sasang"] * m) + (params["d_sasang"] * d) - (params["v_penalty"] * max(0.0, v - 0.12))
-        sl = (params["m_logos"] * m) + (params["r_bonus"] * (0.25 - min(0.25, abs(rp - 0.25))))
+        trend = float(feat.get("trend_consistency") or 0.0)
+        vshift = float(feat.get("vol_regime_shift") or 0.0)
+        wick = float(feat.get("wick_bias_index") or 0.0)
+        sm = (
+            (params["m_myeongni"] * m)
+            + (params["d_myeongni"] * d)
+            + (params["trend_bonus"] * trend)
+            - (params["regime_shift_weight"] * max(0.0, vshift))
+        )
+        ss = (
+            (params["m_sasang"] * m)
+            + (params["d_sasang"] * d)
+            - (params["v_penalty"] * max(0.0, v - 0.12))
+            - (params["wick_bias_weight"] * wick)
+        )
+        sl = (
+            (params["m_logos"] * m)
+            + (params["r_bonus"] * (0.25 - min(0.25, abs(rp - 0.25))))
+            + (0.5 * params["trend_bonus"] * trend)
+        )
         vm = _sign(sm, params["band_m"])
         vs = _sign(ss, params["band_s"])
         vl = _sign(sl, params["band_l"])
@@ -153,13 +178,23 @@ def _extract_params(path: Path, limit_top: int) -> list[dict[str, float]]:
     out: list[dict[str, float]] = []
     best = doc.get("best") if isinstance(doc.get("best"), dict) else {}
     bp = best.get("params") if isinstance(best.get("params"), dict) else {}
-    if REQUIRED.issubset(set(bp.keys())):
-        out.append({k: float(bp[k]) for k in REQUIRED})
+    if isinstance(bp, dict):
+        normalized = {k: float(bp[k]) for k in bp if k in REQUIRED}
+        for dk, dv in DEFAULTS.items():
+            normalized.setdefault(dk, float(dv))
+        core = {"m_myeongni", "d_myeongni", "m_sasang", "d_sasang", "v_penalty", "m_logos", "r_bonus", "band_m", "band_s", "band_l"}
+        if core.issubset(set(normalized.keys())):
+            out.append(normalized)
     top = doc.get("top20") if isinstance(doc.get("top20"), list) else []
     for row in top[: max(0, int(limit_top))]:
         rp = row.get("params") if isinstance(row, dict) else {}
-        if isinstance(rp, dict) and REQUIRED.issubset(set(rp.keys())):
-            out.append({k: float(rp[k]) for k in REQUIRED})
+        if isinstance(rp, dict):
+            normalized = {k: float(rp[k]) for k in rp if k in REQUIRED}
+            for dk, dv in DEFAULTS.items():
+                normalized.setdefault(dk, float(dv))
+            core = {"m_myeongni", "d_myeongni", "m_sasang", "d_sasang", "v_penalty", "m_logos", "r_bonus", "band_m", "band_s", "band_l"}
+            if core.issubset(set(normalized.keys())):
+                out.append(normalized)
     return out
 
 

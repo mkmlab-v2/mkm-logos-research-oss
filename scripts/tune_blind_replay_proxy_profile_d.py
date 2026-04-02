@@ -122,10 +122,27 @@ def _eval_one_run_bucketed(
             v = float(feat.get("volatility_index") or 0.0)
             d = float(feat.get("drawdown_index") or 0.0)
             rp = float(feat.get("range_spread_index") or 0.0)
+            trend = float(feat.get("trend_consistency") or 0.0)
+            vshift = float(feat.get("vol_regime_shift") or 0.0)
+            wick = float(feat.get("wick_bias_index") or 0.0)
 
-            sm = (params["m_myeongni"] * m) + (params["d_myeongni"] * d)
-            ss = (params["m_sasang"] * m) + (params["d_sasang"] * d) - (params["v_penalty"] * max(0.0, v - 0.12))
-            sl = (params["m_logos"] * m) + (params["r_bonus"] * (0.25 - min(0.25, abs(rp - 0.25))))
+            sm = (
+                (params["m_myeongni"] * m)
+                + (params["d_myeongni"] * d)
+                + (params["trend_bonus"] * trend)
+                - (params["regime_shift_weight"] * max(0.0, vshift))
+            )
+            ss = (
+                (params["m_sasang"] * m)
+                + (params["d_sasang"] * d)
+                - (params["v_penalty"] * max(0.0, v - 0.12))
+                - (params["wick_bias_weight"] * wick)
+            )
+            sl = (
+                (params["m_logos"] * m)
+                + (params["r_bonus"] * (0.25 - min(0.25, abs(rp - 0.25))))
+                + (0.5 * params["trend_bonus"] * trend)
+            )
 
             vm = _sign(sm, params["band_m"])
             vs = _sign(ss, params["band_s"])
@@ -159,10 +176,27 @@ def _eval_one_run(params: dict[str, float], public_rows: list[dict[str, Any]], t
         v = float(feat.get("volatility_index") or 0.0)
         d = float(feat.get("drawdown_index") or 0.0)
         rp = float(feat.get("range_spread_index") or 0.0)
+        trend = float(feat.get("trend_consistency") or 0.0)
+        vshift = float(feat.get("vol_regime_shift") or 0.0)
+        wick = float(feat.get("wick_bias_index") or 0.0)
 
-        sm = (params["m_myeongni"] * m) + (params["d_myeongni"] * d)
-        ss = (params["m_sasang"] * m) + (params["d_sasang"] * d) - (params["v_penalty"] * max(0.0, v - 0.12))
-        sl = (params["m_logos"] * m) + (params["r_bonus"] * (0.25 - min(0.25, abs(rp - 0.25))))
+        sm = (
+            (params["m_myeongni"] * m)
+            + (params["d_myeongni"] * d)
+            + (params["trend_bonus"] * trend)
+            - (params["regime_shift_weight"] * max(0.0, vshift))
+        )
+        ss = (
+            (params["m_sasang"] * m)
+            + (params["d_sasang"] * d)
+            - (params["v_penalty"] * max(0.0, v - 0.12))
+            - (params["wick_bias_weight"] * wick)
+        )
+        sl = (
+            (params["m_logos"] * m)
+            + (params["r_bonus"] * (0.25 - min(0.25, abs(rp - 0.25))))
+            + (0.5 * params["trend_bonus"] * trend)
+        )
 
         vm = _sign(sm, params["band_m"])
         vs = _sign(ss, params["band_s"])
@@ -195,6 +229,9 @@ def _sample_params(rng: random.Random, space: str = "v1") -> dict[str, float]:
             "band_m": round(rng.uniform(0.022, 0.082), 4),
             "band_s": round(rng.uniform(0.028, 0.088), 4),
             "band_l": round(rng.uniform(0.04, 0.11), 4),
+            "trend_bonus": round(rng.uniform(0.05, 0.24), 4),
+            "regime_shift_weight": round(rng.uniform(0.04, 0.26), 4),
+            "wick_bias_weight": round(rng.uniform(0.02, 0.2), 4),
         }
     if s == "v2":
         # v2: tighten neutral bands, strengthen logos momentum, and relax over-penalization.
@@ -209,6 +246,9 @@ def _sample_params(rng: random.Random, space: str = "v1") -> dict[str, float]:
             "band_m": round(rng.uniform(0.028, 0.095), 4),
             "band_s": round(rng.uniform(0.038, 0.105), 4),
             "band_l": round(rng.uniform(0.038, 0.105), 4),
+            "trend_bonus": round(rng.uniform(0.04, 0.22), 4),
+            "regime_shift_weight": round(rng.uniform(0.03, 0.22), 4),
+            "wick_bias_weight": round(rng.uniform(0.02, 0.18), 4),
         }
     if s != "v1":
         raise ValueError(f"Unknown param space: {space} (use v1/v2/v3)")
@@ -223,6 +263,9 @@ def _sample_params(rng: random.Random, space: str = "v1") -> dict[str, float]:
         "band_m": round(rng.uniform(0.04, 0.11), 4),
         "band_s": round(rng.uniform(0.05, 0.12), 4),
         "band_l": round(rng.uniform(0.05, 0.12), 4),
+        "trend_bonus": round(rng.uniform(0.02, 0.18), 4),
+        "regime_shift_weight": round(rng.uniform(0.02, 0.2), 4),
+        "wick_bias_weight": round(rng.uniform(0.01, 0.16), 4),
     }
 
 
