@@ -1,32 +1,32 @@
 {
   "schema": "trinity_scoring_distribution_v1",
-  "generated_at_utc": "2026-04-02T13:53:35.121016+00:00",
+  "generated_at_utc": "2026-04-02T14:01:24.200355+00:00",
   "log_path": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
-  "metric": "KOSPI_D1_RETURN_PCT",
+  "metric": "BTC_BINANCE_D1_RETURN_PCT",
   "windows": {
     "d5": {
       "sample_size": 5,
-      "hit": 0,
+      "hit": 5,
       "fail": 0,
       "neutral_draw": 0,
-      "pending_close": 5,
-      "hit_rate": 0.0,
+      "pending_close": 0,
+      "hit_rate": 1.0,
       "fail_rate": 0.0,
       "neutral_draw_rate": 0.0,
-      "pending_close_rate": 1.0,
-      "advisory": "mixed_keep_observe"
+      "pending_close_rate": 0.0,
+      "advisory": "signal_stable_keep_thresholds"
     },
     "d10": {
       "sample_size": 10,
-      "hit": 0,
+      "hit": 10,
       "fail": 0,
       "neutral_draw": 0,
-      "pending_close": 10,
-      "hit_rate": 0.0,
+      "pending_close": 0,
+      "hit_rate": 1.0,
       "fail_rate": 0.0,
       "neutral_draw_rate": 0.0,
-      "pending_close_rate": 1.0,
-      "advisory": "mixed_keep_observe"
+      "pending_close_rate": 0.0,
+      "advisory": "signal_stable_keep_thresholds"
     }
   },
   "dual_regime_state": {
@@ -43,31 +43,30 @@
     },
     "d10": {
       "sample_size": 10,
-      "state_id_present_count": 7,
-      "state_id_present_rate": 0.7,
+      "state_id_present_count": 10,
+      "state_id_present_rate": 1.0,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "myeongni_independent_lens": 7,
-        "none": 3
+        "myeongni_independent_lens": 10
       },
       "top_source": "myeongni_independent_lens"
     },
     "all": {
-      "sample_size": 36,
-      "state_id_present_count": 7,
-      "state_id_present_rate": 0.1944,
+      "sample_size": 35,
+      "state_id_present_count": 18,
+      "state_id_present_rate": 0.5143,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "none": 29,
-        "myeongni_independent_lens": 7
+        "myeongni_independent_lens": 18,
+        "none": 17
       },
-      "top_source": "none"
+      "top_source": "myeongni_independent_lens"
     },
     "advisory": {
-      "decision": "state_signal_not_wired",
-      "reason": "top_source_none_and_present_rate_low",
+      "decision": "state_clamp_stable",
+      "reason": "clamp_rate_lt_0.3",
       "thresholds": {
         "present_rate_low": 0.2,
         "clamp_rate_warn": 0.3,
@@ -104,6 +103,6 @@
       }
     }
   },
-  "latest_decision": "PENDING_CLOSE",
-  "total_filtered_rows": 36
+  "latest_decision": "HIT",
+  "total_filtered_rows": 35
 }

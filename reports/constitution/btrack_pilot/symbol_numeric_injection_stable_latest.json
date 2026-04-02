@@ -1,6 +1,6 @@
 {
   "schema": "symbol_numeric_injection_report_v1",
-  "generated_at_utc": "2026-04-02T13:53:28Z",
+  "generated_at_utc": "2026-04-02T13:59:14Z",
   "inputs": {
     "curated_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_stable_latest.jsonl",
     "raw_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_stable_latest.jsonl",
@@ -111,7 +111,7 @@
         "apocrypha": 3
       },
       "promotion_guard": "approve_numeric_near_miss=true required",
-      "created_at_utc": "2026-04-02T13:53:28Z"
+      "created_at_utc": "2026-04-02T13:59:14Z"
     },
     {
       "id": "numeric-near-miss-70-נשבע",
@@ -126,7 +126,7 @@
         "apocrypha": 3
       },
       "promotion_guard": "approve_numeric_near_miss=true required",
-      "created_at_utc": "2026-04-02T13:53:28Z"
+      "created_at_utc": "2026-04-02T13:59:14Z"
     },
     {
       "id": "numeric-near-miss-7-ישבע",
@@ -141,7 +141,7 @@
         "apocrypha": 2
       },
       "promotion_guard": "approve_numeric_near_miss=true required",
-      "created_at_utc": "2026-04-02T13:53:28Z"
+      "created_at_utc": "2026-04-02T13:59:14Z"
     },
     {
       "id": "numeric-near-miss-70-ישבע",
@@ -156,7 +156,7 @@
         "apocrypha": 2
       },
       "promotion_guard": "approve_numeric_near_miss=true required",
-      "created_at_utc": "2026-04-02T13:53:28Z"
+      "created_at_utc": "2026-04-02T13:59:14Z"
     }
   ],
   "promotion_policy": {

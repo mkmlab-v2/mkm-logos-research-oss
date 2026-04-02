@@ -1,6 +1,6 @@
 {
   "schema": "blind_replay_profile_ranking_v1",
-  "generated_at_utc": "2026-04-02T13:54:34Z",
+  "generated_at_utc": "2026-04-02T13:57:21Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "input": {
@@ -9,24 +9,6 @@
   },
   "profiles": [
     {
-      "profile": "D",
-      "hit_rate": 0.475,
-      "balanced_accuracy": 0.346115,
-      "coverage_rate": 1.0,
-      "matched": 80,
-      "hit": 38,
-      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_D_latest.jsonl"
-    },
-    {
-      "profile": "DS",
-      "hit_rate": 0.475,
-      "balanced_accuracy": 0.346115,
-      "coverage_rate": 1.0,
-      "matched": 80,
-      "hit": 38,
-      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_DS_latest.jsonl"
-    },
-    {
       "profile": "C",
       "hit_rate": 0.475,
       "balanced_accuracy": 0.345363,
@@ -34,6 +16,24 @@
       "matched": 80,
       "hit": 38,
       "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
+    },
+    {
+      "profile": "D",
+      "hit_rate": 0.4625,
+      "balanced_accuracy": 0.337343,
+      "coverage_rate": 1.0,
+      "matched": 80,
+      "hit": 37,
+      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_D_latest.jsonl"
+    },
+    {
+      "profile": "DS",
+      "hit_rate": 0.4625,
+      "balanced_accuracy": 0.337343,
+      "coverage_rate": 1.0,
+      "matched": 80,
+      "hit": 37,
+      "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_DS_latest.jsonl"
     },
     {
       "profile": "A",
@@ -55,13 +55,13 @@
     }
   ],
   "best_profile": {
-    "profile": "D",
+    "profile": "C",
     "hit_rate": 0.475,
-    "balanced_accuracy": 0.346115,
+    "balanced_accuracy": 0.345363,
     "coverage_rate": 1.0,
     "matched": 80,
     "hit": 38,
-    "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_D_latest.jsonl"
+    "prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl"
   },
   "note": "Profile sweep for B-track blind replay only. No live binding."
 }

@@ -1,6 +1,6 @@
 {
   "schema": "blind_replay_proxy_profile_d_tuning_v1",
-  "generated_at_utc": "2026-04-02T13:41:40Z",
+  "generated_at_utc": "2026-04-02T13:56:33Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "inputs": {
@@ -23,21 +23,21 @@
   "best": {
     "iter": -1,
     "params": {
-      "d_sasang": 0.194825,
-      "m_logos": 2.174275,
-      "band_s": 0.072225,
-      "m_myeongni": 1.3373,
-      "band_m": 0.0839,
-      "band_l": 0.0648,
-      "m_sasang": 0.706575,
-      "d_myeongni": 0.29395,
-      "r_bonus": 0.06235,
-      "v_penalty": 0.205375
+      "band_s": 0.063378,
+      "r_bonus": 0.084535,
+      "m_myeongni": 1.4133,
+      "m_sasang": 1.060523,
+      "d_sasang": 0.169907,
+      "m_logos": 2.492293,
+      "band_l": 0.08793,
+      "v_penalty": 0.130232,
+      "d_myeongni": 0.291745,
+      "band_m": 0.08621
     },
-    "btc_balanced_accuracy_mean": 0.381201,
+    "btc_balanced_accuracy_mean": 0.384432,
     "kospi_balanced_accuracy_mean": 0.325941,
-    "unified_score_balanced": 0.360824,
-    "mu_balanced": 0.360824,
+    "unified_score_balanced": 0.362864,
+    "mu_balanced": 0.362864,
     "sigma_balanced": 0.0
   },
   "top20": [
