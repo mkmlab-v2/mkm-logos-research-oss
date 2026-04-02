@@ -1,7 +1,8 @@
 param(
     [string]$ApiBaseUrl = "https://api.jemaai.cloud",
     [string]$LogPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\jemaai_e2e_smoke_alert_log.txt",
-    [string]$StatePath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\jemaai_e2e_smoke_alert_state.json"
+    [string]$StatePath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\jemaai_e2e_smoke_alert_state.json",
+    [string]$StatusPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\jemaai_e2e_smoke_status_latest.json"
 )
 
 $ErrorActionPreference = "Stop"
@@ -60,6 +61,37 @@ function Save-State([string]$key) {
     @{ last_alert_key = $key } | ConvertTo-Json -Depth 3 | Set-Content -LiteralPath $StatePath -Encoding UTF8
 }
 
+function Save-Status(
+    [int]$exitCode,
+    [bool]$smokeOk,
+    [bool]$slackReady,
+    [bool]$telegramReady,
+    [bool]$slackSent,
+    [bool]$telegramSent,
+    [bool]$duplicateSuppressed
+) {
+    $parent = Split-Path -Parent $StatusPath
+    if ($parent -and -not (Test-Path -LiteralPath $parent)) {
+        New-Item -ItemType Directory -Path $parent -Force | Out-Null
+    }
+    $obj = [ordered]@{
+        schema = "jemaai_e2e_smoke_alert_status_v1"
+        checked_at_utc = [DateTime]::UtcNow.ToString("o")
+        api_base = $ApiBaseUrl
+        smoke_ok = $smokeOk
+        exit_code = $exitCode
+        channels = [ordered]@{
+            slack_ready = $slackReady
+            telegram_ready = $telegramReady
+            slack_sent = $slackSent
+            telegram_sent = $telegramSent
+        }
+        duplicate_suppressed = $duplicateSuppressed
+        host = $env:COMPUTERNAME
+    }
+    $obj | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $StatusPath -Encoding UTF8
+}
+
 $smokeScript = "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\run_jemaai_public_event_e2e_smoke.ps1"
 if (-not (Test-Path -LiteralPath $smokeScript)) {
     throw "Missing smoke script: $smokeScript"
@@ -68,8 +100,11 @@ if (-not (Test-Path -LiteralPath $smokeScript)) {
 Write-TaskLog "RUN jemaai_e2e_smoke start"
 & powershell -NoProfile -ExecutionPolicy Bypass -File $smokeScript -ApiBaseUrl $ApiBaseUrl
 $exitCode = $LASTEXITCODE
+$slackReady = -not [string]::IsNullOrWhiteSpace([string]$env:FACT_SAFE_FATAL_SLACK_WEBHOOK)
+$telegramReady = (-not [string]::IsNullOrWhiteSpace([string]$env:TELEGRAM_BOT_TOKEN)) -and (-not [string]::IsNullOrWhiteSpace([string]$env:TELEGRAM_CHAT_ID))
 
 if ($exitCode -eq 0) {
+    Save-Status -exitCode $exitCode -smokeOk $true -slackReady $slackReady -telegramReady $telegramReady -slackSent $false -telegramSent $false -duplicateSuppressed $false
     Write-TaskLog "OK jemaai_e2e_smoke passed"
     exit 0
 }
@@ -78,6 +113,7 @@ $today = Get-Date -Format "yyyy-MM-dd"
 $alertKey = "{0}|exit={1}|api={2}" -f $today, $exitCode, $ApiBaseUrl
 $state = Get-State
 if ($state.last_alert_key -eq $alertKey) {
+    Save-Status -exitCode $exitCode -smokeOk $false -slackReady $slackReady -telegramReady $telegramReady -slackSent $false -telegramSent $false -duplicateSuppressed $true
     Write-TaskLog "INFO duplicate failure today; alert suppressed"
     exit $exitCode
 }
@@ -92,6 +128,7 @@ $message = @"
 
 $slackSent = Send-Slack -text $message
 $telegramSent = Send-Telegram -text $message
+Save-Status -exitCode $exitCode -smokeOk $false -slackReady $slackReady -telegramReady $telegramReady -slackSent $slackSent -telegramSent $telegramSent -duplicateSuppressed $false
 if ($slackSent -or $telegramSent) {
     Save-State -key $alertKey
     Write-TaskLog "ALERT sent (slack=$slackSent telegram=$telegramSent)"
