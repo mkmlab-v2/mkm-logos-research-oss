@@ -1,0 +1,31 @@
+# Example: nginx config additions for jemaai.cloud public showroom
+#
+# 목적:
+# - API: /api/public-events/ -> Windows gateway (public_event_gateway.py) 프록시
+# - UI:  /public_showroom_poll.html 을 public_showroom_poll.html 정적 파일로 서빙
+#
+# 사용:
+# 1) 이 내용을 jemaai.cloud 의 server { ... } 블록 안에 넣고
+# 2) UI 파일 경로(/var/www/... 등)는 본인 환경에 맞게 alias 값을 바꾼 뒤
+# 3) nginx -t && nginx -s reload 또는 systemctl reload nginx
+#
+# 전제:
+# - TLS는 이미 nginx 레벨에서 처리되고 있다고 가정
+# - Windows gateway는 ensure_public_event_gateway.ps1이 띄운 동일 머신/업스트림에서 8788로 listen
+
+# --- API proxy ---
+location /api/public-events/ {
+    proxy_pass http://127.0.0.1:8788;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+
+# --- Polling UI (static) ---
+# UI 파일은 웹 루트에 배치했다고 가정. 아래 alias 경로를 실제 파일 위치로 변경하세요.
+location = /public_showroom_poll.html {
+    alias /var/www/jemaai/public_showroom_poll.html;
+}
+
