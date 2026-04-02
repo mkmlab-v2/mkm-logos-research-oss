@@ -6,7 +6,7 @@ $ErrorActionPreference = "Stop"
 
 $taskName = "Ops-Health-Overview-Daily"
 $opsRoot = "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal"
-$scriptPath = Join-Path $opsRoot "build_ops_health_overview.ps1"
+$scriptPath = Join-Path $opsRoot "run_ops_health_overview_and_append.ps1"
 $assertScript = Join-Path $opsRoot "assert_task_target_exists.ps1"
 
 & powershell -ExecutionPolicy Bypass -File $assertScript -TargetPath $scriptPath -Label "ops health overview build script"

@@ -144,6 +144,10 @@ def _blend(parts: list[dict[str, float]], ws: list[float]) -> dict[str, float]:
     return {k: sum(w * p[k] for w, p in zip(ws, parts)) / total for k in REQUIRED}
 
 
+def _l2_distance(a: dict[str, float], b: dict[str, float]) -> float:
+    return math.sqrt(sum((float(a[k]) - float(b[k])) ** 2 for k in REQUIRED))
+
+
 def _extract_params(path: Path, limit_top: int) -> list[dict[str, float]]:
     doc = _read_json(path)
     out: list[dict[str, float]] = []
@@ -168,6 +172,12 @@ def main() -> int:
     ap.add_argument("--w-btc", type=float, default=0.7)
     ap.add_argument("--w-kospi", type=float, default=0.3)
     ap.add_argument("--kappa", type=float, default=0.15)
+    ap.add_argument(
+        "--diversity-min-l2",
+        type=float,
+        default=0.0,
+        help="Minimum L2 distance between member parameter sets for blend candidates.",
+    )
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--canonical", type=Path, default=DEFAULT_CANON)
     ap.add_argument("--promote-if-better", action="store_true")
@@ -206,6 +216,8 @@ def main() -> int:
     # 2-way blends
     for i, j in itertools.combinations(idxs, 2):
         p1, p2 = uniq[i], uniq[j]
+        if _l2_distance(p1, p2) < float(args.diversity_min_l2):
+            continue
         for a in alpha2:
             b = 1.0 - a
             params = _blend([p1, p2], [a, b])
@@ -229,6 +241,12 @@ def main() -> int:
     # 3-way blends (limited patterns)
     for i, j, k in itertools.combinations(idxs, 3):
         p1, p2, p3 = uniq[i], uniq[j], uniq[k]
+        if (
+            _l2_distance(p1, p2) < float(args.diversity_min_l2)
+            or _l2_distance(p1, p3) < float(args.diversity_min_l2)
+            or _l2_distance(p2, p3) < float(args.diversity_min_l2)
+        ):
+            continue
         for ws in ([1 / 3, 1 / 3, 1 / 3], alpha3, [alpha3[1], alpha3[2], alpha3[0]]):
             params = _blend([p1, p2, p3], ws)
             btc_bal = sum(_eval_one_run(params, pub, truth) for pub, truth in btc_runs) / len(btc_runs)
@@ -262,6 +280,7 @@ def main() -> int:
             "candidate_count_unique": len(uniq),
         },
         "objective": {"w_btc": float(args.w_btc), "w_kospi": float(args.w_kospi), "kappa": float(args.kappa)},
+        "diversity_min_l2": float(args.diversity_min_l2),
         "baseline_canonical_best": round(base_best, 6),
         "best": best,
         "top20": trials[:20],

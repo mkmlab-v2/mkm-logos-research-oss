@@ -21,6 +21,21 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_D_PARAMS_PATH = ROOT / "docs" / "final" / "artifacts" / "BLIND_REPLAY_PROXY_PROFILE_D_PARAMS_V1.json"
+PROFILE_D_ENSEMBLE_PATH = (
+    ROOT / "docs" / "final" / "artifacts" / "BLIND_REPLAY_PROXY_PROFILE_D_ENSEMBLE_SEARCH_V1.json"
+)
+REQUIRED_KEYS = {
+    "m_myeongni",
+    "d_myeongni",
+    "m_sasang",
+    "d_sasang",
+    "v_penalty",
+    "m_logos",
+    "r_bonus",
+    "band_m",
+    "band_s",
+    "band_l",
+}
 
 
 def _utc_now() -> str:
@@ -100,20 +115,8 @@ def _profile_params(profile: str) -> dict[str, float]:
                 best = doc.get("best") if isinstance(doc, dict) else {}
                 params = (best or {}).get("params") if isinstance(best, dict) else {}
                 if isinstance(params, dict):
-                    required = {
-                        "m_myeongni",
-                        "d_myeongni",
-                        "m_sasang",
-                        "d_sasang",
-                        "v_penalty",
-                        "m_logos",
-                        "r_bonus",
-                        "band_m",
-                        "band_s",
-                        "band_l",
-                    }
-                    if required.issubset(set(params.keys())):
-                        return {k: float(params[k]) for k in required}
+                    if REQUIRED_KEYS.issubset(set(params.keys())):
+                        return {k: float(params[k]) for k in REQUIRED_KEYS}
             except Exception:
                 pass
         # Fallback D baseline if tuned params artifact is missing.
@@ -129,14 +132,38 @@ def _profile_params(profile: str) -> dict[str, float]:
             "band_s": 0.085,
             "band_l": 0.075,
         }
-    raise ValueError(f"Unknown profile: {profile} (use A/B/C/D)")
+    if p == "DS":
+        # Soft-ensemble: weighted average of top-2 blend candidates from ensemble search artifact.
+        if PROFILE_D_ENSEMBLE_PATH.is_file():
+            try:
+                doc = json.loads(PROFILE_D_ENSEMBLE_PATH.read_text(encoding="utf-8"))
+                top = doc.get("top20") if isinstance(doc.get("top20"), list) else []
+                picked: list[tuple[float, dict[str, float]]] = []
+                for row in top[:2]:
+                    params = row.get("params") if isinstance(row, dict) else {}
+                    score = float((row or {}).get("unified_score_balanced") or 0.0)
+                    if isinstance(params, dict) and REQUIRED_KEYS.issubset(set(params.keys())):
+                        picked.append((max(0.0, score), {k: float(params[k]) for k in REQUIRED_KEYS}))
+                if len(picked) >= 2:
+                    total_w = sum(max(1e-6, x[0]) for x in picked)
+                    return {
+                        k: sum((max(1e-6, w) / total_w) * pmap[k] for w, pmap in picked)
+                        for k in REQUIRED_KEYS
+                    }
+                if len(picked) == 1:
+                    return picked[0][1]
+            except Exception:
+                pass
+        # Fallback to canonical D if ensemble artifact is unavailable.
+        return _profile_params("D")
+    raise ValueError(f"Unknown profile: {profile} (use A/B/C/D/DS)")
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Generate proxy 12AI predictions for blind replay.")
     ap.add_argument("--public-dataset", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
-    ap.add_argument("--profile", default="B", help="Prediction profile preset: A, B, C, or D (default: B)")
+    ap.add_argument("--profile", default="B", help="Prediction profile preset: A, B, C, D, or DS (default: B)")
     args = ap.parse_args()
 
     rows = _read_jsonl(args.public_dataset)
