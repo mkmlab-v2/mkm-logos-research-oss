@@ -5,7 +5,8 @@
 google-genai SDK로 재현한다 (IDE 밖 실행·스케줄러·파이프라인 편입).
 
 의존성: pip install google-genai
-인증: 환경 변수 GEMINI_API_KEY 또는 GOOGLE_API_KEY (Client 기본 동작과 동일)
+인증: 환경 변수 GEMINI_API_KEY 또는 GOOGLE_API_KEY. Client에는 _api_key()로 읽은 값을 명시 전달(GEMINI 우선).
+  두 변수가 모두 있으면 google-genai가 경고 로그를 낼 수 있으나, 전달한 api_key가 요청에 사용됨.
 
 예:
   py scripts/gemini_multimodal_batch.py check
@@ -236,7 +237,17 @@ def cmd_check(_ns: argparse.Namespace) -> int:
     if not ok:
         return 2
     key = _api_key()
-    print("GEMINI_API_KEY/GOOGLE_API_KEY:", "set" if key else "not set (배치 호출 전에 설정)")
+    g = os.getenv("GEMINI_API_KEY")
+    o = os.getenv("GOOGLE_API_KEY")
+    print("GEMINI_API_KEY:", "set" if g else "unset")
+    print("GOOGLE_API_KEY:", "set" if o else "unset")
+    if g:
+        print("active_key_source: GEMINI_API_KEY (우선)")
+    elif o:
+        print("active_key_source: GOOGLE_API_KEY")
+    else:
+        print("active_key_source: none (배치 호출 전에 설정)")
+    print("combined:", "set" if key else "not set")
     tiny = Path(os.environ.get("TEMP", ".")) / "gemini_batch_mime_probe.txt"
     tiny.write_text("ok", encoding="utf-8")
     try:
