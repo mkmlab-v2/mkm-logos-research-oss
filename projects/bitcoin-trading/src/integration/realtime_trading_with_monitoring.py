@@ -148,6 +148,16 @@ class RealtimeTradingWithMonitoring:
         log_dir = Path(__file__).resolve().parents[2] / "logs"
         log_dir.mkdir(parents=True, exist_ok=True)
         self.state_file = log_dir / "trading_state.json"
+        self.startup_reconcile_status: Dict[str, Any] = {
+            "completed": False,
+            "ts": None,
+            "open_orders_count": None,
+            "has_position": None,
+            "position_side": None,
+            "position_qty": None,
+            "recent_fills_count": None,
+            "error": None,
+        }
         
         # 🏛️ 레짐 엔진 (SSOT 230751, Sensor/Logic용)
         self._prophecy_stack = None
@@ -568,6 +578,7 @@ class RealtimeTradingWithMonitoring:
                 "symbol": self.symbol,
                 "running": self.running,
                 "enable_trading": self.enable_trading,
+                "startup_reconcile": self.startup_reconcile_status,
                 "signal_total_count": self.signal_total_count,
                 "singular_action_counts": self.singular_action_counts,
                 "last_signal_summary": self.last_signal_summary,
@@ -578,6 +589,51 @@ class RealtimeTradingWithMonitoring:
             )
         except Exception as e:
             logger.debug(f"상태 저장 실패: {e}")
+
+    def _startup_reconcile(self) -> None:
+        """
+        Trustless bootstrap:
+        Always align runtime view from exchange before signal loop starts.
+        """
+        try:
+            open_orders = []
+            recent_fills = []
+            position = None
+
+            if hasattr(self.binance, "get_open_orders"):
+                open_orders = self.binance.get_open_orders(self.symbol) or []
+            position = self._get_position()
+            if hasattr(self.binance, "get_recent_fills"):
+                recent_fills = self.binance.get_recent_fills(self.symbol, limit=50) or []
+
+            self.startup_reconcile_status = {
+                "completed": True,
+                "ts": datetime.now().isoformat(timespec="seconds"),
+                "open_orders_count": len(open_orders) if isinstance(open_orders, list) else None,
+                "has_position": bool(position),
+                "position_side": (position or {}).get("side") if isinstance(position, dict) else None,
+                "position_qty": (position or {}).get("quantity") if isinstance(position, dict) else None,
+                "recent_fills_count": len(recent_fills) if isinstance(recent_fills, list) else None,
+                "error": None,
+            }
+            logger.info(
+                "🔁 Startup reconcile 완료: open_orders=%s, has_position=%s, recent_fills=%s",
+                self.startup_reconcile_status["open_orders_count"],
+                self.startup_reconcile_status["has_position"],
+                self.startup_reconcile_status["recent_fills_count"],
+            )
+        except Exception as e:
+            self.startup_reconcile_status = {
+                "completed": False,
+                "ts": datetime.now().isoformat(timespec="seconds"),
+                "open_orders_count": None,
+                "has_position": None,
+                "position_side": None,
+                "position_qty": None,
+                "recent_fills_count": None,
+                "error": str(e),
+            }
+            logger.warning(f"⚠️ Startup reconcile 실패: {e}")
     
     async def _execute_trade(self, signal: str, confidence: float):
         """거래 실행"""
@@ -693,6 +749,8 @@ class RealtimeTradingWithMonitoring:
             logger.info(f"   📊 압축-트레이딩 브릿지: 활성화 (노이즈 제거, 420배 빠름)")
             logger.info(f"      압축 모드: max_compression (99% 노이즈 제거)")
         
+        self._startup_reconcile()
+        self._save_state()
         self.running = True
         
         # WebSocket 커넥터 실행
@@ -723,6 +781,7 @@ class RealtimeTradingWithMonitoring:
             "price_history_size": len(self.price_history),
             "monitoring_enabled": self.monitor.enable_monitoring,
             "trading_enabled": self.enable_trading,
+            "startup_reconcile": self.startup_reconcile_status,
             "mkm_singular_core": {
                 "total_signals": total,
                 "buy_count": buy,

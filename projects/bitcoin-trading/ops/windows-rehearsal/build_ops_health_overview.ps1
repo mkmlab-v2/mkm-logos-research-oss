@@ -25,13 +25,19 @@ $obj = [ordered]@{
         available = ($null -ne $jemaai)
         overall_ok = $jemaaiOk
         path = $JemaaiPath
+        smoke_ok_latest = if ($null -ne $jemaai) { $jemaai.smoke_ok_latest } else { $null }
+        showroom_quality_hooks_ok_latest = if ($null -ne $jemaai) { $jemaai.showroom_quality_hooks_ok_latest } else { $null }
+        failure_reason_text = if ($null -ne $jemaai) { $jemaai.failure_reason_text } else { $null }
     }
     blind_replay_multi_seed = [ordered]@{
         available = ($null -ne $blind)
         overall_ok = $blindOk
         path = $BlindReplayPath
+        status_recent = if ($null -ne $blind) { $blind.status_recent } else { $null }
+        status_age_minutes = if ($null -ne $blind) { $blind.status_age_minutes } else { $null }
         best_balanced_accuracy_mean = if ($null -ne $blind) { $blind.metrics.balanced_accuracy_mean } else { $null }
         best_hit_rate_mean = if ($null -ne $blind) { $blind.metrics.hit_rate_mean } else { $null }
+        failure_reason_text = if ($null -ne $blind) { $blind.failure_reason_text } else { $null }
     }
 }
 

@@ -151,7 +151,10 @@
       pulse: 0,
       bubbles: [],
       actors: [],
-      lang: "HYBRID"
+      lang: "HYBRID",
+      quality: "high",
+      fpsEma: 60,
+      lastQualityAdjustTs: 0
     };
     const MAIN_CHARACTER_ID = "dragon_quant";
     const spriteByMode = {
@@ -254,7 +257,15 @@
         { id: MAIN_CHARACTER_ID, x: 128, y: 78, tx: 128, ty: 78, jitter: 0, major: true },
         { id: "tiger_shield", x: 72, y: 88, tx: 72, ty: 88, jitter: 0, major: true },
         { id: "ox_guard", x: 178, y: 92, tx: 178, ty: 92, jitter: 0, major: false },
-        { id: "rabbit_scalper", x: 44, y: 94, tx: 44, ty: 94, jitter: 0, major: false }
+        { id: "rabbit_scalper", x: 44, y: 94, tx: 44, ty: 94, jitter: 0, major: false },
+        { id: "rat_arbitrage", x: 30, y: 78, tx: 30, ty: 78, jitter: 0, major: false },
+        { id: "snake_hedger", x: 206, y: 78, tx: 206, ty: 78, jitter: 0, major: false },
+        { id: "horse_trend", x: 94, y: 106, tx: 94, ty: 106, jitter: 0, major: false },
+        { id: "sheep_yield", x: 158, y: 108, tx: 158, ty: 108, jitter: 0, major: false },
+        { id: "monkey_momentum", x: 56, y: 112, tx: 56, ty: 112, jitter: 0, major: false },
+        { id: "rooster_oracle", x: 198, y: 110, tx: 198, ty: 110, jitter: 0, major: false },
+        { id: "dog_sentinel", x: 118, y: 118, tx: 118, ty: 118, jitter: 0, major: false },
+        { id: "pig_accumulator", x: 144, y: 120, tx: 144, ty: 120, jitter: 0, major: false }
       ];
     }
 
@@ -312,6 +323,46 @@
         tiger_shield: {
           KR: ["선봉 준비 완료!", "돌격 각이 보인다!"],
           EN: ["Vanguard ready!", "I see the strike angle!"]
+        },
+        rat_arbitrage: {
+          KR: ["스프레드 틈새 발견!", "짧게 먹고 빠진다."],
+          EN: ["Spread gap found.", "Quick in, quick out."]
+        },
+        ox_guard: {
+          KR: ["하방은 내가 받는다.", "기초 체력으로 버틴다."],
+          EN: ["I anchor the downside.", "Hold with base strength."]
+        },
+        rabbit_scalper: {
+          KR: ["초단타 각!", "틱 단위로 춤춘다."],
+          EN: ["Micro scalp window.", "Dancing on ticks."]
+        },
+        snake_hedger: {
+          KR: ["리스크 독을 중화한다.", "헤지 포지션 장전."],
+          EN: ["Neutralizing risk venom.", "Hedge loaded."]
+        },
+        horse_trend: {
+          KR: ["추세를 탄다!", "속도 유지!"],
+          EN: ["Ride the trend!", "Keep the pace!"]
+        },
+        sheep_yield: {
+          KR: ["수익은 천천히 쌓는다.", "이자 농사 간다."],
+          EN: ["Yield stacks slowly.", "Farming carry."]
+        },
+        monkey_momentum: {
+          KR: ["모멘텀 폭주 간다!", "지금은 가속 구간!"],
+          EN: ["Momentum overload!", "Acceleration zone!"]
+        },
+        rooster_oracle: {
+          KR: ["시계열 조짐 확인.", "신호 해석 완료."],
+          EN: ["Pattern omen confirmed.", "Signal interpreted."]
+        },
+        dog_sentinel: {
+          KR: ["규율 유지, 이탈 금지.", "경계선 고정."],
+          EN: ["Maintain discipline.", "Boundary locked."]
+        },
+        pig_accumulator: {
+          KR: ["분할 축적 계속.", "크게 보고 모은다."],
+          EN: ["Accumulating in slices.", "Collect for the long run."]
         }
       };
       const pack = table[kind] || table.idle;
@@ -338,6 +389,73 @@
       stageState.bubbles = stageState.bubbles
         .map((b) => ({ ...b, ttlMs: b.ttlMs - dt }))
         .filter((b) => b.ttlMs > 0);
+    }
+
+    function updateRenderQuality(dt, ts) {
+      const safeDt = Math.max(1, dt);
+      const fps = 1000 / safeDt;
+      stageState.fpsEma = stageState.fpsEma * 0.9 + fps * 0.1;
+      // Avoid quality flapping by requiring a cool-down window.
+      if ((ts - stageState.lastQualityAdjustTs) < 3000) return;
+      const q = stageState.quality;
+      if (q === "high" && stageState.fpsEma < 38) {
+        stageState.quality = "medium";
+        stageState.lastQualityAdjustTs = ts;
+      } else if (q === "medium" && stageState.fpsEma < 28) {
+        stageState.quality = "low";
+        stageState.lastQualityAdjustTs = ts;
+      } else if (q === "low" && stageState.fpsEma > 44) {
+        stageState.quality = "medium";
+        stageState.lastQualityAdjustTs = ts;
+      } else if (q === "medium" && stageState.fpsEma > 54) {
+        stageState.quality = "high";
+        stageState.lastQualityAdjustTs = ts;
+      }
+    }
+
+    function drawThemeObjects(ctx, theme, pulse, quality) {
+      if (quality === "low") return;
+      if (theme === "festival") {
+        ctx.fillStyle = "rgba(255, 232, 128, 0.55)";
+        const n = quality === "high" ? 6 : 3;
+        for (let i = 0; i < n; i += 1) {
+          const x = 24 + i * 38 + Math.sin(pulse + i) * 2;
+          ctx.fillRect(x, 18, 3, 9);
+          ctx.fillRect(x - 3, 26, 9, 2);
+        }
+      } else if (theme === "storm") {
+        ctx.strokeStyle = "rgba(208, 186, 255, 0.75)";
+        ctx.lineWidth = 2;
+        const n = quality === "high" ? 3 : 2;
+        for (let i = 0; i < n; i += 1) {
+          const x = 36 + i * 78 + ((stageState.frame * 0.12 + i * 13) % 30);
+          ctx.beginPath();
+          ctx.moveTo(x, 12);
+          ctx.lineTo(x - 7, 26);
+          ctx.lineTo(x + 2, 26);
+          ctx.lineTo(x - 4, 40);
+          ctx.stroke();
+        }
+      } else if (theme === "sanctuary") {
+        ctx.strokeStyle = "rgba(255, 212, 134, 0.70)";
+        ctx.lineWidth = 2;
+        const n = quality === "high" ? 5 : 3;
+        for (let i = 0; i < n; i += 1) {
+          const x = 34 + i * 46;
+          const y = 22 + Math.sin(pulse * 0.9 + i) * 2;
+          ctx.beginPath();
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      } else {
+        ctx.fillStyle = "rgba(124, 170, 255, 0.50)";
+        const n = quality === "high" ? 12 : 6;
+        for (let i = 0; i < n; i += 1) {
+          const x = (i * 19 + stageState.frame * 0.03) % 256;
+          const y = 10 + (i * 7) % 30;
+          ctx.fillRect(x, y, 1, 1);
+        }
+      }
     }
 
     function renderBubbles() {
@@ -401,6 +519,7 @@
       stageState.lastTs = ts;
       stageState.pulse += dt * 0.004;
       stageState.frame += dt;
+      updateRenderQuality(dt, ts);
 
       ensureActors();
       const obj = stageState.obj || {};
@@ -432,6 +551,7 @@
           ctx.fillRect(tx, ty, 16, 16);
         }
       }
+      drawThemeObjects(ctx, theme, stageState.pulse, stageState.quality);
 
       const wave = Math.sin(stageState.pulse);
       const bob = mode === "Attack" ? Math.sin(stageState.pulse * 1.9) * 4 : Math.sin(stageState.pulse * 1.2) * 2;
@@ -446,7 +566,8 @@
       } else {
         ctx.fillStyle = "rgba(120,180,255,0.10)";
       }
-      for (let i = 0; i < 4; i += 1) {
+      const lineCount = stageState.quality === "low" ? 2 : 4;
+      for (let i = 0; i < lineCount; i += 1) {
         const y = 110 + i * 8 + Math.sin(stageState.pulse + i) * 2;
         ctx.fillRect(0, y, canvas.width, 2);
       }
@@ -464,7 +585,8 @@
       if (risk === "WARNING") {
         // Sweat particles for elevated risk.
         ctx.fillStyle = "rgba(119, 198, 255, 0.85)";
-        for (let i = 0; i < 3; i += 1) {
+        const sweatCount = stageState.quality === "low" ? 1 : 3;
+        for (let i = 0; i < sweatCount; i += 1) {
           const sx = 98 + i * 12 + Math.sin(stageState.pulse + i) * 2;
           const sy = 56 + (i % 2) * 6 + Math.abs(Math.sin(stageState.pulse * 1.6 + i)) * 5;
           ctx.fillRect(sx, sy, 2, 3);
@@ -474,7 +596,8 @@
       if (mode === "Attack") {
         ctx.fillStyle = "rgba(255, 120, 120, 0.55)";
         const dirSign = (dir === "BUY" || dir === "LONG") ? 1 : -1;
-        for (let i = 0; i < 4; i += 1) {
+        const trailCount = stageState.quality === "low" ? 2 : 4;
+        for (let i = 0; i < trailCount; i += 1) {
           const sx = 128 + (i * 18 + (stageState.frame * 0.04) % 22) * dirSign;
           const sy = 56 + i * 9;
           ctx.fillRect(sx, sy, 10, 2);
@@ -493,7 +616,9 @@
         drawPixelCharacter(ctx, 106, 56 + bob, 4, charColor, eyeShift, profile);
       }
 
-      for (const actor of stageState.actors) {
+      const actorLimit = stageState.quality === "low" ? 7 : (stageState.quality === "medium" ? 10 : stageState.actors.length);
+      const actorsToRender = stageState.actors.slice(0, actorLimit);
+      for (const actor of actorsToRender) {
         const p = profileFromCharacterId(actor.id);
         const c = colorFromCharacterId(actor.id);
         const shift = mode === "Attack" ? (wave > 0 ? 1 : 0) : 0;
@@ -502,8 +627,11 @@
       }
 
       updateBubbles(dt);
+      if (stageState.quality === "low" && stageState.bubbles.length > 3) {
+        stageState.bubbles = stageState.bubbles.slice(-3);
+      }
       renderBubbles();
-      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | theme=${theme} | sprite=${spriteInfo.name} | lang=${stageState.lang}`;
+      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | theme=${theme} | sprite=${spriteInfo.name} | lang=${stageState.lang} | quality=${stageState.quality} | fps=${stageState.fpsEma.toFixed(1)}`;
       requestAnimationFrame(drawStage);
     }
 
@@ -594,19 +722,21 @@
         if (obj.event_id && obj.event_id !== lastEventId) {
           lastEventId = obj.event_id;
           pushChat(obj);
+          const eventActorId = String(obj.active_character_id || "").toLowerCase();
           const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
+          const focusActor = stageState.actors.find((a) => a.id === eventActorId) || mainActor;
           const tiger = stageState.actors.find((a) => a.id === "tiger_shield") || stageState.actors[1] || mainActor;
           const d = directionFromEvent(obj);
           const kind = mode === "Attack" ? "attack" : (mode === "Defend" ? "defend" : (d === "bull" ? "bull" : (d === "bear" ? "bear" : "idle")));
           if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
-            addBubble(mainActor, speak("warning", "dragon_quant"));
+            addBubble(focusActor, speak("warning", focusActor.id));
             addBubble(tiger, speak("defend", "tiger_shield"));
           } else {
-            addBubble(mainActor, speak(kind, "dragon_quant"));
+            addBubble(focusActor, speak(kind, focusActor.id));
             if (Math.random() > 0.45) addBubble(tiger, speak(kind, "tiger_shield"));
           }
           if (obj.abstract_reason) {
-            addBubble(mainActor, String(obj.abstract_reason).slice(0, 42));
+            addBubble(focusActor, String(obj.abstract_reason).slice(0, 42));
           }
         }
 

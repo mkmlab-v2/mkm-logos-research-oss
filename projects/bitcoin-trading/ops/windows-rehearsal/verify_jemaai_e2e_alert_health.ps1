@@ -49,17 +49,28 @@ if ($null -ne $statusObj) {
 }
 
 $taskReady = $task.exists -and ($task.status -in @("Ready", "Running"))
-$overall = $taskReady -and ($null -ne $statusObj) -and $statusRecent
+$smokeOkLatest = if ($null -ne $statusObj) { [bool]$statusObj.smoke_ok } else { $false }
+$showroomQualityHooksOk = if ($null -ne $statusObj -and $null -ne $statusObj.showroom_quality_hooks_ok) { [bool]$statusObj.showroom_quality_hooks_ok } else { $false }
+$overall = $taskReady -and ($null -ne $statusObj) -and $statusRecent -and $smokeOkLatest -and $showroomQualityHooksOk
+$reasons = @()
+if (-not $taskReady) { $reasons += "task_not_ready" }
+if ($null -eq $statusObj) { $reasons += "status_file_missing_or_invalid" }
+if (-not $statusRecent) { $reasons += "status_stale" }
+if (-not $smokeOkLatest) { $reasons += "smoke_not_ok" }
+if (-not $showroomQualityHooksOk) { $reasons += "showroom_quality_hooks_not_ok" }
 
 $result = [ordered]@{
-    schema = "jemaai_e2e_alert_health_v1"
+    schema = "jemaai_e2e_alert_health_v2"
     checked_at_utc = [DateTimeOffset]::UtcNow.ToString("o")
     task = $task
     status_file_exists = ($null -ne $statusObj)
     status_age_minutes = $statusAgeMinutes
     status_recent = $statusRecent
-    smoke_ok_latest = if ($null -ne $statusObj) { [bool]$statusObj.smoke_ok } else { $false }
+    smoke_ok_latest = $smokeOkLatest
+    showroom_quality_hooks_ok_latest = $showroomQualityHooksOk
     channel_ready = if ($null -ne $statusObj) { ([bool]$statusObj.channels.slack_ready -or [bool]$statusObj.channels.telegram_ready) } else { $false }
+    failure_reasons = $reasons
+    failure_reason_text = if ($reasons.Count -gt 0) { ($reasons -join ", ") } else { "none" }
     overall_ok = $overall
 }
 

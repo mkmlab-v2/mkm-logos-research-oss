@@ -138,6 +138,20 @@ class AlertManager:
     def _should_send_telegram(self, alert_type: str, metadata: Dict[str, Any]) -> bool:
         if not self.enable_telegram:
             return False
+        # Safety override: critical alerts must always page operator.
+        if alert_type == "critical":
+            return True
+        # Elevated risk override: only high-severity risk breaches bypass suppression.
+        if alert_type == "risk":
+            warning_type = str(metadata.get("warning_type", "")).upper()
+            try:
+                current_value = float(metadata.get("current_value", 0.0) or 0.0)
+                threshold = float(metadata.get("threshold", 0.0) or 0.0)
+            except Exception:
+                current_value = 0.0
+                threshold = 0.0
+            if warning_type in {"DAILY_LOSS_LIMIT", "MAX_DRAWDOWN"} and threshold > 0 and current_value >= threshold:
+                return True
         if self.alert_mode == "full":
             return True
         # Default policy: concise delivery for trading operations.
