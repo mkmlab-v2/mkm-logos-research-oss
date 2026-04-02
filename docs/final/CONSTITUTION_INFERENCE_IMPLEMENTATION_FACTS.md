@@ -89,7 +89,9 @@
 | 관측 로그 샘플 | `data/myeongni/insight_observation_log.sample.jsonl` | `myeongni_16_state_experiment` JSONL과 별도; 통찰 전용 |
 | 관측 로그(부트스트랩) | `data/myeongni/insight_observation_log.jsonl` | 주간 append; 회귀와 동일 계약 |
 | 융합 인터페이스 스텁 | `docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json` | `myeongni_fusion_interface_stub_v1` |
+| 독립 렌즈 v0 (정량 스코어) | `scripts/run_lens_myeongni.py` → `docs/final/artifacts/myeongni_independent_lens_latest.json` | 계약 `MYEONGNI_INDEPENDENT_LENS_V0_CONTRACT.json`; B-track·비트리거; A-track·캡 합선 금지 |
 | 계약 테스트 | `tests/test_myeongni_insight_observation_log.py` | sample·log JSONL + 스텁 JSON |
+| 독립 렌즈 v0 회귀 | `tests/test_myeongni_independent_lens_v0.py` | 러너·스키마 필수 필드 |
 
 ### 3.4 만세력 정밀 런타임 (제2계층, Pointer)
 
@@ -122,7 +124,8 @@
 | BTC 앵커 스모크 (3일) | `data/multilens_eval/curated_dates_btc_anchor_smoke_v1.json` → `data/multilens_eval/dual_regime_market_adapter_btc_anchor_smoke_v1.json` | `sasang_dynamics_regime_mapping_v1.btc_anchor_smoke.jsonl`과 동일 달력일; 네트워크 필요 |
 | Thin 보고서 (BTC 앵커 스모크) | `data/multilens_eval/multilens_eval_v2_thin_report_btc_anchor_smoke_v1.json` | `eval_multilens_harness_v2_thin.py --populate-default-samples` + 위 어댑터·사상 JSONL |
 | BTC 앵커 스모크 원클릭 | `scripts/run_btc_anchor_multilens_smoke.ps1` | 어댑터 → Thin 보고서 재생성(네트워크 필요) |
-| 로컬 자동 체인 (Fact-Lock+B-Track 스모크) | `scripts/run_workspace_autopilot_chain.ps1` | `run_fact_lock_bundle` → 사상 `validate-sample` → `run_btc_anchor_multilens_smoke` → sasang·thin pytest |
+| 로컬 자동 체인 (Fact-Lock+B-Track 스모크) | `scripts/run_workspace_autopilot_chain.ps1` | `run_fact_lock_bundle` → 사상 `validate-sample`(샘플+btc_anchor) → `run_btc_anchor_multilens_smoke` → sasang·thin pytest. 선택: `-IncludeP1AB`, `-IncludeJemaaiCloudChecks`(MVP 파일·nginx 예시 존재 확인, **배포 아님**). |
+| jemaai.cloud 융합 점검 (P1·쇼룸 경로) | `scripts/run_jemaai_cloud_completion_chain.ps1` | 위 autopilot에 P1 A/B(기본) + jemaai MVP 경로 검증 통합; `-SkipP1AB`로 P1 생략. **nginx/VPS 반영은 수동.** |
 | 러너 | `scripts/eval_multilens_harness_v2_thin.py` | `--out`; `--populate-default-samples`로 B-track JSONL 병합; 채운 뒤 `summary`(cap 분포·사상-명리 `mapping_target` 일치 등) |
 | 단위 테스트 | `tests/test_multilens_eval_harness_v2_thin.py` | 행 수·`lens_outputs` 키·`summary` 스팟 체크 |
 | 운영(수동) | `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`, `scripts/sasang_dynamics_regime_mapping_ledger.py` | G: 마운트 후 Vault 동기화·사상 ledger `append`는 본선/로컬에서만 |
@@ -340,6 +343,6 @@
 | 직접 데몬 복제 종료 | `projects/bitcoin-trading/ops/windows-rehearsal/stop_direct_bitcoin_trading_daemon_copies.ps1` | |
 | 워치독 (스케줄 `Bitcoin-Direct-Watchdog-5min` 등) | `projects/bitcoin-trading/ops/windows-rehearsal/ensure_daemon_running.ps1` | `start_24h_daemon`만 기준으로 기동; 매 실행 시 위 `stop_direct_*` 호출로 직접 데몬 정리. `STOP.txt` 시 싱글톤+직접 데몬 모두 종료 시도. |
 | 단일 런타임 보조 | `projects/bitcoin-trading/ops/windows-rehearsal/ensure_single_trading_runtime.ps1` | |
-| Public Event Gateway (MVP, 로컬 HTTP) | `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_event_gateway.py` | 기본 포트 8788; `GET /api/public-events/latest`, `POST /api/public-events/ingest`. 기동·헬스: `projects/bitcoin-trading/ops/windows-rehearsal/ensure_public_event_gateway.ps1`. **공개 도메인(jemaai.cloud 등):** nginx 예시 `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/nginx_public_event_gateway.conf.example` → `proxy_pass` 대상은 게이트웨이 프로세스 호스트(로컬이면 `127.0.0.1:8788`). POST는 헤더 `X-Public-Event-Token` = 환경변수 `PUBLIC_EVENT_GATEWAY_TOKEN`. **공개 쇼룸 vs 관제 분리·필드 가이드:** `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`. |
+| Public Event Gateway (MVP, 로컬 HTTP) | `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_event_gateway.py` | 기본 포트 8788; `GET /api/public-events/latest`, `POST /api/public-events/ingest`. 기동·헬스: `projects/bitcoin-trading/ops/windows-rehearsal/ensure_public_event_gateway.ps1`. **공개 도메인(jemaai.cloud 등):** nginx 예시 `nginx_public_event_gateway.conf.example` → `proxy_pass` 대상은 게이트웨이 호스트(`127.0.0.1:8788`). POST는 `X-Public-Event-Token` = `PUBLIC_EVENT_GATEWAY_TOKEN`. **스펙·경계 확정:** `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`. **ingest 예시:** `jemaai-cloud-mvp/examples/public_event_ingest_minimal.v1.json`. **정적 폴링 UI:** `jemaai-cloud-mvp/public_showroom_poll.html` (`?api=` 로 Base URL). **Gemini 경고 정리 힌트:** `scripts/print_gemini_env_hygiene_hint.ps1`. |
 
 **운영 원칙**: 실행 트리거는 관측 지표·로그 기반으로 유지하고, 성경/명리/사상 렌즈는 브리핑·가설 계층으로 분리한다.
