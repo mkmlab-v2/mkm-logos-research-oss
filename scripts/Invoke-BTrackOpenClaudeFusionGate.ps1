@@ -2,11 +2,14 @@
 # Does not load .env. Cloud: set OPENCLAUDE_PILOT_API_KEY in the shell (or User env) before -Backend Cloud.
 # Isolation: does not touch daemons or trading keys; B-track log is optional append-only text.
 #
+# OpenClaude sends tool-style API calls. Ollama models that do not advertise tool support (e.g. gemma3:4b) may
+# return HTTP 400 on smoke — use default qwen2.5-coder:7b or another tool-capable tag for OpenClaude smoke.
+#
 # Examples:
 #   .\scripts\Invoke-BTrackOpenClaudeFusionGate.ps1
-#   .\scripts\Invoke-BTrackOpenClaudeFusionGate.ps1 -UseGemma3Local
+#   .\scripts\Invoke-BTrackOpenClaudeFusionGate.ps1 -OllamaModel 'llama3.1:8b'
 #   .\scripts\Invoke-BTrackOpenClaudeFusionGate.ps1 -Backend Cloud -CloudBaseUrl 'https://openrouter.ai/api/v1' -CloudModel 'qwen/qwen3-6-plus'
-#   .\scripts\Invoke-BTrackOpenClaudeFusionGate.ps1 -SkipPytest -UseGemma3Local
+#   .\scripts\Invoke-BTrackOpenClaudeFusionGate.ps1 -SkipPytest -WriteFusionLog
 
 param(
     [switch]$SkipPytest,
@@ -25,8 +28,9 @@ $root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 Set-Location $root
 
 if ($UseGemma3Local) {
-    # Ollama image name (not "Gemma 4" product branding); adjust if your ollama list uses another tag.
+    # Ollama tag (not necessarily "Gemma 4" retail name). Often fails OpenClaude smoke (no tool support in API).
     $OllamaModel = 'gemma3:4b'
+    Write-Warning "UseGemma3Local -> gemma3:4b: OpenClaude may return 400 if the model does not support tools. Prefer -OllamaModel qwen2.5-coder:7b for smoke."
 }
 
 $launcher = Join-Path $root "scripts\Start-OpenClaudeBTrackPilot.ps1"

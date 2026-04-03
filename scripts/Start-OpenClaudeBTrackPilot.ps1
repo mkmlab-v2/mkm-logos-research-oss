@@ -10,7 +10,8 @@
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\Start-OpenClaudeBTrackPilot.ps1
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\Start-OpenClaudeBTrackPilot.ps1 -Ollama
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\Start-OpenClaudeBTrackPilot.ps1 -Ollama -Smoke
-#   # One-shot chain: multilens pytest + Ollama smoke — scripts\Invoke-BTrackOpenClaudeFusionGate.ps1
+#   # One-shot chain: multilens pytest + backend smoke — scripts\Invoke-BTrackOpenClaudeFusionGate.ps1 (-Backend Ollama|Cloud)
+#   # Custom smoke text: add -SmokePrompt 'Summarize AGENTS.md in one line' (keep short to save tokens)
 #   # B-track smoke: OpenAI-compatible API (DashScope / OpenRouter / Vercel AI Gateway, etc.) — no .env dot-source
 #   $env:OPENCLAUDE_PILOT_API_KEY = '<provider-key>'
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\Start-OpenClaudeBTrackPilot.ps1 -CloudOpenAI -CloudBaseUrl 'https://openrouter.ai/api/v1' -CloudModel 'qwen/qwen3-6-plus'
@@ -57,10 +58,18 @@ if ($CloudOpenAI) {
     $resolvedBase = if (-not [string]::IsNullOrWhiteSpace($CloudBaseUrl)) { $CloudBaseUrl } else { $env:OPENCLAUDE_PILOT_OPENAI_BASE_URL }
     $resolvedModel = if (-not [string]::IsNullOrWhiteSpace($CloudModel)) { $CloudModel } else { $env:OPENCLAUDE_PILOT_OPENAI_MODEL }
     if ([string]::IsNullOrWhiteSpace($resolvedBase)) {
-        Write-Error "CloudOpenAI: set -CloudBaseUrl or user env OPENCLAUDE_PILOT_OPENAI_BASE_URL (OpenAI-compatible base URL, e.g. DashScope compatible-mode or OpenRouter)."
+        Write-Error @"
+CloudOpenAI: missing base URL. Set one of:
+  - `$env:OPENCLAUDE_PILOT_OPENAI_BASE_URL = 'https://openrouter.ai/api/v1'
+  - or pass -CloudBaseUrl 'https://openrouter.ai/api/v1' (DashScope uses its own compatible-mode URL; see provider docs).
+"@
     }
     if ([string]::IsNullOrWhiteSpace($resolvedModel)) {
-        Write-Error "CloudOpenAI: set -CloudModel or user env OPENCLAUDE_PILOT_OPENAI_MODEL (provider-specific model id)."
+        Write-Error @"
+CloudOpenAI: missing model id. Set one of:
+  - `$env:OPENCLAUDE_PILOT_OPENAI_MODEL = '<provider-model-slug>'
+  - or pass -CloudModel '<provider-model-slug>' (exact string from OpenRouter/DashScope dashboard).
+"@
     }
     $env:CLAUDE_CODE_USE_OPENAI = "1"
     $env:OPENAI_BASE_URL = $resolvedBase.TrimEnd("/")
