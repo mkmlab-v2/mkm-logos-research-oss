@@ -1,0 +1,10 @@
+{
+  "timestamp_utc": "20260403_082925",
+  "build_exit_code": 0,
+  "verify_exit_code": 0,
+  "all_green": true,
+  "build_stdout_tail": "Wrote: C:\\workspace\\reports\\l2\\l2_logos_shadow_mkt_2020-03_covid_shock_v1_20260403_082925.json\nWrote: C:\\workspace\\reports\\l2\\l2_logos_shadow_latest.json\n",
+  "build_stderr_tail": "",
+  "verify_stdout_tail": "{\n  \"all_green\": true,\n  \"checks\": {\n    \"drift_orphan_zero\": true,\n    \"drift_ghost_zero\": true,\n    \"junction_side_by_side\": true,\n    \"forbidden_single_field_fusion\": true,\n    \"forbidden_verse_plus_ohlc_same_prompt\": true,\n    \"pointer_paths_exist\": true\n  },\n  \"missing_paths\": [],\n  \"audit_path\": \"C:\\\\workspace\\\\reports\\\\memory\\\\mkm_index_drift_audit_latest.json\",\n  \"shadow_path\": \"C:\\\\workspace\\\\reports\\\\l2\\\\l2_logos_shadow_latest.json\"\n}\n",
+  "verify_stderr_tail": ""
+}
