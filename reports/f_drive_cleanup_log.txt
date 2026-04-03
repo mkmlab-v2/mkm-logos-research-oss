@@ -1,0 +1,14 @@
+﻿2026-04-03T13:16:47.2610181+09:00 === F: cleanup start ===
+2026-04-03T13:16:48.1434861+09:00 Before: free 0.00 GB
+2026-04-03T13:16:48.1889633+09:00 OK: Clear-RecycleBin F:
+2026-04-03T13:16:55.6101633+09:00 WARN: remove F:\workspace_backups : Could not find a part of the path 'viewLineRenderer_renderLine_2_createLineParts_render_whitespace_for_selection_with_multiple__initially_unsorted_selections.0.html'.
+2026-04-03T13:16:55.6141534+09:00 OK: removed F:\workspace-backups
+2026-04-03T13:16:55.6430976+09:00 WARN: remove F:\workspace-20251222.backup_20251222_044410 : Access to the path is denied.
+2026-04-03T13:16:55.7693815+09:00 OK: removed F:\cache
+2026-04-03T13:16:55.7693815+09:00 Removing F:\workspace_archive (large ??may take many minutes)...
+2026-04-03T13:18:44.8735916+09:00 ERROR: workspace_archive Could not find a part of the path 'viewLineRenderer_renderLine_2_createLineParts_render_whitespace_for_selection_with_multiple__initially_unsorted_selections.0.html'.
+2026-04-03T13:18:45.0854713+09:00 After archive/cache: free 92.74 GB
+2026-04-03T13:18:45.0854713+09:00 Removing F:\workspace (duplicate of C:\workspace SSOT ??may take very long)...
+2026-04-03T13:28:25.2864326+09:00 ERROR: F:\workspace Could not find a part of the path 'viewLineRenderer_renderLine_2_createLineParts_render_whitespace_for_trailing_with_leading__inner__and_without_trailing_whitespace.0.html'.
+2026-04-03T13:28:25.5062700+09:00 Final: free 181.25 GB of 931.48 GB
+2026-04-03T13:28:25.5089640+09:00 === F: cleanup end ===
