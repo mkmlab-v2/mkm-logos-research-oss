@@ -473,6 +473,24 @@ class CryptoNitroLiveTrader:
             use_great_trunk_filter=use_great_trunk_filter,
             binance_client=self.binance  # Binance API 클라이언트 전달
         )
+
+        # 실전 주문 신뢰도 하한: strategy.min_confidence(trading_config.yaml)와 동기화.
+        # 과거 하드코드 0.6이 yaml(예: 0.55)·MKM 전략(0.52 아테나 임계)과 어긋나 체결 0건이 되는 경우가 있었음.
+        try:
+            self.min_exec_confidence = float(getattr(self.strategy, "min_confidence", 0.52))
+        except Exception:
+            self.min_exec_confidence = 0.52
+        _env_mc = os.getenv("CRYPTO_NITRO_MIN_EXEC_CONFIDENCE", "").strip()
+        if _env_mc:
+            try:
+                self.min_exec_confidence = float(_env_mc)
+                logger.info("📌 CRYPTO_NITRO_MIN_EXEC_CONFIDENCE=%.4f (env override)", self.min_exec_confidence)
+            except ValueError:
+                logger.warning("⚠️ CRYPTO_NITRO_MIN_EXEC_CONFIDENCE parse fail, keeping %.4f", self.min_exec_confidence)
+        logger.info(
+            "📌 실전 실행 신뢰도 하한 min_exec_confidence=%.4f (전략 yaml; env로 재정의 가능)",
+            self.min_exec_confidence,
+        )
         
         # 🚀 2천만 원 시드 최적화 통합
         self.optimizer = None
@@ -1207,7 +1225,7 @@ class CryptoNitroLiveTrader:
                     }
                     # Gate/message contract: always carry explicit gate_reason + level.
                     gate_reason = str(signal_data.get("gate_reason", "unspecified")).strip() or "unspecified"
-                    signal_level = "LOW" if (signal == "HOLD" or confidence < 0.6) else ("MID" if confidence < 0.75 else "HIGH")
+                    signal_level = "LOW" if (signal == "HOLD" or confidence < self.min_exec_confidence) else ("MID" if confidence < 0.75 else "HIGH")
                     signal_data["gate_reason"] = gate_reason
                     signal_data["signal_level"] = signal_level
                     signal_data["price_output_locked"] = signal_level == "LOW"
@@ -1282,14 +1300,19 @@ class CryptoNitroLiveTrader:
                         await asyncio.sleep(interval_seconds)
                         continue
                     
-                    # 신뢰도 확인 (최소 0.6 이상)
-                    if confidence < 0.6:
+                    # 신뢰도 확인 (strategy.min_confidence / CRYPTO_NITRO_MIN_EXEC_CONFIDENCE)
+                    if confidence < self.min_exec_confidence:
                         signal_data["signal_level"] = "LOW"
                         signal_data["price_output_locked"] = True
                         if gate_reason == "unspecified":
                             signal_data["gate_reason"] = "low_confidence_hold"
                             gate_reason = "low_confidence_hold"
-                        logger.info("신뢰도 부족: %.2f < 0.6 (level=LOW, gate_reason=%s, price_locked=true)", confidence, gate_reason)
+                        logger.info(
+                            "신뢰도 부족: %.2f < %.2f (level=LOW, gate_reason=%s, price_locked=true)",
+                            confidence,
+                            self.min_exec_confidence,
+                            gate_reason,
+                        )
                         await asyncio.sleep(interval_seconds)
                         continue
                     

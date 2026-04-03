@@ -2213,7 +2213,7 @@ class CryptoNitroLiveStrategy:
                     "is_explosive": True,
                     "timestamp": datetime.now()
                 })
-            elif final_confidence >= 0.6:  # 신뢰도가 높은 신호만 히스토리에 추가
+            elif final_confidence >= self.min_confidence:  # yaml min_confidence와 일치 (구버전 0.6 고정은 연속확인 영구 실패 원인)
                 self.signal_history.append({
                     "signal": final_signal,
                     "confidence": final_confidence,
