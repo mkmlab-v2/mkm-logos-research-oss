@@ -1,9 +1,13 @@
 param(
     [string]$WorkspaceRoot = "C:\workspace",
     [switch]$SkipVaultMirror,
+    [switch]$SkipMkmMemoryInventory,
     [switch]$SkipPhase1Readiness,
     [switch]$StrictPhase1Readiness,
-    [switch]$StrictReconcile
+    [switch]$StrictReconcile,
+    [switch]$IncludeCompressionKpi,
+    [switch]$SkipHydrationMix,
+    [switch]$SkipCompressionAlarm
 )
 
 $ErrorActionPreference = "Stop"
@@ -21,6 +25,33 @@ function Step([string]$Name, [scriptblock]$Block) {
 try {
     Step "P0 / CONSTITUTION paths" {
         & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\verify_p0_constitution_gate_paths.ps1") -WorkspaceRoot $root
+    }
+
+    if (-not $SkipMkmMemoryInventory) {
+        $inv = Join-Path $root "scripts\inventory_mkm_memory_report.py"
+        if (Test-Path -LiteralPath $inv) {
+            Step "MKM memory inventory (.mkm-memory -> reports/memory)" {
+                # Default cap keeps health runs fast on large trees; full scan: MKM_MEMORY_INVENTORY_FULL=1
+                $extra = @()
+                if ($env:MKM_MEMORY_INVENTORY_FULL -eq "1") {
+                    $extra = @()
+                }
+                elseif ($env:MKM_MEMORY_INVENTORY_MAX_FILES -match '^\d+$') {
+                    $extra += "--max-files"
+                    $extra += $env:MKM_MEMORY_INVENTORY_MAX_FILES
+                }
+                else {
+                    $extra += "--max-files"
+                    $extra += "8000"
+                }
+                & py $inv @extra
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== MKM memory inventory ===" -ForegroundColor Yellow
+            Write-Host "SKIP: inventory_mkm_memory_report.py not found"
+        }
     }
 
     if (-not $SkipVaultMirror) {
@@ -65,6 +96,17 @@ try {
         $msg = "reconcile_automation_registry exit $re (scheduler drift?)"
         if ($StrictReconcile) { throw $msg }
         Write-Host "WARN: $msg" -ForegroundColor Yellow
+    }
+
+    if ($IncludeCompressionKpi) {
+        $cc = Join-Path $root "scripts\run_compression_automation_chain.ps1"
+        Step "Compression KPI chain (default + KPI summary + hydration mix)" {
+            if ($SkipHydrationMix) {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $cc -WorkspaceRoot $root -SkipHydrationMix -SkipCompressionAlarm:$SkipCompressionAlarm
+            } else {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $cc -WorkspaceRoot $root -SkipCompressionAlarm:$SkipCompressionAlarm
+            }
+        }
     }
 
     Write-Host ""
