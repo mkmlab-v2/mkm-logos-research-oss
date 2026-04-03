@@ -1,0 +1,306 @@
+/* no1kmedi public marketing — calm clinical, not generic “AI gradient” */
+:root {
+  --bg: #0a1210;
+  --surface: #121c19;
+  --text: #e8ebe9;
+  --muted: #9aa9a3;
+  --accent: #3d9b84;
+  --accent-dim: #2a6b5c;
+  --line: rgba(255, 255, 255, 0.08);
+  --warn-bg: rgba(200, 160, 80, 0.12);
+  --font: "Pretendard Variable", Pretendard, "Noto Sans KR", system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 1.05rem;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+}
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(12px);
+  background: rgba(10, 18, 16, 0.85);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.brand span {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.nav-main {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.nav-main a {
+  color: var(--muted);
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+.nav-main a:hover {
+  color: var(--text);
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 0.4rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .nav-toggle {
+    display: block;
+  }
+  .nav-main {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    padding-top: 0.75rem;
+  }
+  .nav-main.is-open {
+    display: flex;
+  }
+  .header-inner {
+    flex-wrap: wrap;
+  }
+}
+
+main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.hero {
+  padding: 4rem 0 3.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.75rem, 4.5vw, 2.65rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+.hero-lead {
+  max-width: 38rem;
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin: 0 0 2rem;
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.35rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-primary {
+  background: var(--accent);
+  color: #041210;
+}
+.btn-primary:hover {
+  background: #4cb39a;
+  text-decoration: none;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+.btn-ghost:hover {
+  border-color: var(--accent-dim);
+  text-decoration: none;
+}
+
+section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--line);
+}
+section:last-of-type {
+  border-bottom: none;
+}
+
+section h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.45rem;
+  letter-spacing: -0.02em;
+}
+
+.section-lead {
+  color: var(--muted);
+  max-width: 40rem;
+  margin: 0 0 1.75rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.35rem 1.25rem;
+}
+.card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+.card p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.notice-box {
+  background: var(--warn-bg);
+  border: 1px solid rgba(200, 160, 80, 0.25);
+  border-radius: 10px;
+  padding: 1.25rem 1.35rem;
+}
+.notice-box ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.notice-box li + li {
+  margin-top: 0.5rem;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+.steps span {
+  background: var(--surface);
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+.steps .arrow {
+  color: var(--accent-dim);
+  border: none;
+  background: none;
+  padding: 0 0.15rem;
+}
+
+.site-footer {
+  margin-top: 2rem;
+  padding: 2.5rem 1.5rem 2rem;
+  border-top: 1px solid var(--line);
+  background: #060a09;
+}
+.footer-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+}
+.footer-brand {
+  font-weight: 600;
+}
+.footer-meta {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.footer-meta p {
+  margin: 0.25rem 0;
+}
+.footer-legal {
+  font-size: 0.82rem;
+  color: var(--muted);
+  opacity: 0.9;
+}

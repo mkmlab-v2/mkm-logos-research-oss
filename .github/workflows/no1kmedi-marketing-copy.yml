@@ -1,0 +1,20 @@
+# Blocks internal codenames / competitor-brand phrasing on the static marketing site.
+name: no1kmedi-marketing-copy
+
+on:
+  push:
+    paths:
+      - "projects/no1kmedi/marketing-site/**"
+  pull_request:
+    paths:
+      - "projects/no1kmedi/marketing-site/**"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Banned public phrases
+        shell: pwsh
+        run: ./projects/no1kmedi/marketing-site/check-public-copy.ps1

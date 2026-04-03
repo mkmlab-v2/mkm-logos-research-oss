@@ -1,0 +1,11 @@
+# Public site grep banlist (internal codenames / competitor brands). One phrase per line; # comments OK.
+ChatGPT
+챗지피티
+챗GPT
+OpenAI GPT
+ENO-GPT
+Clinical Copilot
+Copilot
+Sovereign AI
+가성비 모델
+RAG-lite
