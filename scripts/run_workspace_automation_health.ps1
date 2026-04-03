@@ -7,7 +7,9 @@ param(
     [switch]$StrictReconcile,
     [switch]$IncludeCompressionKpi,
     [switch]$SkipHydrationMix,
-    [switch]$SkipCompressionAlarm
+    [switch]$SkipCompressionAlarm,
+
+    [switch]$IncludeExternalDriveGovernance
 )
 
 $ErrorActionPreference = "Stop"
@@ -105,6 +107,15 @@ try {
                 & powershell -NoProfile -ExecutionPolicy Bypass -File $cc -WorkspaceRoot $root -SkipHydrationMix -SkipCompressionAlarm:$SkipCompressionAlarm
             } else {
                 & powershell -NoProfile -ExecutionPolicy Bypass -File $cc -WorkspaceRoot $root -SkipCompressionAlarm:$SkipCompressionAlarm
+            }
+        }
+    }
+
+    if ($IncludeExternalDriveGovernance) {
+        $gov = Join-Path $root "scripts\Invoke-ExternalDrivesGovernance.ps1"
+        if (Test-Path -LiteralPath $gov) {
+            Step "E:/F: governance (quick)" {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $gov -WorkspaceRoot $root
             }
         }
     }
