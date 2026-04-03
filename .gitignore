@@ -18,6 +18,9 @@ logs/
 .vault/
 secrets/
 
+# F: workspace_archive migration staging (robocopy target; large)
+storage/MKM_ARCHIVE_FROM_F/
+
 # Python bytecode (VPS pull 시 .pyc 커밋 방지)
 __pycache__/
 # Local prophecy market quote cache (KOSPI/BTC snapshots)
@@ -137,3 +140,7 @@ reports/constitution/btrack_pilot/fact_safe_slack_delivery_*.jsonl
 
 # Local showroom deploy staging (verify_showroom_bundle_chain.ps1 -WithStagingCopy)
 projects/bitcoin-trading/ops/windows-rehearsal/.showroom_staging/
+
+# no1kmedi Next.js App Router: ensure API routes stay tracked if a broad `api/` rule exists
+!projects/no1kmedi/src/app/api/
+!projects/no1kmedi/src/app/api/**

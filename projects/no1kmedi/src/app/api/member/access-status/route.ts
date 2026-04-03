@@ -16,14 +16,15 @@ export async function GET(request: NextRequest) {
 
     const paymentStatus = payment?.state || "none";
     const verificationStatus = verification?.status || "not_submitted";
-    const canUseProClinicalAssist = paymentStatus === "paid" && verificationStatus === "approved";
+    const unlocked = paymentStatus === "paid" && verificationStatus === "approved";
 
     return NextResponse.json({
       success: true,
       email,
       payment_status: paymentStatus,
       verification_status: verificationStatus,
-      can_use_pro_clinical_assist: canUseProClinicalAssist,
+      can_use_pro_clinical_assist: unlocked,
+      pro_clinical_features_unlocked: unlocked,
     });
   } catch (error: any) {
     return NextResponse.json(

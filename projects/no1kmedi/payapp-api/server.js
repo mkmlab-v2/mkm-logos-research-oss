@@ -717,12 +717,14 @@ app.get("/api/member/access-status", async (req, res) => {
     const verification = verifications.find((x) => x.email === email);
     const paymentStatus = payment?.state || "none";
     const verificationStatus = verification?.status || "not_submitted";
+    const unlocked = paymentStatus === "paid" && verificationStatus === "approved";
     return res.json({
       success: true,
       email,
       payment_status: paymentStatus,
       verification_status: verificationStatus,
-      can_use_pro_copilot: paymentStatus === "paid" && verificationStatus === "approved"
+      can_use_pro_clinical_assist: unlocked,
+      pro_clinical_features_unlocked: unlocked,
     });
   } catch (error) {
     return res.status(500).json({ success: false, error: error.message || "access status failed" });
