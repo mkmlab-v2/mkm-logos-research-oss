@@ -1,6 +1,6 @@
 {
   "schema": "trinity_scoring_distribution_v1",
-  "generated_at_utc": "2026-04-02T19:07:03.497114+00:00",
+  "generated_at_utc": "2026-04-03T17:07:04.469554+00:00",
   "log_path": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
   "metric": "KOSPI_D1_RETURN_PCT",
   "windows": {
@@ -53,16 +53,16 @@
       "top_source": "myeongni_independent_lens"
     },
     "all": {
-      "sample_size": 58,
-      "state_id_present_count": 29,
-      "state_id_present_rate": 0.5,
+      "sample_size": 82,
+      "state_id_present_count": 53,
+      "state_id_present_rate": 0.6463,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "none": 29,
-        "myeongni_independent_lens": 29
+        "myeongni_independent_lens": 53,
+        "none": 29
       },
-      "top_source": "none"
+      "top_source": "myeongni_independent_lens"
     },
     "advisory": {
       "decision": "state_clamp_stable",
@@ -104,5 +104,5 @@
     }
   },
   "latest_decision": "PENDING_CLOSE",
-  "total_filtered_rows": 58
+  "total_filtered_rows": 82
 }

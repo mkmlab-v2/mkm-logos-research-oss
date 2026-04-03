@@ -1,7 +1,7 @@
 # Fact-Safe Multi-Lens Brief
 
 ## 메타 고정 헤더
-- generated_at_utc: 2026-04-02T19:06:40Z
+- generated_at_utc: 2026-04-03T17:06:41Z
 - engine_id: V2_Precision_MCP
 - boundary_rule: observatory_ephemeris_v1
 - reliability_badge: HIGH
@@ -15,15 +15,15 @@
 - [HYPO][NON-MEDICAL] 사상 방어선: 의료/법률/실거래 트리거로 단정 금지.
 
 ## 제5장 사후 실행 성과 (Post-Execution Evidence)
-- exchange_snapshot_24h.available: True
-- fills_count: 0
-- realized_pnl: 0.0
-- commission: 0.0
-- funding_fee: -0.01584623
-- net: -0.01584623
-- net_source: exchange_snapshot_24h
-- history samples: 387
-- history net_delta: 0.02025931
+- exchange_snapshot_24h.available: None
+- fills_count: 0.0
+- realized_pnl: None
+- commission: None
+- funding_fee: None
+- net: -0.00578055
+- net_source: kpi_history_fallback
+- history samples: 674
+- history net_delta: 0.03032499
 - history avg_net_per_fill_latest: None
 - backtest_available: True
 - backtest_sample_count: 317
@@ -32,9 +32,9 @@
 - backtest_profit_factor: 0.800345
 - backtest_sweep_available: True
 - backtest_sweep_best_period: 2026-01-01..2026-12-31
-- backtest_sweep_best_sample_count: 69
-- backtest_sweep_best_net_return_pct: 0.929822
-- backtest_sweep_best_profit_factor: 1.071595
+- backtest_sweep_best_sample_count: 70
+- backtest_sweep_best_net_return_pct: 0.917452
+- backtest_sweep_best_profit_factor: 1.070379
 
 ## 운영 게이트 결론
 - reliability_badge: HIGH

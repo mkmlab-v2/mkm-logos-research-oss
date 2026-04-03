@@ -1,6 +1,6 @@
 {
   "schema": "cost_watch_monitor_v1",
-  "ts_utc": "2026-04-02T19:06:40.875810+00:00",
+  "ts_utc": "2026-04-03T17:06:41.933978+00:00",
   "sources": {
     "compression_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
     "vllm_canary_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_repeat_latest.json",
@@ -10,10 +10,10 @@
   },
   "compression": {
     "status": "ok",
-    "global_token_saving_rate": 0.5274261603375527,
+    "global_token_saving_rate": 0.49085794655414905,
     "case_count": 40,
-    "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
-    "avg_sensitive_integrity": 0.9916666666666668
+    "avg_reconstruction_fidelity_jaccard": 0.7349368566589929,
+    "avg_sensitive_integrity": 1.0
   },
   "vllm_canary": {
     "status": "missing",

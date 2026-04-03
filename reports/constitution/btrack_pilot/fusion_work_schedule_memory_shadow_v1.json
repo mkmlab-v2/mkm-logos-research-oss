@@ -1,0 +1,68 @@
+{
+  "schema": "fusion_work_schedule_memory_shadow_v1",
+  "ts_utc": "2026-04-03T05:00:00Z",
+  "fact_check_summary": {
+    "memory_audit_236253_vector_ok": {
+      "status": "confirmed",
+      "evidence": "reports/memory/total_memory_audit_v1.json (local scan)",
+      "caveat": "Point-in-time; re-run after any bulk content mutation."
+    },
+    "rehearsal_sandbox_no_production_write": {
+      "status": "confirmed",
+      "evidence": "scripts/rehearsal_recompress_revector_mkm_memory_pilot.py default out-dir reports/memory/rehearsal_revector_out/"
+    },
+    "b_ultra_window_n5_jaccard_1": {
+      "status": "confirmed",
+      "evidence": "reports/memory/mkm_memory_pilot_p2_window_latest.json",
+      "caveat": "N=5, queue offset 10-14; tier labels in queue JSON still P1_large for those rows — not a formal cross-collection stress battery."
+    },
+    "multilens_kpi_no_go": {
+      "status": "confirmed",
+      "evidence": "reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json; sensitive_integrity_ok false"
+    },
+    "shadow_gate_observation_only": {
+      "status": "confirmed",
+      "evidence": "docs/final/artifacts/independent_lens_shadow_gate_latest.json decision KEEP_OBSERVATION_ONLY; insight_effectiveness_scoreboard promotion_status KEEP_OBSERVATION_ONLY"
+    },
+    "reports_research_shadow_path": {
+      "status": "not_conventional_in_repo",
+      "evidence": "No reports/research/shadow_* glob found; prefer docs/final/artifacts/* or reports/constitution/btrack_pilot/* for new experiment IDs"
+    }
+  },
+  "tracks": [
+    {
+      "id": "M1",
+      "name": "Memory · NotebookLM + governance",
+      "steps": [
+        "Run scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1 after committing NotebookLM_sources_manifest.md (or MCP source_add file).",
+        "NO_GO remediation: follow mkm_memory_no_go_remediation_note_latest.json — adjust multilens sensitive cases or governance thresholds; re-run run_ultra_compression_default + report_ultra_compression_kpi_summary."
+      ],
+      "gates": [
+        "mkm_memory_rollout_gates_v1.json approval_gate_template before any C:\\\\workspace\\\\memory\\\\ inplace write"
+      ]
+    },
+    {
+      "id": "S1",
+      "name": "Shadow · KOSPI / stress labels (observation)",
+      "steps": [
+        "Lock data contract: start/end dates, adjusted vs raw, bar convention (close), benchmark (cash vs index B&H), license/source line (KRX/FnGuide/Yahoo caveats).",
+        "Define stress windows by numeric rule first (e.g. rolling MDD threshold, N-day drawdown) then optional nicknames; avoid unanchored '2024-08 black monday' without date/MDD.",
+        "Compare VIX (global) vs Korea-local proxies (e.g. VKOSPI, KRW, local rates) as sensitivity analysis — do not treat VIX alone as Korea-only regime label without documenting the mapping."
+      ],
+      "artifact_home": "docs/final/artifacts/ or reports/constitution/btrack_pilot/ with schema suffix _v1; extend independent_lens_shadow_gate_latest.json lineage only via new stamped files + history JSONL."
+    },
+    {
+      "id": "X1",
+      "name": "Cross-link (no auto-merge)",
+      "steps": [
+        "Reference CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md for what is callable code vs plan.",
+        "Keep B-track shadow outputs out of A-track OOF and live triggers; scoreboard already notes promotion gate."
+      ]
+    }
+  ],
+  "priority_order": [
+    "M1",
+    "S1",
+    "X1"
+  ]
+}

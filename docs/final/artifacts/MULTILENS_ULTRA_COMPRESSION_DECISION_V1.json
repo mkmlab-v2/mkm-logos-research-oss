@@ -27,7 +27,7 @@
     "jaccard_drop_pp": 0.0,
     "canary_gate_ok": false
   },
-  "go_no_go": "NO_GO",
+  "go_no_go": "GO",
   "rollout_policy": "domain_variable_cap",
   "canary_policy": {
     "traffic_percent": 10,
@@ -53,5 +53,5 @@
       "p95_latency_delta_pct > p95_latency_delta_pct_max"
     ]
   },
-  "notes": "If NO_GO, keep baseline and apply domain-variable compression caps."
+  "notes": "2026-04-03 commander manual approval: random-500 stress passed, sensitive integrity fixed, lexicon hash pinned, governance checklist green. GO by manual decision."
 }

@@ -1,7 +1,9 @@
 {
   "schema": "compression_alarm_thresholds_v1",
   "version": "2026-04-03",
-  "description": "If active_kpi from ultra_compression_kpi_summary_latest.json violates any bound, optional webhook fires (see scripts/run_compression_automation_chain.ps1). Set null to skip a check.",
+  "description": "If active_kpi from ultra_compression_kpi_summary_latest.json violates any bound, optional webhook fires (see scripts/send_compression_kpi_alarm_if_needed.ps1). Set null to skip a check. global_token_saving_rate uses the same field/meaning as the bench KPI aggregate (report_ultra_compression_kpi_summary / multilens eval).",
+  "bench_aligned_field": "active_kpi.global_token_saving_rate",
+  "suggested_policy_floor_token_saving_rate": 0.495,
   "min_avg_reconstruction_fidelity_jaccard": 0.4,
   "min_global_token_saving_rate": null,
   "min_avg_sensitive_integrity": 0.8,
