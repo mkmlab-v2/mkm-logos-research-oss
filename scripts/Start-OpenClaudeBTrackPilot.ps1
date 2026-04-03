@@ -78,10 +78,19 @@ CloudOpenAI: missing model id. Set one of:
     Write-Host "  Fact-Lock: B-track research only; no production trading keys; sandbox data only for API calls." -ForegroundColor DarkGray
 }
 
-$pilotKey = $env:OPENCLAUDE_PILOT_API_KEY
-if (-not [string]::IsNullOrWhiteSpace($pilotKey)) {
+# Cloud: real provider key. Ollama: always ASCII placeholder — OPENCLAUDE_PILOT_API_KEY may contain
+# non-Latin-1 chars or be set globally; passing it to Node/OpenClaude causes ByteString API errors.
+if ($CloudOpenAI) {
+    $pilotKey = $env:OPENCLAUDE_PILOT_API_KEY
+    if ([string]::IsNullOrWhiteSpace($pilotKey)) {
+        Write-Error "CloudOpenAI: set OPENCLAUDE_PILOT_API_KEY in this session (ASCII key from provider)."
+    }
     $env:OPENAI_API_KEY = $pilotKey
-    Write-Host "[OpenClaude B-Track pilot] Using OPENAI_API_KEY from OPENCLAUDE_PILOT_API_KEY (not from .env)." -ForegroundColor Green
+    Write-Host "[OpenClaude B-Track pilot] Using OPENAI_API_KEY from OPENCLAUDE_PILOT_API_KEY (cloud only)." -ForegroundColor Green
+}
+if ($Ollama) {
+    $env:OPENAI_API_KEY = "ollama"
+    Write-Host "[OpenClaude B-Track pilot] Ollama: OPENAI_API_KEY=ollama (placeholder; ignores OPENCLAUDE_PILOT_API_KEY)." -ForegroundColor DarkGray
 }
 
 $oc = Get-Command openclaude -ErrorAction SilentlyContinue

@@ -13,7 +13,10 @@ param(
     [string]$WorkspaceRoot = "",
 
     # Default: fast (names + volume only). FSO per-folder sizes can take many minutes on TB trees.
-    [switch]$FullFolderSizes
+    [switch]$FullFolderSizes,
+
+    # Measure only duplicate_watch + f_drive_redundant_patterns names (minutes, not hours).
+    [switch]$FullFolderSizesPriorityOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -40,7 +43,7 @@ function Get-TopLevelFoldersQuick([string]$driveRoot) {
     return $rows
 }
 
-function Get-TopLevelFolderSizes([string]$driveRoot) {
+function Get-TopLevelFolderSizes([string]$driveRoot, [string]$logLabel) {
     if (-not (Test-Path -LiteralPath $driveRoot)) { return @() }
     $fso = New-Object -ComObject Scripting.FileSystemObject
     try {
@@ -49,13 +52,22 @@ function Get-TopLevelFolderSizes([string]$driveRoot) {
         return @()
     }
     $rows = @()
-    foreach ($sf in $rootFolder.SubFolders) {
+    $subs = @($rootFolder.SubFolders) | Sort-Object Name
+    $n = $subs.Count
+    $i = 0
+    foreach ($sf in $subs) {
+        $i++
+        Write-Host "[FullFolderSizes] $logLabel ($i/$n) $($sf.Name) ..." -ForegroundColor DarkCyan
+        [Console]::Out.Flush()
         try {
+            $bytes = [int64]$sf.Size
+            $gb = [math]::Round([double]$bytes / 1GB, 2)
+            Write-Host "                  -> $gb GB" -ForegroundColor DarkGray
             $rows += [ordered]@{
                 name  = $sf.Name
                 path  = $sf.Path
-                bytes = [int64]$sf.Size
-                gb    = [math]::Round([double]$sf.Size / 1GB, 2)
+                bytes = $bytes
+                gb    = $gb
             }
         } catch { }
     }
@@ -64,10 +76,55 @@ function Get-TopLevelFolderSizes([string]$driveRoot) {
 
 function Test-NameMatch([string]$name, [object[]]$patterns) {
     foreach ($p in $patterns) {
+        if ([string]::IsNullOrWhiteSpace($p)) { continue }
         if ($name -eq $p) { return $true }
         if ($p.EndsWith('*') -and $name.StartsWith($p.TrimEnd('*'))) { return $true }
+        if ($p.EndsWith('-') -and $name.StartsWith($p)) { return $true }
     }
     return $false
+}
+
+function Get-TopLevelFolderSizesPartial([string]$driveRoot, [string]$logLabel, [object[]]$patterns) {
+    $quick = Get-TopLevelFoldersQuick $driveRoot
+    if ($patterns.Count -eq 0) { return $quick }
+    $fso = New-Object -ComObject Scripting.FileSystemObject
+    $rows = @()
+    foreach ($row in $quick) {
+        if (-not (Test-NameMatch $row.name $patterns)) {
+            $rows += [ordered]@{
+                name  = $row.name
+                path  = $row.path
+                bytes = $null
+                gb    = $null
+            }
+            continue
+        }
+        Write-Host "[PrioritySizes] $logLabel $($row.name) ..." -ForegroundColor DarkCyan
+        [Console]::Out.Flush()
+        try {
+            $fol = $fso.GetFolder($row.path)
+            $bytes = [int64]$fol.Size
+            $gb = [math]::Round([double]$bytes / 1GB, 2)
+            Write-Host "               -> $gb GB" -ForegroundColor DarkGray
+            if ($bytes -eq 0 -and (Get-ChildItem -LiteralPath $row.path -Force -ErrorAction SilentlyContinue | Select-Object -First 1)) {
+                Write-Warning "Size reported 0 but folder is non-empty (disk full or FSO quirk): $($row.path)"
+            }
+            $rows += [ordered]@{
+                name  = $row.name
+                path  = $row.path
+                bytes = $bytes
+                gb    = $gb
+            }
+        } catch {
+            $rows += [ordered]@{
+                name  = $row.name
+                path  = $row.path
+                bytes = $null
+                gb    = $null
+            }
+        }
+    }
+    return $rows
 }
 
 $letters = @('E', 'F')
@@ -77,6 +134,19 @@ $suggestions = [System.Collections.Generic.List[string]]::new()
 
 $volRows = @()
 $topMap = @{}
+
+$priorityNames = @()
+if ($FullFolderSizesPriorityOnly) {
+    $seen = [ordered]@{}
+    foreach ($n in @($cfg.duplicate_watch.folder_names)) { if ($n) { $seen[$n] = $true } }
+    foreach ($n in @($cfg.f_drive_redundant_patterns)) { if ($n) { $seen[$n] = $true } }
+    $priorityNames = @($seen.Keys)
+}
+
+$anyFullSizes = $FullFolderSizes -or $FullFolderSizesPriorityOnly
+if ($FullFolderSizes -and $FullFolderSizesPriorityOnly) {
+    Write-Warning "Use either -FullFolderSizes or -FullFolderSizesPriorityOnly; using PriorityOnly."
+}
 
 foreach ($L in $letters) {
     $root = "${L}:\"
@@ -98,8 +168,10 @@ foreach ($L in $letters) {
     }
 
     $key = "${L}:"
-    if ($FullFolderSizes) {
-        $topMap[$key] = Get-TopLevelFolderSizes $root
+    if ($FullFolderSizesPriorityOnly) {
+        $topMap[$key] = Get-TopLevelFolderSizesPartial $root "${L}:" $priorityNames
+    } elseif ($FullFolderSizes) {
+        $topMap[$key] = Get-TopLevelFolderSizes $root "${L}:"
     } else {
         $topMap[$key] = Get-TopLevelFoldersQuick $root
     }
@@ -115,7 +187,7 @@ foreach ($L in $letters) {
         }
     }
 
-    if ($L -eq 'F' -and $cfg.f_drive_redundant_patterns -and $FullFolderSizes) {
+    if ($L -eq 'F' -and $cfg.f_drive_redundant_patterns -and $anyFullSizes) {
         foreach ($row in $topMap[$key]) {
             foreach ($pat in $cfg.f_drive_redundant_patterns) {
                 if (Test-NameMatch $row.name @($pat)) {
@@ -125,7 +197,7 @@ foreach ($L in $letters) {
                 }
             }
         }
-    } elseif ($L -eq 'F' -and $cfg.f_drive_redundant_patterns -and -not $FullFolderSizes) {
+    } elseif ($L -eq 'F' -and $cfg.f_drive_redundant_patterns -and -not $anyFullSizes) {
         foreach ($row in $topMap[$key]) {
             foreach ($pat in $cfg.f_drive_redundant_patterns) {
                 if (Test-NameMatch $row.name @($pat)) {
@@ -139,7 +211,7 @@ foreach ($L in $letters) {
 # Duplicate names across E and F
 $dupNames = $cfg.duplicate_watch.folder_names
 $dupGb = [double]$cfg.duplicate_watch.warn_if_both_exist_gb
-if ($dupNames -and $topMap['E:'] -and $topMap['F:'] -and $FullFolderSizes) {
+if ($dupNames -and $topMap['E:'] -and $topMap['F:'] -and $anyFullSizes) {
     $eNames = @{}
     foreach ($r in $topMap['E:']) { $eNames[$r.name] = $r }
     foreach ($fr in $topMap['F:']) {
@@ -151,7 +223,7 @@ if ($dupNames -and $topMap['E:'] -and $topMap['F:'] -and $FullFolderSizes) {
             }
         }
     }
-} elseif ($dupNames -and $topMap['E:'] -and $topMap['F:'] -and -not $FullFolderSizes) {
+} elseif ($dupNames -and $topMap['E:'] -and $topMap['F:'] -and -not $anyFullSizes) {
     $eSet = @{}
     foreach ($r in $topMap['E:']) { $eSet[$r.name] = $true }
     foreach ($fr in $topMap['F:']) {
@@ -167,15 +239,20 @@ if ($cfg.canonical_workspace) {
 if ($cfg.backup_destination_hint) {
     $suggestions.Add($cfg.backup_destination_hint)
 }
+if (Test-Path -LiteralPath 'F:\workspace_archive') {
+    $suggestions.Add('F:\workspace_archive present: scripts/Migrate-FWorkspaceArchiveToE.ps1 (-WhatIfSizesOnly). Order: -DestinationRoot if set, then E: subfolders, E:\ root, then C:\workspace\storage\MKM_ARCHIVE_FROM_F if E: denies. Verify copy before -RemoveSourceAfterVerify.')
+}
 
 $payload = [ordered]@{
-    generated_at_utc     = $utc
-    config_path        = $ConfigPath
-    canonical_workspace = $cfg.canonical_workspace
-    volumes            = $volRows
-    top_level_folders_gb = $topMap
-    warnings           = $warnings
-    suggestions        = $suggestions
+    generated_at_utc       = $utc
+    config_path          = $ConfigPath
+    canonical_workspace    = $cfg.canonical_workspace
+    mode                   = if ($FullFolderSizesPriorityOnly) { 'priority_folder_sizes' } elseif ($FullFolderSizes) { 'full_folder_sizes' } else { 'quick' }
+    priority_names       = if ($priorityNames.Count -gt 0) { @($priorityNames) } else { $null }
+    volumes                = $volRows
+    top_level_folders_gb   = $topMap
+    warnings               = $warnings
+    suggestions            = $suggestions
 }
 
 $dir = Split-Path -Parent $OutputJson
@@ -186,7 +263,11 @@ $jsonText = $payload | ConvertTo-Json -Depth 8
 Set-Content -LiteralPath $OutputJson -Value $jsonText -Encoding utf8
 
 Write-Host "=== External drives governance ===" -ForegroundColor Cyan
-if (-not $FullFolderSizes) { Write-Host "Mode: Quick (add -FullFolderSizes for per-folder GB; slow on large disks)" -ForegroundColor DarkGray }
+if ($FullFolderSizesPriorityOnly) {
+    Write-Host "Mode: Priority folder sizes only (duplicate/redundant names from config)" -ForegroundColor DarkGray
+} elseif (-not $FullFolderSizes) {
+    Write-Host "Mode: Quick (add -FullFolderSizes for all top-level GB, slow; or -FullFolderSizesPriorityOnly)" -ForegroundColor DarkGray
+}
 Write-Host "Report: $OutputJson"
 foreach ($v in $volRows) {
     Write-Host ("{0}: {1} | free {2} GB / {3} GB ({4}% used)" -f $v.letter, $v.label, $v.free_gb, $v.size_gb, $v.used_percent)

@@ -6,14 +6,18 @@ on:
     branches: [main, master, develop]
     paths:
       - "scripts/validate_swarm_sentiment_dummy.py"
+      - "scripts/Validate-SwarmSentimentBTrack.ps1"
       - "docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json"
       - "docs/final/dummy_swarm_score.jsonl"
+      - "docs/final/hypo_test_sentiment.jsonl"
       - ".github/workflows/swarm-sentiment-schema-validate.yml"
   pull_request:
     paths:
       - "scripts/validate_swarm_sentiment_dummy.py"
+      - "scripts/Validate-SwarmSentimentBTrack.ps1"
       - "docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json"
       - "docs/final/dummy_swarm_score.jsonl"
+      - "docs/final/hypo_test_sentiment.jsonl"
       - ".github/workflows/swarm-sentiment-schema-validate.yml"
   workflow_dispatch:
 
@@ -27,5 +31,7 @@ jobs:
           python-version: "3.11"
       - name: Install jsonschema
         run: python -m pip install --upgrade pip jsonschema
-      - name: Validate dummy JSONL against schema
-        run: python scripts/validate_swarm_sentiment_dummy.py
+      - name: Validate dummy + [HYPO] sample JSONL against schema
+        run: |
+          python scripts/validate_swarm_sentiment_dummy.py
+          python scripts/validate_swarm_sentiment_dummy.py --jsonl docs/final/hypo_test_sentiment.jsonl

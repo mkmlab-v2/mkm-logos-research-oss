@@ -43,6 +43,10 @@ on:
       - "scripts/report_multilens_performance_eval.py"
       - "scripts/run_ultra_compression_bench.py"
       - "scripts/run_ultra_compression_default.py"
+      - "scripts/report_compression_jaccard_loss_patterns.py"
+      - "scripts/report_ultra_compression_kpi_summary.py"
+      - "scripts/run_workspace_automation_health.ps1"
+      - "scripts/run_compression_automation_chain.ps1"
       - "scripts/check_btrack_regression.py"
       - "scripts/lock_btrack_verified_baseline.py"
       - "scripts/build_btrack_dss_enriched_from_docs.py"
@@ -81,6 +85,7 @@ on:
       - "tests/test_myeongni_topflow_integrated_report.py"
       - "tests/test_multilens_performance_eval_report.py"
       - "tests/test_multilens_performance_eval_report_v2.py"
+      - "tests/test_multilens_sensitive_integrity_gate.py"
       - "tests/test_ultra_compression_artifacts.py"
       - "tests/test_run_deut32_cee_pilot.py"
       - "tests/test_run_deut32_cee_stability_sweep.py"
@@ -249,6 +254,11 @@ jobs:
       - name: Token API hydration trend snapshot
         run: python scripts/report_token_api_hydration_trend.py
 
+      - name: Ultra compression active reports (universal + literal)
+        run: |
+          python scripts/run_ultra_compression_default.py
+          python scripts/run_ultra_compression_default.py --mode literal
+
       - name: Ultra compression KPI summary snapshot
         run: python scripts/report_ultra_compression_kpi_summary.py
 
@@ -328,6 +338,9 @@ jobs:
 
       - name: Multi-lens performance evaluation report V2 contract
         run: python -m pytest tests/test_multilens_performance_eval_report_v2.py -q --tb=short
+
+      - name: Multi-lens sensitive integrity gate (L1 must-keep regression)
+        run: python -m pytest tests/test_multilens_sensitive_integrity_gate.py -q --tb=short
 
       - name: Ultra compression artifacts and active-profile consistency contract
         run: |

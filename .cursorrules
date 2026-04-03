@@ -30,11 +30,18 @@
 - **충돌 해소**: `.cursor/rules/sovereign-central-command.mdc` 등의 "응답 끝 Next Action 2가지"는 **이 워크스페이스에서 적용하지 않는다**. 상세 규칙과 충돌 시 **항상 루트 `.cursorrules` 본 절이 우선**한다.
 - **허용**: 짧은 완료 요약, 이미 수행한 조치, 잔여 리스크(있을 때만). 추가 작업은 **지휘관이 새로 열 때** 진행 — 에이전트가 끝에서 끌고 가지 않는다.
 
+## Cursor IDE · 에이전트·MCP (Fact-Lock 융합, 2026-04)
+
+- **런타임**: Agent/Composer는 **계획→실행→검증**을 수행하는 **로컬 실행기**다. **헌법·승인·경계**는 `AGENTS.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`, 위 **TITAN · 자율 기동** 절이 우선한다.
+- **MCP (에디터 허브)**: 등록된 MCP(법망 Beopmang·파일시스템·RAG 등)는 **조회·브리핑·도구 호출**에 쓴다. **최종 팩트**는 **디스크 SSOT·스크립트 exit code·JSON 리포트**만 인정한다. 외부 API·클라우드 요약은 **참고**이며, 준수 단정·법적 효력의 단일 근거로 삼지 않는다(`CONSTITUTION` §13.2, `projects/bitcoin-trading/ops/.hermes.md` §7).
+- **격벽 (A/B · Logos-first)**: verse/Logos 파이프라인에 regime·KOSPI·명리·실거래 시그널을 **동일 실행·동일 프롬프트에서 합선 금지**(`.cursor/rules/logos-first-pipeline.mdc`). B-track·연구 레일은 **본선 OOF·실매매·올그린 게이트와 자동 합선 금지**(`AGENTS.md`, 한의 코퍼스 handoff).
+- **Automations / 이벤트 기동**: B-track·월간 브리프·Vault 미러·`experiments/` 등 **관측·연구** 범위에서만 무인 루프를 허용한다. **실거래·프로덕션 파괴적 쓰기·실키·유료 외부 부작용**은 **명시 승인** 없이 자동 트리거하지 않는다(`.cursor/rules/cursor-cloud-sandbox-boundary.mdc`와 동일 선상).
+
 ---
 
 # 바이브코딩 웹 자동화 규칙 (MKM Study 최적화) - Slim
 # 🧠 Zero-Waste Developer Protocol 통합 (2026-02-14)
-# 🚀 Cursor 2.4 최신 기능 통합 (2026-03-10)
+# 🚀 Cursor 2.4 / 3.x 에이전트·Subagents·Skills·MCP (2026-03-10 · 2026-04 보강)
 
 ## 0) Cursor AI 풀 활용 (2026-03-10 추가) ⭐
 
@@ -355,7 +362,7 @@
 ### 핵심 규칙 (우선순위 최상위)
 - `.cursor/rules/CORE-RULES-ONLY/RULE.md` - 최소 핵심 규칙만 포함
 - `.cursor/rules/qf-synchro-constitution/RULE.md` - QF-Synchro 헌법 (전체)
-- `.cursor/rules/cursor-2.4-features/RULE.md` - Cursor 2.4 (Subagents, Skills, Image Gen)
+- `.cursor/rules/cursor-2.4-features/RULE.md` - Cursor 2.4/3.x (Subagents, Skills, Image Gen, Agent·MCP Fact-Lock 포인터)
 - `.cursor/rules/athena-sovereign-v2.5-nitro.mdc` - Athena 주권 지침
 
 ### Skills (작업별 동적 로드)

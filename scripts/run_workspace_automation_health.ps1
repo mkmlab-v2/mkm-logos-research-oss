@@ -6,6 +6,7 @@ param(
     [switch]$StrictPhase1Readiness,
     [switch]$StrictReconcile,
     [switch]$IncludeCompressionKpi,
+    [switch]$IncludeLiteralTrack,
     [switch]$SkipHydrationMix,
     [switch]$SkipCompressionAlarm,
 
@@ -102,12 +103,10 @@ try {
 
     if ($IncludeCompressionKpi) {
         $cc = Join-Path $root "scripts\run_compression_automation_chain.ps1"
-        Step "Compression KPI chain (default + KPI summary + hydration mix)" {
-            if ($SkipHydrationMix) {
-                & powershell -NoProfile -ExecutionPolicy Bypass -File $cc -WorkspaceRoot $root -SkipHydrationMix -SkipCompressionAlarm:$SkipCompressionAlarm
-            } else {
-                & powershell -NoProfile -ExecutionPolicy Bypass -File $cc -WorkspaceRoot $root -SkipCompressionAlarm:$SkipCompressionAlarm
-            }
+        $literalNote = if ($IncludeLiteralTrack) { " + literal track" } else { "" }
+        Step "Compression KPI chain (default + KPI summary + hydration mix$literalNote)" {
+            # Invoke in-process (avoid nested powershell.exe mangling switch types).
+            & $cc -WorkspaceRoot $root -SkipHydrationMix:$SkipHydrationMix -SkipCompressionAlarm:$SkipCompressionAlarm -IncludeLiteralTrack:$IncludeLiteralTrack
         }
     }
 

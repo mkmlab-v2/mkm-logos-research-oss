@@ -4,7 +4,7 @@
 # Usage:
 #   powershell -NoProfile -ExecutionPolicy Bypass -File ...\publish_showroom_public_event.ps1
 # Env:
-#   SHOWROOM_INGEST_URL (default http://127.0.0.1:8788/api/public-events/ingest)
+#   SHOWROOM_INGEST_URL (default https://api.jemaai.cloud/api/public-events/ingest)
 #   PUBLIC_EVENT_GATEWAY_TOKEN (optional; must match gateway)
 
 param(
@@ -32,7 +32,7 @@ if (-not $doc.public_event_v1) {
 $payload = $doc.public_event_v1 | ConvertTo-Json -Depth 20 -Compress
 $url = [Environment]::GetEnvironmentVariable("SHOWROOM_INGEST_URL", "Process")
 if ([string]::IsNullOrWhiteSpace($url)) {
-    $url = "http://127.0.0.1:8788/api/public-events/ingest"
+    $url = "https://api.jemaai.cloud/api/public-events/ingest"
 }
 
 $headers = @{ "Content-Type" = "application/json; charset=utf-8" }

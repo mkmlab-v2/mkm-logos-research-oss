@@ -40,7 +40,10 @@ function Get-FreeGB([string]$letter) {
 }
 
 function Resolve-DestinationRootFolder {
-    param([string]$Preferred)
+    param(
+        [string]$Preferred,
+        [string]$RepoRoot
+    )
     $candidates = [System.Collections.Generic.List[string]]::new()
     if (-not [string]::IsNullOrWhiteSpace($Preferred)) {
         $candidates.Add($Preferred.Trim())
@@ -50,17 +53,38 @@ function Resolve-DestinationRootFolder {
             "E:\05_User_Data\MKM_ARCHIVE_FROM_F",
             "E:\Backup\MKM_ARCHIVE_FROM_F",
             "E:\01_Development_Tools\MKM_ARCHIVE_FROM_F",
+            "E:\mkm-data-workspace\MKM_ARCHIVE_FROM_F",
+            "E:\workspace\MKM_ARCHIVE_FROM_F",
+            "E:\workspace-archive\MKM_ARCHIVE_FROM_F",
+            "E:\archive\MKM_ARCHIVE_FROM_F",
+            "E:\Projects\MKM_ARCHIVE_FROM_F",
+            "E:\02_Projects\archives\MKM_ARCHIVE_FROM_F",
             "E:\MKM_ARCHIVE_FROM_F"
         )) {
         if (-not $candidates.Contains($p)) { $candidates.Add($p) }
+    }
+    if (-not [string]::IsNullOrWhiteSpace($RepoRoot)) {
+        $fallback = Join-Path $RepoRoot "storage\MKM_ARCHIVE_FROM_F"
+        if (-not $candidates.Contains($fallback)) { $candidates.Add($fallback) }
     }
     $lastErr = $null
     foreach ($root in $candidates) {
         $drive = $root.Substring(0, 2)
         if (-not (Test-Path -LiteralPath $drive)) { continue }
         try {
-            New-Item -ItemType Directory -Force -Path $root -ErrorAction Stop | Out-Null
+            if (-not (Test-Path -LiteralPath $root)) {
+                New-Item -ItemType Directory -Force -Path $root -ErrorAction Stop | Out-Null
+            }
             return $root
+        }
+        catch {
+            $lastErr = $_.Exception.Message
+        }
+        try {
+            if (-not (Test-Path -LiteralPath $root)) {
+                [System.IO.Directory]::CreateDirectory($root) | Out-Null
+            }
+            if (Test-Path -LiteralPath $root) { return $root }
         }
         catch {
             $lastErr = $_.Exception.Message
@@ -69,24 +93,42 @@ function Resolve-DestinationRootFolder {
     throw "Could not create any destination folder (tried user path + E: subfolders). Last error: $lastErr"
 }
 
-if (-not (Test-Path -LiteralPath $Source)) {
-    Write-Error "Source not found: $Source"
-    exit 2
-}
-
 $srcDrive = Get-DriveLetterFromPath $Source
 $freeSrc = if ($srcDrive) { Get-FreeGB $srcDrive } else { $null }
 
 Write-Host "=== Migrate F: workspace_archive ===" -ForegroundColor Cyan
 Write-Host "Source:      $Source"
+
 if ($WhatIfSizesOnly) {
-    Write-Host "[WhatIf] No copy performed. Default/fallback roots: E:\02_Projects\..., E:\05_User_Data\..., E:\Backup\..., E:\ root." -ForegroundColor Yellow
+    Write-Host "[WhatIf] No copy performed. Candidate order: user -DestinationRoot first, then E: subfolders (02_Projects...), E:\ root, last resort: <repo>\storage\MKM_ARCHIVE_FROM_F on C:." -ForegroundColor Yellow
     if ($null -ne $freeSrc) { Write-Host "Src ${srcDrive}: free ${freeSrc} GB" }
+    try {
+        $resolved = Resolve-DestinationRootFolder -Preferred $DestinationRoot -RepoRoot $repo
+        $destPreview = Join-Path $resolved "workspace_archive"
+        Write-Host "Writable DestinationRoot (resolved): $resolved" -ForegroundColor Green
+        Write-Host "Robocopy target would be: $destPreview" -ForegroundColor Green
+        $dd = Get-DriveLetterFromPath $resolved
+        if ($dd) {
+            $fd = Get-FreeGB $dd
+            if ($null -ne $fd) { Write-Host "Dest ${dd}: free ${fd} GB" }
+        }
+    }
+    catch {
+        Write-Warning "Could not create/resolve any destination: $($_.Exception.Message)"
+    }
+    if (-not (Test-Path -LiteralPath $Source)) {
+        Write-Warning "Source missing (nothing to migrate): $Source"
+    }
     exit 0
 }
 
+if (-not (Test-Path -LiteralPath $Source)) {
+    Write-Error "Source not found: $Source"
+    exit 2
+}
+
 try {
-    $DestinationRoot = Resolve-DestinationRootFolder -Preferred $DestinationRoot
+    $DestinationRoot = Resolve-DestinationRootFolder -Preferred $DestinationRoot -RepoRoot $repo
 }
 catch {
     Write-Error $_.Exception.Message

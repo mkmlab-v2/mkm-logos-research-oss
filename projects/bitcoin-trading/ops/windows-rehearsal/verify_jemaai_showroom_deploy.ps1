@@ -1,5 +1,5 @@
 param(
-    [string]$GatewayBaseUrl = "http://127.0.0.1:8788",
+    [string]$GatewayBaseUrl = "https://api.jemaai.cloud",
     [string]$PublicApiBaseUrl = "",
     [string]$ProfilesUrl = "",
     [string]$ExpectedOrigin = "",
@@ -301,8 +301,17 @@ if (Test-Path -LiteralPath $PollHtmlPath) {
             }
         }
     } else {
-        $baseOk = $poll.Contains("http://127.0.0.1:8788")
-        $baseDetail = if ($baseOk) { "poll html currently local default" } else { "local default string missing" }
+        $gatewayBase = $GatewayBaseUrl.TrimEnd("/")
+        $pollCandidates = @($gatewayBase, "https://api.jemaai.cloud", "http://127.0.0.1:8788")
+        $matchedBase = $null
+        foreach ($c in $pollCandidates) {
+            if (-not [string]::IsNullOrWhiteSpace($c) -and $poll.Contains($c)) {
+                $matchedBase = $c
+                break
+            }
+        }
+        $baseOk = -not [string]::IsNullOrWhiteSpace($matchedBase)
+        $baseDetail = if ($baseOk) { "poll html base present: $matchedBase" } else { "poll html base string missing for gateway/default candidates" }
     }
 }
 Write-Step "Polling UI Base URL" $baseOk $baseDetail

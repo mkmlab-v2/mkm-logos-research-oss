@@ -9,11 +9,25 @@
 - **코드/추론 “구현 여부”**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 를 호출 가능한 `.py`와 대조한다. **Multi-Lens·TOE 비단정**은 동 문서 §1.1. **Windows OPS Phase 1 체인·리포트·운영/연구 레인**은 §13.1 (`verify_constitution_gates.ps1`, `constitution_gates_v1.json`, `bootstrap_ops_phase1_daily.ps1`, `verify_ops_phase1_operational_readiness.ps1`)·루트 `AGENTS.md`.
 - **12AI vs 코드북**: **12AI**는 Cursor 작업 라우팅용 오케스트레이션 라벨이며, 코드북 도메인·샤드 개수와 **1:1로 묶지 않는다.** (보통 복잡·고위험 작업만 2~4 전문 에이전트로 분산.) 상세: 루트 `AGENTS.md`, `.cursor/skills/auto-12ai-routing/SKILL.md`.
 
+### AI-Ops 거버넌스 ↔ 외부 프레임워크 (Miessler 등)
+
+외부에서 말하는 “의도·투명성·자율 개선”은 아래처럼 **이 레포의 운영 팩트**에 대응한다. 외부 수치·수사(예: ‘스캐폴딩 비율’)는 **내부 헌법에 하드코딩하지 않는다.**
+
+| 외부 프레임 (요지) | MKM 아키텍처 (운영 팩트) | 에이전트 실무 체크 |
+| --- | --- | --- |
+| **Intent-based engineering** | `quality_gate`, `sensitive_integrity_ok` 등 이진 게이트 | 목표가 **통과/실패로 측정 가능**한가? |
+| **Transparency** | `docs/final/artifacts/*.json`, exit code, 리포트 체인 | 실패·품질이 **수치·로그·산출 경로**로 남는가? |
+| **Autoresearch / 자율 개선** | 연구(B-track)·본선·실거래 **격벽**; `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | **관측·연구 레일**과 **실거래·프로덕션**이 무단 합선되지 않았는가? |
+
+- 에이전트는 **실거래·본선 트리거를 단독으로 확정하지 않으며**, 측정 가능한 eval·게이트·지휘관 승인 경로에 맡긴다.
+
 ## 환경
 
-- **경로**: `C:/workspace` — 주기 점검: `scripts/run_workspace_automation_health.ps1`(Vault는 `MKM_VAULT_ROOT` 또는 G: 마운트 시 미러).
+- **경로**: `C:/workspace` — 주기 점검: `scripts/run_workspace_automation_health.ps1`(Vault는 `MKM_VAULT_ROOT` 또는 G: 마운트 시 미러). **E:/F: 역할·중복 감시(선택):** `scripts/Invoke-ExternalDrivesGovernance.ps1` → `reports/drive_governance_latest.json` (용량: `-FullFolderSizesPriorityOnly` 권장, 전체 루트는 `-FullFolderSizes` 매우 느림); 헬스 체인에 포함 시 `-IncludeExternalDriveGovernance`. **`F:\workspace_archive` 오프로드:** `scripts/Migrate-FWorkspaceArchiveToE.ps1` (`-WhatIfSizesOnly`로 해석 경로 확인; E: 전부 거부 시 `C:\workspace\storage\MKM_ARCHIVE_FROM_F` 폴백, 대용량은 `.gitignore`로 제외). **압축 KPI 알람(선택):** User `COMPRESSION_KPI_ALARM_WEBHOOK_URL` → 없으면 `OPS_ALARM_WEBHOOK_URL`; 임계치 `docs/final/artifacts/compression_alarm_thresholds_v1.json` — `P0_COMMERCIALIZATION_TRACKER.md` 압축 절·루트 `.env.example`.
 - **Python**: Windows에서는 `py` 사용(프로젝트 규칙과 동일).
 - **공유 B-track SSOT(팩트 우선)**: `G:\공유 드라이브\MKM_DATA_VAULT\vault\btrack_artifacts_verified` — 로컬 산출물 동기화: `scripts/push_local_artifacts_to_vault.ps1`
+- **NotebookLM / 금융 Hub B 주간 준비(실험 체인)**: `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`를 감싼 `scripts/Invoke-HubBWeeklyMirror.ps1` → 감사 로그 `reports/hub_b_weekly_mirror_log.jsonl` 한 줄·스키마 `hub_b_weekly_mirror_v1`; 주간 작업 등록 `scripts/Register-HubBWeeklyMirrorTask.ps1`(토요일 기본). 클라우드 `source_add`는 별도(MCP/UI).
+- **B-track Swarm 심리 메트릭**: 더미 + `[HYPO]` 샘플(`docs/final/hypo_test_sentiment.jsonl`) 일괄 검증 `scripts/Validate-SwarmSentimentBTrack.ps1`; 단일 `py scripts/validate_swarm_sentiment_dummy.py [--jsonl …]`; CI `.github/workflows/swarm-sentiment-schema-validate.yml`.
 - **어휘 계약**: `docs/final/MASTER_Linguistic_Contract_2026.md` — 외부 사전 수신: `scripts/setup/fetch_external_lexicons.ps1`, 승격: `scripts/push_external_lexicon_to_vault.ps1`
 
 ## 더 읽을 때
