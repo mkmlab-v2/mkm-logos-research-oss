@@ -6,16 +6,16 @@
 .DESCRIPTION
   Intended to free F: when it is full (~291GB archive typical). Does NOT delete F: until -RemoveSourceAfterVerify is passed AND robocopy exit code is 0-7 (success/no extra files).
 
-  If creating folders on E: fails with "Access denied", run PowerShell as Administrator or pick a DestinationRoot where your user has Modify rights.
+  E:\\ root often denies mkdir (policy). Default uses E:\\02_Projects\\... first; if creation fails, other E: subfolders are tried.
 
 .EXAMPLE
   .\scripts\Migrate-FWorkspaceArchiveToE.ps1 -WhatIfSizesOnly
-  .\scripts\Migrate-FWorkspaceArchiveToE.ps1 -DestinationRoot "E:\MKM_ARCHIVE_FROM_F"
-  .\scripts\Migrate-FWorkspaceArchiveToE.ps1 -DestinationRoot "E:\MKM_ARCHIVE_FROM_F" -RemoveSourceAfterVerify
+  .\scripts\Migrate-FWorkspaceArchiveToE.ps1
+  .\scripts\Migrate-FWorkspaceArchiveToE.ps1 -DestinationRoot "D:\somewhere\MKM_ARCHIVE_FROM_F" -RemoveSourceAfterVerify
 #>
 param(
     [string]$Source = "F:\workspace_archive",
-    [string]$DestinationRoot = "E:\MKM_ARCHIVE_FROM_F",
+    [string]$DestinationRoot = "",
     [string]$WorkspaceRoot = "",
     [switch]$WhatIfSizesOnly,
     [switch]$RemoveSourceAfterVerify
@@ -27,7 +27,6 @@ $logDir = Join-Path $repo "reports"
 if (-not (Test-Path -LiteralPath $logDir)) { New-Item -ItemType Directory -Path $logDir -Force | Out-Null }
 $stamp = (Get-Date).ToUniversalTime().ToString("yyyyMMdd_HHmmss")
 $logFile = Join-Path $logDir "workspace_archive_robocopy_$stamp.log"
-$dest = Join-Path $DestinationRoot "workspace_archive"
 
 function Get-DriveLetterFromPath([string]$path) {
     if ($path -match '^([A-Za-z]):\\') { return $Matches[1].ToUpperInvariant() }
@@ -40,40 +39,73 @@ function Get-FreeGB([string]$letter) {
     return [math]::Round($d.FreeSpace / 1GB, 2)
 }
 
+function Resolve-DestinationRootFolder {
+    param([string]$Preferred)
+    $candidates = [System.Collections.Generic.List[string]]::new()
+    if (-not [string]::IsNullOrWhiteSpace($Preferred)) {
+        $candidates.Add($Preferred.Trim())
+    }
+    foreach ($p in @(
+            "E:\02_Projects\MKM_ARCHIVE_FROM_F",
+            "E:\05_User_Data\MKM_ARCHIVE_FROM_F",
+            "E:\Backup\MKM_ARCHIVE_FROM_F",
+            "E:\01_Development_Tools\MKM_ARCHIVE_FROM_F",
+            "E:\MKM_ARCHIVE_FROM_F"
+        )) {
+        if (-not $candidates.Contains($p)) { $candidates.Add($p) }
+    }
+    $lastErr = $null
+    foreach ($root in $candidates) {
+        $drive = $root.Substring(0, 2)
+        if (-not (Test-Path -LiteralPath $drive)) { continue }
+        try {
+            New-Item -ItemType Directory -Force -Path $root -ErrorAction Stop | Out-Null
+            return $root
+        }
+        catch {
+            $lastErr = $_.Exception.Message
+        }
+    }
+    throw "Could not create any destination folder (tried user path + E: subfolders). Last error: $lastErr"
+}
+
 if (-not (Test-Path -LiteralPath $Source)) {
     Write-Error "Source not found: $Source"
     exit 2
 }
 
 $srcDrive = Get-DriveLetterFromPath $Source
+$freeSrc = if ($srcDrive) { Get-FreeGB $srcDrive } else { $null }
+
+Write-Host "=== Migrate F: workspace_archive ===" -ForegroundColor Cyan
+Write-Host "Source:      $Source"
+if ($WhatIfSizesOnly) {
+    Write-Host "[WhatIf] No copy performed. Default/fallback roots: E:\02_Projects\..., E:\05_User_Data\..., E:\Backup\..., E:\ root." -ForegroundColor Yellow
+    if ($null -ne $freeSrc) { Write-Host "Src ${srcDrive}: free ${freeSrc} GB" }
+    exit 0
+}
+
+try {
+    $DestinationRoot = Resolve-DestinationRootFolder -Preferred $DestinationRoot
+}
+catch {
+    Write-Error $_.Exception.Message
+    exit 3
+}
+
+$dest = Join-Path $DestinationRoot "workspace_archive"
 $dstDrive = Get-DriveLetterFromPath $DestinationRoot
 if (-not $dstDrive) {
     Write-Error "Could not parse drive from DestinationRoot: $DestinationRoot"
     exit 2
 }
-
 $freeDst = Get-FreeGB $dstDrive
-$freeSrc = if ($srcDrive) { Get-FreeGB $srcDrive } else { $null }
 
-Write-Host "=== Migrate F: workspace_archive ===" -ForegroundColor Cyan
-Write-Host "Source:      $Source"
+Write-Host "DestinationRoot (resolved): $DestinationRoot"
 Write-Host "Destination: $dest"
 Write-Host "Log:         $logFile"
 Write-Host "Dest ${dstDrive}: free ${freeDst} GB"
 if ($null -ne $freeSrc) { Write-Host "Src ${srcDrive}: free ${freeSrc} GB" }
-
-if ($WhatIfSizesOnly) {
-    Write-Host "[WhatIf] No copy performed. Pick DestinationRoot with enough free space (need ~300GB headroom for a full archive)." -ForegroundColor Yellow
-    exit 0
-}
-
-try {
-    New-Item -ItemType Directory -Force -Path $DestinationRoot -ErrorAction Stop | Out-Null
-}
-catch {
-    Write-Error "Cannot create DestinationRoot (try Admin PowerShell or another path): $DestinationRoot — $($_.Exception.Message)"
-    exit 3
-}
 
 if ($null -ne $freeDst -and $freeDst -lt 50) {
     Write-Warning "Destination drive ${dstDrive}: has only ${freeDst} GB free; large copy may fail."
