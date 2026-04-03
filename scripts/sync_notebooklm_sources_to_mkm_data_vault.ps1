@@ -127,7 +127,13 @@ $SourceFiles = @(
     "docs\final\artifacts\aegis_unified_scoreboard_btc90_k010_latest.json",
     "docs\final\artifacts\BLIND_REPLAY_C1_ARTIFACT_BUNDLE_2026-04-02.md",
     "reports\constitution\btrack_pilot\blind_replay\blind_replay_dataset_grid_btc_s80_latest.json",
-    "reports\constitution\btrack_pilot\blind_replay\blind_replay_dataset_grid_kospi_s80_latest.json"
+    "reports\constitution\btrack_pilot\blind_replay\blind_replay_dataset_grid_kospi_s80_latest.json",
+    "docs\final\NOTEBOOKLM_OPS_COMMAND_BRIEF_LOGOS_SHADOW_2026-04-03.md",
+    "docs\final\artifacts\LOGOS_SHADOW_202003_INSIGHT_BRIEF_V1.md",
+    "docs\final\artifacts\logos_kospi_shadow_evaluation_bundle_v23_notebooklm.md",
+    "reports\research\logos_shadow_v1\logos_kospi_shadow_evaluation_bundle_v23_latest.json",
+    "reports\research\logos_shadow_v1\logos_kospi_shadow_ablation_v23_round1_summary.json",
+    "docs\final\NOTEBOOKLM_HUB_B_BTC_AB_TRACK_CROSSCHECK_BRIEF_2026-04-04.md"
 )
 
 $SourceDirs = @(
@@ -198,14 +204,16 @@ foreach ($rel in $SourceDirs) {
         continue
     }
 
-    if (Test-Path -LiteralPath $dest) {
-        Remove-Item -LiteralPath $dest -Recurse -Force
+    if (-not (Test-Path -LiteralPath $dest)) {
+        New-Item -ItemType Directory -Path $dest -Force | Out-Null
     }
-    $destParent = Split-Path -Parent $dest
-    if (-not (Test-Path -LiteralPath $destParent)) {
-        New-Item -ItemType Directory -Path $destParent -Force | Out-Null
+    # Mirror directory content with robocopy to avoid transient Remove-Item failures on G: shares.
+    # robocopy exit codes 0-7 are success variants (copied/mismatch/extras handled).
+    $null = & robocopy $src $dest /MIR /R:1 /W:1 /NFL /NDL /NJH /NJS /NP
+    $rc = $LASTEXITCODE
+    if ($rc -gt 7) {
+        throw "robocopy failed for dir '$rel' with exit code $rc"
     }
-    Copy-Item -LiteralPath $src -Destination $dest -Recurse -Force
     $copied++
 }
 

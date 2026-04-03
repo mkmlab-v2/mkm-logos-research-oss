@@ -80,6 +80,7 @@
 | AI-Logos 외부 연구 (arXiv·Kaggle) | `docs/external_research/AI-Logos_Research_Bibliography_2026.md` | B-only; **Confirmed URL** 서지·TBD 분리; 작전 **LeWorld-Enlightenment**; A·본선 자동 합선 금지 |
 | Logos 교집합 랭킹 SSOT | `docs/final/LOGOS_INTERSECTION_RANKING_SSOT_2026-03-29.md` | `mean`/`min` 지표·경로; λ(편향)와 기호 분리; 본선·실매매 자동 합선 금지 |
 | 한의 원전·프록시 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` · `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §9 | 코퍼스 B 분리·승격 경계; 별도 handoff MD 미작성 시 본 문서가 SSOT |
+| BTC 금융 Hub B — A/B 교차검증 브리프 | `docs/final/NOTEBOOKLM_HUB_B_BTC_AB_TRACK_CROSSCHECK_BRIEF_2026-04-04.md` | NotebookLM 소스 ID `bd996cd5-cb6e-444c-8110-eb2ce6a4c745` · 노트북 `b79929a2-8742-42a8-a4d7-06523e12935d` (2026-04-04 적재). OHLCV·온톨로지=B 연구 가설 vs A 본선 팩트 구분·Promotion Loop·Fact-Lock |
 
 ---
 
@@ -133,6 +134,8 @@
 
 **메타 가이드**: `docs/final/LOGOS_NOTEBOOK_META_GUIDE.md`
 
+**용어 (L2 브리핑)**: “Logos Lens / Ruleset” 표기는 구현·산출물 **로고스 독립 렌즈**와 동일 계열로 본다 — `logos_independent_lens` → `docs/final/artifacts/logos_independent_lens_latest.json`, `scripts/run_lens_logos.py`, `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 표.
+
 | 우선순위 | 경로 (워크스페이스 기준) | 비고 |
 |----------|--------------------------|------|
 | P0 | `docs/final/LOGOS_NOTEBOOK_META_GUIDE.md` | Logos-Insight 경계(금융/레짐 비혼선) |
@@ -173,12 +176,24 @@
 
 ---
 
-## 작전지휘부(Ops) NotebookLM 메모 (2026-04-02)
+## 작전지휘부(Ops) NotebookLM 메모 (2026-04-03)
 
+- **2026-04-03 L2 Logos KOSPI Shadow 동기화**: Vault 미러에 다음이 포함됨 — `docs/final/NOTEBOOKLM_OPS_COMMAND_BRIEF_LOGOS_SHADOW_2026-04-03.md`(상황·NotebookLM 질의 세트), `docs/final/artifacts/LOGOS_SHADOW_202003_INSIGHT_BRIEF_V1.md`, `docs/final/artifacts/logos_kospi_shadow_evaluation_bundle_v23_notebooklm.md`(v23 번들 JSON의 Markdown 래퍼; NotebookLM 파일 업로드는 `.json` 미지원 사례 대비). SSOT 수치는 여전히 `reports/research/logos_shadow_v1/logos_kospi_shadow_evaluation_bundle_v23_latest.json`. 작전지휘부 노트북에는 MCP `source_add`(동일 제목 구버전 있으면 `source_delete`로 정리 후) 권장.
+- **2026-04-03 (브리지 정정)**: `NOTEBOOKLM_OPS_COMMAND_BRIEF_LOGOS_SHADOW_2026-04-03.md`에 **`--bare` vs `DEFAULT_SHADOW_EXTRA`(latest)** 이중 스냅샷과 SSOT 주의문을 반영함. 문서만 보고 “전 구간 미통과”로 단정하지 말 것.
+- **2026-04-03 (v23 MD 래퍼)**: `docs/final/artifacts/logos_kospi_shadow_evaluation_bundle_v23_notebooklm.md`는 `v23_latest.json`과 불일치 시 `py scripts/regen_logos_kospi_shadow_v23_notebooklm_md.py`로 재생성. 일괄: `pwsh -File scripts/Invoke-LogosKospiShadowNotebooklmBundle.ps1` (옵션 `-SyncVault`). Ablation 요약은 `reports/.../logos_kospi_shadow_ablation_v23_round1_summary.json`(Vault 동기화 목록에 포함).
 - **NotebookLM**: 노트북명 `작전지휘부 Ops20260318`, ID `347e5cbe-0ade-4615-9aac-8747d4fa644e`, 소스 **13**개 (`notebook_list` 2026-04-02 재확인). 과거 중복 제거 이력(230→151)은 보존하되, 운영 판단 시에는 **현재 MCP 조회값**을 우선한다.
 - **전체 wipe**: **기본 금지**. 소스 대량 삭제는 사용자가 **명시적으로 재구축·전체 재업로드**를 요청한 경우에만 수행.
 - **`OPS_ONEPAGE_STATUS_LATEST.md`**: 워크스페이스 `docs/final/OPS_ONEPAGE_STATUS_LATEST.md`는 **미존재**할 수 있음. NotebookLM에는 소스 **제목**으로만 존재할 수 있음. 새 MD 남발 대신 `docs/final/` 기존 SITREP·본 매니페스트에 **Gap 한 줄** 기록.
 - **로컬 브리지 문서**: `docs/작전지휘부/` 등 경로는 **Vault·다른 머신에만** 있을 수 있음. `source_add` 전 **파일 존재 확인** 필수.
+
+### 파일 기반 장기기억(.mkm-memory) — 멀티렌즈 압축·4D 동기화 (A, 2026-04)
+
+- **역할**: NotebookLM 질의 시 **본 절 + 아래 경로**를 `source_add`하면 작전지휘부 노트에서 **B/High·B/Ultra·A/Extreme 파일럿·재색인 절차**를 근거로 답할 수 있음(측정값은 레포 JSON이 SSOT).
+- **파일럿 실행**: `scripts/pilot_compress_mkm_memory_queue.py` — `reports/memory/mkm_memory_priority_queue_latest.json` 기준; P1 헤드 스윕 산출 예: `mkm_memory_pilot_sweep_ultra_latest.json`, `mkm_memory_pilot_conservative_p1head_latest.json`.
+- **비교 매트릭스**: `reports/memory/mkm_memory_pilot_sweep_matrix_latest.json`.
+- **`content` 변경 후 `vector_4d`**: 동기화 필수 — `tools/tools/core/file_based_memory.py`(`hybrid_vectorize`) 및 `reports/memory/mkm_memory_vector_4d_reindex_paths_v1.json` 참조. `scripts/normalize_mkm_memory_vector_4d.py`는 **중첩 필드 호이스트**용이며 **새 텍스트 재임베딩 대체 아님**.
+- **운영 GO/NO_GO**: `reports/memory/mkm_memory_ultra_compression_go_checklist_v1.json` + `reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json` + `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json` **교차** (민감 무결성·카나리·`go_no_go`).
+- **격벽**: 파일럿 수치(A)와 NotebookLM 서술(B) 혼동 금지; 본선 `memory/` **인플레이스 쓰기**는 승인·백업·롤백 게이트 후 — `reports/memory/mkm_memory_rollout_gates_v1.json`.
 
 ---
 
