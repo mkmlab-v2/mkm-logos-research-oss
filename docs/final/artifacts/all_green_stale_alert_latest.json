@@ -1,13 +1,13 @@
 {
   "schema": "all_green_stale_alert_v1",
-  "ts_utc": "2026-04-03T21:16:29.045144+00:00",
+  "ts_utc": "2026-04-03T21:27:17.328122+00:00",
   "input_path": "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\ops\\all_green_slack_delivery_check_latest.json",
   "success_stale": true,
-  "latest_success_age_hours": 30.83938277547222,
+  "latest_success_age_hours": 31.019456183027778,
   "max_success_age_hours": 12,
-  "checked_at_utc": "2026-04-03T21:16:28.8794216+00:00",
-  "dry_run": true,
-  "webhook_sent": false,
+  "checked_at_utc": "2026-04-03T21:27:17.1423672+00:00",
+  "dry_run": false,
+  "webhook_sent": true,
   "webhook_url_masked": "https:***c5IK6l",
   "reason": "stale_detected"
 }
