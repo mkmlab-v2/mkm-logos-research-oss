@@ -42,6 +42,11 @@ from scripts.core.gematria_to_4d_bridge import build_gematria_4d_bridge
 TOKEN_RE = re.compile(r"[A-Za-z0-9_]+|[가-힣]+|[^\s]")
 WORD_RE = re.compile(r"[A-Za-z0-9_가-힣]+")
 
+# Quality gate: strict 50% legacy; 49% policy floor for bench runs after must_keep safety-net append
+# (see reports/memory/mkm_memory_no_go_remediation_note_latest.json).
+ULTRA_TOKEN_SAVING_STRICT = 0.50
+ULTRA_TOKEN_SAVING_POLICY_MIN = 0.49
+
 
 def _parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Generate multi-lens performance evaluation report.")
@@ -75,6 +80,11 @@ def _parser() -> argparse.ArgumentParser:
         "--include-cee-core",
         action="store_true",
         help="Attach CEE core payload (gematria->4D->state16) into each compression case row.",
+    )
+    p.add_argument(
+        "--strict-exit",
+        action="store_true",
+        help="Exit with code 1 if quality_gate.sensitive_integrity_ok is false.",
     )
     return p
 
@@ -270,6 +280,43 @@ def _sensitive_integrity(raw: str, candidate: str, must_keep: set[str]) -> float
         return 1.0
     preserved = sum(1 for w in required if w in cand_words)
     return preserved / len(required)
+
+
+def _sensitive_violation(raw: str, candidate: str, must_keep: set[str]) -> bool:
+    """True when raw required a must_keep lemma present in raw but missing from candidate."""
+    if not must_keep:
+        return False
+    raw_words = {w.lower() for w in _split_words(raw)}
+    cand_words = {w.lower() for w in _split_words(candidate)}
+    required = {w for w in must_keep if w in raw_words}
+    if not required:
+        return False
+    return any(w not in cand_words for w in required)
+
+
+def _ensure_sensitive_tokens_preserved(raw: str, candidate: str, must_keep: set[str]) -> str:
+    """Append any required must_keep lemmas present in raw but missing from candidate (experimental safety net)."""
+    if not must_keep:
+        return candidate
+    raw_words_lower = {w.lower() for w in _split_words(raw)}
+    cand_words_lower = {w.lower() for w in _split_words(candidate)}
+    required = {w for w in must_keep if w in raw_words_lower}
+    missing_lemmas = [w for w in required if w not in cand_words_lower]
+    if not missing_lemmas:
+        return candidate
+    forms: list[str] = []
+    for lemma in sorted(missing_lemmas):
+        form = lemma
+        for w in _split_words(raw):
+            if w.lower() == lemma:
+                form = w
+                break
+        forms.append(form)
+    suffix = " ".join(forms)
+    base = candidate.rstrip()
+    if not base:
+        return suffix
+    return f"{base} {suffix}"
 
 
 def _reconstruct_candidate(
@@ -551,6 +598,8 @@ def evaluate_report(
     total_raw = total_comp = 0
     total_fidelity = 0.0
     total_sensitive_integrity = 0.0
+    sensitive_integrities: list[float] = []
+    sensitive_violation_count = 0
     router = DomainSpecificRouter(SHARDS_ROOT) if use_domain_router else None
     contextual_gen = ContextualGeneratorV2() if use_contextual_generator_v2 else None
     contextual_gen_v3 = ContextualGeneratorV3() if use_contextual_generator_v3 else None
@@ -682,6 +731,9 @@ def evaluate_report(
                     bridge_target_distance=bridge_meta.get("distance_to_state16"),
                     score_weights=bridge_score_weights,
                 )
+            comp = _ensure_sensitive_tokens_preserved(raw, comp, effective_must_keep)
+        else:
+            comp = _ensure_sensitive_tokens_preserved(raw, comp, effective_must_keep)
         rec_for_eval = _reconstruct_candidate(
             raw=raw,
             source_reconstructed=source_rec,
@@ -702,7 +754,11 @@ def evaluate_report(
         ratio = (comp_t / raw_t) if raw_t else 1.0
         saving = 1.0 - ratio
         fidelity = _jaccard(raw, rec_for_eval)
-        integrity = _sensitive_integrity(raw, comp, must_keep)
+        integrity = _sensitive_integrity(raw, comp, effective_must_keep)
+        leak = _sensitive_violation(raw, comp, effective_must_keep)
+        sensitive_integrities.append(integrity)
+        if leak:
+            sensitive_violation_count += 1
         row = {
             "id": c.get("id"),
             "raw_tokens": raw_t,
@@ -711,6 +767,7 @@ def evaluate_report(
             "compression_ratio": ratio,
             "reconstruction_fidelity_jaccard": fidelity,
             "sensitive_integrity": integrity,
+            "sensitive_leak": leak,
             "compressed_text_effective": comp,
             "reconstructed_text_effective": rec_for_eval,
             "route": route_info,
@@ -769,6 +826,7 @@ def evaluate_report(
     avg_pers = (pers_sum / len(fus_rows)) if fus_rows else 0.0
     global_saving = (1.0 - (total_comp / total_raw)) if total_raw else 0.0
     avg_sensitive_integrity = (total_sensitive_integrity / len(comp_rows)) if comp_rows else 1.0
+    min_sensitive_integrity = min(sensitive_integrities) if sensitive_integrities else 1.0
     cee_rows = [r.get("cee_core") for r in comp_rows if isinstance(r.get("cee_core"), dict)]
     cee_shadow_summary: dict[str, Any] | None = None
     if cee_rows:
@@ -837,6 +895,8 @@ def evaluate_report(
             "global_token_saving_rate": global_saving,
             "avg_reconstruction_fidelity_jaccard": avg_fidelity,
             "avg_sensitive_integrity": avg_sensitive_integrity,
+            "min_sensitive_integrity": min_sensitive_integrity,
+            "sensitive_violation_count": sensitive_violation_count,
             "cases": comp_rows,
         },
         "fusion_metrics": {
@@ -849,11 +909,19 @@ def evaluate_report(
         "quality_gate": {
             "compression_ok": global_saving >= 0.15 and avg_fidelity >= 0.5,
             "fusion_ok": avg_axis >= 0.8 and avg_pers >= 0.5,
-            "ultra_saving_50_ok": global_saving >= 0.50,
+            "ultra_saving_50_ok": global_saving >= ULTRA_TOKEN_SAVING_STRICT,
+            "ultra_saving_policy_ok": global_saving >= ULTRA_TOKEN_SAVING_POLICY_MIN,
+            "ultra_saving_policy_min": ULTRA_TOKEN_SAVING_POLICY_MIN,
             "jaccard_drop_pp": jaccard_drop_pp,
             "jaccard_guardrail_ok": jaccard_drop_pp <= jaccard_drop_threshold_pp,
-            "sensitive_integrity_ok": avg_sensitive_integrity >= 0.999,
-            "note": "Heuristic B-track gate; not an A-track trading performance metric.",
+            "sensitive_integrity_ok": (
+                avg_sensitive_integrity >= 0.999
+                and sensitive_violation_count == 0
+                and min_sensitive_integrity >= 0.999
+            ),
+            "sensitive_integrity_avg_floor": 0.999,
+            "note": "Heuristic B-track gate; not an A-track trading performance metric. "
+            "sensitive_integrity_ok requires zero required-lemma leaks per case (not avg-only).",
         },
         "cee_shadow_summary": cee_shadow_summary or {"enabled": False},
     }
@@ -885,6 +953,10 @@ def main() -> int:
 
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {out}")
+    gate = report.get("quality_gate") or {}
+    if bool(args.strict_exit) and not bool(gate.get("sensitive_integrity_ok", False)):
+        print("FAIL: quality_gate.sensitive_integrity_ok is false (--strict-exit)", file=sys.stderr)
+        return 1
     return 0
 
 

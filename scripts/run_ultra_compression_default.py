@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -18,25 +19,50 @@ INPUT_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_I
 BASELINE_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json"
 DECISION = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
 ACTIVE_REPORT = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
+ACTIVE_REPORT_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json"
+
+# Track B (literal-priority): conservative caps — see docs/final/COMPRESSION_SLA_POLICY_V1.md
+LITERAL_STRATEGY = "C"
+LITERAL_INTENSITY = "high"
+LITERAL_GENERAL_MAX_SAVING = 0.28
+LITERAL_SENSITIVE_MAX_SAVING = 0.26
+LITERAL_HANGUL_MAX_SAVING = 0.30
 
 
 def main() -> int:
+    ap = argparse.ArgumentParser(description="Run ultra compression default profile (Track A universal or Track B literal).")
+    ap.add_argument(
+        "--mode",
+        choices=("universal", "literal"),
+        default="universal",
+        help="universal: decision-driven ops profile (default). literal: conservative caps for higher fidelity.",
+    )
+    args = ap.parse_args()
+    sla_track = str(args.mode)
+
     src_doc = json.loads(INPUT_V2.read_text(encoding="utf-8"))
     baseline_doc = json.loads(BASELINE_V2.read_text(encoding="utf-8"))
     decision_doc = json.loads(DECISION.read_text(encoding="utf-8"))
 
     selected = decision_doc.get("selected_candidate") or {}
-    strategy = str(selected.get("strategy", "B"))
-    intensity = str(selected.get("intensity", "extreme"))
-    general_max_saving_rate = selected.get("general_max_saving_rate")
-    sensitive_max_saving_rate = selected.get("sensitive_max_saving_rate")
-    hangul_max_saving_rate = selected.get("hangul_max_saving_rate")
-    if general_max_saving_rate is not None:
-        general_max_saving_rate = float(general_max_saving_rate)
-    if sensitive_max_saving_rate is not None:
-        sensitive_max_saving_rate = float(sensitive_max_saving_rate)
-    if hangul_max_saving_rate is not None:
-        hangul_max_saving_rate = float(hangul_max_saving_rate)
+    if sla_track == "literal":
+        strategy = LITERAL_STRATEGY
+        intensity = LITERAL_INTENSITY
+        general_max_saving_rate = LITERAL_GENERAL_MAX_SAVING
+        sensitive_max_saving_rate = LITERAL_SENSITIVE_MAX_SAVING
+        hangul_max_saving_rate = LITERAL_HANGUL_MAX_SAVING
+    else:
+        strategy = str(selected.get("strategy", "B"))
+        intensity = str(selected.get("intensity", "extreme"))
+        general_max_saving_rate = selected.get("general_max_saving_rate")
+        sensitive_max_saving_rate = selected.get("sensitive_max_saving_rate")
+        hangul_max_saving_rate = selected.get("hangul_max_saving_rate")
+        if general_max_saving_rate is not None:
+            general_max_saving_rate = float(general_max_saving_rate)
+        if sensitive_max_saving_rate is not None:
+            sensitive_max_saving_rate = float(sensitive_max_saving_rate)
+        if hangul_max_saving_rate is not None:
+            hangul_max_saving_rate = float(hangul_max_saving_rate)
     baseline_avg_jaccard = float(
         baseline_doc.get("compression_metrics", {}).get("avg_reconstruction_fidelity_jaccard", 0.0)
     )
@@ -61,6 +87,7 @@ def main() -> int:
         include_cee_core=True,
     )
     report["active_profile"] = {
+        "sla_track": sla_track,
         "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
         "strategy": strategy,
         "intensity": intensity,
@@ -68,8 +95,9 @@ def main() -> int:
         "sensitive_max_saving_rate": sensitive_max_saving_rate,
         "hangul_max_saving_rate": hangul_max_saving_rate,
     }
-    ACTIVE_REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"WROTE: {ACTIVE_REPORT}")
+    out_path = ACTIVE_REPORT_LITERAL if sla_track == "literal" else ACTIVE_REPORT
+    out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"WROTE: {out_path}")
     return 0
 
 
