@@ -1,0 +1,30 @@
+# Validates projects/no1kmedi Next.js app (App Router + API routes compile).
+name: no1kmedi-web-build
+
+on:
+  push:
+    paths:
+      - "projects/no1kmedi/**"
+      - ".github/workflows/no1kmedi-web-build.yml"
+  pull_request:
+    paths:
+      - "projects/no1kmedi/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: projects/no1kmedi
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: projects/no1kmedi/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
