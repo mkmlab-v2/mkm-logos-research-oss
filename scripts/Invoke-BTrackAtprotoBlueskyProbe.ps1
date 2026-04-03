@@ -5,7 +5,9 @@
 .NOTES
   - 본선/실매매와 합선 금지. 자격 증명 없으면 스킵하고 exit 0(작업 스케줄 실패 방지).
   - 사전: py -m pip install atproto
-  - 환경: User 또는 세션에 BSKY_HANDLE, BSKY_APP_PASSWORD
+  - 비밀 한곳 관리: C:\workspace\.env 에 BSKY_* 저장(커밋 금지) 후
+    projects/bitcoin-trading/ops/windows-rehearsal/sync_required_env_to_user.ps1 실행 → User 환경변수 반영
+  - 또는 수동으로 User 환경변수에 BSKY_HANDLE, BSKY_APP_PASSWORD
 #>
 $ErrorActionPreference = "Stop"
 $workspaceRoot = "C:\workspace"
