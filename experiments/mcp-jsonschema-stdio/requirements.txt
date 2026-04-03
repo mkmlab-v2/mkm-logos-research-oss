@@ -1,0 +1,2 @@
+# `mcp` pulls jsonschema, pydantic, anyio, etc.
+mcp>=1.2.0

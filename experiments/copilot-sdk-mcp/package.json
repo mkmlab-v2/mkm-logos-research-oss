@@ -1,0 +1,10 @@
+{
+  "name": "copilot-sdk-mcp-experiment",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Isolated Copilot SDK wrapper experiments — do not wire to production ops without commander approval",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  }
+}
