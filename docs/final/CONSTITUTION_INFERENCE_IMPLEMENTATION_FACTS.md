@@ -1,7 +1,8 @@
 # Constitution / Inference — 구현 팩트 (SSOT)
 
 **작성일**: 2026-03-29  
-**최종 갱신**: 2026-04-03 — §13.1 Windows Phase 1 체인·리포트 SSOT·`AGENTS.md` 운영/연구 레인 포인터 추가.  
+**최종 갱신**: 2026-04-04 — §13.2 외부 법령 참조(Beopmang) 가이드라인 추가.  
+**이전 갱신**: 2026-04-03 — §13.1 Windows Phase 1 체인·리포트 SSOT·`AGENTS.md` 운영/연구 레인 포인터 추가.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
 
 ---
@@ -380,8 +381,18 @@
 | 일일 체인 태스크 등록 | `projects/bitcoin-trading/ops/windows-rehearsal/register_ops_phase1_chain_task.ps1` | 기본 `\Bitcoin-Ops-Phase1-Chain-Daily` 매일 08:30; **`-IncludeConstitutionGates` 기본 포함**(`-ExcludeConstitutionGates`로 끔). **본선 PC**에서 실행·`schtasks /Query`로 확인 |
 | Phase 1 일일 원클릭 | `projects/bitcoin-trading/ops/windows-rehearsal/bootstrap_ops_phase1_daily.ps1` | `sync_required_env_to_user.ps1` → `register_ops_phase1_chain_task.ps1` 순서; `-SkipEnvSync` / `-SkipTaskRegister` / `-ExcludeConstitutionGates` / `-IncludeReadiness` / `-IncludeWebhookSmoke`. 동기화: `.env`에 `OPS_ALARM_WEBHOOK_URL` 없으면 User `N8N_WEBHOOK_URL`로 **자동 미러** |
 | P0·헌법 경로 스모크 | `scripts/verify_p0_constitution_gate_paths.ps1` | `CONSTITUTION`·`P0_COMMERCIALIZATION_TRACKER`·`AGENTS`·`CLAUDE`·정렬 pytest 스크립트·Vault 동기화 스크립트 등 **존재만** 검사(exit 0/1). 상세 증거 표: `P0_COMMERCIALIZATION_TRACKER.md` §증거 경로 |
-| 압축 KPI 자동 체인 | `scripts/run_compression_automation_chain.ps1` | 기본 프로파일 재평가·KPI 요약·토큰 API hydration 믹스; `run_workspace_automation_health.ps1 -IncludeCompressionKpi`로 묶음 가능; 종료 시 `send_compression_kpi_alarm_if_needed.ps1`(임계치 `docs/final/artifacts/compression_alarm_thresholds_v1.json`, 웹훅 `COMPRESSION_KPI_ALARM_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`, `-SkipCompressionAlarm` 생략) |
+| 압축 KPI 자동 체인 | `scripts/run_compression_automation_chain.ps1` | 범용 프로파일 재평가·KPI 요약(`literal_kpi`는 `-IncludeLiteralTrack`로 리터럴 산출물이 있을 때)·토큰 API hydration 믹스·범용 손실 패턴; `-IncludeLiteralTrack` 시 리터럴 프로파일·리터럴 손실 패턴 추가; `run_workspace_automation_health.ps1 -IncludeCompressionKpi`로 묶음 가능(투트랙까지: 동시에 `-IncludeLiteralTrack`; 알람은 여전히 `active_kpi` 기준); 종료 시 `send_compression_kpi_alarm_if_needed.ps1`(임계치 `docs/final/artifacts/compression_alarm_thresholds_v1.json`, 웹훅 `COMPRESSION_KPI_ALARM_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`, `-SkipCompressionAlarm` 생략) |
 | 에이전트 레인 분리 | 루트 `AGENTS.md` — **운영 자동화 vs 연구 레인** | MKM Study·본선 OOF·실매매 **자동 합선 금지** 방향; 브리핑 전용 필드는 레포 산출물 근거 없이 SSOT 삼지 않음 |
+
+### 13.2 외부 법령 참조 API (Beopmang 등, 보조 레이어)
+
+| 항목 | 값 | 비고 |
+|------|-----|------|
+| 법망(Beopmang) 공개 베이스 | `https://api.beopmang.org` | 서드파티 법령·조문 검색·MCP 연동(무키·무가입 지향). **본 저장소에 호출 코드가 없어도** 외부 에이전트가 참조할 수 있는 **정책 포인터**로 본 표에 고정한다. |
+| MCP 엔드포인트 | `https://api.beopmang.org/mcp` | 공개 안내 기준; 변경 시 제공자 문서 우선. |
+| Hermes 얇은 프로필 | `projects/bitcoin-trading/ops/.hermes.md` §7 | 허용 도구·면책·인용 규칙. |
+| 면책(팩트-락) | — | 제공자 고지: API 출력은 **참고용**이며 **법적 효력 없음**. 준수·계약·소송 가능성 판단의 **최종 SSOT는 아님**. 공식 국가 법령 DB·내부 준법·외부 법무 검토와 대조한다. |
+| 용도 경계 | — | **검색·브리핑·감사 추적 보조** 및 B-track 정책 내러티브 시드에 적합. **실매매 트리거·올그린 게이트·본선 OOF와 자동 합선 금지**(연구/브리핑 레이어). 호출 빈도 등 **익명 집계** 가능—민감정보·키를 쿼리에 넣지 않는다. |
 
 **§13.1 범위:** 위 경로는 **관측·스케줄·게이트·JSON 리포트**만 해당한다. 헌법·백서·사업계획서를 LLM이 매 실행마다 해석해 본선 코드·실거래 파라미터를 바꾸는 **자율 추론 루프는 본 절에 포함되지 않음**(상단 목적·§1.1 Multi-Lens·NotebookLM 격벽과 동일 선상에서 “구현 단정 금지”).
 

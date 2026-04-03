@@ -31,6 +31,41 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 - **KPI 임계치·n8n 알람:** `docs/final/artifacts/compression_alarm_thresholds_v1.json` — 체인 종료 시 `scripts/send_compression_kpi_alarm_if_needed.ps1`가 위반 시 `COMPRESSION_KPI_ALARM_WEBHOOK_URL`(없으면 `OPS_ALARM_WEBHOOK_URL`)로 POST; `-SkipCompressionAlarm`로 생략.
 - **Fact-Lock:** 상용 SLA·무손실 단정은 `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` — 스텁만으로 프로덕션 SaaS 주장 금지; 임계치·게이트는 레포·CI에서 확정 후 기록.
 
+## 상용화 3단계 마일스톤 (L1 Core / L2 API / L3 Ops) — Fact-Lock 2026-04
+
+**역할**: “완전 무인 상용화” 비전과 **레포에서 돌릴 수 있는 단계·스크립트**를 분리한다. **지휘관 하드 게이트**(승인·키·실매매·과금·법무) 없이 프로덕션 전제를 깔지 않는다.  
+**관계**: 아래 [순서](#순서)·Step 1–5·월간 SOP·기존 절은 **삭제하지 않았고 계속 유효**하다. 본 절은 압축→API→운영 **직렬 관점**을 **병행 축**으로 고정한다.
+
+### L1 — 압축 엔진·코드북 (Core)
+
+| 항목 | 내용 |
+|------|------|
+| **목표 (문서 SSOT)** | `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` — Master Codebook Lexicon **V1** 완료 루브릭; **14K 클러스터 심볼**은 **milestone 1b, 별도 계획** (동 문서 §9). |
+| **자동화 루프 (기계)** | `scripts/run_compression_automation_chain.ps1`; `run_ultra_compression_default.py` → `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`; `report_multilens_performance_eval.py`의 `quality_gate` (`sensitive_integrity_ok`); `report_ultra_compression_kpi_summary.py` 등 위 **압축·복원 자동화 체인** 절과 동일. **회귀 테스트**: `tests/test_multilens_sensitive_integrity_gate.py` — CI `dual-regime-integrity.yml` 스텝 *Multi-lens sensitive integrity gate*. |
+| **지휘관 게이트** | 차기 export·스냅샷 동결(명명 **V2** 등은 **지휘관·스키마 확정 후**); `MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json`의 **`go_no_go`는 KPI만으로 자동 세팅되지 않음** (동 Fact-Lock §6.1). |
+
+### L2 — API·가드 (Middleware)
+
+| 항목 | 내용 |
+|------|------|
+| **목표 (문서 SSOT)** | 캐노니컬 계약: `docs/final/openapi_token_compression_stub_v1.yaml` + `scripts/compression_token_api_stub.py`. **v2 Trust Packet 초안**: `docs/final/openapi_token_compression_v2_draft.yaml` — **미구현** (동 Fact-Lock §9.1). |
+| **자동화 루프 (기계)** | `.github/workflows/no1kmedi-api-smoke.yml`; `no1kmedi-guardian-contract-gate.yml`(동 디렉터리). |
+| **지휘관 게이트** | 프로덕션 배포·**실키·Webhook·Hostinger** 반영은 **수동 승인·주입**. `projects/no1kmedi/payapp-api/` 등 결제·대외 API는 **본 트래커에서 경로만 고정**, 감사·약관은 별도. |
+| **도구 경계 (Fact-Lock)** | **`ministack.org` MiniStack = AWS 로컬 에뮬레이터**(LocalStack 대안). L2 **에이전트 MCP·타입 가드**와 **동일 명칭·역할로 연결 금지**. 에이전트 도구 입출력은 **JSON Schema 검증 + stdio MCP**(및 기존 OpenAPI 스텁 `openapi_token_compression_stub_v1.yaml` 등)로만 기술한다. |
+| **L2 참조 구현 (실험)** | `experiments/mcp-jsonschema-stdio/` — Python **FastMCP + JSON Schema(Draft 2020-12) + stdio** 최소 서버(`sentiment_ratio` 스텁). 본선·옵스 트리 **미배선**. Copilot SDK 래퍼 실험은 `experiments/copilot-sdk-mcp/` |
+
+### L3 — 배포·융합 운영 (Ops)
+
+| 항목 | 내용 |
+|------|------|
+| **목표** | Bench·`OBSERVATION_ONLY` vs 본선·실매매·외부 채널 경계 유지 (`AGENTS.md`). |
+| **자동화 루프 (기계)** | `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`; `scripts/run_waiting_queue_monthly_check.ps1`; Windows Phase1·헬스 체인 등 **[증거 경로 빠른 참조](#증거-경로-빠른-참조-게이트-통과-감사-시)** 표. |
+| **지휘관 게이트** | A-track **LIVE**·실매매·외부 과금·약관: **명시적 GO** 없이 전환하지 않음. |
+
+### 최종 타겟 분기 (서술만, 단정 금지)
+
+- **내부 실매매(A-track)·VPS 본선** vs **외부 B2B/API(Hostinger·PayApp 등)** 는 **L3 게이트 성격·증빙·법무**가 달라진다. 분기 확정은 지휘관 결정 후 본 표에 **한 줄 보강**한다.
+
 ## 순서
 
 | Step | 내용 |

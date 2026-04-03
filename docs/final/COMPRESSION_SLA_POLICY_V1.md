@@ -35,12 +35,19 @@ Separate **service expectations** for (A) default multi-lens bench / ops compres
 |-------|---------|
 | A | `py scripts/run_ultra_compression_default.py` or `--mode universal` |
 | B | `py scripts/run_ultra_compression_default.py --mode literal` |
+| Full chain + Track B + dual loss reports | `scripts/run_compression_automation_chain.ps1 -IncludeLiteralTrack` |
+| Workspace health + two-track compression | `scripts/run_workspace_automation_health.ps1 -IncludeCompressionKpi -IncludeLiteralTrack` (optional; adds runtime vs `-IncludeCompressionKpi` alone) |
+
+KPI summary (`reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json`) includes optional `literal_kpi` when `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json` is present.
+
+Webhook alarm (`send_compression_kpi_alarm_if_needed.ps1`) evaluates **Track A `active_kpi` only**; Track B low saving does not by itself trigger that alarm.
 
 ## 5. Loss-pattern diagnostics
 
 - **Script:** `scripts/report_compression_jaccard_loss_patterns.py`  
-- **Output:** `reports/constitution/btrack_pilot/compression_jaccard_loss_patterns_latest.json`  
-- **Input join:** bench input `MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json` + latest Track A active report for reconstructed text.
+- **Output (Track A):** `reports/constitution/btrack_pilot/compression_jaccard_loss_patterns_latest.json` (`--sla-track universal`)  
+- **Output (Track B):** `reports/constitution/btrack_pilot/compression_jaccard_loss_patterns_literal_latest.json` (`--sla-track literal`)  
+- **Input join:** bench input `MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json` + active report for reconstructed text.
 
 ## 6. Revision
 

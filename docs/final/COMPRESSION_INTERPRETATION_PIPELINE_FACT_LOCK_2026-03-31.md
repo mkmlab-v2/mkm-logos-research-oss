@@ -72,6 +72,8 @@ Use these artifacts as runtime truth, not chat memory.
 - **Full grid bench (heavy)**: `py scripts/run_ultra_compression_bench.py` — round1 sweeps strategies `A|B|C`, intensities `high|ultra|extreme`, hangul flag; round2 sweeps cap grid on pareto seeds; emits `MULTILENS_ULTRA_COMPRESSION_ROUND1_V1.json`, `ROUND2`, `DECISION`, `BASELINE_LOCK`. Not required on every commit.
 - **Master codebook lexicon V1**: `scripts/core/master_codebook_lexicon_v1_bridge.py` resolves `reports/constitution/btrack_pilot/master_codebook_lexicon_v1_*_rows_latest.json` (or an explicit path) and, when `use_master_codebook_lexicon_v1=True` in `evaluate_report`, **union-matches** Unicode word tokens of each case’s `raw_text` against export `normalized_form` values to extend **must_keep** (metadata under `route.master_codebook_lexicon_v1`). Reproduce export: `py scripts/export_master_codebook_v1.py`. This is **lexicon rail join only** (no 4D vectors, no replacement of domain shard JSON policy).
 
+- **2026-04-03 — Integrity-first token-saving gate:** `evaluate_report` may append missing `must_keep` tokens (experimental safety net), which can lower bench `global_token_saving_rate` slightly below 50%. `quality_gate` exposes both `ultra_saving_50_ok` (legacy ≥0.50) and `ultra_saving_policy_ok` / `ultra_saving_policy_min` (0.49). Remediation context: `reports/memory/mkm_memory_no_go_remediation_note_latest.json`. **`MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json` `go_no_go` is not auto-set from KPI alone.**
+
 ## 7) Terminology lock (anti-confusion)
 
 - "12AI implemented": currently means **routing orchestration policy is active with a 4-zone pilot router**.
