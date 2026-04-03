@@ -133,7 +133,9 @@ $SourceFiles = @(
     "docs\final\artifacts\logos_kospi_shadow_evaluation_bundle_v23_notebooklm.md",
     "reports\research\logos_shadow_v1\logos_kospi_shadow_evaluation_bundle_v23_latest.json",
     "reports\research\logos_shadow_v1\logos_kospi_shadow_ablation_v23_round1_summary.json",
-    "docs\final\NOTEBOOKLM_HUB_B_BTC_AB_TRACK_CROSSCHECK_BRIEF_2026-04-04.md"
+    "docs\final\NOTEBOOKLM_HUB_B_BTC_AB_TRACK_CROSSCHECK_BRIEF_2026-04-04.md",
+    "docs\final\SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json",
+    "docs\final\dummy_swarm_score.jsonl"
 )
 
 $SourceDirs = @(

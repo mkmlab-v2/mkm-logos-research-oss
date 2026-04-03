@@ -1,0 +1,1 @@
+{"timestamp_utc": "2026-04-04T12:00:00+00:00", "seed_event_id": "wiring_test_lab_001", "seed_cutoff_time": "2026-04-04T11:00:00+00:00", "metrics": {"panic_ratio": 0.35, "fomo_index": 0.42, "consensus_strength": 0.58}, "simulation_meta": {"engine_name": "manual_dummy", "agent_count": 0, "prompt_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"}}

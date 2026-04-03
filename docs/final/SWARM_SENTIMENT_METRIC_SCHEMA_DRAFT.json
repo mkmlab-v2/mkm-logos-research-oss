@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "B_Track_Swarm_Sentiment_Metric_v1",
+  "type": "object",
+  "description": "MiroFish 등 군집 지능 엔진의 텍스트 결과를 A-track 파이프라인이 소화할 수 있는 이산 수치로 정규화하는 데이터 계약 (B-track 전용; 본선 트리거 아님)",
+  "properties": {
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "스코어 추출 및 파일 생성 시각"
+    },
+    "seed_event_id": {
+      "type": "string",
+      "description": "자극이 된 뉴스/이벤트의 식별자 (예: ftx_bankruptcy_20221108)"
+    },
+    "seed_cutoff_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "PIT(Point-in-Time) 보장을 위한 컷오프. 이 시각 이후의 데이터는 프롬프트에 포함 불가"
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "panic_ratio": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "fomo_index": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "consensus_strength": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "방향성 일치도 (군중 분산의 역수)"
+        }
+      },
+      "required": ["panic_ratio", "fomo_index", "consensus_strength"]
+    },
+    "simulation_meta": {
+      "type": "object",
+      "properties": {
+        "engine_name": { "type": "string", "default": "MiroFish" },
+        "agent_count": { "type": "integer" },
+        "prompt_hash": {
+          "type": "string",
+          "description": "재현성을 위한 프롬프트 해시값"
+        }
+      }
+    }
+  },
+  "required": ["timestamp_utc", "seed_event_id", "seed_cutoff_time", "metrics"]
+}
