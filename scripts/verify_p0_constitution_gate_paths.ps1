@@ -6,6 +6,10 @@ $ErrorActionPreference = "Stop"
 $required = @(
     "docs\final\CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
     "docs\final\P0_COMMERCIALIZATION_TRACKER.md",
+    "docs\final\COMPRESSION_SLA_POLICY_V1.md",
+    "docs\final\COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
+    "docs\NotebookLM_sources_manifest.md",
+    ".cursorrules",
     "AGENTS.md",
     "CLAUDE.md",
     "scripts\sync_notebooklm_sources_to_mkm_data_vault.ps1",

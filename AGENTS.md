@@ -12,6 +12,18 @@
 4. **정체성 (Multi-Lens):** 단일 TOE·통일장 “완성” 선언 금지 — §1.1. 레짐·로고스·명리·외경은 **격벽·교차 참고** (§2.1·§4).
 5. **Cursor Cloud Sandbox · 본선 분리:** Cloud Agent/Sandbox는 검증·병렬 가속 전용; 실매매·프로덕션 쓰기·실키 주입은 로컬/VPS 본선과 분리. 상세 `.cursor/rules/cursor-cloud-sandbox-boundary.mdc`.
 
+## Cursor 3.0 · 규칙 스택 (2026-04)
+
+- **제품**: Cursor 3 — **Agents Window**(로컬·워크트리·클라우드·SSH 병렬 에이전트), **Design Mode**(브라우저 UI 타겟), **Agent Tabs**(다중 채팅). IDE 명령 팔레트에서 “Agents Window” 등(공식 Changelog 2026-04-02).
+- **워크스페이스 규칙(SSOT)**: 루트 `.cursorrules`, `.cursor/rules/*.mdc`, 본 `AGENTS.md`, `CLAUDE.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — **Git으로 버전 관리**.
+- **User Rules**: Cursor **Settings → Rules**에만 있는 문구는 **레포에 자동 동기화되지 않음**; 팀·본선 기준은 반드시 위 SSOT 파일에 반영한다.
+
+## 압축 파이프라인 투트랙 (Fact-Lock 요약)
+
+- **정책**: `docs/final/COMPRESSION_SLA_POLICY_V1.md` — Track A(범용)·Track B(리터럴), 산출 JSON, 손실 패턴 리포트, 웹훅은 `active_kpi`(Track A) 기준.
+- **실행**: `scripts/run_ultra_compression_default.py` / `--mode literal`; `scripts/run_compression_automation_chain.ps1 -IncludeLiteralTrack`; 헬스: `scripts/run_workspace_automation_health.ps1 -IncludeCompressionKpi [-IncludeLiteralTrack]`(체인은 in-process 호출).
+- **해석 파이프라인**: `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` — NotebookLM·브리핑은 **참고**; 구현·KPI는 스크립트·산출물만 SSOT.
+
 ## 도메인 핸드오프(참고)
 
 - 한의 원전·코호트: `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` (라벨 A vs 원전 B 혼선 금지).

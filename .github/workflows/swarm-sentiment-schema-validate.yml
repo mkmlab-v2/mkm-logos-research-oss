@@ -10,6 +10,8 @@ on:
       - "docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json"
       - "docs/final/dummy_swarm_score.jsonl"
       - "docs/final/hypo_test_sentiment.jsonl"
+      - "docs/final/corr_report_001_hypo.jsonl"
+      - "docs/final/corr_report_001_left_lens.json"
       - ".github/workflows/swarm-sentiment-schema-validate.yml"
   pull_request:
     paths:
@@ -18,6 +20,8 @@ on:
       - "docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json"
       - "docs/final/dummy_swarm_score.jsonl"
       - "docs/final/hypo_test_sentiment.jsonl"
+      - "docs/final/corr_report_001_hypo.jsonl"
+      - "docs/final/corr_report_001_left_lens.json"
       - ".github/workflows/swarm-sentiment-schema-validate.yml"
   workflow_dispatch:
 
@@ -35,3 +39,4 @@ jobs:
         run: |
           python scripts/validate_swarm_sentiment_dummy.py
           python scripts/validate_swarm_sentiment_dummy.py --jsonl docs/final/hypo_test_sentiment.jsonl
+          python scripts/validate_swarm_sentiment_dummy.py --jsonl docs/final/corr_report_001_hypo.jsonl

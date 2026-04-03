@@ -1,6 +1,6 @@
 {
     "schema":  "showroom_public_bundle_v1",
-    "generated_at_utc":  "2026-04-03T20:07:25.6630395+00:00",
+    "generated_at_utc":  "2026-04-03T21:07:04.9338667+00:00",
     "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1",
     "sources":  {
                     "c2_guardrail_status":  "C:\\workspace\\docs\\final\\artifacts\\c2_aegis_guardrail_status_latest.json",
@@ -15,7 +15,7 @@
                           "ops_fusion_overall_ok":  true,
                           "unified_score_balanced":  0.40342,
                           "direction_source":  "account",
-                          "snapshot_as_of_utc":  "2026-04-03T20:07:25Z",
+                          "snapshot_as_of_utc":  "2026-04-03T21:07:04Z",
                           "c2_status":  "GREEN_HOLD"
                       },
     "public_ui":  {
@@ -32,23 +32,23 @@
                       "unified_score_balanced":  0.40342
                   },
     "public_event_v1":  {
-                            "timestamp":  "2026-04-03T20:07:25.6630395+00:00",
+                            "timestamp":  "2026-04-03T21:07:04.9338667+00:00",
                             "active_character_id":  "dragon_quant",
                             "risk_level":  "INFO",
                             "public_signal_direction":  "HOLD",
                             "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice.",
                             "schema_version":  "public-event.v1",
-                            "event_id":  "showroom-20260403T200725-bda320d4",
+                            "event_id":  "showroom-20260403T210704-4c32679f",
                             "source":  "ops_showroom_bundle_v1",
                             "system_status":  "online",
                             "active_strategies_count":  1,
                             "delayed_metrics":  {
                                                     "delay_seconds":  180,
-                                                    "as_of_utc":  "2026-04-03T20:07:25Z",
+                                                    "as_of_utc":  "2026-04-03T21:07:04Z",
                                                     "pnl_pct_vs_start":  0
                                                 },
                             "direction_abstract":  "short",
                             "disclaimer_ref":  "jemaai_showroom_v1",
-                            "last_ok_utc":  "2026-04-03T20:07:25.6630395+00:00"
+                            "last_ok_utc":  "2026-04-03T21:07:04.9338667+00:00"
                         }
 }

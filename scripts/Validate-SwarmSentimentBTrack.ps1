@@ -16,6 +16,7 @@ Set-Location $root
 
 $py = "scripts\validate_swarm_sentiment_dummy.py"
 $hypo = "docs\final\hypo_test_sentiment.jsonl"
+$corr = "docs\final\corr_report_001_hypo.jsonl"
 
 Write-Host "[B-track Swarm] validate dummy JSONL (wiring)..." -ForegroundColor Cyan
 & py $py
@@ -23,9 +24,17 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if (-not (Test-Path -LiteralPath (Join-Path $root $hypo))) {
     Write-Warning "Skip [HYPO] sample: missing $hypo"
+} else {
+    Write-Host "[B-track Swarm] validate [HYPO] sample: $hypo ..." -ForegroundColor Cyan
+    & py $py --jsonl $hypo
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if (-not (Test-Path -LiteralPath (Join-Path $root $corr))) {
+    Write-Warning "Skip corr_report [HYPO]: missing $corr"
     exit 0
 }
 
-Write-Host "[B-track Swarm] validate [HYPO] sample: $hypo ..." -ForegroundColor Cyan
-& py $py --jsonl $hypo
+Write-Host "[B-track Swarm] validate corr_report [HYPO]: $corr ..." -ForegroundColor Cyan
+& py $py --jsonl $corr
 exit $LASTEXITCODE

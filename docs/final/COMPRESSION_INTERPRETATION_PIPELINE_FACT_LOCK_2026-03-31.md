@@ -62,6 +62,7 @@ Important: multi-lens is a quality microscope, not the primary compressor.
 - Latest generated artifacts:
   - `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json`
   - `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`
+  - **Two-track (literal profile, optional):** `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json` — `py scripts/run_ultra_compression_default.py --mode literal`. Policy SSOT: `docs/final/COMPRESSION_SLA_POLICY_V1.md`.
 
 Use these artifacts as runtime truth, not chat memory.
 
