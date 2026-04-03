@@ -82,7 +82,7 @@
 | Logos 교집합 랭킹 SSOT | `docs/final/LOGOS_INTERSECTION_RANKING_SSOT_2026-03-29.md` | `mean`/`min` 지표·경로; λ(편향)와 기호 분리; 본선·실매매 자동 합선 금지 |
 | 한의 원전·프록시 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` · `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §9 | 코퍼스 B 분리·승격 경계; 별도 handoff MD 미작성 시 본 문서가 SSOT |
 | BTC 금융 Hub B — A/B 교차검증 브리프 | `docs/final/NOTEBOOKLM_HUB_B_BTC_AB_TRACK_CROSSCHECK_BRIEF_2026-04-04.md` | NotebookLM 소스 ID `bd996cd5-cb6e-444c-8110-eb2ce6a4c745` · 노트북 `b79929a2-8742-42a8-a4d7-06523e12935d` (2026-04-04 적재). OHLCV·온톨로지=B 연구 가설 vs A 본선 팩트 구분·Promotion Loop·Fact-Lock |
-| Swarm 심리 메트릭 (B-track 데이터 계약) | `docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json` · `docs/final/dummy_swarm_score.jsonl` | MiroFish류 군집 출력→이산 수치 JSON 계약(draft-07); 로컬 검증 `py scripts/validate_swarm_sentiment_dummy.py`(exit 0); A-track 트리거·실매매 합선 금지 |
+| Swarm 심리 메트릭 (B-track 데이터 계약) | `docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json` · `docs/final/dummy_swarm_score.jsonl` | MiroFish류 군집 출력→이산 수치 JSON 계약(draft-07); 로컬 검증 `py scripts/validate_swarm_sentiment_dummy.py`(exit 0); CI: `.github/workflows/swarm-sentiment-schema-validate.yml`; A-track 트리거·실매매 합선 금지 |
 | Swarm 메트릭 Hub B 번들 (RAG) | `docs/final/SWARM_SENTIMENT_METRIC_NOTEBOOKLM_BUNDLE_2026-04-04.md` | NotebookLM 금융 Hub B 소스 ID `582bfa0b-ac4d-4715-9073-b170bd7a8719` — JSON 직접 업로드 불가 시 MD 번들로 동일 내용 인제스트 |
 
 ---

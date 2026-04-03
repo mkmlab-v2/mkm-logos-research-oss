@@ -1,0 +1,31 @@
+# B-track wiring: JSON Schema Draft7 validation for dummy_swarm_score.jsonl (no API keys).
+name: Swarm sentiment schema validate
+
+on:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/validate_swarm_sentiment_dummy.py"
+      - "docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json"
+      - "docs/final/dummy_swarm_score.jsonl"
+      - ".github/workflows/swarm-sentiment-schema-validate.yml"
+  pull_request:
+    paths:
+      - "scripts/validate_swarm_sentiment_dummy.py"
+      - "docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json"
+      - "docs/final/dummy_swarm_score.jsonl"
+      - ".github/workflows/swarm-sentiment-schema-validate.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install jsonschema
+        run: python -m pip install --upgrade pip jsonschema
+      - name: Validate dummy JSONL against schema
+        run: python scripts/validate_swarm_sentiment_dummy.py
