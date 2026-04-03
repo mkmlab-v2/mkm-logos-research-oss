@@ -10,6 +10,7 @@
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\Start-OpenClaudeBTrackPilot.ps1
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\Start-OpenClaudeBTrackPilot.ps1 -Ollama
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\Start-OpenClaudeBTrackPilot.ps1 -Ollama -Smoke
+#   # One-shot chain: multilens pytest + Ollama smoke — scripts\Invoke-BTrackOpenClaudeFusionGate.ps1
 #   # B-track smoke: OpenAI-compatible API (DashScope / OpenRouter / Vercel AI Gateway, etc.) — no .env dot-source
 #   $env:OPENCLAUDE_PILOT_API_KEY = '<provider-key>'
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\Start-OpenClaudeBTrackPilot.ps1 -CloudOpenAI -CloudBaseUrl 'https://openrouter.ai/api/v1' -CloudModel 'qwen/qwen3-6-plus'
@@ -22,6 +23,7 @@ param(
     [switch]$CloudOpenAI,
     [string]$CloudBaseUrl = "",
     [string]$CloudModel = "",
+    [string]$SmokePrompt = "",
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$RemainingArguments
 )
@@ -79,8 +81,9 @@ if (-not $oc) {
 }
 
 if ($Smoke) {
+    $smokeText = if (-not [string]::IsNullOrWhiteSpace($SmokePrompt)) { $SmokePrompt.Trim() } else { "Reply with exactly one word: OK" }
     Write-Host "[OpenClaude B-Track pilot] Smoke: non-interactive one-shot (openclaude --print)..." -ForegroundColor Cyan
-    $smokeArgs = @("--add-dir", $workspace, "-p", "Reply with exactly one word: OK", "--print")
+    $smokeArgs = @("--add-dir", $workspace, "-p", $smokeText, "--print")
     & openclaude @smokeArgs
     exit $LASTEXITCODE
 }
