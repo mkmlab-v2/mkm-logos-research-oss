@@ -27,7 +27,7 @@
 - **Cursor 3.0 (2026-04)**: Agents Window·Design Mode·Agent Tabs — **병렬 에이전트·UI 정밀 피드백**; 헌법·Fact-Lock·TITAN 우선순위는 변경 없음(루트 `.cursorrules`, `AGENTS.md`).
 - **Python**: Windows에서는 `py` 사용(프로젝트 규칙과 동일).
 - **공유 B-track SSOT(팩트 우선)**: `G:\공유 드라이브\MKM_DATA_VAULT\vault\btrack_artifacts_verified` — 로컬 산출물 동기화: `scripts/push_local_artifacts_to_vault.ps1`
-- **NotebookLM / 금융 Hub B 주간 준비(실험 체인)**: `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`를 감싼 `scripts/Invoke-HubBWeeklyMirror.ps1` → 감사 로그 `reports/hub_b_weekly_mirror_log.jsonl` 한 줄·스키마 `hub_b_weekly_mirror_v1`; 주간 작업 등록 `scripts/Register-HubBWeeklyMirrorTask.ps1`(토요일 기본). 클라우드 `source_add`는 별도(MCP/UI).
+- **NotebookLM / 금융 Hub B 주간 준비(실험 체인)**: `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`를 감싼 `scripts/Invoke-HubBWeeklyMirror.ps1` → 감사 로그 `reports/hub_b_weekly_mirror_log.jsonl` 한 줄·스키마 `hub_b_weekly_mirror_v1`; 주간 작업 등록 `scripts/Register-HubBWeeklyMirrorTask.ps1`(토요일 기본). 클라우드 `source_add`는 별도(MCP/UI). **MCP 설정이 녹색이어도 “이 채팅에 도구 주입”과는 별개** — `.cursor/rules/notebooklm-mcp-session-bridge.mdc`.
 - **B-track Swarm 심리 메트릭**: 더미 + `[HYPO]` 샘플(`docs/final/hypo_test_sentiment.jsonl`) 일괄 검증 `scripts/Validate-SwarmSentimentBTrack.ps1`; 단일 `py scripts/validate_swarm_sentiment_dummy.py [--jsonl …]`; CI `.github/workflows/swarm-sentiment-schema-validate.yml`.
 - **B-track 소셜 원천(격리)**: Bluesky/ATProto 샘플 수집 `scripts/test_atproto_bluesky_bridge.py` (`--dry-run`으로 의존성·경로만 확인; 실수집은 `BSKY_HANDLE`·`BSKY_APP_PASSWORD`). 출력은 `memory/v2/btrack/raw_feeds/atproto/` — 스키마 정규화·MiroFish는 별도 단계·본선 합선 금지.
 - **어휘 계약**: `docs/final/MASTER_Linguistic_Contract_2026.md` — 외부 사전 수신: `scripts/setup/fetch_external_lexicons.ps1`, 승격: `scripts/push_external_lexicon_to_vault.ps1`
