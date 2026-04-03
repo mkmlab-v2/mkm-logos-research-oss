@@ -5,7 +5,7 @@
 
 .EXAMPLE
   .\scripts\Invoke-ExternalDrivesGovernance.ps1
-  .\scripts\Invoke-ExternalDrivesGovernance.ps1 -ConfigPath .\scripts\config\external_drives_governance_v1.json
+  .\scripts\Invoke-ExternalDrivesGovernance.ps1 -ConfigPath .\scripts\external_drives_governance_v1.json
 #>
 param(
     [string]$ConfigPath = "",
@@ -18,7 +18,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $repoRoot = if ($WorkspaceRoot) { $WorkspaceRoot } else { (Resolve-Path (Join-Path $PSScriptRoot '..')).Path }
-if (-not $ConfigPath) { $ConfigPath = Join-Path $PSScriptRoot 'config\external_drives_governance_v1.json' }
+if (-not $ConfigPath) { $ConfigPath = Join-Path $PSScriptRoot 'external_drives_governance_v1.json' }
 if (-not $OutputJson) { $OutputJson = Join-Path $repoRoot 'reports\drive_governance_latest.json' }
 
 if (-not (Test-Path -LiteralPath $ConfigPath)) {

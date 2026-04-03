@@ -1,0 +1,23 @@
+{
+  "canonical_workspace": "C:\\workspace",
+  "backup_destination_hint": "Prefer a single dated mirror on F:; avoid multiple full workspace clones (HF cache, node_modules).",
+  "drives": {
+    "E": {
+      "min_free_gb_warn": 20,
+      "min_free_gb_critical": 5
+    },
+    "F": {
+      "min_free_gb_warn": 15,
+      "min_free_gb_critical": 2
+    }
+  },
+  "f_drive_redundant_patterns": [
+    "workspace*",
+    "huggingface*",
+    "cache*"
+  ],
+  "duplicate_watch": {
+    "folder_names": ["workspace", "mkm-destiny-ai-41e38ec6"],
+    "warn_if_both_exist_gb": 10
+  }
+}
