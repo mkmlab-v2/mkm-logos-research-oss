@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_CODEBOOK = WORKSPACE_ROOT / "docs" / "final" / "master_codebook_dual_track.multidomain_5000.json"
+DEFAULT_CODEBOOK = WORKSPACE_ROOT / "docs" / "final" / "master_codebook_dual_track.multidomain_1000.json"
 DEFAULT_SAMPLES = WORKSPACE_ROOT / "data" / "constitution" / "master_codebook_real_validation_samples.jsonl"
 
 

@@ -14,7 +14,17 @@ $required = @(
     "CLAUDE.md",
     "scripts\sync_notebooklm_sources_to_mkm_data_vault.ps1",
     "scripts\run_waiting_queue_monthly_check.ps1",
-    "projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1"
+    "projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1",
+    "scripts\core\domain_router.py",
+    "codebook\shards\zone_a_scm.json",
+    "codebook\shards\zone_b_timing.json",
+    "codebook\shards\zone_c_hangul.json",
+    "codebook\shards\zone_d_ssot.json",
+    "codebook\shards\zone_e_finance.json",
+    "codebook\shards\zone_f_code.json",
+    "codebook\shards\zone_g_health.json",
+    "codebook\shards\zone_h_legacy.json",
+    "docs\final\master_codebook_dual_track.multidomain_1000.json"
 )
 
 $missing = @()

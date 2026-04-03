@@ -7,18 +7,16 @@ Purpose: lock one unambiguous explanation of the current compression/interpretat
 - This document describes the runtime path currently implemented under `scripts/`.
 - Do not claim "fully implemented 12AI" from design notes alone.
 - Distinguish clearly:
-  - **Implemented now**: 4-shard domain routing pilot + compression benchmark engine.
-  - **Planned**: full 12-shard expansion and explicit 16-state interface integration in compression runtime.
+  - **Implemented now**: domain router loads **every** `codebook/shards/zone_*.json` file (currently **8** shards: `zone_a_scm` through `zone_h_legacy`; the original pilot was the **a–d** subset) + compression benchmark engine.
+  - **Planned**: further expansion toward **12** domain shards (optional target count; not tied to agent count) and explicit 16-state interface integration in compression runtime.
 
 ## 2) Current runtime flow (implemented)
 
 1. Input text enters evaluation/compression runtime.
-2. Domain router selects shard policy (pilot 4 zones):
+2. Domain router selects shard policy by scoring `routing_keywords` across **all** loaded shards (`DomainSpecificRouter` glob: `codebook/shards/zone_*.json`):
    - `scripts/core/domain_router.py`
-   - `codebook/shards/zone_a_scm.json`
-   - `codebook/shards/zone_b_timing.json`
-   - `codebook/shards/zone_c_hangul.json`
-   - `codebook/shards/zone_d_ssot.json`
+   - `zone_a_scm.json`, `zone_b_timing.json`, `zone_c_hangul.json`, `zone_d_ssot.json` (pilot core)
+   - `zone_e_finance.json`, `zone_f_code.json`, `zone_g_health.json`, `zone_h_legacy.json` (extended zones; same loader)
 3. Selected shard injects policy:
    - hard keep terms (always)
    - soft keep terms (conditional)
@@ -69,7 +67,7 @@ Use these artifacts as runtime truth, not chat memory.
 ### 6.1 Benchmark profile and evidence refresh (Fact-Lock)
 
 - **Default eval input**: `docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json`; **baseline report**: `MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json`.
-- **Active profile runner (light, ~seconds)**: `py scripts/run_ultra_compression_default.py` — reads `MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json`, runs `evaluate_report` with `use_domain_router=True` (4-zone pilot), rewrites `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`.
+- **Active profile runner (light, ~seconds)**: `py scripts/run_ultra_compression_default.py` — reads `MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json`, runs `evaluate_report` with `use_domain_router=True` (all `zone_*.json` shards under `codebook/shards/`), rewrites `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`.
 - **Full grid bench (heavy)**: `py scripts/run_ultra_compression_bench.py` — round1 sweeps strategies `A|B|C`, intensities `high|ultra|extreme`, hangul flag; round2 sweeps cap grid on pareto seeds; emits `MULTILENS_ULTRA_COMPRESSION_ROUND1_V1.json`, `ROUND2`, `DECISION`, `BASELINE_LOCK`. Not required on every commit.
 - **Master codebook lexicon V1**: `scripts/core/master_codebook_lexicon_v1_bridge.py` resolves `reports/constitution/btrack_pilot/master_codebook_lexicon_v1_*_rows_latest.json` (or an explicit path) and, when `use_master_codebook_lexicon_v1=True` in `evaluate_report`, **union-matches** Unicode word tokens of each case’s `raw_text` against export `normalized_form` values to extend **must_keep** (metadata under `route.master_codebook_lexicon_v1`). Reproduce export: `py scripts/export_master_codebook_v1.py`. This is **lexicon rail join only** (no 4D vectors, no replacement of domain shard JSON policy).
 
@@ -77,7 +75,7 @@ Use these artifacts as runtime truth, not chat memory.
 
 ## 7) Terminology lock (anti-confusion)
 
-- "12AI implemented": currently means **routing orchestration policy is active with a 4-zone pilot router**.
+- "12AI implemented": currently means **routing orchestration policy is active with a multi-zone shard router** (all `zone_*.json` files under `codebook/shards/`; see §1–2).
 - "12AI" does **not** imply 12 subagents must run, and does **not** imply a 1:1 binding between codebook domain count and agent count.
 - "Codebook": currently means shard JSON policy + template/codebook assets, not only one file.
 - "4D compression": transformation engine concept used by runtime strategy path.

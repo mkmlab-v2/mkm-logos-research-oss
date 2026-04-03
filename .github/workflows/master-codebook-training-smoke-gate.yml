@@ -12,6 +12,7 @@ on:
       - "scripts/validate_master_codebook_real_samples.py"
       - "docs/final/master_codebook_dual_track.schema.json"
       - "docs/final/master_codebook_dual_track.template.json"
+      - "docs/final/master_codebook_dual_track.multidomain_1000.json"
       - "data/constitution/master_codebook_real_validation_samples.jsonl"
   workflow_dispatch:
 
@@ -26,6 +27,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      - name: Validate real samples vs multidomain codebook
+        run: python scripts/validate_master_codebook_real_samples.py
 
       - name: Run master codebook training smoke
         run: python scripts/run_master_codebook_training_smoke.py --count 500 --prefix ci_smoke
