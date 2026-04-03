@@ -1,0 +1,14 @@
+{
+  "name": "no1kmedi-payapp-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "smoke": "node smoke-chat.mjs",
+    "smoke:prod": "node smoke-chat.mjs --prod"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

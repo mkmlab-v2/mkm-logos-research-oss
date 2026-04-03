@@ -1,0 +1,25 @@
+# POST /api/ai/chat smoke — adversarial guard must return 200; LLM cases may 503 until keys are set.
+name: no1kmedi-api-smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install payapp-api deps
+        run: npm ci
+        working-directory: projects/no1kmedi/payapp-api
+
+      - name: Remote smoke (api.no1kmedi.com)
+        run: node smoke-chat.mjs --prod
+        working-directory: projects/no1kmedi/payapp-api
