@@ -45,14 +45,15 @@
 
 ## Handoff (다른 AI / 병렬 창)
 
-**최종 갱신**: 2026-03-29 (로컬 `git status` 기준)
+**최종 갱신**: 2026-04-03 (`git rev-parse HEAD` 기준 — NotebookLM 지휘부·매니페스트 병합 규칙 준수)
 
 | 항목 | 값 |
 |------|-----|
 | **브랜치** | `main` |
-| **Handoff 기록 커밋 (full)** | `d770246f5a87f5b3c42076559844624f199b9ee9` |
-| **Handoff 기록 커밋 (short)** | `d770246f5a` |
-| **SSOT 한 줄** | `d770246f5a docs(battleboard): fuse Handoff policy — git rev-parse SSOT; fix table markdown` |
+| **Handoff 기록 커밋 (full)** | `a630645a7c48750b8693a42db576853de9bf76e3` |
+| **Handoff 기록 커밋 (short)** | `a630645a7c` |
+| **SSOT 한 줄** | `a630645a7c feat(scripts): add sasang encoder smoke benchmark and HF cache gitignore` |
+| **NotebookLM 작전지휘부** | 노트북 `347e5cbe-0ade-4615-9aac-8747d4fa644e` · 소스 **28**개 · 핵심: `CONSTITUTION_*`, `NotebookLM_sources_manifest.md`, 본 전황판, `AGENTS.md`/`CLAUDE.md`, `P0_COMMERCIALIZATION_TRACKER.md` |
 | **작업트리** | 화이트리스트 경로는 커밋됨. 실험 트리는 `.gitignore`의 `projects/*` 등으로 **미표시**될 수 있음 — 로컬은 `git status`로 확인. |
 
 > **운영 규칙 (융합)**: 저장소 **진짜 팁**은 항상 터미널의 `git rev-parse HEAD`가 SSOT. 위 표의 해시는 “이 Handoff 블록을 마지막으로 맞춘 커밋”이며, Handoff만 수정하는 커밋을 내면 그 직후 새 객체 해시가 생기므로 **표는 최신 팁보다 한 커밋 늦을 수 있음(정상)**. 매번 표를 최신 `HEAD`에 맞출 필요는 없고, 필요할 때만 갱신하면 된다. 완전 일치가 필요하면 해당 커밋 직후 표를 한 번 더 고치거나, 검증은 `git rev-parse HEAD`만 보면 된다.
