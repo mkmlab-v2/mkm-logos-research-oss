@@ -17,5 +17,20 @@ foreach ($rel in $targets) {
     }
   }
 }
+
+$webRoot = Join-Path (Split-Path $root -Parent) "src"
+if (Test-Path $webRoot) {
+  Get-ChildItem -Path $webRoot -Recurse -Include "*.tsx", "*.ts" -File | ForEach-Object {
+    if ($_.FullName -match "\\node_modules\\") { return }
+    $text = [System.IO.File]::ReadAllText($_.FullName)
+    foreach ($p in $patterns) {
+      if ($text.Contains($p)) {
+        Write-Host "BANNED in $($_.FullName): $p"
+        $failed = $true
+      }
+    }
+  }
+}
+
 if ($failed) { exit 1 }
-Write-Host "OK: no banned phrases in marketing-site HTML/CSS/JS."
+Write-Host "OK: no banned phrases in marketing-site and no1kmedi/src."

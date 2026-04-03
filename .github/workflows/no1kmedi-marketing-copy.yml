@@ -5,9 +5,11 @@ on:
   push:
     paths:
       - "projects/no1kmedi/marketing-site/**"
+      - "projects/no1kmedi/src/**"
   pull_request:
     paths:
       - "projects/no1kmedi/marketing-site/**"
+      - "projects/no1kmedi/src/**"
   workflow_dispatch:
 
 jobs:

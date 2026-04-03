@@ -1,6 +1,6 @@
 /**
- * Clinical Copilot Guardian API
- * 
+ * 임상 보조 가디언 API
+ *
  * rPPG, 설진, 음성, 설문 데이터를 통합하여
  * 진료 보조 AI 상담 제공
  * 
@@ -144,15 +144,15 @@ export async function POST(request: NextRequest) {
     const vectorCoords = `${vector4d.S.toFixed(3)},${vector4d.L.toFixed(3)},${vector4d.K.toFixed(3)},${vector4d.M.toFixed(3)}`
     const trafficStatus = trafficLight.status === 'high_risk' ? 'R' : trafficLight.status === 'caution' ? 'Y' : 'G'
 
-    const prompt = `System: You are 'Logos AI Guardian'. Analyze the 4D Vector [${vectorCoords}] & Status ${trafficStatus} based on 'Boxmyeongjiju(保命之主)' & '0.25 Equilibrium Theory'.
-Context: S(Spirit), L(Logic), K(Knowledge), M(Material). Equilibrium=0.25.
-Task: Provide concise clinical-support advice for pre-consultation.
+    const prompt = `System: You are the no1kmedi clinical support assistant. Analyze the 4D vector [${vectorCoords}] and status ${trafficStatus}.
+Context: S, L, K, M dimensions; target balance band 0.25.
+Task: Provide concise clinical-support advice for pre-consultation (not a diagnosis).
 Output JSON: {"message": "Direct, empathetic insight (2 sentences)", "recommendations": ["Actionable advice 1", "Actionable advice 2", "Actionable advice 3"]}`
 
     const result = await generateClinicalText({
       prompt,
       systemInstruction:
-        'You are no1kmedi Clinical Copilot Guardian, a clinical-support assistant grounded in Korean medicine principles. You do not diagnose. Provide concise, empathetic pre-consultation guidance in Korean, based on 4D vector analysis (S-L-K-M).',
+        'You are the no1kmedi clinical support assistant for Korean medicine workflows. You do not diagnose. Provide concise, empathetic pre-consultation guidance in Korean, based on 4D vector analysis (S-L-K-M).',
       model: 'gemini-1.5-flash',
       temperature: 0.7,
       maxOutputTokens: 2048,
@@ -190,7 +190,7 @@ Output JSON: {"message": "Direct, empathetic insight (2 sentences)", "recommenda
       }
     })
   } catch (error: any) {
-    console.error('Clinical Copilot Guardian 오류:', error)
+    console.error('임상 보조 가디언 오류:', error)
     return NextResponse.json(
       {
         success: false,

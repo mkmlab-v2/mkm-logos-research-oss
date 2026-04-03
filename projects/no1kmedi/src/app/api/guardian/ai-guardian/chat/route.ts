@@ -1,6 +1,6 @@
 /**
- * Clinical Copilot Guardian 채팅 API
- * 
+ * 임상 보조 가디언 채팅 API
+ *
  * 진료 보조 AI와의 대화형 상담
  * 
  * 작성일: 2026-02-03
@@ -30,16 +30,16 @@ export async function POST(request: NextRequest) {
       `${chat.role === 'user' ? 'U' : 'A'}:${chat.message.substring(0, 50)}`
     ).join('|')
 
-    const context = `Clinical Copilot Guardian. 4D: [${vectorCoords}]. 
+    const context = `no1kmedi clinical support assistant. 4D: [${vectorCoords}].
 History: ${recentHistory || 'none'}
 Q: ${message}
-Theory: 보명지주, 0.25 평형. 
+Theory: equilibrium reference, 0.25 target band.
 Output: 2-3 sentences, pre-consultation clinical-support advice.`
 
     const result = await generateClinicalText({
       prompt: context,
       systemInstruction:
-        'You are no1kmedi Clinical Copilot Guardian, a clinical-support assistant. Do not diagnose. Answer in Korean when possible, with concise and actionable pre-consultation guidance based on S-L-K-M vectors.',
+        'You are the no1kmedi clinical support assistant for Korean medicine workflows. Do not diagnose. Answer in Korean when possible, with concise pre-consultation guidance based on S-L-K-M vectors.',
       model: 'gemini-1.5-flash',
       temperature: 0.7,
       maxOutputTokens: 2048,
@@ -60,7 +60,7 @@ Output: 2-3 sentences, pre-consultation clinical-support advice.`
       }
     })
   } catch (error: any) {
-    console.error('Clinical Copilot 채팅 오류:', error)
+    console.error('임상 보조 가디언 채팅 오류:', error)
     return NextResponse.json(
       {
         success: false,

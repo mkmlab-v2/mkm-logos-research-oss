@@ -593,7 +593,7 @@ app.post("/api/payment/payapp/create", async (req, res) => {
     await writeJson(paymentsFile, rows);
 
     const origin = `https://${req.get("host")}`;
-    const redirectUrl = `https://api.payapp.kr/oapi/pay?mul_no=${encodeURIComponent(payapp_key)}&ordr_idxx=${encodeURIComponent(orderId)}&good_name=${encodeURIComponent(product_name || "MKM Hanui Clinical Copilot")}&good_mny=${encodeURIComponent(String(amount || 39000))}&feedbackurl=${encodeURIComponent(`${origin}/api/payment/payapp/feedback`)}&return_url=${encodeURIComponent(return_url || "https://no1kmedi.com")}`;
+    const redirectUrl = `https://api.payapp.kr/oapi/pay?mul_no=${encodeURIComponent(payapp_key)}&ordr_idxx=${encodeURIComponent(orderId)}&good_name=${encodeURIComponent(product_name || "MKM Hanui Clinical Assistant")}&good_mny=${encodeURIComponent(String(amount || 39000))}&feedbackurl=${encodeURIComponent(`${origin}/api/payment/payapp/feedback`)}&return_url=${encodeURIComponent(return_url || "https://no1kmedi.com")}`;
 
     return res.json({
       success: true,
