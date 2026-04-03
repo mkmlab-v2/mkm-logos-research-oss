@@ -1,6 +1,6 @@
 {
   "schema": "independent_lens_shadow_gate_v1",
-  "ts_utc": "2026-04-03T17:06:42Z",
+  "ts_utc": "2026-04-03T21:06:41Z",
   "month_tag": "2026-04",
   "policy": {
     "a_track_binding": "forbidden",
@@ -9,7 +9,7 @@
     "min_monthly_cycles": 2
   },
   "history": {
-    "weekly_cycles_observed": 158,
+    "weekly_cycles_observed": 170,
     "monthly_cycles_observed": 1,
     "history_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_shadow_history.jsonl"
   },

@@ -11,6 +11,15 @@ Keyword → full-corpus Logos (4D) cosine resonance; optional regime fingerprint
 - Optional ``--rank-by-regime``: skip keyword ranking; scan the full corpus and keep
   **top-k verses by cosine(verse_embedding, regime fingerprint)** only (regime-primary).
 
+**Operational layer split (do not merge in prose or pipelines):**
+
+- **Regime resonance (this script):** ``--rank-by-regime`` uses ``regime_map.json`` keys
+  (e.g. ``imf``, ``lehman``, ``covid``) and Logos embeddings — **not** live index levels.
+- **KOSPI time series:** use ``scripts/run_chronos_forward_kospi_baseline.ps1`` (or downstream
+  JSON under ``data/chronos_forward_training/``) — **do not** pass KOSPI prints into this probe.
+- **Lemma / original-language frequency:** not computed here; any frequency-vs-verse study is a
+  **separate research script** and must not be auto-fused with A-track or this probe's output.
+
 This is a **measurement / research** probe, not a live trading signal.
 """
 

@@ -137,6 +137,8 @@ $SourceFiles = @(
     "docs\final\SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json",
     "docs\final\dummy_swarm_score.jsonl",
     "docs\final\hypo_test_sentiment.jsonl",
+    "docs\final\corr_report_001_hypo.jsonl",
+    "docs\final\corr_report_001_left_lens.json",
     "docs\final\SWARM_SENTIMENT_METRIC_NOTEBOOKLM_BUNDLE_2026-04-04.md"
 )
 

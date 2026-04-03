@@ -1,7 +1,7 @@
 # Fact-Safe Multi-Lens Brief
 
 ## 메타 고정 헤더
-- generated_at_utc: 2026-04-03T17:06:41Z
+- generated_at_utc: 2026-04-03T21:06:40Z
 - engine_id: V2_Precision_MCP
 - boundary_rule: observatory_ephemeris_v1
 - reliability_badge: HIGH
@@ -22,7 +22,7 @@
 - funding_fee: None
 - net: -0.00578055
 - net_source: kpi_history_fallback
-- history samples: 674
+- history samples: 726
 - history net_delta: 0.03032499
 - history avg_net_per_fill_latest: None
 - backtest_available: True
@@ -33,8 +33,8 @@
 - backtest_sweep_available: True
 - backtest_sweep_best_period: 2026-01-01..2026-12-31
 - backtest_sweep_best_sample_count: 70
-- backtest_sweep_best_net_return_pct: 0.917452
-- backtest_sweep_best_profit_factor: 1.070379
+- backtest_sweep_best_net_return_pct: 0.95601
+- backtest_sweep_best_profit_factor: 1.073555
 
 ## 운영 게이트 결론
 - reliability_badge: HIGH

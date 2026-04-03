@@ -1,6 +1,6 @@
 {
   "schema": "insight_effectiveness_scoreboard_v1",
-  "generated_at_utc": "2026-04-03T17:07:05Z",
+  "generated_at_utc": "2026-04-03T21:07:04Z",
   "sources": {
     "fused_history_path": "C:\\workspace\\docs\\final\\artifacts\\fused_paper_cycle_decision_history.jsonl",
     "scoring_distribution_path": "C:\\workspace\\docs\\final\\artifacts\\trinity_scoring_distribution_latest.json",
@@ -35,12 +35,12 @@
     }
   ],
   "state_signal_snapshot": {
-    "state_present_rate_all": 0.6463,
+    "state_present_rate_all": 0.6628,
     "advisory_decision": "state_clamp_stable"
   },
   "shadow_gate_snapshot": {
     "decision": "KEEP_OBSERVATION_ONLY",
-    "weekly_cycles_observed": 158,
+    "weekly_cycles_observed": 170,
     "monthly_cycles_observed": 1
   },
   "checks": {

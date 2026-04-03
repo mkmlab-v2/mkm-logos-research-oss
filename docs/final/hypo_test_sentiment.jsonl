@@ -1,0 +1,1 @@
+{"timestamp_utc":"2026-04-04T06:00:00Z","seed_event_id":"[HYPO]neutral_stress_test_001","seed_cutoff_time":"2026-04-04T05:55:00Z","metrics":{"panic_ratio":0.45,"fomo_index":0.30,"consensus_strength":0.65},"simulation_meta":{"engine_name":"MiroFish","agent_count":8,"prompt_hash":"sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}}

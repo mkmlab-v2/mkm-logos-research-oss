@@ -1,0 +1,24 @@
+{
+  "schema": "dual_lens_left_v1",
+  "event_date_utc": "2024-08-05",
+  "label": "[REFERENCE] Public market summary — verify before treating as trading SSOT",
+  "crypto_fear_and_greed": {
+    "value": 26,
+    "band": "Fear",
+    "api_verified": {
+      "source": "https://api.alternative.me/fng/",
+      "query": "limit=800, date_format=us; entry timestamp 08-05-2024",
+      "fetched_utc": "2026-04-04"
+    },
+    "note": "Alternative.me daily API print for 2024-08-05 is 26 (Fear). Some press roundups cited ~17 same week; use API archive for SSOT."
+  },
+  "btc_usd": {
+    "intraday_low_approx": 49000,
+    "daily_close_approx": 54018,
+    "note": "Intraday dip below $50k and close ~$54k with large daily drop reported 2024-08-05; verify CoinGecko/CoinMarketCap historical for SSOT."
+  },
+  "sources_examples": [
+    "https://cointelegraph.com/news/bitcoin-extreme-fear-etfs-168-million-outflows",
+    "https://www.coindesk.com/markets/2024/08/05/bitcoin-bounces-to-53k-after-brutal-sell-off-reminiscent-of-covid-crash"
+  ]
+}

@@ -10,6 +10,13 @@ Requires: pip install atproto
 Auth:     BSKY_HANDLE (or BLUESKY_HANDLE), BSKY_APP_PASSWORD (App Password from Bluesky settings)
 
 Default out: projects/bitcoin-trading/memory/v2/btrack/raw_feeds/atproto/YYYYMMDD_atproto_sentiment_raw.jsonl
+
+Automation (optional): Invoke-BTrackAtprotoBlueskyProbe.ps1; Register-BTrackAtprotoBlueskyProbeTask.ps1
+(weekly Sunday 09:00 default; not listed in automation_registry.json).
+
+Downstream (separate steps; not implemented here): normalize discourse to Swarm metrics JSONL per
+docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json; validate with scripts/validate_swarm_sentiment_dummy.py
+or scripts/Validate-SwarmSentimentBTrack.ps1. Label live extractions [HYPO] until promoted.
 """
 from __future__ import annotations
 
