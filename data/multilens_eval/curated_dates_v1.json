@@ -1,0 +1,20 @@
+{
+  "schema": "multilens_eval_curated_dates_v1",
+  "intent": "repro_bench_grid_v1",
+  "intent_note": "Overlap JSONL/JSON under data/multilens_eval/*_curated_overlap_* are fixed demo grids for harness regression and spot-checks, not live market-feature pipelines. Optional future OHLC/FGI adapters feed the same slots without reusing this intent label.",
+  "window_label": "2022_crypto_stress_sample",
+  "asset_focus": "BTC_USD_daily_context",
+  "notes": "Illustrative calendar anchors for hand-filled B-track rows; not trading signals. Expand only after metrics contract is frozen.",
+  "dates": [
+    "2022-01-01",
+    "2022-03-01",
+    "2022-05-09",
+    "2022-06-13",
+    "2022-06-18",
+    "2022-09-13",
+    "2022-11-09",
+    "2022-12-30",
+    "2023-01-15",
+    "2023-03-10"
+  ]
+}

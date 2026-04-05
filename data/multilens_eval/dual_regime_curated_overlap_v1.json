@@ -1,0 +1,106 @@
+{
+  "schema": "multilens_dual_regime_inputs_v1",
+  "note": "Observational kwargs for evaluate_dual_regime_and_market_shock per calendar day; B-track / evaluation only. Full grid: 10 dates = curated_dates_v1.",
+  "entries": [
+    {
+      "calendar_date": "2022-01-01",
+      "psi_score": 0.52,
+      "bible_risk_score": 0.3,
+      "vector_4d": { "S": 0.26, "L": 0.24, "K": 0.25, "M": 0.25 },
+      "context_metrics": { "fear_greed_index": 0.35 },
+      "state_id": 4,
+      "logos_manuscript_text": null,
+      "logos_adjustment_strength": 0.12
+    },
+    {
+      "calendar_date": "2022-03-01",
+      "psi_score": 0.58,
+      "bible_risk_score": 0.38,
+      "vector_4d": { "S": 0.27, "L": 0.23, "K": 0.26, "M": 0.24 },
+      "context_metrics": { "fear_greed_index": 0.48 },
+      "state_id": 5,
+      "logos_manuscript_text": null,
+      "logos_adjustment_strength": 0.12
+    },
+    {
+      "calendar_date": "2022-05-09",
+      "psi_score": 0.72,
+      "bible_risk_score": 0.45,
+      "vector_4d": { "S": 0.28, "L": 0.22, "K": 0.26, "M": 0.24 },
+      "context_metrics": { "fear_greed_index": 0.22 },
+      "state_id": 7,
+      "logos_manuscript_text": null,
+      "logos_adjustment_strength": 0.12
+    },
+    {
+      "calendar_date": "2022-06-13",
+      "psi_score": 0.68,
+      "bible_risk_score": 0.5,
+      "vector_4d": { "S": 0.25, "L": 0.25, "K": 0.25, "M": 0.25 },
+      "context_metrics": { "fear_greed_index": 0.18 },
+      "state_id": 12,
+      "logos_manuscript_text": null,
+      "logos_adjustment_strength": 0.12
+    },
+    {
+      "calendar_date": "2022-06-18",
+      "psi_score": 0.7,
+      "bible_risk_score": 0.42,
+      "vector_4d": { "S": 0.26, "L": 0.24, "K": 0.25, "M": 0.25 },
+      "context_metrics": { "fear_greed_index": 0.2 },
+      "state_id": 13,
+      "logos_manuscript_text": null,
+      "logos_adjustment_strength": 0.12
+    },
+    {
+      "calendar_date": "2022-09-13",
+      "psi_score": 0.62,
+      "bible_risk_score": 0.4,
+      "vector_4d": { "S": 0.25, "L": 0.25, "K": 0.25, "M": 0.25 },
+      "context_metrics": { "fear_greed_index": 0.28 },
+      "state_id": 8,
+      "logos_manuscript_text": null,
+      "logos_adjustment_strength": 0.12
+    },
+    {
+      "calendar_date": "2022-11-09",
+      "psi_score": 0.78,
+      "bible_risk_score": 0.55,
+      "vector_4d": { "S": 0.24, "L": 0.26, "K": 0.25, "M": 0.25 },
+      "context_metrics": { "fear_greed_index": 0.15 },
+      "state_id": 15,
+      "logos_manuscript_text": null,
+      "logos_adjustment_strength": 0.12
+    },
+    {
+      "calendar_date": "2022-12-30",
+      "psi_score": 0.5,
+      "bible_risk_score": 0.28,
+      "vector_4d": { "S": 0.25, "L": 0.25, "K": 0.25, "M": 0.25 },
+      "context_metrics": { "fear_greed_index": 0.38 },
+      "state_id": 6,
+      "logos_manuscript_text": null,
+      "logos_adjustment_strength": 0.12
+    },
+    {
+      "calendar_date": "2023-01-15",
+      "psi_score": 0.55,
+      "bible_risk_score": 0.25,
+      "vector_4d": { "S": 0.26, "L": 0.24, "K": 0.25, "M": 0.25 },
+      "context_metrics": { "fear_greed_index": 0.42 },
+      "state_id": 3,
+      "logos_manuscript_text": null,
+      "logos_adjustment_strength": 0.12
+    },
+    {
+      "calendar_date": "2023-03-10",
+      "psi_score": 0.6,
+      "bible_risk_score": 0.33,
+      "vector_4d": { "S": 0.27, "L": 0.23, "K": 0.25, "M": 0.25 },
+      "context_metrics": { "fear_greed_index": 0.45 },
+      "state_id": 2,
+      "logos_manuscript_text": null,
+      "logos_adjustment_strength": 0.12
+    }
+  ]
+}
