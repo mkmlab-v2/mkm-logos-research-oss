@@ -7,6 +7,7 @@ After=network.target
 
 [Service]
 Type=simple
+# nobody must be able to execute WorkingDirectory (avoid /root-only clones).
 User=nobody
 WorkingDirectory=/opt/workspace
 Environment=PYTHONPATH=/opt/workspace
