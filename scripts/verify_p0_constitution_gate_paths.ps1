@@ -5,6 +5,7 @@ param(
 $ErrorActionPreference = "Stop"
 $required = @(
     "docs\final\CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+    "docs\final\MKM12_PRISM_INDEX_REGISTRY_V1.json",
     "docs\final\P0_COMMERCIALIZATION_TRACKER.md",
     "docs\final\COMPRESSION_SLA_POLICY_V1.md",
     "docs\final\COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",

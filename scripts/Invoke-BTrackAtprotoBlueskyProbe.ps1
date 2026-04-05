@@ -21,20 +21,56 @@ if (-not (Test-Path -LiteralPath $py)) {
 
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 
-$h = $env:BSKY_HANDLE
-if (-not $h) { $h = $env:BLUESKY_HANDLE }
-$p = $env:BSKY_APP_PASSWORD
-if (-not $p) { $p = $env:BLUESKY_APP_PASSWORD }
+# If User/session env is empty, load BSKY_* / BLUESKY_* from C:\workspace\.env (same hub as sync script).
+$dotEnv = Join-Path $workspaceRoot ".env"
+if (Test-Path -LiteralPath $dotEnv) {
+    foreach ($raw in Get-Content -LiteralPath $dotEnv) {
+        $line = $raw.Trim()
+        if (-not $line -or $line.StartsWith("#") -or $line.IndexOf("=") -lt 1) { continue }
+        $idx = $line.IndexOf("=")
+        $k = $line.Substring(0, $idx).Trim()
+        if ($k -notmatch "^(BSKY_|BLUESKY_)") { continue }
+        $v = $line.Substring($idx + 1).Trim()
+        if ([string]::IsNullOrWhiteSpace($v)) { continue }
+        $cur = [Environment]::GetEnvironmentVariable($k, "Process")
+        if ([string]::IsNullOrWhiteSpace($cur)) {
+            [Environment]::SetEnvironmentVariable($k, $v, "Process")
+        }
+    }
+}
 
-if ([string]::IsNullOrWhiteSpace($h) -or [string]::IsNullOrWhiteSpace($p)) {
+function Get-BskyIdentifier {
+    $candidates = @(
+        "BSKY_HANDLE",
+        "BLUESKY_HANDLE",
+        "BSKY_EMAIL",
+        "BSKY_IDENTIFIER",
+        "BLUESKY_EMAIL"
+    )
+    foreach ($name in $candidates) {
+        $v = [Environment]::GetEnvironmentVariable($name, "Process")
+        if (-not [string]::IsNullOrWhiteSpace($v)) { return $v.Trim() }
+    }
+    return ""
+}
+
+$id = Get-BskyIdentifier
+$p = [Environment]::GetEnvironmentVariable("BSKY_APP_PASSWORD", "Process")
+if ([string]::IsNullOrWhiteSpace($p)) { $p = [Environment]::GetEnvironmentVariable("BLUESKY_APP_PASSWORD", "Process") }
+
+if ([string]::IsNullOrWhiteSpace($id) -or [string]::IsNullOrWhiteSpace($p)) {
+    $miss = @()
+    if ([string]::IsNullOrWhiteSpace($id)) { $miss += "BSKY_HANDLE_or_BSKY_EMAIL" }
+    if ([string]::IsNullOrWhiteSpace($p)) { $miss += "BSKY_APP_PASSWORD" }
     $line = (@{
         ts_utc   = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
         event    = "skip_missing_bsky_credentials"
-        detail   = "Set BSKY_HANDLE and BSKY_APP_PASSWORD (User env recommended)"
+        missing  = ($miss -join ",")
+        detail   = "Set in C:\workspace\.env or User env; sync: sync_required_env_to_user.ps1"
         script   = "test_atproto_bluesky_bridge.py"
     } | ConvertTo-Json -Compress)
     Add-Content -LiteralPath $skipLog -Value $line -Encoding utf8
-    Write-Host "[BTrack Atproto] Skip: BSKY_HANDLE / BSKY_APP_PASSWORD not set. Logged to $skipLog"
+    Write-Host "[BTrack Atproto] Skip: missing $($miss -join ', '). Logged to $skipLog"
     exit 0
 }
 

@@ -37,6 +37,17 @@ SASANG_TERMS = {
     "bible",
 }
 
+# SSOT: reports/sweep_input_v2_full_144.json — gate_ok row #3 (복원 우선, 절약≥0.5).
+# Commander adoption 2026-04-04: strategy/intensity still from candidate grid;
+# infra flags fixed to match full-corpus sweep winner (not prior router+bridge+codebook defaults).
+P1_EVAL_INFRA_SWEEP_V1: dict[str, bool] = {
+    "use_domain_router": False,
+    "use_master_codebook_lexicon_v1": False,
+    "include_gematria_metadata": True,
+    "include_gematria_4d_bridge": False,
+    "include_cee_core": True,
+}
+
 
 def _parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Run P1 A/B scenario.")
@@ -174,11 +185,12 @@ def main() -> int:
             sensitive_max_saving_rate=float(c["sensitive_max_saving_rate"]),
             hangul_max_saving_rate=float(c["hangul_max_saving_rate"]),
             use_hangul_principle=bool(c["use_hangul_principle"]),
-            use_domain_router=True,
-            use_master_codebook_lexicon_v1=True,
-            include_gematria_metadata=True,
-            include_gematria_4d_bridge=True,
-            include_cee_core=True,
+            use_domain_router=P1_EVAL_INFRA_SWEEP_V1["use_domain_router"],
+            use_master_codebook_lexicon_v1=P1_EVAL_INFRA_SWEEP_V1["use_master_codebook_lexicon_v1"],
+            include_gematria_metadata=P1_EVAL_INFRA_SWEEP_V1["include_gematria_metadata"],
+            include_gematria_4d_bridge=P1_EVAL_INFRA_SWEEP_V1["include_gematria_4d_bridge"],
+            include_cee_core=P1_EVAL_INFRA_SWEEP_V1["include_cee_core"],
+            require_tiktoken_o200k=True,
         )
         cm = rep["compression_metrics"]
         qg = rep["quality_gate"]
@@ -188,6 +200,11 @@ def main() -> int:
             "avg_reconstruction_fidelity_jaccard": cm["avg_reconstruction_fidelity_jaccard"],
             "avg_sensitive_integrity": cm["avg_sensitive_integrity"],
             "jaccard_drop_pp": qg["jaccard_drop_pp"],
+            "o200k_token_saving_rate": cm.get("o200k_token_saving_rate"),
+            "o200k_saving_rate": cm.get("o200k_saving_rate"),
+            "o200k_tokens_before": cm.get("o200k_tokens_before"),
+            "o200k_tokens_after": cm.get("o200k_tokens_after"),
+            "tiktoken_o200k": cm.get("tiktoken_o200k"),
         }
         row["gate_ok"] = bool(
             row["global_token_saving_rate"] >= saving_rate_min
@@ -221,15 +238,23 @@ def main() -> int:
         schema = "multilens_p1_ab_intensity_v1"
     else:
         schema = "multilens_p1_ab_balanced_v1"
+
+    def _repo_rel(path: Path) -> str:
+        resolved = path.resolve()
+        try:
+            return resolved.relative_to(ROOT).as_posix()
+        except ValueError:
+            return resolved.as_posix()
+
     out_doc = {
         "schema": schema,
         "ts_utc": datetime.now(timezone.utc).isoformat(),
         "profile": args.profile,
         "manseryeok_scope": multilens_p1_compression_scope(),
         "source_refs": {
-            "input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
-            "baseline": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json",
-            "decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+            "input": _repo_rel(Path(args.input)),
+            "baseline": _repo_rel(Path(args.baseline)),
+            "decision": _repo_rel(Path(args.decision)),
         },
         "gate_contract": {
             "saving_rate_min": saving_rate_min,
@@ -238,6 +263,10 @@ def main() -> int:
         },
         "baseline": {
             "avg_reconstruction_fidelity_jaccard": baseline_avg_jaccard,
+        },
+        "p1_eval_infra": {
+            "ref": "sweep_input_v2_full_144.json_gate_ok_row_3",
+            **P1_EVAL_INFRA_SWEEP_V1,
         },
         "summary": {
             "candidate_count": len(results),
