@@ -3,6 +3,10 @@
 # Usage:
 #   export WORKSPACE_ROOT=/opt/workspace   # repo root containing scripts/
 #   sudo -E bash scripts/deploy/linux/install_compression_api_stub_systemd.sh
+#
+# Ops: User=nobody cannot chdir into root-only trees (e.g. /root/...). Use /opt/...
+#      or another world-readable path; e.g. sudo chmod -R a+rX "${WORKSPACE_ROOT}".
+# Updates: sudo git -C "${WORKSPACE_ROOT}" pull --ff-only origin main && sudo systemctl restart mkm-compression-api-stub
 set -euo pipefail
 
 WORKSPACE_ROOT="${WORKSPACE_ROOT:-/opt/workspace}"
