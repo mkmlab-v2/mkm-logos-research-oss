@@ -1,7 +1,7 @@
 # Constitution / Inference — 구현 팩트 (SSOT)
 
 **작성일**: 2026-03-29  
-**최종 갱신**: 2026-04-06 — §14 Prism: 증분 색인 원칙·GPU B-track 핸드오프 경로; 레지스트리 v1.0.5. §2 토큰 압축 스텁: `COMPRESSION_API_ENTERPRISE_KEYS` 티어·`GET /health` 페이로드·`scripts/deploy/linux/` 배포 템플릿.  
+**최종 갱신**: 2026-04-06 — §14 Prism: 증분 색인 원칙·GPU B-track 핸드오프 경로; 레지스트리 v1.0.5.  
 **이전 갱신**: 2026-04-04 — §1.2 투트랙 압축 SLA·§13.1 CI 정합; §13.2 Beopmang; §13.1 Phase1·`AGENTS.md`.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
 
@@ -40,9 +40,8 @@
 | 항목 | 경로 | 비고 |
 |------|------|------|
 | Dual-regime 평가 모듈 | `projects/bitcoin-trading/src/integration/dual_regime_api.py` | `evaluate_dual_regime_and_market_shock` 등 Python API; **이 파일 단독으로는 FastAPI 앱이 아니다** (HTTP 래퍼는 별도 서비스/스크립트에 둔다). |
-| 토큰 압축 API (스텁 v1) | `scripts/compression_token_api_stub.py` | FastAPI: `POST /v1/compress`, `POST /v1/expand`, `GET /health`. **티어:** `COMPRESSION_API_ENTERPRISE_KEYS`가 비어 있으면 **레거시 단일 트랙**(모든 요청 enterprise·CI/로컬 호환). 키가 설정되면 `X-API-Key` 또는 `Authorization: Bearer`가 목록과 일치할 때만 **enterprise**(Track A·`integrity_flags.sla_track: active`), 아니면 **public**(Track B·리터럴 KPI 기반 추정·`hydrate_live_eval` 억제). **enterprise**에서 `hydrate_metrics`가 거짓이면 `compression_metrics`는 null(`metrics_mode: none`). `hydrate_metrics` 참이면 `hydrate_live_eval`에 따라 `evaluate_report`·실패 시 플래그·decision 폴백. **public**은 항상 리터럴 비율로 추정 메트릭. `GET /health`: `tier_policy`(키 설정 여부·트랙 라벨), `kpi_snapshot`(요약 JSON의 literal/active 비율·`ts_utc`). **expand는 원문 에코**. 대외 설명 SSOT: `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10 + `openapi_token_compression_stub_v1.yaml` description. |
-| 압축 스텁 Linux 배포(참고) | `scripts/deploy/linux/` | `install_compression_api_stub_systemd.sh`, `mkm-compression-api-stub.service`, `compression-api.env.example`, `nginx-compression-api.conf.example`. 서비스 사용자 `nobody`; repo 읽기 권한·`WORKSPACE_ROOT`/설치 경로는 본선에서 확정. |
-| OpenAPI (압축 스텁) | `docs/final/openapi_token_compression_stub_v1.yaml` | HTTP 계약(SSOT); EvalContext·HydrationHints·CompressionMetrics 스키마 포함. 상용 SLA·과금은 범위 외(스텁은 키 문자열 매칭만). |
+| 토큰 압축 API (스텁 v1) | `scripts/compression_token_api_stub.py` | FastAPI: `POST /v1/compress`, `POST /v1/expand`, `GET /health`. 응답에 `api_contract_version`; `eval_context.hydrate_metrics` 없으면 `compression_metrics` null(라우터만). `hydrate_live_eval` 시 `evaluate_report` 시도·실패 시 `integrity_flags.hydration_live_eval_failed` 가능. **expand는 원문 에코**. 대외 설명 SSOT: `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10 + `openapi_token_compression_stub_v1.yaml` description. |
+| OpenAPI (압축 스텁) | `docs/final/openapi_token_compression_stub_v1.yaml` | HTTP 계약(SSOT); EvalContext·HydrationHints·CompressionMetrics 스키마 포함. 상용 SLA·인증은 범위 외. |
 | 정책 SSOT | `data/regimes/regime_fusion_policy.json` | 워크스페이스 상대 경로로 로드 |
 | 보조 정책 | `data/regimes/dual_regime_policy.json` | 존재 확인됨 |
 | 레짐 맵 | `data/regimes/regime_map.json` | 존재 확인됨 |

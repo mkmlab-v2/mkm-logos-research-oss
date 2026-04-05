@@ -21,8 +21,18 @@ $br = Read-JsonOrNull -path $BroadcastPath
 $rd = Read-JsonOrNull -path $ReadinessPath
 
 $nowUtc = [DateTimeOffset]::UtcNow.ToString("yyyy-MM-dd HH:mm 'UTC'")
-$goNoGo = if ($null -ne $at) { [string]$at.overall_go_no_go } else { "UNKNOWN" }
-$stage = if ($null -ne $at) { [string]$at.recommended_stage } else { "UNKNOWN" }
+# a_track_go_nogo_status_v1: fields live under .result (not document root)
+$goNoGo = "UNKNOWN"
+$stage = "UNKNOWN"
+if ($null -ne $at) {
+    if ($null -ne $at.result) {
+        if ($null -ne $at.result.overall_go_no_go) { $goNoGo = [string]$at.result.overall_go_no_go }
+        if ($null -ne $at.result.recommended_stage) { $stage = [string]$at.result.recommended_stage }
+    }
+    # Legacy/alternate shape (pre result wrapper): tolerate root keys if present
+    if ($goNoGo -eq "UNKNOWN" -and $null -ne $at.overall_go_no_go) { $goNoGo = [string]$at.overall_go_no_go }
+    if ($stage -eq "UNKNOWN" -and $null -ne $at.recommended_stage) { $stage = [string]$at.recommended_stage }
+}
 $overallOk = if ($null -ne $ov) { [string]$ov.overall_ok } else { "false" }
 $degraded = if ($null -ne $ov) { [string]$ov.degraded } else { "true" }
 $score = if ($null -ne $gr -and $null -ne $gr.current) { [string]$gr.current.unified_score_balanced } else { "n/a" }
@@ -42,28 +52,28 @@ $md = @"
 # Ops Fact Brief ($nowUtc)
 
 ## 1) Current State
-- go_no_go: `$goNoGo`
-- recommended_stage: `$stage`
-- overall_ok: `$overallOk`
-- degraded: `$degraded`
+- go_no_go: $goNoGo
+- recommended_stage: $stage
+- overall_ok: $overallOk
+- degraded: $degraded
 
 ## 2) Core Metrics (Observed)
-- unified_score_balanced: `$score`
-- delta_vs_baseline: `$delta`
-- drift_count: `$driftCount`
-- overlap_drift_alert: `$overlapDrift`
+- unified_score_balanced: $score
+- delta_vs_baseline: $delta
+- drift_count: $driftCount
+- overlap_drift_alert: $overlapDrift
 
 ## 3) Reliability Gates
-- high_reliability_decision: `$highRel`
-- reliability_badge: `$badge`
-- gate_reason: `$gateReason`
-- net: `$net`
+- high_reliability_decision: $highRel
+- reliability_badge: $badge
+- gate_reason: $gateReason
+- net: $net
 
 ## 4) Runtime Health
-- daemon_running_flag: `$daemon`
-- public_showroom_lane_ready: `$pubLane`
-- private_trading_lane_ready: `$privLane`
-- key_tasks_schedule_ok: `$schedOk`
+- daemon_running_flag: $daemon
+- public_showroom_lane_ready: $pubLane
+- private_trading_lane_ready: $privLane
+- key_tasks_schedule_ok: $schedOk
 
 ## 5) Confirmed vs Unconfirmed
 - confirmed:
