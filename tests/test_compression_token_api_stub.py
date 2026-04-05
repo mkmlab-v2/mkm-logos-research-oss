@@ -71,7 +71,25 @@ def _write_parity_debug(payload: dict, details: list[dict]) -> None:
 def test_health():
     r = client.get("/health")
     assert r.status_code == 200
-    assert r.json().get("status") == "ok"
+    j = r.json()
+    assert j.get("status") == "ok"
+    assert j.get("api_contract_version") == "1.0.0"
+    assert j.get("tier_policy", {}).get("enterprise_keys_configured") is False
+    assert "kpi_snapshot" in j
+
+
+def test_freemium_public_tier_when_enterprise_keys_configured(monkeypatch):
+    monkeypatch.setenv("COMPRESSION_API_ENTERPRISE_KEYS", "secret-enterprise-key")
+    from scripts.compression_token_api_stub import _enterprise_key_list, _resolve_tier
+
+    assert "secret-enterprise-key" in _enterprise_key_list()
+
+    class Req:
+        def __init__(self, headers: dict[str, str]) -> None:
+            self.headers = headers
+
+    assert _resolve_tier(Req({"x-api-key": "wrong"})) == "public"
+    assert _resolve_tier(Req({"x-api-key": "secret-enterprise-key"})) == "enterprise"
 
 
 def test_compress_returns_shard():

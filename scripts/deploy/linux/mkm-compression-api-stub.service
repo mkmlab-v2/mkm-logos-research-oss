@@ -1,0 +1,19 @@
+# MKM token compression API (FastAPI stub) — install with install_compression_api_stub_systemd.sh
+# Edit paths if workspace is not /opt/workspace.
+
+[Unit]
+Description=MKM Token Compression API Stub (uvicorn)
+After=network.target
+
+[Service]
+Type=simple
+User=nobody
+WorkingDirectory=/opt/workspace
+Environment=PYTHONPATH=/opt/workspace
+EnvironmentFile=-/etc/mkm/compression-api.env
+ExecStart=/usr/bin/python3 -m uvicorn scripts.compression_token_api_stub:app --host 127.0.0.1 --port 8010
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

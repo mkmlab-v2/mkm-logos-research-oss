@@ -5,11 +5,18 @@ Run: uvicorn scripts.compression_token_api_stub:app --host 127.0.0.1 --port 8010
 
 When eval_context.hydrate_metrics and hydrate_live_eval are true, calls evaluate_report; on exception sets
 integrity_flags hydration_live_eval_failed and may fall back to decision-based estimates.
+
+Tiering (Freemium-style; no billing in stub):
+- COMPRESSION_API_ENTERPRISE_KEYS=comma-separated tokens. Match via X-API-Key or Authorization: Bearer → enterprise (Track A).
+- Otherwise → public (Track B / literal KPI estimate; live evaluate_report suppressed).
+
+Production SLA / payment: out of scope; see P0_COMMERCIALIZATION_TRACKER.md.
 """
 
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 from functools import lru_cache
@@ -21,7 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from fastapi import FastAPI  # noqa: E402
+from fastapi import FastAPI, Request  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
 
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
@@ -33,6 +40,7 @@ SHARDS = ROOT / "codebook" / "shards"
 INPUT_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json"
 BASELINE_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json"
 DECISION = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
+KPI_SUMMARY = ROOT / "reports" / "constitution" / "btrack_pilot" / "ultra_compression_kpi_summary_latest.json"
 _router = DomainSpecificRouter(SHARDS)
 TOKEN_RE = re.compile(r"[A-Za-z0-9_]+|[가-힣]+|[^\s]")
 
@@ -133,11 +141,57 @@ def _baseline_avg_jaccard() -> float:
     return float(base_doc.get("compression_metrics", {}).get("avg_reconstruction_fidelity_jaccard", 0.0))
 
 
+@lru_cache(maxsize=1)
+def _kpi_summary_snapshot() -> tuple[float | None, float | None, str | None]:
+    """literal rate, active rate, ts_utc from ultra_compression_kpi_summary_latest.json."""
+    if not KPI_SUMMARY.is_file():
+        return None, None, None
+    try:
+        doc = json.loads(KPI_SUMMARY.read_text(encoding="utf-8"))
+    except Exception:
+        return None, None, None
+    ts = doc.get("ts_utc")
+    ts_s = str(ts) if ts is not None else None
+    lit = (doc.get("literal_kpi") or {}).get("global_token_saving_rate")
+    act = (doc.get("active_kpi") or {}).get("global_token_saving_rate")
+    try:
+        lr_f = float(lit) if lit is not None else None
+    except (TypeError, ValueError):
+        lr_f = None
+    try:
+        ar_f = float(act) if act is not None else None
+    except (TypeError, ValueError):
+        ar_f = None
+    return lr_f, ar_f, ts_s
+
+
+def _enterprise_key_list() -> list[str]:
+    raw = os.environ.get("COMPRESSION_API_ENTERPRISE_KEYS", "").strip()
+    if not raw:
+        return []
+    return [k.strip() for k in raw.split(",") if k.strip()]
+
+
+def _resolve_tier(request: Request) -> str:
+    keys = _enterprise_key_list()
+    if not keys:
+        # No keys configured: preserve legacy single-track behavior (tests, CI, local dev).
+        return "enterprise"
+    x_key = (request.headers.get("x-api-key") or "").strip()
+    auth = (request.headers.get("authorization") or "").strip()
+    bearer = ""
+    if auth.lower().startswith("bearer "):
+        bearer = auth[7:].strip()
+    token = x_key or bearer
+    if token and token in keys:
+        return "enterprise"
+    return "public"
+
+
 def _estimate_metrics_from_text(text: str, savings_ratio: float) -> CompressionMetrics:
     bytes_in = len(text.encode("utf-8"))
     token_in = len(TOKEN_RE.findall(text))
     token_out = max(1, int(round(token_in * (1.0 - savings_ratio)))) if token_in > 0 else 0
-    # Convert token proxy back to byte estimate using input average bytes/token.
     avg_bpt = (bytes_in / token_in) if token_in > 0 else 0.0
     bytes_out = int(round(token_out * avg_bpt)) if token_out > 0 else 0
     return CompressionMetrics(
@@ -198,11 +252,9 @@ def _live_eval_metrics(text: str) -> tuple[CompressionMetrics | None, float, str
             effective = str(first.get("compressed_text_effective", ""))
             bytes_out = len(effective.encode("utf-8"))
             token_out = len(TOKEN_RE.findall(effective))
-            # Keep non-zero lower bound for non-empty input if compressed text was empty unexpectedly.
             if bytes_in > 0 and bytes_out == 0:
                 bytes_out = 1
         else:
-            # Fallback when report shape is unexpected.
             est = _estimate_metrics_from_text(text, max(0.0, min(1.0, ratio)))
             bytes_out = est.bytes_out
             token_out = int(est.token_out or 0)
@@ -219,20 +271,61 @@ def _live_eval_metrics(text: str) -> tuple[CompressionMetrics | None, float, str
 
 
 @app.get("/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
+def health() -> dict[str, Any]:
+    lit_r, act_r, ts_utc = _kpi_summary_snapshot()
+    keys_on = bool(_enterprise_key_list())
+    return {
+        "status": "ok",
+        "api_contract_version": API_CONTRACT_VERSION,
+        "schema_version": "token_compression_stub_v1",
+        "tier_policy": {
+            "public_sla_track": "literal",
+            "enterprise_sla_track": "active",
+            "enterprise_keys_configured": keys_on,
+        },
+        "kpi_snapshot": {
+            "source_relative": "reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json",
+            "ts_utc": ts_utc,
+            "literal_global_token_saving_rate": lit_r,
+            "active_global_token_saving_rate": act_r,
+        },
+    }
 
 
 @app.post("/v1/compress", response_model=CompressResponse)
-def compress(body: CompressRequest) -> CompressResponse:
+def compress(body: CompressRequest, request: Request) -> CompressResponse:
+    tier = _resolve_tier(request)
     route = _router.route(body.text)
+    lit_r, _act_r, _ts = _kpi_summary_snapshot()
+    literal_rate = float(lit_r) if lit_r is not None else 0.24613220815752457
+
     flags: dict[str, Any] = {
         "hangul_principle": route.hangul_principle,
         "hard_keep_count": len(route.must_keep_hard_terms),
         "soft_keep_count": len(route.must_keep_soft_terms),
+        "tier": tier,
+        "sla_track": "literal" if tier == "public" else "active",
     }
     if body.hydration_hints is not None and body.hydration_hints.atom_ids:
         flags["hydration_atom_id_count"] = len(body.hydration_hints.atom_ids)
+
+    if tier == "public":
+        metrics = _estimate_metrics_from_text(body.text, literal_rate)
+        flags["metrics_mode"] = "literal_kpi_estimate"
+        if body.eval_context is not None and bool(body.eval_context.hydrate_live_eval):
+            flags["hydrate_live_eval_suppressed"] = True
+            flags["hydrate_live_eval_suppressed_reason"] = "public_tier_use_enterprise_key"
+        flags["shadow_mode"] = "disabled"
+        return CompressResponse(
+            shard_id=route.shard_id,
+            domain=route.domain,
+            original_text=body.text,
+            client_request_id=body.client_request_id,
+            eval_context_echo=body.eval_context,
+            compression_metrics=metrics,
+            integrity_flags=flags,
+        )
+
     metrics: CompressionMetrics | None = None
     metrics_mode = "none"
     if body.eval_context is not None and bool(body.eval_context.hydrate_metrics):
@@ -252,8 +345,10 @@ def compress(body: CompressRequest) -> CompressResponse:
             else:
                 flags["hydration_metrics_source"] = "decision_selected_candidate"
                 metrics_mode = "decision_fallback"
+    else:
+        metrics_mode = "none"
+
     if body.eval_context is not None and bool(body.eval_context.hydrate_shadow_compare):
-        # Non-invasive shadow: evaluate live path for observability only.
         shadow_metrics, shadow_latency_ms, shadow_err = _live_eval_metrics(body.text)
         flags["shadow_mode"] = "enabled"
         flags["shadow_elapsed_ms"] = shadow_latency_ms

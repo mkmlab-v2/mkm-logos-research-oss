@@ -1,8 +1,8 @@
 # Constitution / Inference — 구현 팩트 (SSOT)
 
 **작성일**: 2026-03-29  
-**최종 갱신**: 2026-04-04 — §1.2 투트랙 압축 SLA(`COMPRESSION_SLA_POLICY_V1.md`) 포인터; §13.1 압축 체인·헬스(`-IncludeLiteralTrack`)·CI(dual-regime) 정합.  
-**이전 갱신**: 2026-04-04 — §13.2 Beopmang; 2026-04-03 — §13.1 Phase1·`AGENTS.md`.  
+**최종 갱신**: 2026-04-06 — §14 Prism: 증분 색인 원칙·GPU B-track 핸드오프 경로; 레지스트리 v1.0.5. §2 토큰 압축 스텁: `COMPRESSION_API_ENTERPRISE_KEYS` 티어·`GET /health` 페이로드·`scripts/deploy/linux/` 배포 템플릿.  
+**이전 갱신**: 2026-04-04 — §1.2 투트랙 압축 SLA·§13.1 CI 정합; §13.2 Beopmang; §13.1 Phase1·`AGENTS.md`.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
 
 ---
@@ -40,8 +40,9 @@
 | 항목 | 경로 | 비고 |
 |------|------|------|
 | Dual-regime 평가 모듈 | `projects/bitcoin-trading/src/integration/dual_regime_api.py` | `evaluate_dual_regime_and_market_shock` 등 Python API; **이 파일 단독으로는 FastAPI 앱이 아니다** (HTTP 래퍼는 별도 서비스/스크립트에 둔다). |
-| 토큰 압축 API (스텁 v1) | `scripts/compression_token_api_stub.py` | FastAPI: `POST /v1/compress`, `POST /v1/expand`, `GET /health`. 응답에 `api_contract_version`; `eval_context.hydrate_metrics` 없으면 `compression_metrics` null(라우터만). `hydrate_live_eval` 시 `evaluate_report` 시도·실패 시 `integrity_flags.hydration_live_eval_failed` 가능. **expand는 원문 에코**. 대외 설명 SSOT: `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10 + `openapi_token_compression_stub_v1.yaml` description. |
-| OpenAPI (압축 스텁) | `docs/final/openapi_token_compression_stub_v1.yaml` | HTTP 계약(SSOT); EvalContext·HydrationHints·CompressionMetrics 스키마 포함. 상용 SLA·인증은 범위 외. |
+| 토큰 압축 API (스텁 v1) | `scripts/compression_token_api_stub.py` | FastAPI: `POST /v1/compress`, `POST /v1/expand`, `GET /health`. **티어:** `COMPRESSION_API_ENTERPRISE_KEYS`가 비어 있으면 **레거시 단일 트랙**(모든 요청 enterprise·CI/로컬 호환). 키가 설정되면 `X-API-Key` 또는 `Authorization: Bearer`가 목록과 일치할 때만 **enterprise**(Track A·`integrity_flags.sla_track: active`), 아니면 **public**(Track B·리터럴 KPI 기반 추정·`hydrate_live_eval` 억제). **enterprise**에서 `hydrate_metrics`가 거짓이면 `compression_metrics`는 null(`metrics_mode: none`). `hydrate_metrics` 참이면 `hydrate_live_eval`에 따라 `evaluate_report`·실패 시 플래그·decision 폴백. **public**은 항상 리터럴 비율로 추정 메트릭. `GET /health`: `tier_policy`(키 설정 여부·트랙 라벨), `kpi_snapshot`(요약 JSON의 literal/active 비율·`ts_utc`). **expand는 원문 에코**. 대외 설명 SSOT: `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10 + `openapi_token_compression_stub_v1.yaml` description. |
+| 압축 스텁 Linux 배포(참고) | `scripts/deploy/linux/` | `install_compression_api_stub_systemd.sh`, `mkm-compression-api-stub.service`, `compression-api.env.example`, `nginx-compression-api.conf.example`. 서비스 사용자 `nobody`; repo 읽기 권한·`WORKSPACE_ROOT`/설치 경로는 본선에서 확정. |
+| OpenAPI (압축 스텁) | `docs/final/openapi_token_compression_stub_v1.yaml` | HTTP 계약(SSOT); EvalContext·HydrationHints·CompressionMetrics 스키마 포함. 상용 SLA·과금은 범위 외(스텁은 키 문자열 매칭만). |
 | 정책 SSOT | `data/regimes/regime_fusion_policy.json` | 워크스페이스 상대 경로로 로드 |
 | 보조 정책 | `data/regimes/dual_regime_policy.json` | 존재 확인됨 |
 | 레짐 맵 | `data/regimes/regime_map.json` | 존재 확인됨 |
@@ -98,6 +99,11 @@
 | 독립 렌즈 융합 스텁 v0(비교 전용) | `scripts/report_independent_lens_fusion_stub_v0.py` → `docs/final/artifacts/independent_lens_fusion_stub_latest.json` | 계약 `INDEPENDENT_LENS_FUSION_STUB_V0_CONTRACT.json`; 일치/충돌 요약만 수행; A-track 자동융합·실거래 트리거 금지 |
 | 독립 렌즈 Shadow 게이트 v1 | `scripts/report_independent_lens_shadow_gate.py` → `docs/final/artifacts/independent_lens_shadow_gate_latest.json` | 계약 `INDEPENDENT_LENS_SHADOW_GATE_V1_CONTRACT.json`; 최소 관측 창(8주·2개월) 누적·`KEEP_OBSERVATION_ONLY` 고정 |
 | 계약 테스트 | `tests/test_myeongni_insight_observation_log.py` | sample·log JSONL + 스텁 JSON |
+| 만세력 기반 명리 4D 융합 | `scripts/myeongri_complete_fusion.py` | `MyeongriCompleteFusion`; `myeongri_4d_correction._ohang_data_to_4d`; `MyeongriController._get_base_vector_4d`와 연동; 본선·실거래 자동 합선 금지 |
+| λ 변환 훅 (스텁) | `scripts/myeongri_lambda_converter.py` | `MyeongriLambdaConverter` |
+| 게마트리아+명리 4D 블렌드 스파이크 v0 | `scripts/spike_gematria_myeongri_blend_v0.py` → `docs/final/artifacts/gematria_myeongri_spike_blend_latest.json` | 기하 메트릭(L2·cosine)만; 예측·교리 정확도 아님; `independent_lens_fusion_stub`의 `consistency_rate`와 무관 |
+| Prism 논리 색인 레지스트리 | `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` | §14 Grand Indexing 2.0; 경로·역할; 코드 4D 축과 혼동 금지 |
+| 회귀 스모크 | `tests/test_myeongri_fusion_scripts_smoke.py`, `tests/test_gematria_myeongri_spike_smoke.py` | CI `dual-regime-integrity.yml`; `run_prophecy_alignment_pytest.ps1` / `.sh` 번들 |
 | 독립 렌즈 v0 회귀 | `tests/test_myeongni_independent_lens_v0.py`, `tests/test_independent_lenses_v0.py`, `tests/test_independent_lens_fusion_stub_v0.py`, `tests/test_independent_lens_shadow_gate_v1.py` | 명리 단독 + 3렌즈 파라미즈 + 융합 스텁 + Shadow 게이트 |
 
 ### 3.4 만세력 정밀 런타임 (제2계층, Pointer)
@@ -235,6 +241,7 @@
 | ENTRY_16 승격 게이트 계약 | `tests/test_entry16_promotion_gate.py` |
 | 사상 벤치(SASANG ↔ 명리 앵커) | `tests/test_sasang_cross_ref_draft.py` |
 | §3.3 명리 통찰 관측 JSONL·융합 스텁 | `tests/test_myeongni_insight_observation_log.py` |
+| §3.3 명리 퓨전 스크립트 스모크 | `tests/test_myeongri_fusion_scripts_smoke.py` |
 | 다중 렌즈 중간 레이어 절차 | `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` |
 
 ---
@@ -398,3 +405,33 @@
 **§13.1 범위:** 위 경로는 **관측·스케줄·게이트·JSON 리포트**만 해당한다. 헌법·백서·사업계획서를 LLM이 매 실행마다 해석해 본선 코드·실거래 파라미터를 바꾸는 **자율 추론 루프는 본 절에 포함되지 않음**(상단 목적·§1.1 Multi-Lens·NotebookLM 격벽과 동일 선상에서 “구현 단정 금지”).
 
 **운영 원칙**: 실행 트리거는 관측 지표·로그 기반으로 유지하고, 성경/명리/사상 렌즈는 브리핑·가설 계층으로 분리한다.
+
+---
+
+## 14. MKM12 Prism Index (Grand Indexing 2.0 — 논리 색인)
+
+**목적**: 물리 폴더를 옮기지 않고, **역할·접근 정책**만 한눈에 두기. 본 절은 **신규 헌법이 아니라** 상단 SSOT 표에 붙는 **색인 레이어**다.
+
+**Prism 축 (기능 네임스페이스)**: 코드 내부의 4D 벡터 축 `(S,L,K,M)` 의미를 덮어쓰지 않는다. 여기서의 S/L/K/M은 **파일·경로 분류용 라벨**이다.
+
+| Prism 축 | 뜻 (요약) | 대표 경로 (팩트) |
+|-----------|-----------|------------------|
+| **S** — Static / Structural | 구현 SSOT·진입 문서 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`, `AGENTS.md` |
+| **L** — Linear / Logical | 흐름·레짐·규칙 코드 | `projects/bitcoin-trading/src/integration/dual_regime_api.py` (§2 표 참조) |
+| **K** — Kernel / Knowledge | 해석·B-track·원전 핸드오프 | `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` 등 |
+| **M** — Manifested / Metrics | 측정·게이트·산출 JSON | `scripts/verify_p0_constitution_gate_paths.ps1`, `scripts/spike_gematria_myeongri_blend_v0.py`, `projects/bitcoin-trading/memory/v2/ops/ops_phase1_chain_report_latest.json` |
+
+**인간 가독 색인 (Draft)**: `docs/final/MKM12_GRAND_INDEX_MAP.md` — S/L/K/M 역할로 핵심 경로를 묶은 요약; 레지스트리·본 표와 **경로 충돌 시** 본 문서 표·JSON을 우선한다.
+
+**중앙 레지스트리 (머신·에이전트 확장용)**: `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` — 위 표의 상위 집합·`agent_access`·`id` 필드. 항목 추가 시 **경로 존재**를 확인하고 본 표 또는 JSON 중 하나에 동기화한다.
+
+**Prophecy Hit Rate CLI (측정·비교용)**: `scripts/eval_prophecy_hit_rate_v1.py` — `run_mode` `price`(OHLCV·시그널 방향 적중) / `proxy`(Oracle·`ab_signal_registry_report_*` 등 precision 경로; 가격 적중과 동일 지표 아님). 산출 스키마 **`prophecy_hit_rate_eval_report_v2`**. 기본 기록 경로 `docs/final/artifacts/prophecy_hit_rate_eval_latest.json` 및 동일 페이로드 `artifacts/latest_report.json`(로컬 재생성·`.gitignore`; VPS·SSH 호환). `--stdout-only`는 파일 미기록.
+
+**증분 색인·동기화 (전체 재색인 불필요)**: 워크스페이스를 물리적으로 통째로 옮기거나 “전부 새로 인덱싱”할 필요는 없다. 역할·경로 정리는 **Prism** 중앙 레지스트리(`MKM12_PRISM_INDEX_REGISTRY_V1.json`)와 가독 색인(`MKM12_GRAND_INDEX_MAP.md`)에 **변경·신규 항목만** 반영하면 된다. NotebookLM 작전지휘부는 **전체 wipe 금지**·파일 단위 갱신이 원칙(`docs/NotebookLM_sources_manifest.md`, `notebooklm-refresh` 스킬). 파일 기반 장기기억(`.mkm-memory`)의 4D·벡터 동기화는 **`content` 변경이 있을 때만** 대상으로 하며, 세부는 동 매니페스트 해당 절과 호출 가능 경로를 따른다.
+
+**에이전트 접근 (권고)** — 강제는 아니며 브리핑·편집 시 참고:
+
+- `read_only_strict`: SSOT 문서 — 요약은 가능, 단정적 “구현 완료” 서술 금지(본 문서 상단 목적과 동일).
+- `execute_observe`: 스크립트·API — 실행은 로컬 정책·CI에 따름.
+- `b_track_only`: 본선·실거래·OOF 자동 합선 금지(§1.1·§13.1과 동일 선상).
+- `system_internal`: 런타임/산출물 — 저장소에 없을 수 있음(생성 경로).

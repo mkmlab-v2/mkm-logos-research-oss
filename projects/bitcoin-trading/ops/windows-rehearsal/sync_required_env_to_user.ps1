@@ -25,6 +25,7 @@ $keys = @(
   "N8N_WEBHOOK_URL",
   "OPS_ALARM_WEBHOOK_URL",
   "COMPRESSION_KPI_ALARM_WEBHOOK_URL",
+  "COMPRESSION_API_ENTERPRISE_KEYS",
   # Slack (multiple channels / fallbacks)
   "SLACK_WEBHOOK_URL",
   "FACT_SAFE_SLACK_WEBHOOK_URL",
@@ -49,8 +50,11 @@ $keys = @(
   "OPENCLAUDE_PILOT_OPENAI_MODEL",
   # Bluesky / ATProto
   "BSKY_HANDLE",
+  "BSKY_EMAIL",
+  "BSKY_IDENTIFIER",
   "BSKY_APP_PASSWORD",
   "BLUESKY_HANDLE",
+  "BLUESKY_EMAIL",
   "BLUESKY_APP_PASSWORD",
   # Paths (override defaults in scripts)
   "WORKSPACE_ROOT",
@@ -94,6 +98,9 @@ $keys = @(
   # OPS local LLM
   "OPS_LOCAL_LLM_ROLLOUT_MODE",
   "OPS_LOCAL_LLM_CANARY_GATE_PATH",
+  # Local Ollama (optional; tools / local engine default)
+  "OLLAMA_MODEL",
+  "OLLAMA_HOST",
   # Fact-safe monthly / eval (run_waiting_queue_monthly_check.ps1)
   "FACT_SAFE_INPUT_USD_PER_1K_TOKENS",
   "FACT_SAFE_OUTPUT_USD_PER_1K_TOKENS",
