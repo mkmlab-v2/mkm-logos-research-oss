@@ -2,7 +2,7 @@
 # Does not load .env. Cloud: set OPENCLAUDE_PILOT_API_KEY in the shell (or User env) before -Backend Cloud.
 # Isolation: does not touch daemons or trading keys; B-track log is optional append-only text.
 #
-# OpenClaude sends tool-style API calls. Ollama models that do not advertise tool support (e.g. gemma3:4b) may
+# OpenClaude sends tool-style API calls. Ollama models that do not advertise tool support (e.g. gemma4:e2b) may
 # return HTTP 400 on smoke — use default qwen2.5-coder:7b or another tool-capable tag for OpenClaude smoke.
 #
 # Examples:
@@ -28,9 +28,9 @@ $root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 Set-Location $root
 
 if ($UseGemma3Local) {
-    # Ollama tag (not necessarily "Gemma 4" retail name). Often fails OpenClaude smoke (no tool support in API).
-    $OllamaModel = 'gemma3:4b'
-    Write-Warning "UseGemma3Local -> gemma3:4b: OpenClaude may return 400 if the model does not support tools. Prefer -OllamaModel qwen2.5-coder:7b for smoke."
+    # Legacy switch name: local Gemma line; now gemma4:e2b (gemma3:4b retired from Ollama on this machine).
+    $OllamaModel = 'gemma4:e2b'
+    Write-Warning "UseGemma3Local -> gemma4:e2b: OpenClaude may return 400 if the model does not support tools. Prefer -OllamaModel qwen2.5-coder:7b for smoke."
 }
 
 $launcher = Join-Path $root "scripts\Start-OpenClaudeBTrackPilot.ps1"

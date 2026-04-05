@@ -115,7 +115,12 @@ def main() -> int:
         "mode": "observation_only",
         "inputs": lens_rows,
         "consensus": cs,
-        "note": "Read-only comparison of independent lens outputs; not A-track auto-fusion or live sizing trigger.",
+        "note": (
+            "Read-only comparison of independent lens outputs; not A-track auto-fusion or live sizing trigger. "
+            "No consistency_rate here — use consensus.agreement_rate for lens-direction alignment; "
+            "optional consistency_rate is defined for myeongni 16-state experiment JSON (separate schema). "
+            "Vector gematria+myeongri geometric spike: scripts/spike_gematria_myeongri_blend_v0.py."
+        ),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

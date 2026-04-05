@@ -7,7 +7,7 @@ CRITICAL: Output is experiment-lane only. Do not wire scores into live trading o
 start_24h_daemon.py without constitution gates and explicit promotion.
 
 Requires: pip install atproto
-Auth:     BSKY_HANDLE (or BLUESKY_HANDLE), BSKY_APP_PASSWORD (App Password from Bluesky settings)
+Auth:     BSKY_HANDLE or BSKY_EMAIL (or BLUESKY_*), plus BSKY_APP_PASSWORD (Bluesky App Password)
 
 Default out: projects/bitcoin-trading/memory/v2/btrack/raw_feeds/atproto/YYYYMMDD_atproto_sentiment_raw.jsonl
 
@@ -45,8 +45,15 @@ SOURCE_ID = "atproto_bluesky_v1"
 CHANNEL_MARKER = "atproto_bluesky_v1"
 
 
-def _env_handle() -> str | None:
-    return os.environ.get("BSKY_HANDLE") or os.environ.get("BLUESKY_HANDLE")
+def _env_identifier() -> str | None:
+    """Bluesky login identifier: handle (e.g. user.bsky.social) or account email."""
+    return (
+        os.environ.get("BSKY_HANDLE")
+        or os.environ.get("BLUESKY_HANDLE")
+        or os.environ.get("BSKY_EMAIL")
+        or os.environ.get("BSKY_IDENTIFIER")
+        or os.environ.get("BLUESKY_EMAIL")
+    )
 
 
 def _env_password() -> str | None:
@@ -61,14 +68,14 @@ def _load_client():
             "Missing dependency: install with  py -m pip install atproto\n"
             f"Import error: {e}"
         ) from e
-    handle = _env_handle()
-    password = _env_password()
-    if not handle or not password:
+    identifier = (_env_identifier() or "").strip()
+    password = (_env_password() or "").strip()
+    if not identifier or not password:
         raise SystemExit(
-            "Set BSKY_HANDLE and BSKY_APP_PASSWORD (Bluesky App Password) in the environment."
+            "Set BSKY_HANDLE or BSKY_EMAIL (identifier) and BSKY_APP_PASSWORD in the environment."
         )
     client = Client()
-    client.login(handle, password)
+    client.login(identifier, password)
     return client
 
 
@@ -199,7 +206,7 @@ def main() -> int:
     collected_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     if args.dry_run:
-        h = _env_handle()
+        ident = _env_identifier()
         p = _env_password()
         print("dry-run: atproto import check…")
         try:
@@ -207,7 +214,7 @@ def main() -> int:
         except ImportError:
             print("dry-run: atproto not installed (py -m pip install atproto)")
             return 2
-        print("dry-run: BSKY_HANDLE set:", bool(h))
+        print("dry-run: BSKY identifier (handle/email) set:", bool(ident))
         print("dry-run: BSKY_APP_PASSWORD set:", bool(p))
         print("dry-run: out dir would be:", args.out_dir)
         return 0

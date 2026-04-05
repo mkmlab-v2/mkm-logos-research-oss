@@ -22,6 +22,10 @@
 .PARAMETER WhatIf
   Print planned copies only; do not write.
 
+.PARAMETER IncludeObsidianContext
+  Also mirror selected `memory/obsidian_vault` subtrees into `<VaultRoot>/obsidian_context/` as `*.md` only,
+  excluding `.obsidian` and `_cursor_session_staging`. SSOT: docs/NotebookLM_sources_manifest.md (B 보조 — Obsidian Context).
+
 .PARAMETER Strict
   Fail if any listed source path is missing.
 
@@ -37,7 +41,8 @@ param(
     [string]$VaultRoot = "G:\공유 드라이브\MKM_DATA_VAULT\vault",
     [string]$MirrorSubfolder = "notebooklm_sources",
     [switch]$WhatIf,
-    [switch]$Strict
+    [switch]$Strict,
+    [switch]$IncludeObsidianContext
 )
 
 if (-not $PSBoundParameters.ContainsKey('VaultRoot')) {
@@ -72,6 +77,8 @@ $SourceFiles = @(
     "docs\NotebookLM_sources_manifest.md",
     "docs\final\AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md",
     "docs\final\CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+    "docs\final\MKM12_PRISM_INDEX_REGISTRY_V1.json",
+    "docs\final\COMPRESSION_SLA_POLICY_V1.md",
     "docs\final\COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
     "docs\final\openapi_token_compression_stub_v1.yaml",
     "docs\final\STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md",
@@ -159,6 +166,7 @@ $OptionalMissingRel = [string[]]@(
 
 $copied = 0
 $skipped = 0
+$obsidianCopied = 0
 
 foreach ($rel in $SourceFiles) {
     $src = Join-Path $WorkspaceRoot $rel
@@ -223,13 +231,91 @@ foreach ($rel in $SourceDirs) {
     $copied++
 }
 
+# Optional: Obsidian -> <VaultRoot>/obsidian_context (*.md only; see NotebookLM_sources_manifest.md)
+if ($IncludeObsidianContext) {
+    $obsPrefix = "memory\obsidian_vault\"
+    $ObsidianRelDirs = @(
+        "memory\obsidian_vault\00_Project_Core",
+        "memory\obsidian_vault\raw_research",
+        "memory\obsidian_vault\OPS",
+        "memory\obsidian_vault\SPIRIT",
+        "memory\obsidian_vault\TRADING",
+        "memory\obsidian_vault\CODING",
+        "memory\obsidian_vault\RESEARCH",
+        "memory\obsidian_vault\LOGIC",
+        "memory\obsidian_vault\KNOWLEDGE"
+    )
+    $obsidianDestRoot = Join-Path $VaultRoot "obsidian_context"
+    $obsidianVaultRoot = Join-Path $WorkspaceRoot "memory\obsidian_vault"
+    $notebookLmRootMds = @()
+    if (Test-Path -LiteralPath $obsidianVaultRoot) {
+        $notebookLmRootMds = @(Get-ChildItem -LiteralPath $obsidianVaultRoot -Filter "NotebookLM*.md" -File -ErrorAction SilentlyContinue)
+    }
+
+    if (-not $WhatIf) {
+        if (-not (Test-Path -LiteralPath $VaultRoot)) {
+            Write-Error "Vault root not found for Obsidian mirror: $VaultRoot"
+            exit 1
+        }
+        if (-not (Test-Path -LiteralPath $obsidianDestRoot)) {
+            New-Item -ItemType Directory -Path $obsidianDestRoot -Force | Out-Null
+        }
+    }
+
+    foreach ($rel in $ObsidianRelDirs) {
+        $src = Join-Path $WorkspaceRoot $rel
+        if (-not (Test-Path -LiteralPath $src)) {
+            Write-Warning "Obsidian context skip missing dir: $rel"
+            continue
+        }
+        if (-not $rel.StartsWith($obsPrefix)) { continue }
+        $short = $rel.Substring($obsPrefix.Length)
+        $dest = Join-Path $obsidianDestRoot $short
+        if ($WhatIf) {
+            Write-Host "[WhatIf] OBSIDIAN_MD $src -> $dest (*.md /S, exclude .obsidian, _cursor_session_staging)"
+            $obsidianCopied++
+            continue
+        }
+        if (-not (Test-Path -LiteralPath $dest)) {
+            New-Item -ItemType Directory -Path $dest -Force | Out-Null
+        }
+        $null = & robocopy $src $dest *.md /S /XD .obsidian _cursor_session_staging /R:1 /W:1 /NFL /NDL /NJH /NJS /NP
+        $rc = $LASTEXITCODE
+        if ($rc -gt 7) {
+            throw "robocopy failed for Obsidian dir '$rel' with exit code $rc"
+        }
+        $obsidianCopied++
+    }
+
+    foreach ($fi in $notebookLmRootMds) {
+        $src = $fi.FullName
+        $leaf = $fi.Name
+        $dest = Join-Path $obsidianDestRoot $leaf
+        if ($WhatIf) {
+            Write-Host "[WhatIf] OBSIDIAN_FILE $src -> $dest"
+            $obsidianCopied++
+            continue
+        }
+        $destParent = Split-Path -Parent $dest
+        if (-not (Test-Path -LiteralPath $destParent)) {
+            New-Item -ItemType Directory -Path $destParent -Force | Out-Null
+        }
+        Copy-Item -LiteralPath $src -Destination $dest -Force
+        $obsidianCopied++
+    }
+
+    Write-Host "Obsidian context mirror -> $obsidianDestRoot (operations=$obsidianCopied)"
+}
+
 $stampLines = @(
     "sync_notebooklm_sources_to_mkm_data_vault.ps1",
     "UTC: $((Get-Date).ToUniversalTime().ToString('o'))",
     "WorkspaceRoot: $WorkspaceRoot",
     "DestRoot: $(Join-Path $VaultRoot $MirrorSubfolder)",
     "Copied operations: $copied",
-    "Skipped (missing): $skipped"
+    "Skipped (missing): $skipped",
+    "IncludeObsidianContext: $IncludeObsidianContext",
+    "Obsidian context operations: $obsidianCopied"
 )
 $stampText = ($stampLines -join "`n") + "`n"
 
