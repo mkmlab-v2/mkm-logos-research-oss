@@ -135,6 +135,8 @@ on:
       - "tests/test_btrack_phase3_snapshot_sync.py"
       - "tests/test_sasang_cross_ref_draft.py"
       - "tests/test_myeongni_insight_observation_log.py"
+      - "tests/test_hypothesis_insight_batch_v1_sample.py"
+      - "data/btrack/**"
       - "tests/test_w3_resonance_compute.py"
       - "tests/test_w3_notice_integrity.py"
       - "tests/test_w3_aux_adapter_contract.py"

@@ -47,6 +47,29 @@ WORD_RE = re.compile(r"[A-Za-z0-9_가-힣]+")
 ULTRA_TOKEN_SAVING_STRICT = 0.50
 ULTRA_TOKEN_SAVING_POLICY_MIN = 0.49
 
+# Global billing-aligned token proxy (Option B: does not replace legacy `_tokens` / global_token_saving_rate).
+TIKTOKEN_O200K_ENCODING = "o200k_base"
+
+
+@lru_cache(maxsize=1)
+def _tiktoken_o200k_status() -> tuple[Any | None, str | None]:
+    """Return (encoder, None) or (None, reason) for optional tiktoken o200k_base."""
+    try:
+        import tiktoken
+    except ImportError:
+        return None, "tiktoken_import_error"
+    try:
+        return tiktoken.get_encoding(TIKTOKEN_O200K_ENCODING), None
+    except Exception as exc:  # noqa: BLE001 — surface encoding/registry failures
+        return None, f"tiktoken_encoding_error:{type(exc).__name__}"
+
+
+def _o200k_saving_rate(tokens_before: int, tokens_after: int) -> float:
+    """OpenAI-style billing token saving rate (o200k_base), corpus-level or per-row."""
+    if not tokens_before:
+        return 0.0
+    return 1.0 - (tokens_after / tokens_before)
+
 
 def _parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Generate multi-lens performance evaluation report.")
@@ -82,9 +105,29 @@ def _parser() -> argparse.ArgumentParser:
         help="Attach CEE core payload (gematria->4D->state16) into each compression case row.",
     )
     p.add_argument(
+        "--include-gematria-metadata",
+        action="store_true",
+        help="Attach scripts/core/gematria_engine metadata per compression case row.",
+    )
+    p.add_argument(
+        "--include-gematria-4d-bridge",
+        action="store_true",
+        help="Attach gematria_to_4d_bridge (nearest state16) per row; use with --include-gematria-metadata.",
+    )
+    p.add_argument(
+        "--apply-gematria-4d-bridge-policy",
+        action="store_true",
+        help="Experimental mode only: use bridge distance in candidate selection (see evaluate_report).",
+    )
+    p.add_argument(
         "--strict-exit",
         action="store_true",
         help="Exit with code 1 if quality_gate.sensitive_integrity_ok is false.",
+    )
+    p.add_argument(
+        "--require-tiktoken-o200k",
+        action="store_true",
+        help="Fail if tiktoken o200k_base encoder is unavailable (billing spine lock).",
     )
     return p
 
@@ -589,13 +632,23 @@ def evaluate_report(
     use_contextual_generator_v3: bool = False,
     use_contextual_generator_v4: bool = False,
     use_contextual_generator_v5_codec: bool = False,
+    require_tiktoken_o200k: bool = False,
 ) -> dict[str, Any]:
     must_keep = must_keep or set()
     comp_cases = doc.get("compression_cases", [])
     fus_cases = doc.get("fusion_answer_cases", [])
 
+    enc_o200k, o200k_err = _tiktoken_o200k_status()
+    if require_tiktoken_o200k and enc_o200k is None:
+        reason = o200k_err or "unknown"
+        raise RuntimeError(
+            "tiktoken o200k_base is required for global billing metrics but is unavailable: "
+            f"{reason}. Install tiktoken in CI/runtime (see dual-regime-integrity workflow)."
+        )
+
     comp_rows = []
     total_raw = total_comp = 0
+    total_o200k_raw = total_o200k_comp = 0
     total_fidelity = 0.0
     total_sensitive_integrity = 0.0
     sensitive_integrities: list[float] = []
@@ -772,6 +825,19 @@ def evaluate_report(
             "reconstructed_text_effective": rec_for_eval,
             "route": route_info,
         }
+        if enc_o200k is not None:
+            o200k_r = len(enc_o200k.encode(raw))
+            o200k_c = len(enc_o200k.encode(comp))
+            o200k_sv = _o200k_saving_rate(o200k_r, o200k_c)
+            row["o200k_raw_tokens"] = o200k_r
+            row["o200k_compressed_tokens"] = o200k_c
+            row["o200k_token_saving_rate"] = o200k_sv
+            # Canonical billing-aligned keys (Option B: legacy row keys retained above).
+            row["o200k_tokens_before"] = o200k_r
+            row["o200k_tokens_after"] = o200k_c
+            row["o200k_saving_rate"] = o200k_sv
+            total_o200k_raw += o200k_r
+            total_o200k_comp += o200k_c
         if include_gematria_metadata:
             gematria_metadata = build_gematria_metadata(
                 raw_text=raw,
@@ -889,6 +955,10 @@ def evaluate_report(
             "use_contextual_generator_v3": use_contextual_generator_v3,
             "use_contextual_generator_v4": use_contextual_generator_v4,
             "use_contextual_generator_v5_codec": use_contextual_generator_v5_codec,
+            "require_tiktoken_o200k": require_tiktoken_o200k,
+            "tiktoken_o200k_encoding": TIKTOKEN_O200K_ENCODING,
+            "tiktoken_o200k_available": enc_o200k is not None,
+            "tiktoken_o200k_unavailable_reason": o200k_err,
         },
         "compression_metrics": {
             "case_count": len(comp_rows),
@@ -898,6 +968,30 @@ def evaluate_report(
             "min_sensitive_integrity": min_sensitive_integrity,
             "sensitive_violation_count": sensitive_violation_count,
             "cases": comp_rows,
+            "tiktoken_o200k": {
+                "encoding": TIKTOKEN_O200K_ENCODING,
+                "available": enc_o200k is not None,
+                "reason_unavailable": o200k_err,
+                "tokens_raw_total": total_o200k_raw if enc_o200k is not None else None,
+                "tokens_compressed_total": total_o200k_comp if enc_o200k is not None else None,
+                "global_token_saving_rate": (
+                    _o200k_saving_rate(total_o200k_raw, total_o200k_comp)
+                    if enc_o200k is not None and total_o200k_raw
+                    else None
+                ),
+            },
+            "o200k_token_saving_rate": (
+                _o200k_saving_rate(total_o200k_raw, total_o200k_comp)
+                if enc_o200k is not None and total_o200k_raw
+                else None
+            ),
+            "o200k_saving_rate": (
+                _o200k_saving_rate(total_o200k_raw, total_o200k_comp)
+                if enc_o200k is not None and total_o200k_raw
+                else None
+            ),
+            "o200k_tokens_before": total_o200k_raw if enc_o200k is not None else None,
+            "o200k_tokens_after": total_o200k_comp if enc_o200k is not None else None,
         },
         "fusion_metrics": {
             "case_count": len(fus_rows),
@@ -949,6 +1043,10 @@ def main() -> int:
         jaccard_drop_threshold_pp=args.jaccard_drop_threshold_pp,
         baseline_avg_jaccard=baseline_avg_jaccard,
         include_cee_core=bool(args.include_cee_core),
+        include_gematria_metadata=bool(args.include_gematria_metadata),
+        include_gematria_4d_bridge=bool(args.include_gematria_4d_bridge),
+        apply_gematria_4d_bridge_policy=bool(args.apply_gematria_4d_bridge_policy),
+        require_tiktoken_o200k=bool(args.require_tiktoken_o200k),
     )
 
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

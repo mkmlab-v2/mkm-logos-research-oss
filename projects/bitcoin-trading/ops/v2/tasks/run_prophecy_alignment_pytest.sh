@@ -52,4 +52,8 @@ exec "${PY}" -m pytest \
   tests/test_multilens_eval_harness_v2_thin.py \
   tests/test_multilens_dual_regime_market_adapter_v1.py \
   tests/test_myeongni_insight_observation_log.py \
+  tests/test_hypothesis_insight_batch_v1_sample.py \
+  tests/test_myeongri_fusion_scripts_smoke.py \
+  tests/test_gematria_myeongri_spike_smoke.py \
+  tests/test_mkm12_prism_index_registry_smoke.py \
   -q --tb=short

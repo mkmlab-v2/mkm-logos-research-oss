@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/hypothesis_insight_batch_v1.schema.json",
+  "title": "hypothesis_insight_batch_v1",
+  "description": "GPU/other-chat collected prophecy-related insights. B-track only; not A-track SSOT; no live trading merge by default.",
+  "type": "object",
+  "required": [
+    "schema",
+    "ts_utc",
+    "hypothesis_tier",
+    "boundary_ack",
+    "insight_one_liner",
+    "gpu_meta"
+  ],
+  "properties": {
+    "schema": {
+      "const": "hypothesis_insight_batch_v1"
+    },
+    "row_id": {
+      "type": "string",
+      "description": "UUID per line"
+    },
+    "ts_utc": {
+      "type": "string",
+      "description": "ISO-8601 UTC"
+    },
+    "hypothesis_tier": {
+      "const": "B"
+    },
+    "boundary_ack": {
+      "type": "boolean",
+      "description": "Collector affirms B-track / no production merge"
+    },
+    "inputs_summary": {
+      "type": "string",
+      "description": "Short corpus/window description (no secrets)"
+    },
+    "insight_one_liner": {
+      "type": "string",
+      "description": "Prefix [HYPO] recommended"
+    },
+    "falsification_hook": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "snapshot_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Repo paths or artifact names only"
+    },
+    "gpu_meta": {
+      "type": "object",
+      "required": ["source_label"],
+      "properties": {
+        "source_label": {
+          "type": "string",
+          "description": "e.g. chat_session_id or runner name"
+        },
+        "model_id": { "type": "string" },
+        "device": { "type": "string", "description": "e.g. cuda:0 or cpu" },
+        "prompt_hash": { "type": "string" },
+        "corpus_ref": {
+          "type": "string",
+          "description": "Local path glob or registered corpus id"
+        }
+      },
+      "additionalProperties": true
+    },
+    "note": { "type": "string" }
+  },
+  "additionalProperties": true
+}
