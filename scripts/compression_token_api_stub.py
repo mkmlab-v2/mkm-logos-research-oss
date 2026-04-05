@@ -181,7 +181,8 @@ def _resolve_tier(request: Request) -> str:
     """public | enterprise — enterprise only if key matches COMPRESSION_API_ENTERPRISE_KEYS."""
     keys = _enterprise_key_list()
     if not keys:
-        return "public"
+        # Legacy single-track: no keys configured → treat all requests as enterprise (CI/local parity).
+        return "enterprise"
     x_key = (request.headers.get("x-api-key") or "").strip()
     auth = (request.headers.get("authorization") or "").strip()
     bearer = ""
@@ -357,9 +358,9 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
                 flags["hydration_metrics_source"] = "decision_selected_candidate"
                 metrics_mode = "decision_fallback"
     else:
-        metrics = _estimate_metrics_from_text(body.text, active_rate)
-        metrics_mode = "active_kpi_estimate"
-        flags["enterprise_default_metrics"] = True
+        # Default compress: shard + routing only; metrics only when hydrate_metrics is set (OpenAPI mode_none).
+        metrics = None
+        metrics_mode = "none"
 
     if body.eval_context is not None and bool(body.eval_context.hydrate_shadow_compare):
         shadow_metrics, shadow_latency_ms, shadow_err = _live_eval_metrics(body.text)
