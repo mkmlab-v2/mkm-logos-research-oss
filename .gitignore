@@ -136,6 +136,9 @@ reports/constitution/btrack_pilot/rag_*.jsonl
 reports/constitution/btrack_pilot/fact_safe_slack_delivery_*.json
 reports/constitution/btrack_pilot/fact_safe_slack_delivery_*.jsonl
 
+# NotebookLM Fusion Hub bulk manifest (regenerated locally; absolute paths)
+reports/notebooklm_fusion_hub_bulk_manifest.json
+
 # Root accidental probe output (one-line JSON); keep local only
 /utf8
 /tmp_verify_report.json
