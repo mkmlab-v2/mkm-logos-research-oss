@@ -11,7 +11,7 @@ import sys
 import os
 import json
 from pathlib import Path
-from typing import Dict, Optional, Any, Tuple
+from typing import Dict, Optional, Any, Tuple, List
 from datetime import datetime
 import pandas as pd
 import numpy as np
@@ -420,6 +420,31 @@ class CryptoNitroLiveStrategy:
         # 보조 레이어(성경/명리/사상/PMI/Reasoning)는 직접 BUY/SELL 트리거가 아닌
         # 리스크 배율(leverage_multiplier) 보정 용도로만 사용한다.
         self.auxiliary_layers_risk_only = bool(safety_mode_config.get("auxiliary_layers_risk_only", True))
+
+        _pf = strategy_config.get("prophecy_phase1_fusion") or {}
+        self.prophecy_phase1_fusion_enabled = bool(_pf.get("enabled", False))
+        self.prophecy_phase1_fusion = {
+            "w_macro": float(_pf.get("w_macro", 0.5)),
+            "w_micro": float(_pf.get("w_micro", 0.5)),
+            "score_threshold_buy": float(_pf.get("score_threshold_buy", 0.12)),
+            "score_threshold_sell": float(_pf.get("score_threshold_sell", -0.12)),
+        }
+        _ig = strategy_config.get("insight_observation_gate") or {}
+        self.insight_observation_gate_enabled = bool(_ig.get("enabled", False))
+        self.insight_observation_gate_mode = str(_ig.get("mode", "observe")).strip().lower()
+        if self.insight_observation_gate_mode not in ("observe", "block"):
+            self.insight_observation_gate_mode = "observe"
+        _logp = (_ig.get("log_path") or "").strip()
+        self.insight_observation_log_path = Path(_logp) if _logp else (workspace_root / "data" / "myeongni" / "insight_observation_log.jsonl")
+        _ap = (_ig.get("regime_alias_path") or "").strip()
+        if _ap:
+            self.insight_regime_alias_path: Path = Path(_ap)
+        else:
+            from .insight_observation_gate import default_alias_path
+
+            self.insight_regime_alias_path = default_alias_path(workspace_root)
+        self._insight_regime_aliases: Dict[str, str] = {}
+        self._insight_filter_rules: List[Dict[str, Any]] = []
         
         logger.info(
             f"✅ 설정 파일 로드 완료: min_confidence={self.min_confidence:.2f}, "
@@ -560,6 +585,21 @@ class CryptoNitroLiveStrategy:
         except Exception as e:
             logger.warning(f"⚠️ Phase 1 모델 초기화 실패: {e}")
             self.phase1_model = None
+        if self.insight_observation_gate_enabled:
+            try:
+                from .insight_observation_gate import load_filter_rules, load_regime_aliases
+
+                self._insight_regime_aliases = load_regime_aliases(self.insight_regime_alias_path)
+                self._insight_filter_rules = load_filter_rules(self.insight_observation_log_path)
+                logger.info(
+                    "✅ insight_observation_gate: %s 규칙, 별칭 %s개 (%s, alias=%s)",
+                    len(self._insight_filter_rules),
+                    len(self._insight_regime_aliases),
+                    self.insight_observation_log_path,
+                    self.insight_regime_alias_path,
+                )
+            except Exception as e:
+                logger.warning("⚠️ insight_observation_gate 로드 실패: %s", e)
         if PMI_NITRO_AVAILABLE:
             try:
                 # 체질은 환경 변수나 설정에서 가져올 수 있음 (기본값: SE)
@@ -1656,9 +1696,38 @@ class CryptoNitroLiveStrategy:
                         phase1_confidence = phase1_prediction["confidence"]
                         original_signal = signal_data.get("signal", "HOLD")
                         original_confidence = signal_data.get("confidence", 0.0)
-                        
+
+                        if self.prophecy_phase1_fusion_enabled:
+                            from .prophecy_phase1_fusion import (
+                                calculate_fusion_signal,
+                                directional_score,
+                                fused_score_to_signal,
+                            )
+
+                            p_reg = directional_score(original_signal, original_confidence)
+                            p_ph = directional_score(phase1_signal, phase1_confidence)
+                            fus = calculate_fusion_signal(
+                                p_reg,
+                                p_ph,
+                                1.0,
+                                self.prophecy_phase1_fusion["w_macro"],
+                                self.prophecy_phase1_fusion["w_micro"],
+                            )
+                            sig_out, conf_out = fused_score_to_signal(
+                                fus["combined_score"],
+                                self.prophecy_phase1_fusion["score_threshold_buy"],
+                                self.prophecy_phase1_fusion["score_threshold_sell"],
+                            )
+                            signal_data["signal"] = sig_out
+                            signal_data["confidence"] = conf_out
+                            signal_data["signal_source"] = "prophecy_phase1_fusion_v1"
+                            signal_data["prophecy_phase1_fusion"] = {
+                                **fus,
+                                "original_signal": original_signal,
+                                "phase1_signal": phase1_signal,
+                            }
                         # Phase 1 모델이 높은 신뢰도(>0.7)를 보이면 우선 적용
-                        if phase1_confidence > 0.7:
+                        elif phase1_confidence > 0.7:
                             # Phase 1 모델 신호 우선 적용
                             signal_data["signal"] = phase1_signal
                             # 신뢰도는 Phase 1과 기존 신호의 가중 평균 (Phase 1 70%, 기존 30%)
@@ -1768,6 +1837,31 @@ class CryptoNitroLiveStrategy:
                         "leverage": self.leverage
                     }
                     logger.info(f"🔥 양방향 매매 전략 활성화: 변동성 {volatility:.3f}, 검색 품질 {search_quality:.2%}")
+
+            if self.insight_observation_gate_enabled and self._insight_filter_rules:
+                try:
+                    from .insight_observation_gate import is_regime_blocked
+
+                    blocked, reason = is_regime_blocked(
+                        str(_regime_id),
+                        self._insight_filter_rules,
+                        aliases=self._insight_regime_aliases,
+                    )
+                    signal_data.setdefault("insight_observation_gate", {})
+                    signal_data["insight_observation_gate"].update(
+                        {
+                            "regime_id": str(_regime_id),
+                            "blocked": blocked,
+                            "reason": reason,
+                            "mode": self.insight_observation_gate_mode,
+                        }
+                    )
+                    if blocked and self.insight_observation_gate_mode == "block":
+                        signal_data["signal"] = "HOLD"
+                        signal_data["confidence"] = min(float(signal_data.get("confidence", 0.0)), 0.05)
+                        signal_data["signal_source"] = "insight_gate_block"
+                except Exception as _ige:
+                    logger.debug("insight_observation_gate 적용 실패(무시): %s", _ige)
             
             # 🏛️ 위상 공명 팩트체크 적용 (신호 검증) - 개선: 임계값 0.2로 강화
             fact_check_result = None
