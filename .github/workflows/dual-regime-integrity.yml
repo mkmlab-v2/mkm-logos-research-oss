@@ -196,7 +196,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install pytest and jsonschema
-        run: python -m pip install --upgrade pip pytest jsonschema fastapi httpx pyyaml
+        run: python -m pip install --upgrade pip pytest jsonschema fastapi httpx pyyaml tiktoken
 
       - name: Integrity guard (golden lock k=6866, 1574 intersection, 149 probes)
         run: python scripts/integrity_guard.py
