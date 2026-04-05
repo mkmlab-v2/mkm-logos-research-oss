@@ -13,14 +13,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # When evaluation scripts receive no CLI extra args: sparsification + v20-style recent precision layer.
 # OBSERVATION_ONLY research default; override with explicit extra args or --bare on bundle scripts.
+# v24: slightly stronger post-filter (refractory + recent-era min evidence) without changing labels/OHLCV.
 DEFAULT_SHADOW_EXTRA_ARGS: list[str] = [
     "--cluster-merge-days",
     "10",
     "--refractory-days",
-    "10",
+    "12",
     "--enable-recent-precision-layer",
     "--recent-precision-min-evidence",
-    "3",
+    "4",
     "--recent-precision-density-window",
     "30",
     "--recent-precision-density-max",
