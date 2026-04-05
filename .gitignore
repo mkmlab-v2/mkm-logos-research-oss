@@ -69,6 +69,9 @@ projects/**/.next/
 docs/final/artifacts/night_watchman_harness/
 docs/final/artifacts/pixel_battalion_refined_upload.zip
 docs/final/artifacts/mkm_toe_training_dataset_v*.csv
+# eval_prophecy_hit_rate_v1.py 등 로컬 평가 재생성 산출 (본선 추적 제외)
+/artifacts/
+docs/final/artifacts/prophecy_hit_rate_eval_latest.json
 projects/bitcoin-trading/.venv/
 projects/bitcoin-trading/.pm2-win/
 mkmlife-home-*.png
