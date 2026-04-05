@@ -1,6 +1,6 @@
 # NotebookLM 소스 매니페스트 (A/B 이원)
 
-**작성일**: 2026-03-29 · **갱신**: 2026-04-04 (Cursor 3.0·투트랙 압축 SLA 포인터)  
+**작성일**: 2026-03-29 · **갱신**: 2026-04-04 (Prism Index 레지스트리·Vault 동기화 목록 추가)  
 **정의**: **A = Fact-Lock(팩트 고정)**, **B = Creative-Lock(통찰·가설)**. B는 본선 OOF·실매매 트리거와 A를 혼선 없이 적용.
 
 **Cursor 3.0 (2026-04)**: NotebookLM과 동일하게 **브리핑·질의·소스 아카이브** 레이어다. **에이전트 병렬(Agents Window)·Design Mode**는 제품 기능이며, **압축 엔진·헌법·실매매 SSOT는 여전히 레포의 `.py`/JSON**이다(`AGENTS.md`, `COMPRESSION_SLA_POLICY_V1.md`).
@@ -34,7 +34,8 @@
 
 | 우선순위 | 경로 (워크스페이스 기준) | 비고 |
 |----------|--------------------------|------|
-| P0 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | 헌법 추론 구현 SSOT |
+| P0 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | 헌법 추론 구현 SSOT (**§14 Prism Index** 포함) |
+| P1 | `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` | Prism 논리 색인(Grand Indexing 2.0); 경로·역할·`agent_access`; 코드 4D 축과 혼동 금지 |
 | P0 | `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` | 압축-해석 파이프라인 Fact-Lock SSOT |
 | P0 | `docs/final/COMPRESSION_SLA_POLICY_V1.md` | 투트랙 압축 SLA(범용·리터럴)·산출·헬스·웹훅 범위; NotebookLM이 이 수치를 대체하지 않음 |
 | P1 | `docs/final/openapi_token_compression_stub_v1.yaml` | 토큰 압축 API 스텁 OpenAPI 3 계약 |
@@ -87,6 +88,25 @@
 | BTC 금융 Hub B — A/B 교차검증 브리프 | `docs/final/NOTEBOOKLM_HUB_B_BTC_AB_TRACK_CROSSCHECK_BRIEF_2026-04-04.md` | NotebookLM 소스 ID `bd996cd5-cb6e-444c-8110-eb2ce6a4c745` · 노트북 `b79929a2-8742-42a8-a4d7-06523e12935d` (2026-04-04 적재). OHLCV·온톨로지=B 연구 가설 vs A 본선 팩트 구분·Promotion Loop·Fact-Lock |
 | Swarm 심리 메트릭 (B-track 데이터 계약) | `docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json` · `docs/final/dummy_swarm_score.jsonl` · `[HYPO]` 샘플 `docs/final/hypo_test_sentiment.jsonl` · 듀얼렌즈 1호 `[HYPO]` `docs/final/corr_report_001_hypo.jsonl` + 좌측 참고 `docs/final/corr_report_001_left_lens.json` | MiroFish류 군집 출력→이산 수치 JSON 계약(draft-07); 로컬 검증 `py scripts/validate_swarm_sentiment_dummy.py` 및 `--jsonl …`; 일괄: `scripts/Validate-SwarmSentimentBTrack.ps1`; CI: `swarm-sentiment-schema-validate.yml`; A-track 트리거·실매매 합선 금지 |
 | Swarm 메트릭 Hub B 번들 (RAG) | `docs/final/SWARM_SENTIMENT_METRIC_NOTEBOOKLM_BUNDLE_2026-04-04.md` | NotebookLM 금융 Hub B 소스 ID `582bfa0b-ac4d-4715-9073-b170bd7a8719` — JSON 직접 업로드 불가 시 MD 번들로 동일 내용 인제스트 |
+
+### B 보조 — Obsidian Context (Creative-Lock, 로컬 볼트)
+
+**목적**: 레포·`docs/final`에 없는 **지휘관 의도·초안·런북 맥락**을 NotebookLM/Vault 미러에 올릴 때 사용. **A(Fact-Lock)를 대체하지 않음.** 민감·미완료·내부 은어는 선별·비식별 후 반영.
+
+**로컬 SSOT 경로**: `memory/obsidian_vault/` (주 볼트; `AGENTS.md` 동일)
+
+| 카테고리 (v4.7 매핑) | 실제 워크스페이스 경로 (디렉터리는 `*.md`만 Vault로 미러) | 비고 |
+|----------------------|----------------------------------------------------------|------|
+| 코어·대시보드 | `memory/obsidian_vault/00_Project_Core/` | S-L-K-M·12 도메인 대시보드 등 |
+| 전략·연구 초안 | `memory/obsidian_vault/raw_research/` | 로드맵·NotebookLM·Kaggle·마케팅 메모 다수 |
+| OPS·엔지니어링 | `memory/obsidian_vault/OPS/`, `memory/obsidian_vault/CODING/` | 런북 성격 |
+| Theology / Logos 에세이 | `memory/obsidian_vault/SPIRIT/` | 일지·성찰 계열( B 궤적 ) |
+| 시장·트레이딩 | `memory/obsidian_vault/TRADING/`, `memory/obsidian_vault/RESEARCH/` | 일지·리서치 |
+| NotebookLM 인덱스 | `memory/obsidian_vault/NotebookLM*.md` (볼트 루트, 파일명 패턴) | 스크립트가 동적 매칭 |
+
+**제외(동기화 스크립트)**: `.obsidian/`, `_cursor_session_staging/` (설정·스테이징 노이즈)
+
+**Vault 미러 출력**: `G:\공유 드라이브\MKM_DATA_VAULT\vault\obsidian_context\` (또는 `MKM_VAULT_ROOT\obsidian_context\`) — `sync_notebooklm_sources_to_mkm_data_vault.ps1 -IncludeObsidianContext`
 
 ---
 

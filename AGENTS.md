@@ -9,8 +9,15 @@
    - 모호성 처리 고정: 저위험 모호성은 질문 대신 합리적 기본값으로 구현/검증 후 사후 보고한다.
 2. **`.cursor/rules/sovereign-central-command.mdc`** — Vault·NotebookLM·보안·운영(3문장 요약 + **§4 마무리**). §4에서 **폐지**: “Next Action 2가지”, `[A]`/`[B]`·a/b 강요. **대체**: TITAN 마무리 또는 고위험 시 **승인 범위만** 명시(루트 `.cursorrules`와 동일 방향).
 3. **구현 팩트(환각 차단)**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — 기획·NotebookLM만 보고 “이미 구현” 단정 금지. P0·헌법 핵심 경로 존재 여부: `scripts/verify_p0_constitution_gate_paths.ps1`.
-4. **정체성 (Multi-Lens):** 단일 TOE·통일장 “완성” 선언 금지 — §1.1. 레짐·로고스·명리·외경은 **격벽·교차 참고** (§2.1·§4).
-5. **Cursor Cloud Sandbox · 본선 분리:** Cloud Agent/Sandbox는 검증·병렬 가속 전용; 실매매·프로덕션 쓰기·실키 주입은 로컬/VPS 본선과 분리. 상세 `.cursor/rules/cursor-cloud-sandbox-boundary.mdc`.
+4. **Prism 색인 (논리 레이어, 선택)**: 물리 이동 없이 경로·역할만 묶은 **Grand Indexing 2.0** — `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§14**, 가독 색인 초안 `docs/final/MKM12_GRAND_INDEX_MAP.md`, 중앙 레지스트리 `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json`. 코드 4D 벡터 축 `(S,L,K,M)`과 혼동하지 말 것.
+5. **정체성 (Multi-Lens):** 단일 TOE·통일장 “완성” 선언 금지 — §1.1. 레짐·로고스·명리·외경은 **격벽·교차 참고** (§2.1·§4).
+6. **Cursor Cloud Sandbox · 본선 분리:** Cloud Agent/Sandbox는 검증·병렬 가속 전용; 실매매·프로덕션 쓰기·실키 주입은 로컬/VPS 본선과 분리. 상세 `.cursor/rules/cursor-cloud-sandbox-boundary.mdc`.
+
+## 로컬 검증 진입점 (개발·PR 전 권장)
+
+- **구현 판정**은 (3)의 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`와 호출 가능 스크립트·테스트로만 한다. 브리핑·노트만으로 경로를 확정하지 않는다.
+- **번들 한 방**: `scripts/run_fact_lock_bundle.ps1` — 루트에서 실행; 맥락·완료 정의는 `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 하단.
+- **보조**: `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` (bitcoin-trading 디렉터리에서). CI 정합은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6.
 
 ## Cursor 3.0 · 규칙 스택 (2026-04)
 
@@ -23,6 +30,7 @@
 - **정책**: `docs/final/COMPRESSION_SLA_POLICY_V1.md` — Track A(범용)·Track B(리터럴), 산출 JSON, 손실 패턴 리포트, 웹훅은 `active_kpi`(Track A) 기준.
 - **실행**: `scripts/run_ultra_compression_default.py` / `--mode literal`; `scripts/run_compression_automation_chain.ps1 -IncludeLiteralTrack`; 헬스: `scripts/run_workspace_automation_health.ps1 -IncludeCompressionKpi [-IncludeLiteralTrack]`(체인은 in-process 호출).
 - **해석 파이프라인**: `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` — NotebookLM·브리핑은 **참고**; 구현·KPI는 스크립트·산출물만 SSOT.
+- **Multilens P1 A/B**: 본선 갱신 `py scripts/run_multilens_p1_production_chain.py`(또는 `scripts/Run-MultilensP1ProductionChain.ps1`); B-track 샌드박스 `py scripts/run_multilens_p1_btrack_chain.py`(또는 `Run-MultilensP1BTrackSuite.ps1`, `-IncludeBalancedWeightsSweep` 선택). 명령만 확인: `--dry-run`; JSON 실행 계획만 출력: `--json-plan`(서브프로세스 미실행, schema `multilens_p1_chain_plan_v1`).
 
 ## 도메인 핸드오프(참고)
 
@@ -45,6 +53,7 @@
 
 ## 경로
 
+- **LLM Wiki (Karpathy 패턴, 로컬 누적):** 규약 `docs/final/LLM_WIKI_SCHEMA.md` — 원본 `memory/obsidian_vault/llm_wiki/raw/` (불변), 합성 `memory/obsidian_vault/llm_wiki/wiki/`. 실행 런타임은 기본 **Cursor**; 별도 로컬 에이전트 앱 필수 아님.
 - 작업 루트: `C:/workspace` (Windows). Python 실행은 `py` 권장.
 - **B-track 파일럿 벤치 SSOT:** `data/logos/btrack_pilot/bench/CANONICAL_BENCH_POINTER_V1.json` — 공식 의도 벤치는 포인터의 `canonical_builder_script`가 갱신하는 `a_track_eval.jsonl` / `b_track_eval.jsonl` 슬롯이다. direct·cross_ref 부트스트랩 빌더는 기본적으로 `*_direct_v1.jsonl` / `*_cross_ref_bootstrap_v1.jsonl`에 쓰며 canonical을 덮어쓰지 않는다. 경로 상수: `tools/myeongni/btrack_bench_paths.py`.
 - **Git 로컬 exclude 주의:** `.git/info/exclude`에 `tools/`·`scripts/` 등으로 디렉터리 **전체**를 막으면 하위 추적 파일이 조용히 제외된다. 필요 시 `tools/*` + `!tools/myeongni/**`, `scripts/*` + `!scripts/**`처럼 내용만 막고 트리는 예외로 되돌리거나, 해당 줄을 제거한다(원격 `.gitignore`에는 루트 `tools/`·`scripts/` 무시 규칙이 없음).
@@ -93,5 +102,6 @@
 - **SSH로 연 원격 폴더**를 열면 그쪽 `AGENTS.md` / `.cursor/rules`가 적용된다. 로컬 `C:/workspace`와 동시에 쓰면 **git 동기화**로 규칙을 맞춘다.
 - 로컬 트리는 **개발·테스트·문서** 우선. **실매매 런타임**은 VPS 등 별도 배포본일 수 있으므로, 코드·설정이 자동 동일하다고 가정하지 않는다.
 - 질문·답변에서 **로컬만**인지 **배포(VPS) 후**인지 구분한다. VPS 경로·PM2 앱 이름 등은 **지휘관이 확정한 값**으로만 서술하고, 미확인이면 “확인 필요”로 표기한다.
+- **Ollama (VPS/본선)**: `gemma4:e2b` 등 최신 모델 풀 시 구버전은 레지스트리 **412** 가능 → **Ollama 업그레이드** 후 `ollama pull`. 로컬 `C:\workspace` Cursor 세션은 **VPS 셸이 아님**; 업그레이드·모델 설치는 **서버 셸(또는 SSH Cursor가 연 그 호스트)** 에서 수행. 태그 정렬: **`OLLAMA_MODEL=gemma4:e2b`**(로컬 `.env` 등).
 - 로컬 **SITREP → 공유 Vault 보급**(Windows, G: 마운트 시): `scripts/titan-sync.ps1` — **VPS 실매매 배포와는 별 작업**이다.
 - **리스크 프로필 소스 고정(n8n 등):** Windows 사용자 환경변수 `RISK_PROFILE_SOURCE_NAME` / `RISK_PROFILE_MODE_NAME`을 설정하면 `projects/bitcoin-trading/ops/windows-rehearsal/ensure_daemon_running.ps1`의 Fact-Safe 동기화가 매 기동 시 동일 라벨을 넘긴다(미설정 시 기존 `memory/v2/risk/risk_profile_fact_safe_latest.json`의 source/mode를 보존).
