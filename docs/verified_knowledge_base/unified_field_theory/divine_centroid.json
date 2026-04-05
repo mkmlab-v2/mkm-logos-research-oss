@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "updated": "2026-02-20T16:07:56.064137",
+  "divine_centroid": {
+    "S": 0.25,
+    "L": 0.25,
+    "K": 0.25,
+    "M": 0.25
+  },
+  "physical_constants": {
+    "G": 6.6743e-11,
+    "c": 299792458.0,
+    "k_B": 1.380649e-23,
+    "h_bar": 1.054571817e-34
+  },
+  "taeyangin_singularity": {
+    "S_min": 0.3,
+    "L_min": 0.3,
+    "S_M_diff_min": 0.07
+  }
+}

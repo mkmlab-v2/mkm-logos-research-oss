@@ -1,0 +1,132 @@
+{
+  "version": "1.0",
+  "created": "2026-02-10",
+  "description": "QF-Synchro 헌법 - System Constraint Factor (λ) 제약 관리",
+  "verification_status": "verified",
+  "source": ".cursor/rules/qf-synchro-constitution/RULE.md",
+  
+  "lambda_concept": {
+    "name": "System Constraint Factor (λ)",
+    "korean": "시스템 제약 계수",
+    "description": "시간의 기상도 - 60진법 주기를 통해 현재 외부 환경이 우리를 어느 방향으로 밀어내고 있는지 계산",
+    "role": "3중 나선 공명 구조의 제2층 (환경 변수)",
+    "weight": 0.3
+  },
+  
+  "domain_formulas": {
+    "health": {
+      "formula": "λ = f(rib_angle) = (각도 - 60°) / 30°",
+      "parameters": {
+        "rib_angle": {
+          "range": "60° ~ 90°",
+          "description": "갈비뼈 각도",
+          "default": 75.0
+        }
+      },
+      "code_location": "tools/tools/core/DomainLambdaCalculator.py:calculate_health",
+      "example": {
+        "rib_angle": 75.0,
+        "lambda": 0.5
+      }
+    },
+    "finance": {
+      "formula": "λ = 1 / (1 + log(PER))",
+      "parameters": {
+        "per": {
+          "range": "> 0",
+          "description": "주가수익비율 (PER)",
+          "default": 15.0
+        }
+      },
+      "code_location": "tools/tools/core/DomainLambdaCalculator.py:calculate_finance",
+      "example": {
+        "per": 15.0,
+        "lambda": 0.724
+      }
+    },
+    "organization": {
+      "formula": "λ = 0.4 + (hierarchy_depth × 0.1)",
+      "parameters": {
+        "hierarchy_depth": {
+          "range": "1 ~ 10",
+          "description": "계층 깊이",
+          "default": 3
+        }
+      },
+      "code_location": "tools/tools/core/DomainLambdaCalculator.py:calculate_organization",
+      "example": {
+        "hierarchy_depth": 3,
+        "lambda": 0.7
+      }
+    },
+    "system": {
+      "formula": "λ = 1 / (1 + log(복잡도))",
+      "parameters": {
+        "complexity": {
+          "range": "1.0 ~ 10.0",
+          "description": "시스템 복잡도",
+          "default": 2.0
+        }
+      },
+      "code_location": "tools/tools/core/DomainLambdaCalculator.py:calculate_system",
+      "example": {
+        "complexity": 2.0,
+        "lambda": 0.590
+      }
+    }
+  },
+  
+  "three_layer_resonance": {
+    "description": "3중 나선 공명 구조 (The Sovereign Logos v1.0)",
+    "layers": [
+      {
+        "layer": 1,
+        "name": "절대 표준 (The Biblical Logos)",
+        "indicator": "Target Equilibrium Point",
+        "values": {
+          "S": 0.249834,
+          "L": 0.249714,
+          "K": 0.250699,
+          "M": 0.249754
+        },
+        "weight": 0.4,
+        "role": "시스템의 윤리적·공학적 북극성",
+        "note": "이 값은 성경 데이터의 평균값이 아닌, 치우친 인간 데이터를 교정하기 위한 공학적 목표점"
+      },
+      {
+        "layer": 2,
+        "name": "환경 변수 (Temporal Metadata - 명리)",
+        "indicator": "λ (System Constraint Factor)",
+        "weight": 0.3,
+        "role": "시간의 기상도 - 외부 환경 제약 반영"
+      },
+      {
+        "layer": 3,
+        "name": "실시간 동역학 (Human Agency - 우리 이론 & A-Code)",
+        "indicator": "4D Vector (S-L-K-M) + A-Code",
+        "weight": 0.3,
+        "role": "선장의 의지와 엔진 출력"
+      }
+    ],
+    "correction_formula": "최종_벡터 = (Divine_Centroid × 0.4) + (λ_보정_벡터 × 0.3) + (실시간_벡터 × 0.3)"
+  },
+  
+  "regression_algorithm": {
+    "name": "0.25 회귀 알고리즘",
+    "description": "거리 > 0.1 시 자동으로 0.25 평형으로 회귀",
+    "process": {
+      "step1": "진단 - 현재 상태가 0.25 평형을 깼는가? (Divine Centroid와의 거리 계산)",
+      "step2": "예측 - 명리적 조류(λ)가 미래 상태를 예고하는가?",
+      "step3": "처방 - 0.25 평형으로 자동 복귀 전략 (과도한 차원의 에너지를 부족한 차원으로 재분배)"
+    },
+    "threshold": 0.1,
+    "code_location": ".cursor/rules/qf-synchro-constitution/RULE.md:931-960"
+  },
+  
+  "verification": {
+    "code_location": "tools/tools/core/DomainLambdaCalculator.py",
+    "status": "verified_in_codebase",
+    "implementation": "완전 구현 완료"
+  }
+}
+

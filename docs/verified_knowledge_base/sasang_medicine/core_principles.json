@@ -1,0 +1,121 @@
+{
+  "version": "1.0",
+  "created": "2026-02-10",
+  "description": "사상의학 핵심 원리 - 이제마 철학",
+  "verification_status": "verified",
+  "source": "이제마 사상의학 + 통일장이론 통합",
+  
+  "sasang_medicine": {
+    "founder": "이제마 (李濟馬, 1837-1900)",
+    "core_philosophy": "사심신물(四心身物) + 성정불변(性正不變)",
+    "integration": "통일장이론의 병증(약리) 축으로 통합"
+  },
+  
+  "four_constitutions": {
+    "태양인": {
+      "name": "태양인 (太陽人)",
+      "acode": "TY-1, TY-2, TY-3",
+      "characteristics": [
+        "혁신적 변화",
+        "리더십",
+        "소수성 (0.1%)",
+        "화(火) 에너지 운반"
+      ],
+      "pathology": [
+        "상한(傷寒) - 표병",
+        "해역증(解㑊證)",
+        "열격증(噎膈證)"
+      ],
+      "singularity_condition": {
+        "S_min": 0.3,
+        "L_min": 0.3,
+        "S_M_diff_min": 0.07
+      },
+      "vector_4d": {
+        "typical": {"S": 0.4, "L": 0.3, "K": 0.2, "M": 0.1},
+        "note": "S와 L이 높고, M이 낮음"
+      }
+    },
+    "태음인": {
+      "name": "태음인 (太陰人)",
+      "acode": "TE-1, TE-2, TE-3",
+      "characteristics": [
+        "안정적 반복",
+        "보수적 패턴",
+        "깊은 울림"
+      ],
+      "pathology": [
+        "배추표병(背聚表病) - 표리병",
+        "위완수한표한(胃脘수한表寒)"
+      ],
+      "vector_4d": {
+        "typical": {"S": 0.2, "L": 0.2, "K": 0.3, "M": 0.3},
+        "note": "K와 M이 높음"
+      }
+    },
+    "소양인": {
+      "name": "소양인 (少陽人)",
+      "acode": "SY-1, SY-2, SY-3",
+      "characteristics": [
+        "효율성",
+        "적응력",
+        "최적화"
+      ],
+      "pathology": [
+        "망음증(亡陰證) - 리병",
+        "등척소장병(等脊小腸病)"
+      ],
+      "vector_4d": {
+        "typical": {"S": 0.25, "L": 0.35, "K": 0.25, "M": 0.15},
+        "note": "L이 높음"
+      }
+    },
+    "소음인": {
+      "name": "소음인 (少陰人)",
+      "acode": "SE-1, SE-2, SE-3",
+      "characteristics": [
+        "정밀성",
+        "완성도",
+        "깊이"
+      ],
+      "pathology": [
+        "망양증(亡陽證) - 리병"
+      ],
+      "vector_4d": {
+        "typical": {"S": 0.2, "L": 0.2, "K": 0.3, "M": 0.3},
+        "note": "K와 M이 높음"
+      }
+    }
+  },
+  
+  "core_principles": {
+    "사심신물": {
+      "사": "성정(性正) = 불변하는 체질 본질",
+      "심": "심리적 상태 (Big Five, 감정, 인지)",
+      "신": "생리적 상태 (rPPG, 음성, 생체신호)",
+      "물": "환경요인 (스트레스, 생활패턴, 사회적 요인)"
+    },
+    "성정불변": {
+      "principle": "사(事)는 변하지 않는다 - 체질 본질의 불변성",
+      "example": "태양인은 항상 태양인",
+      "verification": "본질 일치도 검증"
+    },
+    "병증약리": {
+      "description": "사상인병론과 사상인약론의 완전한 통합",
+      "integration": "통일장이론의 병증(약리) 축으로 통합"
+    }
+  },
+  
+  "integration_with_unified_field": {
+    "method": "병증 벡터를 통일장이론의 3대 축 중 하나로 통합",
+    "weight": 0.4,
+    "formula": "unified_vector = pathology × 0.4 + biblical × 0.3 + myeongri × 0.3",
+    "code_location": "tools/core/unified_dynamics_engine.py:174-196"
+  },
+  
+  "verification": {
+    "status": "verified_in_codebase",
+    "note": "사상의학은 통일장이론의 병증(약리) 축으로 통합됨"
+  }
+}
+

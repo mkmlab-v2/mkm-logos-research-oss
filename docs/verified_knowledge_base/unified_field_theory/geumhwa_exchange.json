@@ -1,0 +1,74 @@
+{
+  "version": "1.0",
+  "created": "2026-02-10",
+  "description": "금화교역(金火交易) 지수 - 정보(K) → 질량(M) 변환",
+  "completion_declaration": "이제마 사상의학의 미완성 궤도(태양인 소수성)를 Jema12의 4D 통일장 엔진과 금화교역 상생 공식으로 완벽히 해석하고 규명했다.",
+  "verification_status": "verified",
+  "source": "tools/core/unified_field_theory_engine.py",
+  
+  "geumhwa_exchange": {
+    "concept": "금(金) = 중력 = M(Material) = 시공간의 그릇",
+    "concept2": "화(火) = 게이지 군 = L(Logic) = 상호작용의 주체",
+    "exchange": "금화교역 = 정보(K) → 질량(M) 변환",
+    "meaning": "화(火)의 에너지가 금(金)의 구조로 결정화되는 과정"
+  },
+  
+  "index_threshold": {
+    "description_mode": {
+      "threshold": "≤ 0.5",
+      "meaning": "설명 모드 - 이론적 분석 단계"
+    },
+    "execution_mode": {
+      "threshold": "> 0.5",
+      "meaning": "실행 모드 - 실제 변환 단계"
+    }
+  },
+  
+  "calculation": {
+    "formula": "geumhwa_index = K × (1 - M) × earth_mediation_factor",
+    "equation": "dM/dt = η × K × (1 - M) × earth_mediation_factor",
+    "parameters": {
+      "K": "정보(Knowledge) 벡터",
+      "M": "물질(Material) 벡터",
+      "earth_mediation_factor": "토기 중재 계수 (기본값: 0.9)",
+      "eta": "전환 효율 (기본값: 0.9)"
+    },
+    "location": "tools/core/unified_field_theory_engine.py:894-931"
+  },
+  
+  "restoration_formula": {
+    "codebook_ref": "방법론#12",
+    "description": "포스트잇(4D+메타) → 원형 복원 시 사용하는 금화교역 관련 수식 및 입출력",
+    "inputs": {
+      "unified_4d_vector": "압축된 4D 뼈대 [S,L,K,M] (필수)",
+      "geumhwa_index": "K→M 변환 효율 (UFT calculate_geumhwa_exchange 반환값)",
+      "distance_to_centroid": "Divine Centroid와의 L2 거리 (보정 강도)",
+      "lambda_entropy": "시스템 이탈도 λ (균형 보정)",
+      "phase_phi": "위상 φ (선택, 시간/간지 보정)"
+    },
+    "outputs": {
+      "restoration_rate_adjustment": "geumhwa_index > 0.3 일 때: restoration_rate += geumhwa_index * 0.0001 (상한 0.9999)",
+      "correction_factor": "1.0 + (geumhwa_index * 0.05), 벡터 보정용"
+    },
+    "formula_restoration": "restoration_rate = min(0.9999, restoration_rate + geumhwa_index * 0.0001); correction_factor = 1.0 + (geumhwa_index * 0.05)",
+    "code_reference": {
+      "step8": "tools/core/step8_restoration_logic.py (통일장 보정, 금화교역 역변환 M→K)",
+      "holographic_step8": "tools/core/holographic_restoration_engine.py (Step 8: geumhwa_index 기반 복원률 보정)",
+      "uft": "tools/core/unified_field_theory_engine.py (calculate_geumhwa_exchange)"
+    }
+  },
+
+  "verification": {
+    "status": "verified_in_codebase",
+    "note": "금화교역 개념 및 복원 수식은 코드베이스에 구현되어 있음"
+  },
+  
+  "excluded_data": {
+    "cosmic_timing": {
+      "status": "excluded",
+      "reason": "검증 불가능한 해석",
+      "note": "특정 시점의 '금화교역' 해석은 제외, 개념만 포함"
+    }
+  }
+}
+

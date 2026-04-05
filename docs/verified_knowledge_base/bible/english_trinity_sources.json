@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "updated": "2026-02-20T16:07:56.255669",
+  "sources": {
+    "kjv": [
+      "https://raw.githubusercontent.com/churchstudio-org/openbible/main/KJV/bible.json"
+    ],
+    "nasb": [
+      "https://raw.githubusercontent.com/Gospel-of-Jesus-Christ/bible-json/main/versions/en-nasb.json",
+      "https://raw.githubusercontent.com/sevenreasons/bible-json/master/nasb.json",
+      "https://raw.githubusercontent.com/scrollmapper/bible_databases/master/eng/nasb.json",
+      "https://raw.githubusercontent.com/churchstudio-org/openbible/main/NASB/bible.json"
+    ],
+    "niv": [
+      "https://raw.githubusercontent.com/thiagobodruk/bible/master/json/en_niv.json",
+      "https://raw.githubusercontent.com/sevenreasons/bible-json/master/niv.json"
+    ]
+  },
+  "verification": "검증된 미러 (2025-12-31)"
+}

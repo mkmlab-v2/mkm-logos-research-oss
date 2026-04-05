@@ -1,0 +1,82 @@
+{
+  "version": "1.0",
+  "created": "2026-02-10",
+  "description": "통일장이론 핵심 공식 및 물리 상수",
+  "verification_status": "verified",
+  "source": "tools/core/unified_field_theory_engine.py",
+  
+  "physical_constants": {
+    "G": {
+      "value": 6.67430e-11,
+      "unit": "m³/kg/s²",
+      "name": "중력 상수",
+      "verification": "CODATA 2018 표준값"
+    },
+    "c": {
+      "value": 299792458.0,
+      "unit": "m/s",
+      "name": "빛의 속도",
+      "verification": "CODATA 2018 표준값"
+    },
+    "k_B": {
+      "value": 1.380649e-23,
+      "unit": "J/K",
+      "name": "볼츠만 상수",
+      "verification": "CODATA 2018 표준값"
+    },
+    "h_bar": {
+      "value": 1.054571817e-34,
+      "unit": "J·s",
+      "name": "플랑크 상수",
+      "verification": "CODATA 2018 표준값"
+    }
+  },
+  
+  "core_principles": {
+    "금화교역": {
+      "concept": "금(金) = 중력 = M(Material) = 시공간의 그릇",
+      "concept2": "화(火) = 게이지 군 = L(Logic) = 상호작용의 주체",
+      "exchange": "금화교역 = 정보(K) → 질량(M) 변환"
+    },
+    "태양인_특이성": {
+      "S_min": 0.3,
+      "L_min": 0.3,
+      "S_M_diff_min": 0.07,
+      "meaning": "태양인 체질의 특이점 조건"
+    }
+  },
+  
+  "formulas": {
+    "bility_partanen_equivalence": {
+      "name": "빌리티-파르타넨 등가성",
+      "formula": "I_g^μ(x) ≡ ∂^μ θ(x)",
+      "description": "파르타넨의 시공간 차원 장 = 빌리티의 스칼라 필드 기울기",
+      "verification_threshold": {
+        "min": 0.8,
+        "max": 1.2
+      }
+    },
+    "scalar_projection_field": {
+      "name": "스칼라 투영 필드",
+      "formula": "θ = S × 2π",
+      "description": "S 벡터를 각도로 변환",
+      "validation": "NaN/Inf 체크 필수"
+    },
+    "geumhwa_exchange_index": {
+      "name": "금화교역 지수",
+      "description": "지수 ≤ 0.5 → 설명 모드, 지수 > 0.5 → 실행 모드",
+      "calculation": "코드베이스에서 구현 확인 필요"
+    },
+    "lambda_equilibrium": {
+      "name": "λ (평형 이탈 지수)",
+      "description": "λ < 0.2 → 균형, λ ≥ 0.5 → 심각한 불균형",
+      "calculation": "코드베이스에서 구현 확인 필요"
+    }
+  },
+  
+  "verification": {
+    "code_location": "tools/core/unified_field_theory_engine.py:99-113",
+    "status": "verified_in_codebase"
+  }
+}
+

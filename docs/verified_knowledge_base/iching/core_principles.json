@@ -1,0 +1,62 @@
+{
+  "version": "1.0",
+  "updated": "2026-02-20T16:07:56.263861",
+  "year_mapping": {
+    "2026": {
+      "hexagram_number": 23,
+      "hexagram_name": "산지박",
+      "hexagram_name_en": "Bo (Peeling)",
+      "upper_trigram": "간(艮, 산)",
+      "lower_trigram": "곤(坤, 땅)",
+      "meaning": "기초가 깎여 나감, 붕괴",
+      "strategy": "현금 확보, 보수적 운용, 레버리지 사용 원천 봉쇄",
+      "leverage_allowed": false,
+      "risk_level": "HIGH"
+    },
+    "2027": {
+      "hexagram_number": 23,
+      "hexagram_name": "산지박",
+      "hexagram_name_en": "Bo (Peeling)",
+      "upper_trigram": "간(艮, 산)",
+      "lower_trigram": "곤(坤, 땅)",
+      "meaning": "기초가 깎여 나감, 붕괴",
+      "strategy": "현금 확보, 보수적 운용, 레버리지 사용 원천 봉쇄",
+      "leverage_allowed": false,
+      "risk_level": "HIGH"
+    },
+    "2028": {
+      "hexagram_number": 23,
+      "hexagram_name": "산지박→지뢰복",
+      "hexagram_name_en": "Bo → Fu (Transition)",
+      "upper_trigram": "간(艮, 산)",
+      "lower_trigram": "곤(坤, 땅)",
+      "meaning": "전환기 - 붕괴에서 회복으로",
+      "strategy": "점진적 전환 준비, 레버리지 여전히 금지",
+      "leverage_allowed": false,
+      "risk_level": "MEDIUM"
+    },
+    "2029": {
+      "hexagram_number": 24,
+      "hexagram_name": "지뢰복(전환)",
+      "hexagram_name_en": "Fu (Return, Transition)",
+      "upper_trigram": "진(震, 우레)",
+      "lower_trigram": "곤(坤, 땅)",
+      "meaning": "땅 속에서 우레가 움직임, 회복 시작",
+      "strategy": "회복 준비, 레버리지 제한적 허용",
+      "leverage_allowed": false,
+      "risk_level": "MEDIUM"
+    },
+    "2030": {
+      "hexagram_number": 24,
+      "hexagram_name": "지뢰복",
+      "hexagram_name_en": "Fu (Return)",
+      "upper_trigram": "진(震, 우레)",
+      "lower_trigram": "곤(坤, 땅)",
+      "meaning": "땅 속에서 우레가 움직임, 회복",
+      "strategy": "공격적 투자, 신기술 선점, 레버리지 활용 가능",
+      "leverage_allowed": true,
+      "risk_level": "LOW"
+    }
+  },
+  "verification": "코드베이스 구현 확인"
+}

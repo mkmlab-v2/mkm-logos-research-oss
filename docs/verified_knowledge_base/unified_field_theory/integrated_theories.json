@@ -1,0 +1,102 @@
+{
+  "version": "1.0",
+  "created": "2026-02-10",
+  "description": "통일장이론 통합 정보 - 사상의학, 성경, 명리, 주역 통합",
+  "verification_status": "verified",
+  "source": "tools/core/unified_dynamics_engine.py",
+  
+  "unified_field_theory": {
+    "concept": "통일장이론은 사상의학(병증), 성경(예언), 명리(순환), 주역(변화)을 하나의 4D 벡터로 통합",
+    "integration_method": "3대 축 가중 평균",
+    "weights": {
+      "pathology": 0.4,
+      "biblical": 0.3,
+      "myeongri": 0.3
+    },
+    "code_location": "tools/core/unified_dynamics_engine.py:111-196"
+  },
+  
+  "integrated_theories": {
+    "pathology": {
+      "name": "병증(약리) - 사상의학",
+      "korean": "사상의학 (이제마 철학)",
+      "description": "이제마의 사상의학을 기반으로 한 병증 분석",
+      "key_concepts": [
+        "사심신물(四心身物)",
+        "성정불변(性正不變)",
+        "병증약리(病證藥理)",
+        "태양인 소수성"
+      ],
+      "vector_mapping": "병증 → 4D 벡터 (S-L-K-M)",
+      "weight": 0.4
+    },
+    "biblical": {
+      "name": "성경(예언) - Project Logos",
+      "korean": "성경 예언 분석",
+      "description": "English Trinity (KJV, NASB, NIV) 기반 예언 분석",
+      "key_concepts": [
+        "English Trinity",
+        "Divine Centroid",
+        "The Great Synthesis",
+        "31,102구절 분석"
+      ],
+      "vector_mapping": "성경 → 4D 벡터 (S-L-K-M)",
+      "weight": 0.3
+    },
+    "myeongri": {
+      "name": "명리(순환) - 60갑자",
+      "korean": "명리학 순환 분석",
+      "description": "60갑자 주기 기반 명리학 분석",
+      "key_concepts": [
+        "60갑자 주기",
+        "간지 계산",
+        "금화교역",
+        "화(火) 소수성"
+      ],
+      "vector_mapping": "명리 → 4D 벡터 (S-L-K-M)",
+      "weight": 0.3
+    },
+    "iching": {
+      "name": "주역(변화) - 64괘",
+      "korean": "주역 변화 분석",
+      "description": "주역 64괘 기반 변화 분석",
+      "key_concepts": [
+        "64괘",
+        "산지박(23)",
+        "지뢰복(24)",
+        "금화교역"
+      ],
+      "vector_mapping": "주역 → 금화교역 분석",
+      "integration": "금화교역 지수 계산에 통합"
+    }
+  },
+  
+  "unification_formula": {
+    "description": "3대 축 가중 평균으로 통합",
+    "formula": "unified_vector = pathology × 0.4 + biblical × 0.3 + myeongri × 0.3",
+    "weight_rationale": {
+      "pathology_0.4": "병증(사상의학)이 가장 직접적인 생체 신호이므로 높은 가중치",
+      "biblical_0.3": "성경(예언)은 장기적 방향성을 제공하므로 중간 가중치",
+      "myeongri_0.3": "명리(순환)는 외부 환경 제약을 반영하므로 중간 가중치"
+    },
+    "fire_hydrophobicity": "화(火) 소수성 최종 적용 (태양인 소수성 가중치)",
+    "divine_centroid_distance": "Divine Centroid와의 거리 계산",
+    "mathematical_expression": {
+      "vector_form": "U = 0.4P + 0.3B + 0.3M",
+      "where": {
+        "U": "unified_vector (통합 벡터)",
+        "P": "pathology_vector (병증 벡터)",
+        "B": "biblical_vector (성경 벡터)",
+        "M": "myeongri_vector (명리 벡터)"
+      },
+      "dimensions": "각 벡터는 4차원 (S, L, K, M)",
+      "normalization": "최종 벡터는 합이 1.0이 되도록 정규화"
+    }
+  },
+  
+  "verification": {
+    "code_location": "tools/core/unified_dynamics_engine.py:111-196",
+    "status": "verified_in_codebase"
+  }
+}
+

@@ -1,0 +1,55 @@
+{
+  "version": "1.0",
+  "created": "2026-02-10",
+  "description": "간지(干支) 계산 - 천문학적 계산 기반",
+  "verification_status": "verified",
+  "source": "천문학적 계산 (60갑자 주기)",
+  
+  "60_ganzhi_cycle": {
+    "cheongan": ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"],
+    "jiji": ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"],
+    "cycle_length": 60,
+    "verification": "천문학적 계산 확인"
+  },
+  
+  "verified_years": {
+    "2026": {
+      "ganzhi": "병오",
+      "element": "화(火)",
+      "verification": "천문학적 계산",
+      "note": "60갑자 주기 기반 계산"
+    },
+    "2030": {
+      "ganzhi": "경술",
+      "element": "금(金)",
+      "verification": "천문학적 계산",
+      "note": "60갑자 주기 기반 계산"
+    }
+  },
+  
+  "calculation_method": {
+    "basis": "60갑자 주기",
+    "reference_year": "1984 (갑자년)",
+    "formula": "(year - 1984) % 60",
+    "verification": "천문학적 계산 확인"
+  },
+  
+  "excluded_data": {
+    "360_day_cycle": {
+      "status": "excluded",
+      "reason": "구현 안 됨, NASA JPL과 모순",
+      "note": "현재 만세력은 365.25일 주기 사용"
+    },
+    "cosmic_constant": {
+      "status": "excluded",
+      "reason": "검증 불가능한 해석",
+      "note": "간지 계산은 천문학적 사실만 포함"
+    }
+  },
+  
+  "verification": {
+    "method": "천문학적 계산",
+    "status": "verified"
+  }
+}
+

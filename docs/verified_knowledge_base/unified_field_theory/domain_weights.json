@@ -1,0 +1,79 @@
+{
+  "version": "1.0",
+  "created": "2026-02-10",
+  "description": "4D-Core 통합 프로토콜 - 도메인별 가중치 프리셋",
+  "verification_status": "verified",
+  "source": ".cursor/rules/4d-core-integration/RULE.md",
+  
+  "domain_presets": {
+    "coding": {
+      "name": "코딩 도메인",
+      "weights": {
+        "L": 0.5,
+        "S": 0.2,
+        "K": 0.15,
+        "M": 0.15
+      },
+      "lambda": 0.8,
+      "description": "논리적 무결성 최우선, 구조적 생존력 강화, 환각(Hallucination) 제로",
+      "critical_leverage_points": ["L", "S"],
+      "code_location": ".cursor/rules/4d-core-integration/RULE.md:85-100"
+    },
+    "creative": {
+      "name": "창의적 도메인",
+      "weights": {
+        "S": 0.4,
+        "L": 0.2,
+        "K": 0.2,
+        "M": 0.2
+      },
+      "lambda": 0.3,
+      "description": "유연한 연상 작용, 창의성 강화, 부드러운 연상",
+      "critical_leverage_points": ["S", "K"],
+      "code_location": ".cursor/rules/4d-core-integration/RULE.md:102-118"
+    }
+  },
+  
+  "gateway_protocol": {
+    "description": "게이트웨이 도메인 자동 감지 및 프리셋 적용",
+    "process": [
+      "사용자 요청",
+      "게이트웨이 도메인 자동 감지",
+      "도메인 프리셋 적용",
+      "4D 벡터화",
+      "병증약리 필터 적용",
+      "보명지주 자동 감지",
+      "결과 반환 (도메인 정보 포함)"
+    ],
+    "code_location": ".cursor/rules/4d-core-integration/RULE.md:164-180"
+  },
+  
+  "pathology_pharmacology_filter": {
+    "description": "병증약리(Pathology-Pharmacology) 필터",
+    "purpose": "논리적 무결성 검증을 통한 코드 제안 필터링",
+    "application": "모든 코드 제안 시 필수 적용",
+    "code_location": ".cursor/rules/4d-core-integration/RULE.md:21-39"
+  },
+  
+  "critical_leverage_point": {
+    "description": "보명지주(Critical Leverage Point) 자동 감지",
+    "purpose": "시스템의 핵심 지점 자동 감지 및 경고",
+    "application": "코드 수정 전 필수 확인",
+    "code_location": ".cursor/rules/4d-core-integration/RULE.md:24"
+  },
+  
+  "dimension_selection": {
+    "description": "용도별 차원 선택",
+    "4d_usage": "이론 분석용 (체질 분류, 동역학 예측, 병증약리 매핑)",
+    "768d_usage": "일반 검색용 (코드/문서 검색, 워크스페이스 인덱싱)",
+    "note": "용도에 따라 적절한 차원 선택 필수",
+    "code_location": ".cursor/rules/qf-synchro-constitution/RULE.md:20-23"
+  },
+  
+  "verification": {
+    "code_location": ".cursor/rules/4d-core-integration/RULE.md",
+    "status": "verified_in_codebase",
+    "implementation": "완전 구현 완료"
+  }
+}
+
