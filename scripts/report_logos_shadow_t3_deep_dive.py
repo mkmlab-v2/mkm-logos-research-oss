@@ -115,7 +115,7 @@ def main() -> int:
         "recall_diagnosis": recall_diag,
         "hypothesis_hooks": [
             "If recall_diagnosis.recall_fraction is 0 but crash_event_count > 0, warnings are not landing in [ci-20,ci) for labeled crashes (threshold/sparsification/precision layer).",
-            "Compare evidence_count_histogram to recent_precision_min_evidence filter (default 3 in DEFAULT_SHADOW_EXTRA).",
+            "Compare evidence_count_histogram to recent_precision_min_evidence filter (default 4 in DEFAULT_SHADOW_EXTRA).",
         ],
         "observation_only": True,
     }
