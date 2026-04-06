@@ -1,8 +1,10 @@
 # Second pass: add MD/TXT/CSV only until ~300 sources (NotebookLM file-type limits).
+# Use --text (-t) for these types; `nlm source add --file` often fails for .md/.csv (API expects PDF-like uploads).
 param(
   [string]$NotebookId = "71f55a03-09d0-411f-b365-0ce2a2064c24",
   [int]$MaxAdd = 190,
-  [long]$MaxBytes = 40MB
+  [long]$MaxBytes = 40MB,
+  [long]$MaxTextBytesForPaste = 409600
 )
 $ErrorActionPreference = "Continue"
 $dirs = @(
@@ -26,7 +28,15 @@ $added = 0
 $fail = 0
 foreach ($f in $files) {
   if ($added -ge $MaxAdd) { break }
-  $null = & nlm source add $NotebookId --file $f.FullName 2>&1
+  $p = $f.FullName
+  if ($f.Length -gt $MaxTextBytesForPaste) {
+    Write-Output "SKIP too large for -t: $($f.Name) ($($f.Length) bytes)"
+    $fail++
+    continue
+  }
+  if ($f.Length -eq 0) { continue }
+  $raw = [System.IO.File]::ReadAllText($p, [System.Text.UTF8Encoding]::new($false))
+  $null = & nlm source add $NotebookId -t $raw --title $f.Name 2>&1
   if ($LASTEXITCODE -eq 0) { $added++ } else { $fail++ }
   if ((($added + $fail) % 50) -eq 0) {
     Write-Output "progress added=$added fail=$fail last=$($f.Name)"
