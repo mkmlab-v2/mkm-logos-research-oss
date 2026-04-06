@@ -4,7 +4,8 @@ param(
   [string]$NotebookId = "71f55a03-09d0-411f-b365-0ce2a2064c24",
   [int]$MaxAdd = 190,
   [long]$MaxBytes = 40MB,
-  [long]$MaxTextBytesForPaste = 409600
+  [long]$MaxTextBytesForPaste = 409600,
+  [int]$MaxTextCharsForCli = 12000
 )
 $ErrorActionPreference = "Continue"
 $dirs = @(
@@ -36,6 +37,11 @@ foreach ($f in $files) {
   }
   if ($f.Length -eq 0) { continue }
   $raw = [System.IO.File]::ReadAllText($p, [System.Text.UTF8Encoding]::new($false))
+  if ($raw.Length -gt $MaxTextCharsForCli) {
+    Write-Output "SKIP too long for CLI -t: $($f.Name) ($($raw.Length) chars)"
+    $fail++
+    continue
+  }
   $null = & nlm source add $NotebookId -t $raw --title $f.Name 2>&1
   if ($LASTEXITCODE -eq 0) { $added++ } else { $fail++ }
   if ((($added + $fail) % 50) -eq 0) {

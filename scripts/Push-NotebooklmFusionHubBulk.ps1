@@ -6,11 +6,13 @@
 #
 # File uploads: `nlm source add --file` maps to APIs that expect supported binary types (e.g. PDF).
 # Markdown/JSON/JSONL/YAML/CSV succeed reliably via `--text` (-t) for modest sizes; see $MaxTextBytesForPaste.
+# On Windows, `-t` payload also hits CreateProcess command-line length limits, so guard with $MaxTextCharsForCli.
 param(
   [string]$NotebookId = "71f55a03-09d0-411f-b365-0ce2a2064c24",
   [string]$ManifestPath = "C:\workspace\reports\notebooklm_fusion_hub_bulk_manifest.json",
   [string]$LogPath = "C:\workspace\reports\notebooklm_fusion_hub_bulk_push.log",
-  [long]$MaxTextBytesForPaste = 409600
+  [long]$MaxTextBytesForPaste = 409600,
+  [int]$MaxTextCharsForCli = 12000
 )
 $ErrorActionPreference = "Continue"
 if (-not (Test-Path $ManifestPath)) {
@@ -50,6 +52,11 @@ foreach ($f in $m.files) {
       & nlm source add $NotebookId --file $f 2>&1 | Tee-Object -FilePath $LogPath -Append
     } elseif ($useText) {
       $raw = [System.IO.File]::ReadAllText($f, [System.Text.UTF8Encoding]::new($false))
+      if ($raw.Length -gt $MaxTextCharsForCli) {
+        "[SKIP too long for CLI -t] $f ($($raw.Length) chars; max $MaxTextCharsForCli)" | Tee-Object -FilePath $LogPath -Append
+        $fail++
+        continue
+      }
       $title = $fi.Name
       & nlm source add $NotebookId -t $raw --title $title 2>&1 | Tee-Object -FilePath $LogPath -Append
     } else {
