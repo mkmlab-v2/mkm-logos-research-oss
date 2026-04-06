@@ -53,4 +53,6 @@ exec "${PY}" -m pytest \
   tests/test_multilens_dual_regime_market_adapter_v1.py \
   tests/test_myeongni_insight_observation_log.py \
   tests/test_hypothesis_insight_batch_v1_sample.py \
+  tests/test_eval_prophecy_hit_rate_v1.py \
+  tests/test_generate_btrack_hypothesis_prophecy_v1.py \
   -q --tb=short
