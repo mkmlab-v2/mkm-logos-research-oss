@@ -32,7 +32,12 @@ $globs = @(
   "data\regimes\*.json",
   "memory\obsidian_vault\SPIRIT\*.md"
 )
-$excludeName = @("*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.pdf", "*.zip", "*.parquet", "*.bin")
+# Skip automation/noise logs that break nlm bulk paste (RecursionError / oversized debug) and scheduler I/O.
+$excludeName = @(
+  "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.pdf", "*.zip", "*.parquet", "*.bin",
+  "waiting_queue*.log", "daily_status_update_*.log", "fused_quant_pixel_sop_latest.log",
+  "*_task.stdout.log", "*_task.stderr.log"
+)
 $files = New-Object System.Collections.Generic.List[string]
 $seen = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
 foreach ($g in $globs) {
