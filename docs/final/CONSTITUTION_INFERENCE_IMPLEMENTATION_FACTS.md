@@ -102,6 +102,7 @@
 | 만세력 기반 명리 4D 융합 | `scripts/myeongri_complete_fusion.py` | `MyeongriCompleteFusion`; `myeongri_4d_correction._ohang_data_to_4d`; `MyeongriController._get_base_vector_4d`와 연동; 본선·실거래 자동 합선 금지 |
 | λ 변환 훅 (스텁) | `scripts/myeongri_lambda_converter.py` | `MyeongriLambdaConverter` |
 | 게마트리아+명리 4D 블렌드 스파이크 v0 | `scripts/spike_gematria_myeongri_blend_v0.py` → `docs/final/artifacts/gematria_myeongri_spike_blend_latest.json` | 기하 메트릭(L2·cosine)만; 예측·교리 정확도 아님; `independent_lens_fusion_stub`의 `consistency_rate`와 무관 |
+| B-track 메가 인사이트 배치 수집 | `scripts/run_notebooklm_mega_insight_batch.py` → `reports/notebooklm/btrack_mega_insights_*.jsonl` | 연구 수집·가설 정리 전용; 필수 태그 `[HYPO]`, `research_only=true`, `promotion_required=true`; A-track·실매매 자동 합선 금지 |
 | Prism 논리 색인 레지스트리 | `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` | §14 Grand Indexing 2.0; 경로·역할; 코드 4D 축과 혼동 금지 |
 | 회귀 스모크 | `tests/test_myeongri_fusion_scripts_smoke.py`, `tests/test_gematria_myeongri_spike_smoke.py` | CI `dual-regime-integrity.yml`; `run_prophecy_alignment_pytest.ps1` / `.sh` 번들 |
 | 독립 렌즈 v0 회귀 | `tests/test_myeongni_independent_lens_v0.py`, `tests/test_independent_lenses_v0.py`, `tests/test_independent_lens_fusion_stub_v0.py`, `tests/test_independent_lens_shadow_gate_v1.py` | 명리 단독 + 3렌즈 파라미즈 + 융합 스텁 + Shadow 게이트 |
@@ -145,6 +146,26 @@
 | 월간 체인 보조 스크립트 | `scripts/run_btc_time_machine_regime_switch_backtest.py`, `scripts/report_fused_paper_cycle_calibration_30.py`, `scripts/night_watchman_harness_v1.ps1` | 레짐 스위치 JSON 타임스탬프 갱신·교정 30 스냅샷·픽셀 Night Watchman(드라이런); B-track 품질 게이트 스텁 3종은 `run_btrack_gate_and_lock` 옵션 |
 
 **Fact-Lock**: 16상태 확장 가설은 **트레이딩 엔진 합선 전** 본 JSONL·스키마로만 기록; `dual_regime_api.py`와의 연결은 별도 승인·PR에서 명시한다.
+
+### 3.7 B-track 재조정 수집 완화 규칙 (연구 전용 carve-out)
+
+**목적**: 과거 훈련 결과를 성경·사상·명리·게마트리아 4D 방식으로 재조정/재사용해도, 그 결과를 **B-track 연구 레이어에만 집적**하도록 운영 경계를 명시한다.
+
+**허용 (B-track 한정):**
+
+- 과거 훈련값의 4D 재매핑, 거리/유사도 기반 재스코어링, 가설성 prior(확률·전이행렬) 기록.
+- 산출물 적재 위치: `reports/notebooklm/`, `docs/final/artifacts/` 하위의 연구 아티팩트.
+- 모든 산출물은 `[HYPO]` 및 `research_only=true`, `promotion_required=true` 메타를 기본값으로 유지.
+
+**금지 (A-track 격벽 유지):**
+
+- `dual_regime_api.py`·OOF·실거래 엔진·레짐 캡으로의 자동 주입/자동 바인딩.
+- 게마트리아 수치·재조정 prior의 본선 하드코딩.
+- 재조정 결과를 단일 TOE/결정론적 예측식으로 단정하는 문구·운영.
+
+**승격 조건 (변경 없음):**
+
+- B-track 결과를 A-track에 반영하려면 §8 Promotion Loop(지휘관 승인 + PR + 경로/테스트 갱신)를 통과해야 한다.
 
 ---
 
