@@ -36,7 +36,7 @@ $globs = @(
 $excludeName = @(
   "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.pdf", "*.zip", "*.parquet", "*.bin",
   "waiting_queue*.log", "daily_status_update_*.log", "fused_quant_pixel_sop_latest.log",
-  "*_task.stdout.log", "*_task.stderr.log"
+  "*_task.stdout.log", "*_task.stderr.log", "*stdout.log", "*stderr.log"
 )
 $files = New-Object System.Collections.Generic.List[string]
 $seen = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
