@@ -53,6 +53,7 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 | **지휘관 게이트** | 프로덕션 배포·**실키·Webhook·Hostinger** 반영은 **수동 승인·주입**. `projects/no1kmedi/payapp-api/` 등 결제·대외 API는 **본 트래커에서 경로만 고정**, 감사·약관은 별도. |
 | **도구 경계 (Fact-Lock)** | **`ministack.org` MiniStack = AWS 로컬 에뮬레이터**(LocalStack 대안). L2 **에이전트 MCP·타입 가드**와 **동일 명칭·역할로 연결 금지**. 에이전트 도구 입출력은 **JSON Schema 검증 + stdio MCP**(및 기존 OpenAPI 스텁 `openapi_token_compression_stub_v1.yaml` 등)로만 기술한다. |
 | **L2 참조 구현 (실험)** | `experiments/mcp-jsonschema-stdio/` — Python **FastMCP + JSON Schema(Draft 2020-12) + stdio** 최소 서버(`sentiment_ratio` 스텁). 본선·옵스 트리 **미배선**. Copilot SDK 래퍼 실험은 `experiments/copilot-sdk-mcp/` |
+| **a-codeai.com (B2B 도메인·nginx)** | **기계 체크리스트**: apex `GET /`가 압축 스텁(8010)만 받으면 JSON 404가 되므로 **정적 랜딩과 API 경로 분리가 1순위**(작전지휘부 NotebookLM 합의·L2 대외 무결성). 예시: `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example` — `/`·`try_files`는 정적, `/health`·`/v1/`만 `127.0.0.1:8010`. **지휘관**: VPS에서 `sites-enabled` 반영·`sudo nginx -t`·reload·백업. |
 
 ### L3 — 배포·융합 운영 (Ops)
 

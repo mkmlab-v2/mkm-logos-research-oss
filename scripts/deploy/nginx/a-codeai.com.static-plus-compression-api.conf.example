@@ -1,8 +1,11 @@
 # a-codeai.com — static landing + MKM compression API stub (8010) on same host
 # SSH 관측(2026): / 는 8010 전부 프록시라 GET / 가 API 404 JSON. /var/www/a-codeai.com 에 정적이 있으면 아래처럼 분리.
 #
-# 적용 전: sudo nginx -t
-# 백업: sudo cp /etc/nginx/sites-enabled/a-codeai.com /etc/nginx/sites-enabled/a-codeai.com.bak
+# 적용 순서 (권장):
+#  1) sudo cp /etc/nginx/sites-enabled/a-codeai.com /etc/nginx/sites-enabled/a-codeai.com.bak
+#  2) 기존 server { listen 443 ... } 블록의 location / 프록시를 아래 패턴으로 교체(ssl·server_name·cert 유지)
+#  3) sudo nginx -t && sudo systemctl reload nginx
+#  4) curl -sSI https://a-codeai.com/ → text/html; curl -sS https://a-codeai.com/health → JSON ok
 #
 # 주의: Let’s Encrypt /.well-known 은 기존 certbot root 블록 유지.
 
