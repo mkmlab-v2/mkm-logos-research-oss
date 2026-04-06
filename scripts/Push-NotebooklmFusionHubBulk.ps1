@@ -43,7 +43,7 @@ foreach ($f in $m.files) {
   }
   try {
     $ext = [System.IO.Path]::GetExtension($f).ToLowerInvariant()
-    $textExts = @(".md", ".txt", ".json", ".jsonl", ".yaml", ".yml", ".csv", ".mdown")
+    $textExts = @(".md", ".txt", ".json", ".jsonl", ".yaml", ".yml", ".csv", ".mdown", ".log", ".html", ".htm")
     $fi = Get-Item -LiteralPath $f
     $useText = ($textExts -contains $ext) -and ($fi.Length -le $MaxTextBytesForPaste) -and ($fi.Length -gt 0)
     if ($ext -eq ".pdf") {
