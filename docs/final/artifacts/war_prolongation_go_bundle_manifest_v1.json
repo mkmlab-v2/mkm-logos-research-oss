@@ -1,0 +1,27 @@
+{
+  "schema": "war_prolongation_go_bundle_manifest_v1",
+  "generated_at_utc": "2026-04-07T00:00:00Z",
+  "description": "Canonical GO-related JSON trio for war prolongation / AIDC observation lane. Repo-relative paths from workspace root.",
+  "artifacts": [
+    {
+      "role": "kpi_gate_go",
+      "path": "docs/final/artifacts/aidc_kpi_gate_war_20260406.json",
+      "notes": "go_no_go.decision and paired accuracy; AIDC stage1 policy."
+    },
+    {
+      "role": "promotion_ready",
+      "path": "docs/final/artifacts/war_prolongation_promotion_ready_latest.json",
+      "notes": "gate_decision GO and promotion_ready flag; points at source bundle."
+    },
+    {
+      "role": "benchmark_bundle_evidence",
+      "path": "docs/final/artifacts/war_prolongation_benchmark_bundle_20260406.json",
+      "notes": "Frozen bundle snapshot referenced by promotion_ready and verification scripts."
+    }
+  ],
+  "optional_related": [
+    "docs/final/artifacts/war_prolongation_significance_eval_latest.json",
+    "docs/final/artifacts/war_prolongation_autopilot_status_latest.json",
+    "docs/final/artifacts/btc_live_upgrade_verification_latest.json"
+  ]
+}

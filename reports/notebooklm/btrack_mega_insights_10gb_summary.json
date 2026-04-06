@@ -1,6 +1,6 @@
 {
   "schema": "btrack_notebooklm_mega_insight_batch_summary_v1",
-  "generated_at_utc": "2026-04-06T16:17:06Z",
+  "generated_at_utc": "2026-04-06T18:19:12Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "research_only": true,
@@ -2418,5 +2418,5 @@
       "error": "{\n  \"status\": \"error\",\n  \"error\": \"Google rejected the query (error code 8: RESOURCE_EXHAUSTED) [type.googleapis.com/google.internal.labs.tailwind.orchestration.v1.UserDisplayableError]. This may indicate account-level restrictions on programmatic access. Try re-authenticating with 'nlm login' or using a different account.\"\n}"
     }
   ],
-  "completed_at_utc": "2026-04-06T18:19:10Z"
+  "completed_at_utc": "2026-04-06T20:26:43Z"
 }

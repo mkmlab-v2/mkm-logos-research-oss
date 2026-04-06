@@ -7,13 +7,13 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
     :root {
-      --bg:#0b1220;
-      --bg2:#101a2f;
-      --fg:#e8ecf0;
-      --muted:#8b98a5;
-      --accent:#d8b25f;
-      --tile-a:#102038;
-      --tile-b:#0d1a2f;
+      --bg:#0f131f;
+      --bg2:#171b28;
+      --fg:#dfe2f3;
+      --muted:#99907c;
+      --accent:#f2ca50;
+      --tile-a:#171b28;
+      --tile-b:#0f131f;
       --bubble-bg:rgba(236, 242, 248, 0.96);
       --bubble-fg:#112338;
       --bubble-border:#28425e;
@@ -21,9 +21,9 @@
     body {
       font-family: system-ui, sans-serif;
       background:
-        radial-gradient(circle at 15% 10%, rgba(43, 76, 124, 0.25), transparent 42%),
-        radial-gradient(circle at 85% 15%, rgba(216, 178, 95, 0.15), transparent 38%),
-        linear-gradient(180deg, var(--bg) 0%, #070d18 100%);
+        radial-gradient(circle at 15% 10%, rgba(56, 62, 85, 0.35), transparent 42%),
+        radial-gradient(circle at 85% 15%, rgba(212, 175, 55, 0.18), transparent 38%),
+        linear-gradient(180deg, var(--bg) 0%, #0a0e1a 100%);
       color: var(--fg);
       margin: 0;
       padding: 1.25rem;
@@ -37,14 +37,14 @@
       align-items: center;
       gap: 1rem;
       padding: 1rem 1.1rem;
-      border: 1px solid #25354a;
-      border-radius: 14px;
-      background: linear-gradient(180deg, rgba(13, 24, 40, 0.95), rgba(10, 18, 30, 0.85));
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+      border: 1px solid #4d4635;
+      border-radius: 0;
+      background: linear-gradient(180deg, rgba(27, 31, 44, 0.95), rgba(15, 19, 31, 0.92));
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.34);
       margin-bottom: 0.9rem;
     }
     .hero .brand { display:flex; flex-direction:column; gap:0.3rem; }
-    .hero .stamp { font-size: 0.72rem; color: #9fb7cc; letter-spacing: 1px; }
+    .hero .stamp { font-size: 0.72rem; color: #d0c5af; letter-spacing: 1px; }
     .layout {
       display: grid;
       grid-template-columns: minmax(0, 1.6fr) minmax(290px, 0.9fr);
@@ -52,23 +52,23 @@
       align-items: start;
     }
     .panel {
-      border: 1px solid #25354a;
-      border-radius: 14px;
-      background: linear-gradient(180deg, rgba(12, 20, 33, 0.95), rgba(10, 17, 27, 0.9));
+      border: 1px solid #4d4635;
+      border-radius: 0;
+      background: linear-gradient(180deg, rgba(27, 31, 44, 0.95), rgba(15, 19, 31, 0.92));
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
       padding: 0.9rem;
     }
-    .panel-title { font-size: 0.82rem; color: #93acc2; margin: 0 0 0.5rem; letter-spacing: 0.4px; text-transform: uppercase; }
+    .panel-title { font-size: 0.82rem; color: #d0c5af; margin: 0 0 0.5rem; letter-spacing: 0.4px; text-transform: uppercase; }
     .row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
-    .badge { font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 999px; background: #1a222d; border: 1px solid #2b3846; color: var(--fg); }
+    .badge { font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 0; background: #1b1f2c; border: 1px solid #4d4635; color: var(--fg); }
     .badge.warn { border-color: rgba(233, 168, 0, 0.55); }
     .badge.ok { border-color: rgba(108, 191, 108, 0.55); }
     .badge.err { border-color: rgba(232, 93, 76, 0.6); }
-    .ticker { background:#0f1419; border: 1px dashed #355071; border-radius: 12px; padding: 0.8rem; margin: 0.55rem 0 0.8rem; }
+    .ticker { background:#0a0e1a; border: 1px dashed #735c00; border-radius: 0; padding: 0.8rem; margin: 0.55rem 0 0.8rem; }
     .ticker .tline { font-size: 0.9rem; color: var(--fg); margin: 0; white-space: pre-wrap; word-break: break-word; }
-    .stage { background:#0b1117; border: 1px solid #2b3846; border-radius: 12px; padding: 0.75rem; margin: 0 0 0.75rem; }
+    .stage { background:#0a0e1a; border: 1px solid #4d4635; border-radius: 0; padding: 0.75rem; margin: 0 0 0.75rem; }
     .stage-wrap { position: relative; }
-    .stage canvas { width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; background: #0a0f14; border-radius: 8px; border: 1px solid #1d2a38; }
+    .stage canvas { width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; background: #0a0e1a; border-radius: 0; border: 1px solid #4d4635; }
     .bubble-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
     .bubble {
       position: absolute;
@@ -98,20 +98,62 @@
       transform: translateX(-50%) rotate(45deg);
     }
     .stage-meta { margin-top: 0.45rem; font-size: 0.78rem; color: var(--muted); }
-    .chat { background:#0b1117; border: 1px solid #2b3846; border-radius: 12px; padding: 0.75rem; margin-top: 0.8rem; }
+    .control-hint { margin-top: 0.4rem; font-size: 0.72rem; color: #9eb0c1; }
+    .king-status { margin-top: 0.25rem; font-size: 0.74rem; color: #c9d6e2; }
+    .obs-box { margin-top: 0.55rem; border: 1px dashed #735c00; border-radius: 0; padding: 0.5rem; background: #0a0e1a; }
+    .obs-text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.74rem; color: #ffe088; line-height: 1.35; word-break: break-word; }
+    .broadcast-mode .hero { border-color: #4a6a90; box-shadow: 0 12px 34px rgba(0, 0, 0, 0.38); }
+    .broadcast-mode .badge { font-size: 0.82rem; padding: 0.32rem 0.62rem; border-width: 2px; }
+    .broadcast-mode .panel-title { color: #bed4ea; }
+    .broadcast-mode .tline { font-size: 1rem; }
+    .broadcast-mode .obs-box { border-color: #5e85b0; background: #122033; }
+    .overlay-only {
+      background: transparent !important;
+      color: #ffffff;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .overlay-only .shell { max-width: none; margin: 0; }
+    .overlay-only .hero,
+    .overlay-only .snapshot-strip,
+    .overlay-only .layout > .panel,
+    .overlay-only .layout > .right-stack > .panel:not(.overlay-panel),
+    .overlay-only .info-disclaimer { display: none !important; }
+    .overlay-only .layout { grid-template-columns: 1fr; gap: 0; }
+    .overlay-only .overlay-panel {
+      display: block !important;
+      margin: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      padding: 0.4rem 0.55rem;
+    }
+    .overlay-only .obs-box {
+      margin: 0;
+      border: 1px solid rgba(126, 165, 208, 0.45);
+      border-radius: 6px;
+      background: rgba(10, 18, 30, 0.58);
+    }
+    .overlay-only .obs-text {
+      font-size: 0.84rem;
+      color: #e8f2ff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+    }
+    .chat { background:#0a0e1a; border: 1px solid #4d4635; border-radius: 0; padding: 0.75rem; margin-top: 0.8rem; }
     .chat pre { background: transparent; padding: 0; margin: 0; white-space: pre-wrap; }
     .stage {
       margin: 0.75rem 0 1rem;
       padding: 0.75rem;
-      border: 1px solid #2b3846;
-      border-radius: 12px;
+      border: 1px solid #4d4635;
+      border-radius: 0;
       background:
         radial-gradient(circle at 50% 10%, #1a222d, #0b1117),
         repeating-linear-gradient(0deg, transparent 0 15px, rgba(129,153,183,0.05) 15px 16px),
         repeating-linear-gradient(90deg, transparent 0 15px, rgba(129,153,183,0.05) 15px 16px);
     }
     .sprite-wrap { display:flex; align-items:center; gap:0.75rem; }
-    .sprite { width: 96px; height: 96px; image-rendering: pixelated; object-fit: contain; border: 1px solid #2b3846; border-radius: 8px; background: #0f1419; }
+    .sprite { width: 96px; height: 96px; image-rendering: pixelated; object-fit: contain; border: 1px solid #4d4635; border-radius: 0; background: #0a0e1a; }
     .sprite-meta { font-size: 0.8rem; color: var(--muted); }
     .sprite-anim-idle { animation: bob 1.8s ease-in-out infinite; }
     .sprite-anim-defend { animation: shake 0.5s ease-in-out infinite; }
@@ -123,11 +165,11 @@
     .mode-idle { filter: saturate(1); }
     .mode-defend { filter: saturate(1.25); transform: translateY(-1px); }
     .mode-attack { filter: saturate(1.6); transform: translateY(-2px); }
-    pre { background: #111a27; padding: 0.75rem; border-radius: 8px; overflow: auto; font-size: 0.8rem; white-space: pre-wrap; word-break: break-all; border: 1px solid #2a3f58; }
+    pre { background: #0a0e1a; padding: 0.75rem; border-radius: 0; overflow: auto; font-size: 0.8rem; white-space: pre-wrap; word-break: break-all; border: 1px solid #4d4635; }
     .err { color: #e85d4c; }
     .ok { color: #6cbf6c; }
     label { font-size: 0.75rem; color: var(--muted); }
-    input, select { width: 100%; padding: 0.4rem; margin: 0.25rem 0 0.75rem; background: #1a222d; border: 1px solid #333; color: var(--fg); border-radius: 6px; box-sizing: border-box; }
+    input, select { width: 100%; padding: 0.4rem; margin: 0.25rem 0 0.75rem; background: #0a0e1a; border: 1px solid #4d4635; color: var(--fg); border-radius: 0; box-sizing: border-box; }
     .lang-wrap { min-width: 132px; flex: 1; }
     .compact { margin: 0; }
     .right-stack { display: grid; gap: 0.9rem; }
@@ -166,10 +208,10 @@
       .snapshot-grid { grid-template-columns: 1fr; }
     }
     .snap-cell {
-      border: 1px solid #2b3f56;
-      border-radius: 10px;
+      border: 1px solid #4d4635;
+      border-radius: 0;
       padding: 0.55rem 0.65rem;
-      background: linear-gradient(180deg, rgba(14, 22, 36, 0.98), rgba(9, 15, 26, 0.92));
+      background: linear-gradient(180deg, rgba(27, 31, 44, 0.98), rgba(15, 19, 31, 0.92));
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
@@ -186,6 +228,19 @@
     .snap-return-pos { color: #7dcea0; }
     .snap-return-neg { color: #f1948a; }
     .snap-cell.snap-span { grid-column: 1 / -1; }
+    .fortress-banner {
+      margin: 0 0 0.9rem;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid #841f00;
+      border-radius: 0;
+      background: linear-gradient(180deg, rgba(147, 0, 10, 0.72), rgba(96, 20, 0, 0.8));
+      color: #ffdad6;
+      font-family: "Press Start 2P", monospace;
+      font-size: 10px;
+      line-height: 1.35;
+      display: none;
+    }
+    .fortress-banner.active { display: block; }
   </style>
 </head>
 <body>
@@ -202,6 +257,7 @@
         <div class="badge" id="dirBadge">DIR: HOLD</div>
       </div>
     </div>
+    <div class="fortress-banner" id="noGoBanner">NO_GO GATE CLOSED · Risk warning is active</div>
 
     <div class="panel snapshot-strip" id="showroomSnapshotStrip">
       <div class="panel-title" id="showroomSnapshotTitle">공개 투자 현황 요약</div>
@@ -225,6 +281,8 @@
             <div class="bubble-layer" id="bubbleLayer"></div>
           </div>
           <div class="stage-meta mono" id="stageMeta">character=unknown_guard | mode=Idle</div>
+          <div class="king-status mono" id="kingStatus">KING: standby | action: none</div>
+          <div class="control-hint">조작: ←↑↓→ 이동, Space 상호작용 (읽기 전용 데모)</div>
         </div>
 
         <div class="chat">
@@ -247,6 +305,10 @@
           <label for="base">GET Base (no trailing slash)</label>
           <input id="base" type="text" value="https://api.jemaai.cloud" autocomplete="off" />
           <p id="status" class="sub compact"></p>
+          <div class="obs-box overlay-panel" id="obsOverlayPanel">
+            <label style="display:block; margin-bottom:0.25rem;">OBS Overlay Text (readonly)</label>
+            <div id="obsOverlayText" class="obs-text">loading…</div>
+          </div>
         </div>
 
         <div class="panel">
@@ -296,6 +358,23 @@
     const defaultBase = params.get("api") || "https://api.jemaai.cloud";
     document.getElementById("base").value = defaultBase;
     const POLL_MS = 20000;
+    const BROADCAST_MODE = /^(1|true|on|yes|y)$/i.test(params.get("broadcast") || "");
+    const OVERLAY_ONLY = /^(1|true|on|yes|y)$/i.test(params.get("overlay") || "");
+    const OVERLAY_PRESET_RAW = String(params.get("preset") || "detailed").toLowerCase();
+    const OVERLAY_PRESET = (OVERLAY_PRESET_RAW === "short" || OVERLAY_PRESET_RAW === "compact" || OVERLAY_PRESET_RAW === "detailed")
+      ? OVERLAY_PRESET_RAW
+      : "detailed";
+
+    if (BROADCAST_MODE) {
+      document.body.classList.add("broadcast-mode");
+    }
+    if (OVERLAY_ONLY) {
+      document.body.classList.add("overlay-only");
+      const panel = document.getElementById("obsOverlayPanel");
+      if (panel && panel.parentElement) {
+        panel.parentElement.parentElement.appendChild(panel);
+      }
+    }
 
     const chatLines = [];
     const chatMax = 10;
@@ -313,7 +392,15 @@
       lang: "HYBRID",
       quality: "high",
       fpsEma: 60,
-      lastQualityAdjustTs: 0
+      lastQualityAdjustTs: 0,
+      king: { x: 128, y: 102, speed: 36, actionUntilTs: 0, actionText: "none" },
+      keyState: { left: false, right: false, up: false, down: false },
+      noGoUntilTs: 0,
+      tavernIndex: 0,
+      deathUntilTs: 0,
+      respawnAtTs: 0,
+      respawnPoint: { x: 34, y: 118 },
+      lastLiquidationEventId: null
     };
     const MAIN_CHARACTER_ID = "dragon_quant";
     const spriteByMode = {
@@ -340,6 +427,8 @@
     let actionBookSteps = [];
     const spriteCache = {};
     let activeSpriteUrl = "";
+    let cachedBundleEvent = null;
+    let lastNetworkErrAt = 0;
 
     function getSpriteImage(url) {
       if (!url) return null;
@@ -683,6 +772,206 @@
       }
     }
 
+    function terrainFromEvent(obj) {
+      const risk = String(obj.risk_level || "").toUpperCase();
+      const direction = directionFromEvent(obj);
+      const score = Number(obj.unified_score_balanced || 0);
+      const volatility = Math.abs(score - 0.25);
+      return {
+        wallStrength: Math.max(0, Math.min(1, 1 - volatility * 2.4)),
+        lavaHot: direction === "bear" ? 1 : (direction === "bull" ? 0.45 : 0.2),
+        dungeonDensity: risk === "WARNING" ? 1 : (volatility > 0.2 ? 0.7 : 0.3)
+      };
+    }
+
+    function drawFortressTerrain(ctx, obj) {
+      const t = terrainFromEvent(obj);
+      // Support walls (left/right)
+      const wallHeight = Math.floor(32 + t.wallStrength * 34);
+      ctx.fillStyle = "#566274";
+      ctx.fillRect(0, 144 - wallHeight, 14, wallHeight);
+      ctx.fillRect(242, 144 - wallHeight, 14, wallHeight);
+      ctx.fillStyle = "#7b889b";
+      for (let y = 144 - wallHeight + 4; y < 140; y += 8) {
+        ctx.fillRect(2, y, 10, 2);
+        ctx.fillRect(244, y, 10, 2);
+      }
+
+      // Lava resistance river near top-right
+      const lavaAlpha = 0.25 + t.lavaHot * 0.45;
+      ctx.fillStyle = `rgba(236,92,58,${lavaAlpha.toFixed(2)})`;
+      ctx.fillRect(168, 18, 78, 20);
+      ctx.fillStyle = "rgba(255, 190, 104, 0.50)";
+      for (let i = 0; i < 6; i += 1) {
+        ctx.fillRect(172 + i * 12, 22 + ((stageState.frame / 90 + i) % 6), 8, 2);
+      }
+
+      // Volatility dungeon cells
+      const dungeonCells = Math.floor(4 + t.dungeonDensity * 8);
+      ctx.fillStyle = "rgba(34, 19, 46, 0.75)";
+      for (let i = 0; i < dungeonCells; i += 1) {
+        const x = 24 + (i % 6) * 24;
+        const y = 92 + Math.floor(i / 6) * 14;
+        ctx.fillRect(x, y, 14, 8);
+      }
+
+      // Tavern area near the fortress gate.
+      ctx.fillStyle = "rgba(88, 63, 39, 0.88)";
+      ctx.fillRect(8, 108, 42, 28);
+      ctx.fillStyle = "rgba(218, 177, 108, 0.92)";
+      ctx.fillRect(12, 112, 34, 4);
+      ctx.fillStyle = "#e8cf95";
+      ctx.font = "7px monospace";
+      ctx.fillText("TAVERN", 12, 124);
+    }
+
+    function updateKingByInput(dt, obj, nowTs) {
+      const k = stageState.king;
+      const speed = k.speed * Math.max(0.6, Math.min(1.5, dt / 16.7));
+      if (stageState.keyState.left) k.x -= speed;
+      if (stageState.keyState.right) k.x += speed;
+      if (stageState.keyState.up) k.y -= speed;
+      if (stageState.keyState.down) k.y += speed;
+      k.x = Math.max(14, Math.min(242, k.x));
+      k.y = Math.max(54, Math.min(132, k.y));
+
+      const lamp = String((obj && obj.c2_signal_lamp) || "").toUpperCase();
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      if (lamp === "RED" || risk === "WARNING") {
+        stageState.noGoUntilTs = Math.max(stageState.noGoUntilTs, nowTs + 1200);
+      }
+    }
+
+    function drawKingAvatar(ctx, obj, nowTs) {
+      const k = stageState.king;
+      const lamp = String((obj && obj.c2_signal_lamp) || "").toUpperCase();
+      const lockOn = nowTs < stageState.noGoUntilTs;
+      const body = lockOn ? "#95a1b2" : "#f0d274";
+      const cape = lockOn ? "#5f6a78" : "#b03c2f";
+      const dead = nowTs < stageState.deathUntilTs;
+      const x = Math.round(k.x);
+      const y = Math.round(k.y);
+
+      ctx.fillStyle = dead ? "#8892a1" : body;
+      ctx.fillRect(x - 4, y - 10, 8, 8);
+      ctx.fillStyle = "#1d2430";
+      ctx.fillRect(x - 2, y - 8, 1, 1);
+      ctx.fillRect(x + 1, y - 8, 1, 1);
+      ctx.fillStyle = dead ? "#677283" : cape;
+      ctx.fillRect(x - 5, y - 2, 10, 8);
+      ctx.fillStyle = "#e7edf4";
+      ctx.fillRect(x - 3, y + 6, 2, 5);
+      ctx.fillRect(x + 1, y + 6, 2, 5);
+      ctx.fillStyle = "#d9b44c";
+      ctx.fillRect(x - 2, y - 13, 4, 2); // crown
+
+      if (k.actionUntilTs > nowTs && !dead) {
+        ctx.fillStyle = "#fff1b2";
+        ctx.fillRect(x + 6, y - 8, 8, 2);
+      }
+
+      if (dead) {
+        ctx.fillStyle = "rgba(12, 16, 22, 0.45)";
+        ctx.fillRect(0, 0, 256, 144);
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "8px monospace";
+        ctx.fillText("으앙! respawn...", Math.max(6, x - 24), Math.max(12, y - 18));
+      }
+
+      if (lockOn) {
+        ctx.strokeStyle = "rgba(232, 93, 76, 0.85)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x - 9, y - 15, 18, 26);
+        if (lamp === "RED") {
+          ctx.fillStyle = "rgba(232, 93, 76, 0.85)";
+          ctx.fillRect(102, 8, 52, 10);
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "7px monospace";
+          ctx.fillText("NO_GO", 114, 15);
+        }
+      }
+    }
+
+    function tryLiquidationEffect(obj, nowTs) {
+      const eid = String(obj.event_id || "");
+      const raw = Number(obj.unrealized_pnl_pct_of_equity);
+      if (!Number.isFinite(raw)) return;
+      if (raw > -1.0) return;
+      if (eid && stageState.lastLiquidationEventId === eid) return;
+      stageState.lastLiquidationEventId = eid || String(nowTs);
+      stageState.deathUntilTs = nowTs + 1200;
+      stageState.respawnAtTs = nowTs + 1200;
+      stageState.king.actionText = "liquidated";
+      stageState.king.actionUntilTs = nowTs + 1200;
+      addBubble(stageState.actors[0], "으앙! 성황당으로 소환...");
+    }
+
+    function handleRespawn(nowTs) {
+      if (stageState.respawnAtTs > 0 && nowTs >= stageState.respawnAtTs) {
+        stageState.king.x = stageState.respawnPoint.x;
+        stageState.king.y = stageState.respawnPoint.y;
+        stageState.respawnAtTs = 0;
+        stageState.king.actionText = "respawned";
+        stageState.king.actionUntilTs = nowTs + 700;
+      }
+    }
+
+    function inTavernZone(x, y) {
+      return x >= 8 && x <= 50 && y >= 104 && y <= 136;
+    }
+
+    function tavernLine() {
+      const lines = [
+        "주막 NPC: 오늘도 팩트락 먼저다.",
+        "주막 NPC: 성문은 NO_GO가 지킨다.",
+        "주막 NPC: 과열이면 검을 거둬라.",
+        "주막 NPC: 신호보다 규율이 먼저다."
+      ];
+      const idx = stageState.tavernIndex % lines.length;
+      stageState.tavernIndex += 1;
+      return lines[idx];
+    }
+
+    function updateObsOverlay(obj) {
+      const el = document.getElementById("obsOverlayText");
+      if (!el) return;
+      const dir = String(obj.public_signal_direction || "HOLD");
+      const risk = String(obj.risk_level || "INFO");
+      const lamp = String(obj.c2_signal_lamp || "UNKNOWN");
+      const score = Number(obj.unified_score_balanced);
+      const scoreTxt = Number.isFinite(score) ? score.toFixed(5) : "-";
+      const eid = String(obj.event_id || "-");
+      const k = stageState.king;
+      const lockOn = performance.now() < stageState.noGoUntilTs;
+      const dead = performance.now() < stageState.deathUntilTs;
+      const mode = BROADCAST_MODE ? "BCAST" : "DEFAULT";
+      if (OVERLAY_PRESET === "short") {
+        el.textContent = `YEORI ${dir} ${risk} L=${lamp} A=${k.actionText} ${dead ? "DEAD" : "LIVE"}`;
+        return;
+      }
+      if (OVERLAY_PRESET === "compact") {
+        el.textContent = `YEORI|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|EID=${eid}`;
+        return;
+      }
+      el.textContent = `YEORI|MODE=${mode}|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|SCORE=${scoreTxt}|KING=(${Math.round(k.x)},${Math.round(k.y)})|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|DEAD=${dead ? "Y" : "N"}|EID=${eid}`;
+    }
+
+    function updateNoGoBanner(obj) {
+      const el = document.getElementById("noGoBanner");
+      if (!el) return;
+      const lamp = String((obj && obj.c2_signal_lamp) || "").toUpperCase();
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      const lockOn = performance.now() < stageState.noGoUntilTs;
+      const active = lamp === "RED" || risk === "WARNING" || lockOn;
+      if (!active) {
+        el.classList.remove("active");
+        return;
+      }
+      const reason = lamp === "RED" ? "LAMP=RED" : (risk === "WARNING" ? "RISK=WARNING" : "KING_LOCK=ON");
+      el.textContent = `NO_GO GATE CLOSED · ${reason}`;
+      el.classList.add("active");
+    }
+
     function renderBubbles() {
       const layer = document.getElementById("bubbleLayer");
       if (!layer) return;
@@ -709,8 +998,22 @@
       const speed = Math.min(1, dt * 0.006);
       for (const actor of stageState.actors) {
         if (risk === "WARNING") {
-          actor.tx = 128 + (actor.major ? 0 : (Math.random() * 20 - 10));
-          actor.ty = 78 + (actor.major ? 0 : (Math.random() * 12 - 6));
+          if (actor.id === MAIN_CHARACTER_ID) {
+            actor.tx = 128;
+            actor.ty = 78;
+          } else if (!actor.major) {
+            // Crowd fallback line near the lower lane (prevents center pile-up).
+            const lineIndex = Math.max(0, stageState.actors.indexOf(actor) - 2);
+            actor.tx = 28 + (lineIndex % 8) * 26;
+            actor.ty = 112 + ((lineIndex % 2) * 5);
+          } else {
+            // Ring formation around the gate to avoid center overlap.
+            const ringIndex = Math.max(0, stageState.actors.indexOf(actor) - 1);
+            const angle = (ringIndex / Math.max(1, stageState.actors.length - 1)) * Math.PI * 2 + stageState.pulse * 0.28;
+            const radius = actor.major ? 50 : 66;
+            actor.tx = 128 + Math.cos(angle) * radius;
+            actor.ty = 86 + Math.sin(angle) * (radius * 0.72);
+          }
         } else if (dirLabel === "bear") {
           actor.tx = 20 + Math.random() * 216;
           actor.ty = 92 + Math.random() * 20;
@@ -730,11 +1033,32 @@
         actor.x += (actor.tx - actor.x) * speed;
         actor.y += (actor.ty - actor.y) * speed;
       }
+      // Simple crowd separation to reduce sprite overlap.
+      for (let i = 0; i < stageState.actors.length; i += 1) {
+        for (let j = i + 1; j < stageState.actors.length; j += 1) {
+          const a = stageState.actors[i];
+          const b = stageState.actors[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 > 0 && d2 < 13 * 13) {
+            const d = Math.sqrt(d2);
+            const push = (13 - d) * 0.45;
+            const ux = dx / d;
+            const uy = dy / d;
+            a.x += ux * push;
+            a.y += uy * push;
+            b.x -= ux * push;
+            b.y -= uy * push;
+          }
+        }
+      }
     }
 
     function drawStage(ts) {
       const canvas = document.getElementById("pixelStage");
       const meta = document.getElementById("stageMeta");
+      const kingStatus = document.getElementById("kingStatus");
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
@@ -745,6 +1069,7 @@
       stageState.pulse += dt * 0.004;
       stageState.frame += dt;
       updateRenderQuality(dt, ts);
+      handleRespawn(ts);
 
       ensureActors();
       const obj = stageState.obj || {};
@@ -777,6 +1102,17 @@
         }
       }
       drawThemeObjects(ctx, theme, stageState.pulse, stageState.quality);
+      drawFortressTerrain(ctx, obj);
+      // Fortress gate and banner for stronger retro-MMO feel.
+      ctx.fillStyle = "rgba(63, 73, 88, 0.88)";
+      ctx.fillRect(108, 86, 40, 42);
+      ctx.fillStyle = "rgba(98, 112, 130, 0.95)";
+      for (let i = 0; i < 4; i += 1) ctx.fillRect(112 + i * 9, 90, 5, 34);
+      ctx.fillStyle = "rgba(217, 178, 95, 0.90)";
+      ctx.fillRect(116, 80, 24, 4);
+      ctx.fillStyle = "#13243a";
+      ctx.font = "7px monospace";
+      ctx.fillText("YEORI", 117, 87);
 
       const wave = Math.sin(stageState.pulse);
       const bob = mode === "Attack" ? Math.sin(stageState.pulse * 1.9) * 4 : Math.sin(stageState.pulse * 1.2) * 2;
@@ -798,6 +1134,8 @@
       }
 
       applyCrowdBehavior(obj, mode, dt);
+      updateKingByInput(dt, obj, ts);
+      tryLiquidationEffect(obj, ts);
 
       if (mode === "Defend") {
         ctx.strokeStyle = risk === "WARNING" ? "rgba(255, 188, 79, 0.80)" : "rgba(135, 225, 165, 0.70)";
@@ -830,19 +1168,24 @@
       }
 
       if (spriteImg && spriteImg.complete && spriteImg.naturalWidth > 0) {
-        const w = 72;
-        const h = 72;
+        const w = 52;
+        const h = 52;
         const x = Math.floor((canvas.width - w) / 2);
-        const y = Math.floor(44 + bob);
+        const y = Math.floor(58 + bob);
         ctx.imageSmoothingEnabled = false;
+        ctx.fillStyle = "rgba(4, 8, 14, 0.45)";
+        ctx.fillRect(x - 2, y - 2, w + 4, h + 4);
         ctx.drawImage(spriteImg, x, y, w, h);
+        ctx.strokeStyle = "rgba(8, 15, 25, 0.85)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x - 1, y - 1, w + 2, h + 2);
       } else {
         // Fallback while image is loading
         drawPixelCharacter(ctx, 106, 56 + bob, 4, charColor, eyeShift, profile);
       }
 
       const actorLimit = stageState.quality === "low" ? 7 : (stageState.quality === "medium" ? 10 : stageState.actors.length);
-      const actorsToRender = stageState.actors.slice(0, actorLimit);
+      const actorsToRender = stageState.actors.filter((a) => a.id !== MAIN_CHARACTER_ID).slice(0, actorLimit);
       for (const actor of actorsToRender) {
         const p = profileFromCharacterId(actor.id);
         const c = colorFromCharacterId(actor.id);
@@ -851,12 +1194,22 @@
         drawPixelCharacter(ctx, Math.round(actor.x - 10), Math.round(actor.y - 14 - yBob + actor.jitter), 2, c, shift, p);
       }
 
+      drawKingAvatar(ctx, obj, ts);
+
       updateBubbles(dt);
       if (stageState.quality === "low" && stageState.bubbles.length > 3) {
         stageState.bubbles = stageState.bubbles.slice(-3);
       }
       renderBubbles();
       meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | theme=${theme} | step=${stageState.actionStep} | sprite=${spriteInfo.name} | lang=${stageState.lang} | quality=${stageState.quality} | fps=${stageState.fpsEma.toFixed(1)}`;
+      if (kingStatus) {
+        const lamp = String(obj.c2_signal_lamp || "UNKNOWN").toUpperCase();
+        const lockOn = ts < stageState.noGoUntilTs;
+        const actionTxt = stageState.king.actionUntilTs > ts ? stageState.king.actionText : "none";
+        kingStatus.textContent = `KING: (${Math.round(stageState.king.x)},${Math.round(stageState.king.y)}) | action=${actionTxt} | gate=${lamp}${lockOn ? " LOCKED" : ""}`;
+      }
+      updateObsOverlay(obj);
+      updateNoGoBanner(obj);
       requestAnimationFrame(drawStage);
     }
 
@@ -963,6 +1316,9 @@
           const bundle = await r.json();
           const o = bundle.observability || {};
           const pe = bundle.public_event_v1 || {};
+          if (pe && typeof pe === "object") {
+            cachedBundleEvent = pe;
+          }
           const dm = pe.delayed_metrics || {};
           const delaySec = (dm.delay_seconds != null) ? dm.delay_seconds : "—";
           const asOf = o.snapshot_as_of_utc || bundle.generated_at_utc || "";
@@ -1041,6 +1397,53 @@
       if (foot) foot.textContent = "";
     }
 
+    function applyShowroomEvent(obj) {
+      // 예능형 표시 계층: 민감값 금지(whitelist only) & 상태 매핑만 수행
+      ensureActors();
+      const mode = modeFromEvent(obj);
+      const modeBadge = document.getElementById("modeBadge");
+      const riskBadge = document.getElementById("riskBadge");
+      const dirBadge = document.getElementById("dirBadge");
+      const tickerText = document.getElementById("tickerText");
+      const tickerBox = document.getElementById("tickerBox");
+
+      modeBadge.textContent = "MODE: " + mode;
+      riskBadge.textContent = "RISK: " + (obj.risk_level || "WARNING");
+      dirBadge.textContent = "DIR: " + (obj.public_signal_direction || "HOLD");
+      tickerText.textContent = tickerLine(obj);
+
+      tickerBox.classList.remove("mode-idle", "mode-defend", "mode-attack");
+      tickerBox.classList.add(mode === "Idle" ? "mode-idle" : (mode === "Defend" ? "mode-defend" : "mode-attack"));
+      stageState.obj = obj;
+      stageState.mode = mode;
+      stageState.charId = String(obj.active_character_id || "unknown_guard");
+      stageState.lang = document.getElementById("langMode").value || "HYBRID";
+
+      if (obj.event_id && obj.event_id !== lastEventId) {
+        lastEventId = obj.event_id;
+        pushChat(obj);
+        const eventActorId = String(obj.active_character_id || "").toLowerCase();
+        const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
+        const focusActor = stageState.actors.find((a) => a.id === eventActorId) || mainActor;
+        const tiger = stageState.actors.find((a) => a.id === "tiger_shield") || stageState.actors[1] || mainActor;
+        const d = directionFromEvent(obj);
+        const kind = mode === "Attack" ? "attack" : (mode === "Defend" ? "defend" : (d === "bull" ? "bull" : (d === "bear" ? "bear" : "idle")));
+        const step = pickActionStep(obj, mode, focusActor.id, obj.event_id);
+        stageState.actionStep = step ? String(step.id) : "-";
+        const stepLine = actionLine(step, stageState.lang);
+        if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
+          addBubble(focusActor, stepLine || speak("warning", focusActor.id));
+          addBubble(tiger, speak("defend", "tiger_shield"));
+        } else {
+          addBubble(focusActor, stepLine || speak(kind, focusActor.id));
+          if (Math.random() > 0.45) addBubble(tiger, speak(kind, "tiger_shield"));
+        }
+        if (obj.abstract_reason) {
+          addBubble(focusActor, String(obj.abstract_reason).slice(0, 42));
+        }
+      }
+    }
+
     async function tick() {
       const base = document.getElementById("base").value.replace(/\/$/, "");
       const url = base + "/api/public-events/latest";
@@ -1059,57 +1462,24 @@
           out.textContent = text;
           return;
         }
-
-        // 예능형 표시 계층: 민감값 금지(whitelist only) & 상태 매핑만 수행
-        ensureActors();
-        const mode = modeFromEvent(obj);
-        const modeBadge = document.getElementById("modeBadge");
-        const riskBadge = document.getElementById("riskBadge");
-        const dirBadge = document.getElementById("dirBadge");
-        const tickerText = document.getElementById("tickerText");
-        const tickerBox = document.getElementById("tickerBox");
-
-        modeBadge.textContent = "MODE: " + mode;
-        riskBadge.textContent = "RISK: " + (obj.risk_level || "WARNING");
-        dirBadge.textContent = "DIR: " + (obj.public_signal_direction || "HOLD");
-        tickerText.textContent = tickerLine(obj);
-
-        tickerBox.classList.remove("mode-idle", "mode-defend", "mode-attack");
-        tickerBox.classList.add(mode === "Idle" ? "mode-idle" : (mode === "Defend" ? "mode-defend" : "mode-attack"));
-        stageState.obj = obj;
-        stageState.mode = mode;
-        stageState.charId = String(obj.active_character_id || "unknown_guard");
-        stageState.lang = document.getElementById("langMode").value || "HYBRID";
-
-        if (obj.event_id && obj.event_id !== lastEventId) {
-          lastEventId = obj.event_id;
-          pushChat(obj);
-          const eventActorId = String(obj.active_character_id || "").toLowerCase();
-          const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
-          const focusActor = stageState.actors.find((a) => a.id === eventActorId) || mainActor;
-          const tiger = stageState.actors.find((a) => a.id === "tiger_shield") || stageState.actors[1] || mainActor;
-          const d = directionFromEvent(obj);
-          const kind = mode === "Attack" ? "attack" : (mode === "Defend" ? "defend" : (d === "bull" ? "bull" : (d === "bear" ? "bear" : "idle")));
-          const step = pickActionStep(obj, mode, focusActor.id, obj.event_id);
-          stageState.actionStep = step ? String(step.id) : "-";
-          const stepLine = actionLine(step, stageState.lang);
-          if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
-            addBubble(focusActor, stepLine || speak("warning", focusActor.id));
-            addBubble(tiger, speak("defend", "tiger_shield"));
-          } else {
-            addBubble(focusActor, stepLine || speak(kind, focusActor.id));
-            if (Math.random() > 0.45) addBubble(tiger, speak(kind, "tiger_shield"));
-          }
-          if (obj.abstract_reason) {
-            addBubble(focusActor, String(obj.abstract_reason).slice(0, 42));
-          }
-        }
+        applyShowroomEvent(obj);
 
         st.innerHTML = '<span class="ok">ok</span> - ' + new Date().toISOString();
         out.textContent = JSON.stringify(obj, null, 2);
       } catch (e) {
-        st.innerHTML = '<span class="err">network error</span>';
-        out.textContent = String(e);
+        const isDefaultCloud = /^https:\/\/api\.jemaai\.cloud$/i.test(base);
+        if (isDefaultCloud) {
+          document.getElementById("base").value = "http://127.0.0.1:8788";
+        }
+        if (cachedBundleEvent && typeof cachedBundleEvent === "object") {
+          applyShowroomEvent(cachedBundleEvent);
+          st.innerHTML = '<span class="err">network error</span> · fallback=bundle';
+          out.textContent = JSON.stringify(cachedBundleEvent, null, 2);
+        } else {
+          st.innerHTML = '<span class="err">network error</span>';
+          out.textContent = String(e);
+        }
+        lastNetworkErrAt = Date.now();
       }
     }
     requestAnimationFrame(drawStage);
@@ -1127,6 +1497,51 @@
       const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
       addBubble(mainActor, speak("idle", "dragon_quant"));
     });
+
+    function handleKeyDown(ev) {
+      if (performance.now() < stageState.deathUntilTs) return;
+      if (ev.key === "ArrowLeft") stageState.keyState.left = true;
+      if (ev.key === "ArrowRight") stageState.keyState.right = true;
+      if (ev.key === "ArrowUp") stageState.keyState.up = true;
+      if (ev.key === "ArrowDown") stageState.keyState.down = true;
+      if (ev.key === " ") {
+        const now = performance.now();
+        const risk = String((stageState.obj && stageState.obj.risk_level) || "").toUpperCase();
+        const dir = String((stageState.obj && stageState.obj.public_signal_direction) || "HOLD").toUpperCase();
+        const lockOn = now < stageState.noGoUntilTs;
+        if (inTavernZone(stageState.king.x, stageState.king.y)) {
+          stageState.king.actionText = "tavern_talk";
+          addBubble(stageState.actors[0], tavernLine());
+        } else if (lockOn) {
+          stageState.king.actionText = "blocked_by_gate";
+          addBubble(stageState.actors[0], "AIDC Gate: NO_GO");
+        } else if (risk === "WARNING") {
+          stageState.king.actionText = "defend";
+          addBubble(stageState.actors[0], "성문 방어 태세!");
+        } else if (dir === "BUY" || dir === "LONG") {
+          stageState.king.actionText = "charge_long";
+          addBubble(stageState.actors[0], "롱 돌격!");
+        } else if (dir === "SELL" || dir === "SHORT") {
+          stageState.king.actionText = "arrow_short";
+          addBubble(stageState.actors[0], "숏 사격!");
+        } else {
+          stageState.king.actionText = "scout";
+          addBubble(stageState.actors[0], "정찰 유지");
+        }
+        stageState.king.actionUntilTs = now + 900;
+        ev.preventDefault();
+      }
+    }
+
+    function handleKeyUp(ev) {
+      if (ev.key === "ArrowLeft") stageState.keyState.left = false;
+      if (ev.key === "ArrowRight") stageState.keyState.right = false;
+      if (ev.key === "ArrowUp") stageState.keyState.up = false;
+      if (ev.key === "ArrowDown") stageState.keyState.down = false;
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
   </script>
 </body>
 </html>

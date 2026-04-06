@@ -1,6 +1,6 @@
 # NotebookLM 소스 매니페스트 (A/B 이원)
 
-**작성일**: 2026-03-29 · **갱신**: 2026-04-04 (Prism Index 레지스트리·Vault 동기화 목록 추가)  
+**작성일**: 2026-03-29 · **갱신**: 2026-04-06 (B-Track Major Reference·DSS frontline 디스크 SSOT 고정)  
 **정의**: **A = Fact-Lock(팩트 고정)**, **B = Creative-Lock(통찰·가설)**. B는 본선 OOF·실매매 트리거와 A를 혼선 없이 적용.
 
 **Cursor 3.0 (2026-04)**: NotebookLM과 동일하게 **브리핑·질의·소스 아카이브** 레이어다. **에이전트 병렬(Agents Window)·Design Mode**는 제품 기능이며, **압축 엔진·헌법·실매매 SSOT는 여전히 레포의 `.py`/JSON**이다(`AGENTS.md`, `COMPRESSION_SLA_POLICY_V1.md`).
@@ -88,6 +88,19 @@
 | BTC 금융 Hub B — A/B 교차검증 브리프 | `docs/final/NOTEBOOKLM_HUB_B_BTC_AB_TRACK_CROSSCHECK_BRIEF_2026-04-04.md` | NotebookLM 소스 ID `bd996cd5-cb6e-444c-8110-eb2ce6a4c745` · 노트북 `b79929a2-8742-42a8-a4d7-06523e12935d` (2026-04-04 적재). OHLCV·온톨로지=B 연구 가설 vs A 본선 팩트 구분·Promotion Loop·Fact-Lock |
 | Swarm 심리 메트릭 (B-track 데이터 계약) | `docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json` · `docs/final/dummy_swarm_score.jsonl` · `[HYPO]` 샘플 `docs/final/hypo_test_sentiment.jsonl` · 듀얼렌즈 1호 `[HYPO]` `docs/final/corr_report_001_hypo.jsonl` + 좌측 참고 `docs/final/corr_report_001_left_lens.json` | MiroFish류 군집 출력→이산 수치 JSON 계약(draft-07); 로컬 검증 `py scripts/validate_swarm_sentiment_dummy.py` 및 `--jsonl …`; 일괄: `scripts/Validate-SwarmSentimentBTrack.ps1`; CI: `swarm-sentiment-schema-validate.yml`; A-track 트리거·실매매 합선 금지 |
 | Swarm 메트릭 Hub B 번들 (RAG) | `docs/final/SWARM_SENTIMENT_METRIC_NOTEBOOKLM_BUNDLE_2026-04-04.md` | NotebookLM 금융 Hub B 소스 ID `582bfa0b-ac4d-4715-9073-b170bd7a8719` — JSON 직접 업로드 불가 시 MD 번들로 동일 내용 인제스트 |
+
+### B-Track Major Reference (4D 융합·위성 코퍼스, OBSERVATION_ONLY)
+
+작전지휘부·RAG가 **비교 배경(Comparative Background)** 으로 우선 인용할 B-Track 앵커 묶음. **A-Track·실매매 엔진 기본 로딩·자동 트리거 합선 금지** (`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §4.5·격벽). `[HYPO]` 서술·승격은 인벤토리 스키마의 `promotion_status` enum(`draft`·`bench_only`·`superseded`·`retired`)만 사용.
+
+| 우선순위 | 경로 | 비고 |
+|----------|------|------|
+| P0 | `docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json` | 정경 16-state↔verse 코사인 스냅샷; CROSS_REF의 `canonical_ref` 조인 기준 |
+| P0 | `docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json` | DSS/외경·위성↔state v2; ENTRY_07·08·16은 line/witness 대기·`note`에 검증 조건 명시 |
+| P0 | `docs/final/artifacts/B_TRACK_HYPOTHESIS_INVENTORY_V1.json` | B 가설 인벤토리; `CROSS_REF_DSS_TO_STATES_DRAFT`·`ENTRY_*` 교차 링크 |
+| P1 | `projects/dss-4d-ingest/outputs/unified_frontline_cycle_report_command_center_followup_20260327_f.json` | **디스크에 존재하는** frontline 사이클 JSON. 종료 문서가 인용하는 `…_r_ext3` 가 레포에 없을 때 **본 파일을 SSOT**로 삼음 |
+| P1 | `docs/final/NOTEBOOKLM_DSS_APOCRYPHA_BUNDLE_NOTE_command_center_followup_20260327_f.md` | DSS/외경 번들 노트(규칙·인사이트 우선순위) |
+| P2 | `docs/final/DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md` | Frontline closeout 브리핑(위 표 JSON·`_r_ext3` 명명과 불일치 시 **실파일·위 표 우선**) |
 
 ### B 보조 — Obsidian Context (Creative-Lock, 로컬 볼트)
 

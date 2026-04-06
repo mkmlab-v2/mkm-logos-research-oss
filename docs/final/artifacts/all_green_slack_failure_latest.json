@@ -1,11 +1,11 @@
 {
   "schema": "all_green_slack_failure_delivery_v1",
-  "ts_utc": "2026-04-02T14:26:07.097120+00:00",
+  "ts_utc": "2026-04-06T13:46:58.820654+00:00",
   "phase": "final",
   "input_all_green_path": "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\ops\\all_green_latest.json",
   "webhook_url_masked": "https:***c5IK6l",
-  "dry_run": false,
-  "webhook_sent": true,
+  "dry_run": true,
+  "webhook_sent": false,
   "final": true,
-  "text_preview": ":rotating_light: *ALL-GREEN FAILED*\n- ts_utc: 2026-04-02T14:26:06.6258302+00:00\n- failed_steps: reconcile_automation_registry\n- reconcile_automation_registry: exit_code=1"
+  "text_preview": ":rotating_light: *ALL-GREEN FAILED*\n- ts_utc: 2026-04-06T13:46:58.2872304+00:00\n- failed_steps: reconcile_automation_registry\n- reconcile_automation_registry: exit_code=1"
 }

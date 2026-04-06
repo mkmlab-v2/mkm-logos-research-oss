@@ -2,7 +2,8 @@ param(
     [string]$TaskName = "\Bitcoin-Ops-Phase1-Chain-Daily",
     [string]$StartTime = "08:30",
     [switch]$IncludeVerifyAllGreen,
-    [switch]$ExcludeConstitutionGates
+    [switch]$ExcludeConstitutionGates,
+    [switch]$ExcludeStrict
 )
 
 $ErrorActionPreference = "Stop"
@@ -18,6 +19,9 @@ if ($IncludeVerifyAllGreen) {
 }
 if (-not $ExcludeConstitutionGates) {
     $extra += " -IncludeConstitutionGates"
+}
+if (-not $ExcludeStrict) {
+    $extra += " -Strict"
 }
 
 $tr = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"$extra"

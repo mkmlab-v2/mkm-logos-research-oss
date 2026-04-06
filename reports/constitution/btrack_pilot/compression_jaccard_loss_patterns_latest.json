@@ -1,6 +1,6 @@
 {
   "schema": "compression_jaccard_loss_patterns_v1",
-  "ts_utc": "2026-04-03T20:39:02.407749+00:00",
+  "ts_utc": "2026-04-06T20:26:54.073463+00:00",
   "sla_track": "universal",
   "sources": {
     "input": "docs\\final\\artifacts\\MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",

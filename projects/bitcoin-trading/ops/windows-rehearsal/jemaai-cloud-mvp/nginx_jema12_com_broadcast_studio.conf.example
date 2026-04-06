@@ -1,0 +1,34 @@
+# Example: jema12.com — /broadcast 404 and /studio/ 500 mitigation
+#
+# Apply inside the server { } block for jema12.com (TLS already assumed).
+# Paths are placeholders — adjust to the host’s real web roots.
+# nginx -t && systemctl reload nginx (or equivalent).
+#
+# --- Fact-lock (2026-04) ---
+# - Public API SSOT for showroom polling: https://api.jemaai.cloud/api/public-events/latest
+# - Static poll UI (reference): https://api.jemaai.cloud/public_showroom_poll.html
+# - jema12.cloud is not a guaranteed DNS alias for api.jemaai.cloud; use api.jemaai.cloud in clients.
+
+# --- A) /broadcast 404: temporary redirect to working public UI until Next route exists ---
+# Replace with `location = /broadcast { ... }` + alias to a static page when you ship one.
+location = /broadcast {
+    return 302 https://api.jemaai.cloud/public_showroom_poll.html;
+}
+
+# --- B) /studio/ 500: avoid alias+try_files pitfalls; prefer root + nested path ---
+# Example: build output lives at /var/www/jema12-studio/studio/index.html
+#   root /var/www/jema12-studio;
+#   location /studio/ {
+#       try_files $uri $uri/ /studio/index.html;
+#   }
+#
+# If you must use alias, do NOT combine with try_files to a URI that re-enters /studio/
+# (redirect loops). Serve index explicitly:
+#
+# location /studio/ {
+#     alias /var/www/jema12-studio/out/;
+#     index index.html;
+#     try_files $uri $uri/ /index.html =404;
+# }
+#
+# Validate with: curl -sSI https://jema12.com/broadcast  and  curl -sSI https://jema12.com/studio/

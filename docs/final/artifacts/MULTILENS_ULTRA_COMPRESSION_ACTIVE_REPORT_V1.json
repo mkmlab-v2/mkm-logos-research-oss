@@ -27,7 +27,11 @@
     "use_contextual_generator_v2": false,
     "use_contextual_generator_v3": false,
     "use_contextual_generator_v4": false,
-    "use_contextual_generator_v5_codec": false
+    "use_contextual_generator_v5_codec": false,
+    "require_tiktoken_o200k": false,
+    "tiktoken_o200k_encoding": "o200k_base",
+    "tiktoken_o200k_available": true,
+    "tiktoken_o200k_unavailable_reason": null
   },
   "compression_metrics": {
     "case_count": 40,
@@ -73,6 +77,12 @@
             ]
           }
         },
+        "o200k_raw_tokens": 25,
+        "o200k_compressed_tokens": 15,
+        "o200k_token_saving_rate": 0.4,
+        "o200k_tokens_before": 25,
+        "o200k_tokens_after": 15,
+        "o200k_saving_rate": 0.4,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -206,6 +216,12 @@
             ]
           }
         },
+        "o200k_raw_tokens": 22,
+        "o200k_compressed_tokens": 15,
+        "o200k_token_saving_rate": 0.31818181818181823,
+        "o200k_tokens_before": 22,
+        "o200k_tokens_after": 15,
+        "o200k_saving_rate": 0.31818181818181823,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -332,6 +348,12 @@
             ]
           }
         },
+        "o200k_raw_tokens": 17,
+        "o200k_compressed_tokens": 7,
+        "o200k_token_saving_rate": 0.5882352941176471,
+        "o200k_tokens_before": 17,
+        "o200k_tokens_after": 7,
+        "o200k_saving_rate": 0.5882352941176471,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -457,6 +479,12 @@
             ]
           }
         },
+        "o200k_raw_tokens": 16,
+        "o200k_compressed_tokens": 13,
+        "o200k_token_saving_rate": 0.1875,
+        "o200k_tokens_before": 16,
+        "o200k_tokens_after": 13,
+        "o200k_saving_rate": 0.1875,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -585,6 +613,12 @@
             ]
           }
         },
+        "o200k_raw_tokens": 15,
+        "o200k_compressed_tokens": 9,
+        "o200k_token_saving_rate": 0.4,
+        "o200k_tokens_before": 15,
+        "o200k_tokens_after": 9,
+        "o200k_saving_rate": 0.4,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -715,6 +749,12 @@
             ]
           }
         },
+        "o200k_raw_tokens": 19,
+        "o200k_compressed_tokens": 13,
+        "o200k_token_saving_rate": 0.3157894736842105,
+        "o200k_tokens_before": 19,
+        "o200k_tokens_after": 13,
+        "o200k_saving_rate": 0.3157894736842105,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -842,6 +882,12 @@
             ]
           }
         },
+        "o200k_raw_tokens": 16,
+        "o200k_compressed_tokens": 8,
+        "o200k_token_saving_rate": 0.5,
+        "o200k_tokens_before": 16,
+        "o200k_tokens_after": 8,
+        "o200k_saving_rate": 0.5,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -961,6 +1007,12 @@
             ]
           }
         },
+        "o200k_raw_tokens": 22,
+        "o200k_compressed_tokens": 12,
+        "o200k_token_saving_rate": 0.4545454545454546,
+        "o200k_tokens_before": 22,
+        "o200k_tokens_after": 12,
+        "o200k_saving_rate": 0.4545454545454546,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1088,6 +1140,12 @@
             ]
           }
         },
+        "o200k_raw_tokens": 22,
+        "o200k_compressed_tokens": 16,
+        "o200k_token_saving_rate": 0.2727272727272727,
+        "o200k_tokens_before": 22,
+        "o200k_tokens_after": 16,
+        "o200k_saving_rate": 0.2727272727272727,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1215,6 +1273,12 @@
             ]
           }
         },
+        "o200k_raw_tokens": 14,
+        "o200k_compressed_tokens": 7,
+        "o200k_token_saving_rate": 0.5,
+        "o200k_tokens_before": 14,
+        "o200k_tokens_after": 7,
+        "o200k_saving_rate": 0.5,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1327,6 +1391,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 37,
+        "o200k_compressed_tokens": 21,
+        "o200k_token_saving_rate": 0.43243243243243246,
+        "o200k_tokens_before": 37,
+        "o200k_tokens_after": 21,
+        "o200k_saving_rate": 0.43243243243243246,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1433,6 +1503,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 20,
+        "o200k_token_saving_rate": 0.5,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 20,
+        "o200k_saving_rate": 0.5,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1539,6 +1615,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 42,
+        "o200k_compressed_tokens": 18,
+        "o200k_token_saving_rate": 0.5714285714285714,
+        "o200k_tokens_before": 42,
+        "o200k_tokens_after": 18,
+        "o200k_saving_rate": 0.5714285714285714,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1645,6 +1727,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 42,
+        "o200k_compressed_tokens": 27,
+        "o200k_token_saving_rate": 0.3571428571428571,
+        "o200k_tokens_before": 42,
+        "o200k_tokens_after": 27,
+        "o200k_saving_rate": 0.3571428571428571,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1751,6 +1839,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 38,
+        "o200k_compressed_tokens": 21,
+        "o200k_token_saving_rate": 0.4473684210526315,
+        "o200k_tokens_before": 38,
+        "o200k_tokens_after": 21,
+        "o200k_saving_rate": 0.4473684210526315,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1857,6 +1951,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 21,
+        "o200k_token_saving_rate": 0.475,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 21,
+        "o200k_saving_rate": 0.475,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1963,6 +2063,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 24,
+        "o200k_token_saving_rate": 0.4,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 24,
+        "o200k_saving_rate": 0.4,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2069,6 +2175,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 25,
+        "o200k_token_saving_rate": 0.375,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 25,
+        "o200k_saving_rate": 0.375,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2175,6 +2287,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 38,
+        "o200k_compressed_tokens": 17,
+        "o200k_token_saving_rate": 0.5526315789473684,
+        "o200k_tokens_before": 38,
+        "o200k_tokens_after": 17,
+        "o200k_saving_rate": 0.5526315789473684,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2281,6 +2399,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 41,
+        "o200k_compressed_tokens": 25,
+        "o200k_token_saving_rate": 0.3902439024390244,
+        "o200k_tokens_before": 41,
+        "o200k_tokens_after": 25,
+        "o200k_saving_rate": 0.3902439024390244,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2387,6 +2511,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 17,
+        "o200k_token_saving_rate": 0.575,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 17,
+        "o200k_saving_rate": 0.575,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2493,6 +2623,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 42,
+        "o200k_compressed_tokens": 21,
+        "o200k_token_saving_rate": 0.5,
+        "o200k_tokens_before": 42,
+        "o200k_tokens_after": 21,
+        "o200k_saving_rate": 0.5,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2599,6 +2735,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 36,
+        "o200k_compressed_tokens": 21,
+        "o200k_token_saving_rate": 0.41666666666666663,
+        "o200k_tokens_before": 36,
+        "o200k_tokens_after": 21,
+        "o200k_saving_rate": 0.41666666666666663,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2705,6 +2847,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 39,
+        "o200k_compressed_tokens": 22,
+        "o200k_token_saving_rate": 0.4358974358974359,
+        "o200k_tokens_before": 39,
+        "o200k_tokens_after": 22,
+        "o200k_saving_rate": 0.4358974358974359,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2811,6 +2959,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 39,
+        "o200k_compressed_tokens": 19,
+        "o200k_token_saving_rate": 0.5128205128205128,
+        "o200k_tokens_before": 39,
+        "o200k_tokens_after": 19,
+        "o200k_saving_rate": 0.5128205128205128,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2917,6 +3071,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 35,
+        "o200k_compressed_tokens": 16,
+        "o200k_token_saving_rate": 0.5428571428571429,
+        "o200k_tokens_before": 35,
+        "o200k_tokens_after": 16,
+        "o200k_saving_rate": 0.5428571428571429,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3023,6 +3183,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 37,
+        "o200k_compressed_tokens": 22,
+        "o200k_token_saving_rate": 0.4054054054054054,
+        "o200k_tokens_before": 37,
+        "o200k_tokens_after": 22,
+        "o200k_saving_rate": 0.4054054054054054,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3129,6 +3295,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 43,
+        "o200k_compressed_tokens": 26,
+        "o200k_token_saving_rate": 0.39534883720930236,
+        "o200k_tokens_before": 43,
+        "o200k_tokens_after": 26,
+        "o200k_saving_rate": 0.39534883720930236,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3235,6 +3407,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 37,
+        "o200k_compressed_tokens": 21,
+        "o200k_token_saving_rate": 0.43243243243243246,
+        "o200k_tokens_before": 37,
+        "o200k_tokens_after": 21,
+        "o200k_saving_rate": 0.43243243243243246,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3341,6 +3519,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 33,
+        "o200k_compressed_tokens": 18,
+        "o200k_token_saving_rate": 0.4545454545454546,
+        "o200k_tokens_before": 33,
+        "o200k_tokens_after": 18,
+        "o200k_saving_rate": 0.4545454545454546,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3447,6 +3631,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 39,
+        "o200k_compressed_tokens": 19,
+        "o200k_token_saving_rate": 0.5128205128205128,
+        "o200k_tokens_before": 39,
+        "o200k_tokens_after": 19,
+        "o200k_saving_rate": 0.5128205128205128,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3553,6 +3743,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 22,
+        "o200k_token_saving_rate": 0.44999999999999996,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 22,
+        "o200k_saving_rate": 0.44999999999999996,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3659,6 +3855,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 32,
+        "o200k_compressed_tokens": 18,
+        "o200k_token_saving_rate": 0.4375,
+        "o200k_tokens_before": 32,
+        "o200k_tokens_after": 18,
+        "o200k_saving_rate": 0.4375,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3765,6 +3967,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 38,
+        "o200k_compressed_tokens": 22,
+        "o200k_token_saving_rate": 0.42105263157894735,
+        "o200k_tokens_before": 38,
+        "o200k_tokens_after": 22,
+        "o200k_saving_rate": 0.42105263157894735,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3871,6 +4079,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 19,
+        "o200k_token_saving_rate": 0.525,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 19,
+        "o200k_saving_rate": 0.525,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3977,6 +4191,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 38,
+        "o200k_compressed_tokens": 25,
+        "o200k_token_saving_rate": 0.3421052631578947,
+        "o200k_tokens_before": 38,
+        "o200k_tokens_after": 25,
+        "o200k_saving_rate": 0.3421052631578947,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4083,6 +4303,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 36,
+        "o200k_compressed_tokens": 21,
+        "o200k_token_saving_rate": 0.41666666666666663,
+        "o200k_tokens_before": 36,
+        "o200k_tokens_after": 21,
+        "o200k_saving_rate": 0.41666666666666663,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4189,6 +4415,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 36,
+        "o200k_compressed_tokens": 22,
+        "o200k_token_saving_rate": 0.38888888888888884,
+        "o200k_tokens_before": 36,
+        "o200k_tokens_after": 22,
+        "o200k_saving_rate": 0.38888888888888884,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4295,6 +4527,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 38,
+        "o200k_compressed_tokens": 19,
+        "o200k_token_saving_rate": 0.5,
+        "o200k_tokens_before": 38,
+        "o200k_tokens_after": 19,
+        "o200k_saving_rate": 0.5,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4401,6 +4639,12 @@
             "hits_sample": []
           }
         },
+        "o200k_raw_tokens": 39,
+        "o200k_compressed_tokens": 26,
+        "o200k_token_saving_rate": 0.33333333333333337,
+        "o200k_tokens_before": 39,
+        "o200k_tokens_after": 26,
+        "o200k_saving_rate": 0.33333333333333337,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4485,7 +4729,19 @@
           }
         }
       }
-    ]
+    ],
+    "tiktoken_o200k": {
+      "encoding": "o200k_base",
+      "available": true,
+      "reason_unavailable": null,
+      "tokens_raw_total": 1343,
+      "tokens_compressed_total": 750,
+      "global_token_saving_rate": 0.4415487714072971
+    },
+    "o200k_token_saving_rate": 0.4415487714072971,
+    "o200k_saving_rate": 0.4415487714072971,
+    "o200k_tokens_before": 1343,
+    "o200k_tokens_after": 750
   },
   "fusion_metrics": {
     "case_count": 10,

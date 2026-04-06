@@ -1,7 +1,7 @@
 {
   "schema": "b_track_hypothesis_inventory_v1",
   "disclaimer": "B-Track hypothesis inventory only; not A-track SSOT; trading engine must not load by default. Rows are [HYPO] unless promoted via §8; cross_links are thematic joins, not ontological identity.",
-  "generated_at_utc": "2026-04-02T16:00:00+00:00",
+  "generated_at_utc": "2026-04-06T12:00:00+00:00",
   "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §4.5.1",
   "inventory_schema_path": "docs/final/B_TRACK_HYPOTHESIS_INVENTORY_SCHEMA.json",
   "entries": [
@@ -24,7 +24,8 @@
           "join_note": "thematic: DSS↔state draft rows for interpretive motifs; not identity between gematria roots and satellite line anchors."
         }
       ],
-      "promotion_status": "draft"
+      "note": "CANDIDATE_FOR_PROMOTION (수동 승격 대기); §8 Promotion Loop; A-track auto-merge forbidden.",
+      "promotion_status": "bench_only"
     },
     {
       "hypothesis_id": "HYP_GEM_ROOT_0002",
@@ -45,7 +46,8 @@
           "join_note": "thematic: Ezra/Neh cohort-list bench rows; book-level stats are orthogonal to entry_id row identity."
         }
       ],
-      "promotion_status": "draft"
+      "note": "CANDIDATE_FOR_PROMOTION (수동 승격 대기); §8 Promotion Loop; A-track auto-merge forbidden.",
+      "promotion_status": "bench_only"
     },
     {
       "hypothesis_id": "HYP_STATE_RES_0001",
@@ -71,7 +73,8 @@
           "join_note": "thematic: ENTRY_11 analogy_bench pilot anchor (state 13); overlay only, not clinical or cosine truth."
         }
       ],
-      "promotion_status": "draft"
+      "note": "CANDIDATE_FOR_PROMOTION (수동 승격 대기); §8 Promotion Loop; A-track auto-merge forbidden.",
+      "promotion_status": "bench_only"
     },
     {
       "hypothesis_id": "HYP_STATE_RES_0002",
@@ -92,7 +95,8 @@
           "join_note": "thematic: calendar/temple/temporal and analogy_bench rows; myeongni scaffolding is not a dual_regime or live trigger."
         }
       ],
-      "promotion_status": "draft"
+      "note": "CANDIDATE_FOR_PROMOTION (수동 승격 대기); §8 Promotion Loop; A-track auto-merge forbidden.",
+      "promotion_status": "bench_only"
     },
     {
       "hypothesis_id": "HYP_SEM_TRIG_0001",
@@ -113,7 +117,8 @@
           "join_note": "thematic: lexical link_type rows; word-level alignment is bench metadata, not market isomorphism."
         }
       ],
-      "promotion_status": "draft"
+      "note": "CANDIDATE_FOR_PROMOTION (수동 승격 대기); §8 Promotion Loop; A-track auto-merge forbidden.",
+      "promotion_status": "bench_only"
     },
     {
       "hypothesis_id": "HYP_SEM_TRIG_0002",
@@ -139,7 +144,8 @@
           "join_note": "thematic: shared pilot anchor for state 13; bridge rows do not assert identity across corpora."
         }
       ],
-      "promotion_status": "draft"
+      "note": "CANDIDATE_FOR_PROMOTION (수동 승격 대기); §8 Promotion Loop; A-track auto-merge forbidden.",
+      "promotion_status": "bench_only"
     },
     {
       "hypothesis_id": "HYP_STRUCT_FRAC_0001",
@@ -160,7 +166,8 @@
           "join_note": "thematic: boundary/community vs analogy_bench narratives; graph statistics remain descriptive, not causal scaling proof."
         }
       ],
-      "promotion_status": "draft"
+      "note": "CANDIDATE_FOR_PROMOTION (수동 승격 대기); §8 Promotion Loop; A-track auto-merge forbidden.",
+      "promotion_status": "bench_only"
     },
     {
       "hypothesis_id": "HYP_STRUCT_FRAC_0002",
@@ -186,7 +193,8 @@
           "join_note": "thematic: single pilot sasang row paired for mixed-lens documentation; not equivalence across domains."
         }
       ],
-      "promotion_status": "draft"
+      "note": "CANDIDATE_FOR_PROMOTION (수동 승격 대기); §8 Promotion Loop; A-track auto-merge forbidden.",
+      "promotion_status": "bench_only"
     }
   ]
 }

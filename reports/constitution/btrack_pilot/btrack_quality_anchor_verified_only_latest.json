@@ -1,6 +1,6 @@
 {
   "schema": "btrack_quality_report_v1",
-  "generated_at_utc": "2026-04-03T21:06:32Z",
+  "generated_at_utc": "2026-04-06T20:06:38Z",
   "inputs": {
     "a_track": "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\a_track_eval_direct_v1.jsonl",
     "b_track": "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\b_track_eval_anchor_verified_only.jsonl"

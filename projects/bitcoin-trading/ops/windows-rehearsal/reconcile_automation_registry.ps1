@@ -2,7 +2,8 @@ param(
     [string]$RegistryPath = "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\automation_registry.json",
     [string]$OutputPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\automation_registry_reconcile_latest.json",
     [switch]$Enforce,
-    [switch]$ShowJson
+    [switch]$ShowJson,
+    [switch]$IgnoreExecutionHealth
 )
 
 $ErrorActionPreference = "Stop"
@@ -41,6 +42,15 @@ function Normalize-Status([string]$status) {
     return $status.Trim()
 }
 
+function Is-LastResultSuccess([string]$value) {
+    if ([string]::IsNullOrWhiteSpace($value)) { return $false }
+    $v = $value.Trim().ToLowerInvariant()
+    if ($v -eq "0") { return $true }
+    if ($v -eq "0x0") { return $true }
+    if ($v -eq "the operation completed successfully. (0x0)") { return $true }
+    return $false
+}
+
 if (-not (Test-Path -LiteralPath $RegistryPath)) {
     throw "Registry not found: $RegistryPath"
 }
@@ -52,6 +62,7 @@ if (-not $registry.tasks) {
 $items = @()
 $driftCount = 0
 $fixedCount = 0
+$executionIssueCount = 0
 foreach ($t in $registry.tasks) {
     $name = [string]$t.name
     $expected = Normalize-Status ([string]$t.expected_status)
@@ -89,6 +100,19 @@ foreach ($t in $registry.tasks) {
     }
 
     if ($drift) { $driftCount += 1 }
+    $isCriticalOrHigh = ([string]$t.criticality -in @("critical", "high"))
+    $isExpectedReady = ($expected -eq "Ready")
+    $executionHealthy = $true
+    if (-not $IgnoreExecutionHealth -and $snap.exists -and $isCriticalOrHigh -and $isExpectedReady) {
+        # Task Scheduler can expose transient non-zero last_result (for example 267009)
+        # while a task is actively running; treat Running as execution-healthy.
+        if ($actual -eq "Running") {
+            $executionHealthy = $true
+        } else {
+            $executionHealthy = Is-LastResultSuccess -value ([string]$snap.last_result)
+        }
+    }
+    if (-not $executionHealthy) { $executionIssueCount += 1 }
     $items += [ordered]@{
         task_name = $name
         expected_status = $expected
@@ -101,11 +125,13 @@ foreach ($t in $registry.tasks) {
         criticality = [string]$t.criticality
         next_run_time = $snap.next_run_time
         last_result = $snap.last_result
+        execution_healthy = $executionHealthy
     }
 }
 
 $criticalDrift = @($items | Where-Object { $_.drift -and $_.criticality -eq "critical" }).Count
-$allOk = ($driftCount -eq 0)
+$executionCriticalIssueCount = @($items | Where-Object { -not $_.execution_healthy -and $_.criticality -eq "critical" }).Count
+$allOk = ($driftCount -eq 0 -and $executionCriticalIssueCount -eq 0)
 
 $payload = [ordered]@{
     schema = "automation_registry_reconcile_v1"
@@ -116,6 +142,9 @@ $payload = [ordered]@{
     drift_count = $driftCount
     critical_drift_count = $criticalDrift
     fixed_count = $fixedCount
+    ignore_execution_health = [bool]$IgnoreExecutionHealth
+    execution_issue_count = $executionIssueCount
+    execution_critical_issue_count = $executionCriticalIssueCount
     items = $items
 }
 
@@ -128,7 +157,7 @@ Set-Content -LiteralPath $OutputPath -Value $json -Encoding UTF8
 if ($ShowJson) {
     Write-Host $json
 }
-Write-Host ("[reconcile] all_ok={0} drift_count={1} critical_drift={2} saved={3}" -f $allOk, $driftCount, $criticalDrift, $OutputPath)
+Write-Host ("[reconcile] all_ok={0} drift_count={1} critical_drift={2} execution_issues={3} saved={4}" -f $allOk, $driftCount, $criticalDrift, $executionIssueCount, $OutputPath)
 
 if (-not $allOk) { exit 1 }
 exit 0

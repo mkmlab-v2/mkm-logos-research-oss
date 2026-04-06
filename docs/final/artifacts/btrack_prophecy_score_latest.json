@@ -1,10 +1,10 @@
 {
   "schema": "btrack_prophecy_score_v1",
-  "generated_at_utc": "2026-04-06T08:05:29Z",
+  "generated_at_utc": "2026-04-06T20:26:54Z",
   "eval_date": "2024-12-30",
   "neutral_bps": 5.0,
   "hypothesis_path": "docs\\final\\artifacts\\btrack_hypothesis_prophecy_latest.json",
-  "hypothesis_ts_utc": "2026-04-06T08:05:27Z",
+  "hypothesis_ts_utc": "2026-04-06T10:12:24Z",
   "inputs": {
     "kospi_csv": "research\\market_data\\kospi_daily_external_yf.csv",
     "btc_csv": null

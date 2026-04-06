@@ -1,6 +1,6 @@
 {
   "schema": "cost_watch_monitor_v1",
-  "ts_utc": "2026-04-03T21:06:41.130630+00:00",
+  "ts_utc": "2026-04-06T20:06:46.085043+00:00",
   "sources": {
     "compression_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
     "vllm_canary_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_repeat_latest.json",
@@ -40,7 +40,7 @@
     "api_cost_usd": 0.0807,
     "input_tokens": 0,
     "output_tokens": 0,
-    "pricing_configured": false,
+    "pricing_configured": true,
     "source_tier": "invoice_audit",
     "invoice_provenance": "provider_file",
     "invoice_audit_ready": false
@@ -48,9 +48,7 @@
   "claim_guardrails": {
     "can_claim_hallucination_zero": false,
     "can_claim_margin_uplift_50": false,
-    "blocking_reasons": [
-      "billing_pricing_not_configured"
-    ]
+    "blocking_reasons": []
   },
   "note": "This monitor is evidence-join only. It does not certify margin uplift without real billing data."
 }
