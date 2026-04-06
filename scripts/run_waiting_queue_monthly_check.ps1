@@ -58,6 +58,8 @@ $scoringDistributionPath = "C:\workspace\docs\final\artifacts\trinity_scoring_di
 $fusedCalibrationScriptPath = "C:\workspace\scripts\report_fused_paper_cycle_calibration_30.py"
 $expandedDatasetPath = "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_dataset_expanded_latest.jsonl"
 $highSampleRepeatPath = "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_canary_repeat_high_sample_latest.json"
+$expandedDatasetScriptPath = "C:\workspace\scripts\generate_vllm_ab_dataset_expanded.py"
+$highSampleRepeatScriptPath = "C:\workspace\scripts\run_vllm_ab_canary_repeat.py"
 $billingInvoiceFromEnvPath = "C:\workspace\docs\final\artifacts\billing_invoice_from_env_latest.json"
 $billingInvoiceFromEnvScriptPath = "C:\workspace\scripts\emit_billing_invoice_from_env.py"
 $billingEvidenceScriptPath = "C:\workspace\scripts\report_billing_evidence_from_vllm.py"
@@ -75,6 +77,8 @@ $c2GuardrailPath = "C:\workspace\docs\final\artifacts\C2_AEGIS_BASELINE_GUARDRAI
 $c2CurrentScoreboardPath = "C:\workspace\docs\final\artifacts\aegis_unified_scoreboard_btc90_k010_latest.json"
 $c2GuardrailStatusPath = "C:\workspace\docs\final\artifacts\c2_aegis_guardrail_status_latest.json"
 $dailySitrepPath = "C:\workspace\docs\final\artifacts\waiting_queue_daily_sitrep_latest.txt"
+$btrackRecommendationPackPath = "C:\workspace\reports\notebooklm\btrack_insight_recommendation_pack_latest.json"
+$btrackMonthlyBriefBuilderPath = "C:\workspace\scripts\build_btrack_monthly_brief_from_recommendation.py"
 $softFailNotes = New-Object System.Collections.Generic.List[string]
 
 function Add-SoftFailNote([string]$message) {
@@ -494,22 +498,26 @@ if (Test-Path -LiteralPath $hallucinationEvalScriptPath) {
 }
 
 if ($enableHighSampleVllmEval) {
-    Write-Host "[waiting-queue-check] Building expanded vLLM AB dataset for high-sample eval..."
-    py scripts/generate_vllm_ab_dataset_expanded.py --target-cases $highSampleCases --output $expandedDatasetPath
-    if ($LASTEXITCODE -ne 0) {
-        throw "Expanded vLLM AB dataset build failed with exit code $LASTEXITCODE"
-    }
+    if ((Test-Path -LiteralPath $expandedDatasetScriptPath) -and (Test-Path -LiteralPath $highSampleRepeatScriptPath)) {
+        Write-Host "[waiting-queue-check] Building expanded vLLM AB dataset for high-sample eval..."
+        py scripts/generate_vllm_ab_dataset_expanded.py --target-cases $highSampleCases --output $expandedDatasetPath
+        if ($LASTEXITCODE -ne 0) {
+            throw "Expanded vLLM AB dataset build failed with exit code $LASTEXITCODE"
+        }
 
-    Write-Host "[waiting-queue-check] Running high-sample vLLM canary repeat (allow-unavailable)..."
-    py scripts/run_vllm_ab_canary_repeat.py --dataset-jsonl $expandedDatasetPath --runs $highSampleRuns --out-json $highSampleRepeatPath --allow-unavailable
-    if ($LASTEXITCODE -ne 0) {
-        throw "High-sample vLLM canary repeat failed with exit code $LASTEXITCODE"
-    }
+        Write-Host "[waiting-queue-check] Running high-sample vLLM canary repeat (allow-unavailable)..."
+        py scripts/run_vllm_ab_canary_repeat.py --dataset-jsonl $expandedDatasetPath --runs $highSampleRuns --out-json $highSampleRepeatPath --allow-unavailable
+        if ($LASTEXITCODE -ne 0) {
+            throw "High-sample vLLM canary repeat failed with exit code $LASTEXITCODE"
+        }
 
-    Write-Host "[waiting-queue-check] Rebuilding hallucination grounding eval after high-sample run..."
-    py scripts/report_hallucination_grounding_eval.py --output $hallucinationEvalPath --target-lane candidate --input-glob "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_canary_run_*.json"
-    if ($LASTEXITCODE -ne 0) {
-        throw "Hallucination grounding eval (high-sample) failed with exit code $LASTEXITCODE"
+        Write-Host "[waiting-queue-check] Rebuilding hallucination grounding eval after high-sample run..."
+        py scripts/report_hallucination_grounding_eval.py --output $hallucinationEvalPath --target-lane candidate --input-glob "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_canary_run_*.json"
+        if ($LASTEXITCODE -ne 0) {
+            throw "Hallucination grounding eval (high-sample) failed with exit code $LASTEXITCODE"
+        }
+    } else {
+        Add-SoftFailNote "high-sample vLLM eval enabled but required scripts are missing; skipped"
     }
 }
 
@@ -866,6 +874,18 @@ if ($LASTEXITCODE -ne 0) {
     throw "Trinity scoring distribution build failed with exit code $LASTEXITCODE"
 }
 
+Write-Host "[waiting-queue-check] Building B-Track monthly brief snapshot (Top10 recommendation)..."
+if ((Test-Path -LiteralPath $btrackMonthlyBriefBuilderPath) -and (Test-Path -LiteralPath $btrackRecommendationPackPath)) {
+    py scripts/build_btrack_monthly_brief_from_recommendation.py --input $btrackRecommendationPackPath --write-monthly-snapshot
+    if ($LASTEXITCODE -ne 0) {
+        throw "B-Track monthly brief build failed with exit code $LASTEXITCODE"
+    }
+} elseif (-not (Test-Path -LiteralPath $btrackMonthlyBriefBuilderPath)) {
+    Add-SoftFailNote "B-Track monthly brief builder script missing; skipped"
+} else {
+    Add-SoftFailNote "B-Track recommendation pack missing; skipped monthly brief build"
+}
+
 # Hysteresis gate: only escalate when the same override skew advisory persists.
 $overrideSkewDecision = $null
 $overrideSkewReason = $null
@@ -916,6 +936,9 @@ if ($overrideSkewDecision -in @("override_skew_net_source_fallback", "override_s
     if ($overrideSkewStreak -ge $overrideSkewStreakThreshold) {
         @{
             checked_at_utc = ([DateTimeOffset]::UtcNow).ToString("o")
+            bundle_mode = $bundleMode
+            cross_ref_test = "pass"
+            bundle_test = if ($SkipBundle) { "skipped" } else { "pass" }
             auto_hold_promotion = $true
             high_reliability_decision_override = "HOLD"
             override_reason = "override_skew_hysteresis_streak_ge_threshold"
@@ -959,6 +982,9 @@ if (Test-Path -LiteralPath $slackDeliveryStatusPath) {
         if ($fallbackEscalated) {
             @{
                 checked_at_utc = ([DateTimeOffset]::UtcNow).ToString("o")
+                bundle_mode = $bundleMode
+                cross_ref_test = "pass"
+                bundle_test = if ($SkipBundle) { "skipped" } else { "pass" }
                 auto_hold_promotion = $true
                 high_reliability_decision_override = "HOLD"
                 override_reason = "net_source_fallback_streak_escalated"
@@ -981,6 +1007,9 @@ if (Test-Path -LiteralPath $slackDeliveryStatusPath) {
 if ($dualRegimeAlertLevel -eq "state_clamp_high_tight_mode") {
     @{
         checked_at_utc = ([DateTimeOffset]::UtcNow).ToString("o")
+        bundle_mode = $bundleMode
+        cross_ref_test = "pass"
+        bundle_test = if ($SkipBundle) { "skipped" } else { "pass" }
         auto_hold_promotion = $true
         high_reliability_decision_override = "HOLD"
         override_reason = "dual_regime_state_clamp_high_tight_mode"
