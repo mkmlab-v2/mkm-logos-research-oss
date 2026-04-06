@@ -1,0 +1,22 @@
+{
+  "schema": "prophecy_hit_rate_eval_report_v2",
+  "generated_at_utc": "2026-04-06T15:50:37Z",
+  "run_mode": "price",
+  "status": "ok",
+  "zeroing_note": "price: directional match rate over provided rows.",
+  "inputs": {
+    "run_mode": "price",
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_war_prolong_20260406_multileg.json",
+    "registry_glob": null
+  },
+  "metrics": {
+    "price_directional_hit_rate": 0.75,
+    "n_evaluated": 4,
+    "price_hits": 3
+  },
+  "sources": {
+    "oracle_path": null,
+    "registry_path": null,
+    "used_field": "best.unified_score_balanced (fallback: mean btc_balanced_accuracy_mean + kospi_balanced_accuracy_mean)"
+  }
+}

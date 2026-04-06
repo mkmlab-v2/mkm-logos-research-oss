@@ -1,0 +1,9 @@
+# Step 1) 개발/검증 루프 (Cursor CLI, 선택)
+agent -p "review current A/B benchmark changes for correctness, performance risks, and reproducibility gaps" --output-format text
+# Optional: 장시간 작업은 Cloud handoff 사용 가능
+# agent -c "analyze benchmark failures and propose minimal code-level fixes with tests"
+
+# Step 2) AIDC 증빙 산출물 생성/판정 (필수)
+py "C:/workspace/scripts/build_btrack_prophecy_score_from_ohlcv.py"
+py "C:/workspace/scripts/update_aidc_kpi_gate.py" --label baseline --iterations 30 --measurement-mode subprocess --output-suffix _v2
+py "C:/workspace/scripts/update_aidc_kpi_gate.py" --label treatment --iterations 30 --measurement-mode subprocess --output-suffix _v2

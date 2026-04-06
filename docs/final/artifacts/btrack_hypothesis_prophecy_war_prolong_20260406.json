@@ -1,0 +1,24 @@
+{
+  "schema": "btrack_hypothesis_prophecy_v1",
+  "version": "1.0.0",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "ts_utc": "2026-04-06T00:00:00Z",
+  "label": "[HYPO] War-prolongation trigger (45-day ceasefire rejection) observation only; defense/energy/logistics momentum watch.",
+  "lens_artifacts": {
+    "logos": "docs/final/artifacts/logos_independent_lens_latest.json",
+    "myeongni": "docs/final/artifacts/myeongni_independent_lens_latest.json",
+    "sasang": "docs/final/artifacts/sasang_independent_lens_latest.json",
+    "fusion_stub": "docs/final/artifacts/independent_lens_fusion_stub_latest.json"
+  },
+  "prediction": {
+    "instrument": "multi",
+    "horizon": "1d",
+    "direction": "bull",
+    "confidence": 0.58
+  },
+  "provenance": {
+    "llm_model": "manual_hypothesis_extension_v1",
+    "prompt_id": "war_prolongation_trigger_2026_04_06"
+  }
+}

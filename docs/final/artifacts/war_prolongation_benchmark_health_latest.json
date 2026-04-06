@@ -1,0 +1,40 @@
+﻿{
+    "schema":  "war_prolongation_benchmark_health_v1",
+    "generated_at_utc":  "2026-04-06T15:50:40Z",
+    "task":  {
+                 "name":  "MKM-War-Prolongation-Autopilot-Daily",
+                 "exists":  true,
+                 "state":  "Ready",
+                 "last_task_result":  0,
+                 "last_run_time":  "\/Date(1775485938000)\/",
+                 "next_run_time":  "\/Date(1775520300000)\/"
+             },
+    "latest_run_log":  {
+                           "schema":  "war_prolongation_resilient_run_log_v1",
+                           "generated_at_utc":  "2026-04-06T15:50:39Z",
+                           "attempt":  1,
+                           "status":  "ok",
+                           "message":  "Chain completed successfully.",
+                           "exit_code":  0,
+                           "dry_run":  false,
+                           "chain_script":  "scripts/run_war_prolongation_benchmark_chain.ps1"
+                       },
+    "latest_bundle_snapshot":  {
+                                   "spot_hit_rate":  0.75,
+                                   "window_hit_rate_h1":  0.75,
+                                   "window_hit_rate_h5":  0.5,
+                                   "window_hit_rate_h20":  0.5,
+                                   "significance_n":  1440,
+                                   "significance_p_value":  0.0,
+                                   "significance_pass":  true,
+                                   "perf_per_w_uplift_pct":  25.693232,
+                                   "gate_decision":  "GO",
+                                   "gate_reasons":  [
+
+                                                    ]
+                               },
+    "status":  "ok",
+    "issues":  [
+
+               ]
+}
