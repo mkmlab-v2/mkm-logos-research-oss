@@ -1,6 +1,6 @@
 {
   "schema": "btrack_prophecy_score_v1",
-  "generated_at_utc": "2026-04-06T20:29:32Z",
+  "generated_at_utc": "2026-04-06T20:30:31Z",
   "eval_date": "2024-12-30",
   "neutral_bps": 5.0,
   "hypothesis_path": "docs\\final\\artifacts\\btrack_hypothesis_prophecy_latest.json",
