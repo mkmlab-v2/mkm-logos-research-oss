@@ -1,0 +1,41 @@
+{
+  "schema": "btc_live_upgrade_verification_v1",
+  "generated_at_utc": "2026-04-06T17:49:52Z",
+  "status": "guarded_activation_only",
+  "checklist": {
+    "gate_go": true,
+    "promotion_ready": false,
+    "insight_gate_enabled": true,
+    "insight_gate_block_mode": true,
+    "risk_profile_active_mode": true,
+    "risk_core_not_locked_hold": false,
+    "phase1_readiness_ok": false
+  },
+  "inputs": {
+    "latest_kpi": "C:/workspace/projects/bitcoin-trading/memory/kpi/latest_kpi.json",
+    "risk_profile": "C:/workspace/projects/bitcoin-trading/memory/v2/risk/risk_profile_fact_safe_latest.json",
+    "benchmark_bundle": "C:/workspace/docs/final/artifacts/war_prolongation_benchmark_bundle_20260406.json",
+    "autopilot_status": "C:/workspace/docs/final/artifacts/war_prolongation_autopilot_status_latest.json",
+    "phase1_readiness": "C:/workspace/projects/bitcoin-trading/memory/v2/ops/ops_phase1_readiness_latest.json",
+    "kpi_snapshot_jsonl": "C:/workspace/projects/bitcoin-trading/memory/kpi/kpi_snapshot_20260406.jsonl"
+  },
+  "runtime_snapshot": {
+    "status_running": true,
+    "status_enable_trading": true,
+    "risk_profile_source": "n8n.regime_watch.v5",
+    "risk_profile_mode": "n8n_active",
+    "exchange_snapshot_24h_net": -53.36093706,
+    "kpi_snapshot_samples": 230,
+    "avg_realized_24h_usdt": null,
+    "avg_unrealized_pnl_usdt": null,
+    "nonzero_position_ratio": 0.0
+  },
+  "decision_hint": {
+    "recommended_mode": "shadow_or_block",
+    "reason": "One or more guardrails still active (notably core HOLD/lock or readiness gate)."
+  },
+  "notes": [
+    "No direct order execution; reporting only.",
+    "Use this report before changing live leverage/risk caps."
+  ]
+}

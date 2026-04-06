@@ -1,0 +1,41 @@
+{
+  "schema": "aidc_ab_result_summary_v1",
+  "generated_at_utc": "2026-04-06T20:26:22Z",
+  "status": "exploratory_with_stats",
+  "scope": "observation_lane_blind_replay",
+  "comparison": {
+    "baseline": {
+      "name": "A",
+      "description": "Chance baseline for 3-class direction labels",
+      "hit_rate_assumed": 0.333333
+    },
+    "treatment": {
+      "name": "B",
+      "description": "Latest btrack_prophecy_score directional match on current eval payload"
+    }
+  },
+  "metrics_snapshot": {
+    "hit_rate": 0.383333,
+    "n_evaluated": 60,
+    "hits": 23,
+    "miss": 37
+  },
+  "statistical_test": {
+    "method": "Wilson 95% CI + one-sided exact binomial test vs chance baseline",
+    "confidence_interval_95": [
+      0.270883,
+      0.509824
+    ],
+    "one_sided_p_value_vs_baseline": 0.244358,
+    "uplift_vs_baseline": 0.05
+  },
+  "inputs": {
+    "answer_key": "C:/workspace/reports/constitution/btrack_pilot/blind_replay/blind_replay_answer_key_historical_btcusdt_1d_cfg6_w60_h10_s2_seed45.jsonl",
+    "prediction_source": "C:/workspace/reports/constitution/btrack_pilot/blind_replay/blind_replay_predictions_12ai_proxy_C_latest.jsonl",
+    "timeseries_csv": "C:/workspace/docs/final/artifacts/ab_result_timeseries.csv"
+  },
+  "limitations": [
+    "Exploratory lane only; not linked to live trading.",
+    "Current snapshot may be low-N if score payload has few rows."
+  ]
+}
