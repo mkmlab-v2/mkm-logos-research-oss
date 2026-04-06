@@ -94,8 +94,10 @@ on:
       - "tests/test_b_track_hypothesis_inventory.py"
       - "tests/test_generate_btrack_hypothesis_prophecy_v1.py"
       - "tests/test_eval_prophecy_hit_rate_v1.py"
+      - "tests/test_build_btrack_prophecy_score_from_ohlcv.py"
       - "scripts/generate_btrack_hypothesis_prophecy_v1.py"
       - "scripts/eval_prophecy_hit_rate_v1.py"
+      - "scripts/build_btrack_prophecy_score_from_ohlcv.py"
       - "scripts/build_btrack_llm_input_bundle.py"
       - "scripts/run_btrack_daily_hypothesis_chain.ps1"
       - "scripts/append_btrack_insight_observation.py"
@@ -227,8 +229,8 @@ jobs:
       - name: B-track Hypothesis Inventory schema
         run: python -m pytest tests/test_b_track_hypothesis_inventory.py -q --tb=short
 
-      - name: B-Track hypothesis prophecy + prophecy hit-rate eval smoke
-        run: python -m pytest tests/test_generate_btrack_hypothesis_prophecy_v1.py tests/test_eval_prophecy_hit_rate_v1.py -q --tb=short
+      - name: B-Track hypothesis + dawn-score + prophecy hit-rate eval smoke
+        run: python -m pytest tests/test_generate_btrack_hypothesis_prophecy_v1.py tests/test_build_btrack_prophecy_score_from_ohlcv.py tests/test_eval_prophecy_hit_rate_v1.py -q --tb=short
 
       - name: ENTRY_16 source-hunt log contract
         run: python -m pytest tests/test_entry16_source_hunt_log.py -q --tb=short

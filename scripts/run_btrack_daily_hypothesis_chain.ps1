@@ -6,12 +6,14 @@
 #   Program: pwsh.exe
 #   Arguments: -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\run_btrack_daily_hypothesis_chain.ps1"
 #   Working directory: C:\workspace
-# Dawn scoring (separate task): build score JSON from OHLCV + yesterday hypothesis, then:
-#   py scripts/eval_prophecy_hit_rate_v1.py --run-mode price --score-json path\to\score.json
+# Dawn scoring: use -IncludeDawnScore or manually:
+#   py scripts/build_btrack_prophecy_score_from_ohlcv.py
+#   py scripts/eval_prophecy_hit_rate_v1.py --run-mode price --score-json docs/final/artifacts/btrack_prophecy_score_latest.json
 param(
   [string]$WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path,
   [switch]$SkipInsightAppend,
-  [switch]$SkipHitRate
+  [switch]$SkipHitRate,
+  [switch]$IncludeDawnScore
 )
 $ErrorActionPreference = "Stop"
 Set-Location $WorkspaceRoot
@@ -56,6 +58,14 @@ if (-not $SkipHitRate) {
   Write-Host "==> eval_prophecy_hit_rate_v1.py (proxy default; no registry)"
   py scripts/eval_prophecy_hit_rate_v1.py --run-mode proxy
   if ($LASTEXITCODE -ne 0) { throw "eval_prophecy_hit_rate exit $LASTEXITCODE" }
+}
+
+if ($IncludeDawnScore) {
+  Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (eval-date auto) + eval_prophecy_hit_rate_v1 price"
+  py scripts/build_btrack_prophecy_score_from_ohlcv.py
+  if ($LASTEXITCODE -ne 0) { throw "build_btrack_prophecy_score exit $LASTEXITCODE" }
+  py scripts/eval_prophecy_hit_rate_v1.py --run-mode price --score-json docs/final/artifacts/btrack_prophecy_score_latest.json
+  if ($LASTEXITCODE -ne 0) { throw "eval_prophecy_hit_rate price exit $LASTEXITCODE" }
 }
 
 Write-Host "OK: B-Track daily hypothesis chain finished. Bundle: docs/final/artifacts/btrack_llm_input_bundle_latest.json"

@@ -15,6 +15,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+import math
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "prophecy_hit_rate_eval_latest.json"
@@ -96,11 +97,63 @@ def _eval_proxy(registry_glob: str | None, root: Path) -> tuple[dict[str, Any], 
             {"proxy_hit_rate": None, "n_evaluated": 0},
             {"status": "no_data", "zeroing_note": f"proxy: no files for glob {registry_glob!r}"},
         )
+    scores: list[float] = []
+    used_files: list[str] = []
+
+    for p in matches:
+        doc = _load_json(p)
+        if not doc:
+            continue
+        best = doc.get("best")
+        top0 = None
+        top20 = doc.get("top20")
+        if isinstance(top20, list) and top20 and isinstance(top20[0], dict):
+            top0 = top20[0]
+
+        # Primary proxy metric for these artifacts: unified_score_balanced
+        # Fallback to mean of btc/kospi balanced accuracies when unified score is absent.
+        candidate = None
+        if isinstance(best, dict):
+            v = best.get("unified_score_balanced")
+            if isinstance(v, (int, float)):
+                candidate = float(v)
+            else:
+                btc = best.get("btc_balanced_accuracy_mean")
+                kospi = best.get("kospi_balanced_accuracy_mean")
+                if isinstance(btc, (int, float)) and isinstance(kospi, (int, float)):
+                    candidate = (float(btc) + float(kospi)) / 2.0
+        if candidate is None and isinstance(top0, dict):
+            v = top0.get("unified_score_balanced")
+            if isinstance(v, (int, float)):
+                candidate = float(v)
+            else:
+                btc = top0.get("btc_balanced_accuracy_mean")
+                kospi = top0.get("kospi_balanced_accuracy_mean")
+                if isinstance(btc, (int, float)) and isinstance(kospi, (int, float)):
+                    candidate = (float(btc) + float(kospi)) / 2.0
+
+        if candidate is None or not math.isfinite(candidate):
+            continue
+        scores.append(candidate)
+        used_files.append(str(p))
+
+    if not scores:
+        return (
+            {"proxy_hit_rate": None, "n_evaluated": 0, "registry_candidates": [str(p) for p in matches[:20]]},
+            {"status": "no_data", "zeroing_note": "proxy: files found but no extractable unified/accuracy metrics."},
+        )
+
+    avg = sum(scores) / len(scores)
     return (
-        {"proxy_hit_rate": None, "n_evaluated": 0, "registry_candidates": [str(p) for p in matches[:20]]},
         {
-            "status": "no_data",
-            "zeroing_note": "proxy: registry files found; precision extraction not implemented in v1 stub.",
+            "proxy_hit_rate": round(avg, 6),
+            "n_evaluated": len(scores),
+            "proxy_scores": [round(s, 6) for s in scores[:20]],
+        },
+        {
+            "status": "ok",
+            "zeroing_note": "proxy: mean of unified_score_balanced (fallback: mean btc/kospi balanced accuracy) from registry files.",
+            "registry_used_files": used_files[:20],
         },
     )
 
@@ -151,8 +204,8 @@ def main() -> int:
         "metrics": metrics,
         "sources": {
             "oracle_path": None,
-            "registry_path": None,
-            "used_field": None,
+            "registry_path": meta.get("registry_used_files"),
+            "used_field": "best.unified_score_balanced (fallback: mean btc_balanced_accuracy_mean + kospi_balanced_accuracy_mean)",
         },
     }
 

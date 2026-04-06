@@ -104,6 +104,26 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
   - `projects/bitcoin-trading/memory/v2/briefs/fact_safe_multilens_broadcast_latest.md`
   - `projects/bitcoin-trading/memory/v2/briefs/fact_safe_multilens_broadcast_latest.json`
 
+### 월간 감사 1페이지 체크리스트 (run_waiting_queue_monthly_check 연계)
+
+**실행 전제**: Bench/관측 레인. 본 체크는 **B-Track 보고 품질·증빙 완결성** 점검이며 A-Track LIVE 전환 승인 절차를 대체하지 않는다.
+
+| 체크 항목 | 확인 방법(명령/파일) | 통과 기준 |
+|---|---|---|
+| 월간 러너 실행 성공 | `scripts/run_waiting_queue_monthly_check.ps1` | 프로세스 exit 0, 중단/예외 없음 |
+| 로그 append 확인 | `docs/final/artifacts/waiting_queue_monthly_check_log.jsonl` | 최신 1행 추가(타임스탬프 증가) |
+| 브리프 생성 확인 | `docs/final/artifacts/fact_safe_multilens_brief_latest.md` | 파일 존재 + 비어있지 않음 |
+| 브로드캐스트 생성 확인 | `projects/bitcoin-trading/memory/v2/briefs/fact_safe_multilens_broadcast_latest.md/.json` | 두 파일 모두 최신 타임스탬프 |
+| 필수 필드 무결성 | broadcast JSON의 `reliability_badge`, `high_reliability_decision`, `gate_reason`, `net` | 4개 키 모두 존재·null 아님 |
+| Prophecy 월간 산출물 존재 | `docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json/.md` | 두 파일 모두 존재(없으면 no_data로 명시) |
+| B-Track 가설/채점 연계 상태 | `docs/final/artifacts/btrack_hypothesis_prophecy_latest.json`, `btrack_prophecy_score_latest.json`, `prophecy_hit_rate_eval_latest.json` | 파일 존재 + `schema` 유효 + `[HYPO]` 문구 유지 |
+| 경로/헌법 스모크 | `scripts/verify_p0_constitution_gate_paths.ps1` | OK 출력(누락 경로 0) |
+
+**보고 규칙(월간)**:
+- 수치 보고는 파일 본문/JSON 필드에서만 인용하고, 채팅·노트의 수치 복사본을 SSOT로 사용하지 않는다.
+- `proxy` 지표는 price hit-rate와 동일 의미가 아니므로, 같은 표에 넣을 때 반드시 별도 라벨(`proxy`, `price`)을 유지한다.
+- 스킵/WARN 항목은 실패로 과장하지 않고 `게이트 미연결/미구현 구간`으로 분리 보고한다.
+
 ### 주간·월간 SOP (권장 고정, 2026-04)
 
 | 주기 | 러너 | 비고 |

@@ -33,3 +33,45 @@ def test_eval_prophecy_hit_rate_price_mode_json(tmp_path: Path) -> None:
 
 def test_eval_prophecy_script_exists() -> None:
     assert _SCRIPT.is_file(), str(_SCRIPT)
+
+
+def test_eval_prophecy_hit_rate_proxy_mode_extracts_registry_metric(tmp_path: Path) -> None:
+    reg_dir = _ROOT / "artifacts" / "test_tmp"
+    reg_dir.mkdir(parents=True, exist_ok=True)
+    reg = reg_dir / "registry_sample_eval_proxy.json"
+    reg.write_text(
+        json.dumps(
+            {
+                "schema": "blind_replay_proxy_profile_d_tuning_v1",
+                "best": {
+                    "unified_score_balanced": 0.382159,
+                    "btc_balanced_accuracy_mean": 0.414997,
+                    "kospi_balanced_accuracy_mean": 0.325941,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    try:
+        cp = subprocess.run(
+            [
+                sys.executable,
+                str(_SCRIPT),
+                "--run-mode",
+                "proxy",
+                "--registry-glob",
+                "artifacts/test_tmp/registry_sample_eval_proxy.json",
+                "--stdout-only",
+            ],
+            capture_output=True,
+            text=True,
+            cwd=str(_ROOT),
+        )
+        assert cp.returncode == 0, cp.stderr
+        doc = json.loads(cp.stdout)
+        assert doc.get("status") == "ok"
+        assert doc.get("metrics", {}).get("n_evaluated") == 1
+        assert doc.get("metrics", {}).get("proxy_hit_rate") == 0.382159
+    finally:
+        if reg.exists():
+            reg.unlink()
