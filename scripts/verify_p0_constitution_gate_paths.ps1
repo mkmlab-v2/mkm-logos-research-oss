@@ -15,6 +15,8 @@ $required = @(
     "CLAUDE.md",
     "scripts\sync_notebooklm_sources_to_mkm_data_vault.ps1",
     "scripts\run_waiting_queue_monthly_check.ps1",
+    "scripts\eval_prophecy_hit_rate_v1.py",
+    "scripts\generate_btrack_hypothesis_prophecy_v1.py",
     "projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1",
     "scripts\core\domain_router.py",
     "codebook\shards\zone_a_scm.json",

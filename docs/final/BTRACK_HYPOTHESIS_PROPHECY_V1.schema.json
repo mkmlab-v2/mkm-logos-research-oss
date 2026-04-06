@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm12.local/schemas/btrack_hypothesis_prophecy_v1.schema.json",
+  "title": "B-Track daily hypothesis for LLM + local scoring (Fact-Lock)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "hypothesis_tier", "boundary_ack", "ts_utc", "label", "prediction"],
+  "properties": {
+    "schema": { "const": "btrack_hypothesis_prophecy_v1" },
+    "version": { "type": "string", "default": "1.0.0" },
+    "hypothesis_tier": { "const": "B" },
+    "boundary_ack": { "const": true },
+    "ts_utc": { "type": "string", "description": "ISO-8601 UTC when the hypothesis was recorded" },
+    "label": {
+      "type": "string",
+      "description": "Must include [HYPO]; optional [NON-MEDICAL] for sasang lens"
+    },
+    "lens_artifacts": {
+      "type": "object",
+      "properties": {
+        "logos": { "type": "string" },
+        "myeongni": { "type": "string" },
+        "sasang": { "type": "string" },
+        "fusion_stub": { "type": "string" }
+      }
+    },
+    "prediction": {
+      "type": "object",
+      "required": ["instrument", "horizon", "direction"],
+      "properties": {
+        "instrument": {
+          "type": "string",
+          "enum": ["kospi", "btc", "none", "multi"]
+        },
+        "horizon": { "type": "string", "description": "e.g. 1d, 5d" },
+        "direction": {
+          "type": "string",
+          "enum": ["bull", "bear", "neutral", "abstain"]
+        },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "llm_model": { "type": "string" },
+        "prompt_id": { "type": "string" }
+      }
+    }
+  }
+}

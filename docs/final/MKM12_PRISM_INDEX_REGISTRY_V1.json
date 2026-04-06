@@ -1,0 +1,7 @@
+{
+  "schema": "mkm12_prism_index_registry_v1",
+  "version": "1.0.0",
+  "ts_utc": "2026-04-06T00:00:00Z",
+  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14.",
+  "entries": []
+}
