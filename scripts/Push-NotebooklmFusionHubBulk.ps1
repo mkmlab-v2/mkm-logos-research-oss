@@ -23,17 +23,6 @@ if (-not (Test-Path $ManifestPath)) {
 $m = Get-Content -Raw -Path $ManifestPath -Encoding utf8 | ConvertFrom-Json
 $ts = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 "=== Push start $ts ===" | Out-File -FilePath $LogPath -Encoding utf8
-# URLs (single invocation, multiple -u)
-$urlArgs = @("source", "add", $NotebookId)
-foreach ($u in $m.urls) {
-  $urlArgs += "-u"
-  $urlArgs += $u
-}
-try {
-  & nlm @urlArgs 2>&1 | Tee-Object -FilePath $LogPath -Append
-} catch {
-  $_ | Out-File -FilePath $LogPath -Append
-}
 $sourceCount = -1
 try {
   $rawSources = (& nlm source list $NotebookId 2>$null | Out-String)
@@ -49,6 +38,17 @@ if ($remainingSlots -eq 0) {
   $ts2 = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
   "=== Done $ts2 ok=0 fail=0 ===" | Tee-Object -FilePath $LogPath -Append
   exit 0
+}
+# URLs (single invocation, multiple -u) - run only when capacity remains.
+$urlArgs = @("source", "add", $NotebookId)
+foreach ($u in $m.urls) {
+  $urlArgs += "-u"
+  $urlArgs += $u
+}
+try {
+  & nlm @urlArgs 2>&1 | Tee-Object -FilePath $LogPath -Append
+} catch {
+  $_ | Out-File -FilePath $LogPath -Append
 }
 $ok = 0
 $fail = 0
