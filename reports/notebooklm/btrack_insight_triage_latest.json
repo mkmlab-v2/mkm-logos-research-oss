@@ -1,0 +1,892 @@
+{
+  "schema": "btrack_insight_triage_v1",
+  "generated_at_utc": "2026-04-06T15:48:40Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "research_only": true,
+  "a_track_autobind_forbidden": true,
+  "label": "[HYPO] Triage set from accumulated NotebookLM insights.",
+  "input_jsonl": "reports\\notebooklm\\btrack_mega_insights_10gb.jsonl",
+  "rows_total": 454,
+  "top_motifs_top20": [
+    {
+      "motif": "b-track",
+      "count": 2320,
+      "source_coverage": 0
+    },
+    {
+      "motif": "a-track",
+      "count": 2141,
+      "source_coverage": 0
+    },
+    {
+      "motif": "canonical",
+      "count": 1605,
+      "source_coverage": 0
+    },
+    {
+      "motif": "systemic",
+      "count": 1492,
+      "source_coverage": 0
+    },
+    {
+      "motif": "comparative",
+      "count": 1422,
+      "source_coverage": 0
+    },
+    {
+      "motif": "explicitly",
+      "count": 1257,
+      "source_coverage": 0
+    },
+    {
+      "motif": "system",
+      "count": 1191,
+      "source_coverage": 0
+    },
+    {
+      "motif": "strictly",
+      "count": 1154,
+      "source_coverage": 0
+    },
+    {
+      "motif": "market",
+      "count": 1121,
+      "source_coverage": 0
+    },
+    {
+      "motif": "structural",
+      "count": 1112,
+      "source_coverage": 0
+    },
+    {
+      "motif": "sectarian",
+      "count": 1089,
+      "source_coverage": 0
+    },
+    {
+      "motif": "non-deterministic",
+      "count": 1081,
+      "source_coverage": 0
+    },
+    {
+      "motif": "conflict",
+      "count": 1078,
+      "source_coverage": 55
+    },
+    {
+      "motif": "fate",
+      "count": 1072,
+      "source_coverage": 0
+    },
+    {
+      "motif": "trigger",
+      "count": 1047,
+      "source_coverage": 0
+    },
+    {
+      "motif": "boundary",
+      "count": 1035,
+      "source_coverage": 0
+    },
+    {
+      "motif": "live",
+      "count": 970,
+      "source_coverage": 0
+    },
+    {
+      "motif": "strict",
+      "count": 963,
+      "source_coverage": 0
+    },
+    {
+      "motif": "trading",
+      "count": 936,
+      "source_coverage": 0
+    },
+    {
+      "motif": "motifs",
+      "count": 921,
+      "source_coverage": 0
+    }
+  ],
+  "high_confidence_top30": [
+    {
+      "query_id": "q010_next_30_queries",
+      "tags": [
+        "scale",
+        "batching"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 29,
+      "citations_count": 50,
+      "references_count": 50,
+      "answer_preview": "**Category 1: 4D Vector Geometry (S, L, K, M) & Myeongri/Sasang Dynamics**\n1. **Analyze the 4D vector distribution (S, L, K, M) of the 1QM War Scroll's \"Sons of Light\" breaking point motif** and compare it against Myeongri's highest-stress state vectors [1, 2].\n2. **Formulate a hypothesis mapping the 16 Myeongri states to the chronological tension in the Book of Jubilees**, specifically contrastin",
+      "evidence_score": 188.0,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0014_logos_stabilization_risk",
+      "tags": [
+        "relaxed",
+        "logos",
+        "stabilization",
+        "risk"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 33,
+      "citations_count": 45,
+      "references_count": 45,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis exists strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1-3]. These motifs evaluate probabilistic structural analogies across canonical texts and original-language witnesses, explicitly rejecting deterministic fate algebra or fixed future certainty [4, 5]. Under the system's strict physical and logi",
+      "evidence_score": 183.5,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "q010_next_30_queries",
+      "tags": [
+        "scale",
+        "batching"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 30,
+      "citations_count": 45,
+      "references_count": 45,
+      "answer_preview": "**Category 11: Ancient Language Neural Translation & Transliteration (Akkadian & DSS)**\n1. **Compare the challenges of handling determinatives and broken text notations (e.g., `<big_gap>`) in Old Assyrian cuneiform** with the `must_keep` token preservation rules used in the Track B literal-priority compression pipeline [1, 2].\n2. **How can the Geometric Mean of BLEU and chrF++ scores** used to eva",
+      "evidence_score": 177.5,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "q008_risk_taxonomy",
+      "tags": [
+        "risk",
+        "taxonomy"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 31,
+      "citations_count": 42,
+      "references_count": 42,
+      "answer_preview": "**Risk Taxonomy for Over-Interpretation in Multi-Lens Text Synthesis**\n\nIn the context of multi-lens text synthesis (incorporating Logos, Dead Sea Scrolls, Apocrypha, Myeongri, and Sasang), over-interpretation occurs when comparative analogies are inappropriately elevated to absolute truths, predictive formulas, or clinical facts. \n\nTo prevent this, the system enforces a strict \"Fact-Lock\" taxonom",
+      "evidence_score": 172.0,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "q010_next_30_queries",
+      "tags": [
+        "scale",
+        "batching"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 23,
+      "citations_count": 46,
+      "references_count": 46,
+      "answer_preview": "Here are the next 30 high-value query prompts designed to maximize novel comparative insight, explicitly categorized to avoid repeating previous topics. These target the newly exposed boundaries surrounding shadow market gating, Sasang/medical AI guardrails, system architecture (UFT & Prism), resonance decay, and linguistic SSOT contracts.\n\n**Category 16: Logos Shadow Market Tracking & Precrash Ga",
+      "evidence_score": 166.0,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "q008_risk_taxonomy",
+      "tags": [
+        "risk",
+        "taxonomy"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 27,
+      "citations_count": 34,
+      "references_count": 34,
+      "answer_preview": "**1. Theological & Canonical Over-Interpretation**\n**The Risk:** Elevating comparative motifs from the Dead Sea Scrolls (DSS) or Apocrypha to the level of normative doctrine, resulting in a canonical override [1, 2]. This includes translating theological hope or apocalyptic texts into deterministic fate algebra [2, 3] or replacing core canonical anchors (such as grace, redemption, and the Christol",
+      "evidence_score": 144.0,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "q008_risk_taxonomy",
+      "tags": [
+        "risk",
+        "taxonomy"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 27,
+      "citations_count": 34,
+      "references_count": 34,
+      "answer_preview": "Here is the risk taxonomy for over-interpretation in the multi-lens text synthesis system, categorized by domain and paired with strict mitigation checks:\n\n**1. Theological & Canonical Over-Interpretation**\n*   **The Risk:** Elevating secondary comparative motifs (such as those from the Dead Sea Scrolls or Apocrypha) to the level of normative doctrine, resulting in a **canonical override** [1, 2].",
+      "evidence_score": 144.0,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "rq0009_logos_warning_risk",
+      "tags": [
+        "relaxed",
+        "logos",
+        "warning",
+        "risk"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 27,
+      "citations_count": 33,
+      "references_count": 33,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic systemic pressures using structural analogies and explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecasting [3, 4]. Under the system's strict multi-corpus isolation",
+      "evidence_score": 141.5,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0044_dss_stabilization_risk",
+      "tags": [
+        "relaxed",
+        "dss",
+        "stabilization",
+        "risk"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 24,
+      "citations_count": 35,
+      "references_count": 35,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis operates strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status. It evaluates probabilistic stabilization and recovery motifs using Dead Sea Scroll (DSS) witnesses, Apocrypha, and fragment contexts. It explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecasting. U",
+      "evidence_score": 140.5,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "q010_next_30_queries",
+      "tags": [
+        "scale",
+        "batching"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 24,
+      "citations_count": 34,
+      "references_count": 34,
+      "answer_preview": "Here are the next 30 high-value query prompts designed to maximize novel comparative insight across the multi-lens architecture. These prompts explore untapped domains in the provided sources, including AI-driven paleography, data compression SLA limits, Sasang AI integration, and advanced structural clustering, while strictly avoiding repetition of your previous 30 prompts.\n\n**Category 6: AI-Driv",
+      "evidence_score": 138.0,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "rq0004_logos_transition_risk",
+      "tags": [
+        "relaxed",
+        "logos",
+        "transition",
+        "risk"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 24,
+      "citations_count": 32,
+      "references_count": 32,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic structural analogies across canonical texts and explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecasting [3-5]. Under the system's strict multi-corpus isolation po",
+      "evidence_score": 133.0,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0014_logos_transition_risk_counterfactual",
+      "tags": [
+        "relaxed",
+        "logos",
+        "transition",
+        "risk",
+        "counterfactual"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 24,
+      "citations_count": 31,
+      "references_count": 31,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis strictly operates within the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic structural analogies of systemic crisis and transition using canonical and comparative original-language texts. It explicitly rejects deterministic fate algebra, fixed future certainty, and causal financial f",
+      "evidence_score": 130.5,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "q008_risk_taxonomy",
+      "tags": [
+        "risk",
+        "taxonomy"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 25,
+      "citations_count": 30,
+      "references_count": 30,
+      "answer_preview": "**1. Theological & Canonical Over-Interpretation**\n*   **The Risk:** Elevating comparative motifs from the Dead Sea Scrolls (DSS) or Apocrypha to the level of normative doctrine, resulting in a **canonical override** [1, 2]. This includes converting theological hope language into deterministic fate algebra, or replacing core, non-replaceable canonical anchors (like grace, redemption, and the Chris",
+      "evidence_score": 130.0,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "rq0019_logos_conflict_risk",
+      "tags": [
+        "relaxed",
+        "logos",
+        "conflict",
+        "risk"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 24,
+      "citations_count": 30,
+      "references_count": 30,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1]. It evaluates probabilistic structural analogies of conflict and resolution using ancient texts [2, 3]. It explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecasting [4]. Under the system's strict",
+      "evidence_score": 128.0,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0012_logos_transition_table_ops_ready",
+      "tags": [
+        "relaxed",
+        "logos",
+        "transition",
+        "table",
+        "ops_ready"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 22,
+      "citations_count": 31,
+      "references_count": 31,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic structural analogies of systemic crisis and transition using ancient canonical and comparative texts [3]. It explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecasti",
+      "evidence_score": 126.095,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "rq0054_dss_governance_risk",
+      "tags": [
+        "relaxed",
+        "dss",
+        "governance",
+        "risk"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 23,
+      "citations_count": 30,
+      "references_count": 30,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1]. It evaluates probabilistic analogies of systemic guardrails and governance language using Dead Sea Scroll (DSS) witnesses, Apocrypha, and fragment contexts [1, 2]. It explicitly rejects deterministic fate algebra, fixed future certainty, o",
+      "evidence_score": 126.0,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0030_logos_warning_table_counterfactual",
+      "tags": [
+        "relaxed",
+        "logos",
+        "warning",
+        "table",
+        "counterfactual"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 23,
+      "citations_count": 29,
+      "references_count": 29,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis operates strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status. It evaluates probabilistic early warning motifs preceding systemic regime shifts using canonical and comparative original-language texts. It explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecastin",
+      "evidence_score": 123.5,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0150_dss_warning_table_counterfactual",
+      "tags": [
+        "relaxed",
+        "dss",
+        "warning",
+        "table",
+        "counterfactual"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 20,
+      "citations_count": 31,
+      "references_count": 31,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis operates strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status, enforcing the Multi-Corpus Isolation Policy [1, 2]. It evaluates early warning architectures prior to systemic regime shifts using historical and sectarian Dead Sea Scroll (DSS) and apocryphal comparative texts on the `analogy_bench` [3-5]. *",
+      "evidence_score": 122.5,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "rq0016_logos_transition_risk_ops_ready",
+      "tags": [
+        "relaxed",
+        "logos",
+        "transition",
+        "risk",
+        "ops_ready"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 22,
+      "citations_count": 29,
+      "references_count": 29,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This monthly reporting checklist operates strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic structural analogies of systemic crisis and transition using ancient canonical and comparative texts. It explicitly rejects deterministic fate algebra, fixed future certainty, or causal fin",
+      "evidence_score": 121.5,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "rq0054_logos_stabilization_risk_counterfactual",
+      "tags": [
+        "relaxed",
+        "logos",
+        "stabilization",
+        "risk",
+        "counterfactual"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 23,
+      "citations_count": 28,
+      "references_count": 28,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1]. It evaluates probabilistic analogies of systemic stabilization and recovery using canonical and comparative original-language sectarian texts. It explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial fo",
+      "evidence_score": 121.0,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0003_logos_transition_extract_evidence_first",
+      "tags": [
+        "relaxed",
+        "logos",
+        "transition",
+        "extract",
+        "evidence_first"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 21,
+      "citations_count": 28,
+      "references_count": 28,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic structural analogies of crisis-to-transition states using ancient canonical and comparative texts [3, 4]. It explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecasti",
+      "evidence_score": 117.0,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "rq0043_logos_stabilization_extract_evidence_first",
+      "tags": [
+        "relaxed",
+        "logos",
+        "stabilization",
+        "extract",
+        "evidence_first"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 22,
+      "citations_count": 27,
+      "references_count": 27,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis operates strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic stabilization and recovery motifs using canonical and comparative original-language sectarian texts [3-5]. **It explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forec",
+      "evidence_score": 116.5,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0032_logos_warning_table_ops_ready",
+      "tags": [
+        "relaxed",
+        "logos",
+        "warning",
+        "table",
+        "ops_ready"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 24,
+      "citations_count": 25,
+      "references_count": 25,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This monthly reporting checklist operates strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1]. It evaluates probabilistic early warning motifs preceding systemic regime shifts using canonical and comparative original-language texts [2]. **It explicitly rejects deterministic fate algebra, fixed future certainty, o",
+      "evidence_score": 115.5,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0055_dss_governance_language",
+      "tags": [
+        "relaxed",
+        "dss",
+        "governance",
+        "language"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 19,
+      "citations_count": 29,
+      "references_count": 29,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1]. It evaluates probabilistic structural analogies of systemic guardrails and governance language using Dead Sea Scroll (DSS) witnesses, Apocrypha, and fragment contexts [2-4]. **It explicitly rejects deterministic fate algebra, fixed future ",
+      "evidence_score": 115.5,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0075_logos_conflict_risk_evidence_first",
+      "tags": [
+        "relaxed",
+        "logos",
+        "conflict",
+        "risk",
+        "evidence_first"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 19,
+      "citations_count": 29,
+      "references_count": 29,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status, enforcing the Multi-Corpus Isolation Policy [1, 2]. It evaluates probabilistic conflict escalation and de-escalation mechanisms using source-grounded comparative texts (Apocrypha, DSS) and canonical anchors [3, 4]. **It explicitly cites uncert",
+      "evidence_score": 115.5,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0015_logos_transition_risk_evidence_first",
+      "tags": [
+        "relaxed",
+        "logos",
+        "transition",
+        "risk",
+        "evidence_first"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 20,
+      "citations_count": 28,
+      "references_count": 28,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic structural analogies of systemic crisis and transition using ancient canonical and comparative texts. It explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecasting [",
+      "evidence_score": 115.0,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "rq0039_dss_warning_risk",
+      "tags": [
+        "relaxed",
+        "dss",
+        "warning",
+        "risk"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 20,
+      "citations_count": 28,
+      "references_count": 28,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic early warning motifs preceding systemic regime shifts using Dead Sea Scroll (DSS) witnesses, Apocrypha, and fragment contexts [3-5]. It explicitly rejects deterministic fate algebra, fixed future certainty, or",
+      "evidence_score": 115.0,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "rq0154_dss_warning_risk_counterfactual",
+      "tags": [
+        "relaxed",
+        "dss",
+        "warning",
+        "risk",
+        "counterfactual"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 20,
+      "citations_count": 28,
+      "references_count": 28,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis operates strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status, enforcing the Multi-Corpus Isolation Policy [1, 2]. It evaluates early warning architectures prior to systemic regime shifts using historical Dead Sea Scroll (DSS) and comparative texts on the `analogy_bench` [3]. **It explicitly cites high u",
+      "evidence_score": 115.0,
+      "risk_score": 0.0
+    },
+    {
+      "query_id": "rq0069_logos_conflict_table_baseline",
+      "tags": [
+        "relaxed",
+        "logos",
+        "conflict",
+        "table",
+        "baseline"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 21,
+      "citations_count": 27,
+      "references_count": 27,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis operates strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status, enforcing the Multi-Corpus Isolation Policy [1, 2]. It evaluates probabilistic conflict escalation and de-escalation mechanisms using source-grounded comparative texts (Apocrypha, DSS) and canonical anchors [3-5]. **It explicitly rejects dete",
+      "evidence_score": 114.5,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0216_dss_governance_risk_ops_ready",
+      "tags": [
+        "relaxed",
+        "dss",
+        "governance",
+        "risk",
+        "ops_ready"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 21,
+      "citations_count": 26,
+      "references_count": 26,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This monthly reporting checklist operates strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1]. It evaluates systemic guardrail and governance language using historical Dead Sea Scroll (DSS) and apocryphal witnesses purely as a highly provisional comparative lens [2, 3]. It explicitly cites high uncertainty, perma",
+      "evidence_score": 112.0,
+      "risk_score": 0.0
+    }
+  ],
+  "reject_candidates_top20": [
+    {
+      "query_id": "rq0133_dss_transition_risk_baseline",
+      "tags": [
+        "relaxed",
+        "dss",
+        "transition",
+        "risk",
+        "baseline"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 0,
+      "citations_count": 0,
+      "references_count": 0,
+      "answer_preview": "**Analyzing DSS Interpretations**\n\nI'm now integrating insights from diverse scrolls. The War Scroll highlights abrupt transitions via intervention [675, 688, 689]. The Community Rule emphasizes disciplined waiting [679, 680, 682, 690, 691]. Pesher texts show normative reinterpretation [691, 693], while Temple/Otot scrolls highlight temporal warnings [692]. Finally, boundary semantics are explored",
+      "evidence_score": 0.6863,
+      "risk_score": 6.585
+    },
+    {
+      "query_id": "q004_counter_examples",
+      "tags": [
+        "falsification",
+        "safety"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 3,
+      "citations_count": 8,
+      "references_count": 8,
+      "answer_preview": "Based on the system's `CROSS_REF` citation anchor evidence checklists and B-Track protocols, apparent resonance must be rejected or held from fully verified status if the textual anchor is missing, partial, or lacks precise line-level mapping. \n\nHere are 8 specific counter-examples where apparent resonance is rejected or deferred due to weak textual anchoring, along with their reasons:\n\n1. **ENTRY",
+      "evidence_score": 29.5688,
+      "risk_score": 2.0
+    },
+    {
+      "query_id": "q004_counter_examples",
+      "tags": [
+        "falsification",
+        "safety"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 1,
+      "citations_count": 4,
+      "references_count": 4,
+      "answer_preview": "**1. ENTRY_16 (Ezra-Neh witnesses for Ezra 2:54)**\nThis resonance is waitlisted (`missing_anchor_until_source_update`) because there is no extant Dead Sea Scroll (DSS) direct witness for this specific verse. Without a direct DSS manuscript, it improperly relies on non-DSS (LXX) proxy witnesses or name-lists without line-level anchors [1, 2].\n\n**2. ENTRY_12 (11Q5 for Psalm 4:6)**\nThe textual anchor",
+      "evidence_score": 15.1713,
+      "risk_score": 2.0
+    },
+    {
+      "query_id": "q004_counter_examples",
+      "tags": [
+        "falsification",
+        "safety"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 1,
+      "citations_count": 3,
+      "references_count": 3,
+      "answer_preview": "**1. ENTRY_16 (Ezra-Neh witnesses for Ezra 2:54)**\nThis resonance is waitlisted (`missing_anchor_until_source_update`) and should be rejected from full verification because there is no extant direct Dead Sea Scroll (DSS) witness for this specific verse [1, 2]. Without a direct DSS manuscript, it improperly relies on non-DSS (LXX) proxy witnesses or name-lists without line-level anchors [1].\n\n**2. ",
+      "evidence_score": 13.065,
+      "risk_score": 2.0
+    },
+    {
+      "query_id": "rq0096_myeongri_warning_extract",
+      "tags": [
+        "relaxed",
+        "myeongri",
+        "warning",
+        "extract"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 1,
+      "citations_count": 7,
+      "references_count": 7,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status, enforcing the Multi-Corpus Isolation Policy. It evaluates early warning motifs and regime shift dynamics using the Logos KOSPI Shadow time/regime interpretation lens on the `analogy_bench`. **It explicitly rejects deterministic fate algebra, f",
+      "evidence_score": 24.5,
+      "risk_score": 2.0
+    },
+    {
+      "query_id": "q009_fusion_vs_stub",
+      "tags": [
+        "stub",
+        "promotion"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 5,
+      "citations_count": 9,
+      "references_count": 9,
+      "answer_preview": "**Fusion stub insights** are strictly restricted to the B-Track (research and observation layer) and serve as experimental or provisional data. Within the fusion interface stub (e.g., `myeongni_fusion_interface_stub_v1`), you may retain:\n*   **Observational Inputs and Identifiers:** Values such as `myeongri_gapja` (2-character variables), `state_id`, `experiment_id`, `run_id`, and short, non-trigg",
+      "evidence_score": 34.9138,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "q010_next_30_queries",
+      "tags": [
+        "scale",
+        "batching"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 29,
+      "citations_count": 50,
+      "references_count": 50,
+      "answer_preview": "**Category 1: 4D Vector Geometry (S, L, K, M) & Myeongri/Sasang Dynamics**\n1. **Analyze the 4D vector distribution (S, L, K, M) of the 1QM War Scroll's \"Sons of Light\" breaking point motif** and compare it against Myeongri's highest-stress state vectors [1, 2].\n2. **Formulate a hypothesis mapping the 16 Myeongri states to the chronological tension in the Book of Jubilees**, specifically contrastin",
+      "evidence_score": 188.0,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "q005_monthly_watchpoints",
+      "tags": [
+        "ops",
+        "watchpoint"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 2,
+      "citations_count": 14,
+      "references_count": 14,
+      "answer_preview": "**[HYPO] B-Track Monthly Watchpoint Checklist Candidates (OBSERVATION_ONLY)**\n\nHere are the monthly watchpoint checklist candidates designed for B-Track research, explicitly enforcing the separation between directional hit-rates and precrash proxy metrics:\n\n**1. Price-Direction Hit-Rate (Directional Constraints)**\n*   **`hit_direction_rate` Monitoring**: Track this as a pure directional proxy, but",
+      "evidence_score": 42.9575,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "q009_fusion_vs_stub",
+      "tags": [
+        "stub",
+        "promotion"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 6,
+      "citations_count": 10,
+      "references_count": 10,
+      "answer_preview": "**Fusion stub insights** are strictly restricted to the research and observation layer (B-Track) and serve as experimental hypotheses. Within the fusion interface stub (e.g., `myeongni_fusion_interface_stub_v1`), you may retain:\n*   **Observational Inputs and Identifiers:** Values such as **`myeongri_gapja`** (2-character variables for L3 input), **`state_id`**, **`experiment_id`**, and **`run_id`",
+      "evidence_score": 39.5838,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "q001_scope_guardrails",
+      "tags": [
+        "guardrail",
+        "scope"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 10,
+      "citations_count": 11,
+      "references_count": 11,
+      "answer_preview": "*   **Isolated Research Scope and A-Track Bulkhead:** The notebook functions exclusively as the \"B-Track\" exploratory research layer for analyzing structural analogies across distinct domains (Logos, Myeongri, Sasang, Apocrypha), maintaining a strict logical and physical bulkhead that expressly forbids insights from automatically merging into the \"A-Track\" live trading execution or Out-Of-Fold (OO",
+      "evidence_score": 49.6163,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "q005_monthly_watchpoints",
+      "tags": [
+        "ops",
+        "watchpoint"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 2,
+      "citations_count": 16,
+      "references_count": 16,
+      "answer_preview": "**[HYPO] B-Track Monthly Watchpoint Checklist Candidates (OBSERVATION_ONLY)**\n\n**1. Price-Direction Hit-Rate (Directional Constraints)**\n*   **`hit_direction_rate` Monitoring**: Track this as a pure directional proxy, but strictly isolate it from crisis precision gates [1, 2]. Directional hit rates and precrash precision can diverge heavily and must not be used interchangeably in gating decisions ",
+      "evidence_score": 47.9588,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "q009_fusion_vs_stub",
+      "tags": [
+        "stub",
+        "promotion"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 4,
+      "citations_count": 11,
+      "references_count": 11,
+      "answer_preview": "**Fusion Stub Insights (B-Track / Observation Only)**\nFusion stub insights are strictly restricted to the exploratory B-Track research layer and must be treated as provisional hypotheses. Within the fusion interface stub (e.g., `myeongni_fusion_interface_stub_v1`), the following elements can remain without requiring promotion:\n*   **Observational Inputs and Identifiers:** System identifiers such a",
+      "evidence_score": 38.3263,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "q004_counter_examples",
+      "tags": [
+        "falsification",
+        "safety"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 1,
+      "citations_count": 2,
+      "references_count": 2,
+      "answer_preview": "**1. ENTRY_16 (Ezra-Neh witnesses for Ezra 2:54)**\nThis resonance must be waitlisted (`missing_anchor_until_source_update`) because there is no extant direct Dead Sea Scroll (DSS) witness for this specific verse [1]. It cannot be fully verified until a non-DSS (such as LXX) proxy witness anchor is definitively established [2].\n\n**2. ENTRY_12 (11Q5 for Psalm 4:6)**\nThe textual anchoring is too weak",
+      "evidence_score": 9.8038,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0001_logos_transition_extract",
+      "tags": [
+        "relaxed",
+        "logos",
+        "transition",
+        "extract"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 13,
+      "citations_count": 14,
+      "references_count": 14,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis exists strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1]. These motifs evaluate probabilistic structural analogies across canonical texts and explicitly reject deterministic fate algebra or fixed future certainty [2, 3]. Under the system's strict physical and logical bulkhead, these insights **do ",
+      "evidence_score": 65.5662,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0003_logos_transition_table",
+      "tags": [
+        "relaxed",
+        "logos",
+        "transition",
+        "table"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 15,
+      "citations_count": 18,
+      "references_count": 18,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic structural analogies across canonical texts and explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecasting [2-4]. Under the system's strict multi-corpus isolation po",
+      "evidence_score": 78.9838,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0004_logos_transition_risk",
+      "tags": [
+        "relaxed",
+        "logos",
+        "transition",
+        "risk"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 24,
+      "citations_count": 32,
+      "references_count": 32,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic structural analogies across canonical texts and explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecasting [3-5]. Under the system's strict multi-corpus isolation po",
+      "evidence_score": 133.0,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "q009_fusion_vs_stub",
+      "tags": [
+        "stub",
+        "promotion"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 4,
+      "citations_count": 9,
+      "references_count": 9,
+      "answer_preview": "**Fusion Stub Insights (B-Track / Observation Only)**\nFusion stub insights are strictly restricted to the exploratory B-Track research layer and must be treated as provisional observations or hypotheses. Within the fusion interface stub (e.g., `MYEONGNI_FUSION_INTERFACE_STUB.json` or independent lens stubs), the following elements can remain without requiring promotion:\n*   **Observational Inputs ",
+      "evidence_score": 33.3525,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0005_logos_transition_language",
+      "tags": [
+        "relaxed",
+        "logos",
+        "transition",
+        "language"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 11,
+      "citations_count": 15,
+      "references_count": 15,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis exists strictly within the B-Track exploratory research layer under `OBSERVATION_ONLY` status. These motifs evaluate probabilistic structural analogies across canonical texts and explicitly reject deterministic fate algebra or fixed future certainty [1-3]. Under the system's strict physical and logical bulkhead, these insights **do not i",
+      "evidence_score": 64.5,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0009_logos_warning_risk",
+      "tags": [
+        "relaxed",
+        "logos",
+        "warning",
+        "risk"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 27,
+      "citations_count": 33,
+      "references_count": 33,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic systemic pressures using structural analogies and explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecasting [3, 4]. Under the system's strict multi-corpus isolation",
+      "evidence_score": 141.5,
+      "risk_score": 1.0
+    },
+    {
+      "query_id": "rq0012_logos_stabilization_compare",
+      "tags": [
+        "relaxed",
+        "logos",
+        "stabilization",
+        "compare"
+      ],
+      "conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      "sources_used_count": 12,
+      "citations_count": 17,
+      "references_count": 17,
+      "answer_preview": "**[HYPO][NON-DETERMINISTIC] Boundary Notice:** This analysis is strictly confined to the B-Track exploratory research layer under `OBSERVATION_ONLY` status [1, 2]. It evaluates probabilistic systemic recovery patterns using structural analogies from ancient texts and explicitly rejects deterministic fate algebra, fixed future certainty, or causal financial forecasting [3]. Under the system's multi",
+      "evidence_score": 71.5,
+      "risk_score": 1.0
+    }
+  ]
+}

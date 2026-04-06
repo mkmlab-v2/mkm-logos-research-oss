@@ -1,0 +1,184 @@
+{
+  "schema": "btrack_mega_insight_progress_summary_v1",
+  "generated_at_utc": "2026-04-06T18:19:10Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "research_only": true,
+  "a_track_autobind_forbidden": true,
+  "label": "[HYPO] Progress summary for large NotebookLM insight accumulation.",
+  "input_jsonl": "reports\\notebooklm\\btrack_mega_insights_10gb.jsonl",
+  "file_size_bytes": 9893203,
+  "rows_total": 454,
+  "rows_analyzed": 454,
+  "tail_window": 5000,
+  "top_tags": [
+    [
+      "relaxed",
+      414
+    ],
+    [
+      "logos",
+      150
+    ],
+    [
+      "dss",
+      150
+    ],
+    [
+      "transition",
+      89
+    ],
+    [
+      "risk",
+      86
+    ],
+    [
+      "extract",
+      86
+    ],
+    [
+      "compare",
+      82
+    ],
+    [
+      "table",
+      82
+    ],
+    [
+      "language",
+      82
+    ],
+    [
+      "falsification",
+      69
+    ],
+    [
+      "warning",
+      69
+    ],
+    [
+      "baseline",
+      66
+    ],
+    [
+      "counterfactual",
+      66
+    ],
+    [
+      "evidence_first",
+      66
+    ],
+    [
+      "ops_ready",
+      66
+    ],
+    [
+      "stabilization",
+      65
+    ],
+    [
+      "conflict",
+      65
+    ],
+    [
+      "governance",
+      65
+    ],
+    [
+      "apocrypha",
+      54
+    ],
+    [
+      "myeongri",
+      30
+    ]
+  ],
+  "top_sources": [
+    [
+      "17bbd1b2-4747-4c87-a282-c0fe012a26bc",
+      281
+    ],
+    [
+      "d0d27ed0-8e8c-4e82-aa47-b9a8496b3a31",
+      260
+    ],
+    [
+      "44348f4b-1805-4c2a-8bcb-bb9e0015477f",
+      249
+    ],
+    [
+      "4843ab02-bb0a-4c2a-9095-cf486cf1becf",
+      220
+    ],
+    [
+      "01e11cda-1cbe-4d78-b248-24925e0145fa",
+      219
+    ],
+    [
+      "82c16aa2-24bc-482d-bebd-e04a6cbd065c",
+      219
+    ],
+    [
+      "033f2331-33f1-44e8-89f6-7fc94eae8a04",
+      209
+    ],
+    [
+      "ea50e29e-e5bb-41cd-835d-1b6466e75b9f",
+      196
+    ],
+    [
+      "1a85ed79-ed72-4faf-9c3c-d1175b334b9f",
+      190
+    ],
+    [
+      "2f3b6738-722f-46e1-9cda-f37f5b793cfd",
+      188
+    ],
+    [
+      "61bb411d-9c33-44ac-bbdd-dafcb443aaff",
+      184
+    ],
+    [
+      "31ae6b5d-b8e7-4e53-b71b-7e74d200138d",
+      178
+    ],
+    [
+      "ac7f7344-4943-48ab-9ff1-c2e81a0b7a51",
+      174
+    ],
+    [
+      "5003ec9f-cf34-421b-baf0-094f1fa06e6c",
+      171
+    ],
+    [
+      "ee12894d-ddf7-40a9-8add-96e6c2e8b1b4",
+      162
+    ],
+    [
+      "08c600ca-0ef3-4eaf-887d-819d63432021",
+      161
+    ],
+    [
+      "49ea2b74-0f88-428c-b81a-4b0313491c44",
+      160
+    ],
+    [
+      "9278bde1-a227-441a-ad27-d58104e6e748",
+      156
+    ],
+    [
+      "acefe6f0-9f61-48f8-920f-0614b3b3172b",
+      135
+    ],
+    [
+      "1a71ce7e-1104-493f-be34-f192f639856a",
+      131
+    ]
+  ],
+  "top_conversations": [
+    [
+      "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+      454
+    ]
+  ]
+}

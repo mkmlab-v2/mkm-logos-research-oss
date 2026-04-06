@@ -1,0 +1,18 @@
+{
+  "schema": "btrack_notebooklm_mega_insight_batch_summary_v1",
+  "generated_at_utc": "2026-04-06T08:45:24Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "label": "[HYPO] NotebookLM batch insight run; observation-only, no A-track auto-binding.",
+  "notebook_id": "71f55a03-09d0-411f-b365-0ce2a2064c24",
+  "query_pack": "C:\\workspace\\docs\\final\\artifacts\\btrack_notebooklm_query_pack_v1.json",
+  "jsonl_out": "reports\\notebooklm\\btrack_mega_insights_smoke.jsonl",
+  "n_planned": 2,
+  "n_success": 2,
+  "n_error": 0,
+  "bytes_appended": 37223,
+  "first_conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+  "last_conversation_id": "ec621ab5-3d06-4d16-8ccc-730ea53ba2cb",
+  "errors": [],
+  "completed_at_utc": "2026-04-06T08:47:21Z"
+}
