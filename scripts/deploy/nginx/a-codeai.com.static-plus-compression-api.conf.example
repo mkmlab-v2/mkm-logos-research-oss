@@ -7,6 +7,7 @@
 #  2) 기존 server { listen 443 ... } 블록의 location / 프록시를 아래 패턴으로 교체(ssl·server_name·cert 유지)
 #  3) sudo nginx -t && sudo systemctl reload nginx
 #  4) curl -sSI https://a-codeai.com/ → text/html; curl -sS https://a-codeai.com/health → JSON ok
+#  5) Optional full check: bash scripts/deploy/linux/check_a_codeai_public_routes.sh
 #
 # 주의: Let’s Encrypt /.well-known 은 기존 certbot root 블록 유지.
 
