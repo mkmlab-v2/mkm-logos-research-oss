@@ -47,3 +47,36 @@
 
 - 본선 `risk_profile_mode`가 KPI에 즉시 반영되지 않으면 **데몬 재기동**이 필요할 수 있다. 실거래 호스트에서는 지휘관 승인 후 수행.
 - 이 문서는 **외부 URL 가용성을 매 시점 검증하지 않는다**. 배포 후 `curl -sSI`로 확인한다.
+
+## 7. 본선 배포 (A-Track) — 지휘관 승인 후 SSH에서 수행
+
+**전제**: 아래는 **프로덕션 호스트 셸**에서 실행한다. 로컬 워크스페이스(Cursor)는 본선 nginx에 직접 접속하지 않는다.
+
+1. **백업** (경로는 호스트의 실제 `sites-enabled` / `conf.d`에 맞출 것):
+
+```bash
+sudo cp -a /etc/nginx/sites-enabled/jema12.com "/etc/nginx/sites-enabled/jema12.com.bak.$(date -u +%Y%m%dT%H%M%SZ)"
+```
+
+2. **스니펫 병합**: `nginx_jema12_com_broadcast_studio.conf.example` 내용을 `jema12.com`의 `server { ... }` 블록 안에 붙인다. `/studio/`는 실제 빌드 디렉터리를 확인한 뒤 `root`/`alias` 중 하나로만 고정한다 (§4).
+
+3. **검증·재로드**:
+
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+(systemd가 아니면 `sudo nginx -s reload` 등 호스트 표준에 따른다.)
+
+4. **대중망 스모크**:
+
+```bash
+curl -sSI "https://jema12.com/broadcast" | head -n 5
+curl -sSI "https://jema12.com/studio/" | head -n 5
+```
+
+기대: `/broadcast`는 예시대로라면 **302** 및 `Location:`이 공개 쇼룸 쪽으로 향함. `/studio/`는 **200** 또는 정적 자산 경로에 맞는 응답(호스트 설정에 따름).
+
+5. **GO JSON 이송(선택)**: 레포의 `docs/final/artifacts/` 세 파일을 본선이 읽는 경로로 `scp`/`rsync`한다. 매니페스트는 `war_prolongation_go_bundle_manifest_v1.json`.
+
+6. **데몬 재기동(선택, KPI 미반영 시만)**: 해당 호스트의 트레이딩/옵스 데몬 기동 방식(PM2, systemd, `ensure_daemon_running.ps1`의 **원격 대응 절차**)에 따라 **한 번에** 재기동하고, `latest_kpi.json`·리스크 프로필을 재확인한다.
