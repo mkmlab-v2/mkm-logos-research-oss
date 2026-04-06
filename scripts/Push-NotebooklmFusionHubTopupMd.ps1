@@ -5,7 +5,8 @@ param(
   [int]$MaxAdd = 190,
   [long]$MaxBytes = 40MB,
   [long]$MaxTextBytesForPaste = 409600,
-  [int]$MaxTextCharsForCli = 12000
+  [int]$MaxTextCharsForCli = 12000,
+  [int]$MaxNotebookSources = 300
 )
 $ErrorActionPreference = "Continue"
 $dirs = @(
@@ -25,10 +26,25 @@ foreach ($d in $dirs) {
 }
 # Exclude stub noise (e.g. projects/mkm *.py.md) — never bulk-ingest training stubs into NotebookLM.
 $files = $all | Where-Object { $_.Length -lt $MaxBytes -and $_.Name -notmatch '\.py\.md$' } | Sort-Object FullName -Unique
+$sourceCount = -1
+try {
+  $rawSources = (& nlm source list $NotebookId 2>$null | Out-String)
+  $parsedSources = $rawSources | ConvertFrom-Json
+  $sourceCount = @($parsedSources).Count
+} catch {}
+if ($sourceCount -ge 0) {
+  Write-Output "[source_count] current=$sourceCount max=$MaxNotebookSources"
+}
+$remainingSlots = if ($sourceCount -ge 0) { [Math]::Max(0, $MaxNotebookSources - $sourceCount) } else { $MaxAdd }
+if ($remainingSlots -le 0) {
+  Write-Output "TOPUP_DONE added=0 fail=0 scanned=$($files.Count) (cap reached)"
+  exit 0
+}
+$effectiveMaxAdd = [Math]::Min($MaxAdd, $remainingSlots)
 $added = 0
 $fail = 0
 foreach ($f in $files) {
-  if ($added -ge $MaxAdd) { break }
+  if ($added -ge $effectiveMaxAdd) { break }
   $p = $f.FullName
   if ($f.Length -gt $MaxTextBytesForPaste) {
     Write-Output "SKIP too large for -t: $($f.Name) ($($f.Length) bytes)"
@@ -43,7 +59,7 @@ foreach ($f in $files) {
     continue
   }
   $null = & nlm source add $NotebookId -t $raw --title $f.Name 2>&1
-  if ($LASTEXITCODE -eq 0) { $added++ } else { $fail++ }
+  if ($LASTEXITCODE -eq 0) { $added++ } else { Write-Output "[FAIL nlm] $($f.FullName)"; $fail++ }
   if ((($added + $fail) % 50) -eq 0) {
     Write-Output "progress added=$added fail=$fail last=$($f.Name)"
   }

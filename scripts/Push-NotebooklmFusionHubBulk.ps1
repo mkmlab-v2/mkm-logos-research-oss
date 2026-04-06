@@ -12,7 +12,8 @@ param(
   [string]$ManifestPath = "C:\workspace\reports\notebooklm_fusion_hub_bulk_manifest.json",
   [string]$LogPath = "C:\workspace\reports\notebooklm_fusion_hub_bulk_push.log",
   [long]$MaxTextBytesForPaste = 409600,
-  [int]$MaxTextCharsForCli = 12000
+  [int]$MaxTextCharsForCli = 12000,
+  [int]$MaxNotebookSources = 300
 )
 $ErrorActionPreference = "Continue"
 if (-not (Test-Path $ManifestPath)) {
@@ -33,10 +34,30 @@ try {
 } catch {
   $_ | Out-File -FilePath $LogPath -Append
 }
+$sourceCount = -1
+try {
+  $rawSources = (& nlm source list $NotebookId 2>$null | Out-String)
+  $parsedSources = $rawSources | ConvertFrom-Json
+  $sourceCount = @($parsedSources).Count
+} catch {}
+if ($sourceCount -ge 0) {
+  "[source_count] current=$sourceCount max=$MaxNotebookSources" | Tee-Object -FilePath $LogPath -Append
+}
+$remainingSlots = if ($sourceCount -ge 0) { [Math]::Max(0, $MaxNotebookSources - $sourceCount) } else { [int]::MaxValue }
+if ($remainingSlots -eq 0) {
+  "[STOP] Notebook source cap reached. Skip file uploads." | Tee-Object -FilePath $LogPath -Append
+  $ts2 = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+  "=== Done $ts2 ok=0 fail=0 ===" | Tee-Object -FilePath $LogPath -Append
+  exit 0
+}
 $ok = 0
 $fail = 0
 $n = 0
 foreach ($f in $m.files) {
+  if ($ok -ge $remainingSlots) {
+    "[STOP] Remaining slots exhausted after $ok successful file uploads." | Tee-Object -FilePath $LogPath -Append
+    break
+  }
   $n++
   if (-not (Test-Path -LiteralPath $f)) {
     "[SKIP missing] $f" | Tee-Object -FilePath $LogPath -Append
@@ -67,7 +88,7 @@ foreach ($f in $m.files) {
       }
       & nlm source add $NotebookId --file $f 2>&1 | Tee-Object -FilePath $LogPath -Append
     }
-    if ($LASTEXITCODE -eq 0) { $ok++ } else { $fail++ }
+    if ($LASTEXITCODE -eq 0) { $ok++ } else { "[FAIL nlm] $f" | Tee-Object -FilePath $LogPath -Append; $fail++ }
   } catch {
     "[ERR] $f : $_" | Tee-Object -FilePath $LogPath -Append
     $fail++
