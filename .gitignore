@@ -138,6 +138,11 @@ reports/constitution/btrack_pilot/fact_safe_slack_delivery_*.jsonl
 
 # NotebookLM Fusion Hub bulk manifest (regenerated locally; absolute paths)
 reports/notebooklm_fusion_hub_bulk_manifest.json
+reports/notebooklm_fusion_hub_bulk_push.log
+
+# B-track blind replay one-off exports (timestamped local runs; regenerable)
+reports/constitution/btrack_pilot/blind_replay/blind_replay_answer_key_20*.jsonl
+reports/constitution/btrack_pilot/blind_replay/blind_replay_public_20*.jsonl
 
 # Root accidental probe output (one-line JSON); keep local only
 /utf8
