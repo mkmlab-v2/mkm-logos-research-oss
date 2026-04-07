@@ -1,6 +1,6 @@
 {
   "schema": "btrack_symbol_candidates_v1",
-  "generated_at_utc": "2026-04-07T00:06:44Z",
+  "generated_at_utc": "2026-04-07T01:06:43Z",
   "inputs": {
     "dss": "C:\\workspace\\data\\logos\\manuscripts\\dss_parsed_enriched.jsonl",
     "apocrypha": "C:\\workspace\\data\\logos\\manuscripts\\apocrypha_std.jsonl"
@@ -25,7 +25,7 @@
         "dss": 0,
         "apocrypha": 191
       },
-      "generated_at_utc": "2026-04-07T00:06:44Z"
+      "generated_at_utc": "2026-04-07T01:06:43Z"
     },
     {
       "rank": 2,
@@ -37,7 +37,7 @@
         "dss": 0,
         "apocrypha": 129
       },
-      "generated_at_utc": "2026-04-07T00:06:44Z"
+      "generated_at_utc": "2026-04-07T01:06:43Z"
     },
     {
       "rank": 3,
@@ -49,7 +49,7 @@
         "dss": 0,
         "apocrypha": 120
       },
-      "generated_at_utc": "2026-04-07T00:06:44Z"
+      "generated_at_utc": "2026-04-07T01:06:43Z"
     },
     {
       "rank": 4,
@@ -61,7 +61,7 @@
         "dss": 0,
         "apocrypha": 96
       },
-      "generated_at_utc": "2026-04-07T00:06:44Z"
+      "generated_at_utc": "2026-04-07T01:06:43Z"
     },
     {
       "rank": 5,
@@ -73,7 +73,7 @@
         "dss": 0,
         "apocrypha": 93
       },
-      "generated_at_utc": "2026-04-07T00:06:44Z"
+      "generated_at_utc": "2026-04-07T01:06:43Z"
     },
     {
       "rank": 6,
@@ -85,7 +85,7 @@
         "dss": 0,
         "apocrypha": 86
       },
-      "generated_at_utc": "2026-04-07T00:06:44Z"
+      "generated_at_utc": "2026-04-07T01:06:43Z"
     },
     {
       "rank": 7,
@@ -97,7 +97,7 @@
         "dss": 0,
         "apocrypha": 68
       },
-      "generated_at_utc": "2026-04-07T00:06:44Z"
+      "generated_at_utc": "2026-04-07T01:06:43Z"
     },
     {
       "rank": 8,
@@ -109,7 +109,7 @@
         "dss": 0,
         "apocrypha": 68
       },
-      "generated_at_utc": "2026-04-07T00:06:44Z"
+      "generated_at_utc": "2026-04-07T01:06:43Z"
     },
     {
       "rank": 9,
@@ -121,7 +121,7 @@
         "dss": 0,
         "apocrypha": 65
       },
-      "generated_at_utc": "2026-04-07T00:06:44Z"
+      "generated_at_utc": "2026-04-07T01:06:43Z"
     },
     {
       "rank": 10,
@@ -133,7 +133,7 @@
         "dss": 0,
         "apocrypha": 51
       },
-      "generated_at_utc": "2026-04-07T00:06:44Z"
+      "generated_at_utc": "2026-04-07T01:06:43Z"
     }
   ],
   "output_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_stable_latest.jsonl"

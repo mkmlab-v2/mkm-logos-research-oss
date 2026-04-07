@@ -1,6 +1,6 @@
 {
   "schema": "aidc_kpi_gate_v1",
-  "generated_at_utc": "2026-04-06T20:30:34Z",
+  "generated_at_utc": "2026-04-07T01:01:37Z",
   "policy": "stage1_power_first",
   "inputs": {
     "ab_result_summary": "C:/workspace/docs/final/artifacts/ab_result_summary.json",
@@ -10,7 +10,7 @@
   "kpi": {
     "performance_per_watt": {
       "paired_ready": true,
-      "uplift_perf_per_w_pct": -13.896422,
+      "uplift_perf_per_w_pct": -19.684273,
       "status": "paired_measured",
       "reason": "paired baseline/treatment comparison required for go/no-go"
     },

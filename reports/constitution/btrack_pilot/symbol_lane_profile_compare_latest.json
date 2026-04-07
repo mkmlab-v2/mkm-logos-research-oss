@@ -1,6 +1,6 @@
 {
   "schema": "btrack_symbol_lane_profile_compare_v1",
-  "generated_at_utc": "2026-04-07T00:06:45Z",
+  "generated_at_utc": "2026-04-07T01:06:44Z",
   "inputs": {
     "stable_gate": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_gate_stable_latest.json",
     "exploratory_gate": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_lane_gate_exploratory_latest.json",
