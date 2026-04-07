@@ -3,6 +3,11 @@
 $ErrorActionPreference = "Stop"
 Set-Location "C:\workspace"
 
+# Drop inherited Process-scope keys so Cursor/host cannot leave a stale GEMINI before .env loads.
+foreach ($k in @("GEMINI_API_KEY", "GOOGLE_API_KEY")) {
+    [Environment]::SetEnvironmentVariable($k, $null, "Process")
+}
+
 $dot = "C:\workspace\.env"
 if (Test-Path -LiteralPath $dot) {
     Get-Content -LiteralPath $dot -Encoding utf8 | ForEach-Object {

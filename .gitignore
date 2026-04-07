@@ -148,6 +148,7 @@ reports/constitution/btrack_pilot/blind_replay/blind_replay_public_20*.jsonl
 # aistudio-mcp-server local npm pack/extract (regenerable; do not commit)
 reports/aistudio-mcp-server-*.tgz
 reports/package/
+reports/aistudio_mcp_env_diagnosis.json
 
 # Root accidental probe output (one-line JSON); keep local only
 /utf8
