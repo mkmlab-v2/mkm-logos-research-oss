@@ -34,6 +34,7 @@
 
 ## 도메인 핸드오프(참고)
 
+- **jema12.com 본선(SSH Cursor)**: `docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md` — 원격 워크스페이스에서 `git pull` → `scripts/deploy/linux/apply_jema12_nginx_snippet.sh` · 검증 스크립트 경로. 도메인·스냅샷: `docs/final/JEMA12_PUBLIC_DOMAIN_AND_DEPLOY_HANDOFF_2026-04-07.md`.
 - 한의 원전·코호트: `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` (라벨 A vs 원전 B 혼선 금지).
 - NotebookLM 소스: `docs/NotebookLM_sources_manifest.md`.
 - **NotebookLM MCP (재발방지)**: Settings에서 녹색·N tools여도 **현재 채팅에 도구가 주입되지 않으면** 에이전트는 호출 불가 — UI 연결 ≠ 세션 사용 가능. SSOT: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`, 스킬 `.cursor/skills/notebooklm-refresh/SKILL.md` §세션 vs UI.

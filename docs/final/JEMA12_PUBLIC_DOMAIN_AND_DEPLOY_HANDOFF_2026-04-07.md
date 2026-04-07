@@ -1,5 +1,7 @@
 # jema12.com / jemaai.cloud — 도메인·배포 핸드오프 (2026-04-07)
 
+**SSH Cursor 절차(표준)**: `docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md` — 레포 경로 표·`git pull`·`apply_jema12_nginx_snippet.sh`·검증 순서.
+
 **목적**: SSH 본선에서 `broadcast` 404, `studio` 500, GO JSON 동기화 시 혼선을 줄이기 위한 **단일 참조**다. 레포에 `jema12.com` Next 앱 전체가 없으므로 **서버 경로는 플레이스홀더**로 두고, 적용 전 호스트에서 확인한다.
 
 ## 1. 도메인 (Fact-lock)
