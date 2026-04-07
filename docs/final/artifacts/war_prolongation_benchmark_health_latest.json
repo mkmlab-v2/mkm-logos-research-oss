@@ -1,17 +1,17 @@
 ﻿{
     "schema":  "war_prolongation_benchmark_health_v1",
-    "generated_at_utc":  "2026-04-06T15:50:40Z",
+    "generated_at_utc":  "2026-04-07T00:20:03Z",
     "task":  {
                  "name":  "MKM-War-Prolongation-Autopilot-Daily",
                  "exists":  true,
                  "state":  "Ready",
                  "last_task_result":  0,
-                 "last_run_time":  "\/Date(1775485938000)\/",
-                 "next_run_time":  "\/Date(1775520300000)\/"
+                 "last_run_time":  "\/Date(1775520301000)\/",
+                 "next_run_time":  "\/Date(1775606700000)\/"
              },
     "latest_run_log":  {
                            "schema":  "war_prolongation_resilient_run_log_v1",
-                           "generated_at_utc":  "2026-04-06T15:50:39Z",
+                           "generated_at_utc":  "2026-04-07T00:10:08Z",
                            "attempt":  1,
                            "status":  "ok",
                            "message":  "Chain completed successfully.",
@@ -20,21 +20,21 @@
                            "chain_script":  "scripts/run_war_prolongation_benchmark_chain.ps1"
                        },
     "latest_bundle_snapshot":  {
-                                   "spot_hit_rate":  0.75,
-                                   "window_hit_rate_h1":  0.75,
+                                   "spot_hit_rate":  1.0,
+                                   "window_hit_rate_h1":  1.0,
                                    "window_hit_rate_h5":  0.5,
                                    "window_hit_rate_h20":  0.5,
                                    "significance_n":  1440,
                                    "significance_p_value":  0.0,
                                    "significance_pass":  true,
-                                   "perf_per_w_uplift_pct":  25.693232,
-                                   "gate_decision":  "GO",
+                                   "perf_per_w_uplift_pct":  -19.660225,
+                                   "gate_decision":  "NO_GO",
                                    "gate_reasons":  [
-
+                                                        "performance_per_watt_no_uplift"
                                                     ]
                                },
-    "status":  "ok",
+    "status":  "attention",
     "issues":  [
-
+                   "gate_not_go"
                ]
 }

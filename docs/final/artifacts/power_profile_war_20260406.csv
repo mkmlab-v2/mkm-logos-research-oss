@@ -21,3 +21,7 @@ timestamp_utc,label,gpu_power_w,gpu_util_pct,throughput_samples_per_s,perf_per_w
 2026-04-06T15:28:57Z,treatment,41.49,25,10.5969,0.255408,10,subprocess
 2026-04-06T15:50:38Z,baseline,39.71,25,7329.2288,184.568844,10,inprocess
 2026-04-06T15:50:38Z,treatment,39.71,25,9212.3445,231.990545,10,inprocess
+2026-04-07T00:05:10Z,baseline,38.22,25,5521.8112,144.474390,10,inprocess
+2026-04-07T00:05:10Z,treatment,38.22,25,7945.3362,207.884255,10,inprocess
+2026-04-07T00:10:08Z,baseline,39.29,23,10339.1229,263.148967,10,inprocess
+2026-04-07T00:10:08Z,treatment,39.27,23,8302.1999,211.413289,10,inprocess

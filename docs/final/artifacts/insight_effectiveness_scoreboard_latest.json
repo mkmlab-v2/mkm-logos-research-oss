@@ -1,6 +1,6 @@
 {
   "schema": "insight_effectiveness_scoreboard_v1",
-  "generated_at_utc": "2026-04-06T20:07:09Z",
+  "generated_at_utc": "2026-04-07T00:36:17Z",
   "sources": {
     "fused_history_path": "C:\\workspace\\docs\\final\\artifacts\\fused_paper_cycle_decision_history.jsonl",
     "scoring_distribution_path": "C:\\workspace\\docs\\final\\artifacts\\trinity_scoring_distribution_latest.json",
@@ -14,33 +14,33 @@
   },
   "latest_window_snapshot": {
     "counts": {
-      "HIT": 19,
+      "HIT": 18,
       "FAIL": 0,
-      "NEUTRAL_DRAW": 0,
+      "NEUTRAL_DRAW": 1,
       "PENDING_CLOSE": 11
     },
     "pending_close_rate_raw": 0.36666666666666664,
-    "hit_rate_resolved_plus_neutral": 1.0,
+    "hit_rate_resolved_plus_neutral": 0.9473684210526315,
     "resolved_plus_neutral_n": 19,
     "hit_rate_resolved_plus_neutral_wilson95": {
-      "lower": 0.8318156346315496,
-      "upper": 1.0000000000000002
+      "lower": 0.7536078466345479,
+      "upper": 0.99064824750947
     }
   },
   "monthly_hit_rate_trace": [
     {
       "month_tag": "2026-04",
-      "hit_rate_resolved_plus_neutral": 1.0,
+      "hit_rate_resolved_plus_neutral": 0.9473684210526315,
       "sample_size": 30
     }
   ],
   "state_signal_snapshot": {
-    "state_present_rate_all": 0.7157,
+    "state_present_rate_all": 0.9006,
     "advisory_decision": "state_clamp_stable"
   },
   "shadow_gate_snapshot": {
     "decision": "KEEP_OBSERVATION_ONLY",
-    "weekly_cycles_observed": 219,
+    "weekly_cycles_observed": 234,
     "monthly_cycles_observed": 1
   },
   "checks": {

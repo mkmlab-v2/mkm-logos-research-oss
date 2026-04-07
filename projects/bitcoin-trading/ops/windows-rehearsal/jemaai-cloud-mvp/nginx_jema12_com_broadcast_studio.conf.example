@@ -9,6 +9,11 @@
 # - Static poll UI (reference): https://api.jemaai.cloud/public_showroom_poll.html
 # - jema12.cloud is not a guaranteed DNS alias for api.jemaai.cloud; use api.jemaai.cloud in clients.
 
+# --- Normalize /studio -> /studio/ (avoids 404 on bare /studio when only /studio/ is configured) ---
+location = /studio {
+    return 301 /studio/;
+}
+
 # --- A) /broadcast 404: temporary redirect to working public UI until Next route exists ---
 # Replace with `location = /broadcast { ... }` + alias to a static page when you ship one.
 location = /broadcast {

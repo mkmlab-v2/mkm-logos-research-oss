@@ -80,3 +80,31 @@ curl -sSI "https://jema12.com/studio/" | head -n 5
 5. **GO JSON 이송(선택)**: 레포의 `docs/final/artifacts/` 세 파일을 본선이 읽는 경로로 `scp`/`rsync`한다. 매니페스트는 `war_prolongation_go_bundle_manifest_v1.json`.
 
 6. **데몬 재기동(선택, KPI 미반영 시만)**: 해당 호스트의 트레이딩/옵스 데몬 기동 방식(PM2, systemd, `ensure_daemon_running.ps1`의 **원격 대응 절차**)에 따라 **한 번에** 재기동하고, `latest_kpi.json`·리스크 프로필을 재확인한다.
+
+## 8. 공개 URL 확인 스냅샷 (2026-04-07, 외부 `curl` 기준)
+
+| URL | 상태 |
+|-----|------|
+| `https://jema12.com/` | **200** |
+| `https://jema12.com/broadcast` · `.../broadcast/` | **404** |
+| `https://jema12.com/studio` | **404** |
+| `https://jema12.com/studio/` | **500** |
+| `https://www.jema12.com/...` | `/broadcast` **404**, `/studio/` **500** (동일 경향) |
+
+**해석:** 루트는 정상이나 **§7(nginx 병합·reload)이 아직 반영되지 않았거나**, `/broadcast`용 `location`이 없고 `/studio/`는 **설정·경로·upstream 오류**로 500이 나는 상태로 보는 것이 타당하다. `/studio` vs `/studio/`가 다르게 동작하는 것은 **트레일링 슬래시·별도 `location`** 미정리일 때 흔하다 — 예시 스니펫에 리다이렉트 보강 참고.
+
+**500 원인 좁히기 (본선에서 한 번만 실행해 로그 일부 공유 가능):**
+
+```bash
+sudo tail -n 80 /var/log/nginx/error.log
+# sites별 로그를 쓰는 경우:
+# sudo tail -n 80 /var/log/nginx/jema12.com-error.log
+```
+
+`rewrite`/`alias`/`proxy_pass` 한 줄과 함께 **해당 요청 시각 근처** 5~10줄이면 원인 특정이 빨라진다.
+
+---
+
+## 9. NotebookLM CLI — `RESOURCE_EXHAUSTED` (별도 이슈)
+
+터미널에 `error code 8: RESOURCE_EXHAUSTED`가 반복되면 **계정·쿼터·프로그래매틱 호출 제한** 가능성이 크다. 대응: `nlm login` 재인증, **호출 간격·배치 크기 축소**, 장시간 루프는 **일시 중지 후 수 시간 뒤 재시도**, 필요 시 다른 Google 프로필. 900초 대기 루프가 계속이면 쿼터 회복 전까지는 **중단**하는 편이 안전하다.

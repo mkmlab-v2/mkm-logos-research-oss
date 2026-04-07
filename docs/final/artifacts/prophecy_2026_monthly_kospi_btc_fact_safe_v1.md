@@ -6,7 +6,7 @@
 3) HOLD 모드에서는 방어 가중치가 자동 적용된다.
 
 ## 메타 고정
-- generated_at_utc: 2026-04-06T20:06:45Z
+- generated_at_utc: 2026-04-07T00:36:15Z
 - engine_id: V2_Precision_MCP
 - engine_scope: monthly_prophecy_generation_only
 - boundary_rule: observatory_ephemeris_v1
