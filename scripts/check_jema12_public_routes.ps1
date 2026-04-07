@@ -1,27 +1,13 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Checks jema12.com public routes (root, broadcast, studio). Exit 0 if expectations met after handoff §7.
+  Checks jema12.com public routes (root, broadcast, studio). Exit 0 if expectations met after handoff section 7.
   Usage:
     powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check_jema12_public_routes.ps1
     $env:BASE_URL='https://www.jema12.com'; .\scripts\check_jema12_public_routes.ps1
 #>
 $ErrorActionPreference = "Stop"
 $base = if ($env:BASE_URL) { $env:BASE_URL.TrimEnd('/') } else { "https://jema12.com" }
-
-function Get-StatusLine {
-    param([string]$Url)
-    try {
-        $r = Invoke-WebRequest -Uri $Url -Method Head -MaximumRedirection 0 -SkipHttpErrorCheck -TimeoutSec 25
-        return [int]$r.StatusCode
-    } catch {
-        # Some stacks return response on redirect exception
-        if ($_.Exception.Response) {
-            return [int]$_.Exception.Response.StatusCode.value__
-        }
-        return -1
-    }
-}
 
 function Get-StatusCurl {
     param([string]$Url)
@@ -39,7 +25,7 @@ $codeRoot = Get-StatusCurl "$base/"
 if ($codeRoot -eq "200") { Write-Host "[PASS] GET / -> $codeRoot" -ForegroundColor Green }
 else { Write-Host "[FAIL] GET / expected 200, got $codeRoot" -ForegroundColor Red; $failed = $true }
 
-# After §7: /broadcast should be 302 (or 301) to showroom
+# After handoff section 7: /broadcast should be 302 (or 301) to showroom
 $codeBc = Get-StatusCurl "$base/broadcast"
 if ($codeBc -in @("302", "301", "200")) {
     Write-Host "[PASS] GET /broadcast -> $codeBc (accept 30x or 200)" -ForegroundColor Green
@@ -68,7 +54,7 @@ if ($codeStSl -eq "500") {
 }
 
 if ($failed) {
-    Write-Host "`nEXIT 1 — apply server: scripts/deploy/linux/apply_jema12_nginx_snippet.sh + docs/final/JEMA12_PUBLIC_DOMAIN_AND_DEPLOY_HANDOFF_2026-04-07.md §7" -ForegroundColor Red
+    Write-Host "`nEXIT 1 — apply server: scripts/deploy/linux/apply_jema12_nginx_snippet.sh + handoff doc section 7" -ForegroundColor Red
     exit 1
 }
 Write-Host "`nEXIT 0" -ForegroundColor Green

@@ -81,6 +81,11 @@ curl -sSI "https://jema12.com/studio/" | head -n 5
 
 6. **데몬 재기동(선택, KPI 미반영 시만)**: 해당 호스트의 트레이딩/옵스 데몬 기동 방식(PM2, systemd, `ensure_daemon_running.ps1`의 **원격 대응 절차**)에 따라 **한 번에** 재기동하고, `latest_kpi.json`·리스크 프로필을 재확인한다.
 
+### 자동화 (레포)
+
+- **공개 URL 점검 (로컬/CI)**: `scripts/check_jema12_public_routes.ps1` (Windows), `scripts/deploy/linux/check_jema12_public_routes.sh` (bash).
+- **본선 nginx (스니펫 + include)**: `scripts/deploy/linux/apply_jema12_nginx_snippet.sh` — root로 실행; `/etc/nginx/snippets/mkm12_jema12_public_routes.conf` 작성 후 `sites-enabled`의 `server_name … jema12` 줄 다음에 `include` 한 줄 삽입(가능할 때). 완료 후 `sudo bash … -y /path/to/site` 로 `nginx -t`·reload.
+
 ## 8. 공개 URL 확인 스냅샷 (2026-04-07, 외부 `curl` 기준)
 
 | URL | 상태 |
