@@ -1,0 +1,207 @@
+{
+  "schema": "btrack_notebooklm_jsonl_kpi_v1",
+  "generated_at_utc": "2026-04-07T02:45:14.876753+00:00",
+  "input_path": "C:/workspace/reports/notebooklm/btrack_mega_insights_10gb.jsonl",
+  "disclaimer": "B-track observation metrics only; not market prediction, A-track promotion, or TOE.",
+  "rows_total_valid": 454,
+  "rows_skipped": 0,
+  "notebook_id_counts": {
+    "71f55a03-09d0-411f-b365-0ce2a2064c24": 454
+  },
+  "distributions": {
+    "n_sources_used": {
+      "count": 454,
+      "min": 0,
+      "max": 33,
+      "mean": 12.0661,
+      "median": 12.0,
+      "p90": 19.69999999999999
+    },
+    "n_citations": {
+      "count": 454,
+      "min": 0,
+      "max": 50,
+      "mean": 16.7247,
+      "median": 17.0,
+      "p90": 24.0
+    },
+    "n_references": {
+      "count": 454,
+      "min": 0,
+      "max": 50,
+      "mean": 16.7247,
+      "median": 17.0,
+      "p90": 24.0
+    },
+    "answer_char_len": {
+      "count": 454,
+      "min": 549,
+      "max": 8284,
+      "mean": 4948.7115,
+      "median": 4971.5,
+      "p90": 6429.4
+    }
+  },
+  "guardrail_keyword_rates": {
+    "[HYPO]": 0.977974,
+    "[NON-DETERMINISTIC]": 0.953744,
+    "[NON-MEDICAL]": 0.566079,
+    "OBSERVATION_ONLY": 0.905286,
+    "B-Track": 0.96696,
+    "A-Track": 0.938326
+  },
+  "tag_counts_top": [
+    {
+      "tag": "relaxed",
+      "count": 414
+    },
+    {
+      "tag": "logos",
+      "count": 150
+    },
+    {
+      "tag": "dss",
+      "count": 150
+    },
+    {
+      "tag": "transition",
+      "count": 89
+    },
+    {
+      "tag": "risk",
+      "count": 86
+    },
+    {
+      "tag": "extract",
+      "count": 86
+    },
+    {
+      "tag": "compare",
+      "count": 82
+    },
+    {
+      "tag": "table",
+      "count": 82
+    },
+    {
+      "tag": "language",
+      "count": 82
+    },
+    {
+      "tag": "falsification",
+      "count": 69
+    },
+    {
+      "tag": "warning",
+      "count": 69
+    },
+    {
+      "tag": "baseline",
+      "count": 66
+    },
+    {
+      "tag": "counterfactual",
+      "count": 66
+    },
+    {
+      "tag": "evidence_first",
+      "count": 66
+    },
+    {
+      "tag": "ops_ready",
+      "count": 66
+    },
+    {
+      "tag": "stabilization",
+      "count": 65
+    },
+    {
+      "tag": "conflict",
+      "count": 65
+    },
+    {
+      "tag": "governance",
+      "count": 65
+    },
+    {
+      "tag": "apocrypha",
+      "count": 54
+    },
+    {
+      "tag": "myeongri",
+      "count": 30
+    },
+    {
+      "tag": "sasang",
+      "count": 30
+    },
+    {
+      "tag": "guardrail",
+      "count": 4
+    },
+    {
+      "tag": "scope",
+      "count": 4
+    },
+    {
+      "tag": "motif",
+      "count": 4
+    },
+    {
+      "tag": "4d",
+      "count": 4
+    },
+    {
+      "tag": "resonance",
+      "count": 4
+    },
+    {
+      "tag": "safety",
+      "count": 4
+    },
+    {
+      "tag": "ops",
+      "count": 4
+    },
+    {
+      "tag": "watchpoint",
+      "count": 4
+    },
+    {
+      "tag": "sensitivity",
+      "count": 4
+    },
+    {
+      "tag": "canon",
+      "count": 4
+    },
+    {
+      "tag": "quality",
+      "count": 4
+    },
+    {
+      "tag": "citation",
+      "count": 4
+    },
+    {
+      "tag": "taxonomy",
+      "count": 4
+    },
+    {
+      "tag": "stub",
+      "count": 4
+    },
+    {
+      "tag": "promotion",
+      "count": 4
+    },
+    {
+      "tag": "scale",
+      "count": 4
+    },
+    {
+      "tag": "batching",
+      "count": 4
+    }
+  ]
+}

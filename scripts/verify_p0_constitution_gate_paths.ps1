@@ -19,6 +19,7 @@ $required = @(
     "scripts\generate_btrack_hypothesis_prophecy_v1.py",
     "scripts\build_logos_wide_restoration.py",
     "scripts\build_btrack_prophecy_score_from_ohlcv.py",
+    "scripts\report_btrack_notebooklm_jsonl_kpi.py",
     "projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1",
     "scripts\core\domain_router.py",
     "codebook\shards\zone_a_scm.json",
