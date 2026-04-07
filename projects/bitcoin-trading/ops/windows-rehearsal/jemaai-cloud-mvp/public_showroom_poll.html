@@ -64,11 +64,12 @@
     .badge.warn { border-color: rgba(233, 168, 0, 0.55); }
     .badge.ok { border-color: rgba(108, 191, 108, 0.55); }
     .badge.err { border-color: rgba(232, 93, 76, 0.6); }
+    .badge.info { border-color: rgba(126, 165, 208, 0.65); color: #bed4ea; }
     .ticker { background:#0a0e1a; border: 1px dashed #735c00; border-radius: 0; padding: 0.8rem; margin: 0.55rem 0 0.8rem; }
     .ticker .tline { font-size: 0.9rem; color: var(--fg); margin: 0; white-space: pre-wrap; word-break: break-word; }
     .stage { background:#0a0e1a; border: 1px solid #4d4635; border-radius: 0; padding: 0.75rem; margin: 0 0 0.75rem; }
     .stage-wrap { position: relative; }
-    .stage canvas { width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; background: #0a0e1a; border-radius: 0; border: 1px solid #4d4635; }
+    .stage canvas { width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; background: #0a0e1a; border-radius: 0; border: 1px solid #4d4635; box-shadow: inset 0 0 0 1px rgba(164, 182, 206, 0.08), 0 10px 20px rgba(0, 0, 0, 0.35); }
     .bubble-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
     .bubble {
       position: absolute;
@@ -168,6 +169,7 @@
     pre { background: #0a0e1a; padding: 0.75rem; border-radius: 0; overflow: auto; font-size: 0.8rem; white-space: pre-wrap; word-break: break-all; border: 1px solid #4d4635; }
     .err { color: #e85d4c; }
     .ok { color: #6cbf6c; }
+    .warn-txt { color: #e9c15e; }
     label { font-size: 0.75rem; color: var(--muted); }
     input, select { width: 100%; padding: 0.4rem; margin: 0.25rem 0 0.75rem; background: #0a0e1a; border: 1px solid #4d4635; color: var(--fg); border-radius: 0; box-sizing: border-box; }
     .lang-wrap { min-width: 132px; flex: 1; }
@@ -221,6 +223,7 @@
     .snap-val.lamp-green { color: #6cbf6c; }
     .snap-val.lamp-yellow { color: #e9a800; }
     .snap-val.lamp-red { color: #e85d4c; }
+    .payload-collapsed { display: none; }
     .snap-footnote { margin-top: 0.55rem; line-height: 1.45; max-width: 72ch; }
     .snap-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
     .snap-val.small { font-size: 0.88rem; color: var(--fg); line-height: 1.35; font-family: system-ui, sans-serif; }
@@ -255,6 +258,9 @@
         <div class="badge ok" id="modeBadge">MODE: Idle</div>
         <div class="badge warn" id="riskBadge">RISK: WARNING</div>
         <div class="badge" id="dirBadge">DIR: HOLD</div>
+        <div class="badge info" id="sourceBadge">SRC: INIT</div>
+        <div class="badge" id="staleBadge">DATA: LIVE</div>
+        <div class="badge info" id="trustBadge">TRUST: INIT</div>
       </div>
     </div>
     <div class="fortress-banner" id="noGoBanner">NO_GO GATE CLOSED · Risk warning is active</div>
@@ -282,6 +288,8 @@
           </div>
           <div class="stage-meta mono" id="stageMeta">character=unknown_guard | mode=Idle</div>
           <div class="king-status mono" id="kingStatus">KING: standby | action: none</div>
+          <div class="king-status mono" id="questCard">QUEST: waiting for signal...</div>
+          <div class="king-status mono" id="twinViewCard">TWIN: public/private sync standby</div>
           <div class="control-hint">조작: ←↑↓→ 이동, Space 상호작용 (읽기 전용 데모)</div>
         </div>
 
@@ -302,16 +310,45 @@
               <option value="EN">EN</option>
             </select>
           </div>
+          <div class="lang-wrap">
+            <label for="fxPreset">FX Preset</label>
+            <select id="fxPreset">
+              <option value="CALM" selected>CALM</option>
+              <option value="BROADCAST">BROADCAST</option>
+              <option value="HYPE">HYPE</option>
+            </select>
+          </div>
+          <div class="lang-wrap">
+            <label for="renderMode">Render Mode</label>
+            <select id="renderMode">
+              <option value="atlas_only" selected>ATLAS_ONLY</option>
+              <option value="debug_fallback">DEBUG_FALLBACK</option>
+            </select>
+          </div>
           <label for="base">GET Base (no trailing slash)</label>
           <input id="base" type="text" value="https://api.jemaai.cloud" autocomplete="off" />
           <p id="status" class="sub compact"></p>
+          <button id="togglePayloadBtn" type="button" style="width:100%; padding:0.45rem; margin:0.2rem 0 0.65rem; background:#0a0e1a; border:1px solid #4d4635; color:#dfe2f3; cursor:pointer;">Debug Payload: OFF</button>
+          <button id="toggleGateLineBtn" type="button" style="width:100%; padding:0.45rem; margin:0 0 0.65rem; background:#0a0e1a; border:1px solid #4d4635; color:#dfe2f3; cursor:pointer;">Gate Line: OFF</button>
+          <button id="toggleReplayBtn" type="button" style="width:100%; padding:0.45rem; margin:0 0 0.4rem; background:#0a0e1a; border:1px solid #4d4635; color:#dfe2f3; cursor:pointer;">Replay: OFF</button>
+          <div class="lang-wrap">
+            <label for="replaySpeed">Replay Speed</label>
+            <select id="replaySpeed">
+              <option value="1">1x</option>
+              <option value="2">2x</option>
+              <option value="4">4x</option>
+            </select>
+          </div>
+          <label for="replaySeek">Replay Seek</label>
+          <input id="replaySeek" type="range" min="0" max="0" value="0" style="width:100%;" />
+          <button id="toggleTwinViewBtn" type="button" style="width:100%; padding:0.45rem; margin:0.45rem 0 0.65rem; background:#0a0e1a; border:1px solid #4d4635; color:#dfe2f3; cursor:pointer;">Twin View: OFF</button>
           <div class="obs-box overlay-panel" id="obsOverlayPanel">
             <label style="display:block; margin-bottom:0.25rem;">OBS Overlay Text (readonly)</label>
             <div id="obsOverlayText" class="obs-text">loading…</div>
           </div>
         </div>
 
-        <div class="panel">
+        <div class="panel payload-collapsed" id="payloadPanel">
           <div class="panel-title">Latest Payload (Whitelisted)</div>
           <pre id="out">loading...</pre>
         </div>
@@ -329,6 +366,7 @@
         <p>
           이 페이지는 공개 쇼룸(폴링 데모)이며, <code class="mono">GET /api/public-events/latest</code>로 수신한
           <strong>화이트리스트 필드만</strong> 표시합니다. 실시간·무지연을 의미하지 않습니다.
+          공개 지표 해석은 <strong>다기준 의사결정(MCDA)</strong> 관측 요약 기준입니다.
         </p>
         <ol class="info-list">
           <li><strong>투자 권유 없음:</strong> 투자 자문·매매 권유·수익 보장을 제공하지 않습니다.</li>
@@ -379,6 +417,17 @@
     const chatLines = [];
     const chatMax = 10;
     let lastEventId = null;
+    let currentSource = "INIT";
+    const ROLE_BY_ACTOR = {
+      dragon_quant: "commander",
+      tiger_shield: "risk",
+      ox_guard: "liquidity",
+      rabbit_scalper: "micro",
+      rat_arbitrage: "spread",
+      snake_hedger: "hedge",
+      horse_trend: "trend",
+      sheep_yield: "carry"
+    };
     const stageState = {
       obj: {},
       mode: "Idle",
@@ -400,7 +449,30 @@
       deathUntilTs: 0,
       respawnAtTs: 0,
       respawnPoint: { x: 34, y: 118 },
-      lastLiquidationEventId: null
+      lastLiquidationEventId: null,
+      lastRetargetTs: 0,
+      modeLockUntilTs: 0,
+      flashUntilTs: 0,
+      flashColor: "rgba(255,255,255,0.20)",
+      floatTexts: [],
+      comboCount: 0,
+      comboUntilTs: 0,
+      comboLabel: "",
+      backdropCache: {},
+      fxPreset: "CALM",
+      showGateLine: false,
+      renderMode: "atlas_only",
+      trustLevel: "INIT",
+      replay: {
+        enabled: false,
+        tape: [],
+        idx: 0,
+        speed: 1,
+        lastAdvanceTs: 0
+      },
+      twinViewOn: false,
+      crisisUntilTs: 0,
+      crisisCooldownUntilTs: 0
     };
     const MAIN_CHARACTER_ID = "dragon_quant";
     const spriteByMode = {
@@ -427,8 +499,185 @@
     let actionBookSteps = [];
     const spriteCache = {};
     let activeSpriteUrl = "";
+    const atlasAnim = {
+      ready: false,
+      image: null,
+      frameMap: {},
+      error: "",
+      sequences: {
+        Idle: ["hero_idle_0", "hero_idle_1", "hero_idle_2"],
+        Attack: ["hero_attack_0", "hero_attack_1"],
+        Defend: ["hero_hit_0", "hero_idle_2"]
+      }
+    };
     let cachedBundleEvent = null;
     let lastNetworkErrAt = 0;
+
+    function setSourceBadge(src, detail) {
+      currentSource = src || "UNKNOWN";
+      const el = document.getElementById("sourceBadge");
+      if (!el) return;
+      el.textContent = "SRC: " + currentSource + (detail ? " · " + detail : "");
+      el.classList.remove("ok", "warn", "err", "info");
+      if (currentSource === "LOCAL" || currentSource === "LOCAL-FALLBACK") {
+        el.classList.add("warn");
+      } else if (currentSource === "CLOUD") {
+        el.classList.add("ok");
+      } else if (currentSource === "ERROR") {
+        el.classList.add("err");
+      } else {
+        el.classList.add("info");
+      }
+    }
+
+    function setStaleBadge(obj) {
+      const el = document.getElementById("staleBadge");
+      if (!el) return;
+      const tsRaw = String((obj && obj.timestamp) || "");
+      let staleSec = NaN;
+      try {
+        const t = Date.parse(tsRaw);
+        if (Number.isFinite(t)) staleSec = (Date.now() - t) / 1000;
+      } catch (e) {}
+      let label = "DATA: LIVE";
+      let cls = "ok";
+      if (!Number.isFinite(staleSec)) {
+        label = "DATA: UNKNOWN";
+        cls = "info";
+      } else if (staleSec >= 300) {
+        label = `DATA: STALE ${Math.round(staleSec)}s`;
+        cls = "err";
+      } else if (staleSec >= 180) {
+        label = `DATA: DELAY ${Math.round(staleSec)}s`;
+        cls = "warn";
+      } else if (staleSec >= 90) {
+        label = `DATA: LAG ${Math.round(staleSec)}s`;
+        cls = "info";
+      }
+      el.textContent = label;
+      el.classList.remove("ok", "warn", "err", "info");
+      el.classList.add(cls);
+    }
+
+    function computeTrustLevel(obj) {
+      const tsRaw = String((obj && obj.timestamp) || "");
+      let staleSec = NaN;
+      try {
+        const t = Date.parse(tsRaw);
+        if (Number.isFinite(t)) staleSec = (Date.now() - t) / 1000;
+      } catch (e) {}
+      if (currentSource === "ERROR") return "ERROR";
+      if (currentSource === "LOCAL-FALLBACK") return "FALLBACK";
+      if (!Number.isFinite(staleSec)) return "UNKNOWN";
+      if (staleSec >= 300) return "STALE";
+      if (staleSec >= 180) return "DELAY";
+      if (staleSec >= 90) return "LAG";
+      return "LIVE";
+    }
+
+    function setTrustBadge(obj) {
+      const el = document.getElementById("trustBadge");
+      if (!el) return;
+      const t = computeTrustLevel(obj);
+      stageState.trustLevel = t;
+      el.textContent = "TRUST: " + t;
+      el.classList.remove("ok", "warn", "err", "info");
+      if (t === "LIVE") el.classList.add("ok");
+      else if (t === "LAG" || t === "DELAY" || t === "FALLBACK") el.classList.add("warn");
+      else if (t === "STALE" || t === "ERROR") el.classList.add("err");
+      else el.classList.add("info");
+    }
+
+    function explainReasonLine(obj, mode) {
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      const dir = String((obj && obj.public_signal_direction) || "HOLD").toUpperCase();
+      const trust = stageState.trustLevel || "UNKNOWN";
+      if (risk === "WARNING") return `Explain: WARNING -> Defend, trust=${trust}`;
+      if (mode === "Attack" && (dir === "BUY" || dir === "LONG")) return `Explain: Long momentum detected, trust=${trust}`;
+      if (mode === "Attack" && (dir === "SELL" || dir === "SHORT")) return `Explain: Short momentum detected, trust=${trust}`;
+      return `Explain: Hold/observe mode, trust=${trust}`;
+    }
+
+    function questLineFromState(obj, mode) {
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      const dir = String((obj && obj.public_signal_direction) || "HOLD").toUpperCase();
+      if (risk === "WARNING") return "QUEST: Guard the gate · no aggressive action";
+      if (mode === "Attack" && (dir === "BUY" || dir === "LONG")) return "QUEST: Keep formation · long chain discipline";
+      if (mode === "Attack" && (dir === "SELL" || dir === "SHORT")) return "QUEST: Keep formation · short chain discipline";
+      return "QUEST: Scout and preserve optionality";
+    }
+
+    function setQuestCard(obj, mode) {
+      const el = document.getElementById("questCard");
+      if (!el) return;
+      el.textContent = questLineFromState(obj, mode);
+    }
+
+    function setTwinViewCard(obj) {
+      const el = document.getElementById("twinViewCard");
+      if (!el) return;
+      if (!stageState.twinViewOn) {
+        el.textContent = "TWIN: OFF";
+        return;
+      }
+      const pub = {
+        dir: String((obj && obj.public_signal_direction) || "HOLD").toUpperCase(),
+        risk: String((obj && obj.risk_level) || "INFO").toUpperCase(),
+        trust: stageState.trustLevel
+      };
+      const priv = {
+        step: String(stageState.actionStep || "-"),
+        quality: String(stageState.quality || "high"),
+        source: String(currentSource || "INIT")
+      };
+      el.textContent = `TWIN: PUB(${pub.dir}/${pub.risk}/${pub.trust}) · PRIV(${priv.step}/${priv.quality}/${priv.source})`;
+    }
+
+    function pushReplayEvent(obj) {
+      if (!obj || typeof obj !== "object") return;
+      const eid = String(obj.event_id || "");
+      if (!eid) return;
+      const tape = stageState.replay.tape;
+      if (tape.length && String(tape[tape.length - 1].event_id || "") === eid) return;
+      tape.push({
+        timestamp: obj.timestamp,
+        event_id: eid,
+        risk_level: obj.risk_level,
+        public_signal_direction: obj.public_signal_direction,
+        abstract_reason: obj.abstract_reason,
+        active_character_id: obj.active_character_id,
+        system_status: obj.system_status,
+        c2_signal_lamp: obj.c2_signal_lamp,
+        unified_score_balanced: obj.unified_score_balanced
+      });
+      if (tape.length > 240) tape.shift();
+      const seek = document.getElementById("replaySeek");
+      if (seek) {
+        seek.max = String(Math.max(0, tape.length - 1));
+        if (!stageState.replay.enabled) seek.value = seek.max;
+      }
+    }
+
+    function maybeAdvanceReplay(ts) {
+      if (!stageState.replay.enabled) return;
+      const tape = stageState.replay.tape;
+      if (!tape.length) return;
+      const stepMs = Math.max(160, 1200 / Math.max(1, Number(stageState.replay.speed || 1)));
+      if ((ts - stageState.replay.lastAdvanceTs) < stepMs) return;
+      stageState.replay.lastAdvanceTs = ts;
+      stageState.replay.idx = Math.min(tape.length - 1, stageState.replay.idx + 1);
+      const ev = tape[stageState.replay.idx];
+      if (ev) applyShowroomEvent(ev, true);
+      const seek = document.getElementById("replaySeek");
+      if (seek) seek.value = String(stageState.replay.idx);
+    }
+
+    function fxProfile() {
+      const p = String(stageState.fxPreset || "BROADCAST").toUpperCase();
+      if (p === "CALM") return { particle: 0.55, shake: 0.35, flash: 0.55, float: 0.65, combo: 0 };
+      if (p === "HYPE") return { particle: 1.35, shake: 1.25, flash: 1.25, float: 1.25, combo: 1 };
+      return { particle: 1.0, shake: 1.0, flash: 1.0, float: 1.0, combo: 1 };
+    }
 
     function getSpriteImage(url) {
       if (!url) return null;
@@ -440,6 +689,82 @@
         spriteCache[url] = img;
       }
       return spriteCache[url];
+    }
+
+    function frameByName(name) {
+      if (!name) return null;
+      return atlasAnim.frameMap[String(name)] || null;
+    }
+
+    function atlasFrameForMode(mode, ts) {
+      if (!atlasAnim.ready) return null;
+      const seq = atlasAnim.sequences[mode] || atlasAnim.sequences.Idle;
+      if (!seq || !seq.length) return null;
+      const fps = mode === "Attack" ? 7 : 4;
+      const idx = Math.floor((ts / 1000) * fps) % seq.length;
+      return frameByName(seq[idx]) || null;
+    }
+
+    function atlasFrameForActor(actor, mode, ts) {
+      if (!atlasAnim.ready || !actor) return null;
+      const baseMode = mode || "Idle";
+      const major = !!actor.major;
+      if (!major) return null;
+      // Major NPCs get atlas animation; minors keep lightweight pixel sprites.
+      let seq = atlasAnim.sequences.Idle;
+      if (baseMode === "Attack") seq = ["hero_attack_0", "hero_attack_1"];
+      else if (baseMode === "Defend") seq = actor.id === "tiger_shield" ? ["hero_hit_0", "hero_idle_2"] : ["hero_idle_2", "hero_idle_1"];
+      const fps = baseMode === "Attack" ? 6 : 3;
+      const phase = Number(actor.phase || 0);
+      const idx = Math.floor(((ts / 1000) + phase) * fps) % seq.length;
+      return frameByName(seq[idx]) || null;
+    }
+
+    async function loadAtlasAnimation() {
+      try {
+        const resp = await fetch("./atlas_latest_browser.json", { cache: "no-store" });
+        if (!resp.ok) {
+          atlasAnim.error = "atlas pointer unavailable";
+          return;
+        }
+        const ptr = await resp.json();
+        if (!ptr || !ptr.metadata_json) {
+          atlasAnim.error = "atlas pointer missing metadata";
+          return;
+        }
+        const metaResp = await fetch("./" + String(ptr.metadata_json).replace(/^\.\//, ""), { cache: "no-store" });
+        if (!metaResp.ok) {
+          atlasAnim.error = "atlas metadata unavailable";
+          return;
+        }
+        const meta = await metaResp.json();
+        if (!meta || !Array.isArray(meta.frames)) {
+          atlasAnim.error = "atlas metadata invalid";
+          return;
+        }
+        const imgSrc = "./" + String(ptr.atlas_webp || ptr.atlas_png || "").replace(/^\.\//, "");
+        if (!imgSrc) {
+          atlasAnim.error = "atlas image path missing";
+          return;
+        }
+        const atlasImg = new Image();
+        atlasImg.src = imgSrc;
+        atlasImg.onload = () => {
+          const map = {};
+          for (const fr of meta.frames) {
+            if (fr && fr.name && fr.frame) map[String(fr.name)] = fr.frame;
+          }
+          atlasAnim.image = atlasImg;
+          atlasAnim.frameMap = map;
+          atlasAnim.error = "";
+          atlasAnim.ready = true;
+        };
+        atlasImg.onerror = () => {
+          atlasAnim.error = "atlas image load failed";
+        };
+      } catch (e) {
+        atlasAnim.error = "atlas load exception";
+      }
     }
 
     function colorFromCharacterId(rawId) {
@@ -538,31 +863,67 @@
       return characterProfiles.unknown_guard;
     }
 
-    function drawPixelCharacter(ctx, x, y, scale, color, eyeShift, profile) {
+    function drawPixelCharacter(ctx, x, y, scale, color, eyeShift, profile, mode = "Idle", pulse = 0, phase = 0, facing = "front", walk = 0) {
       const p = (dx, dy, w = 1, h = 1, c = color) => {
         ctx.fillStyle = c;
         ctx.fillRect(x + dx * scale, y + dy * scale, w * scale, h * scale);
       };
-      p(3, 0, 6, 1);
-      p(2, 1, 8, 1);
-      p(1, 2, 10, 1);
-      p(1, 3, 10, 6);
-      p(2, 9, 8, 1);
-      p(3, 10, 6, 1);
-      p(0, 4, 1, 3);
-      p(10, 4, 1, 3);
-      p(4 + eyeShift, 4, 1, 1, profile.eye || "#f6fbff");
-      p(7 + eyeShift, 4, 1, 1, profile.eye || "#f6fbff");
-      p(4 + eyeShift, 5, 1, 1, "#0a0f14");
-      p(7 + eyeShift, 5, 1, 1, "#0a0f14");
-      p(5, 7, 2, 1, "#0a0f14");
+      const headBob = mode === "Attack" ? Math.round(Math.sin(pulse * 2.2 + phase) * 1) : Math.round(Math.sin(pulse * 1.2 + phase) * 0.6);
+      const attackLean = mode === "Attack" ? 1 : 0;
+      const defendGuard = mode === "Defend";
+      const side = facing === "left" ? -1 : (facing === "right" ? 1 : 0);
+      const step = Math.round(Math.sin(pulse * 6 + phase + walk * 0.08) * (mode === "Idle" ? 0.5 : 1.1));
+      const faceUp = facing === "up";
+      const faceDown = facing === "down";
+      // Ground shadow for depth.
+      ctx.fillStyle = "rgba(8, 12, 18, 0.35)";
+      ctx.fillRect(x + 1 * scale, y + 13 * scale, 8 * scale, 2 * scale);
+      p(3 + attackLean + side, 0 + headBob, 6, 1);
+      p(2 + attackLean + side, 1 + headBob, 8, 1);
+      p(1 + attackLean + side, 2 + headBob, 10, 1);
+      p(1 + attackLean + side, 3 + headBob, 10, faceUp ? 5 : 6);
+      p(2 + attackLean + side, 9 + headBob, 8, 1);
+      p(3 + attackLean + side, 10 + headBob, 6, 1);
+      p(0 + attackLean + side, 4 + headBob, 1, 3);
+      p(10 + attackLean + side, 4 + headBob, 1, 3);
+      if (faceUp) {
+        // Back-facing silhouette: no visible eyes, brighter shoulder accent.
+        p(3 + attackLean + side, 4 + headBob, 1, 2, profile.accent || "#d8e3ef");
+        p(8 + attackLean + side, 4 + headBob, 1, 2, profile.accent || "#d8e3ef");
+        p(4 + attackLean + side, 7 + headBob, 3, 1, "rgba(12,20,30,0.55)");
+      } else {
+        p(4 + eyeShift + attackLean + side, 4 + headBob, 1, 1, profile.eye || "#f6fbff");
+        p(7 + eyeShift + attackLean + side, 4 + headBob, 1, 1, profile.eye || "#f6fbff");
+        p(4 + eyeShift + attackLean + side, 5 + headBob, 1, 1, "#0a0f14");
+        p(7 + eyeShift + attackLean + side, 5 + headBob, 1, 1, "#0a0f14");
+        p(5 + attackLean + side, 7 + headBob, 2, 1, faceDown ? "#111821" : "#0a0f14");
+      }
       p(4, 11, 1, 2, color);
       p(7, 11, 1, 2, color);
-      p(2, 11, 1, 3, color);
-      p(8, 11, 1, 3, color);
+      p(2, 11 + step, 1, 3, color);
+      p(8, 11 - step, 1, 3, color);
       // Shoulder accent to differentiate character profiles.
-      p(1, 6, 1, 2, profile.accent || color);
-      p(9, 6, 1, 2, profile.accent || color);
+      p(1 + attackLean + side, 6 + headBob, 1, 2, profile.accent || color);
+      p(9 + attackLean + side, 6 + headBob, 1, 2, profile.accent || color);
+      // Directional arm/cape patterns for clearer 4-direction silhouette.
+      if (faceUp) {
+        p(2 + side, 9 + headBob, 1, 2, "rgba(96, 108, 124, 0.95)");
+        p(8 + side, 9 + headBob, 1, 2, "rgba(96, 108, 124, 0.95)");
+        p(4 + side, 10 + headBob, 3, 1, "rgba(72, 82, 96, 0.95)");
+      } else if (faceDown) {
+        p(1 + side, 8 + headBob, 1, 3, "rgba(176, 56, 48, 0.78)");
+        p(9 + side, 8 + headBob, 1, 3, "rgba(176, 56, 48, 0.78)");
+        p(4 + side, 9 + headBob, 3, 1, "rgba(202, 84, 74, 0.82)");
+      } else if (facing === "left") {
+        p(1 + side, 8 + headBob, 1, 3, "rgba(176, 56, 48, 0.72)");
+        p(8 + side, 7 + headBob, 2, 1, "rgba(82, 96, 116, 0.85)");
+      } else if (facing === "right") {
+        p(9 + side, 8 + headBob, 1, 3, "rgba(176, 56, 48, 0.72)");
+        p(1 + side, 7 + headBob, 2, 1, "rgba(82, 96, 116, 0.85)");
+      }
+      if (defendGuard) {
+        p(5 + attackLean + side, 3 + headBob, 1, 8, "rgba(239, 209, 128, 0.9)");
+      }
     }
 
     function ensureActors() {
@@ -575,12 +936,21 @@
         { id: "rat_arbitrage", x: 30, y: 78, tx: 30, ty: 78, jitter: 0, major: false },
         { id: "snake_hedger", x: 206, y: 78, tx: 206, ty: 78, jitter: 0, major: false },
         { id: "horse_trend", x: 94, y: 106, tx: 94, ty: 106, jitter: 0, major: false },
-        { id: "sheep_yield", x: 158, y: 108, tx: 158, ty: 108, jitter: 0, major: false },
-        { id: "monkey_momentum", x: 56, y: 112, tx: 56, ty: 112, jitter: 0, major: false },
-        { id: "rooster_oracle", x: 198, y: 110, tx: 198, ty: 110, jitter: 0, major: false },
-        { id: "dog_sentinel", x: 118, y: 118, tx: 118, ty: 118, jitter: 0, major: false },
-        { id: "pig_accumulator", x: 144, y: 120, tx: 144, ty: 120, jitter: 0, major: false }
+        { id: "sheep_yield", x: 158, y: 108, tx: 158, ty: 108, jitter: 0, major: false }
       ];
+      for (let i = 0; i < stageState.actors.length; i += 1) {
+        stageState.actors[i].phase = i * 0.37;
+        stageState.actors[i].role = ROLE_BY_ACTOR[stageState.actors[i].id] || "support";
+      }
+    }
+
+    function effectiveLamp(obj) {
+      const raw = String((obj && obj.c2_signal_lamp) || "").toUpperCase();
+      if (raw === "GREEN" || raw === "YELLOW" || raw === "RED") return raw;
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      if (risk === "WARNING") return "YELLOW";
+      if (risk === "INFO" || risk === "SAFE") return "GREEN";
+      return "UNKNOWN";
     }
 
     function directionFromEvent(obj) {
@@ -705,6 +1075,91 @@
         .filter((b) => b.ttlMs > 0);
     }
 
+    function triggerFlash(nowTs, color, durationMs) {
+      const fx = fxProfile();
+      stageState.flashColor = color || "rgba(255,255,255,0.20)";
+      stageState.flashUntilTs = Math.max(stageState.flashUntilTs, nowTs + Math.max(100, (durationMs || 220) * fx.flash));
+    }
+
+    function addFloatText(x, y, text, color = "#ffe8a0", ttlMs = 900) {
+      if (!text) return;
+      const fx = fxProfile();
+      stageState.floatTexts.push({
+        x, y, text, color,
+        ttlMs: ttlMs * fx.float,
+        vy: -0.018 * (0.9 + fx.float * 0.2)
+      });
+      const maxFloats = fx.float < 0.8 ? 6 : (fx.float > 1.1 ? 14 : 10);
+      if (stageState.floatTexts.length > maxFloats) stageState.floatTexts.shift();
+    }
+
+    function updateFloatTexts(dt) {
+      stageState.floatTexts = stageState.floatTexts
+        .map((f) => ({
+          ...f,
+          y: f.y + f.vy * dt,
+          ttlMs: f.ttlMs - dt
+        }))
+        .filter((f) => f.ttlMs > 0);
+    }
+
+    function drawFloatTexts(ctx) {
+      if (!stageState.floatTexts.length) return;
+      ctx.font = "8px monospace";
+      ctx.textBaseline = "top";
+      for (const f of stageState.floatTexts) {
+        const alpha = Math.max(0.2, Math.min(1, f.ttlMs / 900));
+        ctx.globalAlpha = Math.min(0.65, alpha);
+        ctx.fillStyle = "rgba(8, 12, 18, 1)";
+        ctx.fillRect(Math.round(f.x) - 1, Math.round(f.y) - 1, Math.max(10, f.text.length * 6), 9);
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = f.color || "#ffe8a0";
+        ctx.fillText(String(f.text), Math.round(f.x), Math.round(f.y));
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function registerCombo(nowTs, mode, direction) {
+      if (mode === "Attack") {
+        if (nowTs <= stageState.comboUntilTs) stageState.comboCount += 1;
+        else stageState.comboCount = 1;
+        stageState.comboUntilTs = nowTs + 2400;
+        stageState.comboLabel = direction === "bear" ? "SHORT CHAIN" : "LONG CHAIN";
+        return;
+      }
+      if (mode === "Defend") {
+        if (nowTs <= stageState.comboUntilTs) stageState.comboCount += 1;
+        else stageState.comboCount = 1;
+        stageState.comboUntilTs = nowTs + 2800;
+        stageState.comboLabel = "NO_GO CHAIN";
+        return;
+      }
+      stageState.comboCount = 0;
+      stageState.comboUntilTs = 0;
+      stageState.comboLabel = "";
+    }
+
+    function drawComboHud(ctx, nowTs) {
+      const fx = fxProfile();
+      if (fx.combo < 1) return;
+      if (stageState.comboCount <= 1) return;
+      if (nowTs > stageState.comboUntilTs) return;
+      const remain = Math.max(0, stageState.comboUntilTs - nowTs);
+      const alpha = Math.min(1, 0.35 + (remain / 2800) * 0.65);
+      const txt = `${stageState.comboLabel} x${stageState.comboCount}`;
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = "rgba(8, 12, 18, 0.75)";
+      ctx.fillRect(74, 8, 108, 12);
+      ctx.strokeStyle = "rgba(246, 200, 120, 0.9)";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(74.5, 8.5, 107, 11);
+      ctx.fillStyle = "#ffe6a6";
+      ctx.font = "8px monospace";
+      ctx.textBaseline = "top";
+      ctx.fillText(txt, 78, 10);
+      ctx.globalAlpha = 1;
+    }
+
     function updateRenderQuality(dt, ts) {
       const safeDt = Math.max(1, dt);
       const fps = 1000 / safeDt;
@@ -772,6 +1227,84 @@
       }
     }
 
+    function drawAmbientParticles(ctx, theme, mode, pulse, quality) {
+      const fx = fxProfile();
+      const baseCount = quality === "high" ? 22 : (quality === "medium" ? 14 : 8);
+      const count = Math.max(4, Math.round(baseCount * fx.particle));
+      for (let i = 0; i < count; i += 1) {
+        const t = pulse * (theme === "storm" ? 1.8 : 1.0) + i * 0.61;
+        const x = ((i * 17 + Math.floor(t * 14)) % 260) - 2;
+        const yBase = 16 + ((i * 11) % 96);
+        const y = yBase + Math.sin(t * 0.9 + i) * (theme === "festival" ? 2.6 : 1.7);
+        if (theme === "festival") ctx.fillStyle = "rgba(255, 217, 120, 0.28)";
+        else if (theme === "storm") ctx.fillStyle = "rgba(178, 153, 255, 0.27)";
+        else if (theme === "sanctuary") ctx.fillStyle = "rgba(147, 227, 173, 0.26)";
+        else ctx.fillStyle = "rgba(124, 170, 255, 0.22)";
+        const s = Math.max(1, Math.round((mode === "Attack" ? 2 : 1) * (0.8 + fx.particle * 0.25)));
+        ctx.fillRect(x, y, s, s);
+      }
+    }
+
+    function getBackdropCanvas(theme, width, height) {
+      const key = `${theme}:${width}x${height}`;
+      if (stageState.backdropCache[key]) return stageState.backdropCache[key];
+      const c = document.createElement("canvas");
+      c.width = width;
+      c.height = height;
+      const bctx = c.getContext("2d");
+      if (!bctx) return null;
+      // Pre-render static tile background per theme.
+      for (let ty = 0; ty < height; ty += 16) {
+        for (let tx = 0; tx < width; tx += 16) {
+          const even = (((tx / 16) + (ty / 16)) % 2) === 0;
+          if (theme === "festival") bctx.fillStyle = even ? "#1c352a" : "#162d23";
+          else if (theme === "storm") bctx.fillStyle = even ? "#1f162a" : "#181223";
+          else if (theme === "sanctuary") bctx.fillStyle = even ? "#282212" : "#211b10";
+          else bctx.fillStyle = even ? "#0f1d34" : "#0c182b";
+          bctx.fillRect(tx, ty, 16, 16);
+        }
+      }
+      stageState.backdropCache[key] = c;
+      return c;
+    }
+
+    function drawRetroFrame(ctx, w, h) {
+      ctx.strokeStyle = "rgba(199, 178, 128, 0.55)";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(1.5, 1.5, w - 3, h - 3);
+      ctx.fillStyle = "rgba(250, 223, 145, 0.65)";
+      // Corner pixels for old-school UI frame feel.
+      ctx.fillRect(2, 2, 4, 2);
+      ctx.fillRect(w - 6, 2, 4, 2);
+      ctx.fillRect(2, h - 4, 4, 2);
+      ctx.fillRect(w - 6, h - 4, 4, 2);
+    }
+
+    function drawGateBack(ctx) {
+      // Back plate of the fortress gate.
+      ctx.fillStyle = "rgba(54, 64, 79, 0.92)";
+      ctx.fillRect(108, 86, 40, 42);
+      ctx.fillStyle = "rgba(84, 98, 116, 0.94)";
+      ctx.fillRect(110, 88, 36, 8);
+      ctx.fillStyle = "rgba(217, 178, 95, 0.90)";
+      ctx.fillRect(116, 80, 24, 4);
+      ctx.fillStyle = "#13243a";
+      ctx.font = "7px monospace";
+      ctx.fillText("YEORI", 117, 87);
+    }
+
+    function drawGateFront(ctx, alpha = 1) {
+      const a = Math.max(0.15, Math.min(1, alpha));
+      ctx.save();
+      ctx.globalAlpha = a;
+      // Front bars render above characters when they're "behind" the gate line.
+      ctx.fillStyle = "rgba(98, 112, 130, 0.96)";
+      for (let i = 0; i < 4; i += 1) ctx.fillRect(112 + i * 9, 90, 5, 34);
+      ctx.fillStyle = "rgba(34, 42, 56, 0.92)";
+      ctx.fillRect(108, 124, 40, 4); // threshold lip
+      ctx.restore();
+    }
+
     function terrainFromEvent(obj) {
       const risk = String(obj.risk_level || "").toUpperCase();
       const direction = directionFromEvent(obj);
@@ -835,7 +1368,7 @@
       k.x = Math.max(14, Math.min(242, k.x));
       k.y = Math.max(54, Math.min(132, k.y));
 
-      const lamp = String((obj && obj.c2_signal_lamp) || "").toUpperCase();
+      const lamp = effectiveLamp(obj);
       const risk = String((obj && obj.risk_level) || "").toUpperCase();
       if (lamp === "RED" || risk === "WARNING") {
         stageState.noGoUntilTs = Math.max(stageState.noGoUntilTs, nowTs + 1200);
@@ -844,7 +1377,7 @@
 
     function drawKingAvatar(ctx, obj, nowTs) {
       const k = stageState.king;
-      const lamp = String((obj && obj.c2_signal_lamp) || "").toUpperCase();
+      const lamp = effectiveLamp(obj);
       const lockOn = nowTs < stageState.noGoUntilTs;
       const body = lockOn ? "#95a1b2" : "#f0d274";
       const cape = lockOn ? "#5f6a78" : "#b03c2f";
@@ -904,6 +1437,8 @@
       stageState.king.actionText = "liquidated";
       stageState.king.actionUntilTs = nowTs + 1200;
       addBubble(stageState.actors[0], "으앙! 성황당으로 소환...");
+      addFloatText(118, 56, "LIQUIDATED", "#ff9e96", 1100);
+      triggerFlash(nowTs, "rgba(232, 93, 76, 0.36)", 320);
     }
 
     function handleRespawn(nowTs) {
@@ -937,10 +1472,11 @@
       if (!el) return;
       const dir = String(obj.public_signal_direction || "HOLD");
       const risk = String(obj.risk_level || "INFO");
-      const lamp = String(obj.c2_signal_lamp || "UNKNOWN");
+      const lamp = effectiveLamp(obj);
       const score = Number(obj.unified_score_balanced);
       const scoreTxt = Number.isFinite(score) ? score.toFixed(5) : "-";
       const eid = String(obj.event_id || "-");
+      const eidShort = eid.length > 20 ? (eid.slice(0, 20) + "...") : eid;
       const k = stageState.king;
       const lockOn = performance.now() < stageState.noGoUntilTs;
       const dead = performance.now() < stageState.deathUntilTs;
@@ -950,16 +1486,16 @@
         return;
       }
       if (OVERLAY_PRESET === "compact") {
-        el.textContent = `YEORI|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|EID=${eid}`;
+        el.textContent = `YEORI|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|EID=${eidShort}`;
         return;
       }
-      el.textContent = `YEORI|MODE=${mode}|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|SCORE=${scoreTxt}|KING=(${Math.round(k.x)},${Math.round(k.y)})|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|DEAD=${dead ? "Y" : "N"}|EID=${eid}`;
+      el.textContent = `YEORI|MODE=${mode}|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|SCORE=${scoreTxt}|KING=(${Math.round(k.x)},${Math.round(k.y)})|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|DEAD=${dead ? "Y" : "N"}|EID=${eidShort}`;
     }
 
     function updateNoGoBanner(obj) {
       const el = document.getElementById("noGoBanner");
       if (!el) return;
-      const lamp = String((obj && obj.c2_signal_lamp) || "").toUpperCase();
+      const lamp = effectiveLamp(obj);
       const risk = String((obj && obj.risk_level) || "").toUpperCase();
       const lockOn = performance.now() < stageState.noGoUntilTs;
       const active = lamp === "RED" || risk === "WARNING" || lockOn;
@@ -995,38 +1531,54 @@
     function applyCrowdBehavior(obj, mode, dt) {
       const risk = String(obj.risk_level || "WARNING").toUpperCase();
       const dirLabel = directionFromEvent(obj);
-      const speed = Math.min(1, dt * 0.006);
-      for (const actor of stageState.actors) {
+      // Slow down crowd interpolation to avoid spasm-like motion.
+      const speed = Math.min(0.35, dt * 0.0022);
+      const now = performance.now();
+      const shouldRetarget = (now - stageState.lastRetargetTs) >= 900;
+      if (shouldRetarget) stageState.lastRetargetTs = now;
+      for (let idx = 0; idx < stageState.actors.length; idx += 1) {
+        const actor = stageState.actors[idx];
         if (risk === "WARNING") {
           if (actor.id === MAIN_CHARACTER_ID) {
             actor.tx = 128;
             actor.ty = 78;
           } else if (!actor.major) {
             // Crowd fallback line near the lower lane (prevents center pile-up).
-            const lineIndex = Math.max(0, stageState.actors.indexOf(actor) - 2);
+            const lineIndex = Math.max(0, idx - 2);
             actor.tx = 28 + (lineIndex % 8) * 26;
             actor.ty = 112 + ((lineIndex % 2) * 5);
           } else {
             // Ring formation around the gate to avoid center overlap.
-            const ringIndex = Math.max(0, stageState.actors.indexOf(actor) - 1);
+            const ringIndex = Math.max(0, idx - 1);
             const angle = (ringIndex / Math.max(1, stageState.actors.length - 1)) * Math.PI * 2 + stageState.pulse * 0.28;
             const radius = actor.major ? 50 : 66;
             actor.tx = 128 + Math.cos(angle) * radius;
             actor.ty = 86 + Math.sin(angle) * (radius * 0.72);
           }
         } else if (dirLabel === "bear") {
-          actor.tx = 20 + Math.random() * 216;
-          actor.ty = 92 + Math.random() * 20;
+          // Retarget periodically (not every frame) with deterministic lanes.
+          if (shouldRetarget) {
+            actor.tx = 24 + ((idx * 31) % 208);
+            actor.ty = 96 + ((idx % 3) * 9);
+          }
         } else if (mode === "Attack") {
-          actor.tx = (dirLabel === "bull" ? 214 : 42) + (actor.major ? 0 : (Math.random() * 10 - 5));
-          actor.ty = 74 + (Math.random() * 16 - 8);
+          // Attack lane with mild oscillation instead of random jitter.
+          const side = (dirLabel === "bull") ? 206 : 50;
+          actor.tx = side + Math.sin(stageState.pulse + idx * 0.7) * (actor.major ? 3 : 6);
+          actor.ty = 78 + Math.cos(stageState.pulse * 0.8 + idx * 0.5) * (actor.major ? 2 : 5);
         } else if (mode === "Defend") {
-          actor.tx = actor.major ? 128 : actor.tx;
-          actor.ty = actor.major ? 78 : actor.ty;
-          actor.jitter = Math.sin(stageState.pulse * 2.8 + actor.x) * 1.6;
+          if (actor.major) {
+            actor.tx = 128;
+            actor.ty = 78;
+          } else if (shouldRetarget) {
+            const lineIndex = Math.max(0, idx - 2);
+            actor.tx = 34 + (lineIndex % 7) * 26;
+            actor.ty = 104 + ((lineIndex % 2) * 6);
+          }
+          actor.jitter = Math.sin(stageState.pulse * 1.4 + actor.x * 0.03) * 0.7;
         } else {
-          actor.tx += Math.sin(stageState.pulse + actor.x * 0.01) * 0.8;
-          actor.ty += Math.cos(stageState.pulse * 0.8 + actor.y * 0.02) * 0.6;
+          actor.tx += Math.sin(stageState.pulse + idx * 0.3) * 0.25;
+          actor.ty += Math.cos(stageState.pulse * 0.6 + idx * 0.25) * 0.2;
         }
         actor.tx = Math.max(16, Math.min(236, actor.tx));
         actor.ty = Math.max(62, Math.min(124, actor.ty));
@@ -1070,6 +1622,7 @@
       stageState.frame += dt;
       updateRenderQuality(dt, ts);
       handleRespawn(ts);
+      maybeAdvanceReplay(ts);
 
       ensureActors();
       const obj = stageState.obj || {};
@@ -1081,51 +1634,38 @@
       const profile = profileFromCharacterId(charId);
       const spriteInfo = spriteByMode[mode] || spriteByMode.Idle;
       const spriteImg = getSpriteImage(spriteInfo.url);
+      const atlasFrame = atlasFrameForMode(mode, ts);
       activeSpriteUrl = spriteInfo.url;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const theme = themeFromEvent(obj, mode);
-      // 16x16 tile backdrop for retro-MMO feel.
-      for (let ty = 0; ty < canvas.height; ty += 16) {
-        for (let tx = 0; tx < canvas.width; tx += 16) {
-          const even = (((tx / 16) + (ty / 16)) % 2) === 0;
-          if (theme === "festival") {
-            ctx.fillStyle = even ? "#1f3a2f" : "#173226";
-          } else if (theme === "storm") {
-            ctx.fillStyle = even ? "#22172e" : "#1a1326";
-          } else if (theme === "sanctuary") {
-            ctx.fillStyle = even ? "#2b2414" : "#221d11";
-          } else {
-            ctx.fillStyle = even ? "#102038" : "#0d1a2f";
-          }
-          ctx.fillRect(tx, ty, 16, 16);
-        }
-      }
+      const fx = fxProfile();
+      const camShakeAmp = (mode === "Attack" ? 0.85 : (risk === "WARNING" ? 0.62 : 0.24)) * fx.shake;
+      const camX = Math.sin(stageState.pulse * 2.3) * camShakeAmp;
+      const camY = Math.cos(stageState.pulse * 1.7) * camShakeAmp * 0.6;
+      ctx.save();
+      ctx.translate(camX, camY);
+      // Draw cached static tile backdrop.
+      const backdrop = getBackdropCanvas(theme, canvas.width, canvas.height);
+      if (backdrop) ctx.drawImage(backdrop, 0, 0);
+      drawRetroFrame(ctx, canvas.width, canvas.height);
       drawThemeObjects(ctx, theme, stageState.pulse, stageState.quality);
+      drawAmbientParticles(ctx, theme, mode, stageState.pulse, stageState.quality);
       drawFortressTerrain(ctx, obj);
-      // Fortress gate and banner for stronger retro-MMO feel.
-      ctx.fillStyle = "rgba(63, 73, 88, 0.88)";
-      ctx.fillRect(108, 86, 40, 42);
-      ctx.fillStyle = "rgba(98, 112, 130, 0.95)";
-      for (let i = 0; i < 4; i += 1) ctx.fillRect(112 + i * 9, 90, 5, 34);
-      ctx.fillStyle = "rgba(217, 178, 95, 0.90)";
-      ctx.fillRect(116, 80, 24, 4);
-      ctx.fillStyle = "#13243a";
-      ctx.font = "7px monospace";
-      ctx.fillText("YEORI", 117, 87);
+      drawGateBack(ctx);
 
       const wave = Math.sin(stageState.pulse);
       const bob = mode === "Attack" ? Math.sin(stageState.pulse * 1.9) * 4 : Math.sin(stageState.pulse * 1.2) * 2;
       const eyeShift = mode === "Attack" && dir !== "HOLD" ? (wave > 0 ? 1 : 0) : 0;
 
       if (theme === "festival") {
-        ctx.fillStyle = "rgba(122, 255, 174, 0.10)";
+        ctx.fillStyle = "rgba(122, 255, 174, 0.06)";
       } else if (theme === "storm") {
-        ctx.fillStyle = "rgba(162, 128, 255, 0.10)";
+        ctx.fillStyle = "rgba(162, 128, 255, 0.06)";
       } else if (theme === "sanctuary") {
-        ctx.fillStyle = "rgba(255, 219, 128, 0.09)";
+        ctx.fillStyle = "rgba(255, 219, 128, 0.05)";
       } else {
-        ctx.fillStyle = "rgba(120,180,255,0.10)";
+        ctx.fillStyle = "rgba(120,180,255,0.05)";
       }
       const lineCount = stageState.quality === "low" ? 2 : 4;
       for (let i = 0; i < lineCount; i += 1) {
@@ -1167,43 +1707,158 @@
         }
       }
 
-      if (spriteImg && spriteImg.complete && spriteImg.naturalWidth > 0) {
-        const w = 52;
-        const h = 52;
+      const allowDebugFallback = stageState.renderMode !== "atlas_only";
+      if (atlasAnim.ready && atlasAnim.image && atlasFrame) {
+        const w = 56;
+        const h = 56;
         const x = Math.floor((canvas.width - w) / 2);
-        const y = Math.floor(58 + bob);
+        const y = Math.floor(56 + bob);
         ctx.imageSmoothingEnabled = false;
-        ctx.fillStyle = "rgba(4, 8, 14, 0.45)";
-        ctx.fillRect(x - 2, y - 2, w + 4, h + 4);
-        ctx.drawImage(spriteImg, x, y, w, h);
-        ctx.strokeStyle = "rgba(8, 15, 25, 0.85)";
+        // Grounded contact shadow for stronger stage presence.
+        ctx.fillStyle = "rgba(5, 9, 15, 0.52)";
+        ctx.fillRect(x + 8, y + h - 4, w - 16, 5);
+        ctx.fillStyle = "rgba(4, 8, 14, 0.62)";
+        ctx.fillRect(x - 3, y - 3, w + 6, h + 6);
+        ctx.drawImage(
+          atlasAnim.image,
+          atlasFrame.x, atlasFrame.y, atlasFrame.w, atlasFrame.h,
+          x, y, w, h
+        );
+        ctx.strokeStyle = "rgba(5, 12, 22, 0.95)";
         ctx.lineWidth = 2;
         ctx.strokeRect(x - 1, y - 1, w + 2, h + 2);
-      } else {
+      } else if (allowDebugFallback && spriteImg && spriteImg.complete && spriteImg.naturalWidth > 0) {
+        const w = 56;
+        const h = 56;
+        const x = Math.floor((canvas.width - w) / 2);
+        const y = Math.floor(56 + bob);
+        ctx.imageSmoothingEnabled = false;
+        ctx.fillStyle = "rgba(5, 9, 15, 0.52)";
+        ctx.fillRect(x + 8, y + h - 4, w - 16, 5);
+        ctx.fillStyle = "rgba(4, 8, 14, 0.62)";
+        ctx.fillRect(x - 3, y - 3, w + 6, h + 6);
+        ctx.drawImage(spriteImg, x, y, w, h);
+        ctx.strokeStyle = "rgba(5, 12, 22, 0.95)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x - 1, y - 1, w + 2, h + 2);
+      } else if (allowDebugFallback) {
         // Fallback while image is loading
-        drawPixelCharacter(ctx, 106, 56 + bob, 4, charColor, eyeShift, profile);
+        let mainFacing = "front";
+        if (dir === "BUY" || dir === "LONG") mainFacing = "right";
+        else if (dir === "SELL" || dir === "SHORT") mainFacing = "left";
+        else if (mode === "Defend") mainFacing = "up";
+        else if (mode === "Idle") mainFacing = "down";
+        drawPixelCharacter(ctx, 104, 56 + bob, 4.3, charColor, eyeShift, profile, mode, stageState.pulse, 0, mainFacing, stageState.frame);
+      } else {
+        // Atlas-only mode: show explicit quality warning and avoid mixed-style fallback renders.
+        ctx.fillStyle = "rgba(13, 20, 30, 0.72)";
+        ctx.fillRect(94, 60, 68, 28);
+        ctx.strokeStyle = "rgba(232, 151, 121, 0.92)";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(94.5, 60.5, 67, 27);
+        ctx.fillStyle = "#ffd4bf";
+        ctx.font = "7px monospace";
+        ctx.fillText("ATLAS REQUIRED", 101, 70);
+        const why = atlasAnim.error ? String(atlasAnim.error).slice(0, 18) : "switch debug mode";
+        ctx.fillText(why, 98, 80);
       }
 
       const actorLimit = stageState.quality === "low" ? 7 : (stageState.quality === "medium" ? 10 : stageState.actors.length);
-      const actorsToRender = stageState.actors.filter((a) => a.id !== MAIN_CHARACTER_ID).slice(0, actorLimit);
+      const rolePriority = { risk: 0, commander: 1, hedge: 2, trend: 3, liquidity: 4, spread: 5, micro: 6, carry: 7, support: 8 };
+      const actorsToRender = stageState.actors
+        .filter((a) => a.id !== MAIN_CHARACTER_ID)
+        .sort((a, b) => {
+          const pa = rolePriority[a.role || "support"];
+          const pb = rolePriority[b.role || "support"];
+          if (pa !== pb) return pa - pb;
+          return a.y - b.y;
+        })
+        .slice(0, actorLimit);
       for (const actor of actorsToRender) {
         const p = profileFromCharacterId(actor.id);
         const c = colorFromCharacterId(actor.id);
         const shift = mode === "Attack" ? (wave > 0 ? 1 : 0) : 0;
         const yBob = (directionFromEvent(obj) === "bull" ? Math.abs(Math.sin(stageState.pulse * 2.4 + actor.x * 0.1)) * 4 : 0);
-        drawPixelCharacter(ctx, Math.round(actor.x - 10), Math.round(actor.y - 14 - yBob + actor.jitter), 2, c, shift, p);
+        const ax = Math.round(actor.x - 10);
+        const ay = Math.round(actor.y - 14 - yBob + actor.jitter);
+        const vx = actor.tx - actor.x;
+        const vy = actor.ty - actor.y;
+        let facing = "front";
+        if (Math.abs(vx) > Math.abs(vy) && Math.abs(vx) > 0.4) facing = vx > 0 ? "right" : "left";
+        else if (Math.abs(vy) > 0.4) facing = vy > 0 ? "down" : "up";
+        const afr = atlasFrameForActor(actor, mode, ts);
+        if (atlasAnim.ready && atlasAnim.image && afr) {
+          const aw = 20;
+          const ah = 20;
+          // Soft glow behind major atlas NPCs.
+          ctx.fillStyle = actor.id === "tiger_shield" ? "rgba(255, 202, 118, 0.18)" : "rgba(124, 192, 255, 0.15)";
+          ctx.fillRect(ax - 2, ay - 2, aw + 4, ah + 4);
+          ctx.drawImage(
+            atlasAnim.image,
+            afr.x, afr.y, afr.w, afr.h,
+            ax, ay, aw, ah
+          );
+          ctx.strokeStyle = "rgba(7, 14, 22, 0.70)";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(ax - 0.5, ay - 0.5, aw + 1, ah + 1);
+        } else if (stageState.renderMode !== "atlas_only") {
+          drawPixelCharacter(ctx, ax, ay, 1.8, c, shift, p, mode, stageState.pulse, Number(actor.phase || 0), facing, stageState.frame);
+        } else {
+          ctx.fillStyle = "rgba(255, 210, 160, 0.45)";
+          ctx.fillRect(Math.round(ax - 2), Math.round(ay - 2), 4, 4);
+        }
       }
 
       drawKingAvatar(ctx, obj, ts);
+      // Gate front overlay for depth using smooth y-based alpha curve.
+      const gateY = 104;
+      const dy = gateY - stageState.king.y;
+      const t = Math.max(0, Math.min(1, (dy + 20) / 46));
+      const gateFrontAlpha = 0.24 + t * 0.68;
+      drawGateFront(ctx, gateFrontAlpha);
+      if (stageState.showGateLine) {
+        ctx.strokeStyle = "rgba(255, 208, 122, 0.85)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(6, 104.5);
+        ctx.lineTo(canvas.width - 6, 104.5);
+        ctx.stroke();
+        ctx.fillStyle = "rgba(255, 208, 122, 0.95)";
+        ctx.font = "7px monospace";
+        ctx.fillText("GATE y=104", 8, 96);
+      }
+      updateFloatTexts(dt);
+      drawFloatTexts(ctx);
+      drawComboHud(ctx, ts);
+      ctx.restore();
+      if (ts < stageState.flashUntilTs) {
+        const remain = Math.max(0, stageState.flashUntilTs - ts);
+        const alpha = Math.min(0.45, 0.08 + (remain / 320) * 0.30 * fx.flash);
+        const base = stageState.flashColor || "rgba(255,255,255,0.20)";
+        const rgba = base.replace(/rgba\(([^)]+),\s*[\d.]+\)/, "rgba($1," + alpha.toFixed(3) + ")");
+        ctx.fillStyle = rgba;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      if (ts < stageState.crisisUntilTs) {
+        const remain = Math.max(0, stageState.crisisUntilTs - ts);
+        const alpha = Math.min(0.22, 0.08 + (remain / 1200) * 0.12);
+        ctx.fillStyle = "rgba(255, 92, 78, " + alpha.toFixed(3) + ")";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
 
       updateBubbles(dt);
       if (stageState.quality === "low" && stageState.bubbles.length > 3) {
         stageState.bubbles = stageState.bubbles.slice(-3);
       }
       renderBubbles();
-      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | theme=${theme} | step=${stageState.actionStep} | sprite=${spriteInfo.name} | lang=${stageState.lang} | quality=${stageState.quality} | fps=${stageState.fpsEma.toFixed(1)}`;
+      const spriteLabel =
+        atlasAnim.ready && atlasFrame
+          ? `atlas:${mode}`
+          : (stageState.renderMode === "atlas_only" ? "atlas:missing" : spriteInfo.name);
+      const replayState = stageState.replay.enabled ? `replay=${stageState.replay.idx + 1}/${stageState.replay.tape.length}` : "replay=live";
+      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | theme=${theme} | step=${stageState.actionStep} | sprite=${spriteLabel} | trust=${stageState.trustLevel} | ${replayState} | lang=${stageState.lang} | quality=${stageState.quality} | fps=${stageState.fpsEma.toFixed(1)}`;
       if (kingStatus) {
-        const lamp = String(obj.c2_signal_lamp || "UNKNOWN").toUpperCase();
+        const lamp = effectiveLamp(obj);
         const lockOn = ts < stageState.noGoUntilTs;
         const actionTxt = stageState.king.actionUntilTs > ts ? stageState.king.actionText : "none";
         kingStatus.textContent = `KING: (${Math.round(stageState.king.x)},${Math.round(stageState.king.y)}) | action=${actionTxt} | gate=${lamp}${lockOn ? " LOCKED" : ""}`;
@@ -1220,8 +1875,25 @@
       if (sys === "maintenance") return "Defend";
       if (risk === "safe") return "Idle";
       if (risk === "warning") return "Defend";
-      // Fallback: direction theme drives Attack vs Defend
-      return (dir === "BUY" || dir === "LONG") ? "Attack" : "Defend";
+      // Fallback: HOLD is idle (calm), directional signal drives attack.
+      if (dir === "BUY" || dir === "LONG" || dir === "SELL" || dir === "SHORT") return "Attack";
+      return "Idle";
+    }
+
+    function resolveModeWithLock(obj, candidateMode, nowTs) {
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      const current = stageState.mode || "Idle";
+      if (candidateMode === current) return current;
+      // Safety escalation should apply immediately.
+      if (risk === "WARNING" && candidateMode === "Defend") {
+        stageState.modeLockUntilTs = nowTs + 2800;
+        return candidateMode;
+      }
+      // Prevent fast mode flapping under noisy payloads.
+      if (nowTs < stageState.modeLockUntilTs) return current;
+      const lockMs = candidateMode === "Attack" ? 2200 : (candidateMode === "Defend" ? 2800 : 2500);
+      stageState.modeLockUntilTs = nowTs + lockMs;
+      return candidateMode;
     }
 
     function tickerLine(obj) {
@@ -1252,7 +1924,9 @@
       if (mode === "Defend" && dir === "HOLD") lines.push("관찰 유지. 방어막은 계속 켜둡니다.");
       if (lines.length === 0) lines.push("상태 업데이트 감지! (예능 반응)");
 
-      for (const l of lines.slice(0, 2)) chatLines.push(l);
+      for (const l of lines.slice(0, 2)) {
+        if (chatLines[chatLines.length - 1] !== l) chatLines.push(l);
+      }
       while (chatLines.length > chatMax) chatLines.shift();
       document.getElementById("chatOut").textContent = chatLines.join("\n");
     }
@@ -1397,10 +2071,11 @@
       if (foot) foot.textContent = "";
     }
 
-    function applyShowroomEvent(obj) {
+    function applyShowroomEvent(obj, fromReplay = false) {
       // 예능형 표시 계층: 민감값 금지(whitelist only) & 상태 매핑만 수행
       ensureActors();
-      const mode = modeFromEvent(obj);
+      const candidateMode = modeFromEvent(obj);
+      const mode = resolveModeWithLock(obj, candidateMode, performance.now());
       const modeBadge = document.getElementById("modeBadge");
       const riskBadge = document.getElementById("riskBadge");
       const dirBadge = document.getElementById("dirBadge");
@@ -1418,6 +2093,10 @@
       stageState.mode = mode;
       stageState.charId = String(obj.active_character_id || "unknown_guard");
       stageState.lang = document.getElementById("langMode").value || "HYBRID";
+      if (!fromReplay) pushReplayEvent(obj);
+      setTrustBadge(obj);
+      setQuestCard(obj, mode);
+      setTwinViewCard(obj);
 
       if (obj.event_id && obj.event_id !== lastEventId) {
         lastEventId = obj.event_id;
@@ -1438,8 +2117,37 @@
           addBubble(focusActor, stepLine || speak(kind, focusActor.id));
           if (Math.random() > 0.45) addBubble(tiger, speak(kind, "tiger_shield"));
         }
+        addBubble(focusActor, explainReasonLine(obj, mode));
         if (obj.abstract_reason) {
           addBubble(focusActor, String(obj.abstract_reason).slice(0, 42));
+        }
+        const nowTs = performance.now();
+        registerCombo(nowTs, mode, d);
+        const score = Number(obj.unified_score_balanced);
+        if (mode === "Attack") {
+          const label = directionFromEvent(obj) === "bear" ? "SHORT+" : "LONG+";
+          addFloatText(Math.round(focusActor.x + 6), Math.round(focusActor.y - 22), label, "#ffd27c", 780);
+          if (stageState.comboCount >= 3) {
+            addFloatText(98, 18, `COMBO x${stageState.comboCount}`, "#ffe2a3", 740);
+          }
+          triggerFlash(nowTs, "rgba(255, 182, 107, 0.20)", 160);
+        } else if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
+          addFloatText(Math.round(tiger.x + 4), Math.round(tiger.y - 22), "NO_GO", "#ffb08f", 900);
+          if (stageState.comboCount >= 3) {
+            addFloatText(86, 18, `GUARD x${stageState.comboCount}`, "#ffc3ad", 820);
+          }
+          triggerFlash(nowTs, "rgba(255, 133, 94, 0.18)", 180);
+        } else if (Number.isFinite(score)) {
+          const delta = Math.abs(score - 0.25);
+          const txt = `L=${delta.toFixed(3)}`;
+          addFloatText(Math.round(mainActor.x - 2), Math.round(mainActor.y - 24), txt, "#9fe0ff", 760);
+        }
+      }
+      const nowTs = performance.now();
+      if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
+        if (nowTs >= stageState.crisisCooldownUntilTs) {
+          stageState.crisisUntilTs = nowTs + 1200;
+          stageState.crisisCooldownUntilTs = nowTs + 3800;
         }
       }
     }
@@ -1462,7 +2170,21 @@
           out.textContent = text;
           return;
         }
-        applyShowroomEvent(obj);
+        if (/^https:\/\/api\.jemaai\.cloud$/i.test(base)) {
+          setSourceBadge("CLOUD");
+        } else if (/^http:\/\/127\.0\.0\.1:8788$/i.test(base)) {
+          setSourceBadge("LOCAL");
+        } else {
+          setSourceBadge("LOCAL", "custom");
+        }
+        setStaleBadge(obj);
+        setTrustBadge(obj);
+        if (stageState.replay.enabled) {
+          pushReplayEvent(obj);
+          setTwinViewCard(stageState.obj || obj);
+        } else {
+          applyShowroomEvent(obj);
+        }
 
         st.innerHTML = '<span class="ok">ok</span> - ' + new Date().toISOString();
         out.textContent = JSON.stringify(obj, null, 2);
@@ -1470,14 +2192,28 @@
         const isDefaultCloud = /^https:\/\/api\.jemaai\.cloud$/i.test(base);
         if (isDefaultCloud) {
           document.getElementById("base").value = "http://127.0.0.1:8788";
+          setSourceBadge("LOCAL-FALLBACK", "cors");
         }
         if (cachedBundleEvent && typeof cachedBundleEvent === "object") {
-          applyShowroomEvent(cachedBundleEvent);
-          st.innerHTML = '<span class="err">network error</span> · fallback=bundle';
+          setStaleBadge(cachedBundleEvent);
+          setTrustBadge(cachedBundleEvent);
+          if (stageState.replay.enabled) {
+            pushReplayEvent(cachedBundleEvent);
+            setTwinViewCard(stageState.obj || cachedBundleEvent);
+          } else {
+            applyShowroomEvent(cachedBundleEvent);
+          }
+          st.innerHTML = '<span class="warn-txt">cloud unavailable</span> · using fallback bundle';
           out.textContent = JSON.stringify(cachedBundleEvent, null, 2);
+          if (!isDefaultCloud) {
+            setSourceBadge("LOCAL-FALLBACK", "bundle");
+          }
         } else {
+          setStaleBadge(null);
+          setTrustBadge(null);
           st.innerHTML = '<span class="err">network error</span>';
           out.textContent = String(e);
+          setSourceBadge("ERROR");
         }
         lastNetworkErrAt = Date.now();
       }
@@ -1485,6 +2221,7 @@
     requestAnimationFrame(drawStage);
     loadCharacterProfiles();
     loadActionBook();
+    loadAtlasAnimation();
     loadShowroomBundle();
     tick();
     setInterval(() => {
@@ -1496,6 +2233,138 @@
       stageState.lang = document.getElementById("langMode").value || "HYBRID";
       const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
       addBubble(mainActor, speak("idle", "dragon_quant"));
+    });
+    const fxPresetStorageKey = "jemaai_showroom_fx_preset_v1";
+    try {
+      const savedFxPreset = window.localStorage.getItem(fxPresetStorageKey);
+      const initialFxPreset = savedFxPreset || "CALM";
+      document.getElementById("fxPreset").value = initialFxPreset;
+      stageState.fxPreset = initialFxPreset;
+    } catch (e) {
+      document.getElementById("fxPreset").value = "CALM";
+      stageState.fxPreset = "CALM";
+    }
+    document.getElementById("fxPreset").addEventListener("change", () => {
+      stageState.fxPreset = document.getElementById("fxPreset").value || "CALM";
+      try {
+        window.localStorage.setItem(fxPresetStorageKey, stageState.fxPreset);
+      } catch (e) {}
+      const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
+      addBubble(mainActor, "FX preset: " + stageState.fxPreset);
+    });
+    const renderModeStorageKey = "jemaai_showroom_render_mode_v1";
+    try {
+      const savedRenderMode = window.localStorage.getItem(renderModeStorageKey);
+      const initialRenderMode = savedRenderMode || "atlas_only";
+      document.getElementById("renderMode").value = initialRenderMode;
+      stageState.renderMode = initialRenderMode;
+    } catch (e) {
+      document.getElementById("renderMode").value = "atlas_only";
+      stageState.renderMode = "atlas_only";
+    }
+    document.getElementById("renderMode").addEventListener("change", () => {
+      stageState.renderMode = document.getElementById("renderMode").value || "atlas_only";
+      try {
+        window.localStorage.setItem(renderModeStorageKey, stageState.renderMode);
+      } catch (e) {}
+      const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
+      addBubble(mainActor, stageState.renderMode === "atlas_only" ? "Atlas-only mode" : "Debug fallback mode");
+    });
+    const payloadToggleKey = "jemaai_showroom_debug_payload_open_v1";
+    function applyPayloadPanelState(isOpen) {
+      const panel = document.getElementById("payloadPanel");
+      const btn = document.getElementById("togglePayloadBtn");
+      if (!panel || !btn) return;
+      panel.classList.toggle("payload-collapsed", !isOpen);
+      btn.textContent = isOpen ? "Debug Payload: ON" : "Debug Payload: OFF";
+    }
+    try {
+      const saved = window.localStorage.getItem(payloadToggleKey);
+      applyPayloadPanelState(saved === "1");
+    } catch (e) {
+      applyPayloadPanelState(false);
+    }
+    document.getElementById("togglePayloadBtn").addEventListener("click", () => {
+      const panel = document.getElementById("payloadPanel");
+      const btn = document.getElementById("togglePayloadBtn");
+      if (!panel || !btn) return;
+      const hidden = panel.classList.toggle("payload-collapsed");
+      btn.textContent = hidden ? "Debug Payload: OFF" : "Debug Payload: ON";
+      try {
+        window.localStorage.setItem(payloadToggleKey, hidden ? "0" : "1");
+      } catch (e) {}
+    });
+    const gateLineToggleKey = "jemaai_showroom_gate_line_debug_v1";
+    function applyGateLineState(on) {
+      stageState.showGateLine = !!on;
+      const btn = document.getElementById("toggleGateLineBtn");
+      if (btn) btn.textContent = stageState.showGateLine ? "Gate Line: ON" : "Gate Line: OFF";
+    }
+    try {
+      const saved = window.localStorage.getItem(gateLineToggleKey);
+      applyGateLineState(saved === "1");
+    } catch (e) {
+      applyGateLineState(false);
+    }
+    document.getElementById("toggleGateLineBtn").addEventListener("click", () => {
+      applyGateLineState(!stageState.showGateLine);
+      try {
+        window.localStorage.setItem(gateLineToggleKey, stageState.showGateLine ? "1" : "0");
+      } catch (e) {}
+    });
+    const replayToggleKey = "jemaai_showroom_replay_enabled_v1";
+    function applyReplayState(on) {
+      stageState.replay.enabled = !!on;
+      const btn = document.getElementById("toggleReplayBtn");
+      if (btn) btn.textContent = stageState.replay.enabled ? "Replay: ON" : "Replay: OFF";
+      if (stageState.replay.enabled) {
+        stageState.replay.idx = Math.max(0, stageState.replay.tape.length - 1);
+      }
+      const seek = document.getElementById("replaySeek");
+      if (seek) {
+        seek.max = String(Math.max(0, stageState.replay.tape.length - 1));
+        seek.value = String(Math.max(0, stageState.replay.idx));
+      }
+    }
+    try {
+      applyReplayState(window.localStorage.getItem(replayToggleKey) === "1");
+    } catch (e) {
+      applyReplayState(false);
+    }
+    document.getElementById("toggleReplayBtn").addEventListener("click", () => {
+      applyReplayState(!stageState.replay.enabled);
+      try {
+        window.localStorage.setItem(replayToggleKey, stageState.replay.enabled ? "1" : "0");
+      } catch (e) {}
+    });
+    document.getElementById("replaySpeed").addEventListener("change", () => {
+      const raw = Number(document.getElementById("replaySpeed").value || 1);
+      stageState.replay.speed = raw === 2 || raw === 4 ? raw : 1;
+    });
+    document.getElementById("replaySeek").addEventListener("input", () => {
+      const idx = Number(document.getElementById("replaySeek").value || 0);
+      const tape = stageState.replay.tape;
+      stageState.replay.idx = Math.max(0, Math.min(tape.length - 1, idx));
+      const ev = tape[stageState.replay.idx];
+      if (ev) applyShowroomEvent(ev, true);
+    });
+    const twinToggleKey = "jemaai_showroom_twin_view_v1";
+    function applyTwinViewState(on) {
+      stageState.twinViewOn = !!on;
+      const btn = document.getElementById("toggleTwinViewBtn");
+      if (btn) btn.textContent = stageState.twinViewOn ? "Twin View: ON" : "Twin View: OFF";
+      setTwinViewCard(stageState.obj || {});
+    }
+    try {
+      applyTwinViewState(window.localStorage.getItem(twinToggleKey) === "1");
+    } catch (e) {
+      applyTwinViewState(false);
+    }
+    document.getElementById("toggleTwinViewBtn").addEventListener("click", () => {
+      applyTwinViewState(!stageState.twinViewOn);
+      try {
+        window.localStorage.setItem(twinToggleKey, stageState.twinViewOn ? "1" : "0");
+      } catch (e) {}
     });
 
     function handleKeyDown(ev) {
