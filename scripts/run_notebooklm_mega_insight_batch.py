@@ -13,6 +13,7 @@ import argparse
 import json
 import subprocess
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -56,18 +57,44 @@ def _load_query_pack(path: Path) -> list[dict[str, Any]]:
     return out
 
 
+def _is_resource_exhausted(msg: str) -> bool:
+    m = msg.upper()
+    return "RESOURCE_EXHAUSTED" in m or "ERROR CODE 8" in m
+
+
 def _run_nlm_query(
     notebook_id: str,
     question: str,
     timeout_s: float,
     conversation_id: str | None = None,
+    quota_retry_max: int = 0,
+    quota_retry_base_sec: float = 90.0,
 ) -> dict[str, Any]:
-    cmd = ["nlm", "query", "notebook", notebook_id, question, "-t", str(timeout_s)]
-    if conversation_id:
-        cmd += ["-c", conversation_id]
-    cp = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8")
-    if cp.returncode != 0:
-        raise RuntimeError((cp.stderr or cp.stdout or f"nlm exit {cp.returncode}").strip())
+    retries_done = 0
+    last_err: Exception | None = None
+    while True:
+        cmd = ["nlm", "query", "notebook", notebook_id, question, "-t", str(timeout_s)]
+        if conversation_id:
+            cmd += ["-c", conversation_id]
+        cp = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8")
+        err_text = (cp.stderr or cp.stdout or f"nlm exit {cp.returncode}").strip()
+        if cp.returncode == 0:
+            break
+        last_err = RuntimeError(err_text)
+        if (
+            quota_retry_max > 0
+            and retries_done < quota_retry_max
+            and _is_resource_exhausted(err_text)
+        ):
+            retries_done += 1
+            sleep_s = min(3600.0, quota_retry_base_sec * (2 ** (retries_done - 1)))
+            print(
+                f"QUOTA_RETRY n={retries_done}/{quota_retry_max} sleep_s={sleep_s:.0f}",
+                file=sys.stderr,
+            )
+            time.sleep(sleep_s)
+            continue
+        raise last_err
     try:
         doc = json.loads(cp.stdout)
     except json.JSONDecodeError as exc:
@@ -97,6 +124,18 @@ def main() -> int:
     ap.add_argument("--target-bytes", type=int, default=0, help="Stop when appended bytes reach this target.")
     ap.add_argument("--shared-conversation", action="store_true", help="Use one conversation_id across queries.")
     ap.add_argument("--continue-on-error", action="store_true")
+    ap.add_argument(
+        "--quota-retry-max",
+        type=int,
+        default=0,
+        help="On RESOURCE_EXHAUSTED (Google error 8), retry this many times with exponential backoff.",
+    )
+    ap.add_argument(
+        "--quota-retry-base-sec",
+        type=float,
+        default=90.0,
+        help="Base sleep before first quota retry; doubles each attempt (cap 3600s).",
+    )
     args = ap.parse_args()
 
     queries = _load_query_pack(args.query_pack)
@@ -136,6 +175,8 @@ def main() -> int:
                 question=question,
                 timeout_s=float(args.timeout_sec),
                 conversation_id=conv_id if args.shared_conversation else None,
+                quota_retry_max=int(args.quota_retry_max),
+                quota_retry_base_sec=float(args.quota_retry_base_sec),
             )
             this_conv = value.get("conversation_id")
             if not summary["first_conversation_id"]:
