@@ -1,0 +1,21 @@
+{
+  "schema": "general_compression_ab_result_summary_v1",
+  "runs": [
+    {
+      "label": "baseline",
+      "case_count": 9,
+      "global_token_saving_rate": 0.2962962962962963,
+      "avg_reconstruction_fidelity_jaccard": 0.5530700599328049,
+      "avg_sensitive_integrity": 1.0,
+      "sensitive_violation_count": 0
+    },
+    {
+      "label": "treatment",
+      "case_count": 9,
+      "global_token_saving_rate": 0.5740740740740741,
+      "avg_reconstruction_fidelity_jaccard": 0.47527467659046607,
+      "avg_sensitive_integrity": 1.0,
+      "sensitive_violation_count": 0
+    }
+  ]
+}

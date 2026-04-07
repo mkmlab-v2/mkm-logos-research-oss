@@ -151,3 +151,177 @@
 
 - Cursor CLI는 "코드 생성/수정/검토", AIDC는 "판정/증빙"으로 분리.
 - 무한 루프 실험은 금지하지 않되, `iteration_limit`, `time_budget`, `go_no_go_gate`를 둔 bounded loop로만 운용.
+
+## 13) 2주 실행 계획 (재정렬, 2026-04 기준)
+
+### Sprint 목표
+
+- 목표 1: 과장/은유 용어를 공학 용어로 치환하고 대외 문구 리스크를 제거한다.
+- 목표 2: A/B 벤치 결과를 제3자가 재현 가능한 증빙 번들로 고정한다.
+- 목표 3: `NO_GO` 원인을 분해하고 개선 실험으로 `GO` 가능성을 검증한다.
+
+### Week 1 — 용어/증빙 잠금
+
+#### D1-D2: 문구 리팩터링 잠금
+
+- 담당: 제품/문서 + 엔지니어 리뷰 1인
+- 작업:
+  - "4D 압축/복원" 표현을 "다기준 리스크 스코어링(MCDA) + 정책형 토큰 절감"으로 치환
+  - 금지/허용 문구를 §2, §10 기준으로 일관화
+  - 금지 문구 자동 스캔 실행:
+    - `rg "Zero-Hallucination|항상 우수|XX% 개선 확정|신비주의 엔진|4D 압축/복원" docs/final`
+- 완료 게이트:
+  - 대외 제출 스코프(본 문서 + 제출 패키지) 금지 문구 잔존 0건
+  - `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`의 구현 서술과 충돌 0건
+
+주의: Fact-Lock/헌법 문서에는 용어 설명 목적의 "금지 문구 예시"가 남을 수 있으므로, 스캔 판정은 `external_submission_scope`(제출 패키지) 기준으로 별도 집계한다.
+
+#### D3-D4: 재현 명령 고정
+
+- 담당: 벤치 오너
+- 작업:
+  - `benchmark_manifest.json`, `repro_command.txt`, `ab_result_summary.json`, `ab_result_timeseries.csv`, `power_profile.csv`, `aidc_kpi_gate.json` 재생성
+  - 동일 입력/시드/비용가정으로 baseline+treatment 2회 반복
+- 완료 게이트:
+  - 2회 실행에서 Go/No-Go 판정 일치
+  - 누락 파일 0건(§6 체크리스트 기준)
+
+#### D5-D7: 통계 검정 재확인
+
+- 담당: 데이터 검증
+- 작업:
+  - Wilson 95% CI, p-value, bootstrap diff 재계산
+  - 비유의/악화 구간을 요약문에 명시
+- 완료 게이트:
+  - `ab_result_summary.json`에 CI/p-value 필드 누락 0건
+  - 실패 케이스 보고 포함
+
+### Week 2 — 개선 실험/판정
+
+#### D8-D10: 개선 실험 (bounded)
+
+- 담당: 엔지니어
+- 작업:
+  - Track A/B 파라미터 스윕(전략, 강도, cap, must_keep 정책)
+  - Perf/W와 정확도 동시 측정
+- 완료 게이트:
+  - 실험별 `iteration_limit`, `time_budget` 기록
+  - 모든 실험에 실패/성공 사유 기록
+
+#### D11-D12: 게이트 판정
+
+- 담당: 벤치 오너 + 리뷰어
+- 작업:
+  - `aidc_kpi_gate_v2.json` 생성
+  - 3대 조건 평가: Perf/W, 동일 정확도 유지, SLA 유지
+- 완료 게이트:
+  - 3조건 모두 충족 시 `GO`, 하나라도 미달 시 `NO_GO`
+  - 판정 근거 경로를 JSON에 명시
+
+#### D13-D14: 제출 패키지 잠금
+
+- 담당: 대외 제출 담당
+- 작업:
+  - 심사용 한 문단(§7)과 KPI 표를 최신 수치로 갱신
+  - "주장"과 "증빙 파일 경로" 1:1 매핑 점검
+- 완료 게이트:
+  - 외부 공유 패키지에서 과장 문구 0건
+  - 제3자 재현 체크 1회 통과
+
+### 운영 원칙 (고정)
+
+- `NO_GO`는 실패가 아니라 품질 신호로 취급하고 그대로 공개한다.
+- 수치 없는 주장 금지: 모든 대외 문구는 산출물 경로를 근거로 단다.
+- Cursor CLI(코드/리뷰)와 AIDC(판정/증빙) 역할을 혼합하지 않는다.
+
+## 14) 범용 데이터 처리 피벗 실행 계획 (4주)
+
+목적: BTC 테스트베드 성과를 과장 없이 일반 B2B/B2C 데이터 처리 영역으로 확장하되, "90% 압축 의미 보존"은 실험으로 입증되기 전까지 주장하지 않는다.
+
+### 14.1 레일 분리 원칙
+
+- Trading Rail: 기존 BTC/ops 파이프라인 유지(기존 Gate/SSOT 불변)
+- General Rail: 범용 문서 코퍼스 전용 벤치 신설(별도 산출물/게이트)
+- 승격 규칙: General Rail 결과는 자동으로 Trading Rail에 반영하지 않는다.
+
+### 14.2 Week 1 — 코퍼스/재현성 고정
+
+- [x] 코퍼스 3종 고정: `meeting`, `policy_legal_lite`, `support_faq`
+- [x] 공통 스키마 고정: `raw_text`, `domain`, `sensitivity_level`, `expected_key_terms`
+- [x] 실험 매니페스트 생성: 데이터 버전, split, seed, 비용 가정, commit hash
+- [x] 재현 명령 고정: 단일 명령 2회 실행 시 동일 판정
+
+권장 산출물:
+- `docs/final/artifacts/general_compression_benchmark_manifest_v1.json`
+- `docs/final/artifacts/general_compression_repro_command_v1.txt`
+
+Week 1 완료 게이트:
+- 재현성 체크 통과(동일 입력/시드에서 판정 일치) — `docs/final/artifacts/general_compression_repro_check_v1.json`
+- 누락 필드 0건(manifest schema 기준)
+
+### 14.3 Week 2 — 압축 강도 구간 실험(70/80/90%)
+
+- [x] 강도별 A/B 실행: 70%, 80%, 90% 목표 구간 (스윕 `candidate_count=540`)
+- [x] KPI 동시 수집: `saving_rate`, `jaccard`, `must_keep_integrity` (추가 KPI는 후속)
+- [x] 도메인별 허용오차 표 작성(무관용/완화 구분) — `docs/final/artifacts/general_compression_domain_tolerance_v1.json`
+
+권장 산출물:
+- `docs/final/artifacts/general_compression_ab_result_summary_v1.json`
+- `docs/final/artifacts/general_compression_ab_result_timeseries_v1.csv`
+
+Week 2 완료 게이트:
+- 각 도메인에서 최소 1개 구간이 "품질 허용치 내 + 비용 개선" 충족
+- 실패 구간(악화 케이스) 보고 포함
+
+### 14.3.1 실행 스냅샷 (2026-04-07)
+
+- 스윕 결과: `docs/final/artifacts/general_compression_sweep_result_v1.json`
+- 판정: `GO` (최적 후보 `strategy=A`, `intensity=high`, `general_max_saving_rate=0.55`, `sensitive_max_saving_rate=0.6`, `hangul_max_saving_rate=0.6`)
+- 기준 대비: baseline `saving=0.2963`, `jaccard=0.5531` → best candidate `saving=0.4012`, `jaccard=0.6710`, `sensitive_integrity=1.0`
+- 재현성 2회: `general_compression_kpi_gate_v2_run1.json` / `run2.json` 모두 `GO`
+
+### 14.4 Week 3 — 90% Track-B 고압축 검증
+
+- [x] 90% 후보 정책 고정(`must_keep`, cap, strategy/intensity)
+- [x] 왜곡/누락/환각 실패 유형 분류 리포트 작성 — `docs/final/artifacts/general_compression_90pct_failure_taxonomy_v1.json`
+- [x] 민감 도메인(legal-lite 등)에서 임계 초과 시 자동 `NO_GO` — `docs/final/artifacts/general_compression_domain_guard_gate_v1.json`
+
+권장 산출물:
+- `docs/final/artifacts/general_compression_90pct_failure_taxonomy_v1.json`
+- `docs/final/artifacts/general_compression_kpi_gate_v2.json`
+
+Week 3 완료 게이트:
+- `GO/NO_GO` 판정 JSON 생성
+- 판정 근거 파일 경로 100% 명시
+
+### 14.4.1 90% 프로파일 점검 스냅샷 (2026-04-07)
+
+- Failure taxonomy 결과: `decision_90pct_ready = NO_GO`
+- 원인: 3개 도메인 모두 `fidelity_below_domain_floor`
+- 해석: 90% 고압축은 현재 허용오차 표 기준으로 상용 준비 미달이며, GO 후보(0.55/0.6/0.6) 프로파일을 기본 운영안으로 유지
+- Guard gate: `policy_legal_lite` 실패 감지 시 `general_compression_domain_guard_gate_v1`에서 자동 `NO_GO`
+
+### 14.5 Week 4 — 외부 제출 패키지 잠금
+
+- [ ] 외부 onepager에 "통과 지표"만 노출(비유의/실패도 함께 공개)
+- [ ] 과장 문구 자동 스캔(`rg`) 통과
+- [ ] 가격/비용 시뮬레이션 표 추가(근거 수치 링크 포함)
+
+권장 산출물:
+- `docs/final/artifacts/general_compression_external_claims_whitelist_v1.json`
+- `docs/final/artifacts/general_compression_pricing_simulation_v1.csv`
+
+Week 4 완료 게이트:
+- 대외 패키지 과장 문구 0건
+- 제3자 재현 체크 1회 통과
+
+### 14.6 Go/No-Go 판정 규칙 (범용 트랙)
+
+- GO 최소 조건:
+  - 비용 절감 지표가 베이스라인 대비 개선(신뢰구간 포함)
+  - `must_keep_integrity` 임계치 충족
+  - 핵심 task success 저하가 허용 범위 이내
+- NO_GO 조건:
+  - 90% 고압축에서 의미 왜곡/누락 임계치 초과
+  - SLA(지연/오류) 미달
+  - 재현 불가 또는 산출물 누락

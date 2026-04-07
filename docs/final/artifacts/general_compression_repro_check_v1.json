@@ -1,0 +1,11 @@
+{
+  "schema": "general_compression_repro_check_v1",
+  "run1_summary": "docs/final/artifacts/general_compression_ab_result_summary_v1_run1.json",
+  "run2_summary": "docs/final/artifacts/general_compression_ab_result_summary_v1_run2.json",
+  "run1_gate": "docs/final/artifacts/general_compression_kpi_gate_v2_run1.json",
+  "run2_gate": "docs/final/artifacts/general_compression_kpi_gate_v2_run2.json",
+  "gate_run1": "GO",
+  "gate_run2": "GO",
+  "exact_summary_match": true,
+  "reproducibility_passed": true
+}

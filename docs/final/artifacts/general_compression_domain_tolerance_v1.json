@@ -1,0 +1,31 @@
+{
+  "schema": "general_compression_domain_tolerance_v1",
+  "version": "v1",
+  "domains": [
+    {
+      "domain": "policy_legal_lite",
+      "risk_mode": "zero_tolerance",
+      "fidelity_floor": 0.72,
+      "sensitive_integrity_floor": 1.0,
+      "max_allowed_sensitive_violations": 0
+    },
+    {
+      "domain": "meeting",
+      "risk_mode": "balanced",
+      "fidelity_floor": 0.62,
+      "sensitive_integrity_floor": 0.99,
+      "max_allowed_sensitive_violations": 0
+    },
+    {
+      "domain": "support_faq",
+      "risk_mode": "context_heavy",
+      "fidelity_floor": 0.58,
+      "sensitive_integrity_floor": 0.99,
+      "max_allowed_sensitive_violations": 0
+    }
+  ],
+  "notes": [
+    "This table is for General Rail only.",
+    "Promotion to Trading Rail is forbidden without separate approval."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "general_compression_domain_guard_gate_v1",
+  "inputs": {
+    "taxonomy": "C:\\workspace\\docs\\final\\artifacts\\general_compression_90pct_failure_taxonomy_v1.json"
+  },
+  "rules": {
+    "zero_tolerance_domain_auto_no_go": true,
+    "sensitive_domain_policy_legal_lite_auto_no_go": true
+  },
+  "checks": {
+    "zero_tolerance_failure_count": 1,
+    "policy_legal_lite_failure_count": 1
+  },
+  "decision": "NO_GO"
+}
