@@ -17,6 +17,11 @@
 - **로컬 Fact-Lock 번들(CI에 가까운 순서)**: 저장소 루트에서 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_fact_lock_bundle.ps1`. 절차·맥락: `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 하단 “한 번에 돌리는 명령”.
 - **보조 번들(Prophecy 정렬)**: `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`는 해당 디렉터리에서 실행. 워크스페이스 테스트 목록을 CI `dual-regime-integrity`와 맞출 때는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6 표를 확인한다.
 
+### 도메인 핸드오프 (경로·배포, 혼동 방지)
+
+- **no1kmedi / mkmlife.com**: `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md`
+- **jema12.com 본선**: `docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md`, `docs/final/JEMA12_PUBLIC_DOMAIN_AND_DEPLOY_HANDOFF_2026-04-07.md` (no1kmedi/mkmlife SSOT와 **절차 혼용 금지**.)
+
 ### B-track 성능 모드 전환 규칙
 
 - B-track에서 분리검증 단계가 끝났거나 유의미한 uplift 신호가 보이면, **탐색 우선 모드**로 즉시 전환한다.
@@ -40,6 +45,7 @@
 ## 환경
 
 - **압축 주간 거버넌스(스케줄·갱신 일자 리포트):** `scripts/run_compression_weekly_governance_chain.ps1` → `docs/final/artifacts/compression_weekly_governance_report_latest.json` · `reports/compression_weekly_governance_log.jsonl`; 작업 등록 `scripts/Register-CompressionWeeklyGovernanceTask.ps1`(기본 일요일 07:00).
+- **Track A 상용 하네스:** 비용 시뮬 `run_track_a_conversational_cost_simulation.py`, 섀도우 코퍼스 `run_track_a_shadow_corpus_eval.py`, 스텁 계량 `POST /v1/metering/log`·`eval_context.meter_log`, 미터링 집계 `run_track_a_metering_summary.py`(`Run-TrackAMeteringSummary.ps1`)·7일 관측 `run_track_a_metering_weekly_report.py`(`Run-TrackAMeteringWeeklyReport.ps1`)·밴드 게이트 `check_track_a_metering_band_gate.py`·데일리 체인 `run_track_a_commercialization_daily_chain.ps1`(`Register-TrackACommercializationDailyTask.ps1`), SLA 초안 `docs/final/TRACK_A_SLA_DRAFT.md` — 집계는 `P0_COMMERCIALIZATION_TRACKER.md`.
 - **경로**: `C:/workspace` — 주기 점검: `scripts/run_workspace_automation_health.ps1`(Vault는 `MKM_VAULT_ROOT` 또는 G: 마운트 시 미러). **압축 KPI·투트랙(선택):** 동 스크립트에 `-IncludeCompressionKpi` — 리터럴 트랙은 `-IncludeLiteralTrack`, 연구용 극정밀(ultra-literal)은 `-IncludeUltraLiteralTrack`(시간 증가; `run_compression_automation_chain.ps1` in-process 호출). **E:/F: 역할·중복 감시(선택):** `scripts/Invoke-ExternalDrivesGovernance.ps1` → `reports/drive_governance_latest.json` (용량: `-FullFolderSizesPriorityOnly` 권장, 전체 루트는 `-FullFolderSizes` 매우 느림); 헬스 체인에 포함 시 `-IncludeExternalDriveGovernance`. **`F:\workspace_archive` 오프로드:** `scripts/Migrate-FWorkspaceArchiveToE.ps1` (`-WhatIfSizesOnly`로 해석 경로 확인; E: 전부 거부 시 `C:\workspace\storage\MKM_ARCHIVE_FROM_F` 폴백, 대용량은 `.gitignore`로 제외). **C:/E/F/G 요약(삭제·이동 없음):** `scripts/Invoke-SystemDiskHygieneReport.ps1` → `reports/system_disk_hygiene_latest.json` (용량 이상 시 `-WithWorkspaceFileSumFallback`). **워크스페이스 SLKM+포스트잇 초안:** `scripts/Bootstrap-WorkspaceLayoutRegistry.ps1` → `reports/workspace_layout_registry_bootstrap.json` (`-WithSizesFileSumFallback` 정밀·느림). **C: 여유(안전·실행):** `scripts/Invoke-CWorkspaceSafeCleanup.ps1` (C: 휴지통 + `__pycache__`/pytest 등). **워크스페이스 내부 정리(승인 후):** `scripts/Invoke-WorkspaceDeepCleanup.ps1` (`-RemoveNodeModules` 시 `npm`/`pnpm` 재설치 필요). **프로필 캐시·`.venv`(승인 후):** `scripts/Invoke-ApprovedUserCacheCleanup.ps1` — `bitcoin-trading` 등 `.venv` 삭제 후 `py -m venv .venv`·`pip install -r …` 재실행. **C: 루트 비프로젝트 이동:** `scripts/Move-CNonProjectRootsToE.ps1` — `workspace`·`projects`·`repos` 제외, 기본 `F:\BACKUP\C_ROOT_MIGRATED_FROM_C` (E: mkdir 거부 환경 대비). **압축 KPI 알람(선택):** User `COMPRESSION_KPI_ALARM_WEBHOOK_URL` → 없으면 `OPS_ALARM_WEBHOOK_URL`; 임계치 `docs/final/artifacts/compression_alarm_thresholds_v1.json` — Track A `active_kpi` 기준; 투트랙 정책 `docs/final/COMPRESSION_SLA_POLICY_V1.md` — `P0_COMMERCIALIZATION_TRACKER.md` 압축 절·루트 `.env.example`.
 - **Cursor 3.0 (2026-04)**: Agents Window·Design Mode·Agent Tabs — **병렬 에이전트·UI 정밀 피드백**; 헌법·Fact-Lock·TITAN 우선순위는 변경 없음(루트 `.cursorrules`, `AGENTS.md`).
 - **Python**: Windows에서는 `py` 사용(프로젝트 규칙과 동일).
@@ -54,7 +60,7 @@
 
 ## 더 읽을 때
 
-- 상용화·작업 순서: `docs/final/P0_COMMERCIALIZATION_TRACKER.md` (해당 작업 시).
+- 상용화·작업 순서: `docs/final/P0_COMMERCIALIZATION_TRACKER.md` (해당 작업 시). no1kmedi/mkmlife **경로·VPS·Hostinger 수동 배포**는 `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md`.
 - 에이전트 역할 요약: 루트 `AGENTS.md`.
 - 압축·해석 Fact-Lock + 투트랙 SLA: `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md`, `docs/final/COMPRESSION_SLA_POLICY_V1.md`.
 - **Gemini MCP vs 배치 CLI 라우팅·비용 통제**: 루트 `AGENTS.md` 섹션 **「Gemini 멀티모달: MCP vs 배치 CLI」**.

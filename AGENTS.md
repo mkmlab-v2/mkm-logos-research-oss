@@ -30,12 +30,14 @@
 - **정책**: `docs/final/COMPRESSION_SLA_POLICY_V1.md` — Track A(범용)·Track B(리터럴), 산출 JSON, 손실 패턴 리포트, 웹훅은 `active_kpi`(Track A) 기준.
 - **실행**: `scripts/run_ultra_compression_default.py` / `--mode literal` / `--mode ultra-literal`(연구·극정밀); `scripts/run_compression_automation_chain.ps1 -IncludeLiteralTrack` / `-IncludeUltraLiteralTrack`; 헬스: `scripts/run_workspace_automation_health.ps1 -IncludeCompressionKpi [-IncludeLiteralTrack]`(체인은 in-process 호출).
 - **주간 거버넌스(갱신 일자 리포트)**: `scripts/run_compression_weekly_governance_chain.ps1` → SSOT `docs/final/artifacts/compression_weekly_governance_report_latest.json`, 동일 페이로드의 일자 파일 `compression_weekly_governance_report_YYYY-MM-DD.json`(UTC·로컬/스케줄러; `.gitignore`로 날짜별 파일은 저장소 비추적), 로그 `reports/compression_weekly_governance_log.jsonl`. Windows 작업 스케줄 등록: `scripts/Register-CompressionWeeklyGovernanceTask.ps1` (기본 일요일 07:00; `-Remove`로 해제).
+- **Track A 상용화 하네스(시뮬·섀도우·계량·SLA 초안):** `run_track_a_conversational_cost_simulation.py` · `run_track_a_shadow_corpus_eval.py` / `Run-TrackAShadowJsonlSample.ps1` · `compression_token_api_stub.py`의 `POST /v1/metering/log`·`eval_context.meter_log`·`run_track_a_metering_summary.py` (`Run-TrackAMeteringSummary.ps1`)·`run_track_a_metering_weekly_report.py` (`Run-TrackAMeteringWeeklyReport.ps1`)·`check_track_a_metering_band_gate.py`·`run_track_a_commercialization_daily_chain.ps1` (`Register-TrackACommercializationDailyTask.ps1`) · `docs/final/TRACK_A_SLA_DRAFT.md` — 상세·경로는 `docs/final/P0_COMMERCIALIZATION_TRACKER.md` 압축·L2 절.
 - **해석 파이프라인**: `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` — NotebookLM·브리핑은 **참고**; 구현·KPI는 스크립트·산출물만 SSOT.
 - **Multilens P1 A/B**: 본선 갱신 `py scripts/run_multilens_p1_production_chain.py`(또는 `scripts/Run-MultilensP1ProductionChain.ps1`); B-track 샌드박스 `py scripts/run_multilens_p1_btrack_chain.py`(또는 `Run-MultilensP1BTrackSuite.ps1`, `-IncludeBalancedWeightsSweep` 선택). 명령만 확인: `--dry-run`; JSON 실행 계획만 출력: `--json-plan`(서브프로세스 미실행, schema `multilens_p1_chain_plan_v1`).
 
 ## 도메인 핸드오프(참고)
 
 - **jema12.com 본선(SSH Cursor)**: `docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md` — 원격 워크스페이스에서 `git pull` → `scripts/deploy/linux/apply_jema12_nginx_snippet.sh` · 검증 스크립트 경로. 도메인·스냅샷: `docs/final/JEMA12_PUBLIC_DOMAIN_AND_DEPLOY_HANDOFF_2026-04-07.md`.
+- **no1kmedi / mkmlife.com 경로·VPS PM2·Hostinger 수동 배포**: `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` — 로컬 `C:\workspace` 트리와 분리된 `E:\workspace\mkm-life\deploy-to-hostinger.ps1` 등 **실측 경로** 정리. jema12 런북과 혼용 금지.
 - 한의 원전·코호트: `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` (라벨 A vs 원전 B 혼선 금지).
 - NotebookLM 소스: `docs/NotebookLM_sources_manifest.md`.
 - **NotebookLM MCP (재발방지)**: Settings에서 녹색·N tools여도 **현재 채팅에 도구가 주입되지 않으면** 에이전트는 호출 불가 — UI 연결 ≠ 세션 사용 가능. SSOT: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`, 스킬 `.cursor/skills/notebooklm-refresh/SKILL.md` §세션 vs UI.
