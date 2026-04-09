@@ -196,6 +196,46 @@ def test_compress_prefers_live_eval_when_requested():
         assert d.get("integrity_flags", {}).get("hydration_metrics_unavailable") is True
 
 
+def test_compress_reuses_live_eval_for_shadow_compare(monkeypatch):
+    from scripts import compression_token_api_stub as stub
+
+    calls = {"n": 0}
+
+    def _fake_live_eval(text: str, *, bytes_in=None, token_in=None):
+        calls["n"] += 1
+        return (
+            stub.CompressionMetrics(
+                bytes_in=len(text.encode("utf-8")),
+                bytes_out=5,
+                token_in=3,
+                token_out=2,
+                savings_ratio=0.33,
+            ),
+            1.23,
+            None,
+        )
+
+    monkeypatch.setattr(stub, "_live_eval_metrics", _fake_live_eval)
+    r = client.post(
+        "/v1/compress",
+        json={
+            "text": "reuse live eval once",
+            "eval_context": {
+                "hydrate_metrics": True,
+                "hydrate_live_eval": True,
+                "hydrate_shadow_compare": True,
+            },
+        },
+    )
+    assert r.status_code == 200
+    data = r.json()
+    flags = data.get("integrity_flags", {})
+    assert calls["n"] == 1
+    assert flags.get("metrics_mode") == "live"
+    assert flags.get("shadow_mode") == "enabled"
+    assert flags.get("shadow_live_eval_reused_from_hydration") is True
+
+
 def test_expand_roundtrip_echo():
     r0 = client.post("/v1/compress", json={"text": "roundtrip"})
     p = r0.json()
@@ -209,6 +249,7 @@ def test_expand_roundtrip_echo():
 def test_openapi_compress_examples_parity(tmp_path, monkeypatch):
     meter_path = tmp_path / "openapi_compress_meter.jsonl"
     monkeypatch.setenv("TRACK_A_METERING_LOG_PATH", str(meter_path))
+    monkeypatch.setenv("COMPRESSION_API_ENTERPRISE_KEYS", "secret-enterprise-key")
     yaml = __import__("pytest").importorskip("yaml")
     spec = yaml.safe_load(OPENAPI_STUB.read_text(encoding="utf-8"))
     examples = (
@@ -220,10 +261,17 @@ def test_openapi_compress_examples_parity(tmp_path, monkeypatch):
         .get("application/json", {})
         .get("examples", {})
     )
-    assert {"mode_none", "mode_decision_fallback", "mode_live", "mode_hydrate_with_meter_log"} <= set(examples.keys())
+    assert {
+        "mode_none",
+        "mode_public_ultra_literal",
+        "mode_decision_fallback",
+        "mode_live",
+        "mode_hydrate_with_meter_log",
+    } <= set(examples.keys())
 
     expected_mode: dict[str, str | set[str]] = {
         "mode_none": "none",
+        "mode_public_ultra_literal": "ultra_literal_kpi_estimate",
         "mode_decision_fallback": "decision_fallback",
         "mode_live": {"live", "decision_fallback"},  # live may fallback in constrained env
         "mode_hydrate_with_meter_log": "decision_fallback",
@@ -233,7 +281,12 @@ def test_openapi_compress_examples_parity(tmp_path, monkeypatch):
         payload = item.get("value", {})
         if not isinstance(payload, dict) or "text" not in payload:
             continue
-        r = client.post("/v1/compress", json=payload)
+        headers = (
+            {"x-api-key": "wrong"}
+            if key == "mode_public_ultra_literal"
+            else {"x-api-key": "secret-enterprise-key"}
+        )
+        r = client.post("/v1/compress", json=payload, headers=headers)
         if r.status_code != 200:
             mismatches.append({"example": key, "reason": "status_code", "actual_status": r.status_code})
             continue

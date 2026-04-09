@@ -35,6 +35,13 @@ paths:
                 value:
                   text: "bible test hangul 테스트"
                   client_request_id: "req-none-001"
+              mode_public_ultra_literal:
+                summary: Public tier precision-first estimate (ultra-literal KPI path)
+                value:
+                  text: "public ultra literal precision path 테스트"
+                  client_request_id: "req-ultra-public-001"
+                  eval_context:
+                    runner_hint: "ultra_literal"
               mode_decision_fallback:
                 summary: Hydrate from decision artifact
                 value:
@@ -87,6 +94,28 @@ paths:
                       hard_keep_count: 3
                       soft_keep_count: 5
                       metrics_mode: none
+                mode_public_ultra_literal:
+                  summary: Public-tier ultra-literal estimate response
+                  value:
+                    api_contract_version: "1.0.0"
+                    schema_version: token_compression_stub_v1
+                    shard_id: zone_c_hangul
+                    domain: hangul
+                    router_only: true
+                    original_text: "public ultra literal precision path 테스트"
+                    client_request_id: "req-ultra-public-001"
+                    eval_context_echo:
+                      runner_hint: ultra_literal
+                    compression_metrics:
+                      bytes_in: 47
+                      bytes_out: 41
+                      token_in: 7
+                      token_out: 6
+                      savings_ratio: 0.13
+                    integrity_flags:
+                      tier: public
+                      sla_track: ultra_literal
+                      metrics_mode: ultra_literal_kpi_estimate
                 mode_decision_fallback:
                   summary: Decision artifact hydration response
                   value:
