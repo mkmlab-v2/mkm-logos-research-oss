@@ -11,6 +11,7 @@ info:
       (integrity_flags may include hydration_live_eval_failed).
     - POST /v1/expand: stub returns original_text from the payload unchanged (lossless echo); not a residual/patch
       reconstruction pipeline. Treat submitted text as sensitive for logging and partner agreements.
+    - POST /v1/metering/log: append-only JSONL audit row; eval_context.meter_log on compress may append when metrics include token_in/token_out.
     Auth, rate limits, SLA: out of scope v1.
     Versioning rule: bump PATCH for docs/examples only, MINOR for backward-compatible
     additive fields, MAJOR for required field changes/removals or behavior-breaking changes.
@@ -53,6 +54,15 @@ paths:
                     runner_hint: "active_default"
                   hydration_hints:
                     atom_ids: ["atom:x", "atom:y"]
+              mode_hydrate_with_meter_log:
+                summary: Hydrate from decision artifact and append metering JSONL (TRACK_A_METERING_LOG_PATH)
+                value:
+                  text: "meter log OpenAPI example 텍스트"
+                  client_request_id: "req-meter-openapi-001"
+                  eval_context:
+                    hydrate_metrics: true
+                    meter_log: true
+                    runner_hint: "meter_log_openapi_example"
       responses:
         "200":
           description: OK
@@ -129,6 +139,40 @@ paths:
                       hydration_metrics_source: live_evaluate_report
                       hydration_live_eval_elapsed_ms: 42.7
                       metrics_mode: live
+  /v1/metering/log:
+    post:
+      operationId: logMeteringEvent
+      summary: Append one compression metering row (JSONL; Phase 2 harness)
+      description: |
+        Writes a single JSON object as one line to track_a_metering_log_v1.jsonl under reports/constitution/btrack_pilot/
+        unless env TRACK_A_METERING_LOG_PATH overrides. No billing or invoice; audit trail only.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MeteringLogRequest"
+            example:
+              sla_track: active
+              tokens_before: 1000
+              tokens_after: 520
+              saving_rate: 0.48
+              measured_within_target_band_40_50: true
+              client_request_id: req-meter-001
+              domain: hangul
+              shard_id: zone_c_hangul
+      responses:
+        "200":
+          description: Accepted and appended
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeteringLogResponse"
+              example:
+                accepted: true
+                api_contract_version: "1.0.0"
+                meter_schema: track_a_metering_log_v1
+                log_path_relative: reports/constitution/btrack_pilot/track_a_metering_log_v1.jsonl
   /v1/expand:
     post:
       operationId: expandPayload
@@ -241,6 +285,53 @@ paths:
                     example: ok
 components:
   schemas:
+    MeteringLogRequest:
+      type: object
+      required: [sla_track, tokens_before, tokens_after]
+      properties:
+        sla_track:
+          type: string
+          description: e.g. active (Track A), literal (Track B)
+        tokens_before:
+          type: integer
+          minimum: 0
+        tokens_after:
+          type: integer
+          minimum: 0
+        client_request_id:
+          type: string
+        saving_rate:
+          type: number
+          minimum: 0
+          maximum: 1
+        measured_within_target_band_40_50:
+          type: boolean
+          description: Optional echo of shadow eval band vs 40–50% savings (internal KPI)
+        domain:
+          type: string
+        shard_id:
+          type: string
+        o200k_tokens_before:
+          type: integer
+          minimum: 0
+        o200k_tokens_after:
+          type: integer
+          minimum: 0
+        notes:
+          type: string
+    MeteringLogResponse:
+      type: object
+      required: [accepted, api_contract_version, meter_schema]
+      properties:
+        accepted:
+          type: boolean
+        api_contract_version:
+          type: string
+        meter_schema:
+          type: string
+        log_path_relative:
+          type: string
+          nullable: true
     EvalContext:
       type: object
       description: |
@@ -267,6 +358,11 @@ components:
             If true with hydrate_metrics=true, server tries live evaluate_report first,
             then falls back to decision-based estimate on failure. On exception, integrity_flags may set
             hydration_live_eval_failed=true and hydration_live_eval_error_class to the exception type name.
+        meter_log:
+          type: boolean
+          description: |
+            If true, append one metering JSONL row (same shape as POST /v1/metering/log) when compression_metrics
+            includes token_in and token_out. integrity_flags may set meter_log_appended or meter_log_skipped.
     CompressionMetrics:
       type: object
       description: |
