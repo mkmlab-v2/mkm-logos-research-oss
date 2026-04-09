@@ -73,6 +73,8 @@ docs/final/artifacts/mkm_toe_training_dataset_v*.csv
 /artifacts/
 docs/final/artifacts/prophecy_hit_rate_eval_latest.json
 docs/final/artifacts/btrack_hypothesis_prophecy_latest.json
+# Weekly compression dated snapshots (scheduler/local); latest JSON remains tracked
+docs/final/artifacts/compression_weekly_governance_report_20*.json
 projects/bitcoin-trading/.venv/
 projects/bitcoin-trading/.pm2-win/
 mkmlife-home-*.png

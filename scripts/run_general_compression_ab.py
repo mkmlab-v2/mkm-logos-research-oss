@@ -12,6 +12,12 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.report_multilens_performance_eval import evaluate_report
+from scripts.core.general_mcda_regime_switch import (
+    choose_regime,
+    derive_vector_4d,
+    estimate_signals_from_text,
+    weighted_risk_score,
+)
 
 DEFAULT_INPUT = ROOT / "docs" / "final" / "artifacts" / "general_compression_eval_input_v1.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "general_compression_ab_result_summary_v1.json"
@@ -24,6 +30,18 @@ def _load_json(path: Path) -> dict[str, Any]:
 def _write(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _case_text_map(doc: dict[str, Any]) -> dict[str, dict[str, str]]:
+    out: dict[str, dict[str, str]] = {}
+    for c in doc.get("compression_cases", []):
+        if not isinstance(c, dict):
+            continue
+        out[str(c.get("id", ""))] = {
+            "raw_text": str(c.get("raw_text", "")),
+            "domain": str(c.get("domain", "unknown")),
+        }
+    return out
 
 
 def main() -> int:
@@ -63,6 +81,30 @@ def main() -> int:
         )
 
     compression = report.get("compression_metrics") or {}
+    cases = compression.get("cases") or []
+    case_map = _case_text_map(doc)
+    regime_counts = {"normal": 0, "crisis": 0}
+    switch_count = 0
+    prev_regime: str | None = None
+    score_sum = 0.0
+    for c in cases:
+        cid = str(c.get("id", ""))
+        raw = case_map.get(cid, {}).get("raw_text", "")
+        volatility, news_shock = estimate_signals_from_text(raw)
+        v4 = derive_vector_4d(
+            volatility=volatility,
+            news_shock_score=news_shock,
+            saving_rate=float(c.get("token_saving_rate", 0.0)),
+            fidelity=float(c.get("reconstruction_fidelity_jaccard", 0.0)),
+        )
+        regime = choose_regime(volatility, news_shock)
+        regime_counts[regime] += 1
+        if prev_regime is not None and regime != prev_regime:
+            switch_count += 1
+        prev_regime = regime
+        score_sum += weighted_risk_score(v4, regime)
+    avg_risk_score = (score_sum / len(cases)) if cases else 0.0
+
     row = {
         "label": args.label,
         "profile": {
@@ -77,6 +119,12 @@ def main() -> int:
         "avg_reconstruction_fidelity_jaccard": float(compression.get("avg_reconstruction_fidelity_jaccard", 0.0)),
         "avg_sensitive_integrity": float(compression.get("avg_sensitive_integrity", 0.0)),
         "sensitive_violation_count": int(compression.get("sensitive_violation_count", 0)),
+        "regime_switch_metrics": {
+            "normal_count": regime_counts["normal"],
+            "crisis_count": regime_counts["crisis"],
+            "switch_count": switch_count,
+            "avg_risk_score": avg_risk_score,
+        },
     }
 
     if args.out.is_file() and args.append:

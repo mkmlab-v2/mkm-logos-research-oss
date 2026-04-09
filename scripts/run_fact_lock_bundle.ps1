@@ -30,7 +30,8 @@
 #>
 param(
     [switch]$SkipIntegrityGuard,
-    [switch]$IncludeP1AB
+    [switch]$IncludeP1AB,
+    [switch]$SkipCompressionRestoreBridge
 )
 
 $ErrorActionPreference = 'Stop'
@@ -39,6 +40,8 @@ $workspaceRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $prophecyBundle = Join-Path $workspaceRoot 'projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1'
 $p1AbBundle = Join-Path $workspaceRoot 'scripts\run_p1_ab_bundle.ps1'
 $insightScoreboardScript = Join-Path $workspaceRoot 'scripts\build_insight_effectiveness_scoreboard.py'
+$trackbQuaternionGateScript = Join-Path $workspaceRoot 'scripts\report_trackb_quaternion_two_stage_gate.py'
+$compressionRestoreBridgeScript = Join-Path $workspaceRoot 'scripts\run_agent_compression_restore_bridge.ps1'
 
 if (-not (Test-Path -LiteralPath $prophecyBundle)) {
     throw "Bundle script not found: $prophecyBundle"
@@ -78,6 +81,26 @@ Write-Host '== Fact-Lock: build_insight_effectiveness_scoreboard.py ==' -Foregro
 & py $insightScoreboardScript
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
+}
+
+if (-not (Test-Path -LiteralPath $trackbQuaternionGateScript)) {
+    throw "Track B quaternion two-stage gate script not found: $trackbQuaternionGateScript"
+}
+Write-Host '== Fact-Lock: report_trackb_quaternion_two_stage_gate.py ==' -ForegroundColor Cyan
+& py $trackbQuaternionGateScript
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+}
+
+if (-not $SkipCompressionRestoreBridge) {
+    if (-not (Test-Path -LiteralPath $compressionRestoreBridgeScript)) {
+        throw "Compression/restore bridge script not found: $compressionRestoreBridgeScript"
+    }
+    Write-Host '== Fact-Lock: run_agent_compression_restore_bridge.ps1 ==' -ForegroundColor Cyan
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $compressionRestoreBridgeScript
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
 }
 
 exit 0
