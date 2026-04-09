@@ -50,30 +50,6 @@ on:
       - "scripts/run_compression_weekly_governance_chain.ps1"
       - "scripts/Register-CompressionWeeklyGovernanceTask.ps1"
       - "scripts/build_compression_weekly_governance_report.py"
-      - "scripts/bench_compression_token_api_stub.py"
-      - "scripts/check_token_api_stub_perf_gate.py"
-      - "scripts/report_token_api_stub_perf_observation.py"
-      - "scripts/run_track_a_conversational_cost_simulation.py"
-      - "scripts/run_track_a_shadow_corpus_eval.py"
-      - "scripts/Run-TrackAShadowJsonlSample.ps1"
-      - "scripts/core/billing_meter.py"
-      - "scripts/run_track_a_metering_summary.py"
-      - "scripts/Run-TrackAMeteringSummary.ps1"
-      - "scripts/run_track_a_metering_weekly_report.py"
-      - "scripts/Run-TrackAMeteringWeeklyReport.ps1"
-      - "scripts/check_track_a_metering_band_gate.py"
-      - "scripts/run_track_a_commercialization_daily_chain.ps1"
-      - "scripts/Register-TrackACommercializationDailyTask.ps1"
-      - "docs/final/TRACK_A_SLA_DRAFT.md"
-      - "data/track_a_shadow/**"
-      - "tests/test_track_a_conversational_cost_simulation.py"
-      - "tests/test_track_a_shadow_corpus_eval.py"
-      - "tests/test_track_a_shadow_jsonl_sample.py"
-      - "tests/test_track_a_metering_summary.py"
-      - "tests/test_track_a_metering_weekly_report.py"
-      - "tests/test_track_a_metering_band_gate.py"
-      - "tests/test_track_a_commercialization_daily_chain_ps1.py"
-      - "tests/fixtures/track_a_weekly_gate_fail.json"
       - "scripts/check_btrack_regression.py"
       - "scripts/lock_btrack_verified_baseline.py"
       - "scripts/build_btrack_dss_enriched_from_docs.py"
@@ -118,7 +94,6 @@ on:
       - "tests/test_run_deut32_cee_pilot.py"
       - "tests/test_run_deut32_cee_stability_sweep.py"
       - "tests/test_run_btrack_fusion_gate.py"
-      - "tests/test_token_api_stub_perf_observation.py"
       - "tests/test_cross_ref_dss_schema.py"
       - "tests/test_b_track_hypothesis_inventory.py"
       - "tests/test_generate_btrack_hypothesis_prophecy_v1.py"
@@ -219,11 +194,6 @@ on:
         required: false
         default: false
         type: boolean
-      token_api_stub_perf_blocking:
-        description: "Enable blocking gate for token API stub perf"
-        required: false
-        default: false
-        type: boolean
       approve_numeric_near_miss:
         description: "Enable numeric near-miss promotion export (manual approval only)"
         required: false
@@ -300,18 +270,6 @@ jobs:
       - name: Token API OpenAPI parity (golden examples)
         run: python -m pytest tests/test_compression_token_api_stub.py -q --tb=short -k "openapi_compress_examples_parity or openapi_expand_examples_parity"
 
-      - name: Track A commercialization harness contracts
-        run: |
-          python -m pytest \
-            tests/test_track_a_conversational_cost_simulation.py \
-            tests/test_track_a_shadow_corpus_eval.py \
-            tests/test_track_a_shadow_jsonl_sample.py \
-            tests/test_track_a_metering_summary.py \
-            tests/test_track_a_metering_weekly_report.py \
-            tests/test_track_a_metering_band_gate.py \
-            tests/test_track_a_commercialization_daily_chain_ps1.py \
-            -q --tb=short
-
       - name: Token API hydration mix snapshot
         run: python scripts/report_token_api_hydration_mix.py
 
@@ -339,19 +297,6 @@ jobs:
       - name: Token API hydration trend contract
         run: python -m pytest tests/test_token_api_hydration_trend.py -q --tb=short
 
-      - name: Token API stub perf smoke snapshot
-        run: python scripts/bench_compression_token_api_stub.py --rounds 50 --warmup-rounds 10 --outlier-ms 100
-
-      - name: Token API stub perf observation snapshot (20-run readiness)
-        run: python scripts/report_token_api_stub_perf_observation.py --window-size 20 --p95-max-ms 25 --p95-pass-ratio-floor 0.95
-
-      - name: Token API stub perf gate (warning)
-        run: python scripts/check_token_api_stub_perf_gate.py --mode warning --max-outliers 1 --max-enterprise-p95-ms 25
-
-      - name: Token API stub perf gate (conditional blocking)
-        if: ${{ vars.TOKEN_API_STUB_PERF_BLOCKING == 'true' || github.event.inputs.token_api_stub_perf_blocking == 'true' }}
-        run: python scripts/check_token_api_stub_perf_gate.py --mode block --max-outliers 1 --max-enterprise-p95-ms 25
-
       - name: Token API live_ratio gate (warning)
         run: python scripts/check_token_api_live_ratio_gate.py --mode warning --target-live-ratio 0.70 --arming-floor-ratio 0.60 --arming-success-rate 0.80 --arming-window-rows 10
 
@@ -376,14 +321,6 @@ jobs:
             reports/constitution/btrack_pilot/token_api_hydration_trend_latest.json
             reports/constitution/btrack_pilot/token_api_live_ratio_gate_latest.json
             reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json
-            docs/final/artifacts/track_a_conversational_cost_simulation_latest.json
-            docs/final/artifacts/track_a_shadow_corpus_eval_latest.json
-            docs/final/artifacts/track_a_shadow_corpus_eval_jsonl_sample_latest.json
-            docs/final/artifacts/track_a_metering_summary_latest.json
-            docs/final/artifacts/track_a_metering_weekly_report_latest.json
-            docs/final/artifacts/track_a_metering_band_gate_latest.json
-            reports/track_a_commercialization_daily_log.jsonl
-            reports/constitution/btrack_pilot/track_a_metering_log_v1.jsonl
           if-no-files-found: ignore
 
       - name: B-Track symbol lane regression artifact contract
