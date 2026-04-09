@@ -31,7 +31,8 @@
 param(
     [switch]$SkipIntegrityGuard,
     [switch]$IncludeP1AB,
-    [switch]$SkipCompressionRestoreBridge
+    [switch]$SkipCompressionRestoreBridge,
+    [switch]$IncludeCodebookFactSafe
 )
 
 $ErrorActionPreference = 'Stop'
@@ -42,6 +43,7 @@ $p1AbBundle = Join-Path $workspaceRoot 'scripts\run_p1_ab_bundle.ps1'
 $insightScoreboardScript = Join-Path $workspaceRoot 'scripts\build_insight_effectiveness_scoreboard.py'
 $trackbQuaternionGateScript = Join-Path $workspaceRoot 'scripts\report_trackb_quaternion_two_stage_gate.py'
 $compressionRestoreBridgeScript = Join-Path $workspaceRoot 'scripts\run_agent_compression_restore_bridge.ps1'
+$codebookFactSafeBundleScript = Join-Path $workspaceRoot 'scripts\run_codebook_factsafe_bundle.ps1'
 
 if (-not (Test-Path -LiteralPath $prophecyBundle)) {
     throw "Bundle script not found: $prophecyBundle"
@@ -98,6 +100,17 @@ if (-not $SkipCompressionRestoreBridge) {
     }
     Write-Host '== Fact-Lock: run_agent_compression_restore_bridge.ps1 ==' -ForegroundColor Cyan
     & powershell -NoProfile -ExecutionPolicy Bypass -File $compressionRestoreBridgeScript
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($IncludeCodebookFactSafe) {
+    if (-not (Test-Path -LiteralPath $codebookFactSafeBundleScript)) {
+        throw "Codebook Fact-Safe bundle script not found: $codebookFactSafeBundleScript"
+    }
+    Write-Host '== Fact-Lock: run_codebook_factsafe_bundle.ps1 ==' -ForegroundColor Cyan
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $codebookFactSafeBundleScript -IncludeRecoveredReadiness
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }

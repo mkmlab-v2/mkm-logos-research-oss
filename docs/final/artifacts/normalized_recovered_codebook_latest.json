@@ -1,0 +1,857 @@
+{
+  "schema_version": "v1.0.0",
+  "codebook_id": "recovered-codepack-archive-20260409",
+  "created_at_utc": "2026-04-09T14:19:05Z",
+  "lookup": {
+    "ssot_locked": true,
+    "entries": [
+      {
+        "lookup_id": "other.recovered.sovereign.stable",
+        "domain": "other",
+        "input_key": "STABLE",
+        "canonical_output": {
+          "pattern_name": "STABLE",
+          "trading_signal": "HOLD",
+          "confidence": 0.7,
+          "vector_4d": {
+            "S": 0.25,
+            "L": 0.25,
+            "K": 0.25,
+            "M": 0.25
+          },
+          "prophecy": "평형 유지"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/sovereign_codebook.json",
+          "scripts/experimental/codepack_recovery/core/mkm_sovereign_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.sovereign.caution",
+        "domain": "other",
+        "input_key": "CAUTION",
+        "canonical_output": {
+          "pattern_name": "CAUTION",
+          "trading_signal": "REDUCE",
+          "confidence": 0.8,
+          "vector_4d": {
+            "S": 0.4,
+            "L": 0.4,
+            "K": 0.4,
+            "M": 0.4
+          },
+          "prophecy": "주의 단계"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/sovereign_codebook.json",
+          "scripts/experimental/codepack_recovery/core/mkm_sovereign_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.sovereign.collapse_signal",
+        "domain": "other",
+        "input_key": "COLLAPSE_SIGNAL",
+        "canonical_output": {
+          "pattern_name": "COLLAPSE_SIGNAL",
+          "trading_signal": "EMERGENCY_SELL",
+          "confidence": 0.9,
+          "vector_4d": {
+            "S": 0.8,
+            "L": 0.8,
+            "K": 0.8,
+            "M": 0.8
+          },
+          "prophecy": "시스템 붕괴"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/sovereign_codebook.json",
+          "scripts/experimental/codepack_recovery/core/mkm_sovereign_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e01",
+        "domain": "other",
+        "input_key": "MKM Study",
+        "canonical_output": {
+          "marker_id": "E01",
+          "text": "MKM Study",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e02",
+        "domain": "other",
+        "input_key": "12인 참모진",
+        "canonical_output": {
+          "marker_id": "E02",
+          "text": "12인 참모진",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e03",
+        "domain": "other",
+        "input_key": "만세력",
+        "canonical_output": {
+          "marker_id": "E03",
+          "text": "만세력",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e04",
+        "domain": "other",
+        "input_key": "적응형 학습",
+        "canonical_output": {
+          "marker_id": "E04",
+          "text": "적응형 학습",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e05",
+        "domain": "other",
+        "input_key": "4D 벡터 튜터",
+        "canonical_output": {
+          "marker_id": "E05",
+          "text": "4D 벡터 튜터",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e06",
+        "domain": "other",
+        "input_key": "체질",
+        "canonical_output": {
+          "marker_id": "E06",
+          "text": "체질",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e07",
+        "domain": "other",
+        "input_key": "사주",
+        "canonical_output": {
+          "marker_id": "E07",
+          "text": "사주",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e08",
+        "domain": "other",
+        "input_key": "사상의학",
+        "canonical_output": {
+          "marker_id": "E08",
+          "text": "사상의학",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e09",
+        "domain": "other",
+        "input_key": "용신",
+        "canonical_output": {
+          "marker_id": "E09",
+          "text": "용신",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e10",
+        "domain": "other",
+        "input_key": "격국",
+        "canonical_output": {
+          "marker_id": "E10",
+          "text": "격국",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e11",
+        "domain": "other",
+        "input_key": "대운",
+        "canonical_output": {
+          "marker_id": "E11",
+          "text": "대운",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e12",
+        "domain": "other",
+        "input_key": "세운",
+        "canonical_output": {
+          "marker_id": "E12",
+          "text": "세운",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e13",
+        "domain": "other",
+        "input_key": "절기",
+        "canonical_output": {
+          "marker_id": "E13",
+          "text": "절기",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e14",
+        "domain": "other",
+        "input_key": "학습 목표",
+        "canonical_output": {
+          "marker_id": "E14",
+          "text": "학습 목표",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e15",
+        "domain": "other",
+        "input_key": "진도",
+        "canonical_output": {
+          "marker_id": "E15",
+          "text": "진도",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e16",
+        "domain": "other",
+        "input_key": "복습",
+        "canonical_output": {
+          "marker_id": "E16",
+          "text": "복습",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e17",
+        "domain": "other",
+        "input_key": "퀴즈",
+        "canonical_output": {
+          "marker_id": "E17",
+          "text": "퀴즈",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e18",
+        "domain": "other",
+        "input_key": "이해도",
+        "canonical_output": {
+          "marker_id": "E18",
+          "text": "이해도",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e19",
+        "domain": "other",
+        "input_key": "설명해줘",
+        "canonical_output": {
+          "marker_id": "E19",
+          "text": "설명해줘",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e20",
+        "domain": "other",
+        "input_key": "알려줘",
+        "canonical_output": {
+          "marker_id": "E20",
+          "text": "알려줘",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e21",
+        "domain": "other",
+        "input_key": "오늘의 학습",
+        "canonical_output": {
+          "marker_id": "E21",
+          "text": "오늘의 학습",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e22",
+        "domain": "other",
+        "input_key": "오늘의 운세",
+        "canonical_output": {
+          "marker_id": "E22",
+          "text": "오늘의 운세",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e23",
+        "domain": "other",
+        "input_key": "지금 내 공부 방향",
+        "canonical_output": {
+          "marker_id": "E23",
+          "text": "지금 내 공부 방향",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e24",
+        "domain": "other",
+        "input_key": "오늘의 한문장",
+        "canonical_output": {
+          "marker_id": "E24",
+          "text": "오늘의 한문장",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e25",
+        "domain": "other",
+        "input_key": "튜터",
+        "canonical_output": {
+          "marker_id": "E25",
+          "text": "튜터",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e26",
+        "domain": "other",
+        "input_key": "참모진",
+        "canonical_output": {
+          "marker_id": "E26",
+          "text": "참모진",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e27",
+        "domain": "other",
+        "input_key": "학습",
+        "canonical_output": {
+          "marker_id": "E27",
+          "text": "학습",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e28",
+        "domain": "other",
+        "input_key": "공부",
+        "canonical_output": {
+          "marker_id": "E28",
+          "text": "공부",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e29",
+        "domain": "other",
+        "input_key": "운세",
+        "canonical_output": {
+          "marker_id": "E29",
+          "text": "운세",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e30",
+        "domain": "other",
+        "input_key": "사주 풀이",
+        "canonical_output": {
+          "marker_id": "E30",
+          "text": "사주 풀이",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e31",
+        "domain": "other",
+        "input_key": "오늘 공부",
+        "canonical_output": {
+          "marker_id": "E31",
+          "text": "오늘 공부",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e32",
+        "domain": "other",
+        "input_key": "학습 계획",
+        "canonical_output": {
+          "marker_id": "E32",
+          "text": "학습 계획",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e33",
+        "domain": "other",
+        "input_key": "진도 관리",
+        "canonical_output": {
+          "marker_id": "E33",
+          "text": "진도 관리",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e34",
+        "domain": "other",
+        "input_key": "요약해줘",
+        "canonical_output": {
+          "marker_id": "E34",
+          "text": "요약해줘",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e35",
+        "domain": "other",
+        "input_key": "정리해줘",
+        "canonical_output": {
+          "marker_id": "E35",
+          "text": "정리해줘",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e36",
+        "domain": "other",
+        "input_key": "다시 설명",
+        "canonical_output": {
+          "marker_id": "E36",
+          "text": "다시 설명",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e37",
+        "domain": "other",
+        "input_key": "쉽게 설명",
+        "canonical_output": {
+          "marker_id": "E37",
+          "text": "쉽게 설명",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e38",
+        "domain": "other",
+        "input_key": "핵심만",
+        "canonical_output": {
+          "marker_id": "E38",
+          "text": "핵심만",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e39",
+        "domain": "other",
+        "input_key": "한번 더",
+        "canonical_output": {
+          "marker_id": "E39",
+          "text": "한번 더",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e40",
+        "domain": "other",
+        "input_key": "이해했어",
+        "canonical_output": {
+          "marker_id": "E40",
+          "text": "이해했어",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e41",
+        "domain": "other",
+        "input_key": "다음 단계",
+        "canonical_output": {
+          "marker_id": "E41",
+          "text": "다음 단계",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e42",
+        "domain": "other",
+        "input_key": "복습해줘",
+        "canonical_output": {
+          "marker_id": "E42",
+          "text": "복습해줘",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e43",
+        "domain": "other",
+        "input_key": "테스트해줘",
+        "canonical_output": {
+          "marker_id": "E43",
+          "text": "테스트해줘",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e44",
+        "domain": "other",
+        "input_key": "질문이 있어",
+        "canonical_output": {
+          "marker_id": "E44",
+          "text": "질문이 있어",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e45",
+        "domain": "other",
+        "input_key": "모르겠어",
+        "canonical_output": {
+          "marker_id": "E45",
+          "text": "모르겠어",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e46",
+        "domain": "other",
+        "input_key": "풀어줘",
+        "canonical_output": {
+          "marker_id": "E46",
+          "text": "풀어줘",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e47",
+        "domain": "other",
+        "input_key": "공부 방법",
+        "canonical_output": {
+          "marker_id": "E47",
+          "text": "공부 방법",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e48",
+        "domain": "other",
+        "input_key": "추천해줘",
+        "canonical_output": {
+          "marker_id": "E48",
+          "text": "추천해줘",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e49",
+        "domain": "other",
+        "input_key": "오늘의 추천",
+        "canonical_output": {
+          "marker_id": "E49",
+          "text": "오늘의 추천",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      },
+      {
+        "lookup_id": "other.recovered.education.e50",
+        "domain": "other",
+        "input_key": "학습 추천",
+        "canonical_output": {
+          "marker_id": "E50",
+          "text": "학습 추천",
+          "domain": "education"
+        },
+        "source_refs": [
+          "scripts/experimental/codepack_recovery/data/education_codebook.json",
+          "scripts/experimental/codepack_recovery/core/oracle_codebook.py"
+        ],
+        "status": "active"
+      }
+    ]
+  },
+  "training": {
+    "enabled": false,
+    "records": []
+  },
+  "hybrid_experiment": {
+    "enabled": false,
+    "quaternion_transition_enabled": false,
+    "threshold_gate_enabled": false,
+    "params": {
+      "threshold_t": null,
+      "decay_d": null,
+      "gain_g": null
+    }
+  },
+  "governance": {
+    "literal_restoration_rate_required": 100.0,
+    "off_by_default_policy": true,
+    "promotion_rules": {
+      "require_min_recall_non_degradation": true,
+      "require_brier_non_degradation": true,
+      "require_ci_stability": true
+    }
+  },
+  "fact_safe_meta": {
+    "source_origin": "F:/workspace_archive/from_C_workspace_temp_20260324",
+    "mapping_policy": "best-effort recovered mapping; requires promotion review before production",
+    "tags": [
+      "FACT",
+      "HYPO"
+    ]
+  }
+}

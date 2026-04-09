@@ -1,0 +1,132 @@
+{
+  "schema": "recovered_codepack_validation_v1",
+  "generated_at_utc": "2026-04-09T14:19:05Z",
+  "base_path": "C:\\workspace\\scripts\\experimental\\codepack_recovery",
+  "ok": true,
+  "counts": {
+    "code_required": 10,
+    "json_required": 6,
+    "code_present": 10,
+    "json_present": 6,
+    "json_valid": 6
+  },
+  "code_files": [
+    {
+      "path": "core/unified_codebook_builder.py",
+      "exists": true,
+      "bytes": 30160,
+      "sha256": "b2216fa6490f9dd989c3b43bbc6e52a5470d767697b31ad93a2e18cd41772607"
+    },
+    {
+      "path": "core/mkm_sovereign_codebook.py",
+      "exists": true,
+      "bytes": 24447,
+      "sha256": "7eab6da50923072a8b8e2edd83181df705b59719d54b26c8715d9d94613503b6"
+    },
+    {
+      "path": "core/oracle_codebook.py",
+      "exists": true,
+      "bytes": 14586,
+      "sha256": "6ff23958edbfb4adb33b7a27ebe8652ef5eaa0c5bb3c15176a4508df7e06a64d"
+    },
+    {
+      "path": "core/build_full_codebook.py",
+      "exists": true,
+      "bytes": 2299,
+      "sha256": "9547faad81a9400e14c22a082f183bdd25a18b83365a5767fca5e1180e3965dc"
+    },
+    {
+      "path": "core/build_codebook_with_progress.py",
+      "exists": true,
+      "bytes": 1530,
+      "sha256": "8b97779b8aaeaac2287568825a22046405cc918b0f492414423758dfac17c7a7"
+    },
+    {
+      "path": "core/force_rebuild_s_codebook.py",
+      "exists": true,
+      "bytes": 2481,
+      "sha256": "c5b0155e0641197a322c54440722c615c03320d00092a2e9117f4df51a8fef29"
+    },
+    {
+      "path": "scripts/build_standard_codebook.py",
+      "exists": true,
+      "bytes": 15323,
+      "sha256": "0f55f4f9163613a05851275e674097cf7d32e75475c613faef0970259272903e"
+    },
+    {
+      "path": "scripts/step2_build_all_domain_codebooks.py",
+      "exists": true,
+      "bytes": 8792,
+      "sha256": "13aa0187d5e8809e0a5e943129985c0e0fa7bd6019138df0d592fcd086230787"
+    },
+    {
+      "path": "scripts/build_spirit_domain_codebook.py",
+      "exists": true,
+      "bytes": 7983,
+      "sha256": "c70f5742169592816b308485e8f21c57c359050fe6820208c228e9143989ddf1"
+    },
+    {
+      "path": "scripts/build_knowledge_domain_codebook.py",
+      "exists": true,
+      "bytes": 7636,
+      "sha256": "c88722a2265cf9c11abdba1537898d12e6b627e8a75dd28d448382191c9dccff"
+    }
+  ],
+  "json_files": [
+    {
+      "path": "data/education_codebook.json",
+      "exists": true,
+      "bytes": 2251,
+      "sha256": "1e99f095382eaffb9d9f349a6824d13fdd0e5a7cccb7554c8945905c15400c3d",
+      "json_valid": true,
+      "json_top_level": "object",
+      "top_level_key_count": 4
+    },
+    {
+      "path": "data/sovereign_codebook.json",
+      "exists": true,
+      "bytes": 1264,
+      "sha256": "c9e6e8c57309c46ddc09ea5c7c3fd70d3ff0c065e4a0fe8afbb7b45240349c64",
+      "json_valid": true,
+      "json_top_level": "object",
+      "top_level_key_count": 1
+    },
+    {
+      "path": "data/signal_codebook_service_repo_bootstrap.json",
+      "exists": true,
+      "bytes": 2034203,
+      "sha256": "7fa0eec154a2699af9515d8460970f66be977b42a9f5071ea79960aa5f92b5b5",
+      "json_valid": true,
+      "json_top_level": "object",
+      "top_level_key_count": 4
+    },
+    {
+      "path": "data/backtest_signal_codebook_service_repo_bootstrap.json",
+      "exists": true,
+      "bytes": 697531,
+      "sha256": "f5e8caf828ee2faa25998d08129147fa4865e5923604c21dc79687121f086968",
+      "json_valid": true,
+      "json_top_level": "object",
+      "top_level_key_count": 4
+    },
+    {
+      "path": "data/signal_codebook_mkm_life_pr.json",
+      "exists": true,
+      "bytes": 997004,
+      "sha256": "427aa8ce58804c285e301cd94946bc327a3cec9d3888b29fae5f18fe90f46965",
+      "json_valid": true,
+      "json_top_level": "object",
+      "top_level_key_count": 4
+    },
+    {
+      "path": "data/s_codebook_sample.json",
+      "exists": true,
+      "bytes": 379378,
+      "sha256": "46cdc14c7e25b2caeb7114cb5f8599cd3fd0b3c21be6f50bd8138afa6001c8ed",
+      "json_valid": true,
+      "json_top_level": "array",
+      "top_level_key_count": 100
+    }
+  ],
+  "fact_safe_note": "Archive import validation only. No production routing or performance claims."
+}

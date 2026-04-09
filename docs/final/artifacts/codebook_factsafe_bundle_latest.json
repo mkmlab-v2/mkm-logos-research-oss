@@ -1,0 +1,54 @@
+﻿{
+    "schema":  "codebook_factsafe_bundle_v1",
+    "generated_at_utc":  "2026-04-09T14:19:06Z",
+    "ok":  true,
+    "options":  {
+                    "smoke_count":  500,
+                    "smoke_prefix":  "bundle_probe",
+                    "skip_micro_poc":  false,
+                    "include_recovered_readiness":  true
+                },
+    "steps":  [
+                  {
+                      "id":  "validate_schema",
+                      "exit_code":  0,
+                      "elapsed_ms":  99,
+                      "command":  "py scripts/validate_master_codebook_schema.py"
+                  },
+                  {
+                      "id":  "validate_real_samples",
+                      "exit_code":  0,
+                      "elapsed_ms":  86,
+                      "command":  "py scripts/validate_master_codebook_real_samples.py"
+                  },
+                  {
+                      "id":  "training_smoke",
+                      "exit_code":  0,
+                      "elapsed_ms":  75,
+                      "command":  "py scripts/run_master_codebook_training_smoke.py --count 500 --prefix bundle_probe"
+                  },
+                  {
+                      "id":  "l1_bypass_poc",
+                      "exit_code":  0,
+                      "elapsed_ms":  80,
+                      "command":  "py scripts/l1_codebook_bypass.py"
+                  },
+                  {
+                      "id":  "prophecy_micro_codebook_poc",
+                      "exit_code":  0,
+                      "elapsed_ms":  95,
+                      "command":  "py scripts/run_prophecy_micro_codebook_poc.py"
+                  }
+              ],
+    "outputs":  {
+                    "l1_bypass_artifact":  "docs/final/artifacts/l1_codebook_bypass_poc_latest.json",
+                    "micro_codebook_artifact":  "docs/final/artifacts/prophecy_micro_codebook_poc_latest.json",
+                    "smoke_marker_json":  "reports/constitution/master_codebook_training_smoke_bundle_probe_500.json"
+                },
+    "recovered_readiness":  {
+                                "included":  true,
+                                "exit_code":  0,
+                                "artifact":  "docs/final/artifacts/recovered_codebook_operational_readiness_latest.json"
+                            },
+    "elapsed_ms_total":  1488
+}

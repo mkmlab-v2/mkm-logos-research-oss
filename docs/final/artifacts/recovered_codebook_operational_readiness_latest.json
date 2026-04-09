@@ -1,0 +1,55 @@
+{
+  "schema": "recovered_codebook_operational_readiness_v1",
+  "generated_at_utc": "2026-04-09T14:19:06Z",
+  "decision": "PASS",
+  "checks": [
+    {
+      "id": "recovered_validation_refresh",
+      "pass": true,
+      "exit_code": 0,
+      "output_preview": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\recovered_codepack_validation_latest.json\"}\n"
+    },
+    {
+      "id": "normalized_rebuild",
+      "pass": true,
+      "exit_code": 0,
+      "output_preview": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\normalized_recovered_codebook_latest.json\", \"lookup_entries\": 53}\n"
+    },
+    {
+      "id": "normalized_schema_validation",
+      "pass": true,
+      "exit_code": 0,
+      "output_preview": "✅ dual-track codebook validation passed\nschema: C:\\workspace\\docs\\final\\master_codebook_dual_track.schema.json\ninstance: C:\\workspace\\docs\\final\\artifacts\\normalized_recovered_codebook_latest.json\n"
+    },
+    {
+      "id": "codebook_factsafe_bundle",
+      "pass": true,
+      "exit_code": 0,
+      "output_preview": "== Codebook Fact-Safe: validate_schema ==\n✅ dual-track codebook validation passed\nschema: C:\\workspace\\docs\\final\\master_codebook_dual_track.schema.json\ninstance: C:\\workspace\\docs\\final\\master_codebook_dual_track.template.json\n== Codebook Fact-Safe: validate_real_samples ==\n✅ real sample validation passed\ncodebook: C:\\workspace\\docs\\final\\master_codebook_dual_track.multidomain_1000.json\nsamples: C:\\workspace\\data\\constitution\\master_codebook_real_validation_samples.jsonl\ntotal: 24, matched: 24\n"
+    },
+    {
+      "id": "normalized_semantic_sanity",
+      "pass": true,
+      "detail": {
+        "lookup_entry_count": 53,
+        "literal_restoration_rate_required": 100.0,
+        "off_by_default_policy": true
+      }
+    },
+    {
+      "id": "recovered_integrity_sanity",
+      "pass": true,
+      "detail": {
+        "ok": true,
+        "counts": {
+          "code_required": 10,
+          "json_required": 6,
+          "code_present": 10,
+          "json_present": 6,
+          "json_valid": 6
+        }
+      }
+    }
+  ],
+  "fact_safe_note": "PASS means gate readiness only, not automatic production promotion."
+}
