@@ -3,14 +3,18 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-
 ROOT = Path(__file__).resolve().parents[1]
+_scripts_dir = Path(__file__).resolve().parent
+if str(_scripts_dir) not in sys.path:
+    sys.path.insert(0, str(_scripts_dir))
+
 ART = ROOT / "docs" / "final" / "artifacts"
 CANONICAL_SELECTIVE_OUT = ART / "trackb_action_layer_selective_state_sim_latest.json"
 CANONICAL_SELECTIVE_TRIGGER_OUT = ART / "trackb_action_layer_selective_state_sim_triggercase_latest.json"
