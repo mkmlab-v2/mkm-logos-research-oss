@@ -28,7 +28,8 @@
 ## 압축 파이프라인 투트랙 (Fact-Lock 요약)
 
 - **정책**: `docs/final/COMPRESSION_SLA_POLICY_V1.md` — Track A(범용)·Track B(리터럴), 산출 JSON, 손실 패턴 리포트, 웹훅은 `active_kpi`(Track A) 기준.
-- **실행**: `scripts/run_ultra_compression_default.py` / `--mode literal`; `scripts/run_compression_automation_chain.ps1 -IncludeLiteralTrack`; 헬스: `scripts/run_workspace_automation_health.ps1 -IncludeCompressionKpi [-IncludeLiteralTrack]`(체인은 in-process 호출).
+- **실행**: `scripts/run_ultra_compression_default.py` / `--mode literal` / `--mode ultra-literal`(연구·극정밀); `scripts/run_compression_automation_chain.ps1 -IncludeLiteralTrack` / `-IncludeUltraLiteralTrack`; 헬스: `scripts/run_workspace_automation_health.ps1 -IncludeCompressionKpi [-IncludeLiteralTrack]`(체인은 in-process 호출).
+- **주간 거버넌스(갱신 일자 리포트)**: `scripts/run_compression_weekly_governance_chain.ps1` → SSOT `docs/final/artifacts/compression_weekly_governance_report_latest.json`, 동일 페이로드의 일자 파일 `compression_weekly_governance_report_YYYY-MM-DD.json`(UTC·로컬/스케줄러; `.gitignore`로 날짜별 파일은 저장소 비추적), 로그 `reports/compression_weekly_governance_log.jsonl`. Windows 작업 스케줄 등록: `scripts/Register-CompressionWeeklyGovernanceTask.ps1` (기본 일요일 07:00; `-Remove`로 해제).
 - **해석 파이프라인**: `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` — NotebookLM·브리핑은 **참고**; 구현·KPI는 스크립트·산출물만 SSOT.
 - **Multilens P1 A/B**: 본선 갱신 `py scripts/run_multilens_p1_production_chain.py`(또는 `scripts/Run-MultilensP1ProductionChain.ps1`); B-track 샌드박스 `py scripts/run_multilens_p1_btrack_chain.py`(또는 `Run-MultilensP1BTrackSuite.ps1`, `-IncludeBalancedWeightsSweep` 선택). 명령만 확인: `--dry-run`; JSON 실행 계획만 출력: `--json-plan`(서브프로세스 미실행, schema `multilens_p1_chain_plan_v1`).
 
@@ -46,6 +47,15 @@
 - **헌법 게이트(옵션)**: `run_ops_phase1_chain.ps1 -IncludeConstitutionGates` → `verify_constitution_gates.ps1` → `projects/bitcoin-trading/memory/v2/ops/constitution_gates_result_latest.json`; allowlist `constitution_gates_v1.json`. 상세 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §13.1.
 - **Phase 1 일일 원클릭**: `projects/bitcoin-trading/ops/windows-rehearsal/bootstrap_ops_phase1_daily.ps1` — User 환경 동기화 후 `\Bitcoin-Ops-Phase1-Chain-Daily` 등록(헌법 게이트 기본 켬). 점검·웹훅 스모크: `-IncludeReadiness`, `-IncludeWebhookSmoke`.
 - **MKM Study**(예: `projects/mkm/mkm-study`): **연구·프로토타입·학습** 레인. 실매매·본선 OOF·올그린 게이트와 **자동 합선하지 않는다** (NotebookLM·A/B 격벽과 동일 방향).
+
+## B-track 실행 기본값 (탐색 우선)
+
+- **기본 모드**: B-track은 보수 게이트 우선이 아니라 **성능 탐색 우선**으로 운영한다.
+- **원클릭 진입점**: `scripts/run_btrack_full_explore.ps1`를 기본 실행 경로로 사용한다.
+- **최소 안전선만 유지**: `B-track 아티팩트 경로`, `재현 seed 기록`, `시간/비용 상한`, `A-track 자동 합선 금지`.
+- **전환 규칙**: 유망 uplift가 확인되면(예: short-bucket 개선) 동역학 결합 모델까지 포함해 즉시 비교 벤치를 확장한다.
+- **금지**: B-track 실험 결과를 승인 없이 실거래/프로덕션 게이트에 자동 반영하지 않는다.
+- **Track B 주간 메트릭·게이트(연구 레인, 압축 엔진과 별도)**: `scripts/Run-TrackBWeeklyRefresh.ps1` — 도메인 쌍·semantic(Jaccard/cosine_tokens)·`build_trackb_semantic_eval_by_domain.py`·OOV 스윕·action layer·결정성·선택 상태 시뮬·`trackb_weekly_gate_recheck_latest.json` 등. `-SkipSsmSmoke` / `-SkipCosine` / `-IncludeExtendedStressGrid`(확장 Length/OOV 스트레스, 시간 증가) 선택; 요약 MD 예시 `docs/final/artifacts/trackb_weekly_formula_utility_report_2026-04-08.md`.
 
 ## 12AI vs 코드북 도메인
 

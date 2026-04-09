@@ -1,0 +1,55 @@
+# Track B research lane: lexical semantic metrics + weekly refresh script smoke (no torch/GPU).
+name: Track B research smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop, "chore/**"]
+    paths:
+      - "scripts/track_b_semantic_eval.py"
+      - "scripts/build_trackb_semantic_eval_by_domain.py"
+      - "scripts/build_trackb_quaternion_top_combo_ranking.py"
+      - "scripts/build_trackb_top_combo_fixed_set.py"
+      - "scripts/run_trackb_top_combo_fixed_set_replay.py"
+      - "scripts/run_trackb_top_combo_stress_grid.py"
+      - "scripts/Run-TrackBWeeklyRefresh.ps1"
+      - "tests/test_track_b_semantic_eval_metrics.py"
+      - "tests/test_run_trackb_weekly_refresh_ps1.py"
+      - "tests/test_btrack_bench_paths.py"
+      - "tools/myeongni/btrack_bench_paths.py"
+      - "tools/myeongni/__init__.py"
+      - "data/logos/btrack_pilot/bench/**"
+      - "AGENTS.md"
+      - "CLAUDE.md"
+      - ".github/workflows/trackb-research-smoke.yml"
+  pull_request:
+    paths:
+      - "scripts/track_b_semantic_eval.py"
+      - "scripts/build_trackb_semantic_eval_by_domain.py"
+      - "scripts/build_trackb_quaternion_top_combo_ranking.py"
+      - "scripts/build_trackb_top_combo_fixed_set.py"
+      - "scripts/run_trackb_top_combo_fixed_set_replay.py"
+      - "scripts/run_trackb_top_combo_stress_grid.py"
+      - "scripts/Run-TrackBWeeklyRefresh.ps1"
+      - "tests/test_track_b_semantic_eval_metrics.py"
+      - "tests/test_run_trackb_weekly_refresh_ps1.py"
+      - "tests/test_btrack_bench_paths.py"
+      - "tools/myeongni/btrack_bench_paths.py"
+      - "tools/myeongni/__init__.py"
+      - "data/logos/btrack_pilot/bench/**"
+      - "AGENTS.md"
+      - "CLAUDE.md"
+      - ".github/workflows/trackb-research-smoke.yml"
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: pip install pytest
+      - name: Run Track B unit smoke tests
+        run: pytest tests/test_track_b_semantic_eval_metrics.py tests/test_run_trackb_weekly_refresh_ps1.py tests/test_btrack_bench_paths.py -q
