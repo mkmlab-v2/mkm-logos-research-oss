@@ -9,6 +9,8 @@ on:
 jobs:
   smoke:
     runs-on: ubuntu-latest
+    env:
+      NO1KMEDI_API_KEY: ${{ secrets.NO1KMEDI_API_KEY }}
     steps:
       - uses: actions/checkout@v4
 
@@ -22,22 +24,20 @@ jobs:
 
       - name: Remote smoke (api.no1kmedi.com)
         env:
-          NO1KMEDI_API_KEY: ${{ secrets.NO1KMEDI_API_KEY }}
           SMOKE_ALLOW_UNAUTH_PROTECTED: "1"
         run: node smoke-chat.mjs --prod
         working-directory: projects/no1kmedi/payapp-api
 
       - name: Run benchmark reports against production API
-        if: ${{ secrets.NO1KMEDI_API_KEY != '' }}
+        if: ${{ env.NO1KMEDI_API_KEY != '' }}
         env:
           API_BASE: https://api.no1kmedi.com
           EVAL_TIMEOUT_MS: "60000"
-          NO1KMEDI_API_KEY: ${{ secrets.NO1KMEDI_API_KEY }}
         run: npm run eval:reports:all
         working-directory: projects/no1kmedi/payapp-api
 
       - name: Quality gate from benchmark reports
-        if: ${{ always() && secrets.NO1KMEDI_API_KEY != '' }}
+        if: ${{ always() && env.NO1KMEDI_API_KEY != '' }}
         env:
           MIN_PASS_RATE: "0.9"
           MIN_AVG_SCORE: "4.5"
@@ -45,12 +45,12 @@ jobs:
           node -e "const fs=require('fs'); const path=require('path'); const base='projects/no1kmedi/payapp-api/benchmarks'; const files=['no1kmedi_clinical_eval_latest.json','fusion_eval_latest.json','mkmlife_eval_latest.json','all_profiles_eval_latest.json']; const minPass=Number(process.env.MIN_PASS_RATE||'0.8'); const minAvg=Number(process.env.MIN_AVG_SCORE||'4'); const summary={ generated_at:new Date().toISOString(), min_pass_rate:minPass, min_avg_score:minAvg, overall_pass:true, reports:[] }; for(const f of files){const p=path.join(base,f); if(!fs.existsSync(p)){console.log('[MISSING]',f); summary.overall_pass=false; summary.reports.push({file:f,present:false,pass:false,error:'missing_file'}); continue;} const j=JSON.parse(fs.readFileSync(p,'utf8')); const s=j.summary||{}; const passRate=Number(s.pass_rate); const avgScore=Number(s.avg_score); const failed=Number(s.failed||0); const pass=(passRate>=minPass && avgScore>=minAvg); console.log('[REPORT]',f,'pass_rate=',passRate,'avg_score=',avgScore,'failed=',failed,'gate_pass=',pass); if(!pass){console.log('[GATE_FAIL]',f,'requires pass_rate>=',minPass,'and avg_score>=',minAvg); summary.overall_pass=false;} summary.reports.push({file:f,present:true,pass_rate:passRate,avg_score:avgScore,failed,pass}); } fs.writeFileSync(path.join(base,'gate_summary_latest.json'), JSON.stringify(summary,null,2)); if(!summary.overall_pass){process.exit(1)}"
 
       - name: Print gate summary
-        if: ${{ always() && secrets.NO1KMEDI_API_KEY != '' }}
+        if: ${{ always() && env.NO1KMEDI_API_KEY != '' }}
         run: |
           node -e "const fs=require('fs'); const p='projects/no1kmedi/payapp-api/benchmarks/gate_summary_latest.json'; if(!fs.existsSync(p)){console.log('[GATE_SUMMARY] missing'); process.exit(0)} const s=JSON.parse(fs.readFileSync(p,'utf8')); console.log('[GATE_SUMMARY] overall_pass=',s.overall_pass,'min_pass_rate=',s.min_pass_rate,'min_avg_score=',s.min_avg_score); for(const r of (s.reports||[])){console.log('[GATE_SUMMARY]',r.file,'pass=',r.pass,'pass_rate=',r.pass_rate,'avg_score=',r.avg_score,'failed=',r.failed)}"
 
       - name: Upload benchmark report artifacts
-        if: ${{ always() && secrets.NO1KMEDI_API_KEY != '' }}
+        if: ${{ always() && env.NO1KMEDI_API_KEY != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: no1kmedi-benchmark-reports-${{ github.ref_name }}-${{ github.run_number }}
