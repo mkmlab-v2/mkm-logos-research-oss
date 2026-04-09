@@ -207,6 +207,17 @@ def _enterprise_key_list() -> list[str]:
     return [k.strip() for k in raw.split(",") if k.strip()]
 
 
+@lru_cache(maxsize=1)
+def _live_eval_min_tokens() -> int:
+    """Minimum input token count to run live eval for enterprise hydration."""
+    raw = os.environ.get("COMPRESSION_API_LIVE_EVAL_MIN_TOKENS", "12").strip()
+    try:
+        val = int(raw)
+    except ValueError:
+        return 12
+    return max(0, val)
+
+
 def _resolve_tier(request: Request) -> str:
     """public | enterprise — enterprise only if key matches COMPRESSION_API_ENTERPRISE_KEYS."""
     keys = _enterprise_key_list()
@@ -224,9 +235,16 @@ def _resolve_tier(request: Request) -> str:
     return "public"
 
 
-def _estimate_metrics_from_text(text: str, savings_ratio: float) -> CompressionMetrics:
-    bytes_in = len(text.encode("utf-8"))
-    token_in = len(TOKEN_RE.findall(text))
+def _text_size_tokens(text: str) -> tuple[int, int]:
+    """Return (bytes_in, token_in) once so callers can avoid duplicate regex scans."""
+    return len(text.encode("utf-8")), len(TOKEN_RE.findall(text))
+
+
+def _estimate_metrics_from_text(
+    text: str, savings_ratio: float, *, bytes_in: int | None = None, token_in: int | None = None
+) -> CompressionMetrics:
+    if bytes_in is None or token_in is None:
+        bytes_in, token_in = _text_size_tokens(text)
     token_out = max(1, int(round(token_in * (1.0 - savings_ratio)))) if token_in > 0 else 0
     # Convert token proxy back to byte estimate using input average bytes/token.
     avg_bpt = (bytes_in / token_in) if token_in > 0 else 0.0
@@ -247,7 +265,9 @@ def _estimate_hydrated_metrics(text: str) -> CompressionMetrics | None:
     return _estimate_metrics_from_text(text, ratio)
 
 
-def _live_eval_metrics(text: str) -> tuple[CompressionMetrics | None, float, str | None]:
+def _live_eval_metrics(
+    text: str, *, bytes_in: int | None = None, token_in: int | None = None
+) -> tuple[CompressionMetrics | None, float, str | None]:
     selected = _decision_selected_profile()
     strategy = str(selected.get("strategy", "A"))
     intensity = str(selected.get("intensity", "extreme"))
@@ -280,8 +300,8 @@ def _live_eval_metrics(text: str) -> tuple[CompressionMetrics | None, float, str
         comp_block = report.get("compression_metrics", {})
         ratio = float(comp_block.get("global_token_saving_rate", 0.0))
         cases = comp_block.get("cases", [])
-        bytes_in = len(text.encode("utf-8"))
-        token_in = len(TOKEN_RE.findall(text))
+        if bytes_in is None or token_in is None:
+            bytes_in, token_in = _text_size_tokens(text)
         bytes_out: int
         token_out: int
         if isinstance(cases, list) and cases:
@@ -294,7 +314,9 @@ def _live_eval_metrics(text: str) -> tuple[CompressionMetrics | None, float, str
                 bytes_out = 1
         else:
             # Fallback when report shape is unexpected.
-            est = _estimate_metrics_from_text(text, max(0.0, min(1.0, ratio)))
+            est = _estimate_metrics_from_text(
+                text, max(0.0, min(1.0, ratio)), bytes_in=bytes_in, token_in=token_in
+            )
             bytes_out = est.bytes_out
             token_out = int(est.token_out or 0)
         metrics = CompressionMetrics(
@@ -396,6 +418,7 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
         "sla_track": "literal" if tier == "public" else "active",
     }
     live_metrics_cache: tuple[CompressionMetrics | None, float, str | None] | None = None
+    bytes_in, token_in = _text_size_tokens(body.text)
     if body.hydration_hints is not None and body.hydration_hints.atom_ids:
         flags["hydration_atom_id_count"] = len(body.hydration_hints.atom_ids)
 
@@ -408,7 +431,7 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
         )
         use_ultra_literal = runner_hint in {"ultra_literal", "ultra-literal", "precision_first"}
         public_ratio = ultra_literal_rate if use_ultra_literal else literal_rate
-        metrics = _estimate_metrics_from_text(body.text, public_ratio)
+        metrics = _estimate_metrics_from_text(body.text, public_ratio, bytes_in=bytes_in, token_in=token_in)
         flags["sla_track"] = "ultra_literal" if use_ultra_literal else "literal"
         flags["metrics_mode"] = "ultra_literal_kpi_estimate" if use_ultra_literal else "literal_kpi_estimate"
         if body.eval_context is not None and bool(body.eval_context.hydrate_live_eval):
@@ -439,15 +462,21 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
     metrics_mode = "none"
     if body.eval_context is not None and bool(body.eval_context.hydrate_metrics):
         if bool(body.eval_context.hydrate_live_eval):
-            metrics, latency_ms, live_err = _live_eval_metrics(body.text)
-            live_metrics_cache = (metrics, latency_ms, live_err)
-            flags["hydration_live_eval_elapsed_ms"] = latency_ms
-            if live_err:
-                flags["hydration_live_eval_failed"] = True
-                flags["hydration_live_eval_error_class"] = live_err
-            if metrics is not None:
-                flags["hydration_metrics_source"] = "live_evaluate_report"
-                metrics_mode = "live"
+            min_tok = _live_eval_min_tokens()
+            if token_in >= min_tok:
+                metrics, latency_ms, live_err = _live_eval_metrics(body.text, bytes_in=bytes_in, token_in=token_in)
+                live_metrics_cache = (metrics, latency_ms, live_err)
+                flags["hydration_live_eval_elapsed_ms"] = latency_ms
+                if live_err:
+                    flags["hydration_live_eval_failed"] = True
+                    flags["hydration_live_eval_error_class"] = live_err
+                if metrics is not None:
+                    flags["hydration_metrics_source"] = "live_evaluate_report"
+                    metrics_mode = "live"
+            else:
+                flags["hydration_live_eval_skipped"] = True
+                flags["hydration_live_eval_skip_reason"] = "short_input"
+                flags["hydration_live_eval_min_tokens"] = min_tok
         if metrics is None:
             metrics = _estimate_hydrated_metrics(body.text)
             if metrics is None:
@@ -466,7 +495,9 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
             shadow_metrics, shadow_latency_ms, shadow_err = live_metrics_cache
             flags["shadow_live_eval_reused_from_hydration"] = True
         else:
-            shadow_metrics, shadow_latency_ms, shadow_err = _live_eval_metrics(body.text)
+            shadow_metrics, shadow_latency_ms, shadow_err = _live_eval_metrics(
+                body.text, bytes_in=bytes_in, token_in=token_in
+            )
         flags["shadow_mode"] = "enabled"
         flags["shadow_elapsed_ms"] = shadow_latency_ms
         if shadow_err:

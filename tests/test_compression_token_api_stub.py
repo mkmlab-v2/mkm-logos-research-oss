@@ -168,7 +168,11 @@ def test_compress_hydrates_metrics_when_requested():
         assert d.get("integrity_flags", {}).get("hydration_metrics_unavailable") is True
 
 
-def test_compress_prefers_live_eval_when_requested():
+def test_compress_prefers_live_eval_when_requested(monkeypatch):
+    from scripts import compression_token_api_stub as stub
+
+    monkeypatch.setenv("COMPRESSION_API_LIVE_EVAL_MIN_TOKENS", "0")
+    stub._live_eval_min_tokens.cache_clear()
     payload = {
         "text": "live eval hydration path 성능 테스트",
         "eval_context": {
@@ -199,6 +203,8 @@ def test_compress_prefers_live_eval_when_requested():
 def test_compress_reuses_live_eval_for_shadow_compare(monkeypatch):
     from scripts import compression_token_api_stub as stub
 
+    monkeypatch.setenv("COMPRESSION_API_LIVE_EVAL_MIN_TOKENS", "0")
+    stub._live_eval_min_tokens.cache_clear()
     calls = {"n": 0}
 
     def _fake_live_eval(text: str, *, bytes_in=None, token_in=None):
@@ -236,6 +242,29 @@ def test_compress_reuses_live_eval_for_shadow_compare(monkeypatch):
     assert flags.get("shadow_live_eval_reused_from_hydration") is True
 
 
+def test_compress_skips_live_eval_for_short_input(monkeypatch):
+    from scripts import compression_token_api_stub as stub
+
+    monkeypatch.setenv("COMPRESSION_API_LIVE_EVAL_MIN_TOKENS", "999")
+    stub._live_eval_min_tokens.cache_clear()
+    r = client.post(
+        "/v1/compress",
+        json={
+            "text": "short live eval skip",
+            "eval_context": {
+                "hydrate_metrics": True,
+                "hydrate_live_eval": True,
+            },
+        },
+    )
+    assert r.status_code == 200
+    data = r.json()
+    flags = data.get("integrity_flags", {})
+    assert flags.get("hydration_live_eval_skipped") is True
+    assert flags.get("hydration_live_eval_skip_reason") == "short_input"
+    assert data.get("compression_metrics") is not None
+
+
 def test_expand_roundtrip_echo():
     r0 = client.post("/v1/compress", json={"text": "roundtrip"})
     p = r0.json()
@@ -271,7 +300,10 @@ def test_openapi_compress_examples_parity(tmp_path, monkeypatch):
 
     expected_mode: dict[str, str | set[str]] = {
         "mode_none": "none",
-        "mode_public_ultra_literal": "ultra_literal_kpi_estimate",
+        # public_ultra_literal depends on tier config:
+        # - with enterprise key policy + missing key: ultra_literal_kpi_estimate
+        # - without enterprise key policy: enterprise default, no hydration -> none
+        "mode_public_ultra_literal": {"ultra_literal_kpi_estimate", "none"},
         "mode_decision_fallback": "decision_fallback",
         "mode_live": {"live", "decision_fallback"},  # live may fallback in constrained env
         "mode_hydrate_with_meter_log": "decision_fallback",
