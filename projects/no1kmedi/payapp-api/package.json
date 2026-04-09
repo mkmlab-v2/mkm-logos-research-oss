@@ -6,9 +6,22 @@
   "scripts": {
     "start": "node server.js",
     "smoke": "node smoke-chat.mjs",
-    "smoke:prod": "node smoke-chat.mjs --prod"
+    "smoke:local": "powershell -NoProfile -Command \"$env:API_BASE='http://127.0.0.1:3847'; node smoke-chat.mjs\"",
+    "smoke:prod": "node smoke-chat.mjs --prod",
+    "check:local-llm": "node check-local-llm.mjs",
+    "verify:local": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\run-local-verify.ps1",
+    "eval:hanui": "node eval-hanui-local.mjs",
+    "eval:fusion": "powershell -NoProfile -Command \"$env:BENCHMARK_FILE='benchmarks/hanui_fusion_benchmark_v2.jsonl'; node eval-hanui-local.mjs\"",
+    "eval:fusion:report": "powershell -NoProfile -Command \"if (-not $env:API_BASE) { $env:API_BASE='http://127.0.0.1:3851' }; if (-not $env:EVAL_TIMEOUT_MS) { $env:EVAL_TIMEOUT_MS='60000' }; $env:BENCHMARK_FILE='benchmarks/hanui_fusion_benchmark_v2.jsonl'; $env:EVAL_OUT_FILE='benchmarks/fusion_eval_latest.json'; node eval-hanui-local.mjs\"",
+    "eval:clinical:report": "powershell -NoProfile -Command \"if (-not $env:API_BASE) { $env:API_BASE='http://127.0.0.1:3851' }; if (-not $env:EVAL_TIMEOUT_MS) { $env:EVAL_TIMEOUT_MS='60000' }; $env:BENCHMARK_FILE='benchmarks/no1kmedi_clinical_benchmark_v1.jsonl'; $env:EVAL_OUT_FILE='benchmarks/no1kmedi_clinical_eval_latest.json'; node eval-hanui-local.mjs\"",
+    "eval:mkmlife:report": "powershell -NoProfile -Command \"if (-not $env:API_BASE) { $env:API_BASE='http://127.0.0.1:3851' }; if (-not $env:EVAL_TIMEOUT_MS) { $env:EVAL_TIMEOUT_MS='60000' }; $env:BENCHMARK_FILE='benchmarks/mkmlife_consumer_benchmark_v1.jsonl'; $env:EVAL_OUT_FILE='benchmarks/mkmlife_eval_latest.json'; node eval-hanui-local.mjs\"",
+    "eval:all:report": "powershell -NoProfile -Command \"if (-not $env:API_BASE) { $env:API_BASE='http://127.0.0.1:3851' }; if (-not $env:EVAL_TIMEOUT_MS) { $env:EVAL_TIMEOUT_MS='60000' }; $env:BENCHMARK_FILE='benchmarks/all_profiles_benchmark_v1.jsonl'; $env:EVAL_OUT_FILE='benchmarks/all_profiles_eval_latest.json'; node eval-hanui-local.mjs\"",
+    "eval:reports:all": "powershell -NoProfile -Command \"if (-not $env:API_BASE) { $env:API_BASE='http://127.0.0.1:3851' }; if (-not $env:EVAL_TIMEOUT_MS) { $env:EVAL_TIMEOUT_MS='60000' }; npm run eval:clinical:report; npm run eval:fusion:report; npm run eval:mkmlife:report; npm run eval:all:report\"",
+    "diag:prod": "node diagnose-prod.mjs",
+    "auto:check": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\auto-recovery-check.ps1"
   },
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2"
   }
 }
