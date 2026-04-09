@@ -16,7 +16,7 @@
 본 기술은 단순 예측 모델이 아니라, 데이터 기반 위험 게이팅을 포함한 다기준 의사결정(MCDA) 엔진이다.  
 동일 데이터셋에서 베이스라인 대비 손실 지표와 의사결정 오류 지표를 비교 검증했으며, 결과는 재현 가능한 스크립트와 산출물로 제출한다.
 
-> 금지 문구: "Zero-Hallucination", "항상 우수", "XX% 개선 확정"  
+> 금지 문구 예시: "Zero-Hallucination", "상시 우월", "XX% 개선 확정"  
 > 허용 문구: "본 실험 조건에서", "신뢰구간 95% 기준", "통계적으로 유의/비유의"
 
 ## 3) 실험 설계 (Protocol)
@@ -78,7 +78,7 @@
 ## 7) 심사위원 대응용 한 문단
 
 본 시스템은 "수익률 극대화" 단일 목적이 아니라, 위험 구간에서의 손실 억제와 의사결정 안정성을 함께 최적화하도록 설계되었다.  
-동일한 공개 데이터와 고정된 실험 조건에서 A/B 비교를 수행하고, 신뢰구간과 검정 결과를 포함한 원시 산출물을 제출해 재현성을 보장한다.  
+동일한 공개 데이터와 고정된 실험 조건에서 A/B 비교를 수행하고, 신뢰구간과 검정 결과를 포함한 원시 산출물을 제출해 재현성을 확인한다.  
 따라서 본 결과는 설명 가능한 운영 성능 지표로 활용 가능하며, 정책/사업 의사결정의 객관적 근거로 사용될 수 있다.
 
 ## 8) 즉시 실행 체크리스트 (내부)
@@ -117,9 +117,10 @@
 
 ## 10) 표현 가이드 (심사/투자 겸용)
 
-- 금지: "Risk Zero", "국가 공인 기술 보증", "항상 우수"
+- 금지: "Risk Zero", "국가 공인 기술 확정", "상시 우월"
 - 권장: "본 사업/실험 조건에서", "검증 프로그램 통과", "재현 가능한 로그 기준"
 - 권장: "비용 절감 가능성"은 근거 수치(인프라 단가/실험 시간/전력 로그)와 함께 제시
+- 공개 문구 필수 고지: "observation lane only", "실거래 아님"
 
 ## 12) Cursor CLI + AIDC 운영 분리 (실행 표준)
 
@@ -169,7 +170,7 @@
   - "4D 압축/복원" 표현을 "다기준 리스크 스코어링(MCDA) + 정책형 토큰 절감"으로 치환
   - 금지/허용 문구를 §2, §10 기준으로 일관화
   - 금지 문구 자동 스캔 실행:
-    - `rg "Zero-Hallucination|항상 우수|XX% 개선 확정|신비주의 엔진|4D 압축/복원" docs/final`
+    - `rg "Zero-Hallucination|상시 우월|XX% 개선 확정|신비주의 엔진|4D 압축/복원" docs/final`
 - 완료 게이트:
   - 대외 제출 스코프(본 문서 + 제출 패키지) 금지 문구 잔존 0건
   - `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`의 구현 서술과 충돌 0건
@@ -279,6 +280,7 @@ Week 2 완료 게이트:
 - 판정: `GO` (최적 후보 `strategy=A`, `intensity=high`, `general_max_saving_rate=0.55`, `sensitive_max_saving_rate=0.6`, `hangul_max_saving_rate=0.6`)
 - 기준 대비: baseline `saving=0.2963`, `jaccard=0.5531` → best candidate `saving=0.4012`, `jaccard=0.6710`, `sensitive_integrity=1.0`
 - 재현성 2회: `general_compression_kpi_gate_v2_run1.json` / `run2.json` 모두 `GO`
+- 국면 스위칭 지표: `general_compression_ab_result_summary_v1.json`의 `regime_switch_metrics.switch_count` 포함
 
 ### 14.4 Week 3 — 90% Track-B 고압축 검증
 
@@ -310,6 +312,10 @@ Week 3 완료 게이트:
 권장 산출물:
 - `docs/final/artifacts/general_compression_external_claims_whitelist_v1.json`
 - `docs/final/artifacts/general_compression_pricing_simulation_v1.csv`
+
+현재 상태(부분 완료):
+- [x] 외부 주장 화이트리스트 생성: `general_compression_external_claims_whitelist_v1.json`
+- [x] 가격/비용 시뮬레이션 CSV 생성: `general_compression_pricing_simulation_v1.csv`
 
 Week 4 완료 게이트:
 - 대외 패키지 과장 문구 0건

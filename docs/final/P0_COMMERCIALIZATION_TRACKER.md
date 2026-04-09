@@ -21,6 +21,8 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 | Vault·NotebookLM 미러 | `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1` 성공 + Vault `notebooklm_sources/_LAST_SYNC.txt` |
 | Windows Phase 1 ops | `projects/bitcoin-trading/memory/v2/ops/ops_phase1_chain_report_latest.json`의 `ts_utc` |
 | 경로 스모크(로컬) | `scripts/verify_p0_constitution_gate_paths.ps1` — 핵심 파일 존재만 점검 |
+| Genesis v3 KJV 연구 사격 (포인터·Verbatim) | `docs/final/artifacts/genesis_v3_kjv_genesis_book_only_latest.json` — `match_stats`·`compression_simulation`(`premises` 전제)·`decode_check_ok`; Prophecy·Track B SSOT와 **합선 금지** |
+| Track B OOS2 SSOT · Genesis document envelope 브리지 | 락 `docs/final/artifacts/trackb_quaternion_generalization_oos2_main_lock_v1.json`, 벤치 산출 `docs/final/artifacts/trackb_quaternion_generalization_v6_round3_6_oos2_len20_oov01_02_ssot_v2.json`, 스키마 `docs/final/artifacts/genesis_v3_dual_track_document_v1.schema.json`, 예시 `docs/final/artifacts/genesis_v3_dual_track_document_v1.trackb_ssot_v2_bridge.example.json` · `docs/final/artifacts/genesis_v3_dual_track_document_trackb_oos2_ssot_v2_bridge_v1.json`; 정합 pytest `tests/test_genesis_v3_dual_track_document_trackb_bridge.py` — Genesis·Track B **합선 금지** |
 | 자동 헬스 체인 | `scripts/run_workspace_automation_health.ps1` — 스모크 → (Vault 마운트 시) NL 미러 → Phase1 readiness → reconcile(드리프트 시 기본 WARN, `-StrictReconcile`로 실패); 압축 KPI: `-IncludeCompressionKpi` (투트랙·시간 증가: `-IncludeLiteralTrack`); **GitHub Actions** `dual-regime-integrity.yml`는 범용+리터럴 `run_ultra_compression_default.py` 재생성 후 KPI 요약으로 파이프라인 무결성 검증 (`-SkipHydrationMix`·`-SkipCompressionAlarm`은 로컬 선택) |
 
 ### 압축·복원 자동화 체인 (상용 전제·최소 개입)
@@ -30,6 +32,13 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 - **산출물 SSOT:** `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`, 리터럴 트랙 시 `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json`, `reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json`, `reports/constitution/btrack_pilot/token_api_hydration_mix_latest.json`.
 - **KPI 임계치·n8n 알람:** `docs/final/artifacts/compression_alarm_thresholds_v1.json` — 체인 종료 시 `scripts/send_compression_kpi_alarm_if_needed.ps1`가 위반 시 `COMPRESSION_KPI_ALARM_WEBHOOK_URL`(없으면 `OPS_ALARM_WEBHOOK_URL`)로 POST; `-SkipCompressionAlarm`로 생략.
 - **Fact-Lock:** 상용 SLA·무손실 단정은 `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` — 스텁만으로 프로덕션 SaaS 주장 금지; 임계치·게이트는 레포·CI에서 확정 후 기록.
+- **Track A 대화형 비용 시뮬레이션 (벤치·GO 연계):** `general_compression_kpi_gate_v2.json`이 **GO**이고 `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`의 `global_token_saving_rate`를 사용 — `py scripts/run_track_a_conversational_cost_simulation.py` → `docs/final/artifacts/track_a_conversational_cost_simulation_latest.json` (실 라우팅·청구서 아님).
+- **Track A 섀도우 코퍼스 재측정 (Phase 1):** `run_ultra_compression_default.py`와 동일 universal 프로파일로 N건 텍스트를 `evaluate_report`에 탑재 — `py scripts/run_track_a_shadow_corpus_eval.py` (`--max-cases`, 선택 `--input-jsonl`) → `docs/final/artifacts/track_a_shadow_corpus_eval_latest.json` · `track_a_shadow_corpus_input_manifest_latest.json` (기본은 V2+로컬 코퍼스 순환; 실제 대화 로그는 JSONL로 주입·개인정보 주의).
+- **비식별 JSONL 샘플·원클릭:** `data/track_a_shadow/conversations_sample_v1.jsonl` → `py scripts/run_track_a_shadow_corpus_eval.py --input-jsonl …` 또는 `scripts/Run-TrackAShadowJsonlSample.ps1` → `docs/final/artifacts/track_a_shadow_corpus_eval_jsonl_sample_latest.json` (+ `track_a_shadow_corpus_input_manifest_jsonl_sample_latest.json`).
+
+### Phase 4.1 — Genesis v3 포인터·Verbatim (연구 레인, KJV 공유 라이브러리)
+
+- [x] 연구: Genesis v3 포인터·Verbatim 하이브리드 — KJV Genesis 전권 연결 입력 기준(입력=코퍼스 절 텍스트 연결) `match_rate_by_utf8_octet`≈0.99, `compression_simulation.estimated_ratio_encoded_over_original`≈0.039(`premises` 전제), `decode_check_ok=true` — SSOT: `docs/final/artifacts/genesis_v3_kjv_genesis_book_only_latest.json`
 
 ## 상용화 3단계 마일스톤 (L1 Core / L2 API / L3 Ops) — Fact-Lock 2026-04
 
@@ -49,8 +58,9 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 | 항목 | 내용 |
 |------|------|
 | **목표 (문서 SSOT)** | 캐노니컬 계약: `docs/final/openapi_token_compression_stub_v1.yaml` + `scripts/compression_token_api_stub.py`. **v2 Trust Packet 초안**: `docs/final/openapi_token_compression_v2_draft.yaml` — **미구현** (동 Fact-Lock §9.1). |
+| **Track A 미터링 (Phase 2 최소)** | `POST /v1/metering/log` — `scripts/core/billing_meter.py` (`append_meter_event`); 기본 로그 `reports/constitution/btrack_pilot/track_a_metering_log_v1.jsonl`, 경로는 `TRACK_A_METERING_LOG_PATH`. `eval_context.meter_log` + `hydrate_metrics` 시 `POST /v1/compress` 응답 직후 동일 로그에 1행 append 가능. 청구·정산 아님. SLA 초안(내부): `docs/final/TRACK_A_SLA_DRAFT.md`. |
 | **자동화 루프 (기계)** | `.github/workflows/no1kmedi-api-smoke.yml`; `no1kmedi-guardian-contract-gate.yml`(동 디렉터리). |
-| **지휘관 게이트** | 프로덕션 배포·**실키·Webhook·Hostinger** 반영은 **수동 승인·주입**. `projects/no1kmedi/payapp-api/` 등 결제·대외 API는 **본 트래커에서 경로만 고정**, 감사·약관은 별도. |
+| **지휘관 게이트** | 프로덕션 배포·**실키·Webhook·Hostinger** 반영은 **수동 승인·주입**. `projects/no1kmedi/payapp-api/` 등 결제·대외 API는 **본 트래커에서 경로만 고정**, 감사·약관은 별도. **경로·VPS PM2·mkmlife 수동 배포 SSOT**: `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md`. |
 | **도구 경계 (Fact-Lock)** | **`ministack.org` MiniStack = AWS 로컬 에뮬레이터**(LocalStack 대안). L2 **에이전트 MCP·타입 가드**와 **동일 명칭·역할로 연결 금지**. 에이전트 도구 입출력은 **JSON Schema 검증 + stdio MCP**(및 기존 OpenAPI 스텁 `openapi_token_compression_stub_v1.yaml` 등)로만 기술한다. |
 | **L2 참조 구현 (실험)** | `experiments/mcp-jsonschema-stdio/` — Python **FastMCP + JSON Schema(Draft 2020-12) + stdio** 최소 서버(`sentiment_ratio` 스텁). 본선·옵스 트리 **미배선**. Copilot SDK 래퍼 실험은 `experiments/copilot-sdk-mcp/` |
 | **a-codeai.com (B2B 도메인·nginx)** | **기계 체크리스트**: apex `GET /`가 압축 스텁(8010)만 받으면 JSON 404가 되므로 **정적 랜딩과 API 경로 분리가 1순위**(작전지휘부 NotebookLM 합의·L2 대외 무결성). 예시: `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example` — `/`·`try_files`는 정적, `/health`·`/v1/`만 `127.0.0.1:8010`. **지휘관**: VPS에서 `sites-enabled` 반영·`sudo nginx -t`·reload·백업. |
@@ -247,3 +257,20 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 
 - 루트 헌장 요약: `CLAUDE.md`, `AGENTS.md`
 - 체질·구현 경계: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`
+
+## 사업계획 업그레이드 연결선 (2026-04-08)
+
+- 연계 문서:
+  - `docs/final/STRATEGY_A_API_MIN_EXPOSURE_POLICY_V1_2026-04-08.md`
+  - `docs/final/STRATEGY_B_IC_DRAFT_CONSERVATIVE_V1_2026-04-08.md`
+- 적용 원칙:
+  - 대외(A): 현재 확정값 중심, 상위 구간은 조건부 문구만 허용
+  - 내부(B): 4대 메가 전선은 구간 해금형 로드맵으로 운영
+
+### NotebookLM 기반 전략 논의 -> 실행 전환 체크리스트
+
+1. NotebookLM에서 [FACT]/[HYPOTHESIS]/[ACTION] 3블록으로 브리핑 생성
+2. [FACT] 블록의 수치를 `docs/final/artifacts` JSON과 대조
+3. `decision`/`decision_90pct_ready` 등 게이트 값 확인 후 단계 지정
+4. Step 4 정렬 pytest 또는 관련 스모크 스크립트 실행 로그 확보
+5. 승인 회의(IC/운영)에는 브리핑이 아니라 "artifact 경로 + exit code"를 근거로 제출
