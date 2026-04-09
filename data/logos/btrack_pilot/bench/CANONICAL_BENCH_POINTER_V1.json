@@ -1,0 +1,20 @@
+{
+  "schema": "btrack_canonical_bench_pointer_v1",
+  "policy_note": "Canonical filenames are the default outputs of the SSOT builder only. Other builders use suffixed paths (see alternate_outputs). Change canonical_builder when team policy changes.",
+  "canonical_builder_script": "scripts/build_btrack_bench_from_observed_logs.py",
+  "canonical_a_track_eval": "data/logos/btrack_pilot/bench/a_track_eval.jsonl",
+  "canonical_b_track_eval": "data/logos/btrack_pilot/bench/b_track_eval.jsonl",
+  "manseryeok_manifest": "data/logos/btrack_pilot/bench/BENCH_MANSERYEOK_SCOPE_MANIFEST_V1.json",
+  "alternate_outputs": {
+    "direct_logs": {
+      "build_script": "scripts/build_btrack_bench_from_direct_logs.py",
+      "a_track_eval": "data/logos/btrack_pilot/bench/a_track_eval_direct_v1.jsonl",
+      "b_track_eval": "data/logos/btrack_pilot/bench/b_track_eval_direct_v1.jsonl"
+    },
+    "cross_ref_bootstrap": {
+      "build_script": "scripts/bootstrap_btrack_bench_from_cross_ref.py",
+      "a_track_eval": "data/logos/btrack_pilot/bench/a_track_eval_cross_ref_bootstrap_v1.jsonl",
+      "b_track_eval": "data/logos/btrack_pilot/bench/b_track_eval_cross_ref_bootstrap_v1.jsonl"
+    }
+  }
+}
