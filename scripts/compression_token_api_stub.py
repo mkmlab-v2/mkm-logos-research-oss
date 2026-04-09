@@ -11,6 +11,7 @@ Tiering (Freemium-style, no billing in stub):
   X-API-Key: <token> or Authorization: Bearer <token> match → enterprise tier (Track A / active KPI).
 - Missing or non-matching key → public tier (Track B / literal KPI estimate only; live evaluate_report suppressed).
 
+POST /v1/metering/log appends one JSONL row (scripts/core/billing_meter.py); env TRACK_A_METERING_LOG_PATH overrides path.
 Production SLA and payment are out of scope for this stub; see P0_COMMERCIALIZATION_TRACKER.md.
 """
 
@@ -32,6 +33,7 @@ if str(ROOT) not in sys.path:
 from fastapi import FastAPI, Request  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
 
+from scripts.core.billing_meter import append_meter_event  # noqa: E402
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
 from scripts.report_multilens_performance_eval import evaluate_report  # noqa: E402
 
@@ -54,6 +56,7 @@ class EvalContext(BaseModel):
     hydrate_metrics: bool | None = None
     hydrate_live_eval: bool | None = None
     hydrate_shadow_compare: bool | None = None
+    meter_log: bool | None = None
 
 
 class HydrationHints(BaseModel):
@@ -97,6 +100,27 @@ class ExpandResponse(BaseModel):
     text: str
     api_contract_version: str = API_CONTRACT_VERSION
     integrity_flags: dict[str, Any] = Field(default_factory=dict)
+
+
+class MeteringLogRequest(BaseModel):
+    sla_track: str
+    tokens_before: int = Field(ge=0)
+    tokens_after: int = Field(ge=0)
+    client_request_id: str | None = None
+    saving_rate: float | None = Field(default=None, ge=0.0, le=1.0)
+    measured_within_target_band_40_50: bool | None = None
+    domain: str | None = None
+    shard_id: str | None = None
+    o200k_tokens_before: int | None = Field(default=None, ge=0)
+    o200k_tokens_after: int | None = Field(default=None, ge=0)
+    notes: str | None = None
+
+
+class MeteringLogResponse(BaseModel):
+    accepted: bool = True
+    api_contract_version: str = API_CONTRACT_VERSION
+    meter_schema: str = "track_a_metering_log_v1"
+    log_path_relative: str | None = None
 
 
 @lru_cache(maxsize=1)
@@ -145,20 +169,22 @@ KPI_SUMMARY = ROOT / "reports" / "constitution" / "btrack_pilot" / "ultra_compre
 
 
 @lru_cache(maxsize=1)
-def _kpi_summary_snapshot() -> tuple[float | None, float | None, str | None]:
-    """(literal global_token_saving_rate, active global_token_saving_rate, ts_utc)."""
+def _kpi_summary_snapshot() -> tuple[float | None, float | None, float | None, str | None]:
+    """(literal global_token_saving_rate, active global_token_saving_rate, ultra_literal rate, ts_utc)."""
     if not KPI_SUMMARY.is_file():
-        return None, None, None
+        return None, None, None, None
     try:
         doc = json.loads(KPI_SUMMARY.read_text(encoding="utf-8"))
     except Exception:
-        return None, None, None
+        return None, None, None, None
     ts = doc.get("ts_utc")
     ts_s = str(ts) if ts is not None else None
     lit = doc.get("literal_kpi") or {}
     act = doc.get("active_kpi") or {}
+    ultra = doc.get("ultra_literal_kpi") or {}
     lr = lit.get("global_token_saving_rate")
     ar = act.get("global_token_saving_rate")
+    ur = ultra.get("global_token_saving_rate")
     try:
         lr_f = float(lr) if lr is not None else None
     except (TypeError, ValueError):
@@ -167,7 +193,11 @@ def _kpi_summary_snapshot() -> tuple[float | None, float | None, str | None]:
         ar_f = float(ar) if ar is not None else None
     except (TypeError, ValueError):
         ar_f = None
-    return lr_f, ar_f, ts_s
+    try:
+        ur_f = float(ur) if ur is not None else None
+    except (TypeError, ValueError):
+        ur_f = None
+    return lr_f, ar_f, ur_f, ts_s
 
 
 def _enterprise_key_list() -> list[str]:
@@ -279,9 +309,56 @@ def _live_eval_metrics(text: str) -> tuple[CompressionMetrics | None, float, str
         return None, round((perf_counter() - t0) * 1000.0, 3), type(exc).__name__
 
 
+def _try_append_meter_from_compress(
+    *,
+    metrics: CompressionMetrics | None,
+    flags: dict[str, Any],
+    client_request_id: str | None,
+    sla_track: str,
+    domain: str,
+    shard_id: str,
+) -> None:
+    """Optional JSONL row when eval_context.meter_log is true and token counts exist."""
+    if metrics is None:
+        flags["meter_log_skipped"] = "no_compression_metrics"
+        return
+    tin, tout = metrics.token_in, metrics.token_out
+    if tin is None or tout is None:
+        flags["meter_log_skipped"] = "missing_token_in_or_token_out"
+        return
+    evt: dict[str, Any] = {
+        "sla_track": sla_track,
+        "tokens_before": int(tin),
+        "tokens_after": int(tout),
+        "client_request_id": client_request_id,
+        "domain": domain,
+        "shard_id": shard_id,
+        "notes": "from_compress_eval_context_meter_log",
+    }
+    if metrics.savings_ratio is not None:
+        evt["saving_rate"] = max(0.0, min(1.0, float(metrics.savings_ratio)))
+    try:
+        append_meter_event(evt)
+        flags["meter_log_appended"] = True
+    except Exception as exc:
+        flags["meter_log_append_failed"] = True
+        flags["meter_log_append_error_class"] = type(exc).__name__
+
+
+@app.post("/v1/metering/log", response_model=MeteringLogResponse)
+def metering_log(body: MeteringLogRequest) -> MeteringLogResponse:
+    """Append one metering row (JSONL). Override path via env TRACK_A_METERING_LOG_PATH."""
+    res = append_meter_event(body.model_dump(exclude_none=True))
+    return MeteringLogResponse(
+        accepted=bool(res.get("accepted")),
+        meter_schema=str(res.get("meter_schema") or "track_a_metering_log_v1"),
+        log_path_relative=res.get("log_path_relative"),
+    )
+
+
 @app.get("/health")
 def health() -> dict[str, Any]:
-    lit_r, act_r, ts_utc = _kpi_summary_snapshot()
+    lit_r, act_r, ultra_r, ts_utc = _kpi_summary_snapshot()
     keys_on = bool(_enterprise_key_list())
     return {
         "status": "ok",
@@ -297,6 +374,7 @@ def health() -> dict[str, Any]:
             "ts_utc": ts_utc,
             "literal_global_token_saving_rate": lit_r,
             "active_global_token_saving_rate": act_r,
+            "ultra_literal_global_token_saving_rate": ultra_r,
         },
     }
 
@@ -305,8 +383,9 @@ def health() -> dict[str, Any]:
 def compress(body: CompressRequest, request: Request) -> CompressResponse:
     tier = _resolve_tier(request)
     route = _router.route(body.text)
-    lit_r, act_r, _k_ts = _kpi_summary_snapshot()
+    lit_r, act_r, ultra_r, _k_ts = _kpi_summary_snapshot()
     literal_rate = float(lit_r) if lit_r is not None else 0.24613220815752457
+    ultra_literal_rate = float(ultra_r) if ultra_r is not None else 0.13220815752461323
     active_rate = float(act_r) if act_r is not None else (_decision_selected_saving_ratio() or 0.49)
 
     flags: dict[str, Any] = {
@@ -316,17 +395,35 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
         "tier": tier,
         "sla_track": "literal" if tier == "public" else "active",
     }
+    live_metrics_cache: tuple[CompressionMetrics | None, float, str | None] | None = None
     if body.hydration_hints is not None and body.hydration_hints.atom_ids:
         flags["hydration_atom_id_count"] = len(body.hydration_hints.atom_ids)
 
     # --- Public: Track B (literal KPI estimate only; no live evaluate_report ---
     if tier == "public":
-        metrics = _estimate_metrics_from_text(body.text, literal_rate)
-        flags["metrics_mode"] = "literal_kpi_estimate"
+        runner_hint = (
+            str(body.eval_context.runner_hint).strip().lower()
+            if body.eval_context is not None and body.eval_context.runner_hint
+            else ""
+        )
+        use_ultra_literal = runner_hint in {"ultra_literal", "ultra-literal", "precision_first"}
+        public_ratio = ultra_literal_rate if use_ultra_literal else literal_rate
+        metrics = _estimate_metrics_from_text(body.text, public_ratio)
+        flags["sla_track"] = "ultra_literal" if use_ultra_literal else "literal"
+        flags["metrics_mode"] = "ultra_literal_kpi_estimate" if use_ultra_literal else "literal_kpi_estimate"
         if body.eval_context is not None and bool(body.eval_context.hydrate_live_eval):
             flags["hydrate_live_eval_suppressed"] = True
             flags["hydrate_live_eval_suppressed_reason"] = "public_tier_use_enterprise_key"
         flags["shadow_mode"] = "disabled"
+        if body.eval_context is not None and bool(body.eval_context.meter_log):
+            _try_append_meter_from_compress(
+                metrics=metrics,
+                flags=flags,
+                client_request_id=body.client_request_id,
+                sla_track=str(flags.get("sla_track") or "literal"),
+                domain=route.domain,
+                shard_id=route.shard_id,
+            )
         return CompressResponse(
             shard_id=route.shard_id,
             domain=route.domain,
@@ -343,6 +440,7 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
     if body.eval_context is not None and bool(body.eval_context.hydrate_metrics):
         if bool(body.eval_context.hydrate_live_eval):
             metrics, latency_ms, live_err = _live_eval_metrics(body.text)
+            live_metrics_cache = (metrics, latency_ms, live_err)
             flags["hydration_live_eval_elapsed_ms"] = latency_ms
             if live_err:
                 flags["hydration_live_eval_failed"] = True
@@ -363,7 +461,12 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
         metrics_mode = "none"
 
     if body.eval_context is not None and bool(body.eval_context.hydrate_shadow_compare):
-        shadow_metrics, shadow_latency_ms, shadow_err = _live_eval_metrics(body.text)
+        if live_metrics_cache is not None:
+            # Avoid duplicate evaluate_report call in the same request when live hydration already ran.
+            shadow_metrics, shadow_latency_ms, shadow_err = live_metrics_cache
+            flags["shadow_live_eval_reused_from_hydration"] = True
+        else:
+            shadow_metrics, shadow_latency_ms, shadow_err = _live_eval_metrics(body.text)
         flags["shadow_mode"] = "enabled"
         flags["shadow_elapsed_ms"] = shadow_latency_ms
         if shadow_err:
@@ -377,6 +480,15 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
     else:
         flags["shadow_mode"] = "disabled"
     flags["metrics_mode"] = metrics_mode
+    if body.eval_context is not None and bool(body.eval_context.meter_log):
+        _try_append_meter_from_compress(
+            metrics=metrics,
+            flags=flags,
+            client_request_id=body.client_request_id,
+            sla_track=str(flags.get("sla_track") or "active"),
+            domain=route.domain,
+            shard_id=route.shard_id,
+        )
     return CompressResponse(
         shard_id=route.shard_id,
         domain=route.domain,

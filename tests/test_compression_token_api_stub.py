@@ -76,6 +76,7 @@ def test_health():
     assert j.get("api_contract_version") == "1.0.0"
     assert j.get("tier_policy", {}).get("enterprise_keys_configured") is False
     assert "kpi_snapshot" in j
+    assert "ultra_literal_global_token_saving_rate" in j.get("kpi_snapshot", {})
 
 
 def test_freemium_public_tier_when_enterprise_keys_configured(monkeypatch):
@@ -90,6 +91,25 @@ def test_freemium_public_tier_when_enterprise_keys_configured(monkeypatch):
 
     assert _resolve_tier(Req({"x-api-key": "wrong"})) == "public"
     assert _resolve_tier(Req({"x-api-key": "secret-enterprise-key"})) == "enterprise"
+
+
+def test_public_tier_can_use_ultra_literal_runner_hint(monkeypatch):
+    monkeypatch.setenv("COMPRESSION_API_ENTERPRISE_KEYS", "secret-enterprise-key")
+    r = client.post(
+        "/v1/compress",
+        json={
+            "text": "public precision-first test 텍스트",
+            "eval_context": {"runner_hint": "ultra_literal"},
+        },
+        headers={"x-api-key": "wrong"},
+    )
+    assert r.status_code == 200
+    data = r.json()
+    assert data.get("integrity_flags", {}).get("tier") == "public"
+    assert data.get("integrity_flags", {}).get("sla_track") == "ultra_literal"
+    assert data.get("integrity_flags", {}).get("metrics_mode") == "ultra_literal_kpi_estimate"
+    metrics = data.get("compression_metrics") or {}
+    assert 0.0 <= float(metrics.get("savings_ratio", -1.0)) <= 1.0
 
 
 def test_compress_returns_shard():
@@ -186,7 +206,9 @@ def test_expand_roundtrip_echo():
     assert body.get("api_contract_version") == "1.0.0"
 
 
-def test_openapi_compress_examples_parity():
+def test_openapi_compress_examples_parity(tmp_path, monkeypatch):
+    meter_path = tmp_path / "openapi_compress_meter.jsonl"
+    monkeypatch.setenv("TRACK_A_METERING_LOG_PATH", str(meter_path))
     yaml = __import__("pytest").importorskip("yaml")
     spec = yaml.safe_load(OPENAPI_STUB.read_text(encoding="utf-8"))
     examples = (
@@ -198,12 +220,13 @@ def test_openapi_compress_examples_parity():
         .get("application/json", {})
         .get("examples", {})
     )
-    assert {"mode_none", "mode_decision_fallback", "mode_live"} <= set(examples.keys())
+    assert {"mode_none", "mode_decision_fallback", "mode_live", "mode_hydrate_with_meter_log"} <= set(examples.keys())
 
     expected_mode: dict[str, str | set[str]] = {
         "mode_none": "none",
         "mode_decision_fallback": "decision_fallback",
         "mode_live": {"live", "decision_fallback"},  # live may fallback in constrained env
+        "mode_hydrate_with_meter_log": "decision_fallback",
     }
     mismatches: list[dict] = []
     for key, item in examples.items():
@@ -241,6 +264,7 @@ def test_openapi_compress_examples_parity():
     if mismatches:
         _write_parity_debug({"kind": "compress_examples_parity"}, mismatches)
     assert not mismatches
+    assert meter_path.read_text(encoding="utf-8").strip()
 
 
 def test_openapi_expand_examples_parity():
@@ -277,3 +301,64 @@ def test_openapi_expand_examples_parity():
     if mismatches:
         _write_parity_debug({"kind": "expand_examples_parity"}, mismatches)
     assert not mismatches
+
+
+def test_openapi_includes_metering_log_path():
+    yaml = __import__("pytest").importorskip("yaml")
+    spec = yaml.safe_load(OPENAPI_STUB.read_text(encoding="utf-8"))
+    assert "/v1/metering/log" in spec.get("paths", {})
+
+
+def test_metering_log_append(tmp_path, monkeypatch):
+    log = tmp_path / "meter.jsonl"
+    monkeypatch.setenv("TRACK_A_METERING_LOG_PATH", str(log))
+    r = client.post(
+        "/v1/metering/log",
+        json={
+            "sla_track": "active",
+            "tokens_before": 100,
+            "tokens_after": 51,
+            "saving_rate": 0.49,
+        },
+    )
+    assert r.status_code == 200
+    j = r.json()
+    assert j.get("accepted") is True
+    assert j.get("meter_schema") == "track_a_metering_log_v1"
+    lines = log.read_text(encoding="utf-8").strip().splitlines()
+    assert len(lines) == 1
+    row = json.loads(lines[0])
+    assert row["tokens_before"] == 100
+    assert row["meter_schema"] == "track_a_metering_log_v1"
+
+
+def test_metering_log_validation_422():
+    r = client.post(
+        "/v1/metering/log",
+        json={"sla_track": "active", "tokens_before": -1, "tokens_after": 0},
+    )
+    assert r.status_code == 422
+
+
+def test_compress_meter_log_appends_jsonl(tmp_path, monkeypatch):
+    log = tmp_path / "meter_from_compress.jsonl"
+    monkeypatch.setenv("TRACK_A_METERING_LOG_PATH", str(log))
+    r = client.post(
+        "/v1/compress",
+        json={
+            "text": "meter log test hangul 테스트",
+            "client_request_id": "req-meter-compress-1",
+            "eval_context": {
+                "hydrate_metrics": True,
+                "meter_log": True,
+            },
+        },
+    )
+    assert r.status_code == 200
+    data = r.json()
+    assert data.get("integrity_flags", {}).get("meter_log_appended") is True
+    lines = log.read_text(encoding="utf-8").strip().splitlines()
+    assert len(lines) == 1
+    row = json.loads(lines[0])
+    assert row.get("client_request_id") == "req-meter-compress-1"
+    assert row.get("notes") == "from_compress_eval_context_meter_log"
