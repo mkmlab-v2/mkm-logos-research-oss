@@ -13,6 +13,7 @@ ROUND2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_RO
 DECISION = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
 ACTIVE = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
 ACTIVE_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json"
+ACTIVE_ULTRA_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json"
 HYDRATION_MIX = ROOT / "reports" / "constitution" / "btrack_pilot" / "token_api_hydration_mix_latest.json"
 OUT = ROOT / "reports" / "constitution" / "btrack_pilot" / "ultra_compression_kpi_summary_latest.json"
 
@@ -44,6 +45,7 @@ def main() -> int:
     decision = _load(DECISION)
     active = _load(ACTIVE)
     active_literal = _load(ACTIVE_LITERAL)
+    active_ultra_literal = _load(ACTIVE_ULTRA_LITERAL)
     hyd = _load(HYDRATION_MIX)
 
     selected = decision.get("selected_candidate", {}) if isinstance(decision, dict) else {}
@@ -58,6 +60,7 @@ def main() -> int:
             "decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
             "active": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
             "literal_active": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json",
+            "ultra_literal_active": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json",
             "hydration_mix": "reports/constitution/btrack_pilot/token_api_hydration_mix_latest.json",
         },
         "decision": {
@@ -76,6 +79,11 @@ def main() -> int:
         "literal_kpi": (
             _kpi_from_report(active_literal)
             if ACTIVE_LITERAL.is_file() and isinstance(active_literal.get("compression_metrics"), dict)
+            else None
+        ),
+        "ultra_literal_kpi": (
+            _kpi_from_report(active_ultra_literal)
+            if ACTIVE_ULTRA_LITERAL.is_file() and isinstance(active_ultra_literal.get("compression_metrics"), dict)
             else None
         ),
         "performance": {

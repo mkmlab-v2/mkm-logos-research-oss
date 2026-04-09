@@ -20,6 +20,7 @@ BASELINE_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVA
 DECISION = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
 ACTIVE_REPORT = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
 ACTIVE_REPORT_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json"
+ACTIVE_REPORT_ULTRA_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json"
 
 # Track B (literal-priority): conservative caps — see docs/final/COMPRESSION_SLA_POLICY_V1.md
 LITERAL_STRATEGY = "C"
@@ -28,14 +29,61 @@ LITERAL_GENERAL_MAX_SAVING = 0.28
 LITERAL_SENSITIVE_MAX_SAVING = 0.26
 LITERAL_HANGUL_MAX_SAVING = 0.30
 
+# Track B — Ultra-Literal (research): maximize Jaccard toward 1.0; accept very low saving — same strategy C.
+# Bench proxy: cmp2_001–010 = EN policy/ops (finance-adjacent); cmp2_011–040 = Korean medical/sasang lines.
+ULTRA_LITERAL_STRATEGY = "C"
+ULTRA_LITERAL_INTENSITY = "high"
+ULTRA_LITERAL_GENERAL_MAX_SAVING = 0.06
+ULTRA_LITERAL_SENSITIVE_MAX_SAVING = 0.06
+ULTRA_LITERAL_HANGUL_MAX_SAVING = 0.08
+
+_FINANCE_OPS_PROXY_IDS = frozenset(f"cmp2_{i:03d}" for i in range(1, 11))
+_MEDICAL_KO_PROXY_IDS = frozenset(f"cmp2_{i:03d}" for i in range(11, 41))
+
+
+def _precision_subset_metrics(cases: list[dict]) -> dict[str, object]:
+    """Aggregate Jaccard/saving by bench proxy domain (MULTILENS V2 id bands)."""
+
+    def _agg(id_set: frozenset, label: str) -> dict[str, object] | None:
+        rows = [c for c in cases if str(c.get("id", "")) in id_set]
+        if not rows:
+            return None
+        n = len(rows)
+        jac = sum(float(r.get("reconstruction_fidelity_jaccard") or 0.0) for r in rows) / n
+        sav = sum(float(r.get("token_saving_rate") or 0.0) for r in rows) / n
+        o200k = [float(r["o200k_saving_rate"]) for r in rows if r.get("o200k_saving_rate") is not None]
+        return {
+            "label": label,
+            "case_count": n,
+            "avg_reconstruction_fidelity_jaccard": jac,
+            "avg_token_saving_rate": sav,
+            "avg_o200k_saving_rate": (sum(o200k) / len(o200k)) if o200k else None,
+        }
+
+    out: dict[str, object] = {
+        "schema": "compression_precision_domain_subsets_v1",
+        "note": "Proxy bands on MULTILENS_PERFORMANCE_EVAL_INPUT_V2: finance_ops_en=cmp2_001–010; medical_ko=cmp2_011–040.",
+    }
+    fo = _agg(_FINANCE_OPS_PROXY_IDS, "finance_ops_en_proxy")
+    mk = _agg(_MEDICAL_KO_PROXY_IDS, "medical_ko_proxy")
+    if fo:
+        out["finance_ops_en_proxy"] = fo
+    if mk:
+        out["medical_ko_proxy"] = mk
+    return out
+
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Run ultra compression default profile (Track A universal or Track B literal).")
     ap.add_argument(
         "--mode",
-        choices=("universal", "literal"),
+        choices=("universal", "literal", "ultra-literal"),
         default="universal",
-        help="universal: decision-driven ops profile (default). literal: conservative caps for higher fidelity.",
+        help=(
+            "universal: decision-driven ops profile (default). "
+            "literal: conservative caps for higher fidelity. "
+            "ultra-literal: research profile — very low saving caps, Jaccard toward 1.0 (see COMPRESSION_SLA_POLICY_V1)."
+        ),
     )
     args = ap.parse_args()
     sla_track = str(args.mode)
@@ -51,6 +99,12 @@ def main() -> int:
         general_max_saving_rate = LITERAL_GENERAL_MAX_SAVING
         sensitive_max_saving_rate = LITERAL_SENSITIVE_MAX_SAVING
         hangul_max_saving_rate = LITERAL_HANGUL_MAX_SAVING
+    elif sla_track == "ultra-literal":
+        strategy = ULTRA_LITERAL_STRATEGY
+        intensity = ULTRA_LITERAL_INTENSITY
+        general_max_saving_rate = ULTRA_LITERAL_GENERAL_MAX_SAVING
+        sensitive_max_saving_rate = ULTRA_LITERAL_SENSITIVE_MAX_SAVING
+        hangul_max_saving_rate = ULTRA_LITERAL_HANGUL_MAX_SAVING
     else:
         strategy = str(selected.get("strategy", "B"))
         intensity = str(selected.get("intensity", "extreme"))
@@ -95,7 +149,19 @@ def main() -> int:
         "sensitive_max_saving_rate": sensitive_max_saving_rate,
         "hangul_max_saving_rate": hangul_max_saving_rate,
     }
-    out_path = ACTIVE_REPORT_LITERAL if sla_track == "literal" else ACTIVE_REPORT
+    if sla_track == "ultra-literal":
+        cases = (report.get("compression_metrics") or {}).get("cases") or []
+        if cases:
+            report["compression_metrics"]["precision_domain_subsets"] = _precision_subset_metrics(cases)
+        report["active_profile"]["research_note"] = (
+            "Ultra-Literal: minimize token economy to approach lossless reconstruction on the V2 bench; "
+            "not a compliance seal for regulated medical/financial advice."
+        )
+    out_path = (
+        ACTIVE_REPORT_ULTRA_LITERAL
+        if sla_track == "ultra-literal"
+        else (ACTIVE_REPORT_LITERAL if sla_track == "literal" else ACTIVE_REPORT)
+    )
     out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {out_path}")
     return 0

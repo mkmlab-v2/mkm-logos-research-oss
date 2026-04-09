@@ -2,7 +2,8 @@ param(
     [string]$WorkspaceRoot = "C:\workspace",
     [switch]$SkipHydrationMix,
     [switch]$SkipCompressionAlarm,
-    [switch]$IncludeLiteralTrack
+    [switch]$IncludeLiteralTrack,
+    [switch]$IncludeUltraLiteralTrack
 )
 
 $ErrorActionPreference = "Stop"
@@ -15,6 +16,12 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 if ($IncludeLiteralTrack) {
     Write-Host "=== run_ultra_compression_default.py --mode literal ===" -ForegroundColor Cyan
     py scripts\run_ultra_compression_default.py --mode literal
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if ($IncludeUltraLiteralTrack) {
+    Write-Host "=== run_ultra_compression_default.py --mode ultra-literal (research) ===" -ForegroundColor Cyan
+    py scripts\run_ultra_compression_default.py --mode ultra-literal
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
@@ -35,6 +42,12 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 if ($IncludeLiteralTrack) {
     Write-Host "=== report_compression_jaccard_loss_patterns.py (literal) ===" -ForegroundColor Cyan
     py scripts\report_compression_jaccard_loss_patterns.py --sla-track literal
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if ($IncludeUltraLiteralTrack) {
+    Write-Host "=== report_compression_jaccard_loss_patterns.py (ultra_literal) ===" -ForegroundColor Cyan
+    py scripts\report_compression_jaccard_loss_patterns.py --sla-track ultra_literal
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 

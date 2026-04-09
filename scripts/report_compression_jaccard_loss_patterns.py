@@ -19,8 +19,10 @@ from scripts.report_multilens_performance_eval import _norm_words
 INPUT_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json"
 ACTIVE_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
 ACTIVE_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json"
+ACTIVE_ULTRA_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json"
 OUT = ROOT / "reports" / "constitution" / "btrack_pilot" / "compression_jaccard_loss_patterns_latest.json"
 OUT_LITERAL = ROOT / "reports" / "constitution" / "btrack_pilot" / "compression_jaccard_loss_patterns_literal_latest.json"
+OUT_ULTRA_LITERAL = ROOT / "reports" / "constitution" / "btrack_pilot" / "compression_jaccard_loss_patterns_ultra_literal_latest.json"
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -28,9 +30,9 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--input", default=str(INPUT_V2), help="Bench input JSON with raw_text per case id")
     p.add_argument(
         "--sla-track",
-        choices=("universal", "literal"),
+        choices=("universal", "literal", "ultra_literal"),
         default="universal",
-        help="Select default active report + output: universal (ops) or literal (Track B).",
+        help="Select active report + output: universal (ops), literal (Track B), or ultra_literal (research).",
     )
     p.add_argument(
         "--active-report",
@@ -45,9 +47,15 @@ def main() -> int:
     args = _parser().parse_args()
     inp_path = Path(args.input)
     active_path = Path(args.active_report) if args.active_report else (
-        ACTIVE_LITERAL if args.sla_track == "literal" else ACTIVE_DEFAULT
+        ACTIVE_ULTRA_LITERAL
+        if args.sla_track == "ultra_literal"
+        else (ACTIVE_LITERAL if args.sla_track == "literal" else ACTIVE_DEFAULT)
     )
-    out_path = Path(args.output) if args.output else (OUT_LITERAL if args.sla_track == "literal" else OUT)
+    out_path = Path(args.output) if args.output else (
+        OUT_ULTRA_LITERAL
+        if args.sla_track == "ultra_literal"
+        else (OUT_LITERAL if args.sla_track == "literal" else OUT)
+    )
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     src = json.loads(inp_path.read_text(encoding="utf-8"))

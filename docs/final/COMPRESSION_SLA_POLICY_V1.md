@@ -23,6 +23,14 @@ Separate **service expectations** for (A) default multi-lens bench / ops compres
 - **Artifacts:** `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json` (does not overwrite Track A active report).
 - **Example bench snapshot (V2 input, refresh to reproduce):** on a representative run, average reconstruction fidelity (Jaccard) moved to approximately **0.92** with global token saving near **0.25** — illustrative only; re-run the script for current numbers.
 
+### Track B — Ultra-Literal (research, precision-first)
+
+- **Role:** Same strategy `C` / intensity `high`, but **much lower saving caps** (order ~0.06 general/sensitive, ~0.08 Hangul on the reference implementation) so reconstruction Jaccard approaches **1.0** on the V2 bench, at the cost of token economy. Targets **precision-heavy proxy bands** on that bench: `cmp2_001`–`010` (EN policy/ops, finance-adjacent) and `cmp2_011`–`040` (Korean medical/sasang lines). Subset aggregates are written under `compression_metrics.precision_domain_subsets` in the active report.
+- **Command:** `py scripts/run_ultra_compression_default.py --mode ultra-literal`
+- **Artifact:** `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json` (does not overwrite Track A or Track B literal reports).
+- **Automation (optional):** `scripts/run_compression_automation_chain.ps1 -IncludeUltraLiteralTrack` (also runs loss-pattern report for `--sla-track ultra_literal`).
+- **Boundaries:** Research profile only — not a compliance seal for regulated medical or financial advice; webhook alarms remain **Track A `active_kpi`** per section 3.
+
 ## 3. Boundaries
 
 - Track B does **not** replace dedicated legal, wallet, or clinical verification pipelines. It is a **compression profile**, not a compliance seal.
@@ -35,7 +43,9 @@ Separate **service expectations** for (A) default multi-lens bench / ops compres
 |-------|---------|
 | A | `py scripts/run_ultra_compression_default.py` or `--mode universal` |
 | B | `py scripts/run_ultra_compression_default.py --mode literal` |
+| B ultra-literal (research) | `py scripts/run_ultra_compression_default.py --mode ultra-literal` |
 | Full chain + Track B + dual loss reports | `scripts/run_compression_automation_chain.ps1 -IncludeLiteralTrack` |
+| Full chain + ultra-literal + loss patterns | `scripts/run_compression_automation_chain.ps1 -IncludeUltraLiteralTrack` (can combine with `-IncludeLiteralTrack`) |
 | Workspace health + two-track compression | `scripts/run_workspace_automation_health.ps1 -IncludeCompressionKpi -IncludeLiteralTrack` (optional; adds runtime vs `-IncludeCompressionKpi` alone) |
 
 KPI summary (`reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json`) includes optional `literal_kpi` when `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json` is present.

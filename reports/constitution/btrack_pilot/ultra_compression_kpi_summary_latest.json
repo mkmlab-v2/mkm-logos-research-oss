@@ -1,11 +1,12 @@
 {
   "schema": "ultra_compression_kpi_summary_v1",
-  "ts_utc": "2026-04-07T01:01:30.927309+00:00",
+  "ts_utc": "2026-04-09T05:20:38.793758+00:00",
   "sources": {
     "round2": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json",
     "decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
     "active": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
     "literal_active": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json",
+    "ultra_literal_active": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json",
     "hydration_mix": "reports/constitution/btrack_pilot/token_api_hydration_mix_latest.json"
   },
   "decision": {
@@ -34,6 +35,17 @@
   "literal_kpi": {
     "global_token_saving_rate": 0.24613220815752457,
     "avg_reconstruction_fidelity_jaccard": 0.9189203211649032,
+    "avg_sensitive_integrity": 1.0,
+    "jaccard_drop_pp": 0.0,
+    "jaccard_guardrail_ok": true,
+    "ultra_saving_50_ok": false,
+    "ultra_saving_policy_ok": false,
+    "ultra_saving_policy_min": 0.49,
+    "sensitive_integrity_ok": true
+  },
+  "ultra_literal_kpi": {
+    "global_token_saving_rate": 0.13220815752461323,
+    "avg_reconstruction_fidelity_jaccard": 0.9917661801562729,
     "avg_sensitive_integrity": 1.0,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
