@@ -30,17 +30,20 @@
 
 ## 2. SSH Cursor에서 할 일 (순서)
 
-### 2.0 원격 터미널 시작 경로 (`/root/E:\...` 방지)
+### 2.0 통합 터미널 cwd·Windows 경로 혼선 방지
 
-로컬에서 쓰던 **Windows 절대 경로**(`E:\workspace\...` 등)가 User 설정의 `terminal.integrated.cwd`에 남아 있으면, SSH로 붙은 Linux 통합 터미널이 `/root/E:\workspace\...`처럼 **존재하지 않는 경로**를 cwd로 잡을 수 있다(백업 드라이브 문제가 아니라 Cursor/VS Code 설정·최근 폴더 혼선).
+**증상**: 터미널이 뜨지 않고 `Starting directory (cwd) "/root/E:\workspace\..." does not exist` 같은 메시지가 난다. **E: 드라이브 문제가 아니라**, 로컬(User) 설정에 남은 **`terminal.integrated.cwd` Windows 경로**가 SSH(Remote) 세션과 합쳐져 경로가 깨진 것이다.
 
-**조치 (Windows 쪽 Cursor에서, SSH 연결 상태)**
+**레포 측**: 이 저장소 루트의 `.vscode/settings.json`에서 통합 터미널 시작 디렉터리를 **`${workspaceFolder}`** 로 고정한다(SSH에서 연 폴더 = 실제 Linux 레포 루트).
 
-1. `Ctrl+Shift+P` → **Preferences: Open Remote Settings (SSH: …)** (또는 설정 UI 상단 **Remote [SSH: 호스트명]** 탭).
-2. 검색: `terminal integrated cwd` → 값이 `E:\...`이면 **삭제**하거나, 원격에서만 쓸 **Linux 경로**만 입력(예: `/root`, 실제 레포 루트).
-3. **File → Open Folder**로 서버의 **Linux 경로만** 연다(Recent의 `E:\...`로 SSH 창을 열지 않는다).
-4. 이 레포를 원격에서 열면 루트 `.vscode/settings.json`의 `"terminal.integrated.cwd": "${workspaceFolder}"`가 워크스페이스 폴더 기준으로 cwd를 맞춘다(여전히 User 설정에 Windows 경로가 있으면 Remote 설정에서 먼저 비우는 것이 안전하다).
-5. **Developer: Reload Window** 후 터미널을 새로 연다.
+**클라이언트 측 (Windows에서 쓰는 Cursor — SSH 연결된 창에서)**:
+
+1. `Ctrl+Shift+P` → **`Preferences: Open Remote Settings (JSON)`**. 여기에 키가 없으면 **`Preferences: Open User Settings (JSON)`**에서도 `"terminal.integrated.cwd"`를 찾는다.
+2. 해당 키가 `E:\...`(JSON에서는 `E:\\...`)이면 **줄 전체를 삭제**한다. 설정 UI를 쓸 경우: `Ctrl+,` → **terminal integrated cwd** → **Remote [SSH]** 탭에서 비우기.
+3. **Developer: Reload Window** 후 터미널을 새로 연다.
+4. **File → Open Folder**로 서버의 Linux 경로만 연다(예: `/opt/mkm-sync-check`). **Recent**의 `E:\...`로 SSH 창을 열지 않는다.
+
+User(로컬)와 Remote(SSH) 설정이 합쳐지므로, **두 JSON 모두**에서 위 cwd가 없어야 `/root/E:\...` 현상이 사라진다.
 
 ### 2.1 원격 워크스페이스 열기
 
@@ -130,7 +133,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\check_jema12_public_
 
 | 증상 | 조치 |
 |------|------|
-| 통합 터미널 cwd가 `/root/E:\...`처럼 깨짐 | 로컬 Windows 경로가 SSH 세션에 섞인 경우. §2.0 참고: Remote 설정에서 `terminal.integrated.cwd`의 `E:\...` 삭제, Linux 경로로 폴더만 열기, `.vscode/settings.json`의 `${workspaceFolder}` 활용. |
+| 터미널 cwd `/root/E:\...` 오류 | §2.0 — Remote/User에서 `terminal.integrated.cwd`의 Windows 경로 제거, Linux 폴더만 Open Folder, Reload. |
 | `nginx -t` 실패 | `include` 줄이 `server {}` 밖에 있거나 중복. 백업 파일(`*.bak.*`)과 비교해 수정. |
 | `/broadcast` 여전히 404 | reload 미적용, 다른 `server_name` 블록이 응답, 또는 CDN 캐시. `curl -sSI`로 직접 확인. |
 | `/studio/` 500 | 스니펫과 별개로 정적 경로 오류 가능성 큼 → `error.log` 필수. |
