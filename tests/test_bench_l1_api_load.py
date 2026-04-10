@@ -33,3 +33,26 @@ def test_bench_l1_api_load_dry_run_schema() -> None:
         data = json.loads(outp.read_text(encoding="utf-8"))
     assert data.get("schema") == "bench_l1_api_load_v1"
     assert data.get("dry_run") is True
+
+
+def test_bench_l1_api_load_bench_environment_in_dry_run() -> None:
+    with tempfile.TemporaryDirectory() as td:
+        outp = Path(td) / "bench_out_env.json"
+        r = subprocess.run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "--dry-run",
+                "--bench-environment",
+                "vps_same_host",
+                "--out",
+                str(outp),
+            ],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert r.returncode == 0, r.stderr
+        data = json.loads(outp.read_text(encoding="utf-8"))
+    assert data.get("bench_environment") == "vps_same_host"

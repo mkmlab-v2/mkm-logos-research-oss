@@ -93,4 +93,4 @@ bash scripts/deploy/linux/run_bench_l1_api_load_vps.sh
 test -f docs/final/artifacts/bench_l1_api_load_summary_vps_latest.json && echo "OK: summary_vps"
 ```
 
-**산출 확인:** `docs/final/artifacts/bench_l1_api_load_summary_vps_latest.json` 존재 → 로컬에 `git add`·커밋 또는 Vault 보급 정책에 따름. **P0 L2**에 측정일·`groups["50"]` 요약 한 줄을 적는다.
+**산출 확인:** `docs/final/artifacts/bench_l1_api_load_summary_vps_latest.json` 존재 → 로컬에 `git add`·커밋 또는 Vault 보급 정책에 따름. 스키마가 `groups["50"]`를 제공하지 않으면 `latency_ms.p95`·`error_rate`·`bench_environment`를 기준으로 **P0 L2** 한 줄을 기록한다.

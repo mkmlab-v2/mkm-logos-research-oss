@@ -106,6 +106,7 @@ def run_bench(
     max_concurrent: int,
     approx_words: int,
     timeout: float,
+    bench_environment: str | None,
     server_pid: int | None,
     rss_self: bool,
     mkm_user_context: dict[str, Any] | None = None,
@@ -169,6 +170,7 @@ def run_bench(
         ),
         "base_url": base_url,
         "path": path,
+        "bench_environment": bench_environment,
         "total_requests": total_requests,
         "max_concurrent": max_concurrent,
         "approx_word_tokens": approx_words,
@@ -229,6 +231,12 @@ def main() -> int:
     p.add_argument("--max-concurrent", type=int, default=10)
     p.add_argument("--approx-words", type=int, default=1000)
     p.add_argument("--timeout", type=float, default=60.0)
+    p.add_argument(
+        "--bench-environment",
+        type=str,
+        default=None,
+        help="Optional environment label (e.g. vps_same_host, remote_client).",
+    )
     p.add_argument("--server-pid", type=int, default=0, help="Same-host stub PID for RSS sample")
     p.add_argument(
         "--rss-self",
@@ -244,6 +252,9 @@ def main() -> int:
         help="Optional MKM_User_Context_v1 JSON file merged into each compress payload (load test parity).",
     )
     args = p.parse_args()
+    bench_environment = args.bench_environment.strip() if args.bench_environment else None
+    if bench_environment == "":
+        bench_environment = None
     server_pid = args.server_pid if args.server_pid > 0 else None
 
     mkm_uc: dict[str, Any] | None = None
@@ -264,6 +275,7 @@ def main() -> int:
             "dry_run": True,
             "message": "No HTTP requests executed; stub not contacted.",
             "mkm_user_context_included": bool(mkm_uc),
+            "bench_environment": bench_environment,
         }
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(
@@ -280,6 +292,7 @@ def main() -> int:
         args.max_concurrent,
         args.approx_words,
         args.timeout,
+        bench_environment,
         server_pid,
         args.rss_self,
         mkm_user_context=mkm_uc,
