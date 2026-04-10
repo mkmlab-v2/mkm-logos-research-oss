@@ -9,6 +9,7 @@ $required = @(
     "docs\final\P0_COMMERCIALIZATION_TRACKER.md",
     "docs\final\COMPRESSION_SLA_POLICY_V1.md",
     "docs\final\COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
+    "docs\final\BENCH_L1_API_LOAD_VPS_RUNBOOK.md",
     "docs\NotebookLM_sources_manifest.md",
     ".cursorrules",
     "AGENTS.md",
