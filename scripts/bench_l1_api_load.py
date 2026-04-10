@@ -19,11 +19,12 @@ import argparse
 import json
 import math
 import os
+import subprocess
 import sys
 import time
 import urllib.error
 import urllib.request
-from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -35,6 +36,20 @@ SCHEMA = "bench_l1_api_load_v1"
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+
+
+def _git_head_short() -> str | None:
+    try:
+        out = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=ROOT,
+            stderr=subprocess.DEVNULL,
+            text=True,
+            timeout=5,
+        )
+        return out.strip()[:12] or None
+    except (subprocess.CalledProcessError, OSError, subprocess.TimeoutExpired):
+        return None
 
 
 def _percentile_ms(latencies_ms: list[float], p: float) -> float | None:
@@ -178,6 +193,10 @@ def run_bench(
         "rss_self_sampled": rss_self,
         "server_rss_bytes_before": rss_before,
         "server_rss_bytes_after": rss_after,
+        "command_fingerprint": {
+            "bench_script": "scripts/bench_l1_api_load.py",
+            "git_commit": _git_head_short(),
+        },
         "draft_targets_comparison": {
             "p95_target_ms": 200,
             "rss_target_bytes": int(2.5 * 1024**3),
