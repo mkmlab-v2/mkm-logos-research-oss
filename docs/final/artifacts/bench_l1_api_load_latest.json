@@ -1,6 +1,6 @@
 {
   "schema": "bench_l1_api_load_v1",
-  "generated_at_utc": "2026-04-10T03:07:01+00:00",
+  "generated_at_utc": "2026-04-10T04:10:03+00:00",
   "research_only": true,
   "draft_benchmark": true,
   "notes": "Latencies are client-observed RTT. server_rss_bytes_* require --server-pid on same host with psutil installed.",
@@ -9,7 +9,7 @@
   "total_requests": 100,
   "max_concurrent": 10,
   "approx_word_tokens": 1000,
-  "wall_time_s": 0.1888,
+  "wall_time_s": 0.3708,
   "ok_count": 100,
   "error_count": 0,
   "error_rate": 0.0,
@@ -17,19 +17,19 @@
     "ok": 100
   },
   "latency_ms": {
-    "p50": 12.2,
-    "p95": 24.6,
-    "p99": 28.842,
-    "max": 29.145
+    "p50": 20.339,
+    "p95": 145.509,
+    "p99": 162.365,
+    "max": 170.927
   },
-  "latency_ms_including_errors_p95": 24.6,
-  "server_pid": 38132,
+  "latency_ms_including_errors_p95": 145.509,
+  "server_pid": 2579370,
   "rss_self_sampled": false,
-  "server_rss_bytes_before": 48263168,
-  "server_rss_bytes_after": 44875776,
+  "server_rss_bytes_before": 53493760,
+  "server_rss_bytes_after": 54050816,
   "command_fingerprint": {
     "bench_script": "scripts/bench_l1_api_load.py",
-    "git_commit": "7b9ff4bbc1ee",
+    "git_commit": "c06a67f5c95b",
     "mkm_user_context_included": true,
     "argv": [
       "--base-url",
@@ -43,9 +43,9 @@
       "--approx-words",
       "1000",
       "--server-pid",
-      "38132",
+      "2579370",
       "--mkm-user-context-json",
-      "data\\personalization\\mkm_user_context_v1.sample.json"
+      "data/personalization/mkm_user_context_v1.sample.json"
     ]
   },
   "draft_targets_comparison": {
