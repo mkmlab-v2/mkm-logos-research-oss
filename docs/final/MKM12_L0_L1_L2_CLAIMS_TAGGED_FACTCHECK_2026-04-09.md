@@ -72,7 +72,7 @@ MKM12는 현재 하이브리드 리스크 제어 + 구조 보존 기반의 복�
 - `scripts/run_mkm_l1_parity_prototype.py`
 - `scripts/trackb_ssm_vs_tf_bench.py`
 
-**SSOT 드리프트 가드:** 역추론 스파이크 복원율 문구는 항상 `l1_inverse_decoder_spike_test_summary_latest.json`의 `aggregate`·`generated_at_utc`·`scoring_mode`·`research_only`를 따른다. 불일치 시 본 문서 A)·E)·`FACTCHECK_GEMATRIA_ENGINEERING_REPRODUCIBILITY_2026-04-09.md` 스파이크 절을 아티팩트 우선으로 수정한다.
+**SSOT 드리프트 가드:** 역추론 스파이크 복원율 문구는 항상 `l1_inverse_decoder_spike_test_summary_latest.json`의 `aggregate`·`generated_at_utc`·`scoring_mode`·`research_only`를 따른다. 불일치 시 본 문서 A)·E)·`FACTCHECK_GEMATRIA_ENGINEERING_REPRODUCIBILITY_2026-04-09.md` 스파이크 절을 아티팩트 우선으로 수정한다. **승격(연구→상용) 판단**은 위 플레이북 §9 체크리스트·지휘관 승인으로만 고정한다(NotebookLM 브리핑 단독 근거 금지).
 
 ---
 

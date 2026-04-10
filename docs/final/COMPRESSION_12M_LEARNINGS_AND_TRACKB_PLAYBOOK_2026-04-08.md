@@ -132,6 +132,16 @@ No artifact, no claim.
 - Track B research: `.github/workflows/trackb-research-smoke.yml`, `scripts/Run-TrackBWeeklyRefresh.ps1`
 - Token API stub contract: `docs/final/openapi_token_compression_stub_v1.yaml` v1.1.0+; implementation row: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §2
 
+**Local pytest bundle (Fact-Lock pre-flight, ~1s):** does not satisfy §9.1 alone; use before PRs that touch L1 wire / OpenAPI / summary SSOT.
+
+```bash
+pytest tests/test_l1_inverse_decoder_summary_schema.py \
+  tests/test_l1_side_channel_wire_codec.py \
+  tests/test_compression_token_api_stub.py::test_openapi_includes_l1_side_channel_wire_path \
+  tests/test_compression_token_api_stub.py::test_l1_side_channel_wire_research_endpoint_roundtrip \
+  -q --tb=short
+```
+
 ### 9.4 Related production checklists (orthogonal)
 
 - Trading / staging: `projects/bitcoin-trading/docs/final/STAGING_TO_PRODUCTION_PROMOTION_CHECKLIST_2026-03-25.md` — does **not** replace §9 for compression research → API claims.

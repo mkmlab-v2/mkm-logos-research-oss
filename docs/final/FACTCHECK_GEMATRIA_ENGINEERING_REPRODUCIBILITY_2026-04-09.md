@@ -72,6 +72,7 @@ Therefore, current outputs should be communicated as engineering evidence under 
   - `determinism_delta: 0.04166666666666674`
 - **Interpretation:** this is an honest baseline after leakage removal; "100% restoration" is not supported under noisy-observation-only decoding in this spike. (Separately, `run_l1_permutation_channel_integrated_spike.py` achieves `1.0` when full side-channel metadata is attached — research harness; not LLM beam.)
 - **Wire / HTTP (dev mirror, not product compress):** `scripts/l1_side_channel_wire_codec.py` + `POST /v1/research/l1_side_channel/wire` on `scripts/compression_token_api_stub.py` (OpenAPI `openapi_token_compression_stub_v1.yaml` v1.1.0; 503 if msgpack missing/unavailable). Fact-Lock cross-refs: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §2, `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10.
+- **B-track → Track A / production promotion (compression lane):** formal checklist SSOT is `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9; commercialization row in `docs/final/P0_COMMERCIALIZATION_TRACKER.md`. OOV / BERTScore / Mamba-style forward benches stay **research tasks** outside §9 until separately scoped.
 
 ## External Citation Mapping (Patch for Residual Risk)
 - Goal: attach academically recognized methods to each `[HYPO]` while preserving Fact-Lock wording.
