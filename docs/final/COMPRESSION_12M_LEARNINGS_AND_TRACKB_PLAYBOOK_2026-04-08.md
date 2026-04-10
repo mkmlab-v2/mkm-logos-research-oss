@@ -115,14 +115,27 @@ No artifact, no claim.
 - [ ] **Command fingerprint**: script path + argv + git commit hash (or tag) recorded next to artifacts.
 - [ ] **No conflation**: side-channel `exact_restore_rate = 1.0` harness (`run_l1_permutation_channel_integrated_spike.py` + artifact) is **not** evidence for LLM-beam or Track A compress without a **new** artifact under the same decoding assumptions as the promoted surface.
 
+#### 9.1.1 승격 후보 범위·성능 계약 초안 (지휘관 입력용, 2026-04-10)
+
+**OpenAPI SSOT와 경로 이름 정렬:** 계약 파일은 `docs/final/openapi_token_compression_stub_v1.yaml` 이다. 예시로 드는 승격 후보·제외는 아래와 같다(최종 조합은 지휘관이 체크).
+
+| 구분 | 경로 / 대상 |
+|------|-------------|
+| 상용 후보(예시) | `POST /v1/compress`, `POST /v1/expand`, `POST /v1/metering/log` — 실제 승격 시 **이 중 어디까지** 포함할지 명시 |
+| 연구 노출(기본 비상용 주장) | `POST /v1/research/l1_side_channel/wire` — 스텁·와이어 코덱 검증용; 상용 SLA와 **합쳐서** 말하지 않음 |
+| 증거 혼동 금지 | 사이드채널 통합 스파이크의 exact 복원은 **그 하네스 가정**에서만 FACT; 빔 역추론 요약 JSON·Track A compress와 **동일 근거로 승격** 금지 |
+| §9 밖 연구 | OOV·Mamba 등 전방 벤치 — 별도 스코프·메모 없으면 승격 게이트에 넣지 않음 |
+
+**성능 숫자(잠금 전에는 TBD):** P95 지연·피크 RSS는 **비즈니스/인프라 예산**과 **실측 분포** 없이 임의 기입하지 않는다. 절차는 (1) 동일 입력·동일 환경에서 반복 측정 → (2) 분포 확보 → (3) 임계 합의 → (4) 아래 9.2 표·본 절 갱신.
+
 ### 9.2 Metric and artifact gates (fill thresholds when locked; until then mark TBD)
 
 | Gate | SSOT / artifact | Pass criterion (draft) |
 |------|-----------------|-------------------------|
 | L1 inverse (beam) baseline | `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json` | Re-run reproduces `aggregate.*` within agreed tolerance; prose uses same file’s `generated_at_utc`, `scoring_mode`, `research_only` (`MKM12_L0_L1_L2_CLAIMS_TAGGED_FACTCHECK_2026-04-09.md` §D drift guard). |
 | Track B weekly semantic SSOT | `docs/final/artifacts/trackb_semantic_eval_*_latest.json`, `trackb_weekly_gate_recheck_latest.json` | Operational gate metric remains **Jaccard** unless `CONSTITUTION` / playbook is formally revised; `cosine_tokens` and embedding backends stay parallel research unless promoted by separate memo. |
-| Latency | TBD script + JSON | P95 **TBD** ms on **TBD** hardware profile. |
-| Memory | TBD script + JSON | Peak RSS **TBD** MB on **TBD** profile. |
+| Latency | TBD script + JSON | P95 **TBD** ms; **input contract TBD** (e.g. token cap 1,000 vs UTF-8 byte cap — must match OpenAPI/stub semantics). Measure: **TBD** runs, same commit, **TBD** hardware profile. |
+| Memory | TBD script + JSON | Peak RSS **TBD** MB; same profile as latency row; load model **TBD** (e.g. concurrent requests **TBD**). |
 | RS/ECC | `scripts/run_mkm_l1_parity_prototype.py` lineage | **Not** a promotion blocker description for “parity prototype”; full RS pipeline + error-injection bench required before any “FEC production” claim (`FACTCHECK_GEMATRIA_ENGINEERING_REPRODUCIBILITY_2026-04-09.md`). |
 | Compression SLA / pilot tone | `docs/final/COMPRESSION_SLA_POLICY_V1.md`, `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10 | Partner brief avoids 100% lossless / RS production / external bpb as MKM12 service facts unless matching artifacts exist. |
 
@@ -131,6 +144,8 @@ No artifact, no claim.
 - L1: `.github/workflows/l1-inverse-decoder-smoke.yml`, `l1-inverse-decoder-nightly-sweep.yml`
 - Track B research: `.github/workflows/trackb-research-smoke.yml`, `scripts/Run-TrackBWeeklyRefresh.ps1`
 - Token API stub contract: `docs/final/openapi_token_compression_stub_v1.yaml` v1.1.0+; implementation row: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §2
+
+**CI vs local bundle:** GitHub `l1-inverse-decoder-smoke.yml` runs the **same pytest targets as below** and **adds** `python scripts/run_l1_inverse_decoder_spike_test.py --samples 24 …` (single-run spike). So: **local bundle ⊆ smoke**; passing locally is necessary but not sufficient for §9.1.
 
 **Local pytest bundle (Fact-Lock pre-flight, ~1s):** does not satisfy §9.1 alone; use before PRs that touch L1 wire / OpenAPI / summary SSOT.
 

@@ -15,7 +15,7 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 | 구분 | 증거로 삼을 경로·산출물 |
 |------|-------------------------|
 | 헌법·에이전트 포인터 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`, 루트 `AGENTS.md`, `CLAUDE.md` |
-| B-track → Track A·대외 주장 승격 (압축·복원) | `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` **§9** — 체크리스트 미완이면 연구 산출물을 상용·프로덕션 팩트로 승격하지 않음; L1 사이드채널 1.0과 빔 베이스라인 혼동 금지 |
+| B-track → Track A·대외 주장 승격 (압축·복원) | `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` **§9** (**§9.1.1** OpenAPI 경로·제외·성능 TBD) — 체크리스트 미완이면 연구 산출물을 상용·프로덕션 팩트로 승격하지 않음; L1 사이드채널 1.0과 빔 베이스라인 혼동 금지 |
 | P0 순서 자체 | 본 파일(`P0_COMMERCIALIZATION_TRACKER.md`) + Step 표의 링크 파일 존재 |
 | 정렬 pytest 게이트 | `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` **exit 0** 로그 또는 CI 아티팩트 |
 | 월간 브리프 | `docs/final/artifacts/waiting_queue_monthly_check_log.jsonl` 등 **append 로그** (`run_waiting_queue_monthly_check.ps1`) |
