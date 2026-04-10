@@ -1,6 +1,6 @@
 {
   "schema": "bench_l1_api_load_v1",
-  "generated_at_utc": "2026-04-10T09:24:03+00:00",
+  "generated_at_utc": "2026-04-10T09:22:57+00:00",
   "research_only": true,
   "draft_benchmark": true,
   "notes": "Latencies are client-observed RTT. server_rss_bytes_* require --server-pid on same host with psutil installed.",
@@ -10,7 +10,7 @@
   "total_requests": 300,
   "max_concurrent": 50,
   "approx_word_tokens": 1000,
-  "wall_time_s": 0.6065,
+  "wall_time_s": 1.4428,
   "ok_count": 300,
   "error_count": 0,
   "error_rate": 0.0,
@@ -18,12 +18,12 @@
     "ok": 300
   },
   "latency_ms": {
-    "p50": 45.882,
-    "p95": 293.483,
-    "p99": 366.293,
-    "max": 381.646
+    "p50": 50.938,
+    "p95": 609.377,
+    "p99": 1061.14,
+    "max": 1181.828
   },
-  "latency_ms_including_errors_p95": 293.483,
+  "latency_ms_including_errors_p95": 609.377,
   "server_pid": null,
   "rss_self_sampled": false,
   "server_rss_bytes_before": null,
@@ -46,7 +46,7 @@
       "--bench-environment",
       "vps_same_host",
       "--out",
-      "docs/final/artifacts/bench_runs/bench_l1_api_load_vps_20260410T092403Z.json"
+      "docs/final/artifacts/bench_runs/bench_l1_api_load_vps_20260410T092255Z.json"
     ]
   },
   "draft_targets_comparison": {
