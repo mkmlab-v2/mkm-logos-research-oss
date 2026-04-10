@@ -702,6 +702,57 @@ if (Test-Path -LiteralPath $latestKpiPath) {
     }
 }
 
+# Fallback wiring: when latest_kpi dual_regime_state_kpi is missing,
+# recover state-signal inputs from the most recent scoring distribution snapshot.
+if (($null -eq $dualRegimeStateKpi) -and (Test-Path -LiteralPath $scoringDistributionPath)) {
+    try {
+        $distObj = Get-Content -LiteralPath $scoringDistributionPath -Encoding utf8 | ConvertFrom-Json
+        $drAll = $distObj.dual_regime_state.all
+        if ($null -ne $drAll) {
+            $sampleSize = $null
+            if ($null -ne $drAll.sample_size) {
+                $sampleSize = [int]$drAll.sample_size
+            }
+            $presentRate = $null
+            if ($null -ne $drAll.state_id_present_rate) {
+                $presentRate = [double]$drAll.state_id_present_rate
+            }
+            $clampRate = $null
+            if ($null -ne $drAll.clamp_rate) {
+                $clampRate = [double]$drAll.clamp_rate
+            }
+
+            if (($null -ne $sampleSize) -and ($sampleSize -gt 0)) {
+                $dualRegimeStateSource = [string]$drAll.top_source
+                if ([string]::IsNullOrWhiteSpace($dualRegimeStateSource)) {
+                    $dualRegimeStateSource = "none"
+                }
+                if ($null -ne $presentRate) {
+                    $dualRegimeStatePresent = ([double]$presentRate -gt 0.0)
+                }
+                if ($null -ne $drAll.clamp_count) {
+                    $dualRegimeStateClampCount = [int]$drAll.clamp_count
+                }
+                $dualRegimeStateSampleCount = $sampleSize
+                if ($null -ne $clampRate) {
+                    $dualRegimeStateClampRatio = [math]::Round([double]$clampRate, 6)
+                } elseif (($null -ne $dualRegimeStateClampCount) -and ($dualRegimeStateSampleCount -gt 0)) {
+                    $dualRegimeStateClampRatio = [math]::Round(($dualRegimeStateClampCount / $dualRegimeStateSampleCount), 6)
+                }
+                $dualRegimeStateKpi = @{
+                    state_id_source = $dualRegimeStateSource
+                    state_id_present = $dualRegimeStatePresent
+                    clamp_count = $dualRegimeStateClampCount
+                    sample_count = $dualRegimeStateSampleCount
+                    clamp_ratio = $dualRegimeStateClampRatio
+                    source = "scoring_distribution_fallback"
+                }
+            }
+        }
+    } catch {
+    }
+}
+
 $dualRegimeAlertLevel = "insufficient_data"
 $dualRegimeAlertReason = "state_kpi_missing"
 if (($null -ne $dualRegimeStateSampleCount) -and ($dualRegimeStateSampleCount -gt 0)) {
