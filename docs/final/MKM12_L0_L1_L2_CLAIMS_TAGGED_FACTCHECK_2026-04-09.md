@@ -220,10 +220,11 @@ MKM12는 코드북을 폐기한 것이 아니라, 연구/운영 경계를 지키
 ### I.2) 내부 SSOT 표준 인용 (에이전트·브리프용)
 
 - **역추론(빔) 평균 복원율:** `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json`의 `aggregate.avg_exact_restore_rate` — 항상 동일 파일의 `generated_at_utc`, `scoring_mode` (현재 스냅샷: `legacy`), `research_only`를 함께 인용.
-- **사이드 채널 1.0:** `run_l1_permutation_channel_integrated_spike.py` 하네스에서 **사이드 메타데이터가 완전할 때**만 `exact_restore_rate = 1.0`; 서비스 전 파이프라인 보장 아님.
-- **L1 사이드 채널 바이너리 와이어(연구·스텁):** 코덱 `scripts/l1_side_channel_wire_codec.py`, 아티팩트 `docs/final/artifacts/l1_permutation_channel_integrated_spike_latest.json`(스키마 v3), HTTP `POST /v1/research/l1_side_channel/wire`(`compression_token_api_stub.py`). **상용 압축 본선 계약·프로덕션 게이트와 동일시하지 말 것** — `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §2 토큰 압축 스텁 행 참조.
+- **사이드 채널 1.0 (연구 하네스, 오프-HTTP):** `scripts/run_l1_permutation_channel_integrated_spike.py` — **사이드 메타데이터가 완전할 때**만 `exact_restore_rate = 1.0`; 산출 `docs/final/artifacts/l1_permutation_channel_integrated_spike_latest.json`(스키마 v3). LLM 빔 역추론·서비스 전 구간 보장과 **구분**.
+- **L1 사이드 채널 와이어 코덱 (라이브러리 팩트):** `scripts/l1_side_channel_wire_codec.py` — 적응형 msgpack(± zstd) 바이트열 인코딩; 하네스·스텁이 공통으로 호출 가능.
+- **HTTP 연구 스텁 엔드포인트 (토큰 압축 API v1 스텁 위에 additive):** `POST /v1/research/l1_side_channel/wire` in `scripts/compression_token_api_stub.py` — 페이로드의 `side_channel`에서 최소 필드만 추출해 와이어를 base64로 반환; **상용 `POST /v1/compress`·`expand` 계약·프로덕션 SLA와 동일시 금지**. 계약 SSOT: `docs/final/openapi_token_compression_stub_v1.yaml` **v1.1.0+** (`L1SideChannelWireRequest`/`L1SideChannelWireResponse`). 팩트 락 표: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §2 (토큰 압축 스텁·OpenAPI 행).
 - **“Hybrid Guardrail” 같은 통칭**은 레포 단일 모듈명이 아니다. 운영·연구 게이트를 서술할 때는 예: `scripts/run_notebook_compression_full_chain.ps1` (일일 브리프·위생 JSON), `scripts/run_compression_weekly_governance_chain.ps1` (압축 거버넌스), `scripts/check_mkm_l1_rs_policy_gate.py` (RS 정책 게이트), Track A 계량·밴드: `scripts/check_track_a_metering_band_gate.py` 등 **호출 가능 경로**를 사용한다.
 
 ### I.3) 컴포넌트 (xxHash·MessagePack 등)
 
-범용 벤치 성능은 문헌·업계 상식 수준으로 인용 가능하나, **MKM12 사이드 채널 JSON(와이어 프록시) 실측·프로덕션 통합 후**에만 내부 [FACT]로 승격한다. **msgpack/zstd 적응형 와이어·스파이크 v3·스텁 엔드포인트**는 “연구 레인 실측 + 스텁 노출”까지이며, **운영 SLA·대외 ‘무손실 압축 제품’ [FACT]로의 승격**은 별도 게이트로 본다.
+범용 벤치 성능은 문헌·업계 상식 수준으로 인용 가능하나, **MKM12 사이드 채널 JSON(와이어 프록시) 실측·프로덕션 통합 후**에만 내부 [FACT]로 승격한다. **msgpack/zstd 적응형 와이어·스파이크 v3·스텁 엔드포인트**는 “연구 레인 실측 + 스텁 노출”까지이며, **운영 SLA·대외 ‘무손실 압축 제품’ [FACT]로의 승격**은 별도 게이트로 본다. **스텁 HTTP:** `POST /v1/research/l1_side_channel/wire`는 서버에 **msgpack 미설치**이거나 내부 pack이 불가할 때 **503**을 반환할 수 있다(`compression_token_api_stub.py`); 파트너/에이전트 브리프에서는 pilot §10(`COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10)과 동일 경계를 유지한다.

@@ -1,9 +1,11 @@
 openapi: 3.0.3
 info:
   title: MKM Token Compression API (stub v1)
-  version: "1.0.0"
+  version: "1.1.0"
   description: |
     HTTP data contract for compress/expand. Implementation: scripts/compression_token_api_stub.py.
+    v1.1.0 adds optional research route POST /v1/research/l1_side_channel/wire (additive; requires msgpack).
+    That route returns HTTP 503 if msgpack is not installed or if msgpack packing is unavailable on the server.
     Facts for external pilots (see docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md §10):
     - POST /v1/compress: domain router (shard/policy) always runs on real code. compression_metrics is null
       unless eval_context.hydrate_metrics is true; when hydrate_live_eval is true, the server runs the same
@@ -297,6 +299,52 @@ paths:
                     integrity_flags:
                       stub_expand: true
                       lossless_echo: true
+  /v1/research/l1_side_channel/wire:
+    post:
+      operationId: encodeL1SideChannelWire
+      summary: Research — encode L1 side-channel minimal payload to adaptive msgpack (+ optional zstd) wire bytes
+      description: |
+        Extracts swap_log, typo_patches, oov_stack from side_channel and returns base64 wire bytes
+        (1-byte tag + raw msgpack or zstd-compressed msgpack). Not a production compression path; HTTP 503 if msgpack is not installed or pack is unavailable.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/L1SideChannelWireRequest"
+            example:
+              side_channel:
+                schema: l1_side_channel_v1
+                mode: swap_typo
+                swap_log: [[0, 1]]
+                typo_patches:
+                  - idx: 2
+                    char_pos: 0
+                    orig_char: "B"
+                oov_stack: []
+              zstd_min_raw_bytes: 64
+              zstd_level: 3
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/L1SideChannelWireResponse"
+              example:
+                api_contract_version: "1.0.0"
+                schema_version: l1_side_channel_wire_stub_v1
+                wire_bytes_b64: "AQ=="
+                wire_byte_length: 2
+                variant: raw
+                msgpack_raw_byte_length: 1
+                integrity_flags:
+                  research_lane: true
+                  stub_only: true
+        "422":
+          description: Missing required keys in side_channel
+        "503":
+          description: msgpack not installed on server or msgpack pack unavailable (see compression_token_api_stub.py)
   /health:
     get:
       operationId: health
@@ -314,6 +362,54 @@ paths:
                     example: ok
 components:
   schemas:
+    L1SideChannelWireRequest:
+      type: object
+      required: [side_channel]
+      properties:
+        side_channel:
+          type: object
+          description: Full l1_side_channel_v1 object; server uses swap_log, typo_patches, oov_stack only
+        zstd_min_raw_bytes:
+          type: integer
+          minimum: 0
+          maximum: 2000000
+          default: 64
+        zstd_level:
+          type: integer
+          minimum: 1
+          maximum: 22
+          default: 3
+    L1SideChannelWireResponse:
+      type: object
+      required:
+        - api_contract_version
+        - schema_version
+        - wire_bytes_b64
+        - wire_byte_length
+        - variant
+        - msgpack_raw_byte_length
+      properties:
+        api_contract_version:
+          type: string
+        schema_version:
+          type: string
+          example: l1_side_channel_wire_stub_v1
+        wire_bytes_b64:
+          type: string
+          description: Standard base64 wire bytes (tag + payload)
+        wire_byte_length:
+          type: integer
+          minimum: 0
+        variant:
+          type: string
+          enum: [raw, zstd]
+        msgpack_raw_byte_length:
+          type: integer
+          minimum: 0
+          description: Length of msgpack payload before tagging/compression
+        integrity_flags:
+          type: object
+          additionalProperties: true
     MeteringLogRequest:
       type: object
       required: [sla_track, tokens_before, tokens_after]

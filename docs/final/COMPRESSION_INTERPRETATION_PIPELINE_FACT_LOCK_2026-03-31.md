@@ -114,6 +114,7 @@ Use this section (plus `docs/final/openapi_token_compression_stub_v1.yaml` info 
 - **POST /v1/compress**: Domain router (`scripts/core/domain_router.py` + shard JSON) **always** runs on real code. `compression_metrics` is absent unless `eval_context.hydrate_metrics` is true. When `hydrate_live_eval` is true, the stub calls `evaluate_report` (same family as multilens benches); on exception it may set `integrity_flags.hydration_live_eval_failed` and fall back to decision-artifact estimates when available.
 - **POST /v1/expand**: **Echo** of `original_text` from the payload (`stub_expand`, `lossless_echo`); not a residual/patch decompressor. Partners must not assume lossless “telegram decode” semantics beyond echo; treat submitted text as sensitive for logging.
 - **Multi-lens / 16-state**: Multi-lens remains a **validation/eval** layer in the bench path, not “the compressor.” Myeongri / 16-state is **not** a mandatory runtime wire in this HTTP stub (see §4).
+- **POST /v1/research/l1_side_channel/wire** (OpenAPI **v1.1.0+**, `encodeL1SideChannelWire`): **research lane only** — encodes `side_channel` minimal fields via `scripts/l1_side_channel_wire_codec.py` to tagged adaptive wire (msgpack ± zstd); returns base64 + `integrity_flags.research_lane` / `stub_only`. **Not** part of commercial compress/expand SLA; do not conflate with Track A metering or v2 Trust Packet. **503** if msgpack is missing on the server or internal pack returns unavailable (matches `compression_token_api_stub.py`). Implementation facts: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §2 (토큰 압축 스텁·OpenAPI 행); contract: `docs/final/openapi_token_compression_stub_v1.yaml` path + components.
 
 Onboarding checklist for pilots: (1) default compress returns **router + flags only** unless hydration flags are set; (2) cite **bench JSON artifacts** for savings numbers, not illustrative UI demos; (3) never claim “production SaaS” for this stub without separate auth/SLA scope.
 
@@ -136,4 +137,4 @@ Onboarding checklist for pilots: (1) default compress returns **router + flags o
 
 **Change control:** When changing v2 behavior, update this section, `openapi_token_compression_v2_draft.yaml`, and the stub module; keep v1 stub for regression until deprecation policy is written.
 
-Status: Fact-Lock active (2026-03-31); §11 stub implementation noted (2026-04-01).
+Status: Fact-Lock active (2026-03-31); §11 stub implementation noted (2026-04-01); §10 L1 research wire route + 503 boundary mirrored with `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §2 (2026-04-10).
