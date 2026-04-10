@@ -42,7 +42,12 @@ $required = @(
     "scripts\l1_side_channel_wire_codec.py",
     "scripts\run_l1_permutation_channel_integrated_spike.py",
     "docs\final\artifacts\l1_inverse_decoder_spike_test_summary_latest.json",
-    "docs\final\artifacts\l1_permutation_channel_integrated_spike_latest.json"
+    "docs\final\artifacts\l1_permutation_channel_integrated_spike_latest.json",
+    "scripts\report_trackb_quaternion_two_stage_gate.py",
+    "docs\final\artifacts\trackb_quaternion_order_experiment_v1.json",
+    "docs\final\artifacts\trackb_quaternion_order_stress_v1.json",
+    "docs\final\artifacts\trackb_quaternion_generalization_v1.json",
+    "docs\final\artifacts\trackb_quaternion_two_stage_gate_v2.json"
 )
 
 $missing = @()
