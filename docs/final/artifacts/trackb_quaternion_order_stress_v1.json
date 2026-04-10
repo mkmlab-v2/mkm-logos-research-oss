@@ -1,0 +1,5 @@
+{
+  "schema": "trackb_quaternion_order_stress_v1",
+  "fixture_note": "Minimal inputs for Fact-Lock bundle / CI when full bench not run; regenerate via scripts/run_trackb_quaternion_word_order_stress.py when available.",
+  "min_decode_exact_rate": 1.0
+}

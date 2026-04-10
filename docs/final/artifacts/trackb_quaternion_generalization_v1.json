@@ -1,0 +1,22 @@
+{
+  "schema": "trackb_quaternion_generalization_v1",
+  "fixture_note": "Minimal inputs for Fact-Lock bundle / CI when full bench not run; regenerate via scripts/run_trackb_quaternion_generalization_bench.py when available.",
+  "curve": [
+    {
+      "length": 3,
+      "oov_ratio": 0.0,
+      "sample_count": 120,
+      "decode_exact_rate": 1.0,
+      "collision_count": 0,
+      "collision_rate": 0.0
+    },
+    {
+      "length": 3,
+      "oov_ratio": 0.5,
+      "sample_count": 120,
+      "decode_exact_rate": 1.0,
+      "collision_count": 1,
+      "collision_rate": 0.008333333333333333
+    }
+  ]
+}

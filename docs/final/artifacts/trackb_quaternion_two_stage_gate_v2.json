@@ -1,0 +1,54 @@
+{
+  "schema": "trackb_quaternion_two_stage_gate_v2",
+  "generated_at_utc": "2026-04-10T05:07:38Z",
+  "gate_profile": "trackb_quaternion_restore_research_v2",
+  "research_only": true,
+  "not_billing_claim": true,
+  "inputs": {
+    "order_experiment": "C:\\workspace\\docs\\final\\artifacts\\trackb_quaternion_order_experiment_v1.json",
+    "order_stress": "C:\\workspace\\docs\\final\\artifacts\\trackb_quaternion_order_stress_v1.json",
+    "generalization": "C:\\workspace\\docs\\final\\artifacts\\trackb_quaternion_generalization_v1.json"
+  },
+  "thresholds": {
+    "closed_min_exact_rate": 0.999,
+    "open_min_exact_rate": 0.995,
+    "open_max_collision_rate": 0.01
+  },
+  "stages": {
+    "stage1_closed_candidate_set": {
+      "description": "Closed candidate pool exact decode stability.",
+      "pair_decode_exact_rate": 1.0,
+      "stress_min_decode_exact_rate": 1.0,
+      "pass": true
+    },
+    "stage2_open_generalization": {
+      "description": "Length/OOV mixed pool robustness (open-style benchmark).",
+      "worst_decode_exact_rate": 1.0,
+      "worst_collision_rate": 0.008333333333333333,
+      "worst_exact_cell": {
+        "length": 3,
+        "oov_ratio": 0.0,
+        "sample_count": 120,
+        "decode_exact_rate": 1.0,
+        "collision_count": 0,
+        "collision_rate": 0.0
+      },
+      "worst_collision_cell": {
+        "length": 3,
+        "oov_ratio": 0.5,
+        "sample_count": 120,
+        "decode_exact_rate": 1.0,
+        "collision_count": 1,
+        "collision_rate": 0.008333333333333333
+      },
+      "pass": true
+    }
+  },
+  "decision": "GO",
+  "policy_notes": [
+    "Research validation report only; not a production readiness certificate.",
+    "Closed-pool NN success and open-style robustness are split to prevent over-claiming.",
+    "Promotion to production requires separate tests and governance gates.",
+    "This gate does not authorize production billing/VRAM claims."
+  ]
+}
