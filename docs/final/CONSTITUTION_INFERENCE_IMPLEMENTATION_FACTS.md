@@ -1,7 +1,7 @@
 # Constitution / Inference — 구현 팩트 (SSOT)
 
 **작성일**: 2026-03-29  
-**최종 갱신**: 2026-04-10 — §2 L1 연구 와이어 스텁·503·OpenAPI v1.1.0·COMPRESSION §10 거울; §1.2에 B-track→Track A 승격 체크리스트(`COMPRESSION_12M…` §9·§9.1.1 초안, `P0_COMMERCIALIZATION_TRACKER` 교차).  
+**최종 갱신**: 2026-04-10 — §2 L1 연구 와이어 스텁·503·OpenAPI v1.1.0·COMPRESSION §10 거울; §9.2 draft SLA 벤치 `scripts/bench_l1_api_load.py`; §1.2에 B-track→Track A 승격 체크리스트(`COMPRESSION_12M…` §9·§9.1.1 초안, `P0_COMMERCIALIZATION_TRACKER` 교차).  
 **이전 갱신**: 2026-04-06 §14 Prism·레지스트리 v1.0.5; 2026-04-04 §1.2 투트랙 SLA·§13.1/13.2·`AGENTS.md`.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
 
@@ -42,6 +42,7 @@
 |------|------|------|
 | Dual-regime 평가 모듈 | `projects/bitcoin-trading/src/integration/dual_regime_api.py` | `evaluate_dual_regime_and_market_shock` 등 Python API; **이 파일 단독으로는 FastAPI 앱이 아니다** (HTTP 래퍼는 별도 서비스/스크립트에 둔다). |
 | 토큰 압축 API (스텁 v1) | `scripts/compression_token_api_stub.py` | FastAPI: `POST /v1/compress`, `POST /v1/expand`, `GET /health`. **연구 레인(additive):** `POST /v1/research/l1_side_channel/wire` — L1 사이드 채널 최소 페이로드를 `scripts/l1_side_channel_wire_codec.py`(`encode_adaptive_msgpack` 등)로 적응형 와이어 인코딩·base64 반환; **HTTP 503**: (1) 런타임에 msgpack 미설치, (2) 내부 `msgpack_payload_bytes`가 `None`(pack 불가). 응답에 `api_contract_version`; `eval_context.hydrate_metrics` 없으면 `compression_metrics` null(라우터만). `hydrate_live_eval` 시 `evaluate_report` 시도·실패 시 `integrity_flags.hydration_live_eval_failed` 가능. **expand는 원문 에코**. 회귀: `tests/test_compression_token_api_stub.py`(OpenAPI 경로 포함·와이어 라운드트립). 대외 설명 SSOT: `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10 + `openapi_token_compression_stub_v1.yaml` description. |
+| 토큰 압축 스텁 부하 벤치 (§9.2 draft SLA) | `scripts/bench_l1_api_load.py` → `docs/final/artifacts/bench_l1_api_load_latest.json` | stdlib `urllib` 스레드 풀; **클라이언트 RTT** p50/p95/p99. 서버 RSS는 동일 호스트 `--server-pid`+`psutil` 선택. `research_only`/`draft_benchmark`; FACT 승격은 플레이북 9.2 절차. dry-run 회귀: `tests/test_bench_l1_api_load.py`. |
 | OpenAPI (압축 스텁) | `docs/final/openapi_token_compression_stub_v1.yaml` | HTTP 계약(SSOT); `info.version` **1.1.0+**. EvalContext·HydrationHints·CompressionMetrics 스키마 포함. **v1.1.0** 에 `POST /v1/research/l1_side_channel/wire` 추가; 스키마 `L1SideChannelWireRequest` / `L1SideChannelWireResponse`, 응답 `schema_version` 예시 `l1_side_channel_wire_stub_v1`. 상용 SLA·인증은 범위 외. |
 | 정책 SSOT | `data/regimes/regime_fusion_policy.json` | 워크스페이스 상대 경로로 로드 |
 | 보조 정책 | `data/regimes/dual_regime_policy.json` | 존재 확인됨 |

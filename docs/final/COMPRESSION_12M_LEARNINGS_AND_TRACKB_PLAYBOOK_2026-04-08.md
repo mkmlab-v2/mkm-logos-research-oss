@@ -134,16 +134,28 @@ No artifact, no claim.
 |------|-----------------|-------------------------|
 | L1 inverse (beam) baseline | `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json` | Re-run reproduces `aggregate.*` within agreed tolerance; prose uses same file’s `generated_at_utc`, `scoring_mode`, `research_only` (`MKM12_L0_L1_L2_CLAIMS_TAGGED_FACTCHECK_2026-04-09.md` §D drift guard). |
 | Track B weekly semantic SSOT | `docs/final/artifacts/trackb_semantic_eval_*_latest.json`, `trackb_weekly_gate_recheck_latest.json` | Operational gate metric remains **Jaccard** unless `CONSTITUTION` / playbook is formally revised; `cosine_tokens` and embedding backends stay parallel research unless promoted by separate memo. |
-| Latency | TBD script + JSON | P95 **TBD** ms; **input contract TBD** (e.g. token cap 1,000 vs UTF-8 byte cap — must match OpenAPI/stub semantics). Measure: **TBD** runs, same commit, **TBD** hardware profile. |
-| Memory | TBD script + JSON | Peak RSS **TBD** MB; same profile as latency row; load model **TBD** (e.g. concurrent requests **TBD**). |
+| Latency | `scripts/bench_l1_api_load.py` → `docs/final/artifacts/bench_l1_api_load_latest.json` | **[DRAFT target]** P95 **200** ms vs `latency_ms.p95` (client-observed RTT). **[FACT]** only after artifact records `generated_at_utc`, git hash in run notes, and stub fingerprint per §9.1. Input proxy: **~1,000 words** repeated token (`--approx-words`). |
+| Memory | same artifact + optional `--server-pid` (psutil, same host) | **[DRAFT target]** peak RSS **2.5 GiB** process under test. **4 GiB host = OOM risk**; draft infra **8 GiB RAM**. **[FACT]** requires sampled `server_rss_bytes_*` or documented measurement method; client-only bench does **not** prove server peak. |
 | RS/ECC | `scripts/run_mkm_l1_parity_prototype.py` lineage | **Not** a promotion blocker description for “parity prototype”; full RS pipeline + error-injection bench required before any “FEC production” claim (`FACTCHECK_GEMATRIA_ENGINEERING_REPRODUCIBILITY_2026-04-09.md`). |
 | Compression SLA / pilot tone | `docs/final/COMPRESSION_SLA_POLICY_V1.md`, `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10 | Partner brief avoids 100% lossless / RS production / external bpb as MKM12 service facts unless matching artifacts exist. |
+
+#### 9.2.1 [DRAFT] 성능 목표 (측정 전 — FACT 아님)
+
+다음은 **잠정 목표(draft target pending bench)**이다. `1.5 GiB 오라클 코드북 상주` 등은 레포 팩트체크상 **[HYPO]/미검증**일 수 있어, **확정 SLA로 대외 발표 금지**.
+
+| 지표 | 잠정 목표 | 검증 | 비고 |
+|------|-----------|------|------|
+| P95 지연 | **200 ms** | 동일 페이로드·100회·동시 10 (`bench_l1_api_load.py` 기본) | 클라이언트 RTT; 스텁·네트워크·디스크에 민감 |
+| 피크 RSS | **2.5 GiB** (단일 프로세스) | `--server-pid` + `psutil` 동일 호스트 | **4 GiB RAM 호스트 비권장** |
+| 인프라 (초안) | **8 GiB RAM** VPS | 벤치 JSON에 `infra` 메모 수동 기록 권장 | 커널/캐시 여유 |
+| 부하 | **최대 동시 10** 기본 | `--max-concurrent`, `--total-requests` 조정 가능 | RPS 상한은 운영에서 별도 정의 |
 
 ### 9.3 Automation references (smoke, not a substitute for §9.1)
 
 - L1: `.github/workflows/l1-inverse-decoder-smoke.yml`, `l1-inverse-decoder-nightly-sweep.yml`
 - Track B research: `.github/workflows/trackb-research-smoke.yml`, `scripts/Run-TrackBWeeklyRefresh.ps1`
 - Token API stub contract: `docs/final/openapi_token_compression_stub_v1.yaml` v1.1.0+; implementation row: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §2
+- §9.2 draft SLA bench (stub must be running unless `--dry-run`): `scripts/bench_l1_api_load.py` → `docs/final/artifacts/bench_l1_api_load_latest.json`
 
 **CI vs local bundle:** GitHub `l1-inverse-decoder-smoke.yml` runs the **same pytest targets as below** and **adds** `python scripts/run_l1_inverse_decoder_spike_test.py --samples 24 …` (single-run spike). So: **local bundle ⊆ smoke**; passing locally is necessary but not sufficient for §9.1.
 
