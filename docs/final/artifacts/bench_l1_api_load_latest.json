@@ -1,6 +1,6 @@
 {
   "schema": "bench_l1_api_load_v1",
-  "generated_at_utc": "2026-04-10T02:38:53+00:00",
+  "generated_at_utc": "2026-04-10T02:48:49+00:00",
   "research_only": true,
   "draft_benchmark": true,
   "notes": "Latencies are client-observed RTT. server_rss_bytes_* require --server-pid on same host with psutil installed.",
@@ -9,7 +9,7 @@
   "total_requests": 100,
   "max_concurrent": 10,
   "approx_word_tokens": 1000,
-  "wall_time_s": 0.1394,
+  "wall_time_s": 0.1542,
   "ok_count": 100,
   "error_count": 0,
   "error_rate": 0.0,
@@ -17,25 +17,26 @@
     "ok": 100
   },
   "latency_ms": {
-    "p50": 10.707,
-    "p95": 26.133,
-    "p99": 27.444,
-    "max": 27.66
+    "p50": 12.668,
+    "p95": 24.159,
+    "p99": 26.292,
+    "max": 26.32
   },
-  "latency_ms_including_errors_p95": 26.133,
-  "server_pid": null,
+  "latency_ms_including_errors_p95": 24.159,
+  "server_pid": 31548,
   "rss_self_sampled": false,
-  "server_rss_bytes_before": null,
-  "server_rss_bytes_after": null,
+  "server_rss_bytes_before": 138981376,
+  "server_rss_bytes_after": 139874304,
   "command_fingerprint": {
     "bench_script": "scripts/bench_l1_api_load.py",
-    "git_commit": "38d610bb709a"
+    "git_commit": "cf9e655b0148",
+    "mkm_user_context_included": false
   },
   "draft_targets_comparison": {
     "p95_target_ms": 200,
     "rss_target_bytes": 2684354560,
     "infra_ram_draft_gb": 8,
     "pass_p95_vs_target": true,
-    "pass_rss_vs_target": null
+    "pass_rss_vs_target": true
   }
 }

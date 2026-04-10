@@ -19,6 +19,7 @@ $required = @(
     "scripts\generate_btrack_hypothesis_prophecy_v1.py",
     "scripts\build_logos_wide_restoration.py",
     "scripts\build_btrack_prophecy_score_from_ohlcv.py",
+    "scripts\run_daily_prophecy_eval_and_report.ps1",
     "scripts\report_btrack_notebooklm_jsonl_kpi.py",
     "projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1",
     "scripts\core\domain_router.py",
@@ -30,7 +31,18 @@ $required = @(
     "codebook\shards\zone_f_code.json",
     "codebook\shards\zone_g_health.json",
     "codebook\shards\zone_h_legacy.json",
-    "docs\final\master_codebook_dual_track.multidomain_1000.json"
+    "docs\final\master_codebook_dual_track.multidomain_1000.json",
+    "docs\final\openapi_token_compression_stub_v1.yaml",
+    "docs\final\schemas\mkm_user_context_v1.schema.json",
+    "data\personalization\mkm_user_context_v1.sample.json",
+    "docs\final\COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md",
+    "scripts\bench_l1_api_load.py",
+    "docs\final\artifacts\bench_l1_api_load_latest.json",
+    "scripts\run_l1_inverse_decoder_spike_test.py",
+    "scripts\l1_side_channel_wire_codec.py",
+    "scripts\run_l1_permutation_channel_integrated_spike.py",
+    "docs\final\artifacts\l1_inverse_decoder_spike_test_summary_latest.json",
+    "docs\final\artifacts\l1_permutation_channel_integrated_spike_latest.json"
 )
 
 $missing = @()

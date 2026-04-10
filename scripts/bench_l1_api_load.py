@@ -108,14 +108,17 @@ def run_bench(
     timeout: float,
     server_pid: int | None,
     rss_self: bool,
+    mkm_user_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     url = base_url.rstrip("/") + path
     stem = "benchw "
     text = (stem * approx_words).strip()
-    payload_template = {
+    payload_template: dict[str, Any] = {
         "text": text,
         "client_request_id": "bench-{i}",
     }
+    if mkm_user_context:
+        payload_template["mkm_user_context"] = mkm_user_context
     latencies_ok: list[float] = []
     latencies_err: list[float] = []
     status_counts: dict[str, int] = {}
@@ -196,6 +199,7 @@ def run_bench(
         "command_fingerprint": {
             "bench_script": "scripts/bench_l1_api_load.py",
             "git_commit": _git_head_short(),
+            "mkm_user_context_included": bool(mkm_user_context),
         },
         "draft_targets_comparison": {
             "p95_target_ms": 200,
@@ -232,8 +236,23 @@ def main() -> int:
     )
     p.add_argument("--out", type=Path, default=DEFAULT_OUT)
     p.add_argument("--dry-run", action="store_true")
+    p.add_argument(
+        "--mkm-user-context-json",
+        type=Path,
+        default=None,
+        help="Optional MKM_User_Context_v1 JSON file merged into each compress payload (load test parity).",
+    )
     args = p.parse_args()
     server_pid = args.server_pid if args.server_pid > 0 else None
+
+    mkm_uc: dict[str, Any] | None = None
+    if args.mkm_user_context_json:
+        raw = args.mkm_user_context_json.read_text(encoding="utf-8")
+        loaded = json.loads(raw)
+        if not isinstance(loaded, dict):
+            print(json.dumps({"ok": False, "error": "mkm_user_context_json must be a JSON object"}))
+            return 2
+        mkm_uc = loaded
 
     if args.dry_run:
         payload = {
@@ -243,6 +262,7 @@ def main() -> int:
             "draft_benchmark": True,
             "dry_run": True,
             "message": "No HTTP requests executed; stub not contacted.",
+            "mkm_user_context_included": bool(mkm_uc),
         }
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(
@@ -261,6 +281,7 @@ def main() -> int:
         args.timeout,
         server_pid,
         args.rss_self,
+        mkm_user_context=mkm_uc,
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(
