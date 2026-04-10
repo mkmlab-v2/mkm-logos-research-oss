@@ -1,0 +1,38 @@
+# Nightly: full multi-seed/noise sweep (~minutes). Upload summary JSON; does not auto-commit to main.
+# Requires: Actions enabled on repo; schedule runs only on default branch.
+name: L1 inverse decoder nightly sweep
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 06:15 UTC daily — adjust in repo settings if overlap with other cron jobs matters.
+    - cron: "15 6 * * *"
+
+# Org default "read-only GITHUB_TOKEN" still allows artifact upload when actions: write is set.
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: l1-inverse-decoder-nightly
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: pip install numpy
+      - name: Full sweep (writes docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json)
+        run: python scripts/run_l1_inverse_decoder_spike_test.py --sweep
+      - name: Upload summary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: l1-inverse-decoder-spike-summary-${{ github.run_id }}
+          path: docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json
+          if-no-files-found: error

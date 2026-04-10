@@ -1,6 +1,6 @@
 # NotebookLM 소스 매니페스트 (A/B 이원)
 
-**작성일**: 2026-03-29 · **갱신**: 2026-04-06 (B-Track Major Reference·DSS frontline 디스크 SSOT 고정)  
+**작성일**: 2026-03-29 · **갱신**: 2026-04-10 (MKM12 L0/L1/L2 클레임 교정본·NotebookLM A 궤적 추가)  
 **정의**: **A = Fact-Lock(팩트 고정)**, **B = Creative-Lock(통찰·가설)**. B는 본선 OOF·실매매 트리거와 A를 혼선 없이 적용.
 
 **Cursor 3.0 (2026-04)**: NotebookLM과 동일하게 **브리핑·질의·소스 아카이브** 레이어다. **에이전트 병렬(Agents Window)·Design Mode**는 제품 기능이며, **압축 엔진·헌법·실매매 SSOT는 여전히 레포의 `.py`/JSON**이다(`AGENTS.md`, `COMPRESSION_SLA_POLICY_V1.md`).
@@ -38,10 +38,14 @@
 | P1 | `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` | Prism 논리 색인(Grand Indexing 2.0); 경로·역할·`agent_access`; 코드 4D 축과 혼동 금지 |
 | P0 | `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` | 압축-해석 파이프라인 Fact-Lock SSOT |
 | P0 | `docs/final/COMPRESSION_SLA_POLICY_V1.md` | 투트랙 압축 SLA(범용·리터럴)·산출·헬스·웹훅 범위; NotebookLM이 이 수치를 대체하지 않음 |
+| P1 | `docs/final/MKM12_L0_L1_L2_CLAIMS_TAGGED_FACTCHECK_2026-04-09.md` | L0/L1/L2 클레임 태그·역추론/사이드 채널 SSOT 인용·외부 문헌 앵커(§I); 운영 통합 여부는 CONSTITUTION·`.py`로만 판정 |
 | P1 | `docs/final/openapi_token_compression_stub_v1.yaml` | 토큰 압축 API 스텁 OpenAPI 3 계약 |
 | P0 | `docs/final/STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md` | 16상 인터페이스 삽입 계약(비강제·단계 게이트) |
 | P0 | `docs/final/MASTER_Linguistic_Contract_2026.md` | 어휘·코퍼스 FACT-LOCK(레일·v2·스테이징) SSOT |
 | P0 | `docs/final/master_codebook_dual_track.template.json` | 듀얼 트랙 코드북 템플릿 |
+| P0 | `scripts/experimental/codebook_runtime_pack/README.md` | 코드북 런타임 팩 **공식 명칭 SSOT** (`codebook_runtime_pack`), legacy `codepack_recovery`와 구분 |
+| P1 | `docs/final/artifacts/codebook_factsafe_bundle_latest.json` | 코드북 팩트세이프 번들 최신 결과(옵션: recovered readiness 포함) |
+| P1 | `docs/final/artifacts/recovered_codebook_operational_readiness_latest.json` | 코드북 런타임 팩 운영 준비도 PASS/FAIL 산출 |
 | P1 | `projects/bitcoin-trading/ops/.hermes.md` | 외부 부관(Hermes 등) **얇은 프로필**: SSOT 포인터·금지·스킬 앵커; 본문 복제 금지 |
 | P1 | `data/regimes/regime_fusion_policy.json` | 레짐 퓨전 정책 |
 | P1 | `data/regimes/regime_map.json` | 1차 레짐 맵 |
@@ -389,3 +393,4 @@ https://ko.wikipedia.org/wiki/%EC%82%AC%EC%A3%BC%EB%AA%85%EB%A6%AC%ED%95%99
 ---
 
 **상태**: A 궤적 · Logos-Insight 표(wide_20 JSON/CSV 포함) · **BTC 레짐 공명 FULL JSON 3종·btc_regime_map** 매니페스트 반영 · 이제마 B 분리 · 작전지휘부 151 소스·wipe 정책 · 만세력·사주 A/B `notebook_get` 검증 완료(표 ID 일치; **B 소스 21개**·파일 7·arXiv 3·Kaggle 3·위키 8·AI-Logos 서지·명리 스키마·외부 참조 랜드스케이프·Deep Past Kaggle URL) · **B `notebook_query`** 소스-바운드 Q1/Q2 Gap 기록(2026-03-29) · **DSS Fusion** 노트(`2b2eeff1-…`) 소스 8개 검증 · OPS_ONEPAGE Gap 기록 정책 · **Master Probe v1 / 16-State 정본(2026-03-29) 매니페스트 SSOT** (2026-03-29)
+· **Codebook Runtime Pack 명칭 고정** (`codebook_runtime_pack`, legacy `codepack_recovery` 호환) 및 readiness 아티팩트 A 궤적 반영 (2026-04-09)

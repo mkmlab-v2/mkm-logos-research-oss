@@ -1,0 +1,38 @@
+# PR / push: cheap smoke — single-run spike + committed JSON schema (no multi-minute sweep).
+# Runs on every push/PR to mainline branches so GitHub Actions always shows execution (no path gate).
+# Do not skip via script-hash alone: implicit deps (numpy ABI, env) can change without touching this file.
+name: L1 inverse decoder smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: l1-inverse-decoder-smoke-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: pip install numpy pytest msgpack zstandard
+      - name: Committed summary JSON schema (SSOT shape)
+        run: pytest tests/test_l1_inverse_decoder_summary_schema.py -q
+      - name: L1 side-channel wire codec (msgpack+zstd round-trip)
+        run: pytest tests/test_l1_side_channel_wire_codec.py -q --tb=short
+      - name: L1 side-channel integrated spike artifact schema (v3)
+        run: pytest tests/test_l1_permutation_channel_integrated_spike_artifact_schema.py -q --tb=short
+      - name: Single-run spike (no --sweep)
+        run: python scripts/run_l1_inverse_decoder_spike_test.py --samples 24 --noise-level 0.1 --seed 701
