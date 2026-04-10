@@ -1,0 +1,107 @@
+{
+  "schema": "l1_permutation_channel_integrated_spike_v3",
+  "generated_at_utc": "2026-04-10T00:10:38Z",
+  "research_only": true,
+  "wire_codecs": {
+    "msgpack_available": true,
+    "zstandard_available": true,
+    "zstd_level": 3,
+    "zstd_min_raw_bytes": 64,
+    "round_trip_restore_via_codec_checked": 2160,
+    "round_trip_restore_via_codec_ok": 2160
+  },
+  "claims": {
+    "exact_restore_with_side_channel": "[FACT] 1.0 when swap_log/typo/oov patches applied as below",
+    "payload_wire_format": "[FACT] msgpack, always-zstd, and adaptive tagged wire (1B tag + raw|zstd) measured; round-trip via decode_adaptive_msgpack. research_only / not production API contract."
+  },
+  "inputs": {
+    "seeds": [
+      701,
+      809,
+      907
+    ],
+    "samples_per_seed": 180,
+    "noise_level": 0.2,
+    "modes": [
+      "swap",
+      "swap_typo",
+      "typo",
+      "oov"
+    ],
+    "zstd_min_raw_bytes": 64
+  },
+  "rows": [
+    {
+      "mode": "swap",
+      "exact_restore_rate": 1.0,
+      "samples": 540,
+      "overhead_json_utf8_bytes_mean": 67,
+      "overhead_json_utf8_bytes_min": 67,
+      "overhead_json_utf8_bytes_max": 67,
+      "overhead_msgpack_bytes_mean": 42,
+      "overhead_msgpack_bytes_min": 42,
+      "overhead_msgpack_bytes_max": 42,
+      "overhead_msgpack_zstd_bytes_mean": 51,
+      "overhead_msgpack_zstd_bytes_min": 51,
+      "overhead_msgpack_zstd_bytes_max": 51,
+      "overhead_adaptive_tagged_wire_bytes_mean": 43,
+      "overhead_adaptive_tagged_wire_bytes_min": 43,
+      "overhead_adaptive_tagged_wire_bytes_max": 43,
+      "adaptive_zstd_choice_rate": 0.0
+    },
+    {
+      "mode": "swap_typo",
+      "exact_restore_rate": 1.0,
+      "samples": 540,
+      "overhead_json_utf8_bytes_mean": 155,
+      "overhead_json_utf8_bytes_min": 155,
+      "overhead_json_utf8_bytes_max": 155,
+      "overhead_msgpack_bytes_mean": 98,
+      "overhead_msgpack_bytes_min": 98,
+      "overhead_msgpack_bytes_max": 98,
+      "overhead_msgpack_zstd_bytes_mean": 88.22962962962963,
+      "overhead_msgpack_zstd_bytes_min": 86,
+      "overhead_msgpack_zstd_bytes_max": 89,
+      "overhead_adaptive_tagged_wire_bytes_mean": 89.22962962962963,
+      "overhead_adaptive_tagged_wire_bytes_min": 87,
+      "overhead_adaptive_tagged_wire_bytes_max": 90,
+      "adaptive_zstd_choice_rate": 1.0
+    },
+    {
+      "mode": "typo",
+      "exact_restore_rate": 1.0,
+      "samples": 540,
+      "overhead_json_utf8_bytes_mean": 141,
+      "overhead_json_utf8_bytes_min": 141,
+      "overhead_json_utf8_bytes_max": 141,
+      "overhead_msgpack_bytes_mean": 92,
+      "overhead_msgpack_bytes_min": 92,
+      "overhead_msgpack_bytes_max": 92,
+      "overhead_msgpack_zstd_bytes_mean": 82.20370370370371,
+      "overhead_msgpack_zstd_bytes_min": 80,
+      "overhead_msgpack_zstd_bytes_max": 83,
+      "overhead_adaptive_tagged_wire_bytes_mean": 83.20370370370371,
+      "overhead_adaptive_tagged_wire_bytes_min": 81,
+      "overhead_adaptive_tagged_wire_bytes_max": 84,
+      "adaptive_zstd_choice_rate": 1.0
+    },
+    {
+      "mode": "oov",
+      "exact_restore_rate": 1.0,
+      "samples": 540,
+      "overhead_json_utf8_bytes_mean": 84.21481481481482,
+      "overhead_json_utf8_bytes_min": 80,
+      "overhead_json_utf8_bytes_max": 88,
+      "overhead_msgpack_bytes_mean": 57.214814814814815,
+      "overhead_msgpack_bytes_min": 53,
+      "overhead_msgpack_bytes_max": 61,
+      "overhead_msgpack_zstd_bytes_mean": 66.21481481481482,
+      "overhead_msgpack_zstd_bytes_min": 62,
+      "overhead_msgpack_zstd_bytes_max": 70,
+      "overhead_adaptive_tagged_wire_bytes_mean": 58.214814814814815,
+      "overhead_adaptive_tagged_wire_bytes_min": 54,
+      "overhead_adaptive_tagged_wire_bytes_max": 62,
+      "adaptive_zstd_choice_rate": 0.0
+    }
+  ]
+}
