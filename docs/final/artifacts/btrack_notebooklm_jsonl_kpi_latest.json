@@ -1,7 +1,7 @@
 {
   "schema": "btrack_notebooklm_jsonl_kpi_v1",
-  "generated_at_utc": "2026-04-07T02:45:14.876753+00:00",
-  "input_path": "C:/workspace/reports/notebooklm/btrack_mega_insights_10gb.jsonl",
+  "generated_at_utc": "2026-04-07T10:14:22.986708+00:00",
+  "input_path": "/opt/mkm-sync-check/reports/notebooklm/btrack_mega_insights_10gb.jsonl",
   "disclaimer": "B-track observation metrics only; not market prediction, A-track promotion, or TOE.",
   "rows_total_valid": 454,
   "rows_skipped": 0,
