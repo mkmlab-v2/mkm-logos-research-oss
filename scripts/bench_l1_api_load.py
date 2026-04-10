@@ -200,6 +200,7 @@ def run_bench(
             "bench_script": "scripts/bench_l1_api_load.py",
             "git_commit": _git_head_short(),
             "mkm_user_context_included": bool(mkm_user_context),
+            "argv": sys.argv[1:],
         },
         "draft_targets_comparison": {
             "p95_target_ms": 200,
@@ -293,3 +294,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+

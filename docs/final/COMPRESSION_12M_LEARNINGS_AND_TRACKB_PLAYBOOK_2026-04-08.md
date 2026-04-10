@@ -111,9 +111,9 @@ No artifact, no claim.
 
 ### 9.1 Scope and approval (all required)
 
-- [ ] **Named scope** in writing: which HTTP path(s), job, or product tier is candidate for promotion (e.g. `POST /v1/compress` only — **exclude** `POST /v1/research/l1_side_channel/wire` unless separately approved as research-exposed).
-- [ ] **Command fingerprint**: script path + argv + git commit hash (or tag) recorded next to artifacts.
-- [ ] **No conflation**: side-channel `exact_restore_rate = 1.0` harness (`run_l1_permutation_channel_integrated_spike.py` + artifact) is **not** evidence for LLM-beam or Track A compress without a **new** artifact under the same decoding assumptions as the promoted surface.
+- [x] **Named scope** in writing: `POST /v1/compress`, `POST /v1/expand`, `POST /v1/metering/log` (compression lane candidate). **Exclude by default:** `POST /v1/research/l1_side_channel/wire` unless separately approved as research-exposed.
+- [x] **Command fingerprint**: script path + argv + git commit hash recorded in `docs/final/artifacts/bench_l1_api_load_latest.json.command_fingerprint` (current includes `bench_script`, `argv`, `git_commit`).
+- [x] **No conflation**: side-channel `exact_restore_rate = 1.0` harness (`run_l1_permutation_channel_integrated_spike.py` + artifact) is **not** evidence for LLM-beam or Track A compress; promotion claims require a **new** artifact under the same decoding assumptions.
 
 #### 9.1.1 승격 후보 범위·성능 계약 초안 (지휘관 입력용, 2026-04-10)
 
