@@ -21,11 +21,9 @@ jobs:
   sweep:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Install deps
@@ -33,7 +31,7 @@ jobs:
       - name: Full sweep (writes docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json)
         run: python scripts/run_l1_inverse_decoder_spike_test.py --sweep
       - name: Upload summary artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: l1-inverse-decoder-spike-summary-${{ github.run_id }}
           path: docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json
