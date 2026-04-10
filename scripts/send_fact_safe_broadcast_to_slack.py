@@ -92,7 +92,7 @@ def build_slack_text(payload: dict) -> str:
     net_source = str(payload.get("net_source") or "unknown")
     net_source_alert = (
         ":warning: *NET_SOURCE_FALLBACK_ACTIVE*"
-        if net_source not in {"exchange_snapshot_24h", "unknown"}
+        if net_source not in {"exchange_snapshot_24h", "kpi_latest_snapshot_24h", "unknown"}
         else ":white_check_mark: *NET_SOURCE_PRIMARY*"
     )
     fallback_streak = int(payload.get("net_source_fallback_streak") or 0)
@@ -234,7 +234,7 @@ def main() -> int:
         "price_output_locked": payload.get("price_output_locked"),
         "lock_reason": payload.get("lock_reason"),
         "net_source": payload.get("net_source"),
-        "net_source_fallback_alert": str(payload.get("net_source") or "") not in {"", "exchange_snapshot_24h", "unknown"},
+        "net_source_fallback_alert": str(payload.get("net_source") or "") not in {"", "exchange_snapshot_24h", "kpi_latest_snapshot_24h", "unknown"},
         "core_score": payload.get("core_score"),
         "core_decision": payload.get("core_decision"),
         "core_reason": payload.get("core_reason"),

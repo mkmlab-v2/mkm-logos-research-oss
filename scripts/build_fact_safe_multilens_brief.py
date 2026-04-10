@@ -220,6 +220,12 @@ def build_report(engine_id: str, boundary_rule: str) -> str:
     snapshot_fills = snapshot.get("fills_count")
     net_for_report = snapshot_net if isinstance(snapshot_net, (int, float)) else kpi_latest_net
     fills_for_report = snapshot_fills if isinstance(snapshot_fills, (int, float)) else kpi_latest_fills
+    if isinstance(snapshot_net, (int, float)):
+        net_source = "exchange_snapshot_24h"
+    elif isinstance(kpi_latest_net, (int, float)):
+        net_source = "kpi_latest_snapshot_24h"
+    else:
+        net_source = "unknown"
     reliability = compute_reliability_badge(engine_id=engine_id, samples=samples, net_delta=net_delta)
 
     high_reliability_from_ops = str(waiting.get("high_reliability_decision") or "").upper()
@@ -255,7 +261,7 @@ def build_report(engine_id: str, boundary_rule: str) -> str:
         f"- commission: {snapshot.get('commission')}\n"
         f"- funding_fee: {snapshot.get('funding_fee')}\n"
         f"- net: {net_for_report}\n"
-        f"- net_source: {'exchange_snapshot_24h' if isinstance(snapshot_net, (int, float)) else 'kpi_history_fallback'}\n"
+        f"- net_source: {net_source}\n"
         f"- history samples: {samples}\n"
         f"- history net_delta: {round(net_delta, 8)}\n"
         f"- history avg_net_per_fill_latest: {round(avg_net_per_fill, 8) if avg_net_per_fill is not None else None}\n"
