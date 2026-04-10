@@ -1,0 +1,73 @@
+{
+  "schema": "l1_inverse_decoder_spike_test_summary_v1",
+  "generated_at_utc": "2026-04-10T10:09:53+00:00",
+  "research_only": true,
+  "seeds": [
+    701,
+    809,
+    907
+  ],
+  "noise_levels": [
+    0.1,
+    0.2
+  ],
+  "samples_per_cell": 180,
+  "beam_size": 4,
+  "scoring_mode": "legacy",
+  "aggregate": {
+    "min_exact_restore_rate": 0.5388888888888889,
+    "max_exact_restore_rate": 0.6166666666666667,
+    "avg_exact_restore_rate": 0.5777777777777778,
+    "min_recovery_rate": 0.55,
+    "avg_recovery_rate": 0.5916666666666667,
+    "determinism_delta": 0.04444444444444451
+  },
+  "cells": [
+    {
+      "seed": 701,
+      "noise_level": 0.1,
+      "exact_restore_rate": 0.5833333333333334,
+      "recovery_rate": 0.6,
+      "hard_fail_count": 72
+    },
+    {
+      "seed": 701,
+      "noise_level": 0.2,
+      "exact_restore_rate": 0.5388888888888889,
+      "recovery_rate": 0.55,
+      "hard_fail_count": 81
+    },
+    {
+      "seed": 809,
+      "noise_level": 0.1,
+      "exact_restore_rate": 0.5944444444444444,
+      "recovery_rate": 0.6111111111111112,
+      "hard_fail_count": 70
+    },
+    {
+      "seed": 809,
+      "noise_level": 0.2,
+      "exact_restore_rate": 0.6166666666666667,
+      "recovery_rate": 0.6333333333333333,
+      "hard_fail_count": 66
+    },
+    {
+      "seed": 907,
+      "noise_level": 0.1,
+      "exact_restore_rate": 0.5833333333333334,
+      "recovery_rate": 0.6,
+      "hard_fail_count": 72
+    },
+    {
+      "seed": 907,
+      "noise_level": 0.2,
+      "exact_restore_rate": 0.55,
+      "recovery_rate": 0.5555555555555556,
+      "hard_fail_count": 80
+    }
+  ],
+  "notes": [
+    "Determinism delta is spread of per-seed average exact_restore_rate.",
+    "Use fixed seeds and fixed corpus for reproducibility comparisons."
+  ]
+}
