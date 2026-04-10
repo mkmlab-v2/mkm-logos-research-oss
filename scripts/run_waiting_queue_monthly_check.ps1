@@ -3,6 +3,7 @@ param(
     [double]$OverlapDriftAlertThreshold = -0.05,
     [switch]$SkipNightWatchmanHarness,
     [switch]$SkipBtrackGates,
+    [switch]$SkipNetSourceFallbackAutoHold,
     [string]$CloseReturnPct = "",
     [string]$PredictedBand = "DOWN_STRONG",
     [string]$HypothesisMetric = "KOSPI_D1_RETURN_PCT",
@@ -105,6 +106,10 @@ if ($env:FACT_SAFE_HIGH_SAMPLE_CASES) {
 $highSampleRuns = 10
 if ($env:FACT_SAFE_HIGH_SAMPLE_RUNS) {
     $highSampleRuns = [int]$env:FACT_SAFE_HIGH_SAMPLE_RUNS
+}
+$skipNetSourceFallbackAutoHoldEffective = $SkipNetSourceFallbackAutoHold
+if ($env:FACT_SAFE_SKIP_NET_SOURCE_FALLBACK_AUTO_HOLD) {
+    $skipNetSourceFallbackAutoHoldEffective = ([string]$env:FACT_SAFE_SKIP_NET_SOURCE_FALLBACK_AUTO_HOLD).ToLower() -in @("1", "true", "yes")
 }
 $checkedAtObj = [DateTimeOffset]::UtcNow
 $checkedAt = $checkedAtObj.ToString("o")
@@ -1042,10 +1047,14 @@ if (Test-Path -LiteralPath $slackDeliveryStatusPath) {
                 override_trigger_type = "net_source_fallback"
                 override_priority = 100
                 net_source_fallback_streak = $fallbackStreak
+                skip_net_source_fallback_auto_hold = $skipNetSourceFallbackAutoHoldEffective
                 slack_delivery_status_path = $slackDeliveryStatusPath
                 runner = "scripts/run_waiting_queue_monthly_check.ps1"
             } | ConvertTo-Json -Compress | Add-Content -LiteralPath $logPath -Encoding utf8
-            throw "Auto HOLD promotion triggered: net_source fallback streak=$fallbackStreak"
+            if (-not $skipNetSourceFallbackAutoHoldEffective) {
+                throw "Auto HOLD promotion triggered: net_source fallback streak=$fallbackStreak"
+            }
+            Add-SoftFailNote "Net-source fallback auto-hold escalation observed but suppressed by SkipNetSourceFallbackAutoHold (streak=$fallbackStreak)"
         }
     } catch {
         if ($_.Exception.Message -like "Auto HOLD promotion triggered*") {
