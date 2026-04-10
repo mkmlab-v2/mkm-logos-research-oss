@@ -1,0 +1,6 @@
+{
+  "schema_version": "mkm_user_context_v1",
+  "source": "vps_automated_bench",
+  "locale": "ko-KR",
+  "persona_stub": {"tier": "bench"}
+}
