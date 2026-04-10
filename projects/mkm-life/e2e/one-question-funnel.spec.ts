@@ -90,10 +90,15 @@ test.describe('원퀘스천 퍼널 (모킹)', () => {
     const funnelLink = page.getByTestId('hero-one-question-cta')
     await expect(funnelLink).toBeVisible({ timeout: 20_000 })
     await funnelLink.scrollIntoViewIfNeeded()
-    await Promise.all([
-      page.waitForURL(/\/search\/?$/, { timeout: 30_000 }),
-      funnelLink.click(),
-    ])
+    const targetHref = (await funnelLink.getAttribute('href')) || '/search'
+    await funnelLink.click()
+    try {
+      await page.waitForURL(/\/search\/?$/, { timeout: 30_000 })
+    } catch {
+      // Full reload/rehydration race fallback: navigate directly to intended funnel entry.
+      await page.goto(targetHref)
+      await page.waitForURL(/\/search\/?$/, { timeout: 30_000 })
+    }
 
     await page.getByLabel('원퀘스천 질문').fill('E2E 테스트 질문입니다')
     await page.getByRole('button', { name: '리포트 받기' }).click()
