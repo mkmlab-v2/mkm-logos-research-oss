@@ -68,11 +68,11 @@ MKM12는 현재 하이브리드 리스크 제어 + 구조 보존 기반의 복�
 - `docs/final/artifacts/l1_permutation_channel_integrated_spike_latest.json`
 - `docs/final/artifacts/dynamic_stress_causality_gate_v1.json`
 - `docs/final/artifacts/trackb_quaternion_dynamic_v1_2_cmp.json`
-- `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9 (B-track → Track A / production promotion readiness 체크리스트 v1)
+- `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9·§9.1.1 (B-track → Track A 승격 체크리스트 v1 · OpenAPI 경로·계약 초안)
 - `scripts/run_mkm_l1_parity_prototype.py`
 - `scripts/trackb_ssm_vs_tf_bench.py`
 
-**SSOT 드리프트 가드:** 역추론 스파이크 복원율 문구는 항상 `l1_inverse_decoder_spike_test_summary_latest.json`의 `aggregate`·`generated_at_utc`·`scoring_mode`·`research_only`를 따른다. 불일치 시 본 문서 A)·E)·`FACTCHECK_GEMATRIA_ENGINEERING_REPRODUCIBILITY_2026-04-09.md` 스파이크 절을 아티팩트 우선으로 수정한다. **승격(연구→상용) 판단**은 위 플레이북 §9 체크리스트·지휘관 승인으로만 고정한다(NotebookLM 브리핑 단독 근거 금지).
+**SSOT 드리프트 가드:** 역추론 스파이크 복원율 문구는 항상 `l1_inverse_decoder_spike_test_summary_latest.json`의 `aggregate`·`generated_at_utc`·`scoring_mode`·`research_only`를 따른다. 불일치 시 본 문서 A)·E)·`FACTCHECK_GEMATRIA_ENGINEERING_REPRODUCIBILITY_2026-04-09.md` 스파이크 절을 아티팩트 우선으로 수정한다. **승격(연구→상용) 판단**은 위 플레이북 §9·§9.1.1 체크리스트·지휘관 승인으로만 고정한다(NotebookLM 브리핑 단독 근거 금지).
 
 ---
 
