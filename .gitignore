@@ -163,3 +163,7 @@ projects/bitcoin-trading/ops/windows-rehearsal/.showroom_staging/
 # no1kmedi Next.js App Router: ensure API routes stay tracked if a broad `api/` rule exists
 !projects/no1kmedi/src/app/api/
 !projects/no1kmedi/src/app/api/**
+
+# Cursor/VS Code — 1인: SSH 터미널 cwd 등 공유 설정만 추적 (나머지 .vscode는 로컬)
+.vscode/*
+!.vscode/settings.json
