@@ -68,6 +68,7 @@ MKM12는 현재 하이브리드 리스크 제어 + 구조 보존 기반의 복�
 - `docs/final/artifacts/l1_permutation_channel_integrated_spike_latest.json`
 - `docs/final/artifacts/dynamic_stress_causality_gate_v1.json`
 - `docs/final/artifacts/trackb_quaternion_dynamic_v1_2_cmp.json`
+- `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9 (B-track → Track A / production promotion readiness 체크리스트 v1)
 - `scripts/run_mkm_l1_parity_prototype.py`
 - `scripts/trackb_ssm_vs_tf_bench.py`
 

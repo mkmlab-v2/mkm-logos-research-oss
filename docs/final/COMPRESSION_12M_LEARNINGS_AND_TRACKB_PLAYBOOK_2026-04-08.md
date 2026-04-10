@@ -92,8 +92,8 @@ Day 3-7:
 - Add reproducibility checks (seed, schema, command fingerprint).
 
 Day 8-14:
-- Prepare promotion-readiness memo for Track B (research-only status by default).
-- Only if all gates pass, draft separate production readiness checklist.
+- Use **§9** as the promotion-readiness checklist (research-only default; fill numeric thresholds when product owner locks them).
+- Only if all §9 gates pass for a named scope, draft route-specific production readiness (Hostinger/VPS checklist remains separate).
 
 ## 8) Non-Negotiable Reporting Rule
 
@@ -104,3 +104,34 @@ All summaries must start with:
 - what is explicitly out of scope.
 
 No artifact, no claim.
+
+## 9) B-track → Track A / production promotion readiness (checklist v1, 2026-04-10)
+
+**Status:** default **no promotion** — B-track and research artifacts stay `research_only` / `GO_RESEARCH` until this checklist is completed for a **named scope** (route, daemon, billing surface). NotebookLM·브리핑은 참고만; 통과 여부는 레포 산출물·CI·지휘관 승인으로만 기록한다.
+
+### 9.1 Scope and approval (all required)
+
+- [ ] **Named scope** in writing: which HTTP path(s), job, or product tier is candidate for promotion (e.g. `POST /v1/compress` only — **exclude** `POST /v1/research/l1_side_channel/wire` unless separately approved as research-exposed).
+- [ ] **Command fingerprint**: script path + argv + git commit hash (or tag) recorded next to artifacts.
+- [ ] **No conflation**: side-channel `exact_restore_rate = 1.0` harness (`run_l1_permutation_channel_integrated_spike.py` + artifact) is **not** evidence for LLM-beam or Track A compress without a **new** artifact under the same decoding assumptions as the promoted surface.
+
+### 9.2 Metric and artifact gates (fill thresholds when locked; until then mark TBD)
+
+| Gate | SSOT / artifact | Pass criterion (draft) |
+|------|-----------------|-------------------------|
+| L1 inverse (beam) baseline | `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json` | Re-run reproduces `aggregate.*` within agreed tolerance; prose uses same file’s `generated_at_utc`, `scoring_mode`, `research_only` (`MKM12_L0_L1_L2_CLAIMS_TAGGED_FACTCHECK_2026-04-09.md` §D drift guard). |
+| Track B weekly semantic SSOT | `docs/final/artifacts/trackb_semantic_eval_*_latest.json`, `trackb_weekly_gate_recheck_latest.json` | Operational gate metric remains **Jaccard** unless `CONSTITUTION` / playbook is formally revised; `cosine_tokens` and embedding backends stay parallel research unless promoted by separate memo. |
+| Latency | TBD script + JSON | P95 **TBD** ms on **TBD** hardware profile. |
+| Memory | TBD script + JSON | Peak RSS **TBD** MB on **TBD** profile. |
+| RS/ECC | `scripts/run_mkm_l1_parity_prototype.py` lineage | **Not** a promotion blocker description for “parity prototype”; full RS pipeline + error-injection bench required before any “FEC production” claim (`FACTCHECK_GEMATRIA_ENGINEERING_REPRODUCIBILITY_2026-04-09.md`). |
+| Compression SLA / pilot tone | `docs/final/COMPRESSION_SLA_POLICY_V1.md`, `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10 | Partner brief avoids 100% lossless / RS production / external bpb as MKM12 service facts unless matching artifacts exist. |
+
+### 9.3 Automation references (smoke, not a substitute for §9.1)
+
+- L1: `.github/workflows/l1-inverse-decoder-smoke.yml`, `l1-inverse-decoder-nightly-sweep.yml`
+- Track B research: `.github/workflows/trackb-research-smoke.yml`, `scripts/Run-TrackBWeeklyRefresh.ps1`
+- Token API stub contract: `docs/final/openapi_token_compression_stub_v1.yaml` v1.1.0+; implementation row: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §2
+
+### 9.4 Related production checklists (orthogonal)
+
+- Trading / staging: `projects/bitcoin-trading/docs/final/STAGING_TO_PRODUCTION_PROMOTION_CHECKLIST_2026-03-25.md` — does **not** replace §9 for compression research → API claims.

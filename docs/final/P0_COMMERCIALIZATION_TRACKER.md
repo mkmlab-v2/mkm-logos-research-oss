@@ -15,6 +15,7 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 | 구분 | 증거로 삼을 경로·산출물 |
 |------|-------------------------|
 | 헌법·에이전트 포인터 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`, 루트 `AGENTS.md`, `CLAUDE.md` |
+| B-track → Track A·대외 주장 승격 (압축·복원) | `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` **§9** — 체크리스트 미완이면 연구 산출물을 상용·프로덕션 팩트로 승격하지 않음; L1 사이드채널 1.0과 빔 베이스라인 혼동 금지 |
 | P0 순서 자체 | 본 파일(`P0_COMMERCIALIZATION_TRACKER.md`) + Step 표의 링크 파일 존재 |
 | 정렬 pytest 게이트 | `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` **exit 0** 로그 또는 CI 아티팩트 |
 | 월간 브리프 | `docs/final/artifacts/waiting_queue_monthly_check_log.jsonl` 등 **append 로그** (`run_waiting_queue_monthly_check.ps1`) |
@@ -35,6 +36,10 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 - **Track A 대화형 비용 시뮬레이션 (벤치·GO 연계):** `general_compression_kpi_gate_v2.json`이 **GO**이고 `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`의 `global_token_saving_rate`를 사용 — `py scripts/run_track_a_conversational_cost_simulation.py` → `docs/final/artifacts/track_a_conversational_cost_simulation_latest.json` (실 라우팅·청구서 아님).
 - **Track A 섀도우 코퍼스 재측정 (Phase 1):** `run_ultra_compression_default.py`와 동일 universal 프로파일로 N건 텍스트를 `evaluate_report`에 탑재 — `py scripts/run_track_a_shadow_corpus_eval.py` (`--max-cases`, 선택 `--input-jsonl`) → `docs/final/artifacts/track_a_shadow_corpus_eval_latest.json` · `track_a_shadow_corpus_input_manifest_latest.json` (기본은 V2+로컬 코퍼스 순환; 실제 대화 로그는 JSONL로 주입·개인정보 주의).
 - **비식별 JSONL 샘플·원클릭:** `data/track_a_shadow/conversations_sample_v1.jsonl` → `py scripts/run_track_a_shadow_corpus_eval.py --input-jsonl …` 또는 `scripts/Run-TrackAShadowJsonlSample.ps1` → `docs/final/artifacts/track_a_shadow_corpus_eval_jsonl_sample_latest.json` (+ `track_a_shadow_corpus_input_manifest_jsonl_sample_latest.json`).
+- **Phase 2 밴드 게이트:** `py scripts/check_track_a_metering_band_gate.py` (`warning|block`) → `docs/final/artifacts/track_a_metering_band_gate_latest.json` (입력: weekly metering report).
+- **Phase 2 집계(미터링 요약):** `py scripts/run_track_a_metering_summary.py` 또는 `scripts/Run-TrackAMeteringSummary.ps1` → `docs/final/artifacts/track_a_metering_summary_latest.json` (입력: `reports/constitution/btrack_pilot/track_a_metering_log_v1.jsonl`).
+- **Phase 2 주간 관측(7일):** `py scripts/run_track_a_metering_weekly_report.py` 또는 `scripts/Run-TrackAMeteringWeeklyReport.ps1` → `docs/final/artifacts/track_a_metering_weekly_report_latest.json` (`target_band_hit_rate` 포함).
+- **Phase 2 데일리 체인(원클릭):** `scripts/run_track_a_commercialization_daily_chain.ps1` (shadow JSONL sample → metering summary → 7-day report → band gate → signal-light → `reports/track_a_commercialization_daily_log.jsonl` append). 기본 모드: `GateMode=warning`; 스케줄 등록: `scripts/Register-TrackACommercializationDailyTask.ps1`.
 
 ### Phase 4.1 — Genesis v3 포인터·Verbatim (연구 레인, KJV 공유 라이브러리)
 
@@ -263,9 +268,14 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 - 연계 문서:
   - `docs/final/STRATEGY_A_API_MIN_EXPOSURE_POLICY_V1_2026-04-08.md`
   - `docs/final/STRATEGY_B_IC_DRAFT_CONSERVATIVE_V1_2026-04-08.md`
+  - `docs/final/ATHENA_AUDITOR_REALITY_ALIGNED_EXTERNAL_V1_2026-04-09.md`
+  - `docs/final/ATHENA_AUDITOR_REALITY_ALIGNED_INTERNAL_V1_2026-04-09.md`
 - 적용 원칙:
   - 대외(A): 현재 확정값 중심, 상위 구간은 조건부 문구만 허용
   - 내부(B): 4대 메가 전선은 구간 해금형 로드맵으로 운영
+  - 메시지 분리: 대외 문서는 하이브리드 리스크 통제 중심(강한 결정론·100% 무결성 표현 금지), 내부 문서는 연구 경계·실험 항목·승격 조건을 명시한다.
+  - RS/ECC 경계: `implemented=false` 상태에서는 연구 레인으로만 서술하고, 본선 통합 표현은 RS encode/decode 비교 아티팩트 잠금 후에만 허용한다.
+  - 제출 근거: 회의/브리핑에는 서술보다 `docs/final/artifacts/*.json` 경로와 실행 exit code를 우선 첨부한다.
 
 ### NotebookLM 기반 전략 논의 -> 실행 전환 체크리스트
 
