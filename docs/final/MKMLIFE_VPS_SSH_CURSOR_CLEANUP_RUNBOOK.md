@@ -90,3 +90,44 @@ HTTP는 호스트·환경에 맞게 `curl -sS -o /dev/null -w '%{http_code}' htt
 | VPS `exec cwd` | **실행 중 빌드·PM2** — `git pull`은 위 2절 |
 
 **정리:** “공유 폴더에서 많이 작업했다”는 내용은 **아티팩트·연구**로 두고, **mkmlife.com 라이브 코드**는 **GitHub `mkmlife-com` → VPS pull** 한 줄로만 맞춘다.
+
+---
+
+## 6) 혼동 방지 — 문서 + 터미널 습관
+
+**문서(SSOT·본 런북)만으로 “완전 방지”까지는 어렵다.** 다만 **역할(공유 볼트 ≠ 본선, VPS 본선 = `pm2 describe mkmlife` → `exec cwd`)** 을 고정하고, 아래 **습관**을 매번 지키면 경로가 섞일 확률이 크게 줄어든다.
+
+- **로컬:** Cursor는 **모노레포 루트**(`C:\workspace`)를 연다. `E:\…` 보조 클론은 **배포 스크립트 실행 때만** 쓴다.
+- **VPS:** **`MKMLIFE_ROOT`를 `pm2 describe`로 먼저 뽑고**, 그 안에서만 `git`·빌드·`mkmlife_vps_git_align_safe.sh`.
+
+### 6.1) 로컬 Cursor — 작업 시작 시 (PowerShell 복붙)
+
+모노레포 루트가 맞는지·서브모듈 상태를 한 번에 본다.
+
+```powershell
+Set-Location C:\workspace
+Write-Host "Git toplevel:" (git rev-parse --show-toplevel)
+git status -sb
+git submodule status 2>$null
+if (Test-Path "projects\mkm\mkm-life") {
+  Push-Location "projects\mkm\mkm-life"; git status -sb; git rev-parse HEAD; Pop-Location
+}
+```
+
+- `C:\workspace`·`projects\mkm\mkm-life` 경로는 **본인 저장소 구조에 맞게** 바꾼다.
+- Cursor는 **`git rev-parse --show-toplevel` 과 같은 폴더**를 연 상태인지 확인한다.
+
+### 6.2) VPS — 소스 건드리기 직전 (본선 확정)
+
+위 **§1** 블록과 동일 목적. 한 줄 요약:
+
+```bash
+hostname; date -u; pm2 describe mkmlife | sed -n '1,120p'
+MKMLIFE_ROOT="$(pm2 describe mkmlife 2>/dev/null | awk -F': ' '/exec cwd/{print $2; exit}')"
+cd "$MKMLIFE_ROOT" && pwd && git remote -v && git status -sb && git rev-parse HEAD
+```
+
+### 6.3) 하지 말 것
+
+- 공유 드라이브·아티팩트 폴더를 본선이라 믿고 **`git pull` 목적지로 삼기**
+- **`pm2 describe` 없이** 문서에만 나온 경로만 보고 폴더 **삭제·덮어쓰기**
