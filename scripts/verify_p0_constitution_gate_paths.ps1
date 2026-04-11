@@ -48,7 +48,10 @@ $required = @(
     "docs\final\artifacts\trackb_quaternion_order_experiment_v1.json",
     "docs\final\artifacts\trackb_quaternion_order_stress_v1.json",
     "docs\final\artifacts\trackb_quaternion_generalization_v1.json",
-    "docs\final\artifacts\trackb_quaternion_two_stage_gate_v2.json"
+    "docs\final\artifacts\trackb_quaternion_two_stage_gate_v2.json",
+    "scripts\experimental\codebook_runtime_pack\build_report_schema_v2_quality_alert.py",
+    "scripts\experimental\codebook_runtime_pack\build_report_schema_v2_label_kpi.py",
+    "codebook\policies\slack_fact_safe_mention_routing_v1.json"
 )
 
 $missing = @()
@@ -66,4 +69,22 @@ if ($missing.Count -gt 0) {
 }
 
 Write-Host "OK: P0/CONSTITUTION gate paths present ($($required.Count) checked)."
+
+$optionalQualityArtifacts = @(
+    "docs\final\artifacts\report_schema_v2_quality_alert_latest.json",
+    "docs\final\artifacts\report_schema_v2_label_kpi_latest.json",
+    "docs\final\artifacts\report_schema_v2_latest.json"
+)
+$missingOptional = @()
+foreach ($rel in $optionalQualityArtifacts) {
+    $p = Join-Path $WorkspaceRoot $rel
+    if (-not (Test-Path -LiteralPath $p)) {
+        $missingOptional += $rel
+    }
+}
+if ($missingOptional.Count -gt 0) {
+    Write-Host "WARN: optional report_schema_v2 artifacts missing (run waiting_queue_monthly_check or build_report_schema_v2_* scripts):" -ForegroundColor Yellow
+    $missingOptional | ForEach-Object { Write-Host "  $_" }
+}
+
 exit 0

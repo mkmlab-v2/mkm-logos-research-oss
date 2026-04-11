@@ -1,6 +1,6 @@
 {
   "schema": "war_prolongation_window_eval_v1",
-  "generated_at_utc": "2026-04-07T00:10:07Z",
+  "generated_at_utc": "2026-04-11T00:10:13Z",
   "score_json": "C:/workspace/docs/final/artifacts/btrack_prophecy_score_war_prolong_20260406_multileg.json",
   "market_data_dir": "C:/workspace/research/market_data",
   "horizons": [
@@ -11,152 +11,152 @@
   "summary_by_horizon": {
     "h1": {
       "n_evaluated": 4,
-      "hits": 4,
-      "hit_rate": 1.0
+      "hits": 0,
+      "hit_rate": 0.0
     },
     "h5": {
       "n_evaluated": 4,
-      "hits": 2,
-      "hit_rate": 0.5
+      "hits": 1,
+      "hit_rate": 0.25
     },
     "h20": {
       "n_evaluated": 4,
-      "hits": 2,
-      "hit_rate": 0.5
+      "hits": 0,
+      "hit_rate": 0.0
     }
   },
   "rows": [
     {
       "instrument": "xle",
       "symbol": "XLE",
-      "eval_date": "2026-04-06",
+      "eval_date": "2026-04-10",
       "horizon_days": 1,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
-      "actual_direction": "bull",
-      "window_return": 0.00725739,
-      "hit": 1
-    },
-    {
-      "instrument": "xle",
-      "symbol": "XLE",
-      "eval_date": "2026-04-06",
-      "horizon_days": 5,
-      "window_mode": "trailing_proxy",
-      "predicted_direction": "bull",
       "actual_direction": "bear",
-      "window_return": -0.04603582,
+      "window_return": -0.00680278,
       "hit": 0
     },
     {
       "instrument": "xle",
       "symbol": "XLE",
-      "eval_date": "2026-04-06",
+      "eval_date": "2026-04-10",
+      "horizon_days": 5,
+      "window_mode": "trailing_proxy",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "window_return": -0.03898736,
+      "hit": 0
+    },
+    {
+      "instrument": "xle",
+      "symbol": "XLE",
+      "eval_date": "2026-04-10",
       "horizon_days": 20,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "window_return": -0.00991131,
+      "hit": 0
+    },
+    {
+      "instrument": "ita",
+      "symbol": "ITA",
+      "eval_date": "2026-04-10",
+      "horizon_days": 1,
+      "window_mode": "trailing_proxy",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "window_return": -0.00914737,
+      "hit": 0
+    },
+    {
+      "instrument": "ita",
+      "symbol": "ITA",
+      "eval_date": "2026-04-10",
+      "horizon_days": 5,
+      "window_mode": "trailing_proxy",
+      "predicted_direction": "bull",
       "actual_direction": "bull",
-      "window_return": 0.05497615,
+      "window_return": 0.03483392,
       "hit": 1
     },
     {
       "instrument": "ita",
       "symbol": "ITA",
-      "eval_date": "2026-04-06",
-      "horizon_days": 1,
-      "window_mode": "trailing_proxy",
-      "predicted_direction": "bull",
-      "actual_direction": "bull",
-      "window_return": 0.0148258,
-      "hit": 1
-    },
-    {
-      "instrument": "ita",
-      "symbol": "ITA",
-      "eval_date": "2026-04-06",
-      "horizon_days": 5,
-      "window_mode": "trailing_proxy",
-      "predicted_direction": "bull",
-      "actual_direction": "bull",
-      "window_return": 0.04239957,
-      "hit": 1
-    },
-    {
-      "instrument": "ita",
-      "symbol": "ITA",
-      "eval_date": "2026-04-06",
+      "eval_date": "2026-04-10",
       "horizon_days": 20,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
       "actual_direction": "bear",
-      "window_return": -0.07018993,
+      "window_return": -0.00799173,
       "hit": 0
     },
     {
       "instrument": "vix",
       "symbol": "^VIX",
-      "eval_date": "2026-04-06",
+      "eval_date": "2026-04-10",
       "horizon_days": 1,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
-      "actual_direction": "bull",
-      "window_return": 0.01256804,
-      "hit": 1
-    },
-    {
-      "instrument": "vix",
-      "symbol": "^VIX",
-      "eval_date": "2026-04-06",
-      "horizon_days": 5,
-      "window_mode": "trailing_proxy",
-      "predicted_direction": "bull",
       "actual_direction": "bear",
-      "window_return": -0.22157808,
+      "window_return": -0.01334019,
       "hit": 0
     },
     {
       "instrument": "vix",
       "symbol": "^VIX",
-      "eval_date": "2026-04-06",
+      "eval_date": "2026-04-10",
+      "horizon_days": 5,
+      "window_mode": "trailing_proxy",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "window_return": -0.19438631,
+      "hit": 0
+    },
+    {
+      "instrument": "vix",
+      "symbol": "^VIX",
+      "eval_date": "2026-04-10",
       "horizon_days": 20,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
       "actual_direction": "bear",
-      "window_return": -0.18040013,
+      "window_return": -0.29534632,
       "hit": 0
     },
     {
       "instrument": "wti",
       "symbol": "CL=F",
-      "eval_date": "2026-04-06",
+      "eval_date": "2026-04-10",
       "horizon_days": 1,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
-      "actual_direction": "bull",
-      "window_return": 0.01963423,
-      "hit": 1
+      "actual_direction": "bear",
+      "window_return": -0.02288756,
+      "hit": 0
     },
     {
       "instrument": "wti",
       "symbol": "CL=F",
-      "eval_date": "2026-04-06",
+      "eval_date": "2026-04-10",
       "horizon_days": 5,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
-      "actual_direction": "bull",
-      "window_return": 0.14140911,
-      "hit": 1
+      "actual_direction": "bear",
+      "window_return": -0.14263944,
+      "hit": 0
     },
     {
       "instrument": "wti",
       "symbol": "CL=F",
-      "eval_date": "2026-04-06",
+      "eval_date": "2026-04-10",
       "horizon_days": 20,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
-      "actual_direction": "bull",
-      "window_return": 0.25115513,
-      "hit": 1
+      "actual_direction": "bear",
+      "window_return": -0.00104467,
+      "hit": 0
     }
   ],
   "warnings": [

@@ -1,6 +1,6 @@
 {
   "schema": "aidc_kpi_gate_v1",
-  "generated_at_utc": "2026-04-07T00:10:08Z",
+  "generated_at_utc": "2026-04-11T00:10:17Z",
   "policy": "stage1_power_first",
   "inputs": {
     "ab_result_summary": "C:/workspace/docs/final/artifacts/ab_result_summary.json",
@@ -10,14 +10,14 @@
   "kpi": {
     "performance_per_watt": {
       "paired_ready": true,
-      "uplift_perf_per_w_pct": -19.660225,
+      "uplift_perf_per_w_pct": -32.533001,
       "status": "paired_measured",
       "reason": "paired baseline/treatment comparison required for go/no-go"
     },
     "accuracy": {
-      "hit_rate": 0.595833,
+      "hit_rate": 0.593056,
       "n_evaluated": 1440,
-      "hits": 858,
+      "hits": 854,
       "p_value_one_sided_vs_baseline": 0.0,
       "source": "war_prolongation_significance_eval_latest",
       "status": "measured"
@@ -25,7 +25,7 @@
     "accuracy_significance_target": {
       "alpha_one_sided": 0.05,
       "baseline_hit_rate_assumed": 0.333333,
-      "hits": 858,
+      "hits": 854,
       "target_hits_at_current_n": 510,
       "target_hit_rate_at_current_n": 0.354167,
       "calc_method": "normal_approx"

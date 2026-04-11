@@ -1,7 +1,7 @@
 {
   "schema": "independent_lens_fusion_stub_v0",
   "version": "0.1.0",
-  "ts_utc": "2026-04-07T01:06:49Z",
+  "ts_utc": "2026-04-11T00:35:22Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "mode": "observation_only",
@@ -9,21 +9,21 @@
     {
       "lens_id": "myeongni",
       "available": true,
-      "direction_score": -0.55,
-      "confidence": 0.75,
-      "direction_sign": "bear",
+      "direction_score": 0.0,
+      "confidence": 0.5,
+      "direction_sign": "neutral",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-04-07T01:06:48Z",
+      "artifact_ts_utc": "2026-04-11T00:35:22Z",
       "schema": "myeongni_independent_lens_v0"
     },
     {
       "lens_id": "sasang",
       "available": true,
-      "direction_score": -0.55,
-      "confidence": 0.553333,
-      "direction_sign": "bear",
+      "direction_score": 0.0,
+      "confidence": 0.333333,
+      "direction_sign": "neutral",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-04-07T01:06:49Z",
+      "artifact_ts_utc": "2026-04-11T00:35:22Z",
       "schema": "sasang_independent_lens_v0"
     },
     {
@@ -33,17 +33,17 @@
       "confidence": 0.2,
       "direction_sign": "neutral",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\logos_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-04-07T01:06:49Z",
+      "artifact_ts_utc": "2026-04-11T00:35:22Z",
       "schema": "logos_independent_lens_v0"
     }
   ],
   "consensus": {
     "available_count": 3,
-    "agreement_rate": 0.666667,
-    "conflict_count": 1,
-    "consensus_sign": "bear",
-    "consensus_score": -0.476829,
-    "consensus_confidence": 0.501111
+    "agreement_rate": 1.0,
+    "conflict_count": 0,
+    "consensus_sign": "neutral",
+    "consensus_score": 0.0,
+    "consensus_confidence": 0.344444
   },
   "note": "Read-only comparison of independent lens outputs; not A-track auto-fusion or live sizing trigger. No consistency_rate here — use consensus.agreement_rate for lens-direction alignment; optional consistency_rate is defined for myeongni 16-state experiment JSON (separate schema). Vector gematria+myeongri geometric spike: scripts/spike_gematria_myeongri_blend_v0.py."
 }

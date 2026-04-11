@@ -1,6 +1,6 @@
 {
   "schema": "compression_jaccard_loss_patterns_v1",
-  "ts_utc": "2026-04-07T01:01:33.290720+00:00",
+  "ts_utc": "2026-04-11T00:00:11.970941+00:00",
   "sla_track": "universal",
   "sources": {
     "input": "docs\\final\\artifacts\\MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
@@ -8,27 +8,30 @@
   },
   "summary": {
     "case_count": 40,
-    "avg_words_lost": 4.25
+    "avg_words_lost": 4.975
   },
   "cases": [
     {
       "id": "cmp2_001",
       "domain": "timing",
       "shard_id": "zone_b_timing",
-      "reconstruction_fidelity_jaccard": 0.6666666666666666,
-      "token_saving_rate": 0.43999999999999995,
+      "reconstruction_fidelity_jaccard": 0.5238095238095238,
+      "token_saving_rate": 0.56,
       "raw_word_count": 21,
-      "recon_word_count": 14,
-      "words_lost_count": 7,
+      "recon_word_count": 11,
+      "words_lost_count": 10,
       "words_extra_count": 0,
       "words_lost_sample": [
         "11",
-        "a",
         "analysis",
+        "and",
         "bootstrap",
+        "but",
         "data",
-        "dominates",
-        "shifts"
+        "in",
+        "is",
+        "shifts",
+        "this"
       ],
       "words_extra_sample": []
     },
@@ -36,17 +39,22 @@
       "id": "cmp2_002",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7647058823529411,
-      "token_saving_rate": 0.3157894736842105,
+      "reconstruction_fidelity_jaccard": 0.47058823529411764,
+      "token_saving_rate": 0.5789473684210527,
       "raw_word_count": 17,
-      "recon_word_count": 13,
-      "words_lost_count": 4,
+      "recon_word_count": 8,
+      "words_lost_count": 9,
       "words_extra_count": 0,
       "words_lost_sample": [
+        "gate",
+        "is",
+        "proxy",
         "requires",
         "review",
-        "traceability",
-        "unresolved"
+        "so",
+        "the",
+        "unresolved",
+        "with"
       ],
       "words_extra_sample": []
     },
@@ -62,12 +70,12 @@
       "words_extra_count": 0,
       "words_lost_sample": [
         "b",
-        "caveats",
         "especially",
-        "footprint",
         "notes",
         "preserving",
-        "reduce"
+        "reduce",
+        "token",
+        "while"
       ],
       "words_extra_sample": []
     },
@@ -75,14 +83,19 @@
       "id": "cmp2_004",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.8666666666666667,
-      "token_saving_rate": 0.1875,
+      "reconstruction_fidelity_jaccard": 0.5333333333333333,
+      "token_saving_rate": 0.5,
       "raw_word_count": 15,
-      "recon_word_count": 13,
-      "words_lost_count": 2,
+      "recon_word_count": 8,
+      "words_lost_count": 7,
       "words_extra_count": 0,
       "words_lost_sample": [
-        "reproduce",
+        "artifacts",
+        "can",
+        "claim",
+        "explicitly",
+        "future",
+        "references",
         "reviews"
       ],
       "words_extra_sample": []
@@ -91,18 +104,20 @@
       "id": "cmp2_005",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.6428571428571429,
-      "token_saving_rate": 0.4,
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5333333333333333,
       "raw_word_count": 14,
-      "recon_word_count": 9,
-      "words_lost_count": 5,
+      "recon_word_count": 7,
+      "words_lost_count": 7,
       "words_extra_count": 0,
       "words_lost_sample": [
-        "cadence",
+        "are",
+        "confirmed",
         "external",
-        "override",
-        "updates",
-        "weekly"
+        "governance",
+        "monthly",
+        "should",
+        "updates"
       ],
       "words_extra_sample": []
     },
@@ -110,16 +125,21 @@
       "id": "cmp2_006",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.8125,
-      "token_saving_rate": 0.2777777777777778,
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5555555555555556,
       "raw_word_count": 16,
-      "recon_word_count": 13,
-      "words_lost_count": 3,
+      "recon_word_count": 8,
+      "words_lost_count": 8,
       "words_extra_count": 0,
       "words_lost_sample": [
-        "anchors",
+        "as",
+        "be",
+        "but",
+        "can",
         "mislabeled",
-        "review"
+        "review",
+        "support",
+        "they"
       ],
       "words_extra_sample": []
     },
@@ -135,12 +155,12 @@
       "words_extra_count": 0,
       "words_lost_sample": [
         "accumulate",
-        "bootstrap",
+        "as",
         "improves",
-        "matrix",
+        "in",
         "rows",
-        "thresholds",
-        "transition"
+        "the",
+        "thresholds"
       ],
       "words_extra_sample": []
     },
@@ -148,19 +168,20 @@
       "id": "cmp2_008",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.5714285714285714,
-      "token_saving_rate": 0.5555555555555556,
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.6111111111111112,
       "raw_word_count": 14,
-      "recon_word_count": 8,
-      "words_lost_count": 6,
+      "recon_word_count": 7,
+      "words_lost_count": 7,
       "words_extra_count": 0,
       "words_lost_sample": [
+        "alignment",
+        "and",
         "answers",
         "constitution",
         "constraints",
         "include",
-        "timing",
-        "tri"
+        "lens"
       ],
       "words_extra_sample": []
     },
@@ -168,14 +189,21 @@
       "id": "cmp2_009",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.9375,
-      "token_saving_rate": 0.2857142857142857,
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.6190476190476191,
       "raw_word_count": 16,
-      "recon_word_count": 15,
-      "words_lost_count": 1,
+      "recon_word_count": 8,
+      "words_lost_count": 8,
       "words_extra_count": 0,
       "words_lost_sample": [
-        "drift"
+        "aligned",
+        "codebook",
+        "contracts",
+        "docs",
+        "drift",
+        "from",
+        "keep",
+        "scripts"
       ],
       "words_extra_sample": []
     },
@@ -183,19 +211,20 @@
       "id": "cmp2_010",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.5384615384615384,
-      "token_saving_rate": 0.5,
+      "reconstruction_fidelity_jaccard": 0.46153846153846156,
+      "token_saving_rate": 0.5714285714285714,
       "raw_word_count": 13,
-      "recon_word_count": 7,
-      "words_lost_count": 6,
+      "recon_word_count": 6,
+      "words_lost_count": 7,
       "words_extra_count": 0,
       "words_lost_sample": [
         "avoid",
-        "false",
-        "operational",
+        "confidence",
         "predictive",
-        "quality",
-        "stability"
+        "separate",
+        "should",
+        "stability",
+        "to"
       ],
       "words_extra_sample": []
     },

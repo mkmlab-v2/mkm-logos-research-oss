@@ -1,27 +1,27 @@
 {
   "schema": "aidc_perf_ab_summary_v1",
-  "generated_at_utc": "2026-04-07T00:10:08Z",
+  "generated_at_utc": "2026-04-11T00:10:17Z",
   "baseline": {
-    "timestamp_utc": "2026-04-07T00:10:08Z",
+    "timestamp_utc": "2026-04-11T00:10:17Z",
     "label": "baseline",
-    "gpu_power_w": "39.29",
-    "gpu_util_pct": "23",
-    "throughput_samples_per_s": "10339.1229",
-    "perf_per_w": "263.148967",
+    "gpu_power_w": "9.81",
+    "gpu_util_pct": "7",
+    "throughput_samples_per_s": "5101.5202",
+    "perf_per_w": "520.032639",
     "iterations": "10",
     "measurement_mode": "inprocess"
   },
   "treatment": {
-    "timestamp_utc": "2026-04-07T00:10:08Z",
+    "timestamp_utc": "2026-04-11T00:10:17Z",
     "label": "treatment",
-    "gpu_power_w": "39.27",
-    "gpu_util_pct": "23",
-    "throughput_samples_per_s": "8302.1999",
-    "perf_per_w": "211.413289",
+    "gpu_power_w": "9.75",
+    "gpu_util_pct": "7",
+    "throughput_samples_per_s": "3420.7915",
+    "perf_per_w": "350.850415",
     "iterations": "10",
     "measurement_mode": "inprocess"
   },
   "paired_ready": true,
   "measurement_mode_consistent": true,
-  "uplift_perf_per_w_pct": -19.660225
+  "uplift_perf_per_w_pct": -32.533001
 }
