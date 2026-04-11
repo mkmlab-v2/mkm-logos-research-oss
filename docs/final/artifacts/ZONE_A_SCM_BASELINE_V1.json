@@ -6,7 +6,9 @@
     "strategy": "A",
     "intensity": "extreme",
     "merge_soft_terms": true,
-    "master_codebook_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json"
+    "master_codebook_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+    "boming_jiju_lexicon_enabled": true,
+    "boming_jiju_lexicon_path": "C:/workspace/docs/final/artifacts/scm_boming_jiju_lexicon_v1.json"
   },
   "summary": {
     "zone_a_scm_case_count": 12,
@@ -25,8 +27,11 @@
       "cmp2_040"
     ],
     "effective_must_keep_count_avg": 11.0,
-    "effective_must_keep_count_max": 11
+    "effective_must_keep_count_max": 11,
+    "effective_must_keep_count_avg_with_boming_jiju": 11.0,
+    "effective_must_keep_count_max_with_boming_jiju": 11
   },
+  "integrity_v4_note": "global_real_saving_vs_raw is from probe rows (reconstructed vs raw); boming_jiju overlay does not alter v4 unless compression is re-run with that must_keep.",
   "probe_join": {
     "probe_report": "docs/final/artifacts/MULTILENS_V2_UNIVERSAL_SHARD_PROBE_V1.json",
     "cases_matched_in_probe": 12,
@@ -64,6 +69,16 @@
         "lexicon_term_count": 41769,
         "hit_count": 0,
         "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
+        "hit_count": 0,
+        "hits_sample": []
       }
     },
     {
@@ -86,6 +101,16 @@
         "status": "ok",
         "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
         "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
         "hit_count": 0,
         "hits_sample": []
       }
@@ -112,6 +137,16 @@
         "lexicon_term_count": 41769,
         "hit_count": 0,
         "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
+        "hit_count": 0,
+        "hits_sample": []
       }
     },
     {
@@ -134,6 +169,16 @@
         "status": "ok",
         "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
         "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
         "hit_count": 0,
         "hits_sample": []
       }
@@ -160,6 +205,16 @@
         "lexicon_term_count": 41769,
         "hit_count": 0,
         "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
+        "hit_count": 0,
+        "hits_sample": []
       }
     },
     {
@@ -182,6 +237,16 @@
         "status": "ok",
         "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
         "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
         "hit_count": 0,
         "hits_sample": []
       }
@@ -208,6 +273,16 @@
         "lexicon_term_count": 41769,
         "hit_count": 0,
         "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
+        "hit_count": 0,
+        "hits_sample": []
       }
     },
     {
@@ -230,6 +305,16 @@
         "status": "ok",
         "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
         "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
         "hit_count": 0,
         "hits_sample": []
       }
@@ -256,6 +341,16 @@
         "lexicon_term_count": 41769,
         "hit_count": 0,
         "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
+        "hit_count": 0,
+        "hits_sample": []
       }
     },
     {
@@ -278,6 +373,16 @@
         "status": "ok",
         "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
         "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
         "hit_count": 0,
         "hits_sample": []
       }
@@ -304,6 +409,16 @@
         "lexicon_term_count": 41769,
         "hit_count": 0,
         "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
+        "hit_count": 0,
+        "hits_sample": []
       }
     },
     {
@@ -326,6 +441,16 @@
         "status": "ok",
         "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
         "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      },
+      "effective_must_keep_count_with_boming_jiju": 11,
+      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+        "version": "1.0.0",
+        "entry_count": 4,
         "hit_count": 0,
         "hits_sample": []
       }
