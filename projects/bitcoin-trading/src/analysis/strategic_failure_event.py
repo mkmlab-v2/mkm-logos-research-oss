@@ -14,14 +14,21 @@ from pathlib import Path
 from typing import List, Literal, Optional
 import sys
 
+import logging
+
 from pydantic import BaseModel, Field
+
+logger = logging.getLogger(__name__)
 
 # tools 패키지 임포트를 위해 워크스페이스 루트(C:/workspace)를 sys.path에 추가
 WORKSPACE_ROOT = Path(__file__).resolve().parents[4]
 if str(WORKSPACE_ROOT) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_ROOT))
 
-from tools.tools.core.file_based_memory import FileBasedMemory
+try:
+    from tools.tools.core.file_based_memory import FileBasedMemory
+except ImportError:
+    FileBasedMemory = None  # type: ignore[misc, assignment]
 
 
 FailureSource = Literal["TRADING", "NEWS_EXTRACTOR", "CODING", "SYSTEM", "OTHER"]
@@ -93,6 +100,14 @@ def store_failure_event(
     - content: 사람이 읽기 좋은 한두 줄 요약
     - metadata: 원본 JSON 전체 및 검색용 필드 포함
     """
+
+    if FileBasedMemory is None:
+        logger.warning(
+            "FileBasedMemory unavailable (tools.tools.core missing); "
+            "failure event not persisted: failure_id=%s",
+            event.failure_id,
+        )
+        return "skipped-no-file-based-memory"
 
     # 워크스페이스 루트 기준 메모리 경로 사용 (기본값은 C:/workspace/memory/)
     workspace_root = Path(__file__).resolve().parents[3]
