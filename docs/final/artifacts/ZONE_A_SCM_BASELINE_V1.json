@@ -1,0 +1,334 @@
+{
+  "schema": "zone_a_scm_baseline_v1",
+  "description": "Router cohort zone_a_scm; must_keep simulated as A/extreme + lexicon. Probe metrics joined by id; v4 uses report-embedded route.shard_id filter.",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "simulation": {
+    "strategy": "A",
+    "intensity": "extreme",
+    "merge_soft_terms": true,
+    "master_codebook_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json"
+  },
+  "summary": {
+    "zone_a_scm_case_count": 12,
+    "zone_a_scm_ids": [
+      "cmp2_015",
+      "cmp2_016",
+      "cmp2_017",
+      "cmp2_022",
+      "cmp2_023",
+      "cmp2_028",
+      "cmp2_030",
+      "cmp2_033",
+      "cmp2_035",
+      "cmp2_036",
+      "cmp2_037",
+      "cmp2_040"
+    ],
+    "effective_must_keep_count_avg": 11.0,
+    "effective_must_keep_count_max": 11
+  },
+  "probe_join": {
+    "probe_report": "docs/final/artifacts/MULTILENS_V2_UNIVERSAL_SHARD_PROBE_V1.json",
+    "cases_matched_in_probe": 12,
+    "mean_token_saving_rate_zone_a_cohort": 0.5041666666666667,
+    "mean_jaccard_zone_a_cohort": 0.8659245642701525
+  },
+  "integrity_cost_v4_merge_gap": 1,
+  "integrity_v4_summary_shard_filter_zone_a_scm": {
+    "cases_included": 12,
+    "bytes_raw_total": 1868,
+    "bytes_compressed_total": 1124,
+    "total_wire_bytes": 1493,
+    "global_real_saving_vs_raw": 0.20074946466809418
+  },
+  "per_case": [
+    {
+      "id": "cmp2_015",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    },
+    {
+      "id": "cmp2_016",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    },
+    {
+      "id": "cmp2_017",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    },
+    {
+      "id": "cmp2_022",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    },
+    {
+      "id": "cmp2_023",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    },
+    {
+      "id": "cmp2_028",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    },
+    {
+      "id": "cmp2_030",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    },
+    {
+      "id": "cmp2_033",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    },
+    {
+      "id": "cmp2_035",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    },
+    {
+      "id": "cmp2_036",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    },
+    {
+      "id": "cmp2_037",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    },
+    {
+      "id": "cmp2_040",
+      "effective_must_keep_count": 11,
+      "effective_must_keep_sample": [
+        "금칙",
+        "단위",
+        "사상의학",
+        "소양인",
+        "소음인",
+        "안전하다",
+        "증상",
+        "처방",
+        "체질",
+        "태양인",
+        "태음인"
+      ],
+      "lexicon_meta": {
+        "status": "ok",
+        "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+        "lexicon_term_count": 41769,
+        "hit_count": 0,
+        "hits_sample": []
+      }
+    }
+  ]
+}

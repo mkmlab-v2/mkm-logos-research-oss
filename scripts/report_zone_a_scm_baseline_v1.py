@@ -1,0 +1,179 @@
+#!/usr/bin/env python3
+"""Baseline for zone_a_scm: router cohort, simulated must_keep + lexicon bloat, probe metrics, v4 S_real.
+
+Uses current DomainSpecificRouter (includes Hangul ratio fallback). Simulates evaluate_report effective_must_keep
+for strategy=A, intensity=extreme (hard + soft + master lexicon when available).
+
+Integrity S_real uses cases in the probe report whose route.shard_id == zone_a_scm (embedded at report gen time).
+Regenerate the probe after router changes for full parity.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.calculate_integrity_cost_v4 import evaluate_v4  # noqa: E402
+from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
+from scripts.core.master_codebook_lexicon_v1_bridge import (  # noqa: E402
+    lexicon_hits_for_text,
+    resolve_latest_codebook_path,
+)
+
+DEFAULT_INPUT = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json"
+DEFAULT_PROBE = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_V2_UNIVERSAL_SHARD_PROBE_V1.json"
+DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "ZONE_A_SCM_BASELINE_V1.json"
+SHARDS_ROOT = ROOT / "codebook" / "shards"
+
+
+def simulate_effective_must_keep_a_extreme(
+    raw: str,
+    route: Any,
+    *,
+    cb_path: Path | None,
+) -> tuple[set[str], dict[str, Any]]:
+    """Match report_multilens_performance_eval A/extreme: hard + soft + lexicon."""
+    effective: set[str] = set()
+    effective.update(str(x).lower() for x in route.must_keep_hard_terms)
+    effective.update(str(x).lower() for x in route.must_keep_soft_terms)
+    meta: dict[str, Any] = {"lexicon": None}
+    if cb_path is not None and cb_path.is_file():
+        hits, lmeta = lexicon_hits_for_text(raw, cb_path)
+        effective.update(hits)
+        meta["lexicon"] = lmeta
+    else:
+        meta["lexicon"] = {"status": "skipped", "reason": "export_not_found"}
+    return effective, meta
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description="zone_a_scm baseline: must_keep bloat + probe + v4.")
+    ap.add_argument("--input", type=Path, default=DEFAULT_INPUT)
+    ap.add_argument("--probe-report", type=Path, default=DEFAULT_PROBE)
+    ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    ap.add_argument("--merge-gap-bytes", type=int, default=1)
+    ap.add_argument("--codebook", type=Path, default=None, help="Override master codebook lexicon path.")
+    args = ap.parse_args()
+
+    inp_path = Path(args.input).resolve()
+    if not inp_path.is_file():
+        print("FAIL: input not found", inp_path, file=sys.stderr)
+        return 1
+
+    inp = json.loads(inp_path.read_text(encoding="utf-8"))
+    cases = inp.get("compression_cases") or []
+    router = DomainSpecificRouter(SHARDS_ROOT)
+    cb_path = Path(args.codebook).resolve() if args.codebook else resolve_latest_codebook_path()
+
+    zone_a_ids: list[str] = []
+    per_case: list[dict[str, Any]] = []
+    for c in cases:
+        raw = str(c.get("raw_text", ""))
+        cid = str(c.get("id", ""))
+        route = router.route(raw)
+        if route.shard_id != "zone_a_scm":
+            continue
+        zone_a_ids.append(cid)
+        eff, mmeta = simulate_effective_must_keep_a_extreme(raw, route, cb_path=cb_path)
+        per_case.append(
+            {
+                "id": cid,
+                "effective_must_keep_count": len(eff),
+                "effective_must_keep_sample": sorted(eff)[:32],
+                "lexicon_meta": mmeta.get("lexicon"),
+            }
+        )
+
+    n = len(zone_a_ids)
+    counts = [p["effective_must_keep_count"] for p in per_case]
+    avg_mk = sum(counts) / n if n else 0.0
+    max_mk = max(counts) if counts else 0
+
+    probe_path = Path(args.probe_report).resolve()
+    probe_metrics: dict[str, Any] = {"probe_report": str(probe_path.relative_to(ROOT)).replace("\\", "/")}
+    if probe_path.is_file():
+        probe = json.loads(probe_path.read_text(encoding="utf-8"))
+        rows = (probe.get("compression_metrics") or {}).get("cases") or []
+        by_id = {str(r.get("id")): r for r in rows}
+        tok_savings: list[float] = []
+        jaccs: list[float] = []
+        for cid in zone_a_ids:
+            r = by_id.get(cid)
+            if not r:
+                continue
+            ts = r.get("token_saving_rate")
+            if ts is not None:
+                tok_savings.append(float(ts))
+            j = r.get("reconstruction_fidelity_jaccard")
+            if j is not None:
+                jaccs.append(float(j))
+        probe_metrics.update(
+            {
+                "cases_matched_in_probe": len(tok_savings),
+                "mean_token_saving_rate_zone_a_cohort": sum(tok_savings) / len(tok_savings) if tok_savings else None,
+                "mean_jaccard_zone_a_cohort": sum(jaccs) / len(jaccs) if jaccs else None,
+            }
+        )
+    else:
+        probe_metrics["error"] = "probe_report_missing"
+
+    v4_summary: dict[str, Any] | None = None
+    if probe_path.is_file():
+        probe_doc = json.loads(probe_path.read_text(encoding="utf-8"))
+        raw_by_id = {str(c.get("id")): str(c.get("raw_text", "")) for c in cases}
+        summ, _ = evaluate_v4(
+            probe_doc,
+            raw_by_id,
+            merge_gap_bytes=int(args.merge_gap_bytes),
+            shard_filter="zone_a_scm",
+            include_case_rows=False,
+        )
+        v4_summary = dict(summ)
+
+    payload = {
+        "schema": "zone_a_scm_baseline_v1",
+        "description": (
+            "Router cohort zone_a_scm; must_keep simulated as A/extreme + lexicon. "
+            "Probe metrics joined by id; v4 uses report-embedded route.shard_id filter."
+        ),
+        "source_input": str(inp_path.relative_to(ROOT)).replace("\\", "/"),
+        "simulation": {
+            "strategy": "A",
+            "intensity": "extreme",
+            "merge_soft_terms": True,
+            "master_codebook_path": str(cb_path) if cb_path and cb_path.is_file() else None,
+        },
+        "summary": {
+            "zone_a_scm_case_count": n,
+            "zone_a_scm_ids": zone_a_ids,
+            "effective_must_keep_count_avg": avg_mk,
+            "effective_must_keep_count_max": max_mk,
+        },
+        "probe_join": probe_metrics,
+        "integrity_cost_v4_merge_gap": int(args.merge_gap_bytes),
+        "integrity_v4_summary_shard_filter_zone_a_scm": v4_summary,
+        "per_case": per_case,
+    }
+
+    out_path = Path(args.out).resolve()
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(
+        f"OK: zone_a_scm n={n} avg_must_keep={avg_mk:.2f} max={max_mk} wrote {out_path}"
+    )
+    if v4_summary:
+        print(
+            f"     v4 global_real_saving_vs_raw (probe shard filter)={v4_summary.get('global_real_saving_vs_raw')}"
+        )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
