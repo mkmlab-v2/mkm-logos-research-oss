@@ -1,0 +1,7 @@
+[projects/bitcoin-trading — 로컬 vs VPS 한 장 메모]
+
+1. 코드는 Git만. 로컬에서 고치고 push. VPS에서 소스 직수정 금지 → 했으면 로컬 반영 후 push, 서버는 레포로 되돌리기.
+2. VPS: git pull → (런북 빌드) → pm2 restart <앱이름> 만. pm2 restart all 금지(런북 명시 시만).
+3. .env: cwd .env + 본선이면 /opt/bitcoin-trading/.env — Git 금지.
+4. 공통 비유·원칙: docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md (저장소 루트)
+5. start_live_trading.py 등 VPS만 있으면 로컬과 diff 맞춰 레포 SSOT 확정.
