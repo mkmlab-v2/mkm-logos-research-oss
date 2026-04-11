@@ -44,6 +44,8 @@
 
 | `scripts/Invoke-GeneralProphecyExportThenLora.ps1` | JSONL export + 연속 LoRA 훈련 (레지스트리 갱신 후) |
 
+| `scripts/mkm_unified_mcp.py` | stdio MCP 통합 허브: 예언 레지스트리 조회 + `mkm_compressed_payload_v1` 검증·조립 (`scripts/requirements-mkm-mcp.txt`) |
+
 | `scripts/lora_train_remote_gpu_bootstrap.sh` | (선택) Linux GPU 호스트용 부트스트랩 |
 
 
@@ -122,6 +124,7 @@
 - **도메인 바닥 (정책):** `docs/final/artifacts/general_compression_domain_tolerance_v1.json` — 위 스윕 실측에 맞춰 `fidelity_floor`를 조정(2026-04-12 노트). 엔진 개선 없이 숫자만 느슨하게 한 것은 **아님**이라고 단정하지 말고, 재실행으로 재확인할 것.
 - **측정 이원 (혼동 금지):** **일반 레일** A/B·스윕은 `docs/final/artifacts/general_compression_eval_input_v1.json` 기준 9케이스 요약이다. **V2 극복원**은 별 트랙으로 `py scripts/run_ultra_compression_default.py --mode ultra-literal` → `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json` (갱신 시 `compression_metrics.avg_reconstruction_fidelity_jaccard` 확인; 2026-04-12 실측 예: **~0.992**, global 절약 **~0.13**).
 - **고바닥 스윕 실측:** `docs/final/artifacts/extreme_quality_sweep_v1.json` — `py scripts/run_general_compression_sweep.py --fidelity-floor 0.80 --out …` 결과 **`go_candidate_count`: 0** · **`decision`: NO_GO** (현 그리드에서 baseline 대비 절약 개선 + Jaccard≥0.80 동시 만족 조합 없음).
+- **0.70 바닥 스윕 실측:** `docs/final/artifacts/realistic_quality_sweep_v1.json` — `--fidelity-floor 0.70` 결과 **`go_candidate_count`: 0** · **`decision`: NO_GO**. 동일 9케이스·그리드에서 최고 평균 Jaccard는 **~0.671** 수준이라 **0.70 바닥 자체를 넘는 조합이 없음** (0.80과 동일하게 빈 집합이나, 원인은 “바닥이 현재 도달 가능 상한(~0.67)보다 높음”).
 - **갱신:** `py scripts/report_general_compression_failure_taxonomy.py` → `py scripts/report_general_compression_domain_guard_gate.py`
 
 
@@ -193,6 +196,22 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-GeneralProphe
 5. **사람 검증:** 저장 후 diff·필드명 확인 → `-DryRun`으로 apply 검증.
 
 6. **적용 + 산출:** `Invoke-GeneralProphecyPatchAndExport.ps1 -Patch <파일>` → 필요 시 `Invoke-GeneralProphecyExportThenLora.ps1`으로 LoRA까지.
+
+
+
+## MKM unified MCP (stdio 허브)
+
+
+
+- **역할:** `project-0-workspace-compression-server`를 대체하지 않는다. **예언 레지스트리 Fact-Lock 조회**와 **`mkm_compressed_payload_v1` 봉투 검증**을 한 stdio 프로세스로 제공한다.
+
+- **의존성:** `pip install -r scripts/requirements-mkm-mcp.txt`
+
+- **실행:** `py scripts/mkm_unified_mcp.py` — Cursor MCP 설정에 위 명령을 stdio 서버로 등록한다.
+
+- **환경:** `MKM_PROPHECY_REGISTRY_PATH`로 레지스트리 JSON 경로를 덮어쓸 수 있다 (기본: `docs/final/artifacts/general_prophecy_latest.json`).
+
+- **도구:** `prophecy_registry_summary`, `prophecy_get_question`, `mkm_payload_validate`, `mkm_payload_build`
 
 
 
