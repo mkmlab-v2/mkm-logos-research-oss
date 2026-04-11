@@ -152,7 +152,8 @@ def main() -> int:
         "schema": "exact_match_failure_taxonomy_v1",
         "description": (
             "Per-case mismatch taxonomy: normalization vs substantive. "
-            "Baseline mode mismatches usually mean the bench pairs raw_text with a non-literal reconstructed_text."
+            "Baseline reports: mismatches usually reflect benchmark authoring (raw vs paraphrase in input). "
+            "Experimental reports: mismatches reflect decoder/heuristic reconstruction."
         ),
         "source_report": str(rep_path.relative_to(ROOT)).replace("\\", "/"),
         "source_input": str(inp_path.relative_to(ROOT)).replace("\\", "/"),

@@ -1,6 +1,6 @@
 {
   "schema": "exact_match_failure_taxonomy_v1",
-  "description": "Per-case mismatch taxonomy: normalization vs substantive. Baseline mode mismatches usually mean the bench pairs raw_text with a non-literal reconstructed_text.",
+  "description": "Per-case mismatch taxonomy: normalization vs substantive. Baseline reports: mismatches usually reflect benchmark authoring (raw vs paraphrase in input). Experimental reports: mismatches reflect decoder/heuristic reconstruction.",
   "source_report": "docs/final/artifacts/MULTILENS_V2_BASELINE_SHARD_PROBE_V1.json",
   "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
   "run_mode": "baseline",

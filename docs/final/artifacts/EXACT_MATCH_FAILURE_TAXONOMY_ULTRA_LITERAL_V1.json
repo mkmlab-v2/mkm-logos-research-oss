@@ -1,0 +1,601 @@
+{
+  "schema": "exact_match_failure_taxonomy_v1",
+  "description": "Per-case mismatch taxonomy: normalization vs substantive. Baseline reports: mismatches usually reflect benchmark authoring (raw vs paraphrase in input). Experimental reports: mismatches reflect decoder/heuristic reconstruction.",
+  "source_report": "docs/final/artifacts/MULTILENS_V2_ULTRA_LITERAL_SHARD_PROBE_V1.json",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "run_mode": "experimental",
+  "interpretation_note": "When run_mode is baseline, reconstructed strings come from the input JSON, not an LLM. When experimental, they come from the pipeline decoder/heuristic.",
+  "summary": {
+    "case_count": 40,
+    "exact_match_count": 0,
+    "failure_count": 40
+  },
+  "aggregate_primary_flags_on_failures": {
+    "substantive_mismatch": 4,
+    "near_identical_chars": 31,
+    "likely_paraphrase_or_reorder": 5
+  },
+  "aggregate_by_shard": {
+    "zone_a_scm": {
+      "near_identical_chars": 11,
+      "substantive_mismatch": 1
+    },
+    "zone_b_timing": {
+      "substantive_mismatch": 1,
+      "near_identical_chars": 1
+    },
+    "zone_c_hangul": {
+      "near_identical_chars": 5
+    },
+    "zone_d_ssot": {
+      "near_identical_chars": 10,
+      "substantive_mismatch": 2,
+      "likely_paraphrase_or_reorder": 5
+    },
+    "zone_g_health": {
+      "near_identical_chars": 4
+    }
+  },
+  "failures": [
+    {
+      "id": "cmp2_001",
+      "shard_id": "zone_b_timing",
+      "primary_flags": [
+        "substantive_mismatch"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.931507,
+        "sequence_matcher_word_ratio": 0.717949
+      },
+      "raw_len": 115,
+      "rec_len": 104,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-State 3 to 11 dominates in bootstrap data, but this is read-only analysis and cannot trigger A-track policy shifts.+State 3 to 11 dominates in bootstrap data but this is read only and cannot trigger A track policy shifts"
+    },
+    {
+      "id": "cmp2_002",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.991667,
+        "sequence_matcher_word_ratio": 0.882353
+      },
+      "raw_len": 121,
+      "rec_len": 119,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-ENTRY_16 direct witness is unresolved, so the gate requires manual proxy policy review with strict evidence traceability.+ENTRY_16 direct witness is unresolved so the gate requires manual proxy policy review with strict evidence traceability"
+    },
+    {
+      "id": "cmp2_003",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.981481,
+        "sequence_matcher_word_ratio": 0.740741
+      },
+      "raw_len": 109,
+      "rec_len": 107,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-Compression should reduce token footprint while preserving safety caveats, especially B-track boundary notes.+Compression should reduce token footprint while preserving safety caveats especially B track boundary notes"
+    },
+    {
+      "id": "cmp2_004",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.995169,
+        "sequence_matcher_word_ratio": 0.933333
+      },
+      "raw_len": 104,
+      "rec_len": 103,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-A strong report references source artifacts explicitly so that future reviews can reproduce every claim.+A strong report references source artifacts explicitly so that future reviews can reproduce every claim"
+    },
+    {
+      "id": "cmp2_005",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.995305,
+        "sequence_matcher_word_ratio": 0.928571
+      },
+      "raw_len": 107,
+      "rec_len": 106,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-Weekly noise should not override monthly governance cadence unless external evidence updates are confirmed.+Weekly noise should not override monthly governance cadence unless external evidence updates are confirmed"
+    },
+    {
+      "id": "cmp2_006",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.990099,
+        "sequence_matcher_word_ratio": 0.875
+      },
+      "raw_len": 102,
+      "rec_len": 100,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-Proxy anchors can support manual review, but they must never be mislabeled as direct witness evidence.+Proxy anchors can support manual review but they must never be mislabeled as direct witness evidence"
+    },
+    {
+      "id": "cmp2_007",
+      "shard_id": "zone_b_timing",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.995434,
+        "sequence_matcher_word_ratio": 0.928571
+      },
+      "raw_len": 110,
+      "rec_len": 109,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-Interpretation quality improves as state rows accumulate beyond bootstrap thresholds in the transition matrix.+Interpretation quality improves as state rows accumulate beyond bootstrap thresholds in the transition matrix"
+    },
+    {
+      "id": "cmp2_008",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "substantive_mismatch"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.976077,
+        "sequence_matcher_word_ratio": 0.666667
+      },
+      "raw_len": 106,
+      "rec_len": 103,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-All tri-lens answers should include Myeongri timing, Bible alignment, and Sasang constitution constraints.+All tri lens answers should include Myeongri timing Bible alignment and Sasang constitution constraints"
+    },
+    {
+      "id": "cmp2_009",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "substantive_mismatch"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.975845,
+        "sequence_matcher_word_ratio": 0.727273
+      },
+      "raw_len": 105,
+      "rec_len": 102,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-Fact-Lock tests protect the codebook from drift and keep contracts aligned between docs, scripts, and CI.+Fact Lock tests protect the codebook from drift and keep contracts aligned between docs scripts and CI"
+    },
+    {
+      "id": "cmp2_010",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.995434,
+        "sequence_matcher_word_ratio": 0.923077
+      },
+      "raw_len": 110,
+      "rec_len": 109,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-Performance reporting should separate operational stability from predictive quality to avoid false confidence.+Performance reporting should separate operational stability from predictive quality to avoid false confidence"
+    },
+    {
+      "id": "cmp2_011",
+      "shard_id": "zone_g_health",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.983051,
+        "sequence_matcher_word_ratio": 0.875
+      },
+      "raw_len": 60,
+      "rec_len": 58,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-소양인에게는 열이 위로 치밀 때 수분 보충과 호흡 안정이 먼저이고, 무리한 운동은 저녁 시간에 피해야 한다.+소양인에게는 열이 위로 치밀 때 수분 보충과 호흡 안정이 먼저이고 무리한 운동은 저녁 시간에 피해야 한다"
+    },
+    {
+      "id": "cmp2_012",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.99187,
+        "sequence_matcher_word_ratio": 0.9375
+      },
+      "raw_len": 62,
+      "rec_len": 61,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-소음인의 피로는 겉으로 약해 보여도 속한이 동반되는 경우가 많아서 따뜻한 식사와 규칙 수면을 함께 지켜야 한다.+소음인의 피로는 겉으로 약해 보여도 속한이 동반되는 경우가 많아서 따뜻한 식사와 규칙 수면을 함께 지켜야 한다"
+    },
+    {
+      "id": "cmp2_013",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "likely_paraphrase_or_reorder"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.958678,
+        "sequence_matcher_word_ratio": 0.909091
+      },
+      "raw_len": 63,
+      "rec_len": 58,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-태음인은 체중 변동이 작아도 부종이 먼저 나타날 수 있으니 염분 섭취를 낮추고 아침 걷기를 꾸준히 유지해야 한다.+태음인은 체중 변동이 작아도 부종이 먼저 나타날 수 있으니 염분 섭취를 낮추고 아침 꾸준히 유지해야 한다"
+    },
+    {
+      "id": "cmp2_014",
+      "shard_id": "zone_g_health",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.992,
+        "sequence_matcher_word_ratio": 0.9375
+      },
+      "raw_len": 63,
+      "rec_len": 62,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-태양인은 건조감이 심해지는 계절에 수면 시간이 짧아지면 불안이 커지므로 취침 전 자극성 정보 노출을 줄여야 한다.+태양인은 건조감이 심해지는 계절에 수면 시간이 짧아지면 불안이 커지므로 취침 전 자극성 정보 노출을 줄여야 한다"
+    },
+    {
+      "id": "cmp2_015",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.992,
+        "sequence_matcher_word_ratio": 0.933333
+      },
+      "raw_len": 63,
+      "rec_len": 62,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-사상의학 해석에서는 같은 두통이라도 체질과 시간대가 다르면 원인 축이 달라지므로 단일 처방을 일반화하면 안 된다.+사상의학 해석에서는 같은 두통이라도 체질과 시간대가 다르면 원인 축이 달라지므로 단일 처방을 일반화하면 안 된다"
+    },
+    {
+      "id": "cmp2_016",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.984127,
+        "sequence_matcher_word_ratio": 0.866667
+      },
+      "raw_len": 64,
+      "rec_len": 62,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-명리 상태 전이가 불안정한 주간에는 사상의학 체질 제약을 우선 적용하고, 공격적 의사결정은 관망으로 전환해야 한다.+명리 상태 전이가 불안정한 주간에는 사상의학 체질 제약을 우선 적용하고 공격적 의사결정은 관망으로 전환해야 한다"
+    },
+    {
+      "id": "cmp2_017",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.992126,
+        "sequence_matcher_word_ratio": 0.941176
+      },
+      "raw_len": 64,
+      "rec_len": 63,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-성경 정렬 신호가 강하더라도 체질 부담 지표가 임계치를 넘으면 해석 강도를 낮추고 회복 루틴을 먼저 배치해야 한다.+성경 정렬 신호가 강하더라도 체질 부담 지표가 임계치를 넘으면 해석 강도를 낮추고 회복 루틴을 먼저 배치해야 한다"
+    },
+    {
+      "id": "cmp2_018",
+      "shard_id": "zone_g_health",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.991736,
+        "sequence_matcher_word_ratio": 0.9375
+      },
+      "raw_len": 61,
+      "rec_len": 60,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-소양인의 과열 패턴은 카페인과 수면 부족이 겹칠 때 증폭되므로 오후 카페인 제한과 취침 루틴 고정이 필요하다.+소양인의 과열 패턴은 카페인과 수면 부족이 겹칠 때 증폭되므로 오후 카페인 제한과 취침 루틴 고정이 필요하다"
+    },
+    {
+      "id": "cmp2_019",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "likely_paraphrase_or_reorder"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.956522,
+        "sequence_matcher_word_ratio": 0.909091
+      },
+      "raw_len": 60,
+      "rec_len": 55,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-소음인의 위장 불편은 급한 일정과 찬 음식이 함께 올 때 악화되기 쉬워서 일정 완충과 온식 유지가 핵심이다.+소음인의 위장 불편은 급한 일정과 찬 음식이 함께 올 때 악화되기 쉬워서 일정 온식 유지가 핵심이다"
+    },
+    {
+      "id": "cmp2_020",
+      "shard_id": "zone_g_health",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.99187,
+        "sequence_matcher_word_ratio": 0.9375
+      },
+      "raw_len": 62,
+      "rec_len": 61,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-태음인의 호흡 답답함은 체중 수치보다 순환 정체와 연관될 수 있어서 저강도 유산소를 끊기지 않게 유지해야 한다.+태음인의 호흡 답답함은 체중 수치보다 순환 정체와 연관될 수 있어서 저강도 유산소를 끊기지 않게 유지해야 한다"
+    },
+    {
+      "id": "cmp2_021",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "likely_paraphrase_or_reorder"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.962963,
+        "sequence_matcher_word_ratio": 0.918919
+      },
+      "raw_len": 70,
+      "rec_len": 65,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-태양인의 집중 저하는 수분 부족과 과도한 화면 노출이 동반될 때 두드러지므로 작업 블록 사이에 눈 휴식을 반드시 넣어야 한다.+태양인의 집중 저하는 수분 부족과 과도한 화면 노출이 동반될 때 두드러지므로 작업 블록 사이에 눈 반드시 넣어야 한다"
+    },
+    {
+      "id": "cmp2_022",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.984375,
+        "sequence_matcher_word_ratio": 0.882353
+      },
+      "raw_len": 65,
+      "rec_len": 63,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-체질 판정이 애매한 경우에는 확정 라벨을 서두르지 말고, 반응 로그를 2주 이상 관찰한 뒤 보수적으로 분류해야 한다.+체질 판정이 애매한 경우에는 확정 라벨을 서두르지 말고 반응 로그를 2주 이상 관찰한 뒤 보수적으로 분류해야 한다"
+    },
+    {
+      "id": "cmp2_023",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.991304,
+        "sequence_matcher_word_ratio": 0.933333
+      },
+      "raw_len": 58,
+      "rec_len": 57,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-사상의학 문맥에서 숫자와 단위는 의미 축을 바꾸는 핵심 요소이므로 압축 과정에서 절대 손실되면 안 된다.+사상의학 문맥에서 숫자와 단위는 의미 축을 바꾸는 핵심 요소이므로 압축 과정에서 절대 손실되면 안 된다"
+    },
+    {
+      "id": "cmp2_024",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.983871,
+        "sequence_matcher_word_ratio": 0.875
+      },
+      "raw_len": 63,
+      "rec_len": 61,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-고유명사와 체질명은 오탈자 하나로도 해석이 바뀔 수 있어, 복원 단계에서 원문 대조 검사를 반드시 수행해야 한다.+고유명사와 체질명은 오탈자 하나로도 해석이 바뀔 수 있어 복원 단계에서 원문 대조 검사를 반드시 수행해야 한다"
+    },
+    {
+      "id": "cmp2_025",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.983871,
+        "sequence_matcher_word_ratio": 0.875
+      },
+      "raw_len": 63,
+      "rec_len": 61,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-민감 도메인에서는 토큰 절약률보다 복원 안정성을 우선해야 하며, 임계치 위반 시 즉시 롤백 정책을 적용해야 한다.+민감 도메인에서는 토큰 절약률보다 복원 안정성을 우선해야 하며 임계치 위반 시 즉시 롤백 정책을 적용해야 한다"
+    },
+    {
+      "id": "cmp2_026",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "likely_paraphrase_or_reorder"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.956522,
+        "sequence_matcher_word_ratio": 0.909091
+      },
+      "raw_len": 60,
+      "rec_len": 55,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-체질별 금칙 변환 사전이 비어 있으면 압축 결과가 일시적으로 좋아 보여도 실제 복원 실패가 누적될 수 있다.+체질별 금칙 변환 사전이 비어 있으면 압축 결과가 일시적으로 좋아 보여도 실제 복원 누적될 수 있다"
+    },
+    {
+      "id": "cmp2_027",
+      "shard_id": "zone_c_hangul",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.991453,
+        "sequence_matcher_word_ratio": 0.928571
+      },
+      "raw_len": 59,
+      "rec_len": 58,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-한글 조사와 어미는 문장 논리의 연결부이므로 과도하게 삭제하면 원인과 처방의 방향성이 뒤바뀔 위험이 있다.+한글 조사와 어미는 문장 논리의 연결부이므로 과도하게 삭제하면 원인과 처방의 방향성이 뒤바뀔 위험이 있다"
+    },
+    {
+      "id": "cmp2_028",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.984375,
+        "sequence_matcher_word_ratio": 0.866667
+      },
+      "raw_len": 65,
+      "rec_len": 63,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-사상의학 설명문은 짧은 기능어가 맥락을 지탱하므로, 극단 압축에서는 조사 보존 규칙을 기본값으로 두는 편이 안전하다.+사상의학 설명문은 짧은 기능어가 맥락을 지탱하므로 극단 압축에서는 조사 보존 규칙을 기본값으로 두는 편이 안전하다"
+    },
+    {
+      "id": "cmp2_029",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.99115,
+        "sequence_matcher_word_ratio": 0.928571
+      },
+      "raw_len": 57,
+      "rec_len": 56,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-명리와 사상의학을 함께 해석할 때는 시간축 신호와 체질축 제약을 분리 기록해야 추후 감사가 가능해진다.+명리와 사상의학을 함께 해석할 때는 시간축 신호와 체질축 제약을 분리 기록해야 추후 감사가 가능해진다"
+    },
+    {
+      "id": "cmp2_030",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.990991,
+        "sequence_matcher_word_ratio": 0.933333
+      },
+      "raw_len": 56,
+      "rec_len": 55,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-체질 경계군에서는 강한 단정 문장을 피하고 조건부 표현을 유지해야 과잉 처방 리스크를 낮출 수 있다.+체질 경계군에서는 강한 단정 문장을 피하고 조건부 표현을 유지해야 과잉 처방 리스크를 낮출 수 있다"
+    },
+    {
+      "id": "cmp2_031",
+      "shard_id": "zone_c_hangul",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.984375,
+        "sequence_matcher_word_ratio": 0.894737
+      },
+      "raw_len": 65,
+      "rec_len": 63,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-원전 인용 문구는 조사 하나가 원문 의미를 바꿀 수 있으니, 압축 전후 해시 비교와 육안 검토를 함께 수행해야 한다.+원전 인용 문구는 조사 하나가 원문 의미를 바꿀 수 있으니 압축 전후 해시 비교와 육안 검토를 함께 수행해야 한다"
+    },
+    {
+      "id": "cmp2_032",
+      "shard_id": "zone_c_hangul",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.984375,
+        "sequence_matcher_word_ratio": 0.882353
+      },
+      "raw_len": 65,
+      "rec_len": 63,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-한글 창제 원리 기반 보존 규칙은 복원 안전망으로 쓰되, 일반 도메인에는 가변 적용하여 절약률 손실을 통제해야 한다.+한글 창제 원리 기반 보존 규칙은 복원 안전망으로 쓰되 일반 도메인에는 가변 적용하여 절약률 손실을 통제해야 한다"
+    },
+    {
+      "id": "cmp2_033",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "substantive_mismatch"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.973913,
+        "sequence_matcher_word_ratio": 0.8
+      },
+      "raw_len": 59,
+      "rec_len": 56,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-사상의학 질문 응답에서는 체질명, 증상, 시간 조건의 세 축이 모두 남아 있어야 개인화 정확도가 유지된다.+사상의학 질문 응답에서는 체질명 증상 시간 조건의 세 축이 모두 남아 있어야 개인화 정확도가 유지된다"
+    },
+    {
+      "id": "cmp2_034",
+      "shard_id": "zone_c_hangul",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.983333,
+        "sequence_matcher_word_ratio": 0.866667
+      },
+      "raw_len": 61,
+      "rec_len": 59,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-복원 점검 시 자카드 지표만으로 충분하지 않으므로, 조사 누락률과 문장 기능어 보존률을 추가로 관찰해야 한다.+복원 점검 시 자카드 지표만으로 충분하지 않으므로 조사 누락률과 문장 기능어 보존률을 추가로 관찰해야 한다"
+    },
+    {
+      "id": "cmp2_035",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.985075,
+        "sequence_matcher_word_ratio": 0.888889
+      },
+      "raw_len": 68,
+      "rec_len": 66,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-체질 상담 로그는 동일 표현 반복이 잦아 압축에 유리하지만, 반복 삭제가 핵심 경고문까지 지우지 않도록 제한을 둬야 한다.+체질 상담 로그는 동일 표현 반복이 잦아 압축에 유리하지만 반복 삭제가 핵심 경고문까지 지우지 않도록 제한을 둬야 한다"
+    },
+    {
+      "id": "cmp2_036",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.992,
+        "sequence_matcher_word_ratio": 0.933333
+      },
+      "raw_len": 63,
+      "rec_len": 62,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-사상의학 도메인 카나리에서는 실패율 상승보다도 오판 위험 문장 비율을 우선 모니터링하는 편이 실제 피해를 줄인다.+사상의학 도메인 카나리에서는 실패율 상승보다도 오판 위험 문장 비율을 우선 모니터링하는 편이 실제 피해를 줄인다"
+    },
+    {
+      "id": "cmp2_037",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.984127,
+        "sequence_matcher_word_ratio": 0.875
+      },
+      "raw_len": 64,
+      "rec_len": 62,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-체질 제약이 큰 사용자에게는 절약률 50% 고정 목표보다 복원 정확도 임계치를 먼저 만족시키는 정책이 더 안전하다.+체질 제약이 큰 사용자에게는 절약률 50 고정 목표보다 복원 정확도 임계치를 먼저 만족시키는 정책이 더 안전하다"
+    },
+    {
+      "id": "cmp2_038",
+      "shard_id": "zone_c_hangul",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.992701,
+        "sequence_matcher_word_ratio": 0.947368
+      },
+      "raw_len": 69,
+      "rec_len": 68,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-한글 문장에서 조사 보존은 토큰 비용을 조금 늘려도 의미 왜곡을 줄이는 효과가 있어 민감 영역에서는 비용 대비 가치가 크다.+한글 문장에서 조사 보존은 토큰 비용을 조금 늘려도 의미 왜곡을 줄이는 효과가 있어 민감 영역에서는 비용 대비 가치가 크다"
+    },
+    {
+      "id": "cmp2_039",
+      "shard_id": "zone_d_ssot",
+      "primary_flags": [
+        "likely_paraphrase_or_reorder"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.96124,
+        "sequence_matcher_word_ratio": 0.918919
+      },
+      "raw_len": 67,
+      "rec_len": 62,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-복원 파이프라인 감사 로그에는 원문 대비 누락 토큰 목록을 남겨야 재학습 없이도 규칙 수정 지점을 빠르게 찾을 수 있다.+복원 파이프라인 감사 로그에는 원문 대비 누락 토큰 목록을 남겨야 재학습 없이도 규칙 수정 지점을 찾을 수 있다"
+    },
+    {
+      "id": "cmp2_040",
+      "shard_id": "zone_a_scm",
+      "primary_flags": [
+        "near_identical_chars"
+      ],
+      "detail": {
+        "sequence_matcher_char_ratio": 0.984848,
+        "sequence_matcher_word_ratio": 0.875
+      },
+      "raw_len": 67,
+      "rec_len": 65,
+      "diff_preview": "--- raw\n+++ reconstructed\n@@ -1 +1 @@\n-최종 운영에서는 일반 도메인과 사상의학 도메인의 압축 캡을 분리해, 동일 모델이라도 정책 계층으로 위험을 제어해야 한다.+최종 운영에서는 일반 도메인과 사상의학 도메인의 압축 캡을 분리해 동일 모델이라도 정책 계층으로 위험을 제어해야 한다"
+    }
+  ]
+}
