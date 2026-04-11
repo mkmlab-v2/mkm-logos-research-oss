@@ -1,0 +1,348 @@
+{
+  "schema": "micro_payload_bep_from_integrity_v4_v1",
+  "description": "Gain = mean(raw - compressed); Cost_marginal = mean(wire - compressed) from v4 cases. N_BEP = Cost_fixed / (Gain - Cost_marginal).",
+  "generated_at_utc": "2026-04-11T21:14:24.812916+00:00",
+  "source_integrity_json": "docs/final/artifacts/INTEGRITY_COST_V4_ZONE_C_HANGUL_V1.json",
+  "integrity_schema": "integrity_cost_model_v4",
+  "v4_config": {
+    "merge_gap_bytes": 4,
+    "shard_id_filter": "zone_c_hangul"
+  },
+  "summary_from_integrity": {
+    "cases_included": 5,
+    "bytes_raw_total": 783,
+    "bytes_compressed_total": 437,
+    "total_wire_bytes": 546,
+    "global_real_saving_vs_raw": 0.30268199233716475,
+    "global_token_saving_rate_reported": null
+  },
+  "derived_averages": {
+    "case_count": 5.0,
+    "mean_gain_compression_bytes": 69.2,
+    "mean_cost_marginal_integrity_bytes": 21.8,
+    "mean_net_bytes_vs_raw": 47.4,
+    "total_gain_compression_bytes": 346.0,
+    "total_cost_marginal_integrity_bytes": 109.0
+  },
+  "per_case": [
+    {
+      "id": "cmp2_027",
+      "bytes_raw_utf8": 149.0,
+      "bytes_compressed_utf8": 82.0,
+      "total_wire_bytes": 114.0,
+      "gain_compression_bytes": 67.0,
+      "cost_marginal_integrity_bytes": 32.0,
+      "net_bytes_vs_raw": 35.0
+    },
+    {
+      "id": "cmp2_031",
+      "bytes_raw_utf8": 155.0,
+      "bytes_compressed_utf8": 84.0,
+      "total_wire_bytes": 96.0,
+      "gain_compression_bytes": 71.0,
+      "cost_marginal_integrity_bytes": 12.0,
+      "net_bytes_vs_raw": 59.0
+    },
+    {
+      "id": "cmp2_032",
+      "bytes_raw_utf8": 159.0,
+      "bytes_compressed_utf8": 86.0,
+      "total_wire_bytes": 98.0,
+      "gain_compression_bytes": 73.0,
+      "cost_marginal_integrity_bytes": 12.0,
+      "net_bytes_vs_raw": 61.0
+    },
+    {
+      "id": "cmp2_034",
+      "bytes_raw_utf8": 151.0,
+      "bytes_compressed_utf8": 85.0,
+      "total_wire_bytes": 97.0,
+      "gain_compression_bytes": 66.0,
+      "cost_marginal_integrity_bytes": 12.0,
+      "net_bytes_vs_raw": 54.0
+    },
+    {
+      "id": "cmp2_038",
+      "bytes_raw_utf8": 169.0,
+      "bytes_compressed_utf8": 100.0,
+      "total_wire_bytes": 141.0,
+      "gain_compression_bytes": 69.0,
+      "cost_marginal_integrity_bytes": 41.0,
+      "net_bytes_vs_raw": 28.0
+    }
+  ],
+  "cost_fixed_scenarios": [
+    {
+      "cost_fixed_bytes": 250.0,
+      "bep": {
+        "cost_fixed_bytes": 250.0,
+        "gain_per_unit_bytes": 69.2,
+        "cost_marginal_per_unit_bytes": 21.8,
+        "contribution_margin_per_unit": 47.400000000000006,
+        "n_bep": 5.2742616033755265,
+        "n_bep_ceil": 6,
+        "status": "ok"
+      },
+      "curve_0_to_n": [
+        {
+          "n": 0.0,
+          "cumulative_gain_bytes": 0.0,
+          "cumulative_cost_bytes": 250.0,
+          "net_bytes": -250.0
+        },
+        {
+          "n": 1.0,
+          "cumulative_gain_bytes": 69.2,
+          "cumulative_cost_bytes": 271.8,
+          "net_bytes": -202.60000000000002
+        },
+        {
+          "n": 2.0,
+          "cumulative_gain_bytes": 138.4,
+          "cumulative_cost_bytes": 293.6,
+          "net_bytes": -155.20000000000002
+        },
+        {
+          "n": 3.0,
+          "cumulative_gain_bytes": 207.60000000000002,
+          "cumulative_cost_bytes": 315.4,
+          "net_bytes": -107.79999999999995
+        },
+        {
+          "n": 4.0,
+          "cumulative_gain_bytes": 276.8,
+          "cumulative_cost_bytes": 337.2,
+          "net_bytes": -60.39999999999998
+        },
+        {
+          "n": 5.0,
+          "cumulative_gain_bytes": 346.0,
+          "cumulative_cost_bytes": 359.0,
+          "net_bytes": -13.0
+        },
+        {
+          "n": 6.0,
+          "cumulative_gain_bytes": 415.20000000000005,
+          "cumulative_cost_bytes": 380.8,
+          "net_bytes": 34.400000000000034
+        },
+        {
+          "n": 7.0,
+          "cumulative_gain_bytes": 484.40000000000003,
+          "cumulative_cost_bytes": 402.6,
+          "net_bytes": 81.80000000000001
+        },
+        {
+          "n": 8.0,
+          "cumulative_gain_bytes": 553.6,
+          "cumulative_cost_bytes": 424.4,
+          "net_bytes": 129.20000000000005
+        },
+        {
+          "n": 9.0,
+          "cumulative_gain_bytes": 622.8000000000001,
+          "cumulative_cost_bytes": 446.20000000000005,
+          "net_bytes": 176.60000000000002
+        },
+        {
+          "n": 10.0,
+          "cumulative_gain_bytes": 692.0,
+          "cumulative_cost_bytes": 468.0,
+          "net_bytes": 224.0
+        },
+        {
+          "n": 11.0,
+          "cumulative_gain_bytes": 761.2,
+          "cumulative_cost_bytes": 489.8,
+          "net_bytes": 271.40000000000003
+        },
+        {
+          "n": 12.0,
+          "cumulative_gain_bytes": 830.4000000000001,
+          "cumulative_cost_bytes": 511.6,
+          "net_bytes": 318.80000000000007
+        },
+        {
+          "n": 13.0,
+          "cumulative_gain_bytes": 899.6,
+          "cumulative_cost_bytes": 533.4000000000001,
+          "net_bytes": 366.19999999999993
+        },
+        {
+          "n": 14.0,
+          "cumulative_gain_bytes": 968.8000000000001,
+          "cumulative_cost_bytes": 555.2,
+          "net_bytes": 413.6
+        },
+        {
+          "n": 15.0,
+          "cumulative_gain_bytes": 1038.0,
+          "cumulative_cost_bytes": 577.0,
+          "net_bytes": 461.0
+        },
+        {
+          "n": 16.0,
+          "cumulative_gain_bytes": 1107.2,
+          "cumulative_cost_bytes": 598.8,
+          "net_bytes": 508.4000000000001
+        },
+        {
+          "n": 17.0,
+          "cumulative_gain_bytes": 1176.4,
+          "cumulative_cost_bytes": 620.6,
+          "net_bytes": 555.8000000000001
+        },
+        {
+          "n": 18.0,
+          "cumulative_gain_bytes": 1245.6000000000001,
+          "cumulative_cost_bytes": 642.4000000000001,
+          "net_bytes": 603.2
+        },
+        {
+          "n": 19.0,
+          "cumulative_gain_bytes": 1314.8,
+          "cumulative_cost_bytes": 664.2,
+          "net_bytes": 650.5999999999999
+        },
+        {
+          "n": 20.0,
+          "cumulative_gain_bytes": 1384.0,
+          "cumulative_cost_bytes": 686.0,
+          "net_bytes": 698.0
+        },
+        {
+          "n": 21.0,
+          "cumulative_gain_bytes": 1453.2,
+          "cumulative_cost_bytes": 707.8,
+          "net_bytes": 745.4000000000001
+        },
+        {
+          "n": 22.0,
+          "cumulative_gain_bytes": 1522.4,
+          "cumulative_cost_bytes": 729.6,
+          "net_bytes": 792.8000000000001
+        },
+        {
+          "n": 23.0,
+          "cumulative_gain_bytes": 1591.6000000000001,
+          "cumulative_cost_bytes": 751.4000000000001,
+          "net_bytes": 840.2
+        },
+        {
+          "n": 24.0,
+          "cumulative_gain_bytes": 1660.8000000000002,
+          "cumulative_cost_bytes": 773.2,
+          "net_bytes": 887.6000000000001
+        },
+        {
+          "n": 25.0,
+          "cumulative_gain_bytes": 1730.0,
+          "cumulative_cost_bytes": 795.0,
+          "net_bytes": 935.0
+        },
+        {
+          "n": 26.0,
+          "cumulative_gain_bytes": 1799.2,
+          "cumulative_cost_bytes": 816.8000000000001,
+          "net_bytes": 982.4
+        },
+        {
+          "n": 27.0,
+          "cumulative_gain_bytes": 1868.4,
+          "cumulative_cost_bytes": 838.6,
+          "net_bytes": 1029.8000000000002
+        },
+        {
+          "n": 28.0,
+          "cumulative_gain_bytes": 1937.6000000000001,
+          "cumulative_cost_bytes": 860.4,
+          "net_bytes": 1077.2000000000003
+        },
+        {
+          "n": 29.0,
+          "cumulative_gain_bytes": 2006.8000000000002,
+          "cumulative_cost_bytes": 882.2,
+          "net_bytes": 1124.6000000000001
+        },
+        {
+          "n": 30.0,
+          "cumulative_gain_bytes": 2076.0,
+          "cumulative_cost_bytes": 904.0,
+          "net_bytes": 1172.0
+        },
+        {
+          "n": 31.0,
+          "cumulative_gain_bytes": 2145.2000000000003,
+          "cumulative_cost_bytes": 925.8000000000001,
+          "net_bytes": 1219.4
+        },
+        {
+          "n": 32.0,
+          "cumulative_gain_bytes": 2214.4,
+          "cumulative_cost_bytes": 947.6,
+          "net_bytes": 1266.8000000000002
+        },
+        {
+          "n": 33.0,
+          "cumulative_gain_bytes": 2283.6,
+          "cumulative_cost_bytes": 969.4,
+          "net_bytes": 1314.1999999999998
+        },
+        {
+          "n": 34.0,
+          "cumulative_gain_bytes": 2352.8,
+          "cumulative_cost_bytes": 991.2,
+          "net_bytes": 1361.6000000000001
+        },
+        {
+          "n": 35.0,
+          "cumulative_gain_bytes": 2422.0,
+          "cumulative_cost_bytes": 1013.0,
+          "net_bytes": 1409.0
+        },
+        {
+          "n": 36.0,
+          "cumulative_gain_bytes": 2491.2000000000003,
+          "cumulative_cost_bytes": 1034.8000000000002,
+          "net_bytes": 1456.4
+        },
+        {
+          "n": 37.0,
+          "cumulative_gain_bytes": 2560.4,
+          "cumulative_cost_bytes": 1056.6,
+          "net_bytes": 1503.8000000000002
+        },
+        {
+          "n": 38.0,
+          "cumulative_gain_bytes": 2629.6,
+          "cumulative_cost_bytes": 1078.4,
+          "net_bytes": 1551.1999999999998
+        },
+        {
+          "n": 39.0,
+          "cumulative_gain_bytes": 2698.8,
+          "cumulative_cost_bytes": 1100.2,
+          "net_bytes": 1598.6000000000001
+        },
+        {
+          "n": 40.0,
+          "cumulative_gain_bytes": 2768.0,
+          "cumulative_cost_bytes": 1122.0,
+          "net_bytes": 1646.0
+        }
+      ]
+    },
+    {
+      "cost_fixed_bytes": 500.0,
+      "bep": {
+        "cost_fixed_bytes": 500.0,
+        "gain_per_unit_bytes": 69.2,
+        "cost_marginal_per_unit_bytes": 21.8,
+        "contribution_margin_per_unit": 47.400000000000006,
+        "n_bep": 10.548523206751053,
+        "n_bep_ceil": 11,
+        "status": "ok"
+      }
+    }
+  ]
+}
