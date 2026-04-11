@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://workspace.local/schemas/scm_boming_jiju_lexicon_v1.schema.json",
+  "title": "SCM 보명지주 전용 렉시콘 v1",
+  "description": "Staged lexicon for Sasang constitutional medicine — 보명지주(保命之主) pillar terms per 체질. Label cohort A vs canon/proxy B must not auto-merge with production classifiers (workspace handoff). boundary_ack must be true. Used to extend effective_must_keep on zone_a_scm when explicitly wired.",
+  "type": "object",
+  "required": ["schema", "version", "boundary_ack", "entries"],
+  "additionalProperties": true,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "scm_boming_jiju_lexicon_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "boundary_ack": {
+      "type": "boolean",
+      "const": true,
+      "description": "Acknowledge B-staged / non-clinical binding."
+    },
+    "description": { "type": "string" },
+    "entries": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/entry" }
+    }
+  },
+  "definitions": {
+    "entry": {
+      "type": "object",
+      "required": ["term", "sasang_constitution", "pillar_role"],
+      "additionalProperties": true,
+      "properties": {
+        "term": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Surface form for substring/token match."
+        },
+        "normalized_form": {
+          "type": "string",
+          "description": "Optional; default lowercased term for token match."
+        },
+        "sasang_constitution": {
+          "type": "string",
+          "enum": ["taeeum_in", "taeyang_in", "soeum_in", "soyang_in"],
+          "description": "4체질 (사상체질) 구분."
+        },
+        "pillar_role": {
+          "type": "string",
+          "minLength": 1,
+          "description": "e.g. boming_jiju, or 세부 기둥 태그."
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 50,
+          "description": "Higher = stronger must_keep weight (consumer-defined)."
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "tier": {
+              "type": "string",
+              "enum": ["B_staged", "literature_excerpt", "manual_curate"]
+            },
+            "ref": { "type": "string" }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

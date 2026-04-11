@@ -1,0 +1,40 @@
+{
+  "schema": "scm_boming_jiju_lexicon_v1",
+  "version": "1.0.0",
+  "boundary_ack": true,
+  "description": "v0 샘플: 보명지주·핵심 기둥 용어 예시. 임상·본선 자동 판정 아님. 확장 시 원전 B 코호트와 출처 필드 유지.",
+  "entries": [
+    {
+      "term": "호산지기",
+      "sasang_constitution": "taeeum_in",
+      "pillar_role": "boming_jiju",
+      "priority": 90,
+      "source": { "tier": "B_staged", "ref": "lexicon_v0_seed" },
+      "notes": "태음인 보명지주(호흡·수렴) 축 — 예시 항목"
+    },
+    {
+      "term": "흡취지기",
+      "sasang_constitution": "soeum_in",
+      "pillar_role": "boming_jiju",
+      "priority": 90,
+      "source": { "tier": "B_staged", "ref": "lexicon_v0_seed" },
+      "notes": "소음인 보명지주(소화·흡수) 축 — 예시 항목"
+    },
+    {
+      "term": "심기",
+      "sasang_constitution": "taeyang_in",
+      "pillar_role": "boming_jiju",
+      "priority": 85,
+      "source": { "tier": "B_staged", "ref": "lexicon_v0_seed" },
+      "notes": "태양인 보명지주 축 — 예시 항목(임상 단정 아님)"
+    },
+    {
+      "term": "담기",
+      "sasang_constitution": "soyang_in",
+      "pillar_role": "boming_jiju",
+      "priority": 85,
+      "source": { "tier": "B_staged", "ref": "lexicon_v0_seed" },
+      "notes": "소양인 보명지주 축 — 예시 항목(임상 단정 아님)"
+    }
+  ]
+}
