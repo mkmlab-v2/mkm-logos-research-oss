@@ -8,6 +8,12 @@
 2. **Bench(모의·테스트) 기본**: 실거래·라이브 실행 전환은 **명시적 지시**가 있을 때만.
 3. **팩트 SSOT**: 통과 건수·경로는 **실행 로그** 또는 **트래킹된 파일**이 없으면 인용하지 않는다.
 
+### 권장 작업 순서 (압축·예언·합선 — 기억용)
+
+1. **먼저 (호출 가능 경로·격벽 유지):** P0 경로 게이트 `scripts/verify_p0_constitution_gate_paths.ps1`; 압축 자동화 `run_compression_automation_chain.ps1`(V2 Trust Packet pytest 포함); CI `dual-regime-integrity.yml`. 일반 예언(B 레일) 최소 체인: `generate_general_prophecy_v1.py` → `build_general_prophecy_brief.py` → `eval_general_prophecy_brier_score.py` — **압축 엔진·토큰 스텁과 레지스트리를 코드에서 자동 합선하지 않음**(`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 다중 렌즈·비단정과 동일 선상).
+2. **다음 (승격·연구):** B-track → Track A·대외 주장은 `COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9 + 본 문서 증거 표. 16-state ↔ 압축 런타임 필수 배선은 `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md`(현재 미연동)·`STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md` 로드맵 반영 후 연구 레인.
+3. **나중·금지 서술:** 단일 TOE·완성 통일장·예언-압축 단일 두뇌 비유 — `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.1에서 선언·단정 금지.
+
 ### LLM 검증 티어 (로컬 우선 → 상용 고급)
 
 1. **1차(연구·회귀·비용 민감)**: 벤치·게이트·스모크는 **로컬 또는 자체 호스팅 추론**(예: Ollama·`OLLAMA_MODEL` 등 문서화된 경로)을 기본으로 삼는다. 재현성·비용·데이터 유출 최소화가 목적이다.
@@ -38,7 +44,8 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 ### 압축·복원 자동화 체인 (상용 전제·최소 개입)
 
 - **한 줄 실행:** `scripts/run_compression_automation_chain.ps1`  
-  - `run_ultra_compression_default.py` → `report_ultra_compression_kpi_summary.py` → `report_token_api_hydration_mix.py` (`-SkipHydrationMix`로 마지막 생략 가능).
+  - `run_ultra_compression_default.py` → `report_ultra_compression_kpi_summary.py` → `report_token_api_hydration_mix.py` (`-SkipHydrationMix`로 마지막 생략 가능). 말미에 V2 Trust Packet 회귀: `tests/test_compression_token_api_v2_stub.py` (`-SkipV2TrustPacketTests`로 생략).
+- **V1 vs V2 계약 시각화 (로컬 데모, 상용 아님):** `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/compression_v2_explorer.html` — 정적 서빙 `scripts/Serve-CompressionV2Explorer.ps1` 또는 원클릭 `scripts/Start-CompressionV2ExplorerDemo.ps1` (스텁 CORS 기본 허용). P0 경로 게이트·`run_workspace_autopilot_chain.ps1 -IncludeJemaaiCloudChecks`에 파일 존재 검사 포함.
 - **산출물 SSOT:** `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`, 리터럴 트랙 시 `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json`, `reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json`, `reports/constitution/btrack_pilot/token_api_hydration_mix_latest.json`.
 - **KPI 임계치·n8n 알람:** `docs/final/artifacts/compression_alarm_thresholds_v1.json` — 체인 종료 시 `scripts/send_compression_kpi_alarm_if_needed.ps1`가 위반 시 `COMPRESSION_KPI_ALARM_WEBHOOK_URL`(없으면 `OPS_ALARM_WEBHOOK_URL`)로 POST; `-SkipCompressionAlarm`로 생략.
 - **Fact-Lock:** 상용 SLA·무손실 단정은 `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` — 스텁만으로 프로덕션 SaaS 주장 금지; 임계치·게이트는 레포·CI에서 확정 후 기록.
@@ -71,7 +78,7 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 
 | 항목 | 내용 |
 |------|------|
-| **목표 (문서 SSOT)** | 캐노니컬 계약: `docs/final/openapi_token_compression_stub_v1.yaml` + `scripts/compression_token_api_stub.py`. **v2 Trust Packet 초안**: `docs/final/openapi_token_compression_v2_draft.yaml` — **미구현** (동 Fact-Lock §9.1). |
+| **목표 (문서 SSOT)** | 캐노니컬 계약: `docs/final/openapi_token_compression_stub_v1.yaml` + `scripts/compression_token_api_stub.py`. **v2 Trust Packet 초안**: `docs/final/openapi_token_compression_v2_draft.yaml` + 실험 스텁 `scripts/compression_token_api_v2_stub.py` (상용 SLA·인증은 범위 외; Fact-Lock §11). |
 | **Track A 미터링 (Phase 2 최소)** | `POST /v1/metering/log` — `scripts/core/billing_meter.py` (`append_meter_event`); 기본 로그 `reports/constitution/btrack_pilot/track_a_metering_log_v1.jsonl`, 경로는 `TRACK_A_METERING_LOG_PATH`. `eval_context.meter_log` + `hydrate_metrics` 시 `POST /v1/compress` 응답 직후 동일 로그에 1행 append 가능. 청구·정산 아님. SLA 초안(내부): `docs/final/TRACK_A_SLA_DRAFT.md`. |
 | **자동화 루프 (기계)** | `.github/workflows/no1kmedi-api-smoke.yml`; `no1kmedi-guardian-contract-gate.yml`(동 디렉터리). |
 | **지휘관 게이트** | 프로덕션 배포·**실키·Webhook·Hostinger** 반영은 **수동 승인·주입**. `projects/no1kmedi/payapp-api/` 등 결제·대외 API는 **본 트래커에서 경로만 고정**, 감사·약관은 별도. **경로·VPS PM2·mkmlife 수동 배포 SSOT**: `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md`. |

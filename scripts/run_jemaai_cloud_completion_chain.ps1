@@ -1,4 +1,5 @@
-# Fused "completion" run toward jemaai.cloud: Fact-Lock + P1 A/B + Thin/BTC anchor + Sasang + jemaai MVP file checks.
+# Fused "completion" run toward jemaai.cloud: Fact-Lock + P1 A/B + Thin/BTC anchor + Sasang + jemaai MVP file checks
+# (includes compression_v2_explorer.html + Serve/Start-CompressionV2Explorer scripts when -IncludeJemaaiCloudChecks).
 # Does NOT deploy nginx or start VPS services — local/ops validation only.
 #
 # Usage:

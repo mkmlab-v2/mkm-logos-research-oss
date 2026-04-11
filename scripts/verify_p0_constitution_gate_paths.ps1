@@ -16,6 +16,7 @@ $required = @(
     "projects\bitcoin-trading\AGENTS.md",
     "CLAUDE.md",
     "docs\final\LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md",
+    "docs\final\NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md",
     "scripts\sync_notebooklm_sources_to_mkm_data_vault.ps1",
     "scripts\run_waiting_queue_monthly_check.ps1",
     "projects\bitcoin-trading\ops\windows-rehearsal\GENERAL_PROPHECY_MONTHLY_SCHEDULER_RUNBOOK_V1.md",

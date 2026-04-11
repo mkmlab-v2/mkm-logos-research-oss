@@ -15,6 +15,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_IN = ROOT / "docs" / "final" / "artifacts" / "general_prophecy_latest.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "general_prophecy_brief_latest.md"
+DEFAULT_BRIER_EVAL = ROOT / "docs" / "final" / "artifacts" / "general_prophecy_brier_eval_latest.json"
 
 
 def _utc_now() -> str:
@@ -33,6 +34,16 @@ def _brief(doc: dict[str, Any]) -> str:
     lines.append(f"- registry schema: `{doc.get('schema')}`")
     lines.append(f"- research_rail: `{doc.get('research_rail')}`")
     lines.append("")
+    if DEFAULT_BRIER_EVAL.is_file():
+        bdoc = json.loads(DEFAULT_BRIER_EVAL.read_text(encoding="utf-8"))
+        if bdoc.get("schema") == "general_prophecy_brier_eval_v1":
+            m = bdoc.get("metrics") or {}
+            lines.append("## Brier evaluation (latest)")
+            lines.append("")
+            lines.append(f"- **mean_brier_score:** `{m.get('mean_brier_score')}`")
+            lines.append(f"- **n_evaluated:** `{m.get('n_evaluated')}`")
+            lines.append(f"- **eval_generated_at_utc:** `{bdoc.get('generated_at_utc')}`")
+            lines.append("")
     for q in doc.get("questions") or []:
         if not isinstance(q, dict):
             continue

@@ -55,6 +55,9 @@ if ($IncludeJemaaiCloudChecks) {
         (Join-Path $mvp "nginx_public_event_gateway.conf.example"),
         (Join-Path $mvp "examples\public_event_ingest_minimal.v1.json"),
         (Join-Path $mvp "public_showroom_poll.html"),
+        (Join-Path $mvp "compression_v2_explorer.html"),
+        (Join-Path $workspaceRoot "scripts\Serve-CompressionV2Explorer.ps1"),
+        (Join-Path $workspaceRoot "scripts\Start-CompressionV2ExplorerDemo.ps1"),
         (Join-Path $workspaceRoot "projects\bitcoin-trading\ops\windows-rehearsal\ensure_public_event_gateway.ps1"),
         (Join-Path $workspaceRoot "scripts\print_gemini_env_hygiene_hint.ps1")
     )
