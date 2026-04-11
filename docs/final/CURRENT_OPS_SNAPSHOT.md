@@ -126,6 +126,7 @@
 - **고바닥 스윕 실측:** `docs/final/artifacts/extreme_quality_sweep_v1.json` — `py scripts/run_general_compression_sweep.py --fidelity-floor 0.80 --out …` 결과 **`go_candidate_count`: 0** · **`decision`: NO_GO** (현 그리드에서 baseline 대비 절약 개선 + Jaccard≥0.80 동시 만족 조합 없음).
 - **0.70 바닥 스윕 실측:** `docs/final/artifacts/realistic_quality_sweep_v1.json` — `--fidelity-floor 0.70` 결과 **`go_candidate_count`: 0** · **`decision`: NO_GO**. 동일 9케이스·그리드에서 최고 평균 Jaccard는 **~0.671** 수준이라 **0.70 바닥 자체를 넘는 조합이 없음** (0.80과 동일하게 빈 집합이나, 원인은 “바닥이 현재 도달 가능 상한(~0.67)보다 높음”).
 - **9케이스 유실 토큰 집계 (V2와 분리):** `py scripts/report_general_compression_token_loss_aggregate.py` → `docs/final/artifacts/general_compression_token_loss_aggregate_v1.json` — 스윕 최적 프로파일(A/high/0.55/0.6/0.6)과 동일하게 `evaluate_report` 한 번 돌려 **전역·도메인별 상위 `lost` 토큰**을 JSON으로 고정 (재현용).
+- **4D 브리지 정책 A/B (V2 universal, 동일 캡):** `run_ultra_compression_default.py --mode universal --out …` vs `--apply-gematria-4d-bridge-policy` — 산출 `MULTILENS_BRIDGE_POLICY_AB_OFF_V1.json` / `MULTILENS_BRIDGE_POLICY_AB_ON_V1.json`. 실측(2026-04-12): OFF Jaccard **~0.735**·절약 **~0.491** → ON **~0.854**·절약 **~0.361** (품질↑·절약↓).
 - **갱신:** `py scripts/report_general_compression_failure_taxonomy.py` → `py scripts/report_general_compression_domain_guard_gate.py`
 
 
@@ -208,7 +209,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-GeneralProphe
 
 - **의존성:** `pip install -r scripts/requirements-mkm-mcp.txt`
 
-- **실행:** `py scripts/mkm_unified_mcp.py` — Cursor MCP 설정에 위 명령을 stdio 서버로 등록한다.
+- **실행:** Cursor **Settings → MCP**에 stdio로 `py scripts/mkm_unified_mcp.py`(cwd: 레포 루트)만 등록한다. **일반 터미널에서 직접 실행하지 않는다**(빈 줄이 JSON-RPC 오류를 유발). 디버그만 `MKM_MCP_FORCE_STDIO=1`.
 
 - **환경:** `MKM_PROPHECY_REGISTRY_PATH`로 레지스트리 JSON 경로를 덮어쓸 수 있다 (기본: `docs/final/artifacts/general_prophecy_latest.json`).
 

@@ -85,6 +85,21 @@ def main() -> int:
             "ultra-literal: research profile — very low saving caps, Jaccard toward 1.0 (see COMPRESSION_SLA_POLICY_V1)."
         ),
     )
+    ap.add_argument(
+        "--apply-gematria-4d-bridge-policy",
+        action="store_true",
+        help=(
+            "Pass apply_gematria_4d_bridge_policy=True into evaluate_report (requires include_gematria_4d_bridge; "
+            "adds must_keep terms, may tighten caps, runs _bridge_aware_candidate_select). "
+            "Default OFF to match historical active reports."
+        ),
+    )
+    ap.add_argument(
+        "--out",
+        type=Path,
+        default=None,
+        help="Optional output path for the report JSON (default: Track A/B active report paths by --mode).",
+    )
     args = ap.parse_args()
     sla_track = str(args.mode)
 
@@ -138,6 +153,7 @@ def main() -> int:
         use_master_codebook_lexicon_v1=True,
         include_gematria_metadata=True,
         include_gematria_4d_bridge=True,
+        apply_gematria_4d_bridge_policy=bool(args.apply_gematria_4d_bridge_policy),
         include_cee_core=True,
     )
     report["active_profile"] = {
@@ -148,6 +164,7 @@ def main() -> int:
         "general_max_saving_rate": general_max_saving_rate,
         "sensitive_max_saving_rate": sensitive_max_saving_rate,
         "hangul_max_saving_rate": hangul_max_saving_rate,
+        "apply_gematria_4d_bridge_policy": bool(args.apply_gematria_4d_bridge_policy),
     }
     if sla_track == "ultra-literal":
         cases = (report.get("compression_metrics") or {}).get("cases") or []
@@ -157,11 +174,14 @@ def main() -> int:
             "Ultra-Literal: minimize token economy to approach lossless reconstruction on the V2 bench; "
             "not a compliance seal for regulated medical/financial advice."
         )
-    out_path = (
-        ACTIVE_REPORT_ULTRA_LITERAL
-        if sla_track == "ultra-literal"
-        else (ACTIVE_REPORT_LITERAL if sla_track == "literal" else ACTIVE_REPORT)
-    )
+    out_path = args.out
+    if out_path is None:
+        out_path = (
+            ACTIVE_REPORT_ULTRA_LITERAL
+            if sla_track == "ultra-literal"
+            else (ACTIVE_REPORT_LITERAL if sla_track == "literal" else ACTIVE_REPORT)
+        )
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {out_path}")
     return 0
