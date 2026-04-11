@@ -38,6 +38,7 @@ from scripts.core.contextual_generator_v4 import ContextualGeneratorV4
 from scripts.core.contextual_generator_v5_codec import ContextualGeneratorV5Codec
 from scripts.core.gematria_engine import build_gematria_metadata
 from scripts.core.gematria_to_4d_bridge import build_gematria_4d_bridge
+from scripts.core.state16_interface import NoopState16Adapter, State16Input
 
 TOKEN_RE = re.compile(r"[A-Za-z0-9_]+|[가-힣]+|[^\s]")
 WORD_RE = re.compile(r"[A-Za-z0-9_가-힣]+")
@@ -46,6 +47,15 @@ WORD_RE = re.compile(r"[A-Za-z0-9_가-힣]+")
 # (see reports/memory/mkm_memory_no_go_remediation_note_latest.json).
 ULTRA_TOKEN_SAVING_STRICT = 0.50
 ULTRA_TOKEN_SAVING_POLICY_MIN = 0.49
+
+# When global experimental caps are very high (e.g. strict 90% taxonomy sweep), cap
+# rows by input `domain` so "variable fidelity" limits fidelity collapse (General Rail).
+_HIGH_STRESS_GMAX_THRESHOLD = 0.85
+_HIGH_STRESS_DOMAIN_MAX_SAVING: dict[str, float] = {
+    "policy_legal_lite": 0.52,
+    "meeting": 0.52,
+    "support_faq": 0.54,
+}
 
 # Global billing-aligned token proxy (Option B: does not replace legacy `_tokens` / global_token_saving_rate).
 TIKTOKEN_O200K_ENCODING = "o200k_base"
@@ -663,6 +673,7 @@ def evaluate_report(
         if use_contextual_generator_v5_codec
         else None
     )
+    state16_adapter = NoopState16Adapter()
     for c in comp_cases:
         raw = str(c.get("raw_text", ""))
         source_comp = str(c.get("compressed_text", ""))
@@ -764,6 +775,12 @@ def evaluate_report(
                 cap = hangul_max_saving_rate
             else:
                 cap = sensitive_max_saving_rate if is_sensitive else general_max_saving_rate
+            case_domain = str(c.get("domain", "") or "").strip()
+            gmax = float(general_max_saving_rate) if general_max_saving_rate is not None else None
+            if gmax is not None and gmax >= _HIGH_STRESS_GMAX_THRESHOLD:
+                dstress = _HIGH_STRESS_DOMAIN_MAX_SAVING.get(case_domain)
+                if dstress is not None:
+                    cap = min(cap if cap is not None else 1.0, dstress)
             if apply_gematria_4d_bridge_policy and bridge_meta is not None:
                 state16 = bridge_meta.get("state16")
                 if state16 in {2, 8, 11, 14}:
@@ -812,6 +829,24 @@ def evaluate_report(
         sensitive_integrities.append(integrity)
         if leak:
             sensitive_violation_count += 1
+        rd: str | None = None
+        rsid: str | None = None
+        if isinstance(route_info, dict):
+            dom = route_info.get("domain")
+            sh = route_info.get("shard_id")
+            rd = str(dom) if dom is not None else None
+            rsid = str(sh) if sh is not None else None
+        state16_row = state16_adapter.apply(
+            State16Input(
+                case_id=str(c.get("id", "")),
+                raw_text=raw,
+                compressed_text=comp,
+                reconstructed_text=rec_for_eval,
+                route_domain=rd,
+                route_shard_id=rsid,
+                metadata={"mode": mode, "strategy": strategy, "intensity": intensity},
+            )
+        ).to_row_dict()
         row = {
             "id": c.get("id"),
             "raw_tokens": raw_t,
@@ -824,6 +859,7 @@ def evaluate_report(
             "compressed_text_effective": comp,
             "reconstructed_text_effective": rec_for_eval,
             "route": route_info,
+            "state16": state16_row,
         }
         if enc_o200k is not None:
             o200k_r = len(enc_o200k.encode(raw))

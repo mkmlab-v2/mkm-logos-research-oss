@@ -4,6 +4,8 @@
 Requires (install in the environment that will run training):
   pip install unsloth transformers datasets trl peft accelerate bitsandbytes
 
+TRL 0.24+ uses SFTConfig / processing_class (not tokenizer= on SFTTrainer).
+
 Default base: unsloth/Qwen2.5-7B-Instruct-bnb-4bit (~16–24GB VRAM with 4bit).
 
 Use --dry-run to verify imports, dataset load, and model load without training.
@@ -91,10 +93,10 @@ def main() -> int:
         return 0
 
     try:
+        import unsloth  # noqa: F401 — apply patches before trl/transformers heavy imports
         import torch  # noqa: F401
         from datasets import load_dataset
-        from transformers import TrainingArguments
-        from trl import SFTTrainer
+        from trl import SFTConfig, SFTTrainer
         from unsloth import FastLanguageModel
     except ImportError as e:
         _die(
@@ -143,7 +145,7 @@ def main() -> int:
         random_state=42,
     )
 
-    training_args = TrainingArguments(
+    training_args = SFTConfig(
         output_dir=str(ns.output_dir),
         max_steps=ns.max_steps,
         per_device_train_batch_size=ns.batch_size,
@@ -153,15 +155,15 @@ def main() -> int:
         save_steps=max(1, ns.max_steps),
         warmup_steps=1,
         report_to="none",
+        dataset_text_field="text",
+        max_length=ns.max_seq_length,
     )
 
     trainer = SFTTrainer(
         model=model,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         train_dataset=ds,
         args=training_args,
-        dataset_text_field="text",
-        max_seq_length=ns.max_seq_length,
     )
 
     if ns.dry_run and ns.smoke_load_model:

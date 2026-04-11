@@ -10,7 +10,7 @@
 
 ### 권장 작업 순서 (압축·예언·합선 — 기억용)
 
-1. **먼저 (호출 가능 경로·격벽 유지):** P0 경로 게이트 `scripts/verify_p0_constitution_gate_paths.ps1`; 압축 자동화 `run_compression_automation_chain.ps1`(V2 Trust Packet pytest 포함); CI `dual-regime-integrity.yml`. 일반 예언(B 레일) 최소 체인: `generate_general_prophecy_v1.py` → `build_general_prophecy_brief.py` → `eval_general_prophecy_brier_score.py` — **압축 엔진·토큰 스텁과 레지스트리를 코드에서 자동 합선하지 않음**(`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 다중 렌즈·비단정과 동일 선상).
+1. **먼저 (호출 가능 경로·격벽 유지):** P0 경로 게이트 `scripts/verify_p0_constitution_gate_paths.ps1`; 압축 자동화 `run_compression_automation_chain.ps1`(V2 Trust Packet pytest 포함); CI `dual-regime-integrity.yml`. 일반 예언(B 레일) 최소 체인: `generate_general_prophecy_v1.py` → `build_general_prophecy_brief.py` → `eval_general_prophecy_brier_score.py` → `export_general_prophecy_to_jsonl.py`(LoRA용 JSONL; `data/training/*.jsonl` `.gitignore`) — **압축 엔진·토큰 스텁과 레지스트리를 코드에서 자동 합선하지 않음**(`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 다중 렌즈·비단정과 동일 선상).
 2. **다음 (승격·연구):** B-track → Track A·대외 주장은 `COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9 + 본 문서 증거 표. 16-state ↔ 압축 런타임 필수 배선은 `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md`(현재 미연동)·`STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md` 로드맵 반영 후 연구 레인.
 3. **나중·금지 서술:** 단일 TOE·완성 통일장·예언-압축 단일 두뇌 비유 — `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.1에서 선언·단정 금지.
 
@@ -148,7 +148,7 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 | 필수 필드 무결성 | broadcast JSON의 `reliability_badge`, `high_reliability_decision`, `gate_reason`, `net` | 4개 키 모두 존재·null 아님 |
 | Prophecy 월간 산출물 존재 | `docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json/.md` | 두 파일 모두 존재(없으면 no_data로 명시) |
 | B-Track 가설/채점 연계 상태 | `docs/final/artifacts/btrack_hypothesis_prophecy_latest.json`, `btrack_prophecy_score_latest.json`, `prophecy_hit_rate_eval_latest.json` | 파일 존재 + `schema` 유효 + `[HYPO]` 문구 유지; 월간 `run_waiting_queue_monthly_check.ps1`는 CSV+가설 있을 때 `build_btrack_prophecy_score_from_ohlcv.py --recent-trading-days 30` 후 eval·`btrack_prophecy_score_monthly_YYYY-MM-DD.json`·`prophecy_hit_rate_eval_monthly_YYYY-MM-DD.json` 아카이브(없으면 WARN); 루트는 `-WorkspaceRoot`/`MKM_WORKSPACE_ROOT`; CSV는 `scripts/fetch_kospi_yfinance_csv.py` |
-| 일반 미래 예측(B 레일) 월간 산출 | `run_waiting_queue_monthly_check.ps1` 내 `generate_general_prophecy_v1.py`→`build_general_prophecy_brief.py`→`eval_general_prophecy_brier_score.py`(기본 `-SkipGeneralProphecyChain` **미**지정) | `docs/final/artifacts/general_prophecy_latest.json`, `general_prophecy_brief_latest.md`, `general_prophecy_brier_eval_latest.json` 갱신·exit 0; 스킵 시 `-SkipGeneralProphecyChain` 명시 |
+| 일반 미래 예측(B 레일) 월간 산출 | `run_waiting_queue_monthly_check.ps1` 내 `generate_general_prophecy_v1.py`→`build_general_prophecy_brief.py`→`eval_general_prophecy_brier_score.py`→`export_general_prophecy_to_jsonl.py`(기본 `-SkipGeneralProphecyChain` **미**지정) | `docs/final/artifacts/general_prophecy_latest.json`, `general_prophecy_brief_latest.md`, `general_prophecy_brier_eval_latest.json` 갱신·`data/training/macro_prophecy_dataset_v1.jsonl`(로컬·`.gitignore`)·exit 0; 스킵 시 `-SkipGeneralProphecyChain` 명시 |
 | 경로/헌법 스모크 | `scripts/verify_p0_constitution_gate_paths.ps1` | OK 출력(누락 경로 0) |
 
 **보고 규칙(월간)**:

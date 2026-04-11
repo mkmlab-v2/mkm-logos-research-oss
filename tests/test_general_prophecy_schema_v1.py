@@ -19,6 +19,7 @@ _SEED5 = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_seed_5_v1.jso
 _BRIER_SMOKE = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_brier_smoke_v1.json"
 _OFFICIAL_SEED = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_official_seed_v1.json"
 _MACRO_H2_PACK = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_macro_h2_2026_pack_v1.json"
+_PERSONALIZATION_SMOKE = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_personalization_smoke_v1.json"
 
 
 @pytest.fixture(scope="module")
@@ -98,3 +99,13 @@ def test_general_prophecy_seed_5_fixture_validates(_validator) -> None:
     for q in qs:
         assert q.get("resolution", {}).get("status") == "pending"
         assert q.get("outcome_spec", {}).get("kind") == "binary"
+
+
+def test_general_prophecy_personalization_scope_fixture_validates(_validator) -> None:
+    assert _PERSONALIZATION_SMOKE.is_file(), f"missing {_PERSONALIZATION_SMOKE}"
+    doc = json.loads(_PERSONALIZATION_SMOKE.read_text(encoding="utf-8"))
+    errs = sorted(_validator.iter_errors(doc), key=lambda e: e.path)
+    assert not errs, "schema errors: " + "; ".join(f"{list(e.path)}: {e.message}" for e in errs[:12])
+    q = doc["questions"][0]
+    assert q.get("prophecy_track") == "personalized"
+    assert q.get("personalization_scope_v1", {}).get("mode") == "cohort"

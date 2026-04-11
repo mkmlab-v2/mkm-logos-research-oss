@@ -3,12 +3,14 @@
 
 Uses the last forecast snapshot in forecasts[] (by issued_at_utc order) vs
 resolution.outcome_binary (True -> 1, False -> 0). Skips pending/void/categorical.
+Questions without ``prophecy_track`` are counted under track ``general``.
 """
 from __future__ import annotations
 
 import argparse
 import json
 import sys
+from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -51,6 +53,7 @@ def main() -> int:
         return 2
 
     rows: list[dict[str, Any]] = []
+    by_track: dict[str, list[float]] = defaultdict(list)
     for q in doc.get("questions") or []:
         if not isinstance(q, dict):
             continue
@@ -68,9 +71,16 @@ def main() -> int:
         p = float(fc["probability_0_1"])
         y = 1.0 if ob else 0.0
         b = (p - y) ** 2
+        track = q.get("prophecy_track")
+        if not isinstance(track, str) or not track.strip():
+            track = "general"
+        else:
+            track = track.strip()
+        by_track[track].append(b)
         rows.append(
             {
                 "question_id": q.get("question_id"),
+                "prophecy_track": track,
                 "probability_0_1": p,
                 "outcome_binary": ob,
                 "brier_contribution": round(b, 6),
@@ -79,13 +89,37 @@ def main() -> int:
 
     n = len(rows)
     mean_brier = round(sum(r["brier_contribution"] for r in rows) / n, 6) if n else None
+    track_order = ("general", "financial", "personalized")
+    by_prophecy_track: dict[str, dict[str, Any]] = {}
+    for t in track_order:
+        if t in by_track and by_track[t]:
+            vals = by_track[t]
+            nt = len(vals)
+            by_prophecy_track[t] = {
+                "mean_brier_score": round(sum(vals) / nt, 6),
+                "n_evaluated": nt,
+            }
+    for t, vals in sorted(by_track.items()):
+        if t in track_order or not vals:
+            continue
+        nt = len(vals)
+        by_prophecy_track[t] = {
+            "mean_brier_score": round(sum(vals) / nt, 6),
+            "n_evaluated": nt,
+        }
+
+    metrics: dict[str, Any] = {
+        "mean_brier_score": mean_brier,
+        "n_evaluated": n,
+        "by_prophecy_track": by_prophecy_track,
+    }
     out = {
         "schema": SCHEMA,
         "generated_at_utc": _utc_now(),
         "inputs": {"registry_path": str(ns.input.resolve())},
-        "metrics": {"mean_brier_score": mean_brier, "n_evaluated": n},
+        "metrics": metrics,
         "rows": rows,
-        "note": "binary + resolved + last forecast only; void/categorical skipped",
+        "note": "binary + resolved + last forecast only; void/categorical skipped; missing prophecy_track -> general",
     }
     text = json.dumps(out, ensure_ascii=False, indent=2) + "\n"
     if ns.stdout_only:

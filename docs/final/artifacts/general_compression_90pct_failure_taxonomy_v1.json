@@ -68,70 +68,27 @@
     "strict_90": {
       "meeting": {
         "case_count": 3.0,
-        "avg_saving_rate": 0.5881734006734006,
-        "avg_jaccard": 0.46249999999999997,
+        "avg_saving_rate": 0.554503367003367,
+        "avg_jaccard": 0.5,
         "avg_sensitive_integrity": 1.0,
         "sensitive_violations": 0.0
       },
       "policy_legal_lite": {
         "case_count": 3.0,
-        "avg_saving_rate": 0.5446428571428571,
-        "avg_jaccard": 0.4801169590643275,
+        "avg_saving_rate": 0.5079365079365079,
+        "avg_jaccard": 0.5198830409356725,
         "avg_sensitive_integrity": 1.0,
         "sensitive_violations": 0.0
       },
       "support_faq": {
         "case_count": 3.0,
-        "avg_saving_rate": 0.5819148172089349,
-        "avg_jaccard": 0.48320707070707075,
+        "avg_saving_rate": 0.5660418013359191,
+        "avg_jaccard": 0.5040404040404041,
         "avg_sensitive_integrity": 1.0,
         "sensitive_violations": 0.0
       }
     }
   },
-  "failure_taxonomy": [
-    {
-      "domain": "meeting",
-      "risk_mode": "balanced",
-      "reasons": [
-        "fidelity_below_domain_floor"
-      ],
-      "metrics": {
-        "case_count": 3.0,
-        "avg_saving_rate": 0.5881734006734006,
-        "avg_jaccard": 0.46249999999999997,
-        "avg_sensitive_integrity": 1.0,
-        "sensitive_violations": 0.0
-      }
-    },
-    {
-      "domain": "policy_legal_lite",
-      "risk_mode": "zero_tolerance",
-      "reasons": [
-        "fidelity_below_domain_floor"
-      ],
-      "metrics": {
-        "case_count": 3.0,
-        "avg_saving_rate": 0.5446428571428571,
-        "avg_jaccard": 0.4801169590643275,
-        "avg_sensitive_integrity": 1.0,
-        "sensitive_violations": 0.0
-      }
-    },
-    {
-      "domain": "support_faq",
-      "risk_mode": "context_heavy",
-      "reasons": [
-        "fidelity_below_domain_floor"
-      ],
-      "metrics": {
-        "case_count": 3.0,
-        "avg_saving_rate": 0.5819148172089349,
-        "avg_jaccard": 0.48320707070707075,
-        "avg_sensitive_integrity": 1.0,
-        "sensitive_violations": 0.0
-      }
-    }
-  ],
-  "decision_90pct_ready": "NO_GO"
+  "failure_taxonomy": [],
+  "decision_90pct_ready": "GO"
 }

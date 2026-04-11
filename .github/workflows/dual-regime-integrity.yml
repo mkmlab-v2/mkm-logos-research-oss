@@ -120,6 +120,16 @@ on:
       - "tests/test_entry16_source_hunt_summary.py"
       - "tests/test_entry16_promotion_gate.py"
       - "tests/test_waiting_queue_monthly_check_log.py"
+      - "scripts/generate_general_prophecy_v1.py"
+      - "scripts/build_general_prophecy_brief.py"
+      - "scripts/eval_general_prophecy_brier_score.py"
+      - "scripts/resolve_general_prophecy_question_v1.py"
+      - "scripts/export_general_prophecy_to_jsonl.py"
+      - "docs/final/GENERAL_PROPHECY_SCHEMA_V1.json"
+      - "tests/test_general_prophecy_schema_v1.py"
+      - "tests/test_general_prophecy_chain_smoke.py"
+      - "tests/test_resolve_general_prophecy_question_v1.py"
+      - "tests/test_export_general_prophecy_to_jsonl.py"
       - "scripts/l1_codebook_bypass.py"
       - "scripts/run_prophecy_micro_codebook_poc.py"
       - "tests/test_l1_codebook_bypass_roundtrip.py"
@@ -256,6 +266,15 @@ jobs:
 
       - name: Waiting-queue monthly check log contract
         run: python -m pytest tests/test_waiting_queue_monthly_check_log.py -q --tb=short
+
+      - name: General prophecy B-rail (schema, chain smoke, resolver, LoRA JSONL export)
+        run: |
+          python -m pytest \
+            tests/test_general_prophecy_schema_v1.py \
+            tests/test_general_prophecy_chain_smoke.py \
+            tests/test_resolve_general_prophecy_question_v1.py \
+            tests/test_export_general_prophecy_to_jsonl.py \
+            -q --tb=short
 
       - name: FACT-LOCK lexicon manifest fixture + seed summary shape (when present)
         run: python -m pytest tests/test_fact_lock_lexicon_gate.py -q --tb=short

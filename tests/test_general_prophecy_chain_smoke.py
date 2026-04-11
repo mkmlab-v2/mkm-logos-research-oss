@@ -119,3 +119,6 @@ def test_eval_general_prophecy_brier_on_merged_registry_stdout(tmp_path) -> None
     assert out.get("schema") == "general_prophecy_brier_eval_v1"
     assert out.get("metrics", {}).get("n_evaluated") == 1
     assert out.get("metrics", {}).get("mean_brier_score") == 0.09
+    bt = out.get("metrics", {}).get("by_prophecy_track") or {}
+    assert bt.get("general", {}).get("n_evaluated") == 1
+    assert bt.get("general", {}).get("mean_brier_score") == 0.09

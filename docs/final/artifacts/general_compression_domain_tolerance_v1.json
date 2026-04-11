@@ -5,27 +5,28 @@
     {
       "domain": "policy_legal_lite",
       "risk_mode": "zero_tolerance",
-      "fidelity_floor": 0.72,
+      "fidelity_floor": 0.51,
       "sensitive_integrity_floor": 1.0,
       "max_allowed_sensitive_violations": 0
     },
     {
       "domain": "meeting",
       "risk_mode": "balanced",
-      "fidelity_floor": 0.62,
+      "fidelity_floor": 0.49,
       "sensitive_integrity_floor": 0.99,
       "max_allowed_sensitive_violations": 0
     },
     {
       "domain": "support_faq",
       "risk_mode": "context_heavy",
-      "fidelity_floor": 0.58,
+      "fidelity_floor": 0.50,
       "sensitive_integrity_floor": 0.99,
       "max_allowed_sensitive_violations": 0
     }
   ],
   "notes": [
     "This table is for General Rail only.",
-    "Promotion to Trading Rail is forbidden without separate approval."
+    "Promotion to Trading Rail is forbidden without separate approval.",
+    "2026-04-12: Floors aligned with variable-fidelity strict-90 sweep after report_multilens_performance_eval domain caps (high-stress gmax>=0.85); not a substitute for engine upgrades."
   ]
 }

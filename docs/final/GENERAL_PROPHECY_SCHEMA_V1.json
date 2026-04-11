@@ -67,6 +67,15 @@
           "items": { "type": "string", "minLength": 2 },
           "description": "e.g. politics, macro, culture, tech — for routing only."
         },
+        "prophecy_track": {
+          "type": "string",
+          "enum": ["general", "financial", "personalized"],
+          "description": "general=population B-rail; financial=finance-linked rubric (eval may use separate OHLCV tools); personalized=cohort/user-bound scope below — still B-rail unless promoted."
+        },
+        "personalization_scope_v1": {
+          "$ref": "#/$defs/personalization_scope_v1",
+          "description": "Optional: when absent, treat as population-level. L1 probabilities unchanged; use for routing and per-cohort Brier only."
+        },
         "resolution_deadline_utc": {
           "type": "string",
           "format": "date-time",
@@ -144,6 +153,36 @@
               "description": "Field paths where narrative must not overwrite numbers."
             }
           }
+        }
+      }
+    },
+    "personalization_scope_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["none", "cohort", "user_bound"],
+          "description": "none=explicitly non-personalized row; cohort=shared bucket; user_bound=opaque subject join for evaluation — never raw PII in-repo."
+        },
+        "cohort_id": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 64,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$",
+          "description": "Opaque slug (e.g. region_tier_a)."
+        },
+        "subject_ref": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128,
+          "description": "Opaque token for per-user eval linkage; no email, phone, or legal name."
+        },
+        "consent_scope": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 2 },
+          "description": "Allowed processing tags, e.g. l1_forecast, cohort_aggregate_only."
         }
       }
     },

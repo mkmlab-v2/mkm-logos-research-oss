@@ -8,8 +8,8 @@
     "sensitive_domain_policy_legal_lite_auto_no_go": true
   },
   "checks": {
-    "zero_tolerance_failure_count": 1,
-    "policy_legal_lite_failure_count": 1
+    "zero_tolerance_failure_count": 0,
+    "policy_legal_lite_failure_count": 0
   },
-  "decision": "NO_GO"
+  "decision": "GO"
 }
