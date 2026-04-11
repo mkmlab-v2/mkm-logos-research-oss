@@ -93,6 +93,14 @@ CI는 **저장에 포함된 워크플로만** 돌아간다. §2.2의 `deploy-to-
 - 같은 VPS에 **참고·에이전트·동기 확인용**으로 모노레포 클론이 **또** 있을 수 있다(예: 일부 호스트에서 `/opt/mkm-sync-check`). 이 경로는 **호스트마다 없거나 이름이 다를 수 있으므로 SSOT로 고정하지 않는다.**
 - 그런 클론의 SHA가 `exec cwd` 트리와 **다르더라도** 곧바로 “장애”가 아니다. **수동 배포·검증 대기·롤백 유지**면 정상일 수 있다. 판단은 **SHA 차이 자체**가 아니라 **본선이 따라야 할 브랜치(보통 `origin/main`)**와 **누가·언제 pull/build/restart 하는지** 한 줄로 한다.
 - 해당 보조 경로가 없거나 다르면 **`pm2 describe mkmlife`로 본 `exec cwd`만** 근거로 삼는다.
+- **철거(단일 SSOT 권장):** 보조 클론이 혼선만 남긴다고 판단되면, **`mkmlife`의 `exec cwd`가 `/opt/mkm-sync-check` 아님**을 `pm2 describe`로 확인한 뒤 제거한다. (다른 용도로 쓰는 디렉터리면 절대 삭제하지 않는다.)
+
+**VPS bash 복붙 — 옵션 A(정찰용 클론 제거) 한 블록:**
+
+```bash
+pm2 describe mkmlife | grep -E 'exec cwd|status'
+test -d /opt/mkm-sync-check && rm -rf /opt/mkm-sync-check && echo "OK: removed /opt/mkm-sync-check" || echo "OK: path already absent"
+```
 
 ## 4) VPS 확인 명령 (SSH 접속 후 즉시)
 
