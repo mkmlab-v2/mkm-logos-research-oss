@@ -1,4 +1,5 @@
 param(
+    [string]$WorkspaceRoot = "",
     [switch]$SkipBundle,
     [double]$OverlapDriftAlertThreshold = -0.05,
     [switch]$SkipNightWatchmanHarness,
@@ -21,16 +22,22 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$workspace = "C:\workspace"
-Set-Location $workspace
+if (-not [string]::IsNullOrWhiteSpace($WorkspaceRoot) -and (Test-Path -LiteralPath $WorkspaceRoot)) {
+    $workspace = (Resolve-Path -LiteralPath $WorkspaceRoot).Path
+} elseif (-not [string]::IsNullOrWhiteSpace([string]$env:MKM_WORKSPACE_ROOT) -and (Test-Path -LiteralPath $env:MKM_WORKSPACE_ROOT)) {
+    $workspace = (Resolve-Path -LiteralPath $env:MKM_WORKSPACE_ROOT).Path
+} else {
+    $workspace = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+}
+Set-Location -LiteralPath $workspace
 
-$logPath = "C:\workspace\docs\final\artifacts\waiting_queue_monthly_check_log.jsonl"
-$sourceHuntSummaryPath = "C:\workspace\docs\final\artifacts\entry16_source_hunt_summary.json"
-$promotionGatePath = "C:\workspace\docs\final\artifacts\entry16_promotion_gate.json"
-$decisionLockPath = "C:\workspace\docs\final\artifacts\entry16_manual_promotion_decision_lock_latest.json"
-$highReliabilityGatePath = "C:\workspace\docs\final\artifacts\high_reliability_mode_gate_latest.json"
-$monthlyProphecyPath = "C:\workspace\docs\final\artifacts\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
-$runtimeRiskProfilePath = "C:\workspace\projects\bitcoin-trading\memory\v2\risk\risk_profile_fact_safe_latest.json"
+$logPath = "$workspace\docs\final\artifacts\waiting_queue_monthly_check_log.jsonl"
+$sourceHuntSummaryPath = "$workspace\docs\final\artifacts\entry16_source_hunt_summary.json"
+$promotionGatePath = "$workspace\docs\final\artifacts\entry16_promotion_gate.json"
+$decisionLockPath = "$workspace\docs\final\artifacts\entry16_manual_promotion_decision_lock_latest.json"
+$highReliabilityGatePath = "$workspace\docs\final\artifacts\high_reliability_mode_gate_latest.json"
+$monthlyProphecyPath = "$workspace\docs\final\artifacts\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
+$runtimeRiskProfilePath = "$workspace\projects\bitcoin-trading\memory\v2\risk\risk_profile_fact_safe_latest.json"
 $riskProfileSourceName = [string]$env:RISK_PROFILE_SOURCE_NAME
 $riskProfileModeName = [string]$env:RISK_PROFILE_MODE_NAME
 # Preserve source/mode from existing runtime profile when env overrides are absent (n8n metadata guard).
@@ -46,51 +53,51 @@ if (([string]::IsNullOrWhiteSpace($riskProfileSourceName) -or [string]::IsNullOr
     } catch {
     }
 }
-$symbolLaneProfileComparePath = "C:\workspace\reports\constitution\btrack_pilot\symbol_lane_profile_compare_latest.json"
-$btrackGatePath = "C:\workspace\reports\constitution\btrack_pilot\btrack_promotion_gate_anchor_verified_only_latest.json"
-$symbolLaneGatePath = "C:\workspace\reports\constitution\btrack_pilot\symbol_lane_gate_latest.json"
-$slackDeliveryStatusPath = "C:\workspace\reports\constitution\btrack_pilot\fact_safe_slack_delivery_latest.json"
-$slackDeliveryLogPath = "C:\workspace\reports\constitution\btrack_pilot\fact_safe_slack_delivery_log.jsonl"
-$costWatchMonitorPath = "C:\workspace\docs\final\artifacts\cost_watch_monitor_latest.json"
-$regimeSwitchReportPath = "C:\workspace\docs\final\artifacts\btc_time_machine_regime_switch_backtest_latest.json"
-$billingEvidencePath = "C:\workspace\docs\final\artifacts\billing_evidence_latest.json"
-$hallucinationEvalPath = "C:\workspace\docs\final\artifacts\hallucination_grounding_eval_latest.json"
-$weeklyReliabilitySnapshotPath = "C:\workspace\docs\final\artifacts\trinity_weekly_reliability_snapshot_latest.json"
-$scoringDistributionPath = "C:\workspace\docs\final\artifacts\trinity_scoring_distribution_latest.json"
-$fusedCalibrationScriptPath = "C:\workspace\scripts\report_fused_paper_cycle_calibration_30.py"
-$expandedDatasetPath = "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_dataset_expanded_latest.jsonl"
-$highSampleRepeatPath = "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_canary_repeat_high_sample_latest.json"
-$expandedDatasetScriptPath = "C:\workspace\scripts\generate_vllm_ab_dataset_expanded.py"
-$highSampleRepeatScriptPath = "C:\workspace\scripts\run_vllm_ab_canary_repeat.py"
-$billingInvoiceFromEnvPath = "C:\workspace\docs\final\artifacts\billing_invoice_from_env_latest.json"
-$billingInvoiceFromEnvScriptPath = "C:\workspace\scripts\emit_billing_invoice_from_env.py"
-$billingEvidenceScriptPath = "C:\workspace\scripts\report_billing_evidence_from_vllm.py"
-$hallucinationEvalScriptPath = "C:\workspace\scripts\report_hallucination_grounding_eval.py"
-$costWatchScriptPath = "C:\workspace\scripts\report_cost_watch_monitor.py"
-$regimeSwitchScriptPath = "C:\workspace\scripts\run_btc_time_machine_regime_switch_backtest.py"
-$lensMyeongniScriptPath = "C:\workspace\scripts\run_lens_myeongni.py"
-$lensSasangScriptPath = "C:\workspace\scripts\run_lens_sasang.py"
-$lensLogosScriptPath = "C:\workspace\scripts\run_lens_logos.py"
-$lensFusionStubScriptPath = "C:\workspace\scripts\report_independent_lens_fusion_stub_v0.py"
-$lensShadowGateScriptPath = "C:\workspace\scripts\report_independent_lens_shadow_gate.py"
-$insightScoreboardScriptPath = "C:\workspace\scripts\build_insight_effectiveness_scoreboard.py"
-$c2GuardrailScriptPath = "C:\workspace\scripts\check_c2_aegis_guardrail.py"
-$c2GuardrailPath = "C:\workspace\docs\final\artifacts\C2_AEGIS_BASELINE_GUARDRAIL_V1.json"
-$c2CurrentScoreboardPath = "C:\workspace\docs\final\artifacts\aegis_unified_scoreboard_btc90_k010_latest.json"
-$c2GuardrailStatusPath = "C:\workspace\docs\final\artifacts\c2_aegis_guardrail_status_latest.json"
-$reportSchemaV2FromChainScriptPath = "C:\workspace\scripts\experimental\codebook_runtime_pack\build_report_schema_v2_from_chain_artifacts.py"
-$reportSchemaV2LabelKpiScriptPath = "C:\workspace\scripts\experimental\codebook_runtime_pack\build_report_schema_v2_label_kpi.py"
-$reportSchemaV2QualityAlertScriptPath = "C:\workspace\scripts\experimental\codebook_runtime_pack\build_report_schema_v2_quality_alert.py"
-$dailySitrepPath = "C:\workspace\docs\final\artifacts\waiting_queue_daily_sitrep_latest.txt"
-$btrackRecommendationPackPath = "C:\workspace\reports\notebooklm\btrack_insight_recommendation_pack_latest.json"
-$btrackMonthlyBriefBuilderPath = "C:\workspace\scripts\build_btrack_monthly_brief_from_recommendation.py"
+$symbolLaneProfileComparePath = "$workspace\reports\constitution\btrack_pilot\symbol_lane_profile_compare_latest.json"
+$btrackGatePath = "$workspace\reports\constitution\btrack_pilot\btrack_promotion_gate_anchor_verified_only_latest.json"
+$symbolLaneGatePath = "$workspace\reports\constitution\btrack_pilot\symbol_lane_gate_latest.json"
+$slackDeliveryStatusPath = "$workspace\reports\constitution\btrack_pilot\fact_safe_slack_delivery_latest.json"
+$slackDeliveryLogPath = "$workspace\reports\constitution\btrack_pilot\fact_safe_slack_delivery_log.jsonl"
+$costWatchMonitorPath = "$workspace\docs\final\artifacts\cost_watch_monitor_latest.json"
+$regimeSwitchReportPath = "$workspace\docs\final\artifacts\btc_time_machine_regime_switch_backtest_latest.json"
+$billingEvidencePath = "$workspace\docs\final\artifacts\billing_evidence_latest.json"
+$hallucinationEvalPath = "$workspace\docs\final\artifacts\hallucination_grounding_eval_latest.json"
+$weeklyReliabilitySnapshotPath = "$workspace\docs\final\artifacts\trinity_weekly_reliability_snapshot_latest.json"
+$scoringDistributionPath = "$workspace\docs\final\artifacts\trinity_scoring_distribution_latest.json"
+$fusedCalibrationScriptPath = "$workspace\scripts\report_fused_paper_cycle_calibration_30.py"
+$expandedDatasetPath = "$workspace\reports\constitution\btrack_pilot\vllm_ab_dataset_expanded_latest.jsonl"
+$highSampleRepeatPath = "$workspace\reports\constitution\btrack_pilot\vllm_ab_canary_repeat_high_sample_latest.json"
+$expandedDatasetScriptPath = "$workspace\scripts\generate_vllm_ab_dataset_expanded.py"
+$highSampleRepeatScriptPath = "$workspace\scripts\run_vllm_ab_canary_repeat.py"
+$billingInvoiceFromEnvPath = "$workspace\docs\final\artifacts\billing_invoice_from_env_latest.json"
+$billingInvoiceFromEnvScriptPath = "$workspace\scripts\emit_billing_invoice_from_env.py"
+$billingEvidenceScriptPath = "$workspace\scripts\report_billing_evidence_from_vllm.py"
+$hallucinationEvalScriptPath = "$workspace\scripts\report_hallucination_grounding_eval.py"
+$costWatchScriptPath = "$workspace\scripts\report_cost_watch_monitor.py"
+$regimeSwitchScriptPath = "$workspace\scripts\run_btc_time_machine_regime_switch_backtest.py"
+$lensMyeongniScriptPath = "$workspace\scripts\run_lens_myeongni.py"
+$lensSasangScriptPath = "$workspace\scripts\run_lens_sasang.py"
+$lensLogosScriptPath = "$workspace\scripts\run_lens_logos.py"
+$lensFusionStubScriptPath = "$workspace\scripts\report_independent_lens_fusion_stub_v0.py"
+$lensShadowGateScriptPath = "$workspace\scripts\report_independent_lens_shadow_gate.py"
+$insightScoreboardScriptPath = "$workspace\scripts\build_insight_effectiveness_scoreboard.py"
+$c2GuardrailScriptPath = "$workspace\scripts\check_c2_aegis_guardrail.py"
+$c2GuardrailPath = "$workspace\docs\final\artifacts\C2_AEGIS_BASELINE_GUARDRAIL_V1.json"
+$c2CurrentScoreboardPath = "$workspace\docs\final\artifacts\aegis_unified_scoreboard_btc90_k010_latest.json"
+$c2GuardrailStatusPath = "$workspace\docs\final\artifacts\c2_aegis_guardrail_status_latest.json"
+$reportSchemaV2FromChainScriptPath = "$workspace\scripts\experimental\codebook_runtime_pack\build_report_schema_v2_from_chain_artifacts.py"
+$reportSchemaV2LabelKpiScriptPath = "$workspace\scripts\experimental\codebook_runtime_pack\build_report_schema_v2_label_kpi.py"
+$reportSchemaV2QualityAlertScriptPath = "$workspace\scripts\experimental\codebook_runtime_pack\build_report_schema_v2_quality_alert.py"
+$dailySitrepPath = "$workspace\docs\final\artifacts\waiting_queue_daily_sitrep_latest.txt"
+$btrackRecommendationPackPath = "$workspace\reports\notebooklm\btrack_insight_recommendation_pack_latest.json"
+$btrackMonthlyBriefBuilderPath = "$workspace\scripts\build_btrack_monthly_brief_from_recommendation.py"
 $softFailNotes = New-Object System.Collections.Generic.List[string]
 
 function Add-SoftFailNote([string]$message) {
     $softFailNotes.Add($message) | Out-Null
     Write-Host "[waiting-queue-check][WARN] $message"
 }
-$latestKpiPath = "C:\workspace\projects\bitcoin-trading\memory\kpi\latest_kpi.json"
+$latestKpiPath = "$workspace\projects\bitcoin-trading\memory\kpi\latest_kpi.json"
 $inputUsdPer1k = 0.0
 $outputUsdPer1k = 0.0
 if ($env:FACT_SAFE_INPUT_USD_PER_1K_TOKENS) {
@@ -130,7 +137,7 @@ if ($LASTEXITCODE -ne 0) {
 
 if (-not $SkipBundle) {
     Write-Host "[waiting-queue-check] Running full prophecy alignment bundle..."
-    & "C:\workspace\projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1"
+    & "$workspace\projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1"
     if ($LASTEXITCODE -ne 0) {
         throw "Prophecy alignment bundle failed with exit code $LASTEXITCODE"
     }
@@ -156,7 +163,7 @@ if ($SkipBtrackGates) {
     Write-Host "[waiting-queue-check] Skipping B-Track gate workflows by flag."
 } else {
     Write-Host "[waiting-queue-check] Running B-Track verified gate+lock..."
-    & "C:\workspace\scripts\run_btrack_gate_and_lock.ps1"
+    & "$workspace\scripts\run_btrack_gate_and_lock.ps1"
     if ($LASTEXITCODE -ne 0) {
         throw "B-Track verified gate+lock failed with exit code $LASTEXITCODE"
     }
@@ -249,17 +256,30 @@ $kospiCsv = Join-Path $workspace "research\market_data\kospi_daily_external_yf.c
 $hypoJson = Join-Path $workspace "docs\final\artifacts\btrack_hypothesis_prophecy_latest.json"
 $scoreJson = Join-Path $workspace "docs\final\artifacts\btrack_prophecy_score_latest.json"
 if ((Test-Path -LiteralPath $kospiCsv) -and (Test-Path -LiteralPath $hypoJson)) {
-    Write-Host "[waiting-queue-check] B-Track OHLCV score + prophecy hit-rate eval (price mode)..."
-    py scripts/build_btrack_prophecy_score_from_ohlcv.py
+    Write-Host "[waiting-queue-check] B-Track OHLCV score + prophecy hit-rate eval (price mode, last 30 trading days)..."
+    $buildBtrackArgs = @("scripts/build_btrack_prophecy_score_from_ohlcv.py", "--recent-trading-days", "30")
+    if (-not [string]::IsNullOrWhiteSpace([string]$env:MKM_BTC_DAILY_CSV) -and (Test-Path -LiteralPath $env:MKM_BTC_DAILY_CSV)) {
+        $buildBtrackArgs += @("--btc-csv", $env:MKM_BTC_DAILY_CSV)
+    }
+    py @buildBtrackArgs
     if ($LASTEXITCODE -ne 0) {
         throw "build_btrack_prophecy_score_from_ohlcv failed with exit code $LASTEXITCODE"
     }
     if (-not (Test-Path -LiteralPath $scoreJson)) {
         throw "btrack_prophecy_score_latest.json missing after build_btrack_prophecy_score_from_ohlcv"
     }
+    $scoreArchive = Join-Path $workspace ("docs\final\artifacts\btrack_prophecy_score_monthly_{0:yyyy-MM-dd}.json" -f (Get-Date))
+    Copy-Item -LiteralPath $scoreJson -Destination $scoreArchive -Force
+    Write-Host "[waiting-queue-check] Archived btrack score to $scoreArchive"
+    $hitEvalJson = Join-Path $workspace "docs\final\artifacts\prophecy_hit_rate_eval_latest.json"
     py scripts/eval_prophecy_hit_rate_v1.py --run-mode price --score-json $scoreJson
     if ($LASTEXITCODE -ne 0) {
         throw "eval_prophecy_hit_rate_v1 (price) failed with exit code $LASTEXITCODE"
+    }
+    if (Test-Path -LiteralPath $hitEvalJson) {
+        $hitArchive = Join-Path $workspace ("docs\final\artifacts\prophecy_hit_rate_eval_monthly_{0:yyyy-MM-dd}.json" -f (Get-Date))
+        Copy-Item -LiteralPath $hitEvalJson -Destination $hitArchive -Force
+        Write-Host "[waiting-queue-check] Archived hit-rate eval to $hitArchive"
     }
 } else {
     Write-Host "[waiting-queue-check] WARN: skipping B-Track hit-rate chain (need kospi CSV + hypothesis JSON)." -ForegroundColor Yellow
@@ -534,7 +554,7 @@ if (Test-Path -LiteralPath $billingEvidenceScriptPath) {
 
 Write-Host "[waiting-queue-check] Building hallucination grounding eval snapshot..."
 if (Test-Path -LiteralPath $hallucinationEvalScriptPath) {
-    py scripts/report_hallucination_grounding_eval.py --output $hallucinationEvalPath --target-lane candidate --input-glob "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_canary_run_*.json"
+    py scripts/report_hallucination_grounding_eval.py --output $hallucinationEvalPath --target-lane candidate --input-glob "$workspace\reports\constitution\btrack_pilot\vllm_ab_canary_run_*.json"
     if ($LASTEXITCODE -ne 0) {
         throw "Hallucination grounding eval build failed with exit code $LASTEXITCODE"
     }
@@ -557,7 +577,7 @@ if ($enableHighSampleVllmEval) {
         }
 
         Write-Host "[waiting-queue-check] Rebuilding hallucination grounding eval after high-sample run..."
-        py scripts/report_hallucination_grounding_eval.py --output $hallucinationEvalPath --target-lane candidate --input-glob "C:\workspace\reports\constitution\btrack_pilot\vllm_ab_canary_run_*.json"
+        py scripts/report_hallucination_grounding_eval.py --output $hallucinationEvalPath --target-lane candidate --input-glob "$workspace\reports\constitution\btrack_pilot\vllm_ab_canary_run_*.json"
         if ($LASTEXITCODE -ne 0) {
             throw "Hallucination grounding eval (high-sample) failed with exit code $LASTEXITCODE"
         }
@@ -630,12 +650,12 @@ if (Test-Path -LiteralPath $regimeSwitchScriptPath) {
 
 if ($SkipNightWatchmanHarness) {
     Write-Host "[waiting-queue-check] Skipping Night Watchman harness guard by flag."
-} elseif (-not (Test-Path -LiteralPath "C:\workspace\scripts\night_watchman_harness_v1.ps1")) {
+} elseif (-not (Test-Path -LiteralPath "$workspace\scripts\night_watchman_harness_v1.ps1")) {
     Add-SoftFailNote "Night Watchman harness script missing; skipped"
 } else {
     Write-Host "[waiting-queue-check] Running Night Watchman harness guard..."
-    powershell -ExecutionPolicy Bypass -File "C:\workspace\scripts\night_watchman_harness_v1.ps1" `
-        -ConfigPath "C:\workspace\scripts\configs\night_watchman_harness_v1.json"
+    powershell -ExecutionPolicy Bypass -File "$workspace\scripts\night_watchman_harness_v1.ps1" `
+        -ConfigPath "$workspace\scripts\configs\night_watchman_harness_v1.json"
     if ($LASTEXITCODE -ne 0) {
         throw "Night Watchman harness guard failed with exit code $LASTEXITCODE"
     }

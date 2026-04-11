@@ -104,6 +104,20 @@ def _default_eval_date(rows: list[dict[str, Any]]) -> str | None:
     return max(past)
 
 
+def _past_sorted_unique_dates(rows: list[dict[str, Any]]) -> list[str]:
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    return sorted({r["date"] for r in rows if r["date"] < today})
+
+
+def _last_n_trading_dates(rows: list[dict[str, Any]], n: int) -> list[str]:
+    if n < 1:
+        return []
+    past = _past_sorted_unique_dates(rows)
+    if not past:
+        return []
+    return past[-n:] if len(past) >= n else past
+
+
 def _build_rows(
     *,
     hypothesis: dict[str, Any],
@@ -173,6 +187,14 @@ def main() -> int:
         default="auto",
         help='Trading date YYYY-MM-DD for the bar used vs previous close, or "auto" (latest date before UTC today).',
     )
+    ap.add_argument(
+        "--recent-trading-days",
+        type=int,
+        default=1,
+        metavar="N",
+        help="If N>1, emit one score row per leg per eval date for the last N past trading days "
+        "(same hypothesis predicted_direction vs rolling actuals; see meta.frozen_prediction_note).",
+    )
     ap.add_argument("--neutral-bps", type=float, default=5.0, help="Abs return below this (in bps) => neutral.")
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--stdout-only", action="store_true")
@@ -190,25 +212,51 @@ def main() -> int:
     kospi_rows = load_kospi_yf_rows(args.kospi_csv)
     btc_rows = load_kospi_yf_rows(args.btc_csv) if args.btc_csv and args.btc_csv.is_file() else None
 
-    eval_date = args.eval_date.strip()
-    if eval_date == "auto":
-        eval_date = _default_eval_date(kospi_rows) or ""
-    if not eval_date:
-        print("Could not resolve eval-date (empty CSV or no past dates).", file=sys.stderr)
-        return 2
-
     inst = _instrument(hyp)
     predicted = _predicted_direction(hyp)
 
-    rows_out, wmeta = _build_rows(
-        hypothesis=hyp,
-        eval_date=eval_date,
-        neutral_bps=float(args.neutral_bps),
-        kospi_rows=kospi_rows,
-        btc_rows=btc_rows,
-        inst=inst,
-        predicted=predicted,
-    )
+    n_batch = max(1, int(args.recent_trading_days))
+    if n_batch > 1:
+        dates_to_use = _last_n_trading_dates(kospi_rows, n_batch)
+        if not dates_to_use:
+            print("Could not resolve trading dates for --recent-trading-days (empty CSV or no past dates).", file=sys.stderr)
+            return 2
+        rows_out: list[dict[str, Any]] = []
+        wmeta: dict[str, Any] = {"warnings": []}
+        for ed in dates_to_use:
+            chunk, wm = _build_rows(
+                hypothesis=hyp,
+                eval_date=ed,
+                neutral_bps=float(args.neutral_bps),
+                kospi_rows=kospi_rows,
+                btc_rows=btc_rows,
+                inst=inst,
+                predicted=predicted,
+            )
+            rows_out.extend(chunk)
+            wmeta["warnings"].extend(wm.get("warnings", []))
+        eval_date = dates_to_use[-1]
+        wmeta["batch_eval_dates"] = dates_to_use
+        wmeta["frozen_prediction_note"] = (
+            "Same hypothesis predicted_direction applied to each eval_date vs that day's realized return "
+            f"({len(dates_to_use)} trading days)."
+        )
+    else:
+        eval_date = args.eval_date.strip()
+        if eval_date == "auto":
+            eval_date = _default_eval_date(kospi_rows) or ""
+        if not eval_date:
+            print("Could not resolve eval-date (empty CSV or no past dates).", file=sys.stderr)
+            return 2
+        rows_out, wmeta = _build_rows(
+            hypothesis=hyp,
+            eval_date=eval_date,
+            neutral_bps=float(args.neutral_bps),
+            kospi_rows=kospi_rows,
+            btc_rows=btc_rows,
+            inst=inst,
+            predicted=predicted,
+        )
 
     payload: dict[str, Any] = {
         "schema": SCHEMA,
@@ -220,6 +268,7 @@ def main() -> int:
         "inputs": {
             "kospi_csv": _rel_to_root(args.kospi_csv),
             "btc_csv": str(args.btc_csv) if args.btc_csv else None,
+            "recent_trading_days": n_batch,
         },
         "meta": wmeta,
         "rows": rows_out,

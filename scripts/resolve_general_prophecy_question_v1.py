@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Set resolution on one binary question in a general_prophecy registry (B rail).
 
-Does not call external APIs. Validates full registry after mutation.
+Supports ``resolved`` (with ``--outcome``), ``void``, or ``disputed``. Does not call
+external APIs. Validates full registry after mutation.
 """
 from __future__ import annotations
 
@@ -49,10 +50,16 @@ def main() -> int:
     ap.add_argument("--stdout-only", action="store_true", help="Print JSON; no file write")
     ap.add_argument("--question-id", required=True, help="Target question_id")
     ap.add_argument(
+        "--resolution-status",
+        choices=("resolved", "void", "disputed"),
+        default="resolved",
+        help="resolved requires --outcome; void/disputed omit binary outcome (Brier skips non-resolved).",
+    )
+    ap.add_argument(
         "--outcome",
         choices=("true", "false"),
-        required=True,
-        help="Binary outcome for resolved questions",
+        default=None,
+        help="Required when --resolution-status is resolved.",
     )
     ap.add_argument("--notes", default="", help="resolver_notes")
     ap.add_argument(
@@ -91,12 +98,23 @@ def main() -> int:
         print("only outcome_spec.kind=binary is supported", file=sys.stderr)
         return 2
 
-    ob = ns.outcome == "true"
-    res: dict[str, Any] = {
-        "status": "resolved",
-        "resolved_at_utc": _utc_now(),
-        "outcome_binary": ob,
-    }
+    st = ns.resolution_status
+    if st == "resolved":
+        if not ns.outcome:
+            print("--outcome true|false is required when --resolution-status is resolved", file=sys.stderr)
+            return 2
+        ob = ns.outcome == "true"
+        res: dict[str, Any] = {
+            "status": "resolved",
+            "resolved_at_utc": _utc_now(),
+            "outcome_binary": ob,
+        }
+    else:
+        res = {
+            "status": st,
+            "resolved_at_utc": _utc_now(),
+            "outcome_binary": None,
+        }
     if ns.notes.strip():
         res["resolver_notes"] = ns.notes.strip()
     uris = [u for u in ns.evidence_uri if isinstance(u, str) and u.strip()]

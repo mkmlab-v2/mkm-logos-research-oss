@@ -1,4 +1,4 @@
-"""Market data helpers (OHLC from ticks, feeds)."""
+"""Market utilities (tick aggregation, etc.)."""
 
 from src.market.tick_ohlc_aggregator import TickOhlcAggregator
 

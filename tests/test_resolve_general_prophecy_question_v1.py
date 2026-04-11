@@ -64,6 +64,74 @@ def test_resolve_cli_updates_binary_question(tmp_path, _validator) -> None:
     assert "example.com" in q["resolution"]["evidence_uris"][0]
 
 
+def test_resolve_cli_void_status(tmp_path, _validator) -> None:
+    src = tmp_path / "reg.json"
+    src.write_text(_SAMPLE.read_text(encoding="utf-8"), encoding="utf-8")
+    out = tmp_path / "void.json"
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(_RESOLVE),
+            "-i",
+            str(src),
+            "-o",
+            str(out),
+            "--question-id",
+            "demo.binary.sample_01",
+            "--resolution-status",
+            "void",
+            "--notes",
+            "criteria unmet; sources unavailable",
+            "--evidence-uri",
+            "https://example.com/void-rationale-page",
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert r.returncode == 0, r.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    errs = sorted(_validator.iter_errors(doc), key=lambda e: e.path)
+    assert not errs
+    q = next(x for x in doc["questions"] if x["question_id"] == "demo.binary.sample_01")
+    assert q["resolution"]["status"] == "void"
+    assert q["resolution"]["outcome_binary"] is None
+
+
+def test_resolve_cli_disputed_status(tmp_path, _validator) -> None:
+    src = tmp_path / "reg.json"
+    src.write_text(_SAMPLE.read_text(encoding="utf-8"), encoding="utf-8")
+    out = tmp_path / "disputed.json"
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(_RESOLVE),
+            "-i",
+            str(src),
+            "-o",
+            str(out),
+            "--question-id",
+            "demo.binary.sample_01",
+            "--resolution-status",
+            "disputed",
+            "--notes",
+            "two primary sources conflict",
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert r.returncode == 0, r.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    errs = sorted(_validator.iter_errors(doc), key=lambda e: e.path)
+    assert not errs
+    q = next(x for x in doc["questions"] if x["question_id"] == "demo.binary.sample_01")
+    assert q["resolution"]["status"] == "disputed"
+    assert q["resolution"]["outcome_binary"] is None
+
+
 def test_resolve_cli_unknown_id_exits_nonzero() -> None:
     r = subprocess.run(
         [

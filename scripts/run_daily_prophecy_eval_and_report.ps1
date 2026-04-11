@@ -11,6 +11,7 @@
 
 param(
     [string]$WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path,
+    [int]$RecentTradingDays = 1,
     [switch]$SkipBuildScore,
     [string]$BtcCsvPath = $env:MKM_BTC_DAILY_CSV,
     [double]$LowHitRateWarningThreshold = 0.5,
@@ -40,6 +41,9 @@ $logPath = Join-Path $reportsDir "prophecy_daily_eval_log.jsonl"
 
 if (-not $SkipBuildScore) {
     $buildArgs = @("scripts\build_btrack_prophecy_score_from_ohlcv.py")
+    if ($RecentTradingDays -gt 1) {
+        $buildArgs += @("--recent-trading-days", "$RecentTradingDays")
+    }
     if ($BtcCsvPath -and (Test-Path -LiteralPath $BtcCsvPath)) {
         $buildArgs += @("--btc-csv", $BtcCsvPath)
     }
