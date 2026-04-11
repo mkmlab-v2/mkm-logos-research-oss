@@ -59,6 +59,7 @@
 - **Cursor 3.0 (2026-04)**: **Agents Window** — 로컬·워크트리·클라우드·SSH에서 **에이전트 병렬** 실행(제품 UI; Cmd/Ctrl+Shift+P → “Agents Window”). **Design Mode** — 브라우저 UI에 주석·타겟 지정(⌘⇧D 등). **Agent Tabs** — 에디터에서 여러 에이전트 채팅 동시 표시. SSOT·승인·격벽은 여전히 `AGENTS.md`·`CONSTITUTION_*`·TITAN이 우선이며, 병렬 실행은 **작업 분할·가속**용이지 헌법 자동 완화가 아니다.
 - **런타임**: Agent/Composer는 **계획→실행→검증**을 수행하는 **로컬 실행기**다. **헌법·승인·경계**는 `AGENTS.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`, 위 **TITAN · 자율 기동** 절이 우선한다.
 - **교훈 인덱스 (비-SSOT)**: 반복 금지 행동 클래스 요약은 `docs/final/MKM_LESSONS_LEARNED_V1.md`. 구현 경로·게이트 수치의 단일 진실은 여전히 `CONSTITUTION`·`docs/final/artifacts`·호출 가능 스크립트만.
+- **압축·복원·예언 통합 브리핑**: NotebookLM 노트 `MKM_CORE_INTELLIGENCE_V1`(MCP 생성)은 맥락 보조; **[FACT] 번들**은 `docs/final/MKM_CORE_THEORY_V1.md`, 단일 진실·승격·수치는 `CONSTITUTION`·`artifacts`·호출 스크립트가 우선(NotebookLM 단독 SSOT 금지).
 - **MCP (에디터 허브)**: 등록된 MCP(법망 Beopmang·파일시스템·RAG 등)는 **조회·브리핑·도구 호출**에 쓴다. **최종 팩트**는 **디스크 SSOT·스크립트 exit code·JSON 리포트**만 인정한다. 외부 API·클라우드 요약은 **참고**이며, 준수 단정·법적 효력의 단일 근거로 삼지 않는다(`CONSTITUTION` §13.2, `projects/bitcoin-trading/ops/.hermes.md` §7).
 - **격벽 (A/B · Logos-first)**: verse/Logos 파이프라인에 regime·KOSPI·명리·실거래 시그널을 **동일 실행·동일 프롬프트에서 합선 금지**(`.cursor/rules/logos-first-pipeline.mdc`). B-track·연구 레일은 **본선 OOF·실매매·올그린 게이트와 자동 합선 금지**(`AGENTS.md`, 한의 코퍼스 handoff).
 - **Automations / 이벤트 기동**: B-track·월간 브리프·Vault 미러·`experiments/` 등 **관측·연구** 범위에서만 무인 루프를 허용한다. **실거래·프로덕션 파괴적 쓰기·실키·유료 외부 부작용**은 **명시 승인** 없이 자동 트리거하지 않는다(`.cursor/rules/cursor-cloud-sandbox-boundary.mdc`와 동일 선상).
