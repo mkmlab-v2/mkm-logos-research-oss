@@ -115,36 +115,17 @@ def analyze_case(
     return payload, raw_n, len(merged), merged, framing
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser(description="Integrity cost v4 (merge + varint framing).")
-    ap.add_argument("--report", type=Path, default=DEFAULT_REPORT)
-    ap.add_argument("--input", type=Path, default=DEFAULT_INPUT)
-    ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
-    ap.add_argument("--merge-gap-bytes", type=int, default=4)
-    ap.add_argument(
-        "--shard-id",
-        default="",
-        help="If set, only cases with this shard_id (e.g. zone_c_hangul) in global summary.",
-    )
-    args = ap.parse_args()
-
-    rep_path = Path(args.report).resolve()
-    inp_path = Path(args.input).resolve()
-    if not rep_path.is_file() or not inp_path.is_file():
-        print("FAIL: report or input not found", file=sys.stderr)
-        return 1
-
-    shard_filter = str(args.shard_id).strip() or None
-
-    report = json.loads(rep_path.read_text(encoding="utf-8"))
-    inp = json.loads(inp_path.read_text(encoding="utf-8"))
-    raw_by_id = {str(c.get("id")): str(c.get("raw_text", "")) for c in (inp.get("compression_cases") or [])}
-
+def evaluate_v4(
+    report: dict[str, Any],
+    raw_by_id: dict[str, str],
+    *,
+    merge_gap_bytes: int,
+    shard_filter: str | None,
+    include_case_rows: bool,
+) -> tuple[dict[str, Any], list[dict[str, Any]] | None]:
+    """Returns (summary_dict, case_rows or None)."""
     cases = (report.get("compression_metrics") or {}).get("cases") or []
-    cm = report.get("compression_metrics") or {}
-    run_cfg = report.get("run_config") or {}
-
-    rows: list[dict[str, Any]] = []
+    rows: list[dict[str, Any]] | None = [] if include_case_rows else None
     sum_raw = 0.0
     sum_comp = 0.0
     sum_wire = 0.0
@@ -171,55 +152,104 @@ def main() -> int:
 
         if raw == rec:
             wire = float(bc)
-            rows.append(
-                {
-                    "id": cid,
-                    "shard_id": shard,
-                    "bytes_raw_utf8": br,
-                    "bytes_compressed_utf8": bc,
-                    "exact_match": True,
-                    "segment_count_sm": 0,
-                    "segment_count_merged": 0,
-                    "payload_bytes": 0,
-                    "framing_bytes_varint4": 0,
-                    "total_wire_bytes": int(wire),
-                    "real_saving_vs_raw": 1.0 - (wire / float(br)),
-                }
-            )
+            if include_case_rows and rows is not None:
+                rows.append(
+                    {
+                        "id": cid,
+                        "shard_id": shard,
+                        "bytes_raw_utf8": br,
+                        "bytes_compressed_utf8": bc,
+                        "exact_match": True,
+                        "segment_count_sm": 0,
+                        "segment_count_merged": 0,
+                        "payload_bytes": 0,
+                        "framing_bytes_varint4": 0,
+                        "total_wire_bytes": int(wire),
+                        "real_saving_vs_raw": 1.0 - (wire / float(br)),
+                    }
+                )
             sum_raw += br
             sum_comp += bc
             sum_wire += wire
             n_included += 1
             continue
 
-        payload, raw_n, n_merged, merged, framing = analyze_case(
+        payload, raw_n, n_merged, _merged, framing = analyze_case(
             raw_b,
             rec_b,
-            merge_gap_bytes=int(args.merge_gap_bytes),
+            merge_gap_bytes=int(merge_gap_bytes),
         )
         wire = float(bc + payload + framing)
-        rows.append(
-            {
-                "id": cid,
-                "shard_id": shard,
-                "bytes_raw_utf8": br,
-                "bytes_compressed_utf8": bc,
-                "exact_match": False,
-                "segment_count_sm_non_equal": raw_n,
-                "segment_count_merged": n_merged,
-                "payload_bytes": payload,
-                "framing_bytes_varint4": framing,
-                "merge_gap_bytes": int(args.merge_gap_bytes),
-                "total_wire_bytes": int(wire),
-                "real_saving_vs_raw": 1.0 - (wire / float(br)),
-            }
-        )
+        if include_case_rows and rows is not None:
+            rows.append(
+                {
+                    "id": cid,
+                    "shard_id": shard,
+                    "bytes_raw_utf8": br,
+                    "bytes_compressed_utf8": bc,
+                    "exact_match": False,
+                    "segment_count_sm_non_equal": raw_n,
+                    "segment_count_merged": n_merged,
+                    "payload_bytes": payload,
+                    "framing_bytes_varint4": framing,
+                    "merge_gap_bytes": int(merge_gap_bytes),
+                    "total_wire_bytes": int(wire),
+                    "real_saving_vs_raw": 1.0 - (wire / float(br)),
+                }
+            )
         sum_raw += br
         sum_comp += bc
         sum_wire += wire
         n_included += 1
 
     gsave = 1.0 - (sum_wire / sum_raw) if sum_raw else 0.0
+    summary = {
+        "cases_included": n_included,
+        "bytes_raw_total": int(sum_raw),
+        "bytes_compressed_total": int(sum_comp),
+        "total_wire_bytes": int(sum_wire),
+        "global_real_saving_vs_raw": gsave,
+    }
+    return summary, rows
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Integrity cost v4 (merge + varint framing).")
+    ap.add_argument("--report", type=Path, default=DEFAULT_REPORT)
+    ap.add_argument("--input", type=Path, default=DEFAULT_INPUT)
+    ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    ap.add_argument("--merge-gap-bytes", type=int, default=4)
+    ap.add_argument(
+        "--shard-id",
+        default="",
+        help="If set, only cases with this shard_id (e.g. zone_c_hangul) in global summary.",
+    )
+    args = ap.parse_args()
+
+    rep_path = Path(args.report).resolve()
+    inp_path = Path(args.input).resolve()
+    if not rep_path.is_file() or not inp_path.is_file():
+        print("FAIL: report or input not found", file=sys.stderr)
+        return 1
+
+    shard_filter = str(args.shard_id).strip() or None
+
+    report = json.loads(rep_path.read_text(encoding="utf-8"))
+    inp = json.loads(inp_path.read_text(encoding="utf-8"))
+    raw_by_id = {str(c.get("id")): str(c.get("raw_text", "")) for c in (inp.get("compression_cases") or [])}
+
+    cm = report.get("compression_metrics") or {}
+    run_cfg = report.get("run_config") or {}
+
+    summary, rows = evaluate_v4(
+        report,
+        raw_by_id,
+        merge_gap_bytes=int(args.merge_gap_bytes),
+        shard_filter=shard_filter,
+        include_case_rows=True,
+    )
+    gsave = float(summary["global_real_saving_vs_raw"])
+    rows = rows or []
 
     payload = {
         "schema": "integrity_cost_model_v4",
@@ -236,11 +266,7 @@ def main() -> int:
             "shard_id_filter": shard_filter,
         },
         "summary": {
-            "cases_included": n_included,
-            "bytes_raw_total": int(sum_raw),
-            "bytes_compressed_total": int(sum_comp),
-            "total_wire_bytes": int(sum_wire),
-            "global_real_saving_vs_raw": gsave,
+            **summary,
             "global_token_saving_rate_reported": float(cm.get("global_token_saving_rate") or 0.0)
             if not shard_filter
             else None,
@@ -251,7 +277,7 @@ def main() -> int:
     out_path = Path(args.out).resolve()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"OK: wrote {out_path} cases={n_included} real_saving={gsave:.4f} gap={args.merge_gap_bytes}")
+    print(f"OK: wrote {out_path} cases={summary['cases_included']} real_saving={gsave:.4f} gap={args.merge_gap_bytes}")
     return 0
 
 

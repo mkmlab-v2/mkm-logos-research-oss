@@ -1,0 +1,541 @@
+{
+  "schema": "integrity_v4_merge_gap_sweep_v1",
+  "description": "merge_gap_bytes sweep; varint4 framing; no B_security.",
+  "generated_at_utc": "2026-04-11T20:24:01.236662+00:00",
+  "source_report": "docs/final/artifacts/MULTILENS_V2_UNIVERSAL_SHARD_PROBE_V1.json",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "gap_range": {
+    "min": 1,
+    "max": 32
+  },
+  "universal": [
+    {
+      "merge_gap_bytes": 1,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5355,
+      "global_real_saving_vs_raw": 0.06658532333972456
+    },
+    {
+      "merge_gap_bytes": 2,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5355,
+      "global_real_saving_vs_raw": 0.06658532333972456
+    },
+    {
+      "merge_gap_bytes": 3,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5359,
+      "global_real_saving_vs_raw": 0.06588809482307822
+    },
+    {
+      "merge_gap_bytes": 4,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5367,
+      "global_real_saving_vs_raw": 0.06449363778978556
+    },
+    {
+      "merge_gap_bytes": 5,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5403,
+      "global_real_saving_vs_raw": 0.058218581139968584
+    },
+    {
+      "merge_gap_bytes": 6,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5467,
+      "global_real_saving_vs_raw": 0.04706292487362729
+    },
+    {
+      "merge_gap_bytes": 7,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5497,
+      "global_real_saving_vs_raw": 0.04183371099877986
+    },
+    {
+      "merge_gap_bytes": 8,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5545,
+      "global_real_saving_vs_raw": 0.03346696879902389
+    },
+    {
+      "merge_gap_bytes": 9,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5642,
+      "global_real_saving_vs_raw": 0.01655917727035039
+    },
+    {
+      "merge_gap_bytes": 10,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5674,
+      "global_real_saving_vs_raw": 0.010981349137179741
+    },
+    {
+      "merge_gap_bytes": 11,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5798,
+      "global_real_saving_vs_raw": -0.010632734878856631
+    },
+    {
+      "merge_gap_bytes": 12,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5878,
+      "global_real_saving_vs_raw": -0.02457730521178325
+    },
+    {
+      "merge_gap_bytes": 13,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5922,
+      "global_real_saving_vs_raw": -0.03224681889489278
+    },
+    {
+      "merge_gap_bytes": 14,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5970,
+      "global_real_saving_vs_raw": -0.040613561094648754
+    },
+    {
+      "merge_gap_bytes": 15,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 5970,
+      "global_real_saving_vs_raw": -0.040613561094648754
+    },
+    {
+      "merge_gap_bytes": 16,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6054,
+      "global_real_saving_vs_raw": -0.055255359944221816
+    },
+    {
+      "merge_gap_bytes": 17,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6173,
+      "global_real_saving_vs_raw": -0.07599790831444997
+    },
+    {
+      "merge_gap_bytes": 18,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6173,
+      "global_real_saving_vs_raw": -0.07599790831444997
+    },
+    {
+      "merge_gap_bytes": 19,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6240,
+      "global_real_saving_vs_raw": -0.08767648596827615
+    },
+    {
+      "merge_gap_bytes": 20,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6417,
+      "global_real_saving_vs_raw": -0.11852884782987627
+    },
+    {
+      "merge_gap_bytes": 21,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6494,
+      "global_real_saving_vs_raw": -0.131950496775318
+    },
+    {
+      "merge_gap_bytes": 22,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6572,
+      "global_real_saving_vs_raw": -0.14554645284992151
+    },
+    {
+      "merge_gap_bytes": 23,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6655,
+      "global_real_saving_vs_raw": -0.16001394457033302
+    },
+    {
+      "merge_gap_bytes": 24,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6699,
+      "global_real_saving_vs_raw": -0.16768345825344255
+    },
+    {
+      "merge_gap_bytes": 25,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6699,
+      "global_real_saving_vs_raw": -0.16768345825344255
+    },
+    {
+      "merge_gap_bytes": 26,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6747,
+      "global_real_saving_vs_raw": -0.17605020045319852
+    },
+    {
+      "merge_gap_bytes": 27,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6896,
+      "global_real_saving_vs_raw": -0.20202196269827444
+    },
+    {
+      "merge_gap_bytes": 28,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6896,
+      "global_real_saving_vs_raw": -0.20202196269827444
+    },
+    {
+      "merge_gap_bytes": 29,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6896,
+      "global_real_saving_vs_raw": -0.20202196269827444
+    },
+    {
+      "merge_gap_bytes": 30,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6896,
+      "global_real_saving_vs_raw": -0.20202196269827444
+    },
+    {
+      "merge_gap_bytes": 31,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6954,
+      "global_real_saving_vs_raw": -0.21213177618964618
+    },
+    {
+      "merge_gap_bytes": 32,
+      "cases_included": 40,
+      "bytes_raw_total": 5737,
+      "bytes_compressed_total": 3329,
+      "total_wire_bytes": 6954,
+      "global_real_saving_vs_raw": -0.21213177618964618
+    }
+  ],
+  "by_shard": {
+    "zone_c_hangul": [
+      {
+        "merge_gap_bytes": 1,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 2,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 3,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 4,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 5,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 6,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 7,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 8,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 9,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 10,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 11,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 12,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 13,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 14,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 15,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 16,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 17,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 18,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 19,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 20,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 21,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 546,
+        "global_real_saving_vs_raw": 0.30268199233716475
+      },
+      {
+        "merge_gap_bytes": 22,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 584,
+        "global_real_saving_vs_raw": 0.25415070242656446
+      },
+      {
+        "merge_gap_bytes": 23,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 584,
+        "global_real_saving_vs_raw": 0.25415070242656446
+      },
+      {
+        "merge_gap_bytes": 24,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 584,
+        "global_real_saving_vs_raw": 0.25415070242656446
+      },
+      {
+        "merge_gap_bytes": 25,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 584,
+        "global_real_saving_vs_raw": 0.25415070242656446
+      },
+      {
+        "merge_gap_bytes": 26,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 584,
+        "global_real_saving_vs_raw": 0.25415070242656446
+      },
+      {
+        "merge_gap_bytes": 27,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 584,
+        "global_real_saving_vs_raw": 0.25415070242656446
+      },
+      {
+        "merge_gap_bytes": 28,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 584,
+        "global_real_saving_vs_raw": 0.25415070242656446
+      },
+      {
+        "merge_gap_bytes": 29,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 584,
+        "global_real_saving_vs_raw": 0.25415070242656446
+      },
+      {
+        "merge_gap_bytes": 30,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 584,
+        "global_real_saving_vs_raw": 0.25415070242656446
+      },
+      {
+        "merge_gap_bytes": 31,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 584,
+        "global_real_saving_vs_raw": 0.25415070242656446
+      },
+      {
+        "merge_gap_bytes": 32,
+        "cases_included": 5,
+        "bytes_raw_total": 783,
+        "bytes_compressed_total": 437,
+        "total_wire_bytes": 584,
+        "global_real_saving_vs_raw": 0.25415070242656446
+      }
+    ]
+  },
+  "best": {
+    "universal": {
+      "merge_gap_bytes": 1,
+      "global_real_saving_vs_raw": 0.06658532333972456,
+      "cases_included": 40
+    },
+    "shard:zone_c_hangul": {
+      "merge_gap_bytes": 1,
+      "global_real_saving_vs_raw": 0.30268199233716475,
+      "cases_included": 5
+    }
+  }
+}
