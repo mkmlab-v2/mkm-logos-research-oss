@@ -23,7 +23,13 @@ def test_noop_adapter_returns_not_enabled() -> None:
 
 
 def test_validate_state16_output_range() -> None:
-    validate_state16_output(State16Output(state_id=1, confidence=0.0))
-    validate_state16_output(State16Output(state_id=16, confidence=1.0))
+    validate_state16_output(
+        State16Output(state_id=1, confidence=0.0, error_code="ok", error_message="")
+    )
+    validate_state16_output(
+        State16Output(state_id=16, confidence=1.0, error_code="ok", error_message="")
+    )
     with pytest.raises(ValueError):
-        validate_state16_output(State16Output(state_id=17, confidence=0.5))
+        validate_state16_output(
+            State16Output(state_id=17, confidence=0.5, error_code="ok", error_message="")
+        )
