@@ -14,12 +14,21 @@ _pre_pull_backup_*/
 # Logs (MCP/서비스 잠금 방지)
 logs/
 
+# MCP server local PID locks (restored tree may contain; do not commit)
+mcp-servers/.athena-*.pid
+mcp-servers/.*.pid
+
 # Local secret vault (master key, encrypted secrets)
 .vault/
 secrets/
 
 # F: workspace_archive migration staging (robocopy target; large)
 storage/MKM_ARCHIVE_FROM_F/
+
+# Local LoRA / Unsloth training venvs & compile cache (large; regenerable)
+.venv_lora/
+.venv_lora_local128/
+unsloth_compiled_cache/
 
 # Python bytecode (VPS pull 시 .pyc 커밋 방지)
 __pycache__/
@@ -34,6 +43,8 @@ cache/prophecy_market_snapshot.json
 
 # Local RAG MCP test index
 rag_server/.test_rag_idx/
+# Local RAG manifest (reindex_vault output)
+.rag_index/
 
 # Large artifacts excluded for GitHub push
 models/**
@@ -177,6 +188,15 @@ reports/aistudio_mcp_env_diagnosis.json
 /utf8
 /tmp_verify_report.json
 .aider*
+
+# Local Windows Task Scheduler audit exports (regenerable; keep status clean)
+reports/workspace_scheduled_tasks_audit_latest.csv
+reports/workspace_scheduled_tasks_last_run_latest.csv
+reports/workspace_scheduled_tasks_last_run_latest.json
+reports/workspace_scheduled_tasks_optimize_plan_latest.json
+reports/workspace_scheduled_tasks_stagger_apply_log_latest.txt
+reports/workspace_scheduled_tasks_stagger_plan_latest.json
+reports/workspace_scheduled_tasks_triggers_latest.csv
 
 # Local showroom deploy staging (verify_showroom_bundle_chain.ps1 -WithStagingCopy)
 projects/bitcoin-trading/ops/windows-rehearsal/.showroom_staging/
