@@ -74,6 +74,7 @@ $keys = @(
   # Market / news APIs
   "NEWSAPI_KEY",
   "ALPHA_VANTAGE_API_KEY",
+  "FRED_API_KEY",
   # Hostinger MCP / API
   "HOSTINGER_API_TOKEN",
   "API_TOKEN",
