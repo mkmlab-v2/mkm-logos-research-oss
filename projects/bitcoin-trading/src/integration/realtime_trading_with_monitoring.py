@@ -8,11 +8,18 @@
 - 통합 모니터링 분석
 - 거래 신호 생성 및 실행
 
+Prophecy / 주문 경계 (운영 팩트):
+- ProphecyStack은 레짐·보조 신호 경로에 사용될 수 있음.
+- 비테스트넷(testnet=False)에서 ProphecyStack이 살아 있으면 주문 실행 전에
+  PROPHECY_FUSION_ALLOW_MAINNET=1 가 없으면 _execute_trade 로 가지 않음(차단).
+- DISABLE_PROPHECY_STACK=1 이면 ProphecyStack 초기화를 건너뜀.
+
 작성일: 2026-02-05
 """
 
 import asyncio
 import logging
+import os
 from typing import Dict, Any, Optional
 from datetime import datetime
 import json
@@ -43,6 +50,19 @@ logger = logging.getLogger(__name__)
 
 # Phase 1 방어망: 최소 신뢰도 (손절/익절·반대신호 청산과 동일 기준)
 MIN_CONFIDENCE = 0.52
+
+
+def _env_flag_true(name: str) -> bool:
+    return os.environ.get(name, "").strip().lower() in ("1", "true", "yes")
+
+
+def _block_live_orders_for_prophecy_fusion(prophecy_stack: Any, testnet: bool) -> bool:
+    """Non-testnet + active ProphecyStack without operator override → block _execute_trade."""
+    if prophecy_stack is None:
+        return False
+    if testnet:
+        return False
+    return not _env_flag_true("PROPHECY_FUSION_ALLOW_MAINNET")
 
 
 class RealtimeTradingWithMonitoring:
@@ -164,12 +184,15 @@ class RealtimeTradingWithMonitoring:
         self._regime_defense_mode = False
         self._last_regime_id = "unknown"
         self.alert_manager = None
-        try:
-            from tools.prophecy.prophecy_stack import ProphecyStack
-            self._prophecy_stack = ProphecyStack()
-            logger.info("✅ ProphecyStack 초기화 완료 (레짐·포스트잇 이식)")
-        except Exception as e:
-            logger.warning(f"⚠️ ProphecyStack 초기화 실패(레짐 감지 비활성): {e}")
+        if _env_flag_true("DISABLE_PROPHECY_STACK"):
+            logger.info("DISABLE_PROPHECY_STACK: ProphecyStack 초기화 생략")
+        else:
+            try:
+                from tools.prophecy.prophecy_stack import ProphecyStack
+                self._prophecy_stack = ProphecyStack()
+                logger.info("✅ ProphecyStack 초기화 완료 (레짐·포스트잇 이식)")
+            except Exception as e:
+                logger.warning(f"⚠️ ProphecyStack 초기화 실패(레짐 감지 비활성): {e}")
         
         logger.info("✅ 실전 거래 엔진 + 통합 모니터링 시스템 초기화 완료")
 
@@ -489,6 +512,14 @@ class RealtimeTradingWithMonitoring:
             
             # 거래 실행 (활성화된 경우)
             if self.enable_trading and integrated_signal in ["BUY", "SELL"]:
+                if _block_live_orders_for_prophecy_fusion(self._prophecy_stack, self.testnet):
+                    logger.warning(
+                        "Skipping live orders: ProphecyStack active with testnet=%s; "
+                        "set PROPHECY_FUSION_ALLOW_MAINNET=1 after operator review.",
+                        self.testnet,
+                    )
+                    self._save_state()
+                    return
                 if integrated_confidence < MIN_CONFIDENCE:
                     self._save_state()
                     return
