@@ -10,6 +10,7 @@ $assertScript = Join-Path $projectRoot "ops\windows-rehearsal\assert_task_target
 
 $argParts = @(
     "-NoProfile",
+    "-WindowStyle", "Hidden",
     "-ExecutionPolicy", "Bypass",
     "-File", "`"$healthScript`""
 )

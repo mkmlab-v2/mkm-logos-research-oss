@@ -55,4 +55,8 @@ exec "${PY}" -m pytest \
   tests/test_hypothesis_insight_batch_v1_sample.py \
   tests/test_eval_prophecy_hit_rate_v1.py \
   tests/test_generate_btrack_hypothesis_prophecy_v1.py \
+  tests/test_general_prophecy_schema_v1.py \
+  tests/test_general_prophecy_chain_smoke.py \
+  tests/test_resolve_general_prophecy_question_v1.py \
+  tests/test_export_general_prophecy_to_jsonl.py \
   -q --tb=short

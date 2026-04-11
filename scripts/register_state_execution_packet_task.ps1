@@ -23,13 +23,9 @@ if ($EveryMinutes -lt 5) {
     throw "EveryMinutes must be >= 5"
 }
 
-$action = New-ScheduledTaskAction -Execute "powershell.exe" `
-    -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$runner`"" `
-    -WorkingDirectory $workspaceRoot
-
 # Use schtasks for minute-based repetition compatibility across PowerShell versions.
 $startTime = (Get-Date).AddMinutes(1).ToString("HH:mm")
-$taskRun = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$runner`""
+$taskRun = "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`""
 
 schtasks /Create `
     /TN $TaskName `

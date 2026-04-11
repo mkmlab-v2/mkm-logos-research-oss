@@ -23,7 +23,7 @@ if ($EveryMinutes -lt 10) {
 }
 
 $startTime = (Get-Date).AddMinutes(1).ToString("HH:mm")
-$taskRun = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$runner`""
+$taskRun = "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`""
 
 schtasks /Create `
     /TN $TaskName `

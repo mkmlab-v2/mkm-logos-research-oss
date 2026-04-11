@@ -14,6 +14,7 @@ $assertScript = Join-Path $opsRoot "assert_task_target_exists.ps1"
 
 $argParts = @(
     "-NoProfile",
+    "-WindowStyle", "Hidden",
     "-ExecutionPolicy", "Bypass",
     "-File", "`"$smokeScript`"",
     "-ApiBaseUrl", "`"https://api.jemaai.cloud`""

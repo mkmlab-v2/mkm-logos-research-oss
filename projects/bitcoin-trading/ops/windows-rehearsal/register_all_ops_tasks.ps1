@@ -36,7 +36,7 @@ foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerCom
     }
 }
 
-$dualArgs = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerDual, "-StartTime", $DualMarketStartTime)
+$dualArgs = @("-NoProfile", "-WindowStyle", "Hidden", "-ExecutionPolicy", "Bypass", "-File", $registerDual, "-StartTime", $DualMarketStartTime)
 if ($NoStrictCloseReturn) {
     $dualArgs += "-NoStrictCloseReturn"
 }
@@ -45,7 +45,7 @@ if ($LASTEXITCODE -ne 0) {
     throw "Dual market task registration failed"
 }
 
-$btcArgs = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerBtc, "-StartTime", $BtcBinanceStartTime)
+$btcArgs = @("-NoProfile", "-WindowStyle", "Hidden", "-ExecutionPolicy", "Bypass", "-File", $registerBtc, "-StartTime", $BtcBinanceStartTime)
 if ($NoStrictCloseReturn) {
     $btcArgs += "-NoStrictCloseReturn"
 }
@@ -55,7 +55,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $healthArgs = @(
-    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerHealth,
+    "-NoProfile", "-WindowStyle", "Hidden", "-ExecutionPolicy", "Bypass", "-File", $registerHealth,
     "-StartTime", $HealthcheckStartTime,
     "-Schedule", "WEEKLY",
     "-WeeklyDay", $HealthcheckWeeklyDay
@@ -69,7 +69,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $compressionArgs = @(
-    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerCompressionStub
+    "-NoProfile", "-WindowStyle", "Hidden", "-ExecutionPolicy", "Bypass", "-File", $registerCompressionStub
 )
 if (-not [string]::IsNullOrWhiteSpace($CompressionStubStartTime)) {
     $compressionArgs += @("-StartTime", $CompressionStubStartTime)
@@ -80,7 +80,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $jemaaiArgs = @(
-    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerJemaaiE2E
+    "-NoProfile", "-WindowStyle", "Hidden", "-ExecutionPolicy", "Bypass", "-File", $registerJemaaiE2E
 )
 if (-not [string]::IsNullOrWhiteSpace($JemaaiE2EStartTime)) {
     $jemaaiArgs += @("-StartTime", $JemaaiE2EStartTime)
@@ -91,7 +91,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $blindArgs = @(
-    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerBlindReplay
+    "-NoProfile", "-WindowStyle", "Hidden", "-ExecutionPolicy", "Bypass", "-File", $registerBlindReplay
 )
 if (-not [string]::IsNullOrWhiteSpace($BlindReplayStartTime)) {
     $blindArgs += @("-StartTime", $BlindReplayStartTime)
@@ -102,7 +102,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $opsOverviewArgs = @(
-    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerOpsOverview
+    "-NoProfile", "-WindowStyle", "Hidden", "-ExecutionPolicy", "Bypass", "-File", $registerOpsOverview
 )
 if (-not [string]::IsNullOrWhiteSpace($OpsHealthOverviewStartTime)) {
     $opsOverviewArgs += @("-StartTime", $OpsHealthOverviewStartTime)
@@ -113,7 +113,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $opsWeeklyDigestArgs = @(
-    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $registerOpsWeeklyDigest,
+    "-NoProfile", "-WindowStyle", "Hidden", "-ExecutionPolicy", "Bypass", "-File", $registerOpsWeeklyDigest,
     "-StartTime", $OpsWeeklyDigestStartTime,
     "-WeeklyDay", $OpsWeeklyDigestDay
 )
@@ -123,7 +123,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $alertStatusPath = "C:\workspace\docs\final\artifacts\fatal_alert_config_status_latest.json"
-& powershell -NoProfile -ExecutionPolicy Bypass -File $checkAlertConfig -OutPath $alertStatusPath
+& powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $checkAlertConfig -OutPath $alertStatusPath
 if ($LASTEXITCODE -ne 0) {
     throw "Fatal alert config check failed"
 }
@@ -139,7 +139,7 @@ try {
     $alertSummary = "fatal_ready=unknown (status parse failed)"
 }
 
-$recoveryCommand = "powershell -NoProfile -ExecutionPolicy Bypass -File `"C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\register_all_ops_tasks.ps1`""
+$recoveryCommand = "powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\register_all_ops_tasks.ps1`""
 $stamp = ([DateTimeOffset]::UtcNow).ToString("o")
 $artifactPath = "C:\workspace\docs\final\artifacts\ops_task_recovery_command_latest.txt"
 $artifact = @(

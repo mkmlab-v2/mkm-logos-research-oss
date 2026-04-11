@@ -74,7 +74,7 @@ $dayMap = @{
 }
 $daysOfWeek = $dayMap[$WeeklyOn]
 
-$args = "-NoProfile -ExecutionPolicy Bypass -File `"$runner`" -Mode $Mode -Compute gpu"
+$args = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`" -Mode $Mode -Compute gpu"
 if ($Quiet) {
   $args += " -Quiet"
 }

@@ -16,6 +16,7 @@ $assertScript = Join-Path $opsRoot "assert_task_target_exists.ps1"
 
 $argParts = @(
     "-NoProfile",
+    "-WindowStyle", "Hidden",
     "-ExecutionPolicy", "Bypass",
     "-File", "`"$scriptPath`"",
     "-Phase1Mode", $Phase1Mode

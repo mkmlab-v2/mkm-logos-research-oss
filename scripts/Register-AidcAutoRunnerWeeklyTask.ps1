@@ -43,7 +43,7 @@ $hour = [int]$parts[0]
 $minute = [int]$parts[1]
 $at = Get-Date -Hour $hour -Minute $minute -Second 0
 
-$arg = "-NoProfile -ExecutionPolicy Bypass -File `"$runner`" -MaxCycles 1 -AidcOutputSuffix _v2"
+$arg = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`" -MaxCycles 1 -AidcOutputSuffix _v2"
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $arg -WorkingDirectory $workspaceRoot
 
 $trigger = New-ScheduledTaskTrigger -Weekly -WeeksInterval 1 -DaysOfWeek Saturday -At $at

@@ -16,6 +16,7 @@ $assertScript = Join-Path $opsRoot "assert_task_target_exists.ps1"
 
 $argParts = @(
     "-NoProfile",
+    "-WindowStyle", "Hidden",
     "-ExecutionPolicy", "Bypass",
     "-File", "`"$scriptPath`""
 )
@@ -43,9 +44,9 @@ Write-Host "Command: $tr"
 
 if ($RunNow) {
     if ($PersistUserEnv) {
-        & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath -PersistUserEnv
+        & powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $scriptPath -PersistUserEnv
     } else {
-        & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath
+        & powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $scriptPath
     }
 }
 

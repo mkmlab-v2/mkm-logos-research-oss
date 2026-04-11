@@ -18,7 +18,7 @@ if (-not (Test-Path $checker)) {
 }
 
 $sendArg = if ($Send) { " -Send" } else { "" }
-$tr = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$checker`"$sendArg"
+$tr = "powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$checker`"$sendArg"
 
 schtasks /Delete /TN $TaskName /F | Out-Null 2>&1
 if ($Schedule -eq "WEEKLY") {

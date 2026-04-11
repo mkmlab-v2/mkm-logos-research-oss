@@ -54,7 +54,7 @@ $base = Get-Date
 $atToday = Get-Date -Year $base.Year -Month $base.Month -Day $base.Day -Hour $hour -Minute $minute -Second 0
 
 $inner = "Set-Location -LiteralPath '$mkmLifeRoot'; npm run $npmScript; exit `$LASTEXITCODE"
-$argLine = "-NoProfile -ExecutionPolicy Bypass -Command `"$inner`""
+$argLine = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command `"$inner`""
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" `
     -Argument $argLine `

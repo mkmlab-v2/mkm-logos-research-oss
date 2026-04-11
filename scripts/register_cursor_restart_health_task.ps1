@@ -13,12 +13,12 @@ if (-not (Test-Path $baseline)) {
 }
 
 # Initialize baseline once at registration time.
-powershell -NoProfile -ExecutionPolicy Bypass -File $baseline -InitBaseline | Out-Null
+powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $baseline -InitBaseline | Out-Null
 
-$tr = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$runner`""
+$tr = "powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`""
 
 schtasks /Delete /TN $taskName /F | Out-Null 2>&1
-schtasks /Create /TN $taskName /SC ONLOGON /TR "powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_cursor_restart_health.ps1" /RL LIMITED /F | Out-Null
+schtasks /Create /TN $taskName /SC ONLOGON /TR "powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File C:\workspace\scripts\run_cursor_restart_health.ps1" /RL LIMITED /F | Out-Null
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Registered task: $taskName"
@@ -35,7 +35,7 @@ if (-not (Test-Path $startupDir)) {
 $startupCmd = Join-Path $startupDir "cursor_restart_health_check.cmd"
 $cmdContent = "@echo off`r`n" +
               "timeout /t 20 /nobreak >nul`r`n" +
-              "powershell -NoProfile -ExecutionPolicy Bypass -File `"C:\workspace\scripts\run_cursor_restart_health.ps1`"`r`n"
+              "powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"C:\workspace\scripts\run_cursor_restart_health.ps1`"`r`n"
 [System.IO.File]::WriteAllText($startupCmd, $cmdContent, (New-Object System.Text.UTF8Encoding($false)))
 
 Write-Host "Task Scheduler registration denied. Fallback applied."

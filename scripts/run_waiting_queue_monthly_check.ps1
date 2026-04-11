@@ -237,7 +237,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 if (-not $SkipGeneralProphecyChain) {
-    Write-Host "[waiting-queue-check] General prophecy B-rail chain (registry validate, brief, Brier eval; no external APIs)..."
+    Write-Host "[waiting-queue-check] General prophecy B-rail chain (registry validate, brief, Brier eval, LoRA JSONL export; no external APIs)..."
     py scripts/generate_general_prophecy_v1.py
     if ($LASTEXITCODE -ne 0) {
         throw "generate_general_prophecy_v1 failed with exit code $LASTEXITCODE"
@@ -249,6 +249,10 @@ if (-not $SkipGeneralProphecyChain) {
     py scripts/eval_general_prophecy_brier_score.py
     if ($LASTEXITCODE -ne 0) {
         throw "eval_general_prophecy_brier_score failed with exit code $LASTEXITCODE"
+    }
+    py scripts/export_general_prophecy_to_jsonl.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "export_general_prophecy_to_jsonl failed with exit code $LASTEXITCODE"
     }
 }
 

@@ -16,7 +16,7 @@ if (-not (Test-Path $runner)) {
 }
 
 $strictArg = if ($NoStrictCloseReturn) { "" } else { " -StrictCloseReturn" }
-$tr = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$runner`"$strictArg"
+$tr = "powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`"$strictArg"
 
 schtasks /Delete /TN $TaskName /F | Out-Null 2>&1
 schtasks /Create /TN $TaskName /SC DAILY /ST $StartTime /TR $tr /F | Out-Null

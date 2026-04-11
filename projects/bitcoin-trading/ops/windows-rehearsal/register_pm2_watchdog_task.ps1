@@ -8,7 +8,7 @@ if (-not (Test-Path $runner)) {
     throw "Watchdog script not found: $runner"
 }
 
-$tr = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$runner`""
+$tr = "powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`""
 
 # Recreate task idempotently
 schtasks /Delete /TN $taskName /F | Out-Null 2>&1

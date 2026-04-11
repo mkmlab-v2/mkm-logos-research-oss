@@ -24,7 +24,7 @@ if (-not $ExcludeStrict) {
     $extra += " -Strict"
 }
 
-$tr = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"$extra"
+$tr = "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`"$extra"
 if ($tr.Length -gt 261) {
     throw "/TR exceeds 261 chars; omit switches or shorten paths."
 }

@@ -42,7 +42,7 @@ if (-not (Test-Path -LiteralPath $scriptPath)) {
 
 $resolvedWebhook = Resolve-WebhookForTask
 
-$tr = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
+$tr = "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`""
 if ($VerifyOutputPath -ne $defaultVerifyOutputPath) {
     $tr += " -VerifyOutputPath `"$VerifyOutputPath`""
 }
@@ -79,7 +79,7 @@ if ([string]::IsNullOrWhiteSpace($resolvedWebhook)) {
 }
 
 # Seed the latest artifacts immediately.
-$runArgs = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $scriptPath)
+$runArgs = @("-NoProfile", "-WindowStyle", "Hidden", "-ExecutionPolicy", "Bypass", "-File", $scriptPath)
 if ($VerifyOutputPath -ne $defaultVerifyOutputPath) {
     $runArgs += @("-VerifyOutputPath", $VerifyOutputPath)
 }

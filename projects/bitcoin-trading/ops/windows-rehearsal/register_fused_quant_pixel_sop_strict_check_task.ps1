@@ -52,6 +52,7 @@ if (-not (Test-GatewayLatestEndpoint -Port 8788)) {
 
 $argParts = @(
     "-NoProfile",
+    "-WindowStyle", "Hidden",
     "-ExecutionPolicy", "Bypass",
     "-File", "`"$runner`"",
     "-Phase1Mode", "skip",

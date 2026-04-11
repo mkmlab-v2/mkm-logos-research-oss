@@ -44,7 +44,7 @@ $minute = [int]$parts[1]
 $at = Get-Date -Hour $hour -Minute $minute -Second 0
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" `
-    -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$runner`"" `
+    -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`"" `
     -WorkingDirectory $workspaceRoot
 
 $trigger = New-ScheduledTaskTrigger -Weekly -WeeksInterval 1 -DaysOfWeek Sunday -At $at

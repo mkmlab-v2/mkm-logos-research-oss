@@ -64,7 +64,7 @@ $dayMap = @{
 $daysOfWeek = $dayMap[$WeeklyOn]
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" `
-  -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$runner`" -OnSystemError no_go"
+  -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`" -OnSystemError no_go"
 
 $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek $daysOfWeek -At $At
 

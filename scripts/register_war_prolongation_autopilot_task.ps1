@@ -19,6 +19,7 @@ if (-not (Test-Path -LiteralPath $scriptPath)) {
 
 $args = @(
   "-NoProfile",
+  "-WindowStyle", "Hidden",
   "-ExecutionPolicy", "Bypass",
   "-File", "`"$scriptPath`"",
   "-WorkspaceRoot", "`"$WorkspaceRoot`"",

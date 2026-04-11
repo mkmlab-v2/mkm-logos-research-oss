@@ -15,10 +15,7 @@ if (-not (Test-Path -LiteralPath $scriptPath)) {
   throw "Missing script: $scriptPath"
 }
 
-$args = @(
-  "-c",
-  "`"py '$scriptPath'`""
-) -join " "
+$args = "-WindowStyle Hidden -NoProfile -c `"py '$scriptPath'`""
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $args -WorkingDirectory $WorkspaceRoot
 $trigger = New-ScheduledTaskTrigger -Daily -At $StartTime

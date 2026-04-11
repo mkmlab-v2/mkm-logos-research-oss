@@ -8,7 +8,7 @@ if (-not (Test-Path $runner)) {
     throw "Runner not found: $runner"
 }
 
-$tr = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$runner`""
+$tr = "powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`""
 
 schtasks /Delete /TN $taskName /F | Out-Null 2>&1
 schtasks /Create /TN $taskName /SC MINUTE /MO 5 /TR $tr /F | Out-Null

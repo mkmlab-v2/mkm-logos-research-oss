@@ -8,7 +8,7 @@ if (-not (Test-Path -LiteralPath $runner)) {
     throw "Wrapper runner not found: $runner"
 }
 
-$tr = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$runner`""
+$tr = "powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`""
 
 schtasks /Delete /TN $taskName /F | Out-Null 2>&1
 schtasks /Create /TN $taskName /SC MINUTE /MO 30 /TR $tr /F | Out-Null

@@ -9,7 +9,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$taskCmd = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$env:WORKSPACE\projects\bitcoin-trading\ops\windows-rehearsal\verify_all_green.ps1`" -OutputPath `"$OutputPath`""
+$taskCmd = "powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$env:WORKSPACE\projects\bitcoin-trading\ops\windows-rehearsal\verify_all_green.ps1`" -OutputPath `"$OutputPath`""
 if ($EnforceRegistry) {
     $taskCmd += " -EnforceRegistry"
 }
@@ -25,7 +25,7 @@ $st = (Get-Date).AddMinutes($StartDelayMinutes).ToString("HH:mm")
 # Best-effort delete (no-op if missing)
 schtasks /Delete /TN $TaskName /F | Out-Null 2>&1
 
-$tr = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\verify_all_green.ps1`" -OutputPath `"$OutputPath`""
+$tr = "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\verify_all_green.ps1`" -OutputPath `"$OutputPath`""
 if ($EnforceRegistry) {
     $tr += " -EnforceRegistry"
 }
@@ -40,7 +40,7 @@ Write-Host "Schedule: every $IntervalMinutes minutes; start=$st"
 Write-Host "TR: $tr"
 
 # Also run immediately to populate "latest"
-& powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\verify_all_green.ps1" -OutputPath $OutputPath | Out-Null
+& powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\verify_all_green.ps1" -OutputPath $OutputPath | Out-Null
 
 exit 0
 

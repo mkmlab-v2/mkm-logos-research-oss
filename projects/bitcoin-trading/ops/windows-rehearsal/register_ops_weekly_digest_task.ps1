@@ -19,7 +19,7 @@ if (Test-Path -LiteralPath $assertScript) {
     & $assertScript -TargetPath $scriptPath -Label "$taskName target script" | Out-Null
 }
 
-$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`""
 $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek $WeeklyDay -At $StartTime
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Highest
 

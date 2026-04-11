@@ -26,6 +26,7 @@ if ($lastExitCode -ne 0) {
 
 $argParts = @(
     "-NoProfile",
+    "-WindowStyle", "Hidden",
     "-ExecutionPolicy", "Bypass",
     "-File", "`"$runner`"",
     "-Phase1Mode", "skip",

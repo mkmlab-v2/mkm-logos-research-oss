@@ -24,7 +24,7 @@ if (-not (Test-Path -LiteralPath $runner)) {
 }
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" `
-    -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$runner`"" `
+    -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`"" `
     -WorkingDirectory $workspaceRoot
 
 $parts = $DailyAt -split ':'

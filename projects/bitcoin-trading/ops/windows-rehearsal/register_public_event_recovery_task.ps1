@@ -14,7 +14,7 @@ if (Test-Path -LiteralPath $primaryRunner) {
     throw "Recovery runner not found (primary/fallback): $primaryRunner | $fallbackRunner"
 }
 
-$tr = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$runner`""
+$tr = "powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`""
 
 schtasks /Delete /TN $taskName /F | Out-Null 2>&1
 schtasks /Create /TN $taskName /SC MINUTE /MO 10 /TR $tr /F | Out-Null
