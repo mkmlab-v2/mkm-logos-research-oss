@@ -18,6 +18,7 @@ $required = @(
     "docs\final\LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md",
     "scripts\sync_notebooklm_sources_to_mkm_data_vault.ps1",
     "scripts\run_waiting_queue_monthly_check.ps1",
+    "projects\bitcoin-trading\ops\windows-rehearsal\GENERAL_PROPHECY_MONTHLY_SCHEDULER_RUNBOOK_V1.md",
     "scripts\eval_prophecy_hit_rate_v1.py",
     "scripts\fetch_kospi_yfinance_csv.py",
     "tests\test_load_kospi_yf_rows.py",

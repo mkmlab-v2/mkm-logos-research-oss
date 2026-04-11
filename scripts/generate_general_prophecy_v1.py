@@ -23,6 +23,7 @@ DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "general_prophecy_latest.j
 DEFAULT_MERGE_PATHS: tuple[Path, ...] = (
     ROOT / "tests" / "fixtures" / "general_prophecy_registry_seed_5_v1.json",
     ROOT / "tests" / "fixtures" / "general_prophecy_registry_brier_smoke_v1.json",
+    ROOT / "tests" / "fixtures" / "general_prophecy_registry_macro_h2_2026_pack_v1.json",
 )
 
 
