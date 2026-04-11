@@ -1,0 +1,311 @@
+{
+  "schema": "integrity_cost_model_v6_amortized",
+  "description": "v4 wire + variable security (chunk + merged segments) + fixed_per_batch * ceil(N/K). Breakeven: smallest K with global_real_saving_vs_raw > 0 in sweep.",
+  "generated_at_utc": "2026-04-11T20:36:29.844347+00:00",
+  "source_report": "docs/final/artifacts/MULTILENS_V2_UNIVERSAL_SHARD_PROBE_V1.json",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "run_config_snapshot": {
+    "mode": "experimental",
+    "strategy": "A",
+    "intensity": "extreme",
+    "must_keep_terms": [
+      "bible",
+      "myeongri",
+      "sasang",
+      "사상의학",
+      "체질"
+    ],
+    "general_max_saving_rate": 0.54,
+    "sensitive_max_saving_rate": 0.5,
+    "hangul_max_saving_rate": 0.48,
+    "use_hangul_principle": false,
+    "use_domain_router": true,
+    "use_master_codebook_lexicon_v1": true,
+    "master_codebook_lexicon_path": null,
+    "include_gematria_metadata": true,
+    "include_gematria_4d_bridge": true,
+    "include_cee_core": true,
+    "apply_gematria_4d_bridge_policy": false,
+    "bridge_score_weights": null,
+    "use_contextual_generator_v2": false,
+    "use_contextual_generator_v3": false,
+    "use_contextual_generator_v4": false,
+    "use_contextual_generator_v5_codec": false,
+    "require_tiktoken_o200k": false,
+    "tiktoken_o200k_encoding": "o200k_base",
+    "tiktoken_o200k_available": true,
+    "tiktoken_o200k_unavailable_reason": null
+  },
+  "v6_config": {
+    "merge_gap_bytes": 1,
+    "shard_id_filter": null,
+    "sec_preset": "optimistic",
+    "fixed_per_batch_bytes": 8,
+    "variable_security_model": {
+      "chunk_payload_bytes": 16384,
+      "per_chunk_overhead": 8,
+      "per_merged_segment": 8
+    },
+    "cases_included_n": 40,
+    "sweep_max_k": 40
+  },
+  "summary_v4_reference": {
+    "cases_included": 40,
+    "bytes_raw_total": 5737,
+    "bytes_compressed_total": 3329,
+    "total_wire_bytes": 5355,
+    "global_real_saving_vs_raw": 0.06658532333972456,
+    "global_token_saving_rate_reported": 0.4781997187060478
+  },
+  "breakeven_batch_size_k": null,
+  "sweep_best_by_global_saving": {
+    "batch_size_k": 40,
+    "global_real_saving_vs_raw": -0.17186682935332054,
+    "total_fixed_bytes": 8
+  },
+  "batch_size_sweep": [
+    {
+      "batch_size_k": 1,
+      "batch_count": 40,
+      "total_fixed_bytes": 320,
+      "global_real_saving_vs_raw": -0.22625065365173436
+    },
+    {
+      "batch_size_k": 2,
+      "batch_count": 20,
+      "total_fixed_bytes": 160,
+      "global_real_saving_vs_raw": -0.19836151298588112
+    },
+    {
+      "batch_size_k": 3,
+      "batch_count": 14,
+      "total_fixed_bytes": 112,
+      "global_real_saving_vs_raw": -0.18999477078612514
+    },
+    {
+      "batch_size_k": 4,
+      "batch_count": 10,
+      "total_fixed_bytes": 80,
+      "global_real_saving_vs_raw": -0.1844169426529545
+    },
+    {
+      "batch_size_k": 5,
+      "batch_count": 8,
+      "total_fixed_bytes": 64,
+      "global_real_saving_vs_raw": -0.18162802858636917
+    },
+    {
+      "batch_size_k": 6,
+      "batch_count": 7,
+      "total_fixed_bytes": 56,
+      "global_real_saving_vs_raw": -0.1802335715530765
+    },
+    {
+      "batch_size_k": 7,
+      "batch_count": 6,
+      "total_fixed_bytes": 48,
+      "global_real_saving_vs_raw": -0.17883911451978385
+    },
+    {
+      "batch_size_k": 8,
+      "batch_count": 5,
+      "total_fixed_bytes": 40,
+      "global_real_saving_vs_raw": -0.1774446574864912
+    },
+    {
+      "batch_size_k": 9,
+      "batch_count": 5,
+      "total_fixed_bytes": 40,
+      "global_real_saving_vs_raw": -0.1774446574864912
+    },
+    {
+      "batch_size_k": 10,
+      "batch_count": 4,
+      "total_fixed_bytes": 32,
+      "global_real_saving_vs_raw": -0.17605020045319852
+    },
+    {
+      "batch_size_k": 11,
+      "batch_count": 4,
+      "total_fixed_bytes": 32,
+      "global_real_saving_vs_raw": -0.17605020045319852
+    },
+    {
+      "batch_size_k": 12,
+      "batch_count": 4,
+      "total_fixed_bytes": 32,
+      "global_real_saving_vs_raw": -0.17605020045319852
+    },
+    {
+      "batch_size_k": 13,
+      "batch_count": 4,
+      "total_fixed_bytes": 32,
+      "global_real_saving_vs_raw": -0.17605020045319852
+    },
+    {
+      "batch_size_k": 14,
+      "batch_count": 3,
+      "total_fixed_bytes": 24,
+      "global_real_saving_vs_raw": -0.17465574341990586
+    },
+    {
+      "batch_size_k": 15,
+      "batch_count": 3,
+      "total_fixed_bytes": 24,
+      "global_real_saving_vs_raw": -0.17465574341990586
+    },
+    {
+      "batch_size_k": 16,
+      "batch_count": 3,
+      "total_fixed_bytes": 24,
+      "global_real_saving_vs_raw": -0.17465574341990586
+    },
+    {
+      "batch_size_k": 17,
+      "batch_count": 3,
+      "total_fixed_bytes": 24,
+      "global_real_saving_vs_raw": -0.17465574341990586
+    },
+    {
+      "batch_size_k": 18,
+      "batch_count": 3,
+      "total_fixed_bytes": 24,
+      "global_real_saving_vs_raw": -0.17465574341990586
+    },
+    {
+      "batch_size_k": 19,
+      "batch_count": 3,
+      "total_fixed_bytes": 24,
+      "global_real_saving_vs_raw": -0.17465574341990586
+    },
+    {
+      "batch_size_k": 20,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 21,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 22,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 23,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 24,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 25,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 26,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 27,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 28,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 29,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 30,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 31,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 32,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 33,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 34,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 35,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 36,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 37,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 38,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 39,
+      "batch_count": 2,
+      "total_fixed_bytes": 16,
+      "global_real_saving_vs_raw": -0.1732612863866132
+    },
+    {
+      "batch_size_k": 40,
+      "batch_count": 1,
+      "total_fixed_bytes": 8,
+      "global_real_saving_vs_raw": -0.17186682935332054
+    }
+  ],
+  "detail_batch_size_k": null,
+  "summary_at_detail_k": null,
+  "cases_at_detail_k": null
+}
