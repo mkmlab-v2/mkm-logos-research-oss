@@ -1,0 +1,8 @@
+{
+  "schema": "mkm_l1_rs_channel_policy_v1",
+  "policy": {
+    "allow_rule_count": 4,
+    "block_rule_count": 2,
+    "note": "Stub policy counts for RS channel readiness; block_ratio must stay at or below gate max_block_ratio default (0.6)."
+  }
+}

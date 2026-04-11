@@ -1,0 +1,1415 @@
+{
+  "schema": "compression_jaccard_loss_patterns_aggregated_v1",
+  "ts_utc": "2026-04-11T16:38:12.206789+00:00",
+  "sources": {
+    "loss_patterns": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_latest.json",
+    "sla_track": "universal"
+  },
+  "summary": {
+    "case_count": 40,
+    "unique_tokens_lost": 156,
+    "total_token_occurrences": 170
+  },
+  "global_top": [
+    {
+      "token": "한다",
+      "count": 4
+    },
+    {
+      "token": "함께",
+      "count": 3
+    },
+    {
+      "token": "수",
+      "count": 3
+    },
+    {
+      "token": "bootstrap",
+      "count": 2
+    },
+    {
+      "token": "review",
+      "count": 2
+    },
+    {
+      "token": "된다",
+      "count": 2
+    },
+    {
+      "token": "안",
+      "count": 2
+    },
+    {
+      "token": "압축",
+      "count": 2
+    },
+    {
+      "token": "안전하다",
+      "count": 2
+    },
+    {
+      "token": "대비",
+      "count": 2
+    },
+    {
+      "token": "11",
+      "count": 1
+    },
+    {
+      "token": "a",
+      "count": 1
+    },
+    {
+      "token": "analysis",
+      "count": 1
+    },
+    {
+      "token": "data",
+      "count": 1
+    },
+    {
+      "token": "dominates",
+      "count": 1
+    },
+    {
+      "token": "shifts",
+      "count": 1
+    },
+    {
+      "token": "requires",
+      "count": 1
+    },
+    {
+      "token": "traceability",
+      "count": 1
+    },
+    {
+      "token": "unresolved",
+      "count": 1
+    },
+    {
+      "token": "b",
+      "count": 1
+    },
+    {
+      "token": "caveats",
+      "count": 1
+    },
+    {
+      "token": "especially",
+      "count": 1
+    },
+    {
+      "token": "footprint",
+      "count": 1
+    },
+    {
+      "token": "notes",
+      "count": 1
+    },
+    {
+      "token": "preserving",
+      "count": 1
+    },
+    {
+      "token": "reduce",
+      "count": 1
+    },
+    {
+      "token": "reproduce",
+      "count": 1
+    },
+    {
+      "token": "reviews",
+      "count": 1
+    },
+    {
+      "token": "cadence",
+      "count": 1
+    },
+    {
+      "token": "external",
+      "count": 1
+    },
+    {
+      "token": "override",
+      "count": 1
+    },
+    {
+      "token": "updates",
+      "count": 1
+    },
+    {
+      "token": "weekly",
+      "count": 1
+    },
+    {
+      "token": "anchors",
+      "count": 1
+    },
+    {
+      "token": "mislabeled",
+      "count": 1
+    },
+    {
+      "token": "accumulate",
+      "count": 1
+    },
+    {
+      "token": "improves",
+      "count": 1
+    },
+    {
+      "token": "matrix",
+      "count": 1
+    },
+    {
+      "token": "rows",
+      "count": 1
+    },
+    {
+      "token": "thresholds",
+      "count": 1
+    },
+    {
+      "token": "transition",
+      "count": 1
+    },
+    {
+      "token": "answers",
+      "count": 1
+    },
+    {
+      "token": "constitution",
+      "count": 1
+    },
+    {
+      "token": "constraints",
+      "count": 1
+    },
+    {
+      "token": "include",
+      "count": 1
+    },
+    {
+      "token": "timing",
+      "count": 1
+    },
+    {
+      "token": "tri",
+      "count": 1
+    },
+    {
+      "token": "drift",
+      "count": 1
+    },
+    {
+      "token": "avoid",
+      "count": 1
+    },
+    {
+      "token": "false",
+      "count": 1
+    },
+    {
+      "token": "operational",
+      "count": 1
+    },
+    {
+      "token": "predictive",
+      "count": 1
+    },
+    {
+      "token": "quality",
+      "count": 1
+    },
+    {
+      "token": "stability",
+      "count": 1
+    },
+    {
+      "token": "경우가",
+      "count": 1
+    },
+    {
+      "token": "규칙",
+      "count": 1
+    },
+    {
+      "token": "동반되는",
+      "count": 1
+    },
+    {
+      "token": "따뜻한",
+      "count": 1
+    },
+    {
+      "token": "속한이",
+      "count": 1
+    },
+    {
+      "token": "식사와",
+      "count": 1
+    },
+    {
+      "token": "약해",
+      "count": 1
+    },
+    {
+      "token": "걷기를",
+      "count": 1
+    },
+    {
+      "token": "꾸준히",
+      "count": 1
+    },
+    {
+      "token": "나타날",
+      "count": 1
+    },
+    {
+      "token": "낮추고",
+      "count": 1
+    },
+    {
+      "token": "먼저",
+      "count": 1
+    },
+    {
+      "token": "섭취를",
+      "count": 1
+    },
+    {
+      "token": "염분",
+      "count": 1
+    },
+    {
+      "token": "작아도",
+      "count": 1
+    },
+    {
+      "token": "노출을",
+      "count": 1
+    },
+    {
+      "token": "자극성",
+      "count": 1
+    },
+    {
+      "token": "전",
+      "count": 1
+    },
+    {
+      "token": "정보",
+      "count": 1
+    },
+    {
+      "token": "줄여야",
+      "count": 1
+    },
+    {
+      "token": "단일",
+      "count": 1
+    },
+    {
+      "token": "일반화하면",
+      "count": 1
+    },
+    {
+      "token": "처방을",
+      "count": 1
+    },
+    {
+      "token": "전환해야",
+      "count": 1
+    },
+    {
+      "token": "배치해야",
+      "count": 1
+    },
+    {
+      "token": "급한",
+      "count": 1
+    }
+  ],
+  "by_shard_id": {
+    "zone_a_scm": [
+      {
+        "token": "한다",
+        "count": 3
+      },
+      {
+        "token": "된다",
+        "count": 2
+      },
+      {
+        "token": "안",
+        "count": 2
+      },
+      {
+        "token": "안전하다",
+        "count": 2
+      },
+      {
+        "token": "단일",
+        "count": 1
+      },
+      {
+        "token": "일반화하면",
+        "count": 1
+      },
+      {
+        "token": "처방을",
+        "count": 1
+      },
+      {
+        "token": "전환해야",
+        "count": 1
+      },
+      {
+        "token": "배치해야",
+        "count": 1
+      },
+      {
+        "token": "관찰한",
+        "count": 1
+      },
+      {
+        "token": "이상",
+        "count": 1
+      },
+      {
+        "token": "과정에서",
+        "count": 1
+      },
+      {
+        "token": "손실되면",
+        "count": 1
+      },
+      {
+        "token": "절대",
+        "count": 1
+      },
+      {
+        "token": "규칙을",
+        "count": 1
+      },
+      {
+        "token": "기본값으로",
+        "count": 1
+      },
+      {
+        "token": "두는",
+        "count": 1
+      },
+      {
+        "token": "보존",
+        "count": 1
+      },
+      {
+        "token": "편이",
+        "count": 1
+      },
+      {
+        "token": "남아",
+        "count": 1
+      },
+      {
+        "token": "있어야",
+        "count": 1
+      },
+      {
+        "token": "경고문까지",
+        "count": 1
+      },
+      {
+        "token": "지우지",
+        "count": 1
+      }
+    ],
+    "zone_b_timing": [
+      {
+        "token": "bootstrap",
+        "count": 2
+      },
+      {
+        "token": "11",
+        "count": 1
+      },
+      {
+        "token": "a",
+        "count": 1
+      },
+      {
+        "token": "analysis",
+        "count": 1
+      },
+      {
+        "token": "data",
+        "count": 1
+      },
+      {
+        "token": "dominates",
+        "count": 1
+      },
+      {
+        "token": "shifts",
+        "count": 1
+      },
+      {
+        "token": "accumulate",
+        "count": 1
+      },
+      {
+        "token": "improves",
+        "count": 1
+      },
+      {
+        "token": "matrix",
+        "count": 1
+      },
+      {
+        "token": "rows",
+        "count": 1
+      },
+      {
+        "token": "thresholds",
+        "count": 1
+      },
+      {
+        "token": "transition",
+        "count": 1
+      }
+    ],
+    "zone_c_hangul": [
+      {
+        "token": "뒤바뀔",
+        "count": 1
+      },
+      {
+        "token": "위험이",
+        "count": 1
+      },
+      {
+        "token": "있다",
+        "count": 1
+      },
+      {
+        "token": "수",
+        "count": 1
+      },
+      {
+        "token": "압축",
+        "count": 1
+      },
+      {
+        "token": "있으니",
+        "count": 1
+      },
+      {
+        "token": "전후",
+        "count": 1
+      },
+      {
+        "token": "가치가",
+        "count": 1
+      },
+      {
+        "token": "대비",
+        "count": 1
+      },
+      {
+        "token": "크다",
+        "count": 1
+      }
+    ],
+    "zone_d_ssot": [
+      {
+        "token": "함께",
+        "count": 3
+      },
+      {
+        "token": "review",
+        "count": 2
+      },
+      {
+        "token": "수",
+        "count": 2
+      },
+      {
+        "token": "requires",
+        "count": 1
+      },
+      {
+        "token": "traceability",
+        "count": 1
+      },
+      {
+        "token": "unresolved",
+        "count": 1
+      },
+      {
+        "token": "b",
+        "count": 1
+      },
+      {
+        "token": "caveats",
+        "count": 1
+      },
+      {
+        "token": "especially",
+        "count": 1
+      },
+      {
+        "token": "footprint",
+        "count": 1
+      },
+      {
+        "token": "notes",
+        "count": 1
+      },
+      {
+        "token": "preserving",
+        "count": 1
+      },
+      {
+        "token": "reduce",
+        "count": 1
+      },
+      {
+        "token": "reproduce",
+        "count": 1
+      },
+      {
+        "token": "reviews",
+        "count": 1
+      },
+      {
+        "token": "cadence",
+        "count": 1
+      },
+      {
+        "token": "external",
+        "count": 1
+      },
+      {
+        "token": "override",
+        "count": 1
+      },
+      {
+        "token": "updates",
+        "count": 1
+      },
+      {
+        "token": "weekly",
+        "count": 1
+      },
+      {
+        "token": "anchors",
+        "count": 1
+      },
+      {
+        "token": "mislabeled",
+        "count": 1
+      },
+      {
+        "token": "answers",
+        "count": 1
+      },
+      {
+        "token": "constitution",
+        "count": 1
+      },
+      {
+        "token": "constraints",
+        "count": 1
+      },
+      {
+        "token": "include",
+        "count": 1
+      },
+      {
+        "token": "timing",
+        "count": 1
+      },
+      {
+        "token": "tri",
+        "count": 1
+      },
+      {
+        "token": "drift",
+        "count": 1
+      },
+      {
+        "token": "avoid",
+        "count": 1
+      },
+      {
+        "token": "false",
+        "count": 1
+      },
+      {
+        "token": "operational",
+        "count": 1
+      },
+      {
+        "token": "predictive",
+        "count": 1
+      },
+      {
+        "token": "quality",
+        "count": 1
+      },
+      {
+        "token": "stability",
+        "count": 1
+      },
+      {
+        "token": "경우가",
+        "count": 1
+      },
+      {
+        "token": "규칙",
+        "count": 1
+      },
+      {
+        "token": "동반되는",
+        "count": 1
+      },
+      {
+        "token": "따뜻한",
+        "count": 1
+      },
+      {
+        "token": "속한이",
+        "count": 1
+      },
+      {
+        "token": "식사와",
+        "count": 1
+      },
+      {
+        "token": "약해",
+        "count": 1
+      },
+      {
+        "token": "걷기를",
+        "count": 1
+      },
+      {
+        "token": "꾸준히",
+        "count": 1
+      },
+      {
+        "token": "나타날",
+        "count": 1
+      },
+      {
+        "token": "낮추고",
+        "count": 1
+      },
+      {
+        "token": "먼저",
+        "count": 1
+      },
+      {
+        "token": "섭취를",
+        "count": 1
+      },
+      {
+        "token": "염분",
+        "count": 1
+      },
+      {
+        "token": "작아도",
+        "count": 1
+      },
+      {
+        "token": "급한",
+        "count": 1
+      },
+      {
+        "token": "때",
+        "count": 1
+      },
+      {
+        "token": "쉬워서",
+        "count": 1
+      },
+      {
+        "token": "악화되기",
+        "count": 1
+      },
+      {
+        "token": "온식",
+        "count": 1
+      },
+      {
+        "token": "완충과",
+        "count": 1
+      },
+      {
+        "token": "음식이",
+        "count": 1
+      },
+      {
+        "token": "찬",
+        "count": 1
+      },
+      {
+        "token": "과도한",
+        "count": 1
+      },
+      {
+        "token": "노출이",
+        "count": 1
+      },
+      {
+        "token": "눈",
+        "count": 1
+      },
+      {
+        "token": "두드러지므로",
+        "count": 1
+      },
+      {
+        "token": "사이에",
+        "count": 1
+      },
+      {
+        "token": "수분",
+        "count": 1
+      },
+      {
+        "token": "작업",
+        "count": 1
+      },
+      {
+        "token": "저하는",
+        "count": 1
+      },
+      {
+        "token": "화면",
+        "count": 1
+      },
+      {
+        "token": "휴식을",
+        "count": 1
+      },
+      {
+        "token": "단계에서",
+        "count": 1
+      },
+      {
+        "token": "대조",
+        "count": 1
+      },
+      {
+        "token": "바뀔",
+        "count": 1
+      },
+      {
+        "token": "반드시",
+        "count": 1
+      },
+      {
+        "token": "원문",
+        "count": 1
+      },
+      {
+        "token": "있어",
+        "count": 1
+      },
+      {
+        "token": "하나로도",
+        "count": 1
+      },
+      {
+        "token": "시",
+        "count": 1
+      },
+      {
+        "token": "안정성을",
+        "count": 1
+      },
+      {
+        "token": "우선해야",
+        "count": 1
+      },
+      {
+        "token": "위반",
+        "count": 1
+      },
+      {
+        "token": "절약률보다",
+        "count": 1
+      }
+    ],
+    "zone_g_health": [
+      {
+        "token": "노출을",
+        "count": 1
+      },
+      {
+        "token": "자극성",
+        "count": 1
+      },
+      {
+        "token": "전",
+        "count": 1
+      },
+      {
+        "token": "정보",
+        "count": 1
+      },
+      {
+        "token": "줄여야",
+        "count": 1
+      },
+      {
+        "token": "한다",
+        "count": 1
+      }
+    ]
+  },
+  "by_domain": {
+    "hangul": [
+      {
+        "token": "뒤바뀔",
+        "count": 1
+      },
+      {
+        "token": "위험이",
+        "count": 1
+      },
+      {
+        "token": "있다",
+        "count": 1
+      },
+      {
+        "token": "수",
+        "count": 1
+      },
+      {
+        "token": "압축",
+        "count": 1
+      },
+      {
+        "token": "있으니",
+        "count": 1
+      },
+      {
+        "token": "전후",
+        "count": 1
+      },
+      {
+        "token": "가치가",
+        "count": 1
+      },
+      {
+        "token": "대비",
+        "count": 1
+      },
+      {
+        "token": "크다",
+        "count": 1
+      }
+    ],
+    "health": [
+      {
+        "token": "노출을",
+        "count": 1
+      },
+      {
+        "token": "자극성",
+        "count": 1
+      },
+      {
+        "token": "전",
+        "count": 1
+      },
+      {
+        "token": "정보",
+        "count": 1
+      },
+      {
+        "token": "줄여야",
+        "count": 1
+      },
+      {
+        "token": "한다",
+        "count": 1
+      }
+    ],
+    "scm": [
+      {
+        "token": "한다",
+        "count": 3
+      },
+      {
+        "token": "된다",
+        "count": 2
+      },
+      {
+        "token": "안",
+        "count": 2
+      },
+      {
+        "token": "안전하다",
+        "count": 2
+      },
+      {
+        "token": "단일",
+        "count": 1
+      },
+      {
+        "token": "일반화하면",
+        "count": 1
+      },
+      {
+        "token": "처방을",
+        "count": 1
+      },
+      {
+        "token": "전환해야",
+        "count": 1
+      },
+      {
+        "token": "배치해야",
+        "count": 1
+      },
+      {
+        "token": "관찰한",
+        "count": 1
+      },
+      {
+        "token": "이상",
+        "count": 1
+      },
+      {
+        "token": "과정에서",
+        "count": 1
+      },
+      {
+        "token": "손실되면",
+        "count": 1
+      },
+      {
+        "token": "절대",
+        "count": 1
+      },
+      {
+        "token": "규칙을",
+        "count": 1
+      },
+      {
+        "token": "기본값으로",
+        "count": 1
+      },
+      {
+        "token": "두는",
+        "count": 1
+      },
+      {
+        "token": "보존",
+        "count": 1
+      },
+      {
+        "token": "편이",
+        "count": 1
+      },
+      {
+        "token": "남아",
+        "count": 1
+      },
+      {
+        "token": "있어야",
+        "count": 1
+      },
+      {
+        "token": "경고문까지",
+        "count": 1
+      },
+      {
+        "token": "지우지",
+        "count": 1
+      }
+    ],
+    "ssot": [
+      {
+        "token": "함께",
+        "count": 3
+      },
+      {
+        "token": "review",
+        "count": 2
+      },
+      {
+        "token": "수",
+        "count": 2
+      },
+      {
+        "token": "requires",
+        "count": 1
+      },
+      {
+        "token": "traceability",
+        "count": 1
+      },
+      {
+        "token": "unresolved",
+        "count": 1
+      },
+      {
+        "token": "b",
+        "count": 1
+      },
+      {
+        "token": "caveats",
+        "count": 1
+      },
+      {
+        "token": "especially",
+        "count": 1
+      },
+      {
+        "token": "footprint",
+        "count": 1
+      },
+      {
+        "token": "notes",
+        "count": 1
+      },
+      {
+        "token": "preserving",
+        "count": 1
+      },
+      {
+        "token": "reduce",
+        "count": 1
+      },
+      {
+        "token": "reproduce",
+        "count": 1
+      },
+      {
+        "token": "reviews",
+        "count": 1
+      },
+      {
+        "token": "cadence",
+        "count": 1
+      },
+      {
+        "token": "external",
+        "count": 1
+      },
+      {
+        "token": "override",
+        "count": 1
+      },
+      {
+        "token": "updates",
+        "count": 1
+      },
+      {
+        "token": "weekly",
+        "count": 1
+      },
+      {
+        "token": "anchors",
+        "count": 1
+      },
+      {
+        "token": "mislabeled",
+        "count": 1
+      },
+      {
+        "token": "answers",
+        "count": 1
+      },
+      {
+        "token": "constitution",
+        "count": 1
+      },
+      {
+        "token": "constraints",
+        "count": 1
+      },
+      {
+        "token": "include",
+        "count": 1
+      },
+      {
+        "token": "timing",
+        "count": 1
+      },
+      {
+        "token": "tri",
+        "count": 1
+      },
+      {
+        "token": "drift",
+        "count": 1
+      },
+      {
+        "token": "avoid",
+        "count": 1
+      },
+      {
+        "token": "false",
+        "count": 1
+      },
+      {
+        "token": "operational",
+        "count": 1
+      },
+      {
+        "token": "predictive",
+        "count": 1
+      },
+      {
+        "token": "quality",
+        "count": 1
+      },
+      {
+        "token": "stability",
+        "count": 1
+      },
+      {
+        "token": "경우가",
+        "count": 1
+      },
+      {
+        "token": "규칙",
+        "count": 1
+      },
+      {
+        "token": "동반되는",
+        "count": 1
+      },
+      {
+        "token": "따뜻한",
+        "count": 1
+      },
+      {
+        "token": "속한이",
+        "count": 1
+      },
+      {
+        "token": "식사와",
+        "count": 1
+      },
+      {
+        "token": "약해",
+        "count": 1
+      },
+      {
+        "token": "걷기를",
+        "count": 1
+      },
+      {
+        "token": "꾸준히",
+        "count": 1
+      },
+      {
+        "token": "나타날",
+        "count": 1
+      },
+      {
+        "token": "낮추고",
+        "count": 1
+      },
+      {
+        "token": "먼저",
+        "count": 1
+      },
+      {
+        "token": "섭취를",
+        "count": 1
+      },
+      {
+        "token": "염분",
+        "count": 1
+      },
+      {
+        "token": "작아도",
+        "count": 1
+      },
+      {
+        "token": "급한",
+        "count": 1
+      },
+      {
+        "token": "때",
+        "count": 1
+      },
+      {
+        "token": "쉬워서",
+        "count": 1
+      },
+      {
+        "token": "악화되기",
+        "count": 1
+      },
+      {
+        "token": "온식",
+        "count": 1
+      },
+      {
+        "token": "완충과",
+        "count": 1
+      },
+      {
+        "token": "음식이",
+        "count": 1
+      },
+      {
+        "token": "찬",
+        "count": 1
+      },
+      {
+        "token": "과도한",
+        "count": 1
+      },
+      {
+        "token": "노출이",
+        "count": 1
+      },
+      {
+        "token": "눈",
+        "count": 1
+      },
+      {
+        "token": "두드러지므로",
+        "count": 1
+      },
+      {
+        "token": "사이에",
+        "count": 1
+      },
+      {
+        "token": "수분",
+        "count": 1
+      },
+      {
+        "token": "작업",
+        "count": 1
+      },
+      {
+        "token": "저하는",
+        "count": 1
+      },
+      {
+        "token": "화면",
+        "count": 1
+      },
+      {
+        "token": "휴식을",
+        "count": 1
+      },
+      {
+        "token": "단계에서",
+        "count": 1
+      },
+      {
+        "token": "대조",
+        "count": 1
+      },
+      {
+        "token": "바뀔",
+        "count": 1
+      },
+      {
+        "token": "반드시",
+        "count": 1
+      },
+      {
+        "token": "원문",
+        "count": 1
+      },
+      {
+        "token": "있어",
+        "count": 1
+      },
+      {
+        "token": "하나로도",
+        "count": 1
+      },
+      {
+        "token": "시",
+        "count": 1
+      },
+      {
+        "token": "안정성을",
+        "count": 1
+      },
+      {
+        "token": "우선해야",
+        "count": 1
+      },
+      {
+        "token": "위반",
+        "count": 1
+      },
+      {
+        "token": "절약률보다",
+        "count": 1
+      }
+    ],
+    "timing": [
+      {
+        "token": "bootstrap",
+        "count": 2
+      },
+      {
+        "token": "11",
+        "count": 1
+      },
+      {
+        "token": "a",
+        "count": 1
+      },
+      {
+        "token": "analysis",
+        "count": 1
+      },
+      {
+        "token": "data",
+        "count": 1
+      },
+      {
+        "token": "dominates",
+        "count": 1
+      },
+      {
+        "token": "shifts",
+        "count": 1
+      },
+      {
+        "token": "accumulate",
+        "count": 1
+      },
+      {
+        "token": "improves",
+        "count": 1
+      },
+      {
+        "token": "matrix",
+        "count": 1
+      },
+      {
+        "token": "rows",
+        "count": 1
+      },
+      {
+        "token": "thresholds",
+        "count": 1
+      },
+      {
+        "token": "transition",
+        "count": 1
+      }
+    ]
+  }
+}

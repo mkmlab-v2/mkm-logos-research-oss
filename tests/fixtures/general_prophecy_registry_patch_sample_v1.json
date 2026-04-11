@@ -1,0 +1,9 @@
+{
+  "schema": "general_prophecy_registry_patch_v1",
+  "patches": [
+    {
+      "question_id": "demo.binary.sample_01",
+      "layer3_interpretation_ref": "docs/final/NOTEBOOKLM_AUTOMATED_PATCH_TEST_V1.md"
+    }
+  ]
+}

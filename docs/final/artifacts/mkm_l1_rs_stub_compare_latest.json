@@ -1,0 +1,7 @@
+{
+  "schema": "mkm_l1_rs_stub_compare_v1",
+  "decision_hint": {
+    "status": "CHANNEL_AWARE_RS_POLICY_LOCKED",
+    "note": "Compare artifact lock for RS policy gate; research_only."
+  }
+}

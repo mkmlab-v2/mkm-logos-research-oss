@@ -1,0 +1,4 @@
+# Optional: MKM unified stdio MCP (scripts/mkm_unified_mcp.py)
+mcp>=1.2.0
+jsonschema>=4.0
+pydantic>=2.0

@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/mkm_compressed_payload_v1.schema.json",
+  "title": "MKM compressed context payload v1",
+  "description": "Agent-facing envelope when passing MKM-compressed or summarized text. Cost-aware metadata is optional in v1.",
+  "type": "object",
+  "required": ["schema", "payload_kind", "text_effective", "source"],
+  "properties": {
+    "schema": {
+      "const": "mkm_compressed_payload_v1"
+    },
+    "payload_kind": {
+      "type": "string",
+      "enum": [
+        "lossy_summary",
+        "lossless_excerpt",
+        "code_reference",
+        "registry_pointer",
+        "prophecy_brief_slice"
+      ],
+      "description": "lossless_excerpt/code_reference for build-safe paths; lossy_summary for prose only."
+    },
+    "text_effective": {
+      "type": "string",
+      "description": "Primary string the consumer should treat as context (may be compressed or summarized)."
+    },
+    "token_estimate": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Optional o200k or provider-specific estimate after envelope."
+    },
+    "compression_ratio": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional: compressed length / original length (same unit)."
+    },
+    "fidelity_hint": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional: e.g. Jaccard reconstruction or integrity score from pipeline metrics."
+    },
+    "source": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["file_path", "artifact_path", "inline", "mcp_tool"]
+        },
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "tool_name": {
+          "type": "string",
+          "description": "When kind=mcp_tool, which tool produced the payload."
+        }
+      },
+      "additionalProperties": true
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "e.g. lossy path not suitable for execution."
+    },
+    "savings_meta": {
+      "type": "object",
+      "description": "Optional v1 cost-aware block for agents.",
+      "properties": {
+        "approx_tokens_saved": { "type": "integer" },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

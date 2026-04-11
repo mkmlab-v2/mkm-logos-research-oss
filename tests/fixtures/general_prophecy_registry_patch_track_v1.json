@@ -1,0 +1,13 @@
+{
+  "schema": "general_prophecy_registry_patch_v1",
+  "patches": [
+    {
+      "question_id": "demo.binary.sample_01",
+      "prophecy_track": "financial",
+      "personalization_scope_v1": {
+        "mode": "none",
+        "consent_scope": ["l1_forecast"]
+      }
+    }
+  ]
+}

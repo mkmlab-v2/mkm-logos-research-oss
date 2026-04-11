@@ -1,0 +1,25 @@
+{
+  "schema": "mkm_l1_rs_policy_gate_v1",
+  "generated_at_utc": "2026-04-11T13:47:28Z",
+  "mode": "research_only",
+  "inputs": {
+    "policy": "C:/workspace/docs/final/artifacts/mkm_l1_rs_channel_policy_v1.json",
+    "compare": "C:/workspace/docs/final/artifacts/mkm_l1_rs_stub_compare_latest.json",
+    "device_profiles": "C:/workspace/docs/final/artifacts/dynamic_stress_causality_device_profiles_v1.json",
+    "device_profile": "generic_lab",
+    "max_block_ratio": 0.6
+  },
+  "metrics": {
+    "allow_rule_count": 4,
+    "block_rule_count": 2,
+    "block_ratio": 0.3333333333333333
+  },
+  "status": "GO_RESEARCH_LOCKED",
+  "reasons": [],
+  "selected_device_profile": {
+    "profile_id": "generic_lab",
+    "label": "Generic lab device profile for RS policy gate",
+    "role": "research_only"
+  },
+  "note": "Research gate only. No production promotion implied."
+}

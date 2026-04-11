@@ -1,0 +1,48 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-04-12T12:00:00Z",
+  "git_commit_hint": "local:fixture",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "ci.personalization_scope_smoke_cohort_v1",
+      "question_text": "Before 2027-06-01 UTC, will the cohort pilot.v1 aggregate wellness signal (as defined in the linked rubric) stay above the agreed neutral band at least once per ISO week?",
+      "domain_tags": ["health", "pilot"],
+      "prophecy_track": "personalized",
+      "personalization_scope_v1": {
+        "mode": "cohort",
+        "cohort_id": "pilot.v1",
+        "consent_scope": ["l1_forecast", "cohort_aggregate_only"]
+      },
+      "resolution_deadline_utc": "2027-06-01T00:00:00Z",
+      "resolution_criteria": "TRUE if the published weekly cohort dashboard shows the signal above the neutral band at least once in any ISO week before deadline; FALSE if never; VOID if dashboard unavailable for 30+ consecutive days. Sources: cohort SSOT only.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "above_neutral",
+        "false_label": "never_above"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-12T12:00:00Z",
+          "probability_0_1": 0.5,
+          "source_kind": "baseline",
+          "source_detail": "personalization_scope_smoke",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    }
+  ]
+}

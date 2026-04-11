@@ -1,0 +1,1704 @@
+{
+  "schema": "mkm_mcp_tool_audit_v1",
+  "generated_at_utc": "2026-04-11T16:20:59Z",
+  "mcps_root_resolved": "C:\\Users\\PRO\\.cursor\\projects\\c-workspace\\mcps",
+  "server_count": 20,
+  "total_tool_count": 314,
+  "servers": [
+    {
+      "server_folder": "cursor-app-control",
+      "tool_count": 2,
+      "tools": [
+        {
+          "name": "create_project",
+          "descriptor_file": "cursor-app-control/tools/create_project.json",
+          "description_excerpt": "Create a new project at the given path. Creates the directory if it does not exist and initializes a git repository. Use this to bootstrap a new project before moving the agent to it with move_agent_to_root."
+        },
+        {
+          "name": "move_agent_to_root",
+          "descriptor_file": "cursor-app-control/tools/move_agent_to_root.json",
+          "description_excerpt": "Move the current agent to a new root workspace directory. Use this after creating a worktree or whenever the conversation should continue from a different workspace root."
+        }
+      ]
+    },
+    {
+      "server_folder": "cursor-ide-browser",
+      "tool_count": 26,
+      "tools": [
+        {
+          "name": "browser_click",
+          "descriptor_file": "cursor-ide-browser/tools/browser_click.json",
+          "description_excerpt": "Perform click on a web page. Supports single/double click, different mouse buttons, modifier keys, position offsets, and hold duration."
+        },
+        {
+          "name": "browser_console_messages",
+          "descriptor_file": "cursor-ide-browser/tools/browser_console_messages.json",
+          "description_excerpt": "Returns all console messages"
+        },
+        {
+          "name": "browser_drag",
+          "descriptor_file": "cursor-ide-browser/tools/browser_drag.json",
+          "description_excerpt": "Perform a drag and drop operation. Drags from a source element to a target element or coordinates."
+        },
+        {
+          "name": "browser_fill",
+          "descriptor_file": "cursor-ide-browser/tools/browser_fill.json",
+          "description_excerpt": "Clear and fill a value into an input element. Unlike browser_type which appends text, this clears the existing value first and sets the new value atomically. Use this when you want to replace the entire content of an input field."
+        },
+        {
+          "name": "browser_fill_form",
+          "descriptor_file": "cursor-ide-browser/tools/browser_fill_form.json",
+          "description_excerpt": "Fill multiple form fields at once. Each field uses ref + value. By default, each field is cleared before setting the new value."
+        },
+        {
+          "name": "browser_get_bounding_box",
+          "descriptor_file": "cursor-ide-browser/tools/browser_get_bounding_box.json",
+          "description_excerpt": "Get bounding box details for an element."
+        },
+        {
+          "name": "browser_handle_dialog",
+          "descriptor_file": "cursor-ide-browser/tools/browser_handle_dialog.json",
+          "description_excerpt": "Configure how native browser dialogs (alert, confirm, prompt) are handled. Dialogs are non-blocking in this environment - they return immediately without showing a visible dialog. Use this tool BEFORE triggering an action that shows a di..."
+        },
+        {
+          "name": "browser_highlight",
+          "descriptor_file": "cursor-ide-browser/tools/browser_highlight.json",
+          "description_excerpt": "Temporarily highlight an element for visual debugging."
+        },
+        {
+          "name": "browser_hover",
+          "descriptor_file": "cursor-ide-browser/tools/browser_hover.json",
+          "description_excerpt": "Hover over element on page"
+        },
+        {
+          "name": "browser_lock",
+          "descriptor_file": "cursor-ide-browser/tools/browser_lock.json",
+          "description_excerpt": "Lock or unlock the browser to control whether the user can interact while you work. Set action to \"lock\" or \"unlock\". When locked, the user can still click \"Take Control\" to unlock if needed."
+        },
+        {
+          "name": "browser_mouse_click_xy",
+          "descriptor_file": "cursor-ide-browser/tools/browser_mouse_click_xy.json",
+          "description_excerpt": "Click left, middle, or right mouse button using coordinates from a fresh viewport screenshot captured immediately before this call for the same tab. Do not reuse older screenshot coordinates. If any other browser tool runs first, this ca..."
+        },
+        {
+          "name": "browser_navigate",
+          "descriptor_file": "cursor-ide-browser/tools/browser_navigate.json",
+          "description_excerpt": "Navigate to a URL. By default reuses an existing tab; set newTab: true to open in a new tab."
+        },
+        {
+          "name": "browser_navigate_back",
+          "descriptor_file": "cursor-ide-browser/tools/browser_navigate_back.json",
+          "description_excerpt": "Go back to the previous page in browser history. Returns an error if there is no previous page to navigate to."
+        },
+        {
+          "name": "browser_network_requests",
+          "descriptor_file": "cursor-ide-browser/tools/browser_network_requests.json",
+          "description_excerpt": "Returns all network requests since loading the page"
+        },
+        {
+          "name": "browser_press_key",
+          "descriptor_file": "cursor-ide-browser/tools/browser_press_key.json",
+          "description_excerpt": "Press a key on the keyboard. Supports key combinations with modifiers using \"+\" syntax."
+        },
+        {
+          "name": "browser_profile_start",
+          "descriptor_file": "cursor-ide-browser/tools/browser_profile_start.json",
+          "description_excerpt": "Start CPU profiling to capture call stack timing data. Use browser_profile_stop to end profiling and get results."
+        },
+        {
+          "name": "browser_profile_stop",
+          "descriptor_file": "cursor-ide-browser/tools/browser_profile_stop.json",
+          "description_excerpt": "Stop CPU profiling and return the profile data including call stacks, timing, and samples."
+        },
+        {
+          "name": "browser_resize",
+          "descriptor_file": "cursor-ide-browser/tools/browser_resize.json",
+          "description_excerpt": "Resize the browser window"
+        },
+        {
+          "name": "browser_scroll",
+          "descriptor_file": "cursor-ide-browser/tools/browser_scroll.json",
+          "description_excerpt": "Scroll the page or a specific element. Use this to bring elements into view, scroll to content, or navigate long pages. Can scroll in any direction by specifying delta values or using directional shortcuts."
+        },
+        {
+          "name": "browser_search",
+          "descriptor_file": "cursor-ide-browser/tools/browser_search.json",
+          "description_excerpt": "Search for text on the current page, similar to Cmd+F / Ctrl+F. Highlights all matches, scrolls to the first match, and returns a screenshot showing the match in context along with the count and positions of matches found."
+        },
+        {
+          "name": "browser_select_option",
+          "descriptor_file": "cursor-ide-browser/tools/browser_select_option.json",
+          "description_excerpt": "Select an option in a dropdown. Matching priority: exact value match, then exact label match, then partial label match. The snapshot now shows available options for select elements."
+        },
+        {
+          "name": "browser_snapshot",
+          "descriptor_file": "cursor-ide-browser/tools/browser_snapshot.json",
+          "description_excerpt": "Capture accessibility snapshot of the current page, this is better than screenshot"
+        },
+        {
+          "name": "browser_tabs",
+          "descriptor_file": "cursor-ide-browser/tools/browser_tabs.json",
+          "description_excerpt": "List, create, close, or select a browser tab"
+        },
+        {
+          "name": "browser_take_screenshot",
+          "descriptor_file": "cursor-ide-browser/tools/browser_take_screenshot.json",
+          "description_excerpt": "Take a screenshot of the current page. You can't perform actions based on the screenshot, use browser_snapshot for actions."
+        },
+        {
+          "name": "browser_type",
+          "descriptor_file": "cursor-ide-browser/tools/browser_type.json",
+          "description_excerpt": "Type text into editable element"
+        },
+        {
+          "name": "browser_wait_for",
+          "descriptor_file": "cursor-ide-browser/tools/browser_wait_for.json",
+          "description_excerpt": "Wait for text to appear or disappear, or wait a specified time. Note: time is in SECONDS, not milliseconds."
+        }
+      ]
+    },
+    {
+      "server_folder": "plugin-atlassian-atlassian",
+      "tool_count": 1,
+      "tools": [
+        {
+          "name": "mcp_auth",
+          "descriptor_file": "plugin-atlassian-atlassian/tools/mcp_auth.json",
+          "description_excerpt": "Authenticate this MCP server so the user can access all of its tools. When STATUS.md indicates this server needs authentication, you must call this tool soon through your MCP tool-calling interface."
+        }
+      ]
+    },
+    {
+      "server_folder": "plugin-sentry-sentry",
+      "tool_count": 14,
+      "tools": [
+        {
+          "name": "analyze_issue_with_seer",
+          "descriptor_file": "plugin-sentry-sentry/tools/analyze_issue_with_seer.json",
+          "description_excerpt": "Use Seer to analyze production errors and get detailed root cause analysis with specific code fixes.  Use this tool when: - The user explicitly asks for root cause analysis, Seer analysis, or help fixing/debugging an issue - You are unab..."
+        },
+        {
+          "name": "find_organizations",
+          "descriptor_file": "plugin-sentry-sentry/tools/find_organizations.json",
+          "description_excerpt": "Find organizations that the user has access to in Sentry.  Use this tool when you need to: - View organizations in Sentry - Find an organization's slug to aid other tool requests - Search for specific organizations by name or slug  Retur..."
+        },
+        {
+          "name": "find_projects",
+          "descriptor_file": "plugin-sentry-sentry/tools/find_projects.json",
+          "description_excerpt": "Find projects in Sentry.  Use this tool when you need to: - View projects in a Sentry organization - Find a project's slug to aid other tool requests - Search for specific projects by name or slug  Returns up to 25 results. If you hit th..."
+        },
+        {
+          "name": "find_releases",
+          "descriptor_file": "plugin-sentry-sentry/tools/find_releases.json",
+          "description_excerpt": "Find releases in Sentry.  Use this tool when you need to: - Find recent releases in a Sentry organization - Find the most recent version released of a specific project - Determine when a release was deployed to an environment  <examples>..."
+        },
+        {
+          "name": "find_teams",
+          "descriptor_file": "plugin-sentry-sentry/tools/find_teams.json",
+          "description_excerpt": "Find teams in an organization in Sentry.  Use this tool when you need to: - View teams in a Sentry organization - Find a team's slug and numeric ID to aid other tool requests - Search for specific teams by name or slug  Returns up to 25 ..."
+        },
+        {
+          "name": "get_event_attachment",
+          "descriptor_file": "plugin-sentry-sentry/tools/get_event_attachment.json",
+          "description_excerpt": "Download attachments from a Sentry event.  Use this tool when you need to: - Download files attached to a specific event - Access screenshots, log files, or other attachments uploaded with an error report - Retrieve attachment metadata a..."
+        },
+        {
+          "name": "get_issue_tag_values",
+          "descriptor_file": "plugin-sentry-sentry/tools/get_issue_tag_values.json",
+          "description_excerpt": "Get tag value distribution for a specific Sentry issue.  Use this tool when you need to: - Understand how an issue is distributed across different tag values - Get aggregate counts of unique tag values (e.g., 'how many unique URLs are af..."
+        },
+        {
+          "name": "get_profile_details",
+          "descriptor_file": "plugin-sentry-sentry/tools/get_profile_details.json",
+          "description_excerpt": "Retrieve raw profile chunk data to inspect individual function calls, threads, and stack traces.  USE THIS TOOL WHEN: - User wants to inspect raw profiling samples for a specific profiler session - User needs to see individual thread act..."
+        },
+        {
+          "name": "get_replay_details",
+          "descriptor_file": "plugin-sentry-sentry/tools/get_replay_details.json",
+          "description_excerpt": "Get high-level information about a specific Sentry replay by URL or replay ID.  USE THIS TOOL WHEN USERS: - Share a replay URL - Ask what happened in a specific replay - Want a concise replay summary plus the next issue or trace lookups ..."
+        },
+        {
+          "name": "get_sentry_resource",
+          "descriptor_file": "plugin-sentry-sentry/tools/get_sentry_resource.json",
+          "description_excerpt": "Fetch a Sentry resource by URL or by type and ID.  <examples> ### From a Sentry URL get_sentry_resource(url='https://sentry.io/issues/PROJECT-123/')  ### Breadcrumbs from a Sentry URL get_sentry_resource(url='https://sentry.io/issues/PRO..."
+        },
+        {
+          "name": "search_events",
+          "descriptor_file": "plugin-sentry-sentry/tools/search_events.json",
+          "description_excerpt": "Search for events AND perform counts/aggregations - the ONLY tool for statistics and counts.  Supports TWO query types: 1. AGGREGATIONS (counts, sums, averages): 'how many errors', 'count of issues', 'total tokens' 2. Individual events w..."
+        },
+        {
+          "name": "search_issue_events",
+          "descriptor_file": "plugin-sentry-sentry/tools/search_issue_events.json",
+          "description_excerpt": "Search and filter events within a specific issue using natural language queries.  Use this to filter events by time, environment, release, user, trace ID, or other tags. The tool automatically constrains results to the specified issue.  ..."
+        },
+        {
+          "name": "search_issues",
+          "descriptor_file": "plugin-sentry-sentry/tools/search_issues.json",
+          "description_excerpt": "Search for grouped issues/problems in Sentry - returns a LIST of issues, NOT counts or aggregations.  Uses AI to translate natural language queries into Sentry issue search syntax. Returns grouped issues with metadata like title, status,..."
+        },
+        {
+          "name": "whoami",
+          "descriptor_file": "plugin-sentry-sentry/tools/whoami.json",
+          "description_excerpt": "Identify the authenticated user in Sentry.  Use this tool when you need to: - Get the user's name and email address."
+        }
+      ]
+    },
+    {
+      "server_folder": "plugin-slack-slack",
+      "tool_count": 1,
+      "tools": [
+        {
+          "name": "mcp_auth",
+          "descriptor_file": "plugin-slack-slack/tools/mcp_auth.json",
+          "description_excerpt": "Authenticate this MCP server so the user can access all of its tools. When STATUS.md indicates this server needs authentication, you must call this tool soon through your MCP tool-calling interface."
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-aistudio-mcp",
+      "tool_count": 1,
+      "tools": [
+        {
+          "name": "generate_content",
+          "descriptor_file": "project-0-workspace-aistudio-mcp/tools/generate_content.json",
+          "description_excerpt": "Generate content using Gemini with optional file inputs, code execution, image generation, and Google search. Supports multiple files: images (JPG, PNG, GIF, WebP, SVG, BMP, TIFF), video (MP4, AVI, MOV, WebM, FLV, MPG, WMV), audio (MP3, ..."
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-athena-core",
+      "tool_count": 17,
+      "tools": [
+        {
+          "name": "acodeai_analyze_file",
+          "descriptor_file": "project-0-workspace-athena-core/tools/acodeai_analyze_file.json",
+          "description_excerpt": "[A-Code AI] 특정 파일의 구조를 분석/역공학하고 로컬 메모리(acodeai_analysis_index)를 갱신합니다.      사용 시나리오:     - 큰 리팩터링 후 해당 파일의 Reverse Engineering 문서와 메타데이터를 최신 상태로 맞추고 싶을 때     - VS Code Extension 이 동작하지 않는 환경에서 수동으로 분석을 강제하고 싶을 때"
+        },
+        {
+          "name": "acodeai_commit_and_evolve_memory",
+          "descriptor_file": "project-0-workspace-athena-core/tools/acodeai_commit_and_evolve_memory.json",
+          "description_excerpt": "[CRITICAL TOOL] 파일 수정이 완료된 후 호출되는 매크로 통합 툴 브리지입니다.      A-Code API 서버의 /evolve 엔드포인트에 작업을 위임하여,     1) 코드 검증, 2) 역공학 문서(MD) 생성/갱신, 3) 파일 기반 4D 메모리 인덱스 갱신,     4) (선택) 테스트 실행을 한 번에 수행합니다."
+        },
+        {
+          "name": "acodeai_get_context",
+          "descriptor_file": "project-0-workspace-athena-core/tools/acodeai_get_context.json",
+          "description_excerpt": "[A-Code AI] 분석된 파일에 대한 Reverse Engineering 문서와 메타데이터를 조회합니다.      사용 시나리오:     - 코드를 대폭 수정하기 전에 현재 구조/의존성을 빠르게 파악하고 싶을 때     - 이미 저장되어 있는 분석 결과를 재사용하고 싶을 때"
+        },
+        {
+          "name": "gateway_analyze_task",
+          "descriptor_file": "project-0-workspace-athena-core/tools/gateway_analyze_task.json",
+          "description_excerpt": "작업을 분석합니다 (최종 권위 이론 통합, Gateway)."
+        },
+        {
+          "name": "gateway_auto_process_query",
+          "descriptor_file": "project-0-workspace-athena-core/tools/gateway_auto_process_query.json",
+          "description_excerpt": "자동 장기기억 검색 + 융합 추론 (Gateway, 지연 로딩)."
+        },
+        {
+          "name": "gateway_consult_character",
+          "descriptor_file": "project-0-workspace-athena-core/tools/gateway_consult_character.json",
+          "description_excerpt": "12캐릭터 중 하나와 상담합니다 (Gateway)."
+        },
+        {
+          "name": "gateway_execute_vector_command",
+          "descriptor_file": "project-0-workspace-athena-core/tools/gateway_execute_vector_command.json",
+          "description_excerpt": "벡터 명령어를 즉시 실행합니다 (vec:XXX 패턴, Gateway)."
+        },
+        {
+          "name": "gateway_hold_meeting",
+          "descriptor_file": "project-0-workspace-athena-core/tools/gateway_hold_meeting.json",
+          "description_excerpt": "12캐릭터 AI 이사회 회의를 개최합니다 (Gateway)."
+        },
+        {
+          "name": "gateway_process_natural_language_command",
+          "descriptor_file": "project-0-workspace-athena-core/tools/gateway_process_natural_language_command.json",
+          "description_excerpt": "자연어 명령어를 처리합니다 (Gateway)."
+        },
+        {
+          "name": "gateway_suggest_vector_id",
+          "descriptor_file": "project-0-workspace-athena-core/tools/gateway_suggest_vector_id.json",
+          "description_excerpt": "자연어 입력에 대한 벡터 ID를 추천합니다 (Gateway)."
+        },
+        {
+          "name": "memory_auto_process_query",
+          "descriptor_file": "project-0-workspace-athena-core/tools/memory_auto_process_query.json",
+          "description_excerpt": "자동 장기기억 검색 + 융합 추론 통합 처리 (지연 로딩)."
+        },
+        {
+          "name": "memory_correct_search_results",
+          "descriptor_file": "project-0-workspace-athena-core/tools/memory_correct_search_results.json",
+          "description_excerpt": "CRAG: 검색 결과 자동 수정 (지연 로딩)."
+        },
+        {
+          "name": "memory_evaluate_search_relevance",
+          "descriptor_file": "project-0-workspace-athena-core/tools/memory_evaluate_search_relevance.json",
+          "description_excerpt": "CRAG: 검색 결과 관련성 평가 (지연 로딩)."
+        },
+        {
+          "name": "memory_fusion_search",
+          "descriptor_file": "project-0-workspace-athena-core/tools/memory_fusion_search.json",
+          "description_excerpt": "융합 검색: 6개 컬렉션 동시 검색 후 융합 추론 (지연 로딩)."
+        },
+        {
+          "name": "memory_search",
+          "descriptor_file": "project-0-workspace-athena-core/tools/memory_search.json",
+          "description_excerpt": "장기기억 검색 (파일 기반 메모리만 사용, 외부 벡터 DB 미사용)."
+        },
+        {
+          "name": "memory_search_with_router",
+          "descriptor_file": "project-0-workspace-athena-core/tools/memory_search_with_router.json",
+          "description_excerpt": "Agentic RAG: Router Agent를 통한 지능형 검색 (지연 로딩)."
+        },
+        {
+          "name": "memory_store",
+          "descriptor_file": "project-0-workspace-athena-core/tools/memory_store.json",
+          "description_excerpt": "장기기억 저장 (파일 기반 메모리만 사용, 외부 벡터 DB 미사용)."
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-athena-manseryeok",
+      "tool_count": 9,
+      "tools": [
+        {
+          "name": "add_verified_base_date",
+          "descriptor_file": "project-0-workspace-athena-manseryeok/tools/add_verified_base_date.json",
+          "description_excerpt": "검증된 기준일을 추가합니다.          ⚠️ 주의: 이 함수는 검증된 날짜만 추가해야 합니다.     신뢰할 수 있는 만세력 계산기로 확인된 날짜만 사용하세요.          Args:         year: 연도         month: 월         day: 일         gapja: 갑자 (예: \"경진\")         source: 검증 출처 (예: \"운세냥\", \"주인님 정보\")          ..."
+        },
+        {
+          "name": "analyze_fused_solution",
+          "descriptor_file": "project-0-workspace-athena-manseryeok/tools/analyze_fused_solution.json",
+          "description_excerpt": "명리 + 성경 해석 보조 + 사상(확률) 융합 결과를 반환합니다."
+        },
+        {
+          "name": "analyze_saju_postella",
+          "descriptor_file": "project-0-workspace-athena-manseryeok/tools/analyze_saju_postella.json",
+          "description_excerpt": "포스텔라 스타일 확장 사주 분석 요약을 반환합니다."
+        },
+        {
+          "name": "assess_sasang_probabilistic",
+          "descriptor_file": "project-0-workspace-athena-manseryeok/tools/assess_sasang_probabilistic.json",
+          "description_excerpt": "사상체질 확률 진단(예비용)만 제공합니다.     최종 체질 확진은 한의사 임상 진단이 필요합니다."
+        },
+        {
+          "name": "calculate_saju",
+          "descriptor_file": "project-0-workspace-athena-manseryeok/tools/calculate_saju.json",
+          "description_excerpt": "정확한 만세력(사주팔자) 계산          핵심 원칙:     1. 검증된 기준일 기반 수동 계산 우선 (100% 정확도)     2. sajupy 결과는 교차 검증용으로만 사용     3. AI 추측 완전 배제          Args:         year: 연도 (예: 1973)         month: 월 (1-12)         day: 일 (1-31)         hour: 시 (0-23, 기본값: ..."
+        },
+        {
+          "name": "export_fused_solution_report",
+          "descriptor_file": "project-0-workspace-athena-manseryeok/tools/export_fused_solution_report.json",
+          "description_excerpt": "융합 보고서를 Markdown 파일로 저장합니다."
+        },
+        {
+          "name": "health_check",
+          "descriptor_file": "project-0-workspace-athena-manseryeok/tools/health_check.json",
+          "description_excerpt": "만세력 MCP 런타임 상태를 점검합니다.      Returns:         모듈 로딩/엔진 가용성/진단 요약"
+        },
+        {
+          "name": "report_fused_solution",
+          "descriptor_file": "project-0-workspace-athena-manseryeok/tools/report_fused_solution.json",
+          "description_excerpt": "융합 결과를 사용자 보고서(요약 3줄 + 상세표 + 실행권고)로 반환합니다."
+        },
+        {
+          "name": "verify_saju_date",
+          "descriptor_file": "project-0-workspace-athena-manseryeok/tools/verify_saju_date.json",
+          "description_excerpt": "특정 날짜의 일주를 검증합니다.          Args:         year: 연도         month: 월         day: 일         expected_day_pillar: 예상 일주 (예: \"경진\")          Returns:         검증 결과"
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-athena-metacognition",
+      "tool_count": 4,
+      "tools": [
+        {
+          "name": "analyze_reasoning",
+          "descriptor_file": "project-0-workspace-athena-metacognition/tools/analyze_reasoning.json",
+          "description_excerpt": "Analyze reasoning chain for logical consistency"
+        },
+        {
+          "name": "monitor_thinking",
+          "descriptor_file": "project-0-workspace-athena-metacognition/tools/monitor_thinking.json",
+          "description_excerpt": "Monitor and evaluate thinking process"
+        },
+        {
+          "name": "predict_thinking_dynamics",
+          "descriptor_file": "project-0-workspace-athena-metacognition/tools/predict_thinking_dynamics.json",
+          "description_excerpt": "Predict thinking pattern dynamics using core_engine_v3 dynamics model (벡터화된 입체 사고 + 예측 모델)          ICD A-Code 체계:     - dx/dt = F_사상(x, θ_sasang) + G_환경(x, e) + H_개입(x, u) + ξ(t)     - 사고 패턴의 진화 예측 (12개 특징 기반)          벡터화된 입체 사고:     -..."
+        },
+        {
+          "name": "self_reflect",
+          "descriptor_file": "project-0-workspace-athena-metacognition/tools/self_reflect.json",
+          "description_excerpt": "Perform self-reflection on actions and outcomes"
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-compression-server",
+      "tool_count": 6,
+      "tools": [
+        {
+          "name": "acon_benchmark",
+          "descriptor_file": "project-0-workspace-compression-server/tools/acon_benchmark.json",
+          "description_excerpt": "ACON (Agent Context Optimization) - 품질 게이트 (벤치마크)     압축률이 목표치(55% 이상 크기 감소)를 달성하는지 확인합니다.     자동화 파이프라인에서 압축 전/후 검증 단계로 활용됩니다.          Args:         input_path: 압축 대상을 평가할 입력 파일 경로              Returns:         {             \"success\":..."
+        },
+        {
+          "name": "acon_compress",
+          "descriptor_file": "project-0-workspace-compression-server/tools/acon_compress.json",
+          "description_excerpt": "ACON (Agent Context Optimization) - HDKV 압축 실행     14B 모델 등 컨텍스트 최적화가 필요한 에이전트 규칙을 고밀도 키-값 형태로 압축합니다.          Args:         input_path: 압축할 원본 텍스트/규칙 파일 경로         output_path: 저장할 출력 파일 경로 (기본값: input_path.acon)              Returns:  ..."
+        },
+        {
+          "name": "compress_file",
+          "descriptor_file": "project-0-workspace-compression-server/tools/compress_file.json",
+          "description_excerpt": "파일 압축 (대용량 파일 읽기 시 토큰 절약)          Args:         file_path: 압축할 파일 경로         compression_mode: 압축 모드 (\"max_compression\", \"hybrid\", \"perfect_restoration\")          Returns:         {             \"compressed_data\": {...},             \"res..."
+        },
+        {
+          "name": "compress_rules",
+          "descriptor_file": "project-0-workspace-compression-server/tools/compress_rules.json",
+          "description_excerpt": "규칙 텍스트 압축 (규칙 로딩 시 토큰 절약)          Args:         rules_text: 압축할 규칙 텍스트         compression_mode: 압축 모드 (\"max_compression\", \"hybrid\", \"perfect_restoration\")          Returns:         {             \"compressed_data\": {...},             \"r..."
+        },
+        {
+          "name": "compress_text",
+          "descriptor_file": "project-0-workspace-compression-server/tools/compress_text.json",
+          "description_excerpt": "텍스트 압축 (내부 데이터 처리용)          ⚠️ 주의: 1000 bytes 미만 텍스트는 압축 비효율적 (메타데이터 오버헤드)          Args:         text: 압축할 텍스트         compression_mode: 압축 모드 (\"max_compression\", \"hybrid\", \"perfect_restoration\")         min_length: 최소 텍스트 길이 (bytes, 기..."
+        },
+        {
+          "name": "restore_text",
+          "descriptor_file": "project-0-workspace-compression-server/tools/restore_text.json",
+          "description_excerpt": "압축된 텍스트 복원          Args:         compressed_data: 압축된 데이터         residual_patch: 잔차 패치 (100% 복원용, 선택적)          Returns:         {             \"restored_text\": str,             \"restoration_accuracy\": float,             \"metrics\": {......"
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-config-resource",
+      "tool_count": 3,
+      "tools": [
+        {
+          "name": "list_config_files",
+          "descriptor_file": "project-0-workspace-config-resource/tools/list_config_files.json",
+          "description_excerpt": "설정 파일 목록 조회"
+        },
+        {
+          "name": "read_config_file",
+          "descriptor_file": "project-0-workspace-config-resource/tools/read_config_file.json",
+          "description_excerpt": "설정 파일 읽기 (Specific Retrieval)                  Args:             file_path: 설정 파일 경로 (예: \"infrastructure/config/mkm_galaxy.json\")             section: 특정 섹션만 읽기 (JSON: 키, YAML: 섹션명, 점 표기법 지원)             mask_sensitive: 민감한 정보 마스킹 (기본값: ..."
+        },
+        {
+          "name": "search_config",
+          "descriptor_file": "project-0-workspace-config-resource/tools/search_config.json",
+          "description_excerpt": "설정 파일에서 패턴 검색                  Args:             pattern: 검색 패턴 (정규식)             subdir: 특정 하위 디렉토리만 검색             limit: 최대 결과 수 (기본값: 10)"
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-filesystem",
+      "tool_count": 14,
+      "tools": [
+        {
+          "name": "create_directory",
+          "descriptor_file": "project-0-workspace-filesystem/tools/create_directory.json",
+          "description_excerpt": "Create a new directory or ensure a directory exists. Can create multiple nested directories in one operation. If the directory already exists, this operation will succeed silently. Perfect for setting up directory structures for projects..."
+        },
+        {
+          "name": "directory_tree",
+          "descriptor_file": "project-0-workspace-filesystem/tools/directory_tree.json",
+          "description_excerpt": "Get a recursive tree view of files and directories as a JSON structure. Each entry includes 'name', 'type' (file/directory), and 'children' for directories. Files have no children array, while directories always have a children array (wh..."
+        },
+        {
+          "name": "edit_file",
+          "descriptor_file": "project-0-workspace-filesystem/tools/edit_file.json",
+          "description_excerpt": "Make line-based edits to a text file. Each edit replaces exact line sequences with new content. Returns a git-style diff showing the changes made. Only works within allowed directories."
+        },
+        {
+          "name": "get_file_info",
+          "descriptor_file": "project-0-workspace-filesystem/tools/get_file_info.json",
+          "description_excerpt": "Retrieve detailed metadata about a file or directory. Returns comprehensive information including size, creation time, last modified time, permissions, and type. This tool is perfect for understanding file characteristics without reading..."
+        },
+        {
+          "name": "list_allowed_directories",
+          "descriptor_file": "project-0-workspace-filesystem/tools/list_allowed_directories.json",
+          "description_excerpt": "Returns the list of directories that this server is allowed to access. Subdirectories within these allowed directories are also accessible. Use this to understand which directories and their nested paths are available before trying to ac..."
+        },
+        {
+          "name": "list_directory",
+          "descriptor_file": "project-0-workspace-filesystem/tools/list_directory.json",
+          "description_excerpt": "Get a detailed listing of all files and directories in a specified path. Results clearly distinguish between files and directories with [FILE] and [DIR] prefixes. This tool is essential for understanding directory structure and finding s..."
+        },
+        {
+          "name": "list_directory_with_sizes",
+          "descriptor_file": "project-0-workspace-filesystem/tools/list_directory_with_sizes.json",
+          "description_excerpt": "Get a detailed listing of all files and directories in a specified path, including sizes. Results clearly distinguish between files and directories with [FILE] and [DIR] prefixes. This tool is useful for understanding directory structure..."
+        },
+        {
+          "name": "move_file",
+          "descriptor_file": "project-0-workspace-filesystem/tools/move_file.json",
+          "description_excerpt": "Move or rename files and directories. Can move files between directories and rename them in a single operation. If the destination exists, the operation will fail. Works across different directories and can be used for simple renaming wi..."
+        },
+        {
+          "name": "read_file",
+          "descriptor_file": "project-0-workspace-filesystem/tools/read_file.json",
+          "description_excerpt": "Read the complete contents of a file as text. DEPRECATED: Use read_text_file instead."
+        },
+        {
+          "name": "read_media_file",
+          "descriptor_file": "project-0-workspace-filesystem/tools/read_media_file.json",
+          "description_excerpt": "Read an image or audio file. Returns the base64 encoded data and MIME type. Only works within allowed directories."
+        },
+        {
+          "name": "read_multiple_files",
+          "descriptor_file": "project-0-workspace-filesystem/tools/read_multiple_files.json",
+          "description_excerpt": "Read the contents of multiple files simultaneously. This is more efficient than reading files one by one when you need to analyze or compare multiple files. Each file's content is returned with its path as a reference. Failed reads for i..."
+        },
+        {
+          "name": "read_text_file",
+          "descriptor_file": "project-0-workspace-filesystem/tools/read_text_file.json",
+          "description_excerpt": "Read the complete contents of a file from the file system as text. Handles various text encodings and provides detailed error messages if the file cannot be read. Use this tool when you need to examine the contents of a single file. Use ..."
+        },
+        {
+          "name": "search_files",
+          "descriptor_file": "project-0-workspace-filesystem/tools/search_files.json",
+          "description_excerpt": "Recursively search for files and directories matching a pattern. The patterns should be glob-style patterns that match paths relative to the working directory. Use pattern like '*.ext' to match files in current directory, and '**/*.ext' ..."
+        },
+        {
+          "name": "write_file",
+          "descriptor_file": "project-0-workspace-filesystem/tools/write_file.json",
+          "description_excerpt": "Create a new file or completely overwrite an existing file with new content. Use with caution as it will overwrite existing files without warning. Handles text content with proper encoding. Only works within allowed directories."
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-hostinger-mcp",
+      "tool_count": 119,
+      "tools": [
+        {
+          "name": "billing_createServiceOrderV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/billing_createServiceOrderV1.json",
+          "description_excerpt": "Create a new service order.   **DEPRECATED**  To purchase a domain, use [`POST /api/domains/v1/portfolio`](/#tag/domains-portfolio/POST/api/domains/v1/portfolio) instead.  To purchase a VPS, use [`POST /api/vps/v1/virtual-machines`](/#ta..."
+        },
+        {
+          "name": "billing_deletePaymentMethodV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/billing_deletePaymentMethodV1.json",
+          "description_excerpt": "Delete a payment method from your account.  Use this endpoint to remove unused payment methods from user accounts."
+        },
+        {
+          "name": "billing_disableAutoRenewalV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/billing_disableAutoRenewalV1.json",
+          "description_excerpt": "Disable auto-renewal for a subscription.  Use this endpoint when disable auto-renewal for a subscription."
+        },
+        {
+          "name": "billing_enableAutoRenewalV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/billing_enableAutoRenewalV1.json",
+          "description_excerpt": "Enable auto-renewal for a subscription.  Use this endpoint when enable auto-renewal for a subscription."
+        },
+        {
+          "name": "billing_getCatalogItemListV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/billing_getCatalogItemListV1.json",
+          "description_excerpt": "Retrieve catalog items available for order.  Prices in catalog items is displayed as cents (without floating point), e.g: float `17.99` is displayed as integer `1799`.  Use this endpoint to view available services and pricing before plac..."
+        },
+        {
+          "name": "billing_getPaymentMethodListV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/billing_getPaymentMethodListV1.json",
+          "description_excerpt": "Retrieve available payment methods that can be used for placing new orders.  If you want to add new payment method, please use [hPanel](https://hpanel.hostinger.com/billing/payment-methods).  Use this endpoint to view available payment o..."
+        },
+        {
+          "name": "billing_getSubscriptionListV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/billing_getSubscriptionListV1.json",
+          "description_excerpt": "Retrieve a list of all subscriptions associated with your account.  Use this endpoint to monitor active services and billing status."
+        },
+        {
+          "name": "billing_setDefaultPaymentMethodV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/billing_setDefaultPaymentMethodV1.json",
+          "description_excerpt": "Set the default payment method for your account.  Use this endpoint to configure the primary payment method for future orders."
+        },
+        {
+          "name": "DNS_deleteDNSRecordsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/DNS_deleteDNSRecordsV1.json",
+          "description_excerpt": "Delete DNS records for the selected domain.  To filter which records to delete, add the `name` of the record and `type` to the filter.  Multiple filters can be provided with single request.  If you have multiple records with the same nam..."
+        },
+        {
+          "name": "DNS_getDNSRecordsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/DNS_getDNSRecordsV1.json",
+          "description_excerpt": "Retrieve DNS zone records for a specific domain.  Use this endpoint to view current DNS configuration for domain management."
+        },
+        {
+          "name": "DNS_getDNSSnapshotListV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/DNS_getDNSSnapshotListV1.json",
+          "description_excerpt": "Retrieve DNS snapshots for a domain.  Use this endpoint to view available DNS backup points for restoration."
+        },
+        {
+          "name": "DNS_getDNSSnapshotV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/DNS_getDNSSnapshotV1.json",
+          "description_excerpt": "Retrieve particular DNS snapshot with contents of DNS zone records.  Use this endpoint to view historical DNS configurations for domains."
+        },
+        {
+          "name": "DNS_resetDNSRecordsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/DNS_resetDNSRecordsV1.json",
+          "description_excerpt": "Reset DNS zone to the default records.  Use this endpoint to restore domain DNS to original configuration."
+        },
+        {
+          "name": "DNS_restoreDNSSnapshotV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/DNS_restoreDNSSnapshotV1.json",
+          "description_excerpt": "Restore DNS zone to the selected snapshot.  Use this endpoint to revert domain DNS to a previous configuration."
+        },
+        {
+          "name": "DNS_updateDNSRecordsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/DNS_updateDNSRecordsV1.json",
+          "description_excerpt": "Update DNS records for the selected domain.  Using `overwrite = true` will replace existing records with the provided ones.  Otherwise existing records will be updated and new records will be added.  Use this endpoint to modify domain DN..."
+        },
+        {
+          "name": "DNS_validateDNSRecordsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/DNS_validateDNSRecordsV1.json",
+          "description_excerpt": "Validate DNS records prior to update for the selected domain.  If the validation is successful, the response will contain `200 Success` code. If there is validation error, the response will fail with `422 Validation error` code.  Use thi..."
+        },
+        {
+          "name": "domains_checkDomainAvailabilityV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_checkDomainAvailabilityV1.json",
+          "description_excerpt": "Check availability of domain names across multiple TLDs.  Multiple TLDs can be checked at once. If you want alternative domains with response, provide only one TLD and set `with_alternatives` to `true`. TLDs should be provided without le..."
+        },
+        {
+          "name": "domains_createDomainForwardingV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_createDomainForwardingV1.json",
+          "description_excerpt": "Create domain forwarding configuration.  Use this endpoint to set up domain redirects to other URLs."
+        },
+        {
+          "name": "domains_createWHOISProfileV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_createWHOISProfileV1.json",
+          "description_excerpt": "Create WHOIS contact profile.  Use this endpoint to add new contact information for domain registration."
+        },
+        {
+          "name": "domains_deleteDomainForwardingV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_deleteDomainForwardingV1.json",
+          "description_excerpt": "Delete domain forwarding data.  Use this endpoint to remove redirect configuration from domains."
+        },
+        {
+          "name": "domains_deleteWHOISProfileV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_deleteWHOISProfileV1.json",
+          "description_excerpt": "Delete WHOIS contact profile.  Use this endpoint to remove unused contact profiles from account."
+        },
+        {
+          "name": "domains_disableDomainLockV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_disableDomainLockV1.json",
+          "description_excerpt": "Disable domain lock for the domain.  Domain lock needs to be disabled before transferring the domain to another registrar.  Use this endpoint to prepare domains for transfer to other registrars."
+        },
+        {
+          "name": "domains_disablePrivacyProtectionV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_disablePrivacyProtectionV1.json",
+          "description_excerpt": "Disable privacy protection for the domain.  When privacy protection is disabled, domain owner's personal information is visible in public WHOIS database.  Use this endpoint to make domain owner's information publicly visible."
+        },
+        {
+          "name": "domains_enableDomainLockV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_enableDomainLockV1.json",
+          "description_excerpt": "Enable domain lock for the domain.  When domain lock is enabled, the domain cannot be transferred to another registrar without first disabling the lock.  Use this endpoint to secure domains against unauthorized transfers."
+        },
+        {
+          "name": "domains_enablePrivacyProtectionV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_enablePrivacyProtectionV1.json",
+          "description_excerpt": "Enable privacy protection for the domain.  When privacy protection is enabled, domain owner's personal information is hidden from public WHOIS database.  Use this endpoint to protect domain owner's personal information from public view."
+        },
+        {
+          "name": "domains_getDomainDetailsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_getDomainDetailsV1.json",
+          "description_excerpt": "Retrieve detailed information for specified domain.  Use this endpoint to view comprehensive domain configuration and status."
+        },
+        {
+          "name": "domains_getDomainForwardingV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_getDomainForwardingV1.json",
+          "description_excerpt": "Retrieve domain forwarding data.  Use this endpoint to view current redirect configuration for domains."
+        },
+        {
+          "name": "domains_getDomainListV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_getDomainListV1.json",
+          "description_excerpt": "Retrieve all domains associated with your account.  Use this endpoint to view user's domain portfolio."
+        },
+        {
+          "name": "domains_getWHOISProfileListV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_getWHOISProfileListV1.json",
+          "description_excerpt": "Retrieve WHOIS contact profiles.  Use this endpoint to view available contact profiles for domain registration."
+        },
+        {
+          "name": "domains_getWHOISProfileUsageV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_getWHOISProfileUsageV1.json",
+          "description_excerpt": "Retrieve domain list where provided WHOIS contact profile is used.  Use this endpoint to view which domains use specific contact profiles."
+        },
+        {
+          "name": "domains_getWHOISProfileV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_getWHOISProfileV1.json",
+          "description_excerpt": "Retrieve a WHOIS contact profile.  Use this endpoint to view domain registration contact information."
+        },
+        {
+          "name": "domains_purchaseNewDomainV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_purchaseNewDomainV1.json",
+          "description_excerpt": "Purchase and register a new domain name.  If registration fails, login to [hPanel](https://hpanel.hostinger.com/) and check domain registration status.  If no payment method is provided, your default payment method will be used automatic..."
+        },
+        {
+          "name": "domains_updateDomainNameserversV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/domains_updateDomainNameserversV1.json",
+          "description_excerpt": "Set nameservers for a specified domain.  Be aware, that improper nameserver configuration can lead to the domain being unresolvable or unavailable.  Use this endpoint to configure custom DNS hosting for domains."
+        },
+        {
+          "name": "hosting_createWebsiteV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_createWebsiteV1.json",
+          "description_excerpt": "Create a new website for the authenticated client.  Provide the domain name and associated order ID to create a new website. The datacenter_code parameter is required when creating the first website on a new hosting plan - this will set ..."
+        },
+        {
+          "name": "hosting_deployJsApplication",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_deployJsApplication.json",
+          "description_excerpt": "Deploy a JavaScript application from an archive file to a hosting server. IMPORTANT: the archive must ONLY contain application source files, not the build output, skip node_modules directory; also exclude all files matched by .gitignore ..."
+        },
+        {
+          "name": "hosting_deployStaticWebsite",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_deployStaticWebsite.json",
+          "description_excerpt": "Deploy a static website from an archive file to a hosting server. IMPORTANT: This tool only works for static websites with no build process. The archive must contain pre-built static files (HTML, CSS, JavaScript, images, etc.) ready to b..."
+        },
+        {
+          "name": "hosting_deployWordpressPlugin",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_deployWordpressPlugin.json",
+          "description_excerpt": "Deploy a WordPress plugin from a directory to a hosting server. This tool uploads all plugin files and triggers plugin deployment."
+        },
+        {
+          "name": "hosting_deployWordpressTheme",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_deployWordpressTheme.json",
+          "description_excerpt": "Deploy a WordPress theme from a directory to a hosting server. This tool uploads all theme files and triggers theme deployment. The uploaded theme can optionally be activated after deployment."
+        },
+        {
+          "name": "hosting_generateAFreeSubdomainV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_generateAFreeSubdomainV1.json",
+          "description_excerpt": "Generate a unique free subdomain that can be used for hosting services without purchasing custom domains. Free subdomains allow you to start using hosting services immediately and you can always connect a custom domain to your site later."
+        },
+        {
+          "name": "hosting_importWordpressWebsite",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_importWordpressWebsite.json",
+          "description_excerpt": "Import a WordPress website from an archive file to a hosting server. This tool uploads a website archive (zip, tar, tar.gz, etc.) and a database dump (.sql file) to deploy a complete WordPress website. The archive will be extracted on th..."
+        },
+        {
+          "name": "hosting_listAvailableDatacentersV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_listAvailableDatacentersV1.json",
+          "description_excerpt": "Retrieve a list of datacenters available for setting up hosting plans based on available datacenter capacity and hosting plan of your order. The first item in the list is the best match for your specific order requirements."
+        },
+        {
+          "name": "hosting_listJsDeployments",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_listJsDeployments.json",
+          "description_excerpt": "List javascript application deployments for checking their status. Use this tool when customer asks for the status of the deployment. This tool retrieves a paginated list of Node.js application deployments for a domain with optional filt..."
+        },
+        {
+          "name": "hosting_listOrdersV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_listOrdersV1.json",
+          "description_excerpt": "Retrieve a paginated list of orders accessible to the authenticated client.  This endpoint returns orders of your hosting accounts as well as orders of other client hosting accounts that have shared access with you.  Use the available qu..."
+        },
+        {
+          "name": "hosting_listWebsitesV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_listWebsitesV1.json",
+          "description_excerpt": "Retrieve a paginated list of websites (main and addon types) accessible to the authenticated client.  This endpoint returns websites from your hosting accounts as well as websites from other client hosting accounts that have shared acces..."
+        },
+        {
+          "name": "hosting_showJsDeploymentLogs",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_showJsDeploymentLogs.json",
+          "description_excerpt": "Retrieve logs for a specified JavaScript application deployment for debugging purposes in case of failure."
+        },
+        {
+          "name": "hosting_verifyDomainOwnershipV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/hosting_verifyDomainOwnershipV1.json",
+          "description_excerpt": "Verify ownership of a single domain and return the verification status.  Use this endpoint to check if a domain is accessible for you before using it for new websites. If the domain is accessible, the response will have `is_accessible: t..."
+        },
+        {
+          "name": "reach_createANewContactSegmentV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/reach_createANewContactSegmentV1.json",
+          "description_excerpt": "Create a new contact segment.  This endpoint allows creating a new contact segment that can be used to organize contacts. The segment can be configured with specific criteria like email, name, subscription status, etc."
+        },
+        {
+          "name": "reach_createANewContactV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/reach_createANewContactV1.json",
+          "description_excerpt": "Create a new contact in the email marketing system.  This endpoint allows you to create a new contact with basic information like name, email, and surname.  If double opt-in is enabled, the contact will be created with a pending status a..."
+        },
+        {
+          "name": "reach_createANewProfileContactV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/reach_createANewProfileContactV1.json",
+          "description_excerpt": "Create a new contact in the email marketing system.  This endpoint allows you to create a new contact with basic information like name, email, and surname.  If double opt-in is enabled, the contact will be created with a pending status a..."
+        },
+        {
+          "name": "reach_deleteAContactV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/reach_deleteAContactV1.json",
+          "description_excerpt": "Delete a contact with the specified UUID.  This endpoint permanently removes a contact from the email marketing system."
+        },
+        {
+          "name": "reach_getSegmentDetailsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/reach_getSegmentDetailsV1.json",
+          "description_excerpt": "Get details of a specific segment.  This endpoint retrieves information about a single segment identified by UUID. Segments are used to organize and group contacts based on specific criteria."
+        },
+        {
+          "name": "reach_listContactGroupsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/reach_listContactGroupsV1.json",
+          "description_excerpt": "Get a list of all contact groups.  This endpoint returns a list of contact groups that can be used to organize contacts."
+        },
+        {
+          "name": "reach_listContactsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/reach_listContactsV1.json",
+          "description_excerpt": "Get a list of contacts, optionally filtered by group and subscription status.  This endpoint returns a paginated list of contacts with their basic information. You can filter contacts by group UUID and subscription status."
+        },
+        {
+          "name": "reach_listProfilesV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/reach_listProfilesV1.json",
+          "description_excerpt": "This endpoint returns all profiles available to the client, including their basic information."
+        },
+        {
+          "name": "reach_listSegmentContactsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/reach_listSegmentContactsV1.json",
+          "description_excerpt": "Retrieve contacts associated with a specific segment.  This endpoint allows you to fetch and filter contacts that belong to a particular segment, identified by its UUID."
+        },
+        {
+          "name": "reach_listSegmentsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/reach_listSegmentsV1.json",
+          "description_excerpt": "Get a list of all contact segments.  This endpoint returns a list of contact segments that can be used to organize contacts."
+        },
+        {
+          "name": "v2_getDomainVerificationsDIRECT",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/v2_getDomainVerificationsDIRECT.json",
+          "description_excerpt": "Retrieve a list of pending and completed domain verifications."
+        },
+        {
+          "name": "VPS_activateFirewallV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_activateFirewallV1.json",
+          "description_excerpt": "Activate a firewall for a specified virtual machine.  Only one firewall can be active for a virtual machine at a time.  Use this endpoint to apply firewall rules to VPS instances."
+        },
+        {
+          "name": "VPS_attachPublicKeyV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_attachPublicKeyV1.json",
+          "description_excerpt": "Attach existing public keys from your account to a specified virtual machine.  Multiple keys can be attached to a single virtual machine.  Use this endpoint to enable SSH key authentication for VPS instances."
+        },
+        {
+          "name": "VPS_createFirewallRuleV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_createFirewallRuleV1.json",
+          "description_excerpt": "Create new firewall rule for a specified firewall.  By default, the firewall drops all incoming traffic, which means you must add accept rules for all ports you want to use.  Any virtual machine that has this firewall activated will lose..."
+        },
+        {
+          "name": "VPS_createNewFirewallV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_createNewFirewallV1.json",
+          "description_excerpt": "Create a new firewall.  Use this endpoint to set up new firewall configurations for VPS security."
+        },
+        {
+          "name": "VPS_createNewProjectV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_createNewProjectV1.json",
+          "description_excerpt": "Deploy new project from docker-compose.yaml contents or download contents from URL.   URL can be Github repository url in format https://github.com/[user]/[repo] and it will be automatically resolved to  docker-compose.yaml file in maste..."
+        },
+        {
+          "name": "VPS_createPostInstallScriptV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_createPostInstallScriptV1.json",
+          "description_excerpt": "Add a new post-install script to your account, which can then be used after virtual machine installation.  The script contents will be saved to the file `/post_install` with executable attribute set and will be executed once virtual mach..."
+        },
+        {
+          "name": "VPS_createPTRRecordV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_createPTRRecordV1.json",
+          "description_excerpt": "Create or update a PTR (Pointer) record for a specified virtual machine.  Use this endpoint to configure reverse DNS lookup for VPS IP addresses."
+        },
+        {
+          "name": "VPS_createPublicKeyV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_createPublicKeyV1.json",
+          "description_excerpt": "Add a new public key to your account.  Use this endpoint to register SSH keys for VPS authentication."
+        },
+        {
+          "name": "VPS_createSnapshotV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_createSnapshotV1.json",
+          "description_excerpt": "Create a snapshot of a specified virtual machine.  A snapshot captures the state and data of the virtual machine at a specific point in time,  allowing users to restore the virtual machine to that state if needed.  This operation is usef..."
+        },
+        {
+          "name": "VPS_deactivateFirewallV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_deactivateFirewallV1.json",
+          "description_excerpt": "Deactivate a firewall for a specified virtual machine.  Use this endpoint to remove firewall protection from VPS instances."
+        },
+        {
+          "name": "VPS_deleteFirewallRuleV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_deleteFirewallRuleV1.json",
+          "description_excerpt": "Delete a specific firewall rule from a specified firewall.  Any virtual machine that has this firewall activated will lose sync with the firewall and will have to be synced again manually.         Use this endpoint to remove specific fir..."
+        },
+        {
+          "name": "VPS_deleteFirewallV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_deleteFirewallV1.json",
+          "description_excerpt": "Delete a specified firewall.  Any virtual machine that has this firewall activated will automatically have it deactivated.  Use this endpoint to remove unused firewall configurations."
+        },
+        {
+          "name": "VPS_deletePostInstallScriptV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_deletePostInstallScriptV1.json",
+          "description_excerpt": "Delete a post-install script from your account.         Use this endpoint to remove unused automation scripts."
+        },
+        {
+          "name": "VPS_deleteProjectV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_deleteProjectV1.json",
+          "description_excerpt": "Completely removes a Docker Compose project from the virtual machine, stopping all containers and cleaning up  associated resources including networks, volumes, and images.   This operation is irreversible and will delete all project dat..."
+        },
+        {
+          "name": "VPS_deletePTRRecordV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_deletePTRRecordV1.json",
+          "description_excerpt": "Delete a PTR (Pointer) record for a specified virtual machine.  Once deleted, reverse DNS lookups to the virtual machine's IP address will no longer return the previously configured hostname.  Use this endpoint to remove reverse DNS conf..."
+        },
+        {
+          "name": "VPS_deletePublicKeyV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_deletePublicKeyV1.json",
+          "description_excerpt": "Delete a public key from your account.   **Deleting public key from account does not remove it from virtual machine**          Use this endpoint to remove unused SSH keys from account."
+        },
+        {
+          "name": "VPS_deleteSnapshotV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_deleteSnapshotV1.json",
+          "description_excerpt": "Delete a snapshot of a specified virtual machine.  Use this endpoint to remove VPS snapshots."
+        },
+        {
+          "name": "VPS_getActionDetailsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getActionDetailsV1.json",
+          "description_excerpt": "Retrieve detailed information about a specific action performed on a specified virtual machine.  Use this endpoint to monitor specific VPS operation status and details."
+        },
+        {
+          "name": "VPS_getActionsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getActionsV1.json",
+          "description_excerpt": "Retrieve actions performed on a specified virtual machine.  Actions are operations or events that have been executed on the virtual machine, such as starting, stopping, or modifying  the machine. This endpoint allows you to view the hist..."
+        },
+        {
+          "name": "VPS_getAttachedPublicKeysV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getAttachedPublicKeysV1.json",
+          "description_excerpt": "Retrieve public keys attached to a specified virtual machine.  Use this endpoint to view SSH keys configured for specific VPS instances."
+        },
+        {
+          "name": "VPS_getBackupsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getBackupsV1.json",
+          "description_excerpt": "Retrieve backups for a specified virtual machine.  Use this endpoint to view available backup points for VPS data recovery."
+        },
+        {
+          "name": "VPS_getDataCenterListV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getDataCenterListV1.json",
+          "description_excerpt": "Retrieve all available data centers.  Use this endpoint to view location options before deploying VPS instances."
+        },
+        {
+          "name": "VPS_getFirewallDetailsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getFirewallDetailsV1.json",
+          "description_excerpt": "Retrieve firewall by its ID and rules associated with it.  Use this endpoint to view specific firewall configuration and rules."
+        },
+        {
+          "name": "VPS_getFirewallListV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getFirewallListV1.json",
+          "description_excerpt": "Retrieve all available firewalls.  Use this endpoint to view existing firewall configurations."
+        },
+        {
+          "name": "VPS_getMetricsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getMetricsV1.json",
+          "description_excerpt": "Retrieve historical metrics for a specified virtual machine.  It includes the following metrics:  - CPU usage - Memory usage - Disk usage - Network usage - Uptime  Use this endpoint to monitor VPS performance and resource utilization ove..."
+        },
+        {
+          "name": "VPS_getPostInstallScriptsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getPostInstallScriptsV1.json",
+          "description_excerpt": "Retrieve post-install scripts associated with your account.  Use this endpoint to view available automation scripts for VPS deployment."
+        },
+        {
+          "name": "VPS_getPostInstallScriptV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getPostInstallScriptV1.json",
+          "description_excerpt": "Retrieve post-install script by its ID.  Use this endpoint to view specific automation script details."
+        },
+        {
+          "name": "VPS_getProjectContainersV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getProjectContainersV1.json",
+          "description_excerpt": "Retrieves a list of all containers belonging to a specific Docker Compose project on the virtual machine.   This endpoint returns detailed information about each container including their current status, port mappings, and runtime config..."
+        },
+        {
+          "name": "VPS_getProjectContentsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getProjectContentsV1.json",
+          "description_excerpt": "Retrieves the complete project information including the docker-compose.yml file contents, project metadata, and current deployment status.   This endpoint provides the full configuration and state details of a specific Docker Compose pr..."
+        },
+        {
+          "name": "VPS_getProjectListV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getProjectListV1.json",
+          "description_excerpt": "Retrieves a list of all Docker Compose projects currently deployed on the virtual machine.   This endpoint returns basic information about each project including name, status, file path and list of containers with  details about their na..."
+        },
+        {
+          "name": "VPS_getProjectLogsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getProjectLogsV1.json",
+          "description_excerpt": "Retrieves aggregated log entries from all services within a Docker Compose project.   This endpoint returns recent log output from each container, organized by service name with timestamps.  The response contains the last 300 log entries..."
+        },
+        {
+          "name": "VPS_getPublicKeysV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getPublicKeysV1.json",
+          "description_excerpt": "Retrieve public keys associated with your account.  Use this endpoint to view available SSH keys for VPS authentication."
+        },
+        {
+          "name": "VPS_getScanMetricsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getScanMetricsV1.json",
+          "description_excerpt": "Retrieve scan metrics for the [Monarx](https://www.monarx.com/) malware scanner installed on a specified virtual machine.  The scan metrics provide detailed information about malware scans performed by Monarx, including number of scans, ..."
+        },
+        {
+          "name": "VPS_getSnapshotV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getSnapshotV1.json",
+          "description_excerpt": "Retrieve snapshot for a specified virtual machine.  Use this endpoint to view current VPS snapshot information."
+        },
+        {
+          "name": "VPS_getTemplateDetailsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getTemplateDetailsV1.json",
+          "description_excerpt": "Retrieve detailed information about a specific OS template for virtual machines.  Use this endpoint to view specific template specifications before deployment."
+        },
+        {
+          "name": "VPS_getTemplatesV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getTemplatesV1.json",
+          "description_excerpt": "Retrieve available OS templates for virtual machines.  Use this endpoint to view operating system options before creating or recreating VPS instances."
+        },
+        {
+          "name": "VPS_getVirtualMachineDetailsV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getVirtualMachineDetailsV1.json",
+          "description_excerpt": "Retrieve detailed information about a specified virtual machine.  Use this endpoint to view comprehensive VPS configuration and status."
+        },
+        {
+          "name": "VPS_getVirtualMachinesV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_getVirtualMachinesV1.json",
+          "description_excerpt": "Retrieve all available virtual machines.  Use this endpoint to view available VPS instances."
+        },
+        {
+          "name": "VPS_installMonarxV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_installMonarxV1.json",
+          "description_excerpt": "Install the Monarx malware scanner on a specified virtual machine.  [Monarx](https://www.monarx.com/) is a security tool designed to detect and prevent malware infections on virtual machines.  By installing Monarx, users can enhance the ..."
+        },
+        {
+          "name": "VPS_purchaseNewVirtualMachineV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_purchaseNewVirtualMachineV1.json",
+          "description_excerpt": "Purchase and setup a new virtual machine.  If virtual machine setup fails for any reason, login to [hPanel](https://hpanel.hostinger.com/) and complete the setup manually.  If no payment method is provided, your default payment method wi..."
+        },
+        {
+          "name": "VPS_recreateVirtualMachineV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_recreateVirtualMachineV1.json",
+          "description_excerpt": "Recreate a virtual machine from scratch.  The recreation process involves reinstalling the operating system and resetting the virtual machine to its initial state. Snapshots, if there are any, will be deleted.  ## Password Requirements P..."
+        },
+        {
+          "name": "VPS_resetHostnameV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_resetHostnameV1.json",
+          "description_excerpt": "Reset hostname and PTR record of a specified virtual machine to default value.  Use this endpoint to restore default hostname configuration for VPS instances."
+        },
+        {
+          "name": "VPS_restartProjectV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_restartProjectV1.json",
+          "description_excerpt": "Restarts all services in a Docker Compose project by stopping and starting containers in the correct dependency order.   This operation preserves data volumes and network configurations while refreshing the running containers.   Use this..."
+        },
+        {
+          "name": "VPS_restartVirtualMachineV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_restartVirtualMachineV1.json",
+          "description_excerpt": "Restart a specified virtual machine by fully stopping and starting it.  If the virtual machine was stopped, it will be started.  Use this endpoint to reboot VPS instances."
+        },
+        {
+          "name": "VPS_restoreBackupV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_restoreBackupV1.json",
+          "description_excerpt": "Restore a backup for a specified virtual machine.  The system will then initiate the restore process, which may take some time depending on the size of the backup.  **All data on the virtual machine will be overwritten with the data from..."
+        },
+        {
+          "name": "VPS_restoreSnapshotV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_restoreSnapshotV1.json",
+          "description_excerpt": "Restore a specified virtual machine to a previous state using a snapshot.  Restoring from a snapshot allows users to revert the virtual machine to that state, which is useful for system recovery, undoing changes, or testing.  Use this en..."
+        },
+        {
+          "name": "VPS_setHostnameV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_setHostnameV1.json",
+          "description_excerpt": "Set hostname for a specified virtual machine.  Changing hostname does not update PTR record automatically. If you want your virtual machine to be reachable by a hostname,  you need to point your domain A/AAAA records to virtual machine I..."
+        },
+        {
+          "name": "VPS_setNameserversV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_setNameserversV1.json",
+          "description_excerpt": "Set nameservers for a specified virtual machine.  Be aware, that improper nameserver configuration can lead to the virtual machine being unable to resolve domain names.  Use this endpoint to configure custom DNS resolvers for VPS instances."
+        },
+        {
+          "name": "VPS_setPanelPasswordV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_setPanelPasswordV1.json",
+          "description_excerpt": "Set panel password for a specified virtual machine.  If virtual machine does not use panel OS, the request will still be processed without any effect. Requirements for password are same as in the [recreate virtual machine endpoint](/#tag..."
+        },
+        {
+          "name": "VPS_setRootPasswordV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_setRootPasswordV1.json",
+          "description_excerpt": "Set root password for a specified virtual machine.  Requirements for password are same as in the [recreate virtual machine endpoint](/#tag/vps-virtual-machine/POST/api/vps/v1/virtual-machines/{virtualMachineId}/recreate).  Use this endpo..."
+        },
+        {
+          "name": "VPS_setupPurchasedVirtualMachineV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_setupPurchasedVirtualMachineV1.json",
+          "description_excerpt": "Setup newly purchased virtual machine with `initial` state.  Use this endpoint to configure and initialize purchased VPS instances."
+        },
+        {
+          "name": "VPS_startProjectV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_startProjectV1.json",
+          "description_excerpt": "Starts all services in a Docker Compose project that are currently stopped.   This operation brings up containers in the correct dependency order as defined in the compose file.   Use this to resume a project that was previously stopped ..."
+        },
+        {
+          "name": "VPS_startRecoveryModeV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_startRecoveryModeV1.json",
+          "description_excerpt": "Initiate recovery mode for a specified virtual machine.  Recovery mode is a special state that allows users to perform system rescue operations,  such as repairing file systems, recovering data, or troubleshooting issues that prevent the..."
+        },
+        {
+          "name": "VPS_startVirtualMachineV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_startVirtualMachineV1.json",
+          "description_excerpt": "Start a specified virtual machine.  If the virtual machine is already running, the request will still be processed without any effect.  Use this endpoint to power on stopped VPS instances."
+        },
+        {
+          "name": "VPS_stopProjectV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_stopProjectV1.json",
+          "description_excerpt": "Stops all running services in a Docker Compose project while preserving container configurations and data volumes.   This operation gracefully shuts down containers in reverse dependency order.   Use this to temporarily halt a project wi..."
+        },
+        {
+          "name": "VPS_stopRecoveryModeV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_stopRecoveryModeV1.json",
+          "description_excerpt": "Stop recovery mode for a specified virtual machine.  If virtual machine is not in recovery mode, this operation will fail.  Use this endpoint to exit system rescue mode and return VPS to normal operation."
+        },
+        {
+          "name": "VPS_stopVirtualMachineV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_stopVirtualMachineV1.json",
+          "description_excerpt": "Stop a specified virtual machine.  If the virtual machine is already stopped, the request will still be processed without any effect.  Use this endpoint to power off running VPS instances."
+        },
+        {
+          "name": "VPS_syncFirewallV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_syncFirewallV1.json",
+          "description_excerpt": "Sync a firewall for a specified virtual machine.  Firewall can lose sync with virtual machine if the firewall has new rules added, removed or updated.  Use this endpoint to apply updated firewall rules to VPS instances."
+        },
+        {
+          "name": "VPS_uninstallMonarxV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_uninstallMonarxV1.json",
+          "description_excerpt": "Uninstall the Monarx malware scanner on a specified virtual machine.  If Monarx is not installed, the request will still be processed without any effect.  Use this endpoint to remove malware scanner from VPS instances."
+        },
+        {
+          "name": "VPS_updateFirewallRuleV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_updateFirewallRuleV1.json",
+          "description_excerpt": "Update a specific firewall rule from a specified firewall.  Any virtual machine that has this firewall activated will lose sync with the firewall and will have to be synced again manually.  Use this endpoint to modify existing firewall r..."
+        },
+        {
+          "name": "VPS_updatePostInstallScriptV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_updatePostInstallScriptV1.json",
+          "description_excerpt": "Update a specific post-install script.  Use this endpoint to modify existing automation scripts."
+        },
+        {
+          "name": "VPS_updateProjectV1",
+          "descriptor_file": "project-0-workspace-hostinger-mcp/tools/VPS_updateProjectV1.json",
+          "description_excerpt": "Updates a Docker Compose project by pulling the latest image versions and recreating containers with new configurations.   This operation preserves data volumes while applying changes from the compose file.   Use this to deploy applicati..."
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-local-rag",
+      "tool_count": 3,
+      "tools": [
+        {
+          "name": "get_index_status",
+          "descriptor_file": "project-0-workspace-local-rag/tools/get_index_status.json",
+          "description_excerpt": "Index file count and last build info."
+        },
+        {
+          "name": "reindex_vault",
+          "descriptor_file": "project-0-workspace-local-rag/tools/reindex_vault.json",
+          "description_excerpt": "Incremental reindex of vault (changed files only). May take minutes on large vaults."
+        },
+        {
+          "name": "search_vault",
+          "descriptor_file": "project-0-workspace-local-rag/tools/search_vault.json",
+          "description_excerpt": "Search MKM vault (indexed text). For full files use filesystem MCP read_file."
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-logos-code-pack-distribution",
+      "tool_count": 8,
+      "tools": [
+        {
+          "name": "check_code_pack_update",
+          "descriptor_file": "project-0-workspace-logos-code-pack-distribution/tools/check_code_pack_update.json",
+          "description_excerpt": "코드팩 업데이트 확인          Args:         current_version: 현재 클라이언트 버전 (예: \"1.0.0\")          Returns:         JSON 문자열: 업데이트 가능 여부 및 최신 버전 정보"
+        },
+        {
+          "name": "classify_constitution_4d",
+          "descriptor_file": "project-0-workspace-logos-code-pack-distribution/tools/classify_constitution_4d.json",
+          "description_excerpt": "4D 벡터 기반 체질 분류 (Phase 4: Lambda 병렬도 + GPU 가속 통합)          Phase 1: 체질별 맞춤형 응답 로직 정교화     Phase 4: Lambda 병렬도 + GPU 가속 통합     - 텍스트 → 4D 벡터 변환 (GPU 가속)     - Lambda 기반 병렬도 결정     - DCV 기반 체질 판정     - 실시간 상황 반영     - GPU 활용률 모니터링          ..."
+        },
+        {
+          "name": "download_code_pack",
+          "descriptor_file": "project-0-workspace-logos-code-pack-distribution/tools/download_code_pack.json",
+          "description_excerpt": "코드팩 다운로드          Args:         version: 다운로드할 버전 (기본값: \"latest\" = 최신 버전)          Returns:         JSON 문자열: 코드팩 데이터 또는 에러 메시지"
+        },
+        {
+          "name": "get_code_pack_info",
+          "descriptor_file": "project-0-workspace-logos-code-pack-distribution/tools/get_code_pack_info.json",
+          "description_excerpt": "코드팩 상세 정보 조회          Args:         version: 조회할 버전          Returns:         JSON 문자열: 코드팩 상세 정보"
+        },
+        {
+          "name": "get_code_pack_versions",
+          "descriptor_file": "project-0-workspace-logos-code-pack-distribution/tools/get_code_pack_versions.json",
+          "description_excerpt": "사용 가능한 코드팩 버전 목록 조회          Returns:         JSON 문자열: 버전 목록 및 메타데이터"
+        },
+        {
+          "name": "restore_literal_from_vector",
+          "descriptor_file": "project-0-workspace-logos-code-pack-distribution/tools/restore_literal_from_vector.json",
+          "description_excerpt": "100% 리터럴 복원 (Direct Sovereign Algorithm 통합)          Phase 3: MCP 서버 통합     - 4D 벡터 → 원어 텍스트 복원     - Direct Sovereign Algorithm 사용          Args:         verse_id: 구절 ID         vector_4d: 4D 벡터 {\"S\": float, \"L\": float, \"K\": float, \"M\":..."
+        },
+        {
+          "name": "search_verses_by_constitution",
+          "descriptor_file": "project-0-workspace-logos-code-pack-distribution/tools/search_verses_by_constitution.json",
+          "description_excerpt": "체질별 원어 구절 검색 (Direct Sovereign Algorithm 통합)          Phase 3: MCP 서버 통합     - Direct Sovereign Algorithm 사용     - 체질별 필터링     - 4D 벡터 기반 매칭          Args:         constitution: 체질 타입 (태양인, 소양인, 태음인, 소음인)         vector_4d: 4D 벡터 (선택적, N..."
+        },
+        {
+          "name": "verify_code_pack",
+          "descriptor_file": "project-0-workspace-logos-code-pack-distribution/tools/verify_code_pack.json",
+          "description_excerpt": "코드팩 검증 (체크섬 확인)          Args:         version: 검증할 버전         checksum: 예상 체크섬 (SHA256)          Returns:         JSON 문자열: 검증 결과"
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-logs-resource",
+      "tool_count": 3,
+      "tools": [
+        {
+          "name": "list_log_files",
+          "descriptor_file": "project-0-workspace-logs-resource/tools/list_log_files.json",
+          "description_excerpt": "로그 파일 목록 조회"
+        },
+        {
+          "name": "read_log_file",
+          "descriptor_file": "project-0-workspace-logs-resource/tools/read_log_file.json",
+          "description_excerpt": "로그 파일 읽기 (Specific Retrieval)                  Args:             file_name: 로그 파일명 (예: \"daily_usage_report.json\")             lines: 읽을 최대 줄 수 (None이면 전체, 권장: 50줄 이하)             filter_error: 에러만 필터링 (기본값: False)             search_patt..."
+        },
+        {
+          "name": "search_logs",
+          "descriptor_file": "project-0-workspace-logs-resource/tools/search_logs.json",
+          "description_excerpt": "로그 파일에서 패턴 검색                  Args:             pattern: 검색 패턴 (정규식)             file_name: 특정 파일만 검색 (None이면 모든 파일)             limit: 최대 결과 수 (기본값: 50)"
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-notebooklm-mcp",
+      "tool_count": 36,
+      "tools": [
+        {
+          "name": "batch",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/batch.json",
+          "description_excerpt": "Perform batch operations across multiple notebooks.  Actions: - query: Query multiple notebooks with the same question - add_source: Add the same source URL to multiple notebooks - create: Create multiple notebooks at once - delete: Dele..."
+        },
+        {
+          "name": "chat_configure",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/chat_configure.json",
+          "description_excerpt": "Configure notebook chat settings.  Args:     notebook_id: Notebook UUID     goal: default|learning_guide|custom     custom_prompt: Required when goal=custom (max 10000 chars)     response_length: default|longer|shorter"
+        },
+        {
+          "name": "cross_notebook_query",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/cross_notebook_query.json",
+          "description_excerpt": "Query multiple notebooks and get aggregated answers with per-notebook citations.  Specify notebooks by name, by tags, or use all=True for all notebooks.  Args:     query: Question to ask across notebooks     notebook_names: Comma-separat..."
+        },
+        {
+          "name": "download_artifact",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/download_artifact.json",
+          "description_excerpt": "Download any NotebookLM artifact to a file.  Unified download tool replacing 9 separate download tools. Supports all artifact types: audio, video, report, mind_map, slide_deck, infographic, data_table, quiz, flashcards.  Args:     notebo..."
+        },
+        {
+          "name": "export_artifact",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/export_artifact.json",
+          "description_excerpt": "Export a NotebookLM artifact to Google Docs or Sheets.  Supports: - Data Tables → Google Sheets - Reports (Briefing Doc, Study Guide, Blog Post) → Google Docs  Args:     notebook_id: Notebook UUID     artifact_id: Artifact UUID to export..."
+        },
+        {
+          "name": "note",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/note.json",
+          "description_excerpt": "Manage notes in a notebook. Unified tool for all note operations.  Supports: create, list, update, delete  Args:     notebook_id: Notebook UUID     action: Operation to perform:         - create: Create a new note         - list: List al..."
+        },
+        {
+          "name": "notebook_create",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/notebook_create.json",
+          "description_excerpt": "Create a new notebook.  Args:     title: Optional title for the notebook"
+        },
+        {
+          "name": "notebook_delete",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/notebook_delete.json",
+          "description_excerpt": "Delete notebook permanently. IRREVERSIBLE. Requires confirm=True.  Args:     notebook_id: Notebook UUID     confirm: Must be True after user approval"
+        },
+        {
+          "name": "notebook_describe",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/notebook_describe.json",
+          "description_excerpt": "Get AI-generated notebook summary with suggested topics.  Args:     notebook_id: Notebook UUID  Returns: summary (markdown), suggested_topics list"
+        },
+        {
+          "name": "notebook_get",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/notebook_get.json",
+          "description_excerpt": "Get notebook details with sources.  Args:     notebook_id: Notebook UUID"
+        },
+        {
+          "name": "notebook_list",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/notebook_list.json",
+          "description_excerpt": "List all notebooks.  Args:     max_results: Maximum number of notebooks to return (default: 100)"
+        },
+        {
+          "name": "notebook_query",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/notebook_query.json",
+          "description_excerpt": "Ask AI about EXISTING sources already in notebook. NOT for finding new sources.  Use research_start instead for: deep research, web search, find new sources, Drive search.  Args:     notebook_id: Notebook UUID     query: Question to ask ..."
+        },
+        {
+          "name": "notebook_rename",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/notebook_rename.json",
+          "description_excerpt": "Rename a notebook.  Args:     notebook_id: Notebook UUID     new_title: New title"
+        },
+        {
+          "name": "notebook_share_batch",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/notebook_share_batch.json",
+          "description_excerpt": "Invite multiple collaborators in a single request.  Args:     notebook_id: Notebook UUID     recipients: List of dicts, each with 'email' (str) and optional 'role' (str).                 Role defaults to 'viewer'. Example: [{\"email\": \"a@..."
+        },
+        {
+          "name": "notebook_share_invite",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/notebook_share_invite.json",
+          "description_excerpt": "Invite a collaborator by email.  Args:     notebook_id: Notebook UUID     email: Email address to invite     role: \"viewer\" or \"editor\" (default: viewer)  Returns: success status"
+        },
+        {
+          "name": "notebook_share_public",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/notebook_share_public.json",
+          "description_excerpt": "Enable or disable public link access.  Args:     notebook_id: Notebook UUID     is_public: True to enable public link, False to disable (default: True)  Returns: public_link if enabled, None if disabled"
+        },
+        {
+          "name": "notebook_share_status",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/notebook_share_status.json",
+          "description_excerpt": "Get current sharing settings and collaborators.  Args:     notebook_id: Notebook UUID  Returns: is_public, access_level, collaborators list, and public_link if public"
+        },
+        {
+          "name": "pipeline",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/pipeline.json",
+          "description_excerpt": "Manage and execute multi-step notebook pipelines.  Actions: - run: Execute a pipeline on a notebook - list: List all available pipelines (builtin and user-defined)  Args:     action: Operation to perform (run, list)     notebook_id: Targ..."
+        },
+        {
+          "name": "refresh_auth",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/refresh_auth.json",
+          "description_excerpt": "Reload auth tokens from disk or run headless re-authentication.  Call this after running `nlm login` to pick up new tokens, or to attempt automatic re-authentication if Chrome profile has saved login.  Returns status indicating if tokens..."
+        },
+        {
+          "name": "research_import",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/research_import.json",
+          "description_excerpt": "Import discovered sources into notebook.  Call after research_status shows status=\"completed\".  Args:     notebook_id: Notebook UUID     task_id: Research task ID     source_indices: Source indices to import (default: all)     timeout: I..."
+        },
+        {
+          "name": "research_start",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/research_start.json",
+          "description_excerpt": "Deep research / fast research: Search web or Google Drive to FIND NEW sources.  Use this for: \"deep research on X\", \"find sources about Y\", \"search web for Z\", \"search Drive\". Workflow: research_start -> poll research_status -> research_..."
+        },
+        {
+          "name": "research_status",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/research_status.json",
+          "description_excerpt": "Poll research progress. Blocks until complete or timeout.  Args:     notebook_id: Notebook UUID     poll_interval: Seconds between polls (default: 30)     max_wait: Max seconds to wait (default: 300, 0=single poll)     compact: If True (..."
+        },
+        {
+          "name": "save_auth_tokens",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/save_auth_tokens.json",
+          "description_excerpt": "Save NotebookLM cookies (FALLBACK method - try `nlm login` first!).  IMPORTANT FOR AI ASSISTANTS: - First, run `nlm login` via Bash/terminal (automated, preferred) - Only use this tool if the automated CLI fails  Args:     cookies: Cooki..."
+        },
+        {
+          "name": "server_info",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/server_info.json",
+          "description_excerpt": "Get server version and check for updates.  AI assistants: If update_available is True, inform the user that a new version is available and suggest updating with the provided command.  Returns:     dict with version info:     - version: C..."
+        },
+        {
+          "name": "source_add",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/source_add.json",
+          "description_excerpt": "Add a source to a notebook. Unified tool for all source types.  Supports: url, text, drive, file  Args:     notebook_id: Notebook UUID     source_type: Type of source to add:         - url: Web page or YouTube URL         - text: Pasted ..."
+        },
+        {
+          "name": "source_delete",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/source_delete.json",
+          "description_excerpt": "Delete source(s) permanently. IRREVERSIBLE. Requires confirm=True.  Args:     source_id: Source UUID to delete (single)     source_ids: List of source UUIDs to delete (bulk, alternative to source_id)     confirm: Must be True after user ..."
+        },
+        {
+          "name": "source_describe",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/source_describe.json",
+          "description_excerpt": "Get AI-generated source summary with keyword chips.  Args:     source_id: Source UUID  Returns: summary (markdown with **bold** keywords), keywords list"
+        },
+        {
+          "name": "source_get_content",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/source_get_content.json",
+          "description_excerpt": "Get raw text content of a source (no AI processing).  Returns the original indexed text from PDFs, web pages, pasted text, or YouTube transcripts. Much faster than notebook_query for content export.  Args:     source_id: Source UUID  Ret..."
+        },
+        {
+          "name": "source_list_drive",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/source_list_drive.json",
+          "description_excerpt": "List sources with types and Drive freshness status.  Use before source_sync_drive to identify stale sources.  Args:     notebook_id: Notebook UUID"
+        },
+        {
+          "name": "source_rename",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/source_rename.json",
+          "description_excerpt": "Rename a source in a notebook.  Args:     notebook_id: Notebook UUID containing the source     source_id: Source UUID to rename     new_title: New display title for the source"
+        },
+        {
+          "name": "source_sync_drive",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/source_sync_drive.json",
+          "description_excerpt": "Sync Drive sources with latest content. Requires confirm=True.  Call source_list_drive first to identify stale sources.  Args:     source_ids: Source UUIDs to sync     confirm: Must be True after user approval"
+        },
+        {
+          "name": "studio_create",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/studio_create.json",
+          "description_excerpt": "Create any NotebookLM studio artifact. Unified creation tool.  Supports: audio, video, infographic, slide_deck, report, flashcards, quiz, data_table, mind_map  Args:     notebook_id: Notebook UUID     artifact_type: Type of artifact to c..."
+        },
+        {
+          "name": "studio_delete",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/studio_delete.json",
+          "description_excerpt": "Delete studio artifact. IRREVERSIBLE. Requires confirm=True.  Args:     notebook_id: Notebook UUID     artifact_id: Artifact UUID (from studio_status)     confirm: Must be True after user approval"
+        },
+        {
+          "name": "studio_revise",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/studio_revise.json",
+          "description_excerpt": "Revise individual slides in an existing slide deck. Creates a NEW artifact.  Only slide decks support revision. The original artifact is not modified. Poll studio_status after calling to check when the new deck is ready.  Args:     noteb..."
+        },
+        {
+          "name": "studio_status",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/studio_status.json",
+          "description_excerpt": "Check studio content generation status and get URLs, or rename an artifact.  Args:     notebook_id: Notebook UUID     action: Action to perform:         - status (default): List all artifacts with their status and URLs         - rename: ..."
+        },
+        {
+          "name": "tag",
+          "descriptor_file": "project-0-workspace-notebooklm-mcp/tools/tag.json",
+          "description_excerpt": "Manage notebook tags and find relevant notebooks by tag matching.  Actions: - add: Add tags to a notebook for smart selection - remove: Remove tags from a notebook - list: List all tagged notebooks with their tags - select: Find notebook..."
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-openchrome",
+      "tool_count": 32,
+      "tools": [
+        {
+          "name": "act",
+          "descriptor_file": "project-0-workspace-openchrome/tools/act.json",
+          "description_excerpt": "Execute multi-step browser actions from natural language instruction."
+        },
+        {
+          "name": "computer",
+          "descriptor_file": "project-0-workspace-openchrome/tools/computer.json",
+          "description_excerpt": "Mouse, keyboard, and screenshot actions on a tab."
+        },
+        {
+          "name": "cookies",
+          "descriptor_file": "project-0-workspace-openchrome/tools/cookies.json",
+          "description_excerpt": "Manage browser cookies (get, set, delete, clear)."
+        },
+        {
+          "name": "expand_tools",
+          "descriptor_file": "project-0-workspace-openchrome/tools/expand_tools.json",
+          "description_excerpt": "Show 33 additional specialist tools (network, emulation, PDF, orchestration, etc). Call with tier=2 for specialist tools, tier=3 for all tools including orchestration."
+        },
+        {
+          "name": "fill_form",
+          "descriptor_file": "project-0-workspace-openchrome/tools/fill_form.json",
+          "description_excerpt": "Fill form fields and optionally submit."
+        },
+        {
+          "name": "find",
+          "descriptor_file": "project-0-workspace-openchrome/tools/find.json",
+          "description_excerpt": "Find elements by query. Returns up to 20 matches with refs."
+        },
+        {
+          "name": "form_input",
+          "descriptor_file": "project-0-workspace-openchrome/tools/form_input.json",
+          "description_excerpt": "Set form element value by ref."
+        },
+        {
+          "name": "inspect",
+          "descriptor_file": "project-0-workspace-openchrome/tools/inspect.json",
+          "description_excerpt": "Extract focused page state by query."
+        },
+        {
+          "name": "interact",
+          "descriptor_file": "project-0-workspace-openchrome/tools/interact.json",
+          "description_excerpt": "Find element, act, wait, return state summary."
+        },
+        {
+          "name": "javascript_tool",
+          "descriptor_file": "project-0-workspace-openchrome/tools/javascript_tool.json",
+          "description_excerpt": "Execute JavaScript in page context. Supports await."
+        },
+        {
+          "name": "lightweight_scroll",
+          "descriptor_file": "project-0-workspace-openchrome/tools/lightweight_scroll.json",
+          "description_excerpt": "Scroll page via JS. Returns new scroll position."
+        },
+        {
+          "name": "list_profiles",
+          "descriptor_file": "project-0-workspace-openchrome/tools/list_profiles.json",
+          "description_excerpt": "List available Chrome profiles with names and directory IDs."
+        },
+        {
+          "name": "memory",
+          "descriptor_file": "project-0-workspace-openchrome/tools/memory.json",
+          "description_excerpt": "Manage domain knowledge. Actions: \"record\" (store), \"query\" (retrieve by domain), \"validate\" (adjust confidence). Key prefixes: \"selector:\", \"tip:\", \"avoid:\"."
+        },
+        {
+          "name": "navigate",
+          "descriptor_file": "project-0-workspace-openchrome/tools/navigate.json",
+          "description_excerpt": "Navigate to URL or go forward/back. Omit tabId for new tab."
+        },
+        {
+          "name": "oc_checkpoint",
+          "descriptor_file": "project-0-workspace-openchrome/tools/oc_checkpoint.json",
+          "description_excerpt": "Save or load an automation checkpoint for long-running session continuity. Use \"save\" to persist current task state, \"load\" to restore after context compaction, \"delete\" to clean up."
+        },
+        {
+          "name": "oc_connection_health",
+          "descriptor_file": "project-0-workspace-openchrome/tools/oc_connection_health.json",
+          "description_excerpt": "Get CDP connection health metrics including heartbeat mode, reconnect count, ping latency, connection state, and live reconnection progress. Use this to monitor connection stability during long-running sessions."
+        },
+        {
+          "name": "oc_copy_to_clipboard",
+          "descriptor_file": "project-0-workspace-openchrome/tools/oc_copy_to_clipboard.json",
+          "description_excerpt": "Copy text to the system clipboard. Useful for copying MCP server URLs or config snippets."
+        },
+        {
+          "name": "oc_get_connection_info",
+          "descriptor_file": "project-0-workspace-openchrome/tools/oc_get_connection_info.json",
+          "description_excerpt": "Get connection configuration for a web AI host (Claude Web, ChatGPT, Gemini, or custom). Returns the MCP server URL, bearer token, settings page URL, and step-by-step instructions."
+        },
+        {
+          "name": "oc_journal",
+          "descriptor_file": "project-0-workspace-openchrome/tools/oc_journal.json",
+          "description_excerpt": "Query the tool call journal. Actions: \"summary\" (milestone-based overview for context restoration), \"recent\" (last N entries with full detail)."
+        },
+        {
+          "name": "oc_open_host_settings",
+          "descriptor_file": "project-0-workspace-openchrome/tools/oc_open_host_settings.json",
+          "description_excerpt": "Open the MCP connector settings page for a web AI host in the default browser."
+        },
+        {
+          "name": "oc_profile_status",
+          "descriptor_file": "project-0-workspace-openchrome/tools/oc_profile_status.json",
+          "description_excerpt": "Check browser profile type and capabilities."
+        },
+        {
+          "name": "oc_session_resume",
+          "descriptor_file": "project-0-workspace-openchrome/tools/oc_session_resume.json",
+          "description_excerpt": "Restore working context after context compaction. Reads the last oc_session_snapshot, checks which tabs are still alive, and returns a resume guide with your objective, progress, and tab status. Call this after compaction to continue whe..."
+        },
+        {
+          "name": "oc_session_snapshot",
+          "descriptor_file": "project-0-workspace-openchrome/tools/oc_session_snapshot.json",
+          "description_excerpt": "Save browser state snapshot for context recovery after compaction. Captures open tabs, worker state, and your task memo. Use before long operations or periodically during multi-step tasks. Restore with oc_session_resume."
+        },
+        {
+          "name": "oc_stop",
+          "descriptor_file": "project-0-workspace-openchrome/tools/oc_stop.json",
+          "description_excerpt": "Shut down OpenChrome and close Chrome. Auto-relaunched on next tool call."
+        },
+        {
+          "name": "page_reload",
+          "descriptor_file": "project-0-workspace-openchrome/tools/page_reload.json",
+          "description_excerpt": "Reload the current page."
+        },
+        {
+          "name": "query_dom",
+          "descriptor_file": "project-0-workspace-openchrome/tools/query_dom.json",
+          "description_excerpt": "Query DOM elements via CSS selector or XPath. Returns tag, attributes, text, position. CSS results include a ref field for use in subsequent calls."
+        },
+        {
+          "name": "read_page",
+          "descriptor_file": "project-0-workspace-openchrome/tools/read_page.json",
+          "description_excerpt": "Get page as DOM, accessibility tree (ax), or CSS diagnostics."
+        },
+        {
+          "name": "storage",
+          "descriptor_file": "project-0-workspace-openchrome/tools/storage.json",
+          "description_excerpt": "Manage browser localStorage and sessionStorage."
+        },
+        {
+          "name": "tabs_close",
+          "descriptor_file": "project-0-workspace-openchrome/tools/tabs_close.json",
+          "description_excerpt": "Close one or more tabs by tabId, tabIds, or workerId."
+        },
+        {
+          "name": "tabs_context",
+          "descriptor_file": "project-0-workspace-openchrome/tools/tabs_context.json",
+          "description_excerpt": "Get session tab IDs grouped by worker."
+        },
+        {
+          "name": "tabs_create",
+          "descriptor_file": "project-0-workspace-openchrome/tools/tabs_create.json",
+          "description_excerpt": "Create a new tab with URL."
+        },
+        {
+          "name": "wait_for",
+          "descriptor_file": "project-0-workspace-openchrome/tools/wait_for.json",
+          "description_excerpt": "Wait for a condition before proceeding."
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-sequential-thinking",
+      "tool_count": 1,
+      "tools": [
+        {
+          "name": "sequentialthinking",
+          "descriptor_file": "project-0-workspace-sequential-thinking/tools/sequentialthinking.json",
+          "description_excerpt": "A detailed tool for dynamic and reflective problem-solving through thoughts. This tool helps analyze problems through a flexible thinking process that can adapt and evolve. Each thought can build on, question, or revise previous insights..."
+        }
+      ]
+    },
+    {
+      "server_folder": "project-0-workspace-stitch",
+      "tool_count": 14,
+      "tools": [
+        {
+          "name": "apply_design_system",
+          "descriptor_file": "project-0-workspace-stitch/tools/apply_design_system.json",
+          "description_excerpt": "Applies a design system to a list of screens. Use this tool when the user wants to update one or more screens to match the style of a design system. This tool applies the selected design system's foundational design tokens (colors, fonts..."
+        },
+        {
+          "name": "create_design_system",
+          "descriptor_file": "project-0-workspace-stitch/tools/create_design_system.json",
+          "description_excerpt": "Creates a new design system for a project. Use this tool when the user wants to set or update the overall visual theme, style, or branding of the application. This includes configuring: - Color Palette: Presets, custom primary colors, an..."
+        },
+        {
+          "name": "create_project",
+          "descriptor_file": "project-0-workspace-stitch/tools/create_project.json",
+          "description_excerpt": "Creates a new Stitch project. A project is a container for UI designs and frontend code."
+        },
+        {
+          "name": "edit_screens",
+          "descriptor_file": "project-0-workspace-stitch/tools/edit_screens.json",
+          "description_excerpt": "Edits existing screens within a project using a text prompt.  **Instructions for Tool Call:** *  This action can take a few minutes to complete. Please be patient. DO NOT RETRY. *  If the tool call fails due to connection error, the proc..."
+        },
+        {
+          "name": "fetch_screen_code",
+          "descriptor_file": "project-0-workspace-stitch/tools/fetch_screen_code.json",
+          "description_excerpt": "Retrieves the actual HTML/Code content of a screen. Use this when you need to SEE the code."
+        },
+        {
+          "name": "fetch_screen_image",
+          "descriptor_file": "project-0-workspace-stitch/tools/fetch_screen_image.json",
+          "description_excerpt": "Retrieves the screenshot/preview image of a screen."
+        },
+        {
+          "name": "generate_screen_from_text",
+          "descriptor_file": "project-0-workspace-stitch/tools/generate_screen_from_text.json",
+          "description_excerpt": "Generates a new screen within a project from a text prompt.  **Instructions for Tool Call:** *  This action can take a few minutes to complete. Please be patient. DO NOT RETRY. *  If the tool call fails due to connection error, the gener..."
+        },
+        {
+          "name": "generate_variants",
+          "descriptor_file": "project-0-workspace-stitch/tools/generate_variants.json",
+          "description_excerpt": "Generates variants of existing screens within a project using a text prompt."
+        },
+        {
+          "name": "get_project",
+          "descriptor_file": "project-0-workspace-stitch/tools/get_project.json",
+          "description_excerpt": "Retrieves the details of a specific Stitch project using its project name."
+        },
+        {
+          "name": "get_screen",
+          "descriptor_file": "project-0-workspace-stitch/tools/get_screen.json",
+          "description_excerpt": "Retrieves the details of a specific screen within a project."
+        },
+        {
+          "name": "list_design_systems",
+          "descriptor_file": "project-0-workspace-stitch/tools/list_design_systems.json",
+          "description_excerpt": "Lists all design systems for a given project."
+        },
+        {
+          "name": "list_projects",
+          "descriptor_file": "project-0-workspace-stitch/tools/list_projects.json",
+          "description_excerpt": "Lists all Stitch projects accessible to the user. By default, it lists projects owned by the user."
+        },
+        {
+          "name": "list_screens",
+          "descriptor_file": "project-0-workspace-stitch/tools/list_screens.json",
+          "description_excerpt": "Lists all screens within a given Stitch project."
+        },
+        {
+          "name": "update_design_system",
+          "descriptor_file": "project-0-workspace-stitch/tools/update_design_system.json",
+          "description_excerpt": "Updates a design system for a project. Use this tool when the user wants to change the overall visual theme, style, or branding of the application. This includes configuring: - Color Palette: Presets, custom primary colors, and saturatio..."
+        }
+      ]
+    }
+  ],
+  "integration_notes": {
+    "compression_prophecy_locus": "project-0-workspace-compression-server already exposes compress_text, restore_text, compress_file, compress_rules, acon_* — extend here for token-economy wrappers rather than a new MCP server unless isolation is required.",
+    "overlap_warning": "project-0-workspace-local-rag (search_vault, reindex_vault) vs compression-server both feed context; unified MKM hub tools must not duplicate search_vault semantics — use distinct names (e.g. get_prophecy_registry_slice vs search_vault).",
+    "prophecy_fact_lock": "Read SSOT files via scripts or thin MCP tools that call the same paths as docs/final/CURRENT_OPS_SNAPSHOT.md (general_prophecy_latest.json, export chain) — avoid ad-hoc NotebookLM dumps as registry."
+  }
+}

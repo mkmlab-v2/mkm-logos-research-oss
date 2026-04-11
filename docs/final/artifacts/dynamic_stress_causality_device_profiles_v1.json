@@ -1,0 +1,10 @@
+{
+  "schema": "dynamic_stress_causality_device_profiles_v1",
+  "profiles": [
+    {
+      "profile_id": "generic_lab",
+      "label": "Generic lab device profile for RS policy gate",
+      "role": "research_only"
+    }
+  ]
+}
