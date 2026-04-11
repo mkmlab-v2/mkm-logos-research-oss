@@ -696,9 +696,13 @@ def evaluate_report(
         if router is not None:
             route = router.route(raw)
             effective_must_keep.update(route.must_keep_hard_terms)
-            # Soft terms are applied only in conservative profile to avoid
-            # over-constraining high-compression candidates.
-            if strategy == "C" and intensity == "high":
+            # Soft terms: (1) conservative C/high (legacy) and (2) V2 multilens A/extreme bench
+            # (MULTILENS_BRIDGE_POLICY_AB_OFF-class) so shard soft_term patches affect that profile.
+            # Other strategy/intensity pairs skip soft terms to avoid over-constraining candidates.
+            _merge_shard_soft_terms = (strategy == "C" and intensity == "high") or (
+                strategy == "A" and intensity == "extreme"
+            )
+            if _merge_shard_soft_terms:
                 effective_must_keep.update(route.must_keep_soft_terms)
             effective_hangul_principle = use_hangul_principle or route.hangul_principle
             route_info = {"shard_id": route.shard_id, "domain": route.domain}
