@@ -1,34 +1,30 @@
 {
   "schema": "compression_jaccard_loss_patterns_aggregated_v1",
-  "ts_utc": "2026-04-11T16:38:12.206789+00:00",
+  "ts_utc": "2026-04-11T19:06:42.164292+00:00",
   "sources": {
     "loss_patterns": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_latest.json",
-    "sla_track": "universal"
+    "sla_track": "custom"
   },
   "summary": {
     "case_count": 40,
-    "unique_tokens_lost": 156,
-    "total_token_occurrences": 170
+    "unique_tokens_lost": 148,
+    "total_token_occurrences": 159
   },
   "global_top": [
     {
       "token": "한다",
-      "count": 4
+      "count": 5
     },
     {
       "token": "함께",
       "count": 3
     },
     {
-      "token": "수",
-      "count": 3
-    },
-    {
-      "token": "bootstrap",
+      "token": "quality",
       "count": 2
     },
     {
-      "token": "review",
+      "token": "수",
       "count": 2
     },
     {
@@ -40,15 +36,7 @@
       "count": 2
     },
     {
-      "token": "압축",
-      "count": 2
-    },
-    {
-      "token": "안전하다",
-      "count": 2
-    },
-    {
-      "token": "대비",
+      "token": "있다",
       "count": 2
     },
     {
@@ -220,10 +208,6 @@
       "count": 1
     },
     {
-      "token": "quality",
-      "count": 1
-    },
-    {
       "token": "stability",
       "count": 1
     },
@@ -330,6 +314,22 @@
     {
       "token": "급한",
       "count": 1
+    },
+    {
+      "token": "때",
+      "count": 1
+    },
+    {
+      "token": "쉬워서",
+      "count": 1
+    },
+    {
+      "token": "악화되기",
+      "count": 1
+    },
+    {
+      "token": "온식",
+      "count": 1
     }
   ],
   "by_shard_id": {
@@ -344,10 +344,6 @@
       },
       {
         "token": "안",
-        "count": 2
-      },
-      {
-        "token": "안전하다",
         "count": 2
       },
       {
@@ -407,10 +403,6 @@
         "count": 1
       },
       {
-        "token": "편이",
-        "count": 1
-      },
-      {
         "token": "남아",
         "count": 1
       },
@@ -428,10 +420,6 @@
       }
     ],
     "zone_b_timing": [
-      {
-        "token": "bootstrap",
-        "count": 2
-      },
       {
         "token": "11",
         "count": 1
@@ -466,6 +454,10 @@
       },
       {
         "token": "matrix",
+        "count": 1
+      },
+      {
+        "token": "quality",
         "count": 1
       },
       {
@@ -495,27 +487,11 @@
         "count": 1
       },
       {
-        "token": "수",
+        "token": "민감",
         "count": 1
       },
       {
-        "token": "압축",
-        "count": 1
-      },
-      {
-        "token": "있으니",
-        "count": 1
-      },
-      {
-        "token": "전후",
-        "count": 1
-      },
-      {
-        "token": "가치가",
-        "count": 1
-      },
-      {
-        "token": "대비",
+        "token": "영역에서는",
         "count": 1
       },
       {
@@ -527,10 +503,6 @@
       {
         "token": "함께",
         "count": 3
-      },
-      {
-        "token": "review",
-        "count": 2
       },
       {
         "token": "수",
@@ -843,9 +815,17 @@
       {
         "token": "절약률보다",
         "count": 1
+      },
+      {
+        "token": "정책을",
+        "count": 1
       }
     ],
     "zone_g_health": [
+      {
+        "token": "한다",
+        "count": 2
+      },
       {
         "token": "노출을",
         "count": 1
@@ -864,10 +844,6 @@
       },
       {
         "token": "줄여야",
-        "count": 1
-      },
-      {
-        "token": "한다",
         "count": 1
       }
     ]
@@ -887,27 +863,11 @@
         "count": 1
       },
       {
-        "token": "수",
+        "token": "민감",
         "count": 1
       },
       {
-        "token": "압축",
-        "count": 1
-      },
-      {
-        "token": "있으니",
-        "count": 1
-      },
-      {
-        "token": "전후",
-        "count": 1
-      },
-      {
-        "token": "가치가",
-        "count": 1
-      },
-      {
-        "token": "대비",
+        "token": "영역에서는",
         "count": 1
       },
       {
@@ -916,6 +876,10 @@
       }
     ],
     "health": [
+      {
+        "token": "한다",
+        "count": 2
+      },
       {
         "token": "노출을",
         "count": 1
@@ -935,10 +899,6 @@
       {
         "token": "줄여야",
         "count": 1
-      },
-      {
-        "token": "한다",
-        "count": 1
       }
     ],
     "scm": [
@@ -952,10 +912,6 @@
       },
       {
         "token": "안",
-        "count": 2
-      },
-      {
-        "token": "안전하다",
         "count": 2
       },
       {
@@ -1015,10 +971,6 @@
         "count": 1
       },
       {
-        "token": "편이",
-        "count": 1
-      },
-      {
         "token": "남아",
         "count": 1
       },
@@ -1039,10 +991,6 @@
       {
         "token": "함께",
         "count": 3
-      },
-      {
-        "token": "review",
-        "count": 2
       },
       {
         "token": "수",
@@ -1355,13 +1303,13 @@
       {
         "token": "절약률보다",
         "count": 1
+      },
+      {
+        "token": "정책을",
+        "count": 1
       }
     ],
     "timing": [
-      {
-        "token": "bootstrap",
-        "count": 2
-      },
       {
         "token": "11",
         "count": 1
@@ -1396,6 +1344,10 @@
       },
       {
         "token": "matrix",
+        "count": 1
+      },
+      {
+        "token": "quality",
         "count": 1
       },
       {

@@ -98,10 +98,13 @@ def main() -> int:
     doc = {
         "schema": "compression_jaccard_loss_patterns_v1",
         "ts_utc": datetime.now(timezone.utc).isoformat(),
-        "sla_track": args.sla_track,
+        # When --active-report is set, bench lineage is not universal/literal/ultra_literal alone.
+        "sla_track": ("custom" if args.active_report else args.sla_track),
         "sources": {
             "input": _rel(inp_path),
             "active_report": _rel(active_path),
+            "sla_track_cli": args.sla_track,
+            "explicit_active_report": bool(args.active_report),
         },
         "summary": {
             "case_count": len(rows),

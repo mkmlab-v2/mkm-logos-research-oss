@@ -1,6 +1,6 @@
 {
   "schema": "shard_patch_proposal_v1",
-  "ts_utc": "2026-04-11T18:37:56.976106+00:00",
+  "ts_utc": "2026-04-11T19:06:53.880450+00:00",
   "sources": {
     "loss_patterns": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_latest.json",
     "aggregated_optional": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_aggregated_v1.json"
@@ -13,8 +13,8 @@
   },
   "aggregated_summary_checksum": {
     "case_count": 40,
-    "unique_tokens_lost": 156,
-    "total_token_occurrences": 170
+    "unique_tokens_lost": 148,
+    "total_token_occurrences": 159
   },
   "notes": [
     "Does not modify codebook files; human review before merge.",
@@ -22,137 +22,38 @@
   ],
   "summary": {
     "case_count_in_loss_doc": 40,
-    "candidate_token_count": 5,
-    "excluded_record_count": 151,
+    "candidate_token_count": 1,
+    "excluded_record_count": 147,
     "shard_ids_with_candidates": [
-      "zone_a_scm",
-      "zone_b_timing",
-      "zone_c_hangul",
-      "zone_d_ssot"
+      "zone_b_timing"
     ]
   },
   "by_shard_id": {
-    "zone_a_scm": [
-      {
-        "token": "안전하다",
-        "global_count": 2,
-        "primary_shard_id": "zone_a_scm",
-        "max_shard_count": 2,
-        "shard_concentration": 1.0,
-        "concentrated": true,
-        "per_shard_counts": {
-          "zone_a_scm": 2
-        }
-      }
-    ],
     "zone_b_timing": [
       {
-        "token": "bootstrap",
+        "token": "quality",
         "global_count": 2,
         "primary_shard_id": "zone_b_timing",
-        "max_shard_count": 2,
-        "shard_concentration": 1.0,
-        "concentrated": true,
-        "per_shard_counts": {
-          "zone_b_timing": 2
-        }
-      }
-    ],
-    "zone_c_hangul": [
-      {
-        "token": "대비",
-        "global_count": 2,
-        "primary_shard_id": "zone_c_hangul",
         "max_shard_count": 1,
         "shard_concentration": 0.5,
         "concentrated": true,
         "per_shard_counts": {
-          "zone_c_hangul": 1,
+          "zone_b_timing": 1,
           "zone_d_ssot": 1
-        }
-      },
-      {
-        "token": "압축",
-        "global_count": 2,
-        "primary_shard_id": "zone_c_hangul",
-        "max_shard_count": 1,
-        "shard_concentration": 0.5,
-        "concentrated": true,
-        "per_shard_counts": {
-          "zone_c_hangul": 1,
-          "zone_d_ssot": 1
-        }
-      }
-    ],
-    "zone_d_ssot": [
-      {
-        "token": "review",
-        "global_count": 2,
-        "primary_shard_id": "zone_d_ssot",
-        "max_shard_count": 2,
-        "shard_concentration": 1.0,
-        "concentrated": true,
-        "per_shard_counts": {
-          "zone_d_ssot": 2
         }
       }
     ]
   },
   "candidates_flat": [
     {
-      "token": "bootstrap",
+      "token": "quality",
       "global_count": 2,
       "primary_shard_id": "zone_b_timing",
-      "max_shard_count": 2,
-      "shard_concentration": 1.0,
-      "concentrated": true,
-      "per_shard_counts": {
-        "zone_b_timing": 2
-      }
-    },
-    {
-      "token": "review",
-      "global_count": 2,
-      "primary_shard_id": "zone_d_ssot",
-      "max_shard_count": 2,
-      "shard_concentration": 1.0,
-      "concentrated": true,
-      "per_shard_counts": {
-        "zone_d_ssot": 2
-      }
-    },
-    {
-      "token": "대비",
-      "global_count": 2,
-      "primary_shard_id": "zone_c_hangul",
       "max_shard_count": 1,
       "shard_concentration": 0.5,
       "concentrated": true,
       "per_shard_counts": {
-        "zone_c_hangul": 1,
-        "zone_d_ssot": 1
-      }
-    },
-    {
-      "token": "안전하다",
-      "global_count": 2,
-      "primary_shard_id": "zone_a_scm",
-      "max_shard_count": 2,
-      "shard_concentration": 1.0,
-      "concentrated": true,
-      "per_shard_counts": {
-        "zone_a_scm": 2
-      }
-    },
-    {
-      "token": "압축",
-      "global_count": 2,
-      "primary_shard_id": "zone_c_hangul",
-      "max_shard_count": 1,
-      "shard_concentration": 0.5,
-      "concentrated": true,
-      "per_shard_counts": {
-        "zone_c_hangul": 1,
+        "zone_b_timing": 1,
         "zone_d_ssot": 1
       }
     }
@@ -369,14 +270,14 @@
       "count": 1
     },
     {
-      "token": "quality",
+      "token": "stability",
       "reason": "below_min_global_count",
       "count": 1
     },
     {
-      "token": "stability",
-      "reason": "below_min_global_count",
-      "count": 1
+      "token": "한다",
+      "reason": "functional_stopword",
+      "count": 5
     },
     {
       "token": "경우가",
@@ -451,7 +352,7 @@
     {
       "token": "수",
       "reason": "single_grapheme",
-      "count": 3
+      "count": 2
     },
     {
       "token": "염분",
@@ -487,11 +388,6 @@
       "token": "줄여야",
       "reason": "below_min_global_count",
       "count": 1
-    },
-    {
-      "token": "한다",
-      "reason": "functional_stopword",
-      "count": 4
     },
     {
       "token": "단일",
@@ -770,8 +666,8 @@
     },
     {
       "token": "있다",
-      "reason": "below_min_global_count",
-      "count": 1
+      "reason": "functional_stopword",
+      "count": 2
     },
     {
       "token": "규칙을",
@@ -790,11 +686,6 @@
     },
     {
       "token": "보존",
-      "reason": "below_min_global_count",
-      "count": 1
-    },
-    {
-      "token": "편이",
       "reason": "below_min_global_count",
       "count": 1
     },
@@ -829,16 +720,6 @@
       "count": 1
     },
     {
-      "token": "있으니",
-      "reason": "below_min_global_count",
-      "count": 1
-    },
-    {
-      "token": "전후",
-      "reason": "below_min_global_count",
-      "count": 1
-    },
-    {
       "token": "남아",
       "reason": "below_min_global_count",
       "count": 1
@@ -859,17 +740,17 @@
       "count": 1
     },
     {
-      "token": "가치가",
+      "token": "민감",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "영역에서는",
       "reason": "below_min_global_count",
       "count": 1
     },
     {
       "token": "크다",
-      "reason": "below_min_global_count",
-      "count": 1
-    },
-    {
-      "token": "감사",
       "reason": "below_min_global_count",
       "count": 1
     },
