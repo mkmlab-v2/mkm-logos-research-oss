@@ -1,0 +1,160 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-04-11T15:00:00Z",
+  "git_commit_hint": "seed_v1:copy_to_artifacts_general_prophecy_latest_if_desired",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "seed.oecd_foresight_pdf_headings_2027",
+      "question_text": "Before 2027-01-01T00:00:00Z, will an OECD-hosted PDF whose title or landing text identifies a Foresight Toolkit (2025 edition or successor) show at least five distinct chapter or section headings in its first ten pages?",
+      "domain_tags": ["macro", "policy"],
+      "resolution_deadline_utc": "2027-01-01T00:00:00Z",
+      "resolution_criteria": "TRUE if such a PDF exists and headings are verifiable from the first ten pages (TOC or body). FALSE if only shorter TOC or no qualifying PDF. VOID if OECD blocks access globally for 30+ consecutive days before deadline.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "headings_verified",
+        "false_label": "not_verified"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T15:01:00Z",
+          "probability_0_1": 0.45,
+          "source_kind": "baseline",
+          "source_detail": "seed_panel_placeholder",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "docs/final/NOTEBOOKLM_GENERAL_PROPHECY_VPS_GIT_FORESIGHT_BUNDLE_2026-04-11.md",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "seed.un_pact_portal_http_20261231",
+      "question_text": "On 2026-12-31T23:59:59Z, will an unauthenticated HTTP GET to https://www.un.org/pact-for-the-future/en return a status code in the 200–299 range from at least one probe run within 24 hours?",
+      "domain_tags": ["policy", "governance"],
+      "resolution_deadline_utc": "2027-01-02T00:00:00Z",
+      "resolution_criteria": "TRUE if any probe in the window returns 2xx. FALSE if all return non-2xx. VOID if DNS or TLS fails for all probes (document outage).",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "http_2xx_seen",
+        "false_label": "no_2xx"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T15:02:00Z",
+          "probability_0_1": 0.88,
+          "source_kind": "baseline",
+          "source_detail": "seed_panel_placeholder",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "docs/final/NOTEBOOKLM_GENERAL_PROPHECY_VPS_GIT_FORESIGHT_BUNDLE_2026-04-11.md",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "seed.python_stable_314_before_20260601",
+      "question_text": "Before 2026-06-01T00:00:00Z, will www.python.org/downloads/release/ list a CPython final release whose version string begins with 3.14?",
+      "domain_tags": ["tech"],
+      "resolution_deadline_utc": "2026-06-01T00:00:00Z",
+      "resolution_criteria": "TRUE if a final (not pre-release) 3.14.x appears on the official downloads release index. FALSE otherwise. VOID if python.org is unreachable for 14+ consecutive days before deadline.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "py314_final_listed",
+        "false_label": "not_listed"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T15:03:00Z",
+          "probability_0_1": 0.25,
+          "source_kind": "baseline",
+          "source_detail": "seed_panel_placeholder",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "docs/final/NOTEBOOKLM_GENERAL_PROPHECY_VPS_GIT_FORESIGHT_BUNDLE_2026-04-11.md",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "seed.ecb_mro_above_3_5_before_20261231",
+      "question_text": "Before 2026-12-31T23:59:59Z, will the European Central Bank’s published main refinancing operations (MRO) rate be strictly greater than 3.50% on any single ECB Governing Council monetary policy communication date?",
+      "domain_tags": ["macro", "rates"],
+      "resolution_deadline_utc": "2027-01-01T00:00:00Z",
+      "resolution_criteria": "TRUE if ECB press release / statistical press release shows MRO > 3.50% on at least one policy date. FALSE if never above 3.50% by deadline. VOID if ECB ceases publishing MRO in comparable form.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "mro_above_3_5",
+        "false_label": "never_above"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T15:04:00Z",
+          "probability_0_1": 0.35,
+          "source_kind": "baseline",
+          "source_detail": "seed_panel_placeholder",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "docs/final/NOTEBOOKLM_GENERAL_PROPHECY_VPS_GIT_FORESIGHT_BUNDLE_2026-04-11.md",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "seed.github_repo_default_branch_main_20261231",
+      "question_text": "On 2026-12-31T12:00:00Z, will the public GitHub repository mkmlab-v2/mkm-destiny-ai-41e38ec6 report default branch name exactly main on its API or web UI?",
+      "domain_tags": ["infra", "git"],
+      "resolution_deadline_utc": "2027-01-02T00:00:00Z",
+      "resolution_criteria": "TRUE if default branch is main. FALSE if default differs or repo removed/archived without main. VOID if GitHub returns sustained API outage for 48h around probe time.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "default_is_main",
+        "false_label": "not_main_or_missing"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T15:05:00Z",
+          "probability_0_1": 0.92,
+          "source_kind": "baseline",
+          "source_detail": "seed_panel_placeholder",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "docs/final/NOTEBOOKLM_GENERAL_PROPHECY_VPS_GIT_FORESIGHT_BUNDLE_2026-04-11.md",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    }
+  ]
+}

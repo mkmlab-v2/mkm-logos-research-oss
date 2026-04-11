@@ -118,6 +118,9 @@ on:
       - "tests/test_entry16_source_hunt_summary.py"
       - "tests/test_entry16_promotion_gate.py"
       - "tests/test_waiting_queue_monthly_check_log.py"
+      - "scripts/l1_codebook_bypass.py"
+      - "scripts/run_prophecy_micro_codebook_poc.py"
+      - "tests/test_l1_codebook_bypass_roundtrip.py"
       - "tests/test_fact_lock_lexicon_gate.py"
       - "tests/test_master_atoms_corpus_split.py"
       - "tests/test_morphhb_wlc_index.py"
@@ -263,6 +266,9 @@ jobs:
             tests/test_resolve_morphhb_multi_deterministic.py \
             tests/test_export_master_codebook_v1.py \
             -q --tb=short
+
+      - name: L1 codebook bypass literal roundtrip
+        run: python -m pytest tests/test_l1_codebook_bypass_roundtrip.py -q --tb=short
 
       - name: Token API stub contract (core)
         run: python -m pytest tests/test_compression_token_api_stub.py -q --tb=short -k "not openapi_"

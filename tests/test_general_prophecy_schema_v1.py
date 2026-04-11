@@ -15,6 +15,8 @@ import pytest
 _ROOT = Path(__file__).resolve().parents[1]
 _SCHEMA_PATH = _ROOT / "docs" / "final" / "GENERAL_PROPHECY_SCHEMA_V1.json"
 _FIXTURE = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_sample_v1.json"
+_SEED5 = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_seed_5_v1.json"
+_BRIER_SMOKE = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_brier_smoke_v1.json"
 
 
 @pytest.fixture(scope="module")
@@ -48,3 +50,27 @@ def test_general_prophecy_fixture_semantics() -> None:
     assert q.get("schema") == "general_prophecy_question_v1"
     assert q.get("outcome_spec", {}).get("kind") == "binary"
     assert q.get("forecasts") and q["forecasts"][0].get("source_kind") == "baseline"
+
+
+def test_general_prophecy_brier_smoke_fixture_validates(_validator) -> None:
+    assert _BRIER_SMOKE.is_file(), f"missing {_BRIER_SMOKE}"
+    doc = json.loads(_BRIER_SMOKE.read_text(encoding="utf-8"))
+    errs = sorted(_validator.iter_errors(doc), key=lambda e: e.path)
+    assert not errs, "schema errors: " + "; ".join(f"{list(e.path)}: {e.message}" for e in errs[:12])
+    qs = doc.get("questions")
+    assert isinstance(qs, list) and len(qs) == 1
+    assert qs[0].get("resolution", {}).get("status") == "resolved"
+
+
+def test_general_prophecy_seed_5_fixture_validates(_validator) -> None:
+    assert _SEED5.is_file(), f"missing {_SEED5}"
+    doc = json.loads(_SEED5.read_text(encoding="utf-8"))
+    errs = sorted(_validator.iter_errors(doc), key=lambda e: e.path)
+    assert not errs, "schema errors: " + "; ".join(f"{list(e.path)}: {e.message}" for e in errs[:12])
+    qs = doc.get("questions")
+    assert isinstance(qs, list) and len(qs) == 5
+    ids = [q.get("question_id") for q in qs]
+    assert len(set(ids)) == 5, "question_id values must be unique"
+    for q in qs:
+        assert q.get("resolution", {}).get("status") == "pending"
+        assert q.get("outcome_spec", {}).get("kind") == "binary"

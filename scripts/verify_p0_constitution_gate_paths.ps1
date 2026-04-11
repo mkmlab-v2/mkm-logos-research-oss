@@ -22,6 +22,8 @@ $required = @(
     "scripts\build_general_prophecy_brief.py",
     "scripts\eval_general_prophecy_brier_score.py",
     "tests\fixtures\general_prophecy_registry_sample_v1.json",
+    "tests\fixtures\general_prophecy_registry_seed_5_v1.json",
+    "tests\fixtures\general_prophecy_registry_brier_smoke_v1.json",
     "scripts\generate_btrack_hypothesis_prophecy_v1.py",
     "scripts\build_logos_wide_restoration.py",
     "scripts\build_btrack_prophecy_score_from_ohlcv.py",
