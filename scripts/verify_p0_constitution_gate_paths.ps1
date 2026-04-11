@@ -27,6 +27,7 @@ $required = @(
     "scripts\generate_general_prophecy_v1.py",
     "scripts\build_general_prophecy_brief.py",
     "scripts\eval_general_prophecy_brier_score.py",
+    "scripts\export_general_prophecy_to_jsonl.py",
     "scripts\resolve_general_prophecy_question_v1.py",
     "tests\fixtures\general_prophecy_registry_sample_v1.json",
     "tests\fixtures\general_prophecy_registry_seed_5_v1.json",
