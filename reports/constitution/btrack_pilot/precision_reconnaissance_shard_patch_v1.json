@@ -1,0 +1,234 @@
+{
+  "schema": "precision_reconnaissance_shard_patch_v1",
+  "ts_utc": "2026-04-12T12:00:00+00:00",
+  "sources": {
+    "loss_patterns": "reports/constitution/btrack_pilot/compression_jaccard_loss_patterns_latest.json",
+    "filter": "exclude tokens already in codebook/shards zone_* hard|soft|guard|routing (case-insensitive)"
+  },
+  "sweeps": {
+    "strict_min3_conc075": {
+      "path": "reports/constitution/btrack_pilot/precision_recon_proposal_strict_g3_c075_v1.json",
+      "candidate_count": 0,
+      "note": "no tokens meet global>=3 and concentration>=0.75"
+    },
+    "strict_min2_conc065": {
+      "path": "reports/constitution/btrack_pilot/precision_recon_proposal_strict_g2_c065_v1.json",
+      "candidate_count": 3,
+      "note": "all three already deployed as soft_terms (bootstrap, review, 안전하다)"
+    },
+    "permissive_min1_conc055": {
+      "path": "reports/constitution/btrack_pilot/precision_recon_proposal_permissive_g1_c055_v1.json",
+      "candidate_count": 141,
+      "note": "broad pool; use ranked next_10 only after review"
+    }
+  },
+  "recommended_next_10": [
+    {
+      "rank": 1,
+      "token": "accumulate",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_b_timing",
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "rank": 2,
+      "token": "analysis",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_b_timing",
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "rank": 3,
+      "token": "anchors",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 4,
+      "token": "answers",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 5,
+      "token": "avoid",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 6,
+      "token": "cadence",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 7,
+      "token": "caveats",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 8,
+      "token": "constitution",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 9,
+      "token": "constraints",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 10,
+      "token": "data",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_b_timing",
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    }
+  ],
+  "warnings": [
+    "min_global_count=1 includes singletons; verify case-by-case before shard merge.",
+    "Re-run evaluate_report V2 A/extreme after each batch; watch global_token_saving_rate floor."
+  ],
+  "recommended_next_10_korean": [
+    {
+      "rank": 1,
+      "token": "가치가",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_c_hangul",
+      "per_shard_counts": {
+        "zone_c_hangul": 1
+      }
+    },
+    {
+      "rank": 2,
+      "token": "감사",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 3,
+      "token": "걷기를",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 4,
+      "token": "결과가",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 5,
+      "token": "경고문까지",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_a_scm",
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "rank": 6,
+      "token": "경우가",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 7,
+      "token": "과도한",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "rank": 8,
+      "token": "과정에서",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_a_scm",
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "rank": 9,
+      "token": "관찰한",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_a_scm",
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "rank": 10,
+      "token": "규칙",
+      "global_count": 1,
+      "shard_concentration": 1.0,
+      "primary_shard_id": "zone_d_ssot",
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    }
+  ],
+  "ranking_note": "recommended_next_10 is global_count then concentration among tokens not already in shards. recommended_next_10_korean restricts to Hangul syllables for safer domain glue."
+}
