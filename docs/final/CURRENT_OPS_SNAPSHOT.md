@@ -8,7 +8,7 @@
 
 
 
-**갱신일 (UTC):** 2026-04-12
+**갱신일 (UTC):** 2026-04-12 (샤드 패치·0.70 재스윕 실측 반영)
 
 
 
@@ -139,6 +139,7 @@
 - **측정 이원 (혼동 금지):** **일반 레일** A/B·스윕은 `docs/final/artifacts/general_compression_eval_input_v1.json` 기준 9케이스 요약이다. **V2 극복원**은 별 트랙으로 `py scripts/run_ultra_compression_default.py --mode ultra-literal` → `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json` (갱신 시 `compression_metrics.avg_reconstruction_fidelity_jaccard` 확인; 2026-04-12 실측 예: **~0.992**, global 절약 **~0.13**).
 - **고바닥 스윕 실측:** `docs/final/artifacts/extreme_quality_sweep_v1.json` — `py scripts/run_general_compression_sweep.py --fidelity-floor 0.80 --out …` 결과 **`go_candidate_count`: 0** · **`decision`: NO_GO** (현 그리드에서 baseline 대비 절약 개선 + Jaccard≥0.80 동시 만족 조합 없음).
 - **0.70 바닥 스윕 실측:** `docs/final/artifacts/realistic_quality_sweep_v1.json` — `--fidelity-floor 0.70` 결과 **`go_candidate_count`: 0** · **`decision`: NO_GO**. 동일 9케이스·그리드에서 최고 평균 Jaccard는 **~0.671** 수준이라 **0.70 바닥 자체를 넘는 조합이 없음** (0.80과 동일하게 빈 집합이나, 원인은 “바닥이 현재 도달 가능 상한(~0.67)보다 높음”).
+- **샤드 soft-term 패치 후 0.70 재스윕:** `docs/final/artifacts/general_compression_sweep_after_shard_patch_v1.json` — `shard_patch_proposal_v1` 5토큰을 `codebook/shards/zone_{a,b,c,d}_*.json`의 `must_keep_soft_terms`에 반영 후 동일 입력·그리드 재실행. **최고 Jaccard ~0.671** · **`decision`: NO_GO** (수치는 `realistic_quality_sweep_v1`과 동일). 9케이스 레일과 V2 손실 패턴 제안의 **벤치 불일치** 가능; 상향은 V2/`evaluate_report` 쪽 재측정으로 확인.
 - **9케이스 유실 토큰 집계 (V2와 분리):** `py scripts/report_general_compression_token_loss_aggregate.py` → `docs/final/artifacts/general_compression_token_loss_aggregate_v1.json` — 스윕 최적 프로파일(A/high/0.55/0.6/0.6)과 동일하게 `evaluate_report` 한 번 돌려 **전역·도메인별 상위 `lost` 토큰**을 JSON으로 고정 (재현용).
 - **4D 브리지 정책 A/B (V2 universal, 동일 캡):** `run_ultra_compression_default.py --mode universal --out …` vs `--apply-gematria-4d-bridge-policy` — 산출 `MULTILENS_BRIDGE_POLICY_AB_OFF_V1.json` / `MULTILENS_BRIDGE_POLICY_AB_ON_V1.json`. 실측(2026-04-12): OFF Jaccard **~0.735**·절약 **~0.491** → ON **~0.854**·절약 **~0.361** (품질↑·절약↓).
 - **갱신:** `py scripts/report_general_compression_failure_taxonomy.py` → `py scripts/report_general_compression_domain_guard_gate.py`

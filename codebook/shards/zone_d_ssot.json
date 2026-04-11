@@ -16,7 +16,10 @@
   ],
   "must_keep_soft_terms": [
     "governance",
-    "policy"
+    "policy",
+    "review",
+    "대비",
+    "압축"
   ],
   "guard_tokens": [
     "must",

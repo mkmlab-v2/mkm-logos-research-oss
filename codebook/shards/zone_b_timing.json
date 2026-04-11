@@ -16,6 +16,7 @@
     "state_id"
   ],
   "must_keep_soft_terms": [
+    "bootstrap",
     "전이",
     "타이밍"
   ],
