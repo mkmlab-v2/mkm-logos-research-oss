@@ -75,11 +75,14 @@ if (-not $WhatIf) {
 # Keep in sync with docs/NotebookLM_sources_manifest.md (A/B/Logos/Ijeoma blocks).
 $SourceFiles = @(
     "docs\NotebookLM_sources_manifest.md",
+    "docs\final\CURRENT_OPS_SNAPSHOT.md",
     "docs\final\AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md",
     "docs\final\CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
     "docs\final\MKM12_PRISM_INDEX_REGISTRY_V1.json",
     "docs\final\COMPRESSION_SLA_POLICY_V1.md",
     "docs\final\COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
+    "docs\final\COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1.md",
+    "docs\final\MKM_LESSONS_LEARNED_V1.md",
     "docs\final\openapi_token_compression_stub_v1.yaml",
     "docs\final\STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md",
     "docs\final\MASTER_Linguistic_Contract_2026.md",

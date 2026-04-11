@@ -12,6 +12,20 @@
 
 
 
+## 연속 기억 (세션 핸드오프 — 권장)
+
+- **새 Cursor 채팅:** `@docs/final/CURRENT_OPS_SNAPSHOT.md`를 우선 붙인다. 구현 여부·경로 판정이 필요하면 `@docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`. 장기 규약은 `AGENTS.md`, `CLAUDE.md`.
+- **반복 금지 교훈 (NO_GO 클래스):** `docs/final/MKM_LESSONS_LEARNED_V1.md` — SSOT·레일·레짐·압축 측정·Git 추적 관련 5건; 상세 팩트는 여전히 `CONSTITUTION`·`artifacts`가 우선.
+- **압축 벤치 혼동 방지:** `evaluate_report` 호출·브리지·스윕 차이는 `docs/final/COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1.md` (FAIL-COMP-004와 동일 선상).
+- **역할 분리:** NotebookLM·옵시디언·아래 Vault 미러는 **브리핑·아카이브(B)**. “이미 구현·게이트 통과”는 **레포 스크립트·`docs/final/artifacts/*.json`(A)** 로만 단정한다.
+- **H: 예전 작업 인제스트 (스냅 2026-04-09):** `G:\공유 드라이브\MKM_DATA_VAULT\vault\h_drive_knowledge_ingest\2026-04-09\` — `INGEST_SUMMARY_2026-04-09.txt`, `MATH_THEORY_INGEST_SUMMARY_2026-04-09.txt`, `manifest_h_drive_candidate_2026-04-09.csv` 등. `raw_mirror\`는 대량 아카이브·미러 성격.
+- **H: 로컬 원본 트리 (지휘관 기록·레포와 트리 불일치):** 드라이브 `H:\`(라벨 `mkm`) — 특히 `H:\workspace\docs\` 아래 MD 다수(이론·가이드·일지 등; `docs\final` SSOT와 **동일 경로 아님**), `H:\workspace\daily\YYYY-MM-DD\notes.md`·`tasks.md`. 구현·게이트 판정은 **`C:\workspace` + CONSTITUTION**; H:는 **참고·연혁·초안**으로만 `@` 첨부해 조회.
+- **NotebookLM 소스 Vault 미러:** `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources\` — 레포 SSOT를 반영하려면 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1` (마지막 동기 시각은 `vault\notebooklm_sources\_LAST_SYNC.txt`). 옵시디언 맥락까지 복사할 때 `-IncludeObsidianContext`. **권장 리듬:** 작전 전·주 1회 이상(스냅샷·매니페스트 갱신 후).
+- **NotebookLM MCP:** Cursor에 `project-0-workspace-notebooklm-mcp`가 등록되어 있어도 **이 채팅에 도구가 주입되지 않으면** 호출 불가 — `.cursor/rules/notebooklm-mcp-session-bridge.mdc`. 로컬 MCP 툴 디스크립터는 `mcps/project-0-workspace-notebooklm-mcp/tools/` (`source_list`, `notebook_list`, `note`, `source_get_content` 등).
+- **노트북 앵커·소스 목록:** `docs/NotebookLM_sources_manifest.md` 및 본 파일 하단「NotebookLM + Gemini」URL(메인 + **보조 2개**). **클라우드 노트북 안에만 있는 요약**은 이 레포가 자동으로 대체하지 않는다 — 필요 시 NotebookLM에서 소스로 유지하거나, 내보낸 파일을 레포/`notebooklm_sources` 경로에 두고 동기 스크립트로 미러한다.
+
+
+
 ## 로컬 LoRA (Windows, RTX 5060 Ti) — 현재 정답 경로
 
 
@@ -236,9 +250,12 @@ Set-Location c:\workspace
 
 
 - **지휘관 워크플로**: Gemini 쪽에서 NotebookLM 노트북을 **컨텍스트로 연결**해 작전 브리핑·지시 초안을 쓸 수 있으면, 아래 **동일 URL**을 레포 SSOT(`docs/NotebookLM_sources_manifest.md` · 본 절)와 맞춘다.
-- **노트북 앵커**  
+- **노트북 앵커 (메인)**  
   - https://notebooklm.google.com/notebook/347e5cbe-0ade-4615-9aac-8747d4fa644e  
   - https://notebooklm.google.com/notebook/71f55a03-09d0-411f-b365-0ce2a2064c24  
+- **보조 (B 궤적 · 매니페스트 동일 SSOT)**  
+  - https://notebooklm.google.com/notebook/978ab6ca-d069-4a78-8916-30c7844c4fa6  
+  - https://notebooklm.google.com/notebook/d193d8d4-5678-4cc7-8eb6-7046a9a3b16d  
 - **한계**: 브리핑은 **참고**이며, “이미 구현·이미 통과” 같은 판정은 **레포 스크립트·산출 JSON**으로만 한다. MCP/NotebookLM 세션 미주입 시 도구 호출 불가 — `.cursor/rules/notebooklm-mcp-session-bridge.mdc`.
 
 
@@ -248,5 +265,21 @@ Set-Location c:\workspace
 
 
 - 이 파일은 **레인 합선 방지**: 압축 엔진(A/B Track)과 역할을 섞지 않는다. 장기 불변 규약은 `AGENTS.md`, `CLAUDE.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`를 따른다.
+
+
+
+### 자동화 기동 마스터 페이로드 (One-Shot Execute) — 복붙 계약
+
+
+
+복붙용 — 에이전트에게 그대로 전달:
+
+
+
+> 현재 활성화된 NotebookLM의 최신 통찰을 읽어 `general_prophecy_registry_patch_v1` 초안을 작성하라. 이후 `apply` dry-run → 실제 적용 → `export_general_prophecy_to_jsonl` → `pytest` 검증까지 **중간 승인 없이(TITAN Mode)** 완주하고, 최종 결과와 0.70 스윕 가능 여부만 요약 보고하라.
+
+
+
+**Fact-Lock:** NotebookLM MCP가 이 채팅에 주입되지 않았으면, 노트·포인터는 `docs/final/CURRENT_OPS_SNAPSHOT.md`의 NotebookLM 절·레포 MD 경로에 맞춰 **수동으로** 초안을 만든 뒤 동일 체인을 실행한다. 루트 `.cursorrules`의 **고위험 승인 예외**(실거래·파괴적 삭제·비가역 스키마 등)는 이 페이로드로 면제되지 않는다. `0.70 스윕`의 정의·근거는 팀이 쓰는 스크립트·산출물 기준으로만 보고한다.
 
 

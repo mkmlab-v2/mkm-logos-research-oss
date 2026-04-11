@@ -12,6 +12,8 @@ Purpose: lock one unambiguous explanation of the current compression/interpretat
 
 ## 2) Current runtime flow (implemented)
 
+**한 장 호출 그래프(함수 단위):** `docs/final/COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1.md` — `evaluate_report` · 브리지 · 스윕 래퍼 관계.
+
 1. Input text enters evaluation/compression runtime.
 2. Domain router selects shard policy by scoring `routing_keywords` across **all** loaded shards (`DomainSpecificRouter` glob: `codebook/shards/zone_*.json`):
    - `scripts/core/domain_router.py`
