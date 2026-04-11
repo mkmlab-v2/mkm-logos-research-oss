@@ -8,6 +8,11 @@
 #
 # Does NOT run: git reset --hard, git clean -fd (requires explicit operator approval).
 # Set MKMLIFE_GIT_ALIGN_DRY_RUN=1 to print commands only.
+#
+# SSOT / drift: canonical copy lives in monorepo mkmlab-v2/mkm-destiny-ai-41e38ec6 at
+#   scripts/mkmlife_vps_git_align_safe.sh
+# Manual copy to VPS is OK for speed; re-sync from that path (or git archive / tagged fetch)
+# when behavior changes, so server copies do not silently diverge.
 
 set -e
 
