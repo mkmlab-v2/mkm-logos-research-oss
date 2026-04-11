@@ -135,6 +135,7 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 | 필수 필드 무결성 | broadcast JSON의 `reliability_badge`, `high_reliability_decision`, `gate_reason`, `net` | 4개 키 모두 존재·null 아님 |
 | Prophecy 월간 산출물 존재 | `docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json/.md` | 두 파일 모두 존재(없으면 no_data로 명시) |
 | B-Track 가설/채점 연계 상태 | `docs/final/artifacts/btrack_hypothesis_prophecy_latest.json`, `btrack_prophecy_score_latest.json`, `prophecy_hit_rate_eval_latest.json` | 파일 존재 + `schema` 유효 + `[HYPO]` 문구 유지 |
+| 일반 미래 예측(B 레일) 월간 산출 | `run_waiting_queue_monthly_check.ps1` 내 `generate_general_prophecy_v1.py`→`build_general_prophecy_brief.py`→`eval_general_prophecy_brier_score.py`(기본 `-SkipGeneralProphecyChain` **미**지정) | `docs/final/artifacts/general_prophecy_latest.json`, `general_prophecy_brief_latest.md`, `general_prophecy_brier_eval_latest.json` 갱신·exit 0; 스킵 시 `-SkipGeneralProphecyChain` 명시 |
 | 경로/헌법 스모크 | `scripts/verify_p0_constitution_gate_paths.ps1` | OK 출력(누락 경로 0) |
 
 **보고 규칙(월간)**:

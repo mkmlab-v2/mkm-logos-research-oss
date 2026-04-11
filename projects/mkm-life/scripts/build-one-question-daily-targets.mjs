@@ -70,8 +70,10 @@ function main() {
   const items = (Array.isArray(gap?.items) ? gap.items : [])
     .map((it) => ({
       name: String(it.name || 'unknown'),
+      bound: it.bound === 'upper' ? 'upper' : 'lower',
       actual: n(it.actual),
-      minimum: n(it.minimum),
+      minimum: it.minimum != null && Number.isFinite(n(it.minimum)) ? n(it.minimum) : null,
+      maximum: it.maximum != null && Number.isFinite(n(it.maximum)) ? n(it.maximum) : null,
       gapToPass: n(it.gapToPass),
       action: actionMap.get(String(it.name || '')) || targetHint(String(it.name || '')),
       hint: targetHint(String(it.name || '')),
@@ -119,8 +121,10 @@ function main() {
         t.gapDelta != null && Number.isFinite(t.gapDelta)
           ? ` | gapΔ=${t.gapDelta > 0 ? '+' : ''}${t.gapDelta} (이전 gap=${t.previousGapToPass})`
           : ''
+      const thresh =
+        t.bound === 'upper' && t.maximum != null ? `max≤${t.maximum}` : `min≥${t.minimum ?? 0}`
       lines.push(
-        `- ${t.name}: actual=${t.actual}, target=${t.minimum}, gap=${t.gapToPass}${delta} | action=${t.action}`
+        `- ${t.name}: actual=${t.actual}, ${thresh}, gap=${t.gapToPass}${delta} | action=${t.action}`
       )
     }
   }

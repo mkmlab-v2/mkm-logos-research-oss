@@ -108,55 +108,96 @@ function main() {
     })
   }
 
-  add('query_count', queryCount, T.MIN_QUERY_COUNT)
-  add('gate_pass_rate_pct', kpi.gatePassRatePct, T.MIN_GATE_PASS_RATE_PCT)
-  add('charge_success_rate_pct', kpi.chargeSuccessRatePct, T.MIN_CHARGE_SUCCESS_RATE_PCT)
-  add(
-    'subscription_purchase_success_rate_pct',
-    kpi.subscriptionPurchaseSuccessRatePct,
-    T.MIN_SUBSCRIPTION_PURCHASE_SUCCESS_RATE_PCT
-  )
-  add(
-    'query_to_subscription_view_rate_pct',
-    kpi.queryToSubscriptionViewRatePct,
-    T.MIN_QUERY_TO_SUBSCRIPTION_VIEW_RATE_PCT
-  )
-  add('evidence_open_rate_pct', kpi.evidenceOpenRatePct, T.MIN_EVIDENCE_OPEN_RATE_PCT)
-
-  if (evidenceOpens < minEvidenceSamples) {
+  const skipNoQueries = (name, actual, minimum) => {
     checks.push({
-      name: 'evidence_link_click_rate_pct',
-      actual: n(kpi.evidenceLinkClickRatePct),
-      minimum: n(T.MIN_EVIDENCE_LINK_CLICK_RATE_PCT),
+      name,
+      actual: n(actual),
+      minimum: n(minimum),
       pass: true,
       skipped: true,
-      skipReason: `insufficient_evidence_open_samples(<${minEvidenceSamples})`,
+      skipReason: 'no_queries_yet',
     })
-  } else {
-    add('evidence_link_click_rate_pct', kpi.evidenceLinkClickRatePct, T.MIN_EVIDENCE_LINK_CLICK_RATE_PCT)
   }
 
-  add(
-    'additional_input_submit_rate_pct',
-    kpi.additionalInputSubmitRatePct,
-    T.MIN_ADDITIONAL_INPUT_SUBMIT_RATE_PCT
-  )
+  const noQueries = queryCount === 0
 
-  if (addInputGates < minAddGateSamples) {
-    checks.push({
-      name: 'additional_input_followup_gate_pass_rate_pct',
-      actual: n(kpi.additionalInputFollowupGatePassRatePct),
-      minimum: n(T.MIN_ADDITIONAL_INPUT_FOLLOWUP_GATE_PASS_RATE_PCT),
-      pass: true,
-      skipped: true,
-      skipReason: `insufficient_additional_input_gate_samples(<${minAddGateSamples})`,
-    })
-  } else {
-    add(
+  add('query_count', queryCount, T.MIN_QUERY_COUNT)
+
+  if (noQueries) {
+    skipNoQueries('gate_pass_rate_pct', kpi.gatePassRatePct, T.MIN_GATE_PASS_RATE_PCT)
+    skipNoQueries('charge_success_rate_pct', kpi.chargeSuccessRatePct, T.MIN_CHARGE_SUCCESS_RATE_PCT)
+    skipNoQueries(
+      'subscription_purchase_success_rate_pct',
+      kpi.subscriptionPurchaseSuccessRatePct,
+      T.MIN_SUBSCRIPTION_PURCHASE_SUCCESS_RATE_PCT
+    )
+    skipNoQueries(
+      'query_to_subscription_view_rate_pct',
+      kpi.queryToSubscriptionViewRatePct,
+      T.MIN_QUERY_TO_SUBSCRIPTION_VIEW_RATE_PCT
+    )
+    skipNoQueries('evidence_open_rate_pct', kpi.evidenceOpenRatePct, T.MIN_EVIDENCE_OPEN_RATE_PCT)
+    skipNoQueries('evidence_link_click_rate_pct', kpi.evidenceLinkClickRatePct, T.MIN_EVIDENCE_LINK_CLICK_RATE_PCT)
+    skipNoQueries(
+      'additional_input_submit_rate_pct',
+      kpi.additionalInputSubmitRatePct,
+      T.MIN_ADDITIONAL_INPUT_SUBMIT_RATE_PCT
+    )
+    skipNoQueries(
       'additional_input_followup_gate_pass_rate_pct',
       kpi.additionalInputFollowupGatePassRatePct,
       T.MIN_ADDITIONAL_INPUT_FOLLOWUP_GATE_PASS_RATE_PCT
     )
+  } else {
+    add('gate_pass_rate_pct', kpi.gatePassRatePct, T.MIN_GATE_PASS_RATE_PCT)
+    add('charge_success_rate_pct', kpi.chargeSuccessRatePct, T.MIN_CHARGE_SUCCESS_RATE_PCT)
+    add(
+      'subscription_purchase_success_rate_pct',
+      kpi.subscriptionPurchaseSuccessRatePct,
+      T.MIN_SUBSCRIPTION_PURCHASE_SUCCESS_RATE_PCT
+    )
+    add(
+      'query_to_subscription_view_rate_pct',
+      kpi.queryToSubscriptionViewRatePct,
+      T.MIN_QUERY_TO_SUBSCRIPTION_VIEW_RATE_PCT
+    )
+    add('evidence_open_rate_pct', kpi.evidenceOpenRatePct, T.MIN_EVIDENCE_OPEN_RATE_PCT)
+
+    if (evidenceOpens < minEvidenceSamples) {
+      checks.push({
+        name: 'evidence_link_click_rate_pct',
+        actual: n(kpi.evidenceLinkClickRatePct),
+        minimum: n(T.MIN_EVIDENCE_LINK_CLICK_RATE_PCT),
+        pass: true,
+        skipped: true,
+        skipReason: `insufficient_evidence_open_samples(<${minEvidenceSamples})`,
+      })
+    } else {
+      add('evidence_link_click_rate_pct', kpi.evidenceLinkClickRatePct, T.MIN_EVIDENCE_LINK_CLICK_RATE_PCT)
+    }
+
+    add(
+      'additional_input_submit_rate_pct',
+      kpi.additionalInputSubmitRatePct,
+      T.MIN_ADDITIONAL_INPUT_SUBMIT_RATE_PCT
+    )
+
+    if (addInputGates < minAddGateSamples) {
+      checks.push({
+        name: 'additional_input_followup_gate_pass_rate_pct',
+        actual: n(kpi.additionalInputFollowupGatePassRatePct),
+        minimum: n(T.MIN_ADDITIONAL_INPUT_FOLLOWUP_GATE_PASS_RATE_PCT),
+        pass: true,
+        skipped: true,
+        skipReason: `insufficient_additional_input_gate_samples(<${minAddGateSamples})`,
+      })
+    } else {
+      add(
+        'additional_input_followup_gate_pass_rate_pct',
+        kpi.additionalInputFollowupGatePassRatePct,
+        T.MIN_ADDITIONAL_INPUT_FOLLOWUP_GATE_PASS_RATE_PCT
+      )
+    }
   }
 
   const synRate = n(kpi.syntheticEventRatePct)

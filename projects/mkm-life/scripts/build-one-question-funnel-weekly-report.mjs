@@ -162,8 +162,12 @@ function main() {
         t.gapDelta != null && Number.isFinite(gd)
           ? ` | gapΔ=${gd > 0 ? '+' : ''}${gd.toFixed(2)} (prev gap=${Number(t.previousGapToPass || 0).toFixed(2)})`
           : ''
+      const thresh =
+        t.bound === 'upper' && t.maximum != null
+          ? `max≤${Number(t.maximum).toFixed(2)}`
+          : `min≥${Number(t.minimum || 0).toFixed(2)}`
       lines.push(
-        `- ${t.name || 'unknown'}: actual=${Number(t.actual || 0).toFixed(2)} / target=${Number(t.minimum || 0).toFixed(2)} / gap=${Number(t.gapToPass || 0).toFixed(2)}${delta} | ${t.action || ''}${hint}`
+        `- ${t.name || 'unknown'}: actual=${Number(t.actual || 0).toFixed(2)} / ${thresh} / gap=${Number(t.gapToPass || 0).toFixed(2)}${delta} | ${t.action || ''}${hint}`
       )
     }
   }

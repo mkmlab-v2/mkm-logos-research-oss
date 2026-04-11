@@ -55,11 +55,26 @@ function main() {
     .map((c) => {
       const actual = n(c.actual)
       const minimum = n(c.minimum)
+      const hasMax = c.maximum !== undefined && Number.isFinite(n(c.maximum))
+      if (hasMax) {
+        const cap = n(c.maximum)
+        const gap = round2(Math.max(0, actual - cap))
+        return {
+          name: String(c.name || 'unknown'),
+          bound: 'upper',
+          actual: round2(actual),
+          minimum: null,
+          maximum: round2(cap),
+          gapToPass: gap,
+        }
+      }
       const gap = round2(minimum - actual)
       return {
         name: String(c.name || 'unknown'),
+        bound: 'lower',
         actual: round2(actual),
         minimum: round2(minimum),
+        maximum: null,
         gapToPass: round2(Math.max(0, gap)),
       }
     })
@@ -91,9 +106,11 @@ function main() {
     lines.push('- No gap. All gate checks passed.')
   } else {
     for (const it of items) {
-      lines.push(
-        `- ${it.name}: actual=${it.actual}, minimum=${it.minimum}, gap_to_pass=${it.gapToPass}`
-      )
+      const band =
+        it.bound === 'upper'
+          ? `max_allowed=${it.maximum}`
+          : `minimum=${it.minimum}`
+      lines.push(`- ${it.name}: actual=${it.actual}, ${band}, gap_to_pass=${it.gapToPass}`)
     }
   }
   fs.writeFileSync(outMdPath, `${lines.join('\n')}\n`, 'utf8')

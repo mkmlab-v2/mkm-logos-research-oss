@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm12.local/schemas/general_prophecy_contract_v1.json",
+  "title": "General Prophecy (non-price) — question registry & forecast slots v1",
+  "description": "B/OBSERVATION_ONLY rail. Tetlock-style falsifiable questions; Layer 1 probabilities must not be overwritten by Layer 3 narrative in the same field. Does not auto-resolve; human or scripted resolver updates resolution block.",
+  "oneOf": [
+    { "$ref": "#/$defs/general_prophecy_registry_v1" },
+    { "$ref": "#/$defs/general_prophecy_question_v1" }
+  ],
+  "$defs": {
+    "general_prophecy_registry_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "research_rail", "generated_at_utc", "questions"],
+      "properties": {
+        "schema": { "const": "general_prophecy_registry_v1" },
+        "version": { "type": "string", "default": "1.0.0" },
+        "research_rail": {
+          "type": "string",
+          "enum": ["B", "OBSERVATION_ONLY"],
+          "description": "Must not be A/production without separate promotion checklist."
+        },
+        "boundary_ack": {
+          "type": "boolean",
+          "description": "Acknowledge separation from Logos verse pipeline and from live trading."
+        },
+        "generated_at_utc": { "type": "string", "format": "date-time" },
+        "git_commit_hint": { "type": "string", "description": "Optional host+short SHA for clone parity (VPS/local)." },
+        "questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/general_prophecy_question_v1" }
+        }
+      }
+    },
+    "general_prophecy_question_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "research_rail",
+        "question_id",
+        "question_text",
+        "resolution_deadline_utc",
+        "resolution_criteria",
+        "outcome_spec"
+      ],
+      "properties": {
+        "schema": { "const": "general_prophecy_question_v1" },
+        "research_rail": {
+          "type": "string",
+          "enum": ["B", "OBSERVATION_ONLY"]
+        },
+        "boundary_ack": { "type": "boolean" },
+        "question_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$",
+          "description": "Stable slug, e.g. us_election_2028_president_party_x."
+        },
+        "question_text": {
+          "type": "string",
+          "minLength": 20,
+          "description": "Single unambiguous sentence; no nested questions."
+        },
+        "domain_tags": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 2 },
+          "description": "e.g. politics, macro, culture, tech — for routing only."
+        },
+        "resolution_deadline_utc": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Latest instant by which outcome must be judged (UTC)."
+        },
+        "resolution_criteria": {
+          "type": "string",
+          "minLength": 40,
+          "description": "Falsifiable rubric: sources accepted, tie-break, void conditions."
+        },
+        "outcome_spec": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": ["binary", "categorical", "numeric_threshold", "ordinal"]
+            },
+            "true_label": { "type": "string" },
+            "false_label": { "type": "string" },
+            "categories": {
+              "type": "array",
+              "items": { "type": "string" },
+              "minItems": 2
+            },
+            "numeric_target": { "type": "number" },
+            "comparison": {
+              "type": "string",
+              "enum": ["<=", ">=", "==", "between"]
+            },
+            "numeric_upper": { "type": "number" }
+          },
+          "description": "For kind=binary, true_label and false_label are required in valid payloads (enforce in app or extend schema)."
+        },
+        "forecasts": {
+          "type": "array",
+          "description": "Layer 1 numeric slots; optional until Phase 2 wiring.",
+          "items": { "$ref": "#/$defs/general_prophecy_forecast_snapshot_v1" }
+        },
+        "resolution": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["pending", "resolved", "void", "disputed"]
+            },
+            "resolved_at_utc": { "type": "string", "format": "date-time" },
+            "outcome_binary": { "type": ["boolean", "null"] },
+            "outcome_category": { "type": "string" },
+            "outcome_numeric": { "type": "number" },
+            "resolver_notes": { "type": "string" },
+            "evidence_uris": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 8 }
+            }
+          }
+        },
+        "layer3_interpretation_ref": {
+          "type": "string",
+          "description": "Pointer only (path or notebook source id). No probabilities in this string."
+        },
+        "epistemic_firewall": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "l1_probability_fields": {
+              "type": "array",
+              "items": { "const": "forecasts[].probability_0_1" }
+            },
+            "l3_narrative_forbidden_in": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Field paths where narrative must not overwrite numbers."
+            }
+          }
+        }
+      }
+    },
+    "general_prophecy_forecast_snapshot_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["issued_at_utc", "probability_0_1", "source_kind"],
+      "properties": {
+        "issued_at_utc": { "type": "string", "format": "date-time" },
+        "probability_0_1": { "type": "number", "minimum": 0, "maximum": 1 },
+        "source_kind": {
+          "type": "string",
+          "enum": ["human_panel", "llm_ensemble", "prediction_market", "hybrid", "baseline", "other"]
+        },
+        "source_detail": { "type": "string", "description": "Model id, market URL, or panel id — no secrets." },
+        "brier_ready": { "type": "boolean", "description": "True iff resolution is pending or resolved with known outcome." }
+      }
+    }
+  }
+}

@@ -122,8 +122,12 @@ function main() {
           t.gapDelta != null && Number.isFinite(n(t.gapDelta))
             ? ` | gapΔ=${n(t.gapDelta) > 0 ? '+' : ''}${n(t.gapDelta).toFixed(2)} (prev gap=${n(t.previousGapToPass).toFixed(2)})`
             : ''
+        const thresh =
+          t.bound === 'upper' && t.maximum != null
+            ? `max≤${n(t.maximum).toFixed(2)}`
+            : `min≥${n(t.minimum).toFixed(2)}`
         lines.push(
-          `- ${t.name || 'unknown'}: actual=${n(t.actual).toFixed(2)} / target=${n(t.minimum).toFixed(2)} / gap=${n(t.gapToPass).toFixed(2)}${delta} | ${t.action || ''}`
+          `- ${t.name || 'unknown'}: actual=${n(t.actual).toFixed(2)} / ${thresh} / gap=${n(t.gapToPass).toFixed(2)}${delta} | ${t.action || ''}`
         )
       }
     }

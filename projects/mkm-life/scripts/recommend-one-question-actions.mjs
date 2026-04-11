@@ -27,9 +27,13 @@ function buildRecommendationForCheck(check) {
   if (pass || skipped) return null
   const actual = Number(check?.actual || 0)
   const minimum = Number(check?.minimum || 0)
-  const gapToPass = Number.isFinite(minimum - actual)
-    ? Number(Math.max(0, minimum - actual).toFixed(2))
-    : null
+  const hasMax = check?.maximum !== undefined && Number.isFinite(Number(check.maximum))
+  const maximum = hasMax ? Number(check.maximum) : null
+  const gapToPass = hasMax
+    ? Number(Math.max(0, actual - maximum).toFixed(2))
+    : Number.isFinite(minimum - actual)
+      ? Number(Math.max(0, minimum - actual).toFixed(2))
+      : null
 
   const map = {
     query_count: '유입량 부족: 랜딩 CTA/쇼룸 배너 노출을 늘리고 일일 테스트 트래픽을 확보하세요.',
@@ -55,7 +59,8 @@ function buildRecommendationForCheck(check) {
     check: name,
     priority: 'high',
     actual: Number.isFinite(actual) ? Number(actual.toFixed(2)) : null,
-    minimum: Number.isFinite(minimum) ? Number(minimum.toFixed(2)) : null,
+    minimum: hasMax ? null : Number.isFinite(minimum) ? Number(minimum.toFixed(2)) : null,
+    maximum: hasMax && Number.isFinite(maximum) ? Number(maximum.toFixed(2)) : null,
     gapToPass,
     action: map[name] || `${name} 지표 개선 액션을 정의하세요.`,
   }
@@ -128,8 +133,12 @@ function main() {
     lines.push('- 현재 필수 액션 없음 (모든 체크 통과 또는 샘플 가드 스킵).')
   } else {
     for (const a of actions) {
+      const band =
+        a.maximum != null && Number.isFinite(Number(a.maximum))
+          ? `maximum=${a.maximum}`
+          : `minimum=${a.minimum}`
       lines.push(
-        `- [${a.priority}] ${a.check}: ${a.action} (actual=${a.actual}, minimum=${a.minimum}, gap=${a.gapToPass})`
+        `- [${a.priority}] ${a.check}: ${a.action} (actual=${a.actual}, ${band}, gap=${a.gapToPass})`
       )
     }
   }
