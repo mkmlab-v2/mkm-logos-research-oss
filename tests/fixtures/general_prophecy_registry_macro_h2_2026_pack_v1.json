@@ -1,0 +1,160 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-04-11T12:00:00Z",
+  "git_commit_hint": "fixture:macro_h2_2026_pack_v1",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_h2_kostat_cpi_yoy_below_2_any_month",
+      "question_text": "2027-01-01 00:00 KST 이전에 통계청이 공표하는 소비자물가지수(CPI) 전년동월비가 2.0% 미만으로 보고된 월이 한 번이라도 있는가?",
+      "domain_tags": ["macro", "korea", "inflation"],
+      "resolution_deadline_utc": "2026-12-31T15:00:00Z",
+      "resolution_criteria": "통계청 KOSIS 또는 통계청 보도자료의 전국 소비자물가지수 전년동월비(%)가 공표된 월 중 하나라도 2.0 미만이면 TRUE. 모든 공표가 2.0 이상이면 FALSE. 개정·재공표 시 최종 수치. 공표 없음·정의 불가면 VOID.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_month_yoy_lt_2pct",
+        "false_label": "all_months_yoy_ge_2pct"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T11:00:00Z",
+          "probability_0_1": 0.42,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Macro H2 2026 pack; B-rail only; not A-track.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "internal:macro_h2_2026_kostat_cpi",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_h2_fed_funds_upper_cut_ge_25bp_vs_2026q2",
+      "question_text": "2026년 6월 30일 23:59 US/Eastern 이전에 연준(FOMC)이 공표한 연방기금금리 목표구간 상한이 2026년 4월 1일 시점 상한보다 0.25%p 이상 낮아지는가?",
+      "domain_tags": ["macro", "usa", "rates"],
+      "resolution_deadline_utc": "2026-07-01T04:00:00Z",
+      "resolution_criteria": "Federal Reserve FOMC 성명서의 연방기금금리 목표구간(퍼센트 상한) 기준. 2026-04-01 시점 상한(공식 발표) 대비 2026-06-30 ET까지의 최종 상한이 0.25%p 이상 낮으면 TRUE, 그렇지 않으면 FALSE. 비상시 긴급 발표 포함. 출처 불명시 VOID.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "upper_bound_cut_ge_25bp",
+        "false_label": "upper_bound_cut_lt_25bp_or_higher"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T11:01:00Z",
+          "probability_0_1": 0.55,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Macro H2 2026 pack; B-rail only.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "internal:macro_h2_2026_fed_funds",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_h2_ecb_deposit_facility_below_2pct",
+      "question_text": "2026-12-31 23:59 CET 이전에 유럽중앙은행(ECB)이 공표한 예금편의 금리(DFR)가 2.00% 미만인가?",
+      "domain_tags": ["macro", "eu", "rates"],
+      "resolution_deadline_utc": "2027-01-01T05:00:00Z",
+      "resolution_criteria": "ECB 공식 보도자료의 Deposit facility rate(퍼센트, 소수 한 자리까지)가 2026-12-31 CET까지의 마지막 공표에서 2.00 미만이면 TRUE, 2.00 이상이면 FALSE. 중복 공표는 최종 수치. VOID는 출처 불가.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "dfr_lt_2pct",
+        "false_label": "dfr_ge_2pct"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T11:02:00Z",
+          "probability_0_1": 0.38,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Macro H2 2026 pack; B-rail only.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "internal:macro_h2_2026_ecb_dfr",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_h2_boj_policy_rate_above_1pct",
+      "question_text": "2026-12-31 23:59 JST 이전에 일본은행이 공표한 무담보 코루 금리(정책금리)가 1.00%를 초과하는가?",
+      "domain_tags": ["macro", "japan", "rates"],
+      "resolution_deadline_utc": "2027-01-01T05:00:00Z",
+      "resolution_criteria": "일본은행 공식 보도의 무담보 일간 금리 목표 수준(퍼센트)이 2026-12-31 JST까지의 최종 공표에서 1.00 초과면 TRUE, 이하이면 FALSE. 정책 변경 없이 동일 수치 재공표는 최종만. VOID는 정의 불가.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "policy_rate_gt_1pct",
+        "false_label": "policy_rate_le_1pct"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T11:03:00Z",
+          "probability_0_1": 0.48,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Macro H2 2026 pack; B-rail only.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "internal:macro_h2_2026_boj",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_h2_eia_brent_monthly_avg_ge_80_usd",
+      "question_text": "2026년 7월부터 12월까지의 월 중 하나라도 미국 EIA가 공표하는 Europe Brent Spot Price 월평균(달러/배럴)이 80.00 이상인가?",
+      "domain_tags": ["macro", "energy", "commodities"],
+      "resolution_deadline_utc": "2027-01-15T05:00:00Z",
+      "resolution_criteria": "U.S. EIA 공식 시계열(또는 동등한 EIA 월별 Brent 평균 정의)에서 2026-07~2026-12 각 월의 월평균 달러/배럴 중 하나라도 80.00 이상이면 TRUE, 모두 80.00 미만이면 FALSE. 개정 시 최종. 데이터 없으면 VOID.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_month_avg_ge_80",
+        "false_label": "all_months_avg_lt_80"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T11:04:00Z",
+          "probability_0_1": 0.33,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Macro H2 2026 pack; B-rail only.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "internal:macro_h2_2026_eia_brent",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    }
+  ]
+}

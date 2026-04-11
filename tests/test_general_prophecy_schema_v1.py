@@ -18,6 +18,7 @@ _FIXTURE = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_sample_v1.j
 _SEED5 = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_seed_5_v1.json"
 _BRIER_SMOKE = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_brier_smoke_v1.json"
 _OFFICIAL_SEED = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_official_seed_v1.json"
+_MACRO_H2_PACK = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_macro_h2_2026_pack_v1.json"
 
 
 @pytest.fixture(scope="module")
@@ -61,6 +62,17 @@ def test_general_prophecy_brier_smoke_fixture_validates(_validator) -> None:
     qs = doc.get("questions")
     assert isinstance(qs, list) and len(qs) == 1
     assert qs[0].get("resolution", {}).get("status") == "resolved"
+
+
+def test_general_prophecy_macro_h2_2026_pack_fixture_validates(_validator) -> None:
+    assert _MACRO_H2_PACK.is_file(), f"missing {_MACRO_H2_PACK}"
+    doc = json.loads(_MACRO_H2_PACK.read_text(encoding="utf-8"))
+    errs = sorted(_validator.iter_errors(doc), key=lambda e: e.path)
+    assert not errs, "schema errors: " + "; ".join(f"{list(e.path)}: {e.message}" for e in errs[:12])
+    qs = doc.get("questions")
+    assert isinstance(qs, list) and len(qs) == 5
+    ids = [q.get("question_id") for q in qs]
+    assert len(set(ids)) == 5
 
 
 def test_general_prophecy_official_seed_fixture_validates(_validator) -> None:

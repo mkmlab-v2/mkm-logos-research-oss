@@ -11,6 +11,25 @@ from pathlib import Path
 _ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_generate_general_prophecy_dry_run_with_macro_h2_2026_pack_merge() -> None:
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(_ROOT / "scripts" / "generate_general_prophecy_v1.py"),
+            "--dry-run",
+            "--merge-from",
+            str(_ROOT / "tests" / "fixtures" / "general_prophecy_registry_macro_h2_2026_pack_v1.json"),
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert r.returncode == 0, r.stderr
+    assert "ok" in r.stdout
+    assert r.stdout.strip().split()[-1] == "12"
+
+
 def test_generate_general_prophecy_dry_run_with_official_seed_merge() -> None:
     r = subprocess.run(
         [

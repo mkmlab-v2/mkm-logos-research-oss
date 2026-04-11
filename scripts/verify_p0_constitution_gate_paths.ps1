@@ -30,6 +30,7 @@ $required = @(
     "tests\fixtures\general_prophecy_registry_seed_5_v1.json",
     "tests\fixtures\general_prophecy_registry_brier_smoke_v1.json",
     "tests\fixtures\general_prophecy_registry_official_seed_v1.json",
+    "tests\fixtures\general_prophecy_registry_macro_h2_2026_pack_v1.json",
     "scripts\generate_btrack_hypothesis_prophecy_v1.py",
     "scripts\build_logos_wide_restoration.py",
     "scripts\build_btrack_prophecy_score_from_ohlcv.py",
