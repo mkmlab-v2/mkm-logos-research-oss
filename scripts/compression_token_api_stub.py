@@ -6,6 +6,8 @@ Run: uvicorn scripts.compression_token_api_stub:app --host 127.0.0.1 --port 8010
 When eval_context.hydrate_metrics and hydrate_live_eval are true, calls evaluate_report; on exception sets
 integrity_flags hydration_live_eval_failed and may fall back to decision-based estimates.
 
+Dev: set MKM_APPLY_GEMATRIA_4D_BRIDGE_POLICY=1 to enable gematria metadata + 4D bridge + CEE + bridge policy in live evaluate_report (higher fidelity, lower saving vs default).
+
 Tiering (Freemium-style, no billing in stub):
 - Set COMPRESSION_API_ENTERPRISE_KEYS to a comma-separated list of API tokens. Requests with
   X-API-Key: <token> or Authorization: Bearer <token> match → enterprise tier (Track A / active KPI).
@@ -36,6 +38,7 @@ from starlette.middleware.cors import CORSMiddleware  # noqa: E402
 
 from scripts.core.billing_meter import append_meter_event  # noqa: E402
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
+from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy  # noqa: E402
 from scripts.report_multilens_performance_eval import evaluate_report  # noqa: E402
 
 API_CONTRACT_VERSION = "1.0.0"
@@ -294,6 +297,7 @@ def _live_eval_metrics(
         "fusion_answer_cases": [],
     }
     try:
+        _bp = env_apply_gematria_4d_bridge_policy()
         report = evaluate_report(
             doc,
             source_input="api:live_eval",
@@ -308,6 +312,10 @@ def _live_eval_metrics(
             hangul_max_saving_rate=float(hangul_cap) if hangul_cap is not None else None,
             use_domain_router=True,
             use_master_codebook_lexicon_v1=True,
+            include_gematria_metadata=_bp,
+            include_gematria_4d_bridge=_bp,
+            include_cee_core=_bp,
+            apply_gematria_4d_bridge_policy=_bp,
         )
         comp_block = report.get("compression_metrics", {})
         ratio = float(comp_block.get("global_token_saving_rate", 0.0))

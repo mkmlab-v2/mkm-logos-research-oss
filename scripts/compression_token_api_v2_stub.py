@@ -7,6 +7,8 @@ Compress uses ``evaluate_report`` (same family as v1 live hydration). The packet
 includes ``mk_stub_v2.reconstructed_text`` so ``POST /v2/expand`` can return engine reconstruction
 without echoing a separate v1 ``original_text`` field — still experimental, not a production SLA.
 ``GlobalPivotCompressionPipeline`` is not used; name in early drafts was superseded by this path.
+
+Dev: MKM_APPLY_GEMATRIA_4D_BRIDGE_POLICY=1 enables full gematria/4D bridge policy in evaluate_report (see compression_token_api_stub).
 """
 
 from __future__ import annotations
@@ -32,6 +34,7 @@ from scripts.compression_token_api_stub import (  # noqa: E402
     _decision_selected_profile,
 )
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
+from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy  # noqa: E402
 from scripts.report_multilens_performance_eval import _jaccard, evaluate_report  # noqa: E402
 
 API_CONTRACT_VERSION = "2.0.0-draft"
@@ -144,6 +147,7 @@ def _run_evaluate_for_packet(text: str, loss_profile: LossProfile) -> dict[str, 
         ],
         "fusion_answer_cases": [],
     }
+    _bp = env_apply_gematria_4d_bridge_policy()
     report = evaluate_report(
         doc,
         source_input="api:v2_trust_packet",
@@ -158,6 +162,10 @@ def _run_evaluate_for_packet(text: str, loss_profile: LossProfile) -> dict[str, 
         hangul_max_saving_rate=float(hangul_cap) if hangul_cap is not None else None,
         use_domain_router=True,
         use_master_codebook_lexicon_v1=True,
+        include_gematria_metadata=_bp,
+        include_gematria_4d_bridge=_bp,
+        include_cee_core=_bp,
+        apply_gematria_4d_bridge_policy=_bp,
     )
     elapsed_ms = round((perf_counter() - t0) * 1000.0, 3)
     comp_block = report.get("compression_metrics", {})

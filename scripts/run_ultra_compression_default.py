@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy
 from scripts.report_multilens_performance_eval import evaluate_report
 
 
@@ -102,6 +103,7 @@ def main() -> int:
     )
     args = ap.parse_args()
     sla_track = str(args.mode)
+    apply_bridge_policy = bool(args.apply_gematria_4d_bridge_policy) or env_apply_gematria_4d_bridge_policy()
 
     src_doc = json.loads(INPUT_V2.read_text(encoding="utf-8"))
     baseline_doc = json.loads(BASELINE_V2.read_text(encoding="utf-8"))
@@ -153,7 +155,7 @@ def main() -> int:
         use_master_codebook_lexicon_v1=True,
         include_gematria_metadata=True,
         include_gematria_4d_bridge=True,
-        apply_gematria_4d_bridge_policy=bool(args.apply_gematria_4d_bridge_policy),
+        apply_gematria_4d_bridge_policy=apply_bridge_policy,
         include_cee_core=True,
     )
     report["active_profile"] = {
@@ -164,7 +166,8 @@ def main() -> int:
         "general_max_saving_rate": general_max_saving_rate,
         "sensitive_max_saving_rate": sensitive_max_saving_rate,
         "hangul_max_saving_rate": hangul_max_saving_rate,
-        "apply_gematria_4d_bridge_policy": bool(args.apply_gematria_4d_bridge_policy),
+        "apply_gematria_4d_bridge_policy": apply_bridge_policy,
+        "apply_gematria_4d_bridge_policy_env": env_apply_gematria_4d_bridge_policy(),
     }
     if sla_track == "ultra-literal":
         cases = (report.get("compression_metrics") or {}).get("cases") or []

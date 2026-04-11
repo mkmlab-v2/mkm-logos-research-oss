@@ -48,6 +48,7 @@ $required = @(
     "scripts\report_btrack_notebooklm_jsonl_kpi.py",
     "projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1",
     "scripts\core\domain_router.py",
+    "scripts\core\multilens_bridge_policy_env.py",
     "codebook\shards\zone_a_scm.json",
     "codebook\shards\zone_b_timing.json",
     "codebook\shards\zone_c_hangul.json",
