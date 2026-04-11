@@ -52,12 +52,19 @@ User(로컬)와 Remote(SSH) 설정이 합쳐지므로, **두 JSON 모두**에서
 
 ### 2.2 최신 코드 받기
 
-원격 터미널에서 레포 루트로 이동한 뒤:
+원격 터미널에서 레포 루트로 이동한 뒤, **먼저 drift 점검** 후 pull 한다(VPS·로컬 혼선 재발 방지).
 
 ```bash
-cd /path/to/workspace   # 실제 REPO 루트
-git pull origin main
+cd /path/to/workspace   # 실제 REPO 루트 (표준 예: /opt/mkm-sync-check; /root/mkm-sync-check 는 동일 트리 심링크일 수 있음)
+chmod +x scripts/verify_git_origin_main_sync.sh   # 최초 1회
+bash scripts/verify_git_origin_main_sync.sh --strict .
+# OK이면:
+git pull --ff-only origin main
 ```
+
+`--strict` 없이 경고만 보려면 인자 생략. 오프라인·빠른 점검은 `bash scripts/verify_git_origin_main_sync.sh --no-fetch .`
+
+Windows 로컬 동일 점검: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-GitWorkspaceSanity.ps1 -WorkspaceRoot C:\workspace -CheckOriginMainSync` (`-Strict`는 뒤처짐·분기 시 실패).
 
 `git`이 없거나 클론이 없으면, 본선에 레포를 한 번 클론한 뒤 이 런북을 따른다.
 
@@ -138,6 +145,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\check_jema12_public_
 | `/broadcast` 여전히 404 | reload 미적용, 다른 `server_name` 블록이 응답, 또는 CDN 캐시. `curl -sSI`로 직접 확인. |
 | `/studio/` 500 | 스니펫과 별개로 정적 경로 오류 가능성 큼 → `error.log` 필수. |
 | NotebookLM `RESOURCE_EXHAUSTED` | 웹 nginx와 무관. `nlm login`, 배치 간격 확대, `run_notebooklm_mega_insight_batch.py`의 `--quota-retry-max` 사용. |
+| VPS는 최신인데 Windows만 옛 커밋(또는 반대) | §2.2 — `verify_git_origin_main_sync.sh --strict` 또는 `Verify-GitWorkspaceSanity.ps1 -CheckOriginMainSync`로 drift 확인 후 `git pull --ff-only origin main`. |
 
 ---
 

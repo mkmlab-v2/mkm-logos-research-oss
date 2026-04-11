@@ -114,6 +114,7 @@
 ## SSH Cursor · VPS 실매매 (전제)
 
 - **Git 재발 방지 점검:** `scripts/Verify-GitWorkspaceSanity.ps1` 또는 `scripts/run_workspace_automation_health.ps1 -IncludeGitSanity`(`-StrictGitSanity`는 exclude/원격 오류 시 exit 1). `.git/info/exclude`에 `tools/`·`scripts/`만 두고 `!` 예외 없이 막으면 추적 파일이 조용히 제외된다(루트 `AGENTS.md` 본 절과 동일 경고).
+- **`origin/main` 대비 drift:** Linux·SSH는 `scripts/verify_git_origin_main_sync.sh`(`--strict` 권장 후 `git pull --ff-only origin main`). Windows는 동일 로직을 `Verify-GitWorkspaceSanity.ps1 -CheckOriginMainSync`로 실행; 헬스 체인은 `run_workspace_automation_health.ps1 -IncludeGitOriginMainSync`(`-StrictGitOriginMainSync` 선택).
 - **SSH로 연 원격 폴더**를 열면 그쪽 `AGENTS.md` / `.cursor/rules`가 적용된다. 로컬 `C:/workspace`와 동시에 쓰면 **git 동기화**로 규칙을 맞춘다.
 - 로컬 트리는 **개발·테스트·문서** 우선. **실매매 런타임**은 VPS 등 별도 배포본일 수 있으므로, 코드·설정이 자동 동일하다고 가정하지 않는다.
 - 질문·답변에서 **로컬만**인지 **배포(VPS) 후**인지 구분한다. VPS 경로·PM2 앱 이름 등은 **지휘관이 확정한 값**으로만 서술하고, 미확인이면 “확인 필요”로 표기한다.

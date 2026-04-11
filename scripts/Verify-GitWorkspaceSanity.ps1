@@ -11,16 +11,22 @@
   레포 루트 (기본 C:\workspace).
 
 .PARAMETER Strict
-  위험 exclude 패턴이면 exit 1. 기본은 경고만(WARN)하고 exit 0.
+    위험 exclude 패턴이면 exit 1. 기본은 경고만(WARN)하고 exit 0.
+
+.PARAMETER CheckOriginMainSync
+    `git fetch origin` 후 `HEAD`와 `origin/main` 비교. 뒤처짐·앞섬·분기 시 WARN; `-Strict`이면 exit 1에 포함.
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-GitWorkspaceSanity.ps1
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-GitWorkspaceSanity.ps1 -Strict
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-GitWorkspaceSanity.ps1 -WorkspaceRoot C:\workspace -CheckOriginMainSync -Strict
 #>
 param(
     [string]$WorkspaceRoot = "C:\workspace",
-    [switch]$Strict
+    [switch]$Strict,
+    [switch]$CheckOriginMainSync
 )
 
 $ErrorActionPreference = "Stop"
@@ -112,6 +118,46 @@ try {
         $n = ($porcelain | Measure-Object).Count
         if ($n -gt 200) {
             Write-WarnLine "Working tree has $n porcelain lines - consider commit, .gitignore, or artifact policy (noise vs intentional WIP)."
+        }
+    }
+
+    if ($CheckOriginMainSync) {
+        git fetch origin 2>&1 | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            Write-WarnLine "git fetch origin failed - cannot verify drift vs origin/main."
+            if ($Strict) { $broken = $true }
+        }
+        else {
+            git rev-parse -q --verify refs/remotes/origin/main 2>$null | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+                Write-WarnLine "No origin/main after fetch - check default branch name on remote."
+                if ($Strict) { $broken = $true }
+            }
+            else {
+                $behind = 0
+                $ahead = 0
+                $bOut = git rev-list --count HEAD..origin/main 2>$null
+                if ($LASTEXITCODE -eq 0 -and $bOut -match '^\d+$') { $behind = [int]$bOut }
+                $aOut = git rev-list --count origin/main..HEAD 2>$null
+                if ($LASTEXITCODE -eq 0 -and $aOut -match '^\d+$') { $ahead = [int]$aOut }
+                $h = git rev-parse --short HEAD 2>$null
+                $r = git rev-parse --short origin/main 2>$null
+                if ($behind -gt 0) {
+                    Write-WarnLine "HEAD $h is $behind commit(s) BEHIND origin/main ($r) - run: git pull --ff-only origin main"
+                    $broken = $true
+                }
+                if ($ahead -gt 0) {
+                    Write-WarnLine "HEAD $h is $ahead commit(s) AHEAD of origin/main (unpushed) - push or reset before assuming VPS parity."
+                    $broken = $true
+                }
+                if ($behind -gt 0 -and $ahead -gt 0) {
+                    Write-WarnLine "DIVERGED from origin/main - do not blind pull; inspect git log."
+                    $broken = $true
+                }
+                if ($behind -eq 0 -and $ahead -eq 0) {
+                    Write-OkLine "HEAD $h matches origin/main ($r)."
+                }
+            }
         }
     }
 }

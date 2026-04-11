@@ -13,7 +13,10 @@ param(
     [switch]$IncludeExternalDriveGovernance,
 
     [switch]$IncludeGitSanity,
-    [switch]$StrictGitSanity
+    [switch]$StrictGitSanity,
+
+    [switch]$IncludeGitOriginMainSync,
+    [switch]$StrictGitOriginMainSync
 )
 
 $ErrorActionPreference = "Stop"
@@ -38,6 +41,20 @@ try {
                 }
                 else {
                     & powershell -NoProfile -ExecutionPolicy Bypass -File $gitSan -WorkspaceRoot $root
+                }
+            }
+        }
+    }
+
+    if ($IncludeGitOriginMainSync) {
+        $gitSan = Join-Path $root "scripts\Verify-GitWorkspaceSanity.ps1"
+        if (Test-Path -LiteralPath $gitSan) {
+            Step "Git origin/main drift check (fetch + compare)" {
+                if ($StrictGitOriginMainSync) {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $gitSan -WorkspaceRoot $root -CheckOriginMainSync -Strict
+                }
+                else {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $gitSan -WorkspaceRoot $root -CheckOriginMainSync
                 }
             }
         }
