@@ -1,6 +1,6 @@
 {
   "schema": "report_schema_v2_quality_alert_v1",
-  "generated_at_utc": "2026-04-10T17:45:32Z",
+  "generated_at_utc": "2026-04-11T04:53:48Z",
   "source_kpi_path": "C:\\workspace\\docs\\final\\artifacts\\report_schema_v2_label_kpi_latest.json",
   "source_log_path": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
   "thresholds": {
@@ -16,9 +16,11 @@
     "gate": null
   },
   "metrics": {
-    "grounded_false_rate": null,
+    "grounded_false_rate": 0.0,
     "delta_up_streak": null,
     "delta_up_streak_threshold": null,
-    "label_distribution": {}
+    "label_distribution": {
+      "FACT": 6
+    }
   }
 }
