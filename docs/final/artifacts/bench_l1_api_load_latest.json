@@ -1,51 +1,50 @@
 {
   "schema": "bench_l1_api_load_v1",
-  "generated_at_utc": "2026-04-10T04:10:03+00:00",
+  "generated_at_utc": "2026-04-11T04:29:35+00:00",
   "research_only": true,
   "draft_benchmark": true,
   "notes": "Latencies are client-observed RTT. server_rss_bytes_* require --server-pid on same host with psutil installed.",
   "base_url": "http://127.0.0.1:8010",
   "path": "/v1/compress",
-  "total_requests": 100,
-  "max_concurrent": 10,
-  "approx_word_tokens": 1000,
-  "wall_time_s": 0.3708,
-  "ok_count": 100,
+  "bench_environment": "local_stub_8010",
+  "total_requests": 40,
+  "max_concurrent": 8,
+  "approx_word_tokens": 400,
+  "wall_time_s": 0.1149,
+  "ok_count": 40,
   "error_count": 0,
   "error_rate": 0.0,
   "status_counts": {
-    "ok": 100
+    "ok": 40
   },
   "latency_ms": {
-    "p50": 20.339,
-    "p95": 145.509,
-    "p99": 162.365,
-    "max": 170.927
+    "p50": 9.667,
+    "p95": 59.378,
+    "p99": 62.097,
+    "max": 62.647
   },
-  "latency_ms_including_errors_p95": 145.509,
-  "server_pid": 2579370,
+  "latency_ms_including_errors_p95": 59.378,
+  "server_pid": null,
   "rss_self_sampled": false,
-  "server_rss_bytes_before": 53493760,
-  "server_rss_bytes_after": 54050816,
+  "server_rss_bytes_before": null,
+  "server_rss_bytes_after": null,
   "command_fingerprint": {
     "bench_script": "scripts/bench_l1_api_load.py",
-    "git_commit": "c06a67f5c95b",
-    "mkm_user_context_included": true,
+    "git_commit": "388fc09eb955",
+    "mkm_user_context_included": false,
     "argv": [
       "--base-url",
       "http://127.0.0.1:8010",
-      "--path",
-      "/v1/compress",
       "--total-requests",
-      "100",
+      "40",
       "--max-concurrent",
-      "10",
+      "8",
       "--approx-words",
-      "1000",
-      "--server-pid",
-      "2579370",
-      "--mkm-user-context-json",
-      "data/personalization/mkm_user_context_v1.sample.json"
+      "400",
+      "--timeout",
+      "30",
+      "--bench-environment",
+      "local_stub_8010"
     ]
   },
   "draft_targets_comparison": {
@@ -53,6 +52,6 @@
     "rss_target_bytes": 2684354560,
     "infra_ram_draft_gb": 8,
     "pass_p95_vs_target": true,
-    "pass_rss_vs_target": true
+    "pass_rss_vs_target": null
   }
 }

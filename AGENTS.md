@@ -18,6 +18,7 @@
 - **구현 판정**은 (3)의 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`와 호출 가능 스크립트·테스트로만 한다. 브리핑·노트만으로 경로를 확정하지 않는다.
 - **번들 한 방**: `scripts/run_fact_lock_bundle.ps1` — 루트에서 실행; 맥락·완료 정의는 `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 하단.
 - **보조**: `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` (bitcoin-trading 디렉터리에서). CI 정합은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6.
+- **LLM 검증 티어:** 기본은 **로컬·자체 호스팅 모델**로 게이트·벤치; 상용·대외 품질 확정 전에만 **고급 클라우드 모델 소표본 섀도우**(드리프트 방지). 상세: `docs/final/P0_COMMERCIALIZATION_TRACKER.md` **「LLM 검증 티어」**.
 
 ## Cursor 3.0 · 규칙 스택 (2026-04)
 

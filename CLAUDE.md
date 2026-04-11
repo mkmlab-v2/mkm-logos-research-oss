@@ -30,6 +30,7 @@
 - 과도한 사전 제한으로 탐색을 지연하지 않는다. 안전선은 격벽/재현성/시간·비용 상한으로 최소화한다.
 - 성능 비교는 동일 seed/표본 조건에서 수행해 과대해석을 방지한다.
 - **B-track → Track A / 압축 승격:** SSOT 체크리스트 `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9 + `docs/final/P0_COMMERCIALIZATION_TRACKER.md` 증거 표. OOV·BERTScore·Mamba 등 전방 벤치는 §9 밖 **연구 태스크**로 두고 상용 주장과 합선하지 않는다.
+- **LLM 검증 티어:** 벤치·게이트는 **로컬·자체 호스팅 우선**; 상용·대외 품질 확정 전에만 **고급 클라우드 소표본 섀도우** — 동일 파일 `P0_COMMERCIALIZATION_TRACKER.md` **「LLM 검증 티어」**.
 
 ### AI-Ops 거버넌스 ↔ 외부 프레임워크 (Miessler 등)
 
