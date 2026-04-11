@@ -1,0 +1,329 @@
+{
+  "schema": "spike_literal_hard_insertion_v1",
+  "description": "Post-hoc identity reconstruction spike: set reconstructed to raw when allowed. compression_metrics.global_token_saving_rate is unchanged from source report.",
+  "generated_at_utc": "2026-04-11T20:05:31.740690+00:00",
+  "source_report": "docs/final/artifacts/MULTILENS_V2_LITERAL_SHARD_PROBE_V1.json",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "spike_config": {
+    "mode": "near_identical",
+    "threshold": 0.98,
+    "shard_allowlist": null
+  },
+  "compression_metrics_unchanged": {
+    "global_token_saving_rate": 0.24331926863572428,
+    "case_count": 40,
+    "avg_reconstruction_fidelity_jaccard": 0.9217986106385874,
+    "note": "These are copied from the source report; compression was not re-run."
+  },
+  "exact_match": {
+    "count_before": 0,
+    "count_after": 22,
+    "case_count": 40
+  },
+  "corrected_case_ids": [
+    "cmp2_002",
+    "cmp2_004",
+    "cmp2_011",
+    "cmp2_014",
+    "cmp2_015",
+    "cmp2_016",
+    "cmp2_017",
+    "cmp2_018",
+    "cmp2_020",
+    "cmp2_022",
+    "cmp2_023",
+    "cmp2_027",
+    "cmp2_028",
+    "cmp2_030",
+    "cmp2_031",
+    "cmp2_032",
+    "cmp2_034",
+    "cmp2_035",
+    "cmp2_036",
+    "cmp2_037",
+    "cmp2_038",
+    "cmp2_040"
+  ],
+  "per_case": [
+    {
+      "id": "cmp2_001",
+      "shard_id": "zone_b_timing",
+      "char_ratio_before": 0.890995,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_002",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.991667,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_003",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.926829,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_004",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.995169,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_005",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.908163,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_006",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.931937,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_007",
+      "shard_id": "zone_b_timing",
+      "char_ratio_before": 0.916256,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_008",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.891192,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_009",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.895833,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_010",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.888889,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_011",
+      "shard_id": "zone_g_health",
+      "char_ratio_before": 0.983051,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_012",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.862385,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_013",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.875,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_014",
+      "shard_id": "zone_g_health",
+      "char_ratio_before": 0.992,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_015",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.992,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_016",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.984127,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_017",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.992126,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_018",
+      "shard_id": "zone_g_health",
+      "char_ratio_before": 0.991736,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_019",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.867925,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_020",
+      "shard_id": "zone_g_health",
+      "char_ratio_before": 0.99187,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_021",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.833333,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_022",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.984375,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_023",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.991304,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_024",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.844037,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_025",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.864865,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_026",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.857143,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_027",
+      "shard_id": "zone_c_hangul",
+      "char_ratio_before": 0.991453,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_028",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.984375,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_029",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.893204,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_030",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.990991,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_031",
+      "shard_id": "zone_c_hangul",
+      "char_ratio_before": 0.984375,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_032",
+      "shard_id": "zone_c_hangul",
+      "char_ratio_before": 0.984375,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_033",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.973913,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_034",
+      "shard_id": "zone_c_hangul",
+      "char_ratio_before": 0.983333,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_035",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.985075,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_036",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.992,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_037",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.984127,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_038",
+      "shard_id": "zone_c_hangul",
+      "char_ratio_before": 0.992701,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    },
+    {
+      "id": "cmp2_039",
+      "shard_id": "zone_d_ssot",
+      "char_ratio_before": 0.87395,
+      "hard_insertion_applied": false,
+      "exact_match_after": false
+    },
+    {
+      "id": "cmp2_040",
+      "shard_id": "zone_a_scm",
+      "char_ratio_before": 0.984848,
+      "hard_insertion_applied": true,
+      "exact_match_after": true
+    }
+  ]
+}
