@@ -32,6 +32,19 @@ def test_router_fallback_to_ssot_default() -> None:
     assert route.domain == "ssot"
 
 
+def test_router_hangul_ratio_fallback_zone_c_when_no_routing_keyword_hits() -> None:
+    """Bench cmp2_012-style: Hangul-heavy but no whole-token match on routing_keywords → zone_c."""
+    router = DomainSpecificRouter(SHARDS)
+    raw = (
+        "소음인의 피로는 겉으로 약해 보여도 속한이 동반되는 경우가 많아서 "
+        "따뜻한 식사와 규칙 수면을 함께 지켜야 한다."
+    )
+    route = router.route(raw)
+    assert route.shard_id == "zone_c_hangul"
+    assert route.domain == "hangul"
+    assert route.hangul_principle is True
+
+
 def test_router_matches_finance_keywords() -> None:
     router = DomainSpecificRouter(SHARDS)
     route = router.route("risk drawdown leverage control")

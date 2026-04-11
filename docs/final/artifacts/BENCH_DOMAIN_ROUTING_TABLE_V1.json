@@ -5,39 +5,39 @@
   "summary": {
     "compression_cases": 40,
     "korean_cohort_proxy_count": 30,
-    "zone_c_hangul_count": 5,
+    "zone_c_hangul_count": 14,
     "zone_c_hangul_ids": [
+      "cmp2_012",
+      "cmp2_013",
+      "cmp2_019",
+      "cmp2_021",
+      "cmp2_024",
+      "cmp2_025",
+      "cmp2_026",
       "cmp2_027",
+      "cmp2_029",
       "cmp2_031",
       "cmp2_032",
       "cmp2_034",
-      "cmp2_038"
+      "cmp2_038",
+      "cmp2_039"
     ],
     "korean_proxy_not_zone_c_ids": [
       "cmp2_011",
-      "cmp2_012",
-      "cmp2_013",
       "cmp2_014",
       "cmp2_015",
       "cmp2_016",
       "cmp2_017",
       "cmp2_018",
-      "cmp2_019",
       "cmp2_020",
-      "cmp2_021",
       "cmp2_022",
       "cmp2_023",
-      "cmp2_024",
-      "cmp2_025",
-      "cmp2_026",
       "cmp2_028",
-      "cmp2_029",
       "cmp2_030",
       "cmp2_033",
       "cmp2_035",
       "cmp2_036",
       "cmp2_037",
-      "cmp2_039",
       "cmp2_040"
     ]
   },
@@ -244,8 +244,8 @@
       "id": "cmp2_012",
       "hangul_ratio": 0.7419,
       "korean_cohort_proxy": true,
-      "winner_shard_id": "zone_d_ssot",
-      "zone_c_hit": false,
+      "winner_shard_id": "zone_c_hangul",
+      "zone_c_hit": true,
       "top_keyword_hits": 0,
       "top2_shards": [
         [
@@ -262,8 +262,8 @@
       "id": "cmp2_013",
       "hangul_ratio": 0.7302,
       "korean_cohort_proxy": true,
-      "winner_shard_id": "zone_d_ssot",
-      "zone_c_hit": false,
+      "winner_shard_id": "zone_c_hangul",
+      "zone_c_hit": true,
       "top_keyword_hits": 0,
       "top2_shards": [
         [
@@ -370,8 +370,8 @@
       "id": "cmp2_019",
       "hangul_ratio": 0.7167,
       "korean_cohort_proxy": true,
-      "winner_shard_id": "zone_d_ssot",
-      "zone_c_hit": false,
+      "winner_shard_id": "zone_c_hangul",
+      "zone_c_hit": true,
       "top_keyword_hits": 0,
       "top2_shards": [
         [
@@ -406,8 +406,8 @@
       "id": "cmp2_021",
       "hangul_ratio": 0.7286,
       "korean_cohort_proxy": true,
-      "winner_shard_id": "zone_d_ssot",
-      "zone_c_hit": false,
+      "winner_shard_id": "zone_c_hangul",
+      "zone_c_hit": true,
       "top_keyword_hits": 0,
       "top2_shards": [
         [
@@ -460,8 +460,8 @@
       "id": "cmp2_024",
       "hangul_ratio": 0.7302,
       "korean_cohort_proxy": true,
-      "winner_shard_id": "zone_d_ssot",
-      "zone_c_hit": false,
+      "winner_shard_id": "zone_c_hangul",
+      "zone_c_hit": true,
       "top_keyword_hits": 0,
       "top2_shards": [
         [
@@ -478,8 +478,8 @@
       "id": "cmp2_025",
       "hangul_ratio": 0.7302,
       "korean_cohort_proxy": true,
-      "winner_shard_id": "zone_d_ssot",
-      "zone_c_hit": false,
+      "winner_shard_id": "zone_c_hangul",
+      "zone_c_hit": true,
       "top_keyword_hits": 0,
       "top2_shards": [
         [
@@ -496,8 +496,8 @@
       "id": "cmp2_026",
       "hangul_ratio": 0.7167,
       "korean_cohort_proxy": true,
-      "winner_shard_id": "zone_d_ssot",
-      "zone_c_hit": false,
+      "winner_shard_id": "zone_c_hangul",
+      "zone_c_hit": true,
       "top_keyword_hits": 0,
       "top2_shards": [
         [
@@ -550,8 +550,8 @@
       "id": "cmp2_029",
       "hangul_ratio": 0.7544,
       "korean_cohort_proxy": true,
-      "winner_shard_id": "zone_d_ssot",
-      "zone_c_hit": false,
+      "winner_shard_id": "zone_c_hangul",
+      "zone_c_hit": true,
       "top_keyword_hits": 0,
       "top2_shards": [
         [
@@ -730,8 +730,8 @@
       "id": "cmp2_039",
       "hangul_ratio": 0.7164,
       "korean_cohort_proxy": true,
-      "winner_shard_id": "zone_d_ssot",
-      "zone_c_hit": false,
+      "winner_shard_id": "zone_c_hangul",
+      "zone_c_hit": true,
       "top_keyword_hits": 0,
       "top2_shards": [
         [

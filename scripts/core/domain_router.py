@@ -11,6 +11,10 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+# When no routing_keywords hit any shard (max score 0), route Hangul-heavy text here
+# instead of zone_d_ssot so general-Korean prose gets hangul_principle + zone_c caps.
+HANGUL_RATIO_FALLBACK_ZONE_C = 0.35
+
 
 @dataclass(frozen=True)
 class ShardRoute:
@@ -29,6 +33,20 @@ class DomainSpecificRouter:
         self._root = shards_root
         self._shards = self._load_shards()
 
+    @staticmethod
+    def _hangul_ratio(text: str) -> float:
+        if not text:
+            return 0.0
+        n = sum(1 for ch in text if "\uac00" <= ch <= "\ud7a3")
+        return n / len(text)
+
+    def _shard_by_id(self, shard_id: str) -> dict | None:
+        sid = str(shard_id).lower()
+        for s in self._shards:
+            if str(s.get("shard_id", "")).lower() == sid:
+                return s
+        return None
+
     def route(self, text: str) -> ShardRoute:
         words = {w.lower() for w in re.findall(r"[A-Za-z0-9_가-힣]+", text)}
         scored: list[tuple[int, dict]] = []
@@ -41,7 +59,11 @@ class DomainSpecificRouter:
         else:
             best_score, best = max(scored, key=lambda x: x[0])
             if best_score <= 0:
-                best = self._preferred_default_shard()
+                zc = self._shard_by_id("zone_c_hangul")
+                if zc is not None and self._hangul_ratio(text) >= HANGUL_RATIO_FALLBACK_ZONE_C:
+                    best = zc
+                else:
+                    best = self._preferred_default_shard()
         return ShardRoute(
             shard_id=str(best.get("shard_id", "zone_d_ssot")),
             domain=str(best.get("domain", "ssot")),
