@@ -7,7 +7,7 @@
   - origin 원격, main(또는 현재 브랜치)의 upstream 존재 여부를 알림.
   - SSH Cursor 터미널 cwd 문제 시 참고: docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md §2.0
   - mkmlife-com VPS 작업 트리 정리(스태시 후 ff-only pull): scripts/mkmlife_vps_git_align_safe.sh
-  - projects/mkm-life 디렉터리가 있으면 원퀘스천 퍼널 체인 핵심 스크립트 존재 여부를 WARN(정보)로 표시 (Strict 실패에는 넣지 않음).
+  - projects/mkm-life 디렉터리가 있으면 원퀘스천 퍼널 체인 스크립트 존재 여부를 표시. 기본은 WARN만; `-RequireMkmLifeFunnelScripts` 시 누락을 `$broken`에 반영.
 
 .PARAMETER WorkspaceRoot
   레포 루트 (기본 C:\workspace).
@@ -18,17 +18,23 @@
 .PARAMETER CheckOriginMainSync
     `git fetch origin` 후 `HEAD`와 `origin/main` 비교. 뒤처짐·앞섬·분기 시 WARN; `-Strict`이면 exit 1에 포함.
 
+.PARAMETER RequireMkmLifeFunnelScripts
+    projects/mkm-life 가 있을 때 퍼널 스크립트가 하나라도 없으면 `$broken` 처리( `-Strict` 와 함께 쓰면 exit 1 ). 기본은 WARN만.
+
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-GitWorkspaceSanity.ps1
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-GitWorkspaceSanity.ps1 -Strict
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-GitWorkspaceSanity.ps1 -WorkspaceRoot C:\workspace -CheckOriginMainSync -Strict
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-GitWorkspaceSanity.ps1 -Strict -RequireMkmLifeFunnelScripts
 #>
 param(
     [string]$WorkspaceRoot = "C:\workspace",
     [switch]$Strict,
-    [switch]$CheckOriginMainSync
+    [switch]$CheckOriginMainSync,
+    [switch]$RequireMkmLifeFunnelScripts
 )
 
 $ErrorActionPreference = "Stop"
@@ -120,9 +126,19 @@ try {
         $funnelNeed = @(
             "scripts\run-one-question-funnel-chain.mjs",
             "scripts\aggregate-one-question-funnel.mjs",
+            "scripts\auto-refresh-one-question-threshold-presets.mjs",
+            "scripts\derive-one-question-threshold-presets.mjs",
             "scripts\check-one-question-funnel-gate.mjs",
+            "scripts\recommend-one-question-actions.mjs",
             "scripts\build-one-question-funnel-gap-report.mjs",
-            "scripts\build-one-question-daily-targets.mjs"
+            "scripts\build-one-question-daily-targets.mjs",
+            "scripts\build-one-question-funnel-sitrep.mjs",
+            "scripts\build-one-question-funnel-weekly-report.mjs",
+            "scripts\verify-one-question-funnel-operational-readiness.mjs",
+            "scripts\build-one-question-ops-snapshot.mjs",
+            "scripts\seed-one-question-funnel-events.mjs",
+            "scripts\reset-one-question-funnel-realdata.mjs",
+            "scripts\Register-OneQuestionFunnelDailyTask.ps1"
         )
         $missingFunnel = [System.Collections.Generic.List[string]]::new()
         foreach ($rel in $funnelNeed) {
@@ -132,10 +148,11 @@ try {
             }
         }
         if ($missingFunnel.Count -gt 0) {
-            Write-WarnLine "mkm-life one-question funnel: missing $($missingFunnel.Count) script(s): $($missingFunnel -join ', ') — npm run check:one-question:funnel-chain will fail."
+            Write-WarnLine "mkm-life one-question funnel: missing $($missingFunnel.Count) script(s): $($missingFunnel -join ', ') - npm run check:one-question:funnel-chain may fail."
+            if ($RequireMkmLifeFunnelScripts) { $broken = $true }
         }
         else {
-            Write-OkLine "mkm-life one-question funnel: core chain scripts present."
+            Write-OkLine "mkm-life one-question funnel: full chain scripts present ($($funnelNeed.Count) paths)."
         }
     }
 
