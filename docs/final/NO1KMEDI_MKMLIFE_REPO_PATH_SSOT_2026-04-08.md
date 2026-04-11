@@ -186,3 +186,50 @@ curl -sS https://api.no1kmedi.com/api/ai/router-status
 - `pm2 list`에서 두 앱 status 확인
 - `pm2 describe <app>`의 `exec cwd` 확인
 - `curl -sS https://api.no1kmedi.com/api/ai/router-status` 응답 확인
+
+## 9) Git stash · 동기 (로컬 모노레포 + VPS + 전용 클론) — 융합 절차
+
+**원칙:** `stash@{n}` 내용을 `show`로 확인하기 전에는 **`pop`/`drop` 자동화 금지**. 맨 위 stash가 `docs/final/artifacts` 등 **대량 아티팩트**이면 실수 시 복구 비용이 크다.
+
+### 9.1) 로컬 `C:\workspace` (모노레포)
+
+1. 동기 확인(해시는 매번 `git rev-parse`로 확인; 문서에 고정 커밋을 박아 넣지 않는다):
+
+```powershell
+Set-Location C:\workspace
+git fetch origin
+git rev-parse --short HEAD
+git rev-parse --short origin/main
+git status -sb
+```
+
+2. stash 목록·내용 엿보기(PowerShell에서는 ref를 **따옴표**로 감싼다):
+
+```powershell
+git stash list
+git stash show --stat 'stash@{0}'
+# 필요 시: git stash apply 'stash@{0}'   # 또는 pop / drop — 정책 확정 후 수동만
+```
+
+3. **에이전트/스크립트:** `stash` **일괄 `drop`/`pop` 금지**(지휘관 확인 전).
+
+### 9.2) VPS `mkmlife` 런타임 경로 (`/var/www/mkmlife_runtime/mkm-life`)
+
+SSH에서만 실행(복붙):
+
+```bash
+cd /var/www/mkmlife_runtime/mkm-life
+git stash list
+git stash show --stat 'stash@{0}'
+git stash show --stat 'stash@{1}'
+# 필요 시: git stash apply 'stash@{0}'   또는 pop / drop (정책 확정 후)
+```
+
+### 9.3) 별도 클론 (`origin` = `mkmlab-hq/mkmlife-com` 등)
+
+**그 레포의 루트 디렉터리**에서 위와 **동일 순서**(`list` → `show` → `apply`/`drop`)를 적용한다. 경로는 VPS·로컬 실측이 SSOT이며, 모노레포 `C:\workspace`와 혼동하지 않는다.
+
+### 9.4) 본 문서 §7과의 관계
+
+- §7: PM2·`git pull`·`router-status` **가동 점검**.
+- §9: **stash·로컬/VPS 클론 분리** 등 Git 위생만 담당. 절차를 한 흐름으로 쓸 때는 §7 직후 §9를 붙여 실행한다.
