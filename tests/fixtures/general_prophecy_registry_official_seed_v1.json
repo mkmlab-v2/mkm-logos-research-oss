@@ -1,0 +1,42 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-04-11T12:00:00Z",
+  "git_commit_hint": "fixture:official_seed_v1",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_q3_bok_rate_cut_05p",
+      "question_text": "2026년 9월 30일 23:59 KST 이전에 한국은행이 기준금리를 직전 공시 수준 대비 0.50%p 이상 인하(비정기 금융통화위원회 포함)하는가?",
+      "domain_tags": ["macro", "policy", "korea", "rates"],
+      "resolution_deadline_utc": "2026-09-30T14:59:59Z",
+      "resolution_criteria": "한국은행 공식 보도자료·보도참고자료에 따른 기준금리가 직전 공표 수준보다 정확히 0.50%p 이상 낮아졌으면 TRUE. 0.50%p 미만 인하·동결·인상이면 FALSE. 비정기 금통위 포함. 출처 불가·정의 불가·중복 공표 시 혼선이면 VOID. 동일일 복수 발표 시 최종 수치만 적용.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "cut_ge_50bp",
+        "false_label": "cut_lt_50bp_or_other"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T10:00:00Z",
+          "probability_0_1": 0.78,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO][NON-DETERMINISTIC] Logos 4D: judgment/chaos vs order boundary cluster [HYPO]. Myeongri: Q3 liquidity contraction narrative [HYPO]. Sasang: defensive/so-eum hoarding vs policy impulse [HYPO]. Not A-track; no live trade.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:multilens_stub_gp_2026_q3_bok_rate_cut_05p",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    }
+  ]
+}
