@@ -245,6 +245,26 @@ if (-not $SkipGeneralProphecyChain) {
     }
 }
 
+$kospiCsv = Join-Path $workspace "research\market_data\kospi_daily_external_yf.csv"
+$hypoJson = Join-Path $workspace "docs\final\artifacts\btrack_hypothesis_prophecy_latest.json"
+$scoreJson = Join-Path $workspace "docs\final\artifacts\btrack_prophecy_score_latest.json"
+if ((Test-Path -LiteralPath $kospiCsv) -and (Test-Path -LiteralPath $hypoJson)) {
+    Write-Host "[waiting-queue-check] B-Track OHLCV score + prophecy hit-rate eval (price mode)..."
+    py scripts/build_btrack_prophecy_score_from_ohlcv.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "build_btrack_prophecy_score_from_ohlcv failed with exit code $LASTEXITCODE"
+    }
+    if (-not (Test-Path -LiteralPath $scoreJson)) {
+        throw "btrack_prophecy_score_latest.json missing after build_btrack_prophecy_score_from_ohlcv"
+    }
+    py scripts/eval_prophecy_hit_rate_v1.py --run-mode price --score-json $scoreJson
+    if ($LASTEXITCODE -ne 0) {
+        throw "eval_prophecy_hit_rate_v1 (price) failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Write-Host "[waiting-queue-check] WARN: skipping B-Track hit-rate chain (need kospi CSV + hypothesis JSON)." -ForegroundColor Yellow
+}
+
 Write-Host "[waiting-queue-check] Syncing trinity risk governor to runtime risk_profile..."
 $syncArgs = @("scripts/sync_fact_safe_risk_profile.py", "--prophecy", $monthlyProphecyPath, "--output", $runtimeRiskProfilePath)
 if (-not [string]::IsNullOrWhiteSpace($riskProfileSourceName)) {

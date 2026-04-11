@@ -18,6 +18,7 @@ $required = @(
     "scripts\run_waiting_queue_monthly_check.ps1",
     "scripts\eval_prophecy_hit_rate_v1.py",
     "scripts\fetch_kospi_yfinance_csv.py",
+    "tests\test_load_kospi_yf_rows.py",
     "docs\final\GENERAL_PROPHECY_SCHEMA_V1.json",
     "scripts\generate_general_prophecy_v1.py",
     "scripts\build_general_prophecy_brief.py",
