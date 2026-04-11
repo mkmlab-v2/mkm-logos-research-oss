@@ -60,6 +60,8 @@ Set-Location E:\workspace\mkm-life
 powershell -NoProfile -ExecutionPolicy Bypass -File .\deploy-to-hostinger.ps1 -DryRun
 # 실제 반영 시에만 -DryRun 제거. 사전: User 환경변수 VPS_HOST / VPS_USER / VPS_SSH_KEY 및 SSH 키 파일 존재 확인.
 
+**SSH 한 줄·따옴표 실수 방지(모노레포, 배포 아님):** `C:\workspace`에서 `scripts/Invoke-MkmlifeVpsGitProbe.ps1` — `VPS_HOST` 플레이스홀더·빈 키 경로를 사전에 거부하고, 원격 `cd … && git …`를 **단일 인자**로 `ssh`에 넘긴다 (`VPS_HOST`/`VPS_USER`는 **실제 IP·호스트명·계정**만).
+
 ```
 
 - **E: 예외**: 일상 편집은 `C:\workspace` 정책을 따르되, **이 스크립트가 현재 E:\ 클론에만 있으면** 배포 실행 시에 한해 `E:\workspace\mkm-life`로 이동한다. 나중에 스크립트를 모노레포로 옮기면 이 절 경로만 갱신한다.
