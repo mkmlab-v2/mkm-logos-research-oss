@@ -1,0 +1,11 @@
+{
+  "schema": "slack_fact_safe_mention_routing_v1",
+  "policy_id": "slack-fact-safe-mention-routing-v1",
+  "description": "Map v2 quality alert severity to Slack mention prefix. Empty string = no mention.",
+  "default_mention": "",
+  "by_v2_quality_severity": {
+    "INFO": "",
+    "WARN": "@here",
+    "FAIL": "@channel"
+  }
+}

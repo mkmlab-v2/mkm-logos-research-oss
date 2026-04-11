@@ -1,6 +1,6 @@
 {
   "schema": "war_prolongation_benchmark_bundle_v1",
-  "generated_at_utc": "2026-04-07T00:10:08Z",
+  "generated_at_utc": "2026-04-11T00:10:18Z",
   "run_id": "war_20260406",
   "lane": "btrack_observation_only",
   "inputs": {
@@ -13,14 +13,14 @@
     "repro_command": "C:/workspace/docs/final/artifacts/repro_command_war_prolongation_20260406.txt"
   },
   "snapshot": {
-    "spot_hit_rate": 1.0,
-    "window_hit_rate_h1": 1.0,
-    "window_hit_rate_h5": 0.5,
-    "window_hit_rate_h20": 0.5,
+    "spot_hit_rate": 0.0,
+    "window_hit_rate_h1": 0.0,
+    "window_hit_rate_h5": 0.25,
+    "window_hit_rate_h20": 0.0,
     "significance_n": 1440,
     "significance_p_value": 0.0,
     "significance_pass": true,
-    "perf_per_w_uplift_pct": -19.660225,
+    "perf_per_w_uplift_pct": -32.533001,
     "gate_decision": "NO_GO",
     "gate_reasons": [
       "performance_per_watt_no_uplift"

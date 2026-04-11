@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/mkm_user_context_v1.schema.json",
+  "title": "MKM user context v1",
+  "description": "Minimal personalization / bench context envelope for L1 API and fact-safe pipelines.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "source", "locale"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "mkm_user_context_v1"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Producer label (e.g. vps_automated_bench, manual_stub)."
+    },
+    "locale": {
+      "type": "string",
+      "minLength": 2,
+      "description": "BCP 47 locale tag (e.g. ko-KR)."
+    },
+    "persona_stub": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Non-PII stub for tiering or bench routing."
+    }
+  }
+}

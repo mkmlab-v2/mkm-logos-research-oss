@@ -1,20 +1,20 @@
 {
   "schema": "btrack_verified_baseline_lock_v1",
-  "locked_at_utc": "2026-04-07T01:06:41Z",
+  "locked_at_utc": "2026-04-11T00:05:58Z",
   "inputs": {
     "quality_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_quality_anchor_verified_only_latest.json",
     "gate_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
     "verified_slots": "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\btrack_anchor_evidence_slots_verified.jsonl"
   },
   "input_hashes": {
-    "quality_report_sha256": "d2a4f5b09c93fc4aef7a6a35b6da270cafa57cad1ff89c1cafa95e16bf016248",
-    "gate_report_sha256": "ae296ab0b529320237c61a70385e78b612ddfcd51f4bc32175fc6e1efa0e2e2a",
-    "verified_slots_sha256": "f0f3e5d06a02a837a2afa0e3e8e1e2cb5c33497d476575f14b93ab58f482e796"
+    "quality_report_sha256": "3be03cf441a708fa0aa25cc451192162f5ca28014f707f668db141cdf5e1f638",
+    "gate_report_sha256": "b84466515b0b7c89ec467e80e6d038916dd7be7f52629b01dab5f40566858499",
+    "verified_slots_sha256": "0104fe1bcb2b7169ec6c670a2ca60e88bd3a26aae7bcea8aa2de2772692a35c6"
   },
   "baseline_metrics": {
     "reproducibility_match_rate": 1.0,
-    "resolution_confidence_delta_b_minus_a": 0.0007048124999999988,
-    "contamination_snr_delta_b_minus_a": 0.0024308750000000268
+    "resolution_confidence_delta_b_minus_a": 0.024062499999999997,
+    "contamination_snr_delta_b_minus_a": 0.029531249999999995
   },
   "baseline_decision": "pass",
   "regression_policy": {

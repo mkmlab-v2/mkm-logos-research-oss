@@ -374,3 +374,99 @@
 - WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
 - policy: soft-fail (non-core optional tasks)
 
+[2026-04-10T18:05:15.9290727+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T18:05:32.7586282+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T18:06:05.6270764+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T19:05:18.8546809+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T19:05:35.4527441+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T19:06:06.4327065+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T20:05:15.2220740+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T20:05:33.7388272+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T20:06:07.1484446+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T21:05:15.2652235+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T21:05:31.9433849+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T21:06:01.8296671+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T22:05:23.8283196+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T22:05:41.3865472+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T22:06:15.3343181+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T23:05:15.3234949+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T23:05:41.1287366+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-10T23:06:15.5666811+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-11T00:05:18.2393094+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-11T00:05:36.6436484+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-11T00:06:18.0578880+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-11T00:10:25.1048324+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-11T00:15:22.4375116+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+
+[2026-04-11T00:35:25.0167718+00:00] waiting_queue_daily soft-fail summary
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- policy: soft-fail (non-core optional tasks)
+

@@ -1,6 +1,6 @@
 {
   "schema": "cost_watch_monitor_v1",
-  "ts_utc": "2026-04-07T01:06:48.881218+00:00",
+  "ts_utc": "2026-04-11T00:35:22.195083+00:00",
   "sources": {
     "compression_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
     "vllm_canary_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_repeat_latest.json",
@@ -10,9 +10,9 @@
   },
   "compression": {
     "status": "ok",
-    "global_token_saving_rate": 0.49085794655414905,
+    "global_token_saving_rate": 0.5316455696202531,
     "case_count": 40,
-    "avg_reconstruction_fidelity_jaccard": 0.7349368566589929,
+    "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
     "avg_sensitive_integrity": 1.0
   },
   "vllm_canary": {
@@ -20,11 +20,8 @@
     "reason": "report_not_found"
   },
   "turboquant_poc": {
-    "status": "ok",
-    "query_speedup_x": null,
-    "build_speedup_x": null,
-    "evidence_tier": "candidate_real_benchmark",
-    "synthetic_command_detected": false
+    "status": "missing",
+    "reason": "report_not_found"
   },
   "hallucination_eval": {
     "status": "ok",

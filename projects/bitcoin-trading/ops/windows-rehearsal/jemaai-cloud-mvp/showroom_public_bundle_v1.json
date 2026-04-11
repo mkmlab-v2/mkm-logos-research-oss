@@ -1,6 +1,6 @@
 {
     "schema":  "showroom_public_bundle_v1",
-    "generated_at_utc":  "2026-04-07T01:07:13.0316096+00:00",
+    "generated_at_utc":  "2026-04-11T00:06:18.6881987+00:00",
     "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1",
     "sources":  {
                     "c2_guardrail_status":  "C:\\workspace\\docs\\final\\artifacts\\c2_aegis_guardrail_status_latest.json",
@@ -8,47 +8,46 @@
                     "ops_fusion_status":  "C:\\workspace\\docs\\final\\artifacts\\ops_fusion_cycle_status_latest.json"
                 },
     "observability":  {
-                          "public_pnl_pct_mode":  "equity_vs_baseline_auto_file",
-                          "direction_abstract":  "short",
+                          "public_pnl_pct_mode":  "unavailable_no_metrics",
+                          "direction_abstract":  "flat",
                           "c2_signal_lamp":  "GREEN",
                           "runtime_overall_ok":  true,
                           "ops_fusion_overall_ok":  true,
                           "unified_score_balanced":  0.40342,
-                          "direction_source":  "account",
-                          "snapshot_as_of_utc":  "2026-04-07T01:07:12Z",
+                          "direction_source":  "c2",
+                          "snapshot_as_of_utc":  "2026-04-11T00:06:18Z",
                           "c2_status":  "GREEN_HOLD"
                       },
     "public_ui":  {
                       "schema":  "showroom_public_ui_v1",
-                      "direction_abstract":  "short",
-                      "direction_source":  "account",
+                      "direction_abstract":  "flat",
+                      "direction_source":  "c2",
                       "c2_lamp":  "GREEN",
                       "ops_fusion_ok":  true,
-                      "return_pct_vs_baseline":  0,
-                      "has_return_pct":  true,
-                      "unrealized_pnl_pct_of_equity":  -0.655,
-                      "has_unrealized_pct":  true,
-                      "baseline_mode":  "auto_file",
+                      "return_pct_vs_baseline":  null,
+                      "has_return_pct":  false,
+                      "unrealized_pnl_pct_of_equity":  null,
+                      "has_unrealized_pct":  false,
+                      "baseline_mode":  "none",
                       "unified_score_balanced":  0.40342
                   },
     "public_event_v1":  {
-                            "timestamp":  "2026-04-07T01:07:13.0316096+00:00",
+                            "timestamp":  "2026-04-11T00:06:18.6881987+00:00",
                             "active_character_id":  "dragon_quant",
                             "risk_level":  "INFO",
                             "public_signal_direction":  "HOLD",
                             "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice.",
                             "schema_version":  "public-event.v1",
-                            "event_id":  "showroom-20260407T010713-be2e5fca",
+                            "event_id":  "showroom-20260411T000618-9c8d3ef0",
                             "source":  "ops_showroom_bundle_v1",
                             "system_status":  "online",
                             "active_strategies_count":  1,
                             "delayed_metrics":  {
                                                     "delay_seconds":  180,
-                                                    "as_of_utc":  "2026-04-07T01:07:12Z",
-                                                    "pnl_pct_vs_start":  0
+                                                    "as_of_utc":  "2026-04-11T00:06:18Z"
                                                 },
-                            "direction_abstract":  "short",
+                            "direction_abstract":  "flat",
                             "disclaimer_ref":  "jemaai_showroom_v1",
-                            "last_ok_utc":  "2026-04-07T01:07:13.0316096+00:00"
+                            "last_ok_utc":  "2026-04-11T00:06:18.6881987+00:00"
                         }
 }

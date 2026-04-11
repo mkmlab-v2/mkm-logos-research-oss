@@ -1,0 +1,29 @@
+{
+  "schema": "one_question_funnel_daily_targets_v1",
+  "generatedAt": "2026-04-10T23:35:11.010Z",
+  "gateOk": false,
+  "totalGaps": 2,
+  "previousRunAt": "2026-04-10T23:35:00.771Z",
+  "top": [
+    {
+      "name": "charge_success_rate_pct",
+      "actual": 0,
+      "minimum": 65.31,
+      "gapToPass": 65.31,
+      "action": "과금 성공률 개선",
+      "hint": "결제 실패 사유 상위 1개 제거 + 재시도 UX 적용",
+      "previousGapToPass": 65.31,
+      "gapDelta": 0
+    },
+    {
+      "name": "query_count",
+      "actual": 1,
+      "minimum": 40,
+      "gapToPass": 39,
+      "action": "유입 채널 1개 추가 + 랜딩 CTA 상단 고정",
+      "hint": "유입 채널 1개 추가 + 랜딩 CTA 상단 고정",
+      "previousGapToPass": 39,
+      "gapDelta": 0
+    }
+  ]
+}

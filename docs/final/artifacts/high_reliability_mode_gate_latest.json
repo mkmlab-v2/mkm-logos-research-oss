@@ -1,6 +1,6 @@
 {
   "schema": "high_reliability_mode_gate_v1",
-  "generated_at_utc": "2026-04-07T01:06:44Z",
+  "generated_at_utc": "2026-04-11T00:35:15Z",
   "inputs": {
     "quality_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_quality_anchor_verified_only_latest.json",
     "btrack_gate_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
@@ -14,8 +14,8 @@
   },
   "metrics_snapshot": {
     "reproducibility_match_rate": 1.0,
-    "resolution_confidence_delta_b_minus_a": 0.0007048124999999988,
-    "contamination_snr_delta_b_minus_a": 0.0024308750000000268
+    "resolution_confidence_delta_b_minus_a": 0.024062499999999997,
+    "contamination_snr_delta_b_minus_a": 0.029531249999999995
   },
   "checks": {
     "btrack_gate_pass": true,

@@ -1,0 +1,24 @@
+{
+  "schema": "report_schema_v2_quality_alert_v1",
+  "generated_at_utc": "2026-04-10T17:45:32Z",
+  "source_kpi_path": "C:\\workspace\\docs\\final\\artifacts\\report_schema_v2_label_kpi_latest.json",
+  "source_log_path": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
+  "thresholds": {
+    "fail_solo_grounded_false_rate": 0.25,
+    "fail_pair_min_grounded_false_rate": 0.1,
+    "warn_min_grounded_false_rate": 0.08,
+    "fail_on_streak_and_gate_warn": true
+  },
+  "status": {
+    "severity": "INFO",
+    "reason_codes": [],
+    "delta_streak_alert": false,
+    "gate": null
+  },
+  "metrics": {
+    "grounded_false_rate": null,
+    "delta_up_streak": null,
+    "delta_up_streak_threshold": null,
+    "label_distribution": {}
+  }
+}
