@@ -22,6 +22,7 @@
 - **로컬 vs VPS 역할 분리 (한 원칙)**: `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` (**「VPS 배치 (권장)」** = 모노레포 루트 `cwd` + `projects/bitcoin-trading/start_live_trading.py`) · 5줄: `projects/bitcoin-trading/AGENTS.md` · `projects/bitcoin-trading/로컬_VPS_운영원칙.txt`
 - **no1kmedi / mkmlife.com**: `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md`
 - **jema12.com 본선**: `docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md`, `docs/final/JEMA12_PUBLIC_DOMAIN_AND_DEPLOY_HANDOFF_2026-04-07.md` (no1kmedi/mkmlife SSOT와 **절차 혼용 금지**.)
+- **일반 예언(B 레일, 비가격)**: SSOT는 **모노레포 루트** — `docs/final/GENERAL_PROPHECY_SCHEMA_V1.json`, 체인 `scripts/generate_general_prophecy_v1.py` → `build_general_prophecy_brief.py` → `eval_general_prophecy_brier_score.py`, 판정 `scripts/resolve_general_prophecy_question_v1.py`. 월간 러너 `scripts/run_waiting_queue_monthly_check.ps1`에 포함(`-SkipGeneralProphecyChain` 생략 시). **서브트리(예: mkm-life)에 스키마·스크립트를 이중 복제하지 않는다** — 루트 경로만 따른다.
 
 ### B-track 성능 모드 전환 규칙
 
