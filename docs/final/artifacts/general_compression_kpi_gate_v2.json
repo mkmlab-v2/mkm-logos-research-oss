@@ -5,8 +5,8 @@
   },
   "checks": {
     "saving_improved_vs_baseline": true,
-    "fidelity_floor_ok": false,
+    "fidelity_floor_ok": true,
     "sensitive_integrity_ok": true
   },
-  "decision": "NO_GO"
+  "decision": "GO"
 }

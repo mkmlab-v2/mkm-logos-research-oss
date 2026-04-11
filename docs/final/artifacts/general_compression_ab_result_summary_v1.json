@@ -3,19 +3,45 @@
   "runs": [
     {
       "label": "baseline",
+      "profile": {
+        "strategy": "baseline",
+        "intensity": "baseline",
+        "general_max_saving_rate": null,
+        "sensitive_max_saving_rate": null,
+        "hangul_max_saving_rate": null
+      },
       "case_count": 9,
       "global_token_saving_rate": 0.2962962962962963,
       "avg_reconstruction_fidelity_jaccard": 0.5530700599328049,
       "avg_sensitive_integrity": 1.0,
-      "sensitive_violation_count": 0
+      "sensitive_violation_count": 0,
+      "regime_switch_metrics": {
+        "normal_count": 9,
+        "crisis_count": 0,
+        "switch_count": 0,
+        "avg_risk_score": 0.21038620965091553
+      }
     },
     {
       "label": "treatment",
+      "profile": {
+        "strategy": "A",
+        "intensity": "high",
+        "general_max_saving_rate": 0.55,
+        "sensitive_max_saving_rate": 0.6,
+        "hangul_max_saving_rate": 0.6
+      },
       "case_count": 9,
-      "global_token_saving_rate": 0.5740740740740741,
-      "avg_reconstruction_fidelity_jaccard": 0.47527467659046607,
+      "global_token_saving_rate": 0.4012345679012346,
+      "avg_reconstruction_fidelity_jaccard": 0.671002949292423,
       "avg_sensitive_integrity": 1.0,
-      "sensitive_violation_count": 0
+      "sensitive_violation_count": 0,
+      "regime_switch_metrics": {
+        "normal_count": 9,
+        "crisis_count": 0,
+        "switch_count": 0,
+        "avg_risk_score": 0.2675131186418596
+      }
     }
   ]
 }

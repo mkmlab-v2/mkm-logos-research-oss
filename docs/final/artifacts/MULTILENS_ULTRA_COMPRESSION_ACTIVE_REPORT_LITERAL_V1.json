@@ -27,7 +27,11 @@
     "use_contextual_generator_v2": false,
     "use_contextual_generator_v3": false,
     "use_contextual_generator_v4": false,
-    "use_contextual_generator_v5_codec": false
+    "use_contextual_generator_v5_codec": false,
+    "require_tiktoken_o200k": false,
+    "tiktoken_o200k_encoding": "o200k_base",
+    "tiktoken_o200k_available": true,
+    "tiktoken_o200k_unavailable_reason": null
   },
   "compression_metrics": {
     "case_count": 40,
@@ -73,6 +77,18 @@
             ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 25,
+        "o200k_compressed_tokens": 19,
+        "o200k_token_saving_rate": 0.24,
+        "o200k_tokens_before": 25,
+        "o200k_tokens_after": 19,
+        "o200k_saving_rate": 0.24,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -206,6 +222,18 @@
             ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 22,
+        "o200k_compressed_tokens": 20,
+        "o200k_token_saving_rate": 0.09090909090909094,
+        "o200k_tokens_before": 22,
+        "o200k_tokens_after": 20,
+        "o200k_saving_rate": 0.09090909090909094,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -332,6 +360,18 @@
             ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 17,
+        "o200k_compressed_tokens": 14,
+        "o200k_token_saving_rate": 0.17647058823529416,
+        "o200k_tokens_before": 17,
+        "o200k_tokens_after": 14,
+        "o200k_saving_rate": 0.17647058823529416,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -457,6 +497,18 @@
             ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 16,
+        "o200k_compressed_tokens": 15,
+        "o200k_token_saving_rate": 0.0625,
+        "o200k_tokens_before": 16,
+        "o200k_tokens_after": 15,
+        "o200k_saving_rate": 0.0625,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -585,6 +637,18 @@
             ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 15,
+        "o200k_compressed_tokens": 12,
+        "o200k_token_saving_rate": 0.19999999999999996,
+        "o200k_tokens_before": 15,
+        "o200k_tokens_after": 12,
+        "o200k_saving_rate": 0.19999999999999996,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -715,6 +779,18 @@
             ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 19,
+        "o200k_compressed_tokens": 14,
+        "o200k_token_saving_rate": 0.26315789473684215,
+        "o200k_tokens_before": 19,
+        "o200k_tokens_after": 14,
+        "o200k_saving_rate": 0.26315789473684215,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -842,6 +918,18 @@
             ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 16,
+        "o200k_compressed_tokens": 13,
+        "o200k_token_saving_rate": 0.1875,
+        "o200k_tokens_before": 16,
+        "o200k_tokens_after": 13,
+        "o200k_saving_rate": 0.1875,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -961,6 +1049,18 @@
             ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 22,
+        "o200k_compressed_tokens": 16,
+        "o200k_token_saving_rate": 0.2727272727272727,
+        "o200k_tokens_before": 22,
+        "o200k_tokens_after": 16,
+        "o200k_saving_rate": 0.2727272727272727,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1088,6 +1188,18 @@
             ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 22,
+        "o200k_compressed_tokens": 14,
+        "o200k_token_saving_rate": 0.36363636363636365,
+        "o200k_tokens_before": 22,
+        "o200k_tokens_after": 14,
+        "o200k_saving_rate": 0.36363636363636365,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1215,6 +1327,18 @@
             ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 14,
+        "o200k_compressed_tokens": 11,
+        "o200k_token_saving_rate": 0.2142857142857143,
+        "o200k_tokens_before": 14,
+        "o200k_tokens_after": 11,
+        "o200k_saving_rate": 0.2142857142857143,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1327,6 +1451,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 37,
+        "o200k_compressed_tokens": 29,
+        "o200k_token_saving_rate": 0.21621621621621623,
+        "o200k_tokens_before": 37,
+        "o200k_tokens_after": 29,
+        "o200k_saving_rate": 0.21621621621621623,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1433,6 +1569,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 31,
+        "o200k_token_saving_rate": 0.22499999999999998,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 31,
+        "o200k_saving_rate": 0.22499999999999998,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1539,6 +1687,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 42,
+        "o200k_compressed_tokens": 31,
+        "o200k_token_saving_rate": 0.26190476190476186,
+        "o200k_tokens_before": 42,
+        "o200k_tokens_after": 31,
+        "o200k_saving_rate": 0.26190476190476186,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1645,6 +1805,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 42,
+        "o200k_compressed_tokens": 36,
+        "o200k_token_saving_rate": 0.1428571428571429,
+        "o200k_tokens_before": 42,
+        "o200k_tokens_after": 36,
+        "o200k_saving_rate": 0.1428571428571429,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1751,6 +1923,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 38,
+        "o200k_compressed_tokens": 37,
+        "o200k_token_saving_rate": 0.02631578947368418,
+        "o200k_tokens_before": 38,
+        "o200k_tokens_after": 37,
+        "o200k_saving_rate": 0.02631578947368418,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1857,6 +2041,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 32,
+        "o200k_token_saving_rate": 0.19999999999999996,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 32,
+        "o200k_saving_rate": 0.19999999999999996,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1963,6 +2159,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 33,
+        "o200k_token_saving_rate": 0.17500000000000004,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 33,
+        "o200k_saving_rate": 0.17500000000000004,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2069,6 +2277,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 35,
+        "o200k_token_saving_rate": 0.125,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 35,
+        "o200k_saving_rate": 0.125,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2175,6 +2395,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 38,
+        "o200k_compressed_tokens": 29,
+        "o200k_token_saving_rate": 0.23684210526315785,
+        "o200k_tokens_before": 38,
+        "o200k_tokens_after": 29,
+        "o200k_saving_rate": 0.23684210526315785,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2281,6 +2513,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 41,
+        "o200k_compressed_tokens": 32,
+        "o200k_token_saving_rate": 0.2195121951219512,
+        "o200k_tokens_before": 41,
+        "o200k_tokens_after": 32,
+        "o200k_saving_rate": 0.2195121951219512,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2387,6 +2631,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 28,
+        "o200k_token_saving_rate": 0.30000000000000004,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 28,
+        "o200k_saving_rate": 0.30000000000000004,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2493,6 +2749,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 42,
+        "o200k_compressed_tokens": 36,
+        "o200k_token_saving_rate": 0.1428571428571429,
+        "o200k_tokens_before": 42,
+        "o200k_tokens_after": 36,
+        "o200k_saving_rate": 0.1428571428571429,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2599,6 +2867,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 36,
+        "o200k_compressed_tokens": 31,
+        "o200k_token_saving_rate": 0.13888888888888884,
+        "o200k_tokens_before": 36,
+        "o200k_tokens_after": 31,
+        "o200k_saving_rate": 0.13888888888888884,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2705,6 +2985,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 39,
+        "o200k_compressed_tokens": 31,
+        "o200k_token_saving_rate": 0.20512820512820518,
+        "o200k_tokens_before": 39,
+        "o200k_tokens_after": 31,
+        "o200k_saving_rate": 0.20512820512820518,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2811,6 +3103,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 39,
+        "o200k_compressed_tokens": 29,
+        "o200k_token_saving_rate": 0.2564102564102564,
+        "o200k_tokens_before": 39,
+        "o200k_tokens_after": 29,
+        "o200k_saving_rate": 0.2564102564102564,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2917,6 +3221,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 35,
+        "o200k_compressed_tokens": 28,
+        "o200k_token_saving_rate": 0.19999999999999996,
+        "o200k_tokens_before": 35,
+        "o200k_tokens_after": 28,
+        "o200k_saving_rate": 0.19999999999999996,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3023,6 +3339,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 37,
+        "o200k_compressed_tokens": 30,
+        "o200k_token_saving_rate": 0.18918918918918914,
+        "o200k_tokens_before": 37,
+        "o200k_tokens_after": 30,
+        "o200k_saving_rate": 0.18918918918918914,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3129,6 +3457,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 43,
+        "o200k_compressed_tokens": 39,
+        "o200k_token_saving_rate": 0.09302325581395354,
+        "o200k_tokens_before": 43,
+        "o200k_tokens_after": 39,
+        "o200k_saving_rate": 0.09302325581395354,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3235,6 +3575,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 37,
+        "o200k_compressed_tokens": 30,
+        "o200k_token_saving_rate": 0.18918918918918914,
+        "o200k_tokens_before": 37,
+        "o200k_tokens_after": 30,
+        "o200k_saving_rate": 0.18918918918918914,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3341,6 +3693,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 33,
+        "o200k_compressed_tokens": 25,
+        "o200k_token_saving_rate": 0.24242424242424243,
+        "o200k_tokens_before": 33,
+        "o200k_tokens_after": 25,
+        "o200k_saving_rate": 0.24242424242424243,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3447,6 +3811,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 39,
+        "o200k_compressed_tokens": 30,
+        "o200k_token_saving_rate": 0.23076923076923073,
+        "o200k_tokens_before": 39,
+        "o200k_tokens_after": 30,
+        "o200k_saving_rate": 0.23076923076923073,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3553,6 +3929,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 31,
+        "o200k_token_saving_rate": 0.22499999999999998,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 31,
+        "o200k_saving_rate": 0.22499999999999998,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3659,6 +4047,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 32,
+        "o200k_compressed_tokens": 22,
+        "o200k_token_saving_rate": 0.3125,
+        "o200k_tokens_before": 32,
+        "o200k_tokens_after": 22,
+        "o200k_saving_rate": 0.3125,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3765,6 +4165,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 38,
+        "o200k_compressed_tokens": 29,
+        "o200k_token_saving_rate": 0.23684210526315785,
+        "o200k_tokens_before": 38,
+        "o200k_tokens_after": 29,
+        "o200k_saving_rate": 0.23684210526315785,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3871,6 +4283,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 40,
+        "o200k_compressed_tokens": 32,
+        "o200k_token_saving_rate": 0.19999999999999996,
+        "o200k_tokens_before": 40,
+        "o200k_tokens_after": 32,
+        "o200k_saving_rate": 0.19999999999999996,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3977,6 +4401,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 38,
+        "o200k_compressed_tokens": 31,
+        "o200k_token_saving_rate": 0.1842105263157895,
+        "o200k_tokens_before": 38,
+        "o200k_tokens_after": 31,
+        "o200k_saving_rate": 0.1842105263157895,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4083,6 +4519,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 36,
+        "o200k_compressed_tokens": 31,
+        "o200k_token_saving_rate": 0.13888888888888884,
+        "o200k_tokens_before": 36,
+        "o200k_tokens_after": 31,
+        "o200k_saving_rate": 0.13888888888888884,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4189,6 +4637,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 36,
+        "o200k_compressed_tokens": 32,
+        "o200k_token_saving_rate": 0.11111111111111116,
+        "o200k_tokens_before": 36,
+        "o200k_tokens_after": 32,
+        "o200k_saving_rate": 0.11111111111111116,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4295,6 +4755,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 38,
+        "o200k_compressed_tokens": 29,
+        "o200k_token_saving_rate": 0.23684210526315785,
+        "o200k_tokens_before": 38,
+        "o200k_tokens_after": 29,
+        "o200k_saving_rate": 0.23684210526315785,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4401,6 +4873,18 @@
             "hits_sample": []
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
+        "o200k_raw_tokens": 39,
+        "o200k_compressed_tokens": 35,
+        "o200k_token_saving_rate": 0.10256410256410253,
+        "o200k_tokens_before": 39,
+        "o200k_tokens_after": 35,
+        "o200k_saving_rate": 0.10256410256410253,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4485,7 +4969,19 @@
           }
         }
       }
-    ]
+    ],
+    "tiktoken_o200k": {
+      "encoding": "o200k_base",
+      "available": true,
+      "reason_unavailable": null,
+      "tokens_raw_total": 1343,
+      "tokens_compressed_total": 1082,
+      "global_token_saving_rate": 0.19434102755026061
+    },
+    "o200k_token_saving_rate": 0.19434102755026061,
+    "o200k_saving_rate": 0.19434102755026061,
+    "o200k_tokens_before": 1343,
+    "o200k_tokens_after": 1082
   },
   "fusion_metrics": {
     "case_count": 10,

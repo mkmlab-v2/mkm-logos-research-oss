@@ -35,8 +35,8 @@
   },
   "compression_metrics": {
     "case_count": 40,
-    "global_token_saving_rate": 0.5316455696202531,
-    "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
+    "global_token_saving_rate": 0.49085794655414905,
+    "avg_reconstruction_fidelity_jaccard": 0.7349368566589929,
     "avg_sensitive_integrity": 1.0,
     "min_sensitive_integrity": 1.0,
     "sensitive_violation_count": 0,
@@ -44,29 +44,51 @@
       {
         "id": "cmp2_001",
         "raw_tokens": 25,
-        "compressed_tokens": 11,
-        "token_saving_rate": 0.56,
-        "compression_ratio": 0.44,
-        "reconstruction_fidelity_jaccard": 0.5238095238095238,
+        "compressed_tokens": 14,
+        "token_saving_rate": 0.43999999999999995,
+        "compression_ratio": 0.56,
+        "reconstruction_fidelity_jaccard": 0.6666666666666666,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "State read only cannot trigger A track policy 3 dominates to",
-        "reconstructed_text_effective": "State 3 to dominates read only cannot trigger A track policy",
+        "compressed_text_effective": "State to in but this is read only and cannot 3 policy track trigger",
+        "reconstructed_text_effective": "State 3 to in but this is read only and cannot trigger track policy",
         "route": {
           "shard_id": "zone_b_timing",
           "domain": "timing",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 13,
+            "hits_sample": [
+              "and",
+              "but",
+              "cannot",
+              "in",
+              "is",
+              "only",
+              "policy",
+              "read",
+              "state",
+              "this",
+              "to",
+              "track",
+              "trigger"
+            ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
         "o200k_raw_tokens": 25,
-        "o200k_compressed_tokens": 12,
-        "o200k_token_saving_rate": 0.52,
+        "o200k_compressed_tokens": 15,
+        "o200k_token_saving_rate": 0.4,
         "o200k_tokens_before": 25,
-        "o200k_tokens_after": 12,
-        "o200k_saving_rate": 0.52,
+        "o200k_tokens_after": 15,
+        "o200k_saving_rate": 0.4,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -138,9 +160,25 @@
               "shard_id": "zone_b_timing",
               "domain": "timing",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 13,
+                "hits_sample": [
+                  "and",
+                  "but",
+                  "cannot",
+                  "in",
+                  "is",
+                  "only",
+                  "policy",
+                  "read",
+                  "state",
+                  "this",
+                  "to",
+                  "track",
+                  "trigger"
+                ]
               }
             },
             "mode": "experimental",
@@ -152,29 +190,50 @@
       {
         "id": "cmp2_002",
         "raw_tokens": 19,
-        "compressed_tokens": 8,
-        "token_saving_rate": 0.5789473684210527,
-        "compression_ratio": 0.42105263157894735,
-        "reconstruction_fidelity_jaccard": 0.47058823529411764,
+        "compressed_tokens": 13,
+        "token_saving_rate": 0.3157894736842105,
+        "compression_ratio": 0.6842105263157895,
+        "reconstruction_fidelity_jaccard": 0.7647058823529411,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "direct witness manual policy strict evidence traceability ENTRY_16",
-        "reconstructed_text_effective": "ENTRY_16 direct witness manual policy strict evidence traceability",
+        "compressed_text_effective": "direct witness is so the gate manual proxy ENTRY_16 evidence policy strict with",
+        "reconstructed_text_effective": "ENTRY_16 direct witness is so the gate manual proxy policy with strict evidence",
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 12,
+            "hits_sample": [
+              "direct",
+              "evidence",
+              "gate",
+              "is",
+              "manual",
+              "policy",
+              "proxy",
+              "so",
+              "strict",
+              "the",
+              "with",
+              "witness"
+            ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
         "o200k_raw_tokens": 22,
-        "o200k_compressed_tokens": 11,
-        "o200k_token_saving_rate": 0.5,
+        "o200k_compressed_tokens": 15,
+        "o200k_token_saving_rate": 0.31818181818181823,
         "o200k_tokens_before": 22,
-        "o200k_tokens_after": 11,
-        "o200k_saving_rate": 0.5,
+        "o200k_tokens_after": 15,
+        "o200k_saving_rate": 0.31818181818181823,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -246,9 +305,24 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 12,
+                "hits_sample": [
+                  "direct",
+                  "evidence",
+                  "gate",
+                  "is",
+                  "manual",
+                  "policy",
+                  "proxy",
+                  "so",
+                  "strict",
+                  "the",
+                  "with",
+                  "witness"
+                ]
               }
             },
             "mode": "experimental",
@@ -266,23 +340,38 @@
         "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "track Compression should footprint safety caveats boundary",
-        "reconstructed_text_effective": "Compression should footprint safety caveats track boundary",
+        "compressed_text_effective": "should token while safety track boundary Compression",
+        "reconstructed_text_effective": "Compression should token while safety track boundary",
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 6,
+            "hits_sample": [
+              "boundary",
+              "safety",
+              "should",
+              "token",
+              "track",
+              "while"
+            ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
         "o200k_raw_tokens": 17,
-        "o200k_compressed_tokens": 8,
-        "o200k_token_saving_rate": 0.5294117647058824,
+        "o200k_compressed_tokens": 7,
+        "o200k_token_saving_rate": 0.5882352941176471,
         "o200k_tokens_before": 17,
-        "o200k_tokens_after": 8,
-        "o200k_saving_rate": 0.5294117647058824,
+        "o200k_tokens_after": 7,
+        "o200k_saving_rate": 0.5882352941176471,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -354,9 +443,18 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 6,
+                "hits_sample": [
+                  "boundary",
+                  "safety",
+                  "should",
+                  "token",
+                  "track",
+                  "while"
+                ]
               }
             },
             "mode": "experimental",
@@ -368,29 +466,49 @@
       {
         "id": "cmp2_004",
         "raw_tokens": 16,
-        "compressed_tokens": 8,
-        "token_saving_rate": 0.5,
-        "compression_ratio": 0.5,
-        "reconstruction_fidelity_jaccard": 0.5333333333333333,
+        "compressed_tokens": 13,
+        "token_saving_rate": 0.1875,
+        "compression_ratio": 0.8125,
+        "reconstruction_fidelity_jaccard": 0.8666666666666667,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "A source strong so that reproduce every report",
-        "reconstructed_text_effective": "A strong report source so that reproduce every",
+        "compressed_text_effective": "A strong report references source artifacts so explicitly can claim every future that",
+        "reconstructed_text_effective": "A strong report references source artifacts explicitly so that future can every claim",
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 11,
+            "hits_sample": [
+              "artifacts",
+              "can",
+              "claim",
+              "every",
+              "future",
+              "references",
+              "report",
+              "so",
+              "source",
+              "strong",
+              "that"
+            ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
         "o200k_raw_tokens": 16,
-        "o200k_compressed_tokens": 8,
-        "o200k_token_saving_rate": 0.5,
+        "o200k_compressed_tokens": 13,
+        "o200k_token_saving_rate": 0.1875,
         "o200k_tokens_before": 16,
-        "o200k_tokens_after": 8,
-        "o200k_saving_rate": 0.5,
+        "o200k_tokens_after": 13,
+        "o200k_saving_rate": 0.1875,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -462,9 +580,23 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 11,
+                "hits_sample": [
+                  "artifacts",
+                  "can",
+                  "claim",
+                  "every",
+                  "future",
+                  "references",
+                  "report",
+                  "so",
+                  "source",
+                  "strong",
+                  "that"
+                ]
               }
             },
             "mode": "experimental",
@@ -476,29 +608,47 @@
       {
         "id": "cmp2_005",
         "raw_tokens": 15,
-        "compressed_tokens": 7,
-        "token_saving_rate": 0.5333333333333333,
-        "compression_ratio": 0.4666666666666667,
-        "reconstruction_fidelity_jaccard": 0.5,
+        "compressed_tokens": 9,
+        "token_saving_rate": 0.4,
+        "compression_ratio": 0.6,
+        "reconstruction_fidelity_jaccard": 0.6428571428571429,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "not unless evidence Weekly noise override cadence",
-        "reconstructed_text_effective": "Weekly noise not override cadence unless evidence",
+        "compressed_text_effective": "noise should not monthly governance unless evidence are confirmed",
+        "reconstructed_text_effective": "noise should not monthly governance unless evidence are confirmed",
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 9,
+            "hits_sample": [
+              "are",
+              "confirmed",
+              "evidence",
+              "governance",
+              "monthly",
+              "noise",
+              "not",
+              "should",
+              "unless"
+            ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
         "o200k_raw_tokens": 15,
-        "o200k_compressed_tokens": 7,
-        "o200k_token_saving_rate": 0.5333333333333333,
+        "o200k_compressed_tokens": 9,
+        "o200k_token_saving_rate": 0.4,
         "o200k_tokens_before": 15,
-        "o200k_tokens_after": 7,
-        "o200k_saving_rate": 0.5333333333333333,
+        "o200k_tokens_after": 9,
+        "o200k_saving_rate": 0.4,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -570,9 +720,21 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 9,
+                "hits_sample": [
+                  "are",
+                  "confirmed",
+                  "evidence",
+                  "governance",
+                  "monthly",
+                  "noise",
+                  "not",
+                  "should",
+                  "unless"
+                ]
               }
             },
             "mode": "experimental",
@@ -584,29 +746,51 @@
       {
         "id": "cmp2_006",
         "raw_tokens": 18,
-        "compressed_tokens": 8,
-        "token_saving_rate": 0.5555555555555556,
-        "compression_ratio": 0.4444444444444444,
-        "reconstruction_fidelity_jaccard": 0.5,
+        "compressed_tokens": 13,
+        "token_saving_rate": 0.2777777777777778,
+        "compression_ratio": 0.7222222222222222,
+        "reconstruction_fidelity_jaccard": 0.8125,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "manual must never direct witness evidence Proxy anchors",
-        "reconstructed_text_effective": "Proxy anchors manual must never direct witness evidence",
+        "compressed_text_effective": "Proxy can support manual but they must never as be direct evidence witness",
+        "reconstructed_text_effective": "Proxy can support manual but they must never be as direct witness evidence",
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 13,
+            "hits_sample": [
+              "as",
+              "be",
+              "but",
+              "can",
+              "direct",
+              "evidence",
+              "manual",
+              "must",
+              "never",
+              "proxy",
+              "support",
+              "they",
+              "witness"
+            ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
         "o200k_raw_tokens": 19,
-        "o200k_compressed_tokens": 8,
-        "o200k_token_saving_rate": 0.5789473684210527,
+        "o200k_compressed_tokens": 13,
+        "o200k_token_saving_rate": 0.3157894736842105,
         "o200k_tokens_before": 19,
-        "o200k_tokens_after": 8,
-        "o200k_saving_rate": 0.5789473684210527,
+        "o200k_tokens_after": 13,
+        "o200k_saving_rate": 0.3157894736842105,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -678,9 +862,25 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 13,
+                "hits_sample": [
+                  "as",
+                  "be",
+                  "but",
+                  "can",
+                  "direct",
+                  "evidence",
+                  "manual",
+                  "must",
+                  "never",
+                  "proxy",
+                  "support",
+                  "they",
+                  "witness"
+                ]
               }
             },
             "mode": "experimental",
@@ -698,16 +898,31 @@
         "reconstruction_fidelity_jaccard": 0.5,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "Interpretation quality state beyond bootstrap transition matrix",
-        "reconstructed_text_effective": "Interpretation quality state beyond bootstrap transition matrix",
+        "compressed_text_effective": "Interpretation as state beyond in the quality",
+        "reconstructed_text_effective": "Interpretation quality as state beyond in the",
         "route": {
           "shard_id": "zone_b_timing",
           "domain": "timing",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 6,
+            "hits_sample": [
+              "as",
+              "beyond",
+              "in",
+              "interpretation",
+              "state",
+              "the"
+            ]
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 16,
         "o200k_compressed_tokens": 8,
@@ -786,9 +1001,18 @@
               "shard_id": "zone_b_timing",
               "domain": "timing",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 6,
+                "hits_sample": [
+                  "as",
+                  "beyond",
+                  "in",
+                  "interpretation",
+                  "state",
+                  "the"
+                ]
               }
             },
             "mode": "experimental",
@@ -800,29 +1024,43 @@
       {
         "id": "cmp2_008",
         "raw_tokens": 18,
-        "compressed_tokens": 7,
-        "token_saving_rate": 0.6111111111111112,
-        "compression_ratio": 0.3888888888888889,
-        "reconstruction_fidelity_jaccard": 0.5,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.5555555555555556,
+        "compression_ratio": 0.4444444444444444,
+        "reconstruction_fidelity_jaccard": 0.5714285714285714,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "Myeongri Bible Sasang All tri should timing",
-        "reconstructed_text_effective": "All tri should Myeongri timing Bible Sasang",
+        "compressed_text_effective": "All lens should Myeongri Bible alignment and Sasang",
+        "reconstructed_text_effective": "All lens should Myeongri Bible alignment and Sasang",
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 5,
+            "hits_sample": [
+              "alignment",
+              "all",
+              "and",
+              "lens",
+              "should"
+            ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
         "o200k_raw_tokens": 22,
-        "o200k_compressed_tokens": 11,
-        "o200k_token_saving_rate": 0.5,
+        "o200k_compressed_tokens": 12,
+        "o200k_token_saving_rate": 0.4545454545454546,
         "o200k_tokens_before": 22,
-        "o200k_tokens_after": 11,
-        "o200k_saving_rate": 0.5,
+        "o200k_tokens_after": 12,
+        "o200k_saving_rate": 0.4545454545454546,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -894,9 +1132,17 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 5,
+                "hits_sample": [
+                  "alignment",
+                  "all",
+                  "and",
+                  "lens",
+                  "should"
+                ]
               }
             },
             "mode": "experimental",
@@ -908,29 +1154,52 @@
       {
         "id": "cmp2_009",
         "raw_tokens": 21,
-        "compressed_tokens": 8,
-        "token_saving_rate": 0.6190476190476191,
-        "compression_ratio": 0.38095238095238093,
-        "reconstruction_fidelity_jaccard": 0.5,
+        "compressed_tokens": 15,
+        "token_saving_rate": 0.2857142857142857,
+        "compression_ratio": 0.7142857142857143,
+        "reconstruction_fidelity_jaccard": 0.9375,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "Fact Lock the and between CI tests protect",
-        "reconstructed_text_effective": "Fact Lock tests protect the and between and CI",
+        "compressed_text_effective": "Fact Lock tests protect the from and keep codebook aligned between CI contracts docs scripts",
+        "reconstructed_text_effective": "Fact Lock tests protect the codebook from and keep contracts aligned between docs scripts and CI",
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 14,
+            "hits_sample": [
+              "aligned",
+              "and",
+              "between",
+              "ci",
+              "contracts",
+              "docs",
+              "fact",
+              "from",
+              "keep",
+              "lock",
+              "protect",
+              "scripts",
+              "tests",
+              "the"
+            ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
         "o200k_raw_tokens": 22,
-        "o200k_compressed_tokens": 8,
-        "o200k_token_saving_rate": 0.6363636363636364,
+        "o200k_compressed_tokens": 16,
+        "o200k_token_saving_rate": 0.2727272727272727,
         "o200k_tokens_before": 22,
-        "o200k_tokens_after": 8,
-        "o200k_saving_rate": 0.6363636363636364,
+        "o200k_tokens_after": 16,
+        "o200k_saving_rate": 0.2727272727272727,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1002,9 +1271,26 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 14,
+                "hits_sample": [
+                  "aligned",
+                  "and",
+                  "between",
+                  "ci",
+                  "contracts",
+                  "docs",
+                  "fact",
+                  "from",
+                  "keep",
+                  "lock",
+                  "protect",
+                  "scripts",
+                  "tests",
+                  "the"
+                ]
               }
             },
             "mode": "experimental",
@@ -1016,29 +1302,43 @@
       {
         "id": "cmp2_010",
         "raw_tokens": 14,
-        "compressed_tokens": 6,
-        "token_saving_rate": 0.5714285714285714,
-        "compression_ratio": 0.42857142857142855,
-        "reconstruction_fidelity_jaccard": 0.46153846153846156,
+        "compressed_tokens": 7,
+        "token_saving_rate": 0.5,
+        "compression_ratio": 0.5,
+        "reconstruction_fidelity_jaccard": 0.5384615384615384,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "Performance reporting operational from quality false",
-        "reconstructed_text_effective": "Performance reporting operational from quality false",
+        "compressed_text_effective": "should separate from to confidence Performance reporting",
+        "reconstructed_text_effective": "Performance reporting should separate from to confidence",
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 5,
+            "hits_sample": [
+              "confidence",
+              "from",
+              "separate",
+              "should",
+              "to"
+            ]
           }
         },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
+        },
         "o200k_raw_tokens": 14,
-        "o200k_compressed_tokens": 6,
-        "o200k_token_saving_rate": 0.5714285714285714,
+        "o200k_compressed_tokens": 7,
+        "o200k_token_saving_rate": 0.5,
         "o200k_tokens_before": 14,
-        "o200k_tokens_after": 6,
-        "o200k_saving_rate": 0.5714285714285714,
+        "o200k_tokens_after": 7,
+        "o200k_saving_rate": 0.5,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1110,9 +1410,17 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 5,
+                "hits_sample": [
+                  "confidence",
+                  "from",
+                  "separate",
+                  "should",
+                  "to"
+                ]
               }
             },
             "mode": "experimental",
@@ -1136,10 +1444,18 @@
           "shard_id": "zone_g_health",
           "domain": "health",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 37,
         "o200k_compressed_tokens": 21,
@@ -1218,9 +1534,11 @@
               "shard_id": "zone_g_health",
               "domain": "health",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -1244,10 +1562,18 @@
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 40,
         "o200k_compressed_tokens": 20,
@@ -1326,9 +1652,11 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -1352,10 +1680,18 @@
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 42,
         "o200k_compressed_tokens": 18,
@@ -1434,9 +1770,11 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -1460,10 +1798,18 @@
           "shard_id": "zone_g_health",
           "domain": "health",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 42,
         "o200k_compressed_tokens": 27,
@@ -1542,9 +1888,11 @@
               "shard_id": "zone_g_health",
               "domain": "health",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -1568,10 +1916,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 38,
         "o200k_compressed_tokens": 21,
@@ -1650,9 +2006,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -1676,10 +2034,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 40,
         "o200k_compressed_tokens": 21,
@@ -1758,9 +2124,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -1784,10 +2152,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 40,
         "o200k_compressed_tokens": 24,
@@ -1866,9 +2242,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -1892,10 +2270,18 @@
           "shard_id": "zone_g_health",
           "domain": "health",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 40,
         "o200k_compressed_tokens": 25,
@@ -1974,9 +2360,11 @@
               "shard_id": "zone_g_health",
               "domain": "health",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -2000,10 +2388,18 @@
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 38,
         "o200k_compressed_tokens": 17,
@@ -2082,9 +2478,11 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -2108,10 +2506,18 @@
           "shard_id": "zone_g_health",
           "domain": "health",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 41,
         "o200k_compressed_tokens": 25,
@@ -2190,9 +2596,11 @@
               "shard_id": "zone_g_health",
               "domain": "health",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -2216,10 +2624,18 @@
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 40,
         "o200k_compressed_tokens": 17,
@@ -2298,9 +2714,11 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -2324,10 +2742,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 42,
         "o200k_compressed_tokens": 21,
@@ -2406,9 +2832,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -2432,10 +2860,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 36,
         "o200k_compressed_tokens": 21,
@@ -2514,9 +2950,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -2540,10 +2978,18 @@
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 39,
         "o200k_compressed_tokens": 22,
@@ -2622,9 +3068,11 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -2648,10 +3096,18 @@
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 39,
         "o200k_compressed_tokens": 19,
@@ -2730,9 +3186,11 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -2756,10 +3214,18 @@
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 35,
         "o200k_compressed_tokens": 16,
@@ -2838,9 +3304,11 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -2864,10 +3332,18 @@
           "shard_id": "zone_c_hangul",
           "domain": "hangul",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 37,
         "o200k_compressed_tokens": 22,
@@ -2946,9 +3422,11 @@
               "shard_id": "zone_c_hangul",
               "domain": "hangul",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -2972,10 +3450,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 43,
         "o200k_compressed_tokens": 26,
@@ -3054,9 +3540,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -3080,10 +3568,18 @@
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 37,
         "o200k_compressed_tokens": 21,
@@ -3162,9 +3658,11 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -3188,10 +3686,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 33,
         "o200k_compressed_tokens": 18,
@@ -3270,9 +3776,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -3296,10 +3804,18 @@
           "shard_id": "zone_c_hangul",
           "domain": "hangul",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 39,
         "o200k_compressed_tokens": 19,
@@ -3378,9 +3894,11 @@
               "shard_id": "zone_c_hangul",
               "domain": "hangul",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -3404,10 +3922,18 @@
           "shard_id": "zone_c_hangul",
           "domain": "hangul",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 40,
         "o200k_compressed_tokens": 22,
@@ -3486,9 +4012,11 @@
               "shard_id": "zone_c_hangul",
               "domain": "hangul",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -3512,10 +4040,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 32,
         "o200k_compressed_tokens": 18,
@@ -3594,9 +4130,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -3620,10 +4158,18 @@
           "shard_id": "zone_c_hangul",
           "domain": "hangul",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 38,
         "o200k_compressed_tokens": 22,
@@ -3702,9 +4248,11 @@
               "shard_id": "zone_c_hangul",
               "domain": "hangul",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -3728,10 +4276,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 40,
         "o200k_compressed_tokens": 19,
@@ -3810,9 +4366,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -3836,10 +4394,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 38,
         "o200k_compressed_tokens": 25,
@@ -3918,9 +4484,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -3944,10 +4512,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 36,
         "o200k_compressed_tokens": 21,
@@ -4026,9 +4602,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -4052,10 +4630,18 @@
           "shard_id": "zone_c_hangul",
           "domain": "hangul",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 36,
         "o200k_compressed_tokens": 22,
@@ -4134,9 +4720,11 @@
               "shard_id": "zone_c_hangul",
               "domain": "hangul",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -4160,10 +4748,18 @@
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 38,
         "o200k_compressed_tokens": 19,
@@ -4242,9 +4838,11 @@
               "shard_id": "zone_d_ssot",
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -4268,10 +4866,18 @@
           "shard_id": "zone_a_scm",
           "domain": "scm",
           "master_codebook_lexicon_v1": {
-            "status": "skipped",
-            "reason": "export_not_found",
-            "hint": "py scripts/export_master_codebook_v1.py"
+            "status": "ok",
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+            "lexicon_term_count": 41769,
+            "hit_count": 0,
+            "hits_sample": []
           }
+        },
+        "state16": {
+          "state_id": null,
+          "confidence": null,
+          "error_code": "STATE16_NOT_ENABLED",
+          "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 39,
         "o200k_compressed_tokens": 26,
@@ -4350,9 +4956,11 @@
               "shard_id": "zone_a_scm",
               "domain": "scm",
               "master_codebook_lexicon_v1": {
-                "status": "skipped",
-                "reason": "export_not_found",
-                "hint": "py scripts/export_master_codebook_v1.py"
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
+                "lexicon_term_count": 41769,
+                "hit_count": 0,
+                "hits_sample": []
               }
             },
             "mode": "experimental",
@@ -4367,13 +4975,13 @@
       "available": true,
       "reason_unavailable": null,
       "tokens_raw_total": 1343,
-      "tokens_compressed_total": 722,
-      "global_token_saving_rate": 0.46239761727475803
+      "tokens_compressed_total": 750,
+      "global_token_saving_rate": 0.4415487714072971
     },
-    "o200k_token_saving_rate": 0.46239761727475803,
-    "o200k_saving_rate": 0.46239761727475803,
+    "o200k_token_saving_rate": 0.4415487714072971,
+    "o200k_saving_rate": 0.4415487714072971,
     "o200k_tokens_before": 1343,
-    "o200k_tokens_after": 722
+    "o200k_tokens_after": 750
   },
   "fusion_metrics": {
     "case_count": 10,
@@ -4446,7 +5054,7 @@
   "quality_gate": {
     "compression_ok": true,
     "fusion_ok": true,
-    "ultra_saving_50_ok": true,
+    "ultra_saving_50_ok": false,
     "ultra_saving_policy_ok": true,
     "ultra_saving_policy_min": 0.49,
     "jaccard_drop_pp": 0.0,
