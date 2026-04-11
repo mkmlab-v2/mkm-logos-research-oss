@@ -16,8 +16,8 @@
 | **jemaai.cloud** | 공개 쇼룸·Public Event Gateway·**실매매와 격리**된 관측 UI. | `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`(프로젝트 경로는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 표), `run_jemaai_cloud_completion_chain.ps1` = 로컬 점검, **배포 아님** | 게이트웨이·nginx 예시는 bitcoin-trading `jemaai-cloud-mvp` 경로. **api.jemaai.cloud 권장** — `jema12.cloud`와 동일 가정 금지(핸드오프 표). |
 | **a-codeai.com** | L2·압축 API·B2B 대외면: **정적 랜딩과 API 포트 분리** (nginx). | `P0_COMMERCIALIZATION_TRACKER.md`(a-codeai nginx 체크리스트), `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example` | **apex가 스텁 JSON만 받아 404 나는 설정** 금지 — `/` vs `/v1/` 분리 우선. |
 | **mkmlab.space** | (레포 서술) 회사/랩 **랜딩·R&D 쇼케이스 이전 후보** — `no1kmedi`와 브랜드 분리 논의가 NotebookLM·실행보고에 있음. **단일 배포 SSOT는 호스트 실측 후 확정.** | `NO1KMEDI` SSOT 표(1.1), no1kmedi 실행보고 노트(참고) | no1kmedi 클리닉 전환 시 **랩 콘텐츠 이전** 등 — **한 nginx에 목적 섞지 말 것**. |
-| **jema-ai.com** | 레포 **전용 SSOT 문서는 없음**. NotebookLM `Jema12 Strategic Command Center` 등에 B2B 한의원 솔루션 서술이 있으나 **헌법 표와 별개** — 상용 배포 전 **전용 런북·PM2 이름**을 문서화해야 함. | (없음) — **신규 SSOT 필요 시** 별도 파일 | **mkmlife / no1kmedi / jema12 와 동일 VPS라도** 서버블록·PM2 **이름으로 구분**. |
-| **personadiary.com** | 레포 **전용 SSOT 없음**. 일부 노트에 B2C 일기·페르소나 언급 — **미확정**. | (없음) | **본선 연결 전** 도메인·repo·PM2 **한 줄 확정** 없이 VPS에 합선하지 말 것. |
+| **jema-ai.com** | B2B 한의원 등 기획은 노트 참고. 레포 **포인터만** 확정: 확정 전 타 도메인 런북 금지. | `JEMA_AI_DOMAIN_POINTER_V1.md` | **mkmlife / no1kmedi / jema12 와 동일 VPS라도** 서버블록·PM2 **이름으로 구분**. |
+| **personadiary.com** | B2C 일기 등 기획은 노트 참고. 레포 **포인터만** — 데이터·본선 미확정. | `PERSONADIARY_DOMAIN_POINTER_V1.md` | **본선 연결 전** 도메인·repo·PM2 **한 줄 확정** 없이 VPS에 합선하지 말 것. |
 
 ---
 
@@ -36,3 +36,10 @@
 - 노트 간 **숫자·포트·도메인 역할이 다르면** → **이 파일과 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`를 우선**한다고 명시.
 
 **개정:** 도메인 추가·PM2 이름 확정 시 표만 갱신한다.
+
+---
+
+## 4) 미확정 도메인 전용 포인터 (상세)
+
+- **jema-ai.com:** `docs/final/JEMA_AI_DOMAIN_POINTER_V1.md` — 확정 전 금지·체크리스트.
+- **personadiary.com:** `docs/final/PERSONADIARY_DOMAIN_POINTER_V1.md` — 동일.
