@@ -38,15 +38,24 @@ $ErrorActionPreference = "Stop"
 function Test-PlaceholderHost([string]$h) {
     if ([string]::IsNullOrWhiteSpace($h)) { return $true }
     $t = $h.Trim()
+    # ASCII-only in source file so Windows PowerShell 5.x parses without UTF-8 BOM.
     $bad = @(
-        "실제_호스트", "여기에_진짜", "your.vps.host", "your-vps-host",
-        "example.com", "example.org", "placeholder", "changeme", "tbd",
-        "xxx", "localhost", "127.0.0.1", "<", ">"
+        "your.vps.host", "your-vps-host", "example.com", "example.org",
+        "placeholder", "changeme", "tbd", "xxx", "localhost", "127.0.0.1",
+        "<", ">", "real_ip_or_ssh_hostname", "fill_here", "replace_me"
     )
     foreach ($b in $bad) {
         if ($t -match [regex]::Escape($b)) { return $true }
     }
-    if ($t -like "*예시*" -or $t -like "*실제*도메인*" -or $t -like "*진짜*") { return $true }
+    # Korean doc placeholders via codepoints (no Hangul literals in .ps1).
+    $fragments = @(
+        ([char]0xC2E4) + ([char]0xC81C) + '_' + ([char]0xD638) + ([char]0xC2A4) + ([char]0xD2B8),
+        ([char]0xC5EC) + ([char]0xAE30) + ([char]0xC5D0) + '_' + ([char]0xC9C4) + ([char]0xC9DC),
+        ([char]0xC608) + ([char]0xC2DC)
+    )
+    foreach ($frag in $fragments) {
+        if ($t.Contains($frag)) { return $true }
+    }
     return $false
 }
 
@@ -66,7 +75,7 @@ if (Test-PlaceholderHost $vpsHost) {
 VPS_HOST is missing or looks like a placeholder ('$vpsHost').
 Set a real public IP or SSH hostname (Hostinger dashboard / your ~/.ssh/config / deploy script), e.g.:
   `$env:VPS_HOST = '203.0.113.10'
-See docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md §2.2
+See docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md (section 2.2)
 "@
 }
 
@@ -90,7 +99,7 @@ if ($RemoteRepoPath -notmatch '^/[-a-zA-Z0-9_/]+$') {
 
 $target = "${vpsUser}@${vpsHost}"
 # One argv to ssh.exe: remote shell runs this as a single command string (no PS double-quote splatting).
-$remote = "cd $RemoteRepoPath && git rev-parse HEAD && git fetch origin -q && git rev-parse origin/main"
+$remote = 'cd ' + $RemoteRepoPath + ' && git rev-parse HEAD && git fetch origin -q && git rev-parse origin/main'
 
 Write-Host "=== Mkmlife VPS Git probe ===" -ForegroundColor Cyan
 Write-Host "Target: $target"
