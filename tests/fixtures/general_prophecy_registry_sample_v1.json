@@ -1,0 +1,42 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-04-11T12:00:00Z",
+  "git_commit_hint": "local:fixture",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "demo.binary.sample_01",
+      "question_text": "Before 2027-01-01 UTC, will a specific published OECD foresight toolkit PDF list at least five chapter headings on its cover or TOC page?",
+      "domain_tags": ["macro", "policy"],
+      "resolution_deadline_utc": "2027-01-01T00:00:00Z",
+      "resolution_criteria": "Resolve TRUE if the OECD-hosted PDF for the Foresight Toolkit (or successor title clearly labeled as the 2025 toolkit) contains five or more distinct chapter or section headings visible in the first ten pages (TOC or body). Otherwise FALSE. If no PDF is reachable, VOID.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "condition_met",
+        "false_label": "condition_not_met"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-04-11T12:05:00Z",
+          "probability_0_1": 0.42,
+          "source_kind": "baseline",
+          "source_detail": "stub_baseline_for_ci",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "docs/final/NOTEBOOKLM_GENERAL_PROPHECY_VPS_GIT_FORESIGHT_BUNDLE_2026-04-11.md",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    }
+  ]
+}

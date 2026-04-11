@@ -6,6 +6,8 @@
   - .git/info/exclude 에서 tools/* / scripts/* 가 전체를 가리면서 ! 예외가 없는지 검사 (AGENTS.md 경고와 동일).
   - origin 원격, main(또는 현재 브랜치)의 upstream 존재 여부를 알림.
   - SSH Cursor 터미널 cwd 문제 시 참고: docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md §2.0
+  - mkmlife-com VPS 작업 트리 정리(스태시 후 ff-only pull): scripts/mkmlife_vps_git_align_safe.sh
+  - projects/mkm-life 디렉터리가 있으면 원퀘스천 퍼널 체인 핵심 스크립트 존재 여부를 WARN(정보)로 표시 (Strict 실패에는 넣지 않음).
 
 .PARAMETER WorkspaceRoot
   레포 루트 (기본 C:\workspace).
@@ -110,6 +112,30 @@ try {
         else {
             $up = git rev-parse --abbrev-ref "@{upstream}" 2>$null
             Write-OkLine "upstream = $up"
+        }
+    }
+
+    $mkmLifeRoot = Join-Path $root "projects\mkm-life"
+    if (Test-Path -LiteralPath $mkmLifeRoot -PathType Container) {
+        $funnelNeed = @(
+            "scripts\run-one-question-funnel-chain.mjs",
+            "scripts\aggregate-one-question-funnel.mjs",
+            "scripts\check-one-question-funnel-gate.mjs",
+            "scripts\build-one-question-funnel-gap-report.mjs",
+            "scripts\build-one-question-daily-targets.mjs"
+        )
+        $missingFunnel = [System.Collections.Generic.List[string]]::new()
+        foreach ($rel in $funnelNeed) {
+            $p = Join-Path $mkmLifeRoot $rel
+            if (-not (Test-Path -LiteralPath $p)) {
+                [void]$missingFunnel.Add($rel)
+            }
+        }
+        if ($missingFunnel.Count -gt 0) {
+            Write-WarnLine "mkm-life one-question funnel: missing $($missingFunnel.Count) script(s): $($missingFunnel -join ', ') — npm run check:one-question:funnel-chain will fail."
+        }
+        else {
+            Write-OkLine "mkm-life one-question funnel: core chain scripts present."
         }
     }
 

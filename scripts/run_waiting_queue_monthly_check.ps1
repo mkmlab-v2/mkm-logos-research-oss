@@ -3,6 +3,7 @@ param(
     [double]$OverlapDriftAlertThreshold = -0.05,
     [switch]$SkipNightWatchmanHarness,
     [switch]$SkipBtrackGates,
+    [switch]$SkipGeneralProphecyChain,
     [switch]$SkipNetSourceFallbackAutoHold,
     [string]$CloseReturnPct = "",
     [string]$PredictedBand = "DOWN_STRONG",
@@ -77,6 +78,9 @@ $c2GuardrailScriptPath = "C:\workspace\scripts\check_c2_aegis_guardrail.py"
 $c2GuardrailPath = "C:\workspace\docs\final\artifacts\C2_AEGIS_BASELINE_GUARDRAIL_V1.json"
 $c2CurrentScoreboardPath = "C:\workspace\docs\final\artifacts\aegis_unified_scoreboard_btc90_k010_latest.json"
 $c2GuardrailStatusPath = "C:\workspace\docs\final\artifacts\c2_aegis_guardrail_status_latest.json"
+$reportSchemaV2FromChainScriptPath = "C:\workspace\scripts\experimental\codebook_runtime_pack\build_report_schema_v2_from_chain_artifacts.py"
+$reportSchemaV2LabelKpiScriptPath = "C:\workspace\scripts\experimental\codebook_runtime_pack\build_report_schema_v2_label_kpi.py"
+$reportSchemaV2QualityAlertScriptPath = "C:\workspace\scripts\experimental\codebook_runtime_pack\build_report_schema_v2_quality_alert.py"
 $dailySitrepPath = "C:\workspace\docs\final\artifacts\waiting_queue_daily_sitrep_latest.txt"
 $btrackRecommendationPackPath = "C:\workspace\reports\notebooklm\btrack_insight_recommendation_pack_latest.json"
 $btrackMonthlyBriefBuilderPath = "C:\workspace\scripts\build_btrack_monthly_brief_from_recommendation.py"
@@ -223,6 +227,22 @@ Write-Host "[waiting-queue-check] Generating 2026 monthly KOSPI/BTC prophecy (fa
 py scripts/generate_2026_monthly_kospi_btc_prophecy.py
 if ($LASTEXITCODE -ne 0) {
     throw "2026 monthly KOSPI/BTC prophecy generation failed with exit code $LASTEXITCODE"
+}
+
+if (-not $SkipGeneralProphecyChain) {
+    Write-Host "[waiting-queue-check] General prophecy B-rail chain (registry validate, brief, Brier eval; no external APIs)..."
+    py scripts/generate_general_prophecy_v1.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "generate_general_prophecy_v1 failed with exit code $LASTEXITCODE"
+    }
+    py scripts/build_general_prophecy_brief.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "build_general_prophecy_brief failed with exit code $LASTEXITCODE"
+    }
+    py scripts/eval_general_prophecy_brier_score.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "eval_general_prophecy_brier_score failed with exit code $LASTEXITCODE"
+    }
 }
 
 Write-Host "[waiting-queue-check] Syncing trinity risk governor to runtime risk_profile..."
@@ -1100,6 +1120,28 @@ if (Test-Path -LiteralPath $c2GuardrailScriptPath) {
     }
 } else {
     Add-SoftFailNote "C2 Aegis guardrail script missing; skipped"
+}
+
+Write-Host "[waiting-queue-check] Building report_schema_v2 chain (from chain artifacts -> label KPI -> quality alert)..."
+if (
+    (Test-Path -LiteralPath $reportSchemaV2FromChainScriptPath) -and
+    (Test-Path -LiteralPath $reportSchemaV2LabelKpiScriptPath) -and
+    (Test-Path -LiteralPath $reportSchemaV2QualityAlertScriptPath)
+) {
+    py $reportSchemaV2FromChainScriptPath
+    if ($LASTEXITCODE -ne 0) {
+        throw "report_schema_v2 from-chain build failed with exit code $LASTEXITCODE"
+    }
+    py $reportSchemaV2LabelKpiScriptPath
+    if ($LASTEXITCODE -ne 0) {
+        throw "report_schema_v2 label KPI build failed with exit code $LASTEXITCODE"
+    }
+    py $reportSchemaV2QualityAlertScriptPath
+    if ($LASTEXITCODE -ne 0) {
+        throw "report_schema_v2 quality alert build failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "report_schema_v2 chain script(s) missing; skipped"
 }
 
 Write-Host "[waiting-queue-check] Wrote log: $logPath"

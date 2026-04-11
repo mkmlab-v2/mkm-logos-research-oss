@@ -79,6 +79,11 @@ docs/final/artifacts/report_schema_v2_label_kpi_latest.json
 docs/final/artifacts/report_schema_v2_latest.json
 docs/final/artifacts/general_compression_restore_stress_v1.json
 docs/final/NOTEBOOKLM_GENERAL_PROPHECY_VPS_GIT_FORESIGHT_BUNDLE_*.md
+# General prophecy v1 local outputs (regenerate via scripts/generate_general_prophecy_v1.py etc.)
+docs/final/GENERAL_PROPHECY_SCHEMA_V1.json
+docs/final/artifacts/general_prophecy_brief_latest.md
+docs/final/artifacts/general_prophecy_brier_eval_latest.json
+docs/final/artifacts/general_prophecy_latest.json
 # mkm-life: local funnel pipeline outputs (regenerable; keep scripts + SSOT pair tracked)
 projects/mkm-life/reports/one_question_funnel_*
 !projects/mkm-life/reports/one_question_funnel_daily_targets_latest.json
