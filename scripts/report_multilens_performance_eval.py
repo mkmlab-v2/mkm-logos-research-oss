@@ -139,6 +139,16 @@ def _parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Fail if tiktoken o200k_base encoder is unavailable (billing spine lock).",
     )
+    p.add_argument(
+        "--use-domain-router",
+        action="store_true",
+        help="Run DomainSpecificRouter for shard_id/domain in each case row (baseline or experimental).",
+    )
+    p.add_argument(
+        "--use-master-codebook-lexicon",
+        action="store_true",
+        help="Attach master codebook lexicon bridge metadata (optional; may expand must_keep).",
+    )
     return p
 
 
@@ -1087,6 +1097,8 @@ def main() -> int:
         include_gematria_4d_bridge=bool(args.include_gematria_4d_bridge),
         apply_gematria_4d_bridge_policy=bool(args.apply_gematria_4d_bridge_policy),
         require_tiktoken_o200k=bool(args.require_tiktoken_o200k),
+        use_domain_router=bool(args.use_domain_router),
+        use_master_codebook_lexicon_v1=bool(args.use_master_codebook_lexicon),
     )
 
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
