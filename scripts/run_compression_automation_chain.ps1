@@ -3,7 +3,8 @@ param(
     [switch]$SkipHydrationMix,
     [switch]$SkipCompressionAlarm,
     [switch]$IncludeLiteralTrack,
-    [switch]$IncludeUltraLiteralTrack
+    [switch]$IncludeUltraLiteralTrack,
+    [switch]$SkipV2TrustPacketTests
 )
 
 $ErrorActionPreference = "Stop"
@@ -48,6 +49,12 @@ if ($IncludeLiteralTrack) {
 if ($IncludeUltraLiteralTrack) {
     Write-Host "=== report_compression_jaccard_loss_patterns.py (ultra_literal) ===" -ForegroundColor Cyan
     py scripts\report_compression_jaccard_loss_patterns.py --sla-track ultra_literal
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if (-not $SkipV2TrustPacketTests) {
+    Write-Host "=== pytest tests/test_compression_token_api_v2_stub.py (Trust Packet + Jaccard floor) ===" -ForegroundColor Cyan
+    py -m pytest tests\test_compression_token_api_v2_stub.py -q --tb=short
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 

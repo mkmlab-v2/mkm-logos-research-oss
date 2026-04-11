@@ -32,6 +32,7 @@ if str(ROOT) not in sys.path:
 
 from fastapi import FastAPI, Request  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
+from starlette.middleware.cors import CORSMiddleware  # noqa: E402
 
 from scripts.core.billing_meter import append_meter_event  # noqa: E402
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
@@ -47,6 +48,17 @@ _router = DomainSpecificRouter(SHARDS)
 TOKEN_RE = re.compile(r"[A-Za-z0-9_]+|[가-힣]+|[^\s]")
 
 app = FastAPI(title="MKM Token Compression Stub", version="1.0.0")
+
+# Local dev / Explorer HTML: browser fetch from another origin or file://. Not a production CORS policy.
+_cors_raw = os.environ.get("COMPRESSION_API_CORS_ALLOW_ORIGINS", "*").strip()
+_cors_origins = ["*"] if _cors_raw in {"", "*"} else [x.strip() for x in _cors_raw.split(",") if x.strip()]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_cors_origins,
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class EvalContext(BaseModel):

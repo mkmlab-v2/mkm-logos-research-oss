@@ -26,6 +26,11 @@
 - **워크스페이스 규칙(SSOT)**: 루트 `.cursorrules`, `.cursor/rules/*.mdc`, 본 `AGENTS.md`, `CLAUDE.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — **Git으로 버전 관리**.
 - **User Rules**: Cursor **Settings → Rules**에만 있는 문구는 **레포에 자동 동기화되지 않음**; 팀·본선 기준은 반드시 위 SSOT 파일에 반영한다.
 
+## 로컬 Cursor vs SSH VPS (한 원칙)
+
+- **SSOT**: `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` — 코드·규칙은 **로컬에서만 편집·푸시**; VPS는 **`git pull` + 런북의 재시작/배포만**; 비밀은 **`.env`를 호스트마다** (Git 비추적).
+- **bitcoin-trading 배포(`/opt/bitcoin-trading` 등):** `projects/bitcoin-trading/AGENTS.md` — **`pm2 restart <이름>`만**, **`restart all` 금지**(런북 예외만), **VPS 직수정 → 레포로 되돌리기**, **`.env`·`/opt/bitcoin-trading/.env`** 요약 5줄.
+
 ## 압축 파이프라인 투트랙 (Fact-Lock 요약)
 
 - **정책**: `docs/final/COMPRESSION_SLA_POLICY_V1.md` — Track A(범용)·Track B(리터럴), 산출 JSON, 손실 패턴 리포트, 웹훅은 `active_kpi`(Track A) 기준.

@@ -25,7 +25,9 @@ on:
       - "backtest_results/sweep_kmin_refine/**"
       - "data/myeongni/**"
       - "docs/final/openapi_token_compression_stub_v1.yaml"
+      - "docs/final/openapi_token_compression_v2_draft.yaml"
       - "scripts/compression_token_api_stub.py"
+      - "scripts/compression_token_api_v2_stub.py"
       - "docs/final/artifacts/LOGOS_STATE_MAPPING_V1.json"
       - "docs/final/artifacts/CROSS_REF_DSS_TO_STATES_DRAFT.json"
       - "docs/final/artifacts/SASANG_CROSS_REF_DRAFT.json"
@@ -131,6 +133,7 @@ on:
       - "tests/test_resolve_morphhb_multi_deterministic.py"
       - "tests/test_export_master_codebook_v1.py"
       - "tests/test_compression_token_api_stub.py"
+      - "tests/test_compression_token_api_v2_stub.py"
       - "tests/fixtures/morphhb/**"
       - "tests/fixtures/external_lexicon/MANIFEST.min.json"
       - "scripts/build_morphhb_form_to_lemma_index.py"
@@ -276,6 +279,9 @@ jobs:
       - name: Token API OpenAPI parity (golden examples)
         run: python -m pytest tests/test_compression_token_api_stub.py -q --tb=short -k "openapi_compress_examples_parity or openapi_expand_examples_parity"
 
+      - name: Trust Packet API v2 stub (round-trip + Jaccard floor — no v1 echo)
+        run: python -m pytest tests/test_compression_token_api_v2_stub.py -q --tb=short
+
       - name: Token API hydration mix snapshot
         run: python scripts/report_token_api_hydration_mix.py
 
@@ -319,6 +325,8 @@ jobs:
             docs/final/openapi_token_compression_stub_v1.yaml
             tests/test_compression_token_api_stub.py
             scripts/compression_token_api_stub.py
+            scripts/compression_token_api_v2_stub.py
+            tests/test_compression_token_api_v2_stub.py
             docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json
             docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json
             reports/constitution/btrack_pilot/token_api_parity_debug_latest.json

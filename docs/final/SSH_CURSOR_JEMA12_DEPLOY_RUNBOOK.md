@@ -3,7 +3,7 @@
 **목적**: Cursor에서 **SSH Remote**로 프로덕션 호스트의 워크스페이스를 연 뒤, **같은 레포**로 nginx 스니펫 적용·검증까지 끝내는 절차를 한곳에 고정한다.  
 **전제**: 본선에 **이 레포 클론**이 있고, 사용자에게 **sudo(nginx)** 권한이 있다. TLS·DNS는 이미 동작한다고 가정한다.
 
-**관련 문서**: `docs/final/JEMA12_PUBLIC_DOMAIN_AND_DEPLOY_HANDOFF_2026-04-07.md` (도메인 fact-lock, §7 본선 절차, 검증 스냅샷).  
+**관련 문서**: `docs/final/JEMA12_PUBLIC_DOMAIN_AND_DEPLOY_HANDOFF_2026-04-07.md` (도메인 fact-lock, §7 본선 절차, 검증 스냅샷). **로컬 vs VPS 역할 분리(한 원칙)**: `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`.  
 **범위 분리**: no1kmedi/mkmlife 경로는 `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md`를 따른다(본 문서와 혼용 금지).  
 **교차 규칙**: no1kmedi/mkmlife는 SSH 직후 `pwd` + `pm2 describe <app>` 실측으로만 경로를 판정한다(절대경로 추측 금지).
 

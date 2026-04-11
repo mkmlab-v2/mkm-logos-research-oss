@@ -123,11 +123,11 @@ Onboarding checklist for pilots: (1) default compress returns **router + flags o
 
 ## 11) HTTP v2 (planned): Trust Packet API contract & SLA boundaries
 
-**Status:** OpenAPI draft + **experimental FastAPI stub** (`scripts/compression_token_api_v2_stub.py`, e.g. port 8011). Uses `GlobalPivotCompressionPipeline` for packet payload — **not** a committed production SLA; v1 stub remains the default for light pilots.
+**Status:** OpenAPI draft + **experimental FastAPI stub** (`scripts/compression_token_api_v2_stub.py`, e.g. port 8011). Compress uses `evaluate_report` + domain router; packet `residual_meta` carries stub fields for expand — **not** a committed production SLA; v1 stub remains the default for light pilots.
 
 **SSOT file:** `docs/final/openapi_token_compression_v2_draft.yaml` (`info.version` tracks draft iterations).
 
-**Intent:** Move from v1 “compress envelope + expand echo” to a **single round-trip artifact** — `compression_packet` — that carries `compressed_text` and structured `residual_meta` so `POST /v2/expand` can reassemble using the same packet (wire `GlobalPivotCompressionPipeline`-class logic when implemented). v1 stub remains the reference for current pilots.
+**Intent:** Move from v1 “compress envelope + expand echo” to a **single round-trip artifact** — `compression_packet` — that carries `compressed_text` and structured `residual_meta` so `POST /v2/expand` can reassemble using the same packet (stub stores engine `reconstructed_text` under `residual_meta.mk_stub_v2`; production may replace with opaque engine residuals). v1 stub remains the reference for current pilots.
 
 **Principles (fact-locked for future implementation):**
 

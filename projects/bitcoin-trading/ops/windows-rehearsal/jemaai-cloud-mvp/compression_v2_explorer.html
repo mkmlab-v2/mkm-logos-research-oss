@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>V1 Echo vs V2 Trust Packet — Compression Explorer</title>
+  <style>
+    :root {
+      --bg: #0f131f;
+      --panel: #171b28;
+      --fg: #dfe2f3;
+      --muted: #8a92a8;
+      --accent: #f2ca50;
+      --danger: #e85d4c;
+      --ok: #6cbf6c;
+      --border: #4d4635;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      background: linear-gradient(180deg, var(--bg) 0%, #0a0e1a 100%);
+      color: var(--fg);
+      margin: 0;
+      padding: 1.25rem;
+      line-height: 1.45;
+    }
+    .shell { max-width: 1100px; margin: 0 auto; }
+    h1 { font-size: 1.35rem; margin: 0 0 0.35rem; font-weight: 650; }
+    .sub { color: var(--muted); font-size: 0.88rem; margin: 0 0 1rem; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      margin-bottom: 0.85rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+    .panel h2 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: #d0c5af; margin: 0 0 0.6rem; }
+    label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 0.35rem; }
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.65rem;
+      background: #0a0e1a;
+      border: 1px solid var(--border);
+      color: var(--fg);
+      font-size: 0.92rem;
+      resize: vertical;
+    }
+    .row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin: 0.75rem 0; }
+    .toggle {
+      display: inline-flex;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .toggle button {
+      border: none;
+      background: #1b1f2c;
+      color: var(--muted);
+      padding: 0.45rem 0.85rem;
+      cursor: pointer;
+      font-size: 0.88rem;
+    }
+    .toggle button.active { background: #2a3145; color: var(--fg); box-shadow: inset 0 0 0 1px var(--accent); }
+    .btn {
+      background: linear-gradient(180deg, #3d4458, #2a3145);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 0.55rem 1.1rem;
+      cursor: pointer;
+      font-size: 0.92rem;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    input[type="text"] {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.45rem 0.55rem;
+      background: #0a0e1a;
+      border: 1px solid var(--border);
+      color: var(--fg);
+      font-size: 0.85rem;
+    }
+    pre.json {
+      background: #0a0e1a;
+      border: 1px solid var(--border);
+      padding: 0.65rem;
+      overflow: auto;
+      font-size: 0.78rem;
+      max-height: 220px;
+      margin: 0.4rem 0 0;
+    }
+    .warn-box {
+      border: 1px solid rgba(232, 93, 76, 0.55);
+      background: rgba(232, 93, 76, 0.08);
+      padding: 0.65rem;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .ok-box {
+      border: 1px solid rgba(108, 191, 108, 0.5);
+      background: rgba(108, 191, 108, 0.08);
+      padding: 0.65rem;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .metric { font-variant-numeric: tabular-nums; font-size: 1.15rem; color: var(--accent); }
+    .step { margin-bottom: 0.75rem; }
+    .step-title { font-size: 0.8rem; color: #bed4ea; margin-bottom: 0.25rem; }
+    .badge { font-size: 0.72rem; padding: 0.15rem 0.45rem; border-radius: 4px; margin-left: 0.35rem; }
+    .badge.danger { background: rgba(232, 93, 76, 0.2); color: #ff9a8b; }
+    .badge.ok { background: rgba(108, 191, 108, 0.2); color: #9dd89d; }
+    footer { margin-top: 1.25rem; font-size: 0.78rem; color: var(--muted); }
+    a { color: #9ec5ff; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>V1 Echo vs V2 Trust Packet</h1>
+    <p class="sub">
+      정적 데모: 압축 API 계약(Fact-Lock)상 V1 <code>expand</code>는 <strong>original_text 에코</strong>, V2는 <strong>패킷만</strong>으로 재조립합니다.
+      로컬에서 <code>uvicorn</code> 스텁을 띄운 경우 &quot;Live API&quot;로 실제 응답을 볼 수 있습니다.
+      브라우저가 <code>file://</code>에서 열리면 CORS로 막힐 수 있어, 같은 호스트에서 정적 서빙하거나 스텁에 CORS를 켠 뒤 사용하세요.
+    </p>
+
+    <div class="panel">
+      <h2>입력</h2>
+      <label for="src">원문 (Original text)</label>
+      <textarea id="src" placeholder="예: 사상의학 체질 분류 예시 텍스트입니다. sasang myeongri bible reference.">사상의학 체질 분류 예시 텍스트입니다. sasang myeongri bible reference.</textarea>
+
+      <div class="row">
+        <span style="color:var(--muted);font-size:0.85rem;">모드</span>
+        <div class="toggle" id="modeToggle" role="group" aria-label="API mode">
+          <button type="button" data-mode="demo" class="active">오프라인 데모</button>
+          <button type="button" data-mode="live">Live API</button>
+        </div>
+      </div>
+      <div class="row" id="liveUrls" style="display:none;">
+        <label style="margin:0;">V1 base <input type="text" id="v1base" value="http://127.0.0.1:8010" /></label>
+        <label style="margin:0;">V2 base <input type="text" id="v2base" value="http://127.0.0.1:8011" /></label>
+      </div>
+
+      <div class="row">
+        <span style="color:var(--muted);font-size:0.85rem;">비교 축</span>
+        <div class="toggle" id="verToggle" role="group" aria-label="Contract version">
+          <button type="button" data-ver="v1" class="active">V1 (Echo)</button>
+          <button type="button" data-ver="v2">V2 (Trust Packet)</button>
+        </div>
+        <button type="button" class="btn" id="runBtn">실행 (Run pipeline)</button>
+      </div>
+    </div>
+
+    <div class="panel" id="outPanel" style="display:none;">
+      <h2>네트워크 페이로드 시각화</h2>
+      <div id="steps"></div>
+      <div id="result"></div>
+    </div>
+
+    <footer>
+      SSOT: <code>docs/final/openapi_token_compression_stub_v1.yaml</code> (V1),
+      <code>docs/final/openapi_token_compression_v2_draft.yaml</code> (V2) · 스텁:
+      <code>scripts/compression_token_api_stub.py</code>,
+      <code>scripts/compression_token_api_v2_stub.py</code>
+      · 정적 서빙: 레포 루트에서 <code>powershell -NoProfile -File scripts/Serve-CompressionV2Explorer.ps1</code>
+      후 Live API 모드로 <code>http://127.0.0.1:8765/compression_v2_explorer.html</code>
+    </footer>
+  </div>
+
+  <script>
+(function () {
+  'use strict';
+
+  /** Aligns with report_multilens_performance_eval.WORD_RE + lowercased set Jaccard */
+  function normWords(text) {
+    const re = /[A-Za-z0-9_가-힣]+/g;
+    const m = text.match(re) || [];
+    return new Set(m.map(function (w) { return w.toLowerCase(); }));
+  }
+  function jaccard(a, b) {
+    var sa = normWords(a);
+    var sb = normWords(b);
+    if (sa.size === 0 && sb.size === 0) return 1;
+    if (sa.size === 0 || sb.size === 0) return 0;
+    var inter = 0;
+    sa.forEach(function (x) { if (sb.has(x)) inter++; });
+    var union = sa.size + sb.size - inter;
+    return union ? inter / union : 0;
+  }
+
+  var mode = 'demo';
+  var ver = 'v1';
+
+  document.getElementById('modeToggle').addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.tagName !== 'BUTTON') return;
+    mode = t.getAttribute('data-mode');
+    Array.prototype.forEach.call(document.querySelectorAll('#modeToggle button'), function (b) {
+      b.classList.toggle('active', b.getAttribute('data-mode') === mode);
+    });
+    document.getElementById('liveUrls').style.display = mode === 'live' ? 'flex' : 'none';
+  });
+
+  document.getElementById('verToggle').addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.tagName !== 'BUTTON') return;
+    ver = t.getAttribute('data-ver');
+    Array.prototype.forEach.call(document.querySelectorAll('#verToggle button'), function (b) {
+      b.classList.toggle('active', b.getAttribute('data-ver') === ver);
+    });
+  });
+
+  function esc(s) {
+    return JSON.stringify(s, null, 2);
+  }
+
+  function demoCompressV1(text) {
+    return {
+      api_contract_version: '1.0.0',
+      shard_id: 'zone_d_ssot',
+      domain: 'ssot',
+      original_text: text,
+      router_only: true,
+      compression_metrics: null,
+      integrity_flags: { stub_demo: true, note: 'metrics omitted unless hydrate_metrics' }
+    };
+  }
+
+  function demoCompressV2(text) {
+    var fakeCompressed = text.length > 40 ? text.slice(0, 38) + '…' : text;
+    var packet = {
+      packet_format_version: 'trust_packet.0.1',
+      api_contract_version: '2.0.0-draft',
+      loss_profile: 'semantic_general',
+      compressed_text: fakeCompressed,
+      residual_meta: {
+        mk_stub_v2: {
+          reconstructed_text: text,
+          global_token_saving_rate: 0.42,
+          reconstruction_fidelity_jaccard: 0.95
+        },
+        placeholder_map: {}
+      },
+      router_meta: { shard_id: 'zone_d_ssot', domain: 'ssot' },
+      content_fingerprint: '(demo)'
+    };
+    return {
+      compression_packet: packet,
+      compression_metrics: { token_in: 12, token_out: 7, savings_ratio: 0.42 },
+      integrity_flags: { stub_demo: true }
+    };
+  }
+
+  function renderStep(title, payload, highlight) {
+    var h = highlight === 'danger' ? '<span class="badge danger">에코/원문 재전송</span>' :
+      highlight === 'ok' ? '<span class="badge ok">패킷만</span>' : '';
+    return '<div class="step"><div class="step-title">' + title + h + '</div><pre class="json">' +
+      esc(payload).replace(/</g, '&lt;') + '</pre></div>';
+  }
+
+  async function runLiveV1(base, text) {
+    var u = base.replace(/\/$/, '');
+    var r1 = await fetch(u + '/v1/compress', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text })
+    });
+    var compressRes = await r1.json();
+    var expandBody = { payload: { original_text: text } };
+    var r2 = await fetch(u + '/v1/expand', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(expandBody)
+    });
+    var expandRes = await r2.json();
+    return { compressRes: compressRes, expandReq: expandBody, expandRes: expandRes };
+  }
+
+  async function runLiveV2(base, text) {
+    var u = base.replace(/\/$/, '');
+    var r1 = await fetch(u + '/v2/compress', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text, loss_profile: 'semantic_general' })
+    });
+    var compressRes = await r1.json();
+    var packet = compressRes.compression_packet;
+    var expandBody = { compression_packet: packet };
+    var r2 = await fetch(u + '/v2/expand', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(expandBody)
+    });
+    var expandRes = await r2.json();
+    return { compressRes: compressRes, expandReq: expandBody, expandRes: expandRes };
+  }
+
+  document.getElementById('runBtn').addEventListener('click', async function () {
+    var text = document.getElementById('src').value || '';
+    var stepsEl = document.getElementById('steps');
+    var resultEl = document.getElementById('result');
+    var outPanel = document.getElementById('outPanel');
+    outPanel.style.display = 'block';
+    stepsEl.innerHTML = '';
+    resultEl.innerHTML = '<p style="color:var(--muted)">실행 중…</p>';
+
+    var html = '';
+    var expandedText = '';
+    var floor = 0.73;
+
+    try {
+      if (mode === 'demo') {
+        html += renderStep('① Client → Server (POST /compress)', { text: text }, null);
+        if (ver === 'v1') {
+          var c1 = demoCompressV1(text);
+          html += renderStep('② Server → Client (compress 응답)', c1, null);
+          var exReq = { payload: { original_text: text } };
+          html += renderStep('③ Client → Server (POST /expand) — 복원 요청', exReq, 'danger');
+          expandedText = text;
+          html += renderStep('④ Server → Client (expand 응답)', { text: expandedText, integrity_flags: { stub_expand: true, lossless_echo: true } }, null);
+        } else {
+          var c2 = demoCompressV2(text);
+          html += renderStep('② Server → Client (compress 응답)', c2, null);
+          var ex2 = { compression_packet: c2.compression_packet };
+          html += renderStep('③ Client → Server (POST /expand) — 복원 요청 (원문 필드 없음)', ex2, 'ok');
+          expandedText = c2.compression_packet.residual_meta.mk_stub_v2.reconstructed_text;
+          html += renderStep('④ Server → Client (expand 응답)', { text: expandedText, api_contract_version: '2.0.0-draft' }, null);
+        }
+      } else {
+        var v1b = document.getElementById('v1base').value.trim();
+        var v2b = document.getElementById('v2base').value.trim();
+        html += renderStep('① Client → Server (POST /compress)', { text: text, loss_profile: ver === 'v2' ? 'semantic_general' : '(v1: text only)' }, null);
+        if (ver === 'v1') {
+          var L1 = await runLiveV1(v1b, text);
+          html += renderStep('② Server → Client (compress 응답)', L1.compressRes, null);
+          html += renderStep('③ Client → Server (POST /expand)', L1.expandReq, 'danger');
+          expandedText = L1.expandRes.text || '';
+          html += renderStep('④ Server → Client (expand 응답)', L1.expandRes, null);
+        } else {
+          var L2 = await runLiveV2(v2b, text);
+          html += renderStep('② Server → Client (compress 응답)', L2.compressRes, null);
+          html += renderStep('③ Client → Server (POST /expand)', L2.expandReq, 'ok');
+          expandedText = L2.expandRes.text || '';
+          html += renderStep('④ Server → Client (expand 응답)', L2.expandRes, null);
+        }
+      }
+
+      var jac = jaccard(text, expandedText);
+      var pass = jac >= floor;
+      stepsEl.innerHTML = html;
+      resultEl.innerHTML =
+        '<div class="panel" style="margin:0;border-color:' + (pass ? 'rgba(108,191,108,0.45)' : 'rgba(232,93,76,0.45)') + '">' +
+        '<h2>최종 결과</h2>' +
+        '<p><strong>재구성 텍스트</strong> (expand 출력)</p>' +
+        '<pre class="json">' + esc(expandedText) + '</pre>' +
+        '<p>Jaccard(원문 vs 재구성) <span class="metric">' + jac.toFixed(4) + '</span> ' +
+        '(회귀 하한 데모: <code>' + floor + '</code>) — ' + (pass ? '통과' : '미달') + '</p>' +
+        (ver === 'v1'
+          ? '<div class="warn-box"><strong>V1</strong>: Fact-Lock상 expand는 요청 <code>payload.original_text</code>를 그대로 반환하는 에코입니다. B2B에서 &quot;무손실 복원&quot;만 약속하면 <strong>계약·보안 리스크</strong>가 됩니다.</div>'
+          : '<div class="ok-box"><strong>V2</strong>: expand는 <code>compression_packet</code>만 전송합니다. 실제 무손실은 엔진·SLA 범위에 따르며, 본 페이지는 계약 형태를 시각화합니다.</div>') +
+        '</div>';
+    } catch (err) {
+      stepsEl.innerHTML = html;
+      resultEl.innerHTML = '<div class="warn-box"><strong>오류</strong> (Live API는 스텁 기동·CORS 확인): ' + String(err) + '</div>';
+    }
+  });
+})();
+  </script>
+</body>
+</html>

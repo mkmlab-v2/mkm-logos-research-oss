@@ -4,8 +4,8 @@ info:
   version: "0.1.0-draft"
   description: |
     **Reference implementation (experimental stub):** `scripts/compression_token_api_v2_stub.py` — `POST /v2/compress`,
-    `POST /v2/expand`, `GET /health` (e.g. uvicorn on port 8011). Uses `GlobalPivotCompressionPipeline` in
-    simulation-oriented mode; not a production SLA.
+    `POST /v2/expand`, `GET /health` (e.g. uvicorn on port 8011). Compress path uses `evaluate_report` + domain router
+    (same family as v1 live hydration); not a production SLA.
 
     Purpose: compress returns a structured `compression_packet` (compressed text + residual metadata for reassembly)
     and expand consumes that packet — not a v1-style echo of raw text only.
