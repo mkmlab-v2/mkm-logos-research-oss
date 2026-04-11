@@ -42,7 +42,7 @@ VPS에 **비트코인만 잘린 폴더**만 두지 말고, **모노레포 전체
 
 1. **레포 루트로 이동** (`cd` 경로는 런북·실측 `pwd` 기준).
 2. **`git status`** — 예상치 못한 수정이 있으면, 로컬과 맞춘 뒤에만 진행한다.
-3. **`git pull`** (또는 팀이 정한 브랜치 동기화 방식).
+3. **`git pull`** (또는 팀이 정한 브랜치 동기화 방식). **선택:** 레포 루트에서 `bash scripts/vps_git_worktree_clean.sh --dry-run`으로 미리보기 후, 동일 스크립트(옵션 없음)로 `fetch` + `pull --ff-only` + 알려진 추적 파일 드리프트 복구.
 4. **런북대로만** 서비스 재로드 — 예: jema12 본선은 `docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md`. mkmlife/no1kmedi는 `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md`와 **절차 혼용 금지**.
 
 > PM2나 앱 이름은 프로젝트마다 다르다. **`pm2 restart all` 같은 일괄 명령은 런북에 있을 때만** 쓴다.
