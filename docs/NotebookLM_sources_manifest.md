@@ -1,6 +1,6 @@
 # NotebookLM 소스 매니페스트 (A/B 이원)
 
-**작성일**: 2026-03-29 · **갱신**: 2026-04-12 (A 표: `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1` 추가 · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
+**작성일**: 2026-03-29 · **갱신**: 2026-04-12 (A 표: `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` 추가 · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
 **정의**: **A = Fact-Lock(팩트 고정)**, **B = Creative-Lock(통찰·가설)**. B는 본선 OOF·실매매 트리거와 A를 혼선 없이 적용.
 
 **Cursor 3.0 (2026-04)**: NotebookLM과 동일하게 **브리핑·질의·소스 아카이브** 레이어다. **에이전트 병렬(Agents Window)·Design Mode**는 제품 기능이며, **압축 엔진·헌법·실매매 SSOT는 여전히 레포의 `.py`/JSON**이다(`AGENTS.md`, `COMPRESSION_SLA_POLICY_V1.md`).
@@ -53,6 +53,7 @@
 | P0 | `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` | 압축-해석 파이프라인 Fact-Lock SSOT |
 | P1 | `docs/final/COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1.md` | `evaluate_report`·4D 브리지·스윕 CLI 관계(벤치 혼동 방지); 수치는 artifacts 우선 |
 | P1 | `docs/final/MKM_LESSONS_LEARNED_V1.md` | 반복 NO_GO 교훈 인덱스(비-SSOT); 구현 팩트는 CONSTITUTION·artifacts |
+| P1 | `docs/final/COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1.md` | 압축·복원 축 연대기·읽기 순서·`H:\workspace` 병행 근거(비-Git); 수치·GO는 artifacts·스크립트 우선 |
 | P0 | `docs/final/COMPRESSION_SLA_POLICY_V1.md` | 투트랙 압축 SLA(범용·리터럴)·산출·헬스·웹훅 범위; NotebookLM이 이 수치를 대체하지 않음 |
 | P1 | `docs/final/MKM12_L0_L1_L2_CLAIMS_TAGGED_FACTCHECK_2026-04-09.md` | L0/L1/L2 클레임 태그·역추론/사이드 채널 SSOT 인용·외부 문헌 앵커(§I); 운영 통합 여부는 CONSTITUTION·`.py`로만 판정 |
 | P1 | `docs/final/openapi_token_compression_stub_v1.yaml` | 토큰 압축 API 스텁 OpenAPI 3 계약 |
