@@ -9,7 +9,7 @@ import os
 import time
 import uuid
 from pathlib import Path
-from typing import Dict, Optional, Any
+from typing import Any, Dict, Optional, Union
 import logging
 
 # Security Agent 통합
@@ -274,7 +274,25 @@ class BinanceFuturesClient:
             except Exception as e:
                 logger.warning(f"⚠️ 포지션 모드 설정 실패 (이미 설정되었을 수 있음): {e}")
     
-    def set_leverage(self, symbol: str, leverage: int = 2) -> bool:
+    @staticmethod
+    def _normalize_futures_symbol(symbol: Union[str, None]) -> Optional[str]:
+        """USDT-M 선물 심볼 (예: BTCUSDT). 빈 값·슬래시 형식 방지."""
+        if symbol is None:
+            return None
+        s = str(symbol).strip().upper()
+        if "/" in s:
+            s = s.replace("/", "").replace("-", "")
+        return s if len(s) >= 5 else None
+
+    @staticmethod
+    def _coerce_leverage_int(leverage: Union[int, float, str, None]) -> int:
+        """
+        Binance changeLeverage는 정수 배수만 허용. YAML 2.0·문자열 float가 -1102를 유발할 수 있음.
+        """
+        lev = int(round(float(leverage)))
+        return max(1, min(lev, 125))
+
+    def set_leverage(self, symbol: str, leverage: Union[int, float] = 2) -> bool:
         """
         레버리지 설정 (2배)
         
@@ -286,16 +304,25 @@ class BinanceFuturesClient:
             if USE_CCXT:
                 # CCXT는 레버리지 설정이 자동으로 처리됨
                 return True
-            else:
-                # python-binance - 공식 API 사용
-                self.client.futures_change_leverage(
-                    symbol=symbol,
-                    leverage=leverage
-                )
-                logger.info(f"✅ 레버리지 설정 완료: {symbol} {leverage}배")
-                return True
+            sym = self._normalize_futures_symbol(symbol)
+            if not sym:
+                logger.error("❌ 레버리지 설정 실패: 유효하지 않은 심볼 %r", symbol)
+                return False
+            lev = self._coerce_leverage_int(leverage)
+            # python-binance - 공식 API (leverage는 정수 필수)
+            self.client.futures_change_leverage(symbol=sym, leverage=lev)
+            logger.info(f"✅ 레버리지 설정 완료: {sym} {lev}배")
+            return True
         except Exception as e:
-            logger.error(f"❌ 레버리지 설정 실패: {e}")
+            code = getattr(e, "code", None)
+            if code == -1102:
+                logger.error(
+                    "❌ 레버리지 설정 실패 (-1102 BAD_PARAMETER): symbol=%r leverage=%r → 정수·심볼 확인",
+                    symbol,
+                    leverage,
+                )
+            else:
+                logger.error("❌ 레버리지 설정 실패: %s", e)
             return False
     
     def set_position_mode(self, dual_side_position: bool = True) -> bool:
