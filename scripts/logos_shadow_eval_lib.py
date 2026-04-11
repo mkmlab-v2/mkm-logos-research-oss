@@ -30,11 +30,41 @@ DEFAULT_SHADOW_EXTRA_ARGS: list[str] = [
 
 
 def load_kospi_yf_rows(csv_path: Path) -> list[dict[str, Any]]:
+    """Load daily OHLCV rows from Yahoo-style CSV.
+
+    Supports (1) legacy multi-row export where the date column is named ``Price``
+    (``skiprows=[1, 2]``), and (2) standard single-header CSV with a ``Date`` column
+    (same shape as ``yfinance`` ``to_csv`` / ``vix_daily_external_yf.csv`` in repo).
+    """
     import pandas as pd
 
-    df = pd.read_csv(csv_path, skiprows=[1, 2]).rename(
-        columns={"Price": "date", "Open": "open", "High": "high", "Low": "low", "Close": "close", "Volume": "volume"}
-    )
+    head = csv_path.read_text(encoding="utf-8", errors="ignore").splitlines()[:1]
+    line0 = head[0].lstrip("\ufeff").strip() if head else ""
+    first_cell = line0.split(",", 1)[0].strip().lower() if line0 else ""
+
+    if first_cell == "date":
+        df = pd.read_csv(csv_path)
+        rename: dict[str, str] = {}
+        for c in df.columns:
+            key = str(c).strip().lower()
+            if key == "date":
+                rename[c] = "date"
+            elif key == "open":
+                rename[c] = "open"
+            elif key == "high":
+                rename[c] = "high"
+            elif key == "low":
+                rename[c] = "low"
+            elif key == "close":
+                rename[c] = "close"
+            elif key == "volume":
+                rename[c] = "volume"
+        df = df.rename(columns=rename)
+    else:
+        df = pd.read_csv(csv_path, skiprows=[1, 2]).rename(
+            columns={"Price": "date", "Open": "open", "High": "high", "Low": "low", "Close": "close", "Volume": "volume"}
+        )
+
     rows: list[dict[str, Any]] = []
     for r in df[["date", "open", "high", "low", "close", "volume"]].dropna().itertuples(index=False):
         rows.append(
