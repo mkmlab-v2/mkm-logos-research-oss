@@ -1,0 +1,509 @@
+{
+  "schema": "shard_patch_proposal_v1",
+  "ts_utc": "2026-04-11T19:15:36.215969+00:00",
+  "sources": {
+    "loss_patterns": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_bridge_on_snapshot_v1.json",
+    "aggregated_optional": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_aggregated_v1.json"
+  },
+  "parameters": {
+    "min_global_count": 2,
+    "min_shard_concentration_for_flag": 0.5,
+    "mode": "permissive",
+    "functional_stopword_count": 64
+  },
+  "aggregated_summary_checksum": {
+    "case_count": 40,
+    "unique_tokens_lost": 148,
+    "total_token_occurrences": 158
+  },
+  "notes": [
+    "Does not modify codebook files; human review before merge.",
+    "Virtual Jaccard delta is not simulated here; re-run bench after manual shard edits."
+  ],
+  "summary": {
+    "case_count_in_loss_doc": 40,
+    "candidate_token_count": 2,
+    "excluded_record_count": 85,
+    "shard_ids_with_candidates": [
+      "zone_d_ssot"
+    ]
+  },
+  "by_shard_id": {
+    "zone_d_ssot": [
+      {
+        "token": "보여도",
+        "global_count": 2,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 2,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 2
+        }
+      },
+      {
+        "token": "토큰",
+        "global_count": 2,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 2,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 2
+        }
+      }
+    ]
+  },
+  "candidates_flat": [
+    {
+      "token": "보여도",
+      "global_count": 2,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 2,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 2
+      }
+    },
+    {
+      "token": "토큰",
+      "global_count": 2,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 2,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 2
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "token": "analysis",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "data",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "dominates",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "unresolved",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "b",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "caveats",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "footprint",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "reduce",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "reviews",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "override",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "updates",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "mislabeled",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "improves",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "rows",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "include",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "codebook",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "drift",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "avoid",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "operational",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "predictive",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "stability",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "겉으로",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "경우가",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "규칙",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "속한이",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "식사와",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "함께",
+      "reason": "functional_stopword",
+      "count": 3
+    },
+    {
+      "token": "걷기를",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "꾸준히",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "낮추고",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "먼저",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "변동이",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "부종이",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "섭취를",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "수",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "불편은",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "쉬워서",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "악화되기",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "온식",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "완충과",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "일정과",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "찬",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "과도한",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "노출이",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "눈",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "두드러지므로",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "사이에",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "수분",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "작업",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "저하는",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "화면",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "휴식을",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "대조",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "바뀔",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "반드시",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "오탈자",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "원문",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "있어",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "해석이",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "복원",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "시",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "안정성을",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "정책을",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "즉시",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "하며",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "결과가",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "누적될",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "사전이",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "실제",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "실패가",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "있으면",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "좋아",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "기록해야",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "때는",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "시간축",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "제약을",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "추후",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "누락",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "로그에는",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "빠르게",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "수정",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "없이도",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "있다",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "재학습",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "지점을",
+      "reason": "below_min_global_count",
+      "count": 1
+    }
+  ],
+  "excluded_truncated": false
+}
