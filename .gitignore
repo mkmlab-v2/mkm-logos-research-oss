@@ -37,6 +37,8 @@ rag_server/.test_rag_idx/
 
 # Large artifacts excluded for GitHub push
 models/**
+# Regenerate: py scripts/export_general_prophecy_to_jsonl.py
+data/training/*.jsonl
 **/*.gguf
 **/*.safetensors
 **/checkpoint-*/**
@@ -135,7 +137,9 @@ projects/code-pack-marketplace/
 projects/a-codeai-landing/
 projects/compression-api-landing/
 projects/jema12/
-projects/mkm/
+# Local experimental under projects/mkm (tracked submodule mkmlife-com is exception)
+projects/mkm/*
+!projects/mkm/mkm-life/
 projects/mkmlab-company-website/
 projects/mkmlife.com/
 projects/system-monitoring/
