@@ -1,32 +1,32 @@
 {
   "schema": "trinity_scoring_distribution_v1",
-  "generated_at_utc": "2026-04-11T00:35:23.714626+00:00",
+  "generated_at_utc": "2026-04-11T19:29:08.799903+00:00",
   "log_path": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
-  "metric": "BTC_BINANCE_D1_RETURN_PCT",
+  "metric": "KOSPI_D1_RETURN_PCT",
   "windows": {
     "d5": {
       "sample_size": 5,
-      "hit": 5,
+      "hit": 0,
       "fail": 0,
-      "neutral_draw": 0,
-      "pending_close": 0,
-      "hit_rate": 1.0,
+      "neutral_draw": 1,
+      "pending_close": 4,
+      "hit_rate": 0.0,
       "fail_rate": 0.0,
-      "neutral_draw_rate": 0.0,
-      "pending_close_rate": 0.0,
-      "advisory": "signal_stable_keep_thresholds"
+      "neutral_draw_rate": 0.2,
+      "pending_close_rate": 0.8,
+      "advisory": "mixed_keep_observe"
     },
     "d10": {
       "sample_size": 10,
-      "hit": 10,
+      "hit": 0,
       "fail": 0,
-      "neutral_draw": 0,
-      "pending_close": 0,
-      "hit_rate": 1.0,
+      "neutral_draw": 1,
+      "pending_close": 9,
+      "hit_rate": 0.0,
       "fail_rate": 0.0,
-      "neutral_draw_rate": 0.0,
-      "pending_close_rate": 0.0,
-      "advisory": "signal_stable_keep_thresholds"
+      "neutral_draw_rate": 0.1,
+      "pending_close_rate": 0.9,
+      "advisory": "mixed_keep_observe"
     }
   },
   "dual_regime_state": {
@@ -43,24 +43,25 @@
     },
     "d10": {
       "sample_size": 10,
-      "state_id_present_count": 0,
-      "state_id_present_rate": 0.0,
+      "state_id_present_count": 1,
+      "state_id_present_rate": 0.1,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "none": 10
+        "none": 9,
+        "myeongni_independent_lens": 1
       },
       "top_source": "none"
     },
     "all": {
-      "sample_size": 189,
-      "state_id_present_count": 157,
-      "state_id_present_rate": 0.8307,
+      "sample_size": 117,
+      "state_id_present_count": 79,
+      "state_id_present_rate": 0.6752,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "myeongni_independent_lens": 157,
-        "none": 32
+        "myeongni_independent_lens": 79,
+        "none": 38
       },
       "top_source": "myeongni_independent_lens"
     },
@@ -103,6 +104,6 @@
       }
     }
   },
-  "latest_decision": "HIT",
-  "total_filtered_rows": 189
+  "latest_decision": "PENDING_CLOSE",
+  "total_filtered_rows": 117
 }

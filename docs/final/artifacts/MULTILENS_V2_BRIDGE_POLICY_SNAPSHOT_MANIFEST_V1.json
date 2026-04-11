@@ -1,6 +1,6 @@
 {
   "schema": "multilens_v2_bridge_policy_snapshot_manifest_v1",
-  "generated_at_utc": "2026-04-11T19:11:40.227330+00:00",
+  "generated_at_utc": "2026-04-11T19:28:40.436902+00:00",
   "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
   "baseline_report": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json",
   "artifacts": {

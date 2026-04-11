@@ -1,6 +1,6 @@
 {
   "schema": "c2_aegis_guardrail_status_v1",
-  "generated_at_utc": "2026-04-11T00:35:25Z",
+  "generated_at_utc": "2026-04-11T19:29:10Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "inputs": {
@@ -29,7 +29,7 @@
     "ace_change_threshold": 3
   },
   "structural_break_window_stats": {
-    "window_event_count": 209,
+    "window_event_count": 210,
     "yellow_count": 0,
     "red_count": 0,
     "ace_change_count": 0

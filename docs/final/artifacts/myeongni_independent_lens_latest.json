@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "lens_id": "myeongni",
   "engine_id": "independent_lens_v0",
-  "ts_utc": "2026-04-11T00:35:22Z",
+  "ts_utc": "2026-04-11T19:29:07Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "scores": {
@@ -20,7 +20,7 @@
   "provenance": {
     "source": "embedded_minimal_fallback",
     "input_path": "",
-    "row_ts_utc": "2026-04-11T00:35:22Z"
+    "row_ts_utc": "2026-04-11T19:29:07Z"
   },
   "note": "B-track independent lens v0; not A-track / not dual_regime cap; fusion-ready numeric stub only."
 }
