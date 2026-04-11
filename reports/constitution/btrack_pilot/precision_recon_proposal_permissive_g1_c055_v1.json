@@ -1,0 +1,3233 @@
+{
+  "schema": "shard_patch_proposal_v1",
+  "ts_utc": "2026-04-11T18:58:16.368284+00:00",
+  "sources": {
+    "loss_patterns": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_latest.json",
+    "aggregated_optional": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_aggregated_v1.json"
+  },
+  "parameters": {
+    "min_global_count": 1,
+    "min_shard_concentration_for_flag": 0.55,
+    "mode": "permissive",
+    "functional_stopword_count": 64
+  },
+  "aggregated_summary_checksum": {
+    "case_count": 40,
+    "unique_tokens_lost": 156,
+    "total_token_occurrences": 170
+  },
+  "notes": [
+    "Does not modify codebook files; human review before merge.",
+    "Virtual Jaccard delta is not simulated here; re-run bench after manual shard edits."
+  ],
+  "summary": {
+    "case_count_in_loss_doc": 40,
+    "candidate_token_count": 141,
+    "excluded_record_count": 15,
+    "shard_ids_with_candidates": [
+      "zone_a_scm",
+      "zone_b_timing",
+      "zone_c_hangul",
+      "zone_d_ssot",
+      "zone_g_health"
+    ]
+  },
+  "by_shard_id": {
+    "zone_a_scm": [
+      {
+        "token": "안전하다",
+        "global_count": 2,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 2,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 2
+        }
+      },
+      {
+        "token": "경고문까지",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "과정에서",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "관찰한",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "규칙을",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "기본값으로",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "남아",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "단일",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "두는",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "배치해야",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "보존",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "손실되면",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "이상",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "일반화하면",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "있어야",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "전환해야",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "절대",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "지우지",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "처방을",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      },
+      {
+        "token": "편이",
+        "global_count": 1,
+        "primary_shard_id": "zone_a_scm",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_a_scm": 1
+        }
+      }
+    ],
+    "zone_b_timing": [
+      {
+        "token": "bootstrap",
+        "global_count": 2,
+        "primary_shard_id": "zone_b_timing",
+        "max_shard_count": 2,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_b_timing": 2
+        }
+      },
+      {
+        "token": "accumulate",
+        "global_count": 1,
+        "primary_shard_id": "zone_b_timing",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_b_timing": 1
+        }
+      },
+      {
+        "token": "analysis",
+        "global_count": 1,
+        "primary_shard_id": "zone_b_timing",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_b_timing": 1
+        }
+      },
+      {
+        "token": "data",
+        "global_count": 1,
+        "primary_shard_id": "zone_b_timing",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_b_timing": 1
+        }
+      },
+      {
+        "token": "dominates",
+        "global_count": 1,
+        "primary_shard_id": "zone_b_timing",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_b_timing": 1
+        }
+      },
+      {
+        "token": "improves",
+        "global_count": 1,
+        "primary_shard_id": "zone_b_timing",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_b_timing": 1
+        }
+      },
+      {
+        "token": "matrix",
+        "global_count": 1,
+        "primary_shard_id": "zone_b_timing",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_b_timing": 1
+        }
+      },
+      {
+        "token": "rows",
+        "global_count": 1,
+        "primary_shard_id": "zone_b_timing",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_b_timing": 1
+        }
+      },
+      {
+        "token": "shifts",
+        "global_count": 1,
+        "primary_shard_id": "zone_b_timing",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_b_timing": 1
+        }
+      },
+      {
+        "token": "thresholds",
+        "global_count": 1,
+        "primary_shard_id": "zone_b_timing",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_b_timing": 1
+        }
+      },
+      {
+        "token": "transition",
+        "global_count": 1,
+        "primary_shard_id": "zone_b_timing",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_b_timing": 1
+        }
+      }
+    ],
+    "zone_c_hangul": [
+      {
+        "token": "대비",
+        "global_count": 2,
+        "primary_shard_id": "zone_c_hangul",
+        "max_shard_count": 1,
+        "shard_concentration": 0.5,
+        "concentrated": false,
+        "per_shard_counts": {
+          "zone_c_hangul": 1,
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "압축",
+        "global_count": 2,
+        "primary_shard_id": "zone_c_hangul",
+        "max_shard_count": 1,
+        "shard_concentration": 0.5,
+        "concentrated": false,
+        "per_shard_counts": {
+          "zone_c_hangul": 1,
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "가치가",
+        "global_count": 1,
+        "primary_shard_id": "zone_c_hangul",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_c_hangul": 1
+        }
+      },
+      {
+        "token": "뒤바뀔",
+        "global_count": 1,
+        "primary_shard_id": "zone_c_hangul",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_c_hangul": 1
+        }
+      },
+      {
+        "token": "위험이",
+        "global_count": 1,
+        "primary_shard_id": "zone_c_hangul",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_c_hangul": 1
+        }
+      },
+      {
+        "token": "있으니",
+        "global_count": 1,
+        "primary_shard_id": "zone_c_hangul",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_c_hangul": 1
+        }
+      },
+      {
+        "token": "전후",
+        "global_count": 1,
+        "primary_shard_id": "zone_c_hangul",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_c_hangul": 1
+        }
+      },
+      {
+        "token": "크다",
+        "global_count": 1,
+        "primary_shard_id": "zone_c_hangul",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_c_hangul": 1
+        }
+      }
+    ],
+    "zone_d_ssot": [
+      {
+        "token": "review",
+        "global_count": 2,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 2,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 2
+        }
+      },
+      {
+        "token": "anchors",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "answers",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "avoid",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "cadence",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "caveats",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "constitution",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "constraints",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "drift",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "especially",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "external",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "false",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "footprint",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "include",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "mislabeled",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "notes",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "operational",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "override",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "predictive",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "preserving",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "quality",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "reduce",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "reproduce",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "requires",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "reviews",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "stability",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "timing",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "traceability",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "tri",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "unresolved",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "updates",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "weekly",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "감사",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "걷기를",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "결과가",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "경우가",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "과도한",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "규칙",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "급한",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "기록해야",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "꾸준히",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "나타날",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "낮추고",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "노출이",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "누락",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "누적될",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "단계에서",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "대조",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "동반되는",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "두드러지므로",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "따뜻한",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "로그에는",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "먼저",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "바뀔",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "반드시",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "보여도",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "분리",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "빠르게",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "사이에",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "사전이",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "섭취를",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "속한이",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "수분",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "수정",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "쉬워서",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "시간축",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "식사와",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "신호와",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "실제",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "실패가",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "악화되기",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "안정성을",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "약해",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "없이도",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "염분",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "온식",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "완충과",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "우선해야",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "원문",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "위반",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "음식이",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "있으면",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "작아도",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "작업",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "재학습",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "저하는",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "절약률보다",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "정책을",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "좋아",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "즉시",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "지점을",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "추후",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "토큰",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "하나로도",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "하며",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "해석할",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "화면",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      },
+      {
+        "token": "휴식을",
+        "global_count": 1,
+        "primary_shard_id": "zone_d_ssot",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_d_ssot": 1
+        }
+      }
+    ],
+    "zone_g_health": [
+      {
+        "token": "노출을",
+        "global_count": 1,
+        "primary_shard_id": "zone_g_health",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_g_health": 1
+        }
+      },
+      {
+        "token": "자극성",
+        "global_count": 1,
+        "primary_shard_id": "zone_g_health",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_g_health": 1
+        }
+      },
+      {
+        "token": "정보",
+        "global_count": 1,
+        "primary_shard_id": "zone_g_health",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_g_health": 1
+        }
+      },
+      {
+        "token": "줄여야",
+        "global_count": 1,
+        "primary_shard_id": "zone_g_health",
+        "max_shard_count": 1,
+        "shard_concentration": 1.0,
+        "concentrated": true,
+        "per_shard_counts": {
+          "zone_g_health": 1
+        }
+      }
+    ]
+  },
+  "candidates_flat": [
+    {
+      "token": "bootstrap",
+      "global_count": 2,
+      "primary_shard_id": "zone_b_timing",
+      "max_shard_count": 2,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_b_timing": 2
+      }
+    },
+    {
+      "token": "review",
+      "global_count": 2,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 2,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 2
+      }
+    },
+    {
+      "token": "대비",
+      "global_count": 2,
+      "primary_shard_id": "zone_c_hangul",
+      "max_shard_count": 1,
+      "shard_concentration": 0.5,
+      "concentrated": false,
+      "per_shard_counts": {
+        "zone_c_hangul": 1,
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "안전하다",
+      "global_count": 2,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 2,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 2
+      }
+    },
+    {
+      "token": "압축",
+      "global_count": 2,
+      "primary_shard_id": "zone_c_hangul",
+      "max_shard_count": 1,
+      "shard_concentration": 0.5,
+      "concentrated": false,
+      "per_shard_counts": {
+        "zone_c_hangul": 1,
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "accumulate",
+      "global_count": 1,
+      "primary_shard_id": "zone_b_timing",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "token": "analysis",
+      "global_count": 1,
+      "primary_shard_id": "zone_b_timing",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "token": "anchors",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "answers",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "avoid",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "cadence",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "caveats",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "constitution",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "constraints",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "data",
+      "global_count": 1,
+      "primary_shard_id": "zone_b_timing",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "token": "dominates",
+      "global_count": 1,
+      "primary_shard_id": "zone_b_timing",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "token": "drift",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "especially",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "external",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "false",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "footprint",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "improves",
+      "global_count": 1,
+      "primary_shard_id": "zone_b_timing",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "token": "include",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "matrix",
+      "global_count": 1,
+      "primary_shard_id": "zone_b_timing",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "token": "mislabeled",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "notes",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "operational",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "override",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "predictive",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "preserving",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "quality",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "reduce",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "reproduce",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "requires",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "reviews",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "rows",
+      "global_count": 1,
+      "primary_shard_id": "zone_b_timing",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "token": "shifts",
+      "global_count": 1,
+      "primary_shard_id": "zone_b_timing",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "token": "stability",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "thresholds",
+      "global_count": 1,
+      "primary_shard_id": "zone_b_timing",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "token": "timing",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "traceability",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "transition",
+      "global_count": 1,
+      "primary_shard_id": "zone_b_timing",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_b_timing": 1
+      }
+    },
+    {
+      "token": "tri",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "unresolved",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "updates",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "weekly",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "가치가",
+      "global_count": 1,
+      "primary_shard_id": "zone_c_hangul",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_c_hangul": 1
+      }
+    },
+    {
+      "token": "감사",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "걷기를",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "결과가",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "경고문까지",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "경우가",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "과도한",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "과정에서",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "관찰한",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "규칙",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "규칙을",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "급한",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "기록해야",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "기본값으로",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "꾸준히",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "나타날",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "남아",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "낮추고",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "노출을",
+      "global_count": 1,
+      "primary_shard_id": "zone_g_health",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_g_health": 1
+      }
+    },
+    {
+      "token": "노출이",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "누락",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "누적될",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "단계에서",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "단일",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "대조",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "동반되는",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "두는",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "두드러지므로",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "뒤바뀔",
+      "global_count": 1,
+      "primary_shard_id": "zone_c_hangul",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_c_hangul": 1
+      }
+    },
+    {
+      "token": "따뜻한",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "로그에는",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "먼저",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "바뀔",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "반드시",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "배치해야",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "보여도",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "보존",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "분리",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "빠르게",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "사이에",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "사전이",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "섭취를",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "속한이",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "손실되면",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "수분",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "수정",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "쉬워서",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "시간축",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "식사와",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "신호와",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "실제",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "실패가",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "악화되기",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "안정성을",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "약해",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "없이도",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "염분",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "온식",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "완충과",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "우선해야",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "원문",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "위반",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "위험이",
+      "global_count": 1,
+      "primary_shard_id": "zone_c_hangul",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_c_hangul": 1
+      }
+    },
+    {
+      "token": "음식이",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "이상",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "일반화하면",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "있어야",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "있으니",
+      "global_count": 1,
+      "primary_shard_id": "zone_c_hangul",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_c_hangul": 1
+      }
+    },
+    {
+      "token": "있으면",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "자극성",
+      "global_count": 1,
+      "primary_shard_id": "zone_g_health",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_g_health": 1
+      }
+    },
+    {
+      "token": "작아도",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "작업",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "재학습",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "저하는",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "전환해야",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "전후",
+      "global_count": 1,
+      "primary_shard_id": "zone_c_hangul",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_c_hangul": 1
+      }
+    },
+    {
+      "token": "절대",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "절약률보다",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "정보",
+      "global_count": 1,
+      "primary_shard_id": "zone_g_health",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_g_health": 1
+      }
+    },
+    {
+      "token": "정책을",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "좋아",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "줄여야",
+      "global_count": 1,
+      "primary_shard_id": "zone_g_health",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_g_health": 1
+      }
+    },
+    {
+      "token": "즉시",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "지우지",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "지점을",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "처방을",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "추후",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "크다",
+      "global_count": 1,
+      "primary_shard_id": "zone_c_hangul",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_c_hangul": 1
+      }
+    },
+    {
+      "token": "토큰",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "편이",
+      "global_count": 1,
+      "primary_shard_id": "zone_a_scm",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_a_scm": 1
+      }
+    },
+    {
+      "token": "하나로도",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "하며",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "해석할",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "화면",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    },
+    {
+      "token": "휴식을",
+      "global_count": 1,
+      "primary_shard_id": "zone_d_ssot",
+      "max_shard_count": 1,
+      "shard_concentration": 1.0,
+      "concentrated": true,
+      "per_shard_counts": {
+        "zone_d_ssot": 1
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "token": "11",
+      "reason": "numeric",
+      "count": 1
+    },
+    {
+      "token": "a",
+      "reason": "single_grapheme",
+      "count": 1
+    },
+    {
+      "token": "b",
+      "reason": "single_grapheme",
+      "count": 1
+    },
+    {
+      "token": "함께",
+      "reason": "functional_stopword",
+      "count": 3
+    },
+    {
+      "token": "수",
+      "reason": "single_grapheme",
+      "count": 3
+    },
+    {
+      "token": "전",
+      "reason": "single_grapheme",
+      "count": 1
+    },
+    {
+      "token": "한다",
+      "reason": "functional_stopword",
+      "count": 4
+    },
+    {
+      "token": "된다",
+      "reason": "functional_stopword",
+      "count": 2
+    },
+    {
+      "token": "안",
+      "reason": "single_grapheme",
+      "count": 2
+    },
+    {
+      "token": "때",
+      "reason": "single_grapheme",
+      "count": 1
+    },
+    {
+      "token": "찬",
+      "reason": "single_grapheme",
+      "count": 1
+    },
+    {
+      "token": "눈",
+      "reason": "single_grapheme",
+      "count": 1
+    },
+    {
+      "token": "있어",
+      "reason": "functional_stopword",
+      "count": 1
+    },
+    {
+      "token": "시",
+      "reason": "single_grapheme",
+      "count": 1
+    },
+    {
+      "token": "있다",
+      "reason": "functional_stopword",
+      "count": 1
+    }
+  ],
+  "excluded_truncated": false
+}
