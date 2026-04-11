@@ -1,6 +1,6 @@
 {
   "schema": "shard_patch_proposal_v1",
-  "ts_utc": "2026-04-11T19:07:08.052680+00:00",
+  "ts_utc": "2026-04-11T19:09:17.710239+00:00",
   "sources": {
     "loss_patterns": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_latest.json",
     "aggregated_optional": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_aggregated_v1.json"
@@ -14,7 +14,7 @@
   "aggregated_summary_checksum": {
     "case_count": 40,
     "unique_tokens_lost": 148,
-    "total_token_occurrences": 159
+    "total_token_occurrences": 158
   },
   "notes": [
     "Does not modify codebook files; human review before merge.",
@@ -22,42 +22,12 @@
   ],
   "summary": {
     "case_count_in_loss_doc": 40,
-    "candidate_token_count": 1,
-    "excluded_record_count": 147,
-    "shard_ids_with_candidates": [
-      "zone_b_timing"
-    ]
+    "candidate_token_count": 0,
+    "excluded_record_count": 148,
+    "shard_ids_with_candidates": []
   },
-  "by_shard_id": {
-    "zone_b_timing": [
-      {
-        "token": "quality",
-        "global_count": 2,
-        "primary_shard_id": "zone_b_timing",
-        "max_shard_count": 1,
-        "shard_concentration": 0.5,
-        "concentrated": true,
-        "per_shard_counts": {
-          "zone_b_timing": 1,
-          "zone_d_ssot": 1
-        }
-      }
-    ]
-  },
-  "candidates_flat": [
-    {
-      "token": "quality",
-      "global_count": 2,
-      "primary_shard_id": "zone_b_timing",
-      "max_shard_count": 1,
-      "shard_concentration": 0.5,
-      "concentrated": true,
-      "per_shard_counts": {
-        "zone_b_timing": 1,
-        "zone_d_ssot": 1
-      }
-    }
-  ],
+  "by_shard_id": {},
+  "candidates_flat": [],
   "excluded": [
     {
       "token": "11",
@@ -266,6 +236,11 @@
     },
     {
       "token": "predictive",
+      "reason": "below_min_global_count",
+      "count": 1
+    },
+    {
+      "token": "reporting",
       "reason": "below_min_global_count",
       "count": 1
     },

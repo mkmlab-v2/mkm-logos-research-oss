@@ -1,6 +1,6 @@
 {
   "schema": "compression_jaccard_loss_patterns_aggregated_v1",
-  "ts_utc": "2026-04-11T19:06:42.164292+00:00",
+  "ts_utc": "2026-04-11T19:09:17.449678+00:00",
   "sources": {
     "loss_patterns": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_latest.json",
     "sla_track": "custom"
@@ -8,7 +8,7 @@
   "summary": {
     "case_count": 40,
     "unique_tokens_lost": 148,
-    "total_token_occurrences": 159
+    "total_token_occurrences": 158
   },
   "global_top": [
     {
@@ -18,10 +18,6 @@
     {
       "token": "함께",
       "count": 3
-    },
-    {
-      "token": "quality",
-      "count": 2
     },
     {
       "token": "수",
@@ -205,6 +201,10 @@
     },
     {
       "token": "predictive",
+      "count": 1
+    },
+    {
+      "token": "reporting",
       "count": 1
     },
     {
@@ -457,10 +457,6 @@
         "count": 1
       },
       {
-        "token": "quality",
-        "count": 1
-      },
-      {
         "token": "rows",
         "count": 1
       },
@@ -629,7 +625,7 @@
         "count": 1
       },
       {
-        "token": "quality",
+        "token": "reporting",
         "count": 1
       },
       {
@@ -1117,7 +1113,7 @@
         "count": 1
       },
       {
-        "token": "quality",
+        "token": "reporting",
         "count": 1
       },
       {
@@ -1344,10 +1340,6 @@
       },
       {
         "token": "matrix",
-        "count": 1
-      },
-      {
-        "token": "quality",
         "count": 1
       },
       {

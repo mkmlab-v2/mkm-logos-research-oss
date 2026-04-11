@@ -1,16 +1,16 @@
 {
   "schema": "compression_jaccard_loss_patterns_v1",
-  "ts_utc": "2026-04-11T19:09:30.377326+00:00",
+  "ts_utc": "2026-04-11T19:09:17.305075+00:00",
   "sla_track": "custom",
   "sources": {
     "input": "docs\\final\\artifacts\\MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
-    "active_report": "docs\\final\\artifacts\\MULTILENS_V2_BRIDGE_POLICY_SNAPSHOT_OFF_V1.json",
+    "active_report": "docs\\final\\artifacts\\MULTILENS_V2_A_EXTREME_SOFT_TERMS_PLUS_QUALITY_V1.json",
     "sla_track_cli": "universal",
     "explicit_active_report": true
   },
   "summary": {
     "case_count": 40,
-    "avg_words_lost": 3.975
+    "avg_words_lost": 3.95
   },
   "cases": [
     {
@@ -126,17 +126,16 @@
       "id": "cmp2_007",
       "domain": "timing",
       "shard_id": "zone_b_timing",
-      "reconstruction_fidelity_jaccard": 0.5,
-      "token_saving_rate": 0.5333333333333333,
+      "reconstruction_fidelity_jaccard": 0.5714285714285714,
+      "token_saving_rate": 0.4666666666666667,
       "raw_word_count": 14,
-      "recon_word_count": 7,
-      "words_lost_count": 7,
+      "recon_word_count": 8,
+      "words_lost_count": 6,
       "words_extra_count": 0,
       "words_lost_sample": [
         "accumulate",
         "improves",
         "matrix",
-        "quality",
         "rows",
         "thresholds",
         "transition"
@@ -193,7 +192,7 @@
         "false",
         "operational",
         "predictive",
-        "quality",
+        "reporting",
         "stability"
       ],
       "words_extra_sample": []

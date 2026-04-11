@@ -1,6 +1,6 @@
 {
   "schema": "shard_patch_proposal_v1",
-  "ts_utc": "2026-04-11T19:06:53.880450+00:00",
+  "ts_utc": "2026-04-11T19:09:43.944101+00:00",
   "sources": {
     "loss_patterns": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_latest.json",
     "aggregated_optional": "C:\\workspace\\reports\\constitution\\btrack_pilot\\compression_jaccard_loss_patterns_aggregated_v1.json"
@@ -14,7 +14,7 @@
   "aggregated_summary_checksum": {
     "case_count": 40,
     "unique_tokens_lost": 148,
-    "total_token_occurrences": 159
+    "total_token_occurrences": 158
   },
   "notes": [
     "Does not modify codebook files; human review before merge.",

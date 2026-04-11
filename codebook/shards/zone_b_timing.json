@@ -17,6 +17,7 @@
   ],
   "must_keep_soft_terms": [
     "bootstrap",
+    "quality",
     "전이",
     "타이밍"
   ],
