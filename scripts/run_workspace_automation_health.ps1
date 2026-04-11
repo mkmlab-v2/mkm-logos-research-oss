@@ -10,7 +10,10 @@ param(
     [switch]$SkipHydrationMix,
     [switch]$SkipCompressionAlarm,
 
-    [switch]$IncludeExternalDriveGovernance
+    [switch]$IncludeExternalDriveGovernance,
+
+    [switch]$IncludeGitSanity,
+    [switch]$StrictGitSanity
 )
 
 $ErrorActionPreference = "Stop"
@@ -26,6 +29,20 @@ function Step([string]$Name, [scriptblock]$Block) {
 }
 
 try {
+    if ($IncludeGitSanity) {
+        $gitSan = Join-Path $root "scripts\Verify-GitWorkspaceSanity.ps1"
+        if (Test-Path -LiteralPath $gitSan) {
+            Step "Git / exclude / remote sanity" {
+                if ($StrictGitSanity) {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $gitSan -WorkspaceRoot $root -Strict
+                }
+                else {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $gitSan -WorkspaceRoot $root
+                }
+            }
+        }
+    }
+
     Step "P0 / CONSTITUTION paths" {
         & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\verify_p0_constitution_gate_paths.ps1") -WorkspaceRoot $root
     }

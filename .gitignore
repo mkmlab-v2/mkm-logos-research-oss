@@ -23,6 +23,7 @@ storage/MKM_ARCHIVE_FROM_F/
 
 # Python bytecode (VPS pull 시 .pyc 커밋 방지)
 __pycache__/
+.pytest_cache/
 # Local prophecy market quote cache (KOSPI/BTC snapshots)
 cache/prophecy_market_snapshot.json
 *.pyc

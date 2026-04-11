@@ -15,12 +15,36 @@
 - [HYPO] `Nacrith`, `CDF-24`, `0.93 bpb`, `원본 11%`, `Gzip 대비 3배` 수치는 현재 SSOT 경로에서 직접 검증되지 않았다.
 - [FACT] L1/L2 관련 복원 실험 스크립트와 아티팩트는 존재한다.
   - 근거: `scripts/run_l1_inverse_decoder_spike_test.py`, `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json`
-- [FACT] 역추론(빔) L1 스파이크 요약(`generated_at_utc: 2026-04-10T00:01:38+00:00`, `scoring_mode: legacy`)의 aggregate `avg_exact_restore_rate`는 약 **`0.5787`** (약 **57.9%**)이며 100%가 아니다. (`min` 약 0.5389, `max` 약 0.6167.)
-  - 근거: `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json` — 수치·스코어링 모드는 해당 파일 재실행 시 변할 수 있음.
-- [FACT] 동일 노이즈 분포에 **사이드 채널**(swap/typo/oov 메타데이터)이 **완전히 제공될 때** 결정론 역연산으로 `exact_restore_rate = 1.0`인 연구 스파이크가 별도로 존재한다(LLM 빔 복원·프로덕션 전 구간과 구분).
+- [FACT] 역추론(빔) L1 스파이크 요약(`scoring_mode: legacy`, **`research_only: true` — 연구 하네스, 프로덕션 운영 런타임 실측과 동일시 금지**)의 aggregate `avg_exact_restore_rate`는 **`0.5787037037037037`** (반올림 약 **0.5787**, 약 **57.87%**)이며 100%가 아니다. (`min` 약 0.5389, `max` 약 0.6167.) 시각·시드·샘플 수는 항상 동일 JSON의 `generated_at_utc`·`seeds`·`samples_per_cell`을 인용한다.
+  - 근거: `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json` — 재실행 시 변동 가능.
+- [FACT] 동일 노이즈 분포에 **사이드 채널**(swap/typo/oov 메타데이터)이 **완전히 제공될 때** 결정론 역연산으로 `exact_restore_rate = 1.0`인 연구 스파이크가 별도로 존재한다(LLM 빔 복원·프로덕션 전 구간·API 계약과 구분; 해당 산출물도 `research_only: true`).
   - 근거: `scripts/run_l1_permutation_channel_integrated_spike.py`, `docs/final/artifacts/l1_permutation_channel_integrated_spike_latest.json`
 - [HYPO] "동기화된 AI 모델 상태만 같으면 글자 하나도 안 틀리고 100% 복원"은 연구 목표 서사로는 가능하나 현재 운영 팩트가 아니다.
 - [VISION] "지어내지 않고 정확도를 높이는 단계적 복원 체계"라는 목표 진술은 유지 가능하다.
+
+### Athena Auditor v1.3 — 압축·복원 성능 브리핑 (SSOT 교정본)
+
+아래는 외부 브리핑용 **복붙 가능한 정본**이다. `[FACT]`는 경로·JSON 필드로 재현 가능한 범위만, 해석·목표는 `[HYPO]`/`[VISION]`으로 분리한다.
+
+1. **[FACT] L1 역추론(빔) exact 복원율 — 연구 스파이크**  
+   - `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json`: `research_only: true`, `scoring_mode: legacy`, `aggregate.avg_exact_restore_rate` = **0.5787037037037037** (약 **57.87%**). 운영 서비스 전 구간의 보장 수치가 **아니다**.
+
+2. **[FACT] 글로벌 토큰 절감률 — 증거 조인 산출(실험 리포트 기반)**  
+   - `docs/final/artifacts/cost_watch_monitor_latest.json`의 `compression.global_token_saving_rate` ≈ **0.490858** (약 **49.1%**). 원천은 `compression_report`가 가리키는 `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`이며, 해당 파일 `run_config.mode`는 **`experimental`**, `strategy`는 **`A`**, `case_count` **40**.  
+   - 동일 리포트 `avg_reconstruction_fidelity_jaccard` ≈ **0.735** — 토큰 절감과 **의미/표면 복원 품질**은 별개이며 무손실과 혼동 금지.
+
+3. **[FACT] 사이드 채널 결정론 복원 — 연구 스파이크(v3)**  
+   - `docs/final/artifacts/l1_permutation_channel_integrated_spike_latest.json`: 메타데이터(스키마·클레임대로 패치)가 완전할 때 모드별 `exact_restore_rate` **1.0**. `claims`에 비프로덕션 와이어·계약 구분이 명시됨.  
+   - `overhead_json_utf8_bytes_mean`(샘플당, **노이즈 모드별**): swap **67**, oov 약 **84.2**, typo **141**, swap_typo **155**. msgpack/zstd/적응 태그 와이어는 동일 행에서 더 작은 오버헤드로 측정되므로, 브리핑 시 **와이어 포맷을 한 줄로 고정하지 말 것**.
+
+4. **[HYPO]** 빔 역추론이 100% exact에 못 미치는 이유를 “물리적 한계” 등으로 요약하는 것은 **해석**이며 JSON 필드가 아니다.
+
+5. **[HYPO] / [VISION] — Nacrith·L3TC·처리량·bpb 목표**  
+   - 레포 내 **MKM12 코드 통합 실측 [FACT]로 승격되지 않음**. 인용용 외부 앵커는 본 문서 **§I.1** 표를 따른다(논문 표·환경은 원문).
+
+6. **요약 결론 (경계 고정)**  
+   - [FACT] 연구 하네스에서: (가) legacy 빔 스파이크는 exact **~57.87%**, (나) 사이드 메타 완전 제공 시 결정론 경로 **1.0**이 별도 측정된다.  
+   - [HYPO] 위 (나)를 프로덕션 전 구간·무손실 상품 주장으로 **자동 일반화하지 않는다**. Nacrith/L3TC 수치 목표는 §I.1 문헌 인용 및 통합 PoC 단계.
 
 ---
 
@@ -88,7 +112,7 @@ MKM12는 현재 하이브리드 리스크 제어 + 구조 보존 기반의 복�
   - 근거: `docs/final/artifacts/dynamic_stress_causality_gate_v1.json`
 - [FACT] RS/ECC 완전 통합은 아직 미검증 상태다.
   - 근거: `scripts/run_mkm_l1_parity_prototype.py` (`This is NOT Reed-Solomon.`)
-- [FACT] 역추론(빔) L1 스파이크 요약의 aggregate 평균 exact restore rate는 최신 아티팩트 기준 약 **`0.5787`** (약 **57.9%**, `scoring_mode: legacy`)다.
+- [FACT] 역추론(빔) L1 스파이크 요약의 aggregate 평균 exact restore rate는 최신 아티팩트 기준 **`0.5787037037037037`** (반올림 약 **0.5787**, 약 **57.87%**), `scoring_mode: legacy`, **`research_only: true`(연구 하네스)**다.
   - 근거: `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json`
 - [HYPO] "코드북 전면 폐기 시 즉시 위 베이스라인(aggregate 참조)으로 회귀"는 방향성 설명으로는 가능하나 인과 단정 문구로는 과장 소지가 있다.
 
@@ -220,7 +244,8 @@ MKM12는 코드북을 폐기한 것이 아니라, 연구/운영 경계를 지키
 
 ### I.2) 내부 SSOT 표준 인용 (에이전트·브리프용)
 
-- **역추론(빔) 평균 복원율:** `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json`의 `aggregate.avg_exact_restore_rate` — 항상 동일 파일의 `generated_at_utc`, `scoring_mode` (현재 스냅샷: `legacy`), `research_only`를 함께 인용.
+- **역추론(빔) 평균 복원율:** `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json`의 `aggregate.avg_exact_restore_rate` — 항상 동일 파일의 `generated_at_utc`, `scoring_mode` (스냅샷: `legacy`), **`research_only`(스냅샷: `true` = 연구 하네스)**를 함께 인용.
+- **글로벌 토큰 절감률(join):** `docs/final/artifacts/cost_watch_monitor_latest.json`의 `compression.global_token_saving_rate` — 원천 `compression_report`가 가리키는 `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`의 `run_config.mode`·`strategy`·`case_count`를 함께 인용(`experimental`/`A`/40 등). `avg_reconstruction_fidelity_jaccard`는 절감률과 별도 지표.
 - **사이드 채널 1.0 (연구 하네스, 오프-HTTP):** `scripts/run_l1_permutation_channel_integrated_spike.py` — **사이드 메타데이터가 완전할 때**만 `exact_restore_rate = 1.0`; 산출 `docs/final/artifacts/l1_permutation_channel_integrated_spike_latest.json`(스키마 v3). LLM 빔 역추론·서비스 전 구간 보장과 **구분**.
 - **L1 사이드 채널 와이어 코덱 (라이브러리 팩트):** `scripts/l1_side_channel_wire_codec.py` — 적응형 msgpack(± zstd) 바이트열 인코딩; 하네스·스텁이 공통으로 호출 가능.
 - **HTTP 연구 스텁 엔드포인트 (토큰 압축 API v1 스텁 위에 additive):** `POST /v1/research/l1_side_channel/wire` in `scripts/compression_token_api_stub.py` — 페이로드의 `side_channel`에서 최소 필드만 추출해 와이어를 base64로 반환; **상용 `POST /v1/compress`·`expand` 계약·프로덕션 SLA와 동일시 금지**. 계약 SSOT: `docs/final/openapi_token_compression_stub_v1.yaml` **v1.1.0+** (`L1SideChannelWireRequest`/`L1SideChannelWireResponse`). 팩트 락 표: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §2 (토큰 압축 스텁·OpenAPI 행).
