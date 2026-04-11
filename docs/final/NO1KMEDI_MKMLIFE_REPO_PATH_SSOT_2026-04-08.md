@@ -16,8 +16,9 @@
 | `projects/no1kmedi/` | Next.js 앱·CI 대상 (`no1kmedi-web-build` 워크플로 등) |
 | `projects/no1kmedi/payapp-api/` | Express `api.no1kmedi.com` 백엔드·스모크·벤치 |
 | `projects/no1kmedi/marketing-site/` | 정적 마케팅 자산(별도 빌드 파이프라인) |
+| `projects/mkm/mkm-life/` | **mkmlife.com** 소스(Git **서브모듈** `mkmlab-hq/mkmlife-com`). 로컬 1차 편집·빌드 진입점(§2.1a). |
 
-`mkmlife.com` 전용 UI가 이 모노레포의 **별도 폴더명**으로 없을 수 있다. VPS에서는 `mkm-life` 등 **별도 클론/빌드 트리**로 돌아갈 수 있으므로, 로컬은 위 표 + **VPS `exec cwd` 실측**으로만 맞춘다.
+`mkmlife.com` UI는 위 **`projects/mkm/mkm-life`** 서브모듈이 권장 로컬 트리다. VPS 본선은 여전히 **별도 `exec cwd`**(`/var/www/mkmlife_runtime/mkm-life` 등)일 수 있으므로, 경로·커밋 일치는 **`pm2 describe` 실측**과 `git rev-parse`로만 판정한다.
 
 ### 1.2) PM2 이름 혼동 방지 (레포 vs 본선)
 
@@ -44,6 +45,13 @@
 - **작업·Cursor 워크스페이스 SSOT**: `C:\workspace` 모노레포와 **동일 트리**에서 진행한다. 에이전트·문서·스크립트 기본 경로가 이 루트를 전제로 한다.
 - **E: / F:**: **보관·백업·아카이브 전용**. 일상 개발·배포 준비의 1차 작업 트리로 쓰지 않는다(복사본·스냅샷·오프로드용).
 - **전환 시**: 과거에 `E:\workspace\mkm-life` 등으로 열어두었다면, **File → Open Folder**로 `C:\workspace`(또는 해당 모노레포 루트)를 연 뒤 터미널 기본 cwd도 그 경로로 맞춘다.
+
+### 2.1a) 모노레포 내 `mkm-life` (mkmlife-com) — 권장 로컬 작업 트리
+
+- **경로:** `C:\workspace\projects\mkm\mkm-life`
+- **원격:** `git@github.com:mkmlab-hq/mkmlife-com.git` (루트 `.gitmodules`의 서브모듈 `projects/mkm/mkm-life`와 동일)
+- **초기화(클론 직후·동료 머신):** 모노레포 루트에서 `git submodule update --init projects/mkm/mkm-life`
+- **역할:** mkmlife.com 프론트·§10·§11 제품 락 구현의 **로컬 편집 SSOT**. 배포는 §2.2 `deploy-to-hostinger.ps1`(E: 등)·VPS 절차로 본선에 반영하며, **배포 루트 문자열과 로컬 폴더 경로가 다를 수 있음**(§3 `exec cwd` 실측 우선).
 
 ### 2.2) `deploy-to-hostinger.ps1` (모노레포 밖 — 실측 잠금)
 

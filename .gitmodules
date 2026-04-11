@@ -1,0 +1,3 @@
+[submodule "projects/mkm/mkm-life"]
+	path = projects/mkm/mkm-life
+	url = git@github.com:mkmlab-hq/mkmlife-com.git
