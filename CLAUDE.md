@@ -19,7 +19,7 @@
 
 ### 도메인 핸드오프 (경로·배포, 혼동 방지)
 
-- **로컬 vs VPS 역할 분리 (한 원칙)**: `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` · 배포 트리 전용 5줄: `projects/bitcoin-trading/AGENTS.md`
+- **로컬 vs VPS 역할 분리 (한 원칙)**: `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` (**「VPS 배치 (권장)」** = 모노레포 루트 `cwd` + `projects/bitcoin-trading/start_live_trading.py`) · 5줄: `projects/bitcoin-trading/AGENTS.md` · `projects/bitcoin-trading/로컬_VPS_운영원칙.txt`
 - **no1kmedi / mkmlife.com**: `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md`
 - **jema12.com 본선**: `docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md`, `docs/final/JEMA12_PUBLIC_DOMAIN_AND_DEPLOY_HANDOFF_2026-04-07.md` (no1kmedi/mkmlife SSOT와 **절차 혼용 금지**.)
 

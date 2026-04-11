@@ -28,8 +28,8 @@
 
 ## 로컬 Cursor vs SSH VPS (한 원칙)
 
-- **SSOT**: `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` — 코드·규칙은 **로컬에서만 편집·푸시**; VPS는 **`git pull` + 런북의 재시작/배포만**; 비밀은 **`.env`를 호스트마다** (Git 비추적).
-- **bitcoin-trading 배포(`/opt/bitcoin-trading` 등):** `projects/bitcoin-trading/AGENTS.md` — **`pm2 restart <이름>`만**, **`restart all` 금지**(런북 예외만), **VPS 직수정 → 레포로 되돌리기**, **`.env`·`/opt/bitcoin-trading/.env`** 요약 5줄.
+- **SSOT**: `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` — 코드·규칙은 **로컬에서만 편집·푸시**; VPS는 **`git pull` + 런북의 재시작/배포만**; 비밀은 **`.env`를 호스트마다** (Git 비추적). bitcoin-trading 본선 **권장 배치**는 동 문서 **「VPS 배치 (권장)」** — 모노레포 루트를 **PM2 `cwd`**, **`projects/bitcoin-trading/start_live_trading.py`** 진입.
+- **bitcoin-trading 운영 5줄:** `projects/bitcoin-trading/AGENTS.md` · `projects/bitcoin-trading/로컬_VPS_운영원칙.txt` — **`pm2 restart <이름>`만**, **`restart all` 금지**(런북 예외만), **VPS 직수정 → 레포로 되돌리기**, `.env` 위치는 팀 규칙 한 곳.
 
 ## 압축 파이프라인 투트랙 (Fact-Lock 요약)
 
