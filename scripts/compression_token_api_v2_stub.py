@@ -32,11 +32,13 @@ from scripts.compression_token_api_stub import (  # noqa: E402
     _decision_selected_profile,
 )
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
-from scripts.report_multilens_performance_eval import evaluate_report  # noqa: E402
+from scripts.report_multilens_performance_eval import _jaccard, evaluate_report  # noqa: E402
 
 API_CONTRACT_VERSION = "2.0.0-draft"
 PACKET_FORMAT_VERSION = "trust_packet.0.1"
 RESIDUAL_STUB_KEY = "mk_stub_v2"
+# Same multiset definition as tests (`_jaccard`); floor aligns with Track A round-trip targets.
+V2_JACCARD_TRUST_MIN = 0.73
 
 SHARDS = ROOT / "codebook" / "shards"
 _router = DomainSpecificRouter(SHARDS)
@@ -101,6 +103,25 @@ class ExpandResponseV2(BaseModel):
 
 def _token_count_proxy(text: str) -> int:
     return len(TOKEN_RE.findall(text))
+
+
+def _apply_v2_trust_restoration(
+    raw: str,
+    compressed: str,
+    reconstructed: str,
+    global_ratio: float | None,
+) -> tuple[str, str, float | None, float, bool]:
+    """If reconstruction vs raw is below the Jaccard floor, drop aggressive compression (identity).
+
+    Preserves API round-trip semantics for expand (reconstructed_text) while capping claimed savings.
+    Returns (compressed, reconstructed, savings_ratio_or_none, jaccard_after, restored).
+    """
+    jac = _jaccard(raw, reconstructed)
+    if jac >= V2_JACCARD_TRUST_MIN:
+        return compressed, reconstructed, global_ratio, jac, False
+    ratio_out = 0.0 if global_ratio is not None else None
+    jac_after = _jaccard(raw, raw)
+    return raw, raw, ratio_out, jac_after, True
 
 
 def _run_evaluate_for_packet(text: str, loss_profile: LossProfile) -> dict[str, Any]:
@@ -200,17 +221,24 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
         flags["evaluate_report_ms"] = ev.get("elapsed_ms")
         if not ev.get("ok"):
             flags["evaluate_report_degraded"] = True
-        if ev.get("jaccard") is not None:
-            flags["jaccard_proxy"] = ev.get("jaccard")
+        gr = ev.get("global_ratio")
+        gr_typed: float | None = float(gr) if gr is not None else None
+        rec_raw = str(ev.get("reconstructed_text") or body.text)
+        comp_raw = str(ev.get("compressed_text") or body.text)
+        comp, rec, ratio_final, jac_after, trust_restored = _apply_v2_trust_restoration(
+            body.text, comp_raw, rec_raw, gr_typed
+        )
+        flags["jaccard_proxy"] = jac_after
+        if trust_restored:
+            flags["jaccard_trust_restoration"] = True
+            flags["jaccard_pre_restoration"] = ev.get("jaccard")
         if ev.get("integrity_note"):
             flags["integrity_note"] = ev.get("integrity_note")
-        rec = str(ev.get("reconstructed_text") or body.text)
-        comp = str(ev.get("compressed_text") or body.text)
         residual_meta = {
             RESIDUAL_STUB_KEY: {
                 "reconstructed_text": rec,
-                "global_token_saving_rate": ev.get("global_ratio"),
-                "reconstruction_fidelity_jaccard": ev.get("jaccard"),
+                "global_token_saving_rate": ratio_final,
+                "reconstruction_fidelity_jaccard": jac_after,
             },
             "placeholder_map": {},
         }
@@ -223,11 +251,10 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
         )
         tin = _token_count_proxy(body.text)
         tout = _token_count_proxy(comp)
-        ratio = ev.get("global_ratio")
-        if ratio is None:
+        if ratio_final is None:
             sr = None
         else:
-            sr = max(0.0, min(1.0, float(ratio)))
+            sr = max(0.0, min(1.0, float(ratio_final)))
         metrics = CompressionMetricsV2(token_in=tin, token_out=tout, savings_ratio=sr)
         return CompressResponseV2(
             compression_packet=packet,

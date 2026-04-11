@@ -8,6 +8,7 @@ typically scores at or near 1.0 when the engine returns full ``reconstructed_tex
 
 from __future__ import annotations
 
+import pytest
 from fastapi.testclient import TestClient
 
 from scripts.compression_token_api_v2_stub import (
@@ -96,3 +97,45 @@ def test_v2_roundtrip_jaccard_original_vs_expanded_min():
     expanded = er.json()["text"]
     jac = _jaccard(sample, expanded)
     assert jac >= V2_ROUNDTRIP_JACCARD_MIN, f"jaccard={jac} < {V2_ROUNDTRIP_JACCARD_MIN}"
+
+
+# Curated edge cases: empty/whitespace, ASCII, punctuation-heavy, CJK brackets, and a string that
+# previously yielded sub-floor engine Jaccard (restored via Trust-Restoration in the stub).
+@pytest.mark.parametrize(
+    "sample",
+    [
+        "",
+        "   \n\t",
+        "a",
+        "!@#$%^&*()[]",
+        "한",
+        "「test」 x",
+        "사상의학 체질 · sasang — reference",
+    ],
+)
+def test_v2_roundtrip_jaccard_edge_cases_min(sample: str):
+    cr = client.post(
+        "/v2/compress",
+        json={"text": sample, "loss_profile": "semantic_general"},
+    )
+    assert cr.status_code == 200
+    pkt = cr.json()["compression_packet"]
+    er = client.post(
+        "/v2/expand",
+        json={"compression_packet": pkt},
+    )
+    assert er.status_code == 200
+    expanded = er.json()["text"]
+    jac = _jaccard(sample, expanded)
+    assert jac >= V2_ROUNDTRIP_JACCARD_MIN, f"jaccard={jac} < {V2_ROUNDTRIP_JACCARD_MIN} sample={sample!r}"
+
+
+def test_v2_trust_restoration_flag_on_subfloor_engine_jaccard():
+    """Engine-only reconstruction can dip below the floor; stub must restore and surface the flag."""
+    sample = "「test」 x"
+    cr = client.post(
+        "/v2/compress",
+        json={"text": sample, "loss_profile": "semantic_general"},
+    )
+    assert cr.status_code == 200
+    assert cr.json()["integrity_flags"].get("jaccard_trust_restoration") is True
