@@ -230,5 +230,7 @@
       }
     }
   ],
-  "ranking_note": "recommended_next_10 is global_count then concentration among tokens not already in shards. recommended_next_10_korean restricts to Hangul syllables for safer domain glue."
+  "ranking_note": "recommended_next_10 is global_count then concentration among tokens not already in shards. recommended_next_10_korean restricts to Hangul syllables for safer domain glue.",
+  "recommended_next_10_note": "With min_global_count=1, all listed tokens have global_count=1; rank tie-break is lexicographic. EN-heavy list — manual review before merge. Stricter sweeps (global>=2, conc>=0.65) only reproduce already-deployed tokens; next gains need refreshed loss report or accepting singleton noise.",
+  "recommended_next_10_korean_note": "Surface forms (e.g. inflected) may duplicate lemma coverage; spot-check against master_codebook_lexicon before appending soft_terms."
 }
