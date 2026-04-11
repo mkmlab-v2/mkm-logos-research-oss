@@ -51,18 +51,25 @@
 - **경로:** `C:\workspace\projects\mkm\mkm-life`
 - **원격:** `git@github.com:mkmlab-hq/mkmlife-com.git` (루트 `.gitmodules`의 서브모듈 `projects/mkm/mkm-life`와 동일)
 - **초기화(클론 직후·동료 머신):** 모노레포 루트에서 `git submodule update --init projects/mkm/mkm-life`
-- **역할:** mkmlife.com 프론트·§10·§11 제품 락 구현의 **로컬 편집 SSOT**. 배포는 §2.2 `deploy-to-hostinger.ps1`(E: 등)·VPS 절차로 본선에 반영하며, **배포 루트 문자열과 로컬 폴더 경로가 다를 수 있음**(§3 `exec cwd` 실측 우선).
+- **역할:** mkmlife.com 프론트·§10·§11 제품 락 구현의 **로컬 편집 SSOT**. 배포는 §2.2 `deploy-to-hostinger.ps1`·VPS 절차로 본선에 반영하며, **배포 루트 문자열과 로컬 폴더 경로가 다를 수 있음**(§3 `exec cwd` 실측 우선).
 - **VPS·SSH Cursor 정리(공유 드라이브·아티팩트와 본선 분리):** `docs/final/MKMLIFE_VPS_SSH_CURSOR_CLEANUP_RUNBOOK.md`
+
+### 2.1b) 1인 개발: E: 드라이브 — 백업 전용 (mkmlife 혼동 방지)
+
+- **E:** 는 **보관·백업·스냅샷 전용**이다. mkmlife **소스 편집·Cursor 워크스페이스 루트·일상 `npm run dev`** 는 **E:가 아니라** `C:\workspace` + `projects\mkm\mkm-life`(§2.1a)만 쓴다.
+- **`E:\workspace\mkm-life`** 가 있으면 **과거 클론·백업 복제본**으로만 본다. 여기서 브랜치 작업을 이어가면 `C:\workspace` 서브모듈과 **이중 진실**이 생기므로, **코드 작업은 하지 않는다**(필요 시 백업만 유지·동기는 **파일 복사가 아니라 Git**으로).
+- **`deploy-to-hostinger.ps1`** 이 E:에만 있으면(§2.2) **배포 실행 시에만** `cd` 하고, **스크립트·소스 편집은** 모노레포 또는 `mkmlife-com` 쪽으로 옮겨 **앞으로는 `C:\workspace`에서 끝내는 것**을 권장한다.
 
 ### 2.2) `deploy-to-hostinger.ps1` (모노레포 밖 — 실측 잠금)
 
 - **`C:\workspace` 트리 안에는 없음.** (Glob·검색으로 확인.)
-- **실제 위치(디스크 실측)**: `E:\workspace\mkm-life\deploy-to-hostinger.ps1` — mkmlife.com용 Hostinger VPS 배포 v2 스크립트. **수동 실행**(자동 배포 아님). 기본 `$PSScriptRoot`·상위 `E:\workspace\.env`의 `GEMINI_API_KEY` 등을 참조한다.
+- **역할:** mkmlife.com Hostinger VPS 배포 v2 스크립트. **수동 실행**(자동 배포 아님).
+- **디스크 실측(레거시):** `E:\workspace\mkm-life\deploy-to-hostinger.ps1` — **백업 드라이브에 보관된 복제본**에 둔 경우가 많다. 기본 `$PSScriptRoot`·상위 `E:\workspace\.env`의 `GEMINI_API_KEY` 등을 참조할 수 있다. **일상 개발·편집 루트로 쓰지 않는다**(§2.1b).
 - **SSH 키 기본값**: 스크립트가 User 환경변수 `VPS_SSH_KEY` 미설정 시 `F:\workspace\.ssh\hostinger_mkmlife`를 본다. 키·호스트는 **본인 환경변수(`VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`) 우선**.
 - **스크립트의 원격 배포 루트**: 스크립트 내 `$VPS_PATH = /var/www/mkmlife` (frontend/backend 등 하위 구조). 이 값과 §3 PM2 잠금 경로(`/var/www/mkmlife_runtime/mkm-life`)는 **문자열이 다를 수 있다.** 운영·헬스 판정은 항상 **`pm2 describe` 실측** 우선.
 - **Hostinger API MCP(레포)**: `scripts/run_hostinger_mcp.ps1` — 배포 스크립트와 **역할 다름**(MCP 러너).
 
-**수동 실행 예시(Windows, 자동 배포 아님):**
+**수동 실행 예시(Windows, 자동 배포 아님):** 스크립트가 **백업 드라이브(E:)** 에만 있을 때(§2.1b). **편집은 하지 않고** 배포 실행만 한다.
 
 ```powershell
 Set-Location E:\workspace\mkm-life
@@ -72,7 +79,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\deploy-to-hostinger.ps1 -D
 
 **SSH 한 줄·따옴표 실수 방지(모노레포, 배포 아님):** `C:\workspace`에서 `scripts/Invoke-MkmlifeVpsGitProbe.ps1` — `VPS_HOST` 플레이스홀더·빈 키 경로를 사전에 거부하고, 원격 `cd … && git …`를 **단일 인자**로 `ssh`에 넘긴다 (`VPS_HOST`/`VPS_USER`는 **실제 IP·호스트명·계정**만).
 
-- **E: 예외**: 일상 편집은 `C:\workspace` 정책을 따르되, **이 스크립트가 현재 E:\ 클론에만 있으면** 배포 실행 시에 한해 `E:\workspace\mkm-life`로 이동한다. 나중에 스크립트를 모노레포로 옮기면 이 절 경로만 갱신한다.
+- **스크립트 위치 정리(권장):** `deploy-to-hostinger.ps1` 를 모노레포 `scripts/` 등으로 옮기면 **E:로 `cd` 할 필요가 사라진다**. 옮긴 뒤에는 이 절의 예시 경로를 실제 경로로 갱신한다.
 
 ### 2.3) GitHub Actions(레포 내, push/수동 실행 시만)
 

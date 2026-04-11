@@ -97,7 +97,7 @@ HTTP는 호스트·환경에 맞게 `curl -sS -o /dev/null -w '%{http_code}' htt
 
 **문서(SSOT·본 런북)만으로 “완전 방지”까지는 어렵다.** 다만 **역할(공유 볼트 ≠ 본선, VPS 본선 = `pm2 describe mkmlife` → `exec cwd`)** 을 고정하고, 아래 **습관**을 매번 지키면 경로가 섞일 확률이 크게 줄어든다.
 
-- **로컬:** Cursor는 **모노레포 루트**(`C:\workspace`)를 연다. `E:\…` 보조 클론은 **배포 스크립트 실행 때만** 쓴다.
+- **로컬:** Cursor는 **모노레포 루트**(`C:\workspace`)를 연다. **E: 드라이브는 백업 전용**(SSOT §2.1b) — `E:\workspace\mkm-life` 는 **배포 스크립트 실행이 꼭 필요할 때만** `cd` 하고, 소스 편집·일상 개발은 하지 않는다.
 - **VPS:** **`MKMLIFE_ROOT`를 `pm2 describe`로 먼저 뽑고**, 그 안에서만 `git`·빌드·`mkmlife_vps_git_align_safe.sh`.
 
 ### 6.1) 로컬 Cursor — 작업 시작 시 (PowerShell 복붙)
