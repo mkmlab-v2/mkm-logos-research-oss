@@ -275,6 +275,22 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 - 일부 레짐 상위권에서 `cosine_to_regime_fingerprint_4d`가 **음수**로 나올 수 있다(순위는 여전히 코사인 기준).
 - `bear_trend` 등은 **이름/고유명사** 구절 비중이 높을 수 있어, 텍스트 레이블 과해석은 피한다.
 
+## [Milestone: Zone C E2E Batch V1]
+
+**동결 태그**: `v1.0.0-RC1` → 커밋 `9a64a267ea` (MKM1 배치 E2E 스파이크·아티팩트 포함).  
+**적용 범위**: `zone_c_hangul` 코호트·아래 SSOT 산출물·스크립트에 한정; “모든 네트워크·모든 도메인” 일반화 금지.
+
+### Fact-Lock (3줄)
+
+1. **왜 N=11인가 (BEP)**  
+   무결성 v4 기반 마이크로 페이로드 BEP 산출에서 `Cost_fixed=500B` 가혹 시나리오일 때 `N_BEP_ceil=11`이 될 수 있음 — `docs/final/artifacts/MICRO_PAYLOAD_BEP_FROM_INTEGRITY_ZONE_C_V1.json` (`mean_gain_compression_bytes`·`mean_cost_marginal_integrity_bytes`·`cost_fixed_scenarios` 참조). 배치로 고정비를 상각할 **손익분기 배치 크기**의 한 점으로만 인용한다.
+
+2. **왜 `zone_c` 1차 프레이밍은 varint4인가 (번들 역전)**  
+   동일 5건·`merge_gap=1`에서 `framing_bytes_delta_bundle_v1`이 `framing_bytes_varint4`보다 평균 **+6.8B/건** 무거웠음(캡슐 메타 “입장료”가 소수 편집 구간에서 불리). 따라서 이 코호트에서는 **델타 번들 프레이밍을 1차 선택으로 쓰지 않고** 레거시 **varint4 합산**을 기준으로 둔다 — `calculate_integrity_cost_v4.py`의 `--framing` A/B 컬럼 실측.
+
+3. **종단 23.73%는 무엇인가**  
+   **통제된 E2E 회계**: 5건을 순환한 **11페이로드**를 단일 MKM1 배치에 넣었을 때 `s_real_batch_wire_vs_raw ≈ 0.2373` — `docs/final/artifacts/ZONE_C_BATCH_E2E_SPIKE_V1.json`, 생성 스크립트 `scripts/run_zone_c_batch_e2e_spike_v1.py`. 페이로드 길이는 각 케이스 v4 `total_wire_bytes`(varint4 경로)와 동일하게 둔 **길이-마킹 스파이크**이며, 실제 L4–L7 전송 스택 전체를 대변하지 않는다.
+
 ## 링크
 
 - 루트 헌장 요약: `CLAUDE.md`, `AGENTS.md`
