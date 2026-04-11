@@ -79,6 +79,10 @@ docs/final/artifacts/report_schema_v2_label_kpi_latest.json
 docs/final/artifacts/report_schema_v2_latest.json
 docs/final/artifacts/general_compression_restore_stress_v1.json
 docs/final/NOTEBOOKLM_GENERAL_PROPHECY_VPS_GIT_FORESIGHT_BUNDLE_*.md
+# mkm-life: local funnel pipeline outputs (regenerable; keep scripts + SSOT pair tracked)
+projects/mkm-life/reports/one_question_funnel_*
+!projects/mkm-life/reports/one_question_funnel_daily_targets_latest.json
+!projects/mkm-life/reports/one_question_funnel_daily_targets_latest.md
 # Weekly compression dated snapshots (scheduler/local); latest JSON remains tracked
 docs/final/artifacts/compression_weekly_governance_report_20*.json
 projects/bitcoin-trading/.venv/
