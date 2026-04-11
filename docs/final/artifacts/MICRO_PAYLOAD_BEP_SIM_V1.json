@@ -1,0 +1,95 @@
+{
+  "schema": "micro_payload_bep_sim_v1",
+  "description": "N_BEP = Cost_fixed / (Gain - Cost_marginal); net at N is N*Gain - Cost_fixed - N*Cost_marginal.",
+  "generated_at_utc": "2026-04-11T21:10:09.901419+00:00",
+  "formula": "N_BEP = Cost_fixed / (Gain - Cost_marginal)",
+  "bep": {
+    "cost_fixed_bytes": 200.0,
+    "gain_per_unit_bytes": 50.0,
+    "cost_marginal_per_unit_bytes": 15.0,
+    "contribution_margin_per_unit": 35.0,
+    "n_bep": 5.714285714285714,
+    "n_bep_ceil": 6,
+    "status": "ok"
+  },
+  "curve_0_to_n": [
+    {
+      "n": 0.0,
+      "cumulative_gain_bytes": 0.0,
+      "cumulative_cost_bytes": 200.0,
+      "net_bytes": -200.0
+    },
+    {
+      "n": 1.0,
+      "cumulative_gain_bytes": 50.0,
+      "cumulative_cost_bytes": 215.0,
+      "net_bytes": -165.0
+    },
+    {
+      "n": 2.0,
+      "cumulative_gain_bytes": 100.0,
+      "cumulative_cost_bytes": 230.0,
+      "net_bytes": -130.0
+    },
+    {
+      "n": 3.0,
+      "cumulative_gain_bytes": 150.0,
+      "cumulative_cost_bytes": 245.0,
+      "net_bytes": -95.0
+    },
+    {
+      "n": 4.0,
+      "cumulative_gain_bytes": 200.0,
+      "cumulative_cost_bytes": 260.0,
+      "net_bytes": -60.0
+    },
+    {
+      "n": 5.0,
+      "cumulative_gain_bytes": 250.0,
+      "cumulative_cost_bytes": 275.0,
+      "net_bytes": -25.0
+    },
+    {
+      "n": 6.0,
+      "cumulative_gain_bytes": 300.0,
+      "cumulative_cost_bytes": 290.0,
+      "net_bytes": 10.0
+    },
+    {
+      "n": 7.0,
+      "cumulative_gain_bytes": 350.0,
+      "cumulative_cost_bytes": 305.0,
+      "net_bytes": 45.0
+    },
+    {
+      "n": 8.0,
+      "cumulative_gain_bytes": 400.0,
+      "cumulative_cost_bytes": 320.0,
+      "net_bytes": 80.0
+    },
+    {
+      "n": 9.0,
+      "cumulative_gain_bytes": 450.0,
+      "cumulative_cost_bytes": 335.0,
+      "net_bytes": 115.0
+    },
+    {
+      "n": 10.0,
+      "cumulative_gain_bytes": 500.0,
+      "cumulative_cost_bytes": 350.0,
+      "net_bytes": 150.0
+    },
+    {
+      "n": 11.0,
+      "cumulative_gain_bytes": 550.0,
+      "cumulative_cost_bytes": 365.0,
+      "net_bytes": 185.0
+    },
+    {
+      "n": 12.0,
+      "cumulative_gain_bytes": 600.0,
+      "cumulative_cost_bytes": 380.0,
+      "net_bytes": 220.0
+    }
+  ]
+}
