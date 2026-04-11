@@ -8,6 +8,8 @@ $keys = @(
   # Trading / exchange
   "BINANCE_API_KEY",
   "BINANCE_API_SECRET",
+  "OHLC_BAR_INTERVAL_SEC",
+  "OHLC_MIN_COMPLETED_BARS",
   # Showroom / public events
   "PUBLIC_EVENT_BRIDGE_WEBHOOK_URL",
   "PUBLIC_EVENT_BRIDGE_TOKEN",

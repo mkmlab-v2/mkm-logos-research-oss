@@ -201,18 +201,8 @@ class BinanceRealtimeConnector:
                     if kline_data.get("x", False):  # 캔들 종료 시만
                         self.kline_buffer.append(kline_data)
                         await self._send_to_phase_engine("kline", kline_data)
-                        # 콜백에 kline 데이터 전달
-                        if self.callback:
-                            callback_data = {
-                                "price": float(kline_data.get("c", 0)),  # 종가
-                                "close": float(kline_data.get("c", 0)),
-                                "timestamp": datetime.fromtimestamp(kline_data.get("T", 0) / 1000) if kline_data.get("T") else datetime.now(),
-                                "volume": float(kline_data.get("v", 0))
-                            }
-                            try:
-                                await self.callback(callback_data)
-                            except Exception as e:
-                                logger.error(f"⚠️ 콜백 실행 중 오류: {e}")
+                        # OHLC는 틱(ticker/trade) 기반 TickOhlcAggregator에서 결정적으로 적재한다.
+                        # 종가-only kline 콜백은 동일 봉에 이중 카운트를 유발하므로 엔진 콜백에는 보내지 않음.
             
             # 성능 메트릭 업데이트
             latency_ms = (time.time() - start_time) * 1000

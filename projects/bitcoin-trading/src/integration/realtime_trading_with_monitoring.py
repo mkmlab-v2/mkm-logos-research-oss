@@ -8,6 +8,10 @@
 - 통합 모니터링 분석
 - 거래 신호 생성 및 실행
 
+OHLC / 데이터 (운영 팩트):
+- 통합 분석용 캔들은 ``TickOhlcAggregator``(틱→고정 간격 봉)로만 구성; 랜덤 OHLC 없음.
+- ``OHLC_BAR_INTERVAL_SEC``(기본 60), ``OHLC_MIN_COMPLETED_BARS``(기본 48) 환경변수로 조정.
+
 Prophecy / 주문 경계 (운영 팩트):
 - ProphecyStack은 레짐·보조 신호 경로에 사용될 수 있음.
 - 비테스트넷(testnet=False)에서 ProphecyStack이 살아 있으면 주문 실행 전에
@@ -34,6 +38,7 @@ from src.risk.risk_manager import RiskManager
 from src.risk.risk_guardian import RiskGuardian
 from src.integration.unified_trading_monitor import UnifiedTradingMonitor
 from src.integration.compression_trading_bridge import CompressionTradingBridge
+from src.market.tick_ohlc_aggregator import TickOhlcAggregator
 try:
     from scripts.core.mkm12_singular_core import CoreInput, compute_core_score
 except ModuleNotFoundError:
@@ -159,6 +164,18 @@ class RealtimeTradingWithMonitoring:
         # 가격 히스토리 (모니터링용)
         self.price_history = []
         self.max_history_size = 1000
+        _bar_sec = float(os.environ.get("OHLC_BAR_INTERVAL_SEC", "60") or "60")
+        _min_bars = int(os.environ.get("OHLC_MIN_COMPLETED_BARS", "48") or "48")
+        self._ohlc_min_completed_bars = max(2, _min_bars)
+        self._ohlc_feed = TickOhlcAggregator(
+            bar_interval_sec=max(1.0, _bar_sec),
+            max_stored_bars=500,
+        )
+        logger.info(
+            "📈 Tick OHLC: interval=%ss min_completed_bars=%s (env OHLC_BAR_INTERVAL_SEC / OHLC_MIN_COMPLETED_BARS)",
+            int(max(1.0, _bar_sec)),
+            self._ohlc_min_completed_bars,
+        )
         
         # 실행 상태
         self.running = False
@@ -256,30 +273,39 @@ class RealtimeTradingWithMonitoring:
             if 'price' in data or 'close' in data:
                 price = data.get('price') or data.get('close')
                 timestamp = data.get('timestamp') or datetime.now()
-                
+                vol = float(data.get('volume', 0.0) or 0.0)
+                self._ohlc_feed.push(timestamp, float(price), vol)
+
                 self.price_history.append({
                     'timestamp': timestamp,
                     'price': float(price),
-                    'volume': data.get('volume', 0.0)
+                    'volume': vol,
                 })
-                
+
                 # 히스토리 크기 제한
                 if len(self.price_history) > self.max_history_size:
                     self.price_history = self.price_history[-self.max_history_size:]
-                
+
                 # 주기적으로 가격 데이터 수집 상태 로그 (10개마다)
                 if len(self.price_history) % 10 == 0:
                     logger.info(f"📊 가격 데이터 수집: {len(self.price_history)}개 (현재 가격: {price:.2f} USDT)")
-            
-            # 통합 분석 실행 (충분한 데이터가 있을 때)
-            # 최소 48개 데이터 필요 (48시간이 아니라 48개 데이터 포인트)
-            if len(self.price_history) >= 48:
-                logger.info(f"🔍 통합 분석 실행 (가격 데이터: {len(self.price_history)}개)")
+
+            # 통합 분석: 완료된 OHLC 봉 개수 기준 (랜덤 캔들 제거)
+            if self._ohlc_feed.completed_count() >= self._ohlc_min_completed_bars:
+                logger.info(
+                    "🔍 통합 분석 실행 (완료 봉: %s/%s)",
+                    self._ohlc_feed.completed_count(),
+                    self._ohlc_min_completed_bars,
+                )
                 await self._process_integrated_analysis()
             elif len(self.price_history) > 0:
-                # 데이터 수집 중 로그 (10개마다)
                 if len(self.price_history) % 10 == 0:
-                    logger.info(f"⏳ 가격 데이터 수집 중: {len(self.price_history)}/48개 필요")
+                    logger.info(
+                        "⏳ OHLC 봉 수집 중: %s/%s 완료 (틱 %s개)",
+                        self._ohlc_feed.completed_count(),
+                        self._ohlc_min_completed_bars,
+                        len(self.price_history),
+                    )
         
         except Exception as e:
             logger.error(f"❌ WebSocket 데이터 처리 오류: {e}")
@@ -289,28 +315,24 @@ class RealtimeTradingWithMonitoring:
     async def _process_integrated_analysis(self):
         """통합 분석 처리"""
         try:
-            # 가격 데이터 DataFrame 생성
-            if len(self.price_history) < 48:
+            if self._ohlc_feed.completed_count() < self._ohlc_min_completed_bars:
                 return
-            
-            df_data = []
-            for item in self.price_history[-200:]:  # 최근 200개만 사용
-                price = item['price']
-                df_data.append({
-                    'open': price * (1 + np.random.normal(0, 0.001)),
-                    'high': price * (1 + abs(np.random.normal(0, 0.002))),
-                    'low': price * (1 - abs(np.random.normal(0, 0.002))),
-                    'close': price,
-                    'volume': item.get('volume', 0.0)
-                })
-            
-            price_data = pd.DataFrame(df_data)
-            current_price = self.price_history[-1]['price']
+
+            price_data = self._ohlc_feed.dataframe(max_rows=200)
+            if price_data.empty or len(price_data) < self._ohlc_min_completed_bars:
+                return
+
+            current_price = float(self.price_history[-1]['price']) if self.price_history else float(
+                price_data["close"].iloc[-1]
+            )
 
             # ----- 🏛️ [Sensor & Logic] 레짐 감지 및 방어 모드 판단 (SSOT 230751) -----
             regime_id = "unknown"
             defense_mode = False
-            if getattr(self, "_prophecy_stack", None) is not None and len(self.price_history) >= 48:
+            if (
+                getattr(self, "_prophecy_stack", None) is not None
+                and self._ohlc_feed.completed_count() >= self._ohlc_min_completed_bars
+            ):
                 try:
                     from datetime import datetime as dt
                     vol = float(price_data["close"].pct_change().std()) if len(price_data) > 1 else 0.0
