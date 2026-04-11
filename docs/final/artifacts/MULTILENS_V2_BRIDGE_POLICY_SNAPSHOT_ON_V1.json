@@ -35,8 +35,8 @@
   },
   "compression_metrics": {
     "case_count": 40,
-    "global_token_saving_rate": 0.35161744022503516,
-    "avg_reconstruction_fidelity_jaccard": 0.8590960999784529,
+    "global_token_saving_rate": 0.3502109704641351,
+    "avg_reconstruction_fidelity_jaccard": 0.8610191769015298,
     "avg_sensitive_integrity": 1.0,
     "min_sensitive_integrity": 1.0,
     "sensitive_violation_count": 0,
@@ -1302,14 +1302,14 @@
       {
         "id": "cmp2_010",
         "raw_tokens": 14,
-        "compressed_tokens": 8,
-        "token_saving_rate": 0.4285714285714286,
-        "compression_ratio": 0.5714285714285714,
-        "reconstruction_fidelity_jaccard": 0.6153846153846154,
+        "compressed_tokens": 9,
+        "token_saving_rate": 0.3571428571428571,
+        "compression_ratio": 0.6428571428571429,
+        "reconstruction_fidelity_jaccard": 0.6923076923076923,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "Performance reporting should separate from to false confidence",
-        "reconstructed_text_effective": "Performance reporting should separate from to false confidence",
+        "compressed_text_effective": "Performance reporting should separate from quality to false confidence",
+        "reconstructed_text_effective": "Performance reporting should separate from quality to false confidence",
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
@@ -1334,11 +1334,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 14,
-        "o200k_compressed_tokens": 8,
-        "o200k_token_saving_rate": 0.4285714285714286,
+        "o200k_compressed_tokens": 9,
+        "o200k_token_saving_rate": 0.3571428571428571,
         "o200k_tokens_before": 14,
-        "o200k_tokens_after": 8,
-        "o200k_saving_rate": 0.4285714285714286,
+        "o200k_tokens_after": 9,
+        "o200k_saving_rate": 0.3571428571428571,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4975,13 +4975,13 @@
       "available": true,
       "reason_unavailable": null,
       "tokens_raw_total": 1343,
-      "tokens_compressed_total": 930,
-      "global_token_saving_rate": 0.30752047654504844
+      "tokens_compressed_total": 931,
+      "global_token_saving_rate": 0.3067758749069248
     },
-    "o200k_token_saving_rate": 0.30752047654504844,
-    "o200k_saving_rate": 0.30752047654504844,
+    "o200k_token_saving_rate": 0.3067758749069248,
+    "o200k_saving_rate": 0.3067758749069248,
     "o200k_tokens_before": 1343,
-    "o200k_tokens_after": 930
+    "o200k_tokens_after": 931
   },
   "fusion_metrics": {
     "case_count": 10,

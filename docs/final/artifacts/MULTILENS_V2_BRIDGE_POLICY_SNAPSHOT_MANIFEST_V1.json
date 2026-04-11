@@ -1,6 +1,6 @@
 {
   "schema": "multilens_v2_bridge_policy_snapshot_manifest_v1",
-  "generated_at_utc": "2026-04-11T19:08:03.269114+00:00",
+  "generated_at_utc": "2026-04-11T19:11:40.227330+00:00",
   "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
   "baseline_report": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json",
   "artifacts": {
@@ -9,14 +9,14 @@
   },
   "metrics": {
     "off": {
-      "avg_reconstruction_fidelity_jaccard": 0.7505432900218117,
-      "global_token_saving_rate": 0.4796061884669479,
+      "avg_reconstruction_fidelity_jaccard": 0.752329004307526,
+      "global_token_saving_rate": 0.4781997187060478,
       "avg_sensitive_integrity": 1.0,
       "case_count": 40
     },
     "on": {
-      "avg_reconstruction_fidelity_jaccard": 0.8590960999784529,
-      "global_token_saving_rate": 0.35161744022503516,
+      "avg_reconstruction_fidelity_jaccard": 0.8610191769015298,
+      "global_token_saving_rate": 0.3502109704641351,
       "avg_sensitive_integrity": 1.0,
       "case_count": 40
     }

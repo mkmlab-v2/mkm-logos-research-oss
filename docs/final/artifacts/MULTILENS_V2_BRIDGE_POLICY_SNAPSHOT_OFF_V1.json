@@ -35,8 +35,8 @@
   },
   "compression_metrics": {
     "case_count": 40,
-    "global_token_saving_rate": 0.4796061884669479,
-    "avg_reconstruction_fidelity_jaccard": 0.7505432900218117,
+    "global_token_saving_rate": 0.4781997187060478,
+    "avg_reconstruction_fidelity_jaccard": 0.752329004307526,
     "avg_sensitive_integrity": 1.0,
     "min_sensitive_integrity": 1.0,
     "sensitive_violation_count": 0,
@@ -892,14 +892,14 @@
       {
         "id": "cmp2_007",
         "raw_tokens": 15,
-        "compressed_tokens": 7,
-        "token_saving_rate": 0.5333333333333333,
-        "compression_ratio": 0.4666666666666667,
-        "reconstruction_fidelity_jaccard": 0.5,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.4666666666666667,
+        "compression_ratio": 0.5333333333333333,
+        "reconstruction_fidelity_jaccard": 0.5714285714285714,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "Interpretation as state beyond bootstrap in the",
-        "reconstructed_text_effective": "Interpretation as state beyond bootstrap in the",
+        "compressed_text_effective": "Interpretation quality as state beyond bootstrap in the",
+        "reconstructed_text_effective": "Interpretation quality as state beyond bootstrap in the",
         "route": {
           "shard_id": "zone_b_timing",
           "domain": "timing",
@@ -925,11 +925,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 16,
-        "o200k_compressed_tokens": 8,
-        "o200k_token_saving_rate": 0.5,
+        "o200k_compressed_tokens": 9,
+        "o200k_token_saving_rate": 0.4375,
         "o200k_tokens_before": 16,
-        "o200k_tokens_after": 8,
-        "o200k_saving_rate": 0.5,
+        "o200k_tokens_after": 9,
+        "o200k_saving_rate": 0.4375,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1308,8 +1308,8 @@
         "reconstruction_fidelity_jaccard": 0.5384615384615384,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "should separate from to confidence Performance reporting",
-        "reconstructed_text_effective": "Performance reporting should separate from to confidence",
+        "compressed_text_effective": "should separate from quality to confidence Performance",
+        "reconstructed_text_effective": "Performance should separate from quality to confidence",
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
@@ -4975,13 +4975,13 @@
       "available": true,
       "reason_unavailable": null,
       "tokens_raw_total": 1343,
-      "tokens_compressed_total": 761,
-      "global_token_saving_rate": 0.4333581533879375
+      "tokens_compressed_total": 762,
+      "global_token_saving_rate": 0.43261355174981386
     },
-    "o200k_token_saving_rate": 0.4333581533879375,
-    "o200k_saving_rate": 0.4333581533879375,
+    "o200k_token_saving_rate": 0.43261355174981386,
+    "o200k_saving_rate": 0.43261355174981386,
     "o200k_tokens_before": 1343,
-    "o200k_tokens_after": 761
+    "o200k_tokens_after": 762
   },
   "fusion_metrics": {
     "case_count": 10,
