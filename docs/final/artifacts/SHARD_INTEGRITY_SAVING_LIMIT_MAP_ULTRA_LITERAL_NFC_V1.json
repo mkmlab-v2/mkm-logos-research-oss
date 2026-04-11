@@ -1,0 +1,87 @@
+{
+  "schema": "shard_integrity_saving_limit_map_v1",
+  "description": "Single-run observed metrics per router shard_id; not an optimized frontier. Regenerate after policy/cap changes or a new MULTILENS report.",
+  "generated_at_utc": "2026-04-11T19:52:50.899583+00:00",
+  "exact_match_definition": "unicode_nfc_equal",
+  "source_report": "docs/final/artifacts/MULTILENS_V2_ULTRA_LITERAL_SHARD_PROBE_V1.json",
+  "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "run_config_snapshot": {
+    "mode": "experimental",
+    "strategy": "C",
+    "intensity": "high",
+    "must_keep_terms": [
+      "bible",
+      "myeongri",
+      "sasang",
+      "사상의학",
+      "체질"
+    ],
+    "general_max_saving_rate": 0.06,
+    "sensitive_max_saving_rate": 0.06,
+    "hangul_max_saving_rate": 0.08,
+    "use_hangul_principle": false,
+    "use_domain_router": true,
+    "use_master_codebook_lexicon_v1": true,
+    "master_codebook_lexicon_path": null,
+    "include_gematria_metadata": true,
+    "include_gematria_4d_bridge": true,
+    "include_cee_core": true,
+    "apply_gematria_4d_bridge_policy": false,
+    "bridge_score_weights": null,
+    "use_contextual_generator_v2": false,
+    "use_contextual_generator_v3": false,
+    "use_contextual_generator_v4": false,
+    "use_contextual_generator_v5_codec": false,
+    "require_tiktoken_o200k": false,
+    "tiktoken_o200k_encoding": "o200k_base",
+    "tiktoken_o200k_available": true,
+    "tiktoken_o200k_unavailable_reason": null
+  },
+  "shards": [
+    {
+      "shard_id": "zone_a_scm",
+      "case_count": 12,
+      "exact_match_count": 0,
+      "exact_match_rate": 0.0,
+      "mean_token_saving_rate": 0.14642565359477122,
+      "mean_reconstruction_fidelity_jaccard": 1.0,
+      "mean_o200k_saving_rate": 0.09298057082826056
+    },
+    {
+      "shard_id": "zone_b_timing",
+      "case_count": 2,
+      "exact_match_count": 0,
+      "exact_match_rate": 0.0,
+      "mean_token_saving_rate": 0.1333333333333333,
+      "mean_reconstruction_fidelity_jaccard": 0.9761904761904762,
+      "mean_o200k_saving_rate": 0.09125
+    },
+    {
+      "shard_id": "zone_c_hangul",
+      "case_count": 5,
+      "exact_match_count": 0,
+      "exact_match_rate": 0.0,
+      "mean_token_saving_rate": 0.14211116025357512,
+      "mean_reconstruction_fidelity_jaccard": 1.0,
+      "mean_o200k_saving_rate": 0.10470359022990601
+    },
+    {
+      "shard_id": "zone_d_ssot",
+      "case_count": 17,
+      "exact_match_count": 0,
+      "exact_match_rate": 0.0,
+      "mean_token_saving_rate": 0.11381195925222516,
+      "mean_reconstruction_fidelity_jaccard": 0.9834274266982336,
+      "mean_o200k_saving_rate": 0.08930938186310612
+    },
+    {
+      "shard_id": "zone_g_health",
+      "case_count": 4,
+      "exact_match_count": 0,
+      "exact_match_rate": 0.0,
+      "mean_token_saving_rate": 0.12990196078431374,
+      "mean_reconstruction_fidelity_jaccard": 1.0,
+      "mean_o200k_saving_rate": 0.08787923376338008
+    }
+  ]
+}
