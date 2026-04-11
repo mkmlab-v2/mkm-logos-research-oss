@@ -22,8 +22,8 @@
 - **H: 로컬 원본 트리 (지휘관 기록·레포와 트리 불일치):** 드라이브 `H:\`(라벨 `mkm`) — 특히 `H:\workspace\docs\` 아래 MD 다수(이론·가이드·일지 등; `docs\final` SSOT와 **동일 경로 아님**), `H:\workspace\daily\YYYY-MM-DD\notes.md`·`tasks.md`. 구현·게이트 판정은 **`C:\workspace` + CONSTITUTION**; H:는 **참고·연혁·초안**으로만 `@` 첨부해 조회.
 - **NotebookLM 소스 Vault 미러:** `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources\` — 레포 SSOT를 반영하려면 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1` (마지막 동기 시각은 `vault\notebooklm_sources\_LAST_SYNC.txt`). 옵시디언 맥락까지 복사할 때 `-IncludeObsidianContext`. **권장 리듬:** 작전 전·주 1회 이상(스냅샷·매니페스트 갱신 후).
 - **NotebookLM MCP:** Cursor에 `project-0-workspace-notebooklm-mcp`가 등록되어 있어도 **이 채팅에 도구가 주입되지 않으면** 호출 불가 — `.cursor/rules/notebooklm-mcp-session-bridge.mdc`. 로컬 MCP 툴 디스크립터는 `mcps/project-0-workspace-notebooklm-mcp/tools/` (`source_list`, `notebook_list`, `note`, `source_get_content` 등).
-- **노트북 앵커·소스 목록:** `docs/NotebookLM_sources_manifest.md` 및 본 파일 하단「NotebookLM + Gemini」URL(메인 + **보조 2개**). **클라우드 노트북 안에만 있는 요약**은 이 레포가 자동으로 대체하지 않는다 — 필요 시 NotebookLM에서 소스로 유지하거나, 내보낸 파일을 레포/`notebooklm_sources` 경로에 두고 동기 스크립트로 미러한다.
-
+- **노트북 앵커·소스 목록:** `docs/NotebookLM_sources_manifest.md` 및 본 파일 하단「NotebookLM + Gemini」URL(메인 + **보조 2개**). **클라우드 노트북 안에만 있는 요약**은 이 레포가 자동으로 대체하지 않는다 — 필요 시 NotebookLM에서 소스로 유지하거나, 내보낸 파일을 레포/`notebooklm_sources` 경로에 두고 동기 스크립트로 미러한다。
+- **노트북 전체 목록(서사 정비):** `docs/final/RESEARCH_HISTORY_V1.md` — 계정 소유 노트북 **제목·ID·소스 개수** 스냅샷(MCP `notebook_list`); 구현 SSOT 아님, 갱신 시 재수집。
 
 
 ## 로컬 LoRA (Windows, RTX 5060 Ti) — 현재 정답 경로

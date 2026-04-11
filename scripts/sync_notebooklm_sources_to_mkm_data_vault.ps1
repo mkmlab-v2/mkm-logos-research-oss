@@ -85,6 +85,7 @@ $SourceFiles = @(
     "docs\final\MKM_LESSONS_LEARNED_V1.md",
     "docs\final\COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1.md",
     "docs\final\MKM_CORE_THEORY_V1.md",
+    "docs\final\RESEARCH_HISTORY_V1.md",
     "docs\final\openapi_token_compression_stub_v1.yaml",
     "docs\final\STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md",
     "docs\final\MASTER_Linguistic_Contract_2026.md",

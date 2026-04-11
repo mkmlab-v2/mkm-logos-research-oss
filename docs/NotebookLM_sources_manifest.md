@@ -5,6 +5,8 @@
 
 **Cursor 3.0 (2026-04)**: NotebookLM과 동일하게 **브리핑·질의·소스 아카이브** 레이어다. **에이전트 병렬(Agents Window)·Design Mode**는 제품 기능이며, **압축 엔진·헌법·실매매 SSOT는 여전히 레포의 `.py`/JSON**이다(`AGENTS.md`, `COMPRESSION_SLA_POLICY_V1.md`).
 
+**연구 서사 인덱스 (B, 비-SSOT):** `docs/final/RESEARCH_HISTORY_V1.md` — MCP `notebook_list`로 수집한 **노트북 제목·ID 스냅샷**(구현·게이트 팩트 아님). 갱신 시 이 파일을 먼저 고친 뒤 Vault 동기화.
+
 **Vault 동기화**: `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`가 이 표를 `notebooklm_sources/`로 복사(SSOT 반영). 공유 Vault 루트는 환경의 `MKM_VAULT_ROOT` 또는 스크립트 `-VaultRoot`로 지정.
 
 ### Vault 동기화 — 로컬 부재 Skip (정상, 2026-04)
