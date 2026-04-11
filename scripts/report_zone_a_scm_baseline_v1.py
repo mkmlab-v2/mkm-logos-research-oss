@@ -62,11 +62,12 @@ def simulate_effective_must_keep_a_extreme(
         meta["lexicon"] = {"status": "skipped", "reason": "export_not_found"}
 
     boming_meta: dict[str, Any] | None = None
+    boming_raw_hits: set[str] = set()
     effective_with_boming = set(effective)
     if boming_path is not None and boming_path.is_file():
-        bhits, boming_meta = boming_jiju_hits_for_text(raw, boming_path)
-        effective_with_boming |= bhits
-    return effective, meta, effective_with_boming, boming_meta
+        boming_raw_hits, boming_meta = boming_jiju_hits_for_text(raw, boming_path)
+        effective_with_boming |= boming_raw_hits
+    return effective, meta, effective_with_boming, boming_meta, boming_raw_hits
 
 
 def main() -> int:
@@ -111,7 +112,7 @@ def main() -> int:
         if route.shard_id != "zone_a_scm":
             continue
         zone_a_ids.append(cid)
-        eff, mmeta, eff_boming, bmeta = simulate_effective_must_keep_a_extreme(
+        eff, mmeta, eff_boming, bmeta, boming_raw = simulate_effective_must_keep_a_extreme(
             raw, route, cb_path=cb_path, boming_path=boming_path
         )
         row: dict[str, Any] = {
@@ -121,9 +122,10 @@ def main() -> int:
             "lexicon_meta": mmeta.get("lexicon"),
         }
         if boming_path is not None:
-            bhits = eff_boming - eff
+            net_new = eff_boming - eff
             row["effective_must_keep_count_with_boming_jiju"] = len(eff_boming)
-            row["boming_jiju_hit_terms"] = sorted(bhits)[:32]
+            row["boming_jiju_lexicon_matched_terms"] = sorted(boming_raw)[:32]
+            row["boming_jiju_net_new_terms_vs_baseline"] = sorted(net_new)[:32]
             row["boming_jiju_lexicon_meta"] = bmeta
         per_case.append(row)
 
@@ -132,8 +134,14 @@ def main() -> int:
     avg_mk = sum(counts) / n if n else 0.0
     max_mk = max(counts) if counts else 0
     counts_b: list[int] = []
+    raw_match_total = 0
+    net_new_total = 0
     if boming_path is not None:
         counts_b = [int(p["effective_must_keep_count_with_boming_jiju"]) for p in per_case]
+        for p in per_case:
+            meta = p.get("boming_jiju_lexicon_meta") or {}
+            raw_match_total += int(meta.get("hit_count") or 0)
+            net_new_total += len(p.get("boming_jiju_net_new_terms_vs_baseline") or [])
     avg_mk_b = sum(counts_b) / len(counts_b) if counts_b else None
     max_mk_b = max(counts_b) if counts_b else None
 
@@ -200,6 +208,8 @@ def main() -> int:
             "effective_must_keep_count_max": max_mk,
             "effective_must_keep_count_avg_with_boming_jiju": avg_mk_b,
             "effective_must_keep_count_max_with_boming_jiju": max_mk_b,
+            "boming_jiju_lexicon_raw_match_count_sum": raw_match_total if boming_path else None,
+            "boming_jiju_net_new_term_instances_sum": net_new_total if boming_path else None,
         },
         "integrity_v4_note": (
             "global_real_saving_vs_raw is from probe rows (reconstructed vs raw); "

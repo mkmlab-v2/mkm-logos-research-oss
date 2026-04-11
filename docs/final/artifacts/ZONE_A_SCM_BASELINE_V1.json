@@ -29,7 +29,9 @@
     "effective_must_keep_count_avg": 11.0,
     "effective_must_keep_count_max": 11,
     "effective_must_keep_count_avg_with_boming_jiju": 11.0,
-    "effective_must_keep_count_max_with_boming_jiju": 11
+    "effective_must_keep_count_max_with_boming_jiju": 11,
+    "boming_jiju_lexicon_raw_match_count_sum": 13,
+    "boming_jiju_net_new_term_instances_sum": 0
   },
   "integrity_v4_note": "global_real_saving_vs_raw is from probe rows (reconstructed vs raw); boming_jiju overlay does not alter v4 unless compression is re-run with that must_keep.",
   "probe_join": {
@@ -71,14 +73,19 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "사상의학"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 1,
+        "hits_sample": [
+          "사상의학"
+        ]
       }
     },
     {
@@ -105,14 +112,21 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "사상의학",
+        "체질"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 2,
+        "hits_sample": [
+          "사상의학",
+          "체질"
+        ]
       }
     },
     {
@@ -139,14 +153,19 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "체질"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 1,
+        "hits_sample": [
+          "체질"
+        ]
       }
     },
     {
@@ -173,14 +192,19 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "체질"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 1,
+        "hits_sample": [
+          "체질"
+        ]
       }
     },
     {
@@ -207,14 +231,19 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "사상의학"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 1,
+        "hits_sample": [
+          "사상의학"
+        ]
       }
     },
     {
@@ -241,14 +270,19 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "사상의학"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 1,
+        "hits_sample": [
+          "사상의학"
+        ]
       }
     },
     {
@@ -275,14 +309,19 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "체질"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 1,
+        "hits_sample": [
+          "체질"
+        ]
       }
     },
     {
@@ -309,14 +348,19 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "사상의학"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 1,
+        "hits_sample": [
+          "사상의학"
+        ]
       }
     },
     {
@@ -343,14 +387,19 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "체질"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 1,
+        "hits_sample": [
+          "체질"
+        ]
       }
     },
     {
@@ -377,14 +426,19 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "사상의학"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 1,
+        "hits_sample": [
+          "사상의학"
+        ]
       }
     },
     {
@@ -411,14 +465,19 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "체질"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 1,
+        "hits_sample": [
+          "체질"
+        ]
       }
     },
     {
@@ -445,14 +504,19 @@
         "hits_sample": []
       },
       "effective_must_keep_count_with_boming_jiju": 11,
-      "boming_jiju_hit_terms": [],
+      "boming_jiju_lexicon_matched_terms": [
+        "사상의학"
+      ],
+      "boming_jiju_net_new_terms_vs_baseline": [],
       "boming_jiju_lexicon_meta": {
         "status": "ok",
         "path": "C:\\workspace\\docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
-        "version": "1.0.0",
-        "entry_count": 4,
-        "hit_count": 0,
-        "hits_sample": []
+        "version": "1.1.0",
+        "entry_count": 10,
+        "hit_count": 1,
+        "hits_sample": [
+          "사상의학"
+        ]
       }
     }
   ]
