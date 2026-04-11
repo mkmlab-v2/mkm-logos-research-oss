@@ -52,6 +52,7 @@
 - **원격:** `git@github.com:mkmlab-hq/mkmlife-com.git` (루트 `.gitmodules`의 서브모듈 `projects/mkm/mkm-life`와 동일)
 - **초기화(클론 직후·동료 머신):** 모노레포 루트에서 `git submodule update --init projects/mkm/mkm-life`
 - **역할:** mkmlife.com 프론트·§10·§11 제품 락 구현의 **로컬 편집 SSOT**. 배포는 §2.2 `deploy-to-hostinger.ps1`(E: 등)·VPS 절차로 본선에 반영하며, **배포 루트 문자열과 로컬 폴더 경로가 다를 수 있음**(§3 `exec cwd` 실측 우선).
+- **VPS·SSH Cursor 정리(공유 드라이브·아티팩트와 본선 분리):** `docs/final/MKMLIFE_VPS_SSH_CURSOR_CLEANUP_RUNBOOK.md`
 
 ### 2.2) `deploy-to-hostinger.ps1` (모노레포 밖 — 실측 잠금)
 
