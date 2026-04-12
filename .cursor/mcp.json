@@ -1,0 +1,289 @@
+{
+  "mcpServers": {
+    "compression-server": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/compression_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "WORKSPACE_ROOT": "C:/workspace",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
+      "timeout": 60000
+    },
+    "athena-core": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/athena_core_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "WORKSPACE_ROOT": "C:/workspace",
+        "MKM12_LTM_DB_TYPE": "file",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
+      "timeout": 60000
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-u",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:/workspace",
+        "G:/공유 드라이브/MKM_DATA_VAULT"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
+      "timeout": 60000
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-u",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
+      "timeout": 60000
+    },
+    "athena-metacognition": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/athena_metacognition_server_official.py"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "WORKSPACE_ROOT": "C:/workspace",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
+      "timeout": 60000
+    },
+    "logos-code-pack-distribution": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/logos_code_pack_distribution_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "WORKSPACE_ROOT": "C:/workspace",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
+      "timeout": 60000
+    },
+    "logs-resource": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/logs_resource_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "WORKSPACE_ROOT": "C:/workspace",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
+      "timeout": 60000
+    },
+    "config-resource": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/config_resource_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "WORKSPACE_ROOT": "C:/workspace",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
+      "timeout": 60000
+    },
+    "notebooklm-mcp": {
+      "command": "C:/Users/PRO/.local/bin/notebooklm-mcp.exe",
+      "args": [],
+      "cwd": "C:/workspace",
+      "timeout": 60000,
+      "env": {
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONPATH": "C:\\workspace\\mcp-servers"
+      }
+    },
+    "aistudio-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "aistudio-mcp-server"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "GEMINI_MODEL": "gemini-2.5-flash",
+        "GEMINI_TEMPERATURE": "0.2",
+        "GEMINI_MAX_OUTPUT_TOKENS": "8192",
+        "GEMINI_TIMEOUT": "300000"
+      },
+      "timeout": 60000
+    },
+    "stitch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "stitch-mcp"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "persona-diary-service"
+      },
+      "timeout": 60000
+    },
+    "openchrome": {
+      "command": "npx",
+      "args": [
+        "-u",
+        "-y",
+        "openchrome-mcp@latest",
+        "serve",
+        "--auto-launch"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
+      "timeout": 60000
+    },
+    "athena-manseryeok": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/athena_manseryeok_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "WORKSPACE_ROOT": "C:/workspace",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
+      "timeout": 60000
+    },
+    "local-rag": {
+      "type": "stdio",
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/rag_server/mcp_server.py"
+      ],
+      "cwd": "C:/workspace/rag_server",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "VAULT_PATH": "G:/공유 드라이브/MKM_DATA_VAULT",
+        "INDEX_PATH": "C:/workspace/.rag_index",
+        "RAG_EXCLUDE_GLOBS": "**/projects/bitcoin-trading/docs/archive/**,**/projects/bitcoin-trading/**/temporary/**",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8"
+      },
+      "envFile": "C:/workspace/rag_server/cursor-mcp.env",
+      "timeout": 600000
+    },
+    "hostinger-mcp": {
+      "type": "stdio",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "C:/workspace/scripts/run_hostinger_mcp.ps1"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "DEBUG": "false"
+      },
+      "envFile": "C:/workspace/.env",
+      "timeout": 120000
+    },
+    "mkm-unified-hub": {
+      "command": "py",
+      "args": ["-u", "C:/workspace/scripts/mkm_unified_mcp.py"],
+      "cwd": "C:/workspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "LC_CTYPE": "C.UTF-8"
+      },
+      "timeout": 60000
+    }
+  }
+}

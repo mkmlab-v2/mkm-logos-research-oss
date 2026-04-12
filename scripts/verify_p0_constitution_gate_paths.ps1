@@ -71,6 +71,7 @@ $required = @(
     "rag_server\cursor-mcp.env",
     "scripts\requirements-mkm-mcp.txt",
     "docs\final\artifacts\mkm_mcp_tool_audit_v1.json",
+    "docs\final\artifacts\MKM_MCP_STDIO_POINTER_V1.json",
     "data\personalization\mkm_user_context_v1.sample.json",
     "docs\final\COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md",
     "scripts\bench_l1_api_load.py",

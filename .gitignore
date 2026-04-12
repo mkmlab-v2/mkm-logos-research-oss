@@ -1,6 +1,7 @@
 # Cursor: track multi-chat SSOT only (rest stays local/untracked noise)
 .cursor/**
 !.cursor/current_work_status.md
+!.cursor/mcp.json
 
 # 워크스페이스 루트 - 민감 정보·로컬 설정
 .env

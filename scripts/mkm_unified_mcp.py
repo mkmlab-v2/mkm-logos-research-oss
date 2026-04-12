@@ -3,6 +3,10 @@
 
 Does not replace project-0-workspace-compression-server; adds thin registry/payload tools for agents.
 
+Cursor user config: in `%APPDATA%/Cursor/User/mcp.json` this process is typically the server key
+**mkm-unified-hub** (command py -u …/scripts/mkm_unified_mcp.py, cwd repo root). SSOT:
+`docs/final/artifacts/MKM_MCP_STDIO_POINTER_V1.json`.
+
 Register in Cursor Settings → MCP (stdio). Do **not** run interactively in a plain terminal:
 empty lines on stdin become invalid JSON-RPC and spam errors.
 
@@ -14,6 +18,7 @@ Deps: pip install mcp jsonschema pydantic (see scripts/requirements-mkm-mcp.txt)
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import sys
@@ -202,4 +207,21 @@ if __name__ == "__main__":
             file=sys.stderr,
         )
         raise SystemExit(2)
-    mcp.run(transport="stdio")
+    _scripts = Path(__file__).resolve().parent
+    if str(_scripts) not in sys.path:
+        sys.path.insert(0, str(_scripts))
+    from mkm_mcp_stdio_blank_skip import apply_stdio_blank_line_patch
+
+    apply_stdio_blank_line_patch()
+    print(
+        "[MKM-MCP] stdio blank-line skip patch active (stderr log; do not paste into shell)",
+        file=sys.stderr,
+        flush=True,
+    )
+    try:
+        mcp.run(transport="stdio")
+    except KeyboardInterrupt:
+        # Cursor / terminal stop: avoid noisy asyncio/MCP stack traces on stderr.
+        raise SystemExit(0) from None
+    except asyncio.CancelledError:
+        raise SystemExit(0) from None

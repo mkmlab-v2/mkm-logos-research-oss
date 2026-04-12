@@ -58,7 +58,7 @@
 
 | `scripts/Invoke-GeneralProphecyExportThenLora.ps1` | JSONL export + 연속 LoRA 훈련 (레지스트리 갱신 후) |
 
-| `scripts/mkm_unified_mcp.py` | stdio MCP 통합 허브: 예언 레지스트리 조회 + `mkm_compressed_payload_v1` 검증·조립 (`scripts/requirements-mkm-mcp.txt`) |
+| `scripts/mkm_unified_mcp.py` | stdio MCP 통합 허브: 예언 레지스트리 조회 + `mkm_compressed_payload_v1` 검증·조립 (`scripts/requirements-mkm-mcp.txt`). Cursor `mcp.json` 키: **`mkm-unified-hub`** — 포인터 `docs/final/artifacts/MKM_MCP_STDIO_POINTER_V1.json` |
 
 | `scripts/lora_train_remote_gpu_bootstrap.sh` | (선택) Linux GPU 호스트용 부트스트랩 |
 

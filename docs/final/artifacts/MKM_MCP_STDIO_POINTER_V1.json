@@ -1,0 +1,28 @@
+{
+  "schema": "mkm_mcp_stdio_pointer_v1",
+  "logical_name": "MKM unified stdio MCP (prophecy registry + compressed payload helpers)",
+  "cursor_mcp_json_key": "mkm-unified-hub",
+  "cursor_settings_path_windows": "%APPDATA%\\Cursor\\User\\mcp.json",
+  "entrypoint": {
+    "command": "py",
+    "args_unix_style": ["-u", "C:/workspace/scripts/mkm_unified_mcp.py"],
+    "cwd": "C:/workspace"
+  },
+  "config_user_mcp_json_windows": "%APPDATA%\\Cursor\\User\\mcp.json",
+  "config_project_mcp_json": ".cursor/mcp.json",
+  "workspace_mirror_note": "If Cursor shows 'No MCP Tools' for this repo, keep a full mcpServers copy under .cursor/mcp.json (mirrored from User mcp.json). Remove duplicate keys from ~/.cursor/mcp.json to avoid doubled rows.",
+  "repo_script": "scripts/mkm_unified_mcp.py",
+  "stdio_patch_module": "scripts/mkm_mcp_stdio_blank_skip.py",
+  "stderr_banner_substring": "[MKM-MCP] stdio blank-line skip patch active",
+  "not_this_server": [
+    "compression-server",
+    "athena-core",
+    "filesystem",
+    "notebooklm-mcp",
+    "local-rag",
+    "config-resource",
+    "logs-resource"
+  ],
+  "note": "Cursor UI label is each JSON key under mcpServers. After editing mcp.json, Reload Window. Project list reads .cursor/mcp.json when global list is empty in UI.",
+  "gateway_mcp_exit1": "Cursor may log 'Gateway MCP' exit(1) during MCP reload or when a child stdio process errors once. If per-server status stays green and tools work, it is often a transient supervisor restart. For mkm-unified-hub: blank-line/BOM stdin patch must rebind fastmcp.server.stdio_server (see mkm_mcp_stdio_blank_skip.py)."
+}
