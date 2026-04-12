@@ -12,8 +12,8 @@
   "mean_ratio_light": 0.05971967724335879,
   "mean_ratio_routed": 0.05976798642210275,
   "mean_ratio_heavy": -0.04767741648686037,
-  "mean_ms_baseline": 0.00985,
-  "mean_ms_light": 0.02068,
-  "mean_ms_routed": 0.01816,
-  "mean_ms_heavy": 0.03198
+  "mean_ms_baseline": 0.009559999999999999,
+  "mean_ms_light": 0.02078,
+  "mean_ms_routed": 0.01955,
+  "mean_ms_heavy": 0.02981
 }
