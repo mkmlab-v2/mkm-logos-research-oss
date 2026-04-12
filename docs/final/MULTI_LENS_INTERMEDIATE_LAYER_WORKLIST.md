@@ -39,7 +39,7 @@
 | # | 작업 | 상태 | 비고 |
 |---|------|------|------|
 | 3.1 | `.github/workflows/dual-regime-integrity.yml` — dual-regime + workspace + myeongni 순서 | [x] | `integrity_guard` 포함 |
-| 3.2 | `run_prophecy_alignment_pytest.ps1` / `.sh` — **CI 워크스페이스 테스트와 동일 목록** | [x] | logos + CROSS_REF + ENTRY16 source-hunt(log+summary) + SASANG + myeongni insight |
+| 3.2 | `run_prophecy_alignment_pytest.ps1` / `.sh` — **CI 워크스페이스 테스트와 동일 목록** | [x] | logos + CROSS_REF + ENTRY16 source-hunt(log+summary) + SASANG + myeongni insight + 4-grid myeongri·sasang compression spike |
 
 ---
 
