@@ -47,6 +47,26 @@ class DomainSpecificRouter:
                 return s
         return None
 
+    def _shard_dict_to_route(self, best: dict) -> ShardRoute:
+        return ShardRoute(
+            shard_id=str(best.get("shard_id", "zone_d_ssot")),
+            domain=str(best.get("domain", "ssot")),
+            must_keep_hard_terms=tuple(
+                str(x).lower() for x in best.get("must_keep_hard_terms", best.get("must_keep_terms", []))
+            ),
+            must_keep_soft_terms=tuple(str(x).lower() for x in best.get("must_keep_soft_terms", [])),
+            guard_tokens=tuple(str(x).lower() for x in best.get("guard_tokens", [])),
+            hangul_principle=bool(best.get("hangul_principle", False)),
+        )
+
+    def route_from_shard_id(self, shard_id: str) -> ShardRoute:
+        """Build a ShardRoute from a shard JSON by id (ablation / forced-Psi without keyword scoring)."""
+        d = self._shard_by_id(shard_id)
+        if d is None:
+            known = sorted({str(s.get("shard_id", "")) for s in self._shards if s.get("shard_id")})
+            raise ValueError(f"Unknown shard_id {shard_id!r}; known: {known}")
+        return self._shard_dict_to_route(d)
+
     def route(self, text: str) -> ShardRoute:
         words = {w.lower() for w in re.findall(r"[A-Za-z0-9_가-힣]+", text)}
         scored: list[tuple[int, dict]] = []
@@ -64,16 +84,7 @@ class DomainSpecificRouter:
                     best = zc
                 else:
                     best = self._preferred_default_shard()
-        return ShardRoute(
-            shard_id=str(best.get("shard_id", "zone_d_ssot")),
-            domain=str(best.get("domain", "ssot")),
-            must_keep_hard_terms=tuple(
-                str(x).lower() for x in best.get("must_keep_hard_terms", best.get("must_keep_terms", []))
-            ),
-            must_keep_soft_terms=tuple(str(x).lower() for x in best.get("must_keep_soft_terms", [])),
-            guard_tokens=tuple(str(x).lower() for x in best.get("guard_tokens", [])),
-            hangul_principle=bool(best.get("hangul_principle", False)),
-        )
+        return self._shard_dict_to_route(best)
 
     def _load_shards(self) -> list[dict]:
         if not self._root.is_dir():

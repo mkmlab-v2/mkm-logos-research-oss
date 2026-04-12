@@ -115,3 +115,69 @@ def test_v2_active_profile_sensitive_integrity_ok_matches_ultra_default() -> Non
     assert int(cm.get("sensitive_violation_count", -1)) == 0
     assert float(cm.get("avg_sensitive_integrity", 0.0)) >= 0.999
     assert float(cm.get("min_sensitive_integrity", 0.0)) >= 0.999
+
+
+def test_force_shard_id_requires_domain_router() -> None:
+    from scripts.report_multilens_performance_eval import evaluate_report
+
+    doc = {
+        "compression_cases": [
+            {
+                "id": "ablation_hook_001",
+                "raw_text": "사상의학 체질 태양인 증상",
+                "compressed_text": "placeholder",
+                "reconstructed_text": "사상의학 체질 태양인 증상",
+            }
+        ],
+        "fusion_answer_cases": [],
+    }
+    try:
+        evaluate_report(
+            doc,
+            source_input="inline:test_force_shard_requires_router",
+            mode="experimental",
+            strategy="C",
+            intensity="high",
+            use_domain_router=False,
+            force_shard_id="zone_c_hangul",
+        )
+    except ValueError as e:
+        assert "force_shard_id" in str(e) and "use_domain_router" in str(e)
+    else:
+        raise AssertionError("expected ValueError")
+
+
+def test_force_shard_id_ablation_row_metadata() -> None:
+    """Ablation v1: natural SCM route vs forced zone_c — metadata; experimental regenerates comp."""
+    from scripts.report_multilens_performance_eval import evaluate_report
+
+    doc = {
+        "compression_cases": [
+            {
+                "id": "ablation_hook_002",
+                "raw_text": "사상의학 체질 태양인 증상 처방",
+                "compressed_text": "placeholder",
+                "reconstructed_text": "사상의학 체질 태양인 증상 처방",
+            }
+        ],
+        "fusion_answer_cases": [],
+    }
+    report = evaluate_report(
+        doc,
+        source_input="inline:test_force_shard_ablation",
+        mode="experimental",
+        strategy="C",
+        intensity="high",
+        use_domain_router=True,
+        force_shard_id="zone_c_hangul",
+        general_max_saving_rate=0.54,
+        sensitive_max_saving_rate=0.5,
+    )
+    rc = (report.get("run_config") or {}).get("force_shard_id")
+    assert rc == "zone_c_hangul"
+    row = report["compression_metrics"]["cases"][0]
+    r = row["route"]
+    assert r["shard_id"] == "zone_c_hangul"
+    assert r["route_natural"]["shard_id"] == "zone_a_scm"
+    assert r["force_shard_id"] == "zone_c_hangul"
+    assert r.get("route_applied_is_forced") is True

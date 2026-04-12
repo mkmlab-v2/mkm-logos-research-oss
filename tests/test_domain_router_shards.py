@@ -49,3 +49,20 @@ def test_router_matches_finance_keywords() -> None:
     router = DomainSpecificRouter(SHARDS)
     route = router.route("risk drawdown leverage control")
     assert route.shard_id == "zone_e_finance"
+
+
+def test_route_from_shard_id_ignores_text() -> None:
+    router = DomainSpecificRouter(SHARDS)
+    r = router.route_from_shard_id("zone_c_hangul")
+    assert r.shard_id == "zone_c_hangul"
+    assert r.domain == "hangul"
+
+
+def test_route_from_shard_id_unknown_raises() -> None:
+    router = DomainSpecificRouter(SHARDS)
+    try:
+        router.route_from_shard_id("zone_no_such_shard_xyz")
+    except ValueError as e:
+        assert "Unknown shard_id" in str(e)
+    else:
+        raise AssertionError("expected ValueError")

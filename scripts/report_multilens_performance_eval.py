@@ -149,6 +149,13 @@ def _parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Attach master codebook lexicon bridge metadata (optional; may expand must_keep).",
     )
+    p.add_argument(
+        "--force-shard-id",
+        default="",
+        metavar="SHARD_ID",
+        help="Ablation: after natural route, use this shard's must_keep/hangul flags (requires --use-domain-router). "
+        "Per-case route includes route_natural vs applied shard_id.",
+    )
     return p
 
 
@@ -653,7 +660,10 @@ def evaluate_report(
     use_contextual_generator_v4: bool = False,
     use_contextual_generator_v5_codec: bool = False,
     require_tiktoken_o200k: bool = False,
+    force_shard_id: str | None = None,
 ) -> dict[str, Any]:
+    if force_shard_id and not use_domain_router:
+        raise ValueError("force_shard_id requires use_domain_router=True (DomainSpecificRouter).")
     must_keep = must_keep or set()
     comp_cases = doc.get("compression_cases", [])
     fus_cases = doc.get("fusion_answer_cases", [])
@@ -704,7 +714,11 @@ def evaluate_report(
             if apply_gematria_4d_bridge_policy and mode == "experimental":
                 effective_must_keep.update(_bridge_policy_terms_for_state(bridge_meta.get("state16")))
         if router is not None:
-            route = router.route(raw)
+            natural_route = router.route(raw)
+            if force_shard_id:
+                route = router.route_from_shard_id(force_shard_id)
+            else:
+                route = natural_route
             effective_must_keep.update(route.must_keep_hard_terms)
             # Soft terms: (1) conservative C/high (legacy) and (2) V2 multilens A/extreme bench
             # (MULTILENS_BRIDGE_POLICY_AB_OFF-class) so shard soft_term patches affect that profile.
@@ -716,6 +730,13 @@ def evaluate_report(
                 effective_must_keep.update(route.must_keep_soft_terms)
             effective_hangul_principle = use_hangul_principle or route.hangul_principle
             route_info = {"shard_id": route.shard_id, "domain": route.domain}
+            if force_shard_id:
+                route_info["route_natural"] = {
+                    "shard_id": natural_route.shard_id,
+                    "domain": natural_route.domain,
+                }
+                route_info["force_shard_id"] = str(force_shard_id)
+                route_info["route_applied_is_forced"] = natural_route.shard_id != route.shard_id
         if use_master_codebook_lexicon_v1:
             cb_path = resolve_latest_codebook_path(
                 explicit=master_codebook_lexicon_path,
@@ -1006,6 +1027,7 @@ def evaluate_report(
             "use_contextual_generator_v4": use_contextual_generator_v4,
             "use_contextual_generator_v5_codec": use_contextual_generator_v5_codec,
             "require_tiktoken_o200k": require_tiktoken_o200k,
+            "force_shard_id": force_shard_id,
             "tiktoken_o200k_encoding": TIKTOKEN_O200K_ENCODING,
             "tiktoken_o200k_available": enc_o200k is not None,
             "tiktoken_o200k_unavailable_reason": o200k_err,
@@ -1083,6 +1105,7 @@ def main() -> int:
         base_doc = json.loads(base_report_path.read_text(encoding="utf-8"))
         baseline_avg_jaccard = float(base_doc.get("compression_metrics", {}).get("avg_reconstruction_fidelity_jaccard", 0.0))
     must_keep = {t.strip().lower() for t in args.domain_sensitive_terms.split(",") if t.strip()}
+    force_sid = str(args.force_shard_id).strip() or None
     report = evaluate_report(
         doc,
         source_input=str(src.relative_to(ROOT)).replace("\\", "/"),
@@ -1099,6 +1122,7 @@ def main() -> int:
         require_tiktoken_o200k=bool(args.require_tiktoken_o200k),
         use_domain_router=bool(args.use_domain_router),
         use_master_codebook_lexicon_v1=bool(args.use_master_codebook_lexicon),
+        force_shard_id=force_sid,
     )
 
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

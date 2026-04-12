@@ -1,0 +1,36 @@
+{
+  "schema": "inference_config_v1",
+  "experiment_id": "AB_LOG_INFERENCE_V2",
+  "description": "Log/metric sandbox: anchors + optional LLM lexicon expansion; staging shard stays under artifacts until copied to codebook/shards.",
+  "target_shard_id": "zone_s_log_staging",
+  "target_domain": "log_staging",
+  "anchors": ["timestamp", "trace_id", "status_code"],
+  "auxiliary_anchors": ["error_code", "level"],
+  "metabolism_thresholds": {
+    "high_egress": 0.75,
+    "high_persistence": 0.75
+  },
+  "metabolism_jsonl": {
+    "row_schema_id": "LOG_METABOLISM_COHORT_ROW_V1",
+    "schema_path": "docs/final/artifacts/LOG_METABOLISM_COHORT_ROW_V1.schema.json",
+    "primary_keys": {
+      "egress_pressure": "egress_pressure",
+      "throttle_events": "throttle_events"
+    },
+    "aliases": {
+      "egress_pressure": ["requests_per_minute", "error_rate", "egress_index"],
+      "throttle_events": ["http_429_count", "circuit_breaker_opens", "throttle_count"]
+    },
+    "notes": "Code and gates use neutral keys only; SCM/narrative mapping lives in report JSON."
+  },
+  "sample_log_path": "",
+  "llm_expansion": {
+    "enabled": false,
+    "model_hint": "pro-class-large-context",
+    "prompt_version": "v1.2.1-boming-jiju-focus",
+    "max_lexicon_size": 100,
+    "temperature": 0.2
+  },
+  "fact_lock_policy": "strict_staging_separation",
+  "staging_output_note": "Default script output: docs/final/artifacts/staging_shards/zone_s_log_staging_v1.json — copy to codebook/shards/zone_s_log_staging.json only after human review."
+}
