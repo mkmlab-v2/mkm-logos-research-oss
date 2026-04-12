@@ -112,6 +112,38 @@ def test_public_tier_can_use_ultra_literal_runner_hint(monkeypatch):
     assert 0.0 <= float(metrics.get("savings_ratio", -1.0)) <= 1.0
 
 
+def test_public_tier_bulkhead_never_calls_live_eval_even_when_requested(monkeypatch):
+    """Track B (public tier): live evaluate_report path must not run (A/B bulkhead)."""
+    monkeypatch.setenv("COMPRESSION_API_ENTERPRISE_KEYS", "secret-enterprise-key")
+    monkeypatch.setenv("COMPRESSION_API_LIVE_EVAL_MIN_TOKENS", "0")
+    from scripts import compression_token_api_stub as stub
+
+    stub._live_eval_min_tokens.cache_clear()
+
+    def _live_eval_must_not_run(*_args, **_kwargs):
+        raise AssertionError("public tier must not invoke _live_eval_metrics / live evaluate_report")
+
+    monkeypatch.setattr(stub, "_live_eval_metrics", _live_eval_must_not_run)
+
+    payload = {
+        "text": "bulkhead public tier " * 30,
+        "eval_context": {
+            "hydrate_metrics": True,
+            "hydrate_live_eval": True,
+            "runner_hint": "active_default",
+        },
+    }
+    r = client.post("/v1/compress", json=payload, headers={"x-api-key": "wrong"})
+    assert r.status_code == 200
+    d = r.json()
+    flags = d.get("integrity_flags") or {}
+    assert flags.get("tier") == "public"
+    assert flags.get("hydrate_live_eval_suppressed") is True
+    assert flags.get("hydrate_live_eval_suppressed_reason") == "public_tier_use_enterprise_key"
+    assert flags.get("hydration_metrics_source") != "live_evaluate_report"
+    assert flags.get("metrics_mode") in {"literal_kpi_estimate", "ultra_literal_kpi_estimate"}
+
+
 def test_compress_returns_shard():
     r = client.post("/v1/compress", json={"text": "bible test hangul 테스트"})
     assert r.status_code == 200
