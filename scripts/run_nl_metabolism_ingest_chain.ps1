@@ -49,6 +49,11 @@ if (-not $RepoRoot) {
 }
 $RepoRoot = (Resolve-Path -LiteralPath $RepoRoot).Path
 
+$PythonExe = "py"
+if ($env:MKM_PYTHON_EXE -and (Test-Path -LiteralPath $env:MKM_PYTHON_EXE)) {
+    $PythonExe = $env:MKM_PYTHON_EXE
+}
+
 if (($SourceId -and $RawPath) -or (-not $SourceId -and -not $RawPath)) {
     throw "Provide exactly one of -SourceId or -RawPath"
 }
@@ -72,8 +77,8 @@ if ($IngestReport) {
     $pyArgs += @("--report", $ir)
 }
 
-Write-Host "[nl_metabolism_ingest] py $($pyArgs -join ' ')"
-& py @pyArgs
+Write-Host "[nl_metabolism_ingest] $PythonExe $($pyArgs -join ' ')"
+& $PythonExe @pyArgs
 if ($LASTEXITCODE -ne 0) {
     throw "ingest_notebooklm_metabolism_jsonl.py failed (exit $LASTEXITCODE)"
 }

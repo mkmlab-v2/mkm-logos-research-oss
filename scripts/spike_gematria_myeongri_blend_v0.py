@@ -94,6 +94,11 @@ def run_spike(
         "version": "0.1.0",
         "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "hypothesis_tier": "B",
+        "boundary_ack": True,
+        "label": (
+            "[HYPO][NON-DETERMINISTIC][NON-MEDICAL] Gematria–Myeongri 4D blend spike; "
+            "geometric metrics only."
+        ),
         "disclaimer": (
             "Geometric distances in 4D only; not accuracy, not trading, not doctrinal claim. "
             "Birth inputs are [HYPO] unless sourced."

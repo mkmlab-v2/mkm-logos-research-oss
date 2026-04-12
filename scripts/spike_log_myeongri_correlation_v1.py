@@ -137,11 +137,19 @@ def _correlation_block(
         p_p = sp_pp
     if sp_ps is not None:
         p_s = sp_ps
+    def _finite_round(x: Optional[float]) -> Optional[float]:
+        if x is None:
+            return None
+        xf = float(x)
+        if math.isnan(xf) or math.isinf(xf):
+            return None
+        return round(xf, 8)
+
     out: Dict[str, Any] = {
         "pearson": None if math.isnan(pr) else round(pr, 8),
         "spearman": None if math.isnan(sr) else round(sr, 8),
-        "p_value_pearson": None if p_p is None else round(float(p_p), 8),
-        "p_value_spearman": None if p_s is None else round(float(p_s), 8),
+        "p_value_pearson": _finite_round(p_p),
+        "p_value_spearman": _finite_round(p_s),
         "valid_windows": len(xs),
     }
     return out

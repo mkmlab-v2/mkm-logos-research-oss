@@ -86,9 +86,13 @@ $shardDest = Join-Path $RepoRoot "codebook\shards\$ShardId.json"
 function Invoke-PyArgList {
     # Pass a single string array — do not splat the outer call into param([string[]]$Args) or only the first token binds.
     param([string[]]$ArgList)
-    & py @ArgList
+    $exe = "py"
+    if ($env:MKM_PYTHON_EXE -and (Test-Path -LiteralPath $env:MKM_PYTHON_EXE)) {
+        $exe = $env:MKM_PYTHON_EXE
+    }
+    & $exe @ArgList
     if ($LASTEXITCODE -ne 0) {
-        throw "py failed: py $($ArgList -join ' ') (exit $LASTEXITCODE)"
+        throw "py failed: $exe $($ArgList -join ' ') (exit $LASTEXITCODE)"
     }
 }
 
