@@ -1,0 +1,12 @@
+{
+  "schema": "myeongri_sasang_codebook_spike_v1",
+  "sasang_constitution": "soeum_in",
+  "tokens": [
+    "흡취지기",
+    "소음인",
+    "체질"
+  ],
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "label": "[HYPO][NON-MEDICAL] Spike codebook from scm_boming_jiju_lexicon_v1"
+}

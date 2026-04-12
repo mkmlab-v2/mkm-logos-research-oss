@@ -1,0 +1,18 @@
+{
+  "schema": "myeongri_sasang_codebook_spike_v1",
+  "role": "global_union",
+  "tokens": [
+    "호산지기",
+    "사상의학",
+    "흡취지기",
+    "태음인",
+    "소음인",
+    "태양인",
+    "소양인",
+    "체질",
+    "심기",
+    "담기"
+  ],
+  "hypothesis_tier": "B",
+  "boundary_ack": true
+}

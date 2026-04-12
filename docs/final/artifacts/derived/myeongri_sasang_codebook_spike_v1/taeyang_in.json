@@ -1,0 +1,11 @@
+{
+  "schema": "myeongri_sasang_codebook_spike_v1",
+  "sasang_constitution": "taeyang_in",
+  "tokens": [
+    "태양인",
+    "심기"
+  ],
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "label": "[HYPO][NON-MEDICAL] Spike codebook from scm_boming_jiju_lexicon_v1"
+}

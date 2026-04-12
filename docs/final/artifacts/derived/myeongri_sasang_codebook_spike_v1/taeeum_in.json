@@ -1,0 +1,12 @@
+{
+  "schema": "myeongri_sasang_codebook_spike_v1",
+  "sasang_constitution": "taeeum_in",
+  "tokens": [
+    "호산지기",
+    "사상의학",
+    "태음인"
+  ],
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "label": "[HYPO][NON-MEDICAL] Spike codebook from scm_boming_jiju_lexicon_v1"
+}
