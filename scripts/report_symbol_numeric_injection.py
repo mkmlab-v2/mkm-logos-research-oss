@@ -11,6 +11,10 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in __import__("sys").path:
+    __import__("sys").path.insert(0, str(ROOT))
+
+from scripts.core.sovereign_jsonl import iter_jsonl_dict_rows  # noqa: E402
 PILOT = ROOT / "reports" / "constitution" / "btrack_pilot"
 DEFAULT_INPUT = PILOT / "symbol_candidates_curated_stable_latest.jsonl"
 DEFAULT_RAW_INPUT = PILOT / "symbol_candidates_stable_latest.jsonl"
@@ -24,14 +28,8 @@ def _abs(path_str: str) -> Path:
 
 
 def _iter_jsonl(path: Path):
-    with path.open("r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            obj = json.loads(line)
-            if isinstance(obj, dict):
-                yield obj
+    """B-track pilot JSONL: use Track B context (no Track A row guard)."""
+    yield from iter_jsonl_dict_rows(path, track_context="B")
 
 
 def _normalize_symbol(value: str) -> str:
