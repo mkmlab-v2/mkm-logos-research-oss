@@ -50,10 +50,13 @@ on:
       - "scripts/core/track_source_guard.py"
       - "scripts/core/sovereign_jsonl.py"
       - "scripts/spike_sovereign_token_saving.py"
+      - "scripts/spike_sovereign_vocab_efficiency.py"
       - "scripts/report_symbol_numeric_injection.py"
       - "tests/test_track_source_guard.py"
       - "tests/test_sovereign_jsonl.py"
       - "tests/test_spike_sovereign_token_saving_v1.py"
+      - "tests/test_sovereign_efficiency.py"
+      - "codebook/shards/**"
       - "scripts/spike_gematria_myeongri_blend_v0.py"
       - "scripts/myeongri_complete_fusion.py"
       - "tools/core/myeongri_4d_correction.py"
@@ -314,7 +317,7 @@ jobs:
 
       - name: Sovereign JSONL iterator + sovereign token spike smoke
         run: |
-          python -m pytest tests/test_sovereign_jsonl.py tests/test_spike_sovereign_token_saving_v1.py -q --tb=short
+          python -m pytest tests/test_sovereign_jsonl.py tests/test_spike_sovereign_token_saving_v1.py tests/test_sovereign_efficiency.py -q --tb=short
 
       - name: Logos–Myeongni state mapping snapshot (tracked artifact, no verse pipeline on runner)
         run: python -m pytest tests/test_logos_state_mapping_v1_snapshot.py -q --tb=short
