@@ -11,6 +11,7 @@ import argparse
 import json
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -93,10 +94,16 @@ def main() -> int:
     if out.is_file():
         n_lines = sum(1 for line in out.read_text(encoding="utf-8").splitlines() if line.strip())
 
+    st = latest.stat()
+    mtime_epoch = st.st_mtime
+    mtime_iso = datetime.fromtimestamp(mtime_epoch, tz=timezone.utc).isoformat()
+
     rep = {
         "schema": "vps_kpi_metabolism_export_report_v1",
         "source_kpi_jsonl": str(latest).replace("\\", "/"),
-        "source_mtime_utc": latest.stat().st_mtime,
+        "source_mtime_epoch": mtime_epoch,
+        "source_mtime_iso_utc": mtime_iso,
+        "source_size_bytes": st.st_size,
         "output_metabolism_jsonl": str(out).replace("\\", "/"),
         "output_rows": n_lines,
     }
