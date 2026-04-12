@@ -358,3 +358,38 @@ def test_valid_state_id_clamp_tightens_only_when_enabled(monkeypatch: pytest.Mon
     assert tight.risk_multiplier_cap == pytest.approx(min(baseline.risk_multiplier_cap, 0.65), rel=0, abs=1e-9)
     assert noop.risk_multiplier_cap == pytest.approx(baseline.risk_multiplier_cap, rel=0, abs=1e-9)
     assert tight.risk_multiplier_cap <= baseline.risk_multiplier_cap
+
+
+@pytest.mark.regime_integrity
+def test_track_b_provenance_suppresses_state_clamp(monkeypatch: pytest.MonkeyPatch) -> None:
+    """When source_track marks Track B, state_id must not tighten defensive clamp."""
+    workspace_root = _workspace_root()
+    g = _load_global_policy()
+
+    custom = {
+        "global": {
+            **g,
+            "myeongni_state_defensive_clamp_enabled": True,
+            "myeongni_state_risk_cap_map": {"7": 0.65, "8": 1.25},
+        }
+    }
+    monkeypatch.setattr("src.integration.dual_regime_api._load_policy", lambda _root: custom)
+
+    kwargs = dict(
+        as_of=datetime(2026, 3, 29, 12, 0, 0),
+        vector_4d={"S": 0.25, "L": 0.25, "K": 0.25, "M": 0.25},
+        psi_score=0.5,
+        bible_risk_score=0.0,
+        workspace_root=workspace_root,
+        context_metrics={"fear_greed_index": 0.0},
+    )
+    baseline = evaluate_dual_regime_and_market_shock(**kwargs)
+    tight = evaluate_dual_regime_and_market_shock(**kwargs, state_id=7)
+    suppressed = evaluate_dual_regime_and_market_shock(
+        **kwargs,
+        state_id=7,
+        state_provenance={"source_track": "B"},
+    )
+    assert tight.risk_multiplier_cap < baseline.risk_multiplier_cap
+    assert suppressed.risk_multiplier_cap == pytest.approx(baseline.risk_multiplier_cap, rel=0, abs=1e-9)
+    assert "bulkhead=track_b_state_suppressed" in suppressed.interpretation

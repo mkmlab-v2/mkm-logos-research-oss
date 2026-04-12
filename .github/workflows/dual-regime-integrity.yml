@@ -47,6 +47,8 @@ on:
       - "scripts/spike_4grid_myeongri_compression_v1.py"
       - "scripts/Run-4GridMyeongriCompressionSpikeV1.ps1"
       - "tests/test_spike_4grid_myeongri_compression_v1.py"
+      - "scripts/core/track_source_guard.py"
+      - "tests/test_track_source_guard.py"
       - "scripts/spike_gematria_myeongri_blend_v0.py"
       - "scripts/myeongri_complete_fusion.py"
       - "tools/core/myeongri_4d_correction.py"
@@ -301,6 +303,9 @@ jobs:
 
       - name: Run Dual Regime API smoke / Fact-Lock tests
         run: bash projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.sh
+
+      - name: Track source guard (A/B JSONL tagging)
+        run: python -m pytest tests/test_track_source_guard.py -q --tb=short
 
       - name: Logos–Myeongni state mapping snapshot (tracked artifact, no verse pipeline on runner)
         run: python -m pytest tests/test_logos_state_mapping_v1_snapshot.py -q --tb=short

@@ -83,6 +83,21 @@ def _resolve_state_id_with_source(signal_data: Dict[str, Any]) -> Tuple[Optional
             continue
     return None, "none"
 
+
+def _state_provenance_from_signal(signal_data: Dict[str, Any]) -> Dict[str, Any] | None:
+    """Optional ``source_track`` for dual_regime bulkhead (Track B suppresses state clamp)."""
+    if not isinstance(signal_data, dict):
+        return None
+    st = signal_data.get("source_track")
+    if st is None:
+        ra = signal_data.get("risk_assessment")
+        if isinstance(ra, dict):
+            st = ra.get("source_track")
+    if st is None:
+        return None
+    return {"source_track": st}
+
+
 # BTC-6 Regime Fusion adapter (risk multiplier skeleton, always-neutral 1.0 for now)
 try:
     from src.integration.btc6_regime_fusion_adapter import get_btc6_risk_multiplier
@@ -992,6 +1007,7 @@ class CryptoNitroLiveStrategy:
                 bible_risk_score=float(biblical_risk),
                 workspace_root=workspace_root,
                 state_id=state_id,
+                state_provenance=_state_provenance_from_signal(signal_data),
                 gate_profile=gate_profile,
             )
         except Exception as e:  # pragma: no cover - 방어적 처리

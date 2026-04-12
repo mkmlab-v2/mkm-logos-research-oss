@@ -18,6 +18,29 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Mapping
 
+# Lazy import: ``scripts.core.track_source_guard`` (workspace root on sys.path).
+def _track_b_suppresses_state_id(
+    state_provenance: Mapping[str, Any] | None,
+    workspace_root: Path,
+) -> bool:
+    if not state_provenance:
+        return False
+    root = str(workspace_root.resolve())
+    if root not in sys.path:
+        sys.path.insert(0, root)
+    try:
+        from scripts.core.track_source_guard import (  # noqa: WPS433
+            is_track_b_provenance,
+        )
+
+        return is_track_b_provenance(state_provenance)
+    except Exception:
+        v = state_provenance.get("source_track")
+        if v is None:
+            return False
+        s = str(v).strip().lower()
+        return s in {"b", "track_b", "trackb", "literal", "research"}
+
 
 @dataclass(frozen=True)
 class DualRegimeContext:
@@ -261,11 +284,15 @@ def evaluate_dual_regime_and_market_shock(
     logos_manuscript_text: str | None = None,
     logos_adjustment_strength: float = 0.12,
     state_id: int | None = None,
+    state_provenance: Mapping[str, Any] | None = None,
     gate_profile: str | None = None,
 ) -> DualRegimeContext:
     """Combine PSI, auxiliary bible-risk, and context into a risk cap and shock flags.
 
     This is a **bench/safe** implementation: no live orders; uses JSON policy only.
+
+    If ``state_provenance`` marks Track B (``source_track`` per ``scripts/core/track_source_guard.py``),
+    ``state_id`` is not applied to the optional myeongni defensive clamp (bulkhead).
     """
     _ = as_of  # timestamp reserved for future Chronos / regime_map lookups
     policy = _load_policy(workspace_root)
@@ -305,9 +332,15 @@ def evaluate_dual_regime_and_market_shock(
             strength=float(logos_adjustment_strength),
         )
 
+    effective_state_id = state_id
+    bulkhead_note: str | None = None
+    if _track_b_suppresses_state_id(state_provenance, workspace_root):
+        effective_state_id = None
+        bulkhead_note = "bulkhead=track_b_state_suppressed"
+
     cap, state_segment = _apply_myeongni_state_defensive_clamp(
         cap=cap,
-        state_id=state_id,
+        state_id=effective_state_id,
         policy_global=g,
         risk_multiplier_min=rmin,
         risk_multiplier_max=rmax,
@@ -329,6 +362,8 @@ def evaluate_dual_regime_and_market_shock(
         parts.extend(logos_segments)
     if state_segment:
         parts.append(state_segment)
+    if bulkhead_note:
+        parts.append(bulkhead_note)
     interpretation = "dual_regime: " + "; ".join(parts)
 
     return DualRegimeContext(

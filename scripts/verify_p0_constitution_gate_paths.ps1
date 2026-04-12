@@ -51,6 +51,8 @@ $required = @(
     "scripts\spike_4grid_myeongri_compression_v1.py",
     "scripts\Run-4GridMyeongriCompressionSpikeV1.ps1",
     "tests\test_spike_4grid_myeongri_compression_v1.py",
+    "scripts\core\track_source_guard.py",
+    "tests\test_track_source_guard.py",
     "scripts\core\domain_router.py",
     "scripts\core\multilens_bridge_policy_env.py",
     "codebook\shards\zone_a_scm.json",
