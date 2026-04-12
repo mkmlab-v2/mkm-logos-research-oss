@@ -26,9 +26,30 @@ def main() -> int:
         default=_ROOT / "docs" / "final" / "artifacts" / "derived" / "myeongri_sasang_codebook_spike_v1",
     )
     ap.add_argument("--lexicon", type=Path, default=DEFAULT_LEXICON_PATH)
+    default_sup = (
+        _ROOT / "docs" / "final" / "artifacts" / "derived" / "myeongri_sasang_codebook_spike_v1" / "supplement_terms_v1.json"
+    )
+    ap.add_argument(
+        "--supplement",
+        type=Path,
+        default=default_sup,
+        help="Optional JSON with entries[{term, sasang_constitution}] merged into codebook (B-track).",
+    )
     args = ap.parse_args()
 
-    grouped = entries_by_constitution(args.lexicon)
+    grouped: dict[str, list] = dict(entries_by_constitution(args.lexicon))
+    if args.supplement.is_file():
+        sup = json.loads(args.supplement.read_text(encoding="utf-8"))
+        for e in sup.get("entries") or []:
+            if not isinstance(e, dict):
+                continue
+            k = str(e.get("sasang_constitution", "")).strip()
+            term = str(e.get("term", "")).strip()
+            if k not in SASANG_KEYS or not term:
+                continue
+            grouped.setdefault(k, []).append(
+                {"term": term, "sasang_constitution": k, "pillar_role": "supplement_terms_v1"}
+            )
     out_dir = args.out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -87,6 +108,7 @@ def main() -> int:
     meta = {
         "schema": SCHEMA + "_meta",
         "lexicon_source": _rel(args.lexicon),
+        "supplement": _rel(args.supplement) if args.supplement.is_file() else None,
         "per_constitution_counts": {k: len(grouped.get(k, [])) for k in SASANG_KEYS},
         "global_unique_terms": len(global_terms),
         "out_dir": _rel(out_dir),

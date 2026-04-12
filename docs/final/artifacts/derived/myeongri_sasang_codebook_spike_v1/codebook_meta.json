@@ -1,12 +1,13 @@
 {
   "schema": "myeongri_sasang_codebook_spike_v1_meta",
   "lexicon_source": "docs\\final\\artifacts\\scm_boming_jiju_lexicon_v1.json",
+  "supplement": "docs\\final\\artifacts\\derived\\myeongri_sasang_codebook_spike_v1\\supplement_terms_v1.json",
   "per_constitution_counts": {
-    "taeeum_in": 3,
-    "soeum_in": 3,
-    "taeyang_in": 2,
-    "soyang_in": 2
+    "taeeum_in": 6,
+    "soeum_in": 6,
+    "taeyang_in": 5,
+    "soyang_in": 5
   },
-  "global_unique_terms": 10,
+  "global_unique_terms": 22,
   "out_dir": "docs\\final\\artifacts\\derived\\myeongri_sasang_codebook_spike_v1"
 }

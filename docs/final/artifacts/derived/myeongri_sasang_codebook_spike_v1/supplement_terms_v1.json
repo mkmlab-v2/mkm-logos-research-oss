@@ -1,0 +1,21 @@
+{
+  "schema": "myeongri_sasang_codebook_supplement_v1",
+  "version": "1.0.0",
+  "boundary_ack": true,
+  "hypothesis_tier": "B",
+  "label": "[HYPO][NON-MEDICAL] Extra routing tokens for 4-grid spike; not clinical lexicon SSOT",
+  "entries": [
+    {"term": "비위", "sasang_constitution": "taeeum_in"},
+    {"term": "습담", "sasang_constitution": "taeeum_in"},
+    {"term": "수렴", "sasang_constitution": "taeeum_in"},
+    {"term": "소화", "sasang_constitution": "soeum_in"},
+    {"term": "비장", "sasang_constitution": "soeum_in"},
+    {"term": "흡수", "sasang_constitution": "soeum_in"},
+    {"term": "심화", "sasang_constitution": "taeyang_in"},
+    {"term": "발산", "sasang_constitution": "taeyang_in"},
+    {"term": "열성", "sasang_constitution": "taeyang_in"},
+    {"term": "간담", "sasang_constitution": "soyang_in"},
+    {"term": "담화", "sasang_constitution": "soyang_in"},
+    {"term": "소양", "sasang_constitution": "soyang_in"}
+  ]
+}

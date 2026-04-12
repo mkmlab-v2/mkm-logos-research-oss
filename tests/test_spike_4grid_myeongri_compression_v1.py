@@ -28,5 +28,6 @@ def test_spike_4grid_schema_smoke() -> None:
     assert doc.get("hypothesis_tier") == "B"
     assert doc.get("boundary_ack") is True
     assert len(doc.get("rows") or []) == 5
-    for k in ("mean_ratio_baseline", "mean_ms_baseline"):
+    for k in ("mean_ratio_baseline", "mean_ms_baseline", "corpus_source"):
         assert k in doc
+    assert doc.get("corpus_source") == "synthetic"

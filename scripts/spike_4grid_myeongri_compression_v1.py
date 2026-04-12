@@ -94,6 +94,69 @@ def _route_sasang(text: str, codebook_dir: Path) -> str:
     return best
 
 
+def _load_corpus_file(
+    path: Path,
+    *,
+    max_docs: int,
+    jsonl_key: str | None,
+    max_chars_per_doc: int,
+) -> list[str]:
+    """Load up to max_docs text blobs from .jsonl (field jsonl_key or whole-line JSON str) or text lines."""
+    path = path.resolve()
+    if not path.is_file():
+        raise FileNotFoundError(path)
+
+    out: list[str] = []
+    suf = path.suffix.lower()
+    if suf == ".jsonl":
+        with path.open(encoding="utf-8", errors="replace") as f:
+            for line in f:
+                line = line.strip()
+                if not line or len(out) >= max_docs:
+                    break
+                try:
+                    obj = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if not isinstance(obj, dict):
+                    continue
+                if jsonl_key and jsonl_key in obj:
+                    blob = obj.get(jsonl_key)
+                else:
+                    blob = obj.get("answer") or obj.get("text") or obj.get("body") or obj.get("content")
+                if blob is None:
+                    blob = json.dumps(obj, ensure_ascii=False)
+                text = str(blob).strip()
+                if len(text) < 8:
+                    continue
+                if len(text) > max_chars_per_doc:
+                    text = text[:max_chars_per_doc]
+                out.append(text)
+    else:
+        raw = path.read_text(encoding="utf-8", errors="replace")
+        chunks = [c.strip() for c in raw.split("\n\n") if c.strip()]
+        if len(chunks) < 2:
+            chunks = [ln.strip() for ln in raw.splitlines() if ln.strip()]
+        for c in chunks:
+            if len(out) >= max_docs:
+                break
+            if len(c) < 8:
+                continue
+            out.append(c[:max_chars_per_doc] if len(c) > max_chars_per_doc else c)
+    return out
+
+
+def _corpus_cycle(docs: list[str], n: int, rng: random.Random) -> list[str]:
+    if not docs:
+        return []
+    if len(docs) >= n:
+        return [docs[i] for i in range(n)]
+    out: list[str] = []
+    for i in range(n):
+        out.append(docs[i % len(docs)])
+    return out
+
+
 def _generate_corpus(rng: random.Random, n: int, codebook_dir: Path) -> list[str]:
     global_toks = _load_tokens(codebook_dir / "global_tokens.json")
     if not global_toks:
@@ -180,6 +243,23 @@ def main() -> int:
         action="store_true",
         help="Include per-sample rows in --out JSON (large). Default: summary only.",
     )
+    ap.add_argument(
+        "--corpus-path",
+        type=Path,
+        default=None,
+        help="Optional JSONL or text file; if set, overrides synthetic corpus (cycles if fewer lines than --samples).",
+    )
+    ap.add_argument(
+        "--jsonl-key",
+        default="",
+        help="JSONL field for text (default: try answer, text, body, content or full JSON string).",
+    )
+    ap.add_argument(
+        "--max-chars-per-doc",
+        type=int,
+        default=16000,
+        help="Truncate each document to this many characters.",
+    )
     args = ap.parse_args()
 
     if _zstd(b"test", args.zstd_level) is None:
@@ -187,7 +267,23 @@ def main() -> int:
         return 2
 
     rng = random.Random(args.seed)
-    corpus = _generate_corpus(rng, args.samples, args.codebook_dir)
+    corpus_source = "synthetic"
+    corpus: list[str]
+    if args.corpus_path:
+        key = args.jsonl_key.strip() or None
+        loaded = _load_corpus_file(
+            args.corpus_path,
+            max_docs=args.samples,
+            jsonl_key=key,
+            max_chars_per_doc=args.max_chars_per_doc,
+        )
+        corpus = _corpus_cycle(loaded, args.samples, rng)
+        corpus_source = str(args.corpus_path)
+        if not corpus:
+            print("ERROR: corpus-path produced no documents", file=sys.stderr)
+            return 2
+    else:
+        corpus = _generate_corpus(rng, args.samples, args.codebook_dir)
 
     rows: list[dict[str, Any]] = []
     for text in corpus:
@@ -202,6 +298,7 @@ def main() -> int:
         "hypothesis_tier": "B",
         "boundary_ack": True,
         "label": "[HYPO][NON-MEDICAL] 4-grid compression spike; shared static dict assumed OOB",
+        "corpus_source": corpus_source,
         "samples": args.samples,
         "seed": args.seed,
         "zstd_level": args.zstd_level,

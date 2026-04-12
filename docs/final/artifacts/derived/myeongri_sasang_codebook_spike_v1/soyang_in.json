@@ -3,7 +3,10 @@
   "sasang_constitution": "soyang_in",
   "tokens": [
     "소양인",
-    "담기"
+    "담화",
+    "담기",
+    "간담",
+    "소양"
   ],
   "hypothesis_tier": "B",
   "boundary_ack": true,
