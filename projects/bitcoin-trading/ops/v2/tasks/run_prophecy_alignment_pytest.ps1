@@ -36,6 +36,11 @@ Set-Location -LiteralPath $workspaceRoot
     'tests/test_multilens_eval_harness_v2_thin.py' `
     'tests/test_multilens_dual_regime_market_adapter_v1.py' `
     'tests/test_myeongni_insight_observation_log.py' `
+    'tests/test_spike_log_myeongri_correlation_v1.py' `
+    'tests/test_convert_log_metabolism_to_myeongri_correlation_input_v1.py' `
+    'tests/test_generate_log_metabolism_synthetic_cohort_v1.py' `
+    'tests/test_gematria_myeongri_spike_smoke.py' `
+    'tests/test_myeongri_fusion_scripts_smoke.py' `
     'tests/test_hypothesis_insight_batch_v1_sample.py' `
     'tests/test_eval_prophecy_hit_rate_v1.py' `
     'tests/test_generate_btrack_hypothesis_prophecy_v1.py' `
