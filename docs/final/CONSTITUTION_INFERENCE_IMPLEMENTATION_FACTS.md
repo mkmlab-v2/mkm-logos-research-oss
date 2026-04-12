@@ -101,13 +101,19 @@
 | 독립 렌즈 융합 스텁 v0(비교 전용) | `scripts/report_independent_lens_fusion_stub_v0.py` → `docs/final/artifacts/independent_lens_fusion_stub_latest.json` | 계약 `INDEPENDENT_LENS_FUSION_STUB_V0_CONTRACT.json`; 일치/충돌 요약만 수행; A-track 자동융합·실거래 트리거 금지 |
 | 독립 렌즈 Shadow 게이트 v1 | `scripts/report_independent_lens_shadow_gate.py` → `docs/final/artifacts/independent_lens_shadow_gate_latest.json` | 계약 `INDEPENDENT_LENS_SHADOW_GATE_V1_CONTRACT.json`; 최소 관측 창(8주·2개월) 누적·`KEEP_OBSERVATION_ONLY` 고정 |
 | 계약 테스트 | `tests/test_myeongni_insight_observation_log.py` | sample·log JSONL + 스텁 JSON |
-| 만세력 기반 명리 4D 융합 | `scripts/myeongri_complete_fusion.py` | `MyeongriCompleteFusion`; `myeongri_4d_correction._ohang_data_to_4d`; `MyeongriController._get_base_vector_4d`와 연동; 본선·실거래 자동 합선 금지 |
+| 만세력 기반 명리 4D 융합 | `scripts/myeongri_complete_fusion.py` | `MyeongriCompleteFusion`; `tools/core/myeongri_4d_correction.py`·`_ohang_data_to_4d`; `MyeongriController._get_base_vector_4d`와 연동; 본선·실거래 자동 합선 금지 |
 | λ 변환 훅 (스텁) | `scripts/myeongri_lambda_converter.py` | `MyeongriLambdaConverter` |
 | 게마트리아+명리 4D 블렌드 스파이크 v0 | `scripts/spike_gematria_myeongri_blend_v0.py` → `docs/final/artifacts/gematria_myeongri_spike_blend_latest.json` | 기하 메트릭(L2·cosine)만; 예측·교리 정확도 아님; `independent_lens_fusion_stub`의 `consistency_rate`와 무관 |
+| 로그 윈도우 vs 명리 4D 상관 스파이크 v1 | `scripts/spike_log_myeongri_correlation_v1.py` → `docs/final/artifacts/log_myeongri_correlation_latest.json` | 입력 JSONL `log_myeongri_correlation_input_row_v1`; 출력 `log_myeongri_correlation_output_v0`; 축 `L` vs `error_rate`, `M`(토+수 응축) vs `diversity_ratio`, `‖V‖₂` vs `total_requests`; `p_value_pearson` / `p_value_spearman`(SciPy 없으면 null); 기본 최소 창 30; 라우팅·프로덕션 게이트 자동 합선 금지 |
+| LOG_METABOLISM → 상관 입력 JSONL 변환 | `scripts/convert_log_metabolism_to_myeongri_correlation_input_v1.py` | cohort `egress_pressure`/`throttle_events`를 결정론적 프록시로 `total_requests`/`error_count`/`unique_trace_ids`에 매핑(B-track·[HYPO]); 본선 KPI 단정 금지 |
+| LOG_METABOLISM 합성 코호트 생성 | `scripts/generate_log_metabolism_synthetic_cohort_v1.py` | 기본 `docs/final/artifacts/derived/log_metabolism_synthetic_cohort_v1.jsonl`; `--run-pipeline` 시 변환+`log_myeongri_correlation_synthetic_latest.json`; 실탄 대체 스모크 전용·[HYPO] |
+| 합성 실탄 풀스택 원클릭 | `scripts/run_synthetic_log_myeongri_full_stack_v1.ps1` | `generate_* --run-pipeline` 후 `run_nl_metabolism_auto_chain.ps1 -LocalRawPath`(합성 cohort)·`-SkipStaging -SkipCopyShard`; B-track 스모크 |
+| NL metabolism / ablation Python 선택 | `MKM_PYTHON_EXE` (선택) | 미설정 시 풀스택 스크립트가 `.venv_lora\Scripts\python.exe`를 자동 사용(SciPy·p-value); `run_nl_metabolism_*`·`run_log_ablation_chain_v1`의 `Invoke-PyArgList` 동일 |
+| Git·`tools/` 추적 보장 | 루트 `.gitignore` 말단 `!tools/myeongni/**`, `!tools/core/**`; 로컬 `.git/info/exclude`에 동일 예외 권장 | `tools/*` 일괄 무시와 공존 시 `tools/myeongni`·`tools/core` SSOT가 조용히 누락되지 않게 함(FAIL-GIT-005); `git check-ignore -v <path>`로 검증 |
 | B-track 메가 인사이트 배치 수집 | `scripts/run_notebooklm_mega_insight_batch.py` → `reports/notebooklm/btrack_mega_insights_*.jsonl` | 연구 수집·가설 정리 전용; 필수 태그 `[HYPO]`, `research_only=true`, `promotion_required=true`; A-track·실매매 자동 합선 금지 |
 | B-track NotebookLM JSONL 관측 KPI | `scripts/report_btrack_notebooklm_jsonl_kpi.py` → `docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json` | 출처·인용·답변 길이·가드레일 키워드 비율 등 **품질 관측**만; 예측력·A-track 승격 아님 |
 | Prism 논리 색인 레지스트리 | `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` | §14 Grand Indexing 2.0; 경로·역할; 코드 4D 축과 혼동 금지 |
-| 회귀 스모크 | `tests/test_myeongri_fusion_scripts_smoke.py`, `tests/test_gematria_myeongri_spike_smoke.py` | CI `dual-regime-integrity.yml`; `run_prophecy_alignment_pytest.ps1` / `.sh` 번들 |
+| 회귀 스모크 | `tests/test_myeongri_fusion_scripts_smoke.py`, `tests/test_gematria_myeongri_spike_smoke.py`, `tests/test_spike_log_myeongri_correlation_v1.py`, `tests/test_convert_log_metabolism_to_myeongri_correlation_input_v1.py`, `tests/test_generate_log_metabolism_synthetic_cohort_v1.py` | CI `dual-regime-integrity.yml`; `run_prophecy_alignment_pytest.ps1` / `.sh` 번들 |
 | 독립 렌즈 v0 회귀 | `tests/test_myeongni_independent_lens_v0.py`, `tests/test_independent_lenses_v0.py`, `tests/test_independent_lens_fusion_stub_v0.py`, `tests/test_independent_lens_shadow_gate_v1.py` | 명리 단독 + 3렌즈 파라미즈 + 융합 스텁 + Shadow 게이트 |
 
 ### 3.4 만세력 정밀 런타임 (제2계층, Pointer)
@@ -443,7 +449,7 @@
 | **S** — Static / Structural | 구현 SSOT·진입 문서 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`, `AGENTS.md` |
 | **L** — Linear / Logical | 흐름·레짐·규칙 코드 | `projects/bitcoin-trading/src/integration/dual_regime_api.py` (§2 표 참조) |
 | **K** — Kernel / Knowledge | 해석·B-track·원전 핸드오프 | `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` 등 |
-| **M** — Manifested / Metrics | 측정·게이트·산출 JSON | `scripts/verify_p0_constitution_gate_paths.ps1`, `scripts/spike_gematria_myeongri_blend_v0.py`, `projects/bitcoin-trading/memory/v2/ops/ops_phase1_chain_report_latest.json` |
+| **M** — Manifested / Metrics | 측정·게이트·산출 JSON | `scripts/verify_p0_constitution_gate_paths.ps1`, `scripts/spike_gematria_myeongri_blend_v0.py`, `scripts/spike_log_myeongri_correlation_v1.py`, `projects/bitcoin-trading/memory/v2/ops/ops_phase1_chain_report_latest.json` |
 
 **인간 가독 색인 (Draft)**: `docs/final/MKM12_GRAND_INDEX_MAP.md` — S/L/K/M 역할로 핵심 경로를 묶은 요약; 레지스트리·본 표와 **경로 충돌 시** 본 문서 표·JSON을 우선한다.
 

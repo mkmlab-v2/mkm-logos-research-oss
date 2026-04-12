@@ -80,6 +80,8 @@ projects/**/.next/
 .tmp/
 
 # Local generated artifacts (do not track)
+# Drop-zone for raw log metabolism paste (MKM_LOG_METABOLISM_RAW_IN alternative); may contain secrets
+docs/final/artifacts/derived/inbox_log_metabolism_raw.txt
 # Night Watchman harness history trees and large one-off exports (regenerable; avoid repo bloat)
 docs/final/artifacts/night_watchman_harness/
 docs/final/artifacts/pixel_battalion_refined_upload.zip
@@ -100,6 +102,8 @@ docs/final/artifacts/general_prophecy_latest.json
 docs/final/artifacts/l1_codebook_bypass_poc_latest.json
 docs/final/artifacts/prophecy_micro_codebook_poc_latest.json
 reports/constitution/master_codebook_training_smoke_bundle_*
+# Shard evolve sandbox runs (regenerable; objective + evolve_log under reports/shard_evolve/)
+reports/shard_evolve/
 # mkm-life: local funnel pipeline outputs (regenerable; keep scripts + SSOT pair tracked)
 projects/mkm-life/reports/one_question_funnel_*
 !projects/mkm-life/reports/one_question_funnel_daily_targets_latest.json
@@ -209,3 +213,10 @@ projects/bitcoin-trading/ops/windows-rehearsal/.showroom_staging/
 # Cursor/VS Code — 1인: SSH 터미널 cwd 등 공유 설정만 추적 (나머지 .vscode는 로컬)
 .vscode/*
 !.vscode/settings.json
+
+# tools/ — 일부 환경에서 `tools/*`가 로컬 exclude에만 있어도, 동일 패턴이 루트에 추가될 때를 대비해
+# 추적 SSOT 하위만 말단에서 재포함(FAIL-GIT-005). 상위에 `tools/*`가 없으면 no-op.
+!tools/myeongni/
+!tools/myeongni/**
+!tools/core/
+!tools/core/**
