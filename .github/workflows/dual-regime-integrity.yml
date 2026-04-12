@@ -35,6 +35,9 @@ on:
       - "scripts/tools/build_multilens_eval_input_v3_subset_v1.py"
       - "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V3.json"
       - "docs/final/artifacts/fixtures/log_metabolism_smoke_v1.jsonl"
+      - "docs/final/artifacts/MULTILENS_EVAL_LOG_SHARD_ROUTING_PILOT_V1.json"
+      - "scripts/vps/run_proxy_append_then_export_v1.sh"
+      - "scripts/Run-NlMetabolismAutoChainV3.ps1"
       - "tests/test_spike_log_myeongri_correlation_v1.py"
       - "tests/test_convert_log_metabolism_to_myeongri_correlation_input_v1.py"
       - "tests/test_generate_log_metabolism_synthetic_cohort_v1.py"
@@ -274,6 +277,22 @@ jobs:
           d = json.loads(p.read_text(encoding="utf-8"))
           assert d.get("schema") == "multilens_performance_eval_input_v3", d.get("schema")
           assert len(d.get("compression_cases") or []) == 5, len(d.get("compression_cases") or [])
+          PY
+
+      - name: Multilens log shard routing pilot JSON (contract)
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("docs/final/artifacts/MULTILENS_EVAL_LOG_SHARD_ROUTING_PILOT_V1.json")
+          d = json.loads(p.read_text(encoding="utf-8"))
+          assert d.get("schema") == "multilens_performance_eval_input_v1"
+          cases = d.get("compression_cases") or []
+          assert len(cases) == 6, len(cases)
+          for i, c in enumerate(cases, start=1):
+              assert c.get("id"), i
+              for k in ("raw_text", "compressed_text", "reconstructed_text"):
+                  assert isinstance(c.get(k), str) and c[k].strip(), (i, k)
           PY
 
       - name: Run Dual Regime API smoke / Fact-Lock tests

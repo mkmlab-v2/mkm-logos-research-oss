@@ -1,0 +1,42 @@
+{
+  "schema": "multilens_performance_eval_input_v1",
+  "description": "Pilot: dense trace_id/latency/grpc/json/pod tokens to widen routing gap between log_staging and log_metabolism_alt shards (lab only).",
+  "compression_cases": [
+    {
+      "id": "logp_001",
+      "raw_text": "trace_id=7f3a request_id=req-88 span_id=ab12 grpc.method=/Watchdog/Beat latency_ms=412 status_code=503 error=json parse failed pod=btc-live-7 namespace=prod node=nvme-01",
+      "compressed_text": "trace_id 7f3a grpc Watchdog 503 json parse pod btc-live-7 latency 412",
+      "reconstructed_text": "The trace_id 7f3a with request_id req-88 shows grpc /Watchdog/Beat latency_ms 412, status_code 503, json parse error on pod btc-live-7 in prod namespace."
+    },
+    {
+      "id": "logp_002",
+      "raw_text": "method=POST path=/v1/orders latency_ms=1201 timeout=true circuit=open rate_limit=429 jwt=masked tls=1.3 health=degraded",
+      "compressed_text": "POST orders latency 1201 timeout circuit open 429 health degraded",
+      "reconstructed_text": "POST to path /v1/orders with latency_ms 1201, timeout, circuit open, rate_limit 429, jwt masked, tls 1.3, health degraded."
+    },
+    {
+      "id": "logp_003",
+      "raw_text": "syslog rfc3339 level=error stack=RuntimeError message='heartbeat stale' container=app replica=3 region=ap-northeast-2",
+      "compressed_text": "syslog rfc3339 error stack heartbeat stale container app replica 3",
+      "reconstructed_text": "Syslog rfc3339 level error with stack RuntimeError, message heartbeat stale, container app, replica 3, region ap-northeast-2."
+    },
+    {
+      "id": "logp_004",
+      "raw_text": "kafka topic=metrics partition=2 offset=9912342 redis slow query=GET session host=edge-12 deployment=replicaSet",
+      "compressed_text": "kafka metrics partition redis slow GET session host edge deployment replicaSet",
+      "reconstructed_text": "Kafka topic metrics partition 2 offset large; redis slow query GET session; host edge-12 deployment replicaSet."
+    },
+    {
+      "id": "logp_005",
+      "raw_text": "oauth auth failure jwt expired tls handshake warn duration=88ms http/2 grpc status=UNAVAILABLE stack truncated",
+      "compressed_text": "oauth auth jwt expired tls warn duration 88ms grpc UNAVAILABLE stack truncated",
+      "reconstructed_text": "OAuth auth failure, jwt expired, tls handshake warn, duration 88ms, http/2 grpc UNAVAILABLE, stack truncated."
+    },
+    {
+      "id": "logp_006",
+      "raw_text": "oom kill_switch_events=1 fatal pod eviction namespace=trading node=gpu-0 service=router readiness=false startup probe failed",
+      "compressed_text": "oom kill_switch fatal pod eviction namespace trading readiness false startup probe",
+      "reconstructed_text": "OOM with kill_switch_events, fatal pod eviction in trading namespace on gpu-0 service router, readiness false, startup probe failed."
+    }
+  ]
+}
