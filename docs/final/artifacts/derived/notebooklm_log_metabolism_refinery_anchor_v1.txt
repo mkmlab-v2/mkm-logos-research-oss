@@ -1,0 +1,4 @@
+# MKM_LOG_METABOLISM_REFINERY_V1 — NotebookLM anchor (Fact-Lock)
+# notebook_id: e457f7ae-24b6-49fa-8f3f-1881e5ae027a
+# Role: LOG_METABOLISM cohort JSONL only. discover_nl_metabolism_source.py scans this notebook before other manifest entries.
+# First source_get_content pull path: set in notebooklm_pull_manifest_v1.json when a concrete source_id exists.

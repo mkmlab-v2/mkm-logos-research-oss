@@ -46,14 +46,32 @@ def _list_sources(notebook_id: str, nlm_bin: str) -> list[dict[str, Any]]:
     return [x for x in data if isinstance(x, dict)]
 
 
+def _priority_notebook_ids_from_manifest(doc: dict[str, Any]) -> list[str]:
+    raw = doc.get("discover_priority_notebook_ids")
+    if not isinstance(raw, list):
+        return []
+    out: list[str] = []
+    for x in raw:
+        s = str(x).strip()
+        if s and s not in out:
+            out.append(s)
+    return out
+
+
 def _default_notebook_ids(extra: list[str]) -> list[str]:
     seen: list[str] = []
     if MANIFEST.is_file():
         doc = json.loads(MANIFEST.read_text(encoding="utf-8-sig"))
-        for it in doc.get("items", []):
-            nb = str(it.get("notebook_id") or "").strip()
-            if nb and nb not in seen:
-                seen.append(nb)
+        if isinstance(doc, dict):
+            for nb in _priority_notebook_ids_from_manifest(doc):
+                if nb not in seen:
+                    seen.append(nb)
+            for it in doc.get("items", []):
+                if not isinstance(it, dict):
+                    continue
+                nb = str(it.get("notebook_id") or "").strip()
+                if nb and nb not in seen:
+                    seen.append(nb)
     for x in extra:
         x = str(x).strip()
         if x and x not in seen:

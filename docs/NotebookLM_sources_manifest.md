@@ -1,6 +1,6 @@
 # NotebookLM 소스 매니페스트 (A/B 이원)
 
-**작성일**: 2026-03-29 · **갱신**: 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
+**작성일**: 2026-03-29 · **갱신**: 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · **LOG_METABOLISM 전용** `MKM_LOG_METABOLISM_REFINERY_V1` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
 **정의**: **A = Fact-Lock(팩트 고정)**, **B = Creative-Lock(통찰·가설)**. B는 본선 OOF·실매매 트리거와 A를 혼선 없이 적용.
 
 **Cursor 3.0 (2026-04)**: NotebookLM과 동일하게 **브리핑·질의·소스 아카이브** 레이어다. **에이전트 병렬(Agents Window)·Design Mode**는 제품 기능이며, **압축 엔진·헌법·실매매 SSOT는 여전히 레포의 `.py`/JSON**이다(`AGENTS.md`, `COMPRESSION_SLA_POLICY_V1.md`).
@@ -40,6 +40,8 @@
   - `71f55a03-09d0-411f-b365-0ce2a2064c24` — https://notebooklm.google.com/notebook/71f55a03-09d0-411f-b365-0ce2a2064c24  
 - **압축·복원·예언 통합 (FACT 중심, 작전/성경/명리 제외)** — 브리핑·RAG 보조 전용; SSOT는 여전히 레포·`CONSTITUTION`·`artifacts`.  
   - `aba1f8b1-be62-4367-ac7f-b1a997bb77d4` — https://notebooklm.google.com/notebook/aba1f8b1-be62-4367-ac7f-b1a997bb77d4 — 제목: **MKM_CORE_INTELLIGENCE_V1** (MCP `notebook_create` + `source_add`; `.json` 단일 파일 업로드는 도구 제한 시 텍스트 요약·포인터로 대체)
+- **LOG_METABOLISM JSONL 정제 전용** — 원시 로그·엄격 프롬프트 산출 JSONL만 적재; `discover_nl_metabolism_source.py`가 `notebooklm_pull_manifest_v1.json`의 `discover_priority_notebook_ids`로 **최우선 스캔**.  
+  - `e457f7ae-24b6-49fa-8f3f-1881e5ae027a` — https://notebooklm.google.com/notebook/e457f7ae-24b6-49fa-8f3f-1881e5ae027a — 제목: **MKM_LOG_METABOLISM_REFINERY_V1**
 - **보조 노트북 (지휘관 지정 · B 궤적 / 브리핑·역사 소스)** — 위 메인 앵커를 **대체하지 않음**. 구현·게이트 팩트는 `CONSTITUTION`·`artifacts`·`.py`만.  
   - `978ab6ca-d069-4a78-8916-30c7844c4fa6` — https://notebooklm.google.com/notebook/978ab6ca-d069-4a78-8916-30c7844c4fa6  
   - `d193d8d4-5678-4cc7-8eb6-7046a9a3b16d` — https://notebooklm.google.com/notebook/d193d8d4-5678-4cc7-8eb6-7046a9a3b16d  

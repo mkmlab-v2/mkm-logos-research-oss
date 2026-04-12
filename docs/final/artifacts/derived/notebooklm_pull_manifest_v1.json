@@ -1,0 +1,38 @@
+{
+  "schema": "notebooklm_pull_manifest_v1",
+  "description": "NotebookLM MCP exports written under docs/final/artifacts/derived/ for Fact-Lock traceability.",
+  "pulled_at_utc": "2026-04-12T12:00:00Z",
+  "discover_priority_notebook_ids": [
+    "e457f7ae-24b6-49fa-8f3f-1881e5ae027a"
+  ],
+  "discover_priority_notebook_labels": {
+    "e457f7ae-24b6-49fa-8f3f-1881e5ae027a": "MKM_LOG_METABOLISM_REFINERY_V1"
+  },
+  "items": [
+    {
+      "path": "docs/final/artifacts/derived/notebooklm_log_metabolism_refinery_anchor_v1.txt",
+      "notebook_id": "e457f7ae-24b6-49fa-8f3f-1881e5ae027a",
+      "source_id": null,
+      "title": "MKM_LOG_METABOLISM_REFINERY_V1"
+    },
+    {
+      "path": "docs/final/artifacts/derived/notebooklm_openshell_rehearsal_source_2026-04-12.txt",
+      "notebook_id": "4a99b6e6-d718-49ed-a25c-235e560133f4",
+      "source_id": "c6a2c0d9-e655-4ee3-85c4-79d4a36994ed",
+      "title": "OpenShell 런타임 리허설 결과 보고"
+    },
+    {
+      "path": "docs/final/artifacts/derived/notebooklm_mkm_core_fact_excerpts_2026-04-12.txt",
+      "notebook_id": "aba1f8b1-be62-4367-ac7f-b1a997bb77d4",
+      "source_id": "e75bc377-bf56-4049-8b1b-b1fbcf9041ce",
+      "title": "FACT excerpts — L1 inverse spike + prophecy pointer"
+    },
+    {
+      "path": "docs/final/artifacts/derived/notebooklm_compression_briefing_2026-04-12.txt",
+      "notebook_id": "f8a2f448-f616-4ba7-ada2-46e0e962594e",
+      "source_id": "3df3fe0b-3f61-4fb2-b431-503da0ac2386",
+      "title": "압축 엔진 전황 보고서 (지휘관 브리핑 초안)"
+    }
+  ],
+  "metabolism_jsonl_note": "LOG_METABOLISM cohort rows are not auto-extracted from these Markdown/text sources. Use KPI-derived JSONL (log_metabolism_from_kpi_*_v1.jsonl) or add JSONL as a NotebookLM source (prefer MKM_LOG_METABOLISM_REFINERY_V1) then re-pull with source_get_content. discover_nl_metabolism_source.py honors discover_priority_notebook_ids first."
+}
