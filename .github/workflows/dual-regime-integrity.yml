@@ -43,6 +43,10 @@ on:
       - "tests/test_generate_log_metabolism_synthetic_cohort_v1.py"
       - "tests/test_gematria_myeongri_spike_smoke.py"
       - "tests/test_myeongri_fusion_scripts_smoke.py"
+      - "scripts/build_myeongri_sasang_codebook_spike_v1.py"
+      - "scripts/spike_4grid_myeongri_compression_v1.py"
+      - "scripts/Run-4GridMyeongriCompressionSpikeV1.ps1"
+      - "tests/test_spike_4grid_myeongri_compression_v1.py"
       - "scripts/spike_gematria_myeongri_blend_v0.py"
       - "scripts/myeongri_complete_fusion.py"
       - "tools/core/myeongri_4d_correction.py"
@@ -444,6 +448,9 @@ jobs:
             tests/test_gematria_myeongri_spike_smoke.py \
             tests/test_myeongri_fusion_scripts_smoke.py \
             -q --tb=short
+
+      - name: 4-grid myeongri·sasang codebook compression spike (B-track)
+        run: python -m pytest tests/test_spike_4grid_myeongri_compression_v1.py -q --tb=short
 
       - name: W3/W4 aux non-gating consistency and document audit
         run: |
