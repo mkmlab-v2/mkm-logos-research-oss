@@ -106,6 +106,10 @@
     - 결과: mixed PASS, `swap_typo exact=0.2472`, `recovery=0.2806` (바닥선 미달)
     - 판정: `HOLD_INVESTIGATE` → 주간 결정 `HOLD_V4_BASELINE`
   - D5 종합 결정: `docs/final/artifacts/l1_inverse_decoder_week1_d5_decision_v1.json`
+  - Week2-D6 확대 재현/지연 점검: `docs/final/artifacts/l1_inverse_decoder_week2_d6_repro_latency_v1.json`
+    - mixed: PASS (`exact=0.6217`, `recovery=0.6392`, `p95 latency=165.86ms/sample`)
+    - swap_typo: `exact=0.2508` PASS, `recovery=0.2817` FAIL(기준 0.29), 지연 PASS
+    - 판정: `HOLD_INVESTIGATE`
 - **향후 2주 실행 일정 (운영/개발 분리)**
   - Week1-D1: `Register-L1InverseDecoderDailyGateTask.ps1`로 일일 게이트 스케줄 등록 + 1회 수동 실행 확인
   - Week1-D2: `run_l1_inverse_decoder_failure_profile_v1.py --mode swap_typo` 실행, 실패유형 1순위 고정
