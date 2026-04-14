@@ -93,6 +93,9 @@
     - 최신: `docs/final/artifacts/l1_inverse_decoder_daily_gate_v1_latest.json`
     - 판정: `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` (`all_ok=true`)
     - 기준: `mixed exact>=0.55`, `mixed recovery>=0.58`, `swap_typo exact>=0.25`, `swap_typo recovery>=0.29`
+  - 실패유형 프로파일: `scripts/run_l1_inverse_decoder_failure_profile_v1.py`
+    - 최신: `docs/final/artifacts/l1_inverse_decoder_failure_profile_v1_latest.json`
+    - 현재 1순위 실패: `order_only_mismatch` (ratio≈0.753)
 - **운영 보고 규칙(3줄):**
   - 현재 단계 / 증거 파일 경로 / 다음 1스텝
 
