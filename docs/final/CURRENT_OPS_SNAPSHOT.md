@@ -86,6 +86,9 @@
     - `C2 mixed non-regression`: PASS
     - `C3 swap_typo absolute floor(exact>=0.25, recovery>=0.29)`: PASS
     - 최종: `READY_FOR_BROAD_ROLLOUT`
+  - 후속 개선 실험(v4 + local_refine) 판정: `docs/final/artifacts/l1_inverse_decoder_v4_local_refine_ab_v1.json`
+    - 결과: `exact/recovery delta=0.0`, `latency 증가`(mixed +9.98ms/sample, swap_typo +30.87ms/sample)
+    - 게이트: `HOLD_V4_BASELINE` (채택 보류)
 - **운영 보고 규칙(3줄):**
   - 현재 단계 / 증거 파일 경로 / 다음 1스텝
 

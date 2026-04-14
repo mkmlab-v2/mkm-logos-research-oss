@@ -1,0 +1,127 @@
+{
+  "schema": "l1_inverse_decoder_v4_local_refine_ab_v1",
+  "research_only": true,
+  "inputs": {
+    "seeds": [
+      701,
+      809,
+      907
+    ],
+    "samples": 180,
+    "beam_size": 8,
+    "noise_level": 0.1,
+    "scoring_mode": "enhanced"
+  },
+  "variants": [
+    {
+      "variant": "v4_baseline",
+      "rows": [
+        {
+          "mode": "mixed",
+          "avg_exact_restore_rate": 0.6074074074074075,
+          "avg_recovery_rate": 0.6240740740740741,
+          "avg_latency_ms_per_sample": 196.20578833338288,
+          "failure_profile": {
+            "total_failures": 212,
+            "top_types": [
+              [
+                "order_only_mismatch",
+                186
+              ],
+              [
+                "typo_oov_not_recovered",
+                26
+              ]
+            ]
+          }
+        },
+        {
+          "mode": "swap_typo",
+          "avg_exact_restore_rate": 0.25740740740740736,
+          "avg_recovery_rate": 0.29259259259259257,
+          "avg_latency_ms_per_sample": 182.94758574101488,
+          "failure_profile": {
+            "total_failures": 401,
+            "top_types": [
+              [
+                "order_only_mismatch",
+                302
+              ],
+              [
+                "typo_oov_not_recovered",
+                99
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "variant": "v4_plus_local_refine",
+      "rows": [
+        {
+          "mode": "mixed",
+          "avg_exact_restore_rate": 0.6074074074074075,
+          "avg_recovery_rate": 0.6240740740740741,
+          "avg_latency_ms_per_sample": 206.18958222222759,
+          "failure_profile": {
+            "total_failures": 212,
+            "top_types": [
+              [
+                "order_only_mismatch",
+                186
+              ],
+              [
+                "typo_oov_not_recovered",
+                26
+              ]
+            ]
+          }
+        },
+        {
+          "mode": "swap_typo",
+          "avg_exact_restore_rate": 0.25740740740740736,
+          "avg_recovery_rate": 0.29259259259259257,
+          "avg_latency_ms_per_sample": 213.81898166663532,
+          "failure_profile": {
+            "total_failures": 401,
+            "top_types": [
+              [
+                "order_only_mismatch",
+                302
+              ],
+              [
+                "typo_oov_not_recovered",
+                99
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "delta_vs_v4_baseline": [
+    {
+      "mode": "mixed",
+      "exact_delta": 0.0,
+      "recovery_delta": 0.0,
+      "latency_delta_ms_per_sample": 9.983793888844701
+    },
+    {
+      "mode": "swap_typo",
+      "exact_delta": 0.0,
+      "recovery_delta": 0.0,
+      "latency_delta_ms_per_sample": 30.871395925620448
+    }
+  ],
+  "gate": {
+    "checks": {
+      "swap_typo_exact_uplift_ok": false,
+      "swap_typo_recovery_uplift_ok": false,
+      "mixed_non_regression_ok": true,
+      "latency_budget_ok": false
+    },
+    "all_ok": false,
+    "decision": "HOLD_V4_BASELINE"
+  }
+}
