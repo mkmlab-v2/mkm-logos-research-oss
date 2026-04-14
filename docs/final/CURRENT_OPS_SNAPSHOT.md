@@ -110,6 +110,27 @@
     - mixed: PASS (`exact=0.6217`, `recovery=0.6392`, `p95 latency=165.86ms/sample`)
     - swap_typo: `exact=0.2508` PASS, `recovery=0.2817` FAIL(기준 0.29), 지연 PASS
     - 판정: `HOLD_INVESTIGATE`
+  - Week2-D7 실험 1안(DBA-style literal 포함 강제): `docs/final/artifacts/l1_inverse_decoder_v4_dba_literal_constraint_ab_v1.json`
+    - 결과: mixed 대폭 하락(`exact/recovery -0.1867`), `swap_typo` 미미 개선(`exact/recovery +0.0008`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D8 실험 2안(DFA-style shape 마스킹, swap_typo 한정): `docs/final/artifacts/l1_inverse_decoder_v4_dfa_mask_ab_v1.json`
+    - 결과: mixed 비회귀(`exact/recovery +0.0017`), `swap_typo` 소폭 하락(`exact/recovery -0.0025`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D9 실험 3안(patience factor 조기종료, swap_typo 우선): `docs/final/artifacts/l1_inverse_decoder_v4_patience_ab_v1.json`
+    - 결과: mixed 비회귀(`exact/recovery +0.0008`), `swap_typo` 소폭 하락(`exact/recovery -0.0033`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D10 실험 4안(order-only mismatch 협폭 tie-break): `docs/final/artifacts/l1_inverse_decoder_v4_order_tiebreak_zero_edit_ab_v1.json`
+    - 결과: mixed 소폭 개선(`exact/recovery +0.0042`), `swap_typo` 소폭 하락(`exact/recovery -0.0017`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D11 실험 5안(structured local-window 후보풀, swap_typo 한정): `docs/final/artifacts/l1_inverse_decoder_v4_structured_pool_ab_v1.json`
+    - 결과: mixed 소폭 개선(`exact/recovery +0.0033`), `swap_typo` 소폭 하락(`exact/recovery -0.0025`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D12 실험 6안(swap_typo 전용 2-stage decode path): `docs/final/artifacts/l1_inverse_decoder_v4_two_stage_decode_ab_v1.json`
+    - 결과: mixed 소폭 개선(`exact/recovery +0.0025`), `swap_typo` 미미 개선(`exact/recovery +0.0008`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2 구조 실험 묶음 최종결정: `docs/final/artifacts/l1_inverse_decoder_week2_structural_experiments_decision_v1.json`
+    - 결정: `FREEZE_ON_V4_BASELINE`
+    - 근거: D7~D12 전 후보가 `swap_typo uplift +0.02` 게이트 미달
 - **향후 2주 실행 일정 (운영/개발 분리)**
   - Week1-D1: `Register-L1InverseDecoderDailyGateTask.ps1`로 일일 게이트 스케줄 등록 + 1회 수동 실행 확인
   - Week1-D2: `run_l1_inverse_decoder_failure_profile_v1.py --mode swap_typo` 실행, 실패유형 1순위 고정
