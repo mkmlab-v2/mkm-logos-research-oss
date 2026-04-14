@@ -1,7 +1,7 @@
 # Constitution / Inference — 구현 팩트 (SSOT)
 
 **작성일**: 2026-03-29  
-**최종 갱신**: 2026-04-14 — `google.genai` `HttpOptions.timeout` ms 정합(`gemini_multimodal_batch`·`staging_shard_inference_run`·`generate_btrack_hypothesis_prophecy_v1`); `fill_human_regime_audit_llm_spike` 루트 `.env` 로드; dual-regime-integrity에 human regime audit pytest 단계.  
+**최종 갱신**: 2026-04-14 — `google.genai` `HttpOptions.timeout` ms 정합(`gemini_multimodal_batch`·`staging_shard_inference_run`·`generate_btrack_hypothesis_prophecy_v1`); `fill_human_regime_audit_llm_spike` 루트 `.env` 로드; dual-regime-integrity에 `zstandard` 의존성 및 branch-optional 스파이크 pytest 파일 존재 가드(미추적 시 skip, 추적 시 엄격 실행).  
 **이전 갱신**: 2026-04-14 §2 B-track `4d_to_ohaeng`·human regime audit 스파이크 행; §3.4.1 Postella; 2026-04-13 §1.2 AE-2 KOSPI.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
 

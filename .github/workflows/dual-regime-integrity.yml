@@ -348,6 +348,9 @@ jobs:
         run: |
           python -m pytest tests/test_sovereign_jsonl.py tests/test_spike_sovereign_token_saving_v1.py tests/test_sovereign_efficiency.py -q --tb=short
 
+      # Some spike tests are branch-optional (not always tracked on main/chore branches).
+      # Guard missing files to avoid false-red CI from "file not found" while keeping
+      # tracked tests strict when they exist.
       - name: AE-2 KOSPI structural entropy spike smoke
         run: |
           python -m pip install --upgrade zstandard
