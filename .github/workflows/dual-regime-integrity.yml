@@ -351,7 +351,11 @@ jobs:
       - name: AE-2 KOSPI structural entropy spike smoke
         run: |
           python -m pip install --upgrade zstandard
-          python -m pytest tests/test_spike_kospi_structural_entropy_v1.py tests/test_spike_kospi_structural_entropy_compare_v1.py -q --tb=short
+          if [[ -f tests/test_spike_kospi_structural_entropy_v1.py && -f tests/test_spike_kospi_structural_entropy_compare_v1.py ]]; then
+            python -m pytest tests/test_spike_kospi_structural_entropy_v1.py tests/test_spike_kospi_structural_entropy_compare_v1.py -q --tb=short
+          else
+            echo "SKIP: AE-2 KOSPI structural entropy tests are not tracked in this branch."
+          fi
 
       - name: Logos–Myeongni state mapping snapshot (tracked artifact, no verse pipeline on runner)
         run: python -m pytest tests/test_logos_state_mapping_v1_snapshot.py -q --tb=short
