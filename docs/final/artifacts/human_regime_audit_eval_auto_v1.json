@@ -1,0 +1,39 @@
+{
+  "schema": "btrack_human_regime_audit_eval_v1",
+  "generated_at_utc": "2026-04-14T03:55:01Z",
+  "bundle_path": "docs/final/artifacts/human_regime_audit_filled_auto_v1.json",
+  "items_with_human_label": 50,
+  "items_skipped_no_human": 0,
+  "keyword_accuracy_vs_human": 0.24,
+  "theory_accuracy_vs_human": 0.04,
+  "theory_evaluated_count": 50,
+  "keyword_vs_theory_agreement_rate": 0.44,
+  "keyword_vs_theory_pairs": 50,
+  "confusion_keyword_vs_human": {
+    "lehman||other": 7,
+    "unknown||other": 5,
+    "normal||normal": 1,
+    "normal||other": 15,
+    "unknown||unknown": 10,
+    "lehman||unknown": 4,
+    "normal||unknown": 6,
+    "it_bubble||it_bubble": 1,
+    "unknown||normal": 1
+  },
+  "confusion_theory_vs_human": {
+    "normal||other": 27,
+    "normal||normal": 2,
+    "normal||unknown": 20,
+    "normal||it_bubble": 1
+  },
+  "confusion_keyword_vs_theory": {
+    "lehman||normal": 11,
+    "unknown||normal": 16,
+    "normal||normal": 22,
+    "it_bubble||normal": 1
+  },
+  "risk_note": {
+    "scope": "B-track measurement",
+    "not_trading_trigger": true
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "btrack_human_regime_audit_measurement_manifest_v1",
+  "generated_at_utc": "2026-04-14T03:14:03Z",
+  "note": "auto_fill = substitute labels (heuristic or Gemini). proxy_* = keyword/theory as pseudo-human. None are ground truth.",
+  "audit_sample": "C:/workspace/docs/final/artifacts/human_regime_audit_sample_latest.json",
+  "auto_fill": "gemini",
+  "gemini_fill_options": {
+    "timeout": 240,
+    "batch_size": 4,
+    "max_retries": 4
+  },
+  "filled_auto": "C:/workspace/docs/final/artifacts/human_regime_audit_filled_auto_v1.json",
+  "eval_auto": "C:/workspace/docs/final/artifacts/human_regime_audit_eval_auto_v1.json",
+  "filled_proxy_keyword": "C:/workspace/docs/final/artifacts/human_regime_audit_filled_proxy_keyword_v1.json",
+  "filled_proxy_theory": "C:/workspace/docs/final/artifacts/human_regime_audit_filled_proxy_theory_v1.json",
+  "eval_proxy_keyword": "C:/workspace/docs/final/artifacts/human_regime_audit_eval_proxy_keyword_v1.json",
+  "eval_proxy_theory": "C:/workspace/docs/final/artifacts/human_regime_audit_eval_proxy_theory_v1.json",
+  "summary": {
+    "auto_fill_run": {
+      "items_labeled": 50,
+      "keyword_accuracy_vs_human": 0.24,
+      "theory_accuracy_vs_human": 0.04,
+      "keyword_vs_theory_agreement_rate": 0.44
+    },
+    "proxy_keyword_run": {
+      "items_labeled": 50,
+      "keyword_accuracy_vs_human": 1.0,
+      "theory_accuracy_vs_human": 0.44,
+      "keyword_vs_theory_agreement_rate": 0.44
+    },
+    "proxy_theory_run": {
+      "items_labeled": 50,
+      "keyword_accuracy_vs_human": 0.44,
+      "theory_accuracy_vs_human": 1.0,
+      "keyword_vs_theory_agreement_rate": 0.44
+    }
+  },
+  "risk_note": {
+    "proxy_not_ground_truth": true,
+    "auto_fill_not_ground_truth": true,
+    "not_trading_trigger": true
+  }
+}
