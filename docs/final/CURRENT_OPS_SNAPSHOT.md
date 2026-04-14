@@ -149,6 +149,9 @@
   - Week2-D18 실험 12안(swap_typo-only structural alpha=0.3): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_only_structural_alpha_ab_v1.json`
     - 결과: mixed 비회귀(`exact/recovery +0.0033`), `swap_typo` 소폭 하락(`exact/recovery -0.0025`)
     - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
+    - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
+    - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
 - **향후 2주 실행 일정 (운영/개발 분리)**
   - Week1-D1: `Register-L1InverseDecoderDailyGateTask.ps1`로 일일 게이트 스케줄 등록 + 1회 수동 실행 확인
   - Week1-D2: `run_l1_inverse_decoder_failure_profile_v1.py --mode swap_typo` 실행, 실패유형 1순위 고정
