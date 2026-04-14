@@ -1,0 +1,68 @@
+{
+  "schema": "l1_agb_decoder_spike_test_latest_v1",
+  "research_only": true,
+  "inputs": {
+    "seeds": [
+      701,
+      809,
+      907,
+      1009,
+      1103
+    ],
+    "samples": 240,
+    "beam_size": 8,
+    "noise_level": 0.1,
+    "scoring_mode": "enhanced"
+  },
+  "candidate": "agb_v1_anchor_gap_bipartite",
+  "results": {
+    "mixed": {
+      "mode": "mixed",
+      "avg_exact_restore_rate": 0.6174999999999999,
+      "avg_recovery_rate": 0.635,
+      "avg_latency_ms_per_sample": 135.02857716666767,
+      "p95_latency_ms_per_sample": 137.36437583332494,
+      "avg_anchor_hit_rate": 1.0
+    },
+    "swap_typo": {
+      "mode": "swap_typo",
+      "avg_exact_restore_rate": 0.21416666666666667,
+      "avg_recovery_rate": 0.24583333333333335,
+      "avg_latency_ms_per_sample": 126.65157858330834,
+      "p95_latency_ms_per_sample": 127.8301516669065,
+      "avg_anchor_hit_rate": 1.0
+    }
+  },
+  "baseline_reference": {
+    "mixed_exact": 0.6216666666666667,
+    "mixed_recovery": 0.6391666666666667,
+    "swap_typo_exact": 0.25083333333333335,
+    "swap_typo_recovery": 0.2816666666666667,
+    "mixed_p95_latency_ms_per_sample": 165.86
+  },
+  "delta_vs_baseline": {
+    "mixed_exact_delta": -0.004166666666666763,
+    "mixed_recovery_delta": -0.004166666666666652,
+    "swap_typo_exact_delta": -0.03666666666666668,
+    "swap_typo_recovery_delta": -0.03583333333333333
+  },
+  "gate": {
+    "checks": {
+      "swap_typo_exact_uplift_ok": false,
+      "swap_typo_recovery_uplift_ok": false,
+      "mixed_non_regression_ok": true
+    },
+    "all_ok": false,
+    "decision": "HOLD_V4"
+  },
+  "kill_criteria": {
+    "mixed_exact_breach": false,
+    "latency_p95_breach": false,
+    "swap_typo_below_baseline": true
+  },
+  "continue_criteria": {
+    "swap_typo_exact_ge_target": false,
+    "mixed_recovery_protected": false,
+    "anchor_hit_rate_ge_85": true
+  }
+}

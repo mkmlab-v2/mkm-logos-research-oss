@@ -149,9 +149,21 @@
   - Week2-D18 실험 12안(swap_typo-only structural alpha=0.3): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_only_structural_alpha_ab_v1.json`
     - 결과: mixed 비회귀(`exact/recovery +0.0033`), `swap_typo` 소폭 하락(`exact/recovery -0.0025`)
     - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D19 실험 13안(swap_typo router v1, safe switch): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_router_v1_ab_v1.json`
+    - 결과: mixed 비회귀(`exact/recovery +0.0017`), `swap_typo` 소폭 하락(`exact/recovery -0.0025`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D20 실험 14안(AGB decoder v1 spike): `docs/final/artifacts/l1_agb_decoder_spike_test_latest.json`
+    - 결과: mixed 소폭 하락(`exact/recovery -0.0042`), `swap_typo` 유의 하락(`exact -0.0367`, `recovery -0.0358`)
+    - Kill Criteria: `swap_typo_below_baseline=true` 충족으로 즉시 중단
+    - 보조 분해: `docs/final/artifacts/l1_agb_decoder_noise_breakdown_latest.json`
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
+  - A-Track 일일 게이트 재실행: `docs/final/artifacts/l1_inverse_decoder_daily_gate_v1_latest.json`
+    - 판정: `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` (all checks true)
+  - A-Track 운영 하드닝 정책 고정: `docs/final/artifacts/l1_inverse_decoder_atrack_operational_hardening_v1.json`
+    - 핵심: 일일 게이트 강제 + 실패 시 즉시 롤백 + 실패 알림 상시화
 - **향후 2주 실행 일정 (운영/개발 분리)**
   - Week1-D1: `Register-L1InverseDecoderDailyGateTask.ps1`로 일일 게이트 스케줄 등록 + 1회 수동 실행 확인
   - Week1-D2: `run_l1_inverse_decoder_failure_profile_v1.py --mode swap_typo` 실행, 실패유형 1순위 고정
