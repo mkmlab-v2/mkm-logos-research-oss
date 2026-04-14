@@ -129,6 +129,10 @@
     - 최고 신호: tuple-collapse에서 `swap_typo` 개선 신호(+0.0066/+0.0109) 있었으나 mixed 회귀로 폐기 (`HOLD_PATCH_MIXED_REGRESSION`)
     - 최악 케이스: MBR/AGB에서 `swap_typo` 유의 하락(최대 약 -0.0175~-0.0367)으로 즉시 중단
     - 상세 아티팩트 묶음: `l1_inverse_decoder_v4_swap_typo_specialized_v1_ab_v1.json`, `l1_inverse_decoder_v4_dba_lite_bucket_beam_ab_v1.json`, `l1_inverse_decoder_v4_swap_typo_mbr_rerank_ab_v1.json`, `l1_inverse_decoder_v4_swap_typo_damerau_edit_ab_v1.json`, `l1_inverse_decoder_v4_tuple_collapse_alpha_sweep_v1.json`, `l1_inverse_decoder_v4_swap_typo_only_structural_alpha_ab_v1.json`, `l1_inverse_decoder_v4_swap_typo_router_v1_ab_v1.json`, `l1_agb_decoder_spike_test_latest.json`
+  - Week2-D21 실험 16안(failure-log 기반 경량 reranker v1): `scripts/run_l1_swap_typo_reranker_v1.py`
+    - 데이터셋: `l1_swap_typo_reranker_v1_dataset_summary.json` (rows=51840, groups=540)
+    - 결과: mixed 개선(`exact +0.0478`, `recovery +0.0414`) / `swap_typo`는 `exact +0.0047`, `recovery -0.0039`
+    - 판정: `HOLD_V4` (swap_typo uplift 게이트 미달)
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
