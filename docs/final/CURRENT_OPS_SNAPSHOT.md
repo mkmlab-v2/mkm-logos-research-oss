@@ -76,6 +76,11 @@
     - 기준(3 seeds, 180 samples, beam 8, noise 0.1, enhanced): `swap_typo exact +0.0667`, `recovery +0.0667`
   - compact 운영 샌티티: `docs/final/artifacts/l1_inverse_decoder_objective_v4_compact_eval_v1.json`
     - `mixed exact/recovery +0.0167`, `swap_typo exact/recovery +0.0917` (2 seeds, 60 samples)
+  - 운영 토글(기본 ON):
+    - 기본: `swap_typo objective v4` 활성(`--disable-swap-typo-objective-v4` 미사용 시)
+    - 롤백: `--disable-swap-typo-objective-v4`
+  - 승격 게이트: `docs/final/artifacts/l1_inverse_decoder_objective_v4_promotion_gate_v1.json`
+    - `gate.decision=GO_CANARY_DEFAULT_ON`, `all_ok=true`
 - **운영 보고 규칙(3줄):**
   - 현재 단계 / 증거 파일 경로 / 다음 1스텝
 

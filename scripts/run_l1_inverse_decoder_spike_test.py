@@ -475,7 +475,7 @@ def run(
     noise_level: float,
     scoring_mode: str = "legacy",
     forced_noise_mode: str | None = None,
-    swap_typo_objective_v4: bool = False,
+    swap_typo_objective_v4: bool = True,
 ) -> tuple[dict, list[dict]]:
     rng = random.Random(seed)
     corpus = _build_corpus()
@@ -563,7 +563,11 @@ def run(
         "generated_at_utc": _now_utc(),
         "research_only": True,
         "decode_target": "noisy_observation",
-        "decode_select": "min_adjacent_swap_noisy_then_repaired_then_cosine",
+        "decode_select": (
+            "swap_typo_objective_v4_literal_and_repaired_edit_priority"
+            if swap_typo_objective_v4
+            else "min_adjacent_swap_noisy_then_repaired_then_cosine"
+        ),
         "seed": seed,
         "samples": samples,
         "beam_size": beam_size,
@@ -580,6 +584,7 @@ def run(
             "Spike harness for constrained candidate beam + noise injection.",
             "Not a production certificate; use with fixed-seed rerun checks.",
             "Default scoring_mode=legacy: harness SSOT baseline for regression artifacts; swap_v2 is research-only.",
+            "Canary default: swap_typo objective v4 enabled unless explicitly disabled.",
         ],
     }
     return report, failures
@@ -736,11 +741,11 @@ def main() -> int:
         ),
     )
     ap.add_argument(
-        "--swap-typo-objective-v4",
+        "--disable-swap-typo-objective-v4",
         action="store_true",
         help=(
-            "Research-only: for swap_typo, select by literal-anchor mismatch and "
-            "repaired positional edit distance before swap/cosine ties."
+            "Disable canary default objective v4 for swap_typo and fall back to "
+            "the legacy final-selection objective."
         ),
     )
     args = ap.parse_args()
@@ -752,7 +757,7 @@ def main() -> int:
         noise_level=args.noise_level,
         scoring_mode=args.scoring_mode,
         forced_noise_mode=args.forced_noise_mode,
-        swap_typo_objective_v4=args.swap_typo_objective_v4,
+        swap_typo_objective_v4=not args.disable_swap_typo_objective_v4,
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.fail_log.parent.mkdir(parents=True, exist_ok=True)
@@ -767,7 +772,7 @@ def main() -> int:
         "exact_restore_rate": report["exact_restore_rate"],
         "recovery_rate": report["recovery_rate"],
         "forced_noise_mode": args.forced_noise_mode,
-        "swap_typo_objective_v4": args.swap_typo_objective_v4,
+        "swap_typo_objective_v4": report.get("swap_typo_objective_v4"),
     }
     if args.sweep:
         seeds = [int(x.strip()) for x in args.seeds.split(",") if x.strip()]
