@@ -81,6 +81,11 @@
     - 롤백: `--disable-swap-typo-objective-v4`
   - 승격 게이트: `docs/final/artifacts/l1_inverse_decoder_objective_v4_promotion_gate_v1.json`
     - `gate.decision=GO_CANARY_DEFAULT_ON`, `all_ok=true`
+  - 상용화 체크리스트(3조건): `docs/final/artifacts/l1_inverse_decoder_commercialization_checklist_v1.json`
+    - `C1 swap_typo uplift>=+0.05`: PASS
+    - `C2 mixed non-regression`: PASS
+    - `C3 swap_typo absolute floor(exact>=0.25, recovery>=0.29)`: PASS
+    - 최종: `READY_FOR_BROAD_ROLLOUT`
 - **운영 보고 규칙(3줄):**
   - 현재 단계 / 증거 파일 경로 / 다음 1스텝
 
