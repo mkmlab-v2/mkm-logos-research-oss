@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A-CODEAI | 엔터프라이즈 거시 리스크 조기경보</title>
+  <meta
+    name="description"
+    content="수출입/재무팀을 위한 거시 리스크 조기경보. KPI·한계·보상 조건을 명시한 90일 유료 파일럿."
+  />
+  <style>
+    :root {
+      --bg: #081022;
+      --bg-soft: #0f1a33;
+      --panel: #121f3d;
+      --text: #edf2ff;
+      --muted: #a7b6d8;
+      --line: #263a66;
+      --primary: #86abff;
+      --primary-dark: #0a1738;
+      --ok: #7ef0c2;
+      --warn: #ffd27a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      background: radial-gradient(1200px 500px at 80% -10%, #173063 0%, transparent 60%), linear-gradient(180deg, var(--bg), #0b1733 55%, #0d1c3f);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    .container {
+      width: min(1080px, 92vw);
+      margin: 0 auto;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+      background: color-mix(in oklab, #071024 84%, transparent);
+    }
+    .topbar-inner {
+      min-height: 58px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand { font-weight: 700; letter-spacing: 0.02em; }
+    .lang { color: var(--muted); font-size: 13px; }
+    .lang a { color: var(--text); }
+    .hero {
+      padding: 72px 0 44px;
+      border-bottom: 1px solid var(--line);
+    }
+    .badge-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+    .badge {
+      font-size:12px;
+      padding:4px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:var(--muted);
+      background: color-mix(in oklab, var(--panel), black 8%);
+    }
+    h1 {
+      font-size: clamp(32px, 4.6vw, 56px);
+      line-height: 1.06;
+      margin: 0 0 16px;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      color: var(--muted);
+      max-width: 760px;
+      font-size: 19px;
+      margin: 0 0 26px;
+    }
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid transparent;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--primary-dark);
+      box-shadow: 0 10px 28px rgba(122, 162, 255, 0.25);
+    }
+    .btn-ghost {
+      border-color: var(--line);
+      background: color-mix(in oklab, var(--panel), black 6%);
+    }
+    section { padding: 44px 0; border-bottom: 1px solid var(--line); }
+    h2 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.01em; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: color-mix(in oklab, var(--panel), black 8%);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .kpi { font-size: 30px; font-weight: 800; margin: 0; }
+    .small { color: var(--muted); margin: 0; }
+    ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    .trust-list { display:grid; gap:10px; margin:14px 0 0; }
+    .trust-item {
+      border:1px dashed var(--line);
+      border-radius:12px;
+      padding:12px;
+      background: color-mix(in oklab, var(--bg-soft), black 2%);
+      color:var(--muted);
+    }
+    .legal {
+      border: 1px solid var(--line);
+      background: color-mix(in oklab, var(--bg-soft), black 4%);
+      padding: 18px;
+      border-radius: 14px;
+      color: var(--muted);
+    }
+    .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; font-weight:700; margin-right:6px; }
+    .pill-ok { color:#102317; background: var(--ok); }
+    .pill-warn { color:#2a1e00; background: var(--warn); }
+    .final-cta {
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:20px;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:14px;
+      align-items:center;
+      background: color-mix(in oklab, var(--panel), black 8%);
+    }
+    footer { padding: 28px 0 40px; color: var(--muted); font-size: 13px; }
+    .focus-link:focus-visible,
+    .btn:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Top navigation">
+    <div class="container topbar-inner">
+      <div class="brand">A-CODEAI</div>
+      <div class="lang">Language: <a class="focus-link" href="/">EN</a> | <strong>KO</strong></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="badge-row">
+        <span class="badge">엔터프라이즈 재무팀 특화</span>
+        <span class="badge">투자자문 아님</span>
+        <span class="badge">90일 유료 파일럿</span>
+      </div>
+      <h1>거시 리스크가 빨라질수록,<br />팀에는 신호의 선행시간이 필요합니다.</h1>
+      <p class="subtitle">
+        A-CODEAI는 환율·원자재·공급망 충격에 노출된 기업을 위해
+        조기경보 신호를 제공하며, KPI·한계·보상 조건을 파일럿에 명시합니다.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/pilot">90일 파일럿 보기</a>
+        <a class="btn btn-ghost" href="/benchmark">검증 기준 보기</a>
+        <a class="btn btn-ghost" href="#contact">20분 미팅 신청</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+  <section id="fit">
+    <div class="container">
+      <h2>누가 쓰면 효과가 큰가</h2>
+      <div class="grid">
+        <article class="card"><p class="label">핵심 담당자</p><p class="small">CFO, 자금팀, 리스크관리 조직</p></article>
+        <article class="card"><p class="label">주요 목적</p><p class="small">리스크위원회 의사결정 시간 단축, 충격 이벤트 선제 대응</p></article>
+        <article class="card"><p class="label">전달 방식</p><p class="small">주간 브리프 + 임계치 경보 + 월간 오탐/미탐 리포트</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="trust">
+    <div class="container">
+      <h2>왜 비용을 지불할 수 있나</h2>
+      <div class="trust-list">
+        <div class="trust-item"><span class="pill pill-ok">리스크 리버설</span> KPI 미달 시 크레딧/연장 조건을 사전에 계약서에 명시합니다.</div>
+        <div class="trust-item"><span class="pill pill-ok">블랙박스 금지</span> 성공 사례만이 아니라 실패/오탐/미탐을 함께 공개합니다.</div>
+        <div class="trust-item"><span class="pill pill-ok">조달 친화</span> 범위, 지표, 보상, 면책까지 초기에 고정해 내부 승인 마찰을 줄입니다.</div>
+        <div class="trust-item"><span class="pill pill-warn">한계 고지</span> 불확실성을 숨기지 않고 공개합니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pilot">
+    <div class="container">
+      <h2>상업 조건 요약</h2>
+      <div class="grid">
+        <article class="card"><p class="label">월 구독료</p><p class="kpi">₩4,900,000</p></article>
+        <article class="card"><p class="label">이벤트 경보</p><p class="kpi">₩250,000</p><p class="small">건당, 월 상한 ₩2,000,000</p></article>
+        <article class="card"><p class="label">최소 계약</p><p class="kpi">90일</p><p class="small">총 ₩14,700,000 최소</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="benchmark">
+    <div class="container">
+      <h2>검증 원칙</h2>
+      <div class="grid">
+        <article class="card"><p class="label">투명성</p><p class="small">맞은/틀린 사례를 월 단위로 함께 공개</p></article>
+        <article class="card"><p class="label">재현성</p><p class="small">명령과 아티팩트 경로를 감사 가능하게 공개</p></article>
+        <article class="card"><p class="label">한계 고지</p><p class="small">오탐/미탐 가능성을 선고지</p></article>
+      </div>
+      <div class="trust-list" style="margin-top:14px">
+        <div class="trust-item"><span class="pill pill-ok">상용화 판정</span> `l1_inverse_decoder_commercialization_checklist_v1.json` 기준 <strong>READY_FOR_BROAD_ROLLOUT</strong> 판정(3조건 PASS).</div>
+        <div class="trust-item"><span class="pill pill-ok">핵심 개선</span> `swap_typo` 극한 구간에서 objective v4 적용 시 exact/recovery가 각각 <strong>+0.0667</strong> 개선.</div>
+        <div class="trust-item"><span class="pill pill-ok">운영 안전장치</span> 기본은 개선 경로 ON, 필요 시 `--disable-swap-typo-objective-v4`로 즉시 롤백 가능.</div>
+        <div class="trust-item"><span class="pill pill-warn">적용 범위</span> 의미 전달 중심(요약/검색/로그) 도메인에 최적화. 100% 무결성이 필요한 결제/법무 원문은 별도 리터럴 라인 권장.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="final-cta">
+        <div>
+          <h2 style="margin-bottom:8px">20분 의사결정 미팅으로 시작</h2>
+          <p class="small">범위, KPI, 보상 조건, 시작일을 한 번에 맞춥니다.</p>
+        </div>
+        <div class="cta-row" style="margin:0">
+          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%2090%EC%9D%BC%20%EA%B1%B0%EC%8B%9C%20%EB%A6%AC%EC%8A%A4%ED%81%AC%20%ED%8C%8C%EC%9D%BC%EB%9F%BF%20%EB%AC%B8%EC%9D%98">이메일 문의</a>
+          <a class="btn btn-ghost" href="/pilot">파일럿 상세</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container legal">
+      <strong>법적 고지</strong>
+      <p>본 서비스는 투자자문/매매권유가 아닌 리스크 모니터링 정보 서비스입니다. 최종 의사결정 책임은 고객사에 있습니다.</p>
+    </div>
+  </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>A-CODEAI · 엔터프라이즈 재무팀을 위한 공학 기반 리스크 모니터링.</p>
+    </div>
+  </footer>
+</body>
+</html>
