@@ -1,0 +1,51 @@
+{
+  "schema": "l1_inverse_decoder_v4_orderfix_ab_v1",
+  "research_only": true,
+  "inputs": {
+    "seeds": [
+      701,
+      809,
+      907
+    ],
+    "samples": 180,
+    "beam_size": 8,
+    "noise_level": 0.1,
+    "scoring_mode": "enhanced"
+  },
+  "candidate": "v4_1_repaired_order_distance",
+  "results": [
+    {
+      "mode": "mixed",
+      "avg_exact_restore_rate": 0.587037037037037,
+      "avg_recovery_rate": 0.6037037037037037,
+      "avg_latency_ms_per_sample": 132.1832694445254
+    },
+    {
+      "mode": "swap_typo",
+      "avg_exact_restore_rate": 0.18888888888888888,
+      "avg_recovery_rate": 0.22407407407407406,
+      "avg_latency_ms_per_sample": 167.01346037012559
+    }
+  ],
+  "baseline_reference": {
+    "mixed_exact": 0.6074074074074075,
+    "mixed_recovery": 0.6240740740740741,
+    "swap_typo_exact": 0.25740740740740736,
+    "swap_typo_recovery": 0.29259259259259257
+  },
+  "delta_vs_baseline": {
+    "mixed_exact_delta": -0.020370370370370483,
+    "mixed_recovery_delta": -0.020370370370370372,
+    "swap_typo_exact_delta": -0.06851851851851848,
+    "swap_typo_recovery_delta": -0.0685185185185185
+  },
+  "gate": {
+    "checks": {
+      "swap_typo_exact_uplift_ok": false,
+      "swap_typo_recovery_uplift_ok": false,
+      "mixed_non_regression_ok": false
+    },
+    "all_ok": false,
+    "decision": "HOLD_V4"
+  }
+}

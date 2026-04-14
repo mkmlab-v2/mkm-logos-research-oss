@@ -96,6 +96,9 @@
   - 실패유형 프로파일: `scripts/run_l1_inverse_decoder_failure_profile_v1.py`
     - 최신: `docs/final/artifacts/l1_inverse_decoder_failure_profile_v1_latest.json`
     - 현재 1순위 실패: `order_only_mismatch` (ratio≈0.753)
+  - Week1-D3 실험 1안(order distance 강화): `docs/final/artifacts/l1_inverse_decoder_v4_orderfix_ab_v1.json`
+    - 결과: mixed/swap_typo 모두 성능 하락 (`swap_typo exact -0.0685`, `recovery -0.0685`)
+    - 판정: `HOLD_V4` (즉시 원복)
 - **향후 2주 실행 일정 (운영/개발 분리)**
   - Week1-D1: `Register-L1InverseDecoderDailyGateTask.ps1`로 일일 게이트 스케줄 등록 + 1회 수동 실행 확인
   - Week1-D2: `run_l1_inverse_decoder_failure_profile_v1.py --mode swap_typo` 실행, 실패유형 1순위 고정
