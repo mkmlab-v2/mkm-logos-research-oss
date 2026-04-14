@@ -302,6 +302,9 @@ def _beam_candidates(
     toks = noisy.split()
     pos_vocab = _build_position_vocab(corpus)
     repaired = _repair_tokens_with_vocab(toks, pos_vocab)
+    multiset_dirty = Counter(toks) != Counter(repaired)
+    typo_or_oov_obs = any("X" in t or t == "OOV_TOKEN" for t in toks)
+    swap_typo_like = multiset_dirty and typo_or_oov_obs
 
     pool = set(corpus)
     # Add repaired sentence candidate (position-aware typo/OOV correction).
@@ -312,7 +315,6 @@ def _beam_candidates(
     # Swap-focused candidate family: bounded adjacent transposition paths.
     pool.update(_generate_adjacent_transposition_candidates(toks, max_steps=3))
     pool.update(_generate_adjacent_transposition_candidates(repaired, max_steps=3))
-
     # Constrained local permutations of observed noisy sequence.
     if len(toks) <= 6:
         for p in itertools.permutations(toks):
@@ -382,9 +384,6 @@ def _beam_candidates(
                         inversions += 1
         return (inversions / pairs) if pairs else 0.0
 
-    multiset_dirty = Counter(toks) != Counter(repaired)
-    typo_or_oov_obs = any("X" in t or t == "OOV_TOKEN" for t in toks)
-    swap_typo_like = multiset_dirty and typo_or_oov_obs
     # Pure swap: multiset matches repaired; rely on final min-swap selection, not beam duplication.
     # Typo/OOV + multiset drift: push swap_fit harder in beam ordering.
     beam_swap_w_legacy = 0.24 if swap_typo_like else (0.14 if multiset_dirty else 0.0)
@@ -712,6 +711,15 @@ def main() -> int:
         type=Path,
         default=ROOT / "docs" / "final" / "artifacts" / "l1_inverse_decoder_noise_mode_breakdown_latest.json",
     )
+    ap.add_argument(
+        "--forced-noise-mode",
+        default=None,
+        choices=("swap", "typo", "oov", "swap_typo"),
+        help=(
+            "Fix noise injection to one mode for the single run (default: mixed). "
+            "Not used with --sweep or --noise-breakdown (those define their own grids)."
+        ),
+    )
     args = ap.parse_args()
 
     report, failures = run(
@@ -720,6 +728,7 @@ def main() -> int:
         beam_size=args.beam_size,
         noise_level=args.noise_level,
         scoring_mode=args.scoring_mode,
+        forced_noise_mode=args.forced_noise_mode,
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.fail_log.parent.mkdir(parents=True, exist_ok=True)
@@ -733,6 +742,7 @@ def main() -> int:
         "fail_log": str(args.fail_log),
         "exact_restore_rate": report["exact_restore_rate"],
         "recovery_rate": report["recovery_rate"],
+        "forced_noise_mode": args.forced_noise_mode,
     }
     if args.sweep:
         seeds = [int(x.strip()) for x in args.seeds.split(",") if x.strip()]

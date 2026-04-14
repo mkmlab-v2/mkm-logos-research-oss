@@ -1,0 +1,65 @@
+{
+  "schema": "l1_inverse_decoder_forced_mode_focus_v1",
+  "research_only": true,
+  "inputs": {
+    "seeds": [
+      701,
+      809,
+      907
+    ],
+    "samples": 180,
+    "beam_size": 8,
+    "noise_level": 0.1,
+    "scoring_mode": "swap_v2"
+  },
+  "rows": [
+    {
+      "forced_noise_mode": "swap",
+      "avg_exact_restore_rate": 0.25925925925925924,
+      "min_exact_restore_rate": 0.24444444444444444,
+      "max_exact_restore_rate": 0.2833333333333333,
+      "avg_recovery_rate": 0.30185185185185187,
+      "per_seed": [
+        {
+          "seed": 701,
+          "exact": 0.2833333333333333,
+          "recovery": 0.3111111111111111
+        },
+        {
+          "seed": 809,
+          "exact": 0.25,
+          "recovery": 0.28888888888888886
+        },
+        {
+          "seed": 907,
+          "exact": 0.24444444444444444,
+          "recovery": 0.3055555555555556
+        }
+      ]
+    },
+    {
+      "forced_noise_mode": "swap_typo",
+      "avg_exact_restore_rate": 0.19259259259259257,
+      "min_exact_restore_rate": 0.15,
+      "max_exact_restore_rate": 0.2388888888888889,
+      "avg_recovery_rate": 0.22777777777777777,
+      "per_seed": [
+        {
+          "seed": 701,
+          "exact": 0.2388888888888889,
+          "recovery": 0.2722222222222222
+        },
+        {
+          "seed": 809,
+          "exact": 0.15,
+          "recovery": 0.19444444444444445
+        },
+        {
+          "seed": 907,
+          "exact": 0.18888888888888888,
+          "recovery": 0.21666666666666667
+        }
+      ]
+    }
+  ]
+}
