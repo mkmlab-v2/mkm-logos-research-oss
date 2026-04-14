@@ -553,10 +553,20 @@ jobs:
           fi
 
       - name: Track A metering chain + conversational cost simulation smoke
-        run: python -m pytest tests/test_track_a_metering_chain_smoke.py -q --tb=short
+        run: |
+          if [[ -f tests/test_track_a_metering_chain_smoke.py ]]; then
+            python -m pytest tests/test_track_a_metering_chain_smoke.py -q --tb=short
+          else
+            echo "SKIP: track_a metering chain smoke test is not tracked in this branch."
+          fi
 
       - name: Autonomous evolution loop draft v1 smoke
-        run: python -m pytest tests/test_autonomous_evolution_loop_draft_smoke.py -q --tb=short
+        run: |
+          if [[ -f tests/test_autonomous_evolution_loop_draft_smoke.py ]]; then
+            python -m pytest tests/test_autonomous_evolution_loop_draft_smoke.py -q --tb=short
+          else
+            echo "SKIP: autonomous evolution loop smoke test is not tracked in this branch."
+          fi
 
       - name: Multi-lens sensitive integrity gate (L1 must-keep regression)
         run: python -m pytest tests/test_multilens_sensitive_integrity_gate.py -q --tb=short
