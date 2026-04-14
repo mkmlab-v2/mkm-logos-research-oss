@@ -1,6 +1,6 @@
 {
   "schema": "l1_inverse_decoder_failure_profile_v1",
-  "generated_at_utc": "2026-04-14T09:23:14+00:00",
+  "generated_at_utc": "2026-04-14T09:34:31+00:00",
   "research_only": true,
   "inputs": {
     "seeds": [
@@ -16,22 +16,22 @@
     "swap_typo_objective_v4": true
   },
   "aggregate": {
-    "avg_exact_restore_rate": 0.25740740740740736,
-    "avg_recovery_rate": 0.29259259259259257,
-    "total_failures": 401,
+    "avg_exact_restore_rate": 0.2611111111111111,
+    "avg_recovery_rate": 0.29629629629629634,
+    "total_failures": 399,
     "near_miss_count": 19,
-    "hard_fail_count": 382
+    "hard_fail_count": 380
   },
   "failure_types": [
     {
       "type": "order_only_mismatch",
       "count": 302,
-      "ratio": 0.7531172069825436
+      "ratio": 0.7568922305764411
     },
     {
       "type": "typo_oov_not_recovered",
-      "count": 99,
-      "ratio": 0.24688279301745636
+      "count": 97,
+      "ratio": 0.24310776942355888
     }
   ]
 }
