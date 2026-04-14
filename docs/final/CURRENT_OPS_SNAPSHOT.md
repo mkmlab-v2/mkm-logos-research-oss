@@ -96,6 +96,15 @@
   - 실패유형 프로파일: `scripts/run_l1_inverse_decoder_failure_profile_v1.py`
     - 최신: `docs/final/artifacts/l1_inverse_decoder_failure_profile_v1_latest.json`
     - 현재 1순위 실패: `order_only_mismatch` (ratio≈0.753)
+- **향후 2주 실행 일정 (운영/개발 분리)**
+  - Week1-D1: `Register-L1InverseDecoderDailyGateTask.ps1`로 일일 게이트 스케줄 등록 + 1회 수동 실행 확인
+  - Week1-D2: `run_l1_inverse_decoder_failure_profile_v1.py --mode swap_typo` 실행, 실패유형 1순위 고정
+  - Week1-D3~D4: 실패유형 기반 구조 패치 2개만 실험(A/B + latency 동시 측정)
+  - Week1-D5: 통과 후보 1개만 장샘플(2x) 재검증, 미통과 시 `HOLD_V4_BASELINE` 유지
+  - Week2-D6~D7: 확대 시드/샘플 재현 + 지연 예산(p50/p95) 점검
+  - Week2-D8: 상용화 체크리스트(`l1_inverse_decoder_commercialization_checklist_v1.json`) 재평가
+  - Week2-D9~D10: 스냅샷/대외 문구 동기화 + 최종 Go/No-Go 커밋
+  - 공통 게이트: `swap_typo exact/recovery +0.02` 이상, mixed 비회귀(>=-0.005), latency 증가 <= +2ms/sample
 - **운영 보고 규칙(3줄):**
   - 현재 단계 / 증거 파일 경로 / 다음 1스텝
 
