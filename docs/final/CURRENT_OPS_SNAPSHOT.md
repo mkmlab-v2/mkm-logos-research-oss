@@ -136,6 +136,9 @@
     - 판정: `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` (all checks true)
   - A-Track 운영 하드닝 정책 고정: `docs/final/artifacts/l1_inverse_decoder_atrack_operational_hardening_v1.json`
     - 핵심: 일일 게이트 강제 + 실패 시 즉시 롤백 + 실패 알림 상시화
+  - A-Track 7일 운영 체크리스트 고정: `docs/final/artifacts/l1_inverse_decoder_atrack_7day_ops_checklist_v1.json`
+    - 스케줄러 점검: `MKM_L1InverseDecoder_DailyGate` 등록 확인
+    - 일일/주간 루틴 + 실패 프로토콜 문서화 완료
 - **향후 2주 실행 일정 (운영/개발 분리)**
   - Week1-D1: `Register-L1InverseDecoderDailyGateTask.ps1`로 일일 게이트 스케줄 등록 + 1회 수동 실행 확인
   - Week1-D2: `run_l1_inverse_decoder_failure_profile_v1.py --mode swap_typo` 실행, 실패유형 1순위 고정

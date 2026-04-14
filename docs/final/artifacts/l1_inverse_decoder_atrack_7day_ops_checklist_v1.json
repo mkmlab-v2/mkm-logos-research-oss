@@ -1,0 +1,54 @@
+{
+  "schema": "l1_inverse_decoder_atrack_7day_ops_checklist_v1",
+  "generated_at_utc": "2026-04-14T14:50:00Z",
+  "status": "active",
+  "scope": "A_track_operations_only",
+  "scheduler_check": {
+    "task_name": "MKM_L1InverseDecoder_DailyGate",
+    "detected": true,
+    "mode": "warning",
+    "runner": "py scripts/run_l1_inverse_decoder_daily_gate_v1.py --mode warning"
+  },
+  "daily_routine": [
+    {
+      "step": 1,
+      "action": "Verify latest daily gate artifact exists and is updated",
+      "evidence": "docs/final/artifacts/l1_inverse_decoder_daily_gate_v1_latest.json"
+    },
+    {
+      "step": 2,
+      "action": "Check decision equals GO_KEEP_OBJECTIVE_V4_DEFAULT_ON",
+      "evidence": "docs/final/artifacts/l1_inverse_decoder_daily_gate_v1_latest.json"
+    },
+    {
+      "step": 3,
+      "action": "Append one-line ops note in snapshot only when decision changes",
+      "evidence": "docs/final/CURRENT_OPS_SNAPSHOT.md"
+    }
+  ],
+  "weekly_routine": [
+    {
+      "step": 1,
+      "action": "Generate/inspect gate trend from JSONL log",
+      "evidence": "reports/l1_inverse_decoder_daily_gate_log_v1.jsonl"
+    },
+    {
+      "step": 2,
+      "action": "Confirm research lane remains frozen unless resume policy conditions are met",
+      "evidence": "docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json"
+    },
+    {
+      "step": 3,
+      "action": "Publish one weekly A-track status note",
+      "evidence": "docs/final/CURRENT_OPS_SNAPSHOT.md"
+    }
+  ],
+  "failure_protocol": {
+    "trigger": "Any daily gate check false or decision != GO_KEEP_OBJECTIVE_V4_DEFAULT_ON",
+    "actions": [
+      "Keep v4 freeze posture; do not merge B-track experiment code",
+      "Run immediate rerun: py scripts/run_l1_inverse_decoder_daily_gate_v1.py --mode block",
+      "Log incident with timestamp and failing checks in snapshot"
+    ]
+  }
+}
