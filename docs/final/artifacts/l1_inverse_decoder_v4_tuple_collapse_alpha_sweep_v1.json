@@ -1,0 +1,148 @@
+{
+  "schema": "l1_inverse_decoder_v4_tuple_collapse_alpha_sweep_v1",
+  "research_only": true,
+  "inputs": {
+    "seeds": [
+      701,
+      809,
+      907
+    ],
+    "samples": 180,
+    "beam_size": 8,
+    "noise_level": 0.1,
+    "scoring_mode": "enhanced",
+    "alphas": [
+      0.3,
+      0.6,
+      1.0
+    ]
+  },
+  "rows": [
+    {
+      "alpha": 0.3,
+      "results": {
+        "mixed": {
+          "mode": "mixed",
+          "avg_exact_restore_rate": 0.6055555555555556,
+          "avg_recovery_rate": 0.6222222222222222,
+          "avg_latency_ms_per_sample": 142.6606261111037
+        },
+        "swap_typo": {
+          "mode": "swap_typo",
+          "avg_exact_restore_rate": 0.25740740740740736,
+          "avg_recovery_rate": 0.29259259259259257,
+          "avg_latency_ms_per_sample": 170.8423042592282
+        }
+      },
+      "delta_vs_baseline": {
+        "mixed_exact_delta": -0.016111111111111076,
+        "mixed_recovery_delta": -0.01694444444444443,
+        "swap_typo_exact_delta": 0.00657407407407401,
+        "swap_typo_recovery_delta": 0.010925925925925895
+      },
+      "gate": {
+        "checks": {
+          "swap_typo_exact_uplift_ok": false,
+          "swap_typo_recovery_uplift_ok": false,
+          "mixed_non_regression_ok": false
+        },
+        "all_ok": false
+      }
+    },
+    {
+      "alpha": 0.6,
+      "results": {
+        "mixed": {
+          "mode": "mixed",
+          "avg_exact_restore_rate": 0.6055555555555556,
+          "avg_recovery_rate": 0.6222222222222222,
+          "avg_latency_ms_per_sample": 167.25633259284896
+        },
+        "swap_typo": {
+          "mode": "swap_typo",
+          "avg_exact_restore_rate": 0.25740740740740736,
+          "avg_recovery_rate": 0.29259259259259257,
+          "avg_latency_ms_per_sample": 178.18024407412545
+        }
+      },
+      "delta_vs_baseline": {
+        "mixed_exact_delta": -0.016111111111111076,
+        "mixed_recovery_delta": -0.01694444444444443,
+        "swap_typo_exact_delta": 0.00657407407407401,
+        "swap_typo_recovery_delta": 0.010925925925925895
+      },
+      "gate": {
+        "checks": {
+          "swap_typo_exact_uplift_ok": false,
+          "swap_typo_recovery_uplift_ok": false,
+          "mixed_non_regression_ok": false
+        },
+        "all_ok": false
+      }
+    },
+    {
+      "alpha": 1.0,
+      "results": {
+        "mixed": {
+          "mode": "mixed",
+          "avg_exact_restore_rate": 0.6055555555555556,
+          "avg_recovery_rate": 0.6222222222222222,
+          "avg_latency_ms_per_sample": 152.32890611104838
+        },
+        "swap_typo": {
+          "mode": "swap_typo",
+          "avg_exact_restore_rate": 0.25740740740740736,
+          "avg_recovery_rate": 0.29259259259259257,
+          "avg_latency_ms_per_sample": 162.8109985186408
+        }
+      },
+      "delta_vs_baseline": {
+        "mixed_exact_delta": -0.016111111111111076,
+        "mixed_recovery_delta": -0.01694444444444443,
+        "swap_typo_exact_delta": 0.00657407407407401,
+        "swap_typo_recovery_delta": 0.010925925925925895
+      },
+      "gate": {
+        "checks": {
+          "swap_typo_exact_uplift_ok": false,
+          "swap_typo_recovery_uplift_ok": false,
+          "mixed_non_regression_ok": false
+        },
+        "all_ok": false
+      }
+    }
+  ],
+  "best_alpha_by_swap_typo_recovery_delta": 0.3,
+  "best_row": {
+    "alpha": 0.3,
+    "results": {
+      "mixed": {
+        "mode": "mixed",
+        "avg_exact_restore_rate": 0.6055555555555556,
+        "avg_recovery_rate": 0.6222222222222222,
+        "avg_latency_ms_per_sample": 142.6606261111037
+      },
+      "swap_typo": {
+        "mode": "swap_typo",
+        "avg_exact_restore_rate": 0.25740740740740736,
+        "avg_recovery_rate": 0.29259259259259257,
+        "avg_latency_ms_per_sample": 170.8423042592282
+      }
+    },
+    "delta_vs_baseline": {
+      "mixed_exact_delta": -0.016111111111111076,
+      "mixed_recovery_delta": -0.01694444444444443,
+      "swap_typo_exact_delta": 0.00657407407407401,
+      "swap_typo_recovery_delta": 0.010925925925925895
+    },
+    "gate": {
+      "checks": {
+        "swap_typo_exact_uplift_ok": false,
+        "swap_typo_recovery_uplift_ok": false,
+        "mixed_non_regression_ok": false
+      },
+      "all_ok": false
+    }
+  },
+  "decision": "HOLD_PATCH_MIXED_REGRESSION"
+}

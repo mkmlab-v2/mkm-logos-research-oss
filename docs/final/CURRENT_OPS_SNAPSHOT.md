@@ -134,6 +134,21 @@
   - Week2-D13 실험 7안(swap_typo specialized 분리경로 v1): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_specialized_v1_ab_v1.json`
     - 결과: mixed 비회귀(`exact/recovery +0.0008`), `swap_typo` 소폭 하락(`exact/recovery -0.0033`)
     - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D14 실험 8안(DBA-lite bucket beam, swap_typo 한정): `docs/final/artifacts/l1_inverse_decoder_v4_dba_lite_bucket_beam_ab_v1.json`
+    - 결과: mixed 비회귀(`exact/recovery +0.0017`), `swap_typo` 소폭 하락(`exact/recovery -0.0025`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D15 실험 9안(MBR-style rerank, swap_typo 한정): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_mbr_rerank_ab_v1.json`
+    - 결과: mixed 비회귀(`exact/recovery +0.0025`), `swap_typo` 하락(`exact/recovery -0.0175`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D16 실험 10안(Damerau edit metric, swap_typo 한정): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_damerau_edit_ab_v1.json`
+    - 결과: mixed 소폭 개선(`exact/recovery +0.0042`), `swap_typo` 소폭 하락(`exact/recovery -0.0017`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D17 실험 11안(Tuple Collapse alpha sweep): `docs/final/artifacts/l1_inverse_decoder_v4_tuple_collapse_alpha_sweep_v1.json`
+    - 결과: `swap_typo` 개선(+0.0066 / +0.0109) 관찰했으나 mixed 회귀(`exact -0.0161`, `recovery -0.0169`)로 게이트 실패
+    - 판정: `HOLD_PATCH_MIXED_REGRESSION` (비채택, 즉시 원복)
+  - Week2-D18 실험 12안(swap_typo-only structural alpha=0.3): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_only_structural_alpha_ab_v1.json`
+    - 결과: mixed 비회귀(`exact/recovery +0.0033`), `swap_typo` 소폭 하락(`exact/recovery -0.0025`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
 - **향후 2주 실행 일정 (운영/개발 분리)**
   - Week1-D1: `Register-L1InverseDecoderDailyGateTask.ps1`로 일일 게이트 스케줄 등록 + 1회 수동 실행 확인
   - Week1-D2: `run_l1_inverse_decoder_failure_profile_v1.py --mode swap_typo` 실행, 실패유형 1순위 고정
