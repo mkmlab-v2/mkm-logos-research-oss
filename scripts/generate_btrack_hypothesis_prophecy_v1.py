@@ -166,7 +166,9 @@ JSON Schema reference (follow required + enums):
     from google import genai
     from google.genai import types
 
-    client = genai.Client(api_key=key, http_options=types.HttpOptions(timeout=timeout))
+    # google.genai HttpOptions.timeout is milliseconds; API minimum deadline is 10s.
+    timeout_ms = max(10_000, int(timeout) * 1000)
+    client = genai.Client(api_key=key, http_options=types.HttpOptions(timeout=timeout_ms))
     resp = client.models.generate_content(
         model=model,
         contents=[types.Part.from_text(text=prompt)],
@@ -190,7 +192,12 @@ def main() -> int:
         help="Call Gemini (needs GEMINI_API_KEY). Default: heuristic stub from bundle (no API).",
     )
     ap.add_argument("--model", type=str, default="gemini-2.5-flash")
-    ap.add_argument("--timeout", type=int, default=120)
+    ap.add_argument(
+        "--timeout",
+        type=int,
+        default=120,
+        help="HTTP timeout in seconds for Gemini (sent as ms to google.genai; min 10s server-side).",
+    )
     ap.add_argument("--validate-only", type=Path, metavar="FILE", help="Validate existing JSON; exit 1 on error.")
     args = ap.parse_args()
 

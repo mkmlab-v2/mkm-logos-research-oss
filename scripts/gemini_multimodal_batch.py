@@ -33,7 +33,7 @@ MAX_FILES = 10
 DEFAULT_MODEL_RESEARCH = "gemini-2.5-flash"
 DEFAULT_MODEL_IMAGE = "gemini-2.5-flash-image-preview"
 
-# HTTP 전체 타임아웃(초). 미설정 시 SDK 기본에 맡겨 장시간 대기처럼 보일 수 있음.
+# HTTP 전체 타임아웃(초; 클라이언트에는 ms로 전달). 미설정 시 SDK 기본에 맡겨 장시간 대기처럼 보일 수 있음.
 DEFAULT_TIMEOUT_RESEARCH_S = 900
 DEFAULT_TIMEOUT_IMAGE_S = 300
 DEFAULT_TIMEOUT_CROSSCHECK_S = 900
@@ -86,7 +86,9 @@ def _thinking_config(budget: int) -> Optional[types.ThinkingConfig]:
 
 
 def _make_client(api_key: str, timeout_sec: int) -> genai.Client:
-    http = types.HttpOptions(timeout=timeout_sec)
+    # google.genai HttpOptions.timeout is milliseconds; API minimum deadline is 10s.
+    timeout_ms = max(10_000, int(timeout_sec) * 1000)
+    http = types.HttpOptions(timeout=timeout_ms)
     return genai.Client(api_key=api_key, http_options=http)
 
 

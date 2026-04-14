@@ -176,7 +176,9 @@ def _call_gemini_lexicon(
         f"{sample_snippet[:12000]}\n"
     )
 
-    client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=timeout_s))
+    # google.genai HttpOptions.timeout is milliseconds; API minimum deadline is 10s.
+    timeout_ms = max(10_000, int(timeout_s) * 1000)
+    client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=timeout_ms))
     resp = client.models.generate_content(
         model=model,
         contents=[types.Part.from_text(text=user)],

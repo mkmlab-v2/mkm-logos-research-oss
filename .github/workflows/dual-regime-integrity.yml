@@ -56,6 +56,10 @@ on:
       - "tests/test_sovereign_jsonl.py"
       - "tests/test_spike_sovereign_token_saving_v1.py"
       - "tests/test_sovereign_efficiency.py"
+      - "scripts/spike_kospi_structural_entropy_v1.py"
+      - "scripts/spike_kospi_structural_entropy_compare_v1.py"
+      - "tests/test_spike_kospi_structural_entropy_v1.py"
+      - "tests/test_spike_kospi_structural_entropy_compare_v1.py"
       - "codebook/shards/**"
       - "scripts/spike_gematria_myeongri_blend_v0.py"
       - "scripts/myeongri_complete_fusion.py"
@@ -81,6 +85,15 @@ on:
       - "scripts/report_multilens_performance_eval.py"
       - "scripts/run_ultra_compression_bench.py"
       - "scripts/run_ultra_compression_default.py"
+      - "scripts/run_track_a_shadow_corpus_eval.py"
+      - "scripts/run_track_a_metering_summary.py"
+      - "scripts/run_track_a_metering_weekly_report.py"
+      - "scripts/check_track_a_metering_band_gate.py"
+      - "scripts/build_track_a_signal_light_report.py"
+      - "scripts/run_track_a_conversational_cost_simulation.py"
+      - "scripts/run_autonomous_evolution_loop_draft_v1.py"
+      - "scripts/Run-TrackAShadowJsonlSample.ps1"
+      - "scripts/run_track_a_commercialization_daily_chain.ps1"
       - "scripts/report_compression_jaccard_loss_patterns.py"
       - "scripts/report_ultra_compression_kpi_summary.py"
       - "scripts/run_workspace_automation_health.ps1"
@@ -126,6 +139,11 @@ on:
       - "tests/test_myeongni_topflow_integrated_report.py"
       - "tests/test_multilens_performance_eval_report.py"
       - "tests/test_multilens_performance_eval_report_v2.py"
+      - "tests/test_track_a_shadow_corpus_eval_smoke.py"
+      - "tests/test_track_a_metering_chain_smoke.py"
+      - "tests/test_autonomous_evolution_loop_draft_smoke.py"
+      - "tests/fixtures/track_a_metering_log_smoke_v1.jsonl"
+      - "data/track_a_shadow/conversations_sample_v1.jsonl"
       - "tests/test_multilens_sensitive_integrity_gate.py"
       - "tests/test_ultra_compression_artifacts.py"
       - "tests/test_compression_weekly_governance_report.py"
@@ -138,6 +156,17 @@ on:
       - "tests/test_eval_prophecy_hit_rate_v1.py"
       - "tests/test_build_btrack_prophecy_score_from_ohlcv.py"
       - "scripts/generate_btrack_hypothesis_prophecy_v1.py"
+      - "scripts/fill_human_regime_audit_llm_spike.py"
+      - "scripts/fill_human_regime_audit_proxy_spike.py"
+      - "scripts/run_human_regime_audit_measurement_chain_spike.py"
+      - "scripts/build_human_regime_audit_sample_spike.py"
+      - "scripts/eval_human_regime_audit_spike.py"
+      - "scripts/gemini_multimodal_batch.py"
+      - "scripts/staging_shard_inference_run.py"
+      - "tests/test_fill_human_regime_audit_llm_heuristic_spike.py"
+      - "tests/test_fill_human_regime_audit_gemini_retry_spike.py"
+      - "tests/test_fill_human_regime_audit_proxy_spike.py"
+      - "tests/test_human_regime_audit_and_agreement_spike.py"
       - "scripts/eval_prophecy_hit_rate_v1.py"
       - "scripts/build_btrack_prophecy_score_from_ohlcv.py"
       - "scripts/build_btrack_llm_input_bundle.py"
@@ -319,6 +348,11 @@ jobs:
         run: |
           python -m pytest tests/test_sovereign_jsonl.py tests/test_spike_sovereign_token_saving_v1.py tests/test_sovereign_efficiency.py -q --tb=short
 
+      - name: AE-2 KOSPI structural entropy spike smoke
+        run: |
+          python -m pip install --upgrade zstandard
+          python -m pytest tests/test_spike_kospi_structural_entropy_v1.py tests/test_spike_kospi_structural_entropy_compare_v1.py -q --tb=short
+
       - name: Logos–Myeongni state mapping snapshot (tracked artifact, no verse pipeline on runner)
         run: python -m pytest tests/test_logos_state_mapping_v1_snapshot.py -q --tb=short
 
@@ -333,6 +367,8 @@ jobs:
 
       - name: B-Track hypothesis + dawn-score + prophecy hit-rate eval smoke
         run: python -m pytest tests/test_generate_btrack_hypothesis_prophecy_v1.py tests/test_build_btrack_prophecy_score_from_ohlcv.py tests/test_eval_prophecy_hit_rate_v1.py -q --tb=short
+      - name: pytest human regime audit spike (Gemini retry + proxy + agreement)
+        run: python -m pytest tests/test_fill_human_regime_audit_llm_heuristic_spike.py tests/test_fill_human_regime_audit_gemini_retry_spike.py tests/test_fill_human_regime_audit_proxy_spike.py tests/test_human_regime_audit_and_agreement_spike.py -q --tb=short
 
       - name: ENTRY_16 source-hunt log contract
         run: python -m pytest tests/test_entry16_source_hunt_log.py -q --tb=short
@@ -498,6 +534,15 @@ jobs:
 
       - name: Multi-lens performance evaluation report V2 contract
         run: python -m pytest tests/test_multilens_performance_eval_report_v2.py -q --tb=short
+
+      - name: Track A shadow corpus eval smoke (universal profile subset)
+        run: python -m pytest tests/test_track_a_shadow_corpus_eval_smoke.py -q --tb=short
+
+      - name: Track A metering chain + conversational cost simulation smoke
+        run: python -m pytest tests/test_track_a_metering_chain_smoke.py -q --tb=short
+
+      - name: Autonomous evolution loop draft v1 smoke
+        run: python -m pytest tests/test_autonomous_evolution_loop_draft_smoke.py -q --tb=short
 
       - name: Multi-lens sensitive integrity gate (L1 must-keep regression)
         run: python -m pytest tests/test_multilens_sensitive_integrity_gate.py -q --tb=short

@@ -1,8 +1,8 @@
 # Constitution / Inference — 구현 팩트 (SSOT)
 
 **작성일**: 2026-03-29  
-**최종 갱신**: 2026-04-10 — §2 L1 연구 와이어 스텁·503·OpenAPI v1.1.0·COMPRESSION §10 거울; §9.2 draft SLA 벤치 `scripts/bench_l1_api_load.py`; §1.2에 B-track→Track A 승격 체크리스트(`COMPRESSION_12M…` §9·§9.1.1 초안, `P0_COMMERCIALIZATION_TRACKER` 교차).  
-**이전 갱신**: 2026-04-06 §14 Prism·레지스트리 v1.0.5; 2026-04-04 §1.2 투트랙 SLA·§13.1/13.2·`AGENTS.md`.  
+**최종 갱신**: 2026-04-14 — `google.genai` `HttpOptions.timeout` ms 정합(`gemini_multimodal_batch`·`staging_shard_inference_run`·`generate_btrack_hypothesis_prophecy_v1`); `fill_human_regime_audit_llm_spike` 루트 `.env` 로드; dual-regime-integrity에 human regime audit pytest 단계.  
+**이전 갱신**: 2026-04-14 §2 B-track `4d_to_ohaeng`·human regime audit 스파이크 행; §3.4.1 Postella; 2026-04-13 §1.2 AE-2 KOSPI.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
 
 ---
@@ -23,6 +23,7 @@
 | Master codebook lexicon V1 export | `scripts/export_master_codebook_v1.py` | 아톰+Strong+MorphHB 시드 조인 산출; 루브릭은 동 COMPRESSION 문서 §9 |
 | Master codebook lexicon V1 → multilens route join (bridge) | `scripts/core/master_codebook_lexicon_v1_bridge.py` | `evaluate_report(..., use_master_codebook_lexicon_v1=True)` 시 원문 토큰과 `normalized_form` 교집합으로 must_keep 보강; 4D·샤드 정책 대체 아님. 호출부: `report_multilens_performance_eval.py`, ultra/P1 러너·벤치·압축 스텁 |
 | State16 Insertion Contract | `docs/final/STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md` | 16상 인터페이스 삽입 지점/입출력/오류/단계적 게이트 명세 (런타임 강제 아님) |
+| AE-2 KOSPI 구조 엔트로피 스파이크 v1 | `scripts/spike_kospi_structural_entropy_v1.py` → `docs/final/artifacts/spike_kospi_kld_v1.json` (합성 기본); `--mode csv`+`research/market_data/kospi_daily_external_yf.csv` → `spike_kospi_kld_v1_real.json` (JSON에 `csv_source_health`: 행 수·수익률 쌍·스킵 카운트·기간); `scripts/spike_kospi_structural_entropy_compare_v1.py` → `docs/final/artifacts/spike_kospi_kld_v1_compare.json` | **관측·연구 전용** — 멀티렌즈 토큰 압축·Track A 승격·`evaluate_report` 본선과 자동 합선 없음; blind replay 코스피 그리드와 별도 레일 (`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1.md` §2 2026-04-13). 회귀: `tests/test_spike_kospi_structural_entropy_v1.py`, `tests/test_spike_kospi_structural_entropy_compare_v1.py`. |
 
 ### 1.1 엔지니어링 정체성 (Multi-Lens · 단일 방정식 비단정)
 
@@ -50,6 +51,9 @@
 | 정책 SSOT | `data/regimes/regime_fusion_policy.json` | 워크스페이스 상대 경로로 로드 |
 | 보조 정책 | `data/regimes/dual_regime_policy.json` | 존재 확인됨 |
 | 레짐 맵 | `data/regimes/regime_map.json` | 존재 확인됨 |
+| B-track 4D→레짐 이론 오버레이 스파이크 | `scripts/build_4d_to_ohaeng_theory_aligned_regime_overlay_spike.py` → 기본 `docs/final/artifacts/4d_to_ohaeng_regime_labeled_with_theory_regime_v1.jsonl` | 행 `vector_4d`와 레짐 맵 `fingerprint.unified_4d_vector` 코사인 → `regime_id_theory_v1` 등; 경로명 `ohaeng`은 파이프라인 라벨(전통 오행 1:1 매핑 단정 아님). 연구·[HYPO] |
+| B-track 4D→ohaeng NotebookLM 권장 풀체인 스파이크 | `scripts/run_4d_to_ohaeng_notebooklm_recommended_full_chain_spike.py` | 포인터 `docs/final/artifacts/4d_to_ohaeng_notebooklm_merge_inputs_recommended_v1.json`; merge·holdout·스냅샷·게이트·선택 이론 오버레이(`--no-theory-overlay` 가능). 실매매·A-track 자동 합선 금지 |
+| Human regime audit 측정 스파이크 | `scripts/run_human_regime_audit_measurement_chain_spike.py` → `docs/final/artifacts/human_regime_audit_measurement_run_latest.json` | `scripts/fill_human_regime_audit_llm_spike.py`로 휴리스틱/Gemini 자동 라벨·프록시 비교; Gemini는 `google.genai` `HttpOptions.timeout`이 **밀리초**(초×1000·최소 10s); 루트 `.env`는 기동 시 로드·기존 env 미덮어씀. 회귀: `tests/test_fill_human_regime_audit_llm_heuristic_spike.py`, `tests/test_fill_human_regime_audit_gemini_retry_spike.py` |
 | 성경 2차 레짐 | `data/regimes/biblical_regime_matrix.json` | 헌법: 보조 레이어 |
 
 ### 2.1 Dual-regime 평가 하이브리드 (연속 캡 · 이산 임계 · 16상 미연동)
@@ -119,7 +123,7 @@
 | B-track 메가 인사이트 배치 수집 | `scripts/run_notebooklm_mega_insight_batch.py` → `reports/notebooklm/btrack_mega_insights_*.jsonl` | 연구 수집·가설 정리 전용; 필수 태그 `[HYPO]`, `research_only=true`, `promotion_required=true`; A-track·실매매 자동 합선 금지 |
 | B-track NotebookLM JSONL 관측 KPI | `scripts/report_btrack_notebooklm_jsonl_kpi.py` → `docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json` | 출처·인용·답변 길이·가드레일 키워드 비율 등 **품질 관측**만; 예측력·A-track 승격 아님 |
 | Prism 논리 색인 레지스트리 | `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` | §14 Grand Indexing 2.0; 경로·역할; 코드 4D 축과 혼동 금지 |
-| 회귀 스모크 | `tests/test_myeongri_fusion_scripts_smoke.py`, `tests/test_gematria_myeongri_spike_smoke.py`, `tests/test_spike_log_myeongri_correlation_v1.py`, `tests/test_convert_log_metabolism_to_myeongri_correlation_input_v1.py`, `tests/test_generate_log_metabolism_synthetic_cohort_v1.py`, `tests/test_spike_4grid_myeongri_compression_v1.py` | CI `dual-regime-integrity.yml`; `run_prophecy_alignment_pytest.ps1` / `.sh` 번들 |
+| 회귀 스모크 | `tests/test_myeongri_fusion_scripts_smoke.py`, `tests/test_gematria_myeongri_spike_smoke.py`, `tests/test_spike_log_myeongri_correlation_v1.py`, `tests/test_convert_log_metabolism_to_myeongri_correlation_input_v1.py`, `tests/test_generate_log_metabolism_synthetic_cohort_v1.py`, `tests/test_spike_4grid_myeongri_compression_v1.py`, `tests/test_spike_kospi_structural_entropy_v1.py`, `tests/test_spike_kospi_structural_entropy_compare_v1.py` | CI `dual-regime-integrity.yml`; `run_prophecy_alignment_pytest.ps1` / `.sh` 번들 |
 | 독립 렌즈 v0 회귀 | `tests/test_myeongni_independent_lens_v0.py`, `tests/test_independent_lenses_v0.py`, `tests/test_independent_lens_fusion_stub_v0.py`, `tests/test_independent_lens_shadow_gate_v1.py` | 명리 단독 + 3렌즈 파라미즈 + 융합 스텁 + Shadow 게이트 |
 
 ### 3.4 만세력 정밀 런타임 (제2계층, Pointer)
@@ -129,6 +133,17 @@
 | 정밀 런타임 SSOT 포인터 | `docs/final/MANSE_PRECISION_RUNTIME_POINTER_V1.json` | **에이전트 공식 배선 Path B**: MCP stdio `athena-manseryeok`. 배치/CI는 동일 엔진을 `mkm-life` 절입·원격 URL 등으로 사용(per-row MCP 비권장); 워크스페이스에 `projects/mkm/mkm-life` 없으면 배포본에서 확인 |
 | 프로비넌스 헬퍼 (MCP 태그) | `tools/myeongni/manseryeok_provenance.py` → `precision_mcp_runtime_metadata()` | 근사 스텁과 구분되는 메타 블록 |
 | B-track 파일럿 벤치 경로 상수 | `tools/myeongni/btrack_bench_paths.py` | canonical·direct·bootstrap JSONL 슬롯; 포인터 `CANONICAL_BENCH_POINTER_V1.json`과 짝; 계약 테스트 `tests/test_btrack_bench_paths.py` |
+
+#### 3.4.1 Postella 대조·후처리 체인 (워크스페이스 스크립트)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| Postella 비교 리포트 | `scripts/run_manse_postella_comparison_report_v1.py` → `docs/final/artifacts/manse_postella_comparison_latest.json` | `--min-non-empty-per-field` evidence gate; Postella는 외부 참조로만 취급 |
+| 원클릭 체인 (PowerShell) | `scripts/Invoke-MansePostellaPostValidationChainV1.ps1` | `-Reseed`, `-NoStandardDb`, `-Ours`/`-Postella` |
+| 원클릭 체인 (Python, Linux/CI 패리티) | `scripts/run_manse_postella_post_validation_chain_v1.py` | 동일 단계 순서 |
+| 트리아지·체크리스트·팩·reeval·후보 요약 | `scripts/run_manse_postella_mismatch_triage_v1.py`, `scripts/build_manse_postella_mismatch_checklist_v1.py`, `scripts/build_manse_postella_debug_packs_v1.py`, `scripts/run_manse_postella_debug_pack_reeval_perfect_v1.py`, `scripts/build_manse_postella_rule_fix_candidates_v1.py` | `postella.metadata.synthetic_hour_mismatch_injected` 시 합성 데모 불일치로 태깅·엔진 회귀 오해 방지 |
+| 데모 시드 (엔진 정렬) | `scripts/seed_manse_postella_valid_samples_v1.py` | `PerfectManseryeok`로 ours 기둥 정렬 후 Postella 시주만 선택 주입 가능 |
+| 회귀·CI | `tests/test_run_manse_postella_debug_pack_reeval_perfect_v1.py`, `tests/test_build_manse_postella_rule_fix_candidates_v1.py`, `tests/test_build_manse_postella_mismatch_checklist_v1.py`; `.github/workflows/manse-postella-chain-smoke.yml` | 관련 스크립트 경로 변경 시 트리거 |
 
 ### 3.5 사상(Sasang) 동역학 — 레짐 매핑 (B-track, 관측 전용)
 
