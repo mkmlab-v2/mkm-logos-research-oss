@@ -1,0 +1,73 @@
+{
+  "schema": "l1_inverse_decoder_daily_gate_v1",
+  "generated_at_utc": "2026-04-14T08:40:37+00:00",
+  "research_only": true,
+  "inputs": {
+    "seeds": [
+      701,
+      809
+    ],
+    "samples": 120,
+    "beam_size": 8,
+    "noise_level": 0.1,
+    "scoring_mode": "enhanced",
+    "swap_typo_objective_v4_default": true
+  },
+  "results": {
+    "mixed": {
+      "mode": "mixed",
+      "avg_exact_restore_rate": 0.6,
+      "avg_recovery_rate": 0.6208333333333333,
+      "min_exact_restore_rate": 0.5916666666666667,
+      "min_recovery_rate": 0.6166666666666667,
+      "per_seed": [
+        {
+          "seed": 701,
+          "exact_restore_rate": 0.6083333333333333,
+          "recovery_rate": 0.625
+        },
+        {
+          "seed": 809,
+          "exact_restore_rate": 0.5916666666666667,
+          "recovery_rate": 0.6166666666666667
+        }
+      ]
+    },
+    "swap_typo": {
+      "mode": "swap_typo",
+      "avg_exact_restore_rate": 0.2791666666666667,
+      "avg_recovery_rate": 0.30833333333333335,
+      "min_exact_restore_rate": 0.24166666666666667,
+      "min_recovery_rate": 0.275,
+      "per_seed": [
+        {
+          "seed": 701,
+          "exact_restore_rate": 0.31666666666666665,
+          "recovery_rate": 0.3416666666666667
+        },
+        {
+          "seed": 809,
+          "exact_restore_rate": 0.24166666666666667,
+          "recovery_rate": 0.275
+        }
+      ]
+    }
+  },
+  "thresholds": {
+    "mixed_exact_min": 0.55,
+    "mixed_recovery_min": 0.58,
+    "swap_typo_exact_min": 0.25,
+    "swap_typo_recovery_min": 0.29
+  },
+  "checks": {
+    "mixed_exact_ok": true,
+    "mixed_recovery_ok": true,
+    "swap_typo_exact_ok": true,
+    "swap_typo_recovery_ok": true
+  },
+  "gate": {
+    "all_ok": true,
+    "decision": "GO_KEEP_OBJECTIVE_V4_DEFAULT_ON",
+    "mode": "warning"
+  }
+}

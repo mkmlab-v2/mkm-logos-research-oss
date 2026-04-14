@@ -89,6 +89,10 @@
   - 후속 개선 실험(v4 + local_refine) 판정: `docs/final/artifacts/l1_inverse_decoder_v4_local_refine_ab_v1.json`
     - 결과: `exact/recovery delta=0.0`, `latency 증가`(mixed +9.98ms/sample, swap_typo +30.87ms/sample)
     - 게이트: `HOLD_V4_BASELINE` (채택 보류)
+  - D0-D1 일일 운영 게이트: `scripts/run_l1_inverse_decoder_daily_gate_v1.py`
+    - 최신: `docs/final/artifacts/l1_inverse_decoder_daily_gate_v1_latest.json`
+    - 판정: `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` (`all_ok=true`)
+    - 기준: `mixed exact>=0.55`, `mixed recovery>=0.58`, `swap_typo exact>=0.25`, `swap_typo recovery>=0.29`
 - **운영 보고 규칙(3줄):**
   - 현재 단계 / 증거 파일 경로 / 다음 1스텝
 
