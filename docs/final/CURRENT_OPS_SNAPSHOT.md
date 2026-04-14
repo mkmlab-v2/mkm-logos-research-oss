@@ -131,6 +131,9 @@
   - Week2 구조 실험 묶음 최종결정: `docs/final/artifacts/l1_inverse_decoder_week2_structural_experiments_decision_v1.json`
     - 결정: `FREEZE_ON_V4_BASELINE`
     - 근거: D7~D12 전 후보가 `swap_typo uplift +0.02` 게이트 미달
+  - Week2-D13 실험 7안(swap_typo specialized 분리경로 v1): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_specialized_v1_ab_v1.json`
+    - 결과: mixed 비회귀(`exact/recovery +0.0008`), `swap_typo` 소폭 하락(`exact/recovery -0.0033`)
+    - 판정: `HOLD_V4` (비채택, 즉시 원복)
 - **향후 2주 실행 일정 (운영/개발 분리)**
   - Week1-D1: `Register-L1InverseDecoderDailyGateTask.ps1`로 일일 게이트 스케줄 등록 + 1회 수동 실행 확인
   - Week1-D2: `run_l1_inverse_decoder_failure_profile_v1.py --mode swap_typo` 실행, 실패유형 1순위 고정
