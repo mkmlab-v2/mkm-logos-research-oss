@@ -119,44 +119,16 @@
   - Week2-D9 실험 3안(patience factor 조기종료, swap_typo 우선): `docs/final/artifacts/l1_inverse_decoder_v4_patience_ab_v1.json`
     - 결과: mixed 비회귀(`exact/recovery +0.0008`), `swap_typo` 소폭 하락(`exact/recovery -0.0033`)
     - 판정: `HOLD_V4` (비채택, 즉시 원복)
-  - Week2-D10 실험 4안(order-only mismatch 협폭 tie-break): `docs/final/artifacts/l1_inverse_decoder_v4_order_tiebreak_zero_edit_ab_v1.json`
-    - 결과: mixed 소폭 개선(`exact/recovery +0.0042`), `swap_typo` 소폭 하락(`exact/recovery -0.0017`)
-    - 판정: `HOLD_V4` (비채택, 즉시 원복)
-  - Week2-D11 실험 5안(structured local-window 후보풀, swap_typo 한정): `docs/final/artifacts/l1_inverse_decoder_v4_structured_pool_ab_v1.json`
-    - 결과: mixed 소폭 개선(`exact/recovery +0.0033`), `swap_typo` 소폭 하락(`exact/recovery -0.0025`)
-    - 판정: `HOLD_V4` (비채택, 즉시 원복)
-  - Week2-D12 실험 6안(swap_typo 전용 2-stage decode path): `docs/final/artifacts/l1_inverse_decoder_v4_two_stage_decode_ab_v1.json`
-    - 결과: mixed 소폭 개선(`exact/recovery +0.0025`), `swap_typo` 미미 개선(`exact/recovery +0.0008`)
-    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D10~D12 요약(order-tiebreak/structured-pool/two-stage): 모두 `HOLD_V4`
+    - 공통 패턴: mixed 비회귀/소폭 개선, `swap_typo`는 미세 하락 또는 미미 개선
+    - 상세 아티팩트: `l1_inverse_decoder_v4_order_tiebreak_zero_edit_ab_v1.json`, `l1_inverse_decoder_v4_structured_pool_ab_v1.json`, `l1_inverse_decoder_v4_two_stage_decode_ab_v1.json`
   - Week2 구조 실험 묶음 최종결정: `docs/final/artifacts/l1_inverse_decoder_week2_structural_experiments_decision_v1.json`
     - 결정: `FREEZE_ON_V4_BASELINE`
     - 근거: D7~D12 전 후보가 `swap_typo uplift +0.02` 게이트 미달
-  - Week2-D13 실험 7안(swap_typo specialized 분리경로 v1): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_specialized_v1_ab_v1.json`
-    - 결과: mixed 비회귀(`exact/recovery +0.0008`), `swap_typo` 소폭 하락(`exact/recovery -0.0033`)
-    - 판정: `HOLD_V4` (비채택, 즉시 원복)
-  - Week2-D14 실험 8안(DBA-lite bucket beam, swap_typo 한정): `docs/final/artifacts/l1_inverse_decoder_v4_dba_lite_bucket_beam_ab_v1.json`
-    - 결과: mixed 비회귀(`exact/recovery +0.0017`), `swap_typo` 소폭 하락(`exact/recovery -0.0025`)
-    - 판정: `HOLD_V4` (비채택, 즉시 원복)
-  - Week2-D15 실험 9안(MBR-style rerank, swap_typo 한정): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_mbr_rerank_ab_v1.json`
-    - 결과: mixed 비회귀(`exact/recovery +0.0025`), `swap_typo` 하락(`exact/recovery -0.0175`)
-    - 판정: `HOLD_V4` (비채택, 즉시 원복)
-  - Week2-D16 실험 10안(Damerau edit metric, swap_typo 한정): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_damerau_edit_ab_v1.json`
-    - 결과: mixed 소폭 개선(`exact/recovery +0.0042`), `swap_typo` 소폭 하락(`exact/recovery -0.0017`)
-    - 판정: `HOLD_V4` (비채택, 즉시 원복)
-  - Week2-D17 실험 11안(Tuple Collapse alpha sweep): `docs/final/artifacts/l1_inverse_decoder_v4_tuple_collapse_alpha_sweep_v1.json`
-    - 결과: `swap_typo` 개선(+0.0066 / +0.0109) 관찰했으나 mixed 회귀(`exact -0.0161`, `recovery -0.0169`)로 게이트 실패
-    - 판정: `HOLD_PATCH_MIXED_REGRESSION` (비채택, 즉시 원복)
-  - Week2-D18 실험 12안(swap_typo-only structural alpha=0.3): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_only_structural_alpha_ab_v1.json`
-    - 결과: mixed 비회귀(`exact/recovery +0.0033`), `swap_typo` 소폭 하락(`exact/recovery -0.0025`)
-    - 판정: `HOLD_V4` (비채택, 즉시 원복)
-  - Week2-D19 실험 13안(swap_typo router v1, safe switch): `docs/final/artifacts/l1_inverse_decoder_v4_swap_typo_router_v1_ab_v1.json`
-    - 결과: mixed 비회귀(`exact/recovery +0.0017`), `swap_typo` 소폭 하락(`exact/recovery -0.0025`)
-    - 판정: `HOLD_V4` (비채택, 즉시 원복)
-  - Week2-D20 실험 14안(AGB decoder v1 spike): `docs/final/artifacts/l1_agb_decoder_spike_test_latest.json`
-    - 결과: mixed 소폭 하락(`exact/recovery -0.0042`), `swap_typo` 유의 하락(`exact -0.0367`, `recovery -0.0358`)
-    - Kill Criteria: `swap_typo_below_baseline=true` 충족으로 즉시 중단
-    - 보조 분해: `docs/final/artifacts/l1_agb_decoder_noise_breakdown_latest.json`
-    - 판정: `HOLD_V4` (비채택, 즉시 원복)
+  - Week2-D13~D20 B-Track 요약(분리경로/DBA-lite/MBR/Damerau/TupleCollapse/router/AGB): 전부 `HOLD_V4`
+    - 최고 신호: tuple-collapse에서 `swap_typo` 개선 신호(+0.0066/+0.0109) 있었으나 mixed 회귀로 폐기 (`HOLD_PATCH_MIXED_REGRESSION`)
+    - 최악 케이스: MBR/AGB에서 `swap_typo` 유의 하락(최대 약 -0.0175~-0.0367)으로 즉시 중단
+    - 상세 아티팩트 묶음: `l1_inverse_decoder_v4_swap_typo_specialized_v1_ab_v1.json`, `l1_inverse_decoder_v4_dba_lite_bucket_beam_ab_v1.json`, `l1_inverse_decoder_v4_swap_typo_mbr_rerank_ab_v1.json`, `l1_inverse_decoder_v4_swap_typo_damerau_edit_ab_v1.json`, `l1_inverse_decoder_v4_tuple_collapse_alpha_sweep_v1.json`, `l1_inverse_decoder_v4_swap_typo_only_structural_alpha_ab_v1.json`, `l1_inverse_decoder_v4_swap_typo_router_v1_ab_v1.json`, `l1_agb_decoder_spike_test_latest.json`
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
