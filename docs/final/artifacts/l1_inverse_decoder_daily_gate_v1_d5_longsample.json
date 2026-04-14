@@ -1,0 +1,84 @@
+{
+  "schema": "l1_inverse_decoder_daily_gate_v1",
+  "generated_at_utc": "2026-04-14T09:50:49+00:00",
+  "research_only": true,
+  "inputs": {
+    "seeds": [
+      701,
+      809,
+      907
+    ],
+    "samples": 240,
+    "beam_size": 8,
+    "noise_level": 0.1,
+    "scoring_mode": "enhanced",
+    "swap_typo_objective_v4_default": true
+  },
+  "results": {
+    "mixed": {
+      "mode": "mixed",
+      "avg_exact_restore_rate": 0.6125,
+      "avg_recovery_rate": 0.6263888888888889,
+      "min_exact_restore_rate": 0.6083333333333333,
+      "min_recovery_rate": 0.6208333333333333,
+      "per_seed": [
+        {
+          "seed": 701,
+          "exact_restore_rate": 0.6166666666666667,
+          "recovery_rate": 0.6291666666666667
+        },
+        {
+          "seed": 809,
+          "exact_restore_rate": 0.6083333333333333,
+          "recovery_rate": 0.6208333333333333
+        },
+        {
+          "seed": 907,
+          "exact_restore_rate": 0.6125,
+          "recovery_rate": 0.6291666666666667
+        }
+      ]
+    },
+    "swap_typo": {
+      "mode": "swap_typo",
+      "avg_exact_restore_rate": 0.24722222222222223,
+      "avg_recovery_rate": 0.28055555555555556,
+      "min_exact_restore_rate": 0.20416666666666666,
+      "min_recovery_rate": 0.24583333333333332,
+      "per_seed": [
+        {
+          "seed": 701,
+          "exact_restore_rate": 0.2875,
+          "recovery_rate": 0.32083333333333336
+        },
+        {
+          "seed": 809,
+          "exact_restore_rate": 0.20416666666666666,
+          "recovery_rate": 0.24583333333333332
+        },
+        {
+          "seed": 907,
+          "exact_restore_rate": 0.25,
+          "recovery_rate": 0.275
+        }
+      ]
+    }
+  },
+  "thresholds": {
+    "mixed_exact_min": 0.55,
+    "mixed_recovery_min": 0.58,
+    "swap_typo_exact_min": 0.25,
+    "swap_typo_recovery_min": 0.29
+  },
+  "checks": {
+    "mixed_exact_ok": true,
+    "mixed_recovery_ok": true,
+    "swap_typo_exact_ok": false,
+    "swap_typo_recovery_ok": false
+  },
+  "gate": {
+    "all_ok": false,
+    "decision": "HOLD_INVESTIGATE",
+    "mode": "block"
+  }
+}

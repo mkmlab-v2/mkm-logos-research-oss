@@ -1,0 +1,38 @@
+{
+  "schema": "l1_inverse_decoder_week1_d5_decision_v1",
+  "research_only": true,
+  "inputs": {
+    "d3_candidate": "docs\\final\\artifacts\\l1_inverse_decoder_v4_orderfix_ab_v1.json",
+    "d4_candidate": "docs\\final\\artifacts\\l1_inverse_decoder_v4_typo_wildcard_ab_v1.json",
+    "d5_longsample_gate": "docs\\final\\artifacts\\l1_inverse_decoder_daily_gate_v1_d5_longsample.json"
+  },
+  "candidate_results": [
+    {
+      "name": "v4_1_repaired_order_distance",
+      "decision": "HOLD_V4",
+      "all_ok": false
+    },
+    {
+      "name": "v4_2_typo_x_wildcard_repair",
+      "decision": "HOLD_V4",
+      "all_ok": false
+    }
+  ],
+  "longsample_gate": {
+    "decision": "HOLD_INVESTIGATE",
+    "all_ok": false,
+    "checks": {
+      "mixed_exact_ok": true,
+      "mixed_recovery_ok": true,
+      "swap_typo_exact_ok": false,
+      "swap_typo_recovery_ok": false
+    },
+    "swap_typo_exact": 0.24722222222222223,
+    "swap_typo_recovery": 0.28055555555555556
+  },
+  "week1_d5_decision": {
+    "status": "HOLD_V4_BASELINE",
+    "reason": "No candidate passed D3/D4 gates and long-sample D5 gate failed on swap_typo floors.",
+    "next_focus": "Revisit thresholds or redesign swap_typo robustness path before Week2 promotion checks."
+  }
+}
