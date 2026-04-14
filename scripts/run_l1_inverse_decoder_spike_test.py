@@ -475,6 +475,7 @@ def run(
     noise_level: float,
     scoring_mode: str = "legacy",
     forced_noise_mode: str | None = None,
+    swap_typo_objective_v4: bool = False,
 ) -> tuple[dict, list[dict]]:
     rng = random.Random(seed)
     corpus = _build_corpus()
@@ -516,8 +517,21 @@ def run(
             ct = c.split()
             swap_dist = _swap_distance_noisy_then_repaired(noisy_tokens, repaired_ref, ct)
             cos_s = _cos(observed, _encode(ct))
-            # Primary: fewer adjacent swaps vs observation; tie-break: higher cosine to observed embedding.
-            key = (swap_dist, -cos_s)
+            if swap_typo_objective_v4 and noise_mode == "swap_typo":
+                cos_repaired = _cos(_encode(repaired_ref), _encode(ct))
+                literal_mismatch = sum(
+                    1 for idx, lit in literal_channel.items() if idx >= len(ct) or ct[idx] != lit
+                )
+                repaired_edit = 0.0
+                for idx in range(max(len(ct), len(repaired_ref))):
+                    a = repaired_ref[idx] if idx < len(repaired_ref) else ""
+                    b = ct[idx] if idx < len(ct) else ""
+                    repaired_edit += float(_levenshtein(a, b))
+                # v4: literal anchors + repaired positional edit drive selection.
+                key = (float(literal_mismatch), repaired_edit, float(swap_dist), -cos_repaired, -cos_s)
+            else:
+                # Primary: fewer adjacent swaps vs observation; tie-break: higher cosine to observed embedding.
+                key = (swap_dist, -cos_s)
             if best_key is None or key < best_key:
                 best_key = key
                 best = c
@@ -556,6 +570,7 @@ def run(
         "noise_level": noise_level,
         "scoring_mode": scoring_mode,
         "forced_noise_mode": forced_noise_mode,
+        "swap_typo_objective_v4": swap_typo_objective_v4,
         "exact_restore_rate": exact / max(1, samples),
         "recovery_rate": recover / max(1, samples),
         "hard_fail_count": sum(1 for x in failures if x["type"] == "hard_fail"),
@@ -720,6 +735,14 @@ def main() -> int:
             "Not used with --sweep or --noise-breakdown (those define their own grids)."
         ),
     )
+    ap.add_argument(
+        "--swap-typo-objective-v4",
+        action="store_true",
+        help=(
+            "Research-only: for swap_typo, select by literal-anchor mismatch and "
+            "repaired positional edit distance before swap/cosine ties."
+        ),
+    )
     args = ap.parse_args()
 
     report, failures = run(
@@ -729,6 +752,7 @@ def main() -> int:
         noise_level=args.noise_level,
         scoring_mode=args.scoring_mode,
         forced_noise_mode=args.forced_noise_mode,
+        swap_typo_objective_v4=args.swap_typo_objective_v4,
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.fail_log.parent.mkdir(parents=True, exist_ok=True)
@@ -743,6 +767,7 @@ def main() -> int:
         "exact_restore_rate": report["exact_restore_rate"],
         "recovery_rate": report["recovery_rate"],
         "forced_noise_mode": args.forced_noise_mode,
+        "swap_typo_objective_v4": args.swap_typo_objective_v4,
     }
     if args.sweep:
         seeds = [int(x.strip()) for x in args.seeds.split(",") if x.strip()]
