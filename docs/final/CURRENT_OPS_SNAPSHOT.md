@@ -255,7 +255,8 @@
   - Week-2 Day3 진행: `run_compression_automation_chain.ps1 -SkipHydrationMix -SkipV2TrustPacketTests`로 KPI 체인 재실행 후 정렬 리포트 재생성. 드리프트 해소 확인(런타임 saving `0.46835` == KPI saving `0.46835`, drift `0.0`), 결론은 정책 floor 미충족으로 `HOLD_BASELINE_TRACK_A_POLICY` 유지.
   - 주의: 기본 체인의 `report_token_api_hydration_mix.py`는 `scripts.run_hybrid_codec_v0_spike` 모듈 누락으로 실패하므로, 현재는 `-SkipHydrationMix` 우회가 필요(체인 핵심 KPI에는 영향 없음).
   - Week-2 Day4 진행: `scripts/run_hybrid_codec_v0_spike.py` 모듈 복구(중복 헤더/`from __future__` 충돌 정리) 후 `report_token_api_hydration_mix.py` 정상 재개. `run_compression_automation_chain.ps1 -SkipV2TrustPacketTests`를 우회 없이 통과( hydration mix 포함 ).
-  - 다음 1스텝: Week-2 Day5에서 `tests/test_compression_token_api_v2_stub.py` collection 실패 원인(`scripts.tracka_profile_client_utils` 누락) 복구 여부를 분리 이슈로 정리하고, Trust Packet 테스트까지 녹색화.
+  - Week-2 Day5 진행: 누락 유틸 `scripts/tracka_profile_client_utils.py` 복구 + 중복 구문 정리 후 `py -m pytest tests/test_compression_token_api_v2_stub.py -q` 통과(`15 passed`), 이어 `run_compression_automation_chain.ps1` 기본 실행도 완전 통과(우회 플래그 0개).
+  - 다음 1스텝: Week-2 Day6에서 정책 floor `0.49` 미충족 원인(현재 A saving `0.46835`)을 상용 정책 문구/게이트 값과 동기화할지, 엔진 개선으로 회복할지 의사결정 문서화.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
