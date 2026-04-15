@@ -183,6 +183,10 @@
     - 등록 실행: `Register-L1InverseDecoderModeRouterV3CanaryTask.ps1 -IntervalMinutes 30` 완료
     - 수동 트리거: `Start-ScheduledTask` 1회 실행 후 `LastTaskResult=0` 확인
     - 최신 상태/로그: `l1_inverse_decoder_mode_router_v3_canary_status_latest.json` (`action=KEEP_CANARY`) + `reports/l1_inverse_decoder_mode_router_v3_canary_log_v1.jsonl` append 확인
+  - Week2-D35 phase_2 승격 판정 리포트: `scripts/run_l1_inverse_decoder_mode_router_v3_phase2_promotion_decision.py`
+    - 산출: `docs/final/artifacts/l1_inverse_decoder_mode_router_v3_phase2_promotion_decision_v1.json`
+    - 24h 창 집계: observation 4건 / keep 4건 / rollback 0건 / keep_ratio 1.0
+    - 판정: `GO_PHASE2_30PCT` (동일 rollback guard 유지한 채 30% 승격 권고)
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
