@@ -1,0 +1,67 @@
+{
+  "schema": "track_a_gate_alignment_v1",
+  "generated_at_utc": "2026-04-15T08:04:04+00:00",
+  "inputs": {
+    "active_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "kpi_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\ultra_compression_kpi_summary_latest.json",
+    "sweep_policy_floor": "C:\\workspace\\docs\\final\\artifacts\\track_a_domain_cap_sweep_v1.json",
+    "sweep_aligned_floor": "C:\\workspace\\docs\\final\\artifacts\\track_a_domain_cap_sweep_aligned_v1.json",
+    "sweep_relaxed_floor": "C:\\workspace\\docs\\final\\artifacts\\track_a_domain_cap_sweep_relaxed_v1.json"
+  },
+  "floors": {
+    "policy_floor": 0.49,
+    "runtime_active_saving": 0.4683544303797469,
+    "stale_kpi_active_saving": 0.49085794655414905,
+    "runtime_minus_stale_kpi": -0.02250351617440216,
+    "policy_floor_ok_now": false
+  },
+  "sweep_decisions": {
+    "policy_floor_049": {
+      "decision": "HOLD_BASELINE_TRACK_A",
+      "viable_count": 0,
+      "recommended": null
+    },
+    "aligned_floor_runtime": {
+      "decision": "GO_RECOMMENDED_CAPS",
+      "viable_count": 4,
+      "recommended": {
+        "caps": {
+          "general": 0.5,
+          "sensitive": 0.5,
+          "hangul": 0.48
+        },
+        "saving": 0.4683544303797469,
+        "jaccard": 0.8488363572487027,
+        "integrity": 1.0,
+        "target_domain_jaccard": 0.704115761689291,
+        "delta_saving_vs_baseline": 0.0,
+        "delta_jaccard_vs_baseline": 0.0,
+        "delta_target_domain_jaccard_vs_baseline": 0.0,
+        "saving_floor_ok": true,
+        "integrity_floor_ok": true
+      }
+    },
+    "relaxed_floor_046": {
+      "decision": "GO_RECOMMENDED_CAPS",
+      "viable_count": 8,
+      "recommended": {
+        "caps": {
+          "general": 0.5,
+          "sensitive": 0.48,
+          "hangul": 0.48
+        },
+        "saving": 0.4613220815752461,
+        "jaccard": 0.8575417143915598,
+        "integrity": 1.0,
+        "target_domain_jaccard": 0.7389371902607197,
+        "delta_saving_vs_baseline": -0.007032348804500765,
+        "delta_jaccard_vs_baseline": 0.00870535714285714,
+        "delta_target_domain_jaccard_vs_baseline": 0.03482142857142867,
+        "saving_floor_ok": true,
+        "integrity_floor_ok": true
+      }
+    }
+  },
+  "conclusion": "HOLD_BASELINE_TRACK_A_POLICY",
+  "next_action": "Keep Track A baseline under policy floor gate; use relaxed-floor result only as research evidence."
+}

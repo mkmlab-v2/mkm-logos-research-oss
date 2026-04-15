@@ -250,7 +250,9 @@
   - Day6 진행: `scripts/run_track_a_must_keep_priority_sweep_v1.py`로 우선순위 재정렬 + top-N(1~4) 초소형 스윕 실행, 산출 `docs/final/artifacts/track_a_must_keep_priority_sweep_v1.json` — jaccard +0.000~+0.005 개선, saving `0.464~0.468`으로 floor `0.49` 여전히 미충족(viable=0).
   - Day7 결론: Week-1 must-keep 강화 실험은 품질 개선 대비 절감률 손실로 상용 게이트 미통과 → `HOLD_BASELINE_TRACK_A` 유지, 다음 사이클은 token-level 보호 대신 도메인 캡/라우팅 측 실험으로 전환.
   - Week-2 Day1 진행: `scripts/run_track_a_domain_cap_sweep_v1.py`로 도메인 cap 스윕(36조합) 실행, 산출 `docs/final/artifacts/track_a_domain_cap_sweep_v1.json` — `ssot/timing` jaccard는 최대 +0.059 개선되지만 saving `0.429~0.456`으로 floor 미충족, `viable_count=0`.
-  - 다음 1스텝: Week-2 Day2는 상용 게이트 floor(`0.49`)를 적용하는 평가 경로와 실험 경로의 캡/최소절감 바닥 불일치를 먼저 정렬한 뒤, 라우팅 조건식 A/B로 재시도.
+  - Week-2 Day2 진행: 게이트 정렬 리포트 `scripts/report_track_a_gate_alignment_v1.py` + `docs/final/artifacts/track_a_gate_alignment_v1.json` 생성. 런타임 A saving `0.46835` vs KPI 스냅샷 `0.49085` 불일치 확인(`-0.0225`), 정책 floor `0.49` 기준 결론은 `HOLD_BASELINE_TRACK_A_POLICY`.
+  - 보조 증거: 정렬 floor(0.468)·완화 floor(0.46) 스윕은 viable 후보가 있으나(`track_a_domain_cap_sweep_aligned_v1.json`, `track_a_domain_cap_sweep_relaxed_v1.json`) 정책 floor 미충족이라 상용 승격 근거로는 사용 금지.
+  - 다음 1스텝: Week-2 Day3에서 `ultra_compression_kpi_summary_latest.json` 갱신 체인을 재실행해 KPI/런타임 수치 드리프트를 먼저 해소하고, 동일 seed로 정책 floor 재검증.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
