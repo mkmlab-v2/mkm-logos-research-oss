@@ -254,7 +254,8 @@
   - 보조 증거: 정렬 floor(0.468)·완화 floor(0.46) 스윕은 viable 후보가 있으나(`track_a_domain_cap_sweep_aligned_v1.json`, `track_a_domain_cap_sweep_relaxed_v1.json`) 정책 floor 미충족이라 상용 승격 근거로는 사용 금지.
   - Week-2 Day3 진행: `run_compression_automation_chain.ps1 -SkipHydrationMix -SkipV2TrustPacketTests`로 KPI 체인 재실행 후 정렬 리포트 재생성. 드리프트 해소 확인(런타임 saving `0.46835` == KPI saving `0.46835`, drift `0.0`), 결론은 정책 floor 미충족으로 `HOLD_BASELINE_TRACK_A_POLICY` 유지.
   - 주의: 기본 체인의 `report_token_api_hydration_mix.py`는 `scripts.run_hybrid_codec_v0_spike` 모듈 누락으로 실패하므로, 현재는 `-SkipHydrationMix` 우회가 필요(체인 핵심 KPI에는 영향 없음).
-  - 다음 1스텝: Week-2 Day4에서 hydration mix 의존 모듈 경로를 복구하거나 스크립트를 현재 코드 경로에 맞게 수정해 우회 플래그 없이 전체 체인 녹색 복구.
+  - Week-2 Day4 진행: `scripts/run_hybrid_codec_v0_spike.py` 모듈 복구(중복 헤더/`from __future__` 충돌 정리) 후 `report_token_api_hydration_mix.py` 정상 재개. `run_compression_automation_chain.ps1 -SkipV2TrustPacketTests`를 우회 없이 통과( hydration mix 포함 ).
+  - 다음 1스텝: Week-2 Day5에서 `tests/test_compression_token_api_v2_stub.py` collection 실패 원인(`scripts.tracka_profile_client_utils` 누락) 복구 여부를 분리 이슈로 정리하고, Trust Packet 테스트까지 녹색화.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 

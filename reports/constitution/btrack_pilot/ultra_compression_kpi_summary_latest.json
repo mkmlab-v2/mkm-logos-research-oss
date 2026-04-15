@@ -1,6 +1,6 @@
 {
   "schema": "ultra_compression_kpi_summary_v1",
-  "ts_utc": "2026-04-15T08:26:41.045131+00:00",
+  "ts_utc": "2026-04-15T08:32:22.262738+00:00",
   "sources": {
     "round2": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json",
     "decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
@@ -66,8 +66,9 @@
     "total_examples": 5,
     "metrics_mode_counts": {
       "none": 2,
-      "decision_fallback": 3
+      "decision_fallback": 2,
+      "live": 1
     },
-    "live_ratio": 0.0
+    "live_ratio": 0.2
   }
 }
