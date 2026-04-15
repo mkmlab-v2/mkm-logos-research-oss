@@ -277,7 +277,8 @@
   - Week-6 Pack 등록: `scripts/build_track_a_week6_engine_internal_pack_v1.py` + `docs/final/artifacts/track_a_week6_engine_internal_pack_v1.json` 생성. entry(`HOLD_W5_POLICY_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 하에서 W6-E1~E4(entropy drop budget, n-gram preserve, clause boundary, policy replay) 엔진 내부 규칙 실험 계약을 고정.
   - Week-6 E1 진행: `scripts/run_track_a_week6_entropy_budget_sweep_v1.py` + `docs/final/artifacts/track_a_week6_entropy_budget_sweep_v1.json` 생성. drop-budget(0.08~0.14) + risk multiplier(`ssot=0.6`, `timing=0.65`) 스윕에서 jaccard(`0.8438`)·integrity(`1.0`)는 유지됐지만 saving이 `0.47058`로 floor(`0.475`) 미달(viable=0), 판정 `HOLD_W6_E1_NO_VIABLE`.
   - Week-6 E2 진행: `scripts/run_track_a_week6_ngram_preserve_sweep_v1.py` + `docs/final/artifacts/track_a_week6_ngram_preserve_sweep_v1.json` 생성. n-gram(2/3) + preserve ratio(0.15~0.25) 규칙 주입에서 saving은 `0.501~0.505`로 floor(`0.48`)를 넘겼지만 jaccard가 `0.552~0.580`로 floor(`0.84`) 미달(viable=0), 판정 `HOLD_W6_E2_NO_VIABLE`.
-  - 다음 1스텝: W6-E3(`run_track_a_week6_clause_boundary_sweep_v1.py`) 구현/실행으로 clause boundary penalty와 sentence 최소 토큰 규칙이 품질 하락을 줄일 수 있는지 검증한다.
+  - Week-6 E3 진행: `scripts/run_track_a_week6_clause_boundary_sweep_v1.py` + `docs/final/artifacts/track_a_week6_clause_boundary_sweep_v1.json` 생성. boundary penalty(0.1~0.2) + sentence min tokens(4~6) 스윕에서 saving은 최대 `0.49094`까지 회복했지만 jaccard가 `0.638~0.760`로 floor(`0.845`) 미달(viable=0), 판정 `HOLD_W6_E3_NO_VIABLE`.
+  - 다음 1스텝: W6-E4 리플레이 리포트(`report_track_a_week6_policy_replay_v1.py`)로 Week-6 전구간 HOLD를 고정하고 Week-7 전환 기준을 등록한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
