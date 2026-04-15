@@ -6,13 +6,13 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W7-E4)
+## Track A Sprint Update (2026-04-15, W8-Pack)
 
-- 실행: `py scripts/report_track_a_week7_policy_replay_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week7_policy_replay_v1.json`
-- 결과: `decision=HOLD_W7_POLICY_REPLAY`
-- 핵심 수치: `best_saving_seen=0.47463`(policy floor `0.49` 미달), `best_jaccard_seen=0.84884`, `best_integrity_seen=1.0`, `quality_tradeoff_flag=true`
-- 다음 1스텝: Week-8 가설 팩 등록(정책 floor 유지 + quality_tradeoff_flag 해소용 경량 구조 실험 재설계)
+- 실행: `py scripts/build_track_a_week8_hypothesis_pack_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week8_hypothesis_pack_v1.json`
+- 결과: Week-8 가설 팩 등록 완료 (`W8-E1~E4`, policy floor `0.49` lock 유지)
+- 핵심 수치(입력 조건): `week7_decision=HOLD_W7_POLICY_REPLAY`, `best_saving_seen=0.47463`, `best_jaccard_seen=0.84884`, `quality_tradeoff_flag=true`
+- 다음 1스텝: W8-E1(`run_track_a_week8_phrase_budget_micro_sweep_v1.py`) 구현/실행
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
@@ -290,7 +290,10 @@
   - Week-7 Pack 등록: `scripts/build_track_a_week7_architecture_redesign_pack_v1.py` + `docs/final/artifacts/track_a_week7_architecture_redesign_pack_v1.json` 생성. entry(`HOLD_W6_POLICY_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 하에서 W7-E1~E4(2-stage arch, semantic chunker, pareto scorer, policy replay) 아키텍처 레벨 실험 계약을 고정.
   - Week-7 E1 진행: `scripts/run_track_a_week7_two_stage_arch_sweep_v1.py` + `docs/final/artifacts/track_a_week7_two_stage_arch_sweep_v1.json` 생성. 2-stage(planner 0.10~0.14 / executor 0.32~0.36) 스윕에서 saving은 최대 `0.48016`까지 회복했지만 jaccard가 `0.751~0.823`로 floor(`0.84`) 미달(viable=0), 판정 `HOLD_W7_E1_NO_VIABLE`.
   - Week-7 E2 진행: `scripts/run_track_a_week7_semantic_chunk_sweep_v1.py` + `docs/final/artifacts/track_a_week7_semantic_chunk_sweep_v1.json` 생성. semantic chunk(48/64/80) + sentence policy(0.2/0.25/0.3) 스윕에서 saving은 최대 `0.48191`까지 회복했지만 jaccard가 `0.770~0.824`로 floor(`0.845`) 미달(viable=0), 판정 `HOLD_W7_E2_NO_VIABLE`.
-  - 다음 1스텝: W7-E3(`run_track_a_week7_pareto_scorer_sweep_v1.py`) 구현/실행으로 saving/jaccard 가중치 조합에서 pareto 상의 유효 후보가 있는지 검증한다.
+  - Week-7 E3 진행: `scripts/run_track_a_week7_pareto_scorer_sweep_v1.py` + `docs/final/artifacts/track_a_week7_pareto_scorer_sweep_v1.json` 생성. dual-objective(saving/jaccard) 가중치 스윕(0.45/0.5/0.55)에서 integrity는 `1.0` 유지됐지만 saving/jaccard 동시 게이트를 충족한 조합이 없어(viable=0), 판정 `HOLD_W7_E3_NO_VIABLE`.
+  - Week-7 E4 진행: 리플레이 리포트 `scripts/report_track_a_week7_policy_replay_v1.py` + `docs/final/artifacts/track_a_week7_policy_replay_v1.json` 생성. E1~E3 종합에서 `best_saving=0.47463`, `best_jaccard=0.84884`, `best_integrity=1.0`이나 `policy_floor_ok=false` 및 `quality_tradeoff_flag=true` 유지로 최종 판정은 `HOLD_W7_POLICY_REPLAY`.
+  - Week-8 Pack 등록: `scripts/build_track_a_week8_hypothesis_pack_v1.py` + `docs/final/artifacts/track_a_week8_hypothesis_pack_v1.json` 생성. entry(`HOLD_W7_POLICY_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 하에서 W8-E1~E4(phrase budget micro-tuning, confidence restore gate, low-cost rerank, policy replay) 가설 실험 계약을 고정.
+  - 다음 1스텝: W8-E1(`run_track_a_week8_phrase_budget_micro_sweep_v1.py`) 구현/실행으로 domain-locked phrase budget의 saving/jaccard 동시 회복 가능 여부를 검증한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
