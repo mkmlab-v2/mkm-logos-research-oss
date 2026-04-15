@@ -6,16 +6,16 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W17-E1)
+## Track A Sprint Update (2026-04-15, W17-E2)
 
-- 실행: `py scripts/run_track_a_week17_guard_banded_unlock_sweep_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week17_guard_banded_unlock_sweep_v1.json`
-- 결과: `decision=HOLD_W17_E1_NO_VIABLE`, `viable_count=0`
+- 실행: `py scripts/run_track_a_week17_confidence_budget_crossover_sweep_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week17_confidence_budget_crossover_sweep_v1.json`
+- 결과: `decision=HOLD_W17_E2_NO_VIABLE`, `viable_count=0`
 - 기준선: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
 - 최고 run: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0` (기준선과 동일)
-- 관찰: `guard_relax_margin` 추가(0.0~0.002)에도 `switched_to_router_off_cases=0`, `guard_blocked_cases=30`, `protected_blocked_cases=10`으로 unlock 경로 개방 실패
-- 판단: guard-banded unlock 단독으로 deadlock 해소 불가, 상용화 라인은 HOLD 유지
-- 다음 1스텝: W17-E2(`run_track_a_week17_confidence_budget_crossover_sweep_v1.py`) 구현/실행
+- 관찰: `floor_shadow_blocked_cases=6` 지속, `confidence_blocked_cases`(30~33) 누적, `switched_to_router_off_cases=0`으로 crossover 진입 자체가 차단
+- 판단: confidence-budget crossover 단독으로 deadlock 해소 불가, 상용화 라인은 HOLD 유지
+- 다음 1스텝: W17-E3(`run_track_a_week17_domain_quota_veto_sweep_v1.py`) 구현/실행
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
