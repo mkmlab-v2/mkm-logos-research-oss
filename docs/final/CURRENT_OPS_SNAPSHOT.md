@@ -267,7 +267,8 @@
   - Week-4 Pack 등록: `scripts/build_track_a_week4_experiment_pack_v1.py` + `docs/final/artifacts/track_a_week4_experiment_pack_v1.json` 생성. entry 조건(`HOLD_POLICY_FLOOR_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 아래 W4-E1~E4(domain phrase ssot/timing + selective router 제약 + policy replay) 실행 계약을 분리 고정.
   - Week-4 E1 진행: `scripts/run_track_a_week4_domain_phrase_ab_v1.py` + `docs/final/artifacts/track_a_week4_domain_phrase_ab_v1.json` 생성. ssot 전용 phrase 정책에서 target-domain jaccard는 `+0.0371`, 전체 jaccard `+0.0074` 개선됐지만 saving이 `0.46273`으로 floor `0.475` 미달(viable=0), 판정 `HOLD_W4_E1_NO_VIABLE`.
   - Week-4 E2 진행: `scripts/run_track_a_week4_domain_phrase_ab_v1.py --target-domains timing ...` + `docs/final/artifacts/track_a_week4_timing_domain_phrase_ab_v1.json` 생성. timing 전용 phrase 정책에서 target-domain jaccard는 `+0.1071`, 전체 jaccard `+0.00714` 개선됐지만 saving이 `0.46273`으로 floor `0.475` 미달(viable=0), 판정 `HOLD_W4_E2_NO_VIABLE`.
-  - 다음 1스텝: W4-E3(`run_track_a_week4_selective_router_ab_v1.py`) 구현/실행으로 `ssot,timing` router_off 금지 제약에서 saving 회복 가능한지 확인한다.
+  - Week-4 E3 진행: `scripts/run_track_a_week4_selective_router_ab_v1.py` + `docs/final/artifacts/track_a_week4_selective_router_ab_v1.json` 생성. `ssot,timing` router_off 금지(나머지 75% 케이스만 router_off 허용) 혼합 결과 saving `0.49963`로 floor `0.48`은 통과했지만 jaccard가 `0.55193`(baseline 대비 `-0.2969`)로 `0.82` 게이트 미달, 판정 `HOLD_W4_E3_NO_VIABLE`.
+  - 다음 1스텝: W4-E4 리플레이 리포트(`report_track_a_week4_policy_replay_v1.py`)로 Week-4 전구간 HOLD 결론을 고정하고 Week-5 후보(엔진 레벨 라우팅 규칙 수정)를 별도 등록한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
