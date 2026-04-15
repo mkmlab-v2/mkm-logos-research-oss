@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -27,9 +28,38 @@ from scripts.logos_shadow_eval_lib import load_kospi_yf_rows
 DEFAULT_HYPOTHESIS = ROOT / "docs" / "final" / "artifacts" / "btrack_hypothesis_prophecy_latest.json"
 DEFAULT_KOSPI_CSV = ROOT / "research" / "market_data" / "kospi_daily_external_yf.csv"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score_latest.json"
+DEFAULT_LOCK = ROOT / "docs" / "final" / "artifacts" / ".btrack_prophecy_score_latest.lock"
 DEFAULT_FLOW_CSV = ROOT / "research" / "market_data" / "kospi_monthly_flow_external.csv"
 
 SCHEMA = "btrack_prophecy_score_v1"
+
+
+def _acquire_lock(lock_path: Path) -> bool:
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        fd = os.open(str(lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError:
+        return False
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write(
+            json.dumps(
+                {
+                    "pid": os.getpid(),
+                    "ts_utc": _utc_now(),
+                    "script": "build_btrack_prophecy_score_from_ohlcv.py",
+                },
+                ensure_ascii=False,
+            )
+            + "\n"
+        )
+    return True
+
+
+def _release_lock(lock_path: Path) -> None:
+    try:
+        lock_path.unlink(missing_ok=True)
+    except Exception:
+        pass
 
 
 def _rel_to_root(p: Path) -> str:
@@ -907,6 +937,12 @@ def main() -> int:
         help="Minimum cumulative down move (%) in lookback to force bear.",
     )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--lock-file",
+        type=Path,
+        default=DEFAULT_LOCK,
+        help="Single-writer lock file for btrack score artifact updates.",
+    )
     ap.add_argument("--stdout-only", action="store_true")
     args = ap.parse_args()
 
@@ -1140,10 +1176,17 @@ def main() -> int:
     text = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
     print(text)
     if not args.stdout_only:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(text, encoding="utf-8")
-        # Success line on stdout: stderr triggers PowerShell native-command errors under strict runs (scheduled tasks).
-        print(f"WROTE: {args.output.resolve()}")
+        lock_path = args.lock_file if args.lock_file.is_absolute() else ROOT / args.lock_file
+        if not _acquire_lock(lock_path):
+            print(f"Writer lock already active: {lock_path}", file=sys.stderr)
+            return 3
+        try:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(text, encoding="utf-8")
+            # Success line on stdout: stderr triggers PowerShell native-command errors under strict runs (scheduled tasks).
+            print(f"WROTE: {args.output.resolve()}")
+        finally:
+            _release_lock(lock_path)
     return 0
 
 
