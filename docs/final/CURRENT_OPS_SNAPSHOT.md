@@ -6,16 +6,16 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W15-E1)
+## Track A Sprint Update (2026-04-15, W15-E2)
 
-- 실행: `py scripts/run_track_a_week15_selective_floor_unlock_sweep_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week15_selective_floor_unlock_sweep_v1.json`
-- 결과: `decision=HOLD_W15_E1_NO_VIABLE`, `viable_count=0`
+- 실행: `py scripts/run_track_a_week15_confidence_replay_crossover_sweep_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week15_confidence_replay_crossover_sweep_v1.json`
+- 결과: `decision=HOLD_W15_E2_NO_VIABLE`, `viable_count=0`
 - 기준선: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
 - 최고 run: 기준선과 동일 (`saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`)
-- 관찰: 전 run에서 `switched_to_router_off_cases=0`, `guard_blocked_cases=30`, `protected_blocked_cases=10`
-- 판단: selective floor unlock 설정에서도 strict guard + protected domain 제약으로 off-path unlock이 열리지 않아 `quality_tradeoff_flag` 해소 근거 미확보
-- 다음 1스텝: W15-E2(`run_track_a_week15_confidence_replay_crossover_sweep_v1.py`) 구현/실행으로 crossover 경로 검증
+- 관찰: 전 run에서 `floor_shadow_blocked_cases=6` 지속, 일부 조합(`crossover_weight=0.7`)만 `switched_to_router_off_cases=1` 발생했지만 집계 지표 개선 없음
+- 판단: confidence replay crossover 조정만으로 floor shadow 장벽을 넘지 못해 `quality_tradeoff_flag` 해소 근거 미확보
+- 다음 1스텝: W15-E3(`run_track_a_week15_adaptive_throttle_veto_sweep_v1.py`) 구현/실행으로 adaptive throttle veto 경로 검증
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
