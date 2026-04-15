@@ -270,7 +270,8 @@
   - Week-4 E3 진행: `scripts/run_track_a_week4_selective_router_ab_v1.py` + `docs/final/artifacts/track_a_week4_selective_router_ab_v1.json` 생성. `ssot,timing` router_off 금지(나머지 75% 케이스만 router_off 허용) 혼합 결과 saving `0.49963`로 floor `0.48`은 통과했지만 jaccard가 `0.55193`(baseline 대비 `-0.2969`)로 `0.82` 게이트 미달, 판정 `HOLD_W4_E3_NO_VIABLE`.
   - Week-4 E4 진행: 리플레이 리포트 `scripts/report_track_a_week4_policy_replay_v1.py` + `docs/final/artifacts/track_a_week4_policy_replay_v1.json` 생성. E1~E3 종합 기준 `best_saving=0.49963`, `best_integrity=1.0`이지만 `quality_tradeoff_flag=true`로 최종 판정은 `HOLD_W4_POLICY_REPLAY`.
   - Week-5 Pack 등록: `scripts/build_track_a_week5_engine_routing_pack_v1.py` + `docs/final/artifacts/track_a_week5_engine_routing_pack_v1.json` 생성. entry(`HOLD_W4_POLICY_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 하에서 W5-E1~E4(패널티 라우터 스코어링, 도메인 confidence 임계, 하이브리드 fallback, policy replay) 실행 계약을 고정.
-  - 다음 1스텝: W5-E1(`run_track_a_week5_penalty_router_sweep_v1.py`) 구현/실행으로 risk domain(`ssot,timing`) penalty grid에서 saving-jaccard 균형점을 탐색한다.
+  - Week-5 E1 진행: `scripts/run_track_a_week5_penalty_router_sweep_v1.py` + `docs/final/artifacts/track_a_week5_penalty_router_sweep_v1.json` 생성. risk domain(`ssot,timing`) 보호 + 비위험군 penalty 스윕(0.05~0.2) 결과 saving은 `0.494~0.503`으로 floor(`0.475`) 통과했지만 jaccard가 `0.560~0.609`로 floor(`0.82`) 미달(viable=0), 판정 `HOLD_W5_E1_NO_VIABLE`.
+  - 다음 1스텝: W5-E2(`run_track_a_week5_confidence_router_sweep_v1.py`) 구현/실행으로 confidence 임계 기반 라우팅에서 jaccard 하락을 줄일 수 있는지 검증한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
