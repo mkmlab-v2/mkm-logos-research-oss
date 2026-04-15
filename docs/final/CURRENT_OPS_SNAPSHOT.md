@@ -225,6 +225,11 @@
   - 팩트 확정 경로: 구현/수치/날짜는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` + git + exit code + artifact JSON로만 확정.
   - 레일/트랙 격벽: 연구(B)·운영(A) 자동 합선 금지, 압축 성과는 Track A KPI와 ultra-literal 수치를 분리 표기.
 
+- **SSH Cursor 핸드오프 반영(2026-04-15):**
+  - 상태: VPS 작업 레포 `/opt/mkm-lab-workspace-v2`에서 `HEAD == origin/main` 확인, KPI→metabolism append/export 체인 수동 검증 완료.
+  - 증거: proxy 고정값 `MKM_KPI_PROXY_LOG=/root/.pm2/logs/bitcoin-live-error.log`, cron `kpi_proxy_metabolism_v1` 5분 주기 등록, 산출 `docs/final/artifacts/derived/log_metabolism_from_kpi_vps_export_v1.jsonl`.
+  - 다음 1스텝: VPS에서 `crontab -l | rg kpi_proxy_metabolism_v1` + `tail -n 50 /opt/mkm-lab-workspace-v2/docs/final/artifacts/derived/kpi_metabolism_cron.log`로 주기 실행 흔적만 점검.
+
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
 - **기본 동작:** `compression_token_api_stub.py`에서 Hybrid v0 경로는 **기본 ON**(환경변수 미설정).
