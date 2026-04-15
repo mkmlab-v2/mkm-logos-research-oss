@@ -6,13 +6,13 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W8-E2)
+## Track A Sprint Update (2026-04-15, W8-E3)
 
-- 실행: `py scripts/run_track_a_week8_confidence_restore_gate_sweep_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week8_confidence_restore_gate_sweep_v1.json`
-- 결과: `decision=HOLD_W8_E2_NO_VIABLE`, `viable_count=0`, `run_count=9`
-- 핵심 수치: saving은 최대 `0.49863`까지 회복됐지만 jaccard가 `0.580~0.652` 구간으로 floor(`0.85`)를 크게 하회, integrity는 `1.0` 유지
-- 다음 1스텝: W8-E3(`run_track_a_week8_low_cost_rerank_sweep_v1.py`) 구현/실행
+- 실행: `py scripts/run_track_a_week8_low_cost_rerank_sweep_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week8_low_cost_rerank_sweep_v1.json`
+- 결과: `decision=HOLD_W8_E3_NO_VIABLE`, `viable_count=0`, `run_count=9`
+- 핵심 수치: saving은 최대 `0.49689`까지 회복됐지만 jaccard가 `0.656~0.758` 구간으로 floor(`0.85`) 미달, latency budget(`2.0ms/case`)은 전 조합 통과
+- 다음 1스텝: W8-E4(`report_track_a_week8_policy_replay_v1.py`) 구현/실행
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
@@ -295,7 +295,8 @@
   - Week-8 Pack 등록: `scripts/build_track_a_week8_hypothesis_pack_v1.py` + `docs/final/artifacts/track_a_week8_hypothesis_pack_v1.json` 생성. entry(`HOLD_W7_POLICY_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 하에서 W8-E1~E4(phrase budget micro-tuning, confidence restore gate, low-cost rerank, policy replay) 가설 실험 계약을 고정.
   - Week-8 E1 진행: `scripts/run_track_a_week8_phrase_budget_micro_sweep_v1.py` + `docs/final/artifacts/track_a_week8_phrase_budget_micro_sweep_v1.json` 생성. target-domain(`ssot,timing`) router_on 고정 + phrase budget(0.04/0.06/0.08) 마이크로 스윕에서 integrity는 `1.0` 유지됐지만 saving이 `0.47077~0.47363`으로 floor(`0.48`) 미달이고 jaccard도 `0.81149~0.82800`으로 floor(`0.85`) 미달(viable=0), 판정 `HOLD_W8_E1_NO_VIABLE`.
   - Week-8 E2 진행: `scripts/run_track_a_week8_confidence_restore_gate_sweep_v1.py` + `docs/final/artifacts/track_a_week8_confidence_restore_gate_sweep_v1.json` 생성. confidence restore threshold(0.6/0.65/0.7) + penalty(0.05/0.08/0.1) 스윕에서 saving은 `0.490~0.499`로 floor(`0.485`)를 통과했지만 jaccard가 `0.580~0.652`로 floor(`0.85`)를 크게 하회(viable=0), 판정 `HOLD_W8_E2_NO_VIABLE`.
-  - 다음 1스텝: W8-E3(`run_track_a_week8_low_cost_rerank_sweep_v1.py`) 구현/실행으로 low-cost rerank 보정의 jaccard 회복 가능 여부를 검증한다.
+  - Week-8 E3 진행: `scripts/run_track_a_week8_low_cost_rerank_sweep_v1.py` + `docs/final/artifacts/track_a_week8_low_cost_rerank_sweep_v1.json` 생성. rerank alpha(0.15/0.2/0.25) + candidate pool(2/3/4) 스윕에서 latency budget(`<=2.0ms/case`)은 전 조합 통과하고 saving은 최대 `0.49689`까지 회복됐지만 jaccard가 `0.656~0.758`으로 floor(`0.85`) 미달(viable=0), 판정 `HOLD_W8_E3_NO_VIABLE`.
+  - 다음 1스텝: W8-E4(`report_track_a_week8_policy_replay_v1.py`) 구현/실행으로 Week-8 E1~E3 통합 replay 판정을 확정한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
