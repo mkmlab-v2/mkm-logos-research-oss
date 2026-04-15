@@ -275,7 +275,8 @@
   - Week-5 E3 진행: `scripts/run_track_a_week5_hybrid_router_mix_v1.py` + `docs/final/artifacts/track_a_week5_hybrid_router_mix_v1.json` 생성. hard-domain(`ssot,timing`) router_on 고정 + soft penalty alpha(0.2~0.4) 혼합에서 saving은 `0.493~0.494`로 floor(`0.485`) 통과했지만 jaccard가 `0.611~0.631`로 floor(`0.84`) 미달(viable=0), 판정 `HOLD_W5_E3_NO_VIABLE`.
   - Week-5 E4 진행: 리플레이 리포트 `scripts/report_track_a_week5_policy_replay_v1.py` + `docs/final/artifacts/track_a_week5_policy_replay_v1.json` 생성. E1~E3 종합에서 `best_saving=0.49416`, `best_integrity=1.0`이나 `quality_tradeoff_flag=true` 유지로 최종 판정은 `HOLD_W5_POLICY_REPLAY`.
   - Week-6 Pack 등록: `scripts/build_track_a_week6_engine_internal_pack_v1.py` + `docs/final/artifacts/track_a_week6_engine_internal_pack_v1.json` 생성. entry(`HOLD_W5_POLICY_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 하에서 W6-E1~E4(entropy drop budget, n-gram preserve, clause boundary, policy replay) 엔진 내부 규칙 실험 계약을 고정.
-  - 다음 1스텝: W6-E1(`run_track_a_week6_entropy_budget_sweep_v1.py`) 구현/실행으로 risk domain budget multiplier가 있는 drop-budget 스윕에서 saving-jaccard 균형점을 탐색한다.
+  - Week-6 E1 진행: `scripts/run_track_a_week6_entropy_budget_sweep_v1.py` + `docs/final/artifacts/track_a_week6_entropy_budget_sweep_v1.json` 생성. drop-budget(0.08~0.14) + risk multiplier(`ssot=0.6`, `timing=0.65`) 스윕에서 jaccard(`0.8438`)·integrity(`1.0`)는 유지됐지만 saving이 `0.47058`로 floor(`0.475`) 미달(viable=0), 판정 `HOLD_W6_E1_NO_VIABLE`.
+  - 다음 1스텝: W6-E2(`run_track_a_week6_ngram_preserve_sweep_v1.py`) 구현/실행으로 n-gram 보존 규칙 주입 시 saving 하락을 제한하면서 jaccard 이득이 유지되는지 확인한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
