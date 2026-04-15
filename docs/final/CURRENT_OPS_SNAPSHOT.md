@@ -141,6 +141,10 @@
     - 사전 게이트 등록: `docs/final/artifacts/l1_inverse_decoder_swap_typo_lane_decoder_v2_preregister.json` (`is_structural_new_path=true`)
     - 결과: mixed 개선(`exact +0.0575`, `recovery +0.0483`) / `swap_typo` 하락(`exact -0.0508`, `recovery -0.0483`)
     - 판정: `HOLD_V4` (swap_typo uplift 게이트 미달, lane 확장 대비 실익 없음)
+  - Week2-D24 실험 19안(order-only bucket 타깃 lane decoder v1): `scripts/run_l1_swap_typo_order_lane_decoder_v1.py`
+    - 사전 게이트 등록: `docs/final/artifacts/l1_inverse_decoder_swap_typo_order_lane_decoder_v1_preregister.json` (`target_failure_bucket=order_only_mismatch`)
+    - 결과: mixed 개선(`exact +0.0575`, `recovery +0.0483`) / `swap_typo` 하락(`exact -0.0508`, `recovery -0.0483`), `swap_typo avg_lane_pool_size=224.95`
+    - 판정: `HOLD_V4` (order lane 확장만으로는 swap_typo uplift 미충족)
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
