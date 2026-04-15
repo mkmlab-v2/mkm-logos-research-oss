@@ -278,7 +278,8 @@
   - Week-6 E1 진행: `scripts/run_track_a_week6_entropy_budget_sweep_v1.py` + `docs/final/artifacts/track_a_week6_entropy_budget_sweep_v1.json` 생성. drop-budget(0.08~0.14) + risk multiplier(`ssot=0.6`, `timing=0.65`) 스윕에서 jaccard(`0.8438`)·integrity(`1.0`)는 유지됐지만 saving이 `0.47058`로 floor(`0.475`) 미달(viable=0), 판정 `HOLD_W6_E1_NO_VIABLE`.
   - Week-6 E2 진행: `scripts/run_track_a_week6_ngram_preserve_sweep_v1.py` + `docs/final/artifacts/track_a_week6_ngram_preserve_sweep_v1.json` 생성. n-gram(2/3) + preserve ratio(0.15~0.25) 규칙 주입에서 saving은 `0.501~0.505`로 floor(`0.48`)를 넘겼지만 jaccard가 `0.552~0.580`로 floor(`0.84`) 미달(viable=0), 판정 `HOLD_W6_E2_NO_VIABLE`.
   - Week-6 E3 진행: `scripts/run_track_a_week6_clause_boundary_sweep_v1.py` + `docs/final/artifacts/track_a_week6_clause_boundary_sweep_v1.json` 생성. boundary penalty(0.1~0.2) + sentence min tokens(4~6) 스윕에서 saving은 최대 `0.49094`까지 회복했지만 jaccard가 `0.638~0.760`로 floor(`0.845`) 미달(viable=0), 판정 `HOLD_W6_E3_NO_VIABLE`.
-  - 다음 1스텝: W6-E4 리플레이 리포트(`report_track_a_week6_policy_replay_v1.py`)로 Week-6 전구간 HOLD를 고정하고 Week-7 전환 기준을 등록한다.
+  - Week-6 E4 진행: 리플레이 리포트 `scripts/report_track_a_week6_policy_replay_v1.py` + `docs/final/artifacts/track_a_week6_policy_replay_v1.json` 생성. E1~E3 종합에서 `best_saving=0.50525`, `best_integrity=1.0`이나 `quality_tradeoff_flag=true` 유지로 최종 판정은 `HOLD_W6_POLICY_REPLAY`.
+  - 다음 1스텝: Week-7 아키텍처 레벨 재설계(압축 엔진 내부 규칙을 모듈 단위로 분리 교체) 실험팩 등록으로 전환한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
