@@ -1,0 +1,85 @@
+{
+  "schema": "track_a_week4_experiment_pack_v1",
+  "generated_at_utc": "2026-04-15T10:05:37+00:00",
+  "entry_condition": {
+    "replay_decision": "HOLD_POLICY_FLOOR_REPLAY",
+    "policy_floor_locked": 0.49,
+    "quality_tradeoff_flag": true
+  },
+  "pack": {
+    "name": "track_a_week4_domain_phrase_router_pack",
+    "objective": "Recover saving toward 0.49 while avoiding router-off quality collapse.",
+    "constraints": [
+      "Keep policy floor unchanged at 0.49",
+      "Integrity floor fixed at 1.0",
+      "Do not enable global router_off path as default candidate"
+    ],
+    "experiments": [
+      {
+        "id": "W4-E1",
+        "title": "Domain-specific phrase policy (ssot only)",
+        "script_hint": "run_track_a_week4_domain_phrase_ab_v1.py",
+        "config": {
+          "target_domains": [
+            "ssot"
+          ],
+          "phrase_seed_tokens": [
+            "constitution",
+            "constraints",
+            "operational",
+            "stability",
+            "quality"
+          ],
+          "router_mode": "on"
+        },
+        "success_gate": "saving >= 0.475 and jaccard >= baseline-0.01 and integrity == 1.0"
+      },
+      {
+        "id": "W4-E2",
+        "title": "Domain-specific phrase policy (timing only)",
+        "script_hint": "run_track_a_week4_domain_phrase_ab_v1.py",
+        "config": {
+          "target_domains": [
+            "timing"
+          ],
+          "phrase_seed_tokens": [
+            "bootstrap",
+            "timing",
+            "thresholds",
+            "transition",
+            "matrix"
+          ],
+          "router_mode": "on"
+        },
+        "success_gate": "saving >= 0.475 and timing-domain jaccard non-regression and integrity == 1.0"
+      },
+      {
+        "id": "W4-E3",
+        "title": "Selective router constraints (deny router_off on ssot/timing)",
+        "script_hint": "run_track_a_week4_selective_router_ab_v1.py",
+        "config": {
+          "router_default": "on",
+          "router_off_allowed_domains": [
+            "general_only"
+          ],
+          "router_off_denied_domains": [
+            "ssot",
+            "timing"
+          ]
+        },
+        "success_gate": "saving >= 0.48 and jaccard >= 0.82 and integrity == 1.0"
+      },
+      {
+        "id": "W4-E4",
+        "title": "Policy floor replay with best constrained candidate",
+        "script_hint": "report_track_a_week4_policy_replay_v1.py",
+        "config": {
+          "policy_floor": 0.49,
+          "require_quality_tradeoff_flag": false
+        },
+        "success_gate": "saving >= 0.49 and integrity == 1.0 and quality_tradeoff_flag == false"
+      }
+    ]
+  },
+  "next_action": "Start W4-E1 and keep commercialization line at HOLD until W4-E4 passes."
+}
