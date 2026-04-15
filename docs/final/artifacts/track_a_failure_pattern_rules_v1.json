@@ -1,0 +1,118 @@
+{
+  "schema": "track_a_failure_pattern_rules_v1",
+  "generated_at_utc": "2026-04-15T06:54:26+00:00",
+  "input": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+  "selection": {
+    "target_domains": [
+      "ssot",
+      "timing"
+    ],
+    "max_jaccard": 0.6,
+    "selected_case_count": 13,
+    "candidate_mode": "risk_token_frequency_fallback"
+  },
+  "must_keep_candidates": [
+    {
+      "token": "track",
+      "risk_count": 1
+    },
+    {
+      "token": "state",
+      "risk_count": 1
+    }
+  ],
+  "selected_cases": [
+    {
+      "id": "cmp2_003",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5882352941176471,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_007",
+      "domain": "timing",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5333333333333333,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_008",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5714285714285714,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_010",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5384615384615384,
+      "token_saving_rate": 0.5,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_012",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5294117647058824,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_013",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.47058823529411764,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_019",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.47058823529411764,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_021",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.47368421052631576,
+      "token_saving_rate": 0.55,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_024",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_025",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_026",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.47058823529411764,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_029",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5333333333333333,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_039",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.47368421052631576,
+      "token_saving_rate": 0.55,
+      "missing_tokens_sample": []
+    }
+  ],
+  "next_action": "Use must_keep_candidates as Day2 rule seed, then run Track A A/B regression."
+}

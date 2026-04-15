@@ -243,7 +243,8 @@
 - **Track A 상용화 개선 스프린트(Week-1) 기동(2026-04-15):**
   - 상태: Day1 기준선 분해 완료 — `scripts/report_track_a_domain_breakdown_v1.py`로 도메인/취약 케이스 아티팩트 생성.
   - 증거: `docs/final/artifacts/track_a_domain_breakdown_v1.json` (global saving `0.4908579`, avg jaccard `0.7349368`, 취약 도메인 `timing`/`ssot`, 최저 케이스 `cmp2_013` jaccard `0.4705882`).
-  - 다음 1스텝: Day2 실패패턴 룰셋(v1) 작성 — `ssot/timing` 저복원 상위 10케이스 기준으로 must-keep 확장 실험(토큰/부정어/숫자/엔티티 보호) 후 A/B 비교.
+  - Day2 진행: `scripts/build_track_a_failure_pattern_rules_v1.py` 추가, `docs/final/artifacts/track_a_failure_pattern_rules_v1.json` 생성(`selected_case_count=13`, 현재 `candidate_mode=risk_token_frequency_fallback`).
+  - 다음 1스텝: Day3에서 저복원 케이스 원문(raw_text) 포함 평가셋을 보강해 missing-token 기반 후보를 재생성하고, 그 후보로 must-keep 룰 A/B를 실행.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
