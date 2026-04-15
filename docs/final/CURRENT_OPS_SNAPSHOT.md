@@ -240,6 +240,11 @@
   - 증거: 커밋 `2cb291a56e` (`feat(ops): add one-command local-to-vps deploy scripts`), dry-run에서 remote command 조립/가드 정상 출력 확인.
   - 다음 1스텝: 운영 시 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy/ship_to_vps.ps1 -ReloadCmd "pm2 restart bitcoin-live"`를 기본 진입점으로 사용.
 
+- **Track A 상용화 개선 스프린트(Week-1) 기동(2026-04-15):**
+  - 상태: Day1 기준선 분해 완료 — `scripts/report_track_a_domain_breakdown_v1.py`로 도메인/취약 케이스 아티팩트 생성.
+  - 증거: `docs/final/artifacts/track_a_domain_breakdown_v1.json` (global saving `0.4908579`, avg jaccard `0.7349368`, 취약 도메인 `timing`/`ssot`, 최저 케이스 `cmp2_013` jaccard `0.4705882`).
+  - 다음 1스텝: Day2 실패패턴 룰셋(v1) 작성 — `ssot/timing` 저복원 상위 10케이스 기준으로 must-keep 확장 실험(토큰/부정어/숫자/엔티티 보호) 후 A/B 비교.
+
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
 - **기본 동작:** `compression_token_api_stub.py`에서 Hybrid v0 경로는 **기본 ON**(환경변수 미설정).
