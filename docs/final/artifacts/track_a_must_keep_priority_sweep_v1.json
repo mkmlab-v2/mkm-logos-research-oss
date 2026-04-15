@@ -1,0 +1,60 @@
+{
+  "schema": "track_a_must_keep_priority_sweep_v1",
+  "generated_at_utc": "2026-04-15T07:24:03+00:00",
+  "rules_priority": "C:\\workspace\\docs\\final\\artifacts\\track_a_failure_pattern_rules_priority_v1.json",
+  "topn_list": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "runs": [
+    {
+      "top_n": 1,
+      "decision": "HOLD_BASELINE_TRACK_A",
+      "saving": 0.4683544303797469,
+      "jaccard": 0.8488363572487027,
+      "integrity": 1.0,
+      "delta_saving": 0.0,
+      "delta_jaccard": 0.0,
+      "saving_floor_ok": false,
+      "integrity_floor_ok": true
+    },
+    {
+      "top_n": 2,
+      "decision": "HOLD_BASELINE_TRACK_A",
+      "saving": 0.4669479606188467,
+      "jaccard": 0.8506220715344168,
+      "integrity": 1.0,
+      "delta_saving": -0.0014064697609001975,
+      "delta_jaccard": 0.0017857142857141683,
+      "saving_floor_ok": false,
+      "integrity_floor_ok": true
+    },
+    {
+      "top_n": 3,
+      "decision": "HOLD_BASELINE_TRACK_A",
+      "saving": 0.4655414908579466,
+      "jaccard": 0.8524077858201311,
+      "integrity": 1.0,
+      "delta_saving": -0.002812939521800284,
+      "delta_jaccard": 0.0035714285714284477,
+      "saving_floor_ok": false,
+      "integrity_floor_ok": true
+    },
+    {
+      "top_n": 4,
+      "decision": "HOLD_BASELINE_TRACK_A",
+      "saving": 0.4641350210970464,
+      "jaccard": 0.8541935001058455,
+      "integrity": 1.0,
+      "delta_saving": -0.0042194092827004814,
+      "delta_jaccard": 0.005357142857142838,
+      "saving_floor_ok": false,
+      "integrity_floor_ok": true
+    }
+  ],
+  "viable_count": 0,
+  "recommended": null,
+  "decision": "HOLD_BASELINE_TRACK_A"
+}

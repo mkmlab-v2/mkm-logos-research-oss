@@ -247,7 +247,8 @@
   - Day3 진행: `scripts/build_track_a_low_fidelity_evalset_v1.py`로 원문 포함 저복원 평가셋 `docs/final/artifacts/track_a_low_fidelity_evalset_v1.json` 생성 후 규칙 재생성(`candidate_mode=missing_token_frequency`, 후보 예: `reduce`, `footprint`, `bootstrap`, `timing`).
   - Day4 진행: `scripts/run_track_a_must_keep_ab_v1.py`로 must-keep 상위 20개 주입 A/B 회귀 실행, 산출 `docs/final/artifacts/track_a_must_keep_ab_result_v1.json` (`delta_jaccard=+0.03228`, `delta_saving=-0.02531`, `integrity=1.0`) → 판정 `HOLD_BASELINE_TRACK_A` (saving floor 미충족).
   - Day5 진행: `scripts/run_track_a_must_keep_topn_sweep_v1.py`로 top-N(5,6,7,8) 축소 스윕 실행, 산출 `docs/final/artifacts/track_a_must_keep_topn_sweep_v1.json` — jaccard는 +0.007~+0.012 개선되지만 saving `0.458~0.463`으로 floor `0.49` 미충족(전부 HOLD).
-  - 다음 1스텝: Day6에서 candidate 우선순위를 재정렬(숫자/부정어/정책 토큰 우선)하고 top-N 1~4 초소형 조합으로 saving floor 회복 가능성만 추가 확인.
+  - Day6 진행: `scripts/run_track_a_must_keep_priority_sweep_v1.py`로 우선순위 재정렬 + top-N(1~4) 초소형 스윕 실행, 산출 `docs/final/artifacts/track_a_must_keep_priority_sweep_v1.json` — jaccard +0.000~+0.005 개선, saving `0.464~0.468`으로 floor `0.49` 여전히 미충족(viable=0).
+  - Day7 결론: Week-1 must-keep 강화 실험은 품질 개선 대비 절감률 손실로 상용 게이트 미통과 → `HOLD_BASELINE_TRACK_A` 유지, 다음 사이클은 token-level 보호 대신 도메인 캡/라우팅 측 실험으로 전환.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 

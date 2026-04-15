@@ -1,0 +1,253 @@
+{
+  "schema": "track_a_failure_pattern_rules_priority_v1",
+  "generated_at_utc": "2026-04-15T07:24:00+00:00",
+  "input": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+  "selection": {
+    "target_domains": [
+      "ssot",
+      "timing"
+    ],
+    "max_jaccard": 0.6,
+    "selected_case_count": 13,
+    "candidate_mode": "missing_token_frequency"
+  },
+  "must_keep_candidates": [
+    {
+      "token": "bootstrap",
+      "missing_count": 1
+    },
+    {
+      "token": "timing",
+      "missing_count": 1
+    },
+    {
+      "token": "rows",
+      "missing_count": 1
+    },
+    {
+      "token": "tri",
+      "missing_count": 1
+    },
+    {
+      "token": "reduce",
+      "missing_count": 1
+    },
+    {
+      "token": "footprint",
+      "missing_count": 1
+    },
+    {
+      "token": "preserving",
+      "missing_count": 1
+    },
+    {
+      "token": "caveats",
+      "missing_count": 1
+    },
+    {
+      "token": "especially",
+      "missing_count": 1
+    },
+    {
+      "token": "notes",
+      "missing_count": 1
+    },
+    {
+      "token": "improves",
+      "missing_count": 1
+    },
+    {
+      "token": "accumulate",
+      "missing_count": 1
+    },
+    {
+      "token": "thresholds",
+      "missing_count": 1
+    },
+    {
+      "token": "transition",
+      "missing_count": 1
+    },
+    {
+      "token": "matrix",
+      "missing_count": 1
+    },
+    {
+      "token": "answers",
+      "missing_count": 1
+    },
+    {
+      "token": "include",
+      "missing_count": 1
+    },
+    {
+      "token": "constitution",
+      "missing_count": 1
+    },
+    {
+      "token": "constraints",
+      "missing_count": 1
+    },
+    {
+      "token": "operational",
+      "missing_count": 1
+    },
+    {
+      "token": "stability",
+      "missing_count": 1
+    },
+    {
+      "token": "predictive",
+      "missing_count": 1
+    },
+    {
+      "token": "quality",
+      "missing_count": 1
+    },
+    {
+      "token": "avoid",
+      "missing_count": 1
+    },
+    {
+      "token": "false",
+      "missing_count": 1
+    }
+  ],
+  "selected_cases": [
+    {
+      "id": "cmp2_003",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5882352941176471,
+      "missing_tokens_sample": [
+        "reduce",
+        "footprint",
+        "preserving",
+        "caveats",
+        "especially",
+        "notes"
+      ]
+    },
+    {
+      "id": "cmp2_007",
+      "domain": "timing",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5333333333333333,
+      "missing_tokens_sample": [
+        "improves",
+        "rows",
+        "accumulate",
+        "bootstrap",
+        "thresholds",
+        "transition",
+        "matrix"
+      ]
+    },
+    {
+      "id": "cmp2_008",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5714285714285714,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": [
+        "tri",
+        "answers",
+        "include",
+        "timing",
+        "constitution",
+        "constraints"
+      ]
+    },
+    {
+      "id": "cmp2_010",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5384615384615384,
+      "token_saving_rate": 0.5,
+      "missing_tokens_sample": [
+        "operational",
+        "stability",
+        "predictive",
+        "quality",
+        "avoid",
+        "false"
+      ]
+    },
+    {
+      "id": "cmp2_012",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5294117647058824,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_013",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.47058823529411764,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_019",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.47058823529411764,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_021",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.47368421052631576,
+      "token_saving_rate": 0.55,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_024",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_025",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_026",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.47058823529411764,
+      "token_saving_rate": 0.5555555555555556,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_029",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.5,
+      "token_saving_rate": 0.5333333333333333,
+      "missing_tokens_sample": []
+    },
+    {
+      "id": "cmp2_039",
+      "domain": "ssot",
+      "reconstruction_fidelity_jaccard": 0.47368421052631576,
+      "token_saving_rate": 0.55,
+      "missing_tokens_sample": []
+    }
+  ],
+  "next_action": "Use must_keep_candidates as Day2 rule seed, then run Track A A/B regression.",
+  "priority_words": [
+    "bootstrap",
+    "cannot",
+    "gate",
+    "never",
+    "no",
+    "not",
+    "phase",
+    "policy",
+    "risk",
+    "state",
+    "timing",
+    "track"
+  ]
+}
