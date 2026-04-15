@@ -8,8 +8,9 @@
 
 from __future__ import annotations
 
+import argparse
 import json
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -28,6 +29,7 @@ WAITING_LOG = ART_DIR / "waiting_queue_monthly_check_log.jsonl"
 BTC_SWEEP = ART_DIR / "btc_time_machine_sweep_latest.json"
 K_SHIELD_SWEEP = ART_DIR / "btc_k_shield_fast_sweep_2025_latest.json"
 KPI_JSONL_GLOB = ROOT / "projects" / "bitcoin-trading" / "memory" / "kpi" / "kpi_snapshot_*.jsonl"
+KOSPI_CSV = ROOT / "research" / "market_data" / "kospi_daily_external_yf.csv"
 
 SCORING_RULE = {
     "label": "trinity_daily_hypothesis_v1",
@@ -238,20 +240,334 @@ def _base_probs(phase: str) -> tuple[int, int, int]:
     return (38, 34, 28)
 
 
-def _adjust_for_hold(up: int, neutral: int, down: int, hold_mode: bool) -> tuple[int, int, int]:
+def _adjust_for_hold(
+    up: int,
+    neutral: int,
+    down: int,
+    hold_mode: bool,
+    *,
+    momentum_score: float,
+) -> tuple[int, int, int]:
     if not hold_mode:
         return up, neutral, down
+    if momentum_score >= 0.62:
+        # In HOLD, keep slight defense but avoid hard down-bias under strong observed up momentum.
+        up2 = max(10, up - 1)
+        down2 = min(70, down + 1)
+        neutral2 = 100 - up2 - down2
+        return up2, neutral2, down2
     # Conservative shift while preserving total 100.
     up2 = max(10, up - 4)
     down2 = min(70, down + 4)
-    return up2, neutral, down2
+    neutral2 = 100 - up2 - down2
+    return up2, neutral2, down2
+
+
+def _monthly_returns_from_csv(path: Path) -> list[dict[str, Any]]:
+    import csv
+
+    rows: list[tuple[date, float]] = []
+    if not path.exists():
+        return []
+    with path.open(newline="", encoding="utf-8-sig") as f:
+        r = csv.DictReader(f)
+        for row in r:
+            try:
+                d = date.fromisoformat(str(row["Date"])[:10])
+                c = float(row["Close"])
+            except Exception:
+                continue
+            rows.append((d, c))
+    rows.sort(key=lambda x: x[0])
+    by_ym: dict[tuple[int, int], list[float]] = {}
+    for d, c in rows:
+        by_ym.setdefault((d.year, d.month), []).append(c)
+    out: list[dict[str, Any]] = []
+    for (y, m), seq in sorted(by_ym.items()):
+        if len(seq) < 2 or seq[0] <= 0:
+            continue
+        out.append({"year": y, "month": m, "return_pct": (seq[-1] / seq[0] - 1.0) * 100.0})
+    return out
+
+
+def _recent_market_momentum(path: Path, *, lookback: int = 3) -> dict[str, Any]:
+    months = _monthly_returns_from_csv(path)
+    if not months:
+        return {"score": 0.5, "avg_return_pct": 0.0, "up_ratio": 0.5, "n": 0}
+    tail = months[-max(1, lookback) :]
+    vals = [float(r["return_pct"]) for r in tail]
+    avg = sum(vals) / len(vals)
+    up_ratio = sum(1 for v in vals if v > 0) / len(vals)
+    score = max(0.0, min(1.0, 0.5 + avg / 20.0 + (up_ratio - 0.5) * 0.3))
+    return {
+        "score": round(score, 6),
+        "avg_return_pct": round(avg, 6),
+        "up_ratio": round(up_ratio, 6),
+        "n": len(vals),
+    }
+
+
+def _apply_market_momentum_overlay(
+    up: int,
+    neutral: int,
+    down: int,
+    *,
+    phase: str,
+    momentum_score: float,
+) -> tuple[int, int, int]:
+    # Fast reactive overlay: strong observed up momentum should reduce mechanical down-bias.
+    if momentum_score >= 0.62:
+        shift = {"기준선/탐색": 8, "압박/방어": 6, "재정비/경쟁": 5, "성과 회수/정리": 3}.get(phase, 4)
+        up2 = min(85, up + shift)
+        down2 = max(5, down - shift)
+        neutral2 = 100 - up2 - down2
+        return up2, neutral2, down2
+    if momentum_score <= 0.38:
+        shift = {"기준선/탐색": 5, "압박/방어": 6, "재정비/경쟁": 4, "성과 회수/정리": 3}.get(phase, 4)
+        up2 = max(5, up - shift)
+        down2 = min(85, down + shift)
+        neutral2 = 100 - up2 - down2
+        return up2, neutral2, down2
+    return up, neutral, down
+
+
+def _sasang_external_profile() -> dict[str, Any]:
+    return {
+        "schema": "sasang_external_market_profile_v1",
+        "shock_abs_return_threshold_pct": 8.0,
+        "high_vol_threshold_pct": 4.0,
+        "momentum_window": 3,
+        "momentum_warn_threshold_pct": 1.0,
+        "seongjeong_overlay_enabled": False,
+        "seongjeong_overlay_strength": 0.22,
+        "seongjeong_activation_mode": "always",
+        "phase_bias": {
+            "기준선/탐색": 0.1,
+            "압박/방어": -0.35,
+            "재정비/경쟁": -0.05,
+            "성과 회수/정리": 0.2,
+        },
+        "max_shift_pct": 12,
+        "base_shift_pct": 3,
+        "high_vol_neutral_guard_enabled": True,
+        "high_vol_neutral_guard_threshold_pct": 4.0,
+        "high_vol_neutral_min_pct": 40,
+        "high_vol_defensive_shock_threshold_pct": 10.0,
+        "high_vol_defensive_down_bonus_pct": 3,
+        "multi_event_prior_enabled": True,
+        "event_streak_days": 2,
+        "event_streak_threshold_pct": -3.0,
+        "event_vol_break_threshold_pct": 4.5,
+        "event_directional_bonus_pct": 4,
+    }
+
+
+def _clip(x: float, lo: float, hi: float) -> float:
+    return max(lo, min(hi, x))
+
+
+def _normalize_probs(up: int, neutral: int, down: int) -> tuple[int, int, int]:
+    up2 = int(max(5, min(90, up)))
+    down2 = int(max(5, min(90, down)))
+    neutral2 = int(max(5, 100 - up2 - down2))
+    s = up2 + neutral2 + down2
+    if s != 100:
+        neutral2 += 100 - s
+    return up2, neutral2, down2
+
+
+def _apply_high_vol_guard(
+    up: int,
+    neutral: int,
+    down: int,
+    *,
+    prev_ret: float,
+    roll_abs_3m: float,
+    profile: dict[str, Any],
+) -> tuple[int, int, int, dict[str, Any]]:
+    guard_enabled = bool(profile.get("high_vol_neutral_guard_enabled", True))
+    guard_thr = float(profile.get("high_vol_neutral_guard_threshold_pct", 4.0))
+    neutral_min = int(profile.get("high_vol_neutral_min_pct", 40))
+    defensive_shock_thr = float(profile.get("high_vol_defensive_shock_threshold_pct", 10.0))
+    down_bonus = int(profile.get("high_vol_defensive_down_bonus_pct", 3))
+    applied = False
+    defensive = False
+
+    if guard_enabled and roll_abs_3m >= guard_thr:
+        applied = True
+        if neutral < neutral_min:
+            shift = neutral_min - neutral
+            # Pull from the dominant directional side first.
+            if up >= down:
+                up -= shift
+            else:
+                down -= shift
+            neutral = neutral_min
+        if abs(prev_ret) >= defensive_shock_thr and prev_ret < 0:
+            defensive = True
+            up -= down_bonus
+            down += down_bonus
+        up, neutral, down = _normalize_probs(up, neutral, down)
+
+    return up, neutral, down, {"applied": applied, "defensive": defensive}
+
+
+def _apply_multi_event_prior(
+    up: int,
+    neutral: int,
+    down: int,
+    *,
+    prev_vals: list[float],
+    prev_ret: float,
+    roll_abs_3m: float,
+    profile: dict[str, Any],
+) -> tuple[int, int, int, dict[str, Any]]:
+    enabled = bool(profile.get("multi_event_prior_enabled", True))
+    streak_days = int(max(1, profile.get("event_streak_days", 2)))
+    streak_thr = float(profile.get("event_streak_threshold_pct", -3.0))
+    vol_break_thr = float(profile.get("event_vol_break_threshold_pct", 4.5))
+    bonus = int(profile.get("event_directional_bonus_pct", 4))
+    down_streak = False
+    vol_break = False
+    shock_event = False
+    applied = False
+
+    tail = prev_vals[-streak_days:] if prev_vals else []
+    if len(tail) >= streak_days:
+        down_streak = all(v <= streak_thr for v in tail)
+    vol_break = roll_abs_3m >= vol_break_thr
+    shock_event = abs(prev_ret) >= max(6.0, abs(streak_thr) * 1.5)
+
+    if enabled and (down_streak or vol_break or shock_event):
+        applied = True
+        if prev_ret < 0:
+            up -= bonus
+            down += bonus
+        elif prev_ret > 0 and not down_streak:
+            up += max(1, bonus - 1)
+            down -= max(1, bonus - 1)
+        up, neutral, down = _normalize_probs(up, neutral, down)
+
+    meta = {
+        "enabled": enabled,
+        "applied": applied,
+        "down_streak": down_streak,
+        "vol_break": vol_break,
+        "shock_event": shock_event,
+    }
+    return up, neutral, down, meta
+
+
+def _sasang_external_adjust(
+    up: int,
+    neutral: int,
+    down: int,
+    *,
+    phase: str,
+    prev_ret: float,
+    roll_abs_3m: float,
+    profile: dict[str, Any],
+) -> tuple[int, int, int, dict[str, Any]]:
+    """External-reality tilt tuned for sasang stage-like market behavior.
+
+    - Shock regime (|prev_ret| high): mean-reversion tilt
+    - Normal regime: momentum-follow tilt
+    - Phase bias acts as weak prior (defensive in 압박/방어)
+    """
+    shock_thr = float(profile.get("shock_abs_return_threshold_pct", 8.0))
+    high_vol_thr = float(profile.get("high_vol_threshold_pct", 4.0))
+    momentum_window = int(max(1, profile.get("momentum_window", 3)))
+    momentum_warn_threshold_pct = float(profile.get("momentum_warn_threshold_pct", 1.0))
+    phase_bias = float((profile.get("phase_bias") or {}).get(phase, 0.0))
+    use_sj = bool(profile.get("seongjeong_overlay_enabled", False))
+    sj_strength = float(profile.get("seongjeong_overlay_strength", 0.0))
+    sj_mode = str(profile.get("seongjeong_activation_mode") or "always")
+    base_shift = int(profile.get("base_shift_pct", 3))
+    max_shift = int(profile.get("max_shift_pct", 12))
+
+    prev_sign = 1.0 if prev_ret > 0 else (-1.0 if prev_ret < 0 else 0.0)
+    shock_mode = abs(prev_ret) >= shock_thr
+    high_vol_mode = roll_abs_3m >= high_vol_thr
+    momentum_mode = False
+    if momentum_window > 0:
+        momentum_signal_pct = abs(prev_ret)
+        momentum_mode = momentum_signal_pct >= momentum_warn_threshold_pct
+    trend_component = (-prev_sign if shock_mode else prev_sign) * _clip(abs(prev_ret) / 15.0, 0.0, 1.0)
+    vol_component = _clip((roll_abs_3m - 3.0) / 6.0, -1.0, 1.0) * 0.3
+    # Seongjeong proxy (애/노/락/희): emotion-led market posture from observable market action.
+    # 애(sadness): drawdown grief; 노(anger): high-vol shock response;
+    # 락(stability joy): low-vol calm; 희(euphoria): sustained upside.
+    ae = _clip(max(0.0, -prev_ret) / 15.0 + _clip((roll_abs_3m - 5.0) / 8.0, 0.0, 1.0) * 0.5, 0.0, 1.0)
+    no = _clip(abs(prev_ret) / 12.0 + _clip((roll_abs_3m - 4.0) / 7.0, 0.0, 1.0) * 0.6, 0.0, 1.0)
+    rak = _clip(1.0 - _clip(roll_abs_3m / 8.0, 0.0, 1.0), 0.0, 1.0)
+    hee = _clip(max(0.0, prev_ret) / 15.0 + _clip((3.0 - roll_abs_3m) / 6.0, 0.0, 1.0) * 0.4, 0.0, 1.0)
+    sj_net = _clip((hee + rak) - (ae + no), -1.0, 1.0)
+    sj_active = False
+    if use_sj:
+        if sj_mode == "always":
+            sj_active = True
+        elif sj_mode == "shock":
+            sj_active = shock_mode
+        elif sj_mode == "high_vol":
+            sj_active = high_vol_mode
+        elif sj_mode == "shock_or_high_vol":
+            sj_active = shock_mode or high_vol_mode
+        elif sj_mode == "shock_or_high_vol_or_momentum":
+            sj_active = shock_mode or high_vol_mode or momentum_mode
+        else:
+            sj_active = True
+    sj_term = sj_strength * sj_net if sj_active else 0.0
+
+    tilt = _clip(trend_component - vol_component + phase_bias + sj_term, -1.0, 1.0)
+
+    shift = int(round(base_shift + min(max_shift - base_shift, abs(tilt) * max_shift)))
+    if tilt > 0:
+        up += shift
+        down -= shift
+    elif tilt < 0:
+        up -= shift
+        down += shift
+    up, neutral, down = _normalize_probs(up, neutral, down)
+    meta = {
+        "prev_ret_pct": round(prev_ret, 6),
+        "roll_abs_3m_pct": round(roll_abs_3m, 6),
+        "shock_mode": shock_mode,
+        "high_vol_mode": high_vol_mode,
+        "momentum_mode": momentum_mode,
+        "momentum_warn_threshold_pct": momentum_warn_threshold_pct,
+        "tilt": round(tilt, 6),
+        "shift_pct": shift,
+        "seongjeong": {
+            "ae": round(ae, 6),
+            "no": round(no, 6),
+            "rak": round(rak, 6),
+            "hee": round(hee, 6),
+            "net": round(sj_net, 6),
+            "enabled": use_sj,
+            "activation_mode": sj_mode,
+            "active": sj_active,
+            "term": round(sj_term, 6),
+        },
+    }
+    return up, neutral, down, meta
 
 
 def _scoring_rule() -> dict[str, Any]:
     return dict(SCORING_RULE)
 
 
-def generate() -> dict[str, Any]:
+def generate(
+    *,
+    seongjeong_overlay_enabled: bool | None = None,
+    seongjeong_overlay_strength: float | None = None,
+    seongjeong_activation_mode: str | None = None,
+    shock_abs_return_threshold_pct: float | None = None,
+    high_vol_threshold_pct: float | None = None,
+    momentum_warn_threshold_pct: float | None = None,
+    momentum_window: int | None = None,
+    high_vol_neutral_guard_enabled: bool | None = None,
+    multi_event_prior_enabled: bool | None = None,
+) -> dict[str, Any]:
     gate = _safe_json(GATE_JSON)
     waiting = _latest_jsonl(WAITING_LOG)
     sweep = _safe_json(BTC_SWEEP)
@@ -288,13 +604,82 @@ def generate() -> dict[str, Any]:
     effective_gate, merged_gate_reason = _merge_gate_decision(base_effective_gate, core_decision)
     gate_reason = f"{base_gate_reason}|{merged_gate_reason}"
     hold_mode = effective_gate.upper() == "HOLD" or reliability_badge.upper() == "LOW"
+    market_momentum = _recent_market_momentum(KOSPI_CSV, lookback=3)
+    momentum_score = float(market_momentum["score"])
+    ext_profile = _sasang_external_profile()
+    if seongjeong_overlay_enabled is not None:
+        ext_profile["seongjeong_overlay_enabled"] = bool(seongjeong_overlay_enabled)
+    if seongjeong_overlay_strength is not None:
+        ext_profile["seongjeong_overlay_strength"] = float(max(0.0, min(1.0, seongjeong_overlay_strength)))
+    if seongjeong_activation_mode:
+        ext_profile["seongjeong_activation_mode"] = str(seongjeong_activation_mode)
+    if shock_abs_return_threshold_pct is not None:
+        ext_profile["shock_abs_return_threshold_pct"] = float(max(0.1, shock_abs_return_threshold_pct))
+    if high_vol_threshold_pct is not None:
+        ext_profile["high_vol_threshold_pct"] = float(max(0.1, high_vol_threshold_pct))
+    if momentum_warn_threshold_pct is not None:
+        ext_profile["momentum_warn_threshold_pct"] = float(max(0.01, momentum_warn_threshold_pct))
+    if momentum_window is not None:
+        ext_profile["momentum_window"] = int(max(1, momentum_window))
+    if high_vol_neutral_guard_enabled is not None:
+        ext_profile["high_vol_neutral_guard_enabled"] = bool(high_vol_neutral_guard_enabled)
+    if multi_event_prior_enabled is not None:
+        ext_profile["multi_event_prior_enabled"] = bool(multi_event_prior_enabled)
+    monthly_hist = _monthly_returns_from_csv(KOSPI_CSV)
+    monthly_ret_map = {f"{int(r['year'])}-{int(r['month']):02d}": float(r["return_pct"]) for r in monthly_hist}
     price_output_locked = hold_mode
     lock_reason = "low_or_hold_mode_price_output_forbidden" if price_output_locked else "price_output_allowed"
     months: list[dict[str, Any]] = []
+    sim_ret_map: dict[str, float] = {}
+    asof_year = 2026
     for month in range(1, 13):
         phase = _month_phase(month)
         up, neutral, down = _base_probs(phase)
-        up, neutral, down = _adjust_for_hold(up, neutral, down, hold_mode)
+        # Build causal monthly context: prefer observed previous months, then fallback to simulated path.
+        prev_vals: list[float] = []
+        for pm in range(max(1, month - 3), month):
+            pym = f"{asof_year}-{pm:02d}"
+            if pym in monthly_ret_map:
+                prev_vals.append(float(monthly_ret_map[pym]))
+            elif pym in sim_ret_map:
+                prev_vals.append(float(sim_ret_map[pym]))
+        prev_ret = prev_vals[-1] if prev_vals else 0.0
+        roll_abs_3m = (sum(abs(v) for v in prev_vals) / len(prev_vals)) if prev_vals else 2.0
+
+        up, neutral, down = _adjust_for_hold(up, neutral, down, hold_mode, momentum_score=momentum_score)
+        up, neutral, down, sasang_meta = _sasang_external_adjust(
+            up,
+            neutral,
+            down,
+            phase=phase,
+            prev_ret=prev_ret,
+            roll_abs_3m=roll_abs_3m,
+            profile=ext_profile,
+        )
+        up, neutral, down, hv_guard_meta = _apply_high_vol_guard(
+            up,
+            neutral,
+            down,
+            prev_ret=prev_ret,
+            roll_abs_3m=roll_abs_3m,
+            profile=ext_profile,
+        )
+        up, neutral, down, me_prior_meta = _apply_multi_event_prior(
+            up,
+            neutral,
+            down,
+            prev_vals=prev_vals,
+            prev_ret=prev_ret,
+            roll_abs_3m=roll_abs_3m,
+            profile=ext_profile,
+        )
+        up, neutral, down = _apply_market_momentum_overlay(
+            up,
+            neutral,
+            down,
+            phase=phase,
+            momentum_score=momentum_score,
+        )
         kospi_direction = "중립"
         if up > down:
             kospi_direction = "완만상방"
@@ -306,14 +691,28 @@ def generate() -> dict[str, Any]:
         btc_neutral = 100 - btc_up - btc_down
         if hold_mode:
             # Keep defensive framing under HOLD.
-            btc_up = max(10, btc_up - 4)
-            btc_down = min(75, btc_down + 4)
+            if momentum_score >= 0.62:
+                btc_up = max(10, btc_up - 1)
+                btc_down = min(75, btc_down + 1)
+            else:
+                btc_up = max(10, btc_up - 4)
+                btc_down = min(75, btc_down + 4)
             btc_neutral = 100 - btc_up - btc_down
         btc_direction = "중립"
         if btc_up > btc_down:
             btc_direction = "완만상방"
         elif btc_down > btc_up:
             btc_direction = "방어하방"
+
+        # Simulated return for future months when observed monthly close isn't available yet.
+        ym = f"{asof_year}-{month:02d}"
+        if ym not in monthly_ret_map:
+            sim_ret = 0.0
+            if kospi_direction == "완만상방":
+                sim_ret = 2.0
+            elif kospi_direction == "방어하방":
+                sim_ret = -2.0
+            sim_ret_map[ym] = sim_ret
 
         months.append(
             {
@@ -332,6 +731,11 @@ def generate() -> dict[str, Any]:
                     "direction": btc_direction,
                 },
                 "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+                "sasang_external_context": {
+                    **sasang_meta,
+                    "high_vol_guard": hv_guard_meta,
+                    "multi_event_prior": me_prior_meta,
+                },
             }
         )
     risk_profile_now = _build_risk_profile(
@@ -384,6 +788,8 @@ def generate() -> dict[str, Any]:
             "hypothesis_falsification_condition": scoring_rule["falsification_condition"],
             "observed_lever_priority": OBSERVED_LEVER_PRIORITY,
             "decision_driver_policy": "prefer_observed_lever_over_symbolic_lens",
+            "recent_market_momentum": market_momentum,
+            "sasang_external_profile": ext_profile,
         },
         "risk_profile": risk_profile_now,
         "months": months,
@@ -463,12 +869,68 @@ def to_markdown(doc: dict[str, Any]) -> str:
 
 
 def main() -> int:
-    doc = generate()
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--out-json", type=Path, default=OUT_JSON)
+    ap.add_argument("--out-md", type=Path, default=OUT_MD)
+    ap.add_argument("--seongjeong-overlay", choices=("auto", "on", "off"), default="auto")
+    ap.add_argument("--seongjeong-strength", type=float, default=None)
+    ap.add_argument(
+        "--seongjeong-activation-mode",
+        choices=("always", "shock", "high_vol", "shock_or_high_vol", "shock_or_high_vol_or_momentum"),
+        default=None,
+    )
+    ap.add_argument("--shock-abs-return-threshold-pct", type=float, default=None)
+    ap.add_argument("--high-vol-threshold-pct", type=float, default=None)
+    ap.add_argument("--momentum-warn-threshold-pct", type=float, default=None)
+    ap.add_argument("--momentum-window", type=int, default=None)
+    ap.add_argument("--high-vol-neutral-guard", choices=("auto", "on", "off"), default="auto")
+    ap.add_argument("--multi-event-prior", choices=("auto", "on", "off"), default="auto")
+    args = ap.parse_args()
+
+    sj_enabled: bool | None
+    if args.seongjeong_overlay == "on":
+        sj_enabled = True
+    elif args.seongjeong_overlay == "off":
+        sj_enabled = False
+    else:
+        sj_enabled = None
+
+    hv_guard: bool | None
+    if args.high_vol_neutral_guard == "on":
+        hv_guard = True
+    elif args.high_vol_neutral_guard == "off":
+        hv_guard = False
+    else:
+        hv_guard = None
+
+    me_prior: bool | None
+    if args.multi_event_prior == "on":
+        me_prior = True
+    elif args.multi_event_prior == "off":
+        me_prior = False
+    else:
+        me_prior = None
+
+    doc = generate(
+        seongjeong_overlay_enabled=sj_enabled,
+        seongjeong_overlay_strength=args.seongjeong_strength,
+        seongjeong_activation_mode=args.seongjeong_activation_mode,
+        shock_abs_return_threshold_pct=args.shock_abs_return_threshold_pct,
+        high_vol_threshold_pct=args.high_vol_threshold_pct,
+        momentum_warn_threshold_pct=args.momentum_warn_threshold_pct,
+        momentum_window=args.momentum_window,
+        high_vol_neutral_guard_enabled=hv_guard,
+        multi_event_prior_enabled=me_prior,
+    )
     ART_DIR.mkdir(parents=True, exist_ok=True)
-    OUT_JSON.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    OUT_MD.write_text(to_markdown(doc), encoding="utf-8")
-    print(str(OUT_JSON))
-    print(str(OUT_MD))
+    out_json = args.out_json if args.out_json.is_absolute() else ROOT / args.out_json
+    out_md = args.out_md if args.out_md.is_absolute() else ROOT / args.out_md
+    out_json.parent.mkdir(parents=True, exist_ok=True)
+    out_md.parent.mkdir(parents=True, exist_ok=True)
+    out_json.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    out_md.write_text(to_markdown(doc), encoding="utf-8")
+    print(str(out_json))
+    print(str(out_md))
     return 0
 
 

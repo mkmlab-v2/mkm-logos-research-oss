@@ -7,26 +7,59 @@ param(
 $ErrorActionPreference = "Stop"
 
 function Test-GatewayLatestEndpoint([int]$Port) {
+    $probeHosts = @("127.0.0.1", "localhost")
     try {
-        $url = "http://127.0.0.1:{0}/api/public-events/latest" -f $Port
-        $req = [System.Net.HttpWebRequest]::Create($url)
-        $req.Method = "GET"
-        $req.Timeout = 5000
-        $req.ReadWriteTimeout = 5000
-        $req.Proxy = $null
-        $resp = $req.GetResponse()
-        $statusCode = [int]$resp.StatusCode
-        $resp.Close()
-        return @{
-            ok = ($statusCode -ge 200 -and $statusCode -lt 400)
-            status_code = $statusCode
+        $ipRows = Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
+            Where-Object {
+                $_.IPAddress -and
+                $_.IPAddress -notlike "127.*" -and
+                $_.IPAddress -ne "0.0.0.0"
+            } |
+            Select-Object -ExpandProperty IPAddress -Unique
+        if ($ipRows) {
+            $probeHosts += @($ipRows)
         }
     } catch {
-        return @{
-            ok = $false
-            status_code = -1
-            error = $_.Exception.Message
+        # keep default loopback probes only
+    }
+
+    $lastError = $null
+    $attemptsPerHost = 3
+    foreach ($probeHost in $probeHosts | Select-Object -Unique) {
+        $url = "http://{0}:{1}/api/public-events/latest" -f $probeHost, $Port
+        for ($attempt = 1; $attempt -le $attemptsPerHost; $attempt++) {
+            try {
+                $req = [System.Net.HttpWebRequest]::Create($url)
+                $req.Method = "GET"
+                $req.Timeout = 5000
+                $req.ReadWriteTimeout = 5000
+                $req.Proxy = $null
+                $req.KeepAlive = $false
+                $resp = $req.GetResponse()
+                $statusCode = [int]$resp.StatusCode
+                $resp.Close()
+                if ($statusCode -ge 200 -and $statusCode -lt 400) {
+                    return @{
+                        ok = $true
+                        status_code = $statusCode
+                        probe_host = $probeHost
+                        probe_url = $url
+                        probe_attempt = $attempt
+                    }
+                }
+                $lastError = "status_code=$statusCode host=$probeHost attempt=$attempt"
+            } catch {
+                $lastError = "$($_.Exception.Message) host=$probeHost attempt=$attempt"
+                Start-Sleep -Milliseconds 300
+            }
         }
+    }
+
+    return @{
+        ok = $false
+        status_code = -1
+        error = $lastError
+        probe_hosts = $probeHosts
     }
 }
 

@@ -18,6 +18,9 @@
 .PARAMETER IncludeCodebookFactSafe
   압축 복원 브리지 이후 `scripts/run_codebook_factsafe_bundle.ps1 -IncludeRecoveredReadiness`를 실행한다(코드북·복구 레일 스모크).
 
+.PARAMETER Include4dOhaengRegimeSnapshotGate
+  B-track 스파이크: `scripts/run_4d_to_ohaeng_regime_snapshot_gate_chain_spike.ps1` 실행(스냅샷 갱신 + 게이트). 기본 번들과 격리; 아티팩트 없으면 실패한다.
+
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1
 
@@ -30,6 +33,9 @@
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -IncludeCodebookFactSafe
 
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -Include4dOhaengRegimeSnapshotGate
+
 .NOTES
   SSOT 순서: `.github/workflows/dual-regime-integrity.yml`
   pytest·`py` 규칙: `docs/final/P0_COMMERCIALIZATION_TRACKER.md`
@@ -38,7 +44,8 @@ param(
     [switch]$SkipIntegrityGuard,
     [switch]$IncludeP1AB,
     [switch]$SkipCompressionRestoreBridge,
-    [switch]$IncludeCodebookFactSafe
+    [switch]$IncludeCodebookFactSafe,
+    [switch]$Include4dOhaengRegimeSnapshotGate
 )
 
 $ErrorActionPreference = 'Stop'
@@ -50,6 +57,7 @@ $insightScoreboardScript = Join-Path $workspaceRoot 'scripts\build_insight_effec
 $trackbQuaternionGateScript = Join-Path $workspaceRoot 'scripts\report_trackb_quaternion_two_stage_gate.py'
 $compressionRestoreBridgeScript = Join-Path $workspaceRoot 'scripts\run_agent_compression_restore_bridge.ps1'
 $codebookFactSafeBundleScript = Join-Path $workspaceRoot 'scripts\run_codebook_factsafe_bundle.ps1'
+$ohaengRegimeSnapshotGateChain = Join-Path $workspaceRoot 'scripts\run_4d_to_ohaeng_regime_snapshot_gate_chain_spike.ps1'
 
 if (-not (Test-Path -LiteralPath $prophecyBundle)) {
     throw "Bundle script not found: $prophecyBundle"
@@ -117,6 +125,17 @@ if ($IncludeCodebookFactSafe) {
     }
     Write-Host '== Fact-Lock: run_codebook_factsafe_bundle.ps1 ==' -ForegroundColor Cyan
     & powershell -NoProfile -ExecutionPolicy Bypass -File $codebookFactSafeBundleScript -IncludeRecoveredReadiness
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($Include4dOhaengRegimeSnapshotGate) {
+    if (-not (Test-Path -LiteralPath $ohaengRegimeSnapshotGateChain)) {
+        throw "4D->Ohaeng regime snapshot gate chain not found: $ohaengRegimeSnapshotGateChain"
+    }
+    Write-Host '== Fact-Lock (optional): 4D->Ohaeng regime snapshot + gate ==' -ForegroundColor Cyan
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $ohaengRegimeSnapshotGateChain
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }

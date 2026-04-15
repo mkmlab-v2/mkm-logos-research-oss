@@ -38,10 +38,12 @@ Write-Host "=== [3/4] run_btc_anchor_multilens_smoke.ps1 ===" -ForegroundColor C
 & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $workspaceRoot "scripts\run_btc_anchor_multilens_smoke.ps1")
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "=== [4/4] pytest (sasang ledger + multilens thin) ===" -ForegroundColor Cyan
+Write-Host "=== [4/4] pytest (sasang ledger + multilens thin + kospi dynamics bridge/verify smoke) ===" -ForegroundColor Cyan
 & py -m pytest @(
     (Join-Path $workspaceRoot "tests\test_sasang_dynamics_regime_mapping_ledger.py"),
     (Join-Path $workspaceRoot "tests\test_multilens_eval_harness_v2_thin.py"),
+    (Join-Path $workspaceRoot "tests\test_kospi_sasang_dynamics_bridge_v1.py"),
+    (Join-Path $workspaceRoot "tests\test_verify_kospi_sasang_dynamics_holdout_smoke.py"),
     "-q", "--tb=short"
 )
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

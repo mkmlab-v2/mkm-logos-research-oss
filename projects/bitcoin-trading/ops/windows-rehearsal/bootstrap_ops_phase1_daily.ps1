@@ -3,7 +3,8 @@ param(
     [switch]$SkipTaskRegister,
     [switch]$ExcludeConstitutionGates,
     [switch]$IncludeReadiness,
-    [switch]$IncludeWebhookSmoke
+    [switch]$IncludeWebhookSmoke,
+    [string]$TrackaDefaultLane = "c3_domain_gated"
 )
 
 $ErrorActionPreference = "Stop"
@@ -22,10 +23,10 @@ if (-not $SkipTaskRegister) {
     $reg = Join-Path $ops "register_ops_phase1_chain_task.ps1"
     Write-Host "=== OPS: register daily Phase 1 task (constitution gates on by default) ==="
     if ($ExcludeConstitutionGates) {
-        & powershell -NoProfile -ExecutionPolicy Bypass -File $reg -ExcludeConstitutionGates
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $reg -ExcludeConstitutionGates -TrackaDefaultLane $TrackaDefaultLane
     }
     else {
-        & powershell -NoProfile -ExecutionPolicy Bypass -File $reg
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $reg -TrackaDefaultLane $TrackaDefaultLane
     }
     if ($LASTEXITCODE -ne 0) {
         throw "register_ops_phase1_chain_task failed"

@@ -214,7 +214,8 @@ def main() -> int:
     if not args.stdout_only:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(text, encoding="utf-8")
-        print(f"WROTE: {args.output.resolve()}", file=__import__("sys").stderr)
+        # Success line on stdout (stderr can surface as terminating errors in strict PowerShell runs).
+        print(f"WROTE: {args.output.resolve()}")
     return 0
 
 

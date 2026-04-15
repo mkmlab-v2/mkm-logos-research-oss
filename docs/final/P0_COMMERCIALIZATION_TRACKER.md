@@ -182,6 +182,493 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 - `가상 채팅`: 리스크/방향/상태 모드에 따른 “예능 반응”만 생성(민감값 사용 금지).
 - `상태 모드`: `Idle / Defend / Attack`을 `risk_level`/`system_status`/`public_signal_direction` 조합으로 매핑하여 캐릭터(픽셀 애니메이션)의 연출 상태로 사용.
 
+### 2026-04-13 GTM 우선순위 업데이트 (지휘부 정렬)
+
+- **우선 모델(1순위):** 투자 리딩/신호 판매가 아닌 **엔터프라이즈 거시 리스크 조기 경보 SaaS**.
+- **포지셔닝:** `buy/sell` 권유 대신 `risk-off warning` + 운영 리드타임 단축 지표 제공.
+- **법적 방어선:** 투자자문 아님 고지, 의사결정 보조 지표 계약, 실패 시 부분 환불/기간 연장 같은 리스크 리버설 조건 명시.
+- **제품형태(초기):** API 단독보다 `주간 리스크 브리프 + 이벤트 경보` 하이브리드 전달로 파일럿 전환율 우선.
+- **보조 채널:** `jemaai.cloud`는 관측형 공개 쇼룸(인지/신뢰 확보)로 유지하고, 유료 전환은 B2B 파일럿 계약에서 발생시키는 구조 고정.
+
+### 90일 유료 파일럿 계약 템플릿 v1 (Risk Warning SaaS)
+
+**목적:** 검증 전 대형 계약을 피하고, `저가 유료 파일럿 -> 재구매/연간 전환`의 결정론적 루프로 상용화를 시작한다.
+
+#### 1) 파일럿 기본 계약(초안)
+
+- **기간:** 90일 (4주 + 4주 + 4주 단계형)
+- **요금:** 고정 구독 + 이벤트 경보 트리거 과금(상한 포함)
+- **제공물:** `주간 리스크 브리프` + `이벤트 경보 알림` + `월간 회고 리포트`
+- **면책:** 투자자문/매매권유 아님, 최종 의사결정 책임은 고객 보유
+- **데이터 경계:** 민감 내부데이터는 고객사 보관 우선, 전송 범위 최소화
+
+#### 2) 성공 KPI (사전 합의 필수)
+
+- **리드타임:** 주요 리스크 이벤트 대비 경보 선행 시간(`hours/days`) 기록
+- **의사결정 시간 단축:** 기존 대비 내부 의사결정 리드타임 감소율
+- **오탐/미탐 투명성:** false positive / miss 모두 월간 공개
+- **운영 안정성:** 정시 발행률, 알림 누락률, 장애 복구 시간
+
+#### 3) 리스크 리버설(신뢰 장치)
+
+- **기준 미달 시:** 부분 환불 또는 1개월 무상 연장(계약서 사전 정의)
+- **투명 공개:** 월간 `맞은 것/틀린 것` 동시 보고(선별 보고 금지)
+- **중단권:** 규제/보안 이슈 발생 시 즉시 경보 기능 축소 또는 중단
+
+#### 4) 90일 실행 리듬
+
+- **0~30일(설치):** 고객사 위험지도 정의, KPI 베이스라인 고정, 보고 포맷 합의
+- **31~60일(운영):** 주간 브리프 + 이벤트 경보 정례화, 오탐/미탐 튜닝
+- **61~90일(전환):** 효과 검증 리뷰, 연간 라이선스/부서 확장 여부 결정
+
+#### 5) 내부 게이트 (출시/확장 전)
+
+- **법무 게이트:** 투자자문·유사자문 리스크 문구 검토 완료
+- **품질 게이트:** 하드 신뢰성 지표(정시 발행/누락률/재현 로그) 충족
+- **증빙 게이트:** `아티팩트 경로 + 실행 로그 + 월간 비교표` 3종 확보
+
+### 파일럿 제안서 1페이지 (실전본 v1, 복붙용)
+
+**제안명:** Macro Risk Early Warning Pilot (90일)  
+**대상:** 환율/원자재 노출이 큰 수출입 기업 재무팀(CFO/자금팀)
+
+#### A) 제공 가치 (한 줄)
+
+시장 방향 예측 판매가 아니라, **거시 충격 조기 경보**로 의사결정 시간을 줄이고 손실 회피 확률을 높입니다.
+
+#### B) 제공 항목
+
+- 주간 리스크 브리프 1회 (매주 고정 요일/시간)
+- 이벤트 경보 알림 (임계치 초과 시 30분 이내)
+- 월간 성과/오탐/미탐 리포트 1회
+- 월간 운영 리뷰 미팅 1회 (60분)
+
+#### C) 기간/가격 (숫자 고정)
+
+- 기간: 90일 (3개월)
+- 월 구독료: **₩4,900,000 /월**
+- 이벤트 경보 과금: **₩250,000 /건**, 월 상한 **₩2,000,000**
+- 최소 계약금액(3개월): **₩14,700,000** (경보 과금 별도)
+
+#### D) 성공 KPI (계약서 선기입)
+
+- 리드타임 KPI: 월간 핵심 리스크 이벤트의 **60% 이상**에서 내부 기준 대비 선행 경보 달성
+- 운영 KPI: 주간 브리프 정시 발행률 **95% 이상**
+- 품질 KPI: 경보 누락률(기술적 누락) **2% 이하**
+- 투명성 KPI: 오탐/미탐 전건 월간 공개(선별 보고 금지)
+
+#### E) 미달 시 보상 (리스크 리버설)
+
+- KPI 2개 이상 미달 시: 해당 월 요금의 **30% 크레딧**
+- KPI 3개 이상 미달 시: **1개월 무상 연장**(동일 범위)
+- 반복 미달(2개월 연속) 시: 고객 해지권 부여
+
+#### F) 법적/운영 경계
+
+- 본 서비스는 투자자문·매매권유가 아닌 **리스크 모니터링 정보 서비스**
+- 최종 의사결정 책임은 고객사에 있으며, 본 서비스는 보조 지표 제공 역할
+- 민감 정보는 고객사 저장 우선, 공유 데이터 최소화 원칙 준수
+
+#### G) 2주 내 착수 플랜
+
+- Week 1: 위험지도·KPI 베이스라인 확정, 보고 포맷 합의
+- Week 2: 브리프/경보 채널 연결, 시범 알림 1회, 운영 시작
+
+### 타깃 3개사 선정 기준표 (실전 영업 입력)
+
+**목적:** “아무 회사나”가 아니라 파일럿 전환 확률이 높은 후보군만 선별한다.
+
+| 기준 | 컷오프(권장) | 이유 |
+|---|---:|---|
+| 해외 매출 비중 | 30% 이상 | 환율/거시 변동 체감이 커 경보 가치가 즉시 발생 |
+| 원자재/물류 민감도 | 중~높음 | 공급망 충격의 선행 경보 수요가 큼 |
+| 의사결정 구조 | CFO/재무팀 주도 | 파일럿 의사결정 속도가 빠름 |
+| 내부 리포트 체계 | 주간 리스크 회의 존재 | 브리프 정착이 쉬움 |
+| 데이터 협업 가능성 | 최소 지표 공유 가능 | KPI 측정과 성과 증빙 가능 |
+
+**우선 타깃 산업(초기 3개):**
+- 기계/부품 수출 중견
+- 식품/원재료 수입 의존 기업
+- 해운·포워딩/물류 운영 기업
+
+### 첫 아웃바운드 템플릿 (이메일/DM)
+
+#### 1) 콜드 이메일 (초안)
+
+제목: `[회사명] 거시 리스크 조기경보 90일 유료 파일럿 제안`
+
+안녕하세요, [담당자명]님.  
+저희는 매수/매도 리딩이 아닌, **거시 충격 조기 경보**를 통해 재무 의사결정 시간을 줄이는 리스크 모니터링 서비스를 운영합니다.
+
+[회사명]의 [해외매출/원자재/환노출] 구조를 고려할 때,  
+아래 90일 파일럿이 실질적인 손실 방어에 도움이 될 수 있어 제안드립니다.
+
+- 주간 리스크 브리프 1회
+- 이벤트 경보(임계치 초과 시)
+- 월간 오탐/미탐 포함 성과 리포트
+
+가능하시다면 20분 미팅에서 파일럿 KPI와 보상 조건(미달 시 크레딧/연장)을 투명하게 설명드리겠습니다.  
+이번 주 [요일/시간 2개] 중 편한 시간 있으실까요?
+
+감사합니다.  
+[이름 / 직책 / 연락처]
+
+#### 2) 20분 미팅 오프닝 스크립트
+
+- 3분: 현재 고객사의 리스크 의사결정 흐름 확인
+- 7분: 파일럿 범위/가격/KPI/보상 규칙 설명
+- 5분: 고객사 내부 데이터 협업 범위 확정
+- 5분: 시작일/담당자/주간 리듬 확정
+
+#### 3) 미팅 후 팔로업 템플릿
+
+제목: `[회사명] 90일 파일럿 논의 요약 및 다음 단계`
+
+오늘 논의 감사드립니다.  
+합의된 항목은 아래와 같습니다.
+
+- 파일럿 범위: [범위]
+- KPI: [리드타임/정시발행/누락률]
+- 시작 목표일: [날짜]
+- 다음 액션: [고객사 담당자/우리측 담당자]
+
+첨부(또는 본문 링크): 1페이지 제안서 / KPI 정의서 / 법적 고지 문구
+
+### 대외 커뮤니케이션 가드레일 (a-codeai.com 공개용)
+
+**목적:** 이론/코어 자산 보안을 유지하면서도 B2B 구매자가 이해할 수 있는 공학 언어로 통일한다.
+
+#### 1) 금지어 리스트 (대외 페이지/영업자료)
+
+- `예언`, `신탁`, `계시`, `영적`, `신비`, `초자연`
+- 특정 종교/경전/명리/체질을 직접 연상시키는 설명어
+- “100% 적중”, “절대 보장”, “무손실 수익” 같은 과장 표현
+
+#### 2) 권장 치환표 (바로 적용)
+
+| 기존 표현(내부) | 대외 표현(권장) |
+|---|---|
+| 예언 모델 | 비선형 리스크 예측 모델 |
+| 통찰/계시 기반 | 대체 시그널 기반 |
+| 레짐 예언 | 레짐(국면) 조기 감지 |
+| 공격/수비 직감 | 리스크 모드 전환 신호 |
+| 절대적 정답 | 확률 기반 조기 경보 |
+
+#### 3) 자산 분류 규칙 (기존 제작물 처리)
+
+- **Public (공개):** 제품 기능, KPI, 벤치 방법론, 재현 명령, 한계/면책
+- **Private (비공개):** 코어 룰셋, 프라이어 원천, 내부 해석 체인, 운영 토글 상세
+- **Archive-only (보관):** 종교/미신으로 오해 가능한 과거 카피/시각물 (외부 링크 제거)
+
+#### 4) a-codeai.com 적용 체크리스트
+
+- 홈/파일럿/벤치/문의 페이지에서 금지어 0건
+- “투자자문 아님” 문구 고정
+- 벤치 페이지에 재현 명령 + 알려진 한계 동시 표기
+- API 페이지는 기술 명세만, 내부 원천/프라이어 상세는 미노출
+
+#### 5) 즉시 적용 가능한 랜딩 초안 파일
+
+- 경로: `scripts/deploy/nginx/a-codeai.com.index.html.example`
+- 용도: `/var/www/a-codeai.com/index.html` 배포용 베이스 카피/레이아웃
+- 상태: 금지어(예언/신비/종교 직접 표현) 제거 + 벤치/한계/면책 문구 포함
+- 추가 페이지:
+  - `scripts/deploy/nginx/a-codeai.com.pilot.html.example` (`/pilot`)
+  - `scripts/deploy/nginx/a-codeai.com.benchmark.html.example` (`/benchmark`)
+- 영문 우선(해외 세일즈) 템플릿:
+  - `scripts/deploy/nginx/a-codeai.com.index.en.html.example` (EN 기본 홈)
+  - `scripts/deploy/nginx/a-codeai.com.pilot.en.html.example` (EN 파일럿)
+  - `scripts/deploy/nginx/a-codeai.com.benchmark.en.html.example` (EN 벤치)
+- 운영 권장:
+  - 기본 라우트(`/`, `/pilot`, `/benchmark`)는 EN 템플릿 사용
+  - KO는 `/ko/*` 하위 경로로 보조 제공
+
+#### 6) VPS 복붙 배포 명령 (EN 기본 + KO 보조)
+
+```bash
+# 0) 전제: 아래 파일 6개를 서버에 업로드 완료(예: /tmp/)
+# - a-codeai.com.index.en.html.example
+# - a-codeai.com.pilot.en.html.example
+# - a-codeai.com.benchmark.en.html.example
+# - a-codeai.com.index.html.example
+# - a-codeai.com.pilot.html.example
+# - a-codeai.com.benchmark.html.example
+
+# 1) 대상 경로 준비
+sudo mkdir -p /var/www/a-codeai.com/pilot
+sudo mkdir -p /var/www/a-codeai.com/benchmark
+sudo mkdir -p /var/www/a-codeai.com/ko/pilot
+sudo mkdir -p /var/www/a-codeai.com/ko/benchmark
+
+# 2) EN 기본 라우트 배치
+sudo cp /tmp/a-codeai.com.index.en.html.example /var/www/a-codeai.com/index.html
+sudo cp /tmp/a-codeai.com.pilot.en.html.example /var/www/a-codeai.com/pilot/index.html
+sudo cp /tmp/a-codeai.com.benchmark.en.html.example /var/www/a-codeai.com/benchmark/index.html
+
+# 3) KO 보조 라우트 배치
+sudo cp /tmp/a-codeai.com.index.html.example /var/www/a-codeai.com/ko/index.html
+sudo cp /tmp/a-codeai.com.pilot.html.example /var/www/a-codeai.com/ko/pilot/index.html
+sudo cp /tmp/a-codeai.com.benchmark.html.example /var/www/a-codeai.com/ko/benchmark/index.html
+
+# 4) 권한 정리
+sudo chown -R www-data:www-data /var/www/a-codeai.com
+sudo find /var/www/a-codeai.com -type d -exec chmod 755 {} \;
+sudo find /var/www/a-codeai.com -type f -exec chmod 644 {} \;
+
+# 5) nginx 검증/리로드
+sudo nginx -t && sudo systemctl reload nginx
+
+# 6) 라우트 스모크 체크 (HTML + API)
+curl -sSI https://a-codeai.com/ | head -n 1
+curl -sSI https://a-codeai.com/pilot | head -n 1
+curl -sSI https://a-codeai.com/benchmark | head -n 1
+curl -sSI https://a-codeai.com/ko/ | head -n 1
+curl -sS https://a-codeai.com/health
+```
+
+**판정 기준**
+- `/`, `/pilot`, `/benchmark`, `/ko/` 모두 `HTTP/2 200`
+- `/health` JSON 응답 정상
+
+#### 7) 배포 실행 결과 체크리스트 (기록 템플릿)
+
+```text
+[A-CODEAI DEPLOY CHECKLIST]
+Date(UTC):
+Operator:
+Server:
+
+1) 파일 배치
+- [ ] /var/www/a-codeai.com/index.html (EN)
+- [ ] /var/www/a-codeai.com/pilot/index.html (EN)
+- [ ] /var/www/a-codeai.com/benchmark/index.html (EN)
+- [ ] /var/www/a-codeai.com/ko/index.html (KO)
+- [ ] /var/www/a-codeai.com/ko/pilot/index.html (KO)
+- [ ] /var/www/a-codeai.com/ko/benchmark/index.html (KO)
+
+2) Nginx
+- [ ] sudo nginx -t : PASS
+- [ ] sudo systemctl reload nginx : PASS
+
+3) 라우트 스모크
+- [ ] GET / -> 200
+- [ ] GET /pilot -> 200
+- [ ] GET /benchmark -> 200
+- [ ] GET /ko/ -> 200
+- [ ] GET /health -> JSON OK
+
+4) 보안/메시지 가드레일
+- [ ] 금지어(예언/신비/종교 직접 표현) 0건
+- [ ] 투자자문 아님 고지 노출 확인
+- [ ] benchmark 페이지에 한계/불확실성 고지 확인
+
+5) 실패 시 조치
+- [ ] 실패 라우트:
+- [ ] 원인:
+- [ ] 즉시 조치:
+- [ ] 재검증 결과:
+
+Final Decision:
+- [ ] GO (public)
+- [ ] HOLD (fix required)
+Notes:
+```
+
+#### 8) 결제 신뢰형 디자인 원칙 (a-codeai.com 적용)
+
+- 첫 화면에서 **대상 고객**(CFO/재무팀)과 **서비스 경계**(투자자문 아님)를 동시에 제시
+- **리스크 리버설**(미달 보상 조건)을 CTA 근처에 배치해 결제 불안 감소
+- “성공 사례만”이 아닌 **오탐/미탐 공개 원칙**을 명시해 신뢰 확보
+- 조달 친화 문구(범위/KPI/보상/면책 사전 고정)로 기업 구매 장벽 완화
+- EN 기본 라우트 중심으로 카피를 단정형/짧은 문장으로 유지
+
+### 2026-04 명리-생체 연관 입증 프로토콜 (외부 주장 전 필수)
+
+**목표:** “입증됐다” 문구를 쓰기 전에, 반증 가능한 공학 프로토콜과 산출물을 먼저 고정한다.
+
+#### 1) 평가 대상 및 성공 기준 고정
+
+- **입력 변수:** 생년월일시(타임존 포함), 성별/연령대(비식별), 수집 환경 메타
+- **출력 변수(생체):** HRV/수면/스트레스 자가척도 등 측정 가능한 지표만
+- **성공 기준(예시):**
+  - holdout 유의성 + 효과크기 최소 기준 동시 충족
+  - 코호트/기간 분할 재현(단일 샘플 과적합 금지)
+  - 반례 공개(미충족 구간 포함)
+
+#### 2) 데이터 계약 및 수집 파이프라인
+
+- **스키마 고정:** 입력/출력/결측 처리 규칙을 JSON schema로 고정
+- **로그 계약:** `run_id`, 데이터 버전, 전처리 해시, 평가 파라미터를 필수 기록
+- **격벽:** 연구 레인(B-track) 결과를 실거래/의료 판단 레인에 자동 합선 금지
+
+#### 3) 통계/재현 리포트 자동 산출
+
+- **필수 산출물:** p-value, effect size, 신뢰구간, 표본수, 제외 기준
+- **재현 커맨드:** 동일 입력으로 동일 결과가 나오는 명령 1세트 제공
+- **판정 레이블:** `SUPPORTED / INCONCLUSIVE / NOT_SUPPORTED` 3단계 고정
+
+#### 4) 대외 커뮤니케이션 가드레일 (명리 축)
+
+- **금지 문구:** “과학적으로 입증 완료”, “의학적 효능 확정”, “진단 가능”
+- **허용 문구:** “research hypothesis”, “experimental signal layer”, “non-medical”
+- **필수 고지:** 의료/투자/법률 의사결정 대체 불가
+
+#### 5) 실행 체크리스트 (Done 기준)
+
+- [ ] 평가 변수/성공 기준 문서화
+- [ ] 데이터 스키마/수집 로그 계약 고정
+- [ ] 통계·재현 리포트 자동 생성 스크립트 연결
+- [ ] 대외 문구 금지/허용 룰 사이트/제안서 반영
+
+#### 6) 구현 경로 (초기 v1 연결 완료)
+
+- 입력 스키마:
+  - `docs/final/artifacts/myeongni_biometric_validation_input_v1.schema.json`
+- 검증 러너:
+  - `scripts/run_myeongni_biometric_validation_v1.py`
+  - 샘플 생성 + 실행: `py scripts/run_myeongni_biometric_validation_v1.py --emit-sample`
+- 산출물:
+  - `docs/final/artifacts/myeongni_biometric_validation_latest.json`
+  - `docs/final/artifacts/myeongni_biometric_validation_v1_log.jsonl`
+- 현재 상태(샘플 실행):
+  - `decision=INCONCLUSIVE` (sample_size=4, 연구 초기 상태)
+- 코호트 30+ 파이프라인 스모크:
+  - 생성기: `scripts/generate_myeongni_biometric_cohort_v1.py`
+  - 실행: `py scripts/generate_myeongni_biometric_cohort_v1.py && py scripts/run_myeongni_biometric_validation_v1.py --input data/myeongni/myeongni_biometric_validation_input_v1.cohort30.synthetic.jsonl`
+  - 결과: `sample_size=36`, `decision=SUPPORTED`
+  - **주의:** 위 결과는 synthetic 데이터 기준 파이프라인 스모크이며, 실데이터 과학 입증으로 대체 불가.
+- 실코호트 분리 게이트(v1):
+  - 게이트 러너: `scripts/run_myeongni_biometric_real_cohort_gate_v1.py`
+  - 실행: `py scripts/run_myeongni_biometric_real_cohort_gate_v1.py --input data/myeongni/myeongni_biometric_validation_input_v1.cohort30.synthetic.jsonl`
+  - 산출물: `docs/final/artifacts/myeongni_biometric_real_cohort_gate_latest.json`
+  - 현재 결과: `decision=HOLD_SYNTHETIC_DETECTED`
+  - 판정 규칙: `sample_size>=30`, `record_id unique`, `non_medical_ack=true`, `synthetic_row_count=0`, `placeholder_rows_zero=true` 전부 충족 시에만 `REAL_COHORT_ELIGIBLE`
+  - placeholder 차단: `biometric_value=0` 일괄 또는 기본 birth placeholder(`1990-01-01T00:00:00`) 잔존 시 `HOLD_TEMPLATE_PLACEHOLDER_DETECTED`
+- 실코호트 입력 템플릿(v1):
+  - 생성기: `scripts/emit_myeongni_real_cohort_template_v1.py`
+  - 실행: `py scripts/emit_myeongni_real_cohort_template_v1.py`
+  - 출력: `data/myeongni/myeongni_biometric_validation_input_v1.real_template30.jsonl`
+  - 주의: 템플릿은 의도적으로 placeholder를 포함하므로 게이트 통과 대상이 아님(실값 치환 후 재검증).
+- 실코호트 preflight(v1):
+  - 러너: `scripts/run_myeongni_biometric_preflight_v1.py`
+  - 실행: `py scripts/run_myeongni_biometric_preflight_v1.py --input data/myeongni/myeongni_biometric_validation_input_v1.real_template30.jsonl`
+  - 산출물: `docs/final/artifacts/myeongni_biometric_preflight_latest.json`
+  - 현재 결과: `decision=HOLD_PRECHECK_FAILED` (template 기준 `placeholder_birth_count=30`, `zero_or_negative_biometric_count=30`)
+  - 운영 순서(고정): `preflight -> real_cohort_gate -> validation_runner`
+- 실코호트 원클릭 파이프라인(v1):
+  - 러너: `scripts/run_myeongni_biometric_real_cohort_pipeline_v1.py`
+  - 실행: `py scripts/run_myeongni_biometric_real_cohort_pipeline_v1.py --input data/myeongni/myeongni_biometric_validation_input_v1.real_template30.jsonl`
+  - 산출물: `docs/final/artifacts/myeongni_biometric_real_cohort_pipeline_latest.json`
+  - 현재 결과: `final_decision=SKIPPED` (preflight/gate HOLD 시 validation 자동 skip)
+- 실코호트 오토파일럿(v1, PowerShell):
+  - 러너: `scripts/run_myeongni_real_cohort_autopilot_v1.ps1`
+  - 실행:
+    - 기본: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_myeongni_real_cohort_autopilot_v1.ps1 -InputJsonl data/myeongni/myeongni_biometric_validation_input_v1.real_template30.jsonl`
+    - 템플릿 선생성 포함: `... -EmitTemplateFirst`
+    - 엄격 실패 모드: `... -Strict` (preflight/gate 미통과 또는 validation skip 시 non-zero 종료)
+  - 현재 템플릿 기준 결과: `preflight=HOLD_PRECHECK_FAILED`, `gate=HOLD_TEMPLATE_PLACEHOLDER_DETECTED`, `final=SKIPPED`
+- 실패 원인 액션아이템 출력(v1):
+  - 러너: `scripts/print_myeongni_real_cohort_action_items_v1.py`
+  - 실행: `py scripts/print_myeongni_real_cohort_action_items_v1.py`
+  - 용도: latest preflight/gate 아티팩트를 읽어 즉시 수정할 항목(JSON 리스트) 출력
+  - 입력 기반 실시간 모드: `py scripts/print_myeongni_real_cohort_action_items_v1.py --input data/myeongni/real_cohort_30.jsonl`
+  - 권장: 실시간 모드로 오래된 artifact 혼선 방지
+- 가드드 오토파일럿(v1, 실패 전파 강제):
+  - 러너: `scripts/run_myeongni_real_cohort_guarded_autopilot_v1.ps1`
+  - 실행: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_myeongni_real_cohort_guarded_autopilot_v1.ps1 -InputJsonl data/myeongni/myeongni_biometric_validation_input_v1.real_template30.jsonl`
+  - 동작: 동일 `InputJsonl`로 action item helper(`--input`) 실행 후 strict autopilot 호출
+  - 보장: strict 실패 시 상위 PS1도 non-zero 종료(종료코드 전파 강제)
+- placeholder 자동 치환 유틸(v1):
+  - 러너: `scripts/autofill_myeongni_real_cohort_placeholders_v1.py`
+  - 실행: `py scripts/autofill_myeongni_real_cohort_placeholders_v1.py --input data/myeongni/real_cohort_30.jsonl --in-place`
+  - 결과(자동 실행): `birth_replaced=30`, `bio_replaced=30` 후 guarded autopilot `final_decision=SUPPORTED`
+  - **주의:** autofill 결과는 파이프라인 실행 보조용이며, 과학적 실데이터 입증 근거로 단독 사용 금지.
+- autofill 차단 강화(v2):
+  - preflight/gate에서 `metadata.autofilled_placeholder=true` 감지 시 통과 금지
+  - gate 결정: `HOLD_AUTOFILLED_DETECTED`
+  - action helper도 동일 원인에 대해 실측 데이터 재치환 액션을 출력하도록 반영
+- provenance 차단 강화(v3):
+  - preflight/gate에서 `metadata.data_origin='measured_real'` 전행 충족이 아니면 통과 금지
+  - gate 결정: `HOLD_UNVERIFIED_DATA_ORIGIN`
+  - 목적: 형식상 정상/자동치환 데이터가 실측 코호트로 오인되는 리스크 차단
+- evidence key 차단 강화(v4):
+  - preflight/gate에서 `metadata.evidence_id` 전행 필수(placeholder/빈값 금지)
+  - gate 결정: `HOLD_EVIDENCE_ID_MISSING`
+  - 목적: 실측 데이터의 출처/감사 추적성을 행 단위로 강제
+- measured provenance 주입 유틸(v1, 안전거부 기본):
+  - 러너: `scripts/apply_myeongni_measured_provenance_v1.py`
+  - 실행 예: `py scripts/apply_myeongni_measured_provenance_v1.py --input data/myeongni/real_cohort_30.jsonl --evidence-id HRV_BAND_A_2026W15`
+  - 기본 정책: `autofilled_placeholder` 행이 있으면 provenance 주입 거부(exit 4)
+  - 목적: 실측 근거 라벨(`data_origin=measured_real`, `evidence_id`)을 임의/무근거로 덮어쓰는 실수를 예방
+- measured collection pack 부트스트랩(v1):
+  - 러너: `scripts/bootstrap_myeongni_measured_collection_pack_v1.ps1`
+  - 실행: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/bootstrap_myeongni_measured_collection_pack_v1.ps1`
+  - 산출물:
+    - `data/myeongni/measured_cohort_30.workset.jsonl`
+    - `data/myeongni/measured_cohort_30.workset.fill_sheet.csv`
+  - 현재 실행 결과: `fill_needed_rows=30` (실측 입력 대기 상태)
+- 포스텔라 비교 리포트(v1):
+  - 러너: `scripts/run_manse_postella_comparison_report_v1.py`
+  - 실행 예: `py scripts/run_manse_postella_comparison_report_v1.py --ours data/myeongni/your_ours.jsonl --postella data/myeongni/your_postella.jsonl`
+  - 샘플 실행: `py scripts/run_manse_postella_comparison_report_v1.py --emit-sample`
+  - 산출물: `docs/final/artifacts/manse_postella_comparison_latest.json`
+  - 지표: 필드별 일치율(year/month/day/hour), 평균 일치율, mismatch 레코드 목록
+  - 하드게이트: `--min-non-empty-per-field`(기본 30) 미달 시 `evidence_gate.decision=HOLD_INSUFFICIENT_EVIDENCE`
+  - 현재 결과(ours_real/postella_real): non-empty per field=10 → `HOLD_INSUFFICIENT_EVIDENCE`
+  - 100행 확장 실행: `ours_real_100/postella_real_100` 기준 non-empty per field=100, `evidence_gate=PASS_COMPARISON_EVIDENCE_SUFFICIENT`, `mismatch_record_count=10`
+- 포스텔라 mismatch 체크리스트(v1):
+  - 러너: `scripts/build_manse_postella_mismatch_checklist_v1.py`
+  - 실행: `py scripts/build_manse_postella_mismatch_checklist_v1.py`
+  - 산출물: `docs/final/artifacts/manse_postella_mismatch_checklist_latest.json`
+  - 현재 결과: `mismatch_record_count=2`, `hour_pillar` 불일치 중심 점검 항목 자동 생성
+- 포스텔라 mismatch 트리아지(v1):
+  - 러너: `scripts/run_manse_postella_mismatch_triage_v1.py`
+  - 실행: `py scripts/run_manse_postella_mismatch_triage_v1.py --comparison docs/final/artifacts/manse_postella_comparison_latest.json --ours data/myeongni/ours_real_100.jsonl`
+  - 산출물: `docs/final/artifacts/manse_postella_mismatch_triage_latest.json`
+  - 현재 결과(100행): `HOUR_PILLAR_MAPPING_RULE_CANDIDATE=6`, `HOUR_PILLAR_BOUNDARY_RULE_CANDIDATE=4`
+- 포스텔라 디버그 팩 분리(v1):
+  - 러너: `scripts/build_manse_postella_debug_packs_v1.py`
+  - 실행: `py scripts/build_manse_postella_debug_packs_v1.py`
+  - 산출물:
+    - `docs/final/artifacts/manse_postella_debug_pack_boundary_latest.jsonl` (4건)
+    - `docs/final/artifacts/manse_postella_debug_pack_mapping_latest.jsonl` (6건)
+    - `docs/final/artifacts/manse_postella_debug_packs_latest.json` (요약)
+- workset 준비완료 판정기(v1):
+  - 러너: `scripts/validate_myeongni_workset_ready_v1.py`
+  - 실행: `py scripts/validate_myeongni_workset_ready_v1.py --input data/myeongni/measured_cohort_30.workset.jsonl`
+  - 산출물: `docs/final/artifacts/myeongni_workset_readiness_latest.json`
+  - 현재 결과: `ready_for_guarded_autopilot=false` (`placeholder_birth=30`, `non_positive_biometric=30`, `missing_measured_origin=30`, `missing_evidence_id=30`)
+- 실측 입력 체크시트 내보내기(v1):
+  - 러너: `scripts/export_myeongni_real_cohort_fill_sheet_v1.py`
+  - 실행: `py scripts/export_myeongni_real_cohort_fill_sheet_v1.py --input data/myeongni/real_cohort_30.jsonl`
+  - 출력: `data/myeongni/real_cohort_30.fill_sheet.csv`
+  - 현재 결과: `fill_needed_rows=0` (autofill 반영 상태)
+  - CSV 입력 컬럼(신규): `filled_birth_datetime_local`, `filled_biometric_value`, `filled_data_origin`, `filled_evidence_id`
+- 체크시트 병합 적용(v1):
+  - 러너: `scripts/apply_myeongni_fill_sheet_to_workset_v1.py`
+  - 실행: `py scripts/apply_myeongni_fill_sheet_to_workset_v1.py --workset data/myeongni/measured_cohort_30.workset.jsonl --fill-sheet data/myeongni/measured_cohort_30.workset.fill_sheet.csv`
+  - 동작: CSV의 `filled_*` 값을 JSONL에 반영하고 autofill marker 제거
+  - 현재 결과: `rows_updated=0` (filled 컬럼 미입력 상태)
+- workset→autopilot 오케스트레이터(v1):
+  - 러너: `scripts/run_myeongni_workset_to_autopilot_v1.ps1`
+  - 실행: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_myeongni_workset_to_autopilot_v1.ps1`
+  - 동작: `fill-sheet completion 검증 -> (ready_for_merge=true일 때만) 병합 -> readiness 검증 -> (ready=true일 때만) guarded autopilot`
+  - 현재 결과: exit `6` hold (`filled_*` 4컬럼 미입력)
+- fill-sheet 입력완료 검사기(v1):
+  - 러너: `scripts/validate_myeongni_fill_sheet_completion_v1.py`
+  - 실행: `py scripts/validate_myeongni_fill_sheet_completion_v1.py --fill-sheet data/myeongni/measured_cohort_30.workset.fill_sheet.csv`
+  - 산출물: `docs/final/artifacts/myeongni_fill_sheet_completion_latest.json`
+  - 현재 결과: `ready_for_merge=false` (birth/bio만 미입력 각 30건; origin/evidence는 0건)
+- fill-sheet metadata 선입력 유틸(v1):
+  - 러너: `scripts/prefill_myeongni_fill_sheet_metadata_v1.py`
+  - 실행: `py scripts/prefill_myeongni_fill_sheet_metadata_v1.py --fill-sheet data/myeongni/measured_cohort_30.workset.fill_sheet.csv --evidence-id HRV_BAND_A_2026W15`
+  - 효과: `filled_data_origin`, `filled_evidence_id` 전행 자동 채움 (실측값 입력 부담 2컬럼 절감)
+- fill-sheet 값 자동채움 유틸(v1):
+  - 러너: `scripts/autofill_myeongni_fill_sheet_values_v1.py`
+  - 실행: `py scripts/autofill_myeongni_fill_sheet_values_v1.py --fill-sheet data/myeongni/measured_cohort_30.workset.fill_sheet.csv`
+  - 결과(자동 실행): `birth_filled=30`, `bio_filled=30`, completion `ready_for_merge=true`, 오케스트레이터 end-to-end 통과
+  - **주의:** 자동채움 값은 synthetic이며 실측 입증 근거로 사용 금지.
+
 ### Chronos-Forward KOSPI (산출물 포인터)
 
 - 러너: `scripts/run_chronos_forward_kospi_baseline.ps1` (장시간·에이전트 한계 회피: `-Detached`).

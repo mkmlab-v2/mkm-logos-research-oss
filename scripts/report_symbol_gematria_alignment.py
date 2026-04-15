@@ -110,6 +110,13 @@ def _cosine(a: dict[str, float], b: dict[str, float]) -> float:
     return _dot(a, b) / den
 
 
+def _normalize_l2(v: dict[str, float]) -> dict[str, float]:
+    n = _norm(v)
+    if n <= 0.0:
+        return dict(v)
+    return {k: float(v[k] / n) for k in ("S", "L", "K", "M")}
+
+
 def _pearson(xs: list[float], ys: list[float]) -> float | None:
     n = len(xs)
     if n < 2 or len(ys) != n:
@@ -136,6 +143,12 @@ def main() -> int:
         choices=("random", "gematria_nonzero"),
         default="random",
         help="random: sample all rows; gematria_nonzero: sample rows with nonzero gematria only",
+    )
+    ap.add_argument(
+        "--pre-normalization",
+        choices=("none", "l2_only"),
+        default="none",
+        help="Optional vector pre-normalization before distance/cosine",
     )
     args = ap.parse_args()
 
@@ -200,6 +213,9 @@ def main() -> int:
         if not all(isinstance(vec_b.get(k), (int, float)) for k in ("S", "L", "K", "M")):
             continue
         vec_b = {k: float(vec_b[k]) for k in ("S", "L", "K", "M")}
+        if args.pre_normalization == "l2_only":
+            vec_a = _normalize_l2(vec_a)
+            vec_b = _normalize_l2(vec_b)
         dist = _distance(vec_a, vec_b)
         cos = _cosine(vec_a, vec_b)
         dist_values.append(dist)
@@ -255,6 +271,7 @@ def main() -> int:
             "effective_sample_size": used,
             "seed": args.seed,
             "resonance_threshold_cosine": args.resonance_threshold,
+            "pre_normalization": args.pre_normalization,
         },
         "summary": {
             "avg_distance_symbol_vs_gematria_4d": round(sum(dist_values) / used, 6),

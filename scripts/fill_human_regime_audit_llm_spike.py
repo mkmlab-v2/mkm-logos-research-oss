@@ -111,9 +111,27 @@ def _retryable_http(exc: BaseException) -> bool:
     try:
         import httpx  # type: ignore
 
-        return isinstance(exc, (httpx.ReadTimeout, httpx.ConnectTimeout, httpx.TimeoutException))
+        if isinstance(exc, (httpx.ReadTimeout, httpx.ConnectTimeout, httpx.TimeoutException)):
+            return True
     except Exception:
-        return False
+        pass
+    try:
+        from google.genai import errors as genai_errors
+
+        if isinstance(exc, genai_errors.ServerError):
+            return True
+        if isinstance(exc, genai_errors.ClientError):
+            code = getattr(exc, "code", None)
+            if code in (408, 429):
+                return True
+    except Exception:
+        pass
+    msg = str(exc).lower()
+    if "503" in msg or "unavailable" in msg or "high demand" in msg:
+        return True
+    if "429" in msg or "resource exhausted" in msg or "too many requests" in msg:
+        return True
+    return False
 
 
 def _batch_gemini(

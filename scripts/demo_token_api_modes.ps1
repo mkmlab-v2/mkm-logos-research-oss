@@ -1,4 +1,4 @@
-Param(
+﻿Param(
   [string]$BaseUrl = "http://127.0.0.1:8010"
 )
 
@@ -22,7 +22,8 @@ $reqNone = @{
 $resNone = Invoke-JsonPost -Url "$BaseUrl/v1/compress" -Body $reqNone
 $resNone | ConvertTo-Json -Depth 8
 
-Write-Host "`n== Token API demo: mode_decision_fallback =="
+Write-Host ""
+Write-Host "== Token API demo: mode_decision_fallback =="
 $reqDecision = @{
   text = "compression hydration test 텍스트"
   client_request_id = "demo-decision-001"
@@ -34,9 +35,10 @@ $reqDecision = @{
 $resDecision = Invoke-JsonPost -Url "$BaseUrl/v1/compress" -Body $reqDecision
 $resDecision | ConvertTo-Json -Depth 8
 
-Write-Host "`n== Token API demo: mode_live =="
+Write-Host ""
+Write-Host "== Token API demo: mode_live =="
 $reqLive = @{
-  text = "live eval hydration path 성능 테스트"
+  text = "live eval hydration path enterprise compression 성능 테스트 스텁 token count twelve minimum for live path"
   client_request_id = "demo-live-001"
   eval_context = @{
     hydrate_metrics = $true
@@ -50,6 +52,7 @@ $reqLive = @{
 $resLive = Invoke-JsonPost -Url "$BaseUrl/v1/compress" -Body $reqLive
 $resLive | ConvertTo-Json -Depth 8
 
-Write-Host "`n== Token API demo: expand roundtrip (live payload) =="
+Write-Host ""
+Write-Host "== Token API demo: expand roundtrip (live payload) =="
 $exp = Invoke-JsonPost -Url "$BaseUrl/v1/expand" -Body @{ payload = $resLive }
 $exp | ConvertTo-Json -Depth 8

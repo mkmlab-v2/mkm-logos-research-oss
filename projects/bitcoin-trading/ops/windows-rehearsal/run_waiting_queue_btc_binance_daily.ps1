@@ -7,6 +7,7 @@ $ErrorActionPreference = "Stop"
 $workspace = "C:\workspace"
 $runner = Join-Path $workspace "scripts\run_waiting_queue_monthly_check.ps1"
 $taskLog = Join-Path $workspace "docs\final\artifacts\waiting_queue_btc_binance_daily_task.log"
+$lockPath = Join-Path $workspace "docs\final\artifacts\locks\waiting_queue_btc_binance_daily.lock.json"
 $waitingLogPath = Join-Path $workspace "docs\final\artifacts\waiting_queue_monthly_check_log.jsonl"
 $distributionPath = Join-Path $workspace "docs\final\artifacts\trinity_scoring_distribution_latest.json"
 
@@ -211,12 +212,43 @@ function Get-StrictModeEnabled {
     return $raw.Trim().ToLower() -in @("1", "true", "yes", "on")
 }
 
+function Acquire-TaskLock {
+    param([string]$Path)
+    $lockDir = Split-Path -Parent $Path
+    if (-not (Test-Path -LiteralPath $lockDir)) {
+        New-Item -ItemType Directory -Path $lockDir -Force | Out-Null
+    }
+    if (Test-Path -LiteralPath $Path) {
+        Write-TaskLog "WARN lock_exists path=$Path -> skip duplicated run"
+        return $false
+    }
+    $payload = @{
+        schema = "task_lock_v1"
+        task = "waiting_queue_btc_binance_daily"
+        created_at_utc = (Get-Date).ToUniversalTime().ToString("o")
+        host = $env:COMPUTERNAME
+        pid = $PID
+    }
+    $payload | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $Path -Encoding utf8
+    return $true
+}
+
+function Release-TaskLock {
+    param([string]$Path)
+    if (Test-Path -LiteralPath $Path) {
+        Remove-Item -LiteralPath $Path -Force -ErrorAction SilentlyContinue
+    }
+}
+
 if (-not (Test-Path $runner)) {
     Write-TaskLog "ERROR runner missing: $runner"
     throw "Waiting queue runner not found: $runner"
 }
 
 try {
+    if (-not (Acquire-TaskLock -Path $lockPath)) {
+        exit 0
+    }
     Set-Location $workspace
     $strictMode = Get-StrictModeEnabled -CliStrict:$StrictCloseReturn
     Update-DailyCloseInputFromEnv
@@ -307,4 +339,6 @@ try {
     Write-TaskLog "ERROR exception: $($_.Exception.Message)"
     Send-CriticalAlert -title "waiting_queue_btc_binance_daily_failed" -detail "$($_.Exception.Message)"
     exit 1
+} finally {
+    Release-TaskLock -Path $lockPath
 }

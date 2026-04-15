@@ -307,6 +307,65 @@ def test_expand_roundtrip_echo():
     assert body.get("api_contract_version") == "1.0.0"
 
 
+def test_hybrid_codec_v0_compress_expand_roundtrip(monkeypatch):
+    monkeypatch.setenv("COMPRESSION_API_USE_HYBRID_CODEC_V0", "1")
+    text = "오늘 시스템이 BTCUSDT 리포트를 연구모드로 검증했다"
+    r0 = client.post("/v1/compress", json={"text": text})
+    assert r0.status_code == 200
+    body0 = r0.json()
+    flags = body0.get("integrity_flags", {})
+    assert flags.get("hybrid_codec_v0_enabled") is True
+    assert flags.get("hybrid_codec_v0_exact_restore_ok") is True
+    assert flags.get("hybrid_codec_v0_checksum_ok") is True
+    payload = flags.get("hybrid_codec_v0_payload")
+    assert isinstance(payload, dict)
+    assert payload.get("schema") == "hybrid_codec_v0_payload_v1"
+
+    r1 = client.post("/v1/expand", json={"payload": {"hybrid_codec_v0_payload": payload}})
+    assert r1.status_code == 200
+    body1 = r1.json()
+    assert body1.get("text") == text
+    assert body1.get("integrity_flags", {}).get("lossless_echo") is True
+
+
+def test_hybrid_codec_v0_expand_accepts_direct_payload(monkeypatch):
+    monkeypatch.setenv("COMPRESSION_API_USE_HYBRID_CODEC_V0", "1")
+    text = "META:emotion=a.2345 그가 2026-04-13 리포트를 정밀하게 생성했다"
+    r0 = client.post("/v1/compress", json={"text": text})
+    assert r0.status_code == 200
+    payload = r0.json().get("integrity_flags", {}).get("hybrid_codec_v0_payload")
+    assert isinstance(payload, dict)
+
+    r1 = client.post("/v1/expand", json={"payload": payload})
+    assert r1.status_code == 200
+    assert r1.json().get("text") == text
+
+
+def test_hybrid_codec_v0_default_on_canary(monkeypatch):
+    monkeypatch.delenv("COMPRESSION_API_USE_HYBRID_CODEC_V0", raising=False)
+    monkeypatch.delenv("COMPRESSION_API_FORCE_DISABLE_HYBRID_CODEC_V0", raising=False)
+    from scripts import compression_token_api_stub as stub
+
+    stub._hybrid_codec_v0_enabled.cache_clear()
+    r = client.post("/v1/compress", json={"text": "canary default on test"})
+    assert r.status_code == 200
+    flags = r.json().get("integrity_flags", {})
+    assert flags.get("hybrid_codec_v0_enabled") is True
+
+
+def test_hybrid_codec_v0_force_disable_overrides_default(monkeypatch):
+    monkeypatch.delenv("COMPRESSION_API_USE_HYBRID_CODEC_V0", raising=False)
+    monkeypatch.setenv("COMPRESSION_API_FORCE_DISABLE_HYBRID_CODEC_V0", "1")
+    from scripts import compression_token_api_stub as stub
+
+    stub._hybrid_codec_v0_enabled.cache_clear()
+    r = client.post("/v1/compress", json={"text": "canary force off test"})
+    assert r.status_code == 200
+    flags = r.json().get("integrity_flags", {})
+    assert flags.get("hybrid_codec_v0_enabled") in (None, False)
+    assert "hybrid_codec_v0_payload" not in flags
+
+
 def test_openapi_compress_examples_parity(tmp_path, monkeypatch):
     meter_path = tmp_path / "openapi_compress_meter.jsonl"
     monkeypatch.setenv("TRACK_A_METERING_LOG_PATH", str(meter_path))

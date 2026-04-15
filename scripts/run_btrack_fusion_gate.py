@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "reports" / "constitution" / "btrack_pilot" / "btrack_fusion_gate_latest.json"
 RISK_LOG = ROOT / "reports" / "constitution" / "btrack_pilot" / "fusion_gate_risk_log.jsonl"
 EVIDENCE_TODO = ROOT / "reports" / "constitution" / "btrack_pilot" / "fusion_gate_evidence_todo_latest.json"
+MEMORY_PALACE_ROUTE_SNAPSHOT = ROOT / "docs" / "final" / "artifacts" / "memory_palace_route_snapshot_latest.json"
 RISK_ORDER = {"stable": 0, "medium": 1, "high_thin": 2, "critical_thin": 3}
 
 
@@ -72,6 +73,12 @@ def main() -> int:
     ap.add_argument("--min-resonance-rate", type=float, default=0.80)
     ap.add_argument("--min-mean-axis-pearson", type=float, default=-0.20)
     ap.add_argument("--min-saving-delta", type=float, default=-0.20)
+    ap.add_argument(
+        "--pre-normalization",
+        choices=("none", "l2_only"),
+        default="none",
+        help="Pre-normalization mode forwarded to run_gematria_4d_gate.py",
+    )
     ap.add_argument("--min-cee-consensus-rate", type=float, default=0.60)
     ap.add_argument("--min-cee-mean-margin", type=float, default=0.0010)
     ap.add_argument("--min-master-atoms", type=int, default=10000)
@@ -90,7 +97,8 @@ def main() -> int:
     )
     ap.add_argument("--risk-log", default=str(RISK_LOG))
     ap.add_argument("--evidence-todo", default=str(EVIDENCE_TODO))
-    ap.add_argument("--thin-margin-threshold", type=float, default=0.01)
+    ap.add_argument("--memory-palace-route-snapshot", default=str(MEMORY_PALACE_ROUTE_SNAPSHOT))
+    ap.add_argument("--thin-margin-threshold", type=float, default=0.001)
     ap.add_argument("--thin-margin-streak-limit", type=int, default=10)
     ap.add_argument(
         "--enforce-thin-margin-streak",
@@ -109,6 +117,9 @@ def main() -> int:
     risk_log_path = Path(args.risk_log)
     if not risk_log_path.is_absolute():
         risk_log_path = ROOT / risk_log_path
+    memory_palace_snapshot_path = Path(args.memory_palace_route_snapshot)
+    if not memory_palace_snapshot_path.is_absolute():
+        memory_palace_snapshot_path = ROOT / memory_palace_snapshot_path
 
     _run(
         [
@@ -120,6 +131,8 @@ def main() -> int:
             str(args.min_mean_axis_pearson),
             "--min-saving-delta",
             str(args.min_saving_delta),
+            "--pre-normalization",
+            args.pre_normalization,
         ]
     )
     _run([py, "scripts/run_deut32_cee_pilot.py"])
@@ -143,6 +156,9 @@ def main() -> int:
     align = _jread(ROOT / "reports" / "constitution" / "btrack_pilot" / "symbol_gematria_alignment_test_nonzero.json")
     uplift = _jread(ROOT / "docs" / "final" / "artifacts" / "MULTILENS_GEMATRIA_4D_UPLIFT_AB_V1.json")
     master_atoms = _jread(ROOT / "reports" / "constitution" / "btrack_pilot" / "original_language_master_atoms_summary_latest.json")
+    memory_palace_snapshot = (
+        _jread(memory_palace_snapshot_path) if memory_palace_snapshot_path.is_file() else {}
+    )
 
     consensus_rate = float(cee_sweep.get("summary", {}).get("consensus_rate", 0.0))
     mean_margin = float(cee_sweep.get("summary", {}).get("mean_lambda_margin", 0.0))
@@ -176,8 +192,10 @@ def main() -> int:
     # Append risk log and compute thin-margin streak.
     risk_log_path.parent.mkdir(parents=True, exist_ok=True)
     current_log = {
+        "schema_version": "fusion_gate_risk_log_v2",
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "decision": None,  # filled later
+        "pre_normalization": args.pre_normalization,
         "cee_consensus_winner": cee_sweep.get("summary", {}).get("consensus_winner"),
         "cee_consensus_rate": consensus_rate,
         "cee_mean_lambda_margin": mean_margin,
@@ -227,11 +245,13 @@ def main() -> int:
     current_log["decision"] = decision
     report = {
         "schema": "btrack_fusion_gate_v1",
+        "schema_version": "btrack_fusion_gate_report_v2",
         "decision": decision,
         "thresholds": {
             "min_resonance_rate": args.min_resonance_rate,
             "min_mean_axis_pearson": args.min_mean_axis_pearson,
             "min_saving_delta": args.min_saving_delta,
+            "pre_normalization": args.pre_normalization,
             "min_cee_consensus_rate": args.min_cee_consensus_rate,
             "min_cee_mean_margin": args.min_cee_mean_margin,
             "min_master_atoms": args.min_master_atoms,
@@ -259,6 +279,21 @@ def main() -> int:
             "master_atoms_unique": master_atoms.get("stats", {}).get("unique_master_atoms"),
             "master_atoms_by_lang": master_atoms.get("stats", {}).get("unique_atoms_by_lang"),
             "master_atoms_lemma_method": master_atoms.get("stats", {}).get("lemma_method"),
+        },
+        "memory_palace_route_snapshot": {
+            "path": str(memory_palace_snapshot_path),
+            "present": bool(memory_palace_snapshot),
+            "domain": memory_palace_snapshot.get("domain"),
+            "route_selected": (memory_palace_snapshot.get("route") or {}).get("selected"),
+            "route_reason": (memory_palace_snapshot.get("route") or {}).get("reason"),
+            "hysteresis_upshift_required_streak": (memory_palace_snapshot.get("hysteresis") or {}).get(
+                "upshift_required_streak"
+            ),
+            "hysteresis_applied": (memory_palace_snapshot.get("hysteresis") or {}).get("applied"),
+            "unresolved_row_rate": (memory_palace_snapshot.get("robustness") or {}).get("unresolved_row_rate"),
+            "ticket_patch_size": (memory_palace_snapshot.get("ticket_patch") or {}).get("patch_size"),
+            "research_only": memory_palace_snapshot.get("research_only"),
+            "promotion_required": memory_palace_snapshot.get("promotion_required"),
         },
         "risk_log_path": str(risk_log_path),
         "evidence_todo_path": str(evidence_todo_path) if evidence_todo_written else None,

@@ -40,6 +40,12 @@ from scripts.core.billing_meter import append_meter_event  # noqa: E402
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
 from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy  # noqa: E402
 from scripts.report_multilens_performance_eval import evaluate_report  # noqa: E402
+from scripts.run_hybrid_codec_v0_spike import (  # noqa: E402
+    decode_packet_dict as hybrid_decode_packet_dict,
+)
+from scripts.run_hybrid_codec_v0_spike import (  # noqa: E402
+    encode_packet_dict as hybrid_encode_packet_dict,
+)
 
 API_CONTRACT_VERSION = "1.0.0"
 
@@ -233,6 +239,34 @@ def _live_eval_min_tokens() -> int:
     return max(0, val)
 
 
+@lru_cache(maxsize=1)
+def _hybrid_codec_v0_enabled() -> bool:
+    force_off = os.environ.get("COMPRESSION_API_FORCE_DISABLE_HYBRID_CODEC_V0", "").strip().lower()
+    if force_off in {"1", "true", "yes", "on"}:
+        return False
+    raw = os.environ.get("COMPRESSION_API_USE_HYBRID_CODEC_V0", "").strip().lower()
+    if raw in {"1", "true", "yes", "on"}:
+        return True
+    if raw in {"0", "false", "no", "off"}:
+        return False
+    # Canary default-on: env unset means enabled.
+    return True
+
+
+def _tracka_profile_label() -> str:
+    lane = os.environ.get("HYBRID_CODEC_TRACKA_DEFAULT_LANE", "").strip().lower()
+    if lane:
+        return f"{lane}_default"
+    return "c3_domain_gated_default"
+
+
+def _tracka_profile_source() -> str:
+    lane = os.environ.get("HYBRID_CODEC_TRACKA_DEFAULT_LANE", "").strip().lower()
+    if lane:
+        return "env_tracka_default_lane"
+    return "default_promoted"
+
+
 def _resolve_tier(request: Request) -> str:
     """public | enterprise — enterprise only if key matches COMPRESSION_API_ENTERPRISE_KEYS."""
     keys = _enterprise_key_list()
@@ -411,6 +445,8 @@ def health() -> dict[str, Any]:
             "enterprise_sla_track": "active",
             "enterprise_keys_configured": keys_on,
         },
+        "tracka_profile": _tracka_profile_label(),
+        "tracka_profile_source": _tracka_profile_source(),
         "kpi_snapshot": {
             "source_relative": "reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json",
             "ts_utc": ts_utc,
@@ -436,7 +472,26 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
         "soft_keep_count": len(route.must_keep_soft_terms),
         "tier": tier,
         "sla_track": "literal" if tier == "public" else "active",
+        "tracka_profile": _tracka_profile_label(),
+        "tracka_profile_source": _tracka_profile_source(),
     }
+    hybrid_payload: dict[str, Any] | None = None
+    if _hybrid_codec_v0_enabled():
+        try:
+            hybrid_payload = hybrid_encode_packet_dict(body.text)
+            restored = hybrid_decode_packet_dict(hybrid_payload)
+            hybrid_saving = 1.0 - (
+                float(hybrid_payload["output_char_len"]) / max(1.0, float(hybrid_payload["input_char_len"]))
+            )
+            flags["hybrid_codec_v0_enabled"] = True
+            flags["hybrid_codec_v0_payload"] = hybrid_payload
+            flags["hybrid_codec_v0_exact_restore_ok"] = restored == body.text
+            flags["hybrid_codec_v0_checksum_ok"] = True
+            flags["hybrid_codec_v0_saving_rate_chars"] = hybrid_saving
+        except Exception as exc:
+            flags["hybrid_codec_v0_enabled"] = True
+            flags["hybrid_codec_v0_failed"] = True
+            flags["hybrid_codec_v0_error_class"] = type(exc).__name__
     live_metrics_cache: tuple[CompressionMetrics | None, float, str | None] | None = None
     bytes_in, token_in = _text_size_tokens(body.text)
     if body.hydration_hints is not None and body.hydration_hints.atom_ids:
@@ -555,6 +610,22 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
 def expand(body: ExpandRequest) -> ExpandResponse:
     payload = body.payload
     text = str(payload.get("original_text") or payload.get("text") or "")
+    try:
+        candidate = payload.get("hybrid_codec_v0_payload")
+        if isinstance(candidate, dict):
+            text = hybrid_decode_packet_dict(candidate)
+        elif str(payload.get("schema") or "") == "hybrid_codec_v0_payload_v1":
+            text = hybrid_decode_packet_dict(payload)
+    except Exception as exc:
+        return ExpandResponse(
+            text=text,
+            integrity_flags={
+                "stub_expand": True,
+                "lossless_echo": False,
+                "hybrid_codec_v0_expand_failed": True,
+                "hybrid_codec_v0_expand_error_class": type(exc).__name__,
+            },
+        )
     return ExpandResponse(
         text=text,
         integrity_flags={"stub_expand": True, "lossless_echo": True},

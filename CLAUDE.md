@@ -5,7 +5,7 @@
 ## 에이전트 동작
 
 - **TITAN**: 루트 `.cursorrules` 최상단 — 자율 기동, **이항 선택([A]/[B]) 강요 금지**, 고위험만 승인 요청.
-- **세션 핸드오프 (선택):** 새 채팅에서 직전 작전 팩트만 이어 붙일 때 `@docs/final/CURRENT_OPS_SNAPSHOT.md`를 첨부한다. 불변 SSOT가 아니며 압축 파이프라인(A/B Track)과 역할을 섞지 않는다. 상세: 루트 `AGENTS.md` 동명 절.
+- **세션 핸드오프 (선택):** 새 채팅에서 직전 작전 팩트만 이어 붙일 때 `@docs/final/CURRENT_OPS_SNAPSHOT.md`를 첨부한다. 불변 SSOT가 아니며 압축 파이프라인(A/B Track)과 역할을 섞지 않는다. **종료 조건·로컬 체크리스트**만 남길 때는 `MISSION_LOG.template.md` → **`MISSION_LOG.md`**(비추적); 스냅샷과 동일 내용 이중 기술 금지. 상세: 루트 `AGENTS.md` 동명 절.
 - **중앙 지휘부 규칙**: `.cursor/rules/sovereign-central-command.mdc` (`alwaysApply`).
 - **코드/추론 “구현 여부”**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 를 호출 가능한 `.py`와 대조한다. **Multi-Lens·TOE 비단정**은 동 문서 §1.1. **Windows OPS Phase 1 체인·리포트·운영/연구 레인**은 §13.1 (`verify_constitution_gates.ps1`, `constitution_gates_v1.json`, `bootstrap_ops_phase1_daily.ps1`, `verify_ops_phase1_operational_readiness.ps1`)·루트 `AGENTS.md`.
 - **12AI vs 코드북**: **12AI**는 Cursor 작업 라우팅용 오케스트레이션 라벨이며, 코드북 도메인·샤드 개수와 **1:1로 묶지 않는다.** (보통 복잡·고위험 작업만 2~4 전문 에이전트로 분산.) 상세: 루트 `AGENTS.md`, `.cursor/skills/auto-12ai-routing/SKILL.md`.

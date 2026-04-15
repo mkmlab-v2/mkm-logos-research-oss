@@ -24,6 +24,12 @@ def main() -> int:
     ap.add_argument("--min-resonance-rate", type=float, default=0.80)
     ap.add_argument("--min-mean-axis-pearson", type=float, default=-0.20)
     ap.add_argument("--min-saving-delta", type=float, default=-0.20)
+    ap.add_argument(
+        "--pre-normalization",
+        choices=("none", "l2_only"),
+        default="none",
+        help="Optional pre-normalization passed to report_symbol_gematria_alignment.py",
+    )
     args = ap.parse_args()
     py = args.python
 
@@ -42,6 +48,8 @@ def main() -> int:
             "120",
             "--resonance-threshold",
             "0.85",
+            "--pre-normalization",
+            args.pre_normalization,
         ]
     )
     _run([py, "scripts/report_gematria_4d_uplift_ab.py"])

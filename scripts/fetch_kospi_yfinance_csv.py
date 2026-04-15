@@ -17,7 +17,13 @@ DEFAULT_OUT = ROOT / "research" / "market_data" / "kospi_daily_external_yf.csv"
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--symbol", default="^KS11", help="Yahoo Finance ticker (default KOSPI index)")
-    ap.add_argument("--period", default="5y", help="yfinance period=…")
+    ap.add_argument("--period", default="5y", help="yfinance period=… (ignored if --start is set)")
+    ap.add_argument(
+        "--start",
+        default="",
+        help="YYYY-MM-DD download start (inclusive). Use with long history, e.g. 1990-01-01 for ~30y+.",
+    )
+    ap.add_argument("--end", default="", help="Optional YYYY-MM-DD end (exclusive upper bound for yfinance).")
     ap.add_argument("--output", "-o", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--dry-run", action="store_true", help="Print resolved paths only; no download")
     ns = ap.parse_args()
@@ -33,7 +39,18 @@ def main() -> int:
         print("requires pandas and yfinance: pip install pandas yfinance", file=sys.stderr)
         raise SystemExit(2) from e
 
-    df = yf.download(ns.symbol, period=ns.period, interval="1d", auto_adjust=False, progress=False)
+    if ns.start.strip():
+        kwargs: dict = {
+            "interval": "1d",
+            "auto_adjust": False,
+            "progress": False,
+        }
+        if ns.end.strip():
+            df = yf.download(ns.symbol, start=ns.start.strip(), end=ns.end.strip(), **kwargs)
+        else:
+            df = yf.download(ns.symbol, start=ns.start.strip(), **kwargs)
+    else:
+        df = yf.download(ns.symbol, period=ns.period, interval="1d", auto_adjust=False, progress=False)
     if df is None or df.empty:
         print(f"no rows for {ns.symbol!r}", file=sys.stderr)
         return 2

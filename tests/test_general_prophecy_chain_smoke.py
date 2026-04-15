@@ -8,6 +8,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 _ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -27,7 +29,7 @@ def test_generate_general_prophecy_dry_run_with_official_seed_merge() -> None:
     )
     assert r.returncode == 0, r.stderr
     assert "ok" in r.stdout
-    assert r.stdout.strip().split()[-1] == "13"
+    assert r.stdout.strip().split()[-1] == "15"
 
 
 def test_generate_general_prophecy_dry_run() -> None:
@@ -40,8 +42,8 @@ def test_generate_general_prophecy_dry_run() -> None:
     )
     assert r.returncode == 0, r.stderr
     assert "ok" in r.stdout
-    # default merge: sample (1) + seed_5 (5) + brier_smoke (1) + macro_h2_2026_pack (5)
-    assert r.stdout.strip().split()[-1] == "12"
+    # default merge: sample (1) + seed_5 (5) + brier_smoke (1) + live_resolved_bootstrap (2) + macro_h2_2026_pack (5)
+    assert r.stdout.strip().split()[-1] == "14"
 
 
 def test_generate_general_prophecy_dry_run_no_default_merge() -> None:
@@ -97,7 +99,7 @@ def test_eval_general_prophecy_brier_on_merged_registry_stdout(tmp_path) -> None
     assert gen.returncode == 0, gen.stderr
     reg = json.loads(gen.stdout)
     assert reg.get("schema") == "general_prophecy_registry_v1"
-    assert len(reg.get("questions") or []) == 12
+    assert len(reg.get("questions") or []) == 14
 
     merged_path = tmp_path / "merged_registry.json"
     merged_path.write_text(gen.stdout, encoding="utf-8")
@@ -117,8 +119,9 @@ def test_eval_general_prophecy_brier_on_merged_registry_stdout(tmp_path) -> None
     assert r.returncode == 0, r.stderr
     out = json.loads(r.stdout)
     assert out.get("schema") == "general_prophecy_brier_eval_v1"
-    assert out.get("metrics", {}).get("n_evaluated") == 1
-    assert out.get("metrics", {}).get("mean_brier_score") == 0.09
+    # brier_smoke (1) + live_resolved_bootstrap (2) contribute resolved binary rows
+    assert out.get("metrics", {}).get("n_evaluated") == 3
+    assert out.get("metrics", {}).get("mean_brier_score") == pytest.approx(0.086133, abs=1e-5)
     bt = out.get("metrics", {}).get("by_prophecy_track") or {}
-    assert bt.get("general", {}).get("n_evaluated") == 1
-    assert bt.get("general", {}).get("mean_brier_score") == 0.09
+    assert bt.get("general", {}).get("n_evaluated") == 3
+    assert bt.get("general", {}).get("mean_brier_score") == pytest.approx(0.086133, abs=1e-5)

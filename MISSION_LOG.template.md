@@ -27,6 +27,21 @@ PowerShell 예: `Copy-Item -Path MISSION_LOG.template.md -Destination MISSION_LO
 - [ ] **Exit:** (예) `py -m pytest tests/test_example.py -q` → exit 0
 - [ ] **Evidence:** (예) 로그 / `docs/final/artifacts/...`
 
+## Autonomous evolution loop (draft v1)
+
+**정의**: [측정 → 제안 → 검증 → 결정]의 **유한** 루프. 무한 최적화·무승인 커밋·이론 상수 임의 변경 **금지**.
+
+| Step | 내용 | 레포 앵커 |
+|------|------|-----------|
+| 1 Snapshot | 벤치 연동 KPI 스냅샷 | `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` 등 |
+| 2 Proposal | 가설·패치는 **allowlist + 인간 게이트** 없으면 스킵 | 초안: `scripts/run_autonomous_evolution_loop_draft_v1.py` (`--dry-run` 기본) |
+| 3 Validation | `pytest` / `verify_p0` 등 **한 줄 gate**, 타임아웃 필수 | `--gate-profile minimal` (권장) 또는 `--gate-cmd "..."`, `--gate-timeout` |
+| 4 Decision | 산출 JSON만; **고착(Commit)은 지휘관 또는 CI 정책** | `docs/final/artifacts/autonomous_evolution_loop_draft_v1_latest.json` |
+
+**한 줄 실행 (권장 — 스냅샷 + 소형 게이트):** `py scripts/run_autonomous_evolution_loop_draft_v1.py --gate-profile minimal`  
+**한 줄 실행 (게이트 생략):** `py scripts/run_autonomous_evolution_loop_draft_v1.py --gate-profile none`  
+**회귀:** `py -m pytest tests/test_autonomous_evolution_loop_draft_smoke.py -q` (파일 내 `minimal` 게이트 테스트 포함; `minimal` 프로파일 자체는 AE 단일 노드 + shadow만 호출해 재귀 방지)
+
 ## Completed (선택 아카이브)
 
 - (완료된 행은 여기로 옮기거나 날짜만 남김)

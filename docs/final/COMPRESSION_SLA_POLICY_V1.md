@@ -4,6 +4,32 @@
 **Aligned with:** `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md`, `docs/final/artifacts/compression_alarm_thresholds_v1.json`  
 **Not:** a guarantee of trading edge, legal advice, or literal replication of all payloads without separate audits.
 
+### Operating summary — use-case mapping (고정)
+
+**관심사 분리:** 토큰 경제·벤치용 **압축/복원 파이프라인**과 **시그널 생성·실매매(`dual_regime` 등)** 는 다른 축이다. 벤치 산출을 본선 트레이딩 근거로 섞지 않는다 — `MKM_LESSONS_LEARNED_V1.md`의 **FAIL-COMP-004** (연구/벤치 ↔ 상용 레일 무단 합선 금지) 및 Fact-Lock과 동일 선상. **가짜 인과(“압축 기술이 수익률을 올렸다”)** 홍보는 정책 위반에 가깝다.
+
+| Profile | `run_ultra_compression_default.py` | 최적화 축 | 전형적 용도 (문서상 역할) |
+|---------|-------------------------------------|-----------|-------------------------|
+| **Track A — universal** | 기본 / `--mode universal` | 벤치·옵스·**`active_kpi`·웹훅 알람** | API/로깅·기본 재평가 |
+| **Track B — literal** | `--mode literal` | 복원·감사 가능성(높은 Jaccard, 낮은 절감) | 도메인 리터럴·보수적 페이로드 |
+| **Track B — ultra-literal** | `--mode ultra-literal` | 극복원·연구·정밀 밴드 (비용·시간↑) | **연구 레인**; 컴플라이언스/법적 인감 **아님** (§3·본 문서 경계) |
+
+**라우팅:** 애플리케이션이 압축을 호출할 때는 **유스케이스별로 `mode`를 명시**하고(하드코딩 또는 설정 테이블), 트레이딩 모듈이 “수익 최적 조합”으로 프로파일을 바꾸지 않는다. 주문/감사 로그에 어떤 프로파일을 쓸지는 **별도 요구·지연·보관 정책**에 따르며, `ultra-literal`을 전 로그에 일괄 강제하는 것이 항상 타당하다고 단정하지 않는다.
+
+#### Call-site audit (강제 라우팅 후보 — 레포 스캔 기준)
+
+**결론:** `projects/bitcoin-trading/src/**` 전략·백테스트·주문 경로에서 **`evaluate_report` / `POST /v1/compress` HTTP 호출은 발견되지 않음.** 압축은 **워크스페이스 `scripts/` 벤치·스텁·자동화**에 집중. OPS는 스텁 **생존 확인만** `GET http://127.0.0.1:8010/health` (`ensure_compression_stub.ps1`, `build_ops_health_overview.ps1`).
+
+| 진입점 종류 | 경로 | 비고 |
+|-------------|------|------|
+| 배치 벤치·KPI 재생성 | `scripts/run_ultra_compression_default.py` (`--mode`) | 단일 CLI로 Track 선택; **강제 라우팅의 기준선** |
+| 자동화 체인 | `scripts/run_compression_automation_chain.ps1` | universal → (옵션) literal / ultra-literal 순 실행 |
+| HTTP 스텁 v1 | `scripts/compression_token_api_stub.py` → `POST /v1/compress` | 티어·`hydrate_live_eval`·`runner_hint`(ultra_literal 등); **향후 앱이 붙을 때 가장 유력한 단일 게이트** |
+| HTTP 스텁 v2 | `scripts/compression_token_api_v2_stub.py` | Trust Packet·`evaluate_report` 패밀리 |
+| 스트레스·반증 | `scripts/run_compression_cross_domain_falsification_v1.py`, `scripts/run_cross_domain_compression_stress_v1.py` | 벤치용; 본선과 합선 금지(FAIL-COMP-004) |
+
+**향후 코드 강제 권장:** 트레이딩/주문 모듈에 압축을 붙일 경우 **스텁의 요청 스키마**에 `sla_track` 또는 명시적 `runner_hint`를 필수화하고, `compression_token_api_stub.compress` 한 함수에서만 허용 프로파일을 검증한다(분산 하드코딩 지양).
+
 ## 1. Purpose
 
 Separate **service expectations** for (A) default multi-lens bench / ops compression and (B) **domain-literal** payloads where token economy is secondary to reconstructive fidelity and auditability.

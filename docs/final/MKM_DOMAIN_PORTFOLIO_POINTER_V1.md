@@ -34,6 +34,7 @@
 
 - **본 파일**(포인터 표) + 이미 있는 **작전지휘부·Fusion Hub·no1kmedi 실행보고** — 질의 시 “레포 SSOT 열”을 인용하라고 프롬프트에 한 줄 넣는다.
 - 노트 간 **숫자·포트·도메인 역할이 다르면** → **이 파일과 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`를 우선**한다고 명시.
+- 사업 우선순위 질의(무엇을 먼저 팔지)는 **`docs/final/P0_COMMERCIALIZATION_TRACKER.md`의 GTM 업데이트 절**을 우선 참조하고, 도메인 문서는 역할/배포 격벽 판단에만 사용한다.
 
 **개정:** 도메인 추가·PM2 이름 확정 시 표만 갱신한다.
 

@@ -42,10 +42,15 @@ Set-Location -LiteralPath $workspaceRoot
     'tests/test_gematria_myeongri_spike_smoke.py' `
     'tests/test_myeongri_fusion_scripts_smoke.py' `
     'tests/test_spike_4grid_myeongri_compression_v1.py' `
+    'tests/test_spike_kospi_structural_entropy_v1.py' `
+    'tests/test_spike_kospi_structural_entropy_compare_v1.py' `
     'tests/test_track_source_guard.py' `
     'tests/test_sovereign_jsonl.py' `
     'tests/test_spike_sovereign_token_saving_v1.py' `
     'tests/test_sovereign_efficiency.py' `
+    'tests/test_track_a_shadow_corpus_eval_smoke.py' `
+    'tests/test_track_a_metering_chain_smoke.py' `
+    'tests/test_autonomous_evolution_loop_draft_smoke.py' `
     'tests/test_hypothesis_insight_batch_v1_sample.py' `
     'tests/test_eval_prophecy_hit_rate_v1.py' `
     'tests/test_generate_btrack_hypothesis_prophecy_v1.py' `

@@ -4,6 +4,8 @@
 !.cursor/mcp.json
 
 # 워크스페이스 루트 - 민감 정보·로컬 설정
+# Ephemeral mission checklist (tracked template: MISSION_LOG.template.md)
+/MISSION_LOG.md
 .env
 .env.backup*
 .env.local
@@ -104,6 +106,10 @@ docs/final/artifacts/prophecy_micro_codebook_poc_latest.json
 reports/constitution/master_codebook_training_smoke_bundle_*
 # Shard evolve sandbox runs (regenerable; objective + evolve_log under reports/shard_evolve/)
 reports/shard_evolve/
+# Fused SOP single-runner lock (runtime; run_fused_quant_pixel_sop.ps1)
+reports/fused_quant_pixel_sop_runner.lock
+# Track A daily commercialization chain append-only log (local/scheduler)
+reports/track_a_commercialization_daily_log.jsonl
 # mkm-life: local funnel pipeline outputs (regenerable; keep scripts + SSOT pair tracked)
 projects/mkm-life/reports/one_question_funnel_*
 !projects/mkm-life/reports/one_question_funnel_daily_targets_latest.json
@@ -220,3 +226,50 @@ projects/bitcoin-trading/ops/windows-rehearsal/.showroom_staging/
 !tools/myeongni/**
 !tools/core/
 !tools/core/**
+
+# Local backup shards and bytecode noise (non-SSOT, regenerable)
+codebook/shards/*.pre_log_ablation_*.bak
+tools/**/__pycache__/
+
+# Hybrid codec experiment branch artifacts (derived sweep lanes; SSOT latest remains tracked)
+docs/final/artifacts/hybrid_codec_v0_canary_bench_c*_latest.json
+docs/final/artifacts/hybrid_codec_v0_two_stage_gate_c*_latest.json
+docs/final/artifacts/memory_palace_translator_robustness_c*_latest.json
+
+# Regenerable local sweeps / spikes under docs/final/artifacts (no committed SSOT in these prefixes; git add -f to promote)
+docs/final/artifacts/_tmp_*
+docs/final/artifacts/4d_to_ohaeng_*
+docs/final/artifacts/hybrid_codec_v0_*
+docs/final/artifacts/hybrid_codec_domain_*
+docs/final/artifacts/hybrid_codec_external_*
+docs/final/artifacts/hybrid_codec_tracka_*
+docs/final/artifacts/memory_palace_route_*
+docs/final/artifacts/memory_palace_translator_*
+docs/final/artifacts/report_log_ablation_*
+docs/final/artifacts/integrity_cost_v4_*
+docs/final/artifacts/trackb_meta_control_*
+docs/final/artifacts/log_ablation_chain_*
+docs/final/artifacts/log_metabolism_aggregate_*
+docs/final/artifacts/log_metabolism_from_*
+docs/final/artifacts/biblical_external_dualgate_*
+docs/final/artifacts/myeongri_sasang_pair_*
+docs/final/artifacts/trackb_semantic_eval_*
+docs/final/artifacts/cursor_context_router_*
+docs/final/artifacts/kospi_biblical_only_*
+docs/final/artifacts/biblical_external_reality_*
+docs/final/artifacts/multiline_monthly_commercial_*
+docs/final/artifacts/manseryeok_engine_boundary_*
+docs/final/artifacts/multiline_prophecy_lane_*
+docs/final/artifacts/kospi_daily_biblical_*
+docs/final/artifacts/kospi_external_dualgate_*
+docs/final/artifacts/manse_postella_debug_*
+docs/final/artifacts/trackb_quaternion_top_*
+docs/final/artifacts/multiline_lane_gates_*
+docs/final/artifacts/track_a_shadow_*
+docs/final/artifacts/cursor_prompt_payload_*
+docs/final/artifacts/domain_operator_mapping_*
+docs/final/artifacts/kospi_myeongri_advanced_*
+docs/final/artifacts/manse_saju_stage_*
+docs/final/artifacts/manseryeok_month_anchor_*
+docs/final/artifacts/memory_palace_promotion_*
+docs/final/artifacts/memory_palace_tier_*

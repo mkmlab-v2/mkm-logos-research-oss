@@ -1,6 +1,6 @@
 # NotebookLM 소스 매니페스트 (A/B 이원)
 
-**작성일**: 2026-03-29 · **갱신**: 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · **LOG_METABOLISM 전용** `MKM_LOG_METABOLISM_REFINERY_V1` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
+**작성일**: 2026-03-29 · **갱신**: 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · **LOG_METABOLISM 전용** `MKM_LOG_METABOLISM_REFINERY_V1` · **CORE↔Refinery 격벽 포인터** `NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
 **정의**: **A = Fact-Lock(팩트 고정)**, **B = Creative-Lock(통찰·가설)**. B는 본선 OOF·실매매 트리거와 A를 혼선 없이 적용.
 
 **Cursor 3.0 (2026-04)**: NotebookLM과 동일하게 **브리핑·질의·소스 아카이브** 레이어다. **에이전트 병렬(Agents Window)·Design Mode**는 제품 기능이며, **압축 엔진·헌법·실매매 SSOT는 여전히 레포의 `.py`/JSON**이다(`AGENTS.md`, `COMPRESSION_SLA_POLICY_V1.md`).
@@ -42,6 +42,7 @@
   - `aba1f8b1-be62-4367-ac7f-b1a997bb77d4` — https://notebooklm.google.com/notebook/aba1f8b1-be62-4367-ac7f-b1a997bb77d4 — 제목: **MKM_CORE_INTELLIGENCE_V1** (MCP `notebook_create` + `source_add`; `.json` 단일 파일 업로드는 도구 제한 시 텍스트 요약·포인터로 대체)
 - **LOG_METABOLISM JSONL 정제 전용** — 원시 로그·엄격 프롬프트 산출 JSONL만 적재; `discover_nl_metabolism_source.py`가 `notebooklm_pull_manifest_v1.json`의 `discover_priority_notebook_ids`로 **최우선 스캔**.  
   - `e457f7ae-24b6-49fa-8f3f-1881e5ae027a` — https://notebooklm.google.com/notebook/e457f7ae-24b6-49fa-8f3f-1881e5ae027a — 제목: **MKM_LOG_METABOLISM_REFINERY_V1**
+- **CORE ↔ Refinery 교차 질의 보강 (포인터 1파일)** — `docs/final/NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md` 를 **MKM_CORE_INTELLIGENCE_V1** 노트에만 소스 추가 권장(Refinery 노트는 동 문서·CONSTITUTION 이미 보유로 중복 최소화). MCP `cross_notebook_query` 시 CORE 쪽이 LOG_METABOLISM 격벽을 근거로 답하도록 한다.
 - **보조 노트북 (지휘관 지정 · B 궤적 / 브리핑·역사 소스)** — 위 메인 앵커를 **대체하지 않음**. 구현·게이트 팩트는 `CONSTITUTION`·`artifacts`·`.py`만.  
   - `978ab6ca-d069-4a78-8916-30c7844c4fa6` — https://notebooklm.google.com/notebook/978ab6ca-d069-4a78-8916-30c7844c4fa6  
   - `d193d8d4-5678-4cc7-8eb6-7046a9a3b16d` — https://notebooklm.google.com/notebook/d193d8d4-5678-4cc7-8eb6-7046a9a3b16d  
@@ -59,6 +60,10 @@
 | P0 | `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` | 압축-해석 파이프라인 Fact-Lock SSOT |
 | P1 | `docs/final/COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1.md` | `evaluate_report`·4D 브리지·스윕 CLI 관계(벤치 혼동 방지); 수치는 artifacts 우선 |
 | P1 | `docs/final/MKM_LESSONS_LEARNED_V1.md` | 반복 NO_GO 교훈 인덱스(비-SSOT); 구현 팩트는 CONSTITUTION·artifacts |
+| P1 | `docs/final/NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md` | NotebookLM **MKM_CORE_INTELLIGENCE_V1** 전용: LOG_METABOLISM·압축 축 격벽 경로 포인터; 구현 SSOT는 CONSTITUTION |
+| P1 | `docs/final/INTERNAL_COMPRESSION_MAX_LANE_FOUNDATION_V1.md` | 내부 전용 압축/복원 개발 원점(정경 원어 코어 vs 번역기 레일·조건부 압축·비합선 원칙) |
+| P1 | `docs/final/artifacts/MANSE_SAJU_STAGE_LAW_CONTRACT_V0.json` | 만세력·사주 단계 법칙 수학화 계약(v0, 연구 전용·검증 통과분만 freeze) |
+| P1 | `docs/final/artifacts/manse_saju_stage_law_spike_latest.json` | 만세력·사주 단계 예측 스파이크 산출(v0, research_only) |
 | P1 | `docs/final/COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1.md` | 압축·복원 축 연대기·읽기 순서·`H:\workspace` 병행 근거(비-Git); 수치·GO는 artifacts·스크립트 우선 |
 | P1 | `docs/final/MKM_CORE_THEORY_V1.md` | L0/L1/L2 팩트체크에서 **[FACT]만** 추린 압축·복원·예언 축 번들; CONSTITUTION·artifacts 우선 |
 | P0 | `docs/final/COMPRESSION_SLA_POLICY_V1.md` | 투트랙 압축 SLA(범용·리터럴)·산출·헬스·웹훅 범위; NotebookLM이 이 수치를 대체하지 않음 |

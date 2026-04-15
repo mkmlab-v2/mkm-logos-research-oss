@@ -27,6 +27,33 @@ function Assert-ExitCode([string]$stepName) {
     }
 }
 
+function Wait-FusedSopExclusiveLock {
+    param(
+        [string]$LockPath,
+        [TimeSpan]$Timeout
+    )
+    $deadline = [DateTime]::UtcNow.Add($Timeout)
+    while ([DateTime]::UtcNow -lt $deadline) {
+        try {
+            return [System.IO.File]::Open(
+                $LockPath,
+                [System.IO.FileMode]::OpenOrCreate,
+                [System.IO.FileAccess]::ReadWrite,
+                [System.IO.FileShare]::None)
+        } catch {
+            Start-Sleep -Seconds 3
+        }
+    }
+    throw "Timed out acquiring exclusive lock for Fused SOP (another runner still holding $LockPath)."
+}
+
+$reportsDir = Join-Path $workspace "reports"
+if (-not (Test-Path -LiteralPath $reportsDir)) {
+    New-Item -ItemType Directory -Path $reportsDir -Force | Out-Null
+}
+$runnerLockPath = Join-Path $reportsDir "fused_quant_pixel_sop_runner.lock"
+$lockFs = Wait-FusedSopExclusiveLock -LockPath $runnerLockPath -Timeout ([TimeSpan]::FromMinutes(120))
+try {
 Set-Location $workspace
 Write-SopLog "Fused SOP start mode=$Phase1Mode phase2=$RunPhase2 decision=$NightWatchmanDecision confirmLive=$ConfirmLiveAlert"
 
@@ -115,3 +142,8 @@ if ($RunPhase2) {
 }
 
 Write-SopLog "Fused SOP completed successfully."
+} finally {
+    if ($null -ne $lockFs) {
+        $lockFs.Dispose()
+    }
+}

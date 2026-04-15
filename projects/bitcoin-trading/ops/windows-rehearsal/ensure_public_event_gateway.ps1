@@ -89,6 +89,35 @@ function Stop-GatewayProcesses {
     }
 }
 
+function Stop-PortOwnerIfGateway([int]$targetPort) {
+    try {
+        $listeners = @(Get-NetTCPConnection -LocalPort $targetPort -State Listen -ErrorAction SilentlyContinue)
+    } catch {
+        $listeners = @()
+    }
+    if ($listeners.Count -eq 0) {
+        return $false
+    }
+    foreach ($row in $listeners) {
+        $pid = [int]$row.OwningProcess
+        try {
+            $proc = Get-CimInstance Win32_Process -Filter ("ProcessId = {0}" -f $pid)
+        } catch {
+            $proc = $null
+        }
+        if ($proc -and $proc.CommandLine -and $proc.CommandLine -match 'public_event_gateway\.py') {
+            try {
+                Stop-Process -Id $pid -Force -ErrorAction SilentlyContinue
+                Write-Log ("Killed stale gateway port owner PID={0} on port {1}" -f $pid, $targetPort)
+                return $true
+            } catch {
+                # ignore
+            }
+        }
+    }
+    return $false
+}
+
 function Test-GatewayPortListening([int]$targetPort) {
     try {
         $listeners = Get-NetTCPConnection -LocalPort $targetPort -State Listen -ErrorAction SilentlyContinue
@@ -174,6 +203,16 @@ try {
         Start-GatewayProcess
     }
     if (-not (Wait-GatewayHealthy -targetPort $Port -retries 10 -sleepSeconds 1)) {
+        $killedPortOwner = Stop-PortOwnerIfGateway -targetPort $Port
+        if ($killedPortOwner) {
+            Write-Log "Retrying gateway bootstrap after conditional port-owner cleanup."
+            Start-Sleep -Seconds 1
+            Start-GatewayProcess
+            if (Wait-GatewayHealthy -targetPort $Port -retries 8 -sleepSeconds 1) {
+                Write-Log "Gateway healthy after conditional port-owner cleanup (port=$Port)"
+                exit 0
+            }
+        }
         $postRetryProcs = @(Get-GatewayProcesses)
         if ($postRetryProcs.Count -gt 0 -and -not $Strict) {
             Write-Log "Gateway health probe failed but process exists; proceeding in degraded mode."

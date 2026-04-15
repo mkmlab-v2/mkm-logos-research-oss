@@ -159,6 +159,7 @@ $SourceFiles = @(
     "docs\final\corr_report_001_left_lens.json",
     "docs\final\SWARM_SENTIMENT_METRIC_NOTEBOOKLM_BUNDLE_2026-04-04.md",
     "docs\final\NOTEBOOKLM_MKMLIFE_NEWS_QUESTION_STARTER_BUNDLE_2026-04-12.md",
+    "docs\final\NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md",
     "docs\final\artifacts\news_question_starter_sample_v1.json"
 )
 

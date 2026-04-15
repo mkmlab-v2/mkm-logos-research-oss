@@ -17,7 +17,9 @@ param(
     [string]$SecondaryCloseReturnPct = "",
     [string]$SecondaryPredictedBand = "DOWN_STRONG",
     [string]$SecondaryHitThresholdPct = "",
-    [string]$SecondaryFailThresholdPct = ""
+    [string]$SecondaryFailThresholdPct = "",
+    [switch]$SkipKospiSasangDynamicsVerify,
+    [switch]$SkipBiblicalExternalRealityLockedProfile
 )
 
 $ErrorActionPreference = "Stop"
@@ -37,6 +39,9 @@ $promotionGatePath = "$workspace\docs\final\artifacts\entry16_promotion_gate.jso
 $decisionLockPath = "$workspace\docs\final\artifacts\entry16_manual_promotion_decision_lock_latest.json"
 $highReliabilityGatePath = "$workspace\docs\final\artifacts\high_reliability_mode_gate_latest.json"
 $monthlyProphecyPath = "$workspace\docs\final\artifacts\prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
+$biblicalExternalDualgateStabilityPath = "$workspace\docs\final\artifacts\biblical_external_dualgate_stability_v1_latest.json"
+$biblicalExternalRealityStatus = "skipped"
+$biblicalFixedCommercialOpsRelaxed = $null
 $runtimeRiskProfilePath = "$workspace\projects\bitcoin-trading\memory\v2\risk\risk_profile_fact_safe_latest.json"
 $riskProfileSourceName = [string]$env:RISK_PROFILE_SOURCE_NAME
 $riskProfileModeName = [string]$env:RISK_PROFILE_MODE_NAME
@@ -121,6 +126,10 @@ if ($env:FACT_SAFE_HIGH_SAMPLE_RUNS) {
 $skipNetSourceFallbackAutoHoldEffective = $SkipNetSourceFallbackAutoHold
 if ($env:FACT_SAFE_SKIP_NET_SOURCE_FALLBACK_AUTO_HOLD) {
     $skipNetSourceFallbackAutoHoldEffective = ([string]$env:FACT_SAFE_SKIP_NET_SOURCE_FALLBACK_AUTO_HOLD).ToLower() -in @("1", "true", "yes")
+}
+$skipBiblicalExternalRealityEffective = $SkipBiblicalExternalRealityLockedProfile
+if ($env:FACT_SAFE_SKIP_BIBLICAL_EXTERNAL_REALITY_LOCKED) {
+    $skipBiblicalExternalRealityEffective = ([string]$env:FACT_SAFE_SKIP_BIBLICAL_EXTERNAL_REALITY_LOCKED).ToLower() -in @("1", "true", "yes")
 }
 $checkedAtObj = [DateTimeOffset]::UtcNow
 $checkedAt = $checkedAtObj.ToString("o")
@@ -236,6 +245,27 @@ if ($LASTEXITCODE -ne 0) {
     throw "2026 monthly KOSPI/BTC prophecy generation failed with exit code $LASTEXITCODE"
 }
 
+if (-not $skipBiblicalExternalRealityEffective) {
+    Write-Host "[waiting-queue-check] Biblical external reality locked profile + dual-gate stability (staged-search defaults when present)..."
+    & "$workspace\scripts\Run-BiblicalExternalRealityLockedProfile.ps1" -UseStagedSearchDefaults
+    if ($LASTEXITCODE -ne 0) {
+        throw "Run-BiblicalExternalRealityLockedProfile.ps1 failed with exit code $LASTEXITCODE"
+    }
+    $biblicalExternalRealityStatus = "pass"
+    if (Test-Path -LiteralPath $biblicalExternalDualgateStabilityPath) {
+        try {
+            $stabDoc = Get-Content -LiteralPath $biblicalExternalDualgateStabilityPath -Raw -Encoding utf8 | ConvertFrom-Json
+            if ($null -ne $stabDoc.aggregate.fixed_commercial_ops_relaxed) {
+                $biblicalFixedCommercialOpsRelaxed = [bool]$stabDoc.aggregate.fixed_commercial_ops_relaxed
+            }
+        } catch {
+            $biblicalFixedCommercialOpsRelaxed = $null
+        }
+    }
+} else {
+    Write-Host "[waiting-queue-check] Skipping biblical external reality locked profile (flag or FACT_SAFE_SKIP_BIBLICAL_EXTERNAL_REALITY_LOCKED)."
+}
+
 if (-not $SkipGeneralProphecyChain) {
     Write-Host "[waiting-queue-check] General prophecy B-rail chain (registry validate, brief, Brier eval, LoRA JSONL export; no external APIs)..."
     py scripts/generate_general_prophecy_v1.py
@@ -253,6 +283,88 @@ if (-not $SkipGeneralProphecyChain) {
     py scripts/export_general_prophecy_to_jsonl.py
     if ($LASTEXITCODE -ne 0) {
         throw "export_general_prophecy_to_jsonl failed with exit code $LASTEXITCODE"
+    }
+
+    Write-Host "[waiting-queue-check] Multiline prophecy delegated bundle (live + shadow bootstrap)..."
+    if (Test-Path -LiteralPath "$workspace\scripts\run_multiline_prophecy_delegated_bundle_v0.py") {
+        py scripts/run_multiline_prophecy_delegated_bundle_v0.py
+        if ($LASTEXITCODE -ne 0) {
+            throw "run_multiline_prophecy_delegated_bundle_v0 failed with exit code $LASTEXITCODE"
+        }
+        if (Test-Path -LiteralPath "$workspace\scripts\run_multiline_prophecy_policy_gate_v0.py") {
+            py scripts/run_multiline_prophecy_policy_gate_v0.py
+            if ($LASTEXITCODE -ne 0) {
+                throw "run_multiline_prophecy_policy_gate_v0 failed with exit code $LASTEXITCODE"
+            }
+            if (Test-Path -LiteralPath "$workspace\scripts\report_multiline_prophecy_weight_monitor_v0.py") {
+                py scripts/report_multiline_prophecy_weight_monitor_v0.py
+                if ($LASTEXITCODE -ne 0) {
+                    throw "report_multiline_prophecy_weight_monitor_v0 failed with exit code $LASTEXITCODE"
+                }
+            } else {
+                Add-SoftFailNote "report_multiline_prophecy_weight_monitor_v0.py missing; skipped"
+            }
+            if (Test-Path -LiteralPath "$workspace\scripts\run_multiline_prophecy_utility_validation_v1.py") {
+                py scripts/run_multiline_prophecy_utility_validation_v1.py
+                if ($LASTEXITCODE -ne 0) {
+                    throw "run_multiline_prophecy_utility_validation_v1 failed with exit code $LASTEXITCODE"
+                }
+            } else {
+                Add-SoftFailNote "run_multiline_prophecy_utility_validation_v1.py missing; skipped"
+            }
+            if (Test-Path -LiteralPath "$workspace\scripts\run_multiline_prophecy_model_selection_v1.py") {
+                py scripts/run_multiline_prophecy_model_selection_v1.py
+                if ($LASTEXITCODE -ne 0) {
+                    throw "run_multiline_prophecy_model_selection_v1 failed with exit code $LASTEXITCODE"
+                }
+            } else {
+                Add-SoftFailNote "run_multiline_prophecy_model_selection_v1.py missing; skipped"
+            }
+            if (Test-Path -LiteralPath "$workspace\scripts\run_manseryeok_caller_preprocess_crosssuite_v2.py") {
+                py scripts/run_manseryeok_caller_preprocess_crosssuite_v2.py
+                if ($LASTEXITCODE -ne 0) {
+                    throw "run_manseryeok_caller_preprocess_crosssuite_v2 failed with exit code $LASTEXITCODE"
+                }
+            } else {
+                Add-SoftFailNote "run_manseryeok_caller_preprocess_crosssuite_v2.py missing; skipped"
+            }
+            if (Test-Path -LiteralPath "$workspace\scripts\run_manseryeok_integrity_gate_v1.py") {
+                if (Test-Path -LiteralPath "$workspace\scripts\run_manseryeok_boundary_alignment_policy_check_v1.py") {
+                    py scripts/run_manseryeok_boundary_alignment_policy_check_v1.py
+                    if ($LASTEXITCODE -ne 0) {
+                        throw "run_manseryeok_boundary_alignment_policy_check_v1 failed with exit code $LASTEXITCODE"
+                    }
+                    if (Test-Path -LiteralPath "$workspace\tests\fixtures\manseryeok_calculation_profile_v1.zi23.json") {
+                        py scripts/run_manseryeok_boundary_alignment_policy_check_v1.py --profile tests/fixtures/manseryeok_calculation_profile_v1.zi23.json --out docs/final/artifacts/manseryeok_boundary_alignment_policy_check_v1_zi23_latest.json
+                        if ($LASTEXITCODE -ne 0) {
+                            throw "run_manseryeok_boundary_alignment_policy_check_v1 (zi23) failed with exit code $LASTEXITCODE"
+                        }
+                        if (Test-Path -LiteralPath "$workspace\scripts\run_manseryeok_zi23_readiness_gate_v1.py") {
+                            py scripts/run_manseryeok_zi23_readiness_gate_v1.py
+                            if ($LASTEXITCODE -ne 0) {
+                                throw "run_manseryeok_zi23_readiness_gate_v1 failed with exit code $LASTEXITCODE"
+                            }
+                        } else {
+                            Add-SoftFailNote "run_manseryeok_zi23_readiness_gate_v1.py missing; zi_23 readiness gate skipped"
+                        }
+                    } else {
+                        Add-SoftFailNote "manseryeok_calculation_profile_v1.zi23.json missing; zi_23 policy check skipped"
+                    }
+                } else {
+                    Add-SoftFailNote "run_manseryeok_boundary_alignment_policy_check_v1.py missing; skipped"
+                }
+                py scripts/run_manseryeok_integrity_gate_v1.py
+                if ($LASTEXITCODE -ne 0) {
+                    throw "run_manseryeok_integrity_gate_v1 failed with exit code $LASTEXITCODE"
+                }
+            } else {
+                Add-SoftFailNote "run_manseryeok_integrity_gate_v1.py missing; skipped"
+            }
+        } else {
+            Add-SoftFailNote "run_multiline_prophecy_policy_gate_v0.py missing; skipped"
+        }
+    } else {
+        Add-SoftFailNote "run_multiline_prophecy_delegated_bundle_v0.py missing; skipped"
     }
 }
 
@@ -287,6 +399,21 @@ if ((Test-Path -LiteralPath $kospiCsv) -and (Test-Path -LiteralPath $hypoJson)) 
     }
 } else {
     Write-Host "[waiting-queue-check] WARN: skipping B-Track hit-rate chain (need kospi CSV + hypothesis JSON)." -ForegroundColor Yellow
+}
+
+if (-not $SkipKospiSasangDynamicsVerify) {
+    $kospiSasangVerifyPy = Join-Path $workspace "scripts\verify_kospi_sasang_dynamics_holdout_v1.py"
+    if ((Test-Path -LiteralPath $kospiCsv) -and (Test-Path -LiteralPath $kospiSasangVerifyPy)) {
+        Write-Host "[waiting-queue-check] KOSPI sasang dynamics holdout verify (fast, observational)..."
+        py scripts/verify_kospi_sasang_dynamics_holdout_v1.py --fast --mode holdout
+        if ($LASTEXITCODE -ne 0) {
+            throw "verify_kospi_sasang_dynamics_holdout_v1.py failed with exit code $LASTEXITCODE"
+        }
+    } else {
+        Write-Host "[waiting-queue-check] WARN: skipping KOSPI sasang dynamics verify (need kospi CSV + verify script)." -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "[waiting-queue-check] SkipKospiSasangDynamicsVerify: sasang dynamics verify omitted." -ForegroundColor DarkGray
 }
 
 Write-Host "[waiting-queue-check] Syncing trinity risk governor to runtime risk_profile..."
@@ -899,6 +1026,9 @@ $logRow = @{
     k_shield_metadata_guard = $kShieldMetadataGuard
     k_shield_metadata_reason = $kShieldMetadataReason
     monthly_prophecy_path = $monthlyProphecyPath
+    biblical_external_reality_locked_profile = $biblicalExternalRealityStatus
+    biblical_external_dualgate_stability_path = $biblicalExternalDualgateStabilityPath
+    biblical_fixed_commercial_ops_relaxed = $biblicalFixedCommercialOpsRelaxed
     runtime_risk_profile_path = $runtimeRiskProfilePath
     next_monthly_due_date = $nextMonthlyDue
     horizon_t30_date = $horizonT30

@@ -3,7 +3,8 @@ param(
     [switch]$SkipFusionStatusCheck,
     [switch]$Strict,
     [switch]$IncludeConstitutionGates,
-    [switch]$SkipOpsAlarm
+    [switch]$SkipOpsAlarm,
+    [string]$TrackaDefaultLane = "c3_domain_gated"
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,6 +14,11 @@ $reportPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\ops_phase1_ch
 $snapshotPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\ops_environment_snapshot_latest.json"
 $fusionStatusPath = "C:\workspace\docs\final\artifacts\ops_fusion_cycle_status_latest.json"
 $allGreenPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\all_green_latest.json"
+
+if ($TrackaDefaultLane -and $TrackaDefaultLane.Trim().Length -gt 0) {
+    $env:HYBRID_CODEC_TRACKA_DEFAULT_LANE = $TrackaDefaultLane.Trim().ToLowerInvariant()
+    Write-Host ("[phase1] HYBRID_CODEC_TRACKA_DEFAULT_LANE={0}" -f $env:HYBRID_CODEC_TRACKA_DEFAULT_LANE)
+}
 
 function Get-SharedVaultReachability {
     param([string]$SnapPath)

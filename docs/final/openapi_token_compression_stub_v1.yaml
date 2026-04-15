@@ -1,9 +1,10 @@
 openapi: 3.0.3
 info:
   title: MKM Token Compression API (stub v1)
-  version: "1.1.0"
+  version: "1.1.1"
   description: |
     HTTP data contract for compress/expand. Implementation: scripts/compression_token_api_stub.py.
+    v1.1.1: compress examples for mode_live use text long enough for default COMPRESSION_API_LIVE_EVAL_MIN_TOKENS (12 regex tokens).
     v1.1.0 adds optional research route POST /v1/research/l1_side_channel/wire (additive; requires msgpack).
     That route returns HTTP 503 if msgpack is not installed or if msgpack packing is unavailable on the server.
     Facts for external pilots (see docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md §10):
@@ -55,7 +56,7 @@ paths:
               mode_live:
                 summary: Hydrate via live evaluate_report first
                 value:
-                  text: "live eval hydration path 성능 테스트"
+                  text: "live eval hydration path enterprise compression 성능 테스트 스텁 token count twelve minimum for live path"
                   client_request_id: "req-live-001"
                   eval_context:
                     hydrate_metrics: true
@@ -151,24 +152,24 @@ paths:
                     shard_id: zone_c_hangul
                     domain: hangul
                     router_only: true
-                    original_text: "live eval hydration path 성능 테스트"
+                    original_text: "live eval hydration path enterprise compression 성능 테스트 스텁 token count twelve minimum for live path"
                     client_request_id: "req-live-001"
                     eval_context_echo:
                       hydrate_metrics: true
                       hydrate_live_eval: true
                       runner_hint: active_default
                     compression_metrics:
-                      bytes_in: 45
-                      bytes_out: 21
-                      token_in: 7
-                      token_out: 3
-                      savings_ratio: 0.57
+                      bytes_in: 112
+                      bytes_out: 48
+                      token_in: 16
+                      token_out: 8
+                      savings_ratio: 0.5
                     integrity_flags:
-                      hangul_principle: true
-                      hard_keep_count: 3
-                      soft_keep_count: 5
+                      hangul_principle: false
+                      hard_keep_count: 5
+                      soft_keep_count: 33
                       hydration_metrics_source: live_evaluate_report
-                      hydration_live_eval_elapsed_ms: 42.7
+                      hydration_live_eval_elapsed_ms: 15.0
                       metrics_mode: live
   /v1/metering/log:
     post:
@@ -256,16 +257,16 @@ paths:
                     shard_id: zone_c_hangul
                     domain: hangul
                     router_only: true
-                    original_text: "live eval hydration path 성능 테스트"
+                    original_text: "live eval hydration path enterprise compression 성능 테스트 스텁 token count twelve minimum for live path"
                     compression_metrics:
-                      bytes_in: 45
-                      bytes_out: 21
-                      token_in: 7
-                      token_out: 3
-                      savings_ratio: 0.57
+                      bytes_in: 112
+                      bytes_out: 48
+                      token_in: 16
+                      token_out: 8
+                      savings_ratio: 0.5
                     integrity_flags:
                       hydration_metrics_source: live_evaluate_report
-                      hydration_live_eval_elapsed_ms: 42.7
+                      hydration_live_eval_elapsed_ms: 15.0
                       metrics_mode: live
       responses:
         "200":
@@ -294,7 +295,7 @@ paths:
                 from_live_mode:
                   summary: Expanded text from live mode payload
                   value:
-                    text: "live eval hydration path 성능 테스트"
+                    text: "live eval hydration path enterprise compression 성능 테스트 스텁 token count twelve minimum for live path"
                     api_contract_version: "1.0.0"
                     integrity_flags:
                       stub_expand: true

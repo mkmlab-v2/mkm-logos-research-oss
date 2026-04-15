@@ -15,8 +15,15 @@ from scripts.compression_token_api_v2_stub import (
     API_CONTRACT_VERSION,
     PACKET_FORMAT_VERSION,
     RESIDUAL_STUB_KEY,
+    _legacy_flat_key_access_count,
+    _tracka_profile_deprecations,
+    _tracka_profile_label,
+    _tracka_profile_meta,
+    _tracka_profile_override_env,
+    _tracka_profile_source,
     app,
 )
+from scripts.tracka_profile_client_utils import extract_tracka_profile_meta
 from scripts.report_multilens_performance_eval import _jaccard
 
 client = TestClient(app)
@@ -26,12 +33,70 @@ V2_ROUNDTRIP_JACCARD_MIN = 0.73
 
 
 def test_health_v2():
+    before = _legacy_flat_key_access_count()
     r = client.get("/health")
     assert r.status_code == 200
     j = r.json()
     assert j.get("status") == "ok"
     assert j.get("api_contract_version") == API_CONTRACT_VERSION
     assert j.get("packet_format_version") == PACKET_FORMAT_VERSION
+    assert j.get("tracka_profile_meta") == _tracka_profile_meta()
+    assert j.get("tracka_profile_deprecations") == _tracka_profile_deprecations()
+    assert "tracka_profile" not in j
+    assert "tracka_profile_source" not in j
+    assert "tracka_profile_override_env" not in j
+    assert j.get("legacy_flat_key_access_count") == before
+
+
+def test_health_and_compress_tracka_profile_consistent():
+    health = client.get("/health")
+    assert health.status_code == 200
+    health_meta = health.json().get("tracka_profile_meta")
+    assert isinstance(health_meta, dict) and health_meta
+
+    cr = client.post(
+        "/v2/compress",
+        json={"text": "profile consistency check sample", "loss_profile": "semantic_general"},
+    )
+    assert cr.status_code == 200
+    compress_meta = cr.json().get("integrity_flags", {}).get("tracka_profile_meta")
+    compress_deprecations = cr.json().get("integrity_flags", {}).get("tracka_profile_deprecations")
+    assert compress_meta == health_meta
+    assert compress_deprecations == health.json().get("tracka_profile_deprecations")
+    assert "tracka_profile" not in cr.json().get("integrity_flags", {})
+    assert "tracka_profile_source" not in cr.json().get("integrity_flags", {})
+    assert "tracka_profile_override_env" not in cr.json().get("integrity_flags", {})
+
+
+def test_extract_tracka_profile_meta_prefers_meta_then_legacy_fallback():
+    full = {
+        "tracka_profile": "legacy_profile",
+        "tracka_profile_source": "legacy_source",
+        "tracka_profile_override_env": {"legacy": "yes"},
+        "tracka_profile_meta": {
+            "profile": "meta_profile",
+            "source": "meta_source",
+            "override_env": {"meta": "yes"},
+        },
+    }
+    got_full = extract_tracka_profile_meta(full)
+    assert got_full == {
+        "profile": "meta_profile",
+        "source": "meta_source",
+        "override_env": {"meta": "yes"},
+    }
+
+    legacy_only = {
+        "tracka_profile": "legacy_profile",
+        "tracka_profile_source": "legacy_source",
+        "tracka_profile_override_env": {"legacy": "yes"},
+    }
+    got_legacy = extract_tracka_profile_meta(legacy_only)
+    assert got_legacy == {
+        "profile": "legacy_profile",
+        "source": "legacy_source",
+        "override_env": {"legacy": "yes"},
+    }
 
 
 def test_compress_expand_roundtrip_semantic_general():
@@ -46,6 +111,10 @@ def test_compress_expand_roundtrip_semantic_general():
     )
     assert cr.status_code == 200
     cj = cr.json()
+    assert cj["integrity_flags"].get("tracka_profile_meta") == _tracka_profile_meta()
+    assert "tracka_profile" not in cj["integrity_flags"]
+    assert "tracka_profile_source" not in cj["integrity_flags"]
+    assert "tracka_profile_override_env" not in cj["integrity_flags"]
     pkt = cj["compression_packet"]
     assert pkt["packet_format_version"] == PACKET_FORMAT_VERSION
     assert pkt["api_contract_version"] == API_CONTRACT_VERSION
@@ -139,3 +208,27 @@ def test_v2_trust_restoration_flag_on_subfloor_engine_jaccard():
     )
     assert cr.status_code == 200
     assert cr.json()["integrity_flags"].get("jaccard_trust_restoration") is True
+
+
+def test_v2_lossless_profile_uses_fused_hybrid_codec():
+    sample = "OPS gateway 8788 and SHA256 checksum must restore exactly."
+    cr = client.post(
+        "/v2/compress",
+        json={"text": sample, "loss_profile": "lossless_text"},
+    )
+    assert cr.status_code == 200
+    cj = cr.json()
+    assert cj["integrity_flags"].get("tracka_profile_meta") == _tracka_profile_meta()
+    assert "tracka_profile" not in cj["integrity_flags"]
+    assert "tracka_profile_source" not in cj["integrity_flags"]
+    assert "tracka_profile_override_env" not in cj["integrity_flags"]
+    assert cj["integrity_flags"].get("hybrid_codec_v0_fused") is True
+    assert cj["integrity_flags"].get("hybrid_codec_v0_exact_restore_ok") is True
+
+    pkt = cj["compression_packet"]
+    stub = pkt["residual_meta"][RESIDUAL_STUB_KEY]
+    assert "hybrid_codec_v0_payload" in stub
+
+    er = client.post("/v2/expand", json={"compression_packet": pkt})
+    assert er.status_code == 200
+    assert er.json()["text"] == sample

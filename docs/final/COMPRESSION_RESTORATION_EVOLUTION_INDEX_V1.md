@@ -58,6 +58,27 @@
 
 - **`COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md`**: 시장 주장·벤치 순서·Track A 현실·Track B 쿼터니언 연구·**§9 승격** 등 “운영 철학” 정리.
 
+### 2026-04-13 — AE-2 KOSPI 일간 수익률 구조 엔트로피 스파이크 (연구·관측 전용)
+
+- **스크립트:** `scripts/spike_kospi_structural_entropy_v1.py` (합성 또는 `research/market_data/kospi_daily_external_yf.csv` 기반), `scripts/spike_kospi_structural_entropy_compare_v1.py` (G2 비교).
+- **산출물:** `docs/final/artifacts/spike_kospi_kld_v1.json`, `spike_kospi_kld_v1_real.json`, `spike_kospi_kld_v1_compare.json` — 3-bin 대 균등 KL·SL-K-M 가설 투영 요약·zlib/zstd 바이트 대조.
+- **격벽:** **멀티렌즈 토큰 압축·`evaluate_report` 본선과 자동 합선 없음.** **B-track blind replay** 코스피 그리드(`reports/constitution/btrack_pilot/blind_replay/*kospi*`)는 **별도 레일**(리플레이·스코어링) — AE-2와 동일 실험·동일 게이트가 **아님**.
+
+#### Phase 3 — 역할 분리 (박제)
+
+| 레일 | 목적 | 대표 경로·산출 | AE-2와의 관계 |
+|------|------|----------------|---------------|
+| **AE-2 스파이크** | 일간 단순 수익률 → ±1% 3-bin, KL(대 균등), `SlkmProjectionV1` 평균, `float64` 패킹 대 zlib/zstd 바이트 | `scripts/spike_kospi_structural_entropy_v1.py`, `docs/final/artifacts/spike_kospi_kld_v1_*.json` | 본 행 자체가 SSOT. |
+| **Blind replay (B-track)** | 코스피 시계열에 대한 **블라인드 리플레이·그리드·스코어** 실험; promotion·월간 체인 등 **기존 게이트**와 연결될 수 있음 | `reports/constitution/btrack_pilot/blind_replay/*kospi*` 등 | **입력·지표·게이트가 AE-2와 다름.** AE-2 결과를 replay 승격·압축 KPI에 **자동 합선 금지.** |
+
+#### 실측 베이스라인 스냅샷 (디스크 기준, CSV 갱신 시 변동)
+
+- **근거 파일:** `docs/final/artifacts/spike_kospi_kld_v1_real.json` (`schema_version`: `spike_kospi_structural_entropy_v1`).
+- **입력 CSV:** `research/market_data/kospi_daily_external_yf.csv`.
+- **기간 (`csv_source_health`):** `first_date` **2024-04-11** — `last_date` **2026-04-10**; `return_pairs_computed` **484**; 스킵 **0**.
+- **분포:** `kld_bin_vs_uniform_nats` **≈0.1363**; `structural_entropy_bits` **≈1.388**; `slkm_projection.mean_vector` S/L **≈0.233**, K/M **≈0.267** (가설 투영).
+- **바이트 대조 (동일 스키마):** `zstd_compressed_bytes` / `raw_bytes` **≈0.929** (KLD·엔트로피와 **척도 다름** — 병합 서술 금지).
+
 ---
 
 ## 3) 읽기 순서 (통찰용 소스 묶음)
@@ -74,7 +95,8 @@
    - `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json`  
    - `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json`  
 8. **진입 스크립트:** `scripts/run_ultra_compression_default.py`, `scripts/run_ultra_compression_bench.py`, `scripts/run_compression_automation_chain.ps1`  
-9. **(선택) H: 운영 메모:** 아래 §5 — **multilens 파이프라인 SSOT가 아니라** 병행 맥락용.
+9. **(선택) H: 운영 메모:** 아래 §5 — **multilens 파이프라인 SSOT가 아니라** 병행 맥락용.  
+10. **(선택) AE-2 시장 수익률 스파이크:** §2 `2026-04-13` 및 `docs/final/artifacts/spike_kospi_kld_v1_compare.json` — **압축 KPI·Track A 승격 근거 아님.**
 
 ---
 
@@ -82,7 +104,8 @@
 
 - **“1년 전과 비교해서 코드가 이렇게 바뀌었다”**는 말은 **이 인덱스 + 위 문서**가 없으면 환각 위험이 크다.  
 - 수치 비교는 **같은 입력 JSON·같은 모드·같은 아티팩트 파일**에서만 한다 (`FAIL-COMP-004`).  
-- **16-state ↔ 압축 런타임 필수 배선**은 Fact-Lock상 **아직 아님** — 로드맵은 동 해석 문서·`STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md` 참고.
+- **16-state ↔ 압축 런타임 필수 배선**은 Fact-Lock상 **아직 아님** — 로드맵은 동 해석 문서·`STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md` 참고.  
+- **AE-2 KOSPI 스파이크**와 **blind replay 코스피**는 §2 `2026-04-13` Phase 3 표대로 **역할이 다르다** — 한쪽 수치를 다른 쪽 게이트·승격 근거로 쓰지 않는다.
 
 ---
 

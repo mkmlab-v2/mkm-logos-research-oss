@@ -36,12 +36,20 @@ from scripts.compression_token_api_stub import (  # noqa: E402
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
 from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy  # noqa: E402
 from scripts.report_multilens_performance_eval import _jaccard, evaluate_report  # noqa: E402
+from scripts.run_hybrid_codec_v0_spike import (  # noqa: E402
+    decode_packet_dict as hybrid_decode_packet_dict,
+)
+from scripts.run_hybrid_codec_v0_spike import (  # noqa: E402
+    encode_packet_dict as hybrid_encode_packet_dict,
+)
+from scripts.run_hybrid_codec_v0_spike import _phrase_first_enabled  # noqa: E402
 
 API_CONTRACT_VERSION = "2.0.0-draft"
 PACKET_FORMAT_VERSION = "trust_packet.0.1"
 RESIDUAL_STUB_KEY = "mk_stub_v2"
 # Same multiset definition as tests (`_jaccard`); floor aligns with Track A round-trip targets.
 V2_JACCARD_TRUST_MIN = 0.73
+_LEGACY_FLAT_KEY_ACCESS_COUNT = 0
 
 SHARDS = ROOT / "codebook" / "shards"
 _router = DomainSpecificRouter(SHARDS)
@@ -205,14 +213,92 @@ def _fingerprint(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()[:32]
 
 
+def _tracka_profile_label() -> str:
+    lane = os.environ.get("HYBRID_CODEC_TRACKA_DEFAULT_LANE", "").strip().lower()
+    if lane:
+        return f"{lane}_default"
+    return "c3_domain_gated_default"
+
+
+def _tracka_profile_source() -> str:
+    lane = os.environ.get("HYBRID_CODEC_TRACKA_DEFAULT_LANE", "").strip().lower()
+    if lane:
+        return "env_tracka_default_lane"
+    force_off = os.environ.get("HYBRID_CODEC_PHRASE_FIRST_FORCE_OFF", "").strip().lower()
+    if force_off in {"1", "true", "yes", "on"}:
+        return "env_force_off"
+    raw = os.environ.get("HYBRID_CODEC_PHRASE_FIRST", "").strip().lower()
+    if raw in {"1", "true", "yes", "on"}:
+        return "env_override_on"
+    if raw in {"0", "false", "no", "off"}:
+        return "env_override_off"
+    return "default_promoted"
+
+
+def _tracka_profile_override_env() -> dict[str, str]:
+    """Expose safe, normalized env override state for ops dashboards."""
+    raw_force_off = os.environ.get("HYBRID_CODEC_PHRASE_FIRST_FORCE_OFF")
+    raw_phrase_first = os.environ.get("HYBRID_CODEC_PHRASE_FIRST")
+    force_off_norm = (raw_force_off or "").strip().lower()
+    phrase_first_norm = (raw_phrase_first or "").strip().lower()
+    return {
+        "phrase_first": "set" if raw_phrase_first is not None else "unset",
+        "phrase_first_value": phrase_first_norm if phrase_first_norm else "none",
+        "force_off": "set" if raw_force_off is not None else "unset",
+        "force_off_value": force_off_norm if force_off_norm else "none",
+    }
+
+
+def _tracka_profile_meta() -> dict[str, Any]:
+    return {
+        "profile": _tracka_profile_label(),
+        "source": _tracka_profile_source(),
+        "override_env": _tracka_profile_override_env(),
+    }
+
+
+def _tracka_profile_deprecations() -> dict[str, Any]:
+    """Transition guide after legacy flat keys were removed from API responses."""
+    return {
+        "removed_flat_keys": [
+            "tracka_profile",
+            "tracka_profile_source",
+            "tracka_profile_override_env",
+        ],
+        "replacement": "tracka_profile_meta",
+        "status": "legacy_flat_keys_removed",
+    }
+
+
+def _legacy_flat_key_access_count() -> int:
+    return int(_LEGACY_FLAT_KEY_ACCESS_COUNT)
+
+
+def _build_tracka_profile_payload(*, include_legacy_flat_keys: bool) -> dict[str, Any]:
+    """Single construction path: meta-first payload."""
+    meta = _tracka_profile_meta()
+    payload: dict[str, Any] = {
+        "tracka_profile_meta": meta,
+        "tracka_profile_deprecations": _tracka_profile_deprecations(),
+    }
+    if include_legacy_flat_keys:
+        payload["tracka_profile"] = meta["profile"]
+        payload["tracka_profile_source"] = meta["source"]
+        payload["tracka_profile_override_env"] = meta["override_env"]
+    return payload
+
+
 @app.get("/health")
 def health() -> dict[str, Any]:
+    profile_payload = _build_tracka_profile_payload(include_legacy_flat_keys=False)
     return {
         "status": "ok",
         "api_contract_version": API_CONTRACT_VERSION,
         "packet_format_version": PACKET_FORMAT_VERSION,
         "schema_version": "token_compression_stub_v2_draft",
         "stub_engine": "evaluate_report",
+        "legacy_flat_key_access_count": _legacy_flat_key_access_count(),
+        **profile_payload,
     }
 
 
@@ -223,8 +309,44 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
         "stub_v2": True,
         "hangul_principle": route.hangul_principle,
         "loss_profile": body.loss_profile,
+        **_build_tracka_profile_payload(include_legacy_flat_keys=False),
     }
     try:
+        # Fused lane: lossless_text goes through deterministic hybrid codec first.
+        if body.loss_profile == "lossless_text":
+            hybrid_payload = hybrid_encode_packet_dict(body.text)
+            restored = hybrid_decode_packet_dict(hybrid_payload)
+            encoded = " ".join([str(x) for x in (hybrid_payload.get("body_tokens") or [])])
+            in_len = max(1, int(hybrid_payload.get("input_char_len") or 0))
+            out_len = int(hybrid_payload.get("output_char_len") or 0)
+            savings = max(0.0, min(1.0, 1.0 - (float(out_len) / float(in_len))))
+            flags["hybrid_codec_v0_fused"] = True
+            flags["hybrid_codec_v0_exact_restore_ok"] = restored == body.text
+            residual_meta = {
+                RESIDUAL_STUB_KEY: {
+                    "reconstructed_text": restored,
+                    "global_token_saving_rate": savings,
+                    "reconstruction_fidelity_jaccard": _jaccard(body.text, restored),
+                    "hybrid_codec_v0_payload": hybrid_payload,
+                },
+                "placeholder_map": {},
+            }
+            packet = CompressionPacket(
+                loss_profile=body.loss_profile,
+                compressed_text=encoded,
+                residual_meta=residual_meta,
+                router_meta={"shard_id": route.shard_id, "domain": route.domain},
+                content_fingerprint=_fingerprint(body.text),
+            )
+            tin = _token_count_proxy(body.text)
+            tout = _token_count_proxy(encoded)
+            metrics = CompressionMetricsV2(token_in=tin, token_out=tout, savings_ratio=savings)
+            return CompressResponseV2(
+                compression_packet=packet,
+                compression_metrics=metrics,
+                integrity_flags=flags,
+            )
+
         ev = _run_evaluate_for_packet(body.text, body.loss_profile)
         flags["evaluate_report_ms"] = ev.get("elapsed_ms")
         if not ev.get("ok"):

@@ -51,7 +51,14 @@ VERIFIED_BASE_DATES = [
     # 주인님 정보는 정확한 일주 확인 후 추가 필요
 ]
 
-def calculate_saju_manual(year: int, month: int, day: int, hour: int = 0) -> dict:
+def calculate_saju_manual(
+    year: int,
+    month: int,
+    day: int,
+    hour: int = 0,
+    minute: int = 0,
+    day_rollover_policy: str = "midnight_00",
+) -> dict:
     """
     검증된 기준일 기반 수동 계산 (100% 정확도 보장)
     
@@ -61,6 +68,10 @@ def calculate_saju_manual(year: int, month: int, day: int, hour: int = 0) -> dic
     3. AI 추측 완전 배제
     """
     target_date = datetime(year, month, day)
+    effective_target_date = target_date
+    if day_rollover_policy == "zi_23" and hour >= 23:
+        # zi_23 policy: the day pillar rolls at 23:00, not 00:00.
+        effective_target_date = target_date + timedelta(days=1)
     gt_year_pillar = None
     gt_month_pillar = None
     gt_day_pillar = None
@@ -89,7 +100,7 @@ def calculate_saju_manual(year: int, month: int, day: int, hour: int = 0) -> dic
     min_diff = float('inf')
     
     for base in VERIFIED_BASE_DATES:
-        diff = abs((target_date - base["date"]).days)
+        diff = abs((effective_target_date - base["date"]).days)
         if diff < min_diff:
             min_diff = diff
             best_base = base
@@ -98,7 +109,7 @@ def calculate_saju_manual(year: int, month: int, day: int, hour: int = 0) -> dic
         return {"error": "검증된 기준일이 없습니다"}
     
     # 일주 계산
-    days_diff = (target_date - best_base["date"]).days
+    days_diff = (effective_target_date - best_base["date"]).days
     day_idx = (best_base["gapja_idx"] + days_diff) % 60
     if day_idx < 0:
         day_idx += 60
@@ -146,6 +157,8 @@ def calculate_saju_manual(year: int, month: int, day: int, hour: int = 0) -> dic
         "base_date": best_base["date"].strftime("%Y-%m-%d"),
         "base_gapja": best_base["gapja"],
         "days_diff": days_diff,
+        "effective_target_date": effective_target_date.strftime("%Y-%m-%d"),
+        "day_rollover_policy": day_rollover_policy,
         "ground_truth_source": gt_source,
         "calculation_method": "manual_verified",
         "verified": True

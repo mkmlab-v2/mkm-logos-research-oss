@@ -3,7 +3,8 @@ param(
     [string]$StartTime = "08:30",
     [switch]$IncludeVerifyAllGreen,
     [switch]$ExcludeConstitutionGates,
-    [switch]$ExcludeStrict
+    [switch]$ExcludeStrict,
+    [string]$TrackaDefaultLane = "c3_domain_gated"
 )
 
 $ErrorActionPreference = "Stop"
@@ -22,6 +23,9 @@ if (-not $ExcludeConstitutionGates) {
 }
 if (-not $ExcludeStrict) {
     $extra += " -Strict"
+}
+if ($TrackaDefaultLane -and $TrackaDefaultLane.Trim().Length -gt 0) {
+    $extra += " -TrackaDefaultLane " + $TrackaDefaultLane.Trim().ToLowerInvariant()
 }
 
 $tr = "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`"$extra"
