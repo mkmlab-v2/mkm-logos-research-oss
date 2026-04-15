@@ -6,16 +6,16 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W20-E1)
+## Track A Sprint Update (2026-04-15, W20-E2)
 
-- 실행: `py scripts/run_track_a_week20_staged_guard_unlock_sweep_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week20_staged_guard_unlock_sweep_v1.json`
-- 결과: `decision=HOLD_W20_E1_NO_VIABLE`, `viable_count=0`
+- 실행: `py scripts/run_track_a_week20_confidence_first_crossover_sweep_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week20_confidence_first_crossover_sweep_v1.json`
+- 결과: `decision=HOLD_W20_E2_NO_VIABLE`, `viable_count=0`
 - 기준선: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
 - 최고 run: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0` (기준선과 동일)
-- 관찰: staged guard 파라미터 확장(`unlock_ratio` 최대 0.20, `guard_relax_margin` 최대 0.005)에도 `switched_to_router_off_cases=0`, `guard_blocked_cases=30`, `protected_blocked_cases=10` 고정
-- 판단: staged guard unlock 단독으로 deadlock 해소 불가, 상용화 라인은 HOLD 유지
-- 다음 1스텝: W20-E2(`run_track_a_week20_confidence_first_crossover_sweep_v1.py`) 구현/실행
+- 관찰: confidence-first crossover에서도 일부 off 전환은 제한적으로 발생했지만 `floor_shadow_blocked_cases`와 `confidence_blocked_cases` 누적으로 baseline 개선 부재
+- 판단: confidence-first crossover 단독으로 deadlock 해소 불가, 상용화 라인은 HOLD 유지
+- 다음 1스텝: W20-E3(`run_track_a_week20_widened_domain_budget_veto_sweep_v1.py`) 구현/실행
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
