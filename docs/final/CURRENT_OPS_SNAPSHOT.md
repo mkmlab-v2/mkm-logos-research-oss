@@ -245,7 +245,8 @@
   - 증거: `docs/final/artifacts/track_a_domain_breakdown_v1.json` (global saving `0.4908579`, avg jaccard `0.7349368`, 취약 도메인 `timing`/`ssot`, 최저 케이스 `cmp2_013` jaccard `0.4705882`).
   - Day2 진행: `scripts/build_track_a_failure_pattern_rules_v1.py` 추가, `docs/final/artifacts/track_a_failure_pattern_rules_v1.json` 생성(`selected_case_count=13`, 현재 `candidate_mode=risk_token_frequency_fallback`).
   - Day3 진행: `scripts/build_track_a_low_fidelity_evalset_v1.py`로 원문 포함 저복원 평가셋 `docs/final/artifacts/track_a_low_fidelity_evalset_v1.json` 생성 후 규칙 재생성(`candidate_mode=missing_token_frequency`, 후보 예: `reduce`, `footprint`, `bootstrap`, `timing`).
-  - 다음 1스텝: Day4 must-keep 후보 상위 20개를 주입한 A/B 회귀를 실행해 `saving>=0.49`·`integrity=1.0` 유지 조건에서 jaccard 개선 여부를 판정.
+  - Day4 진행: `scripts/run_track_a_must_keep_ab_v1.py`로 must-keep 상위 20개 주입 A/B 회귀 실행, 산출 `docs/final/artifacts/track_a_must_keep_ab_result_v1.json` (`delta_jaccard=+0.03228`, `delta_saving=-0.02531`, `integrity=1.0`) → 판정 `HOLD_BASELINE_TRACK_A` (saving floor 미충족).
+  - 다음 1스텝: Day5는 후보 토큰을 도메인별 최소집합(예: 상위 5~8개)으로 줄여 saving floor `>=0.49`를 다시 맞추는 축소 실험을 수행.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 

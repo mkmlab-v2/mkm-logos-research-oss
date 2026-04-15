@@ -1,0 +1,63 @@
+{
+  "schema": "track_a_must_keep_ab_result_v1",
+  "generated_at_utc": "2026-04-15T07:02:07+00:00",
+  "inputs": {
+    "input": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+    "active_a_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "rules": "C:\\workspace\\docs\\final\\artifacts\\track_a_failure_pattern_rules_v1.json",
+    "top_n": 20,
+    "base_must_keep": [
+      "bible",
+      "myeongri",
+      "sasang",
+      "사상의학",
+      "체질"
+    ],
+    "candidate_tokens": [
+      "reduce",
+      "footprint",
+      "preserving",
+      "caveats",
+      "especially",
+      "notes",
+      "improves",
+      "rows",
+      "accumulate",
+      "bootstrap",
+      "thresholds",
+      "transition",
+      "matrix",
+      "tri",
+      "answers",
+      "include",
+      "timing",
+      "constitution",
+      "constraints",
+      "operational"
+    ]
+  },
+  "metrics": {
+    "baseline": {
+      "global_token_saving_rate": 0.4683544303797469,
+      "avg_reconstruction_fidelity_jaccard": 0.8488363572487027,
+      "avg_sensitive_integrity": 1.0
+    },
+    "treatment": {
+      "global_token_saving_rate": 0.44303797468354433,
+      "avg_reconstruction_fidelity_jaccard": 0.8811165770289223,
+      "avg_sensitive_integrity": 1.0
+    },
+    "delta": {
+      "global_token_saving_rate": -0.025316455696202556,
+      "avg_reconstruction_fidelity_jaccard": 0.032280219780219666,
+      "avg_sensitive_integrity": 0.0
+    }
+  },
+  "gate": {
+    "saving_floor_ok": false,
+    "integrity_floor_ok": true,
+    "jaccard_non_regression_ok": true,
+    "jaccard_uplift_2pp_ok": true
+  },
+  "decision": "HOLD_BASELINE_TRACK_A"
+}
