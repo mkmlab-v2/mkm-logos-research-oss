@@ -1,0 +1,28 @@
+{
+  "schema": "l1_inverse_decoder_swap_typo_lane_decoder_v2_preregister",
+  "generated_at_utc": "2026-04-15T02:30:58+00:00",
+  "research_only": true,
+  "hypothesis": "Lane decoder v2 with swap_typo-specific scoring can recover typo lanes without mixed regression.",
+  "candidate": "swap_typo_lane_decoder_v2",
+  "is_structural_new_path": true,
+  "isolation": "swap_typo-focused candidate generation/scoring; production v4 path unchanged",
+  "inputs": {
+    "train_seeds": [
+      701,
+      809
+    ],
+    "eval_seeds": [
+      1009,
+      1103
+    ],
+    "samples_per_seed": 120,
+    "beam_size": 8,
+    "noise_level": 0.1,
+    "scoring_mode": "enhanced"
+  },
+  "gate": {
+    "swap_typo_uplift_min": 0.02,
+    "mixed_non_regression_floor": -0.005,
+    "go_rule": "swap_typo exact/recovery each >= +0.02 and mixed exact/recovery each >= -0.005"
+  }
+}
