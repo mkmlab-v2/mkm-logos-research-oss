@@ -273,7 +273,8 @@
   - Week-5 E1 진행: `scripts/run_track_a_week5_penalty_router_sweep_v1.py` + `docs/final/artifacts/track_a_week5_penalty_router_sweep_v1.json` 생성. risk domain(`ssot,timing`) 보호 + 비위험군 penalty 스윕(0.05~0.2) 결과 saving은 `0.494~0.503`으로 floor(`0.475`) 통과했지만 jaccard가 `0.560~0.609`로 floor(`0.82`) 미달(viable=0), 판정 `HOLD_W5_E1_NO_VIABLE`.
   - Week-5 E2 진행: `scripts/run_track_a_week5_confidence_router_sweep_v1.py` + `docs/final/artifacts/track_a_week5_confidence_router_sweep_v1.json` 생성. domain override(`ssot=0.70`, `timing=0.68`) 포함 confidence threshold 스윕(0.55~0.70)에서 saving은 `0.484~0.489`으로 floor(`0.48`) 통과했지만 jaccard가 `0.724~0.751`로 floor(`0.83`) 미달(viable=0), 판정 `HOLD_W5_E2_NO_VIABLE`.
   - Week-5 E3 진행: `scripts/run_track_a_week5_hybrid_router_mix_v1.py` + `docs/final/artifacts/track_a_week5_hybrid_router_mix_v1.json` 생성. hard-domain(`ssot,timing`) router_on 고정 + soft penalty alpha(0.2~0.4) 혼합에서 saving은 `0.493~0.494`로 floor(`0.485`) 통과했지만 jaccard가 `0.611~0.631`로 floor(`0.84`) 미달(viable=0), 판정 `HOLD_W5_E3_NO_VIABLE`.
-  - 다음 1스텝: W5-E4 리플레이 리포트(`report_track_a_week5_policy_replay_v1.py`)로 Week-5 전구간 HOLD를 고정하고 Week-6 전환 기준(엔진 내부 압축 규칙 수정 필요)을 등록한다.
+  - Week-5 E4 진행: 리플레이 리포트 `scripts/report_track_a_week5_policy_replay_v1.py` + `docs/final/artifacts/track_a_week5_policy_replay_v1.json` 생성. E1~E3 종합에서 `best_saving=0.49416`, `best_integrity=1.0`이나 `quality_tradeoff_flag=true` 유지로 최종 판정은 `HOLD_W5_POLICY_REPLAY`.
+  - 다음 1스텝: Week-6 엔진 내부 압축 규칙 재설계(라우터 외부 혼합이 아닌 내부 scoring/compression rule 변경) 실험팩을 등록한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
