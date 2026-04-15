@@ -1,0 +1,29 @@
+{
+  "schema": "l1_inverse_decoder_mode_router_v3_canary_status_v1",
+  "generated_at_utc": "2026-04-15T03:47:51+00:00",
+  "research_only": true,
+  "phase": "phase_1",
+  "traffic_pct": 10,
+  "inputs": {
+    "decision_artifact": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_mode_router_v3_canary_decision_v1.json",
+    "daily_gate_artifact": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_daily_gate_v1_latest.json",
+    "longsample_gate_artifact": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_swap_typo_mode_router_decoder_v3_longsample_gate_v1.json"
+  },
+  "checks": {
+    "canary_decision_ok": true,
+    "daily_gate_ok": true,
+    "longsample_gate_ok": true
+  },
+  "decision": {
+    "canary_ok": true,
+    "action": "KEEP_CANARY",
+    "rollback_switch": "L1_INVERSE_DECODER_MODE_ROUTER_V3_FORCE_DISABLE=1"
+  },
+  "metrics": {
+    "daily_gate_decision": "GO_KEEP_OBJECTIVE_V4_DEFAULT_ON",
+    "longsample_gate_decision": "GO_CANDIDATE_FOR_CANARY",
+    "swap_typo_delta_exact": 0.30999999999999994,
+    "swap_typo_delta_recovery": 0.2966666666666667,
+    "swap_typo_p95_latency_delta_ms": -5.602628749329597
+  }
+}

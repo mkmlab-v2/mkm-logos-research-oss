@@ -171,6 +171,10 @@
     - 산출: `docs/final/artifacts/l1_inverse_decoder_mode_router_v3_canary_decision_v1.json`
     - 판정: `GO_CANARY_MODE_ROUTER_V3_10PCT` (upstream: daily gate `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` + candidate gate `GO_CANDIDATE_FOR_CANARY`)
     - 롤백: `L1_INVERSE_DECODER_MODE_ROUTER_V3_FORCE_DISABLE=1` 즉시 비활성화 + fallback command 고정
+  - Week2-D32 운영 관측 루프(mode router v3 canary monitor v1): `scripts/run_l1_inverse_decoder_mode_router_v3_canary_monitor.py`
+    - 산출: `docs/final/artifacts/l1_inverse_decoder_mode_router_v3_canary_status_latest.json` + `reports/l1_inverse_decoder_mode_router_v3_canary_log_v1.jsonl`
+    - 1회 실행 결과: `action=KEEP_CANARY` (phase_1 / 10%), 주요 체크(`canary_decision_ok`, `daily_gate_ok`, `longsample_gate_ok`) 모두 true
+    - 즉시 롤백 스위치: `L1_INVERSE_DECODER_MODE_ROUTER_V3_FORCE_DISABLE=1`
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
@@ -1973,4 +1977,11 @@ Set-Location c:\workspace
   등록: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-CursorContextPipelineTask.ps1 -StartTime 07:30 -Query "Cursor context pipeline daily refresh" -TopK 6`  
   해제: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-CursorContextPipelineTask.ps1 -Remove`
 
+
+## 기억 복원 포인터 (2026-04-15)
+
+- 대화 기반으로 재정리한 전략 원문을 아래 파일로 복원 저장:
+  - `docs/final/AI_AUTONOMOUS_MANAGEMENT_STRATEGY_2025-12-10.md`
+- 요지: "AI 자율 경영 컨셉 1순위 + 단계적 통합(Phase 1/2/3)".
+- 주의: 구현 여부 판정은 계속 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 실행 가능한 스크립트/산출물 기준으로만 확정.
 
