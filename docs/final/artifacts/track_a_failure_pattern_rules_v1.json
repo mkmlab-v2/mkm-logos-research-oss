@@ -1,6 +1,6 @@
 {
   "schema": "track_a_failure_pattern_rules_v1",
-  "generated_at_utc": "2026-04-15T06:54:26+00:00",
+  "generated_at_utc": "2026-04-15T06:59:05+00:00",
   "input": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
   "selection": {
     "target_domains": [
@@ -9,16 +9,108 @@
     ],
     "max_jaccard": 0.6,
     "selected_case_count": 13,
-    "candidate_mode": "risk_token_frequency_fallback"
+    "candidate_mode": "missing_token_frequency"
   },
   "must_keep_candidates": [
     {
-      "token": "track",
-      "risk_count": 1
+      "token": "reduce",
+      "missing_count": 1
     },
     {
-      "token": "state",
-      "risk_count": 1
+      "token": "footprint",
+      "missing_count": 1
+    },
+    {
+      "token": "preserving",
+      "missing_count": 1
+    },
+    {
+      "token": "caveats",
+      "missing_count": 1
+    },
+    {
+      "token": "especially",
+      "missing_count": 1
+    },
+    {
+      "token": "notes",
+      "missing_count": 1
+    },
+    {
+      "token": "improves",
+      "missing_count": 1
+    },
+    {
+      "token": "rows",
+      "missing_count": 1
+    },
+    {
+      "token": "accumulate",
+      "missing_count": 1
+    },
+    {
+      "token": "bootstrap",
+      "missing_count": 1
+    },
+    {
+      "token": "thresholds",
+      "missing_count": 1
+    },
+    {
+      "token": "transition",
+      "missing_count": 1
+    },
+    {
+      "token": "matrix",
+      "missing_count": 1
+    },
+    {
+      "token": "tri",
+      "missing_count": 1
+    },
+    {
+      "token": "answers",
+      "missing_count": 1
+    },
+    {
+      "token": "include",
+      "missing_count": 1
+    },
+    {
+      "token": "timing",
+      "missing_count": 1
+    },
+    {
+      "token": "constitution",
+      "missing_count": 1
+    },
+    {
+      "token": "constraints",
+      "missing_count": 1
+    },
+    {
+      "token": "operational",
+      "missing_count": 1
+    },
+    {
+      "token": "stability",
+      "missing_count": 1
+    },
+    {
+      "token": "predictive",
+      "missing_count": 1
+    },
+    {
+      "token": "quality",
+      "missing_count": 1
+    },
+    {
+      "token": "avoid",
+      "missing_count": 1
+    },
+    {
+      "token": "false",
+      "missing_count": 1
     }
   ],
   "selected_cases": [
@@ -27,28 +119,57 @@
       "domain": "ssot",
       "reconstruction_fidelity_jaccard": 0.5,
       "token_saving_rate": 0.5882352941176471,
-      "missing_tokens_sample": []
+      "missing_tokens_sample": [
+        "reduce",
+        "footprint",
+        "preserving",
+        "caveats",
+        "especially",
+        "notes"
+      ]
     },
     {
       "id": "cmp2_007",
       "domain": "timing",
       "reconstruction_fidelity_jaccard": 0.5,
       "token_saving_rate": 0.5333333333333333,
-      "missing_tokens_sample": []
+      "missing_tokens_sample": [
+        "improves",
+        "rows",
+        "accumulate",
+        "bootstrap",
+        "thresholds",
+        "transition",
+        "matrix"
+      ]
     },
     {
       "id": "cmp2_008",
       "domain": "ssot",
       "reconstruction_fidelity_jaccard": 0.5714285714285714,
       "token_saving_rate": 0.5555555555555556,
-      "missing_tokens_sample": []
+      "missing_tokens_sample": [
+        "tri",
+        "answers",
+        "include",
+        "timing",
+        "constitution",
+        "constraints"
+      ]
     },
     {
       "id": "cmp2_010",
       "domain": "ssot",
       "reconstruction_fidelity_jaccard": 0.5384615384615384,
       "token_saving_rate": 0.5,
-      "missing_tokens_sample": []
+      "missing_tokens_sample": [
+        "operational",
+        "stability",
+        "predictive",
+        "quality",
+        "avoid",
+        "false"
+      ]
     },
     {
       "id": "cmp2_012",

@@ -18,6 +18,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_ACTIVE = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "track_a_failure_pattern_rules_v1.json"
+DEFAULT_EVALSET = ROOT / "docs" / "final" / "artifacts" / "track_a_low_fidelity_evalset_v1.json"
 
 TOKEN_RE = re.compile(r"[A-Za-z0-9_]+")
 STOPWORDS = {
@@ -73,6 +74,7 @@ def _safe_float(value: Any, default: float = 0.0) -> float:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--active-report", type=Path, default=DEFAULT_ACTIVE)
+    ap.add_argument("--evalset", type=Path, default=DEFAULT_EVALSET)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--max-jaccard", type=float, default=0.6)
     ap.add_argument("--target-domains", type=str, default="ssot,timing")
@@ -84,6 +86,9 @@ def main() -> int:
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     report = json.loads(active_path.read_text(encoding="utf-8"))
+    evalset_path = args.evalset if args.evalset.is_absolute() else ROOT / args.evalset
+    evalset_doc = json.loads(evalset_path.read_text(encoding="utf-8")) if evalset_path.exists() else {"cases": []}
+    evalset_map = {str(row.get("id") or ""): row for row in evalset_doc.get("cases", [])}
     cases: list[dict[str, Any]] = (report.get("compression_metrics", {}) or {}).get("cases", [])
     target_domains = {d.strip() for d in args.target_domains.split(",") if d.strip()}
 
@@ -97,12 +102,14 @@ def main() -> int:
         if domain not in target_domains or jaccard > args.max_jaccard:
             continue
 
-        raw_text = str(row.get("raw_text_effective") or row.get("raw_text") or "")
+        case_id = str(row.get("id") or "")
+        eval_row = evalset_map.get(case_id, {})
+        raw_text = str(eval_row.get("raw_text") or row.get("raw_text_effective") or row.get("raw_text") or "")
         # Active report V1 stores compressed/reconstructed fields consistently.
         # Use compressed text as fallback source when raw text is not present.
         if not raw_text:
             raw_text = str(row.get("compressed_text_effective") or row.get("compressed_text") or "")
-        recon_text = str(row.get("reconstructed_text_effective") or row.get("reconstructed_text") or "")
+        recon_text = str(eval_row.get("reconstructed_text_effective") or row.get("reconstructed_text_effective") or row.get("reconstructed_text") or "")
 
         raw_tokens = _tokenize(raw_text)
         recon_set = set(_tokenize(recon_text))
@@ -115,7 +122,7 @@ def main() -> int:
         missing_tokens.update(missing)
         selected_cases.append(
             {
-                "id": str(row.get("id") or ""),
+                "id": case_id,
                 "domain": domain,
                 "reconstruction_fidelity_jaccard": jaccard,
                 "token_saving_rate": _safe_float(row.get("token_saving_rate")),
