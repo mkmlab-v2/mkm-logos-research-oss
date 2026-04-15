@@ -263,7 +263,8 @@
   - Week-3 Day1 진행: `scripts/run_track_a_routing_condition_ab_v1.py` + `docs/final/artifacts/track_a_routing_condition_ab_v1.json` 생성. armA(router on) saving `0.46835` vs armB(router off) saving `0.50773`, integrity `1.0`로 D1 중간게이트(`>=0.475`)는 통과(`GO_W3_D2_CAP_DECOUPLING`), 단 jaccard는 `-0.3029` 급락이라 D2에서 품질 회복 조건을 강제한다.
   - Week-3 Day2 진행: `scripts/run_track_a_cap_decouple_sweep_v1.py` + `docs/final/artifacts/track_a_cap_decouple_sweep_v1.json` 생성. router-off 기준 cap 분리 9조합 스윕 결과 `viable_count=0`(`saving>=0.48`, `jaccard>=0.8`, `integrity=1.0` 동시충족 없음), 결정은 `HOLD_W3_D2_NO_VIABLE`.
   - Week-3 Day3 진행: `scripts/run_track_a_phrase_profile_ab_v1.py` + `docs/final/artifacts/track_a_phrase_profile_ab_v1.json` 생성. router-on baseline 대비 phrase-first(top5) 처리 시 jaccard는 `+0.00536` 개선됐지만 saving이 `0.46413`으로 floor `0.485` 미달(viable=0), 결정은 `HOLD_W3_D3_NO_VIABLE`.
-  - 다음 1스텝: Week-3 D4는 baseline 유지 전제로 policy floor 리플레이 아티팩트를 생성해 이번 회복 스프린트의 승격 불가를 명시하고 Week-4 후보군을 분리 등록한다.
+  - Week-3 Day4 진행: 리플레이 판정 `scripts/report_track_a_policy_floor_replay_v1.py` + `docs/final/artifacts/track_a_policy_floor_replay_v1.json` 생성. D1~D3 종합에서 best saving은 `0.5077`, integrity `1.0`이나 품질 트레이드오프 플래그(`router_off jaccard 급락`)가 활성이라 최종 판정은 `HOLD_POLICY_FLOOR_REPLAY`.
+  - 다음 1스텝: Week-4 실험팩을 분리 등록해 domain-specific phrase 정책 + selective router 제약 조합만 별도 검증 레일에서 재탐색한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
