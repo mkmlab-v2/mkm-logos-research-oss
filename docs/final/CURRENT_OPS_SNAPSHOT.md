@@ -167,6 +167,10 @@
     - 산출: `docs/final/artifacts/l1_inverse_decoder_swap_typo_mode_router_decoder_v3_longsample_gate_v1.json`
     - 결과: 품질/지연 동시 통과(`swap_typo exact/recovery +0.3100/+0.2967`, `swap_typo p95 latency delta -5.60ms/sample`, mixed도 p95 `-5.66ms/sample`)
     - 판정: `GO_CANDIDATE_FOR_CANARY` (D6 baseline 대비 품질·지연 모두 gate 통과)
+  - Week2-D31 운영 결정(mode router v3 canary decision v1): `scripts/run_l1_inverse_decoder_mode_router_v3_canary_decision.py`
+    - 산출: `docs/final/artifacts/l1_inverse_decoder_mode_router_v3_canary_decision_v1.json`
+    - 판정: `GO_CANARY_MODE_ROUTER_V3_10PCT` (upstream: daily gate `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` + candidate gate `GO_CANDIDATE_FOR_CANARY`)
+    - 롤백: `L1_INVERSE_DECODER_MODE_ROUTER_V3_FORCE_DISABLE=1` 즉시 비활성화 + fallback command 고정
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용

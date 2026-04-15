@@ -1,0 +1,46 @@
+{
+  "schema": "l1_inverse_decoder_mode_router_v3_canary_decision_v1",
+  "generated_at_utc": "2026-04-15T03:26:59+00:00",
+  "research_only": true,
+  "inputs": {
+    "daily_gate_artifact": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_daily_gate_v1_latest.json",
+    "candidate_gate_artifact": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_swap_typo_mode_router_decoder_v3_longsample_gate_v1.json"
+  },
+  "upstream_checks": {
+    "daily_gate_all_ok": true,
+    "candidate_gate_all_ok": true,
+    "daily_gate_decision": "GO_KEEP_OBJECTIVE_V4_DEFAULT_ON",
+    "candidate_gate_decision": "GO_CANDIDATE_FOR_CANARY"
+  },
+  "decision": "GO_CANARY_MODE_ROUTER_V3_10PCT",
+  "rollout_plan": {
+    "phase_1": {
+      "traffic_pct": 10,
+      "duration_hours": 24,
+      "success_criteria": [
+        "daily gate remains GO_KEEP_OBJECTIVE_V4_DEFAULT_ON",
+        "no latency p95 regression > +2ms/sample vs baseline window",
+        "no new alert for swap_typo floor breach"
+      ]
+    },
+    "phase_2": {
+      "traffic_pct": 30,
+      "duration_hours": 48,
+      "requires_phase_1_pass": true
+    },
+    "phase_3": {
+      "traffic_pct": 100,
+      "duration_hours": 0,
+      "requires_phase_2_pass": true
+    }
+  },
+  "rollback_policy": {
+    "instant_disable_switch": "L1_INVERSE_DECODER_MODE_ROUTER_V3_FORCE_DISABLE=1",
+    "fallback_command": "py scripts/run_l1_inverse_decoder_spike_test.py --disable-swap-typo-objective-v4",
+    "trigger_any": [
+      "daily gate decision != GO_KEEP_OBJECTIVE_V4_DEFAULT_ON",
+      "candidate latency check false",
+      "swap_typo exact/recovery floor breach on daily gate"
+    ]
+  }
+}
