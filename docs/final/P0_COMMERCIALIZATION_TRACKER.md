@@ -56,6 +56,8 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 - **Phase 2 집계(미터링 요약):** `py scripts/run_track_a_metering_summary.py` 또는 `scripts/Run-TrackAMeteringSummary.ps1` → `docs/final/artifacts/track_a_metering_summary_latest.json` (입력: `reports/constitution/btrack_pilot/track_a_metering_log_v1.jsonl`).
 - **Phase 2 주간 관측(7일):** `py scripts/run_track_a_metering_weekly_report.py` 또는 `scripts/Run-TrackAMeteringWeeklyReport.ps1` → `docs/final/artifacts/track_a_metering_weekly_report_latest.json` (`target_band_hit_rate` 포함).
 - **Phase 2 데일리 체인(원클릭):** `scripts/run_track_a_commercialization_daily_chain.ps1` (shadow JSONL sample → metering summary → 7-day report → band gate → signal-light → `reports/track_a_commercialization_daily_log.jsonl` append). 기본 모드: `GateMode=warning`; 스케줄 등록: `scripts/Register-TrackACommercializationDailyTask.ps1`.
+- **LLM 정렬(NotebookLM/Gemini/Cursor 공통 입력 고정):** `scripts/Run-ProphecyAlignmentOneClick.ps1` → `docs/final/artifacts/llm_prophecy_alignment_payload_latest.json` 갱신. `sync_check.drift_ok`를 운영 판정에 포함하고, 엄격 모드는 `-StrictSync` 사용. 스케줄 등록: `scripts/Register-ProphecyAlignmentOneClickTask.ps1`.
+- **운영 주의(스케줄러 정합):** 스케줄 등록 스크립트는 사용 전 `ReadFile`/실행 스모크로 동작을 확인한다. placeholder/no-op 스크립트는 운영 SSOT로 단정하지 않는다.
 
 ### Phase 4.1 — Genesis v3 포인터·Verbatim (연구 레인, KJV 공유 라이브러리)
 

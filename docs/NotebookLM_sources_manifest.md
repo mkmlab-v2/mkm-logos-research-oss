@@ -36,8 +36,8 @@
 
 - **역할**: 브리핑·질의·소스 아카이브 레이어. **구현 여부·수치·경로의 단일 진실**은 여전히 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·호출 가능 스크립트·JSON 산출물(`AGENTS.md` 동일).
 - **작전 지휘 참조 노트북 (NotebookLM URL)**  
-  - `347e5cbe-0ade-4615-9aac-8747d4fa644e` — https://notebooklm.google.com/notebook/347e5cbe-0ade-4615-9aac-8747d4fa644e  
-  - `71f55a03-09d0-411f-b365-0ce2a2064c24` — https://notebooklm.google.com/notebook/71f55a03-09d0-411f-b365-0ce2a2064c24  
+  - `작전지휘부 Ops20260318` (`347e5cbe-0ade-4615-9aac-8747d4fa644e`) — https://notebooklm.google.com/notebook/347e5cbe-0ade-4615-9aac-8747d4fa644e  
+  - `Fusion Insight Hub - Bible x Myeongri x Sasang (2026-04-01)` (`71f55a03-09d0-411f-b365-0ce2a2064c24`) — https://notebooklm.google.com/notebook/71f55a03-09d0-411f-b365-0ce2a2064c24  
 - **압축·복원·예언 통합 (FACT 중심, 작전/성경/명리 제외)** — 브리핑·RAG 보조 전용; SSOT는 여전히 레포·`CONSTITUTION`·`artifacts`.  
   - `aba1f8b1-be62-4367-ac7f-b1a997bb77d4` — https://notebooklm.google.com/notebook/aba1f8b1-be62-4367-ac7f-b1a997bb77d4 — 제목: **MKM_CORE_INTELLIGENCE_V1** (MCP `notebook_create` + `source_add`; `.json` 단일 파일 업로드는 도구 제한 시 텍스트 요약·포인터로 대체)
 - **LOG_METABOLISM JSONL 정제 전용** — 원시 로그·엄격 프롬프트 산출 JSONL만 적재; `discover_nl_metabolism_source.py`가 `notebooklm_pull_manifest_v1.json`의 `discover_priority_notebook_ids`로 **최우선 스캔**.  
