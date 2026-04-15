@@ -788,6 +788,14 @@ class CryptoNitroLiveTrader:
             "🛡️ biblical_lane gate mode=%s (off|shadow|enforce; hook=memory/v2/ops/biblical_single_lane_trading_hook_v1_latest.json)",
             self.biblical_lane_gate_mode,
         )
+        self.general_explainable_soft_influence_mode = str(
+            os.getenv("GENERAL_EXPLAINABLE_SOFT_INFLUENCE_MODE", "on") or "on"
+        ).strip().lower()
+        self._general_explainable_soft_cache: Dict[str, Any] = {}
+        logger.info(
+            "🛡️ general explainable soft influence mode=%s (off|on; confidence/sizing cap only)",
+            self.general_explainable_soft_influence_mode,
+        )
 
         logger.info("✅ Crypto-Nitro Live Trader 초기화 완료")
 
@@ -835,6 +843,128 @@ class CryptoNitroLiveTrader:
         if signal in ("BUY", "SELL"):
             return True, "biblical_single_lane_gate_not_ready"
         return False, ""
+
+    def _read_json_safely(self, path: Path) -> Optional[Dict[str, Any]]:
+        if not path.is_file():
+            return None
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            return None
+
+    def _compute_general_explainable_soft_influence(self) -> Dict[str, Any]:
+        """
+        Reference-only soft influence:
+        - never flips BUY/SELL/HOLD directly
+        - only scales confidence and sizing caps downward when explainability quality weakens
+        """
+        neutral = {
+            "enabled": False,
+            "active": False,
+            "confidence_cap": 1.0,
+            "sizing_cap": 1.0,
+            "reasons": [],
+            "stats": {},
+        }
+        if self.general_explainable_soft_influence_mode == "off":
+            return neutral
+
+        hook = self._read_biblical_lane_hook()
+        if not hook:
+            return neutral
+
+        ref_ext = hook.get("reference_only_extensions") if isinstance(hook.get("reference_only_extensions"), dict) else {}
+        ge_meta = ref_ext.get("general_prophecy_explainable") if isinstance(ref_ext.get("general_prophecy_explainable"), dict) else {}
+        if not bool(ge_meta.get("enabled", False)):
+            return neutral
+        if not bool(ge_meta.get("reference_only", True)):
+            return neutral
+        if not bool(ge_meta.get("must_not_trigger_orders", True)):
+            return neutral
+
+        src = str(ge_meta.get("source_artifact") or "").strip()
+        if not src:
+            src = str((hook.get("source_artifacts") or {}).get("general_prophecy_explainable") or "").strip()
+        if not src:
+            return neutral
+
+        artifact_path = Path(src)
+        if not artifact_path.is_absolute():
+            artifact_path = (
+                Path(__file__).parent.parent.parent.parent.parent / src
+            ).resolve()
+        if not artifact_path.is_file():
+            return neutral
+
+        cache_key = str(artifact_path)
+        mtime = artifact_path.stat().st_mtime
+        cached = self._general_explainable_soft_cache.get(cache_key)
+        if isinstance(cached, dict) and float(cached.get("mtime", -1.0)) == float(mtime):
+            return cached.get("result", neutral)
+
+        artifact = self._read_json_safely(artifact_path)
+        if not isinstance(artifact, dict):
+            return neutral
+
+        rows = artifact.get("questions") if isinstance(artifact.get("questions"), list) else []
+        confs: List[float] = []
+        neutral_count = 0
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            try:
+                confs.append(float(row.get("fusion_confidence", 0.0) or 0.0))
+            except Exception:
+                confs.append(0.0)
+            if str(row.get("fusion_decision", "")).strip().lower() == "neutral":
+                neutral_count += 1
+        n = len(confs)
+        avg_conf = (sum(confs) / n) if n > 0 else 0.0
+        neutral_ratio = (neutral_count / n) if n > 0 else 1.0
+
+        quality_path = artifact_path.parent / "general_prophecy_explainability_quality_v1_latest.json"
+        quality = self._read_json_safely(quality_path)
+        repro_rate = None
+        if isinstance(quality, dict):
+            try:
+                repro_rate = float((quality.get("summary") or {}).get("reproducible_evidence_rate"))
+            except Exception:
+                repro_rate = None
+
+        confidence_cap = 1.0
+        sizing_cap = 1.0
+        reasons: List[str] = []
+        if avg_conf < 0.52:
+            confidence_cap *= 0.94
+            sizing_cap *= 0.90
+            reasons.append("avg_fusion_confidence_low")
+        if neutral_ratio > 0.70:
+            confidence_cap *= 0.96
+            sizing_cap *= 0.92
+            reasons.append("neutral_ratio_high")
+        if repro_rate is not None and repro_rate < 0.30:
+            confidence_cap *= 0.95
+            sizing_cap *= 0.90
+            reasons.append("reproducible_evidence_rate_low")
+
+        confidence_cap = max(0.80, min(1.0, confidence_cap))
+        sizing_cap = max(0.75, min(1.0, sizing_cap))
+        active = bool(reasons)
+        result = {
+            "enabled": True,
+            "active": active,
+            "confidence_cap": confidence_cap,
+            "sizing_cap": sizing_cap,
+            "reasons": reasons,
+            "stats": {
+                "question_count": n,
+                "avg_fusion_confidence": round(avg_conf, 6),
+                "neutral_ratio": round(neutral_ratio, 6),
+                "reproducible_evidence_rate": None if repro_rate is None else round(repro_rate, 6),
+            },
+        }
+        self._general_explainable_soft_cache[cache_key] = {"mtime": mtime, "result": result}
+        return result
 
     def _load_risk_profile(self):
         """
@@ -1286,6 +1416,30 @@ class CryptoNitroLiveTrader:
                     signal = signal_data.get("signal", "HOLD")
                     confidence = signal_data.get("confidence", 0.0)
                     leverage_multiplier = signal_data.get("leverage_multiplier", 1.0)
+                    soft_influence = self._compute_general_explainable_soft_influence()
+                    if signal in ("BUY", "SELL") and bool(soft_influence.get("active", False)):
+                        raw_conf = float(confidence)
+                        conf_cap = float(soft_influence.get("confidence_cap", 1.0) or 1.0)
+                        size_cap = float(soft_influence.get("sizing_cap", 1.0) or 1.0)
+                        confidence = max(0.0, min(1.0, raw_conf * conf_cap))
+                        leverage_multiplier = max(0.0, float(leverage_multiplier) * size_cap)
+                        signal_data["confidence"] = confidence
+                        signal_data["soft_sizing_cap_multiplier"] = size_cap
+                        signal_data["general_explainable_soft_influence"] = soft_influence
+                        logger.info(
+                            "SOFT_INFLUENCE active: conf %.3f->%.3f (cap=%.3f), sizing cap=%.3f, reasons=%s",
+                            raw_conf,
+                            confidence,
+                            conf_cap,
+                            size_cap,
+                            ",".join(soft_influence.get("reasons", [])),
+                        )
+                    elif signal in ("BUY", "SELL"):
+                        logger.debug(
+                            "SOFT_INFLUENCE inactive: enabled=%s, active=%s",
+                            soft_influence.get("enabled", False),
+                            soft_influence.get("active", False),
+                        )
                     singular_core = signal_data.get("mkm_singular_core") or {}
                     singular_action = str(singular_core.get("action", "LOCKED")).upper()
                     if singular_action not in ("BUY", "SELL", "LOCKED"):
@@ -1896,22 +2050,30 @@ class CryptoNitroLiveTrader:
             vol_multiplier = 1.0
 
         confidence_multiplier = max(0.8, min(1.1, 0.8 + float(confidence) * 0.3))
+        soft_sizing_cap = 1.0
+        if isinstance(signal_data, dict):
+            try:
+                soft_sizing_cap = max(0.75, min(1.0, float(signal_data.get("soft_sizing_cap_multiplier", 1.0) or 1.0)))
+            except Exception:
+                soft_sizing_cap = 1.0
         allowed_notional = min(
             max_notional_by_ratio,
             max_notional_by_risk * vol_multiplier * confidence_multiplier,
         )
+        allowed_notional *= soft_sizing_cap
         if requested_notional <= allowed_notional:
             return requested_position_size
 
         logger.info(
             "🛡️ 동적 사이징 캡 적용: 요청 %.2f USDT -> 허용 %.2f USDT "
-            "(risk_per_trade=%.2f%%, stop_loss=%.2f%%, vol=%.4f, conf=%.2f)",
+            "(risk_per_trade=%.2f%%, stop_loss=%.2f%%, vol=%.4f, conf=%.2f, soft_cap=%.2f)",
             requested_notional,
             allowed_notional,
             self.config_risk_per_trade * 100.0,
             stop_loss * 100.0,
             realized_volatility,
             confidence,
+            soft_sizing_cap,
         )
         return max(0.0, allowed_notional / max(price, 1e-9))
     
@@ -2485,20 +2647,28 @@ class CryptoNitroLiveTrader:
                 else:
                     vol_multiplier = 1.0
                 confidence_multiplier = max(0.8, min(1.1, 0.8 + float(confidence) * 0.3))
+                soft_sizing_cap = 1.0
+                if isinstance(signal_data, dict):
+                    try:
+                        soft_sizing_cap = max(0.75, min(1.0, float(signal_data.get("soft_sizing_cap_multiplier", 1.0) or 1.0)))
+                    except Exception:
+                        soft_sizing_cap = 1.0
                 allowed_notional = min(
                     max_notional_by_ratio,
                     max_notional_by_risk * vol_multiplier * confidence_multiplier,
                 )
+                allowed_notional *= soft_sizing_cap
                 if requested_notional > allowed_notional:
                     logger.info(
                         "🛡️ 동적 사이징 캡 적용: 요청 %.2f USDT -> 허용 %.2f USDT "
-                        "(risk_per_trade=%.2f%%, stop_loss=%.2f%%, vol=%.4f, conf=%.2f)",
+                        "(risk_per_trade=%.2f%%, stop_loss=%.2f%%, vol=%.4f, conf=%.2f, soft_cap=%.2f)",
                         requested_notional,
                         allowed_notional,
                         self.config_risk_per_trade * 100.0,
                         stop_loss * 100.0,
                         realized_volatility,
                         confidence,
+                        soft_sizing_cap,
                     )
                     position_size = max(0.0, allowed_notional / max(price, 1e-9))
 

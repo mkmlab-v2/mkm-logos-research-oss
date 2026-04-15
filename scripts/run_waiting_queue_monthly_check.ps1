@@ -19,7 +19,8 @@ param(
     [string]$SecondaryHitThresholdPct = "",
     [string]$SecondaryFailThresholdPct = "",
     [switch]$SkipKospiSasangDynamicsVerify,
-    [switch]$SkipBiblicalExternalRealityLockedProfile
+    [switch]$SkipBiblicalExternalRealityLockedProfile,
+    [switch]$StrictGeneralExplainabilityQualityGate
 )
 
 $ErrorActionPreference = "Stop"
@@ -94,6 +95,7 @@ $reportSchemaV2FromChainScriptPath = "$workspace\scripts\experimental\codebook_r
 $reportSchemaV2LabelKpiScriptPath = "$workspace\scripts\experimental\codebook_runtime_pack\build_report_schema_v2_label_kpi.py"
 $reportSchemaV2QualityAlertScriptPath = "$workspace\scripts\experimental\codebook_runtime_pack\build_report_schema_v2_quality_alert.py"
 $dailySitrepPath = "$workspace\docs\final\artifacts\waiting_queue_daily_sitrep_latest.txt"
+$generalExplainabilityQualityPath = "$workspace\docs\final\artifacts\general_prophecy_explainability_quality_v1_latest.json"
 $btrackRecommendationPackPath = "$workspace\reports\notebooklm\btrack_insight_recommendation_pack_latest.json"
 $btrackMonthlyBriefBuilderPath = "$workspace\scripts\build_btrack_monthly_brief_from_recommendation.py"
 $softFailNotes = New-Object System.Collections.Generic.List[string]
@@ -131,6 +133,23 @@ $skipBiblicalExternalRealityEffective = $SkipBiblicalExternalRealityLockedProfil
 if ($env:FACT_SAFE_SKIP_BIBLICAL_EXTERNAL_REALITY_LOCKED) {
     $skipBiblicalExternalRealityEffective = ([string]$env:FACT_SAFE_SKIP_BIBLICAL_EXTERNAL_REALITY_LOCKED).ToLower() -in @("1", "true", "yes")
 }
+$generalExplainabilityCoverageMin = 1.0
+if ($env:GENERAL_EXPLAINABILITY_COVERAGE_MIN) {
+    $generalExplainabilityCoverageMin = [double]$env:GENERAL_EXPLAINABILITY_COVERAGE_MIN
+}
+$generalExplainabilityConflictMin = 1.0
+if ($env:GENERAL_EXPLAINABILITY_CONFLICT_MIN) {
+    $generalExplainabilityConflictMin = [double]$env:GENERAL_EXPLAINABILITY_CONFLICT_MIN
+}
+$generalExplainabilityReproMin = 0.30
+if ($env:GENERAL_EXPLAINABILITY_REPRO_MIN) {
+    $generalExplainabilityReproMin = [double]$env:GENERAL_EXPLAINABILITY_REPRO_MIN
+}
+$generalExplainabilityQualityGate = "skipped"
+$generalExplainabilityQualityReason = $null
+$generalExplainabilityCoverageRate = $null
+$generalExplainabilityConflictRate = $null
+$generalExplainabilityReproRate = $null
 $checkedAtObj = [DateTimeOffset]::UtcNow
 $checkedAt = $checkedAtObj.ToString("o")
 $nextMonthlyDue = $checkedAtObj.AddDays(30).ToString("yyyy-MM-dd")
@@ -271,6 +290,55 @@ if (-not $SkipGeneralProphecyChain) {
     py scripts/generate_general_prophecy_v1.py
     if ($LASTEXITCODE -ne 0) {
         throw "generate_general_prophecy_v1 failed with exit code $LASTEXITCODE"
+    }
+    py scripts/build_general_prophecy_explainable_v1.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "build_general_prophecy_explainable_v1 failed with exit code $LASTEXITCODE"
+    }
+    py scripts/report_general_prophecy_explainability_quality_v1.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "report_general_prophecy_explainability_quality_v1 failed with exit code $LASTEXITCODE"
+    }
+    if (Test-Path -LiteralPath $generalExplainabilityQualityPath) {
+        try {
+            $gqObj = Get-Content -LiteralPath $generalExplainabilityQualityPath -Raw -Encoding utf8 | ConvertFrom-Json
+            $generalExplainabilityCoverageRate = $gqObj.summary.coverage_rate
+            $generalExplainabilityConflictRate = $gqObj.summary.conflict_resolution_rate
+            $generalExplainabilityReproRate = $gqObj.summary.reproducible_evidence_rate
+            $gateCoverageOk = ($null -ne $generalExplainabilityCoverageRate) -and ([double]$generalExplainabilityCoverageRate -ge [double]$generalExplainabilityCoverageMin)
+            $gateConflictOk = ($null -ne $generalExplainabilityConflictRate) -and ([double]$generalExplainabilityConflictRate -ge [double]$generalExplainabilityConflictMin)
+            $gateReproOk = ($null -ne $generalExplainabilityReproRate) -and ([double]$generalExplainabilityReproRate -ge [double]$generalExplainabilityReproMin)
+            if ($gateCoverageOk -and $gateConflictOk -and $gateReproOk) {
+                $generalExplainabilityQualityGate = "pass"
+                $generalExplainabilityQualityReason = "all_thresholds_satisfied"
+            } else {
+                $generalExplainabilityQualityGate = "fail"
+                $generalExplainabilityQualityReason = "threshold_below_min"
+                $gateMsg = "general explainability quality gate fail: coverage=$generalExplainabilityCoverageRate (min=$generalExplainabilityCoverageMin), conflict=$generalExplainabilityConflictRate (min=$generalExplainabilityConflictMin), reproducible=$generalExplainabilityReproRate (min=$generalExplainabilityReproMin)"
+                if ($StrictGeneralExplainabilityQualityGate) {
+                    throw $gateMsg
+                }
+                Add-SoftFailNote $gateMsg
+            }
+        } catch {
+            $generalExplainabilityQualityGate = "parse_error"
+            $generalExplainabilityQualityReason = "quality_report_parse_error"
+            if ($StrictGeneralExplainabilityQualityGate) {
+                throw "general explainability quality parse failed"
+            }
+            Add-SoftFailNote "general explainability quality parse failed; gate marked parse_error"
+        }
+    } else {
+        $generalExplainabilityQualityGate = "missing"
+        $generalExplainabilityQualityReason = "quality_report_missing"
+        if ($StrictGeneralExplainabilityQualityGate) {
+            throw "general explainability quality report missing: $generalExplainabilityQualityPath"
+        }
+        Add-SoftFailNote "general explainability quality report missing; gate marked missing"
+    }
+    py scripts/sync_biblical_lane_hook_to_bitcoin_trading.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "sync_biblical_lane_hook_to_bitcoin_trading failed with exit code $LASTEXITCODE"
     }
     py scripts/build_general_prophecy_brief.py
     if ($LASTEXITCODE -ne 0) {
@@ -1049,6 +1117,16 @@ $logRow = @{
     cost_watch_blocking_reasons = $costWatchBlockingReasons
     cost_watch_billing_invoice_audit_ready = $costWatchBillingAuditReady
     cost_watch_billing_source_tier = $costWatchBillingSourceTier
+    general_explainability_quality_path = $generalExplainabilityQualityPath
+    general_explainability_quality_gate = $generalExplainabilityQualityGate
+    general_explainability_quality_reason = $generalExplainabilityQualityReason
+    general_explainability_coverage_rate = $generalExplainabilityCoverageRate
+    general_explainability_conflict_resolution_rate = $generalExplainabilityConflictRate
+    general_explainability_reproducible_evidence_rate = $generalExplainabilityReproRate
+    general_explainability_coverage_min = $generalExplainabilityCoverageMin
+    general_explainability_conflict_min = $generalExplainabilityConflictMin
+    general_explainability_repro_min = $generalExplainabilityReproMin
+    strict_general_explainability_quality_gate = [bool]$StrictGeneralExplainabilityQualityGate
     regime_switch_report_path = $regimeSwitchReportPath
     regime_switch_rule = $regimeSwitchRule
     regime_switch_delta_net_return_pct_sum = $regimeSwitchDeltaNet
