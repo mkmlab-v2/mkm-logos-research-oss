@@ -1,0 +1,136 @@
+{
+  "schema": "l1_inverse_decoder_swap_typo_mode_router_decoder_v1_longsample_gate_v1",
+  "generated_at_utc": "2026-04-15T02:57:46+00:00",
+  "research_only": true,
+  "inputs": {
+    "seeds": [
+      701,
+      809,
+      907,
+      1009,
+      1103
+    ],
+    "samples": 240,
+    "beam_size": 8,
+    "noise_level": 0.1,
+    "scoring_mode": "enhanced",
+    "candidate": "swap_typo_mode_router_decoder_v1"
+  },
+  "results": {
+    "mixed": {
+      "mode": "mixed",
+      "avg_exact_restore_rate": 0.6433333333333333,
+      "avg_recovery_rate": 0.6591666666666667,
+      "min_exact_restore_rate": 0.625,
+      "min_recovery_rate": 0.6375,
+      "avg_latency_ms_per_sample": 154.59550166657817,
+      "p95_latency_ms_per_sample": 155.85964583345535,
+      "per_seed": [
+        {
+          "seed": 701,
+          "exact": 0.65,
+          "recovery": 0.6583333333333333,
+          "latency_ms_per_sample": 155.46845750068314
+        },
+        {
+          "seed": 809,
+          "exact": 0.6291666666666667,
+          "recovery": 0.6375,
+          "latency_ms_per_sample": 155.85964583345535
+        },
+        {
+          "seed": 907,
+          "exact": 0.625,
+          "recovery": 0.6416666666666667,
+          "latency_ms_per_sample": 152.80519874941092
+        },
+        {
+          "seed": 1009,
+          "exact": 0.6541666666666667,
+          "recovery": 0.6625,
+          "latency_ms_per_sample": 154.17516833307067
+        },
+        {
+          "seed": 1103,
+          "exact": 0.6583333333333333,
+          "recovery": 0.6958333333333333,
+          "latency_ms_per_sample": 154.6690379162707
+        }
+      ]
+    },
+    "swap_typo": {
+      "mode": "swap_typo",
+      "avg_exact_restore_rate": 0.8391666666666666,
+      "avg_recovery_rate": 0.8458333333333332,
+      "min_exact_restore_rate": 0.8208333333333333,
+      "min_recovery_rate": 0.825,
+      "avg_latency_ms_per_sample": 341.5740674167561,
+      "p95_latency_ms_per_sample": 346.31016749966267,
+      "per_seed": [
+        {
+          "seed": 701,
+          "exact": 0.8625,
+          "recovery": 0.8708333333333333,
+          "latency_ms_per_sample": 346.31016749966267
+        },
+        {
+          "seed": 809,
+          "exact": 0.8416666666666667,
+          "recovery": 0.85,
+          "latency_ms_per_sample": 340.1286912499927
+        },
+        {
+          "seed": 907,
+          "exact": 0.8375,
+          "recovery": 0.8458333333333333,
+          "latency_ms_per_sample": 336.91665958419134
+        },
+        {
+          "seed": 1009,
+          "exact": 0.8333333333333334,
+          "recovery": 0.8375,
+          "latency_ms_per_sample": 340.3828570832654
+        },
+        {
+          "seed": 1103,
+          "exact": 0.8208333333333333,
+          "recovery": 0.825,
+          "latency_ms_per_sample": 344.1319616666685
+        }
+      ]
+    }
+  },
+  "baseline_reference": {
+    "artifact": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_week2_d6_repro_latency_v1.json",
+    "mixed_exact": 0.6216666666666667,
+    "mixed_recovery": 0.6391666666666667,
+    "swap_typo_exact": 0.25083333333333335,
+    "swap_typo_recovery": 0.2816666666666667,
+    "mixed_p95_latency_ms_per_sample": 165.8593687500494,
+    "swap_typo_p95_latency_ms_per_sample": 154.90656124990588
+  },
+  "delta_vs_baseline": {
+    "mixed_exact_delta": 0.021666666666666612,
+    "mixed_recovery_delta": 0.020000000000000018,
+    "swap_typo_exact_delta": 0.5883333333333333,
+    "swap_typo_recovery_delta": 0.5641666666666665,
+    "mixed_p95_latency_delta_ms": -9.999722916594067,
+    "swap_typo_p95_latency_delta_ms": 191.4036062497568
+  },
+  "thresholds": {
+    "swap_typo_uplift_min": 0.02,
+    "mixed_non_regression_floor": -0.005,
+    "latency_p95_delta_max_ms": 2.0
+  },
+  "checks": {
+    "swap_typo_exact_uplift_ok": true,
+    "swap_typo_recovery_uplift_ok": true,
+    "mixed_non_regression_ok": true,
+    "mixed_latency_p95_ok": true,
+    "swap_typo_latency_p95_ok": false
+  },
+  "gate": {
+    "all_ok": false,
+    "decision": "HOLD_LATENCY_OR_STABILITY"
+  }
+}

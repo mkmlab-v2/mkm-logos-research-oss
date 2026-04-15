@@ -149,6 +149,10 @@
     - 사전 게이트 등록: `docs/final/artifacts/l1_inverse_decoder_swap_typo_mode_router_decoder_v1_preregister.json` (`target_failure_bucket=order_only_mismatch`)
     - 결과: mixed 개선(`exact +0.0617`, `recovery +0.0525`) / `swap_typo` 개선(`exact +0.5742`, `recovery +0.5475`), `swap_typo avg_pool_size=768.19`
     - 판정: `GO_MODE_ROUTER_DECODER_V1` (precheck gate 통과; 대규모 pool로 latency/장샘플 재검증 필요)
+  - Week2-D26 검증(mode router v1 longsample + latency gate): `scripts/run_l1_swap_typo_mode_router_decoder_v1_longsample_gate.py`
+    - 산출: `docs/final/artifacts/l1_inverse_decoder_swap_typo_mode_router_decoder_v1_longsample_gate_v1.json`
+    - 결과: 품질 게이트는 통과(`swap_typo exact/recovery +0.5883/+0.5642`, mixed 비회귀)했지만 `swap_typo p95 latency delta +191.40ms/sample`로 예산 초과
+    - 판정: `HOLD_LATENCY_OR_STABILITY` (현 상태로 canary 승격 금지, latency 절감 패치 선행)
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
