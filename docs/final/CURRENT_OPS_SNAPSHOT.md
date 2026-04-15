@@ -160,6 +160,13 @@
     - 산출: `docs/final/artifacts/l1_inverse_decoder_swap_typo_mode_router_decoder_v2_longsample_gate_v1.json`
     - 결과: 품질 게이트 통과 + latency 개선(v1 대비 대폭 감소)했지만 `swap_typo p95 latency delta +31.52ms/sample`로 여전히 예산(+2ms) 초과
     - 판정: `HOLD_LATENCY_OR_STABILITY` (추가 pruning/early-stop 없이는 canary 승격 불가)
+  - Week2-D29 실험 22안(mode router v3, aggressive latency cut): `scripts/run_l1_swap_typo_mode_router_decoder_v3.py`
+    - 사전 게이트 등록: `docs/final/artifacts/l1_inverse_decoder_swap_typo_mode_router_decoder_v3_preregister.json` (`permutation_cap=96`, `dynamic_top_k=24|48`, `swap_dist_cutoff=8`)
+    - precheck 결과: `GO_MODE_ROUTER_DECODER_V3` (mixed `+0.0575/+0.0483`, swap_typo `+0.2950/+0.2850`, swap_typo avg_pool_size `24.0`)
+  - Week2-D30 검증(mode router v3 longsample + latency gate): `scripts/run_l1_swap_typo_mode_router_decoder_v3_longsample_gate.py`
+    - 산출: `docs/final/artifacts/l1_inverse_decoder_swap_typo_mode_router_decoder_v3_longsample_gate_v1.json`
+    - 결과: 품질/지연 동시 통과(`swap_typo exact/recovery +0.3100/+0.2967`, `swap_typo p95 latency delta -5.60ms/sample`, mixed도 p95 `-5.66ms/sample`)
+    - 판정: `GO_CANDIDATE_FOR_CANARY` (D6 baseline 대비 품질·지연 모두 gate 통과)
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
