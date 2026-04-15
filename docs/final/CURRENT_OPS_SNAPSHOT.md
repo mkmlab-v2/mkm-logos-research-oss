@@ -6,16 +6,16 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W18-E2)
+## Track A Sprint Update (2026-04-15, W18-E3)
 
-- 실행: `py scripts/run_track_a_week18_budgeted_crossover_shadow_sweep_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week18_budgeted_crossover_shadow_sweep_v1.json`
-- 결과: `decision=HOLD_W18_E2_NO_VIABLE`, `viable_count=0`
+- 실행: `py scripts/run_track_a_week18_coupled_veto_domain_budget_sweep_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week18_coupled_veto_domain_budget_sweep_v1.json`
+- 결과: `decision=HOLD_W18_E3_NO_VIABLE`, `viable_count=0`
 - 기준선: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
 - 최고 run: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0` (기준선과 동일)
-- 관찰: `switched_to_router_off_cases`는 일부 조합에서 1건 발생했으나 `floor_shadow_blocked_cases=6`, `confidence_blocked_cases`(26~29)로 대부분 차단되어 `delta_vs_baseline` 개선 0 고정
-- 판단: budgeted crossover + dynamic floor shadow 조합도 deadlock 해소 불가, 상용화 라인은 HOLD 유지
-- 다음 1스텝: W18-E3(`run_track_a_week18_coupled_veto_domain_budget_sweep_v1.py`) 구현/실행
+- 관찰: coupled veto + domain budget에서 일부 조합 `switched_to_router_off_cases` 최대 2건까지 허용됐지만 최고 run의 `delta_vs_baseline`는 여전히 0, saving/jaccard 동시 개선 실패
+- 판단: coupled veto-domain budget 조합도 deadlock 해소 불가, 상용화 라인은 HOLD 유지
+- 다음 1스텝: W18-E4(`report_track_a_week18_policy_replay_v1.py`) 구현/실행으로 주간 replay 종합 판정 확정
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
