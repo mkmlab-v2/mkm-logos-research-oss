@@ -362,6 +362,9 @@ class CryptoNitroLiveTrader:
         # 매크로 레짐 연동용 기본값 (KOSPI/환율/에너지 등 외부 레짐 스코어)
         self.macro_risk_level: float = 0.0
         self.fiat_crisis_flag: bool = False
+        # 레포 사상 단독 레인 JSON → BTC 전용 방어적 스트레스 (KOSPI 체결 없음)
+        self._sasang_btc_overlay_stress: float = 0.0
+        self._sasang_btc_overlay_label: str = "pending"
         
         # ⚠️ 실전 매매 활성화 확인
         if enable_live_trading and not testnet:
@@ -566,6 +569,8 @@ class CryptoNitroLiveTrader:
         )
         
         # 설정 파일에서 리스크 관리 및 매크로 레짐 설정 읽기
+        config = None
+        config_path = None
         try:
             import yaml
             # 여러 경로 시도
@@ -676,6 +681,25 @@ class CryptoNitroLiveTrader:
             import traceback
             logger.debug(traceback.format_exc())
             self.risk_manager.max_position_size = 0.15  # 기본값 15%
+
+        try:
+            from src.risk.kospi_sasang_lane_btc_overlay import resolve_sasang_overlay
+
+            stress, meta = resolve_sasang_overlay(workspace_root, config)
+            self._sasang_btc_overlay_stress = float(stress)
+            self._sasang_btc_overlay_label = str(meta.get("label", "off"))
+            if meta.get("label") != "disabled":
+                logger.info(
+                    "🛡️ 사상 단독 레인 → BTC 리스크 오버레이: track=%s, stress=%.2f, %s, path=%s",
+                    meta.get("track", "market"),
+                    self._sasang_btc_overlay_stress,
+                    self._sasang_btc_overlay_label,
+                    meta.get("path"),
+                )
+        except Exception as e:
+            logger.warning("⚠️ 사상 BTC 오버레이 초기화 실패(무시): %s", e)
+            self._sasang_btc_overlay_stress = 0.0
+            self._sasang_btc_overlay_label = "error"
         
         # peak_capital을 현재 잔고로 리셋 (낙폭 계산 정확도 향상)
         try:
@@ -756,8 +780,61 @@ class CryptoNitroLiveTrader:
         }
 
         self._load_risk_profile()
-        
+        # Optional: workspace-synced biblical single-lane gate hook (memory/v2/ops/…json)
+        self.biblical_lane_gate_mode = str(
+            os.getenv("BIBLICAL_SINGLE_LANE_GATE_MODE", "shadow") or "shadow"
+        ).strip().lower()
+        logger.info(
+            "🛡️ biblical_lane gate mode=%s (off|shadow|enforce; hook=memory/v2/ops/biblical_single_lane_trading_hook_v1_latest.json)",
+            self.biblical_lane_gate_mode,
+        )
+
         logger.info("✅ Crypto-Nitro Live Trader 초기화 완료")
+
+    def _read_biblical_lane_hook(self) -> Optional[Dict[str, Any]]:
+        path = (
+            Path(__file__).parent.parent.parent
+            / "memory"
+            / "v2"
+            / "ops"
+            / "biblical_single_lane_trading_hook_v1_latest.json"
+        )
+        if not path.is_file():
+            return None
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            return None
+
+    def _biblical_lane_gate_force_hold(self, signal: str) -> tuple[bool, str]:
+        """
+        When BIBLICAL_SINGLE_LANE_GATE_MODE=enforce and live_trading.allowed is false,
+        block directional execution (fail-open if hook missing or schema mismatch).
+        """
+        mode = getattr(self, "biblical_lane_gate_mode", "shadow")
+        if mode == "off":
+            return False, ""
+        hook = self._read_biblical_lane_hook()
+        if not hook:
+            if mode == "enforce":
+                logger.debug("biblical_lane hook file missing; fail-open (no block)")
+            return False, ""
+        ver = str(hook.get("schema_version", "")).strip()
+        if ver != "biblical_single_lane_trading_hook_v1":
+            if mode == "enforce":
+                logger.warning("biblical_lane hook schema_version mismatch (%s); fail-open", ver or "empty")
+            return False, ""
+        lt = hook.get("live_trading") if isinstance(hook.get("live_trading"), dict) else {}
+        if bool(lt.get("allowed", False)):
+            return False, ""
+        if mode == "shadow":
+            logger.debug(
+                "biblical_lane hook: live_trading.allowed=false (shadow; execution not blocked)"
+            )
+            return False, ""
+        if signal in ("BUY", "SELL"):
+            return True, "biblical_single_lane_gate_not_ready"
+        return False, ""
 
     def _load_risk_profile(self):
         """
@@ -919,6 +996,8 @@ class CryptoNitroLiveTrader:
         try:
             macro_level = getattr(self, "macro_risk_level", 0.0)
             macro_level = max(0.0, min(1.0, float(macro_level)))
+            sasang_s = float(getattr(self, "_sasang_btc_overlay_stress", 0.0))
+            macro_level = max(macro_level, sasang_s)
             if macro_level > 0.0:
                 macro_factor = max(0.3, 1.0 - macro_level)  # 최소 30%까지 축소
                 old_max_trades = max_trades_per_day
@@ -1234,6 +1313,8 @@ class CryptoNitroLiveTrader:
                     # leverage_multiplier 0.2~1.5 → macro_risk_level 1.0~0.0 (위기 시 포지션/일일손실 한도 축소)
                     try:
                         macro_level = max(0.0, min(1.0, (1.5 - float(leverage_multiplier)) / 1.3))
+                        sasang_s = float(getattr(self, "_sasang_btc_overlay_stress", 0.0))
+                        macro_level = max(macro_level, sasang_s)
                         self.risk_manager.apply_macro_regime(macro_level)
                     except Exception as rm_err:
                         logger.debug("RiskManager BTC-6 반영 건너뜀: %s", rm_err)
@@ -1293,6 +1374,22 @@ class CryptoNitroLiveTrader:
                         signal_data["gate_reason"] = "market_shock_hardguard_hold"
                         gate_reason = "market_shock_hardguard_hold"
                         signal_level = "LOW"
+
+                    bl_hold, bl_reason = self._biblical_lane_gate_force_hold(signal)
+                    if bl_hold and signal in ("BUY", "SELL"):
+                        signal = "HOLD"
+                        confidence = min(confidence, 0.59)
+                        signal_data["signal"] = "HOLD"
+                        signal_data["confidence"] = confidence
+                        signal_data["signal_level"] = "LOW"
+                        signal_data["price_output_locked"] = True
+                        signal_data["gate_reason"] = bl_reason
+                        gate_reason = bl_reason
+                        signal_level = "LOW"
+                        logger.warning(
+                            "🛡️ biblical_lane gate enforce: forced HOLD (%s)",
+                            bl_reason,
+                        )
 
                     # HOLD/LOW 신호는 가격 수치 출력 없이 스킵
                     if signal == "HOLD":
