@@ -1,6 +1,6 @@
 {
   "schema": "l1_inverse_decoder_failure_profile_v1",
-  "generated_at_utc": "2026-04-14T09:34:31+00:00",
+  "generated_at_utc": "2026-04-15T00:15:18+00:00",
   "research_only": true,
   "inputs": {
     "seeds": [
@@ -17,7 +17,7 @@
   },
   "aggregate": {
     "avg_exact_restore_rate": 0.2611111111111111,
-    "avg_recovery_rate": 0.29629629629629634,
+    "avg_recovery_rate": 0.2962962962962963,
     "total_failures": 399,
     "near_miss_count": 19,
     "hard_fail_count": 380

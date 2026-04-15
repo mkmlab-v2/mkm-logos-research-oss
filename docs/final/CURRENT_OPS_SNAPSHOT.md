@@ -95,7 +95,7 @@
     - 기준: `mixed exact>=0.55`, `mixed recovery>=0.58`, `swap_typo exact>=0.25`, `swap_typo recovery>=0.29`
   - 실패유형 프로파일: `scripts/run_l1_inverse_decoder_failure_profile_v1.py`
     - 최신: `docs/final/artifacts/l1_inverse_decoder_failure_profile_v1_latest.json`
-    - 현재 1순위 실패: `order_only_mismatch` (ratio≈0.753)
+    - 현재 1순위 실패: `order_only_mismatch` (ratio≈0.757; 최근 재실행 `generated_at_utc=2026-04-15T00:15:18+00:00`)
   - Week1-D3 실험 1안(order distance 강화): `docs/final/artifacts/l1_inverse_decoder_v4_orderfix_ab_v1.json`
     - 결과: mixed/swap_typo 모두 성능 하락 (`swap_typo exact -0.0685`, `recovery -0.0685`)
     - 판정: `HOLD_V4` (즉시 원복)
@@ -137,7 +137,7 @@
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
   - A-Track 일일 게이트 재실행: `docs/final/artifacts/l1_inverse_decoder_daily_gate_v1_latest.json`
-    - 최신(UTC): `2026-04-15T00:00:46+00:00` — 판정: `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` (all checks true) · mixed avg exact/recovery `0.60`/`0.621`, swap_typo avg `0.275`/`0.304`
+    - 최신(UTC): `2026-04-15T00:13:50+00:00` — 판정: `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` (all checks true) · mixed avg exact/recovery `0.60`/`0.621`, swap_typo avg `0.279`/`0.308`
   - A-Track 주간(운영 로그 `reports/l1_inverse_decoder_daily_gate_log_v1.jsonl`): 표준 일일 경로 기준 연속 GO; 과거 1건 `HOLD_INVESTIGATE`는 D5 longsample 전용 산출물 맥락으로 분리. 연구 레인 `STOP_INCREMENTAL_TUNING_KEEP_V4` 유지(`docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`).
   - A-Track 운영 하드닝 정책 고정: `docs/final/artifacts/l1_inverse_decoder_atrack_operational_hardening_v1.json`
     - 핵심: 일일 게이트 강제 + 실패 시 즉시 롤백 + 실패 알림 상시화
