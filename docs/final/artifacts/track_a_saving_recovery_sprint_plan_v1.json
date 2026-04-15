@@ -1,0 +1,51 @@
+{
+  "schema": "track_a_saving_recovery_sprint_plan_v1",
+  "generated_at_utc": "2026-04-15T09:55:25+00:00",
+  "guardrail": {
+    "policy_floor_locked": 0.49,
+    "runtime_saving_now": 0.4683544303797469,
+    "gap_to_recover": 0.021645569620253102,
+    "decision_ref": "C:\\workspace\\docs\\final\\artifacts\\track_a_policy_floor_decision_v1.json",
+    "decision_id": "DECISION_KEEP_POLICY_FLOOR_049_HOLD_BASELINE"
+  },
+  "sprint": {
+    "name": "track_a_saving_recovery_week3",
+    "objective": "Recover global token saving to policy floor without degrading integrity or jaccard gate.",
+    "work_items": [
+      {
+        "id": "W3-D1",
+        "title": "Domain-routing condition split A/B",
+        "owner": "agent",
+        "deliverable": "track_a_routing_condition_ab_v1.json",
+        "success_gate": "saving >= 0.475 and integrity == 1.0"
+      },
+      {
+        "id": "W3-D2",
+        "title": "Cap decoupling by sensitive/hangul only",
+        "owner": "agent",
+        "deliverable": "track_a_cap_decouple_sweep_v1.json",
+        "success_gate": "saving >= 0.48 and target-domain jaccard non-regression"
+      },
+      {
+        "id": "W3-D3",
+        "title": "Conservative phrase-first profile test",
+        "owner": "agent",
+        "deliverable": "track_a_phrase_profile_ab_v1.json",
+        "success_gate": "saving >= 0.485 and integrity == 1.0"
+      },
+      {
+        "id": "W3-D4",
+        "title": "Final candidate replay under policy floor",
+        "owner": "agent",
+        "deliverable": "track_a_policy_floor_replay_v1.json",
+        "success_gate": "saving >= 0.49 and integrity == 1.0"
+      }
+    ],
+    "stop_conditions": [
+      "Any integrity drop below 1.0",
+      "Any policy-floor claim without artifact proof",
+      "Any attempt to downgrade policy floor in runtime-only scripts"
+    ]
+  },
+  "next_action": "Start W3-D1 and keep commercialization status at HOLD until replay gate passes."
+}
