@@ -6,14 +6,14 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W11-E4)
+## Track A Sprint Update (2026-04-15, W12-Pack)
 
-- 실행: `py scripts/report_track_a_week11_policy_replay_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week11_policy_replay_v1.json`
-- 결과: `decision=HOLD_W11_POLICY_REPLAY`
-- 핵심 수치: `best_saving_seen=0.47050`, `best_jaccard_seen=0.84884`, `best_integrity_seen=1.0`
-- 리플레이 체크: `policy_floor_ok=false`(floor `0.49` 미달), `integrity_ok=true`, `quality_tradeoff_flag=true`(요구값 `false`와 불일치)
-- 다음 1스텝: Week-12 가설 팩 등록(`build_track_a_week12_hypothesis_pack_v1.py`)로 quality_tradeoff_flag 해소 중심 실험 설계
+- 실행: `py scripts/build_track_a_week12_hypothesis_pack_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week12_hypothesis_pack_v1.json`
+- 결과: Week-12 실험 팩 등록 완료 (`track_a_week12_hypothesis_pack`)
+- 진입 조건: `week11_decision=HOLD_W11_POLICY_REPLAY`, `policy_floor_locked=0.49`, `quality_tradeoff_flag=true`, `best_saving_seen=0.47050`, `best_jaccard_seen=0.84884`
+- 실험 구성: W12-E1(lane-weighted router), W12-E2(quality-first tie-break replay), W12-E3(confidence+adaptive quota rollback), W12-E4(policy replay)
+- 다음 1스텝: W12-E1(`run_track_a_week12_lane_weighted_router_sweep_v1.py`) 구현/실행으로 첫 sweep 결과 확보
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
