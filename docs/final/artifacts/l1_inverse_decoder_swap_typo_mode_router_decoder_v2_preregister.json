@@ -1,0 +1,31 @@
+{
+  "schema": "l1_inverse_decoder_swap_typo_mode_router_decoder_v2_preregister",
+  "generated_at_utc": "2026-04-15T03:04:50+00:00",
+  "research_only": true,
+  "hypothesis": "Two-stage pruning can retain D25 quality signal while reducing swap_typo latency.",
+  "candidate": "swap_typo_mode_router_decoder_v2",
+  "target_failure_bucket": "order_only_mismatch",
+  "is_structural_new_path": true,
+  "isolation": "mode-routed candidate generation/scoring isolated from production v4 path",
+  "inputs": {
+    "train_seeds": [
+      701,
+      809
+    ],
+    "eval_seeds": [
+      1009,
+      1103
+    ],
+    "samples_per_seed": 120,
+    "beam_size": 8,
+    "noise_level": 0.1,
+    "scoring_mode": "enhanced",
+    "permutation_cap": 240,
+    "prune_top_k": 96
+  },
+  "gate": {
+    "swap_typo_uplift_min": 0.02,
+    "mixed_non_regression_floor": -0.005,
+    "go_rule": "swap_typo exact/recovery each >= +0.02 and mixed exact/recovery each >= -0.005"
+  }
+}
