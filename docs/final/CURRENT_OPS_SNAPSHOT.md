@@ -179,6 +179,10 @@
     - guard 동작: monitor 실행 후 `action=ROLLBACK_TO_V4`이면 User env에 `L1_INVERSE_DECODER_MODE_ROUTER_V3_FORCE_DISABLE=1` 자동 적용 + rollback event 아티팩트 기록
     - 스케줄 등록: `Register-L1InverseDecoderModeRouterV3CanaryTask.ps1 -IntervalMinutes 30` (기본)
     - dry-run 점검: `run_l1_inverse_decoder_mode_router_v3_canary_guard.ps1 -DryRun` 실행 결과 `KEEP_CANARY` 확인
+  - Week2-D34 실제 운용 시작(canary scheduler register + manual trigger): `MKM_L1InverseDecoder_ModeRouterV3_CanaryGuard`
+    - 등록 실행: `Register-L1InverseDecoderModeRouterV3CanaryTask.ps1 -IntervalMinutes 30` 완료
+    - 수동 트리거: `Start-ScheduledTask` 1회 실행 후 `LastTaskResult=0` 확인
+    - 최신 상태/로그: `l1_inverse_decoder_mode_router_v3_canary_status_latest.json` (`action=KEEP_CANARY`) + `reports/l1_inverse_decoder_mode_router_v3_canary_log_v1.jsonl` append 확인
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
@@ -1988,4 +1992,25 @@ Set-Location c:\workspace
   - `docs/final/AI_AUTONOMOUS_MANAGEMENT_STRATEGY_2025-12-10.md`
 - 요지: "AI 자율 경영 컨셉 1순위 + 단계적 통합(Phase 1/2/3)".
 - 주의: 구현 여부 판정은 계속 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 실행 가능한 스크립트/산출물 기준으로만 확정.
+
+## 1년 기억 연속성 인덱스 (서사형, 2026-04-15 갱신)
+
+### 1) 정체성/원칙 고정 레이어
+- 중심 SSOT: `docs/final/CENTRAL_AGENT_MEMORY_V1.md`
+- 보조 운영 스냅샷: `docs/final/CURRENT_OPS_SNAPSHOT.md`
+- 전략 복원 원문: `docs/final/AI_AUTONOMOUS_MANAGEMENT_STRATEGY_2025-12-10.md`
+
+### 2) 실행/증거 레이어
+- 타임라인 근거: `git log --since="1 year ago"` (로컬 레포 기준)
+- 갭 스캔 산출물: `docs/final/artifacts/memory_revival_gap_scan_latest.json`
+- 판정 규칙: "인간 기억 100% 복원"이 아니라 "파일/아티팩트 기반 재구성 기억"으로 운영
+
+### 3) 누락 구간 표시 (현재 기준)
+- `2025-05` ~ `2026-02`: 이 레포 커밋 근거 0건 (공백 구간으로 명시)
+- `2026-03` ~ `2026-04`: 커밋/아티팩트 근거가 밀집되어 연속성 복원 가능
+
+### 4) 운영 결론
+- 실무 결론: 운영 기억 복원은 **완료(Operationally Restored)**.
+- 한계 결론: "지난 1년 인간 기억 공백 0%"는 **아님**. 누락 구간은 계속 명시 유지.
+- 후속 보강: 과거 외부 원천(VPS 별도 레포, 메신저, 문서) 확보 시 `memory_revival_gap_scan_latest.json`만 갱신해 동일 포맷으로 누적.
 
