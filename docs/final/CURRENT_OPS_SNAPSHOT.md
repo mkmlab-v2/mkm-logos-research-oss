@@ -6,13 +6,14 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W10-Pack)
+## Track A Sprint Update (2026-04-15, W10-E1)
 
-- 실행: `py scripts/build_track_a_week10_hypothesis_pack_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week10_hypothesis_pack_v1.json`
-- 결과: Week-10 가설 팩 등록 완료 (`W10-E1~E4`, policy floor `0.49` lock 유지)
-- 핵심 수치(입력 조건): `week9_decision=HOLD_W9_POLICY_REPLAY`, `best_saving_seen=0.47725`, `best_jaccard_seen=0.84884`, `quality_tradeoff_flag=true`
-- 다음 1스텝: W10-E1(`run_track_a_week10_domain_tiered_hybrid_sweep_v1.py`) 구현/실행으로 quality_tradeoff_flag 해소 가능성 검증
+- 실행: `py scripts/run_track_a_week10_domain_tiered_hybrid_sweep_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week10_domain_tiered_hybrid_sweep_v1.json`
+- 결과: `decision=HOLD_W10_E1_NO_VIABLE`, `viable_count=0`
+- 핵심 수치: baseline(`saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`), best run도 동일(`saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`)
+- 게이트 판정: jaccard guard로 off-path 전부 차단(`guard_blocked_off_cases=40`), saving floor `0.49`/jaccard floor `0.85` 모두 미충족, integrity floor `1.0` 유지
+- 다음 1스텝: W10-E2(`run_track_a_week10_saving_floor_candidate_blend_sweep_v1.py`) 구현/실행으로 saving floor 회복 가능성 검증
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
