@@ -6,16 +6,16 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W17-E4)
+## Track A Sprint Update (2026-04-15, W18-Pack)
 
-- 실행: `py scripts/report_track_a_week17_policy_replay_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week17_policy_replay_v1.json`
-- 결과: `decision=HOLD_W17_POLICY_REPLAY`
+- 실행: `py scripts/build_track_a_week18_hypothesis_pack_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week18_hypothesis_pack_v1.json`
+- 결과: `pack=track_a_week18_hypothesis_pack` 등록 완료
 - 기준선: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
-- Week-17 종합: `best_saving_seen=0.46911`, `best_jaccard_seen=0.84884`, `best_integrity_seen=1.0`
-- 리플레이 체크: `policy_floor_ok=false`, `integrity_ok=true`, `quality_tradeoff_flag=true`(요구값=false)로 정책 GO 조건 미충족
-- 판단: Week-17 E1~E3 모두 `viable_count=0`으로 deadlock 지속, 상용화 라인은 HOLD 유지
-- 다음 1스텝: Week-18 hypothesis pack(`build_track_a_week18_hypothesis_pack_v1.py`) 등록으로 다음 탐색 사이클 시작
+- 진입조건 반영: `week17_decision=HOLD_W17_POLICY_REPLAY`, `policy_floor_locked=0.49`, `quality_tradeoff_flag=true`
+- Week-18 목적: guard-window unlock + budgeted crossover + coupled veto-domain budget 조합으로 `quality_tradeoff_flag` 해소 탐색
+- 판단: 상용화 라인은 HOLD 유지, Week-18 실험군(E1~E3) 탐색으로 전진
+- 다음 1스텝: W18-E1(`run_track_a_week18_guard_window_unlock_sweep_v1.py`) 구현/실행
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
