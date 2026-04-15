@@ -137,7 +137,8 @@
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
   - A-Track 일일 게이트 재실행: `docs/final/artifacts/l1_inverse_decoder_daily_gate_v1_latest.json`
-    - 판정: `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` (all checks true)
+    - 최신(UTC): `2026-04-15T00:00:46+00:00` — 판정: `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` (all checks true) · mixed avg exact/recovery `0.60`/`0.621`, swap_typo avg `0.275`/`0.304`
+  - A-Track 주간(운영 로그 `reports/l1_inverse_decoder_daily_gate_log_v1.jsonl`): 표준 일일 경로 기준 연속 GO; 과거 1건 `HOLD_INVESTIGATE`는 D5 longsample 전용 산출물 맥락으로 분리. 연구 레인 `STOP_INCREMENTAL_TUNING_KEEP_V4` 유지(`docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`).
   - A-Track 운영 하드닝 정책 고정: `docs/final/artifacts/l1_inverse_decoder_atrack_operational_hardening_v1.json`
     - 핵심: 일일 게이트 강제 + 실패 시 즉시 롤백 + 실패 알림 상시화
   - A-Track 7일 운영 체크리스트 고정: `docs/final/artifacts/l1_inverse_decoder_atrack_7day_ops_checklist_v1.json`

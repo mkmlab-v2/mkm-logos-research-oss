@@ -1,6 +1,6 @@
 {
   "schema": "l1_inverse_decoder_daily_gate_v1",
-  "generated_at_utc": "2026-04-14T09:33:03+00:00",
+  "generated_at_utc": "2026-04-15T00:00:46+00:00",
   "research_only": true,
   "inputs": {
     "seeds": [
@@ -35,20 +35,20 @@
     },
     "swap_typo": {
       "mode": "swap_typo",
-      "avg_exact_restore_rate": 0.2791666666666667,
-      "avg_recovery_rate": 0.30833333333333335,
-      "min_exact_restore_rate": 0.25,
-      "min_recovery_rate": 0.2833333333333333,
+      "avg_exact_restore_rate": 0.275,
+      "avg_recovery_rate": 0.3041666666666667,
+      "min_exact_restore_rate": 0.23333333333333334,
+      "min_recovery_rate": 0.26666666666666666,
       "per_seed": [
         {
           "seed": 701,
-          "exact_restore_rate": 0.30833333333333335,
-          "recovery_rate": 0.3333333333333333
+          "exact_restore_rate": 0.31666666666666665,
+          "recovery_rate": 0.3416666666666667
         },
         {
           "seed": 809,
-          "exact_restore_rate": 0.25,
-          "recovery_rate": 0.2833333333333333
+          "exact_restore_rate": 0.23333333333333334,
+          "recovery_rate": 0.26666666666666666
         }
       ]
     }
