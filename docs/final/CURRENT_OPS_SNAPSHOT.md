@@ -6,14 +6,14 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W13-Pack)
+## Track A Sprint Update (2026-04-15, W13-E1)
 
-- 실행: `py scripts/build_track_a_week13_hypothesis_pack_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week13_hypothesis_pack_v1.json`
-- 결과: Week-13 실험 팩 등록 완료 (`track_a_week13_hypothesis_pack`)
-- 진입 조건: `week12_decision=HOLD_W12_POLICY_REPLAY`, `policy_floor_locked=0.49`, `quality_tradeoff_flag=true`, `best_saving_seen=0.46911`, `best_jaccard_seen=0.84884`
-- 실험 구성: W13-E1(domain-priority unlock), W13-E2(recovery blend floor shadow), W13-E3(confidence penalty anneal), W13-E4(policy replay)
-- 다음 1스텝: W13-E1(`run_track_a_week13_domain_priority_unlock_sweep_v1.py`) 구현/실행으로 첫 sweep 결과 확보
+- 실행: `py scripts/run_track_a_week13_domain_priority_unlock_sweep_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week13_domain_priority_unlock_sweep_v1.json`
+- 결과: `decision=HOLD_W13_E1_NO_VIABLE`, `viable_count=0`
+- 핵심 수치: baseline(`saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`), best run(동일: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`)
+- 게이트 판정: domain-priority selective unlock에서도 `guard_blocked_cases=38`로 거의 전량 차단, `router_off` 전환 최대 1건 수준에 머물러 floor(`saving=0.49`, `jaccard=0.85`) 동시 미달 유지
+- 다음 1스텝: W13-E2(`run_track_a_week13_recovery_blend_floor_shadow_sweep_v1.py`) 구현/실행으로 recovery-first replay 검증
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
