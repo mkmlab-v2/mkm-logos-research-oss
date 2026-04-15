@@ -175,6 +175,10 @@
     - 산출: `docs/final/artifacts/l1_inverse_decoder_mode_router_v3_canary_status_latest.json` + `reports/l1_inverse_decoder_mode_router_v3_canary_log_v1.jsonl`
     - 1회 실행 결과: `action=KEEP_CANARY` (phase_1 / 10%), 주요 체크(`canary_decision_ok`, `daily_gate_ok`, `longsample_gate_ok`) 모두 true
     - 즉시 롤백 스위치: `L1_INVERSE_DECODER_MODE_ROUTER_V3_FORCE_DISABLE=1`
+  - Week2-D33 자동 운용 훅(canary guard + scheduler): `scripts/run_l1_inverse_decoder_mode_router_v3_canary_guard.ps1`, `scripts/Register-L1InverseDecoderModeRouterV3CanaryTask.ps1`
+    - guard 동작: monitor 실행 후 `action=ROLLBACK_TO_V4`이면 User env에 `L1_INVERSE_DECODER_MODE_ROUTER_V3_FORCE_DISABLE=1` 자동 적용 + rollback event 아티팩트 기록
+    - 스케줄 등록: `Register-L1InverseDecoderModeRouterV3CanaryTask.ps1 -IntervalMinutes 30` (기본)
+    - dry-run 점검: `run_l1_inverse_decoder_mode_router_v3_canary_guard.ps1 -DryRun` 실행 결과 `KEEP_CANARY` 확인
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
