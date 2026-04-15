@@ -262,7 +262,8 @@
   - Week-2 Day7 진행: 회복 스프린트 등록 `scripts/build_track_a_saving_recovery_sprint_plan_v1.py` + `docs/final/artifacts/track_a_saving_recovery_sprint_plan_v1.json` 생성. floor 고정(`0.49`) 대비 현재 gap `0.0216455`를 명시하고 W3-D1~D4 실행 항목/중단조건을 분리 등록.
   - Week-3 Day1 진행: `scripts/run_track_a_routing_condition_ab_v1.py` + `docs/final/artifacts/track_a_routing_condition_ab_v1.json` 생성. armA(router on) saving `0.46835` vs armB(router off) saving `0.50773`, integrity `1.0`로 D1 중간게이트(`>=0.475`)는 통과(`GO_W3_D2_CAP_DECOUPLING`), 단 jaccard는 `-0.3029` 급락이라 D2에서 품질 회복 조건을 강제한다.
   - Week-3 Day2 진행: `scripts/run_track_a_cap_decouple_sweep_v1.py` + `docs/final/artifacts/track_a_cap_decouple_sweep_v1.json` 생성. router-off 기준 cap 분리 9조합 스윕 결과 `viable_count=0`(`saving>=0.48`, `jaccard>=0.8`, `integrity=1.0` 동시충족 없음), 결정은 `HOLD_W3_D2_NO_VIABLE`.
-  - 다음 1스텝: Week-3 D3는 router-on baseline으로 복귀해 conservative phrase-first profile 실험으로 jaccard 회복을 우선 검증한다.
+  - Week-3 Day3 진행: `scripts/run_track_a_phrase_profile_ab_v1.py` + `docs/final/artifacts/track_a_phrase_profile_ab_v1.json` 생성. router-on baseline 대비 phrase-first(top5) 처리 시 jaccard는 `+0.00536` 개선됐지만 saving이 `0.46413`으로 floor `0.485` 미달(viable=0), 결정은 `HOLD_W3_D3_NO_VIABLE`.
+  - 다음 1스텝: Week-3 D4는 baseline 유지 전제로 policy floor 리플레이 아티팩트를 생성해 이번 회복 스프린트의 승격 불가를 명시하고 Week-4 후보군을 분리 등록한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
