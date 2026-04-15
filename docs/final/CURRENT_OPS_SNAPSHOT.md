@@ -137,12 +137,17 @@
     - 사전 게이트 등록: `docs/final/artifacts/l1_inverse_decoder_swap_typo_lane_decoder_v1_preregister.json` (`is_structural_new_path=true`)
     - 결과: mixed 개선(`exact +0.0575`, `recovery +0.0483`) / `swap_typo` 하락(`exact -0.0508`, `recovery -0.0483`)
     - 판정: `HOLD_V4` (swap_typo uplift 게이트 미달, production v4 유지)
+  - Week2-D23 실험 18안(structural lane decoder v2, swap_typo score 강화): `scripts/run_l1_swap_typo_lane_decoder_v2.py`
+    - 사전 게이트 등록: `docs/final/artifacts/l1_inverse_decoder_swap_typo_lane_decoder_v2_preregister.json` (`is_structural_new_path=true`)
+    - 결과: mixed 개선(`exact +0.0575`, `recovery +0.0483`) / `swap_typo` 하락(`exact -0.0508`, `recovery -0.0483`)
+    - 판정: `HOLD_V4` (swap_typo uplift 게이트 미달, lane 확장 대비 실익 없음)
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
   - A-Track 일일 게이트 재실행: `docs/final/artifacts/l1_inverse_decoder_daily_gate_v1_latest.json`
-    - 최신(UTC): `2026-04-15T00:13:50+00:00` — 판정: `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` (all checks true) · mixed avg exact/recovery `0.60`/`0.621`, swap_typo avg `0.279`/`0.308`
-  - A-Track 주간(운영 로그 `reports/l1_inverse_decoder_daily_gate_log_v1.jsonl`): 표준 일일 경로 기준 연속 GO; 과거 1건 `HOLD_INVESTIGATE`는 D5 longsample 전용 산출물 맥락으로 분리. 연구 레인 `STOP_INCREMENTAL_TUNING_KEEP_V4` 유지(`docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`).
+    - 최신(UTC): `2026-04-15T02:14:00+00:00` — 판정: `GO_KEEP_OBJECTIVE_V4_DEFAULT_ON` (all checks true) · mixed avg exact/recovery `0.60`/`0.621`, swap_typo avg `0.279`/`0.308`
+  - A-Track 주간(운영 로그 `reports/l1_inverse_decoder_daily_gate_log_v1.jsonl`): 표준 일일 경로 기준 연속 GO 유지. 연구 레인 `STOP_INCREMENTAL_TUNING_KEEP_V4` 유지(`docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`).
+  - Fact-Lock/동기화: `scripts/run_fact_lock_bundle.ps1` 통과(무손상·예언 체인·압축 복원 브리지 OK), `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1` 실행(copied=47, missing path는 WARNING으로 기록).
   - A-Track 운영 하드닝 정책 고정: `docs/final/artifacts/l1_inverse_decoder_atrack_operational_hardening_v1.json`
     - 핵심: 일일 게이트 강제 + 실패 시 즉시 롤백 + 실패 알림 상시화
   - A-Track 7일 운영 체크리스트 고정: `docs/final/artifacts/l1_inverse_decoder_atrack_7day_ops_checklist_v1.json`
