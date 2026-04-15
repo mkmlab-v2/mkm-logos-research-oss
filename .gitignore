@@ -133,6 +133,7 @@ assets/
 athena_vault_infrastructure/
 memory/
 projects/bitcoin-trading/memory/
+projects/bitcoin-trading/memory/kpi/
 docs/docs/
 docs/reports/
 
