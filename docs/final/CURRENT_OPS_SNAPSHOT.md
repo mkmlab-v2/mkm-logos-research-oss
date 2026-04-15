@@ -6,14 +6,14 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W11-E3)
+## Track A Sprint Update (2026-04-15, W11-E4)
 
-- 실행: `py scripts/run_track_a_week11_dynamic_cap_confidence_veto_sweep_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week11_dynamic_cap_confidence_veto_sweep_v1.json`
-- 결과: `decision=HOLD_W11_E3_NO_VIABLE`, `viable_count=0`
-- 핵심 수치: baseline(`saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`), best run(`saving=0.47428`, `jaccard=0.84149`, `integrity=1.0`)
-- 게이트 판정: dynamic cap + confidence veto로 saving은 일부 회복(`max 0.47428`)했지만 floor `0.49` 미달, jaccard도 `0.85` 미달, integrity `1.0` 유지
-- 다음 1스텝: W11-E4(`report_track_a_week11_policy_replay_v1.py`) 구현/실행으로 Week-11 종합 policy replay 판정 수행
+- 실행: `py scripts/report_track_a_week11_policy_replay_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week11_policy_replay_v1.json`
+- 결과: `decision=HOLD_W11_POLICY_REPLAY`
+- 핵심 수치: `best_saving_seen=0.47050`, `best_jaccard_seen=0.84884`, `best_integrity_seen=1.0`
+- 리플레이 체크: `policy_floor_ok=false`(floor `0.49` 미달), `integrity_ok=true`, `quality_tradeoff_flag=true`(요구값 `false`와 불일치)
+- 다음 1스텝: Week-12 가설 팩 등록(`build_track_a_week12_hypothesis_pack_v1.py`)로 quality_tradeoff_flag 해소 중심 실험 설계
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
