@@ -12,6 +12,8 @@ param(
     [string]$WorkspaceRoot = "C:\workspace",
     [string]$StatusPath = "docs/final/artifacts/l1_inverse_decoder_mode_router_v3_canary_status_latest.json",
     [string]$RollbackEventPath = "docs/final/artifacts/l1_inverse_decoder_mode_router_v3_canary_rollback_event_latest.json",
+    [string]$Phase = "phase_1",
+    [int]$TrafficPct = 10,
     [switch]$DryRun
 )
 
@@ -23,7 +25,7 @@ if (-not (Test-Path -LiteralPath $monitorScript)) {
 }
 
 Set-Location $WorkspaceRoot
-py $monitorScript | Out-Host
+py $monitorScript --phase $Phase --traffic-pct $TrafficPct | Out-Host
 
 $statusAbs = Join-Path $WorkspaceRoot $StatusPath
 if (-not (Test-Path -LiteralPath $statusAbs)) {

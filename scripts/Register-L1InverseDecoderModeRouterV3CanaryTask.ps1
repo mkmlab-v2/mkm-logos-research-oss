@@ -16,6 +16,8 @@ param(
     [string]$TaskName = "MKM_L1InverseDecoder_ModeRouterV3_CanaryGuard",
     [int]$IntervalMinutes = 30,
     [string]$WorkspaceRoot = "C:\workspace",
+    [string]$Phase = "phase_1",
+    [int]$TrafficPct = 10,
     [switch]$DryRun
 )
 
@@ -41,7 +43,7 @@ if ($DryRun) {
     $dryRunArg = " -DryRun"
 }
 
-$argLine = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`" -WorkspaceRoot `"$WorkspaceRoot`"$dryRunArg"
+$argLine = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`" -WorkspaceRoot `"$WorkspaceRoot`" -Phase `"$Phase`" -TrafficPct $TrafficPct$dryRunArg"
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $argLine -WorkingDirectory $WorkspaceRoot
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) `
@@ -58,5 +60,5 @@ $description = "Mode-router v3 canary monitor and automatic rollback switch guar
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
     -Settings $settings -Principal $principal -Description $description -Force | Out-Null
 
-Write-Host "Registered scheduled task: $TaskName (every $IntervalMinutes minutes, user=$env:USERNAME)"
+Write-Host "Registered scheduled task: $TaskName (every $IntervalMinutes minutes, user=$env:USERNAME, phase=$Phase, traffic=$TrafficPct%)"
 Write-Host "Runner: $runner"

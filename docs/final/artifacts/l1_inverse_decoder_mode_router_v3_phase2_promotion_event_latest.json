@@ -1,0 +1,11 @@
+﻿{
+    "schema":  "l1_inverse_decoder_mode_router_v3_phase2_promotion_event_v1",
+    "generated_at_utc":  "2026-04-15T04:06:07.9366935Z",
+    "decision_artifact":  "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_mode_router_v3_phase2_promotion_decision_v1.json",
+    "decision":  "GO_PHASE2_30PCT",
+    "applied":  true,
+    "target_phase":  "phase_2",
+    "target_traffic_pct":  30,
+    "interval_minutes":  30,
+    "register_script":  "C:\\workspace\\scripts\\Register-L1InverseDecoderModeRouterV3CanaryTask.ps1"
+}

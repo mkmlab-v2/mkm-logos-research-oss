@@ -187,6 +187,10 @@
     - 산출: `docs/final/artifacts/l1_inverse_decoder_mode_router_v3_phase2_promotion_decision_v1.json`
     - 24h 창 집계: observation 4건 / keep 4건 / rollback 0건 / keep_ratio 1.0
     - 판정: `GO_PHASE2_30PCT` (동일 rollback guard 유지한 채 30% 승격 권고)
+  - Week2-D36 phase_2 적용(30%): `scripts/run_l1_inverse_decoder_mode_router_v3_apply_phase2_promotion.ps1`
+    - 적용 결과: canary guard task를 `phase_2`, `traffic_pct=30`으로 재등록 완료
+    - promotion event: `docs/final/artifacts/l1_inverse_decoder_mode_router_v3_phase2_promotion_event_latest.json` (`applied=true`)
+    - 수동 트리거 검증: `LastTaskResult=0`, canary status/log에 `phase_2` + `traffic_pct=30`로 append 확인
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
