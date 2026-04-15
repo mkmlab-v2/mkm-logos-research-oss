@@ -1,0 +1,34 @@
+{
+  "schema": "track_a_week4_policy_replay_v1",
+  "generated_at_utc": "2026-04-15T10:22:38+00:00",
+  "inputs": {
+    "pack": "C:\\workspace\\docs\\final\\artifacts\\track_a_week4_experiment_pack_v1.json",
+    "w4_e1": "C:\\workspace\\docs\\final\\artifacts\\track_a_week4_domain_phrase_ab_v1.json",
+    "w4_e2": "C:\\workspace\\docs\\final\\artifacts\\track_a_week4_timing_domain_phrase_ab_v1.json",
+    "w4_e3": "C:\\workspace\\docs\\final\\artifacts\\track_a_week4_selective_router_ab_v1.json"
+  },
+  "week4_summary": {
+    "entry_replay_decision": "HOLD_POLICY_FLOOR_REPLAY",
+    "e1_decision": "HOLD_W4_E1_NO_VIABLE",
+    "e2_decision": "HOLD_W4_E2_NO_VIABLE",
+    "e3_decision": "HOLD_W4_E3_NO_VIABLE",
+    "e1_viable_count": 0,
+    "e2_viable_count": 0,
+    "e3_gate": {
+      "saving_floor_ok": true,
+      "jaccard_floor_ok": false,
+      "integrity_floor_ok": true
+    }
+  },
+  "replay_checks": {
+    "policy_floor": 0.49,
+    "best_saving_seen": 0.4996276991809382,
+    "best_jaccard_seen": 0.8562539396662849,
+    "best_integrity_seen": 1.0,
+    "policy_floor_ok": true,
+    "integrity_ok": true,
+    "quality_tradeoff_flag": true
+  },
+  "decision": "HOLD_W4_POLICY_REPLAY",
+  "next_action": "Start Week-5 engine-level routing rule redesign under fixed 0.49 floor."
+}
