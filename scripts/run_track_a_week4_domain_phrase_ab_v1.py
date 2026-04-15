@@ -160,6 +160,7 @@ def main() -> int:
     ]
     recommended = sorted(viable, key=lambda r: (r["target_domain_jaccard"], r["saving"]), reverse=True)[0] if viable else None
 
+    phase_label = "W4_E2" if target_domain_set == {"timing"} else "W4_E1"
     out_doc = {
         "schema": "track_a_week4_domain_phrase_ab_v1",
         "generated_at_utc": _now_utc(),
@@ -186,11 +187,20 @@ def main() -> int:
         "treatments": treatments,
         "viable_count": len(viable),
         "recommended": recommended,
-        "decision": "GO_W4_E2_TIMING_PHRASE" if recommended else "HOLD_W4_E1_NO_VIABLE",
+        "decision": (
+            "GO_W4_E2_TIMING_PHRASE" if (recommended and phase_label == "W4_E2")
+            else "GO_W4_E1_SSOT_PHRASE" if recommended
+            else "HOLD_W4_E2_NO_VIABLE" if phase_label == "W4_E2"
+            else "HOLD_W4_E1_NO_VIABLE"
+        ),
         "next_action": (
             "Proceed to W4-E2 timing-domain phrase policy with same router-on guard."
+            if (recommended and phase_label == "W4_E1")
+            else "Proceed to W4-E3 selective router constraints with the timing-domain candidate."
             if recommended
             else "Keep baseline router-on and still run W4-E2 to test timing-specific recovery."
+            if phase_label == "W4_E1"
+            else "Keep baseline router-on and proceed to W4-E3 selective router constraints."
         ),
     }
 
