@@ -258,7 +258,8 @@
   - 주의: 기본 체인의 `report_token_api_hydration_mix.py`는 `scripts.run_hybrid_codec_v0_spike` 모듈 누락으로 실패하므로, 현재는 `-SkipHydrationMix` 우회가 필요(체인 핵심 KPI에는 영향 없음).
   - Week-2 Day4 진행: `scripts/run_hybrid_codec_v0_spike.py` 모듈 복구(중복 헤더/`from __future__` 충돌 정리) 후 `report_token_api_hydration_mix.py` 정상 재개. `run_compression_automation_chain.ps1 -SkipV2TrustPacketTests`를 우회 없이 통과( hydration mix 포함 ).
   - Week-2 Day5 진행: 누락 유틸 `scripts/tracka_profile_client_utils.py` 복구 + 중복 구문 정리 후 `py -m pytest tests/test_compression_token_api_v2_stub.py -q` 통과(`15 passed`), 이어 `run_compression_automation_chain.ps1` 기본 실행도 완전 통과(우회 플래그 0개).
-  - 다음 1스텝: Week-2 Day6에서 정책 floor `0.49` 미충족 원인(현재 A saving `0.46835`)을 상용 정책 문구/게이트 값과 동기화할지, 엔진 개선으로 회복할지 의사결정 문서화.
+  - Week-2 Day6 진행: 정책 선택지 문서화 `scripts/report_track_a_policy_floor_decision_v1.py` + `docs/final/artifacts/track_a_policy_floor_decision_v1.json` 생성. 옵션 A(0.49 유지) vs 옵션 B(런타임 밴드 하향) 비교 결과, 결정은 `DECISION_KEEP_POLICY_FLOOR_049_HOLD_BASELINE`.
+  - 다음 1스텝: Week-2 Day7에서 policy floor 유지를 전제로 엔진 절감 회복 실험(도메인 라우팅 조건식/캡 분리)을 별도 스프린트로 분리 등록.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
