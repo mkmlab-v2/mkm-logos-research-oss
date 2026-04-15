@@ -6,14 +6,14 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W13-E2)
+## Track A Sprint Update (2026-04-15, W13-E3)
 
-- 실행: `py scripts/run_track_a_week13_recovery_blend_floor_shadow_sweep_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week13_recovery_blend_floor_shadow_sweep_v1.json`
-- 결과: `decision=HOLD_W13_E2_NO_VIABLE`, `viable_count=0`
-- 핵심 수치: baseline(`saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`), best run(동일: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`)
-- 게이트 판정: recovery-first blend에서도 `floor_shadow_blocked_cases=6`이 지속되고 `router_off` 전환이 0~1건 수준에 그쳐 floor(`saving=0.49`, `jaccard=0.85`) 동시 미달 유지
-- 다음 1스텝: W13-E3(`run_track_a_week13_confidence_penalty_anneal_sweep_v1.py`) 구현/실행으로 confidence anneal 검증
+- 실행: `py scripts/run_track_a_week13_confidence_penalty_anneal_sweep_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week13_confidence_penalty_anneal_sweep_v1.json`
+- 결과: `decision=HOLD_W13_E3_NO_VIABLE`, `viable_count=0`
+- 핵심 수치: baseline(`saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`), best run(`saving=0.47077`, `jaccard=0.84705`, `integrity=1.0`)
+- 게이트 판정: confidence/anneal 조합으로 `router_off` 전환은 일부(최대 3건) 발생했지만 saving 상승폭이 제한적이고 jaccard 하락이 동반되어 floor(`saving=0.49`, `jaccard=0.85`) 동시 미달 유지
+- 다음 1스텝: W13-E4(`report_track_a_week13_policy_replay_v1.py`) 구현/실행으로 Week-13 종합 policy replay 판정
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
