@@ -220,6 +220,11 @@
 - **운영 보고 규칙(3줄):**
   - 현재 단계 / 증거 파일 경로 / 다음 1스텝
 
+- **복구 맥락 실행 체크(3줄):**
+  - 결정 맥락 유지: 목표는 100% 과거 복원이 아니라 우선순위·격벽·톤·결정 이유의 연속성 유지.
+  - 팩트 확정 경로: 구현/수치/날짜는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` + git + exit code + artifact JSON로만 확정.
+  - 레일/트랙 격벽: 연구(B)·운영(A) 자동 합선 금지, 압축 성과는 Track A KPI와 ultra-literal 수치를 분리 표기.
+
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
 - **기본 동작:** `compression_token_api_stub.py`에서 Hybrid v0 경로는 **기본 ON**(환경변수 미설정).
