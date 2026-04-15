@@ -6,16 +6,16 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W17-E3)
+## Track A Sprint Update (2026-04-15, W17-E4)
 
-- 실행: `py scripts/run_track_a_week17_domain_quota_veto_sweep_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week17_domain_quota_veto_sweep_v1.json`
-- 결과: `decision=HOLD_W17_E3_NO_VIABLE`, `viable_count=0`
+- 실행: `py scripts/report_track_a_week17_policy_replay_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week17_policy_replay_v1.json`
+- 결과: `decision=HOLD_W17_POLICY_REPLAY`
 - 기준선: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
-- 최고 run: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0` (기준선과 동일)
-- 관찰: `domain_quota_cap`(1~3)으로 도메인별 off 전환 상한을 도입했으나 최고 run에서도 `delta_vs_baseline`가 0으로 고정, saving/jaccard 동시 개선 부재
-- 판단: adaptive veto + domain quota 조합도 deadlock 해소 불가, 상용화 라인은 HOLD 유지
-- 다음 1스텝: W17-E4(`report_track_a_week17_policy_replay_v1.py`) 구현/실행으로 주간 replay 종합 판정 확정
+- Week-17 종합: `best_saving_seen=0.46911`, `best_jaccard_seen=0.84884`, `best_integrity_seen=1.0`
+- 리플레이 체크: `policy_floor_ok=false`, `integrity_ok=true`, `quality_tradeoff_flag=true`(요구값=false)로 정책 GO 조건 미충족
+- 판단: Week-17 E1~E3 모두 `viable_count=0`으로 deadlock 지속, 상용화 라인은 HOLD 유지
+- 다음 1스텝: Week-18 hypothesis pack(`build_track_a_week18_hypothesis_pack_v1.py`) 등록으로 다음 탐색 사이클 시작
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
