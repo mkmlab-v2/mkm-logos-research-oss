@@ -260,7 +260,8 @@
   - Week-2 Day5 진행: 누락 유틸 `scripts/tracka_profile_client_utils.py` 복구 + 중복 구문 정리 후 `py -m pytest tests/test_compression_token_api_v2_stub.py -q` 통과(`15 passed`), 이어 `run_compression_automation_chain.ps1` 기본 실행도 완전 통과(우회 플래그 0개).
   - Week-2 Day6 진행: 정책 선택지 문서화 `scripts/report_track_a_policy_floor_decision_v1.py` + `docs/final/artifacts/track_a_policy_floor_decision_v1.json` 생성. 옵션 A(0.49 유지) vs 옵션 B(런타임 밴드 하향) 비교 결과, 결정은 `DECISION_KEEP_POLICY_FLOOR_049_HOLD_BASELINE`.
   - Week-2 Day7 진행: 회복 스프린트 등록 `scripts/build_track_a_saving_recovery_sprint_plan_v1.py` + `docs/final/artifacts/track_a_saving_recovery_sprint_plan_v1.json` 생성. floor 고정(`0.49`) 대비 현재 gap `0.0216455`를 명시하고 W3-D1~D4 실행 항목/중단조건을 분리 등록.
-  - 다음 1스텝: Week-3 D1(`track_a_routing_condition_ab_v1`)부터 착수해 saving `>=0.475` 중간 게이트를 먼저 통과한 뒤 단계 승격.
+  - Week-3 Day1 진행: `scripts/run_track_a_routing_condition_ab_v1.py` + `docs/final/artifacts/track_a_routing_condition_ab_v1.json` 생성. armA(router on) saving `0.46835` vs armB(router off) saving `0.50773`, integrity `1.0`로 D1 중간게이트(`>=0.475`)는 통과(`GO_W3_D2_CAP_DECOUPLING`), 단 jaccard는 `-0.3029` 급락이라 D2에서 품질 회복 조건을 강제한다.
+  - 다음 1스텝: Week-3 D2(`track_a_cap_decouple_sweep_v1`)에서 sensitive/hangul cap 분리 스윕으로 saving은 유지하고 jaccard 급락을 회복하는 조합만 추린다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
