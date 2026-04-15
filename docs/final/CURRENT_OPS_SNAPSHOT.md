@@ -6,13 +6,13 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W8-E4)
+## Track A Sprint Update (2026-04-15, W9-Pack)
 
-- 실행: `py scripts/report_track_a_week8_policy_replay_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week8_policy_replay_v1.json`
-- 결과: `decision=HOLD_W8_POLICY_REPLAY`
-- 핵심 수치: `best_saving_seen=0.49327`(policy floor `0.49` 통과)·`best_jaccard_seen=0.84884`·`best_integrity_seen=1.0`, 단 `quality_tradeoff_flag=true` 유지
-- 다음 1스텝: Week-9 가설 팩 등록(quality_tradeoff_flag 해소 중심)
+- 실행: `py scripts/build_track_a_week9_hypothesis_pack_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week9_hypothesis_pack_v1.json`
+- 결과: Week-9 가설 팩 등록 완료 (`W9-E1~E4`, policy floor `0.49` lock 유지)
+- 핵심 수치(입력 조건): `week8_decision=HOLD_W8_POLICY_REPLAY`, `best_saving_seen=0.49327`, `best_jaccard_seen=0.84884`, `quality_tradeoff_flag=true`
+- 다음 1스텝: W9-E1(`run_track_a_week9_domain_frozen_router_mix_sweep_v1.py`) 구현/실행
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
@@ -297,7 +297,8 @@
   - Week-8 E2 진행: `scripts/run_track_a_week8_confidence_restore_gate_sweep_v1.py` + `docs/final/artifacts/track_a_week8_confidence_restore_gate_sweep_v1.json` 생성. confidence restore threshold(0.6/0.65/0.7) + penalty(0.05/0.08/0.1) 스윕에서 saving은 `0.490~0.499`로 floor(`0.485`)를 통과했지만 jaccard가 `0.580~0.652`로 floor(`0.85`)를 크게 하회(viable=0), 판정 `HOLD_W8_E2_NO_VIABLE`.
   - Week-8 E3 진행: `scripts/run_track_a_week8_low_cost_rerank_sweep_v1.py` + `docs/final/artifacts/track_a_week8_low_cost_rerank_sweep_v1.json` 생성. rerank alpha(0.15/0.2/0.25) + candidate pool(2/3/4) 스윕에서 latency budget(`<=2.0ms/case`)은 전 조합 통과하고 saving은 최대 `0.49689`까지 회복됐지만 jaccard가 `0.656~0.758`으로 floor(`0.85`) 미달(viable=0), 판정 `HOLD_W8_E3_NO_VIABLE`.
   - Week-8 E4 진행: 리플레이 리포트 `scripts/report_track_a_week8_policy_replay_v1.py` + `docs/final/artifacts/track_a_week8_policy_replay_v1.json` 생성. E1~E3 종합에서 `best_saving=0.49327`, `best_jaccard=0.84884`, `best_integrity=1.0`으로 policy floor/integrity는 충족했지만 `quality_tradeoff_flag=true`가 유지되어 최종 판정은 `HOLD_W8_POLICY_REPLAY`.
-  - 다음 1스텝: Week-9 가설 팩 등록으로 quality_tradeoff_flag 해소를 목표로 한 신규 실험 계약을 수립한다.
+  - Week-9 Pack 등록: `scripts/build_track_a_week9_hypothesis_pack_v1.py` + `docs/final/artifacts/track_a_week9_hypothesis_pack_v1.json` 생성. entry(`HOLD_W8_POLICY_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 하에서 W9-E1~E4(domain-frozen router mix, jaccard-prior rerank, confidence-band fallback, policy replay) 실험 계약을 고정.
+  - 다음 1스텝: W9-E1(`run_track_a_week9_domain_frozen_router_mix_sweep_v1.py`) 구현/실행으로 quality_tradeoff_flag 해소 가능성을 검증한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
