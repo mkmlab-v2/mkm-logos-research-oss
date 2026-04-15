@@ -235,6 +235,11 @@
   - 증거: 롤오버 gzip `docs/final/artifacts/derived/rollover/log_metabolism_from_kpi_vps_export_v1_20260415T061404Z.jsonl.gz`, 보존 크론 `10 3 * * * ... -mtime +14 -delete`, export 리포트 `output_line_count=8` + JSONL `wc -l=8`.
   - 다음 1스텝: VPS에서 `.gitignore` 변경만 커밋/푸시해 워킹트리를 clean으로 마감하고, 다음 사이클에서 `output_line_count` 증가만 점검.
 
+- **로컬 1커맨드 배포 경로 고정(2026-04-15):**
+  - 상태: 로컬 개발→원격 푸시→VPS fast-forward+검증을 `scripts/deploy/ship_to_vps.ps1` + `scripts/deploy/linux/verify_and_reload.sh`로 표준화.
+  - 증거: 커밋 `2cb291a56e` (`feat(ops): add one-command local-to-vps deploy scripts`), dry-run에서 remote command 조립/가드 정상 출력 확인.
+  - 다음 1스텝: 운영 시 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy/ship_to_vps.ps1 -ReloadCmd "pm2 restart bitcoin-live"`를 기본 진입점으로 사용.
+
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
 - **기본 동작:** `compression_token_api_stub.py`에서 Hybrid v0 경로는 **기본 ON**(환경변수 미설정).
