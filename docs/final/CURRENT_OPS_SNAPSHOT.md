@@ -249,6 +249,8 @@
   - Day5 진행: `scripts/run_track_a_must_keep_topn_sweep_v1.py`로 top-N(5,6,7,8) 축소 스윕 실행, 산출 `docs/final/artifacts/track_a_must_keep_topn_sweep_v1.json` — jaccard는 +0.007~+0.012 개선되지만 saving `0.458~0.463`으로 floor `0.49` 미충족(전부 HOLD).
   - Day6 진행: `scripts/run_track_a_must_keep_priority_sweep_v1.py`로 우선순위 재정렬 + top-N(1~4) 초소형 스윕 실행, 산출 `docs/final/artifacts/track_a_must_keep_priority_sweep_v1.json` — jaccard +0.000~+0.005 개선, saving `0.464~0.468`으로 floor `0.49` 여전히 미충족(viable=0).
   - Day7 결론: Week-1 must-keep 강화 실험은 품질 개선 대비 절감률 손실로 상용 게이트 미통과 → `HOLD_BASELINE_TRACK_A` 유지, 다음 사이클은 token-level 보호 대신 도메인 캡/라우팅 측 실험으로 전환.
+  - Week-2 Day1 진행: `scripts/run_track_a_domain_cap_sweep_v1.py`로 도메인 cap 스윕(36조합) 실행, 산출 `docs/final/artifacts/track_a_domain_cap_sweep_v1.json` — `ssot/timing` jaccard는 최대 +0.059 개선되지만 saving `0.429~0.456`으로 floor 미충족, `viable_count=0`.
+  - 다음 1스텝: Week-2 Day2는 상용 게이트 floor(`0.49`)를 적용하는 평가 경로와 실험 경로의 캡/최소절감 바닥 불일치를 먼저 정렬한 뒤, 라우팅 조건식 A/B로 재시도.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
