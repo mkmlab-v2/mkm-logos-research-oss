@@ -273,3 +273,26 @@ docs/final/artifacts/manse_saju_stage_*
 docs/final/artifacts/manseryeok_month_anchor_*
 docs/final/artifacts/memory_palace_promotion_*
 docs/final/artifacts/memory_palace_tier_*
+
+# Additional local-only experiment outputs (high churn; 0 tracked SSOT in these prefixes)
+docs/final/artifacts/partnerx_windows_*
+docs/final/artifacts/memory_palace_*
+docs/final/artifacts/alignment_*
+docs/final/artifacts/autonomous_evolution_*
+docs/final/artifacts/biblical_gate_*
+docs/final/artifacts/external_bundle_*
+docs/final/artifacts/multiline_fusion_*
+docs/final/artifacts/multiline_prophecy_*
+docs/final/artifacts/multiline_external_*
+docs/final/artifacts/kospi_sasang_*
+docs/final/artifacts/myeongni_biometric_*
+docs/final/artifacts/kospi_external_*
+docs/final/artifacts/kospi_myeongri_*
+docs/final/artifacts/kospi_biblical_*
+docs/final/artifacts/manse_postella_*
+docs/final/artifacts/prophecy_guard_*
+docs/final/artifacts/sasang_stage_*
+docs/final/artifacts/trackb_action_*
+docs/final/artifacts/internal_compression_*
+docs/final/artifacts/track_a_*
+docs/final/artifacts/log_metabolism_*
