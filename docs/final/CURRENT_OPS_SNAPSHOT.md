@@ -280,7 +280,8 @@
   - Week-6 E3 진행: `scripts/run_track_a_week6_clause_boundary_sweep_v1.py` + `docs/final/artifacts/track_a_week6_clause_boundary_sweep_v1.json` 생성. boundary penalty(0.1~0.2) + sentence min tokens(4~6) 스윕에서 saving은 최대 `0.49094`까지 회복했지만 jaccard가 `0.638~0.760`로 floor(`0.845`) 미달(viable=0), 판정 `HOLD_W6_E3_NO_VIABLE`.
   - Week-6 E4 진행: 리플레이 리포트 `scripts/report_track_a_week6_policy_replay_v1.py` + `docs/final/artifacts/track_a_week6_policy_replay_v1.json` 생성. E1~E3 종합에서 `best_saving=0.50525`, `best_integrity=1.0`이나 `quality_tradeoff_flag=true` 유지로 최종 판정은 `HOLD_W6_POLICY_REPLAY`.
   - Week-7 Pack 등록: `scripts/build_track_a_week7_architecture_redesign_pack_v1.py` + `docs/final/artifacts/track_a_week7_architecture_redesign_pack_v1.json` 생성. entry(`HOLD_W6_POLICY_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 하에서 W7-E1~E4(2-stage arch, semantic chunker, pareto scorer, policy replay) 아키텍처 레벨 실험 계약을 고정.
-  - 다음 1스텝: W7-E1(`run_track_a_week7_two_stage_arch_sweep_v1.py`) 구현/실행으로 planner/executor 이중 단계 압축 구조가 saving-jaccard 균형을 개선하는지 확인한다.
+  - Week-7 E1 진행: `scripts/run_track_a_week7_two_stage_arch_sweep_v1.py` + `docs/final/artifacts/track_a_week7_two_stage_arch_sweep_v1.json` 생성. 2-stage(planner 0.10~0.14 / executor 0.32~0.36) 스윕에서 saving은 최대 `0.48016`까지 회복했지만 jaccard가 `0.751~0.823`로 floor(`0.84`) 미달(viable=0), 판정 `HOLD_W7_E1_NO_VIABLE`.
+  - 다음 1스텝: W7-E2(`run_track_a_week7_semantic_chunk_sweep_v1.py`) 구현/실행으로 semantic chunk 크기와 sentence policy 강도를 조합해 jaccard 하락폭을 줄일 수 있는지 검증한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
