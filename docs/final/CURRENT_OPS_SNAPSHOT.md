@@ -145,6 +145,10 @@
     - 사전 게이트 등록: `docs/final/artifacts/l1_inverse_decoder_swap_typo_order_lane_decoder_v1_preregister.json` (`target_failure_bucket=order_only_mismatch`)
     - 결과: mixed 개선(`exact +0.0575`, `recovery +0.0483`) / `swap_typo` 하락(`exact -0.0508`, `recovery -0.0483`), `swap_typo avg_lane_pool_size=224.95`
     - 판정: `HOLD_V4` (order lane 확장만으로는 swap_typo uplift 미충족)
+  - Week2-D25 실험 20안(mode router + permutation pool v1): `scripts/run_l1_swap_typo_mode_router_decoder_v1.py`
+    - 사전 게이트 등록: `docs/final/artifacts/l1_inverse_decoder_swap_typo_mode_router_decoder_v1_preregister.json` (`target_failure_bucket=order_only_mismatch`)
+    - 결과: mixed 개선(`exact +0.0617`, `recovery +0.0525`) / `swap_typo` 개선(`exact +0.5742`, `recovery +0.5475`), `swap_typo avg_pool_size=768.19`
+    - 판정: `GO_MODE_ROUTER_DECODER_V1` (precheck gate 통과; 대규모 pool로 latency/장샘플 재검증 필요)
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용

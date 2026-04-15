@@ -1,0 +1,44 @@
+{
+  "schema": "l1_inverse_decoder_swap_typo_mode_router_decoder_v1_ab",
+  "generated_at_utc": "2026-04-15T02:45:33+00:00",
+  "research_only": true,
+  "candidate": "swap_typo_mode_router_decoder_v1",
+  "results": {
+    "mixed": {
+      "sample_count": 240.0,
+      "avg_pool_size": 96.0,
+      "exact_restore_rate": 0.6833333333333333,
+      "recovery_rate": 0.6916666666666667
+    },
+    "swap_typo": {
+      "sample_count": 240.0,
+      "avg_pool_size": 768.1875,
+      "exact_restore_rate": 0.825,
+      "recovery_rate": 0.8291666666666667
+    }
+  },
+  "baseline_reference": {
+    "mixed_exact": 0.6216666666666667,
+    "mixed_recovery": 0.6391666666666667,
+    "swap_typo_exact": 0.25083333333333335,
+    "swap_typo_recovery": 0.2816666666666667
+  },
+  "delta_vs_baseline": {
+    "mixed_exact_delta": 0.06166666666666665,
+    "mixed_recovery_delta": 0.05249999999999999,
+    "swap_typo_exact_delta": 0.5741666666666666,
+    "swap_typo_recovery_delta": 0.5475000000000001
+  },
+  "gate": {
+    "checks": {
+      "swap_typo_exact_uplift_ok": true,
+      "swap_typo_recovery_uplift_ok": true,
+      "mixed_non_regression_ok": true
+    },
+    "all_ok": true,
+    "decision": "GO_MODE_ROUTER_DECODER_V1"
+  },
+  "artifacts": {
+    "preregister": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_swap_typo_mode_router_decoder_v1_preregister.json"
+  }
+}
