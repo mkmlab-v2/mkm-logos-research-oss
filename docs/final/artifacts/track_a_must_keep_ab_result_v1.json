@@ -1,11 +1,11 @@
 {
   "schema": "track_a_must_keep_ab_result_v1",
-  "generated_at_utc": "2026-04-15T07:02:07+00:00",
+  "generated_at_utc": "2026-04-15T07:04:21+00:00",
   "inputs": {
     "input": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
     "active_a_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
     "rules": "C:\\workspace\\docs\\final\\artifacts\\track_a_failure_pattern_rules_v1.json",
-    "top_n": 20,
+    "top_n": 8,
     "base_must_keep": [
       "bible",
       "myeongri",
@@ -21,19 +21,7 @@
       "especially",
       "notes",
       "improves",
-      "rows",
-      "accumulate",
-      "bootstrap",
-      "thresholds",
-      "transition",
-      "matrix",
-      "tri",
-      "answers",
-      "include",
-      "timing",
-      "constitution",
-      "constraints",
-      "operational"
+      "rows"
     ]
   },
   "metrics": {
@@ -43,13 +31,13 @@
       "avg_sensitive_integrity": 1.0
     },
     "treatment": {
-      "global_token_saving_rate": 0.44303797468354433,
-      "avg_reconstruction_fidelity_jaccard": 0.8811165770289223,
+      "global_token_saving_rate": 0.45850914205344584,
+      "avg_reconstruction_fidelity_jaccard": 0.8613363572487026,
       "avg_sensitive_integrity": 1.0
     },
     "delta": {
-      "global_token_saving_rate": -0.025316455696202556,
-      "avg_reconstruction_fidelity_jaccard": 0.032280219780219666,
+      "global_token_saving_rate": -0.00984528832630105,
+      "avg_reconstruction_fidelity_jaccard": 0.012499999999999956,
       "avg_sensitive_integrity": 0.0
     }
   },
@@ -57,7 +45,7 @@
     "saving_floor_ok": false,
     "integrity_floor_ok": true,
     "jaccard_non_regression_ok": true,
-    "jaccard_uplift_2pp_ok": true
+    "jaccard_uplift_2pp_ok": false
   },
   "decision": "HOLD_BASELINE_TRACK_A"
 }
