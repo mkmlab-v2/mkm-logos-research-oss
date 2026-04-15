@@ -272,7 +272,8 @@
   - Week-5 Pack 등록: `scripts/build_track_a_week5_engine_routing_pack_v1.py` + `docs/final/artifacts/track_a_week5_engine_routing_pack_v1.json` 생성. entry(`HOLD_W4_POLICY_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 하에서 W5-E1~E4(패널티 라우터 스코어링, 도메인 confidence 임계, 하이브리드 fallback, policy replay) 실행 계약을 고정.
   - Week-5 E1 진행: `scripts/run_track_a_week5_penalty_router_sweep_v1.py` + `docs/final/artifacts/track_a_week5_penalty_router_sweep_v1.json` 생성. risk domain(`ssot,timing`) 보호 + 비위험군 penalty 스윕(0.05~0.2) 결과 saving은 `0.494~0.503`으로 floor(`0.475`) 통과했지만 jaccard가 `0.560~0.609`로 floor(`0.82`) 미달(viable=0), 판정 `HOLD_W5_E1_NO_VIABLE`.
   - Week-5 E2 진행: `scripts/run_track_a_week5_confidence_router_sweep_v1.py` + `docs/final/artifacts/track_a_week5_confidence_router_sweep_v1.json` 생성. domain override(`ssot=0.70`, `timing=0.68`) 포함 confidence threshold 스윕(0.55~0.70)에서 saving은 `0.484~0.489`으로 floor(`0.48`) 통과했지만 jaccard가 `0.724~0.751`로 floor(`0.83`) 미달(viable=0), 판정 `HOLD_W5_E2_NO_VIABLE`.
-  - 다음 1스텝: W5-E3(`run_track_a_week5_hybrid_router_mix_v1.py`) 구현/실행으로 hard-domain router_on + soft penalty 혼합이 품질 손실을 줄이는지 확인한다.
+  - Week-5 E3 진행: `scripts/run_track_a_week5_hybrid_router_mix_v1.py` + `docs/final/artifacts/track_a_week5_hybrid_router_mix_v1.json` 생성. hard-domain(`ssot,timing`) router_on 고정 + soft penalty alpha(0.2~0.4) 혼합에서 saving은 `0.493~0.494`로 floor(`0.485`) 통과했지만 jaccard가 `0.611~0.631`로 floor(`0.84`) 미달(viable=0), 판정 `HOLD_W5_E3_NO_VIABLE`.
+  - 다음 1스텝: W5-E4 리플레이 리포트(`report_track_a_week5_policy_replay_v1.py`)로 Week-5 전구간 HOLD를 고정하고 Week-6 전환 기준(엔진 내부 압축 규칙 수정 필요)을 등록한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
