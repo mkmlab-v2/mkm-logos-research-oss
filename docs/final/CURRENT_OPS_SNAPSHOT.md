@@ -6,14 +6,16 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W14-Pack)
+## Track A Sprint Update (2026-04-15, W14-E1)
 
-- 실행: `py scripts/build_track_a_week14_hypothesis_pack_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week14_hypothesis_pack_v1.json`
-- 결과: Week-14 실험 팩 등록 완료 (`track_a_week14_hypothesis_pack`)
-- 진입 조건: `week13_decision=HOLD_W13_POLICY_REPLAY`, `policy_floor_locked=0.49`, `quality_tradeoff_flag=true`, `best_saving_seen=0.46911`, `best_jaccard_seen=0.84884`
-- 실험 구성: W14-E1(staged lane unlock), W14-E2(replay anneal floor shadow), W14-E3(confidence throttle rollback), W14-E4(policy replay)
-- 다음 1스텝: W14-E1(`run_track_a_week14_staged_lane_unlock_sweep_v1.py`) 구현/실행으로 첫 sweep 결과 확보
+- 실행: `py scripts/run_track_a_week14_staged_lane_unlock_sweep_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week14_staged_lane_unlock_sweep_v1.json`
+- 결과: `decision=HOLD_W14_E1_NO_VIABLE`, `viable_count=0`
+- 기준선: `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
+- 최고 run: 기준선과 동일 (`saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`)
+- 관찰: 전 run에서 `switched_to_router_off_cases=0`, `guard_blocked_cases=30`, `protected_blocked_cases=10`
+- 판단: strict guard + protected domain 제약으로 off-path unlock이 사실상 열리지 않아 `quality_tradeoff_flag` 해소 근거 미확보
+- 다음 1스텝: W14-E2(`run_track_a_week14_replay_anneal_floor_shadow_sweep_v1.py`) 구현/실행으로 replay anneal 경로 검증
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
