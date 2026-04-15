@@ -1,6 +1,6 @@
 {
   "schema": "ultra_compression_kpi_summary_v1",
-  "ts_utc": "2026-04-11T11:50:32.722817+00:00",
+  "ts_utc": "2026-04-15T08:26:41.045131+00:00",
   "sources": {
     "round2": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json",
     "decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
@@ -10,31 +10,31 @@
     "hydration_mix": "reports/constitution/btrack_pilot/token_api_hydration_mix_latest.json"
   },
   "decision": {
-    "go_no_go": "GO",
+    "go_no_go": "NO_GO",
     "rollout_policy": "domain_variable_cap",
     "selected_candidate": {
       "strategy": "A",
       "intensity": "extreme",
-      "global_token_saving_rate": 0.5274261603375527,
-      "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
-      "avg_sensitive_integrity": 0.9916666666666668,
+      "global_token_saving_rate": 0.4683544303797469,
+      "avg_reconstruction_fidelity_jaccard": 0.8488363572487027,
+      "avg_sensitive_integrity": 1.0,
       "jaccard_drop_pp": 0.0
     }
   },
   "active_kpi": {
-    "global_token_saving_rate": 0.49085794655414905,
-    "avg_reconstruction_fidelity_jaccard": 0.7349368566589929,
+    "global_token_saving_rate": 0.4683544303797469,
+    "avg_reconstruction_fidelity_jaccard": 0.8488363572487027,
     "avg_sensitive_integrity": 1.0,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
     "ultra_saving_50_ok": false,
-    "ultra_saving_policy_ok": true,
+    "ultra_saving_policy_ok": false,
     "ultra_saving_policy_min": 0.49,
     "sensitive_integrity_ok": true
   },
   "literal_kpi": {
-    "global_token_saving_rate": 0.24613220815752457,
-    "avg_reconstruction_fidelity_jaccard": 0.9189203211649032,
+    "global_token_saving_rate": 0.23628691983122363,
+    "avg_reconstruction_fidelity_jaccard": 0.9753949175824175,
     "avg_sensitive_integrity": 1.0,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
@@ -44,8 +44,8 @@
     "sensitive_integrity_ok": true
   },
   "ultra_literal_kpi": {
-    "global_token_saving_rate": 0.13220815752461323,
-    "avg_reconstruction_fidelity_jaccard": 0.9917661801562729,
+    "global_token_saving_rate": 0.1378340365682138,
+    "avg_reconstruction_fidelity_jaccard": 0.9988095238095237,
     "avg_sensitive_integrity": 1.0,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
@@ -55,11 +55,11 @@
     "sensitive_integrity_ok": true
   },
   "performance": {
-    "bench_total_elapsed_ms": 7972.044,
-    "round2_elapsed_ms": 6639.684,
+    "bench_total_elapsed_ms": 5865.46,
+    "round2_elapsed_ms": 4376.112,
     "round2_full_grid_count": 332,
-    "round2_evaluated_count": 108,
-    "round2_pruned_by_saving_count": 224,
+    "round2_evaluated_count": 80,
+    "round2_pruned_by_saving_count": 252,
     "round2_pruned_by_bound_count": 0
   },
   "api_hydration_mix": {
