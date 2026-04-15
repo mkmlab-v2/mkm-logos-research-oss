@@ -265,7 +265,8 @@
   - Week-3 Day3 진행: `scripts/run_track_a_phrase_profile_ab_v1.py` + `docs/final/artifacts/track_a_phrase_profile_ab_v1.json` 생성. router-on baseline 대비 phrase-first(top5) 처리 시 jaccard는 `+0.00536` 개선됐지만 saving이 `0.46413`으로 floor `0.485` 미달(viable=0), 결정은 `HOLD_W3_D3_NO_VIABLE`.
   - Week-3 Day4 진행: 리플레이 판정 `scripts/report_track_a_policy_floor_replay_v1.py` + `docs/final/artifacts/track_a_policy_floor_replay_v1.json` 생성. D1~D3 종합에서 best saving은 `0.5077`, integrity `1.0`이나 품질 트레이드오프 플래그(`router_off jaccard 급락`)가 활성이라 최종 판정은 `HOLD_POLICY_FLOOR_REPLAY`.
   - Week-4 Pack 등록: `scripts/build_track_a_week4_experiment_pack_v1.py` + `docs/final/artifacts/track_a_week4_experiment_pack_v1.json` 생성. entry 조건(`HOLD_POLICY_FLOOR_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 아래 W4-E1~E4(domain phrase ssot/timing + selective router 제약 + policy replay) 실행 계약을 분리 고정.
-  - 다음 1스텝: W4-E1(`run_track_a_week4_domain_phrase_ab_v1.py`) 구현/실행으로 ssot 전용 phrase 정책의 saving-jaccard 균형 가능성을 먼저 판정한다.
+  - Week-4 E1 진행: `scripts/run_track_a_week4_domain_phrase_ab_v1.py` + `docs/final/artifacts/track_a_week4_domain_phrase_ab_v1.json` 생성. ssot 전용 phrase 정책에서 target-domain jaccard는 `+0.0371`, 전체 jaccard `+0.0074` 개선됐지만 saving이 `0.46273`으로 floor `0.475` 미달(viable=0), 판정 `HOLD_W4_E1_NO_VIABLE`.
+  - 다음 1스텝: W4-E2 동일 스크립트로 timing 전용 phrase 정책을 실행해 timing 축에서 saving 손실 폭이 더 작은 조합이 있는지 확인한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
