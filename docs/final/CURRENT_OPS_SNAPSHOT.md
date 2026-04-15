@@ -6,14 +6,14 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-15, W11-E1)
+## Track A Sprint Update (2026-04-15, W11-E2)
 
-- 실행: `py scripts/run_track_a_week11_dual_threshold_router_sweep_v1.py`
-- 산출물: `docs/final/artifacts/track_a_week11_dual_threshold_router_sweep_v1.json`
-- 결과: `decision=HOLD_W11_E1_NO_VIABLE`, `viable_count=0`
-- 핵심 수치: baseline(`saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`), best run도 동일(`saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`)
-- 게이트 판정: dual-threshold에서 off-path 전부 차단(`threshold_blocked_cases=30`, `switched_to_router_off_cases=0`), saving/jaccard floor 미충족, integrity `1.0` 유지
-- 다음 1스텝: W11-E2(`run_track_a_week11_offpath_quota_backpressure_sweep_v1.py`) 구현/실행으로 off-path quota + backpressure 경로 검증
+- 실행: `py scripts/run_track_a_week11_offpath_quota_backpressure_sweep_v1.py`
+- 산출물: `docs/final/artifacts/track_a_week11_offpath_quota_backpressure_sweep_v1.json`
+- 결과: `decision=HOLD_W11_E2_NO_VIABLE`, `viable_count=0`
+- 핵심 수치: baseline(`saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`), best run(`saving=0.47011`, `jaccard=0.84765`, `integrity=1.0`)
+- 게이트 판정: off-path quota/backpressure로 미세 변화만 발생(`max saving +0.0010`)했고 floor(`0.49`/`0.85`)는 모두 미충족, integrity `1.0` 유지
+- 다음 1스텝: W11-E3(`run_track_a_week11_dynamic_cap_confidence_veto_sweep_v1.py`) 구현/실행으로 dynamic cap + confidence veto 경로 검증
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
