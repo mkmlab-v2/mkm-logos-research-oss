@@ -269,7 +269,8 @@
   - Week-4 E2 진행: `scripts/run_track_a_week4_domain_phrase_ab_v1.py --target-domains timing ...` + `docs/final/artifacts/track_a_week4_timing_domain_phrase_ab_v1.json` 생성. timing 전용 phrase 정책에서 target-domain jaccard는 `+0.1071`, 전체 jaccard `+0.00714` 개선됐지만 saving이 `0.46273`으로 floor `0.475` 미달(viable=0), 판정 `HOLD_W4_E2_NO_VIABLE`.
   - Week-4 E3 진행: `scripts/run_track_a_week4_selective_router_ab_v1.py` + `docs/final/artifacts/track_a_week4_selective_router_ab_v1.json` 생성. `ssot,timing` router_off 금지(나머지 75% 케이스만 router_off 허용) 혼합 결과 saving `0.49963`로 floor `0.48`은 통과했지만 jaccard가 `0.55193`(baseline 대비 `-0.2969`)로 `0.82` 게이트 미달, 판정 `HOLD_W4_E3_NO_VIABLE`.
   - Week-4 E4 진행: 리플레이 리포트 `scripts/report_track_a_week4_policy_replay_v1.py` + `docs/final/artifacts/track_a_week4_policy_replay_v1.json` 생성. E1~E3 종합 기준 `best_saving=0.49963`, `best_integrity=1.0`이지만 `quality_tradeoff_flag=true`로 최종 판정은 `HOLD_W4_POLICY_REPLAY`.
-  - 다음 1스텝: Week-5 엔진 레벨 라우팅 규칙 재설계 실험팩(도메인별 라우터 스코어링/하드 금지 대신 penalty 기반) 등록으로 전환한다.
+  - Week-5 Pack 등록: `scripts/build_track_a_week5_engine_routing_pack_v1.py` + `docs/final/artifacts/track_a_week5_engine_routing_pack_v1.json` 생성. entry(`HOLD_W4_POLICY_REPLAY`, floor `0.49` lock, quality_tradeoff_flag=true) 하에서 W5-E1~E4(패널티 라우터 스코어링, 도메인 confidence 임계, 하이브리드 fallback, policy replay) 실행 계약을 고정.
+  - 다음 1스텝: W5-E1(`run_track_a_week5_penalty_router_sweep_v1.py`) 구현/실행으로 risk domain(`ssot,timing`) penalty grid에서 saving-jaccard 균형점을 탐색한다.
 
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
