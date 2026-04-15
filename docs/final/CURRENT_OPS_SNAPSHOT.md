@@ -230,6 +230,11 @@
   - 증거: proxy 고정값 `MKM_KPI_PROXY_LOG=/root/.pm2/logs/bitcoin-live-error.log`, cron `kpi_proxy_metabolism_v1` 5분 주기 등록, 산출 `docs/final/artifacts/derived/log_metabolism_from_kpi_vps_export_v1.jsonl`.
   - 다음 1스텝: VPS에서 `crontab -l | rg kpi_proxy_metabolism_v1` + `tail -n 50 /opt/mkm-lab-workspace-v2/docs/final/artifacts/derived/kpi_metabolism_cron.log`로 주기 실행 흔적만 점검.
 
+- **SSH Cursor 후속 정리 반영(2026-04-15):**
+  - 상태: 위생 정책 적용 완료(`.gitignore` 런타임 산출 4종 + `projects/bitcoin-trading/memory/kpi/`), 5분 크론/append→export 체인은 계속 정상.
+  - 증거: 롤오버 gzip `docs/final/artifacts/derived/rollover/log_metabolism_from_kpi_vps_export_v1_20260415T061404Z.jsonl.gz`, 보존 크론 `10 3 * * * ... -mtime +14 -delete`, export 리포트 `output_line_count=8` + JSONL `wc -l=8`.
+  - 다음 1스텝: VPS에서 `.gitignore` 변경만 커밋/푸시해 워킹트리를 clean으로 마감하고, 다음 사이클에서 `output_line_count` 증가만 점검.
+
 #### Hybrid codec v0 운영 토글 (Canary default-on)
 
 - **기본 동작:** `compression_token_api_stub.py`에서 Hybrid v0 경로는 **기본 ON**(환경변수 미설정).
