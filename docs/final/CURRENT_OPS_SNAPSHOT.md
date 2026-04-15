@@ -133,6 +133,10 @@
     - 데이터셋: `l1_swap_typo_reranker_v1_dataset_summary.json` (rows=51840, groups=540)
     - 결과: mixed 개선(`exact +0.0478`, `recovery +0.0414`) / `swap_typo`는 `exact +0.0047`, `recovery -0.0039`
     - 판정: `HOLD_V4` (swap_typo uplift 게이트 미달)
+  - Week2-D22 실험 17안(structural lane decoder v1): `scripts/run_l1_swap_typo_lane_decoder_v1.py`
+    - 사전 게이트 등록: `docs/final/artifacts/l1_inverse_decoder_swap_typo_lane_decoder_v1_preregister.json` (`is_structural_new_path=true`)
+    - 결과: mixed 개선(`exact +0.0575`, `recovery +0.0483`) / `swap_typo` 하락(`exact -0.0508`, `recovery -0.0483`)
+    - 판정: `HOLD_V4` (swap_typo uplift 게이트 미달, production v4 유지)
   - 운영 재개 정책 고정: `docs/final/artifacts/l1_inverse_decoder_swap_typo_research_resume_policy_v1.json`
     - 현재: `STOP_INCREMENTAL_TUNING_KEEP_V4`
     - 재개: 구조적으로 새로운 디코딩 경로 + 사전 게이트 등록 시에만 허용
