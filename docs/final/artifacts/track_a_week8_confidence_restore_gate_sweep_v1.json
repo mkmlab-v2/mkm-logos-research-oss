@@ -1,0 +1,280 @@
+{
+  "schema": "track_a_week8_confidence_restore_gate_sweep_v1",
+  "generated_at_utc": "2026-04-15T11:45:31+00:00",
+  "inputs": {
+    "input": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+    "active_a_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "pack": "C:\\workspace\\docs\\final\\artifacts\\track_a_week8_hypothesis_pack_v1.json",
+    "restore_threshold_grid": [
+      0.6,
+      0.65,
+      0.7
+    ],
+    "restore_penalty_grid": [
+      0.05,
+      0.08,
+      0.1
+    ],
+    "risk_domains": [
+      "ssot",
+      "timing"
+    ],
+    "caps": {
+      "general": 0.54,
+      "sensitive": 0.5,
+      "hangul": 0.48
+    },
+    "floors": {
+      "saving_floor": 0.485,
+      "jaccard_floor": 0.85,
+      "integrity_floor": 1.0
+    }
+  },
+  "baseline_router_on": {
+    "global_token_saving_rate": 0.4691068817878029,
+    "avg_reconstruction_fidelity_jaccard": 0.8488363572487027,
+    "avg_sensitive_integrity": 1.0,
+    "sensitive_leak_rate": 0.0
+  },
+  "run_count": 9,
+  "viable_count": 0,
+  "recommended": null,
+  "decision": "HOLD_W8_E2_NO_VIABLE",
+  "next_action": "Keep baseline and continue to W8-E3 low-cost rerank path.",
+  "runs": [
+    {
+      "restore_threshold": 0.6,
+      "restore_penalty": 0.08,
+      "risk_domains": [
+        "ssot",
+        "timing"
+      ],
+      "switched_to_router_off_cases": 21,
+      "switched_ratio": 0.525,
+      "metrics": {
+        "global_token_saving_rate": 0.49326537851982916,
+        "avg_reconstruction_fidelity_jaccard": 0.6521804712100765,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_leak_rate": 0.0
+      },
+      "delta_vs_baseline": {
+        "saving": 0.024158496732026247,
+        "jaccard": -0.19665588603862616,
+        "integrity": 0.0
+      },
+      "gate": {
+        "saving_floor_ok": true,
+        "jaccard_floor_ok": false,
+        "integrity_floor_ok": true
+      }
+    },
+    {
+      "restore_threshold": 0.6,
+      "restore_penalty": 0.1,
+      "risk_domains": [
+        "ssot",
+        "timing"
+      ],
+      "switched_to_router_off_cases": 19,
+      "switched_ratio": 0.475,
+      "metrics": {
+        "global_token_saving_rate": 0.490528880411814,
+        "avg_reconstruction_fidelity_jaccard": 0.6510356053690032,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_leak_rate": 0.0
+      },
+      "delta_vs_baseline": {
+        "saving": 0.021421998624011063,
+        "jaccard": -0.19780075187969948,
+        "integrity": 0.0
+      },
+      "gate": {
+        "saving_floor_ok": true,
+        "jaccard_floor_ok": false,
+        "integrity_floor_ok": true
+      }
+    },
+    {
+      "restore_threshold": 0.7,
+      "restore_penalty": 0.05,
+      "risk_domains": [
+        "ssot",
+        "timing"
+      ],
+      "switched_to_router_off_cases": 21,
+      "switched_ratio": 0.525,
+      "metrics": {
+        "global_token_saving_rate": 0.49166450132684664,
+        "avg_reconstruction_fidelity_jaccard": 0.6360236422504224,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_leak_rate": 0.0
+      },
+      "delta_vs_baseline": {
+        "saving": 0.022557619539043727,
+        "jaccard": -0.21281271499828025,
+        "integrity": 0.0
+      },
+      "gate": {
+        "saving_floor_ok": true,
+        "jaccard_floor_ok": false,
+        "integrity_floor_ok": true
+      }
+    },
+    {
+      "restore_threshold": 0.65,
+      "restore_penalty": 0.1,
+      "risk_domains": [
+        "ssot",
+        "timing"
+      ],
+      "switched_to_router_off_cases": 22,
+      "switched_ratio": 0.55,
+      "metrics": {
+        "global_token_saving_rate": 0.49038999152292506,
+        "avg_reconstruction_fidelity_jaccard": 0.6275590831811807,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_leak_rate": 0.0
+      },
+      "delta_vs_baseline": {
+        "saving": 0.021283109735122152,
+        "jaccard": -0.22127727406752196,
+        "integrity": 0.0
+      },
+      "gate": {
+        "saving_floor_ok": true,
+        "jaccard_floor_ok": false,
+        "integrity_floor_ok": true
+      }
+    },
+    {
+      "restore_threshold": 0.65,
+      "restore_penalty": 0.08,
+      "risk_domains": [
+        "ssot",
+        "timing"
+      ],
+      "switched_to_router_off_cases": 24,
+      "switched_ratio": 0.6,
+      "metrics": {
+        "global_token_saving_rate": 0.49348596675512324,
+        "avg_reconstruction_fidelity_jaccard": 0.6204494125585457,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_leak_rate": 0.0
+      },
+      "delta_vs_baseline": {
+        "saving": 0.02437908496732033,
+        "jaccard": -0.22838694469015697,
+        "integrity": 0.0
+      },
+      "gate": {
+        "saving_floor_ok": true,
+        "jaccard_floor_ok": false,
+        "integrity_floor_ok": true
+      }
+    },
+    {
+      "restore_threshold": 0.7,
+      "restore_penalty": 0.08,
+      "risk_domains": [
+        "ssot",
+        "timing"
+      ],
+      "switched_to_router_off_cases": 24,
+      "switched_ratio": 0.6,
+      "metrics": {
+        "global_token_saving_rate": 0.49860894577129117,
+        "avg_reconstruction_fidelity_jaccard": 0.6170660921251092,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_leak_rate": 0.0
+      },
+      "delta_vs_baseline": {
+        "saving": 0.029502063983488258,
+        "jaccard": -0.23177026512359344,
+        "integrity": 0.0
+      },
+      "gate": {
+        "saving_floor_ok": true,
+        "jaccard_floor_ok": false,
+        "integrity_floor_ok": true
+      }
+    },
+    {
+      "restore_threshold": 0.6,
+      "restore_penalty": 0.05,
+      "risk_domains": [
+        "ssot",
+        "timing"
+      ],
+      "switched_to_router_off_cases": 25,
+      "switched_ratio": 0.625,
+      "metrics": {
+        "global_token_saving_rate": 0.496263744532901,
+        "avg_reconstruction_fidelity_jaccard": 0.6095119125585458,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_leak_rate": 0.0
+      },
+      "delta_vs_baseline": {
+        "saving": 0.027156862745098098,
+        "jaccard": -0.2393244446901569,
+        "integrity": 0.0
+      },
+      "gate": {
+        "saving_floor_ok": true,
+        "jaccard_floor_ok": false,
+        "integrity_floor_ok": true
+      }
+    },
+    {
+      "restore_threshold": 0.7,
+      "restore_penalty": 0.1,
+      "risk_domains": [
+        "ssot",
+        "timing"
+      ],
+      "switched_to_router_off_cases": 25,
+      "switched_ratio": 0.625,
+      "metrics": {
+        "global_token_saving_rate": 0.49430105594869544,
+        "avg_reconstruction_fidelity_jaccard": 0.5926997995554497,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_leak_rate": 0.0
+      },
+      "delta_vs_baseline": {
+        "saving": 0.025194174160892535,
+        "jaccard": -0.25613655769325294,
+        "integrity": 0.0
+      },
+      "gate": {
+        "saving_floor_ok": true,
+        "jaccard_floor_ok": false,
+        "integrity_floor_ok": true
+      }
+    },
+    {
+      "restore_threshold": 0.65,
+      "restore_penalty": 0.05,
+      "risk_domains": [
+        "ssot",
+        "timing"
+      ],
+      "switched_to_router_off_cases": 27,
+      "switched_ratio": 0.675,
+      "metrics": {
+        "global_token_saving_rate": 0.49863112130817255,
+        "avg_reconstruction_fidelity_jaccard": 0.580408132888783,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_leak_rate": 0.0
+      },
+      "delta_vs_baseline": {
+        "saving": 0.029524239520369644,
+        "jaccard": -0.26842822435991964,
+        "integrity": 0.0
+      },
+      "gate": {
+        "saving_floor_ok": true,
+        "jaccard_floor_ok": false,
+        "integrity_floor_ok": true
+      }
+    }
+  ]
+}
