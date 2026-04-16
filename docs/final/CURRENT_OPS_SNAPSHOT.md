@@ -2282,3 +2282,9 @@ Set-Location c:\workspace
 - **핵심:** `min_exact_sequence_match_rate_over_grid=1.0`, `first_oov_below_floor_by_length`의 `64`는 `null`
 - **precheck:** `trackb_promotion_precheck_draft_latest.json`에 `split_b2`·`stress_split_b2_min_exact` 반영
 
+## Track B All-in-one Weekly (A + B1 + B2) — Verified (2026-04-16)
+
+- **실행:** `Run-TrackBWeeklyRefresh.ps1 -IncludeExtendedStressGrid -IncludeExtendedStressB2 -SkipSsmSmoke -SkipCosine`
+- **결과:** exit `0`, wall time 약 `880392ms` (~14.7분), 로그에 `split_a` → `split_b1` → `split_b2` 순서로 완료
+- **Git 주의:** 루트 `.gitignore`에 `docs/final/artifacts/trackb_quaternion_top_*` 패턴이 있어 해당 산출물은 **커밋 대상에서 제외**될 수 있음(로컬 재현·CI에서 생성 가정)
+
