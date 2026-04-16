@@ -8,12 +8,15 @@
 
 ## Track A Sprint Update (2026-04-16, W22-E1)
 
-- 실행: `py scripts/build_track_a_week22_hypothesis_pack_v1.py` 후 `py scripts/run_track_a_week22_staged_guard_unlock_sweep_v1.py`
-- 산출물(로컬): `track_a_week22_hypothesis_pack_v1.json`, `track_a_week22_staged_guard_unlock_sweep_v1.json` (루트 `.gitignore`의 `docs/final/artifacts/track_a_*`로 커밋 제외 — 재생성은 동일 스크립트)
-- 결과: `decision=HOLD_W22_E1_NO_VIABLE`, `viable_count=0`
+- 실행: `py scripts/build_track_a_week22_hypothesis_pack_v1.py` 후 W22-E1 baseline/변형 실행
+  - baseline: `py scripts/run_track_a_week22_staged_guard_unlock_sweep_v1.py`
+  - conservative: `--unlock-ratio-grid 0.08,0.10,0.12 --jaccard-guard-grid 0.848,0.850,0.852 --guard-relax-margin-grid 0.0010,0.0015,0.0020`
+  - aggressive: `--unlock-ratio-grid 0.16,0.18,0.20 --jaccard-guard-grid 0.842,0.844,0.846 --guard-relax-margin-grid 0.0030,0.0040,0.0050`
+- 산출물(로컬): `track_a_week22_hypothesis_pack_v1.json`, `track_a_week22_staged_guard_unlock_sweep*_v1.json`, `track_a_week22_e1_ab_compare_v1.json` (루트 `.gitignore`의 `docs/final/artifacts/track_a_*`로 커밋 제외 — 재생성은 동일 스크립트)
+- 결과: baseline/conservative/aggressive 전부 `decision=HOLD_W22_E1_NO_VIABLE`, `viable_count=0` 및 best metrics 동일(`saving=0.46209`, `jaccard=0.83232`, `integrity=1.0`)
 - 기준선(재확인): `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
-- 판단: W22-E1 단독에서도 floor(`saving>=0.49`, `jaccard>=0.85`, `integrity==1.0`) 동시 충족 실패로 상용 Track A 라인 HOLD 유지
-- 다음 1스텝: W22-E2를 열지 말고 E1 그리드/기준선 재설계(정책 가드 또는 입력셋 재기준선) 후 재시도
+- 판단: W22-E1은 그리드 조정만으로 결과가 바뀌지 않는 deadlock 상태로 확인 — 상용 Track A 라인 HOLD 유지
+- 다음 1스텝: E2 확장보다 우선 `evaluate_report` 라우팅/스코어 결합 규칙(정책 로직) 또는 입력셋 기준선 자체를 변경하는 실험 설계 필요
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 

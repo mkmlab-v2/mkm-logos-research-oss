@@ -37,6 +37,29 @@ def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _parse_float_grid(raw: str | None) -> list[float]:
+    if not raw:
+        return []
+    out: list[float] = []
+    for token in raw.split(","):
+        token = token.strip()
+        if not token:
+            continue
+        out.append(float(token))
+    return out
+
+
+def _parse_str_grid(raw: str | None) -> list[str]:
+    if not raw:
+        return []
+    out: list[str] = []
+    for token in raw.split(","):
+        token = token.strip().lower()
+        if token:
+            out.append(token)
+    return out
+
+
 def _read_e1_config(pack_doc: dict[str, Any]) -> tuple[list[float], list[float], list[float], list[str]]:
     experiments = ((pack_doc.get("pack") or {}).get("experiments") or [])
     e1 = next((x for x in experiments if str(x.get("id")) == "W22-E1"), {})
@@ -85,12 +108,28 @@ def main() -> int:
     ap.add_argument("--saving-floor", type=float, default=0.49)
     ap.add_argument("--jaccard-floor", type=float, default=0.85)
     ap.add_argument("--integrity-floor", type=float, default=1.0)
+    ap.add_argument("--unlock-ratio-grid", type=str, default="")
+    ap.add_argument("--jaccard-guard-grid", type=str, default="")
+    ap.add_argument("--guard-relax-margin-grid", type=str, default="")
+    ap.add_argument("--protected-domains", type=str, default="")
     args = ap.parse_args()
 
     input_doc = _load_json(args.input if args.input.is_absolute() else ROOT / args.input)
     active_doc = _load_json(args.active_a_report if args.active_a_report.is_absolute() else ROOT / args.active_a_report)
     pack_doc = _load_json(args.pack if args.pack.is_absolute() else ROOT / args.pack)
     unlock_ratios, jaccard_guards, guard_relax_margins, protected_domains = _read_e1_config(pack_doc)
+    unlock_override = _parse_float_grid(args.unlock_ratio_grid)
+    guard_override = _parse_float_grid(args.jaccard_guard_grid)
+    relax_override = _parse_float_grid(args.guard_relax_margin_grid)
+    domains_override = _parse_str_grid(args.protected_domains)
+    if unlock_override:
+        unlock_ratios = unlock_override
+    if guard_override:
+        jaccard_guards = guard_override
+    if relax_override:
+        guard_relax_margins = relax_override
+    if domains_override:
+        protected_domains = domains_override
     protected_set = set(protected_domains)
 
     active_profile = active_doc.get("active_profile", {})
