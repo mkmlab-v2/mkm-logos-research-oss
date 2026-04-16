@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>A-CODEAI | 엔터프라이즈 거시 리스크 조기경보</title>
+  <title>A-CODEAI | 재무팀용 거시 리스크 조기경보</title>
   <meta
     name="description"
-    content="수출입/재무팀을 위한 거시 리스크 조기경보. KPI·한계·보상 조건을 명시한 90일 유료 파일럿."
+    content="재무·리스크팀을 위한 거시 리스크 조기경보. KPI 기반 90일 유료 파일럿과 명확한 보상 조건."
   />
   <style>
     :root {
@@ -124,6 +124,7 @@
     }
     .kpi { font-size: 30px; font-weight: 800; margin: 0; }
     .small { color: var(--muted); margin: 0; }
+    .mono { font-family: Consolas, Menlo, monospace; font-size: 13px; color: #d7e2ff; margin: 0; }
     ul { margin: 0; padding-left: 18px; color: var(--muted); }
     .trust-list { display:grid; gap:10px; margin:14px 0 0; }
     .trust-item {
@@ -177,15 +178,15 @@
         <span class="badge">투자자문 아님</span>
         <span class="badge">90일 유료 파일럿</span>
       </div>
-      <h1>거시 리스크가 빨라질수록,<br />팀에는 신호의 선행시간이 필요합니다.</h1>
+      <h1>거시 충격을 더 빨리 보고,<br />의사결정은 더 빠르게.</h1>
       <p class="subtitle">
-        A-CODEAI는 환율·원자재·공급망 충격에 노출된 기업을 위해
-        조기경보 신호를 제공하며, KPI·한계·보상 조건을 파일럿에 명시합니다.
+        A-CODEAI는 환율·원자재·공급망 변동에 노출된 재무/리스크팀을 위해
+        조기경보 신호를 제공하고, KPI·한계·미달 시 보상 조건을 파일럿 계약에 명시합니다.
       </p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="/pilot">90일 파일럿 보기</a>
+        <a class="btn btn-primary" href="#contact">20분 미팅 신청</a>
+        <a class="btn btn-ghost" href="/pilot">90일 파일럿 보기</a>
         <a class="btn btn-ghost" href="/benchmark">검증 기준 보기</a>
-        <a class="btn btn-ghost" href="#contact">20분 미팅 신청</a>
       </div>
     </div>
   </header>
@@ -214,6 +215,17 @@
     </div>
   </section>
 
+  <section id="flow">
+    <div class="container">
+      <h2>파일럿 진행 방식</h2>
+      <div class="grid">
+        <article class="card"><p class="label">1주차</p><p class="small">리스크 범위, 임계치, 리포트 수신 책임자 확정</p></article>
+        <article class="card"><p class="label">2~10주차</p><p class="small">주간 브리프 + 임계치 경보 + 이벤트 리뷰 운영</p></article>
+        <article class="card"><p class="label">11~12주차</p><p class="small">오탐/미탐 리포트와 연장·확장 여부 공동 판단</p></article>
+      </div>
+    </div>
+  </section>
+
   <section id="pilot">
     <div class="container">
       <h2>상업 조건 요약</h2>
@@ -227,7 +239,7 @@
 
   <section id="benchmark">
     <div class="container">
-      <h2>검증 원칙</h2>
+      <h2>증거 공개 및 검증 원칙</h2>
       <div class="grid">
         <article class="card"><p class="label">투명성</p><p class="small">맞은/틀린 사례를 월 단위로 함께 공개</p></article>
         <article class="card"><p class="label">재현성</p><p class="small">명령과 아티팩트 경로를 감사 가능하게 공개</p></article>
@@ -238,6 +250,41 @@
         <div class="trust-item"><span class="pill pill-ok">핵심 개선</span> `swap_typo` 극한 구간에서 objective v4 적용 시 exact/recovery가 각각 <strong>+0.0667</strong> 개선.</div>
         <div class="trust-item"><span class="pill pill-ok">운영 안전장치</span> 기본은 개선 경로 ON, 필요 시 `--disable-swap-typo-objective-v4`로 즉시 롤백 가능.</div>
         <div class="trust-item"><span class="pill pill-warn">적용 범위</span> 의미 전달 중심(요약/검색/로그) 도메인에 최적화. 100% 무결성이 필요한 결제/법무 원문은 별도 리터럴 라인 권장.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="self-check">
+    <div class="container">
+      <h2>60초 직접 검증</h2>
+      <div class="grid">
+        <article class="card">
+          <p class="label">Step 1</p>
+          <p class="small">홈페이지가 HTML로 정상 응답하는지 확인</p>
+          <p class="mono">curl -sSI https://a-codeai.com/</p>
+        </article>
+        <article class="card">
+          <p class="label">Step 2</p>
+          <p class="small">헬스체크 JSON 상태 확인</p>
+          <p class="mono">curl -sS https://a-codeai.com/health</p>
+        </article>
+        <article class="card">
+          <p class="label">Step 3</p>
+          <p class="small">API 라우트 동작 확인</p>
+          <p class="mono">curl -sSI https://a-codeai.com/v1/compress</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="trust-ops">
+    <div class="container">
+      <h2>신뢰를 만드는 운영 원칙</h2>
+      <div class="trust-list">
+        <div class="trust-item"><span class="pill pill-ok">가짜 사회적 증거 금지</span> 익명 추천사·검증 불가 성장수치 사용 금지.</div>
+        <div class="trust-item"><span class="pill pill-ok">재현 우선 업데이트</span> 새로운 성과 주장은 재현 경로와 함께 공개.</div>
+        <div class="trust-item"><span class="pill pill-ok">오픈 테스트 절차</span> 파일럿 계약 전에도 라우트/헬스 점검 직접 실행 가능.</div>
+        <div class="trust-item"><span class="pill pill-warn">적용 경계 명확화</span> 100% 리터럴 보존 필수 워크로드는 수주를 제한.</div>
       </div>
     </div>
   </section>

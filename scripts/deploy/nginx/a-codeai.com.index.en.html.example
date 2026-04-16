@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>A-CODEAI | Enterprise Macro Risk Warning</title>
+  <title>A-CODEAI | Macro Risk Early Warning for Treasury Teams</title>
   <meta
     name="description"
-    content="Enterprise macro risk early warning for treasury teams. Transparent KPI, known limits, and compensation terms."
+    content="Macro risk early warning for treasury and risk teams. Start with a KPI-based 90-day pilot and clear compensation terms."
   />
   <style>
     :root {
@@ -115,6 +115,7 @@
     }
     .kpi { font-size: 30px; font-weight: 800; margin: 0; }
     .small { color: var(--muted); margin: 0; }
+    .mono { font-family: Consolas, Menlo, monospace; font-size: 13px; color: #d7e2ff; margin: 0; }
     ul { margin: 0; padding-left: 18px; color: var(--muted); }
     .trust-list { display: grid; gap: 10px; margin: 14px 0 0; }
     .trust-item {
@@ -168,15 +169,15 @@
         <span class="badge">Not Investment Advice</span>
         <span class="badge">Paid 90-Day Pilot</span>
       </div>
-      <h1>When macro risk moves fast, your team needs lead time, not noise.</h1>
+      <h1>See macro shocks earlier.<br />Decide faster with less noise.</h1>
       <p class="subtitle">
-        A-CODEAI provides early warning signals for FX, commodity, and supply-chain shocks,
-        with transparent KPI, known limitations, and compensation terms built into the pilot.
+        A-CODEAI helps treasury and risk teams detect FX, commodity, and supply-chain stress earlier,
+        with a KPI-defined 90-day pilot and explicit miss-handling terms.
       </p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="/pilot">View 90-day pilot</a>
-        <a class="btn btn-secondary" href="/benchmark">View benchmark policy</a>
-        <a class="btn btn-secondary" href="#contact">Book a 20-min call</a>
+        <a class="btn btn-primary" href="#contact">Book a 20-min call</a>
+        <a class="btn btn-secondary" href="/pilot">View 90-day pilot</a>
+        <a class="btn btn-secondary" href="/benchmark">See verification policy</a>
       </div>
     </div>
   </header>
@@ -197,6 +198,26 @@
           <article class="card">
             <p class="label">Delivery</p>
             <p class="small">Weekly brief, threshold alerts, and monthly review with wins and misses together.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow">
+      <div class="container">
+        <h2>How the pilot runs</h2>
+        <div class="grid">
+          <article class="card">
+            <p class="label">Week 1</p>
+            <p class="small">Align risk scope, thresholds, and reporting owners.</p>
+          </article>
+          <article class="card">
+            <p class="label">Weeks 2-10</p>
+            <p class="small">Run weekly brief + threshold alerts + event review.</p>
+          </article>
+          <article class="card">
+            <p class="label">Weeks 11-12</p>
+            <p class="small">Deliver false positive / miss report and renewal recommendation.</p>
           </article>
         </div>
       </div>
@@ -238,7 +259,7 @@
 
     <section id="benchmark">
       <div class="container">
-        <h2>Verification policy</h2>
+        <h2>Evidence and verification policy</h2>
         <div class="grid">
           <article class="card">
             <p class="label">Transparency</p>
@@ -258,6 +279,41 @@
           <div class="trust-item"><span class="pill pill-ok">Hard-Case Gain</span> In `swap_typo` stress mode, objective v4 improves both exact and recovery by <strong>+0.0667</strong>.</div>
           <div class="trust-item"><span class="pill pill-ok">Safety Control</span> Improved path is default-on, with immediate rollback via `--disable-swap-typo-objective-v4`.</div>
           <div class="trust-item"><span class="pill pill-warn">Fit Boundary</span> Best for meaning-centric workloads (summarization, search, logs). For 100% fidelity workloads (payments/legal originals), use the literal-preserve lane.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="self-check">
+      <div class="container">
+        <h2>Self-check in under 60 seconds</h2>
+        <div class="grid">
+          <article class="card">
+            <p class="label">Step 1</p>
+            <p class="small">Verify homepage serves HTML.</p>
+            <p class="mono">curl -sSI https://a-codeai.com/</p>
+          </article>
+          <article class="card">
+            <p class="label">Step 2</p>
+            <p class="small">Verify health endpoint returns JSON OK.</p>
+            <p class="mono">curl -sS https://a-codeai.com/health</p>
+          </article>
+          <article class="card">
+            <p class="label">Step 3</p>
+            <p class="small">Verify API route behavior.</p>
+            <p class="mono">curl -sSI https://a-codeai.com/v1/compress</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="trust-ops">
+      <div class="container">
+        <h2>Trust by operating discipline</h2>
+        <div class="trust-list">
+          <div class="trust-item"><span class="pill pill-ok">No fake social proof</span> No anonymous testimonials, no unverifiable growth claims.</div>
+          <div class="trust-item"><span class="pill pill-ok">Repro-first updates</span> New claims are published only with reproducible evidence paths.</div>
+          <div class="trust-item"><span class="pill pill-ok">Open test workflow</span> Prospects can run route and health checks before pilot contract.</div>
+          <div class="trust-item"><span class="pill pill-warn">Scope honesty</span> We reject workloads that require strict 100% literal preservation.</div>
         </div>
       </div>
     </section>
