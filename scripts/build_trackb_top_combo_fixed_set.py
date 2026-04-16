@@ -23,6 +23,8 @@ def main() -> int:
     ap.add_argument("--ranking", default=str(DEFAULT_RANKING))
     ap.add_argument("--top-n", type=int, default=3)
     ap.add_argument("--max-failures", type=int, default=0)
+    ap.add_argument("--artifact-contains", default="", help="Optional substring filter for artifact path.")
+    ap.add_argument("--artifact-endswith", default="", help="Optional suffix filter for artifact path.")
     ap.add_argument("--out", default=str(DEFAULT_OUT))
     args = ap.parse_args()
 
@@ -32,11 +34,16 @@ def main() -> int:
 
     selected: list[dict[str, Any]] = []
     for row in rows:
+        artifact = str(row.get("artifact") or "")
+        if args.artifact_contains and args.artifact_contains not in artifact:
+            continue
+        if args.artifact_endswith and not artifact.endswith(args.artifact_endswith):
+            continue
         if int(row.get("failure_count", 999999)) > args.max_failures:
             continue
         selected.append(
             {
-                "artifact": row.get("artifact"),
+                "artifact": artifact,
                 "score_min_short_bucket_rate": row.get("min_short_bucket_rate"),
                 "failure_count": row.get("failure_count"),
                 "weights": row.get("weights"),
@@ -56,6 +63,8 @@ def main() -> int:
         "selection_policy": {
             "top_n": args.top_n,
             "max_failures": args.max_failures,
+            "artifact_contains": args.artifact_contains or None,
+            "artifact_endswith": args.artifact_endswith or None,
             "ranking_metric": ranking.get("ranking_metric", "best.min_short_bucket_rate"),
             "tie_breaker": ranking.get("tie_breaker", ["failure_count_asc", "artifact_name_asc"]),
         },

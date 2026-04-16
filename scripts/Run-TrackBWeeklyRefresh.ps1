@@ -13,6 +13,7 @@ param(
     [switch] $SkipSsmSmoke,
     [switch] $SkipCosine,
     [switch] $IncludeExtendedStressGrid,
+    [switch] $IncludeExtendedStressB2,
     [string] $OovRatios = "0.0,0.05,0.1,0.15,0.2,0.25,0.3"
 )
 
@@ -90,12 +91,41 @@ Invoke-Step "run_trackb_top_combo_fixed_set_replay" @("scripts/run_trackb_top_co
 Invoke-Step "run_trackb_top_combo_stress_grid" @("scripts/run_trackb_top_combo_stress_grid.py")
 
 if ($IncludeExtendedStressGrid) {
-    Invoke-Step "run_trackb_top_combo_stress_grid_extended" @(
-        "scripts/run_trackb_top_combo_stress_grid.py",
-        "--lengths", "20,24,32,40",
-        "--oov-ratios", "0.1,0.2,0.3",
-        "--out", "docs/final/artifacts/trackb_quaternion_top_combo_stress_grid_extended_latest.json"
+    # Bounded split mode for stable weekly completion.
+    # 1) Pin to robust exact candidate only.
+    Invoke-Step "build_trackb_top_combo_fixed_set_exact_robust_only" @(
+        "scripts/build_trackb_top_combo_fixed_set.py",
+        "--top-n", "1",
+        "--artifact-contains", "exact_guarded_robust",
+        "--out", "docs/final/artifacts/trackb_quaternion_top_combo_fixed_set_exact_robust_only_latest.json"
     )
+    # 2) Split stress into smaller chunks to avoid monolithic long-running stalls.
+    Invoke-Step "run_trackb_top_combo_stress_grid_extended_split_a" @(
+        "scripts/run_trackb_top_combo_stress_grid.py",
+        "--fixed-set", "docs/final/artifacts/trackb_quaternion_top_combo_fixed_set_exact_robust_only_latest.json",
+        "--lengths", "20,24,32",
+        "--oov-ratios", "0.1,0.3,0.5",
+        "--samples-per-cell-cap", "240",
+        "--out", "docs/final/artifacts/trackb_quaternion_top_combo_stress_grid_exact_robust_split_a_latest.json"
+    )
+    Invoke-Step "run_trackb_top_combo_stress_grid_extended_split_b1" @(
+        "scripts/run_trackb_top_combo_stress_grid.py",
+        "--fixed-set", "docs/final/artifacts/trackb_quaternion_top_combo_fixed_set_exact_robust_only_latest.json",
+        "--lengths", "40,48",
+        "--oov-ratios", "0.1,0.3,0.5",
+        "--samples-per-cell-cap", "240",
+        "--out", "docs/final/artifacts/trackb_quaternion_top_combo_stress_grid_exact_robust_split_b1_latest.json"
+    )
+    if ($IncludeExtendedStressB2) {
+        Invoke-Step "run_trackb_top_combo_stress_grid_extended_split_b2" @(
+            "scripts/run_trackb_top_combo_stress_grid.py",
+            "--fixed-set", "docs/final/artifacts/trackb_quaternion_top_combo_fixed_set_exact_robust_only_latest.json",
+            "--lengths", "64",
+            "--oov-ratios", "0.1,0.3,0.5",
+            "--samples-per-cell-cap", "240",
+            "--out", "docs/final/artifacts/trackb_quaternion_top_combo_stress_grid_exact_robust_split_b2_latest.json"
+        )
+    }
 }
 
 Write-Host "Track B weekly refresh completed. See docs/final/artifacts/trackb_weekly_gate_recheck_latest.json" -ForegroundColor Green

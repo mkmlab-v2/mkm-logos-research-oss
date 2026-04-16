@@ -2110,3 +2110,175 @@ Set-Location c:\workspace
 - 한계 결론: "지난 1년 인간 기억 공백 0%"는 **아님**. 누락 구간은 계속 명시 유지.
 - 후속 보강: 과거 외부 원천(VPS 별도 레포, 메신저, 문서) 확보 시 `memory_revival_gap_scan_latest.json`만 갱신해 동일 포맷으로 누적.
 
+## Track B Sprint Update (2026-04-15, Weekly Refresh)
+
+- **결정:** `GO_RESEARCH` (`docs/final/artifacts/trackb_weekly_gate_recheck_latest.json`)
+- **실행:** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-TrackBWeeklyRefresh.ps1`
+- **핵심 게이트:** semantic/collision/oov/determinism/action-layer gate 모두 통과
+- **도메인 평균 semantic:** medical `0.82818182`, finance `0.83414918`, policy `0.85545455`
+- **액션 레이어 파일럿:** `action_fire_rate=0.4`, `fallback_rate=0.6` (게이트 기준 통과)
+- **선택 상태 시뮬레이션:** triggercase에서 `policy_blocked` 관측, `action_trigger_rate=0.0`
+- **주의:** 연구 레인 결과이며 프로덕션 승격/실거래 트리거와 분리 유지
+
+## Track B Sprint Update (2026-04-15, Extended Stress Grid)
+
+- **결정:** 주간 게이트 재체크는 유지 `GO_RESEARCH` (`docs/final/artifacts/trackb_weekly_gate_recheck_latest.json`)
+- **확장 실행:** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-TrackBWeeklyRefresh.ps1 -IncludeExtendedStressGrid`
+- **추가 산출:** `docs/final/artifacts/trackb_quaternion_top_combo_stress_grid_extended_latest.json`
+- **핵심 관찰:** extended grid(length 20/24/32/40, oov 0.1/0.2/0.3)에서 `candidate_count=0`
+- **해석:** B트랙 품질 게이트는 통과 상태이나, quaternion top combo stress 후보 생성 경로는 별도 병목 진단 필요
+
+## Track B Sprint Update (2026-04-15, Quaternion Candidate Recovery)
+
+- **병목 원인:** 랭킹 입력 glob 기본값이 `trackb_quaternion_generalization_v6_round3*.json`이라 기존 `v1` fixture만 있을 때 `candidate_count=0` 발생
+- **복구 실행:** `run_trackb_quaternion_generalization_bench_v6.py`로 `trackb_quaternion_generalization_v6_round3_manual_latest.json` 생성 후 ranking/fixed-set/replay/stress 재실행
+- **결과:** ranking `candidate_count=1`, fixed set `selected_count=1`, replay `candidate_count=1`
+- **확장 stress:** length 20/24/32/40 × oov 0.1/0.2/0.3에서 `token_set_match_rate=1.0` 유지
+- **주의:** 동일 산출물 `stress_summary`에 `min_exact_sequence_match_rate_over_grid=0.0`가 기록되어 exact-sequence 기준 별도 검증 레인이 필요
+
+## Track B Sprint Update (2026-04-15, Exact-Sequence Guarded Lane)
+
+- **추가 실행:** `run_trackb_quaternion_generalization_bench_v6.py --harness-mode exact_restore_guarded --single-profile --samples-per-cell 20`
+- **신규 산출:** `docs/final/artifacts/trackb_quaternion_generalization_v6_round3_exact_guarded_latest.json`
+- **핵심 결과:** `best.min_short_bucket_rate=1.0`, `target_passed=true`, curve에서 `exact_sequence_match_rate=1.0` (length 3/5, oov 0.0/0.1)
+- **파이프라인 반영:** ranking `candidate_count=2`, fixed set `selected_count=2`, replay `candidate_count=2`
+- **현재 best:** `trackb_quaternion_generalization_v6_round3_exact_guarded_latest.json`
+
+## Track B Sprint Update (2026-04-15, Exact Wide Stress Recheck)
+
+- **실행:** `run_trackb_top_combo_stress_grid.py --out docs/final/artifacts/trackb_quaternion_top_combo_stress_grid_exact_wide_latest.json --lengths 20,24,32,40,48,64 --oov-ratios 0.1,0.2,0.3,0.4,0.5 --collapse-floor 0.75`
+- **결과 파일:** `docs/final/artifacts/trackb_quaternion_top_combo_stress_grid_exact_wide_latest.json`
+- **대상 후보:** 2개(`exact_guarded`, `manual`) 모두 stress replay 완료 (`candidate_count=2`)
+- **핵심 판정:** `exact_guarded`는 전 구간에서 `exact_sequence_match_rate=1.0`, `first_oov_below_floor_by_length` 전부 `null`, `min_exact_sequence_match_rate_over_grid=1.0`
+- **비교 관찰:** `manual` 후보는 `token_set_match_rate=1.0`이지만 summary에 `min_exact_sequence_match_rate_over_grid=0.0`로 기록되어 exact 기준에서는 취약
+- **결론:** B트랙 확장 스트레스 기준 현재 우선 승격 후보는 `trackb_quaternion_generalization_v6_round3_exact_guarded_latest.json`
+
+## Track B Sprint Update (2026-04-16, Exact Robustness Deepening)
+
+- **강건성 벤치 실행:** `run_trackb_quaternion_generalization_bench_v6.py --harness-mode exact_restore_guarded --single-profile --samples-per-cell 120 --seeds 7,13,29,43,71 --lengths 3,5,8,12 --oov-ratios 0.0,0.1,0.2,0.3`
+- **신규 산출:** `docs/final/artifacts/trackb_quaternion_generalization_v6_round3_exact_guarded_robust_latest.json`
+- **핵심 결과:** `target_passed=true`, `best.min_short_bucket_rate=1.0`, 전체 curve(`length 3/5/8/12`, `oov 0.0~0.3`)에서 `exact_sequence_match_rate=1.0`
+- **후속 조치:** `exact_guarded` 계열만 분리한 fixed set(`trackb_quaternion_top_combo_fixed_set_exact_only_latest.json`)으로 bounded stress 재검증
+- **bounded stress 결과:** `trackb_quaternion_top_combo_stress_grid_exact_only_bounded_latest.json`에서 2개 후보 모두 `length 20/24/32`, `oov 0.1/0.2/0.3` 구간 `min_exact_sequence_match_rate_over_grid=1.0`
+- **운영 판단:** 현재 B트랙 exact 레인 기준 우선 후보는 `trackb_quaternion_generalization_v6_round3_exact_guarded_robust_latest.json` (연구 레인, 프로덕션 자동 승격 없음)
+
+## Track B Sprint Update (2026-04-16, Weekly Chain Link Verification)
+
+- **검증 목표:** robust 후보가 주간 체인(`Run-TrackBWeeklyRefresh.ps1`)의 ranking/fixed-set/replay에 실제 반영되는지 확인
+- **반영 확인:** `trackb_quaternion_top_combo_ranking_latest.json`에서 `candidate_count=3`, robust 후보(`...exact_guarded_robust_latest.json`) 포함
+- **fixed set 반영:** `trackb_quaternion_top_combo_fixed_set_latest.json`에서 `selected_count=3`, robust 후보 포함
+- **replay 반영:** `trackb_quaternion_top_combo_fixed_set_replay_latest.json`에서 `candidate_count=3`, robust 후보 `replay_min_short_bucket_rate=1.0`
+- **주간 게이트:** `trackb_weekly_gate_recheck_latest.json`는 `decision=GO_RESEARCH` 유지
+- **운영 메모:** 주간 체인의 마지막 extended stress 단계는 장시간 정체되어 수동 중지(핵심 검증 산출물은 중지 전 생성 완료)
+
+## Track B Sprint Update (2026-04-16, Split-Stress Execution Baseline)
+
+- **실행 전략 전환:** extended stress 장시간 정체를 피하기 위해 `robust` 단일 후보 고정셋(`trackb_quaternion_top_combo_fixed_set_exact_robust_only_latest.json`)으로 분할 실행
+- **Split A 완료:** `trackb_quaternion_top_combo_stress_grid_exact_robust_split_a_latest.json` (`length 20/24/32`, `oov 0.1/0.3/0.5`)
+- **Split B 완료:** `trackb_quaternion_top_combo_stress_grid_exact_robust_split_b_latest.json` (`length 40/48/64`, `oov 0.1/0.3/0.5`)
+- **핵심 결과:** 두 split 모두 `min_exact_sequence_match_rate_over_grid=1.0`, `first_oov_below_floor_by_length` 전 구간 `null`
+- **운영 결론:** D+1 오전 목표였던 "분할 실행으로 extended 구간 완주 + 붕괴 지점 확인"을 robust 후보 기준으로 충족
+
+## Track B Sprint Update (2026-04-16, Promotion Precheck Draft)
+
+- **D+1 오후 산출:** `docs/final/artifacts/trackb_promotion_precheck_draft_latest.json`
+- **판정 방식:** exact 품질/스트레스/주간 게이트 + 운영 런타임 예산(`300000ms`)을 함께 점검
+- **체크 결과:** 품질 게이트는 모두 충족(`robust_target_passed=true`, split A/B `min_exact=1.0`, weekly gate=`GO_RESEARCH`)
+- **보류 사유:** 운영 예산 초과(`split_b_elapsed_ms=451858`) 및 extended chain 안정성 미충족
+- **현재 결정:** `HOLD_PROMOTION_PRECHECK_DRAFT`
+- **다음 액션:** 주간 체인에 bounded split 경로 고정 → split B 타임아웃/청크 스케줄러 적용 → 1회 완주 후 precheck 재판정
+
+## NotebookLM Archive Curation Update (2026-04-15)
+
+- **완료 상태:** `docs/final/artifacts/notebooklm_archive_curation_completion_latest.json` 기준 `completed_with_exceptions`
+- **URL 이관 결과:** 후보 고유 URL `271` 중 `231` 이관 완료, 구조적 실패 예외 `40` 고정
+- **활성 노트북 수:** `9`개로 운영 목표(`<=10`) 충족 (`docs/final/artifacts/notebooklm_notebook_inventory_after_archive_latest.json`)
+- **예외 분류:** 잔여 URL triage 결과 `retry=0`, `structural=40`, `unknown=0` (`docs/final/artifacts/notebooklm_archive_remaining_url_triage_latest.json`)
+- **운영 원칙:** 예외 40개는 무작위 재시도 중단, 필요 시 개별 URL 수동 처리
+
+## NotebookLM Archive Exception Priority (2026-04-15)
+
+- **신규 아티팩트:** `docs/final/artifacts/notebooklm_archive_exception_manual_priority_latest.json`
+- **대상:** 구조적 실패 예외 URL `40`개
+- **분류 결과:** 수동 처리 우선순위 버킷 `5`개(도메인/실패유형 기준)
+- **우선 원칙:** `gov_or_legal_portal`, `pdf_or_file_gateway`를 먼저 수동 처리하고, paywall/login/dynamic 차단 성격은 선택 처리
+- **운영 메모:** 잔여 예외는 자동 재시도 루프에서 제외하고, 필요 URL만 개별 대응
+
+## NotebookLM Exception Manual Runbook (2026-04-15)
+
+- **신규 아티팩트:** `docs/final/artifacts/notebooklm_archive_exception_manual_runbook_latest.json`
+- **범위:** 상위 우선 버킷 2종(`gov_or_legal_portal`, `pdf_or_file_gateway`) 수동 처리 절차
+- **핵심 지침:** stable URL/file 확인 후 `nlm source add`로 수동 반영, 임시 쿼리 링크·블라인드 재시도 금지
+
+## NotebookLM Exception Manual Batch (2026-04-15)
+
+- **실행:** 런북 우선순위(top 10) 수동 배치 시도
+- **결과 아티팩트:** `docs/final/artifacts/notebooklm_archive_manual_batch_result_latest.json`
+- **요약:** `attempted=10`, `success=0`, `failed=10`, 누적 잔여 예외 `40` 유지
+- **판정:** 상위 예외군은 자동/CLI 경로로는 구조적 차단 가능성이 높아 브라우저 수동 캡처·파일 대체 업로드 중심으로 전환 필요
+
+## NotebookLM Manual File Probe (2026-04-15)
+
+- **실행 아티팩트:** `docs/final/artifacts/notebooklm_archive_manual_file_probe_latest.json`
+- **시도 범위:** `gov/pdf` 우선 URL 3건에 대해 로컬 PDF 다운로드 후 `nlm source add --file` 업로드 검증
+- **결과:** `download_ok=2/3`(1건은 403), 하지만 `nlm_file_add_ok=0/3`
+- **추가 팩트:** 로컬 파일 헤더는 정상 PDF(`%PDF-1.4`, `%PDF-1.6`)였으나 CLI 업로드는 `Error: Could not add file source.`로 동일 실패
+- **운영 해석:** 현 세션의 NotebookLM CLI에서는 파일 업로드 경로가 차단/제약 상태로 판단, URL 기반 성공 케이스만 유지
+
+## MKMLIFE Daily Ops Stabilization Update (2026-04-15)
+
+- **자동복구 도입:** `scripts/Run-DailyOpsChain.ps1`에 `-AutoResetNextCacheOnHealthcheckFail` 추가(헬스체크 1차 실패 시 `.next` 캐시 자동 정리 후 재시도)
+- **태스크 연동:** `scripts/Register-DailyOpsChainTask.ps1`에 동일 스위치 전달 옵션 추가, `MKMLIFE-Daily-Ops-Chain` 작업 액션에 반영 확인
+- **스모크 안정화:** `scripts/smoke-payapp-bridge-e2e.mjs`에서 base URL fallback 기본 활성화(`SMOKE_ALLOW_BASE_URL_FALLBACKS=1`), 후보 포트 `3491/3492` 확장
+- **추천 피드백 운영화:** `report:recommendation-feedback` 체인 추가 및 `recommendation_feedback_summary_latest.json` 생성
+- **알람 게이트 보정:** 추천 수용률은 샘플 부족 시 `critical` 승격 금지(`insufficient_samples_for_critical` 경고 처리)
+- **최신 검증 상태:** `npm run ops:daily-chain` 연속 성공(`ok=true`), `recommendation_feedback_summary.total_events=24`, `combined_accept_rate=0.6667`, `daily_ops_alert.severity=ok`
+
+## NotebookLM Final Inventory Sync (2026-04-15)
+
+- **CLI 실측 계정:** `default: admin@no1kmedi.com`
+- **현재 노트북 총수:** `9` (삭제 대상 `_ARCHIVED` 잔존 없음)
+- **현재 활성 목록:** `16_트레이딩_비트코인20260311`, `01_도구설정_오픈라우터_커서_노트북LM`, `00_HUB_저소스통합_인덱스_2026-04-15`, `00_TOP3_예언레인_일반예언20260311`, `00_TOP2_핵심연구_압축`, `28_핵심운영_MKM_CORE_INTELLIGENCE_V1`, `00_TOP1_운영_작전지휘부_Ops20260318`, `05_핵심연구_FusionInsightHub_Bible_Myeongri_Sasang`, `90_ARCHIVE_2026Q2_기억보관소`
+- **혼선 대응:** 웹 UI에 잔존 표시 시 캐시/계정 불일치 가능성이 높으므로 강새로고침 및 계정 재확인 후 재조회
+
+## NotebookLM Active Set Slim-Down (2026-04-15)
+
+- **조치:** 저활용 2개 노트북(`00_HUB_저소스통합_인덱스_2026-04-15`, `01_도구설정_오픈라우터_커서_노트북LM`)을 `_ARCHIVED`로 전환
+- **현재 상태:** `total=9`, `archived=2`, `active=7`
+- **현재 active 7:** `90_ARCHIVE_2026Q2_기억보관소`, `16_트레이딩_비트코인20260311`, `00_TOP3_예언레인_일반예언20260311`, `00_TOP2_핵심연구_압축`, `28_핵심운영_MKM_CORE_INTELLIGENCE_V1`, `00_TOP1_운영_작전지휘부_Ops20260318`, `05_핵심연구_FusionInsightHub_Bible_Myeongri_Sasang`
+- **참조 아티팩트:** `docs/final/artifacts/notebooklm_notebook_inventory_after_archive_latest.json`
+
+## NotebookLM Final Trim Complete (2026-04-15)
+
+- **최종 삭제:** `_ARCHIVED` 잔여 2개 삭제 완료 (`delete_success=2`, `delete_failed=0`)
+- **최종 상태:** `total=7`, `active=7`, `archived=0`
+- **의미:** 과거 유물/저활용 노트북 제거를 마치고 실운영 최소 셋으로 고정
+
+## General Prophecy Sample Expansion (2026-04-15)
+
+- **조치:** `docs/final/artifacts/general_prophecy_latest.json`에 단기(<=30일) binary 질문 10개 추가
+- **현재 레지스트리:** `total_questions=24`, `resolved=3`, `pending_binary=21`
+- **마감 분포:** `pending_binary_le_30d=10`으로 단기 해상 큐 확보 (`docs/final/artifacts/general_prophecy_sample_growth_plan_latest.json`)
+- **주의:** 대시보드 Brier `n`은 해상(resolved) 후에만 증가하므로 즉시 변화는 없음
+
+## MKMLIFE Alert Gate Sync (2026-04-15)
+
+- **실사용 우선 유지:** 추천 수용률 알람은 계속 `real_user` 지표 우선으로 판정하고, 샘플 부족 시 `critical` 대신 경고(`insufficient_samples_for_critical`)로 처리
+- **전달 품질 분리 기록:** `run-daily-ops-chain.mjs` 요약에 `payapp_smoke_delivery_summary` 추가(`bridge_count`, `direct_fallback_count`, `degraded_count`, `max_consecutive_degraded`)
+- **새 경고 게이트:** `check-daily-ops-alerts.mjs`에 `smoke_payapp_bridge.direct_fallback_ratio` 경고 추가(기본 임계 `OPS_ALERT_SMOKE_DIRECT_FALLBACK_RATIO_WARN=0.3`, 최소 런수 `OPS_ALERT_SMOKE_DELIVERY_MIN_RUNS_WARN=2`)
+- **검증 스냅샷:** 최근 체크에서 `direct_fallback_ratio=0.5` 경고가 정상 생성되어 bridge 성공과 degraded 우회가 운영 지표에서 분리 가시화됨
+
+## Track B Weekly Refresh Verified (2026-04-16)
+
+- **실행:** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-TrackBWeeklyRefresh.ps1 -IncludeExtendedStressGrid -SkipSsmSmoke -SkipCosine`
+- **결과:** exit `0`, wall time 약 `680126ms` (~11.3분), 마지막 로그 `Track B weekly refresh completed`
+- **확장 스트레스:** bounded split A + B1 완료; 길이 64 그리드는 기본 비포함(옵션 `-IncludeExtendedStressB2`)
+- **precheck 갱신:** `docs/final/artifacts/trackb_promotion_precheck_draft_latest.json`에서 `extended_chain_stability_ok=true`, 주간 완주 기록 반영
+
+## Track B Extended Stress B2 (length 64) — Standalone (2026-04-16)
+
+- **실행:** `py scripts/run_trackb_top_combo_stress_grid.py --fixed-set docs/final/artifacts/trackb_quaternion_top_combo_fixed_set_exact_robust_only_latest.json --lengths 64 --oov-ratios 0.1,0.3,0.5 --samples-per-cell-cap 240 --out docs/final/artifacts/trackb_quaternion_top_combo_stress_grid_exact_robust_split_b2_latest.json`
+- **결과:** exit `0`, wall time 약 `193647ms` (~3.2분)
+- **핵심:** `min_exact_sequence_match_rate_over_grid=1.0`, `first_oov_below_floor_by_length`의 `64`는 `null`
+- **precheck:** `trackb_promotion_precheck_draft_latest.json`에 `split_b2`·`stress_split_b2_min_exact` 반영
+

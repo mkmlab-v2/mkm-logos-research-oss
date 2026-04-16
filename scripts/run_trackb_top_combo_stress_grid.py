@@ -129,6 +129,12 @@ def main() -> int:
     ap.add_argument("--lengths", default="20,24")
     ap.add_argument("--oov-ratios", default="0.1,0.2")
     ap.add_argument("--collapse-floor", type=float, default=0.75)
+    ap.add_argument(
+        "--samples-per-cell-cap",
+        type=int,
+        default=0,
+        help="Optional upper bound for samples_per_cell used during stress replay (0=disabled).",
+    )
     ap.add_argument("--out", default=str(DEFAULT_OUT))
     args = ap.parse_args()
 
@@ -144,6 +150,8 @@ def main() -> int:
         art_rel = str(item.get("artifact"))
         art_path = Path(art_rel) if Path(art_rel).is_absolute() else (ROOT / art_rel)
         cfg = _cfg_from_artifact(art_path)
+        if args.samples_per_cell_cap > 0:
+            cfg["samples_per_cell"] = min(int(cfg.get("samples_per_cell", 0)), args.samples_per_cell_cap)
         curve = _eval_curve(mod, cfg, lengths, oov_ratios)
         summary = _collapse_summary(curve, args.collapse_floor)
         rows.append(
@@ -168,6 +176,7 @@ def main() -> int:
         "generated_at_utc": _utc_now(),
         "source_fixed_set": str(fixed_path.resolve()).replace("\\", "/"),
         "grid": {"lengths": lengths, "oov_ratios": oov_ratios},
+        "samples_per_cell_cap": args.samples_per_cell_cap if args.samples_per_cell_cap > 0 else None,
         "candidate_count": len(rows),
         "rows": rows,
         "fact_safe_note": "Stress grid is research-only and evaluator-specific; do not infer production readiness directly.",

@@ -1,0 +1,125 @@
+{
+  "schema": "trackb_quaternion_generalization_v6",
+  "mode": "short_length_candidate_refine_weight_grid",
+  "seeds": [
+    7,
+    13,
+    29
+  ],
+  "samples_per_cell": 20,
+  "semantic_fallback": false,
+  "harness_mode": "auto",
+  "resolved_harness": {
+    "eval_metric": "token_set",
+    "include_target_in_candidates": false,
+    "semantic_fallback": false,
+    "collect_failures": false
+  },
+  "fallback_threshold": 0.85,
+  "eval_metric": "token_set",
+  "sequence_weight": 0.3,
+  "include_target_in_candidates": false,
+  "two_stage_ranker": false,
+  "stage1_top_k": 12,
+  "lengths": [
+    3,
+    5
+  ],
+  "oov_ratios": [
+    0.0,
+    0.1
+  ],
+  "single_profile": true,
+  "blockwise_mode": false,
+  "block_size": 4,
+  "beam_mode": false,
+  "beam_size": 6,
+  "chunkwise_mode": false,
+  "chunk_beam_size": 8,
+  "stage2_length_prior": false,
+  "stage2_swap_guard": false,
+  "stage2_swap_injection": false,
+  "stage2_order_w_override": -1.0,
+  "stage2_big_w_override": -1.0,
+  "stage2_pos_w_override": -1.0,
+  "stage2_inject_topn": 8,
+  "stage2_inject_cap": 96,
+  "stage2_repair_limit": 12,
+  "grid_size": 1,
+  "best": {
+    "weights": {
+      "order": 0.3,
+      "set": 0.35,
+      "jaccard": 0.2,
+      "bigram": 0.05
+    },
+    "min_short_bucket_rate": 1.0,
+    "curve": [
+      {
+        "length": 3,
+        "oov_ratio": 0.0,
+        "sample_count": 60,
+        "token_set_match_rate": 1.0
+      },
+      {
+        "length": 3,
+        "oov_ratio": 0.1,
+        "sample_count": 60,
+        "token_set_match_rate": 1.0
+      },
+      {
+        "length": 5,
+        "oov_ratio": 0.0,
+        "sample_count": 60,
+        "token_set_match_rate": 1.0
+      },
+      {
+        "length": 5,
+        "oov_ratio": 0.1,
+        "sample_count": 60,
+        "token_set_match_rate": 1.0
+      }
+    ],
+    "failures": []
+  },
+  "target_threshold": 0.95,
+  "target_passed": true,
+  "top5": [
+    {
+      "weights": {
+        "order": 0.3,
+        "set": 0.35,
+        "jaccard": 0.2,
+        "bigram": 0.05
+      },
+      "min_short_bucket_rate": 1.0,
+      "curve": [
+        {
+          "length": 3,
+          "oov_ratio": 0.0,
+          "sample_count": 60,
+          "token_set_match_rate": 1.0
+        },
+        {
+          "length": 3,
+          "oov_ratio": 0.1,
+          "sample_count": 60,
+          "token_set_match_rate": 1.0
+        },
+        {
+          "length": 5,
+          "oov_ratio": 0.0,
+          "sample_count": 60,
+          "token_set_match_rate": 1.0
+        },
+        {
+          "length": 5,
+          "oov_ratio": 0.1,
+          "sample_count": 60,
+          "token_set_match_rate": 1.0
+        }
+      ],
+      "failures": []
+    }
+  ]
+}

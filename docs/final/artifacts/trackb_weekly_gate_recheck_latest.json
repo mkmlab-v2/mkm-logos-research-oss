@@ -1,0 +1,83 @@
+{
+  "schema": "trackb_weekly_gate_recheck_v4",
+  "generated_at_utc": "2026-04-16T00:00:17Z",
+  "measured_item": "Weekly recheck for historical-formula utility on Track B (action-gate + selective-state MVP)",
+  "artifact_inputs": {
+    "by_domain": "docs/final/artifacts/trackb_semantic_eval_by_domain_latest.json",
+    "oov_sweep": "docs/final/artifacts/trackb_oov_collision_sweep_latest.json",
+    "determinism": "docs/final/artifacts/trackb_determinism_repeatcheck_latest.json",
+    "action_layer_gate": "docs/final/artifacts/trackb_action_layer_gate_pilot_latest.json",
+    "action_layer_selective_state_sim": "docs/final/artifacts/trackb_action_layer_selective_state_sim_triggercase_latest.json"
+  },
+  "gates": {
+    "semantic_score_min": 0.8,
+    "collision_rate_max": 0.01,
+    "oov_rate_max": 0.15,
+    "determinism_required": true,
+    "oov_stress_semantic_floor_at_0p1": 0.75,
+    "action_fire_rate_min": 0.3,
+    "fallback_rate_max": 0.7
+  },
+  "checks": {
+    "domain_gate_checks": {
+      "medical": {
+        "semantic_ok": true,
+        "collision_ok": true,
+        "oov_ok": true
+      },
+      "finance": {
+        "semantic_ok": true,
+        "collision_ok": true,
+        "oov_ok": true
+      },
+      "policy": {
+        "semantic_ok": true,
+        "collision_ok": true,
+        "oov_ok": true
+      }
+    },
+    "oov_stress_checks": {
+      "medical": {
+        "semantic_floor_ok": true,
+        "oov_directional_degradation_expected": true
+      },
+      "finance": {
+        "semantic_floor_ok": true,
+        "oov_directional_degradation_expected": true
+      },
+      "policy": {
+        "semantic_floor_ok": true,
+        "oov_directional_degradation_expected": true
+      }
+    },
+    "determinism_ok": true,
+    "action_layer_gate_checks": {
+      "event_count": 5,
+      "action_fire_count": 2,
+      "fallback_count": 3,
+      "action_fire_rate": 0.4,
+      "fallback_rate": 0.6,
+      "action_fire_rate_ok": true,
+      "fallback_rate_ok": true
+    },
+    "action_layer_selective_state_checks": {
+      "artifact_relative": "docs/final/artifacts/trackb_action_layer_selective_state_sim_triggercase_latest.json",
+      "summary": {
+        "event_count": 5,
+        "action_triggered_count": 0,
+        "fallback_count": 1,
+        "action_trigger_rate": 0.0,
+        "fallback_rate": 0.2
+      },
+      "observed_fallback_reasons": [
+        "policy_blocked"
+      ],
+      "cooldown_observed": false,
+      "policy_blocked_observed": true,
+      "action_trigger_observed": false,
+      "fact_safe_note": "selective_state_sim is a logic MVP (forget + accumulate + gate). Not a Mamba/SSM model forward-pass benchmark."
+    }
+  },
+  "decision": "GO_RESEARCH",
+  "out_of_scope": "No production promotion, no trading trigger, no billing claim."
+}

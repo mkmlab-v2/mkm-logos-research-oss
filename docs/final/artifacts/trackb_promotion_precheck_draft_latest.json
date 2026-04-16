@@ -1,0 +1,53 @@
+{
+  "schema": "trackb_promotion_precheck_draft_v1",
+  "generated_at_utc": "2026-04-16T00:28:00Z",
+  "candidate_artifact": "docs/final/artifacts/trackb_quaternion_generalization_v6_round3_exact_guarded_robust_latest.json",
+  "artifact_inputs": {
+    "robust": "docs/final/artifacts/trackb_quaternion_generalization_v6_round3_exact_guarded_robust_latest.json",
+    "split_a": "docs/final/artifacts/trackb_quaternion_top_combo_stress_grid_exact_robust_split_a_latest.json",
+    "split_b1": "docs/final/artifacts/trackb_quaternion_top_combo_stress_grid_exact_robust_split_b1_latest.json",
+    "split_b2": "docs/final/artifacts/trackb_quaternion_top_combo_stress_grid_exact_robust_split_b2_latest.json",
+    "weekly_gate": "docs/final/artifacts/trackb_weekly_gate_recheck_latest.json"
+  },
+  "gates": {
+    "exact_short_bucket_min": 0.95,
+    "stress_exact_floor": 0.75,
+    "weekly_gate_decision_required": "GO_RESEARCH",
+    "operational_runtime_budget_ms": 300000
+  },
+  "checks": {
+    "robust_target_passed": true,
+    "robust_min_short_bucket_rate": 1.0,
+    "stress_split_a_min_exact": 1.0,
+    "stress_split_b1_min_exact": 1.0,
+    "stress_split_b2_min_exact": 1.0,
+    "weekly_gate_decision": "GO_RESEARCH",
+    "runtime_observation_ms": {
+      "split_a_elapsed_ms": 232224,
+      "split_b_elapsed_ms": 451858,
+      "weekly_refresh_wall_ms": 680126,
+      "split_b2_standalone_elapsed_ms": 193647
+    },
+    "runtime_budget_ok": false,
+    "extended_chain_stability_ok": true,
+    "weekly_refresh_verified": {
+      "script": "scripts/Run-TrackBWeeklyRefresh.ps1",
+      "flags": [
+        "IncludeExtendedStressGrid",
+        "SkipSsmSmoke",
+        "SkipCosine"
+      ],
+      "exit_code": 0,
+      "elapsed_ms": 680126,
+      "extended_b2_included": false,
+      "note": "Length-64 stress: optional in weekly script (-IncludeExtendedStressB2); standalone run completed 2026-04-16."
+    }
+  },
+  "decision": "HOLD_PROMOTION_PRECHECK_DRAFT",
+  "decision_reason": "Research lane: exact/stress quality checks remain strong; weekly refresh completes exit 0 with bounded split A+B1; optional length-64 split B2 also measured (min_exact=1.0). Full wall time still exceeds the 300s reference budget; production promotion remains out of scope.",
+  "next_actions": [
+    "If total runtime must drop: lower --samples-per-cell-cap on split steps or narrow oov grid.",
+    "Re-run full weekly with -IncludeExtendedStressB2 only when an all-in-one log is required."
+  ],
+  "out_of_scope": "No production promotion, no trading trigger."
+}
