@@ -3,6 +3,7 @@ import { siteCopy } from "@/content/siteCopy";
 import { SiteHeader } from "@/components/SiteHeader";
 import { FreeValidationLeadForm } from "@/components/FreeValidationLeadForm";
 import { ContactActionLinks } from "@/components/ContactActionLinks";
+import { AdvancedConsultForm } from "@/components/AdvancedConsultForm";
 
 export default function HomePage() {
   const c = siteCopy;
@@ -68,6 +69,8 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+
+        <AdvancedConsultForm />
 
         <section id="contact" aria-labelledby="contact-title">
           <h2 id="contact-title">{c.contact.title}</h2>

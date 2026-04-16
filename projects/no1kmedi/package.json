@@ -3,10 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prebuild:auto": "npm run gate:recommended",
+    "prebuild": "npm run smoke:commercialization-gate",
+    "prebuild:live": "npm run check:manseryeok-live-env && npm run smoke:commercialization-gate:live",
     "dev": "next dev -p 3010",
     "build": "next build",
+    "build:auto": "next build",
+    "build:live": "next build",
     "start": "next start -p 3010",
-    "lint": "next lint"
+    "lint": "next lint",
+    "smoke:advanced-consult": "node ./scripts/smoke-advanced-consult.mjs",
+    "smoke:advanced-consult:live": "node ./scripts/smoke-advanced-consult.mjs --require-live",
+    "smoke:member-access-flow": "node ./scripts/smoke-member-access-flow.mjs",
+    "smoke:commercialization-gate": "node ./scripts/smoke-commercialization-gate.mjs",
+    "smoke:commercialization-gate:live": "node ./scripts/smoke-commercialization-gate.mjs --require-live",
+    "check:manseryeok-live-env": "node ./scripts/check-manseryeok-live-env.mjs",
+    "gate:recommended": "node ./scripts/run-recommended-gate.mjs",
+    "manseryeok:local-api": "node ./scripts/start-manseryeok-local-api.mjs"
   },
   "dependencies": {
     "next": "^14.2.18",
