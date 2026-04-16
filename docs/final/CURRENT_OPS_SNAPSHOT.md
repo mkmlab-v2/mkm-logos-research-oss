@@ -6,6 +6,29 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
+## Compression/Restore Unified Ops Board (A/B)
+
+- 운영 원칙: 이 채팅창을 압축/복원 단일 관제창으로 사용한다. `상태`/`다음실행`/`검증`/`중지` 명령만으로 루프를 운영한다.
+- KPI 기준선(현재): `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
+- 목표 게이트: `saving>=0.49`, `jaccard>=0.85`, `integrity==1.0`
+
+### A/B Go-Hold-Stop
+
+- `GO`: 목표 게이트 3종 동시 충족 + 민감 무결성 유지 + 회귀 테스트 통과
+- `HOLD`: 무결성은 유지되나 `saving` 또는 `jaccard` 일부 미달 (현재 상태)
+- `STOP`: 무결성 저하(`integrity<1.0`) 또는 민감 누출/운영 리스크 급증
+
+### 트랙 운영 모드
+
+- A트랙(상용): 유지보수 모드 우선 (일일/주간 자동 점검, 게이트 위반 시 롤백, 월 1회 리베이스)
+- B트랙(연구): 저빈도 실험 모드 (주 1회 또는 이슈 발생 시), A트랙 의사결정 보조로만 사용
+
+### 완전 중단(축소 아님) 조건
+
+- 4주 연속 KPI 안정
+- 장애/품질 이슈 0건
+- 대체 운영 체계 확보
+
 ## Track A Sprint Update (2026-04-16, W22-E1)
 
 - 실행: `py scripts/build_track_a_week22_hypothesis_pack_v1.py` 후 W22-E1 baseline/변형 실행
