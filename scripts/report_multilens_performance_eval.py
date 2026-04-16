@@ -743,6 +743,84 @@ def _bridge_aware_candidate_select(
     return best
 
 
+def _experimental_candidate_pool_select(
+    *,
+    raw: str,
+    base_candidate: str,
+    strategy: str,
+    intensity: str,
+    effective_must_keep: set[str],
+    effective_hangul_principle: bool,
+    cap: float | None,
+    max_variants: int = 5,
+) -> tuple[str, dict[str, Any]]:
+    variants: list[tuple[str, str]] = [("base", base_candidate)]
+
+    denser_intensity = {"extreme": "ultra", "ultra": "high", "high": "high"}[intensity]
+    if denser_intensity != intensity:
+        denser = _compress_experimental(
+            raw,
+            strategy=strategy,
+            intensity=denser_intensity,
+            must_keep=effective_must_keep,
+            use_hangul_principle=effective_hangul_principle,
+        )
+        denser = _apply_max_saving_cap(raw, denser, max_saving_rate=cap)
+        denser = _ensure_sensitive_tokens_preserved(raw, denser, effective_must_keep)
+        variants.append(("denser_intensity", denser))
+
+    if intensity != "extreme":
+        sparser_intensity = {"high": "ultra", "ultra": "extreme"}[intensity]
+        sparser = _compress_experimental(
+            raw,
+            strategy=strategy,
+            intensity=sparser_intensity,
+            must_keep=effective_must_keep,
+            use_hangul_principle=effective_hangul_principle,
+        )
+        sparser = _apply_max_saving_cap(raw, sparser, max_saving_rate=cap)
+        sparser = _ensure_sensitive_tokens_preserved(raw, sparser, effective_must_keep)
+        variants.append(("sparser_intensity", sparser))
+
+    if effective_hangul_principle:
+        no_hangul = _compress_experimental(
+            raw,
+            strategy=strategy,
+            intensity=intensity,
+            must_keep=effective_must_keep,
+            use_hangul_principle=False,
+        )
+        no_hangul = _apply_max_saving_cap(raw, no_hangul, max_saving_rate=cap)
+        no_hangul = _ensure_sensitive_tokens_preserved(raw, no_hangul, effective_must_keep)
+        variants.append(("no_hangul_principle", no_hangul))
+
+    variants = variants[: max(1, int(max_variants))]
+    raw_token_count = _tokens(raw)
+    best_key = "base"
+    best = base_candidate
+    best_score = -10**9
+    for key, cand in variants:
+        rec = _reconstruct_experimental_from_raw(
+            raw=raw,
+            compressed_candidate=cand,
+            use_hangul_principle=effective_hangul_principle,
+        )
+        fidelity = _jaccard(raw, rec)
+        saving = 1.0 - ((_tokens(cand) / raw_token_count) if raw_token_count else 1.0)
+        integrity = _sensitive_integrity(raw, cand, effective_must_keep)
+        score = (1.2 * fidelity) + (0.45 * saving) + (1.4 * integrity)
+        if score > best_score:
+            best_score = score
+            best = cand
+            best_key = key
+    meta = {
+        "candidate_pool_enabled": True,
+        "candidate_pool_size": len(variants),
+        "candidate_pool_selected": best_key,
+    }
+    return best, meta
+
+
 def evaluate_report(
     doc: dict[str, Any],
     *,
@@ -774,6 +852,8 @@ def evaluate_report(
     enable_router_blend_candidate: bool = False,
     router_blend_allow_nonrisk_jaccard_drop_pp: float = 1.0,
     router_blend_min_saving_gain_pp: float = 2.0,
+    enable_candidate_pool_expansion: bool = False,
+    candidate_pool_max_variants: int = 5,
 ) -> dict[str, Any]:
     if force_shard_id and not use_domain_router:
         raise ValueError("force_shard_id requires use_domain_router=True (DomainSpecificRouter).")
@@ -1020,6 +1100,20 @@ def evaluate_report(
                         "saving_gain_min": saving_gain_min,
                         "jaccard_drop_tolerance": drop_tol,
                     }
+            if enable_candidate_pool_expansion:
+                comp, pool_meta = _experimental_candidate_pool_select(
+                    raw=raw,
+                    base_candidate=comp,
+                    strategy=strategy,
+                    intensity=intensity,
+                    effective_must_keep=effective_must_keep,
+                    effective_hangul_principle=effective_hangul_principle,
+                    cap=cap,
+                    max_variants=candidate_pool_max_variants,
+                )
+                if route_info is None:
+                    route_info = {}
+                route_info["candidate_pool"] = pool_meta
         else:
             comp = _ensure_sensitive_tokens_preserved(raw, comp, effective_must_keep)
         rec_for_eval = _reconstruct_candidate(
