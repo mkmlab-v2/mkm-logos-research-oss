@@ -61,6 +61,10 @@
 - 추가 실험(W22-E2.4 선택 로직 변경): `selection_mode=greedy_saving` + 제약(`min_jaccard=0.89`, `min_integrity=1.0`) 적용
   - 결과: 지표/판정 동일(`saving=0.46356`, `jaccard=0.89658`, `integrity=1.0`, HOLD), 선택 분포도 동일
   - 해석: 점수식뿐 아니라 선택 규칙을 바꿔도 현재 후보군에서는 `saving` ceiling이 사실상 고정
+- 정책 검토(W22 rebaseline options): `py scripts/report_track_a_week22_rebaseline_options_v1.py`
+  - 옵션 A(현행 floor 0.49 유지): `saving_gap=0.02644`, 즉시 판정 `HOLD`
+  - 옵션 B(관측 saving 밴드 0.46356 임시 정렬): 품질/무결성 기준 충족 시 `GO_CONDITIONAL`
+  - 권고: `A_KEEP_FLOOR_049` (정책 의미 변경은 제품/운영 의사결정 필요)
 - 기준선(재확인): `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
 - 판단: W22-E1은 그리드 조정만으로 결과가 바뀌지 않는 deadlock 상태로 확인 — 상용 Track A 라인 HOLD 유지
 - 다음 1스텝: (1) 후보군 유형 자체 추가(현재 base/denser/no_hangul 3종 외 신규 후보) 또는 (2) policy floor/입력셋 재기준선 의사결정 필요
