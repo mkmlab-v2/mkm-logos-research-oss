@@ -775,6 +775,7 @@ class CryptoNitroLiveTrader:
         self.config_slippage_cap_bps: Optional[float] = None
         self.config_maker_only_level: Optional[str] = None
         self.config_kill_switch_threshold: Optional[float] = None
+        self.config_leverage_multiplier_cap: Optional[float] = None
         self.config_singular_core_decision: str = "UNKNOWN"
         self.config_singular_core_score: float = 0.0
         self.risk_profile_pipeline_status: Dict[str, Any] = {
@@ -1185,12 +1186,16 @@ class CryptoNitroLiveTrader:
                 self.config_kill_switch_threshold = max(0.005, min(0.10, float(ks)))
                 self.risk_manager.max_daily_loss = min(self.risk_manager.max_daily_loss, self.config_kill_switch_threshold)
 
+            lmc = profile.get("leverage_multiplier_cap")
+            if lmc is not None:
+                self.config_leverage_multiplier_cap = max(0.30, min(1.00, float(lmc)))
+
             singular_core = profile.get("singular_core") if isinstance(profile.get("singular_core"), dict) else {}
             self.config_singular_core_decision = str(singular_core.get("core_decision") or "UNKNOWN").upper()
             self.config_singular_core_score = float(singular_core.get("core_score") or 0.0)
 
             logger.info(
-                "🛡️ risk_profile 로드(%s): source=%s, mode=%s, age_min=%s, max_trades=%s, max_position_size=%.2f, maker_only=%s, slippage_bps=%s, kill_switch=%.3f, core_decision=%s, core_score=%.2f",
+                "🛡️ risk_profile 로드(%s): source=%s, mode=%s, age_min=%s, max_trades=%s, max_position_size=%.2f, maker_only=%s, slippage_bps=%s, kill_switch=%.3f, lev_mul_cap=%s, core_decision=%s, core_score=%.2f",
                 profile_path,
                 self.risk_profile_pipeline_status.get("source"),
                 self.risk_profile_pipeline_status.get("mode"),
@@ -1200,6 +1205,7 @@ class CryptoNitroLiveTrader:
                 self.config_maker_only_level,
                 self.config_slippage_cap_bps,
                 self.risk_manager.max_daily_loss,
+                self.config_leverage_multiplier_cap,
                 self.config_singular_core_decision,
                 self.config_singular_core_score,
             )
@@ -1546,6 +1552,8 @@ class CryptoNitroLiveTrader:
                             soft_influence.get("enabled", False),
                             soft_influence.get("active", False),
                         )
+                    if self.config_leverage_multiplier_cap is not None:
+                        leverage_multiplier = min(float(leverage_multiplier), float(self.config_leverage_multiplier_cap))
                     singular_core = signal_data.get("mkm_singular_core") or {}
                     singular_action = str(singular_core.get("action", "LOCKED")).upper()
                     if singular_action not in ("BUY", "SELL", "LOCKED"):
@@ -1771,6 +1779,8 @@ class CryptoNitroLiveTrader:
                                     logger.info("🟡 Oracle Gateway REDUCE: 레버리지 %.2f → %.2f", leverage_multiplier, effective_leverage)
                             except Exception as og_err:
                                 logger.warning("Oracle Gateway 예외(APPROVE 통과): %s", og_err)
+                        if self.config_leverage_multiplier_cap is not None:
+                            effective_leverage = min(float(effective_leverage), float(self.config_leverage_multiplier_cap))
 
                         trade_start_time = time.time()
                         try:

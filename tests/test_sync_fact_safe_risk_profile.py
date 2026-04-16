@@ -74,6 +74,33 @@ def test_derive_profile_forces_lock_when_core_hold():
     assert out["max_position_size"] == 0.03
 
 
+def test_derive_profile_applies_integrated_governance_caps():
+    out = _derive_profile(
+        risk_profile={
+            "mode": "ACTIVE_MODE",
+            "position_scale_cap": 1.0,
+            "daily_loss_cap_pct": 1.0,
+            "fused_risk_pressure": 0.4,
+        },
+        now=datetime.now(timezone.utc),
+        source_name="fact_safe_prophecy.trinity_governor",
+        mode_name="shadow",
+        governance={
+            "schema": "integrated_governance_v1",
+            "final_regime": "DEFENSE",
+            "is_fallback": True,
+            "final_action_allowed": False,
+            "final_score": -0.72,
+            "veto_reason_codes": ["extreme_defense_score"],
+        },
+    )
+    assert out["governance_bridge"]["enabled"] is True
+    assert out["governance_bridge"]["final_regime"] == "DEFENSE"
+    assert out["governance_bridge"]["position_cap_multiplier"] <= 0.35
+    assert out["leverage_multiplier_cap"] <= 0.5
+    assert out["max_position_size"] <= 0.035
+
+
 def _run_sync_cli(args: list[str]) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         [sys.executable, str(_SYNC_SCRIPT), *args],
