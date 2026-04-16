@@ -43,6 +43,22 @@
 - 비공개 경계: core compression/reconstruction internals, candidate-generation internals, proprietary policy tuning logic
 - 상태: 저장소 반영/푸시 완료, 웹 서버 반영은 배포 스크립트 1회 실행으로 동기화
 
+### 배포 후 체크리스트 (정상/이상 기준)
+
+- 실행 명령: `RELOAD_NGINX=1 bash /opt/mkm-destiny-ai-41e38ec6/scripts/deploy/linux/deploy_a_codeai_landing_from_repo.sh`
+- 정상 기준:
+  - `GET /benchmark` = 200
+  - `GET /ko/benchmark` = 200
+  - `GET /evidence/latest.json` = 200, `verification_pack` 필드 존재
+  - `GET /health` = 200, `status=ok`
+- 이상 기준:
+  - route check 실패 또는 `nginx -t` 실패
+  - `/evidence/latest.json`에서 최신 `generated_at_utc` 갱신 누락
+  - benchmark 페이지에서 evidence block이 `unavailable`로 고정
+- 이상 시 조치:
+  - 배포 스크립트 재실행 → route check 재검증
+  - 필요 시 `a-codeai.com.evidence.latest.json.example` 재생성 후 재배포
+
 ## Track A Sprint Update (2026-04-16, W22-E1)
 
 - 실행: `py scripts/build_track_a_week22_hypothesis_pack_v1.py` 후 W22-E1 baseline/변형 실행
