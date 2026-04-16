@@ -58,6 +58,9 @@ $trackbQuaternionGateScript = Join-Path $workspaceRoot 'scripts\report_trackb_qu
 $compressionRestoreBridgeScript = Join-Path $workspaceRoot 'scripts\run_agent_compression_restore_bridge.ps1'
 $codebookFactSafeBundleScript = Join-Path $workspaceRoot 'scripts\run_codebook_factsafe_bundle.ps1'
 $ohaengRegimeSnapshotGateChain = Join-Path $workspaceRoot 'scripts\run_4d_to_ohaeng_regime_snapshot_gate_chain_spike.ps1'
+$trackCEvidenceScript = Join-Path $workspaceRoot 'scripts\build_track_c_evidence_pack_v1.py'
+$trackCCopyGuardScript = Join-Path $workspaceRoot 'scripts\check_track_c_copy_guard_v1.py'
+$trackCClaimValidatorScript = Join-Path $workspaceRoot 'scripts\validate_track_c_landing_claims_v1.py'
 
 if (-not (Test-Path -LiteralPath $prophecyBundle)) {
     throw "Bundle script not found: $prophecyBundle"
@@ -117,6 +120,33 @@ if (-not $SkipCompressionRestoreBridge) {
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }
+}
+
+if (-not (Test-Path -LiteralPath $trackCEvidenceScript)) {
+    throw "Track C evidence script not found: $trackCEvidenceScript"
+}
+Write-Host '== Fact-Lock: build_track_c_evidence_pack_v1.py ==' -ForegroundColor Cyan
+& py $trackCEvidenceScript
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+}
+
+if (-not (Test-Path -LiteralPath $trackCCopyGuardScript)) {
+    throw "Track C copy guard script not found: $trackCCopyGuardScript"
+}
+Write-Host '== Fact-Lock: check_track_c_copy_guard_v1.py ==' -ForegroundColor Cyan
+& py $trackCCopyGuardScript (Join-Path $workspaceRoot 'docs\final\TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md')
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+}
+
+if (-not (Test-Path -LiteralPath $trackCClaimValidatorScript)) {
+    throw "Track C landing validator script not found: $trackCClaimValidatorScript"
+}
+Write-Host '== Fact-Lock: validate_track_c_landing_claims_v1.py ==' -ForegroundColor Cyan
+& py $trackCClaimValidatorScript --evidence-pack (Join-Path $workspaceRoot 'docs\final\artifacts\track_c_evidence_pack_latest.json')
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
 }
 
 if ($IncludeCodebookFactSafe) {

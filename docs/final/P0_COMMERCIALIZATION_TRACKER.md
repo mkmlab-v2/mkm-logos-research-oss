@@ -192,6 +192,24 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 - **제품형태(초기):** API 단독보다 `주간 리스크 브리프 + 이벤트 경보` 하이브리드 전달로 파일럿 전환율 우선.
 - **보조 채널:** `jemaai.cloud`는 관측형 공개 쇼룸(인지/신뢰 확보)로 유지하고, 유료 전환은 B2B 파일럿 계약에서 발생시키는 구조 고정.
 
+### Track C (IP 비즈니스) 실행 레인 — 2026-04-17 추가
+
+- **정의:** Track C는 `직접 매매`가 아니라 `지적재산(IP) 제품화` 레인이다. 출력은 리스크 경보·상태 브리프·라이선스 피처로 제한한다.
+- **실행 문서 SSOT:** `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`
+- **필수 경계:**
+  - 투자자문/매수·매도 권유 문구 금지
+  - Track A/B 운영 산출과 Track C 대외 산출의 역할 분리
+  - 외부 배포 문구는 `risk warning / scenario posture` 중심
+- **출시 게이트 (최소):**
+  1. 엔진 상태 근거 아티팩트 최신성 확인 (`integrated_governance_v1_latest.json` + 3엔진 게이트)
+  2. 월간 투명성 리포트 템플릿 고정(오탐/미탐 동시 공개)
+  3. 90일 파일럿 계약서에 KPI·리스크 리버설 조항 선기입
+  4. 랜딩 페이지 카피 법무 문구 점검(비투자자문)
+- **자동 검증 도구 (Track C):**
+  - `py scripts/build_track_c_evidence_pack_v1.py`
+  - `py scripts/check_track_c_copy_guard_v1.py docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`
+  - `py scripts/validate_track_c_landing_claims_v1.py`
+
 ### 90일 유료 파일럿 계약 템플릿 v1 (Risk Warning SaaS)
 
 **목적:** 검증 전 대형 계약을 피하고, `저가 유료 파일럿 -> 재구매/연간 전환`의 결정론적 루프로 상용화를 시작한다.

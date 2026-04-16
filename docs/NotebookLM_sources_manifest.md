@@ -112,6 +112,7 @@
 
 | 항목 | 경로 (또는 TBD) | 비고 |
 |------|------------------|------|
+| Track C IP 사업계획 (v1) | `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` | B2B/IP 수익화 실행안; 비투자자문 문구·Track A/B/C 경계 포함 |
 | DSS / Qumran | `docs/final/DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md` | Creative-Lock; frontline closeout SSOT |
 | 명리·융합 의사결정 | `docs/final/MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` | SSOT; B 노트북에는 동명 텍스트 소스로 반영(`MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json`). A와 역할 분리 |
 | AI·명리·만세 외부 참조 | `docs/final/AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md` | 타 서비스·RAG·LLM 패턴 정리(참고만); 본선 OOF·A와 무단 합선 금지 |
