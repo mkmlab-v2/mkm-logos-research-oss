@@ -42,6 +42,9 @@ def main() -> int:
     ap.add_argument("--jaccard-floor", type=float, default=0.85)
     ap.add_argument("--integrity-floor", type=float, default=1.0)
     ap.add_argument("--pool-size", type=int, default=5)
+    ap.add_argument("--fidelity-weight", type=float, default=1.2)
+    ap.add_argument("--saving-weight", type=float, default=0.45)
+    ap.add_argument("--integrity-weight", type=float, default=1.4)
     args = ap.parse_args()
 
     doc = _load_json(args.input if args.input.is_absolute() else ROOT / args.input)
@@ -62,6 +65,9 @@ def main() -> int:
         include_cee_core=True,
         enable_candidate_pool_expansion=True,
         candidate_pool_max_variants=max(1, int(args.pool_size)),
+        candidate_pool_fidelity_weight=float(args.fidelity_weight),
+        candidate_pool_saving_weight=float(args.saving_weight),
+        candidate_pool_integrity_weight=float(args.integrity_weight),
     )
     metrics = report.get("compression_metrics", {})
     gate = {
@@ -86,6 +92,11 @@ def main() -> int:
         "inputs": {
             "input": str(args.input),
             "pool_size": int(args.pool_size),
+            "candidate_pool_score_weights": {
+                "fidelity": float(args.fidelity_weight),
+                "saving": float(args.saving_weight),
+                "integrity": float(args.integrity_weight),
+            },
             "floors": {
                 "saving_floor": args.saving_floor,
                 "jaccard_floor": args.jaccard_floor,

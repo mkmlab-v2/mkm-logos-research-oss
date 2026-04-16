@@ -753,6 +753,7 @@ def _experimental_candidate_pool_select(
     effective_hangul_principle: bool,
     cap: float | None,
     max_variants: int = 5,
+    score_weights: dict[str, float] | None = None,
 ) -> tuple[str, dict[str, Any]]:
     variants: list[tuple[str, str]] = [("base", base_candidate)]
 
@@ -796,6 +797,11 @@ def _experimental_candidate_pool_select(
 
     variants = variants[: max(1, int(max_variants))]
     raw_token_count = _tokens(raw)
+    weights = score_weights or {
+        "fidelity": 1.2,
+        "saving": 0.45,
+        "integrity": 1.4,
+    }
     best_key = "base"
     best = base_candidate
     best_score = -10**9
@@ -808,7 +814,11 @@ def _experimental_candidate_pool_select(
         fidelity = _jaccard(raw, rec)
         saving = 1.0 - ((_tokens(cand) / raw_token_count) if raw_token_count else 1.0)
         integrity = _sensitive_integrity(raw, cand, effective_must_keep)
-        score = (1.2 * fidelity) + (0.45 * saving) + (1.4 * integrity)
+        score = (
+            (float(weights.get("fidelity", 1.2)) * fidelity)
+            + (float(weights.get("saving", 0.45)) * saving)
+            + (float(weights.get("integrity", 1.4)) * integrity)
+        )
         if score > best_score:
             best_score = score
             best = cand
@@ -817,6 +827,11 @@ def _experimental_candidate_pool_select(
         "candidate_pool_enabled": True,
         "candidate_pool_size": len(variants),
         "candidate_pool_selected": best_key,
+        "candidate_pool_score_weights": {
+            "fidelity": float(weights.get("fidelity", 1.2)),
+            "saving": float(weights.get("saving", 0.45)),
+            "integrity": float(weights.get("integrity", 1.4)),
+        },
     }
     return best, meta
 
@@ -854,6 +869,9 @@ def evaluate_report(
     router_blend_min_saving_gain_pp: float = 2.0,
     enable_candidate_pool_expansion: bool = False,
     candidate_pool_max_variants: int = 5,
+    candidate_pool_fidelity_weight: float = 1.2,
+    candidate_pool_saving_weight: float = 0.45,
+    candidate_pool_integrity_weight: float = 1.4,
 ) -> dict[str, Any]:
     if force_shard_id and not use_domain_router:
         raise ValueError("force_shard_id requires use_domain_router=True (DomainSpecificRouter).")
@@ -1110,6 +1128,11 @@ def evaluate_report(
                     effective_hangul_principle=effective_hangul_principle,
                     cap=cap,
                     max_variants=candidate_pool_max_variants,
+                    score_weights={
+                        "fidelity": candidate_pool_fidelity_weight,
+                        "saving": candidate_pool_saving_weight,
+                        "integrity": candidate_pool_integrity_weight,
+                    },
                 )
                 if route_info is None:
                     route_info = {}

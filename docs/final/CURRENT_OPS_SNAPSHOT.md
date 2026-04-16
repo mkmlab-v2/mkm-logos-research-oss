@@ -24,9 +24,14 @@
   - 결과: `decision=HOLD_W22_E2_NO_VIABLE`
   - 지표 변화: `avg_reconstruction_fidelity_jaccard=0.95350`로 대폭 개선, `avg_sensitive_integrity=1.0` 유지, 그러나 `global_token_saving_rate=0.41219`로 floor(0.49) 미달
   - 해석: 후보군 다변화는 실제로 작동(선택 분포: `denser_intensity`/`base`/`no_hangul_principle`)했으나, 현재 정책 floor 기준에서는 절감률이 크게 희생됨
+- 추가 실험(W22-E2.1 가중치 튜닝): `candidate_pool` 점수 가중치 3안 비교
+  - base `(f=1.2,s=0.45,i=1.4)`: `saving=0.41219`, `jaccard=0.95350`, `integrity=1.0`, HOLD
+  - saving_up `(f=0.9,s=1.1,i=1.4)`: `saving=0.45281`, `jaccard=0.90924`, `integrity=1.0`, HOLD
+  - saving_max `(f=0.6,s=1.6,i=1.4)`: `saving=0.46356`, `jaccard=0.89658`, `integrity=1.0`, HOLD
+  - 결론: 가중치 튜닝으로 절감률은 회복 추세이나, policy floor `0.49` 재진입에는 아직 부족
 - 기준선(재확인): `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
 - 판단: W22-E1은 그리드 조정만으로 결과가 바뀌지 않는 deadlock 상태로 확인 — 상용 Track A 라인 HOLD 유지
-- 다음 1스텝: 후보군 다변화가 품질 회복에는 유효함이 확인됐으므로, `candidate_pool` 점수 가중치(현재 fidelity 편향)를 절감률 회복 쪽으로 재튜닝한 W22-E2.1 실험으로 `saving>=0.49` 재진입 가능성 검증 필요
+- 다음 1스텝: (1) 후보군 유형 자체 추가(현재 base/denser/no_hangul 3종 외 신규 후보) 또는 (2) policy floor/입력셋 재기준선 의사결정 필요
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
