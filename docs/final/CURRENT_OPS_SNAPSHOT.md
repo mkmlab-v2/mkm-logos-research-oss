@@ -36,6 +36,13 @@
 - 검증: `GET /` 200, `GET /health` 200(`ok`), `GET /v1/compress` 405(정상), `POST /v1/compress` 200(계약 필드 확인)
 - 최종: `[OK] a-codeai landing deploy completed.`
 
+## A-CODEAI Benchmark Transparency Update (2026-04-16)
+
+- 반영: 공개 검증 패키지(`verification_pack`)를 evidence JSON에 추가하고 benchmark KO/EN 페이지에 공개/비공개 경계를 명시
+- 포함 항목: 재현 명령 2종(`check_a_codeai_public_routes.sh`, `build_a_codeai_public_evidence_json.py`) + 공개 아티팩트 경로
+- 비공개 경계: core compression/reconstruction internals, candidate-generation internals, proprietary policy tuning logic
+- 상태: 저장소 반영/푸시 완료, 웹 서버 반영은 배포 스크립트 1회 실행으로 동기화
+
 ## Track A Sprint Update (2026-04-16, W22-E1)
 
 - 실행: `py scripts/build_track_a_week22_hypothesis_pack_v1.py` 후 W22-E1 baseline/변형 실행
