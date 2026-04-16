@@ -2,7 +2,8 @@ param(
     [string]$LogPath = "C:\workspace\docs\final\artifacts\all_green_slack_failure_delivery_log.jsonl",
     [int]$TailLines = 500,
     [string]$OutputPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\all_green_slack_delivery_check_latest.json",
-    [double]$MaxSuccessAgeHours = 24
+    [double]$MaxSuccessAgeHours = 24,
+    [string]$AllGreenPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\all_green_latest.json"
 )
 
 $ErrorActionPreference = "Stop"
@@ -67,6 +68,24 @@ if ($latestSuccess.Count -gt 0) {
     }
 }
 
+$currentAllGreenOk = $null
+if (Test-Path -LiteralPath $AllGreenPath) {
+    try {
+        $allGreenDoc = Get-Content -LiteralPath $AllGreenPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        if ($null -ne $allGreenDoc) {
+            $currentAllGreenOk = [bool]$allGreenDoc.overall_ok
+        }
+    } catch {
+        $currentAllGreenOk = $null
+    }
+}
+
+# Slack delivery in this lane is failure-triggered.
+# When current all_green is healthy, stale "last successful failure-notification" is expected.
+if ($currentAllGreenOk -eq $true) {
+    $successStale = $false
+}
+
 $hasSuccess = ($latestSuccess.Count -gt 0)
 $healthy = ($hasSuccess -and (-not $successStale))
 
@@ -82,6 +101,7 @@ $out = [ordered]@{
     latest_success_age_hours = $latestSuccessAgeHours
     success_stale = $successStale
     has_success = $hasSuccess
+    current_all_green_ok = $currentAllGreenOk
     healthy = $healthy
 }
 
