@@ -133,6 +133,7 @@
       </p>
       <div class="cta-row">
         <a class="btn btn-primary" href="#contact">20분 미팅 신청</a>
+        <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%20%EB%AC%B4%EB%A3%8C%20%EA%B2%80%EC%A6%9D%20%ED%8C%A9%20%EC%8B%A0%EC%B2%AD">무료 검증 팩 신청</a>
         <a class="btn btn-ghost" href="/ko/benchmark">검증 기준 보기</a>
       </div>
     </div>
@@ -174,6 +175,17 @@
 
     <section>
       <div class="container">
+        <h2>무료 검증 → 유료 전환 기준</h2>
+        <div class="grid">
+          <article class="card"><p class="label">무료 검증</p><p class="small">월 30회 샘플 검증, 지연 응답, 팀 운영 기능 제외</p></article>
+          <article class="card"><p class="label">유료 전환</p><p class="small">생산 응답속도, 운영 워크플로, 계약 보호(SLA/보상)가 필요할 때 Pilot 전환</p></article>
+          <article class="card"><p class="label">전환 경로</p><p class="small">무료 검증 팩 신청 → 결과 리뷰 20분 미팅 → 90일 파일럿 시작</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
         <h2>도입 판단 체크</h2>
         <div class="notice"><span class="pill pill-ok">필수</span> 품질/무결성 게이트 충족 여부, 운영 리드타임, 내부 승인 적합성을 함께 확인합니다.</div>
       </div>
@@ -194,6 +206,7 @@
         <h2>20분 미팅으로 시작</h2>
         <div class="cta-row">
           <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%2090%EC%9D%BC%20%ED%8C%8C%EC%9D%BC%EB%9F%BF%20%EB%AC%B8%EC%9D%98">이메일 문의</a>
+          <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%20%EB%AC%B4%EB%A3%8C%20%EA%B2%80%EC%A6%9D%20%ED%8C%A9%20%EC%8B%A0%EC%B2%AD">무료 검증 팩 신청</a>
           <a class="btn btn-ghost" href="/ko/">홈으로</a>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import { Fragment } from "react";
 import { siteCopy } from "@/content/siteCopy";
 import { SiteHeader } from "@/components/SiteHeader";
+import { FreeValidationLeadForm } from "@/components/FreeValidationLeadForm";
+import { ContactActionLinks } from "@/components/ContactActionLinks";
 
 export default function HomePage() {
   const c = siteCopy;
@@ -70,9 +72,8 @@ export default function HomePage() {
         <section id="contact" aria-labelledby="contact-title">
           <h2 id="contact-title">{c.contact.title}</h2>
           <p className="section-lead">{c.contact.section_lead}</p>
-          <p>
-            {c.contact.email_label}: <a href={`mailto:${c.footer.email}`}>{c.footer.email}</a>
-          </p>
+          <ContactActionLinks email={c.footer.email} label={c.contact.email_label} />
+          <FreeValidationLeadForm />
         </section>
       </main>
 

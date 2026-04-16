@@ -132,6 +132,7 @@
       </p>
       <div class="cta-row">
         <a class="btn btn-primary" href="#contact">Book 20-min call</a>
+        <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20free%20validation%20pack%20request">Request free validation pack</a>
         <a class="btn btn-ghost" href="/benchmark">View validation policy</a>
       </div>
     </div>
@@ -173,6 +174,17 @@
 
     <section>
       <div class="container">
+        <h2>Free validation to paid conversion rule</h2>
+        <div class="grid">
+          <article class="card"><p class="label">Free validation</p><p class="small">30 sample validations/month, delayed response, no team workflow features.</p></article>
+          <article class="card"><p class="label">Paid conversion</p><p class="small">Upgrade when your team needs production response time, SLA, and contractual protection.</p></article>
+          <article class="card"><p class="label">Conversion path</p><p class="small">Request free validation pack -> 20-minute review call -> start 90-day pilot.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
         <h2>Decision checklist</h2>
         <div class="notice"><span class="pill pill-ok">Required</span>Quality gate pass, integrity stability, operating lead-time, and committee fit.</div>
       </div>
@@ -193,6 +205,7 @@
         <h2>Start with a 20-minute call</h2>
         <div class="cta-row">
           <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%2090-day%20pilot%20inquiry">Email us</a>
+          <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20free%20validation%20pack%20request">Request free validation pack</a>
           <a class="btn btn-ghost" href="/">Back to home</a>
         </div>
       </div>

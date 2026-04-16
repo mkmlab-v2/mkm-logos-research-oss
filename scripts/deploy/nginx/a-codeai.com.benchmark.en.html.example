@@ -200,6 +200,7 @@
           <p class="small">Request a pilot pre-check pack including route checks, benchmark reading guide, and operation boundary checklist.</p>
         </div>
         <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20free%20validation%20pack%20request">Request free validation pack</a>
           <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20open%20validation%20pack%20request">Request validation pack</a>
           <a class="btn btn-ghost" href="/pilot">Pilot policy</a>
         </div>
@@ -209,7 +210,8 @@
     <section>
       <div class="container">
         <div class="cta-row">
-          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20benchmark%20inquiry">Request details</a>
+          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%2090-day%20pilot%20inquiry">Start 90-day pilot inquiry</a>
+          <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20free%20validation%20pack%20request">Request free validation pack</a>
           <a class="btn btn-ghost" href="/pilot">See pilot terms</a>
         </div>
       </div>
