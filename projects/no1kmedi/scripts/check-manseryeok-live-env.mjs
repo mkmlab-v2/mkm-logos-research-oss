@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const url = process.env.ATHENA_MANSERYEOK_API_URL;
+const token = process.env.ATHENA_MANSERYEOK_API_TOKEN?.trim();
 
 function fail(message) {
   console.error(`check-manseryeok-live-env failed: ${message}`);
@@ -25,7 +26,10 @@ async function main() {
   try {
     const res = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { "x-api-token": token } : {}),
+      },
       body: JSON.stringify({ birth_datetime: "1988-01-03 06:30" }),
       signal: controller.signal,
     });

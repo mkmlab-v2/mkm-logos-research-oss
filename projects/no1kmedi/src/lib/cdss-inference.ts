@@ -59,10 +59,14 @@ function pickSasangCandidate(input: PatientConsultInputV1): SasangType {
 async function fetchManseryeokReference(birthDatetime: string): Promise<ManseryeokResult> {
   const endpoint = process.env.ATHENA_MANSERYEOK_API_URL?.trim();
   if (!endpoint) return FALLBACK_SAJU;
+  const token = process.env.ATHENA_MANSERYEOK_API_TOKEN?.trim();
   try {
     const res = await fetch(endpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { "x-api-token": token } : {}),
+      },
       body: JSON.stringify({ birth_datetime: birthDatetime }),
     });
     if (!res.ok) return FALLBACK_SAJU;

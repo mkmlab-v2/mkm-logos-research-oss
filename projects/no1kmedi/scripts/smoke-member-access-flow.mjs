@@ -65,7 +65,10 @@ async function main() {
 
   const review = await request("/api/member/verification/review", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "x-no1kmedi-admin-token": ADMIN_TOKEN,
+    },
     body: JSON.stringify({ verification_id: verificationId, decision: "approved", admin_token: ADMIN_TOKEN }),
   });
   assert(review.res.status === 200, `verification review expected 200, got ${review.res.status}`);

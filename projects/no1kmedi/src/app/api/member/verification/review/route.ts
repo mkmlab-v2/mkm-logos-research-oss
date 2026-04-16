@@ -3,8 +3,52 @@ import { getVerifications, saveVerifications } from "../../../payment/payapp/_st
 
 export const runtime = "nodejs";
 
+const REVIEW_RATE_LIMIT_MAX = Number(process.env.NO1KMEDI_REVIEW_RATE_LIMIT_MAX || 20);
+const REVIEW_RATE_LIMIT_WINDOW_MS = Number(process.env.NO1KMEDI_REVIEW_RATE_LIMIT_WINDOW_MS || 60_000);
+const reviewRateWindow = new Map<string, { count: number; resetAt: number }>();
+
+function readClientIp(request: NextRequest): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  const realIp = request.headers.get("x-real-ip");
+  if (realIp) return realIp.trim();
+  return "unknown";
+}
+
+function checkRateLimit(key: string): { allowed: boolean; retryAfterSeconds: number } {
+  const now = Date.now();
+  const entry = reviewRateWindow.get(key);
+  if (!entry || now > entry.resetAt) {
+    reviewRateWindow.set(key, { count: 1, resetAt: now + REVIEW_RATE_LIMIT_WINDOW_MS });
+    return { allowed: true, retryAfterSeconds: 0 };
+  }
+
+  if (entry.count >= REVIEW_RATE_LIMIT_MAX) {
+    return { allowed: false, retryAfterSeconds: Math.max(1, Math.ceil((entry.resetAt - now) / 1000)) };
+  }
+
+  entry.count += 1;
+  reviewRateWindow.set(key, entry);
+  return { allowed: true, retryAfterSeconds: 0 };
+}
+
 export async function POST(request: NextRequest) {
   try {
+    const limiter = checkRateLimit(readClientIp(request));
+    if (!limiter.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "rate_limited",
+          retry_after_seconds: limiter.retryAfterSeconds,
+        },
+        {
+          status: 429,
+          headers: { "Retry-After": String(limiter.retryAfterSeconds) },
+        },
+      );
+    }
+
     const body = await request.json();
     const { verification_id, decision, admin_token, reviewer } = body ?? {};
     if (!verification_id || !decision) {
@@ -15,7 +59,13 @@ export async function POST(request: NextRequest) {
     }
 
     const expected = process.env.NO1KMEDI_ADMIN_TOKEN;
-    if (expected && admin_token !== expected) {
+    const headerToken =
+      request.headers.get("x-no1kmedi-admin-token") ||
+      request.headers.get("authorization")?.replace(/^Bearer\s+/i, "").trim() ||
+      "";
+    const providedToken = headerToken || admin_token || "";
+
+    if (expected && providedToken !== expected) {
       return NextResponse.json({ success: false, error: "unauthorized" }, { status: 401 });
     }
 
