@@ -52,6 +52,9 @@
   - saving_up `(f=0.9,s=1.1,i=1.4)`: `saving=0.45281`, `jaccard=0.90924`, `integrity=1.0`, HOLD
   - saving_max `(f=0.6,s=1.6,i=1.4)`: `saving=0.46356`, `jaccard=0.89658`, `integrity=1.0`, HOLD
   - 결론: 가중치 튜닝으로 절감률은 회복 추세이나, policy floor `0.49` 재진입에는 아직 부족
+- 추가 실험(W22-E2.2 단일 스파이크): 절감률 극우선 `(f=0.3,s=2.2,i=1.4)` 실행
+  - 결과: `saving=0.46356`, `jaccard=0.89658`, `integrity=1.0`, 판정 `HOLD_W22_E2_NO_VIABLE`
+  - 해석: 절감률 가중치를 더 올려도 현재 후보군 5종에서는 `saving` 상한이 약 `0.463~0.464` 구간에 고정
 - 기준선(재확인): `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
 - 판단: W22-E1은 그리드 조정만으로 결과가 바뀌지 않는 deadlock 상태로 확인 — 상용 Track A 라인 HOLD 유지
 - 다음 1스텝: (1) 후보군 유형 자체 추가(현재 base/denser/no_hangul 3종 외 신규 후보) 또는 (2) policy floor/입력셋 재기준선 의사결정 필요
