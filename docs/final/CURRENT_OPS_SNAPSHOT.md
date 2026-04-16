@@ -6,14 +6,14 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
-## Track A Sprint Update (2026-04-16, W21-E4)
+## Track A Sprint Update (2026-04-16, W22-E1)
 
-- 실행: `py scripts/run_track_a_week21_confidence_first_crossover_sweep_v1.py` → `py scripts/run_track_a_week21_widened_domain_budget_veto_sweep_v1.py` → `py scripts/report_track_a_week21_policy_replay_v1.py`
-- 산출물(로컬): `track_a_week21_*_sweep_v1.json`, `track_a_week21_policy_replay_v1.json` (루트 `.gitignore`의 `docs/final/artifacts/track_a_*`로 커밋 제외 — 재생성은 동일 스크립트)
-- 결과: E1~E3 전부 `viable_count=0`; E4 `decision=HOLD_W21_POLICY_REPLAY` (`best_saving_seen` 기준 `policy_floor` 미달, 승격 시 `quality_tradeoff_flag=false` 필요)
+- 실행: `py scripts/build_track_a_week22_hypothesis_pack_v1.py` 후 `py scripts/run_track_a_week22_staged_guard_unlock_sweep_v1.py`
+- 산출물(로컬): `track_a_week22_hypothesis_pack_v1.json`, `track_a_week22_staged_guard_unlock_sweep_v1.json` (루트 `.gitignore`의 `docs/final/artifacts/track_a_*`로 커밋 제외 — 재생성은 동일 스크립트)
+- 결과: `decision=HOLD_W22_E1_NO_VIABLE`, `viable_count=0`
 - 기준선(재확인): `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
-- 판단: Week-21 주간 replay 종합 판정 확정 — 상용 Track A 라인 HOLD 유지
-- 다음 1스텝: Week-22 가설 팩 또는 엔진/벤치 변경 없이는 동일 deadlock 반복 가능 — 우선순위에 따라 W22 팩 설계 또는 `MULTILENS_PERFORMANCE_EVAL_INPUT_V2`·압축 정책 재기준선 검토
+- 판단: W22-E1 단독에서도 floor(`saving>=0.49`, `jaccard>=0.85`, `integrity==1.0`) 동시 충족 실패로 상용 Track A 라인 HOLD 유지
+- 다음 1스텝: W22-E2를 열지 말고 E1 그리드/기준선 재설계(정책 가드 또는 입력셋 재기준선) 후 재시도
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
