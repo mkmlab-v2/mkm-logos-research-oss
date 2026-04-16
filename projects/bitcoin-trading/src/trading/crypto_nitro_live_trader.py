@@ -725,6 +725,14 @@ class CryptoNitroLiveTrader:
         
         # 상태 저장 파일 (재시작/복구용)
         self.state_file = log_dir / "trading_state.json"
+        self.position_sync_file = log_dir / "position_sync_events.jsonl"
+        self.execution_edge_file = log_dir / "execution_edge_metrics.jsonl"
+        self.logical_position_side = "FLAT"
+        self.initial_equity = 0.0
+        self.hard_kill_switch_drawdown_pct = max(
+            0.01,
+            min(0.5, float(os.getenv("LIVE_HARD_KILL_SWITCH_DRAWDOWN_PCT", "0.08"))),
+        )
         
         # 안전한 종료를 위한 시그널 핸들러
         # ⚠️ 윈도우/멀티스레드/서비스 환경에서 signal 사용 시 예외가 날 수 있으므로
@@ -796,8 +804,106 @@ class CryptoNitroLiveTrader:
             "🛡️ general explainable soft influence mode=%s (off|on; confidence/sizing cap only)",
             self.general_explainable_soft_influence_mode,
         )
+        try:
+            self._reconcile_position_state(reason="init")
+        except Exception as e:
+            logger.warning("⚠️ 초기 Position Sync 실패(무시): %s", e)
+        try:
+            b = self.binance.get_balance() if self.binance else {}
+            self.initial_equity = float((b or {}).get("total") or 0.0)
+        except Exception:
+            self.initial_equity = 0.0
 
         logger.info("✅ Crypto-Nitro Live Trader 초기화 완료")
+
+    @staticmethod
+    def _normalize_position_side(side: Optional[str]) -> str:
+        s = str(side or "").strip().upper()
+        if s in {"LONG", "BUY"}:
+            return "LONG"
+        if s in {"SHORT", "SELL"}:
+            return "SHORT"
+        return "FLAT"
+
+    def _exchange_position_side(self) -> str:
+        pos = self._get_current_position_info()
+        if not pos:
+            return "FLAT"
+        return self._normalize_position_side(pos.get("side"))
+
+    def _append_position_sync_event(self, payload: Dict[str, Any]) -> None:
+        try:
+            self.position_sync_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.position_sync_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(payload, ensure_ascii=False) + "\n")
+        except Exception as e:
+            logger.warning("⚠️ position sync 이벤트 로그 저장 실패: %s", e)
+
+    def _append_execution_edge_metric(self, payload: Dict[str, Any]) -> None:
+        try:
+            self.execution_edge_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.execution_edge_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(payload, ensure_ascii=False) + "\n")
+        except Exception as e:
+            logger.warning("⚠️ execution edge 로그 저장 실패: %s", e)
+
+    def _check_account_hard_kill_switch(self, balance_total: float) -> bool:
+        if balance_total <= 0:
+            return False
+        if self.initial_equity <= 0:
+            self.initial_equity = float(balance_total)
+            return True
+        dd = (self.initial_equity - float(balance_total)) / max(self.initial_equity, 1e-9)
+        if dd >= self.hard_kill_switch_drawdown_pct:
+            self.safe_mode = True
+            self.running = False
+            logger.error(
+                "🛑 HARD KILL-SWITCH 발동: equity drawdown %.2f%% >= %.2f%% (initial=%.2f, current=%.2f)",
+                dd * 100.0,
+                self.hard_kill_switch_drawdown_pct * 100.0,
+                self.initial_equity,
+                balance_total,
+            )
+            self._append_execution_edge_metric(
+                {
+                    "ts": datetime.now().isoformat(),
+                    "event": "hard_kill_switch_triggered",
+                    "drawdown_pct": dd * 100.0,
+                    "threshold_pct": self.hard_kill_switch_drawdown_pct * 100.0,
+                    "initial_equity": self.initial_equity,
+                    "current_equity": balance_total,
+                }
+            )
+            return False
+        return True
+
+    def _reconcile_position_state(self, reason: str) -> Dict[str, Any]:
+        exchange_side = self._exchange_position_side()
+        logical_side = self._normalize_position_side(self.logical_position_side)
+        desync = exchange_side != logical_side
+        if desync:
+            logger.warning(
+                "🧭 Position Sync desync 감지: logical=%s, exchange=%s, reason=%s -> exchange 기준으로 교정",
+                logical_side,
+                exchange_side,
+                reason,
+            )
+            self.logical_position_side = exchange_side
+            self._append_position_sync_event(
+                {
+                    "ts": datetime.now().isoformat(),
+                    "event": "position_reconciled",
+                    "reason": reason,
+                    "logical_before": logical_side,
+                    "exchange_side": exchange_side,
+                    "logical_after": self.logical_position_side,
+                }
+            )
+        return {
+            "desync": desync,
+            "logical_side": self.logical_position_side,
+            "exchange_side": exchange_side,
+        }
 
     def _read_biblical_lane_hook(self) -> Optional[Dict[str, Any]]:
         path = (
@@ -2101,6 +2207,14 @@ class CryptoNitroLiveTrader:
         try:
             if signal == "HOLD":
                 return None
+            order_start_ts = time.time()
+            sync_status = self._reconcile_position_state(reason=f"before_execute:{signal}")
+            logger.info(
+                "🧭 Position Sync 상태: logical=%s, exchange=%s, desync=%s",
+                sync_status.get("logical_side"),
+                sync_status.get("exchange_side"),
+                sync_status.get("desync"),
+            )
             
             # 🏛️ Financial Sovereign Harness: 신호 검증 (헌법 제3조: 100% Literal Restoration)
             if self.harness and signal_data and signal_data.get("signal_id"):
@@ -2169,6 +2283,9 @@ class CryptoNitroLiveTrader:
             balance = balance_info.get('total', 0.0) if isinstance(balance_info, dict) else 0.0
             if balance <= 0:
                 logger.error("❌ 잔고가 없습니다")
+                return None
+            if not self._check_account_hard_kill_switch(balance):
+                logger.error("❌ 계좌 하드 킬스위치로 거래 취소")
                 return None
             
             # 🎯 정확도 기반 레버리지 조정 (단, 전체 레버리지는 1~2배 범위로 제한)
@@ -2785,6 +2902,36 @@ class CryptoNitroLiveTrader:
                 )
                 
                 if order_result:
+                    self.logical_position_side = "LONG"
+                    fill_price = float(order_result.get("avgPrice") or order_result.get("price") or 0.0)
+                    order_id = order_result.get("orderId")
+                    try:
+                        fills = self.binance.get_recent_fills(symbol=self.symbol, limit=30)
+                        oid = str(order_id) if order_id is not None else ""
+                        matched = [f for f in fills if str(f.get("orderId", "")) == oid]
+                        if matched:
+                            qty_sum = sum(float(f.get("qty", 0.0) or 0.0) for f in matched)
+                            if qty_sum > 0:
+                                fill_price = sum(
+                                    float(f.get("price", 0.0) or 0.0) * float(f.get("qty", 0.0) or 0.0)
+                                    for f in matched
+                                ) / qty_sum
+                    except Exception:
+                        pass
+                    slippage_bps = ((fill_price - price) / max(price, 1e-9)) * 10000.0 if fill_price > 0 else 0.0
+                    latency_ms = (time.time() - order_start_ts) * 1000.0
+                    self._append_execution_edge_metric(
+                        {
+                            "ts": datetime.now().isoformat(),
+                            "symbol": self.symbol,
+                            "signal": signal,
+                            "order_id": order_id,
+                            "signal_price": float(price),
+                            "fill_price": float(fill_price),
+                            "slippage_bps": float(slippage_bps),
+                            "latency_ms": float(latency_ms),
+                        }
+                    )
                     trade_result = {
                         "timestamp": datetime.now().isoformat(),
                         "signal": signal,
@@ -2833,6 +2980,36 @@ class CryptoNitroLiveTrader:
                 )
                 
                 if order_result:
+                    self.logical_position_side = "SHORT"
+                    fill_price = float(order_result.get("avgPrice") or order_result.get("price") or 0.0)
+                    order_id = order_result.get("orderId")
+                    try:
+                        fills = self.binance.get_recent_fills(symbol=self.symbol, limit=30)
+                        oid = str(order_id) if order_id is not None else ""
+                        matched = [f for f in fills if str(f.get("orderId", "")) == oid]
+                        if matched:
+                            qty_sum = sum(float(f.get("qty", 0.0) or 0.0) for f in matched)
+                            if qty_sum > 0:
+                                fill_price = sum(
+                                    float(f.get("price", 0.0) or 0.0) * float(f.get("qty", 0.0) or 0.0)
+                                    for f in matched
+                                ) / qty_sum
+                    except Exception:
+                        pass
+                    slippage_bps = ((price - fill_price) / max(price, 1e-9)) * 10000.0 if fill_price > 0 else 0.0
+                    latency_ms = (time.time() - order_start_ts) * 1000.0
+                    self._append_execution_edge_metric(
+                        {
+                            "ts": datetime.now().isoformat(),
+                            "symbol": self.symbol,
+                            "signal": signal,
+                            "order_id": order_id,
+                            "signal_price": float(price),
+                            "fill_price": float(fill_price),
+                            "slippage_bps": float(slippage_bps),
+                            "latency_ms": float(latency_ms),
+                        }
+                    )
                     trade_result = {
                         "timestamp": datetime.now().isoformat(),
                         "signal": signal,
@@ -3014,6 +3191,7 @@ class CryptoNitroLiveTrader:
                 "last_signal_summary": self.last_signal_summary,
                 "circuit_breaker_state": self.circuit_breaker_state,
                 "safe_mode": self.safe_mode,
+                "logical_position_side": self.logical_position_side,
                 "last_price_update": self.last_price_update.isoformat() if hasattr(self, 'last_price_update') else None,
                 "current_position": self._get_current_position_info()
             }
@@ -3113,6 +3291,7 @@ class CryptoNitroLiveTrader:
             self.total_pnl = state.get("total_pnl", 0.0)
             self.circuit_breaker_state = state.get("circuit_breaker_state", self.circuit_breaker_state)
             self.safe_mode = state.get("safe_mode", False)
+            self.logical_position_side = self._normalize_position_side(state.get("logical_position_side"))
             
             if state.get("last_price_update"):
                 self.last_price_update = datetime.fromisoformat(state["last_price_update"])
@@ -3121,6 +3300,7 @@ class CryptoNitroLiveTrader:
             logger.info(f"   - 거래 횟수: {self.trades_count}회")
             logger.info(f"   - 총 손익: ${self.total_pnl:,.2f}")
             logger.info(f"   - Circuit Breaker 상태: {self.circuit_breaker_state['state']}")
+            logger.info(f"   - Logical Position: {self.logical_position_side}")
             
             return True
         except json.JSONDecodeError as e:
