@@ -1,6 +1,6 @@
 {
   "schema": "high_reliability_mode_gate_v1",
-  "generated_at_utc": "2026-04-11T19:28:59Z",
+  "generated_at_utc": "2026-04-16T01:36:44Z",
   "inputs": {
     "quality_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_quality_anchor_verified_only_latest.json",
     "btrack_gate_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
