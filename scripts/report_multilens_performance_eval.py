@@ -107,7 +107,7 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--domain-sensitive-terms",
         default="",
-        help="Comma-separated terms that must be preserved in experimental compression",
+        help="Comma-separated must_keep items; use spaces inside an item for multi-word phrases (e.g. token footprint,strict mode).",
     )
     p.add_argument(
         "--include-cee-core",
@@ -185,6 +185,75 @@ def _norm_words_cached(text: str) -> tuple[str, ...]:
 @lru_cache(maxsize=8192)
 def _split_words_cached(text: str) -> tuple[str, ...]:
     return tuple(WORD_RE.findall(text))
+
+
+def _partition_must_keep(terms: set[str]) -> tuple[set[str], tuple[tuple[str, ...], ...]]:
+    """Split must_keep into single-word lemmas and multi-word phrases (order-stable phrases)."""
+    words: set[str] = set()
+    phrases: list[tuple[str, ...]] = []
+    seen_ph: set[tuple[str, ...]] = set()
+    for t in terms:
+        s = " ".join(str(t).split()).strip().lower()
+        if not s:
+            continue
+        if " " in s:
+            tup = tuple(s.split())
+            if tup not in seen_ph:
+                seen_ph.add(tup)
+                phrases.append(tup)
+        else:
+            words.add(s)
+    return words, tuple(phrases)
+
+
+def _expand_must_keep_words(terms: set[str]) -> set[str]:
+    """Flatten phrases to word lemmas for components that only support token sets."""
+    w, phrases = _partition_must_keep(terms)
+    out = set(w)
+    for p in phrases:
+        out.update(p)
+    return out
+
+
+def _phrase_required_in_raw(raw: str, phrase_words: tuple[str, ...]) -> bool:
+    if not phrase_words:
+        return False
+    lw = [x.lower() for x in _split_words(raw)]
+    n = len(phrase_words)
+    if len(lw) < n:
+        return False
+    pt = tuple(p.lower() for p in phrase_words)
+    for i in range(len(lw) - n + 1):
+        if tuple(lw[i : i + n]) == pt:
+            return True
+    return False
+
+
+def _phrase_present_in_text(text: str, phrase_words: tuple[str, ...]) -> bool:
+    if not phrase_words:
+        return True
+    lw = [x.lower() for x in _split_words(text)]
+    n = len(phrase_words)
+    if len(lw) < n:
+        return False
+    pt = tuple(p.lower() for p in phrase_words)
+    for i in range(len(lw) - n + 1):
+        if tuple(lw[i : i + n]) == pt:
+            return True
+    return False
+
+
+def _raw_phrase_surface(raw: str, phrase_words: tuple[str, ...]) -> str | None:
+    raw_words = _split_words(raw)
+    lw = [x.lower() for x in raw_words]
+    n = len(phrase_words)
+    pt = tuple(p.lower() for p in phrase_words)
+    if len(lw) < n:
+        return None
+    for i in range(len(lw) - n + 1):
+        if tuple(lw[i : i + n]) == pt:
+            return " ".join(raw_words[i : i + n])
+    return None
 
 
 def _has_hangul_syllable(word: str) -> bool:
@@ -297,6 +366,21 @@ def _compress_experimental(
     words = _split_words(raw)
     if not words:
         return raw
+    word_mk, phrase_tuples = _partition_must_keep(must_keep)
+    lw_list = [w.lower() for w in words]
+    protected: set[int] = set()
+    for i, lw in enumerate(lw_list):
+        if lw in word_mk:
+            protected.add(i)
+    for pt in phrase_tuples:
+        n = len(pt)
+        if n == 0:
+            continue
+        pt_l = tuple(p.lower() for p in pt)
+        for i in range(len(lw_list) - n + 1):
+            if tuple(lw_list[i : i + n]) == pt_l:
+                for j in range(i, i + n):
+                    protected.add(j)
     # Keep ratio increases with intensity.
     stride = {"high": 2, "ultra": 3, "extreme": 4}[intensity]
     strategy_offset = {"A": 0, "B": 1, "C": 2}[strategy]
@@ -305,7 +389,7 @@ def _compress_experimental(
     anchors = {0, 1, max(0, len(words) - 2), max(0, len(words) - 1), len(words) // 2}
     for i, w in enumerate(words):
         lw = w.lower()
-        if lw in must_keep:
+        if i in protected:
             kept.append(w)
             continue
         if use_hangul_principle and _is_hangul_particle_like(w):
@@ -343,39 +427,62 @@ def _compress_experimental(
 def _sensitive_integrity(raw: str, candidate: str, must_keep: set[str]) -> float:
     if not must_keep:
         return 1.0
+    words, phrase_tuples = _partition_must_keep(must_keep)
     raw_words = {w.lower() for w in _split_words(raw)}
     cand_words = {w.lower() for w in _split_words(candidate)}
-    required = {w for w in must_keep if w in raw_words}
-    if not required:
+    checks: list[float] = []
+    for w in words:
+        if w in raw_words:
+            checks.append(1.0 if w in cand_words else 0.0)
+    for pt in phrase_tuples:
+        if _phrase_required_in_raw(raw, pt):
+            checks.append(1.0 if _phrase_present_in_text(candidate, pt) else 0.0)
+    if not checks:
         return 1.0
-    preserved = sum(1 for w in required if w in cand_words)
-    return preserved / len(required)
+    return sum(checks) / len(checks)
 
 
 def _sensitive_violation(raw: str, candidate: str, must_keep: set[str]) -> bool:
     """True when raw required a must_keep lemma present in raw but missing from candidate."""
     if not must_keep:
         return False
+    words, phrase_tuples = _partition_must_keep(must_keep)
     raw_words = {w.lower() for w in _split_words(raw)}
     cand_words = {w.lower() for w in _split_words(candidate)}
-    required = {w for w in must_keep if w in raw_words}
-    if not required:
-        return False
-    return any(w not in cand_words for w in required)
+    for w in words:
+        if w in raw_words and w not in cand_words:
+            return True
+    for pt in phrase_tuples:
+        if _phrase_required_in_raw(raw, pt) and not _phrase_present_in_text(candidate, pt):
+            return True
+    return False
 
 
 def _ensure_sensitive_tokens_preserved(raw: str, candidate: str, must_keep: set[str]) -> str:
     """Append any required must_keep lemmas present in raw but missing from candidate (experimental safety net)."""
     if not must_keep:
         return candidate
+    words, phrase_tuples = _partition_must_keep(must_keep)
     raw_words_lower = {w.lower() for w in _split_words(raw)}
-    cand_words_lower = {w.lower() for w in _split_words(candidate)}
-    required = {w for w in must_keep if w in raw_words_lower}
-    missing_lemmas = [w for w in required if w not in cand_words_lower]
+    comp = candidate
+
+    for pt in phrase_tuples:
+        if not _phrase_required_in_raw(raw, pt):
+            continue
+        if _phrase_present_in_text(comp, pt):
+            continue
+        surface = _raw_phrase_surface(raw, pt)
+        if surface:
+            base = comp.rstrip()
+            comp = surface if not base else f"{base} {surface}"
+
+    cand_words_lower = {w.lower() for w in _split_words(comp)}
+    required_words = {w for w in words if w in raw_words_lower}
+    missing_lemmas = [w for w in sorted(required_words) if w not in cand_words_lower]
     if not missing_lemmas:
-        return candidate
+        return comp
     forms: list[str] = []
-    for lemma in sorted(missing_lemmas):
+    for lemma in missing_lemmas:
         form = lemma
         for w in _split_words(raw):
             if w.lower() == lemma:
@@ -383,7 +490,7 @@ def _ensure_sensitive_tokens_preserved(raw: str, candidate: str, must_keep: set[
                 break
         forms.append(form)
     suffix = " ".join(forms)
-    base = candidate.rstrip()
+    base = comp.rstrip()
     if not base:
         return suffix
     return f"{base} {suffix}"
@@ -458,8 +565,11 @@ def _reconstruct_experimental_from_raw(
 def _is_sensitive_case(raw: str, must_keep: set[str]) -> bool:
     if not must_keep:
         return False
+    words, phrase_tuples = _partition_must_keep(must_keep)
     raw_words = {w.lower() for w in _split_words(raw)}
-    return any(term in raw_words for term in must_keep)
+    if any(w in raw_words for w in words):
+        return True
+    return any(_phrase_required_in_raw(raw, pt) for pt in phrase_tuples)
 
 
 def _is_hangul_case(raw: str) -> bool:
@@ -513,7 +623,7 @@ def _apply_min_saving_floor(
     if len(cand_words) <= target_comp_tokens:
         return candidate
 
-    must_keep = {w.lower() for w in must_keep_terms}
+    must_keep = _expand_must_keep_words(set(must_keep_terms))
     essential: list[str] = []
     optional: list[str] = []
     for w in cand_words:
@@ -661,10 +771,14 @@ def evaluate_report(
     use_contextual_generator_v5_codec: bool = False,
     require_tiktoken_o200k: bool = False,
     force_shard_id: str | None = None,
+    enable_router_blend_candidate: bool = False,
+    router_blend_allow_nonrisk_jaccard_drop_pp: float = 1.0,
+    router_blend_min_saving_gain_pp: float = 2.0,
 ) -> dict[str, Any]:
     if force_shard_id and not use_domain_router:
         raise ValueError("force_shard_id requires use_domain_router=True (DomainSpecificRouter).")
     must_keep = must_keep or set()
+    base_must_keep = set(must_keep)
     comp_cases = doc.get("compression_cases", [])
     fus_cases = doc.get("fusion_answer_cases", [])
 
@@ -754,18 +868,19 @@ def evaluate_report(
                 effective_must_keep.update(hits)
                 route_info["master_codebook_lexicon_v1"] = meta
         if mode == "experimental":
+            expanded_must_keep = _expand_must_keep_words(effective_must_keep)
             if contextual_codec_v5 is not None and apply_gematria_4d_bridge_policy and bridge_meta is not None:
                 comp = contextual_codec_v5.encode(
                     raw=raw,
                     state16=bridge_meta.get("state16"),
-                    must_keep=effective_must_keep,
+                    must_keep=expanded_must_keep,
                 )
                 codec_decoded = contextual_codec_v5.decode_hybrid(encoded=comp, raw=raw, max_tokens_ratio=0.52)
             elif contextual_gen_v4 is not None and apply_gematria_4d_bridge_policy and bridge_meta is not None:
                 comp = contextual_gen_v4.generate(
                     raw=raw,
                     state16=bridge_meta.get("state16"),
-                    must_keep=effective_must_keep,
+                    must_keep=expanded_must_keep,
                     strategy=strategy,
                     intensity=intensity,
                     use_hangul_principle=effective_hangul_principle,
@@ -774,7 +889,7 @@ def evaluate_report(
                 comp = contextual_gen_v3.generate(
                     raw=raw,
                     state16=bridge_meta.get("state16"),
-                    must_keep=effective_must_keep,
+                    must_keep=expanded_must_keep,
                     strategy=strategy,
                     intensity=intensity,
                     use_hangul_principle=effective_hangul_principle,
@@ -783,7 +898,7 @@ def evaluate_report(
                 comp = contextual_gen.generate(
                     raw=raw,
                     state16=bridge_meta.get("state16"),
-                    must_keep=effective_must_keep,
+                    must_keep=expanded_must_keep,
                     strategy=strategy,
                     intensity=intensity,
                     use_hangul_principle=effective_hangul_principle,
@@ -837,6 +952,74 @@ def evaluate_report(
                     score_weights=bridge_score_weights,
                 )
             comp = _ensure_sensitive_tokens_preserved(raw, comp, effective_must_keep)
+
+            if (
+                enable_router_blend_candidate
+                and router is not None
+                and not force_shard_id
+            ):
+                alt_must_keep = set(base_must_keep)
+                alt_hangul_principle = use_hangul_principle
+                alt_comp = _compress_experimental(
+                    raw,
+                    strategy=strategy,
+                    intensity=intensity,
+                    must_keep=alt_must_keep,
+                    use_hangul_principle=alt_hangul_principle,
+                )
+                alt_min_saving_floor = 0.50 if (strategy == "A" and intensity == "extreme") else None
+                alt_comp = _apply_min_saving_floor(
+                    raw,
+                    alt_comp,
+                    min_saving_rate=alt_min_saving_floor,
+                    must_keep_terms=alt_must_keep,
+                    use_hangul_principle=alt_hangul_principle,
+                )
+                alt_is_sensitive = _is_sensitive_case(raw, alt_must_keep)
+                alt_is_hangul = _is_hangul_case(raw)
+                if alt_hangul_principle and alt_is_hangul and hangul_max_saving_rate is not None:
+                    alt_cap = hangul_max_saving_rate
+                else:
+                    alt_cap = sensitive_max_saving_rate if alt_is_sensitive else general_max_saving_rate
+                alt_comp = _apply_max_saving_cap(raw, alt_comp, max_saving_rate=alt_cap)
+                alt_comp = _ensure_sensitive_tokens_preserved(raw, alt_comp, alt_must_keep)
+
+                main_rec = _reconstruct_experimental_from_raw(
+                    raw=raw,
+                    compressed_candidate=comp,
+                    use_hangul_principle=effective_hangul_principle,
+                )
+                alt_rec = _reconstruct_experimental_from_raw(
+                    raw=raw,
+                    compressed_candidate=alt_comp,
+                    use_hangul_principle=alt_hangul_principle,
+                )
+                main_saving = 1.0 - ((_tokens(comp) / _tokens(raw)) if _tokens(raw) else 1.0)
+                alt_saving = 1.0 - ((_tokens(alt_comp) / _tokens(raw)) if _tokens(raw) else 1.0)
+                main_j = _jaccard(raw, main_rec)
+                alt_j = _jaccard(raw, alt_rec)
+                saving_gain = alt_saving - main_saving
+                jaccard_drop = max(0.0, main_j - alt_j)
+
+                route_domain = str((route_info or {}).get("domain") or "").strip().lower()
+                nonrisk_drop_tol = max(0.0, float(router_blend_allow_nonrisk_jaccard_drop_pp) / 100.0)
+                risk_drop_tol = nonrisk_drop_tol * 0.5
+                saving_gain_min = max(0.0, float(router_blend_min_saving_gain_pp) / 100.0)
+                is_risk_domain = route_domain in {"ssot", "timing"}
+                drop_tol = risk_drop_tol if is_risk_domain else nonrisk_drop_tol
+
+                if (saving_gain >= saving_gain_min) and (jaccard_drop <= drop_tol):
+                    comp = alt_comp
+                    if route_info is None:
+                        route_info = {}
+                    route_info["router_blend_applied"] = True
+                    route_info["router_blend"] = {
+                        "domain": route_domain or None,
+                        "saving_gain": saving_gain,
+                        "jaccard_drop": jaccard_drop,
+                        "saving_gain_min": saving_gain_min,
+                        "jaccard_drop_tolerance": drop_tol,
+                    }
         else:
             comp = _ensure_sensitive_tokens_preserved(raw, comp, effective_must_keep)
         rec_for_eval = _reconstruct_candidate(

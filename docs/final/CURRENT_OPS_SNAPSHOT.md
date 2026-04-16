@@ -17,9 +17,12 @@
 - 추가 실험(W22-E1.5): `py scripts/run_track_a_week22_e15_score_shift_v1.py` 실행
   - 결과: `decision=HOLD_W22_E15_NO_VIABLE`, gate=`saving_floor_ok=false`, `jaccard_floor_ok=false`, `integrity_floor_ok=true`
   - 관찰: 라우팅 결합 규칙 변경 후에도 `delta_vs_baseline`가 0 (`saving/jaccard/integrity` 모두 불변), `switched_to_router_off_cases=6`(ssot)인데 전체 지표는 변하지 않음
+- 추가 실험(W22-E1.5b): `evaluate_report` 내부에 `enable_router_blend_candidate` 훅 추가 후 `py scripts/run_track_a_week22_e15_router_blend_v1.py` 실행
+  - 기본 파라미터(`drop_pp=1.2`, `saving_gain_pp=1.0`): `decision=HOLD_W22_E15B_NO_VIABLE`, `blend_applied_cases=0`
+  - 완화 파라미터(`drop_pp=5.0`, `saving_gain_pp=0.0`): `blend_applied_cases=1`까지 증가했지만 여전히 `HOLD`, 그리고 `integrity_floor_ok=false`로 악화
 - 기준선(재확인): `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
 - 판단: W22-E1은 그리드 조정만으로 결과가 바뀌지 않는 deadlock 상태로 확인 — 상용 Track A 라인 HOLD 유지
-- 다음 1스텝: E2 확장보다 우선 `evaluate_report` 내부 케이스 점수 산출/라우팅 기준 자체를 직접 수정하는 코드 레벨 실험 또는 입력셋(`MULTILENS_PERFORMANCE_EVAL_INPUT_V2`) 재기준선 검토 필요
+- 다음 1스텝: E2 확장보다 우선 (1) `evaluate_report` 내부 라우터 후보 생성 로직 자체 변경(압축 후보군 다양화) 또는 (2) 입력셋(`MULTILENS_PERFORMANCE_EVAL_INPUT_V2`)·policy floor 재기준선 검토 필요
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
