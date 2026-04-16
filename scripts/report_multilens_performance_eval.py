@@ -754,6 +754,9 @@ def _experimental_candidate_pool_select(
     cap: float | None,
     max_variants: int = 5,
     score_weights: dict[str, float] | None = None,
+    selection_mode: str = "weighted_score",
+    min_jaccard_for_greedy: float = 0.88,
+    min_integrity_for_greedy: float = 1.0,
 ) -> tuple[str, dict[str, Any]]:
     variants: list[tuple[str, str]] = [("base", base_candidate)]
 
@@ -827,6 +830,7 @@ def _experimental_candidate_pool_select(
     best_key = "base"
     best = base_candidate
     best_score = -10**9
+    candidate_stats: list[tuple[str, float, float, float]] = []
     for key, cand in variants:
         rec = _reconstruct_experimental_from_raw(
             raw=raw,
@@ -836,6 +840,7 @@ def _experimental_candidate_pool_select(
         fidelity = _jaccard(raw, rec)
         saving = 1.0 - ((_tokens(cand) / raw_token_count) if raw_token_count else 1.0)
         integrity = _sensitive_integrity(raw, cand, effective_must_keep)
+        candidate_stats.append((key, fidelity, saving, integrity))
         score = (
             (float(weights.get("fidelity", 1.2)) * fidelity)
             + (float(weights.get("saving", 0.45)) * saving)
@@ -845,10 +850,30 @@ def _experimental_candidate_pool_select(
             best_score = score
             best = cand
             best_key = key
+
+    if selection_mode == "greedy_saving":
+        greedy = [
+            x
+            for x in candidate_stats
+            if (x[1] >= min_jaccard_for_greedy and x[2] >= min_integrity_for_greedy)
+        ]
+        if greedy:
+            greedy_best = sorted(greedy, key=lambda x: x[2], reverse=True)[0]
+            greedy_key = greedy_best[0]
+            for key, cand in variants:
+                if key == greedy_key:
+                    best = cand
+                    best_key = key
+                    break
     meta = {
         "candidate_pool_enabled": True,
         "candidate_pool_size": len(variants),
         "candidate_pool_selected": best_key,
+        "candidate_pool_selection_mode": selection_mode,
+        "candidate_pool_greedy_constraints": {
+            "min_jaccard": float(min_jaccard_for_greedy),
+            "min_integrity": float(min_integrity_for_greedy),
+        },
         "candidate_pool_score_weights": {
             "fidelity": float(weights.get("fidelity", 1.2)),
             "saving": float(weights.get("saving", 0.45)),
@@ -894,6 +919,9 @@ def evaluate_report(
     candidate_pool_fidelity_weight: float = 1.2,
     candidate_pool_saving_weight: float = 0.45,
     candidate_pool_integrity_weight: float = 1.4,
+    candidate_pool_selection_mode: str = "weighted_score",
+    candidate_pool_min_jaccard_for_greedy: float = 0.88,
+    candidate_pool_min_integrity_for_greedy: float = 1.0,
 ) -> dict[str, Any]:
     if force_shard_id and not use_domain_router:
         raise ValueError("force_shard_id requires use_domain_router=True (DomainSpecificRouter).")
@@ -1155,6 +1183,9 @@ def evaluate_report(
                         "saving": candidate_pool_saving_weight,
                         "integrity": candidate_pool_integrity_weight,
                     },
+                    selection_mode=str(candidate_pool_selection_mode),
+                    min_jaccard_for_greedy=float(candidate_pool_min_jaccard_for_greedy),
+                    min_integrity_for_greedy=float(candidate_pool_min_integrity_for_greedy),
                 )
                 if route_info is None:
                     route_info = {}

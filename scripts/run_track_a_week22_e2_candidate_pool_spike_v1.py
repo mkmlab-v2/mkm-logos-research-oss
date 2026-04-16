@@ -45,6 +45,9 @@ def main() -> int:
     ap.add_argument("--fidelity-weight", type=float, default=1.2)
     ap.add_argument("--saving-weight", type=float, default=0.45)
     ap.add_argument("--integrity-weight", type=float, default=1.4)
+    ap.add_argument("--selection-mode", type=str, default="weighted_score")
+    ap.add_argument("--min-jaccard-for-greedy", type=float, default=0.88)
+    ap.add_argument("--min-integrity-for-greedy", type=float, default=1.0)
     args = ap.parse_args()
 
     doc = _load_json(args.input if args.input.is_absolute() else ROOT / args.input)
@@ -68,6 +71,9 @@ def main() -> int:
         candidate_pool_fidelity_weight=float(args.fidelity_weight),
         candidate_pool_saving_weight=float(args.saving_weight),
         candidate_pool_integrity_weight=float(args.integrity_weight),
+        candidate_pool_selection_mode=str(args.selection_mode),
+        candidate_pool_min_jaccard_for_greedy=float(args.min_jaccard_for_greedy),
+        candidate_pool_min_integrity_for_greedy=float(args.min_integrity_for_greedy),
     )
     metrics = report.get("compression_metrics", {})
     gate = {
@@ -96,6 +102,11 @@ def main() -> int:
                 "fidelity": float(args.fidelity_weight),
                 "saving": float(args.saving_weight),
                 "integrity": float(args.integrity_weight),
+            },
+            "candidate_pool_selection_mode": str(args.selection_mode),
+            "candidate_pool_greedy_constraints": {
+                "min_jaccard": float(args.min_jaccard_for_greedy),
+                "min_integrity": float(args.min_integrity_for_greedy),
             },
             "floors": {
                 "saving_floor": args.saving_floor,

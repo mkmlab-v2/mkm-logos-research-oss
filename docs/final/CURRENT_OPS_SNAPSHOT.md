@@ -58,6 +58,9 @@
 - 추가 실험(W22-E2.3 후보군 확장): 후보 타입 2종(`sparse_guard_strategy_c`, `aggressive_floor53`)을 추가하고 `pool_size=7`로 재실행
   - 결과: 지표/판정 동일(`saving=0.46356`, `jaccard=0.89658`, `integrity=1.0`, HOLD), 신규 후보는 최종 선택 분포에 등장하지 않음
   - 해석: 후보군 확장 1차는 효과 없음. 현 점수 구조에서 여전히 `base/no_hangul` 중심으로 수렴
+- 추가 실험(W22-E2.4 선택 로직 변경): `selection_mode=greedy_saving` + 제약(`min_jaccard=0.89`, `min_integrity=1.0`) 적용
+  - 결과: 지표/판정 동일(`saving=0.46356`, `jaccard=0.89658`, `integrity=1.0`, HOLD), 선택 분포도 동일
+  - 해석: 점수식뿐 아니라 선택 규칙을 바꿔도 현재 후보군에서는 `saving` ceiling이 사실상 고정
 - 기준선(재확인): `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
 - 판단: W22-E1은 그리드 조정만으로 결과가 바뀌지 않는 deadlock 상태로 확인 — 상용 Track A 라인 HOLD 유지
 - 다음 1스텝: (1) 후보군 유형 자체 추가(현재 base/denser/no_hangul 3종 외 신규 후보) 또는 (2) policy floor/입력셋 재기준선 의사결정 필요
