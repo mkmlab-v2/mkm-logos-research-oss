@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A-CODEAI | 검증 정책</title>
+  <meta
+    name="description"
+    content="A-CODEAI 검증 정책: 투명성, 재현성, 한계 고지, 롤백 제어."
+  />
+  <style>
+    :root {
+      --bg: #081022;
+      --panel: #121f3d;
+      --text: #edf2ff;
+      --muted: #a7b6d8;
+      --line: #263a66;
+      --primary: #86abff;
+      --primary-dark: #0a1738;
+      --ok: #7ef0c2;
+      --warn: #ffd27a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #081022, #0d1c3f);
+      line-height: 1.55;
+    }
+    .container { width: min(980px, 92vw); margin: 0 auto; }
+    .topbar { border-bottom: 1px solid var(--line); background: rgba(7, 16, 36, 0.9); }
+    .topbar-inner {
+      min-height: 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    a { color: inherit; }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4.8vw, 50px);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+    .hero { padding: 56px 0 34px; border-bottom: 1px solid var(--line); }
+    .subtitle { margin: 0; color: var(--muted); max-width: 760px; }
+    section { padding: 34px 0; border-bottom: 1px solid var(--line); }
+    h2 { margin: 0 0 10px; font-size: 24px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(18, 31, 61, 0.65);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .pill {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-right: 6px;
+    }
+    .pill-ok { background: var(--ok); color: #102317; }
+    .pill-warn { background: var(--warn); color: #2a1e00; }
+    .small { margin: 0; color: var(--muted); }
+    .mono { font-family: Consolas, Menlo, monospace; font-size: 13px; color: #d7e2ff; }
+    ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: var(--primary); color: var(--primary-dark); }
+    .btn-ghost { border-color: var(--line); background: rgba(18, 31, 61, 0.45); }
+    footer { padding: 26px 0 34px; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Top navigation">
+    <div class="container topbar-inner">
+      <div><strong>A-CODEAI</strong></div>
+      <div><a href="/ko/">홈</a> · <a href="/ko/pilot">파일럿</a> · <strong>검증</strong></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <h1>먼저 증거를 공개합니다.<br />그 다음에 영업합니다.</h1>
+      <p class="subtitle">
+        의사결정자가 가정에 의존하지 않도록 검증 규칙, 한계, 롤백 제어를 문서화해 공개합니다.
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container">
+        <h2>검증 원칙</h2>
+        <div class="card">
+          <span class="pill pill-ok">투명성</span>
+          성공 사례뿐 아니라 오탐/미탐을 월 단위로 함께 공개합니다.
+        </div>
+        <div class="card">
+          <span class="pill pill-ok">재현성</span>
+          명령어와 아티팩트 경로를 남겨 감사 가능한 상태를 유지합니다.
+        </div>
+        <div class="card">
+          <span class="pill pill-warn">한계 고지</span>
+          오탐/미탐 가능성을 사전 고지하고 운영에 반영합니다.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>현재 증거 스냅샷</h2>
+        <div class="card">
+          <p class="small"><span class="pill pill-ok">상용 준비도</span> `l1_inverse_decoder_commercialization_checklist_v1.json` 기준 <strong>READY_FOR_BROAD_ROLLOUT</strong> (3/3 PASS).</p>
+        </div>
+        <div class="card">
+          <p class="small"><span class="pill pill-ok">극한 구간 개선</span> `swap_typo` 스트레스 구간에서 objective v4 적용 시 exact/recovery <strong>+0.0667</strong>.</p>
+        </div>
+        <div class="card">
+          <p class="small"><span class="pill pill-warn">적용 경계</span> 의미 전달형 도메인 우선. 100% 리터럴 보존이 필요한 워크로드는 리터럴 보존 레인 권장.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>운영 안전장치</h2>
+        <ul>
+          <li>개선 경로 ON이 기본이며 롤백 스위치로 즉시 복구 가능</li>
+          <li>Track A / Track B 분리 운영으로 승격 거버넌스 유지</li>
+          <li>재현 가능한 산출물 없이는 상용 주장 금지</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>재현 점검 명령 예시</h2>
+        <div class="card">
+          <p class="mono">bash scripts/deploy/linux/check_a_codeai_public_routes.sh</p>
+        </div>
+        <div class="card">
+          <p class="mono">python3 scripts/build_a_codeai_public_evidence_json.py --repo-root .</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>공개 범위 / 비공개 범위</h2>
+        <div class="card">
+          <p class="small"><span class="pill pill-ok">공개</span> KPI readiness, hard-case gain, 라우트/API 점검, 롤백 및 레인 분리 정책.</p>
+        </div>
+        <div class="card">
+          <p class="small"><span class="pill pill-warn">비공개</span> 핵심 압축/복원 내부 로직, 후보 생성 내부 로직, 정책 튜닝 상세.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>자동 갱신 증거 스냅샷</h2>
+        <div class="card">
+          <p class="small">실시간 Health 상태</p>
+          <p id="health-status" class="mono">loading...</p>
+        </div>
+        <div class="card">
+          <p class="small">상용 준비도 (자동)</p>
+          <p id="evidence-readiness" class="mono">loading...</p>
+        </div>
+        <div class="card">
+          <p class="small">극한 구간 개선치 (자동)</p>
+          <p id="evidence-gain" class="mono">loading...</p>
+        </div>
+        <div class="card">
+          <p class="small">갱신 정책</p>
+          <p class="small">페이지 로드시 `/health`, `/evidence/latest.json`를 `cache: no-store`로 조회해 최신 상태를 표시합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>오픈 검증 패키지</h2>
+        <div class="card">
+          <p class="small">파일럿 전 점검을 위해 라우트 점검, 벤치 읽기 가이드, 운영 경계 체크리스트를 요청할 수 있습니다.</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%20%EC%98%A4%ED%94%88%20%EA%B2%80%EC%A6%9D%20%ED%8C%A8%ED%82%A4%EC%A7%80%20%EC%9A%94%EC%B2%AD">검증 패키지 요청</a>
+          <a class="btn btn-ghost" href="/ko/pilot">파일럿 정책 보기</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%20%EA%B2%80%EC%A6%9D%20%EC%A0%95%EC%B1%85%20%EB%AC%B8%EC%9D%98">세부 문의</a>
+          <a class="btn btn-ghost" href="/ko/pilot">파일럿 조건 보기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">A-CODEAI · 검증 페이지</div>
+  </footer>
+  <script>
+    (async function () {
+      var healthEl = document.getElementById("health-status");
+      var readinessEl = document.getElementById("evidence-readiness");
+      var gainEl = document.getElementById("evidence-gain");
+      try {
+        var healthRes = await fetch("/health", { cache: "no-store" });
+        var health = await healthRes.json();
+        var ts1 = new Date().toISOString();
+        if (healthEl) {
+          healthEl.textContent = "status=" + (health.status || "unknown") + " (checked " + ts1 + ")";
+        }
+      } catch (e) {
+        if (healthEl) healthEl.textContent = "status=unavailable";
+      }
+      try {
+        var evRes = await fetch("/evidence/latest.json", { cache: "no-store" });
+        var ev = await evRes.json();
+        var cr = ev.commercial_readiness || {};
+        var hg = ev.hard_case_gain || {};
+        if (readinessEl) {
+          readinessEl.textContent = "status=" + (cr.status || "unknown") + " (" + (cr.criteria_passed || 0) + "/" + (cr.criteria_total || 0) + ")";
+        }
+        if (gainEl) {
+          gainEl.textContent = "delta=" + (typeof hg.value === "number" ? hg.value.toFixed(4) : "n/a");
+        }
+      } catch (e) {
+        if (readinessEl) readinessEl.textContent = "evidence=unavailable";
+        if (gainEl) gainEl.textContent = "delta=n/a";
+      }
+    })();
+  </script>
+</body>
+</html>

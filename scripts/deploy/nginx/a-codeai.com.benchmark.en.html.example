@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A-CODEAI | Benchmark Policy</title>
+  <meta
+    name="description"
+    content="A-CODEAI benchmark and verification policy: transparency, reproducibility, limits, and rollback controls."
+  />
+  <style>
+    :root {
+      --bg: #081022;
+      --panel: #121f3d;
+      --text: #edf2ff;
+      --muted: #a7b6d8;
+      --line: #263a66;
+      --primary: #86abff;
+      --primary-dark: #0a1738;
+      --ok: #7ef0c2;
+      --warn: #ffd27a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans", Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #081022, #0d1c3f);
+      line-height: 1.55;
+    }
+    .container { width: min(980px, 92vw); margin: 0 auto; }
+    .topbar { border-bottom: 1px solid var(--line); background: rgba(7, 16, 36, 0.9); }
+    .topbar-inner {
+      min-height: 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    a { color: inherit; }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4.8vw, 50px);
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+    }
+    .hero { padding: 56px 0 34px; border-bottom: 1px solid var(--line); }
+    .subtitle { margin: 0; color: var(--muted); max-width: 760px; }
+    section { padding: 34px 0; border-bottom: 1px solid var(--line); }
+    h2 { margin: 0 0 10px; font-size: 24px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(18, 31, 61, 0.65);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .pill {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-right: 6px;
+    }
+    .pill-ok { background: var(--ok); color: #102317; }
+    .pill-warn { background: var(--warn); color: #2a1e00; }
+    .small { margin: 0; color: var(--muted); }
+    .mono { font-family: Consolas, Menlo, monospace; font-size: 13px; color: #d7e2ff; }
+    ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: var(--primary); color: var(--primary-dark); }
+    .btn-ghost { border-color: var(--line); background: rgba(18, 31, 61, 0.45); }
+    footer { padding: 26px 0 34px; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Top navigation">
+    <div class="container topbar-inner">
+      <div><strong>A-CODEAI</strong></div>
+      <div><a href="/">Home</a> · <a href="/pilot">Pilot</a> · <strong>Benchmark</strong></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <h1>Evidence first.<br />Marketing second.</h1>
+      <p class="subtitle">
+        We publish verification rules, known limits, and rollback controls so decision makers can
+        evaluate signal quality with fewer assumptions.
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container">
+        <h2>Verification principles</h2>
+        <div class="card">
+          <span class="pill pill-ok">Transparency</span>
+          Wins and misses are reported together each month.
+        </div>
+        <div class="card">
+          <span class="pill pill-ok">Reproducibility</span>
+          Repro commands and artifact paths are retained for audit.
+        </div>
+        <div class="card">
+          <span class="pill pill-warn">Known limits</span>
+          False positives and misses can occur and are disclosed upfront.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Current evidence snapshots</h2>
+        <div class="card">
+          <p class="small"><span class="pill pill-ok">Readiness</span> `l1_inverse_decoder_commercialization_checklist_v1.json` → <strong>READY_FOR_BROAD_ROLLOUT</strong> (3/3 criteria passed).</p>
+        </div>
+        <div class="card">
+          <p class="small"><span class="pill pill-ok">Hard-case gain</span> `swap_typo` stress mode with objective v4 improved exact/recovery by <strong>+0.0667</strong>.</p>
+        </div>
+        <div class="card">
+          <p class="small"><span class="pill pill-warn">Scope boundary</span> Meaning-centric workloads first. 100% literal-fidelity workloads should use literal-preserve lanes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Operational safety controls</h2>
+        <ul>
+          <li>Improved path is default-on with immediate rollback switch.</li>
+          <li>Track A and Track B are separated for governance and promotion control.</li>
+          <li>No direct commercialization claim without reproducible artifacts.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Example reproducibility command</h2>
+        <div class="card">
+          <p class="mono">bash scripts/deploy/linux/check_a_codeai_public_routes.sh</p>
+        </div>
+        <div class="card">
+          <p class="mono">python3 scripts/build_a_codeai_public_evidence_json.py --repo-root .</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Public vs private boundary</h2>
+        <div class="card">
+          <p class="small"><span class="pill pill-ok">Public</span> KPI readiness, hard-case gain, route/API checks, rollback and lane split policy.</p>
+        </div>
+        <div class="card">
+          <p class="small"><span class="pill pill-warn">Private</span> Core compression/reconstruction internals, candidate-generation internals, and proprietary policy tuning logic.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Auto-refreshed evidence snapshot</h2>
+        <div class="card">
+          <p class="small">Live health check</p>
+          <p id="health-status" class="mono">loading...</p>
+        </div>
+        <div class="card">
+          <p class="small">Commercial readiness (auto)</p>
+          <p id="evidence-readiness" class="mono">loading...</p>
+        </div>
+        <div class="card">
+          <p class="small">Hard-case gain (auto)</p>
+          <p id="evidence-gain" class="mono">loading...</p>
+        </div>
+        <div class="card">
+          <p class="small">Refresh policy</p>
+          <p class="small">This block is populated from `/health` and `/evidence/latest.json` on page load with `cache: no-store`.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Open validation pack</h2>
+        <div class="card">
+          <p class="small">Request a pilot pre-check pack including route checks, benchmark reading guide, and operation boundary checklist.</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20open%20validation%20pack%20request">Request validation pack</a>
+          <a class="btn btn-ghost" href="/pilot">Pilot policy</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20benchmark%20inquiry">Request details</a>
+          <a class="btn btn-ghost" href="/pilot">See pilot terms</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">A-CODEAI · Benchmark page</div>
+  </footer>
+  <script>
+    (async function () {
+      var healthEl = document.getElementById("health-status");
+      var readinessEl = document.getElementById("evidence-readiness");
+      var gainEl = document.getElementById("evidence-gain");
+      try {
+        var healthRes = await fetch("/health", { cache: "no-store" });
+        var health = await healthRes.json();
+        var ts1 = new Date().toISOString();
+        if (healthEl) {
+          healthEl.textContent = "status=" + (health.status || "unknown") + " (checked " + ts1 + ")";
+        }
+      } catch (e) {
+        if (healthEl) healthEl.textContent = "status=unavailable";
+      }
+      try {
+        var evRes = await fetch("/evidence/latest.json", { cache: "no-store" });
+        var ev = await evRes.json();
+        var cr = ev.commercial_readiness || {};
+        var hg = ev.hard_case_gain || {};
+        if (readinessEl) {
+          readinessEl.textContent = "status=" + (cr.status || "unknown") + " (" + (cr.criteria_passed || 0) + "/" + (cr.criteria_total || 0) + ")";
+        }
+        if (gainEl) {
+          gainEl.textContent = "delta=" + (typeof hg.value === "number" ? hg.value.toFixed(4) : "n/a");
+        }
+      } catch (e) {
+        if (readinessEl) readinessEl.textContent = "evidence=unavailable";
+        if (gainEl) gainEl.textContent = "delta=n/a";
+      }
+    })();
+  </script>
+</body>
+</html>

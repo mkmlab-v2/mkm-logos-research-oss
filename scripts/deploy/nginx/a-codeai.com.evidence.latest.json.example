@@ -1,0 +1,45 @@
+{
+  "schema": "a_codeai_public_evidence_v1",
+  "generated_at_utc": "2026-04-16T05:26:29Z",
+  "commercial_readiness": {
+    "status": "READY_FOR_BROAD_ROLLOUT",
+    "criteria_passed": 3,
+    "criteria_total": 3,
+    "source": "l1_inverse_decoder_commercialization_checklist_v1.json"
+  },
+  "hard_case_gain": {
+    "metric": "swap_typo_objective_v4_exact_recovery_delta",
+    "value": 0.0667,
+    "source": "l1_inverse_decoder_swap_typo_objective_v4_ab_v1.json"
+  },
+  "ops_safety": {
+    "rollback_switch": "--disable-swap-typo-objective-v4",
+    "track_split": "Track A / Track B separated"
+  },
+  "verification_pack": {
+    "public_scope": [
+      "KPI readiness status",
+      "Hard-case gain delta",
+      "Route/API health checks",
+      "Rollback and lane-split policy"
+    ],
+    "non_public_scope": [
+      "Core compression/reconstruction internals",
+      "Candidate generation internals",
+      "Proprietary policy tuning logic"
+    ],
+    "repro_commands": [
+      "bash scripts/deploy/linux/check_a_codeai_public_routes.sh",
+      "python3 scripts/build_a_codeai_public_evidence_json.py --repo-root ."
+    ],
+    "artifacts": [
+      "docs/final/artifacts/l1_inverse_decoder_commercialization_checklist_v1.json",
+      "docs/final/artifacts/l1_inverse_decoder_swap_typo_objective_v4_ab_v1.json",
+      "scripts/deploy/nginx/a-codeai.com.evidence.latest.json.example"
+    ]
+  },
+  "notes": [
+    "Meaning-centric workloads first",
+    "Literal-preserve lane recommended for strict fidelity workloads"
+  ]
+}
