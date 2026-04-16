@@ -29,6 +29,13 @@
 - 장애/품질 이슈 0건
 - 대체 운영 체계 확보
 
+## A-CODEAI Web Deploy Status (2026-04-16)
+
+- 실행(리눅스): `RELOAD_NGINX=1 bash /opt/mkm-destiny-ai-41e38ec6/scripts/deploy/linux/deploy_a_codeai_landing_from_repo.sh`
+- 결과: `nginx -t` 통과, `nginx reload` 완료, `a-codeai` public route check 통과
+- 검증: `GET /` 200, `GET /health` 200(`ok`), `GET /v1/compress` 405(정상), `POST /v1/compress` 200(계약 필드 확인)
+- 최종: `[OK] a-codeai landing deploy completed.`
+
 ## Track A Sprint Update (2026-04-16, W22-E1)
 
 - 실행: `py scripts/build_track_a_week22_hypothesis_pack_v1.py` 후 W22-E1 baseline/변형 실행
