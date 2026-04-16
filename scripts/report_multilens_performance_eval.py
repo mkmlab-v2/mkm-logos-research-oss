@@ -795,6 +795,28 @@ def _experimental_candidate_pool_select(
         no_hangul = _ensure_sensitive_tokens_preserved(raw, no_hangul, effective_must_keep)
         variants.append(("no_hangul_principle", no_hangul))
 
+    sparse_guard = _compress_experimental(
+        raw,
+        strategy="C",
+        intensity="extreme",
+        must_keep=effective_must_keep,
+        use_hangul_principle=effective_hangul_principle,
+    )
+    sparse_guard = _apply_max_saving_cap(raw, sparse_guard, max_saving_rate=cap)
+    sparse_guard = _ensure_sensitive_tokens_preserved(raw, sparse_guard, effective_must_keep)
+    variants.append(("sparse_guard_strategy_c", sparse_guard))
+
+    aggressive_floor = _apply_min_saving_floor(
+        raw,
+        base_candidate,
+        min_saving_rate=0.53,
+        must_keep_terms=effective_must_keep,
+        use_hangul_principle=effective_hangul_principle,
+    )
+    aggressive_floor = _apply_max_saving_cap(raw, aggressive_floor, max_saving_rate=cap)
+    aggressive_floor = _ensure_sensitive_tokens_preserved(raw, aggressive_floor, effective_must_keep)
+    variants.append(("aggressive_floor53", aggressive_floor))
+
     variants = variants[: max(1, int(max_variants))]
     raw_token_count = _tokens(raw)
     weights = score_weights or {

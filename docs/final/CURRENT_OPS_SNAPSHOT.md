@@ -55,6 +55,9 @@
 - 추가 실험(W22-E2.2 단일 스파이크): 절감률 극우선 `(f=0.3,s=2.2,i=1.4)` 실행
   - 결과: `saving=0.46356`, `jaccard=0.89658`, `integrity=1.0`, 판정 `HOLD_W22_E2_NO_VIABLE`
   - 해석: 절감률 가중치를 더 올려도 현재 후보군 5종에서는 `saving` 상한이 약 `0.463~0.464` 구간에 고정
+- 추가 실험(W22-E2.3 후보군 확장): 후보 타입 2종(`sparse_guard_strategy_c`, `aggressive_floor53`)을 추가하고 `pool_size=7`로 재실행
+  - 결과: 지표/판정 동일(`saving=0.46356`, `jaccard=0.89658`, `integrity=1.0`, HOLD), 신규 후보는 최종 선택 분포에 등장하지 않음
+  - 해석: 후보군 확장 1차는 효과 없음. 현 점수 구조에서 여전히 `base/no_hangul` 중심으로 수렴
 - 기준선(재확인): `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
 - 판단: W22-E1은 그리드 조정만으로 결과가 바뀌지 않는 deadlock 상태로 확인 — 상용 Track A 라인 HOLD 유지
 - 다음 1스텝: (1) 후보군 유형 자체 추가(현재 base/denser/no_hangul 3종 외 신규 후보) 또는 (2) policy floor/입력셋 재기준선 의사결정 필요
