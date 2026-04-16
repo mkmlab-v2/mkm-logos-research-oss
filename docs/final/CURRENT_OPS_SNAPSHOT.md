@@ -14,9 +14,12 @@
   - aggressive: `--unlock-ratio-grid 0.16,0.18,0.20 --jaccard-guard-grid 0.842,0.844,0.846 --guard-relax-margin-grid 0.0030,0.0040,0.0050`
 - 산출물(로컬): `track_a_week22_hypothesis_pack_v1.json`, `track_a_week22_staged_guard_unlock_sweep*_v1.json`, `track_a_week22_e1_ab_compare_v1.json` (루트 `.gitignore`의 `docs/final/artifacts/track_a_*`로 커밋 제외 — 재생성은 동일 스크립트)
 - 결과: baseline/conservative/aggressive 전부 `decision=HOLD_W22_E1_NO_VIABLE`, `viable_count=0` 및 best metrics 동일(`saving=0.46209`, `jaccard=0.83232`, `integrity=1.0`)
+- 추가 실험(W22-E1.5): `py scripts/run_track_a_week22_e15_score_shift_v1.py` 실행
+  - 결과: `decision=HOLD_W22_E15_NO_VIABLE`, gate=`saving_floor_ok=false`, `jaccard_floor_ok=false`, `integrity_floor_ok=true`
+  - 관찰: 라우팅 결합 규칙 변경 후에도 `delta_vs_baseline`가 0 (`saving/jaccard/integrity` 모두 불변), `switched_to_router_off_cases=6`(ssot)인데 전체 지표는 변하지 않음
 - 기준선(재확인): `saving=0.46911`, `jaccard=0.84884`, `integrity=1.0`
 - 판단: W22-E1은 그리드 조정만으로 결과가 바뀌지 않는 deadlock 상태로 확인 — 상용 Track A 라인 HOLD 유지
-- 다음 1스텝: E2 확장보다 우선 `evaluate_report` 라우팅/스코어 결합 규칙(정책 로직) 또는 입력셋 기준선 자체를 변경하는 실험 설계 필요
+- 다음 1스텝: E2 확장보다 우선 `evaluate_report` 내부 케이스 점수 산출/라우팅 기준 자체를 직접 수정하는 코드 레벨 실험 또는 입력셋(`MULTILENS_PERFORMANCE_EVAL_INPUT_V2`) 재기준선 검토 필요
 
 ### 1) 명령어 계약 (짧은 한국어 키워드)
 
