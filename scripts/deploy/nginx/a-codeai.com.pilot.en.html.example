@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A-CODEAI | Enterprise 90-Day Pilot</title>
+  <meta name="description" content="Enterprise 90-day paid pilot for treasury and risk teams. Fixed KPI gates, protected IP, and production-ready operating rhythm." />
+  <style>
+    :root {
+      --bg: #070f22;
+      --bg-soft: #0f1c3a;
+      --panel: #132448;
+      --text: #edf3ff;
+      --muted: #a8badf;
+      --line: #2a3f6e;
+      --brand: #86abff;
+      --brand-ink: #0b1738;
+      --ok: #86f4cc;
+      --warn: #ffd889;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans", Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1100px 500px at 85% -10%, #173267 0%, transparent 62%), linear-gradient(180deg, var(--bg), #0b1734 56%, #0e1e42);
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    .container { width: min(1080px, 92vw); margin: 0 auto; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 15, 34, 0.84);
+      backdrop-filter: blur(8px);
+    }
+    .topbar-inner {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand { font-weight: 700; letter-spacing: 0.02em; }
+    .hero { padding: 72px 0 46px; border-bottom: 1px solid var(--line); }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .badge {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(19, 36, 72, 0.55);
+    }
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 4.8vw, 58px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      margin: 0 0 26px;
+      max-width: 780px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: var(--brand); color: var(--brand-ink); }
+    .btn-ghost { border-color: var(--line); background: rgba(19, 36, 72, 0.42); }
+    section { padding: 42px 0; border-bottom: 1px solid var(--line); }
+    h2 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.01em; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      background: rgba(19, 36, 72, 0.62);
+    }
+    .label { margin: 0 0 6px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .kpi { margin: 0; font-size: 30px; font-weight: 800; }
+    .small { margin: 0; color: var(--muted); }
+    .mono { font-family: Consolas, Menlo, monospace; font-size: 13px; color: #dae6ff; margin: 0; }
+    .notice {
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      color: var(--muted);
+      background: rgba(16, 28, 58, 0.36);
+    }
+    .pill { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 8px; margin-right: 6px; }
+    .pill-ok { color: #0f2a1c; background: var(--ok); }
+    .pill-warn { color: #2b2006; background: var(--warn); }
+    footer { padding: 28px 0 38px; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Top navigation">
+    <div class="container topbar-inner">
+      <div class="brand">A-CODEAI</div>
+      <div><a href="/">Home</a> · <strong>Pilot</strong> · <a href="/benchmark">Benchmark</a></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="badge-row">
+        <span class="badge">Enterprise treasury/risk</span>
+        <span class="badge">No black-box operations</span>
+        <span class="badge">90-day paid pilot</span>
+      </div>
+      <h1>Contract-grade KPI gates,<br />protected implementation IP.</h1>
+      <p class="subtitle">
+        A-CODEAI pilot is designed for production decisions: fixed KPI gates, fixed review rhythm,
+        and explicit remediation terms, without exposing proprietary internals.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#contact">Book 20-min call</a>
+        <a class="btn btn-ghost" href="/benchmark">View validation policy</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container">
+        <h2>Pilot architecture</h2>
+        <div class="grid">
+          <article class="card"><p class="label">KPI fixed</p><p class="small">Decision gates are fixed at kickoff and not shifted mid-cycle.</p></article>
+          <article class="card"><p class="label">IP protected</p><p class="small">Internal algorithms stay private; contractual scope focuses on outcomes and operating evidence.</p></article>
+          <article class="card"><p class="label">Risk reversal</p><p class="small">Credit/extension clauses are defined upfront for underperformance cases.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>90-day operating cadence</h2>
+        <div class="grid">
+          <article class="card"><p class="label">Week 1</p><p class="small">Scope, thresholds, owners, and rollback policy alignment.</p></article>
+          <article class="card"><p class="label">Weeks 2-10</p><p class="small">Weekly brief, event alerts, and miss/false-positive logging.</p></article>
+          <article class="card"><p class="label">Weeks 11-12</p><p class="small">Joint audit and renew/expand/stop decision.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Commercial terms</h2>
+        <div class="grid">
+          <article class="card"><p class="label">Monthly fee</p><p class="kpi">KRW 4,900,000</p></article>
+          <article class="card"><p class="label">Event alert</p><p class="kpi">KRW 250,000</p><p class="small">Per alert, capped at KRW 2,000,000/month</p></article>
+          <article class="card"><p class="label">Minimum term</p><p class="kpi">90 days</p><p class="small">Minimum contract value KRW 14,700,000</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Decision checklist</h2>
+        <div class="notice"><span class="pill pill-ok">Required</span>Quality gate pass, integrity stability, operating lead-time, and committee fit.</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Live status snapshot</h2>
+        <div class="card">
+          <p class="small">Health API status</p>
+          <p id="health-status" class="mono">loading...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2>Start with a 20-minute call</h2>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%2090-day%20pilot%20inquiry">Email us</a>
+          <a class="btn btn-ghost" href="/">Back to home</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="notice"><span class="pill pill-warn">Legal</span>A-CODEAI is a risk monitoring information service, not investment advisory or trade recommendation.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">A-CODEAI · Pilot page (EN)</div>
+  </footer>
+
+  <script>
+    (async function () {
+      var el = document.getElementById("health-status");
+      if (!el) return;
+      try {
+        var res = await fetch("/health", { cache: "no-store" });
+        var data = await res.json();
+        var ts = new Date().toISOString();
+        el.textContent = "status=" + (data.status || "unknown") + " (checked " + ts + ")";
+      } catch (e) {
+        el.textContent = "status=unavailable";
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A-CODEAI | 엔터프라이즈 90일 파일럿</title>
+  <meta name="description" content="재무·리스크팀 전용 90일 유료 파일럿. KPI와 종료 기준을 계약서에 고정하고, 블랙박스 없이 운영합니다." />
+  <style>
+    :root {
+      --bg: #070f22;
+      --bg-soft: #0f1c3a;
+      --panel: #132448;
+      --text: #edf3ff;
+      --muted: #a8badf;
+      --line: #2a3f6e;
+      --brand: #86abff;
+      --brand-ink: #0b1738;
+      --ok: #86f4cc;
+      --warn: #ffd889;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1100px 500px at 85% -10%, #173267 0%, transparent 62%), linear-gradient(180deg, var(--bg), #0b1734 56%, #0e1e42);
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    .container { width: min(1080px, 92vw); margin: 0 auto; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 15, 34, 0.84);
+      backdrop-filter: blur(8px);
+    }
+    .topbar-inner {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand { font-weight: 700; letter-spacing: 0.02em; }
+    .hero { padding: 72px 0 46px; border-bottom: 1px solid var(--line); }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .badge {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(19, 36, 72, 0.55);
+    }
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 4.8vw, 58px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      margin: 0 0 26px;
+      max-width: 780px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: var(--brand); color: var(--brand-ink); }
+    .btn-ghost { border-color: var(--line); background: rgba(19, 36, 72, 0.42); }
+    section { padding: 42px 0; border-bottom: 1px solid var(--line); }
+    h2 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.01em; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      background: rgba(19, 36, 72, 0.62);
+    }
+    .label { margin: 0 0 6px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .kpi { margin: 0; font-size: 30px; font-weight: 800; }
+    .small { margin: 0; color: var(--muted); }
+    .mono { font-family: Consolas, Menlo, monospace; font-size: 13px; color: #dae6ff; margin: 0; }
+    ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    .notice {
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      color: var(--muted);
+      background: rgba(16, 28, 58, 0.36);
+    }
+    .pill { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 8px; margin-right: 6px; }
+    .pill-ok { color: #0f2a1c; background: var(--ok); }
+    .pill-warn { color: #2b2006; background: var(--warn); }
+    footer { padding: 28px 0 38px; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Top navigation">
+    <div class="container topbar-inner">
+      <div class="brand">A-CODEAI</div>
+      <div><a href="/ko/">홈</a> · <strong>파일럿</strong> · <a href="/ko/benchmark">검증</a></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="badge-row">
+        <span class="badge">엔터프라이즈 재무/리스크팀 전용</span>
+        <span class="badge">블랙박스 운영 금지</span>
+        <span class="badge">90일 유료 파일럿</span>
+      </div>
+      <h1>성과 기준은 계약서에,<br />핵심 IP는 안전하게.</h1>
+      <p class="subtitle">
+        A-CODEAI 파일럿은 내부 구현 상세를 공개하지 않으면서도, KPI·리뷰 리듬·미달 시 처리 기준을 명시해
+        도입 리스크를 낮춘 상용 운영 모델입니다.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#contact">20분 미팅 신청</a>
+        <a class="btn btn-ghost" href="/ko/benchmark">검증 기준 보기</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container">
+        <h2>파일럿 설계 원칙</h2>
+        <div class="grid">
+          <article class="card"><p class="label">KPI 고정</p><p class="small">시작 시점에 목표/판정 기준을 고정하고 중간에 임의 변경하지 않습니다.</p></article>
+          <article class="card"><p class="label">IP 보호</p><p class="small">내부 알고리즘/파이프라인은 비공개, 결과·품질·운영 지표만 계약 범위로 제공합니다.</p></article>
+          <article class="card"><p class="label">리스크 리버설</p><p class="small">미달 시 연장/크레딧 등 보정 조건을 사전에 협의합니다.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>90일 운영 흐름</h2>
+        <div class="grid">
+          <article class="card"><p class="label">1주차</p><p class="small">범위, 임계치, 리포트 수신 책임자, 롤백 기준 확정</p></article>
+          <article class="card"><p class="label">2~10주차</p><p class="small">주간 브리프 + 이벤트 경보 + 오탐/미탐 로그 누적</p></article>
+          <article class="card"><p class="label">11~12주차</p><p class="small">성과 리뷰 후 연장/확장/종료 의사결정</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>상업 조건</h2>
+        <div class="grid">
+          <article class="card"><p class="label">월 구독료</p><p class="kpi">₩4,900,000</p></article>
+          <article class="card"><p class="label">이벤트 경보</p><p class="kpi">₩250,000</p><p class="small">건당, 월 상한 ₩2,000,000</p></article>
+          <article class="card"><p class="label">최소 계약</p><p class="kpi">90일</p><p class="small">최소 계약금액 ₩14,700,000</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>도입 판단 체크</h2>
+        <div class="notice"><span class="pill pill-ok">필수</span> 품질/무결성 게이트 충족 여부, 운영 리드타임, 내부 승인 적합성을 함께 확인합니다.</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>실시간 상태 스냅샷</h2>
+        <div class="card">
+          <p class="small">Health API 상태</p>
+          <p id="health-status" class="mono">loading...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2>20분 미팅으로 시작</h2>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%2090%EC%9D%BC%20%ED%8C%8C%EC%9D%BC%EB%9F%BF%20%EB%AC%B8%EC%9D%98">이메일 문의</a>
+          <a class="btn btn-ghost" href="/ko/">홈으로</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="notice"><span class="pill pill-warn">법적 고지</span>본 서비스는 투자자문/매매권유가 아닌 리스크 모니터링 정보 서비스입니다.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">A-CODEAI · Pilot page (KO)</div>
+  </footer>
+
+  <script>
+    (async function () {
+      var el = document.getElementById("health-status");
+      if (!el) return;
+      try {
+        var res = await fetch("/health", { cache: "no-store" });
+        var data = await res.json();
+        var ts = new Date().toISOString();
+        el.textContent = "status=" + (data.status || "unknown") + " (checked " + ts + ")";
+      } catch (e) {
+        el.textContent = "status=unavailable";
+      }
+    })();
+  </script>
+</body>
+</html>
