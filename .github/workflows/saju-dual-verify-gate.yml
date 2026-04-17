@@ -1,0 +1,102 @@
+# Saju dual-verify logic (Python) + optional mkm-life API smoke (Linux uses python3, not py).
+name: saju-dual-verify-gate
+
+on:
+  push:
+    paths:
+      - "scripts/saju_dual_verify.py"
+      - "scripts/final_saju_verification.py"
+      - "scripts/manseryeok_perfect_final.py"
+      - "scripts/core/solar_term_ssot.py"
+      - "scripts/core/boundary_risk_guard.py"
+      - "scripts/run_saju_golden_replay.py"
+      - "tests/fixtures/saju_golden_cases_v1.json"
+      - "tests/test_saju_dual_verify.py"
+      - "tests/test_saju_golden_replay.py"
+      - "tests/test_run_saju_golden_replay.py"
+      - "projects/mkm/mkm-life/app/api/v1/saju/**"
+      - "projects/mkm/mkm-life/scripts/smoke-saju-verify-e2e.mjs"
+      - "projects/mkm/mkm-life/package.json"
+      - "projects/mkm/mkm-life/package-lock.json"
+      - ".github/workflows/saju-dual-verify-gate.yml"
+  pull_request:
+    paths:
+      - "scripts/saju_dual_verify.py"
+      - "scripts/final_saju_verification.py"
+      - "scripts/manseryeok_perfect_final.py"
+      - "scripts/core/solar_term_ssot.py"
+      - "scripts/core/boundary_risk_guard.py"
+      - "scripts/run_saju_golden_replay.py"
+      - "tests/fixtures/saju_golden_cases_v1.json"
+      - "tests/test_saju_dual_verify.py"
+      - "tests/test_saju_golden_replay.py"
+      - "tests/test_run_saju_golden_replay.py"
+      - "projects/mkm/mkm-life/app/api/v1/saju/**"
+      - "projects/mkm/mkm-life/scripts/smoke-saju-verify-e2e.mjs"
+      - "projects/mkm/mkm-life/package.json"
+      - "projects/mkm/mkm-life/package-lock.json"
+      - ".github/workflows/saju-dual-verify-gate.yml"
+  workflow_dispatch:
+
+jobs:
+  pytest-saju:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: python -m pip install --upgrade pip pytest
+      - name: Run saju dual verify + golden replay tests
+        run: |
+          python -m pytest \
+            tests/test_saju_dual_verify.py \
+            tests/test_saju_golden_replay.py \
+            tests/test_run_saju_golden_replay.py \
+            -q --tb=short
+
+  mkm-life-saju-smoke:
+    runs-on: ubuntu-latest
+    needs: pytest-saju
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: projects/mkm/mkm-life/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install mkm-life dependencies
+        working-directory: projects/mkm/mkm-life
+        run: npm ci
+      - name: Build Next.js app
+        working-directory: projects/mkm/mkm-life
+        run: npm run build
+      - name: Start server and run saju verify smoke
+        working-directory: projects/mkm/mkm-life
+        run: |
+          set -e
+          npm run start -- -p 3500 &
+          SERVER_PID=$!
+          for i in $(seq 1 90); do
+            if curl -sf "http://127.0.0.1:3500/" >/dev/null 2>&1; then
+              echo "server ready"
+              break
+            fi
+            sleep 2
+            if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+              echo "next start exited early"
+              exit 1
+            fi
+          done
+          if ! curl -sf "http://127.0.0.1:3500/" >/dev/null 2>&1; then
+            echo "server did not become ready"
+            exit 1
+          fi
+          export MKMLIFE_BASE_URL=http://127.0.0.1:3500
+          npm run smoke:saju-verify
+          kill "$SERVER_PID" || true
+          wait "$SERVER_PID" 2>/dev/null || true
