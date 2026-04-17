@@ -61,6 +61,25 @@ jobs:
     needs: pytest-saju
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: false
+      # Parent repo records mkm-life as a submodule (SSH URL). CI needs a checkout
+      # of the gitlinked commit before package-lock.json exists for npm cache.
+      - name: Init mkm-life submodule (HTTPS)
+        shell: bash
+        env:
+          # Optional: fine-grained PAT with read access to mkmlab-hq/mkmlife-com if the repo is private.
+          SUBMODULE_TOKEN: ${{ secrets.MKM_LIFE_SUBMODULE_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -n "${SUBMODULE_TOKEN}" ]]; then
+            SUB_URL="https://x-access-token:${SUBMODULE_TOKEN}@github.com/mkmlab-hq/mkmlife-com.git"
+          else
+            SUB_URL="https://github.com/mkmlab-hq/mkmlife-com.git"
+          fi
+          git config submodule.projects/mkm/mkm-life.url "${SUB_URL}"
+          git submodule sync projects/mkm/mkm-life
+          git submodule update --init --depth 1 projects/mkm/mkm-life
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
