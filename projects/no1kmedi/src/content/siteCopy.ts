@@ -1,12 +1,21 @@
 import data from "../../marketing-site/public-copy.json";
 
 export type SiteCopy = {
+  header: { brand_name: string; brand_tagline: string };
   seo: { title: string; description: string };
   nav: { about: string; safety: string; workflow: string; contact: string };
   hero: {
     eyebrow: string;
     title: string;
     subtitle: string;
+    cta_primary: string;
+    cta_secondary: string;
+  };
+  trust: { items: { label: string; value: string }[] };
+  public_solution: {
+    title: string;
+    section_lead: string;
+    cards: { title: string; body: string }[];
     cta_primary: string;
     cta_secondary: string;
   };

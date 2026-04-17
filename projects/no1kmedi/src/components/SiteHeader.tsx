@@ -3,15 +3,16 @@
 import { useState } from "react";
 
 type Nav = { about: string; safety: string; workflow: string; contact: string };
+type Brand = { brand_name: string; brand_tagline: string };
 
-export function SiteHeader({ nav }: { nav: Nav }) {
+export function SiteHeader({ nav, brand }: { nav: Nav; brand: Brand }) {
   const [open, setOpen] = useState(false);
 
   return (
     <header className="site-header">
       <div className="header-inner">
         <a className="brand" href="/">
-          no1kmedi <span>한의 임상 지원</span>
+          {brand.brand_name} <span>{brand.brand_tagline}</span>
         </a>
         <button
           type="button"

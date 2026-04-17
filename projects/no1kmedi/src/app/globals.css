@@ -1,4 +1,4 @@
-/* no1kmedi public marketing — calm clinical, not generic “AI gradient” */
+/* jema-ai.com public marketing — calm clinical; hero uses restrained depth, not generic template-style gradients */
 :root {
   --bg: #0a1210;
   --surface: #121c19;
@@ -129,9 +129,211 @@ main {
   padding: 0 1.5rem 4rem;
 }
 
+.admin-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.admin-panel {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.15rem;
+  background: var(--surface);
+}
+
+.admin-panel h1 {
+  margin: 0 0 0.6rem;
+  font-size: 1.35rem;
+}
+
+.admin-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.8rem;
+  align-items: end;
+}
+
+.admin-controls label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.admin-controls input,
+.admin-controls select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  padding: 0.6rem 0.7rem;
+}
+
+.admin-list {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-summary-grid {
+  margin-top: 0.85rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.65rem;
+}
+
+.admin-summary-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  background: rgba(61, 155, 132, 0.07);
+}
+
+.admin-summary-card p {
+  margin: 0 0 0.2rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.admin-summary-card strong {
+  font-size: 0.95rem;
+}
+
+.admin-reservation-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.8rem 0.9rem;
+}
+
+.admin-reservation-card p {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.admin-status-actions {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chat-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem;
+  background: var(--surface);
+  display: grid;
+  gap: 0.8rem;
+}
+
+.chat-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.7rem;
+}
+
+.chat-profile-grid label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.chat-profile-grid input,
+.chat-input-row input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  padding: 0.62rem 0.7rem;
+}
+
+.chat-log {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.7rem;
+  background: rgba(255, 255, 255, 0.01);
+  display: grid;
+  gap: 0.45rem;
+  max-height: 280px;
+  overflow: auto;
+}
+
+.chat-bubble {
+  margin: 0;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.92rem;
+}
+
+.chat-bubble-user {
+  background: rgba(61, 155, 132, 0.12);
+}
+
+.chat-bubble-assistant {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.chat-input-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.55rem;
+}
+
 .hero {
+  position: relative;
   padding: 4rem 0 3.5rem;
   border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  animation: fadeUp 0.8s ease both;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -40% -20% auto -20%;
+  height: 120%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 18% 12%, rgba(61, 155, 132, 0.22), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 88% 8%, rgba(42, 107, 92, 0.18), transparent 50%),
+    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(18, 28, 25, 0.9), transparent 65%);
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(2px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.hero-orb-a {
+  width: 360px;
+  height: 360px;
+  left: -110px;
+  top: -120px;
+  background: radial-gradient(circle at 30% 30%, rgba(96, 212, 182, 0.45), rgba(61, 155, 132, 0.03));
+  animation: floatSlowA 8s ease-in-out infinite alternate;
+}
+
+.hero-orb-b {
+  width: 290px;
+  height: 290px;
+  right: -80px;
+  top: -70px;
+  background: radial-gradient(circle at 30% 30%, rgba(77, 148, 220, 0.25), rgba(77, 148, 220, 0.02));
+  animation: floatSlowB 9s ease-in-out infinite alternate;
 }
 
 .eyebrow {
@@ -164,6 +366,33 @@ main {
   gap: 0.75rem;
 }
 
+.hero-role-cta {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.hero-role-cta .card p {
+  margin-bottom: 0.9rem;
+}
+
+.hero-proof {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.hero-proof span {
+  font-size: 0.82rem;
+  color: #b9cfc8;
+  border: 1px solid rgba(185, 207, 200, 0.25);
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  background: rgba(12, 21, 18, 0.6);
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -187,6 +416,7 @@ main {
 .btn-primary:hover {
   background: #4cb39a;
   text-decoration: none;
+  box-shadow: 0 10px 26px rgba(61, 155, 132, 0.28);
 }
 .btn-ghost {
   background: transparent;
@@ -224,11 +454,47 @@ section h2 {
   gap: 1.25rem;
 }
 
+.trust-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.8rem;
+}
+
+.trust-item {
+  background: linear-gradient(180deg, rgba(61, 155, 132, 0.1), rgba(18, 28, 25, 0.95));
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.95rem 1rem;
+}
+
+.trust-item p {
+  margin: 0 0 0.35rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.trust-item strong {
+  font-size: 0.98rem;
+  letter-spacing: -0.01em;
+}
+
+.section-cta {
+  margin-top: 1.15rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .card {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 1.35rem 1.25rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(61, 155, 132, 0.5);
 }
 .card h3 {
   margin: 0 0 0.5rem;
@@ -277,10 +543,223 @@ section h2 {
   padding: 0 0.15rem;
 }
 
+#premium-story {
+  position: relative;
+}
+
+.premium-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.premium-panel {
+  border: 1px solid rgba(61, 155, 132, 0.38);
+  border-radius: 14px;
+  padding: 1.15rem 1.15rem 1.2rem;
+  background: linear-gradient(160deg, rgba(61, 155, 132, 0.15), rgba(18, 28, 25, 0.9) 45%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  animation: fadeUp 0.9s ease both;
+}
+
+.premium-label {
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8bc7b8;
+}
+
+.premium-panel h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1.05rem;
+}
+
+.premium-panel p {
+  margin: 0;
+  color: var(--muted);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatSlowA {
+  from {
+    transform: translateY(0px) translateX(0px);
+  }
+  to {
+    transform: translateY(14px) translateX(6px);
+  }
+}
+
+@keyframes floatSlowB {
+  from {
+    transform: translateY(0px) translateX(0px);
+  }
+  to {
+    transform: translateY(-12px) translateX(-8px);
+  }
+}
+
 .consult-form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 0.95rem;
+}
+
+.patient-survey-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.95rem;
+}
+
+.patient-survey-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.patient-survey-form input,
+.patient-survey-form select,
+.patient-survey-form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.65rem 0.75rem;
+  font-family: inherit;
+}
+
+.patient-survey-full {
+  grid-column: 1 / -1;
+}
+
+.patient-survey-flags {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.8rem 0.9rem;
+  margin: 0;
+}
+
+.patient-survey-flags legend {
+  color: var(--muted);
+  font-size: 0.86rem;
+  padding: 0 0.2rem;
+}
+
+.patient-survey-flags label,
+.patient-survey-consent label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.patient-survey-consent {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.patient-survey-emergency {
+  margin: 0 0 1rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 120, 120, 0.35);
+  background: rgba(255, 120, 120, 0.12);
+  color: #ffbaba;
+  font-size: 0.9rem;
+}
+
+.patient-report-card {
+  margin-top: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+}
+
+.patient-report-card h3 {
+  margin: 0 0 0.65rem;
+  font-size: 1.04rem;
+}
+
+.patient-report-badge {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 0.65rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 0.8rem;
+}
+
+.patient-report-badge.is-routine {
+  color: #9fd8c8;
+}
+
+.patient-report-badge.is-priority {
+  color: #ffcf7d;
+}
+
+.patient-report-badge.is-emergency {
+  color: #ff9b9b;
+}
+
+.patient-report-meta {
+  margin: 0.45rem 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.patient-report-next {
+  margin: 0.75rem 0 0.6rem;
+  font-weight: 600;
+}
+
+.patient-report-clinics {
+  margin-top: 0.7rem;
+}
+
+.patient-report-clinics h4 {
+  margin: 0 0 0.45rem;
+  font-size: 0.95rem;
+}
+
+.patient-report-clinic-item {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  margin-bottom: 0.45rem;
+}
+
+.patient-report-clinic-item strong {
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.patient-report-clinic-item p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.patient-clinic-request-btn {
+  margin-top: 0.45rem;
+}
+
+.patient-report-cta {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .lead-form-card {
