@@ -68,17 +68,18 @@ jobs:
       - name: Init mkm-life submodule (HTTPS)
         shell: bash
         env:
-          # Optional: fine-grained PAT with read access to mkmlab-hq/mkmlife-com if the repo is private.
+          # Optional: PAT with read access to mkmlab-hq/mkmlife-com (e.g. cross-org private submodule).
           SUBMODULE_TOKEN: ${{ secrets.MKM_LIFE_SUBMODULE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
+          # Do not run `git submodule sync` here: it copies SSH from .gitmodules and overwrites this URL.
           if [[ -n "${SUBMODULE_TOKEN}" ]]; then
             SUB_URL="https://x-access-token:${SUBMODULE_TOKEN}@github.com/mkmlab-hq/mkmlife-com.git"
           else
-            SUB_URL="https://github.com/mkmlab-hq/mkmlife-com.git"
+            SUB_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/mkmlab-hq/mkmlife-com.git"
           fi
           git config submodule.projects/mkm/mkm-life.url "${SUB_URL}"
-          git submodule sync projects/mkm/mkm-life
           git submodule update --init --depth 1 projects/mkm/mkm-life
       - uses: actions/setup-node@v4
         with:
