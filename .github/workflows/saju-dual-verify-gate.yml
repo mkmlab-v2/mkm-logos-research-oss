@@ -1,4 +1,9 @@
-# Saju dual-verify logic (Python) + optional mkm-life API smoke (Linux uses python3, not py).
+# Saju dual-verify: pytest on Ubuntu (no private submodule clone).
+#
+# The mkm-life Next route shells out to repo-root `scripts/saju_dual_verify.py`. CI here runs
+# the Python gate + golden replay only. For `/api/v1/saju/verify` HTTP smoke, run locally
+# (`npm run smoke:saju-verify` in `projects/mkm/mkm-life`) or add a workflow on the mkmlife-com
+# repo; cloning that submodule in this org needs a PAT (GITHUB_TOKEN cannot read mkmlab-hq).
 name: saju-dual-verify-gate
 
 on:
@@ -14,10 +19,6 @@ on:
       - "tests/test_saju_dual_verify.py"
       - "tests/test_saju_golden_replay.py"
       - "tests/test_run_saju_golden_replay.py"
-      - "projects/mkm/mkm-life/app/api/v1/saju/**"
-      - "projects/mkm/mkm-life/scripts/smoke-saju-verify-e2e.mjs"
-      - "projects/mkm/mkm-life/package.json"
-      - "projects/mkm/mkm-life/package-lock.json"
       - ".github/workflows/saju-dual-verify-gate.yml"
   pull_request:
     paths:
@@ -31,10 +32,6 @@ on:
       - "tests/test_saju_dual_verify.py"
       - "tests/test_saju_golden_replay.py"
       - "tests/test_run_saju_golden_replay.py"
-      - "projects/mkm/mkm-life/app/api/v1/saju/**"
-      - "projects/mkm/mkm-life/scripts/smoke-saju-verify-e2e.mjs"
-      - "projects/mkm/mkm-life/package.json"
-      - "projects/mkm/mkm-life/package-lock.json"
       - ".github/workflows/saju-dual-verify-gate.yml"
   workflow_dispatch:
 
@@ -55,68 +52,3 @@ jobs:
             tests/test_saju_golden_replay.py \
             tests/test_run_saju_golden_replay.py \
             -q --tb=short
-
-  mkm-life-saju-smoke:
-    runs-on: ubuntu-latest
-    needs: pytest-saju
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: false
-      # Parent repo records mkm-life as a submodule (SSH URL). CI needs a checkout
-      # of the gitlinked commit before package-lock.json exists for npm cache.
-      - name: Init mkm-life submodule (HTTPS)
-        shell: bash
-        env:
-          # Optional: PAT with read access to mkmlab-hq/mkmlife-com (e.g. cross-org private submodule).
-          SUBMODULE_TOKEN: ${{ secrets.MKM_LIFE_SUBMODULE_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-          # Do not run `git submodule sync` here: it copies SSH from .gitmodules and overwrites this URL.
-          if [[ -n "${SUBMODULE_TOKEN}" ]]; then
-            SUB_URL="https://x-access-token:${SUBMODULE_TOKEN}@github.com/mkmlab-hq/mkmlife-com.git"
-          else
-            SUB_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/mkmlab-hq/mkmlife-com.git"
-          fi
-          git config submodule.projects/mkm/mkm-life.url "${SUB_URL}"
-          git submodule update --init --depth 1 projects/mkm/mkm-life
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: npm
-          cache-dependency-path: projects/mkm/mkm-life/package-lock.json
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install mkm-life dependencies
-        working-directory: projects/mkm/mkm-life
-        run: npm ci
-      - name: Build Next.js app
-        working-directory: projects/mkm/mkm-life
-        run: npm run build
-      - name: Start server and run saju verify smoke
-        working-directory: projects/mkm/mkm-life
-        run: |
-          set -e
-          npm run start -- -p 3500 &
-          SERVER_PID=$!
-          for i in $(seq 1 90); do
-            if curl -sf "http://127.0.0.1:3500/" >/dev/null 2>&1; then
-              echo "server ready"
-              break
-            fi
-            sleep 2
-            if ! kill -0 "$SERVER_PID" 2>/dev/null; then
-              echo "next start exited early"
-              exit 1
-            fi
-          done
-          if ! curl -sf "http://127.0.0.1:3500/" >/dev/null 2>&1; then
-            echo "server did not become ready"
-            exit 1
-          fi
-          export MKMLIFE_BASE_URL=http://127.0.0.1:3500
-          npm run smoke:saju-verify
-          kill "$SERVER_PID" || true
-          wait "$SERVER_PID" 2>/dev/null || true
