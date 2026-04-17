@@ -10,6 +10,8 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, Optional, List
 
+from scripts.core.solar_term_ssot import calculate_month_pillar_ssot_fallback
+
 class PerfectManseryeok:
     """완벽한 만세력 계산기 (최종 정립)"""
     
@@ -131,76 +133,18 @@ class PerfectManseryeok:
         # 연주 계산 (월주 계산에 필요)
         year_pillar = self.calculate_year_pillar(year, month, day)
         year_gan = year_pillar[0]
-        year_gan_idx = self.CHEONGAN.index(year_gan)
         
         # ✅ sajupy 검증 결과 반영: 1973년 12월 10일 = 갑자월
         # sajupy는 24절기를 분 단위로 정밀 계산하므로, 특정 날짜에 대한 예외 처리
         if year == 1973 and month == 12 and day == 10:
             return "갑자"  # sajupy 검증 완료 (24절기 분 단위 정밀도)
         
-        # 절기 기준 월지 결정
-        # 입춘(2월 4일경) 후 = 인월(寅月, 인덱스 2)
-        # 경칩(3월 5일경) 후 = 묘월(卯월, 인덱스 3)
-        # 청명(4월 5일경) 후 = 진월(辰월, 인덱스 4)
-        # 입하(5월 5일경) 후 = 사월(巳월, 인덱스 5)
-        # 망종(6월 6일경) 후 = 오월(午월, 인덱스 6)
-        # 소서(7월 7일경) 후 = 미월(未월, 인덱스 7)
-        # 입추(8월 7일경) 후 = 신월(申월, 인덱스 8)
-        # 백로(9월 7일경) 후 = 유월(酉월, 인덱스 9)
-        # 한로(10월 8일경) 후 = 술월(戌월, 인덱스 10)
-        # 입동(11월 7일경) 후 = 해월(亥월, 인덱스 11)
-        # 대설(12월 7일경) 후 = 자월(子월, 인덱스 0)
-        # 소한(1월 5일경) 후 = 축월(丑월, 인덱스 1)
-        
-        # 절기 날짜 (근사치, 정확한 계산 필요 시 별도 라이브러리 사용)
-        # ⚠️ 주의: 절기 날짜는 연도별로 다를 수 있음 (정확한 계산은 별도 라이브러리 필요)
-        jeolgi_dates = {
-            1: {"name": "소한", "date": 5},
-            2: {"name": "입춘", "date": 4},
-            3: {"name": "경칩", "date": 5},
-            4: {"name": "청명", "date": 5},
-            5: {"name": "입하", "date": 5},
-            6: {"name": "망종", "date": 6},
-            7: {"name": "소서", "date": 7},
-            8: {"name": "입추", "date": 7},
-            9: {"name": "백로", "date": 7},
-            10: {"name": "한로", "date": 8},
-            11: {"name": "입동", "date": 7},
-            12: {"name": "대설", "date": 7}  # ⚠️ 연도별로 정확한 날짜/시간 다를 수 있음
-        }
-        
-        # 월지 인덱스 매핑 (절기 기준)
-        month_ji_map = {
-            1: 1,   # 소한 후 = 축월(丑월, 인덱스 1)
-            2: 2,   # 입춘 후 = 인월(寅월, 인덱스 2)
-            3: 3,   # 경칩 후 = 묘월(卯월, 인덱스 3)
-            4: 4,   # 청명 후 = 진월(辰월, 인덱스 4)
-            5: 5,   # 입하 후 = 사월(巳월, 인덱스 5)
-            6: 6,   # 망종 후 = 오월(午월, 인덱스 6)
-            7: 7,   # 소서 후 = 미월(未월, 인덱스 7)
-            8: 8,   # 입추 후 = 신월(申월, 인덱스 8)
-            9: 9,   # 백로 후 = 유월(酉월, 인덱스 9)
-            10: 10, # 한로 후 = 술월(戌월, 인덱스 10)
-            11: 11, # 입동 후 = 해월(亥월, 인덱스 11)
-            12: 0   # 대설 후 = 자월(子월, 인덱스 0)
-        }
-        
-        # 현재 월의 절기 확인
-        current_jeolgi = jeolgi_dates.get(month, {"name": "알 수 없음", "date": 1})
-        is_after_jeolgi = day >= current_jeolgi["date"]
-        
-        if is_after_jeolgi:
-            # 절기 후 = 해당 월의 월지
-            month_ji_idx = month_ji_map.get(month, 0)
-        else:
-            # 절기 전 = 전월의 월지
-            prev_month = month - 1 if month > 1 else 12
-            month_ji_idx = month_ji_map.get(prev_month, 0)
-        
-        # 월간 계산: (연간 × 2 + 월지인덱스) % 10
-        month_gan_idx = (year_gan_idx * 2 + month_ji_idx) % 10
-        
-        return self.CHEONGAN[month_gan_idx] + self.JIJI[month_ji_idx]
+        month_pillar, _ = calculate_month_pillar_ssot_fallback(
+            year_stem=year_gan,
+            month=month,
+            day=day,
+        )
+        return month_pillar
     
     def calculate_day_pillar(self, year: int, month: int, day: int) -> str:
         """

@@ -1,0 +1,83 @@
+{
+  "schema": "saju_golden_cases_v1",
+  "description": "Golden replay cases for saju dual verification status gates",
+  "cases": [
+    {
+      "id": "kr_confirmed_reference_1973_1210_0430",
+      "input": {
+        "year": 1973,
+        "month": 12,
+        "day": 10,
+        "hour": 4,
+        "minute": 30,
+        "tz": "Asia/Seoul",
+        "is_solar": true,
+        "is_male": true,
+        "secondary_day_rollover_policy": "midnight_00"
+      },
+      "expected": {
+        "status": "CONFIRMED"
+      }
+    },
+    {
+      "id": "kr_review_near_solar_term_anchor_1973_1207_0430",
+      "input": {
+        "year": 1973,
+        "month": 12,
+        "day": 7,
+        "hour": 4,
+        "minute": 30,
+        "tz": "Asia/Seoul",
+        "is_solar": true,
+        "is_male": true,
+        "secondary_day_rollover_policy": "midnight_00"
+      },
+      "expected": {
+        "status": "REVIEW",
+        "reasons_contains": [
+          "near_solar_term_anchor_day"
+        ]
+      }
+    },
+    {
+      "id": "us_review_ambiguous_dst_2021_1107_0130",
+      "input": {
+        "year": 2021,
+        "month": 11,
+        "day": 7,
+        "hour": 1,
+        "minute": 30,
+        "tz": "America/New_York",
+        "is_solar": true,
+        "is_male": true,
+        "secondary_day_rollover_policy": "midnight_00"
+      },
+      "expected": {
+        "status": "REVIEW",
+        "reasons_contains": [
+          "ambiguous_local_time_due_to_dst"
+        ]
+      }
+    },
+    {
+      "id": "kr_review_near_zi_boundary_1973_1210_2330",
+      "input": {
+        "year": 1973,
+        "month": 12,
+        "day": 10,
+        "hour": 23,
+        "minute": 30,
+        "tz": "Asia/Seoul",
+        "is_solar": true,
+        "is_male": true,
+        "secondary_day_rollover_policy": "midnight_00"
+      },
+      "expected": {
+        "status": "REVIEW",
+        "reasons_contains": [
+          "near_zi_boundary_window"
+        ]
+      }
+    }
+  ]
+}

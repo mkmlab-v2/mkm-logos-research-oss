@@ -18,6 +18,8 @@ from datetime import datetime, timedelta
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+from scripts.core.solar_term_ssot import calculate_month_pillar_ssot_fallback
+
 # 한글 인코딩
 try:
     if sys.stdout.encoding != 'utf-8':
@@ -37,6 +39,7 @@ for i in range(60):
     gan_idx = i % 10
     ji_idx = i % 12
     GAPJA.append(CHEONGAN[gan_idx] + JIJI[ji_idx])
+VALID_GAPJA = set(GAPJA)
 
 # 검증된 기준일 (100% 신뢰)
 VERIFIED_BASE_DATES = [
@@ -50,6 +53,10 @@ VERIFIED_BASE_DATES = [
     },
     # 주인님 정보는 정확한 일주 확인 후 추가 필요
 ]
+
+
+def _is_valid_sexagenary(pillar: str) -> bool:
+    return str(pillar) in VALID_GAPJA
 
 def calculate_saju_manual(
     year: int,
@@ -76,6 +83,7 @@ def calculate_saju_manual(
     gt_month_pillar = None
     gt_day_pillar = None
     gt_source = None
+    fallback_events = []
 
     # Ground Truth DB 우선: tools/get_manser.py (MKM_Temporal_Vault)
     try:
@@ -130,12 +138,45 @@ def calculate_saju_manual(
             year_idx += 60
         year_pillar = GAPJA[year_idx]
 
-        month_idx = (month - 1) % 12
-        month_ji = JIJI[month_idx]
-        year_gan_idx = year_idx % 10
-        month_gan_idx = (year_gan_idx * 2 + month) % 10
-        month_gan = CHEONGAN[month_gan_idx]
-        month_pillar = month_gan + month_ji
+        month_pillar, month_meta = calculate_month_pillar_ssot_fallback(
+            year_stem=year_pillar[0],
+            month=month,
+            day=day,
+        )
+
+        # Hotfix: impossible sexagenary output must not pass through.
+        if not _is_valid_sexagenary(month_pillar):
+            month_pillar_before_fallback = month_pillar
+            try:
+                from scripts.manseryeok_perfect_final import PerfectManseryeok
+
+                month_pillar = PerfectManseryeok().calculate_month_pillar(year, month, day)
+            except Exception:
+                month_pillar = month_pillar_before_fallback
+            fallback_events.append(
+                {
+                    "type": "invalid_month_pillar_fallback",
+                    "before": month_pillar_before_fallback,
+                    "after": month_pillar,
+                    "fallback_engine": "PerfectManseryeok.calculate_month_pillar",
+                    "is_valid_after": _is_valid_sexagenary(month_pillar),
+                }
+            )
+        else:
+            fallback_events.append(
+                {
+                    "type": "month_pillar_ssot_fallback_used",
+                    "after": month_pillar,
+                    "meta": {
+                        "month_ji_idx": month_meta.month_ji_idx,
+                        "month_ji": month_meta.month_ji,
+                        "term_anchor_month": month_meta.term_anchor_month,
+                        "term_anchor_day_approx": month_meta.term_anchor_day_approx,
+                        "used_prev_month_branch": month_meta.used_prev_month_branch,
+                        "method": month_meta.method,
+                    },
+                }
+            )
 
     # 시주 계산
     hour_ji_idx = ((hour + 1) // 2) % 12  # 자시=0, 축시=1, ...
@@ -161,7 +202,14 @@ def calculate_saju_manual(
         "day_rollover_policy": day_rollover_policy,
         "ground_truth_source": gt_source,
         "calculation_method": "manual_verified",
-        "verified": True
+        "verified": True,
+        "sexagenary_validation": {
+            "year_valid": _is_valid_sexagenary(year_pillar),
+            "month_valid": _is_valid_sexagenary(month_pillar),
+            "day_valid": _is_valid_sexagenary(day_pillar),
+            "hour_valid": _is_valid_sexagenary(hour_pillar),
+        },
+        "fallback_events": fallback_events,
     }
 
 def compare_all_methods(year: int, month: int, day: int, hour: int = 0):
