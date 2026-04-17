@@ -7,6 +7,8 @@ import { AdvancedConsultForm } from "@/components/AdvancedConsultForm";
 import { PatientPreSurveyForm } from "@/components/PatientPreSurveyForm";
 import { BasicHealthChatCard } from "@/components/BasicHealthChatCard";
 
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
   const c = siteCopy;
 
