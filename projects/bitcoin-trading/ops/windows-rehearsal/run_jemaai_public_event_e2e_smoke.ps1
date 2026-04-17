@@ -1,11 +1,19 @@
 param(
     [string]$ApiBaseUrl = "https://api.jemaai.cloud",
     [int]$TimeoutSec = 10,
-    [string]$PublicEventToken = $env:PUBLIC_EVENT_GATEWAY_TOKEN,
+    [string]$PublicEventToken = "",
     [string]$OutputPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\jemaai_e2e_smoke_report_latest.json"
 )
 
 $ErrorActionPreference = "Stop"
+
+if ([string]::IsNullOrWhiteSpace($PublicEventToken)) {
+    # Prefer User-scope token to avoid stale process env mismatch.
+    $PublicEventToken = [Environment]::GetEnvironmentVariable("PUBLIC_EVENT_GATEWAY_TOKEN", "User")
+    if ([string]::IsNullOrWhiteSpace($PublicEventToken)) {
+        $PublicEventToken = $env:PUBLIC_EVENT_GATEWAY_TOKEN
+    }
+}
 
 function Write-Step([string]$name, [bool]$ok, [string]$detail) {
     $status = if ($ok) { "PASS" } else { "FAIL" }
