@@ -1,10 +1,10 @@
 {
   "schema": "manseryeok_collision_dictionary_v1",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "upstream_fingerprint": {
     "app": "forceteller_pro_web",
     "version": "2.2",
-    "sampled_utc": "2026-04-18T05:41:44Z",
+    "sampled_utc": "2026-04-18T05:51:55Z",
     "device_tz": "Asia/Seoul"
   },
   "collection_howto": {
@@ -49,9 +49,14 @@
         "il": "기축",
         "si": "갑자"
       },
-      "pillars_external": {},
+      "pillars_external": {
+        "yeon": "정묘",
+        "wol": "계축",
+        "il": "경인",
+        "si": "병자"
+      },
       "policy_resolution": "unresolved",
-      "notes": "pillars_native from cohort; fill pillars_external via Forceteller UI (collection_howto)."
+      "notes": "Forceteller web 2.2 (https://pro.forceteller.com/) result grid; wall 양 1988/02/04 23:42 KST, 서울, 여자; UI also shows 지역시 -32분 line. Four pillars differ from pillars_native (engine/cohort): documented collision."
     },
     {
       "key": "lichun_y2024_off+0h",
@@ -63,9 +68,14 @@
         "il": "무술",
         "si": "신유"
       },
-      "pillars_external": {},
+      "pillars_external": {
+        "yeon": "계묘",
+        "wol": "을축",
+        "il": "무술",
+        "si": "경신"
+      },
       "policy_resolution": "unresolved",
-      "notes": "pillars_native from cohort; fill pillars_external via Forceteller UI (collection_howto)."
+      "notes": "Forceteller web 2.2 result grid; wall 양 2024/02/04 17:27 KST, 서울, 여자. 일주(il)만 pillars_native와 동일(무술); 연·월·시는 불일치."
     },
     {
       "key": "lichun_y1992_off-12h",
@@ -77,9 +87,14 @@
         "il": "경술",
         "si": "신사"
       },
-      "pillars_external": {},
+      "pillars_external": {
+        "yeon": "신미",
+        "wol": "신축",
+        "il": "경술",
+        "si": "신사"
+      },
       "policy_resolution": "unresolved",
-      "notes": "pillars_native from cohort; fill pillars_external via Forceteller UI (collection_howto)."
+      "notes": "Forceteller web 2.2 result grid; wall 양 1992/02/04 10:48 KST, 서울, 여자. 일·시(il, si)는 pillars_native와 동일(경술, 신사); 연·월은 불일치(임신·임인 vs 신미·신축)."
     }
   ]
 }
