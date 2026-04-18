@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_per_date_combo_walkforward_v1",
-  "generated_at_utc": "2026-04-18T13:25:55Z",
+  "generated_at_utc": "2026-04-18T13:30:55Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -8,6 +8,7 @@
     "kospi_csv": "C:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
     "btc_csv": "research\\market_data\\btc_daily_external_yf.csv",
     "target_instrument": "btc",
+    "train_objective": "margin_vs_bull",
     "n_rows_after_target_filter": 30,
     "n_folds": 5,
     "n_folds_requested": 5,

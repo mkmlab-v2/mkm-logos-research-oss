@@ -114,14 +114,25 @@ def _param_grid() -> itertools.product:
 
 
 def _best_params_on_train(
-    train_rows: list[dict[str, Any]], km: dict[str, float], bm: dict[str, float]
+    train_rows: list[dict[str, Any]],
+    km: dict[str, float],
+    bm: dict[str, float],
+    *,
+    train_objective: str,
 ) -> tuple[float, tuple[float, float, float, float, float, float, float]] | None:
-    best: tuple[float, tuple[float, float, float, float, float, float, float] | None] = (-1.0, None)
+    best: tuple[float, float, tuple[float, float, float, float, float, float, float] | None] = (-1.0, -1.0, None)
+    bull_train = sum(1 for r in train_rows if str(r.get("actual_direction") or "").strip().lower() == "bull") / len(train_rows) if train_rows else 0.0
     for p in _param_grid():
         a, _ = _acc(train_rows, p, km, bm)
-        if a > best[0]:
-            best = (a, p)
-    return best if best[1] is not None else None
+        if train_objective == "margin_vs_bull":
+            primary = a - bull_train
+            secondary = a
+        else:
+            primary = a
+            secondary = a - bull_train
+        if primary > best[0] or (primary == best[0] and secondary > best[1]):
+            best = (primary, secondary, p)
+    return (best[1], best[2]) if best[2] is not None else None
 
 
 def _params_to_dict(p: tuple[float, ...]) -> dict[str, float]:
@@ -171,6 +182,12 @@ def main() -> int:
         default="btc",
         help="Primary training/eval target. btc keeps KOSPI only as cross-assist signal.",
     )
+    ap.add_argument(
+        "--train-objective",
+        choices=("accuracy", "margin_vs_bull"),
+        default="margin_vs_bull",
+        help="How to pick params on train block before scoring test block.",
+    )
     ap.add_argument("--n-folds", type=int, default=5, help="Contiguous date blocks (oldest..newest); folds = n_folds-1.")
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
@@ -212,7 +229,7 @@ def main() -> int:
         test_set = set(test_dates)
         train = [r for r in rows if str(r.get("eval_date"))[:10] in train_set]
         test = [r for r in rows if str(r.get("eval_date"))[:10] in test_set]
-        fitted = _best_params_on_train(train, km, bm)
+        fitted = _best_params_on_train(train, km, bm, train_objective=args.train_objective)
         if fitted is None:
             raise SystemExit(f"fold {fi}: no candidate params")
         _, p = fitted
@@ -259,6 +276,7 @@ def main() -> int:
             "kospi_csv": str(args.kospi_csv),
             "btc_csv": str(args.btc_csv),
             "target_instrument": args.target_instrument,
+            "train_objective": args.train_objective,
             "n_rows_after_target_filter": len(rows),
             "n_folds": n_folds_effective,
             "n_folds_requested": n_folds_requested,
