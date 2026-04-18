@@ -1,24 +1,24 @@
 ﻿id	split	utterance	intent	slots_json	expected_action	data_tier	build_pack	conflict_hint	ambiguity_hint	review_status	reviewer_note
-utt_0001	holdout	표준 코스로 시작해줘	SET_COURSE	"{""course"":""표준""}"	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0002	holdout	온도 40도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":40}"	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0003	holdout	헹굼 2회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":2}"	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0004	holdout	탈수는 약으로	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0005	holdout	30분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":30}"	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0006	holdout	끝나면 앱으로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0007	holdout	지금 상태 알려줘	QUERY_STATUS	{}	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0008	holdout	멈췄다가 다시 시작해줘	PAUSE_CYCLE	{}	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0009	holdout	쾌속으로 30분만 돌려줘	SET_COURSE	"{""course"":""쾌속"",""duration_min"":30}"	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0010	holdout	울 코스로 바꾸고 탈수는 약하게	SET_COURSE	"{""course"":""울"",""spin_level"":""약""}"	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0011	holdout	울 코스로 60도 해줘	SET_COURSE	"{""course"":""울"",""temperature_c"":60}"	reask_or_reject	seed_demo_v1	expanded_300_v1	course_temperature_conflict		OK	seed_row_prefill_v1
-utt_0012	holdout	헹굼 10회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":10}"	reask_or_reject	seed_demo_v1	expanded_300_v1	rinse_out_of_range		OK	seed_row_prefill_v1
-utt_0013	holdout	온도 95도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":95}"	reask_or_reject	seed_demo_v1	expanded_300_v1	temperature_out_of_profile		OK	seed_row_prefill_v1
-utt_0014	holdout	시간은 0분으로	SET_DURATION	"{""duration_min"":0}"	reask_or_reject	seed_demo_v1	expanded_300_v1	duration_out_of_range		OK	seed_row_prefill_v1
-utt_0015	holdout	빨리 끝나는 걸로	SET_COURSE	{}	reask	seed_demo_v1	expanded_300_v1		course_not_specified	OK	seed_row_prefill_v1
-utt_0016	holdout	아까처럼 다시 해줘	RESUME_CYCLE	{}	reask	seed_demo_v1	expanded_300_v1		reference_missing	OK	seed_row_prefill_v1
-utt_0017	holdout	밤이라 조용하게 돌려줘	SET_SPIN_LEVEL	{}	reask	seed_demo_v1	expanded_300_v1		spin_level_not_explicit	OK	seed_row_prefill_v1
-utt_0018	holdout	표준으로 하고 1시간 뒤에 시작, 끝나면 알려줘	SET_COURSE	"{""course"":""표준"",""delay_start_min"":60,""notify_channel"":""app""}"	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0019	holdout	중지하고 쾌속으로 다시 시작해	STOP_CYCLE	"{""course"":""쾌속""}"	accept	seed_demo_v1	expanded_300_v1			OK	seed_row_prefill_v1
-utt_0020	holdout	빨래 다 되면 알려만 줘	NOTIFY_WHEN_DONE	{}	reask	seed_demo_v1	expanded_300_v1		notification_channel_not_specified	OK	seed_row_prefill_v1
+utt_0001	holdout	표준 코스로 시작해줘	SET_COURSE	"{""course"":""표준""}"	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0002	holdout	온도 40도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":40}"	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0003	holdout	헹굼 2회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":2}"	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0004	holdout	탈수는 약으로	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0005	holdout	30분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":30}"	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0006	holdout	끝나면 앱으로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0007	holdout	지금 상태 알려줘	QUERY_STATUS	{}	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0008	holdout	멈췄다가 다시 시작해줘	PAUSE_CYCLE	{}	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0009	holdout	쾌속으로 30분만 돌려줘	SET_COURSE	"{""course"":""쾌속"",""duration_min"":30}"	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0010	holdout	울 코스로 바꾸고 탈수는 약하게	SET_COURSE	"{""course"":""울"",""spin_level"":""약""}"	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0011	holdout	울 코스로 60도 해줘	SET_COURSE	"{""course"":""울"",""temperature_c"":60}"	reask_or_reject	seed_demo_v1	expanded_300_v1	course_temperature_conflict		REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0012	holdout	헹굼 10회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":10}"	reask_or_reject	seed_demo_v1	expanded_300_v1	rinse_out_of_range		REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0013	holdout	온도 95도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":95}"	reask_or_reject	seed_demo_v1	expanded_300_v1	temperature_out_of_profile		REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0014	holdout	시간은 0분으로	SET_DURATION	"{""duration_min"":0}"	reask_or_reject	seed_demo_v1	expanded_300_v1	duration_out_of_range		REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0015	holdout	빨리 끝나는 걸로	SET_COURSE	{}	reask	seed_demo_v1	expanded_300_v1		course_not_specified	REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0016	holdout	아까처럼 다시 해줘	RESUME_CYCLE	{}	reask	seed_demo_v1	expanded_300_v1		reference_missing	REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0017	holdout	밤이라 조용하게 돌려줘	SET_SPIN_LEVEL	{}	reask	seed_demo_v1	expanded_300_v1		spin_level_not_explicit	REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0018	holdout	표준으로 하고 1시간 뒤에 시작, 끝나면 알려줘	SET_COURSE	"{""course"":""표준"",""delay_start_min"":60,""notify_channel"":""app""}"	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0019	holdout	중지하고 쾌속으로 다시 시작해	STOP_CYCLE	"{""course"":""쾌속""}"	accept	seed_demo_v1	expanded_300_v1			REVIEW_TODO	seed_prefill_review_todo_v1
+utt_0020	holdout	빨래 다 되면 알려만 줘	NOTIFY_WHEN_DONE	{}	reask	seed_demo_v1	expanded_300_v1		notification_channel_not_specified	REVIEW_TODO	seed_prefill_review_todo_v1
 s300_CANCELOPTION_00271	train	예약 취소해줘	CANCEL_OPTION	"{""cancel_target"":""delay_start""}"	accept	synthetic_combinatorial_v1	expanded_300_v1			PENDING	synthetic_review_required
 s300_CANCELOPTION_00272	train	지연 시작 취소	CANCEL_OPTION	{}	accept	synthetic_combinatorial_v1	expanded_300_v1			PENDING	synthetic_review_required
 s300_CANCELOPTION_00273	train	알림만 끄줘	CANCEL_OPTION	"{""cancel_target"":""delay_start""}"	accept	synthetic_combinatorial_v1	expanded_300_v1			PENDING	synthetic_review_required

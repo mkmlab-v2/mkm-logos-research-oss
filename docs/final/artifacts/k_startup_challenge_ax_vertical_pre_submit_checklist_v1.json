@@ -45,8 +45,16 @@
   ],
   "recommended_evidence_paths": [
     "docs/final/artifacts/challenge_ax_vertical_lg_hs_execution_pack_v1.json",
+    "docs/final/artifacts/lg_washer_voice_dataset_strategy_recommended_v1.json",
     "docs/final/artifacts/lg_washer_integrity_validation_report_sample_v1.json",
     "docs/final/artifacts/defense_edge_execution_evidence_v1.json"
+  ],
+  "recommended_quality": [
+    {
+      "id": "DATA_ABC_NOT_D",
+      "title_ko": "골든·합성 서술: A(우선검토)·B(실발화 치환)·C(수행계획서에 합성·실측 분리) 채택, D(무검토 일괄 OK) 비권장",
+      "status": "recommended"
+    }
   ],
   "post_submit": [
     {

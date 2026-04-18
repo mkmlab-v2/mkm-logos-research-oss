@@ -31,8 +31,8 @@ def main() -> int:
         if (r.get("review_status") or "").strip():
             continue
         if rid.startswith("utt_"):
-            r["review_status"] = "OK"
-            r["reviewer_note"] = (r.get("reviewer_note") or "").strip() or "seed_row_prefill_v1"
+            r["review_status"] = "REVIEW_TODO"
+            r["reviewer_note"] = (r.get("reviewer_note") or "").strip() or "seed_prefill_review_todo_v1"
         else:
             r["review_status"] = "PENDING"
             r["reviewer_note"] = (r.get("reviewer_note") or "").strip() or "synthetic_review_required"

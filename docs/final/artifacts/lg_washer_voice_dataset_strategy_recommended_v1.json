@@ -1,0 +1,48 @@
+{
+  "schema": "lg_washer_voice_dataset_strategy_recommended_v1",
+  "generated_at_utc": "2026-04-18T16:00:00Z",
+  "research_only": true,
+  "title_ko": "LG HS 세탁 음성 골든·증강 데이터 권장 운영안 (A/B/C 채택, D 비권장)",
+  "paths": {
+    "execution_pack": "docs/final/artifacts/challenge_ax_vertical_lg_hs_execution_pack_v1.json",
+    "review_sheet_tsv": "docs/final/artifacts/lg_washer_voice_golden_review_sheet_v1.tsv",
+    "golden_train_jsonl": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
+    "golden_holdout_jsonl": "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl",
+    "augmented_stress_preview": "docs/final/artifacts/lg_washer_voice_augmented_stress_preview_v1.jsonl"
+  },
+  "option_A_priority_review_ko": {
+    "summary": "의도·상충·OOB 케이스부터 TSV로 소수를 먼저 검토하고 OK/REJECT/수정을 남긴다.",
+    "suggested_batches": [
+      "SET_COURSE + temperature/spin 복합",
+      "reask_or_reject 및 conflict_hint가 있는 행 전부",
+      "NOTIFY/DELAY 등 채널·시간 슬롯이 민감한 행"
+    ],
+    "commands": [
+      "py scripts/export_lg_washer_golden_review_sheet_v1.py",
+      "py scripts/apply_lg_washer_golden_review_sheet_v1.py",
+      "py scripts/apply_lg_washer_golden_review_sheet_v1.py --drop-rejected"
+    ]
+  },
+  "option_B_incremental_real_speech_ko": {
+    "summary": "필드 녹음·동의 확보한 실발화로 s300_* 행을 순차 치환하고 data_tier를 실데이터로 갱신한다.",
+    "note": "치환 후 apply → validate → (선택) 증강 재생성."
+  },
+  "option_C_submission_narrative_ko": {
+    "summary": "수행계획서에는 'PoC용 합성/시드 + 인간 검증·실측 로드맵'을 분리 서술하고, 증강 말뭉치는 스트레스 전용임을 명시한다.",
+    "forbidden_phrases_ko": [
+      "무검토 일괄 OK로 골든 완료를 단정하는 표현",
+      "증강(스트레스) 말뭉치를 골든 홀드아웃 정확도 근거로 쓰는 표현",
+      "로컬 벤치 수치를 가전 탑재 성능으로 단정하는 표현"
+    ]
+  },
+  "option_D_bulk_ok_not_recommended_ko": {
+    "summary": "합성 280건을 검토 없이 일괄 OK 처리하는 방안은 채택하지 않는다.",
+    "rationale_ko": "대외 주장·감사 대응 리스크와 실행 팩 submission_guardrails_ko와 충돌."
+  },
+  "current_repo_note_ko": "시드(utt_*)는 prefill 기본값으로 REVIEW_TODO(인간 검토 대기). 합성(s300_*)은 PENDING. 확정 시 TSV에 OK/수정 후 apply.",
+  "tooling": {
+    "prefill": "py scripts/prefill_lg_washer_review_sheet_v1.py",
+    "validate_golden": "py scripts/validate_lg_washer_voice_golden_jsonl_v1.py",
+    "build_augmented_preview": "py scripts/build_lg_washer_voice_augmented_jsonl_v1.py --count 2000"
+  }
+}
