@@ -180,13 +180,17 @@ def main() -> int:
         key=lambda r: (str(r.get("eval_date")), str(r.get("instrument"))),
     )
     dates = sorted({str(r.get("eval_date"))[:10] for r in rows})
-    if len(dates) < args.n_folds:
-        raise SystemExit(f"need at least n_folds={args.n_folds} distinct eval_dates, got {len(dates)}")
+    if len(dates) < 2:
+        raise SystemExit(f"need at least 2 distinct eval_dates for walk-forward, got {len(dates)}")
+
+    n_folds_requested = int(args.n_folds)
+    n_folds_effective = max(2, min(n_folds_requested, len(dates)))
+    n_folds_clamped = n_folds_effective != n_folds_requested
 
     km = _prior_map(args.kospi_csv) if args.kospi_csv.is_file() else {}
     bm = _prior_map(args.btc_csv) if args.btc_csv.is_file() else {}
 
-    fold_specs = _blocked_walkforward_folds(dates, args.n_folds)
+    fold_specs = _blocked_walkforward_folds(dates, n_folds_effective)
     fold_rows_out: list[dict[str, Any]] = []
     test_accs: list[float] = []
     beats_bull_flags: list[bool] = []
@@ -242,7 +246,10 @@ def main() -> int:
             "score_json": str(args.score_json),
             "kospi_csv": str(args.kospi_csv),
             "btc_csv": str(args.btc_csv),
-            "n_folds": args.n_folds,
+            "n_folds": n_folds_effective,
+            "n_folds_requested": n_folds_requested,
+            "n_folds_effective": n_folds_effective,
+            "n_folds_clamped": n_folds_clamped,
             "n_distinct_eval_dates": len(dates),
             "n_walkforward_folds": len(fold_specs),
             "note": "Blocked chronological walk-forward: test block f uses only params fit on dates strictly before that block.",

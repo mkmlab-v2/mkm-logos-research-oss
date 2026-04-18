@@ -12,7 +12,9 @@ Shadow lanes are B-track measurement only (not live routing, not A-track promoti
 Modes:
 - ``instrument_combo_best``: KOSPI fixed mode + BTC causal thresholds from sweep artifact.
 - ``per_date_lens_holdout_best``: self/cross prior-return sign combo from holdout artifact.
-- ``both``: run both lanes.
+- ``walkforward_aggregate``: fold-level stability summary from walk-forward JSON (no row-level preds).
+- ``both``: instrument + holdout row lanes only.
+- ``all``: instrument + holdout + walk-forward aggregate lane.
 """
 
 from __future__ import annotations
@@ -30,6 +32,7 @@ DEFAULT_KOSPI_CSV = ROOT / "research" / "market_data" / "kospi_daily_external_yf
 DEFAULT_BTC_CSV = ROOT / "research" / "market_data" / "btc_daily_external_yf.csv"
 DEFAULT_COMBO_SWEEP = ROOT / "docs" / "final" / "artifacts" / "prophecy_instrument_combo_sweep_v1_latest.json"
 DEFAULT_HOLDOUT = ROOT / "docs" / "final" / "artifacts" / "prophecy_per_date_combo_holdout_v1_latest.json"
+DEFAULT_WALKFORWARD = ROOT / "docs" / "final" / "artifacts" / "prophecy_per_date_combo_walkforward_v1_latest.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "prophecy_shadow_panel_eval_v1_latest.json"
 SCHEMA = "prophecy_shadow_panel_eval_v1"
 VALID = {"bull", "bear", "neutral"}
@@ -174,9 +177,10 @@ def main() -> int:
     ap.add_argument("--btc-csv", type=Path, default=DEFAULT_BTC_CSV)
     ap.add_argument("--combo-sweep-json", type=Path, default=DEFAULT_COMBO_SWEEP)
     ap.add_argument("--holdout-json", type=Path, default=DEFAULT_HOLDOUT)
+    ap.add_argument("--walkforward-json", type=Path, default=DEFAULT_WALKFORWARD)
     ap.add_argument(
         "--shadow-mode",
-        choices=("instrument_combo_best", "per_date_lens_holdout_best", "both"),
+        choices=("instrument_combo_best", "per_date_lens_holdout_best", "walkforward_aggregate", "both", "all"),
         default="both",
     )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
@@ -196,7 +200,7 @@ def main() -> int:
 
     lanes: list[dict[str, Any]] = []
 
-    if args.shadow_mode in ("instrument_combo_best", "both"):
+    if args.shadow_mode in ("instrument_combo_best", "both", "all"):
         sweep = _load_json(args.combo_sweep_json) or {}
         best = sweep.get("best_candidate") if isinstance(sweep.get("best_candidate"), dict) else {}
         k_mode = str(best.get("kospi_mode") or "bull")
@@ -218,7 +222,7 @@ def main() -> int:
             }
         )
 
-    if args.shadow_mode in ("per_date_lens_holdout_best", "both"):
+    if args.shadow_mode in ("per_date_lens_holdout_best", "both", "all"):
         ho = _load_json(args.holdout_json) or {}
         bp = ho.get("best_params_from_train") if isinstance(ho.get("best_params_from_train"), dict) else {}
         preds = [_predict_holdout(r, params=bp, km=km, bm=bm) for r in rows]
@@ -237,6 +241,24 @@ def main() -> int:
             }
         )
 
+    if args.shadow_mode in ("walkforward_aggregate", "all"):
+        wf = _load_json(args.walkforward_json) or {}
+        agg = wf.get("aggregate") if isinstance(wf.get("aggregate"), dict) else {}
+        if agg:
+            folds = wf.get("folds")
+            n_folds = len(folds) if isinstance(folds, list) else 0
+            lanes.append(
+                {
+                    "lane_id": "per_date_combo_walkforward_aggregate_v1",
+                    "lane_kind": "fold_aggregate",
+                    "source_artifact": str(args.walkforward_json),
+                    "metrics_all": None,
+                    "walkforward_aggregate": agg,
+                    "walkforward_fold_count": n_folds,
+                    "walkforward_inputs": wf.get("inputs") if isinstance(wf.get("inputs"), dict) else {},
+                }
+            )
+
     out = {
         "schema": SCHEMA,
         "generated_at_utc": _utc_now(),
@@ -249,6 +271,7 @@ def main() -> int:
             "shadow_mode": args.shadow_mode,
             "combo_sweep_json": str(args.combo_sweep_json),
             "holdout_json": str(args.holdout_json),
+            "walkforward_json": str(args.walkforward_json),
         },
         "baseline": {"lane_id": "current_panel_prediction", "metrics": base},
         "control": {"lane_id": "always_bull_control", "price_directional_hit_rate": round(bull_ctrl, 6)},

@@ -1,14 +1,14 @@
 # Daily B-Track: build OHLCV score JSON + price-mode hit-rate eval.
 # Optional -IncludeOverlaySpike: refreshes prophecy_restoration_spike_latest.json (threshold per script default / sweep policy).
 # Optional -IncludeShadowPanelEval: writes prophecy_shadow_panel_eval_v1_latest.json (B-track measurement lanes; not live routing).
-#   Use -ShadowPanelMode instrument_combo_best for a lighter single-lane eval, or set MKM_PROPHECY_SHADOW_PANEL_MODE.
+#   Use -ShadowPanelMode instrument_combo_best for a lighter single-lane eval; -ShadowPanelMode all includes walk-forward aggregate; or set MKM_PROPHECY_SHADOW_PANEL_MODE.
 # Does NOT train models, promote canonical weights, or touch live trading.
 #
 # Prerequisites: py on PATH; KOSPI CSV at research/market_data/kospi_daily_external_yf.csv;
 # hypothesis at docs/final/artifacts/btrack_hypothesis_prophecy_latest.json (from daily chain or stub).
 #
 # Optional env: MKM_BTC_DAILY_CSV (path to BTC daily CSV), MKM_PROPHECY_PROXY_REGISTRY_GLOB (proxy eval),
-#   MKM_PROPHECY_SHADOW_PANEL_MODE (both | instrument_combo_best | per_date_lens_holdout_best) when -ShadowPanelMode omitted.
+#   MKM_PROPHECY_SHADOW_PANEL_MODE (both | all | instrument_combo_best | per_date_lens_holdout_best | walkforward_aggregate) when -ShadowPanelMode omitted.
 #
 # Example (Task Scheduler):
 #   powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\run_daily_prophecy_eval_and_report.ps1" -IncludeDatedArchive
@@ -77,7 +77,7 @@ if ($LASTEXITCODE -ne 0) {
 
 $shadowModeLogged = $null
 if ($IncludeShadowPanelEval) {
-    $validShadowModes = @("both", "instrument_combo_best", "per_date_lens_holdout_best")
+    $validShadowModes = @("both", "all", "instrument_combo_best", "per_date_lens_holdout_best", "walkforward_aggregate")
     $shadowModeResolved = if ($PSBoundParameters.ContainsKey("ShadowPanelMode") -and $ShadowPanelMode.Trim().Length -gt 0) {
         $ShadowPanelMode.Trim()
     }

@@ -111,6 +111,67 @@ def test_shadow_panel_eval_with_synthetic_inputs(tmp_path: Path) -> None:
         assert m.get("price_hits") == 2
 
 
+def test_shadow_panel_walkforward_aggregate_lane(tmp_path: Path) -> None:
+    ws = Path(__file__).resolve().parents[1]
+    wf = {
+        "schema": "prophecy_per_date_combo_walkforward_v1",
+        "aggregate": {
+            "mean_test_accuracy": 0.55,
+            "stdev_test_accuracy": 0.05,
+            "min_test_accuracy": 0.5,
+            "max_test_accuracy": 0.6,
+            "fraction_test_beats_always_bull": 0.75,
+        },
+        "folds": [{"fold_index": 0}],
+        "inputs": {"n_walkforward_folds": 1},
+    }
+    wf_path = tmp_path / "wf.json"
+    wf_path.write_text(json.dumps(wf), encoding="utf-8")
+    score_path = tmp_path / "score.json"
+    score_path.write_text(
+        json.dumps(
+            {
+                "rows": [
+                    {
+                        "instrument": "kospi",
+                        "eval_date": "2026-01-07",
+                        "predicted_direction": "bull",
+                        "actual_direction": "bull",
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    out = tmp_path / "shadow.json"
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(ws / "scripts" / "eval_prophecy_shadow_panel_v1.py"),
+            "--score-json",
+            str(score_path),
+            "--walkforward-json",
+            str(wf_path),
+            "--shadow-mode",
+            "walkforward_aggregate",
+            "--output",
+            str(out),
+        ],
+        cwd=str(ws),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    lanes = doc.get("lanes")
+    assert isinstance(lanes, list) and len(lanes) == 1
+    lane = lanes[0]
+    assert lane.get("lane_kind") == "fold_aggregate"
+    assert lane.get("metrics_all") is None
+    assert lane.get("walkforward_aggregate", {}).get("mean_test_accuracy") == 0.55
+
+
 def test_shadow_panel_eval_stdout_only_smoke() -> None:
     ws = Path(__file__).resolve().parents[1]
     proc = subprocess.run(
