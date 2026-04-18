@@ -1,0 +1,199 @@
+{
+  "schema": "defense_code_pack_v1",
+  "version": "1.0.0",
+  "status": "active",
+  "generated_at_utc": "2026-04-18T12:00:00Z",
+  "purpose": "국방 대외·합성 벤치용 단일 계약: 메시지 프로파일, 용어 치환, 클레임 경계, 연결 아티팩트. 번역기·제안서 초안·압축 라우팅은 본 파일을 상위 SSOT로 따른다.",
+  "ssot_precedence_note": "저장소 루트 CLAUDE.md / AGENTS.md와 충돌 시 인간 지휘관 판단. 압축 수치는 항상 특정 JSON 경로를 인용한다.",
+  "track_a_headline_ssot": {
+    "artifact": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "metrics_object": "compression_metrics",
+    "headline_fields": [
+      "case_count",
+      "global_token_saving_rate",
+      "avg_reconstruction_fidelity_jaccard"
+    ],
+    "do_not_mix_with": "다른 artifact 헤드라인, 정책 문서의 과거 스냅샷(~0.73 등), 또는 ultra-literal+브리지 실험 파일과 동일 표·동일 문장 병기"
+  },
+  "excludes": {
+    "b_track": "명리·비트코인·사상 벤치 데이터는 본 코드팩 파이프라인과 자동 합선하지 않는다.",
+    "mil_std_names": "USMTF/VMF 등 실제 군 표준명을 사칭하지 않는다. 합성 필드명만 사용."
+  },
+  "briefing_metaphors_vs_facts": {
+    "purpose": "대외 브리핑 비유(GPS·화물 97% 등)와 저장소 측정값을 혼동하지 않도록 고정.",
+    "facts": [
+      "4D/게마트리아 브리지는 토큰을 직접 ‘압축’하는 단일 엔진이라기보다 후보 선택·must_keep·라우팅 보조(메타/제약) 레이어에 가깝다.",
+      "MULTILENS_ULTRA_LITERAL_BRIDGE_POLICY_EXPERIMENT_V1.json 의 낮은 global_token_saving_rate(≈0.139)는 ultra-literal 캡(≈0.06)·브리지 정책·C/high 조합의 결과이며, ‘좌표 메타만으로 페이로드가 무조건 폭증’이라고 단정하면 부정확할 수 있다.",
+      "Track A 벤치 헤드라인은 MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json 의 compression_metrics 필드로 인용하고, 정책 문서의 ~0.73 스냅샷과 섞어 한 표에 쓰지 않는다.",
+      "UAV 하이브리드 합성 벤치 평균 payload_compression_ratio는 defense_hybrid_compression_bench_v0.json 의 aggregate.mean_payload_compression_ratio 로 정의(합성 입력·literal 서술 레인)."
+    ],
+    "metaphors_allowed_only_as": "비유(illustration) — 반드시 ‘측정 아님’ 표기.",
+    "forbidden_as_measured_claims": [
+      "모든 텍스트를 4D 위상만으로 1:1 전송하여 바이트 절감이 보장된다",
+      "화물 97% 삭감을 모든 도메인·모든 입력에서 달성했다",
+      "4D 메타데이터 ‘무게’ 하나만이 절감률 49%→13.9% 변화의 단일 원인이다"
+    ],
+    "hybrid_engineering_summary_ko": "결정론 필드(좌표·시간 등)는 사이드 채널·와이어로 분리 가능하고, 서술은 Multilens 트랙(literal/universal/ultra-literal)으로 별도 측정한다. 대역·품질 목표는 트랙별로 분리 보고한다."
+  },
+  "message_profiles": {
+    "uav_recon_synthetic_v1": {
+      "description": "합성 UAV 정찰 보고 — 표준 사칭 없음.",
+      "schema_document": "docs/final/artifacts/defense_edge_synthetic_uav_handoff_v0.json",
+      "json_schema_key": "uav_recon_json_schema_draft07",
+      "bench_input_artifact": "docs/final/artifacts/defense_uav_bench_input_v0.json",
+      "extended_fields_in_bench": {
+        "timestamp_utc": {
+          "type": "string",
+          "format": "ISO8601 Zulu 권장",
+          "critical": true
+        },
+        "situational_text": {
+          "type": "string",
+          "critical": false,
+          "note": "서술형 — Multilens literal 등 의미 압축 레인 대상. 좌표·시간과 혼동 금지."
+        }
+      },
+      "critical_field_paths": [
+        "location.lat",
+        "location.lon",
+        "altitude_m",
+        "battery_pct",
+        "target_type",
+        "confidence",
+        "timestamp_utc"
+      ],
+      "deterministic_wire_contract": {
+        "description": "필수 필드는 LLM 압축 전 msgpack 적응 와이어로 분리 가능(실측: run_defense_hybrid_compression_bench).",
+        "reference_script": "scripts/run_defense_hybrid_compression_bench.py",
+        "reference_codec_patterns": "scripts/l1_side_channel_wire_codec.py"
+      }
+    }
+  },
+  "terminology_translation_matrix": [
+    {
+      "internal_or_forbidden_in_external": "4D / S-L-K-M / 사원수",
+      "defense_facing_en": "multi-axis structural embedding or auxiliary routing metadata",
+      "defense_facing_ko": "다축 구조 메타데이터·라우팅 보조",
+      "rule": "대외 문서 본문에 내부 연구명 단독 기재 금지."
+    },
+    {
+      "internal_or_forbidden_in_external": "게마트리아",
+      "defense_facing_en": "deterministic lexical hash or symbolic index",
+      "defense_facing_ko": "결정론적 어휘 해시·심볼 인덱스",
+      "rule": "압축·검색 구현 설명에만. 종교·오컬트 연상 문구 금지."
+    },
+    {
+      "internal_or_forbidden_in_external": "사주 / 갑자 / 명리",
+      "defense_facing_en": "timestamp-based event signature (if needed)",
+      "defense_facing_ko": "시각·이벤트 서명 (필요 시)",
+      "rule": "국방 합성 스키마와 B-Track 명리 데이터 합선 금지."
+    },
+    {
+      "internal_or_forbidden_in_external": "literal 모드 = 필드 100% Exact 보증",
+      "defense_facing_en": "Track B literal prioritizes reconstruction fidelity metrics; field-exactness requires separate verification or deterministic channel",
+      "defense_facing_ko": "literal은 복원 지표 우선 프로파일이며, 필드 단위 완전 일치는 별도 검증·결정론 채널로 증명",
+      "rule": "COMPRESSION_SLA_POLICY_V1.md 정합."
+    }
+  ],
+  "claim_boundaries": {
+    "tags": {
+      "FACT": "재현 가능한 .py / 고정 JSON 경로로 증명 가능한 문장만.",
+      "HYPO": "연구 가설·미완 구현. 제안서에는 조건부 표현.",
+      "VISION": "장기 목표. 운영 약속 아님."
+    },
+    "forbidden_external_phrases": [
+      "통신 단절 시 완벽 복원",
+      "100% 무손실 리터럴 복원 (전 페이로드)",
+      "사원수 연산만으로 텍스트 바이트 N% 압축",
+      "AI 훈련만으로 전 구간 100% Exact"
+    ],
+    "required_citation_style": "수치는 docs/final/artifacts/<file>.json 의 필드명과 함께 기재. L1 exact%와 Multilens Jaccard는 동일 문장에서 합치지 않는다.",
+    "aligned_docs": [
+      "docs/final/COMPRESSION_SLA_POLICY_V1.md",
+      "docs/final/MKM12_L0_L1_L2_CLAIMS_TAGGED_FACTCHECK_2026-04-09.md",
+      "docs/final/ATHENA_AUDITOR_REALITY_ALIGNED_EXTERNAL_V1_2026-04-09.md"
+    ]
+  },
+  "compression_tracks_reference": {
+    "universal_track_a": "scripts/run_ultra_compression_default.py --mode universal",
+    "literal_track_b": "scripts/run_ultra_compression_default.py --mode literal",
+    "ultra_literal_research": "scripts/run_ultra_compression_default.py --mode ultra-literal",
+    "gematria_bridge_experiment": "scripts/run_ultra_compression_default.py --mode ultra-literal --apply-gematria-4d-bridge-policy --out <path>",
+    "bridge_policy_ab_pair": "py scripts/run_multilens_bridge_policy_ab.py",
+    "bridge_policy_ab_all_modes": "py scripts/run_multilens_bridge_policy_ab.py --all-modes",
+    "defense_bench_snapshot_table": "py scripts/build_defense_bench_snapshot_table.py",
+    "defense_bench_snapshot_table_merged_note": "defense_hybrid_compression_bench_merged_v0.json 가 있으면 표에 merged 행 추가(--hybrid-merged)",
+    "defense_bench_briefing_bullets": "py scripts/build_defense_bench_briefing_bullets.py",
+    "defense_uav_stress_regression": "pytest tests/test_defense_hybrid_stress_bench.py -q",
+    "defense_artifact_schema_regression": "pytest tests/test_defense_artifact_schemas.py -q",
+    "defense_pytest_glob": "pytest tests/test_defense_*.py -q  (run_defense_repro_bundle --pytest가 동일 글롭)",
+    "defense_hybrid_merged_bench": "py scripts/run_defense_hybrid_compression_bench.py --append-stress",
+    "defense_repro_bundle_merged_hybrid": "py scripts/run_defense_repro_bundle.py --merged-hybrid",
+    "defense_repro_bundle": "py scripts/run_defense_repro_bundle.py",
+    "defense_repro_bundle_with_pytest": "py scripts/run_defense_repro_bundle.py --pytest",
+    "defense_repro_bundle_skip_pitch": "py scripts/run_defense_repro_bundle.py --skip-pitch",
+    "note": "국방 제안용 서술은 literal+필드검증 또는 하이브리드 벤치와 정합; ultra-literal·브리지는 연구·실험 레인."
+  },
+  "linked_repo_artifacts": [
+    {
+      "role": "UAV 합성 스키마·예시",
+      "path": "docs/final/artifacts/defense_edge_synthetic_uav_handoff_v0.json"
+    },
+    {
+      "role": "UAV 벤치 입력 100건",
+      "path": "docs/final/artifacts/defense_uav_bench_input_v0.json"
+    },
+    {
+      "role": "하이브리드 압축 벤치 결과(결정론 필드 + literal 서술)",
+      "path": "docs/final/artifacts/defense_hybrid_compression_bench_v0.json"
+    },
+    {
+      "role": "L1 빔 exact restore 요약(연구 하네스)",
+      "path": "docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json"
+    },
+    {
+      "role": "ultra-literal + 4D 브리지 정책 실험 리포트",
+      "path": "docs/final/artifacts/MULTILENS_ULTRA_LITERAL_BRIDGE_POLICY_EXPERIMENT_V1.json"
+    },
+    {
+      "role": "Multilens 브리지 정책 A/B 요약(동일 V2 입력·동일 모드)",
+      "path": "docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_V1.json"
+    },
+    {
+      "role": "브리지 A/B 모드별(universal/literal/ultra-literal) 묶음",
+      "path": "docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_BY_MODE_V1.json"
+    },
+    {
+      "role": "Track A·하이브리드·브리지 한 화면 스냅샷 표",
+      "path": "docs/final/artifacts/DEFENSE_BENCH_SNAPSHOT_TABLE_V1.json"
+    },
+    {
+      "role": "슬라이드·브리핑용 불릿(KO/EN, 스냅샷에서 생성)",
+      "path": "docs/final/artifacts/DEFENSE_BENCH_BRIEFING_BULLETS_V1.json"
+    },
+    {
+      "role": "UAV 스트레스·회귀 입력(메인 100건과 별도)",
+      "path": "docs/final/artifacts/defense_uav_bench_stress_v0.json"
+    }
+  ],
+    "derived_artifacts": {
+    "defense_pitch_codepack_v1": "docs/final/artifacts/defense_pitch_codepack_v1.json",
+    "build_command": "py scripts/build_defense_codepack.py",
+    "build_note": "DEFENSE_BENCH_BRIEFING_BULLETS_V1.json가 있으면 pitch에 briefing_bullets로 내장. run_defense_repro_bundle.py가 기본으로 build_defense_codepack를 실행(--skip-pitch로 생략).",
+    "note": "번역기·프롬프트 주입용으로 base 코드팩 + MKM12(+선택 ATHENA)를 조립한 파생물."
+  },
+  "translator_and_doc_rules": {
+    "preserve_literal": [
+      "좌표 소수 자릿수",
+      "timestamp_utc 원문",
+      "target_type enum 값",
+      "내부 코드명 → terminology_translation_matrix 거친 대외어만"
+    ],
+    "never_without_mapping": [
+      "게마트리아",
+      "사원수",
+      "4D 벡터 (내부 축 이름)"
+    ],
+    "output_locales_priority": ["ko-KR 대외 공학체", "en-US 기술 백서"]
+  }
+}
