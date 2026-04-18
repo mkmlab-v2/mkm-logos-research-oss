@@ -1,0 +1,145 @@
+{
+  "schema": "multilens_bridge_policy_ab_by_mode_v1",
+  "generated_at_utc": "2026-04-18T05:51:39Z",
+  "input_unchanged": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "modes": {
+    "universal": {
+      "bridge_off": {
+        "artifact": "docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_OFF_universal_V1.json",
+        "active_profile": {
+          "sla_track": "universal",
+          "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+          "strategy": "A",
+          "intensity": "extreme",
+          "general_max_saving_rate": 0.54,
+          "sensitive_max_saving_rate": 0.5,
+          "hangul_max_saving_rate": 0.48,
+          "apply_gematria_4d_bridge_policy": false,
+          "apply_gematria_4d_bridge_policy_env": false
+        },
+        "compression_metrics_summary": {
+          "case_count": 40,
+          "global_token_saving_rate": 0.4683544303797469,
+          "avg_reconstruction_fidelity_jaccard": 0.8488363572487027,
+          "avg_sensitive_integrity": 1.0,
+          "sensitive_violation_count": 0
+        }
+      },
+      "bridge_on": {
+        "artifact": "docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_ON_universal_V1.json",
+        "active_profile": {
+          "sla_track": "universal",
+          "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+          "strategy": "A",
+          "intensity": "extreme",
+          "general_max_saving_rate": 0.54,
+          "sensitive_max_saving_rate": 0.5,
+          "hangul_max_saving_rate": 0.48,
+          "apply_gematria_4d_bridge_policy": true,
+          "apply_gematria_4d_bridge_policy_env": false
+        },
+        "compression_metrics_summary": {
+          "case_count": 40,
+          "global_token_saving_rate": 0.3263009845288326,
+          "avg_reconstruction_fidelity_jaccard": 0.9648400802628743,
+          "avg_sensitive_integrity": 1.0,
+          "sensitive_violation_count": 0
+        }
+      }
+    },
+    "literal": {
+      "bridge_off": {
+        "artifact": "docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_OFF_literal_V1.json",
+        "active_profile": {
+          "sla_track": "literal",
+          "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+          "strategy": "C",
+          "intensity": "high",
+          "general_max_saving_rate": 0.28,
+          "sensitive_max_saving_rate": 0.26,
+          "hangul_max_saving_rate": 0.3,
+          "apply_gematria_4d_bridge_policy": false,
+          "apply_gematria_4d_bridge_policy_env": false
+        },
+        "compression_metrics_summary": {
+          "case_count": 40,
+          "global_token_saving_rate": 0.23628691983122363,
+          "avg_reconstruction_fidelity_jaccard": 0.9753949175824175,
+          "avg_sensitive_integrity": 1.0,
+          "sensitive_violation_count": 0
+        }
+      },
+      "bridge_on": {
+        "artifact": "docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_ON_literal_V1.json",
+        "active_profile": {
+          "sla_track": "literal",
+          "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+          "strategy": "C",
+          "intensity": "high",
+          "general_max_saving_rate": 0.28,
+          "sensitive_max_saving_rate": 0.26,
+          "hangul_max_saving_rate": 0.3,
+          "apply_gematria_4d_bridge_policy": true,
+          "apply_gematria_4d_bridge_policy_env": false
+        },
+        "compression_metrics_summary": {
+          "case_count": 40,
+          "global_token_saving_rate": 0.2728551336146273,
+          "avg_reconstruction_fidelity_jaccard": 0.9812614468864469,
+          "avg_sensitive_integrity": 1.0,
+          "sensitive_violation_count": 0
+        }
+      }
+    },
+    "ultra_literal": {
+      "bridge_off": {
+        "artifact": "docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_OFF_ultra_literal_V1.json",
+        "active_profile": {
+          "sla_track": "ultra-literal",
+          "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+          "strategy": "C",
+          "intensity": "high",
+          "general_max_saving_rate": 0.06,
+          "sensitive_max_saving_rate": 0.06,
+          "hangul_max_saving_rate": 0.08,
+          "apply_gematria_4d_bridge_policy": false,
+          "apply_gematria_4d_bridge_policy_env": false,
+          "research_note": "Ultra-Literal: minimize token economy to approach lossless reconstruction on the V2 bench; not a compliance seal for regulated medical/financial advice."
+        },
+        "compression_metrics_summary": {
+          "case_count": 40,
+          "global_token_saving_rate": 0.1378340365682138,
+          "avg_reconstruction_fidelity_jaccard": 0.9988095238095237,
+          "avg_sensitive_integrity": 1.0,
+          "sensitive_violation_count": 0
+        }
+      },
+      "bridge_on": {
+        "artifact": "docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_ON_ultra_literal_V1.json",
+        "active_profile": {
+          "sla_track": "ultra-literal",
+          "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+          "strategy": "C",
+          "intensity": "high",
+          "general_max_saving_rate": 0.06,
+          "sensitive_max_saving_rate": 0.06,
+          "hangul_max_saving_rate": 0.08,
+          "apply_gematria_4d_bridge_policy": true,
+          "apply_gematria_4d_bridge_policy_env": false,
+          "research_note": "Ultra-Literal: minimize token economy to approach lossless reconstruction on the V2 bench; not a compliance seal for regulated medical/financial advice."
+        },
+        "compression_metrics_summary": {
+          "case_count": 40,
+          "global_token_saving_rate": 0.1392405063291139,
+          "avg_reconstruction_fidelity_jaccard": 0.9988095238095237,
+          "avg_sensitive_integrity": 1.0,
+          "sensitive_violation_count": 0
+        }
+      }
+    }
+  },
+  "reproduce_commands": {
+    "all_modes": "py scripts/run_multilens_bridge_policy_ab.py --all-modes",
+    "per_mode": "py scripts/run_multilens_bridge_policy_ab.py --mode <universal|literal|ultra-literal>"
+  }
+}

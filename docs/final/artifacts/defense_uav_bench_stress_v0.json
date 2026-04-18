@@ -1,0 +1,90 @@
+{
+  "schema": "defense_uav_bench_input_v0",
+  "bench_subset": "stress_regression_v0",
+  "generated_at_utc": "2026-04-18T12:00:00Z",
+  "seed": null,
+  "record_count": 8,
+  "note": "고정 회귀용 — 긴 서술·개행·혼합 스크립트·좌표 경계. 메인 100건 벤치와 별도; aggregate는 defense_hybrid_compression_bench_stress_v0.json(테스트 산출) 참고.",
+  "records": [
+    {
+      "id": "stress_000",
+      "location": { "lat": 33.0, "lon": 124.0 },
+      "altitude_m": 120.0,
+      "battery_pct": 50,
+      "target_type": "vehicle",
+      "confidence": 0.5,
+      "timestamp_utc": "2026-04-01T00:00:00Z",
+      "situational_text": "LONG_KO: 전방 교전 이격 유지. 시야 불량 구간 통과, 표적 재확인 요청. 서쪽 이격 중 배터리 상태 모니터링. 바람 추정, 고도 유지하며 재촬영. 전자간섭 흔적 없음, 좌표 고정 완료. 전방 고도에서 신호 약함, 구름 영향 가능. 전방 교전 이격 유지. 시야 불량 구간 통과, 표적 재확인 요청. 서쪽 이격 중 배터리 상태 모니터링. 바람 추정, 고도 유지하며 재촬영. 전자간섭 흔적 없음, 좌표 고정 완료. 전방 고도에서 신호 약함, 구름 영향 가능. 전방 교전 이격 유지. 시야 불량 구간 통과, 표적 재확인 요청. 서쪽 이격 중 배터리 상태 모니터링. 바람 추정, 고도 유지하며 재촬영. 전자간섭 흔적 없음, 좌표 고정 완료. 전방 고도에서 신호 약함, 구름 영향 가능. 전방 교전 이격 유지. 시야 불량 구간 통과, 표적 재확인 요청. 서쪽 이격 중 배터리 상태 모니터링. 바람 추정, 고도 유지하며 재촬영. 전자간섭 흔적 없음, 좌표 고정 완료. 전방 고도에서 신호 약함, 구름 영향 가능. EN: maintain orbit; no IFF change. Repeat block for UTF-8 stress."
+    },
+    {
+      "id": "stress_001",
+      "location": { "lat": 38.499999, "lon": 131.999999 },
+      "altitude_m": 499.9,
+      "battery_pct": 1,
+      "target_type": "structure",
+      "confidence": 0.0001,
+      "timestamp_utc": "2026-12-31T23:59:59Z",
+      "situational_text": "Line1: 좌표 경계 근접.\nLine2: 탭\t구분 테스트.\nLine3: 숫자 0123456789 혼합."
+    },
+    {
+      "id": "stress_002",
+      "location": { "lat": 35.5, "lon": 128.0 },
+      "altitude_m": 0.1,
+      "battery_pct": 99,
+      "target_type": "unknown",
+      "confidence": 0.9999,
+      "timestamp_utc": "2026-06-15T12:30:00Z",
+      "situational_text": "Mixed: 한글 English 日本語記号·화살표→·℃·Ω·α·β. Payload-like tokens: LAT=35.5 LON=128.0 ALT=0.1m."
+    },
+    {
+      "id": "stress_003",
+      "location": { "lat": 34.123456, "lon": 126.654321 },
+      "altitude_m": 250.25,
+      "battery_pct": 42,
+      "target_type": "personnel",
+      "confidence": 0.42,
+      "timestamp_utc": "2026-01-01T00:00:01Z",
+      "situational_text": ""
+    },
+    {
+      "id": "stress_004",
+      "location": { "lat": 37.5665, "lon": 126.978 },
+      "altitude_m": 88.8,
+      "battery_pct": 7,
+      "target_type": "none",
+      "confidence": 0.07,
+      "timestamp_utc": "2026-03-03T03:03:03Z",
+      "situational_text": "!!!@@@###$$$%%%^^^&&&***((( )))___+++===|||\\\\///<<<>>>???~~~"
+    },
+    {
+      "id": "stress_005",
+      "location": { "lat": 36.0, "lon": 127.5 },
+      "altitude_m": 1000.0,
+      "battery_pct": 100,
+      "target_type": "vehicle",
+      "confidence": 1.0,
+      "timestamp_utc": "2026-04-18T00:00:00Z",
+      "situational_text": "고고도 긴급: 배터리 100% 가상 상한 테스트(필드는 정수 100). confidence 1.0 경계."
+    },
+    {
+      "id": "stress_006",
+      "location": { "lat": 33.333333, "lon": 130.666666 },
+      "altitude_m": 42.0,
+      "battery_pct": 42,
+      "target_type": "structure",
+      "confidence": 0.424242,
+      "timestamp_utc": "2026-02-29T12:00:00Z",
+      "situational_text": "Unicode: 가나다라마바사아자차카타파하 漢字 emoji-neutral [OK] — 운영 문서에 이모지 금지 시 이 레코드만 조정."
+    },
+    {
+      "id": "stress_007",
+      "location": { "lat": 34.8, "lon": 129.2 },
+      "altitude_m": 300.0,
+      "battery_pct": 55,
+      "target_type": "unknown",
+      "confidence": 0.55,
+      "timestamp_utc": "2026-05-05T05:05:05Z",
+      "situational_text": "Duplicate-duplicate-duplicate: same same same. 전방 300m 고도에서 unknown 신호 약함, 구름 영향 가능. 전방 300m 고도에서 unknown 신호 약함, 구름 영향 가능."
+    }
+  ]
+}

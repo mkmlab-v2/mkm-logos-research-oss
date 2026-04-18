@@ -1,0 +1,55 @@
+{
+  "schema": "multilens_bridge_policy_ab_v1",
+  "generated_at_utc": "2026-04-18T07:09:18Z",
+  "input_unchanged": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+  "mode": "ultra-literal",
+  "reproduce_commands": {
+    "bridge_off": "py scripts/run_ultra_compression_default.py --mode ultra-literal --out docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_OFF_V1.json",
+    "bridge_on": "py scripts/run_ultra_compression_default.py --mode ultra-literal --apply-gematria-4d-bridge-policy --out docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_ON_V1.json",
+    "full_ab_chain": "py scripts/run_multilens_bridge_policy_ab.py"
+  },
+  "bridge_off": {
+    "artifact": "docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_OFF_V1.json",
+    "active_profile": {
+      "sla_track": "ultra-literal",
+      "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+      "strategy": "C",
+      "intensity": "high",
+      "general_max_saving_rate": 0.06,
+      "sensitive_max_saving_rate": 0.06,
+      "hangul_max_saving_rate": 0.08,
+      "apply_gematria_4d_bridge_policy": false,
+      "apply_gematria_4d_bridge_policy_env": false,
+      "research_note": "Ultra-Literal: minimize token economy to approach lossless reconstruction on the V2 bench; not a compliance seal for regulated medical/financial advice."
+    },
+    "compression_metrics_summary": {
+      "case_count": 40,
+      "global_token_saving_rate": 0.1378340365682138,
+      "avg_reconstruction_fidelity_jaccard": 0.9988095238095237,
+      "avg_sensitive_integrity": 1.0,
+      "sensitive_violation_count": 0
+    }
+  },
+  "bridge_on": {
+    "artifact": "docs/final/artifacts/MULTILENS_BRIDGE_POLICY_AB_ON_V1.json",
+    "active_profile": {
+      "sla_track": "ultra-literal",
+      "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+      "strategy": "C",
+      "intensity": "high",
+      "general_max_saving_rate": 0.06,
+      "sensitive_max_saving_rate": 0.06,
+      "hangul_max_saving_rate": 0.08,
+      "apply_gematria_4d_bridge_policy": true,
+      "apply_gematria_4d_bridge_policy_env": false,
+      "research_note": "Ultra-Literal: minimize token economy to approach lossless reconstruction on the V2 bench; not a compliance seal for regulated medical/financial advice."
+    },
+    "compression_metrics_summary": {
+      "case_count": 40,
+      "global_token_saving_rate": 0.1392405063291139,
+      "avg_reconstruction_fidelity_jaccard": 0.9988095238095237,
+      "avg_sensitive_integrity": 1.0,
+      "sensitive_violation_count": 0
+    }
+  }
+}
