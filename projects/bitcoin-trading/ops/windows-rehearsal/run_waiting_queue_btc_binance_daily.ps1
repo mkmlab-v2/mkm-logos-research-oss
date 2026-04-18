@@ -4,7 +4,11 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$workspace = "C:\workspace"
+# Repo root: .../projects/bitcoin-trading/ops/windows-rehearsal -> four parents up
+if (-not $PSScriptRoot) {
+    throw "PSScriptRoot is required (run via -File from saved script path)."
+}
+$workspace = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..\..")).Path
 $runner = Join-Path $workspace "scripts\run_waiting_queue_monthly_check.ps1"
 $taskLog = Join-Path $workspace "docs\final\artifacts\waiting_queue_btc_binance_daily_task.log"
 $lockPath = Join-Path $workspace "docs\final\artifacts\locks\waiting_queue_btc_binance_daily.lock.json"
