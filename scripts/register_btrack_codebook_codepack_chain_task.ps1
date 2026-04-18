@@ -11,9 +11,25 @@ param(
 $ErrorActionPreference = "Stop"
 $workspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $chain = Join-Path $workspaceRoot "scripts\Run-BtrackCodebookCodepackPromotionChain.ps1"
+$schtasks = Join-Path $env:WINDIR "System32\schtasks.exe"
+if (-not (Test-Path -LiteralPath $schtasks)) {
+    $schtasks = "schtasks.exe"
+}
+
+function Invoke-SchTasks {
+    param([string[]]$TaskArgs)
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = "SilentlyContinue"
+    try {
+        & $schtasks @TaskArgs 2>&1 | Out-Null
+        return $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $prev
+    }
+}
 
 if ($Remove) {
-    schtasks /Delete /TN $TaskName /F 2>$null | Out-Null
+    $null = Invoke-SchTasks @("/Delete", "/TN", $TaskName, "/F")
     Write-Host "Removed scheduled task (if existed): $TaskName"
     exit 0
 }
@@ -29,10 +45,10 @@ if ($DailyAt -notmatch '^\d{2}:\d{2}$') {
 $tr = "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$chain`""
 if (-not $Signoff) { $tr += " -SkipSignoff" }
 
-schtasks /Delete /TN $TaskName /F 2>$null | Out-Null
-schtasks /Create /TN $TaskName /TR $tr /SC DAILY /ST $DailyAt /F | Out-Null
-if ($LASTEXITCODE -ne 0) {
-    throw "schtasks /Create failed (exit=$LASTEXITCODE). Try elevated PowerShell."
+$null = Invoke-SchTasks @("/Delete", "/TN", $TaskName, "/F")
+$createExit = Invoke-SchTasks @("/Create", "/TN", $TaskName, "/TR", $tr, "/SC", "DAILY", "/ST", $DailyAt, "/F")
+if ($createExit -ne 0) {
+    throw "schtasks /Create failed (exit=$createExit). Try elevated PowerShell (Run as administrator)."
 }
 
 Write-Host "Registered scheduled task: $TaskName"
