@@ -1,7 +1,7 @@
 # @MKM12-METADATA
 # Type: Logic
-# Vector: {S:0.7, L:0.82, K:0.55, M:0.7}
-# Balance: 86
+# Vector: {S:0.72, L:0.84, K:0.56, M:0.72}
+# Balance: 87
 # Purpose: Observation-only agreement between independent-lens direction_score sign and score row directions (no promotion).
 # Keywords: btrack, sidecar, lens, hit-rate, observation
 from __future__ import annotations
@@ -18,6 +18,7 @@ DEFAULT_SIDECAR = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btrack_insight_sidecar_lens_hit_agreement_v1_latest.json"
 
 SCHEMA = "btrack_insight_sidecar_lens_hit_agreement_v1"
+FORMAT_VERSION = "1.1.0"
 
 
 def _utc_now() -> str:
@@ -46,9 +47,31 @@ def _direction_from_score(value: Any) -> str | None:
     return "neutral"
 
 
+def _per_date_by_row_index(per_date: list[dict[str, Any]]) -> tuple[dict[int, dict[str, Any]], list[str]]:
+    """Map score row index -> sidecar per_date row; prefer paired_row_index when valid."""
+    warnings: list[str] = []
+    out: dict[int, dict[str, Any]] = {}
+    seen_dup: set[int] = set()
+    for j, prow in enumerate(per_date):
+        if not isinstance(prow, dict):
+            continue
+        raw_idx = prow.get("paired_row_index")
+        if isinstance(raw_idx, int) and raw_idx >= 0:
+            idx = raw_idx
+        else:
+            idx = j
+            if raw_idx is not None:
+                warnings.append(f"invalid_paired_row_index_at_sidecar_pos_{j}")
+        if idx in out and idx not in seen_dup:
+            seen_dup.add(idx)
+            warnings.append(f"duplicate_paired_row_index:{idx}")
+        out[idx] = prow
+    return out, warnings
+
+
 def _agree_counts(
     score_rows: list[dict[str, Any]],
-    per_date: list[dict[str, Any]],
+    per_by_idx: dict[int, dict[str, Any]],
     lens_key: str,
     instrument_filter: str | None,
 ) -> dict[str, Any]:
@@ -56,9 +79,8 @@ def _agree_counts(
     pred_hits = 0
     n = 0
     skipped_no_lens = 0
+    skipped_no_sidecar_row = 0
     for i, srow in enumerate(score_rows):
-        if i >= len(per_date):
-            break
         ins = str(srow.get("instrument") or "").strip().lower()
         if instrument_filter and ins != instrument_filter:
             continue
@@ -66,7 +88,11 @@ def _agree_counts(
         pred = str(srow.get("predicted_direction") or "").strip().lower()
         if act not in ("bull", "bear", "neutral") or pred not in ("bull", "bear", "neutral"):
             continue
-        snap = per_date[i].get("lens_scores_snapshot")
+        prow = per_by_idx.get(i)
+        if not isinstance(prow, dict):
+            skipped_no_sidecar_row += 1
+            continue
+        snap = prow.get("lens_scores_snapshot")
         if not isinstance(snap, dict):
             skipped_no_lens += 1
             continue
@@ -85,6 +111,7 @@ def _agree_counts(
             pred_hits += 1
     return {
         "rows_used": n,
+        "skipped_no_sidecar_row": skipped_no_sidecar_row,
         "skipped_no_lens_direction": skipped_no_lens,
         "agree_with_actual": actual_hits,
         "agree_with_predicted": pred_hits,
@@ -102,7 +129,7 @@ def main() -> int:
         "--instrument",
         choices=("kospi", "btc", "all"),
         default="all",
-        help="Restrict score rows by instrument (default all).",
+        help="Primary slice for top-level by_lens (default all). by_instrument always includes all three.",
     )
     args = ap.parse_args()
 
@@ -111,7 +138,7 @@ def main() -> int:
     rows = score.get("rows") if isinstance(score.get("rows"), list) else []
     score_rows = [x for x in rows if isinstance(x, dict)]
     pdf = side.get("per_date_features")
-    per_date = pdf if isinstance(pdf, list) else []
+    per_date = [x for x in pdf if isinstance(x, dict)] if isinstance(pdf, list) else []
 
     warnings: list[str] = []
     if not per_date:
@@ -119,15 +146,32 @@ def main() -> int:
     if len(per_date) != len(score_rows):
         warnings.append(f"per_date_len_mismatch_score_rows:{len(per_date)}_vs_{len(score_rows)}")
 
+    per_by_idx, idx_warnings = _per_date_by_row_index(per_date)
+    warnings.extend(idx_warnings)
+
+    expected = set(range(len(score_rows)))
+    got = set(per_by_idx.keys())
+    if expected and not got.issuperset(expected):
+        missing = sorted(expected - got)
+        if len(missing) <= 8:
+            warnings.append(f"sidecar_missing_row_indices:{missing}")
+        else:
+            warnings.append(f"sidecar_missing_row_indices_count:{len(missing)}")
+
     inst_f: str | None = None if args.instrument == "all" else args.instrument
 
-    by_lens: dict[str, Any] = {}
-    for lk in ("logos", "myeongni", "sasang"):
-        by_lens[lk] = _agree_counts(score_rows, per_date, lk, inst_f)
+    by_instrument: dict[str, Any] = {}
+    for label, filt in (("all", None), ("kospi", "kospi"), ("btc", "btc")):
+        by_lens: dict[str, Any] = {}
+        for lk in ("logos", "myeongni", "sasang"):
+            by_lens[lk] = _agree_counts(score_rows, per_by_idx, lk, filt)
+        by_instrument[label] = by_lens
+
+    by_lens_primary = by_instrument[args.instrument]
 
     out: dict[str, Any] = {
         "schema": SCHEMA,
-        "version": "1.0.0",
+        "version": FORMAT_VERSION,
         "generated_at_utc": _utc_now(),
         "research_only": True,
         "instrument_filter": args.instrument,
@@ -135,11 +179,14 @@ def main() -> int:
         "sidecar_ref": _rel(args.sidecar_json),
         "score_row_count": len(score_rows),
         "per_date_feature_count": len(per_date),
-        "by_lens": by_lens,
+        "sidecar_row_index_map_size": len(per_by_idx),
+        "by_lens": by_lens_primary,
+        "by_instrument": by_instrument,
         "warnings": warnings,
         "notes_ko": [
-            "렌즈 direction_score 부호→bull/bear/neutral 규칙은 사이드카 빌더와 동일 해석(관측).",
-            "적중 정의는 actual_direction / predicted_direction과의 문자열 일치만; 승격 게이트 미사용.",
+            "per_date 행은 paired_row_index(유효 시)로 점수 rows에 매핑; 없으면 나열 순서.",
+            "렌즈 direction_score 부호→bull/bear/neutral; 적중은 문자열 일치만(승격 게이트 미사용).",
+            "by_instrument는 kospi/btc/all 동시 집계; by_lens는 --instrument 선택에 해당.",
         ],
     }
 

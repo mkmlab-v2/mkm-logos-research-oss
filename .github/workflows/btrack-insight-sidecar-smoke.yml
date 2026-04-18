@@ -1,0 +1,48 @@
+# Smoke: B-track insight sidecar + lens agreement observation (no promotion gates).
+name: B-track insight sidecar smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"
+      - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "tests/test_btrack_prophecy_score_insight_sidecar_stub_v1.py"
+      - "tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "docs/final/schemas/btrack_prophecy_score_insight_sidecar_v1.schema.json"
+      - "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json"
+      - "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json"
+      - ".github/workflows/btrack-insight-sidecar-smoke.yml"
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"
+      - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "tests/test_btrack_prophecy_score_insight_sidecar_stub_v1.py"
+      - "tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "docs/final/schemas/btrack_prophecy_score_insight_sidecar_v1.schema.json"
+      - "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json"
+      - "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json"
+      - ".github/workflows/btrack-insight-sidecar-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: btrack-insight-sidecar-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: pip install pytest
+      - name: pytest B-track insight sidecar
+        run: python -m pytest tests/test_btrack_prophecy_score_insight_sidecar_stub_v1.py tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py -q --tb=short

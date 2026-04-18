@@ -11,6 +11,7 @@ def test_lens_hit_agreement_artifact() -> None:
     assert ART.is_file(), "run: py scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
     data = json.loads(ART.read_text(encoding="utf-8-sig"))
     assert data.get("schema") == "btrack_insight_sidecar_lens_hit_agreement_v1"
+    assert data.get("version") == "1.1.0"
     assert data.get("research_only") is True
     by = data.get("by_lens")
     assert isinstance(by, dict)
@@ -18,3 +19,10 @@ def test_lens_hit_agreement_artifact() -> None:
         assert k in by
         blk = by[k]
         assert "rows_used" in blk and "rate_agree_with_actual" in blk
+        assert "skipped_no_sidecar_row" in blk
+
+    bi = data.get("by_instrument")
+    assert isinstance(bi, dict)
+    for ins in ("all", "kospi", "btc"):
+        assert ins in bi
+        assert "logos" in bi[ins]
