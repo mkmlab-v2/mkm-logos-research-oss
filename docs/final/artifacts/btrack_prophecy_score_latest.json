@@ -1,6 +1,6 @@
 {
   "schema": "btrack_prophecy_score_v1",
-  "generated_at_utc": "2026-04-18T07:27:30Z",
+  "generated_at_utc": "2026-04-18T07:32:01Z",
   "eval_date": "2026-04-15",
   "neutral_bps": 2.0,
   "hypothesis_path": "docs\\final\\artifacts\\btrack_hypothesis_prophecy_latest.json",
@@ -60,9 +60,7 @@
     "downside_force_bear_min_cum_down_pct": 6.0
   },
   "meta": {
-    "warnings": [
-      "btc: no prev/cur row for eval_date=2026-04-15"
-    ],
+    "warnings": [],
     "batch_eval_dates": [
       "2026-03-05",
       "2026-03-06",
@@ -744,6 +742,17 @@
       "daily_return": 0.02410957,
       "prev_close": 5967.75,
       "close": 6111.6298828125,
+      "neutral_bps": 2.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-04-15",
+      "predicted_direction": "bear",
+      "actual_direction": "bull",
+      "daily_return": 0.00840463,
+      "prev_close": 74181.609375,
+      "close": 74805.078125,
       "neutral_bps": 2.0,
       "flow_score_for_reversal": 9951.6
     }

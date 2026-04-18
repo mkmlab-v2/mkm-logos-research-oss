@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_overlay_ablation_spike_v1",
-  "generated_at_utc": "2026-04-18T07:27:38Z",
+  "generated_at_utc": "2026-04-18T07:32:10Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -23,17 +23,17 @@
     "prior_return_threshold": -0.048
   },
   "baseline": {
-    "price_directional_hit_rate": 0.423729,
-    "n_evaluated": 59,
+    "price_directional_hit_rate": 0.416667,
+    "n_evaluated": 60,
     "hits": 25
   },
   "after_overlay": {
-    "price_directional_hit_rate": 0.389831,
-    "n_evaluated": 59,
+    "price_directional_hit_rate": 0.383333,
+    "n_evaluated": 60,
     "hits": 23,
     "overlay_rows_modified": 6
   },
-  "delta_hit_rate": -0.033898,
+  "delta_hit_rate": -0.033334,
   "notes": [
     "Same scoring rules as eval_prophecy_hit_rate_v1 price mode over rows[].",
     "Overlay is a measurement placeholder — not admission to Track A / live routing.",
