@@ -19,6 +19,7 @@ DEFAULT_PROPHECY_GATE = ART / "prophecy_promotion_gates_v1_latest.json"
 DEFAULT_CODEBOOK_DRIFT = ART / "codebook_codepack_drift_latest.json"
 DEFAULT_MEASUREMENT_GATE = ART / "lg_washer_measurement_gate_latest.json"
 DEFAULT_ESTIMATION_READY = ART / "lg_washer_estimation_readiness_latest.json"
+DEFAULT_LIVE_AB = ART / "prophecy_live_ab_summary_v1_latest.json"
 DEFAULT_OUT = ART / "btrack_promotion_signoff_packet_v1_latest.json"
 
 
@@ -53,11 +54,15 @@ def main() -> int:
     drift = _load(args.codebook_drift)
     measurement = _load(args.measurement_gate)
     estimation = _load(args.estimation_readiness)
+    live_ab_path = args.live_ab_json
+    if live_ab_path is None and DEFAULT_LIVE_AB.exists():
+        live_ab_path = DEFAULT_LIVE_AB
+
     live_ab: dict[str, Any] | None = None
-    if args.live_ab_json is not None:
-        if not args.live_ab_json.exists():
-            raise SystemExit(f"live_ab_json not found: {args.live_ab_json}")
-        live_ab = _load(args.live_ab_json)
+    if live_ab_path is not None:
+        if not live_ab_path.exists():
+            raise SystemExit(f"live_ab_json not found: {live_ab_path}")
+        live_ab = _load(live_ab_path)
 
     prophecy_ready = bool(prophecy.get("auto_promote_ready") is True)
     drift_stable = str(drift.get("drift_status", "")).upper() == "STABLE"
@@ -80,17 +85,23 @@ def main() -> int:
         "measurement_gate": _rel(args.measurement_gate),
         "estimation_readiness": _rel(args.estimation_readiness),
     }
-    if live_ab is not None and args.live_ab_json is not None:
-        inputs["prophecy_live_ab_summary"] = _rel(args.live_ab_json)
+    if live_ab is not None and live_ab_path is not None:
+        inputs["prophecy_live_ab_summary"] = _rel(live_ab_path)
 
     next_actions_ko: list[str] = [
         "prophecy: human sign-off (운영) 확정",
         "lg_washer: 타깃 보드 실측 JSON으로 교체 후 measurement_gate 재실행(현재는 로컬 벤치 프록시 가능 시 GO)",
     ]
+    live_ab_status = str((live_ab or {}).get("status", "")).upper() if isinstance(live_ab, dict) else ""
     if live_ab is None:
         next_actions_ko.insert(
             0,
             "prophecy: 소액 live A/B 요약 JSON을 --live-ab-json로 붙여 재생성(없으면 human sign-off에 수동 첨부)",
+        )
+    elif live_ab_status != "READY":
+        next_actions_ko.insert(
+            0,
+            "prophecy: live A/B 요약은 존재하나 status!=READY → KPI 24h 체결/손익 필드 채운 뒤 요약 재생성",
         )
 
     out = {
