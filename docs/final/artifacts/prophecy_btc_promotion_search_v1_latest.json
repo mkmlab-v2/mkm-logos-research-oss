@@ -1,0 +1,151 @@
+{
+  "schema": "prophecy_btc_promotion_search_v1",
+  "generated_at_utc": "2026-04-18T13:35:35Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "inputs": {
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "n_folds_grid": [
+      4,
+      5,
+      6,
+      8
+    ],
+    "objective_grid": [
+      "margin_vs_bull",
+      "accuracy"
+    ],
+    "thresholds": {
+      "min_mean_test_accuracy": 0.55,
+      "max_stdev_test_accuracy": 0.15,
+      "min_fraction_test_beats_always_bull": 0.5,
+      "min_min_test_accuracy_across_folds": 0.4
+    },
+    "total_candidates": 8
+  },
+  "summary": {
+    "n_successful_runs": 8,
+    "n_failed_runs": 0,
+    "n_pass_candidates": 0,
+    "best_candidate": {
+      "n_folds": 6,
+      "train_objective": "margin_vs_bull",
+      "aggregate": {
+        "mean_test_accuracy": 0.48,
+        "stdev_test_accuracy": 0.203961,
+        "min_test_accuracy": 0.2,
+        "max_test_accuracy": 0.8,
+        "fraction_test_beats_always_bull": 0.4
+      },
+      "passes_default_gates": false,
+      "rank_score": 1.396039
+    }
+  },
+  "top_candidates": [
+    {
+      "n_folds": 6,
+      "train_objective": "margin_vs_bull",
+      "aggregate": {
+        "mean_test_accuracy": 0.48,
+        "stdev_test_accuracy": 0.203961,
+        "min_test_accuracy": 0.2,
+        "max_test_accuracy": 0.8,
+        "fraction_test_beats_always_bull": 0.4
+      },
+      "passes_default_gates": false,
+      "rank_score": 1.396039
+    },
+    {
+      "n_folds": 6,
+      "train_objective": "accuracy",
+      "aggregate": {
+        "mean_test_accuracy": 0.48,
+        "stdev_test_accuracy": 0.203961,
+        "min_test_accuracy": 0.2,
+        "max_test_accuracy": 0.8,
+        "fraction_test_beats_always_bull": 0.4
+      },
+      "passes_default_gates": false,
+      "rank_score": 1.396039
+    },
+    {
+      "n_folds": 5,
+      "train_objective": "margin_vs_bull",
+      "aggregate": {
+        "mean_test_accuracy": 0.458333,
+        "stdev_test_accuracy": 0.138193,
+        "min_test_accuracy": 0.333333,
+        "max_test_accuracy": 0.666667,
+        "fraction_test_beats_always_bull": 0.25
+      },
+      "passes_default_gates": false,
+      "rank_score": 1.345139
+    },
+    {
+      "n_folds": 5,
+      "train_objective": "accuracy",
+      "aggregate": {
+        "mean_test_accuracy": 0.458333,
+        "stdev_test_accuracy": 0.138193,
+        "min_test_accuracy": 0.333333,
+        "max_test_accuracy": 0.666667,
+        "fraction_test_beats_always_bull": 0.25
+      },
+      "passes_default_gates": false,
+      "rank_score": 1.345139
+    },
+    {
+      "n_folds": 4,
+      "train_objective": "margin_vs_bull",
+      "aggregate": {
+        "mean_test_accuracy": 0.464286,
+        "stdev_test_accuracy": 0.191219,
+        "min_test_accuracy": 0.25,
+        "max_test_accuracy": 0.714286,
+        "fraction_test_beats_always_bull": 0.333333
+      },
+      "passes_default_gates": false,
+      "rank_score": 1.337353
+    },
+    {
+      "n_folds": 4,
+      "train_objective": "accuracy",
+      "aggregate": {
+        "mean_test_accuracy": 0.464286,
+        "stdev_test_accuracy": 0.191219,
+        "min_test_accuracy": 0.25,
+        "max_test_accuracy": 0.714286,
+        "fraction_test_beats_always_bull": 0.333333
+      },
+      "passes_default_gates": false,
+      "rank_score": 1.337353
+    },
+    {
+      "n_folds": 8,
+      "train_objective": "margin_vs_bull",
+      "aggregate": {
+        "mean_test_accuracy": 0.464286,
+        "stdev_test_accuracy": 0.182884,
+        "min_test_accuracy": 0.25,
+        "max_test_accuracy": 0.75,
+        "fraction_test_beats_always_bull": 0.285714
+      },
+      "passes_default_gates": false,
+      "rank_score": 1.288545
+    },
+    {
+      "n_folds": 8,
+      "train_objective": "accuracy",
+      "aggregate": {
+        "mean_test_accuracy": 0.464286,
+        "stdev_test_accuracy": 0.182884,
+        "min_test_accuracy": 0.25,
+        "max_test_accuracy": 0.75,
+        "fraction_test_beats_always_bull": 0.285714
+      },
+      "passes_default_gates": false,
+      "rank_score": 1.288545
+    }
+  ],
+  "errors": []
+}
