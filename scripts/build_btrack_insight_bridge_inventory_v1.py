@@ -53,6 +53,8 @@ WATCHLIST: list[tuple[str, str]] = [
     ("vault_sync_script", "scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1"),
     ("mega_batch_script", "scripts/run_notebooklm_mega_insight_batch.py"),
     ("dual_gate_refresh", "scripts/refresh_prophecy_promotion_gates_dual_v1.py"),
+    ("prophecy_live_ab_summary_script", "scripts/build_prophecy_live_ab_summary_from_kpi_v1.py"),
+    ("defense_edge_execution_evidence_script", "scripts/build_defense_edge_execution_evidence_v1.py"),
     ("notebooklm_pull_manifest", "docs/final/artifacts/derived/notebooklm_pull_manifest_v1.json"),
     ("agent_memory_ssot", "docs/final/CENTRAL_AGENT_MEMORY_V1.md"),
     ("prophecy_score_insight_sidecar", "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json"),

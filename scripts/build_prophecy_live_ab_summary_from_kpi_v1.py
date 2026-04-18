@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-ROOT = Path("C:/workspace")
+ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_KPI = ROOT / "projects" / "bitcoin-trading" / "memory" / "kpi" / "latest_kpi.json"
 _PANEL_GATE = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_gates_v1_panel_calibrated_latest.json"
 _DEFAULT_GATE = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_gates_v1_latest.json"

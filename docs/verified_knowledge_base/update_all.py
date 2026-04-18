@@ -15,7 +15,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any
 
-WORKSPACE_ROOT = Path("C:/workspace")
+WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(WORKSPACE_ROOT))
 
 # 출력 디렉토리

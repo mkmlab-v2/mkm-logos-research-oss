@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 import logging
 
-WORKSPACE_ROOT = Path("C:/workspace")
+WORKSPACE_ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(WORKSPACE_ROOT))
 sys.path.insert(0, str(WORKSPACE_ROOT / "projects" / "mkm" / "mkm-backend-nitro" / "app" / "core"))
 

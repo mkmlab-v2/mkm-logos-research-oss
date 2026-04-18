@@ -87,6 +87,8 @@ def main() -> int:
             "signoff_packet_latest": _optional_link(ROOT / "docs/final/artifacts/btrack_promotion_signoff_packet_v1_latest.json"),
             "live_ab_summary": _optional_link(ROOT / "docs/final/artifacts/prophecy_live_ab_summary_v1_latest.json"),
             "dual_gate_refresh_script": _optional_link(ROOT / "scripts/refresh_prophecy_promotion_gates_dual_v1.py"),
+            "live_ab_summary_build_script": _optional_link(ROOT / "scripts/build_prophecy_live_ab_summary_from_kpi_v1.py"),
+            "defense_edge_evidence_build_script": _optional_link(ROOT / "scripts/build_defense_edge_execution_evidence_v1.py"),
             "signoff_build_script": _optional_link(ROOT / "scripts/build_btrack_promotion_signoff_packet_v1.py"),
             "insight_sidecar_chain_script": _optional_link(ROOT / "scripts/Run-BtrackInsightSidecarChain.ps1"),
             "insight_sidecar_chain_task_register_script": _optional_link(

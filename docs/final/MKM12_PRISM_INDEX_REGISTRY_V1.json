@@ -1,8 +1,8 @@
 {
   "schema": "mkm12_prism_index_registry_v1",
-  "version": "1.0.10",
-  "ts_utc": "2026-04-20T03:00:00Z",
-  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. LG washer pipeline ROOT portability 2026-04-19.",
+  "version": "1.0.11",
+  "ts_utc": "2026-04-20T04:00:00Z",
+  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. Repo-root ROOT cleanup (prophecy/defense/bitcoin-trading) 2026-04-19.",
   "entries": [
     {
       "id": "prism_constitution_implementation_facts",
@@ -255,6 +255,20 @@
       "prism_axis": "M",
       "agent_access": "execute_observe",
       "summary_ko": "코드북/코드팩·리포 지문 드리프트 검사(사인오프 입력)"
+    },
+    {
+      "id": "prism_script_refresh_prophecy_promotion_gates_dual",
+      "path": "scripts/refresh_prophecy_promotion_gates_dual_v1.py",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "예언 승격 게이트 dual 산출물 일괄 갱신"
+    },
+    {
+      "id": "prism_script_build_prophecy_live_ab_summary_from_kpi",
+      "path": "scripts/build_prophecy_live_ab_summary_from_kpi_v1.py",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "live A/B 요약 JSON 빌드(KPI 기반)"
     }
   ]
 }

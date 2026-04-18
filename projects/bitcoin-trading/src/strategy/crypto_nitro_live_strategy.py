@@ -27,16 +27,13 @@ logger = logging.getLogger(__name__)
 
 # 경로 설정
 # __file__: projects/bitcoin-trading/src/strategy/crypto_nitro_live_strategy.py
-# workspace_root: C:/workspace (strategy -> src -> bitcoin-trading -> projects -> workspace = 5단계)
+# workspace root: strategy -> src -> bitcoin-trading -> projects -> repo root (5 parents)
 current_file = Path(__file__).resolve()
-workspace_root = current_file.parent.parent.parent.parent.parent
-# 경로 검증: workspace_root가 실제로 workspace인지 확인
-if not workspace_root.exists() or workspace_root.name not in ("workspace", "C:"):
-    # 경로 계산 오류 시 직접 설정
-    workspace_root = Path("C:/workspace").resolve()
-    if not workspace_root.exists():
-        # 환경 변수에서 확인
-        workspace_root = Path(os.getenv("WORKSPACE_ROOT", "C:/workspace")).resolve()
+workspace_root = current_file.parents[4]
+if not (workspace_root / "scripts").is_dir():
+    _alt = os.getenv("WORKSPACE_ROOT") or os.getenv("MKM_WORKSPACE_ROOT")
+    if _alt:
+        workspace_root = Path(_alt).expanduser().resolve()
 
 sys.path.insert(0, str(workspace_root))
 scripts_path = workspace_root / "scripts"

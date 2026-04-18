@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 
-ROOT = Path("C:/workspace")
+ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
 BENCH_L1 = ART / "bench_l1_api_load_latest.json"
 DEFENSE_HYBRID = ART / "defense_hybrid_compression_bench_v0.json"

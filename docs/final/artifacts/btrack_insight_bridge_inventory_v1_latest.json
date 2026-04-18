@@ -1,14 +1,14 @@
 {
   "schema": "btrack_insight_bridge_inventory_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-18T18:39:55Z",
+  "generated_at_utc": "2026-04-18T18:44:08Z",
   "research_only": true,
   "workspace_root_hint": "C:/workspace",
   "prism": {
     "registry_path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
     "exists": true,
     "schema": "mkm12_prism_index_registry_v1",
-    "entry_count": 36
+    "entry_count": 38
   },
   "notebooklm_manifest": {
     "path": "docs/NotebookLM_sources_manifest.md",
@@ -34,8 +34,8 @@
       "role": "prism_registry",
       "path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
       "exists": true,
-      "bytes": 11246,
-      "mtime_utc": "2026-04-18T18:39:47Z",
+      "bytes": 11851,
+      "mtime_utc": "2026-04-18T18:44:03Z",
       "kind": "file"
     },
     {
@@ -229,7 +229,7 @@
       "path": "scripts/build_lg_washer_voice_golden_jsonl_v1.py",
       "exists": true,
       "bytes": 22578,
-      "mtime_utc": "2026-04-18T18:39:17Z",
+      "mtime_utc": "2026-04-18T18:41:23Z",
       "kind": "file"
     },
     {
@@ -237,7 +237,7 @@
       "path": "scripts/check_codebook_codepack_drift_v1.py",
       "exists": true,
       "bytes": 4220,
-      "mtime_utc": "2026-04-18T18:39:17Z",
+      "mtime_utc": "2026-04-18T18:41:23Z",
       "kind": "file"
     },
     {
@@ -245,7 +245,7 @@
       "path": "scripts/check_lg_washer_measurement_gate_v1.py",
       "exists": true,
       "bytes": 3799,
-      "mtime_utc": "2026-04-18T18:39:16Z",
+      "mtime_utc": "2026-04-18T18:41:23Z",
       "kind": "file"
     },
     {
@@ -253,7 +253,7 @@
       "path": "scripts/check_lg_washer_estimation_readiness_v1.py",
       "exists": true,
       "bytes": 3995,
-      "mtime_utc": "2026-04-18T18:39:16Z",
+      "mtime_utc": "2026-04-18T18:41:23Z",
       "kind": "file"
     },
     {
@@ -284,8 +284,24 @@
       "role": "dual_gate_refresh",
       "path": "scripts/refresh_prophecy_promotion_gates_dual_v1.py",
       "exists": true,
-      "bytes": 4510,
-      "mtime_utc": "2026-04-18T17:35:06Z",
+      "bytes": 4525,
+      "mtime_utc": "2026-04-18T18:42:59Z",
+      "kind": "file"
+    },
+    {
+      "role": "prophecy_live_ab_summary_script",
+      "path": "scripts/build_prophecy_live_ab_summary_from_kpi_v1.py",
+      "exists": true,
+      "bytes": 4262,
+      "mtime_utc": "2026-04-18T18:42:59Z",
+      "kind": "file"
+    },
+    {
+      "role": "defense_edge_execution_evidence_script",
+      "path": "scripts/build_defense_edge_execution_evidence_v1.py",
+      "exists": true,
+      "bytes": 4672,
+      "mtime_utc": "2026-04-18T18:42:59Z",
       "kind": "file"
     },
     {

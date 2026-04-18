@@ -22,7 +22,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path("C:/workspace")
+ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
 EVAL = ROOT / "scripts" / "eval_prophecy_promotion_gates_v1.py"
 DEFAULT_LENS = ART / "prophecy_per_date_combo_walkforward_v1_latest.json"

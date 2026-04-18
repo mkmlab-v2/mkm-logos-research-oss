@@ -29,12 +29,12 @@ import shutil
 # .parent.parent.parent.parent = projects
 # .parent.parent.parent.parent.parent = workspace root
 _current_file = Path(__file__).resolve()
-if _current_file.parts[-4] == "bitcoin-trading":
-    # projects/bitcoin-trading/src/evolution/auto_evolution_engine.py
-    WORKSPACE_ROOT = _current_file.parent.parent.parent.parent.parent
-else:
-    # 다른 구조인 경우 직접 계산
-    WORKSPACE_ROOT = Path("C:/workspace").resolve()
+# projects/bitcoin-trading/src/evolution/... -> repo root is five parents up
+WORKSPACE_ROOT = _current_file.parents[4]
+if not (WORKSPACE_ROOT / "scripts").is_dir():
+    _alt = os.getenv("WORKSPACE_ROOT") or os.getenv("MKM_WORKSPACE_ROOT")
+    if _alt:
+        WORKSPACE_ROOT = Path(_alt).expanduser().resolve()
 
 sys.path.insert(0, str(WORKSPACE_ROOT))
 sys.path.insert(0, str(WORKSPACE_ROOT / "projects" / "bitcoin-trading"))
