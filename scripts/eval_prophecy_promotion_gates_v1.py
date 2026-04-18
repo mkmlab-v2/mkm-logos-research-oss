@@ -40,7 +40,8 @@ DEFAULT_LENS_WF = ROOT / "docs" / "final" / "artifacts" / "prophecy_per_date_com
 DEFAULT_INSTRUMENT_WF = ROOT / "docs" / "final" / "artifacts" / "prophecy_instrument_combo_walkforward_v1_latest.json"
 DEFAULT_SCORE = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score_latest.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_gates_v1_latest.json"
-DEFAULT_STREAK_HISTORY = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_strict_streak_v1.json"
+# Default streak file for ad-hoc eval runs; dual refresh uses *_legacy_v1 / *_panel_calibrated_v1.
+DEFAULT_STREAK_HISTORY = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_strict_streak_legacy_v1.json"
 SCHEMA = "prophecy_promotion_gates_v1"
 VALID_DIR = {"bull", "bear", "neutral"}
 SCHEMA_LENS_WF = "prophecy_per_date_combo_walkforward_v1"
