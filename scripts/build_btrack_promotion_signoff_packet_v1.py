@@ -40,6 +40,12 @@ def main() -> int:
     ap.add_argument("--codebook-drift", type=Path, default=DEFAULT_CODEBOOK_DRIFT)
     ap.add_argument("--measurement-gate", type=Path, default=DEFAULT_MEASUREMENT_GATE)
     ap.add_argument("--estimation-readiness", type=Path, default=DEFAULT_ESTIMATION_READY)
+    ap.add_argument(
+        "--live-ab-json",
+        type=Path,
+        default=None,
+        help="Optional path to a small JSON summary of live A/B results (control vs treatment).",
+    )
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
@@ -47,11 +53,15 @@ def main() -> int:
     drift = _load(args.codebook_drift)
     measurement = _load(args.measurement_gate)
     estimation = _load(args.estimation_readiness)
+    live_ab: dict[str, Any] | None = None
+    if args.live_ab_json is not None:
+        if not args.live_ab_json.exists():
+            raise SystemExit(f"live_ab_json not found: {args.live_ab_json}")
+        live_ab = _load(args.live_ab_json)
 
     prophecy_ready = bool(prophecy.get("auto_promote_ready") is True)
     drift_stable = str(drift.get("drift_status", "")).upper() == "STABLE"
     measurement_go = str(measurement.get("status", "")).upper() == "GO"
-    estimation_ready = str(estimation.get("status", "")).upper() == "ESTIMATION_READY"
 
     prophecy_decision = "READY_FOR_HUMAN_SIGNOFF" if prophecy_ready else "HOLD"
     lg_decision = "READY_FOR_HUMAN_SIGNOFF" if (drift_stable and measurement_go) else "HOLD"
@@ -64,22 +74,37 @@ def main() -> int:
     if not measurement_go:
         blockers.append("lg_measurement_gate_not_go")
 
+    inputs: dict[str, Any] = {
+        "prophecy_gate": _rel(args.prophecy_gate),
+        "codebook_drift": _rel(args.codebook_drift),
+        "measurement_gate": _rel(args.measurement_gate),
+        "estimation_readiness": _rel(args.estimation_readiness),
+    }
+    if live_ab is not None and args.live_ab_json is not None:
+        inputs["prophecy_live_ab_summary"] = _rel(args.live_ab_json)
+
+    next_actions_ko: list[str] = [
+        "prophecy: human sign-off (운영) 확정",
+        "lg_washer: 타깃 보드 실측 JSON으로 교체 후 measurement_gate 재실행(현재는 로컬 벤치 프록시 가능 시 GO)",
+    ]
+    if live_ab is None:
+        next_actions_ko.insert(
+            0,
+            "prophecy: 소액 live A/B 요약 JSON을 --live-ab-json로 붙여 재생성(없으면 human sign-off에 수동 첨부)",
+        )
+
     out = {
         "schema": "btrack_promotion_signoff_packet_v1",
         "generated_at_utc": _utc_now(),
         "research_only": True,
-        "inputs": {
-            "prophecy_gate": _rel(args.prophecy_gate),
-            "codebook_drift": _rel(args.codebook_drift),
-            "measurement_gate": _rel(args.measurement_gate),
-            "estimation_readiness": _rel(args.estimation_readiness),
-        },
+        "inputs": inputs,
         "track_status": {
             "prophecy": {
                 "decision": prophecy_decision,
                 "auto_promote_ready": prophecy.get("auto_promote_ready"),
                 "strict_pass_streak": prophecy.get("strict_pass_streak"),
                 "promotion_recommendation": prophecy.get("promotion_recommendation"),
+                "live_ab_summary": live_ab,
             },
             "lg_washer": {
                 "decision": lg_decision,
@@ -97,10 +122,7 @@ def main() -> int:
             "lg_washer: measurement_gate는 GO 가능하나, measurement_kind가 local proxy면 제출 최종본으로 단정 금지",
             "estimation_readiness는 실측 존재 시 MEASUREMENT_PRIMARY로 표시되며 measurement_gate가 우선이다",
         ],
-        "next_actions_ko": [
-            "prophecy: 소액 live A/B 결과 포함 human sign-off 패킷 확정",
-            "lg_washer: 타깃 보드 실측 JSON으로 교체 후 measurement_gate 재실행(현재는 로컬 벤치 프록시 가능 시 GO)",
-        ],
+        "next_actions_ko": next_actions_ko,
     }
 
     args.out.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
