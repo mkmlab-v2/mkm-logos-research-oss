@@ -9,7 +9,8 @@
 # hypothesis at docs/final/artifacts/btrack_hypothesis_prophecy_latest.json (from daily chain or stub).
 #
 # Optional env: MKM_BTC_DAILY_CSV (path to BTC daily CSV), MKM_PROPHECY_PROXY_REGISTRY_GLOB (proxy eval),
-#   MKM_PROPHECY_SHADOW_PANEL_MODE (both | all | instrument_combo_best | per_date_lens_holdout_best | walkforward_aggregate) when -ShadowPanelMode omitted.
+#   MKM_PROPHECY_SHADOW_PANEL_MODE (both | all | instrument_combo_best | per_date_lens_holdout_best | walkforward_aggregate) when -ShadowPanelMode omitted,
+#   MKM_PROPHECY_WALKFORWARD_N_FOLDS (integer) passed to walk-forward script when shadow mode is all or walkforward_aggregate.
 #
 # Example (Task Scheduler):
 #   powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\run_daily_prophecy_eval_and_report.ps1" -IncludeDatedArchive
