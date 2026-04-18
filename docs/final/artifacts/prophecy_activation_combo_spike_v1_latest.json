@@ -1,0 +1,76 @@
+{
+  "schema": "prophecy_activation_combo_spike_v1",
+  "generated_at_utc": "2026-04-18T07:40:47Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "inputs": {
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "kospi_csv": "C:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
+    "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+    "min_activation_changes": 20
+  },
+  "baseline": {
+    "lane_id": "baseline",
+    "metrics": {
+      "price_directional_hit_rate": 0.416667,
+      "n_evaluated": 60,
+      "price_hits": 25
+    }
+  },
+  "lanes": [
+    {
+      "lane_id": "always_bull_control",
+      "changed_rows": 60,
+      "metrics": {
+        "price_directional_hit_rate": 0.566667,
+        "n_evaluated": 60,
+        "price_hits": 34
+      },
+      "delta_vs_baseline": 0.15,
+      "activation_met": true
+    },
+    {
+      "lane_id": "always_bear_control",
+      "changed_rows": 0,
+      "metrics": {
+        "price_directional_hit_rate": 0.416667,
+        "n_evaluated": 60,
+        "price_hits": 25
+      },
+      "delta_vs_baseline": 0.0,
+      "activation_met": false
+    },
+    {
+      "lane_id": "prior_completed_return_sign_v1",
+      "changed_rows": 32,
+      "missing_prior_rows": 0,
+      "metrics": {
+        "price_directional_hit_rate": 0.4,
+        "n_evaluated": 60,
+        "price_hits": 24
+      },
+      "delta_vs_baseline": -0.016667,
+      "activation_met": true,
+      "note": "Causal prior return sign per instrument/date; no same-day lookahead."
+    }
+  ],
+  "best_lane_by_hit_rate": {
+    "lane_id": "always_bull_control",
+    "changed_rows": 60,
+    "metrics": {
+      "price_directional_hit_rate": 0.566667,
+      "n_evaluated": 60,
+      "price_hits": 34
+    },
+    "delta_vs_baseline": 0.15,
+    "activation_met": true
+  },
+  "summary": {
+    "activation_target_changes": 20,
+    "lanes_meeting_activation": [
+      "always_bull_control",
+      "prior_completed_return_sign_v1"
+    ]
+  },
+  "note": "Activation-first probe. Control lanes are not deployable policies; used to size headroom and calibration gaps."
+}
