@@ -15,6 +15,7 @@ on:
       - "scripts/validate_ephemeris_baseline.py"
       - "scripts/run_manseryeok_validation_smoke_v1.py"
       - "scripts/validate_collision_dictionary_v1.py"
+      - "scripts/collision_dict_refresh_native_v1.py"
       - "scripts/build_ganji_validation_cohort_v1.py"
       - "scripts/populate_swiss_ephemeris_lichun.py"
       - "scripts/manseryeok_perfect_final.py"
