@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-04-20T00:15:00Z
+- **last_updated_utc:** 2026-04-20T00:35:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -101,6 +101,7 @@
 | 2026-04-19 (LG 게이트·경로·Phase3 검증) | `check_lg_washer_measurement_gate_v1`·`check_lg_washer_estimation_readiness_v1`·`build_btrack_promotion_signoff_packet_v1` 재실행(측정은 여전히 proxy·실측 교체는 장비 수령 후). `bitcoin-trading` `src`/`ops`·`biblical_single_lane_trading_hook`에서 `C:/workspace` 리터럴 제거; `strategic_failure_event`/`strategic_news_extractor` 워크스페이스 `memory` 경로를 `parents[4]`로 정정. `pytest` `test_btrack_phase3_snapshot_sync`·`test_btrack_prophecy_score_insight_sidecar_stub_v1` 통과. |
 | 2026-04-19 (대기열 PS) | `run_waiting_queue_btc_binance_daily.ps1`의 고정 `C:\\workspace` 제거·`PSScriptRoot`에서 레포 루트 4단계 상위로 해석; CENTRAL `다음에 할 일`을 실측·푸시·P0/대기열 점검 축으로 재작성. |
 | 2026-04-20 (멀티렌즈 회귀) | `pytest`: `test_independent_lenses_v0`·`test_independent_lens_shadow_gate_v1`·`test_independent_lens_fusion_stub_v0`·`test_scm_boming_jiju_lexicon_v1`·`test_eval_btrack_insight_sidecar_lens_hit_agreement_v1` 일괄 **13 passed** — 명리/사상/로고스 렌즈 러너·섀도 게이트·퓨전 스텁·보명지주 렉시콘·사이드카 렌즈 일치 eval이 CI 가능 상태로 유지됨을 확인. |
+| 2026-04-20 (멀티렌즈 CI) | `.github/workflows/multilens-independent-lens-smoke.yml` 추가: 위 pytest 번들을 path-filtered push/PR에서 자동 실행; `verify_p0_constitution_gate_paths.ps1`·`MKM12_PRISM_INDEX_REGISTRY_V1.json`에 워크플로 경로 등록. |
 | | |
 
 ---

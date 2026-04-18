@@ -271,6 +271,13 @@
       "summary_ko": "코드북/코드팩 프로모 체인 Windows 작업 스케줄러 등록·제거"
     },
     {
+      "id": "prism_workflow_multilens_independent_lens_smoke",
+      "path": ".github/workflows/multilens-independent-lens-smoke.yml",
+      "prism_axis": "L",
+      "agent_access": "execute_observe",
+      "summary_ko": "CI: 명리·사상·로고스 독립 렌즈+섀도 게이트+퓨전 스텁+보명 렉시콘+사이드카 렌즈일치 pytest 스모크"
+    },
+    {
       "id": "prism_script_refresh_prophecy_promotion_gates_dual",
       "path": "scripts/refresh_prophecy_promotion_gates_dual_v1.py",
       "prism_axis": "M",

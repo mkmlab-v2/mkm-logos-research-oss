@@ -28,6 +28,7 @@ $required = @(
     "docs\final\artifacts\btrack_insight_sidecar_lens_hit_agreement_v1_latest.json",
     "scripts\Run-BtrackInsightSidecarChain.ps1",
     "scripts\Run-BtrackCodebookCodepackPromotionChain.ps1",
+    ".github\workflows\multilens-independent-lens-smoke.yml",
     "scripts\register_btrack_insight_sidecar_chain_task.ps1",
     "scripts\register_btrack_codebook_codepack_chain_task.ps1",
     "scripts\validate_lg_washer_voice_golden_jsonl_v1.py",

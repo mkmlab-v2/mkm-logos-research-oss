@@ -1,0 +1,75 @@
+# Smoke: independent lens runners (myeongni / sasang / logos) + shadow gate + fusion stub
+# + boming lexicon + B-track sidecar lens agreement eval (no GPU).
+name: Multilens independent lens smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop, "chore/**"]
+    paths:
+      - "scripts/run_lens_myeongni.py"
+      - "scripts/run_lens_sasang.py"
+      - "scripts/run_lens_logos.py"
+      - "scripts/report_independent_lens_shadow_gate.py"
+      - "scripts/report_independent_lens_fusion_stub_v0.py"
+      - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "tests/test_independent_lenses_v0.py"
+      - "tests/test_myeongni_independent_lens_v0.py"
+      - "tests/test_independent_lens_shadow_gate_v1.py"
+      - "tests/test_independent_lens_fusion_stub_v0.py"
+      - "tests/test_scm_boming_jiju_lexicon_v1.py"
+      - "tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "data/myeongni/**"
+      - "data/sasang/**"
+      - "docs/final/artifacts/independent_lens_shadow_gate_latest.json"
+      - "docs/final/artifacts/independent_lens_fusion_stub_latest.json"
+      - ".github/workflows/multilens-independent-lens-smoke.yml"
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/run_lens_myeongni.py"
+      - "scripts/run_lens_sasang.py"
+      - "scripts/run_lens_logos.py"
+      - "scripts/report_independent_lens_shadow_gate.py"
+      - "scripts/report_independent_lens_fusion_stub_v0.py"
+      - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "tests/test_independent_lenses_v0.py"
+      - "tests/test_myeongni_independent_lens_v0.py"
+      - "tests/test_independent_lens_shadow_gate_v1.py"
+      - "tests/test_independent_lens_fusion_stub_v0.py"
+      - "tests/test_scm_boming_jiju_lexicon_v1.py"
+      - "tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "data/myeongni/**"
+      - "data/sasang/**"
+      - "docs/final/artifacts/independent_lens_shadow_gate_latest.json"
+      - "docs/final/artifacts/independent_lens_fusion_stub_latest.json"
+      - ".github/workflows/multilens-independent-lens-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: multilens-independent-lens-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: pip install pytest
+      - name: Multilens independent lens regression bundle
+        run: >
+          python -m pytest
+          tests/test_independent_lenses_v0.py
+          tests/test_myeongni_independent_lens_v0.py
+          tests/test_independent_lens_shadow_gate_v1.py
+          tests/test_independent_lens_fusion_stub_v0.py
+          tests/test_scm_boming_jiju_lexicon_v1.py
+          tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py
+          -q --tb=short
