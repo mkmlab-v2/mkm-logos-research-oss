@@ -13,7 +13,9 @@ from typing import List, Dict, Any, Optional
 _current = Path(__file__).resolve()
 _workspace_root = _current.parent.parent.parent.parent.parent
 if not _workspace_root.exists():
-    _workspace_root = Path(os.getenv("WORKSPACE_ROOT", "C:/workspace")).resolve()
+    _env_wr = os.getenv("WORKSPACE_ROOT")
+    if _env_wr:
+        _workspace_root = Path(_env_wr).resolve()
 
 DEFAULT_WISDOM_PATH = _workspace_root / "data" / "distill_14b" / "trading_wisdom.jsonl"
 

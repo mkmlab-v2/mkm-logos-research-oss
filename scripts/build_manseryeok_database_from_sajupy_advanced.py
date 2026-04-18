@@ -26,7 +26,8 @@ from typing import Dict, Any, List, Optional, Tuple
 from collections import defaultdict
 
 # 워크스페이스 경로 설정
-WORKSPACE_ROOT = Path(os.getenv("WORKSPACE_ROOT", "C:/workspace"))
+_wr = os.getenv("WORKSPACE_ROOT")
+WORKSPACE_ROOT = Path(_wr).resolve() if _wr else Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(WORKSPACE_ROOT))
 
 # sajupy 라이브러리

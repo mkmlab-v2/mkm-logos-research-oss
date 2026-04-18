@@ -374,8 +374,9 @@ def main():
     logger.info("📚 표준 코드북 구축 스크립트")
     logger.info("=" * 80)
     
-    # 워크스페이스 루트
-    workspace_root = Path(os.getenv("WORKSPACE_ROOT", "C:/workspace"))
+    # 워크스페이스 루트 (…/scripts/experimental/codepack_recovery/scripts → repo root)
+    _wr = os.getenv("WORKSPACE_ROOT")
+    workspace_root = Path(_wr).resolve() if _wr else Path(__file__).resolve().parents[4]
     
     # 출력 경로
     output_path = workspace_root / "memory" / "codebooks" / "standard_codebook_v1.0.json"
