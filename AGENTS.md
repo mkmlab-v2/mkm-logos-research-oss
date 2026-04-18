@@ -2,6 +2,12 @@
 
 **역할**: Cursor/Athena 에이전트가 먼저 읽는 **짧은 진입점**이다. 상세 규칙은 아래 파일이 주도한다.
 
+## 중앙 메모리 (크로스 채팅 정체성)
+
+- **지속 SSOT:** `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — Athena 정체성·격벽·Fact-Lock·「분기별 한 줄」.
+- **자동 주입:** `.cursor/rules/central-agent-memory.mdc` (`alwaysApply`)에 **SSOT 핵심 5줄**이 매 에이전트 턴 컨텍스트에 포함된다. `@` 없이도 원칙 정렬은 가능하다.
+- **한계:** 채팅 로그는 세션 간 공유되지 않는다. “지난 작업” 맥락은 **본 파일·커밋**으로 누적한다. 표 전체·깊은 동기화가 필요하면 작업 시작 시 `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` 또는 에이전트 `Read`를 쓴다.
+
 ## 세션 핸드오프 (선택)
 
 새 채팅에서 직전 작전의 팩트만 이어 붙일 때 `@docs/final/CURRENT_OPS_SNAPSHOT.md`를 첨부한다. **불변 SSOT가 아니며** 필요 시 갱신·비운다. 압축 파이프라인(A/B Track)과 역할을 섞지 않는다.
@@ -21,6 +27,7 @@
 
 ## 로컬 검증 진입점 (개발·PR 전 권장)
 
+- **만세력 Phase B 스모크 (Meeus vs Swiss 立春 Reference B + 59-case ganji 코호트):** `python scripts/run_manseryeok_validation_smoke_v1.py` (B-2만: `--skip-ephemeris`). CI 워크플로: `.github/workflows/manseryeok-validation-smoke.yml`.
 - **구현 판정**은 (3)의 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`와 호출 가능 스크립트·테스트로만 한다. 브리핑·노트만으로 경로를 확정하지 않는다.
 - **번들 한 방**: `scripts/run_fact_lock_bundle.ps1` — 루트에서 실행; 맥락·완료 정의는 `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 하단.
 - **보조**: `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` (bitcoin-trading 디렉터리에서). CI 정합은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6.

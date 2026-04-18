@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ganji_mapping_validate_input_v1",
+  "title": "Ganji mapping layer validation input",
+  "type": "object",
+  "required": ["schema", "version", "rule_set_id", "cases"],
+  "properties": {
+    "schema": { "const": "ganji_mapping_validate_input_v1" },
+    "version": { "type": "string" },
+    "rule_set_id": { "type": "string" },
+    "normalization_profile_id": { "type": "string" },
+    "cohort_meta": {
+      "type": "object",
+      "description": "Optional provenance for generated cohorts (build_ganji_validation_cohort_v1.py)"
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["case_id", "birth_instant_utc"],
+        "properties": {
+          "case_id": { "type": "string" },
+          "birth_instant_utc": { "type": "string", "format": "date-time" },
+          "location": {
+            "type": "object",
+            "properties": {
+              "iana_tz": { "type": "string" },
+              "lat": { "type": "number" },
+              "lon": { "type": "number" }
+            }
+          },
+          "expected_pillars": {
+            "type": "object",
+            "properties": {
+              "yeon": { "type": "string" },
+              "wol": { "type": "string" },
+              "il": { "type": "string" },
+              "si": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

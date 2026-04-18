@@ -1,0 +1,2041 @@
+{
+  "schema": "manseryeok_diff_target_output_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-04-18T04:38:39Z",
+  "timezone": "Asia/Seoul",
+  "reproducibility": {
+    "grid_spec_hash": "89a610b864255a8eb3911ece7bea427e032e1a013f26b4d81eff96fde1a6022a"
+  },
+  "targets": [
+    {
+      "target_id": "ipchun_2024_0000",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-02T17:21:25.784429+09:00",
+      "iso_utc": "2024-02-02T08:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-48.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0001",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-02T19:21:25.784429+09:00",
+      "iso_utc": "2024-02-02T10:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-46.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0002",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-02T21:21:25.784429+09:00",
+      "iso_utc": "2024-02-02T12:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-44.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0003",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-02T23:21:25.784429+09:00",
+      "iso_utc": "2024-02-02T14:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-42.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0004",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T01:21:25.784429+09:00",
+      "iso_utc": "2024-02-02T16:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-40.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0005",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T03:21:25.784429+09:00",
+      "iso_utc": "2024-02-02T18:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-38.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0006",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T05:21:25.784429+09:00",
+      "iso_utc": "2024-02-02T20:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-36.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0007",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T07:21:25.784429+09:00",
+      "iso_utc": "2024-02-02T22:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-34.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0008",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T09:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T00:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-32.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0009",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T11:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T02:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-30.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0010",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T13:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T04:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-28.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0011",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T15:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T06:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-26.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0012",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T17:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T08:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-24.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0013",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T19:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T10:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-22.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0014",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T21:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T12:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-20.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0015",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-03T23:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T14:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-18.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0016",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T01:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T16:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-16.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0017",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T03:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T18:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-14.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0018",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T05:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T20:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-12.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0019",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T07:21:25.784429+09:00",
+      "iso_utc": "2024-02-03T22:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-10.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0020",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T09:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T00:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-8.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0021",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T11:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T02:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-6.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0022",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T13:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T04:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-4.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0023",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T15:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T06:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "-2.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0024",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T17:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T08:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "0.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0025",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T19:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T10:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "2.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0026",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T21:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T12:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "4.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0027",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-04T23:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T14:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "6.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0028",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T01:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T16:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "8.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0029",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T03:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T18:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "10.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0030",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T05:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T20:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "12.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0031",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T07:21:25.784429+09:00",
+      "iso_utc": "2024-02-04T22:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "14.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0032",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T09:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T00:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "16.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0033",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T11:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T02:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "18.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0034",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T13:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T04:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "20.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0035",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T15:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T06:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "22.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0036",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T17:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T08:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "24.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0037",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T19:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T10:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "26.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0038",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T21:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T12:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "28.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0039",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-05T23:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T14:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "30.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0040",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-06T01:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T16:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "32.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0041",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-06T03:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T18:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "34.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0042",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-06T05:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T20:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "36.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0043",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-06T07:21:25.784429+09:00",
+      "iso_utc": "2024-02-05T22:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "38.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0044",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-06T09:21:25.784429+09:00",
+      "iso_utc": "2024-02-06T00:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "40.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0045",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-06T11:21:25.784429+09:00",
+      "iso_utc": "2024-02-06T02:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "42.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0046",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-06T13:21:25.784429+09:00",
+      "iso_utc": "2024-02-06T04:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "44.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0047",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-06T15:21:25.784429+09:00",
+      "iso_utc": "2024-02-06T06:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "46.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2024_0048",
+      "category": "ipchun_adjacent",
+      "iso_local": "2024-02-06T17:21:25.784429+09:00",
+      "iso_utc": "2024-02-06T08:21:25.784429Z",
+      "labels": {
+        "year": "2024",
+        "offset_hours_from_lichun_meeus": "48.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0000",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-01T23:08:40.617145+09:00",
+      "iso_utc": "2025-02-01T14:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-48.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0001",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T01:08:40.617145+09:00",
+      "iso_utc": "2025-02-01T16:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-46.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0002",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T03:08:40.617145+09:00",
+      "iso_utc": "2025-02-01T18:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-44.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0003",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T05:08:40.617145+09:00",
+      "iso_utc": "2025-02-01T20:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-42.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0004",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T07:08:40.617145+09:00",
+      "iso_utc": "2025-02-01T22:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-40.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0005",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T09:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T00:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-38.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0006",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T11:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T02:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-36.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0007",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T13:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T04:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-34.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0008",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T15:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T06:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-32.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0009",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T17:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T08:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-30.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0010",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T19:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T10:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-28.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0011",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T21:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T12:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-26.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0012",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-02T23:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T14:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-24.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0013",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T01:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T16:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-22.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0014",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T03:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T18:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-20.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0015",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T05:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T20:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-18.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0016",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T07:08:40.617145+09:00",
+      "iso_utc": "2025-02-02T22:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-16.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0017",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T09:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T00:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-14.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0018",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T11:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T02:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-12.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0019",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T13:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T04:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-10.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0020",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T15:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T06:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-8.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0021",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T17:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T08:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-6.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0022",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T19:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T10:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-4.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0023",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T21:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T12:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "-2.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0024",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-03T23:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T14:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "0.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0025",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T01:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T16:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "2.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0026",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T03:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T18:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "4.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0027",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T05:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T20:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "6.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0028",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T07:08:40.617145+09:00",
+      "iso_utc": "2025-02-03T22:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "8.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0029",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T09:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T00:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "10.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0030",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T11:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T02:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "12.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0031",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T13:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T04:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "14.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0032",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T15:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T06:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "16.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0033",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T17:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T08:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "18.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0034",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T19:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T10:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "20.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0035",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T21:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T12:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "22.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0036",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-04T23:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T14:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "24.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0037",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T01:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T16:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "26.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0038",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T03:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T18:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "28.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0039",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T05:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T20:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "30.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0040",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T07:08:40.617145+09:00",
+      "iso_utc": "2025-02-04T22:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "32.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0041",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T09:08:40.617145+09:00",
+      "iso_utc": "2025-02-05T00:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "34.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0042",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T11:08:40.617145+09:00",
+      "iso_utc": "2025-02-05T02:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "36.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0043",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T13:08:40.617145+09:00",
+      "iso_utc": "2025-02-05T04:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "38.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0044",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T15:08:40.617145+09:00",
+      "iso_utc": "2025-02-05T06:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "40.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0045",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T17:08:40.617145+09:00",
+      "iso_utc": "2025-02-05T08:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "42.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0046",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T19:08:40.617145+09:00",
+      "iso_utc": "2025-02-05T10:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "44.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0047",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T21:08:40.617145+09:00",
+      "iso_utc": "2025-02-05T12:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "46.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2025_0048",
+      "category": "ipchun_adjacent",
+      "iso_local": "2025-02-05T23:08:40.617145+09:00",
+      "iso_utc": "2025-02-05T14:08:40.617145Z",
+      "labels": {
+        "year": "2025",
+        "offset_hours_from_lichun_meeus": "48.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0000",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-02T04:55:55.680639+09:00",
+      "iso_utc": "2026-02-01T19:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-48.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0001",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-02T06:55:55.680639+09:00",
+      "iso_utc": "2026-02-01T21:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-46.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0002",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-02T08:55:55.680639+09:00",
+      "iso_utc": "2026-02-01T23:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-44.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0003",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-02T10:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T01:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-42.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0004",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-02T12:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T03:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-40.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0005",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-02T14:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T05:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-38.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0006",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-02T16:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T07:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-36.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0007",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-02T18:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T09:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-34.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0008",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-02T20:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T11:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-32.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0009",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-02T22:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T13:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-30.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0010",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T00:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T15:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-28.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0011",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T02:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T17:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-26.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0012",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T04:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T19:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-24.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0013",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T06:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T21:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-22.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0014",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T08:55:55.680639+09:00",
+      "iso_utc": "2026-02-02T23:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-20.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0015",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T10:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T01:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-18.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0016",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T12:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T03:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-16.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0017",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T14:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T05:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-14.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0018",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T16:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T07:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-12.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0019",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T18:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T09:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-10.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0020",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T20:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T11:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-8.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0021",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-03T22:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T13:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-6.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0022",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T00:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T15:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-4.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0023",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T02:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T17:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "-2.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0024",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T04:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T19:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "0.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0025",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T06:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T21:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "2.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0026",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T08:55:55.680639+09:00",
+      "iso_utc": "2026-02-03T23:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "4.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0027",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T10:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T01:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "6.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0028",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T12:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T03:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "8.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0029",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T14:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T05:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "10.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0030",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T16:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T07:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "12.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0031",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T18:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T09:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "14.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0032",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T20:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T11:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "16.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0033",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-04T22:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T13:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "18.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0034",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T00:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T15:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "20.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0035",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T02:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T17:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "22.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0036",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T04:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T19:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "24.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0037",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T06:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T21:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "26.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0038",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T08:55:55.680639+09:00",
+      "iso_utc": "2026-02-04T23:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "28.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0039",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T10:55:55.680639+09:00",
+      "iso_utc": "2026-02-05T01:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "30.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0040",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T12:55:55.680639+09:00",
+      "iso_utc": "2026-02-05T03:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "32.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0041",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T14:55:55.680639+09:00",
+      "iso_utc": "2026-02-05T05:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "34.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0042",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T16:55:55.680639+09:00",
+      "iso_utc": "2026-02-05T07:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "36.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0043",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T18:55:55.680639+09:00",
+      "iso_utc": "2026-02-05T09:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "38.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0044",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T20:55:55.680639+09:00",
+      "iso_utc": "2026-02-05T11:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "40.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0045",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-05T22:55:55.680639+09:00",
+      "iso_utc": "2026-02-05T13:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "42.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0046",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-06T00:55:55.680639+09:00",
+      "iso_utc": "2026-02-05T15:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "44.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0047",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-06T02:55:55.680639+09:00",
+      "iso_utc": "2026-02-05T17:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "46.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2026_0048",
+      "category": "ipchun_adjacent",
+      "iso_local": "2026-02-06T04:55:55.680639+09:00",
+      "iso_utc": "2026-02-05T19:55:55.680639Z",
+      "labels": {
+        "year": "2026",
+        "offset_hours_from_lichun_meeus": "48.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0000",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-02T10:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T01:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-48.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0001",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-02T12:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T03:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-46.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0002",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-02T14:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T05:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-44.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0003",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-02T16:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T07:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-42.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0004",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-02T18:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T09:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-40.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0005",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-02T20:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T11:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-38.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0006",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-02T22:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T13:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-36.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0007",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T00:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T15:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-34.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0008",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T02:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T17:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-32.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0009",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T04:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T19:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-30.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0010",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T06:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T21:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-28.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0011",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T08:43:26.182712+09:00",
+      "iso_utc": "2027-02-02T23:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-26.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0012",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T10:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T01:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-24.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0013",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T12:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T03:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-22.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0014",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T14:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T05:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-20.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0015",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T16:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T07:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-18.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0016",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T18:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T09:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-16.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0017",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T20:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T11:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-14.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0018",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-03T22:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T13:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-12.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0019",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T00:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T15:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-10.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0020",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T02:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T17:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-8.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0021",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T04:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T19:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-6.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0022",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T06:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T21:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-4.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0023",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T08:43:26.182712+09:00",
+      "iso_utc": "2027-02-03T23:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "-2.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0024",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T10:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T01:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "0.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0025",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T12:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T03:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "2.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0026",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T14:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T05:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "4.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0027",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T16:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T07:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "6.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0028",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T18:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T09:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "8.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0029",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T20:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T11:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "10.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0030",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-04T22:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T13:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "12.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0031",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T00:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T15:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "14.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0032",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T02:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T17:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "16.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0033",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T04:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T19:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "18.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0034",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T06:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T21:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "20.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0035",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T08:43:26.182712+09:00",
+      "iso_utc": "2027-02-04T23:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "22.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0036",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T10:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T01:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "24.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0037",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T12:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T03:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "26.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0038",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T14:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T05:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "28.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0039",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T16:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T07:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "30.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0040",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T18:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T09:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "32.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0041",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T20:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T11:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "34.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0042",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-05T22:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T13:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "36.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0043",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-06T00:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T15:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "38.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0044",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-06T02:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T17:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "40.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0045",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-06T04:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T19:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "42.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0046",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-06T06:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T21:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "44.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0047",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-06T08:43:26.182712+09:00",
+      "iso_utc": "2027-02-05T23:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "46.0"
+      }
+    },
+    {
+      "target_id": "ipchun_2027_0048",
+      "category": "ipchun_adjacent",
+      "iso_local": "2027-02-06T10:43:26.182712+09:00",
+      "iso_utc": "2027-02-06T01:43:26.182712Z",
+      "labels": {
+        "year": "2027",
+        "offset_hours_from_lichun_meeus": "48.0"
+      }
+    },
+    {
+      "target_id": "zi_1992-03-13_000",
+      "category": "zi_boundary",
+      "iso_local": "1992-03-13T22:30:00+09:00",
+      "iso_utc": "1992-03-13T13:30:00Z",
+      "labels": {
+        "anchor_date_local": "1992-03-13",
+        "local_hour_frac": "22.5"
+      }
+    },
+    {
+      "target_id": "zi_1992-03-13_001",
+      "category": "zi_boundary",
+      "iso_local": "1992-03-13T23:00:00+09:00",
+      "iso_utc": "1992-03-13T14:00:00Z",
+      "labels": {
+        "anchor_date_local": "1992-03-13",
+        "local_hour_frac": "23.0"
+      }
+    },
+    {
+      "target_id": "zi_1992-03-13_002",
+      "category": "zi_boundary",
+      "iso_local": "1992-03-13T23:30:00+09:00",
+      "iso_utc": "1992-03-13T14:30:00Z",
+      "labels": {
+        "anchor_date_local": "1992-03-13",
+        "local_hour_frac": "23.5"
+      }
+    },
+    {
+      "target_id": "zi_1992-03-13_003",
+      "category": "zi_boundary",
+      "iso_local": "1992-03-13T00:00:00+09:00",
+      "iso_utc": "1992-03-12T15:00:00Z",
+      "labels": {
+        "anchor_date_local": "1992-03-13",
+        "local_hour_frac": "0.0"
+      }
+    },
+    {
+      "target_id": "zi_1992-03-13_004",
+      "category": "zi_boundary",
+      "iso_local": "1992-03-13T00:30:00+09:00",
+      "iso_utc": "1992-03-12T15:30:00Z",
+      "labels": {
+        "anchor_date_local": "1992-03-13",
+        "local_hour_frac": "0.5"
+      }
+    },
+    {
+      "target_id": "zi_1992-03-13_005",
+      "category": "zi_boundary",
+      "iso_local": "1992-03-13T01:00:00+09:00",
+      "iso_utc": "1992-03-12T16:00:00Z",
+      "labels": {
+        "anchor_date_local": "1992-03-13",
+        "local_hour_frac": "1.0"
+      }
+    },
+    {
+      "target_id": "zi_1992-03-13_006",
+      "category": "zi_boundary",
+      "iso_local": "1992-03-13T01:30:00+09:00",
+      "iso_utc": "1992-03-12T16:30:00Z",
+      "labels": {
+        "anchor_date_local": "1992-03-13",
+        "local_hour_frac": "1.5"
+      }
+    }
+  ]
+}

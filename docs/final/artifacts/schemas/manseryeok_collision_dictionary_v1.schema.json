@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "manseryeok_collision_dictionary_v1",
+  "title": "Manual collision log: PerfectManseryeok vs external app snapshot",
+  "type": "object",
+  "required": ["schema", "version", "entries"],
+  "properties": {
+    "schema": { "const": "manseryeok_collision_dictionary_v1" },
+    "version": { "type": "string" },
+    "upstream_fingerprint": {
+      "type": "object",
+      "properties": {
+        "app": { "type": "string" },
+        "version": { "type": "string" },
+        "sampled_utc": { "type": "string" }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "pillars_native"],
+        "properties": {
+          "key": { "type": "string", "description": "Stable id e.g. wall-clock ISO local" },
+          "birth_instant_utc": { "type": "string" },
+          "pillars_native": {
+            "type": "object",
+            "properties": {
+              "yeon": { "type": "string" },
+              "wol": { "type": "string" },
+              "il": { "type": "string" },
+              "si": { "type": "string" }
+            }
+          },
+          "pillars_external": { "type": "object" },
+          "policy_resolution": {
+            "type": "string",
+            "enum": ["native", "external", "unresolved"]
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+# Phase B-1 (Meeus vs Reference B 立春) + Phase B-2 (59-case ganji cohort checksum).
+# No pyswisseph required in CI — Reference B JSON is committed; regenerate locally via
+# scripts/populate_swiss_ephemeris_lichun.py when ephemeris rows change.
+name: manseryeok-validation-smoke
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/validate_ganji_mapping.py"
+      - "scripts/validate_ephemeris_baseline.py"
+      - "scripts/run_manseryeok_validation_smoke_v1.py"
+      - "scripts/build_ganji_validation_cohort_v1.py"
+      - "scripts/populate_swiss_ephemeris_lichun.py"
+      - "scripts/manseryeok_perfect_final.py"
+      - "scripts/core/solar_longitude_meeus_v1.py"
+      - "docs/final/artifacts/ganji_mapping_validate_cohort_v1.json"
+      - "docs/final/artifacts/ephemeris_reference_b_lichun_stub_v1.json"
+      - "docs/final/artifacts/schemas/**"
+      - ".github/workflows/manseryeok-validation-smoke.yml"
+  pull_request:
+    paths:
+      - "scripts/validate_ganji_mapping.py"
+      - "scripts/validate_ephemeris_baseline.py"
+      - "scripts/run_manseryeok_validation_smoke_v1.py"
+      - "scripts/build_ganji_validation_cohort_v1.py"
+      - "scripts/populate_swiss_ephemeris_lichun.py"
+      - "scripts/manseryeok_perfect_final.py"
+      - "scripts/core/solar_longitude_meeus_v1.py"
+      - "docs/final/artifacts/ganji_mapping_validate_cohort_v1.json"
+      - "docs/final/artifacts/ephemeris_reference_b_lichun_stub_v1.json"
+      - "docs/final/artifacts/schemas/**"
+      - ".github/workflows/manseryeok-validation-smoke.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Run manseryeok validation smoke (B-1 + B-2)
+        run: python scripts/run_manseryeok_validation_smoke_v1.py

@@ -1,0 +1,76 @@
+{
+  "schema": "ganji_mapping_report_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-04-18T04:45:12Z",
+  "rule_set_id": "perfect_manseryeok_v1_midnight_rollover_default",
+  "normalization_profile_id": "hangul_two_chars_strip_ws_v1",
+  "engine": {
+    "implementation": "PerfectManseryeok",
+    "git_sha": "9b4e3a8a16842b9d2b5e5188f77bde5dbc2d0b43"
+  },
+  "rows": [
+    {
+      "case_id": "sample_1992_03_13_02_kst",
+      "observed_normalized": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "계축"
+      },
+      "expected_normalized": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "계축"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "edge_lichun_2024_meeus_grid_no_expected",
+      "observed_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "정사"
+      },
+      "expected_normalized": {},
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_boundary_1992_03_13_23_kst",
+      "observed_normalized": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "임자"
+      },
+      "expected_normalized": {},
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    }
+  ],
+  "aggregate": {
+    "mean_match_score": 1.0,
+    "exact_match_rate": 1.0
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "manseryeok_diff_target_output_v1",
+  "title": "Manseryeok diff target generator output",
+  "type": "object",
+  "required": ["schema", "version", "generated_at_utc", "targets"],
+  "properties": {
+    "schema": { "const": "manseryeok_diff_target_output_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string", "format": "date-time" },
+    "timezone": { "type": "string" },
+    "reproducibility": {
+      "type": "object",
+      "required": ["grid_spec_hash"],
+      "properties": {
+        "grid_spec_hash": { "type": "string" }
+      }
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["target_id", "iso_local", "iso_utc", "category"],
+        "properties": {
+          "target_id": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": ["ipchun_adjacent", "jieqi_boundary", "zi_boundary", "other"]
+          },
+          "iso_local": { "type": "string" },
+          "iso_utc": { "type": "string", "format": "date-time" },
+          "labels": { "type": "object", "additionalProperties": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

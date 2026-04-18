@@ -1,0 +1,2 @@
+# Optional: Swiss Ephemeris bindings for populate_swiss_ephemeris_lichun.py
+pyswisseph>=2.10.3,<3

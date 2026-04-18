@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ephemeris_baseline_report_v1",
+  "title": "Physical layer ephemeris baseline checksum report",
+  "type": "object",
+  "required": ["schema", "version", "ephemeris_definition_id", "rows", "summary"],
+  "properties": {
+    "schema": { "const": "ephemeris_baseline_report_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string", "format": "date-time" },
+    "ephemeris_definition_id": { "type": "string" },
+    "reference_a": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "library_version": { "type": "string" }
+      }
+    },
+    "reference_b": { "type": "object" },
+    "timezone_for_display": { "type": "string" },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["jieqi_code", "year", "instant_a_utc", "instant_b_utc", "delta_ms"],
+        "properties": {
+          "jieqi_code": { "type": "string" },
+          "year": { "type": "integer" },
+          "instant_a_utc": { "type": "string", "format": "date-time" },
+          "instant_b_utc": { "type": "string", "format": "date-time" },
+          "instant_b_source": {
+            "type": "string",
+            "enum": ["reference_b_file", "naive_anchor_noon_kst_feb4"]
+          },
+          "delta_ms": { "type": "integer" },
+          "pass": { "type": "boolean" },
+          "threshold_ms": { "type": "integer" }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "p95_delta_ms": { "type": "number" },
+        "max_delta_ms": { "type": "number" },
+        "fail_count": { "type": "integer" }
+      }
+    }
+  }
+}

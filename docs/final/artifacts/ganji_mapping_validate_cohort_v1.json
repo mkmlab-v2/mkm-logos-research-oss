@@ -1,0 +1,781 @@
+{
+  "schema": "ganji_mapping_validate_input_v1",
+  "version": "1.0.0",
+  "rule_set_id": "perfect_manseryeok_v1_midnight_rollover_default",
+  "normalization_profile_id": "hangul_two_chars_strip_ws_v1",
+  "cohort_meta": {
+    "expected_derivation": "perfect_manseryeok_engine_snapshot_v1",
+    "purpose": "Regression checksum — not independent KASI/Postella labels.",
+    "reference_lichun_path": "C:/workspace/docs/final/artifacts/ephemeris_reference_b_lichun_stub_v1.json",
+    "case_count": 59
+  },
+  "cases": [
+    {
+      "case_id": "lichun_y1988_off-48h",
+      "birth_instant_utc": "1988-02-02T14:42:49.180204Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "정묘",
+        "wol": "계축",
+        "il": "정해",
+        "si": "경자"
+      }
+    },
+    {
+      "case_id": "lichun_y1988_off-36h",
+      "birth_instant_utc": "1988-02-03T02:42:49.180204Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "정묘",
+        "wol": "계축",
+        "il": "무자",
+        "si": "무오"
+      }
+    },
+    {
+      "case_id": "lichun_y1988_off-24h",
+      "birth_instant_utc": "1988-02-03T14:42:49.180204Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "정묘",
+        "wol": "계축",
+        "il": "무자",
+        "si": "임자"
+      }
+    },
+    {
+      "case_id": "lichun_y1988_off-12h",
+      "birth_instant_utc": "1988-02-04T02:42:49.180204Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "기축",
+        "si": "경오"
+      }
+    },
+    {
+      "case_id": "lichun_y1988_off+0h",
+      "birth_instant_utc": "1988-02-04T14:42:49.180204Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "기축",
+        "si": "갑자"
+      }
+    },
+    {
+      "case_id": "lichun_y1988_off+12h",
+      "birth_instant_utc": "1988-02-05T02:42:49.180204Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "경인",
+        "si": "임오"
+      }
+    },
+    {
+      "case_id": "lichun_y1988_off+24h",
+      "birth_instant_utc": "1988-02-05T14:42:49.180204Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "경인",
+        "si": "병자"
+      }
+    },
+    {
+      "case_id": "lichun_y1988_off+36h",
+      "birth_instant_utc": "1988-02-06T02:42:49.180204Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "신묘",
+        "si": "갑오"
+      }
+    },
+    {
+      "case_id": "lichun_y1988_off+48h",
+      "birth_instant_utc": "1988-02-06T14:42:49.180204Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "신묘",
+        "si": "무자"
+      }
+    },
+    {
+      "case_id": "lichun_y1992_off-48h",
+      "birth_instant_utc": "1992-02-02T13:48:16.859671Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "신미",
+        "wol": "신축",
+        "il": "무신",
+        "si": "계해"
+      }
+    },
+    {
+      "case_id": "lichun_y1992_off-36h",
+      "birth_instant_utc": "1992-02-03T01:48:16.859671Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "신미",
+        "wol": "신축",
+        "il": "기유",
+        "si": "기사"
+      }
+    },
+    {
+      "case_id": "lichun_y1992_off-24h",
+      "birth_instant_utc": "1992-02-03T13:48:16.859671Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "신미",
+        "wol": "신축",
+        "il": "기유",
+        "si": "을해"
+      }
+    },
+    {
+      "case_id": "lichun_y1992_off-12h",
+      "birth_instant_utc": "1992-02-04T01:48:16.859671Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "경술",
+        "si": "신사"
+      }
+    },
+    {
+      "case_id": "lichun_y1992_off+0h",
+      "birth_instant_utc": "1992-02-04T13:48:16.859671Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "경술",
+        "si": "정해"
+      }
+    },
+    {
+      "case_id": "lichun_y1992_off+12h",
+      "birth_instant_utc": "1992-02-05T01:48:16.859671Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "신해",
+        "si": "계사"
+      }
+    },
+    {
+      "case_id": "lichun_y1992_off+24h",
+      "birth_instant_utc": "1992-02-05T13:48:16.859671Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "신해",
+        "si": "기해"
+      }
+    },
+    {
+      "case_id": "lichun_y1992_off+36h",
+      "birth_instant_utc": "1992-02-06T01:48:16.859671Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "임자",
+        "si": "을사"
+      }
+    },
+    {
+      "case_id": "lichun_y1992_off+48h",
+      "birth_instant_utc": "1992-02-06T13:48:16.859671Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "임자",
+        "si": "신해"
+      }
+    },
+    {
+      "case_id": "lichun_y2020_off-48h",
+      "birth_instant_utc": "2020-02-02T09:03:19.430542Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "기해",
+        "wol": "정축",
+        "il": "을해",
+        "si": "을유"
+      }
+    },
+    {
+      "case_id": "lichun_y2020_off-36h",
+      "birth_instant_utc": "2020-02-02T21:03:19.430542Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "기해",
+        "wol": "정축",
+        "il": "병자",
+        "si": "신묘"
+      }
+    },
+    {
+      "case_id": "lichun_y2020_off-24h",
+      "birth_instant_utc": "2020-02-03T09:03:19.430542Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "기해",
+        "wol": "정축",
+        "il": "병자",
+        "si": "정유"
+      }
+    },
+    {
+      "case_id": "lichun_y2020_off-12h",
+      "birth_instant_utc": "2020-02-03T21:03:19.430542Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "정축",
+        "si": "계묘"
+      }
+    },
+    {
+      "case_id": "lichun_y2020_off+0h",
+      "birth_instant_utc": "2020-02-04T09:03:19.430542Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "정축",
+        "si": "기유"
+      }
+    },
+    {
+      "case_id": "lichun_y2020_off+12h",
+      "birth_instant_utc": "2020-02-04T21:03:19.430542Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "무인",
+        "si": "을묘"
+      }
+    },
+    {
+      "case_id": "lichun_y2020_off+24h",
+      "birth_instant_utc": "2020-02-05T09:03:19.430542Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "무인",
+        "si": "신유"
+      }
+    },
+    {
+      "case_id": "lichun_y2020_off+36h",
+      "birth_instant_utc": "2020-02-05T21:03:19.430542Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "기묘",
+        "si": "정묘"
+      }
+    },
+    {
+      "case_id": "lichun_y2020_off+48h",
+      "birth_instant_utc": "2020-02-06T09:03:19.430542Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "기묘",
+        "si": "계유"
+      }
+    },
+    {
+      "case_id": "lichun_y2024_off-48h",
+      "birth_instant_utc": "2024-02-02T08:27:08.086214Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "계묘",
+        "wol": "을축",
+        "il": "병신",
+        "si": "정유"
+      }
+    },
+    {
+      "case_id": "lichun_y2024_off-36h",
+      "birth_instant_utc": "2024-02-02T20:27:08.086214Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "계묘",
+        "wol": "을축",
+        "il": "정유",
+        "si": "계묘"
+      }
+    },
+    {
+      "case_id": "lichun_y2024_off-24h",
+      "birth_instant_utc": "2024-02-03T08:27:08.086214Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "계묘",
+        "wol": "을축",
+        "il": "정유",
+        "si": "기유"
+      }
+    },
+    {
+      "case_id": "lichun_y2024_off-12h",
+      "birth_instant_utc": "2024-02-03T20:27:08.086214Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "을묘"
+      }
+    },
+    {
+      "case_id": "lichun_y2024_off+0h",
+      "birth_instant_utc": "2024-02-04T08:27:08.086214Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "신유"
+      }
+    },
+    {
+      "case_id": "lichun_y2024_off+12h",
+      "birth_instant_utc": "2024-02-04T20:27:08.086214Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "기해",
+        "si": "정묘"
+      }
+    },
+    {
+      "case_id": "lichun_y2024_off+24h",
+      "birth_instant_utc": "2024-02-05T08:27:08.086214Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "기해",
+        "si": "계유"
+      }
+    },
+    {
+      "case_id": "lichun_y2024_off+36h",
+      "birth_instant_utc": "2024-02-05T20:27:08.086214Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "경자",
+        "si": "기묘"
+      }
+    },
+    {
+      "case_id": "lichun_y2024_off+48h",
+      "birth_instant_utc": "2024-02-06T08:27:08.086214Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "경자",
+        "si": "을유"
+      }
+    },
+    {
+      "case_id": "zi_y19920313_h23kst",
+      "birth_instant_utc": "1992-03-13T14:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "임자"
+      }
+    },
+    {
+      "case_id": "zi_y19920313_h00kst",
+      "birth_instant_utc": "1992-03-12T15:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "임자"
+      }
+    },
+    {
+      "case_id": "zi_y19920313_h01kst",
+      "birth_instant_utc": "1992-03-12T16:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "계축"
+      }
+    },
+    {
+      "case_id": "zi_y20000615_h23kst",
+      "birth_instant_utc": "2000-06-15T14:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "경진",
+        "wol": "임오",
+        "il": "갑진",
+        "si": "갑자"
+      }
+    },
+    {
+      "case_id": "zi_y20000615_h00kst",
+      "birth_instant_utc": "2000-06-14T15:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "경진",
+        "wol": "임오",
+        "il": "갑진",
+        "si": "갑자"
+      }
+    },
+    {
+      "case_id": "zi_y20000615_h01kst",
+      "birth_instant_utc": "2000-06-14T16:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "경진",
+        "wol": "임오",
+        "il": "갑진",
+        "si": "을축"
+      }
+    },
+    {
+      "case_id": "zi_y20240204_h23kst",
+      "birth_instant_utc": "2024-02-04T14:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "임자"
+      }
+    },
+    {
+      "case_id": "zi_y20240204_h00kst",
+      "birth_instant_utc": "2024-02-03T15:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "임자"
+      }
+    },
+    {
+      "case_id": "zi_y20240204_h01kst",
+      "birth_instant_utc": "2024-02-03T16:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "계축"
+      }
+    },
+    {
+      "case_id": "zi_y19880715_h23kst",
+      "birth_instant_utc": "1988-07-15T13:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "무진",
+        "wol": "기미",
+        "il": "신미",
+        "si": "무자"
+      }
+    },
+    {
+      "case_id": "zi_y19880715_h00kst",
+      "birth_instant_utc": "1988-07-14T14:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "무진",
+        "wol": "기미",
+        "il": "신미",
+        "si": "무자"
+      }
+    },
+    {
+      "case_id": "zi_y19880715_h01kst",
+      "birth_instant_utc": "1988-07-14T15:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "무진",
+        "wol": "기미",
+        "il": "신미",
+        "si": "기축"
+      }
+    },
+    {
+      "case_id": "zi_y20121212_h23kst",
+      "birth_instant_utc": "2012-12-12T14:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임진",
+        "wol": "임자",
+        "il": "정미",
+        "si": "경자"
+      }
+    },
+    {
+      "case_id": "zi_y20121212_h00kst",
+      "birth_instant_utc": "2012-12-11T15:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임진",
+        "wol": "임자",
+        "il": "정미",
+        "si": "경자"
+      }
+    },
+    {
+      "case_id": "zi_y20121212_h01kst",
+      "birth_instant_utc": "2012-12-11T16:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "임진",
+        "wol": "임자",
+        "il": "정미",
+        "si": "신축"
+      }
+    },
+    {
+      "case_id": "misc_y19750808_h14",
+      "birth_instant_utc": "1975-08-08T05:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "을묘",
+        "wol": "갑신",
+        "il": "병술",
+        "si": "을미"
+      }
+    },
+    {
+      "case_id": "misc_y20100101_h12",
+      "birth_instant_utc": "2010-01-01T03:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "기축",
+        "wol": "병자",
+        "il": "신해",
+        "si": "갑오"
+      }
+    },
+    {
+      "case_id": "misc_y20300601_h09",
+      "birth_instant_utc": "2030-06-01T00:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "경술",
+        "wol": "신사",
+        "il": "정묘",
+        "si": "을사"
+      }
+    },
+    {
+      "case_id": "misc_y19551111_h11",
+      "birth_instant_utc": "1955-11-11T02:30:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "을미",
+        "wol": "정해",
+        "il": "병자",
+        "si": "갑오"
+      }
+    },
+    {
+      "case_id": "misc_y19991231_h18",
+      "birth_instant_utc": "1999-12-31T09:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "기묘",
+        "wol": "병자",
+        "il": "정사",
+        "si": "기유"
+      }
+    },
+    {
+      "case_id": "misc_y19870615_h10",
+      "birth_instant_utc": "1987-06-15T00:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "정묘",
+        "wol": "병오",
+        "il": "을미",
+        "si": "신사"
+      }
+    },
+    {
+      "case_id": "misc_y19880820_h16",
+      "birth_instant_utc": "1988-08-20T06:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "무진",
+        "wol": "경신",
+        "il": "정미",
+        "si": "무신"
+      }
+    },
+    {
+      "case_id": "misc_y20050302_h07",
+      "birth_instant_utc": "2005-03-01T22:00:00Z",
+      "location": {
+        "iana_tz": "Asia/Seoul"
+      },
+      "expected_pillars": {
+        "yeon": "을유",
+        "wol": "무인",
+        "il": "을유",
+        "si": "경진"
+      }
+    }
+  ]
+}

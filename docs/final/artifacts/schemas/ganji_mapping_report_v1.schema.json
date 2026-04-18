@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ganji_mapping_report_v1",
+  "title": "Ganji mapping layer validation report",
+  "type": "object",
+  "required": ["schema", "version", "rule_set_id", "rows", "aggregate"],
+  "properties": {
+    "schema": { "const": "ganji_mapping_report_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string", "format": "date-time" },
+    "engine": {
+      "type": "object",
+      "properties": {
+        "implementation": { "type": "string" },
+        "git_sha": { "type": "string" }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["case_id", "match_score", "pillar_matches"],
+        "properties": {
+          "case_id": { "type": "string" },
+          "observed_normalized": {
+            "type": "object",
+            "properties": {
+              "yeon": { "type": "string" },
+              "wol": { "type": "string" },
+              "il": { "type": "string" },
+              "si": { "type": "string" }
+            }
+          },
+          "expected_normalized": { "type": "object" },
+          "pillar_matches": {
+            "type": "object",
+            "properties": {
+              "yeon": { "type": "boolean" },
+              "wol": { "type": "boolean" },
+              "il": { "type": "boolean" },
+              "si": { "type": "boolean" }
+            }
+          },
+          "match_score": { "type": "number", "minimum": 0, "maximum": 1 },
+          "string_exact_match": { "type": "boolean" }
+        }
+      }
+    },
+    "aggregate": {
+      "type": "object",
+      "properties": {
+        "mean_match_score": { "type": "number" },
+        "exact_match_rate": { "type": "number" }
+      }
+    }
+  }
+}

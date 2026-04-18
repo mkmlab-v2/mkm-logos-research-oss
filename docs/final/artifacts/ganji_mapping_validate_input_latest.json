@@ -1,0 +1,28 @@
+{
+  "schema": "ganji_mapping_validate_input_v1",
+  "version": "1.0.0",
+  "rule_set_id": "perfect_manseryeok_v1_midnight_rollover_default",
+  "normalization_profile_id": "hangul_two_chars_strip_ws_v1",
+  "cases": [
+    {
+      "case_id": "sample_1992_03_13_02_kst",
+      "birth_instant_utc": "1992-03-12T17:00:00Z",
+      "expected_pillars": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "계축"
+      }
+    },
+    {
+      "case_id": "edge_lichun_2024_meeus_grid_no_expected",
+      "birth_instant_utc": "2024-02-04T00:00:00Z",
+      "location": { "iana_tz": "Asia/Seoul" }
+    },
+    {
+      "case_id": "zi_boundary_1992_03_13_23_kst",
+      "birth_instant_utc": "1992-03-13T14:00:00Z",
+      "location": { "iana_tz": "Asia/Seoul" }
+    }
+  ]
+}

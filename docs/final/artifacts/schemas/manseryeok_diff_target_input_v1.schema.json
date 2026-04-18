@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "manseryeok_diff_target_input_v1",
+  "title": "Manseryeok diff target generator input",
+  "type": "object",
+  "required": ["schema", "version", "grid"],
+  "properties": {
+    "schema": { "const": "manseryeok_diff_target_input_v1" },
+    "version": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "timezone": {
+      "type": "string",
+      "description": "IANA tz for local iso display",
+      "default": "Asia/Seoul"
+    },
+    "grid": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["ipchun_window", "zi_boundary", "compound"]
+        },
+        "years": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 1800, "maximum": 2200 },
+          "minItems": 1
+        },
+        "ipchun_window_hours": { "type": "number", "default": 48 },
+        "ipchun_step_hours": { "type": "number", "default": 2 },
+        "zi_anchor_date": {
+          "type": "string",
+          "description": "YYYY-MM-DD for zi grid (local date in timezone)"
+        },
+        "zi_hour_samples": {
+          "type": "array",
+          "items": { "type": "number" },
+          "description": "Local hour fractional, e.g. 23.0, 23.5, 0.0, 0.5, 1.0"
+        }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}

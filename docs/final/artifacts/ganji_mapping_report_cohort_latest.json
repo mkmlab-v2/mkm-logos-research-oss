@@ -1,0 +1,1374 @@
+{
+  "schema": "ganji_mapping_report_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-04-18T05:14:07Z",
+  "rule_set_id": "perfect_manseryeok_v1_midnight_rollover_default",
+  "normalization_profile_id": "hangul_two_chars_strip_ws_v1",
+  "engine": {
+    "implementation": "PerfectManseryeok",
+    "git_sha": "9b4e3a8a16842b9d2b5e5188f77bde5dbc2d0b43"
+  },
+  "rows": [
+    {
+      "case_id": "lichun_y1988_off-48h",
+      "observed_normalized": {
+        "yeon": "정묘",
+        "wol": "계축",
+        "il": "정해",
+        "si": "경자"
+      },
+      "expected_normalized": {
+        "yeon": "정묘",
+        "wol": "계축",
+        "il": "정해",
+        "si": "경자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1988_off-36h",
+      "observed_normalized": {
+        "yeon": "정묘",
+        "wol": "계축",
+        "il": "무자",
+        "si": "무오"
+      },
+      "expected_normalized": {
+        "yeon": "정묘",
+        "wol": "계축",
+        "il": "무자",
+        "si": "무오"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1988_off-24h",
+      "observed_normalized": {
+        "yeon": "정묘",
+        "wol": "계축",
+        "il": "무자",
+        "si": "임자"
+      },
+      "expected_normalized": {
+        "yeon": "정묘",
+        "wol": "계축",
+        "il": "무자",
+        "si": "임자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1988_off-12h",
+      "observed_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "기축",
+        "si": "경오"
+      },
+      "expected_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "기축",
+        "si": "경오"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1988_off+0h",
+      "observed_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "기축",
+        "si": "갑자"
+      },
+      "expected_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "기축",
+        "si": "갑자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1988_off+12h",
+      "observed_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "경인",
+        "si": "임오"
+      },
+      "expected_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "경인",
+        "si": "임오"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1988_off+24h",
+      "observed_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "경인",
+        "si": "병자"
+      },
+      "expected_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "경인",
+        "si": "병자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1988_off+36h",
+      "observed_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "신묘",
+        "si": "갑오"
+      },
+      "expected_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "신묘",
+        "si": "갑오"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1988_off+48h",
+      "observed_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "신묘",
+        "si": "무자"
+      },
+      "expected_normalized": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "신묘",
+        "si": "무자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1992_off-48h",
+      "observed_normalized": {
+        "yeon": "신미",
+        "wol": "신축",
+        "il": "무신",
+        "si": "계해"
+      },
+      "expected_normalized": {
+        "yeon": "신미",
+        "wol": "신축",
+        "il": "무신",
+        "si": "계해"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1992_off-36h",
+      "observed_normalized": {
+        "yeon": "신미",
+        "wol": "신축",
+        "il": "기유",
+        "si": "기사"
+      },
+      "expected_normalized": {
+        "yeon": "신미",
+        "wol": "신축",
+        "il": "기유",
+        "si": "기사"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1992_off-24h",
+      "observed_normalized": {
+        "yeon": "신미",
+        "wol": "신축",
+        "il": "기유",
+        "si": "을해"
+      },
+      "expected_normalized": {
+        "yeon": "신미",
+        "wol": "신축",
+        "il": "기유",
+        "si": "을해"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1992_off-12h",
+      "observed_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "경술",
+        "si": "신사"
+      },
+      "expected_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "경술",
+        "si": "신사"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1992_off+0h",
+      "observed_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "경술",
+        "si": "정해"
+      },
+      "expected_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "경술",
+        "si": "정해"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1992_off+12h",
+      "observed_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "신해",
+        "si": "계사"
+      },
+      "expected_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "신해",
+        "si": "계사"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1992_off+24h",
+      "observed_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "신해",
+        "si": "기해"
+      },
+      "expected_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "신해",
+        "si": "기해"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1992_off+36h",
+      "observed_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "임자",
+        "si": "을사"
+      },
+      "expected_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "임자",
+        "si": "을사"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y1992_off+48h",
+      "observed_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "임자",
+        "si": "신해"
+      },
+      "expected_normalized": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "임자",
+        "si": "신해"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2020_off-48h",
+      "observed_normalized": {
+        "yeon": "기해",
+        "wol": "정축",
+        "il": "을해",
+        "si": "을유"
+      },
+      "expected_normalized": {
+        "yeon": "기해",
+        "wol": "정축",
+        "il": "을해",
+        "si": "을유"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2020_off-36h",
+      "observed_normalized": {
+        "yeon": "기해",
+        "wol": "정축",
+        "il": "병자",
+        "si": "신묘"
+      },
+      "expected_normalized": {
+        "yeon": "기해",
+        "wol": "정축",
+        "il": "병자",
+        "si": "신묘"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2020_off-24h",
+      "observed_normalized": {
+        "yeon": "기해",
+        "wol": "정축",
+        "il": "병자",
+        "si": "정유"
+      },
+      "expected_normalized": {
+        "yeon": "기해",
+        "wol": "정축",
+        "il": "병자",
+        "si": "정유"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2020_off-12h",
+      "observed_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "정축",
+        "si": "계묘"
+      },
+      "expected_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "정축",
+        "si": "계묘"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2020_off+0h",
+      "observed_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "정축",
+        "si": "기유"
+      },
+      "expected_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "정축",
+        "si": "기유"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2020_off+12h",
+      "observed_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "무인",
+        "si": "을묘"
+      },
+      "expected_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "무인",
+        "si": "을묘"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2020_off+24h",
+      "observed_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "무인",
+        "si": "신유"
+      },
+      "expected_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "무인",
+        "si": "신유"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2020_off+36h",
+      "observed_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "기묘",
+        "si": "정묘"
+      },
+      "expected_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "기묘",
+        "si": "정묘"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2020_off+48h",
+      "observed_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "기묘",
+        "si": "계유"
+      },
+      "expected_normalized": {
+        "yeon": "경자",
+        "wol": "무인",
+        "il": "기묘",
+        "si": "계유"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2024_off-48h",
+      "observed_normalized": {
+        "yeon": "계묘",
+        "wol": "을축",
+        "il": "병신",
+        "si": "정유"
+      },
+      "expected_normalized": {
+        "yeon": "계묘",
+        "wol": "을축",
+        "il": "병신",
+        "si": "정유"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2024_off-36h",
+      "observed_normalized": {
+        "yeon": "계묘",
+        "wol": "을축",
+        "il": "정유",
+        "si": "계묘"
+      },
+      "expected_normalized": {
+        "yeon": "계묘",
+        "wol": "을축",
+        "il": "정유",
+        "si": "계묘"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2024_off-24h",
+      "observed_normalized": {
+        "yeon": "계묘",
+        "wol": "을축",
+        "il": "정유",
+        "si": "기유"
+      },
+      "expected_normalized": {
+        "yeon": "계묘",
+        "wol": "을축",
+        "il": "정유",
+        "si": "기유"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2024_off-12h",
+      "observed_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "을묘"
+      },
+      "expected_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "을묘"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2024_off+0h",
+      "observed_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "신유"
+      },
+      "expected_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "신유"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2024_off+12h",
+      "observed_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "기해",
+        "si": "정묘"
+      },
+      "expected_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "기해",
+        "si": "정묘"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2024_off+24h",
+      "observed_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "기해",
+        "si": "계유"
+      },
+      "expected_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "기해",
+        "si": "계유"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2024_off+36h",
+      "observed_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "경자",
+        "si": "기묘"
+      },
+      "expected_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "경자",
+        "si": "기묘"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "lichun_y2024_off+48h",
+      "observed_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "경자",
+        "si": "을유"
+      },
+      "expected_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "경자",
+        "si": "을유"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y19920313_h23kst",
+      "observed_normalized": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "임자"
+      },
+      "expected_normalized": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "임자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y19920313_h00kst",
+      "observed_normalized": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "임자"
+      },
+      "expected_normalized": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "임자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y19920313_h01kst",
+      "observed_normalized": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "계축"
+      },
+      "expected_normalized": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "계축"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y20000615_h23kst",
+      "observed_normalized": {
+        "yeon": "경진",
+        "wol": "임오",
+        "il": "갑진",
+        "si": "갑자"
+      },
+      "expected_normalized": {
+        "yeon": "경진",
+        "wol": "임오",
+        "il": "갑진",
+        "si": "갑자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y20000615_h00kst",
+      "observed_normalized": {
+        "yeon": "경진",
+        "wol": "임오",
+        "il": "갑진",
+        "si": "갑자"
+      },
+      "expected_normalized": {
+        "yeon": "경진",
+        "wol": "임오",
+        "il": "갑진",
+        "si": "갑자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y20000615_h01kst",
+      "observed_normalized": {
+        "yeon": "경진",
+        "wol": "임오",
+        "il": "갑진",
+        "si": "을축"
+      },
+      "expected_normalized": {
+        "yeon": "경진",
+        "wol": "임오",
+        "il": "갑진",
+        "si": "을축"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y20240204_h23kst",
+      "observed_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "임자"
+      },
+      "expected_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "임자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y20240204_h00kst",
+      "observed_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "임자"
+      },
+      "expected_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "임자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y20240204_h01kst",
+      "observed_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "계축"
+      },
+      "expected_normalized": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "계축"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y19880715_h23kst",
+      "observed_normalized": {
+        "yeon": "무진",
+        "wol": "기미",
+        "il": "신미",
+        "si": "무자"
+      },
+      "expected_normalized": {
+        "yeon": "무진",
+        "wol": "기미",
+        "il": "신미",
+        "si": "무자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y19880715_h00kst",
+      "observed_normalized": {
+        "yeon": "무진",
+        "wol": "기미",
+        "il": "신미",
+        "si": "무자"
+      },
+      "expected_normalized": {
+        "yeon": "무진",
+        "wol": "기미",
+        "il": "신미",
+        "si": "무자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y19880715_h01kst",
+      "observed_normalized": {
+        "yeon": "무진",
+        "wol": "기미",
+        "il": "신미",
+        "si": "기축"
+      },
+      "expected_normalized": {
+        "yeon": "무진",
+        "wol": "기미",
+        "il": "신미",
+        "si": "기축"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y20121212_h23kst",
+      "observed_normalized": {
+        "yeon": "임진",
+        "wol": "임자",
+        "il": "정미",
+        "si": "경자"
+      },
+      "expected_normalized": {
+        "yeon": "임진",
+        "wol": "임자",
+        "il": "정미",
+        "si": "경자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y20121212_h00kst",
+      "observed_normalized": {
+        "yeon": "임진",
+        "wol": "임자",
+        "il": "정미",
+        "si": "경자"
+      },
+      "expected_normalized": {
+        "yeon": "임진",
+        "wol": "임자",
+        "il": "정미",
+        "si": "경자"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "zi_y20121212_h01kst",
+      "observed_normalized": {
+        "yeon": "임진",
+        "wol": "임자",
+        "il": "정미",
+        "si": "신축"
+      },
+      "expected_normalized": {
+        "yeon": "임진",
+        "wol": "임자",
+        "il": "정미",
+        "si": "신축"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "misc_y19750808_h14",
+      "observed_normalized": {
+        "yeon": "을묘",
+        "wol": "갑신",
+        "il": "병술",
+        "si": "을미"
+      },
+      "expected_normalized": {
+        "yeon": "을묘",
+        "wol": "갑신",
+        "il": "병술",
+        "si": "을미"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "misc_y20100101_h12",
+      "observed_normalized": {
+        "yeon": "기축",
+        "wol": "병자",
+        "il": "신해",
+        "si": "갑오"
+      },
+      "expected_normalized": {
+        "yeon": "기축",
+        "wol": "병자",
+        "il": "신해",
+        "si": "갑오"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "misc_y20300601_h09",
+      "observed_normalized": {
+        "yeon": "경술",
+        "wol": "신사",
+        "il": "정묘",
+        "si": "을사"
+      },
+      "expected_normalized": {
+        "yeon": "경술",
+        "wol": "신사",
+        "il": "정묘",
+        "si": "을사"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "misc_y19551111_h11",
+      "observed_normalized": {
+        "yeon": "을미",
+        "wol": "정해",
+        "il": "병자",
+        "si": "갑오"
+      },
+      "expected_normalized": {
+        "yeon": "을미",
+        "wol": "정해",
+        "il": "병자",
+        "si": "갑오"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "misc_y19991231_h18",
+      "observed_normalized": {
+        "yeon": "기묘",
+        "wol": "병자",
+        "il": "정사",
+        "si": "기유"
+      },
+      "expected_normalized": {
+        "yeon": "기묘",
+        "wol": "병자",
+        "il": "정사",
+        "si": "기유"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "misc_y19870615_h10",
+      "observed_normalized": {
+        "yeon": "정묘",
+        "wol": "병오",
+        "il": "을미",
+        "si": "신사"
+      },
+      "expected_normalized": {
+        "yeon": "정묘",
+        "wol": "병오",
+        "il": "을미",
+        "si": "신사"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "misc_y19880820_h16",
+      "observed_normalized": {
+        "yeon": "무진",
+        "wol": "경신",
+        "il": "정미",
+        "si": "무신"
+      },
+      "expected_normalized": {
+        "yeon": "무진",
+        "wol": "경신",
+        "il": "정미",
+        "si": "무신"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    },
+    {
+      "case_id": "misc_y20050302_h07",
+      "observed_normalized": {
+        "yeon": "을유",
+        "wol": "무인",
+        "il": "을유",
+        "si": "경진"
+      },
+      "expected_normalized": {
+        "yeon": "을유",
+        "wol": "무인",
+        "il": "을유",
+        "si": "경진"
+      },
+      "pillar_matches": {
+        "yeon": true,
+        "wol": true,
+        "il": true,
+        "si": true
+      },
+      "match_score": 1.0,
+      "string_exact_match": true
+    }
+  ],
+  "aggregate": {
+    "mean_match_score": 1.0,
+    "exact_match_rate": 1.0
+  }
+}

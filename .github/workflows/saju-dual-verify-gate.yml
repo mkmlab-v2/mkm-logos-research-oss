@@ -12,7 +12,12 @@ on:
       - "scripts/saju_dual_verify.py"
       - "scripts/final_saju_verification.py"
       - "scripts/manseryeok_perfect_final.py"
+      - "scripts/validate_ganji_mapping.py"
+      - "scripts/validate_ephemeris_baseline.py"
+      - "scripts/run_manseryeok_validation_smoke_v1.py"
+      - "scripts/build_ganji_validation_cohort_v1.py"
       - "scripts/core/solar_term_ssot.py"
+      - "scripts/core/solar_longitude_meeus_v1.py"
       - "scripts/core/boundary_risk_guard.py"
       - "scripts/run_saju_golden_replay.py"
       - "tests/fixtures/saju_golden_cases_v1.json"
@@ -25,7 +30,12 @@ on:
       - "scripts/saju_dual_verify.py"
       - "scripts/final_saju_verification.py"
       - "scripts/manseryeok_perfect_final.py"
+      - "scripts/validate_ganji_mapping.py"
+      - "scripts/validate_ephemeris_baseline.py"
+      - "scripts/run_manseryeok_validation_smoke_v1.py"
+      - "scripts/build_ganji_validation_cohort_v1.py"
       - "scripts/core/solar_term_ssot.py"
+      - "scripts/core/solar_longitude_meeus_v1.py"
       - "scripts/core/boundary_risk_guard.py"
       - "scripts/run_saju_golden_replay.py"
       - "tests/fixtures/saju_golden_cases_v1.json"
@@ -52,4 +62,22 @@ jobs:
             tests/test_saju_golden_replay.py \
             tests/test_run_saju_golden_replay.py \
             -q --tb=short
+      - name: Enforce confirmed golden reference with fail-on-review
+        run: |
+          python scripts/saju_dual_verify.py \
+            --year 1973 --month 12 --day 10 --hour 4 --minute 30 \
+            --tz Asia/Seoul --solar --male --stdout-only --fail-on-review
+      - name: Enforce zi_23 confirmed alignment with fail-on-review
+        run: |
+          python scripts/saju_dual_verify.py \
+            --year 1973 --month 12 --day 10 --hour 23 --minute 31 \
+            --tz Asia/Seoul --solar --male \
+            --secondary-day-rollover-policy zi_23 \
+            --stdout-only --fail-on-review
+      - name: Replay golden fixtures gate report
+        run: |
+          python scripts/run_saju_golden_replay.py \
+            --fixture tests/fixtures/saju_golden_cases_v1.json \
+            --out docs/final/artifacts/saju_golden_replay_latest.json \
+            --log docs/final/artifacts/saju_golden_replay_log.jsonl
 

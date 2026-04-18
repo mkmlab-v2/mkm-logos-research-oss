@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ephemeris_reference_b_lichun_v1",
+  "title": "Optional Reference B: 立春 instant per year (KASI export, manual, etc.)",
+  "type": "object",
+  "required": ["schema", "version", "rows"],
+  "properties": {
+    "schema": { "const": "ephemeris_reference_b_lichun_v1" },
+    "version": { "type": "string" },
+    "source_note": { "type": "string" },
+    "generator_meta": {
+      "type": "object",
+      "description": "Optional provenance from populate_swiss_ephemeris_lichun.py"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["year", "instant_utc"],
+        "properties": {
+          "year": { "type": "integer" },
+          "instant_utc": {
+            "type": "string",
+            "description": "ISO-8601 UTC, Z or offset"
+          }
+        }
+      }
+    }
+  }
+}
