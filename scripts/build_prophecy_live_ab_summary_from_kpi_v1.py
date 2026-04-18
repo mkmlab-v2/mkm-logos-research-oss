@@ -14,7 +14,9 @@ from typing import Any
 
 ROOT = Path("C:/workspace")
 DEFAULT_KPI = ROOT / "projects" / "bitcoin-trading" / "memory" / "kpi" / "latest_kpi.json"
-DEFAULT_GATE = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_gates_v1_latest.json"
+_PANEL_GATE = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_gates_v1_panel_calibrated_latest.json"
+_DEFAULT_GATE = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_gates_v1_latest.json"
+DEFAULT_GATE = _PANEL_GATE if _PANEL_GATE.is_file() else _DEFAULT_GATE
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "prophecy_live_ab_summary_v1_latest.json"
 
 

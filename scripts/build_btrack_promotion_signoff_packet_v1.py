@@ -15,7 +15,9 @@ from typing import Any
 ROOT = Path("C:/workspace")
 ART = ROOT / "docs" / "final" / "artifacts"
 
-DEFAULT_PROPHECY_GATE = ART / "prophecy_promotion_gates_v1_latest.json"
+_PANEL_GATE = ART / "prophecy_promotion_gates_v1_panel_calibrated_latest.json"
+_DEFAULT_GATE = ART / "prophecy_promotion_gates_v1_latest.json"
+DEFAULT_PROPHECY_GATE = _PANEL_GATE if _PANEL_GATE.is_file() else _DEFAULT_GATE
 DEFAULT_CODEBOOK_DRIFT = ART / "codebook_codepack_drift_latest.json"
 DEFAULT_MEASUREMENT_GATE = ART / "lg_washer_measurement_gate_latest.json"
 DEFAULT_ESTIMATION_READY = ART / "lg_washer_estimation_readiness_latest.json"
@@ -95,6 +97,9 @@ def main() -> int:
     }
     if live_ab is not None and live_ab_path is not None:
         inputs["prophecy_live_ab_summary"] = _rel(live_ab_path)
+    legacy_gate = ART / "prophecy_promotion_gates_v1_legacy_strict_latest.json"
+    if legacy_gate.is_file():
+        inputs["prophecy_gate_legacy_strict"] = _rel(legacy_gate)
 
     next_actions_ko: list[str] = [
         "prophecy: human sign-off (운영) 확정",

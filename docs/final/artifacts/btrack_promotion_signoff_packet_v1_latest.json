@@ -1,28 +1,29 @@
 {
   "schema": "btrack_promotion_signoff_packet_v1",
-  "generated_at_utc": "2026-04-18T17:30:44Z",
+  "generated_at_utc": "2026-04-18T17:34:01Z",
   "research_only": true,
   "inputs": {
-    "prophecy_gate": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json",
+    "prophecy_gate": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json",
     "codebook_drift": "docs/final/artifacts/codebook_codepack_drift_latest.json",
     "measurement_gate": "docs/final/artifacts/lg_washer_measurement_gate_latest.json",
     "estimation_readiness": "docs/final/artifacts/lg_washer_estimation_readiness_latest.json",
-    "prophecy_live_ab_summary": "docs/final/artifacts/prophecy_live_ab_summary_v1_latest.json"
+    "prophecy_live_ab_summary": "docs/final/artifacts/prophecy_live_ab_summary_v1_latest.json",
+    "prophecy_gate_legacy_strict": "docs/final/artifacts/prophecy_promotion_gates_v1_legacy_strict_latest.json"
   },
   "track_status": {
     "prophecy": {
       "decision": "READY_FOR_HUMAN_SIGNOFF",
       "auto_promote_ready": true,
-      "strict_pass_streak": 3,
+      "strict_pass_streak": 1,
       "promotion_recommendation": "auto_promote_ready",
       "live_ab_summary": {
         "schema": "prophecy_live_ab_summary_v1",
-        "generated_at_utc": "2026-04-18T16:45:18Z",
+        "generated_at_utc": "2026-04-18T17:34:01Z",
         "research_only": true,
         "status": "INSUFFICIENT_DATA",
         "inputs": {
           "kpi_json": "projects/bitcoin-trading/memory/kpi/latest_kpi.json",
-          "prophecy_gate_json": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json"
+          "prophecy_gate_json": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json"
         },
         "environment": {
           "status_symbol": "BTCUSDT",
@@ -38,8 +39,8 @@
           "net": null
         },
         "prophecy_gate_snapshot": {
-          "auto_promote_ready": false,
-          "strict_pass_streak": 0,
+          "auto_promote_ready": true,
+          "strict_pass_streak": 1,
           "promotion_track_mode": "btc_only_crossassist"
         },
         "arms": {

@@ -1,0 +1,23 @@
+{
+  "schema": "prophecy_promotion_strict_streak_v1",
+  "runs": [
+    {
+      "ts_utc": "2026-04-18T17:33:45Z",
+      "strict_passed": false,
+      "soft_passed": false,
+      "promotion_track_mode": "btc_only_crossassist",
+      "strict_thresholds": {
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      "soft_thresholds": {
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      }
+    }
+  ]
+}
