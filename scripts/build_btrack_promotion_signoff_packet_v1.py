@@ -48,6 +48,11 @@ def main() -> int:
         help="Optional path to a small JSON summary of live A/B results (control vs treatment).",
     )
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--separate-track-gates",
+        action="store_true",
+        help="Emit track-local blockers/next actions so B-track work can proceed independently.",
+    )
     args = ap.parse_args()
 
     prophecy = _load(args.prophecy_gate)
@@ -71,13 +76,16 @@ def main() -> int:
     prophecy_decision = "READY_FOR_HUMAN_SIGNOFF" if prophecy_ready else "HOLD"
     lg_decision = "READY_FOR_HUMAN_SIGNOFF" if (drift_stable and measurement_go) else "HOLD"
 
-    blockers: list[str] = []
+    prophecy_blockers: list[str] = []
+    lg_blockers: list[str] = []
     if not prophecy_ready:
-        blockers.append("prophecy_auto_promote_ready_false")
+        prophecy_blockers.append("prophecy_auto_promote_ready_false")
     if not drift_stable:
-        blockers.append("codebook_codepack_drift_detected")
+        lg_blockers.append("codebook_codepack_drift_detected")
     if not measurement_go:
-        blockers.append("lg_measurement_gate_not_go")
+        lg_blockers.append("lg_measurement_gate_not_go")
+
+    blockers = [*prophecy_blockers, *lg_blockers]
 
     inputs: dict[str, Any] = {
         "prophecy_gate": _rel(args.prophecy_gate),
@@ -104,6 +112,11 @@ def main() -> int:
             "prophecy: live A/B 요약은 존재하나 status!=READY → KPI 24h 체결/손익 필드 채운 뒤 요약 재생성",
         )
 
+    prophecy_next_actions_ko = [x for x in next_actions_ko if x.startswith("prophecy:")]
+    lg_next_actions_ko = [x for x in next_actions_ko if x.startswith("lg_washer:")]
+
+    global_blockers = blockers if not args.separate_track_gates else []
+
     out = {
         "schema": "btrack_promotion_signoff_packet_v1",
         "generated_at_utc": _utc_now(),
@@ -116,17 +129,38 @@ def main() -> int:
                 "strict_pass_streak": prophecy.get("strict_pass_streak"),
                 "promotion_recommendation": prophecy.get("promotion_recommendation"),
                 "live_ab_summary": live_ab,
+                "blockers": prophecy_blockers,
+                "next_actions_ko": prophecy_next_actions_ko,
             },
             "lg_washer": {
                 "decision": lg_decision,
                 "codebook_codepack_drift_status": drift.get("drift_status"),
                 "measurement_gate_status": measurement.get("status"),
                 "estimation_readiness_status": estimation.get("status"),
+                "blockers": lg_blockers,
+                "next_actions_ko": lg_next_actions_ko,
             },
         },
         "global": {
             "all_tracks_ready_for_human_signoff": (prophecy_decision == "READY_FOR_HUMAN_SIGNOFF" and lg_decision == "READY_FOR_HUMAN_SIGNOFF"),
-            "blockers": blockers,
+            "blockers": global_blockers,
+            "gate_coupling_mode": "separated" if args.separate_track_gates else "combined",
+            "any_track_ready_for_human_signoff": (
+                prophecy_decision == "READY_FOR_HUMAN_SIGNOFF"
+                or lg_decision == "READY_FOR_HUMAN_SIGNOFF"
+            ),
+            "ready_tracks": [
+                k
+                for k, v in {
+                    "prophecy": prophecy_decision,
+                    "lg_washer": lg_decision,
+                }.items()
+                if v == "READY_FOR_HUMAN_SIGNOFF"
+            ],
+            "blockers_by_track": {
+                "prophecy": prophecy_blockers,
+                "lg_washer": lg_blockers,
+            },
         },
         "notes_ko": [
             "prophecy는 auto_promote_ready=true여도 human sign-off 전 본선/실매매 자동 승격 금지",
