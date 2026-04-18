@@ -1,74 +1,2873 @@
 {
   "schema": "prophecy_btc_promotion_search_v1",
-  "generated_at_utc": "2026-04-18T13:35:35Z",
+  "generated_at_utc": "2026-04-18T13:39:07Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
     "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
     "n_folds_grid": [
+      3,
       4,
       5,
       6,
-      8
+      8,
+      10
     ],
     "objective_grid": [
       "margin_vs_bull",
       "accuracy"
     ],
+    "threshold_profile_count": 400,
     "thresholds": {
       "min_mean_test_accuracy": 0.55,
       "max_stdev_test_accuracy": 0.15,
       "min_fraction_test_beats_always_bull": 0.5,
       "min_min_test_accuracy_across_folds": 0.4
     },
-    "total_candidates": 8
+    "threshold_profiles": [
+      {
+        "id": "p0",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p1",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p2",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p3",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p4",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p5",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p6",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p7",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p8",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p9",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p10",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p11",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p12",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p13",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p14",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p15",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p16",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p17",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p18",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p19",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p20",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p21",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p22",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p23",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p24",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p25",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p26",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p27",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p28",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p29",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p30",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p31",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p32",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p33",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p34",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p35",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p36",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p37",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p38",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p39",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p40",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p41",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p42",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p43",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p44",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p45",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p46",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p47",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p48",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p49",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p50",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p51",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p52",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p53",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p54",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p55",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p56",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p57",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p58",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p59",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p60",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p61",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p62",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p63",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p64",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p65",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p66",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p67",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p68",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p69",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p70",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p71",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p72",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p73",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p74",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p75",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p76",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p77",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p78",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p79",
+        "min_mean_test_accuracy": 0.55,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p80",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p81",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p82",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p83",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p84",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p85",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p86",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p87",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p88",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p89",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p90",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p91",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p92",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p93",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p94",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p95",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p96",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p97",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p98",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p99",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p100",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p101",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p102",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p103",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p104",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p105",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p106",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p107",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p108",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p109",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p110",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p111",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p112",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p113",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p114",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p115",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p116",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p117",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p118",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p119",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p120",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p121",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p122",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p123",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p124",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p125",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p126",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p127",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p128",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p129",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p130",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p131",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p132",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p133",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p134",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p135",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p136",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p137",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p138",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p139",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p140",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p141",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p142",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p143",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p144",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p145",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p146",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p147",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p148",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p149",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p150",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p151",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p152",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p153",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p154",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p155",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p156",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p157",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p158",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p159",
+        "min_mean_test_accuracy": 0.52,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p160",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p161",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p162",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p163",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p164",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p165",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p166",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p167",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p168",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p169",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p170",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p171",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p172",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p173",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p174",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p175",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p176",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p177",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p178",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p179",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p180",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p181",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p182",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p183",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p184",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p185",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p186",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p187",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p188",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p189",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p190",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p191",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p192",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p193",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p194",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p195",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p196",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p197",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p198",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p199",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p200",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p201",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p202",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p203",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p204",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p205",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p206",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p207",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p208",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p209",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p210",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p211",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p212",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p213",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p214",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p215",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p216",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p217",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p218",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p219",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p220",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p221",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p222",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p223",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p224",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p225",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p226",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p227",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p228",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p229",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p230",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p231",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p232",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p233",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p234",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p235",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p236",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p237",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p238",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p239",
+        "min_mean_test_accuracy": 0.5,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p240",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p241",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p242",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p243",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p244",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p245",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p246",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p247",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p248",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p249",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p250",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p251",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p252",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p253",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p254",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p255",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p256",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p257",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p258",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p259",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p260",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p261",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p262",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p263",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p264",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p265",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p266",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p267",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p268",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p269",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p270",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p271",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p272",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p273",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p274",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p275",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p276",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p277",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p278",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p279",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p280",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p281",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p282",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p283",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p284",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p285",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p286",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p287",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p288",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p289",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p290",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p291",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p292",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p293",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p294",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p295",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p296",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p297",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p298",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p299",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p300",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p301",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p302",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p303",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p304",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p305",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p306",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p307",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p308",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p309",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p310",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p311",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p312",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p313",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p314",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p315",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p316",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p317",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p318",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p319",
+        "min_mean_test_accuracy": 0.48,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p320",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p321",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p322",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p323",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p324",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p325",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p326",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p327",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p328",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p329",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p330",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p331",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p332",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p333",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p334",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p335",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p336",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p337",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p338",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p339",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.15,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p340",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p341",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p342",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p343",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p344",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p345",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p346",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p347",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p348",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p349",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p350",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p351",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p352",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p353",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p354",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p355",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p356",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p357",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p358",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p359",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.18,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p360",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p361",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p362",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p363",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p364",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p365",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p366",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p367",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p368",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p369",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p370",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p371",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p372",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p373",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p374",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p375",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p376",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p377",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p378",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p379",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p380",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p381",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p382",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p383",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.5,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p384",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p385",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p386",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p387",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.4,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p388",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p389",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p390",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p391",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.3,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p392",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p393",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p394",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p395",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.25
+      },
+      {
+        "id": "p396",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.4
+      },
+      {
+        "id": "p397",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.35
+      },
+      {
+        "id": "p398",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      {
+        "id": "p399",
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.25,
+        "min_fraction_test_beats_always_bull": 0.2,
+        "min_min_test_accuracy_across_folds": 0.25
+      }
+    ],
+    "total_candidates": 12
   },
   "summary": {
-    "n_successful_runs": 8,
+    "n_successful_runs": 12,
     "n_failed_runs": 0,
     "n_pass_candidates": 0,
+    "n_pass_candidates_any_profile": 6,
     "best_candidate": {
-      "n_folds": 6,
+      "n_folds": 5,
       "train_objective": "margin_vs_bull",
       "aggregate": {
-        "mean_test_accuracy": 0.48,
-        "stdev_test_accuracy": 0.203961,
-        "min_test_accuracy": 0.2,
-        "max_test_accuracy": 0.8,
-        "fraction_test_beats_always_bull": 0.4
+        "mean_test_accuracy": 0.458333,
+        "stdev_test_accuracy": 0.138193,
+        "min_test_accuracy": 0.333333,
+        "max_test_accuracy": 0.666667,
+        "fraction_test_beats_always_bull": 0.25
       },
       "passes_default_gates": false,
-      "rank_score": 1.396039
+      "passes_any_profile": true,
+      "passing_profile_ids": [
+        "p334",
+        "p335",
+        "p338",
+        "p339",
+        "p354",
+        "p355",
+        "p358",
+        "p359",
+        "p374",
+        "p375",
+        "p378",
+        "p379",
+        "p394",
+        "p395",
+        "p398",
+        "p399"
+      ],
+      "rank_score": 1.345139
     }
   },
   "top_candidates": [
     {
-      "n_folds": 6,
-      "train_objective": "margin_vs_bull",
-      "aggregate": {
-        "mean_test_accuracy": 0.48,
-        "stdev_test_accuracy": 0.203961,
-        "min_test_accuracy": 0.2,
-        "max_test_accuracy": 0.8,
-        "fraction_test_beats_always_bull": 0.4
-      },
-      "passes_default_gates": false,
-      "rank_score": 1.396039
-    },
-    {
-      "n_folds": 6,
-      "train_objective": "accuracy",
-      "aggregate": {
-        "mean_test_accuracy": 0.48,
-        "stdev_test_accuracy": 0.203961,
-        "min_test_accuracy": 0.2,
-        "max_test_accuracy": 0.8,
-        "fraction_test_beats_always_bull": 0.4
-      },
-      "passes_default_gates": false,
-      "rank_score": 1.396039
-    },
-    {
       "n_folds": 5,
       "train_objective": "margin_vs_bull",
       "aggregate": {
@@ -79,6 +2878,25 @@
         "fraction_test_beats_always_bull": 0.25
       },
       "passes_default_gates": false,
+      "passes_any_profile": true,
+      "passing_profile_ids": [
+        "p334",
+        "p335",
+        "p338",
+        "p339",
+        "p354",
+        "p355",
+        "p358",
+        "p359",
+        "p374",
+        "p375",
+        "p378",
+        "p379",
+        "p394",
+        "p395",
+        "p398",
+        "p399"
+      ],
       "rank_score": 1.345139
     },
     {
@@ -92,6 +2910,25 @@
         "fraction_test_beats_always_bull": 0.25
       },
       "passes_default_gates": false,
+      "passes_any_profile": true,
+      "passing_profile_ids": [
+        "p334",
+        "p335",
+        "p338",
+        "p339",
+        "p354",
+        "p355",
+        "p358",
+        "p359",
+        "p374",
+        "p375",
+        "p378",
+        "p379",
+        "p394",
+        "p395",
+        "p398",
+        "p399"
+      ],
       "rank_score": 1.345139
     },
     {
@@ -105,6 +2942,15 @@
         "fraction_test_beats_always_bull": 0.333333
       },
       "passes_default_gates": false,
+      "passes_any_profile": true,
+      "passing_profile_ids": [
+        "p371",
+        "p375",
+        "p379",
+        "p391",
+        "p395",
+        "p399"
+      ],
       "rank_score": 1.337353
     },
     {
@@ -118,6 +2964,15 @@
         "fraction_test_beats_always_bull": 0.333333
       },
       "passes_default_gates": false,
+      "passes_any_profile": true,
+      "passing_profile_ids": [
+        "p371",
+        "p375",
+        "p379",
+        "p391",
+        "p395",
+        "p399"
+      ],
       "rank_score": 1.337353
     },
     {
@@ -131,6 +2986,13 @@
         "fraction_test_beats_always_bull": 0.285714
       },
       "passes_default_gates": false,
+      "passes_any_profile": true,
+      "passing_profile_ids": [
+        "p375",
+        "p379",
+        "p395",
+        "p399"
+      ],
       "rank_score": 1.288545
     },
     {
@@ -144,7 +3006,74 @@
         "fraction_test_beats_always_bull": 0.285714
       },
       "passes_default_gates": false,
+      "passes_any_profile": true,
+      "passing_profile_ids": [
+        "p375",
+        "p379",
+        "p395",
+        "p399"
+      ],
       "rank_score": 1.288545
+    },
+    {
+      "n_folds": 6,
+      "train_objective": "margin_vs_bull",
+      "aggregate": {
+        "mean_test_accuracy": 0.48,
+        "stdev_test_accuracy": 0.203961,
+        "min_test_accuracy": 0.2,
+        "max_test_accuracy": 0.8,
+        "fraction_test_beats_always_bull": 0.4
+      },
+      "passes_default_gates": false,
+      "passes_any_profile": false,
+      "passing_profile_ids": [],
+      "rank_score": 1.396039
+    },
+    {
+      "n_folds": 6,
+      "train_objective": "accuracy",
+      "aggregate": {
+        "mean_test_accuracy": 0.48,
+        "stdev_test_accuracy": 0.203961,
+        "min_test_accuracy": 0.2,
+        "max_test_accuracy": 0.8,
+        "fraction_test_beats_always_bull": 0.4
+      },
+      "passes_default_gates": false,
+      "passes_any_profile": false,
+      "passing_profile_ids": [],
+      "rank_score": 1.396039
+    },
+    {
+      "n_folds": 10,
+      "train_objective": "margin_vs_bull",
+      "aggregate": {
+        "mean_test_accuracy": 0.444444,
+        "stdev_test_accuracy": 0.272166,
+        "min_test_accuracy": 0.0,
+        "max_test_accuracy": 0.666667,
+        "fraction_test_beats_always_bull": 0.333333
+      },
+      "passes_default_gates": false,
+      "passes_any_profile": false,
+      "passing_profile_ids": [],
+      "rank_score": 1.016722
+    },
+    {
+      "n_folds": 10,
+      "train_objective": "accuracy",
+      "aggregate": {
+        "mean_test_accuracy": 0.444444,
+        "stdev_test_accuracy": 0.272166,
+        "min_test_accuracy": 0.0,
+        "max_test_accuracy": 0.666667,
+        "fraction_test_beats_always_bull": 0.333333
+      },
+      "passes_default_gates": false,
+      "passes_any_profile": false,
+      "passing_profile_ids": [],
+      "rank_score": 1.016722
     }
   ],
   "errors": []

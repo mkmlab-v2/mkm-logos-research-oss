@@ -40,6 +40,7 @@ DEFAULT_LENS_WF = ROOT / "docs" / "final" / "artifacts" / "prophecy_per_date_com
 DEFAULT_INSTRUMENT_WF = ROOT / "docs" / "final" / "artifacts" / "prophecy_instrument_combo_walkforward_v1_latest.json"
 DEFAULT_SCORE = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score_latest.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_gates_v1_latest.json"
+DEFAULT_STREAK_HISTORY = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_strict_streak_v1.json"
 SCHEMA = "prophecy_promotion_gates_v1"
 VALID_DIR = {"bull", "bear", "neutral"}
 SCHEMA_LENS_WF = "prophecy_per_date_combo_walkforward_v1"
@@ -158,6 +159,31 @@ def _all_true(gates: list[dict[str, Any]]) -> bool:
     return bool(gates) and all(bool(g.get("passed")) for g in gates)
 
 
+def _load_history(path: Path) -> dict[str, Any]:
+    doc = _load_json(path) or {}
+    if not isinstance(doc, dict):
+        doc = {}
+    runs = doc.get("runs")
+    if not isinstance(runs, list):
+        runs = []
+    return {"runs": runs}
+
+
+def _save_history(path: Path, runs: list[dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"schema": "prophecy_promotion_strict_streak_v1", "runs": runs}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def _strict_streak(runs: list[dict[str, Any]]) -> int:
+    c = 0
+    for r in reversed(runs):
+        if bool(r.get("strict_passed")):
+            c += 1
+        else:
+            break
+    return c
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="B-track prophecy promotion numeric gates (dual track + shared).")
     ap.add_argument(
@@ -190,6 +216,12 @@ def main() -> int:
     ap.add_argument("--max-stdev", type=float, default=0.15, dest="max_stdev")
     ap.add_argument("--min-beat-bull-frac", type=float, default=0.5, dest="min_beat_frac")
     ap.add_argument("--min-worst-fold", type=float, default=0.4, dest="min_worst_fold")
+    ap.add_argument("--soft-min-mean", type=float, default=0.45)
+    ap.add_argument("--soft-max-stdev", type=float, default=0.22)
+    ap.add_argument("--soft-min-beat-bull-frac", type=float, default=0.25)
+    ap.add_argument("--soft-min-worst-fold", type=float, default=0.3)
+    ap.add_argument("--strict-streak-required", type=int, default=5)
+    ap.add_argument("--streak-history-json", type=Path, default=DEFAULT_STREAK_HISTORY)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--stdout-only", action="store_true")
     ap.add_argument("--fail-on-gate", action="store_true", help="Exit 1 when combined_all_passed is false.")
@@ -202,6 +234,12 @@ def main() -> int:
         "max_stdev_test_accuracy": args.max_stdev,
         "min_fraction_test_beats_always_bull": args.min_beat_frac,
         "min_min_test_accuracy_across_folds": args.min_worst_fold,
+    }
+    soft_thresholds = {
+        "min_mean_test_accuracy": args.soft_min_mean,
+        "max_stdev_test_accuracy": args.soft_max_stdev,
+        "min_fraction_test_beats_always_bull": args.soft_min_beat_bull_frac,
+        "min_min_test_accuracy_across_folds": args.soft_min_worst_fold,
     }
 
     lens_wf = _load_json(lens_path) or {}
@@ -271,7 +309,40 @@ def main() -> int:
         combined_all_passed = bool(lens_passed and inst_passed and shared_ok)
     else:
         combined_all_passed = bool(lens_passed and shared_ok)
-    recommendation = "manual_review_candidate" if combined_all_passed else "defer"
+    strict_passed = combined_all_passed
+    soft_lens_passed = False
+    if lens_ok:
+        soft_lens_passed = _all_true(
+            _walkforward_gates(
+                lens_wf,
+                track_id="lens_soft_tmp",
+                min_mean=float(soft_thresholds["min_mean_test_accuracy"]),
+                max_stdev=float(soft_thresholds["max_stdev_test_accuracy"]),
+                min_beat_frac=float(soft_thresholds["min_fraction_test_beats_always_bull"]),
+                min_worst_fold=float(soft_thresholds["min_min_test_accuracy_across_folds"]),
+            )
+        )
+    soft_passed = bool(soft_lens_passed and shared_ok)
+
+    h = _load_history(args.streak_history_json)
+    runs = list(h["runs"])
+    runs.append(
+        {
+            "ts_utc": _utc_now(),
+            "strict_passed": strict_passed,
+            "soft_passed": soft_passed,
+            "promotion_track_mode": args.promotion_track_mode,
+            "strict_thresholds": thresholds,
+            "soft_thresholds": soft_thresholds,
+        }
+    )
+    if len(runs) > 200:
+        runs = runs[-200:]
+    _save_history(args.streak_history_json, runs)
+    streak = _strict_streak(runs)
+    auto_promote_ready = strict_passed and streak >= max(1, int(args.strict_streak_required))
+
+    recommendation = "auto_promote_ready" if auto_promote_ready else ("manual_review_candidate" if strict_passed else "defer")
 
     out: dict[str, Any] = {
         "schema": SCHEMA,
@@ -284,7 +355,10 @@ def main() -> int:
             "score_json": str(args.score_json),
             "promotion_track_mode": args.promotion_track_mode,
             "thresholds": thresholds,
+            "soft_thresholds": soft_thresholds,
             "skip_shared_gates": bool(args.skip_shared_gates),
+            "strict_streak_required": int(args.strict_streak_required),
+            "streak_history_json": str(args.streak_history_json),
         },
         "tracks": {
             "per_date_lens": {
@@ -306,6 +380,10 @@ def main() -> int:
         "shared_all_gates_passed": shared_passed if not args.skip_shared_gates else None,
         "combined_all_passed": combined_all_passed,
         "all_gates_passed": combined_all_passed,
+        "strict_passed": strict_passed,
+        "soft_passed": soft_passed,
+        "strict_pass_streak": streak,
+        "auto_promote_ready": auto_promote_ready,
         "promotion_recommendation": recommendation,
         "note": "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. Human sign-off still required before A-track or live routing.",
     }

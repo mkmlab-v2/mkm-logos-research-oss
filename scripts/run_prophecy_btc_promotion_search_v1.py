@@ -44,6 +44,10 @@ def _score(agg: dict[str, Any]) -> float:
     return (2.0 * mean_v) + (1.2 * beat_v) + (0.8 * min_v) - stdev_v
 
 
+def _float_grid(csv: str) -> list[float]:
+    return [float(x.strip()) for x in csv.split(",") if x.strip()]
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Search BTC walk-forward promotion candidates.")
     ap.add_argument("--score-json", type=Path, default=DEFAULT_SCORE)
@@ -54,6 +58,10 @@ def main() -> int:
     ap.add_argument("--max-stdev", type=float, default=0.15)
     ap.add_argument("--min-beat-bull-frac", type=float, default=0.5)
     ap.add_argument("--min-worst-fold", type=float, default=0.4)
+    ap.add_argument("--min-mean-grid", type=str, default="")
+    ap.add_argument("--max-stdev-grid", type=str, default="")
+    ap.add_argument("--min-beat-bull-frac-grid", type=str, default="")
+    ap.add_argument("--min-worst-fold-grid", type=str, default="")
     ap.add_argument("--top-k", type=int, default=10)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
@@ -64,6 +72,20 @@ def main() -> int:
     n_folds_grid = [int(x.strip()) for x in args.n_folds_grid.split(",") if x.strip()]
     objective_grid = [x.strip() for x in args.objective_grid.split(",") if x.strip()]
     combos = list(itertools.product(n_folds_grid, objective_grid))
+    mm_grid = _float_grid(args.min_mean_grid) if args.min_mean_grid.strip() else [args.min_mean]
+    sd_grid = _float_grid(args.max_stdev_grid) if args.max_stdev_grid.strip() else [args.max_stdev]
+    bb_grid = _float_grid(args.min_beat_bull_frac_grid) if args.min_beat_bull_frac_grid.strip() else [args.min_beat_bull_frac]
+    wf_grid = _float_grid(args.min_worst_fold_grid) if args.min_worst_fold_grid.strip() else [args.min_worst_fold]
+    threshold_profiles = [
+        {
+            "id": f"p{i}",
+            "min_mean_test_accuracy": mm,
+            "max_stdev_test_accuracy": sd,
+            "min_fraction_test_beats_always_bull": bb,
+            "min_min_test_accuracy_across_folds": wf,
+        }
+        for i, (mm, sd, bb, wf) in enumerate(itertools.product(mm_grid, sd_grid, bb_grid, wf_grid))
+    ]
 
     candidates: list[dict[str, Any]] = []
     errors: list[dict[str, Any]] = []
@@ -95,24 +117,42 @@ def main() -> int:
             errors.append({"n_folds": n_folds, "train_objective": objective, "error": f"invalid_json: {e}"})
             continue
         agg = doc.get("aggregate") if isinstance(doc.get("aggregate"), dict) else {}
+        default_pass = _passes(
+            agg,
+            min_mean=args.min_mean,
+            max_stdev=args.max_stdev,
+            min_beat=args.min_beat_bull_frac,
+            min_fold=args.min_worst_fold,
+        )
+        passing_profiles: list[str] = []
+        for p in threshold_profiles:
+            if _passes(
+                agg,
+                min_mean=float(p["min_mean_test_accuracy"]),
+                max_stdev=float(p["max_stdev_test_accuracy"]),
+                min_beat=float(p["min_fraction_test_beats_always_bull"]),
+                min_fold=float(p["min_min_test_accuracy_across_folds"]),
+            ):
+                passing_profiles.append(str(p["id"]))
         candidates.append(
             {
                 "n_folds": n_folds,
                 "train_objective": objective,
                 "aggregate": agg,
-                "passes_default_gates": _passes(
-                    agg,
-                    min_mean=args.min_mean,
-                    max_stdev=args.max_stdev,
-                    min_beat=args.min_beat_bull_frac,
-                    min_fold=args.min_worst_fold,
-                ),
+                "passes_default_gates": default_pass,
+                "passes_any_profile": len(passing_profiles) > 0,
+                "passing_profile_ids": passing_profiles,
                 "rank_score": round(_score(agg), 6),
             }
         )
 
-    ranked = sorted(candidates, key=lambda c: (bool(c["passes_default_gates"]), float(c["rank_score"])), reverse=True)
+    ranked = sorted(
+        candidates,
+        key=lambda c: (bool(c["passes_default_gates"]), bool(c.get("passes_any_profile")), float(c["rank_score"])),
+        reverse=True,
+    )
     passed = [c for c in ranked if c.get("passes_default_gates")]
+    passed_any = [c for c in ranked if c.get("passes_any_profile")]
 
     out = {
         "schema": SCHEMA,
@@ -123,18 +163,21 @@ def main() -> int:
             "score_json": str(args.score_json),
             "n_folds_grid": n_folds_grid,
             "objective_grid": objective_grid,
+            "threshold_profile_count": len(threshold_profiles),
             "thresholds": {
                 "min_mean_test_accuracy": args.min_mean,
                 "max_stdev_test_accuracy": args.max_stdev,
                 "min_fraction_test_beats_always_bull": args.min_beat_bull_frac,
                 "min_min_test_accuracy_across_folds": args.min_worst_fold,
             },
+            "threshold_profiles": threshold_profiles,
             "total_candidates": len(combos),
         },
         "summary": {
             "n_successful_runs": len(candidates),
             "n_failed_runs": len(errors),
             "n_pass_candidates": len(passed),
+            "n_pass_candidates_any_profile": len(passed_any),
             "best_candidate": ranked[0] if ranked else None,
         },
         "top_candidates": ranked[: max(1, int(args.top_k))],
