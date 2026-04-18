@@ -1,12 +1,13 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-04-18T13:12:55Z",
+  "generated_at_utc": "2026-04-18T13:25:55Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
-    "lens_walkforward_json": "docs\\final\\artifacts\\prophecy_per_date_combo_walkforward_v1_latest.json",
-    "instrument_walkforward_json": "docs\\final\\artifacts\\prophecy_instrument_combo_walkforward_v1_latest.json",
+    "lens_walkforward_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_per_date_combo_walkforward_v1_latest.json",
+    "instrument_walkforward_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_instrument_combo_walkforward_v1_latest.json",
     "score_json": "docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "promotion_track_mode": "btc_only_crossassist",
     "thresholds": {
       "min_mean_test_accuracy": 0.55,
       "max_stdev_test_accuracy": 0.15,
@@ -27,18 +28,18 @@
             "min_mean_test_accuracy": 0.55
           },
           "observed": {
-            "mean_test_accuracy": 0.479167
+            "mean_test_accuracy": 0.458333
           }
         },
         {
           "gate_id": "lens_wf_stdev_test_accuracy",
-          "passed": false,
+          "passed": true,
           "threshold": {
             "op": "<=",
             "max_stdev_test_accuracy": 0.15
           },
           "observed": {
-            "stdev_test_accuracy": 0.223413
+            "stdev_test_accuracy": 0.138193
           }
         },
         {
@@ -61,74 +62,18 @@
             "min_min_test_accuracy_across_folds": 0.4
           },
           "observed": {
-            "min_test_accuracy": 0.25
+            "min_test_accuracy": 0.333333
           }
         }
       ]
     },
     "instrument_combo": {
-      "all_gates_passed": false,
-      "gates": [
-        {
-          "gate_id": "instrument_wf_mean_test_accuracy",
-          "passed": true,
-          "threshold": {
-            "op": ">=",
-            "min_mean_test_accuracy": 0.55
-          },
-          "observed": {
-            "mean_test_accuracy": 0.5625
-          }
-        },
-        {
-          "gate_id": "instrument_wf_stdev_test_accuracy",
-          "passed": true,
-          "threshold": {
-            "op": "<=",
-            "max_stdev_test_accuracy": 0.15
-          },
-          "observed": {
-            "stdev_test_accuracy": 0.036084
-          }
-        },
-        {
-          "gate_id": "instrument_wf_fraction_folds_beat_always_bull",
-          "passed": false,
-          "threshold": {
-            "op": ">=",
-            "min_fraction_test_beats_always_bull": 0.5
-          },
-          "observed": {
-            "fraction_test_beats_always_bull": 0.25,
-            "n_folds": 4
-          }
-        },
-        {
-          "gate_id": "instrument_wf_min_fold_test_accuracy",
-          "passed": true,
-          "threshold": {
-            "op": ">=",
-            "min_min_test_accuracy_across_folds": 0.4
-          },
-          "observed": {
-            "min_test_accuracy": 0.5
-          }
-        }
-      ]
+      "all_gates_passed": null,
+      "gates": []
     },
     "shared": {
       "all_gates_passed": true,
       "gates": [
-        {
-          "gate_id": "panel_kospi_btc_per_date",
-          "passed": true,
-          "reason": null,
-          "detail": {
-            "n_eval_dates_with_any_row": 30,
-            "n_eval_dates_with_kospi_and_btc": 30,
-            "n_score_rows": 60
-          }
-        },
         {
           "gate_id": "score_btc_csv_input_present",
           "passed": true,
@@ -149,18 +94,18 @@
         "min_mean_test_accuracy": 0.55
       },
       "observed": {
-        "mean_test_accuracy": 0.479167
+        "mean_test_accuracy": 0.458333
       }
     },
     {
       "gate_id": "lens_wf_stdev_test_accuracy",
-      "passed": false,
+      "passed": true,
       "threshold": {
         "op": "<=",
         "max_stdev_test_accuracy": 0.15
       },
       "observed": {
-        "stdev_test_accuracy": 0.223413
+        "stdev_test_accuracy": 0.138193
       }
     },
     {
@@ -183,17 +128,7 @@
         "min_min_test_accuracy_across_folds": 0.4
       },
       "observed": {
-        "min_test_accuracy": 0.25
-      }
-    },
-    {
-      "gate_id": "panel_kospi_btc_per_date",
-      "passed": true,
-      "reason": null,
-      "detail": {
-        "n_eval_dates_with_any_row": 30,
-        "n_eval_dates_with_kospi_and_btc": 30,
-        "n_score_rows": 60
+        "min_test_accuracy": 0.333333
       }
     },
     {
@@ -206,7 +141,7 @@
     }
   ],
   "lens_all_gates_passed": false,
-  "instrument_combo_all_gates_passed": false,
+  "instrument_combo_all_gates_passed": null,
   "shared_all_gates_passed": true,
   "combined_all_passed": false,
   "all_gates_passed": false,

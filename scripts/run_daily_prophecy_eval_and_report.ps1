@@ -1,7 +1,7 @@
 # Daily B-Track: build OHLCV score JSON + price-mode hit-rate eval.
 # Optional -IncludeOverlaySpike: refreshes prophecy_restoration_spike_latest.json (threshold per script default / sweep policy).
 # Optional -IncludeShadowPanelEval: writes prophecy_shadow_panel_eval_v1_latest.json (B-track measurement lanes; not live routing).
-#   -ShadowPanelMode all | walkforward_aggregate: runs run_prophecy_per_date_combo_walkforward_v1.py first so walk-forward JSON is fresh, then shadow eval.
+#   -ShadowPanelMode all | walkforward_aggregate: runs run_prophecy_per_date_combo_walkforward_v1.py first (target-instrument=btc) so walk-forward JSON is fresh, then shadow eval.
 #   Use -ShadowPanelMode instrument_combo_best for a lighter single-lane eval; or set MKM_PROPHECY_SHADOW_PANEL_MODE.
 # Does NOT train models, promote canonical weights, or touch live trading.
 #
@@ -108,6 +108,7 @@ if ($IncludeShadowPanelEval) {
         $wfArgs = @(
             "scripts\run_prophecy_per_date_combo_walkforward_v1.py",
             "--score-json", $scoreOut,
+            "--target-instrument", "btc",
             "--output", $walkforwardOut
         )
         if ($BtcCsvPath -and (Test-Path -LiteralPath $BtcCsvPath)) {

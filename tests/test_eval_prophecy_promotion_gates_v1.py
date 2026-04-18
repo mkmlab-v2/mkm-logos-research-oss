@@ -57,6 +57,8 @@ def test_promotion_gates_all_pass_skip_shared(tmp_path: Path) -> None:
             str(lens),
             "--instrument-walkforward-json",
             str(inst),
+            "--promotion-track-mode",
+            "dual",
             "--skip-shared-gates",
             "--output",
             str(out),
@@ -157,6 +159,8 @@ def test_shared_gates_detect_incomplete_panel(tmp_path: Path) -> None:
             str(lens),
             "--instrument-walkforward-json",
             str(inst),
+            "--promotion-track-mode",
+            "dual",
             "--score-json",
             str(score_path),
             "--stdout-only",
@@ -170,3 +174,47 @@ def test_shared_gates_detect_incomplete_panel(tmp_path: Path) -> None:
     doc = json.loads(proc.stdout)
     assert doc.get("combined_all_passed") is False
     assert doc.get("tracks", {}).get("shared", {}).get("all_gates_passed") is False
+
+
+def test_btc_only_mode_ignores_dual_leg_panel_gate(tmp_path: Path) -> None:
+    ws = Path(__file__).resolve().parents[1]
+    lens = tmp_path / "lens5.json"
+    inst = tmp_path / "inst5.json"
+    lens.write_text(json.dumps(_lens_wf_passing()), encoding="utf-8")
+    inst.write_text(json.dumps(_instrument_wf_passing()), encoding="utf-8")
+    score_path = tmp_path / "score_btc_only.json"
+    score_path.write_text(
+        json.dumps(
+            {
+                "inputs": {"btc_csv": "research/market_data/btc_daily_external_yf.csv"},
+                "rows": [
+                    {"instrument": "kospi", "eval_date": "2026-01-10", "actual_direction": "bull"},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(ws / "scripts" / "eval_prophecy_promotion_gates_v1.py"),
+            "--lens-walkforward-json",
+            str(lens),
+            "--instrument-walkforward-json",
+            str(inst),
+            "--promotion-track-mode",
+            "btc_only_crossassist",
+            "--score-json",
+            str(score_path),
+            "--stdout-only",
+        ],
+        cwd=str(ws),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0
+    doc = json.loads(proc.stdout)
+    assert doc.get("tracks", {}).get("shared", {}).get("all_gates_passed") is True
+    assert doc.get("instrument_combo_all_gates_passed") is None
+    assert doc.get("combined_all_passed") is True

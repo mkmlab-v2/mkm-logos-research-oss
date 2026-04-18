@@ -165,6 +165,12 @@ def main() -> int:
     ap.add_argument("--score-json", type=Path, default=DEFAULT_SCORE)
     ap.add_argument("--kospi-csv", type=Path, default=DEFAULT_KOSPI_CSV)
     ap.add_argument("--btc-csv", type=Path, default=DEFAULT_BTC_CSV)
+    ap.add_argument(
+        "--target-instrument",
+        choices=("btc", "kospi", "all"),
+        default="btc",
+        help="Primary training/eval target. btc keeps KOSPI only as cross-assist signal.",
+    )
     ap.add_argument("--n-folds", type=int, default=5, help="Contiguous date blocks (oldest..newest); folds = n_folds-1.")
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
@@ -175,10 +181,16 @@ def main() -> int:
     doc = _load_json(args.score_json)
     if not doc or not isinstance(doc.get("rows"), list):
         raise SystemExit(f"invalid score json: {args.score_json}")
-    rows = sorted(
+    all_rows = sorted(
         [r for r in doc["rows"] if isinstance(r, dict)],
         key=lambda r: (str(r.get("eval_date")), str(r.get("instrument"))),
     )
+    if args.target_instrument == "all":
+        rows = all_rows
+    else:
+        rows = [r for r in all_rows if str(r.get("instrument") or "").strip().lower() == args.target_instrument]
+    if not rows:
+        raise SystemExit(f"no rows after target-instrument filter: {args.target_instrument}")
     dates = sorted({str(r.get("eval_date"))[:10] for r in rows})
     if len(dates) < 2:
         raise SystemExit(f"need at least 2 distinct eval_dates for walk-forward, got {len(dates)}")
@@ -246,6 +258,8 @@ def main() -> int:
             "score_json": str(args.score_json),
             "kospi_csv": str(args.kospi_csv),
             "btc_csv": str(args.btc_csv),
+            "target_instrument": args.target_instrument,
+            "n_rows_after_target_filter": len(rows),
             "n_folds": n_folds_effective,
             "n_folds_requested": n_folds_requested,
             "n_folds_effective": n_folds_effective,

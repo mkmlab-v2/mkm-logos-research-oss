@@ -179,6 +179,12 @@ def main() -> int:
         help="Instrument-combo walk-forward artifact (required for combined pass).",
     )
     ap.add_argument("--score-json", type=Path, default=DEFAULT_SCORE)
+    ap.add_argument(
+        "--promotion-track-mode",
+        choices=("btc_only_crossassist", "dual"),
+        default="btc_only_crossassist",
+        help="btc_only_crossassist: evaluate lens track only (BTC target) + shared BTC input gate.",
+    )
     ap.add_argument("--skip-shared-gates", action="store_true")
     ap.add_argument("--min-mean", type=float, default=0.55, dest="min_mean")
     ap.add_argument("--max-stdev", type=float, default=0.15, dest="max_stdev")
@@ -249,15 +255,22 @@ def main() -> int:
     shared_gates: list[dict[str, Any]] = []
     shared_passed = True
     if not args.skip_shared_gates and args.score_json.is_file():
-        shared_gates = [
-            _panel_dual_leg_gate(args.score_json),
-            _score_btc_csv_input_gate(args.score_json),
-        ]
+        if args.promotion_track_mode == "dual":
+            shared_gates = [
+                _panel_dual_leg_gate(args.score_json),
+                _score_btc_csv_input_gate(args.score_json),
+            ]
+        else:
+            # BTC-only promotion mode: require BTC source path, but not dual-leg panel completeness.
+            shared_gates = [_score_btc_csv_input_gate(args.score_json)]
         shared_passed = _all_true(shared_gates)
 
     legacy_gates = list(lens_gates) + (shared_gates if not args.skip_shared_gates else [])
     shared_ok = True if args.skip_shared_gates else shared_passed
-    combined_all_passed = bool(lens_passed and inst_passed and shared_ok)
+    if args.promotion_track_mode == "dual":
+        combined_all_passed = bool(lens_passed and inst_passed and shared_ok)
+    else:
+        combined_all_passed = bool(lens_passed and shared_ok)
     recommendation = "manual_review_candidate" if combined_all_passed else "defer"
 
     out: dict[str, Any] = {
@@ -269,6 +282,7 @@ def main() -> int:
             "lens_walkforward_json": str(lens_path),
             "instrument_walkforward_json": str(args.instrument_walkforward_json),
             "score_json": str(args.score_json),
+            "promotion_track_mode": args.promotion_track_mode,
             "thresholds": thresholds,
             "skip_shared_gates": bool(args.skip_shared_gates),
         },
@@ -278,8 +292,8 @@ def main() -> int:
                 "gates": lens_gates,
             },
             "instrument_combo": {
-                "all_gates_passed": inst_passed,
-                "gates": inst_gates,
+                "all_gates_passed": inst_passed if args.promotion_track_mode == "dual" else None,
+                "gates": inst_gates if args.promotion_track_mode == "dual" else [],
             },
             "shared": {
                 "all_gates_passed": shared_passed if not args.skip_shared_gates else None,
@@ -288,7 +302,7 @@ def main() -> int:
         },
         "gates": legacy_gates,
         "lens_all_gates_passed": lens_passed,
-        "instrument_combo_all_gates_passed": inst_passed,
+        "instrument_combo_all_gates_passed": inst_passed if args.promotion_track_mode == "dual" else None,
         "shared_all_gates_passed": shared_passed if not args.skip_shared_gates else None,
         "combined_all_passed": combined_all_passed,
         "all_gates_passed": combined_all_passed,
