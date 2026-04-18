@@ -1,0 +1,356 @@
+{
+  "schema": "prophecy_prior_threshold_sweep_summary_v1",
+  "generated_at_utc": "2026-04-18T07:00:44Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "isolation_note": "B-track measurement only; no Myeongri merge; not Track A / live routing (CONSTITUTION §1.1.1).",
+  "panel": {
+    "score_json": "docs/final/artifacts/btrack_prophecy_score_latest.json",
+    "generated_after": "OHLCV rebuild --recent-trading-days 30 + sweep refresh",
+    "n_evaluated_directional": 30,
+    "batch_note": "Same hypothesis predicted_direction applied to each eval_date vs that day's realized return (30 trading days)."
+  },
+  "sweep": {
+    "prior_day_shock_bear_abstain_v0": [
+      {
+        "prior_return_threshold": -0.048,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p048000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 3,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.047,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p047000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 3,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.046,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p046000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 3,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.045,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p045000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 3,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.044,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p044000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 4,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.043,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p043000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 4,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.042,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p042000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 5,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.041,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p041000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 5,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.04,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p040000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 5,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.039,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p039000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 5,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.038,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p038000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 5,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.037,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p037000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 5,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.036,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p036000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 5,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.035,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p035000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 5,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.034,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p034000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 5,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.033,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p033000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.4,
+        "delta_hit_rate": 0.0,
+        "overlay_rows_modified": 5,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.032,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p032000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.366667,
+        "delta_hit_rate": -0.033333,
+        "overlay_rows_modified": 6,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.031,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p031000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.366667,
+        "delta_hit_rate": -0.033333,
+        "overlay_rows_modified": 6,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.03,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p030000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.366667,
+        "delta_hit_rate": -0.033333,
+        "overlay_rows_modified": 6,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.025,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p025000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.333333,
+        "delta_hit_rate": -0.066667,
+        "overlay_rows_modified": 8,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.02,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p020000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.333333,
+        "delta_hit_rate": -0.066667,
+        "overlay_rows_modified": 8,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.015,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p015000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.333333,
+        "delta_hit_rate": -0.066667,
+        "overlay_rows_modified": 10,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.01,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p010000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.333333,
+        "delta_hit_rate": -0.066667,
+        "overlay_rows_modified": 10,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.008,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p008000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.333333,
+        "delta_hit_rate": -0.066667,
+        "overlay_rows_modified": 11,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.006,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p006000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.333333,
+        "delta_hit_rate": -0.066667,
+        "overlay_rows_modified": 11,
+        "n_evaluated": 30
+      },
+      {
+        "prior_return_threshold": -0.004,
+        "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p004000_panel20260418v2.json",
+        "baseline_hit_rate": 0.4,
+        "after_hit_rate": 0.3,
+        "delta_hit_rate": -0.1,
+        "overlay_rows_modified": 12,
+        "n_evaluated": 30
+      }
+    ],
+    "best_delta": {
+      "prior_return_threshold": -0.048,
+      "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p048000_panel20260418v2.json",
+      "baseline_hit_rate": 0.4,
+      "after_hit_rate": 0.4,
+      "delta_hit_rate": 0.0,
+      "overlay_rows_modified": 3,
+      "n_evaluated": 30
+    },
+    "worst_delta": {
+      "prior_return_threshold": -0.004,
+      "artifact": "docs/final/artifacts/prophecy_spike_thr_m0p004000_panel20260418v2.json",
+      "baseline_hit_rate": 0.4,
+      "after_hit_rate": 0.3,
+      "delta_hit_rate": -0.1,
+      "overlay_rows_modified": 12,
+      "n_evaluated": 30
+    },
+    "tie_break_note": "Among equal delta_hit_rate, prefer fewer overlay_rows_modified.",
+    "overlay_none": {
+      "schema": "prophecy_overlay_ablation_spike_v1",
+      "generated_at_utc": "2026-04-18T07:00:57Z",
+      "research_only": true,
+      "hypothesis_tag": "[HYPO]",
+      "inputs": {
+        "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+        "year_map_json": "C:\\workspace\\docs\\final\\artifacts\\4d_to_ohaeng_regime_year_map_sample_v1.json",
+        "overlay": "none",
+        "stress_years_resolved": [
+          1997,
+          1998,
+          1999,
+          2000,
+          2001,
+          2002,
+          2008,
+          2009,
+          2020,
+          2021
+        ],
+        "kospi_csv": null,
+        "prior_return_threshold": null
+      },
+      "baseline": {
+        "price_directional_hit_rate": 0.4,
+        "n_evaluated": 30,
+        "hits": 12
+      },
+      "after_overlay": {
+        "price_directional_hit_rate": 0.4,
+        "n_evaluated": 30,
+        "hits": 12,
+        "overlay_rows_modified": 0
+      },
+      "delta_hit_rate": 0.0,
+      "notes": [
+        "Same scoring rules as eval_prophecy_hit_rate_v1 price mode over rows[].",
+        "Overlay is a measurement placeholder — not admission to Track A / live routing.",
+        "stress_bear_to_neutral_v0: panels only in non-stress years show delta_hit_rate≈0 by construction.",
+        "prior_day_shock_bear_abstain_v0: uses prior completed daily return from KOSPI CSV only (no eval-day lookahead)."
+      ]
+    },
+    "stress_bear_to_neutral_v0": {
+      "schema": "prophecy_overlay_ablation_spike_v1",
+      "generated_at_utc": "2026-04-18T07:00:57Z",
+      "research_only": true,
+      "hypothesis_tag": "[HYPO]",
+      "inputs": {
+        "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+        "year_map_json": "C:\\workspace\\docs\\final\\artifacts\\4d_to_ohaeng_regime_year_map_sample_v1.json",
+        "overlay": "stress_bear_to_neutral_v0",
+        "stress_years_resolved": [
+          1997,
+          1998,
+          1999,
+          2000,
+          2001,
+          2002,
+          2008,
+          2009,
+          2020,
+          2021
+        ],
+        "kospi_csv": null,
+        "prior_return_threshold": null
+      },
+      "baseline": {
+        "price_directional_hit_rate": 0.4,
+        "n_evaluated": 30,
+        "hits": 12
+      },
+      "after_overlay": {
+        "price_directional_hit_rate": 0.4,
+        "n_evaluated": 30,
+        "hits": 12,
+        "overlay_rows_modified": 0
+      },
+      "delta_hit_rate": 0.0,
+      "notes": [
+        "Same scoring rules as eval_prophecy_hit_rate_v1 price mode over rows[].",
+        "Overlay is a measurement placeholder — not admission to Track A / live routing.",
+        "stress_bear_to_neutral_v0: panels only in non-stress years show delta_hit_rate≈0 by construction.",
+        "prior_day_shock_bear_abstain_v0: uses prior completed daily return from KOSPI CSV only (no eval-day lookahead)."
+      ]
+    }
+  }
+}

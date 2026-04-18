@@ -20,7 +20,7 @@
 
 | 갈래 | 내용 | 병렬 시 주의 |
 |------|------|----------------|
-| **사업·공고** | 평가표·실증 요건·파트너·제출물 — SSOT 수치만으로 당선을 단정하지 않음; 갭 매트릭스 초안 `docs/final/artifacts/defense_rfp_evaluation_gap_matrix_v1.json`(공고 확보 후 행 채움) | 레포 대규모 편집과 **동시에 한 사람이** 맡으면 컨텍스트가 섞임 → **별도 채팅** 권장 |
+| **사업·공고** | 평가표·실증 요건·파트너·제출물 — SSOT 수치만으로 당선을 단정하지 않음; 갭 매트릭스 `docs/final/artifacts/defense_rfp_evaluation_gap_matrix_v1.json` · **붙임2 체크리스트** `docs/final/artifacts/defense_pitchday_2026_annex2_proposal_checklist_v1.json` | 레포 대규모 편집과 **동시에 한 사람이** 맡으면 컨텍스트가 섞임 → **별도 채팅** 권장 |
 | **B-track 연구** | 예언 스윕·오버레이 AB·명리·로고스 — §1.1·§8·합선 금지 | 본선/국방 제안 서사와 **문장·코드 합선 금지** |
 | **레포 본선** | `CONSTITUTION`·`scripts/run_*`·CI·헌법 경로 | **직렬 우선**: 동일 파일을 두 세션에서 동시 편집하지 않음 |
 

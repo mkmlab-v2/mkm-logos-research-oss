@@ -1,0 +1,11 @@
+{
+  "schema": "prophecy_overlay_prior_threshold_recommended_v1",
+  "generated_at_utc": "2026-04-18T07:00:44Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "recommended_prior_return_threshold": -0.048,
+  "rationale": "Max delta_hit_rate on sweep grid; ties broken by fewer overlay_rows_modified.",
+  "source_summary": "docs/final/artifacts/prophecy_prior_threshold_sweep_summary_latest.json",
+  "score_snapshot": "docs/final/artifacts/btrack_prophecy_score_latest.json",
+  "not_live_routing": true
+}
