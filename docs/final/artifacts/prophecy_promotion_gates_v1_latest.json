@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-04-18T13:30:55Z",
+  "generated_at_utc": "2026-04-18T14:27:10Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -14,7 +14,15 @@
       "min_fraction_test_beats_always_bull": 0.5,
       "min_min_test_accuracy_across_folds": 0.4
     },
-    "skip_shared_gates": false
+    "soft_thresholds": {
+      "min_mean_test_accuracy": 0.45,
+      "max_stdev_test_accuracy": 0.22,
+      "min_fraction_test_beats_always_bull": 0.25,
+      "min_min_test_accuracy_across_folds": 0.3
+    },
+    "skip_shared_gates": false,
+    "strict_streak_required": 5,
+    "streak_history_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_promotion_strict_streak_v1.json"
   },
   "tracks": {
     "per_date_lens": {
@@ -145,6 +153,10 @@
   "shared_all_gates_passed": true,
   "combined_all_passed": false,
   "all_gates_passed": false,
+  "strict_passed": false,
+  "soft_passed": true,
+  "strict_pass_streak": 0,
+  "auto_promote_ready": false,
   "promotion_recommendation": "defer",
   "note": "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. Human sign-off still required before A-track or live routing."
 }
