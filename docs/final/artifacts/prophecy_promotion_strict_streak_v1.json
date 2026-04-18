@@ -126,6 +126,24 @@
         "min_fraction_test_beats_always_bull": 0.25,
         "min_min_test_accuracy_across_folds": 0.3
       }
+    },
+    {
+      "ts_utc": "2026-04-18T14:30:29Z",
+      "strict_passed": true,
+      "soft_passed": true,
+      "promotion_track_mode": "btc_only_crossassist",
+      "strict_thresholds": {
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      },
+      "soft_thresholds": {
+        "min_mean_test_accuracy": 0.45,
+        "max_stdev_test_accuracy": 0.22,
+        "min_fraction_test_beats_always_bull": 0.25,
+        "min_min_test_accuracy_across_folds": 0.3
+      }
     }
   ]
 }
