@@ -1,6 +1,6 @@
 {
   "schema": "lg_washer_voice_augmented_manifest_v1",
-  "generated_at_utc": "2026-04-18T11:52:52Z",
+  "generated_at_utc": "2026-04-18T12:27:26Z",
   "research_only": true,
   "source_train_only": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
   "output_jsonl": "docs/final/artifacts/lg_washer_voice_augmented_stress_preview_v1.jsonl",
