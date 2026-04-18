@@ -1,0 +1,123 @@
+{
+  "schema": "defense_pitchday_annex2_checklist_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-04-18T16:20:00Z",
+  "program": "2026년 첨단국방 피치데이 (로봇·인공지능 중심)",
+  "source": "공고 붙임2 신청서류 — 제안서 필드(사용자 제공 공고문)",
+  "purpose": "제출 전 항목별 완료 여부. status: todo | draft | ready. 레포 증거는 보조이며 제안서 본문·이미지는 레포 밖.",
+  "submission_reminders": {
+    "email": "kush@kdia.or.kr",
+    "subject": "[피치데이 신청] 참여기업명",
+    "files": ["업체명_참가신청서", "업체명_제안서"],
+    "deadline_kst": "2026-04-27T16:00:00+09:00"
+  },
+  "sections": [
+    {
+      "id": "APPLICATION_FORM",
+      "title_ko": "1. 참가신청서",
+      "rows": [
+        {
+          "id": "APP_REP",
+          "field_ko": "신청자(대표자) 성명·직책·주소·휴대폰·이메일·소속",
+          "status": "todo",
+          "repo_hint_paths": [],
+          "notes": "대표 명의·연락처 현행화(공고 §7)."
+        },
+        {
+          "id": "APP_FIELD",
+          "field_ko": "해당 분야 체크(로봇·네트워크·전자전·인공지능)",
+          "status": "todo",
+          "repo_hint_paths": ["docs/final/artifacts/defense_rfp_evaluation_gap_matrix_v1.json"],
+          "notes": "붙임1 한 축과 제안서 제품명 정합."
+        },
+        {
+          "id": "APP_EXHIBIT",
+          "field_ko": "전시 희망여부",
+          "status": "todo",
+          "repo_hint_paths": [],
+          "notes": "희망/불희망."
+        }
+      ]
+    },
+    {
+      "id": "PROPOSAL_DOC",
+      "title_ko": "2. 제안서",
+      "rows": [
+        {
+          "id": "PROP_DOMAIN",
+          "field_ko": "제안분야(붙임1 제품군과 동일 표기)",
+          "status": "draft",
+          "repo_hint_paths": ["docs/final/artifacts/defense_rfp_evaluation_gap_matrix_v1.json"],
+          "notes": "초안: 인공지능 분야 ③ 군사환경 엣지 AI 디바이스(온디바이스 AI). 붙임1 체크와 최종 정합 필요."
+        },
+        {
+          "id": "PROP_PRODUCT_NAME",
+          "field_ko": "제품명(10자 이내, 모델명 단독 표기 금지)",
+          "status": "ready",
+          "repo_hint_paths": [],
+          "notes": "확정: 무결성 전술압축기(8자). 모델명(MKM 등)은 별도 표기."
+        },
+        {
+          "id": "PROP_INTRO",
+          "field_ko": "제품소개",
+          "status": "todo",
+          "repo_hint_paths": [
+            "docs/final/artifacts/defense_code_pack_v1.json",
+            "docs/final/artifacts/defense_pitch_codepack_v1.json"
+          ],
+          "notes": "FACT: research_only·합성 재현; 과장 금지."
+        },
+        {
+          "id": "PROP_IMAGE",
+          "field_ko": "제품 이미지 또는 사진",
+          "status": "todo",
+          "repo_hint_paths": [],
+          "notes": "레포 외 자산."
+        },
+        {
+          "id": "PROP_SPECS",
+          "field_ko": "제품 사양(구체적) — 성능 수치·구성품·납품 단가 등",
+          "status": "draft",
+          "repo_hint_paths": [
+            "docs/final/artifacts/defense_hybrid_compression_bench_v0.json",
+            "docs/final/artifacts/bench_l1_api_load_latest.json",
+            "docs/final/artifacts/usmtf_training_fixture_compress_spike_latest.json",
+            "docs/final/artifacts/defense_edge_execution_evidence_v1.json"
+          ],
+          "notes": "수치마다 측정 전제·경로 각주. latency는 local_stub_8010 n=30 P95=38.198ms 기준. 로컬 CUDA/NVIDIA 환경은 defense_edge_execution_evidence_v1.json 참조. 메모리 수치(RSS null)는 증빙 전까지 제외."
+        },
+        {
+          "id": "PROP_GOV_PROJECTS",
+          "field_ko": "해당 제품 정부과제 참여여부(없으면 해당없음)",
+          "status": "todo",
+          "repo_hint_paths": [],
+          "notes": "공고 §3 제외 요건과 교차 검토."
+        },
+        {
+          "id": "PROP_CONOPS",
+          "field_ko": "운용개념(안) — 필요 시 이미지",
+          "status": "draft",
+          "repo_hint_paths": ["docs/final/artifacts/defense_edge_synthetic_uav_handoff_v0.json"],
+          "notes": "하이브리드 데이터 사수 프레임 초안 적용: 필수 필드 결정론 채널 + 서술 구간 멀티렌즈 압축. 4D는 보조 제약 레이어로 한정."
+        },
+        {
+          "id": "PROP_FEATURES",
+          "field_ko": "주요기능",
+          "status": "todo",
+          "repo_hint_paths": [
+            "scripts/run_defense_repro_bundle.py",
+            ".github/workflows/defense-repro-bundle-smoke.yml"
+          ],
+          "notes": "재현 커맨드·CI는 부록."
+        }
+      ]
+    }
+  ],
+  "summary_counts": {
+    "total_rows": 11,
+    "todo": 7,
+    "draft": 3,
+    "ready": 1
+  },
+  "how_to_update_status": "편집 시 각 row의 status를 draft/ready로 바꾸고 summary_counts를 수동 갱신."
+}

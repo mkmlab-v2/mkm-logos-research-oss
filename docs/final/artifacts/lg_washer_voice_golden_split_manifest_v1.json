@@ -1,0 +1,40 @@
+{
+  "schema": "lg_washer_voice_golden_split_manifest_v1",
+  "generated_at_utc": "2026-04-18T08:40:00Z",
+  "research_only": true,
+  "source_report": "docs/final/artifacts/lg_washer_integrity_validation_report_sample_v1.json",
+  "execution_pack": "docs/final/artifacts/challenge_ax_vertical_lg_hs_execution_pack_v1.json",
+  "outputs": {
+    "train_jsonl": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
+    "holdout_jsonl": "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl"
+  },
+  "split_policy": {
+    "note": "Demo split for 20-sample pack: first 12 train, last 8 holdout.",
+    "train_count": 12,
+    "holdout_count": 8,
+    "train_ids": [
+      "utt_0001",
+      "utt_0002",
+      "utt_0003",
+      "utt_0004",
+      "utt_0005",
+      "utt_0006",
+      "utt_0007",
+      "utt_0008",
+      "utt_0009",
+      "utt_0010",
+      "utt_0011",
+      "utt_0012"
+    ],
+    "holdout_ids": [
+      "utt_0013",
+      "utt_0014",
+      "utt_0015",
+      "utt_0016",
+      "utt_0017",
+      "utt_0018",
+      "utt_0019",
+      "utt_0020"
+    ]
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema": "lg_washer_integrity_validation_report_v1",
+  "status": "template_draft",
+  "generated_at_utc": "TEMPLATE_FILL_REQUIRED",
+  "research_only": true,
+  "program_context": {
+    "program_name": "모두의 챌린지 AX - 버티컬 분야",
+    "target_org": "LG전자 HS본부",
+    "target_task": "세탁기/건조기 온디바이스 AI 음성 제어",
+    "note": "본 템플릿은 PoC 수행 중 검증 결과 기록용이며, 미측정 수치 단정 금지."
+  },
+  "dataset_governance": {
+    "golden_dataset": {
+      "name": "golden_300",
+      "record_count": 300,
+      "design_principle": "Intent/Slot 커버리지 중심",
+      "split": {
+        "train": 200,
+        "holdout": 100,
+        "strategy": "intent_slot_stratified"
+      }
+    },
+    "augmentation_dataset": {
+      "name": "augmented_30k",
+      "record_count": 30000,
+      "usage": "강건성 스트레스 테스트 전용",
+      "note": "골든셋 성능 수치와 혼용하지 않음."
+    },
+    "privacy_and_rights": {
+      "consent_policy": "TEMPLATE_FILL_REQUIRED",
+      "anonymization": "TEMPLATE_FILL_REQUIRED",
+      "retention_policy": "TEMPLATE_FILL_REQUIRED"
+    }
+  },
+  "codebook_profile": {
+    "version": "LG_HS_WASH_v1.0",
+    "intent_set": [
+      "START_CYCLE",
+      "PAUSE_CYCLE",
+      "RESUME_CYCLE",
+      "STOP_CYCLE",
+      "SET_COURSE",
+      "SET_TEMPERATURE",
+      "SET_RINSE_COUNT",
+      "SET_SPIN_LEVEL",
+      "SET_DURATION",
+      "DELAY_START",
+      "NOTIFY_WHEN_DONE",
+      "QUERY_STATUS",
+      "CANCEL_OPTION"
+    ],
+    "device_profile_required": true,
+    "device_profile_note": "온도/헹굼/탈수 범위는 모델별 실제 허용 범위로 제한해야 함."
+  },
+  "deterministic_channel_policy": {
+    "critical_fields": [
+      "course",
+      "temperature_c",
+      "rinse_count",
+      "spin_level",
+      "duration_min",
+      "delay_start_min"
+    ],
+    "conflict_rules_enabled": true,
+    "oob_range_handling": "reject_or_reask",
+    "fallback_policy": "핵심 필드 미확정 시 제어 명령 실행 금지"
+  },
+  "evaluation_protocol": {
+    "local_baseline_reference": "docs/final/artifacts/defense_edge_execution_evidence_v1.json",
+    "target_device_measurement_required": true,
+    "blind_holdout_enforced": true,
+    "metrics": {
+      "critical_field_accuracy": null,
+      "conflict_detection_rate": null,
+      "reask_rate": null,
+      "latency_ms": {
+        "p50": null,
+        "p95": null,
+        "p99": null
+      }
+    }
+  },
+  "dataset_artifacts": {
+    "execution_pack": "docs/final/artifacts/challenge_ax_vertical_lg_hs_execution_pack_v1.json",
+    "train_jsonl": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
+    "holdout_jsonl": "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl",
+    "split_manifest": "docs/final/artifacts/lg_washer_voice_golden_split_manifest_v1.json",
+    "jsonl_builder_script": "scripts/build_lg_washer_voice_golden_jsonl_v1.py"
+  },
+  "result_summary_ko": {
+    "one_line": "TEMPLATE_FILL_REQUIRED",
+    "strengths": [
+      "TEMPLATE_FILL_REQUIRED"
+    ],
+    "limits": [
+      "TEMPLATE_FILL_REQUIRED"
+    ],
+    "next_actions": [
+      "TEMPLATE_FILL_REQUIRED"
+    ]
+  },
+  "submission_guardrails": [
+    "절대표현(예: 0% 실패, 완전 무오류) 사용 금지.",
+    "로컬 벤치 수치를 타깃 디바이스 수치로 환산·단정하지 않음.",
+    "디바이스 미확정 슬롯 범위는 제안서에 고정값으로 쓰지 않음.",
+    "측정 수치는 생성 시각과 산출 경로를 함께 표기."
+  ],
+  "evidence_paths": [
+    "docs/final/artifacts/bench_l1_api_load_latest.json",
+    "docs/final/artifacts/defense_hybrid_compression_bench_v0.json",
+    "docs/final/artifacts/defense_edge_execution_evidence_v1.json",
+    "docs/final/artifacts/challenge_ax_vertical_lg_hs_execution_pack_v1.json",
+    "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
+    "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl",
+    "docs/final/artifacts/lg_washer_voice_golden_split_manifest_v1.json",
+    "scripts/build_lg_washer_voice_golden_jsonl_v1.py",
+    "docs/final/artifacts/k_startup_challenge_ax_vertical_pre_submit_checklist_v1.json"
+  ]
+}
