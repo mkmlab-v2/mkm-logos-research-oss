@@ -1,7 +1,8 @@
 # Daily B-Track: build OHLCV score JSON + price-mode hit-rate eval.
 # Optional -IncludeOverlaySpike: refreshes prophecy_restoration_spike_latest.json (threshold per script default / sweep policy).
 # Optional -IncludeShadowPanelEval: writes prophecy_shadow_panel_eval_v1_latest.json (B-track measurement lanes; not live routing).
-#   Use -ShadowPanelMode instrument_combo_best for a lighter single-lane eval; -ShadowPanelMode all includes walk-forward aggregate; or set MKM_PROPHECY_SHADOW_PANEL_MODE.
+#   -ShadowPanelMode all | walkforward_aggregate: runs run_prophecy_per_date_combo_walkforward_v1.py first so walk-forward JSON is fresh, then shadow eval.
+#   Use -ShadowPanelMode instrument_combo_best for a lighter single-lane eval; or set MKM_PROPHECY_SHADOW_PANEL_MODE.
 # Does NOT train models, promote canonical weights, or touch live trading.
 #
 # Prerequisites: py on PATH; KOSPI CSV at research/market_data/kospi_daily_external_yf.csv;
@@ -36,6 +37,7 @@ Set-Location -LiteralPath $WorkspaceRoot
 
 $evalScript = Join-Path $WorkspaceRoot "scripts\eval_prophecy_hit_rate_v1.py"
 $shadowPanelScript = Join-Path $WorkspaceRoot "scripts\eval_prophecy_shadow_panel_v1.py"
+$walkforwardScript = Join-Path $WorkspaceRoot "scripts\run_prophecy_per_date_combo_walkforward_v1.py"
 $hypoScript = Join-Path $WorkspaceRoot "scripts\generate_btrack_hypothesis_prophecy_v1.py"
 if (-not (Test-Path -LiteralPath $evalScript)) {
     throw "Missing required script: $evalScript"
@@ -51,6 +53,7 @@ $artifactsDir = Join-Path $WorkspaceRoot "docs\final\artifacts"
 $scoreOut = Join-Path $artifactsDir "btrack_prophecy_score_latest.json"
 $evalOut = Join-Path $artifactsDir "prophecy_hit_rate_eval_latest.json"
 $shadowPanelOut = Join-Path $artifactsDir "prophecy_shadow_panel_eval_v1_latest.json"
+$walkforwardOut = Join-Path $artifactsDir "prophecy_per_date_combo_walkforward_v1_latest.json"
 $reportsDir = Join-Path $WorkspaceRoot "reports"
 $logPath = Join-Path $reportsDir "prophecy_daily_eval_log.jsonl"
 
@@ -76,6 +79,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $shadowModeLogged = $null
+$RegenWalkforwardThisRun = $false
 if ($IncludeShadowPanelEval) {
     $validShadowModes = @("both", "all", "instrument_combo_best", "per_date_lens_holdout_best", "walkforward_aggregate")
     $shadowModeResolved = if ($PSBoundParameters.ContainsKey("ShadowPanelMode") -and $ShadowPanelMode.Trim().Length -gt 0) {
@@ -91,8 +95,36 @@ if ($IncludeShadowPanelEval) {
     if ($validShadowModes -notcontains $shadowModeResolved) {
         throw "Invalid ShadowPanelMode '$shadowModeResolved'. Use: $($validShadowModes -join ', ')"
     }
+    if (($shadowModeResolved -eq "all" -or $shadowModeResolved -eq "walkforward_aggregate") -and -not (Test-Path -LiteralPath $walkforwardScript)) {
+        throw "Missing required script: $walkforwardScript"
+    }
     $kospiCsvDefault = Join-Path $WorkspaceRoot "research\market_data\kospi_daily_external_yf.csv"
     $btcCsvDefault = Join-Path $WorkspaceRoot "research\market_data\btc_daily_external_yf.csv"
+    if ($shadowModeResolved -eq "all" -or $shadowModeResolved -eq "walkforward_aggregate") {
+        $wfArgs = @(
+            "scripts\run_prophecy_per_date_combo_walkforward_v1.py",
+            "--score-json", $scoreOut,
+            "--output", $walkforwardOut
+        )
+        if ($BtcCsvPath -and (Test-Path -LiteralPath $BtcCsvPath)) {
+            $wfArgs += @("--btc-csv", $BtcCsvPath)
+        }
+        elseif (Test-Path -LiteralPath $btcCsvDefault) {
+            $wfArgs += @("--btc-csv", $btcCsvDefault)
+        }
+        if (Test-Path -LiteralPath $kospiCsvDefault) {
+            $wfArgs += @("--kospi-csv", $kospiCsvDefault)
+        }
+        if ($env:MKM_PROPHECY_WALKFORWARD_N_FOLDS -and $env:MKM_PROPHECY_WALKFORWARD_N_FOLDS.Trim().Length -gt 0) {
+            $wfArgs += @("--n-folds", $env:MKM_PROPHECY_WALKFORWARD_N_FOLDS.Trim())
+        }
+        Write-Host "==> run_prophecy_per_date_combo_walkforward_v1.py (before shadow; mode=$shadowModeResolved)"
+        & py @wfArgs
+        if ($LASTEXITCODE -ne 0) {
+            throw "run_prophecy_per_date_combo_walkforward_v1.py exit $LASTEXITCODE"
+        }
+        $RegenWalkforwardThisRun = $true
+    }
     $shadowArgs = @(
         "scripts\eval_prophecy_shadow_panel_v1.py",
         "--score-json", $scoreOut,
@@ -107,6 +139,9 @@ if ($IncludeShadowPanelEval) {
     }
     if (Test-Path -LiteralPath $kospiCsvDefault) {
         $shadowArgs += @("--kospi-csv", $kospiCsvDefault)
+    }
+    if ($RegenWalkforwardThisRun) {
+        $shadowArgs += @("--walkforward-json", $walkforwardOut)
     }
     Write-Host "==> eval_prophecy_shadow_panel_v1.py (--shadow-mode $shadowModeResolved)"
     & py @shadowArgs
@@ -151,6 +186,9 @@ if ($IncludeDatedArchive) {
     if ($IncludeShadowPanelEval -and (Test-Path -LiteralPath $shadowPanelOut)) {
         Copy-Item -LiteralPath $shadowPanelOut -Destination (Join-Path $artifactsDir "prophecy_shadow_panel_eval_v1_$d.json") -Force
     }
+    if ($RegenWalkforwardThisRun -and (Test-Path -LiteralPath $walkforwardOut)) {
+        Copy-Item -LiteralPath $walkforwardOut -Destination (Join-Path $artifactsDir "prophecy_per_date_combo_walkforward_v1_$d.json") -Force
+    }
 }
 
 $hit = $null
@@ -184,15 +222,30 @@ if ($IncludeShadowPanelEval -and (Test-Path -LiteralPath $shadowPanelOut)) {
         foreach ($lane in @($sj.lanes)) {
             $mid = $lane.lane_id
             $m = $lane.metrics_all
-            if ($null -eq $m) { continue }
-            [void]$summaries.Add(
-                [ordered]@{
-                    lane_id                      = [string]$mid
-                    price_directional_hit_rate   = $m.price_directional_hit_rate
-                    n_evaluated                  = [int]$m.n_evaluated
-                    delta_vs_baseline            = $lane.delta_vs_baseline
-                }
-            )
+            if ($null -ne $m) {
+                [void]$summaries.Add(
+                    [ordered]@{
+                        lane_id                    = [string]$mid
+                        lane_kind                  = "row_panel"
+                        price_directional_hit_rate = $m.price_directional_hit_rate
+                        n_evaluated                = [int]$m.n_evaluated
+                        delta_vs_baseline          = $lane.delta_vs_baseline
+                    }
+                )
+            }
+            elseif ($lane.lane_kind -eq "fold_aggregate" -and $null -ne $lane.walkforward_aggregate) {
+                $agg = $lane.walkforward_aggregate
+                [void]$summaries.Add(
+                    [ordered]@{
+                        lane_id                    = [string]$mid
+                        lane_kind                  = "fold_aggregate"
+                        mean_test_accuracy         = $agg.mean_test_accuracy
+                        stdev_test_accuracy        = $agg.stdev_test_accuracy
+                        walkforward_fold_count     = [int]$lane.walkforward_fold_count
+                        fraction_beats_always_bull = $agg.fraction_test_beats_always_bull
+                    }
+                )
+            }
         }
         if ($summaries.Count -gt 0) {
             $shadowLanesLog = @($summaries.ToArray())
