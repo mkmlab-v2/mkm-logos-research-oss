@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-ROOT = Path("C:/workspace")
+ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
 
 _PANEL_GATE = ART / "prophecy_promotion_gates_v1_panel_calibrated_latest.json"
@@ -23,6 +23,7 @@ DEFAULT_MEASUREMENT_GATE = ART / "lg_washer_measurement_gate_latest.json"
 DEFAULT_ESTIMATION_READY = ART / "lg_washer_estimation_readiness_latest.json"
 DEFAULT_LIVE_AB = ART / "prophecy_live_ab_summary_v1_latest.json"
 DEFAULT_OUT = ART / "btrack_promotion_signoff_packet_v1_latest.json"
+DEFAULT_BRIDGE_INDEX = ART / "btrack_insight_promotion_bridge_index_v1_latest.json"
 
 
 def _utc_now() -> str:
@@ -54,6 +55,17 @@ def main() -> int:
         "--separate-track-gates",
         action="store_true",
         help="Emit track-local blockers/next actions so B-track work can proceed independently.",
+    )
+    ap.add_argument(
+        "--insight-bridge-index",
+        type=Path,
+        default=None,
+        help="Optional path to btrack_insight_promotion_bridge_index_v1 JSON.",
+    )
+    ap.add_argument(
+        "--no-insight-bridge-index",
+        action="store_true",
+        help="Do not attach btrack_insight_bridge_index to inputs even if default file exists.",
     )
     args = ap.parse_args()
 
@@ -100,6 +112,13 @@ def main() -> int:
     legacy_gate = ART / "prophecy_promotion_gates_v1_legacy_strict_latest.json"
     if legacy_gate.is_file():
         inputs["prophecy_gate_legacy_strict"] = _rel(legacy_gate)
+
+    if not args.no_insight_bridge_index:
+        bridge = args.insight_bridge_index
+        if bridge is None and DEFAULT_BRIDGE_INDEX.is_file():
+            bridge = DEFAULT_BRIDGE_INDEX
+        if bridge is not None and bridge.is_file():
+            inputs["btrack_insight_bridge_index"] = _rel(bridge)
 
     next_actions_ko: list[str] = [
         "prophecy: human sign-off (운영) 확정",

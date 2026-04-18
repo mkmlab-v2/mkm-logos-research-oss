@@ -1,0 +1,241 @@
+{
+  "schema": "btrack_insight_bridge_inventory_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-04-18T17:49:19Z",
+  "research_only": true,
+  "workspace_root_hint": "C:/workspace",
+  "prism": {
+    "registry_path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
+    "exists": true,
+    "schema": "mkm12_prism_index_registry_v1",
+    "entry_count": 0
+  },
+  "notebooklm_manifest": {
+    "path": "docs/NotebookLM_sources_manifest.md",
+    "exists": true,
+    "bytes": 46011,
+    "mtime_utc": "2026-04-16T16:38:16Z",
+    "kind": "file"
+  },
+  "long_term_memory": {
+    "candidates": [
+      {
+        "path": ".mkm-memory",
+        "exists": false
+      },
+      {
+        "path": ".cursor/mkm-memory",
+        "exists": false
+      }
+    ]
+  },
+  "paths": [
+    {
+      "role": "prism_registry",
+      "path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
+      "exists": true,
+      "bytes": 293,
+      "mtime_utc": "2026-04-15T23:03:56Z",
+      "kind": "file"
+    },
+    {
+      "role": "grand_index_map",
+      "path": "docs/final/MKM12_GRAND_INDEX_MAP.md",
+      "exists": false
+    },
+    {
+      "role": "constitution_facts",
+      "path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+      "exists": true,
+      "bytes": 72003,
+      "mtime_utc": "2026-04-18T07:01:24Z",
+      "kind": "file"
+    },
+    {
+      "role": "notebooklm_manifest",
+      "path": "docs/NotebookLM_sources_manifest.md",
+      "exists": true,
+      "bytes": 46011,
+      "mtime_utc": "2026-04-16T16:38:16Z",
+      "kind": "file"
+    },
+    {
+      "role": "notebooklm_core_bridge_pointer",
+      "path": "docs/final/NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md",
+      "exists": false
+    },
+    {
+      "role": "notebooklm_mega_jsonl",
+      "path": "reports/notebooklm/btrack_mega_insights_10gb.jsonl",
+      "exists": true,
+      "bytes": 9893203,
+      "mtime_utc": "2026-04-10T05:06:01Z",
+      "kind": "file"
+    },
+    {
+      "role": "notebooklm_mega_latest_jsonl",
+      "path": "reports/notebooklm/btrack_mega_insights_latest.jsonl",
+      "exists": false
+    },
+    {
+      "role": "notebooklm_triage",
+      "path": "reports/notebooklm/btrack_insight_triage_latest.json",
+      "exists": true,
+      "bytes": 42842,
+      "mtime_utc": "2026-04-06T15:48:40Z",
+      "kind": "file"
+    },
+    {
+      "role": "notebooklm_recommendation_pack",
+      "path": "reports/notebooklm/btrack_insight_recommendation_pack_latest.json",
+      "exists": true,
+      "bytes": 18806,
+      "mtime_utc": "2026-04-06T15:56:47Z",
+      "kind": "file"
+    },
+    {
+      "role": "notebooklm_kpi",
+      "path": "docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json",
+      "exists": true,
+      "bytes": 3594,
+      "mtime_utc": "2026-04-18T17:36:25Z",
+      "kind": "file"
+    },
+    {
+      "role": "myeongni_insight_log",
+      "path": "data/myeongni/insight_observation_log.jsonl",
+      "exists": true,
+      "bytes": 11538,
+      "mtime_utc": "2026-04-17T16:18:12Z",
+      "kind": "file"
+    },
+    {
+      "role": "myeongni_16_state_jsonl",
+      "path": "data/myeongni/myeongni_16_state_experiment_v1.jsonl",
+      "exists": true,
+      "bytes": 215,
+      "mtime_utc": "2026-04-17T14:34:23Z",
+      "kind": "file"
+    },
+    {
+      "role": "lens_logos",
+      "path": "docs/final/artifacts/logos_independent_lens_latest.json",
+      "exists": true,
+      "bytes": 762,
+      "mtime_utc": "2026-04-18T17:17:36Z",
+      "kind": "file"
+    },
+    {
+      "role": "lens_myeongni",
+      "path": "docs/final/artifacts/myeongni_independent_lens_latest.json",
+      "exists": true,
+      "bytes": 891,
+      "mtime_utc": "2026-04-18T17:17:36Z",
+      "kind": "file"
+    },
+    {
+      "role": "lens_sasang",
+      "path": "docs/final/artifacts/sasang_independent_lens_latest.json",
+      "exists": true,
+      "bytes": 1030,
+      "mtime_utc": "2026-04-18T17:17:36Z",
+      "kind": "file"
+    },
+    {
+      "role": "prophecy_gate_latest",
+      "path": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json",
+      "exists": true,
+      "bytes": 4741,
+      "mtime_utc": "2026-04-18T17:33:45Z",
+      "kind": "file"
+    },
+    {
+      "role": "prophecy_gate_legacy_strict",
+      "path": "docs/final/artifacts/prophecy_promotion_gates_v1_legacy_strict_latest.json",
+      "exists": true,
+      "bytes": 4741,
+      "mtime_utc": "2026-04-18T17:33:45Z",
+      "kind": "file"
+    },
+    {
+      "role": "prophecy_gate_panel_calibrated",
+      "path": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json",
+      "exists": true,
+      "bytes": 5145,
+      "mtime_utc": "2026-04-18T17:33:45Z",
+      "kind": "file"
+    },
+    {
+      "role": "prophecy_streak_legacy",
+      "path": "docs/final/artifacts/prophecy_promotion_strict_streak_legacy_v1.json",
+      "exists": true,
+      "bytes": 698,
+      "mtime_utc": "2026-04-18T17:33:45Z",
+      "kind": "file"
+    },
+    {
+      "role": "prophecy_streak_panel",
+      "path": "docs/final/artifacts/prophecy_promotion_strict_streak_panel_calibrated_v1.json",
+      "exists": true,
+      "bytes": 698,
+      "mtime_utc": "2026-04-18T17:33:45Z",
+      "kind": "file"
+    },
+    {
+      "role": "signoff_packet",
+      "path": "docs/final/artifacts/btrack_promotion_signoff_packet_v1_latest.json",
+      "exists": true,
+      "bytes": 4233,
+      "mtime_utc": "2026-04-18T17:34:01Z",
+      "kind": "file"
+    },
+    {
+      "role": "live_ab_summary",
+      "path": "docs/final/artifacts/prophecy_live_ab_summary_v1_latest.json",
+      "exists": true,
+      "bytes": 1278,
+      "mtime_utc": "2026-04-18T17:34:01Z",
+      "kind": "file"
+    },
+    {
+      "role": "vault_sync_script",
+      "path": "scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1",
+      "exists": true,
+      "bytes": 15143,
+      "mtime_utc": "2026-04-16T16:38:16Z",
+      "kind": "file"
+    },
+    {
+      "role": "mega_batch_script",
+      "path": "scripts/run_notebooklm_mega_insight_batch.py",
+      "exists": true,
+      "bytes": 9083,
+      "mtime_utc": "2026-04-07T01:19:27Z",
+      "kind": "file"
+    },
+    {
+      "role": "dual_gate_refresh",
+      "path": "scripts/refresh_prophecy_promotion_gates_dual_v1.py",
+      "exists": true,
+      "bytes": 4510,
+      "mtime_utc": "2026-04-18T17:35:06Z",
+      "kind": "file"
+    },
+    {
+      "role": "notebooklm_pull_manifest",
+      "path": "docs/final/artifacts/derived/notebooklm_pull_manifest_v1.json",
+      "exists": true,
+      "bytes": 1970,
+      "mtime_utc": "2026-04-15T00:16:53Z",
+      "kind": "file"
+    },
+    {
+      "role": "agent_memory_ssot",
+      "path": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
+      "exists": true,
+      "bytes": 14675,
+      "mtime_utc": "2026-04-18T07:18:58Z",
+      "kind": "file"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "schema": "btrack_insight_promotion_bridge_index_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-04-18T17:49:19Z",
+  "research_only": true,
+  "description_ko": "B-track 통찰·렌즈·NotebookLM·명리 로그와 예언 승격 산출물 사이의 포인터 맵. scores/walkforward에 자동 합선하지 않음.",
+  "inventory_ref": {
+    "path": "docs/final/artifacts/btrack_insight_bridge_inventory_v1_latest.json",
+    "exists": true
+  },
+  "links": {
+    "prophecy_promotion_gates": {
+      "latest_compat": {
+        "path": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json",
+        "exists": true
+      },
+      "legacy_strict": {
+        "path": "docs/final/artifacts/prophecy_promotion_gates_v1_legacy_strict_latest.json",
+        "exists": true
+      },
+      "panel_calibrated": {
+        "path": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json",
+        "exists": true
+      }
+    },
+    "prophecy_strict_streak": {
+      "legacy": {
+        "path": "docs/final/artifacts/prophecy_promotion_strict_streak_legacy_v1.json",
+        "exists": true
+      },
+      "panel_calibrated": {
+        "path": "docs/final/artifacts/prophecy_promotion_strict_streak_panel_calibrated_v1.json",
+        "exists": true
+      }
+    },
+    "notebooklm_btrack": {
+      "mega_insights_jsonl": {
+        "path": "reports/notebooklm/btrack_mega_insights_10gb.jsonl",
+        "exists": true
+      },
+      "mega_insights_latest_jsonl": {
+        "path": "reports/notebooklm/btrack_mega_insights_latest.jsonl",
+        "exists": false
+      },
+      "jsonl_kpi": {
+        "path": "docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json",
+        "exists": true
+      },
+      "triage": {
+        "path": "reports/notebooklm/btrack_insight_triage_latest.json",
+        "exists": true
+      },
+      "recommendation_pack": {
+        "path": "reports/notebooklm/btrack_insight_recommendation_pack_latest.json",
+        "exists": true
+      }
+    },
+    "multilens_artifacts": {
+      "logos_independent_lens": {
+        "path": "docs/final/artifacts/logos_independent_lens_latest.json",
+        "exists": true
+      },
+      "myeongni_independent_lens": {
+        "path": "docs/final/artifacts/myeongni_independent_lens_latest.json",
+        "exists": true
+      },
+      "sasang_independent_lens": {
+        "path": "docs/final/artifacts/sasang_independent_lens_latest.json",
+        "exists": true
+      }
+    },
+    "myeongni_logs": {
+      "insight_observation_log": {
+        "path": "data/myeongni/insight_observation_log.jsonl",
+        "exists": true
+      },
+      "state16_experiment_jsonl": {
+        "path": "data/myeongni/myeongni_16_state_experiment_v1.jsonl",
+        "exists": true
+      }
+    },
+    "operational_rails": {
+      "signoff_packet_latest": {
+        "path": "docs/final/artifacts/btrack_promotion_signoff_packet_v1_latest.json",
+        "exists": true
+      },
+      "live_ab_summary": {
+        "path": "docs/final/artifacts/prophecy_live_ab_summary_v1_latest.json",
+        "exists": true
+      },
+      "dual_gate_refresh_script": {
+        "path": "scripts/refresh_prophecy_promotion_gates_dual_v1.py",
+        "exists": true
+      },
+      "signoff_build_script": {
+        "path": "scripts/build_btrack_promotion_signoff_packet_v1.py",
+        "exists": true
+      }
+    },
+    "ssot_docs": {
+      "notebooklm_sources_manifest": {
+        "path": "docs/NotebookLM_sources_manifest.md",
+        "exists": true
+      },
+      "constitution_implementation_facts": {
+        "path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+        "exists": true
+      },
+      "central_agent_memory": {
+        "path": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
+        "exists": true
+      }
+    }
+  }
+}
