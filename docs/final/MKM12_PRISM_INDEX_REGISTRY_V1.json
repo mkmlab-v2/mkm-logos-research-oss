@@ -1,8 +1,8 @@
 {
   "schema": "mkm12_prism_index_registry_v1",
-  "version": "1.0.3",
-  "ts_utc": "2026-04-19T18:00:00Z",
-  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. Phase-3 insight sidecar stub pointers 2026-04-19.",
+  "version": "1.0.4",
+  "ts_utc": "2026-04-19T20:00:00Z",
+  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. Sidecar lens–direction agreement eval pointers 2026-04-19.",
   "entries": [
     {
       "id": "prism_constitution_implementation_facts",
@@ -171,6 +171,20 @@
       "prism_axis": "M",
       "agent_access": "execute_observe",
       "summary_ko": "insight sidecar stub 산출 스크립트"
+    },
+    {
+      "id": "prism_btrack_insight_sidecar_lens_hit_agreement_latest",
+      "path": "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json",
+      "prism_axis": "M",
+      "agent_access": "b_track_only",
+      "summary_ko": "사이드카 렌즈 부호 vs 점수행 방향 일치 관측 요약"
+    },
+    {
+      "id": "prism_script_eval_btrack_insight_sidecar_lens_hit_agreement",
+      "path": "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "렌즈–적중 일치율 관측 eval 스크립트"
     }
   ]
 }

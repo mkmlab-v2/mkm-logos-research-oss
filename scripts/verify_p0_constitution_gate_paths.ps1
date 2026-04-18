@@ -21,6 +21,8 @@ $required = @(
     "scripts\build_btrack_prophecy_score_insight_sidecar_stub_v1.py",
     "docs\final\schemas\btrack_prophecy_score_insight_sidecar_v1.schema.json",
     "docs\final\artifacts\btrack_prophecy_score_insight_sidecar_v1_latest.json",
+    "scripts\eval_btrack_insight_sidecar_lens_hit_agreement_v1.py",
+    "docs\final\artifacts\btrack_insight_sidecar_lens_hit_agreement_v1_latest.json",
     ".cursorrules",
     "AGENTS.md",
     "README.md",

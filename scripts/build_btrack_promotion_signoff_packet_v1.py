@@ -24,6 +24,8 @@ DEFAULT_ESTIMATION_READY = ART / "lg_washer_estimation_readiness_latest.json"
 DEFAULT_LIVE_AB = ART / "prophecy_live_ab_summary_v1_latest.json"
 DEFAULT_OUT = ART / "btrack_promotion_signoff_packet_v1_latest.json"
 DEFAULT_BRIDGE_INDEX = ART / "btrack_insight_promotion_bridge_index_v1_latest.json"
+DEFAULT_INSIGHT_SIDECAR = ART / "btrack_prophecy_score_insight_sidecar_v1_latest.json"
+DEFAULT_LENS_HIT_AGREEMENT = ART / "btrack_insight_sidecar_lens_hit_agreement_v1_latest.json"
 
 
 def _utc_now() -> str:
@@ -66,6 +68,28 @@ def main() -> int:
         "--no-insight-bridge-index",
         action="store_true",
         help="Do not attach btrack_insight_bridge_index to inputs even if default file exists.",
+    )
+    ap.add_argument(
+        "--insight-sidecar-json",
+        type=Path,
+        default=None,
+        help="Optional path to btrack_prophecy_score_insight_sidecar_v1 JSON.",
+    )
+    ap.add_argument(
+        "--no-insight-sidecar",
+        action="store_true",
+        help="Do not attach btrack_prophecy_score_insight_sidecar to inputs even if default file exists.",
+    )
+    ap.add_argument(
+        "--lens-hit-agreement-json",
+        type=Path,
+        default=None,
+        help="Optional path to btrack_insight_sidecar_lens_hit_agreement_v1 JSON.",
+    )
+    ap.add_argument(
+        "--no-lens-hit-agreement",
+        action="store_true",
+        help="Do not attach lens hit agreement observation JSON to inputs.",
     )
     args = ap.parse_args()
 
@@ -119,6 +143,20 @@ def main() -> int:
             bridge = DEFAULT_BRIDGE_INDEX
         if bridge is not None and bridge.is_file():
             inputs["btrack_insight_bridge_index"] = _rel(bridge)
+
+    if not args.no_insight_sidecar:
+        side = args.insight_sidecar_json
+        if side is None and DEFAULT_INSIGHT_SIDECAR.is_file():
+            side = DEFAULT_INSIGHT_SIDECAR
+        if side is not None and side.is_file():
+            inputs["btrack_prophecy_score_insight_sidecar"] = _rel(side)
+
+    if not args.no_lens_hit_agreement:
+        agr = args.lens_hit_agreement_json
+        if agr is None and DEFAULT_LENS_HIT_AGREEMENT.is_file():
+            agr = DEFAULT_LENS_HIT_AGREEMENT
+        if agr is not None and agr.is_file():
+            inputs["btrack_insight_sidecar_lens_hit_agreement"] = _rel(agr)
 
     next_actions_ko: list[str] = [
         "prophecy: human sign-off (운영) 확정",

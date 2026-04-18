@@ -1,0 +1,42 @@
+{
+  "schema": "btrack_insight_sidecar_lens_hit_agreement_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-04-18T18:04:04Z",
+  "research_only": true,
+  "instrument_filter": "all",
+  "paired_score_ref": "docs/final/artifacts/btrack_prophecy_score_latest.json",
+  "sidecar_ref": "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json",
+  "score_row_count": 60,
+  "per_date_feature_count": 60,
+  "by_lens": {
+    "logos": {
+      "rows_used": 60,
+      "skipped_no_lens_direction": 0,
+      "agree_with_actual": 1,
+      "agree_with_predicted": 0,
+      "rate_agree_with_actual": 0.016666666666666666,
+      "rate_agree_with_predicted": 0.0
+    },
+    "myeongni": {
+      "rows_used": 60,
+      "skipped_no_lens_direction": 0,
+      "agree_with_actual": 25,
+      "agree_with_predicted": 60,
+      "rate_agree_with_actual": 0.4166666666666667,
+      "rate_agree_with_predicted": 1.0
+    },
+    "sasang": {
+      "rows_used": 60,
+      "skipped_no_lens_direction": 0,
+      "agree_with_actual": 1,
+      "agree_with_predicted": 0,
+      "rate_agree_with_actual": 0.016666666666666666,
+      "rate_agree_with_predicted": 0.0
+    }
+  },
+  "warnings": [],
+  "notes_ko": [
+    "렌즈 direction_score 부호→bull/bear/neutral 규칙은 사이드카 빌더와 동일 해석(관측).",
+    "적중 정의는 actual_direction / predicted_direction과의 문자열 일치만; 승격 게이트 미사용."
+  ]
+}

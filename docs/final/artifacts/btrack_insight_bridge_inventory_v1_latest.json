@@ -1,14 +1,14 @@
 {
   "schema": "btrack_insight_bridge_inventory_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-18T17:57:56Z",
+  "generated_at_utc": "2026-04-18T18:04:04Z",
   "research_only": true,
   "workspace_root_hint": "C:/workspace",
   "prism": {
     "registry_path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
     "exists": true,
     "schema": "mkm12_prism_index_registry_v1",
-    "entry_count": 24
+    "entry_count": 26
   },
   "notebooklm_manifest": {
     "path": "docs/NotebookLM_sources_manifest.md",
@@ -34,8 +34,8 @@
       "role": "prism_registry",
       "path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
       "exists": true,
-      "bytes": 7427,
-      "mtime_utc": "2026-04-18T17:57:45Z",
+      "bytes": 8088,
+      "mtime_utc": "2026-04-18T18:03:51Z",
       "kind": "file"
     },
     {
@@ -188,8 +188,8 @@
       "role": "signoff_packet",
       "path": "docs/final/artifacts/btrack_promotion_signoff_packet_v1_latest.json",
       "exists": true,
-      "bytes": 4346,
-      "mtime_utc": "2026-04-18T17:54:32Z",
+      "bytes": 4469,
+      "mtime_utc": "2026-04-18T18:04:04Z",
       "kind": "file"
     },
     {
@@ -244,24 +244,40 @@
       "role": "prophecy_score_insight_sidecar",
       "path": "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json",
       "exists": true,
-      "bytes": 1425,
-      "mtime_utc": "2026-04-18T17:57:55Z",
+      "bytes": 67827,
+      "mtime_utc": "2026-04-18T18:01:36Z",
       "kind": "file"
     },
     {
       "role": "prophecy_score_insight_sidecar_schema",
       "path": "docs/final/schemas/btrack_prophecy_score_insight_sidecar_v1.schema.json",
       "exists": true,
-      "bytes": 2234,
-      "mtime_utc": "2026-04-18T17:57:11Z",
+      "bytes": 4006,
+      "mtime_utc": "2026-04-18T18:02:15Z",
       "kind": "file"
     },
     {
       "role": "prophecy_score_insight_sidecar_script",
       "path": "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py",
       "exists": true,
-      "bytes": 3746,
-      "mtime_utc": "2026-04-18T17:57:21Z",
+      "bytes": 9643,
+      "mtime_utc": "2026-04-18T18:02:15Z",
+      "kind": "file"
+    },
+    {
+      "role": "insight_sidecar_lens_hit_agreement",
+      "path": "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json",
+      "exists": true,
+      "bytes": 1468,
+      "mtime_utc": "2026-04-18T18:04:04Z",
+      "kind": "file"
+    },
+    {
+      "role": "insight_sidecar_lens_hit_agreement_script",
+      "path": "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py",
+      "exists": true,
+      "bytes": 5417,
+      "mtime_utc": "2026-04-18T18:03:22Z",
       "kind": "file"
     }
   ]

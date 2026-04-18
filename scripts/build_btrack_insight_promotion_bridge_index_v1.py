@@ -84,6 +84,10 @@ def main() -> int:
             "latest_stub": _optional_link(ROOT / "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json"),
             "build_stub_script": _optional_link(ROOT / "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"),
             "sidecar_schema": _optional_link(ROOT / "docs/final/schemas/btrack_prophecy_score_insight_sidecar_v1.schema.json"),
+            "lens_hit_agreement_eval": _optional_link(
+                ROOT / "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json"
+            ),
+            "lens_hit_agreement_script": _optional_link(ROOT / "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"),
         },
         "ssot_docs": {
             "notebooklm_sources_manifest": _optional_link(ROOT / "docs/NotebookLM_sources_manifest.md"),
