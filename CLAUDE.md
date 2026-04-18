@@ -6,16 +6,17 @@
 
 - **TITAN**: 루트 `.cursorrules` 최상단 — 자율 기동, **이항 선택([A]/[B]) 강요 금지**, 고위험만 승인 요청.
 - **세션 핸드오프 (선택):** 새 채팅에서 직전 작전 팩트만 이어 붙일 때 `@docs/final/CURRENT_OPS_SNAPSHOT.md`를 첨부한다. 불변 SSOT가 아니며 압축 파이프라인(A/B Track)과 역할을 섞지 않는다. **종료 조건·로컬 체크리스트**만 남길 때는 `MISSION_LOG.template.md` → **`MISSION_LOG.md`**(비추적); 스냅샷과 동일 내용 이중 기술 금지. 상세: 루트 `AGENTS.md` 동명 절.
+- **병렬 작전:** 사업·공고 / B-track / 레포 편집은 **채팅·브랜치를 나눌 것** — 루트 `AGENTS.md` **「병렬 작전 권장」**.
 - **크로스 채팅 정체성:** `docs/final/CENTRAL_AGENT_MEMORY_V1.md`(지속 SSOT) · `.cursor/rules/central-agent-memory.mdc`(핵심 5줄 `alwaysApply`). 세션 로그 자동 병합 없음. 상세: 루트 `AGENTS.md` 「중앙 메모리」.
 - **중앙 지휘부 규칙**: `.cursor/rules/sovereign-central-command.mdc` (`alwaysApply`).
-- **코드/추론 “구현 여부”**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 를 호출 가능한 `.py`와 대조한다. **Multi-Lens·TOE 비단정**은 동 문서 §1.1. **Windows OPS Phase 1 체인·리포트·운영/연구 레인**은 §13.1 (`verify_constitution_gates.ps1`, `constitution_gates_v1.json`, `bootstrap_ops_phase1_daily.ps1`, `verify_ops_phase1_operational_readiness.ps1`)·루트 `AGENTS.md`.
+- **코드/추론 “구현 여부”**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 를 호출 가능한 `.py`와 대조한다. **Multi-Lens·TOE 비단정**은 동 문서 §1.1; **예언 성능 우선·도메인 사례 격리 [VISION]**는 **§1.1.1**. **Windows OPS Phase 1 체인·리포트·운영/연구 레인**은 §13.1 (`verify_constitution_gates.ps1`, `constitution_gates_v1.json`, `bootstrap_ops_phase1_daily.ps1`, `verify_ops_phase1_operational_readiness.ps1`)·루트 `AGENTS.md`.
 - **12AI vs 코드북**: **12AI**는 Cursor 작업 라우팅용 오케스트레이션 라벨이며, 코드북 도메인·샤드 개수와 **1:1로 묶지 않는다.** (보통 복잡·고위험 작업만 2~4 전문 에이전트로 분산.) 상세: 루트 `AGENTS.md`, `.cursor/skills/auto-12ai-routing/SKILL.md`.
 - **LLM Wiki (개인 지식 누적):** 규약 `docs/final/LLM_WIKI_SCHEMA.md` — 작업 트리 `memory/obsidian_vault/llm_wiki/raw/`(불변)·`wiki/`(합성). 코드 구현 팩트와 혼동 금지; 구현 SSOT는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`.
 - **Prism 색인 (Grand Indexing 2.0):** 가독 `docs/final/MKM12_GRAND_INDEX_MAP.md`, 머신 레지스트리 `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` — 코드 4D 벡터 축과 혼동 금지; 상세 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §14.
 
 ### 개발 검증 진입점 (권장)
 
-- **구현 여부·경로 판정**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`와 호출 가능한 `.py`/pytest만 SSOT로 삼는다. 기획·NotebookLM·비전 문서만으로 “이미 구현”을 단정하지 않는다 (**Multi-Lens·격벽·TOE 비단정**: 동 문서 §1.1).
+- **구현 여부·경로 판정**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`와 호출 가능한 `.py`/pytest만 SSOT로 삼는다. 기획·NotebookLM·비전 문서만으로 “이미 구현”을 단정하지 않는다 (**Multi-Lens·격벽·TOE 비단정**: 동 문서 §1.1; **예언·델타·격리 우선순위 [VISION]**: §1.1.1).
 - **로컬 Fact-Lock 번들(CI에 가까운 순서)**: 저장소 루트에서 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_fact_lock_bundle.ps1`. 절차·맥락: `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 하단 “한 번에 돌리는 명령”.
 - **보조 번들(Prophecy 정렬)**: `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`는 해당 디렉터리에서 실행. 워크스페이스 테스트 목록을 CI `dual-regime-integrity`와 맞출 때는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6 표를 확인한다.
 

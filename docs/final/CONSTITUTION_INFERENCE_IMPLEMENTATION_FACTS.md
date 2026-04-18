@@ -1,7 +1,7 @@
 # Constitution / Inference — 구현 팩트 (SSOT)
 
 **작성일**: 2026-03-29  
-**최종 갱신**: 2026-04-14 — `google.genai` `HttpOptions.timeout` ms 정합(`gemini_multimodal_batch`·`staging_shard_inference_run`·`generate_btrack_hypothesis_prophecy_v1`); `fill_human_regime_audit_llm_spike` 루트 `.env` 로드; dual-regime-integrity에 `zstandard` 의존성 및 branch-optional 스파이크 pytest 파일 존재 가드(미추적 시 skip, 추적 시 엄격 실행).  
+**최종 갱신**: 2026-04-18 — §1.1.1 `[VISION]` 예언 성능 우선·국방 서사 `research_only` 격리; `prior_day_shock` 스윕 요약·권장 임계값 `prophecy_overlay_prior_threshold_recommended_latest.json`; `prophecy_prior_threshold_sweep_summary_latest.json`(OHLCV 30일 패널·26점 그리드); `eval_prophecy_hit_rate_v1.py --run-mode price` 최신 재생성; 스파이크 기본 `--prior-return-threshold -0.048`; CI `prophecy-restoration-spike-smoke.yml`; 이전 갱신: Prism §14 Prophecy 오버레이 단락·스키마 `prophecy_overlay_ablation_spike_v1`; 그 이전: 2026-04-14 — `google.genai` `HttpOptions.timeout` ms 정합(`gemini_multimodal_batch`·`staging_shard_inference_run`·`generate_btrack_hypothesis_prophecy_v1`); `fill_human_regime_audit_llm_spike` 루트 `.env` 로드; dual-regime-integrity에 `zstandard` 의존성 및 branch-optional 스파이크 pytest 파일 존재 가드(미추적 시 skip, 추적 시 엄격 실행).  
 **이전 갱신**: 2026-04-14 §2 B-track `4d_to_ohaeng`·human regime audit 스파이크 행; §3.4.1 Postella; 2026-04-13 §1.2 AE-2 KOSPI.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
 
@@ -34,6 +34,10 @@
 - **다중 렌즈:** 로고스(정경 코어), 명리(B-track 실험), 레짐·PSI(실물 1차) 등은 **각각의 스키마·경로**로 두고, 필요 시 **교차 참조·관측 리포트**로만 맞춘다.
 - **격벽:** §4 평행 코퍼스, §3 명리 분리, §2.1 dual-regime(16상 캡 미연동)을 **합선 방지**의 기본으로 둔다.
 - **UFT·통일장 라벨:** `tools/core/unified_field_theory_engine*.py` 등은 **§10 경로 팩트**로만 인용한다. **호출 가능한 `.py`·테스트**가 없으면 “구현됨”으로 말하지 않는다(본 문서 상단 목적과 동일).
+
+### 1.1.1 [VISION] 예언 성능 우선·대외 도메인 사례 격리 (2026-04-18)
+
+대외용 ‘국방 제안·지원사업’ 서사는 **`research_only` 도메인 연구 사례**로만 유지하고, 시스템 우선순위 서술은 **예언(Prophecy) 성능·재현 가능한 채점**으로 맞춘다. B-track 기반 개입의 **성패 판정**은 `prophecy_hit_rate_eval_report_v2` 및 동일 채점기 위의 **적중률 델타**(또는 `run_prophecy_restoration_spike.py` 등 **AB 오버레이 스파이크 산출**)로만 논한다; 델타가 음수인 것도 **유효한 관측**이며 정책·임계값 스윕 비교의 입력이 된다. 명리·로고스 등 B-track 산출물은 Prior·실험 입력으로만 쓰고, **§1.1 TOE 비단정·§8 Promotion Loop·격벽** 없이 A-track·실매매 파이프라인에 합선하지 않는다. 다축 브리지·라우팅 보조와 토큰 압축 경로의 **역할 분업**은 기존 표·§2 경로 팩트를 따르며, 본 절은 구현 행을 중복하지 않는다.
 
 ---
 
@@ -478,6 +482,8 @@
 **중앙 레지스트리 (머신·에이전트 확장용)**: `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` — 위 표의 상위 집합·`agent_access`·`id` 필드. 항목 추가 시 **경로 존재**를 확인하고 본 표 또는 JSON 중 하나에 동기화한다.
 
 **Prophecy Hit Rate CLI (측정·비교용)**: `scripts/eval_prophecy_hit_rate_v1.py` — `run_mode` `price`(`--score-json`에 `predicted_direction`/`actual_direction` 또는 `rows[]`; 방향 일치율) / `proxy`(Oracle·레지스트리 precision 경로; 가격 적중과 동일 지표 아님; 미연결 시 `no_data`). **새벽 채점 OHLCV→score JSON**: `scripts/build_btrack_prophecy_score_from_ohlcv.py` — KOSPI SSOT `research/market_data/kospi_daily_external_yf.csv`(로더 `load_kospi_yf_rows`; **Date 헤더 단일행 CSV**·구형 `Price` 헤더 겸용); **CSV 갱신(선택)**: `scripts/fetch_kospi_yfinance_csv.py`(`^KS11`, `yfinance`). BTC는 `--btc-csv` 동형 파일 있을 때만 multi 2번째 행; 산출 `docs/final/artifacts/btrack_prophecy_score_latest.json`; `--eval-date auto`는 UTC 기준 CSV 내 “어제” 막대; **`--recent-trading-days N`**: 동일 가설 방향을 유지한 채 최근 N거래일 각각에 대해 `rows[]`를 누적(히트레이트 표본 확장; `meta.frozen_prediction_note` 참고). 선택 `run_btrack_daily_hypothesis_chain.ps1 -IncludeDawnScore` → 위 score 생성 후 `eval_prophecy_hit_rate_v1 --run-mode price`. 산출 스키마 **`prophecy_hit_rate_eval_report_v2`**. 기본 기록 경로 `docs/final/artifacts/prophecy_hit_rate_eval_latest.json` 및 동일 페이로드 `artifacts/latest_report.json`(로컬 재생성·`.gitignore`; VPS·SSH 호환). `--stdout-only`는 파일 미기록. **월간 체인**: `run_waiting_queue_monthly_check.ps1`가 KOSPI CSV·가설 JSON이 있으면 `build_btrack_prophecy_score_from_ohlcv.py --recent-trading-days 30`(및 선택 `MKM_BTC_DAILY_CSV`) 후 `eval_prophecy_hit_rate_v1.py --run-mode price`를 이어서 실행하고, 같은 실행에서 `btrack_prophecy_score_monthly_YYYY-MM-DD.json`·`prophecy_hit_rate_eval_monthly_YYYY-MM-DD.json`로 복사(없으면 WARN 스킵).
+
+**예언 방향 오버레이 소거 스파이크(B-track, [HYPO])**: `scripts/run_prophecy_restoration_spike.py` — 동일 `btrack_prophecy_score_v1` `rows[]`에 선택 오버레이 적용 전후 방향 적중률·`delta_hit_rate`를 스키마 `prophecy_overlay_ablation_spike_v1`·`docs/final/artifacts/prophecy_restoration_spike_latest.json`에 기록. 오버레이: (1) **기본** `prior_day_shock_bear_abstain_v0` — `research/market_data/kospi_daily_external_yf.csv`에서 **전거래일 완결 일간 수익률**(평가일 당일 `daily_return` 미사용)이 `--prior-return-threshold`(스크립트 기본 **-4.8%**; 패널별 권장은 `docs/final/artifacts/prophecy_overlay_prior_threshold_recommended_latest.json`) 이하일 때 `bear→neutral`; (2) `stress_bear_to_neutral_v0` — 표본 `docs/final/artifacts/4d_to_ohaeng_regime_year_map_sample_v1.json` 스트레스 연도 구간. **임계값 스윕:** OHLCV 30일 패널 요약 `docs/final/artifacts/prophecy_prior_threshold_sweep_summary_latest.json` (`prophecy_prior_threshold_sweep_summary_v1`). 본선·실매매 트리거 아님. 회귀: `tests/test_prophecy_restoration_spike.py` — **CI**: `.github/workflows/prophecy-restoration-spike-smoke.yml`.
 
 **일일 B-Track 번들(렌즈→퓨전→LLM 입력→가설 JSON)**: `scripts/run_btrack_daily_hypothesis_chain.ps1` + `scripts/build_btrack_llm_input_bundle.py` + `scripts/generate_btrack_hypothesis_prophecy_v1.py`(기본 스텁; `--gemini`는 API 키 필요); 산출 `docs/final/artifacts/btrack_hypothesis_prophecy_latest.json`; 가설 스키마 `docs/final/BTRACK_HYPOTHESIS_PROPHECY_V1.schema.json`.
 

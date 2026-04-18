@@ -1,0 +1,29 @@
+{
+  "schema": "promotion_lane_status_v1",
+  "lane_id": "defense_synthetic_uav_codepack",
+  "recorded_at_utc": "2026-04-18T06:26:09Z",
+  "last_repro_bundle_ok_utc": "2026-04-18T06:26:09Z",
+  "last_repro_bundle_argv": ["run_defense_repro_bundle.py", "--skip-all-modes-bridge", "--pytest"],
+  "last_pytest_defense_passed": "11 passed",
+  "promotion_status": "GO_RESEARCH",
+  "not_equivalent_to": [
+    "compression_openapi_track_a_sla_playbook_section_9",
+    "main_theory_auto_merge",
+    "canon_corpus_b_to_label_cohort_a"
+  ],
+  "evidence_paths": [
+    "docs/final/artifacts/defense_code_pack_v1.json",
+    "docs/final/artifacts/defense_pitch_codepack_v1.json",
+    "scripts/run_defense_repro_bundle.py",
+    "scripts/defense_code_pack_v1.py",
+    ".github/workflows/defense-repro-bundle-smoke.yml",
+    "tests/test_defense_artifact_schemas.py",
+    "tests/test_defense_hybrid_stress_bench.py"
+  ],
+  "next_gates_if_api_scope": [
+    "COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md section 9 named scope",
+    "bench_l1_api_load artifact + stub fingerprint",
+    "commander_approval_written"
+  ],
+  "notes": "Auditable research/due-diligence lane only; rerun run_defense_repro_bundle.py --pytest to refresh exit-0 proof."
+}

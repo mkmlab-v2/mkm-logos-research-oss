@@ -1,0 +1,53 @@
+# Smoke: hybrid → bridge → Track A → snapshot → briefing → pitch codepack → code pack verify → pytest (tests/test_defense_*.py).
+# Skips --all-modes bridge (6 extra multilens runs) and L1 sweep to keep CI fast.
+name: Defense repro bundle smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/run_defense_**.py"
+      - "scripts/run_defense_repro_bundle.py"
+      - "scripts/build_defense_**.py"
+      - "scripts/defense_code_pack_v1.py"
+      - "scripts/run_ultra_compression_default.py"
+      - "scripts/report_multilens_performance_eval.py"
+      - "docs/final/artifacts/defense_**"
+      - "tests/test_defense_hybrid_stress_bench.py"
+      - "tests/test_defense_artifact_schemas.py"
+      - "tests/test_defense_*.py"
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/run_defense_**.py"
+      - "scripts/run_defense_repro_bundle.py"
+      - "scripts/build_defense_**.py"
+      - "scripts/defense_code_pack_v1.py"
+      - "scripts/run_ultra_compression_default.py"
+      - "scripts/report_multilens_performance_eval.py"
+      - "docs/final/artifacts/defense_**"
+      - "tests/test_defense_hybrid_stress_bench.py"
+      - "tests/test_defense_artifact_schemas.py"
+      - "tests/test_defense_*.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: defense-repro-bundle-smoke-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install deps (multilens + msgpack + pytest)
+        run: pip install numpy msgpack zstandard tiktoken pytest
+      - name: Defense repro bundle + pytest regression
+        run: python scripts/run_defense_repro_bundle.py --skip-all-modes-bridge --pytest

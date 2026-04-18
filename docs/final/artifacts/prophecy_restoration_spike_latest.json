@@ -1,0 +1,43 @@
+{
+  "schema": "prophecy_overlay_ablation_spike_v1",
+  "generated_at_utc": "2026-04-18T06:54:55Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "inputs": {
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "year_map_json": "C:\\workspace\\docs\\final\\artifacts\\4d_to_ohaeng_regime_year_map_sample_v1.json",
+    "overlay": "prior_day_shock_bear_abstain_v0",
+    "stress_years_resolved": [
+      1997,
+      1998,
+      1999,
+      2000,
+      2001,
+      2002,
+      2008,
+      2009,
+      2020,
+      2021
+    ],
+    "kospi_csv": "C:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
+    "prior_return_threshold": -0.048
+  },
+  "baseline": {
+    "price_directional_hit_rate": 0.4,
+    "n_evaluated": 30,
+    "hits": 12
+  },
+  "after_overlay": {
+    "price_directional_hit_rate": 0.4,
+    "n_evaluated": 30,
+    "hits": 12,
+    "overlay_rows_modified": 3
+  },
+  "delta_hit_rate": 0.0,
+  "notes": [
+    "Same scoring rules as eval_prophecy_hit_rate_v1 price mode over rows[].",
+    "Overlay is a measurement placeholder — not admission to Track A / live routing.",
+    "stress_bear_to_neutral_v0: panels only in non-stress years show delta_hit_rate≈0 by construction.",
+    "prior_day_shock_bear_abstain_v0: uses prior completed daily return from KOSPI CSV only (no eval-day lookahead)."
+  ]
+}

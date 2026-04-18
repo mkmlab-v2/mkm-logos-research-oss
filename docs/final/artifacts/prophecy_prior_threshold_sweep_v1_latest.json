@@ -1,0 +1,70 @@
+{
+  "schema": "prophecy_prior_threshold_sweep_v1",
+  "generated_at_utc": "2026-04-18T06:54:46Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "inputs": {
+    "overlay": "prior_day_shock_bear_abstain_v0",
+    "score_json": "docs/final/artifacts/btrack_prophecy_score_latest.json",
+    "kospi_csv": "research/market_data/kospi_daily_external_yf.csv",
+    "panel_note": "build_btrack_prophecy_score_from_ohlcv.py --recent-trading-days 30"
+  },
+  "rows": [
+    {
+      "prior_return_threshold": -0.005,
+      "delta_hit_rate": -0.066667,
+      "baseline_hit_rate": 0.4,
+      "after_hit_rate": 0.333333,
+      "overlay_rows_modified": 11
+    },
+    {
+      "prior_return_threshold": -0.01,
+      "delta_hit_rate": -0.066667,
+      "baseline_hit_rate": 0.4,
+      "after_hit_rate": 0.333333,
+      "overlay_rows_modified": 10
+    },
+    {
+      "prior_return_threshold": -0.015,
+      "delta_hit_rate": -0.066667,
+      "baseline_hit_rate": 0.4,
+      "after_hit_rate": 0.333333,
+      "overlay_rows_modified": 10
+    },
+    {
+      "prior_return_threshold": -0.02,
+      "delta_hit_rate": -0.066667,
+      "baseline_hit_rate": 0.4,
+      "after_hit_rate": 0.333333,
+      "overlay_rows_modified": 8
+    },
+    {
+      "prior_return_threshold": -0.025,
+      "delta_hit_rate": -0.066667,
+      "baseline_hit_rate": 0.4,
+      "after_hit_rate": 0.333333,
+      "overlay_rows_modified": 8
+    },
+    {
+      "prior_return_threshold": -0.03,
+      "delta_hit_rate": -0.033333,
+      "baseline_hit_rate": 0.4,
+      "after_hit_rate": 0.366667,
+      "overlay_rows_modified": 6
+    },
+    {
+      "prior_return_threshold": -0.04,
+      "delta_hit_rate": 0.0,
+      "baseline_hit_rate": 0.4,
+      "after_hit_rate": 0.4,
+      "overlay_rows_modified": 5
+    },
+    {
+      "prior_return_threshold": -0.05,
+      "delta_hit_rate": 0.0,
+      "baseline_hit_rate": 0.4,
+      "after_hit_rate": 0.4,
+      "overlay_rows_modified": 3
+    }
+  ]
+}

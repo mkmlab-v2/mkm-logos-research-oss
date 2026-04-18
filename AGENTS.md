@@ -14,13 +14,27 @@
 
 다단계 임무의 **종료 조건·로컬 체크리스트**만 디스크에 남길 때는 `MISSION_LOG.template.md` → **`MISSION_LOG.md`**(로컬 전용,`.gitignore`). **작전 요약·세션 핸드오프**는 `docs/final/CURRENT_OPS_SNAPSHOT.md`가 우선이며, 동일 SSOT를 스냅샷과 `MISSION_LOG`에 **이중 서술하지 않는다**. 순서·상용 게이트 SSOT는 `P0_COMMERCIALIZATION_TRACKER.md`이다.
 
+## 병렬 작전 권장 (다중 채팅·서브에이전트)
+
+채팅 로그는 세션 간 공유되지 않으므로, **역할이 다르면 채팅을 나누는 것이 권장**이다.
+
+| 갈래 | 내용 | 병렬 시 주의 |
+|------|------|----------------|
+| **사업·공고** | 평가표·실증 요건·파트너·제출물 — SSOT 수치만으로 당선을 단정하지 않음; 갭 매트릭스 초안 `docs/final/artifacts/defense_rfp_evaluation_gap_matrix_v1.json`(공고 확보 후 행 채움) | 레포 대규모 편집과 **동시에 한 사람이** 맡으면 컨텍스트가 섞임 → **별도 채팅** 권장 |
+| **B-track 연구** | 예언 스윕·오버레이 AB·명리·로고스 — §1.1·§8·합선 금지 | 본선/국방 제안 서사와 **문장·코드 합선 금지** |
+| **레포 본선** | `CONSTITUTION`·`scripts/run_*`·CI·헌법 경로 | **직렬 우선**: 동일 파일을 두 세션에서 동시 편집하지 않음 |
+
+- **동시 편집을 피할 파일(직렬 대상 예시):** 루트 `AGENTS.md`·`CLAUDE.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`, 동일 `scripts/run_defense_*.py` / `run_prophecy_restoration_spike.py` 등 **한 스트림에서만** 바꾼다.
+- **코드 병렬이 필요하면:** 브랜치 분리 또는 `git worktree`(작업 트리 복제)로 나눈 뒤 → 머지 전 충돌 확인.
+- **서브에이전트/Task 병렬:** 조사·읽기 위주는 부담 적음; **쓰기**는 디렉터리·브랜치 범위를 명시해 겹치지 않게 한다.
+
 ## 필수 우선순위
 
 1. **루트 `.cursorrules`** — 최상단 **TITAN · 자율 기동(Command-by-Negation)**. 예외가 아니면 권장 조치를 질문 없이 수행·사후 보고; 끝맺음은 [A]/[B] 선택 강요 없이 **완료 보고 + 잔여 리스크(있을 때만)**.
    - 실무 해석 고정: 명시적 STOP/승인 필요 예외(파괴적 삭제·실거래·비용 유발·비가역 근본 변경) 외에는 파일 편집/터미널/검증을 자율 연속 수행한다.
    - 모호성 처리 고정: 저위험 모호성은 질문 대신 합리적 기본값으로 구현/검증 후 사후 보고한다.
 2. **`.cursor/rules/sovereign-central-command.mdc`** — Vault·NotebookLM·보안·운영(3문장 요약 + **§4 마무리**). §4에서 **폐지**: “Next Action 2가지”, `[A]`/`[B]`·a/b 강요. **대체**: TITAN 마무리 또는 고위험 시 **승인 범위만** 명시(루트 `.cursorrules`와 동일 방향).
-3. **구현 팩트(환각 차단)**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — 기획·NotebookLM만 보고 “이미 구현” 단정 금지. P0·헌법 핵심 경로 존재 여부: `scripts/verify_p0_constitution_gate_paths.ps1`.
+3. **구현 팩트(환각 차단)**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — 기획·NotebookLM만 보고 “이미 구현” 단정 금지. **§1.1.1 [VISION]** — 예언 성능·재현 채점 우선(`prophecy_hit_rate_eval_report_v2`, `scripts/run_prophecy_restoration_spike.py` 등 AB 산출); 대외 도메인 사례(예: 국방 벤치)는 **`research_only`** 격리·본선 주장과 분리. P0·헌법 핵심 경로 존재 여부: `scripts/verify_p0_constitution_gate_paths.ps1`.
 4. **Prism 색인 (논리 레이어, 선택)**: 물리 이동 없이 경로·역할만 묶은 **Grand Indexing 2.0** — `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§14**, 가독 색인 초안 `docs/final/MKM12_GRAND_INDEX_MAP.md`, 중앙 레지스트리 `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json`. 코드 4D 벡터 축 `(S,L,K,M)`과 혼동하지 말 것.
 5. **정체성 (Multi-Lens):** 단일 TOE·통일장 “완성” 선언 금지 — §1.1. 레짐·로고스·명리·외경은 **격벽·교차 참고** (§2.1·§4).
 6. **Cursor Cloud Sandbox · 본선 분리:** Cloud Agent/Sandbox는 검증·병렬 가속 전용; 실매매·프로덕션 쓰기·실키 주입은 로컬/VPS 본선과 분리. 상세 `.cursor/rules/cursor-cloud-sandbox-boundary.mdc`.
@@ -32,6 +46,7 @@
 - **구현 판정**은 (3)의 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`와 호출 가능 스크립트·테스트로만 한다. 브리핑·노트만으로 경로를 확정하지 않는다.
 - **번들 한 방**: `scripts/run_fact_lock_bundle.ps1` — 루트에서 실행; 맥락·완료 정의는 `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 하단.
 - **보조**: `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` (bitcoin-trading 디렉터리에서). CI 정합은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6.
+- **예언 오버레이 AB 스파이크(§1.1.1)**: `py -m pytest tests/test_prophecy_restoration_spike.py` — GitHub `.github/workflows/prophecy-restoration-spike-smoke.yml` (스크립트·테스트 변경 시). 임계값 스윕 산출(로컬 재생성): `docs/final/artifacts/prophecy_prior_threshold_sweep_v1_latest.json`.
 - **LLM 검증 티어:** 기본은 **로컬·자체 호스팅 모델**로 게이트·벤치; 상용·대외 품질 확정 전에만 **고급 클라우드 모델 소표본 섀도우**(드리프트 방지). 상세: `docs/final/P0_COMMERCIALIZATION_TRACKER.md` **「LLM 검증 티어」**.
 
 ## Cursor 3.0 · 규칙 스택 (2026-04)

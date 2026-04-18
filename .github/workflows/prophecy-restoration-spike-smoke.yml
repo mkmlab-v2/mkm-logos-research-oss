@@ -1,0 +1,38 @@
+# Smoke: AB 오버레이 스파이크 회귀 (§1.1.1 예언 델타 축과 정합).
+name: Prophecy restoration spike smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/run_prophecy_restoration_spike.py"
+      - "tests/test_prophecy_restoration_spike.py"
+      - ".github/workflows/prophecy-restoration-spike-smoke.yml"
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/run_prophecy_restoration_spike.py"
+      - "tests/test_prophecy_restoration_spike.py"
+      - ".github/workflows/prophecy-restoration-spike-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prophecy-restoration-spike-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: pip install pytest
+      - name: pytest prophecy restoration spike
+        run: python -m pytest tests/test_prophecy_restoration_spike.py -q --tb=short
