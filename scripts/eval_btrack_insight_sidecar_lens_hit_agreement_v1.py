@@ -18,7 +18,7 @@ DEFAULT_SIDECAR = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btrack_insight_sidecar_lens_hit_agreement_v1_latest.json"
 
 SCHEMA = "btrack_insight_sidecar_lens_hit_agreement_v1"
-FORMAT_VERSION = "1.1.0"
+FORMAT_VERSION = "1.2.0"
 
 
 def _utc_now() -> str:
@@ -31,6 +31,21 @@ def _rel(p: Path) -> str:
 
 def _load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def _direction_from_mapping_target(value: Any) -> str | None:
+    if value is None:
+        return None
+    s = str(value).strip().lower()
+    if s in ("bull", "long"):
+        return "bull"
+    if s in ("bear", "short"):
+        return "bear"
+    if s in ("sideways", "neutral", "flat"):
+        return "neutral"
+    if s in ("abstain", "", "none", "unknown"):
+        return None
+    return None
 
 
 def _direction_from_score(value: Any) -> str | None:
@@ -120,6 +135,65 @@ def _agree_counts(
     }
 
 
+def _agree_dated_aux_mapping_target(
+    score_rows: list[dict[str, Any]],
+    per_by_idx: dict[int, dict[str, Any]],
+    dated_key: str,
+    instrument_filter: str | None,
+) -> dict[str, Any]:
+    """Compare mapping_target from dated JSONL snapshot vs score row directions (observation)."""
+    actual_hits = 0
+    pred_hits = 0
+    n = 0
+    skipped_no_dated_block = 0
+    skipped_no_aux = 0
+    skipped_no_mapping_target = 0
+    for i, srow in enumerate(score_rows):
+        ins = str(srow.get("instrument") or "").strip().lower()
+        if instrument_filter and ins != instrument_filter:
+            continue
+        act = str(srow.get("actual_direction") or "").strip().lower()
+        pred = str(srow.get("predicted_direction") or "").strip().lower()
+        if act not in ("bull", "bear", "neutral") or pred not in ("bull", "bear", "neutral"):
+            continue
+        prow = per_by_idx.get(i)
+        if not isinstance(prow, dict):
+            skipped_no_dated_block += 1
+            continue
+        dated_root = prow.get("dated_source_snapshots_asof_eval_date")
+        if not isinstance(dated_root, dict):
+            skipped_no_dated_block += 1
+            continue
+        aux = dated_root.get(dated_key)
+        if not isinstance(aux, dict):
+            skipped_no_aux += 1
+            continue
+        snap = aux.get("snapshot")
+        if not isinstance(snap, dict):
+            skipped_no_aux += 1
+            continue
+        mt = snap.get("mapping_target")
+        ddir = _direction_from_mapping_target(mt)
+        if ddir is None:
+            skipped_no_mapping_target += 1
+            continue
+        n += 1
+        if ddir == act:
+            actual_hits += 1
+        if ddir == pred:
+            pred_hits += 1
+    return {
+        "rows_used": n,
+        "skipped_no_dated_block": skipped_no_dated_block,
+        "skipped_no_aux_row": skipped_no_aux,
+        "skipped_no_mapping_target": skipped_no_mapping_target,
+        "agree_with_actual": actual_hits,
+        "agree_with_predicted": pred_hits,
+        "rate_agree_with_actual": (actual_hits / n) if n else None,
+        "rate_agree_with_predicted": (pred_hits / n) if n else None,
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--score-json", type=Path, default=DEFAULT_SCORE)
@@ -169,6 +243,12 @@ def main() -> int:
 
     by_lens_primary = by_instrument[args.instrument]
 
+    by_dated_aux: dict[str, Any] = {}
+    for aux_key in ("myeongni_16_state_jsonl", "sasang_dynamics_jsonl"):
+        by_dated_aux[aux_key] = {}
+        for label, filt in (("all", None), ("kospi", "kospi"), ("btc", "btc")):
+            by_dated_aux[aux_key][label] = _agree_dated_aux_mapping_target(score_rows, per_by_idx, aux_key, filt)
+
     out: dict[str, Any] = {
         "schema": SCHEMA,
         "version": FORMAT_VERSION,
@@ -182,11 +262,13 @@ def main() -> int:
         "sidecar_row_index_map_size": len(per_by_idx),
         "by_lens": by_lens_primary,
         "by_instrument": by_instrument,
+        "by_dated_aux": by_dated_aux,
         "warnings": warnings,
         "notes_ko": [
             "per_date 행은 paired_row_index(유효 시)로 점수 rows에 매핑; 없으면 나열 순서.",
             "렌즈 direction_score 부호→bull/bear/neutral; 적중은 문자열 일치만(승격 게이트 미사용).",
             "by_instrument는 kospi/btc/all 동시 집계; by_lens는 --instrument 선택에 해당.",
+            "by_dated_aux: 사이드카 dated_source_snapshots_asof_eval_date.snapshot.mapping_target를 bull/bear/neutral로 해석해 점수 행과 비교(데이터 없으면 skipped 증가).",
         ],
     }
 

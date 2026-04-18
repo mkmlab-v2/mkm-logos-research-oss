@@ -3,7 +3,8 @@
 
 param(
     [switch]$SkipSignoff,
-    [switch]$SkipNotebooklmKpi
+    [switch]$SkipNotebooklmKpi,
+    [switch]$IncludeMultilensRefresh
 )
 
 $ErrorActionPreference = "Stop"
@@ -18,6 +19,18 @@ if (-not $SkipNotebooklmKpi) {
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     } else {
         Write-Host "Skip NotebookLM KPI (mega jsonl not present)." -ForegroundColor DarkGray
+    }
+}
+
+if ($IncludeMultilensRefresh) {
+    foreach ($script in @(
+            "scripts/run_lens_logos.py",
+            "scripts/run_lens_myeongni.py",
+            "scripts/run_lens_sasang.py"
+        )) {
+        Write-Host "Multilens refresh: $script" -ForegroundColor DarkGray
+        & py $script
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
 }
 
