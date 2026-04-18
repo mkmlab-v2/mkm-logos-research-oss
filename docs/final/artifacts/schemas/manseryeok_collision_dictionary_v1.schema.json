@@ -23,6 +23,7 @@
         "properties": {
           "key": { "type": "string", "description": "Stable id e.g. wall-clock ISO local" },
           "birth_instant_utc": { "type": "string" },
+          "location_note": { "type": "string" },
           "pillars_native": {
             "type": "object",
             "properties": {

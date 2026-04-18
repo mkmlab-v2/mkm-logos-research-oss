@@ -1,10 +1,25 @@
 {
   "schema": "manseryeok_collision_dictionary_v1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "upstream_fingerprint": {
-    "app": "unspecified",
-    "version": "unspecified",
+    "app": "postella_or_manual",
+    "version": "fill_when_sampling",
     "sampled_utc": ""
   },
-  "entries": []
+  "entries": [
+    {
+      "key": "template_kst_1992-03-13T02:00",
+      "birth_instant_utc": "1992-03-12T17:00:00Z",
+      "location_note": "Wall clock Asia/Seoul; engine input y=1992 m=3 d=13 h=2",
+      "pillars_native": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "계축"
+      },
+      "pillars_external": {},
+      "policy_resolution": "unresolved",
+      "notes": "native = PerfectManseryeok (repo main API). Fill pillars_external from Postella/screenshot; set policy_resolution to native|external|unresolved; bump upstream_fingerprint when app updates."
+    }
+  ]
 }
