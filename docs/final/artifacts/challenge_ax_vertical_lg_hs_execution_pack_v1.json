@@ -79,7 +79,9 @@
         "demo_pack_fallback": "py scripts/build_lg_washer_voice_golden_jsonl_v1.py --pack demo",
         "golden_validate": "py scripts/validate_lg_washer_voice_golden_jsonl_v1.py",
         "review_sheet_tsv": "docs/final/artifacts/lg_washer_voice_golden_review_sheet_v1.tsv",
-        "review_sheet_export": "py scripts/export_lg_washer_golden_review_sheet_v1.py"
+        "review_sheet_export": "py scripts/export_lg_washer_golden_review_sheet_v1.py",
+        "review_sheet_apply": "py scripts/apply_lg_washer_golden_review_sheet_v1.py",
+        "review_sheet_apply_drop_rejected": "py scripts/apply_lg_washer_golden_review_sheet_v1.py --drop-rejected"
       }
     },
     "augmentation_plan": {
