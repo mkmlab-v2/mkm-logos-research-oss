@@ -1,0 +1,27 @@
+# Track A: adoption evidence filenames must match convention when files exist under docs/final/evidence/.
+name: Adoption evidence naming check
+
+on:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "docs/final/evidence/**"
+      - "scripts/auto_capture_adoption_evidence_v1.py"
+      - ".github/workflows/adoption-evidence-naming-check.yml"
+  pull_request:
+    paths:
+      - "docs/final/evidence/**"
+      - "scripts/auto_capture_adoption_evidence_v1.py"
+      - ".github/workflows/adoption-evidence-naming-check.yml"
+  workflow_dispatch:
+
+jobs:
+  naming-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Strict naming validation (no repo writes)
+        run: python scripts/auto_capture_adoption_evidence_v1.py --check
