@@ -82,6 +82,8 @@ projects/**/.next/
 .tmp/
 
 # Local generated artifacts (do not track)
+# LG washer augmented stress full corpus (regenerate: py scripts/build_lg_washer_voice_augmented_jsonl_v1.py --count 30000)
+docs/final/artifacts/lg_washer_voice_augmented_stress_full_v1.jsonl
 # Drop-zone for raw log metabolism paste (MKM_LOG_METABOLISM_RAW_IN alternative); may contain secrets
 docs/final/artifacts/derived/inbox_log_metabolism_raw.txt
 # Night Watchman harness history trees and large one-off exports (regenerable; avoid repo bloat)

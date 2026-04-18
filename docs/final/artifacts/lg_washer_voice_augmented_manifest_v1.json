@@ -1,0 +1,13 @@
+{
+  "schema": "lg_washer_voice_augmented_manifest_v1",
+  "generated_at_utc": "2026-04-18T11:52:52Z",
+  "research_only": true,
+  "source_train_only": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
+  "output_jsonl": "docs/final/artifacts/lg_washer_voice_augmented_stress_preview_v1.jsonl",
+  "record_count": 2000,
+  "governance_ko": [
+    "시드는 골든 train JSONL만 사용(홀드아웃 누수 방지).",
+    "대외 제출 시 '실측 골든'·정확도 리포트에 본 말뭉치를 섞지 않는다."
+  ],
+  "builder": "scripts/build_lg_washer_voice_augmented_jsonl_v1.py"
+}

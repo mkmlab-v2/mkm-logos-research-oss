@@ -1,6 +1,6 @@
 {
   "schema": "challenge_ax_vertical_execution_pack_v1",
-  "generated_at_utc": "2026-04-18T12:30:00Z",
+  "generated_at_utc": "2026-04-18T14:00:00Z",
   "research_only": true,
   "program": {
     "name_ko": "모두의 챌린지 AX - 버티컬 분야",
@@ -76,12 +76,23 @@
         "device_profile_placeholder": "docs/final/artifacts/lg_washer_device_profile_placeholder_v1.json",
         "builder_script": "scripts/build_lg_washer_voice_golden_jsonl_v1.py",
         "builder_invocation": "py scripts/build_lg_washer_voice_golden_jsonl_v1.py --pack expanded_300",
-        "demo_pack_fallback": "py scripts/build_lg_washer_voice_golden_jsonl_v1.py --pack demo"
+        "demo_pack_fallback": "py scripts/build_lg_washer_voice_golden_jsonl_v1.py --pack demo",
+        "golden_validate": "py scripts/validate_lg_washer_voice_golden_jsonl_v1.py"
       }
     },
     "augmentation_plan": {
       "name": "augmented_30k",
-      "usage_ko": "강건성 스트레스 테스트 전용(골든 홀드아웃 지표와 혼용 금지)"
+      "usage_ko": "강건성 스트레스 테스트 전용(골든 홀드아웃 지표와 혼용 금지)",
+      "repo_preview": {
+        "artifact": "docs/final/artifacts/lg_washer_voice_augmented_stress_preview_v1.jsonl",
+        "record_count": 2000,
+        "manifest": "docs/final/artifacts/lg_washer_voice_augmented_manifest_v1.json",
+        "note_ko": "레포에 커밋된 프리뷰(2000). 전량 30k는 로컬 생성 후 gitignore 경로 권장."
+      },
+      "builder_script": "scripts/build_lg_washer_voice_augmented_jsonl_v1.py",
+      "builder_preview": "py scripts/build_lg_washer_voice_augmented_jsonl_v1.py --count 2000",
+      "builder_full_30k": "py scripts/build_lg_washer_voice_augmented_jsonl_v1.py --count 30000 --out docs/final/artifacts/lg_washer_voice_augmented_stress_full_v1.jsonl",
+      "augmented_validate": "py scripts/validate_lg_washer_voice_golden_jsonl_v1.py --profile augmented --jsonl docs/final/artifacts/lg_washer_voice_augmented_stress_preview_v1.jsonl"
     }
   },
   "integration_risk_controls": {
@@ -100,6 +111,8 @@
     "docs/final/artifacts/lg_washer_integrity_validation_report_sample_v1.json",
     "docs/final/artifacts/lg_washer_device_profile_placeholder_v1.json",
     "docs/final/artifacts/lg_washer_voice_golden_split_manifest_v1.json",
+    "docs/final/artifacts/lg_washer_voice_augmented_manifest_v1.json",
+    "docs/final/artifacts/lg_washer_voice_augmented_stress_preview_v1.jsonl",
     "docs/final/artifacts/defense_edge_execution_evidence_v1.json",
     "docs/final/artifacts/k_startup_challenge_ax_vertical_pre_submit_checklist_v1.json"
   ]
