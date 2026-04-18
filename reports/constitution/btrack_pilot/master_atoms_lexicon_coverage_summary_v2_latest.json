@@ -1,14 +1,9 @@
 {
   "schema": "master_atoms_lexicon_coverage_summary_v2",
-  "generated_at_utc": "2026-03-30T20:04:49.512548+00:00",
+  "generated_at_utc": "2026-04-18T17:20:25.128623+00:00",
   "inputs": {
     "atoms": "C:\\workspace\\reports\\constitution\\btrack_pilot\\original_language_master_atoms_latest.jsonl",
-    "external_lexicon_manifest": {
-      "path": "C:\\workspace\\vault\\external_lexicon\\MANIFEST.json",
-      "sha256": "e6cc02de271bb4ac2f39c2dc16e0c34b0132befe6d4d82e6241d6ff198057769",
-      "schema": "external_lexicon_manifest_v1",
-      "generated_at_utc": "2026-03-30T18:54:46Z"
-    },
+    "external_lexicon_manifest": null,
     "morphhb_index": "C:\\workspace\\reports\\constitution\\btrack_pilot\\morphhb_norm_to_lemma_index_latest.json",
     "strongs_greek_xml": "C:\\workspace\\vault\\external_lexicon\\sources\\openscriptures-strongs\\greek\\StrongsGreekDictionaryXML_1.4\\strongsgreek.xml",
     "strongs_hebrew_xml": "C:\\workspace\\vault\\external_lexicon\\sources\\openscriptures-strongs\\hebrew\\StrongHebrewG.xml",

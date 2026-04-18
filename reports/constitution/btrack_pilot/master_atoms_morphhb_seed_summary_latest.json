@@ -1,24 +1,34 @@
 {
   "rail_id": "rail_morphhb",
-  "generated_at_utc": "2026-04-18T17:17:58.497849+00:00",
-  "inputs": {
-    "atoms": "C:\\workspace\\reports\\constitution\\btrack_pilot\\original_language_master_atoms_latest.jsonl",
-    "morphhb_index": "C:\\workspace\\reports\\constitution\\btrack_pilot\\morphhb_norm_to_lemma_index_latest.json"
-  },
   "atoms_total": 41769,
   "hebrew_atoms": 22913,
   "matched_hebrew": 13032,
   "unmatched_hebrew": 9881,
-  "ambiguous_hebrew": 1925,
+  "ambiguous_hebrew": 0,
   "no_strong_hint_hebrew": 16,
   "skipped_non_hebrew": 18856,
   "coverage": {
     "hebrew": {
       "matched_any_wlc_row": 13032,
       "unmatched": 9881,
-      "ambiguous_morphhb": 1925,
+      "ambiguous_morphhb": 0,
       "matched_no_strong_digit_in_lemma": 16,
       "fraction_of_hebrew_atoms": 0.56876
+    }
+  },
+  "generated_at_utc": "2026-04-18T17:20:16.986148+00:00",
+  "inputs": {
+    "atoms": "C:\\workspace\\reports\\constitution\\btrack_pilot\\original_language_master_atoms_latest.jsonl",
+    "morphhb_index": "C:\\workspace\\reports\\constitution\\btrack_pilot\\morphhb_norm_to_lemma_index_latest.json",
+    "morphhb_seed_in": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_atoms_morphhb_seed_latest.jsonl",
+    "lexicon_seed": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_atoms_lexicon_seed_latest.jsonl"
+  },
+  "multi_resolution": {
+    "rows_resolved_from_wlc_multi": 1925,
+    "by_rule": {
+      "strong_intersection_lexicographic": 809,
+      "lexicographic_all_candidates": 654,
+      "strong_intersection_unique": 462
     }
   }
 }
