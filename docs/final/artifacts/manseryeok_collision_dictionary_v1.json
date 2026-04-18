@@ -1,6 +1,6 @@
 {
   "schema": "manseryeok_collision_dictionary_v1",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "upstream_fingerprint": {
     "app": "forceteller_pro_web",
     "version": "2.2",
@@ -11,6 +11,7 @@
     "reference_engine": "PerfectManseryeok on repo main (scripts/manseryeok_perfect_final.py); native pillars must match python scripts/validate_collision_dictionary_v1.py",
     "steps": [
       "After any change to scripts/manseryeok_perfect_final.py, run: python scripts/collision_dict_refresh_native_v1.py --write",
+      "To add cohort-backed rows (native only, external pending): python scripts/sync_collision_dict_cohort_entries_v1.py --case-id <id> [--case-id ...] --write",
       "In the target app (e.g. Postella), enter the same birth local date/time as implied by birth_instant_utc + Asia/Seoul unless you document another IANA tz in location_note.",
       "Copy the four pillars (yeon, wol, il, si) into pillars_external using the same Hangul spelling as native.",
       "Set upstream_fingerprint.app, .version (app build or settings string), .sampled_utc (ISO Z when you captured the screenshot), and .device_tz if not Seoul.",
@@ -37,6 +38,48 @@
       },
       "policy_resolution": "native",
       "notes": "Sampled https://pro.forceteller.com/ result page: four pillars match pillars_native. UI shows wall 1992/03/13 02:00 KST and -32 min location correction (effective 01:28 line labeled 지역시 -32분)."
+    },
+    {
+      "key": "lichun_y1988_off+0h",
+      "birth_instant_utc": "1988-02-04T14:42:49.180204Z",
+      "location_note": "Wall clock Asia/Seoul y=1988 m=2 d=4 h=23; ganji_mapping_validate_cohort_v1 case_id=lichun_y1988_off+0h",
+      "pillars_native": {
+        "yeon": "무진",
+        "wol": "갑인",
+        "il": "기축",
+        "si": "갑자"
+      },
+      "pillars_external": {},
+      "policy_resolution": "unresolved",
+      "notes": "pillars_native from cohort; fill pillars_external via Forceteller UI (collection_howto)."
+    },
+    {
+      "key": "lichun_y2024_off+0h",
+      "birth_instant_utc": "2024-02-04T08:27:08.086214Z",
+      "location_note": "Wall clock Asia/Seoul y=2024 m=2 d=4 h=17; ganji_mapping_validate_cohort_v1 case_id=lichun_y2024_off+0h",
+      "pillars_native": {
+        "yeon": "갑진",
+        "wol": "병인",
+        "il": "무술",
+        "si": "신유"
+      },
+      "pillars_external": {},
+      "policy_resolution": "unresolved",
+      "notes": "pillars_native from cohort; fill pillars_external via Forceteller UI (collection_howto)."
+    },
+    {
+      "key": "lichun_y1992_off-12h",
+      "birth_instant_utc": "1992-02-04T01:48:16.859671Z",
+      "location_note": "Wall clock Asia/Seoul y=1992 m=2 d=4 h=10; ganji_mapping_validate_cohort_v1 case_id=lichun_y1992_off-12h",
+      "pillars_native": {
+        "yeon": "임신",
+        "wol": "임인",
+        "il": "경술",
+        "si": "신사"
+      },
+      "pillars_external": {},
+      "policy_resolution": "unresolved",
+      "notes": "pillars_native from cohort; fill pillars_external via Forceteller UI (collection_howto)."
     }
   ]
 }
