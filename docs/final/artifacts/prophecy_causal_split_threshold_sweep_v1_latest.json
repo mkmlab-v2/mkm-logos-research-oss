@@ -1,0 +1,251 @@
+{
+  "schema": "prophecy_causal_split_threshold_sweep_v1",
+  "generated_at_utc": "2026-04-18T07:48:58Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "inputs": {
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "kospi_csv": "C:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
+    "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+    "threshold_grid": [
+      -0.06,
+      -0.05,
+      -0.04,
+      -0.03,
+      -0.02,
+      -0.01,
+      0.0,
+      0.01,
+      0.02,
+      0.03,
+      0.04,
+      0.05
+    ],
+    "candidate_pairs_per_instrument": 66,
+    "total_candidates": 4356
+  },
+  "baseline": {
+    "lane_id": "current_panel_prediction",
+    "metrics": {
+      "price_directional_hit_rate": 0.416667,
+      "n_evaluated": 60,
+      "price_hits": 25
+    }
+  },
+  "control": {
+    "lane_id": "always_bull_control",
+    "price_directional_hit_rate": 0.566667
+  },
+  "best_candidate": {
+    "kospi": {
+      "low_thr": -0.06,
+      "high_thr": -0.05
+    },
+    "btc": {
+      "low_thr": -0.03,
+      "high_thr": -0.02
+    },
+    "metrics": {
+      "price_directional_hit_rate": 0.533333,
+      "n_evaluated": 60,
+      "price_hits": 32
+    },
+    "delta_vs_baseline": 0.116666,
+    "delta_vs_always_bull_control": -0.033334,
+    "changed_rows": 55,
+    "missing_prior_rows": 0
+  },
+  "top_candidates": [
+    {
+      "kospi": {
+        "low_thr": -0.06,
+        "high_thr": -0.05
+      },
+      "btc": {
+        "low_thr": -0.03,
+        "high_thr": -0.02
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.533333,
+        "n_evaluated": 60,
+        "price_hits": 32
+      },
+      "delta_vs_baseline": 0.116666,
+      "delta_vs_always_bull_control": -0.033334,
+      "changed_rows": 55,
+      "missing_prior_rows": 0
+    },
+    {
+      "kospi": {
+        "low_thr": -0.06,
+        "high_thr": -0.05
+      },
+      "btc": {
+        "low_thr": -0.06,
+        "high_thr": -0.05
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.516667,
+        "n_evaluated": 60,
+        "price_hits": 31
+      },
+      "delta_vs_baseline": 0.1,
+      "delta_vs_always_bull_control": -0.05,
+      "changed_rows": 58,
+      "missing_prior_rows": 0
+    },
+    {
+      "kospi": {
+        "low_thr": -0.06,
+        "high_thr": -0.05
+      },
+      "btc": {
+        "low_thr": -0.06,
+        "high_thr": -0.04
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.516667,
+        "n_evaluated": 60,
+        "price_hits": 31
+      },
+      "delta_vs_baseline": 0.1,
+      "delta_vs_always_bull_control": -0.05,
+      "changed_rows": 58,
+      "missing_prior_rows": 0
+    },
+    {
+      "kospi": {
+        "low_thr": -0.06,
+        "high_thr": -0.05
+      },
+      "btc": {
+        "low_thr": -0.05,
+        "high_thr": -0.04
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.516667,
+        "n_evaluated": 60,
+        "price_hits": 31
+      },
+      "delta_vs_baseline": 0.1,
+      "delta_vs_always_bull_control": -0.05,
+      "changed_rows": 58,
+      "missing_prior_rows": 0
+    },
+    {
+      "kospi": {
+        "low_thr": -0.06,
+        "high_thr": -0.05
+      },
+      "btc": {
+        "low_thr": -0.06,
+        "high_thr": -0.03
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.5,
+        "n_evaluated": 60,
+        "price_hits": 30
+      },
+      "delta_vs_baseline": 0.083333,
+      "delta_vs_always_bull_control": -0.066667,
+      "changed_rows": 58,
+      "missing_prior_rows": 0
+    },
+    {
+      "kospi": {
+        "low_thr": -0.06,
+        "high_thr": -0.05
+      },
+      "btc": {
+        "low_thr": -0.06,
+        "high_thr": -0.02
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.5,
+        "n_evaluated": 60,
+        "price_hits": 30
+      },
+      "delta_vs_baseline": 0.083333,
+      "delta_vs_always_bull_control": -0.066667,
+      "changed_rows": 58,
+      "missing_prior_rows": 0
+    },
+    {
+      "kospi": {
+        "low_thr": -0.06,
+        "high_thr": -0.05
+      },
+      "btc": {
+        "low_thr": -0.05,
+        "high_thr": -0.03
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.5,
+        "n_evaluated": 60,
+        "price_hits": 30
+      },
+      "delta_vs_baseline": 0.083333,
+      "delta_vs_always_bull_control": -0.066667,
+      "changed_rows": 58,
+      "missing_prior_rows": 0
+    },
+    {
+      "kospi": {
+        "low_thr": -0.06,
+        "high_thr": -0.05
+      },
+      "btc": {
+        "low_thr": -0.05,
+        "high_thr": -0.02
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.5,
+        "n_evaluated": 60,
+        "price_hits": 30
+      },
+      "delta_vs_baseline": 0.083333,
+      "delta_vs_always_bull_control": -0.066667,
+      "changed_rows": 58,
+      "missing_prior_rows": 0
+    },
+    {
+      "kospi": {
+        "low_thr": -0.06,
+        "high_thr": -0.05
+      },
+      "btc": {
+        "low_thr": -0.04,
+        "high_thr": -0.03
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.5,
+        "n_evaluated": 60,
+        "price_hits": 30
+      },
+      "delta_vs_baseline": 0.083333,
+      "delta_vs_always_bull_control": -0.066667,
+      "changed_rows": 58,
+      "missing_prior_rows": 0
+    },
+    {
+      "kospi": {
+        "low_thr": -0.06,
+        "high_thr": -0.05
+      },
+      "btc": {
+        "low_thr": -0.04,
+        "high_thr": -0.02
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.5,
+        "n_evaluated": 60,
+        "price_hits": 30
+      },
+      "delta_vs_baseline": 0.083333,
+      "delta_vs_always_bull_control": -0.066667,
+      "changed_rows": 58,
+      "missing_prior_rows": 0
+    }
+  ],
+  "note": "Instrument-specific causal threshold sweep; no same-day lookahead."
+}
