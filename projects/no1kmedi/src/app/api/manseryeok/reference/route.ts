@@ -1,3 +1,7 @@
+/**
+ * jema-ai.com — POST /api/manseryeok/reference
+ * Proxies workspace Python engine; repo path projects/no1kmedi (do not confuse with public domain string).
+ */
 import { NextResponse } from "next/server";
 import path from "node:path";
 import { promises as fs } from "node:fs";

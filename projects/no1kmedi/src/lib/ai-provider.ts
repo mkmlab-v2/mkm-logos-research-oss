@@ -88,8 +88,8 @@ export async function generateClinicalText(opts: GenerateClinicalOptions): Promi
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
-        "HTTP-Referer": process.env.OPENROUTER_HTTP_REFERER?.trim() || "https://no1kmedi.local",
-        "X-Title": process.env.OPENROUTER_APP_NAME?.trim() || "no1kmedi-web",
+        "HTTP-Referer": process.env.OPENROUTER_HTTP_REFERER?.trim() || "https://jema-ai.com",
+        "X-Title": process.env.OPENROUTER_APP_NAME?.trim() || "jema-ai.com",
       },
       body: JSON.stringify(body),
       cache: "no-store",

@@ -1,5 +1,5 @@
 /**
- * Global birth input contract (mkmlife / saju_birth_resolver_v1 parity):
+ * Global birth input contract — jema-ai.com CDSS (mkmlife / saju_birth_resolver_v1 parity):
  * prefer `birth_instant_utc` (ISO with Z or offset) + `iana_tz` for DST-safe resolution.
  * Legacy `birth_datetime` string remains for older integrations.
  */

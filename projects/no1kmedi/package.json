@@ -1,5 +1,6 @@
 {
   "name": "no1kmedi-web",
+  "description": "jema-ai.com — public brand; workspace folder projects/no1kmedi is repo path only (npm name legacy).",
   "version": "0.1.0",
   "private": true,
   "scripts": {

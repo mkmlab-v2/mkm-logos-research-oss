@@ -4,7 +4,7 @@
     "brand": "JEMA AI",
     "public_domain": "jema-ai.com",
     "audience": "일반인(AI 한의학 이해·무료 사전 리포트) 및 한의원·한의사(도입·진료보조)",
-    "note": "사용자 노출 문구의 단일 원천. 저장소·API 패키지명 no1kmedi는 내부 식별자로 유지할 수 있다."
+    "note": "사용자 노출 문구의 단일 원천. 공개 브랜드는 jema-ai.com; 저장소 폴더 projects/no1kmedi·패키지명은 내부 식별자일 뿐 사용자 호칭에 쓰지 않는다."
   },
   "header": {
     "brand_name": "JEMA AI",
