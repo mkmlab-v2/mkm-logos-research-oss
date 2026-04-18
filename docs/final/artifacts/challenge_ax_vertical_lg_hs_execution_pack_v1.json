@@ -1,6 +1,6 @@
 {
   "schema": "challenge_ax_vertical_execution_pack_v1",
-  "generated_at_utc": "2026-04-18T08:35:00Z",
+  "generated_at_utc": "2026-04-18T12:30:00Z",
   "research_only": true,
   "program": {
     "name_ko": "모두의 챌린지 AX - 버티컬 분야",
@@ -68,12 +68,15 @@
     "golden_plan": {
       "name": "golden_300",
       "split_target": { "train": 200, "holdout": 100, "strategy": "intent_slot_stratified" },
-      "current_demo_pack": {
-        "note_ko": "현재 레포에는 20건 샘플 분할 데모가 존재하며, 300건 확장 시 동일 스키마로 확장한다.",
+      "current_repo_pack": {
+        "note_ko": "레포 기본 산출은 300건 팩(expanded_300): 시드 20 + 합성 조합 280, 의도별 stratified train=200/holdout=100. 대외 '실측 골든' 주장은 실데이터·LG 서명 device_profile 확정 후로 한정.",
         "train_jsonl": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
         "holdout_jsonl": "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl",
         "manifest": "docs/final/artifacts/lg_washer_voice_golden_split_manifest_v1.json",
-        "builder_script": "scripts/build_lg_washer_voice_golden_jsonl_v1.py"
+        "device_profile_placeholder": "docs/final/artifacts/lg_washer_device_profile_placeholder_v1.json",
+        "builder_script": "scripts/build_lg_washer_voice_golden_jsonl_v1.py",
+        "builder_invocation": "py scripts/build_lg_washer_voice_golden_jsonl_v1.py --pack expanded_300",
+        "demo_pack_fallback": "py scripts/build_lg_washer_voice_golden_jsonl_v1.py --pack demo"
       }
     },
     "augmentation_plan": {
@@ -95,6 +98,7 @@
   "repo_evidence_paths": [
     "docs/final/artifacts/lg_washer_integrity_validation_report_template_v1.json",
     "docs/final/artifacts/lg_washer_integrity_validation_report_sample_v1.json",
+    "docs/final/artifacts/lg_washer_device_profile_placeholder_v1.json",
     "docs/final/artifacts/lg_washer_voice_golden_split_manifest_v1.json",
     "docs/final/artifacts/defense_edge_execution_evidence_v1.json",
     "docs/final/artifacts/k_startup_challenge_ax_vertical_pre_submit_checklist_v1.json"

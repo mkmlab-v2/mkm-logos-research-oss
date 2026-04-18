@@ -1,40 +1,99 @@
 {
   "schema": "lg_washer_voice_golden_split_manifest_v1",
-  "generated_at_utc": "2026-04-18T08:40:00Z",
+  "generated_at_utc": "2026-04-18T11:32:25Z",
   "research_only": true,
   "source_report": "docs/final/artifacts/lg_washer_integrity_validation_report_sample_v1.json",
   "execution_pack": "docs/final/artifacts/challenge_ax_vertical_lg_hs_execution_pack_v1.json",
+  "device_profile_placeholder": "docs/final/artifacts/lg_washer_device_profile_placeholder_v1.json",
   "outputs": {
     "train_jsonl": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
     "holdout_jsonl": "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl"
   },
   "split_policy": {
-    "note": "Demo split for 20-sample pack: first 12 train, last 8 holdout.",
-    "train_count": 12,
-    "holdout_count": 8,
-    "train_ids": [
-      "utt_0001",
-      "utt_0002",
-      "utt_0003",
-      "utt_0004",
-      "utt_0005",
-      "utt_0006",
-      "utt_0007",
-      "utt_0008",
-      "utt_0009",
-      "utt_0010",
-      "utt_0011",
-      "utt_0012"
-    ],
-    "holdout_ids": [
-      "utt_0013",
-      "utt_0014",
-      "utt_0015",
-      "utt_0016",
-      "utt_0017",
-      "utt_0018",
-      "utt_0019",
-      "utt_0020"
+    "strategy": "intent_slot_stratified_v1",
+    "note_ko": "의도별로 largest-remainder로 train=200/holdout=100을 배분한 뒤, 의도 내에서는 id 사전순으로 앞쪽을 train에 배정.",
+    "train_count": 200,
+    "holdout_count": 100,
+    "intent_targets": {
+      "SET_COURSE": 50,
+      "SET_TEMPERATURE": 38,
+      "SET_RINSE_COUNT": 32,
+      "SET_SPIN_LEVEL": 34,
+      "SET_DURATION": 26,
+      "DELAY_START": 26,
+      "NOTIFY_WHEN_DONE": 24,
+      "QUERY_STATUS": 14,
+      "PAUSE_CYCLE": 10,
+      "RESUME_CYCLE": 10,
+      "STOP_CYCLE": 12,
+      "START_CYCLE": 14,
+      "CANCEL_OPTION": 10
+    },
+    "train_allocation_per_intent": {
+      "CANCEL_OPTION": 7,
+      "DELAY_START": 17,
+      "NOTIFY_WHEN_DONE": 16,
+      "PAUSE_CYCLE": 7,
+      "QUERY_STATUS": 9,
+      "RESUME_CYCLE": 7,
+      "SET_COURSE": 34,
+      "SET_DURATION": 17,
+      "SET_RINSE_COUNT": 21,
+      "SET_SPIN_LEVEL": 23,
+      "SET_TEMPERATURE": 25,
+      "START_CYCLE": 9,
+      "STOP_CYCLE": 8
+    },
+    "counts_total_per_intent": {
+      "SET_COURSE": 50,
+      "SET_TEMPERATURE": 38,
+      "SET_RINSE_COUNT": 32,
+      "SET_SPIN_LEVEL": 34,
+      "DELAY_START": 26,
+      "NOTIFY_WHEN_DONE": 24,
+      "QUERY_STATUS": 14,
+      "PAUSE_CYCLE": 10,
+      "SET_DURATION": 26,
+      "RESUME_CYCLE": 10,
+      "STOP_CYCLE": 12,
+      "START_CYCLE": 14,
+      "CANCEL_OPTION": 10
+    },
+    "counts_train_per_intent": {
+      "CANCEL_OPTION": 7,
+      "DELAY_START": 17,
+      "NOTIFY_WHEN_DONE": 16,
+      "PAUSE_CYCLE": 7,
+      "QUERY_STATUS": 9,
+      "RESUME_CYCLE": 7,
+      "SET_COURSE": 34,
+      "SET_DURATION": 17,
+      "SET_RINSE_COUNT": 21,
+      "SET_SPIN_LEVEL": 23,
+      "SET_TEMPERATURE": 25,
+      "START_CYCLE": 9,
+      "STOP_CYCLE": 8
+    },
+    "counts_holdout_per_intent": {
+      "CANCEL_OPTION": 3,
+      "DELAY_START": 9,
+      "NOTIFY_WHEN_DONE": 8,
+      "PAUSE_CYCLE": 3,
+      "QUERY_STATUS": 5,
+      "RESUME_CYCLE": 3,
+      "SET_COURSE": 16,
+      "SET_DURATION": 9,
+      "SET_RINSE_COUNT": 11,
+      "SET_SPIN_LEVEL": 11,
+      "SET_TEMPERATURE": 13,
+      "START_CYCLE": 5,
+      "STOP_CYCLE": 4
+    }
+  },
+  "data_governance": {
+    "data_tier_notes_ko": [
+      "utt_*: 샘플 리포트의 시드 20건.",
+      "s300_*: PoC 구조 검증용 합성 조합 발화(실제 제품 음성/라벨로 대체 전까지 대외 '실측 골든' 주장 금지)."
     ]
   }
 }

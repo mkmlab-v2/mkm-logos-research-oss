@@ -34,6 +34,7 @@
   },
   "codebook_profile": {
     "version": "LG_HS_WASH_v1.0",
+    "device_profile_placeholder_ref": "docs/final/artifacts/lg_washer_device_profile_placeholder_v1.json",
     "intent_set": [
       "START_CYCLE",
       "PAUSE_CYCLE",
@@ -82,6 +83,7 @@
   },
   "dataset_artifacts": {
     "execution_pack": "docs/final/artifacts/challenge_ax_vertical_lg_hs_execution_pack_v1.json",
+    "device_profile_placeholder": "docs/final/artifacts/lg_washer_device_profile_placeholder_v1.json",
     "train_jsonl": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
     "holdout_jsonl": "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl",
     "split_manifest": "docs/final/artifacts/lg_washer_voice_golden_split_manifest_v1.json",
@@ -109,6 +111,7 @@
     "docs/final/artifacts/bench_l1_api_load_latest.json",
     "docs/final/artifacts/defense_hybrid_compression_bench_v0.json",
     "docs/final/artifacts/defense_edge_execution_evidence_v1.json",
+    "docs/final/artifacts/lg_washer_device_profile_placeholder_v1.json",
     "docs/final/artifacts/challenge_ax_vertical_lg_hs_execution_pack_v1.json",
     "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
     "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl",
