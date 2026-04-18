@@ -39,6 +39,7 @@ Set-Location -LiteralPath $WorkspaceRoot
 $evalScript = Join-Path $WorkspaceRoot "scripts\eval_prophecy_hit_rate_v1.py"
 $shadowPanelScript = Join-Path $WorkspaceRoot "scripts\eval_prophecy_shadow_panel_v1.py"
 $walkforwardScript = Join-Path $WorkspaceRoot "scripts\run_prophecy_per_date_combo_walkforward_v1.py"
+$instrumentWalkforwardScript = Join-Path $WorkspaceRoot "scripts\run_prophecy_instrument_combo_walkforward_v1.py"
 $hypoScript = Join-Path $WorkspaceRoot "scripts\generate_btrack_hypothesis_prophecy_v1.py"
 if (-not (Test-Path -LiteralPath $evalScript)) {
     throw "Missing required script: $evalScript"
@@ -55,6 +56,7 @@ $scoreOut = Join-Path $artifactsDir "btrack_prophecy_score_latest.json"
 $evalOut = Join-Path $artifactsDir "prophecy_hit_rate_eval_latest.json"
 $shadowPanelOut = Join-Path $artifactsDir "prophecy_shadow_panel_eval_v1_latest.json"
 $walkforwardOut = Join-Path $artifactsDir "prophecy_per_date_combo_walkforward_v1_latest.json"
+$instrumentWalkforwardOut = Join-Path $artifactsDir "prophecy_instrument_combo_walkforward_v1_latest.json"
 $reportsDir = Join-Path $WorkspaceRoot "reports"
 $logPath = Join-Path $reportsDir "prophecy_daily_eval_log.jsonl"
 
@@ -81,6 +83,7 @@ if ($LASTEXITCODE -ne 0) {
 
 $shadowModeLogged = $null
 $RegenWalkforwardThisRun = $false
+$RegenInstrumentWfThisRun = $false
 if ($IncludeShadowPanelEval) {
     $validShadowModes = @("both", "all", "instrument_combo_best", "per_date_lens_holdout_best", "walkforward_aggregate")
     $shadowModeResolved = if ($PSBoundParameters.ContainsKey("ShadowPanelMode") -and $ShadowPanelMode.Trim().Length -gt 0) {
@@ -125,6 +128,33 @@ if ($IncludeShadowPanelEval) {
             throw "run_prophecy_per_date_combo_walkforward_v1.py exit $LASTEXITCODE"
         }
         $RegenWalkforwardThisRun = $true
+        if (Test-Path -LiteralPath $instrumentWalkforwardScript) {
+            $instWfArgs = @(
+                "scripts\run_prophecy_instrument_combo_walkforward_v1.py",
+                "--score-json", $scoreOut,
+                "--output", $instrumentWalkforwardOut
+            )
+            if ($BtcCsvPath -and (Test-Path -LiteralPath $BtcCsvPath)) {
+                $instWfArgs += @("--btc-csv", $BtcCsvPath)
+            }
+            elseif (Test-Path -LiteralPath $btcCsvDefault) {
+                $instWfArgs += @("--btc-csv", $btcCsvDefault)
+            }
+            if (Test-Path -LiteralPath $kospiCsvDefault) {
+                $instWfArgs += @("--kospi-csv", $kospiCsvDefault)
+            }
+            if ($env:MKM_PROPHECY_WALKFORWARD_N_FOLDS -and $env:MKM_PROPHECY_WALKFORWARD_N_FOLDS.Trim().Length -gt 0) {
+                $instWfArgs += @("--n-folds", $env:MKM_PROPHECY_WALKFORWARD_N_FOLDS.Trim())
+            }
+            Write-Host "==> run_prophecy_instrument_combo_walkforward_v1.py (before shadow)"
+            & py @instWfArgs
+            if ($LASTEXITCODE -eq 0) {
+                $RegenInstrumentWfThisRun = $true
+            }
+            else {
+                Write-Warning "Instrument walk-forward failed (exit $LASTEXITCODE). Rebuild score with KOSPI+BTC per eval_date and --btc-csv; promotion gates need both tracks."
+            }
+        }
     }
     $shadowArgs = @(
         "scripts\eval_prophecy_shadow_panel_v1.py",
@@ -189,6 +219,9 @@ if ($IncludeDatedArchive) {
     }
     if ($RegenWalkforwardThisRun -and (Test-Path -LiteralPath $walkforwardOut)) {
         Copy-Item -LiteralPath $walkforwardOut -Destination (Join-Path $artifactsDir "prophecy_per_date_combo_walkforward_v1_$d.json") -Force
+    }
+    if ($RegenInstrumentWfThisRun -and (Test-Path -LiteralPath $instrumentWalkforwardOut)) {
+        Copy-Item -LiteralPath $instrumentWalkforwardOut -Destination (Join-Path $artifactsDir "prophecy_instrument_combo_walkforward_v1_$d.json") -Force
     }
 }
 
