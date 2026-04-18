@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { PatientConsultInputV1 } from "@/lib/cdss-contract";
 import { buildAdvancedConsultDraft } from "@/lib/cdss-inference";
+import { validateLaneABirth } from "@/lib/global-birth-input";
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
@@ -10,7 +11,8 @@ function validateInput(body: PatientConsultInputV1): string | null {
   if (body.schema !== "patient_consult_input_v1") return "invalid_schema";
   if (!isNonEmptyString(body.request_id)) return "missing_request_id";
   if (!isNonEmptyString(body.actor_id)) return "missing_actor_id";
-  if (!isNonEmptyString(body.lane_a_profile?.birth_datetime)) return "missing_birth_datetime";
+  const birthErr = validateLaneABirth(body.lane_a_profile || {});
+  if (birthErr) return birthErr;
   if (!isNonEmptyString(body.lane_b_clinical?.chief_complaint)) return "missing_chief_complaint";
   if (!isNonEmptyString(body.lane_b_clinical?.onset)) return "missing_onset";
   if (!isNonEmptyString(body.lane_b_clinical?.severity)) return "missing_severity";

@@ -98,9 +98,22 @@ const server = http.createServer((req, res) => {
     }
 
     const birthDatetime = payload.birth_datetime;
-    if (typeof birthDatetime !== "string" || birthDatetime.trim().length === 0) {
+    const utc = payload.birth_instant_utc;
+    const ianaTz = payload.iana_tz;
+    const useGlobal =
+      typeof utc === "string" &&
+      utc.trim().length > 0 &&
+      typeof ianaTz === "string" &&
+      ianaTz.trim().length > 0;
+    const seed = useGlobal ? `${utc.trim()}|${ianaTz.trim()}` : birthDatetime;
+    if (typeof seed !== "string" || seed.trim().length === 0) {
       res.writeHead(400, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ success: false, error: "birth_datetime is required" }));
+      res.end(
+        JSON.stringify({
+          success: false,
+          error: "provide birth_instant_utc+iana_tz or birth_datetime",
+        }),
+      );
       return;
     }
 
@@ -108,7 +121,7 @@ const server = http.createServer((req, res) => {
     res.end(
       JSON.stringify({
         success: true,
-        saju_label: makeSajuLabel(birthDatetime),
+        saju_label: makeSajuLabel(seed),
       }),
     );
   });

@@ -8,7 +8,7 @@
 
 | 항목 | 값 |
 |------|-----|
-| **레포 내 전용 앱 경로** | **미확정** — `projects/...` 에 고정된 트리 없음. |
+| **레포 내 전용 앱 경로 (워크스페이스 후보)** | 모노레포 `projects/no1kmedi` (Next.js; `src/app/layout.tsx` 의 `metadataBase` 가 `https://jema-ai.com`). **배포·PM2·nginx 본선 경로는 별도 확정 문서로만 판정**(`NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` 등과 혼동 금지). |
 | **전용 런북·배포 스크립트** | **없음** — 별도 문서화 전까지 **타 도메인 런북 복붙 금지**. |
 | **PM2 앱 이름 / `exec cwd`** | **미확정** — 확정 후 `pm2 describe` 실측으로만 본선 판정. |
 | **VPS 호스트** | no1kmedi/mkmlife/jema12 와 **동일 물리일 수 있음** — 그래도 **nginx `server_name`·upstream·PM2 이름은 분리**. |

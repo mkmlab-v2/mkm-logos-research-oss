@@ -27,7 +27,8 @@ async function main() {
       request_id: `smoke_${Date.now()}`,
       actor_id: "hanui-smoke-001",
       lane_a_profile: {
-        birth_datetime: "1988-01-03 06:30",
+        birth_instant_utc: "1987-12-31T15:00:00Z",
+        iana_tz: "Asia/Seoul",
         constitution_survey: {
           digestion_pattern: "식후 더부룩함이 잦음",
           sleep_pattern: "입면 지연과 새벽 각성",

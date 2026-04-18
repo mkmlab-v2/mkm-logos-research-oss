@@ -5,7 +5,12 @@ export type PatientConsultInputV1 = {
   request_id: string;
   actor_id: string;
   lane_a_profile: {
-    birth_datetime: string;
+    /** @deprecated Prefer birth_instant_utc + iana_tz for global/DST-safe resolution. */
+    birth_datetime?: string;
+    /** Absolute birth instant (ISO 8601, Z or numeric offset). */
+    birth_instant_utc?: string;
+    /** IANA timezone id (e.g. Asia/Seoul). */
+    iana_tz?: string;
     constitution_survey: {
       body_heat_preference?: string;
       digestion_pattern?: string;

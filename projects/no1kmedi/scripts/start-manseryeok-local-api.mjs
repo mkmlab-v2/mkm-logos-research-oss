@@ -30,7 +30,20 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    const label = makeSajuLabel(payload.birth_datetime);
+    const utc = payload.birth_instant_utc;
+    const ianaTz = payload.iana_tz;
+    const useGlobal =
+      typeof utc === "string" &&
+      utc.trim().length > 0 &&
+      typeof ianaTz === "string" &&
+      ianaTz.trim().length > 0;
+    const seed = useGlobal ? `${utc.trim()}|${ianaTz.trim()}` : payload.birth_datetime;
+    if (typeof seed !== "string" || String(seed).trim().length === 0) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "birth_instant_utc+iana_tz or birth_datetime required" }));
+      return;
+    }
+    const label = makeSajuLabel(seed);
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ saju_label: label, source: "local-api" }));
   });

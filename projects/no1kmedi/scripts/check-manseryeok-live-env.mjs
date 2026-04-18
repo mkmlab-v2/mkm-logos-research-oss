@@ -30,7 +30,11 @@ async function main() {
         "Content-Type": "application/json",
         ...(token ? { "x-api-token": token } : {}),
       },
-      body: JSON.stringify({ birth_datetime: "1988-01-03 06:30" }),
+      body: JSON.stringify({
+        birth_instant_utc: "1987-12-31T15:00:00Z",
+        iana_tz: "Asia/Seoul",
+        birth_datetime: "1988-01-03 06:30",
+      }),
       signal: controller.signal,
     });
     if (!res.ok) fail(`endpoint probe failed with status ${res.status}`);

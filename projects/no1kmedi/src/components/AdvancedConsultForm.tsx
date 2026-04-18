@@ -42,7 +42,9 @@ export function AdvancedConsultForm() {
   const [accessEmail, setAccessEmail] = useState("");
   const [accessBusy, setAccessBusy] = useState(false);
   const [accessStatus, setAccessStatus] = useState<MemberAccessStatusResponse | null>(null);
-  const [birthDatetime, setBirthDatetime] = useState("");
+  /** ISO instant with explicit Z or offset + IANA zone (same contract as mkmlife saju resolver). */
+  const [birthInstantUtc, setBirthInstantUtc] = useState("1990-01-01T00:00:00Z");
+  const [ianaTz, setIanaTz] = useState("Asia/Seoul");
   const [chiefComplaint, setChiefComplaint] = useState("");
   const [onset, setOnset] = useState("");
   const [severity, setSeverity] = useState("");
@@ -97,7 +99,8 @@ export function AdvancedConsultForm() {
           request_id: `req_${Date.now()}`,
           actor_id: actorId,
           lane_a_profile: {
-            birth_datetime: birthDatetime,
+            birth_instant_utc: birthInstantUtc.trim(),
+            iana_tz: ianaTz.trim(),
             constitution_survey: {
               digestion_pattern: digestionPattern,
               sleep_pattern: sleepPattern,
@@ -156,7 +159,29 @@ export function AdvancedConsultForm() {
 
       <form className="consult-form" onSubmit={onSubmit}>
         <label>한의사 계정 ID<input value={actorId} onChange={(e) => setActorId(e.target.value)} required /></label>
-        <label>생년월일시 (참고 레인)<input value={birthDatetime} onChange={(e) => setBirthDatetime(e.target.value)} placeholder="YYYY-MM-DD HH:mm" required /></label>
+        <label>
+          출생 시각 (UTC, ISO)
+          <input
+            value={birthInstantUtc}
+            onChange={(e) => setBirthInstantUtc(e.target.value)}
+            placeholder="1990-01-01T00:00:00Z"
+            required
+            autoComplete="bday-time"
+          />
+        </label>
+        <label>
+          시간대 (IANA)
+          <input
+            value={ianaTz}
+            onChange={(e) => setIanaTz(e.target.value)}
+            placeholder="Asia/Seoul"
+            required
+            spellCheck={false}
+          />
+        </label>
+        <p className="section-lead" style={{ fontSize: "0.9rem", marginTop: "-0.5rem" }}>
+          전 세계 출생은 절대시각(UTC)·Z 또는 ±오프셋과 IANA 구역을 함께 입력합니다. 레거시 로컬 문자열은 API에서 선택 지원합니다.
+        </p>
         <label>주증상 (임상 레인)<input value={chiefComplaint} onChange={(e) => setChiefComplaint(e.target.value)} required /></label>
         <label>발현 시점<input value={onset} onChange={(e) => setOnset(e.target.value)} required /></label>
         <label>중증도<input value={severity} onChange={(e) => setSeverity(e.target.value)} required /></label>

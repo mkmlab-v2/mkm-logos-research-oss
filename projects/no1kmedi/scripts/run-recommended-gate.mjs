@@ -30,7 +30,10 @@ async function hasValidLiveEndpoint() {
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ birth_datetime: "1990-01-01 00:00" }),
+        body: JSON.stringify({
+          birth_instant_utc: "1990-01-01T00:00:00Z",
+          iana_tz: "Asia/Seoul",
+        }),
         signal: controller.signal,
       });
       if (!res.ok) return false;
