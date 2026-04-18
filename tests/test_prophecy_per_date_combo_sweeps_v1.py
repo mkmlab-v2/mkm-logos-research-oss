@@ -36,3 +36,12 @@ def test_per_date_combo_holdout_runs() -> None:
     doc = _run("run_prophecy_per_date_combo_holdout_v1.py", "_tmp_prophecy_per_date_combo_holdout_test.json")
     assert doc.get("schema") == "prophecy_per_date_combo_holdout_v1"
     assert "test" in doc and "accuracy" in doc["test"]
+
+
+def test_per_date_combo_walkforward_runs() -> None:
+    doc = _run("run_prophecy_per_date_combo_walkforward_v1.py", "_tmp_prophecy_per_date_combo_walkforward_test.json")
+    assert doc.get("schema") == "prophecy_per_date_combo_walkforward_v1"
+    assert isinstance(doc.get("folds"), list) and len(doc["folds"]) >= 1
+    agg = doc.get("aggregate")
+    assert isinstance(agg, dict)
+    assert "mean_test_accuracy" in agg and "stdev_test_accuracy" in agg
