@@ -147,7 +147,6 @@ def main() -> int:
             h,
             is_solar=True,
             is_male=False,
-            day_rollover_policy="midnight_00",
         )
         observed = _pillars_from_full(full)
 

@@ -51,7 +51,6 @@ def _expected_for_instant(
         local.hour,
         is_solar=True,
         is_male=False,
-        day_rollover_policy="midnight_00",
     )
     return _pillars_from_full(full)
 
