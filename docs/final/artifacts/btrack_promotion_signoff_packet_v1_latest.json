@@ -1,6 +1,6 @@
 {
   "schema": "btrack_promotion_signoff_packet_v1",
-  "generated_at_utc": "2026-04-18T18:04:25Z",
+  "generated_at_utc": "2026-04-18T18:33:31Z",
   "research_only": true,
   "inputs": {
     "prophecy_gate": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json",
@@ -11,7 +11,8 @@
     "prophecy_gate_legacy_strict": "docs/final/artifacts/prophecy_promotion_gates_v1_legacy_strict_latest.json",
     "btrack_insight_bridge_index": "docs/final/artifacts/btrack_insight_promotion_bridge_index_v1_latest.json",
     "btrack_prophecy_score_insight_sidecar": "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json",
-    "btrack_insight_sidecar_lens_hit_agreement": "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json"
+    "btrack_insight_sidecar_lens_hit_agreement": "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json",
+    "btrack_prophecy_score_insight_overlay_view": "docs/final/artifacts/btrack_prophecy_score_insight_overlay_view_v1_latest.json"
   },
   "track_status": {
     "prophecy": {

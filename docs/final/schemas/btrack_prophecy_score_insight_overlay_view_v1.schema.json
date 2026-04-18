@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/btrack_prophecy_score_insight_overlay_view_v1.schema.json",
+  "title": "B-track prophecy score — insight overlay observation view v1",
+  "description": "Row-aligned join of btrack_prophecy_score_v1 rows and insight sidecar per_date_features. Research-only; does not replace score for gates.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "research_only",
+    "paired_score_ref",
+    "insight_sidecar_ref",
+    "joined_rows"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "btrack_prophecy_score_insight_overlay_view_v1"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "minLength": 10
+    },
+    "research_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "paired_score_ref": { "type": "string", "minLength": 1 },
+    "paired_score_schema": { "type": ["string", "null"] },
+    "insight_sidecar_ref": { "type": "string", "minLength": 1 },
+    "insight_sidecar_schema": { "type": ["string", "null"] },
+    "insight_sidecar_format": { "type": ["string", "null"] },
+    "paired_row_count": { "type": "integer", "minimum": 0 },
+    "joined_row_count": { "type": "integer", "minimum": 0 },
+    "alignment_warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "joined_rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["score_row"],
+        "properties": {
+          "score_row": { "type": "object", "additionalProperties": true },
+          "insight_sidecar_observation": {
+            "type": ["object", "null"],
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "notes_ko": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "description_ko": { "type": "string" }
+  }
+}

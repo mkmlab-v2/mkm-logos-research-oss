@@ -1,6 +1,7 @@
 # B-track insight sidecar chain: optional NotebookLM KPI refresh -> sidecar -> lens agreement -> inventory -> bridge index -> optional signoff.
 # Run from repo root (or any cwd; resolves workspace from script location).
 # Daily Windows task: scripts/register_btrack_insight_sidecar_chain_task.ps1 (default -SkipSignoff for unattended).
+# After sidecar: scripts/build_btrack_prophecy_score_insight_overlay_view_v1.py (phase-3 observation join; not a gate input).
 
 param(
     [switch]$SkipSignoff,
@@ -37,6 +38,10 @@ if ($IncludeMultilensRefresh) {
 
 Write-Host "build_btrack_prophecy_score_insight_sidecar_stub_v1.py" -ForegroundColor DarkGray
 & py "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "build_btrack_prophecy_score_insight_overlay_view_v1.py" -ForegroundColor DarkGray
+& py "scripts/build_btrack_prophecy_score_insight_overlay_view_v1.py"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "eval_btrack_insight_sidecar_lens_hit_agreement_v1.py" -ForegroundColor DarkGray

@@ -7,6 +7,7 @@ on:
     branches: [main, master, develop]
     paths:
       - "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"
+      - "scripts/build_btrack_prophecy_score_insight_overlay_view_v1.py"
       - "scripts/run_lens_sasang.py"
       - "scripts/run_lens_myeongni.py"
       - "scripts/seed_btrack_lens_calendar_stub_jsonl_v1.py"
@@ -15,14 +16,18 @@ on:
       - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
       - "tests/test_btrack_prophecy_score_insight_sidecar_stub_v1.py"
       - "tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "tests/test_btrack_prophecy_score_insight_overlay_view_v1.py"
       - "docs/final/schemas/btrack_prophecy_score_insight_sidecar_v1.schema.json"
+      - "docs/final/schemas/btrack_prophecy_score_insight_overlay_view_v1.schema.json"
       - "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json"
+      - "docs/final/artifacts/btrack_prophecy_score_insight_overlay_view_v1_latest.json"
       - "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json"
       - ".github/workflows/btrack-insight-sidecar-smoke.yml"
   pull_request:
     branches: [main, master, develop]
     paths:
       - "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"
+      - "scripts/build_btrack_prophecy_score_insight_overlay_view_v1.py"
       - "scripts/run_lens_sasang.py"
       - "scripts/run_lens_myeongni.py"
       - "scripts/seed_btrack_lens_calendar_stub_jsonl_v1.py"
@@ -31,8 +36,11 @@ on:
       - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
       - "tests/test_btrack_prophecy_score_insight_sidecar_stub_v1.py"
       - "tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "tests/test_btrack_prophecy_score_insight_overlay_view_v1.py"
       - "docs/final/schemas/btrack_prophecy_score_insight_sidecar_v1.schema.json"
+      - "docs/final/schemas/btrack_prophecy_score_insight_overlay_view_v1.schema.json"
       - "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json"
+      - "docs/final/artifacts/btrack_prophecy_score_insight_overlay_view_v1_latest.json"
       - "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json"
       - ".github/workflows/btrack-insight-sidecar-smoke.yml"
 
@@ -55,4 +63,4 @@ jobs:
       - name: Install test dependencies
         run: pip install pytest
       - name: pytest B-track insight sidecar
-        run: python -m pytest tests/test_btrack_prophecy_score_insight_sidecar_stub_v1.py tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py -q --tb=short
+        run: python -m pytest tests/test_btrack_prophecy_score_insight_sidecar_stub_v1.py tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py tests/test_btrack_prophecy_score_insight_overlay_view_v1.py -q --tb=short

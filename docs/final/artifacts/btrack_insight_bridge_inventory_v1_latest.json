@@ -1,14 +1,14 @@
 {
   "schema": "btrack_insight_bridge_inventory_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-18T18:29:48Z",
+  "generated_at_utc": "2026-04-18T18:33:31Z",
   "research_only": true,
   "workspace_root_hint": "C:/workspace",
   "prism": {
     "registry_path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
     "exists": true,
     "schema": "mkm12_prism_index_registry_v1",
-    "entry_count": 29
+    "entry_count": 32
   },
   "notebooklm_manifest": {
     "path": "docs/NotebookLM_sources_manifest.md",
@@ -34,8 +34,8 @@
       "role": "prism_registry",
       "path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
       "exists": true,
-      "bytes": 9068,
-      "mtime_utc": "2026-04-18T18:29:42Z",
+      "bytes": 10081,
+      "mtime_utc": "2026-04-18T18:33:19Z",
       "kind": "file"
     },
     {
@@ -265,6 +265,30 @@
       "kind": "file"
     },
     {
+      "role": "prophecy_score_insight_overlay_view",
+      "path": "docs/final/artifacts/btrack_prophecy_score_insight_overlay_view_v1_latest.json",
+      "exists": true,
+      "bytes": 90044,
+      "mtime_utc": "2026-04-18T18:33:31Z",
+      "kind": "file"
+    },
+    {
+      "role": "prophecy_score_insight_overlay_view_schema",
+      "path": "docs/final/schemas/btrack_prophecy_score_insight_overlay_view_v1.schema.json",
+      "exists": true,
+      "bytes": 2103,
+      "mtime_utc": "2026-04-18T18:32:52Z",
+      "kind": "file"
+    },
+    {
+      "role": "prophecy_score_insight_overlay_view_script",
+      "path": "scripts/build_btrack_prophecy_score_insight_overlay_view_v1.py",
+      "exists": true,
+      "bytes": 5461,
+      "mtime_utc": "2026-04-18T18:32:48Z",
+      "kind": "file"
+    },
+    {
       "role": "insight_sidecar_lens_hit_agreement",
       "path": "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json",
       "exists": true,
@@ -284,8 +308,8 @@
       "role": "insight_sidecar_chain_script",
       "path": "scripts/Run-BtrackInsightSidecarChain.ps1",
       "exists": true,
-      "bytes": 2574,
-      "mtime_utc": "2026-04-18T18:18:43Z",
+      "bytes": 3035,
+      "mtime_utc": "2026-04-18T18:33:31Z",
       "kind": "file"
     },
     {

@@ -25,6 +25,7 @@ DEFAULT_LIVE_AB = ART / "prophecy_live_ab_summary_v1_latest.json"
 DEFAULT_OUT = ART / "btrack_promotion_signoff_packet_v1_latest.json"
 DEFAULT_BRIDGE_INDEX = ART / "btrack_insight_promotion_bridge_index_v1_latest.json"
 DEFAULT_INSIGHT_SIDECAR = ART / "btrack_prophecy_score_insight_sidecar_v1_latest.json"
+DEFAULT_INSIGHT_OVERLAY_VIEW = ART / "btrack_prophecy_score_insight_overlay_view_v1_latest.json"
 DEFAULT_LENS_HIT_AGREEMENT = ART / "btrack_insight_sidecar_lens_hit_agreement_v1_latest.json"
 
 
@@ -90,6 +91,17 @@ def main() -> int:
         "--no-lens-hit-agreement",
         action="store_true",
         help="Do not attach lens hit agreement observation JSON to inputs.",
+    )
+    ap.add_argument(
+        "--insight-overlay-view-json",
+        type=Path,
+        default=None,
+        help="Optional path to btrack_prophecy_score_insight_overlay_view_v1 JSON (phase-3 observation join).",
+    )
+    ap.add_argument(
+        "--no-insight-overlay-view",
+        action="store_true",
+        help="Do not attach score+sidecar overlay observation view to inputs.",
     )
     args = ap.parse_args()
 
@@ -157,6 +169,13 @@ def main() -> int:
             agr = DEFAULT_LENS_HIT_AGREEMENT
         if agr is not None and agr.is_file():
             inputs["btrack_insight_sidecar_lens_hit_agreement"] = _rel(agr)
+
+    if not args.no_insight_overlay_view:
+        ov = args.insight_overlay_view_json
+        if ov is None and DEFAULT_INSIGHT_OVERLAY_VIEW.is_file():
+            ov = DEFAULT_INSIGHT_OVERLAY_VIEW
+        if ov is not None and ov.is_file():
+            inputs["btrack_prophecy_score_insight_overlay_view"] = _rel(ov)
 
     next_actions_ko: list[str] = [
         "prophecy: human sign-off (운영) 확정",
