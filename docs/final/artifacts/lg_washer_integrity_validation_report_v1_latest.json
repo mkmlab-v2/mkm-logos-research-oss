@@ -101,7 +101,9 @@
     "golden_review_sheet_tsv": "docs/final/artifacts/lg_washer_voice_golden_review_sheet_v1.tsv",
     "golden_review_sheet_export_script": "scripts/export_lg_washer_golden_review_sheet_v1.py",
     "golden_review_sheet_apply_script": "scripts/apply_lg_washer_golden_review_sheet_v1.py",
-    "recommended_dataset_strategy": "docs/final/artifacts/lg_washer_voice_dataset_strategy_recommended_v1.json"
+    "recommended_dataset_strategy": "docs/final/artifacts/lg_washer_voice_dataset_strategy_recommended_v1.json",
+    "target_device_estimation": "docs/final/artifacts/lg_washer_target_device_estimation_v1.json",
+    "estimation_readiness_script": "scripts/check_lg_washer_estimation_readiness_v1.py"
   },
   "sample_records": [
     {
@@ -340,7 +342,8 @@
     "절대표현(예: 0% 실패, 완전 무오류) 사용 금지.",
     "로컬 벤치 수치를 타깃 디바이스 수치로 환산·단정하지 않음.",
     "디바이스 미확정 슬롯 범위는 제안서에 고정값으로 쓰지 않음.",
-    "측정 수치는 생성 시각과 산출 경로를 함께 표기."
+    "측정 수치는 생성 시각과 산출 경로를 함께 표기.",
+    "추정치 산출물은 advisory이며 measurement_gate(HOLD/GO) 승격 판정과 분리한다."
   ],
   "evidence_paths": [
     "docs/final/artifacts/bench_l1_api_load_latest.json",

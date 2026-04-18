@@ -67,7 +67,11 @@
   "dataset_pipeline": {
     "golden_plan": {
       "name": "golden_300",
-      "split_target": { "train": 200, "holdout": 100, "strategy": "intent_slot_stratified" },
+      "split_target": {
+        "train": 200,
+        "holdout": 100,
+        "strategy": "intent_slot_stratified"
+      },
       "current_repo_pack": {
         "note_ko": "레포 기본 산출은 300건 팩(expanded_300): 시드 20 + 합성 조합 280, 의도별 stratified train=200/holdout=100. 대외 '실측 골든' 주장은 실데이터·LG 서명 device_profile 확정 후로 한정.",
         "train_jsonl": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
@@ -82,7 +86,9 @@
         "review_sheet_export": "py scripts/export_lg_washer_golden_review_sheet_v1.py",
         "review_sheet_apply": "py scripts/apply_lg_washer_golden_review_sheet_v1.py",
         "review_sheet_apply_drop_rejected": "py scripts/apply_lg_washer_golden_review_sheet_v1.py --drop-rejected",
-        "review_sheet_prefill_status": "py scripts/prefill_lg_washer_review_sheet_v1.py"
+        "review_sheet_prefill_status": "py scripts/prefill_lg_washer_review_sheet_v1.py",
+        "estimation_template": "docs/final/artifacts/lg_washer_target_device_estimation_v1.json",
+        "estimation_readiness": "py scripts/check_lg_washer_estimation_readiness_v1.py"
       }
     },
     "augmentation_plan": {
@@ -110,7 +116,8 @@
     "로컬 벤치 수치를 가전 탑재 성능으로 단정하지 않는다.",
     "절대표현(완전 무오류/0% 실패 등)을 피하고 검증 가능한 문장으로 쓴다.",
     "모델별 허용 범위(device_profile) 확정 전에는 슬롯 값 고정을 제안서에 박지 않는다.",
-    "합성(s300_*) 발화는 무검토 일괄 OK 금지. 권장 운영안은 docs/final/artifacts/lg_washer_voice_dataset_strategy_recommended_v1.json."
+    "합성(s300_*) 발화는 무검토 일괄 OK 금지. 권장 운영안은 docs/final/artifacts/lg_washer_voice_dataset_strategy_recommended_v1.json.",
+    "추정치(ESTIMATED_BASELINE)는 measurement_gate 승격 근거로 사용하지 않는다."
   ],
   "recommended_dataset_strategy": {
     "artifact": "docs/final/artifacts/lg_washer_voice_dataset_strategy_recommended_v1.json",
@@ -126,6 +133,7 @@
     "docs/final/artifacts/lg_washer_voice_golden_review_sheet_v1.tsv",
     "docs/final/artifacts/defense_edge_execution_evidence_v1.json",
     "docs/final/artifacts/k_startup_challenge_ax_vertical_pre_submit_checklist_v1.json",
-    "docs/final/artifacts/lg_washer_voice_dataset_strategy_recommended_v1.json"
+    "docs/final/artifacts/lg_washer_voice_dataset_strategy_recommended_v1.json",
+    "docs/final/artifacts/lg_washer_target_device_estimation_v1.json"
   ]
 }

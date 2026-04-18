@@ -8,7 +8,8 @@
     "review_sheet_tsv": "docs/final/artifacts/lg_washer_voice_golden_review_sheet_v1.tsv",
     "golden_train_jsonl": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
     "golden_holdout_jsonl": "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl",
-    "augmented_stress_preview": "docs/final/artifacts/lg_washer_voice_augmented_stress_preview_v1.jsonl"
+    "augmented_stress_preview": "docs/final/artifacts/lg_washer_voice_augmented_stress_preview_v1.jsonl",
+    "estimation_template": "docs/final/artifacts/lg_washer_target_device_estimation_v1.json"
   },
   "option_A_priority_review_ko": {
     "summary": "의도·상충·OOB 케이스부터 TSV로 소수를 먼저 검토하고 OK/REJECT/수정을 남긴다.",
@@ -45,7 +46,9 @@
     "validate_golden": "py scripts/validate_lg_washer_voice_golden_jsonl_v1.py",
     "build_augmented_preview": "py scripts/build_lg_washer_voice_augmented_jsonl_v1.py --count 2000",
     "measurement_gate": "py scripts/check_lg_washer_measurement_gate_v1.py",
-    "codebook_codepack_drift_check": "py scripts/check_codebook_codepack_drift_v1.py --strict"
+    "codebook_codepack_drift_check": "py scripts/check_codebook_codepack_drift_v1.py --strict",
+    "estimation_readiness": "py scripts/check_lg_washer_estimation_readiness_v1.py",
+    "estimation_not_promotion_note": "ESTIMATION_READY is advisory only; measurement_gate remains HOLD until measured."
   },
   "measurement_template": "docs/final/artifacts/lg_washer_target_device_measurement_v1.json"
 }
