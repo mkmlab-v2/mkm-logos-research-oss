@@ -133,7 +133,7 @@
 | 정밀 런타임 SSOT 포인터 | `docs/final/MANSE_PRECISION_RUNTIME_POINTER_V1.json` | **에이전트 공식 배선 Path B**: MCP stdio `athena-manseryeok`. 배치/CI는 동일 엔진을 `mkm-life` 절입·원격 URL 등으로 사용(per-row MCP 비권장); 워크스페이스에 `projects/mkm/mkm-life` 없으면 배포본에서 확인 |
 | 프로비넌스 헬퍼 (MCP 태그) | `tools/myeongni/manseryeok_provenance.py` → `precision_mcp_runtime_metadata()` | 근사 스텁과 구분되는 메타 블록 |
 | B-track 파일럿 벤치 경로 상수 | `tools/myeongni/btrack_bench_paths.py` | canonical·direct·bootstrap JSONL 슬롯; 포인터 `CANONICAL_BENCH_POINTER_V1.json`과 짝; 계약 테스트 `tests/test_btrack_bench_paths.py` |
-| 전세계 출생 (IANA) → 엔진 입력 | `scripts/saju_birth_resolver_v1.py`, CLI `scripts/run_saju_global_birth_v1.py` | 권장: `birth_instant_utc` + `iana_tz` (DST 격리·왕복 검증); 스키마 `docs/final/artifacts/schemas/saju_global_birth_request_v1.schema.json` / `saju_global_birth_result_v1.schema.json`; 테스트 `tests/test_saju_birth_resolver_v1.py` |
+| 전세계 출생 (IANA) → 엔진 입력 | `scripts/saju_birth_resolver_v1.py`, CLI `scripts/run_saju_global_birth_v1.py`; 듀얼 검증 `scripts/saju_dual_verify.py --birth-instant-utc … --tz …`; 제품 `projects/mkm/mkm-life` `POST /api/v1/saju/verify` 본문 `birth_instant_utc` + `tz` | 권장: `birth_instant_utc` + `iana_tz` (DST 격리·왕복 검증); 스키마 `docs/final/artifacts/schemas/saju_global_birth_request_v1.schema.json` / `saju_global_birth_result_v1.schema.json`; 테스트 `tests/test_saju_birth_resolver_v1.py`, `tests/test_saju_dual_verify.py` |
 
 #### 3.4.1 Postella 대조·후처리 체인 (워크스페이스 스크립트)
 

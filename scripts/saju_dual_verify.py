@@ -31,9 +31,15 @@ if str(ROOT) not in sys.path:
 from scripts.final_saju_verification import calculate_saju_manual
 from scripts.core.boundary_risk_guard import BoundaryInput, evaluate_boundary_risks
 from scripts.manseryeok_perfect_final import PerfectManseryeok
+from scripts.saju_birth_resolver_v1 import resolve_from_utc_instant
 
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "saju_dual_verify_latest.json"
 PILLARS = ("year", "month", "day", "hour")
+BOUNDARY_ONLY_REASONS = {
+    "near_zi_boundary_window",
+    "near_branch_boundary_window",
+    "near_solar_term_anchor_day",
+}
 
 
 def _hour_branch(local_dt: datetime) -> str:
@@ -80,6 +86,35 @@ def _pillar_diffs(primary: dict[str, str], secondary: dict[str, str]) -> dict[st
     return diffs
 
 
+def _policy_interpretation(
+    *,
+    is_confirmed: bool,
+    reasons: list[str],
+    pillar_diffs: dict[str, dict[str, str]],
+    hour_branch_expected_match: bool,
+) -> str:
+    if is_confirmed:
+        return "confirmed"
+    reason_set = set(reasons)
+    if (
+        reason_set
+        and reason_set.issubset(BOUNDARY_ONLY_REASONS)
+        and not pillar_diffs
+        and hour_branch_expected_match
+    ):
+        return "boundary_warning_only"
+    if "pillar_mismatch_between_engines" in reason_set:
+        return "engine_mismatch_review"
+    if "hour_branch_mismatch_vs_input_time" in reason_set:
+        return "hour_branch_review"
+    if {
+        "ambiguous_local_time_due_to_dst",
+        "nonexistent_local_time_due_to_dst",
+    } & reason_set:
+        return "dst_review"
+    return "review_required"
+
+
 def _dst_transition_flags(year: int, month: int, day: int, hour: int, minute: int, tz: ZoneInfo) -> dict[str, Any]:
     naive = datetime(year, month, day, hour, minute)
     aware_fold0 = naive.replace(tzinfo=tz, fold=0)
@@ -120,7 +155,40 @@ class VerifyInput:
     secondary_day_rollover_policy: str
 
 
-def verify_dual_saju(inp: VerifyInput) -> dict[str, Any]:
+def resolve_verify_input_from_utc(
+    birth_instant_utc_iso: str,
+    tz_iana: str,
+    *,
+    is_solar: bool,
+    is_male: bool,
+    secondary_day_rollover_policy: str,
+) -> tuple[VerifyInput, dict[str, Any]]:
+    """Build VerifyInput from absolute instant + IANA zone (same contract as saju_birth_resolver_v1)."""
+    res = resolve_from_utc_instant(birth_instant_utc_iso, tz_iana)
+    ld = res.local_datetime
+    inp = VerifyInput(
+        year=ld.year,
+        month=ld.month,
+        day=ld.day,
+        hour=ld.hour,
+        minute=ld.minute,
+        tz=res.iana_tz,
+        is_solar=is_solar,
+        is_male=is_male,
+        secondary_day_rollover_policy=secondary_day_rollover_policy,
+    )
+    meta = {
+        "mode": "utc_instant",
+        "birth_instant_utc": res.birth_instant_utc.strftime("%Y-%m-%dT%H:%M:%S") + "Z",
+        "iana_tz": res.iana_tz,
+        "local_iso": ld.isoformat(),
+        "warnings": list(res.warnings),
+        "resolver_meta": res.meta,
+    }
+    return inp, meta
+
+
+def verify_dual_saju(inp: VerifyInput, *, birth_resolution_meta: dict[str, Any] | None = None) -> dict[str, Any]:
     tz = ZoneInfo(inp.tz)
     local_dt = datetime(inp.year, inp.month, inp.day, inp.hour, inp.minute, tzinfo=tz)
     dst_flags = _dst_transition_flags(inp.year, inp.month, inp.day, inp.hour, inp.minute, tz)
@@ -141,6 +209,7 @@ def verify_dual_saju(inp: VerifyInput) -> dict[str, Any]:
         hour=inp.hour,
         is_solar=inp.is_solar,
         is_male=inp.is_male,
+        day_rollover_policy=inp.secondary_day_rollover_policy,
     )
     primary_pillars = dict(primary_doc.get("saju") or {})
     secondary_raw = calculate_saju_manual(
@@ -181,6 +250,12 @@ def verify_dual_saju(inp: VerifyInput) -> dict[str, Any]:
         reasons.append("nonexistent_local_time_due_to_dst")
     for r in boundary_risk["reasons"]:
         reasons.append(r)
+    policy_interpretation = _policy_interpretation(
+        is_confirmed=is_confirmed,
+        reasons=reasons,
+        pillar_diffs=pillar_diffs,
+        hour_branch_expected_match=hour_branch_expected_match,
+    )
 
     return {
         "schema": "saju_dual_verify_v1",
@@ -193,6 +268,7 @@ def verify_dual_saju(inp: VerifyInput) -> dict[str, Any]:
             "expected_hour_branch": expected_hour_branch,
             "dst_transition_check": dst_flags,
             "boundary_risk_check": boundary_risk,
+            **({"birth_resolution": birth_resolution_meta} if birth_resolution_meta else {}),
         },
         "primary": {
             "engine": "PerfectManseryeok",
@@ -211,6 +287,7 @@ def verify_dual_saju(inp: VerifyInput) -> dict[str, Any]:
         "comparison": {
             "status": "CONFIRMED" if is_confirmed else "REVIEW",
             "is_confirmed": is_confirmed,
+            "policy_interpretation": policy_interpretation,
             "reasons": reasons,
             "pillar_diffs": pillar_diffs,
             "hour_branch_check": {
@@ -225,10 +302,17 @@ def verify_dual_saju(inp: VerifyInput) -> dict[str, Any]:
 
 def _parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--year", type=int, required=True)
-    ap.add_argument("--month", type=int, required=True)
-    ap.add_argument("--day", type=int, required=True)
-    ap.add_argument("--hour", type=int, required=True)
+    ap.add_argument(
+        "--birth-instant-utc",
+        dest="birth_instant_utc",
+        default=None,
+        metavar="ISO",
+        help="Absolute birth instant (ISO Z or offset); use with --tz IANA. Preferred for global/DST-safe input.",
+    )
+    ap.add_argument("--year", type=int, default=None)
+    ap.add_argument("--month", type=int, default=None)
+    ap.add_argument("--day", type=int, default=None)
+    ap.add_argument("--hour", type=int, default=None)
     ap.add_argument("--minute", type=int, default=0)
     ap.add_argument("--tz", type=str, default="Asia/Seoul")
     ap.add_argument("--solar", action="store_true", default=True)
@@ -249,18 +333,40 @@ def _parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = _parse_args()
-    inp = VerifyInput(
-        year=args.year,
-        month=args.month,
-        day=args.day,
-        hour=args.hour,
-        minute=args.minute,
-        tz=args.tz,
-        is_solar=bool(args.solar),
-        is_male=bool(args.male),
-        secondary_day_rollover_policy=str(args.secondary_day_rollover_policy),
-    )
-    doc = verify_dual_saju(inp)
+    birth_meta: dict[str, Any] | None = None
+    if args.birth_instant_utc:
+        try:
+            inp, birth_meta = resolve_verify_input_from_utc(
+                str(args.birth_instant_utc).strip(),
+                str(args.tz).strip(),
+                is_solar=bool(args.solar),
+                is_male=bool(args.male),
+                secondary_day_rollover_policy=str(args.secondary_day_rollover_policy),
+            )
+        except ValueError as e:
+            print(f"saju_dual_verify: {e}", file=sys.stderr)
+            return 1
+    elif None not in (args.year, args.month, args.day, args.hour):
+        inp = VerifyInput(
+            year=int(args.year),
+            month=int(args.month),
+            day=int(args.day),
+            hour=int(args.hour),
+            minute=int(args.minute),
+            tz=str(args.tz),
+            is_solar=bool(args.solar),
+            is_male=bool(args.male),
+            secondary_day_rollover_policy=str(args.secondary_day_rollover_policy),
+        )
+    else:
+        print(
+            "saju_dual_verify: provide either --birth-instant-utc ISO + --tz IANA, "
+            "or --year/--month/--day/--hour (+ optional --minute) + --tz.",
+            file=sys.stderr,
+        )
+        return 2
+
+    doc = verify_dual_saju(inp, birth_resolution_meta=birth_meta)
     text = json.dumps(doc, ensure_ascii=False, indent=2)
     print(text)
     if not args.stdout_only:
