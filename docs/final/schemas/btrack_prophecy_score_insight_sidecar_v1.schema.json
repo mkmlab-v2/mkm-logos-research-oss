@@ -59,8 +59,24 @@
       "description": "Reserved feature ids for future numeric joins (no values in stub)."
     },
     "per_date_features": {
-      "description": "Future: parallel rows keyed by eval_date; null in stub.",
-      "type": ["array", "null"]
+      "description": "Parallel to paired score rows[] order; null if score missing. Lens values are global snapshots mirrored per row (not date-conditioned v1).",
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "required": ["eval_date", "instrument", "observation_only", "paired_row_index", "lens_scores_snapshot"],
+        "additionalProperties": true,
+        "properties": {
+          "eval_date": { "type": "string", "minLength": 8 },
+          "instrument": { "type": "string" },
+          "observation_only": { "type": "boolean", "const": true },
+          "paired_row_index": { "type": "integer", "minimum": 0 },
+          "lens_scores_snapshot": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Keys: logos | myeongni | sasang — each null or {direction_score, confidence, ...}."
+          }
+        }
+      }
     },
     "notes_ko": {
       "type": "array",
