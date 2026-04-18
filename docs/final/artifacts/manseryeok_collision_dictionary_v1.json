@@ -1,10 +1,10 @@
 {
   "schema": "manseryeok_collision_dictionary_v1",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "upstream_fingerprint": {
-    "app": "postella_or_manual",
-    "version": "fill_when_sampling",
-    "sampled_utc": "",
+    "app": "forceteller_pro_web",
+    "version": "2.2",
+    "sampled_utc": "2026-04-18T05:41:44Z",
     "device_tz": "Asia/Seoul"
   },
   "collection_howto": {
@@ -29,9 +29,14 @@
         "il": "무자",
         "si": "계축"
       },
-      "pillars_external": {},
-      "policy_resolution": "unresolved",
-      "notes": "Fill pillars_external from app UI; bump dictionary version if schema or native definition changes."
+      "pillars_external": {
+        "yeon": "임신",
+        "wol": "계묘",
+        "il": "무자",
+        "si": "계축"
+      },
+      "policy_resolution": "native",
+      "notes": "Sampled https://pro.forceteller.com/ result page: four pillars match pillars_native. UI shows wall 1992/03/13 02:00 KST and -32 min location correction (effective 01:28 line labeled 지역시 -32분)."
     }
   ]
 }
