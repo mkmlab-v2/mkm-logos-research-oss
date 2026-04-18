@@ -1,0 +1,125 @@
+{
+  "schema": "prophecy_fusion_ablation_spike_v1",
+  "generated_at_utc": "2026-04-18T07:17:45Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "promotion_ready": false,
+  "inputs": {
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "year_map": "C:\\workspace\\docs\\final\\artifacts\\4d_to_ohaeng_regime_year_map_sample_v1.json",
+    "min_lens_confidence": 0.2
+  },
+  "baseline": {
+    "lane_id": "base",
+    "metrics": {
+      "price_directional_hit_rate": 0.333333,
+      "n_evaluated": 30,
+      "price_hits": 10
+    }
+  },
+  "lens_inputs": [
+    {
+      "lens_id": "myeongni",
+      "available": true,
+      "direction_sign": "neutral",
+      "confidence": 0.5,
+      "path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json"
+    },
+    {
+      "lens_id": "sasang",
+      "available": true,
+      "direction_sign": "neutral",
+      "confidence": 0.506667,
+      "path": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json"
+    },
+    {
+      "lens_id": "logos",
+      "available": true,
+      "direction_sign": "neutral",
+      "confidence": 0.2,
+      "path": "C:\\workspace\\docs\\final\\artifacts\\logos_independent_lens_latest.json"
+    }
+  ],
+  "scenarios": [
+    {
+      "lane_id": "lens_myeongni",
+      "policy": "force_non_neutral_lens_sign",
+      "lens_sign": "neutral",
+      "changed_rows": 0,
+      "metrics": {
+        "price_directional_hit_rate": 0.333333,
+        "n_evaluated": 30,
+        "price_hits": 10
+      },
+      "delta_hit_rate": 0.0
+    },
+    {
+      "lane_id": "lens_sasang",
+      "policy": "force_non_neutral_lens_sign",
+      "lens_sign": "neutral",
+      "changed_rows": 0,
+      "metrics": {
+        "price_directional_hit_rate": 0.333333,
+        "n_evaluated": 30,
+        "price_hits": 10
+      },
+      "delta_hit_rate": 0.0
+    },
+    {
+      "lane_id": "lens_logos",
+      "policy": "force_non_neutral_lens_sign",
+      "lens_sign": "neutral",
+      "changed_rows": 0,
+      "metrics": {
+        "price_directional_hit_rate": 0.333333,
+        "n_evaluated": 30,
+        "price_hits": 10
+      },
+      "delta_hit_rate": 0.0
+    },
+    {
+      "lane_id": "fused_lenses",
+      "policy": "confidence_weighted_lens_vote",
+      "changed_rows": 0,
+      "fused_meta": {
+        "fused_sign": "neutral",
+        "votes": {
+          "bull": 0.0,
+          "bear": 0.0
+        },
+        "used_lenses": []
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.333333,
+        "n_evaluated": 30,
+        "price_hits": 10
+      },
+      "delta_hit_rate": 0.0
+    },
+    {
+      "lane_id": "regime_4d_stress_proxy",
+      "policy": "bear_to_neutral_if_eval_year_in_stress_map",
+      "changed_rows": 0,
+      "stress_year_count": 10,
+      "metrics": {
+        "price_directional_hit_rate": 0.333333,
+        "n_evaluated": 30,
+        "price_hits": 10
+      },
+      "delta_hit_rate": 0.0
+    }
+  ],
+  "best_scenario": {
+    "lane_id": "lens_myeongni",
+    "policy": "force_non_neutral_lens_sign",
+    "lens_sign": "neutral",
+    "changed_rows": 0,
+    "metrics": {
+      "price_directional_hit_rate": 0.333333,
+      "n_evaluated": 30,
+      "price_hits": 10
+    },
+    "delta_hit_rate": 0.0
+  },
+  "note": "B-track observation-only ablation. Delta-only evidence; not A-track routing, not live trading trigger, and not proof of transfer from compression recovery."
+}
