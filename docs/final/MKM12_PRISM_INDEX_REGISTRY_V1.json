@@ -1,7 +1,148 @@
 {
   "schema": "mkm12_prism_index_registry_v1",
-  "version": "1.0.0",
-  "ts_utc": "2026-04-06T00:00:00Z",
-  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14.",
-  "entries": []
+  "version": "1.0.1",
+  "ts_utc": "2026-04-19T00:00:00Z",
+  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. B-track bridge batch 2026-04-19.",
+  "entries": [
+    {
+      "id": "prism_constitution_implementation_facts",
+      "path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+      "prism_axis": "S",
+      "agent_access": "read_only_strict",
+      "summary_ko": "구현 팩트 SSOT — NotebookLM·기획만으로 구현 단정 금지"
+    },
+    {
+      "id": "prism_central_agent_memory",
+      "path": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
+      "prism_axis": "S",
+      "agent_access": "read_only_strict",
+      "summary_ko": "중앙 에이전트 메모리 SSOT — 격벽·Fact-Lock"
+    },
+    {
+      "id": "prism_notebooklm_sources_manifest",
+      "path": "docs/NotebookLM_sources_manifest.md",
+      "prism_axis": "S",
+      "agent_access": "read_only_strict",
+      "summary_ko": "NotebookLM A/B 소스 매니페스트 — Vault 동기화 목록 SSOT"
+    },
+    {
+      "id": "prism_btrack_insight_bridge_inventory_latest",
+      "path": "docs/final/artifacts/btrack_insight_bridge_inventory_v1_latest.json",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "B-track 통찰·렌즈·게이트 경로 인벤토리(재생성 스크립트 연동)"
+    },
+    {
+      "id": "prism_btrack_insight_promotion_bridge_index_latest",
+      "path": "docs/final/artifacts/btrack_insight_promotion_bridge_index_v1_latest.json",
+      "prism_axis": "M",
+      "agent_access": "b_track_only",
+      "summary_ko": "통찰↔승격 산출물 포인터 맵 — 스코어 자동 합선 없음"
+    },
+    {
+      "id": "prism_btrack_notebooklm_jsonl_kpi_latest",
+      "path": "docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json",
+      "prism_axis": "M",
+      "agent_access": "b_track_only",
+      "summary_ko": "NotebookLM mega JSONL 관측 KPI — 예측 승격 아님"
+    },
+    {
+      "id": "prism_notebooklm_mega_insights_10gb_jsonl",
+      "path": "reports/notebooklm/btrack_mega_insights_10gb.jsonl",
+      "prism_axis": "K",
+      "agent_access": "b_track_only",
+      "summary_ko": "B-track NotebookLM 메가 인사이트 JSONL"
+    },
+    {
+      "id": "prism_myeongni_insight_observation_log",
+      "path": "data/myeongni/insight_observation_log.jsonl",
+      "prism_axis": "K",
+      "agent_access": "b_track_only",
+      "summary_ko": "명리 통찰 관측 로그 JSONL"
+    },
+    {
+      "id": "prism_logos_independent_lens_latest",
+      "path": "docs/final/artifacts/logos_independent_lens_latest.json",
+      "prism_axis": "K",
+      "agent_access": "b_track_only",
+      "summary_ko": "로고스 독립 렌즈 산출 최신"
+    },
+    {
+      "id": "prism_myeongni_independent_lens_latest",
+      "path": "docs/final/artifacts/myeongni_independent_lens_latest.json",
+      "prism_axis": "K",
+      "agent_access": "b_track_only",
+      "summary_ko": "명리 독립 렌즈 산출 최신"
+    },
+    {
+      "id": "prism_sasang_independent_lens_latest",
+      "path": "docs/final/artifacts/sasang_independent_lens_latest.json",
+      "prism_axis": "K",
+      "agent_access": "b_track_only",
+      "summary_ko": "사상 독립 렌즈 산출 최신"
+    },
+    {
+      "id": "prism_prophecy_promotion_gates_latest_compat",
+      "path": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "예언 승격 게이트(레거시 호환 latest 복사본)"
+    },
+    {
+      "id": "prism_prophecy_promotion_gates_legacy_strict",
+      "path": "docs/final/artifacts/prophecy_promotion_gates_v1_legacy_strict_latest.json",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "예언 승격 게이트 — legacy strict"
+    },
+    {
+      "id": "prism_prophecy_promotion_gates_panel_calibrated",
+      "path": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "예언 승격 게이트 — panel calibrated"
+    },
+    {
+      "id": "prism_btrack_promotion_signoff_packet_latest",
+      "path": "docs/final/artifacts/btrack_promotion_signoff_packet_v1_latest.json",
+      "prism_axis": "M",
+      "agent_access": "b_track_only",
+      "summary_ko": "B-track 승격 사인오프 패킷 최신"
+    },
+    {
+      "id": "prism_script_sync_notebooklm_vault",
+      "path": "scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1",
+      "prism_axis": "L",
+      "agent_access": "execute_observe",
+      "summary_ko": "NotebookLM 소스 → MKM Vault 미러"
+    },
+    {
+      "id": "prism_script_refresh_prophecy_promotion_gates_dual",
+      "path": "scripts/refresh_prophecy_promotion_gates_dual_v1.py",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "dual 예언 승격 게이트 산출물 갱신"
+    },
+    {
+      "id": "prism_script_build_btrack_insight_bridge_inventory",
+      "path": "scripts/build_btrack_insight_bridge_inventory_v1.py",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "B-track 브리지 인벤토리 JSON 생성"
+    },
+    {
+      "id": "prism_script_build_btrack_insight_promotion_bridge_index",
+      "path": "scripts/build_btrack_insight_promotion_bridge_index_v1.py",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "B-track 승격 브리지 인덱스 JSON 생성"
+    },
+    {
+      "id": "prism_notebooklm_pull_manifest_derived",
+      "path": "docs/final/artifacts/derived/notebooklm_pull_manifest_v1.json",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "NotebookLM pull/discover 우선순위 매니페스트"
+    }
+  ]
 }

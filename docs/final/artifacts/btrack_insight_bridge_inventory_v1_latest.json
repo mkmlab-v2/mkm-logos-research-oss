@@ -1,14 +1,14 @@
 {
   "schema": "btrack_insight_bridge_inventory_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-18T17:49:19Z",
+  "generated_at_utc": "2026-04-18T17:51:50Z",
   "research_only": true,
   "workspace_root_hint": "C:/workspace",
   "prism": {
     "registry_path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
     "exists": true,
     "schema": "mkm12_prism_index_registry_v1",
-    "entry_count": 0
+    "entry_count": 20
   },
   "notebooklm_manifest": {
     "path": "docs/NotebookLM_sources_manifest.md",
@@ -34,8 +34,8 @@
       "role": "prism_registry",
       "path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
       "exists": true,
-      "bytes": 293,
-      "mtime_utc": "2026-04-15T23:03:56Z",
+      "bytes": 6138,
+      "mtime_utc": "2026-04-18T17:51:35Z",
       "kind": "file"
     },
     {
@@ -185,8 +185,8 @@
       "role": "signoff_packet",
       "path": "docs/final/artifacts/btrack_promotion_signoff_packet_v1_latest.json",
       "exists": true,
-      "bytes": 4233,
-      "mtime_utc": "2026-04-18T17:34:01Z",
+      "bytes": 4346,
+      "mtime_utc": "2026-04-18T17:49:19Z",
       "kind": "file"
     },
     {
