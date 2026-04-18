@@ -2,6 +2,9 @@
 """Verify collision dictionary pillars_native matches PerfectManseryeok (regression).
 
 Optional: report when pillars_external is filled and differs from native (informational).
+
+Fill workflow: see docs/final/artifacts/manseryeok_collision_dictionary_v1.json key
+collection_howto.steps (Postella / manual snapshot).
 """
 
 from __future__ import annotations

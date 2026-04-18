@@ -12,7 +12,16 @@
       "properties": {
         "app": { "type": "string" },
         "version": { "type": "string" },
-        "sampled_utc": { "type": "string" }
+        "sampled_utc": { "type": "string" },
+        "device_tz": { "type": "string", "description": "IANA tz used in app, default Asia/Seoul" }
+      }
+    },
+    "collection_howto": {
+      "type": "object",
+      "description": "Human checklist for filling pillars_external",
+      "properties": {
+        "reference_engine": { "type": "string" },
+        "steps": { "type": "array", "items": { "type": "string" } }
       }
     },
     "entries": {
