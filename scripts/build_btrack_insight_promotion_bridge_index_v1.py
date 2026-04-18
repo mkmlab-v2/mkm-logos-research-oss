@@ -73,6 +73,15 @@ def main() -> int:
         "myeongni_logs": {
             "insight_observation_log": _optional_link(ROOT / "data/myeongni/insight_observation_log.jsonl"),
             "state16_experiment_jsonl": _optional_link(ROOT / "data/myeongni/myeongni_16_state_experiment_v1.jsonl"),
+            "state16_calendar_stub_jsonl": _optional_link(
+                ROOT / "data/myeongni/myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl"
+            ),
+        },
+        "sasang_logs": {
+            "dynamics_calendar_stub_jsonl": _optional_link(
+                ROOT / "data/sasang/sasang_dynamics_regime_mapping_v1.calendar_stub_through_202604.jsonl"
+            ),
+            "dynamics_sample_jsonl": _optional_link(ROOT / "data/sasang/sasang_dynamics_regime_mapping_v1.sample.jsonl"),
         },
         "operational_rails": {
             "signoff_packet_latest": _optional_link(ROOT / "docs/final/artifacts/btrack_promotion_signoff_packet_v1_latest.json"),

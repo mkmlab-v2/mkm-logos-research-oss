@@ -54,7 +54,10 @@ WATCHLIST: list[tuple[str, str]] = [
     ("insight_sidecar_lens_hit_agreement_script", "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"),
     ("insight_sidecar_chain_script", "scripts/Run-BtrackInsightSidecarChain.ps1"),
     ("sasang_dynamics_sample_jsonl", "data/sasang/sasang_dynamics_regime_mapping_v1.sample.jsonl"),
+    ("sasang_dynamics_calendar_stub_jsonl", "data/sasang/sasang_dynamics_regime_mapping_v1.calendar_stub_through_202604.jsonl"),
     ("myeongni_16_state_experiment_jsonl", "data/myeongni/myeongni_16_state_experiment_v1.jsonl"),
+    ("myeongni_16_state_calendar_stub_jsonl", "data/myeongni/myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl"),
+    ("seed_lens_calendar_stub_script", "scripts/seed_btrack_lens_calendar_stub_jsonl_v1.py"),
 ]
 
 

@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_JSONL = ROOT / "data" / "sasang" / "sasang_dynamics_regime_mapping_v1.sample.jsonl"
+DEFAULT_JSONL = ROOT / "data" / "sasang" / "sasang_dynamics_regime_mapping_v1.calendar_stub_through_202604.jsonl"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "sasang_independent_lens_latest.json"
 
 ARTIFACT_SCHEMA = "sasang_independent_lens_v0"

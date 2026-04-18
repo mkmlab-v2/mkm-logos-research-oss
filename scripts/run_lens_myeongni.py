@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_EXPERIMENT = ROOT / "data" / "myeongni" / "myeongni_16_state_experiment_v1.jsonl"
+DEFAULT_EXPERIMENT = ROOT / "data" / "myeongni" / "myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl"
 DEFAULT_SAMPLE = ROOT / "data" / "myeongni" / "myeongni_16_state_experiment_v1.sample.jsonl"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "myeongni_independent_lens_latest.json"
 

@@ -23,8 +23,8 @@ SIDEcar_FORMAT = "1.4.0"
 
 DEFAULT_NOTEBOOKLM_KPI = ROOT / "docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json"
 DEFAULT_MYEONGNI_INSIGHT_LOG = ROOT / "data/myeongni/insight_observation_log.jsonl"
-DEFAULT_SASANG_DYNAMICS_JSONL = ROOT / "data/sasang/sasang_dynamics_regime_mapping_v1.sample.jsonl"
-DEFAULT_MYEONGNI_EXPERIMENT_JSONL = ROOT / "data/myeongni/myeongni_16_state_experiment_v1.jsonl"
+DEFAULT_SASANG_DYNAMICS_JSONL = ROOT / "data/sasang/sasang_dynamics_regime_mapping_v1.calendar_stub_through_202604.jsonl"
+DEFAULT_MYEONGNI_EXPERIMENT_JSONL = ROOT / "data/myeongni/myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl"
 
 
 def _utc_now() -> str:

@@ -1,7 +1,7 @@
 {
   "schema": "btrack_insight_sidecar_lens_hit_agreement_v1",
   "version": "1.2.0",
-  "generated_at_utc": "2026-04-18T18:18:57Z",
+  "generated_at_utc": "2026-04-18T18:23:09Z",
   "research_only": true,
   "instrument_filter": "all",
   "paired_score_ref": "docs/final/artifacts/btrack_prophecy_score_latest.json",
@@ -23,19 +23,19 @@
       "rows_used": 30,
       "skipped_no_sidecar_row": 0,
       "skipped_no_lens_direction": 0,
-      "agree_with_actual": 12,
-      "agree_with_predicted": 30,
-      "rate_agree_with_actual": 0.4,
-      "rate_agree_with_predicted": 1.0
+      "agree_with_actual": 1,
+      "agree_with_predicted": 0,
+      "rate_agree_with_actual": 0.03333333333333333,
+      "rate_agree_with_predicted": 0.0
     },
     "sasang": {
       "rows_used": 30,
       "skipped_no_sidecar_row": 0,
       "skipped_no_lens_direction": 0,
-      "agree_with_actual": 12,
-      "agree_with_predicted": 30,
-      "rate_agree_with_actual": 0.4,
-      "rate_agree_with_predicted": 1.0
+      "agree_with_actual": 1,
+      "agree_with_predicted": 0,
+      "rate_agree_with_actual": 0.03333333333333333,
+      "rate_agree_with_predicted": 0.0
     }
   },
   "by_instrument": {
@@ -53,19 +53,19 @@
         "rows_used": 30,
         "skipped_no_sidecar_row": 0,
         "skipped_no_lens_direction": 0,
-        "agree_with_actual": 12,
-        "agree_with_predicted": 30,
-        "rate_agree_with_actual": 0.4,
-        "rate_agree_with_predicted": 1.0
+        "agree_with_actual": 1,
+        "agree_with_predicted": 0,
+        "rate_agree_with_actual": 0.03333333333333333,
+        "rate_agree_with_predicted": 0.0
       },
       "sasang": {
         "rows_used": 30,
         "skipped_no_sidecar_row": 0,
         "skipped_no_lens_direction": 0,
-        "agree_with_actual": 12,
-        "agree_with_predicted": 30,
-        "rate_agree_with_actual": 0.4,
-        "rate_agree_with_predicted": 1.0
+        "agree_with_actual": 1,
+        "agree_with_predicted": 0,
+        "rate_agree_with_actual": 0.03333333333333333,
+        "rate_agree_with_predicted": 0.0
       }
     },
     "kospi": {
@@ -82,19 +82,19 @@
         "rows_used": 30,
         "skipped_no_sidecar_row": 0,
         "skipped_no_lens_direction": 0,
-        "agree_with_actual": 12,
-        "agree_with_predicted": 30,
-        "rate_agree_with_actual": 0.4,
-        "rate_agree_with_predicted": 1.0
+        "agree_with_actual": 1,
+        "agree_with_predicted": 0,
+        "rate_agree_with_actual": 0.03333333333333333,
+        "rate_agree_with_predicted": 0.0
       },
       "sasang": {
         "rows_used": 30,
         "skipped_no_sidecar_row": 0,
         "skipped_no_lens_direction": 0,
-        "agree_with_actual": 12,
-        "agree_with_predicted": 30,
-        "rate_agree_with_actual": 0.4,
-        "rate_agree_with_predicted": 1.0
+        "agree_with_actual": 1,
+        "agree_with_predicted": 0,
+        "rate_agree_with_actual": 0.03333333333333333,
+        "rate_agree_with_predicted": 0.0
       }
     },
     "btc": {
@@ -130,24 +130,24 @@
   "by_dated_aux": {
     "myeongni_16_state_jsonl": {
       "all": {
-        "rows_used": 0,
+        "rows_used": 30,
         "skipped_no_dated_block": 0,
-        "skipped_no_aux_row": 30,
+        "skipped_no_aux_row": 0,
         "skipped_no_mapping_target": 0,
-        "agree_with_actual": 0,
-        "agree_with_predicted": 0,
-        "rate_agree_with_actual": null,
-        "rate_agree_with_predicted": null
+        "agree_with_actual": 12,
+        "agree_with_predicted": 10,
+        "rate_agree_with_actual": 0.4,
+        "rate_agree_with_predicted": 0.3333333333333333
       },
       "kospi": {
-        "rows_used": 0,
+        "rows_used": 30,
         "skipped_no_dated_block": 0,
-        "skipped_no_aux_row": 30,
+        "skipped_no_aux_row": 0,
         "skipped_no_mapping_target": 0,
-        "agree_with_actual": 0,
-        "agree_with_predicted": 0,
-        "rate_agree_with_actual": null,
-        "rate_agree_with_predicted": null
+        "agree_with_actual": 12,
+        "agree_with_predicted": 10,
+        "rate_agree_with_actual": 0.4,
+        "rate_agree_with_predicted": 0.3333333333333333
       },
       "btc": {
         "rows_used": 0,
@@ -162,24 +162,24 @@
     },
     "sasang_dynamics_jsonl": {
       "all": {
-        "rows_used": 0,
+        "rows_used": 30,
         "skipped_no_dated_block": 0,
         "skipped_no_aux_row": 0,
-        "skipped_no_mapping_target": 30,
-        "agree_with_actual": 0,
-        "agree_with_predicted": 0,
-        "rate_agree_with_actual": null,
-        "rate_agree_with_predicted": null
+        "skipped_no_mapping_target": 0,
+        "agree_with_actual": 12,
+        "agree_with_predicted": 10,
+        "rate_agree_with_actual": 0.4,
+        "rate_agree_with_predicted": 0.3333333333333333
       },
       "kospi": {
-        "rows_used": 0,
+        "rows_used": 30,
         "skipped_no_dated_block": 0,
         "skipped_no_aux_row": 0,
-        "skipped_no_mapping_target": 30,
-        "agree_with_actual": 0,
-        "agree_with_predicted": 0,
-        "rate_agree_with_actual": null,
-        "rate_agree_with_predicted": null
+        "skipped_no_mapping_target": 0,
+        "agree_with_actual": 12,
+        "agree_with_predicted": 10,
+        "rate_agree_with_actual": 0.4,
+        "rate_agree_with_predicted": 0.3333333333333333
       },
       "btc": {
         "rows_used": 0,

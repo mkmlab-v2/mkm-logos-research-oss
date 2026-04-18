@@ -1,8 +1,8 @@
 {
   "schema": "mkm12_prism_index_registry_v1",
-  "version": "1.0.5",
-  "ts_utc": "2026-04-19T22:00:00Z",
-  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. Run-BtrackInsightSidecarChain.ps1 pointer 2026-04-19.",
+  "version": "1.0.6",
+  "ts_utc": "2026-04-19T23:30:00Z",
+  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. B-track calendar-stub JSONL seed + chain pointer 2026-04-19.",
   "entries": [
     {
       "id": "prism_constitution_implementation_facts",
@@ -192,6 +192,13 @@
       "prism_axis": "L",
       "agent_access": "execute_observe",
       "summary_ko": "사이드카·agreement·인벤토리·브리지·선택 사인오프 원클릭 체인"
+    },
+    {
+      "id": "prism_script_seed_btrack_lens_calendar_stub_jsonl",
+      "path": "scripts/seed_btrack_lens_calendar_stub_jsonl_v1.py",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "사상·명리 캘린더 스텁 JSONL 재생성(사이드카 dated as-of·렌즈 tail 정합)"
     }
   ]
 }

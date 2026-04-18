@@ -1,14 +1,14 @@
 {
   "schema": "btrack_insight_bridge_inventory_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-18T18:16:47Z",
+  "generated_at_utc": "2026-04-18T18:24:05Z",
   "research_only": true,
   "workspace_root_hint": "C:/workspace",
   "prism": {
     "registry_path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
     "exists": true,
     "schema": "mkm12_prism_index_registry_v1",
-    "entry_count": 27
+    "entry_count": 28
   },
   "notebooklm_manifest": {
     "path": "docs/NotebookLM_sources_manifest.md",
@@ -34,8 +34,8 @@
       "role": "prism_registry",
       "path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
       "exists": true,
-      "bytes": 8396,
-      "mtime_utc": "2026-04-18T18:14:18Z",
+      "bytes": 8738,
+      "mtime_utc": "2026-04-18T18:24:00Z",
       "kind": "file"
     },
     {
@@ -101,7 +101,7 @@
       "path": "docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json",
       "exists": true,
       "bytes": 3594,
-      "mtime_utc": "2026-04-18T18:13:11Z",
+      "mtime_utc": "2026-04-18T18:19:46Z",
       "kind": "file"
     },
     {
@@ -125,23 +125,23 @@
       "path": "docs/final/artifacts/logos_independent_lens_latest.json",
       "exists": true,
       "bytes": 830,
-      "mtime_utc": "2026-04-18T18:16:07Z",
+      "mtime_utc": "2026-04-18T18:19:46Z",
       "kind": "file"
     },
     {
       "role": "lens_myeongni",
       "path": "docs/final/artifacts/myeongni_independent_lens_latest.json",
       "exists": true,
-      "bytes": 891,
-      "mtime_utc": "2026-04-18T18:16:07Z",
+      "bytes": 930,
+      "mtime_utc": "2026-04-18T18:23:09Z",
       "kind": "file"
     },
     {
       "role": "lens_sasang",
       "path": "docs/final/artifacts/sasang_independent_lens_latest.json",
       "exists": true,
-      "bytes": 1057,
-      "mtime_utc": "2026-04-18T18:16:07Z",
+      "bytes": 1087,
+      "mtime_utc": "2026-04-18T18:23:09Z",
       "kind": "file"
     },
     {
@@ -244,8 +244,8 @@
       "role": "prophecy_score_insight_sidecar",
       "path": "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json",
       "exists": true,
-      "bytes": 65806,
-      "mtime_utc": "2026-04-18T18:16:47Z",
+      "bytes": 76936,
+      "mtime_utc": "2026-04-18T18:23:09Z",
       "kind": "file"
     },
     {
@@ -260,40 +260,48 @@
       "role": "prophecy_score_insight_sidecar_script",
       "path": "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py",
       "exists": true,
-      "bytes": 17471,
-      "mtime_utc": "2026-04-18T18:16:23Z",
+      "bytes": 17522,
+      "mtime_utc": "2026-04-18T18:22:55Z",
       "kind": "file"
     },
     {
       "role": "insight_sidecar_lens_hit_agreement",
       "path": "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json",
       "exists": true,
-      "bytes": 4328,
-      "mtime_utc": "2026-04-18T18:16:47Z",
+      "bytes": 6677,
+      "mtime_utc": "2026-04-18T18:23:09Z",
       "kind": "file"
     },
     {
       "role": "insight_sidecar_lens_hit_agreement_script",
       "path": "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py",
       "exists": true,
-      "bytes": 7495,
-      "mtime_utc": "2026-04-18T18:06:38Z",
+      "bytes": 10727,
+      "mtime_utc": "2026-04-18T18:18:41Z",
       "kind": "file"
     },
     {
       "role": "insight_sidecar_chain_script",
       "path": "scripts/Run-BtrackInsightSidecarChain.ps1",
       "exists": true,
-      "bytes": 2165,
-      "mtime_utc": "2026-04-18T18:12:11Z",
+      "bytes": 2574,
+      "mtime_utc": "2026-04-18T18:18:43Z",
       "kind": "file"
     },
     {
       "role": "sasang_dynamics_sample_jsonl",
       "path": "data/sasang/sasang_dynamics_regime_mapping_v1.sample.jsonl",
       "exists": true,
-      "bytes": 1727,
-      "mtime_utc": "2026-04-17T14:34:23Z",
+      "bytes": 1422,
+      "mtime_utc": "2026-04-18T18:23:37Z",
+      "kind": "file"
+    },
+    {
+      "role": "sasang_dynamics_calendar_stub_jsonl",
+      "path": "data/sasang/sasang_dynamics_regime_mapping_v1.calendar_stub_through_202604.jsonl",
+      "exists": true,
+      "bytes": 36526,
+      "mtime_utc": "2026-04-18T18:22:51Z",
       "kind": "file"
     },
     {
@@ -302,6 +310,22 @@
       "exists": true,
       "bytes": 215,
       "mtime_utc": "2026-04-17T14:34:23Z",
+      "kind": "file"
+    },
+    {
+      "role": "myeongni_16_state_calendar_stub_jsonl",
+      "path": "data/myeongni/myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl",
+      "exists": true,
+      "bytes": 28877,
+      "mtime_utc": "2026-04-18T18:22:51Z",
+      "kind": "file"
+    },
+    {
+      "role": "seed_lens_calendar_stub_script",
+      "path": "scripts/seed_btrack_lens_calendar_stub_jsonl_v1.py",
+      "exists": true,
+      "bytes": 3870,
+      "mtime_utc": "2026-04-18T18:22:46Z",
       "kind": "file"
     }
   ]

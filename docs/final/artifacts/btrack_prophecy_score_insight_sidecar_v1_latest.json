@@ -1,7 +1,7 @@
 {
   "schema": "btrack_prophecy_score_insight_sidecar_v1",
   "version": "1.4.0",
-  "generated_at_utc": "2026-04-18T18:16:47Z",
+  "generated_at_utc": "2026-04-18T18:23:09Z",
   "research_only": true,
   "paired_score_ref": "docs/final/artifacts/btrack_prophecy_score_latest.json",
   "paired_score_schema": "btrack_prophecy_score_v1",
@@ -33,35 +33,35 @@
       "lens_id": "logos",
       "direction_score": -0.323333,
       "confidence": 0.2,
-      "lens_ts_utc": "2026-04-18T18:16:07Z",
+      "lens_ts_utc": "2026-04-18T18:19:46Z",
       "verses_with_simple_4d": 3,
       "batch_rows_total": 3
     },
     "myeongni": {
       "lens_id": "myeongni",
-      "direction_score": -0.55,
-      "confidence": 0.74,
-      "lens_ts_utc": "2026-04-18T18:16:07Z",
-      "state_id": 9,
-      "run_id": "recovery_seed_20260417",
+      "direction_score": 0.0,
+      "confidence": 0.76,
+      "lens_ts_utc": "2026-04-18T18:23:09Z",
+      "state_id": 15,
+      "run_id": "calendar_stub_through_202604",
       "experiment_id": null
     },
     "sasang": {
       "lens_id": "sasang",
-      "direction_score": -0.55,
-      "confidence": 0.543333,
-      "lens_ts_utc": "2026-04-18T18:16:07Z",
+      "direction_score": 0.0,
+      "confidence": 0.493333,
+      "lens_ts_utc": "2026-04-18T18:23:09Z",
       "machine_readables": {
-        "heat_proxy": 0.44,
-        "cold_proxy": 0.58,
-        "volatility_rarefaction_proxy": 0.61
+        "heat_proxy": 0.585,
+        "cold_proxy": 0.415,
+        "volatility_rarefaction_proxy": 0.48
       }
     }
   },
   "notebooklm_observation_kpi_ref": "docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json",
   "notebooklm_observation_kpi_summary": {
     "schema": "btrack_notebooklm_jsonl_kpi_v1",
-    "generated_at_utc": "2026-04-18T18:13:11.470156+00:00",
+    "generated_at_utc": "2026-04-18T18:19:46.653423+00:00",
     "input_path": "C:/workspace/reports/notebooklm/btrack_mega_insights_10gb.jsonl",
     "disclaimer": "B-track observation metrics only; not market prediction, A-track promotion, or TOE.",
     "rows_total_valid": 454,
@@ -83,8 +83,8 @@
     "jsonl_line_count": 18
   },
   "dated_jsonl_aux_sources": {
-    "sasang_dynamics_jsonl": "data/sasang/sasang_dynamics_regime_mapping_v1.sample.jsonl",
-    "myeongni_16_state_jsonl": "data/myeongni/myeongni_16_state_experiment_v1.jsonl"
+    "sasang_dynamics_jsonl": "data/sasang/sasang_dynamics_regime_mapping_v1.calendar_stub_through_202604.jsonl",
+    "myeongni_16_state_jsonl": "data/myeongni/myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl"
   },
   "feature_contract_v1": [
     "lens_majority_agreement_score_global",
@@ -111,47 +111,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-05",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "accumulation",
+            "mapping_target": "bull",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.495,
+              "cold_proxy": 0.505,
+              "volatility_rarefaction_proxy": 0.48
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-05T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-05",
+          "snapshot": {
+            "state_id": 14,
+            "mapping_target": "bull",
+            "consistency_rate": 0.76,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-05T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -174,47 +184,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-06",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "distribution",
+            "mapping_target": "bear",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.51,
+              "cold_proxy": 0.49,
+              "volatility_rarefaction_proxy": 0.5
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-06T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-06",
+          "snapshot": {
+            "state_id": 15,
+            "mapping_target": "bear",
+            "consistency_rate": 0.55,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-06T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -237,47 +257,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-09",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "distribution",
+            "mapping_target": "bear",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.555,
+              "cold_proxy": 0.445,
+              "volatility_rarefaction_proxy": 0.56
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-09T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-09",
+          "snapshot": {
+            "state_id": 7,
+            "mapping_target": "bear",
+            "consistency_rate": 0.64,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-09T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -300,47 +330,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-10",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "phase_transition",
+            "mapping_target": "sideways",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.57,
+              "cold_proxy": 0.43,
+              "volatility_rarefaction_proxy": 0.58
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-10T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-10",
+          "snapshot": {
+            "state_id": 8,
+            "mapping_target": "sideways",
+            "consistency_rate": 0.67,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-10T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -363,47 +403,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-11",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "accumulation",
+            "mapping_target": "bull",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.585,
+              "cold_proxy": 0.415,
+              "volatility_rarefaction_proxy": 0.6
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-11T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-11",
+          "snapshot": {
+            "state_id": 9,
+            "mapping_target": "bull",
+            "consistency_rate": 0.7,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-11T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -426,47 +476,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-12",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "distribution",
+            "mapping_target": "bear",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.45,
+              "cold_proxy": 0.55,
+              "volatility_rarefaction_proxy": 0.48
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-12T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-12",
+          "snapshot": {
+            "state_id": 10,
+            "mapping_target": "bear",
+            "consistency_rate": 0.73,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-12T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -489,47 +549,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-13",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "phase_transition",
+            "mapping_target": "sideways",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.465,
+              "cold_proxy": 0.535,
+              "volatility_rarefaction_proxy": 0.5
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-13T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-13",
+          "snapshot": {
+            "state_id": 11,
+            "mapping_target": "sideways",
+            "consistency_rate": 0.76,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-13T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -552,47 +622,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-16",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "phase_transition",
+            "mapping_target": "sideways",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.51,
+              "cold_proxy": 0.49,
+              "volatility_rarefaction_proxy": 0.56
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-16T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-16",
+          "snapshot": {
+            "state_id": 14,
+            "mapping_target": "sideways",
+            "consistency_rate": 0.61,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-16T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -615,47 +695,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-17",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "accumulation",
+            "mapping_target": "bull",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.525,
+              "cold_proxy": 0.475,
+              "volatility_rarefaction_proxy": 0.58
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-17T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-17",
+          "snapshot": {
+            "state_id": 15,
+            "mapping_target": "bull",
+            "consistency_rate": 0.64,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-17T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -678,47 +768,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-18",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "distribution",
+            "mapping_target": "bear",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.54,
+              "cold_proxy": 0.46,
+              "volatility_rarefaction_proxy": 0.6
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-18T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-18",
+          "snapshot": {
+            "state_id": 16,
+            "mapping_target": "bear",
+            "consistency_rate": 0.67,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-18T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -741,47 +841,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-19",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "phase_transition",
+            "mapping_target": "sideways",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.555,
+              "cold_proxy": 0.445,
+              "volatility_rarefaction_proxy": 0.48
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-19T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-19",
+          "snapshot": {
+            "state_id": 6,
+            "mapping_target": "sideways",
+            "consistency_rate": 0.7,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-19T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -804,47 +914,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-20",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "accumulation",
+            "mapping_target": "bull",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.57,
+              "cold_proxy": 0.43,
+              "volatility_rarefaction_proxy": 0.5
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-20T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-20",
+          "snapshot": {
+            "state_id": 7,
+            "mapping_target": "bull",
+            "consistency_rate": 0.73,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-20T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -867,47 +987,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-23",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "accumulation",
+            "mapping_target": "bull",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.465,
+              "cold_proxy": 0.535,
+              "volatility_rarefaction_proxy": 0.56
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-23T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-23",
+          "snapshot": {
+            "state_id": 10,
+            "mapping_target": "bull",
+            "consistency_rate": 0.58,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-23T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -930,47 +1060,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-24",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "distribution",
+            "mapping_target": "bear",
             "machine_readables": {
               "heat_proxy": 0.48,
               "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "volatility_rarefaction_proxy": 0.58
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-24T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-24",
+          "snapshot": {
+            "state_id": 11,
+            "mapping_target": "bear",
+            "consistency_rate": 0.61,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-24T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -993,47 +1133,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-25",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "phase_transition",
+            "mapping_target": "sideways",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.495,
+              "cold_proxy": 0.505,
+              "volatility_rarefaction_proxy": 0.6
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-25T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-25",
+          "snapshot": {
+            "state_id": 12,
+            "mapping_target": "sideways",
+            "consistency_rate": 0.64,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-25T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1056,47 +1206,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-26",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "accumulation",
+            "mapping_target": "bull",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.51,
+              "cold_proxy": 0.49,
+              "volatility_rarefaction_proxy": 0.48
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-26T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-26",
+          "snapshot": {
+            "state_id": 13,
+            "mapping_target": "bull",
+            "consistency_rate": 0.67,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-26T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1119,47 +1279,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-27",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "distribution",
+            "mapping_target": "bear",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.525,
+              "cold_proxy": 0.475,
+              "volatility_rarefaction_proxy": 0.5
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-27T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-27",
+          "snapshot": {
+            "state_id": 14,
+            "mapping_target": "bear",
+            "consistency_rate": 0.7,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-27T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1182,47 +1352,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-30",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "distribution",
+            "mapping_target": "bear",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.57,
+              "cold_proxy": 0.43,
+              "volatility_rarefaction_proxy": 0.56
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-30T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-30",
+          "snapshot": {
+            "state_id": 6,
+            "mapping_target": "bear",
+            "consistency_rate": 0.55,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-30T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1245,47 +1425,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-03-31",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "phase_transition",
+            "mapping_target": "sideways",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.585,
+              "cold_proxy": 0.415,
+              "volatility_rarefaction_proxy": 0.58
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-03-31T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-03-31",
+          "snapshot": {
+            "state_id": 7,
+            "mapping_target": "sideways",
+            "consistency_rate": 0.58,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-03-31T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1308,47 +1498,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-04-01",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "accumulation",
+            "mapping_target": "bull",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.45,
+              "cold_proxy": 0.55,
+              "volatility_rarefaction_proxy": 0.6
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-04-01T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-04-01",
+          "snapshot": {
+            "state_id": 8,
+            "mapping_target": "bull",
+            "consistency_rate": 0.61,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-04-01T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1371,47 +1571,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-04-02",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "distribution",
+            "mapping_target": "bear",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.465,
+              "cold_proxy": 0.535,
+              "volatility_rarefaction_proxy": 0.48
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-04-02T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-04-02",
+          "snapshot": {
+            "state_id": 9,
+            "mapping_target": "bear",
+            "consistency_rate": 0.64,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-04-02T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1434,47 +1644,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-04-03",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "phase_transition",
+            "mapping_target": "sideways",
             "machine_readables": {
               "heat_proxy": 0.48,
               "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "volatility_rarefaction_proxy": 0.5
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-04-03T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-04-03",
+          "snapshot": {
+            "state_id": 10,
+            "mapping_target": "sideways",
+            "consistency_rate": 0.67,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-04-03T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1497,47 +1717,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-04-06",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "phase_transition",
+            "mapping_target": "sideways",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.525,
+              "cold_proxy": 0.475,
+              "volatility_rarefaction_proxy": 0.56
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-04-06T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-04-06",
+          "snapshot": {
+            "state_id": 13,
+            "mapping_target": "sideways",
+            "consistency_rate": 0.76,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-04-06T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1560,47 +1790,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-04-07",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "accumulation",
+            "mapping_target": "bull",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.54,
+              "cold_proxy": 0.46,
+              "volatility_rarefaction_proxy": 0.58
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-04-07T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-04-07",
+          "snapshot": {
+            "state_id": 14,
+            "mapping_target": "bull",
+            "consistency_rate": 0.55,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-04-07T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1623,47 +1863,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-04-08",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "distribution",
+            "mapping_target": "bear",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.555,
+              "cold_proxy": 0.445,
+              "volatility_rarefaction_proxy": 0.6
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-04-08T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-04-08",
+          "snapshot": {
+            "state_id": 15,
+            "mapping_target": "bear",
+            "consistency_rate": 0.58,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-04-08T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1686,47 +1936,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-04-09",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "phase_transition",
+            "mapping_target": "sideways",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.57,
+              "cold_proxy": 0.43,
+              "volatility_rarefaction_proxy": 0.48
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-04-09T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-04-09",
+          "snapshot": {
+            "state_id": 16,
+            "mapping_target": "sideways",
+            "consistency_rate": 0.61,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-04-09T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1749,47 +2009,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-04-10",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "accumulation",
+            "mapping_target": "bull",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.585,
+              "cold_proxy": 0.415,
+              "volatility_rarefaction_proxy": 0.5
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-04-10T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-04-10",
+          "snapshot": {
+            "state_id": 6,
+            "mapping_target": "bull",
+            "consistency_rate": 0.64,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-04-10T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1812,47 +2082,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-04-13",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "accumulation",
+            "mapping_target": "bull",
             "machine_readables": {
               "heat_proxy": 0.48,
               "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "volatility_rarefaction_proxy": 0.56
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-04-13T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-04-13",
+          "snapshot": {
+            "state_id": 9,
+            "mapping_target": "bull",
+            "consistency_rate": 0.73,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-04-13T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1875,47 +2155,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-04-14",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "distribution",
+            "mapping_target": "bear",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.495,
+              "cold_proxy": 0.505,
+              "volatility_rarefaction_proxy": 0.58
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-04-14T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-04-14",
+          "snapshot": {
+            "state_id": 10,
+            "mapping_target": "bear",
+            "consistency_rate": 0.76,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-04-14T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
@@ -1938,47 +2228,57 @@
           "lens_id": "logos",
           "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "lens_ts_utc": "2026-04-18T18:19:46Z",
           "verses_with_simple_4d": 3,
           "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
-          "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
+          "direction_score": 0.0,
+          "confidence": 0.76,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
+          "state_id": 15,
+          "run_id": "calendar_stub_through_202604",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": -0.55,
-          "confidence": 0.543333,
-          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "direction_score": 0.0,
+          "confidence": 0.493333,
+          "lens_ts_utc": "2026-04-18T18:23:09Z",
           "machine_readables": {
-            "heat_proxy": 0.44,
-            "cold_proxy": 0.58,
-            "volatility_rarefaction_proxy": 0.61
+            "heat_proxy": 0.585,
+            "cold_proxy": 0.415,
+            "volatility_rarefaction_proxy": 0.48
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
       "dated_source_snapshots_asof_eval_date": {
         "sasang_dynamics_jsonl": {
-          "matched_calendar_day": "2026-01-06",
+          "matched_calendar_day": "2026-04-15",
           "snapshot": {
-            "regime_hypothesis": null,
-            "mapping_target": null,
+            "regime_hypothesis": "phase_transition",
+            "mapping_target": "sideways",
             "machine_readables": {
-              "heat_proxy": 0.48,
-              "cold_proxy": 0.52,
-              "volatility_rarefaction_proxy": 0.52
+              "heat_proxy": 0.51,
+              "cold_proxy": 0.49,
+              "volatility_rarefaction_proxy": 0.6
             }
           },
-          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+          "source_row_ts_utc": "2026-04-15T12:00:00+00:00"
         },
-        "myeongni_16_state_jsonl": null
+        "myeongni_16_state_jsonl": {
+          "matched_calendar_day": "2026-04-15",
+          "snapshot": {
+            "state_id": 11,
+            "mapping_target": "sideways",
+            "consistency_rate": 0.55,
+            "run_id": "calendar_stub_through_202604",
+            "experiment_id": null
+          },
+          "source_row_ts_utc": "2026-04-15T13:00:00Z"
+        }
       },
       "myeongni_insight_lines_cumulative_through_eval_date": 16
     }
