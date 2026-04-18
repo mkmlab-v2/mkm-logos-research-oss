@@ -1,6 +1,6 @@
 {
   "schema": "multilens_gematria_4d_uplift_ab_v1",
-  "ts_utc": "2026-03-31T02:59:19.429717+00:00",
+  "ts_utc": "2026-04-18T17:10:50.745629+00:00",
   "source_input": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
   "profile": {
     "strategy": "A",
@@ -21,37 +21,43 @@
     }
   },
   "metrics_off": {
-    "global_token_saving_rate": 0.5316455696202531,
-    "avg_reconstruction_fidelity_jaccard": 0.6896489337975407,
+    "global_token_saving_rate": 0.5119549929676512,
+    "avg_reconstruction_fidelity_jaccard": 0.8009328208341365,
     "avg_sensitive_integrity": 1.0
   },
   "metrics_on": {
-    "global_token_saving_rate": 0.40365682137834036,
-    "avg_reconstruction_fidelity_jaccard": 0.8068498806405152,
+    "global_token_saving_rate": 0.36849507735583686,
+    "avg_reconstruction_fidelity_jaccard": 0.9172578646843352,
     "avg_sensitive_integrity": 1.0
   },
   "deltas_on_minus_off": {
-    "global_token_saving_rate": -0.12798874824191275,
-    "avg_reconstruction_fidelity_jaccard": 0.11720094684297455,
+    "global_token_saving_rate": -0.14345991561181437,
+    "avg_reconstruction_fidelity_jaccard": 0.1163250438501987,
     "avg_sensitive_integrity": 0.0
   },
   "quality_gate_off": {
     "compression_ok": true,
     "fusion_ok": true,
     "ultra_saving_50_ok": true,
+    "ultra_saving_policy_ok": true,
+    "ultra_saving_policy_min": 0.49,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
     "sensitive_integrity_ok": true,
-    "note": "Heuristic B-track gate; not an A-track trading performance metric."
+    "sensitive_integrity_avg_floor": 0.999,
+    "note": "Heuristic B-track gate; not an A-track trading performance metric. sensitive_integrity_ok requires zero required-lemma leaks per case (not avg-only)."
   },
   "quality_gate_on": {
     "compression_ok": true,
     "fusion_ok": true,
     "ultra_saving_50_ok": false,
+    "ultra_saving_policy_ok": false,
+    "ultra_saving_policy_min": 0.49,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
     "sensitive_integrity_ok": true,
-    "note": "Heuristic B-track gate; not an A-track trading performance metric."
+    "sensitive_integrity_avg_floor": 0.999,
+    "note": "Heuristic B-track gate; not an A-track trading performance metric. sensitive_integrity_ok requires zero required-lemma leaks per case (not avg-only)."
   },
   "uplift_claim_supported": true,
   "note": "Current bridge is metadata-layer; non-zero uplift requires separate algorithmic integration proof."

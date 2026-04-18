@@ -2,12 +2,12 @@
   "schema": "myeongri_sasang_codebook_spike_v1",
   "sasang_constitution": "taeeum_in",
   "tokens": [
-    "사상의학",
     "호산지기",
+    "사상의학",
     "태음인",
-    "비위",
     "습담",
-    "수렴"
+    "수렴",
+    "비위"
   ],
   "hypothesis_tier": "B",
   "boundary_ack": true,

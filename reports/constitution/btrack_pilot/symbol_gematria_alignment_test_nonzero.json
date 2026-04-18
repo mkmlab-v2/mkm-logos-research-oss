@@ -1,6 +1,6 @@
 {
   "schema": "symbol_gematria_alignment_test_v1",
-  "generated_at_utc": "2026-03-30T19:01:20Z",
+  "generated_at_utc": "2026-04-18T17:10:50Z",
   "inputs": {
     "input_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_with_vector4d_latest.jsonl",
     "sample_mode": "gematria_nonzero",
@@ -8,7 +8,8 @@
     "requested_sample_size": 120,
     "effective_sample_size": 120,
     "seed": 42,
-    "resonance_threshold_cosine": 0.85
+    "resonance_threshold_cosine": 0.85,
+    "pre_normalization": "none"
   },
   "summary": {
     "avg_distance_symbol_vs_gematria_4d": 0.0,

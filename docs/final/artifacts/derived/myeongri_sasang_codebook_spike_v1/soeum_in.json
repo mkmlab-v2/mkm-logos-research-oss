@@ -4,10 +4,10 @@
   "tokens": [
     "흡취지기",
     "소음인",
+    "흡수",
     "소화",
     "체질",
-    "비장",
-    "흡수"
+    "비장"
   ],
   "hypothesis_tier": "B",
   "boundary_ack": true,
