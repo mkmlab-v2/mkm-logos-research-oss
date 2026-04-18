@@ -1,0 +1,276 @@
+{
+  "schema": "prophecy_per_date_lens_combo_sweep_v1",
+  "generated_at_utc": "2026-04-18T07:56:03Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "inputs": {
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "kospi_csv": "C:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
+    "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+    "deadzone_grid": [
+      0.0,
+      0.01,
+      0.02,
+      0.03
+    ],
+    "weight_grid": [
+      -1.0,
+      -0.5,
+      0.0,
+      0.5,
+      1.0,
+      1.5
+    ],
+    "bias_grid": [
+      0.0,
+      0.5,
+      1.0
+    ],
+    "up_thr_grid": [
+      0.5,
+      1.0,
+      1.5
+    ],
+    "down_thr_grid": [
+      -0.5,
+      -1.0,
+      -1.5
+    ],
+    "total_candidates": 15552
+  },
+  "baseline": {
+    "lane_id": "current_panel_prediction",
+    "metrics": {
+      "price_directional_hit_rate": 0.416667,
+      "n_evaluated": 60,
+      "price_hits": 25
+    }
+  },
+  "control": {
+    "lane_id": "always_bull_control",
+    "price_directional_hit_rate": 0.566667
+  },
+  "best_candidate": {
+    "params": {
+      "dz_self": 0.0,
+      "dz_cross": 0.02,
+      "w_self": -1.0,
+      "w_cross": 1.5,
+      "kospi_bull_bias": 0.0,
+      "up_thr": 0.5,
+      "down_thr": -0.5
+    },
+    "metrics": {
+      "price_directional_hit_rate": 0.65,
+      "n_evaluated": 60,
+      "price_hits": 39
+    },
+    "delta_vs_baseline": 0.233333,
+    "delta_vs_always_bull_control": 0.083333,
+    "changed_rows": 30,
+    "missing_prior_refs": 0
+  },
+  "top_candidates": [
+    {
+      "params": {
+        "dz_self": 0.0,
+        "dz_cross": 0.02,
+        "w_self": -1.0,
+        "w_cross": 1.5,
+        "kospi_bull_bias": 0.0,
+        "up_thr": 0.5,
+        "down_thr": -0.5
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.65,
+        "n_evaluated": 60,
+        "price_hits": 39
+      },
+      "delta_vs_baseline": 0.233333,
+      "delta_vs_always_bull_control": 0.083333,
+      "changed_rows": 30,
+      "missing_prior_refs": 0
+    },
+    {
+      "params": {
+        "dz_self": 0.0,
+        "dz_cross": 0.02,
+        "w_self": -0.5,
+        "w_cross": 1.0,
+        "kospi_bull_bias": 0.0,
+        "up_thr": 0.5,
+        "down_thr": -0.5
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.65,
+        "n_evaluated": 60,
+        "price_hits": 39
+      },
+      "delta_vs_baseline": 0.233333,
+      "delta_vs_always_bull_control": 0.083333,
+      "changed_rows": 30,
+      "missing_prior_refs": 0
+    },
+    {
+      "params": {
+        "dz_self": 0.0,
+        "dz_cross": 0.02,
+        "w_self": -0.5,
+        "w_cross": 1.5,
+        "kospi_bull_bias": 0.0,
+        "up_thr": 0.5,
+        "down_thr": -0.5
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.65,
+        "n_evaluated": 60,
+        "price_hits": 39
+      },
+      "delta_vs_baseline": 0.233333,
+      "delta_vs_always_bull_control": 0.083333,
+      "changed_rows": 30,
+      "missing_prior_refs": 0
+    },
+    {
+      "params": {
+        "dz_self": 0.0,
+        "dz_cross": 0.03,
+        "w_self": -0.5,
+        "w_cross": 1.0,
+        "kospi_bull_bias": 1.0,
+        "up_thr": 0.5,
+        "down_thr": -0.5
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.633333,
+        "n_evaluated": 60,
+        "price_hits": 38
+      },
+      "delta_vs_baseline": 0.216666,
+      "delta_vs_always_bull_control": 0.066666,
+      "changed_rows": 42,
+      "missing_prior_refs": 0
+    },
+    {
+      "params": {
+        "dz_self": 0.0,
+        "dz_cross": 0.03,
+        "w_self": -0.5,
+        "w_cross": 1.5,
+        "kospi_bull_bias": 1.0,
+        "up_thr": 0.5,
+        "down_thr": -0.5
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.633333,
+        "n_evaluated": 60,
+        "price_hits": 38
+      },
+      "delta_vs_baseline": 0.216666,
+      "delta_vs_always_bull_control": 0.066666,
+      "changed_rows": 42,
+      "missing_prior_refs": 0
+    },
+    {
+      "params": {
+        "dz_self": 0.0,
+        "dz_cross": 0.02,
+        "w_self": -1.0,
+        "w_cross": 1.5,
+        "kospi_bull_bias": 0.5,
+        "up_thr": 0.5,
+        "down_thr": -0.5
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.633333,
+        "n_evaluated": 60,
+        "price_hits": 38
+      },
+      "delta_vs_baseline": 0.216666,
+      "delta_vs_always_bull_control": 0.066666,
+      "changed_rows": 31,
+      "missing_prior_refs": 0
+    },
+    {
+      "params": {
+        "dz_self": 0.0,
+        "dz_cross": 0.03,
+        "w_self": -1.0,
+        "w_cross": 1.5,
+        "kospi_bull_bias": 0.0,
+        "up_thr": 0.5,
+        "down_thr": -0.5
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.633333,
+        "n_evaluated": 60,
+        "price_hits": 38
+      },
+      "delta_vs_baseline": 0.216666,
+      "delta_vs_always_bull_control": 0.066666,
+      "changed_rows": 27,
+      "missing_prior_refs": 0
+    },
+    {
+      "params": {
+        "dz_self": 0.0,
+        "dz_cross": 0.03,
+        "w_self": -0.5,
+        "w_cross": 1.0,
+        "kospi_bull_bias": 0.0,
+        "up_thr": 0.5,
+        "down_thr": -0.5
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.633333,
+        "n_evaluated": 60,
+        "price_hits": 38
+      },
+      "delta_vs_baseline": 0.216666,
+      "delta_vs_always_bull_control": 0.066666,
+      "changed_rows": 27,
+      "missing_prior_refs": 0
+    },
+    {
+      "params": {
+        "dz_self": 0.0,
+        "dz_cross": 0.03,
+        "w_self": -0.5,
+        "w_cross": 1.5,
+        "kospi_bull_bias": 0.0,
+        "up_thr": 0.5,
+        "down_thr": -0.5
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.633333,
+        "n_evaluated": 60,
+        "price_hits": 38
+      },
+      "delta_vs_baseline": 0.216666,
+      "delta_vs_always_bull_control": 0.066666,
+      "changed_rows": 27,
+      "missing_prior_refs": 0
+    },
+    {
+      "params": {
+        "dz_self": 0.0,
+        "dz_cross": 0.01,
+        "w_self": -0.5,
+        "w_cross": 1.0,
+        "kospi_bull_bias": 1.0,
+        "up_thr": 0.5,
+        "down_thr": -0.5
+      },
+      "metrics": {
+        "price_directional_hit_rate": 0.616667,
+        "n_evaluated": 60,
+        "price_hits": 37
+      },
+      "delta_vs_baseline": 0.2,
+      "delta_vs_always_bull_control": 0.05,
+      "changed_rows": 40,
+      "missing_prior_refs": 0
+    }
+  ],
+  "note": "Per-date causal lens combo sweep with self/cross prior-return signs."
+}
