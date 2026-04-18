@@ -62,7 +62,9 @@ def main() -> int:
 
     expected = {
         "defense_code_pack_sha256": "87772d94001bbb3420d8f4931cef58f371f68330948adad2aae50ab263c46982",
-        "lg_report_sha256": "ea61e754fe16497db9116bdd4305145402bd2ea1182ef2e1d9bd9c5645a3473c",
+        # Baseline fingerprint for docs/final/artifacts/lg_washer_integrity_validation_report_v1_latest.json
+        # (report_ready_local_baseline). Update when the report artifact is intentionally regenerated.
+        "lg_report_sha256": "0e0625be92fec3200441539357a1a9daf74bed55075d82eb6121b20214fdeaac",
     }
 
     drift_items: list[str] = []

@@ -1,3 +1,9 @@
+# @MKM12-METADATA
+# Type: Logic
+# Vector: {S:0.8, L:0.85, K:0.52, M:0.66}
+# Balance: 86
+# Purpose: Summarize whether estimation JSON is internally consistent; defer to measurement when present.
+# Keywords: LG, washer, estimation, readiness, gate
 from __future__ import annotations
 
 import argparse
@@ -50,7 +56,22 @@ def main() -> int:
     if meas_exists:
         m_status = str(meas.get("status", "")).strip().lower()
         if m_status in {"measured", "validated"}:
-            reasons.append("measurement_already_available_use_measurement_gate")
+            # When real (or proxy) measurement exists, estimation readiness is informational only.
+            # Do not mark TODO here; operators should follow measurement_gate instead.
+            out_status = "MEASUREMENT_PRIMARY_SKIP_ESTIMATION"
+            out = {
+                "schema": "lg_washer_estimation_readiness_v1",
+                "generated_at_utc": _utc_now(),
+                "status": out_status,
+                "reasons": [],
+                "estimation_ref": str(args.estimation.relative_to(ROOT)).replace("\\", "/") if args.estimation.is_relative_to(ROOT) else str(args.estimation),
+                "measurement_ref": str(args.measurement.relative_to(ROOT)).replace("\\", "/") if args.measurement.is_relative_to(ROOT) else str(args.measurement),
+                "rule_ko": "실측이 존재하면 estimation_readiness는 참고용이며 measurement_gate가 우선이다",
+            }
+            args.out.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            print(str(args.out))
+            print(out_status)
+            return 0
 
     status = "ESTIMATION_READY" if not reasons else "ESTIMATION_TODO"
 

@@ -1,12 +1,9 @@
 {
   "schema": "lg_washer_estimation_readiness_v1",
-  "generated_at_utc": "2026-04-18T15:01:40Z",
-  "status": "ESTIMATION_TODO",
-  "reasons": [
-    "estimated_latency_p95_missing",
-    "estimated_latency_p99_missing"
-  ],
+  "generated_at_utc": "2026-04-18T15:48:20Z",
+  "status": "MEASUREMENT_PRIMARY_SKIP_ESTIMATION",
+  "reasons": [],
   "estimation_ref": "docs/final/artifacts/lg_washer_target_device_estimation_v1.json",
   "measurement_ref": "docs/final/artifacts/lg_washer_target_device_measurement_v1.json",
-  "rule_ko": "ESTIMATION_READY는 참고 가능 상태일 뿐 measurement_gate 승격 근거가 아니다"
+  "rule_ko": "실측이 존재하면 estimation_readiness는 참고용이며 measurement_gate가 우선이다"
 }

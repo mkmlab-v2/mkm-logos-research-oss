@@ -1,0 +1,38 @@
+{
+  "schema": "btrack_promotion_signoff_packet_v1",
+  "generated_at_utc": "2026-04-18T15:48:20Z",
+  "research_only": true,
+  "inputs": {
+    "prophecy_gate": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json",
+    "codebook_drift": "docs/final/artifacts/codebook_codepack_drift_latest.json",
+    "measurement_gate": "docs/final/artifacts/lg_washer_measurement_gate_latest.json",
+    "estimation_readiness": "docs/final/artifacts/lg_washer_estimation_readiness_latest.json"
+  },
+  "track_status": {
+    "prophecy": {
+      "decision": "READY_FOR_HUMAN_SIGNOFF",
+      "auto_promote_ready": true,
+      "strict_pass_streak": 1,
+      "promotion_recommendation": "auto_promote_ready"
+    },
+    "lg_washer": {
+      "decision": "READY_FOR_HUMAN_SIGNOFF",
+      "codebook_codepack_drift_status": "STABLE",
+      "measurement_gate_status": "GO",
+      "estimation_readiness_status": "MEASUREMENT_PRIMARY_SKIP_ESTIMATION"
+    }
+  },
+  "global": {
+    "all_tracks_ready_for_human_signoff": true,
+    "blockers": []
+  },
+  "notes_ko": [
+    "prophecy는 auto_promote_ready=true여도 human sign-off 전 본선/실매매 자동 승격 금지",
+    "lg_washer: measurement_gate는 GO 가능하나, measurement_kind가 local proxy면 제출 최종본으로 단정 금지",
+    "estimation_readiness는 실측 존재 시 MEASUREMENT_PRIMARY로 표시되며 measurement_gate가 우선이다"
+  ],
+  "next_actions_ko": [
+    "prophecy: 소액 live A/B 결과 포함 human sign-off 패킷 확정",
+    "lg_washer: 타깃 보드 실측 JSON으로 교체 후 measurement_gate 재실행(현재는 로컬 벤치 프록시 가능 시 GO)"
+  ]
+}
