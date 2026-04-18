@@ -42,6 +42,30 @@
       "type": "string",
       "description": "Optional path to btrack_insight_promotion_bridge_index_v1_latest.json."
     },
+    "paired_row_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Count of rows mirrored from paired score (informational)."
+    },
+    "notebooklm_observation_kpi_ref": {
+      "type": ["string", "null"],
+      "description": "Path to btrack_notebooklm_jsonl_kpi_latest.json when embedded summary is present."
+    },
+    "notebooklm_observation_kpi_summary": {
+      "type": ["object", "null"],
+      "additionalProperties": true,
+      "description": "Subset of KPI JSON; observation only."
+    },
+    "myeongni_insight_observation_log_meta": {
+      "type": ["object", "null"],
+      "additionalProperties": true,
+      "description": "Byte size and JSONL line count for insight_observation_log.jsonl."
+    },
+    "lens_globals_for_sidecar": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Per-lens minimal scalars copied from latest independent lens artifacts."
+    },
     "experimental_attribution_enabled": {
       "type": "boolean",
       "description": "When false, consumers must not treat sidecar as promotion signal."

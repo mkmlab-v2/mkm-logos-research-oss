@@ -1,7 +1,7 @@
 {
   "schema": "btrack_prophecy_score_insight_sidecar_v1",
-  "version": "1.1.0",
-  "generated_at_utc": "2026-04-18T18:00:05Z",
+  "version": "1.2.0",
+  "generated_at_utc": "2026-04-18T18:01:36Z",
   "research_only": true,
   "paired_score_ref": "docs/final/artifacts/btrack_prophecy_score_latest.json",
   "paired_score_schema": "btrack_prophecy_score_v1",
@@ -51,6 +51,30 @@
         "volatility_rarefaction_proxy": 0.52
       }
     }
+  },
+  "notebooklm_observation_kpi_ref": "docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json",
+  "notebooklm_observation_kpi_summary": {
+    "schema": "btrack_notebooklm_jsonl_kpi_v1",
+    "generated_at_utc": "2026-04-18T17:36:25.347780+00:00",
+    "input_path": "C:/workspace/reports/notebooklm/btrack_mega_insights_10gb.jsonl",
+    "disclaimer": "B-track observation metrics only; not market prediction, A-track promotion, or TOE.",
+    "rows_total_valid": 454,
+    "rows_skipped": 0,
+    "guardrail_keyword_rates": {
+      "[HYPO]": 0.977974,
+      "[NON-DETERMINISTIC]": 0.953744,
+      "[NON-MEDICAL]": 0.566079,
+      "OBSERVATION_ONLY": 0.905286,
+      "B-Track": 0.96696,
+      "A-Track": 0.938326
+    },
+    "answer_char_len_mean": 4948.7115,
+    "answer_char_len_median": 4971.5
+  },
+  "myeongni_insight_observation_log_meta": {
+    "path": "data/myeongni/insight_observation_log.jsonl",
+    "bytes": 11538,
+    "jsonl_line_count": 18
   },
   "feature_contract_v1": [
     "lens_majority_agreement_score_global",
@@ -2223,6 +2247,7 @@
     "score JSON의 rows·predicted_direction는 변경하지 않음.",
     "per_date_features의 렌즈 값은 현재 글로벌 스냅샷을 행마다 복제(B-track 관측; 날짜 조건부 아님).",
     "승격·walkforward 게이트는 기존 btrack_prophecy_score_v1만 입력.",
-    "실험 병합은 별 계약·회귀 후 experimental_attribution_enabled 검토."
+    "실험 병합은 별 계약·회귀 후 experimental_attribution_enabled 검토.",
+    "notebooklm_observation_kpi_summary·명리 로그 메타는 전역 관측만(per_date와 자동 정렬되지 않음)."
   ]
 }

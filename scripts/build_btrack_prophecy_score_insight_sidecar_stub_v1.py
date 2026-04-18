@@ -18,7 +18,10 @@ DEFAULT_BRIDGE = ROOT / "docs" / "final" / "artifacts" / "btrack_insight_promoti
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score_insight_sidecar_v1_latest.json"
 
 SCHEMA = "btrack_prophecy_score_insight_sidecar_v1"
-SIDEcar_FORMAT = "1.1.0"
+SIDEcar_FORMAT = "1.2.0"
+
+DEFAULT_NOTEBOOKLM_KPI = ROOT / "docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json"
+DEFAULT_MYEONGNI_INSIGHT_LOG = ROOT / "data/myeongni/insight_observation_log.jsonl"
 
 
 def _utc_now() -> str:
@@ -85,6 +88,51 @@ def _build_lens_snapshot_block() -> tuple[dict[str, Any], dict[str, Any | None]]
     return refs, minimal
 
 
+def _jsonl_line_count(path: Path) -> int | None:
+    if not path.is_file():
+        return None
+    n = 0
+    try:
+        with path.open("r", encoding="utf-8", errors="replace") as f:
+            for _ in f:
+                n += 1
+    except OSError:
+        return None
+    return n
+
+
+def _notebooklm_kpi_summary(kpi: dict[str, Any]) -> dict[str, Any]:
+    dist = kpi.get("distributions") if isinstance(kpi.get("distributions"), dict) else {}
+    ach = dist.get("answer_char_len") if isinstance(dist.get("answer_char_len"), dict) else {}
+    out: dict[str, Any] = {
+        "schema": kpi.get("schema"),
+        "generated_at_utc": kpi.get("generated_at_utc"),
+        "input_path": kpi.get("input_path"),
+        "disclaimer": kpi.get("disclaimer"),
+        "rows_total_valid": kpi.get("rows_total_valid"),
+        "rows_skipped": kpi.get("rows_skipped"),
+        "guardrail_keyword_rates": kpi.get("guardrail_keyword_rates"),
+        "answer_char_len_mean": ach.get("mean"),
+        "answer_char_len_median": ach.get("median"),
+    }
+    return out
+
+
+def _myeongni_insight_log_meta(path: Path) -> dict[str, Any] | None:
+    if not path.is_file():
+        return None
+    try:
+        st = path.stat()
+    except OSError:
+        return None
+    lines = _jsonl_line_count(path)
+    return {
+        "path": _rel(path),
+        "bytes": int(st.st_size),
+        "jsonl_line_count": lines,
+    }
+
+
 def _per_date_features(rows: list[dict[str, Any]], lens_snap: dict[str, Any | None]) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     for i, row in enumerate(rows):
@@ -123,6 +171,13 @@ def main() -> int:
         action="store_true",
         help="Reserved; default build keeps experimental_attribution_enabled=false.",
     )
+    ap.add_argument(
+        "--skip-external-observations",
+        action="store_true",
+        help="Omit NotebookLM KPI summary and Myeongni insight log meta.",
+    )
+    ap.add_argument("--notebooklm-kpi-json", type=Path, default=DEFAULT_NOTEBOOKLM_KPI)
+    ap.add_argument("--myeongni-insight-log", type=Path, default=DEFAULT_MYEONGNI_INSIGHT_LOG)
     args = ap.parse_args()
 
     score_schema: str | None = None
@@ -144,6 +199,16 @@ def main() -> int:
     else:
         per_date = _per_date_features(rows, lens_minimal)
 
+    nb_summary: dict[str, Any] | None = None
+    nb_ref: str | None = None
+    mn_meta: dict[str, Any] | None = None
+    if not args.skip_external_observations:
+        kpi_raw = _load_json(args.notebooklm_kpi_json)
+        if kpi_raw:
+            nb_summary = _notebooklm_kpi_summary(kpi_raw)
+            nb_ref = _rel(args.notebooklm_kpi_json)
+        mn_meta = _myeongni_insight_log_meta(args.myeongni_insight_log)
+
     out: dict[str, Any] = {
         "schema": SCHEMA,
         "version": SIDEcar_FORMAT,
@@ -156,6 +221,9 @@ def main() -> int:
         "experimental_attribution_enabled": bool(args.enable_experimental_attribution),
         "lens_snapshot_refs": lens_refs,
         "lens_globals_for_sidecar": lens_minimal,
+        "notebooklm_observation_kpi_ref": nb_ref,
+        "notebooklm_observation_kpi_summary": nb_summary,
+        "myeongni_insight_observation_log_meta": mn_meta,
         "feature_contract_v1": [
             "lens_majority_agreement_score_global",
             "notebooklm_guardrail_token_rate_prior_window",
@@ -167,6 +235,7 @@ def main() -> int:
             "per_date_features의 렌즈 값은 현재 글로벌 스냅샷을 행마다 복제(B-track 관측; 날짜 조건부 아님).",
             "승격·walkforward 게이트는 기존 btrack_prophecy_score_v1만 입력.",
             "실험 병합은 별 계약·회귀 후 experimental_attribution_enabled 검토.",
+            "notebooklm_observation_kpi_summary·명리 로그 메타는 전역 관측만(per_date와 자동 정렬되지 않음).",
         ],
     }
 

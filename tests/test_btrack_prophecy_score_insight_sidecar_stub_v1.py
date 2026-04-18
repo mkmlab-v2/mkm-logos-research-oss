@@ -16,7 +16,7 @@ def test_sidecar_stub_artifact_contract() -> None:
     assert data.get("experimental_attribution_enabled") is False
     assert isinstance(data.get("paired_score_ref"), str) and data["paired_score_ref"]
     assert isinstance(data.get("feature_contract_v1"), list)
-    assert data.get("version") == "1.1.0"
+    assert data.get("version") == "1.2.0"
 
     score = json.loads(SCORE.read_text(encoding="utf-8-sig"))
     rows = score.get("rows") if isinstance(score.get("rows"), list) else []
@@ -30,3 +30,10 @@ def test_sidecar_stub_artifact_contract() -> None:
         assert isinstance(snap, dict)
         for k in ("logos", "myeongni", "sasang"):
             assert k in snap
+
+    ksum = data.get("notebooklm_observation_kpi_summary")
+    assert isinstance(ksum, dict)
+    assert ksum.get("schema") == "btrack_notebooklm_jsonl_kpi_v1"
+    mn = data.get("myeongni_insight_observation_log_meta")
+    assert isinstance(mn, dict)
+    assert mn.get("jsonl_line_count", 0) >= 1
