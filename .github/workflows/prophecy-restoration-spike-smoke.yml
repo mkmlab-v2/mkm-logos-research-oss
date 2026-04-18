@@ -32,7 +32,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - name: Install pytest
-        run: pip install pytest
+      - name: Install test dependencies
+        run: pip install pytest pandas
       - name: pytest prophecy restoration spike
         run: python -m pytest tests/test_prophecy_restoration_spike.py -q --tb=short
