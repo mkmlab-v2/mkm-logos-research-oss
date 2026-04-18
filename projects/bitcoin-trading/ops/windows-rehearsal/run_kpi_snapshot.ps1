@@ -10,6 +10,12 @@ function Write-TaskLog([string]$message) {
     Add-Content -Path $taskLog -Value $line
 }
 
+$maint = [System.Environment]::GetEnvironmentVariable("MKM_WORKSPACE_MAINTENANCE")
+if ($maint -and ($maint.Trim().ToLower() -in @("1", "true", "yes", "on"))) {
+    Write-TaskLog "SKIP: MKM_WORKSPACE_MAINTENANCE active (no KPI / canary writes)"
+    exit 0
+}
+
 if (-not (Test-Path $runner)) {
     Write-TaskLog "ERROR runner missing: $runner"
     throw "KPI runner not found: $runner"

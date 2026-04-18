@@ -17,6 +17,12 @@ $ErrorActionPreference = "Stop"
 $workspaceRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 Set-Location -LiteralPath $workspaceRoot
 
+$maint = [System.Environment]::GetEnvironmentVariable("MKM_WORKSPACE_MAINTENANCE")
+if ($maint -and ($maint.Trim().ToLower() -in @("1", "true", "yes", "on"))) {
+    Write-Host "SKIP: MKM_WORKSPACE_MAINTENANCE active (autopilot chain not run)" -ForegroundColor Yellow
+    exit 0
+}
+
 $flArgs = @()
 if ($IncludeP1AB) {
     $flArgs += "-IncludeP1AB"

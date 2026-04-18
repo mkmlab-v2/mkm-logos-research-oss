@@ -6,12 +6,18 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 WORKSPACE_ROOT = Path(__file__).resolve().parents[4]
+_SCRIPTS = WORKSPACE_ROOT / "scripts"
+if _SCRIPTS.is_dir() and str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
+from workspace_maintenance_gate import is_workspace_maintenance_active  # noqa: E402
+
 MEMORY_DIR = PROJECT_ROOT / "memory"
 KPI_DIR = MEMORY_DIR / "kpi"
 WATCHDOG_LOG = MEMORY_DIR / "watchdog_direct.log"
@@ -268,6 +274,16 @@ def _extract_dual_regime_state_kpi(status: dict, trader_state: dict) -> dict:
 
 
 def main() -> int:
+    if is_workspace_maintenance_active():
+        print(
+            json.dumps(
+                {"maintenance_skip": True, "reason": "MKM_WORKSPACE_MAINTENANCE"},
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
+        return 0
+
     KPI_DIR.mkdir(parents=True, exist_ok=True)
     now = datetime.now(timezone.utc)
 

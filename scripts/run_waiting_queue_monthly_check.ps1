@@ -38,6 +38,12 @@ if (-not [string]::IsNullOrWhiteSpace($WorkspaceRoot) -and (Test-Path -LiteralPa
 }
 Set-Location -LiteralPath $workspace
 
+$maint = [System.Environment]::GetEnvironmentVariable("MKM_WORKSPACE_MAINTENANCE")
+if ($maint -and ($maint.Trim().ToLower() -in @("1", "true", "yes", "on"))) {
+    Write-Host "SKIP: MKM_WORKSPACE_MAINTENANCE active (monthly check not run)" -ForegroundColor Yellow
+    exit 0
+}
+
 $logPath = "$workspace\docs\final\artifacts\waiting_queue_monthly_check_log.jsonl"
 $sourceHuntSummaryPath = "$workspace\docs\final\artifacts\entry16_source_hunt_summary.json"
 $promotionGatePath = "$workspace\docs\final\artifacts\entry16_promotion_gate.json"

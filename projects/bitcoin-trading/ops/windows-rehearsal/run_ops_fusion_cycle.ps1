@@ -7,6 +7,12 @@ $ErrorActionPreference = "Stop"
 $workspace = "C:\workspace"
 Set-Location $workspace
 
+$maint = [System.Environment]::GetEnvironmentVariable("MKM_WORKSPACE_MAINTENANCE")
+if ($maint -and ($maint.Trim().ToLower() -in @("1", "true", "yes", "on"))) {
+    Write-Host "[ops-fusion] SKIP: MKM_WORKSPACE_MAINTENANCE active" -ForegroundColor Yellow
+    exit 0
+}
+
 Write-Host "[ops-fusion] Step 1/7: waiting_queue_btc_binance_daily"
 powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\run_waiting_queue_btc_binance_daily.ps1"
 if ($LASTEXITCODE -ne 0) {

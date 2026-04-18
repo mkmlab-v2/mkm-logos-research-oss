@@ -4,12 +4,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+_SCRIPTS_DIR = ROOT / "scripts"
+if _SCRIPTS_DIR.is_dir() and str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+from workspace_maintenance_gate import is_workspace_maintenance_active  # noqa: E402
 DEFAULT_PROPHECY = ROOT / "docs" / "final" / "artifacts" / "prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
 DEFAULT_OUT = ROOT / "projects" / "bitcoin-trading" / "memory" / "v2" / "risk" / "risk_profile_fact_safe_latest.json"
 DEFAULT_GOVERNANCE = ROOT / "docs" / "final" / "artifacts" / "integrated_governance_v1_latest.json"
@@ -181,6 +186,10 @@ def main() -> int:
         help="Integrated governance artifact path used for risk-cap bridge (empty string disables bridge).",
     )
     args = ap.parse_args()
+
+    if is_workspace_maintenance_active():
+        print("SKIP: MKM_WORKSPACE_MAINTENANCE active; not writing risk profile.")
+        return 0
 
     doc = _safe_json(Path(args.prophecy))
     risk_profile = doc.get("risk_profile") if isinstance(doc.get("risk_profile"), dict) else {}
