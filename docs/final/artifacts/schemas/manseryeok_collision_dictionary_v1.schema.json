@@ -21,6 +21,10 @@
       "description": "Human checklist for filling pillars_external",
       "properties": {
         "reference_engine": { "type": "string" },
+        "ssot_policy": {
+          "type": "string",
+          "description": "Authoritative rule for product/CI vs third-party snapshots"
+        },
         "steps": { "type": "array", "items": { "type": "string" } }
       }
     },
