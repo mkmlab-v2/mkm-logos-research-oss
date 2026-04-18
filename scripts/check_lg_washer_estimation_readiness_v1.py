@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-ROOT = Path("C:/workspace")
+ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
 DEFAULT_EST = ART / "lg_washer_target_device_estimation_v1.json"
 DEFAULT_MEAS = ART / "lg_washer_target_device_measurement_v1.json"

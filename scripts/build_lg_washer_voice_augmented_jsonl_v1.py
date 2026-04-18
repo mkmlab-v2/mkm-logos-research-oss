@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 
-ROOT = Path("C:/workspace")
+ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
 DEFAULT_TRAIN = ART / "lg_washer_voice_golden_train_v1.jsonl"
 DEFAULT_OUT_PREVIEW = ART / "lg_washer_voice_augmented_stress_preview_v1.jsonl"

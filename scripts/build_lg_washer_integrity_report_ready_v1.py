@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 
-ROOT = Path("C:/workspace")
+ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
 
 INPUT_REPORT = ART / "lg_washer_integrity_validation_report_sample_v1.json"

@@ -1,14 +1,14 @@
 {
   "schema": "btrack_insight_bridge_inventory_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-18T18:36:50Z",
+  "generated_at_utc": "2026-04-18T18:39:55Z",
   "research_only": true,
   "workspace_root_hint": "C:/workspace",
   "prism": {
     "registry_path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
     "exists": true,
     "schema": "mkm12_prism_index_registry_v1",
-    "entry_count": 34
+    "entry_count": 36
   },
   "notebooklm_manifest": {
     "path": "docs/NotebookLM_sources_manifest.md",
@@ -34,8 +34,8 @@
       "role": "prism_registry",
       "path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
       "exists": true,
-      "bytes": 10675,
-      "mtime_utc": "2026-04-18T18:36:41Z",
+      "bytes": 11246,
+      "mtime_utc": "2026-04-18T18:39:47Z",
       "kind": "file"
     },
     {
@@ -221,7 +221,39 @@
       "path": "scripts/validate_lg_washer_voice_golden_jsonl_v1.py",
       "exists": true,
       "bytes": 6266,
-      "mtime_utc": "2026-04-18T18:36:21Z",
+      "mtime_utc": "2026-04-18T18:37:51Z",
+      "kind": "file"
+    },
+    {
+      "role": "lg_washer_voice_golden_build_script",
+      "path": "scripts/build_lg_washer_voice_golden_jsonl_v1.py",
+      "exists": true,
+      "bytes": 22578,
+      "mtime_utc": "2026-04-18T18:39:17Z",
+      "kind": "file"
+    },
+    {
+      "role": "check_codebook_codepack_drift_script",
+      "path": "scripts/check_codebook_codepack_drift_v1.py",
+      "exists": true,
+      "bytes": 4220,
+      "mtime_utc": "2026-04-18T18:39:17Z",
+      "kind": "file"
+    },
+    {
+      "role": "check_lg_washer_measurement_gate_script",
+      "path": "scripts/check_lg_washer_measurement_gate_v1.py",
+      "exists": true,
+      "bytes": 3799,
+      "mtime_utc": "2026-04-18T18:39:16Z",
+      "kind": "file"
+    },
+    {
+      "role": "check_lg_washer_estimation_readiness_script",
+      "path": "scripts/check_lg_washer_estimation_readiness_v1.py",
+      "exists": true,
+      "bytes": 3995,
+      "mtime_utc": "2026-04-18T18:39:16Z",
       "kind": "file"
     },
     {

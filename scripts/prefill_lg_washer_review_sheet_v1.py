@@ -11,7 +11,7 @@ import csv
 from pathlib import Path
 
 
-ROOT = Path("C:/workspace")
+ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_TSV = ROOT / "docs" / "final" / "artifacts" / "lg_washer_voice_golden_review_sheet_v1.tsv"
 
 

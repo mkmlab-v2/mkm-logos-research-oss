@@ -116,6 +116,10 @@ def main() -> int:
             "holdout_jsonl": _optional_link(ROOT / "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl"),
             "split_manifest": _optional_link(ROOT / "docs/final/artifacts/lg_washer_voice_golden_split_manifest_v1.json"),
             "validate_script": _optional_link(ROOT / "scripts/validate_lg_washer_voice_golden_jsonl_v1.py"),
+            "golden_build_script": _optional_link(ROOT / "scripts/build_lg_washer_voice_golden_jsonl_v1.py"),
+            "measurement_gate_script": _optional_link(ROOT / "scripts/check_lg_washer_measurement_gate_v1.py"),
+            "estimation_readiness_script": _optional_link(ROOT / "scripts/check_lg_washer_estimation_readiness_v1.py"),
+            "codebook_drift_script": _optional_link(ROOT / "scripts/check_codebook_codepack_drift_v1.py"),
         },
         "ssot_docs": {
             "notebooklm_sources_manifest": _optional_link(ROOT / "docs/NotebookLM_sources_manifest.md"),

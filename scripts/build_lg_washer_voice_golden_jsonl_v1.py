@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any
 
 
-ROOT = Path("C:/workspace")
+ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
 DEFAULT_SRC = ART / "lg_washer_integrity_validation_report_sample_v1.json"
 OUT_TRAIN = ART / "lg_washer_voice_golden_train_v1.jsonl"
