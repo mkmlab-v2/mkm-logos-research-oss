@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_panel_coverage_delta_probe_v1",
-  "generated_at_utc": "2026-04-18T07:23:25Z",
+  "generated_at_utc": "2026-04-18T07:27:38Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -13,26 +13,27 @@
   "score_summary": {
     "neutral_bps": 2.0,
     "instrument_row_counts": {
-      "kospi": 30
+      "kospi": 30,
+      "btc": 29
     },
-    "has_btc_rows": false
+    "has_btc_rows": true
   },
   "baseline_all": {
     "lane_id": "baseline_all",
     "metrics": {
-      "price_directional_hit_rate": 0.333333,
-      "n_evaluated": 30,
-      "price_hits": 10
+      "price_directional_hit_rate": 0.423729,
+      "n_evaluated": 59,
+      "price_hits": 25
     }
   },
   "lanes": [
     {
       "lane_id": "baseline_all",
-      "row_count": 30,
+      "row_count": 59,
       "metrics": {
-        "price_directional_hit_rate": 0.333333,
-        "n_evaluated": 30,
-        "price_hits": 10
+        "price_directional_hit_rate": 0.423729,
+        "n_evaluated": 59,
+        "price_hits": 25
       },
       "delta_vs_all_baseline": 0.0
     },
@@ -40,32 +41,42 @@
       "lane_id": "baseline_kospi_leg",
       "row_count": 30,
       "metrics": {
-        "price_directional_hit_rate": 0.333333,
+        "price_directional_hit_rate": 0.4,
         "n_evaluated": 30,
-        "price_hits": 10
+        "price_hits": 12
+      },
+      "delta_vs_all_baseline": null
+    },
+    {
+      "lane_id": "baseline_btc_leg",
+      "row_count": 29,
+      "metrics": {
+        "price_directional_hit_rate": 0.448276,
+        "n_evaluated": 29,
+        "price_hits": 13
       },
       "delta_vs_all_baseline": null
     },
     {
       "lane_id": "prior_day_momentum_direction_v0",
-      "row_count": 30,
+      "row_count": 59,
       "metrics": {
-        "price_directional_hit_rate": 0.4,
-        "n_evaluated": 30,
-        "price_hits": 12
+        "price_directional_hit_rate": 0.40678,
+        "n_evaluated": 59,
+        "price_hits": 24
       },
-      "delta_vs_all_baseline": 0.066667,
-      "changed_rows": 15,
+      "delta_vs_all_baseline": -0.016949,
+      "changed_rows": 33,
       "missing_prior_completed_return_rows": 0,
       "neutral_bps": 2.0
     },
     {
       "lane_id": "stress_bear_to_neutral_v0",
-      "row_count": 30,
+      "row_count": 59,
       "metrics": {
-        "price_directional_hit_rate": 0.333333,
-        "n_evaluated": 30,
-        "price_hits": 10
+        "price_directional_hit_rate": 0.423729,
+        "n_evaluated": 59,
+        "price_hits": 25
       },
       "delta_vs_all_baseline": 0.0,
       "changed_rows": 0,
@@ -73,11 +84,11 @@
     },
     {
       "lane_id": "broadcast_fused_lenses_v0",
-      "row_count": 30,
+      "row_count": 59,
       "metrics": {
-        "price_directional_hit_rate": 0.333333,
-        "n_evaluated": 30,
-        "price_hits": 10
+        "price_directional_hit_rate": 0.423729,
+        "n_evaluated": 59,
+        "price_hits": 25
       },
       "delta_vs_all_baseline": 0.0,
       "changed_rows": 0,
@@ -92,17 +103,14 @@
     }
   ],
   "best_non_baseline_lane": {
-    "lane_id": "prior_day_momentum_direction_v0",
-    "row_count": 30,
+    "lane_id": "baseline_btc_leg",
+    "row_count": 29,
     "metrics": {
-      "price_directional_hit_rate": 0.4,
-      "n_evaluated": 30,
-      "price_hits": 12
+      "price_directional_hit_rate": 0.448276,
+      "n_evaluated": 29,
+      "price_hits": 13
     },
-    "delta_vs_all_baseline": 0.066667,
-    "changed_rows": 15,
-    "missing_prior_completed_return_rows": 0,
-    "neutral_bps": 2.0
+    "delta_vs_all_baseline": null
   },
   "audit": {
     "adjacent_or_duplicate_measurement_paths": [

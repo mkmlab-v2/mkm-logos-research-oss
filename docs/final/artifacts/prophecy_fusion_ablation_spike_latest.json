@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_fusion_ablation_spike_v1",
-  "generated_at_utc": "2026-04-18T07:17:45Z",
+  "generated_at_utc": "2026-04-18T07:27:39Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "promotion_ready": false,
@@ -12,9 +12,9 @@
   "baseline": {
     "lane_id": "base",
     "metrics": {
-      "price_directional_hit_rate": 0.333333,
-      "n_evaluated": 30,
-      "price_hits": 10
+      "price_directional_hit_rate": 0.423729,
+      "n_evaluated": 59,
+      "price_hits": 25
     }
   },
   "lens_inputs": [
@@ -47,9 +47,9 @@
       "lens_sign": "neutral",
       "changed_rows": 0,
       "metrics": {
-        "price_directional_hit_rate": 0.333333,
-        "n_evaluated": 30,
-        "price_hits": 10
+        "price_directional_hit_rate": 0.423729,
+        "n_evaluated": 59,
+        "price_hits": 25
       },
       "delta_hit_rate": 0.0
     },
@@ -59,9 +59,9 @@
       "lens_sign": "neutral",
       "changed_rows": 0,
       "metrics": {
-        "price_directional_hit_rate": 0.333333,
-        "n_evaluated": 30,
-        "price_hits": 10
+        "price_directional_hit_rate": 0.423729,
+        "n_evaluated": 59,
+        "price_hits": 25
       },
       "delta_hit_rate": 0.0
     },
@@ -71,9 +71,9 @@
       "lens_sign": "neutral",
       "changed_rows": 0,
       "metrics": {
-        "price_directional_hit_rate": 0.333333,
-        "n_evaluated": 30,
-        "price_hits": 10
+        "price_directional_hit_rate": 0.423729,
+        "n_evaluated": 59,
+        "price_hits": 25
       },
       "delta_hit_rate": 0.0
     },
@@ -90,9 +90,9 @@
         "used_lenses": []
       },
       "metrics": {
-        "price_directional_hit_rate": 0.333333,
-        "n_evaluated": 30,
-        "price_hits": 10
+        "price_directional_hit_rate": 0.423729,
+        "n_evaluated": 59,
+        "price_hits": 25
       },
       "delta_hit_rate": 0.0
     },
@@ -102,9 +102,9 @@
       "changed_rows": 0,
       "stress_year_count": 10,
       "metrics": {
-        "price_directional_hit_rate": 0.333333,
-        "n_evaluated": 30,
-        "price_hits": 10
+        "price_directional_hit_rate": 0.423729,
+        "n_evaluated": 59,
+        "price_hits": 25
       },
       "delta_hit_rate": 0.0
     }
@@ -115,9 +115,9 @@
     "lens_sign": "neutral",
     "changed_rows": 0,
     "metrics": {
-      "price_directional_hit_rate": 0.333333,
-      "n_evaluated": 30,
-      "price_hits": 10
+      "price_directional_hit_rate": 0.423729,
+      "n_evaluated": 59,
+      "price_hits": 25
     },
     "delta_hit_rate": 0.0
   },
