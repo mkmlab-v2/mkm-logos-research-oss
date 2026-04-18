@@ -1,8 +1,8 @@
 {
   "schema": "mkm12_prism_index_registry_v1",
-  "version": "1.0.1",
-  "ts_utc": "2026-04-19T00:00:00Z",
-  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. B-track bridge batch 2026-04-19.",
+  "version": "1.0.2",
+  "ts_utc": "2026-04-19T12:00:00Z",
+  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. B-track bridge + NotebookLM CORE/Refinery pointer 2026-04-19.",
   "entries": [
     {
       "id": "prism_constitution_implementation_facts",
@@ -24,6 +24,13 @@
       "prism_axis": "S",
       "agent_access": "read_only_strict",
       "summary_ko": "NotebookLM A/B 소스 매니페스트 — Vault 동기화 목록 SSOT"
+    },
+    {
+      "id": "prism_notebooklm_log_metabolism_core_bridge_pointer",
+      "path": "docs/final/NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md",
+      "prism_axis": "S",
+      "agent_access": "read_only_strict",
+      "summary_ko": "CORE↔Refinery 격벽 경로 포인터(NotebookLM MKM_CORE_INTELLIGENCE_V1 전용)"
     },
     {
       "id": "prism_btrack_insight_bridge_inventory_latest",
