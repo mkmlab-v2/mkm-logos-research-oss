@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/btrack_prophecy_score_insight_sidecar_v1.schema.json",
+  "title": "B-track prophecy score — insight sidecar v1",
+  "description": "Optional B-track / [HYPO] features adjacent to btrack_prophecy_score_v1. Does not replace score rows or gates; experimental_attribution_enabled defaults false.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "paired_score_ref",
+    "experimental_attribution_enabled"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "btrack_prophecy_score_insight_sidecar_v1"
+    },
+    "version": {
+      "type": "string",
+      "description": "Sidecar format revision (optional)."
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "minLength": 10
+    },
+    "research_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "paired_score_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Workspace-relative path to btrack_prophecy_score_v1 JSON."
+    },
+    "paired_score_schema": {
+      "type": "string",
+      "description": "Observed schema of paired score file (informational)."
+    },
+    "bridge_index_ref": {
+      "type": "string",
+      "description": "Optional path to btrack_insight_promotion_bridge_index_v1_latest.json."
+    },
+    "experimental_attribution_enabled": {
+      "type": "boolean",
+      "description": "When false, consumers must not treat sidecar as promotion signal."
+    },
+    "lens_snapshot_refs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "feature_contract_v1": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Reserved feature ids for future numeric joins (no values in stub)."
+    },
+    "per_date_features": {
+      "description": "Future: parallel rows keyed by eval_date; null in stub.",
+      "type": ["array", "null"]
+    },
+    "notes_ko": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

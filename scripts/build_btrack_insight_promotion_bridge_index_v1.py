@@ -80,6 +80,11 @@ def main() -> int:
             "dual_gate_refresh_script": _optional_link(ROOT / "scripts/refresh_prophecy_promotion_gates_dual_v1.py"),
             "signoff_build_script": _optional_link(ROOT / "scripts/build_btrack_promotion_signoff_packet_v1.py"),
         },
+        "prophecy_score_insight_sidecar_phase3": {
+            "latest_stub": _optional_link(ROOT / "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json"),
+            "build_stub_script": _optional_link(ROOT / "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"),
+            "sidecar_schema": _optional_link(ROOT / "docs/final/schemas/btrack_prophecy_score_insight_sidecar_v1.schema.json"),
+        },
         "ssot_docs": {
             "notebooklm_sources_manifest": _optional_link(ROOT / "docs/NotebookLM_sources_manifest.md"),
             "constitution_implementation_facts": _optional_link(

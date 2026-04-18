@@ -47,6 +47,9 @@ WATCHLIST: list[tuple[str, str]] = [
     ("dual_gate_refresh", "scripts/refresh_prophecy_promotion_gates_dual_v1.py"),
     ("notebooklm_pull_manifest", "docs/final/artifacts/derived/notebooklm_pull_manifest_v1.json"),
     ("agent_memory_ssot", "docs/final/CENTRAL_AGENT_MEMORY_V1.md"),
+    ("prophecy_score_insight_sidecar", "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json"),
+    ("prophecy_score_insight_sidecar_schema", "docs/final/schemas/btrack_prophecy_score_insight_sidecar_v1.schema.json"),
+    ("prophecy_score_insight_sidecar_script", "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"),
 ]
 
 

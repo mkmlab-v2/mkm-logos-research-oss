@@ -1,8 +1,8 @@
 {
   "schema": "mkm12_prism_index_registry_v1",
-  "version": "1.0.2",
-  "ts_utc": "2026-04-19T12:00:00Z",
-  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. B-track bridge + NotebookLM CORE/Refinery pointer 2026-04-19.",
+  "version": "1.0.3",
+  "ts_utc": "2026-04-19T18:00:00Z",
+  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. Phase-3 insight sidecar stub pointers 2026-04-19.",
   "entries": [
     {
       "id": "prism_constitution_implementation_facts",
@@ -150,6 +150,27 @@
       "prism_axis": "M",
       "agent_access": "execute_observe",
       "summary_ko": "NotebookLM pull/discover 우선순위 매니페스트"
+    },
+    {
+      "id": "prism_btrack_prophecy_score_insight_sidecar_latest",
+      "path": "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json",
+      "prism_axis": "M",
+      "agent_access": "b_track_only",
+      "summary_ko": "예언 점수 옆 통찰 사이드카(stub, 기본 비활성)"
+    },
+    {
+      "id": "prism_schema_btrack_prophecy_score_insight_sidecar_v1",
+      "path": "docs/final/schemas/btrack_prophecy_score_insight_sidecar_v1.schema.json",
+      "prism_axis": "S",
+      "agent_access": "read_only_strict",
+      "summary_ko": "insight sidecar JSON 스키마(v1)"
+    },
+    {
+      "id": "prism_script_build_btrack_prophecy_score_insight_sidecar_stub",
+      "path": "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "insight sidecar stub 산출 스크립트"
     }
   ]
 }

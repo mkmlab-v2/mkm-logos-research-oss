@@ -1,0 +1,35 @@
+{
+  "schema": "btrack_prophecy_score_insight_sidecar_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-04-18T17:57:55Z",
+  "research_only": true,
+  "paired_score_ref": "docs/final/artifacts/btrack_prophecy_score_latest.json",
+  "paired_score_schema": "btrack_prophecy_score_v1",
+  "bridge_index_ref": "docs/final/artifacts/btrack_insight_promotion_bridge_index_v1_latest.json",
+  "experimental_attribution_enabled": false,
+  "lens_snapshot_refs": {
+    "logos_independent_lens_latest": {
+      "path": "docs/final/artifacts/logos_independent_lens_latest.json",
+      "exists": true
+    },
+    "myeongni_independent_lens_latest": {
+      "path": "docs/final/artifacts/myeongni_independent_lens_latest.json",
+      "exists": true
+    },
+    "sasang_independent_lens_latest": {
+      "path": "docs/final/artifacts/sasang_independent_lens_latest.json",
+      "exists": true
+    }
+  },
+  "feature_contract_v1": [
+    "lens_majority_agreement_score_global",
+    "notebooklm_guardrail_token_rate_prior_window",
+    "myeongni_insight_log_lines_prior_window"
+  ],
+  "per_date_features": null,
+  "notes_ko": [
+    "stub: score JSON의 rows·predicted_direction는 변경하지 않음.",
+    "승격·walkforward 게이트는 기존 btrack_prophecy_score_v1 입력만 사용.",
+    "실험 병합은 별 계약·플래그·회귀 후 experimental_attribution_enabled=true에서만 검토."
+  ]
+}
