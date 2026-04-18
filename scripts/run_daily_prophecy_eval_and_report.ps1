@@ -1,12 +1,14 @@
 # Daily B-Track: build OHLCV score JSON + price-mode hit-rate eval.
 # Optional -IncludeOverlaySpike: refreshes prophecy_restoration_spike_latest.json (threshold per script default / sweep policy).
 # Optional -IncludeShadowPanelEval: writes prophecy_shadow_panel_eval_v1_latest.json (B-track measurement lanes; not live routing).
+#   Use -ShadowPanelMode instrument_combo_best for a lighter single-lane eval, or set MKM_PROPHECY_SHADOW_PANEL_MODE.
 # Does NOT train models, promote canonical weights, or touch live trading.
 #
 # Prerequisites: py on PATH; KOSPI CSV at research/market_data/kospi_daily_external_yf.csv;
 # hypothesis at docs/final/artifacts/btrack_hypothesis_prophecy_latest.json (from daily chain or stub).
 #
-# Optional env: MKM_BTC_DAILY_CSV (path to BTC daily CSV), MKM_PROPHECY_PROXY_REGISTRY_GLOB (proxy eval).
+# Optional env: MKM_BTC_DAILY_CSV (path to BTC daily CSV), MKM_PROPHECY_PROXY_REGISTRY_GLOB (proxy eval),
+#   MKM_PROPHECY_SHADOW_PANEL_MODE (both | instrument_combo_best | per_date_lens_holdout_best) when -ShadowPanelMode omitted.
 #
 # Example (Task Scheduler):
 #   powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\run_daily_prophecy_eval_and_report.ps1" -IncludeDatedArchive
@@ -24,7 +26,9 @@ param(
     # After score+eval: refresh prophecy_restoration_spike_latest.json (default overlay threshold from script).
     [switch]$IncludeOverlaySpike,
     # After score+eval: shadow panel lanes vs sweep/holdout artifacts (measurement-only).
-    [switch]$IncludeShadowPanelEval
+    [switch]$IncludeShadowPanelEval,
+    # Shadow eval mode (Python --shadow-mode). Omit to use env MKM_PROPHECY_SHADOW_PANEL_MODE or both.
+    [string]$ShadowPanelMode = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -71,12 +75,28 @@ if ($LASTEXITCODE -ne 0) {
     throw "eval_prophecy_hit_rate_v1.py (price) exit $LASTEXITCODE"
 }
 
+$shadowModeLogged = $null
 if ($IncludeShadowPanelEval) {
+    $validShadowModes = @("both", "instrument_combo_best", "per_date_lens_holdout_best")
+    $shadowModeResolved = if ($PSBoundParameters.ContainsKey("ShadowPanelMode") -and $ShadowPanelMode.Trim().Length -gt 0) {
+        $ShadowPanelMode.Trim()
+    }
+    elseif ($env:MKM_PROPHECY_SHADOW_PANEL_MODE -and $env:MKM_PROPHECY_SHADOW_PANEL_MODE.Trim().Length -gt 0) {
+        $env:MKM_PROPHECY_SHADOW_PANEL_MODE.Trim()
+    }
+    else {
+        "both"
+    }
+    $shadowModeLogged = $shadowModeResolved
+    if ($validShadowModes -notcontains $shadowModeResolved) {
+        throw "Invalid ShadowPanelMode '$shadowModeResolved'. Use: $($validShadowModes -join ', ')"
+    }
     $kospiCsvDefault = Join-Path $WorkspaceRoot "research\market_data\kospi_daily_external_yf.csv"
     $btcCsvDefault = Join-Path $WorkspaceRoot "research\market_data\btc_daily_external_yf.csv"
     $shadowArgs = @(
         "scripts\eval_prophecy_shadow_panel_v1.py",
         "--score-json", $scoreOut,
+        "--shadow-mode", $shadowModeResolved,
         "--output", $shadowPanelOut
     )
     if ($BtcCsvPath -and (Test-Path -LiteralPath $BtcCsvPath)) {
@@ -88,7 +108,7 @@ if ($IncludeShadowPanelEval) {
     if (Test-Path -LiteralPath $kospiCsvDefault) {
         $shadowArgs += @("--kospi-csv", $kospiCsvDefault)
     }
-    Write-Host "==> eval_prophecy_shadow_panel_v1.py"
+    Write-Host "==> eval_prophecy_shadow_panel_v1.py (--shadow-mode $shadowModeResolved)"
     & py @shadowArgs
     if ($LASTEXITCODE -ne 0) {
         throw "eval_prophecy_shadow_panel_v1.py exit $LASTEXITCODE"
@@ -128,6 +148,9 @@ if ($IncludeDatedArchive) {
     if (Test-Path -LiteralPath $evalOut) {
         Copy-Item -LiteralPath $evalOut -Destination (Join-Path $artifactsDir "prophecy_hit_rate_eval_$d.json") -Force
     }
+    if ($IncludeShadowPanelEval -and (Test-Path -LiteralPath $shadowPanelOut)) {
+        Copy-Item -LiteralPath $shadowPanelOut -Destination (Join-Path $artifactsDir "prophecy_shadow_panel_eval_v1_$d.json") -Force
+    }
 }
 
 $hit = $null
@@ -148,6 +171,7 @@ if (-not (Test-Path -LiteralPath $reportsDir)) {
 }
 $shadowHit = $null
 $shadowN = $null
+$shadowLanesLog = $null
 if ($IncludeShadowPanelEval -and (Test-Path -LiteralPath $shadowPanelOut)) {
     $sj = Get-Content -LiteralPath $shadowPanelOut -Raw -Encoding UTF8 | ConvertFrom-Json
     if ($null -ne $sj.lanes) {
@@ -155,6 +179,23 @@ if ($IncludeShadowPanelEval -and (Test-Path -LiteralPath $shadowPanelOut)) {
         if ($null -ne $lane0.metrics_all) {
             $shadowHit = $lane0.metrics_all.price_directional_hit_rate
             $shadowN = [int]$lane0.metrics_all.n_evaluated
+        }
+        $summaries = New-Object System.Collections.ArrayList
+        foreach ($lane in @($sj.lanes)) {
+            $mid = $lane.lane_id
+            $m = $lane.metrics_all
+            if ($null -eq $m) { continue }
+            [void]$summaries.Add(
+                [ordered]@{
+                    lane_id                      = [string]$mid
+                    price_directional_hit_rate   = $m.price_directional_hit_rate
+                    n_evaluated                  = [int]$m.n_evaluated
+                    delta_vs_baseline            = $lane.delta_vs_baseline
+                }
+            )
+        }
+        if ($summaries.Count -gt 0) {
+            $shadowLanesLog = @($summaries.ToArray())
         }
     }
 }
@@ -167,8 +208,10 @@ $logObj = [ordered]@{
     price_directional_hit_rate = $hit
     low_hit_threshold          = $LowHitRateWarningThreshold
     shadow_panel_eval_path     = $(if ($IncludeShadowPanelEval) { $shadowPanelOut } else { $null })
+    shadow_panel_mode          = $shadowModeLogged
     shadow_lane0_hit_rate      = $shadowHit
     shadow_lane0_n_evaluated   = $shadowN
+    shadow_lanes               = $shadowLanesLog
 }
 ($logObj | ConvertTo-Json -Compress) | Add-Content -LiteralPath $logPath -Encoding UTF8
 
