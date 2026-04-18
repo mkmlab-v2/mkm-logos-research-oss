@@ -1,0 +1,122 @@
+{
+  "schema": "prophecy_panel_coverage_delta_probe_v1",
+  "generated_at_utc": "2026-04-18T07:23:25Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "inputs": {
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "kospi_csv": "C:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
+    "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+    "year_map_json": "C:\\workspace\\docs\\final\\artifacts\\4d_to_ohaeng_regime_year_map_sample_v1.json",
+    "min_lens_confidence": 0.2
+  },
+  "score_summary": {
+    "neutral_bps": 2.0,
+    "instrument_row_counts": {
+      "kospi": 30
+    },
+    "has_btc_rows": false
+  },
+  "baseline_all": {
+    "lane_id": "baseline_all",
+    "metrics": {
+      "price_directional_hit_rate": 0.333333,
+      "n_evaluated": 30,
+      "price_hits": 10
+    }
+  },
+  "lanes": [
+    {
+      "lane_id": "baseline_all",
+      "row_count": 30,
+      "metrics": {
+        "price_directional_hit_rate": 0.333333,
+        "n_evaluated": 30,
+        "price_hits": 10
+      },
+      "delta_vs_all_baseline": 0.0
+    },
+    {
+      "lane_id": "baseline_kospi_leg",
+      "row_count": 30,
+      "metrics": {
+        "price_directional_hit_rate": 0.333333,
+        "n_evaluated": 30,
+        "price_hits": 10
+      },
+      "delta_vs_all_baseline": null
+    },
+    {
+      "lane_id": "prior_day_momentum_direction_v0",
+      "row_count": 30,
+      "metrics": {
+        "price_directional_hit_rate": 0.4,
+        "n_evaluated": 30,
+        "price_hits": 12
+      },
+      "delta_vs_all_baseline": 0.066667,
+      "changed_rows": 15,
+      "missing_prior_completed_return_rows": 0,
+      "neutral_bps": 2.0
+    },
+    {
+      "lane_id": "stress_bear_to_neutral_v0",
+      "row_count": 30,
+      "metrics": {
+        "price_directional_hit_rate": 0.333333,
+        "n_evaluated": 30,
+        "price_hits": 10
+      },
+      "delta_vs_all_baseline": 0.0,
+      "changed_rows": 0,
+      "stress_year_count": 10
+    },
+    {
+      "lane_id": "broadcast_fused_lenses_v0",
+      "row_count": 30,
+      "metrics": {
+        "price_directional_hit_rate": 0.333333,
+        "n_evaluated": 30,
+        "price_hits": 10
+      },
+      "delta_vs_all_baseline": 0.0,
+      "changed_rows": 0,
+      "fused_meta": {
+        "fused_sign": "neutral",
+        "votes": {
+          "bull": 0.0,
+          "bear": 0.0
+        },
+        "used_lenses": []
+      }
+    }
+  ],
+  "best_non_baseline_lane": {
+    "lane_id": "prior_day_momentum_direction_v0",
+    "row_count": 30,
+    "metrics": {
+      "price_directional_hit_rate": 0.4,
+      "n_evaluated": 30,
+      "price_hits": 12
+    },
+    "delta_vs_all_baseline": 0.066667,
+    "changed_rows": 15,
+    "missing_prior_completed_return_rows": 0,
+    "neutral_bps": 2.0
+  },
+  "audit": {
+    "adjacent_or_duplicate_measurement_paths": [
+      "scripts/run_prophecy_restoration_spike.py — overlay ablation on same rows (prior shock / stress).",
+      "scripts/run_prophecy_fusion_ablation_spike.py — broadcast lens vote + stress proxy deltas.",
+      "docs/final/artifacts/prophecy_eval_comparison_report_latest.json — fixed-direction vs walk-forward (different contract; coverage warnings).",
+      "scripts/spike_gematria_myeongri_blend_v0.py — geometric blend; explicitly not prediction accuracy.",
+      "scripts/run_gematria_4d_gate.py / scripts/run_btrack_fusion_gate.py — alignment/uplift gates; not OHLCV directional hit."
+    ],
+    "btc_leg_note": "If hypothesis instrument is multi but btc leg rows are absent, rebuild with `py scripts/build_btrack_prophecy_score_from_ohlcv.py --btc-csv <YF-style daily>` (repo sample: C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv)."
+  },
+  "recommended_next_steps": [
+    "Rebuild ``btrack_prophecy_score_latest.json`` with ``--btc-csv`` so ``baseline_btc_leg`` exists for BTC-specific Δ.",
+    "Replace broadcast lens artifacts with **per-eval_date** lens panels (JSONL keyed by eval_date) — current *_latest.json tails are global.",
+    "Keep one primary price metric: ``eval_prophecy_hit_rate_v1.py --run-mode price`` on the same score snapshot used here."
+  ]
+}
