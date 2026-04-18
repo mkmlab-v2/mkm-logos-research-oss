@@ -7,6 +7,7 @@ on:
     branches: [main, master, develop]
     paths:
       - "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"
+      - "scripts/Run-BtrackInsightSidecarChain.ps1"
       - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
       - "tests/test_btrack_prophecy_score_insight_sidecar_stub_v1.py"
       - "tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
@@ -18,6 +19,7 @@ on:
     branches: [main, master, develop]
     paths:
       - "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"
+      - "scripts/Run-BtrackInsightSidecarChain.ps1"
       - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
       - "tests/test_btrack_prophecy_score_insight_sidecar_stub_v1.py"
       - "tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"

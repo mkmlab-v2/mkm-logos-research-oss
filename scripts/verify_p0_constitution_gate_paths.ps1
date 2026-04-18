@@ -23,6 +23,7 @@ $required = @(
     "docs\final\artifacts\btrack_prophecy_score_insight_sidecar_v1_latest.json",
     "scripts\eval_btrack_insight_sidecar_lens_hit_agreement_v1.py",
     "docs\final\artifacts\btrack_insight_sidecar_lens_hit_agreement_v1_latest.json",
+    "scripts\Run-BtrackInsightSidecarChain.ps1",
     ".cursorrules",
     "AGENTS.md",
     "README.md",

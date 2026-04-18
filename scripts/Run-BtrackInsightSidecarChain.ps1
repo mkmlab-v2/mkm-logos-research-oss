@@ -1,0 +1,47 @@
+# B-track insight sidecar chain: optional NotebookLM KPI refresh -> sidecar -> lens agreement -> inventory -> bridge index -> optional signoff.
+# Run from repo root (or any cwd; resolves workspace from script location).
+
+param(
+    [switch]$SkipSignoff,
+    [switch]$SkipNotebooklmKpi
+)
+
+$ErrorActionPreference = "Stop"
+$root = if ($PSScriptRoot) { (Resolve-Path (Join-Path $PSScriptRoot "..")).Path } else { (Get-Location).Path }
+Set-Location -LiteralPath $root
+
+if (-not $SkipNotebooklmKpi) {
+    $mega = Join-Path $root "reports\notebooklm\btrack_mega_insights_10gb.jsonl"
+    if (Test-Path -LiteralPath $mega) {
+        Write-Host "NotebookLM KPI: report_btrack_notebooklm_jsonl_kpi.py" -ForegroundColor DarkGray
+        & py "scripts/report_btrack_notebooklm_jsonl_kpi.py"
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    } else {
+        Write-Host "Skip NotebookLM KPI (mega jsonl not present)." -ForegroundColor DarkGray
+    }
+}
+
+Write-Host "build_btrack_prophecy_score_insight_sidecar_stub_v1.py" -ForegroundColor DarkGray
+& py "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "eval_btrack_insight_sidecar_lens_hit_agreement_v1.py" -ForegroundColor DarkGray
+& py "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "build_btrack_insight_bridge_inventory_v1.py" -ForegroundColor DarkGray
+& py "scripts/build_btrack_insight_bridge_inventory_v1.py"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "build_btrack_insight_promotion_bridge_index_v1.py" -ForegroundColor DarkGray
+& py "scripts/build_btrack_insight_promotion_bridge_index_v1.py"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+if (-not $SkipSignoff) {
+    Write-Host "build_btrack_promotion_signoff_packet_v1.py --separate-track-gates" -ForegroundColor DarkGray
+    & py "scripts/build_btrack_promotion_signoff_packet_v1.py" --separate-track-gates
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+Write-Host "OK B-track insight sidecar chain." -ForegroundColor Green
+exit 0

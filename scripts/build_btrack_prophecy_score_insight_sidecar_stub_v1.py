@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -18,7 +19,7 @@ DEFAULT_BRIDGE = ROOT / "docs" / "final" / "artifacts" / "btrack_insight_promoti
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score_insight_sidecar_v1_latest.json"
 
 SCHEMA = "btrack_prophecy_score_insight_sidecar_v1"
-SIDEcar_FORMAT = "1.2.0"
+SIDEcar_FORMAT = "1.3.0"
 
 DEFAULT_NOTEBOOKLM_KPI = ROOT / "docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json"
 DEFAULT_MYEONGNI_INSIGHT_LOG = ROOT / "data/myeongni/insight_observation_log.jsonl"
@@ -118,6 +119,49 @@ def _notebooklm_kpi_summary(kpi: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
+def _insight_log_lines_per_calendar_day(path: Path) -> dict[str, int]:
+    per_day: dict[str, int] = defaultdict(int)
+    if not path.is_file():
+        return {}
+    try:
+        with path.open("r", encoding="utf-8", errors="replace") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    o = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if not isinstance(o, dict):
+                    continue
+                ts = str(o.get("ts_utc") or "").strip()
+                if len(ts) >= 10 and ts[4] == "-" and ts[7] == "-":
+                    day = ts[:10]
+                    per_day[day] += 1
+    except OSError:
+        return {}
+    return dict(per_day)
+
+
+def _cumulative_insight_lines_through(per_day: dict[str, int], eval_date: str) -> int:
+    if not eval_date or len(eval_date) < 10:
+        return 0
+    return sum(c for d, c in per_day.items() if d <= eval_date[:10])
+
+
+def _score_row_context(row: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "predicted_direction": row.get("predicted_direction"),
+        "actual_direction": row.get("actual_direction"),
+        "daily_return": row.get("daily_return"),
+        "prev_close": row.get("prev_close"),
+        "close": row.get("close"),
+        "neutral_bps": row.get("neutral_bps"),
+        "flow_score_for_reversal": row.get("flow_score_for_reversal"),
+    }
+
+
 def _myeongni_insight_log_meta(path: Path) -> dict[str, Any] | None:
     if not path.is_file():
         return None
@@ -133,26 +177,35 @@ def _myeongni_insight_log_meta(path: Path) -> dict[str, Any] | None:
     }
 
 
-def _per_date_features(rows: list[dict[str, Any]], lens_snap: dict[str, Any | None]) -> list[dict[str, Any]]:
+def _per_date_features(
+    rows: list[dict[str, Any]],
+    lens_snap: dict[str, Any | None],
+    insight_per_day: dict[str, int] | None,
+) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     for i, row in enumerate(rows):
         if not isinstance(row, dict):
             continue
         ed = str(row.get("eval_date") or "").strip()
         ins = str(row.get("instrument") or "").strip().lower()
-        out.append(
-            {
-                "eval_date": ed,
-                "instrument": ins,
-                "observation_only": True,
-                "paired_row_index": i,
-                "lens_scores_snapshot": {
-                    "logos": lens_snap.get("logos"),
-                    "myeongni": lens_snap.get("myeongni"),
-                    "sasang": lens_snap.get("sasang"),
-                },
-            }
-        )
+        item: dict[str, Any] = {
+            "eval_date": ed,
+            "instrument": ins,
+            "observation_only": True,
+            "paired_row_index": i,
+            "score_row_context": _score_row_context(row),
+            "lens_scores_snapshot": {
+                "logos": lens_snap.get("logos"),
+                "myeongni": lens_snap.get("myeongni"),
+                "sasang": lens_snap.get("sasang"),
+            },
+            "lens_snapshot_attribution": "global_mirrored_v1",
+        }
+        if insight_per_day is not None:
+            item["myeongni_insight_lines_cumulative_through_eval_date"] = _cumulative_insight_lines_through(
+                insight_per_day, ed
+            )
+        out.append(item)
     return out
 
 
@@ -178,6 +231,11 @@ def main() -> int:
     )
     ap.add_argument("--notebooklm-kpi-json", type=Path, default=DEFAULT_NOTEBOOKLM_KPI)
     ap.add_argument("--myeongni-insight-log", type=Path, default=DEFAULT_MYEONGNI_INSIGHT_LOG)
+    ap.add_argument(
+        "--skip-insight-log-cumulative",
+        action="store_true",
+        help="Do not attach per-row cumulative counts from insight_observation_log.jsonl.",
+    )
     args = ap.parse_args()
 
     score_schema: str | None = None
@@ -191,13 +249,17 @@ def main() -> int:
 
     lens_refs, lens_minimal = _build_lens_snapshot_block()
 
+    insight_per_day: dict[str, int] | None = None
+    if not args.skip_insight_log_cumulative:
+        insight_per_day = _insight_log_lines_per_calendar_day(args.myeongni_insight_log)
+
     per_date: list[dict[str, Any]] | None
     if args.skip_per_date:
         per_date = None
     elif not rows:
         per_date = None
     else:
-        per_date = _per_date_features(rows, lens_minimal)
+        per_date = _per_date_features(rows, lens_minimal, insight_per_day)
 
     nb_summary: dict[str, Any] | None = None
     nb_ref: str | None = None
@@ -219,6 +281,12 @@ def main() -> int:
         "paired_row_count": len(rows),
         "bridge_index_ref": _rel(args.bridge_index) if args.bridge_index.is_file() else None,
         "experimental_attribution_enabled": bool(args.enable_experimental_attribution),
+        "lens_attribution_mode": "global_mirrored_with_row_score_context_v1",
+        "phase3_merge": {
+            "status": "not_started",
+            "target": "btrack_prophecy_score_v1_optional_overlay_or_walkforward_branch",
+            "note_ko": "점수 본문 병합·게이트 연동은 별 스키마·플래그·회귀 PR에서만 진행.",
+        },
         "lens_snapshot_refs": lens_refs,
         "lens_globals_for_sidecar": lens_minimal,
         "notebooklm_observation_kpi_ref": nb_ref,
@@ -232,10 +300,11 @@ def main() -> int:
         "per_date_features": per_date,
         "notes_ko": [
             "score JSON의 rows·predicted_direction는 변경하지 않음.",
-            "per_date_features의 렌즈 값은 현재 글로벌 스냅샷을 행마다 복제(B-track 관측; 날짜 조건부 아님).",
+            "lens_scores_snapshot은 글로벌 렌즈 스냅샷 복제(lens_snapshot_attribution); score_row_context는 해당 행의 점수 SSOT 필드 복사(평가일·종목 정렬).",
+            "myeongni_insight_lines_cumulative_through_eval_date는 insight 로그 ts_utc 달력일이 eval_date 이하인 줄 수 누적(관측).",
             "승격·walkforward 게이트는 기존 btrack_prophecy_score_v1만 입력.",
             "실험 병합은 별 계약·회귀 후 experimental_attribution_enabled 검토.",
-            "notebooklm_observation_kpi_summary·명리 로그 메타는 전역 관측만(per_date와 자동 정렬되지 않음).",
+            "notebooklm_observation_kpi_summary·명리 로그 파일 메타는 전역 관측.",
         ],
     }
 

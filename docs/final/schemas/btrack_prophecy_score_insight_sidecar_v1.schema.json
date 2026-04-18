@@ -70,6 +70,15 @@
       "type": "boolean",
       "description": "When false, consumers must not treat sidecar as promotion signal."
     },
+    "lens_attribution_mode": {
+      "type": "string",
+      "description": "How lens_scores_snapshot relates to calendar rows (e.g. global_mirrored_with_row_score_context_v1)."
+    },
+    "phase3_merge": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Placeholder for future score-overlay merge status (not_started until separate PR)."
+    },
     "lens_snapshot_refs": {
       "type": "object",
       "additionalProperties": {

@@ -1,7 +1,7 @@
 {
   "schema": "btrack_insight_sidecar_lens_hit_agreement_v1",
   "version": "1.1.0",
-  "generated_at_utc": "2026-04-18T18:07:00Z",
+  "generated_at_utc": "2026-04-18T18:13:11Z",
   "research_only": true,
   "instrument_filter": "all",
   "paired_score_ref": "docs/final/artifacts/btrack_prophecy_score_latest.json",

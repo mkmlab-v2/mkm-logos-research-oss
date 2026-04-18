@@ -52,6 +52,7 @@ WATCHLIST: list[tuple[str, str]] = [
     ("prophecy_score_insight_sidecar_script", "scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py"),
     ("insight_sidecar_lens_hit_agreement", "docs/final/artifacts/btrack_insight_sidecar_lens_hit_agreement_v1_latest.json"),
     ("insight_sidecar_lens_hit_agreement_script", "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"),
+    ("insight_sidecar_chain_script", "scripts/Run-BtrackInsightSidecarChain.ps1"),
 ]
 
 

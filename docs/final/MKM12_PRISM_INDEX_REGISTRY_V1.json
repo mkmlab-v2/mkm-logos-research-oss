@@ -1,8 +1,8 @@
 {
   "schema": "mkm12_prism_index_registry_v1",
-  "version": "1.0.4",
-  "ts_utc": "2026-04-19T20:00:00Z",
-  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. Sidecar lens–direction agreement eval pointers 2026-04-19.",
+  "version": "1.0.5",
+  "ts_utc": "2026-04-19T22:00:00Z",
+  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. Run-BtrackInsightSidecarChain.ps1 pointer 2026-04-19.",
   "entries": [
     {
       "id": "prism_constitution_implementation_facts",
@@ -185,6 +185,13 @@
       "prism_axis": "M",
       "agent_access": "execute_observe",
       "summary_ko": "렌즈–적중 일치율 관측 eval 스크립트"
+    },
+    {
+      "id": "prism_script_run_btrack_insight_sidecar_chain",
+      "path": "scripts/Run-BtrackInsightSidecarChain.ps1",
+      "prism_axis": "L",
+      "agent_access": "execute_observe",
+      "summary_ko": "사이드카·agreement·인벤토리·브리지·선택 사인오프 원클릭 체인"
     }
   ]
 }
