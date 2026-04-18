@@ -1,18 +1,18 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-04-18T14:30:29Z",
+  "generated_at_utc": "2026-04-18T16:26:21Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
     "lens_walkforward_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_per_date_combo_walkforward_v1_latest.json",
     "instrument_walkforward_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_instrument_combo_walkforward_v1_latest.json",
-    "score_json": "docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
     "promotion_track_mode": "btc_only_crossassist",
     "thresholds": {
-      "min_mean_test_accuracy": 0.45,
-      "max_stdev_test_accuracy": 0.22,
-      "min_fraction_test_beats_always_bull": 0.25,
-      "min_min_test_accuracy_across_folds": 0.3
+      "min_mean_test_accuracy": 0.55,
+      "max_stdev_test_accuracy": 0.15,
+      "min_fraction_test_beats_always_bull": 0.5,
+      "min_min_test_accuracy_across_folds": 0.4
     },
     "soft_thresholds": {
       "min_mean_test_accuracy": 0.45,
@@ -21,19 +21,19 @@
       "min_min_test_accuracy_across_folds": 0.3
     },
     "skip_shared_gates": false,
-    "strict_streak_required": 1,
+    "strict_streak_required": 5,
     "streak_history_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_promotion_strict_streak_v1.json"
   },
   "tracks": {
     "per_date_lens": {
-      "all_gates_passed": true,
+      "all_gates_passed": false,
       "gates": [
         {
           "gate_id": "lens_wf_mean_test_accuracy",
-          "passed": true,
+          "passed": false,
           "threshold": {
             "op": ">=",
-            "min_mean_test_accuracy": 0.45
+            "min_mean_test_accuracy": 0.55
           },
           "observed": {
             "mean_test_accuracy": 0.458333
@@ -44,7 +44,7 @@
           "passed": true,
           "threshold": {
             "op": "<=",
-            "max_stdev_test_accuracy": 0.22
+            "max_stdev_test_accuracy": 0.15
           },
           "observed": {
             "stdev_test_accuracy": 0.138193
@@ -52,10 +52,10 @@
         },
         {
           "gate_id": "lens_wf_fraction_folds_beat_always_bull",
-          "passed": true,
+          "passed": false,
           "threshold": {
             "op": ">=",
-            "min_fraction_test_beats_always_bull": 0.25
+            "min_fraction_test_beats_always_bull": 0.5
           },
           "observed": {
             "fraction_test_beats_always_bull": 0.25,
@@ -64,10 +64,10 @@
         },
         {
           "gate_id": "lens_wf_min_fold_test_accuracy",
-          "passed": true,
+          "passed": false,
           "threshold": {
             "op": ">=",
-            "min_min_test_accuracy_across_folds": 0.3
+            "min_min_test_accuracy_across_folds": 0.4
           },
           "observed": {
             "min_test_accuracy": 0.333333
@@ -96,10 +96,10 @@
   "gates": [
     {
       "gate_id": "lens_wf_mean_test_accuracy",
-      "passed": true,
+      "passed": false,
       "threshold": {
         "op": ">=",
-        "min_mean_test_accuracy": 0.45
+        "min_mean_test_accuracy": 0.55
       },
       "observed": {
         "mean_test_accuracy": 0.458333
@@ -110,7 +110,7 @@
       "passed": true,
       "threshold": {
         "op": "<=",
-        "max_stdev_test_accuracy": 0.22
+        "max_stdev_test_accuracy": 0.15
       },
       "observed": {
         "stdev_test_accuracy": 0.138193
@@ -118,10 +118,10 @@
     },
     {
       "gate_id": "lens_wf_fraction_folds_beat_always_bull",
-      "passed": true,
+      "passed": false,
       "threshold": {
         "op": ">=",
-        "min_fraction_test_beats_always_bull": 0.25
+        "min_fraction_test_beats_always_bull": 0.5
       },
       "observed": {
         "fraction_test_beats_always_bull": 0.25,
@@ -130,10 +130,10 @@
     },
     {
       "gate_id": "lens_wf_min_fold_test_accuracy",
-      "passed": true,
+      "passed": false,
       "threshold": {
         "op": ">=",
-        "min_min_test_accuracy_across_folds": 0.3
+        "min_min_test_accuracy_across_folds": 0.4
       },
       "observed": {
         "min_test_accuracy": 0.333333
@@ -148,15 +148,15 @@
       }
     }
   ],
-  "lens_all_gates_passed": true,
+  "lens_all_gates_passed": false,
   "instrument_combo_all_gates_passed": null,
   "shared_all_gates_passed": true,
-  "combined_all_passed": true,
-  "all_gates_passed": true,
-  "strict_passed": true,
+  "combined_all_passed": false,
+  "all_gates_passed": false,
+  "strict_passed": false,
   "soft_passed": true,
-  "strict_pass_streak": 1,
-  "auto_promote_ready": true,
-  "promotion_recommendation": "auto_promote_ready",
+  "strict_pass_streak": 0,
+  "auto_promote_ready": false,
+  "promotion_recommendation": "defer",
   "note": "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. Human sign-off still required before A-track or live routing."
 }

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prophecy_live_ab_summary_v1",
+  "title": "Prophecy live A/B summary",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "status",
+    "control",
+    "treatment"
+  ],
+  "properties": {
+    "schema": { "const": "prophecy_live_ab_summary_v1" },
+    "generated_at_utc": { "type": "string", "format": "date-time" },
+    "period_start_utc": { "type": ["string", "null"], "format": "date-time" },
+    "period_end_utc": { "type": ["string", "null"], "format": "date-time" },
+    "status": {
+      "type": "string",
+      "enum": ["INSUFFICIENT_DATA", "READY"]
+    },
+    "readiness_rule": {
+      "type": "object",
+      "required": ["min_trades_per_arm", "require_fee_and_net"],
+      "properties": {
+        "min_trades_per_arm": { "type": "integer", "minimum": 1 },
+        "require_fee_and_net": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "control": { "$ref": "#/$defs/arm" },
+    "treatment": { "$ref": "#/$defs/arm" },
+    "data_quality_note": { "type": "string" }
+  },
+  "$defs": {
+    "arm": {
+      "type": "object",
+      "required": ["trades", "realized_pnl", "fee", "net", "max_drawdown"],
+      "properties": {
+        "trades": { "type": "integer", "minimum": 0 },
+        "realized_pnl": { "type": "number" },
+        "fee": { "type": ["number", "null"] },
+        "net": { "type": "number" },
+        "max_drawdown": { "type": "number" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,6 +1,6 @@
 {
   "schema": "lg_washer_measurement_gate_v1",
-  "generated_at_utc": "2026-04-18T15:43:51Z",
+  "generated_at_utc": "2026-04-18T16:26:21Z",
   "report_ref": "docs/final/artifacts/lg_washer_integrity_validation_report_v1_latest.json",
   "measurement_ref": "docs/final/artifacts/lg_washer_target_device_measurement_v1.json",
   "status": "GO",
