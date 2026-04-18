@@ -14,11 +14,13 @@ on:
       - "scripts/validate_ganji_mapping.py"
       - "scripts/validate_ephemeris_baseline.py"
       - "scripts/run_manseryeok_validation_smoke_v1.py"
+      - "scripts/validate_collision_dictionary_v1.py"
       - "scripts/build_ganji_validation_cohort_v1.py"
       - "scripts/populate_swiss_ephemeris_lichun.py"
       - "scripts/manseryeok_perfect_final.py"
       - "scripts/core/solar_longitude_meeus_v1.py"
       - "docs/final/artifacts/ganji_mapping_validate_cohort_v1.json"
+      - "docs/final/artifacts/manseryeok_collision_dictionary_v1.json"
       - "docs/final/artifacts/ephemeris_reference_b_lichun_stub_v1.json"
       - "docs/final/artifacts/schemas/**"
       - ".github/workflows/manseryeok-validation-smoke.yml"
@@ -31,5 +33,5 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - name: Run manseryeok validation smoke (B-1 + B-2)
+      - name: Run manseryeok validation smoke (B-1 + B-2 + collision dict)
         run: python scripts/run_manseryeok_validation_smoke_v1.py

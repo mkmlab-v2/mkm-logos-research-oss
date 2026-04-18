@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Smoke: optional ephemeris B-1 + mandatory B-2 cohort at exact_match_rate >= gate."""
+"""Smoke: optional ephemeris B-1 + B-2 cohort + collision-dict native checksum."""
 
 from __future__ import annotations
 
@@ -33,6 +33,11 @@ def main() -> int:
         type=float,
         default=1.0,
         help="Exit 2 if B-2 aggregate exact_match_rate falls below this",
+    )
+    ap.add_argument(
+        "--skip-collision-dict",
+        action="store_true",
+        help="Skip validate_collision_dictionary_v1.py",
     )
     args = ap.parse_args()
 
@@ -70,7 +75,16 @@ def main() -> int:
         ],
         cwd=_WS,
     )
-    return r2.returncode
+    if r2.returncode != 0:
+        return r2.returncode
+
+    if not args.skip_collision_dict:
+        r3 = subprocess.run(
+            [py, str(_WS / "scripts/validate_collision_dictionary_v1.py")],
+            cwd=_WS,
+        )
+        return r3.returncode
+    return 0
 
 
 if __name__ == "__main__":
