@@ -19,6 +19,8 @@ on:
       - "scripts/validate_collision_dictionary_v1.py"
       - "scripts/collision_dict_refresh_native_v1.py"
       - "scripts/sync_collision_dict_cohort_entries_v1.py"
+      - "scripts/saju_birth_resolver_v1.py"
+      - "scripts/run_saju_global_birth_v1.py"
       - "scripts/core/solar_term_ssot.py"
       - "scripts/core/solar_longitude_meeus_v1.py"
       - "scripts/core/boundary_risk_guard.py"
@@ -28,6 +30,9 @@ on:
       - "tests/test_saju_golden_replay.py"
       - "tests/test_run_saju_golden_replay.py"
       - "docs/final/artifacts/manseryeok_collision_dictionary_v1.json"
+      - "docs/final/artifacts/schemas/saju_global_birth_request_v1.schema.json"
+      - "docs/final/artifacts/schemas/saju_global_birth_result_v1.schema.json"
+      - "tests/test_saju_birth_resolver_v1.py"
       - ".github/workflows/saju-dual-verify-gate.yml"
   pull_request:
     paths:
@@ -41,6 +46,8 @@ on:
       - "scripts/validate_collision_dictionary_v1.py"
       - "scripts/collision_dict_refresh_native_v1.py"
       - "scripts/sync_collision_dict_cohort_entries_v1.py"
+      - "scripts/saju_birth_resolver_v1.py"
+      - "scripts/run_saju_global_birth_v1.py"
       - "scripts/core/solar_term_ssot.py"
       - "scripts/core/solar_longitude_meeus_v1.py"
       - "scripts/core/boundary_risk_guard.py"
@@ -50,6 +57,9 @@ on:
       - "tests/test_saju_golden_replay.py"
       - "tests/test_run_saju_golden_replay.py"
       - "docs/final/artifacts/manseryeok_collision_dictionary_v1.json"
+      - "docs/final/artifacts/schemas/saju_global_birth_request_v1.schema.json"
+      - "docs/final/artifacts/schemas/saju_global_birth_result_v1.schema.json"
+      - "tests/test_saju_birth_resolver_v1.py"
       - ".github/workflows/saju-dual-verify-gate.yml"
   workflow_dispatch:
 
@@ -69,6 +79,7 @@ jobs:
             tests/test_saju_dual_verify.py \
             tests/test_saju_golden_replay.py \
             tests/test_run_saju_golden_replay.py \
+            tests/test_saju_birth_resolver_v1.py \
             -q --tb=short
       - name: Enforce confirmed golden reference with fail-on-review
         run: |
@@ -90,4 +101,9 @@ jobs:
             --log docs/final/artifacts/saju_golden_replay_log.jsonl
       - name: Collision dictionary native checksum
         run: python scripts/validate_collision_dictionary_v1.py
+      - name: Global birth CLI smoke (UTC + Seoul)
+        run: |
+          python scripts/run_saju_global_birth_v1.py \
+            --utc-instant 1992-03-12T17:00:00Z --iana-tz Asia/Seoul --compact \
+            | python -c "import json,sys; d=json.load(sys.stdin); assert d['resolution']['engine_inputs']['day']==13"
 

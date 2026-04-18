@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "saju_global_birth_request_v1",
+  "title": "Global birth input for saju (IANA TZ)",
+  "type": "object",
+  "required": ["schema", "version", "iana_tz"],
+  "properties": {
+    "schema": { "const": "saju_global_birth_request_v1" },
+    "version": { "type": "string" },
+    "iana_tz": {
+      "type": "string",
+      "description": "IANA Time Zone Database id (e.g. Asia/Seoul, Europe/Paris)."
+    },
+    "birth_instant_utc": {
+      "type": "string",
+      "description": "Preferred: ISO-8601 instant with Z or offset (absolute time)."
+    },
+    "local_civil": {
+      "type": "object",
+      "description": "Alternative: wall clock in iana_tz",
+      "properties": {
+        "year": { "type": "integer" },
+        "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "day": { "type": "integer", "minimum": 1, "maximum": 31 },
+        "hour": { "type": "integer", "minimum": 0, "maximum": 23 },
+        "minute": { "type": "integer", "minimum": 0, "maximum": 59 },
+        "second": { "type": "integer", "minimum": 0, "maximum": 59 }
+      },
+      "required": ["year", "month", "day", "hour", "minute", "second"],
+      "additionalProperties": false
+    },
+    "dst_fold": {
+      "type": "integer",
+      "enum": [0, 1],
+      "description": "Disambiguate repeated local hour after DST ends (with local_civil only)."
+    },
+    "is_male": { "type": "boolean", "default": false }
+  },
+  "additionalProperties": false,
+  "oneOf": [
+    { "required": ["birth_instant_utc"] },
+    { "required": ["local_civil"] }
+  ]
+}

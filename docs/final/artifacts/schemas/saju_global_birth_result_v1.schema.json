@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "saju_global_birth_result_v1",
+  "title": "Global birth resolution + engine output",
+  "type": "object",
+  "required": ["schema", "version", "resolution", "full_saju"],
+  "properties": {
+    "schema": { "const": "saju_global_birth_result_v1" },
+    "version": { "type": "string" },
+    "resolution": {
+      "type": "object",
+      "properties": {
+        "birth_instant_utc": { "type": "string" },
+        "iana_tz": { "type": "string" },
+        "local_iso": { "type": "string" },
+        "engine_inputs": {
+          "type": "object",
+          "properties": {
+            "year": { "type": "integer" },
+            "month": { "type": "integer" },
+            "day": { "type": "integer" },
+            "hour": { "type": "integer" }
+          }
+        },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "meta": { "type": "object" }
+      }
+    },
+    "full_saju": { "type": "object" }
+  }
+}
