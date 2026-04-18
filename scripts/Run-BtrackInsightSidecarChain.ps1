@@ -1,6 +1,7 @@
 # B-track insight sidecar chain: optional NotebookLM KPI refresh -> sidecar -> lens agreement -> inventory -> bridge index -> optional signoff.
 # Run from repo root (or any cwd; resolves workspace from script location).
 # Daily Windows task: scripts/register_btrack_insight_sidecar_chain_task.ps1 (default -SkipSignoff for unattended).
+# Codebook/codepack-only path (drift strict + inventory + bridge + signoff): scripts/Run-BtrackCodebookCodepackPromotionChain.ps1
 # After sidecar: scripts/build_btrack_prophecy_score_insight_overlay_view_v1.py (phase-3 observation join; not a gate input).
 
 param(
@@ -12,6 +13,10 @@ param(
 $ErrorActionPreference = "Stop"
 $root = if ($PSScriptRoot) { (Resolve-Path (Join-Path $PSScriptRoot "..")).Path } else { (Get-Location).Path }
 Set-Location -LiteralPath $root
+
+Write-Host "check_codebook_codepack_drift_v1.py --strict (gate before sidecar/signoff)" -ForegroundColor DarkGray
+& py "scripts/check_codebook_codepack_drift_v1.py" --strict
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if (-not $SkipNotebooklmKpi) {
     $mega = Join-Path $root "reports\notebooklm\btrack_mega_insights_10gb.jsonl"

@@ -1,14 +1,14 @@
 {
   "schema": "btrack_insight_bridge_inventory_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-18T18:44:08Z",
+  "generated_at_utc": "2026-04-18T19:04:57Z",
   "research_only": true,
   "workspace_root_hint": "C:/workspace",
   "prism": {
     "registry_path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
     "exists": true,
     "schema": "mkm12_prism_index_registry_v1",
-    "entry_count": 38
+    "entry_count": 40
   },
   "notebooklm_manifest": {
     "path": "docs/NotebookLM_sources_manifest.md",
@@ -34,8 +34,8 @@
       "role": "prism_registry",
       "path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
       "exists": true,
-      "bytes": 11851,
-      "mtime_utc": "2026-04-18T18:44:03Z",
+      "bytes": 12550,
+      "mtime_utc": "2026-04-18T19:04:52Z",
       "kind": "file"
     },
     {
@@ -316,8 +316,8 @@
       "role": "agent_memory_ssot",
       "path": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
       "exists": true,
-      "bytes": 14675,
-      "mtime_utc": "2026-04-18T07:18:58Z",
+      "bytes": 17027,
+      "mtime_utc": "2026-04-18T18:58:19Z",
       "kind": "file"
     },
     {
@@ -388,8 +388,8 @@
       "role": "insight_sidecar_chain_script",
       "path": "scripts/Run-BtrackInsightSidecarChain.ps1",
       "exists": true,
-      "bytes": 3035,
-      "mtime_utc": "2026-04-18T18:35:10Z",
+      "bytes": 3393,
+      "mtime_utc": "2026-04-18T19:04:47Z",
       "kind": "file"
     },
     {

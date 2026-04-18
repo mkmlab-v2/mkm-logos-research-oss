@@ -257,6 +257,20 @@
       "summary_ko": "코드북/코드팩·리포 지문 드리프트 검사(사인오프 입력)"
     },
     {
+      "id": "prism_script_run_btrack_codebook_codepack_promotion_chain",
+      "path": "scripts/Run-BtrackCodebookCodepackPromotionChain.ps1",
+      "prism_axis": "L",
+      "agent_access": "execute_observe",
+      "summary_ko": "드리프트 strict→인벤토리→프로모 브리지→선택 사인오프(사이드카 비의존 원클릭)"
+    },
+    {
+      "id": "prism_script_register_btrack_codebook_codepack_chain_task",
+      "path": "scripts/register_btrack_codebook_codepack_chain_task.ps1",
+      "prism_axis": "L",
+      "agent_access": "execute_observe",
+      "summary_ko": "코드북/코드팩 프로모 체인 Windows 작업 스케줄러 등록·제거"
+    },
+    {
       "id": "prism_script_refresh_prophecy_promotion_gates_dual",
       "path": "scripts/refresh_prophecy_promotion_gates_dual_v1.py",
       "prism_axis": "M",
