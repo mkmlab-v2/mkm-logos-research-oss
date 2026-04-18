@@ -1,14 +1,14 @@
 {
   "schema": "btrack_insight_bridge_inventory_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-18T18:24:05Z",
+  "generated_at_utc": "2026-04-18T18:29:48Z",
   "research_only": true,
   "workspace_root_hint": "C:/workspace",
   "prism": {
     "registry_path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
     "exists": true,
     "schema": "mkm12_prism_index_registry_v1",
-    "entry_count": 28
+    "entry_count": 29
   },
   "notebooklm_manifest": {
     "path": "docs/NotebookLM_sources_manifest.md",
@@ -34,8 +34,8 @@
       "role": "prism_registry",
       "path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
       "exists": true,
-      "bytes": 8738,
-      "mtime_utc": "2026-04-18T18:24:00Z",
+      "bytes": 9068,
+      "mtime_utc": "2026-04-18T18:29:42Z",
       "kind": "file"
     },
     {
@@ -286,6 +286,14 @@
       "exists": true,
       "bytes": 2574,
       "mtime_utc": "2026-04-18T18:18:43Z",
+      "kind": "file"
+    },
+    {
+      "role": "insight_sidecar_chain_task_register_script",
+      "path": "scripts/register_btrack_insight_sidecar_chain_task.ps1",
+      "exists": true,
+      "bytes": 2154,
+      "mtime_utc": "2026-04-18T18:29:34Z",
       "kind": "file"
     },
     {

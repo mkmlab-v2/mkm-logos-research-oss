@@ -1,5 +1,6 @@
 # B-track insight sidecar chain: optional NotebookLM KPI refresh -> sidecar -> lens agreement -> inventory -> bridge index -> optional signoff.
 # Run from repo root (or any cwd; resolves workspace from script location).
+# Daily Windows task: scripts/register_btrack_insight_sidecar_chain_task.ps1 (default -SkipSignoff for unattended).
 
 param(
     [switch]$SkipSignoff,

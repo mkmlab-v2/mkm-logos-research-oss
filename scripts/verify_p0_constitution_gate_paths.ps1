@@ -24,6 +24,7 @@ $required = @(
     "scripts\eval_btrack_insight_sidecar_lens_hit_agreement_v1.py",
     "docs\final\artifacts\btrack_insight_sidecar_lens_hit_agreement_v1_latest.json",
     "scripts\Run-BtrackInsightSidecarChain.ps1",
+    "scripts\register_btrack_insight_sidecar_chain_task.ps1",
     ".cursorrules",
     "AGENTS.md",
     "README.md",

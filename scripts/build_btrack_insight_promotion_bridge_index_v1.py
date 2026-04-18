@@ -89,6 +89,9 @@ def main() -> int:
             "dual_gate_refresh_script": _optional_link(ROOT / "scripts/refresh_prophecy_promotion_gates_dual_v1.py"),
             "signoff_build_script": _optional_link(ROOT / "scripts/build_btrack_promotion_signoff_packet_v1.py"),
             "insight_sidecar_chain_script": _optional_link(ROOT / "scripts/Run-BtrackInsightSidecarChain.ps1"),
+            "insight_sidecar_chain_task_register_script": _optional_link(
+                ROOT / "scripts/register_btrack_insight_sidecar_chain_task.ps1"
+            ),
         },
         "prophecy_score_insight_sidecar_phase3": {
             "latest_stub": _optional_link(ROOT / "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json"),

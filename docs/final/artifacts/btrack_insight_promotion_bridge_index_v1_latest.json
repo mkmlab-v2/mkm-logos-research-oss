@@ -1,7 +1,7 @@
 {
   "schema": "btrack_insight_promotion_bridge_index_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-18T18:23:09Z",
+  "generated_at_utc": "2026-04-18T18:29:48Z",
   "research_only": true,
   "description_ko": "B-track 통찰·렌즈·NotebookLM·명리 로그와 예언 승격 산출물 사이의 포인터 맵. scores/walkforward에 자동 합선하지 않음.",
   "inventory_ref": {
@@ -112,6 +112,10 @@
       },
       "insight_sidecar_chain_script": {
         "path": "scripts/Run-BtrackInsightSidecarChain.ps1",
+        "exists": true
+      },
+      "insight_sidecar_chain_task_register_script": {
+        "path": "scripts/register_btrack_insight_sidecar_chain_task.ps1",
         "exists": true
       }
     },
