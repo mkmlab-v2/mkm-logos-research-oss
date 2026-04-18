@@ -111,6 +111,12 @@ def main() -> int:
             ),
             "lens_hit_agreement_script": _optional_link(ROOT / "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"),
         },
+        "lg_washer_voice_golden": {
+            "train_jsonl": _optional_link(ROOT / "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl"),
+            "holdout_jsonl": _optional_link(ROOT / "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl"),
+            "split_manifest": _optional_link(ROOT / "docs/final/artifacts/lg_washer_voice_golden_split_manifest_v1.json"),
+            "validate_script": _optional_link(ROOT / "scripts/validate_lg_washer_voice_golden_jsonl_v1.py"),
+        },
         "ssot_docs": {
             "notebooklm_sources_manifest": _optional_link(ROOT / "docs/NotebookLM_sources_manifest.md"),
             "constitution_implementation_facts": _optional_link(

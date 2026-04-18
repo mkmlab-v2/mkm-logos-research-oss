@@ -1,8 +1,8 @@
 {
   "schema": "mkm12_prism_index_registry_v1",
-  "version": "1.0.8",
-  "ts_utc": "2026-04-20T01:00:00Z",
-  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. B-track phase-3 observation overlay view join 2026-04-19.",
+  "version": "1.0.9",
+  "ts_utc": "2026-04-20T02:00:00Z",
+  "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. LG washer voice golden validate + bridge pointers 2026-04-19.",
   "entries": [
     {
       "id": "prism_constitution_implementation_facts",
@@ -227,6 +227,20 @@
       "prism_axis": "M",
       "agent_access": "b_track_only",
       "summary_ko": "예언 점수+사이드카 행 조인 관측 산출물(latest)"
+    },
+    {
+      "id": "prism_script_validate_lg_washer_voice_golden_jsonl",
+      "path": "scripts/validate_lg_washer_voice_golden_jsonl_v1.py",
+      "prism_axis": "M",
+      "agent_access": "execute_observe",
+      "summary_ko": "LG 워셔 보이스 골든 train/holdout·manifest 검증 CLI"
+    },
+    {
+      "id": "prism_lg_washer_voice_golden_train_jsonl",
+      "path": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
+      "prism_axis": "M",
+      "agent_access": "read_only_strict",
+      "summary_ko": "LG 워셔 보이스 골든 학습 JSONL(v1)"
     }
   ]
 }

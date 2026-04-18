@@ -1,0 +1,44 @@
+# Smoke: LG washer voice golden JSONL + split manifest validation.
+name: LG washer voice golden smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/validate_lg_washer_voice_golden_jsonl_v1.py"
+      - "tests/test_lg_washer_voice_golden_validate_cli_v1.py"
+      - "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl"
+      - "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl"
+      - "docs/final/artifacts/lg_washer_voice_golden_split_manifest_v1.json"
+      - ".github/workflows/lg-washer-voice-golden-smoke.yml"
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/validate_lg_washer_voice_golden_jsonl_v1.py"
+      - "tests/test_lg_washer_voice_golden_validate_cli_v1.py"
+      - "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl"
+      - "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl"
+      - "docs/final/artifacts/lg_washer_voice_golden_split_manifest_v1.json"
+      - ".github/workflows/lg-washer-voice-golden-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lg-washer-voice-golden-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: pip install pytest
+      - name: pytest LG washer golden validate CLI
+        run: python -m pytest tests/test_lg_washer_voice_golden_validate_cli_v1.py -q --tb=short

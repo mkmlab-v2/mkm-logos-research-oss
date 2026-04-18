@@ -1,14 +1,14 @@
 {
   "schema": "btrack_insight_bridge_inventory_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-18T18:33:31Z",
+  "generated_at_utc": "2026-04-18T18:36:50Z",
   "research_only": true,
   "workspace_root_hint": "C:/workspace",
   "prism": {
     "registry_path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
     "exists": true,
     "schema": "mkm12_prism_index_registry_v1",
-    "entry_count": 32
+    "entry_count": 34
   },
   "notebooklm_manifest": {
     "path": "docs/NotebookLM_sources_manifest.md",
@@ -34,8 +34,8 @@
       "role": "prism_registry",
       "path": "docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json",
       "exists": true,
-      "bytes": 10081,
-      "mtime_utc": "2026-04-18T18:33:19Z",
+      "bytes": 10675,
+      "mtime_utc": "2026-04-18T18:36:41Z",
       "kind": "file"
     },
     {
@@ -188,8 +188,40 @@
       "role": "signoff_packet",
       "path": "docs/final/artifacts/btrack_promotion_signoff_packet_v1_latest.json",
       "exists": true,
-      "bytes": 4600,
-      "mtime_utc": "2026-04-18T18:04:25Z",
+      "bytes": 4733,
+      "mtime_utc": "2026-04-18T18:33:31Z",
+      "kind": "file"
+    },
+    {
+      "role": "lg_washer_voice_golden_train_jsonl",
+      "path": "docs/final/artifacts/lg_washer_voice_golden_train_v1.jsonl",
+      "exists": true,
+      "bytes": 79157,
+      "mtime_utc": "2026-04-18T14:30:03Z",
+      "kind": "file"
+    },
+    {
+      "role": "lg_washer_voice_golden_holdout_jsonl",
+      "path": "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl",
+      "exists": true,
+      "bytes": 39870,
+      "mtime_utc": "2026-04-18T14:30:03Z",
+      "kind": "file"
+    },
+    {
+      "role": "lg_washer_voice_golden_split_manifest",
+      "path": "docs/final/artifacts/lg_washer_voice_golden_split_manifest_v1.json",
+      "exists": true,
+      "bytes": 2434,
+      "mtime_utc": "2026-04-18T14:30:03Z",
+      "kind": "file"
+    },
+    {
+      "role": "lg_washer_voice_golden_validate_script",
+      "path": "scripts/validate_lg_washer_voice_golden_jsonl_v1.py",
+      "exists": true,
+      "bytes": 6266,
+      "mtime_utc": "2026-04-18T18:36:21Z",
       "kind": "file"
     },
     {
@@ -277,7 +309,7 @@
       "path": "docs/final/schemas/btrack_prophecy_score_insight_overlay_view_v1.schema.json",
       "exists": true,
       "bytes": 2103,
-      "mtime_utc": "2026-04-18T18:32:52Z",
+      "mtime_utc": "2026-04-18T18:35:10Z",
       "kind": "file"
     },
     {
@@ -285,7 +317,7 @@
       "path": "scripts/build_btrack_prophecy_score_insight_overlay_view_v1.py",
       "exists": true,
       "bytes": 5461,
-      "mtime_utc": "2026-04-18T18:32:48Z",
+      "mtime_utc": "2026-04-18T18:35:10Z",
       "kind": "file"
     },
     {
@@ -309,7 +341,7 @@
       "path": "scripts/Run-BtrackInsightSidecarChain.ps1",
       "exists": true,
       "bytes": 3035,
-      "mtime_utc": "2026-04-18T18:33:31Z",
+      "mtime_utc": "2026-04-18T18:35:10Z",
       "kind": "file"
     },
     {
