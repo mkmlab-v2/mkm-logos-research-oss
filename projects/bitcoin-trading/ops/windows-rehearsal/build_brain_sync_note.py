@@ -10,13 +10,16 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+WORKSPACE_ROOT = PROJECT_ROOT.parent.parent
 MEMORY_DIR = PROJECT_ROOT / "memory"
 KPI_DIR = MEMORY_DIR / "kpi"
 BRAIN_DIR = MEMORY_DIR / "brain_sync"
 WATCHDOG_LOG = MEMORY_DIR / "watchdog_direct.log"
 LATEST_KPI = KPI_DIR / "latest_kpi.json"
 STATUS_JSON = MEMORY_DIR / "trading_daemon_status.json"
-SLACK_ADVISORY_HISTORY = Path("C:/workspace/docs/final/artifacts/slack_advisory_history_latest.json")
+SLACK_ADVISORY_HISTORY = (
+    WORKSPACE_ROOT / "docs" / "final" / "artifacts" / "slack_advisory_history_latest.json"
+)
 
 
 def _safe_text(path: Path) -> str:

@@ -806,7 +806,6 @@ class CryptoNitroLiveStrategy:
         try:
             candidates = [
                 workspace_root / "projects" / "bitcoin-trading" / "config" / "trading_config.yaml",
-                Path("C:/workspace/projects/bitcoin-trading/config/trading_config.yaml"),
                 Path(__file__).resolve().parents[2] / "config" / "trading_config.yaml",
             ]
 

@@ -208,8 +208,8 @@ def store_strategic_news_event(
     content: 인간이 읽기 좋은 요약 텍스트
     metadata: 원본 JSON 전체 및 검색용 필드 포함
     """
-    # 워크스페이스 루트 기준 메모리 경로 사용 (기본값은 C:/workspace/memory/)
-    workspace_root = Path(__file__).resolve().parents[3]
+    # 워크스페이스 루트 기준 메모리 경로
+    workspace_root = Path(__file__).resolve().parents[4]
     memory_root = workspace_root / "memory"
     fbm = FileBasedMemory(memory_root=memory_root)
 

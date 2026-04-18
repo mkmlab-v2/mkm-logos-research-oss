@@ -20,7 +20,7 @@ from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
-# tools 패키지 임포트를 위해 워크스페이스 루트(C:/workspace)를 sys.path에 추가
+# tools 패키지 임포트를 위해 워크스페이스 루트를 sys.path에 추가
 WORKSPACE_ROOT = Path(__file__).resolve().parents[4]
 if str(WORKSPACE_ROOT) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_ROOT))
@@ -109,8 +109,8 @@ def store_failure_event(
         )
         return "skipped-no-file-based-memory"
 
-    # 워크스페이스 루트 기준 메모리 경로 사용 (기본값은 C:/workspace/memory/)
-    workspace_root = Path(__file__).resolve().parents[3]
+    # 워크스페이스 루트 기준 메모리 경로
+    workspace_root = Path(__file__).resolve().parents[4]
     memory_root = workspace_root / "memory"
     fbm = FileBasedMemory(memory_root=memory_root)
 

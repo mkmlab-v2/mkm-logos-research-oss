@@ -40,11 +40,12 @@ def _build_recommended_actions(project_root: Path, drift_items: list[str], missi
                 }
             )
         elif "workspace .cursorrules missing" in item:
+            cursor_path = project_root.parent.parent / ".cursorrules"
             actions.append(
                 {
                     "priority": "P1",
                     "title": "Restore workspace .cursorrules",
-                    "command_template": "Ensure C:/workspace/.cursorrules exists and is readable.",
+                    "command_template": f"Ensure .cursorrules exists and is readable: {cursor_path.as_posix()}",
                 }
             )
 

@@ -28,6 +28,14 @@ def _now() -> str:
     return datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
 
+def _artifact_rel_path(p: Path) -> str:
+    """Repo-relative posix path for portable hook JSON (no drive-letter literals)."""
+    try:
+        return p.resolve().relative_to(REPO.resolve()).as_posix()
+    except ValueError:
+        return p.as_posix()
+
+
 def build_hook(
     prophecy: dict[str, Any],
     status: dict[str, Any],
@@ -48,8 +56,8 @@ def build_hook(
             "this hook maps gate state + bias snapshot for the BTC daemon. Not a price forecast."
         ),
         "source_artifacts": {
-            "prophecy_v2": str(DEFAULT_PROPHECY.as_posix()),
-            "stability_status": str(DEFAULT_STATUS.as_posix()),
+            "prophecy_v2": _artifact_rel_path(DEFAULT_PROPHECY),
+            "stability_status": _artifact_rel_path(DEFAULT_STATUS),
         },
         "live_trading": {
             "lane": str(lt.get("lane", "biblical_only")),
