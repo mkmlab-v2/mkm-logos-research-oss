@@ -1,6 +1,6 @@
 {
   "schema": "lg_washer_voice_golden_split_manifest_v1",
-  "generated_at_utc": "2026-04-18T12:27:25Z",
+  "generated_at_utc": "2026-04-18T14:30:03Z",
   "research_only": true,
   "source_report": "docs/final/artifacts/lg_washer_integrity_validation_report_sample_v1.json",
   "execution_pack": "docs/final/artifacts/challenge_ax_vertical_lg_hs_execution_pack_v1.json",
