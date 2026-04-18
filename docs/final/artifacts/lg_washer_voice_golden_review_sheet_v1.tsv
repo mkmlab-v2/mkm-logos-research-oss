@@ -1,0 +1,301 @@
+﻿id	split	utterance	intent	slots_json	expected_action	data_tier	build_pack	conflict_hint	ambiguity_hint	review_status	reviewer_note
+utt_0001	holdout	표준 코스로 시작해줘	SET_COURSE	"{""course"":""표준""}"	accept	seed_demo_v1	expanded_300_v1				
+utt_0002	holdout	온도 40도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":40}"	accept	seed_demo_v1	expanded_300_v1				
+utt_0003	holdout	헹굼 2회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":2}"	accept	seed_demo_v1	expanded_300_v1				
+utt_0004	holdout	탈수는 약으로	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	seed_demo_v1	expanded_300_v1				
+utt_0005	holdout	30분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":30}"	accept	seed_demo_v1	expanded_300_v1				
+utt_0006	holdout	끝나면 앱으로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	seed_demo_v1	expanded_300_v1				
+utt_0007	holdout	지금 상태 알려줘	QUERY_STATUS	{}	accept	seed_demo_v1	expanded_300_v1				
+utt_0008	holdout	멈췄다가 다시 시작해줘	PAUSE_CYCLE	{}	accept	seed_demo_v1	expanded_300_v1				
+utt_0009	holdout	쾌속으로 30분만 돌려줘	SET_COURSE	"{""course"":""쾌속"",""duration_min"":30}"	accept	seed_demo_v1	expanded_300_v1				
+utt_0010	holdout	울 코스로 바꾸고 탈수는 약하게	SET_COURSE	"{""course"":""울"",""spin_level"":""약""}"	accept	seed_demo_v1	expanded_300_v1				
+utt_0011	holdout	울 코스로 60도 해줘	SET_COURSE	"{""course"":""울"",""temperature_c"":60}"	reask_or_reject	seed_demo_v1	expanded_300_v1	course_temperature_conflict			
+utt_0012	holdout	헹굼 10회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":10}"	reask_or_reject	seed_demo_v1	expanded_300_v1	rinse_out_of_range			
+utt_0013	holdout	온도 95도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":95}"	reask_or_reject	seed_demo_v1	expanded_300_v1	temperature_out_of_profile			
+utt_0014	holdout	시간은 0분으로	SET_DURATION	"{""duration_min"":0}"	reask_or_reject	seed_demo_v1	expanded_300_v1	duration_out_of_range			
+utt_0015	holdout	빨리 끝나는 걸로	SET_COURSE	{}	reask	seed_demo_v1	expanded_300_v1		course_not_specified		
+utt_0016	holdout	아까처럼 다시 해줘	RESUME_CYCLE	{}	reask	seed_demo_v1	expanded_300_v1		reference_missing		
+utt_0017	holdout	밤이라 조용하게 돌려줘	SET_SPIN_LEVEL	{}	reask	seed_demo_v1	expanded_300_v1		spin_level_not_explicit		
+utt_0018	holdout	표준으로 하고 1시간 뒤에 시작, 끝나면 알려줘	SET_COURSE	"{""course"":""표준"",""delay_start_min"":60,""notify_channel"":""app""}"	accept	seed_demo_v1	expanded_300_v1				
+utt_0019	holdout	중지하고 쾌속으로 다시 시작해	STOP_CYCLE	"{""course"":""쾌속""}"	accept	seed_demo_v1	expanded_300_v1				
+utt_0020	holdout	빨래 다 되면 알려만 줘	NOTIFY_WHEN_DONE	{}	reask	seed_demo_v1	expanded_300_v1		notification_channel_not_specified		
+s300_CANCELOPTION_00271	train	예약 취소해줘	CANCEL_OPTION	"{""cancel_target"":""delay_start""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_CANCELOPTION_00272	train	지연 시작 취소	CANCEL_OPTION	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_CANCELOPTION_00273	train	알림만 끄줘	CANCEL_OPTION	"{""cancel_target"":""delay_start""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_CANCELOPTION_00274	train	예약 취소해줘	CANCEL_OPTION	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_CANCELOPTION_00275	train	지연 시작 취소	CANCEL_OPTION	"{""cancel_target"":""delay_start""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_CANCELOPTION_00276	train	알림만 끄줘	CANCEL_OPTION	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_CANCELOPTION_00277	train	예약 취소해줘	CANCEL_OPTION	"{""cancel_target"":""delay_start""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_CANCELOPTION_00278	holdout	지연 시작 취소	CANCEL_OPTION	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_CANCELOPTION_00279	holdout	알림만 끄줘	CANCEL_OPTION	"{""cancel_target"":""delay_start""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_CANCELOPTION_00280	holdout	예약 취소해줘	CANCEL_OPTION	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00168	train	10분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":10}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00169	train	23분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":23}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00170	train	36분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":36}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00171	train	49분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":49}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00172	train	62분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":62}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00173	train	75분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":75}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00174	train	88분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":88}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00175	train	101분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":101}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00176	train	114분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":114}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00177	train	127분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":127}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00178	train	140분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":140}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00179	train	153분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":153}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00180	train	166분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":166}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00181	train	179분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":179}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00182	train	12분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":12}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00183	train	25분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":25}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00184	train	38분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":38}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00185	holdout	51분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":51}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00186	holdout	64분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":64}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00187	holdout	77분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":77}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00188	holdout	90분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":90}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00189	holdout	103분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":103}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00190	holdout	116분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":116}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00191	holdout	129분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":129}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_DELAYSTART_00192	holdout	142분 뒤에 시작해줘	DELAY_START	"{""delay_start_min"":142}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00193	train	끝나면 app로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00194	train	끝나면 tv로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""tv""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00195	train	끝나면 app로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00196	train	끝나면 tv로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""tv""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00197	train	끝나면 app로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00198	train	끝나면 tv로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""tv""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00199	train	끝나면 app로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00200	train	끝나면 tv로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""tv""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00201	train	끝나면 알려줘	NOTIFY_WHEN_DONE	{}	reask	synthetic_combinatorial_v1	expanded_300_v1		notification_channel_not_specified		
+s300_NOTIFYWHENDONE_00202	train	끝나면 tv로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""tv""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00203	train	끝나면 app로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00204	train	끝나면 tv로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""tv""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00205	train	끝나면 app로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00206	train	끝나면 tv로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""tv""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00207	train	끝나면 app로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00208	train	끝나면 tv로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""tv""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00209	holdout	끝나면 app로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00210	holdout	끝나면 알려줘	NOTIFY_WHEN_DONE	{}	reask	synthetic_combinatorial_v1	expanded_300_v1		notification_channel_not_specified		
+s300_NOTIFYWHENDONE_00211	holdout	끝나면 app로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00212	holdout	끝나면 tv로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""tv""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00213	holdout	끝나면 app로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""app""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_NOTIFYWHENDONE_00214	holdout	끝나면 tv로 알려줘	NOTIFY_WHEN_DONE	"{""notify_channel"":""tv""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_PAUSECYCLE_00228	train	잠깐 멈춰줘	PAUSE_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_PAUSECYCLE_00229	train	세탁 멈춰	PAUSE_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_PAUSECYCLE_00230	train	일시정지해줘	PAUSE_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_PAUSECYCLE_00231	train	잠깐 멈춰줘	PAUSE_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_PAUSECYCLE_00232	train	세탁 멈춰	PAUSE_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_PAUSECYCLE_00233	train	일시정지해줘	PAUSE_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_PAUSECYCLE_00234	train	잠깐 멈춰줘	PAUSE_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_PAUSECYCLE_00235	holdout	세탁 멈춰	PAUSE_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_PAUSECYCLE_00236	holdout	일시정지해줘	PAUSE_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00215	train	지금 상태 알려줘	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00216	train	남은 시간 얼마야	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00217	train	지금 어느 단계야	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00218	train	에러 있어?	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00219	train	문 열어도 돼?	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00220	train	지금 상태 알려줘	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00221	train	남은 시간 얼마야	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00222	train	지금 어느 단계야	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00223	train	에러 있어?	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00224	holdout	문 열어도 돼?	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00225	holdout	지금 상태 알려줘	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00226	holdout	남은 시간 얼마야	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_QUERYSTATUS_00227	holdout	지금 어느 단계야	QUERY_STATUS	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_RESUMECYCLE_00237	train	다시 시작해줘	RESUME_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_RESUMECYCLE_00238	train	이어서 돌려줘	RESUME_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_RESUMECYCLE_00239	train	재개해줘	RESUME_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_RESUMECYCLE_00240	train	다시 시작해줘	RESUME_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_RESUMECYCLE_00241	train	이어서 돌려줘	RESUME_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_RESUMECYCLE_00242	train	재개해줘	RESUME_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_RESUMECYCLE_00243	train	다시 시작해줘	RESUME_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_RESUMECYCLE_00244	holdout	이어서 돌려줘	RESUME_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_RESUMECYCLE_00245	holdout	재개해줘	RESUME_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00001	train	표준 코스로 실행해줘	SET_COURSE	"{""course"":""표준""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00002	train	쾌속 코스로 실행해줘	SET_COURSE	"{""course"":""쾌속""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00003	train	울 코스로 실행해줘	SET_COURSE	"{""course"":""울""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00004	train	불림 코스로 실행해줘	SET_COURSE	"{""course"":""불림""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00005	train	헹굼만 코스로 실행해줘	SET_COURSE	"{""course"":""헹굼만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00006	train	탈수만 코스로 실행해줘	SET_COURSE	"{""course"":""탈수만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00007	train	표준 코스로 실행해줘	SET_COURSE	"{""course"":""표준""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00008	train	쾌속 코스로 실행해줘	SET_COURSE	"{""course"":""쾌속""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00009	train	울 코스로 실행해줘	SET_COURSE	"{""course"":""울""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00010	train	불림 코스로 실행해줘	SET_COURSE	"{""course"":""불림""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00011	train	빨리 끝나는 걸로 해줘	SET_COURSE	{}	reask	synthetic_combinatorial_v1	expanded_300_v1		course_not_specified		
+s300_SETCOURSE_00012	train	탈수만 코스로 실행해줘	SET_COURSE	"{""course"":""탈수만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00013	train	표준 코스로 90도 돌려줘	SET_COURSE	"{""course"":""표준"",""temperature_c"":90}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	course_temperature_conflict			
+s300_SETCOURSE_00014	train	쾌속 코스로 실행해줘	SET_COURSE	"{""course"":""쾌속""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00015	train	울 코스로 실행해줘	SET_COURSE	"{""course"":""울""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00016	train	불림 코스로 실행해줘	SET_COURSE	"{""course"":""불림""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00017	train	헹굼만 코스로 실행해줘	SET_COURSE	"{""course"":""헹굼만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00018	train	탈수만 코스로 실행해줘	SET_COURSE	"{""course"":""탈수만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00019	train	표준 코스로 실행해줘	SET_COURSE	"{""course"":""표준""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00020	train	쾌속 코스로 실행해줘	SET_COURSE	"{""course"":""쾌속""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00021	train	울 코스로 실행해줘	SET_COURSE	"{""course"":""울""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00022	train	빨리 끝나는 걸로 해줘	SET_COURSE	{}	reask	synthetic_combinatorial_v1	expanded_300_v1		course_not_specified		
+s300_SETCOURSE_00023	train	헹굼만 코스로 실행해줘	SET_COURSE	"{""course"":""헹굼만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00024	train	탈수만 코스로 실행해줘	SET_COURSE	"{""course"":""탈수만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00025	train	표준 코스로 실행해줘	SET_COURSE	"{""course"":""표준""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00026	train	쾌속 코스로 90도 돌려줘	SET_COURSE	"{""course"":""쾌속"",""temperature_c"":90}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	course_temperature_conflict			
+s300_SETCOURSE_00027	train	울 코스로 실행해줘	SET_COURSE	"{""course"":""울""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00028	train	불림 코스로 실행해줘	SET_COURSE	"{""course"":""불림""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00029	train	헹굼만 코스로 실행해줘	SET_COURSE	"{""course"":""헹굼만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00030	train	탈수만 코스로 실행해줘	SET_COURSE	"{""course"":""탈수만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00031	train	표준 코스로 실행해줘	SET_COURSE	"{""course"":""표준""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00032	train	쾌속 코스로 실행해줘	SET_COURSE	"{""course"":""쾌속""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00033	train	빨리 끝나는 걸로 해줘	SET_COURSE	{}	reask	synthetic_combinatorial_v1	expanded_300_v1		course_not_specified		
+s300_SETCOURSE_00034	train	불림 코스로 실행해줘	SET_COURSE	"{""course"":""불림""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00035	holdout	헹굼만 코스로 실행해줘	SET_COURSE	"{""course"":""헹굼만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00036	holdout	탈수만 코스로 실행해줘	SET_COURSE	"{""course"":""탈수만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00037	holdout	표준 코스로 실행해줘	SET_COURSE	"{""course"":""표준""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00038	holdout	쾌속 코스로 실행해줘	SET_COURSE	"{""course"":""쾌속""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00039	holdout	울 코스로 90도 돌려줘	SET_COURSE	"{""course"":""울"",""temperature_c"":90}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	course_temperature_conflict			
+s300_SETCOURSE_00040	holdout	불림 코스로 실행해줘	SET_COURSE	"{""course"":""불림""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00041	holdout	헹굼만 코스로 실행해줘	SET_COURSE	"{""course"":""헹굼만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00042	holdout	탈수만 코스로 실행해줘	SET_COURSE	"{""course"":""탈수만""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00043	holdout	표준 코스로 실행해줘	SET_COURSE	"{""course"":""표준""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETCOURSE_00044	holdout	빨리 끝나는 걸로 해줘	SET_COURSE	{}	reask	synthetic_combinatorial_v1	expanded_300_v1		course_not_specified		
+s300_SETDURATION_00143	train	시간 15분으로 맞춰줘	SET_DURATION	"{""duration_min"":15}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00144	train	시간 22분으로 맞춰줘	SET_DURATION	"{""duration_min"":22}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00145	train	시간 29분으로 맞춰줘	SET_DURATION	"{""duration_min"":29}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00146	train	시간 36분으로 맞춰줘	SET_DURATION	"{""duration_min"":36}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00147	train	시간 43분으로 맞춰줘	SET_DURATION	"{""duration_min"":43}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00148	train	시간 50분으로 맞춰줘	SET_DURATION	"{""duration_min"":50}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00149	train	시간 57분으로 맞춰줘	SET_DURATION	"{""duration_min"":57}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00150	train	시간 64분으로 맞춰줘	SET_DURATION	"{""duration_min"":64}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00151	train	시간 71분으로 맞춰줘	SET_DURATION	"{""duration_min"":71}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00152	train	시간 78분으로 맞춰줘	SET_DURATION	"{""duration_min"":78}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00153	train	시간은 0분으로 해줘	SET_DURATION	"{""duration_min"":0}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	duration_out_of_range			
+s300_SETDURATION_00154	train	시간 92분으로 맞춰줘	SET_DURATION	"{""duration_min"":92}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00155	train	시간 99분으로 맞춰줘	SET_DURATION	"{""duration_min"":99}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00156	train	시간 106분으로 맞춰줘	SET_DURATION	"{""duration_min"":106}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00157	train	시간 113분으로 맞춰줘	SET_DURATION	"{""duration_min"":113}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00158	train	시간 120분으로 맞춰줘	SET_DURATION	"{""duration_min"":120}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00159	train	시간 127분으로 맞춰줘	SET_DURATION	"{""duration_min"":127}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00160	holdout	시간 134분으로 맞춰줘	SET_DURATION	"{""duration_min"":134}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00161	holdout	시간 141분으로 맞춰줘	SET_DURATION	"{""duration_min"":141}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00162	holdout	시간 148분으로 맞춰줘	SET_DURATION	"{""duration_min"":148}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00163	holdout	시간 155분으로 맞춰줘	SET_DURATION	"{""duration_min"":155}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00164	holdout	시간은 0분으로 해줘	SET_DURATION	"{""duration_min"":0}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	duration_out_of_range			
+s300_SETDURATION_00165	holdout	시간 169분으로 맞춰줘	SET_DURATION	"{""duration_min"":169}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00166	holdout	시간 176분으로 맞춰줘	SET_DURATION	"{""duration_min"":176}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETDURATION_00167	holdout	시간 183분으로 맞춰줘	SET_DURATION	"{""duration_min"":183}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00081	train	헹굼 1회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":1}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00082	train	헹굼 2회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":2}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00083	train	헹굼 3회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":3}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00084	train	헹굼 4회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":4}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00085	train	헹굼 5회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":5}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00086	train	헹굼 1회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":1}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00087	train	헹굼 2회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":2}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00088	train	헹굼 3회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":3}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00089	train	헹굼 4회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":4}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00090	train	헹굼 10회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":10}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	rinse_out_of_range			
+s300_SETRINSECOUNT_00091	train	헹굼 1회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":1}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00092	train	헹굼 2회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":2}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00093	train	헹굼 3회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":3}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00094	train	헹굼 4회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":4}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00095	train	헹굼 5회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":5}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00096	train	헹굼 1회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":1}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00097	train	헹굼 2회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":2}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00098	train	헹굼 3회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":3}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00099	train	헹굼 4회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":4}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00100	train	헹굼 10회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":10}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	rinse_out_of_range			
+s300_SETRINSECOUNT_00101	train	헹굼 1회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":1}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00102	holdout	헹굼 2회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":2}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00103	holdout	헹굼 3회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":3}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00104	holdout	헹굼 4회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":4}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00105	holdout	헹굼 5회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":5}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00106	holdout	헹굼 1회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":1}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00107	holdout	헹굼 2회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":2}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00108	holdout	헹굼 3회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":3}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00109	holdout	헹굼 4회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":4}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETRINSECOUNT_00110	holdout	헹굼 10회로 해줘	SET_RINSE_COUNT	"{""rinse_count"":10}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	rinse_out_of_range			
+s300_SETSPINLEVEL_00111	train	탈수는 약으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00112	train	탈수는 중으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""중""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00113	train	탈수는 강으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""강""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00114	train	탈수는 약으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00115	train	탈수는 중으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""중""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00116	train	탈수는 강으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""강""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00117	train	탈수는 약으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00118	train	탈수는 중으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""중""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00119	train	탈수는 강으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""강""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00120	train	탈수는 약으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00121	train	탈수는 중으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""중""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00122	train	밤엔 조용히 돌려줘	SET_SPIN_LEVEL	{}	reask	synthetic_combinatorial_v1	expanded_300_v1		spin_level_not_explicit		
+s300_SETSPINLEVEL_00123	train	탈수는 약으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00124	train	탈수는 중으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""중""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00125	train	탈수는 강으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""강""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00126	train	탈수는 약으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00127	train	탈수는 중으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""중""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00128	train	탈수는 강으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""강""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00129	train	탈수는 약으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00130	train	탈수는 중으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""중""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00131	train	탈수는 강으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""강""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00132	train	탈수는 약으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00133	train	탈수는 중으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""중""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00134	holdout	밤엔 조용히 돌려줘	SET_SPIN_LEVEL	{}	reask	synthetic_combinatorial_v1	expanded_300_v1		spin_level_not_explicit		
+s300_SETSPINLEVEL_00135	holdout	탈수는 약으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00136	holdout	탈수는 중으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""중""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00137	holdout	탈수는 강으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""강""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00138	holdout	탈수는 약으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00139	holdout	탈수는 중으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""중""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00140	holdout	탈수는 강으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""강""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00141	holdout	탈수는 약으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""약""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETSPINLEVEL_00142	holdout	탈수는 중으로 해줘	SET_SPIN_LEVEL	"{""spin_level"":""중""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00045	train	온도 30도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":30}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00046	train	온도 35도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":35}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00047	train	온도 40도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":40}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00048	train	온도 45도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":45}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00049	train	온도 50도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":50}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00050	train	온도 55도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":55}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00051	train	온도 60도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":60}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00052	train	온도 20도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":20}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00053	train	온도 95도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":95}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	temperature_out_of_profile			
+s300_SETTEMPERATURE_00054	train	온도 33도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":33}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00055	train	온도 44도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":44}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00056	train	온도 50도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":50}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00057	train	온도 30도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":30}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00058	train	온도 35도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":35}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00059	train	온도 40도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":40}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00060	train	온도 45도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":45}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00061	train	온도 50도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":50}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00062	train	온도 95도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":95}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	temperature_out_of_profile			
+s300_SETTEMPERATURE_00063	train	온도 60도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":60}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00064	train	온도 20도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":20}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00065	train	온도 25도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":25}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00066	train	온도 33도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":33}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00067	train	온도 44도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":44}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00068	train	온도 50도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":50}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00069	train	온도 30도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":30}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00070	holdout	온도 35도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":35}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00071	holdout	온도 95도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":95}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	temperature_out_of_profile			
+s300_SETTEMPERATURE_00072	holdout	온도 45도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":45}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00073	holdout	온도 50도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":50}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00074	holdout	온도 55도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":55}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00075	holdout	온도 60도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":60}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00076	holdout	온도 20도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":20}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00077	holdout	온도 25도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":25}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00078	holdout	온도 33도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":33}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00079	holdout	온도 44도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":44}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_SETTEMPERATURE_00080	holdout	온도 95도로 맞춰줘	SET_TEMPERATURE	"{""temperature_c"":95}"	reask_or_reject	synthetic_combinatorial_v1	expanded_300_v1	temperature_out_of_profile			
+s300_STARTCYCLE_00257	train	지금 시작해줘	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00258	train	바로 돌려줘	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00259	train	세탁 시작	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00260	train	지금 시작해줘	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00261	train	바로 돌려줘	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00262	train	세탁 시작	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00263	train	지금 시작해줘	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00264	train	바로 돌려줘	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00265	train	세탁 시작	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00266	holdout	지금 시작해줘	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00267	holdout	바로 돌려줘	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00268	holdout	세탁 시작	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00269	holdout	지금 시작해줘	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STARTCYCLE_00270	holdout	바로 돌려줘	START_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STOPCYCLE_00246	train	완전히 멈춰줘	STOP_CYCLE	"{""course"":""쾌속""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STOPCYCLE_00247	train	세탁 종료해줘	STOP_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STOPCYCLE_00248	train	중지해줘	STOP_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STOPCYCLE_00249	train	완전히 멈춰줘	STOP_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STOPCYCLE_00250	train	세탁 종료해줘	STOP_CYCLE	"{""course"":""쾌속""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STOPCYCLE_00251	train	중지해줘	STOP_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STOPCYCLE_00252	train	완전히 멈춰줘	STOP_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STOPCYCLE_00253	train	세탁 종료해줘	STOP_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STOPCYCLE_00254	holdout	중지해줘	STOP_CYCLE	"{""course"":""쾌속""}"	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STOPCYCLE_00255	holdout	완전히 멈춰줘	STOP_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				
+s300_STOPCYCLE_00256	holdout	세탁 종료해줘	STOP_CYCLE	{}	accept	synthetic_combinatorial_v1	expanded_300_v1				

@@ -91,7 +91,9 @@
     "augmented_stress_preview_jsonl": "docs/final/artifacts/lg_washer_voice_augmented_stress_preview_v1.jsonl",
     "augmented_manifest": "docs/final/artifacts/lg_washer_voice_augmented_manifest_v1.json",
     "golden_validate_script": "scripts/validate_lg_washer_voice_golden_jsonl_v1.py",
-    "augmented_builder_script": "scripts/build_lg_washer_voice_augmented_jsonl_v1.py"
+    "augmented_builder_script": "scripts/build_lg_washer_voice_augmented_jsonl_v1.py",
+    "golden_review_sheet_tsv": "docs/final/artifacts/lg_washer_voice_golden_review_sheet_v1.tsv",
+    "golden_review_sheet_export_script": "scripts/export_lg_washer_golden_review_sheet_v1.py"
   },
   "sample_records": [
     { "id": "utt_0001", "utterance": "표준 코스로 시작해줘", "intent": "SET_COURSE", "slots": { "course": "표준" }, "secondary_intents": ["START_CYCLE"], "expected_action": "accept" },
@@ -153,6 +155,8 @@
     "scripts/build_lg_washer_voice_augmented_jsonl_v1.py",
     "docs/final/artifacts/lg_washer_voice_augmented_manifest_v1.json",
     "docs/final/artifacts/lg_washer_voice_augmented_stress_preview_v1.jsonl",
+    "docs/final/artifacts/lg_washer_voice_golden_review_sheet_v1.tsv",
+    "scripts/export_lg_washer_golden_review_sheet_v1.py",
     "docs/final/artifacts/k_startup_challenge_ax_vertical_pre_submit_checklist_v1.json"
   ]
 }
