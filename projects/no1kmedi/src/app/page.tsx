@@ -3,9 +3,6 @@ import { siteCopy } from "@/content/siteCopy";
 import { SiteHeader } from "@/components/SiteHeader";
 import { FreeValidationLeadForm } from "@/components/FreeValidationLeadForm";
 import { ContactActionLinks } from "@/components/ContactActionLinks";
-import { AdvancedConsultForm } from "@/components/AdvancedConsultForm";
-import { PatientPreSurveyForm } from "@/components/PatientPreSurveyForm";
-import { BasicHealthChatCard } from "@/components/BasicHealthChatCard";
 
 export const dynamic = "force-dynamic";
 
@@ -22,30 +19,31 @@ export default function HomePage() {
         <section className="hero" id="top" aria-labelledby="hero-title">
           <div className="hero-orb hero-orb-a" aria-hidden="true" />
           <div className="hero-orb hero-orb-b" aria-hidden="true" />
+          <div className="hero-grid-overlay" aria-hidden="true" />
           <span className="eyebrow">{c.hero.eyebrow}</span>
           <h1 id="hero-title">{c.hero.title}</h1>
           <p className="hero-lead">{c.hero.subtitle}</p>
           <div className="hero-cta">
-            <a className="btn btn-primary" href="#patient-intake">
-              {c.hero.cta_primary}
+            <a className="btn btn-primary" href="/consumer">
+              일반인 시작하기
             </a>
-            <a className="btn btn-ghost" href="#advanced-consult">
-              {c.hero.cta_secondary}
+            <a className="btn btn-ghost" href="/clinician">
+              한의사 시작하기
             </a>
           </div>
           <div className="hero-role-cta">
-            <article className="card">
+            <article className="card card-lift">
               <h3>환자/보호자</h3>
-              <p>기본 건강·체질·통증 정보를 먼저 입력하면 의료진 검토를 빠르게 시작할 수 있습니다.</p>
-              <a className="btn btn-primary" href="#patient-intake">
-                사전문진 입력
+              <p>질문형 AI 상담으로 건강정보를 먼저 정리하고, 제휴 한의원 연결까지 한 번에 이어집니다.</p>
+              <a className="btn btn-primary" href="/consumer">
+                일반인 상담 입장
               </a>
             </article>
-            <article className="card">
+            <article className="card card-lift">
               <h3>한의사/의료진</h3>
-              <p>사상의학 중심 CDSS 화면에서 근거 기반 초안을 확인하고 최종 판단을 확정합니다.</p>
-              <a className="btn btn-ghost" href="#advanced-consult">
-                의료진 화면 이동
+              <p>입력된 환자 정보를 바탕으로 citation 기반 차트 초안을 만들고 최종 판단은 의료진이 확정합니다.</p>
+              <a className="btn btn-ghost" href="/clinician">
+                의료진 보조 입장
               </a>
             </article>
           </div>
@@ -53,6 +51,32 @@ export default function HomePage() {
             <span role="listitem">근거 출처 매핑</span>
             <span role="listitem">의료진 최종판단 고정</span>
             <span role="listitem">일반인 무료 사전 리포트</span>
+          </div>
+        </section>
+
+        <section id="brand-motion" aria-labelledby="brand-motion-title">
+          <div className="brand-motion-grid">
+            <article className="brand-motion-copy">
+              <p className="premium-label">Brand Motion</p>
+              <h2 id="brand-motion-title">대외 홍보용 시네마틱 섹션</h2>
+              <p className="section-lead">
+                일반인 대상 랜딩의 첫 인상을 강화하기 위해 모션 영상과 반응형 글래스 레이어를 결합했습니다.
+                의료진 보조라는 핵심 메시지는 유지하면서도 브랜드 완성도를 높입니다.
+              </p>
+              <div className="hero-proof" role="list" aria-label="브랜드 모션 특징">
+                <span role="listitem">Autoplay mute motion</span>
+                <span role="listitem">Glass depth overlay</span>
+                <span role="listitem">Enterprise-style visual rhythm</span>
+              </div>
+            </article>
+            <div className="brand-motion-stage card-lift" aria-hidden="true">
+              <div className="brand-motion-canvas" />
+              <div className="brand-motion-beam brand-motion-beam-a" />
+              <div className="brand-motion-beam brand-motion-beam-b" />
+              <div className="brand-motion-grain" />
+              <div className="brand-motion-tint" />
+              <div className="brand-motion-label">JEMA AI MOTION SCENE</div>
+            </div>
           </div>
         </section>
 
@@ -79,11 +103,11 @@ export default function HomePage() {
             ))}
           </div>
           <div className="section-cta">
-            <a className="btn btn-primary" href="#patient-intake">
-              {c.public_solution.cta_primary}
+            <a className="btn btn-primary" href="/consumer">
+              일반인 AI 상담으로 이동
             </a>
-            <a className="btn btn-ghost" href="#contact">
-              {c.public_solution.cta_secondary}
+            <a className="btn btn-ghost" href="/clinician">
+              의료진 보조 화면 보기
             </a>
           </div>
         </section>
@@ -136,24 +160,26 @@ export default function HomePage() {
             한 화면 흐름 안에서 연결합니다.
           </p>
           <div className="premium-grid">
-            <article className="premium-panel">
+            <article className="premium-panel card-lift">
               <p className="premium-label">Public</p>
               <h3>쉽게 이해되는 AI 한의학 안내</h3>
-              <p>입력 부담을 줄인 문진과 결과 요약으로 일반인도 서비스 가치를 빠르게 체감합니다.</p>
+              <p>챗 인터페이스와 사전문진이 연결되어 일반인이 즉시 체감 가능한 상담 흐름으로 진입합니다.</p>
             </article>
-            <article className="premium-panel">
+            <article className="premium-panel card-lift">
               <p className="premium-label">Clinical</p>
               <h3>차트·진료 준비 보조로 바로 연결</h3>
-              <p>문진/상담 맥락을 정리해 의료진이 기록 반영과 환자 설명에 집중할 수 있도록 돕습니다.</p>
+              <p>환자 입력 데이터와 임상 정보를 분리 레인으로 요약해 의료진 기록 정확도를 높입니다.</p>
             </article>
           </div>
+          <div className="section-cta">
+            <a className="btn btn-primary" href="/consumer">
+              일반인 체험 시작
+            </a>
+            <a className="btn btn-ghost" href="/clinician">
+              의료진 체험 시작
+            </a>
+          </div>
         </section>
-
-        <BasicHealthChatCard />
-
-        <PatientPreSurveyForm />
-
-        <AdvancedConsultForm />
 
         <section id="contact" aria-labelledby="contact-title">
           <h2 id="contact-title">{c.contact.title}</h2>

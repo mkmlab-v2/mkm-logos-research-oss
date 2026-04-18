@@ -9,6 +9,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import {
+  CONSTITUTION_QUESTIONS,
+  CONSTITUTION_SURVEY_SCHEMA_VERSION,
+  CORE_CONSTITUTION_QUESTION_IDS,
+  DEFAULT_CONSTITUTION_ANSWERS,
+  type ConstitutionQuestionId,
+  type ConstitutionQuestionOption,
+} from "@/lib/constitution-survey-schema";
 
 type PatientPreSurveyResponse = {
   success: boolean;
@@ -55,6 +63,9 @@ export function PatientPreSurveyForm() {
   const [duration, setDuration] = useState("");
   const [sleepPattern, setSleepPattern] = useState("");
   const [digestionPattern, setDigestionPattern] = useState("");
+  const [constitutionAnswers, setConstitutionAnswers] =
+    useState<Record<ConstitutionQuestionId, ConstitutionQuestionOption | "">>(DEFAULT_CONSTITUTION_ANSWERS);
+  const [showAdvancedConstitutionSurvey, setShowAdvancedConstitutionSurvey] = useState(false);
   const [redFlags, setRedFlags] = useState({
     chestPain: false,
     breathingTrouble: false,
@@ -74,11 +85,24 @@ export function PatientPreSurveyForm() {
   const [report, setReport] = useState<PersonalSolutionReport | null>(null);
 
   const hasRedFlag = useMemo(() => Object.values(redFlags).some(Boolean), [redFlags]);
+  const answeredConstitutionCount = useMemo(
+    () => Object.values(constitutionAnswers).filter((v) => v === "a" || v === "b").length,
+    [constitutionAnswers],
+  );
+  const answeredCoreConstitutionCount = useMemo(
+    () => CORE_CONSTITUTION_QUESTION_IDS.filter((id) => constitutionAnswers[id] === "a" || constitutionAnswers[id] === "b").length,
+    [constitutionAnswers],
+  );
+  const isCoreConstitutionSurveyComplete = answeredCoreConstitutionCount === CORE_CONSTITUTION_QUESTION_IDS.length;
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!consentPrivacy || !consentMedical) {
       setError("개인정보/의료정보 수집 동의를 모두 체크해 주세요.");
+      return;
+    }
+    if (!isCoreConstitutionSurveyComplete) {
+      setError("체질 핵심 설문 5문항을 모두 선택해 주세요.");
       return;
     }
 
@@ -97,8 +121,10 @@ export function PatientPreSurveyForm() {
           pain_scale_0_10: Number(painScale),
           symptom_duration: duration.trim(),
           constitution_survey: {
+            schema_version: CONSTITUTION_SURVEY_SCHEMA_VERSION,
             sleep_pattern: sleepPattern.trim(),
             digestion_pattern: digestionPattern.trim(),
+            questionnaire_answers: constitutionAnswers,
           },
           red_flags: redFlags,
           consultation_goal: goal.trim(),
@@ -168,6 +194,8 @@ export function PatientPreSurveyForm() {
       setDuration("");
       setSleepPattern("");
       setDigestionPattern("");
+      setConstitutionAnswers(DEFAULT_CONSTITUTION_ANSWERS);
+      setShowAdvancedConstitutionSurvey(false);
       setRedFlags({
         chestPain: false,
         breathingTrouble: false,
@@ -273,6 +301,70 @@ export function PatientPreSurveyForm() {
           소화 패턴
           <input value={digestionPattern} onChange={(e) => setDigestionPattern(e.target.value)} placeholder="예: 식후 더부룩함" />
         </label>
+        <fieldset className="patient-survey-full patient-survey-flags">
+          <legend>체질 추정 설문 (핵심 5문항 필수)</legend>
+          <p className="section-lead">
+            핵심 설문 완료: {answeredCoreConstitutionCount}/{CORE_CONSTITUTION_QUESTION_IDS.length}
+          </p>
+          {CONSTITUTION_QUESTIONS.filter((item) => CORE_CONSTITUTION_QUESTION_IDS.includes(item.id)).map((item) => (
+            <div key={item.id}>
+              <p>{item.id}. {item.prompt}</p>
+              <label>
+                <input
+                  type="radio"
+                  name={`constitution-${item.id}`}
+                  value="a"
+                  checked={constitutionAnswers[item.id] === "a"}
+                  onChange={() => setConstitutionAnswers((prev) => ({ ...prev, [item.id]: "a" }))}
+                />
+                A. {item.optionA}
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={`constitution-${item.id}`}
+                  value="b"
+                  checked={constitutionAnswers[item.id] === "b"}
+                  onChange={() => setConstitutionAnswers((prev) => ({ ...prev, [item.id]: "b" }))}
+                />
+                B. {item.optionB}
+              </label>
+            </div>
+          ))}
+          <button type="button" className="btn btn-ghost" onClick={() => setShowAdvancedConstitutionSurvey((prev) => !prev)}>
+            {showAdvancedConstitutionSurvey ? "정밀 15문항 닫기" : "정밀 15문항(선택) 열기"}
+          </button>
+          {showAdvancedConstitutionSurvey ? (
+            <div>
+              <p className="section-lead">정밀 설문 완료: {answeredConstitutionCount}/{CONSTITUTION_QUESTIONS.length}</p>
+              {CONSTITUTION_QUESTIONS.filter((item) => !CORE_CONSTITUTION_QUESTION_IDS.includes(item.id)).map((item) => (
+                <div key={item.id}>
+                  <p>{item.id}. {item.prompt}</p>
+                  <label>
+                    <input
+                      type="radio"
+                      name={`constitution-${item.id}`}
+                      value="a"
+                      checked={constitutionAnswers[item.id] === "a"}
+                      onChange={() => setConstitutionAnswers((prev) => ({ ...prev, [item.id]: "a" }))}
+                    />
+                    A. {item.optionA}
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name={`constitution-${item.id}`}
+                      value="b"
+                      checked={constitutionAnswers[item.id] === "b"}
+                      onChange={() => setConstitutionAnswers((prev) => ({ ...prev, [item.id]: "b" }))}
+                    />
+                    B. {item.optionB}
+                  </label>
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </fieldset>
         <label className="patient-survey-full">
           이번 상담에서 가장 해결하고 싶은 점
           <textarea value={goal} onChange={(e) => setGoal(e.target.value)} rows={3} placeholder="원하는 상담 방향을 적어 주세요." />
@@ -354,6 +446,11 @@ export function PatientPreSurveyForm() {
           {busy ? "제출 중..." : "사전 문진 제출"}
         </button>
       </form>
+      <div className="consult-notice">
+        <p>[HYPO] 본 설문 기반 체질 분류는 탐색적 가설(B-Track) 성격의 예비 분류입니다.</p>
+        <p>[NON-MEDICAL] 본 결과는 의학적 진단/처방을 대체하지 않으며 최종 확진은 한의사 임상 진단이 필요합니다.</p>
+        <p>[NON-DETERMINISTIC] 본 결과는 미래를 확정하는 결정론적 예측 지표가 아닙니다.</p>
+      </div>
 
       {status ? <p className="lead-success">{status}</p> : null}
       {report ? (

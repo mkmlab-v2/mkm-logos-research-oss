@@ -10,6 +10,12 @@
 4. **Cursor SSH**: “실행만 하는 주방” — 레시피 수정은 로컬. 비유·공통 원칙: 루트 `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`.
 5. **`start_live_trading.py`**: 패키지 루트(`projects/bitcoin-trading/start_live_trading.py`) — **`scripts/start_24h_daemon.py`를 같은 Python으로 subprocess 위임**한다. PM2·런북에서 예전에 VPS 전용 경로만 쓰던 경우, **동일 파일을 Git SSOT로 맞춘다**.
 
+## VPS 모노레포 경로 (Fact-Safe·배포 — 혼동 방지)
+
+- 로컬 `ship_to_vps.ps1` 기본 **VPS 레포 루트**는 **`/opt/mkm-lab-workspace-v2`** (`VpsRepoPath`). 다른 경로(`/opt/mkm-destiny-*` 등)에 클론이 더 있어도, **PM2가 실제로 쓰는 cwd**가 본선이다.
+- **반드시** `pm2 show <앱이름>`으로 `exec cwd`·`script path`를 확인한 뒤, 그 모노레포 루트에서만 `git pull`·`scripts/sync_fact_safe_risk_profile.py`·`memory/v2/risk/` 갱신을 한다. 다른 클론에서만 sync 하면 **본선 프로세스가 그 JSON을 읽지 않을 수 있다.**
+- 금융 예언 → 리스크 JSON 반영 절차: **`docs/final/FINANCIAL_PROPHECY_VPS_LIVE_TRADING_DIRECTIVE_V1.md`**.
+
 ## 더 읽기
 
 - 루트: `../../AGENTS.md` · `../../docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`

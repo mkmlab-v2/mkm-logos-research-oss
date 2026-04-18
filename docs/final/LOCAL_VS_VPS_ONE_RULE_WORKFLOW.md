@@ -25,7 +25,7 @@
 
 VPS에 **비트코인만 잘린 폴더**만 두지 말고, **모노레포 전체를 한 번 클론**한 뒤 실행은 **`projects/bitcoin-trading`만** 쓴다. `git pull` 한 번에 **래퍼(`start_live_trading.py`)·데몬·`AGENTS.md`**가 같이 따라오고, 레포 밖 단독 나무(`/opt/bitcoin-trading`만)와 **파일 누락·경로 불일치**가 반복되지 않는다.
 
-1. VPS에 모노레포 클론 (이미 있으면 그 경로 사용; 예: `/opt/mkm-destiny-ai` — **실측 `pwd`·런북**이 우선).
+1. VPS에 모노레포 클론 (이미 있으면 그 경로 사용). **여러 클론이 있으면** 로컬 `scripts/deploy/ship_to_vps.ps1` 기본 `VpsRepoPath`는 **`/opt/mkm-lab-workspace-v2`** 이다. 그래도 **최종 본선은 `pm2 show <앱이름>`의 `exec cwd`(모노레포 루트)** 로 확정한다 — destiny 등 **다른 경로**에서만 `git pull`/`sync` 하면 본선 프로세스와 파일이 어긋난다. Fact-Safe 리스크 JSON 반영 절차: `docs/final/FINANCIAL_PROPHECY_VPS_LIVE_TRADING_DIRECTIVE_V1.md`.
 2. 예전 **단독 `/opt/bitcoin-trading` 트리**에만 있던 것 중 레포에 없는 것만 이식: **`config/trading_config.yaml`** 커스텀, **`.env`**(비밀) — 클론 루트 또는 `projects/bitcoin-trading/` **한 곳**만 팀 규칙으로 고정.
 3. **PM2:** **`cwd`** = **모노레포 루트**, **`script`** = **`projects/bitcoin-trading/start_live_trading.py`**.
 4. 기동 확인 후 옛 단독 트리는 **백업만 남기고 중지**(혼선 방지).
@@ -40,7 +40,7 @@ VPS에 **비트코인만 잘린 폴더**만 두지 말고, **모노레포 전체
 
 ## VPS에 SSH로 들어갔을 때 (순서 고정)
 
-1. **레포 루트로 이동** (`cd` 경로는 런북·실측 `pwd` 기준).
+1. **레포 루트로 이동** (`cd` 경로는 런북·실측 `pwd` 기준; **여러 클론이면 `pm2 show`의 exec cwd**가 본선).
 2. **`git status`** — 예상치 못한 수정이 있으면, 로컬과 맞춘 뒤에만 진행한다.
 3. **`git pull`** (또는 팀이 정한 브랜치 동기화 방식). **선택:** 레포 루트에서 `bash scripts/vps_git_worktree_clean.sh --dry-run`으로 미리보기 후, 동일 스크립트(옵션 없음)로 `fetch` + `pull --ff-only` + 알려진 추적 파일 드리프트 복구.
 4. **런북대로만** 서비스 재로드 — 예: jema12 본선은 `docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md`. mkmlife/no1kmedi는 `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md`와 **절차 혼용 금지**.

@@ -96,12 +96,31 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Emit sasang independent lens v0 JSON from dynamics JSONL tail.")
     ap.add_argument("--input-jsonl", type=Path, default=DEFAULT_JSONL)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--allow-fallback",
+        action="store_true",
+        help="Allow fallback payload or missing mapping_target for manual debugging only.",
+    )
     args = ap.parse_args()
 
     row = _tail_jsonl_row(args.input_jsonl)
     src = "sasang_dynamics_jsonl_tail"
     in_path = str(args.input_jsonl.resolve())
+    mt = str((row or {}).get("mapping_target") or "").strip().lower() if isinstance(row, dict) else ""
+    valid_mapping = mt in _MAPPING_TO_SCORE
+    if row is not None and (not valid_mapping) and (not args.allow_fallback):
+        print(
+            "sasang lens hard-gate: mapping_target missing/invalid in source row "
+            f"({args.input_jsonl}). Use --allow-fallback only for manual debugging."
+        )
+        return 2
     if row is None:
+        if not args.allow_fallback:
+            print(
+                "sasang lens hard-gate: no valid source row found "
+                f"(missing/empty {args.input_jsonl}). Use --allow-fallback only for manual debugging."
+            )
+            return 2
         row = {
             "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00"),
             "hypothesis_tier": "B",

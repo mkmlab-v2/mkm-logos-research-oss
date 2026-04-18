@@ -136,6 +136,29 @@ main {
   overflow: hidden;
 }
 
+.app-entry-banner {
+  margin: 0 0 0.95rem;
+  display: inline-flex;
+  gap: 0.45rem;
+  align-items: center;
+  font-size: 0.82rem;
+  color: #b9cfc8;
+  border: 1px solid rgba(185, 207, 200, 0.28);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  background: rgba(9, 16, 14, 0.66);
+}
+
+.app-entry-banner a {
+  color: #9fe3d2;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.app-entry-banner a:hover {
+  text-decoration: underline;
+}
+
 .hero::before {
   content: "";
   position: absolute;

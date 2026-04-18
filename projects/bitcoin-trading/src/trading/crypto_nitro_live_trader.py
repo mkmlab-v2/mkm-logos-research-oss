@@ -23,10 +23,11 @@ import time
 import yaml
 
 # 경로 설정
-workspace_root = Path(__file__).parent.parent.parent.parent
+project_root = Path(__file__).resolve().parents[2]  # .../projects/bitcoin-trading
+workspace_root = project_root.parents[1]            # .../workspace
+sys.path.insert(0, str(project_root))
 sys.path.insert(0, str(workspace_root))
 sys.path.insert(0, str(workspace_root / "scripts"))
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # 모듈 import
 from src.api.binance_client import BinanceFuturesClient, USE_CCXT

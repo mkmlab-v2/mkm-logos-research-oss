@@ -24,8 +24,10 @@ type PreSurveyPayload = {
   pain_scale_0_10: number;
   symptom_duration: string;
   constitution_survey?: {
+    schema_version?: string;
     sleep_pattern?: string;
     digestion_pattern?: string;
+    questionnaire_answers?: Record<string, "a" | "b" | "">;
   };
   red_flags?: {
     chestPain?: boolean;
@@ -227,8 +229,10 @@ export async function POST(request: NextRequest) {
       },
       lane_a_profile: {
         constitution_survey: {
+          schema_version: payload.constitution_survey?.schema_version || "",
           sleep_pattern: payload.constitution_survey?.sleep_pattern || "",
           digestion_pattern: payload.constitution_survey?.digestion_pattern || "",
+          questionnaire_answers: payload.constitution_survey?.questionnaire_answers || {},
         },
       },
       safety: {

@@ -3,8 +3,25 @@ import { siteCopy } from "@/content/siteCopy";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://jema-ai.com"),
   title: siteCopy.seo.title,
   description: siteCopy.seo.description,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: siteCopy.seo.title,
+    description: siteCopy.seo.description,
+    url: "https://jema-ai.com",
+    siteName: siteCopy.header.brand_name,
+    locale: "ko_KR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteCopy.seo.title,
+    description: siteCopy.seo.description,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

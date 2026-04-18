@@ -22,6 +22,12 @@ jobs:
         run: npm ci
         working-directory: projects/no1kmedi/payapp-api
 
+      - name: Production API diagnostics (health + router aliases)
+        env:
+          API_BASE: https://api.no1kmedi.com
+        run: node diagnose-prod.mjs
+        working-directory: projects/no1kmedi/payapp-api
+
       - name: Remote smoke (api.no1kmedi.com)
         env:
           SMOKE_ALLOW_UNAUTH_PROTECTED: "1"

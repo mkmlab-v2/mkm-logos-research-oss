@@ -100,3 +100,54 @@ Scope: Separate `Track C (IP licensing and insight products)` from `Track B (dir
 2. Publish Track C landing copy with legal-safe value framing.
 3. Add Track C section to P0 tracker as a first-class lane with explicit gates.
 
+## 8) External Messaging (Public Version, Fixed)
+
+Use this paragraph as the default public description:
+
+`MKM is a governance engine that integrates multi-lens signals (Biblical, Myeongri, and Sasang) to quantify market risk posture. The current operating scope is decision-support for exposure controls such as position and leverage caps, not buy/sell recommendations. Outputs are delivered with reproducible artifacts and verification logs. The service does not provide investment advice and does not guarantee returns.`
+
+Short copy options:
+
+- Risk Warning First, Not Trade Advice.
+- Signal Integration for Risk Posture, Without Return Assurance Claims.
+- Artifact-backed, Reproducible, Governance-driven.
+
+Mandatory disclaimer lines:
+
+- Not investment advice.
+- No guarantee of returns.
+- Final decisions remain with client operators.
+
+## 9) Internal R&D Positioning (Vision Version, Fixed)
+
+Use this paragraph as the internal status baseline:
+
+`Production currently operates up to macro risk-cap governance driven by the integrated governor. Personal DOB-coupled cross-attention execution remains in R&D. Before any promotion to production, the path is: (1) strict data contract and de-identification policy, (2) offline model validation with walk-forward, drift, and ablation gates, (3) non-execution shadow operation, and (4) promotion only after statistical, operational, and legal gates are all satisfied. Demo/template outputs must be labeled as research until promotion gates pass.`
+
+Promotion milestones:
+
+1. **Data Contract**: personal-signal schema + de-identification policy locked.
+2. **Modeling**: cross-attention candidate training (offline only).
+3. **Validation**: walk-forward, drift, ablation, fail-safe all green.
+4. **Shadow**: 4-8 weeks non-execution warning mode.
+5. **Promotion Gate**: statistical + operational + legal triple gate pass.
+
+## 10) Claim Boundary (Do/Don't)
+
+Allowed language:
+
+- risk warning
+- scenario posture
+- governance layer
+- reproducible artifacts
+- decision support
+- exposure control
+- drawdown-aware policy
+
+Disallowed language:
+
+- buy/sell signal provider
+- return-assurance claims / outperformance-assurance claims
+- deterministic prediction claims
+- "DOB-based auto-trading lock already running in production"
+

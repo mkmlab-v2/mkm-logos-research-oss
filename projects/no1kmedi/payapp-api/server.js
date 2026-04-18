@@ -871,7 +871,7 @@ app.get("/health", (_req, res) => {
   });
 });
 
-app.get("/api/ai/router-status", (_req, res) => {
+function sendRouterStatus(_req, res) {
   const localConfigured = !!LOCAL_LLM_URL;
   const n8nConfigured = !!N8N_WEBHOOK_URL;
   const openrouterConfigured = !!OPENROUTER_API_KEY;
@@ -900,7 +900,12 @@ app.get("/api/ai/router-status", (_req, res) => {
       MKMLIFE_LOCAL_LLM_MODEL: String(process.env.MKMLIFE_LOCAL_LLM_MODEL || "").trim() || null,
     },
   });
-});
+}
+
+/** Canonical + aliases (some reverse proxies or older deploys only matched shallow paths). */
+app.get("/api/ai/router-status", sendRouterStatus);
+app.get("/api/router-status", sendRouterStatus);
+app.get("/router-status", sendRouterStatus);
 
 app.get("/api/ai/n8n-contract", (_req, res) => {
   res.json({

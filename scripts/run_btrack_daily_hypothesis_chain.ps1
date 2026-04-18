@@ -6,6 +6,8 @@
 #   Program: pwsh.exe
 #   Arguments: -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\run_btrack_daily_hypothesis_chain.ps1"
 #   Working directory: C:\workspace
+# Recommended registrar:
+#   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:40"
 # Dawn scoring: use -IncludeDawnScore or manually:
 #   py scripts/build_btrack_prophecy_score_from_ohlcv.py
 #   py scripts/eval_prophecy_hit_rate_v1.py --run-mode price --score-json docs/final/artifacts/btrack_prophecy_score_latest.json

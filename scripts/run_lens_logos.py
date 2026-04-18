@@ -69,9 +69,20 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Emit logos independent lens v0 JSON from 4D batch sample.")
     ap.add_argument("--batch-json", type=Path, default=DEFAULT_BATCH)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--allow-fallback",
+        action="store_true",
+        help="Allow empty fallback payload when no 4D vectors are available.",
+    )
     args = ap.parse_args()
 
     vecs, total_rows = _aggregate_batch(args.batch_json)
+    if not vecs and not args.allow_fallback:
+        print(
+            "logos lens hard-gate: no pipeline1_simple_4d vectors found "
+            f"(input={args.batch_json}). Use --allow-fallback only for manual debugging."
+        )
+        return 2
     direction, conf = _scores_from_vecs(vecs)
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 

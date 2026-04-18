@@ -7,7 +7,7 @@
 
 import json
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Dict, Any, Optional, List
 
 from scripts.core.solar_term_ssot import calculate_month_pillar_ssot_fallback
@@ -134,11 +134,6 @@ class PerfectManseryeok:
         year_pillar = self.calculate_year_pillar(year, month, day)
         year_gan = year_pillar[0]
         
-        # ✅ sajupy 검증 결과 반영: 1973년 12월 10일 = 갑자월
-        # sajupy는 24절기를 분 단위로 정밀 계산하므로, 특정 날짜에 대한 예외 처리
-        if year == 1973 and month == 12 and day == 10:
-            return "갑자"  # sajupy 검증 완료 (24절기 분 단위 정밀도)
-        
         month_pillar, _ = calculate_month_pillar_ssot_fallback(
             year_stem=year_gan,
             month=month,
@@ -146,7 +141,14 @@ class PerfectManseryeok:
         )
         return month_pillar
     
-    def calculate_day_pillar(self, year: int, month: int, day: int) -> str:
+    def calculate_day_pillar(
+        self,
+        year: int,
+        month: int,
+        day: int,
+        hour: int = 0,
+        day_rollover_policy: str = "midnight_00",
+    ) -> str:
         """
         일주 계산 (기준일 재설정: 2012-03-28 = 무자일)
         
@@ -154,6 +156,15 @@ class PerfectManseryeok:
         1. 표준 만세력 데이터베이스 (use_standard_db=True일 때) ⭐ 최우선
         2. 계산 로직 (Fallback)
         """
+        target_date = datetime(year, month, day)
+        effective_target_date = target_date
+        if day_rollover_policy == "zi_23" and hour >= 23:
+            # zi_23 policy: day pillar rolls at 23:00.
+            effective_target_date = target_date + timedelta(days=1)
+            year = effective_target_date.year
+            month = effective_target_date.month
+            day = effective_target_date.day
+
         # 1. 표준 만세력 데이터베이스 우선 사용 ⭐ 최우선
         if self.use_standard_db and self._get_exact_ganji:
             try:
@@ -173,8 +184,7 @@ class PerfectManseryeok:
         # ✅ 수정: 2012년 3월 28일 = 무자일(24번)을 기준점으로 사용
         # 이 기준일은 사용자가 검증한 정확한 날짜입니다.
         
-        target_date = datetime(year, month, day)
-        days_diff = (target_date - self.base_date).days
+        days_diff = (effective_target_date - self.base_date).days
         
         # 60갑자 인덱스 계산 (음수 처리 포함)
         current_idx = (self.base_gapja_idx + days_diff) % 60
@@ -253,9 +263,16 @@ class PerfectManseryeok:
         
         return daewoon_list
     
-    def calculate_full_saju_perfect(self, year: int, month: int, day: int,
-                                   hour: int, is_solar: bool = False,
-                                   is_male: bool = True) -> Dict[str, Any]:
+    def calculate_full_saju_perfect(
+        self,
+        year: int,
+        month: int,
+        day: int,
+        hour: int,
+        is_solar: bool = False,
+        is_male: bool = True,
+        day_rollover_policy: str = "midnight_00",
+    ) -> Dict[str, Any]:
         """
         전체 사주 계산 (완벽한 최종)
         
@@ -268,7 +285,13 @@ class PerfectManseryeok:
         month_pillar = self.calculate_month_pillar(year, month, day)
         
         # 일주
-        day_pillar = self.calculate_day_pillar(year, month, day)
+        day_pillar = self.calculate_day_pillar(
+            year=year,
+            month=month,
+            day=day,
+            hour=hour,
+            day_rollover_policy=day_rollover_policy,
+        )
         
         # 시주
         hour_pillar = self.calculate_hour_pillar(day_pillar, hour)
@@ -326,7 +349,8 @@ class PerfectManseryeok:
                 "day": day,
                 "hour": hour,
                 "is_solar": is_solar,
-                "is_male": is_male
+                "is_male": is_male,
+                "day_rollover_policy": day_rollover_policy,
             },
             "saju": {
                 "year": year_pillar,

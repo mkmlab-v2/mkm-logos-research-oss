@@ -1,4 +1,5 @@
-# Daily B-Track: build OHLCV score JSON + price-mode hit-rate eval + overlay ablation spike (unless -SkipOverlaySpike).
+# Daily B-Track: build OHLCV score JSON + price-mode hit-rate eval.
+# Optional -IncludeOverlaySpike: refreshes prophecy_restoration_spike_latest.json (threshold per script default / sweep policy).
 # Does NOT train models, promote canonical weights, or touch live trading.
 #
 # Prerequisites: py on PATH; KOSPI CSV at research/market_data/kospi_daily_external_yf.csv;
@@ -8,7 +9,6 @@
 #
 # Example (Task Scheduler):
 #   powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\run_daily_prophecy_eval_and_report.ps1" -IncludeDatedArchive
-# Overlay ablation spike runs after eval by default; pass -SkipOverlaySpike for a faster pass.
 
 param(
     [string]$WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path,
@@ -20,7 +20,8 @@ param(
     [switch]$IncludeDatedArchive,
     [switch]$IncludeProxyEval,
     [string]$ProxyRegistryGlob = $env:MKM_PROPHECY_PROXY_REGISTRY_GLOB,
-    [switch]$SkipOverlaySpike
+    # After score+eval: refresh prophecy_restoration_spike_latest.json (default overlay threshold from script).
+    [switch]$IncludeOverlaySpike
 )
 
 $ErrorActionPreference = "Stop"
@@ -62,6 +63,14 @@ if ($LASTEXITCODE -ne 0) {
     throw "eval_prophecy_hit_rate_v1.py (price) exit $LASTEXITCODE"
 }
 
+if ($IncludeOverlaySpike) {
+    Write-Host "==> run_prophecy_restoration_spike.py"
+    & py scripts\run_prophecy_restoration_spike.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "run_prophecy_restoration_spike.py exit $LASTEXITCODE"
+    }
+}
+
 if ($IncludeProxyEval) {
     $proxyOut = Join-Path $artifactsDir "prophecy_hit_rate_eval_proxy_latest.json"
     $proxyArgs = @(
@@ -76,22 +85,6 @@ if ($IncludeProxyEval) {
     & py @proxyArgs
     if ($LASTEXITCODE -ne 0) {
         throw "eval_prophecy_hit_rate_v1.py (proxy) exit $LASTEXITCODE"
-    }
-}
-
-$overlaySpikeRan = $false
-if (-not $SkipOverlaySpike) {
-    $spikeScript = Join-Path $WorkspaceRoot "scripts\run_prophecy_restoration_spike.py"
-    if (-not (Test-Path -LiteralPath $spikeScript)) {
-        Write-Warning "Overlay spike skipped: missing $spikeScript"
-    }
-    else {
-        Write-Host "==> run_prophecy_restoration_spike.py"
-        & py $spikeScript
-        if ($LASTEXITCODE -ne 0) {
-            throw "run_prophecy_restoration_spike.py exit $LASTEXITCODE"
-        }
-        $overlaySpikeRan = $true
     }
 }
 
@@ -128,7 +121,6 @@ $logObj = [ordered]@{
     n_evaluated                = $n
     price_directional_hit_rate = $hit
     low_hit_threshold          = $LowHitRateWarningThreshold
-    overlay_spike_ran          = $overlaySpikeRan
 }
 ($logObj | ConvertTo-Json -Compress) | Add-Content -LiteralPath $logPath -Encoding UTF8
 

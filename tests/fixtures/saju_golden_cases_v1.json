@@ -20,6 +20,23 @@
       }
     },
     {
+      "id": "kr_confirmed_non_boundary_1973_1209_0430",
+      "input": {
+        "year": 1973,
+        "month": 12,
+        "day": 9,
+        "hour": 4,
+        "minute": 30,
+        "tz": "Asia/Seoul",
+        "is_solar": true,
+        "is_male": true,
+        "secondary_day_rollover_policy": "midnight_00"
+      },
+      "expected": {
+        "status": "CONFIRMED"
+      }
+    },
+    {
       "id": "kr_review_near_solar_term_anchor_1973_1207_0430",
       "input": {
         "year": 1973,
@@ -77,6 +94,23 @@
         "reasons_contains": [
           "near_zi_boundary_window"
         ]
+      }
+    },
+    {
+      "id": "kr_confirmed_zi23_policy_1973_1210_2331",
+      "input": {
+        "year": 1973,
+        "month": 12,
+        "day": 10,
+        "hour": 23,
+        "minute": 31,
+        "tz": "Asia/Seoul",
+        "is_solar": true,
+        "is_male": true,
+        "secondary_day_rollover_policy": "zi_23"
+      },
+      "expected": {
+        "status": "CONFIRMED"
       }
     }
   ]

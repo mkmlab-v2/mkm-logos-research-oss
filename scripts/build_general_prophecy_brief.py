@@ -44,6 +44,12 @@ def _brief(doc: dict[str, Any]) -> str:
             lines.append(f"- **n_evaluated:** `{m.get('n_evaluated')}`")
             lines.append(f"- **eval_generated_at_utc:** `{bdoc.get('generated_at_utc')}`")
             lines.append("")
+            lines.append("### Ops KPI")
+            lines.append("")
+            lines.append(f"- **pending_count:** `{m.get('pending_count')}`")
+            lines.append(f"- **overdue_count:** `{m.get('overdue_count')}`")
+            lines.append(f"- **median_days_to_deadline:** `{m.get('median_days_to_deadline')}`")
+            lines.append("")
     for q in doc.get("questions") or []:
         if not isinstance(q, dict):
             continue

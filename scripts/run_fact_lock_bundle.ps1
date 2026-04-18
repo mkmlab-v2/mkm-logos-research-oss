@@ -61,6 +61,7 @@ $ohaengRegimeSnapshotGateChain = Join-Path $workspaceRoot 'scripts\run_4d_to_oha
 $trackCEvidenceScript = Join-Path $workspaceRoot 'scripts\build_track_c_evidence_pack_v1.py'
 $trackCCopyGuardScript = Join-Path $workspaceRoot 'scripts\check_track_c_copy_guard_v1.py'
 $trackCClaimValidatorScript = Join-Path $workspaceRoot 'scripts\validate_track_c_landing_claims_v1.py'
+$sajuGoldenReplayScript = Join-Path $workspaceRoot 'scripts\run_saju_golden_replay.py'
 
 if (-not (Test-Path -LiteralPath $prophecyBundle)) {
     throw "Bundle script not found: $prophecyBundle"
@@ -145,6 +146,15 @@ if (-not (Test-Path -LiteralPath $trackCClaimValidatorScript)) {
 }
 Write-Host '== Fact-Lock: validate_track_c_landing_claims_v1.py ==' -ForegroundColor Cyan
 & py $trackCClaimValidatorScript --evidence-pack (Join-Path $workspaceRoot 'docs\final\artifacts\track_c_evidence_pack_latest.json')
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+}
+
+if (-not (Test-Path -LiteralPath $sajuGoldenReplayScript)) {
+    throw "Saju golden replay script not found: $sajuGoldenReplayScript"
+}
+Write-Host '== Fact-Lock: run_saju_golden_replay.py ==' -ForegroundColor Cyan
+& py $sajuGoldenReplayScript
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }

@@ -455,9 +455,21 @@ class CryptoNitroLiveStrategy:
         if _ap:
             self.insight_regime_alias_path: Path = Path(_ap)
         else:
-            from .insight_observation_gate import default_alias_path
+            # Gate 모듈이 없는 환경에서도 기본 비활성 경로로 안전하게 부팅한다.
+            fallback_alias_path = workspace_root / "data" / "myeongni" / "regime_aliases.json"
+            if self.insight_observation_gate_enabled:
+                try:
+                    from .insight_observation_gate import default_alias_path
 
-            self.insight_regime_alias_path = default_alias_path(workspace_root)
+                    self.insight_regime_alias_path = default_alias_path(workspace_root)
+                except ImportError:
+                    logger.warning(
+                        "⚠️ insight_observation_gate 모듈 없음: fallback alias path 사용 (%s)",
+                        fallback_alias_path,
+                    )
+                    self.insight_regime_alias_path = fallback_alias_path
+            else:
+                self.insight_regime_alias_path = fallback_alias_path
         self._insight_regime_aliases: Dict[str, str] = {}
         self._insight_filter_rules: List[Dict[str, Any]] = []
         

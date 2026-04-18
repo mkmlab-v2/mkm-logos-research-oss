@@ -48,8 +48,10 @@ export type PatientPreSurveyRecord = {
   };
   lane_a_profile: {
     constitution_survey: {
+      schema_version?: string;
       sleep_pattern: string;
       digestion_pattern: string;
+      questionnaire_answers?: Record<string, "a" | "b" | "">;
     };
   };
   safety: {

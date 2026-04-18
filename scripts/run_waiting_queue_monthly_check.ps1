@@ -20,7 +20,11 @@ param(
     [string]$SecondaryFailThresholdPct = "",
     [switch]$SkipKospiSasangDynamicsVerify,
     [switch]$SkipBiblicalExternalRealityLockedProfile,
-    [switch]$StrictGeneralExplainabilityQualityGate
+    [switch]$StrictGeneralExplainabilityQualityGate,
+    [switch]$AllowLensFallback,
+    [switch]$UseWalkForwardBackfilledHistory,
+    [string]$WalkForwardBackfillStartDate = "",
+    [string]$WalkForwardBackfillEndDate = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -98,7 +102,23 @@ $dailySitrepPath = "$workspace\docs\final\artifacts\waiting_queue_daily_sitrep_l
 $generalExplainabilityQualityPath = "$workspace\docs\final\artifacts\general_prophecy_explainability_quality_v1_latest.json"
 $btrackRecommendationPackPath = "$workspace\reports\notebooklm\btrack_insight_recommendation_pack_latest.json"
 $btrackMonthlyBriefBuilderPath = "$workspace\scripts\build_btrack_monthly_brief_from_recommendation.py"
+$walkForwardEvalScriptPath = "$workspace\scripts\eval_btrack_walk_forward_hit_rate_v1.py"
+$evalComparisonScriptPath = "$workspace\scripts\build_prophecy_eval_comparison_report_v1.py"
+$walkForwardHistoryBuilderScriptPath = "$workspace\scripts\build_fusion_shadow_daily_history_v1.py"
+$walkForwardRawHistoryPath = "$workspace\docs\final\artifacts\independent_lens_fusion_shadow_history.jsonl"
+$walkForwardBackfilledHistoryPath = "$workspace\docs\final\artifacts\independent_lens_fusion_shadow_daily_backfilled_latest.jsonl"
+$walkForwardEvalLatestPath = "$workspace\docs\final\artifacts\prophecy_hit_rate_eval_walk_forward_30d_2026-04-17.json"
+$evalComparisonLatestPath = "$workspace\docs\final\artifacts\prophecy_eval_comparison_report_latest.json"
+$walkForwardSyntheticRatioWarnThreshold = 0.30
+if ($env:WALK_FORWARD_SYNTHETIC_RATIO_WARN_THRESHOLD) {
+    try {
+        $walkForwardSyntheticRatioWarnThreshold = [double]$env:WALK_FORWARD_SYNTHETIC_RATIO_WARN_THRESHOLD
+    } catch {
+        $walkForwardSyntheticRatioWarnThreshold = 0.30
+    }
+}
 $softFailNotes = New-Object System.Collections.Generic.List[string]
+$allowLensFallbackState = if ($AllowLensFallback) { "enabled" } else { "disabled" }
 
 function Add-SoftFailNote([string]$message) {
     $softFailNotes.Add($message) | Out-Null
@@ -266,11 +286,20 @@ if ($LASTEXITCODE -ne 0) {
 
 if (-not $skipBiblicalExternalRealityEffective) {
     Write-Host "[waiting-queue-check] Biblical external reality locked profile + dual-gate stability (staged-search defaults when present)..."
-    & "$workspace\scripts\Run-BiblicalExternalRealityLockedProfile.ps1" -UseStagedSearchDefaults
-    if ($LASTEXITCODE -ne 0) {
-        throw "Run-BiblicalExternalRealityLockedProfile.ps1 failed with exit code $LASTEXITCODE"
+    $biblicalProfileScript = "$workspace\scripts\Run-BiblicalExternalRealityLockedProfile.ps1"
+    $biblicalGateScript = "$workspace\scripts\check_biblical_external_reality_gate_v1.py"
+    if ((Test-Path -LiteralPath $biblicalProfileScript) -and (Test-Path -LiteralPath $biblicalGateScript)) {
+        & $biblicalProfileScript -UseStagedSearchDefaults
+        if ($LASTEXITCODE -ne 0) {
+            Add-SoftFailNote "Run-BiblicalExternalRealityLockedProfile.ps1 failed with exit code $LASTEXITCODE; marked soft-fail"
+            $biblicalExternalRealityStatus = "soft_fail"
+        } else {
+            $biblicalExternalRealityStatus = "pass"
+        }
+    } else {
+        Add-SoftFailNote "Biblical external reality profile dependencies missing; skipped"
+        $biblicalExternalRealityStatus = "missing_dependency"
     }
-    $biblicalExternalRealityStatus = "pass"
     if (Test-Path -LiteralPath $biblicalExternalDualgateStabilityPath) {
         try {
             $stabDoc = Get-Content -LiteralPath $biblicalExternalDualgateStabilityPath -Raw -Encoding utf8 | ConvertFrom-Json
@@ -351,6 +380,48 @@ if (-not $SkipGeneralProphecyChain) {
     py scripts/export_general_prophecy_to_jsonl.py
     if ($LASTEXITCODE -ne 0) {
         throw "export_general_prophecy_to_jsonl failed with exit code $LASTEXITCODE"
+    }
+    if (Test-Path -LiteralPath "$workspace\scripts\verify_general_prophecy_monthly_artifacts_v1.py") {
+        Write-Host "[waiting-queue-check] Verifying monthly artifact triage (brief/brier/shortlist)..."
+        py scripts/verify_general_prophecy_monthly_artifacts_v1.py
+        if ($LASTEXITCODE -ne 0) {
+            throw "verify_general_prophecy_monthly_artifacts_v1 failed with exit code $LASTEXITCODE"
+        }
+    }
+    if ((Test-Path -LiteralPath "$workspace\scripts\build_mkm_episode_refinery_v1.py") -and (Test-Path -LiteralPath "$workspace\scripts\validate_mkm_episode_refinery_v1.py")) {
+        Write-Host "[waiting-queue-check] Building MKM Episode v1 refinery artifacts..."
+        py scripts/build_mkm_episode_refinery_v1.py
+        if ($LASTEXITCODE -ne 0) {
+            throw "build_mkm_episode_refinery_v1 failed with exit code $LASTEXITCODE"
+        }
+        Write-Host "[waiting-queue-check] Validating MKM Episode v1 refinery artifacts..."
+        py scripts/validate_mkm_episode_refinery_v1.py
+        if ($LASTEXITCODE -ne 0) {
+            throw "validate_mkm_episode_refinery_v1 failed with exit code $LASTEXITCODE"
+        }
+    }
+    if (Test-Path -LiteralPath "$workspace\scripts\mkm_policy_gradient_optimizer.py") {
+        Write-Host "[waiting-queue-check] Running MKM policy gradient optimizer..."
+        py scripts/mkm_policy_gradient_optimizer.py
+        if ($LASTEXITCODE -ne 0) {
+            throw "mkm_policy_gradient_optimizer failed with exit code $LASTEXITCODE"
+        }
+    }
+    if (Test-Path -LiteralPath "$workspace\scripts\build_human_insight_attribution_v1.py") {
+        Write-Host "[waiting-queue-check] Building human insight attribution weights..."
+        py scripts/build_human_insight_attribution_v1.py
+        if ($LASTEXITCODE -ne 0) {
+            throw "build_human_insight_attribution_v1 failed with exit code $LASTEXITCODE"
+        }
+    }
+    if (Test-Path -LiteralPath "$workspace\scripts\promote_mkm_policy_from_optimizer_v1.py") {
+        Write-Host "[waiting-queue-check] Evaluating MKM policy promotion gate..."
+        py scripts/promote_mkm_policy_from_optimizer_v1.py
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "[waiting-queue-check] MKM policy promotion applied."
+        } else {
+            Write-Host "[waiting-queue-check] MKM policy promotion held (guardrails or decisions not met)." -ForegroundColor DarkYellow
+        }
     }
 
     Write-Host "[waiting-queue-check] Multiline prophecy delegated bundle (live + shadow bootstrap)..."
@@ -796,8 +867,13 @@ if (Test-Path -LiteralPath $costWatchScriptPath) {
 }
 
 Write-Host "[waiting-queue-check] Independent lens v0 snapshots (myeongni, sasang, logos)..."
+$lensFallbackArgs = @()
+if ($AllowLensFallback) {
+    Write-Host "[waiting-queue-check] WARN: AllowLensFallback enabled; lens fallback payloads may pass hard-gates." -ForegroundColor Yellow
+    $lensFallbackArgs = @("--allow-fallback")
+}
 if (Test-Path -LiteralPath $lensMyeongniScriptPath) {
-    py scripts/run_lens_myeongni.py
+    py scripts/run_lens_myeongni.py @lensFallbackArgs
     if ($LASTEXITCODE -ne 0) {
         throw "run_lens_myeongni.py failed with exit code $LASTEXITCODE"
     }
@@ -805,7 +881,7 @@ if (Test-Path -LiteralPath $lensMyeongniScriptPath) {
     Add-SoftFailNote "run_lens_myeongni.py missing; skipped"
 }
 if (Test-Path -LiteralPath $lensSasangScriptPath) {
-    py scripts/run_lens_sasang.py
+    py scripts/run_lens_sasang.py @lensFallbackArgs
     if ($LASTEXITCODE -ne 0) {
         throw "run_lens_sasang.py failed with exit code $LASTEXITCODE"
     }
@@ -813,7 +889,7 @@ if (Test-Path -LiteralPath $lensSasangScriptPath) {
     Add-SoftFailNote "run_lens_sasang.py missing; skipped"
 }
 if (Test-Path -LiteralPath $lensLogosScriptPath) {
-    py scripts/run_lens_logos.py
+    py scripts/run_lens_logos.py @lensFallbackArgs
     if ($LASTEXITCODE -ne 0) {
         throw "run_lens_logos.py failed with exit code $LASTEXITCODE"
     }
@@ -1038,6 +1114,7 @@ if (($null -ne $dualRegimeStateSampleCount) -and ($dualRegimeStateSampleCount -g
 $logRow = @{
     checked_at_utc = $checkedAt
     bundle_mode = $bundleMode
+    allow_lens_fallback = [bool]$AllowLensFallback
     cross_ref_test = "pass"
     bundle_test = if ($SkipBundle) { "skipped" } else { "pass" }
     source_hunt_summary = "pass"
@@ -1117,6 +1194,10 @@ $logRow = @{
     cost_watch_blocking_reasons = $costWatchBlockingReasons
     cost_watch_billing_invoice_audit_ready = $costWatchBillingAuditReady
     cost_watch_billing_source_tier = $costWatchBillingSourceTier
+    walk_forward_use_backfilled_history = [bool]$UseWalkForwardBackfilledHistory
+    walk_forward_backfill_start_date = if ([string]::IsNullOrWhiteSpace($WalkForwardBackfillStartDate)) { $null } else { $WalkForwardBackfillStartDate }
+    walk_forward_backfill_end_date = if ([string]::IsNullOrWhiteSpace($WalkForwardBackfillEndDate)) { $null } else { $WalkForwardBackfillEndDate }
+    walk_forward_history_source = if ($UseWalkForwardBackfilledHistory) { $walkForwardBackfilledHistoryPath } else { $walkForwardRawHistoryPath }
     general_explainability_quality_path = $generalExplainabilityQualityPath
     general_explainability_quality_gate = $generalExplainabilityQualityGate
     general_explainability_quality_reason = $generalExplainabilityQualityReason
@@ -1396,13 +1477,76 @@ if (
     Add-SoftFailNote "report_schema_v2 chain script(s) missing; skipped"
 }
 
+Write-Host "[waiting-queue-check] Building walk-forward eval + comparison report..."
+if ((Test-Path -LiteralPath $walkForwardEvalScriptPath) -and (Test-Path -LiteralPath $evalComparisonScriptPath)) {
+    $walkForwardHistoryForEval = $walkForwardRawHistoryPath
+    if ($UseWalkForwardBackfilledHistory) {
+        if (Test-Path -LiteralPath $walkForwardHistoryBuilderScriptPath) {
+            $backfillArgs = @(
+                "scripts/build_fusion_shadow_daily_history_v1.py",
+                "--input-jsonl", $walkForwardRawHistoryPath,
+                "--output-jsonl", $walkForwardBackfilledHistoryPath,
+                "--backfill-leading"
+            )
+            if (-not [string]::IsNullOrWhiteSpace($WalkForwardBackfillStartDate)) {
+                $backfillArgs += @("--start-date", $WalkForwardBackfillStartDate)
+            }
+            if (-not [string]::IsNullOrWhiteSpace($WalkForwardBackfillEndDate)) {
+                $backfillArgs += @("--end-date", $WalkForwardBackfillEndDate)
+            }
+            py @backfillArgs
+            if ($LASTEXITCODE -ne 0) {
+                Add-SoftFailNote "walk-forward history backfill build failed with exit code $LASTEXITCODE; fallback to raw history"
+            } elseif (Test-Path -LiteralPath $walkForwardBackfilledHistoryPath) {
+                $walkForwardHistoryForEval = $walkForwardBackfilledHistoryPath
+            } else {
+                Add-SoftFailNote "walk-forward history backfill output missing; fallback to raw history"
+            }
+        } else {
+            Add-SoftFailNote "walk-forward history backfill script missing; fallback to raw history"
+        }
+    }
+    py scripts/eval_btrack_walk_forward_hit_rate_v1.py --recent-trading-days 30 --history-jsonl $walkForwardHistoryForEval --output $walkForwardEvalLatestPath
+    if ($LASTEXITCODE -ne 0) {
+        Add-SoftFailNote "walk-forward eval build failed with exit code $LASTEXITCODE; skipped comparison report"
+    } else {
+        py scripts/build_prophecy_eval_comparison_report_v1.py `
+            --bear-json "$workspace\docs\final\artifacts\prophecy_hit_rate_eval_3way_bear_2026-04-17.json" `
+            --neutral-json "$workspace\docs\final\artifacts\prophecy_hit_rate_eval_3way_neutral_2026-04-17.json" `
+            --bull-json "$workspace\docs\final\artifacts\prophecy_hit_rate_eval_3way_bull_2026-04-17.json" `
+            --walk-forward-json $walkForwardEvalLatestPath `
+            --output $evalComparisonLatestPath
+        if ($LASTEXITCODE -ne 0) {
+            Add-SoftFailNote "prophecy eval comparison report build failed with exit code $LASTEXITCODE"
+        } elseif (Test-Path -LiteralPath $evalComparisonLatestPath) {
+            try {
+                $cmpObj = Get-Content -LiteralPath $evalComparisonLatestPath -Raw -Encoding utf8 | ConvertFrom-Json
+                $wfRatio = $cmpObj.walk_forward.synthetic_backfill_ratio
+                if ($null -ne $wfRatio) {
+                    $wfRatioValue = [double]$wfRatio
+                    if ($wfRatioValue -gt [double]$walkForwardSyntheticRatioWarnThreshold) {
+                        Add-SoftFailNote ("walk-forward synthetic_backfill_ratio high ({0:N4} > {1:N4}); increase raw daily signal density" -f $wfRatioValue, $walkForwardSyntheticRatioWarnThreshold)
+                    }
+                }
+            } catch {
+                Add-SoftFailNote "walk-forward synthetic ratio parse failed in comparison report"
+            }
+        }
+    }
+} else {
+    Add-SoftFailNote "walk-forward/comparison script missing; skipped"
+}
+
 Write-Host "[waiting-queue-check] Wrote log: $logPath"
 if ($softFailNotes.Count -gt 0) {
+    $walkForwardBackfillState = if ($UseWalkForwardBackfilledHistory) { "enabled" } else { "disabled" }
     $sitrep = @()
     $sitrep += ("[{0}] waiting_queue_daily soft-fail summary" -f ([DateTimeOffset]::UtcNow.ToString("o")))
     foreach ($n in $softFailNotes) {
         $sitrep += ("- WARN: {0}" -f $n)
     }
+    $sitrep += ("- allow_lens_fallback: {0}" -f $allowLensFallbackState)
+    $sitrep += ("- walk_forward_backfilled_history: {0}" -f $walkForwardBackfillState)
     $sitrep += "- policy: soft-fail (non-core optional tasks)"
     $sitrep += ""
     Add-Content -LiteralPath $dailySitrepPath -Value ($sitrep -join [Environment]::NewLine) -Encoding utf8

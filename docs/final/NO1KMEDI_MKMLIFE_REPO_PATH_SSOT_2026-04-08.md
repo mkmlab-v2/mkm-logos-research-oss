@@ -153,10 +153,24 @@ pm2 save
 1. SSH 접속 직후 `pwd` + `pm2 describe no1kmedi-com` + `pm2 describe mkmlife` 실행
 2. `pwd` 기준 경로가 Git 레포일 때만 `git pull origin main` 실행
 3. `.env` 확인 (`LOCAL_LLM_URL`, `AI_ROUTER_MODE` 등)
-4. **Express API만** `payapp-api` 디렉터리에서 `./deploy-vps-local-llm.sh` 실행(PM2 이름 `no1kmedi-payapp-api`). `no1kmedi-com` / `mkmlife` 배포는 각각 해당 빌드·호스트 절차를 따른다.
+4. **Express API만** (`api.no1kmedi.com` — DNS가 가리키는 호스트에서): 그 호스트의 `payapp-api` Git 클론으로 이동 후 `git pull origin main`, 이어서 `./deploy-vps-local-llm.sh`(레포: `projects/no1kmedi/payapp-api/deploy-vps-local-llm.sh`). PM2 앱 이름 `no1kmedi-payapp-api`. `no1kmedi-com` / `mkmlife` 배포는 각각 해당 빌드·호스트 절차를 따른다.
+
+**Hostinger/API 호스트 복붙(경로만 실측으로 바꿀 것):**
+
+```bash
+cd /path/to/payapp-api   # pm2 describe no1kmedi-payapp-api 의 exec cwd 상위 등 — 실측
+git pull origin main
+chmod +x deploy-vps-local-llm.sh
+./deploy-vps-local-llm.sh
+curl -sS https://api.no1kmedi.com/health
+curl -sS https://api.no1kmedi.com/api/ai/router-status
+```
 4b. **mkmlife.com(Hostinger VPS) 프론트 배포(로컬 Windows)**: §2.2의 `deploy-to-hostinger.ps1`를 **수동** 실행(-DryRun 권장 선행). VPS 반영 후 §4처럼 `pm2 describe mkmlife`로 실측 확인.
 5. `pm2 describe <app>`에서 `exec cwd`, `status` 확인
-6. `curl -sS https://api.no1kmedi.com/api/ai/router-status` 확인
+6. `curl -sS https://api.no1kmedi.com/health` 확인(`ok:true`; **`gateway` 필드가 있으면** 최신 `payapp-api` 빌드). 라우터 상세는 배포 후 `curl -sS https://api.no1kmedi.com/api/ai/router-status` 또는 `…/router-status`(별칭).
+7. 로컬(윈도우)에서 사전 점검: 모노레포 `projects/no1kmedi/payapp-api`에서 `npm ci && node diagnose-prod.mjs` — 프로덕션과의 차이(예: `gateway` 없음·router 404)를 로그로 확인.
+
+**DNS 분리 주의:** `no1kmedi.com` / `api.no1kmedi.com`이 가리키는 **실제 호스트(IP)**에서 `payapp-api`·Next를 재시작해야 한다. **다른 VPS**(예: mkmlife만 있는 148.230.x.x)에서 `pm2 restart`해도 DNS가 그쪽을 보지 않으면 웹/API 반영이 없다.
 
 ## 6) 이번 정리 결론
 
@@ -188,12 +202,13 @@ test -f ./deploy-vps-local-llm.sh && bash ./deploy-vps-local-llm.sh || echo "dep
 # 5) 상태 재확인
 pm2 describe no1kmedi-com | sed -n '1,120p'
 pm2 describe mkmlife | sed -n '1,120p'
-curl -sS https://api.no1kmedi.com/api/ai/router-status
+curl -sS https://api.no1kmedi.com/health
+curl -sS https://api.no1kmedi.com/api/ai/router-status || curl -sS https://api.no1kmedi.com/router-status
 ```
 
 ## 8) 3줄 판정 규칙 (실행 결과용)
 
-- **정상**: `no1kmedi-com`/`mkmlife`의 PM2 `exec cwd`가 잠금값과 일치하고, `router-status`가 200 계열 응답.
+- **정상**: `no1kmedi-com`/`mkmlife`의 PM2 `exec cwd`가 잠금값과 일치하고, `GET /health`가 200·`ok:true`(`gateway` 필드 권장). `router-status` 경로는 최신 `payapp-api` 배포 후 200.
 - **주의**: PM2 앱은 살아 있으나 `exec cwd` 불일치 또는 `git pull`/배포 스크립트가 `skip`된 경우.
 - **수정 필요**: PM2 앱 down/error, `exec cwd` 미일치 + 서비스 응답 실패(5xx/타임아웃/연결불가).
 
@@ -201,7 +216,7 @@ curl -sS https://api.no1kmedi.com/api/ai/router-status
 
 - `pm2 list`에서 두 앱 status 확인
 - `pm2 describe <app>`의 `exec cwd` 확인
-- `curl -sS https://api.no1kmedi.com/api/ai/router-status` 응답 확인
+- `curl -sS https://api.no1kmedi.com/health` 응답 확인; `router-status`는 `payapp-api` 최신 배포 후 `api/ai/router-status` 또는 `router-status` 별칭
 
 ## 9) Git stash · 동기 (로컬 모노레포 + VPS + 전용 클론) — 융합 절차
 
@@ -247,7 +262,7 @@ git stash show --stat 'stash@{1}'
 
 ### 9.4) 본 문서 §7과의 관계
 
-- §7: PM2·`git pull`·`router-status` **가동 점검**.
+- §7: PM2·`git pull`·`/health`·(배포 후)`router-status` **가동 점검**.
 - §9: **stash·로컬/VPS 클론 분리** 등 Git 위생만 담당. 절차를 한 흐름으로 쓸 때는 §7 직후 §9를 붙여 실행한다.
 
 ---

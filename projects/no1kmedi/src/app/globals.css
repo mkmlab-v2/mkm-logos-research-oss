@@ -129,6 +129,34 @@ main {
   padding: 0 1.5rem 4rem;
 }
 
+.subpage-main {
+  padding-top: 0.75rem;
+}
+
+.role-hero {
+  position: relative;
+  padding: 3rem 0 2.25rem;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.role-hero::before {
+  content: "";
+  position: absolute;
+  inset: -35% -10% auto -10%;
+  height: 110%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 65% 48% at 10% 18%, rgba(61, 155, 132, 0.19), transparent 58%),
+    radial-gradient(ellipse 45% 38% at 94% 5%, rgba(77, 148, 220, 0.14), transparent 52%);
+}
+
+.role-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
 .admin-page {
   max-width: 1120px;
   margin: 0 auto;
@@ -308,6 +336,19 @@ main {
 .hero > * {
   position: relative;
   z-index: 1;
+}
+
+.hero-grid-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.25;
+  background-image:
+    linear-gradient(rgba(157, 205, 190, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(157, 205, 190, 0.12) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.85), transparent 90%);
 }
 
 .hero-orb {
@@ -496,6 +537,31 @@ section h2 {
   transform: translateY(-3px);
   border-color: rgba(61, 155, 132, 0.5);
 }
+
+.card-lift {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-lift::after {
+  content: "";
+  position: absolute;
+  inset: -120% -40% auto;
+  height: 180%;
+  transform: rotate(16deg) translateX(-130%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0)
+  );
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+
+.card-lift:hover::after {
+  transform: rotate(16deg) translateX(140%);
+}
 .card h3 {
   margin: 0 0 0.5rem;
   font-size: 1.1rem;
@@ -545,6 +611,97 @@ section h2 {
 
 #premium-story {
   position: relative;
+}
+
+#brand-motion {
+  position: relative;
+}
+
+.brand-motion-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 1.2rem;
+  align-items: stretch;
+}
+
+.brand-motion-copy {
+  padding-top: 0.35rem;
+}
+
+.brand-motion-stage {
+  position: relative;
+  border-radius: 14px;
+  border: 1px solid rgba(157, 205, 190, 0.28);
+  min-height: 320px;
+  background: #0c1412;
+}
+
+.brand-motion-canvas {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 28%, rgba(82, 199, 171, 0.3), transparent 44%),
+    radial-gradient(circle at 76% 18%, rgba(72, 120, 210, 0.22), transparent 41%),
+    radial-gradient(circle at 52% 84%, rgba(41, 76, 68, 0.42), transparent 52%),
+    linear-gradient(135deg, #0c1714, #0b1110 42%, #121e1a 100%);
+  filter: saturate(0.88) contrast(1.04) brightness(0.76);
+  animation: motionPulse 8s ease-in-out infinite alternate;
+}
+
+.brand-motion-beam {
+  position: absolute;
+  inset: -35% auto auto -30%;
+  width: 62%;
+  height: 180%;
+  transform: rotate(18deg);
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(141, 236, 212, 0.1), rgba(141, 236, 212, 0));
+}
+
+.brand-motion-beam-a {
+  animation: beamSweepA 7.2s ease-in-out infinite alternate;
+}
+
+.brand-motion-beam-b {
+  left: auto;
+  right: -34%;
+  width: 54%;
+  transform: rotate(-16deg);
+  background: linear-gradient(90deg, rgba(110, 164, 246, 0.09), rgba(110, 164, 246, 0));
+  animation: beamSweepB 9.1s ease-in-out infinite alternate;
+}
+
+.brand-motion-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+  background-size: 3px 3px;
+  mix-blend-mode: soft-light;
+}
+
+.brand-motion-tint {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(61, 155, 132, 0.22), transparent 56%),
+    linear-gradient(180deg, rgba(10, 18, 16, 0.12), rgba(10, 18, 16, 0.72));
+}
+
+.brand-motion-label {
+  position: absolute;
+  left: 1rem;
+  bottom: 0.95rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  color: #c9e8df;
+  border: 1px solid rgba(201, 232, 223, 0.3);
+  border-radius: 999px;
+  padding: 0.25rem 0.62rem;
+  background: rgba(5, 13, 11, 0.58);
 }
 
 .premium-grid {
@@ -606,6 +763,46 @@ section h2 {
   }
   to {
     transform: translateY(-12px) translateX(-8px);
+  }
+}
+
+@keyframes motionPulse {
+  from {
+    transform: scale(1) translateY(0);
+  }
+  to {
+    transform: scale(1.03) translateY(-4px);
+  }
+}
+
+@keyframes beamSweepA {
+  from {
+    transform: rotate(18deg) translateX(-22%);
+    opacity: 0.7;
+  }
+  to {
+    transform: rotate(18deg) translateX(18%);
+    opacity: 0.35;
+  }
+}
+
+@keyframes beamSweepB {
+  from {
+    transform: rotate(-16deg) translateX(16%);
+    opacity: 0.55;
+  }
+  to {
+    transform: rotate(-16deg) translateX(-24%);
+    opacity: 0.25;
+  }
+}
+
+@media (max-width: 900px) {
+  .brand-motion-grid {
+    grid-template-columns: 1fr;
+  }
+  .brand-motion-stage {
+    min-height: 260px;
   }
 }
 

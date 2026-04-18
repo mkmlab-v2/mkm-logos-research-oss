@@ -183,8 +183,10 @@ def calculate_saju_manual(
     hour_ji = JIJI[hour_ji_idx]
 
     # 일간에 따른 시간간 계산
+    # NOTE: Primary engine(PerfectManseryeok)와 동일하게
+    # "day_gan_idx * 2 + hour_ji_idx" 규칙을 사용해 경계 시각(23시) 불일치를 방지한다.
     day_gan_idx = CHEONGAN.index(day_pillar[0]) if day_pillar and day_pillar[0] in CHEONGAN else (day_idx % 10)
-    hour_gan_idx = (day_gan_idx * 2 + (hour + 1) // 2) % 10
+    hour_gan_idx = (day_gan_idx * 2 + hour_ji_idx) % 10
     hour_gan = CHEONGAN[hour_gan_idx]
     hour_pillar = hour_gan + hour_ji
     

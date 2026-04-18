@@ -54,7 +54,11 @@ function main() {
   runNodeScript('scripts/verify-one-question-funnel-operational-readiness.mjs')
   // Compact ops snapshot for quick monitoring (best-effort).
   runNodeScript('scripts/build-one-question-ops-snapshot.mjs')
-  process.exitCode = gateStatus
+  // Ops mode toggle:
+  // - default: strict (propagate gate status as process exit code)
+  // - non-blocking: keep gate artifacts but return 0 for scheduler health signal
+  const nonBlockingGate = String(process.env.ONE_QUESTION_GATE_NONBLOCKING || '').trim() === '1'
+  process.exitCode = nonBlockingGate ? 0 : gateStatus
 }
 
 main()

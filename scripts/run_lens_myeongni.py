@@ -98,6 +98,11 @@ def main() -> int:
     ap.add_argument("--experiment-jsonl", type=Path, default=DEFAULT_EXPERIMENT)
     ap.add_argument("--fallback-sample", type=Path, default=DEFAULT_SAMPLE)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--allow-fallback",
+        action="store_true",
+        help="Allow embedded fallback payload when source JSONL is unavailable.",
+    )
     args = ap.parse_args()
 
     row = _tail_jsonl_row(args.experiment_jsonl)
@@ -108,6 +113,13 @@ def main() -> int:
         src = "sample_jsonl_fallback"
         in_path = str(args.fallback_sample.resolve())
     if row is None:
+        if not args.allow_fallback:
+            print(
+                "myeongni lens hard-gate: no valid source row found "
+                f"(missing/empty {args.experiment_jsonl} and {args.fallback_sample}). "
+                "Use --allow-fallback only for manual debugging.",
+            )
+            return 2
         row = {
             "experiment_id": "exp_16state_v1",
             "hypothesis_tier": "B",
