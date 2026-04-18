@@ -1,0 +1,36 @@
+{
+  "schema": "lg_washer_measurement_gate_v1",
+  "generated_at_utc": "2026-04-18T14:52:09Z",
+  "report_ref": "docs/final/artifacts/lg_washer_integrity_validation_report_v1_latest.json",
+  "measurement_ref": "docs/final/artifacts/lg_washer_target_device_measurement_v1.json",
+  "status": "HOLD",
+  "reasons": [
+    "measurement_status_not_measured",
+    "latency_p95_missing",
+    "latency_p99_missing",
+    "critical_field_accuracy_missing",
+    "conflict_detection_rate_missing"
+  ],
+  "report_metrics_snapshot": {
+    "critical_field_accuracy": 1.0,
+    "conflict_detection_rate": 1.0,
+    "reask_rate": 0.4,
+    "latency_ms": {
+      "p50": 7.361,
+      "p95": 38.198,
+      "p99": 39.906
+    }
+  },
+  "measured_metrics_snapshot": {
+    "critical_field_accuracy": null,
+    "conflict_detection_rate": null,
+    "reask_rate": null,
+    "latency_ms": {
+      "p50": null,
+      "p95": null,
+      "p99": null
+    }
+  },
+  "promotion_rule_ko": "측정 파일 status=measured/validated + latency(p95,p99) + critical/conflict 지표 존재 시 GO",
+  "next_action_ko": "HOLD면 타깃 보드 실측 JSON 채운 뒤 재실행"
+}

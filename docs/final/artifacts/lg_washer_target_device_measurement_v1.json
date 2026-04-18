@@ -1,0 +1,27 @@
+{
+  "schema": "lg_washer_target_device_measurement_v1",
+  "status": "todo_measurement",
+  "generated_at_utc": "TEMPLATE_FILL_REQUIRED",
+  "research_only": true,
+  "measurement_environment": {
+    "device_model": "TEMPLATE_FILL_REQUIRED",
+    "firmware_version": "TEMPLATE_FILL_REQUIRED",
+    "board_or_soc": "TEMPLATE_FILL_REQUIRED",
+    "test_run_id": "TEMPLATE_FILL_REQUIRED"
+  },
+  "metrics": {
+    "critical_field_accuracy": null,
+    "conflict_detection_rate": null,
+    "reask_rate": null,
+    "latency_ms": {
+      "p50": null,
+      "p95": null,
+      "p99": null
+    }
+  },
+  "notes_ko": "로컬 기준선 수치 대체 금지. 타깃 보드 실측값만 기입.",
+  "evidence_paths": [
+    "docs/final/artifacts/lg_washer_integrity_validation_report_v1_latest.json",
+    "docs/final/artifacts/lg_washer_voice_golden_holdout_v1.jsonl"
+  ]
+}

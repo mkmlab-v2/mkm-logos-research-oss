@@ -1,0 +1,21 @@
+{
+  "schema": "codebook_codepack_drift_v1",
+  "generated_at_utc": "2026-04-18T14:51:56Z",
+  "drift_status": "STABLE",
+  "drift_items": [],
+  "missing_references": [],
+  "fingerprints": {
+    "defense_code_pack_sha256": "87772d94001bbb3420d8f4931cef58f371f68330948adad2aae50ab263c46982",
+    "lg_report_sha256": "ea61e754fe16497db9116bdd4305145402bd2ea1182ef2e1d9bd9c5645a3473c",
+    "execution_pack_sha256": "02d331b63ba5aca780d5b7a39752ad61385282b97b2db41f0b1574addcf6d1cc",
+    "codepack_version": "1.0.0",
+    "codepack_status": "active",
+    "report_status": "report_ready_local_baseline",
+    "report_codebook_version": "LG_HS_WASH_v1.0"
+  },
+  "expected_baseline": {
+    "defense_code_pack_sha256": "87772d94001bbb3420d8f4931cef58f371f68330948adad2aae50ab263c46982",
+    "lg_report_sha256": "ea61e754fe16497db9116bdd4305145402bd2ea1182ef2e1d9bd9c5645a3473c"
+  },
+  "recommendation_ko": "DRIFT면 codepack/report 재빌드 후 제출 문안 수치 동기화"
+}

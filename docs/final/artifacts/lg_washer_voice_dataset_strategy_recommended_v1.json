@@ -43,6 +43,9 @@
   "tooling": {
     "prefill": "py scripts/prefill_lg_washer_review_sheet_v1.py",
     "validate_golden": "py scripts/validate_lg_washer_voice_golden_jsonl_v1.py",
-    "build_augmented_preview": "py scripts/build_lg_washer_voice_augmented_jsonl_v1.py --count 2000"
-  }
+    "build_augmented_preview": "py scripts/build_lg_washer_voice_augmented_jsonl_v1.py --count 2000",
+    "measurement_gate": "py scripts/check_lg_washer_measurement_gate_v1.py",
+    "codebook_codepack_drift_check": "py scripts/check_codebook_codepack_drift_v1.py --strict"
+  },
+  "measurement_template": "docs/final/artifacts/lg_washer_target_device_measurement_v1.json"
 }
