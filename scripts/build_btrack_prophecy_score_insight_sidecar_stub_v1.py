@@ -19,10 +19,12 @@ DEFAULT_BRIDGE = ROOT / "docs" / "final" / "artifacts" / "btrack_insight_promoti
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score_insight_sidecar_v1_latest.json"
 
 SCHEMA = "btrack_prophecy_score_insight_sidecar_v1"
-SIDEcar_FORMAT = "1.3.0"
+SIDEcar_FORMAT = "1.4.0"
 
 DEFAULT_NOTEBOOKLM_KPI = ROOT / "docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json"
 DEFAULT_MYEONGNI_INSIGHT_LOG = ROOT / "data/myeongni/insight_observation_log.jsonl"
+DEFAULT_SASANG_DYNAMICS_JSONL = ROOT / "data/sasang/sasang_dynamics_regime_mapping_v1.sample.jsonl"
+DEFAULT_MYEONGNI_EXPERIMENT_JSONL = ROOT / "data/myeongni/myeongni_16_state_experiment_v1.jsonl"
 
 
 def _utc_now() -> str:
@@ -150,6 +152,63 @@ def _cumulative_insight_lines_through(per_day: dict[str, int], eval_date: str) -
     return sum(c for d, c in per_day.items() if d <= eval_date[:10])
 
 
+def _jsonl_last_row_by_calendar_day(path: Path) -> dict[str, dict[str, Any]]:
+    """Calendar day (ts_utc[:10]) -> last JSON object for that day (file order wins within a day)."""
+    by_day: dict[str, dict[str, Any]] = {}
+    if not path.is_file():
+        return {}
+    try:
+        with path.open("r", encoding="utf-8", errors="replace") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    o = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if not isinstance(o, dict):
+                    continue
+                ts = str(o.get("ts_utc") or "").strip()
+                if len(ts) >= 10 and ts[4] == "-" and ts[7] == "-":
+                    by_day[ts[:10]] = o
+    except OSError:
+        return {}
+    return by_day
+
+
+def _row_asof_calendar_day(
+    by_day: dict[str, dict[str, Any]],
+    eval_date: str,
+) -> tuple[str | None, dict[str, Any] | None]:
+    if not by_day or not eval_date or len(eval_date) < 10:
+        return None, None
+    d0 = eval_date[:10]
+    eligible = [d for d in by_day if d <= d0]
+    if not eligible:
+        return None, None
+    chosen = max(eligible)
+    return chosen, by_day[chosen]
+
+
+def _sasang_dated_compact(row: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "regime_hypothesis": row.get("regime_hypothesis"),
+        "mapping_target": row.get("mapping_target"),
+        "machine_readables": row.get("machine_readables"),
+    }
+
+
+def _myeongni_dated_compact(row: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "state_id": row.get("state_id"),
+        "mapping_target": row.get("mapping_target"),
+        "consistency_rate": row.get("consistency_rate"),
+        "run_id": row.get("run_id"),
+        "experiment_id": row.get("experiment_id"),
+    }
+
+
 def _score_row_context(row: dict[str, Any]) -> dict[str, Any]:
     return {
         "predicted_direction": row.get("predicted_direction"),
@@ -181,6 +240,8 @@ def _per_date_features(
     rows: list[dict[str, Any]],
     lens_snap: dict[str, Any | None],
     insight_per_day: dict[str, int] | None,
+    sasang_by_day: dict[str, dict[str, Any]] | None,
+    myeongni_exp_by_day: dict[str, dict[str, Any]] | None,
 ) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     for i, row in enumerate(rows):
@@ -201,6 +262,25 @@ def _per_date_features(
             },
             "lens_snapshot_attribution": "global_mirrored_v1",
         }
+        if sasang_by_day is not None or myeongni_exp_by_day is not None:
+            dated: dict[str, Any] = {"sasang_dynamics_jsonl": None, "myeongni_16_state_jsonl": None}
+            if sasang_by_day:
+                sd, srow = _row_asof_calendar_day(sasang_by_day, ed)
+                if sd and srow is not None:
+                    dated["sasang_dynamics_jsonl"] = {
+                        "matched_calendar_day": sd,
+                        "snapshot": _sasang_dated_compact(srow),
+                        "source_row_ts_utc": srow.get("ts_utc"),
+                    }
+            if myeongni_exp_by_day:
+                md, mrow = _row_asof_calendar_day(myeongni_exp_by_day, ed)
+                if md and mrow is not None:
+                    dated["myeongni_16_state_jsonl"] = {
+                        "matched_calendar_day": md,
+                        "snapshot": _myeongni_dated_compact(mrow),
+                        "source_row_ts_utc": mrow.get("ts_utc"),
+                    }
+            item["dated_source_snapshots_asof_eval_date"] = dated
         if insight_per_day is not None:
             item["myeongni_insight_lines_cumulative_through_eval_date"] = _cumulative_insight_lines_through(
                 insight_per_day, ed
@@ -236,6 +316,13 @@ def main() -> int:
         action="store_true",
         help="Do not attach per-row cumulative counts from insight_observation_log.jsonl.",
     )
+    ap.add_argument("--sasang-dynamics-jsonl", type=Path, default=DEFAULT_SASANG_DYNAMICS_JSONL)
+    ap.add_argument("--myeongni-experiment-jsonl", type=Path, default=DEFAULT_MYEONGNI_EXPERIMENT_JSONL)
+    ap.add_argument(
+        "--skip-dated-jsonl-aux",
+        action="store_true",
+        help="Do not attach dated_source_snapshots_asof_eval_date from sasang/myeongni JSONLs.",
+    )
     args = ap.parse_args()
 
     score_schema: str | None = None
@@ -253,13 +340,32 @@ def main() -> int:
     if not args.skip_insight_log_cumulative:
         insight_per_day = _insight_log_lines_per_calendar_day(args.myeongni_insight_log)
 
+    sasang_by_day: dict[str, dict[str, Any]] | None = None
+    myeongni_exp_by_day: dict[str, dict[str, Any]] | None = None
+    if not args.skip_dated_jsonl_aux:
+        sasang_by_day = _jsonl_last_row_by_calendar_day(args.sasang_dynamics_jsonl) or None
+        myeongni_exp_by_day = _jsonl_last_row_by_calendar_day(args.myeongni_experiment_jsonl) or None
+
     per_date: list[dict[str, Any]] | None
     if args.skip_per_date:
         per_date = None
     elif not rows:
         per_date = None
     else:
-        per_date = _per_date_features(rows, lens_minimal, insight_per_day)
+        per_date = _per_date_features(
+            rows,
+            lens_minimal,
+            insight_per_day,
+            sasang_by_day if not args.skip_dated_jsonl_aux else None,
+            myeongni_exp_by_day if not args.skip_dated_jsonl_aux else None,
+        )
+
+    dated_jsonl_aux_sources: dict[str, Any] | None = None
+    if not args.skip_dated_jsonl_aux:
+        dated_jsonl_aux_sources = {
+            "sasang_dynamics_jsonl": _rel(args.sasang_dynamics_jsonl) if args.sasang_dynamics_jsonl.is_file() else None,
+            "myeongni_16_state_jsonl": _rel(args.myeongni_experiment_jsonl) if args.myeongni_experiment_jsonl.is_file() else None,
+        }
 
     nb_summary: dict[str, Any] | None = None
     nb_ref: str | None = None
@@ -281,7 +387,7 @@ def main() -> int:
         "paired_row_count": len(rows),
         "bridge_index_ref": _rel(args.bridge_index) if args.bridge_index.is_file() else None,
         "experimental_attribution_enabled": bool(args.enable_experimental_attribution),
-        "lens_attribution_mode": "global_mirrored_with_row_score_context_v1",
+        "lens_attribution_mode": "global_mirrored_with_row_score_context_and_dated_jsonl_aux_v1",
         "phase3_merge": {
             "status": "not_started",
             "target": "btrack_prophecy_score_v1_optional_overlay_or_walkforward_branch",
@@ -292,6 +398,7 @@ def main() -> int:
         "notebooklm_observation_kpi_ref": nb_ref,
         "notebooklm_observation_kpi_summary": nb_summary,
         "myeongni_insight_observation_log_meta": mn_meta,
+        "dated_jsonl_aux_sources": dated_jsonl_aux_sources,
         "feature_contract_v1": [
             "lens_majority_agreement_score_global",
             "notebooklm_guardrail_token_rate_prior_window",
@@ -302,6 +409,7 @@ def main() -> int:
             "score JSON의 rows·predicted_direction는 변경하지 않음.",
             "lens_scores_snapshot은 글로벌 렌즈 스냅샷 복제(lens_snapshot_attribution); score_row_context는 해당 행의 점수 SSOT 필드 복사(평가일·종목 정렬).",
             "myeongni_insight_lines_cumulative_through_eval_date는 insight 로그 ts_utc 달력일이 eval_date 이하인 줄 수 누적(관측).",
+            "dated_source_snapshots_asof_eval_date: sasang/myeongni JSONL에서 ts_utc 달력일 기준 eval_date 이하 최신 일자 스냅샷(종목 무관; B-track 관측).",
             "승격·walkforward 게이트는 기존 btrack_prophecy_score_v1만 입력.",
             "실험 병합은 별 계약·회귀 후 experimental_attribution_enabled 검토.",
             "notebooklm_observation_kpi_summary·명리 로그 파일 메타는 전역 관측.",

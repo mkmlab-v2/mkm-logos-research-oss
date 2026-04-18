@@ -1,14 +1,14 @@
 {
   "schema": "btrack_prophecy_score_insight_sidecar_v1",
-  "version": "1.3.0",
-  "generated_at_utc": "2026-04-18T18:13:11Z",
+  "version": "1.4.0",
+  "generated_at_utc": "2026-04-18T18:16:47Z",
   "research_only": true,
   "paired_score_ref": "docs/final/artifacts/btrack_prophecy_score_latest.json",
   "paired_score_schema": "btrack_prophecy_score_v1",
-  "paired_row_count": 60,
+  "paired_row_count": 30,
   "bridge_index_ref": "docs/final/artifacts/btrack_insight_promotion_bridge_index_v1_latest.json",
   "experimental_attribution_enabled": false,
-  "lens_attribution_mode": "global_mirrored_with_row_score_context_v1",
+  "lens_attribution_mode": "global_mirrored_with_row_score_context_and_dated_jsonl_aux_v1",
   "phase3_merge": {
     "status": "not_started",
     "target": "btrack_prophecy_score_v1_optional_overlay_or_walkforward_branch",
@@ -31,30 +31,30 @@
   "lens_globals_for_sidecar": {
     "logos": {
       "lens_id": "logos",
-      "direction_score": 0.0,
+      "direction_score": -0.323333,
       "confidence": 0.2,
-      "lens_ts_utc": "2026-04-11T19:29:08Z",
-      "verses_with_simple_4d": 0,
-      "batch_rows_total": 0
+      "lens_ts_utc": "2026-04-18T18:16:07Z",
+      "verses_with_simple_4d": 3,
+      "batch_rows_total": 3
     },
     "myeongni": {
       "lens_id": "myeongni",
       "direction_score": -0.55,
       "confidence": 0.74,
-      "lens_ts_utc": "2026-04-18T17:10:43Z",
+      "lens_ts_utc": "2026-04-18T18:16:07Z",
       "state_id": 9,
       "run_id": "recovery_seed_20260417",
       "experiment_id": null
     },
     "sasang": {
       "lens_id": "sasang",
-      "direction_score": 0.0,
-      "confidence": 0.506667,
-      "lens_ts_utc": "2026-04-11T19:29:07Z",
+      "direction_score": -0.55,
+      "confidence": 0.543333,
+      "lens_ts_utc": "2026-04-18T18:16:07Z",
       "machine_readables": {
-        "heat_proxy": 0.48,
-        "cold_proxy": 0.52,
-        "volatility_rarefaction_proxy": 0.52
+        "heat_proxy": 0.44,
+        "cold_proxy": 0.58,
+        "volatility_rarefaction_proxy": 0.61
       }
     }
   },
@@ -82,6 +82,10 @@
     "bytes": 11538,
     "jsonl_line_count": 18
   },
+  "dated_jsonl_aux_sources": {
+    "sasang_dynamics_jsonl": "data/sasang/sasang_dynamics_regime_mapping_v1.sample.jsonl",
+    "myeongni_16_state_jsonl": "data/myeongni/myeongni_16_state_experiment_v1.jsonl"
+  },
   "feature_contract_v1": [
     "lens_majority_agreement_score_global",
     "notebooklm_guardrail_token_rate_prior_window",
@@ -105,88 +109,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-05",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 1,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.02571088,
-        "prev_close": 72710.578125,
-        "close": 70841.125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-06",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 2,
+      "paired_row_index": 1,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "neutral",
@@ -199,88 +172,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-06",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 3,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.03817885,
-        "prev_close": 70841.125,
-        "close": 68136.4921875,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-09",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 4,
+      "paired_row_index": 2,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -293,88 +235,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-09",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 5,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.03687448,
-        "prev_close": 65969.78125,
-        "close": 68402.3828125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-10",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 6,
+      "paired_row_index": 3,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -387,88 +298,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-10",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 7,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.02228781,
-        "prev_close": 68402.3828125,
-        "close": 69926.921875,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-11",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 8,
+      "paired_row_index": 4,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -481,88 +361,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-11",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 9,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.00397502,
-        "prev_close": 69926.921875,
-        "close": 70204.8828125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-12",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 10,
+      "paired_row_index": 5,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -575,88 +424,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-12",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 11,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.00411051,
-        "prev_close": 70204.8828125,
-        "close": 70493.4609375,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-13",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 12,
+      "paired_row_index": 6,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -669,88 +487,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-13",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 13,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.00673544,
-        "prev_close": 70493.4609375,
-        "close": 70968.265625,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-16",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 14,
+      "paired_row_index": 7,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -763,88 +550,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-16",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 15,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.02845411,
-        "prev_close": 72789.9140625,
-        "close": 74861.0859375,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-17",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 16,
+      "paired_row_index": 8,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -857,88 +613,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-17",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 17,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.01253801,
-        "prev_close": 74861.0859375,
-        "close": 73922.4765625,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-18",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 18,
+      "paired_row_index": 9,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -951,88 +676,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-18",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 19,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.03621224,
-        "prev_close": 73922.4765625,
-        "close": 71245.578125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-19",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 20,
+      "paired_row_index": 10,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -1045,88 +739,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-19",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 21,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.01870697,
-        "prev_close": 71245.578125,
-        "close": 69912.7890625,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-20",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 22,
+      "paired_row_index": 11,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -1139,88 +802,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-20",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 23,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.00872225,
-        "prev_close": 69912.7890625,
-        "close": 70522.5859375,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-23",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 24,
+      "paired_row_index": 12,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -1233,88 +865,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-23",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 25,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.04524488,
-        "prev_close": 67845.2109375,
-        "close": 70914.859375,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-24",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 26,
+      "paired_row_index": 13,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -1327,88 +928,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-24",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 27,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.00559826,
-        "prev_close": 70914.859375,
-        "close": 70517.859375,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-25",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 28,
+      "paired_row_index": 14,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -1421,88 +991,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-25",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 29,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.01123153,
-        "prev_close": 70517.859375,
-        "close": 71309.8828125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-26",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 30,
+      "paired_row_index": 15,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -1515,88 +1054,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-26",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 31,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.03531429,
-        "prev_close": 71309.8828125,
-        "close": 68791.625,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-27",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 32,
+      "paired_row_index": 16,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -1609,88 +1117,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-27",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 33,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.03566204,
-        "prev_close": 68791.625,
-        "close": 66338.375,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-30",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 34,
+      "paired_row_index": 17,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -1703,88 +1180,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-30",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 35,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.01116707,
-        "prev_close": 65954.921875,
-        "close": 66691.4453125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-03-31",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 36,
+      "paired_row_index": 18,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -1797,88 +1243,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-03-31",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 37,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.02311941,
-        "prev_close": 66691.4453125,
-        "close": 68233.3125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 0.0
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-04-01",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 38,
+      "paired_row_index": 19,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -1891,88 +1306,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-04-01",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 39,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.00226807,
-        "prev_close": 68233.3125,
-        "close": 68078.5546875,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 9951.6
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-04-02",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 40,
+      "paired_row_index": 20,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -1985,88 +1369,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-04-02",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 41,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.01747958,
-        "prev_close": 68078.5546875,
-        "close": 66888.5703125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 9951.6
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-04-03",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 42,
+      "paired_row_index": 21,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -2079,88 +1432,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-04-03",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 43,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.00063585,
-        "prev_close": 66888.5703125,
-        "close": 66931.1015625,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 9951.6
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-04-06",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 44,
+      "paired_row_index": 22,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -2173,88 +1495,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-04-06",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 45,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.0017696,
-        "prev_close": 68981.8984375,
-        "close": 68859.828125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 9951.6
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-04-07",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 46,
+      "paired_row_index": 23,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -2267,88 +1558,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-04-07",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 47,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.04474125,
-        "prev_close": 68859.828125,
-        "close": 71940.703125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 9951.6
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-04-08",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 48,
+      "paired_row_index": 24,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -2361,88 +1621,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-04-08",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 49,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.01136135,
-        "prev_close": 71940.703125,
-        "close": 71123.359375,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 9951.6
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-04-09",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 50,
+      "paired_row_index": 25,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -2455,88 +1684,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-04-09",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 51,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.00906128,
-        "prev_close": 71123.359375,
-        "close": 71767.828125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 9951.6
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-04-10",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 52,
+      "paired_row_index": 26,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -2549,88 +1747,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-04-10",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 53,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.0168769,
-        "prev_close": 71767.828125,
-        "close": 72979.046875,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 9951.6
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-04-13",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 54,
+      "paired_row_index": 27,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bear",
@@ -2643,88 +1810,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-04-13",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 55,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.05273576,
-        "prev_close": 70753.40625,
-        "close": 74484.640625,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 9951.6
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-04-14",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 56,
+      "paired_row_index": 28,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -2737,88 +1873,57 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 0
-    },
-    {
-      "eval_date": "2026-04-14",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 57,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bear",
-        "daily_return": -0.00406837,
-        "prev_close": 74484.640625,
-        "close": 74181.609375,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 9951.6
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 0
     },
     {
       "eval_date": "2026-04-15",
       "instrument": "kospi",
       "observation_only": true,
-      "paired_row_index": 58,
+      "paired_row_index": 29,
       "score_row_context": {
         "predicted_direction": "bear",
         "actual_direction": "bull",
@@ -2831,81 +1936,50 @@
       "lens_scores_snapshot": {
         "logos": {
           "lens_id": "logos",
-          "direction_score": 0.0,
+          "direction_score": -0.323333,
           "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
+          "verses_with_simple_4d": 3,
+          "batch_rows_total": 3
         },
         "myeongni": {
           "lens_id": "myeongni",
           "direction_score": -0.55,
           "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "state_id": 9,
           "run_id": "recovery_seed_20260417",
           "experiment_id": null
         },
         "sasang": {
           "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
-          "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
-          }
-        }
-      },
-      "lens_snapshot_attribution": "global_mirrored_v1",
-      "myeongni_insight_lines_cumulative_through_eval_date": 16
-    },
-    {
-      "eval_date": "2026-04-15",
-      "instrument": "btc",
-      "observation_only": true,
-      "paired_row_index": 59,
-      "score_row_context": {
-        "predicted_direction": "bear",
-        "actual_direction": "bull",
-        "daily_return": 0.00840463,
-        "prev_close": 74181.609375,
-        "close": 74805.078125,
-        "neutral_bps": 5.0,
-        "flow_score_for_reversal": 9951.6
-      },
-      "lens_scores_snapshot": {
-        "logos": {
-          "lens_id": "logos",
-          "direction_score": 0.0,
-          "confidence": 0.2,
-          "lens_ts_utc": "2026-04-11T19:29:08Z",
-          "verses_with_simple_4d": 0,
-          "batch_rows_total": 0
-        },
-        "myeongni": {
-          "lens_id": "myeongni",
           "direction_score": -0.55,
-          "confidence": 0.74,
-          "lens_ts_utc": "2026-04-18T17:10:43Z",
-          "state_id": 9,
-          "run_id": "recovery_seed_20260417",
-          "experiment_id": null
-        },
-        "sasang": {
-          "lens_id": "sasang",
-          "direction_score": 0.0,
-          "confidence": 0.506667,
-          "lens_ts_utc": "2026-04-11T19:29:07Z",
+          "confidence": 0.543333,
+          "lens_ts_utc": "2026-04-18T18:16:07Z",
           "machine_readables": {
-            "heat_proxy": 0.48,
-            "cold_proxy": 0.52,
-            "volatility_rarefaction_proxy": 0.52
+            "heat_proxy": 0.44,
+            "cold_proxy": 0.58,
+            "volatility_rarefaction_proxy": 0.61
           }
         }
       },
       "lens_snapshot_attribution": "global_mirrored_v1",
+      "dated_source_snapshots_asof_eval_date": {
+        "sasang_dynamics_jsonl": {
+          "matched_calendar_day": "2026-01-06",
+          "snapshot": {
+            "regime_hypothesis": null,
+            "mapping_target": null,
+            "machine_readables": {
+              "heat_proxy": 0.48,
+              "cold_proxy": 0.52,
+              "volatility_rarefaction_proxy": 0.52
+            }
+          },
+          "source_row_ts_utc": "2026-01-06T12:00:00+00:00"
+        },
+        "myeongni_16_state_jsonl": null
+      },
       "myeongni_insight_lines_cumulative_through_eval_date": 16
     }
   ],
@@ -2913,6 +1987,7 @@
     "score JSON의 rows·predicted_direction는 변경하지 않음.",
     "lens_scores_snapshot은 글로벌 렌즈 스냅샷 복제(lens_snapshot_attribution); score_row_context는 해당 행의 점수 SSOT 필드 복사(평가일·종목 정렬).",
     "myeongni_insight_lines_cumulative_through_eval_date는 insight 로그 ts_utc 달력일이 eval_date 이하인 줄 수 누적(관측).",
+    "dated_source_snapshots_asof_eval_date: sasang/myeongni JSONL에서 ts_utc 달력일 기준 eval_date 이하 최신 일자 스냅샷(종목 무관; B-track 관측).",
     "승격·walkforward 게이트는 기존 btrack_prophecy_score_v1만 입력.",
     "실험 병합은 별 계약·회귀 후 experimental_attribution_enabled 검토.",
     "notebooklm_observation_kpi_summary·명리 로그 파일 메타는 전역 관측."

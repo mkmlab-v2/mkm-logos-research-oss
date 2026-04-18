@@ -16,7 +16,7 @@ def test_sidecar_stub_artifact_contract() -> None:
     assert data.get("experimental_attribution_enabled") is False
     assert isinstance(data.get("paired_score_ref"), str) and data["paired_score_ref"]
     assert isinstance(data.get("feature_contract_v1"), list)
-    assert data.get("version") == "1.3.0"
+    assert data.get("version") == "1.4.0"
 
     score = json.loads(SCORE.read_text(encoding="utf-8-sig"))
     rows = score.get("rows") if isinstance(score.get("rows"), list) else []
@@ -29,6 +29,9 @@ def test_sidecar_stub_artifact_contract() -> None:
         assert isinstance(row.get("score_row_context"), dict)
         assert "myeongni_insight_lines_cumulative_through_eval_date" in row
         assert isinstance(row.get("lens_snapshot_attribution"), str)
+        dated = row.get("dated_source_snapshots_asof_eval_date")
+        assert isinstance(dated, dict)
+        assert "sasang_dynamics_jsonl" in dated and "myeongni_16_state_jsonl" in dated
         snap = row.get("lens_scores_snapshot")
         assert isinstance(snap, dict)
         for k in ("logos", "myeongni", "sasang"):
@@ -36,6 +39,9 @@ def test_sidecar_stub_artifact_contract() -> None:
 
     pm = data.get("phase3_merge")
     assert isinstance(pm, dict) and pm.get("status") == "not_started"
+
+    dsrc = data.get("dated_jsonl_aux_sources")
+    assert isinstance(dsrc, dict)
 
     ksum = data.get("notebooklm_observation_kpi_summary")
     assert isinstance(ksum, dict)

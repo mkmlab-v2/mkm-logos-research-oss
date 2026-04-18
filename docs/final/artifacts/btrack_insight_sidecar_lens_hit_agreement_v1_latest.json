@@ -1,82 +1,53 @@
 {
   "schema": "btrack_insight_sidecar_lens_hit_agreement_v1",
   "version": "1.1.0",
-  "generated_at_utc": "2026-04-18T18:13:11Z",
+  "generated_at_utc": "2026-04-18T18:16:47Z",
   "research_only": true,
   "instrument_filter": "all",
   "paired_score_ref": "docs/final/artifacts/btrack_prophecy_score_latest.json",
   "sidecar_ref": "docs/final/artifacts/btrack_prophecy_score_insight_sidecar_v1_latest.json",
-  "score_row_count": 60,
-  "per_date_feature_count": 60,
-  "sidecar_row_index_map_size": 60,
+  "score_row_count": 30,
+  "per_date_feature_count": 30,
+  "sidecar_row_index_map_size": 30,
   "by_lens": {
     "logos": {
-      "rows_used": 60,
+      "rows_used": 30,
       "skipped_no_sidecar_row": 0,
       "skipped_no_lens_direction": 0,
-      "agree_with_actual": 1,
-      "agree_with_predicted": 0,
-      "rate_agree_with_actual": 0.016666666666666666,
-      "rate_agree_with_predicted": 0.0
+      "agree_with_actual": 12,
+      "agree_with_predicted": 30,
+      "rate_agree_with_actual": 0.4,
+      "rate_agree_with_predicted": 1.0
     },
     "myeongni": {
-      "rows_used": 60,
+      "rows_used": 30,
       "skipped_no_sidecar_row": 0,
       "skipped_no_lens_direction": 0,
-      "agree_with_actual": 25,
-      "agree_with_predicted": 60,
-      "rate_agree_with_actual": 0.4166666666666667,
+      "agree_with_actual": 12,
+      "agree_with_predicted": 30,
+      "rate_agree_with_actual": 0.4,
       "rate_agree_with_predicted": 1.0
     },
     "sasang": {
-      "rows_used": 60,
+      "rows_used": 30,
       "skipped_no_sidecar_row": 0,
       "skipped_no_lens_direction": 0,
-      "agree_with_actual": 1,
-      "agree_with_predicted": 0,
-      "rate_agree_with_actual": 0.016666666666666666,
-      "rate_agree_with_predicted": 0.0
+      "agree_with_actual": 12,
+      "agree_with_predicted": 30,
+      "rate_agree_with_actual": 0.4,
+      "rate_agree_with_predicted": 1.0
     }
   },
   "by_instrument": {
     "all": {
       "logos": {
-        "rows_used": 60,
-        "skipped_no_sidecar_row": 0,
-        "skipped_no_lens_direction": 0,
-        "agree_with_actual": 1,
-        "agree_with_predicted": 0,
-        "rate_agree_with_actual": 0.016666666666666666,
-        "rate_agree_with_predicted": 0.0
-      },
-      "myeongni": {
-        "rows_used": 60,
-        "skipped_no_sidecar_row": 0,
-        "skipped_no_lens_direction": 0,
-        "agree_with_actual": 25,
-        "agree_with_predicted": 60,
-        "rate_agree_with_actual": 0.4166666666666667,
-        "rate_agree_with_predicted": 1.0
-      },
-      "sasang": {
-        "rows_used": 60,
-        "skipped_no_sidecar_row": 0,
-        "skipped_no_lens_direction": 0,
-        "agree_with_actual": 1,
-        "agree_with_predicted": 0,
-        "rate_agree_with_actual": 0.016666666666666666,
-        "rate_agree_with_predicted": 0.0
-      }
-    },
-    "kospi": {
-      "logos": {
         "rows_used": 30,
         "skipped_no_sidecar_row": 0,
         "skipped_no_lens_direction": 0,
-        "agree_with_actual": 1,
-        "agree_with_predicted": 0,
-        "rate_agree_with_actual": 0.03333333333333333,
-        "rate_agree_with_predicted": 0.0
+        "agree_with_actual": 12,
+        "agree_with_predicted": 30,
+        "rate_agree_with_actual": 0.4,
+        "rate_agree_with_predicted": 1.0
       },
       "myeongni": {
         "rows_used": 30,
@@ -91,39 +62,68 @@
         "rows_used": 30,
         "skipped_no_sidecar_row": 0,
         "skipped_no_lens_direction": 0,
-        "agree_with_actual": 1,
-        "agree_with_predicted": 0,
-        "rate_agree_with_actual": 0.03333333333333333,
-        "rate_agree_with_predicted": 0.0
+        "agree_with_actual": 12,
+        "agree_with_predicted": 30,
+        "rate_agree_with_actual": 0.4,
+        "rate_agree_with_predicted": 1.0
       }
     },
-    "btc": {
+    "kospi": {
       "logos": {
         "rows_used": 30,
         "skipped_no_sidecar_row": 0,
         "skipped_no_lens_direction": 0,
-        "agree_with_actual": 0,
-        "agree_with_predicted": 0,
-        "rate_agree_with_actual": 0.0,
-        "rate_agree_with_predicted": 0.0
+        "agree_with_actual": 12,
+        "agree_with_predicted": 30,
+        "rate_agree_with_actual": 0.4,
+        "rate_agree_with_predicted": 1.0
       },
       "myeongni": {
         "rows_used": 30,
         "skipped_no_sidecar_row": 0,
         "skipped_no_lens_direction": 0,
-        "agree_with_actual": 13,
+        "agree_with_actual": 12,
         "agree_with_predicted": 30,
-        "rate_agree_with_actual": 0.43333333333333335,
+        "rate_agree_with_actual": 0.4,
         "rate_agree_with_predicted": 1.0
       },
       "sasang": {
         "rows_used": 30,
         "skipped_no_sidecar_row": 0,
         "skipped_no_lens_direction": 0,
+        "agree_with_actual": 12,
+        "agree_with_predicted": 30,
+        "rate_agree_with_actual": 0.4,
+        "rate_agree_with_predicted": 1.0
+      }
+    },
+    "btc": {
+      "logos": {
+        "rows_used": 0,
+        "skipped_no_sidecar_row": 0,
+        "skipped_no_lens_direction": 0,
         "agree_with_actual": 0,
         "agree_with_predicted": 0,
-        "rate_agree_with_actual": 0.0,
-        "rate_agree_with_predicted": 0.0
+        "rate_agree_with_actual": null,
+        "rate_agree_with_predicted": null
+      },
+      "myeongni": {
+        "rows_used": 0,
+        "skipped_no_sidecar_row": 0,
+        "skipped_no_lens_direction": 0,
+        "agree_with_actual": 0,
+        "agree_with_predicted": 0,
+        "rate_agree_with_actual": null,
+        "rate_agree_with_predicted": null
+      },
+      "sasang": {
+        "rows_used": 0,
+        "skipped_no_sidecar_row": 0,
+        "skipped_no_lens_direction": 0,
+        "agree_with_actual": 0,
+        "agree_with_predicted": 0,
+        "rate_agree_with_actual": null,
+        "rate_agree_with_predicted": null
       }
     }
   },
