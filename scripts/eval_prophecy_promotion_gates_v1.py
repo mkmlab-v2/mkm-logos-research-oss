@@ -222,6 +222,11 @@ def main() -> int:
     ap.add_argument("--soft-min-worst-fold", type=float, default=0.3)
     ap.add_argument("--strict-streak-required", type=int, default=5)
     ap.add_argument("--streak-history-json", type=Path, default=DEFAULT_STREAK_HISTORY)
+    ap.add_argument(
+        "--calibration-note",
+        default="",
+        help="Optional sentence appended to output note (e.g. threshold rationale for operators).",
+    )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--stdout-only", action="store_true")
     ap.add_argument("--fail-on-gate", action="store_true", help="Exit 1 when combined_all_passed is false.")
@@ -359,6 +364,11 @@ def main() -> int:
             "skip_shared_gates": bool(args.skip_shared_gates),
             "strict_streak_required": int(args.strict_streak_required),
             "streak_history_json": str(args.streak_history_json),
+            **(
+                {"calibration_note": str(args.calibration_note).strip()}
+                if str(args.calibration_note).strip()
+                else {}
+            ),
         },
         "tracks": {
             "per_date_lens": {
@@ -385,7 +395,11 @@ def main() -> int:
         "strict_pass_streak": streak,
         "auto_promote_ready": auto_promote_ready,
         "promotion_recommendation": recommendation,
-        "note": "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. Human sign-off still required before A-track or live routing.",
+        "note": (
+            "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. "
+            "Human sign-off still required before A-track or live routing."
+            + (f" {str(args.calibration_note).strip()}" if str(args.calibration_note).strip() else "")
+        ),
     }
 
     text = json.dumps(out, ensure_ascii=False, indent=2) + "\n"
