@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-04-20T00:35:00Z
+- **last_updated_utc:** 2026-04-20T12:00:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -102,6 +102,7 @@
 | 2026-04-19 (대기열 PS) | `run_waiting_queue_btc_binance_daily.ps1`의 고정 `C:\\workspace` 제거·`PSScriptRoot`에서 레포 루트 4단계 상위로 해석; CENTRAL `다음에 할 일`을 실측·푸시·P0/대기열 점검 축으로 재작성. |
 | 2026-04-20 (멀티렌즈 회귀) | `pytest`: `test_independent_lenses_v0`·`test_independent_lens_shadow_gate_v1`·`test_independent_lens_fusion_stub_v0`·`test_scm_boming_jiju_lexicon_v1`·`test_eval_btrack_insight_sidecar_lens_hit_agreement_v1` 일괄 **13 passed** — 명리/사상/로고스 렌즈 러너·섀도 게이트·퓨전 스텁·보명지주 렉시콘·사이드카 렌즈 일치 eval이 CI 가능 상태로 유지됨을 확인. |
 | 2026-04-20 (멀티렌즈 CI) | `.github/workflows/multilens-independent-lens-smoke.yml` 추가: 위 pytest 번들을 path-filtered push/PR에서 자동 실행; `verify_p0_constitution_gate_paths.ps1`·`MKM12_PRISM_INDEX_REGISTRY_V1.json`에 워크플로 경로 등록. |
+| 2026-04-20 (메모리 큐) | `다음에 할 일` 갱신: 푸시 완료 항목 제거 → **CI 녹색 확인**·**미커밋 artifact 정리/의도 커밋**·LG 실측 대기 유지. |
 | | |
 
 ---
@@ -163,8 +164,8 @@
 ## 다음에 할 일 (최대 3개)
 
 1. LG 타깃 보드 **실측 JSON** 수령 시 `docs/final/artifacts/lg_washer_target_device_measurement_v1.json` 전면 교체 후 `check_lg_washer_measurement_gate_v1.py`·`check_lg_washer_estimation_readiness_v1.py`·사인오프 패킷 재실행(현재는 proxy·게이트 GO 유지, 최종본 단정 금지).
-2. **원격 동기화:** `main`이 `origin/main`보다 앞서면 `git push origin main`(네트워크·자격 증명 필요 시 지휘관 실행).
-3. **운영 점검:** `powershell -File scripts/verify_p0_constitution_gate_paths.ps1` 주기 실행; BTC 대기열 일일 스크립트는 `projects/bitcoin-trading/ops/windows-rehearsal/run_waiting_queue_btc_binance_daily.ps1`(레포 루트 상대·공개 시세 조회) 스케줄 또는 수동 스모크.
+2. **CI 확인:** GitHub Actions `Multilens independent lens smoke`(`.github/workflows/multilens-independent-lens-smoke.yml`) 및 최근 푸시된 워크플로가 `main`에서 **성공**인지 확인; 실패 시 로그·path filter·테스트 로컬 재현(`pytest` 동일 번들).
+3. **워킹트리·운영:** 로컬에 `docs/final/artifacts/`·`reports/` 등 미커밋 변경이 쌓이면 **의도적 커밋** vs **`git restore`**로 정리(자동 체인 산출 노이즈 억제); 루틴은 `verify_p0_constitution_gate_paths.ps1`·`run_waiting_queue_btc_binance_daily.ps1` 주기 또는 수동 스모크.
 
 ## 동기화 루틴
 
