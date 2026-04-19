@@ -26,8 +26,12 @@ def test_runner_emits_schema(tmp_path: Path, script_rel: str, schema: str, lens_
     runner = _ROOT / script_rel
     assert runner.is_file(), runner
     out = tmp_path / f"lens_{lens_id}.json"
+    cmd = [sys.executable, str(runner), "--output", str(out)]
+    # data/logos/4lens_batch_sample.json is gitignored; CI has no batch vectors.
+    if script_rel.endswith("run_lens_logos.py"):
+        cmd.append("--allow-fallback")
     cp = subprocess.run(
-        [sys.executable, str(runner), "--output", str(out)],
+        cmd,
         cwd=str(_ROOT),
         capture_output=True,
         text=True,
