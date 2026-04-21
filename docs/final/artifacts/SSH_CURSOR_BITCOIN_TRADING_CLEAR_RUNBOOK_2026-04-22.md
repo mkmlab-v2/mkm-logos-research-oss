@@ -104,6 +104,35 @@ pm2 logs bitcoin-live --lines 200
 - 메인 프로세스(`bitcoin-live`)는 중지하지 않는다(장애 전파 방지).
 - 원인 파악 전 재시도 반복 금지.
 
+## Phase 6: 일일 검증 + 주 1회 반자동 진화 (비거래)
+목표:
+- 매일 예언 생성/정답 비교 루프를 유지한다.
+- 주 1회만 파라미터 탐색/후보 비교를 수행하고, 반영은 수동 승인으로 제한한다.
+
+일일(매일 1회, 비거래):
+```bash
+powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/run_daily_prophecy_eval_and_report.ps1" -IncludeDatedArchive
+```
+
+주간(주 1회, 비거래/후보 생성):
+```bash
+py "scripts/run_prophecy_per_date_combo_walkforward_v1.py"
+py "scripts/run_prophecy_instrument_combo_walkforward_v1.py"
+py "scripts/refresh_prophecy_promotion_gates_dual_v1.py"
+py "scripts/fast_promotion_gate_v1.py"
+py "scripts/build_a_track_go_nogo_status.py"
+```
+
+주간 판정 규칙:
+- `fast_promotion_gate_v1_latest.json`의 `result.live_ready=true`여도
+- `a_track_go_nogo_status_latest.json`이 `HOLD/S1_SHADOW`면 운영 정책 변경 금지
+- 주간 실행 결과는 "후보 리프레시"로만 기록하고, 실매매 전략 자동 교체 금지
+
+수동 승인 없이는 금지:
+- 메인 전략 파라미터 변경
+- 주문 라우팅 규칙 변경
+- A-track 승격 선언
+
 ## SSH Cursor 전달용 단문 지시
 아래 문장을 그대로 전달:
 
