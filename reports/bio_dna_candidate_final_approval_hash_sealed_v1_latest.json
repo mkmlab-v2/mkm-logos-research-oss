@@ -1,0 +1,23 @@
+{
+  "approval_event": "DNA_CONSTITUTION_CANDIDATE_READY_FINAL_HASH_SEALED_V1",
+  "timestamp_utc": "2026-04-21T10:04:01Z",
+  "approver": "CEO_Giryun_Lee",
+  "commit_hash": "4f2dc854f4",
+  "evidence_bundle_index": "reports/evidence_bundle_20260421/index.json",
+  "evidence_hash_manifest": "reports/evidence_bundle_20260421/hashes_sha256.json",
+  "hash_manifest_file_count": 14,
+  "hash_algorithm": "sha256",
+  "check_results": {
+    "scope_limit": "CANDIDATE_READY_ONLY",
+    "baseline_fixed": "NEUTRAL_ONLY",
+    "stability_metrics": {
+      "ready_rate": 1.0,
+      "ci_low": "POSITIVE"
+    },
+    "metric_definition_check": "POLICY_SWEEP_COUNT_18_27_CONFIRMED",
+    "market_uplift_guardrail": "RESEARCH_HOLDOUT_ONLY",
+    "synthetic_boundary": "E2E_ONLY_NO_PROD_USE",
+    "rollback_condition": "CI_LOW_LE_0_OR_OVERCLAIM"
+  },
+  "final_conclusion": "본 건은 DNA 통합 파이프라인의 candidate-ready 상태를 승인하며, 운영 승격은 human review 후속 절차 및 research holdout 가드레일 준수 조건에서만 유효하다."
+}
