@@ -1,0 +1,22 @@
+{
+  "schema": "bio_dna_constitution_final_approval_v1",
+  "approved_at_utc": "2026-04-21T10:12:00Z",
+  "approval_status": "APPROVED",
+  "approved_by": "CEO_Giryun_Lee",
+  "scope": {
+    "promotion_level": "CANDIDATE_READY_CONFIRMED",
+    "operational_constraint": "human_review_required_for_any_live_promotion",
+    "market_uplift_claim_scope": "research_ab_holdout_only"
+  },
+  "evidence": {
+    "bundle_index": "reports/evidence_bundle_20260421/index.json",
+    "hash_manifest": "reports/evidence_bundle_20260421/hashes_sha256.json",
+    "hash_sealed_approval_log": "reports/bio_dna_candidate_final_approval_hash_sealed_v1_latest.json",
+    "promotion_packet": "reports/bio_dna_constitution_promotion_packet_v1_latest.json"
+  },
+  "traceability": {
+    "bundle_freeze_commit": "4f2dc854f4",
+    "hash_seal_commit": "1322994ff5"
+  },
+  "note": "Final human approval recorded after evidence bundle freeze and SHA-256 integrity sealing."
+}
