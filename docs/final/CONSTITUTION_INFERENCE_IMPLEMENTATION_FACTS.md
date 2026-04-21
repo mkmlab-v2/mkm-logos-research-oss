@@ -356,6 +356,8 @@
 | **DNA 승격 준비 게이트(리포트)** | `scripts/build_bio_dna_promotion_readiness_v1.py` | 매핑 커버리지·유효 타깃 수·교차 매치 행 수 임계값으로 `promotion_candidate_ready` 판정; `--strict` 미달 시 exit **2** |
 | **DNA 준비 체인(원클릭)** | `scripts/run_bio_dna_readiness_chain_v1.py` | `normalize_bio_genotype_long_v1.py` → `check_bio_genotype_paper_snp_overlap_v1.py` → `build_bio_dna_promotion_readiness_v1.py` 직렬 실행; 선택 `--run-threshold-sweep`로 정책 스윕 생성, `--strict-readiness` 지원 |
 | **DNA 승격 임계값 스윕** | `scripts/run_bio_dna_promotion_threshold_sweep_v1.py` | 커버리지·타깃 행·매치 행 임계값 그리드를 전수 평가해 `recommended_policy` 산출; 기본 `reports/bio_dna_promotion_threshold_sweep_v1_latest.json` |
+| **DNA A/B 자동빌드·홀드아웃 평가** | `scripts/run_bio_dna_ab_autobuild_and_eval_v1.py` | `--use-blind-replay-profiles` 시 answer key + 프로파일(A/B/C/D/DS) 병합으로 확장 평가셋 생성 후 holdout+bootstrap 실행; 기준 baseline 정책은 운영 판정 시 `neutral` 고정 |
+| **DNA A/B neutral 다중-seed 안정성** | `scripts/run_bio_dna_ab_neutral_seed_stability_v1.py` | `neutral` 고정으로 seed 반복 실행해 `promotion_ready_rate`·`ci_low` 분포 요약(`reports/bio_dna_ab_neutral_seed_stability_v1.json/.csv`) |
 | **지노타입-코호트 커버리지 리포트** | `scripts/report_bio_genotype_cohort_coverage_v1.py` | 코호트 `sample_id` 대비 지노타입 `sample_id` 매칭률·누락 수 집계; 누락 템플릿 기본 `tmp/bio_genotype_missing_sample_template_v1.csv` 생성 |
 | **합성 지노타입 생성(E2E 전용)** | `scripts/generate_bio_synthetic_genotype_from_missing_template_v1.py` | 누락 템플릿 기반 합성 `sample_id,rsid,genotype` 생성; 리포트에 `research_only=true`, `promotion_forbidden=true` 기록 |
 | **누락 보강 + readiness 원클릭 체인** | `scripts/run_bio_genotype_missing_fill_chain_v1.ps1` | 커버리지 리포트 → (선택 `-SyntheticMode`) 합성 지노타입 생성 → DNA readiness chain 연쇄; `-RunThresholdSweep`/`-StrictReadiness` 지원 |
@@ -366,6 +368,7 @@
 2. **체질↔SNP 클러스터 고정표:** 검증된 재현 파이프와 코호트 계약이 없으면 **`[HYPO]`**로만 다룬다; **본 §8.1 표에 유전자명–태음/소양 등 매핑을 넣지 않는다.**
 3. **신뢰 가중치 배수 (예: 설문 대비 DNA 2.5×):** 헌법 상수로 고정하지 않으며, **스윕·홀드아웃 리포트**가 있기 전에는 코드/설정 실험 분기로만 둔다.
 4. **합성 데이터 경계:** `generate_bio_synthetic_genotype_from_missing_template_v1.py` 산출은 **E2E 파이프라인 검증 전용**이다. `ready=True`/`passing`이 나오더라도 **실측·운영 승격 근거로 사용하지 않는다**.
+5. **지표 정의 고정:** `threshold_sweep`의 `passing/total`은 **정책 조합 통과 수**이며, SNP per-sample 매칭률(`dna_paper_snp_match_ratio` 등)과 동일 의미로 해석하지 않는다.
 
 ---
 
