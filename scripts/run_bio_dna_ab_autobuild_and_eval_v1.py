@@ -5,10 +5,13 @@
 # Balance: 89
 # Purpose: One-click build combined AB CSV from existing artifact and run holdout evaluation.
 # Keywords: bio, dna, ab, autobuild, holdout, bootstrap
-"""Autobuild combined A/B CSV from existing artifact and run holdout evaluation.
+"""Autobuild combined A/B CSV from existing artifacts and run holdout evaluation.
 
-Default source:
+Default source mode:
 - docs/final/artifacts/ab_result_timeseries.csv
+
+Optional expanded source mode:
+- reports/constitution/btrack_pilot/blind_replay/answer_key + multiple prediction profiles
 
 Autobuild rules:
 - Use rows where sample_id starts with BR_
@@ -84,23 +87,99 @@ def main() -> int:
     ap.add_argument("--bootstrap-iterations", type=int, default=2000)
     ap.add_argument("--min-holdout-samples", type=int, default=12)
     ap.add_argument("--min-abs-uplift", type=float, default=0.02)
+    ap.add_argument(
+        "--use-blind-replay-profiles",
+        action="store_true",
+        help="Build combined set from blind replay answer key + multiple prediction profile files.",
+    )
+    ap.add_argument(
+        "--answer-key-jsonl",
+        type=Path,
+        default=root
+        / "reports"
+        / "constitution"
+        / "btrack_pilot"
+        / "blind_replay"
+        / "blind_replay_answer_key_historical_btcusdt_1d_cfg6_w60_h10_s2_seed45.jsonl",
+    )
+    ap.add_argument(
+        "--prediction-jsonl",
+        action="append",
+        default=[],
+        help="Prediction jsonl path(s); if omitted in blind-replay mode, defaults to A/B/C/D/DS latest.",
+    )
     ns = ap.parse_args()
 
-    if not ns.source_csv.is_file():
-        raise FileNotFoundError(f"missing source-csv: {ns.source_csv}")
-
     rows_in: list[dict[str, str]] = []
-    with ns.source_csv.open("r", encoding="utf-8", newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            sid = str(row.get("sample_id") or "").strip()
-            truth = str(row.get("truth") or "").strip()
-            pred = str(row.get("prediction") or "").strip()
-            if not sid.startswith("BR_"):
+    mode = "timeseries_csv"
+    source_desc: dict[str, Any] = {}
+    if ns.use_blind_replay_profiles:
+        mode = "blind_replay_profiles"
+        if not ns.answer_key_jsonl.is_file():
+            raise FileNotFoundError(f"missing answer-key-jsonl: {ns.answer_key_jsonl}")
+        answer_map: dict[str, str] = {}
+        for ln in ns.answer_key_jsonl.read_text(encoding="utf-8").splitlines():
+            if not ln.strip():
                 continue
-            if not truth or not pred:
-                continue
-            rows_in.append({"sample_id": sid, "truth": truth, "prediction": pred})
+            obj = json.loads(ln)
+            sid = str(obj.get("sample_id") or "").strip()
+            lab = str(obj.get("answer_label") or "").strip()
+            if sid and lab:
+                answer_map[sid] = lab
+
+        pred_files = [Path(p) for p in ns.prediction_jsonl]
+        if not pred_files:
+            blind_root = (
+                root
+                / "reports"
+                / "constitution"
+                / "btrack_pilot"
+                / "blind_replay"
+            )
+            pred_files = [
+                blind_root / "blind_replay_predictions_12ai_proxy_A_latest.jsonl",
+                blind_root / "blind_replay_predictions_12ai_proxy_B_latest.jsonl",
+                blind_root / "blind_replay_predictions_12ai_proxy_C_latest.jsonl",
+                blind_root / "blind_replay_predictions_12ai_proxy_D_latest.jsonl",
+                blind_root / "blind_replay_predictions_12ai_proxy_DS_latest.jsonl",
+            ]
+        pred_files = [p for p in pred_files if p.is_file()]
+        if not pred_files:
+            raise RuntimeError("no valid prediction jsonl files found")
+
+        for pf in pred_files:
+            for ln in pf.read_text(encoding="utf-8").splitlines():
+                if not ln.strip():
+                    continue
+                obj = json.loads(ln)
+                sid = str(obj.get("sample_id") or "").strip()
+                pred = str(obj.get("direction_sign") or "").strip()
+                profile = str(obj.get("profile") or pf.stem).strip()
+                truth = answer_map.get(sid)
+                if not sid or not pred or not truth:
+                    continue
+                # Expand effective sample count by treating profile as distinct run sample.
+                sid_ext = f"{sid}::{profile}"
+                rows_in.append({"sample_id": sid_ext, "truth": truth, "prediction": pred})
+        source_desc = {
+            "answer_key_jsonl": str(ns.answer_key_jsonl.resolve()),
+            "prediction_jsonl_files": [str(p.resolve()) for p in pred_files],
+        }
+    else:
+        if not ns.source_csv.is_file():
+            raise FileNotFoundError(f"missing source-csv: {ns.source_csv}")
+        with ns.source_csv.open("r", encoding="utf-8", newline="") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                sid = str(row.get("sample_id") or "").strip()
+                truth = str(row.get("truth") or "").strip()
+                pred = str(row.get("prediction") or "").strip()
+                if not sid.startswith("BR_"):
+                    continue
+                if not truth or not pred:
+                    continue
+                rows_in.append({"sample_id": sid, "truth": truth, "prediction": pred})
+        source_desc = {"source_csv": str(ns.source_csv.resolve())}
 
     labels = sorted({r["truth"] for r in rows_in})
     if not labels:
@@ -156,7 +235,8 @@ def main() -> int:
         "schema": "bio_dna_ab_autobuild_report_v1",
         "generated_at_utc": _utc_now(),
         "inputs": {
-            "source_csv": str(ns.source_csv.resolve()),
+            "source_mode": mode,
+            **source_desc,
             "baseline_mode": ns.baseline_mode,
             "seed": ns.seed,
         },
