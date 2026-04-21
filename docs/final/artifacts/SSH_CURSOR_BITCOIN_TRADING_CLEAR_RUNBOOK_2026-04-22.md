@@ -133,6 +133,53 @@ py "scripts/build_a_track_go_nogo_status.py"
 - 주문 라우팅 규칙 변경
 - A-track 승격 선언
 
+## Phase 7: Factor Influence 30분 자동 집계 (SSH 운영)
+목표:
+- `pm2` 실로그 기준으로 최근 1200라인/24h 근사치를 함께 산출한다.
+- `factor_influence_latest.json`를 30분마다 갱신하고, **원인 버킷(breakdown)**·**알림 상태**를 함께 기록한다.
+
+본선 크론(권장 엔트리):
+```bash
+/usr/bin/python3 /opt/mkm-lab-workspace-v2/projects/bitcoin-trading/scripts/report_factor_influence_latest.py \
+  >> /opt/mkm-lab-workspace-v2/projects/bitcoin-trading/logs/factor_influence_cron.log 2>&1
+```
+(동일 로직을 레포 스크립트로 등록하려면 아래 `register_*` 참고.)
+
+수동 1회 실행:
+```bash
+cd /opt/mkm-lab-workspace-v2/projects/bitcoin-trading
+python3 scripts/report_factor_influence_latest.py \
+  --log-file /root/.pm2/logs/bitcoin-live-out.log \
+  --out-dir exports/cursor_trade_history \
+  --recent-lines 1200 \
+  --window-hours 24 \
+  --emit-legacy-files
+```
+
+임계치(환경변수, 선택): `FACTOR_INFLUENCE_CRIT_VECTOR`, `FACTOR_INFLUENCE_CRIT_ENGINE`(기본 0.5), `FACTOR_INFLUENCE_ESCALATE_AFTER`(기본 2회 연속 CRITICAL 쌍이면 `critical_action_required`).
+
+슬림 전용(알림·breakdown 없이 구 스키마 `factor_influence_latest_v1`만 필요할 때):
+```bash
+python3 scripts/build_factor_influence_latest.py \
+  --log-file /root/.pm2/logs/bitcoin-live-out.log \
+  --out-dir exports/cursor_trade_history \
+  --recent-lines 1200 \
+  --window-hours 24 \
+  --emit-legacy-files
+```
+
+30분 크론 등록:
+```bash
+cd /opt/mkm-lab-workspace-v2/projects/bitcoin-trading
+bash ops/v2/ssh/register_factor_influence_latest_cron.sh
+crontab -l | grep bitcoin-factor-influence-latest
+```
+
+핵심 확인 파일:
+- `exports/cursor_trade_history/factor_influence_latest.json` — 상단 `exported_at`, `trade_done_rate` / `vector_missing_rate` / `engine_fallback_ma_rate`, `recent_lines.breakdown`
+- `exports/cursor_trade_history/factor_influence_alert_state.json` — `severity`, `consecutive_critical_count`, `repeat_alert_suppressed`
+- `exports/cursor_trade_history/factor_influence_recent_lines.json` / `factor_influence_24h.json` — `--emit-legacy-files` 시
+
 ## SSH Cursor 전달용 단문 지시
 아래 문장을 그대로 전달:
 
