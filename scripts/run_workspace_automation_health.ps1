@@ -16,11 +16,35 @@ param(
     [switch]$StrictGitSanity,
 
     [switch]$IncludeGitOriginMainSync,
-    [switch]$StrictGitOriginMainSync
+    [switch]$StrictGitOriginMainSync,
+
+    # Optional: fast pytest subset for weather B-track triplet + fusion-search-json (not run by default; ~tens of seconds).
+    [switch]$IncludeWeatherPipelineSmoke,
+
+    # Optional: bio PMID paper SNP sidecar join smoke (no network; sub-second).
+    [switch]$IncludeBioPaperSnpJoinSmoke,
+    # Shortcut profile: run only P0 path gate + automation registry reconcile + Bio SNP smoke.
+    [switch]$BioSnpOnly,
+
+    # Optional: run full weather external gate (chain -> comparison -> reliability -> go/no-go audit append).
+    [switch]$IncludeWeatherFullGate,
+    [string]$WeatherFullGateCsvPath = "",
+    [string]$WeatherFullGateForecastsJsonlPath = "",
+    [string]$WeatherFullGateRunLabel = "external_real_week_health_gate_v1",
+    [string]$WeatherFullGateBaselineProfile = "synthetic_hypo_120d",
+    [switch]$WeatherFullGateAutoColumnsCsv,
+    [switch]$WeatherFullGateStrictSchemaCsv
 )
 
 $ErrorActionPreference = "Stop"
 $root = $WorkspaceRoot
+
+if ($BioSnpOnly) {
+    $IncludeBioPaperSnpJoinSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+}
 
 function Step([string]$Name, [scriptblock]$Block) {
     Write-Host ""
@@ -150,6 +174,80 @@ try {
             Step "E:/F: governance (quick)" {
                 & powershell -NoProfile -ExecutionPolicy Bypass -File $gov -WorkspaceRoot $root
             }
+        }
+    }
+
+    if ($IncludeWeatherPipelineSmoke) {
+        $wt = Join-Path $root "tests\test_weather_gt_triplet_chain_smoke.py"
+        if (Test-Path -LiteralPath $wt) {
+            Step "Weather triplet pipeline smoke (fusion-search-json + optimizer)" {
+                & py -m pytest $wt -k "fusion_search_json or optimize_weather_lens_fusion" -q --tb=line
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Weather pipeline smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: test_weather_gt_triplet_chain_smoke.py not found"
+        }
+    }
+
+    if ($IncludeBioPaperSnpJoinSmoke) {
+        $bio = Join-Path $root "tests\test_bio_paper_snp_join_chain_smoke_v1.py"
+        $bioChainCli = Join-Path $root "tests\test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py"
+        $bioEpmcCli = Join-Path $root "tests\test_run_bio_epmc_catalog_and_label_merge_v1_cli.py"
+        if (Test-Path -LiteralPath $bio) {
+            Step "Bio paper SNP join smoke (join/apply + sidecar chain CLI + EPMC CLI guards)" {
+                $tests = @($bio)
+                if (Test-Path -LiteralPath $bioChainCli) {
+                    $tests += $bioChainCli
+                }
+                else {
+                    Write-Host "WARN: missing CLI guard test ($bioChainCli)" -ForegroundColor Yellow
+                }
+                if (Test-Path -LiteralPath $bioEpmcCli) {
+                    $tests += $bioEpmcCli
+                }
+                else {
+                    Write-Host "WARN: missing CLI guard test ($bioEpmcCli)" -ForegroundColor Yellow
+                }
+                & py -m pytest @tests -q --tb=line
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Bio paper SNP join smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: test_bio_paper_snp_join_chain_smoke_v1.py not found"
+        }
+    }
+
+    if ($IncludeWeatherFullGate) {
+        $full = Join-Path $root "scripts\run_weather_btrack_external_real_week_full_gate_v1.ps1"
+        if (Test-Path -LiteralPath $full) {
+            $csv = $WeatherFullGateCsvPath
+            if ([string]::IsNullOrWhiteSpace($csv)) {
+                $csv = Join-Path $root "tests\fixtures\weather_ground_truth_synthetic_120d_input.csv"
+            }
+            $fc = $WeatherFullGateForecastsJsonlPath
+            if ([string]::IsNullOrWhiteSpace($fc)) {
+                $fc = Join-Path $root "tests\fixtures\weather_synthetic_120d_external_lens_hypo_v1.jsonl"
+            }
+            Step "Weather full gate (external chain + reliability + go/no-go audit)" {
+                $args = @(
+                    "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $full,
+                    "-CsvPath", $csv,
+                    "-ForecastsJsonlPath", $fc,
+                    "-RunLabel", $WeatherFullGateRunLabel,
+                    "-BaselineProfile", $WeatherFullGateBaselineProfile
+                )
+                if ($WeatherFullGateAutoColumnsCsv) { $args += "-AutoColumnsCsv" }
+                if ($WeatherFullGateStrictSchemaCsv) { $args += "-StrictSchemaCsv" }
+                & powershell @args
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Weather full gate ===" -ForegroundColor Yellow
+            Write-Host "SKIP: run_weather_btrack_external_real_week_full_gate_v1.ps1 not found"
         }
     }
 

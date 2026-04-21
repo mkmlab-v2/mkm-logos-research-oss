@@ -193,6 +193,50 @@ on:
       - "docs/final/GENERAL_PROPHECY_SCHEMA_V1.json"
       - "tests/test_general_prophecy_schema_v1.py"
       - "tests/test_general_prophecy_chain_smoke.py"
+      - "scripts/csv_to_weather_ground_truth_jsonl_v1.py"
+      - "scripts/weather_csv_sniff_v1.py"
+      - "scripts/validate_weather_ground_truth_jsonl_v1.py"
+      - "scripts/generate_weather_gt_synthetic_csv_v1.py"
+      - "scripts/generate_weather_external_lens_forecasts_from_csv_v1.py"
+      - "scripts/build_weather_triplet_registry_v1.py"
+      - "scripts/run_weather_gt_to_prophecy_triplet_chain_v1.py"
+      - "scripts/run_weather_synthetic_120d_chain_and_brier_v1.ps1"
+      - "scripts/run_weather_synthetic_120d_chain_and_brier_v1.py"
+      - "scripts/fetch_kaggle_seattle_weather_sample_chain_v1.ps1"
+      - "scripts/requirements-weather-pipeline.txt"
+      - "scripts/print_brier_eval_summary_lines_v1.py"
+      - "scripts/run_weather_external_forecasts_minimal_chain_eval_v1.ps1"
+      - "scripts/run_weather_synthetic_120d_external_hypo_chain_eval_v1.ps1"
+      - "scripts/weather_gt_jsonl_to_forecasts_sidecar_v1.py"
+      - "scripts/validate_weather_forecasts_jsonl_against_gt_v1.py"
+      - "scripts/emit_weather_forecasts_jsonl_template_from_gt_v1.py"
+      - "scripts/optimize_weather_lens_fusion_weights_v1.py"
+      - "scripts/run_weather_btrack_hypo_fusionopt_to_artifacts_v1.py"
+      - "scripts/run_weather_btrack_external_forecasts_to_artifacts_v1.py"
+      - "scripts/run_weather_btrack_external_real_week_chain_v1.ps1"
+      - "scripts/run_weather_btrack_external_real_week_full_gate_v1.ps1"
+      - "docs/final/artifacts/weather_btrack_pipeline_hypo_fusionopt_summary_v1.json"
+      - "docs/final/artifacts/weather_lens_fusion_search_synthetic_120d_hypo_v1.json"
+      - "docs/final/artifacts/weather_prophecy_brier_eval_synthetic_120d_hypo_fusionopt_v1.json"
+      - "docs/final/artifacts/weather_btrack_pipeline_external_hypo_120d_v1_summary.json"
+      - "docs/final/artifacts/weather_btrack_summary_comparison_hypo_vs_external_hypo_120d_v1.json"
+      - "docs/final/artifacts/weather_lens_fusion_search_external_hypo_120d_v1.json"
+      - "docs/final/artifacts/weather_prophecy_brier_eval_external_hypo_120d_v1.json"
+      - "scripts/run_weather_synthetic_120d_optimize_fusion_then_chain_v1.ps1"
+      - "docs/final/artifacts/weather_prophecy_brier_eval_synthetic_120d_summary_v1.json"
+      - "docs/final/artifacts/weather_prophecy_brier_eval_synthetic_120d_sidecar_summary_v1.json"
+      - "tests/fixtures/weather_synthetic_120d_forecasts_sidecar_v1.jsonl"
+      - "tests/fixtures/weather_synthetic_120d_external_lens_hypo_v1.jsonl"
+      - "scripts/weather_ground_truth_jsonl_to_prophecy_triplet_registry_v1.py"
+      - "docs/final/schemas/weather_ground_truth_row_v1.schema.json"
+      - "tests/fixtures/weather_ground_truth_rows_v1.sample.jsonl"
+      - "tests/fixtures/weather_ground_truth_minimal_input.csv"
+      - "tests/fixtures/weather_kaggle_style_sniff_input.csv"
+      - "tests/fixtures/weather_forecasts_external_lens_minimal_v1.jsonl"
+      - "tests/fixtures/weather_ground_truth_synthetic_120d_input.csv"
+      - "tests/fixtures/weather_ground_truth_synthetic_120d_v1.jsonl"
+      - "tests/fixtures/weather_prophecy_triplet_chain_smoke_v1.json"
+      - "tests/test_weather_gt_triplet_chain_smoke.py"
       - "tests/test_resolve_general_prophecy_question_v1.py"
       - "tests/test_export_general_prophecy_to_jsonl.py"
       - "scripts/l1_codebook_bypass.py"
@@ -249,6 +293,24 @@ on:
       - "scripts/build_state_sasang_ops_bundle.py"
       - "docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json"
       - "docs/final/MYEONGRI_INSIGHT_SSOT.md"
+      - "scripts/check_bio_paper_snp_mapping_coverage_v1.py"
+      - "scripts/spec_bio_sample_paper_snp_join_gate_v1.py"
+      - "scripts/apply_bio_paper_snp_sidecar_to_samples_v1.py"
+      - "scripts/export_bio_measured_labels_paper_snp_sidecar_v1.py"
+      - "scripts/run_bio_paper_snp_sidecar_export_and_apply_v1.py"
+      - "scripts/export_bio_sample_paper_pmid_mapping_from_cohort_v1.py"
+      - "scripts/run_bio_epmc_catalog_and_label_merge_v1.py"
+      - "scripts/merge_bio_catalog_refsnp_into_measured_labels_v1.py"
+      - "scripts/build_bio_epmc_sasang_genetics_catalog_v1.py"
+      - "scripts/Run-BioPaperSnpSidecarExportAndApply.ps1"
+      - "tests/test_bio_paper_snp_join_chain_smoke_v1.py"
+      - "tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py"
+      - "tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py"
+      - "tests/fixtures/bio_paper_snp_join_smoke_samples_v1.csv"
+      - "tests/fixtures/bio_paper_snp_join_smoke_mapping_v1.csv"
+      - "docs/final/artifacts/bio_measured_labels_paper_snp_sidecar_v1.json"
+      - "docs/final/artifacts/bio_sample_paper_pmid_mapping_template_v1.csv"
+      - ".github/workflows/bio-paper-snp-sidecar-smoke.yml"
       # Docs-only PRs (battleboard, manifests) also trigger Fact-Lock
       - "docs/**"
   workflow_dispatch:
@@ -394,14 +456,34 @@ jobs:
       - name: Waiting-queue monthly check log contract
         run: python -m pytest tests/test_waiting_queue_monthly_check_log.py -q --tb=short
 
-      - name: General prophecy B-rail (schema, chain smoke, resolver, LoRA JSONL export)
+      - name: General prophecy B-rail (schema, chain smoke, resolver, LoRA JSONL export, weather GT triplet)
         run: |
           python -m pytest \
             tests/test_general_prophecy_schema_v1.py \
             tests/test_general_prophecy_chain_smoke.py \
             tests/test_resolve_general_prophecy_question_v1.py \
             tests/test_export_general_prophecy_to_jsonl.py \
+            tests/test_weather_gt_triplet_chain_smoke.py \
             -q --tb=short
+
+      - name: Weather synthetic 120d E2E (full chain + Brier, temp outputs)
+        run: |
+          set -euo pipefail
+          WDIR="${RUNNER_TEMP}/weather_synth120d_e2e"
+          mkdir -p "$WDIR"
+          export WDIR
+          python scripts/run_weather_synthetic_120d_chain_and_brier_v1.py \
+            --registry-json "$WDIR/triplet.json" \
+            --jsonl "$WDIR/gt.jsonl" \
+            --brier-out "$WDIR/brier_sidecar.json" \
+            --ece-bins 10 --ece-min-per-tag 5
+          python scripts/run_weather_synthetic_120d_chain_and_brier_v1.py \
+            --stub-only \
+            --registry-json "$WDIR/triplet_stub.json" \
+            --jsonl "$WDIR/gt_stub.jsonl" \
+            --brier-out "$WDIR/brier_stub.json" \
+            --ece-bins 10 --ece-min-per-tag 5
+          python -c "import json,os; w=os.environ['WDIR']; sc=json.load(open(os.path.join(w,'brier_sidecar.json')))['metrics']['mean_brier_score']; st=json.load(open(os.path.join(w,'brier_stub.json')))['metrics']['mean_brier_score']; assert abs(st-0.25)<1e-9, st; assert sc < 0.05, sc"
 
       - name: FACT-LOCK lexicon manifest fixture + seed summary shape (when present)
         run: python -m pytest tests/test_fact_lock_lexicon_gate.py -q --tb=short
@@ -500,6 +582,9 @@ jobs:
 
       - name: SASANG CROSS_REF draft (ijeoma chunk ↔ LOGOS bench Fact-Lock)
         run: python -m pytest tests/test_sasang_cross_ref_draft.py -q --tb=short
+
+      - name: Bio PMID paper SNP sidecar join smoke (§8.1, no network)
+        run: python -m pytest tests/test_bio_paper_snp_join_chain_smoke_v1.py tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py -q --tb=short
 
       - name: Myeongni insight observation JSONL + fusion interface stub (§3.3)
         run: python -m pytest tests/test_myeongni_insight_observation_log.py -q --tb=short

@@ -1,0 +1,58 @@
+# Smoke: PMID paper SNP sidecar join gate + apply + mapping export (no Europe PMC).
+name: Bio paper SNP sidecar join smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/check_bio_paper_snp_mapping_coverage_v1.py"
+      - "scripts/spec_bio_sample_paper_snp_join_gate_v1.py"
+      - "scripts/apply_bio_paper_snp_sidecar_to_samples_v1.py"
+      - "scripts/export_bio_sample_paper_pmid_mapping_from_cohort_v1.py"
+      - "scripts/export_bio_measured_labels_paper_snp_sidecar_v1.py"
+      - "scripts/run_bio_paper_snp_sidecar_export_and_apply_v1.py"
+      - "scripts/run_bio_epmc_catalog_and_label_merge_v1.py"
+      - "tests/test_bio_paper_snp_join_chain_smoke_v1.py"
+      - "tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py"
+      - "tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py"
+      - "tests/fixtures/bio_paper_snp_join_smoke_*.csv"
+      - "docs/final/artifacts/bio_measured_labels_paper_snp_sidecar_v1.json"
+      - ".github/workflows/bio-paper-snp-sidecar-smoke.yml"
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/check_bio_paper_snp_mapping_coverage_v1.py"
+      - "scripts/spec_bio_sample_paper_snp_join_gate_v1.py"
+      - "scripts/apply_bio_paper_snp_sidecar_to_samples_v1.py"
+      - "scripts/export_bio_sample_paper_pmid_mapping_from_cohort_v1.py"
+      - "scripts/export_bio_measured_labels_paper_snp_sidecar_v1.py"
+      - "scripts/run_bio_paper_snp_sidecar_export_and_apply_v1.py"
+      - "scripts/run_bio_epmc_catalog_and_label_merge_v1.py"
+      - "tests/test_bio_paper_snp_join_chain_smoke_v1.py"
+      - "tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py"
+      - "tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py"
+      - "tests/fixtures/bio_paper_snp_join_smoke_*.csv"
+      - "docs/final/artifacts/bio_measured_labels_paper_snp_sidecar_v1.json"
+      - ".github/workflows/bio-paper-snp-sidecar-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bio-paper-snp-sidecar-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: pip install pytest
+      - name: pytest bio paper SNP join smoke
+        run: python -m pytest tests/test_bio_paper_snp_join_chain_smoke_v1.py tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py -q --tb=short
