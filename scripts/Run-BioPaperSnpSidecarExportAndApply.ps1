@@ -2,6 +2,7 @@
 # Run from repo root. Requires explicit sample_id<->pmid mapping (constitution gate).
 # Optional: -MappingCoverageMin 0.95 (strict precheck via check_bio_paper_snp_mapping_coverage_v1.py; fail exit 2).
 # Shortcut: -StrictMappingCoverage95 (equivalent to -MappingCoverageMin 0.95 unless MappingCoverageMin is explicitly set).
+# Fast health-only validation shortcut lives in run_workspace_automation_health.ps1: -BioSnpOnly.
 # CI equivalent: .github/workflows/bio-paper-snp-sidecar-smoke.yml (pytest only).
 
 param(

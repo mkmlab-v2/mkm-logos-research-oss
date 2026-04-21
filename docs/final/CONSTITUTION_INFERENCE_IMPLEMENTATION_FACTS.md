@@ -351,12 +351,21 @@
 | **v3→JSON→샘플(EPMC 제외)** | `scripts/run_bio_paper_snp_sidecar_export_and_apply_v1.py`, `scripts/Run-BioPaperSnpSidecarExportAndApply.ps1` | `export_*_sidecar` + `apply_*` 연쇄; 선택 `--mapping-coverage-min`(0 초과 시 선행 커버리지 strict, 미달 exit **2**); PS1은 `-MappingCoverageMin` 또는 단축 `-StrictMappingCoverage95` |
 | **sample↔PMID 매핑 추출** | `scripts/export_bio_sample_paper_pmid_mapping_from_cohort_v1.py` | 코호트에 **이미 있는** `paper_pmid`(또는 `pmid`) 열만 사용; 수동 편집 템플릿 `docs/final/artifacts/bio_sample_paper_pmid_mapping_template_v1.csv` |
 | **매핑 커버리지(선행 점검)** | `scripts/check_bio_paper_snp_mapping_coverage_v1.py` | 코호트 `sample_id` 대비 매핑에 PMID가 있는 비율·JSON 리포트 기본 `reports/bio_paper_snp_mapping_coverage_v1_latest.json`; `--strict` 시 미달 exit **2** |
+| **실제 지노타입 교차(샘플 rsid)** | `scripts/check_bio_genotype_paper_snp_overlap_v1.py` | `apply` 결과(`paper_snp_ids_final_v3`)와 샘플별 지노타입 `rsid`를 교차해 `dna_paper_snp_match_count/ratio` 산출; 기본 리포트 `reports/bio_genotype_paper_snp_overlap_v1_latest.json` |
+| **지노타입 long 정규화(ingest)** | `scripts/normalize_bio_genotype_long_v1.py` | 다양한 입력 CSV(`rsid`/`rsid_list`)를 표준 `sample_id,rsid,genotype` long 포맷으로 정규화; 기본 리포트 `reports/bio_genotype_normalize_long_v1_latest.json` |
+| **DNA 승격 준비 게이트(리포트)** | `scripts/build_bio_dna_promotion_readiness_v1.py` | 매핑 커버리지·유효 타깃 수·교차 매치 행 수 임계값으로 `promotion_candidate_ready` 판정; `--strict` 미달 시 exit **2** |
+| **DNA 준비 체인(원클릭)** | `scripts/run_bio_dna_readiness_chain_v1.py` | `normalize_bio_genotype_long_v1.py` → `check_bio_genotype_paper_snp_overlap_v1.py` → `build_bio_dna_promotion_readiness_v1.py` 직렬 실행; 선택 `--run-threshold-sweep`로 정책 스윕 생성, `--strict-readiness` 지원 |
+| **DNA 승격 임계값 스윕** | `scripts/run_bio_dna_promotion_threshold_sweep_v1.py` | 커버리지·타깃 행·매치 행 임계값 그리드를 전수 평가해 `recommended_policy` 산출; 기본 `reports/bio_dna_promotion_threshold_sweep_v1_latest.json` |
+| **지노타입-코호트 커버리지 리포트** | `scripts/report_bio_genotype_cohort_coverage_v1.py` | 코호트 `sample_id` 대비 지노타입 `sample_id` 매칭률·누락 수 집계; 누락 템플릿 기본 `tmp/bio_genotype_missing_sample_template_v1.csv` 생성 |
+| **합성 지노타입 생성(E2E 전용)** | `scripts/generate_bio_synthetic_genotype_from_missing_template_v1.py` | 누락 템플릿 기반 합성 `sample_id,rsid,genotype` 생성; 리포트에 `research_only=true`, `promotion_forbidden=true` 기록 |
+| **누락 보강 + readiness 원클릭 체인** | `scripts/run_bio_genotype_missing_fill_chain_v1.ps1` | 커버리지 리포트 → (선택 `-SyntheticMode`) 합성 지노타입 생성 → DNA readiness chain 연쇄; `-RunThresholdSweep`/`-StrictReadiness` 지원 |
 
 **격벽 (Fact-Lock):**
 
 1. **코호트 A vs 원전·Proxy B:** `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` — B를 본선 분류·204 OOF·자동 합선하지 않는다.
 2. **체질↔SNP 클러스터 고정표:** 검증된 재현 파이프와 코호트 계약이 없으면 **`[HYPO]`**로만 다룬다; **본 §8.1 표에 유전자명–태음/소양 등 매핑을 넣지 않는다.**
 3. **신뢰 가중치 배수 (예: 설문 대비 DNA 2.5×):** 헌법 상수로 고정하지 않으며, **스윕·홀드아웃 리포트**가 있기 전에는 코드/설정 실험 분기로만 둔다.
+4. **합성 데이터 경계:** `generate_bio_synthetic_genotype_from_missing_template_v1.py` 산출은 **E2E 파이프라인 검증 전용**이다. `ready=True`/`passing`이 나오더라도 **실측·운영 승격 근거로 사용하지 않는다**.
 
 ---
 
@@ -530,3 +539,5 @@
 - `execute_observe`: 스크립트·API — 실행은 로컬 정책·CI에 따름.
 - `b_track_only`: 본선·실거래·OOF 자동 합선 금지(§1.1·§13.1과 동일 선상).
 - `system_internal`: 런타임/산출물 — 저장소에 없을 수 있음(생성 경로).
+
+**검증 자동 분기 팩트 (2026-04-21)**: `projects/no1kmedi/scripts/run-verify-auto.mjs` + `package.json` `verify:auto`가 `ATHENA_MANSERYEOK_API_URL`(및 필요 시 `ATHENA_MANSERYEOK_API_TOKEN`) live probe 성공 시 `verify:live`, 실패 시 `verify:full`로 자동 분기하며, `scripts/run-no1kmedi-verify-auto.mjs`로 workspace root에서도 동일 경로 실행 가능.

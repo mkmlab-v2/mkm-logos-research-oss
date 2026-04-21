@@ -195,8 +195,9 @@ try {
         $bio = Join-Path $root "tests\test_bio_paper_snp_join_chain_smoke_v1.py"
         $bioChainCli = Join-Path $root "tests\test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py"
         $bioEpmcCli = Join-Path $root "tests\test_run_bio_epmc_catalog_and_label_merge_v1_cli.py"
+        $bioGeno = Join-Path $root "tests\test_check_bio_genotype_paper_snp_overlap_v1.py"
         if (Test-Path -LiteralPath $bio) {
-            Step "Bio paper SNP join smoke (join/apply + sidecar chain CLI + EPMC CLI guards)" {
+            Step "Bio paper SNP join smoke (join/apply + chain CLI + EPMC CLI + genotype overlap)" {
                 $tests = @($bio)
                 if (Test-Path -LiteralPath $bioChainCli) {
                     $tests += $bioChainCli
@@ -209,6 +210,12 @@ try {
                 }
                 else {
                     Write-Host "WARN: missing CLI guard test ($bioEpmcCli)" -ForegroundColor Yellow
+                }
+                if (Test-Path -LiteralPath $bioGeno) {
+                    $tests += $bioGeno
+                }
+                else {
+                    Write-Host "WARN: missing genotype overlap test ($bioGeno)" -ForegroundColor Yellow
                 }
                 & py -m pytest @tests -q --tb=line
             }
