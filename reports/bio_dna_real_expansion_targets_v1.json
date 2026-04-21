@@ -1,0 +1,259 @@
+{
+  "schema": "bio_dna_real_expansion_targets_v1",
+  "generated_at_utc": "2026-04-21T10:33:27Z",
+  "inputs": {
+    "overlap_csv": "C:\\workspace\\tmp\\bio_cohort_with_genotype_overlap_v1.csv",
+    "top_k": 30
+  },
+  "summary": {
+    "rows": 389,
+    "rows_with_paper_snp_targets": 389,
+    "rows_with_any_genotype_match": 2,
+    "rows_without_match_but_with_targets": 195,
+    "recommended_target_count": 30
+  },
+  "recommendation_rule": "Prioritize rows with target_count>0 and match_count=0, ranked by higher target_count and lower genotype_rsid_count mismatch.",
+  "top_targets": [
+    {
+      "sample_id": "fp_m3847",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m3848",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4219",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m14",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m187",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m255",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m3691",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m3722",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m3723",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4804",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4805",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4806",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4807",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4808",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4809",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4810",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4811",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4812",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4813",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4814",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4815",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4220",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m520",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m521",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m263",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m524",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4221",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m4222",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m522",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    },
+    {
+      "sample_id": "fp_m523",
+      "target_count": 4,
+      "match_count": 0,
+      "genotype_rsid_count": 0,
+      "paper_pmid": "30376909",
+      "priority_score": 4000
+    }
+  ],
+  "note": "Use as collection priority guidance; does not alter promotion gate directly."
+}
