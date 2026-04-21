@@ -1,0 +1,70 @@
+{
+  "schema": "bio_dna_evidence_bundle_index_v1",
+  "bundle_id": "evidence_bundle_20260421",
+  "generated_at_utc": "2026-04-21T10:05:00Z",
+  "purpose": "Curated reproducibility snapshot for DNA promotion-candidate judgment and AB holdout stability.",
+  "scope_guardrails": {
+    "research_only": true,
+    "requires_human_review_and_approval": true,
+    "market_uplift_claim_scope": "research_ab_holdout_only"
+  },
+  "curated_artifacts": [
+    {
+      "path": "reports/bio_dna_constitution_promotion_packet_v1_latest.json",
+      "role": "latest promotion packet json"
+    },
+    {
+      "path": "reports/bio_dna_constitution_promotion_packet_v1_latest.md",
+      "role": "latest promotion packet markdown summary"
+    },
+    {
+      "path": "reports/bio_dna_candidate_approval_log_latest.json",
+      "role": "candidate-ready approval log"
+    },
+    {
+      "path": "reports/bio_dna_ab_neutral_seed_stability_v1.json",
+      "role": "neutral baseline multi-seed stability summary"
+    },
+    {
+      "path": "reports/bio_dna_ab_neutral_seed_stability_v1.csv",
+      "role": "neutral baseline multi-seed per-run table"
+    },
+    {
+      "path": "reports/bio_dna_ab_holdout_eval_v1_blindreplay_profiles_neutral.json",
+      "role": "neutral baseline holdout eval"
+    },
+    {
+      "path": "reports/bio_dna_ab_holdout_eval_v1_blindreplay_profiles_majority.json",
+      "role": "majority baseline holdout eval"
+    },
+    {
+      "path": "reports/bio_dna_ab_holdout_eval_v1_blindreplay_profiles_oracle_shifted.json",
+      "role": "oracle_shifted baseline holdout eval"
+    },
+    {
+      "path": "reports/bio_dna_ab_holdout_eval_v1_blindreplay_profiles_random.json",
+      "role": "random baseline holdout eval"
+    },
+    {
+      "path": "reports/bio_dna_ab_autobuild_report_v1_blindreplay_profiles_neutral.json",
+      "role": "neutral baseline autobuild provenance"
+    },
+    {
+      "path": "reports/bio_dna_ab_autobuild_report_v1_blindreplay_profiles_majority.json",
+      "role": "majority baseline autobuild provenance"
+    },
+    {
+      "path": "reports/bio_dna_ab_autobuild_report_v1_blindreplay_profiles_oracle_shifted.json",
+      "role": "oracle_shifted baseline autobuild provenance"
+    },
+    {
+      "path": "reports/bio_dna_ab_autobuild_report_v1_blindreplay_profiles_random.json",
+      "role": "random baseline autobuild provenance"
+    },
+    {
+      "path": "reports/bio_dna_ab_combined_blindreplay_profiles_v1.csv",
+      "role": "expanded AB combined dataset source snapshot"
+    }
+  ],
+  "exclusions_note": "High-volume per-seed run directory and redundant intermediate outputs are intentionally excluded from this curated snapshot."
+}
