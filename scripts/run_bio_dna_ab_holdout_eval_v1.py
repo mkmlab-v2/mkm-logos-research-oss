@@ -8,9 +8,11 @@
 """A/B holdout evaluation runner for DNA feature promotion decisions.
 
 Input contract:
-- baseline/treatment CSV must contain:
-  sample_id, y_true, y_pred
+- Option A (two-file mode):
+  baseline/treatment CSV must each contain sample_id, y_true, y_pred
   (column names are configurable with args)
+- Option B (single-file mode):
+  combined CSV contains sample_id, y_true, y_pred_baseline, y_pred_treatment
 - Rows are joined by sample_id; only common sample_ids are evaluated.
 """
 
@@ -80,6 +82,39 @@ def _join_rows(
     return joined
 
 
+def _load_rows_from_combined(
+    path: Path,
+    sample_col: str,
+    true_col: str,
+    base_pred_col: str,
+    treat_pred_col: str,
+) -> list[EvalRow]:
+    with path.open("r", encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        required = {sample_col, true_col, base_pred_col, treat_pred_col}
+        fields = set(reader.fieldnames or [])
+        missing = sorted(required - fields)
+        if missing:
+            raise ValueError(f"missing columns in {path}: {missing}")
+        out: list[EvalRow] = []
+        for row in reader:
+            sid = str(row.get(sample_col) or "").strip()
+            y_true = str(row.get(true_col) or "").strip()
+            y_base = str(row.get(base_pred_col) or "").strip()
+            y_treat = str(row.get(treat_pred_col) or "").strip()
+            if not sid or not y_true or not y_base or not y_treat:
+                continue
+            out.append(
+                EvalRow(
+                    sample_id=sid,
+                    y_true=y_true,
+                    y_pred_base=y_base,
+                    y_pred_treat=y_treat,
+                )
+            )
+    return out
+
+
 def _split_holdout(rows: list[EvalRow], holdout_ratio: float) -> tuple[list[EvalRow], list[EvalRow]]:
     train: list[EvalRow] = []
     holdout: list[EvalRow] = []
@@ -128,11 +163,14 @@ def _bootstrap_delta_ci(
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Run A/B holdout evaluation with bootstrap CI.")
-    ap.add_argument("--baseline-csv", type=Path, required=True)
-    ap.add_argument("--treatment-csv", type=Path, required=True)
+    ap.add_argument("--baseline-csv", type=Path, default=None)
+    ap.add_argument("--treatment-csv", type=Path, default=None)
+    ap.add_argument("--combined-csv", type=Path, default=None)
     ap.add_argument("--sample-col", default="sample_id")
     ap.add_argument("--true-col", default="y_true")
     ap.add_argument("--pred-col", default="y_pred")
+    ap.add_argument("--base-pred-col", default="y_pred_baseline")
+    ap.add_argument("--treat-pred-col", default="y_pred_treatment")
     ap.add_argument("--holdout-ratio", type=float, default=0.3)
     ap.add_argument("--bootstrap-iterations", type=int, default=2000)
     ap.add_argument("--bootstrap-alpha", type=float, default=0.05, help="0.05 = 95%% CI")
@@ -148,10 +186,20 @@ def main() -> int:
 
     if not (0.0 < ns.holdout_ratio < 1.0):
         raise ValueError("--holdout-ratio must be between 0 and 1")
-
-    base = _load_prediction_map(ns.baseline_csv, ns.sample_col, ns.true_col, ns.pred_col)
-    treat = _load_prediction_map(ns.treatment_csv, ns.sample_col, ns.true_col, ns.pred_col)
-    rows = _join_rows(base, treat)
+    if ns.combined_csv is not None:
+        rows = _load_rows_from_combined(
+            ns.combined_csv,
+            sample_col=ns.sample_col,
+            true_col=ns.true_col,
+            base_pred_col=ns.base_pred_col,
+            treat_pred_col=ns.treat_pred_col,
+        )
+    else:
+        if ns.baseline_csv is None or ns.treatment_csv is None:
+            raise ValueError("two-file mode requires --baseline-csv and --treatment-csv")
+        base = _load_prediction_map(ns.baseline_csv, ns.sample_col, ns.true_col, ns.pred_col)
+        treat = _load_prediction_map(ns.treatment_csv, ns.sample_col, ns.true_col, ns.pred_col)
+        rows = _join_rows(base, treat)
     train, holdout = _split_holdout(rows, ns.holdout_ratio)
 
     train_base = _acc(train, "base")
@@ -174,11 +222,14 @@ def main() -> int:
         "generated_at_utc": _utc_now(),
         "research_only": True,
         "inputs": {
-            "baseline_csv": str(ns.baseline_csv.resolve()),
-            "treatment_csv": str(ns.treatment_csv.resolve()),
+            "baseline_csv": str(ns.baseline_csv.resolve()) if ns.baseline_csv else None,
+            "treatment_csv": str(ns.treatment_csv.resolve()) if ns.treatment_csv else None,
+            "combined_csv": str(ns.combined_csv.resolve()) if ns.combined_csv else None,
             "sample_col": ns.sample_col,
             "true_col": ns.true_col,
             "pred_col": ns.pred_col,
+            "base_pred_col": ns.base_pred_col,
+            "treat_pred_col": ns.treat_pred_col,
         },
         "split": {
             "holdout_ratio": ns.holdout_ratio,
