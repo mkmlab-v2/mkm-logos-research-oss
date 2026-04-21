@@ -1,13 +1,13 @@
-# SSH Cursor Bitcoin Trading Clear Runbook (2026-04-22)
+# SSH Cursor Bitcoin Trading Clear Runbook v2 (Single Mode, 2026-04-22)
 
 ## 목적
 - SSH Cursor 작업 시 저장소 불일치로 인한 혼선을 제거한다.
-- 비트코인 운영은 기존 메인 전략을 유지하고, 검증 체인 반영 전에는 승격/대체를 금지한다.
+- 비트코인 운영을 단일 전략으로 고정하고, 검증 체인은 비거래 모드로만 수행한다.
 
 ## 절대 원칙
 - 서버 운영 원격을 임의 변경하지 않는다.
 - 검증 스크립트가 없는 상태에서 승격(Go) 판단을 하지 않는다.
-- `A-track HOLD/S1_SHADOW` 상태에서는 메인 전략 대체 금지, 병렬 소액만 허용한다.
+- `A-track HOLD/S1_SHADOW` 상태에서는 메인 전략만 유지하고, 병렬 매매를 금지한다.
 
 ## Phase 0: 서버 상태 고정 확인 (필수)
 ```bash
@@ -21,18 +21,19 @@ git rev-parse --short HEAD
 - 원격이 `git@github.com:mkmlab-hq/mkm-lab-workspace-v2.git`이면 이 런북 그대로 진행.
 - 다른 원격이면 즉시 중지 후 운영 책임자에게 보고.
 
-## Phase 1: 운영 안정 모드 유지 (즉시 적용)
+## Phase 1: 단일 매매 모드 강제 (즉시 적용)
 ```bash
 pm2 status
+pm2 stop bitcoin-live-treatment || true
+pm2 delete bitcoin-live-treatment || true
 pm2 restart bitcoin-live
-pm2 restart bitcoin-live-treatment
 pm2 save
 ```
 
 운영 규칙:
 - `bitcoin-live` = 기존 메인 전략 유지
-- `bitcoin-live-treatment` = 병렬 소액 실험 경로 유지
-- 검증 체인 반영 전까지 두 프로세스 역할 변경 금지
+- `bitcoin-live-treatment` = 사용 금지(중지/삭제 상태 유지)
+- 검증 결과와 무관하게 메인 전략 대체 금지
 
 ## Phase 2: 최소 이식 PR 수행 지시 (SSH Cursor 작업)
 아래 파일이 서버 리포에 없으면 반드시 이식 PR을 먼저 수행한다.
@@ -82,22 +83,21 @@ python3 scripts/build_a_track_go_nogo_status.py
 - `decision=pass` AND `result.live_ready=true`여도
 - `overall_go_no_go=HOLD`이면 운영은 제한 모드 유지 (`S1_SHADOW`)
 
-## Phase 5: 비트코인 운영 혼선 방지 체크
+## Phase 5: 단일 매매 운영 체크
 ```bash
 pm2 status
 pm2 logs bitcoin-live --lines 120
-pm2 logs bitcoin-live-treatment --lines 120
 ```
 
 확인 항목:
-- 두 프로세스 모두 online
-- treatment가 main을 덮어쓰지 않음
-- 주문/포지션/PnL 분리 증거가 없으면 승격 주장 금지
+- `bitcoin-live`만 online
+- `bitcoin-live-treatment` 프로세스가 목록에 없음
+- 검증 체인 실행 중에도 주문/포지션 로직 변경 없음
 
 ## 장애 시 즉시 롤백
 ```bash
-pm2 stop bitcoin-live-treatment
-pm2 logs bitcoin-live-treatment --lines 200
+pm2 restart bitcoin-live
+pm2 logs bitcoin-live --lines 200
 ```
 
 추가 원칙:
@@ -107,4 +107,4 @@ pm2 logs bitcoin-live-treatment --lines 200
 ## SSH Cursor 전달용 단문 지시
 아래 문장을 그대로 전달:
 
-"서버 원격(`mkmlab-hq/mkm-lab-workspace-v2`) 기준으로만 작업. 먼저 14개 B-track 검증 스크립트 이식 PR 수행, 이후 python3 1~6 고정 체인 실행, 마지막에 3개 JSON 키(decision/live_ready/overall_go_no_go+recommended_stage)만 보고. HOLD면 S1_SHADOW 제한 운영 유지, 메인 전략 대체 금지."
+"서버 원격(`mkmlab-hq/mkm-lab-workspace-v2`) 기준으로만 작업. 단일 매매 정책이므로 `bitcoin-live-treatment`은 stop/delete 유지, `bitcoin-live`만 운영. 14개 B-track 검증 스크립트 이식 PR 후 python3 1~6 고정 체인 실행, 마지막에 3개 JSON 키(decision/live_ready/overall_go_no_go+recommended_stage)만 보고. HOLD면 S1_SHADOW 제한 운영 유지, 메인 전략 단일 유지."
