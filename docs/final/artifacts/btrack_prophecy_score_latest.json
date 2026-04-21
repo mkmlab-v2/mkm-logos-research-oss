@@ -1,13 +1,13 @@
 {
   "schema": "btrack_prophecy_score_v1",
-  "generated_at_utc": "2026-04-21T16:17:20Z",
+  "generated_at_utc": "2026-04-21T17:52:42Z",
   "eval_date": "2026-04-17",
   "neutral_bps": 5.0,
   "hypothesis_path": "docs\\final\\artifacts\\btrack_hypothesis_prophecy_latest.json",
   "hypothesis_ts_utc": "2026-04-21T02:31:31Z",
   "inputs": {
     "kospi_csv": "research\\market_data\\kospi_daily_external_yf.csv",
-    "btc_csv": null,
+    "btc_csv": "research\\market_data\\btc_daily_external_yf.csv",
     "recent_trading_days": 30,
     "bull_reversal_lookback": 0,
     "bull_reversal_threshold_pct": 6.0,
@@ -60,38 +60,7 @@
     "downside_force_bear_min_cum_down_pct": 6.0
   },
   "meta": {
-    "warnings": [
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv).",
-      "instrument multi: btc leg skipped (no btc csv)."
-    ],
+    "warnings": [],
     "batch_eval_dates": [
       "2026-03-09",
       "2026-03-10",
@@ -139,6 +108,17 @@
       "flow_score_for_reversal": 0.0
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-03-09",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.03687448,
+      "prev_close": 65969.78125,
+      "close": 68402.3828125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-03-10",
       "predicted_direction": "bull",
@@ -146,6 +126,17 @@
       "daily_return": 0.05345138,
       "prev_close": 5251.8701171875,
       "close": 5532.58984375,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-03-10",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.02228781,
+      "prev_close": 68402.3828125,
+      "close": 69926.921875,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 0.0
     },
@@ -161,6 +152,17 @@
       "flow_score_for_reversal": 0.0
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-03-11",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00397502,
+      "prev_close": 69926.921875,
+      "close": 70204.8828125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-03-12",
       "predicted_direction": "bull",
@@ -168,6 +170,17 @@
       "daily_return": -0.00475944,
       "prev_close": 5609.9501953125,
       "close": 5583.25,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-03-12",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00411051,
+      "prev_close": 70204.8828125,
+      "close": 70493.4609375,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 0.0
     },
@@ -183,6 +196,17 @@
       "flow_score_for_reversal": 0.0
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-03-13",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00673544,
+      "prev_close": 70493.4609375,
+      "close": 70968.265625,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-03-16",
       "predicted_direction": "bull",
@@ -190,6 +214,17 @@
       "daily_return": 0.01141008,
       "prev_close": 5487.240234375,
       "close": 5549.85009765625,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-03-16",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.02845411,
+      "prev_close": 72789.9140625,
+      "close": 74861.0859375,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 0.0
     },
@@ -205,6 +240,17 @@
       "flow_score_for_reversal": 0.0
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-03-17",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "daily_return": -0.01253801,
+      "prev_close": 74861.0859375,
+      "close": 73922.4765625,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-03-18",
       "predicted_direction": "bull",
@@ -212,6 +258,17 @@
       "daily_return": 0.0504478,
       "prev_close": 5640.47998046875,
       "close": 5925.02978515625,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-03-18",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "daily_return": -0.03621224,
+      "prev_close": 73922.4765625,
+      "close": 71245.578125,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 0.0
     },
@@ -227,6 +284,17 @@
       "flow_score_for_reversal": 0.0
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-03-19",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "daily_return": -0.01870697,
+      "prev_close": 71245.578125,
+      "close": 69912.7890625,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-03-20",
       "predicted_direction": "bull",
@@ -234,6 +302,17 @@
       "daily_return": 0.00311978,
       "prev_close": 5763.22021484375,
       "close": 5781.2001953125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-03-20",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00872225,
+      "prev_close": 69912.7890625,
+      "close": 70522.5859375,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 0.0
     },
@@ -249,6 +328,17 @@
       "flow_score_for_reversal": 0.0
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-03-23",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.04524488,
+      "prev_close": 67845.2109375,
+      "close": 70914.859375,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-03-24",
       "predicted_direction": "bull",
@@ -256,6 +346,17 @@
       "daily_return": 0.02740969,
       "prev_close": 5405.75,
       "close": 5553.919921875,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-03-24",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "daily_return": -0.00559826,
+      "prev_close": 70914.859375,
+      "close": 70517.859375,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 0.0
     },
@@ -271,6 +372,17 @@
       "flow_score_for_reversal": 0.0
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-03-25",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.01123153,
+      "prev_close": 70517.859375,
+      "close": 71309.8828125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-03-26",
       "predicted_direction": "bull",
@@ -278,6 +390,17 @@
       "daily_return": -0.03221256,
       "prev_close": 5642.2099609375,
       "close": 5460.4599609375,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-03-26",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "daily_return": -0.03531429,
+      "prev_close": 71309.8828125,
+      "close": 68791.625,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 0.0
     },
@@ -293,6 +416,17 @@
       "flow_score_for_reversal": 0.0
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-03-27",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "daily_return": -0.03566204,
+      "prev_close": 68791.625,
+      "close": 66338.375,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-03-30",
       "predicted_direction": "bull",
@@ -300,6 +434,17 @@
       "daily_return": -0.0297066,
       "prev_close": 5438.8701171875,
       "close": 5277.2998046875,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-03-30",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.01116707,
+      "prev_close": 65954.921875,
+      "close": 66691.4453125,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 0.0
     },
@@ -315,6 +460,17 @@
       "flow_score_for_reversal": 0.0
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-03-31",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.02311941,
+      "prev_close": 66691.4453125,
+      "close": 68233.3125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 0.0
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-04-01",
       "predicted_direction": "bull",
@@ -322,6 +478,17 @@
       "daily_return": 0.08436291,
       "prev_close": 5052.4599609375,
       "close": 5478.7001953125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-04-01",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "daily_return": -0.00226807,
+      "prev_close": 68233.3125,
+      "close": 68078.5546875,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 9951.6
     },
@@ -337,6 +504,17 @@
       "flow_score_for_reversal": 9951.6
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-04-02",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "daily_return": -0.01747958,
+      "prev_close": 68078.5546875,
+      "close": 66888.5703125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-04-03",
       "predicted_direction": "bull",
@@ -344,6 +522,17 @@
       "daily_return": 0.02736886,
       "prev_close": 5234.0498046875,
       "close": 5377.2998046875,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-04-03",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00063585,
+      "prev_close": 66888.5703125,
+      "close": 66931.1015625,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 9951.6
     },
@@ -359,6 +548,17 @@
       "flow_score_for_reversal": 9951.6
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-04-06",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "daily_return": -0.0017696,
+      "prev_close": 68981.8984375,
+      "close": 68859.828125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-04-07",
       "predicted_direction": "bull",
@@ -366,6 +566,17 @@
       "daily_return": 0.00815542,
       "prev_close": 5450.330078125,
       "close": 5494.77978515625,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-04-07",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.04474125,
+      "prev_close": 68859.828125,
+      "close": 71940.703125,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 9951.6
     },
@@ -381,6 +592,17 @@
       "flow_score_for_reversal": 9951.6
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-04-08",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "daily_return": -0.01136135,
+      "prev_close": 71940.703125,
+      "close": 71123.359375,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-04-09",
       "predicted_direction": "bull",
@@ -388,6 +610,17 @@
       "daily_return": -0.01606346,
       "prev_close": 5872.33984375,
       "close": 5778.009765625,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-04-09",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00906128,
+      "prev_close": 71123.359375,
+      "close": 71767.828125,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 9951.6
     },
@@ -403,6 +636,17 @@
       "flow_score_for_reversal": 9951.6
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-04-10",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.0168769,
+      "prev_close": 71767.828125,
+      "close": 72979.046875,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-04-13",
       "predicted_direction": "bull",
@@ -410,6 +654,17 @@
       "daily_return": -0.00857674,
       "prev_close": 5858.8701171875,
       "close": 5808.6201171875,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-04-13",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.05273576,
+      "prev_close": 70753.40625,
+      "close": 74484.640625,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 9951.6
     },
@@ -425,6 +680,17 @@
       "flow_score_for_reversal": 9951.6
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-04-14",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "daily_return": -0.00406837,
+      "prev_close": 74484.640625,
+      "close": 74181.609375,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-04-15",
       "predicted_direction": "bull",
@@ -432,6 +698,17 @@
       "daily_return": 0.02071805,
       "prev_close": 5967.75,
       "close": 6091.39013671875,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-04-15",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00840463,
+      "prev_close": 74181.609375,
+      "close": 74805.078125,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 9951.6
     },
@@ -447,6 +724,17 @@
       "flow_score_for_reversal": 9951.6
     },
     {
+      "instrument": "btc",
+      "eval_date": "2026-04-16",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00463945,
+      "prev_close": 74805.078125,
+      "close": 75152.1328125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
       "instrument": "kospi",
       "eval_date": "2026-04-17",
       "predicted_direction": "bull",
@@ -454,6 +742,17 @@
       "daily_return": -0.00548179,
       "prev_close": 6226.0498046875,
       "close": 6191.919921875,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-04-17",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.0262766,
+      "prev_close": 75152.1328125,
+      "close": 77126.875,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 9951.6
     }
