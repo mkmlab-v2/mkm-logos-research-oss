@@ -1,11 +1,11 @@
 {
   "schema": "prophecy_instrument_combo_walkforward_v1",
-  "generated_at_utc": "2026-04-18T13:12:54Z",
+  "generated_at_utc": "2026-04-21T14:08:45Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
     "score_json": "docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
-    "kospi_csv": "C:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
+    "kospi_csv": "research\\market_data\\kospi_daily_external_yf.csv",
     "btc_csv": "research\\market_data\\btc_daily_external_yf.csv",
     "threshold_grid": [
       -0.06,
@@ -33,20 +33,20 @@
     {
       "fold_index": 0,
       "train_dates": [
-        "2026-03-05",
-        "2026-03-06",
         "2026-03-09",
         "2026-03-10",
         "2026-03-11",
-        "2026-03-12"
+        "2026-03-12",
+        "2026-03-13",
+        "2026-03-16"
       ],
       "test_dates": [
-        "2026-03-13",
-        "2026-03-16",
         "2026-03-17",
         "2026-03-18",
         "2026-03-19",
-        "2026-03-20"
+        "2026-03-20",
+        "2026-03-23",
+        "2026-03-24"
       ],
       "n_train_rows": 12,
       "n_test_rows": 12,
@@ -58,23 +58,21 @@
         }
       },
       "train": {
-        "accuracy": 0.583333,
-        "hits": 7,
+        "accuracy": 0.75,
+        "hits": 9,
         "n": 12
       },
       "test": {
-        "accuracy": 0.583333,
-        "hits": 7,
+        "accuracy": 0.5,
+        "hits": 6,
         "n": 12,
-        "always_bull_control": 0.583333
+        "always_bull_control": 0.5
       },
       "test_beats_always_bull": false
     },
     {
       "fold_index": 1,
       "train_dates": [
-        "2026-03-05",
-        "2026-03-06",
         "2026-03-09",
         "2026-03-10",
         "2026-03-11",
@@ -84,15 +82,17 @@
         "2026-03-17",
         "2026-03-18",
         "2026-03-19",
-        "2026-03-20"
+        "2026-03-20",
+        "2026-03-23",
+        "2026-03-24"
       ],
       "test_dates": [
-        "2026-03-23",
-        "2026-03-24",
         "2026-03-25",
         "2026-03-26",
         "2026-03-27",
-        "2026-03-30"
+        "2026-03-30",
+        "2026-03-31",
+        "2026-04-01"
       ],
       "n_train_rows": 24,
       "n_test_rows": 12,
@@ -104,8 +104,8 @@
         }
       },
       "train": {
-        "accuracy": 0.625,
-        "hits": 15,
+        "accuracy": 0.666667,
+        "hits": 16,
         "n": 24
       },
       "test": {
@@ -119,8 +119,6 @@
     {
       "fold_index": 2,
       "train_dates": [
-        "2026-03-05",
-        "2026-03-06",
         "2026-03-09",
         "2026-03-10",
         "2026-03-11",
@@ -136,15 +134,17 @@
         "2026-03-25",
         "2026-03-26",
         "2026-03-27",
-        "2026-03-30"
+        "2026-03-30",
+        "2026-03-31",
+        "2026-04-01"
       ],
       "test_dates": [
-        "2026-03-31",
-        "2026-04-01",
         "2026-04-02",
         "2026-04-03",
         "2026-04-06",
-        "2026-04-07"
+        "2026-04-07",
+        "2026-04-08",
+        "2026-04-09"
       ],
       "n_train_rows": 36,
       "n_test_rows": 12,
@@ -156,8 +156,8 @@
         }
       },
       "train": {
-        "accuracy": 0.583333,
-        "hits": 21,
+        "accuracy": 0.611111,
+        "hits": 22,
         "n": 36
       },
       "test": {
@@ -171,8 +171,6 @@
     {
       "fold_index": 3,
       "train_dates": [
-        "2026-03-05",
-        "2026-03-06",
         "2026-03-09",
         "2026-03-10",
         "2026-03-11",
@@ -194,15 +192,17 @@
         "2026-04-02",
         "2026-04-03",
         "2026-04-06",
-        "2026-04-07"
+        "2026-04-07",
+        "2026-04-08",
+        "2026-04-09"
       ],
       "test_dates": [
-        "2026-04-08",
-        "2026-04-09",
         "2026-04-10",
         "2026-04-13",
         "2026-04-14",
-        "2026-04-15"
+        "2026-04-15",
+        "2026-04-16",
+        "2026-04-17"
       ],
       "n_train_rows": 48,
       "n_test_rows": 12,
@@ -214,24 +214,24 @@
         }
       },
       "train": {
-        "accuracy": 0.583333,
-        "hits": 28,
+        "accuracy": 0.604167,
+        "hits": 29,
         "n": 48
       },
       "test": {
-        "accuracy": 0.583333,
-        "hits": 7,
+        "accuracy": 0.666667,
+        "hits": 8,
         "n": 12,
-        "always_bull_control": 0.666667
+        "always_bull_control": 0.75
       },
       "test_beats_always_bull": false
     }
   ],
   "aggregate": {
     "mean_test_accuracy": 0.5625,
-    "stdev_test_accuracy": 0.036084,
+    "stdev_test_accuracy": 0.069096,
     "min_test_accuracy": 0.5,
-    "max_test_accuracy": 0.583333,
+    "max_test_accuracy": 0.666667,
     "fraction_test_beats_always_bull": 0.25
   },
   "note": "Same candidate family as prophecy_instrument_combo_sweep_v1; blocked chronological folds."

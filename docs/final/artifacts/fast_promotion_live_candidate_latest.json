@@ -1,0 +1,31 @@
+{
+  "schema": "fast_promotion_gate_v1",
+  "generated_at_utc": "2026-04-21T15:06:11Z",
+  "research_only": true,
+  "promotion_required": true,
+  "inputs": {
+    "promotion_gates_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_promotion_gates_v1_latest.json",
+    "hit_rate_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_hit_rate_eval_latest.json",
+    "external_status_json": "C:\\workspace\\docs\\final\\artifacts\\external_feed_drop_validation_status_latest.json",
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "min_hit_rate": 0.5,
+    "min_n": 5,
+    "allow_external_degraded_for_live": false,
+    "allow_missing_external_status": false
+  },
+  "checks": {
+    "shadow_has_score_rows": true,
+    "promotion_combined_all_passed": true,
+    "hit_rate_ok": true,
+    "hit_rate_observed": 0.6,
+    "n_evaluated_observed": 60,
+    "external_mode": "latest_ok",
+    "external_live_ok": true
+  },
+  "result": {
+    "shadow_ready": true,
+    "live_ready": true,
+    "recommendation": "live_candidate",
+    "note": "B-track fast gate only. Human sign-off required before any A-track/live route."
+  }
+}
