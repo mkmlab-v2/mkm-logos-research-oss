@@ -1,0 +1,13 @@
+source_id,type,year,pmid,pmcid,doi,sample_size,effect_stats_extractable,key_stats,url
+pmc3306582,GWAS,2012,22394158,PMC3306582,10.1089/acm.2010.0764,1222,true,"rs10937331 p=2.71e-6 OR=1.61 | rs7180547 p=1.58e-6 OR=2.49 | rs12431592 p=1.31e-6 OR=1.53",https://pmc.ncbi.nlm.nih.gov/articles/PMC3306582/
+pubmed19552595,GenomeWideLinkage,2009,19552595,,10.1089/acm.2009.0067,350,true,"family linkage n=40 + association n=310 | NPL Z > 5 at multiple loci",https://pubmed.ncbi.nlm.nih.gov/19552595/
+pmc4432511,GWASReplication,2015,25888059,PMC4432511,10.1186/s12906-015-0609-4,5490,true,"rs7193144 OR=0.729 p=1.47e-7 | association remains after BMI adjustment",https://pmc.ncbi.nlm.nih.gov/articles/PMC4432511/
+pubmed18465425,CandidateGene,2008,18465425,,,,true,"overall overweight vs lean P=0.049 OR=0.296 | Taeumin subgroup P=0.007 OR=0.152",https://pubmed.ncbi.nlm.nih.gov/18465425/
+pubmed16318998,CandidateGene,2005,16318998,,,,true,"Taeumin obesity risk p=0.050 | IL-1ra A2- carrier signal p=0.047",https://pubmed.ncbi.nlm.nih.gov/16318998/
+pmc3094695,CandidateGeneStratified,2011,19822564,PMC3094695,10.1093/ecam/nep162,1370,true,"FTO BMI effect size +1.1 kg/m2 | MC4R BMI effect size +0.64 kg/m2",https://pmc.ncbi.nlm.nih.gov/articles/PMC3094695/
+pmc6390394,TwinStudy,2018,30376909,PMC6390394,10.1017/thg.2018.56,,true,"multivariate genetic/environment overlap across Sasang types",https://pmc.ncbi.nlm.nih.gov/articles/PMC6390394/
+pmc3501090,PathwayReanalysis,2012,,PMC3501090,,1222,true,"pathway-level enrichment based on Sasang GWAS",https://pmc.ncbi.nlm.nih.gov/articles/PMC3501090/
+koreascience2021_trends,Review,2021,,,,,true,"43 genetics studies reviewed (1996-2020)",https://koreascience.kr/article/JAKO202128557512169.page
+ref_yin2009_jacm,GWAS,2009,19954339,,10.1089/acm.2009.0205,,true,"353,202 SNP typed | 15,944 significant one-to-one | 22,616 significant one-to-two",https://pubmed.ncbi.nlm.nih.gov/19954339/
+ref_systematic_review_2012,SystematicReview,2012,,,10.1016/j.jams.2012.06.001,,true,"systematic review of significant/non-significant candidate-gene signals",review_ref_only
+ref_kim2015_fto_replication_doi,GWASReplication,2015,25888059,PMC4432511,10.1186/s12906-015-0609-4,5490,true,"discovery n=3810 + replication n=1680 | OR=0.729 p=1.47e-7",https://pmc.ncbi.nlm.nih.gov/articles/PMC4432511/
