@@ -140,3 +140,42 @@ py "scripts/build_a_track_go_nogo_status.py"
 
 ## Deployment Record
 - 2026-04-22: `mkmlab.space` landing updated to self-hosted promo video (`/media/promo.mp4`) and cache-busted assets (`main.css`/`main.js` at `?v=20260422-2`), deployed via `mkmlab-redesign_20260422_032053.zip`.
+
+## Worktree 고정 운영 표준 (클린 배포/동기화)
+목표:
+- 더티 워킹트리와 운영 작업을 물리적으로 분리한다.
+- 배포/동기화/핫픽스는 상시 클린 worktree에서만 수행한다.
+
+기본 경로(로컬 표준):
+- 메인 작업 트리: `C:\workspace` (더티 상태 허용)
+- 클린 운영 트리: `C:\workspace\_ops_clean_hq`
+
+최초 1회 설정:
+```bash
+cd C:\workspace
+git remote get-url hq || git remote add hq git@github.com:mkmlab-hq/mkm-lab-workspace-v2.git
+git fetch hq
+git worktree add C:\workspace\_ops_clean_hq hq/main
+```
+
+일상 운영(배포/동기화/핫픽스 전용):
+```bash
+cd C:\workspace\_ops_clean_hq
+git fetch hq
+git checkout main
+git pull --ff-only hq main
+git status
+```
+
+작업 규칙:
+- `C:\workspace`에서 배포용 checkout/cherry-pick/merge 금지
+- 운영 반영은 `C:\workspace\_ops_clean_hq`에서만 수행
+- 필요한 경우 임시 worktree를 추가 생성해 브랜치별 격리 수행
+
+작업 종료/정리:
+```bash
+cd C:\workspace
+git worktree list
+git worktree remove C:\workspace\_ops_clean_hq
+git worktree prune
+```
