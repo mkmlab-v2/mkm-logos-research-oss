@@ -1,6 +1,6 @@
 {
   "schema": "btrack_promotion_signoff_packet_v1",
-  "generated_at_utc": "2026-04-21T17:53:42Z",
+  "generated_at_utc": "2026-04-21T18:00:59Z",
   "research_only": true,
   "inputs": {
     "prophecy_gate": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json",

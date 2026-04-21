@@ -1,10 +1,12 @@
 {
   "schema": "btrack_fusion_gate_v1",
+  "schema_version": "btrack_fusion_gate_report_v2",
   "decision": "pass",
   "thresholds": {
     "min_resonance_rate": 0.8,
     "min_mean_axis_pearson": -0.2,
     "min_saving_delta": -0.2,
+    "pre_normalization": "none",
     "min_cee_consensus_rate": 0.6,
     "min_cee_mean_margin": 0.001,
     "min_master_atoms": 10000,
@@ -12,30 +14,43 @@
     "min_master_greek_atoms": 3000,
     "master_atoms_lemma_mode": "normalized_form_v1",
     "max_cee_risk_band": "critical_thin",
-    "thin_margin_threshold": 0.01,
+    "thin_margin_threshold": 0.001,
     "thin_margin_streak_limit": 10,
     "enforce_thin_margin_streak": false
   },
   "metrics": {
     "gematria_resonance_rate": 1.0,
     "gematria_mean_axis_pearson": 1.0,
-    "gematria_saving_delta_on_minus_off": -0.12798874824191275,
+    "gematria_saving_delta_on_minus_off": -0.14345991561181437,
     "cee_pilot_winner": "sons_of_israel",
     "cee_pilot_lambda_margin": 0.00165,
     "cee_consensus_winner": "sons_of_god",
     "cee_consensus_rate": 0.666667,
     "cee_mean_lambda_margin": 0.001267,
     "cee_margin_risk_band": "high_thin",
-    "cee_thin_margin_streak": 14,
-    "cee_thin_margin_streak_alert": true,
-    "recommended_action": "enforce_hard_gate_and_collect_direct_witness",
-    "master_atoms_unique": 41769,
+    "cee_thin_margin_streak": 0,
+    "cee_thin_margin_streak_alert": false,
+    "recommended_action": "collect_more_evidence",
+    "master_atoms_unique": 41775,
     "master_atoms_by_lang": {
       "greek": 13982,
       "hebrew": 22913,
-      "other": 4874
+      "other": 4880
     },
     "master_atoms_lemma_method": "normalized_form_v1"
+  },
+  "memory_palace_route_snapshot": {
+    "path": "C:\\workspace\\docs\\final\\artifacts\\memory_palace_route_snapshot_latest.json",
+    "present": true,
+    "domain": "control",
+    "route_selected": "raw",
+    "route_reason": "stage_risk_policy_forces_raw_fallback",
+    "hysteresis_upshift_required_streak": 2,
+    "hysteresis_applied": false,
+    "unresolved_row_rate": 0.125,
+    "ticket_patch_size": 1,
+    "research_only": true,
+    "promotion_required": true
   },
   "risk_log_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\fusion_gate_risk_log.jsonl",
   "evidence_todo_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\fusion_gate_evidence_todo_latest.json",

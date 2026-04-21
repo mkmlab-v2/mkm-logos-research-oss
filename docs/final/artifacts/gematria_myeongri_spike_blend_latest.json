@@ -1,0 +1,72 @@
+{
+  "schema": "gematria_myeongri_spike_blend_v0",
+  "version": "0.1.0",
+  "ts_utc": "2026-04-21T18:00:52Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "label": "[HYPO][NON-DETERMINISTIC][NON-MEDICAL] Gematria–Myeongri 4D blend spike; geometric metrics only.",
+  "disclaimer": "Geometric distances in 4D only; not accuracy, not trading, not doctrinal claim. Birth inputs are [HYPO] unless sourced.",
+  "inputs": {
+    "hebrew_text": "ישוע",
+    "birth_year": 4,
+    "birth_month": 1,
+    "birth_day": 1,
+    "birth_hour": 12,
+    "is_solar": true,
+    "is_male": true,
+    "blend_weight_myeongri": 0.5
+  },
+  "gematria_metadata": {
+    "raw_combined_sum": 386,
+    "compressed_combined_sum": 386,
+    "reconstructed_combined_sum": 386,
+    "raw_hebrew_sum": 386,
+    "raw_greek_sum": 0,
+    "compressed_hebrew_sum": 386,
+    "compressed_greek_sum": 0,
+    "reconstructed_hebrew_sum": 386,
+    "reconstructed_greek_sum": 0,
+    "raw_hebrew_chars": 4,
+    "raw_greek_chars": 0,
+    "compressed_hebrew_chars": 4,
+    "compressed_greek_chars": 0,
+    "reconstructed_hebrew_chars": 4,
+    "reconstructed_greek_chars": 0
+  },
+  "vanilla_bridge": {
+    "state16": 6,
+    "distance_to_state16": 0.008165782265037447,
+    "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
+  },
+  "vector_4d": {
+    "vanilla": {
+      "S": 0.2533,
+      "L": 0.2533,
+      "K": 0.2533,
+      "M": 0.24009999999999998
+    },
+    "myeongri": {
+      "S": 0.25,
+      "L": 0.25,
+      "K": 0.125,
+      "M": 0.375
+    },
+    "hybrid": {
+      "S": 0.25165000000000004,
+      "L": 0.25165000000000004,
+      "K": 0.18915,
+      "M": 0.30755
+    }
+  },
+  "metrics": {
+    "l2_vanilla_myeongri": 0.1862275,
+    "l2_vanilla_hybrid": 0.09311375,
+    "cosine_vanilla_myeongri": 0.93634181,
+    "cosine_vanilla_hybrid": 0.98299487
+  },
+  "fact_lock": {
+    "independent_lens_fusion_stub_has_consistency_rate": false,
+    "consistency_rate_where_defined": "docs/final/MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json (16-state experiment ledger)",
+    "fusion_stub_consensus_fields": "agreement_rate, consensus_score (lens directions), not vector blend"
+  }
+}
