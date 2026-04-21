@@ -13,10 +13,13 @@ on:
       - "scripts/export_bio_measured_labels_paper_snp_sidecar_v1.py"
       - "scripts/run_bio_paper_snp_sidecar_export_and_apply_v1.py"
       - "scripts/run_bio_epmc_catalog_and_label_merge_v1.py"
+      - "scripts/check_bio_genotype_paper_snp_overlap_v1.py"
       - "tests/test_bio_paper_snp_join_chain_smoke_v1.py"
       - "tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py"
       - "tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py"
+      - "tests/test_check_bio_genotype_paper_snp_overlap_v1.py"
       - "tests/fixtures/bio_paper_snp_join_smoke_*.csv"
+      - "tests/fixtures/bio_genotype_rsid_smoke_v1.csv"
       - "docs/final/artifacts/bio_measured_labels_paper_snp_sidecar_v1.json"
       - ".github/workflows/bio-paper-snp-sidecar-smoke.yml"
   pull_request:
@@ -29,10 +32,13 @@ on:
       - "scripts/export_bio_measured_labels_paper_snp_sidecar_v1.py"
       - "scripts/run_bio_paper_snp_sidecar_export_and_apply_v1.py"
       - "scripts/run_bio_epmc_catalog_and_label_merge_v1.py"
+      - "scripts/check_bio_genotype_paper_snp_overlap_v1.py"
       - "tests/test_bio_paper_snp_join_chain_smoke_v1.py"
       - "tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py"
       - "tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py"
+      - "tests/test_check_bio_genotype_paper_snp_overlap_v1.py"
       - "tests/fixtures/bio_paper_snp_join_smoke_*.csv"
+      - "tests/fixtures/bio_genotype_rsid_smoke_v1.csv"
       - "docs/final/artifacts/bio_measured_labels_paper_snp_sidecar_v1.json"
       - ".github/workflows/bio-paper-snp-sidecar-smoke.yml"
 
@@ -55,4 +61,4 @@ jobs:
       - name: Install test dependencies
         run: pip install pytest
       - name: pytest bio paper SNP join smoke
-        run: python -m pytest tests/test_bio_paper_snp_join_chain_smoke_v1.py tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py -q --tb=short
+        run: python -m pytest tests/test_bio_paper_snp_join_chain_smoke_v1.py tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py tests/test_check_bio_genotype_paper_snp_overlap_v1.py -q --tb=short

@@ -207,11 +207,14 @@ $required = @(
     "tests\test_bio_paper_snp_join_chain_smoke_v1.py",
     "tests\test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py",
     "tests\test_run_bio_epmc_catalog_and_label_merge_v1_cli.py",
+    "tests\test_check_bio_genotype_paper_snp_overlap_v1.py",
     "tests\fixtures\bio_paper_snp_join_smoke_samples_v1.csv",
     "tests\fixtures\bio_paper_snp_join_smoke_mapping_v1.csv",
+    "tests\fixtures\bio_genotype_rsid_smoke_v1.csv",
     ".github\workflows\bio-paper-snp-sidecar-smoke.yml",
     "scripts\Run-BioPaperSnpSidecarExportAndApply.ps1",
     "scripts\check_bio_paper_snp_mapping_coverage_v1.py",
+    "scripts\check_bio_genotype_paper_snp_overlap_v1.py",
     "codebook\policies\slack_fact_safe_mention_routing_v1.json"
 )
 

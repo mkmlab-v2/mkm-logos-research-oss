@@ -351,6 +351,7 @@
 | **v3→JSON→샘플(EPMC 제외)** | `scripts/run_bio_paper_snp_sidecar_export_and_apply_v1.py`, `scripts/Run-BioPaperSnpSidecarExportAndApply.ps1` | `export_*_sidecar` + `apply_*` 연쇄; 선택 `--mapping-coverage-min`(0 초과 시 선행 커버리지 strict, 미달 exit **2**); PS1은 `-MappingCoverageMin` 또는 단축 `-StrictMappingCoverage95` |
 | **sample↔PMID 매핑 추출** | `scripts/export_bio_sample_paper_pmid_mapping_from_cohort_v1.py` | 코호트에 **이미 있는** `paper_pmid`(또는 `pmid`) 열만 사용; 수동 편집 템플릿 `docs/final/artifacts/bio_sample_paper_pmid_mapping_template_v1.csv` |
 | **매핑 커버리지(선행 점검)** | `scripts/check_bio_paper_snp_mapping_coverage_v1.py` | 코호트 `sample_id` 대비 매핑에 PMID가 있는 비율·JSON 리포트 기본 `reports/bio_paper_snp_mapping_coverage_v1_latest.json`; `--strict` 시 미달 exit **2** |
+| **실제 지노타입 교차(샘플 rsid)** | `scripts/check_bio_genotype_paper_snp_overlap_v1.py` | `apply` 결과(`paper_snp_ids_final_v3`)와 샘플별 지노타입 `rsid`를 교차해 `dna_paper_snp_match_count/ratio` 산출; 기본 리포트 `reports/bio_genotype_paper_snp_overlap_v1_latest.json` |
 
 **격벽 (Fact-Lock):**
 
