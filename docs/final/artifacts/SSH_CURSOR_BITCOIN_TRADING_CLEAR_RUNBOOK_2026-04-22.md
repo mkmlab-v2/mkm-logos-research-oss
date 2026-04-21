@@ -140,6 +140,7 @@ py "scripts/build_a_track_go_nogo_status.py"
 
 ## Deployment Record
 - 2026-04-22: `mkmlab.space` landing updated to self-hosted promo video (`/media/promo.mp4`) and cache-busted assets (`main.css`/`main.js` at `?v=20260422-2`), deployed via `mkmlab-redesign_20260422_032053.zip`.
+- 2026-04-22: PR #25 merge 이후 `hq/main` 동기화 완료, `mkmlab-redesign` 핵심 파일 5종 존재 확인, runbook `Worktree 고정 운영 표준` 섹션 확인, `https://mkmlab.space/media/promo.mp4` 및 `main.css/main.js?v=20260422-2` HTTP 200 응답 확인.
 
 ## Worktree 고정 운영 표준 (클린 배포/동기화)
 목표:
