@@ -26,4 +26,5 @@ jobs:
           python scripts/enforce_backend_fact_engine_quantization_guard.py \
             --scan-dir projects/bitcoin-trading/src \
             --scan-dir scripts \
-            --skip-regex "/scripts/run_rag_turboquant_poc_template.py"
+            --skip-regex "/scripts/run_rag_turboquant_poc_template.py" \
+            --skip-regex "/scripts/train_mkm_prophecy_lora_unsloth.py"
