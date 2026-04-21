@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-04-18T17:33:45Z",
+  "generated_at_utc": "2026-04-21T01:23:45Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -37,7 +37,7 @@
             "min_mean_test_accuracy": 0.48
           },
           "observed": {
-            "mean_test_accuracy": 0.48
+            "mean_test_accuracy": 0.5
           }
         },
         {
@@ -48,7 +48,7 @@
             "max_stdev_test_accuracy": 0.205
           },
           "observed": {
-            "stdev_test_accuracy": 0.203961
+            "stdev_test_accuracy": 0.117851
           }
         },
         {
@@ -59,8 +59,8 @@
             "min_fraction_test_beats_always_bull": 0.4
           },
           "observed": {
-            "fraction_test_beats_always_bull": 0.4,
-            "n_folds": 5
+            "fraction_test_beats_always_bull": 0.5,
+            "n_folds": 4
           }
         },
         {
@@ -71,7 +71,7 @@
             "min_min_test_accuracy_across_folds": 0.2
           },
           "observed": {
-            "min_test_accuracy": 0.2
+            "min_test_accuracy": 0.333333
           }
         }
       ]
@@ -103,7 +103,7 @@
         "min_mean_test_accuracy": 0.48
       },
       "observed": {
-        "mean_test_accuracy": 0.48
+        "mean_test_accuracy": 0.5
       }
     },
     {
@@ -114,7 +114,7 @@
         "max_stdev_test_accuracy": 0.205
       },
       "observed": {
-        "stdev_test_accuracy": 0.203961
+        "stdev_test_accuracy": 0.117851
       }
     },
     {
@@ -125,8 +125,8 @@
         "min_fraction_test_beats_always_bull": 0.4
       },
       "observed": {
-        "fraction_test_beats_always_bull": 0.4,
-        "n_folds": 5
+        "fraction_test_beats_always_bull": 0.5,
+        "n_folds": 4
       }
     },
     {
@@ -137,7 +137,7 @@
         "min_min_test_accuracy_across_folds": 0.2
       },
       "observed": {
-        "min_test_accuracy": 0.2
+        "min_test_accuracy": 0.333333
       }
     },
     {
@@ -155,8 +155,8 @@
   "combined_all_passed": true,
   "all_gates_passed": true,
   "strict_passed": true,
-  "soft_passed": false,
-  "strict_pass_streak": 1,
+  "soft_passed": true,
+  "strict_pass_streak": 2,
   "auto_promote_ready": true,
   "promotion_recommendation": "auto_promote_ready",
   "note": "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. Human sign-off still required before A-track or live routing. Legacy strict 0.55/0.15/0.5/0.4 is in prophecy_promotion_gates_v1_legacy_strict_latest.json; this profile matches the best grid walk-forward aggregate on the current score snapshot."
