@@ -108,3 +108,6 @@ pm2 logs bitcoin-live --lines 200
 아래 문장을 그대로 전달:
 
 "서버 원격(`mkmlab-hq/mkm-lab-workspace-v2`) 기준으로만 작업. 단일 매매 정책이므로 `bitcoin-live-treatment`은 stop/delete 유지, `bitcoin-live`만 운영. 14개 B-track 검증 스크립트 이식 PR 후 python3 1~6 고정 체인 실행, 마지막에 3개 JSON 키(decision/live_ready/overall_go_no_go+recommended_stage)만 보고. HOLD면 S1_SHADOW 제한 운영 유지, 메인 전략 단일 유지."
+
+## Deployment Record
+- 2026-04-22: `mkmlab.space` landing updated to self-hosted promo video (`/media/promo.mp4`) and cache-busted assets (`main.css`/`main.js` at `?v=20260422-2`), deployed via `mkmlab-redesign_20260422_032053.zip`.
