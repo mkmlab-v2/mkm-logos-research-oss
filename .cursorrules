@@ -162,6 +162,17 @@
 
 ---
 
+## 2.1) DNA Candidate 승인 상태 동기화 (2026-04-21)
+
+- **상태 고정**: DNA 통합은 `APPROVED_CANDIDATE`로 취급하되, **human-gated** 제약은 유지한다.
+- **근거 경로 고정**: `reports/bio_dna_constitution_final_approval_latest.json`, `reports/evidence_bundle_20260421/index.json`, `reports/evidence_bundle_20260421/hashes_sha256.json`.
+- **A/B 판정 기준 고정**: 승격 판단 baseline은 `neutral` 단일 기준으로만 해석한다.
+- **지표 정의 고정**: `18/27`은 **정책 스윕 통과 수**이며 SNP per-sample 매칭률과 혼동하지 않는다.
+- **표현 가드레일**: 시장 성능 향상 단정은 금지하고 `research_ab_holdout_only` 범위로 제한한다.
+- **입력 우선순위**: 바이오 파이프라인 실행 시 `--SyntheticMode`는 기본 비활성; 실측 `--genotype-input-csv` 우선 검토 후 필요 시에만 합성 모드 사용.
+
+---
+
 ## 3) 프로젝트 핵심 컨텍스트
 
 - 프로젝트: MKM Study (4D 벡터 튜터 + 12인 참모진)
