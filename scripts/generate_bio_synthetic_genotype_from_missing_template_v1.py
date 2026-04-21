@@ -39,6 +39,12 @@ def main() -> int:
         default=Path("reports/bio_genotype_synthetic_build_v1_latest.json"),
     )
     ap.add_argument("--seed", type=int, default=20260421)
+    ap.add_argument(
+        "--fallback-cohort-csv",
+        type=Path,
+        default=None,
+        help="If missing template has zero rows, rebuild sample list from cohort sample_id.",
+    )
     ns = ap.parse_args()
 
     if not ns.missing_template_csv.is_file():
@@ -55,6 +61,17 @@ def main() -> int:
             sid = str(row.get("sample_id") or "").strip()
             if sid:
                 sample_ids.append(sid)
+
+    if not sample_ids and ns.fallback_cohort_csv is not None and ns.fallback_cohort_csv.is_file():
+        with ns.fallback_cohort_csv.open("r", encoding="utf-8", newline="") as f:
+            reader = csv.DictReader(f)
+            if "sample_id" in (reader.fieldnames or []):
+                seen: set[str] = set()
+                for row in reader:
+                    sid = str(row.get("sample_id") or "").strip()
+                    if sid and sid not in seen:
+                        seen.add(sid)
+                        sample_ids.append(sid)
 
     out_rows: list[dict[str, str]] = []
     for sid in sample_ids:

@@ -43,6 +43,7 @@ if ($SyntheticMode) {
     Run-Step "build_synthetic_genotype" @(
         (Join-Path $repoRoot "scripts\generate_bio_synthetic_genotype_from_missing_template_v1.py"),
         "--missing-template-csv", $MissingTemplateCsv,
+        "--fallback-cohort-csv", $CohortCsv,
         "--output-csv", $SyntheticGenotypeCsv,
         "--output-report", $SyntheticBuildReport,
         "--seed", "$SyntheticSeed"
