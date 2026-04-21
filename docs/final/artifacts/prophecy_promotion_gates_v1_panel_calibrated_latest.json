@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-04-21T01:23:45Z",
+  "generated_at_utc": "2026-04-21T02:31:33Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -88,7 +88,7 @@
           "passed": true,
           "reason": null,
           "detail": {
-            "btc_csv": "research\\market_data\\btc_daily_external_yf.csv"
+            "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
           }
         }
       ]
@@ -145,7 +145,7 @@
       "passed": true,
       "reason": null,
       "detail": {
-        "btc_csv": "research\\market_data\\btc_daily_external_yf.csv"
+        "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
       }
     }
   ],
@@ -156,7 +156,7 @@
   "all_gates_passed": true,
   "strict_passed": true,
   "soft_passed": true,
-  "strict_pass_streak": 2,
+  "strict_pass_streak": 1,
   "auto_promote_ready": true,
   "promotion_recommendation": "auto_promote_ready",
   "note": "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. Human sign-off still required before A-track or live routing. Legacy strict 0.55/0.15/0.5/0.4 is in prophecy_promotion_gates_v1_legacy_strict_latest.json; this profile matches the best grid walk-forward aggregate on the current score snapshot."

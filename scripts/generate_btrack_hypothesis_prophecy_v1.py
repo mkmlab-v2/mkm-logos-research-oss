@@ -140,7 +140,57 @@ def _extract_json_blob(text: str) -> dict[str, Any] | None:
         return None
 
 
-def _run_gemini(bundle_path: Path, *, model: str, timeout: int) -> dict[str, Any]:
+def _normalize_gemini_doc(doc: dict[str, Any], bundle: dict[str, Any]) -> dict[str, Any]:
+    """Apply conservative post-processing so gemini output does not stick to neutral."""
+    pred = doc.get("prediction")
+    if not isinstance(pred, dict):
+        return doc
+    direction = str(pred.get("direction") or "").strip().lower()
+    if direction not in ("neutral", "abstain"):
+        return doc
+
+    fusion = bundle.get("artifacts", {}).get("independent_lens_fusion_stub") or {}
+    consensus = fusion.get("consensus") if isinstance(fusion.get("consensus"), dict) else {}
+    c_score_raw = consensus.get("consensus_score")
+    try:
+        c_score = float(c_score_raw)
+    except (TypeError, ValueError):
+        c_score = 0.0
+
+    fallback_dir = "neutral"
+    # Favor directional call unless consensus is near-zero.
+    if c_score >= 0.08:
+        fallback_dir = "bull"
+    elif c_score <= -0.08:
+        fallback_dir = "bear"
+    else:
+        logos = bundle.get("artifacts", {}).get("logos_independent_lens") or {}
+        logos_scores = logos.get("scores") if isinstance(logos.get("scores"), dict) else {}
+        try:
+            logos_ds = float(logos_scores.get("direction_score"))
+        except (TypeError, ValueError):
+            logos_ds = 0.0
+        if logos_ds >= 0.05:
+            fallback_dir = "bull"
+        elif logos_ds <= -0.05:
+            fallback_dir = "bear"
+
+    if fallback_dir != "neutral":
+        pred["direction"] = fallback_dir
+        cf = pred.get("confidence")
+        try:
+            cfn = float(cf) if cf is not None else 0.0
+        except (TypeError, ValueError):
+            cfn = 0.0
+        pred["confidence"] = round(max(cfn, 0.51), 4)
+        label = str(doc.get("label") or "").strip()
+        suffix = f" | neutral->{fallback_dir}_fallback"
+        if suffix not in label:
+            doc["label"] = f"{label}{suffix}" if label else f"[HYPO] neutral->{fallback_dir}_fallback"
+    return doc
+
+
+def _run_gemini(bundle_path: Path, *, model: str, timeout: int, bundle: dict[str, Any]) -> dict[str, Any]:
     key = __import__("os").getenv("GEMINI_API_KEY") or __import__("os").getenv("GOOGLE_API_KEY")
     if not key:
         raise RuntimeError("GEMINI_API_KEY or GOOGLE_API_KEY required for --gemini")
@@ -156,6 +206,7 @@ Required fields: schema, hypothesis_tier (must be \"B\"), boundary_ack (true), t
 
 prediction.direction must be one of: bull, bear, neutral, abstain.
 prediction.instrument one of: kospi, btc, none, multi.
+Avoid neutral/abstain unless evidence is truly indecisive (very low directional edge).
 
 Input bundle (read-only context):
 {bundle_text[:120000]}
@@ -178,7 +229,7 @@ JSON Schema reference (follow required + enums):
     doc = _extract_json_blob(raw)
     if not doc:
         raise RuntimeError(f"Gemini did not return parseable JSON. Raw (truncated): {raw[:2000]!r}")
-    return doc
+    return _normalize_gemini_doc(doc, bundle)
 
 
 def main() -> int:
@@ -220,7 +271,7 @@ def main() -> int:
     bundle = _load_json(args.bundle)
 
     if args.gemini:
-        doc = _run_gemini(args.bundle, model=args.model, timeout=args.timeout)
+        doc = _run_gemini(args.bundle, model=args.model, timeout=args.timeout, bundle=bundle)
     else:
         doc = _build_stub_from_bundle(bundle)
 

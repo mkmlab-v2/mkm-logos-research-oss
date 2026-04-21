@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-04-21T01:23:45Z",
+  "generated_at_utc": "2026-04-21T02:31:33Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -87,7 +87,7 @@
           "passed": true,
           "reason": null,
           "detail": {
-            "btc_csv": "research\\market_data\\btc_daily_external_yf.csv"
+            "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
           }
         }
       ]
@@ -144,7 +144,7 @@
       "passed": true,
       "reason": null,
       "detail": {
-        "btc_csv": "research\\market_data\\btc_daily_external_yf.csv"
+        "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
       }
     }
   ],
