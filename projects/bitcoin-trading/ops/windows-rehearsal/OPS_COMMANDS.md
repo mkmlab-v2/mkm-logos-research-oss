@@ -39,6 +39,31 @@ cd C:\workspace
 powershell -ExecutionPolicy Bypass -File .\projects\bitcoin-trading\ops\windows-rehearsal\run_waiting_queue_verify_fast.ps1
 ```
 
+## Cursor Trade History 24h Sync (Control/Treatment)
+
+### Manual one-shot run
+
+```powershell
+cd C:\workspace\projects\bitcoin-trading
+py .\scripts\sync_cursor_trade_history_latest_24h.py --source-dir C:\workspace\projects\bitcoin-trading\exports\cursor_trade_history --dest-dir C:\workspace\projects\bitcoin-trading\exports\cursor_trade_history
+```
+
+### Windows scheduler register/unregister
+
+```powershell
+cd C:\workspace\projects\bitcoin-trading
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\register_cursor_trade_history_latest_24h_task.ps1
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\unregister_cursor_trade_history_latest_24h_task.ps1
+```
+
+### Linux cron register/unregister (VPS)
+
+```bash
+cd /root/projects/bitcoin-trading
+bash ./ops/v2/ssh/register_cursor_trade_history_latest_24h_cron.sh
+bash ./ops/v2/ssh/unregister_cursor_trade_history_latest_24h_cron.sh
+```
+
 ## 30-Second Health Check
 
 ```powershell
