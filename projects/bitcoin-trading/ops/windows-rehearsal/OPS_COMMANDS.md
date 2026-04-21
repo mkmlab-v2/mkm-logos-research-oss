@@ -46,6 +46,7 @@ powershell -ExecutionPolicy Bypass -File .\projects\bitcoin-trading\ops\windows-
 ```powershell
 cd C:\workspace\projects\bitcoin-trading
 py .\scripts\sync_cursor_trade_history_latest_24h.py --source-dir C:\workspace\projects\bitcoin-trading\exports\cursor_trade_history --dest-dir C:\workspace\projects\bitcoin-trading\exports\cursor_trade_history
+py .\scripts\sync_cursor_trade_history_latest_24h.py --source-dir C:\workspace\projects\bitcoin-trading\exports\cursor_trade_history --dest-dir C:\workspace\projects\bitcoin-trading\exports\cursor_trade_history --run-promotion-gate
 ```
 
 ### Windows scheduler register/unregister

@@ -17,7 +17,7 @@ if [[ ! -f "$SCRIPT_PATH" ]]; then
   exit 2
 fi
 
-CRON_CMD="cd \"$WORKSPACE_ROOT\" && \"$PYTHON_BIN\" \"$SCRIPT_PATH\" --source-dir \"$SOURCE_DIR\" --dest-dir \"$DEST_DIR\" >> \"$LOG_PATH\" 2>&1"
+CRON_CMD="cd \"$WORKSPACE_ROOT\" && \"$PYTHON_BIN\" \"$SCRIPT_PATH\" --source-dir \"$SOURCE_DIR\" --dest-dir \"$DEST_DIR\" --run-promotion-gate >> \"$LOG_PATH\" 2>&1"
 CRON_LINE="$SCHEDULE $CRON_CMD # $TASK_NAME"
 
 TMP_CRON="$(mktemp)"

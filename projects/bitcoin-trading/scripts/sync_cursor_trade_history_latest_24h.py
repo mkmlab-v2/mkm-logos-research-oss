@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import shutil
 import sys
 from dataclasses import dataclass
@@ -76,6 +77,17 @@ def _parse_args() -> argparse.Namespace:
         type=Path,
         default=None,
         help="Optional JSONL log path. Defaults to <dest-dir>/sync_latest_24h.log.jsonl.",
+    )
+    parser.add_argument(
+        "--run-promotion-gate",
+        action="store_true",
+        help="Run strategy promotion gate evaluation after sync succeeds.",
+    )
+    parser.add_argument(
+        "--promotion-gate-script",
+        type=Path,
+        default=Path(__file__).resolve().parent / "evaluate_trade_strategy_promotion_gate_v1.py",
+        help="Promotion gate evaluation script path.",
     )
     return parser.parse_args()
 
@@ -182,6 +194,46 @@ def _append_log(path: Path, row: dict[str, Any]) -> None:
         fh.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
+def _run_promotion_gate(script_path: Path, dest_dir: Path, log_file: Path) -> dict[str, Any]:
+    if not script_path.exists():
+        raise RuntimeError(f"promotion gate script not found: {script_path}")
+
+    output_file = dest_dir / "strategy_promotion_gate_latest.json"
+    shadow_file = dest_dir / "trades_treatment_v2_shadow.json"
+    cmd = [
+        sys.executable,
+        str(script_path),
+        "--control-file",
+        str(dest_dir / "trades_control.json"),
+        "--treatment-file",
+        str(dest_dir / "trades_treatment.json"),
+        "--shadow-file",
+        str(shadow_file),
+        "--output-file",
+        str(output_file),
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+    status = "ok" if result.returncode == 0 else "error"
+    _append_log(
+        log_file,
+        {
+            "event": "strategy_promotion_gate_after_sync",
+            "status": status,
+            "script_path": str(script_path),
+            "output_file": str(output_file),
+            "return_code": result.returncode,
+            "stdout": result.stdout.strip(),
+            "stderr": result.stderr.strip(),
+        },
+    )
+    if result.returncode != 0:
+        raise RuntimeError(
+            "promotion gate evaluation failed: "
+            f"code={result.returncode} stderr={result.stderr.strip()}"
+        )
+    return {"output_file": str(output_file), "shadow_file": str(shadow_file)}
+
+
 def main() -> int:
     args = _parse_args()
     source_dir = args.source_dir
@@ -248,6 +300,14 @@ def main() -> int:
         }
         _append_log(log_file, log_row)
 
+        promotion_info: dict[str, Any] | None = None
+        if args.run_promotion_gate:
+            promotion_info = _run_promotion_gate(
+                script_path=args.promotion_gate_script,
+                dest_dir=dest_dir,
+                log_file=log_file,
+            )
+
         print("[OK] sync + latest window generation complete")
         print(f"source: {source_dir}")
         print(f"dest:   {dest_dir}")
@@ -257,6 +317,9 @@ def main() -> int:
             f"treatment={len(treatment.kept)} "
             f"total={all_latest['counts']['total']}"
         )
+        if promotion_info is not None:
+            print("[OK] promotion gate evaluated")
+            print(f"gate_output: {promotion_info['output_file']}")
         return 0
     except RuntimeError as exc:
         _append_log(

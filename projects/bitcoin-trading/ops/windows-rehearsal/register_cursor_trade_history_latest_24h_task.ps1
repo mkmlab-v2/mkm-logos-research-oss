@@ -11,7 +11,7 @@ if (-not (Test-Path $runner)) {
     throw "Sync script not found: $runner"
 }
 
-$tr = "$pythonExe `"$runner`" --source-dir `"$sourceDir`" --dest-dir `"$destDir`""
+$tr = "$pythonExe `"$runner`" --source-dir `"$sourceDir`" --dest-dir `"$destDir`" --run-promotion-gate"
 
 schtasks /Delete /TN $taskName /F | Out-Null 2>&1
 schtasks /Create /TN $taskName /SC MINUTE /MO 15 /TR $tr /F | Out-Null
