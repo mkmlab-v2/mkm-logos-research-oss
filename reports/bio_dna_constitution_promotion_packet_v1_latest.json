@@ -1,6 +1,6 @@
 {
   "schema": "bio_dna_constitution_promotion_packet_v1",
-  "generated_at_utc": "2026-04-21T08:00:00Z",
+  "generated_at_utc": "2026-04-21T09:55:00Z",
   "status": {
     "promotion_candidate_ready": true,
     "threshold_sweep_passing_count": 18,
@@ -17,7 +17,19 @@
     "mapping_coverage_report": "reports/bio_paper_snp_mapping_coverage_autofill_v1.json",
     "overlap_report": "reports/bio_genotype_paper_snp_overlap_v1_latest.json",
     "genotype_input_csv": "tmp/bio_genotype_real_1case_v1.csv",
-    "cohort_csv": "tmp/bio_cohort_with_paper_snp_sidecar_autofill_v1.csv"
+    "cohort_csv": "tmp/bio_cohort_with_paper_snp_sidecar_autofill_v1.csv",
+    "ab_neutral_seed_stability_summary_json": "reports/bio_dna_ab_neutral_seed_stability_v1.json",
+    "ab_neutral_seed_stability_summary_csv": "reports/bio_dna_ab_neutral_seed_stability_v1.csv"
+  },
+  "ab_holdout_policy": {
+    "baseline_mode_locked": "neutral",
+    "source_mode": "blind_replay_profiles",
+    "seed_stability": {
+      "attempted": 30,
+      "succeeded": 30,
+      "promotion_ready_rate": 1.0,
+      "ci_low_median": 0.09345794392523366
+    }
   },
   "guardrails": {
     "synthetic_data_allowed_for_e2e_only": true,
@@ -26,6 +38,7 @@
   },
   "decision_hint": {
     "constitution_update_candidate": true,
-    "requires_human_review_and_approval": true
+    "requires_human_review_and_approval": true,
+    "market_uplift_claim_scope": "research_ab_holdout_only"
   }
 }
