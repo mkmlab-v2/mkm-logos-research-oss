@@ -1,8 +1,14 @@
 from __future__ import annotations
 
 import pandas as pd
+import pytest
 
-from scripts.run_btc_time_machine_fact_safe_backtest import BacktestConfig, run_backtest
+from scripts import run_btc_time_machine_fact_safe_backtest as btc_script
+from scripts.run_btc_time_machine_fact_safe_backtest import (
+    BacktestConfig,
+    _load_btc_data_with_fallback,
+    run_backtest,
+)
 
 
 def test_run_backtest_produces_samples_on_valid_close_series():
@@ -44,3 +50,46 @@ def test_run_backtest_applies_vol_shock_skip():
     )
     out = run_backtest(df, cfg)
     assert out["skipped_vol_shock"] > 0
+
+
+def test_load_btc_data_with_fallback_uses_fixture_when_primary_fails(tmp_path, monkeypatch):
+    fx = tmp_path / "btc_fixture.csv"
+    fx.write_text(
+        "Date,Open,High,Low,Close,Volume\n"
+        "2026-04-17,10,11,9,10.5,1000\n"
+        "2026-04-18,10.5,12,10,11,1200\n",
+        encoding="utf-8",
+    )
+
+    def _always_fail(**_kwargs):
+        raise RuntimeError("primary fetch failed")
+
+    monkeypatch.setattr(btc_script, "fetch_historical_data_light", _always_fail)
+    monkeypatch.setattr(btc_script, "FALLBACK_BTC_FIXTURE", fx)
+
+    df, mode = _load_btc_data_with_fallback(
+        start_dt=pd.Timestamp("2026-04-17").to_pydatetime(),
+        end_dt=pd.Timestamp("2026-04-18").to_pydatetime(),
+        symbol="BTCUSDT",
+        data_file=None,
+    )
+    assert mode == "fixture_fallback"
+    assert len(df) == 2
+    assert "close" in df.columns
+
+
+def test_load_btc_data_with_fallback_raises_when_fixture_missing(monkeypatch, tmp_path):
+    def _always_fail(**_kwargs):
+        raise RuntimeError("primary fetch failed")
+
+    missing = tmp_path / "missing_fixture.csv"
+    monkeypatch.setattr(btc_script, "fetch_historical_data_light", _always_fail)
+    monkeypatch.setattr(btc_script, "FALLBACK_BTC_FIXTURE", missing)
+
+    with pytest.raises(RuntimeError):
+        _load_btc_data_with_fallback(
+            start_dt=pd.Timestamp("2026-04-17").to_pydatetime(),
+            end_dt=pd.Timestamp("2026-04-18").to_pydatetime(),
+            symbol="BTCUSDT",
+            data_file=None,
+        )
