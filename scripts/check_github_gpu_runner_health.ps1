@@ -3,7 +3,8 @@ param(
     [string]$RunnerName = "WIN-GPU-RUNNER-01",
     [switch]$CheckOnly,
     [int]$RecoveryPollSeconds = 30,
-    [string]$WebhookUrl = ""
+    [string]$WebhookUrl = "",
+    [string]$RunnerDir = "C:\workspace\actions-runner-gpu"
 )
 
 $ErrorActionPreference = "Stop"
@@ -116,6 +117,24 @@ function Find-RunnerService {
     return ($services | Select-Object -First 1)
 }
 
+function Start-RunnerProcess {
+    param(
+        [string]$WorkingDirectory
+    )
+    $runCmd = Join-Path $WorkingDirectory "run.cmd"
+    if (-not (Test-Path -LiteralPath $runCmd)) {
+        throw "run.cmd not found: $runCmd"
+    }
+    # Avoid duplicate interactive runner processes.
+    $alreadyRunning = @(Get-CimInstance Win32_Process -Filter "Name = 'cmd.exe'" -ErrorAction SilentlyContinue | Where-Object {
+        $_.CommandLine -like "*actions-runner-gpu*run.cmd*"
+    })
+    if ($alreadyRunning.Count -gt 0) {
+        return
+    }
+    Start-Process -FilePath $runCmd -WorkingDirectory $WorkingDirectory | Out-Null
+}
+
 $before = Get-RunnerState -RepoName $Repo -TargetRunnerName $RunnerName
 if ($null -eq $before) {
     $msg = "Runner not found: $RunnerName (repo=$Repo)"
@@ -144,11 +163,37 @@ if ($CheckOnly.IsPresent) {
 
 $svc = Find-RunnerService -TargetRunnerName $RunnerName
 if ($null -eq $svc) {
-    $msg = "No actions.runner* service found. Start runner manually with .\\run.cmd in runner directory."
-    Write-Host $msg
-    Send-HealthAlert -ExitCode 3 -Message $msg -BeforeState $before
-    Write-HealthLog -ExitCode 3 -Message $msg -BeforeState $before
-    exit 3
+    Write-Host "No actions.runner* service found. Attempting process-based recovery via run.cmd."
+    try {
+        Start-RunnerProcess -WorkingDirectory $RunnerDir
+    }
+    catch {
+        $msg = "Process recovery failed: $($_.Exception.Message)"
+        Write-Host $msg
+        Send-HealthAlert -ExitCode 3 -Message $msg -BeforeState $before
+        Write-HealthLog -ExitCode 3 -Message $msg -BeforeState $before
+        exit 3
+    }
+    Start-Sleep -Seconds $RecoveryPollSeconds
+    $after = Get-RunnerState -RepoName $Repo -TargetRunnerName $RunnerName
+    if ($null -eq $after) {
+        $msg = "Runner disappeared after process start attempt: $RunnerName"
+        Write-Host $msg
+        Send-HealthAlert -ExitCode 5 -Message $msg -BeforeState $before
+        Write-HealthLog -ExitCode 5 -Message $msg -BeforeState $before
+        exit 5
+    }
+    Write-Host "Runner status after process recovery: name=$($after.name) status=$($after.status) busy=$($after.busy)"
+    if ($after.status -ne "online") {
+        $msg = "Runner is still offline after process start."
+        Write-Host $msg
+        Send-HealthAlert -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after
+        Write-HealthLog -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after
+        exit 6
+    }
+    Write-Host "Runner recovery successful (process mode)."
+    Write-HealthLog -ExitCode 0 -Message "Runner recovery successful (process mode)." -BeforeState $before -AfterState $after
+    exit 0
 }
 
 Write-Host "Attempting service restart: $($svc.Name)"
