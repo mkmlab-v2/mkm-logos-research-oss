@@ -3,6 +3,7 @@ param(
     [string]$RunnerName = "WIN-GPU-RUNNER-01",
     [switch]$CheckOnly,
     [int]$RecoveryPollSeconds = 30,
+    [int]$MaxRecoveryAttempts = 3,
     [string]$WebhookUrl = "",
     [string]$RunnerDir = "C:\workspace\actions-runner-gpu"
 )
@@ -135,6 +136,16 @@ function Start-RunnerProcess {
     Start-Process -FilePath $runCmd -WorkingDirectory $WorkingDirectory | Out-Null
 }
 
+function Wait-RunnerOnline {
+    param(
+        [string]$RepoName,
+        [string]$TargetRunnerName,
+        [int]$PollSeconds
+    )
+    Start-Sleep -Seconds $PollSeconds
+    return Get-RunnerState -RepoName $RepoName -TargetRunnerName $TargetRunnerName
+}
+
 $before = Get-RunnerState -RepoName $Repo -TargetRunnerName $RunnerName
 if ($null -eq $before) {
     $msg = "Runner not found: $RunnerName (repo=$Repo)"
@@ -163,70 +174,82 @@ if ($CheckOnly.IsPresent) {
 
 $svc = Find-RunnerService -TargetRunnerName $RunnerName
 if ($null -eq $svc) {
-    Write-Host "No actions.runner* service found. Attempting process-based recovery via run.cmd."
-    try {
-        Start-RunnerProcess -WorkingDirectory $RunnerDir
+    Write-Host "No actions.runner* service found. Attempting process-based recovery via run.cmd (max_attempts=$MaxRecoveryAttempts)."
+    for ($attempt = 1; $attempt -le $MaxRecoveryAttempts; $attempt++) {
+        try {
+            Start-RunnerProcess -WorkingDirectory $RunnerDir
+        }
+        catch {
+            $msg = "Process recovery failed on attempt $attempt/${MaxRecoveryAttempts}: $($_.Exception.Message)"
+            Write-Host $msg
+            if ($attempt -ge $MaxRecoveryAttempts) {
+                Send-HealthAlert -ExitCode 3 -Message $msg -BeforeState $before
+                Write-HealthLog -ExitCode 3 -Message $msg -BeforeState $before
+                exit 3
+            }
+            continue
+        }
+        $after = Wait-RunnerOnline -RepoName $Repo -TargetRunnerName $RunnerName -PollSeconds $RecoveryPollSeconds
+        if ($null -eq $after) {
+            $msg = "Runner disappeared after process start attempt $attempt/${MaxRecoveryAttempts}: $RunnerName"
+            Write-Host $msg
+            if ($attempt -ge $MaxRecoveryAttempts) {
+                Send-HealthAlert -ExitCode 5 -Message $msg -BeforeState $before
+                Write-HealthLog -ExitCode 5 -Message $msg -BeforeState $before
+                exit 5
+            }
+            continue
+        }
+        Write-Host "Runner status after process recovery attempt $attempt/${MaxRecoveryAttempts}: name=$($after.name) status=$($after.status) busy=$($after.busy)"
+        if ($after.status -eq "online") {
+            Write-Host "Runner recovery successful (process mode)."
+            Write-HealthLog -ExitCode 0 -Message "Runner recovery successful (process mode)." -BeforeState $before -AfterState $after
+            exit 0
+        }
     }
-    catch {
-        $msg = "Process recovery failed: $($_.Exception.Message)"
-        Write-Host $msg
-        Send-HealthAlert -ExitCode 3 -Message $msg -BeforeState $before
-        Write-HealthLog -ExitCode 3 -Message $msg -BeforeState $before
-        exit 3
-    }
-    Start-Sleep -Seconds $RecoveryPollSeconds
-    $after = Get-RunnerState -RepoName $Repo -TargetRunnerName $RunnerName
-    if ($null -eq $after) {
-        $msg = "Runner disappeared after process start attempt: $RunnerName"
-        Write-Host $msg
-        Send-HealthAlert -ExitCode 5 -Message $msg -BeforeState $before
-        Write-HealthLog -ExitCode 5 -Message $msg -BeforeState $before
-        exit 5
-    }
-    Write-Host "Runner status after process recovery: name=$($after.name) status=$($after.status) busy=$($after.busy)"
-    if ($after.status -ne "online") {
-        $msg = "Runner is still offline after process start."
-        Write-Host $msg
-        Send-HealthAlert -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after
-        Write-HealthLog -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after
-        exit 6
-    }
-    Write-Host "Runner recovery successful (process mode)."
-    Write-HealthLog -ExitCode 0 -Message "Runner recovery successful (process mode)." -BeforeState $before -AfterState $after
-    exit 0
-}
-
-Write-Host "Attempting service restart: $($svc.Name)"
-try {
-    Restart-Service -Name $svc.Name -ErrorAction Stop
-}
-catch {
-    $msg = "Restart-Service failed: $($_.Exception.Message)"
+    $msg = "Runner is still offline after process-start retries."
     Write-Host $msg
-    Send-HealthAlert -ExitCode 4 -Message $msg -BeforeState $before -ServiceName $svc.Name
-    Write-HealthLog -ExitCode 4 -Message $msg -BeforeState $before -ServiceName $svc.Name
-    exit 4
-}
-
-Start-Sleep -Seconds $RecoveryPollSeconds
-$after = Get-RunnerState -RepoName $Repo -TargetRunnerName $RunnerName
-if ($null -eq $after) {
-    $msg = "Runner disappeared after restart attempt: $RunnerName"
-    Write-Host $msg
-    Send-HealthAlert -ExitCode 5 -Message $msg -BeforeState $before -ServiceName $svc.Name
-    Write-HealthLog -ExitCode 5 -Message $msg -BeforeState $before -ServiceName $svc.Name
-    exit 5
-}
-
-Write-Host "Runner status after: name=$($after.name) status=$($after.status) busy=$($after.busy)"
-if ($after.status -ne "online") {
-    $msg = "Runner is still offline after restart."
-    Write-Host $msg
-    Send-HealthAlert -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after -ServiceName $svc.Name
-    Write-HealthLog -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after -ServiceName $svc.Name
+    Send-HealthAlert -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after
+    Write-HealthLog -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after
     exit 6
 }
 
-Write-Host "Runner recovery successful."
-Write-HealthLog -ExitCode 0 -Message "Runner recovery successful." -BeforeState $before -AfterState $after -ServiceName $svc.Name
-exit 0
+Write-Host "Attempting service restart: $($svc.Name) (max_attempts=$MaxRecoveryAttempts)"
+for ($attempt = 1; $attempt -le $MaxRecoveryAttempts; $attempt++) {
+    try {
+        Restart-Service -Name $svc.Name -ErrorAction Stop
+    }
+    catch {
+        $msg = "Restart-Service failed on attempt $attempt/${MaxRecoveryAttempts}: $($_.Exception.Message)"
+        Write-Host $msg
+        if ($attempt -ge $MaxRecoveryAttempts) {
+            Send-HealthAlert -ExitCode 4 -Message $msg -BeforeState $before -ServiceName $svc.Name
+            Write-HealthLog -ExitCode 4 -Message $msg -BeforeState $before -ServiceName $svc.Name
+            exit 4
+        }
+        continue
+    }
+    $after = Wait-RunnerOnline -RepoName $Repo -TargetRunnerName $RunnerName -PollSeconds $RecoveryPollSeconds
+    if ($null -eq $after) {
+        $msg = "Runner disappeared after restart attempt $attempt/${MaxRecoveryAttempts}: $RunnerName"
+        Write-Host $msg
+        if ($attempt -ge $MaxRecoveryAttempts) {
+            Send-HealthAlert -ExitCode 5 -Message $msg -BeforeState $before -ServiceName $svc.Name
+            Write-HealthLog -ExitCode 5 -Message $msg -BeforeState $before -ServiceName $svc.Name
+            exit 5
+        }
+        continue
+    }
+    Write-Host "Runner status after service recovery attempt $attempt/${MaxRecoveryAttempts}: name=$($after.name) status=$($after.status) busy=$($after.busy)"
+    if ($after.status -eq "online") {
+        Write-Host "Runner recovery successful."
+        Write-HealthLog -ExitCode 0 -Message "Runner recovery successful." -BeforeState $before -AfterState $after -ServiceName $svc.Name
+        exit 0
+    }
+}
+
+$msg = "Runner is still offline after restart retries."
+Write-Host $msg
+Send-HealthAlert -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after -ServiceName $svc.Name
+Write-HealthLog -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after -ServiceName $svc.Name
+exit 6
