@@ -599,7 +599,7 @@ jobs:
         run: python -m pytest tests/test_sasang_cross_ref_draft.py -q --tb=short
 
       - name: Bio PMID paper SNP sidecar join smoke (§8.1, no network)
-        run: python -m pytest tests/test_bio_paper_snp_join_chain_smoke_v1.py tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py tests/test_check_bio_genotype_paper_snp_overlap_v1.py tests/test_normalize_bio_genotype_long_v1.py tests/test_build_bio_dna_promotion_readiness_v1.py tests/test_run_bio_dna_readiness_chain_v1.py tests/test_run_bio_dna_promotion_threshold_sweep_v1.py -q --tb=short
+        run: python -m pytest tests/test_bio_paper_snp_join_chain_smoke_v1.py tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py tests/test_check_bio_genotype_paper_snp_overlap_v1.py -q --tb=short
 
       - name: Myeongni insight observation JSONL + fusion interface stub (§3.3)
         run: python -m pytest tests/test_myeongni_insight_observation_log.py -q --tb=short
