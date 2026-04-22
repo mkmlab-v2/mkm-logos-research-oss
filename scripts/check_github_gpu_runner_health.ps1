@@ -2,7 +2,8 @@ param(
     [string]$Repo = "mkmlab-v2/mkm-destiny-ai-41e38ec6",
     [string]$RunnerName = "WIN-GPU-RUNNER-01",
     [switch]$CheckOnly,
-    [int]$RecoveryPollSeconds = 30
+    [int]$RecoveryPollSeconds = 30,
+    [string]$WebhookUrl = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -33,6 +34,46 @@ function Write-HealthLog {
         after = $AfterState
     }
     ($entry | ConvertTo-Json -Compress -Depth 6) | Add-Content -Path $LogPath -Encoding utf8
+}
+
+function Send-HealthAlert {
+    param(
+        [int]$ExitCode,
+        [string]$Message,
+        [object]$BeforeState = $null,
+        [object]$AfterState = $null,
+        [string]$ServiceName = $null
+    )
+    $url = $WebhookUrl
+    if ([string]::IsNullOrWhiteSpace($url)) {
+        $url = $env:RUNNER_HEALTH_WEBHOOK_URL
+    }
+    if ([string]::IsNullOrWhiteSpace($url)) {
+        $url = $env:OPS_ALARM_WEBHOOK_URL
+    }
+    if ([string]::IsNullOrWhiteSpace($url)) {
+        return
+    }
+    $payload = @{
+        event = "github_gpu_runner_health_alert"
+        kind = "failure"
+        message = "runner=$RunnerName exit_code=$ExitCode $Message"
+        ts_utc = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+        repo = $Repo
+        runner = $RunnerName
+        check_only = [bool]$CheckOnly.IsPresent
+        recovery_poll_seconds = $RecoveryPollSeconds
+        exit_code = $ExitCode
+        service_name = $ServiceName
+        before = $BeforeState
+        after = $AfterState
+    } | ConvertTo-Json -Depth 6
+    try {
+        Invoke-RestMethod -Uri $url -Method Post -ContentType "application/json; charset=utf-8" -Body $payload | Out-Null
+    }
+    catch {
+        Write-Host "WARN: webhook send failed: $($_.Exception.Message)"
+    }
 }
 
 function Get-RunnerState {
@@ -79,6 +120,7 @@ $before = Get-RunnerState -RepoName $Repo -TargetRunnerName $RunnerName
 if ($null -eq $before) {
     $msg = "Runner not found: $RunnerName (repo=$Repo)"
     Write-Host $msg
+    Send-HealthAlert -ExitCode 2 -Message $msg
     Write-HealthLog -ExitCode 2 -Message $msg -BeforeState $null
     exit 2
 }
@@ -95,6 +137,7 @@ if ($before.status -eq "online") {
 if ($CheckOnly.IsPresent) {
     $msg = "CheckOnly mode: runner is offline; restart skipped."
     Write-Host $msg
+    Send-HealthAlert -ExitCode 1 -Message $msg -BeforeState $before
     Write-HealthLog -ExitCode 1 -Message $msg -BeforeState $before
     exit 1
 }
@@ -103,6 +146,7 @@ $svc = Find-RunnerService -TargetRunnerName $RunnerName
 if ($null -eq $svc) {
     $msg = "No actions.runner* service found. Start runner manually with .\\run.cmd in runner directory."
     Write-Host $msg
+    Send-HealthAlert -ExitCode 3 -Message $msg -BeforeState $before
     Write-HealthLog -ExitCode 3 -Message $msg -BeforeState $before
     exit 3
 }
@@ -114,6 +158,7 @@ try {
 catch {
     $msg = "Restart-Service failed: $($_.Exception.Message)"
     Write-Host $msg
+    Send-HealthAlert -ExitCode 4 -Message $msg -BeforeState $before -ServiceName $svc.Name
     Write-HealthLog -ExitCode 4 -Message $msg -BeforeState $before -ServiceName $svc.Name
     exit 4
 }
@@ -123,6 +168,7 @@ $after = Get-RunnerState -RepoName $Repo -TargetRunnerName $RunnerName
 if ($null -eq $after) {
     $msg = "Runner disappeared after restart attempt: $RunnerName"
     Write-Host $msg
+    Send-HealthAlert -ExitCode 5 -Message $msg -BeforeState $before -ServiceName $svc.Name
     Write-HealthLog -ExitCode 5 -Message $msg -BeforeState $before -ServiceName $svc.Name
     exit 5
 }
@@ -131,6 +177,7 @@ Write-Host "Runner status after: name=$($after.name) status=$($after.status) bus
 if ($after.status -ne "online") {
     $msg = "Runner is still offline after restart."
     Write-Host $msg
+    Send-HealthAlert -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after -ServiceName $svc.Name
     Write-HealthLog -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after -ServiceName $svc.Name
     exit 6
 }
