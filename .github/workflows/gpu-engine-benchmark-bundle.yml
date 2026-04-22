@@ -77,14 +77,15 @@ jobs:
     runs-on: [self-hosted, gpu]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      - name: Detect Python on self-hosted runner
+        run: |
+          python --version
+          python -m pip --version
       - name: Install dependencies
-        run: pip install pandas numpy pyyaml requests scipy scikit-learn hmmlearn torch
+        run: python -m pip install pandas numpy pyyaml requests scipy scikit-learn hmmlearn torch
       - name: Run unified benchmark bundle builder
         run: >
-          python3 scripts/build_gpu_engine_benchmark_bundle_v1.py
+          python scripts/build_gpu_engine_benchmark_bundle_v1.py
           --btc-start "${{ inputs.btc_start }}"
           --btc-end "${{ inputs.btc_end }}"
           --prophecy-top-k "${{ inputs.prophecy_top_k }}"
