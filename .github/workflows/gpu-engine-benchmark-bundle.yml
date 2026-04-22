@@ -1,0 +1,43 @@
+# Build unified cpu/numba/cuda benchmark bundle (manual dispatch only).
+name: GPU engine benchmark bundle
+
+on:
+  workflow_dispatch:
+    inputs:
+      btc_start:
+        description: "BTC benchmark start date (YYYY-MM-DD)"
+        required: false
+        default: "2026-03-20"
+        type: string
+      btc_end:
+        description: "BTC benchmark end date (YYYY-MM-DD)"
+        required: false
+        default: "2026-04-18"
+        type: string
+      prophecy_top_k:
+        description: "Top-K candidates to retain in prophecy output"
+        required: false
+        default: "5"
+        type: string
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install pandas numpy pyyaml requests scipy scikit-learn hmmlearn torch
+      - name: Run unified benchmark bundle builder
+        run: >
+          python3 scripts/build_gpu_engine_benchmark_bundle_v1.py
+          --btc-start "${{ inputs.btc_start }}"
+          --btc-end "${{ inputs.btc_end }}"
+          --prophecy-top-k "${{ inputs.prophecy_top_k }}"
+      - name: Upload benchmark artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpu-engine-benchmark-bundle
+          path: docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json
