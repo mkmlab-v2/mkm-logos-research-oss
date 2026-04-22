@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from statistics import median
 from pathlib import Path
 from typing import Any
 
@@ -38,21 +39,33 @@ def _metric_from_bundle(bundle: dict[str, Any], run_name: str, metric_name: str)
     return None
 
 
+def _metric_from_bundles(bundles: list[dict[str, Any]], run_name: str, metric_name: str) -> float | None:
+    vals: list[float] = []
+    for bundle in bundles:
+        v = _metric_from_bundle(bundle, run_name, metric_name)
+        if v is not None:
+            vals.append(float(v))
+    if not vals:
+        return None
+    return float(median(vals))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Check GPU benchmark regression vs baseline.")
-    ap.add_argument("--bundle", default=str(DEFAULT_BUNDLE))
+    ap.add_argument("--bundle", action="append", default=[])
     ap.add_argument("--baseline", default=str(DEFAULT_BASELINE))
     ap.add_argument("--max-regression-pct", type=float, default=None)
     args = ap.parse_args()
 
-    bundle_path = _abs(args.bundle)
+    bundle_args = args.bundle or [str(DEFAULT_BUNDLE)]
+    bundle_paths = [_abs(x) for x in bundle_args]
     baseline_path = _abs(args.baseline)
-    for p in (bundle_path, baseline_path):
+    for p in [*bundle_paths, baseline_path]:
         if not p.is_file():
             print(f"ERROR: missing file: {p}")
             return 2
 
-    bundle = _jread(bundle_path)
+    bundles = [_jread(p) for p in bundle_paths]
     baseline = _jread(baseline_path)
 
     policy_default = baseline.get("max_regression_pct_default")
@@ -70,7 +83,7 @@ def main() -> int:
 
     failures: list[str] = []
     print("GPU benchmark regression check")
-    print(f"- bundle: {bundle_path}")
+    print(f"- bundles: {[str(p) for p in bundle_paths]}")
     print(f"- baseline: {baseline_path}")
     print(f"- max_regression_pct: {max_regression_pct}")
 
@@ -83,7 +96,7 @@ def main() -> int:
         if not metric_name or not isinstance(baseline_value, (int, float)):
             failures.append(f"{run_name}: missing metric_name/baseline_value")
             continue
-        current_value = _metric_from_bundle(bundle, run_name, metric_name)
+        current_value = _metric_from_bundles(bundles, run_name, metric_name)
         if current_value is None:
             failures.append(f"{run_name}: current metric missing ({metric_name})")
             continue
