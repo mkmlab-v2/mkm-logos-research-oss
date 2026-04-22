@@ -6,6 +6,34 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$LogPath = "C:\workspace\reports\github_gpu_runner_health_log.jsonl"
+
+function Write-HealthLog {
+    param(
+        [int]$ExitCode,
+        [string]$Message,
+        [object]$BeforeState = $null,
+        [object]$AfterState = $null,
+        [string]$ServiceName = $null
+    )
+    $logDir = Split-Path -Parent $LogPath
+    if (-not (Test-Path -LiteralPath $logDir)) {
+        New-Item -ItemType Directory -Path $logDir -Force | Out-Null
+    }
+    $entry = [ordered]@{
+        ts_utc = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+        repo = $Repo
+        runner = $RunnerName
+        check_only = [bool]$CheckOnly.IsPresent
+        recovery_poll_seconds = $RecoveryPollSeconds
+        exit_code = $ExitCode
+        message = $Message
+        service_name = $ServiceName
+        before = $BeforeState
+        after = $AfterState
+    }
+    ($entry | ConvertTo-Json -Compress -Depth 6) | Add-Content -Path $LogPath -Encoding utf8
+}
 
 function Get-RunnerState {
     param(
@@ -49,25 +77,33 @@ function Find-RunnerService {
 
 $before = Get-RunnerState -RepoName $Repo -TargetRunnerName $RunnerName
 if ($null -eq $before) {
-    Write-Host "Runner not found: $RunnerName (repo=$Repo)"
+    $msg = "Runner not found: $RunnerName (repo=$Repo)"
+    Write-Host $msg
+    Write-HealthLog -ExitCode 2 -Message $msg -BeforeState $null
     exit 2
 }
 
 Write-Host "Runner status before: name=$($before.name) status=$($before.status) busy=$($before.busy)"
 
 if ($before.status -eq "online") {
-    Write-Host "Runner is already online. No action needed."
+    $msg = "Runner is already online. No action needed."
+    Write-Host $msg
+    Write-HealthLog -ExitCode 0 -Message $msg -BeforeState $before -AfterState $before
     exit 0
 }
 
 if ($CheckOnly.IsPresent) {
-    Write-Host "CheckOnly mode: runner is offline; restart skipped."
+    $msg = "CheckOnly mode: runner is offline; restart skipped."
+    Write-Host $msg
+    Write-HealthLog -ExitCode 1 -Message $msg -BeforeState $before
     exit 1
 }
 
 $svc = Find-RunnerService -TargetRunnerName $RunnerName
 if ($null -eq $svc) {
-    Write-Host "No actions.runner* service found. Start runner manually with .\\run.cmd in runner directory."
+    $msg = "No actions.runner* service found. Start runner manually with .\\run.cmd in runner directory."
+    Write-Host $msg
+    Write-HealthLog -ExitCode 3 -Message $msg -BeforeState $before
     exit 3
 }
 
@@ -76,22 +112,29 @@ try {
     Restart-Service -Name $svc.Name -ErrorAction Stop
 }
 catch {
-    Write-Host "Restart-Service failed: $($_.Exception.Message)"
+    $msg = "Restart-Service failed: $($_.Exception.Message)"
+    Write-Host $msg
+    Write-HealthLog -ExitCode 4 -Message $msg -BeforeState $before -ServiceName $svc.Name
     exit 4
 }
 
 Start-Sleep -Seconds $RecoveryPollSeconds
 $after = Get-RunnerState -RepoName $Repo -TargetRunnerName $RunnerName
 if ($null -eq $after) {
-    Write-Host "Runner disappeared after restart attempt: $RunnerName"
+    $msg = "Runner disappeared after restart attempt: $RunnerName"
+    Write-Host $msg
+    Write-HealthLog -ExitCode 5 -Message $msg -BeforeState $before -ServiceName $svc.Name
     exit 5
 }
 
 Write-Host "Runner status after: name=$($after.name) status=$($after.status) busy=$($after.busy)"
 if ($after.status -ne "online") {
-    Write-Host "Runner is still offline after restart."
+    $msg = "Runner is still offline after restart."
+    Write-Host $msg
+    Write-HealthLog -ExitCode 6 -Message $msg -BeforeState $before -AfterState $after -ServiceName $svc.Name
     exit 6
 }
 
 Write-Host "Runner recovery successful."
+Write-HealthLog -ExitCode 0 -Message "Runner recovery successful." -BeforeState $before -AfterState $after -ServiceName $svc.Name
 exit 0
