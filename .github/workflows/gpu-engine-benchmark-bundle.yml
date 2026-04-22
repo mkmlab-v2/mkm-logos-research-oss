@@ -19,9 +19,20 @@ on:
         required: false
         default: "5"
         type: string
+      run_self_hosted_gpu:
+        description: "Also run on self-hosted GPU runner"
+        required: false
+        default: false
+        type: boolean
+      require_cuda_on_gpu_runner:
+        description: "Fail self-hosted job when requested cuda is not used"
+        required: false
+        default: true
+        type: boolean
 
 jobs:
-  benchmark:
+  benchmark_hosted:
+    name: benchmark (hosted fallback-allowed)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -39,5 +50,64 @@ jobs:
       - name: Upload benchmark artifact
         uses: actions/upload-artifact@v4
         with:
-          name: gpu-engine-benchmark-bundle
+          name: gpu-engine-benchmark-bundle-hosted
+          path: docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json
+      - name: Annotate engine fallback on hosted runner
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          p = pathlib.Path("docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json")
+          doc = json.loads(p.read_text(encoding="utf-8"))
+          mismatches = []
+          for run_name, run_doc in (doc.get("runs") or {}).items():
+              engine = run_doc.get("engine") or {}
+              req = engine.get("requested")
+              used = engine.get("used")
+              if req and used and req != used:
+                  mismatches.append((run_name, req, used))
+          if mismatches:
+              for run_name, req, used in mismatches:
+                  print(f"::warning::{run_name}: requested={req}, used={used} (hosted runner fallback)")
+          print(f"hosted_mismatch_count={len(mismatches)}")
+          PY
+
+  benchmark_gpu:
+    name: benchmark (self-hosted gpu strict)
+    if: ${{ inputs.run_self_hosted_gpu == true }}
+    runs-on: [self-hosted, gpu]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install pandas numpy pyyaml requests scipy scikit-learn hmmlearn torch
+      - name: Run unified benchmark bundle builder
+        run: >
+          python3 scripts/build_gpu_engine_benchmark_bundle_v1.py
+          --btc-start "${{ inputs.btc_start }}"
+          --btc-end "${{ inputs.btc_end }}"
+          --prophecy-top-k "${{ inputs.prophecy_top_k }}"
+      - name: Enforce CUDA usage on GPU runner
+        if: ${{ inputs.require_cuda_on_gpu_runner == true }}
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          p = pathlib.Path("docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json")
+          doc = json.loads(p.read_text(encoding="utf-8"))
+          bad = []
+          for run_name, run_doc in (doc.get("runs") or {}).items():
+              engine = run_doc.get("engine") or {}
+              if engine.get("requested") == "cuda" and engine.get("used") != "cuda":
+                  bad.append((run_name, engine.get("used")))
+          if bad:
+              for run_name, used in bad:
+                  print(f"ERROR: {run_name} expected cuda but used={used}")
+              sys.exit(1)
+          print("CUDA enforcement passed on self-hosted GPU runner.")
+          PY
+      - name: Upload benchmark artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpu-engine-benchmark-bundle-gpu
           path: docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json
