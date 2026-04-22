@@ -370,16 +370,24 @@ def main() -> int:
     numba_runner = _build_numba_runner() if args.engine == "numba" else None
     cuda_results = None
     if args.engine == "cuda":
-        cuda_results = _compute_candidates_cuda(
-            actual_enc=actual_enc,
-            old_enc=old_enc,
-            is_kospi=is_kospi,
-            km_arr=km_arr,
-            bm_arr=bm_arr,
-            pairs=pairs,
-            kospi_modes=kospi_modes,
-            kospi_mode_code=kospi_mode_code,
-        )
+        try:
+            cuda_results = _compute_candidates_cuda(
+                actual_enc=actual_enc,
+                old_enc=old_enc,
+                is_kospi=is_kospi,
+                km_arr=km_arr,
+                bm_arr=bm_arr,
+                pairs=pairs,
+                kospi_modes=kospi_modes,
+                kospi_mode_code=kospi_mode_code,
+            )
+        except Exception as exc:
+            print(
+                f"[WARN] cuda candidate sweep failed ({exc.__class__.__name__}: {exc}); "
+                "falling back to cpu path",
+                file=sys.stderr,
+            )
+            cuda_results = None
     if cuda_results is not None:
         engine_used = "cuda"
     elif numba_runner is not None:
@@ -450,16 +458,24 @@ def main() -> int:
         for eng in ("cpu", "numba", "cuda"):
             t_eng = time.perf_counter()
             if eng == "cuda":
-                _cuda_rows = _compute_candidates_cuda(
-                    actual_enc=actual_enc,
-                    old_enc=old_enc,
-                    is_kospi=is_kospi,
-                    km_arr=km_arr,
-                    bm_arr=bm_arr,
-                    pairs=pairs,
-                    kospi_modes=kospi_modes,
-                    kospi_mode_code=kospi_mode_code,
-                )
+                try:
+                    _cuda_rows = _compute_candidates_cuda(
+                        actual_enc=actual_enc,
+                        old_enc=old_enc,
+                        is_kospi=is_kospi,
+                        km_arr=km_arr,
+                        bm_arr=bm_arr,
+                        pairs=pairs,
+                        kospi_modes=kospi_modes,
+                        kospi_mode_code=kospi_mode_code,
+                    )
+                except Exception as exc:
+                    print(
+                        f"[WARN] cuda benchmark probe failed ({exc.__class__.__name__}: {exc}); "
+                        "marking benchmark engine as cpu fallback",
+                        file=sys.stderr,
+                    )
+                    _cuda_rows = None
                 used_eng = "cuda" if _cuda_rows is not None else "cpu"
             elif eng == "numba":
                 _numba = _build_numba_runner()
