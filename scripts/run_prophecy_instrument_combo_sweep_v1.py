@@ -255,14 +255,14 @@ def _compute_candidates_cuda(
         return None
 
     device = torch.device("cuda")
-    actual_t = torch.as_tensor(actual_enc, dtype=torch.int64, device=device)
-    old_t = torch.as_tensor(old_enc, dtype=torch.int64, device=device)
+    actual_t = torch.as_tensor(actual_enc, dtype=torch.int16, device=device)
+    old_t = torch.as_tensor(old_enc, dtype=torch.int16, device=device)
     old_valid_t = torch.where(old_t == 99, torch.zeros_like(old_t), old_t)
     kospi_t = torch.as_tensor(is_kospi, dtype=torch.bool, device=device)
     btc_t = ~kospi_t
-    km_t = torch.as_tensor(km_arr, dtype=torch.float64, device=device)
-    bm_t = torch.as_tensor(bm_arr, dtype=torch.float64, device=device)
-    pair_t = torch.as_tensor(pairs, dtype=torch.float64, device=device)  # [P, 2]
+    km_t = torch.as_tensor(km_arr, dtype=torch.float32, device=device)
+    bm_t = torch.as_tensor(bm_arr, dtype=torch.float32, device=device)
+    pair_t = torch.as_tensor(pairs, dtype=torch.float32, device=device)  # [P, 2]
     lo_t = pair_t[:, 0].unsqueeze(1)  # [P, 1]
     hi_t = pair_t[:, 1].unsqueeze(1)  # [P, 1]
     p_count = int(pair_t.shape[0])
@@ -274,13 +274,22 @@ def _compute_candidates_cuda(
     n_eval = int(((actual_t >= -1) & (actual_t <= 1)).sum().item())
     actual_row = actual_t.unsqueeze(0)  # [1, N]
     old_row = old_valid_t.unsqueeze(0)  # [1, N]
+    old_rows = old_row.repeat(p_count, 1)  # [P, N]
     bm_row = bm_t.unsqueeze(0)  # [1, N]
+
+    btc_pred = torch.zeros((p_count, n_rows), dtype=torch.int16, device=device)
+    btc_pred = torch.where(bm_row <= lo_t, torch.full_like(btc_pred, -1), btc_pred)
+    btc_pred = torch.where(bm_row >= hi_t, torch.full_like(btc_pred, 1), btc_pred)
+    btc_pred = torch.where(bm_row.isnan(), old_rows, btc_pred)
+
+    base_pred = old_rows.clone()
+    base_pred[:, btc_t] = btc_pred[:, btc_t]
 
     out_results: list[dict[str, Any]] = []
     for k_mode in kospi_modes:
-        pred = old_row.repeat(p_count, 1)  # [P, N]
+        pred = base_pred.clone()  # [P, N]
         if k_mode == "causal":
-            km_pred = torch.zeros_like(km_t, dtype=torch.int64)
+            km_pred = torch.zeros_like(km_t, dtype=torch.int16)
             km_pred = torch.where(km_t <= -0.06, torch.full_like(km_pred, -1), km_pred)
             km_pred = torch.where(km_t >= -0.05, torch.full_like(km_pred, 1), km_pred)
             km_pred = torch.where(km_nan, old_valid_t, km_pred)
@@ -289,12 +298,6 @@ def _compute_candidates_cuda(
         else:
             pred[:, kospi_t] = int(kospi_mode_code[k_mode])
             missing_k = 0
-
-        btc_pred = torch.zeros((p_count, n_rows), dtype=torch.int64, device=device)
-        btc_pred = torch.where(bm_row <= lo_t, torch.full_like(btc_pred, -1), btc_pred)
-        btc_pred = torch.where(bm_row >= hi_t, torch.full_like(btc_pred, 1), btc_pred)
-        btc_pred = torch.where(bm_row.isnan(), old_row.repeat(p_count, 1), btc_pred)
-        pred[:, btc_t] = btc_pred[:, btc_t]
 
         changed = (pred != old_t.unsqueeze(0)).sum(dim=1)
         hits = (pred == actual_row).sum(dim=1)
@@ -325,6 +328,29 @@ def _compute_candidates_cuda(
                 }
             )
     return out_results
+
+
+def _compute_candidates_cuda_with_retry(**kwargs):
+    try:
+        return _compute_candidates_cuda(**kwargs)
+    except Exception as exc_first:
+        torch_mod = _maybe_get_torch()
+        if torch_mod is not None:
+            try:
+                torch_mod.cuda.empty_cache()
+            except Exception:
+                pass
+        try:
+            return _compute_candidates_cuda(**kwargs)
+        except Exception as exc_second:
+            print(
+                f"[WARN] cuda candidate sweep failed after retry "
+                f"({exc_first.__class__.__name__}: {exc_first}; "
+                f"retry={exc_second.__class__.__name__}: {exc_second}); "
+                "falling back to cpu path",
+                file=sys.stderr,
+            )
+            return None
 
 
 def main() -> int:
@@ -370,24 +396,16 @@ def main() -> int:
     numba_runner = _build_numba_runner() if args.engine == "numba" else None
     cuda_results = None
     if args.engine == "cuda":
-        try:
-            cuda_results = _compute_candidates_cuda(
-                actual_enc=actual_enc,
-                old_enc=old_enc,
-                is_kospi=is_kospi,
-                km_arr=km_arr,
-                bm_arr=bm_arr,
-                pairs=pairs,
-                kospi_modes=kospi_modes,
-                kospi_mode_code=kospi_mode_code,
-            )
-        except Exception as exc:
-            print(
-                f"[WARN] cuda candidate sweep failed ({exc.__class__.__name__}: {exc}); "
-                "falling back to cpu path",
-                file=sys.stderr,
-            )
-            cuda_results = None
+        cuda_results = _compute_candidates_cuda_with_retry(
+            actual_enc=actual_enc,
+            old_enc=old_enc,
+            is_kospi=is_kospi,
+            km_arr=km_arr,
+            bm_arr=bm_arr,
+            pairs=pairs,
+            kospi_modes=kospi_modes,
+            kospi_mode_code=kospi_mode_code,
+        )
     if cuda_results is not None:
         engine_used = "cuda"
     elif numba_runner is not None:
@@ -458,24 +476,16 @@ def main() -> int:
         for eng in ("cpu", "numba", "cuda"):
             t_eng = time.perf_counter()
             if eng == "cuda":
-                try:
-                    _cuda_rows = _compute_candidates_cuda(
-                        actual_enc=actual_enc,
-                        old_enc=old_enc,
-                        is_kospi=is_kospi,
-                        km_arr=km_arr,
-                        bm_arr=bm_arr,
-                        pairs=pairs,
-                        kospi_modes=kospi_modes,
-                        kospi_mode_code=kospi_mode_code,
-                    )
-                except Exception as exc:
-                    print(
-                        f"[WARN] cuda benchmark probe failed ({exc.__class__.__name__}: {exc}); "
-                        "marking benchmark engine as cpu fallback",
-                        file=sys.stderr,
-                    )
-                    _cuda_rows = None
+                _cuda_rows = _compute_candidates_cuda_with_retry(
+                    actual_enc=actual_enc,
+                    old_enc=old_enc,
+                    is_kospi=is_kospi,
+                    km_arr=km_arr,
+                    bm_arr=bm_arr,
+                    pairs=pairs,
+                    kospi_modes=kospi_modes,
+                    kospi_mode_code=kospi_mode_code,
+                )
                 used_eng = "cuda" if _cuda_rows is not None else "cpu"
             elif eng == "numba":
                 _numba = _build_numba_runner()
