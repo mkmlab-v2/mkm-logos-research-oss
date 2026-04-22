@@ -2,7 +2,7 @@ param(
   [ValidateSet("quick", "standard", "high")]
   [string]$Profile = "standard",
   [string]$Ref = "main",
-  [string]$MaxRegressionPct = "10",
+  [string]$MaxRegressionPct = "",
   [switch]$UploadArtifacts,
   [switch]$Watch
 )
@@ -16,6 +16,17 @@ $sampleCount = switch ($Profile) {
   default { throw "Unsupported profile: $Profile" }
 }
 
+$effectiveMaxRegressionPct = if ([string]::IsNullOrWhiteSpace($MaxRegressionPct)) {
+  switch ($Profile) {
+    "quick" { "15" }      # quick mode is intentionally noisier; avoid false failures
+    "standard" { "10" }
+    "high" { "10" }
+    default { "10" }
+  }
+} else {
+  $MaxRegressionPct
+}
+
 $uploadArtifactsValue = if ($UploadArtifacts.IsPresent) { "true" } else { "false" }
 
 $args = @(
@@ -23,13 +34,13 @@ $args = @(
   "--ref", $Ref,
   "-f", "run_self_hosted_gpu=true",
   "-f", "require_cuda_on_gpu_runner=true",
-  "-f", "max_regression_pct=$MaxRegressionPct",
+  "-f", "max_regression_pct=$effectiveMaxRegressionPct",
   "-f", "sample_count=$sampleCount",
   "-f", "upload_artifacts=$uploadArtifactsValue"
 )
 
 Write-Host "Dispatching GPU benchmark workflow"
-Write-Host "  profile=$Profile sample_count=$sampleCount ref=$Ref upload_artifacts=$uploadArtifactsValue"
+Write-Host "  profile=$Profile sample_count=$sampleCount max_regression_pct=$effectiveMaxRegressionPct ref=$Ref upload_artifacts=$uploadArtifactsValue"
 
 $dispatchOutput = & gh @args
 $dispatchOutput | Write-Host
