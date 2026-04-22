@@ -39,15 +39,13 @@ def _metric_from_bundle(bundle: dict[str, Any], run_name: str, metric_name: str)
     return None
 
 
-def _metric_from_bundles(bundles: list[dict[str, Any]], run_name: str, metric_name: str) -> float | None:
+def _metric_values_from_bundles(bundles: list[dict[str, Any]], run_name: str, metric_name: str) -> list[float]:
     vals: list[float] = []
     for bundle in bundles:
         v = _metric_from_bundle(bundle, run_name, metric_name)
         if v is not None:
             vals.append(float(v))
-    if not vals:
-        return None
-    return float(median(vals))
+    return vals
 
 
 def main() -> int:
@@ -96,10 +94,14 @@ def main() -> int:
         if not metric_name or not isinstance(baseline_value, (int, float)):
             failures.append(f"{run_name}: missing metric_name/baseline_value")
             continue
-        current_value = _metric_from_bundles(bundles, run_name, metric_name)
-        if current_value is None:
+        sample_values = _metric_values_from_bundles(bundles, run_name, metric_name)
+        if not sample_values:
             failures.append(f"{run_name}: current metric missing ({metric_name})")
             continue
+        current_value = float(median(sample_values))
+        sample_min = min(sample_values)
+        sample_max = max(sample_values)
+        sample_values_str = ", ".join(f"{x:.6f}" for x in sample_values)
         target_regression_pct_raw = rule.get("max_regression_pct")
         if isinstance(target_regression_pct_raw, (int, float)):
             target_regression_pct = float(target_regression_pct_raw)
@@ -111,6 +113,9 @@ def main() -> int:
         min_allowed = max(min_allowed_pct, abs_floor) if abs_floor is not None else min_allowed_pct
         print(
             f"- {run_name}.{metric_name}: current={current_value:.6f} "
+            f"sample_min={sample_min:.6f} "
+            f"sample_max={sample_max:.6f} "
+            f"samples=[{sample_values_str}] "
             f"baseline={float(baseline_value):.6f} "
             f"max_regression_pct={target_regression_pct:.3f} "
             f"min_allowed={min_allowed:.6f}"
