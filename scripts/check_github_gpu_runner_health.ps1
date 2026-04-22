@@ -56,19 +56,66 @@ function Send-HealthAlert {
     if ([string]::IsNullOrWhiteSpace($url)) {
         return
     }
+    $beforeStatus = if ($null -ne $BeforeState) { $BeforeState.status } else { "unknown" }
+    $afterStatus = if ($null -ne $AfterState) { $AfterState.status } else { "unknown" }
+    $hostName = $env:COMPUTERNAME
+    $severity = if ($ExitCode -ge 4) { "critical" } else { "warning" }
+    $summaryText = "[$severity] runner=$RunnerName exit_code=$ExitCode before=$beforeStatus after=$afterStatus message=$Message"
     $payload = @{
         event = "github_gpu_runner_health_alert"
         kind = "failure"
-        message = "runner=$RunnerName exit_code=$ExitCode $Message"
+        severity = $severity
+        title = "GitHub GPU runner health alert"
+        message = $summaryText
+        text = $summaryText
         ts_utc = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+        host = $hostName
         repo = $Repo
         runner = $RunnerName
         check_only = [bool]$CheckOnly.IsPresent
         recovery_poll_seconds = $RecoveryPollSeconds
+        max_recovery_attempts = $MaxRecoveryAttempts
         exit_code = $ExitCode
         service_name = $ServiceName
         before = $BeforeState
         after = $AfterState
+        fields = @{
+            host = $hostName
+            repo = $Repo
+            runner = $RunnerName
+            check_only = [bool]$CheckOnly.IsPresent
+            recovery_poll_seconds = $RecoveryPollSeconds
+            max_recovery_attempts = $MaxRecoveryAttempts
+            service_name = $ServiceName
+            before_status = $beforeStatus
+            after_status = $afterStatus
+            exit_code = $ExitCode
+        }
+        blocks = @(
+            @{
+                type = "header"
+                text = @{
+                    type = "plain_text"
+                    text = "GitHub GPU runner health alert"
+                }
+            },
+            @{
+                type = "section"
+                text = @{
+                    type = "mrkdwn"
+                    text = "*Severity:* $severity`n*Runner:* $RunnerName`n*Repo:* $Repo`n*Message:* $Message"
+                }
+            },
+            @{
+                type = "section"
+                fields = @(
+                    @{ type = "mrkdwn"; text = "*Before:*\n$beforeStatus" },
+                    @{ type = "mrkdwn"; text = "*After:*\n$afterStatus" },
+                    @{ type = "mrkdwn"; text = "*Exit code:*\n$ExitCode" },
+                    @{ type = "mrkdwn"; text = "*Host:*\n$hostName" }
+                )
+            }
+        )
     } | ConvertTo-Json -Depth 6
     try {
         Invoke-RestMethod -Uri $url -Method Post -ContentType "application/json; charset=utf-8" -Body $payload | Out-Null
