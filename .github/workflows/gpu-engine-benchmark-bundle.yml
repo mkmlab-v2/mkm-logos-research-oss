@@ -29,6 +29,11 @@ on:
         required: false
         default: true
         type: boolean
+      max_regression_pct:
+        description: "Allowed performance regression percentage vs locked GPU baseline"
+        required: false
+        default: "20"
+        type: string
 
 jobs:
   benchmark_hosted:
@@ -93,6 +98,12 @@ jobs:
         if: ${{ inputs.require_cuda_on_gpu_runner == true }}
         run: |
           python -c "import json,pathlib,sys; p=pathlib.Path('docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json'); doc=json.loads(p.read_text(encoding='utf-8')); bad=[]; runs=(doc.get('runs') or {}); [bad.append((name,(run.get('engine') or {}).get('used'))) for name,run in runs.items() if ((run.get('engine') or {}).get('requested')=='cuda' and (run.get('engine') or {}).get('used')!='cuda')]; [print(f'ERROR: {name} expected cuda but used={used}') for name,used in bad]; sys.exit(1 if bad else 0)"
+      - name: Check GPU performance regression vs baseline
+        run: >
+          python scripts/check_gpu_engine_benchmark_regression.py
+          --bundle docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json
+          --baseline docs/final/artifacts/gpu_engine_benchmark_baseline_v1.json
+          --max-regression-pct "${{ inputs.max_regression_pct }}"
       - name: Upload benchmark artifact
         uses: actions/upload-artifact@v4
         with:
