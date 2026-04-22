@@ -92,7 +92,10 @@ def main() -> int:
             target_regression_pct = float(target_regression_pct_raw)
         else:
             target_regression_pct = max_regression_pct
-        min_allowed = float(baseline_value) * (1.0 - (target_regression_pct / 100.0))
+        min_allowed_pct = float(baseline_value) * (1.0 - (target_regression_pct / 100.0))
+        abs_floor_raw = rule.get("absolute_min")
+        abs_floor = float(abs_floor_raw) if isinstance(abs_floor_raw, (int, float)) else None
+        min_allowed = max(min_allowed_pct, abs_floor) if abs_floor is not None else min_allowed_pct
         print(
             f"- {run_name}.{metric_name}: current={current_value:.6f} "
             f"baseline={float(baseline_value):.6f} "

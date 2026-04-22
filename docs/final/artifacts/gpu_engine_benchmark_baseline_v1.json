@@ -12,7 +12,8 @@
     "prophecy_instrument_combo_sweep_v1": {
       "metric_name": "candidates_per_sec",
       "baseline_value": 1183856.502242,
-      "max_regression_pct": 20.0
+      "max_regression_pct": 20.0,
+      "absolute_min": 400000.0
     }
   }
 }
