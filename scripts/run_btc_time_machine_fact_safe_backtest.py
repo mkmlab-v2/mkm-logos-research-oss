@@ -222,6 +222,7 @@ def _build_numba_runner():
                     0.0,
                     0.0,
                     0.0,
+                    0.0,
                     np.nan,
                     max_drawdown * 100.0,
                     float(max_loss_streak),
@@ -569,6 +570,22 @@ def run_backtest_with_engine(df: pd.DataFrame, cfg: BacktestConfig, engine: str 
                 cfg.daily_loss_cap_pct,
                 cfg.skip_if_vol_shock_pct,
             )
+            if arr.shape[0] == 8:
+                # Backward compatibility with legacy zero-trade output shape.
+                arr = np.array(
+                    [
+                        arr[0],
+                        arr[1],
+                        arr[2],
+                        0.0,
+                        arr[3],
+                        arr[4],
+                        arr[5],
+                        arr[6],
+                        arr[7],
+                    ],
+                    dtype=np.float64,
+                )
             sample_count = int(arr[0])
             profit_factor = None if np.isnan(arr[4]) else round(float(arr[4]), 6)
             metrics = {
