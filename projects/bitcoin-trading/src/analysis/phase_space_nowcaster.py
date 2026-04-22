@@ -20,6 +20,8 @@ import numpy as np
 import math
 import logging
 
+logger = logging.getLogger(__name__)
+
 # 워크스페이스 루트
 WORKSPACE_ROOT = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(WORKSPACE_ROOT))
@@ -32,7 +34,7 @@ try:
     UNIFIED_ENGINE_AVAILABLE = True
 except ImportError:
     UNIFIED_ENGINE_AVAILABLE = False
-    print("⚠️ UnifiedDynamicsEngine 없음, 기본 로직 사용", file=sys.stderr)
+    logger.debug("UnifiedDynamicsEngine 없음, 기본 로직 사용")
 
 # DTW 라이브러리 (선택적)
 try:
@@ -45,9 +47,7 @@ except ImportError:
         DTW_AVAILABLE = True
     except ImportError:
         DTW_AVAILABLE = False
-        print("⚠️ DTW 라이브러리 미설치. pip install fastdtw 또는 dtw-python 필요")
-
-logger = logging.getLogger(__name__)
+        logger.debug("DTW 라이브러리 미설치 (fastdtw 또는 dtw-python)")
 
 # ============================================
 # 🏛️ 성경 데이터 상수 (2026-01-18 정정 완료)

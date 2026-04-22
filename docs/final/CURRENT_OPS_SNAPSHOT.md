@@ -2370,3 +2370,131 @@ Set-Location c:\workspace
 - **결과:** exit `0`, wall time 약 `880392ms` (~14.7분), 로그에 `split_a` → `split_b1` → `split_b2` 순서로 완료
 - **Git 주의:** 루트 `.gitignore`에 `docs/final/artifacts/trackb_quaternion_top_*` 패턴이 있어 해당 산출물은 **커밋 대상에서 제외**될 수 있음(로컬 재현·CI에서 생성 가정)
 
+## Sasang x DNA Insight Sync (2026-04-20)
+
+- **NotebookLM 반영 완료:** 노트북 `dna와사상`에 `Action Plan: Sasang x DNA next experiments` 노트 생성
+- **핵심 고정:** `SNP x constitution` 상호작용 우선, 상태수는 현재 strict 벤치에서 `12` 우위, 분자 비유(토토머/금속매개)는 `research_only`
+- **즉시 실행 후보 3건:** (1) additive vs interaction AB, (2) 12-state 외부 코호트 강건성, (3) multimodal vs 단일모달 강건성
+- **근거 산출:** `reports/bio_sasang_nstates_strict_comparison_v2.json` 및 statesweep strict 리포트 4종(n8/n10/n12/n14)
+
+## Sasang x DNA Priority Execution (2026-04-20)
+
+- **1단계 AB 완료:** `scripts/eval_bio_sasang_interaction_ab_v1.py` 실행, 결과 `reports/bio_sasang_interaction_ab_v1_latest.json`
+- **AB 판정:** `interaction_preferred=false` (`metric_diff=interaction-additive` 기준, MAE/RMSE에서 상호작용 항이 개선 우위를 보이지 않음)
+- **2·3단계 준비 자산 생성:** 외부 코호트/멀티모달 입력 스키마와 예시 파일 추가
+  - `docs/final/artifacts/schemas/bio_sasang_external_cohort_input_v1.schema.json`
+  - `docs/final/artifacts/schemas/bio_sasang_multimodal_aligned_input_v1.schema.json`
+  - `docs/final/artifacts/bio_sasang_external_cohort_input_example_v1.json`
+  - `docs/final/artifacts/bio_sasang_multimodal_aligned_input_example_v1.json`
+- **준비 점검:** `scripts/check_bio_sasang_data_readiness_v1.py` 실행 결과 `reports/bio_sasang_data_readiness_v1_latest.json` (`all_ready=true`, 예시 입력 기준)
+- **실행 상태 갱신:** `reports/bio_sasang_priority_execution_status_v2.json` (2·3단계 `ready_for_data_ingestion`)
+
+## Sasang x DNA Step2/3 Runner Execution (2026-04-20)
+
+- **신규 런너 추가:** `scripts/run_bio_sasang_external_robustness_v1.py`, `scripts/run_bio_sasang_multimodal_robustness_v1.py`
+- **실행 결과:** 예시 입력 기준 두 단계 모두 정상 실행되었고, 샘플 수 부족으로 `blocked` 판정
+  - `reports/bio_sasang_external_robustness_v1_latest.json` (`insufficient_external_samples`, `n_samples=2`)
+  - `reports/bio_sasang_multimodal_robustness_v1_latest.json` (`insufficient_multimodal_samples`, `n_samples=2`)
+- **현재 의미:** 파이프라인/런너 준비는 완료. 실제 외부·멀티모달 코호트(최소 20 샘플) 주입 시 즉시 Step2/3 실험 가능
+- **통합 상태:** `reports/bio_sasang_priority_execution_status_v3.json`
+
+## Sasang x DNA Shadow Execution (2026-04-20)
+
+- **병목 해소(실행 리허설):** `scripts/build_bio_sasang_shadow_inputs_v1.py`로 shadow 입력 240건 생성
+  - `docs/final/artifacts/bio_sasang_external_cohort_input_shadow_v1.json`
+  - `docs/final/artifacts/bio_sasang_multimodal_aligned_input_shadow_v1.json`
+  - `reports/bio_sasang_shadow_inputs_manifest_v1_latest.json`
+- **Step2 실행 결과(Shadow):** `reports/bio_sasang_external_robustness_v1_shadow_latest.json`
+  - `status=completed`, `external_spearman_mean=0.1708`, `delta_vs_baseline=-0.3587`
+- **Step3 실행 결과(Shadow):** `reports/bio_sasang_multimodal_robustness_v1_shadow_latest.json`
+  - `status=completed`, `delta_spearman_mean=+0.4169`, `delta_mae_mean=-166.8940`
+- **주의(승격 경계):** 본 결과는 synthetic side-channel을 포함한 shadow 리허설이며 **promotion 증거로 사용 금지**
+- **통합 상태:** `reports/bio_sasang_priority_execution_status_v4.json`
+
+## Sasang x DNA One-Click Chain (2026-04-20)
+
+- **원클릭 엔트리포인트 추가:** `scripts/run_bio_sasang_priority_chain_v1.py`
+- **실행:** `py scripts/run_bio_sasang_priority_chain_v1.py --build-shadow-inputs --output reports/bio_sasang_priority_chain_v1_latest.json`
+- **결과:** `all_exit_ok=true`, step1/2/3 전부 exit `0`
+- **요약 판정:** `step1_interaction_preferred=false`, `step2_status=completed`, `step3_status=completed`
+- **근거:** `reports/bio_sasang_priority_chain_v1_latest.json` (각 단계 명령/stdout/exit 포함)
+
+## Sasang x DNA Promotion Decision Gate (2026-04-20)
+
+- **신규 판정 스크립트:** `scripts/build_bio_sasang_promotion_decision_v1.py`
+- **실행:** 체인/상태 리포트를 입력으로 GO/HOLD 자동 판정 아티팩트 생성
+- **산출:** `reports/bio_sasang_promotion_decision_v1_latest.json`
+- **현재 판정:** `stage=hold`, `go=false`
+  - 실패 체크: `step2_external_drop_within_limit`, `evidence_non_shadow_ok`
+- **해석:** shadow tier + 외부 강건성 하락폭 조건 미충족으로 승격 보류(실코호트 재검증 필요)
+
+## Sasang x DNA Real Evidence Readiness Gate (2026-04-20)
+
+- **신규 준비도 게이트:** `scripts/verify_bio_sasang_real_evidence_readiness_v1.py`
+- **산출:** `reports/bio_sasang_real_evidence_readiness_v1_latest.json`
+- **현재 상태:** `all_ready=false`, `next_action=collect_non_shadow_real_cohorts`
+  - external: 샘플 수는 충분하나 `source_type=internal_new_collection` + `cohort_name=shadow_*`로 non-shadow 조건 불충족
+  - multimodal: 샘플/모달 수는 충분하나 `dataset_name=shadow_*`로 non-shadow 조건 불충족
+- **의미:** 기술적 체인은 준비 완료, 승격용 증거는 실제 비-shadow 코호트 주입 전까지 게이트 차단 유지
+
+## Sasang x DNA Real-Gated Chain Mode (2026-04-20)
+
+- **체인 하드게이트 연결:** `scripts/run_bio_sasang_priority_chain_v1.py`에 `--require-real-evidence` 모드 추가
+- **동작:** non-shadow 준비도 미충족 시 Step1/2/3 실행 전 체인을 즉시 차단하고 종료 코드 `1` 반환
+- **실행 결과:** `reports/bio_sasang_priority_chain_v1_real_gate_latest.json`
+  - `blocked_at=real_evidence_readiness_gate`
+  - `reason=non_shadow_real_evidence_not_ready`
+  - `next_action=collect_non_shadow_real_cohorts`
+
+## Bitcoin 12-state Draft — Hypothesis/Fact Split (2026-04-20)
+
+- **문서 성격 고정:** 장문 "비트코인 12상 전이/치명적 돌연변이 임계치" 초안은 **`[HYPOTHESIS]`** 레이어로만 취급한다. 운영/대외 보고의 **`[FACT]`** 근거로 직접 승격 금지.
+- **현재 팩트 범위:** 레포에서 확정된 것은 `Bio-AX` 파이프라인(DDG 코호트, 12-state 비교, significance/verdict 자동화)이며, 비트코인 12상 수치(예: `s8`, `xi=0.36`, `60k dead-line`, Sharpe/Sortino 수치)는 본 레포 산출물로 검증되지 않았다.
+- **허용 사용:** BTC 초안의 수식/구조는 "아이디어 템플릿"으로 사용 가능(상태공간 정의, 전이행렬, 임계 게이트). 단, 임계치와 성과 수치는 `초기값`으로 표기하고 재계산 전 단정 금지.
+- **금지 문구:** "수학적으로 증명", "절대적 임계치 확정", "우주적 섭리 입증" 등 최종 단정형 표현은 금지한다.
+- **승격 조건:** BTC 데이터 실실행(입력/산출 경로 명시) + 백테스트 리포트 + 유의성 검증 결과가 생성될 때만 `[FACT]`로 승격.
+
+## Bio AX Full Chain Status (2026-04-20)
+
+- **status schema:** `bio_ax_full_chain_status_v1`
+- **generated_at_utc:** `2026-04-20T18:59:33Z`
+- **input:** `C:\workspace\tmp\bio_ax_to_sasang_v1.csv`
+- **device:** `auto`
+- **require_real_evidence:** `True`
+- **hard_gate_stops_all:** `True`
+- **real_evidence_gate:** `ready=False`, `reason=real_cohort_contract_not_ready`, `next_action=collect_non_shadow_real_cohorts`
+- **real_evidence_readiness_report:** `C:\workspace\reports\bio_sasang_real_evidence_readiness_v1_latest.json`
+- **family_stats:** `rows=30`, `has_family_col=True`, `n_families=1`
+- **kfold_guard_reason:** `insufficient_families_for_kfold`
+- **kfold_cv:** `disabled`
+- **mvp_report:** `skipped_by_real_evidence_gate`
+- **significance_report:** `skipped`
+- **verdict_report:** `skipped`
+- **btc_hypothesis_report:** `skipped`
+- **btc_onepager_txt:** `skipped`
+- **btc_onepager_json:** `skipped`
+
+## Constitution Promotion Gate (2026-04-21)
+
+- **schema:** `constitution_promotion_gate_v1`
+- **generated_at_utc:** `2026-04-21T14:03:09Z`
+- **decision:** `stage=hold`, `go=False`, `reason=checks_failed`
+- **failed_checks:** `real_cohort_contract_ready, real_evidence_gate_ready, kfold_guard_ok, kfold_cv_enabled, significance_report_present, verdict_report_present, family_count_min_3, blocked_at_none`
+- **next_action:** `collect_non_shadow_real_cohorts_and_rerun`
+- **real_cohort_contract_ready:** `False`
+- **real_evidence_gate_ready:** `False`
+- **kfold_guard_reason:** `insufficient_families_for_kfold`
+- **kfold_cv:** `disabled`
+- **significance_report:** `skipped`
+- **verdict_report:** `skipped`
+- **blocked_at:** `real_evidence_readiness_gate`
+
+## Bio Promotion Provenance (2026-04-20)
+
+- **promotion_stage:** `go_candidate`
+- **promotion_go:** `True`
+- **synthetic_hint_detected:** `True`
+- **evidence_tier:** `rehearsal_synthetic`
+- **fact_promotion_allowed:** `False`
+- **reason:** `synthetic_or_template_input_detected`
+- **sidecar_csv:** `C:\workspace\tmp\bio_multimodal_sidecar_from_paper_proxy_v1.csv`

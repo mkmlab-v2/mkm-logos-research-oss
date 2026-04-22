@@ -1,0 +1,72 @@
+{
+  "schema": "dual_promotion_prep_pack_v1",
+  "generated_at_utc": "2026-04-21T14:14:30Z",
+  "research_only": true,
+  "scope": {
+    "prophecy_lane": "B->A promotion readiness",
+    "compression_lane": "B->A promotion readiness"
+  },
+  "preflight": {
+    "p0_constitution_gate_paths": {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_p0_constitution_gate_paths.ps1",
+      "status": "pass",
+      "note": "OK: P0/CONSTITUTION gate paths present (216 checked)."
+    }
+  },
+  "prophecy": {
+    "status": "manual_review_candidate",
+    "go": true,
+    "summary": "Legacy strict gates now pass; human sign-off still required for promotion.",
+    "evidence": {
+      "promotion_gate": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json",
+      "hit_rate_eval": "docs/final/artifacts/prophecy_hit_rate_eval_latest.json"
+    },
+    "metrics": {
+      "combined_all_passed": true,
+      "strict_passed": true,
+      "soft_passed": true,
+      "auto_promote_ready": false,
+      "promotion_recommendation": "manual_review_candidate",
+      "price_directional_hit_rate": 0.0,
+      "n_evaluated": 60,
+      "price_hits": 0
+    },
+    "blocking_items": [],
+    "next_actions": [
+      "Run commander sign-off review for B->A promotion decision",
+      "Maintain observation-only routing until sign-off explicitly approves promotion"
+    ]
+  },
+  "compression": {
+    "status": "s1_shadow_only",
+    "go": false,
+    "summary": "Compression lane is operationally limited to S1 shadow by A-track go/no-go gating.",
+    "evidence": {
+      "active_report": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+      "bench_l1_api_load": "docs/final/artifacts/bench_l1_api_load_latest.json",
+      "l1_inverse_decoder_spike_summary": "docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json",
+      "a_track_go_nogo_status": "docs/final/artifacts/a_track_go_nogo_status_latest.json"
+    },
+    "metrics": {
+      "compression_avg_reconstruction_fidelity_jaccard": 0.8488363572487027,
+      "bench_error_rate": 0.0,
+      "bench_latency_p95_ms": 166.893,
+      "bench_latency_p99_ms": 178.56,
+      "a_track_overall_go_no_go": "HOLD",
+      "a_track_recommended_stage": "S1_SHADOW"
+    },
+    "blocking_items": [
+      "A-track go/no-go is HOLD with recommended stage S1_SHADOW",
+      "Price output remains locked by high-reliability policy gates"
+    ],
+    "next_actions": [
+      "Keep compression output in shadow-only route until go/no-go advances beyond S1",
+      "Lock scope and threshold approvals per COMPRESSION playbook section 9 before any Track A claim"
+    ]
+  },
+  "approval_conditions": [
+    "Do not auto-wire B-track outputs into A-track or live trading paths",
+    "Promotion decision requires human commander sign-off with artifact-backed evidence",
+    "All gate results must remain reproducible via script path and latest artifact outputs"
+  ]
+}

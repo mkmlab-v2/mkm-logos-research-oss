@@ -1,0 +1,26 @@
+{
+  "schema": "promotion_signoff_decision_v1",
+  "generated_at_utc": "2026-04-21T15:45:00Z",
+  "source_brief": "docs/final/artifacts/promotion_signoff_brief_latest.md",
+  "decision": {
+    "status": "APPROVE",
+    "mode": "limited_live_deployment",
+    "effective_time_utc": "2026-04-21T15:40:00Z",
+    "signoff_owner": "Commander (Human in the Loop)"
+  },
+  "scope": {
+    "allow_fast_gate_live_candidate": true,
+    "allow_full_a_track_promotion": false,
+    "a_track_guardrail_required_state": "HOLD_OR_S1_SHADOW_ONLY"
+  },
+  "enforcement_conditions": {
+    "require_fast_promotion_live_ready": true,
+    "require_price_output_locked_policy_respected": true,
+    "rollback_triggers": [
+      "gate_fail",
+      "integrity_warning",
+      "operator_stop_command"
+    ]
+  },
+  "notes": "Limited live permission only. No automatic full-track promotion without separate governance release."
+}

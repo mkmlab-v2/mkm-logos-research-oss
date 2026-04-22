@@ -1,0 +1,11 @@
+{
+  "schema": "external_feed_drop_validation_status_v1",
+  "checked_at_utc": "2026-04-21T14:11:56Z",
+  "latest_path": "C:\\workspace\\docs\\final\\artifacts\\external_feed_drop_2026_placeholder.json",
+  "selected_path": "C:\\workspace\\docs\\final\\artifacts\\external_feed_drop_2026_placeholder.json",
+  "mode": "latest_ok",
+  "validation_errors": [],
+  "degraded": false,
+  "research_only": true,
+  "promotion_required": true
+}

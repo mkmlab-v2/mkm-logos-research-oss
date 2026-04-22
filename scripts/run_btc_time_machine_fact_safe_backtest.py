@@ -11,12 +11,14 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 import pandas as pd
+import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 BTC_ROOT = ROOT / "projects" / "bitcoin-trading"
@@ -38,6 +40,336 @@ class BacktestConfig:
     max_position_fraction: float = 0.2
     daily_loss_cap_pct: float = 1.5
     skip_if_vol_shock_pct: float = 8.0
+
+
+def _maybe_get_numba():
+    try:
+        from numba import njit
+    except Exception:
+        return None
+    return njit
+
+
+def _maybe_get_torch():
+    try:
+        import torch
+    except Exception:
+        return None
+    if not torch.cuda.is_available():
+        return None
+    return torch
+
+
+def _cuda_device_name() -> str | None:
+    torch = _maybe_get_torch()
+    if torch is None:
+        return None
+    try:
+        return str(torch.cuda.get_device_name(torch.cuda.current_device()))
+    except Exception:
+        return "cuda-available"
+
+
+def _run_backtest_cpu(close_values: np.ndarray, day_keys: np.ndarray, cfg: BacktestConfig) -> dict[str, Any]:
+    trades: list[float] = []
+    skipped_vol_shock = 0
+    skipped_daily_loss_cap = 0
+    daily_pnl: dict[str, float] = {}
+    equity = 1.0
+    peak_equity = 1.0
+    max_drawdown = 0.0
+    max_loss_streak = 0
+    loss_streak = 0
+
+    for i in range(cfg.warmup, len(close_values) - cfg.horizon, cfg.stride):
+        hist = close_values[i - cfg.warmup : i + 1]
+        latest = float(hist[-1])
+        sma = float(hist.mean())
+        direction = 1 if latest >= sma else -1
+        entry = float(close_values[i])
+        exit_ = float(close_values[i + cfg.horizon])
+        raw_ret = (exit_ - entry) / entry
+        if abs(raw_ret) * 100.0 >= cfg.skip_if_vol_shock_pct:
+            skipped_vol_shock += 1
+            continue
+        signed = direction * raw_ret
+        fee = cfg.fee_bps_round_trip / 10_000.0
+        slippage = cfg.slippage_bps_round_trip / 10_000.0
+        net_ret = (signed - fee - slippage) * cfg.max_position_fraction
+        day_key = str(day_keys[i])
+        day_realized = daily_pnl.get(day_key, 0.0)
+        daily_loss_cap = cfg.daily_loss_cap_pct / 100.0
+        if day_realized <= -daily_loss_cap and net_ret < 0:
+            skipped_daily_loss_cap += 1
+            continue
+        daily_pnl[day_key] = day_realized + net_ret
+        trades.append(net_ret)
+        equity *= 1.0 + net_ret
+        peak_equity = max(peak_equity, equity)
+        drawdown = (peak_equity - equity) / peak_equity if peak_equity > 0 else 0.0
+        max_drawdown = max(max_drawdown, drawdown)
+        if net_ret < 0:
+            loss_streak += 1
+            max_loss_streak = max(max_loss_streak, loss_streak)
+        else:
+            loss_streak = 0
+
+    if not trades:
+        return {
+            "sample_count": 0,
+            "win_rate": 0.0,
+            "net_return_pct": 0.0,
+            "avg_trade_return_pct": 0.0,
+            "profit_factor": None,
+            "max_drawdown_pct": 0.0,
+            "max_loss_streak": 0,
+            "skipped_vol_shock": skipped_vol_shock,
+            "skipped_daily_loss_cap": skipped_daily_loss_cap,
+        }
+    wins = [x for x in trades if x > 0]
+    losses = [x for x in trades if x < 0]
+    gross_profit = sum(wins)
+    gross_loss = abs(sum(losses))
+    profit_factor = (gross_profit / gross_loss) if gross_loss > 0 else None
+    net_return = sum(trades)
+
+    return {
+        "sample_count": len(trades),
+        "win_rate": round(len(wins) / len(trades), 6),
+        "net_return_pct": round(net_return * 100.0, 6),
+        "avg_trade_return_pct": round((net_return / len(trades)) * 100.0, 6),
+        "profit_factor": round(profit_factor, 6) if profit_factor is not None else None,
+        "max_drawdown_pct": round(max_drawdown * 100.0, 6),
+        "max_loss_streak": int(max_loss_streak),
+        "skipped_vol_shock": skipped_vol_shock,
+        "skipped_daily_loss_cap": skipped_daily_loss_cap,
+    }
+
+
+def _build_numba_runner():
+    njit = _maybe_get_numba()
+    if njit is None:
+        return None
+
+    @njit(cache=True)
+    def _run_numba(
+        close_values: np.ndarray,
+        day_ids: np.ndarray,
+        warmup: int,
+        horizon: int,
+        stride: int,
+        fee_bps_round_trip: float,
+        slippage_bps_round_trip: float,
+        max_position_fraction: float,
+        daily_loss_cap_pct: float,
+        skip_if_vol_shock_pct: float,
+    ) -> np.ndarray:
+        n = len(close_values)
+        max_trades = n
+        trades = np.zeros(max_trades, dtype=np.float64)
+        trade_count = 0
+        skipped_vol_shock = 0
+        skipped_daily_loss_cap = 0
+        daily_pnl = np.zeros(n, dtype=np.float64)
+        equity = 1.0
+        peak_equity = 1.0
+        max_drawdown = 0.0
+        max_loss_streak = 0
+        loss_streak = 0
+
+        fee = fee_bps_round_trip / 10_000.0
+        slippage = slippage_bps_round_trip / 10_000.0
+        daily_loss_cap = daily_loss_cap_pct / 100.0
+
+        for i in range(warmup, n - horizon, stride):
+            hist = close_values[i - warmup : i + 1]
+            latest = hist[-1]
+            sma = np.mean(hist)
+            direction = 1.0 if latest >= sma else -1.0
+            entry = close_values[i]
+            exit_ = close_values[i + horizon]
+            raw_ret = (exit_ - entry) / entry
+            if abs(raw_ret) * 100.0 >= skip_if_vol_shock_pct:
+                skipped_vol_shock += 1
+                continue
+            signed = direction * raw_ret
+            net_ret = (signed - fee - slippage) * max_position_fraction
+            day_idx = day_ids[i]
+            day_realized = daily_pnl[day_idx]
+            if day_realized <= -daily_loss_cap and net_ret < 0:
+                skipped_daily_loss_cap += 1
+                continue
+            daily_pnl[day_idx] = day_realized + net_ret
+            trades[trade_count] = net_ret
+            trade_count += 1
+            equity *= 1.0 + net_ret
+            if equity > peak_equity:
+                peak_equity = equity
+            drawdown = (peak_equity - equity) / peak_equity if peak_equity > 0 else 0.0
+            if drawdown > max_drawdown:
+                max_drawdown = drawdown
+            if net_ret < 0:
+                loss_streak += 1
+                if loss_streak > max_loss_streak:
+                    max_loss_streak = loss_streak
+            else:
+                loss_streak = 0
+
+        if trade_count == 0:
+            return np.array(
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    np.nan,
+                    max_drawdown * 100.0,
+                    float(max_loss_streak),
+                    float(skipped_vol_shock),
+                    float(skipped_daily_loss_cap),
+                ],
+                dtype=np.float64,
+            )
+
+        trade_slice = trades[:trade_count]
+        wins = trade_slice[trade_slice > 0]
+        losses = trade_slice[trade_slice < 0]
+        gross_profit = np.sum(wins) if len(wins) > 0 else 0.0
+        gross_loss = abs(np.sum(losses)) if len(losses) > 0 else 0.0
+        profit_factor = gross_profit / gross_loss if gross_loss > 0 else np.nan
+        net_return = float(np.sum(trade_slice))
+        win_rate = float(len(wins)) / float(trade_count)
+
+        return np.array(
+            [
+                float(trade_count),
+                win_rate,
+                net_return * 100.0,
+                (net_return / float(trade_count)) * 100.0,
+                profit_factor,
+                max_drawdown * 100.0,
+                float(max_loss_streak),
+                float(skipped_vol_shock),
+                float(skipped_daily_loss_cap),
+            ],
+            dtype=np.float64,
+        )
+
+    return _run_numba
+
+
+def _run_backtest_cuda(close_values: np.ndarray, day_keys: np.ndarray, cfg: BacktestConfig) -> dict[str, Any] | None:
+    torch = _maybe_get_torch()
+    if torch is None:
+        return None
+
+    device = torch.device("cuda")
+    n = int(len(close_values))
+    if n <= cfg.warmup + cfg.horizon:
+        return {
+            "sample_count": 0,
+            "win_rate": 0.0,
+            "net_return_pct": 0.0,
+            "avg_trade_return_pct": 0.0,
+            "profit_factor": None,
+            "max_drawdown_pct": 0.0,
+            "max_loss_streak": 0,
+            "skipped_vol_shock": 0,
+            "skipped_daily_loss_cap": 0,
+        }
+
+    # CPU에서 day id 생성 (문자열 매핑), 연산 핵심은 GPU 텐서로 수행
+    unique_days: dict[Any, int] = {}
+    day_ids_np = np.empty(n, dtype=np.int64)
+    next_id = 0
+    for i, d in enumerate(day_keys):
+        did = unique_days.get(d)
+        if did is None:
+            did = next_id
+            unique_days[d] = did
+            next_id += 1
+        day_ids_np[i] = did
+
+    close_t = torch.as_tensor(close_values, dtype=torch.float64, device=device)
+    day_ids_t = torch.as_tensor(day_ids_np, dtype=torch.int64, device=device)
+    daily_pnl_t = torch.zeros(max(1, next_id), dtype=torch.float64, device=device)
+
+    fee = cfg.fee_bps_round_trip / 10_000.0
+    slippage = cfg.slippage_bps_round_trip / 10_000.0
+    daily_loss_cap = cfg.daily_loss_cap_pct / 100.0
+
+    trades: list[float] = []
+    skipped_vol_shock = 0
+    skipped_daily_loss_cap = 0
+    equity = 1.0
+    peak_equity = 1.0
+    max_drawdown = 0.0
+    max_loss_streak = 0
+    loss_streak = 0
+
+    for i in range(cfg.warmup, n - cfg.horizon, cfg.stride):
+        hist = close_t[i - cfg.warmup : i + 1]
+        latest = float(hist[-1].item())
+        sma = float(hist.mean().item())
+        direction = 1.0 if latest >= sma else -1.0
+
+        entry = float(close_t[i].item())
+        exit_ = float(close_t[i + cfg.horizon].item())
+        raw_ret = (exit_ - entry) / entry
+        if abs(raw_ret) * 100.0 >= cfg.skip_if_vol_shock_pct:
+            skipped_vol_shock += 1
+            continue
+
+        signed = direction * raw_ret
+        net_ret = (signed - fee - slippage) * cfg.max_position_fraction
+        day_idx = int(day_ids_t[i].item())
+        day_realized = float(daily_pnl_t[day_idx].item())
+        if day_realized <= -daily_loss_cap and net_ret < 0:
+            skipped_daily_loss_cap += 1
+            continue
+        daily_pnl_t[day_idx] = daily_pnl_t[day_idx] + net_ret
+
+        trades.append(net_ret)
+        equity *= 1.0 + net_ret
+        peak_equity = max(peak_equity, equity)
+        drawdown = (peak_equity - equity) / peak_equity if peak_equity > 0 else 0.0
+        max_drawdown = max(max_drawdown, drawdown)
+        if net_ret < 0:
+            loss_streak += 1
+            max_loss_streak = max(max_loss_streak, loss_streak)
+        else:
+            loss_streak = 0
+
+    if not trades:
+        return {
+            "sample_count": 0,
+            "win_rate": 0.0,
+            "net_return_pct": 0.0,
+            "avg_trade_return_pct": 0.0,
+            "profit_factor": None,
+            "max_drawdown_pct": 0.0,
+            "max_loss_streak": 0,
+            "skipped_vol_shock": skipped_vol_shock,
+            "skipped_daily_loss_cap": skipped_daily_loss_cap,
+        }
+
+    wins = [x for x in trades if x > 0]
+    losses = [x for x in trades if x < 0]
+    gross_profit = sum(wins)
+    gross_loss = abs(sum(losses))
+    profit_factor = (gross_profit / gross_loss) if gross_loss > 0 else None
+    net_return = sum(trades)
+
+    return {
+        "sample_count": len(trades),
+        "win_rate": round(len(wins) / len(trades), 6),
+        "net_return_pct": round(net_return * 100.0, 6),
+        "avg_trade_return_pct": round((net_return / len(trades)) * 100.0, 6),
+        "profit_factor": round(profit_factor, 6) if profit_factor is not None else None,
+        "max_drawdown_pct": round(max_drawdown * 100.0, 6),
+        "max_loss_streak": int(max_loss_streak),
+        "skipped_vol_shock": skipped_vol_shock,
+        "skipped_daily_loss_cap": skipped_daily_loss_cap,
+    }
 
 
 def _z_now() -> str:
@@ -137,6 +469,60 @@ def run_backtest(df: pd.DataFrame, cfg: BacktestConfig) -> dict[str, Any]:
     }
 
 
+def run_backtest_with_engine(df: pd.DataFrame, cfg: BacktestConfig, engine: str = "cpu") -> tuple[dict[str, Any], str]:
+    close_values = df["close"].to_numpy(dtype=np.float64)
+    day_keys = np.array(
+        [str(ts.date()) if hasattr(ts, "date") else f"bar-{i}" for i, ts in enumerate(df.index)],
+        dtype=object,
+    )
+
+    if engine == "cuda":
+        metrics = _run_backtest_cuda(close_values=close_values, day_keys=day_keys, cfg=cfg)
+        if metrics is not None:
+            return metrics, "cuda"
+    if engine == "numba":
+        numba_runner = _build_numba_runner()
+        if numba_runner is not None:
+            unique_days = {}
+            day_ids = np.empty(len(day_keys), dtype=np.int64)
+            next_id = 0
+            for i, d in enumerate(day_keys):
+                did = unique_days.get(d)
+                if did is None:
+                    did = next_id
+                    unique_days[d] = did
+                    next_id += 1
+                day_ids[i] = did
+            arr = numba_runner(
+                close_values,
+                day_ids,
+                cfg.warmup,
+                cfg.horizon,
+                cfg.stride,
+                cfg.fee_bps_round_trip,
+                cfg.slippage_bps_round_trip,
+                cfg.max_position_fraction,
+                cfg.daily_loss_cap_pct,
+                cfg.skip_if_vol_shock_pct,
+            )
+            sample_count = int(arr[0])
+            profit_factor = None if np.isnan(arr[4]) else round(float(arr[4]), 6)
+            metrics = {
+                "sample_count": sample_count,
+                "win_rate": round(float(arr[1]), 6),
+                "net_return_pct": round(float(arr[2]), 6),
+                "avg_trade_return_pct": round(float(arr[3]), 6),
+                "profit_factor": profit_factor,
+                "max_drawdown_pct": round(float(arr[5]), 6),
+                "max_loss_streak": int(arr[6]),
+                "skipped_vol_shock": int(arr[7]),
+                "skipped_daily_loss_cap": int(arr[8]),
+            }
+            return metrics, "numba"
+    metrics = _run_backtest_cpu(close_values=close_values, day_keys=day_keys, cfg=cfg)
+    return metrics, "cpu"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run BTC causal time-machine backtest.")
     parser.add_argument("--symbol", default="BTCUSDT")
@@ -152,6 +538,8 @@ def main() -> int:
     parser.add_argument("--skip-if-vol-shock-pct", type=float, default=8.0)
     parser.add_argument("--csv", default="")
     parser.add_argument("--output", default=str(DEFAULT_OUT))
+    parser.add_argument("--engine", choices=["cpu", "numba", "cuda"], default="cpu")
+    parser.add_argument("--benchmark-all-engines", action="store_true")
     args = parser.parse_args()
 
     start_dt = datetime.fromisoformat(args.start)
@@ -173,7 +561,25 @@ def main() -> int:
         daily_loss_cap_pct=args.daily_loss_cap_pct,
         skip_if_vol_shock_pct=args.skip_if_vol_shock_pct,
     )
-    metrics = run_backtest(df, cfg)
+    t0 = time.perf_counter()
+    metrics, engine_used = run_backtest_with_engine(df, cfg, engine=args.engine)
+    elapsed_ms = max(0.001, round((time.perf_counter() - t0) * 1000.0, 3))
+    bars = int(len(df))
+    bars_per_sec = round((bars / (elapsed_ms / 1000.0)), 6) if elapsed_ms > 0 else None
+
+    benchmark: dict[str, Any] | None = None
+    if args.benchmark_all_engines:
+        benchmark = {}
+        for eng in ("cpu", "numba", "cuda"):
+            t_eng = time.perf_counter()
+            _m, used_eng = run_backtest_with_engine(df, cfg, engine=eng)
+            ms_eng = max(0.001, round((time.perf_counter() - t_eng) * 1000.0, 3))
+            benchmark[eng] = {
+                "requested": eng,
+                "used": used_eng,
+                "elapsed_ms": ms_eng,
+                "bars_per_sec": round((bars / (ms_eng / 1000.0)), 6) if ms_eng > 0 else None,
+            }
 
     payload = {
         "schema": "btc_time_machine_fact_safe_backtest_v1",
@@ -182,7 +588,7 @@ def main() -> int:
         "symbol": args.symbol,
         "start": args.start,
         "end": args.end,
-        "bars": int(len(df)),
+        "bars": bars,
         "config": {
             "warmup": cfg.warmup,
             "horizon": cfg.horizon,
@@ -194,6 +600,16 @@ def main() -> int:
             "skip_if_vol_shock_pct": cfg.skip_if_vol_shock_pct,
         },
         "metrics": metrics,
+        "performance": {
+            "elapsed_ms": elapsed_ms,
+            "bars_per_sec": bars_per_sec,
+            "benchmark_all_engines": benchmark,
+        },
+        "engine": {
+            "requested": args.engine,
+            "used": engine_used,
+            "cuda_device": _cuda_device_name() if engine_used == "cuda" else None,
+        },
     }
 
     out = Path(args.output)

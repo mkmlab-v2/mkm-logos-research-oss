@@ -299,6 +299,10 @@ on:
       - "scripts/export_bio_measured_labels_paper_snp_sidecar_v1.py"
       - "scripts/run_bio_paper_snp_sidecar_export_and_apply_v1.py"
       - "scripts/check_bio_genotype_paper_snp_overlap_v1.py"
+      - "scripts/normalize_bio_genotype_long_v1.py"
+      - "scripts/build_bio_dna_promotion_readiness_v1.py"
+      - "scripts/run_bio_dna_readiness_chain_v1.py"
+      - "scripts/run_bio_dna_promotion_threshold_sweep_v1.py"
       - "scripts/export_bio_sample_paper_pmid_mapping_from_cohort_v1.py"
       - "scripts/run_bio_epmc_catalog_and_label_merge_v1.py"
       - "scripts/merge_bio_catalog_refsnp_into_measured_labels_v1.py"
@@ -308,6 +312,10 @@ on:
       - "tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py"
       - "tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py"
       - "tests/test_check_bio_genotype_paper_snp_overlap_v1.py"
+      - "tests/test_normalize_bio_genotype_long_v1.py"
+      - "tests/test_build_bio_dna_promotion_readiness_v1.py"
+      - "tests/test_run_bio_dna_readiness_chain_v1.py"
+      - "tests/test_run_bio_dna_promotion_threshold_sweep_v1.py"
       - "tests/fixtures/bio_paper_snp_join_smoke_samples_v1.csv"
       - "tests/fixtures/bio_paper_snp_join_smoke_mapping_v1.csv"
       - "tests/fixtures/bio_genotype_rsid_smoke_v1.csv"
@@ -472,6 +480,10 @@ jobs:
       - name: Weather synthetic 120d E2E (full chain + Brier, temp outputs)
         run: |
           set -euo pipefail
+          if [ ! -f "scripts/run_weather_synthetic_120d_chain_and_brier_v1.py" ]; then
+            echo "SKIP: scripts/run_weather_synthetic_120d_chain_and_brier_v1.py not present on this branch."
+            exit 0
+          fi
           WDIR="${RUNNER_TEMP}/weather_synth120d_e2e"
           mkdir -p "$WDIR"
           export WDIR

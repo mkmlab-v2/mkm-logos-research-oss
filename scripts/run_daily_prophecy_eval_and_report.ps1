@@ -30,7 +30,8 @@ param(
     # After score+eval: shadow panel lanes vs sweep/holdout artifacts (measurement-only).
     [switch]$IncludeShadowPanelEval,
     # Shadow eval mode (Python --shadow-mode). Omit to use env MKM_PROPHECY_SHADOW_PANEL_MODE or both.
-    [string]$ShadowPanelMode = ""
+    [string]$ShadowPanelMode = "",
+    [switch]$SkipHypothesisRefresh
 )
 
 $ErrorActionPreference = "Stop"
@@ -46,6 +47,14 @@ if (-not (Test-Path -LiteralPath $evalScript)) {
 }
 if (-not (Test-Path -LiteralPath $hypoScript)) {
     throw "Missing required script: $hypoScript"
+}
+
+if (-not $SkipHypothesisRefresh) {
+    Write-Host "==> generate_btrack_hypothesis_prophecy_v1.py (auto refresh; manual override guard)"
+    & py "scripts\generate_btrack_hypothesis_prophecy_v1.py"
+    if ($LASTEXITCODE -ne 0) {
+        throw "generate_btrack_hypothesis_prophecy_v1.py exit $LASTEXITCODE"
+    }
 }
 if ($IncludeShadowPanelEval -and -not (Test-Path -LiteralPath $shadowPanelScript)) {
     throw "Missing required script: $shadowPanelScript"

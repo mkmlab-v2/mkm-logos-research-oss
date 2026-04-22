@@ -16,6 +16,9 @@ import numpy as np
 import pandas as pd
 import logging
 import math
+
+logger = logging.getLogger(__name__)
+
 # MKM12 헌법: 안전 상수 ε (자동 추가)
 EPSILON = 1e-5
 
@@ -49,7 +52,6 @@ except ImportError as e:
     logging.warning(f"⚠️ 이론 모듈 import 실패: {e}")
 
 # MKM12DynamicsPredictor import (별도 처리)
-# logging 모듈이 아직 설정되지 않았으므로 print 사용
 MKM12_DYNAMICS_AVAILABLE = False
 try:
     # 경로 1: tools/tools/core (우선순위 1)
@@ -58,7 +60,7 @@ try:
         sys.path.insert(0, str(tools_tools_core_path))
         from MKM12DynamicsPredictor import MKM12DynamicsPredictor
         MKM12_DYNAMICS_AVAILABLE = True
-        print(f"✅ MKM12DynamicsPredictor import 성공 (tools/tools/core): {MKM12_DYNAMICS_AVAILABLE}")
+        logger.debug("MKM12DynamicsPredictor import 성공 (tools/tools/core)")
     else:
         raise ImportError(f"파일 없음: {tools_tools_core_path / 'MKM12DynamicsPredictor.py'}")
 except (ImportError, Exception) as e:
@@ -69,7 +71,7 @@ except (ImportError, Exception) as e:
             sys.path.insert(0, str(tools_core_path))
             from MKM12DynamicsPredictor import MKM12DynamicsPredictor
             MKM12_DYNAMICS_AVAILABLE = True
-            print(f"✅ MKM12DynamicsPredictor import 성공 (tools/core): {MKM12_DYNAMICS_AVAILABLE}")
+            logger.debug("MKM12DynamicsPredictor import 성공 (tools/core)")
         else:
             raise ImportError(f"파일 없음: {tools_core_path / 'MKM12DynamicsPredictor.py'}")
     except (ImportError, Exception) as e2:
@@ -77,12 +79,12 @@ except (ImportError, Exception) as e:
             # 경로 3: tools.core (패키지 형태)
             from tools.core.MKM12DynamicsPredictor import MKM12DynamicsPredictor
             MKM12_DYNAMICS_AVAILABLE = True
-            print(f"✅ MKM12DynamicsPredictor import 성공 (tools.core): {MKM12_DYNAMICS_AVAILABLE}")
+            logger.debug("MKM12DynamicsPredictor import 성공 (tools.core)")
         except ImportError as e3:
-            print(f"⚠️ MKM12DynamicsPredictor import 실패: {e}, {e2}, {e3}")
+            logger.debug("MKM12DynamicsPredictor import 실패: %s, %s, %s", e, e2, e3)
             MKM12_DYNAMICS_AVAILABLE = False
 
-print(f"🔍 최종 MKM12_DYNAMICS_AVAILABLE 상태: {MKM12_DYNAMICS_AVAILABLE}")
+logger.debug("MKM12_DYNAMICS_AVAILABLE=%s", MKM12_DYNAMICS_AVAILABLE)
 
 # 통일장 이론 엔진 import
 UFT_AVAILABLE = False
@@ -90,12 +92,12 @@ try:
     sys.path.insert(0, str(workspace_root / "tools" / "core"))
     from unified_field_theory_engine import UnifiedFieldTheoryEngine
     UFT_AVAILABLE = True
-    print(f"✅ UnifiedFieldTheoryEngine import 성공")
+    logger.debug("UnifiedFieldTheoryEngine import 성공")
 except ImportError:
     try:
         from tools.core.unified_field_theory_engine import UnifiedFieldTheoryEngine
         UFT_AVAILABLE = True
-        print(f"✅ UnifiedFieldTheoryEngine import 성공 (tools.core)")
+        logger.debug("UnifiedFieldTheoryEngine import 성공 (tools.core)")
     except ImportError as e:
         logging.warning(f"⚠️ 통일장 이론 엔진 import 실패: {e}")
 
