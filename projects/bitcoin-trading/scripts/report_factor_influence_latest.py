@@ -28,8 +28,8 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument(
         "--log-file",
         type=Path,
-        default=Path("/root/.pm2/logs/bitcoin-live-out.log"),
-        help="Trading stdout log (pm2).",
+        default=Path("/root/.pm2/logs/bitcoin-live-error.log"),
+        help="PM2 log for factor diagnostics (bitcoin-live-error.log tags; use -out.log if needed).",
     )
     p.add_argument(
         "--out-dir",

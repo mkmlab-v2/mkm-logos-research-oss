@@ -138,6 +138,10 @@ py "scripts/build_a_track_go_nogo_status.py"
 - `pm2` 실로그 기준으로 최근 1200라인/24h 근사치를 함께 산출한다.
 - `factor_influence_latest.json`를 30분마다 갱신하고, **원인 버킷(breakdown)**·**알림 상태**를 함께 기록한다.
 
+로그 선택:
+- **진단 태그(`vector_missing`, `engine_fallback_ma` 등)** 는 운영 기준 **`bitcoin-live-error.log`** 에 많이 실린다. 스크립트 기본값·크론 등록 스크립트 기본도 이 경로로 맞춘다.
+- 표준 출력만 보려면 `--log-file /root/.pm2/logs/bitcoin-live-out.log` 로 바꿔 실행한다.
+
 본선 크론(권장 엔트리):
 ```bash
 /usr/bin/python3 /opt/mkm-lab-workspace-v2/projects/bitcoin-trading/scripts/report_factor_influence_latest.py \
@@ -149,7 +153,7 @@ py "scripts/build_a_track_go_nogo_status.py"
 ```bash
 cd /opt/mkm-lab-workspace-v2/projects/bitcoin-trading
 python3 scripts/report_factor_influence_latest.py \
-  --log-file /root/.pm2/logs/bitcoin-live-out.log \
+  --log-file /root/.pm2/logs/bitcoin-live-error.log \
   --out-dir exports/cursor_trade_history \
   --recent-lines 1200 \
   --window-hours 24 \
@@ -161,7 +165,7 @@ python3 scripts/report_factor_influence_latest.py \
 슬림 전용(알림·breakdown 없이 구 스키마 `factor_influence_latest_v1`만 필요할 때):
 ```bash
 python3 scripts/build_factor_influence_latest.py \
-  --log-file /root/.pm2/logs/bitcoin-live-out.log \
+  --log-file /root/.pm2/logs/bitcoin-live-error.log \
   --out-dir exports/cursor_trade_history \
   --recent-lines 1200 \
   --window-hours 24 \
@@ -174,6 +178,16 @@ cd /opt/mkm-lab-workspace-v2/projects/bitcoin-trading
 bash ops/v2/ssh/register_factor_influence_latest_cron.sh
 crontab -l | grep bitcoin-factor-influence-latest
 ```
+크론에서 표준 출력 로그를 쓰려면 등록 전에 한 줄만 지정한다:  
+`export LOG_FILE=/root/.pm2/logs/bitcoin-live-out.log`
+
+### hq 저장소 반영 (한 줄)
+로컬에만 있는 체리픽 커밋을 **`mkmlab-hq/mkm-lab-workspace-v2`** 의 `main`에 올리려면 클린 워크트리에서 예를 들면:
+```bash
+git fetch hq && git cherry-pick 9727be0e   # 또는 VPS에 반영한 동일 변경의 커밋 해시
+git push hq main
+```
+(VPS와 동일 내용이면 해시만 맞추면 된다.)
 
 핵심 확인 파일:
 - `exports/cursor_trade_history/factor_influence_latest.json` — 상단 `exported_at`, `trade_done_rate` / `vector_missing_rate` / `engine_fallback_ma_rate`, `recent_lines.breakdown`

@@ -36,8 +36,8 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--log-file",
         type=Path,
-        default=Path("/root/.pm2/logs/bitcoin-live-out.log"),
-        help="Input trading log file path (default: /root/.pm2/logs/bitcoin-live-out.log).",
+        default=Path("/root/.pm2/logs/bitcoin-live-error.log"),
+        help="Input log path (default: pm2 bitcoin-live-error.log for diagnostic tags).",
     )
     parser.add_argument(
         "--out-dir",
