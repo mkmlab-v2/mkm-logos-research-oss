@@ -2,6 +2,9 @@
 name: GPU engine benchmark bundle
 
 on:
+  schedule:
+    # Every day at 02:30 UTC
+    - cron: "30 2 * * *"
   workflow_dispatch:
     inputs:
       btc_start:
@@ -32,7 +35,7 @@ on:
       max_regression_pct:
         description: "Allowed performance regression percentage vs locked GPU baseline"
         required: false
-        default: "20"
+        default: "10"
         type: string
 
 jobs:
@@ -78,7 +81,7 @@ jobs:
 
   benchmark_gpu:
     name: benchmark (self-hosted gpu strict)
-    if: ${{ inputs.run_self_hosted_gpu == true }}
+    if: ${{ github.event_name == 'schedule' || inputs.run_self_hosted_gpu == true }}
     runs-on: [self-hosted, gpu]
     steps:
       - uses: actions/checkout@v4
@@ -94,6 +97,12 @@ jobs:
           --btc-start "${{ inputs.btc_start }}"
           --btc-end "${{ inputs.btc_end }}"
           --prophecy-top-k "${{ inputs.prophecy_top_k }}"
+      - name: Run repeated GPU benchmark samples (self-hosted)
+        run: |
+          New-Item -ItemType Directory -Path tmp/gpu-regression-samples -Force | Out-Null
+          python scripts/build_gpu_engine_benchmark_bundle_v1.py --btc-start "${{ inputs.btc_start }}" --btc-end "${{ inputs.btc_end }}" --prophecy-top-k "${{ inputs.prophecy_top_k }}" --output tmp/gpu-regression-samples/sample_1.json
+          python scripts/build_gpu_engine_benchmark_bundle_v1.py --btc-start "${{ inputs.btc_start }}" --btc-end "${{ inputs.btc_end }}" --prophecy-top-k "${{ inputs.prophecy_top_k }}" --output tmp/gpu-regression-samples/sample_2.json
+          python scripts/build_gpu_engine_benchmark_bundle_v1.py --btc-start "${{ inputs.btc_start }}" --btc-end "${{ inputs.btc_end }}" --prophecy-top-k "${{ inputs.prophecy_top_k }}" --output tmp/gpu-regression-samples/sample_3.json
       - name: Enforce CUDA usage on GPU runner
         if: ${{ inputs.require_cuda_on_gpu_runner == true }}
         run: |
@@ -101,11 +110,17 @@ jobs:
       - name: Check GPU performance regression vs baseline
         run: >
           python scripts/check_gpu_engine_benchmark_regression.py
-          --bundle docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json
+          --bundle tmp/gpu-regression-samples/sample_1.json
+          --bundle tmp/gpu-regression-samples/sample_2.json
+          --bundle tmp/gpu-regression-samples/sample_3.json
           --baseline docs/final/artifacts/gpu_engine_benchmark_baseline_v1.json
-          --max-regression-pct "${{ inputs.max_regression_pct }}"
+          --max-regression-pct "${{ github.event_name == 'schedule' && '10' || inputs.max_regression_pct }}"
       - name: Upload benchmark artifact
         uses: actions/upload-artifact@v4
         with:
           name: gpu-engine-benchmark-bundle-gpu
-          path: docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json
+          path: |
+            docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json
+            tmp/gpu-regression-samples/sample_1.json
+            tmp/gpu-regression-samples/sample_2.json
+            tmp/gpu-regression-samples/sample_3.json
