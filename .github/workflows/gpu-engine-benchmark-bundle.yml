@@ -103,6 +103,8 @@ jobs:
           python scripts/build_gpu_engine_benchmark_bundle_v1.py --btc-start "${{ inputs.btc_start }}" --btc-end "${{ inputs.btc_end }}" --prophecy-top-k "${{ inputs.prophecy_top_k }}" --output tmp/gpu-regression-samples/sample_1.json
           python scripts/build_gpu_engine_benchmark_bundle_v1.py --btc-start "${{ inputs.btc_start }}" --btc-end "${{ inputs.btc_end }}" --prophecy-top-k "${{ inputs.prophecy_top_k }}" --output tmp/gpu-regression-samples/sample_2.json
           python scripts/build_gpu_engine_benchmark_bundle_v1.py --btc-start "${{ inputs.btc_start }}" --btc-end "${{ inputs.btc_end }}" --prophecy-top-k "${{ inputs.prophecy_top_k }}" --output tmp/gpu-regression-samples/sample_3.json
+          python scripts/build_gpu_engine_benchmark_bundle_v1.py --btc-start "${{ inputs.btc_start }}" --btc-end "${{ inputs.btc_end }}" --prophecy-top-k "${{ inputs.prophecy_top_k }}" --output tmp/gpu-regression-samples/sample_4.json
+          python scripts/build_gpu_engine_benchmark_bundle_v1.py --btc-start "${{ inputs.btc_start }}" --btc-end "${{ inputs.btc_end }}" --prophecy-top-k "${{ inputs.prophecy_top_k }}" --output tmp/gpu-regression-samples/sample_5.json
       - name: Enforce CUDA usage on GPU runner
         if: ${{ inputs.require_cuda_on_gpu_runner == true }}
         run: |
@@ -113,9 +115,12 @@ jobs:
           --bundle tmp/gpu-regression-samples/sample_1.json
           --bundle tmp/gpu-regression-samples/sample_2.json
           --bundle tmp/gpu-regression-samples/sample_3.json
+          --bundle tmp/gpu-regression-samples/sample_4.json
+          --bundle tmp/gpu-regression-samples/sample_5.json
           --baseline docs/final/artifacts/gpu_engine_benchmark_baseline_v1.json
           --max-regression-pct "${{ github.event_name == 'schedule' && '10' || inputs.max_regression_pct }}"
       - name: Upload benchmark artifact
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: gpu-engine-benchmark-bundle-gpu
@@ -124,3 +129,5 @@ jobs:
             tmp/gpu-regression-samples/sample_1.json
             tmp/gpu-regression-samples/sample_2.json
             tmp/gpu-regression-samples/sample_3.json
+            tmp/gpu-regression-samples/sample_4.json
+            tmp/gpu-regression-samples/sample_5.json
