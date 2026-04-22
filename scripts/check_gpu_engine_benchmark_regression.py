@@ -87,10 +87,17 @@ def main() -> int:
         if current_value is None:
             failures.append(f"{run_name}: current metric missing ({metric_name})")
             continue
-        min_allowed = float(baseline_value) * (1.0 - (max_regression_pct / 100.0))
+        target_regression_pct_raw = rule.get("max_regression_pct")
+        if isinstance(target_regression_pct_raw, (int, float)):
+            target_regression_pct = float(target_regression_pct_raw)
+        else:
+            target_regression_pct = max_regression_pct
+        min_allowed = float(baseline_value) * (1.0 - (target_regression_pct / 100.0))
         print(
             f"- {run_name}.{metric_name}: current={current_value:.6f} "
-            f"baseline={float(baseline_value):.6f} min_allowed={min_allowed:.6f}"
+            f"baseline={float(baseline_value):.6f} "
+            f"max_regression_pct={target_regression_pct:.3f} "
+            f"min_allowed={min_allowed:.6f}"
         )
         if current_value < min_allowed:
             failures.append(

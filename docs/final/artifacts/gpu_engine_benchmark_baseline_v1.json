@@ -6,11 +6,13 @@
   "targets": {
     "btc_time_machine_fact_safe_backtest": {
       "metric_name": "bars_per_sec",
-      "baseline_value": 15.574827
+      "baseline_value": 15.574827,
+      "max_regression_pct": 10.0
     },
     "prophecy_instrument_combo_sweep_v1": {
       "metric_name": "candidates_per_sec",
-      "baseline_value": 1183856.502242
+      "baseline_value": 1183856.502242,
+      "max_regression_pct": 20.0
     }
   }
 }
