@@ -307,27 +307,48 @@ def _run_backtest_cuda(close_values: np.ndarray, day_keys: np.ndarray, cfg: Back
     max_loss_streak = 0
     loss_streak = 0
 
-    for i in range(cfg.warmup, n - cfg.horizon, cfg.stride):
-        hist = close_t[i - cfg.warmup : i + 1]
-        latest = float(hist[-1].item())
-        sma = float(hist.mean().item())
-        direction = 1.0 if latest >= sma else -1.0
+    eval_idx_np = np.arange(cfg.warmup, n - cfg.horizon, cfg.stride, dtype=np.int64)
+    if eval_idx_np.size > 0:
+        eval_idx_t = torch.as_tensor(eval_idx_np, dtype=torch.int64, device=device)
+        horizon_t = eval_idx_t + int(cfg.horizon)
 
-        entry = float(close_t[i].item())
-        exit_ = float(close_t[i + cfg.horizon].item())
-        raw_ret = (exit_ - entry) / entry
-        if abs(raw_ret) * 100.0 >= cfg.skip_if_vol_shock_pct:
+        # Keep theory signal + return generation on device in one pass.
+        prefix = torch.empty(n + 1, dtype=torch.float64, device=device)
+        prefix[0] = 0.0
+        prefix[1:] = torch.cumsum(close_t, dim=0)
+        window_sum_t = prefix[eval_idx_t + 1] - prefix[eval_idx_t - int(cfg.warmup)]
+        sma_t = window_sum_t / float(cfg.warmup + 1)
+        latest_t = close_t[eval_idx_t]
+        direction_t = torch.where(latest_t >= sma_t, 1.0, -1.0)
+
+        entry_t = close_t[eval_idx_t]
+        exit_t = close_t[horizon_t]
+        raw_ret_t = (exit_t - entry_t) / entry_t
+        shock_mask_t = torch.abs(raw_ret_t) * 100.0 >= float(cfg.skip_if_vol_shock_pct)
+        signed_t = direction_t * raw_ret_t
+        net_ret_t = (signed_t - fee - slippage) * float(cfg.max_position_fraction)
+        day_idx_t = day_ids_t[eval_idx_t]
+
+        shock_mask_np = shock_mask_t.detach().cpu().numpy().astype(np.bool_)
+        net_ret_np = net_ret_t.detach().cpu().numpy()
+        day_idx_np = day_idx_t.detach().cpu().numpy()
+    else:
+        shock_mask_np = np.empty(0, dtype=np.bool_)
+        net_ret_np = np.empty(0, dtype=np.float64)
+        day_idx_np = np.empty(0, dtype=np.int64)
+
+    daily_pnl_cpu = np.zeros(max(1, next_id), dtype=np.float64)
+    for is_shock, net_ret_raw, day_idx in zip(shock_mask_np, net_ret_np, day_idx_np):
+        if bool(is_shock):
             skipped_vol_shock += 1
             continue
-
-        signed = direction * raw_ret
-        net_ret = (signed - fee - slippage) * cfg.max_position_fraction
-        day_idx = int(day_ids_t[i].item())
-        day_realized = float(daily_pnl_t[day_idx].item())
+        net_ret = float(net_ret_raw)
+        day_i = int(day_idx)
+        day_realized = float(daily_pnl_cpu[day_i])
         if day_realized <= -daily_loss_cap and net_ret < 0:
             skipped_daily_loss_cap += 1
             continue
-        daily_pnl_t[day_idx] = daily_pnl_t[day_idx] + net_ret
+        daily_pnl_cpu[day_i] = day_realized + net_ret
 
         trades.append(net_ret)
         equity *= 1.0 + net_ret
