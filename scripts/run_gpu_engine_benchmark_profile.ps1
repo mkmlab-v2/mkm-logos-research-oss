@@ -38,11 +38,12 @@ if (-not $Watch.IsPresent) {
   return
 }
 
-$runUrl = ($dispatchOutput | Select-String -Pattern "https://github.com/.*/actions/runs/\d+").Matches.Value
-if ([string]::IsNullOrWhiteSpace($runUrl)) {
+$runMatch = ($dispatchOutput | Select-String -Pattern "https://github.com/([^/]+/[^/]+)/actions/runs/(\d+)").Matches
+if (-not $runMatch -or $runMatch.Count -eq 0) {
   throw "Failed to parse workflow run URL from gh output."
 }
 
-$runId = ($runUrl -split "/")[-1]
-Write-Host "Watching run id: $runId"
-& gh run watch $runId --interval 20 --exit-status
+$repo = $runMatch[0].Groups[1].Value
+$runId = $runMatch[0].Groups[2].Value
+Write-Host "Watching run id: $runId (repo=$repo)"
+& gh run watch $runId -R $repo --interval 20 --exit-status
