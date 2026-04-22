@@ -1,0 +1,46 @@
+# Financial Sovereign 블랙박스 CLI 스모크 (비거래). research CSV 없으면 레포 픽스처로 실행; 둘 다 없으면 SKIP exit 0.
+name: Bitcoin sovereign backtest smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      require_data:
+        description: "Fail if neither research CSV nor fixture exists"
+        required: false
+        default: false
+        type: boolean
+  push:
+    branches: [main, master]
+    paths:
+      - "projects/bitcoin-trading/src/backtest/financial_sovereign_backtester.py"
+      - "projects/bitcoin-trading/scripts/smoke_financial_sovereign_backtest.py"
+      - "projects/bitcoin-trading/scripts/run_financial_sovereign_backtest_cli.py"
+      - "projects/bitcoin-trading/src/strategy/crypto_nitro_live_strategy.py"
+      - "projects/bitcoin-trading/tests/fixtures/btc_smoke_daily.csv"
+      - ".github/workflows/bitcoin-sovereign-backtest-smoke.yml"
+  pull_request:
+    paths:
+      - "projects/bitcoin-trading/src/backtest/financial_sovereign_backtester.py"
+      - "projects/bitcoin-trading/scripts/smoke_financial_sovereign_backtest.py"
+      - "projects/bitcoin-trading/scripts/run_financial_sovereign_backtest_cli.py"
+      - "projects/bitcoin-trading/src/strategy/crypto_nitro_live_strategy.py"
+      - "projects/bitcoin-trading/tests/fixtures/btc_smoke_daily.csv"
+      - ".github/workflows/bitcoin-sovereign-backtest-smoke.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    env:
+      MKM_SOVEREIGN_SMOKE_REQUIRE_DATA: ${{ github.event_name == 'workflow_dispatch' && inputs.require_data && '1' || '0' }}
+    defaults:
+      run:
+        working-directory: projects/bitcoin-trading
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install minimal deps for backtester import chain
+        run: pip install pandas numpy pyyaml requests scipy scikit-learn hmmlearn
+      - name: Run smoke (research CSV 또는 레포 픽스처)
+        run: python3 scripts/smoke_financial_sovereign_backtest.py
