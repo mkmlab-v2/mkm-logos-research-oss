@@ -40,6 +40,11 @@ on:
         required: false
         default: "10"
         type: string
+      upload_artifacts:
+        description: "Upload benchmark artifacts in manual runs"
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   benchmark_hosted:
@@ -59,6 +64,7 @@ jobs:
           --btc-end "${{ inputs.btc_end }}"
           --prophecy-top-k "${{ inputs.prophecy_top_k }}"
       - name: Upload benchmark artifact
+        if: ${{ github.event_name == 'schedule' || inputs.upload_artifacts == true }}
         uses: actions/upload-artifact@v5
         with:
           name: gpu-engine-benchmark-bundle-hosted
@@ -123,7 +129,7 @@ jobs:
           --baseline docs/final/artifacts/gpu_engine_benchmark_baseline_v1.json
           --max-regression-pct "${{ github.event_name == 'schedule' && '10' || inputs.max_regression_pct }}"
       - name: Upload benchmark artifact
-        if: ${{ always() }}
+        if: ${{ always() && (github.event_name == 'schedule' || inputs.upload_artifacts == true) }}
         uses: actions/upload-artifact@v5
         with:
           name: gpu-engine-benchmark-bundle-gpu
