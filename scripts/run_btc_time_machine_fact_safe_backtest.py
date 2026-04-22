@@ -28,6 +28,7 @@ from backtest.light_historical_data_loader import fetch_historical_data_light
 
 
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btc_time_machine_fact_safe_backtest_latest.json"
+FALLBACK_BTC_FIXTURE = ROOT / "projects" / "bitcoin-trading" / "tests" / "fixtures" / "btc_smoke_daily.csv"
 
 
 @dataclass(frozen=True)
@@ -376,6 +377,48 @@ def _z_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def _load_btc_data_with_fallback(
+    start_dt: datetime,
+    end_dt: datetime,
+    symbol: str,
+    data_file: str | None,
+) -> tuple[pd.DataFrame, str]:
+    try:
+        df = fetch_historical_data_light(
+            start_date=start_dt,
+            end_date=end_dt,
+            data_file=data_file,
+            symbol=symbol,
+        )
+        return df, "primary"
+    except Exception as exc:
+        if FALLBACK_BTC_FIXTURE.exists():
+            print(
+                f"[WARN] primary BTC data fetch failed ({exc.__class__.__name__}: {exc}); "
+                f"fallback fixture={FALLBACK_BTC_FIXTURE}",
+                file=sys.stderr,
+            )
+            df = pd.read_csv(FALLBACK_BTC_FIXTURE)
+            lowered = {c.lower(): c for c in df.columns}
+            date_col = lowered.get("date") or lowered.get("timestamp")
+            if not date_col:
+                raise RuntimeError(f"fallback fixture missing date/timestamp column: {FALLBACK_BTC_FIXTURE}")
+            if date_col.lower() == "timestamp":
+                df["date"] = pd.to_datetime(df[date_col], unit="ms", errors="coerce")
+            else:
+                df["date"] = pd.to_datetime(df[date_col], errors="coerce")
+            df = df.dropna(subset=["date"]).set_index("date").sort_index()
+            for col in ("open", "high", "low", "close", "volume"):
+                src_col = lowered.get(col)
+                if src_col and src_col in df.columns:
+                    df[col] = pd.to_numeric(df[src_col], errors="coerce")
+            df = df[(df.index >= start_dt) & (df.index <= end_dt)]
+            if "close" not in df.columns:
+                raise RuntimeError(f"fallback fixture missing close column: {FALLBACK_BTC_FIXTURE}")
+            return df, "fixture_fallback"
+        raise
+
+
 def _signal_from_past(close_hist: pd.Series) -> int:
     """
     Causal signal: compare latest close vs SMA of history.
@@ -545,9 +588,9 @@ def main() -> int:
     start_dt = datetime.fromisoformat(args.start)
     end_dt = datetime.fromisoformat(args.end)
     data_file = args.csv.strip() or None
-    df = fetch_historical_data_light(
-        start_date=start_dt,
-        end_date=end_dt,
+    df, data_source_mode = _load_btc_data_with_fallback(
+        start_dt=start_dt,
+        end_dt=end_dt,
         data_file=data_file,
         symbol=args.symbol,
     )
@@ -589,6 +632,8 @@ def main() -> int:
         "start": args.start,
         "end": args.end,
         "bars": bars,
+        "data_source_mode": data_source_mode,
+        "data_source_file": (str(FALLBACK_BTC_FIXTURE) if data_source_mode == "fixture_fallback" else data_file),
         "config": {
             "warmup": cfg.warmup,
             "horizon": cfg.horizon,
