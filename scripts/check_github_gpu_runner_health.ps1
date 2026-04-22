@@ -10,6 +10,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $LogPath = "C:\workspace\reports\github_gpu_runner_health_log.jsonl"
+$AlertRetryQueuePath = "C:\workspace\reports\github_gpu_runner_health_alert_retry_queue.jsonl"
 
 function Write-HealthLog {
     param(
@@ -122,6 +123,17 @@ function Send-HealthAlert {
     }
     catch {
         Write-Host "WARN: webhook send failed: $($_.Exception.Message)"
+        $queueDir = Split-Path -Parent $AlertRetryQueuePath
+        if (-not (Test-Path -LiteralPath $queueDir)) {
+            New-Item -ItemType Directory -Path $queueDir -Force | Out-Null
+        }
+        $retryEntry = [ordered]@{
+            ts_utc = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+            webhook_url = $url
+            error = $_.Exception.Message
+            payload_json = $payload
+        }
+        ($retryEntry | ConvertTo-Json -Compress -Depth 8) | Add-Content -Path $AlertRetryQueuePath -Encoding utf8
     }
 }
 
