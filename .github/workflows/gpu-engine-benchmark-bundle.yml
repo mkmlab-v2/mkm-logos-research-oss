@@ -1,6 +1,9 @@
 # Build unified cpu/numba/cuda benchmark bundle (manual dispatch only).
 name: GPU engine benchmark bundle
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   schedule:
     # Every day at 02:30 UTC
