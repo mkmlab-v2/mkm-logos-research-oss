@@ -1,6 +1,7 @@
-# One-shot ops chain (local): P0 Fact-Lock bundle -> Sasang JSONL validate -> BTC Multilens smoke -> contract pytest subset.
+# One-shot ops chain (local): Multitarget pre-gate -> P0 Fact-Lock bundle -> Sasang JSONL validate -> BTC Multilens smoke -> contract pytest subset.
 # Optional: -IncludeP1AB (Multilens P1 A/B + final selection after core Fact-Lock).
 # Optional: -IncludeJemaaiCloudChecks (verify jemaai.cloud MVP paths + nginx example; no VPS deploy).
+# Optional: -SkipMultitargetPreGate (skip multitarget topology/trainability pre-gate).
 # No live trading. Network required for step 3 (Binance + FGI).
 #
 # Usage:
@@ -10,7 +11,9 @@
 param(
     [switch]$IncludeP1AB,
     [switch]$IncludeJemaaiCloudChecks,
-    [switch]$IncludeJemaaiE2ESmoke
+    [switch]$IncludeJemaaiE2ESmoke,
+    [switch]$SkipMultitargetPreGate,
+    [bool]$TreatMultitargetHoldAsSuccess = $true
 )
 
 $ErrorActionPreference = "Stop"
@@ -21,6 +24,39 @@ $maint = [System.Environment]::GetEnvironmentVariable("MKM_WORKSPACE_MAINTENANCE
 if ($maint -and ($maint.Trim().ToLower() -in @("1", "true", "yes", "on"))) {
     Write-Host "SKIP: MKM_WORKSPACE_MAINTENANCE active (autopilot chain not run)" -ForegroundColor Yellow
     exit 0
+}
+
+if (-not $SkipMultitargetPreGate) {
+    $topologyScript = Join-Path $workspaceRoot "scripts\build_multitarget_label_topology_report_v1.py"
+    $trainabilityGateScript = Join-Path $workspaceRoot "scripts\eval_target_conditioned_trainability_gate_v1.py"
+    $topologyJson = Join-Path $workspaceRoot "artifacts\B_track\kaggle_training_5seed\multitarget_classification\multitarget_label_topology_report_latest.json"
+    $trainabilityJson = Join-Path $workspaceRoot "artifacts\B_track\kaggle_training_5seed\multitarget_classification\target_conditioned_trainability_gate_latest.json"
+    $unseenTcJson = Join-Path $workspaceRoot "artifacts\B_track\kaggle_training_5seed\multitarget_classification\target_conditioned_benchmark_summary_unseen_target.json"
+    $seenTcJson = Join-Path $workspaceRoot "artifacts\B_track\kaggle_training_5seed\multitarget_classification\target_conditioned_benchmark_summary_seen_label.json"
+
+    foreach ($p in @($topologyScript, $trainabilityGateScript, $unseenTcJson, $seenTcJson)) {
+        if (-not (Test-Path -LiteralPath $p)) {
+            throw "Multitarget pre-gate missing required file: $p"
+        }
+    }
+
+    Write-Host "=== [0/4] multitarget topology + trainability pre-gate ===" -ForegroundColor Cyan
+    & py $topologyScript --source-csv (Join-Path $workspaceRoot "data\kaggle\processed\multitarget_bioactivity\normalized.csv") --output-json $topologyJson
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+    & py $trainabilityGateScript --unseen-benchmark-json $unseenTcJson --seen-label-benchmark-json $seenTcJson --label-topology-json $topologyJson --output-json $trainabilityJson
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+    $gate = Get-Content -LiteralPath $trainabilityJson -Raw | ConvertFrom-Json
+    if ($null -ne $gate -and "$($gate.final_status)".ToUpper() -eq "HOLD") {
+        Write-Host "PRE-GATE HOLD: multitarget trainability gate blocked downstream heavy chain." -ForegroundColor Yellow
+        if ($TreatMultitargetHoldAsSuccess) {
+            Write-Host "Exit policy: HOLD treated as successful stop (exit 0)." -ForegroundColor Yellow
+            exit 0
+        }
+        Write-Host "Exit policy: HOLD treated as failure (exit 20)." -ForegroundColor Red
+        exit 20
+    }
 }
 
 $flArgs = @()

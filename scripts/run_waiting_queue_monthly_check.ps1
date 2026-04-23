@@ -24,7 +24,9 @@ param(
     [switch]$AllowLensFallback,
     [switch]$UseWalkForwardBackfilledHistory,
     [string]$WalkForwardBackfillStartDate = "",
-    [string]$WalkForwardBackfillEndDate = ""
+    [string]$WalkForwardBackfillEndDate = "",
+    [switch]$SkipExternalFeedValidation,
+    [switch]$StrictExternalFeedValidation
 )
 
 $ErrorActionPreference = "Stop"
@@ -42,6 +44,36 @@ $maint = [System.Environment]::GetEnvironmentVariable("MKM_WORKSPACE_MAINTENANCE
 if ($maint -and ($maint.Trim().ToLower() -in @("1", "true", "yes", "on"))) {
     Write-Host "SKIP: MKM_WORKSPACE_MAINTENANCE active (monthly check not run)" -ForegroundColor Yellow
     exit 0
+}
+
+$externalFeedValidationMode = "skipped"
+if (-not $SkipExternalFeedValidation) {
+    $externalLatestRel = "docs\final\artifacts\external_feed_drop_latest.json"
+    $externalLatest = Join-Path $workspace $externalLatestRel
+    $externalValidatedRel = "docs\final\artifacts\external_feed_drop_latest.validated.json"
+    $externalStatusRel = "docs\final\artifacts\external_feed_drop_validation_status_latest.json"
+    $externalLoader = Join-Path $workspace "scripts\load_external_feed_drop_with_fallback_v1.py"
+    if (Test-Path -LiteralPath $externalLoader) {
+        if (Test-Path -LiteralPath $externalLatest) {
+            Write-Host "[waiting-queue-check] External feed validate+fallback (B-track research-only)..."
+            py $externalLoader --latest $externalLatestRel --output $externalValidatedRel --status-output $externalStatusRel
+            if ($LASTEXITCODE -ne 0) {
+                if ($StrictExternalFeedValidation) {
+                    throw "external feed validation failed (strict mode) exit $LASTEXITCODE"
+                }
+                Write-Host "[waiting-queue-check] WARN: external feed validation failed; continue in degraded mode (research-only)." -ForegroundColor Yellow
+                $externalFeedValidationMode = "degraded"
+            } else {
+                $externalFeedValidationMode = "latest_or_fallback_ok"
+            }
+        } else {
+            Write-Host "[waiting-queue-check] Skip external feed validate (missing latest drop): $externalLatestRel" -ForegroundColor DarkYellow
+            $externalFeedValidationMode = "missing_latest_drop"
+        }
+    } else {
+        Write-Host "[waiting-queue-check] Skip external feed validate (missing loader): scripts\load_external_feed_drop_with_fallback_v1.py" -ForegroundColor DarkYellow
+        $externalFeedValidationMode = "missing_loader"
+    }
 }
 
 $logPath = "$workspace\docs\final\artifacts\waiting_queue_monthly_check_log.jsonl"
@@ -1176,6 +1208,7 @@ $logRow = @{
     weekly_reliability_neutral_draw_rate = $weeklyNeutralDrawRate
     k_shield_metadata_guard = $kShieldMetadataGuard
     k_shield_metadata_reason = $kShieldMetadataReason
+    external_feed_validation_mode = $externalFeedValidationMode
     monthly_prophecy_path = $monthlyProphecyPath
     biblical_external_reality_locked_profile = $biblicalExternalRealityStatus
     biblical_external_dualgate_stability_path = $biblicalExternalDualgateStabilityPath

@@ -18,6 +18,11 @@ from workspace_maintenance_gate import is_workspace_maintenance_active  # noqa: 
 DEFAULT_PROPHECY = ROOT / "docs" / "final" / "artifacts" / "prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
 DEFAULT_OUT = ROOT / "projects" / "bitcoin-trading" / "memory" / "v2" / "risk" / "risk_profile_fact_safe_latest.json"
 DEFAULT_GOVERNANCE = ROOT / "docs" / "final" / "artifacts" / "integrated_governance_v1_latest.json"
+DEFAULT_TRINITY_PREDICTION = ROOT / "docs" / "final" / "artifacts" / "trinity_3lens_prediction_latest.json"
+DEFAULT_TRINITY_DAILY_SCORE = ROOT / "docs" / "final" / "artifacts" / "trinity_daily_score_latest.json"
+DEFAULT_TRINITY_WEIGHTS = ROOT / "docs" / "final" / "artifacts" / "trinity_lens_weights_latest.json"
+DEFAULT_TRINITY_PREDICTION_BTC = ROOT / "docs" / "final" / "artifacts" / "trinity_3lens_prediction_btc_latest.json"
+DEFAULT_TRINITY_DAILY_SCORE_BTC = ROOT / "docs" / "final" / "artifacts" / "trinity_daily_score_btc_latest.json"
 
 
 def _clamp(v: float, lo: float, hi: float) -> float:
@@ -85,6 +90,7 @@ def _derive_profile(
     source_name: str,
     mode_name: str,
     governance: dict[str, Any] | None = None,
+    trinity_evolution: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     mode = str(risk_profile.get("mode") or "LOCKED_MODE").upper()
     core_decision = str(risk_profile.get("core_decision") or "HOLD").upper()
@@ -123,6 +129,8 @@ def _derive_profile(
                 _clamp(float(out["max_position_size"]) * float(bridge["position_cap_multiplier"]), 0.01, 0.20), 4
             )
             out["leverage_multiplier_cap"] = float(bridge["leverage_multiplier_cap"])
+        if isinstance(trinity_evolution, dict) and trinity_evolution:
+            out["trinity_evolution"] = trinity_evolution
         return out
 
     max_trades = int(round(_clamp(40.0 * position_scale_cap, 10.0, 80.0)))
@@ -157,6 +165,81 @@ def _derive_profile(
             _clamp(float(out["max_position_size"]) * float(bridge["position_cap_multiplier"]), 0.01, 0.20), 4
         )
         out["leverage_multiplier_cap"] = float(bridge["leverage_multiplier_cap"])
+    if isinstance(trinity_evolution, dict) and trinity_evolution:
+        out["trinity_evolution"] = trinity_evolution
+    return out
+
+
+def _build_trinity_evolution_snapshot(
+    prediction: dict[str, Any],
+    daily_score: dict[str, Any],
+    weights: dict[str, Any],
+    prediction_btc: dict[str, Any] | None = None,
+    daily_score_btc: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    pred_id = str(prediction.get("prediction_id") or "") if isinstance(prediction, dict) else ""
+    fusion = prediction.get("fusion") if isinstance(prediction.get("fusion"), dict) else {}
+    probs = prediction.get("probabilities") if isinstance(prediction.get("probabilities"), dict) else {}
+    wt = weights.get("weights") if isinstance(weights.get("weights"), dict) else {}
+    stats = weights.get("stats") if isinstance(weights.get("stats"), dict) else {}
+    out: dict[str, Any] = {
+        "schema": "trinity_evolution_snapshot_v1",
+        "prediction_id": pred_id or None,
+        "regime": prediction.get("regime") if isinstance(prediction, dict) else None,
+        "probabilities": {
+            "up": probs.get("up"),
+            "flat": probs.get("flat"),
+            "down": probs.get("down"),
+        },
+        "fusion": {
+            "final_score": fusion.get("final_score"),
+            "confidence": fusion.get("confidence"),
+            "veto_triggered": fusion.get("veto_triggered"),
+        },
+        "latest_daily_score": {
+            "regime_decision": daily_score.get("regime_decision") if isinstance(daily_score, dict) else None,
+            "brier_score_3class": daily_score.get("brier_score_3class") if isinstance(daily_score, dict) else None,
+            "realized_return_pct": daily_score.get("realized_return_pct") if isinstance(daily_score, dict) else None,
+            "generated_at_utc": daily_score.get("generated_at_utc") if isinstance(daily_score, dict) else None,
+        },
+        "weights": {
+            "mode": weights.get("mode") if isinstance(weights, dict) else None,
+            "wB": wt.get("wB"),
+            "wM": wt.get("wM"),
+            "wS": wt.get("wS"),
+            "fail_safe_triggered": stats.get("fail_safe_triggered"),
+            "mean_brier_score_3class": stats.get("mean_brier_score_3class"),
+            "fail_rate": stats.get("fail_rate"),
+        },
+    }
+    if isinstance(prediction_btc, dict) and prediction_btc:
+        p_btc_fusion = prediction_btc.get("fusion") if isinstance(prediction_btc.get("fusion"), dict) else {}
+        p_btc_probs = (
+            prediction_btc.get("probabilities")
+            if isinstance(prediction_btc.get("probabilities"), dict)
+            else {}
+        )
+        out["btc_prediction"] = {
+            "prediction_id": prediction_btc.get("prediction_id"),
+            "regime": prediction_btc.get("regime"),
+            "probabilities": {
+                "up": p_btc_probs.get("up"),
+                "flat": p_btc_probs.get("flat"),
+                "down": p_btc_probs.get("down"),
+            },
+            "fusion": {
+                "final_score": p_btc_fusion.get("final_score"),
+                "confidence": p_btc_fusion.get("confidence"),
+                "veto_triggered": p_btc_fusion.get("veto_triggered"),
+            },
+        }
+    if isinstance(daily_score_btc, dict) and daily_score_btc:
+        out["btc_daily_score"] = {
+            "regime_decision": daily_score_btc.get("regime_decision"),
+            "brier_score_3class": daily_score_btc.get("brier_score_3class"),
+            "realized_return_pct": daily_score_btc.get("realized_return_pct"),
+            "generated_at_utc": daily_score_btc.get("generated_at_utc"),
+        }
     return out
 
 
@@ -184,6 +267,31 @@ def main() -> int:
         "--integrated-governance",
         default=str(DEFAULT_GOVERNANCE),
         help="Integrated governance artifact path used for risk-cap bridge (empty string disables bridge).",
+    )
+    ap.add_argument(
+        "--trinity-prediction",
+        default=str(DEFAULT_TRINITY_PREDICTION),
+        help="Trinity prediction artifact path (empty string disables evolution snapshot).",
+    )
+    ap.add_argument(
+        "--trinity-daily-score",
+        default=str(DEFAULT_TRINITY_DAILY_SCORE),
+        help="Trinity daily score artifact path (optional for evolution snapshot).",
+    )
+    ap.add_argument(
+        "--trinity-weights",
+        default=str(DEFAULT_TRINITY_WEIGHTS),
+        help="Trinity weights artifact path (optional for evolution snapshot).",
+    )
+    ap.add_argument(
+        "--trinity-prediction-btc",
+        default=str(DEFAULT_TRINITY_PREDICTION_BTC),
+        help="Trinity BTC prediction artifact path (optional for evolution snapshot).",
+    )
+    ap.add_argument(
+        "--trinity-daily-score-btc",
+        default=str(DEFAULT_TRINITY_DAILY_SCORE_BTC),
+        help="Trinity BTC daily score artifact path (optional for evolution snapshot).",
     )
     args = ap.parse_args()
 
@@ -220,12 +328,30 @@ def main() -> int:
         if gov_candidate:
             governance_doc = gov_candidate
 
+    trinity_snapshot: dict[str, Any] | None = None
+    trinity_pred_arg = str(args.trinity_prediction or "").strip()
+    if trinity_pred_arg:
+        pred_doc = _safe_json(Path(trinity_pred_arg))
+        if pred_doc:
+            score_doc = _safe_json(Path(str(args.trinity_daily_score or "").strip())) if str(args.trinity_daily_score or "").strip() else {}
+            weights_doc = _safe_json(Path(str(args.trinity_weights or "").strip())) if str(args.trinity_weights or "").strip() else {}
+            pred_btc_doc = _safe_json(Path(str(args.trinity_prediction_btc or "").strip())) if str(args.trinity_prediction_btc or "").strip() else {}
+            score_btc_doc = _safe_json(Path(str(args.trinity_daily_score_btc or "").strip())) if str(args.trinity_daily_score_btc or "").strip() else {}
+            trinity_snapshot = _build_trinity_evolution_snapshot(
+                prediction=pred_doc,
+                daily_score=score_doc,
+                weights=weights_doc,
+                prediction_btc=pred_btc_doc if pred_btc_doc else None,
+                daily_score_btc=score_btc_doc if score_btc_doc else None,
+            )
+
     out_doc = _derive_profile(
         risk_profile=risk_profile,
         now=now,
         source_name=source_name,
         mode_name=mode_name,
         governance=governance_doc,
+        trinity_evolution=trinity_snapshot,
     )
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(out_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

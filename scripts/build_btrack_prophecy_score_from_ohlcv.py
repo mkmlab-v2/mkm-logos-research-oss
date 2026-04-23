@@ -5,6 +5,11 @@ Reads B-Track hypothesis JSON and OHLCV CSVs (YFinance-style; same loader as log
 KOSPI SSOT path: research/market_data/kospi_daily_external_yf.csv
 BTC: pass --btc-csv when hypothesis instrument is btc or multi (optional file).
 
+When ``--recent-trading-days N`` is greater than 1, the **same** hypothesis ``prediction.direction``
+is applied to each of the last N eval dates (frozen prediction). For **per-day** predictions
+mapped 1:1 to OHLCV without that freeze, use ``eval_prophecy_walk_forward_v1.py`` with a JSONL of
+``eval_date`` + direction rows instead.
+
 Does not fetch live APIs. B-Track / [HYPO] only — not a live trading trigger.
 """
 
@@ -91,6 +96,16 @@ def _predicted_direction(h: dict[str, Any]) -> str | None:
     if d == "abstain":
         return None
     return None
+
+
+def _is_manual_override_hypothesis(h: dict[str, Any]) -> bool:
+    prov = h.get("provenance")
+    if not isinstance(prov, dict):
+        return False
+    prompt_id = str(prov.get("prompt_id") or "").strip().lower()
+    if not prompt_id:
+        return False
+    return "manual_override" in prompt_id
 
 
 def _instrument(h: dict[str, Any]) -> str:
@@ -938,6 +953,11 @@ def main() -> int:
     )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     ap.add_argument(
+        "--allow-manual-override-hypothesis",
+        action="store_true",
+        help="Allow hypothesis provenance marked as manual override (default: block for reproducibility).",
+    )
+    ap.add_argument(
         "--lock-file",
         type=Path,
         default=DEFAULT_LOCK,
@@ -949,6 +969,14 @@ def main() -> int:
     hyp = _load_hypothesis(args.hypothesis_json)
     if not hyp:
         print(f"Missing or invalid hypothesis JSON: {args.hypothesis_json}", file=sys.stderr)
+        return 2
+    if _is_manual_override_hypothesis(hyp) and not args.allow_manual_override_hypothesis:
+        print(
+            "Manual-override hypothesis is blocked by default. Regenerate via "
+            "scripts/generate_btrack_hypothesis_prophecy_v1.py or pass "
+            "--allow-manual-override-hypothesis for explicit one-off use.",
+            file=sys.stderr,
+        )
         return 2
 
     if not args.kospi_csv.is_file():

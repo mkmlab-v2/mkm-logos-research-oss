@@ -126,6 +126,12 @@ def main() -> int:
     # Compact JSON: full pretty indentation would inflate ~40k rows beyond practical Git/Vault limits.
     out.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     print(json.dumps({"ok": True, "out": str(out), "row_count": n}, ensure_ascii=False))
+    try:
+        from scripts.core.emit_master_codebook_pointer_latest_v1 import emit_pointer
+
+        emit_pointer()
+    except Exception:
+        pass
     return 0
 
 

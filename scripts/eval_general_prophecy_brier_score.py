@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Mean Brier score for resolved binary questions in a general_prophecy registry."""
+"""Mean Brier score for resolved binary questions in a general_prophecy registry.
+
+Optional --ece-bins: equal-width [0,1] bins for binary ECE (metrics.ece_binary.weighted_ece).
+Per-domain_tag ECE: metrics.ece_binary_by_domain_tag when --ece-min-per-tag satisfied.
+"""
 from __future__ import annotations
 
 import argparse
@@ -49,11 +53,98 @@ def _median_int(vals: list[int]) -> float | None:
     return (s[m - 1] + s[m]) / 2.0
 
 
+def _binary_ece_equal_width(pairs: list[tuple[float, float]], n_bins: int) -> dict[str, Any] | None:
+    """Expected calibration error: sum_k (n_k/n) * |positive_rate_k - avg_confidence_k|."""
+    if not pairs or n_bins < 1:
+        return None
+    n_total = len(pairs)
+    buckets: list[list[tuple[float, float]]] = [[] for _ in range(n_bins)]
+    for p, y in pairs:
+        p = max(0.0, min(1.0, float(p)))
+        yi = 1.0 if y >= 0.5 else 0.0
+        if p >= 1.0:
+            idx = n_bins - 1
+        else:
+            idx = min(n_bins - 1, int(p * n_bins))
+        buckets[idx].append((p, yi))
+
+    bin_rows: list[dict[str, Any]] = []
+    weighted = 0.0
+    lo = 0.0
+    width = 1.0 / n_bins
+    for i, bucket in enumerate(buckets):
+        hi = lo + width
+        if i == n_bins - 1:
+            hi = 1.0
+        nk = len(bucket)
+        if nk == 0:
+            bin_rows.append(
+                {
+                    "bin_index": i,
+                    "interval_lo_inclusive": round(lo, 6),
+                    "interval_hi": round(hi, 6),
+                    "n": 0,
+                    "avg_confidence": None,
+                    "positive_rate": None,
+                    "calibration_gap": None,
+                }
+            )
+        else:
+            avg_p = sum(t[0] for t in bucket) / nk
+            pos_rate = sum(t[1] for t in bucket) / nk
+            gap = abs(pos_rate - avg_p)
+            w = nk / n_total
+            weighted += w * gap
+            bin_rows.append(
+                {
+                    "bin_index": i,
+                    "interval_lo_inclusive": round(lo, 6),
+                    "interval_hi": round(hi, 6),
+                    "n": nk,
+                    "avg_confidence": round(avg_p, 6),
+                    "positive_rate": round(pos_rate, 6),
+                    "calibration_gap": round(gap, 6),
+                }
+            )
+        lo = hi
+
+    return {
+        "n_bins": n_bins,
+        "scheme": "equal_width_probability",
+        "weighted_ece": round(weighted, 6),
+        "bins": bin_rows,
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--input", "-i", type=Path, default=DEFAULT_IN)
     ap.add_argument("--output", "-o", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--stdout-only", action="store_true")
+    ap.add_argument(
+        "--no-print-output-path",
+        action="store_true",
+        help="When writing JSON to --output, do not print the output path to stdout (stderr only for errors).",
+    )
+    ap.add_argument(
+        "--no-rows",
+        action="store_true",
+        help="Omit per-question rows from JSON output (metrics only; smaller files).",
+    )
+    ap.add_argument(
+        "--ece-bins",
+        type=int,
+        default=0,
+        metavar="N",
+        help="If N>0, add binary ECE over N equal-width probability bins (same resolved rows as Brier).",
+    )
+    ap.add_argument(
+        "--ece-min-per-tag",
+        type=int,
+        default=5,
+        metavar="M",
+        help="With --ece-bins: include a domain_tag in ece_binary_by_domain_tag only if it has >= M (p,y) pairs (default 5).",
+    )
     ns = ap.parse_args()
     if not ns.input.is_file():
         print(f"missing {ns.input}", file=sys.stderr)
@@ -72,6 +163,8 @@ def main() -> int:
     overdue_count = 0
     pending_days_to_deadline: list[int] = []
     now_utc = datetime.now(timezone.utc)
+    ece_pairs: list[tuple[float, float]] = []
+    ece_pairs_by_tag: dict[str, list[tuple[float, float]]] = defaultdict(list)
 
     for q in doc.get("questions") or []:
         if not isinstance(q, dict):
@@ -100,6 +193,8 @@ def main() -> int:
         issued_at = fc.get("issued_at_utc")
         p = float(fc["probability_0_1"])
         y = 1.0 if ob else 0.0
+        if ns.ece_bins > 0:
+            ece_pairs.append((p, y))
         b = (p - y) ** 2
         track = q.get("prophecy_track")
         if not isinstance(track, str) or not track.strip():
@@ -111,7 +206,10 @@ def main() -> int:
         if isinstance(tags, list):
             for t in tags:
                 if isinstance(t, str) and t.strip():
-                    by_domain_tag[t.strip()].append(b)
+                    tt = t.strip()
+                    by_domain_tag[tt].append(b)
+                    if ns.ece_bins > 0:
+                        ece_pairs_by_tag[tt].append((p, y))
         if isinstance(issued_at, str) and len(issued_at) >= 7 and issued_at[4] == "-":
             by_month[issued_at[:7]].append(b)
         resolved_at = res.get("resolved_at_utc")
@@ -166,21 +264,35 @@ def main() -> int:
         "overdue_count": overdue_count,
         "median_days_to_deadline": _median_int(pending_days_to_deadline),
     }
-    out = {
+    if ns.ece_bins > 0 and ece_pairs:
+        ece_doc = _binary_ece_equal_width(ece_pairs, ns.ece_bins)
+        if ece_doc:
+            metrics["ece_binary"] = ece_doc
+        by_tag_ece: dict[str, Any] = {}
+        for tag, pairs in sorted(ece_pairs_by_tag.items()):
+            if len(pairs) >= ns.ece_min_per_tag:
+                ed = _binary_ece_equal_width(pairs, ns.ece_bins)
+                if ed:
+                    by_tag_ece[tag] = ed
+        if by_tag_ece:
+            metrics["ece_binary_by_domain_tag"] = by_tag_ece
+    out: dict[str, Any] = {
         "schema": SCHEMA,
         "generated_at_utc": _utc_now(),
         "inputs": {"registry_path": str(ns.input.resolve())},
         "metrics": metrics,
-        "rows": rows,
         "note": "binary + resolved + last forecast only; void/categorical skipped; missing prophecy_track -> general",
     }
+    if not ns.no_rows:
+        out["rows"] = rows
     text = json.dumps(out, ensure_ascii=False, indent=2) + "\n"
     if ns.stdout_only:
         sys.stdout.write(text)
         return 0
     ns.output.parent.mkdir(parents=True, exist_ok=True)
     ns.output.write_text(text, encoding="utf-8")
-    print(str(ns.output.resolve()))
+    if not ns.no_print_output_path:
+        print(str(ns.output.resolve()))
     return 0
 
 
