@@ -81,6 +81,11 @@ def main() -> int:
     ap.add_argument("--dss-jsonl", default="data/logos/manuscripts/dss_original_only_latest.jsonl")
     ap.add_argument("--apocrypha-jsonl", default="data/logos/manuscripts/apocrypha_original_only_latest.jsonl")
     ap.add_argument(
+        "--canon-only",
+        action="store_true",
+        help="Scan canon lane only (skip DSS/apocrypha loads). Requires --canon-jsonl.",
+    )
+    ap.add_argument(
         "--canon-jsonl",
         default="",
         help="Optional canonical verse stream (e.g. data/logos/verse_decoded_v2.jsonl). Rows use lane label 'canon'.",
@@ -91,18 +96,26 @@ def main() -> int:
     args = ap.parse_args()
 
     regimes = _load_regimes(Path(args.regime_map_json))
-    dss_rows = _read_jsonl(Path(args.dss_jsonl))
-    apo_rows = _read_jsonl(Path(args.apocrypha_jsonl))
-    rows = [("dss", r) for r in dss_rows] + [("apocrypha", r) for r in apo_rows]
+    dss_rows: list[dict[str, Any]] = []
+    apo_rows: list[dict[str, Any]] = []
+    rows: list[tuple[str, dict[str, Any]]] = []
+    if not args.canon_only:
+        dss_rows = _read_jsonl(Path(args.dss_jsonl))
+        apo_rows = _read_jsonl(Path(args.apocrypha_jsonl))
+        rows.extend([("dss", r) for r in dss_rows])
+        rows.extend([("apocrypha", r) for r in apo_rows])
     canon_opt = (args.canon_jsonl or "").strip()
     canon_rows: list[dict[str, Any]] = []
+    if args.canon_only and not canon_opt:
+        print("error: --canon-only requires --canon-jsonl", file=sys.stderr)
+        return 2
     if canon_opt:
         canon_path = Path(canon_opt)
         if not canon_path.is_file():
             print(f"error: --canon-jsonl not found: {canon_path}", file=sys.stderr)
             return 2
         canon_rows = _read_jsonl(canon_path)
-        rows += [("canon", r) for r in canon_rows]
+        rows.extend([("canon", r) for r in canon_rows])
 
     top_by_regime: dict[str, list[dict[str, Any]]] = {r: [] for r in REGIMES}
     top_global: list[dict[str, Any]] = []
@@ -147,6 +160,7 @@ def main() -> int:
             "dss_jsonl": args.dss_jsonl,
             "apocrypha_jsonl": args.apocrypha_jsonl,
             "canon_jsonl": canon_opt or None,
+            "canon_only": bool(args.canon_only),
             "regime_map_json": args.regime_map_json,
             "top_n": int(args.top_n),
         },

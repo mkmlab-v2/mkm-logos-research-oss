@@ -38,8 +38,13 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Balanced regime singularity report with per-regime quota.")
-    ap.add_argument("--dss-jsonl", required=True)
-    ap.add_argument("--apocrypha-jsonl", required=True)
+    ap.add_argument("--dss-jsonl", default="data/logos/manuscripts/dss_original_only_latest.jsonl")
+    ap.add_argument("--apocrypha-jsonl", default="data/logos/manuscripts/apocrypha_original_only_latest.jsonl")
+    ap.add_argument(
+        "--canon-only",
+        action="store_true",
+        help="Scan canon lane only (skip DSS/apocrypha loads). Requires --canon-jsonl.",
+    )
     ap.add_argument(
         "--canon-jsonl",
         default="",
@@ -50,10 +55,16 @@ def main() -> int:
     ap.add_argument("--output-json", required=True)
     args = ap.parse_args()
 
-    dss_rows = _read_jsonl(Path(args.dss_jsonl))
-    apo_rows = _read_jsonl(Path(args.apocrypha_jsonl))
+    dss_rows: list[dict[str, Any]] = []
+    apo_rows: list[dict[str, Any]] = []
+    if not args.canon_only:
+        dss_rows = _read_jsonl(Path(args.dss_jsonl))
+        apo_rows = _read_jsonl(Path(args.apocrypha_jsonl))
     canon_opt = (args.canon_jsonl or "").strip()
     canon_rows: list[dict[str, Any]] = []
+    if args.canon_only and not canon_opt:
+        print("error: --canon-only requires --canon-jsonl", file=sys.stderr)
+        return 2
     if canon_opt:
         cp = Path(canon_opt)
         if not cp.is_file():
@@ -125,6 +136,7 @@ def main() -> int:
             "dss_jsonl": args.dss_jsonl,
             "apocrypha_jsonl": args.apocrypha_jsonl,
             "canon_jsonl": canon_opt or None,
+            "canon_only": bool(args.canon_only),
             "regime_map_json": args.regime_map_json,
             "quota_per_regime": quota,
         },
