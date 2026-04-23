@@ -6,11 +6,21 @@
 #   -CanonJsonl <path>
 #   -RegimeMapJson <path>
 #   -SkipVaultSync
+#   -SkipHealthEnforcement
+#   -HealthMaxFailCount <int>
+#   -HealthMinPassRate <float>
+#   -HealthAllowYellow
+#   -DryRun
 
 param(
     [string]$CanonJsonl = "data/logos/verse_decoded_v2.jsonl",
     [string]$RegimeMapJson = "data/regimes/regime_map_btc_ext.json",
-    [switch]$SkipVaultSync
+    [switch]$SkipVaultSync,
+    [switch]$SkipHealthEnforcement,
+    [int]$HealthMaxFailCount = 0,
+    [double]$HealthMinPassRate = 1.0,
+    [switch]$HealthAllowYellow,
+    [switch]$DryRun
 )
 
 $ErrorActionPreference = "Stop"
@@ -23,9 +33,25 @@ if (-not (Test-Path -LiteralPath $chain)) {
 }
 
 Write-Host "[1/2] Run canon singularity chain" -ForegroundColor Cyan
-& py $chain `
-    --canon-jsonl $CanonJsonl `
-    --regime-map-json $RegimeMapJson
+$chainArgs = @(
+    $chain,
+    "--canon-jsonl", $CanonJsonl,
+    "--regime-map-json", $RegimeMapJson
+)
+if (-not $SkipHealthEnforcement) {
+    $chainArgs += @(
+        "--enforce-health",
+        "--health-max-fail-count", "$HealthMaxFailCount",
+        "--health-min-pass-rate", "$HealthMinPassRate"
+    )
+    if ($HealthAllowYellow) {
+        $chainArgs += "--health-allow-yellow"
+    }
+}
+if ($DryRun) {
+    $chainArgs += "--dry-run"
+}
+& py @chainArgs
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if ($SkipVaultSync) {
@@ -39,7 +65,11 @@ if (-not (Test-Path -LiteralPath $sync)) {
 }
 
 Write-Host "[2/2] Mirror NotebookLM sources to vault" -ForegroundColor Cyan
-& powershell -NoProfile -ExecutionPolicy Bypass -File $sync
+if ($DryRun) {
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $sync -WhatIf
+} else {
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $sync
+}
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "DONE: canon singularity chain + vault sync" -ForegroundColor Green
