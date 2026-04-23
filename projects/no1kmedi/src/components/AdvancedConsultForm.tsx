@@ -1,6 +1,49 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { CdssGenerationReason } from "@/lib/cdss-contract";
+
+function formatIntakePinInput(value: string): string {
+  const normalized = value.replace(/[^A-Z0-9]/gi, "").toUpperCase().slice(0, 6);
+  if (normalized.length <= 3) return normalized;
+  return `${normalized.slice(0, 3)}-${normalized.slice(3)}`;
+}
+
+function triageBadgeClass(level: "routine" | "priority" | "emergency"): string {
+  return `triage-badge triage-badge-${level}`;
+}
+
+function normalizePatientNameInput(value: string): string {
+  return value.replace(/\s+/g, " ").trimStart();
+}
+
+function normalizePhoneLast4Input(value: string): string {
+  return value.replace(/\D/g, "").slice(0, 4);
+}
+
+function cdssTemplateHint(reason?: CdssGenerationReason): string {
+  switch (reason) {
+    case "disabled":
+      return "서버에서 CDSS 생성형 추론이 꺼져 있습니다. 활성화하려면 CDSS_LLM_ENABLED=true.";
+    case "no_credentials":
+      return "API 베이스 URL·키가 없습니다. CDSS_LLM_API_* 를 설정하거나 CDSS_LLM_USE_OPENROUTER=true 와 OPENROUTER_API_KEY 를 설정하세요.";
+    case "no_models":
+      return "모델명이 비어 있습니다. CDSS_LLM_PRIMARY_MODEL 또는 OPENROUTER_MODEL 을 지정하세요.";
+    case "llm_error":
+      return "모델 호출은 시도했으나 응답이 없거나 JSON 형식이 맞지 않았습니다. 타임아웃·모델 호환(response_format)·네트워크를 확인하세요.";
+    default:
+      return "생성형 CDSS 추론이 이번 응답에 포함되지 않았습니다.";
+  }
+}
+
+const RECENT_PIN_STORAGE_KEY = "advanced_consult_recent_pins_v1";
+
+type RecentPinItem = {
+  pin: string;
+  name: string;
+  phoneLast4: string;
+  savedAt: string;
+};
 
 type CdssCitation = {
   citation_id: string;
@@ -20,6 +63,7 @@ type AdvancedConsultResponse = {
     reasoning: { syndrome_hypothesis: string; care_direction: string; caution: string };
     citations: CdssCitation[];
     non_medical_notice: string;
+    generation?: { llm_used: boolean; reason?: CdssGenerationReason };
   };
   guardrail?: {
     lane_separation: boolean;
@@ -37,7 +81,33 @@ type MemberAccessStatusResponse = {
   can_use_pro_clinical_assist?: boolean;
 };
 
-export function AdvancedConsultForm() {
+type PatientPinLookupResponse = {
+  success: boolean;
+  error?: string;
+  retry_after_seconds?: number;
+  survey?: {
+    survey_id: string;
+    intake_pin: string;
+    triage_level: "routine" | "priority" | "emergency";
+    patient_name: string;
+    symptoms: {
+      pain_area: string;
+      pain_scale_0_10: number;
+      symptom_duration: string;
+      consultation_goal: string;
+    };
+    constitution_survey: {
+      sleep_pattern: string;
+      digestion_pattern: string;
+    };
+  };
+};
+
+type AdvancedConsultFormProps = {
+  activeView?: "assist" | "pin";
+};
+
+export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFormProps) {
   const [actorId, setActorId] = useState("hanui-demo-001");
   const [accessEmail, setAccessEmail] = useState("");
   const [accessBusy, setAccessBusy] = useState(false);
@@ -54,6 +124,66 @@ export function AdvancedConsultForm() {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<AdvancedConsultResponse | null>(null);
   const [selectedCitationId, setSelectedCitationId] = useState<string | null>(null);
+  const [lookupPin, setLookupPin] = useState("");
+  const [lookupName, setLookupName] = useState("");
+  const [lookupPhoneLast4, setLookupPhoneLast4] = useState("");
+  const [lookupBusy, setLookupBusy] = useState(false);
+  const [lookupStatus, setLookupStatus] = useState("");
+  const [copyMode, setCopyMode] = useState<"pin_only" | "pin_with_name">("pin_with_name");
+  const [loadedSurveyContext, setLoadedSurveyContext] = useState<{
+    surveyId: string;
+    intakePin: string;
+    patientName: string;
+    triageLevel: "routine" | "priority" | "emergency";
+  } | null>(null);
+  const [recentPins, setRecentPins] = useState<RecentPinItem[]>([]);
+
+  async function copyLoadedContext(): Promise<void> {
+    if (!loadedSurveyContext) return;
+    const text =
+      copyMode === "pin_only" ? loadedSurveyContext.intakePin : `${loadedSurveyContext.intakePin} / ${loadedSurveyContext.patientName}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setLookupStatus(`복사 완료: ${text}`);
+    } catch {
+      setLookupStatus("복사에 실패했습니다. 브라우저 권한을 확인해 주세요.");
+    }
+  }
+
+  function persistRecentPins(next: RecentPinItem[]) {
+    setRecentPins(next);
+    try {
+      localStorage.setItem(RECENT_PIN_STORAGE_KEY, JSON.stringify(next));
+    } catch {
+      // ignore storage write errors
+    }
+  }
+
+  function saveRecentPin(pin: string, name: string, phoneLast4: string) {
+    const normalizedPin = formatIntakePinInput(pin);
+    if (!normalizedPin) return;
+    const next: RecentPinItem[] = [
+      {
+        pin: normalizedPin,
+        name: name.trim(),
+        phoneLast4: normalizePhoneLast4Input(phoneLast4),
+        savedAt: new Date().toISOString(),
+      },
+      ...recentPins.filter((item) => item.pin !== normalizedPin),
+    ].slice(0, 5);
+    persistRecentPins(next);
+  }
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(RECENT_PIN_STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as RecentPinItem[];
+      if (Array.isArray(parsed)) setRecentPins(parsed.slice(0, 5));
+    } catch {
+      // ignore storage parse errors
+    }
+  }, []);
 
   const selectedCitation = useMemo(() => {
     if (!result?.draft?.citations || !selectedCitationId) return null;
@@ -111,6 +241,14 @@ export function AdvancedConsultForm() {
             onset,
             severity,
             medication,
+            patient_intake_context: loadedSurveyContext
+              ? {
+                  survey_id: loadedSurveyContext.surveyId,
+                  intake_pin: loadedSurveyContext.intakePin,
+                  patient_name: loadedSurveyContext.patientName,
+                  triage_level: loadedSurveyContext.triageLevel,
+                }
+              : undefined,
             health_survey: {
               sleep_quality: sleepPattern,
             },
@@ -124,6 +262,62 @@ export function AdvancedConsultForm() {
       setResult({ success: false, error: "advanced_consult_fetch_failed" });
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function applyPatientPin() {
+    if (!lookupPin.trim()) {
+      setLookupStatus("문진 코드(PIN)를 입력해 주세요.");
+      return;
+    }
+    if (!lookupName.trim() && lookupPhoneLast4.trim().length !== 4) {
+      setLookupStatus("환자 확인용으로 이름 또는 연락처 뒤 4자리를 입력해 주세요.");
+      return;
+    }
+
+    setLookupBusy(true);
+    setLookupStatus("");
+    try {
+      const params = new URLSearchParams();
+      params.set("pin", lookupPin.trim());
+      if (lookupName.trim()) params.set("name", lookupName.trim());
+      if (lookupPhoneLast4.trim()) params.set("phone_last4", lookupPhoneLast4.trim());
+
+      const res = await fetch(`/api/intake/patient-presurvey?${params.toString()}`, { cache: "no-store" });
+      const json = (await res.json()) as PatientPinLookupResponse;
+      if (!res.ok || !json.success || !json.survey) {
+        if (res.status === 429 && json.error === "too_many_lookup_attempts") {
+          const retrySec = json.retry_after_seconds || 60;
+          setLookupStatus(`조회 제한 중입니다. 약 ${retrySec}초 후 다시 시도해 주세요.`);
+          return;
+        }
+        setLookupStatus(`문진 조회 실패: ${json.error || "unknown_error"}`);
+        return;
+      }
+
+      const painPart = json.survey.symptoms.pain_area;
+      const goalPart = json.survey.symptoms.consultation_goal;
+      const mergedComplaint = [painPart, goalPart].filter(Boolean).join(" / ");
+      setChiefComplaint(mergedComplaint || painPart || "환자 문진 입력 기반");
+      setOnset(json.survey.symptoms.symptom_duration || "");
+      setSeverity(`${json.survey.symptoms.pain_scale_0_10}/10`);
+      setDigestionPattern(json.survey.constitution_survey.digestion_pattern || "");
+      setSleepPattern(json.survey.constitution_survey.sleep_pattern || "");
+      setMedication("");
+      setLoadedSurveyContext({
+        surveyId: json.survey.survey_id,
+        intakePin: json.survey.intake_pin,
+        patientName: json.survey.patient_name,
+        triageLevel: json.survey.triage_level,
+      });
+      setLookupStatus(
+        `PIN ${json.survey.intake_pin} 조회 완료: ${json.survey.patient_name} (${json.survey.triage_level}) 문진을 진료 보조 폼에 반영했습니다.`,
+      );
+      saveRecentPin(json.survey.intake_pin, json.survey.patient_name, lookupPhoneLast4);
+    } catch {
+      setLookupStatus("문진 조회 중 네트워크 오류가 발생했습니다.");
+    } finally {
+      setLookupBusy(false);
     }
   }
 
@@ -147,7 +341,7 @@ export function AdvancedConsultForm() {
             </p>
             {needsUpgradeCta ? (
               <div className="consult-access-cta">
-                <a className="btn btn-primary" href="#contact">결제/심사 진행 문의</a>
+                <a className="btn btn-primary" href="/#contact">결제/심사 진행 문의</a>
                 <span>승인 완료 후 고급 CDSS 기능이 열립니다.</span>
               </div>
             ) : null}
@@ -157,6 +351,91 @@ export function AdvancedConsultForm() {
         ) : null}
       </div>
 
+      <div className="card consult-access-card">
+        <h3>환자 PIN 불러오기 (접수 코드)</h3>
+        <div className="section-cta" style={{ marginTop: "0", marginBottom: "0.65rem" }}>
+          <button
+            type="button"
+            className={`btn ${copyMode === "pin_with_name" ? "btn-primary" : "btn-ghost"}`}
+            onClick={() => setCopyMode("pin_with_name")}
+          >
+            복사 포맷: PIN+이름
+          </button>
+          <button
+            type="button"
+            className={`btn ${copyMode === "pin_only" ? "btn-primary" : "btn-ghost"}`}
+            onClick={() => setCopyMode("pin_only")}
+          >
+            복사 포맷: PIN만
+          </button>
+        </div>
+        <div className="consult-access-row">
+          <input
+            value={lookupPin}
+            onChange={(e) => setLookupPin(formatIntakePinInput(e.target.value))}
+            onPaste={(e) => {
+              const pasted = e.clipboardData.getData("text");
+              if (!pasted) return;
+              e.preventDefault();
+              setLookupPin(formatIntakePinInput(pasted));
+            }}
+            placeholder="예: A7B-92K"
+            autoCapitalize="characters"
+            spellCheck={false}
+          />
+          <input
+            value={lookupName}
+            onChange={(e) => setLookupName(normalizePatientNameInput(e.target.value))}
+            onBlur={(e) => setLookupName(e.target.value.trim())}
+            placeholder="환자 이름 (선택)"
+          />
+          <input
+            value={lookupPhoneLast4}
+            onChange={(e) => setLookupPhoneLast4(normalizePhoneLast4Input(e.target.value))}
+            placeholder="전화 뒤 4자리 (선택)"
+            maxLength={4}
+            inputMode="numeric"
+          />
+          <button type="button" className="btn btn-ghost" onClick={applyPatientPin} disabled={lookupBusy}>
+            {lookupBusy ? "불러오는 중..." : "문진 불러오기"}
+          </button>
+        </div>
+        <p className="workspace-muted">
+          PIN 단독 조회를 막기 위해 이름 또는 연락처 뒤 4자리 확인값을 함께 받습니다.
+        </p>
+        {lookupStatus ? <p className="consult-access-ok">{lookupStatus}</p> : null}
+        {recentPins.length > 0 ? (
+          <div className="section-cta" style={{ marginTop: "0.5rem" }}>
+            {recentPins.map((item) => (
+              <button
+                key={item.pin}
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => {
+                  setLookupPin(item.pin);
+                  setLookupName(item.name);
+                  setLookupPhoneLast4(item.phoneLast4);
+                  void applyPatientPin();
+                }}
+              >
+                최근 {item.pin}
+                {item.name ? ` / ${item.name}` : ""}
+              </button>
+            ))}
+          </div>
+        ) : null}
+        {loadedSurveyContext ? (
+          <div className="consult-source-chip">
+            linked: {loadedSurveyContext.intakePin} / {loadedSurveyContext.patientName}{" "}
+            <span className={triageBadgeClass(loadedSurveyContext.triageLevel)}>{loadedSurveyContext.triageLevel}</span>
+            <button type="button" className="btn btn-ghost" style={{ marginLeft: "0.5rem", padding: "0.2rem 0.45rem" }} onClick={copyLoadedContext}>
+              PIN/이름 복사
+            </button>
+          </div>
+        ) : null}
+      </div>
+
+      {activeView === "assist" ? (
       <form className="consult-form" onSubmit={onSubmit}>
         <label>한의사 계정 ID<input value={actorId} onChange={(e) => setActorId(e.target.value)} required /></label>
         <label>
@@ -192,13 +471,30 @@ export function AdvancedConsultForm() {
           {busy ? "추론 중..." : "고급 진료 보조 리포트 생성"}
         </button>
       </form>
+      ) : null}
 
-      {result ? (
+      {activeView === "assist" && result ? (
         <div className="consult-result">
           {!result.success ? (
             <p className="consult-error">오류: {result.error || "unknown_error"}</p>
           ) : (
             <>
+              {result.draft?.generation?.llm_used === true ? (
+                <p className="consult-source-chip" role="status" style={{ marginBottom: "0.75rem" }}>
+                  생성형 CDSS 초안 적용됨 (이번 응답에 모델 추론 포함)
+                </p>
+              ) : null}
+              {result.draft?.generation?.llm_used === false ? (
+                <div className="notice-box" role="status">
+                  <strong>규칙 기반 초안 표시 중</strong>
+                  <span style={{ display: "block", marginTop: "0.35rem", fontWeight: 400 }}>
+                    {cdssTemplateHint(result.draft.generation.reason)}{" "}
+                    <span className="consult-source-chip" style={{ display: "inline", marginLeft: "0.35rem" }}>
+                      사유: {result.draft.generation.reason ?? "unknown"}
+                    </span>
+                  </span>
+                </div>
+              ) : null}
               <p className="consult-summary">{result.draft?.clinical_summary}</p>
               <div className="grid-3">
                 <article className="card"><h3>체질 후보</h3><p>{result.draft?.profile_summary.sasang_candidate}</p></article>

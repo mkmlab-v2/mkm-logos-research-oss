@@ -29,6 +29,7 @@ async function main() {
       lane_a_profile: {
         birth_instant_utc: "1987-12-31T15:00:00Z",
         iana_tz: "Asia/Seoul",
+        birth_datetime: "1988-01-03 06:30",
         constitution_survey: {
           digestion_pattern: "식후 더부룩함이 잦음",
           sleep_pattern: "입면 지연과 새벽 각성",
@@ -49,6 +50,11 @@ async function main() {
   assert(consult.json?.guardrail?.lane_separation === true, "lane_separation must be true");
   assert(consult.json?.guardrail?.citation_enforced === true, "citation_enforced must be true");
   assert(Array.isArray(consult.json?.draft?.citations) && consult.json.draft.citations.length > 0, "citations required");
+  const gen = consult.json?.draft?.generation;
+  assert(typeof gen?.llm_used === "boolean", "draft.generation.llm_used must be boolean");
+  if (gen.llm_used === false) {
+    assert(typeof gen.reason === "string" && gen.reason.length > 0, "draft.generation.reason required when llm_used is false");
+  }
 
   const source = consult.json?.draft?.profile_summary?.saju_source;
   assert(source === "live" || source === "fallback", `invalid saju_source: ${source}`);

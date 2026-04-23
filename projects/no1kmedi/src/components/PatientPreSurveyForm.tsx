@@ -21,6 +21,7 @@ import {
 type PatientPreSurveyResponse = {
   success: boolean;
   survey_id?: string;
+  intake_pin?: string;
   triage_level?: "routine" | "priority" | "emergency";
   recommended_partner_clinics?: {
     id: string;
@@ -37,6 +38,7 @@ type PatientPreSurveyResponse = {
 
 type PersonalSolutionReport = {
   surveyId: string;
+  intakePin: string;
   triageLevel: "routine" | "priority" | "emergency";
   summaryTitle: string;
   summaryBody: string;
@@ -94,6 +96,22 @@ export function PatientPreSurveyForm() {
     [constitutionAnswers],
   );
   const isCoreConstitutionSurveyComplete = answeredCoreConstitutionCount === CORE_CONSTITUTION_QUESTION_IDS.length;
+  const intakeShareMessage = report
+    ? `[NO1KMEDI 문진 코드]\n문진코드: ${report.intakePin}\n이름: ${report.patientName}\n진료 전에 원장님 화면에 이 코드를 입력해 주세요.`
+    : "";
+
+  function shareViaSms() {
+    if (!report) return;
+    const body = encodeURIComponent(intakeShareMessage);
+    window.location.href = `sms:?&body=${body}`;
+  }
+
+  function shareViaKakao() {
+    if (!report) return;
+    const text = encodeURIComponent(intakeShareMessage);
+    const fallback = encodeURIComponent(window.location.origin);
+    window.open(`https://story.kakao.com/share?text=${text}&url=${fallback}`, "_blank", "noopener,noreferrer");
+  }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -175,6 +193,7 @@ export function PatientPreSurveyForm() {
 
       setReport({
         surveyId: json.survey_id || `presurvey_local_${Date.now()}`,
+        intakePin: json.intake_pin || "PIN-ERROR",
         triageLevel,
         summaryTitle,
         summaryBody,
@@ -251,8 +270,8 @@ export function PatientPreSurveyForm() {
 
   return (
     <section id="patient-intake" aria-labelledby="patient-intake-title">
-      <h2 id="patient-intake-title">환자 사전 문진 (자가 입력)</h2>
-      <p className="section-lead">진단/처방 자동결정이 아닌 진료 준비용 문진입니다. 최종 판단은 의료진이 확정합니다.</p>
+      <h2 id="patient-intake-title">보조 설문 입력</h2>
+      <p className="section-lead">핵심 상담을 위한 보조 입력 단계입니다. 진단/처방 자동결정이 아니며 최종 판단은 의료진이 확정합니다.</p>
 
       {hasRedFlag ? (
         <p className="patient-survey-emergency">
@@ -456,6 +475,17 @@ export function PatientPreSurveyForm() {
       {report ? (
         <article className="patient-report-card" aria-live="polite">
           <h3>무료 개인 솔루션 리포트</h3>
+          <p className="patient-report-pin">
+            접수용 문진 코드: <strong>{report.intakePin}</strong>
+          </p>
+          <div className="section-cta" style={{ marginTop: "0", marginBottom: "0.75rem" }}>
+            <button type="button" className="btn btn-ghost" onClick={shareViaKakao}>
+              카카오로 코드 보내기
+            </button>
+            <button type="button" className="btn btn-ghost" onClick={shareViaSms}>
+              문자로 코드 보내기
+            </button>
+          </div>
           <p className={`patient-report-badge is-${report.triageLevel}`}>분류: {report.summaryTitle}</p>
           <p>{report.summaryBody}</p>
           <p className="patient-report-meta">입력 요약: {report.patientSnapshot}</p>
@@ -484,6 +514,9 @@ export function PatientPreSurveyForm() {
           ) : null}
           <p className="patient-report-next">{report.nextAction}</p>
           <div className="patient-report-cta">
+            <a className="btn btn-ghost" href="/consumer">
+              대화 화면으로 돌아가기
+            </a>
             <a className="btn btn-primary" href="#contact">
               제휴 한의원 예약 문의
             </a>

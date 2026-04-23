@@ -34,14 +34,14 @@ export default function HomePage() {
           <div className="hero-role-cta">
             <article className="card card-lift">
               <h3>환자/보호자</h3>
-              <p>질문형 AI 상담으로 건강정보를 먼저 정리하고, 제휴 한의원 연결까지 한 번에 이어집니다.</p>
+              <p>간단한 문진 입력으로 상담 전 핵심 정보를 정리하고, 필요 시 제휴 한의원 상담으로 연결합니다.</p>
               <a className="btn btn-primary" href="/consumer">
                 일반인 상담 입장
               </a>
             </article>
             <article className="card card-lift">
               <h3>한의사/의료진</h3>
-              <p>입력된 환자 정보를 바탕으로 citation 기반 차트 초안을 만들고 최종 판단은 의료진이 확정합니다.</p>
+              <p>문진·상담 데이터를 기반으로 진료 준비 초안을 정리하며, 최종 진단·처방 판단은 의료진이 확정합니다.</p>
               <a className="btn btn-ghost" href="/clinician">
                 의료진 보조 입장
               </a>
@@ -57,16 +57,15 @@ export default function HomePage() {
         <section id="brand-motion" aria-labelledby="brand-motion-title">
           <div className="brand-motion-grid">
             <article className="brand-motion-copy">
-              <p className="premium-label">Brand Motion</p>
-              <h2 id="brand-motion-title">대외 홍보용 시네마틱 섹션</h2>
+              <p className="premium-label">{c.concept_block.label}</p>
+              <h2 id="brand-motion-title">{c.concept_block.title}</h2>
               <p className="section-lead">
-                일반인 대상 랜딩의 첫 인상을 강화하기 위해 모션 영상과 반응형 글래스 레이어를 결합했습니다.
-                의료진 보조라는 핵심 메시지는 유지하면서도 브랜드 완성도를 높입니다.
+                {c.concept_block.lead}
               </p>
               <div className="hero-proof" role="list" aria-label="브랜드 모션 특징">
-                <span role="listitem">Autoplay mute motion</span>
-                <span role="listitem">Glass depth overlay</span>
-                <span role="listitem">Enterprise-style visual rhythm</span>
+                {c.concept_block.proof_items.map((item) => (
+                  <span key={item} role="listitem">{item}</span>
+                ))}
               </div>
             </article>
             <div className="brand-motion-stage card-lift" aria-hidden="true">
@@ -75,7 +74,7 @@ export default function HomePage() {
               <div className="brand-motion-beam brand-motion-beam-b" />
               <div className="brand-motion-grain" />
               <div className="brand-motion-tint" />
-              <div className="brand-motion-label">JEMA AI MOTION SCENE</div>
+              <div className="brand-motion-label">{c.concept_block.stage_label}</div>
             </div>
           </div>
         </section>
@@ -153,30 +152,64 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="premium-story" aria-labelledby="premium-story-title">
-          <h2 id="premium-story-title">AI 한의학 랜딩 경험을 더 명확하게</h2>
+        <section id="clinic-o2o" aria-labelledby="clinic-o2o-title">
+          <h2 id="clinic-o2o-title">한의원 QR 접수 운영 가이드</h2>
           <p className="section-lead">
-            일반인에게는 이해하기 쉬운 사전 리포트 경험을, 의료진에게는 근거 중심 임상 정리 경험을
-            한 화면 흐름 안에서 연결합니다.
+            원내 대기실 QR로 환자가 스마트폰에서 사전 문진을 완료하고, 접수 시 문진 코드(PIN)만 제시하면
+            의료진 화면에서 즉시 불러올 수 있도록 설계합니다.
           </p>
-          <div className="premium-grid">
-            <article className="premium-panel card-lift">
-              <p className="premium-label">Public</p>
-              <h3>쉽게 이해되는 AI 한의학 안내</h3>
-              <p>챗 인터페이스와 사전문진이 연결되어 일반인이 즉시 체감 가능한 상담 흐름으로 진입합니다.</p>
+          <div className="grid-3">
+            <article className="card">
+              <h3>대기실 안내판 문구</h3>
+              <p>
+                &quot;진료 전 2분 문진&quot; QR을 스캔해 주세요. 입력 완료 후 발급되는 문진 코드를 접수대에 보여주세요.
+              </p>
             </article>
-            <article className="premium-panel card-lift">
-              <p className="premium-label">Clinical</p>
-              <h3>차트·진료 준비 보조로 바로 연결</h3>
-              <p>환자 입력 데이터와 임상 정보를 분리 레인으로 요약해 의료진 기록 정확도를 높입니다.</p>
+            <article className="card">
+              <h3>접수대 1페이지 스크립트</h3>
+              <p>
+                &quot;문진 코드가 있으신가요? 코드와 성함을 확인해 드릴게요.&quot; 확인 후 의료진 화면에서 PIN으로 환자
+                문진을 호출합니다.
+              </p>
+            </article>
+            <article className="card">
+              <h3>의료법 고지 고정</h3>
+              <p>
+                환자 화면은 웰니스 기반 사전 문진/정보 제공이며, 최종 진단·처방·차트 확정은 한의사가 수행합니다.
+              </p>
             </article>
           </div>
           <div className="section-cta">
             <a className="btn btn-primary" href="/consumer">
-              일반인 체험 시작
+              QR용 환자 문진 화면 열기
+            </a>
+            <a className="btn btn-ghost" href="/reception">
+              접수대 PIN 조회 화면
             </a>
             <a className="btn btn-ghost" href="/clinician">
-              의료진 체험 시작
+              의료진 보조 화면 열기
+            </a>
+          </div>
+        </section>
+
+        <section id="premium-story" aria-labelledby="premium-story-title">
+          <h2 id="premium-story-title">{c.landing_flow.title}</h2>
+          <p className="section-lead">{c.landing_flow.lead}</p>
+          <div className="premium-grid">
+            {c.landing_flow.cards.map((item) => (
+              <article key={item.title} className="premium-panel card-lift">
+                <p className="premium-label">{item.label}</p>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+          <div className="section-cta">
+            <a className="btn btn-primary" href="/consumer">
+              {c.landing_flow.cta_primary}
+            </a>
+            <a className="btn btn-ghost" href="/clinician">
+              {c.landing_flow.cta_secondary}
             </a>
           </div>
         </section>

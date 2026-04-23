@@ -4,7 +4,7 @@
  * 진료 보조 AI와의 대화형 상담
  * 
  * 작성일: 2026-02-03
- * 도메인: no1kmedi.com/guardian
+ * 공개 브랜드 도메인: jema-ai.com (가디언 채팅 API)
  * 상태: ✅ 구현 완료
  */
 
@@ -26,8 +26,9 @@ export async function POST(request: NextRequest) {
     const vector4d = extract4DVector(health_data)
     const vectorCoords = `${vector4d.S.toFixed(3)},${vector4d.L.toFixed(3)},${vector4d.K.toFixed(3)},${vector4d.M.toFixed(3)}`
     
-    const recentHistory = chat_history.slice(-3).map((chat: any) => 
-      `${chat.role === 'user' ? 'U' : 'A'}:${chat.message.substring(0, 50)}`
+    const hist = Array.isArray(chat_history) ? chat_history : []
+    const recentHistory = hist.slice(-10).map((chat: { role?: string; message?: string }) =>
+      `${chat.role === 'user' ? 'U' : 'A'}:${(chat.message || '').substring(0, 120)}`,
     ).join('|')
 
     const context = `no1kmedi clinical support assistant. 4D: [${vectorCoords}].
@@ -36,16 +37,19 @@ Q: ${message}
 Theory: equilibrium reference, 0.25 target band.
 Output: 2-3 sentences, pre-consultation clinical-support advice.`
 
-    const result = await generateClinicalText({
-      prompt: context,
-      systemInstruction:
-        'You are the no1kmedi clinical support assistant for Korean medicine workflows. Do not diagnose. Answer in Korean when possible, with concise pre-consultation guidance based on S-L-K-M vectors.',
-      model: 'gemini-1.5-flash',
-      temperature: 0.7,
-      maxOutputTokens: 2048,
-      topP: 0.95,
-      topK: 40,
-    })
+    const result = await generateClinicalText(
+      {
+        prompt: context,
+        systemInstruction:
+          'You are the no1kmedi clinical support assistant for Korean medicine workflows. Do not diagnose. Answer in Korean when possible, with concise pre-consultation guidance based on S-L-K-M vectors.',
+        model: 'gemini-1.5-flash',
+        temperature: 0.7,
+        maxOutputTokens: 2048,
+        topP: 0.95,
+        topK: 40,
+      },
+      'guardian_public_chat',
+    )
 
     return NextResponse.json({
       success: true,

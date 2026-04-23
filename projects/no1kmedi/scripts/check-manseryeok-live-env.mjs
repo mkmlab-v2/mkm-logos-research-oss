@@ -1,4 +1,27 @@
 #!/usr/bin/env node
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+function loadEnvFile(filePath) {
+  if (!fs.existsSync(filePath)) return;
+  const raw = fs.readFileSync(filePath, "utf8");
+  for (const line of raw.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const idx = trimmed.indexOf("=");
+    if (idx <= 0) continue;
+    const key = trimmed.slice(0, idx).trim();
+    const value = trimmed.slice(idx + 1).trim();
+    if (!key || process.env[key] !== undefined) continue;
+    process.env[key] = value;
+  }
+}
+
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+loadEnvFile(path.resolve(scriptDir, "../.env.local"));
+loadEnvFile(path.resolve(scriptDir, "../../../.env"));
+
 const url = process.env.ATHENA_MANSERYEOK_API_URL;
 const token = process.env.ATHENA_MANSERYEOK_API_TOKEN?.trim();
 
