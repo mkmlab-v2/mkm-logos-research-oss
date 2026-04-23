@@ -35,6 +35,10 @@ def main() -> int:
         "--summary-output-json",
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
     )
+    ap.add_argument(
+        "--quality-gate-output-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_v1.json",
+    )
     ap.add_argument("--summary-top-n", type=int, default=20)
     ap.add_argument("--expected-canon-rows", type=int, default=28741)
     ap.add_argument("--skip-validate", action="store_true")
@@ -89,6 +93,8 @@ def main() -> int:
         str(args.summary_output_json),
         "--expected-canon-rows",
         str(int(args.expected_canon_rows)),
+        "--output-json",
+        str(args.quality_gate_output_json),
     ]
 
     cmds = [cmd_report, cmd_balanced, cmd_summary]

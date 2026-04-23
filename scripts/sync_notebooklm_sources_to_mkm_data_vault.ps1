@@ -189,6 +189,7 @@ $SourceFiles = @(
     "docs\final\artifacts\original_corpus_regime_singularity_report_with_canon_v1.json",
     "docs\final\artifacts\original_corpus_regime_singularity_canon_only_v1.json",
     "docs\final\artifacts\original_corpus_regime_singularity_canon_lane_summary_v1.json",
+    "docs\final\artifacts\original_corpus_regime_singularity_canon_quality_gate_v1.json",
     "docs\final\artifacts\regime_map_calibration_round2_for_sideways_v1.json",
     "docs\final\artifacts\regime_map_calibration_round3_balanced_constraints_v1.json",
     "docs\final\artifacts\regime_map_calibration_round4_mixed_hybrid_v1.json",

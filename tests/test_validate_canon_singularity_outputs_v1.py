@@ -56,8 +56,13 @@ def test_validate_canon_singularity_outputs_v1(tmp_path: Path):
         str(summary),
         "--expected-canon-rows",
         "10",
+        "--output-json",
+        str(tmp_path / "gate.json"),
     ]
     cp = subprocess.run(cmd, check=False, cwd=Path(__file__).resolve().parents[1], capture_output=True, text=True)
     assert cp.returncode == 0
     assert "OK: canon singularity outputs validated" in cp.stdout
+    gate = json.loads((tmp_path / "gate.json").read_text(encoding="utf-8"))
+    assert gate["schema"] == "original_corpus_regime_singularity_canon_quality_gate_v1"
+    assert gate["result"] == "pass"
 
