@@ -1,0 +1,3007 @@
+{
+  "schema": "original_singularity_gloss_report_v4",
+  "generated_at_utc": "2026-04-23T00:24:19Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "inputs": {
+    "balanced_report_json": "docs/final/artifacts/original_corpus_regime_singularity_balanced_report_v1.json",
+    "gloss_overrides_json": "docs/final/artifacts/hebrew_singularity_gloss_overrides_v1.json"
+  },
+  "bridges": {
+    "master_codebook_lexicon_v1": {
+      "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+      "enabled": true,
+      "hebrew_forms_loaded": 22913,
+      "strongs_hint_forms": 13015
+    },
+    "hebrew_singularity_gloss_overrides_v1": {
+      "path": "C:\\workspace\\docs\\final\\artifacts\\hebrew_singularity_gloss_overrides_v1.json",
+      "enabled": true,
+      "entry_count": 21
+    }
+  },
+  "normalization": {
+    "strategy": "validated_prefix_chain_longest_surface_first_then_peel_until_lookup_hit",
+    "prefixes_chain": [
+      "ו",
+      "ב",
+      "ל",
+      "כ",
+      "מ",
+      "ה"
+    ],
+    "max_chain_steps": 8,
+    "stop_tokens_filtered": [
+      "א",
+      "ב",
+      "ה",
+      "ו",
+      "י",
+      "כ",
+      "ל",
+      "מ",
+      "נ",
+      "ר",
+      "ת"
+    ],
+    "inherits_gloss_stack_from": "original_singularity_gloss_report_v3"
+  },
+  "summary": {
+    "rows_in_union": 24,
+    "unique_tokens": 138,
+    "known_gloss_tokens": 72,
+    "known_gloss_ratio": 0.5217391304347826,
+    "codebook_hits_in_union": 123,
+    "strongs_gloss_hits_in_union": 29,
+    "override_hits_in_union": 20,
+    "note": "Conservative lemma = first mapped candidate along validated Hebrew prefix peel; not full morphological analysis."
+  },
+  "top_tokens_global": [
+    {
+      "token": "פט",
+      "freq": 8,
+      "gloss_ko": "형태 단편·오탈자 의심(DSS/전각) [HYPO]",
+      "known": true,
+      "strongs_hint": "",
+      "override": true
+    },
+    {
+      "token": "כל",
+      "freq": 8,
+      "gloss_ko": "모든/전체",
+      "known": true,
+      "strongs_hint": "H3605",
+      "override": false
+    },
+    {
+      "token": "על",
+      "freq": 6,
+      "gloss_ko": "~위에/대하여",
+      "known": true,
+      "strongs_hint": "H5920",
+      "override": false
+    },
+    {
+      "token": "אל",
+      "freq": 6,
+      "gloss_ko": "향하여/~에게",
+      "known": true,
+      "strongs_hint": "H408",
+      "override": false
+    },
+    {
+      "token": "לא",
+      "freq": 5,
+      "gloss_ko": "아니/아니다",
+      "known": true,
+      "strongs_hint": "H3808",
+      "override": false
+    },
+    {
+      "token": "יחד",
+      "freq": 4,
+      "gloss_ko": "함께",
+      "known": true,
+      "strongs_hint": "H3161",
+      "override": false
+    },
+    {
+      "token": "מן",
+      "freq": 4,
+      "gloss_ko": "~로부터",
+      "known": true,
+      "strongs_hint": "H4478",
+      "override": false
+    },
+    {
+      "token": "עם",
+      "freq": 4,
+      "gloss_ko": "백성/함께",
+      "known": true,
+      "strongs_hint": "H5971",
+      "override": false
+    },
+    {
+      "token": "דבר",
+      "freq": 4,
+      "gloss_ko": "말씀/사건",
+      "known": true,
+      "strongs_hint": "H1696",
+      "override": false
+    },
+    {
+      "token": "אי",
+      "freq": 4,
+      "gloss_ko": "어디/섬",
+      "known": true,
+      "strongs_hint": "H335",
+      "override": false
+    },
+    {
+      "token": "פנה",
+      "freq": 3,
+      "gloss_ko": "돌이키다",
+      "known": true,
+      "strongs_hint": "H6437",
+      "override": false
+    },
+    {
+      "token": "פה",
+      "freq": 3,
+      "gloss_ko": "입",
+      "known": true,
+      "strongs_hint": "H6310",
+      "override": false
+    },
+    {
+      "token": "היה",
+      "freq": 3,
+      "gloss_ko": "이다/있다",
+      "known": true,
+      "strongs_hint": "H1961",
+      "override": false
+    },
+    {
+      "token": "נתן",
+      "freq": 2,
+      "gloss_ko": "주다",
+      "known": true,
+      "strongs_hint": "H5414",
+      "override": false
+    },
+    {
+      "token": "את",
+      "freq": 2,
+      "gloss_ko": "(목적격 표지)",
+      "known": true,
+      "strongs_hint": "H853",
+      "override": false
+    },
+    {
+      "token": "מלך",
+      "freq": 2,
+      "gloss_ko": "왕",
+      "known": true,
+      "strongs_hint": "H4427",
+      "override": false
+    },
+    {
+      "token": "בנה",
+      "freq": 2,
+      "gloss_ko": "짓다",
+      "known": true,
+      "strongs_hint": "H1129",
+      "override": false
+    },
+    {
+      "token": "בית",
+      "freq": 2,
+      "gloss_ko": "집",
+      "known": true,
+      "strongs_hint": "H1004",
+      "override": false
+    },
+    {
+      "token": "עמד",
+      "freq": 2,
+      "gloss_ko": "서다",
+      "known": true,
+      "strongs_hint": "H5975",
+      "override": false
+    },
+    {
+      "token": "עד",
+      "freq": 2,
+      "gloss_ko": "~까지/증언",
+      "known": true,
+      "strongs_hint": "H5703",
+      "override": false
+    },
+    {
+      "token": "רא",
+      "freq": 2,
+      "gloss_ko": "보다·바라보다(단편; ראה 계열) [HYPO]",
+      "known": true,
+      "strongs_hint": "",
+      "override": true
+    },
+    {
+      "token": "הוא",
+      "freq": 2,
+      "gloss_ko": "그/그것",
+      "known": true,
+      "strongs_hint": "H1931",
+      "override": false
+    },
+    {
+      "token": "עבר",
+      "freq": 2,
+      "gloss_ko": "지나가다",
+      "known": true,
+      "strongs_hint": "H5674",
+      "override": false
+    },
+    {
+      "token": "אדם",
+      "freq": 2,
+      "gloss_ko": "사람",
+      "known": true,
+      "strongs_hint": "H120",
+      "override": false
+    },
+    {
+      "token": "מים",
+      "freq": 2,
+      "gloss_ko": "물",
+      "known": true,
+      "strongs_hint": "H4325",
+      "override": false
+    },
+    {
+      "token": "מקום",
+      "freq": 2,
+      "gloss_ko": "장소",
+      "known": true,
+      "strongs_hint": "H4725",
+      "override": false
+    },
+    {
+      "token": "לב",
+      "freq": 2,
+      "gloss_ko": "마음",
+      "known": true,
+      "strongs_hint": "H3820",
+      "override": false
+    },
+    {
+      "token": "וב",
+      "freq": 2,
+      "gloss_ko": "그리고·안에서(단편) [HYPO]",
+      "known": true,
+      "strongs_hint": "",
+      "override": true
+    },
+    {
+      "token": "עצה",
+      "freq": 2,
+      "gloss_ko": "",
+      "known": false,
+      "strongs_hint": "H6095",
+      "override": false
+    },
+    {
+      "token": "קרב",
+      "freq": 2,
+      "gloss_ko": "",
+      "known": false,
+      "strongs_hint": "H7126",
+      "override": false
+    },
+    {
+      "token": "רחק",
+      "freq": 2,
+      "gloss_ko": "",
+      "known": false,
+      "strongs_hint": "H7368",
+      "override": false
+    },
+    {
+      "token": "אלה",
+      "freq": 2,
+      "gloss_ko": "",
+      "known": false,
+      "strongs_hint": "H422",
+      "override": false
+    },
+    {
+      "token": "עול",
+      "freq": 2,
+      "gloss_ko": "",
+      "known": false,
+      "strongs_hint": "H5764",
+      "override": false
+    },
+    {
+      "token": "בני",
+      "freq": 2,
+      "gloss_ko": "아들들/자손",
+      "known": true,
+      "strongs_hint": "H1137",
+      "override": false
+    },
+    {
+      "token": "חק",
+      "freq": 2,
+      "gloss_ko": "",
+      "known": false,
+      "strongs_hint": "H2706",
+      "override": false
+    },
+    {
+      "token": "ברית",
+      "freq": 2,
+      "gloss_ko": "언약",
+      "known": true,
+      "strongs_hint": "H1285",
+      "override": false
+    },
+    {
+      "token": "עדה",
+      "freq": 1,
+      "gloss_ko": "",
+      "known": false,
+      "strongs_hint": "H5710",
+      "override": false
+    },
+    {
+      "token": "עים",
+      "freq": 1,
+      "gloss_ko": "형태 단편 [HYPO]",
+      "known": true,
+      "strongs_hint": "",
+      "override": true
+    },
+    {
+      "token": "יד",
+      "freq": 1,
+      "gloss_ko": "손",
+      "known": true,
+      "strongs_hint": "H3027",
+      "override": false
+    },
+    {
+      "token": "נבוכדנאצר",
+      "freq": 1,
+      "gloss_ko": "",
+      "known": false,
+      "strongs_hint": "H5019",
+      "override": false
+    }
+  ],
+  "top_tokens_by_regime": {
+    "bull_pump": [
+      {
+        "token": "כל",
+        "freq": 5,
+        "gloss_ko": "모든/전체",
+        "known": true,
+        "strongs_hint": "H3605",
+        "override": false
+      },
+      {
+        "token": "אל",
+        "freq": 4,
+        "gloss_ko": "향하여/~에게",
+        "known": true,
+        "strongs_hint": "H408",
+        "override": false
+      },
+      {
+        "token": "בני",
+        "freq": 2,
+        "gloss_ko": "아들들/자손",
+        "known": true,
+        "strongs_hint": "H1137",
+        "override": false
+      },
+      {
+        "token": "חק",
+        "freq": 2,
+        "gloss_ko": "",
+        "known": false,
+        "strongs_hint": "H2706",
+        "override": false
+      },
+      {
+        "token": "היה",
+        "freq": 2,
+        "gloss_ko": "이다/있다",
+        "known": true,
+        "strongs_hint": "H1961",
+        "override": false
+      },
+      {
+        "token": "על",
+        "freq": 2,
+        "gloss_ko": "~위에/대하여",
+        "known": true,
+        "strongs_hint": "H5920",
+        "override": false
+      },
+      {
+        "token": "ברית",
+        "freq": 2,
+        "gloss_ko": "언약",
+        "known": true,
+        "strongs_hint": "H1285",
+        "override": false
+      },
+      {
+        "token": "פנה",
+        "freq": 2,
+        "gloss_ko": "돌이키다",
+        "known": true,
+        "strongs_hint": "H6437",
+        "override": false
+      },
+      {
+        "token": "מן",
+        "freq": 2,
+        "gloss_ko": "~로부터",
+        "known": true,
+        "strongs_hint": "H4478",
+        "override": false
+      },
+      {
+        "token": "פט",
+        "freq": 2,
+        "gloss_ko": "형태 단편·오탈자 의심(DSS/전각) [HYPO]",
+        "known": true,
+        "strongs_hint": "",
+        "override": true
+      },
+      {
+        "token": "אלהים",
+        "freq": 1,
+        "gloss_ko": "하나님/신",
+        "known": true,
+        "strongs_hint": "H430",
+        "override": false
+      },
+      {
+        "token": "ישראל",
+        "freq": 1,
+        "gloss_ko": "이스라엘",
+        "known": true,
+        "strongs_hint": "H3478",
+        "override": false
+      }
+    ],
+    "capitulation": [
+      {
+        "token": "פט",
+        "freq": 6,
+        "gloss_ko": "형태 단편·오탈자 의심(DSS/전각) [HYPO]",
+        "known": true,
+        "strongs_hint": "",
+        "override": true
+      },
+      {
+        "token": "לא",
+        "freq": 4,
+        "gloss_ko": "아니/아니다",
+        "known": true,
+        "strongs_hint": "H3808",
+        "override": false
+      },
+      {
+        "token": "על",
+        "freq": 4,
+        "gloss_ko": "~위에/대하여",
+        "known": true,
+        "strongs_hint": "H5920",
+        "override": false
+      },
+      {
+        "token": "יחד",
+        "freq": 3,
+        "gloss_ko": "함께",
+        "known": true,
+        "strongs_hint": "H3161",
+        "override": false
+      },
+      {
+        "token": "עם",
+        "freq": 3,
+        "gloss_ko": "백성/함께",
+        "known": true,
+        "strongs_hint": "H5971",
+        "override": false
+      },
+      {
+        "token": "כל",
+        "freq": 3,
+        "gloss_ko": "모든/전체",
+        "known": true,
+        "strongs_hint": "H3605",
+        "override": false
+      },
+      {
+        "token": "דבר",
+        "freq": 3,
+        "gloss_ko": "말씀/사건",
+        "known": true,
+        "strongs_hint": "H1696",
+        "override": false
+      },
+      {
+        "token": "אי",
+        "freq": 3,
+        "gloss_ko": "어디/섬",
+        "known": true,
+        "strongs_hint": "H335",
+        "override": false
+      },
+      {
+        "token": "מלך",
+        "freq": 2,
+        "gloss_ko": "왕",
+        "known": true,
+        "strongs_hint": "H4427",
+        "override": false
+      },
+      {
+        "token": "בית",
+        "freq": 2,
+        "gloss_ko": "집",
+        "known": true,
+        "strongs_hint": "H1004",
+        "override": false
+      },
+      {
+        "token": "מן",
+        "freq": 2,
+        "gloss_ko": "~로부터",
+        "known": true,
+        "strongs_hint": "H4478",
+        "override": false
+      },
+      {
+        "token": "עד",
+        "freq": 2,
+        "gloss_ko": "~까지/증언",
+        "known": true,
+        "strongs_hint": "H5703",
+        "override": false
+      }
+    ]
+  },
+  "rows_glossed_preview": [
+    {
+      "row_id": "dss_enriched_0020",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "יחד עדה",
+      "tokens_lemmatized": [
+        "יחד",
+        "עדה"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "יחד",
+          "lemma_for_lookup": "יחד",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "함께",
+          "known": true,
+          "strongs_hint": "H3161"
+        },
+        {
+          "surface": "עדה",
+          "lemma_for_lookup": "עדה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H5710"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1552978",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "וְ תִּ ְעִים לְ נתן אֵת בְּ יָד נְבוּכַדְנֶאצַּר מֶלֶךְ בָּבֶל",
+      "tokens_lemmatized": [
+        "עים",
+        "נתן",
+        "את",
+        "יד",
+        "נבוכדנאצר",
+        "מלך",
+        "בבל"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ת",
+          "lemma_for_lookup": "ת",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "עים",
+          "lemma_for_lookup": "עים",
+          "lemma_source": "override",
+          "gloss_ko": "형태 단편 [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "נתן",
+          "lemma_for_lookup": "נתן",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "주다",
+          "known": true,
+          "strongs_hint": "H5414"
+        },
+        {
+          "surface": "את",
+          "lemma_for_lookup": "את",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "(목적격 표지)",
+          "known": true,
+          "strongs_hint": "H853"
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "יד",
+          "lemma_for_lookup": "יד",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "손",
+          "known": true,
+          "strongs_hint": "H3027"
+        },
+        {
+          "surface": "נבוכדנאצר",
+          "lemma_for_lookup": "נבוכדנאצר",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H5019"
+        },
+        {
+          "surface": "מלך",
+          "lemma_for_lookup": "מלך",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "왕",
+          "known": true,
+          "strongs_hint": "H4427"
+        },
+        {
+          "surface": "בבל",
+          "lemma_for_lookup": "בבל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "바벨론",
+          "known": true,
+          "strongs_hint": "H894"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553033",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "וְ בנה לְ בַּיִת אמן בְּ יִ ְרָאֵל אֲ ֶר לֹא עמד כְּמֹו לְ מִן לְ פָּנֶה וְ עַד",
+      "tokens_lemmatized": [
+        "בנה",
+        "בית",
+        "אמן",
+        "ראל",
+        "לא",
+        "עמד",
+        "כמו",
+        "מן",
+        "פנה",
+        "עד"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "בנה",
+          "lemma_for_lookup": "בנה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "짓다",
+          "known": true,
+          "strongs_hint": "H1129"
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "בית",
+          "lemma_for_lookup": "בית",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "집",
+          "known": true,
+          "strongs_hint": "H1004"
+        },
+        {
+          "surface": "אמן",
+          "lemma_for_lookup": "אמן",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H539"
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "י",
+          "lemma_for_lookup": "י",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ראל",
+          "lemma_for_lookup": "ראל",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "א",
+          "lemma_for_lookup": "א",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ר",
+          "lemma_for_lookup": "ר",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "לא",
+          "lemma_for_lookup": "לא",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "아니/아니다",
+          "known": true,
+          "strongs_hint": "H3808"
+        },
+        {
+          "surface": "עמד",
+          "lemma_for_lookup": "עמד",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "서다",
+          "known": true,
+          "strongs_hint": "H5975"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553129",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "וְ רֹא פֶּתֶן אַכְזָר הַ תַּנִּין הֵם מֶלֶךְ הַ עַם וְ יַיִן הוּא",
+      "tokens_lemmatized": [
+        "רא",
+        "פתן",
+        "אכזר",
+        "תנין",
+        "הם",
+        "מלך",
+        "עם",
+        "יין",
+        "הוא"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "רא",
+          "lemma_for_lookup": "רא",
+          "lemma_source": "override",
+          "gloss_ko": "보다·바라보다(단편; ראה 계열) [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "פתן",
+          "lemma_for_lookup": "פתן",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H6620"
+        },
+        {
+          "surface": "אכזר",
+          "lemma_for_lookup": "אכזר",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H393"
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "תנין",
+          "lemma_for_lookup": "תנין",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H8577"
+        },
+        {
+          "surface": "הם",
+          "lemma_for_lookup": "הם",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H1992"
+        },
+        {
+          "surface": "מלך",
+          "lemma_for_lookup": "מלך",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "왕",
+          "known": true,
+          "strongs_hint": "H4427"
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "עם",
+          "lemma_for_lookup": "עם",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "백성/함께",
+          "known": true,
+          "strongs_hint": "H5971"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "יין",
+          "lemma_for_lookup": "יין",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H3196"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553164",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "עֵד לְ פט לְ מות עַל פֶּה אֲ ֶר לֹא מלא יֹום לְ עבר",
+      "tokens_lemmatized": [
+        "עד",
+        "פט",
+        "מות",
+        "על",
+        "פה",
+        "לא",
+        "מלא",
+        "יום",
+        "עבר"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "עד",
+          "lemma_for_lookup": "עד",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "~까지/증언",
+          "known": true,
+          "strongs_hint": "H5703"
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "פט",
+          "lemma_for_lookup": "פט",
+          "lemma_source": "override",
+          "gloss_ko": "형태 단편·오탈자 의심(DSS/전각) [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "מות",
+          "lemma_for_lookup": "מות",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H4191"
+        },
+        {
+          "surface": "על",
+          "lemma_for_lookup": "על",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "~위에/대하여",
+          "known": true,
+          "strongs_hint": "H5920"
+        },
+        {
+          "surface": "פה",
+          "lemma_for_lookup": "פה",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "입",
+          "known": true,
+          "strongs_hint": "H6310"
+        },
+        {
+          "surface": "א",
+          "lemma_for_lookup": "א",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ר",
+          "lemma_for_lookup": "ר",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "לא",
+          "lemma_for_lookup": "לא",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "아니/아니다",
+          "known": true,
+          "strongs_hint": "H3808"
+        },
+        {
+          "surface": "מלא",
+          "lemma_for_lookup": "מלא",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H4390"
+        },
+        {
+          "surface": "יום",
+          "lemma_for_lookup": "יום",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "날",
+          "known": true,
+          "strongs_hint": "H3117"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553202",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "וְ כֹּל נֶפֶ אָדָם אֲ ֶר נפל אֶל מַיִם מָקֹום מַיִם וְ אֶל מָקֹום",
+      "tokens_lemmatized": [
+        "כל",
+        "נפ",
+        "אדם",
+        "נפל",
+        "אל",
+        "מים",
+        "מקום",
+        "מים",
+        "אל",
+        "מקום"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "כל",
+          "lemma_for_lookup": "כל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "모든/전체",
+          "known": true,
+          "strongs_hint": "H3605"
+        },
+        {
+          "surface": "נפ",
+          "lemma_for_lookup": "נפ",
+          "lemma_source": "override",
+          "gloss_ko": "네페쉬 단편 [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "אדם",
+          "lemma_for_lookup": "אדם",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "사람",
+          "known": true,
+          "strongs_hint": "H120"
+        },
+        {
+          "surface": "א",
+          "lemma_for_lookup": "א",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ר",
+          "lemma_for_lookup": "ר",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "נפל",
+          "lemma_for_lookup": "נפל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H5307"
+        },
+        {
+          "surface": "אל",
+          "lemma_for_lookup": "אל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "향하여/~에게",
+          "known": true,
+          "strongs_hint": "H408"
+        },
+        {
+          "surface": "מים",
+          "lemma_for_lookup": "מים",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "물",
+          "known": true,
+          "strongs_hint": "H4325"
+        },
+        {
+          "surface": "מקום",
+          "lemma_for_lookup": "מקום",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "장소",
+          "known": true,
+          "strongs_hint": "H4725"
+        },
+        {
+          "surface": "מים",
+          "lemma_for_lookup": "מים",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "물",
+          "known": true,
+          "strongs_hint": "H4325"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553212",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "וְ דבר סָרָה כְּ מִ ְפָּט הַ אֹוב וְ הַ יִדְּעֹנִי פט וְ כֹּל אֲ ֶר תעה",
+      "tokens_lemmatized": [
+        "דבר",
+        "סרה",
+        "פט",
+        "אוב",
+        "ידעני",
+        "פט",
+        "כל",
+        "תעה"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "דבר",
+          "lemma_for_lookup": "דבר",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "말씀/사건",
+          "known": true,
+          "strongs_hint": "H1696"
+        },
+        {
+          "surface": "סרה",
+          "lemma_for_lookup": "סרה",
+          "lemma_source": "override",
+          "gloss_ko": "모함·반역 단편 [HYPO]",
+          "known": true,
+          "strongs_hint": "H5627"
+        },
+        {
+          "surface": "כ",
+          "lemma_for_lookup": "כ",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "מ",
+          "lemma_for_lookup": "מ",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "פט",
+          "lemma_for_lookup": "פט",
+          "lemma_source": "override",
+          "gloss_ko": "형태 단편·오탈자 의심(DSS/전각) [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "אוב",
+          "lemma_for_lookup": "אוב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H178"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ידעני",
+          "lemma_for_lookup": "ידעני",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H3049"
+        },
+        {
+          "surface": "פט",
+          "lemma_for_lookup": "פט",
+          "lemma_source": "override",
+          "gloss_ko": "형태 단편·오탈자 의심(DSS/전각) [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553337",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "אִי הַ יָ ָר בְּ עַיִן וְ בחר אִי בְּ ְרִרוּת לֵב וְ לֹא נזר מִן עַם",
+      "tokens_lemmatized": [
+        "אי",
+        "עין",
+        "בחר",
+        "אי",
+        "ררות",
+        "לב",
+        "לא",
+        "נזר",
+        "מן",
+        "עם"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "אי",
+          "lemma_for_lookup": "אי",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "어디/섬",
+          "known": true,
+          "strongs_hint": "H335"
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "י",
+          "lemma_for_lookup": "י",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ר",
+          "lemma_for_lookup": "ר",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "עין",
+          "lemma_for_lookup": "עין",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H5869"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "בחר",
+          "lemma_for_lookup": "בחר",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H977"
+        },
+        {
+          "surface": "אי",
+          "lemma_for_lookup": "אי",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "어디/섬",
+          "known": true,
+          "strongs_hint": "H335"
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ררות",
+          "lemma_for_lookup": "ררות",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "לב",
+          "lemma_for_lookup": "לב",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "마음",
+          "known": true,
+          "strongs_hint": "H3820"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553362",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "לֵב אַיִן לְ חֵלֶק בְּ בַּיִת הַ תֹּורָה כְּ מִ ְפָּט רֵעַ אֲ ֶר וב",
+      "tokens_lemmatized": [
+        "לב",
+        "אין",
+        "חלק",
+        "בית",
+        "תורה",
+        "פט",
+        "רע",
+        "וב"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "לב",
+          "lemma_for_lookup": "לב",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "마음",
+          "known": true,
+          "strongs_hint": "H3820"
+        },
+        {
+          "surface": "אין",
+          "lemma_for_lookup": "אין",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "없다",
+          "known": true,
+          "strongs_hint": "H369"
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "חלק",
+          "lemma_for_lookup": "חלק",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H2505"
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "בית",
+          "lemma_for_lookup": "בית",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "집",
+          "known": true,
+          "strongs_hint": "H1004"
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "תורה",
+          "lemma_for_lookup": "תורה",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "율법/가르침",
+          "known": true,
+          "strongs_hint": "H8451"
+        },
+        {
+          "surface": "כ",
+          "lemma_for_lookup": "כ",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "מ",
+          "lemma_for_lookup": "מ",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "פט",
+          "lemma_for_lookup": "פט",
+          "lemma_source": "override",
+          "gloss_ko": "형태 단편·오탈자 의심(DSS/전각) [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "רע",
+          "lemma_for_lookup": "רע",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H7451"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553532",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "הַ כֹּל עַל דָּבָר וְ כְּ אֲ ֶר יצא הַ גֹּורָל עַל עֵצָה הַ רַב קרב אֹו רחק וְ בְּ קרב לְ עֵצָה הַ יַחַד לֹא נגע בְּ טָה",
+      "tokens_lemmatized": [
+        "כל",
+        "על",
+        "דבר",
+        "יצא",
+        "גורל",
+        "על",
+        "עצה",
+        "רב",
+        "קרב",
+        "או",
+        "רחק",
+        "קרב",
+        "עצה",
+        "יחד",
+        "לא",
+        "נגע",
+        "טה"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "כל",
+          "lemma_for_lookup": "כל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "모든/전체",
+          "known": true,
+          "strongs_hint": "H3605"
+        },
+        {
+          "surface": "על",
+          "lemma_for_lookup": "על",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "~위에/대하여",
+          "known": true,
+          "strongs_hint": "H5920"
+        },
+        {
+          "surface": "דבר",
+          "lemma_for_lookup": "דבר",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "말씀/사건",
+          "known": true,
+          "strongs_hint": "H1696"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "כ",
+          "lemma_for_lookup": "כ",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "א",
+          "lemma_for_lookup": "א",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ר",
+          "lemma_for_lookup": "ר",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "יצא",
+          "lemma_for_lookup": "יצא",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "나가다",
+          "known": true,
+          "strongs_hint": "H3318"
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "גורל",
+          "lemma_for_lookup": "גורל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H1486"
+        },
+        {
+          "surface": "על",
+          "lemma_for_lookup": "על",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "~위에/대하여",
+          "known": true,
+          "strongs_hint": "H5920"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553540",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "וְ אֵלֶּה הַ מִ ְפָּט אֲ ֶר פט בְּ בְּ מִדְרָ יַחַד עַל פֶּה הַ דָּבָר אִם מצא בְּ אִי אֲ ֶר קר",
+      "tokens_lemmatized": [
+        "אלה",
+        "פט",
+        "פט",
+        "מדר",
+        "יחד",
+        "על",
+        "פה",
+        "דבר",
+        "אם",
+        "מצא",
+        "אי",
+        "קר"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "אלה",
+          "lemma_for_lookup": "אלה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H422"
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "מ",
+          "lemma_for_lookup": "מ",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "פט",
+          "lemma_for_lookup": "פט",
+          "lemma_source": "override",
+          "gloss_ko": "형태 단편·오탈자 의심(DSS/전각) [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "א",
+          "lemma_for_lookup": "א",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ר",
+          "lemma_for_lookup": "ר",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "פט",
+          "lemma_for_lookup": "פט",
+          "lemma_source": "override",
+          "gloss_ko": "형태 단편·오탈자 의심(DSS/전각) [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "מדר",
+          "lemma_for_lookup": "מדר",
+          "lemma_source": "override",
+          "gloss_ko": "미드라시·규범 단편 [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "יחד",
+          "lemma_for_lookup": "יחד",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "함께",
+          "known": true,
+          "strongs_hint": "H3161"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553656",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "text_preview": "קֵץ היה וְ אֲנִי לְ אָדָם רִ ְעָה וְ לְ סֹוד בָּ ָר עָוֶל עָוֹן פֶּ ַע חַטָּאת עִם נעויה לֵבָב",
+      "tokens_lemmatized": [
+        "קץ",
+        "היה",
+        "אני",
+        "אדם",
+        "עה",
+        "סוד",
+        "עול",
+        "עון",
+        "פ",
+        "ע",
+        "חטאת",
+        "עם",
+        "נעויה",
+        "לבב"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "קץ",
+          "lemma_for_lookup": "קץ",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "끝/종말",
+          "known": true,
+          "strongs_hint": "H7093"
+        },
+        {
+          "surface": "היה",
+          "lemma_for_lookup": "היה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "이다/있다",
+          "known": true,
+          "strongs_hint": "H1961"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "אני",
+          "lemma_for_lookup": "אני",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H589"
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "אדם",
+          "lemma_for_lookup": "אדם",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "사람",
+          "known": true,
+          "strongs_hint": "H120"
+        },
+        {
+          "surface": "ר",
+          "lemma_for_lookup": "ר",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "עה",
+          "lemma_for_lookup": "עה",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "סוד",
+          "lemma_for_lookup": "סוד",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H5475"
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        }
+      ]
+    },
+    {
+      "row_id": "dss_enriched_0037",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "בני אלהים בני ישראל עליון עמים נחלה גבול",
+      "tokens_lemmatized": [
+        "בני",
+        "אלהים",
+        "בני",
+        "ישראל",
+        "עליון",
+        "עמים",
+        "נחלה",
+        "גבול"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "בני",
+          "lemma_for_lookup": "בני",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "아들들/자손",
+          "known": true,
+          "strongs_hint": "H1137"
+        },
+        {
+          "surface": "אלהים",
+          "lemma_for_lookup": "אלהים",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "하나님/신",
+          "known": true,
+          "strongs_hint": "H430"
+        },
+        {
+          "surface": "בני",
+          "lemma_for_lookup": "בני",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "아들들/자손",
+          "known": true,
+          "strongs_hint": "H1137"
+        },
+        {
+          "surface": "ישראל",
+          "lemma_for_lookup": "ישראל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "이스라엘",
+          "known": true,
+          "strongs_hint": "H3478"
+        },
+        {
+          "surface": "עליון",
+          "lemma_for_lookup": "עליון",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "지극히 높으신 분",
+          "known": true,
+          "strongs_hint": "H5945"
+        },
+        {
+          "surface": "עמים",
+          "lemma_for_lookup": "עמים",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "민족들",
+          "known": true,
+          "strongs_hint": "H5971"
+        },
+        {
+          "surface": "נחלה",
+          "lemma_for_lookup": "נחלה",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "유업/기업",
+          "known": true,
+          "strongs_hint": "H5159"
+        },
+        {
+          "surface": "גבול",
+          "lemma_for_lookup": "גבול",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "경계/경계선",
+          "known": true,
+          "strongs_hint": "H1366"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553047",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "מָצֹוד בנה הַ גָּדֵר רחק הַ חֹק וְ בְּ כֹּל הַ ָנָה הַ אֵלֶּה היה",
+      "tokens_lemmatized": [
+        "מצוד",
+        "בנה",
+        "גדר",
+        "רחק",
+        "חק",
+        "כל",
+        "נה",
+        "אלה",
+        "היה"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "מצוד",
+          "lemma_for_lookup": "מצוד",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H4685"
+        },
+        {
+          "surface": "בנה",
+          "lemma_for_lookup": "בנה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "짓다",
+          "known": true,
+          "strongs_hint": "H1129"
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "גדר",
+          "lemma_for_lookup": "גדר",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H1443"
+        },
+        {
+          "surface": "רחק",
+          "lemma_for_lookup": "רחק",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H7368"
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "חק",
+          "lemma_for_lookup": "חק",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H2706"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "כל",
+          "lemma_for_lookup": "כל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "모든/전체",
+          "known": true,
+          "strongs_hint": "H3605"
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "נה",
+          "lemma_for_lookup": "נה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H5089"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553210",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "קֹדֶ הוּא אַל כב אִי עִם אִ ָּה בְּ עִיר הַ מִקְדָּ לְ טמא",
+      "tokens_lemmatized": [
+        "קד",
+        "הוא",
+        "אל",
+        "כב",
+        "אי",
+        "עם",
+        "עיר",
+        "מקד",
+        "טמא"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "קד",
+          "lemma_for_lookup": "קד",
+          "lemma_source": "override",
+          "gloss_ko": "거룩·앞 단편 [HYPO]",
+          "known": true,
+          "strongs_hint": "H4168"
+        },
+        {
+          "surface": "הוא",
+          "lemma_for_lookup": "הוא",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "그/그것",
+          "known": true,
+          "strongs_hint": "H1931"
+        },
+        {
+          "surface": "אל",
+          "lemma_for_lookup": "אל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "향하여/~에게",
+          "known": true,
+          "strongs_hint": "H408"
+        },
+        {
+          "surface": "כב",
+          "lemma_for_lookup": "כב",
+          "lemma_source": "override",
+          "gloss_ko": "형태 단편 [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "אי",
+          "lemma_for_lookup": "אי",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "어디/섬",
+          "known": true,
+          "strongs_hint": "H335"
+        },
+        {
+          "surface": "עם",
+          "lemma_for_lookup": "עם",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "백성/함께",
+          "known": true,
+          "strongs_hint": "H5971"
+        },
+        {
+          "surface": "א",
+          "lemma_for_lookup": "א",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "עיר",
+          "lemma_for_lookup": "עיר",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "도시",
+          "known": true,
+          "strongs_hint": "H5892"
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "מקד",
+          "lemma_for_lookup": "מקד",
+          "lemma_source": "override",
+          "gloss_ko": "성소 단편(מקדש) [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553284",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "לְ עבר עַל הַ פקד בְּ ְבוּעָה הַ בְּרִית קום עַל וְ כֵּן",
+      "tokens_lemmatized": [
+        "עבר",
+        "על",
+        "פקד",
+        "בועה",
+        "ברית",
+        "קום",
+        "על",
+        "כן"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "עבר",
+          "lemma_for_lookup": "עבר",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "지나가다",
+          "known": true,
+          "strongs_hint": "H5674"
+        },
+        {
+          "surface": "על",
+          "lemma_for_lookup": "על",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "~위에/대하여",
+          "known": true,
+          "strongs_hint": "H5920"
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "פקד",
+          "lemma_for_lookup": "פקד",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H6485"
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "בועה",
+          "lemma_for_lookup": "בועה",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ברית",
+          "lemma_for_lookup": "ברית",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "언약",
+          "known": true,
+          "strongs_hint": "H1285"
+        },
+        {
+          "surface": "קום",
+          "lemma_for_lookup": "קום",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H6965"
+        },
+        {
+          "surface": "על",
+          "lemma_for_lookup": "על",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "~위에/대하여",
+          "known": true,
+          "strongs_hint": "H5920"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553315",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "הַ נדר אֵת כֶּסֶף עֵרֶךְ",
+      "tokens_lemmatized": [
+        "נדר",
+        "את",
+        "כסף",
+        "ערך"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "ה",
+          "lemma_for_lookup": "ה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "נדר",
+          "lemma_for_lookup": "נדר",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H5087"
+        },
+        {
+          "surface": "את",
+          "lemma_for_lookup": "את",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "(목적격 표지)",
+          "known": true,
+          "strongs_hint": "H853"
+        },
+        {
+          "surface": "כסף",
+          "lemma_for_lookup": "כסף",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H3701"
+        },
+        {
+          "surface": "ערך",
+          "lemma_for_lookup": "ערך",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H6186"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553371",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "אֵל אֶל דָּבָר וְ מע וְ כתב סֵפֶר זִכָּרֹון לְ פָּנֶה לְ יָרֵא אֵל וְ לְ ח ב",
+      "tokens_lemmatized": [
+        "אל",
+        "אל",
+        "דבר",
+        "מע",
+        "כתב",
+        "ספר",
+        "זכרון",
+        "פנה",
+        "ירא",
+        "אל",
+        "ח"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "אל",
+          "lemma_for_lookup": "אל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "향하여/~에게",
+          "known": true,
+          "strongs_hint": "H408"
+        },
+        {
+          "surface": "אל",
+          "lemma_for_lookup": "אל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "향하여/~에게",
+          "known": true,
+          "strongs_hint": "H408"
+        },
+        {
+          "surface": "דבר",
+          "lemma_for_lookup": "דבר",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "말씀/사건",
+          "known": true,
+          "strongs_hint": "H1696"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "מע",
+          "lemma_for_lookup": "מע",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "כתב",
+          "lemma_for_lookup": "כתב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H3789"
+        },
+        {
+          "surface": "ספר",
+          "lemma_for_lookup": "ספר",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "책/기록",
+          "known": true,
+          "strongs_hint": "H5608"
+        },
+        {
+          "surface": "זכרון",
+          "lemma_for_lookup": "זכרון",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "기억/기록",
+          "known": true,
+          "strongs_hint": "H2146"
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "פנה",
+          "lemma_for_lookup": "פנה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "돌이키다",
+          "known": true,
+          "strongs_hint": "H6437"
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553531",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "בְּ בְּרִית לְ וב לְ אֱמֶת וְ לְ סור מִן כֹּל עָוֶל וְ בין בְּ כֹּל מִ ְפָּט הַ יַחַד וְ אַחַר בְּ בוא לְ עמד לְ פָּנֶה ",
+      "tokens_lemmatized": [
+        "ברית",
+        "וב",
+        "אמת",
+        "סור",
+        "מן",
+        "כל",
+        "עול",
+        "בין",
+        "כל",
+        "פט",
+        "יחד",
+        "אחר",
+        "בוא",
+        "עמד",
+        "פנה"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ברית",
+          "lemma_for_lookup": "ברית",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "언약",
+          "known": true,
+          "strongs_hint": "H1285"
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "וב",
+          "lemma_for_lookup": "וב",
+          "lemma_source": "override",
+          "gloss_ko": "그리고·안에서(단편) [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "אמת",
+          "lemma_for_lookup": "אמת",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "진리/진실",
+          "known": true,
+          "strongs_hint": "H571"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "סור",
+          "lemma_for_lookup": "סור",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H5493"
+        },
+        {
+          "surface": "מן",
+          "lemma_for_lookup": "מן",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "~로부터",
+          "known": true,
+          "strongs_hint": "H4478"
+        },
+        {
+          "surface": "כל",
+          "lemma_for_lookup": "כל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "모든/전체",
+          "known": true,
+          "strongs_hint": "H3605"
+        },
+        {
+          "surface": "עול",
+          "lemma_for_lookup": "עול",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H5764"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553629",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "וְ בְּ רֹא ָבוּעַ לְ מֹועֵד דְּרֹור וְ בְּ כֹּל היה חֹק חרת בְּ לָ ֹון לְ פְּרִי תְּהִלָּה וְ מָנָה ָפָה נ א",
+      "tokens_lemmatized": [
+        "רא",
+        "בוע",
+        "מועד",
+        "דרור",
+        "כל",
+        "היה",
+        "חק",
+        "חרת",
+        "ון",
+        "פרי",
+        "תהלה",
+        "מנה",
+        "פה"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "רא",
+          "lemma_for_lookup": "רא",
+          "lemma_source": "override",
+          "gloss_ko": "보다·바라보다(단편; ראה 계열) [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "בוע",
+          "lemma_for_lookup": "בוע",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "מועד",
+          "lemma_for_lookup": "מועד",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "정한 때/절기",
+          "known": true,
+          "strongs_hint": "H4150"
+        },
+        {
+          "surface": "דרור",
+          "lemma_for_lookup": "דרור",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H1865"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "כל",
+          "lemma_for_lookup": "כל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "모든/전체",
+          "known": true,
+          "strongs_hint": "H3605"
+        },
+        {
+          "surface": "היה",
+          "lemma_for_lookup": "היה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "이다/있다",
+          "known": true,
+          "strongs_hint": "H1961"
+        },
+        {
+          "surface": "חק",
+          "lemma_for_lookup": "חק",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H2706"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553750",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "חנ ָלֹום עֹולָם נתן לְ וְ מַלְכוּת",
+      "tokens_lemmatized": [
+        "חנ",
+        "לום",
+        "עולם",
+        "נתן",
+        "מלכות"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "חנ",
+          "lemma_for_lookup": "חנ",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "לום",
+          "lemma_for_lookup": "לום",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "עולם",
+          "lemma_for_lookup": "עולם",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "영원/세상",
+          "known": true,
+          "strongs_hint": "H5769"
+        },
+        {
+          "surface": "נתן",
+          "lemma_for_lookup": "נתן",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "주다",
+          "known": true,
+          "strongs_hint": "H5414"
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "מלכות",
+          "lemma_for_lookup": "מלכות",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "왕권/나라",
+          "known": true,
+          "strongs_hint": "H4438"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1553902",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "כְּ רֶמֶ לְ מ ל בְּ כֹּל בְּ חַכָּה עלה וְ גרר בְּ חֵרֶם",
+      "tokens_lemmatized": [
+        "רמ",
+        "כל",
+        "חכה",
+        "עלה",
+        "גרר",
+        "חרם"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "כ",
+          "lemma_for_lookup": "כ",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "רמ",
+          "lemma_for_lookup": "רמ",
+          "lemma_source": "override",
+          "gloss_ko": "형태 단편 [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "מ",
+          "lemma_for_lookup": "מ",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ל",
+          "lemma_for_lookup": "ל",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "כל",
+          "lemma_for_lookup": "כל",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "모든/전체",
+          "known": true,
+          "strongs_hint": "H3605"
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "חכה",
+          "lemma_for_lookup": "חכה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H2442"
+        },
+        {
+          "surface": "עלה",
+          "lemma_for_lookup": "עלה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H5927"
+        },
+        {
+          "surface": "ו",
+          "lemma_for_lookup": "ו",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "גרר",
+          "lemma_for_lookup": "גרר",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H1642"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1554066",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "אֲ ֶר בר",
+      "tokens_lemmatized": [
+        "בר"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "א",
+          "lemma_for_lookup": "א",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "ר",
+          "lemma_for_lookup": "ר",
+          "lemma_source": "surface_only",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "בר",
+          "lemma_for_lookup": "בר",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H1247"
+        }
+      ]
+    },
+    {
+      "row_id": "dss_etcbc_line_1554438",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "text_preview": "גלה בְּ לֹא מִ ְפָּט מִן רוּחַ",
+      "tokens_lemmatized": [
+        "גלה",
+        "לא",
+        "פט",
+        "מן",
+        "רוח"
+      ],
+      "lemma_preview": [
+        {
+          "surface": "גלה",
+          "lemma_for_lookup": "גלה",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": "H1540"
+        },
+        {
+          "surface": "ב",
+          "lemma_for_lookup": "ב",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "לא",
+          "lemma_for_lookup": "לא",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "아니/아니다",
+          "known": true,
+          "strongs_hint": "H3808"
+        },
+        {
+          "surface": "מ",
+          "lemma_for_lookup": "מ",
+          "lemma_source": "codebook_form",
+          "gloss_ko": "",
+          "known": false,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "פט",
+          "lemma_for_lookup": "פט",
+          "lemma_source": "override",
+          "gloss_ko": "형태 단편·오탈자 의심(DSS/전각) [HYPO]",
+          "known": true,
+          "strongs_hint": ""
+        },
+        {
+          "surface": "מן",
+          "lemma_for_lookup": "מן",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "~로부터",
+          "known": true,
+          "strongs_hint": "H4478"
+        },
+        {
+          "surface": "רוח",
+          "lemma_for_lookup": "רוח",
+          "lemma_source": "gloss_ko",
+          "gloss_ko": "영/바람",
+          "known": true,
+          "strongs_hint": "H7305"
+        }
+      ]
+    }
+  ]
+}

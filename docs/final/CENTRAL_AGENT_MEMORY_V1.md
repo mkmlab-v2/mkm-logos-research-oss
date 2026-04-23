@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-04-20T12:00:00Z
+- **last_updated_utc:** 2026-04-23T12:00:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -62,6 +62,12 @@
 9. 12AI·운영: 지휘·자동화는 **게이트·라벨**(FACT/HYPO/STRAT) 중심 서술이 많음 — **구현 여부는 코드만**.
 10. **범위:** 위 요약은 **NL에 올라온 2026년 초~중순 자료** 기준; “작년 한 해” 전체가 아니면 **추가 소스 업로드 후 재동기화** 필요.
 
+### Logos 원어 스택 — 세션 간 혼동 방지 (Fact-Lock)
+
+1. **마스터 아톰** (`scripts/core/build_original_language_master_atoms.py`): 입력은 `verse_decoded_v2.jsonl`+외경+DSS; 고유형 ~4.2만·헬라 ~1.4만은 **요약 JSON**의 `unique_*` — **정규화·가벼운 휴리스틱**이며 완전 형태소 분석 아님 (`original_language_master_atoms_summary_*.json`·스크립트 note).
+2. **레짐 특이점 리포트** (`scripts/core/build_original_corpus_regime_singularity_report_v1.py`): 구절→`build_gematria_metadata`→`build_gematria_4d_bridge`→레짐 지문과 **내적 스코어**; 물리적 에너지 아님·산출 `hypothesis_tier:B`.
+3. **코퍼스 분리**: 두 파이프라인은 **동일 산출물이 아님**. 특이점 기본 인자는 DSS/외경 JSONL; 정경 전체를 쓰려면 **`--canon-jsonl`**로 `verse_decoded_v2.jsonl` 등을 넣고 레인 **`canon`**으로 분리(동일 스크립트에 2026-04-23 패치).
+
 ---
 
 ## 이론 고효율 압축 — Athena 정체성 지문 (맥락 복원용)
@@ -103,6 +109,11 @@
 | 2026-04-20 (멀티렌즈 회귀) | `pytest`: `test_independent_lenses_v0`·`test_independent_lens_shadow_gate_v1`·`test_independent_lens_fusion_stub_v0`·`test_scm_boming_jiju_lexicon_v1`·`test_eval_btrack_insight_sidecar_lens_hit_agreement_v1` 일괄 **13 passed** — 명리/사상/로고스 렌즈 러너·섀도 게이트·퓨전 스텁·보명지주 렉시콘·사이드카 렌즈 일치 eval이 CI 가능 상태로 유지됨을 확인. |
 | 2026-04-20 (멀티렌즈 CI) | `.github/workflows/multilens-independent-lens-smoke.yml` 추가: 위 pytest 번들을 path-filtered push/PR에서 자동 실행; `verify_p0_constitution_gate_paths.ps1`·`MKM12_PRISM_INDEX_REGISTRY_V1.json`에 워크플로 경로 등록. |
 | 2026-04-20 (메모리 큐) | `다음에 할 일` 갱신: 푸시 완료 항목 제거 → **CI 녹색 확인**·**미커밋 artifact 정리/의도 커밋**·LG 실측 대기 유지. |
+| 2026-04-20 (Bio Sasang n-state strict) | FireProtDB DDG strict 코호트(4,783)로 `n_states=8/10/12/14` 대칭 비교(family 5-fold·seeds 42/43/44·bootstrap 5000): Spearman 순위 **12(0.5295) > 14(0.5175) > 10(0.5028) > 8(0.4958)**. 현 벤치마크 최적 상태수는 **12**로 고정 (`reports/bio_sasang_nstates_strict_comparison_v2.json`). |
+| 2026-04-20 (NotebookLM insight action sync) | 노트북 `dna와사상`에 `Action Plan: Sasang x DNA next experiments`를 저장하고, 실행 우선순위를 `SNP x constitution` 상호작용 AB → 12상 외부 강건성 → multimodal 강건성으로 고정. 분자 비유 레이어(토토머/금속매개 안정화)는 운영 주장으로 승격하지 않고 `research_only`를 유지. |
+| 2026-04-22 (Multitarget strict HOLD + trainability gate) | scaffold/target-holdout 재벤치 및 runtime policy 리허설 이후 `generalization_gate_decision_strict_hold_latest.json`이 `HOLD` 고정; 추가로 target-conditioned PoC와 `target_conditioned_trainability_gate_latest.json` 실행 결과, `stage2_trained_target_count=0`·`topology_trainable_target_count=0`으로 연구 게이트도 `HOLD` 확정. |
+| 2026-04-22 (B-track dual-lane autogate v4 pass) | `evaluate_b_track_staged_go_nogo_v4.py`로 AUROC 단일클래스 미정의를 `WARN-DATA-003`로 분리하고, `run_ab_track_autogate_pipeline_v3.py --rebuild-unseen-split --unseen-heldout-target EGFR --rebuild-seen-label-split --b-gate-evaluator v4 --allow-auroc-missing-single-class-test` 재실행 결과 `artifacts/weekly_status_v3.json`에서 `a_pass=true`, `b_unseen_pass=true`, `b_seen_label_pass=true`, `all_pass=true` 달성. |
+| 2026-04-23 (Logos 파이프라인 혼동 방지 + canon 레인) | 마스터 아톰 집계 vs 레짐 특이점 리포트는 **서로 다른 입력·목적** — Fact-Lock으로 구분해 `CENTRAL_AGENT_MEMORY`에 고정. 특이점 스크립트에 **`--canon-jsonl`**·레인 `canon` 추가; Vault 미러 스크립트에 **`MKM_OBSIDIAN_VAULT_ROOT`**·기본 `memory/obsidian_vault` 스텁; 글로스 v4 보수 접두 체인은 코드북·HYPO 보조 유지. |
 | | |
 
 ---
@@ -163,9 +174,9 @@
 
 ## 다음에 할 일 (최대 3개)
 
-1. LG 타깃 보드 **실측 JSON** 수령 시 `docs/final/artifacts/lg_washer_target_device_measurement_v1.json` 전면 교체 후 `check_lg_washer_measurement_gate_v1.py`·`check_lg_washer_estimation_readiness_v1.py`·사인오프 패킷 재실행(현재는 proxy·게이트 GO 유지, 최종본 단정 금지).
-2. **CI 확인:** GitHub Actions `Multilens independent lens smoke`(`.github/workflows/multilens-independent-lens-smoke.yml`) 및 최근 푸시된 워크플로가 `main`에서 **성공**인지 확인; 실패 시 로그·path filter·테스트 로컬 재현(`pytest` 동일 번들).
-3. **워킹트리·운영:** 로컬에 `docs/final/artifacts/`·`reports/` 등 미커밋 변경이 쌓이면 **의도적 커밋** vs **`git restore`**로 정리(자동 체인 산출 노이즈 억제); 루틴은 `verify_p0_constitution_gate_paths.ps1`·`run_waiting_queue_btc_binance_daily.ps1` 주기 또는 수동 스모크.
+1. Multitarget 데이터 계약 결정: `target-conditioned` Stage-2 학습 가능성 확보(타깃 내 다중 라벨) 또는 과업 축소(target ID + OOD reject) 중 하나를 운영 규격으로 확정.
+2. 멀티타깃 파이프라인 사전 게이트로 `build_multitarget_label_topology_report_v1.py`·`eval_target_conditioned_trainability_gate_v1.py`를 연결해 학습 불가 구조에서 즉시 `HOLD` 차단.
+3. NotebookLM 지휘부 동기화 루틴 유지: `sync_notebooklm_sources_to_mkm_data_vault.ps1` 실행 후 `CURRENT_OPS_SNAPSHOT.md`와 최신 multitarget 아티팩트 경로 정합 점검.
 
 ## 동기화 루틴
 
