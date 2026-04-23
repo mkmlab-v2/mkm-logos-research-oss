@@ -2,7 +2,17 @@
 
 import { useState } from "react";
 
-type Nav = { about: string; safety: string; workflow: string; contact: string };
+type Nav = {
+  service_group: string;
+  service_consumer: string;
+  service_clinician: string;
+  service_reception: string;
+  about_group: string;
+  about: string;
+  safety: string;
+  workflow: string;
+  contact: string;
+};
 type Brand = { brand_name: string; brand_tagline: string };
 type Links = { consumer: string; clinician: string; reception: string; contact: string };
 
@@ -41,17 +51,17 @@ export function SiteHeader({ nav, brand, links }: { nav: Nav; brand: Brand; link
             }
           }}
         >
-          <span className="nav-group-label">서비스</span>
+          <span className="nav-group-label">{nav.service_group}</span>
           <a href={links.consumer} onClick={() => setOpen(false)}>
-            일반인 상담
+            {nav.service_consumer}
           </a>
           <a href={links.clinician} onClick={() => setOpen(false)}>
-            한의사 보조
+            {nav.service_clinician}
           </a>
           <a href={links.reception} onClick={() => setOpen(false)}>
-            접수대 PIN
+            {nav.service_reception}
           </a>
-          <span className="nav-group-label">소개</span>
+          <span className="nav-group-label">{nav.about_group}</span>
           <a href="#about" onClick={() => setOpen(false)}>
             {nav.about}
           </a>
