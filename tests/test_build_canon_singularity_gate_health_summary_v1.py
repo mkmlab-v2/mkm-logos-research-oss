@@ -53,5 +53,9 @@ def test_build_canon_singularity_gate_health_summary_v1(tmp_path: Path):
     assert data["counts"]["pass_count"] == 1
     assert data["counts"]["fail_count"] == 1
     assert data["latest_status"]["result"] == "fail"
+    assert data["streak"]["result"] == "fail"
+    assert data["streak"]["count"] == 1
+    assert data["health_level"] == "red"
+    assert "Investigate latest failure" in data["recommended_action"]
     assert data["last_failure"]["error"] == "x"
 

@@ -20,6 +20,19 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def _streak(recent: list[dict[str, Any]]) -> dict[str, Any]:
+    if not recent:
+        return {"result": None, "count": 0}
+    latest_result = recent[-1].get("result")
+    cnt = 0
+    for row in reversed(recent):
+        if row.get("result") == latest_result:
+            cnt += 1
+        else:
+            break
+    return {"result": latest_result, "count": cnt}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build health summary from canon quality-gate history JSONL.")
     ap.add_argument(
@@ -48,6 +61,18 @@ def main() -> int:
 
     denom = len(recent)
     pass_rate = (pass_count / denom) if denom > 0 else 0.0
+    streak = _streak(recent)
+    latest_result = (latest or {}).get("result")
+    if latest_result == "fail":
+        health_level = "red"
+        recommended_action = "Investigate latest failure and re-run canon chain after fixing source artifact mismatch."
+    elif fail_count > 0:
+        health_level = "yellow"
+        recommended_action = "Monitor window failures; if recurring, inspect trends and tighten upstream checks."
+    else:
+        health_level = "green"
+        recommended_action = "No immediate action. Continue scheduled monitoring."
+
     out = {
         "schema": "original_corpus_regime_singularity_canon_quality_gate_health_summary_v1",
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -67,6 +92,9 @@ def main() -> int:
             "generated_at_utc": (latest or {}).get("generated_at_utc"),
             "error": (latest or {}).get("error"),
         },
+        "streak": streak,
+        "health_level": health_level,
+        "recommended_action": recommended_action,
         "last_failure": {
             "generated_at_utc": (last_fail or {}).get("generated_at_utc"),
             "error": (last_fail or {}).get("error"),
