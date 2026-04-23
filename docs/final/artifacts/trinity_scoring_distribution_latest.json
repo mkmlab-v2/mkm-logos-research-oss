@@ -1,6 +1,6 @@
 {
   "schema": "trinity_scoring_distribution_v1",
-  "generated_at_utc": "2026-04-11T19:29:08.799903+00:00",
+  "generated_at_utc": "2026-04-23T01:16:07.548872+00:00",
   "log_path": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
   "metric": "KOSPI_D1_RETURN_PCT",
   "windows": {
@@ -32,35 +32,34 @@
   "dual_regime_state": {
     "d5": {
       "sample_size": 5,
-      "state_id_present_count": 0,
-      "state_id_present_rate": 0.0,
+      "state_id_present_count": 5,
+      "state_id_present_rate": 1.0,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "none": 5
+        "myeongni_independent_lens": 5
       },
-      "top_source": "none"
+      "top_source": "myeongni_independent_lens"
     },
     "d10": {
       "sample_size": 10,
-      "state_id_present_count": 1,
-      "state_id_present_rate": 0.1,
+      "state_id_present_count": 10,
+      "state_id_present_rate": 1.0,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "none": 9,
-        "myeongni_independent_lens": 1
+        "myeongni_independent_lens": 10
       },
-      "top_source": "none"
+      "top_source": "myeongni_independent_lens"
     },
     "all": {
-      "sample_size": 117,
-      "state_id_present_count": 79,
-      "state_id_present_rate": 0.6752,
+      "sample_size": 214,
+      "state_id_present_count": 176,
+      "state_id_present_rate": 0.8224,
       "clamp_count": 0,
       "clamp_rate": 0.0,
       "source_counts": {
-        "myeongni_independent_lens": 79,
+        "myeongni_independent_lens": 176,
         "none": 38
       },
       "top_source": "myeongni_independent_lens"
@@ -105,5 +104,5 @@
     }
   },
   "latest_decision": "PENDING_CLOSE",
-  "total_filtered_rows": 117
+  "total_filtered_rows": 214
 }

@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_instrument_combo_sweep_v1",
-  "generated_at_utc": "2026-04-18T07:52:12Z",
+  "generated_at_utc": "2026-04-22T10:47:31Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -33,48 +33,32 @@
   "baseline": {
     "lane_id": "current_panel_prediction",
     "metrics": {
-      "price_directional_hit_rate": 0.416667,
-      "n_evaluated": 60,
-      "price_hits": 25
+      "price_directional_hit_rate": 0.0,
+      "n_evaluated": 30,
+      "price_hits": 0
     }
   },
   "control": {
     "lane_id": "always_bull_control",
-    "price_directional_hit_rate": 0.566667
+    "price_directional_hit_rate": 0.6
   },
   "best_candidate": {
     "kospi_mode": "bull",
     "btc": {
-      "low_thr": -0.03,
-      "high_thr": -0.02
+      "low_thr": -0.06,
+      "high_thr": -0.05
     },
     "metrics": {
-      "price_directional_hit_rate": 0.583333,
-      "n_evaluated": 60,
-      "price_hits": 35
+      "price_directional_hit_rate": 0.6,
+      "n_evaluated": 30,
+      "price_hits": 18
     },
-    "delta_vs_baseline": 0.166666,
-    "delta_vs_always_bull_control": 0.016666,
-    "changed_rows": 57,
+    "delta_vs_baseline": 0.6,
+    "delta_vs_always_bull_control": 0.0,
+    "changed_rows": 30,
     "missing_prior_rows": 0
   },
   "top_candidates": [
-    {
-      "kospi_mode": "bull",
-      "btc": {
-        "low_thr": -0.03,
-        "high_thr": -0.02
-      },
-      "metrics": {
-        "price_directional_hit_rate": 0.583333,
-        "n_evaluated": 60,
-        "price_hits": 35
-      },
-      "delta_vs_baseline": 0.166666,
-      "delta_vs_always_bull_control": 0.016666,
-      "changed_rows": 57,
-      "missing_prior_rows": 0
-    },
     {
       "kospi_mode": "bull",
       "btc": {
@@ -82,13 +66,13 @@
         "high_thr": -0.05
       },
       "metrics": {
-        "price_directional_hit_rate": 0.566667,
-        "n_evaluated": 60,
-        "price_hits": 34
+        "price_directional_hit_rate": 0.6,
+        "n_evaluated": 30,
+        "price_hits": 18
       },
-      "delta_vs_baseline": 0.15,
+      "delta_vs_baseline": 0.6,
       "delta_vs_always_bull_control": 0.0,
-      "changed_rows": 60,
+      "changed_rows": 30,
       "missing_prior_rows": 0
     },
     {
@@ -98,29 +82,13 @@
         "high_thr": -0.04
       },
       "metrics": {
-        "price_directional_hit_rate": 0.566667,
-        "n_evaluated": 60,
-        "price_hits": 34
+        "price_directional_hit_rate": 0.6,
+        "n_evaluated": 30,
+        "price_hits": 18
       },
-      "delta_vs_baseline": 0.15,
+      "delta_vs_baseline": 0.6,
       "delta_vs_always_bull_control": 0.0,
-      "changed_rows": 60,
-      "missing_prior_rows": 0
-    },
-    {
-      "kospi_mode": "bull",
-      "btc": {
-        "low_thr": -0.05,
-        "high_thr": -0.04
-      },
-      "metrics": {
-        "price_directional_hit_rate": 0.566667,
-        "n_evaluated": 60,
-        "price_hits": 34
-      },
-      "delta_vs_baseline": 0.15,
-      "delta_vs_always_bull_control": 0.0,
-      "changed_rows": 60,
+      "changed_rows": 30,
       "missing_prior_rows": 0
     },
     {
@@ -130,13 +98,13 @@
         "high_thr": -0.03
       },
       "metrics": {
-        "price_directional_hit_rate": 0.55,
-        "n_evaluated": 60,
-        "price_hits": 33
+        "price_directional_hit_rate": 0.6,
+        "n_evaluated": 30,
+        "price_hits": 18
       },
-      "delta_vs_baseline": 0.133333,
-      "delta_vs_always_bull_control": -0.016667,
-      "changed_rows": 60,
+      "delta_vs_baseline": 0.6,
+      "delta_vs_always_bull_control": 0.0,
+      "changed_rows": 30,
       "missing_prior_rows": 0
     },
     {
@@ -146,79 +114,41 @@
         "high_thr": -0.02
       },
       "metrics": {
-        "price_directional_hit_rate": 0.55,
-        "n_evaluated": 60,
-        "price_hits": 33
+        "price_directional_hit_rate": 0.6,
+        "n_evaluated": 30,
+        "price_hits": 18
       },
-      "delta_vs_baseline": 0.133333,
-      "delta_vs_always_bull_control": -0.016667,
-      "changed_rows": 60,
+      "delta_vs_baseline": 0.6,
+      "delta_vs_always_bull_control": 0.0,
+      "changed_rows": 30,
       "missing_prior_rows": 0
     },
     {
       "kospi_mode": "bull",
       "btc": {
-        "low_thr": -0.05,
-        "high_thr": -0.03
+        "low_thr": -0.06,
+        "high_thr": -0.01
       },
       "metrics": {
-        "price_directional_hit_rate": 0.55,
-        "n_evaluated": 60,
-        "price_hits": 33
+        "price_directional_hit_rate": 0.6,
+        "n_evaluated": 30,
+        "price_hits": 18
       },
-      "delta_vs_baseline": 0.133333,
-      "delta_vs_always_bull_control": -0.016667,
-      "changed_rows": 60,
-      "missing_prior_rows": 0
-    },
-    {
-      "kospi_mode": "bull",
-      "btc": {
-        "low_thr": -0.05,
-        "high_thr": -0.02
-      },
-      "metrics": {
-        "price_directional_hit_rate": 0.55,
-        "n_evaluated": 60,
-        "price_hits": 33
-      },
-      "delta_vs_baseline": 0.133333,
-      "delta_vs_always_bull_control": -0.016667,
-      "changed_rows": 60,
-      "missing_prior_rows": 0
-    },
-    {
-      "kospi_mode": "bull",
-      "btc": {
-        "low_thr": -0.04,
-        "high_thr": -0.03
-      },
-      "metrics": {
-        "price_directional_hit_rate": 0.55,
-        "n_evaluated": 60,
-        "price_hits": 33
-      },
-      "delta_vs_baseline": 0.133333,
-      "delta_vs_always_bull_control": -0.016667,
-      "changed_rows": 60,
-      "missing_prior_rows": 0
-    },
-    {
-      "kospi_mode": "bull",
-      "btc": {
-        "low_thr": -0.04,
-        "high_thr": -0.02
-      },
-      "metrics": {
-        "price_directional_hit_rate": 0.55,
-        "n_evaluated": 60,
-        "price_hits": 33
-      },
-      "delta_vs_baseline": 0.133333,
-      "delta_vs_always_bull_control": -0.016667,
-      "changed_rows": 60,
+      "delta_vs_baseline": 0.6,
+      "delta_vs_always_bull_control": 0.0,
+      "changed_rows": 30,
       "missing_prior_rows": 0
     }
   ],
-  "note": "KOSPI fixed/casual mode + BTC causal threshold sweep. Causal inputs only (prior completed return)."
+  "performance": {
+    "elapsed_ms": 7.066,
+    "candidates_per_sec": 37362.015284,
+    "benchmark_all_engines": null
+  },
+  "note": "KOSPI fixed/casual mode + BTC causal threshold sweep. Causal inputs only (prior completed return).",
+  "engine": {
+    "requested": "cuda",
+    "used": "cpu",
+    "cuda_device": null
+  }
 }

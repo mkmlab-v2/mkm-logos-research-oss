@@ -1,9 +1,9 @@
 {
   "schema": "l1_inverse_decoder_mode_router_v3_canary_status_v1",
-  "generated_at_utc": "2026-04-15T05:12:29+00:00",
+  "generated_at_utc": "2026-04-23T01:13:35+00:00",
   "research_only": true,
-  "phase": "phase_2",
-  "traffic_pct": 30,
+  "phase": "phase_3",
+  "traffic_pct": 100,
   "inputs": {
     "decision_artifact": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_mode_router_v3_canary_decision_v1.json",
     "daily_gate_artifact": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_daily_gate_v1_latest.json",

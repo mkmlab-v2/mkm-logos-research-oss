@@ -6,6 +6,13 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
+## 2026-04-22 최신 상태 (B-track dual-lane)
+
+- 실행 명령(핵심): `python scripts/run_ab_track_autogate_pipeline_v3.py --b-phase promotion --b-gate-evaluator v4 --allow-auroc-missing-single-class-test --rebuild-unseen-split --unseen-heldout-target EGFR --unseen-split-seed 20260424 --unseen-val-ratio 0.12 --rebuild-seen-label-split --seed 20260424`
+- 핵심 결과: `artifacts/weekly_status_v3.json` 기준 `a_pass=true`, `b_unseen_pass=true`, `b_seen_label_pass=true`, `all_pass=true`
+- B-track 경고 분리: unseen lane은 이슈 없음, `WARN-DATA-003`만 존재(AUROC 단일클래스 미정의 정책 다운그레이드)
+- 부가 스모크: runtime/inference/batch policy smoke 모두 `all_pass=true`
+
 ## Compression/Restore Unified Ops Board (A/B)
 
 - 운영 원칙: 이 채팅창을 압축/복원 단일 관제창으로 사용한다. `상태`/`다음실행`/`검증`/`중지` 명령만으로 루프를 운영한다.
@@ -2488,6 +2495,17 @@ Set-Location c:\workspace
 - **significance_report:** `skipped`
 - **verdict_report:** `skipped`
 - **blocked_at:** `real_evidence_readiness_gate`
+
+## Multitarget Strict HOLD + Trainability Gate (2026-04-22)
+
+- **strict hold 결정 고정:** `artifacts/B_track/kaggle_training_5seed/multitarget_classification/generalization_gate_decision_strict_hold_latest.json` (`final_decision=HOLD`)
+- **증거 번들:** `artifacts/B_track/kaggle_training_5seed/multitarget_classification/scaffold_strict_hold_evidence_bundle_index.json`
+- **운영 리허설 번들:** `artifacts/B_track/kaggle_training_5seed/multitarget_classification/multitarget_runtime_policy_operational_rehearsal_bundle_index.json`
+- **runtime policy 상태:** `multitarget_runtime_policy_latest.json`에서 `route_action=force_hold`; batch smoke `HOLD_COUNT=32`, `ALLOW_COUNT=0`
+- **target-conditioned PoC:** `target_conditioned_benchmark_summary_unseen_target.json`, `target_conditioned_benchmark_summary_seen_label.json`
+- **학습 가능성 진단:** `multitarget_label_topology_report_latest.json` (`trainable_target_count=0`, 모든 target label_cardinality=1)
+- **연구 게이트:** `target_conditioned_trainability_gate_latest.json` (`final_status=HOLD`, blocker=stage2 trainability 0)
+- **운영 해석:** 모델 튜닝 문제가 아니라 데이터/과업 정의 이슈로 분류; 상용 판정은 strict HOLD 유지
 
 ## Bio Promotion Provenance (2026-04-20)
 

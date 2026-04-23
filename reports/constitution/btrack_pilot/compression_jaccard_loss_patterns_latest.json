@@ -1,6 +1,6 @@
 {
   "schema": "compression_jaccard_loss_patterns_v1",
-  "ts_utc": "2026-04-16T01:19:32.958208+00:00",
+  "ts_utc": "2026-04-21T14:02:32.023573+00:00",
   "sla_track": "universal",
   "sources": {
     "input": "docs\\final\\artifacts\\MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
@@ -9,8 +9,8 @@
     "explicit_active_report": false
   },
   "summary": {
-    "case_count": 45,
-    "avg_words_lost": 2.7777777777777777
+    "case_count": 40,
+    "avg_words_lost": 2.325
   },
   "cases": [
     {
@@ -650,108 +650,6 @@
       "words_extra_count": 0,
       "words_lost_sample": [
         "한다"
-      ],
-      "words_extra_sample": []
-    },
-    {
-      "id": "cmp2_041",
-      "domain": "code",
-      "shard_id": "zone_f_code",
-      "reconstruction_fidelity_jaccard": 0.782608695652174,
-      "token_saving_rate": 0.33333333333333337,
-      "raw_word_count": 23,
-      "recon_word_count": 18,
-      "words_lost_count": 5,
-      "words_extra_count": 0,
-      "words_lost_sample": [
-        "contract",
-        "handler",
-        "openapi",
-        "raises",
-        "serialization"
-      ],
-      "words_extra_sample": []
-    },
-    {
-      "id": "cmp2_042",
-      "domain": "code",
-      "shard_id": "zone_f_code",
-      "reconstruction_fidelity_jaccard": 0.6818181818181818,
-      "token_saving_rate": 0.42307692307692313,
-      "raw_word_count": 22,
-      "recon_word_count": 15,
-      "words_lost_count": 7,
-      "words_extra_count": 0,
-      "words_lost_sample": [
-        "error",
-        "fails",
-        "input",
-        "refactor",
-        "shared",
-        "validates",
-        "validation"
-      ],
-      "words_extra_sample": []
-    },
-    {
-      "id": "cmp2_043",
-      "domain": "code",
-      "shard_id": "zone_f_code",
-      "reconstruction_fidelity_jaccard": 0.6363636363636364,
-      "token_saving_rate": 0.41666666666666663,
-      "raw_word_count": 22,
-      "recon_word_count": 14,
-      "words_lost_count": 8,
-      "words_extra_count": 0,
-      "words_lost_sample": [
-        "asserts",
-        "disk",
-        "fixtures",
-        "loads",
-        "marked",
-        "matches",
-        "published",
-        "response"
-      ],
-      "words_extra_sample": []
-    },
-    {
-      "id": "cmp2_044",
-      "domain": "code",
-      "shard_id": "zone_f_code",
-      "reconstruction_fidelity_jaccard": 0.7,
-      "token_saving_rate": 0.43999999999999995,
-      "raw_word_count": 20,
-      "recon_word_count": 14,
-      "words_lost_count": 6,
-      "words_extra_count": 0,
-      "words_lost_sample": [
-        "document",
-        "handler",
-        "includes",
-        "method",
-        "tracing",
-        "version"
-      ],
-      "words_extra_sample": []
-    },
-    {
-      "id": "cmp2_045",
-      "domain": "code",
-      "shard_id": "zone_f_code",
-      "reconstruction_fidelity_jaccard": 0.7,
-      "token_saving_rate": 0.41666666666666663,
-      "raw_word_count": 20,
-      "recon_word_count": 14,
-      "words_lost_count": 6,
-      "words_extra_count": 0,
-      "words_lost_sample": [
-        "artifact",
-        "drift",
-        "fails",
-        "faster",
-        "print",
-        "triage"
       ],
       "words_extra_sample": []
     }

@@ -1,51 +1,38 @@
 {
   "schema": "bench_l1_api_load_v1",
-  "generated_at_utc": "2026-04-11T04:53:46+00:00",
+  "generated_at_utc": "2026-04-21T14:02:55+00:00",
   "research_only": true,
   "draft_benchmark": true,
   "notes": "Latencies are client-observed RTT. server_rss_bytes_* require --server-pid on same host with psutil installed.",
   "base_url": "http://127.0.0.1:8010",
   "path": "/v1/compress",
-  "bench_environment": "local_stub_8010",
-  "total_requests": 30,
-  "max_concurrent": 6,
-  "approx_word_tokens": 300,
-  "wall_time_s": 0.0934,
-  "ok_count": 30,
+  "bench_environment": null,
+  "total_requests": 100,
+  "max_concurrent": 10,
+  "approx_word_tokens": 1000,
+  "wall_time_s": 0.6507,
+  "ok_count": 100,
   "error_count": 0,
   "error_rate": 0.0,
   "status_counts": {
-    "ok": 30
+    "ok": 100
   },
   "latency_ms": {
-    "p50": 7.361,
-    "p95": 38.198,
-    "p99": 39.906,
-    "max": 40.17
+    "p50": 52.084,
+    "p95": 166.893,
+    "p99": 178.56,
+    "max": 179.349
   },
-  "latency_ms_including_errors_p95": 38.198,
+  "latency_ms_including_errors_p95": 166.893,
   "server_pid": null,
   "rss_self_sampled": false,
   "server_rss_bytes_before": null,
   "server_rss_bytes_after": null,
   "command_fingerprint": {
     "bench_script": "scripts/bench_l1_api_load.py",
-    "git_commit": "e8f9d2b7086b",
+    "git_commit": "e72a664d19ce",
     "mkm_user_context_included": false,
-    "argv": [
-      "--base-url",
-      "http://127.0.0.1:8010",
-      "--total-requests",
-      "30",
-      "--max-concurrent",
-      "6",
-      "--approx-words",
-      "300",
-      "--timeout",
-      "25",
-      "--bench-environment",
-      "local_stub_8010"
-    ]
+    "argv": []
   },
   "draft_targets_comparison": {
     "p95_target_ms": 200,
