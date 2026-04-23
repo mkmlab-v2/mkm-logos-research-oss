@@ -3,7 +3,13 @@
 param(
     [switch]$Remove,
     [string]$TaskName = "MKM_CanonSingularity_Chain",
-    [string]$DailyAt = "06:40"
+    [string]$DailyAt = "06:40",
+    [ValidateSet("strict", "balanced", "lenient")]
+    [string]$HealthProfile = "strict",
+    [Nullable[int]]$HealthMaxFailCount = $null,
+    [Nullable[double]]$HealthMinPassRate = $null,
+    [switch]$HealthAllowYellow,
+    [switch]$PrintOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -20,8 +26,41 @@ if (-not (Test-Path -LiteralPath $runner)) {
     throw "Runner not found: $runner"
 }
 
+$profileDefaults = @{
+    strict = @{ MaxFail = 0; MinPass = 1.0; AllowYellow = $false }
+    balanced = @{ MaxFail = 1; MinPass = 0.9; AllowYellow = $true }
+    lenient = @{ MaxFail = 2; MinPass = 0.8; AllowYellow = $true }
+}
+$selected = $profileDefaults[$HealthProfile]
+
+$maxFail = if ($null -ne $HealthMaxFailCount) { [int]$HealthMaxFailCount } else { [int]$selected.MaxFail }
+$minPass = if ($null -ne $HealthMinPassRate) { [double]$HealthMinPassRate } else { [double]$selected.MinPass }
+$allowYellow = if ($HealthAllowYellow.IsPresent) { $true } else { [bool]$selected.AllowYellow }
+
+$runnerArgs = @(
+    "-NoProfile",
+    "-WindowStyle", "Hidden",
+    "-ExecutionPolicy", "Bypass",
+    "-File", "`"$runner`"",
+    "-HealthMaxFailCount", "$maxFail",
+    "-HealthMinPassRate", "$minPass"
+)
+if ($allowYellow) {
+    $runnerArgs += "-HealthAllowYellow"
+}
+$runnerArgString = ($runnerArgs -join " ")
+
+if ($PrintOnly) {
+    Write-Host "PrintOnly: no task registration performed."
+    Write-Host "TaskName: $TaskName"
+    Write-Host "DailyAt: $DailyAt"
+    Write-Host "HealthProfile: $HealthProfile"
+    Write-Host "RunnerArgs: $runnerArgString"
+    exit 0
+}
+
 $action = New-ScheduledTaskAction -Execute "powershell.exe" `
-    -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`"" `
+    -Argument $runnerArgString `
     -WorkingDirectory $workspaceRoot
 
 $parts = $DailyAt -split ":"
@@ -41,7 +80,7 @@ $settings = New-ScheduledTaskSettingsSet `
     -ExecutionTimeLimit (New-TimeSpan -Minutes 60)
 
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
-$description = "Run canon-only singularity chain and mirror outputs to MKM_DATA_VAULT."
+$description = "Run canon-only singularity chain and mirror outputs to MKM_DATA_VAULT. HealthProfile=$HealthProfile MaxFail=$maxFail MinPass=$minPass AllowYellow=$allowYellow"
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
     -Settings $settings -Principal $principal -Description $description -Force | Out-Null
