@@ -18,6 +18,7 @@ const ADMIN_TOKEN = process.env.NO1KMEDI_ADMIN_TOKEN || "NO1KMEDI_2026_xF7pQ2mL9
 const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || "";
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || "openai/gpt-4.1-mini";
+const MKMLIFE_PAYAPP_WEBHOOK_URL = String(process.env.MKMLIFE_PAYAPP_WEBHOOK_URL || "").trim();
 
 /** Same convention as workspace `.env.example`: Ollama OpenAI-compatible endpoint. */
 function deriveLocalLlmUrl() {
@@ -1411,7 +1412,39 @@ app.post("/api/payment/payapp/feedback", async (req, res) => {
       });
     }
     await writeJson(paymentsFile, rows);
-    return res.json({ success: true });
+
+    const webhookUrl =
+      MKMLIFE_PAYAPP_WEBHOOK_URL ||
+      `http://127.0.0.1:${process.env.MKMLIFE_PORT || "3105"}/api/v1/payments/webhook/payapp`;
+    let forward = { attempted: false, ok: false, status: null, body: null };
+    try {
+      forward.attempted = true;
+      const fRes = await fetchWithTimeout(
+        webhookUrl,
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+        8000
+      );
+      const fBody = await fRes.json().catch(() => ({}));
+      forward = {
+        attempted: true,
+        ok: fRes.ok,
+        status: fRes.status,
+        body: fBody,
+      };
+    } catch (error) {
+      forward = {
+        attempted: true,
+        ok: false,
+        status: null,
+        body: { error: String(error?.message || error || "forward_failed") },
+      };
+    }
+
+    return res.json({ success: true, forward, webhook_url: webhookUrl });
   } catch (error) {
     return res.status(500).json({ success: false, error: error.message || "feedback handling failed" });
   }
