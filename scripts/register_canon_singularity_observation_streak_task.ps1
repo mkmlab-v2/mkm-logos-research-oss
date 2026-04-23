@@ -1,19 +1,21 @@
-# Register (or remove) a daily scheduled task for nextday no-touch observation report.
+# Register (or remove) a daily scheduled task for 3-day observation streak report.
 #
 # Usage:
-#   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\register_canon_singularity_nextday_observation_task.ps1
-#   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\register_canon_singularity_nextday_observation_task.ps1 -DailyAt "07:20"
+#   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\register_canon_singularity_observation_streak_task.ps1
+#   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\register_canon_singularity_observation_streak_task.ps1 -DailyAt "07:25" -Window 3
 
 param(
     [switch]$Remove,
-    [string]$TaskName = "MKM_CanonSingularity_NextdayObservation",
-    [string]$DailyAt = "07:20",
+    [string]$TaskName = "MKM_CanonSingularity_ObservationStreak",
+    [string]$DailyAt = "07:25",
+    [int]$Window = 3,
+    [int]$MinPassCount = 3,
     [switch]$PrintOnly
 )
 
 $ErrorActionPreference = "Stop"
 $workspaceRoot = "C:\workspace"
-$builder = Join-Path $workspaceRoot "scripts\core\build_canon_singularity_nextday_observation_report_v1.py"
+$builder = Join-Path $workspaceRoot "scripts\core\build_canon_singularity_observation_streak_report_v1.py"
 
 if ($Remove) {
     Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false -ErrorAction SilentlyContinue
@@ -22,12 +24,13 @@ if ($Remove) {
 }
 
 if (-not (Test-Path -LiteralPath $builder)) {
-    throw "Nextday observation builder not found: $builder"
+    throw "Observation streak builder not found: $builder"
 }
 
 $runnerArgs = @(
     $builder,
-    "--append-history"
+    "--window", "$Window",
+    "--min-pass-count", "$MinPassCount"
 )
 $runnerArgString = ($runnerArgs -join " ")
 
@@ -35,6 +38,8 @@ if ($PrintOnly) {
     Write-Host "PrintOnly: no task registration performed."
     Write-Host "TaskName: $TaskName"
     Write-Host "DailyAt: $DailyAt"
+    Write-Host "Window: $Window"
+    Write-Host "MinPassCount: $MinPassCount"
     Write-Host "RunnerArgs: $runnerArgString"
     exit 0
 }
@@ -45,7 +50,7 @@ $action = New-ScheduledTaskAction -Execute "py.exe" `
 
 $parts = $DailyAt -split ":"
 if ($parts.Count -lt 2) {
-    throw "DailyAt must be HH:mm (e.g. 07:20), got: $DailyAt"
+    throw "DailyAt must be HH:mm (e.g. 07:25), got: $DailyAt"
 }
 $hour = [int]$parts[0]
 $minute = [int]$parts[1]
@@ -60,7 +65,7 @@ $settings = New-ScheduledTaskSettingsSet `
     -ExecutionTimeLimit (New-TimeSpan -Minutes 20)
 
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
-$description = "Build canon nextday no-touch observation report daily with history append."
+$description = "Build canon observation streak report daily. Window=$Window MinPassCount=$MinPassCount"
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
     -Settings $settings -Principal $principal -Description $description -Force | Out-Null

@@ -1,6 +1,6 @@
 {
   "schema": "original_corpus_regime_singularity_canon_nextday_observation_report_v1",
-  "generated_at_utc": "2026-04-23T13:24:03Z",
+  "generated_at_utc": "2026-04-23T13:41:46Z",
   "inputs": {
     "go_no_go_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_promotion_go_no_go_v1.json",
     "freeze_v2_stability_gate_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_strict_baseline_freeze_v2_stability_gate_v1.json",

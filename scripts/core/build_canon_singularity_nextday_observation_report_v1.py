@@ -44,6 +44,12 @@ def _write_md(path: Path, data: dict[str, Any]) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def _append_jsonl(path: Path, row: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as fp:
+        fp.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build nextday no-touch observation report from core operational artifacts.")
     ap.add_argument(
@@ -69,6 +75,15 @@ def main() -> int:
     ap.add_argument(
         "--output-md",
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_nextday_observation_report_v1.md",
+    )
+    ap.add_argument(
+        "--history-jsonl",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_nextday_observation_history_v1.jsonl",
+    )
+    ap.add_argument(
+        "--append-history",
+        action="store_true",
+        help="Append report row into history JSONL.",
     )
     args = ap.parse_args()
 
@@ -99,6 +114,8 @@ def main() -> int:
     }
     _write_json(Path(args.output_json), out)
     _write_md(Path(args.output_md), out)
+    if args.append_history:
+        _append_jsonl(Path(args.history_jsonl), out)
     print(str(args.output_json))
     return 0
 

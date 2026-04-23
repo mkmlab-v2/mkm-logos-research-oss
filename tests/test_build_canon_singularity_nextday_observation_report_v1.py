@@ -13,6 +13,7 @@ def test_build_canon_singularity_nextday_observation_report_v1(tmp_path: Path):
     drift = tmp_path / "drift.json"
     out_json = tmp_path / "report.json"
     out_md = tmp_path / "report.md"
+    hist = tmp_path / "history.jsonl"
     go.write_text(json.dumps({"verdict": "go"}), encoding="utf-8")
     freeze.write_text(json.dumps({"status": "pass"}), encoding="utf-8")
     rehearse.write_text(json.dumps({"ops_alert_summary": {"ops_alert": False}}), encoding="utf-8")
@@ -32,11 +33,16 @@ def test_build_canon_singularity_nextday_observation_report_v1(tmp_path: Path):
         str(out_json),
         "--output-md",
         str(out_md),
+        "--history-jsonl",
+        str(hist),
+        "--append-history",
     ]
     cp = subprocess.run(cmd, check=False, cwd=Path(__file__).resolve().parents[1], capture_output=True, text=True)
     assert cp.returncode == 0
     data = json.loads(out_json.read_text(encoding="utf-8"))
     assert data["schema"] == "original_corpus_regime_singularity_canon_nextday_observation_report_v1"
     assert data["verdict"] == "pass"
+    lines = [x for x in hist.read_text(encoding="utf-8").splitlines() if x.strip()]
+    assert len(lines) == 1
     assert out_md.exists()
 

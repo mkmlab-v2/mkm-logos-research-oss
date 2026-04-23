@@ -1,6 +1,6 @@
 # Canon Nextday Observation Report v1
 
-- generated_at_utc: 2026-04-23T13:24:03Z
+- generated_at_utc: 2026-04-23T13:41:46Z
 - verdict: pass
 
 ## Checks
