@@ -58,6 +58,8 @@ def test_validate_canon_singularity_outputs_v1(tmp_path: Path):
         "10",
         "--output-json",
         str(tmp_path / "gate.json"),
+        "--history-jsonl",
+        str(tmp_path / "history.jsonl"),
     ]
     cp = subprocess.run(cmd, check=False, cwd=Path(__file__).resolve().parents[1], capture_output=True, text=True)
     assert cp.returncode == 0
@@ -65,6 +67,9 @@ def test_validate_canon_singularity_outputs_v1(tmp_path: Path):
     gate = json.loads((tmp_path / "gate.json").read_text(encoding="utf-8"))
     assert gate["schema"] == "original_corpus_regime_singularity_canon_quality_gate_v1"
     assert gate["result"] == "pass"
+    hist = (tmp_path / "history.jsonl").read_text(encoding="utf-8").strip().splitlines()
+    assert len(hist) == 1
+    assert json.loads(hist[0])["result"] == "pass"
 
 
 def test_validate_canon_singularity_outputs_v1_writes_fail_artifact(tmp_path: Path):
@@ -120,6 +125,8 @@ def test_validate_canon_singularity_outputs_v1_writes_fail_artifact(tmp_path: Pa
         "10",
         "--output-json",
         str(gate_path),
+        "--history-jsonl",
+        str(tmp_path / "history_fail.jsonl"),
     ]
     cp = subprocess.run(cmd, check=False, cwd=Path(__file__).resolve().parents[1], capture_output=True, text=True)
     assert cp.returncode == 1
@@ -128,4 +135,7 @@ def test_validate_canon_singularity_outputs_v1_writes_fail_artifact(tmp_path: Pa
     assert gate["schema"] == "original_corpus_regime_singularity_canon_quality_gate_v1"
     assert gate["result"] == "fail"
     assert "canon_rows must be 10" in gate["error"]
+    hist = (tmp_path / "history_fail.jsonl").read_text(encoding="utf-8").strip().splitlines()
+    assert len(hist) == 1
+    assert json.loads(hist[0])["result"] == "fail"
 

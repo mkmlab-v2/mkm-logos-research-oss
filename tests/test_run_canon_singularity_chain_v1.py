@@ -22,4 +22,5 @@ def test_run_canon_singularity_chain_dry_run():
     assert "build_canon_singularity_lane_summary_v1.py --input-json" in out
     assert "validate_canon_singularity_outputs_v1.py --report-json" in out
     assert "--output-json docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_v1.json" in out
+    assert "build_canon_singularity_gate_health_summary_v1.py --history-jsonl" in out
 

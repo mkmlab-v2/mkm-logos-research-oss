@@ -23,6 +23,12 @@ def _write_output(path: Path, data: dict[str, Any]) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def _append_jsonl(path: Path, data: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(data, ensure_ascii=False) + "\n")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Validate canon-only singularity outputs (v1).")
     ap.add_argument(
@@ -43,9 +49,14 @@ def main() -> int:
         "--output-json",
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_v1.json",
     )
+    ap.add_argument(
+        "--history-jsonl",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_history_v1.jsonl",
+    )
     args = ap.parse_args()
 
     out_path = Path(args.output_json)
+    history_path = Path(args.history_jsonl)
     checks = {
         "report_canon_only": False,
         "report_no_dss": False,
@@ -128,6 +139,17 @@ def main() -> int:
                 "checks": checks,
             },
         )
+        _append_jsonl(
+            history_path,
+            {
+                "schema": "original_corpus_regime_singularity_canon_quality_gate_event_v1",
+                "generated_at_utc": base_out["generated_at_utc"],
+                "result": "pass",
+                "error": None,
+                "inputs": base_out["inputs"],
+                "checks": checks,
+            },
+        )
         print("OK: canon singularity outputs validated")
         return 0
     except Exception as e:
@@ -137,6 +159,17 @@ def main() -> int:
                 **base_out,
                 "result": "fail",
                 "error": str(e),
+                "checks": checks,
+            },
+        )
+        _append_jsonl(
+            history_path,
+            {
+                "schema": "original_corpus_regime_singularity_canon_quality_gate_event_v1",
+                "generated_at_utc": base_out["generated_at_utc"],
+                "result": "fail",
+                "error": str(e),
+                "inputs": base_out["inputs"],
                 "checks": checks,
             },
         )
