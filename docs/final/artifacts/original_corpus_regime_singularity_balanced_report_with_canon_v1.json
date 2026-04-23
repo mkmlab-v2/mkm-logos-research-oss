@@ -1,0 +1,615 @@
+{
+  "schema": "original_corpus_regime_singularity_balanced_report_v1",
+  "generated_at_utc": "2026-04-23T01:03:23Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "inputs": {
+    "dss_jsonl": "data/logos/manuscripts/dss_original_only_latest.jsonl",
+    "apocrypha_jsonl": "data/logos/manuscripts/apocrypha_original_only_latest.jsonl",
+    "canon_jsonl": "data/logos/verse_decoded_v2.jsonl",
+    "regime_map_json": "data/regimes/regime_map_btc_ext.json",
+    "quota_per_regime": 12
+  },
+  "counts": {
+    "dss_rows": 48176,
+    "apocrypha_rows": 6090,
+    "canon_rows": 28741,
+    "rows_scanned": 83007,
+    "balanced_unique_rows": 24
+  },
+  "quota_counts": {
+    "bull_pump": 12,
+    "sideways_accumulation": 12,
+    "bear_trend": 12,
+    "capitulation": 12
+  },
+  "per_regime_top": {
+    "bull_pump": [
+      {
+        "row_id": "dss_enriched_0037",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "בני אלהים בני ישראל עליון עמים נחלה גבול"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553047",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "מָצֹוד בנה הַ גָּדֵר רחק הַ חֹק וְ בְּ כֹּל הַ ָנָה הַ אֵלֶּה היה"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553210",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "קֹדֶ הוּא אַל כב אִי עִם אִ ָּה בְּ עִיר הַ מִקְדָּ לְ טמא"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553284",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "לְ עבר עַל הַ פקד בְּ ְבוּעָה הַ בְּרִית קום עַל וְ כֵּן"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553315",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "הַ נדר אֵת כֶּסֶף עֵרֶךְ"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553371",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "אֵל אֶל דָּבָר וְ מע וְ כתב סֵפֶר זִכָּרֹון לְ פָּנֶה לְ יָרֵא אֵל וְ לְ ח ב"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553531",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "בְּ בְּרִית לְ וב לְ אֱמֶת וְ לְ סור מִן כֹּל עָוֶל וְ בין בְּ כֹּל מִ ְפָּט הַ יַחַד וְ אַחַר בְּ בוא לְ עמד לְ פָּנֶה "
+      },
+      {
+        "row_id": "dss_etcbc_line_1553629",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "וְ בְּ רֹא ָבוּעַ לְ מֹועֵד דְּרֹור וְ בְּ כֹּל היה חֹק חרת בְּ לָ ֹון לְ פְּרִי תְּהִלָּה וְ מָנָה ָפָה נ א"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553750",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "חנ ָלֹום עֹולָם נתן לְ וְ מַלְכוּת"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553902",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "כְּ רֶמֶ לְ מ ל בְּ כֹּל בְּ חַכָּה עלה וְ גרר בְּ חֵרֶם"
+      },
+      {
+        "row_id": "dss_etcbc_line_1554066",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "אֲ ֶר בר"
+      },
+      {
+        "row_id": "dss_etcbc_line_1554438",
+        "lane": "dss",
+        "target_regime": "bull_pump",
+        "score": 0.3095720977751874,
+        "state16": 2,
+        "text_preview": "גלה בְּ לֹא מִ ְפָּט מִן רוּחַ"
+      }
+    ],
+    "sideways_accumulation": [
+      {
+        "row_id": "dss_enriched_0037",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "בני אלהים בני ישראל עליון עמים נחלה גבול"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553047",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "מָצֹוד בנה הַ גָּדֵר רחק הַ חֹק וְ בְּ כֹּל הַ ָנָה הַ אֵלֶּה היה"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553210",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "קֹדֶ הוּא אַל כב אִי עִם אִ ָּה בְּ עִיר הַ מִקְדָּ לְ טמא"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553284",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "לְ עבר עַל הַ פקד בְּ ְבוּעָה הַ בְּרִית קום עַל וְ כֵּן"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553315",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "הַ נדר אֵת כֶּסֶף עֵרֶךְ"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553371",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "אֵל אֶל דָּבָר וְ מע וְ כתב סֵפֶר זִכָּרֹון לְ פָּנֶה לְ יָרֵא אֵל וְ לְ ח ב"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553531",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "בְּ בְּרִית לְ וב לְ אֱמֶת וְ לְ סור מִן כֹּל עָוֶל וְ בין בְּ כֹּל מִ ְפָּט הַ יַחַד וְ אַחַר בְּ בוא לְ עמד לְ פָּנֶה "
+      },
+      {
+        "row_id": "dss_etcbc_line_1553629",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "וְ בְּ רֹא ָבוּעַ לְ מֹועֵד דְּרֹור וְ בְּ כֹּל היה חֹק חרת בְּ לָ ֹון לְ פְּרִי תְּהִלָּה וְ מָנָה ָפָה נ א"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553750",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "חנ ָלֹום עֹולָם נתן לְ וְ מַלְכוּת"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553902",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "כְּ רֶמֶ לְ מ ל בְּ כֹּל בְּ חַכָּה עלה וְ גרר בְּ חֵרֶם"
+      },
+      {
+        "row_id": "dss_etcbc_line_1554066",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "אֲ ֶר בר"
+      },
+      {
+        "row_id": "dss_etcbc_line_1554438",
+        "lane": "dss",
+        "target_regime": "sideways_accumulation",
+        "score": 0.41185733598112,
+        "state16": 2,
+        "text_preview": "גלה בְּ לֹא מִ ְפָּט מִן רוּחַ"
+      }
+    ],
+    "bear_trend": [
+      {
+        "row_id": "dss_enriched_0037",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "בני אלהים בני ישראל עליון עמים נחלה גבול"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553047",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "מָצֹוד בנה הַ גָּדֵר רחק הַ חֹק וְ בְּ כֹּל הַ ָנָה הַ אֵלֶּה היה"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553210",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "קֹדֶ הוּא אַל כב אִי עִם אִ ָּה בְּ עִיר הַ מִקְדָּ לְ טמא"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553284",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "לְ עבר עַל הַ פקד בְּ ְבוּעָה הַ בְּרִית קום עַל וְ כֵּן"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553315",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "הַ נדר אֵת כֶּסֶף עֵרֶךְ"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553371",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "אֵל אֶל דָּבָר וְ מע וְ כתב סֵפֶר זִכָּרֹון לְ פָּנֶה לְ יָרֵא אֵל וְ לְ ח ב"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553531",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "בְּ בְּרִית לְ וב לְ אֱמֶת וְ לְ סור מִן כֹּל עָוֶל וְ בין בְּ כֹּל מִ ְפָּט הַ יַחַד וְ אַחַר בְּ בוא לְ עמד לְ פָּנֶה "
+      },
+      {
+        "row_id": "dss_etcbc_line_1553629",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "וְ בְּ רֹא ָבוּעַ לְ מֹועֵד דְּרֹור וְ בְּ כֹּל היה חֹק חרת בְּ לָ ֹון לְ פְּרִי תְּהִלָּה וְ מָנָה ָפָה נ א"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553750",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "חנ ָלֹום עֹולָם נתן לְ וְ מַלְכוּת"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553902",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "כְּ רֶמֶ לְ מ ל בְּ כֹּל בְּ חַכָּה עלה וְ גרר בְּ חֵרֶם"
+      },
+      {
+        "row_id": "dss_etcbc_line_1554066",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "אֲ ֶר בר"
+      },
+      {
+        "row_id": "dss_etcbc_line_1554438",
+        "lane": "dss",
+        "target_regime": "bear_trend",
+        "score": 0.30957209777518746,
+        "state16": 2,
+        "text_preview": "גלה בְּ לֹא מִ ְפָּט מִן רוּחַ"
+      }
+    ],
+    "capitulation": [
+      {
+        "row_id": "dss_enriched_0020",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "יחד עדה"
+      },
+      {
+        "row_id": "dss_etcbc_line_1552978",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "וְ תִּ ְעִים לְ נתן אֵת בְּ יָד נְבוּכַדְנֶאצַּר מֶלֶךְ בָּבֶל"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553033",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "וְ בנה לְ בַּיִת אמן בְּ יִ ְרָאֵל אֲ ֶר לֹא עמד כְּמֹו לְ מִן לְ פָּנֶה וְ עַד"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553129",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "וְ רֹא פֶּתֶן אַכְזָר הַ תַּנִּין הֵם מֶלֶךְ הַ עַם וְ יַיִן הוּא"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553164",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "עֵד לְ פט לְ מות עַל פֶּה אֲ ֶר לֹא מלא יֹום לְ עבר"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553202",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "וְ כֹּל נֶפֶ אָדָם אֲ ֶר נפל אֶל מַיִם מָקֹום מַיִם וְ אֶל מָקֹום"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553212",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "וְ דבר סָרָה כְּ מִ ְפָּט הַ אֹוב וְ הַ יִדְּעֹנִי פט וְ כֹּל אֲ ֶר תעה"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553337",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "אִי הַ יָ ָר בְּ עַיִן וְ בחר אִי בְּ ְרִרוּת לֵב וְ לֹא נזר מִן עַם"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553362",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "לֵב אַיִן לְ חֵלֶק בְּ בַּיִת הַ תֹּורָה כְּ מִ ְפָּט רֵעַ אֲ ֶר וב"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553532",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "הַ כֹּל עַל דָּבָר וְ כְּ אֲ ֶר יצא הַ גֹּורָל עַל עֵצָה הַ רַב קרב אֹו רחק וְ בְּ קרב לְ עֵצָה הַ יַחַד לֹא נגע בְּ טָה"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553540",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "וְ אֵלֶּה הַ מִ ְפָּט אֲ ֶר פט בְּ בְּ מִדְרָ יַחַד עַל פֶּה הַ דָּבָר אִם מצא בְּ אִי אֲ ֶר קר"
+      },
+      {
+        "row_id": "dss_etcbc_line_1553656",
+        "lane": "dss",
+        "target_regime": "capitulation",
+        "score": 0.3187220119951438,
+        "state16": 3,
+        "text_preview": "קֵץ היה וְ אֲנִי לְ אָדָם רִ ְעָה וְ לְ סֹוד בָּ ָר עָוֶל עָוֹן פֶּ ַע חַטָּאת עִם נעויה לֵבָב"
+      }
+    ]
+  },
+  "balanced_union_top": [
+    {
+      "row_id": "dss_enriched_0020",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "יחד עדה"
+    },
+    {
+      "row_id": "dss_etcbc_line_1552978",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "וְ תִּ ְעִים לְ נתן אֵת בְּ יָד נְבוּכַדְנֶאצַּר מֶלֶךְ בָּבֶל"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553033",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "וְ בנה לְ בַּיִת אמן בְּ יִ ְרָאֵל אֲ ֶר לֹא עמד כְּמֹו לְ מִן לְ פָּנֶה וְ עַד"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553129",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "וְ רֹא פֶּתֶן אַכְזָר הַ תַּנִּין הֵם מֶלֶךְ הַ עַם וְ יַיִן הוּא"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553164",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "עֵד לְ פט לְ מות עַל פֶּה אֲ ֶר לֹא מלא יֹום לְ עבר"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553202",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "וְ כֹּל נֶפֶ אָדָם אֲ ֶר נפל אֶל מַיִם מָקֹום מַיִם וְ אֶל מָקֹום"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553212",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "וְ דבר סָרָה כְּ מִ ְפָּט הַ אֹוב וְ הַ יִדְּעֹנִי פט וְ כֹּל אֲ ֶר תעה"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553337",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "אִי הַ יָ ָר בְּ עַיִן וְ בחר אִי בְּ ְרִרוּת לֵב וְ לֹא נזר מִן עַם"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553362",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "לֵב אַיִן לְ חֵלֶק בְּ בַּיִת הַ תֹּורָה כְּ מִ ְפָּט רֵעַ אֲ ֶר וב"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553532",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "הַ כֹּל עַל דָּבָר וְ כְּ אֲ ֶר יצא הַ גֹּורָל עַל עֵצָה הַ רַב קרב אֹו רחק וְ בְּ קרב לְ עֵצָה הַ יַחַד לֹא נגע בְּ טָה"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553540",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "וְ אֵלֶּה הַ מִ ְפָּט אֲ ֶר פט בְּ בְּ מִדְרָ יַחַד עַל פֶּה הַ דָּבָר אִם מצא בְּ אִי אֲ ֶר קר"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553656",
+      "lane": "dss",
+      "target_regime": "capitulation",
+      "score": 0.3187220119951438,
+      "state16": 3,
+      "text_preview": "קֵץ היה וְ אֲנִי לְ אָדָם רִ ְעָה וְ לְ סֹוד בָּ ָר עָוֶל עָוֹן פֶּ ַע חַטָּאת עִם נעויה לֵבָב"
+    },
+    {
+      "row_id": "dss_enriched_0037",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "בני אלהים בני ישראל עליון עמים נחלה גבול"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553047",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "מָצֹוד בנה הַ גָּדֵר רחק הַ חֹק וְ בְּ כֹּל הַ ָנָה הַ אֵלֶּה היה"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553210",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "קֹדֶ הוּא אַל כב אִי עִם אִ ָּה בְּ עִיר הַ מִקְדָּ לְ טמא"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553284",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "לְ עבר עַל הַ פקד בְּ ְבוּעָה הַ בְּרִית קום עַל וְ כֵּן"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553315",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "הַ נדר אֵת כֶּסֶף עֵרֶךְ"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553371",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "אֵל אֶל דָּבָר וְ מע וְ כתב סֵפֶר זִכָּרֹון לְ פָּנֶה לְ יָרֵא אֵל וְ לְ ח ב"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553531",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "בְּ בְּרִית לְ וב לְ אֱמֶת וְ לְ סור מִן כֹּל עָוֶל וְ בין בְּ כֹּל מִ ְפָּט הַ יַחַד וְ אַחַר בְּ בוא לְ עמד לְ פָּנֶה "
+    },
+    {
+      "row_id": "dss_etcbc_line_1553629",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "וְ בְּ רֹא ָבוּעַ לְ מֹועֵד דְּרֹור וְ בְּ כֹּל היה חֹק חרת בְּ לָ ֹון לְ פְּרִי תְּהִלָּה וְ מָנָה ָפָה נ א"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553750",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "חנ ָלֹום עֹולָם נתן לְ וְ מַלְכוּת"
+    },
+    {
+      "row_id": "dss_etcbc_line_1553902",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "כְּ רֶמֶ לְ מ ל בְּ כֹּל בְּ חַכָּה עלה וְ גרר בְּ חֵרֶם"
+    },
+    {
+      "row_id": "dss_etcbc_line_1554066",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "אֲ ֶר בר"
+    },
+    {
+      "row_id": "dss_etcbc_line_1554438",
+      "lane": "dss",
+      "target_regime": "bull_pump",
+      "score": 0.3095720977751874,
+      "state16": 2,
+      "text_preview": "גלה בְּ לֹא מִ ְפָּט מִן רוּחַ"
+    }
+  ],
+  "note": "B-track balanced extraction using independent regime quotas; non-trading."
+}

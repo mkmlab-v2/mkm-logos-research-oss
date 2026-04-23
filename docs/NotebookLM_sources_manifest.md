@@ -139,6 +139,8 @@
 | P1 | `docs/final/NOTEBOOKLM_DSS_APOCRYPHA_BUNDLE_NOTE_command_center_followup_20260327_f.md` | DSS/외경 번들 노트(규칙·인사이트 우선순위) |
 | P2 | `docs/final/DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md` | Frontline closeout 브리핑(위 표 JSON·`_r_ext3` 명명과 불일치 시 **실파일·위 표 우선**) |
 | P2 | `docs/final/artifacts/original_corpus_regime_singularity_balanced_report_v1.json` | 레짐별 할당 특이점 B-track(코사인); A·실매매 합선 금지 |
+| P2 | `docs/final/artifacts/original_corpus_regime_singularity_report_with_canon_v1.json` | DSS+외경+정경(`verse_decoded_v2`) 레짐 공명 스캔; `top_canon_singularities`=정경 레인만 상위 N |
+| P2 | `docs/final/artifacts/original_corpus_regime_singularity_balanced_report_with_canon_v1.json` | 동일 입력에 균형 할당(per-regime quota)·`canon_jsonl` 포함 시 counts.canon_rows |
 | P2 | `docs/final/artifacts/original_singularity_gloss_report_v3.json` | 동일 유니온 행 글로스(v3·코드북 브리지·선택 오버라이드); 번역 확정 아님·[HYPO] 보조 |
 | P2 | `docs/final/artifacts/original_singularity_gloss_report_v4.json` | v3 스택 + 검증 접두 탈형 체인(표면 길이 우선 첫 매핑); 공격적 정규화 금지·[HYPO] 보조 |
 | P2 | `docs/final/artifacts/hebrew_singularity_gloss_overrides_v1.json` | 분석자 오버라이드(단편/DSS 형태 등); [HYPO] |

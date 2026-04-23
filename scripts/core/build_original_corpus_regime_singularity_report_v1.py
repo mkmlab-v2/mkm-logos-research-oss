@@ -106,6 +106,7 @@ def main() -> int:
 
     top_by_regime: dict[str, list[dict[str, Any]]] = {r: [] for r in REGIMES}
     top_global: list[dict[str, Any]] = []
+    top_canon_only: list[dict[str, Any]] = []
     scanned = 0
 
     for lane, row in rows:
@@ -133,6 +134,8 @@ def main() -> int:
         }
         _top_push(top_by_regime[best_regime], base, int(args.top_n))
         _top_push(top_global, base, int(args.top_n))
+        if lane == "canon":
+            _top_push(top_canon_only, base, int(args.top_n))
         scanned += 1
 
     out = {
@@ -154,8 +157,9 @@ def main() -> int:
             "rows_scanned": scanned,
         },
         "top_global_singularities": top_global,
+        "top_canon_singularities": top_canon_only if canon_rows else [],
         "top_by_best_regime": top_by_regime,
-        "note": "B-track geometric resonance scan over original-only corpora; non-trading.",
+        "note": "B-track geometric resonance scan over original-only corpora; non-trading. top_canon_singularities ranks canon lane only (verse_decoded_v2 when passed via --canon-jsonl).",
     }
 
     out_path = Path(args.output_json)

@@ -1,6 +1,6 @@
 {
   "schema": "original_corpus_regime_singularity_report_v1",
-  "generated_at_utc": "2026-04-23T00:56:23Z",
+  "generated_at_utc": "2026-04-23T01:02:55Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "inputs": {
@@ -468,6 +468,458 @@
       "text_preview": "על"
     }
   ],
+  "top_canon_singularities": [
+    {
+      "row_id": "Gen.5.26",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַֽ יְחִ֣י מְתוּשֶׁ֗לַח אַֽחֲרֵי֙ הוֹלִיד֣ וֹ אֶת לֶ֔מֶךְ שְׁתַּ֤יִם וּ שְׁמוֹנִים֙ שָׁנָ֔ה וּ שְׁבַ֥ע מֵא֖וֹת שָׁנָ֑ה ו"
+    },
+    {
+      "row_id": "Gen.5.27",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יִּהְיוּ֙ כָּל יְמֵ֣י מְתוּשֶׁ֔לַח תֵּ֤שַׁע וְ שִׁשִּׁים֙ שָׁנָ֔ה וּ תְשַׁ֥ע מֵא֖וֹת שָׁנָ֑ה וַ יָּמֹֽת"
+    },
+    {
+      "row_id": "Gen.7.19",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ הַ מַּ֗יִם גָּֽבְר֛וּ מְאֹ֥ד מְאֹ֖ד עַל הָ אָ֑רֶץ וַ יְכֻסּ֗וּ כָּל הֶֽ הָרִים֙ הַ גְּבֹהִ֔ים אֲשֶׁר תַּ֖חַת כָּל הַ "
+    },
+    {
+      "row_id": "Gen.10.28",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ אֶת עוֹבָ֥ל וְ אֶת אֲבִֽימָאֵ֖ל וְ אֶת שְׁבָֽא"
+    },
+    {
+      "row_id": "Gen.12.16",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וּ לְ אַבְרָ֥ם הֵיטִ֖יב בַּ עֲבוּרָ֑ הּ וַֽ יְהִי ל֤ וֹ צֹאן וּ בָקָר֙ וַ חֲמֹרִ֔ים וַ עֲבָדִים֙ וּ שְׁפָחֹ֔ת וַ אֲתֹנֹ֖"
+    },
+    {
+      "row_id": "Gen.28.1",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יִּקְרָ֥א יִצְחָ֛ק אֶֽל יַעֲקֹ֖ב וַ יְבָ֣רֶךְ אֹת֑ וֹ וַ יְצַוֵּ֨ הוּ֙ וַ יֹּ֣אמֶר ל֔ וֹ לֹֽא תִקַּ֥ח אִשָּׁ֖ה מִ בְּ"
+    },
+    {
+      "row_id": "Gen.31.11",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יֹּ֨אמֶר אֵלַ֜ י מַלְאַ֧ךְ הָ אֱלֹהִ֛ים בַּ חֲל֖וֹם יַֽעֲקֹ֑ב וָ אֹמַ֖ר הִנֵּֽנִ י"
+    },
+    {
+      "row_id": "Gen.32.13",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ אַתָּ֣ה אָמַ֔רְתָּ הֵיטֵ֥ב אֵיטִ֖יב עִמָּ֑ ךְ וְ שַׂמְתִּ֤י אֶֽת זַרְעֲ ךָ֙ כְּ ח֣וֹל הַ יָּ֔ם אֲשֶׁ֥ר לֹא יִסָּפֵ֖ר "
+    },
+    {
+      "row_id": "Gen.34.18",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יִּֽיטְב֥וּ דִבְרֵי הֶ֖ם בְּ עֵינֵ֣י חֲמ֑וֹר וּ בְ עֵינֵ֖י שְׁכֶ֥ם בֶּן חֲמֽוֹר"
+    },
+    {
+      "row_id": "Gen.35.18",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יְהִ֞י בְּ צֵ֤את נַפְשָׁ הּ֙ כִּ֣י מֵ֔תָה וַ תִּקְרָ֥א שְׁמ֖ וֹ בֶּן אוֹנִ֑י וְ אָבִ֖י ו קָֽרָא ל֥ וֹ בִנְיָמִֽין"
+    },
+    {
+      "row_id": "Gen.36.40",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ֠ אֵלֶּה שְׁמ֞וֹת אַלּוּפֵ֤י עֵשָׂו֙ לְ מִשְׁפְּחֹתָ֔ ם לִ מְקֹמֹתָ֖ ם בִּ שְׁמֹתָ֑ ם אַלּ֥וּף תִּמְנָ֛ע אַלּ֥וּף עַֽל"
+    },
+    {
+      "row_id": "Gen.42.10",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יֹּאמְר֥וּ אֵלָ֖י ו לֹ֣א אֲדֹנִ֑ י וַ עֲבָדֶ֥י ךָ בָּ֖אוּ לִ שְׁבָּר אֹֽכֶל"
+    },
+    {
+      "row_id": "Gen.45.6",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "כִּי זֶ֛ה שְׁנָתַ֥יִם הָ רָעָ֖ב בְּ קֶ֣רֶב הָ אָ֑רֶץ וְ עוֹד֙ חָמֵ֣שׁ שָׁנִ֔ים אֲשֶׁ֥ר אֵין חָרִ֖ישׁ וְ קָצִּֽיר"
+    },
+    {
+      "row_id": "Gen.46.14",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וּ בְנֵ֖י זְבוּלֻ֑ן סֶ֥רֶד וְ אֵל֖וֹן וְ יַחְלְאֵֽל"
+    },
+    {
+      "row_id": "Exod.1.2",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "רְאוּבֵ֣ן שִׁמְע֔וֹן לֵוִ֖י וִ יהוּדָֽה"
+    },
+    {
+      "row_id": "Exod.3.15",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יֹּאמֶר֩ ע֨וֹד אֱלֹהִ֜ים אֶל מֹשֶׁ֗ה כֹּֽה תֹאמַר֮ אֶל בְּנֵ֣י יִשְׂרָאֵל֒ יְהוָ֞ה אֱלֹהֵ֣י אֲבֹתֵי כֶ֗ם אֱלֹהֵ֨י אַב"
+    },
+    {
+      "row_id": "Exod.10.3",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יָּבֹ֨א מֹשֶׁ֣ה וְ אַהֲרֹן֮ אֶל פַּרְעֹה֒ וַ יֹּאמְר֣וּ אֵלָ֗י ו כֹּֽה אָמַ֤ר יְהוָה֙ אֱלֹהֵ֣י הָֽ עִבְרִ֔ים עַד מָתַ"
+    },
+    {
+      "row_id": "Exod.16.29",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "רְא֗וּ כִּֽי יְהוָה֮ נָתַ֣ן לָ כֶ֣ם הַ שַּׁבָּת֒ עַל כֵּ֠ן ה֣וּא נֹתֵ֥ן לָ כֶ֛ם בַּ יּ֥וֹם הַ שִּׁשִּׁ֖י לֶ֣חֶם יוֹמָ֑יִ"
+    },
+    {
+      "row_id": "Exod.25.8",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ עָ֥שׂוּ לִ֖ י מִקְדָּ֑שׁ וְ שָׁכַנְתִּ֖י בְּ תוֹכָֽ ם"
+    },
+    {
+      "row_id": "Exod.26.17",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "שְׁתֵּ֣י יָד֗וֹת לַ קֶּ֨רֶשׁ֙ הָ אֶחָ֔ד מְשֻׁלָּבֹ֔ת אִשָּׁ֖ה אֶל אֲחֹתָ֑ הּ כֵּ֣ן תַּעֲשֶׂ֔ה לְ כֹ֖ל קַרְשֵׁ֥י הַ מִּשׁ"
+    },
+    {
+      "row_id": "Exod.29.36",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וּ פַ֨ר חַטָּ֜את תַּעֲשֶׂ֤ה לַ יּוֹם֙ עַל הַ כִּפֻּרִ֔ים וְ חִטֵּאתָ֙ עַל הַ מִּזְבֵּ֔חַ בְּ כַפֶּרְ ךָ֖ עָלָ֑י ו וּ מָֽ"
+    },
+    {
+      "row_id": "Exod.29.44",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ קִדַּשְׁתִּ֛י אֶת אֹ֥הֶל מוֹעֵ֖ד וְ אֶת הַ מִּזְבֵּ֑חַ וְ אֶת אַהֲרֹ֧ן וְ אֶת בָּנָ֛י ו אֲקַדֵּ֖שׁ לְ כַהֵ֥ן לִֽ י"
+    },
+    {
+      "row_id": "Exod.33.13",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ עַתָּ֡ה אִם נָא֩ מָצָ֨אתִי חֵ֜ן בְּ עֵינֶ֗י ךָ הוֹדִעֵ֤ נִי נָא֙ אֶת דְּרָכֶ֔ ךָ וְ אֵדָ֣עֲ ךָ֔ לְמַ֥עַן אֶמְצָא חֵ֖ן"
+    },
+    {
+      "row_id": "Exod.33.20",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יֹּ֕אמֶר לֹ֥א תוּכַ֖ל לִ רְאֹ֣ת אֶת פָּנָ֑ י כִּ֛י לֹֽא יִרְאַ֥ נִי הָ אָדָ֖ם וָ חָֽי"
+    },
+    {
+      "row_id": "Exod.35.25",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ כָל אִשָּׁ֥ה חַכְמַת לֵ֖ב בְּ יָדֶ֣י הָ טָו֑וּ וַ יָּבִ֣יאוּ מַטְוֶ֗ה אֶֽת הַ תְּכֵ֨לֶת֙ וְ אֶת הָֽ אַרְגָּמָ֔ן אֶת ת"
+    },
+    {
+      "row_id": "Exod.35.33",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וּ בַ חֲרֹ֥שֶׁת אֶ֛בֶן לְ מַלֹּ֖את וּ בַ חֲרֹ֣שֶׁת עֵ֑ץ לַ עֲשׂ֖וֹת בְּ כָל מְלֶ֥אכֶת מַחֲשָֽׁבֶת"
+    },
+    {
+      "row_id": "Exod.36.14",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יַּ֨עַשׂ֙ יְרִיעֹ֣ת עִזִּ֔ים לְ אֹ֖הֶל עַל הַ מִּשְׁכָּ֑ן עַשְׁתֵּֽי עֶשְׂרֵ֥ה יְרִיעֹ֖ת עָשָׂ֥ה אֹתָֽ ם"
+    },
+    {
+      "row_id": "Exod.37.3",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יִּצֹ֣ק ל֗ וֹ אַרְבַּע֙ טַבְּעֹ֣ת זָהָ֔ב עַ֖ל אַרְבַּ֣ע פַּעֲמֹתָ֑י ו וּ שְׁתֵּ֣י טַבָּעֹ֗ת עַל צַלְע וֹ֙ הָֽ אֶחָ֔ת "
+    },
+    {
+      "row_id": "Lev.1.9",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ קִרְבּ֥ וֹ וּ כְרָעָ֖י ו יִרְחַ֣ץ בַּ מָּ֑יִם וְ הִקְטִ֨יר הַ כֹּהֵ֤ן אֶת הַ כֹּל֙ הַ מִּזְבֵּ֔חָ ה עֹלָ֛ה אִשֵּׁ֥ה ר"
+    },
+    {
+      "row_id": "Lev.3.6",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ אִם מִן הַ צֹּ֧אן קָרְבָּנ֛ וֹ לְ זֶ֥בַח שְׁלָמִ֖ים לַ יהוָ֑ה זָכָר֙ א֣וֹ נְקֵבָ֔ה תָּמִ֖ים יַקְרִיבֶֽ נּוּ"
+    },
+    {
+      "row_id": "Lev.3.13",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ סָמַ֤ךְ אֶת יָד וֹ֙ עַל רֹאשׁ֔ וֹ וְ שָׁחַ֣ט אֹת֔ וֹ לִ פְנֵ֖י אֹ֣הֶל מוֹעֵ֑ד וְ֠ זָרְקוּ בְּנֵ֨י אַהֲרֹ֧ן אֶת דָּמ֛ "
+    },
+    {
+      "row_id": "Lev.4.2",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "דַּבֵּ֞ר אֶל בְּנֵ֣י יִשְׂרָאֵ֘ל לֵ אמֹר֒ נֶ֗פֶשׁ כִּֽי תֶחֱטָ֤א בִ שְׁגָגָה֙ מִ כֹּל֙ מִצְוֺ֣ת יְהוָ֔ה אֲשֶׁ֖ר לֹ֣א תֵע"
+    },
+    {
+      "row_id": "Lev.7.10",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ כָל מִנְחָ֥ה בְלוּלָֽה בַ שֶּׁ֖מֶן וַ חֲרֵבָ֑ה לְ כָל בְּנֵ֧י אַהֲרֹ֛ן תִּהְיֶ֖ה אִ֥ישׁ כְּ אָחִֽי ו"
+    },
+    {
+      "row_id": "Lev.13.8",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ רָאָה֙ הַ כֹּהֵ֔ן וְ הִנֵּ֛ה פָּשְׂתָ֥ה הַ מִּסְפַּ֖חַת בָּ ע֑וֹר וְ טִמְּא֥ וֹ הַ כֹּהֵ֖ן צָרַ֥עַת הִֽוא"
+    },
+    {
+      "row_id": "Lev.15.15",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ עָשָׂ֤ה אֹתָ ם֙ הַ כֹּהֵ֔ן אֶחָ֣ד חַטָּ֔את וְ הָ אֶחָ֖ד עֹלָ֑ה וְ כִפֶּ֨ר עָלָ֧י ו הַ כֹּהֵ֛ן לִ פְנֵ֥י יְהוָ֖ה מִ זּ"
+    },
+    {
+      "row_id": "Lev.20.6",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ הַ נֶּ֗פֶשׁ אֲשֶׁ֨ר תִּפְנֶ֤ה אֶל הָֽ אֹבֹת֙ וְ אֶל הַ יִּדְּעֹנִ֔ים לִ זְנ֖וֹת אַחֲרֵי הֶ֑ם וְ נָתַתִּ֤י אֶת פָּנַ י"
+    },
+    {
+      "row_id": "Num.1.24",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "לִ בְנֵ֣י גָ֔ד תּוֹלְדֹתָ֥ ם לְ מִשְׁפְּחֹתָ֖ ם לְ בֵ֣ית אֲבֹתָ֑ ם בְּ מִסְפַּ֣ר שֵׁמ֗וֹת מִ בֶּ֨ן עֶשְׂרִ֤ים שָׁנָה֙ וָ"
+    },
+    {
+      "row_id": "Num.5.30",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "א֣וֹ אִ֗ישׁ אֲשֶׁ֨ר תַּעֲבֹ֥ר עָלָ֛י ו ר֥וּחַ קִנְאָ֖ה וְ קִנֵּ֣א אֶת אִשְׁתּ֑ וֹ וְ הֶעֱמִ֤יד אֶת הָֽ אִשָּׁה֙ לִ פְנֵ֣"
+    },
+    {
+      "row_id": "Num.7.17",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וּ לְ זֶ֣בַח הַ שְּׁלָמִים֮ בָּקָ֣ר שְׁנַיִם֒ אֵילִ֤ם חֲמִשָּׁה֙ עַתּוּדִ֣ים חֲמִשָּׁ֔ה כְּבָשִׂ֥ים בְּנֵֽי שָׁנָ֖ה חֲמִ"
+    },
+    {
+      "row_id": "Num.14.29",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "בַּ מִּדְבָּ֣ר הַ֠ זֶּה יִפְּל֨וּ פִגְרֵי כֶ֜ם וְ כָל פְּקֻדֵי כֶם֙ לְ כָל מִסְפַּרְ כֶ֔ם מִ בֶּ֛ן עֶשְׂרִ֥ים שָׁנָ֖ה וָ"
+    },
+    {
+      "row_id": "Num.18.6",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ אֲנִ֗י הִנֵּ֤ה לָקַ֨חְתִּי֙ אֶת אֲחֵי כֶ֣ם הַ לְוִיִּ֔ם מִ תּ֖וֹךְ בְּנֵ֣י יִשְׂרָאֵ֑ל לָ כֶ֞ם מַתָּנָ֤ה נְתֻנִים֙ לַ"
+    },
+    {
+      "row_id": "Num.18.28",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "כֵּ֣ן תָּרִ֤ימוּ גַם אַתֶּם֙ תְּרוּמַ֣ת יְהוָ֔ה מִ כֹּל֙ מַעְשְׂרֹ֣תֵי כֶ֔ם אֲשֶׁ֣ר תִּקְח֔וּ מֵ אֵ֖ת בְּנֵ֣י יִשְׂרָאֵ֑"
+    },
+    {
+      "row_id": "Num.21.3",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יִּשְׁמַ֨ע יְהוָ֜ה בְּ ק֣וֹל יִשְׂרָאֵ֗ל וַ יִּתֵּן֙ אֶת הַֽ כְּנַעֲנִ֔י וַ יַּחֲרֵ֥ם אֶתְ הֶ֖ם וְ אֶת עָרֵי הֶ֑ם וַ "
+    },
+    {
+      "row_id": "Num.22.15",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יֹּ֥סֶף ע֖וֹד בָּלָ֑ק שְׁלֹ֣חַ שָׂרִ֔ים רַבִּ֥ים וְ נִכְבָּדִ֖ים מֵ אֵֽלֶּה"
+    },
+    {
+      "row_id": "Num.35.20",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ אִם בְּ שִׂנְאָ֖ה יֶהְדָּפֶ֑ נּוּ אֽוֹ הִשְׁלִ֥יךְ עָלָ֛י ו בִּ צְדִיָּ֖ה וַ יָּמֹֽת"
+    },
+    {
+      "row_id": "Num.36.7",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ לֹֽא תִסֹּ֤ב נַחֲלָה֙ לִ בְנֵ֣י יִשְׂרָאֵ֔ל מִ מַּטֶּ֖ה אֶל מַטֶּ֑ה כִּ֣י אִ֗ישׁ בְּ נַחֲלַת֙ מַטֵּ֣ה אֲבֹתָ֔י ו יִדְ"
+    },
+    {
+      "row_id": "Deut.1.28",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "אָנָ֣ה אֲנַ֣חְנוּ עֹלִ֗ים אַחֵי נוּ֩ הֵמַ֨סּוּ אֶת לְבָבֵ֜ נוּ לֵ אמֹ֗ר עַ֣ם גָּד֤וֹל וָ רָם֙ מִמֶּ֔ נּוּ עָרִ֛ים גְּדֹל"
+    },
+    {
+      "row_id": "Deut.2.12",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וּ בְ שֵׂעִ֞יר יָשְׁב֣וּ הַ חֹרִים֮ לְ פָנִים֒ וּ בְנֵ֧י עֵשָׂ֣ו יִֽירָשׁ֗וּ ם וַ יַּשְׁמִידוּ ם֙ מִ פְּנֵי הֶ֔ם וַ יֵּש"
+    },
+    {
+      "row_id": "Deut.2.35",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "רַ֥ק הַ בְּהֵמָ֖ה בָּזַ֣זְנוּ לָ֑ נוּ וּ שְׁלַ֥ל הֶ עָרִ֖ים אֲשֶׁ֥ר לָכָֽדְנוּ"
+    },
+    {
+      "row_id": "Deut.4.17",
+      "lane": "canon",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "תַּבְנִ֕ית כָּל בְּהֵמָ֖ה אֲשֶׁ֣ר בָּ אָ֑רֶץ תַּבְנִית֙ כָּל צִפּ֣וֹר כָּנָ֔ף אֲשֶׁ֥ר תָּע֖וּף בַּ שָּׁמָֽיִם"
+    }
+  ],
   "top_by_best_regime": {
     "bull_pump": [],
     "sideways_accumulation": [
@@ -925,5 +1377,5 @@
     "bear_trend": [],
     "capitulation": []
   },
-  "note": "B-track geometric resonance scan over original-only corpora; non-trading."
+  "note": "B-track geometric resonance scan over original-only corpora; non-trading. top_canon_singularities ranks canon lane only (verse_decoded_v2 when passed via --canon-jsonl)."
 }
