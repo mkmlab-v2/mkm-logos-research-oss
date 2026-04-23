@@ -1,6 +1,6 @@
 # NotebookLM 소스 매니페스트 (A/B 이원)
 
-**작성일**: 2026-03-29 · **갱신**: 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · **LOG_METABOLISM 전용** `MKM_LOG_METABOLISM_REFINERY_V1` · **CORE↔Refinery 격벽 포인터** `NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
+**작성일**: 2026-03-29 · **갱신**: 2026-04-23 (Vault 미러: 원어 특이점 글로스 v3·히브리 오버라이드·`master_codebook_lexicon_v1` **포인터** JSON 추가; 동기화 스크립트 `$SourceFiles` 반영) · 이전 갱신 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · **LOG_METABOLISM 전용** `MKM_LOG_METABOLISM_REFINERY_V1` · **CORE↔Refinery 격벽 포인터** `NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
 **정의**: **A = Fact-Lock(팩트 고정)**, **B = Creative-Lock(통찰·가설)**. B는 본선 OOF·실매매 트리거와 A를 혼선 없이 적용.
 
 **Cursor 3.0 (2026-04)**: NotebookLM과 동일하게 **브리핑·질의·소스 아카이브** 레이어다. **에이전트 병렬(Agents Window)·Design Mode**는 제품 기능이며, **압축 엔진·헌법·실매매 SSOT는 여전히 레포의 `.py`/JSON**이다(`AGENTS.md`, `COMPRESSION_SLA_POLICY_V1.md`).
@@ -138,6 +138,11 @@
 | P1 | `projects/dss-4d-ingest/outputs/unified_frontline_cycle_report_command_center_followup_20260327_f.json` | **디스크에 존재하는** frontline 사이클 JSON. 종료 문서가 인용하는 `…_r_ext3` 가 레포에 없을 때 **본 파일을 SSOT**로 삼음 |
 | P1 | `docs/final/NOTEBOOKLM_DSS_APOCRYPHA_BUNDLE_NOTE_command_center_followup_20260327_f.md` | DSS/외경 번들 노트(규칙·인사이트 우선순위) |
 | P2 | `docs/final/DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md` | Frontline closeout 브리핑(위 표 JSON·`_r_ext3` 명명과 불일치 시 **실파일·위 표 우선**) |
+| P2 | `docs/final/artifacts/original_corpus_regime_singularity_balanced_report_v1.json` | 레짐별 할당 특이점 B-track(코사인); A·실매매 합선 금지 |
+| P2 | `docs/final/artifacts/original_singularity_gloss_report_v3.json` | 동일 유니온 행 글로스(v3·코드북 브리지·선택 오버라이드); 번역 확정 아님·[HYPO] 보조 |
+| P2 | `docs/final/artifacts/original_singularity_gloss_report_v4.json` | v3 스택 + 검증 접두 탈형 체인(표면 길이 우선 첫 매핑); 공격적 정규화 금지·[HYPO] 보조 |
+| P2 | `docs/final/artifacts/hebrew_singularity_gloss_overrides_v1.json` | 분석자 오버라이드(단편/DSS 형태 등); [HYPO] |
+| P2 | `docs/final/artifacts/master_codebook_lexicon_v1_export_pointer_latest.json` | 최신 `master_codebook_lexicon_v1_*_rows_latest.json` 포인터(행 수·atoms 입력 SHA); 대용량 lexicon 본체는 `reports/constitution/btrack_pilot/` |
 
 ### B 보조 — Obsidian Context (Creative-Lock, 로컬 볼트)
 
@@ -157,6 +162,8 @@
 **제외(동기화 스크립트)**: `.obsidian/`, `_cursor_session_staging/` (설정·스테이징 노이즈)
 
 **Vault 미러 출력**: `G:\공유 드라이브\MKM_DATA_VAULT\vault\obsidian_context\` (또는 `MKM_VAULT_ROOT\obsidian_context\`) — `sync_notebooklm_sources_to_mkm_data_vault.ps1 -IncludeObsidianContext`
+
+**소스 경로 오버라이드**: 실제 볼트가 레포 밖이면 환경 변수 `MKM_OBSIDIAN_VAULT_ROOT` 또는 같은 스크립트의 `-ObsidianVaultRoot`로 볼트 루트를 지정한다. 미지정 시 기본은 `<workspace>/memory/obsidian_vault`(`.gitignore`로 클론에 없을 수 있음); 첫 동기 시 해당 경로에 매니페스트 하위 폴더 스텁이 만들어진다.
 
 ---
 

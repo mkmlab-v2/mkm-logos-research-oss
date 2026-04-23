@@ -26,6 +26,11 @@
   Also mirror selected `memory/obsidian_vault` subtrees into `<VaultRoot>/obsidian_context/` as `*.md` only,
   excluding `.obsidian` and `_cursor_session_staging`. SSOT: docs/NotebookLM_sources_manifest.md (B 보조 — Obsidian Context).
 
+.PARAMETER ObsidianVaultRoot
+  Absolute path to the Obsidian vault root (folder that contains `00_Project_Core`, etc.). When omitted, uses env
+  `MKM_OBSIDIAN_VAULT_ROOT` if set; otherwise `<WorkspaceRoot>/memory/obsidian_vault`. If that default path is missing,
+  it is created (stub dirs only) so mirrors do not spam per-folder warnings.
+
 .PARAMETER Strict
   Fail if any listed source path is missing.
 
@@ -42,7 +47,8 @@ param(
     [string]$MirrorSubfolder = "notebooklm_sources",
     [switch]$WhatIf,
     [switch]$Strict,
-    [switch]$IncludeObsidianContext
+    [switch]$IncludeObsidianContext,
+    [string]$ObsidianVaultRoot = ""
 )
 
 if (-not $PSBoundParameters.ContainsKey('VaultRoot')) {
@@ -50,6 +56,16 @@ if (-not $PSBoundParameters.ContainsKey('VaultRoot')) {
     if ($e -and $e.Trim()) {
         $VaultRoot = $e.Trim().TrimEnd('\')
     }
+}
+
+# Obsidian mirror source (vault folder containing manifest subdirs); same pattern as MKM_VAULT_ROOT.
+$obsidianVaultResolved = ""
+if ($PSBoundParameters.ContainsKey('ObsidianVaultRoot') -and $ObsidianVaultRoot.Trim()) {
+    $obsidianVaultResolved = $ObsidianVaultRoot.Trim().TrimEnd('\')
+} elseif ($env:MKM_OBSIDIAN_VAULT_ROOT -and $env:MKM_OBSIDIAN_VAULT_ROOT.Trim()) {
+    $obsidianVaultResolved = $env:MKM_OBSIDIAN_VAULT_ROOT.Trim().TrimEnd('\')
+} else {
+    $obsidianVaultResolved = Join-Path $WorkspaceRoot "memory\obsidian_vault"
 }
 
 $ErrorActionPreference = "Stop"
@@ -104,6 +120,10 @@ $SourceFiles = @(
     "projects\bitcoin-trading\ops\windows-rehearsal\DAILY_EXECUTION_INSIGHT_BRIEF_TEMPLATE.md",
     "docs\final\DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md",
     "docs\final\artifacts\LOGOS_STATE_MAPPING_V1.json",
+    "docs\final\artifacts\LOGOS_STATE_MAPPING_V2.json",
+    "docs\final\artifacts\LOGOS_STATE_MAPPING_TRACKA_GATE_V1.json",
+    "docs\final\artifacts\LOGOS_STATE_MAPPING_DELTA_REPORT_V1.json",
+    "docs\final\artifacts\LOGOS_STATE_MAPPING_RELEASE_GATE_V1.json",
     "docs\final\artifacts\CROSS_REF_DSS_TO_STATES_DRAFT.json",
     "docs\final\artifacts\B_TRACK_HYPOTHESIS_INVENTORY_V1.json",
     "projects\dss-4d-ingest\outputs\unified_frontline_cycle_report_command_center_followup_20260327_f.json",
@@ -161,7 +181,21 @@ $SourceFiles = @(
     "docs\final\NOTEBOOKLM_MKMLIFE_NEWS_QUESTION_STARTER_BUNDLE_2026-04-12.md",
     "docs\final\NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md",
     "docs\final\TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
-    "docs\final\artifacts\news_question_starter_sample_v1.json"
+    "docs\final\artifacts\news_question_starter_sample_v1.json",
+    "docs\final\artifacts\gematria_myeongri_corpus_delta_apocrypha_v1.json",
+    "docs\final\artifacts\gematria_myeongri_corpus_delta_dss_v1.json",
+    "docs\final\artifacts\gematria_myeongri_corpus_delta_unified_summary_v1.json",
+    "docs\final\artifacts\original_corpus_regime_singularity_report_v1.json",
+    "docs\final\artifacts\regime_map_calibration_round2_for_sideways_v1.json",
+    "docs\final\artifacts\regime_map_calibration_round3_balanced_constraints_v1.json",
+    "docs\final\artifacts\regime_map_calibration_round4_mixed_hybrid_v1.json",
+    "docs\final\artifacts\original_corpus_regime_singularity_balanced_report_v1.json",
+    "docs\final\artifacts\btrack_balanced_regime_eval_latest.json",
+    "docs\final\artifacts\btrack_balanced_regime_eval_baseline_v1.json",
+    "docs\final\artifacts\original_singularity_gloss_report_v3.json",
+    "docs\final\artifacts\original_singularity_gloss_report_v4.json",
+    "docs\final\artifacts\hebrew_singularity_gloss_overrides_v1.json",
+    "docs\final\artifacts\master_codebook_lexicon_v1_export_pointer_latest.json"
 )
 
 $SourceDirs = @(
@@ -248,23 +282,47 @@ foreach ($rel in $SourceDirs) {
 
 # Optional: Obsidian -> <VaultRoot>/obsidian_context (*.md only; see NotebookLM_sources_manifest.md)
 if ($IncludeObsidianContext) {
-    $obsPrefix = "memory\obsidian_vault\"
-    $ObsidianRelDirs = @(
-        "memory\obsidian_vault\00_Project_Core",
-        "memory\obsidian_vault\raw_research",
-        "memory\obsidian_vault\OPS",
-        "memory\obsidian_vault\SPIRIT",
-        "memory\obsidian_vault\TRADING",
-        "memory\obsidian_vault\CODING",
-        "memory\obsidian_vault\RESEARCH",
-        "memory\obsidian_vault\LOGIC",
-        "memory\obsidian_vault\KNOWLEDGE"
+    $ObsidianSubdirs = @(
+        "00_Project_Core",
+        "raw_research",
+        "OPS",
+        "SPIRIT",
+        "TRADING",
+        "CODING",
+        "RESEARCH",
+        "LOGIC",
+        "KNOWLEDGE"
     )
     $obsidianDestRoot = Join-Path $VaultRoot "obsidian_context"
-    $obsidianVaultRoot = Join-Path $WorkspaceRoot "memory\obsidian_vault"
+    $defaultWsObsidianVault = Join-Path $WorkspaceRoot "memory\obsidian_vault"
     $notebookLmRootMds = @()
-    if (Test-Path -LiteralPath $obsidianVaultRoot) {
-        $notebookLmRootMds = @(Get-ChildItem -LiteralPath $obsidianVaultRoot -Filter "NotebookLM*.md" -File -ErrorAction SilentlyContinue)
+
+    if (-not (Test-Path -LiteralPath $obsidianVaultResolved)) {
+        if ($obsidianVaultResolved -eq $defaultWsObsidianVault) {
+            New-Item -ItemType Directory -Path $obsidianVaultResolved -Force | Out-Null
+            foreach ($sd in $ObsidianSubdirs) {
+                $sdPath = Join-Path $obsidianVaultResolved $sd
+                if (-not (Test-Path -LiteralPath $sdPath)) {
+                    New-Item -ItemType Directory -Path $sdPath -Force | Out-Null
+                }
+            }
+        } else {
+            Write-Warning "Obsidian vault root not found (set MKM_OBSIDIAN_VAULT_ROOT or -ObsidianVaultRoot): $obsidianVaultResolved — skipping Obsidian context mirror."
+        }
+    }
+
+    # Partial clone: vault root exists but manifest subdirs missing — fill stubs only under workspace default path.
+    if ((Test-Path -LiteralPath $obsidianVaultResolved) -and ($obsidianVaultResolved -eq $defaultWsObsidianVault)) {
+        foreach ($sd in $ObsidianSubdirs) {
+            $sdPath = Join-Path $obsidianVaultResolved $sd
+            if (-not (Test-Path -LiteralPath $sdPath)) {
+                New-Item -ItemType Directory -Path $sdPath -Force | Out-Null
+            }
+        }
+    }
+
+    if (Test-Path -LiteralPath $obsidianVaultResolved) {
+        $notebookLmRootMds = @(Get-ChildItem -LiteralPath $obsidianVaultResolved -Filter "NotebookLM*.md" -File -ErrorAction SilentlyContinue)
     }
 
     if (-not $WhatIf) {
@@ -277,14 +335,11 @@ if ($IncludeObsidianContext) {
         }
     }
 
-    foreach ($rel in $ObsidianRelDirs) {
-        $src = Join-Path $WorkspaceRoot $rel
+    foreach ($short in $ObsidianSubdirs) {
+        $src = Join-Path $obsidianVaultResolved $short
         if (-not (Test-Path -LiteralPath $src)) {
-            Write-Warning "Obsidian context skip missing dir: $rel"
             continue
         }
-        if (-not $rel.StartsWith($obsPrefix)) { continue }
-        $short = $rel.Substring($obsPrefix.Length)
         $dest = Join-Path $obsidianDestRoot $short
         if ($WhatIf) {
             Write-Host "[WhatIf] OBSIDIAN_MD $src -> $dest (*.md /S, exclude .obsidian, _cursor_session_staging)"
@@ -297,7 +352,7 @@ if ($IncludeObsidianContext) {
         $null = & robocopy $src $dest *.md /S /XD .obsidian _cursor_session_staging /R:1 /W:1 /NFL /NDL /NJH /NJS /NP
         $rc = $LASTEXITCODE
         if ($rc -gt 7) {
-            throw "robocopy failed for Obsidian dir '$rel' with exit code $rc"
+            throw "robocopy failed for Obsidian dir '$short' with exit code $rc"
         }
         $obsidianCopied++
     }
@@ -319,7 +374,7 @@ if ($IncludeObsidianContext) {
         $obsidianCopied++
     }
 
-    Write-Host "Obsidian context mirror -> $obsidianDestRoot (operations=$obsidianCopied)"
+    Write-Host "Obsidian context mirror -> $obsidianDestRoot (source=$obsidianVaultResolved operations=$obsidianCopied)"
 }
 
 $stampLines = @(
@@ -330,6 +385,7 @@ $stampLines = @(
     "Copied operations: $copied",
     "Skipped (missing): $skipped",
     "IncludeObsidianContext: $IncludeObsidianContext",
+    "ObsidianVaultRoot: $obsidianVaultResolved",
     "Obsidian context operations: $obsidianCopied"
 )
 $stampText = ($stampLines -join "`n") + "`n"
