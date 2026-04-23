@@ -142,6 +142,7 @@
 | P2 | `docs/final/artifacts/original_corpus_regime_singularity_report_with_canon_v1.json` | DSS+외경+정경(`verse_decoded_v2`) 레짐 공명 스캔; `top_canon_singularities`=정경 레인만 상위 N |
 | P2 | `docs/final/artifacts/original_corpus_regime_singularity_balanced_report_with_canon_v1.json` | 동일 입력에 균형 할당(per-regime quota)·`canon_jsonl` 포함 시 counts.canon_rows |
 | P2 | `docs/final/artifacts/original_corpus_regime_singularity_canon_only_v1.json` | 정경 전용(`--canon-only`) 레짐 공명 스캔; DSS/외경 로딩 없이 canon lane만 계산 |
+| P2 | `docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json` | 정경 lane 가독 요약(top/global + regime별 상위); 특이점 원본 리포트의 파생 산출물 |
 | P2 | `docs/final/artifacts/original_corpus_regime_singularity_balanced_canon_only_v1.json` | 정경 전용(`--canon-only`) 균형 할당(per-regime quota) 결과 |
 | P2 | `docs/final/artifacts/original_singularity_gloss_report_v3.json` | 동일 유니온 행 글로스(v3·코드북 브리지·선택 오버라이드); 번역 확정 아님·[HYPO] 보조 |
 | P2 | `docs/final/artifacts/original_singularity_gloss_report_v4.json` | v3 스택 + 검증 접두 탈형 체인(표면 길이 우선 첫 매핑); 공격적 정규화 금지·[HYPO] 보조 |
