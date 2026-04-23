@@ -9,8 +9,31 @@ param(
 $ErrorActionPreference = "Stop"
 
 function Get-TaskSnapshot([string]$TaskName) {
-    schtasks /Query /TN $TaskName /V /FO LIST > $null 2>&1
-    if ($LASTEXITCODE -ne 0) {
+    # Prefer ScheduledTasks cmdlets to avoid locale-dependent parsing from schtasks output.
+    try {
+        $queryName = $TaskName
+        $queryPath = "\"
+        if ($TaskName -match "^\\") {
+            $trimmed = $TaskName.TrimStart("\")
+            $idx = $trimmed.LastIndexOf("\")
+            if ($idx -ge 0) {
+                $queryPath = "\" + $trimmed.Substring(0, $idx + 1)
+                $queryName = $trimmed.Substring($idx + 1)
+            } else {
+                $queryName = $trimmed
+            }
+        }
+        $task = Get-ScheduledTask -TaskName $queryName -TaskPath $queryPath -ErrorAction Stop
+        $info = Get-ScheduledTaskInfo -TaskName $queryName -TaskPath $queryPath -ErrorAction Stop
+        return @{
+            task_name = $TaskName
+            exists = $true
+            status = [string]$task.State
+            next_run_time = [string]$info.NextRunTime
+            last_result = [string]$info.LastTaskResult
+        }
+    }
+    catch {
         return @{
             task_name = $TaskName
             exists = $false
@@ -18,18 +41,6 @@ function Get-TaskSnapshot([string]$TaskName) {
             next_run_time = ""
             last_result = ""
         }
-    }
-
-    $raw = schtasks /Query /TN $TaskName /V /FO LIST
-    $statusLine = ($raw | Select-String "^Status:\s+" | Select-Object -First 1).ToString()
-    $nextRunLine = ($raw | Select-String "^Next Run Time:\s+" | Select-Object -First 1).ToString()
-    $lastResultLine = ($raw | Select-String "^Last Result:\s+" | Select-Object -First 1).ToString()
-    return @{
-        task_name = $TaskName
-        exists = $true
-        status = ($statusLine -replace "^Status:\s+", "").Trim()
-        next_run_time = ($nextRunLine -replace "^Next Run Time:\s+", "").Trim()
-        last_result = ($lastResultLine -replace "^Last Result:\s+", "").Trim()
     }
 }
 

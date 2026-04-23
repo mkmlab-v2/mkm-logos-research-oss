@@ -1,21 +1,27 @@
 {
     "schema":  "showroom_public_bundle_v1",
-    "generated_at_utc":  "2026-04-13T15:17:05.3864221+00:00",
+    "generated_at_utc":  "2026-04-23T01:32:47.2165695+00:00",
     "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1",
     "sources":  {
-                    "c2_guardrail_status":  "C:\\workspace\\docs\\final\\artifacts\\c2_aegis_guardrail_status_latest.json",
+                    "trade_window_24h":  "C:\\workspace\\projects\\bitcoin-trading\\exports\\cursor_trade_history\\all_trades_latest_24h.json",
                     "runtime_health":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\ops\\runtime_health_latest.json",
+                    "c2_guardrail_status":  "C:\\workspace\\docs\\final\\artifacts\\c2_aegis_guardrail_status_latest.json",
+                    "daemon_status":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\status\\trading_daemon_status.json",
+                    "trading_state":  "C:\\workspace\\projects\\bitcoin-trading\\logs\\trading_state.json",
                     "ops_fusion_status":  "C:\\workspace\\docs\\final\\artifacts\\ops_fusion_cycle_status_latest.json"
                 },
     "observability":  {
-                          "public_pnl_pct_mode":  "unavailable_no_metrics",
+                          "context_stale":  false,
+                          "context_age_seconds":  999,
                           "direction_abstract":  "flat",
                           "c2_signal_lamp":  "GREEN",
                           "runtime_overall_ok":  true,
                           "ops_fusion_overall_ok":  true,
                           "unified_score_balanced":  0.40342,
+                          "public_pnl_pct_mode":  "unavailable_no_metrics",
                           "direction_source":  "c2",
-                          "snapshot_as_of_utc":  "2026-04-13T15:17:04Z",
+                          "context_ttl_seconds":  14400,
+                          "snapshot_as_of_utc":  "2026-04-23T01:16:08Z",
                           "c2_status":  "GREEN_HOLD"
                       },
     "public_ui":  {
@@ -32,22 +38,42 @@
                       "unified_score_balanced":  0.40342
                   },
     "public_event_v1":  {
-                            "timestamp":  "2026-04-13T15:17:05.3864221+00:00",
+                            "timestamp":  "2026-04-23T01:32:47.2165695+00:00",
                             "active_character_id":  "dragon_quant",
                             "risk_level":  "INFO",
                             "public_signal_direction":  "HOLD",
-                            "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice.",
+                            "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice. | signal=HOLD/LOCKED | regime=unknown",
                             "schema_version":  "public-event.v1",
-                            "event_id":  "showroom-20260413T151705-c711069a",
+                            "event_id":  "showroom-20260423T013247-01509382",
                             "source":  "ops_showroom_bundle_v1",
                             "system_status":  "online",
                             "active_strategies_count":  1,
                             "delayed_metrics":  {
                                                     "delay_seconds":  180,
-                                                    "as_of_utc":  "2026-04-13T15:17:04Z"
+                                                    "as_of_utc":  "2026-04-23T01:16:08Z"
                                                 },
                             "direction_abstract":  "flat",
                             "disclaimer_ref":  "jemaai_showroom_v1",
-                            "last_ok_utc":  "2026-04-13T15:17:05.3864221+00:00"
+                            "last_ok_utc":  "2026-04-23T01:32:47.2165695+00:00",
+                            "order_summary_public":  {
+                                                         "trades_24h_count":  35,
+                                                         "latest_trade_utc":  "2026-04-23T00:11:25.0850000+00:00",
+                                                         "latest_trade_side":  "SELL",
+                                                         "successful_trades_all":  0,
+                                                         "failed_trades_all":  0
+                                                     },
+                            "signal_gate_public":  {
+                                                       "signal_total_count":  1,
+                                                       "last_signal_utc":  "2026-04-23T10:31:29",
+                                                       "integrated_signal":  "HOLD",
+                                                       "integrated_confidence":  0.49,
+                                                       "singular_action":  "LOCKED",
+                                                       "singular_decision":  "HOLD",
+                                                       "singular_reason":  "score_inside_locked_band",
+                                                       "warning_level":  "NORMAL",
+                                                       "regime_defense_mode":  false,
+                                                       "regime_id":  "unknown",
+                                                       "lock_reason":  "MIN_CONFIDENCE(0.49\u003c0.52)"
+                                                   }
                         }
 }

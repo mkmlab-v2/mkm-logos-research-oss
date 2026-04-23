@@ -82,6 +82,9 @@ $c2Path = Join-Path $root "docs\final\artifacts\c2_aegis_guardrail_status_latest
 $fusionPath = Join-Path $root "docs\final\artifacts\ops_fusion_cycle_status_latest.json"
 $runtimePath = Join-Path $root "projects\bitcoin-trading\memory\v2\ops\runtime_health_latest.json"
 $privateMetricsPath = Join-Path $root "projects\bitcoin-trading\memory\v2\public\public_trading_metrics_latest.json"
+$tradeWindowPath = Join-Path $root "projects\bitcoin-trading\exports\cursor_trade_history\all_trades_latest_24h.json"
+$daemonStatusPath = Join-Path $root "projects\bitcoin-trading\memory\v2\status\trading_daemon_status.json"
+$tradingStatePath = Join-Path $root "projects\bitcoin-trading\logs\trading_state.json"
 $baselineCandidate = Join-Path $root "projects\bitcoin-trading\memory\v2\ops\showroom_equity_baseline_usdt.local.json"
 $autoBaselinePath = Join-Path $root "projects\bitcoin-trading\memory\v2\ops\showroom_equity_baseline_auto.json"
 
@@ -89,6 +92,9 @@ $c2 = Read-JsonFile -Path $c2Path
 $fusion = Read-JsonFile -Path $fusionPath
 $runtime = Read-JsonFile -Path $runtimePath
 $priv = Read-JsonFile -Path $privateMetricsPath
+$tradeWindow = Read-JsonFile -Path $tradeWindowPath
+$daemonStatus = Read-JsonFile -Path $daemonStatusPath
+$tradingState = Read-JsonFile -Path $tradingStatePath
 
 $generatedUtc = ([DateTimeOffset]::UtcNow).ToString("o")
 $c2Status = if ($c2 -and $c2.status) { [string]$c2.status } else { "UNKNOWN" }
@@ -116,6 +122,25 @@ if ($c2 -and $c2.generated_at_utc) { $c2AsOf = [string]$c2.generated_at_utc }
 
 $asOf = $c2AsOf
 if ([string]::IsNullOrWhiteSpace($asOf)) { $asOf = $generatedUtc }
+
+$contextTtlSec = 14400
+try {
+    $ttlRaw = [Environment]::GetEnvironmentVariable("SHOWROOM_CONTEXT_TTL_SECONDS", "Process")
+    if (-not [string]::IsNullOrWhiteSpace($ttlRaw)) {
+        $contextTtlSec = [int]$ttlRaw
+    }
+} catch {}
+if ($contextTtlSec -lt 300) { $contextTtlSec = 300 }
+
+$contextAgeSec = $null
+$contextStale = $false
+try {
+    $asOfDt = [DateTimeOffset]::Parse($asOf)
+    $contextAgeSec = [math]::Max(0, [int]([DateTimeOffset]::UtcNow - $asOfDt).TotalSeconds)
+    $contextStale = ($contextAgeSec -gt $contextTtlSec)
+} catch {
+    $contextStale = $true
+}
 
 $delaySec = 180
 $baselineUsdt = $null
@@ -209,6 +234,125 @@ if ($dirSource -eq "account" -or $dirSource -eq "auto_account") {
 
 $lamp = Get-C2SignalLamp -Status $c2Status
 
+$tradeCount24h = 0
+$latestTradeTs = $null
+$latestTradeSide = "unknown"
+if ($tradeWindow -and $tradeWindow.counts -and $tradeWindow.counts.total -ne $null) {
+    $tradeCount24h = [int]$tradeWindow.counts.total
+}
+if ($tradeWindow) {
+    $allTrades = @()
+    if ($tradeWindow.control) { $allTrades += @($tradeWindow.control) }
+    if ($tradeWindow.treatment) { $allTrades += @($tradeWindow.treatment) }
+    if ($allTrades.Count -gt 0) {
+        $tsKeys = @("timestamp","ts","time","created_at","updated_at","entry_time","exit_time","opened_at","closed_at","event_time","signal_time")
+        $sideKeys = @("side","position_side","signal","direction","action")
+        $best = $null
+        $bestDt = $null
+        foreach ($t in $allTrades) {
+            foreach ($k in $tsKeys) {
+                if ($t.PSObject.Properties.Name -contains $k -and $t.$k) {
+                    try {
+                        $d = [DateTimeOffset]::Parse([string]$t.$k)
+                        if ($null -eq $bestDt -or $d -gt $bestDt) {
+                            $bestDt = $d
+                            $best = $t
+                        }
+                    } catch {}
+                    break
+                }
+            }
+        }
+        if ($bestDt) { $latestTradeTs = $bestDt.ToString("o") }
+        if ($best) {
+            foreach ($k in $sideKeys) {
+                if ($best.PSObject.Properties.Name -contains $k -and $best.$k) {
+                    $latestTradeSide = [string]$best.$k
+                    break
+                }
+            }
+        }
+    }
+}
+$recentFillsCount = $null
+$positionSide = $null
+if ($tradingState -and $tradingState.startup_reconcile) {
+    if ($tradingState.startup_reconcile.recent_fills_count -ne $null) {
+        $recentFillsCount = [int]$tradingState.startup_reconcile.recent_fills_count
+    }
+    if ($tradingState.startup_reconcile.position_side) {
+        $positionSide = [string]$tradingState.startup_reconcile.position_side
+    }
+}
+if ($tradeCount24h -le 0 -and $null -ne $recentFillsCount -and $recentFillsCount -gt 0) {
+    $tradeCount24h = $recentFillsCount
+}
+if (($latestTradeSide -eq "unknown" -or [string]::IsNullOrWhiteSpace($latestTradeSide)) -and -not [string]::IsNullOrWhiteSpace($positionSide)) {
+    $latestTradeSide = $positionSide
+}
+$successfulTrades = $null
+$failedTrades = $null
+if ($daemonStatus) {
+    if ($daemonStatus.successful_trades -ne $null) { $successfulTrades = [int]$daemonStatus.successful_trades }
+    if ($daemonStatus.failed_trades -ne $null) { $failedTrades = [int]$daemonStatus.failed_trades }
+}
+if (($null -eq $successfulTrades -or $successfulTrades -le 0) -and $null -ne $recentFillsCount -and $recentFillsCount -gt 0) {
+    $successfulTrades = $recentFillsCount
+}
+
+$signalTotalCount = 0
+$lastSignalUtc = $null
+$integratedSignal = "HOLD"
+$integratedConfidence = $null
+$minConfidence = 0.52
+$singularAction = "LOCKED"
+$singularDecision = "HOLD"
+$singularReason = "unknown"
+$singularScore = $null
+$warningLevel = "NORMAL"
+$regimeDefenseMode = $false
+$regimeId = "unknown"
+if ($tradingState) {
+    if ($tradingState.signal_total_count -ne $null) {
+        $signalTotalCount = [int]$tradingState.signal_total_count
+    }
+    if ($tradingState.last_signal_summary) {
+        $lss = $tradingState.last_signal_summary
+        if ($lss.timestamp) { $lastSignalUtc = [string]$lss.timestamp }
+        if ($lss.integrated_signal) { $integratedSignal = [string]$lss.integrated_signal }
+        if ($lss.integrated_confidence -ne $null) { $integratedConfidence = [double]$lss.integrated_confidence }
+        if ($lss.singular_action) { $singularAction = [string]$lss.singular_action }
+        if ($lss.singular_decision) { $singularDecision = [string]$lss.singular_decision }
+        if ($lss.singular_reason) { $singularReason = [string]$lss.singular_reason }
+        if ($lss.singular_score -ne $null) { $singularScore = [double]$lss.singular_score }
+        if ($lss.warning_level) { $warningLevel = [string]$lss.warning_level }
+        if ($lss.regime_defense_mode -ne $null) { $regimeDefenseMode = [bool]$lss.regime_defense_mode }
+        if ($lss.regime_id) { $regimeId = [string]$lss.regime_id }
+    }
+}
+$lockReason = "NONE"
+if ($signalTotalCount -le 0) {
+    $lockReason = "WARMUP"
+} elseif ($regimeDefenseMode) {
+    $lockReason = "REGIME_DEFENSE"
+} elseif ([string]$warningLevel -eq "CRITICAL") {
+    $lockReason = "RISK_GUARD"
+} elseif ($null -ne $integratedConfidence -and [double]$integratedConfidence -lt $minConfidence) {
+    $lockReason = ("MIN_CONFIDENCE({0:0.00}<{1:0.00})" -f [double]$integratedConfidence, $minConfidence)
+} elseif ([string]$singularAction -eq "LOCKED") {
+    if (-not [string]::IsNullOrWhiteSpace($singularReason) -and $singularReason -ne "unknown") {
+        if ($null -ne $singularScore) {
+            $lockReason = ("SINGULAR_HOLD({0};score={1:0.00})" -f $singularReason, [double]$singularScore)
+        } else {
+            $lockReason = "SINGULAR_HOLD:" + $singularReason
+        }
+    } else {
+        $lockReason = "SINGULAR_HOLD"
+    }
+} elseif ([string]$integratedSignal -eq "HOLD") {
+    $lockReason = "INTEGRATED_HOLD"
+}
+
 # Machine-readable UI tokens only (Korean copy ships in public_showroom_poll.html — avoids PS1 encoding issues on Windows).
 $publicUi = [ordered]@{
     schema                         = "showroom_public_ui_v1"
@@ -237,8 +381,12 @@ $abstract = "C2=$c2Status | exploratory monitor | no investment advice."
 if ($null -ne $score) {
     $abstract = "C2=$c2Status | score_obs=$([math]::Round($score, 5)) | exploratory monitor | no investment advice."
 }
+if ($signalTotalCount -gt 0) {
+    $abstract = "$abstract | signal=$integratedSignal/$singularAction | regime=$regimeId"
+}
 
 $sys = Get-SystemStatus -RuntimeOk $runtimeOk -FusionOk $fusionOk
+if ($contextStale) { $sys = "degraded" }
 $eventId = "showroom-{0}-{1}" -f ([DateTimeOffset]::UtcNow.ToString("yyyyMMddTHHmmss")), ([guid]::NewGuid().ToString("N").Substring(0, 8))
 
 $publicEvent = [ordered]@{
@@ -256,6 +404,32 @@ $publicEvent = [ordered]@{
     direction_abstract       = $dirAbs
     disclaimer_ref           = "jemaai_showroom_v1"
     last_ok_utc              = $generatedUtc
+    order_summary_public     = [ordered]@{
+        trades_24h_count      = $tradeCount24h
+        latest_trade_utc      = $latestTradeTs
+        latest_trade_side     = $latestTradeSide
+        successful_trades_all = $successfulTrades
+        failed_trades_all     = $failedTrades
+    }
+    signal_gate_public       = [ordered]@{
+        signal_total_count    = $signalTotalCount
+        last_signal_utc       = $lastSignalUtc
+        integrated_signal     = $integratedSignal
+        integrated_confidence = $integratedConfidence
+        singular_action       = $singularAction
+        singular_decision     = $singularDecision
+        singular_reason       = $singularReason
+        warning_level         = $warningLevel
+        regime_defense_mode   = $regimeDefenseMode
+        regime_id             = $regimeId
+        lock_reason           = $lockReason
+    }
+}
+
+if ($contextStale) {
+    $publicEvent.risk_level = "WARNING"
+    $publicEvent.public_signal_direction = "HOLD"
+    $publicEvent.abstract_reason = "context_stale_age=${contextAgeSec}s | fallback_hold | no investment advice."
 }
 
 foreach ($k in $delayed.Keys) {
@@ -270,6 +444,9 @@ $bundle = [ordered]@{
         c2_guardrail_status = $c2Path
         ops_fusion_status     = $fusionPath
         runtime_health        = $runtimePath
+        trade_window_24h      = $tradeWindowPath
+        daemon_status         = $daemonStatusPath
+        trading_state         = $tradingStatePath
     }
     observability        = @{
         unified_score_balanced = $score
@@ -280,6 +457,9 @@ $bundle = [ordered]@{
         ops_fusion_overall_ok   = $fusionOk
         runtime_overall_ok      = $runtimeOk
         snapshot_as_of_utc      = $asOf
+        context_age_seconds     = $contextAgeSec
+        context_ttl_seconds     = $contextTtlSec
+        context_stale           = $contextStale
         public_pnl_pct_mode     = $(if ($null -ne $pnlPct) { "equity_vs_baseline_" + $baselineMode } else { "unavailable_no_metrics" })
     }
     public_ui            = $publicUi

@@ -47,6 +47,16 @@ function Write-Log([string]$message) {
     Write-Host $line
 }
 
+function Get-EnvAnyScope([string]$Name) {
+    $p = [Environment]::GetEnvironmentVariable($Name, "Process")
+    if (-not [string]::IsNullOrWhiteSpace($p)) { return [string]$p }
+    $u = [Environment]::GetEnvironmentVariable($Name, "User")
+    if (-not [string]::IsNullOrWhiteSpace($u)) { return [string]$u }
+    $m = [Environment]::GetEnvironmentVariable($Name, "Machine")
+    if (-not [string]::IsNullOrWhiteSpace($m)) { return [string]$m }
+    return ""
+}
+
 function Get-DaemonProcesses {
     # Do not filter Win32_Process.Name='python.exe' here: some shells report differently;
     # match by script path in CommandLine only.
@@ -54,8 +64,9 @@ function Get-DaemonProcesses {
         Where-Object {
             $_.CommandLine -and
             ($_.CommandLine -match 'start_24h_daemon\.py') -and
-            # Exclude launcher wrapper process (py.exe) to avoid false duplicate detection.
-            ($_.Name -ne 'py.exe')
+            # Exclude launcher/wrapper shells to avoid false duplicate detection.
+            # Actual daemon owner is the long-running python process.
+            ($_.Name -notin @('py.exe', 'cmd.exe'))
         }
 }
 
@@ -82,8 +93,29 @@ function Start-Daemon {
         Write-Log "Fact-Safe risk sync skipped (prophecy/script missing)"
     }
 
-    Write-Log "Starting daemon process"
-    Start-Process -FilePath "py" -ArgumentList $daemonArg -WorkingDirectory $projectRoot -WindowStyle Hidden
+    # Local default guardrail:
+    # - Keep daemon in testnet + non-trading mode unless user explicitly allows live mode.
+    # - This prevents accidental live orders after reboot/logon auto-recovery.
+    # - hold_shadow: mainnet observation only (matches promotion gate hold_shadow recommendation).
+    $allowLive = Get-EnvAnyScope -Name "ALLOW_LIVE_TRADING_ON_LOCAL"
+    $holdShadow = Get-EnvAnyScope -Name "LOCAL_DAEMON_HOLD_SHADOW"
+    if ($allowLive -eq "1") {
+        Write-Log "Starting daemon process (LOCAL LIVE MODE ALLOWED)"
+        $liveCommand = "set TESTNET=false&& set ENABLE_TRADING=true&& py $daemonArg"
+        Start-Process -FilePath "cmd.exe" -ArgumentList @("/c", $liveCommand) -WorkingDirectory $projectRoot -WindowStyle Hidden
+        return
+    }
+
+    if ($holdShadow -eq "1") {
+        Write-Log "Starting daemon process (HOLD_SHADOW: TESTNET=false, ENABLE_TRADING=false)"
+        $holdShadowCommand = "set TESTNET=false&& set ENABLE_TRADING=false&& py $daemonArg"
+        Start-Process -FilePath "cmd.exe" -ArgumentList @("/c", $holdShadowCommand) -WorkingDirectory $projectRoot -WindowStyle Hidden
+        return
+    }
+
+    $safeCommand = "set TESTNET=true&& set ENABLE_TRADING=false&& py $daemonArg"
+    Write-Log "Starting daemon process in SAFE MODE (TESTNET=true, ENABLE_TRADING=false)"
+    Start-Process -FilePath "cmd.exe" -ArgumentList @("/c", $safeCommand) -WorkingDirectory $projectRoot -WindowStyle Hidden
 }
 
 function Sync-DaemonStatusMirror {
@@ -147,9 +179,22 @@ function Test-LockOwnerAlive {
         }
     } catch {
         $msg = $_.Exception.Message
-        if ($msg -match 'locked a portion of the file' -or $msg -match 'cannot access the file') {
-            # Locked-by-owner is a healthy signal for strong singleton lock.
-            Write-Log "Lock file is actively held by running daemon (owner lock in place)."
+        $isSharingViolation = $false
+        # Locale-safe detection: lock read can fail with localized text on Windows.
+        # Treat common IO lock/share violations as "owner alive" instead of parse failure.
+        try {
+            if ($_.Exception -is [System.IO.IOException]) {
+                $isSharingViolation = $true
+            } elseif ($_.Exception.InnerException -and ($_.Exception.InnerException -is [System.IO.IOException])) {
+                $isSharingViolation = $true
+            } elseif ($msg -match 'locked a portion of the file' -or $msg -match 'cannot access the file') {
+                $isSharingViolation = $true
+            }
+        } catch {
+            $isSharingViolation = $false
+        }
+        if ($isSharingViolation) {
+            Write-Log "Lock file appears actively held by running daemon (sharing violation on read)."
             return $true
         }
         Write-Log "Lock file parse failed: $msg"
@@ -259,6 +304,7 @@ if (-not $isRunning) {
     Write-Log "Daemon not running"
     Update-RuntimeProbe -isRunning $false -heartbeatStale $heartbeatStale -lockOwnerAlive $lockOwnerAlive -daemonCount $daemonProcs.Count
     Start-Daemon
+    Sync-DaemonStatusMirror
     exit 0
 }
 
@@ -270,6 +316,7 @@ if ($heartbeatStale) {
     }
     Update-RuntimeProbe -isRunning $true -heartbeatStale $true -lockOwnerAlive $lockOwnerAlive -daemonCount $daemonProcs.Count
     Start-Daemon
+    Sync-DaemonStatusMirror
     exit 0
 }
 

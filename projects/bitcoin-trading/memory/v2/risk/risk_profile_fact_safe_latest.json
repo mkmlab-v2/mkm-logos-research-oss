@@ -1,7 +1,7 @@
 {
   "schema_version": "risk_profile_v0.1",
-  "generated_at": "2026-04-18T00:20:03+00:00",
-  "expires_at": "2026-04-18T12:20:03+00:00",
+  "generated_at": "2026-04-23T01:38:51+00:00",
+  "expires_at": "2026-04-23T13:38:51+00:00",
   "source": "n8n.regime_watch.v5",
   "mode": "n8n_shadow",
   "max_trades_per_day": 5,
@@ -28,17 +28,5 @@
     "core_score": 0.25,
     "core_contract_version": "mkm12_singular_core_v1"
   },
-  "notes": "LOCKED_MODE enforced by Fact-Safe contract or singular core hold.",
-  "governance_bridge": {
-    "schema": "integrated_governance_risk_bridge_v1",
-    "enabled": true,
-    "final_regime": "ATTACK",
-    "is_fallback": false,
-    "final_action_allowed": true,
-    "final_score": 0.693774,
-    "veto_reason_codes": [],
-    "position_cap_multiplier": 1.0,
-    "leverage_multiplier_cap": 1.0
-  },
-  "leverage_multiplier_cap": 1.0
+  "notes": "LOCKED_MODE enforced by Fact-Safe contract or singular core hold."
 }

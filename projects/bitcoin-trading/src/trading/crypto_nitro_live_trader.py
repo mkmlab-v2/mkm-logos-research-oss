@@ -1563,20 +1563,28 @@ class CryptoNitroLiveTrader:
                     self.singular_action_counts[singular_action] = (
                         self.singular_action_counts.get(singular_action, 0) + 1
                     )
-                    self.last_signal_summary = {
-                        "ts": datetime.now().isoformat(),
-                        "signal": signal,
-                        "confidence": confidence,
-                        "singular_action": singular_action,
-                        "singular_vector": singular_core.get("vector"),
-                        "singular_raw": singular_core.get("raw"),
-                    }
                     # Gate/message contract: always carry explicit gate_reason + level.
                     gate_reason = str(signal_data.get("gate_reason", "unspecified")).strip() or "unspecified"
                     signal_level = "LOW" if (signal == "HOLD" or confidence < self.min_exec_confidence) else ("MID" if confidence < 0.75 else "HIGH")
                     signal_data["gate_reason"] = gate_reason
                     signal_data["signal_level"] = signal_level
                     signal_data["price_output_locked"] = signal_level == "LOW"
+                    self.last_signal_summary = {
+                        "ts": datetime.now().isoformat(),
+                        "signal": signal,
+                        "confidence": confidence,
+                        "signal_level": signal_level,
+                        "gate_reason": gate_reason,
+                        "singular_action": singular_action,
+                        "singular_vector": singular_core.get("vector"),
+                        "singular_raw": singular_core.get("raw"),
+                    }
+                    # Persist signal counters/summaries even when signal is HOLD.
+                    # Without this, state files can look frozen at zero when no trades execute.
+                    try:
+                        self._save_state()
+                    except Exception as state_err:
+                        logger.debug("signal state save skipped: %s", state_err)
 
                     # 🏛️ BTC-6 Regime Fusion → RiskManager 반영 (설계 §7: risk_multiplier 전달)
                     # leverage_multiplier 0.2~1.5 → macro_risk_level 1.0~0.0 (위기 시 포지션/일일손실 한도 축소)
@@ -2967,6 +2975,7 @@ class CryptoNitroLiveTrader:
                         trade_result["omni_regime_shift_probability"] = (
                             (signal_data.get("omni_oracle_result") or {}).get("regime_shift_probability")
                         )
+                    self._annotate_trade_audit_tags(trade_result, signal_data)
             
             elif signal == "SELL":
                 # 숏 포지션 오픈
@@ -3047,12 +3056,25 @@ class CryptoNitroLiveTrader:
                         trade_result["omni_regime_shift_probability"] = (
                             (signal_data.get("omni_oracle_result") or {}).get("regime_shift_probability")
                         )
+                    self._annotate_trade_audit_tags(trade_result, signal_data)
             
             return trade_result
             
         except Exception as e:
             logger.error(f"❌ 실전 매매 실행 실패: {e}", exc_info=True)
             return None
+    
+    def _annotate_trade_audit_tags(
+        self, trade_result: Dict[str, Any], signal_data: Optional[Dict[str, Any]]
+    ) -> None:
+        """A/B·승격 감사용: 프로세스별 전략 라벨과 신호 출처를 체결 레코드에 남긴다."""
+        rid = str(os.getenv("RUNTIME_STRATEGY_ID", "") or "").strip()
+        if rid:
+            trade_result["runtime_strategy_id"] = rid
+        if signal_data:
+            src = signal_data.get("signal_source")
+            if src is not None:
+                trade_result["signal_source"] = src
     
     def _save_trades_history(self):
         """거래 이력 저장"""

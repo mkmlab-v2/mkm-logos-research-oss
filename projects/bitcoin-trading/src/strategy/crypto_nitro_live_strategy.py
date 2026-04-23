@@ -421,6 +421,15 @@ class CryptoNitroLiveStrategy:
         self.max_daily_loss = risk_config.get("max_daily_loss", 0.05)
         self.stop_loss_ratio = risk_config.get("stop_loss_ratio", 0.02)
         self.take_profit_ratio = risk_config.get("take_profit_ratio", 0.04)
+        # 무거운 분석 블록 샘플링 실행 간격.
+        # 실시간(binance_client 사용) 기본은 1(매 봉), 백테스트/리플레이 기본은 3으로 호출 빈도 절감.
+        _analysis_stride_default = 3 if self.binance_client is None else 1
+        _analysis_stride_raw = strategy_config.get("analysis_stride_bars", _analysis_stride_default)
+        try:
+            self.analysis_stride_bars = max(1, int(_analysis_stride_raw))
+        except Exception:
+            self.analysis_stride_bars = _analysis_stride_default
+        self._analysis_tick = 0
 
         # 안전 운용 모드: 실전 트리거는 실물 데이터 AND 고정, 예언 레이어는 보조 가중으로 제한
         safety_mode_config = self.config.get("safety_mode", {})
@@ -1396,7 +1405,8 @@ class CryptoNitroLiveStrategy:
         
         try:
             # 가격 데이터가 충분하지 않으면 HOLD
-            if len(self.price_data) < 20:
+            n_prices = len(self.price_data)
+            if n_prices < 20:
                 return {
                     "signal": "HOLD",
                     "confidence": 0.0,
@@ -1404,82 +1414,16 @@ class CryptoNitroLiveStrategy:
                     "reason": "가격 데이터 부족"
                 }
             
-            # 최신 가격 데이터로 행 생성
-            latest_row = self.price_data.iloc[-1].copy()
-            latest_row['close'] = current_price
-            
-            # 🏛️ 비트코인 통일장 레짐 뷰 (λ + 4D 기반 상위 리스크 필터)
-            btc_regime_summary = None
-            current_regime_id_result: Dict[str, Any] = {"regime_id": "unknown", "distance": float("inf"), "fingerprint": None}
-            try:
-                if self.prophecy_stack is not None:
-                    # 시장 요인 실데이터: price_data 기반 0~1 스코어 (athena_router 여부와 무관)
-                    _vol = (
-                        float(self.price_data["close"].pct_change().std())
-                        if len(self.price_data) > 1
-                        else 0.0
-                    )
-                    vol_score = float(min(max(_vol / 0.1, 0.0), 1.0))
-                    # 모멘텀: 최근 14봉 수익률을 -0.1~0.1 구간에서 0~1로 매핑
-                    if len(self.price_data) >= 14:
-                        ret_14 = (self.price_data["close"].iloc[-1] / self.price_data["close"].iloc[-14]) - 1.0
-                        momentum_score = float(min(max((ret_14 + 0.1) / 0.2, 0.0), 1.0))
-                    else:
-                        momentum_score = 0.5
-                    # 거래량 스코어: 최근 거래량 / 20봉 평균, 상한 1.0
-                    if "volume" in self.price_data.columns and len(self.price_data) >= 20:
-                        vol_mean = float(self.price_data["volume"].iloc[-20:].mean())
-                        cur_vol = float(self.price_data["volume"].iloc[-1])
-                        volume_score = float(min(cur_vol / vol_mean, 1.0)) if vol_mean > 0 else 0.5
-                    else:
-                        volume_score = 0.5
-                    market_factors = {
-                        "realized_vol": vol_score,
-                        "momentum_score": momentum_score,
-                        "volume_score": volume_score,
-                    }
-                    btc_regime_summary = self.prophecy_stack.get_bitcoin_unified_field_summary(
-                        as_of=current_time,
-                        pathology_vector=None,
-                        biblical_text=None,
-                        myeongri_gapja=None,
-                        domain_hint="btc_spot",
-                        market_factors=market_factors,
-                    )
-                    # 🏛️ 현재 레짐(imf/it_bubble/lehman/covid) 판별 — codebook_ref·레짐별 파라미터용
-                    try:
-                        vec_4d = (
-                            getattr(btc_regime_summary, "unified_vector_4d", None)
-                            if btc_regime_summary else None
-                        )
-                        current_regime_id_result = self.prophecy_stack.get_current_regime(
-                            vector_4d=vec_4d if isinstance(vec_4d, dict) else None
-                        )
-                        rid = current_regime_id_result.get("regime_id", "unknown")
-                        if rid != "unknown":
-                            logger.debug(
-                                "현재 레짐: %s (거리: %s)",
-                                rid,
-                                current_regime_id_result.get("distance"),
-                            )
-                    except Exception as reg_e:
-                        logger.debug("get_current_regime 실패: %s", reg_e)
-            except Exception as e:
-                logger.warning(f"⚠️ 비트코인 통일장 레짐 뷰 계산 실패: {e}")
-                btc_regime_summary = None
-
-            # 🧠 use_mean_reversion: 이론 선택 전 계산 → context 전달 (권장안 B)
-            _regime_id_for_ctx = current_regime_id_result.get("regime_id", "unknown")
-            _regime_id_to_type = {"unknown": "UNKNOWN", "lehman": "CRISIS", "covid": "CRISIS", "imf": "TRANSITION", "it_bubble": "TRANSITION"}
-            _rt = _regime_id_to_type.get(_regime_id_for_ctx, "UNKNOWN")
-            use_mean_reversion_flag = use_mean_reversion(_rt, None) if use_mean_reversion is not None else False
-            if self.force_use_mean_reversion is not None:
-                use_mean_reversion_flag = bool(self.force_use_mean_reversion)
+            close_series = self.price_data["close"]
+            returns_std = float(close_series.pct_change().std()) if n_prices > 1 else 0.0
 
             # 🧪 calibration_mode: 복잡 PMI/게이트/헌법 경로가 한쪽 신호로 쏠릴 때가 있어
             # 스윕용으로는 10/40 봉 MA 추세 기반 간단 신호만 사용 (즉시 리턴)
             if self.backtest_calibration:
                 try:
+                    # 캘리브레이션 모드에서는 무거운 레짐/라우터 계산을 생략하고
+                    # MA 기반 단순 신호만 사용한다.
+                    use_mean_reversion_flag = bool(self.force_use_mean_reversion) if self.force_use_mean_reversion is not None else False
                     if len(self.price_data) < 80:
                         return {
                             "signal": "HOLD",
@@ -1547,13 +1491,81 @@ class CryptoNitroLiveStrategy:
                 except Exception as e:
                     logger.debug(f"calibration MA rule failed(무시): {e}")
 
+            # 최신 가격 데이터로 행 생성
+            latest_row = self.price_data.iloc[-1].copy()
+            latest_row['close'] = current_price
+            
+            # 🏛️ 비트코인 통일장 레짐 뷰 (λ + 4D 기반 상위 리스크 필터)
+            btc_regime_summary = None
+            current_regime_id_result: Dict[str, Any] = {"regime_id": "unknown", "distance": float("inf"), "fingerprint": None}
+            try:
+                if self.prophecy_stack is not None:
+                    # 시장 요인 실데이터: price_data 기반 0~1 스코어 (athena_router 여부와 무관)
+                    _vol = returns_std
+                    vol_score = float(min(max(_vol / 0.1, 0.0), 1.0))
+                    # 모멘텀: 최근 14봉 수익률을 -0.1~0.1 구간에서 0~1로 매핑
+                    if n_prices >= 14:
+                        ret_14 = (close_series.iloc[-1] / close_series.iloc[-14]) - 1.0
+                        momentum_score = float(min(max((ret_14 + 0.1) / 0.2, 0.0), 1.0))
+                    else:
+                        momentum_score = 0.5
+                    # 거래량 스코어: 최근 거래량 / 20봉 평균, 상한 1.0
+                    if "volume" in self.price_data.columns and n_prices >= 20:
+                        vol_mean = float(self.price_data["volume"].iloc[-20:].mean())
+                        cur_vol = float(self.price_data["volume"].iloc[-1])
+                        volume_score = float(min(cur_vol / vol_mean, 1.0)) if vol_mean > 0 else 0.5
+                    else:
+                        volume_score = 0.5
+                    market_factors = {
+                        "realized_vol": vol_score,
+                        "momentum_score": momentum_score,
+                        "volume_score": volume_score,
+                    }
+                    btc_regime_summary = self.prophecy_stack.get_bitcoin_unified_field_summary(
+                        as_of=current_time,
+                        pathology_vector=None,
+                        biblical_text=None,
+                        myeongri_gapja=None,
+                        domain_hint="btc_spot",
+                        market_factors=market_factors,
+                    )
+                    # 🏛️ 현재 레짐(imf/it_bubble/lehman/covid) 판별 — codebook_ref·레짐별 파라미터용
+                    try:
+                        vec_4d = (
+                            getattr(btc_regime_summary, "unified_vector_4d", None)
+                            if btc_regime_summary else None
+                        )
+                        current_regime_id_result = self.prophecy_stack.get_current_regime(
+                            vector_4d=vec_4d if isinstance(vec_4d, dict) else None
+                        )
+                        rid = current_regime_id_result.get("regime_id", "unknown")
+                        if rid != "unknown":
+                            logger.debug(
+                                "현재 레짐: %s (거리: %s)",
+                                rid,
+                                current_regime_id_result.get("distance"),
+                            )
+                    except Exception as reg_e:
+                        logger.debug("get_current_regime 실패: %s", reg_e)
+            except Exception as e:
+                logger.warning(f"⚠️ 비트코인 통일장 레짐 뷰 계산 실패: {e}")
+                btc_regime_summary = None
+
+            # 🧠 use_mean_reversion: 이론 선택 전 계산 → context 전달 (권장안 B)
+            _regime_id_for_ctx = current_regime_id_result.get("regime_id", "unknown")
+            _regime_id_to_type = {"unknown": "UNKNOWN", "lehman": "CRISIS", "covid": "CRISIS", "imf": "TRANSITION", "it_bubble": "TRANSITION"}
+            _rt = _regime_id_to_type.get(_regime_id_for_ctx, "UNKNOWN")
+            use_mean_reversion_flag = use_mean_reversion(_rt, None) if use_mean_reversion is not None else False
+            if self.force_use_mean_reversion is not None:
+                use_mean_reversion_flag = bool(self.force_use_mean_reversion)
+
             # 🧠 TradingAthenaRouter: 이론 자동 선택 (MKM-Sovereign-Core 통합)
             theory_result = None
             if self.athena_router:
                 try:
                     # 시장 상황 분석
-                    volatility = self.price_data['close'].pct_change().std() if len(self.price_data) > 1 else 0.0
-                    trend = "up" if current_price > (self.price_data['close'].iloc[-10] if len(self.price_data) >= 10 else self.price_data['close'].iloc[0]) else "down"
+                    volatility = returns_std
+                    trend = "up" if current_price > (close_series.iloc[-10] if n_prices >= 10 else close_series.iloc[0]) else "down"
                     
                     market_data = {
                         "price": current_price,
@@ -1847,7 +1859,7 @@ class CryptoNitroLiveStrategy:
                 }
                 
                 # 🔥 양방향 매매 전략 결정 (검색 품질 기반)
-                volatility = self.price_data['close'].pct_change().std() if len(self.price_data) > 1 else 0.0
+                volatility = returns_std
                 
                 # 양방향 매매 조건: 높은 변동성 + 높은 검색 품질 (70% 이상)
                 if volatility > 0.05 and search_quality >= 0.70:
@@ -1906,9 +1918,14 @@ class CryptoNitroLiveStrategy:
                 except Exception as e:
                     logger.warning(f"⚠️ 위상 공명 팩트체크 실패: {e}")
             
+            self._analysis_tick += 1
+            should_run_heavy_analysis = (self.analysis_stride_bars <= 1) or (
+                self._analysis_tick % self.analysis_stride_bars == 0
+            )
+
             # 🏛️ 사원수 기반 시장 위상 분석 (선택적)
             quaternion_insight = None
-            if self.quaternion_analyzer and len(self.price_data) >= 20:
+            if should_run_heavy_analysis and self.quaternion_analyzer and len(self.price_data) >= 20:
                 try:
                     quaternion_result = self.quaternion_analyzer.analyze_market_phase(
                         price_data=self.price_data,
@@ -1922,7 +1939,7 @@ class CryptoNitroLiveStrategy:
             
             # 🏛️ SBSC 프레임워크 기반 전략 검증
             sbsc_verification = None
-            if self.sbsc_verifier:
+            if should_run_heavy_analysis and self.sbsc_verifier:
                 try:
                     sbsc_verification = self.sbsc_verifier.verify_trading_signal(
                         signal_data=signal_data,
@@ -1942,7 +1959,7 @@ class CryptoNitroLiveStrategy:
             
             # 🔥 화기운 감지 및 신호 강화
             fire_energy_result = None
-            if self.nowcaster and len(self.price_data) >= 20:
+            if should_run_heavy_analysis and self.nowcaster and len(self.price_data) >= 20:
                 try:
                     # 🏛️ Bitcoin 4D Mapper를 사용한 비트코인 특화 4D 벡터 계산
                     if self.bitcoin_4d_mapper:

@@ -270,6 +270,7 @@ class BitcoinTradingDaemon:
             "commission": None,
             "funding_fee": None,
             "net": None,
+            "error": None,
         }
         try:
             if not self.engine or not getattr(self.engine, "binance", None):
@@ -279,41 +280,82 @@ class BitcoinTradingDaemon:
                 return snapshot
             now_ms = int(time.time() * 1000)
             start_ms = now_ms - 24 * 60 * 60 * 1000
-            trades = client.futures_account_trades(
-                symbol=self.symbol,
-                startTime=start_ms,
-                endTime=now_ms,
-                limit=1000,
-            )
-            income = client.futures_income_history(
-                symbol=self.symbol,
-                startTime=start_ms,
-                endTime=now_ms,
-                limit=200,
-            )
-            realized = 0.0
-            commission = 0.0
+            try:
+                trades = client.futures_account_trades(
+                    symbol=self.symbol,
+                    startTime=start_ms,
+                    endTime=now_ms,
+                    limit=1000,
+                )
+            except Exception as e_range:
+                logger.warning(
+                    "futures_account_trades(start/end) failed: %s; falling back to limit-only",
+                    e_range,
+                )
+                trades = client.futures_account_trades(symbol=self.symbol, limit=1000)
+                snapshot["error"] = f"futures_account_trades(range_fallback): {e_range}"
+            if not isinstance(trades, list):
+                trades = []
+            # If we fell back to limit-only, keep only rows inside the 24h window when timestamps exist.
+            if trades:
+                filtered: list = []
+                for r in trades:
+                    if not isinstance(r, dict):
+                        continue
+                    t_raw = r.get("time")
+                    try:
+                        t_ms = int(t_raw) if t_raw is not None else None
+                    except (TypeError, ValueError):
+                        t_ms = None
+                    if t_ms is None or (start_ms <= t_ms <= now_ms):
+                        filtered.append(r)
+                if filtered:
+                    trades = filtered
+
+            realized = sum(float(r.get("realizedPnl") or 0.0) for r in trades)
+            commission = sum(float(r.get("commission") or 0.0) for r in trades)
             funding = 0.0
+            try:
+                income = client.futures_income_history(
+                    symbol=self.symbol,
+                    startTime=start_ms,
+                    endTime=now_ms,
+                    limit=500,
+                )
+            except Exception as e_sym:
+                logger.warning("futures_income_history(symbol=...) failed: %s; retrying without symbol", e_sym)
+                try:
+                    income = client.futures_income_history(
+                        startTime=start_ms,
+                        endTime=now_ms,
+                        limit=1000,
+                    )
+                except Exception as e_plain:
+                    logger.warning("futures_income_history failed: %s; funding_fee stays 0", e_plain)
+                    income = None
+                    snapshot["error"] = f"futures_income_history: {e_plain}"
+
             if isinstance(income, list):
                 for row in income:
-                    t = row.get("incomeType")
-                    v = float(row.get("income") or 0.0)
-                    if t == "REALIZED_PNL":
-                        realized += v
-                    elif t == "COMMISSION":
-                        commission += v
-                    elif t == "FUNDING_FEE":
-                        funding += v
+                    sym = row.get("symbol")
+                    if sym and sym != self.symbol:
+                        continue
+                    if row.get("incomeType") == "FUNDING_FEE":
+                        funding += float(row.get("income") or 0.0)
+
             snapshot = {
                 "available": True,
-                "fills_count": len(trades) if isinstance(trades, list) else None,
+                "fills_count": len(trades),
                 "realized_pnl": round(realized, 8),
                 "commission": round(commission, 8),
                 "funding_fee": round(funding, 8),
                 "net": round(realized + commission + funding, 8),
+                "error": snapshot.get("error"),
             }
             return snapshot
-        except Exception:
+        except Exception as e:
+            logger.warning("exchange_snapshot_24h unavailable: %s", e)
+            snapshot["error"] = str(e)
             return snapshot
 
     def _sync_trade_counters_from_trader_state(self):

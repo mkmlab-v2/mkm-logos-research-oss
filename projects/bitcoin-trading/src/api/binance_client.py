@@ -82,6 +82,27 @@ def _is_invalid_credential_value(value: Optional[str]) -> bool:
     return False
 
 
+def _read_key_from_dotenv(dotenv_path: Path, key: str) -> Optional[str]:
+    """Read a single KEY=value from .env safely (no shell expansion)."""
+    try:
+        if not dotenv_path.exists():
+            return None
+        prefix = f"{key}="
+        for raw in dotenv_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+            line = raw.strip()
+            if not line or line.startswith("#") or not line.startswith(prefix):
+                continue
+            value = line[len(prefix):].strip()
+            if " #" in value:
+                value = value.split(" #", 1)[0].strip()
+            if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+                value = value[1:-1]
+            return value.strip() or None
+    except Exception:
+        return None
+    return None
+
+
 def get_binance_api_keys() -> tuple[str, str]:
     """
     Binance API 키 가져오기 (우선순위: Security Agent > 환경 변수 > 파일)
@@ -131,7 +152,24 @@ def get_binance_api_keys() -> tuple[str, str]:
             return api_key, api_secret
         logger.warning("⚠️ 환경 변수 BINANCE_API_KEY/BINANCE_API_SECRET 값이 비정상입니다. 파일 소스로 폴백합니다.")
     
-    # 3. 파일에서 가져오기 (보조 PC용 - 환경 변수가 없을 때만)
+    # 3. .env 파일에서 가져오기 (데몬/스케줄러 환경 드리프트 방지)
+    try:
+        dotenv_candidates = [
+            Path(__file__).resolve().parents[4] / ".env",  # C:/workspace/.env
+            Path.cwd() / ".env",
+        ]
+        for dotenv in dotenv_candidates:
+            k = _read_key_from_dotenv(dotenv, "BINANCE_API_KEY")
+            s = _read_key_from_dotenv(dotenv, "BINANCE_API_SECRET")
+            if k and s and not (_is_invalid_credential_value(k) or _is_invalid_credential_value(s)):
+                logger.info("✅ .env 파일에서 Binance API 키를 가져왔습니다.")
+                logger.info("   .env 경로: %s", dotenv)
+                logger.info("   사용 중인 API 키 (끝 4자): ...%s (Binance 화면의 키와 동일한지 확인)", k[-4:] if len(k) >= 4 else "****")
+                return k, s
+    except Exception as e:
+        logger.warning("⚠️ .env에서 API 키 가져오기 실패: %s", e)
+
+    # 4. 파일에서 가져오기 (보조 PC용 - 환경 변수/.env가 없을 때만)
     try:
         # 프로젝트 루트 디렉토리 찾기 (여러 경로 시도)
         current_file = Path(__file__)
@@ -184,7 +222,7 @@ def get_binance_api_keys() -> tuple[str, str]:
         import traceback
         logger.debug(traceback.format_exc())
     
-    # 4. 키가 없으면 None 반환
+    # 5. 키가 없으면 None 반환
     logger.error("❌ Binance API 키를 찾을 수 없습니다.")
     logger.error("   다음 중 하나를 설정하세요:")
     logger.error("   1. Security Agent에 저장")
@@ -229,6 +267,7 @@ class BinanceFuturesClient:
         self.api_secret = api_secret
         self.testnet = testnet
         self.maker_only = maker_only
+        self._last_time_sync_at = 0.0
         
         # Rate Limit 관리 (Binance Futures API 제한)
         # - Weight Limit: 1200 / 1분
@@ -270,9 +309,43 @@ class BinanceFuturesClient:
             
             # Hedge Mode 활성화 (롱/숏 동시 보유 가능)
             try:
+                self._sync_server_time_offset(force=True)
                 self.set_position_mode(dual_side_position=True)
             except Exception as e:
                 logger.warning(f"⚠️ 포지션 모드 설정 실패 (이미 설정되었을 수 있음): {e}")
+
+    def _sync_server_time_offset(self, force: bool = False) -> None:
+        """
+        Sync local timestamp offset for signed futures endpoints.
+        Fixes Binance -1021 errors (timestamp ahead/behind server time).
+        """
+        if USE_CCXT or not getattr(self, "client", None):
+            return
+        now = time.time()
+        if not force and (now - self._last_time_sync_at) < 30:
+            return
+        try:
+            server = self.client.futures_time()
+            server_ms = int(server.get("serverTime", 0))
+            local_ms = int(time.time() * 1000)
+            self.client.timestamp_offset = server_ms - local_ms
+            self._last_time_sync_at = now
+            logger.info("⏱️ Binance server time synced (offset_ms=%s)", self.client.timestamp_offset)
+        except Exception as e:
+            logger.warning("⚠️ 서버 시간 동기화 실패: %s", e)
+
+    def _call_client(self, fn):
+        """
+        Execute signed API call with one-time server-time resync retry on -1021.
+        """
+        try:
+            return fn()
+        except Exception as e:
+            if not USE_CCXT and getattr(e, "code", None) == -1021:
+                logger.warning("⚠️ Binance timestamp skew detected (-1021), resync + retry.")
+                self._sync_server_time_offset(force=True)
+                return fn()
+            raise
     
     @staticmethod
     def _normalize_futures_symbol(symbol: Union[str, None]) -> Optional[str]:
@@ -310,7 +383,7 @@ class BinanceFuturesClient:
                 return False
             lev = self._coerce_leverage_int(leverage)
             # python-binance - 공식 API (leverage는 정수 필수)
-            self.client.futures_change_leverage(symbol=sym, leverage=lev)
+            self._call_client(lambda: self.client.futures_change_leverage(symbol=sym, leverage=lev))
             logger.info(f"✅ 레버리지 설정 완료: {sym} {lev}배")
             return True
         except Exception as e:
@@ -335,7 +408,7 @@ class BinanceFuturesClient:
         try:
             if not USE_CCXT:
                 # python-binance
-                self.client.futures_change_position_mode(dualSidePosition=dual_side_position)
+                self._call_client(lambda: self.client.futures_change_position_mode(dualSidePosition=dual_side_position))
                 mode = "Hedge Mode" if dual_side_position else "One-way Mode"
                 logger.info(f"✅ 포지션 모드 설정 완료: {mode}")
                 return True
@@ -400,7 +473,7 @@ class BinanceFuturesClient:
                 ticker = self.exchange.fetch_ticker(symbol)
                 return float(ticker['last'])
             else:
-                ticker = self.client.futures_symbol_ticker(symbol=symbol)
+                ticker = self._call_client(lambda: self.client.futures_symbol_ticker(symbol=symbol))
                 return float(ticker['price'])
         except Exception as e:
             logger.error(f"❌ 가격 조회 실패: {e}")
@@ -415,7 +488,7 @@ class BinanceFuturesClient:
                 best_bid = float(ob["bids"][0][0]) if ob["bids"] else 0.0
                 best_ask = float(ob["asks"][0][0]) if ob["asks"] else 0.0
                 return best_bid, best_ask
-            book = self.client.futures_order_book(symbol=symbol, limit=limit)
+            book = self._call_client(lambda: self.client.futures_order_book(symbol=symbol, limit=limit))
             best_bid = float(book["bids"][0][0]) if book.get("bids") else 0.0
             best_ask = float(book["asks"][0][0]) if book.get("asks") else 0.0
             return best_bid, best_ask
@@ -429,7 +502,7 @@ class BinanceFuturesClient:
         try:
             self._check_rate_limit(weight=1)
             if not USE_CCXT and self.client:
-                info = self.client.futures_exchange_info()
+                info = self._call_client(lambda: self.client.futures_exchange_info())
                 for s in info.get("symbols", []):
                     if s["symbol"] == symbol:
                         for f in s.get("filters", []):
@@ -484,7 +557,7 @@ class BinanceFuturesClient:
                 price = self._round_to_tick(best_bid, tick, down=True)
                 if price <= 0:
                     price = self.get_current_price(symbol)
-                order = self.client.futures_create_order(
+                order = self._call_client(lambda: self.client.futures_create_order(
                     symbol=symbol,
                     side='BUY',
                     type='LIMIT',
@@ -493,7 +566,7 @@ class BinanceFuturesClient:
                     price=price,
                     positionSide='LONG',
                     newClientOrderId=self._build_client_order_id("openlong"),
-                )
+                ))
                 logger.info(f"✅ 롱 포지션 진입 (Maker-only): {symbol} LIMIT {quantity} @ {price} GTX")
                 return order
             if self.maker_only and USE_CCXT:
@@ -514,12 +587,12 @@ class BinanceFuturesClient:
                     params={'leverage': leverage, 'positionSide': 'LONG'}
                 )
             else:
-                order = self.client.futures_create_order(
+                order = self._call_client(lambda: self.client.futures_create_order(
                     symbol=symbol, side='BUY', type='MARKET',
                     quantity=quantity,
                     positionSide='LONG',
                     newClientOrderId=self._build_client_order_id("openlong"),
-                )
+                ))
             logger.info(f"✅ 롱 포지션 진입: {symbol} {quantity} @ {leverage}배 레버리지")
             return order
         except Exception as e:
@@ -546,7 +619,7 @@ class BinanceFuturesClient:
                 price = self._round_to_tick(best_ask, tick, down=False)
                 if price <= 0:
                     price = self.get_current_price(symbol)
-                order = self.client.futures_create_order(
+                order = self._call_client(lambda: self.client.futures_create_order(
                     symbol=symbol,
                     side='SELL',
                     type='LIMIT',
@@ -555,7 +628,7 @@ class BinanceFuturesClient:
                     price=price,
                     positionSide='SHORT',
                     newClientOrderId=self._build_client_order_id("openshort"),
-                )
+                ))
                 logger.info(f"✅ 숏 포지션 진입 (Maker-only): {symbol} LIMIT {quantity} @ {price} GTX")
                 return order
             if self.maker_only and USE_CCXT:
@@ -576,12 +649,12 @@ class BinanceFuturesClient:
                     params={'leverage': leverage, 'positionSide': 'SHORT'}
                 )
             else:
-                order = self.client.futures_create_order(
+                order = self._call_client(lambda: self.client.futures_create_order(
                     symbol=symbol, side='SELL', type='MARKET',
                     quantity=quantity,
                     positionSide='SHORT',
                     newClientOrderId=self._build_client_order_id("openshort"),
-                )
+                ))
             logger.info(f"✅ 숏 포지션 진입: {symbol} {quantity} @ {leverage}배 레버리지")
             return order
         except Exception as e:
@@ -628,7 +701,7 @@ class BinanceFuturesClient:
                             logger.info(f"✅ 포지션 청산: {symbol} {position_side}")
                         return order
             else:
-                positions = self.client.futures_position_information(symbol=symbol)
+                positions = self._call_client(lambda: self.client.futures_position_information(symbol=symbol))
                 for pos in positions:
                     position_amt = float(pos['positionAmt'])
                     if position_amt != 0:
@@ -643,7 +716,7 @@ class BinanceFuturesClient:
                             best_bid, best_ask = self._get_order_book(symbol)
                             tick = self._get_tick_size(symbol)
                             price = self._round_to_tick(best_bid, tick, down=True) if close_position_side == 'LONG' else self._round_to_tick(best_ask, tick, down=False)
-                            order = self.client.futures_create_order(
+                            order = self._call_client(lambda: self.client.futures_create_order(
                                 symbol=symbol,
                                 side=side,
                                 type='LIMIT',
@@ -653,17 +726,17 @@ class BinanceFuturesClient:
                                 positionSide=close_position_side,
                                 reduceOnly=True,
                                 newClientOrderId=self._build_client_order_id("close"),
-                            )
+                            ))
                             logger.info(f"✅ 포지션 청산 (Maker-only): {symbol} {close_position_side} LIMIT @ {price} GTX")
                         else:
-                            order = self.client.futures_create_order(
+                            order = self._call_client(lambda: self.client.futures_create_order(
                                 symbol=symbol,
                                 side=side,
                                 type='MARKET',
                                 quantity=qty,
                                 positionSide=close_position_side,
                                 newClientOrderId=self._build_client_order_id("close"),
-                            )
+                            ))
                             logger.info(f"✅ 포지션 청산: {symbol} {close_position_side}")
                         return order
             logger.warning(f"⚠️ 청산할 포지션이 없습니다: {symbol} {position_side}")
@@ -682,7 +755,7 @@ class BinanceFuturesClient:
                     'total': balance.get('USDT', {}).get('total', 0.0)
                 }
             else:
-                balance = self.client.futures_account_balance()
+                balance = self._call_client(lambda: self.client.futures_account_balance())
                 for b in balance:
                     if b['asset'] == 'USDT':
                         return {
@@ -717,11 +790,11 @@ class BinanceFuturesClient:
                 return ohlcv
             else:
                 # python-binance 사용
-                klines = self.client.futures_klines(
+                klines = self._call_client(lambda: self.client.futures_klines(
                     symbol=symbol,
                     interval=interval,
                     limit=limit
-                )
+                ))
                 return klines
         except Exception as e:
             logger.error(f"❌ 캔들스틱 데이터 조회 실패: {e}")
@@ -754,7 +827,7 @@ class BinanceFuturesClient:
                 return None
             else:
                 # python-binance 사용
-                positions = self.client.futures_position_information(symbol=symbol)
+                positions = self._call_client(lambda: self.client.futures_position_information(symbol=symbol))
                 for pos in positions:
                     position_amt = float(pos['positionAmt'])
                     if position_amt != 0:
@@ -776,7 +849,7 @@ class BinanceFuturesClient:
         try:
             if USE_CCXT:
                 return self.exchange.fetch_open_orders(symbol=symbol)
-            return self.client.futures_get_open_orders(symbol=symbol)
+            return self._call_client(lambda: self.client.futures_get_open_orders(symbol=symbol))
         except Exception as e:
             logger.error(f"❌ 미체결 주문 조회 실패: {e}")
             return []
@@ -787,7 +860,7 @@ class BinanceFuturesClient:
             if USE_CCXT:
                 trades = self.exchange.fetch_my_trades(symbol=symbol, limit=limit)
                 return trades if isinstance(trades, list) else []
-            trades = self.client.futures_account_trades(symbol=symbol, limit=limit)
+            trades = self._call_client(lambda: self.client.futures_account_trades(symbol=symbol, limit=limit))
             return trades if isinstance(trades, list) else []
         except Exception as e:
             logger.error(f"❌ 최근 체결 조회 실패: {e}")

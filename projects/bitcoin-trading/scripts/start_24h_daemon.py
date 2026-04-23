@@ -38,6 +38,26 @@ def _parse_bool(value: Any, default: bool) -> bool:
     return str(value).strip().lower() in {"1", "true", "yes", "y", "on"}
 
 
+def _read_dotenv_map(path: Path) -> dict[str, str]:
+    env_map: dict[str, str] = {}
+    if not path.is_file():
+        return env_map
+    for raw in path.read_text(encoding="utf-8", errors="ignore").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if " #" in value:
+            value = value.split(" #", 1)[0].strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            value = value[1:-1]
+        if key:
+            env_map[key] = value
+    return env_map
+
+
 def _pid_is_running(pid: int) -> bool:
     try:
         os.kill(pid, 0)
@@ -140,11 +160,19 @@ async def main():
         False,
     )
 
+    dotenv = _read_dotenv_map(PROJECT_ROOT.parent / ".env")
+
     symbol = os.getenv("SYMBOL", str(cfg_symbol))
-    testnet = _parse_bool(os.getenv("TESTNET"), cfg_testnet)
+    testnet_raw = os.getenv("TESTNET")
+    if testnet_raw is None:
+        testnet_raw = dotenv.get("TESTNET")
+    testnet = _parse_bool(testnet_raw, cfg_testnet)
     initial_capital = float(os.getenv("INITIAL_CAPITAL", str(cfg_initial_capital)))
     leverage = int(os.getenv("LEVERAGE", str(cfg_leverage)))
-    enable_trading = _parse_bool(os.getenv("ENABLE_TRADING"), cfg_enable_trading)
+    enable_raw = os.getenv("ENABLE_TRADING")
+    if enable_raw is None:
+        enable_raw = dotenv.get("ENABLE_TRADING")
+    enable_trading = _parse_bool(enable_raw, cfg_enable_trading)
     
     print("="*80)
     print("🚀 24시간 비트코인 자동매매 데몬")

@@ -5,7 +5,8 @@ param(
     [string]$ExpectedOrigin = "",
     [string]$PollHtmlPath = "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp\public_showroom_poll.html",
     [string]$N8nHeaderJsonPath = "",
-    [switch]$AutoFixLocal
+    [switch]$AutoFixLocal,
+    [switch]$SkipE2ESmoke
 )
 
 $ErrorActionPreference = "Stop"
@@ -330,6 +331,39 @@ if (-not $portOk -and $AutoFixLocal) {
 $portDetail = if ($portOk) { "TCP 8788 listening" } else { "TCP 8788 not listening" }
 Write-Step "Firewall / Port Reachability" $portOk $portDetail
 $results += $portOk
+
+# 6) E2E smoke (source priority + TTL runtime + latest integrity)
+if (-not $SkipE2ESmoke) {
+    $smokeScript = "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\run_jemaai_public_event_e2e_smoke.ps1"
+    $smokeReport = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\jemaai_e2e_smoke_report_latest.json"
+    $smokeOk = $false
+    $smokeDetail = "smoke not executed"
+    try {
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $smokeScript -ApiBaseUrl $GatewayBaseUrl -OutputPath $smokeReport
+        $smokeExit = $LASTEXITCODE
+        if ($smokeExit -eq 0 -and (Test-Path -LiteralPath $smokeReport)) {
+            $rep = Get-Content -LiteralPath $smokeReport -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
+            $checkNames = @(
+                "source_priority_protection_ok",
+                "ttl_runtime_fields_ok",
+                "schema_ok",
+                "signal_gate_public_ok"
+            )
+            $missing = @()
+            foreach ($n in $checkNames) {
+                if (-not ($rep.checks.PSObject.Properties.Name -contains $n)) { $missing += $n }
+            }
+            $smokeOk = ($missing.Count -eq 0) -and [bool]$rep.overall_ok
+            $smokeDetail = if ($smokeOk) { "overall_ok=true; schema=" + [string]$rep.schema } else { "overall_ok=" + [string]$rep.overall_ok + "; missing=" + ($missing -join ",") }
+        } else {
+            $smokeDetail = "exit=" + [string]$smokeExit
+        }
+    } catch {
+        $smokeDetail = $_.Exception.Message
+    }
+    Write-Step "E2E Smoke (Priority/TTL/Post-Verify)" $smokeOk $smokeDetail
+    $results += $smokeOk
+}
 
 $allOk = -not ($results -contains $false)
 if ($allOk) {

@@ -66,6 +66,56 @@ _latest_event: Dict[str, Any] = {
 }
 
 
+def _source_priority(source: str) -> int:
+    s = str(source or "").strip().lower()
+    if s == "ops_showroom_bundle_v1":
+        return 100
+    if s == "ops_e2e_smoke":
+        return 90
+    if s == "linux_runtime_heartbeat":
+        return 10
+    return 50
+
+
+def _merge_event_by_priority(current: Dict[str, Any], incoming: Dict[str, Any]) -> Dict[str, Any]:
+    current_src = str(current.get("source") or "")
+    incoming_src = str(incoming.get("source") or "")
+    current_pri = _source_priority(current_src)
+    incoming_pri = _source_priority(incoming_src)
+
+    # Same or higher priority: allow full replacement.
+    if incoming_pri >= current_pri:
+        return incoming
+
+    # Lower priority (e.g. heartbeat): keep rich narrative fields from higher-priority event.
+    merged = dict(current)
+
+    # Keep liveness/timing signals updated, but preserve identity/source
+    # from the higher-priority event to avoid context downgrade.
+    merged["timestamp"] = incoming.get("timestamp", current.get("timestamp"))
+    merged["event_id"] = current.get("event_id")
+    merged["source"] = current_src
+    merged["schema_version"] = incoming.get("schema_version", current.get("schema_version"))
+    merged["system_status"] = incoming.get("system_status", current.get("system_status", "online"))
+
+    # Only allow these fields to be updated from low-priority payload if currently missing.
+    for key in (
+        "active_character_id",
+        "risk_level",
+        "public_signal_direction",
+        "abstract_reason",
+        "active_strategies_count",
+        "delayed_metrics",
+        "direction_abstract",
+        "disclaimer_ref",
+        "last_ok_utc",
+    ):
+        if key not in merged or merged.get(key) in (None, "", {}):
+            merged[key] = incoming.get(key, merged.get(key))
+
+    return merged
+
+
 def _ensure_parent(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -176,7 +226,7 @@ class PublicEventHandler(BaseHTTPRequestHandler):
 
         with _state_lock:
             global _latest_event
-            _latest_event = data
+            _latest_event = _merge_event_by_priority(_latest_event, data)
             _save_state(_latest_event)
 
         self._send_json(200, {"ok": True, "event_id": data.get("event_id")})
