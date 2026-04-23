@@ -36,6 +36,8 @@ def main() -> int:
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
     )
     ap.add_argument("--summary-top-n", type=int, default=20)
+    ap.add_argument("--expected-canon-rows", type=int, default=28741)
+    ap.add_argument("--skip-validate", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
@@ -76,8 +78,24 @@ def main() -> int:
         "--output-json",
         str(args.summary_output_json),
     ]
+    cmd_validate = [
+        py,
+        str(root / "scripts" / "core" / "validate_canon_singularity_outputs_v1.py"),
+        "--report-json",
+        str(args.report_output_json),
+        "--balanced-json",
+        str(args.balanced_output_json),
+        "--summary-json",
+        str(args.summary_output_json),
+        "--expected-canon-rows",
+        str(int(args.expected_canon_rows)),
+    ]
 
-    for cmd in (cmd_report, cmd_balanced, cmd_summary):
+    cmds = [cmd_report, cmd_balanced, cmd_summary]
+    if not args.skip_validate:
+        cmds.append(cmd_validate)
+
+    for cmd in cmds:
         rc = _run(cmd, dry_run=bool(args.dry_run))
         if rc != 0:
             return rc
