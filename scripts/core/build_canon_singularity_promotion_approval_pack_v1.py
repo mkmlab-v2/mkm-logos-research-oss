@@ -23,6 +23,7 @@ def _write_md(path: Path, data: dict[str, Any]) -> None:
     g = data.get("go_no_go") or {}
     o = data.get("ops_alert_summary") or {}
     f = data.get("freeze_vfinal") or {}
+    s = data.get("observation_streak") or {}
     lines = [
         "# Canon Promotion Approval Pack v1",
         "",
@@ -34,6 +35,8 @@ def _write_md(path: Path, data: dict[str, Any]) -> None:
         f"- ops_alert: {o.get('ops_alert')}",
         f"- ops_severity: {o.get('severity')}",
         f"- freeze_vfinal_decision: {f.get('freeze_decision')}",
+        f"- observation_streak_verdict: {s.get('verdict')}",
+        f"- three_day_unattended_pass: {s.get('three_day_unattended_pass')}",
         "",
         "## Included Artifacts",
     ]
@@ -66,6 +69,10 @@ def main() -> int:
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_strict_baseline_freeze_generation_diff_vfinal_v1.json",
     )
     ap.add_argument(
+        "--observation-streak-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_observation_streak_report_v1.json",
+    )
+    ap.add_argument(
         "--output-json",
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_promotion_approval_pack_v1.json",
     )
@@ -80,6 +87,14 @@ def main() -> int:
     runbook = _read_json(Path(args.ops_alert_runbook_json))
     freeze_vfinal = _read_json(Path(args.freeze_vfinal_json))
     gen_diff = _read_json(Path(args.freeze_generation_diff_json))
+    streak = _read_json(Path(args.observation_streak_json))
+    streak_metrics = dict(streak.get("metrics") or {})
+    three_day_unattended_pass = (
+        str(streak.get("verdict") or "") == "pass"
+        and int(streak_metrics.get("window") or 0) >= 3
+        and int(streak_metrics.get("pass_count") or 0) >= 3
+        and str(streak_metrics.get("latest_verdict") or "") == "pass"
+    )
 
     verdict = "approved" if str(go_no_go.get("verdict") or "") == "go" else "hold"
     out = {
@@ -100,12 +115,19 @@ def main() -> int:
             "total_change_count": int(gen_diff.get("total_change_count") or 0),
             "generated_at_utc": str(gen_diff.get("generated_at_utc") or ""),
         },
+        "observation_streak": {
+            "verdict": str(streak.get("verdict") or "missing"),
+            "metrics": streak_metrics,
+            "three_day_unattended_pass": three_day_unattended_pass,
+            "generated_at_utc": str(streak.get("generated_at_utc") or ""),
+        },
         "included_artifacts": [
             str(args.go_no_go_json),
             str(args.rehearsal_latest_json),
             str(args.ops_alert_runbook_json),
             str(args.freeze_vfinal_json),
             str(args.freeze_generation_diff_json),
+            str(args.observation_streak_json),
         ],
     }
     _write_json(Path(args.output_json), out)

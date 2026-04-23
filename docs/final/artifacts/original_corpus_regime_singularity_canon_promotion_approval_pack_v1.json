@@ -1,0 +1,45 @@
+{
+  "schema": "original_corpus_regime_singularity_canon_promotion_approval_pack_v1",
+  "generated_at_utc": "2026-04-23T13:49:04Z",
+  "verdict": "approved",
+  "go_no_go": {
+    "verdict": "go",
+    "hold_reasons": [],
+    "generated_at_utc": "2026-04-23T13:19:26Z"
+  },
+  "ops_alert_summary": {
+    "ops_alert": false,
+    "severity": "none",
+    "consecutive_alert_count": 0,
+    "strict_rehearsal_recommended": false
+  },
+  "freeze_vfinal": {
+    "freeze_decision": "frozen",
+    "generated_at_utc": "2026-04-23T12:59:04Z"
+  },
+  "freeze_generation_diff": {
+    "total_change_count": 26,
+    "generated_at_utc": "2026-04-23T12:59:04Z"
+  },
+  "observation_streak": {
+    "verdict": "hold",
+    "metrics": {
+      "window": 3,
+      "window_size_observed": 1,
+      "pass_count": 1,
+      "hold_count": 0,
+      "pass_rate": 1.0,
+      "latest_verdict": "pass"
+    },
+    "three_day_unattended_pass": false,
+    "generated_at_utc": "2026-04-23T13:41:46Z"
+  },
+  "included_artifacts": [
+    "docs/final/artifacts/original_corpus_regime_singularity_canon_promotion_go_no_go_v1.json",
+    "docs/final/artifacts/original_corpus_regime_singularity_canon_rehearsal_status_latest.json",
+    "docs/final/artifacts/original_corpus_regime_singularity_canon_ops_alert_runbook_latest.json",
+    "docs/final/artifacts/original_corpus_regime_singularity_canon_strict_baseline_freeze_vfinal_v1.json",
+    "docs/final/artifacts/original_corpus_regime_singularity_canon_strict_baseline_freeze_generation_diff_vfinal_v1.json",
+    "docs/final/artifacts/original_corpus_regime_singularity_canon_observation_streak_report_v1.json"
+  ]
+}

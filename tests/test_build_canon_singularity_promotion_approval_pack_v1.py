@@ -12,6 +12,7 @@ def test_build_canon_singularity_promotion_approval_pack_v1(tmp_path: Path):
     runbook = tmp_path / "runbook.json"
     freeze = tmp_path / "freeze.json"
     diff = tmp_path / "diff.json"
+    streak = tmp_path / "streak.json"
     out_json = tmp_path / "pack.json"
     out_md = tmp_path / "pack.md"
     go.write_text(json.dumps({"verdict": "go", "hold_reasons": []}), encoding="utf-8")
@@ -19,6 +20,7 @@ def test_build_canon_singularity_promotion_approval_pack_v1(tmp_path: Path):
     runbook.write_text(json.dumps({"ops_alert_summary": {"ops_alert": False, "severity": "none"}}), encoding="utf-8")
     freeze.write_text(json.dumps({"freeze_decision": "frozen"}), encoding="utf-8")
     diff.write_text(json.dumps({"total_change_count": 3}), encoding="utf-8")
+    streak.write_text(json.dumps({"verdict": "pass", "metrics": {"window": 3, "pass_count": 3, "latest_verdict": "pass"}}), encoding="utf-8")
     cmd = [
         sys.executable,
         "scripts/core/build_canon_singularity_promotion_approval_pack_v1.py",
@@ -32,6 +34,8 @@ def test_build_canon_singularity_promotion_approval_pack_v1(tmp_path: Path):
         str(freeze),
         "--freeze-generation-diff-json",
         str(diff),
+        "--observation-streak-json",
+        str(streak),
         "--output-json",
         str(out_json),
         "--output-md",
@@ -42,5 +46,6 @@ def test_build_canon_singularity_promotion_approval_pack_v1(tmp_path: Path):
     data = json.loads(out_json.read_text(encoding="utf-8"))
     assert data["schema"] == "original_corpus_regime_singularity_canon_promotion_approval_pack_v1"
     assert data["verdict"] == "approved"
+    assert data["observation_streak"]["three_day_unattended_pass"] is True
     assert out_md.exists()
 

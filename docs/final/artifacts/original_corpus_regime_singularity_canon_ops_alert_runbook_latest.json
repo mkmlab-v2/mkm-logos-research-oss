@@ -1,0 +1,63 @@
+{
+  "schema": "original_corpus_regime_singularity_canon_ops_alert_runbook_v1",
+  "generated_at_utc": "2026-04-23T13:49:04Z",
+  "inputs": {
+    "rehearsal_latest_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_rehearsal_status_latest.json",
+    "freeze_v2_stability_gate_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_strict_baseline_freeze_v2_stability_gate_v1.json",
+    "observation_streak_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_observation_streak_report_v1.json"
+  },
+  "task": {
+    "name": "MKM_CanonSingularity_Chain",
+    "exists": true,
+    "status": "Ready",
+    "last_result": "0",
+    "last_run_time": "04/23/2026 20:35:48"
+  },
+  "drift_gate": {
+    "path": "C:\\workspace\\docs\\final\\artifacts\\original_corpus_regime_singularity_canon_strict_freeze_drift_gate_v1.json",
+    "status": "stable",
+    "drift_count": 0,
+    "generated_at_utc": "2026-04-23T09:52:53Z"
+  },
+  "ops_alert_summary": {
+    "ops_alert": false,
+    "severity": "none",
+    "consecutive_alert_count": 0,
+    "strict_rehearsal_recommended": false
+  },
+  "recommended_action": {
+    "kind": "none",
+    "command": "",
+    "reason": "stable"
+  },
+  "strict_auto_run": {
+    "enabled": false,
+    "triggered": false,
+    "exit_code": null,
+    "status": "not_run",
+    "summary_path": "C:\\workspace\\docs\\final\\artifacts\\original_corpus_regime_singularity_canon_strict_rehearsal_run_v1.json"
+  },
+  "freeze_v2_stability_gate": {
+    "path": "C:\\workspace\\docs\\final\\artifacts\\original_corpus_regime_singularity_canon_strict_baseline_freeze_v2_stability_gate_v1.json",
+    "status": "pass",
+    "generated_at_utc": "2026-04-23T11:36:09Z",
+    "window_size": 5,
+    "frozen_rate": 1.0
+  },
+  "observation_streak": {
+    "verdict": "hold",
+    "metrics": {
+      "window": 3,
+      "window_size_observed": 1,
+      "pass_count": 1,
+      "hold_count": 0,
+      "pass_rate": 1.0,
+      "latest_verdict": "pass"
+    },
+    "hold_reasons": [],
+    "generated_at_utc": "2026-04-23T13:41:46Z"
+  },
+  "attention_reasons": [
+    "observation_streak_hold"
+  ]
+}

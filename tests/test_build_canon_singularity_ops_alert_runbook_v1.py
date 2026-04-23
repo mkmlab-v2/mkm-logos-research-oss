@@ -9,6 +9,7 @@ from pathlib import Path
 def test_build_canon_singularity_ops_alert_runbook_v1(tmp_path: Path):
     src = tmp_path / "rehearsal.json"
     freeze_gate = tmp_path / "freeze_gate.json"
+    streak = tmp_path / "streak.json"
     out_json = tmp_path / "runbook.json"
     out_md = tmp_path / "runbook.md"
     src.write_text(
@@ -28,6 +29,10 @@ def test_build_canon_singularity_ops_alert_runbook_v1(tmp_path: Path):
         json.dumps({"status": "pass", "metrics": {"window_size": 7, "frozen_rate": 0.857143}}, ensure_ascii=False),
         encoding="utf-8",
     )
+    streak.write_text(
+        json.dumps({"verdict": "hold", "metrics": {"window": 3, "window_size_observed": 1, "pass_count": 1, "latest_verdict": "pass"}}, ensure_ascii=False),
+        encoding="utf-8",
+    )
     cmd = [
         sys.executable,
         "scripts/core/build_canon_singularity_ops_alert_runbook_v1.py",
@@ -35,6 +40,8 @@ def test_build_canon_singularity_ops_alert_runbook_v1(tmp_path: Path):
         str(src),
         "--freeze-v2-stability-gate-json",
         str(freeze_gate),
+        "--observation-streak-json",
+        str(streak),
         "--output-json",
         str(out_json),
         "--output-md",
@@ -47,5 +54,7 @@ def test_build_canon_singularity_ops_alert_runbook_v1(tmp_path: Path):
     assert data["ops_alert_summary"]["severity"] == "high"
     assert data["freeze_v2_stability_gate"]["status"] == "pass"
     assert data["freeze_v2_stability_gate"]["frozen_rate"] == 0.857143
+    assert data["observation_streak"]["verdict"] == "hold"
+    assert "observation_streak_hold" in data["attention_reasons"]
     assert out_md.exists()
 
