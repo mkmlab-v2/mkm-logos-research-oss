@@ -221,6 +221,8 @@ $SourceFiles = @(
     "docs\final\artifacts\original_corpus_regime_singularity_canon_promotion_go_no_go_v1.md",
     "docs\final\artifacts\original_corpus_regime_singularity_canon_promotion_approval_pack_v1.json",
     "docs\final\artifacts\original_corpus_regime_singularity_canon_promotion_approval_pack_v1.md",
+    "docs\final\artifacts\original_corpus_regime_singularity_canon_nextday_observation_report_v1.json",
+    "docs\final\artifacts\original_corpus_regime_singularity_canon_nextday_observation_report_v1.md",
     "docs\final\artifacts\original_corpus_regime_singularity_canon_operations_lock_declaration_v1.json",
     "docs\final\artifacts\original_corpus_regime_singularity_canon_operations_lock_declaration_v1.md",
     "docs\final\artifacts\original_corpus_regime_singularity_canon_regime_calibration_round_v1.json",
