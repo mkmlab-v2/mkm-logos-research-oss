@@ -8,6 +8,7 @@ on:
 
 jobs:
   canary-monitor:
+    if: ${{ vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
