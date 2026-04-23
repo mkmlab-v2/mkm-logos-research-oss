@@ -12,6 +12,13 @@ export type SiteCopy = {
     cta_secondary: string;
     cta_tertiary: string;
     cta_quaternary: string;
+    role_cards: {
+      title: string;
+      body: string;
+      cta: string;
+      href: string;
+      variant: "primary" | "ghost";
+    }[];
   };
   trust: { items: { label: string; value: string }[]; note: string };
   public_solution: {
@@ -32,6 +39,12 @@ export type SiteCopy = {
   value_props: { title: string; body: string }[];
   safety: { title: string; items: string[] };
   workflow: { title: string; section_lead: string; steps: string[] };
+  clinic_o2o: {
+    title: string;
+    section_lead: string;
+    cards: { title: string; body: string }[];
+    ctas: { label: string; href: string; variant: "primary" | "ghost" }[];
+  };
   landing_flow: {
     title: string;
     lead: string;
