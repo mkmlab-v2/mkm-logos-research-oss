@@ -26,6 +26,7 @@ def test_run_canon_singularity_chain_dry_run():
     assert "enforce_canon_singularity_gate_health_v1.py --health-summary-json" not in out
     assert "build_canon_singularity_insight_minimum_v1.py --summary-json" in out
     assert "validate_canon_singularity_insight_minimum_v1.py --input-json" in out
+    assert "build_canon_singularity_insight_delta_summary_v1.py --history-jsonl" in out
 
 
 def test_run_canon_singularity_chain_dry_run_with_health_enforcement():

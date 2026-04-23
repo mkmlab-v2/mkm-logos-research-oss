@@ -59,6 +59,14 @@ def main() -> int:
         "--insight-quality-gate-output-json",
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_quality_gate_v1.json",
     )
+    ap.add_argument(
+        "--insight-history-jsonl",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_history_v1.jsonl",
+    )
+    ap.add_argument(
+        "--insight-delta-output-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_delta_summary_v1.json",
+    )
     ap.add_argument("--insight-top-n", type=int, default=12)
     ap.add_argument("--skip-insight", action="store_true")
     ap.add_argument("--quality-gate-health-window", type=int, default=30)
@@ -158,6 +166,8 @@ def main() -> int:
         str(int(args.insight_top_n)),
         "--output-json",
         str(args.insight_output_json),
+        "--history-jsonl",
+        str(args.insight_history_jsonl),
     ]
     cmd_insight_gate = [
         py,
@@ -166,6 +176,14 @@ def main() -> int:
         str(args.insight_output_json),
         "--output-json",
         str(args.insight_quality_gate_output_json),
+    ]
+    cmd_insight_delta = [
+        py,
+        str(root / "scripts" / "core" / "build_canon_singularity_insight_delta_summary_v1.py"),
+        "--history-jsonl",
+        str(args.insight_history_jsonl),
+        "--output-json",
+        str(args.insight_delta_output_json),
     ]
 
     cmds = [cmd_report, cmd_balanced, cmd_summary]
@@ -193,6 +211,9 @@ def main() -> int:
         rc_insight_gate = _run(cmd_insight_gate, dry_run=bool(args.dry_run))
         if rc_insight_gate != 0:
             return rc_insight_gate
+        rc_insight_delta = _run(cmd_insight_delta, dry_run=bool(args.dry_run))
+        if rc_insight_delta != 0:
+            return rc_insight_delta
     return 0
 
 

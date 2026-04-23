@@ -12,6 +12,12 @@ def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _append_jsonl(path: Path, data: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(data, ensure_ascii=False) + "\n")
+
+
 def _clean_text(s: str) -> str:
     return " ".join(str(s).split())
 
@@ -36,6 +42,10 @@ def main() -> int:
     ap.add_argument(
         "--output-json",
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_v1.json",
+    )
+    ap.add_argument(
+        "--history-jsonl",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_history_v1.jsonl",
     )
     args = ap.parse_args()
 
@@ -101,6 +111,17 @@ def main() -> int:
     out_path = Path(args.output_json)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    _append_jsonl(
+        Path(args.history_jsonl),
+        {
+            "schema": "original_corpus_regime_singularity_canon_insight_minimum_event_v1",
+            "generated_at_utc": out["generated_at_utc"],
+            "inputs": out["inputs"],
+            "counts": out["counts"],
+            "meta": out["meta"],
+            "insights": out["insights"],
+        },
+    )
     print(str(out_path))
     return 0
 

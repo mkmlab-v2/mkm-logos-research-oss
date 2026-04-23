@@ -37,6 +37,8 @@ def test_build_canon_singularity_insight_minimum_v1(tmp_path: Path):
         "1",
         "--output-json",
         str(out),
+        "--history-jsonl",
+        str(tmp_path / "hist.jsonl"),
     ]
     cp = subprocess.run(cmd, check=False, cwd=Path(__file__).resolve().parents[1], capture_output=True, text=True)
     assert cp.returncode == 0
@@ -45,4 +47,6 @@ def test_build_canon_singularity_insight_minimum_v1(tmp_path: Path):
     assert data["counts"]["insight_rows"] == 1
     assert data["insights"][0]["row_id"] == "Gen.1.1"
     assert len(data["insights"][0]["commentary"]) > 20
+    hist = (tmp_path / "hist.jsonl").read_text(encoding="utf-8").strip().splitlines()
+    assert len(hist) == 1
 
