@@ -23,4 +23,21 @@ def test_run_canon_singularity_chain_dry_run():
     assert "validate_canon_singularity_outputs_v1.py --report-json" in out
     assert "--output-json docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_v1.json" in out
     assert "build_canon_singularity_gate_health_summary_v1.py --history-jsonl" in out
+    assert "enforce_canon_singularity_gate_health_v1.py --health-summary-json" not in out
+
+
+def test_run_canon_singularity_chain_dry_run_with_health_enforcement():
+    root = Path(__file__).resolve().parents[1]
+    cmd = [
+        sys.executable,
+        str(root / "scripts" / "core" / "run_canon_singularity_chain_v1.py"),
+        "--canon-jsonl",
+        "data/logos/verse_decoded_v2.jsonl",
+        "--enforce-health",
+        "--dry-run",
+    ]
+    cp = subprocess.run(cmd, check=False, cwd=root, capture_output=True, text=True)
+    assert cp.returncode == 0
+    out = cp.stdout
+    assert "enforce_canon_singularity_gate_health_v1.py --health-summary-json" in out
 

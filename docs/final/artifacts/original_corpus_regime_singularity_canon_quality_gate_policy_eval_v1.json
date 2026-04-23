@@ -1,0 +1,15 @@
+{
+  "schema": "original_corpus_regime_singularity_canon_quality_gate_policy_eval_v1",
+  "generated_at_utc": "2026-04-23T03:51:44Z",
+  "inputs": {
+    "health_summary_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_health_summary_v1.json",
+    "max_fail_count": 0,
+    "min_pass_rate": 1.0,
+    "allow_yellow": false
+  },
+  "status": "pass",
+  "health_level": "green",
+  "fail_count": 0,
+  "pass_rate": 1.0,
+  "reasons": []
+}

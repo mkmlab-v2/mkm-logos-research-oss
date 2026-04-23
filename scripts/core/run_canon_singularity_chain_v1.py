@@ -47,7 +47,15 @@ def main() -> int:
         "--quality-gate-health-summary-json",
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_health_summary_v1.json",
     )
+    ap.add_argument(
+        "--quality-gate-policy-output-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_policy_eval_v1.json",
+    )
     ap.add_argument("--quality-gate-health-window", type=int, default=30)
+    ap.add_argument("--enforce-health", action="store_true")
+    ap.add_argument("--health-max-fail-count", type=int, default=0)
+    ap.add_argument("--health-min-pass-rate", type=float, default=1.0)
+    ap.add_argument("--health-allow-yellow", action="store_true")
     ap.add_argument("--summary-top-n", type=int, default=20)
     ap.add_argument("--expected-canon-rows", type=int, default=28741)
     ap.add_argument("--skip-validate", action="store_true")
@@ -117,6 +125,20 @@ def main() -> int:
         "--output-json",
         str(args.quality_gate_health_summary_json),
     ]
+    cmd_enforce_health = [
+        py,
+        str(root / "scripts" / "core" / "enforce_canon_singularity_gate_health_v1.py"),
+        "--health-summary-json",
+        str(args.quality_gate_health_summary_json),
+        "--max-fail-count",
+        str(int(args.health_max_fail_count)),
+        "--min-pass-rate",
+        str(float(args.health_min_pass_rate)),
+        "--output-json",
+        str(args.quality_gate_policy_output_json),
+    ]
+    if bool(args.health_allow_yellow):
+        cmd_enforce_health.append("--allow-yellow")
 
     cmds = [cmd_report, cmd_balanced, cmd_summary]
     rc_validate = 0
@@ -132,6 +154,10 @@ def main() -> int:
             return rc_validate
         if rc_health != 0:
             return rc_health
+        if bool(args.enforce_health):
+            rc_enforce = _run(cmd_enforce_health, dry_run=bool(args.dry_run))
+            if rc_enforce != 0:
+                return rc_enforce
     return 0
 
 
