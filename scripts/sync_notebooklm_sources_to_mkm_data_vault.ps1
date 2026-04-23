@@ -197,6 +197,8 @@ $SourceFiles = @(
     "docs\final\artifacts\original_corpus_regime_singularity_canon_insight_minimum_quality_gate_v1.json",
     "docs\final\artifacts\original_corpus_regime_singularity_canon_insight_minimum_history_v1.jsonl",
     "docs\final\artifacts\original_corpus_regime_singularity_canon_insight_delta_summary_v1.json",
+    "docs\final\artifacts\original_corpus_regime_singularity_canon_insight_explainability_v1.json",
+    "docs\final\artifacts\original_corpus_regime_singularity_canon_insight_explainability_quality_gate_v1.json",
     "docs\final\artifacts\original_corpus_regime_singularity_canon_operational_consistency_check_v1.json",
     "docs\final\artifacts\regime_map_calibration_round2_for_sideways_v1.json",
     "docs\final\artifacts\regime_map_calibration_round3_balanced_constraints_v1.json",

@@ -1,0 +1,18 @@
+{
+  "schema": "original_corpus_regime_singularity_canon_insight_explainability_quality_gate_v1",
+  "generated_at_utc": "2026-04-23T04:51:52Z",
+  "inputs": {
+    "input_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_insight_explainability_v1.json",
+    "min_rows": 5
+  },
+  "status": "pass",
+  "checks": {
+    "schema_ok": true,
+    "rows_ok": true,
+    "components_ok": true,
+    "text_ok": true
+  },
+  "metrics": {
+    "rows": 12
+  }
+}

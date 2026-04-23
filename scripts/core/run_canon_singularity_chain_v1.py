@@ -60,6 +60,14 @@ def main() -> int:
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_quality_gate_v1.json",
     )
     ap.add_argument(
+        "--insight-explainability-output-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_explainability_v1.json",
+    )
+    ap.add_argument(
+        "--insight-explainability-gate-output-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_explainability_quality_gate_v1.json",
+    )
+    ap.add_argument(
         "--insight-history-jsonl",
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_history_v1.jsonl",
     )
@@ -185,6 +193,22 @@ def main() -> int:
         "--output-json",
         str(args.insight_delta_output_json),
     ]
+    cmd_insight_explain = [
+        py,
+        str(root / "scripts" / "core" / "build_canon_singularity_insight_explainability_v1.py"),
+        "--insight-json",
+        str(args.insight_output_json),
+        "--output-json",
+        str(args.insight_explainability_output_json),
+    ]
+    cmd_insight_explain_gate = [
+        py,
+        str(root / "scripts" / "core" / "validate_canon_singularity_insight_explainability_v1.py"),
+        "--input-json",
+        str(args.insight_explainability_output_json),
+        "--output-json",
+        str(args.insight_explainability_gate_output_json),
+    ]
 
     cmds = [cmd_report, cmd_balanced, cmd_summary]
     rc_validate = 0
@@ -214,6 +238,12 @@ def main() -> int:
         rc_insight_delta = _run(cmd_insight_delta, dry_run=bool(args.dry_run))
         if rc_insight_delta != 0:
             return rc_insight_delta
+        rc_explain = _run(cmd_insight_explain, dry_run=bool(args.dry_run))
+        if rc_explain != 0:
+            return rc_explain
+        rc_explain_gate = _run(cmd_insight_explain_gate, dry_run=bool(args.dry_run))
+        if rc_explain_gate != 0:
+            return rc_explain_gate
     return 0
 
 

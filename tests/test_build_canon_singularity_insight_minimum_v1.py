@@ -21,6 +21,14 @@ def test_build_canon_singularity_insight_minimum_v1(tmp_path: Path):
                         "margin_vs_second": 0.1,
                         "state16": 2,
                         "text_preview": "abc",
+                    },
+                    {
+                        "row_id": "Gen.1.2",
+                        "best_regime": "sideways_accumulation",
+                        "score": 0.5,
+                        "margin_vs_second": 0.2,
+                        "state16": 2,
+                        "text_preview": "abc def",
                     }
                 ],
             },
@@ -45,7 +53,9 @@ def test_build_canon_singularity_insight_minimum_v1(tmp_path: Path):
     data = json.loads(out.read_text(encoding="utf-8"))
     assert data["schema"] == "original_corpus_regime_singularity_canon_insight_minimum_v1"
     assert data["counts"]["insight_rows"] == 1
-    assert data["insights"][0]["row_id"] == "Gen.1.1"
+    assert data["insights"][0]["row_id"] == "Gen.1.2"
+    assert data["meta"]["rank_policy_version"] == "score_margin_tokendiv_v2"
+    assert "token_diversity" in data["insights"][0]
     assert len(data["insights"][0]["commentary"]) > 20
     hist = (tmp_path / "hist.jsonl").read_text(encoding="utf-8").strip().splitlines()
     assert len(hist) == 1

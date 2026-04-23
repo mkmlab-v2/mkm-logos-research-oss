@@ -22,6 +22,13 @@ def _clean_text(s: str) -> str:
     return " ".join(str(s).split())
 
 
+def _token_diversity(text: str) -> float:
+    toks = [t for t in text.split(" ") if t]
+    if not toks:
+        return 0.0
+    return len(set(toks)) / len(toks)
+
+
 def _regime_note(regime: str) -> str:
     notes = {
         "bull_pump": "상승 가속 국면과의 정렬 강도가 높은 행입니다.",
@@ -50,7 +57,22 @@ def main() -> int:
     args = ap.parse_args()
 
     data = _read_json(Path(args.summary_json))
-    top = list(data.get("top_canon_global") or [])[: int(args.top_n)]
+    rows = list(data.get("top_canon_global") or [])
+    for row in rows:
+        text_preview = _clean_text(str(row.get("text_preview") or ""))
+        row["_token_diversity"] = _token_diversity(text_preview)
+        row["_clean_text_preview"] = text_preview
+    rows = sorted(
+        rows,
+        key=lambda r: (
+            float(r.get("score", 0.0)),
+            float(r.get("margin_vs_second", 0.0)),
+            float(r.get("_token_diversity", 0.0)),
+            str(r.get("row_id") or ""),
+        ),
+        reverse=True,
+    )
+    top = rows[: int(args.top_n)]
     insights: list[dict[str, Any]] = []
     regime_counts: dict[str, int] = {}
     for idx, row in enumerate(top, start=1):
@@ -58,7 +80,8 @@ def main() -> int:
         regime_counts[regime] = regime_counts.get(regime, 0) + 1
         score = float(row.get("score", 0.0))
         margin = float(row.get("margin_vs_second", 0.0))
-        text_preview = _clean_text(str(row.get("text_preview") or ""))
+        text_preview = str(row.get("_clean_text_preview") or "")
+        token_div = float(row.get("_token_diversity", 0.0))
         commentary = (
             f"{row.get('row_id')}는 {regime} 정렬 점수 {score:.6f}, "
             f"2순위 대비 마진 {margin:.6f}로 분리되며, {_regime_note(regime)}"
@@ -72,6 +95,7 @@ def main() -> int:
                 "margin_vs_second": margin,
                 "state16": row.get("state16"),
                 "text_preview": text_preview,
+                "token_diversity": round(token_div, 6),
                 "commentary": commentary,
                 "evidence": {
                     "source_summary": str(args.summary_json),
@@ -105,6 +129,13 @@ def main() -> int:
         "meta": {
             "dominant_regime_in_top_n": dominant_regime,
             "method": "Template-based minimum insight from canon lane summary.",
+            "rank_policy_version": "score_margin_tokendiv_v2",
+            "rank_policy": [
+                "score desc",
+                "margin_vs_second desc",
+                "token_diversity desc",
+                "row_id desc",
+            ],
         },
         "insights": insights,
     }
