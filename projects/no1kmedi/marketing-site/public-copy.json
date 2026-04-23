@@ -20,6 +20,12 @@
     "workflow": "활용 흐름",
     "contact": "문의"
   },
+  "links": {
+    "consumer": "/consumer",
+    "clinician": "/clinician",
+    "reception": "/reception",
+    "contact": "#contact"
+  },
   "hero": {
     "eyebrow": "한의원 진료 보조 워크플로우",
     "title": "문진·상담 정보를 정리해 진료 준비를 돕는 AI 보조 서비스",

@@ -9,14 +9,14 @@ export const dynamic = "force-dynamic";
 export default function HomePage() {
   const c = siteCopy;
   const heroCtaLinks = {
-    primary: "/consumer",
-    secondary: "/clinician",
-    tertiary: "#contact",
-    quaternary: "/reception",
+    primary: c.links.consumer,
+    secondary: c.links.clinician,
+    tertiary: c.links.contact,
+    quaternary: c.links.reception,
   } as const;
   const sectionCtaLinks = {
-    publicSolutionPrimary: "/consumer",
-    publicSolutionSecondary: "#contact",
+    publicSolutionPrimary: c.links.consumer,
+    publicSolutionSecondary: c.links.contact,
   } as const;
 
   return (
@@ -199,10 +199,10 @@ export default function HomePage() {
             ))}
           </div>
           <div className="section-cta">
-            <a className="btn btn-primary" href="/consumer">
+            <a className="btn btn-primary" href={c.links.consumer}>
               {c.landing_flow.cta_primary}
             </a>
-            <a className="btn btn-ghost" href="/clinician">
+            <a className="btn btn-ghost" href={c.links.clinician}>
               {c.landing_flow.cta_secondary}
             </a>
           </div>

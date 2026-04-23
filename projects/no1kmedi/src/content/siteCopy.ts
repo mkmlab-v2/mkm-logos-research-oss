@@ -4,6 +4,7 @@ export type SiteCopy = {
   header: { brand_name: string; brand_tagline: string };
   seo: { title: string; description: string };
   nav: { about: string; safety: string; workflow: string; contact: string };
+  links: { consumer: string; clinician: string; reception: string; contact: string };
   hero: {
     eyebrow: string;
     title: string;
