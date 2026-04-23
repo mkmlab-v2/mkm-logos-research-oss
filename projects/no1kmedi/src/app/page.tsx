@@ -24,7 +24,7 @@ export default function HomePage() {
       <a className="skip" href="#main">
         본문으로 건너뛰기
       </a>
-      <SiteHeader nav={c.nav} brand={c.header} />
+      <SiteHeader nav={c.nav} brand={c.header} links={c.links} />
       <main id="main">
         <section className="hero" id="top" aria-labelledby="hero-title">
           <div className="hero-orb hero-orb-a" aria-hidden="true" />

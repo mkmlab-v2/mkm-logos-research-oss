@@ -4,8 +4,9 @@ import { useState } from "react";
 
 type Nav = { about: string; safety: string; workflow: string; contact: string };
 type Brand = { brand_name: string; brand_tagline: string };
+type Links = { consumer: string; clinician: string; reception: string; contact: string };
 
-export function SiteHeader({ nav, brand }: { nav: Nav; brand: Brand }) {
+export function SiteHeader({ nav, brand, links }: { nav: Nav; brand: Brand; links: Links }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -41,13 +42,13 @@ export function SiteHeader({ nav, brand }: { nav: Nav; brand: Brand }) {
           }}
         >
           <span className="nav-group-label">서비스</span>
-          <a href="/consumer" onClick={() => setOpen(false)}>
+          <a href={links.consumer} onClick={() => setOpen(false)}>
             일반인 상담
           </a>
-          <a href="/clinician" onClick={() => setOpen(false)}>
+          <a href={links.clinician} onClick={() => setOpen(false)}>
             한의사 보조
           </a>
-          <a href="/reception" onClick={() => setOpen(false)}>
+          <a href={links.reception} onClick={() => setOpen(false)}>
             접수대 PIN
           </a>
           <span className="nav-group-label">소개</span>
