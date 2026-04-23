@@ -68,6 +68,16 @@ def main() -> int:
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_explainability_quality_gate_v1.json",
     )
     ap.add_argument(
+        "--insight-slice-stability-output-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_slice_stability_v1.json",
+    )
+    ap.add_argument(
+        "--insight-slice-stability-gate-output-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_slice_stability_quality_gate_v1.json",
+    )
+    ap.add_argument("--insight-slice-stability-window", type=int, default=3)
+    ap.add_argument("--insight-max-slice-change-count", type=int, default=5)
+    ap.add_argument(
         "--insight-history-jsonl",
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_history_v1.jsonl",
     )
@@ -209,6 +219,26 @@ def main() -> int:
         "--output-json",
         str(args.insight_explainability_gate_output_json),
     ]
+    cmd_insight_slice_stability = [
+        py,
+        str(root / "scripts" / "core" / "build_canon_singularity_insight_slice_stability_v1.py"),
+        "--history-jsonl",
+        str(args.insight_history_jsonl),
+        "--window",
+        str(int(args.insight_slice_stability_window)),
+        "--output-json",
+        str(args.insight_slice_stability_output_json),
+    ]
+    cmd_insight_slice_stability_gate = [
+        py,
+        str(root / "scripts" / "core" / "validate_canon_singularity_insight_slice_stability_v1.py"),
+        "--input-json",
+        str(args.insight_slice_stability_output_json),
+        "--max-slice-change-count",
+        str(int(args.insight_max_slice_change_count)),
+        "--output-json",
+        str(args.insight_slice_stability_gate_output_json),
+    ]
 
     cmds = [cmd_report, cmd_balanced, cmd_summary]
     rc_validate = 0
@@ -244,6 +274,12 @@ def main() -> int:
         rc_explain_gate = _run(cmd_insight_explain_gate, dry_run=bool(args.dry_run))
         if rc_explain_gate != 0:
             return rc_explain_gate
+        rc_slice = _run(cmd_insight_slice_stability, dry_run=bool(args.dry_run))
+        if rc_slice != 0:
+            return rc_slice
+        rc_slice_gate = _run(cmd_insight_slice_stability_gate, dry_run=bool(args.dry_run))
+        if rc_slice_gate != 0:
+            return rc_slice_gate
     return 0
 
 
