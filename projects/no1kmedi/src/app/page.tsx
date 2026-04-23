@@ -8,6 +8,16 @@ export const dynamic = "force-dynamic";
 
 export default function HomePage() {
   const c = siteCopy;
+  const heroCtaLinks = {
+    primary: "/consumer",
+    secondary: "/clinician",
+    tertiary: "#contact",
+    quaternary: "/reception",
+  } as const;
+  const sectionCtaLinks = {
+    publicSolutionPrimary: "/consumer",
+    publicSolutionSecondary: "#contact",
+  } as const;
 
   return (
     <>
@@ -24,11 +34,17 @@ export default function HomePage() {
           <h1 id="hero-title">{c.hero.title}</h1>
           <p className="hero-lead">{c.hero.subtitle}</p>
           <div className="hero-cta">
-            <a className="btn btn-primary" href="/consumer">
-              일반인 시작하기
+            <a className="btn btn-primary" href={heroCtaLinks.primary}>
+              {c.hero.cta_primary}
             </a>
-            <a className="btn btn-ghost" href="/clinician">
-              한의사 시작하기
+            <a className="btn btn-ghost" href={heroCtaLinks.secondary}>
+              {c.hero.cta_secondary}
+            </a>
+            <a className="btn btn-ghost" href={heroCtaLinks.tertiary}>
+              {c.hero.cta_tertiary}
+            </a>
+            <a className="btn btn-ghost" href={heroCtaLinks.quaternary}>
+              {c.hero.cta_quaternary}
             </a>
           </div>
           <div className="hero-role-cta">
@@ -88,6 +104,9 @@ export default function HomePage() {
               </article>
             ))}
           </div>
+          <p className="trust-note" role="note">
+            {c.trust.note}
+          </p>
         </section>
 
         <section id="public-solution" aria-labelledby="public-solution-title">
@@ -102,11 +121,11 @@ export default function HomePage() {
             ))}
           </div>
           <div className="section-cta">
-            <a className="btn btn-primary" href="/consumer">
-              일반인 AI 상담으로 이동
+            <a className="btn btn-primary" href={sectionCtaLinks.publicSolutionPrimary}>
+              {c.public_solution.cta_primary}
             </a>
-            <a className="btn btn-ghost" href="/clinician">
-              의료진 보조 화면 보기
+            <a className="btn btn-ghost" href={sectionCtaLinks.publicSolutionSecondary}>
+              {c.public_solution.cta_secondary}
             </a>
           </div>
         </section>

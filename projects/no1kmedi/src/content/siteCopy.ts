@@ -10,8 +10,10 @@ export type SiteCopy = {
     subtitle: string;
     cta_primary: string;
     cta_secondary: string;
+    cta_tertiary: string;
+    cta_quaternary: string;
   };
-  trust: { items: { label: string; value: string }[] };
+  trust: { items: { label: string; value: string }[]; note: string };
   public_solution: {
     title: string;
     section_lead: string;

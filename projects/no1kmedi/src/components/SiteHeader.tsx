@@ -17,14 +17,29 @@ export function SiteHeader({ nav, brand }: { nav: Nav; brand: Brand }) {
         <button
           type="button"
           className="nav-toggle"
+          aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
           aria-expanded={open}
           aria-controls="site-nav"
           id="nav-toggle"
           onClick={() => setOpen((v) => !v)}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              setOpen(false);
+            }
+          }}
         >
           메뉴
         </button>
-        <nav className={`nav-main${open ? " is-open" : ""}`} id="site-nav" aria-label="주요">
+        <nav
+          className={`nav-main${open ? " is-open" : ""}`}
+          id="site-nav"
+          aria-label="주요"
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              setOpen(false);
+            }
+          }}
+        >
           <span className="nav-group-label">서비스</span>
           <a href="/consumer" onClick={() => setOpen(false)}>
             일반인 상담
