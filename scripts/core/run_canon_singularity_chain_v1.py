@@ -78,6 +78,19 @@ def main() -> int:
     ap.add_argument("--insight-slice-stability-window", type=int, default=3)
     ap.add_argument("--insight-max-slice-change-count", type=int, default=5)
     ap.add_argument(
+        "--weekly-brief-output-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_weekly_brief_v1.json",
+    )
+    ap.add_argument(
+        "--weekly-brief-output-md",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_weekly_brief_v1.md",
+    )
+    ap.add_argument(
+        "--weekly-brief-gate-output-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_weekly_brief_quality_gate_v1.json",
+    )
+    ap.add_argument("--weekly-brief-window", type=int, default=7)
+    ap.add_argument(
         "--insight-history-jsonl",
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_history_v1.jsonl",
     )
@@ -239,6 +252,32 @@ def main() -> int:
         "--output-json",
         str(args.insight_slice_stability_gate_output_json),
     ]
+    cmd_weekly_brief = [
+        py,
+        str(root / "scripts" / "core" / "build_canon_singularity_weekly_brief_v1.py"),
+        "--insight-history-jsonl",
+        str(args.insight_history_jsonl),
+        "--gate-history-jsonl",
+        str(args.quality_gate_history_jsonl),
+        "--health-summary-json",
+        str(args.quality_gate_health_summary_json),
+        "--slice-stability-json",
+        str(args.insight_slice_stability_output_json),
+        "--window",
+        str(int(args.weekly_brief_window)),
+        "--output-json",
+        str(args.weekly_brief_output_json),
+        "--output-md",
+        str(args.weekly_brief_output_md),
+    ]
+    cmd_weekly_brief_gate = [
+        py,
+        str(root / "scripts" / "core" / "validate_canon_singularity_weekly_brief_v1.py"),
+        "--input-json",
+        str(args.weekly_brief_output_json),
+        "--output-json",
+        str(args.weekly_brief_gate_output_json),
+    ]
 
     cmds = [cmd_report, cmd_balanced, cmd_summary]
     rc_validate = 0
@@ -280,6 +319,12 @@ def main() -> int:
         rc_slice_gate = _run(cmd_insight_slice_stability_gate, dry_run=bool(args.dry_run))
         if rc_slice_gate != 0:
             return rc_slice_gate
+        rc_weekly = _run(cmd_weekly_brief, dry_run=bool(args.dry_run))
+        if rc_weekly != 0:
+            return rc_weekly
+        rc_weekly_gate = _run(cmd_weekly_brief_gate, dry_run=bool(args.dry_run))
+        if rc_weekly_gate != 0:
+            return rc_weekly_gate
     return 0
 
 
