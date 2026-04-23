@@ -51,6 +51,16 @@ def main() -> int:
         "--quality-gate-policy-output-json",
         default="docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_policy_eval_v1.json",
     )
+    ap.add_argument(
+        "--insight-output-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_v1.json",
+    )
+    ap.add_argument(
+        "--insight-quality-gate-output-json",
+        default="docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_quality_gate_v1.json",
+    )
+    ap.add_argument("--insight-top-n", type=int, default=12)
+    ap.add_argument("--skip-insight", action="store_true")
     ap.add_argument("--quality-gate-health-window", type=int, default=30)
     ap.add_argument("--enforce-health", action="store_true")
     ap.add_argument("--health-max-fail-count", type=int, default=0)
@@ -139,6 +149,24 @@ def main() -> int:
     ]
     if bool(args.health_allow_yellow):
         cmd_enforce_health.append("--allow-yellow")
+    cmd_insight = [
+        py,
+        str(root / "scripts" / "core" / "build_canon_singularity_insight_minimum_v1.py"),
+        "--summary-json",
+        str(args.summary_output_json),
+        "--top-n",
+        str(int(args.insight_top_n)),
+        "--output-json",
+        str(args.insight_output_json),
+    ]
+    cmd_insight_gate = [
+        py,
+        str(root / "scripts" / "core" / "validate_canon_singularity_insight_minimum_v1.py"),
+        "--input-json",
+        str(args.insight_output_json),
+        "--output-json",
+        str(args.insight_quality_gate_output_json),
+    ]
 
     cmds = [cmd_report, cmd_balanced, cmd_summary]
     rc_validate = 0
@@ -158,6 +186,13 @@ def main() -> int:
             rc_enforce = _run(cmd_enforce_health, dry_run=bool(args.dry_run))
             if rc_enforce != 0:
                 return rc_enforce
+    if not args.skip_insight:
+        rc_insight = _run(cmd_insight, dry_run=bool(args.dry_run))
+        if rc_insight != 0:
+            return rc_insight
+        rc_insight_gate = _run(cmd_insight_gate, dry_run=bool(args.dry_run))
+        if rc_insight_gate != 0:
+            return rc_insight_gate
     return 0
 
 

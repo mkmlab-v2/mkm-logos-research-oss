@@ -1,25 +1,25 @@
 {
   "schema": "original_corpus_regime_singularity_canon_quality_gate_health_summary_v1",
-  "generated_at_utc": "2026-04-23T03:51:44Z",
+  "generated_at_utc": "2026-04-23T04:34:04Z",
   "inputs": {
     "history_jsonl": "docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_history_v1.jsonl",
     "window": 30
   },
   "counts": {
-    "history_events_total": 3,
-    "events_in_window": 3,
-    "pass_count": 3,
+    "history_events_total": 5,
+    "events_in_window": 5,
+    "pass_count": 5,
     "fail_count": 0,
     "pass_rate": 1.0
   },
   "latest_status": {
     "result": "pass",
-    "generated_at_utc": "2026-04-23T03:51:44Z",
+    "generated_at_utc": "2026-04-23T04:34:04Z",
     "error": null
   },
   "streak": {
     "result": "pass",
-    "count": 3
+    "count": 5
   },
   "health_level": "green",
   "recommended_action": "No immediate action. Continue scheduled monitoring.",
@@ -40,6 +40,16 @@
     },
     {
       "generated_at_utc": "2026-04-23T03:51:44Z",
+      "result": "pass",
+      "error": null
+    },
+    {
+      "generated_at_utc": "2026-04-23T04:27:46Z",
+      "result": "pass",
+      "error": null
+    },
+    {
+      "generated_at_utc": "2026-04-23T04:34:04Z",
       "result": "pass",
       "error": null
     }

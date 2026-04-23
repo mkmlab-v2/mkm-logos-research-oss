@@ -1,0 +1,272 @@
+{
+  "schema": "original_corpus_regime_singularity_canon_insight_minimum_v1",
+  "generated_at_utc": "2026-04-23T04:34:05Z",
+  "inputs": {
+    "summary_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+    "top_n": 12
+  },
+  "counts": {
+    "insight_rows": 12,
+    "regime_counts": {
+      "sideways_accumulation": 12
+    }
+  },
+  "meta": {
+    "dominant_regime_in_top_n": "sideways_accumulation",
+    "method": "Template-based minimum insight from canon lane summary."
+  },
+  "insights": [
+    {
+      "rank": 1,
+      "row_id": "Gen.5.26",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַֽ יְחִ֣י מְתוּשֶׁ֗לַח אַֽחֲרֵי֙ הוֹלִיד֣ וֹ אֶת לֶ֔מֶךְ שְׁתַּ֤יִם וּ שְׁמוֹנִים֙ שָׁנָ֔ה וּ שְׁבַ֥ע מֵא֖וֹת שָׁנָ֑ה ו",
+      "commentary": "Gen.5.26는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    },
+    {
+      "rank": 2,
+      "row_id": "Gen.5.27",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יִּהְיוּ֙ כָּל יְמֵ֣י מְתוּשֶׁ֔לַח תֵּ֤שַׁע וְ שִׁשִּׁים֙ שָׁנָ֔ה וּ תְשַׁ֥ע מֵא֖וֹת שָׁנָ֑ה וַ יָּמֹֽת",
+      "commentary": "Gen.5.27는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    },
+    {
+      "rank": 3,
+      "row_id": "Gen.7.19",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ הַ מַּ֗יִם גָּֽבְר֛וּ מְאֹ֥ד מְאֹ֖ד עַל הָ אָ֑רֶץ וַ יְכֻסּ֗וּ כָּל הֶֽ הָרִים֙ הַ גְּבֹהִ֔ים אֲשֶׁר תַּ֖חַת כָּל הַ",
+      "commentary": "Gen.7.19는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    },
+    {
+      "rank": 4,
+      "row_id": "Gen.10.28",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ אֶת עוֹבָ֥ל וְ אֶת אֲבִֽימָאֵ֖ל וְ אֶת שְׁבָֽא",
+      "commentary": "Gen.10.28는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    },
+    {
+      "rank": 5,
+      "row_id": "Gen.12.16",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וּ לְ אַבְרָ֥ם הֵיטִ֖יב בַּ עֲבוּרָ֑ הּ וַֽ יְהִי ל֤ וֹ צֹאן וּ בָקָר֙ וַ חֲמֹרִ֔ים וַ עֲבָדִים֙ וּ שְׁפָחֹ֔ת וַ אֲתֹנֹ֖",
+      "commentary": "Gen.12.16는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    },
+    {
+      "rank": 6,
+      "row_id": "Gen.28.1",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יִּקְרָ֥א יִצְחָ֛ק אֶֽל יַעֲקֹ֖ב וַ יְבָ֣רֶךְ אֹת֑ וֹ וַ יְצַוֵּ֨ הוּ֙ וַ יֹּ֣אמֶר ל֔ וֹ לֹֽא תִקַּ֥ח אִשָּׁ֖ה מִ בְּ",
+      "commentary": "Gen.28.1는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    },
+    {
+      "rank": 7,
+      "row_id": "Gen.31.11",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יֹּ֨אמֶר אֵלַ֜ י מַלְאַ֧ךְ הָ אֱלֹהִ֛ים בַּ חֲל֖וֹם יַֽעֲקֹ֑ב וָ אֹמַ֖ר הִנֵּֽנִ י",
+      "commentary": "Gen.31.11는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    },
+    {
+      "rank": 8,
+      "row_id": "Gen.32.13",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ אַתָּ֣ה אָמַ֔רְתָּ הֵיטֵ֥ב אֵיטִ֖יב עִמָּ֑ ךְ וְ שַׂמְתִּ֤י אֶֽת זַרְעֲ ךָ֙ כְּ ח֣וֹל הַ יָּ֔ם אֲשֶׁ֥ר לֹא יִסָּפֵ֖ר",
+      "commentary": "Gen.32.13는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    },
+    {
+      "rank": 9,
+      "row_id": "Gen.34.18",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יִּֽיטְב֥וּ דִבְרֵי הֶ֖ם בְּ עֵינֵ֣י חֲמ֑וֹר וּ בְ עֵינֵ֖י שְׁכֶ֥ם בֶּן חֲמֽוֹר",
+      "commentary": "Gen.34.18는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    },
+    {
+      "rank": 10,
+      "row_id": "Gen.35.18",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יְהִ֞י בְּ צֵ֤את נַפְשָׁ הּ֙ כִּ֣י מֵ֔תָה וַ תִּקְרָ֥א שְׁמ֖ וֹ בֶּן אוֹנִ֑י וְ אָבִ֖י ו קָֽרָא ל֥ וֹ בִנְיָמִֽין",
+      "commentary": "Gen.35.18는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    },
+    {
+      "rank": 11,
+      "row_id": "Gen.36.40",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וְ֠ אֵלֶּה שְׁמ֞וֹת אַלּוּפֵ֤י עֵשָׂו֙ לְ מִשְׁפְּחֹתָ֔ ם לִ מְקֹמֹתָ֖ ם בִּ שְׁמֹתָ֑ ם אַלּ֥וּף תִּמְנָ֛ע אַלּ֥וּף עַֽל",
+      "commentary": "Gen.36.40는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    },
+    {
+      "rank": 12,
+      "row_id": "Gen.42.10",
+      "best_regime": "sideways_accumulation",
+      "score": 0.41185733598112,
+      "margin_vs_second": 0.10228523820593255,
+      "state16": 2,
+      "text_preview": "וַ יֹּאמְר֥וּ אֵלָ֖י ו לֹ֣א אֲדֹנִ֑ י וַ עֲבָדֶ֥י ךָ בָּ֖אוּ לִ שְׁבָּר אֹֽכֶל",
+      "commentary": "Gen.42.10는 sideways_accumulation 정렬 점수 0.411857, 2순위 대비 마진 0.102285로 분리되며, 횡보-축적 국면과의 정렬이 반복적으로 관찰됩니다.",
+      "evidence": {
+        "source_summary": "docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json",
+        "source_fields": [
+          "row_id",
+          "best_regime",
+          "score",
+          "margin_vs_second",
+          "state16",
+          "text_preview"
+        ]
+      }
+    }
+  ]
+}
