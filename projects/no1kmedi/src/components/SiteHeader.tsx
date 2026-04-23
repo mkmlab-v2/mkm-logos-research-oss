@@ -25,6 +25,17 @@ export function SiteHeader({ nav, brand }: { nav: Nav; brand: Brand }) {
           메뉴
         </button>
         <nav className={`nav-main${open ? " is-open" : ""}`} id="site-nav" aria-label="주요">
+          <span className="nav-group-label">서비스</span>
+          <a href="/consumer" onClick={() => setOpen(false)}>
+            일반인 상담
+          </a>
+          <a href="/clinician" onClick={() => setOpen(false)}>
+            한의사 보조
+          </a>
+          <a href="/reception" onClick={() => setOpen(false)}>
+            접수대 PIN
+          </a>
+          <span className="nav-group-label">소개</span>
           <a href="#about" onClick={() => setOpen(false)}>
             {nav.about}
           </a>

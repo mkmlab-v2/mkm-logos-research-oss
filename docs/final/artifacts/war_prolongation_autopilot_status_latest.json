@@ -1,10 +1,10 @@
 ﻿{
     "schema":  "war_prolongation_autopilot_status_v1",
-    "generated_at_utc":  "2026-04-11T00:05:18Z",
+    "generated_at_utc":  "2026-04-23T00:50:12Z",
     "cycle_ok":  true,
     "monitored_task":  "MKM-War-Prolongation-Autopilot-Daily",
-    "promotion_ready":  false,
-    "gate_decision":  "NO_GO",
+    "promotion_ready":  true,
+    "gate_decision":  "GO",
     "references":  {
                        "health":  "docs/final/artifacts/war_prolongation_benchmark_health_latest.json",
                        "bundle":  "docs/final/artifacts/war_prolongation_benchmark_bundle_20260406.json",

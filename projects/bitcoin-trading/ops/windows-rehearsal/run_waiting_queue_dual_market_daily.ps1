@@ -1,5 +1,7 @@
 param(
-    [switch]$StrictCloseReturn
+    [switch]$StrictCloseReturn,
+    [switch]$SkipExternalFeedValidation,
+    [switch]$StrictExternalFeedValidation
 )
 
 $ErrorActionPreference = "Stop"
@@ -257,6 +259,12 @@ try {
         SecondaryPredictedBand = "DOWN_STRONG"
         SecondaryHitThresholdPct = "-1.0"
         SecondaryFailThresholdPct = "1.8"
+    }
+    if ($SkipExternalFeedValidation) {
+        $invokeArgs["SkipExternalFeedValidation"] = $true
+    }
+    if ($StrictExternalFeedValidation) {
+        $invokeArgs["StrictExternalFeedValidation"] = $true
     }
     if (-not [string]::IsNullOrWhiteSpace([string]$env:DAILY_KOSPI_D1_RETURN_PCT)) {
         $invokeArgs["CloseReturnPct"] = [string]$env:DAILY_KOSPI_D1_RETURN_PCT

@@ -1,6 +1,6 @@
 {
   "schema": "billing_evidence_v1",
-  "ts_utc": "2026-04-11T19:29:07.402864+00:00",
+  "ts_utc": "2026-04-23T01:16:05.694098+00:00",
   "source_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_benchmark_auto_latest.json",
   "invoice_input": "C:\\workspace\\docs\\final\\artifacts\\billing_invoice_from_env_latest.json",
   "invoice_provenance": "provider_file",
@@ -10,9 +10,9 @@
   "input_tokens": 0,
   "output_tokens": 0,
   "total_tokens": 0,
-  "input_usd_per_1k_tokens": 0.0,
-  "output_usd_per_1k_tokens": 0.0,
-  "pricing_configured": false,
+  "input_usd_per_1k_tokens": 0.15,
+  "output_usd_per_1k_tokens": 0.6,
+  "pricing_configured": true,
   "api_cost_usd": 0.0807,
   "note": "invoice_audit_ready=false if invoice JSON still contains replace_with* placeholders."
 }

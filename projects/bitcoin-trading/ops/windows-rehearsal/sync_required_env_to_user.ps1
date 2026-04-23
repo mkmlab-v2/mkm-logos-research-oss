@@ -40,6 +40,7 @@ $keys = @(
   "TELEGRAM_BOT_TOKEN",
   "TELEGRAM_CHAT_ID",
   "TELEGRAM_ALERT_MODE",
+  "OPS_TELEGRAM_FALLBACK_ENABLED",
   "TELEGRAM_TRADE_ALERT_COOLDOWN_SECONDS",
   "TELEGRAM_TRADE_ALERT_PRICE_BAND_BPS",
   # Google AI / Gemini
@@ -198,6 +199,21 @@ if ([string]::IsNullOrWhiteSpace($compAlarmCur)) {
   if (-not [string]::IsNullOrWhiteSpace($mirrorOps)) {
     [Environment]::SetEnvironmentVariable("COMPRESSION_KPI_ALARM_WEBHOOK_URL", $mirrorOps, "User")
     Write-Host "MIRROR_USER:COMPRESSION_KPI_ALARM_WEBHOOK_URL<=OPS_ALARM_WEBHOOK_URL"
+  }
+}
+
+$fatalSlackCur = [Environment]::GetEnvironmentVariable("FACT_SAFE_FATAL_SLACK_WEBHOOK", "User")
+if ([string]::IsNullOrWhiteSpace($fatalSlackCur)) {
+  $mirrorSlack = $null
+  if ($map.ContainsKey("SLACK_WEBHOOK_URL") -and -not [string]::IsNullOrWhiteSpace($map["SLACK_WEBHOOK_URL"])) {
+    $mirrorSlack = $map["SLACK_WEBHOOK_URL"].Trim()
+  }
+  if ([string]::IsNullOrWhiteSpace($mirrorSlack)) {
+    $mirrorSlack = [Environment]::GetEnvironmentVariable("SLACK_WEBHOOK_URL", "User")
+  }
+  if (-not [string]::IsNullOrWhiteSpace($mirrorSlack)) {
+    [Environment]::SetEnvironmentVariable("FACT_SAFE_FATAL_SLACK_WEBHOOK", $mirrorSlack, "User")
+    Write-Host "MIRROR_USER:FACT_SAFE_FATAL_SLACK_WEBHOOK<=SLACK_WEBHOOK_URL"
   }
 }
 

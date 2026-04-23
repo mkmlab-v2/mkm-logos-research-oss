@@ -196,8 +196,12 @@ try {
         $bioChainCli = Join-Path $root "tests\test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py"
         $bioEpmcCli = Join-Path $root "tests\test_run_bio_epmc_catalog_and_label_merge_v1_cli.py"
         $bioGeno = Join-Path $root "tests\test_check_bio_genotype_paper_snp_overlap_v1.py"
+        $bioNorm = Join-Path $root "tests\test_normalize_bio_genotype_long_v1.py"
+        $bioReady = Join-Path $root "tests\test_build_bio_dna_promotion_readiness_v1.py"
+        $bioReadyChain = Join-Path $root "tests\test_run_bio_dna_readiness_chain_v1.py"
+        $bioSweep = Join-Path $root "tests\test_run_bio_dna_promotion_threshold_sweep_v1.py"
         if (Test-Path -LiteralPath $bio) {
-            Step "Bio paper SNP join smoke (join/apply + chain CLI + EPMC CLI + genotype overlap)" {
+            Step "Bio paper SNP join smoke (join/apply + chain CLI + EPMC CLI + genotype overlap + readiness gate)" {
                 $tests = @($bio)
                 if (Test-Path -LiteralPath $bioChainCli) {
                     $tests += $bioChainCli
@@ -216,6 +220,30 @@ try {
                 }
                 else {
                     Write-Host "WARN: missing genotype overlap test ($bioGeno)" -ForegroundColor Yellow
+                }
+                if (Test-Path -LiteralPath $bioNorm) {
+                    $tests += $bioNorm
+                }
+                else {
+                    Write-Host "WARN: missing genotype normalize test ($bioNorm)" -ForegroundColor Yellow
+                }
+                if (Test-Path -LiteralPath $bioReady) {
+                    $tests += $bioReady
+                }
+                else {
+                    Write-Host "WARN: missing DNA readiness gate test ($bioReady)" -ForegroundColor Yellow
+                }
+                if (Test-Path -LiteralPath $bioReadyChain) {
+                    $tests += $bioReadyChain
+                }
+                else {
+                    Write-Host "WARN: missing DNA readiness chain test ($bioReadyChain)" -ForegroundColor Yellow
+                }
+                if (Test-Path -LiteralPath $bioSweep) {
+                    $tests += $bioSweep
+                }
+                else {
+                    Write-Host "WARN: missing DNA threshold sweep test ($bioSweep)" -ForegroundColor Yellow
                 }
                 & py -m pytest @tests -q --tb=line
             }

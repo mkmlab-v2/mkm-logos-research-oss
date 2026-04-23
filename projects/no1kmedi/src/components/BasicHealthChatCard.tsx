@@ -9,6 +9,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 
 type ChatTurn = {
   role: "user" | "assistant";
@@ -21,7 +22,12 @@ type ChatResponse = {
   error?: string;
 };
 
-export function BasicHealthChatCard() {
+type BasicHealthChatCardProps = {
+  /** marketing: 랜딩 섹션용 제목 포함 · workspace: 앱형 전체 높이 레이아웃용 심플 블록 */
+  layout?: "marketing" | "workspace";
+};
+
+export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCardProps) {
   const [message, setMessage] = useState("");
   const [painArea, setPainArea] = useState("");
   const [painScale, setPainScale] = useState("5");
@@ -44,7 +50,8 @@ export function BasicHealthChatCard() {
     const userMessage = message.trim();
     setBusy(true);
     setError("");
-    setHistory((prev) => [...prev, { role: "user", message: userMessage }]);
+    const historyWithUser: ChatTurn[] = [...history, { role: "user", message: userMessage }];
+    setHistory(historyWithUser);
     setMessage("");
     try {
       const res = await fetch("/api/guardian/ai-guardian/chat", {
@@ -61,7 +68,7 @@ export function BasicHealthChatCard() {
               vector_4d: { S: 0.25, L: 0.25, K: 0.25, M: 0.25 },
             },
           },
-          chat_history: history.slice(-6),
+          chat_history: historyWithUser.slice(-12),
         }),
       });
       const json = (await res.json()) as ChatResponse;
@@ -76,12 +83,22 @@ export function BasicHealthChatCard() {
     }
   }
 
-  return (
-    <section id="basic-health-chat" aria-labelledby="basic-health-chat-title">
-      <h2 id="basic-health-chat-title">AI 기본 건강상담 (사전 안내)</h2>
-      <p className="section-lead">간단한 건강 질문에 답하고, 필요 시 바로 문진/예약 단계로 연결됩니다.</p>
+  const isWorkspace = layout === "workspace";
 
-      <div className="chat-card">
+  return (
+    <section
+      id="basic-health-chat"
+      aria-labelledby="basic-health-chat-title"
+      className={isWorkspace ? "workspace-chat-root" : undefined}
+    >
+      <h2 id="basic-health-chat-title" className={isWorkspace ? "sr-only" : undefined}>
+        AI 기본 건강상담 (사전 안내)
+      </h2>
+      {isWorkspace ? null : (
+        <p className="section-lead">간단한 건강 질문에 답하고, 필요 시 바로 문진/예약 단계로 연결됩니다.</p>
+      )}
+
+      <div className={`chat-card${isWorkspace ? " chat-card--workspace" : ""}`}>
         <div className="chat-profile-grid">
           <label>
             주요 불편 부위
@@ -129,8 +146,25 @@ export function BasicHealthChatCard() {
         {error ? <p className="consult-error">{error}</p> : null}
 
         <div className="section-cta">
-          <a className="btn btn-primary" href="#patient-intake">사전문진으로 이어가기</a>
-          <a className="btn btn-ghost" href="#contact">한의원 상담 연결 문의</a>
+          {isWorkspace ? (
+            <>
+              <Link className="btn btn-primary" href="/consumer?panel=survey#patient-intake">
+                사전문진·연결 단계
+              </Link>
+              <Link className="btn btn-ghost" href="/#contact">
+                문의
+              </Link>
+            </>
+          ) : (
+            <>
+              <a className="btn btn-primary" href="#patient-intake">
+                사전문진으로 이어가기
+              </a>
+              <a className="btn btn-ghost" href="#contact">
+                한의원 상담 연결 문의
+              </a>
+            </>
+          )}
         </div>
       </div>
     </section>

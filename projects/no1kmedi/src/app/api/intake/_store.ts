@@ -25,6 +25,7 @@ async function writeJson<T>(filePath: string, data: T): Promise<void> {
 
 export type PatientPreSurveyRecord = {
   survey_id: string;
+  intake_pin?: string;
   submitted_at_utc: string;
   status: "patient_submitted";
   triage_level: "routine" | "priority" | "emergency";

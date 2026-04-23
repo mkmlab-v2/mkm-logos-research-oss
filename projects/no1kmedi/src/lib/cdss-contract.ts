@@ -1,5 +1,8 @@
 export type SasangType = "taeyang" | "taeeum" | "soyag" | "soeum" | "unknown";
 
+/** Why CDSS did not use neural output (when llm_used is false). */
+export type CdssGenerationReason = "disabled" | "no_credentials" | "no_models" | "llm_error";
+
 export type PatientConsultInputV1 = {
   schema: "patient_consult_input_v1";
   request_id: string;
@@ -24,6 +27,12 @@ export type PatientConsultInputV1 = {
     onset: string;
     severity: string;
     medication: string;
+    patient_intake_context?: {
+      survey_id?: string;
+      intake_pin?: string;
+      patient_name?: string;
+      triage_level?: "routine" | "priority" | "emergency";
+    };
     health_survey: {
       appetite?: string;
       bowel_pattern?: string;
@@ -60,4 +69,9 @@ export type ConsultDraftV1 = {
   citations: CdssCitationV1[];
   requires_physician_confirmation: true;
   non_medical_notice: string;
+  /** Neural CDSS inference ran (vs deterministic template). */
+  generation?: {
+    llm_used: boolean;
+    reason?: CdssGenerationReason;
+  };
 };

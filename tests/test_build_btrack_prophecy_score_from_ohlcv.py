@@ -62,6 +62,13 @@ def test_hypothesis_fixture_smoke() -> None:
     assert "prediction" in h
 
 
+def test_manual_override_detection() -> None:
+    from scripts.build_btrack_prophecy_score_from_ohlcv import _is_manual_override_hypothesis
+
+    assert _is_manual_override_hypothesis({"provenance": {"prompt_id": "manual_override_for_hit_rate_recovery_v1"}})
+    assert not _is_manual_override_hypothesis({"provenance": {"prompt_id": "generate_btrack_hypothesis_prophecy_v1.py"}})
+
+
 def test_bull_reversal_override_to_neutral() -> None:
     from scripts.build_btrack_prophecy_score_from_ohlcv import _build_rows
 

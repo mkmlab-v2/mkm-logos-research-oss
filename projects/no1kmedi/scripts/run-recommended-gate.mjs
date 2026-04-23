@@ -48,6 +48,13 @@ async function hasValidLiveEndpoint() {
 }
 
 async function main() {
+  const fast = process.env.RECOMMENDED_GATE_FAST === "1" || process.env.RECOMMENDED_GATE_FAST === "true";
+  if (fast) {
+    console.log("[recommended-gate] RECOMMENDED_GATE_FAST -> gate:fast (priority smoke + next build only)");
+    await run("npm", ["run", "gate:fast"]);
+    return;
+  }
+
   const useLive = await hasValidLiveEndpoint();
   if (useLive) {
     console.log("[recommended-gate] live endpoint validated -> running live gate");

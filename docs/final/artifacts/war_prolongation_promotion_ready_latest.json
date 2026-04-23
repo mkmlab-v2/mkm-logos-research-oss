@@ -1,8 +1,8 @@
 ﻿{
     "schema":  "war_prolongation_promotion_ready_v1",
-    "generated_at_utc":  "2026-04-11T00:05:18Z",
-    "gate_decision":  "NO_GO",
-    "promotion_ready":  false,
+    "generated_at_utc":  "2026-04-23T00:50:12Z",
+    "gate_decision":  "GO",
+    "promotion_ready":  true,
     "source_bundle":  "docs/final/artifacts/war_prolongation_benchmark_bundle_20260406.json",
-    "note":  "Hold: gate decision is not GO."
+    "note":  "Promotion-ready by gate decision."
 }

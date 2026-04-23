@@ -19,10 +19,24 @@ export type SiteCopy = {
     cta_primary: string;
     cta_secondary: string;
   };
+  concept_block: {
+    label: string;
+    title: string;
+    lead: string;
+    proof_items: string[];
+    stage_label: string;
+  };
   about: { title: string; section_lead: string };
   value_props: { title: string; body: string }[];
   safety: { title: string; items: string[] };
   workflow: { title: string; section_lead: string; steps: string[] };
+  landing_flow: {
+    title: string;
+    lead: string;
+    cards: { label: string; title: string; body: string }[];
+    cta_primary: string;
+    cta_secondary: string;
+  };
   contact: { title: string; section_lead: string; email_label: string };
   footer: {
     company_line: string;

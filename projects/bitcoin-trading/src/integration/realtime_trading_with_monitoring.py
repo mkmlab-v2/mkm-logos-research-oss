@@ -24,6 +24,7 @@ Prophecy / 주문 경계 (운영 팩트):
 import asyncio
 import logging
 import os
+import time
 from typing import Dict, Any, Optional
 from datetime import datetime
 import json
@@ -176,9 +177,12 @@ class RealtimeTradingWithMonitoring:
             int(max(1.0, _bar_sec)),
             self._ohlc_min_completed_bars,
         )
+        self._seed_ohlc_from_exchange()
         
         # 실행 상태
         self.running = False
+        self.ws_tick_count = 0
+        self._last_state_persist_ts = 0.0
         self.signal_total_count = 0
         self.singular_action_counts = {"BUY": 0, "SELL": 0, "LOCKED": 0}
         self.last_signal_summary: Dict[str, Any] = {}
@@ -212,6 +216,48 @@ class RealtimeTradingWithMonitoring:
                 logger.warning(f"⚠️ ProphecyStack 초기화 실패(레짐 감지 비활성): {e}")
         
         logger.info("✅ 실전 거래 엔진 + 통합 모니터링 시스템 초기화 완료")
+
+    def _seed_ohlc_from_exchange(self) -> None:
+        """
+        Warm up OHLC aggregator from recent exchange klines so signal loop
+        can start without waiting for full live-bar accumulation.
+        """
+        try:
+            interval_sec = int(max(1.0, float(getattr(self._ohlc_feed, "_interval", 60))))
+            interval_map = {
+                60: "1m",
+                180: "3m",
+                300: "5m",
+                900: "15m",
+                1800: "30m",
+                3600: "1h",
+            }
+            kline_interval = interval_map.get(interval_sec, "1m")
+            target = int(self._ohlc_min_completed_bars) + 5
+            klines = self.binance.get_klines(symbol=self.symbol, interval=kline_interval, limit=max(50, target))
+            if not isinstance(klines, list) or len(klines) < 3:
+                logger.warning("⚠️ OHLC warmup seed skipped: insufficient klines")
+                return
+
+            seeded = 0
+            for row in klines:
+                if not isinstance(row, (list, tuple)) or len(row) < 6:
+                    continue
+                close_ts_ms = int(row[6]) if len(row) > 6 else int(row[0]) + (interval_sec * 1000)
+                close_price = float(row[4])
+                volume = float(row[5])
+                ts = datetime.fromtimestamp(max(0, close_ts_ms) / 1000.0)
+                self._ohlc_feed.push(ts, close_price, volume)
+                seeded += 1
+
+            logger.info(
+                "✅ OHLC warmup seed complete: interval=%s seeded=%s completed=%s",
+                kline_interval,
+                seeded,
+                self._ohlc_feed.completed_count(),
+            )
+        except Exception as e:
+            logger.warning(f"⚠️ OHLC warmup seed failed: {e}")
 
     def _get_position(self) -> Optional[Dict[str, Any]]:
         """현재 포지션 조회 (Binance API). 없으면 None."""
@@ -269,6 +315,7 @@ class RealtimeTradingWithMonitoring:
     async def _on_websocket_data(self, data: Dict[str, Any]):
         """WebSocket 데이터 수신 콜백"""
         try:
+            self.ws_tick_count += 1
             # 가격 데이터 저장
             if 'price' in data or 'close' in data:
                 price = data.get('price') or data.get('close')
@@ -289,6 +336,13 @@ class RealtimeTradingWithMonitoring:
                 # 주기적으로 가격 데이터 수집 상태 로그 (10개마다)
                 if len(self.price_history) % 10 == 0:
                     logger.info(f"📊 가격 데이터 수집: {len(self.price_history)}개 (현재 가격: {price:.2f} USDT)")
+
+            # Persist liveness even before warmup/signal generation
+            # so watchdog/health checks don't see a frozen startup snapshot.
+            now_ts = datetime.now().timestamp()
+            if (now_ts - self._last_state_persist_ts) >= 15:
+                self._save_state()
+                self._last_state_persist_ts = now_ts
 
             # 통합 분석: 완료된 OHLC 봉 개수 기준 (랜덤 캔들 제거)
             if self._ohlc_feed.completed_count() >= self._ohlc_min_completed_bars:
@@ -619,6 +673,7 @@ class RealtimeTradingWithMonitoring:
             "singular_action": action,
             "singular_decision": str((singular_core or {}).get("decision") or "HOLD"),
             "singular_score": float((singular_core or {}).get("score") or 0.0),
+            "singular_reason": str((singular_core or {}).get("reason") or "unknown"),
             "price": round(float(current_price), 2),
             "regime_defense_mode": bool(getattr(self, "_regime_defense_mode", False)),
             "regime_id": getattr(self, "_last_regime_id", "unknown"),
@@ -626,11 +681,18 @@ class RealtimeTradingWithMonitoring:
 
     def _save_state(self) -> None:
         try:
+            connector_metrics: Dict[str, Any] = {}
+            try:
+                connector_metrics = self.connector.get_metrics() if self.connector else {}
+            except Exception:
+                connector_metrics = {}
             state = {
                 "timestamp": datetime.now().isoformat(timespec="seconds"),
                 "symbol": self.symbol,
                 "running": self.running,
                 "enable_trading": self.enable_trading,
+                "ws_tick_count": int(self.ws_tick_count),
+                "connector_metrics": connector_metrics,
                 "startup_reconcile": self.startup_reconcile_status,
                 "signal_total_count": self.signal_total_count,
                 "singular_action_counts": self.singular_action_counts,
@@ -642,6 +704,15 @@ class RealtimeTradingWithMonitoring:
             )
         except Exception as e:
             logger.debug(f"상태 저장 실패: {e}")
+
+    async def _state_persist_loop(self) -> None:
+        """Persist runtime liveness/state regardless of signal warmup."""
+        while self.running:
+            try:
+                self._save_state()
+            except Exception:
+                pass
+            await asyncio.sleep(15)
 
     def _startup_reconcile(self) -> None:
         """
@@ -803,9 +874,11 @@ class RealtimeTradingWithMonitoring:
             logger.info(f"      압축 모드: max_compression (99% 노이즈 제거)")
         
         self._startup_reconcile()
-        self._save_state()
         self.running = True
+        self._save_state()
         
+        persist_task = asyncio.create_task(self._state_persist_loop())
+
         # WebSocket 커넥터 실행
         try:
             await self.connector.run()
@@ -813,6 +886,12 @@ class RealtimeTradingWithMonitoring:
             logger.info("⏹️ 사용자에 의해 중단됨")
         finally:
             self.running = False
+            persist_task.cancel()
+            try:
+                await persist_task
+            except asyncio.CancelledError:
+                pass
+            self._save_state()
             
             # 정리
             await self.connector.disconnect()

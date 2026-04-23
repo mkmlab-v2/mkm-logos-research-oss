@@ -4,7 +4,8 @@ param(
     [switch]$Strict,
     [switch]$IncludeConstitutionGates,
     [switch]$SkipOpsAlarm,
-    [string]$TrackaDefaultLane = "c3_domain_gated"
+    [string]$TrackaDefaultLane = "c3_domain_gated",
+    [switch]$IncludeShowroomDeployVerify
 )
 
 $ErrorActionPreference = "Stop"
@@ -66,6 +67,8 @@ function Write-Phase1Report {
         [bool]$FusionSkipped,
         [object]$FusionExit,
         [object]$VerifyExit,
+        [object]$ShowroomVerifyExit,
+        [bool]$IncludeShowroomVerify,
         [bool]$IncludeAllGreen,
         [bool]$StrictMode,
         [string]$Outcome
@@ -87,6 +90,9 @@ function Write-Phase1Report {
         include_verify_all_green = $IncludeAllGreen
         verify_all_green_exit_code = $VerifyExit
         verify_all_green_ok = if (-not $IncludeAllGreen) { $null } else { ($VerifyExit -eq 0) }
+        include_showroom_deploy_verify = $IncludeShowroomVerify
+        showroom_deploy_verify_exit_code = $ShowroomVerifyExit
+        showroom_deploy_verify_ok = if (-not $IncludeShowroomVerify) { $null } else { ($ShowroomVerifyExit -eq 0) }
         strict_mode = $StrictMode
         outcome = $Outcome
         overall_chain_ok = $overallOk
@@ -115,27 +121,110 @@ function Send-OpsPhase1Webhook {
     )
     if ($SkipOpsAlarm) { return }
     $url = [Environment]::GetEnvironmentVariable("OPS_ALARM_WEBHOOK_URL", "Process")
-    if ([string]::IsNullOrWhiteSpace($url)) {
-        $url = [Environment]::GetEnvironmentVariable("OPS_ALARM_WEBHOOK_URL", "User")
+    if ([string]::IsNullOrWhiteSpace($url)) { $url = [Environment]::GetEnvironmentVariable("OPS_ALARM_WEBHOOK_URL", "User") }
+    if ([string]::IsNullOrWhiteSpace($url)) { $url = [Environment]::GetEnvironmentVariable("OPS_ALARM_WEBHOOK_URL", "Machine") }
+    # Fallback for legacy ops channels.
+    if ([string]::IsNullOrWhiteSpace($url)) { $url = [Environment]::GetEnvironmentVariable("FACT_SAFE_FATAL_SLACK_WEBHOOK", "Process") }
+    if ([string]::IsNullOrWhiteSpace($url)) { $url = [Environment]::GetEnvironmentVariable("FACT_SAFE_FATAL_SLACK_WEBHOOK", "User") }
+    if ([string]::IsNullOrWhiteSpace($url)) { $url = [Environment]::GetEnvironmentVariable("FACT_SAFE_FATAL_SLACK_WEBHOOK", "Machine") }
+    # Final fallback to generic Slack webhook used by other ops scripts.
+    if ([string]::IsNullOrWhiteSpace($url)) { $url = [Environment]::GetEnvironmentVariable("SLACK_WEBHOOK_URL", "Process") }
+    if ([string]::IsNullOrWhiteSpace($url)) { $url = [Environment]::GetEnvironmentVariable("SLACK_WEBHOOK_URL", "User") }
+    if ([string]::IsNullOrWhiteSpace($url)) { $url = [Environment]::GetEnvironmentVariable("SLACK_WEBHOOK_URL", "Machine") }
+    $webhookSent = $false
+    $webhookError = ""
+    $bodyObj = [ordered]@{
+        event       = "ops_phase1_chain"
+        kind        = $Kind
+        message     = $Message
+        report_path = $reportPath
+        ts_utc      = [DateTimeOffset]::UtcNow.ToString("o")
     }
-    if ([string]::IsNullOrWhiteSpace($url)) {
-        $url = [Environment]::GetEnvironmentVariable("OPS_ALARM_WEBHOOK_URL", "Machine")
-    }
-    if ([string]::IsNullOrWhiteSpace($url)) { return }
-    try {
-        $bodyObj = [ordered]@{
-            event       = "ops_phase1_chain"
-            kind        = $Kind
-            message     = $Message
-            report_path = $reportPath
-            ts_utc      = [DateTimeOffset]::UtcNow.ToString("o")
+    $json = $bodyObj | ConvertTo-Json -Compress -Depth 5
+
+    function Test-IsSlackWebhook([string]$u) {
+        if ([string]::IsNullOrWhiteSpace($u)) { return $false }
+        try {
+            $uri = [uri]$u
+            return ($uri.Host -match "hooks\.slack\.com$")
         }
-        $json = $bodyObj | ConvertTo-Json -Compress -Depth 5
-        Invoke-RestMethod -Uri $url -Method Post -Body $json -ContentType "application/json; charset=utf-8" -TimeoutSec 30
-        Write-Host ("[phase1] Webhook sent ({0})" -f $Kind)
+        catch {
+            return $false
+        }
     }
-    catch {
-        Write-Host ("[phase1] WARN webhook post failed: {0}" -f $_.Exception.Message) -ForegroundColor Yellow
+
+    function Send-WebhookAttempt([string]$u, [string]$genericJson, [hashtable]$obj) {
+        if (Test-IsSlackWebhook $u) {
+            $text = "[ops_phase1_chain][{0}] {1}`nreport={2}" -f $obj.kind, $obj.message, $obj.report_path
+            $slackBody = @{ text = $text } | ConvertTo-Json -Compress
+            Invoke-RestMethod -Uri $u -Method Post -Body $slackBody -ContentType "application/json; charset=utf-8" -TimeoutSec 30 | Out-Null
+            return
+        }
+        Invoke-RestMethod -Uri $u -Method Post -Body $genericJson -ContentType "application/json; charset=utf-8" -TimeoutSec 30 | Out-Null
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($url)) {
+        for ($attempt = 1; $attempt -le 2; $attempt += 1) {
+            try {
+                Send-WebhookAttempt -u $url -genericJson $json -obj $bodyObj
+                $webhookSent = $true
+                break
+            } catch {
+                $webhookError = $_.Exception.Message
+                if ($attempt -lt 2) { Start-Sleep -Seconds 2 }
+            }
+        }
+    }
+
+    if ($webhookSent) {
+        Write-Host ("[phase1] Webhook sent ({0})" -f $Kind)
+        return
+    }
+
+    # Telegram fallback is optional and disabled by default.
+    $telegramFallbackEnabled = $false
+    foreach ($scope in @("Process", "User", "Machine")) {
+        $raw = [Environment]::GetEnvironmentVariable("OPS_TELEGRAM_FALLBACK_ENABLED", $scope)
+        if (-not [string]::IsNullOrWhiteSpace($raw)) {
+            $v = $raw.Trim().ToLowerInvariant()
+            if ($v -in @("1", "true", "yes", "on")) { $telegramFallbackEnabled = $true }
+            break
+        }
+    }
+    if (-not $telegramFallbackEnabled) {
+        if ([string]::IsNullOrWhiteSpace($url)) {
+            Write-Host "[phase1] WARN no webhook configured (telegram fallback disabled)." -ForegroundColor Yellow
+        } else {
+            Write-Host ("[phase1] WARN webhook post failed (telegram fallback disabled): {0}" -f $webhookError) -ForegroundColor Yellow
+        }
+        return
+    }
+
+    # Telegram fallback (if configured) to avoid silent alert loss.
+    $tgToken = [Environment]::GetEnvironmentVariable("TELEGRAM_BOT_TOKEN", "Process")
+    if ([string]::IsNullOrWhiteSpace($tgToken)) { $tgToken = [Environment]::GetEnvironmentVariable("TELEGRAM_BOT_TOKEN", "User") }
+    if ([string]::IsNullOrWhiteSpace($tgToken)) { $tgToken = [Environment]::GetEnvironmentVariable("TELEGRAM_BOT_TOKEN", "Machine") }
+    $tgChat = [Environment]::GetEnvironmentVariable("TELEGRAM_CHAT_ID", "Process")
+    if ([string]::IsNullOrWhiteSpace($tgChat)) { $tgChat = [Environment]::GetEnvironmentVariable("TELEGRAM_CHAT_ID", "User") }
+    if ([string]::IsNullOrWhiteSpace($tgChat)) { $tgChat = [Environment]::GetEnvironmentVariable("TELEGRAM_CHAT_ID", "Machine") }
+    if (-not [string]::IsNullOrWhiteSpace($tgToken) -and -not [string]::IsNullOrWhiteSpace($tgChat)) {
+        try {
+            $tgUri = "https://api.telegram.org/bot{0}/sendMessage" -f $tgToken.Trim()
+            $tgText = "[ops_phase1_chain][$Kind] $Message`nreport=$reportPath"
+            $tgBody = @{ chat_id = $tgChat; text = $tgText } | ConvertTo-Json -Compress
+            Invoke-RestMethod -Uri $tgUri -Method Post -Body $tgBody -ContentType "application/json; charset=utf-8" -TimeoutSec 30 | Out-Null
+            Write-Host ("[phase1] Alert routed via Telegram fallback ({0})" -f $Kind) -ForegroundColor Yellow
+            return
+        }
+        catch {
+            Write-Host ("[phase1] WARN telegram fallback failed: {0}" -f $_.Exception.Message) -ForegroundColor Yellow
+        }
+    }
+
+    if ([string]::IsNullOrWhiteSpace($url)) {
+        Write-Host "[phase1] WARN no webhook configured and telegram fallback unavailable." -ForegroundColor Yellow
+    } else {
+        Write-Host ("[phase1] WARN webhook post failed: {0}" -f $webhookError) -ForegroundColor Yellow
     }
 }
 
@@ -144,7 +233,7 @@ try {
     & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $ops "collect_ops_environment_snapshot.ps1")
     $snapshotExit = $LASTEXITCODE
     if ($snapshotExit -ne 0) {
-        Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $true -FusionExit $null -VerifyExit $null -IncludeAllGreen $false -StrictMode $Strict -Outcome "snapshot_failed"
+            Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $true -FusionExit $null -VerifyExit $null -ShowroomVerifyExit $null -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $false -StrictMode $Strict -Outcome "snapshot_failed"
         throw "collect_ops_environment_snapshot failed"
     }
 
@@ -157,7 +246,7 @@ try {
         if ($fusionExit -ne 0) {
             $msg = "[phase1] fusion status check failed — run run_ops_fusion_cycle.ps1 if stale, then re-check."
             if ($Strict) {
-                Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $false -FusionExit $fusionExit -VerifyExit $null -IncludeAllGreen $IncludeVerifyAllGreen -StrictMode $true -Outcome "fusion_failed_strict"
+                Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $false -FusionExit $fusionExit -VerifyExit $null -ShowroomVerifyExit $null -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $IncludeVerifyAllGreen -StrictMode $true -Outcome "fusion_failed_strict"
                 throw $msg
             }
             Write-Host "$msg" -ForegroundColor Yellow
@@ -172,8 +261,23 @@ try {
         & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $ops "verify_all_green.ps1")
         $verifyExit = $LASTEXITCODE
         if ($verifyExit -ne 0) {
-            Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $fusionSkipped -FusionExit $fusionExit -VerifyExit $verifyExit -IncludeAllGreen $true -StrictMode $Strict -Outcome "verify_all_green_failed"
+            Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $fusionSkipped -FusionExit $fusionExit -VerifyExit $verifyExit -ShowroomVerifyExit $null -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $true -StrictMode $Strict -Outcome "verify_all_green_failed"
             throw "verify_all_green failed"
+        }
+    }
+
+    $showroomVerifyExit = $null
+    if ($IncludeShowroomDeployVerify) {
+        Write-Host "=== Phase 1 chain: verify_jemaai_showroom_deploy ==="
+        & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $ops "verify_jemaai_showroom_deploy.ps1")
+        $showroomVerifyExit = $LASTEXITCODE
+        if ($showroomVerifyExit -ne 0) {
+            $msg = "[phase1] showroom deploy verify failed."
+            if ($Strict) {
+                Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $fusionSkipped -FusionExit $fusionExit -VerifyExit $verifyExit -ShowroomVerifyExit $showroomVerifyExit -IncludeShowroomVerify $true -IncludeAllGreen $IncludeVerifyAllGreen -StrictMode $true -Outcome "showroom_verify_failed_strict"
+                throw $msg
+            }
+            Write-Host $msg -ForegroundColor Yellow
         }
     }
 
@@ -181,7 +285,10 @@ try {
     if (-not $fusionSkipped -and $fusionExit -ne 0) {
         $outcome = "fusion_warn"
     }
-    Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $fusionSkipped -FusionExit $fusionExit -VerifyExit $verifyExit -IncludeAllGreen $IncludeVerifyAllGreen -StrictMode $Strict -Outcome $outcome
+    if ($IncludeShowroomDeployVerify -and $showroomVerifyExit -ne 0) {
+        $outcome = "showroom_verify_warn"
+    }
+    Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $fusionSkipped -FusionExit $fusionExit -VerifyExit $verifyExit -ShowroomVerifyExit $showroomVerifyExit -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $IncludeVerifyAllGreen -StrictMode $Strict -Outcome $outcome
 
     if ($IncludeConstitutionGates) {
         Write-Host "=== Phase 1 chain: constitution gates (JSON + registry + risk allowlist) ==="

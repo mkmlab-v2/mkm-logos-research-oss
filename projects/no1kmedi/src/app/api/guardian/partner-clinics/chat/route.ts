@@ -43,15 +43,18 @@ export async function POST(request: NextRequest) {
 
     const context = `당신은 ${clinic.name}의 상담 안내 챗봇입니다.\n질문:${message}`
 
-    const result = await generateClinicalText({
-      prompt: context,
-      systemInstruction: `You are a clinical front-desk chatbot for ${clinic.name}. Do not provide diagnosis or treatment decisions. Answer in Korean when possible.`,
-      model: 'gemini-1.5-flash',
-      temperature: 0.7,
-      maxOutputTokens: 1024,
-      topP: 0.95,
-      topK: 40,
-    })
+    const result = await generateClinicalText(
+      {
+        prompt: context,
+        systemInstruction: `You are a clinical front-desk chatbot for ${clinic.name}. Do not provide diagnosis or treatment decisions. Answer in Korean when possible.`,
+        model: 'gemini-1.5-flash',
+        temperature: 0.7,
+        maxOutputTokens: 1024,
+        topP: 0.95,
+        topK: 40,
+      },
+      'guardian_public_chat',
+    )
 
     return NextResponse.json({
       success: true,

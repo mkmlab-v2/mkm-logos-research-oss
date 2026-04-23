@@ -110,7 +110,10 @@ class BinanceRealtimeConnector:
         else:
             # 결합 스트림
             streams_str = "/".join(self.streams)
-            return f"{self.base_url}/stream?streams={streams_str}"
+            combined_base = self.base_url
+            if combined_base.endswith("/ws"):
+                combined_base = combined_base[:-3]
+            return f"{combined_base}/stream?streams={streams_str}"
     
     async def connect(self):
         """WebSocket 연결"""
@@ -154,7 +157,7 @@ class BinanceRealtimeConnector:
         try:
             data = json.loads(message)
             
-            # 스트림 타입별 처리
+            # 스트림 타입별 처리 (combined stream payload)
             if "stream" in data:
                 stream = data["stream"]
                 payload = data["data"]
@@ -203,6 +206,45 @@ class BinanceRealtimeConnector:
                         await self._send_to_phase_engine("kline", kline_data)
                         # OHLC는 틱(ticker/trade) 기반 TickOhlcAggregator에서 결정적으로 적재한다.
                         # 종가-only kline 콜백은 동일 봉에 이중 카운트를 유발하므로 엔진 콜백에는 보내지 않음.
+            else:
+                # Raw payload fallback (some endpoints emit non-combined envelopes).
+                event_type = str(data.get("e", "")).lower()
+                if event_type == "24hrticker":
+                    self.ticker_buffer.append(data)
+                    await self._send_to_phase_engine("ticker", data)
+                    if self.callback:
+                        callback_data = {
+                            "price": float(data.get("c", 0)),
+                            "close": float(data.get("c", 0)),
+                            "timestamp": datetime.now(),
+                            "volume": float(data.get("v", 0)),
+                        }
+                        try:
+                            await self.callback(callback_data)
+                        except Exception as e:
+                            logger.error(f"⚠️ 콜백 실행 중 오류(raw ticker): {e}")
+                elif event_type == "trade":
+                    self.trade_buffer.append(data)
+                    await self._send_to_phase_engine("trade", data)
+                    if self.callback:
+                        callback_data = {
+                            "price": float(data.get("p", 0)),
+                            "close": float(data.get("p", 0)),
+                            "timestamp": datetime.fromtimestamp(data.get("T", 0) / 1000) if data.get("T") else datetime.now(),
+                            "volume": float(data.get("q", 0)),
+                        }
+                        try:
+                            await self.callback(callback_data)
+                        except Exception as e:
+                            logger.error(f"⚠️ 콜백 실행 중 오류(raw trade): {e}")
+                elif event_type == "depthupdate":
+                    self.depth_buffer.append(data)
+                    await self._send_to_phase_engine("depth", data)
+                elif event_type == "kline":
+                    kline_data = data.get("k", {})
+                    if kline_data.get("x", False):
+                        self.kline_buffer.append(kline_data)
+                        await self._send_to_phase_engine("kline", kline_data)
             
             # 성능 메트릭 업데이트
             latency_ms = (time.time() - start_time) * 1000

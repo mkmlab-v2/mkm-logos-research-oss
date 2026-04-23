@@ -1,6 +1,6 @@
 {
   "schema": "war_prolongation_window_eval_v1",
-  "generated_at_utc": "2026-04-11T00:10:13Z",
+  "generated_at_utc": "2026-04-23T00:53:06Z",
   "score_json": "C:/workspace/docs/final/artifacts/btrack_prophecy_score_war_prolong_20260406_multileg.json",
   "market_data_dir": "C:/workspace/research/market_data",
   "horizons": [
@@ -11,152 +11,152 @@
   "summary_by_horizon": {
     "h1": {
       "n_evaluated": 4,
-      "hits": 0,
-      "hit_rate": 0.0
+      "hits": 2,
+      "hit_rate": 0.5
     },
     "h5": {
       "n_evaluated": 4,
-      "hits": 1,
-      "hit_rate": 0.25
+      "hits": 3,
+      "hit_rate": 0.75
     },
     "h20": {
       "n_evaluated": 4,
-      "hits": 0,
-      "hit_rate": 0.0
+      "hits": 1,
+      "hit_rate": 0.25
     }
   },
   "rows": [
     {
       "instrument": "xle",
       "symbol": "XLE",
-      "eval_date": "2026-04-10",
+      "eval_date": "2026-04-22",
       "horizon_days": 1,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
-      "actual_direction": "bear",
-      "window_return": -0.00680278,
-      "hit": 0
+      "actual_direction": "bull",
+      "window_return": 0.01199216,
+      "hit": 1
     },
     {
       "instrument": "xle",
       "symbol": "XLE",
-      "eval_date": "2026-04-10",
-      "horizon_days": 5,
-      "window_mode": "trailing_proxy",
-      "predicted_direction": "bull",
-      "actual_direction": "bear",
-      "window_return": -0.03898736,
-      "hit": 0
-    },
-    {
-      "instrument": "xle",
-      "symbol": "XLE",
-      "eval_date": "2026-04-10",
-      "horizon_days": 20,
-      "window_mode": "trailing_proxy",
-      "predicted_direction": "bull",
-      "actual_direction": "bear",
-      "window_return": -0.00991131,
-      "hit": 0
-    },
-    {
-      "instrument": "ita",
-      "symbol": "ITA",
-      "eval_date": "2026-04-10",
-      "horizon_days": 1,
-      "window_mode": "trailing_proxy",
-      "predicted_direction": "bull",
-      "actual_direction": "bear",
-      "window_return": -0.00914737,
-      "hit": 0
-    },
-    {
-      "instrument": "ita",
-      "symbol": "ITA",
-      "eval_date": "2026-04-10",
+      "eval_date": "2026-04-22",
       "horizon_days": 5,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
       "actual_direction": "bull",
-      "window_return": 0.03483392,
+      "window_return": 0.01398857,
       "hit": 1
+    },
+    {
+      "instrument": "xle",
+      "symbol": "XLE",
+      "eval_date": "2026-04-22",
+      "horizon_days": 20,
+      "window_mode": "trailing_proxy",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "window_return": -0.07067717,
+      "hit": 0
     },
     {
       "instrument": "ita",
       "symbol": "ITA",
-      "eval_date": "2026-04-10",
-      "horizon_days": 20,
-      "window_mode": "trailing_proxy",
-      "predicted_direction": "bull",
-      "actual_direction": "bear",
-      "window_return": -0.00799173,
-      "hit": 0
-    },
-    {
-      "instrument": "vix",
-      "symbol": "^VIX",
-      "eval_date": "2026-04-10",
+      "eval_date": "2026-04-22",
       "horizon_days": 1,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
       "actual_direction": "bear",
-      "window_return": -0.01334019,
+      "window_return": -0.01766104,
       "hit": 0
     },
     {
-      "instrument": "vix",
-      "symbol": "^VIX",
-      "eval_date": "2026-04-10",
+      "instrument": "ita",
+      "symbol": "ITA",
+      "eval_date": "2026-04-22",
       "horizon_days": 5,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
       "actual_direction": "bear",
-      "window_return": -0.19438631,
+      "window_return": -0.06346156,
+      "hit": 0
+    },
+    {
+      "instrument": "ita",
+      "symbol": "ITA",
+      "eval_date": "2026-04-22",
+      "horizon_days": 20,
+      "window_mode": "trailing_proxy",
+      "predicted_direction": "bull",
+      "actual_direction": "bear",
+      "window_return": -0.01567555,
       "hit": 0
     },
     {
       "instrument": "vix",
       "symbol": "^VIX",
-      "eval_date": "2026-04-10",
-      "horizon_days": 20,
-      "window_mode": "trailing_proxy",
-      "predicted_direction": "bull",
-      "actual_direction": "bear",
-      "window_return": -0.29534632,
-      "hit": 0
-    },
-    {
-      "instrument": "wti",
-      "symbol": "CL=F",
-      "eval_date": "2026-04-10",
+      "eval_date": "2026-04-22",
       "horizon_days": 1,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
       "actual_direction": "bear",
-      "window_return": -0.02288756,
+      "window_return": -0.02974359,
       "hit": 0
     },
     {
-      "instrument": "wti",
-      "symbol": "CL=F",
-      "eval_date": "2026-04-10",
+      "instrument": "vix",
+      "symbol": "^VIX",
+      "eval_date": "2026-04-22",
       "horizon_days": 5,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
-      "actual_direction": "bear",
-      "window_return": -0.14263944,
-      "hit": 0
+      "actual_direction": "bull",
+      "window_return": 0.04127683,
+      "hit": 1
     },
     {
-      "instrument": "wti",
-      "symbol": "CL=F",
-      "eval_date": "2026-04-10",
+      "instrument": "vix",
+      "symbol": "^VIX",
+      "eval_date": "2026-04-22",
       "horizon_days": 20,
       "window_mode": "trailing_proxy",
       "predicted_direction": "bull",
       "actual_direction": "bear",
-      "window_return": -0.00104467,
+      "window_return": -0.2979592,
       "hit": 0
+    },
+    {
+      "instrument": "wti",
+      "symbol": "CL=F",
+      "eval_date": "2026-04-22",
+      "horizon_days": 1,
+      "window_mode": "trailing_proxy",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "window_return": 0.01356779,
+      "hit": 1
+    },
+    {
+      "instrument": "wti",
+      "symbol": "CL=F",
+      "eval_date": "2026-04-22",
+      "horizon_days": 5,
+      "window_mode": "trailing_proxy",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "window_return": 0.02289403,
+      "hit": 1
+    },
+    {
+      "instrument": "wti",
+      "symbol": "CL=F",
+      "eval_date": "2026-04-22",
+      "horizon_days": 20,
+      "window_mode": "trailing_proxy",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "window_return": 0.01115321,
+      "hit": 1
     }
   ],
   "warnings": [

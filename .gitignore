@@ -17,6 +17,12 @@ _pre_pull_backup_*/
 # Logs (MCP/서비스 잠금 방지)
 logs/
 
+# 로컬 일회성 산출 (예: weather 체인 `-o out/reg.json`)
+/out/
+
+# Kaggle 자동 다운로드 + 기상 체인 스크립트 산출 (scripts/fetch_kaggle_seattle_weather_sample_chain_v1.ps1)
+data/kaggle_auto_weather/
+
 # MCP server local PID locks (restored tree may contain; do not commit)
 mcp-servers/.athena-*.pid
 mcp-servers/.*.pid
@@ -120,6 +126,10 @@ projects/mkm-life/reports/one_question_funnel_*
 docs/final/artifacts/compression_weekly_governance_report_20*.json
 projects/bitcoin-trading/.venv/
 projects/bitcoin-trading/.pm2-win/
+# Regenerable trade exports (scp from VPS or scripts/export_cursor_trade_history_v1.py)
+projects/bitcoin-trading/exports/cursor_trade_history/*.json
+projects/bitcoin-trading/data/_smoke*.json
+projects/bitcoin-trading/data/backtest_cli_results.json
 mkmlife-home-*.png
 tmp/
 tmp_*.css
@@ -238,6 +248,13 @@ tools/**/__pycache__/
 docs/final/artifacts/hybrid_codec_v0_canary_bench_c*_latest.json
 docs/final/artifacts/hybrid_codec_v0_two_stage_gate_c*_latest.json
 docs/final/artifacts/memory_palace_translator_robustness_c*_latest.json
+
+# Weather triplet bulk regenerable (summary JSON tracked; large intermediates not)
+docs/final/artifacts/weather_prophecy_triplet_synthetic_120d_v1.json
+docs/final/artifacts/weather_prophecy_triplet_synthetic_120d_v1_gt_labels.jsonl
+docs/final/artifacts/weather_prophecy_triplet_synthetic_120d_v1_gt_labels_forecasts_sidecar.jsonl
+docs/final/artifacts/weather_prophecy_triplet_synthetic_120d_stub_v1.json
+docs/final/artifacts/weather_prophecy_triplet_synthetic_120d_stub_v1_gt_labels.jsonl
 
 # Regenerable local sweeps / spikes under docs/final/artifacts (no committed SSOT in these prefixes; git add -f to promote)
 docs/final/artifacts/_tmp_*

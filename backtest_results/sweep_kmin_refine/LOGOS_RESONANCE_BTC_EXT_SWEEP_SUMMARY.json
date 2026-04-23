@@ -1,12 +1,13 @@
 [
   {
-    "k": 6865,
-    "intersection_report": "C:\\workspace\\backtest_results\\sweep_kmin_refine\\LOGOS_RESONANCE_BTC_EXT_INTERSECTION_TOP6865.json",
+    "k": 6866,
+    "intersection_report": "C:\\workspace\\backtest_results\\sweep_kmin_refine\\LOGOS_RESONANCE_BTC_EXT_INTERSECTION_TOP6866.json",
     "summary": {
       "any_pairwise_non_empty": true,
       "any_triple_non_empty": true,
-      "all_four_non_empty": false
+      "all_four_non_empty": true,
+      "relaxed_non_empty": true
     },
-    "count_all_four": 0
+    "count_all_four": 1273
   }
 ]

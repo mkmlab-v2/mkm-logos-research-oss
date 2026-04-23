@@ -78,9 +78,10 @@ class AlertManager:
         self.telegram_chat_id = telegram_chat_id or os.getenv("TELEGRAM_CHAT_ID")
         self.enable_telegram = enable_telegram and REQUESTS_AVAILABLE
         # Alert policy mode:
-        # - trade_status_only(default): Telegram sends only trade/performance and limited system status.
+        # - trade_only: Telegram sends only trade fill alerts.
+        # - trade_status_only(default): Telegram sends trade/performance and limited system status.
         # - full: Telegram sends all alert types.
-        self.alert_mode = str(os.getenv("TELEGRAM_ALERT_MODE", "trade_status_only")).strip().lower()
+        self.alert_mode = str(os.getenv("TELEGRAM_ALERT_MODE", "trade_only")).strip().lower()
         
         if self.enable_telegram and (not self.telegram_bot_token or not self.telegram_chat_id):
             logger.warning("⚠️ Telegram 환경 변수 없음 (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)")
@@ -138,6 +139,8 @@ class AlertManager:
     def _should_send_telegram(self, alert_type: str, metadata: Dict[str, Any]) -> bool:
         if not self.enable_telegram:
             return False
+        if self.alert_mode == "trade_only":
+            return alert_type == "trade"
         # Safety override: critical alerts must always page operator.
         if alert_type == "critical":
             return True

@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -80,6 +81,62 @@ def test_eval_general_prophecy_brier_stdout_on_fixture() -> None:
     )
     assert r.returncode == 0, r.stderr
     assert "general_prophecy_brier_eval_v1" in r.stdout
+
+
+def test_eval_general_prophecy_brier_no_rows_writes_metrics_only(tmp_path) -> None:
+    fx = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_brier_smoke_v1.json"
+    out = tmp_path / "brier_no_rows.json"
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(_ROOT / "scripts" / "eval_general_prophecy_brier_score.py"),
+            "-i",
+            str(fx),
+            "-o",
+            str(out),
+            "--no-rows",
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert r.returncode == 0, r.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert "rows" not in doc
+    assert doc.get("metrics", {}).get("n_evaluated", 0) >= 1
+
+
+def test_eval_general_prophecy_brier_ece_bins_no_rows(tmp_path) -> None:
+    fx = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_brier_smoke_v1.json"
+    out = tmp_path / "brier_ece.json"
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(_ROOT / "scripts" / "eval_general_prophecy_brier_score.py"),
+            "-i",
+            str(fx),
+            "-o",
+            str(out),
+            "--no-rows",
+            "--ece-bins",
+            "10",
+            "--ece-min-per-tag",
+            "1",
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert r.returncode == 0, r.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    ece = doc.get("metrics", {}).get("ece_binary") or {}
+    assert ece.get("n_bins") == 10
+    assert isinstance(ece.get("weighted_ece"), (int, float))
+    assert len(ece.get("bins") or []) == 10
+    by_tag = doc.get("metrics", {}).get("ece_binary_by_domain_tag") or {}
+    assert "ci" in by_tag and "math" in by_tag
 
 
 def test_eval_general_prophecy_brier_on_merged_registry_stdout(tmp_path) -> None:

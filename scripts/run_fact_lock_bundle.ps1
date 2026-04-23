@@ -21,6 +21,9 @@
 .PARAMETER Include4dOhaengRegimeSnapshotGate
   B-track 스파이크: `scripts/run_4d_to_ohaeng_regime_snapshot_gate_chain_spike.ps1` 실행(스냅샷 갱신 + 게이트). 기본 번들과 격리; 아티팩트 없으면 실패한다.
 
+.PARAMETER IncludeBtrackBalancedRegimeEval
+  B-track 균형 레짐 평가 체인(`scripts/run_btrack_balanced_regime_eval_chain_v1.ps1`)을 후단에서 실행한다.
+
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1
 
@@ -36,6 +39,9 @@
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -Include4dOhaengRegimeSnapshotGate
 
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -IncludeBtrackBalancedRegimeEval
+
 .NOTES
   SSOT 순서: `.github/workflows/dual-regime-integrity.yml`
   pytest·`py` 규칙: `docs/final/P0_COMMERCIALIZATION_TRACKER.md`
@@ -45,7 +51,8 @@ param(
     [switch]$IncludeP1AB,
     [switch]$SkipCompressionRestoreBridge,
     [switch]$IncludeCodebookFactSafe,
-    [switch]$Include4dOhaengRegimeSnapshotGate
+    [switch]$Include4dOhaengRegimeSnapshotGate,
+    [switch]$IncludeBtrackBalancedRegimeEval
 )
 
 $ErrorActionPreference = 'Stop'
@@ -58,6 +65,7 @@ $trackbQuaternionGateScript = Join-Path $workspaceRoot 'scripts\report_trackb_qu
 $compressionRestoreBridgeScript = Join-Path $workspaceRoot 'scripts\run_agent_compression_restore_bridge.ps1'
 $codebookFactSafeBundleScript = Join-Path $workspaceRoot 'scripts\run_codebook_factsafe_bundle.ps1'
 $ohaengRegimeSnapshotGateChain = Join-Path $workspaceRoot 'scripts\run_4d_to_ohaeng_regime_snapshot_gate_chain_spike.ps1'
+$btrackBalancedRegimeEvalChain = Join-Path $workspaceRoot 'scripts\run_btrack_balanced_regime_eval_chain_v1.ps1'
 $trackCEvidenceScript = Join-Path $workspaceRoot 'scripts\build_track_c_evidence_pack_v1.py'
 $trackCCopyGuardScript = Join-Path $workspaceRoot 'scripts\check_track_c_copy_guard_v1.py'
 $trackCClaimValidatorScript = Join-Path $workspaceRoot 'scripts\validate_track_c_landing_claims_v1.py'
@@ -176,6 +184,17 @@ if ($Include4dOhaengRegimeSnapshotGate) {
     }
     Write-Host '== Fact-Lock (optional): 4D->Ohaeng regime snapshot + gate ==' -ForegroundColor Cyan
     & powershell -NoProfile -ExecutionPolicy Bypass -File $ohaengRegimeSnapshotGateChain
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($IncludeBtrackBalancedRegimeEval) {
+    if (-not (Test-Path -LiteralPath $btrackBalancedRegimeEvalChain)) {
+        throw "B-track balanced regime eval chain not found: $btrackBalancedRegimeEvalChain"
+    }
+    Write-Host '== Fact-Lock (optional): B-track balanced regime eval chain ==' -ForegroundColor Cyan
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $btrackBalancedRegimeEvalChain
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }

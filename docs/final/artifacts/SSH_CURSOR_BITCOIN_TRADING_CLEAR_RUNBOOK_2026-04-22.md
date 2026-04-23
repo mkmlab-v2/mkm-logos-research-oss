@@ -94,6 +94,23 @@ pm2 logs bitcoin-live --lines 120
 - `bitcoin-live-treatment` 프로세스가 목록에 없음
 - 검증 체인 실행 중에도 주문/포지션 로직 변경 없음
 
+## 선택: 로컬 Financial Sovereign 백테스트 스모크 (비거래, PR/CI 전)
+데이터 소스 우선순위: (1) `research/market_data/btc_daily_external_yf.csv`(로컬·미추적 가능) (2) 레포 추적 픽스처 `projects/bitcoin-trading/tests/fixtures/btc_smoke_daily.csv`(CI 기본). 둘 다 없으면 **SKIP exit 0**(stderr 안내). 반드시 데이터가 있어야 할 때만 `MKM_SOVEREIGN_SMOKE_REQUIRE_DATA=1`. 주문·PM2와 무관.
+
+```powershell
+cd C:\workspace\projects\bitcoin-trading
+python scripts\smoke_financial_sovereign_backtest.py
+echo $LASTEXITCODE   # 0 이면 통과 또는 SKIP
+```
+
+Linux(모노레포 예: `/opt/mkm-lab-workspace-v2`):
+
+```bash
+cd /opt/mkm-lab-workspace-v2/projects/bitcoin-trading && python3 scripts/smoke_financial_sovereign_backtest.py
+```
+
+동일 기능을 인자로 직접 쓸 때는 `scripts/run_financial_sovereign_backtest_cli.py --help` 참고. 결과는 `projects/bitcoin-trading/data/` 아래 JSON에 기록된다(`schema`: `financial_sovereign_backtest_cli_v2`, 스모크 출력은 보통 `_smoke_financial_sovereign_backtest.json`).
+
 ## 장애 시 즉시 롤백
 ```bash
 pm2 restart bitcoin-live
@@ -241,3 +258,91 @@ git worktree list
 git worktree remove C:\workspace\_ops_clean_hq
 git worktree prune
 ```
+
+## Pre-News 아침 체인 (로컬 관측, 실매매 자동 합선 없음)
+- 운영 정책(2026-04-22): **평시 SSH Cursor 미사용**, 로컬 단일 체인 우선. 원격은 비상 시 `-EmergencyOverride`로만 사용.
+- 스냅샷: `py scripts\build_pre_news_snapshot_v1.py` (선택 `--yf-fetch`)
+- dual_regime 벤치 브리지: `py scripts\dry_run_pre_news_dual_regime_v1.py` (선택 `docs\final\artifacts\pre_news_bench_inputs_latest.json`)
+- 텔레그램: `py scripts\send_pre_news_bridge_stub_telegram_v1.py` — 레포 `.env`의 `TELEGRAM_*` 로드; 없으면 skip
+- 자율진화 제안(자동 적용 금지): `py scripts\evolve_pre_news_bench_inputs_v1.py --write-candidate` → `pre_news_bench_evolution_suggestion_latest.json` / `pre_news_bench_inputs_candidate_latest.json`
+- 한 번에: `powershell -ExecutionPolicy Bypass -File scripts\run_pre_news_morning_chain_v1.ps1` (`-YfFetch` / `-SkipTelegram` / `-SkipEvolution`)
+- 예약 등록: `scripts\register_pre_news_morning_chain_task.ps1` (`-SkipTelegram` 가능)
+- 일일 예언 평가 뒤 Pre-News: `powershell -ExecutionPolicy Bypass -File scripts\run_daily_prophecy_then_pre_news_v1.ps1`
+- SSH Shadow 실행(원격 체점 + 제안 회수): `powershell -ExecutionPolicy Bypass -File scripts\run_ssh_shadow_pre_news_chain_v1.ps1 -SshHost <host>`
+- 로컬 24h 단일 체인(권장): `powershell -ExecutionPolicy Bypass -File scripts\run_local_24h_ops_chain_v1.ps1 -SkipTelegram`
+- 로컬 최소 검증 5줄 번들: `powershell -ExecutionPolicy Bypass -File scripts\run_local_min_verification_5lines_v1.ps1`
+- 30분 재점검(실전 모드): `powershell -ExecutionPolicy Bypass -File scripts\run_local_live_recheck_30m_v1.ps1`
+- 30분 재점검 자동 등록: `powershell -ExecutionPolicy Bypass -File scripts\register_local_live_recheck_30m_task.ps1`
+- 모드 전환 가드(실거래/테스트넷 변경 감지): `py scripts\alert_local_trading_mode_transition_v1.py --current-live <true|false> --current-testnet <true|false>`
+- 로컬 아침 등록: `scripts\register_local_24h_ops_chain_task.ps1` (`-SkipTelegram`, `-SkipProphecyEval` 선택)
+- 주간 후보 검토 패킷: `py scripts\run_pre_news_weekly_candidate_review_v1.py` (수동 승격 전용, 자동 적용 금지)
+- 주간 검토 스케줄 등록: `scripts\register_pre_news_weekly_candidate_review_task.ps1`
+
+## 로컬 복구 리허설 6줄 (월 1회 권장)
+```powershell
+# 1) 데몬 단일화(직접 복제 정리 + 싱글톤 보장)
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\ensure_single_trading_runtime.ps1 -StopDirectCopies -StartSingletonIfMissing
+
+# 2) 메인 로컬 체인 1회 실행(텔레그램 제외)
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_local_24h_ops_chain_v1.ps1 -SkipTelegram
+
+# 3) 최소 검증 리포트 확인(daemon/mode/missing)
+py -c "import json,pathlib;d=json.loads(pathlib.Path(r'C:\workspace\reports\local_trading_min_verification_latest.json').read_text(encoding='utf-8'));print(d['daemon']['running'], d['environment']['effective_BTC_ENABLE_LIVE_TRADING'], d['environment']['effective_BTC_TESTNET'], sum(1 for x in d['artifacts'] if not x['exists']))"
+
+# 4) 아침/주간 스케줄러 상태 점검
+powershell -NoProfile -Command "Get-ScheduledTask -TaskName 'MKM_Local_24H_Ops_Chain','MKM_PreNews_Weekly_Candidate_Review' | Select TaskName,State"
+
+# 5) 주간 리뷰 패킷 1회 수동 생성
+py C:\workspace\scripts\run_pre_news_weekly_candidate_review_v1.py
+
+# 6) 핵심 산출물 4종 mtime 확인
+py -c "from pathlib import Path;import datetime as dt; fs=[r'C:\workspace\docs\final\artifacts\prophecy_hit_rate_eval_latest.json',r'C:\workspace\docs\final\artifacts\pre_news_dual_regime_bridge_latest.json',r'C:\workspace\docs\final\artifacts\pre_news_bench_evolution_suggestion_latest.json',r'C:\workspace\docs\final\artifacts\pre_news_weekly_candidate_review_latest.json']; [print(f, dt.datetime.utcfromtimestamp(Path(f).stat().st_mtime).isoformat()+'Z') for f in fs]"
+```
+
+정상 판정:
+- 3번 출력이 `True false true 0`
+- 4번 두 태스크 모두 `Ready`
+- 6번 네 파일 시간이 현재 시각대에 갱신
+
+## 운영 체크박스 템플릿 (복붙용)
+주간/월간 운영 점검 시 아래 블록을 그대로 복사해 사용:
+
+```md
+# MKM 로컬 24h 운영 점검 (YYYY-MM-DD)
+
+## A. 모드 고정
+- [ ] `BTC_ENABLE_LIVE_TRADING` / `BTC_TESTNET` 값 확인
+- [ ] 현재 의도 모드와 일치 (`false/true` 기본)
+- [ ] 무단 모드 전환 알림(`local_trading_mode_guard_state.json`) 확인
+
+## B. 일일 체인 헬스
+- [ ] `MKM_Local_24H_Ops_Chain` 상태 `Ready`
+- [ ] `start_24h_daemon.py` 프로세스 존재
+- [ ] `local_trading_min_verification_latest.json`에서 `daemon.running=true`
+- [ ] `artifact.missing.count=0`
+
+## C. 주간 후보 리뷰
+- [ ] `pre_news_weekly_candidate_review_latest.json` 생성 시각 확인
+- [ ] `decision_hint` 확인 (`keep_current` / `manual_compare_required`)
+- [ ] 자동 반영 금지 원칙 유지 (`auto_apply_forbidden=true`)
+
+## D. 수동 반영(해당 시만)
+- [ ] 승인자 확인 (이름: ________)
+- [ ] 반영 전 active/candidate diff 확인
+- [ ] 반영 후 즉시 실거래 연결 금지 확인
+
+## E. 월 1회 복구 리허설
+- [ ] 런북의 "로컬 복구 리허설 6줄" 실행
+- [ ] 판정 기준 3개 충족 확인
+- [ ] 결과 로그 보관 경로 기록
+
+## 메모
+- 이슈/이상 징후:
+- 조치 내용:
+- 다음 액션:
+```
+
+## Bio Tier-2 운영 1줄 (Curated + Empty Fallback)
+- 권장 기본 실행:
+  `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_bio_tier2_preflight_smoke_v1.ps1 -UseCuratedExtraListing -RequireDownloadOk -CuratedMinHitCount 1 -FallbackToRawExtraOnEmptyCurated`
+- 의미: 스크리닝→curated 생성→(0건이면 raw extra로 폴백)→merge-only→dry-run smoke 순서로 점검한다.

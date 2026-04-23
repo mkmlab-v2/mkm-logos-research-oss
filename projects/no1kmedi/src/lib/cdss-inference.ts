@@ -1,4 +1,10 @@
-import type { CdssCitationV1, ConsultDraftV1, PatientConsultInputV1, SasangType } from "@/lib/cdss-contract";
+import type {
+  CdssCitationV1,
+  CdssGenerationReason,
+  ConsultDraftV1,
+  PatientConsultInputV1,
+  SasangType,
+} from "@/lib/cdss-contract";
 import { looksLikeIsoInstant } from "@/lib/global-birth-input";
 
 type ManseryeokResult = { saju_label: string; source: "live" | "fallback" };
@@ -79,6 +85,21 @@ function safeJsonParse(text: string): Record<string, unknown> | null {
   }
 }
 
+/** Dedicated CDSS endpoint, or OpenRouter when CDSS_LLM_USE_OPENROUTER=true and CDSS URL/key omitted. */
+function resolveCdssOpenAiCredentials(): { apiBase: string; apiKey: string } | null {
+  const dedicatedBase = process.env.CDSS_LLM_API_BASE_URL?.trim();
+  const dedicatedKey = process.env.CDSS_LLM_API_KEY?.trim();
+  if (dedicatedBase && dedicatedKey) {
+    return { apiBase: dedicatedBase.replace(/\/$/, ""), apiKey: dedicatedKey };
+  }
+  const useOpenRouter = (process.env.CDSS_LLM_USE_OPENROUTER || "").toLowerCase() === "true";
+  if (!useOpenRouter) return null;
+  const orKey = process.env.OPENROUTER_API_KEY?.trim();
+  if (!orKey) return null;
+  const orBase = (process.env.OPENROUTER_BASE_URL?.trim() || "https://openrouter.ai/api/v1").replace(/\/$/, "");
+  return { apiBase: orBase, apiKey: orKey };
+}
+
 function validateLlmReasoning(value: Record<string, unknown> | null): LlmReasoning | null {
   if (!value) return null;
   const clinicalSummary = value.clinical_summary;
@@ -103,10 +124,11 @@ function validateLlmReasoning(value: Record<string, unknown> | null): LlmReasoni
 }
 
 async function callOpenAiCompatibleModel(model: string, input: PatientConsultInputV1): Promise<LlmReasoning | null> {
-  const apiBase = process.env.CDSS_LLM_API_BASE_URL?.trim();
-  const apiKey = process.env.CDSS_LLM_API_KEY?.trim();
+  const creds = resolveCdssOpenAiCredentials();
   const timeoutMs = Number(process.env.CDSS_LLM_TIMEOUT_MS || 12000);
-  if (!apiBase || !apiKey || !model) return null;
+  if (!creds || !model) return null;
+  const apiBase = creds.apiBase;
+  const apiKey = creds.apiKey;
 
   const systemPrompt = [
     "너는 한의사 진료보조 CDSS 초안을 생성하는 어시스턴트다.",
@@ -133,12 +155,18 @@ async function callOpenAiCompatibleModel(model: string, input: PatientConsultInp
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    };
+    if (apiBase.includes("openrouter.ai")) {
+      headers["HTTP-Referer"] = process.env.OPENROUTER_HTTP_REFERER?.trim() || "https://jema-ai.com";
+      headers["X-Title"] = process.env.OPENROUTER_APP_NAME?.trim() || "jema-ai.com CDSS";
+    }
+
     const res = await fetch(`${apiBase.replace(/\/$/, "")}/chat/completions`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
+      headers,
       signal: controller.signal,
       body: JSON.stringify({
         model,
@@ -150,7 +178,10 @@ async function callOpenAiCompatibleModel(model: string, input: PatientConsultInp
         ],
       }),
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.warn(`[cdss] chat/completions HTTP ${res.status} (model=${model})`);
+      return null;
+    }
     const payload = (await res.json()) as { choices?: Array<{ message?: { content?: string } }> };
     const content = payload.choices?.[0]?.message?.content;
     if (typeof content !== "string" || !content.trim()) return null;
@@ -162,29 +193,48 @@ async function callOpenAiCompatibleModel(model: string, input: PatientConsultInp
   }
 }
 
-async function generateReasoningWithRouter(input: PatientConsultInputV1): Promise<LlmReasoning | null> {
-  const primaryModel = process.env.CDSS_LLM_PRIMARY_MODEL?.trim() || "";
+type ReasoningRouterOutcome =
+  | { ok: true; reasoning: LlmReasoning }
+  | { ok: false; reason: CdssGenerationReason };
+
+async function generateReasoningWithRouter(input: PatientConsultInputV1): Promise<ReasoningRouterOutcome> {
+  const primaryModel =
+    process.env.CDSS_LLM_PRIMARY_MODEL?.trim() ||
+    process.env.OPENROUTER_MODEL?.trim() ||
+    "";
   const fallbackModel = process.env.CDSS_LLM_FALLBACK_MODEL?.trim() || "";
   const escalationModel = process.env.CDSS_LLM_ESCALATION_MODEL?.trim() || "";
   const enabled = (process.env.CDSS_LLM_ENABLED || "false").toLowerCase() === "true";
-  if (!enabled) return null;
+  if (!enabled) return { ok: false, reason: "disabled" };
+
+  if (!resolveCdssOpenAiCredentials()) {
+    return { ok: false, reason: "no_credentials" };
+  }
+
+  let attempted = false;
 
   if (isComplexCase(input) && escalationModel) {
+    attempted = true;
     const escalated = await callOpenAiCompatibleModel(escalationModel, input);
-    if (escalated) return escalated;
+    if (escalated) return { ok: true, reasoning: escalated };
   }
 
   if (primaryModel) {
+    attempted = true;
     const primary = await callOpenAiCompatibleModel(primaryModel, input);
-    if (primary) return primary;
+    if (primary) return { ok: true, reasoning: primary };
   }
 
   if (fallbackModel) {
+    attempted = true;
     const fallback = await callOpenAiCompatibleModel(fallbackModel, input);
-    if (fallback) return fallback;
+    if (fallback) return { ok: true, reasoning: fallback };
   }
 
-  return null;
+  if (!attempted) return { ok: false, reason: "no_models" };
+
+  console.warn("[cdss] all configured CDSS model calls failed or returned invalid JSON (network, timeout, or response_format)");
+  return { ok: false, reason: "llm_error" };
 }
 
 async function fetchManseryeokReference(profile: PatientConsultInputV1["lane_a_profile"]): Promise<ManseryeokResult> {
@@ -269,8 +319,13 @@ export async function buildAdvancedConsultDraft(input: PatientConsultInputV1): P
   const saju = await fetchManseryeokReference(input.lane_a_profile);
   const sasang = pickSasangCandidate(input);
   const citation = CANON_CITATION_MAP[sasang];
-  const llmReasoning = await generateReasoningWithRouter(input);
+  const outcome = await generateReasoningWithRouter(input);
+  const llmReasoning = outcome.ok ? outcome.reasoning : null;
   const fallback = buildFallbackDraftParts(input);
+
+  const generation: ConsultDraftV1["generation"] = outcome.ok
+    ? { llm_used: true }
+    : { llm_used: false, reason: outcome.reason };
 
   return {
     schema: "consult_draft_v1",
@@ -286,5 +341,6 @@ export async function buildAdvancedConsultDraft(input: PatientConsultInputV1): P
     citations: [citation],
     requires_physician_confirmation: true,
     non_medical_notice: "본 결과는 진료 보조 초안이며, 최종 진단·처방 판단은 한의사가 직접 확정해야 합니다.",
+    generation,
   };
 }

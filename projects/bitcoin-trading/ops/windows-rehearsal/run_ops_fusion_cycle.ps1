@@ -1,6 +1,11 @@
 param(
-    [string]$Phase1Mode = "weekly_lite"
+    [string]$Phase1Mode = "weekly_lite",
+    [switch]$SkipExternalFeedValidation,
+    [switch]$StrictExternalFeedValidation
 )
+
+# Scope: BTC / Phase1 trading ops (waiting queue, quant pixel SOP, C2, trinity JSON).
+# NOT the B-track weather pipeline (lens fusion / scripts/run_weather_* / --fusion-search-json).
 
 $ErrorActionPreference = "Stop"
 
@@ -14,7 +19,18 @@ if ($maint -and ($maint.Trim().ToLower() -in @("1", "true", "yes", "on"))) {
 }
 
 Write-Host "[ops-fusion] Step 1/7: waiting_queue_btc_binance_daily"
-powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\run_waiting_queue_btc_binance_daily.ps1"
+$step1Args = @(
+    "-NoProfile",
+    "-ExecutionPolicy", "Bypass",
+    "-File", "C:\workspace\projects\bitcoin-trading\ops\windows-rehearsal\run_waiting_queue_btc_binance_daily.ps1"
+)
+if ($SkipExternalFeedValidation) {
+    $step1Args += "-SkipExternalFeedValidation"
+}
+if ($StrictExternalFeedValidation) {
+    $step1Args += "-StrictExternalFeedValidation"
+}
+powershell @step1Args
 if ($LASTEXITCODE -ne 0) {
     throw "run_waiting_queue_btc_binance_daily.ps1 failed with exit code $LASTEXITCODE"
 }
@@ -26,7 +42,18 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "[ops-fusion] Step 3/7: waiting_queue_monthly_check (includes C2 guardrail)"
-powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\run_waiting_queue_monthly_check.ps1"
+$step3Args = @(
+    "-NoProfile",
+    "-ExecutionPolicy", "Bypass",
+    "-File", "C:\workspace\scripts\run_waiting_queue_monthly_check.ps1"
+)
+if ($SkipExternalFeedValidation) {
+    $step3Args += "-SkipExternalFeedValidation"
+}
+if ($StrictExternalFeedValidation) {
+    $step3Args += "-StrictExternalFeedValidation"
+}
+powershell @step3Args
 if ($LASTEXITCODE -ne 0) {
     throw "run_waiting_queue_monthly_check.ps1 failed with exit code $LASTEXITCODE"
 }

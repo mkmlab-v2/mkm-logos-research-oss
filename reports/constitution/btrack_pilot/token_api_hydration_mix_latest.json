@@ -1,6 +1,6 @@
 {
   "schema": "token_api_hydration_mix_v1",
-  "ts_utc": "2026-04-16T01:19:32.728593+00:00",
+  "ts_utc": "2026-04-21T14:02:31.722572+00:00",
   "source_openapi": "docs/final/openapi_token_compression_stub_v1.yaml",
   "total_examples": 5,
   "metrics_mode_counts": {
@@ -43,7 +43,7 @@
       "shadow_mode": "enabled",
       "shadow_metrics_mode": "live",
       "root_cause": "live_eval_unavailable_then_decision_fallback",
-      "savings_ratio": 0.4683544303797469
+      "savings_ratio": 0.5274261603375527
     },
     {
       "example": "mode_live",
@@ -63,7 +63,7 @@
       "shadow_mode": "enabled",
       "shadow_metrics_mode": "live",
       "root_cause": "live_eval_unavailable_then_decision_fallback",
-      "savings_ratio": 0.4683544303797469
+      "savings_ratio": 0.5274261603375527
     }
   ]
 }

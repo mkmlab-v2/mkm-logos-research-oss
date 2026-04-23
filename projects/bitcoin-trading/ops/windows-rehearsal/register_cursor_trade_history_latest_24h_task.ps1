@@ -2,16 +2,13 @@ $ErrorActionPreference = "Stop"
 
 $taskName = "Bitcoin-CursorTradeHistory-Latest24h-15min"
 $projectRoot = "C:\workspace\projects\bitcoin-trading"
-$runner = Join-Path $projectRoot "scripts\sync_cursor_trade_history_latest_24h.py"
-$pythonExe = "py"
-$sourceDir = "C:\workspace\projects\bitcoin-trading\exports\cursor_trade_history"
-$destDir = "C:\workspace\projects\bitcoin-trading\exports\cursor_trade_history"
+$runner = Join-Path $projectRoot "ops\windows-rehearsal\run_cursor_trade_history_latest_24h.ps1"
 
 if (-not (Test-Path $runner)) {
-    throw "Sync script not found: $runner"
+    throw "Task runner script not found: $runner"
 }
 
-$tr = "$pythonExe `"$runner`" --source-dir `"$sourceDir`" --dest-dir `"$destDir`" --run-promotion-gate"
+$tr = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$runner`""
 
 schtasks /Delete /TN $taskName /F | Out-Null 2>&1
 schtasks /Create /TN $taskName /SC MINUTE /MO 15 /TR $tr /F | Out-Null

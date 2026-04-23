@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_2026_monthly_kospi_btc_fact_safe_v1",
-  "generated_at_utc": "2026-04-11T19:29:05Z",
+  "generated_at_utc": "2026-04-23T01:16:02Z",
   "meta": {
     "engine_id": "V2_Precision_MCP",
     "engine_scope": "monthly_prophecy_generation_only",
@@ -8,25 +8,25 @@
     "myeongri_verification_engine": "project-0-workspace-athena-manseryeok.verify_saju_date",
     "calendar_source_type": "external_standard_required",
     "calendar_source_name": "standard_rabbinic_calendar",
-    "reliability_badge": "MID",
+    "reliability_badge": "HIGH",
     "high_reliability_decision": "HOLD",
     "gate_reason": "monthly_check_gate|core_forced_hold",
     "base_gate_reason": "monthly_check_gate",
     "price_output_locked": true,
     "lock_reason": "low_or_hold_mode_price_output_forbidden",
     "raw_high_reliability_gate": "PASS",
-    "samples_7d": 476,
-    "net_delta_7d": 0.0,
+    "samples_7d": 638,
+    "net_delta_7d": 168.68879595,
     "overlap_drift_alert": false,
     "btc_backtest_best_period": "2026-01-01..2026-12-31",
-    "btc_backtest_best_net_return_pct": 1.522237,
-    "btc_backtest_best_profit_factor": 1.10902,
+    "btc_backtest_best_net_return_pct": 2.491473,
+    "btc_backtest_best_profit_factor": 1.1593,
     "k_shield_candidate_name": "k_shield_h1_soft",
     "k_shield_candidate_net_return_pct": -6.383742,
     "k_shield_candidate_profit_factor": 0.840615,
     "k_shield_candidate_max_drawdown_pct": 8.285629,
     "core_score": 0.25,
-    "core_score_raw": 0.24088,
+    "core_score_raw": 0.29268,
     "core_decision": "HOLD",
     "core_reason": "score_inside_locked_band",
     "core_contract_version": "mkm12_singular_core_v1",
@@ -58,7 +58,41 @@
       "semiconductor_news",
       "foreign_institutional_flow"
     ],
-    "decision_driver_policy": "prefer_observed_lever_over_symbolic_lens"
+    "decision_driver_policy": "prefer_observed_lever_over_symbolic_lens",
+    "recent_market_momentum": {
+      "score": 1.0,
+      "avg_return_pct": 9.694156,
+      "up_ratio": 0.666667,
+      "n": 3
+    },
+    "sasang_external_profile": {
+      "schema": "sasang_external_market_profile_v1",
+      "shock_abs_return_threshold_pct": 8.0,
+      "high_vol_threshold_pct": 4.0,
+      "momentum_window": 3,
+      "momentum_warn_threshold_pct": 1.0,
+      "seongjeong_overlay_enabled": false,
+      "seongjeong_overlay_strength": 0.22,
+      "seongjeong_activation_mode": "always",
+      "phase_bias": {
+        "기준선/탐색": 0.1,
+        "압박/방어": -0.35,
+        "재정비/경쟁": -0.05,
+        "성과 회수/정리": 0.2
+      },
+      "max_shift_pct": 12,
+      "base_shift_pct": 3,
+      "high_vol_neutral_guard_enabled": true,
+      "high_vol_neutral_guard_threshold_pct": 4.0,
+      "high_vol_neutral_min_pct": 40,
+      "high_vol_defensive_shock_threshold_pct": 10.0,
+      "high_vol_defensive_down_bonus_pct": 3,
+      "multi_event_prior_enabled": true,
+      "event_streak_days": 2,
+      "event_streak_threshold_pct": -3.0,
+      "event_vol_break_threshold_pct": 4.5,
+      "event_directional_bonus_pct": 4
+    }
   },
   "risk_profile": {
     "logos_regime_score": 0.56,
@@ -79,205 +113,589 @@
       "month": 1,
       "phase": "기준선/탐색",
       "kospi": {
-        "up_pct": 30,
+        "up_pct": 46,
         "neutral_pct": 36,
-        "down_pct": 34,
-        "direction": "방어하방"
+        "down_pct": 18,
+        "direction": "완만상방"
       },
       "btc": {
-        "up_pct": 29,
+        "up_pct": 48,
         "neutral_pct": 36,
-        "down_pct": 35,
-        "direction": "방어하방"
+        "down_pct": 16,
+        "direction": "완만상방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": 0.0,
+        "roll_abs_3m_pct": 2.0,
+        "shock_mode": false,
+        "high_vol_mode": false,
+        "momentum_mode": false,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": 0.15,
+        "shift_pct": 5,
+        "seongjeong": {
+          "ae": 0.0,
+          "no": 0.0,
+          "rak": 0.75,
+          "hee": 0.066667,
+          "net": 0.816667,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": false,
+          "defensive": false
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": false,
+          "down_streak": false,
+          "vol_break": false,
+          "shock_event": false
+        }
+      }
     },
     {
       "month": 2,
       "phase": "기준선/탐색",
       "kospi": {
-        "up_pct": 30,
-        "neutral_pct": 36,
-        "down_pct": 34,
-        "direction": "방어하방"
+        "up_pct": 32,
+        "neutral_pct": 40,
+        "down_pct": 28,
+        "direction": "완만상방"
       },
       "btc": {
-        "up_pct": 29,
-        "neutral_pct": 36,
-        "down_pct": 35,
-        "direction": "방어하방"
+        "up_pct": 34,
+        "neutral_pct": 40,
+        "down_pct": 26,
+        "direction": "완만상방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": 21.225256,
+        "roll_abs_3m_pct": 21.225256,
+        "shock_mode": true,
+        "high_vol_mode": true,
+        "momentum_mode": true,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": -1.0,
+        "shift_pct": 12,
+        "seongjeong": {
+          "ae": 0.5,
+          "no": 1.0,
+          "rak": 0.0,
+          "hee": 1.0,
+          "net": -0.5,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": true,
+          "defensive": false
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": true,
+          "down_streak": false,
+          "vol_break": true,
+          "shock_event": true
+        }
+      }
     },
     {
       "month": 3,
       "phase": "기준선/탐색",
       "kospi": {
-        "up_pct": 30,
-        "neutral_pct": 36,
-        "down_pct": 34,
-        "direction": "방어하방"
+        "up_pct": 32,
+        "neutral_pct": 40,
+        "down_pct": 28,
+        "direction": "완만상방"
       },
       "btc": {
-        "up_pct": 29,
-        "neutral_pct": 36,
-        "down_pct": 35,
-        "direction": "방어하방"
+        "up_pct": 34,
+        "neutral_pct": 40,
+        "down_pct": 26,
+        "direction": "완만상방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": 26.15245,
+        "roll_abs_3m_pct": 23.688853,
+        "shock_mode": true,
+        "high_vol_mode": true,
+        "momentum_mode": true,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": -1.0,
+        "shift_pct": 12,
+        "seongjeong": {
+          "ae": 0.5,
+          "no": 1.0,
+          "rak": 0.0,
+          "hee": 1.0,
+          "net": -0.5,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": true,
+          "defensive": false
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": true,
+          "down_streak": false,
+          "vol_break": true,
+          "shock_event": true
+        }
+      }
     },
     {
       "month": 4,
       "phase": "압박/방어",
       "kospi": {
-        "up_pct": 20,
-        "neutral_pct": 34,
-        "down_pct": 46,
+        "up_pct": 27,
+        "neutral_pct": 40,
+        "down_pct": 33,
         "direction": "방어하방"
       },
       "btc": {
-        "up_pct": 19,
-        "neutral_pct": 34,
-        "down_pct": 47,
+        "up_pct": 29,
+        "neutral_pct": 40,
+        "down_pct": 31,
         "direction": "방어하방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": -12.766949,
+        "roll_abs_3m_pct": 20.048218,
+        "shock_mode": true,
+        "high_vol_mode": true,
+        "momentum_mode": true,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": 0.20113,
+        "shift_pct": 5,
+        "seongjeong": {
+          "ae": 1.0,
+          "no": 1.0,
+          "rak": 0.0,
+          "hee": 0.0,
+          "net": -1.0,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": true,
+          "defensive": true
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": true,
+          "down_streak": false,
+          "vol_break": true,
+          "shock_event": true
+        }
+      }
     },
     {
       "month": 5,
       "phase": "압박/방어",
       "kospi": {
         "up_pct": 20,
-        "neutral_pct": 34,
-        "down_pct": 46,
+        "neutral_pct": 40,
+        "down_pct": 40,
         "direction": "방어하방"
       },
       "btc": {
-        "up_pct": 19,
-        "neutral_pct": 34,
-        "down_pct": 47,
+        "up_pct": 22,
+        "neutral_pct": 40,
+        "down_pct": 38,
         "direction": "방어하방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": 15.696967,
+        "roll_abs_3m_pct": 18.205455,
+        "shock_mode": true,
+        "high_vol_mode": true,
+        "momentum_mode": true,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": -1.0,
+        "shift_pct": 12,
+        "seongjeong": {
+          "ae": 0.5,
+          "no": 1.0,
+          "rak": 0.0,
+          "hee": 1.0,
+          "net": -0.5,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": true,
+          "defensive": false
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": true,
+          "down_streak": false,
+          "vol_break": true,
+          "shock_event": true
+        }
+      }
     },
     {
       "month": 6,
       "phase": "압박/방어",
       "kospi": {
-        "up_pct": 20,
-        "neutral_pct": 34,
-        "down_pct": 46,
-        "direction": "방어하방"
-      },
-      "btc": {
-        "up_pct": 19,
-        "neutral_pct": 34,
+        "up_pct": 13,
+        "neutral_pct": 40,
         "down_pct": 47,
         "direction": "방어하방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "btc": {
+        "up_pct": 15,
+        "neutral_pct": 40,
+        "down_pct": 45,
+        "direction": "방어하방"
+      },
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": -2.0,
+        "roll_abs_3m_pct": 10.154638,
+        "shock_mode": false,
+        "high_vol_mode": true,
+        "momentum_mode": true,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": -0.783333,
+        "shift_pct": 12,
+        "seongjeong": {
+          "ae": 0.455498,
+          "no": 0.694207,
+          "rak": 0.0,
+          "hee": 0.0,
+          "net": -1.0,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": true,
+          "defensive": false
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": true,
+          "down_streak": false,
+          "vol_break": true,
+          "shock_event": false
+        }
+      }
     },
     {
       "month": 7,
       "phase": "재정비/경쟁",
       "kospi": {
-        "up_pct": 29,
-        "neutral_pct": 35,
-        "down_pct": 36,
+        "up_pct": 26,
+        "neutral_pct": 40,
+        "down_pct": 34,
         "direction": "방어하방"
       },
       "btc": {
         "up_pct": 28,
-        "neutral_pct": 35,
-        "down_pct": 37,
+        "neutral_pct": 40,
+        "down_pct": 32,
         "direction": "방어하방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": -2.0,
+        "roll_abs_3m_pct": 6.565656,
+        "shock_mode": false,
+        "high_vol_mode": true,
+        "momentum_mode": true,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": -0.361616,
+        "shift_pct": 7,
+        "seongjeong": {
+          "ae": 0.231187,
+          "no": 0.38658,
+          "rak": 0.179293,
+          "hee": 0.0,
+          "net": -0.438474,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": true,
+          "defensive": false
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": true,
+          "down_streak": false,
+          "vol_break": true,
+          "shock_event": false
+        }
+      }
     },
     {
       "month": 8,
       "phase": "재정비/경쟁",
       "kospi": {
-        "up_pct": 29,
+        "up_pct": 32,
         "neutral_pct": 35,
-        "down_pct": 36,
+        "down_pct": 33,
         "direction": "방어하방"
       },
       "btc": {
-        "up_pct": 28,
+        "up_pct": 34,
         "neutral_pct": 35,
-        "down_pct": 37,
-        "direction": "방어하방"
+        "down_pct": 31,
+        "direction": "완만상방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": -2.0,
+        "roll_abs_3m_pct": 2.0,
+        "shock_mode": false,
+        "high_vol_mode": false,
+        "momentum_mode": true,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": -0.133333,
+        "shift_pct": 5,
+        "seongjeong": {
+          "ae": 0.133333,
+          "no": 0.166667,
+          "rak": 0.75,
+          "hee": 0.066667,
+          "net": 0.516667,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": false,
+          "defensive": false
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": false,
+          "down_streak": false,
+          "vol_break": false,
+          "shock_event": false
+        }
+      }
     },
     {
       "month": 9,
       "phase": "재정비/경쟁",
       "kospi": {
-        "up_pct": 29,
+        "up_pct": 32,
         "neutral_pct": 35,
-        "down_pct": 36,
+        "down_pct": 33,
         "direction": "방어하방"
       },
       "btc": {
-        "up_pct": 28,
+        "up_pct": 34,
         "neutral_pct": 35,
-        "down_pct": 37,
-        "direction": "방어하방"
+        "down_pct": 31,
+        "direction": "완만상방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": -2.0,
+        "roll_abs_3m_pct": 2.0,
+        "shock_mode": false,
+        "high_vol_mode": false,
+        "momentum_mode": true,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": -0.133333,
+        "shift_pct": 5,
+        "seongjeong": {
+          "ae": 0.133333,
+          "no": 0.166667,
+          "rak": 0.75,
+          "hee": 0.066667,
+          "net": 0.516667,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": false,
+          "defensive": false
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": false,
+          "down_streak": false,
+          "vol_break": false,
+          "shock_event": false
+        }
+      }
     },
     {
       "month": 10,
       "phase": "성과 회수/정리",
       "kospi": {
-        "up_pct": 34,
+        "up_pct": 44,
         "neutral_pct": 34,
-        "down_pct": 32,
+        "down_pct": 22,
         "direction": "완만상방"
       },
       "btc": {
-        "up_pct": 33,
+        "up_pct": 46,
         "neutral_pct": 34,
-        "down_pct": 33,
-        "direction": "중립"
+        "down_pct": 20,
+        "direction": "완만상방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": -2.0,
+        "roll_abs_3m_pct": 2.0,
+        "shock_mode": false,
+        "high_vol_mode": false,
+        "momentum_mode": true,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": 0.116667,
+        "shift_pct": 4,
+        "seongjeong": {
+          "ae": 0.133333,
+          "no": 0.166667,
+          "rak": 0.75,
+          "hee": 0.066667,
+          "net": 0.516667,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": false,
+          "defensive": false
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": false,
+          "down_streak": false,
+          "vol_break": false,
+          "shock_event": false
+        }
+      }
     },
     {
       "month": 11,
       "phase": "성과 회수/정리",
       "kospi": {
-        "up_pct": 34,
+        "up_pct": 48,
         "neutral_pct": 34,
-        "down_pct": 32,
+        "down_pct": 18,
         "direction": "완만상방"
       },
       "btc": {
-        "up_pct": 33,
+        "up_pct": 50,
         "neutral_pct": 34,
-        "down_pct": 33,
-        "direction": "중립"
+        "down_pct": 16,
+        "direction": "완만상방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": 2.0,
+        "roll_abs_3m_pct": 2.0,
+        "shock_mode": false,
+        "high_vol_mode": false,
+        "momentum_mode": true,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": 0.383333,
+        "shift_pct": 8,
+        "seongjeong": {
+          "ae": 0.0,
+          "no": 0.166667,
+          "rak": 0.75,
+          "hee": 0.2,
+          "net": 0.783333,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": false,
+          "defensive": false
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": false,
+          "down_streak": false,
+          "vol_break": false,
+          "shock_event": false
+        }
+      }
     },
     {
       "month": 12,
       "phase": "성과 회수/정리",
       "kospi": {
-        "up_pct": 34,
+        "up_pct": 48,
         "neutral_pct": 34,
-        "down_pct": 32,
+        "down_pct": 18,
         "direction": "완만상방"
       },
       "btc": {
-        "up_pct": 33,
+        "up_pct": 50,
         "neutral_pct": 34,
-        "down_pct": 33,
-        "direction": "중립"
+        "down_pct": 16,
+        "direction": "완만상방"
       },
-      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용."
+      "note": "확정 예언이 아닌 확률 시나리오. HOLD 모드에서는 방어 가중치 적용.",
+      "sasang_external_context": {
+        "prev_ret_pct": 2.0,
+        "roll_abs_3m_pct": 2.0,
+        "shock_mode": false,
+        "high_vol_mode": false,
+        "momentum_mode": true,
+        "momentum_warn_threshold_pct": 1.0,
+        "tilt": 0.383333,
+        "shift_pct": 8,
+        "seongjeong": {
+          "ae": 0.0,
+          "no": 0.166667,
+          "rak": 0.75,
+          "hee": 0.2,
+          "net": 0.783333,
+          "enabled": false,
+          "activation_mode": "always",
+          "active": false,
+          "term": 0.0
+        },
+        "high_vol_guard": {
+          "applied": false,
+          "defensive": false
+        },
+        "multi_event_prior": {
+          "enabled": true,
+          "applied": false,
+          "down_streak": false,
+          "vol_break": false,
+          "shock_event": false
+        }
+      }
     }
   ]
 }

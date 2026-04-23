@@ -1,5 +1,7 @@
 param(
-    [switch]$StrictCloseReturn
+    [switch]$StrictCloseReturn,
+    [switch]$SkipExternalFeedValidation,
+    [switch]$StrictExternalFeedValidation
 )
 
 $ErrorActionPreference = "Stop"
@@ -266,6 +268,12 @@ try {
         PredictedBand = "DOWN_STRONG"
         HitThresholdPct = "-1.0"
         FailThresholdPct = "1.8"
+    }
+    if ($SkipExternalFeedValidation) {
+        $invokeArgs["SkipExternalFeedValidation"] = $true
+    }
+    if ($StrictExternalFeedValidation) {
+        $invokeArgs["StrictExternalFeedValidation"] = $true
     }
     $btcReturnPct = $null
     if (-not [string]::IsNullOrWhiteSpace([string]$env:DAILY_BTC_BINANCE_D1_RETURN_PCT)) {

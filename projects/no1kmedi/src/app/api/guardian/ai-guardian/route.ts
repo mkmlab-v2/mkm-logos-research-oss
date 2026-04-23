@@ -5,7 +5,7 @@
  * 진료 보조 AI 상담 제공
  * 
  * 작성일: 2026-02-03
- * 도메인: no1kmedi.com/guardian
+ * 공개 브랜드 도메인: jema-ai.com (가디언 임상 보조 API)
  * 상태: ✅ 구현 완료
  */
 
@@ -149,16 +149,19 @@ Context: S, L, K, M dimensions; target balance band 0.25.
 Task: Provide concise clinical-support advice for pre-consultation (not a diagnosis).
 Output JSON: {"message": "Direct, empathetic insight (2 sentences)", "recommendations": ["Actionable advice 1", "Actionable advice 2", "Actionable advice 3"]}`
 
-    const result = await generateClinicalText({
-      prompt,
-      systemInstruction:
-        'You are the no1kmedi clinical support assistant for Korean medicine workflows. You do not diagnose. Provide concise, empathetic pre-consultation guidance in Korean, based on 4D vector analysis (S-L-K-M).',
-      model: 'gemini-1.5-flash',
-      temperature: 0.7,
-      maxOutputTokens: 2048,
-      topP: 0.95,
-      topK: 40,
-    })
+    const result = await generateClinicalText(
+      {
+        prompt,
+        systemInstruction:
+          'You are the no1kmedi clinical support assistant for Korean medicine workflows. You do not diagnose. Provide concise, empathetic pre-consultation guidance in Korean, based on 4D vector analysis (S-L-K-M).',
+        model: 'gemini-1.5-flash',
+        temperature: 0.7,
+        maxOutputTokens: 2048,
+        topP: 0.95,
+        topK: 40,
+      },
+      'guardian_public_chat',
+    )
 
     const jsonStr = result.text.replace(/```json|```/g, '').trim()
     let aiAnalysis: { message: string; recommendations?: string[] }

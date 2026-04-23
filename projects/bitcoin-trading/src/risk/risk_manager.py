@@ -548,10 +548,11 @@ class RiskManager:
         
         logger.info(f"💰 손익 업데이트: {pnl:.2f} USDT (일일: {self.daily_pnl:.2f} USDT, 총 자본: {self.current_capital:.2f} USDT)")
         
-        # 큰 손익 발생 시 알림 (5% 이상) - 간단한 메시지로 전송
+        # 큰 손익은 로그로만 기록한다.
+        # Telegram은 AlertManager 정책(기본 trade_only) 기준으로 체결 알림만 전송한다.
         if abs(pnl) >= self.initial_capital * 0.05:
             pnl_ratio = pnl / self.initial_capital
             message = f"💰 큰 손익 발생: {pnl:+.2f} USDT ({pnl_ratio:+.2%})"
-            asyncio.create_task(self.alert_manager.send_telegram(message))
+            logger.warning(message)
 
 

@@ -4,6 +4,7 @@ param(
     [switch]$IncludeVerifyAllGreen,
     [switch]$ExcludeConstitutionGates,
     [switch]$ExcludeStrict,
+    [switch]$ExcludeShowroomDeployVerify,
     [string]$TrackaDefaultLane = "c3_domain_gated"
 )
 
@@ -23,6 +24,9 @@ if (-not $ExcludeConstitutionGates) {
 }
 if (-not $ExcludeStrict) {
     $extra += " -Strict"
+}
+if (-not $ExcludeShowroomDeployVerify) {
+    $extra += " -IncludeShowroomDeployVerify"
 }
 if ($TrackaDefaultLane -and $TrackaDefaultLane.Trim().Length -gt 0) {
     $extra += " -TrackaDefaultLane " + $TrackaDefaultLane.Trim().ToLowerInvariant()
