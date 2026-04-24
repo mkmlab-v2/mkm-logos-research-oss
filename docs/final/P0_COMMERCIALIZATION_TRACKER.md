@@ -827,3 +827,22 @@ Notes:
 3. `decision`/`decision_90pct_ready` 등 게이트 값 확인 후 단계 지정
 4. Step 4 정렬 pytest 또는 관련 스모크 스크립트 실행 로그 확보
 5. 승인 회의(IC/운영)에는 브리핑이 아니라 "artifact 경로 + exit code"를 근거로 제출
+
+### [P0 Tracker] Bio DNA A-Track 진단 및 정합성 보정 보고 (2026-04)
+
+**1. 상태 (Status)**
+- **Overall Status**: `HOLD_FOR_CI_NARROWING` (안정성은 확보되었으나, AB Test 신뢰구간 하한선 미달로 자동 승격 보류)
+
+**2. 핵심 지표 (Metrics)**
+- **Readiness**: `PASS` (3/3 Ready)
+- **Threshold Sweep**: `PASS` (권장 정책: coverage=0.4, target=1, match=1)
+- **AB Holdout Eval**: `BLOCK` (Uplift +0.037 달성했으나 CI 하한선 < 0 규정 위반)
+- **Seed Stability**: `PASS` (5/5 Ready, Rate 1.0)
+
+**3. 주요 형상 관리 (Configuration & SSOT)**
+- 문서 환각 보정 완료: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 내 허위 경로(`run_bio_sasang_*`) 삭제 및 실존 DNA 파이프라인(`run_bio_dna_*`)으로 매핑 완료.
+- 12-AI Rule 확인: `.cursor/rules/12ai-orchestration.mdc` 기구축 확인 (향후 DNA 트랙 승격 시 연동 예정).
+
+**4. 다음 행동 강령 (Next Action Items)**
+- AB Holdout의 CI 하한선을 양수로 끌어올리기 위한 평가 데이터셋(Evalset) 볼륨 확대.
+- Gematria/사상(B-track)의 간섭 없이 A-track 단독 임계치 미세 조정(Fine-tuning) 반복.
