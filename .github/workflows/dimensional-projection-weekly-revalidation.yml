@@ -9,6 +9,10 @@ jobs:
   weekly-holdout-and-promote:
     runs-on: windows-latest
     steps:
+      - name: Enable git long paths
+        shell: pwsh
+        run: git config --system core.longpaths true
+
       - name: Checkout
         uses: actions/checkout@v5
 
