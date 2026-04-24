@@ -77,7 +77,7 @@ jobs:
 
       - name: Upload weekly artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dimensional-projection-weekly-${{ github.run_id }}
           path: |
