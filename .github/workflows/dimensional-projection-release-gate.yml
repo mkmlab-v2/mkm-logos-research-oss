@@ -1,0 +1,87 @@
+name: Dimensional Projection Release Gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      evalset_size:
+        description: "Generated evalset size before split"
+        required: false
+        default: "900"
+        type: string
+      skip_scorer_tuning:
+        description: "Skip scorer tuning in holdout chain"
+        required: false
+        default: true
+        type: boolean
+  pull_request:
+    paths:
+      - "api-services/routers/dimensional_projection/**"
+      - "api-services/scripts/*dimensional_projection*"
+      - "api-services/tests/test_dimensional_projection*"
+      - "api-services/tests/test_validate_dimensional_projection_holdout.py"
+      - "scripts/Run-DimensionalProjectionHoldoutValidation.ps1"
+      - "scripts/Promote-DimensionalProjectionFreeze.ps1"
+      - ".github/workflows/dimensional-projection-release-gate.yml"
+
+jobs:
+  holdout-and-promote:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependencies
+        shell: pwsh
+        run: |
+          py -m pip install --upgrade pip pytest fastapi httpx
+
+      - name: Run dimensional projection regressions
+        shell: pwsh
+        run: |
+          py -m pytest "api-services/tests/test_validate_dimensional_projection_holdout.py" "api-services/tests/test_dimensional_projection_router.py" -q
+
+      - name: Holdout validation chain
+        shell: pwsh
+        run: |
+          $skipFlag = "${{ github.event.inputs.skip_scorer_tuning }}"
+          $size = "${{ github.event.inputs.evalset_size }}"
+          if ([string]::IsNullOrWhiteSpace($size)) { $size = "900" }
+          if ($skipFlag -eq "false") {
+            powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Run-DimensionalProjectionHoldoutValidation.ps1" -WorkspaceRoot "$env:GITHUB_WORKSPACE" -EvalsetSize $size
+          } else {
+            powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Run-DimensionalProjectionHoldoutValidation.ps1" -WorkspaceRoot "$env:GITHUB_WORKSPACE" -EvalsetSize $size -SkipScorerTuning
+          }
+
+      - name: Promote freeze artifacts when gate passes
+        shell: pwsh
+        run: |
+          $root = "$env:GITHUB_WORKSPACE"
+          powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Promote-DimensionalProjectionFreeze.ps1" `
+            -WorkspaceRoot $root `
+            -HoldoutGateJson (Join-Path $root "reports/dimensional_projection_bridge/holdout_gate_latest.json") `
+            -FreezeDir (Join-Path $root "reports/dimensional_projection_bridge/freeze") `
+            -ActiveDir (Join-Path $root "reports/dimensional_projection_bridge")
+
+      - name: Upload dimensional projection gate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dimensional-projection-release-gate-${{ github.run_id }}
+          path: |
+            reports/dimensional_projection_bridge/engine_eval_multi_policy_train_latest.json
+            reports/dimensional_projection_bridge/engine_eval_multi_policy_holdout_latest.json
+            reports/dimensional_projection_bridge/holdout_gate_latest.json
+            reports/dimensional_projection_bridge/engine_overrides_train_latest.json
+            reports/dimensional_projection_bridge/policies_calibrated_train_latest.json
+            reports/dimensional_projection_bridge/freeze/engine_overrides_latest.json
+            reports/dimensional_projection_bridge/freeze/policies_calibrated_latest.json
+            reports/dimensional_projection_bridge/freeze/scorer_config_latest.json
+            reports/dimensional_projection_bridge/freeze/runtime_lock_manifest_latest.json
+            reports/dimensional_projection_bridge/promotions/*.json
+          if-no-files-found: ignore
+

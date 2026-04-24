@@ -1,0 +1,57 @@
+name: Dimensional Projection Weekly Revalidation
+
+on:
+  schedule:
+    - cron: "0 22 * * 0"
+  workflow_dispatch:
+
+jobs:
+  weekly-holdout-and-promote:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependencies
+        shell: pwsh
+        run: |
+          py -m pip install --upgrade pip pytest fastapi httpx
+
+      - name: Run holdout validation chain
+        shell: pwsh
+        run: |
+          powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Run-DimensionalProjectionHoldoutValidation.ps1" `
+            -WorkspaceRoot "$env:GITHUB_WORKSPACE" `
+            -EvalsetSize 900 `
+            -SkipScorerTuning
+
+      - name: Promote freeze artifacts when gate passes
+        shell: pwsh
+        run: |
+          $root = "$env:GITHUB_WORKSPACE"
+          powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Promote-DimensionalProjectionFreeze.ps1" `
+            -WorkspaceRoot $root `
+            -HoldoutGateJson (Join-Path $root "reports/dimensional_projection_bridge/holdout_gate_latest.json") `
+            -FreezeDir (Join-Path $root "reports/dimensional_projection_bridge/freeze") `
+            -ActiveDir (Join-Path $root "reports/dimensional_projection_bridge")
+
+      - name: Upload weekly artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dimensional-projection-weekly-${{ github.run_id }}
+          path: |
+            reports/dimensional_projection_bridge/engine_eval_multi_policy_holdout_latest.json
+            reports/dimensional_projection_bridge/holdout_gate_latest.json
+            reports/dimensional_projection_bridge/freeze/engine_overrides_latest.json
+            reports/dimensional_projection_bridge/freeze/policies_calibrated_latest.json
+            reports/dimensional_projection_bridge/freeze/scorer_config_latest.json
+            reports/dimensional_projection_bridge/freeze/runtime_lock_manifest_latest.json
+            reports/dimensional_projection_bridge/promotions/*.json
+          if-no-files-found: ignore
+
