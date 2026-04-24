@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { CdssGenerationReason } from "@/lib/cdss-contract";
+import { getConfidenceThresholds } from "@/lib/confidence-thresholds";
 
 function formatIntakePinInput(value: string): string {
   const normalized = value.replace(/[^A-Z0-9]/gi, "").toUpperCase().slice(0, 6);
@@ -36,6 +37,20 @@ function cdssTemplateHint(reason?: CdssGenerationReason): string {
   }
 }
 
+function confidenceTier(value: number): "high" | "medium" | "low" {
+  const thresholds = getConfidenceThresholds();
+  if (value >= thresholds.high_min) return "high";
+  if (value >= thresholds.medium_min) return "medium";
+  return "low";
+}
+
+function confidenceLevel(value: number): "A" | "B" | "C" {
+  const tier = confidenceTier(value);
+  if (tier === "high") return "A";
+  if (tier === "medium") return "B";
+  return "C";
+}
+
 const RECENT_PIN_STORAGE_KEY = "advanced_consult_recent_pins_v1";
 
 type RecentPinItem = {
@@ -58,10 +73,41 @@ type AdvancedConsultResponse = {
   error?: string;
   draft?: {
     request_id: string;
+    lens_mode: "neutral" | "integrated" | "compare";
+    include_scripture: boolean;
     clinical_summary: string;
     profile_summary: { sasang_candidate: string; saju_reference: string; saju_source: "live" | "fallback" };
     reasoning: { syndrome_hypothesis: string; care_direction: string; caution: string };
     citations: CdssCitation[];
+    collaboration?: {
+      enabled: boolean;
+      mode: "three_agent_mvp" | "four_agent_full";
+      gate_status: "PASS" | "REVIEW" | "BLOCK";
+      gate_reasons: string[];
+      gate_scores: {
+        quality: number;
+        cost: number;
+        safety: number;
+      };
+      agreement_points: string[];
+      conflict_points: string[];
+      final_consensus: string;
+      priority_actions_top3: string[];
+      do_not_do_top3: string[];
+      plan_30d: string[];
+      opinions: Array<{
+        agent_id: "sasang_ai" | "myeongri_ai" | "scripture_ai" | "orchestrator_ai";
+        stance: string;
+        rationale: string[];
+        confidence: number;
+      }>;
+    };
+    fact_lock?: {
+      evidence_path: string;
+      validated_at: string;
+      confidence_level: "A" | "B" | "C";
+      note?: string;
+    };
     non_medical_notice: string;
     generation?: { llm_used: boolean; reason?: CdssGenerationReason };
   };
@@ -121,6 +167,8 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
   const [medication, setMedication] = useState("");
   const [digestionPattern, setDigestionPattern] = useState("");
   const [sleepPattern, setSleepPattern] = useState("");
+  const [lensMode, setLensMode] = useState<"neutral" | "integrated" | "compare">("neutral");
+  const [includeScripture, setIncludeScripture] = useState(false);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<AdvancedConsultResponse | null>(null);
   const [selectedCitationId, setSelectedCitationId] = useState<string | null>(null);
@@ -228,6 +276,14 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
           schema: "patient_consult_input_v1",
           request_id: `req_${Date.now()}`,
           actor_id: actorId,
+          lens_mode: lensMode,
+          include_scripture: includeScripture,
+          external_context: {
+            business_goal: "high-value one-question consultation",
+            budget_krw: 1000,
+            kpi_targets: ["answer_depth", "actionability", "safety_guardrail_pass"],
+            contract_constraints: ["no medical diagnosis", "no prescription replacement"],
+          },
           lane_a_profile: {
             birth_instant_utc: birthInstantUtc.trim(),
             iana_tz: ianaTz.trim(),
@@ -467,6 +523,18 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
         <label>복약 정보<input value={medication} onChange={(e) => setMedication(e.target.value)} /></label>
         <label>체질 설문 (소화 패턴)<input value={digestionPattern} onChange={(e) => setDigestionPattern(e.target.value)} /></label>
         <label>건강 설문 (수면 패턴)<input value={sleepPattern} onChange={(e) => setSleepPattern(e.target.value)} /></label>
+        <label>
+          렌즈 모드
+          <select value={lensMode} onChange={(e) => setLensMode(e.target.value as "neutral" | "integrated" | "compare")}>
+            <option value="neutral">neutral (기본)</option>
+            <option value="integrated">integrated (사상+명리 통합)</option>
+            <option value="compare">compare (사상/명리 비교)</option>
+          </select>
+        </label>
+        <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <input type="checkbox" checked={includeScripture} onChange={(e) => setIncludeScripture(e.target.checked)} />
+          성경 맥락 포함 (선택)
+        </label>
         <button type="submit" className="btn btn-primary" disabled={busy || !canUseAdvancedConsult}>
           {busy ? "추론 중..." : "고급 진료 보조 리포트 생성"}
         </button>
@@ -506,6 +574,7 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
                 <article className="card">
                   <h3>가드레일</h3>
                   <p>분리해석: {result.guardrail?.lane_separation ? "ON" : "OFF"} / 근거강제: {result.guardrail?.citation_enforced ? "ON" : "OFF"}</p>
+                  <p>lens: {result.draft?.lens_mode || "neutral"} / scripture: {result.draft?.include_scripture ? "ON" : "OFF"}</p>
                 </article>
               </div>
 
@@ -538,6 +607,89 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
                   </article>
                 ) : null}
               </div>
+              {result.draft?.collaboration?.enabled ? (
+                <div className="consult-reasoning">
+                  <h3>4-AI 합의 결과</h3>
+                  <p>{result.draft.collaboration.final_consensus}</p>
+                  <p>
+                    mode={result.draft.collaboration.mode} / gate_status={result.draft.collaboration.gate_status} /
+                    quality={result.draft.collaboration.gate_scores.quality} /
+                    cost={result.draft.collaboration.gate_scores.cost} /
+                    safety={result.draft.collaboration.gate_scores.safety}
+                  </p>
+                  {result.draft.collaboration.gate_reasons.length ? (
+                    <p>gate_reasons: {result.draft.collaboration.gate_reasons.join(", ")}</p>
+                  ) : null}
+                  {result.draft.collaboration.agreement_points.length ? (
+                    <ul>
+                      {result.draft.collaboration.agreement_points.map((point) => (
+                        <li key={`agree-${point}`}>합의: {point}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  {result.draft.collaboration.conflict_points.length ? (
+                    <ul>
+                      {result.draft.collaboration.conflict_points.map((point) => (
+                        <li key={`conflict-${point}`}>충돌: {point}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  {result.draft.collaboration.priority_actions_top3.length ? (
+                    <>
+                      <p><strong>실행 우선순위 TOP3</strong></p>
+                      <ul>
+                        {result.draft.collaboration.priority_actions_top3.map((point) => (
+                          <li key={`priority-${point}`}>{point}</li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : null}
+                  {result.draft.collaboration.do_not_do_top3.length ? (
+                    <>
+                      <p><strong>금지 TOP3</strong></p>
+                      <ul>
+                        {result.draft.collaboration.do_not_do_top3.map((point) => (
+                          <li key={`deny-${point}`}>{point}</li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : null}
+                  {result.draft.collaboration.plan_30d.length ? (
+                    <>
+                      <p><strong>30일 플랜</strong></p>
+                      <ul>
+                        {result.draft.collaboration.plan_30d.map((step) => (
+                          <li key={`plan-${step}`}>{step}</li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : null}
+                  <div className="grid-3">
+                    {result.draft.collaboration.opinions.map((op) => (
+                      <article key={`op-${op.agent_id}`} className="card">
+                        <h3>{op.agent_id}</h3>
+                        <p>{op.stance}</p>
+                        <p className="consult-source-chip">
+                          <span className={`consult-confidence-badge is-${confidenceTier(op.confidence)}`}>
+                            {confidenceTier(op.confidence).toUpperCase()}
+                          </span>{" "}
+                          confidence: {op.confidence} (level {confidenceLevel(op.confidence)})
+                        </p>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {result.draft?.fact_lock ? (
+                <article className="card">
+                  <h3>Fact-Lock</h3>
+                  <p className="consult-source-chip">level: {result.draft.fact_lock.confidence_level}</p>
+                  <p>evidence: {result.draft.fact_lock.evidence_path}</p>
+                  <p>validated_at: {result.draft.fact_lock.validated_at}</p>
+                  {result.draft.fact_lock.note ? <p>note: {result.draft.fact_lock.note}</p> : null}
+                </article>
+              ) : null}
 
               <p className="consult-notice">{result.draft?.non_medical_notice}</p>
             </>

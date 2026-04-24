@@ -1,0 +1,70 @@
+name: 12ai-orchestration-gate
+
+on:
+  workflow_call:
+    inputs:
+      role:
+        required: false
+        type: string
+        default: Architect
+      current_metrics_path:
+        required: false
+        type: string
+        default: docs/final/artifacts/bench_l1_api_load_latest.json
+      baseline_metrics_path:
+        required: false
+        type: string
+        default: docs/final/artifacts/bench_l1_api_load_summary_vps_latest.json
+      baseline_lock_path:
+        required: false
+        type: string
+        default: docs/final/artifacts/orchestration_gate_baseline_lock_v1.json
+      retries:
+        required: false
+        type: number
+        default: 3
+      action:
+        required: false
+        type: string
+        default: change_strategy
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify baseline lock
+        shell: pwsh
+        run: |
+          pwsh -NoProfile -ExecutionPolicy Bypass -File "$env:GITHUB_WORKSPACE/scripts/verify_12ai_baseline_lock.ps1" `
+            -BaselineMetricsPath "${{ inputs.baseline_metrics_path }}" `
+            -LockFilePath "${{ inputs.baseline_lock_path }}"
+
+      - name: Compute gate metrics from artifacts
+        id: metrics
+        shell: pwsh
+        run: |
+          $raw = pwsh -NoProfile -ExecutionPolicy Bypass -File "$env:GITHUB_WORKSPACE/scripts/get_12ai_gate_metrics.ps1" `
+            -CurrentMetricsPath "${{ inputs.current_metrics_path }}" `
+            -BaselineMetricsPath "${{ inputs.baseline_metrics_path }}"
+          $data = $raw | ConvertFrom-Json
+          "latency_improvement=$($data.derived.latency_improvement)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "error_rate_reduction=$($data.derived.error_rate_reduction)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "metrics_json=$($raw -replace \"`r`n\", \" \" -replace \"`n\", \" \")" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: 12AI orchestration gate verify
+        shell: pwsh
+        run: |
+          $branch = "${{ github.head_ref || github.ref_name }}"
+          $role = "${{ inputs.role }}"
+          if ($branch -match "mutator") {
+            $role = "Mutator"
+          }
+          pwsh -NoProfile -ExecutionPolicy Bypass -File "$env:GITHUB_WORKSPACE/scripts/verify_12ai_orchestration_gate.ps1" `
+            -LatencyImprovement "${{ steps.metrics.outputs.latency_improvement }}" `
+            -ErrorRateReduction "${{ steps.metrics.outputs.error_rate_reduction }}" `
+            -Retries "${{ inputs.retries }}" `
+            -Action "${{ inputs.action }}" `
+            -Role $role `
+            -BranchName $branch

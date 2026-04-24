@@ -862,6 +862,30 @@ section h2 {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .hero,
+  .premium-panel {
+    animation: none;
+  }
+
+  .hero-orb-a,
+  .hero-orb-b,
+  .brand-motion-canvas,
+  .brand-motion-beam-a,
+  .brand-motion-beam-b {
+    animation: none;
+  }
+
+  .card-lift::after {
+    transition: none;
+    transform: rotate(16deg) translateX(-130%);
+  }
+}
+
 .consult-form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1196,6 +1220,34 @@ section h2 {
   color: #ff9b9b;
   border-color: rgba(255, 155, 155, 0.45);
   background: rgba(255, 155, 155, 0.1);
+}
+
+.consult-confidence-badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  border: 1px solid var(--line);
+}
+
+.consult-confidence-badge.is-high {
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.75);
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.consult-confidence-badge.is-medium {
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.75);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.consult-confidence-badge.is-low {
+  color: #fda4af;
+  border-color: rgba(251, 113, 133, 0.75);
+  background: rgba(251, 113, 133, 0.12);
 }
 
 .site-footer {

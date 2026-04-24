@@ -6,14 +6,28 @@ on:
     paths:
       - "projects/no1kmedi/marketing-site/**"
       - "projects/no1kmedi/src/**"
+      - "scripts/verify_12ai_orchestration_gate.ps1"
+      - ".github/workflows/no1kmedi-marketing-copy.yml"
   pull_request:
     paths:
       - "projects/no1kmedi/marketing-site/**"
       - "projects/no1kmedi/src/**"
+      - "scripts/verify_12ai_orchestration_gate.ps1"
+      - ".github/workflows/no1kmedi-marketing-copy.yml"
   workflow_dispatch:
 
 jobs:
+  orchestration-gate:
+    uses: ./.github/workflows/12ai-orchestration-gate.yml
+    with:
+      role: Architect
+      current_metrics_path: docs/final/artifacts/bench_l1_api_load_latest.json
+      baseline_metrics_path: docs/final/artifacts/bench_l1_api_load_summary_vps_latest.json
+      retries: 3
+      action: change_strategy
+
   check:
+    needs: orchestration-gate
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
