@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [string]$WorkspaceRoot = "C:\workspace",
+    [string]$WorkspaceRoot = "",
     [int]$EvalsetSize = 900,
     [double]$TrainRatio = 0.8,
     [int]$SplitSeed = 42,
@@ -12,12 +12,18 @@ param(
     [switch]$IncludeRealEmbedding,
     [switch]$SkipScorerTuning,
     [switch]$EnforceLockVerify,
-    [string]$LockManifest = "C:\workspace\reports\dimensional_projection_bridge\run7_lock_manifest_latest.json"
+    [string]$LockManifest = ""
 )
 
 $ErrorActionPreference = "Stop"
 
+if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
+    $WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+}
 $workspaceRoot = $WorkspaceRoot
+if ([string]::IsNullOrWhiteSpace($LockManifest)) {
+    $LockManifest = Join-Path $workspaceRoot "reports\dimensional_projection_bridge\run7_lock_manifest_latest.json"
+}
 $apiRoot = Join-Path $workspaceRoot "api-services"
 $dataDir = Join-Path $apiRoot "scripts\data"
 
@@ -30,6 +36,7 @@ $overrideScript = Join-Path $apiRoot "scripts\build_dimensional_projection_engin
 $thresholdScript = Join-Path $apiRoot "scripts\tune_dimensional_projection_thresholds.py"
 $scorerScript = Join-Path $apiRoot "scripts\tune_dimensional_projection_scorer_config.py"
 $failureReportScript = Join-Path $apiRoot "scripts\build_dimensional_projection_holdout_failure_report_v1.py"
+$runtimeLockRefresh = Join-Path $apiRoot "scripts\refresh_dimensional_projection_runtime_lock_manifest_v1.py"
 
 $fullJsonl = Join-Path $dataDir "dimensional_projection_evalset_generated.jsonl"
 $trainJsonl = Join-Path $dataDir "dimensional_projection_evalset_train_latest.jsonl"
@@ -53,7 +60,7 @@ if ($EnforceLockVerify) {
         throw "Lock verifier not found: $lockVerifier"
     }
     Write-Host "==> 0) Verify run7 lock integrity (fail-fast)" -ForegroundColor Cyan
-    py $lockVerifier --lock-manifest $LockManifest --out "C:\workspace\reports\dimensional_projection_bridge\run7_lock_verify_latest.json"
+    py $lockVerifier --lock-manifest $LockManifest --out (Join-Path $workspaceRoot "reports\dimensional_projection_bridge\run7_lock_verify_latest.json")
     if ($LASTEXITCODE -ne 0) { throw "Lock integrity verification failed (exit $LASTEXITCODE)" }
     # Holdout chain uses temporary train/freeze artifacts; run7 lock is enforced
     # by explicit pre/post verifier rather than runtime_lock.py's freeze schema.
@@ -100,8 +107,8 @@ Copy-Item $trainOverrides $freezeOverrides -Force
 Copy-Item $trainPolicies $freezePolicies -Force
 if (Test-Path -LiteralPath $trainScorer) {
     Copy-Item $trainScorer $freezeScorer -Force
-} elseif (Test-Path -LiteralPath "C:\workspace\reports\dimensional_projection_bridge\scorer_config_latest.json") {
-    Copy-Item "C:\workspace\reports\dimensional_projection_bridge\scorer_config_latest.json" $freezeScorer -Force
+} elseif (Test-Path -LiteralPath (Join-Path $workspaceRoot "reports\dimensional_projection_bridge\scorer_config_latest.json")) {
+    Copy-Item (Join-Path $workspaceRoot "reports\dimensional_projection_bridge\scorer_config_latest.json") $freezeScorer -Force
 }
 
 Write-Host "==> 5) Holdout evaluation (no retuning)" -ForegroundColor Cyan
@@ -152,8 +159,8 @@ if ($EnforceLockVerify) {
         $refs = $lockPayload.refs
         $lockScorer = [string]$refs.scorer_json
         $lockPolicies = [string]$refs.policies_json
-        $latestScorer = "C:\workspace\reports\dimensional_projection_bridge\scorer_config_latest.json"
-        $latestPolicies = "C:\workspace\reports\dimensional_projection_bridge\policies_calibrated_latest.json"
+        $latestScorer = Join-Path $workspaceRoot "reports\dimensional_projection_bridge\scorer_config_latest.json"
+        $latestPolicies = Join-Path $workspaceRoot "reports\dimensional_projection_bridge\policies_calibrated_latest.json"
         if (-not (Test-Path -LiteralPath $lockScorer)) { throw "Lock scorer ref not found: $lockScorer" }
         if (-not (Test-Path -LiteralPath $lockPolicies)) { throw "Lock policies ref not found: $lockPolicies" }
         if ((Resolve-Path -LiteralPath $lockScorer).Path -ne (Resolve-Path -LiteralPath $latestScorer).Path) {
@@ -162,7 +169,7 @@ if ($EnforceLockVerify) {
         if ((Resolve-Path -LiteralPath $lockPolicies).Path -ne (Resolve-Path -LiteralPath $latestPolicies).Path) {
             Copy-Item -LiteralPath $lockPolicies -Destination $latestPolicies -Force
         }
-        py $lockVerifier --lock-manifest $LockManifest --out "C:\workspace\reports\dimensional_projection_bridge\run7_lock_verify_latest.json"
+        py $lockVerifier --lock-manifest $LockManifest --out (Join-Path $workspaceRoot "reports\dimensional_projection_bridge\run7_lock_verify_latest.json")
         if ($LASTEXITCODE -ne 0) { throw "Post-restore lock integrity verification failed (exit $LASTEXITCODE)" }
     } catch {
         $restoreError = $_
@@ -170,6 +177,11 @@ if ($EnforceLockVerify) {
 }
 if ($restoreError -ne $null) {
     throw $restoreError
+}
+if (Test-Path -LiteralPath $runtimeLockRefresh) {
+    Write-Host "==> 8) Refresh runtime lock manifest checksums" -ForegroundColor Cyan
+    py $runtimeLockRefresh
+    if ($LASTEXITCODE -ne 0) { throw "Runtime lock manifest refresh failed (exit $LASTEXITCODE)" }
 }
 if ($holdoutGateExit -ne 0) {
     throw "Holdout gate failed; see $holdoutGate"

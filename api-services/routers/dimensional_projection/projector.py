@@ -21,6 +21,11 @@ from typing import Protocol
 from routers.dimensional_projection.runtime_lock import enforce_runtime_lock
 
 
+def _reports_root() -> Path:
+    root = os.getenv("MKM_WORKSPACE_ROOT", "/opt/workspace").strip() or "/opt/workspace"
+    return Path(root) / "reports" / "dimensional_projection_bridge"
+
+
 def _normalize_signed(value: float) -> float:
     return round(max(-1.0, min(1.0, value)), 6)
 
@@ -144,17 +149,17 @@ def _resolve_eval_report_path() -> Path:
     env = os.getenv("DIMENSIONAL_PROJECTION_ENGINE_EVAL_REPORT", "").strip()
     if env:
         return Path(env)
-    return Path("C:/workspace/reports/dimensional_projection_bridge/engine_eval_multi_policy_latest.json")
+    return _reports_root() / "engine_eval_multi_policy_latest.json"
 
 
 def _resolve_engine_override_path() -> Path:
     env = os.getenv("DIMENSIONAL_PROJECTION_ENGINE_OVERRIDE_FILE", "").strip()
     if env:
         return Path(env)
-    freeze_path = Path("C:/workspace/reports/dimensional_projection_bridge/freeze/engine_overrides_latest.json")
+    freeze_path = _reports_root() / "freeze" / "engine_overrides_latest.json"
     if freeze_path.is_file():
         return freeze_path
-    return Path("C:/workspace/reports/dimensional_projection_bridge/engine_overrides_latest.json")
+    return _reports_root() / "engine_overrides_latest.json"
 
 
 def _engine_from_name(name: str) -> ProjectionEngine:

@@ -14,6 +14,11 @@ _LOCK = Lock()
 _VERIFIED = False
 
 
+def _reports_root() -> Path:
+    root = os.getenv("MKM_WORKSPACE_ROOT", "/opt/workspace").strip() or "/opt/workspace"
+    return Path(root) / "reports" / "dimensional_projection_bridge"
+
+
 def _sha256(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as f:
@@ -29,7 +34,7 @@ def _runtime_lock_path() -> Path:
     env = os.getenv("DIMENSIONAL_PROJECTION_RUNTIME_LOCK_MANIFEST", "").strip()
     if env:
         return Path(env)
-    return Path("C:/workspace/reports/dimensional_projection_bridge/freeze/runtime_lock_manifest_latest.json")
+    return _reports_root() / "freeze" / "runtime_lock_manifest_latest.json"
 
 
 def enforce_runtime_lock() -> None:

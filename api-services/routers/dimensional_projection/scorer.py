@@ -17,6 +17,11 @@ from typing import Any
 
 from routers.dimensional_projection.runtime_lock import enforce_runtime_lock
 
+def _reports_root() -> Path:
+    root = os.getenv("MKM_WORKSPACE_ROOT", "/opt/workspace").strip() or "/opt/workspace"
+    return Path(root) / "reports" / "dimensional_projection_bridge"
+
+
 DEFAULT_SCORER_CONFIG = {
     "canon": {"s_weight": 0.25, "l_weight": 0.25, "bias": 0.5},
     "risk": {
@@ -161,10 +166,10 @@ def _resolve_scorer_config_path() -> Path:
     env = os.getenv("DIMENSIONAL_PROJECTION_SCORER_CONFIG_FILE", "").strip()
     if env:
         return Path(env)
-    freeze_path = Path("C:/workspace/reports/dimensional_projection_bridge/freeze/scorer_config_latest.json")
+    freeze_path = _reports_root() / "freeze" / "scorer_config_latest.json"
     if freeze_path.is_file():
         return freeze_path
-    return Path("C:/workspace/reports/dimensional_projection_bridge/scorer_config_latest.json")
+    return _reports_root() / "scorer_config_latest.json"
 
 
 def _load_scorer_config_file() -> dict[str, Any]:

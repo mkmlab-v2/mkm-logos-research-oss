@@ -32,11 +32,16 @@ def _to_float(value: Any, default: float) -> float:
         return default
 
 
+def _reports_root() -> Path:
+    root = os.getenv("MKM_WORKSPACE_ROOT", "/opt/workspace").strip() or "/opt/workspace"
+    return Path(root) / "reports" / "dimensional_projection_bridge"
+
+
 def _resolve_policy_file() -> Path:
     env = os.getenv("DIMENSIONAL_PROJECTION_POLICY_FILE", "").strip()
     if env:
         return Path(env)
-    runtime_path = Path("C:/workspace/reports/dimensional_projection_bridge/policies_latest.json")
+    runtime_path = _reports_root() / "policies_latest.json"
     if runtime_path.is_file():
         return runtime_path
     return Path(__file__).with_name("policies.default.json")
@@ -56,10 +61,10 @@ def _resolve_calibrated_policy_file() -> Path:
     env = os.getenv("DIMENSIONAL_PROJECTION_CALIBRATED_POLICY_FILE", "").strip()
     if env:
         return Path(env)
-    freeze_path = Path("C:/workspace/reports/dimensional_projection_bridge/freeze/policies_calibrated_latest.json")
+    freeze_path = _reports_root() / "freeze" / "policies_calibrated_latest.json"
     if freeze_path.is_file():
         return freeze_path
-    return Path("C:/workspace/reports/dimensional_projection_bridge/policies_calibrated_latest.json")
+    return _reports_root() / "policies_calibrated_latest.json"
 
 
 def _load_calibrated_policy_file() -> dict[str, Any]:

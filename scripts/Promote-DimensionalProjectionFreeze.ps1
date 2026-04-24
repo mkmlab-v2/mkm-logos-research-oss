@@ -1,9 +1,9 @@
 [CmdletBinding()]
 param(
-    [string]$WorkspaceRoot = "C:\workspace",
-    [string]$HoldoutGateJson = "C:\workspace\reports\dimensional_projection_bridge\holdout_gate_latest.json",
-    [string]$FreezeDir = "C:\workspace\reports\dimensional_projection_bridge\freeze",
-    [string]$ActiveDir = "C:\workspace\reports\dimensional_projection_bridge",
+    [string]$WorkspaceRoot = "",
+    [string]$HoldoutGateJson = "",
+    [string]$FreezeDir = "",
+    [string]$ActiveDir = "",
     [switch]$AllowPartial
 )
 
@@ -32,6 +32,19 @@ function Get-FileSha256([string]$Path) {
         throw "Cannot hash missing file: $Path"
     }
     return (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToLowerInvariant()
+}
+
+if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
+    $WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+}
+if ([string]::IsNullOrWhiteSpace($HoldoutGateJson)) {
+    $HoldoutGateJson = Join-Path $WorkspaceRoot "reports\dimensional_projection_bridge\holdout_gate_latest.json"
+}
+if ([string]::IsNullOrWhiteSpace($FreezeDir)) {
+    $FreezeDir = Join-Path $WorkspaceRoot "reports\dimensional_projection_bridge\freeze"
+}
+if ([string]::IsNullOrWhiteSpace($ActiveDir)) {
+    $ActiveDir = Join-Path $WorkspaceRoot "reports\dimensional_projection_bridge"
 }
 
 Set-Location $WorkspaceRoot
