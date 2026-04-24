@@ -1,5 +1,8 @@
 name: Dimensional Projection Weekly Revalidation
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 on:
   schedule:
     - cron: "0 22 * * 0"
