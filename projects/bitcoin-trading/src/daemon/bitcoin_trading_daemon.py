@@ -475,40 +475,44 @@ class BitcoinTradingDaemon:
         while self.running:
             try:
                 await asyncio.sleep(60)  # 60초마다 체크 (헬스체크 간격 동기화)
-                
-                if self.engine:
-                    status = self.engine.get_status()
-                    
-                    # 상태 로깅
-                    logger.info(
-                        f"📊 헬스 체크: "
-                        f"실행 중={status.get('running', False)}, "
-                        f"가격 히스토리={status.get('price_history_size', 0)}, "
-                        f"거래 활성화={status.get('trading_enabled', False)}"
-                    )
-                    
-                    # 리스크 가디언 상태 확인
-                    if 'risk_guardian' in status:
-                        rg_status = status['risk_guardian']
-                        if rg_status.get('trading_paused', False):
-                            logger.warning(
-                                f"⚠️ 리스크 가디언: 거래 중단됨 "
-                                f"(재개: {rg_status.get('pause_until', 'N/A')})"
-                            )
-                    
-                    # 압축 브릿지 상태 확인
-                    if 'compression_bridge' in status:
-                        cb_status = status['compression_bridge']
+
+                with otel_span(
+                    "daemon.health_tick",
+                    attributes={"symbol": self.symbol},
+                ):
+                    if self.engine:
+                        status = self.engine.get_status()
+
+                        # 상태 로깅
                         logger.info(
-                            f"📊 압축 브릿지: "
-                            f"압축 횟수={cb_status.get('compression_count', 0)}, "
-                            f"평균 노이즈 필터링={cb_status.get('avg_noise_filtered', 0):.1%}"
+                            f"📊 헬스 체크: "
+                            f"실행 중={status.get('running', False)}, "
+                            f"가격 히스토리={status.get('price_history_size', 0)}, "
+                            f"거래 활성화={status.get('trading_enabled', False)}"
                         )
-                
-                # 상태 저장
-                self._save_status()
-                self._touch_heartbeat()
-                
+
+                        # 리스크 가디언 상태 확인
+                        if 'risk_guardian' in status:
+                            rg_status = status['risk_guardian']
+                            if rg_status.get('trading_paused', False):
+                                logger.warning(
+                                    f"⚠️ 리스크 가디언: 거래 중단됨 "
+                                    f"(재개: {rg_status.get('pause_until', 'N/A')})"
+                                )
+
+                        # 압축 브릿지 상태 확인
+                        if 'compression_bridge' in status:
+                            cb_status = status['compression_bridge']
+                            logger.info(
+                                f"📊 압축 브릿지: "
+                                f"압축 횟수={cb_status.get('compression_count', 0)}, "
+                                f"평균 노이즈 필터링={cb_status.get('avg_noise_filtered', 0):.1%}"
+                            )
+
+                    # 상태 저장
+                    self._save_status()
+                    self._touch_heartbeat()
+
             except Exception as e:
                 logger.error(f"❌ 헬스 체크 오류: {e}")
     

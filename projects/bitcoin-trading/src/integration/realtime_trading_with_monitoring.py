@@ -1237,7 +1237,23 @@ class RealtimeTradingWithMonitoring:
             logger.warning(f"⚠️ Startup reconcile 실패: {e}")
     
     async def _execute_trade(self, signal: str, confidence: float):
-        """거래 실행"""
+        """거래 실행 (OTel: execute_trade 스팬)."""
+        from src.monitoring import trading_otel as _otel
+
+        with _otel.span(
+            "execute_trade",
+            attributes={
+                "signal": str(signal),
+                "symbol": self.symbol,
+                "confidence": str(confidence),
+                "testnet": str(self.testnet),
+                "enable_trading": str(self.enable_trading),
+            },
+        ):
+            await self._execute_trade_impl(signal, confidence)
+
+    async def _execute_trade_impl(self, signal: str, confidence: float):
+        """거래 실행 구현."""
         try:
             self._set_execution_trace(
                 decision="attempted",
@@ -1573,6 +1589,14 @@ class RealtimeTradingWithMonitoring:
                 )
         
         except Exception as e:
+            try:
+                from opentelemetry import trace as _otel_trace
+
+                _sp = _otel_trace.get_current_span()
+                if _sp is not None and getattr(_sp, "is_recording", lambda: False)():
+                    _sp.record_exception(e)
+            except Exception:
+                pass
             logger.error(f"❌ 거래 실행 오류: {e}")
             self._set_execution_trace(
                 decision="failed",

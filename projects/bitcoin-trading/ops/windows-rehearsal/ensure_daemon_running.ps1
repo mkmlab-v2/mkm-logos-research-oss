@@ -53,6 +53,22 @@ if ($ensureProm -eq "1") {
     }
 }
 
+# Optional: OpenTelemetry SDK (User env MKM_ENSURE_OTEL_CLIENT=1).
+$ensureOtel = [Environment]::GetEnvironmentVariable("MKM_ENSURE_OTEL_CLIENT", "Process")
+if ([string]::IsNullOrWhiteSpace($ensureOtel)) {
+    $ensureOtel = [Environment]::GetEnvironmentVariable("MKM_ENSURE_OTEL_CLIENT", "User")
+}
+if ($ensureOtel -eq "1") {
+    $reqOtel = Join-Path $projectRoot "requirements-optional-otel.txt"
+    if (Test-Path $reqOtel) {
+        try {
+            py -m pip install -q -r $reqOtel 2>&1 | Out-Null
+        } catch {
+            # non-fatal: MKM_OTEL_ENABLED still no-ops without packages
+        }
+    }
+}
+
 if (-not (Test-Path $memoryDir)) {
     New-Item -ItemType Directory -Path $memoryDir | Out-Null
 }
