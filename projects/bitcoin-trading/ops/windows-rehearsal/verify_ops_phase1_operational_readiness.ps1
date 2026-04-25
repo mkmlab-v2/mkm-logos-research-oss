@@ -2,12 +2,16 @@ param(
     [string]$TaskName = "\Bitcoin-Ops-Phase1-Chain-Daily",
     [string]$ReportPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\ops_phase1_chain_report_latest.json",
     [string]$OutputPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\ops_phase1_readiness_latest.json",
+    [string]$SignalBiasPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\signal_bias_snapshot_latest.json",
     [int]$MaxReportAgeHours = 30,
     [switch]$RequireConstitutionGates = $true,
     [switch]$RequireStrictMode = $true,
     [switch]$Strict,
     [switch]$AllowNonZeroLastResult,
-    [switch]$RequireBitcoinTradingOtelSmoke
+    [switch]$RequireBitcoinTradingOtelSmoke,
+    [double]$SignalBiasSellRatioWarn = 0.80,
+    [double]$SignalBiasSellRatioFail = 0.95,
+    [switch]$EnforceSignalBiasGuard
 )
 
 $ErrorActionPreference = "Stop"
@@ -121,6 +125,52 @@ $checks += [ordered]@{
 }
 if ([string]::IsNullOrWhiteSpace($alarmUrl)) {
     if ($Strict) { $fail = $true }
+}
+
+$signalBiasGuardFail = $false
+if (Test-Path -LiteralPath $SignalBiasPath) {
+    try {
+        $bias = Get-Content -LiteralPath $SignalBiasPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $sellRatio = 0.0
+        $windowCount = 0
+        if ($bias.PSObject.Properties.Name -contains "ratios" -and $bias.ratios) {
+            $sellRatio = [double]$bias.ratios.sell_ratio
+        }
+        if ($bias.PSObject.Properties.Name -contains "signal_count_window") {
+            $windowCount = [int]$bias.signal_count_window
+        }
+        $guardLevel = "ok"
+        if ($sellRatio -ge $SignalBiasSellRatioFail) {
+            $guardLevel = "fail"
+            $signalBiasGuardFail = $true
+        }
+        elseif ($sellRatio -ge $SignalBiasSellRatioWarn) {
+            $guardLevel = "warn"
+        }
+        $checks += [ordered]@{
+            id = "signal_bias_guard"
+            ok = if ($EnforceSignalBiasGuard) { -not $signalBiasGuardFail } else { $true }
+            detail = ("sell_ratio={0} window_count={1} warn={2} fail={3} level={4}" -f `
+                ([Math]::Round($sellRatio, 4)), $windowCount, $SignalBiasSellRatioWarn, $SignalBiasSellRatioFail, $guardLevel)
+        }
+        if ($EnforceSignalBiasGuard -and $signalBiasGuardFail) { $fail = $true }
+    }
+    catch {
+        $checks += [ordered]@{
+            id = "signal_bias_guard"
+            ok = $false
+            detail = "parse_error"
+        }
+        if ($EnforceSignalBiasGuard) { $fail = $true }
+    }
+}
+else {
+    $checks += [ordered]@{
+        id = "signal_bias_guard"
+        ok = if ($EnforceSignalBiasGuard) { $false } else { $true }
+        detail = "file_missing"
+    }
+    if ($EnforceSignalBiasGuard) { $fail = $true }
 }
 
 $reportOk = $false
