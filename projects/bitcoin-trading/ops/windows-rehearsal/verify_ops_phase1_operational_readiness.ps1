@@ -49,6 +49,7 @@ function Get-SchtasksFieldValue {
 $checks = @()
 $fail = $false
 $lastResultGateOk = $true
+$otelSmokeInTask = $null
 
 $oldEap = $ErrorActionPreference
 $ErrorActionPreference = "Continue"
@@ -135,6 +136,31 @@ if (Test-Path -LiteralPath $ReportPath) {
         $reportOk = $true
         if ($rep.PSObject.Properties.Name -contains "overall_chain_ok") {
             $phase1ChainOverallOk = [bool]$rep.overall_chain_ok
+        }
+        if ($rep.PSObject.Properties.Name -contains "include_bitcoin_trading_otel_smoke") {
+            $otelSmokeInReport = [bool]$rep.include_bitcoin_trading_otel_smoke
+            $checks += [ordered]@{
+                id = "phase1_report_otel_smoke_included"
+                ok = if ($RequireBitcoinTradingOtelSmoke) { $otelSmokeInReport } else { $true }
+                detail = if ($otelSmokeInReport) { "otel_smoke_included" } elseif ($RequireBitcoinTradingOtelSmoke) { "otel_smoke_not_included_required" } else { "otel_smoke_not_included_optional" }
+            }
+            if ($RequireBitcoinTradingOtelSmoke -and -not $otelSmokeInReport) { $fail = $true }
+            if ($null -ne $otelSmokeInTask) {
+                $otelCrossOk = ($otelSmokeInTask -eq $otelSmokeInReport)
+                $checks += [ordered]@{
+                    id = "otel_smoke_task_report_consistency"
+                    ok = if ($RequireBitcoinTradingOtelSmoke) { $otelCrossOk } else { $true }
+                    detail = if ($otelCrossOk) { "task_and_report_match" } elseif ($RequireBitcoinTradingOtelSmoke) { "task_report_mismatch_required" } else { "task_report_mismatch_optional" }
+                }
+                if ($RequireBitcoinTradingOtelSmoke -and -not $otelCrossOk) { $fail = $true }
+            }
+        } else {
+            $checks += [ordered]@{
+                id = "phase1_report_otel_smoke_included"
+                ok = if ($RequireBitcoinTradingOtelSmoke) { $false } else { $true }
+                detail = if ($RequireBitcoinTradingOtelSmoke) { "field_missing_required" } else { "field_missing_optional" }
+            }
+            if ($RequireBitcoinTradingOtelSmoke) { $fail = $true }
         }
         $checks += [ordered]@{ id = "phase1_report_fresh"; ok = $fresh; detail = "age_hours=$reportAge max=$MaxReportAgeHours" }
         if (-not $fresh -and $Strict) { $fail = $true }
