@@ -1,6 +1,14 @@
 name: Dimensional Projection Release Gate
 # Required-check trigger guard: keep path-filter workflow visible to PR checks.
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
@@ -18,18 +26,11 @@ on:
         default: true
         type: boolean
   pull_request:
-    paths:
-      - "api-services/routers/dimensional_projection/**"
-      - "api-services/scripts/*dimensional_projection*"
-      - "api-services/tests/test_dimensional_projection*"
-      - "api-services/tests/test_validate_dimensional_projection_holdout.py"
-      - "scripts/Run-DimensionalProjectionHoldoutValidation.ps1"
-      - "scripts/Promote-DimensionalProjectionFreeze.ps1"
-      - ".github/workflows/dimensional-projection-release-gate.yml"
 
 jobs:
   holdout-and-promote:
     runs-on: windows-latest
+    timeout-minutes: 180
     steps:
       - name: Enable git long paths
         shell: pwsh

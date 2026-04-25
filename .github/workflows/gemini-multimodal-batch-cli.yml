@@ -16,9 +16,17 @@ on:
       - "tests/test_gemini_multimodal_batch_cli.py"
       - ".github/workflows/gemini-multimodal-batch-cli.yml"
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   cli:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4

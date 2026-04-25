@@ -55,10 +55,18 @@ on:
         default: false
         type: boolean
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   benchmark_hosted:
     name: benchmark (hosted fallback-allowed)
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -101,6 +109,7 @@ jobs:
     name: benchmark (self-hosted gpu strict)
     if: ${{ github.event_name == 'schedule' || inputs.run_self_hosted_gpu == true }}
     runs-on: [self-hosted, gpu]
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v5
       - name: Detect Python on self-hosted runner

@@ -1,16 +1,16 @@
 name: no1kmedi Guardian Contract Gate
 # Required-check trigger guard: keep path-filter workflow visible to PR checks.
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+
 on:
   pull_request:
-    paths:
-      - "projects/no1kmedi/src/app/api/guardian/**"
-      - "projects/no1kmedi/src/lib/ai-provider.ts"
-      - "projects/no1kmedi/src/lib/vertex-gemini.ts"
-      - "projects/no1kmedi/src/lib/local-llm.ts"
-      - "scripts/validate_no1kmedi_guardian_contracts.py"
-      - "scripts/verify_12ai_orchestration_gate.ps1"
-      - ".github/workflows/no1kmedi-guardian-contract-gate.yml"
   workflow_dispatch:
 
 jobs:
@@ -24,8 +24,8 @@ jobs:
       action: change_strategy
 
   guardian-contract-gate:
-    needs: orchestration-gate
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4

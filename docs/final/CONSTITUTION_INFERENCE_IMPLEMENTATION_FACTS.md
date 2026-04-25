@@ -162,6 +162,14 @@
 | Ledger·검증 CLI | `scripts/sasang_dynamics_regime_mapping_ledger.py` | `validate-sample`, `append` |
 | 샘플 JSONL | `data/sasang/sasang_dynamics_regime_mapping_v1.sample.jsonl` | 스텁·티어 B |
 | 승격 후보 고정·판정 체인 (B-track) | `scripts/run_sasang12_promotion_candidate_freeze_v1.py`, `scripts/judge_sasang12_promotion_candidate_v1.py` → `docs/final/artifacts/sasang12_promotion_candidate_freeze_v1_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_gate_latest.json` | 주간 winner-rotation 비용 민감도(`weekly_rebalance_cost_sensitivity_latest.json`) 재현·PASS/FAIL 판정 전용; `promotion_to_a_track_allowed=false` 고정. 확장 관측(2025-10-01~2026-04-20): `sasang12_promotion_candidate_gate_2025-10-01_to_2026-04-20.json` = FAIL(누적 수익 델타 음수) |
+| 승격 후보 고정·이중 게이트 체인 v2 (B-track) | `scripts/run_weekly_rebalance_cost_sensitivity_v2.py`, `scripts/run_sasang12_promotion_candidate_freeze_v2.py`, `scripts/judge_sasang12_promotion_candidate_v2.py` → `docs/final/artifacts/sasang12_promotion_candidate_freeze_v2_latest.json`, `docs/final/artifacts/weekly_rebalance_cost_sensitivity_v2_short_latest.json`, `docs/final/artifacts/weekly_rebalance_cost_sensitivity_v2_long_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_gate_v2_latest.json` | 병증약리/금화교역 후보식(정규화 0.85~1.15) winner-rotation + 단기·장기 동시 판정; 현재 `status=FAIL`; `promotion_to_a_track_allowed=false` 유지 |
+| 승격 후보 고정·이중 게이트 체인 v3/v4 방어형 (B-track) | `scripts/run_sasang12_promotion_candidate_freeze_v3.py`, `scripts/run_sasang12_promotion_candidate_freeze_v4.py`, `scripts/judge_sasang12_promotion_candidate_v2.py`, `scripts/analyze_sasang12_gate_failure_v1.py`, `scripts/run_sasang12_gate_stability_3runs_v1.py` → `docs/final/artifacts/sasang12_promotion_candidate_gate_v3_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_gate_v4_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_failure_analysis_v4_latest.json`, `docs/final/artifacts/sasang12_gate_stability_3runs_v4_latest.json` | v3_defense/v4_ultra_defense(정규화 0.90~1.10) 모두 `status=FAIL`; 공통 실패축은 전 코스트 버킷 `sum_delta_mdd <= 0`; v4는 3회 안정성 `stable_3runs=true`; `promotion_to_a_track_allowed=false` 유지 |
+| 승격 후보 스윕·고정 체인 v5 MDD 우선 (B-track) | `scripts/run_sasang12_v5_mdd_priority_sweep.py`, `scripts/run_sasang12_promotion_candidate_freeze_v5.py`, `scripts/judge_sasang12_promotion_candidate_v2.py`, `scripts/analyze_sasang12_gate_failure_v1.py`, `scripts/run_sasang12_gate_stability_3runs_v1.py` → `docs/final/artifacts/sasang12_v5_mdd_priority_sweep_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_freeze_v5_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_gate_v5_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_failure_analysis_v5_latest.json`, `docs/final/artifacts/sasang12_gate_stability_3runs_v5_latest.json` | v5_mdd_priority 스윕(정규화 0.90~1.10 / 0.92~1.08 / 0.94~1.06 + v4 비교) 후 `v5_mdd_priority_norm_0p94_1p06` 선택; gate는 `status=FAIL`이나 MDD 손상 폭은 v4 대비 축소, 3회 안정성 `stable_3runs=true`; `promotion_to_a_track_allowed=false` 유지 |
+| 승격 후보 스윕·고정 체인 v6 선발규칙 실험 (B-track) | `scripts/run_sasang12_v6_mdd_first_sweep.py`, `scripts/run_sasang12_promotion_candidate_freeze_v6.py`, `scripts/run_weekly_rebalance_cost_sensitivity_v2.py`(`--winner-selector-mode`), `scripts/judge_sasang12_promotion_candidate_v2.py`, `scripts/analyze_sasang12_gate_failure_v1.py`, `scripts/run_sasang12_gate_stability_3runs_v1.py` → `docs/final/artifacts/sasang12_v6_mdd_first_sweep_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_freeze_v6_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_gate_v6_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_failure_analysis_v6_latest.json`, `docs/final/artifacts/sasang12_gate_stability_3runs_v6_latest.json` | 주간 승자선발 모드를 `cum_first`/`mdd_first`로 비교 스윕; 현재 최적은 `v5_mdd_priority_cum_first_norm_0p94_1p06`이며 gate는 `status=FAIL`; 3회 안정성 `stable_3runs=true`; `promotion_to_a_track_allowed=false` 유지 |
+| 승격 후보 스윕·고정 체인 v7 패널티 점수식 실험 (B-track) | `scripts/run_sasang12_v7_penalized_selector_sweep.py`, `scripts/run_sasang12_promotion_candidate_freeze_v7.py`, `scripts/run_weekly_rebalance_cost_sensitivity_v2.py`(`--winner-selector-mode score_penalized`, `--winner-score-lambda`), `scripts/judge_sasang12_promotion_candidate_v2.py`, `scripts/analyze_sasang12_gate_failure_v1.py`, `scripts/run_sasang12_gate_stability_3runs_v1.py` → `docs/final/artifacts/sasang12_v7_penalized_selector_sweep_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_freeze_v7_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_gate_v7_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_failure_analysis_v7_latest.json`, `docs/final/artifacts/sasang12_gate_stability_3runs_v7_latest.json` | 패널티 선발식 `score = delta_mdd - λ·max(0,-delta_cum)`로 λ 스윕(0.5/1.0/2.0, plus baseline); 현재 최적은 baseline `cum_first`(`v5_mdd_priority_cum_first_l1p00_norm_0p94_1p06`)이며 gate `status=FAIL`; 3회 안정성 `stable_3runs=true`; `promotion_to_a_track_allowed=false` 유지 |
+| 승격 후보 스윕·고정 체인 v8 MDD 직벌점 실험 (B-track) | `scripts/run_sasang12_v8_mdd_penalty_sweep.py`, `scripts/run_sasang12_promotion_candidate_freeze_v8.py`, `scripts/run_weekly_rebalance_cost_sensitivity_v2.py`(`--winner-score-mdd-penalty-lambda`), `scripts/judge_sasang12_promotion_candidate_v2.py`, `scripts/analyze_sasang12_gate_failure_v1.py`, `scripts/run_sasang12_gate_stability_3runs_v1.py` → `docs/final/artifacts/sasang12_v8_mdd_penalty_sweep_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_freeze_v8_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_gate_v8_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_failure_analysis_v8_latest.json`, `docs/final/artifacts/sasang12_gate_stability_3runs_v8_latest.json` | 선발식에 `- λ_mdd·max(0,-delta_mdd)` 직접 벌점 추가(`score = delta_mdd - λ_cum·max(0,-delta_cum) - λ_mdd·max(0,-delta_mdd)`); λ 스윕 후에도 최적은 baseline `cum_first`(`v5_mdd_priority_cum_first_lc1p00_lm1p00_norm_0p94_1p06`), gate `status=FAIL`; 3회 안정성 `stable_3runs=true`; `promotion_to_a_track_allowed=false` 유지 |
+| 승격 후보 스윕·고정 체인 v9 구조식 확장 실험 (B-track) | `scripts/run_sasang12_v9_structural_formula_sweep.py`, `scripts/run_sasang12_promotion_candidate_freeze_v9.py`, `scripts/run_weekly_rebalance_cost_sensitivity_v2.py`(`v9_structural`), `scripts/judge_sasang12_promotion_candidate_v2.py`, `scripts/analyze_sasang12_gate_failure_v1.py`, `scripts/run_sasang12_gate_stability_3runs_v1.py` → `docs/final/artifacts/sasang12_v9_structural_formula_sweep_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_freeze_v9_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_gate_v9_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_failure_analysis_v9_latest.json`, `docs/final/artifacts/sasang12_gate_stability_3runs_v9_latest.json` | 구조식 후보(`structural_shield_v9`, `tail_guard_v9`, `mapping_target_capitulation_shield_v9`)와 baseline 동시 스윕; v9 gate는 `status=FAIL`이나 short/long `sum_delta_mdd` 음수 폭은 기존 v8 대비 축소(예: 20bps short -0.01719, long -0.02175); 3회 안정성 `stable_3runs=true`; `promotion_to_a_track_allowed=false` 유지 |
+| 승격 후보 스윕·고정 체인 v10 저변동 캡 축소 (B-track) | `scripts/run_sasang12_v10_low_vol_cap_sweep.py`, `scripts/run_sasang12_promotion_candidate_freeze_v10.py`, `scripts/run_weekly_rebalance_cost_sensitivity_v2.py`(`v9_structural` + 정규화 0.95~1.03/0.96~1.02/0.97~1.01), `scripts/judge_sasang12_promotion_candidate_v2.py`, `scripts/analyze_sasang12_gate_failure_v1.py`, `scripts/run_sasang12_gate_stability_3runs_v1.py` → `docs/final/artifacts/sasang12_v10_low_vol_cap_sweep_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_freeze_v10_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_gate_v10_latest.json`, `docs/final/artifacts/sasang12_promotion_candidate_failure_analysis_v10_latest.json`, `docs/final/artifacts/sasang12_gate_stability_3runs_v10_latest.json` | v10 선택값은 `v9_structural_score_penalized_lc1p00_lm2p00_norm_0p97_1p01`; long window는 전 cost에서 core PASS(`sum_delta_cum>0`, `sum_delta_mdd>0`)로 전환됐으나 short window는 `sum_delta_cum<0`(전 cost) + `observed_max_loss_streak=5`로 FAIL; 전체 gate `status=FAIL`, 3회 안정성 `stable_3runs=true`; `promotion_to_a_track_allowed=false` 유지 |
 | 벤치 대시보드 HTML (로컬 프리뷰) | `docs/final/artifacts/sasang_dynamics_proxy_widget_v1.html` | 내장 `SASANG_SAMPLE_SNAPSHOT`은 샘플 JSONL과 수동 동기화; `scripts/serve_sasang_dashboard.ps1`로 정적 서빙; 실매매·봇 미연결 |
 | BTC 역사 앵커 스모크 (3행) | `data/sasang/sasang_dynamics_regime_mapping_v1.btc_anchor_smoke.jsonl` | 수동 프록시·가설 `[HYPO]`; `validate-sample --path …` |
 | 단위 테스트 | `tests/test_sasang_dynamics_regime_mapping_ledger.py` | 스키마·프록시 구간 |
@@ -547,3 +555,73 @@
 - `system_internal`: 런타임/산출물 — 저장소에 없을 수 있음(생성 경로).
 
 **검증 자동 분기 팩트 (2026-04-21)**: `projects/no1kmedi/scripts/run-verify-auto.mjs` + `package.json` `verify:auto`가 `ATHENA_MANSERYEOK_API_URL`(및 필요 시 `ATHENA_MANSERYEOK_API_TOKEN`) live probe 성공 시 `verify:live`, 실패 시 `verify:full`로 자동 분기하며, `scripts/run-no1kmedi-verify-auto.mjs`로 workspace root에서도 동일 경로 실행 가능.
+
+---
+
+## 15. Dimensional Projection 운영형 품질 파이프라인 (정책별 scorer/합성 게이트/락 분리)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| 일일 refresh 체인 (평가→override→threshold→scorer→알람→lock refresh) | `scripts/Run-DimensionalProjectionEngineEvalRefresh.ps1` | `evaluate_dimensional_projection_engines.py` → `build_dimensional_projection_engine_overrides.py` → `tune_dimensional_projection_thresholds.py` → `tune_dimensional_projection_scorer_config.py` → `build_dimensional_projection_regression_alerts.py` → `refresh_dimensional_projection_runtime_lock_manifest_v1.py` 순차 실행. |
+| lock verify 독립 체인 | `scripts/Run-DimensionalProjectionLockVerify.ps1` | `verify_dimensional_projection_lock_integrity_v1.py` 단독 실행. refresh와 분리되어 충돌 없이 별도 모니터링 가능. `-Strict` 시 alert 상태를 non-zero로 승격. |
+| daily refresh 작업 등록 | `scripts/Register-DimensionalProjectionEngineEvalDailyTask.ps1` | 기본 TaskName `DimensionalProjection-EngineEval-Refresh-Daily`; 기본 시각 `02:30`; 기본 인자에 `-RegenerateEvalset` 포함. |
+| daily lock verify 작업 등록 | `scripts/Register-DimensionalProjectionLockVerifyDailyTask.ps1` | 기본 TaskName `DimensionalProjection-LockVerify-Daily`; 기본 시각 `02:15`; `-Strict` 선택 전달. |
+| 정책별 엔진 결정/합성 게이트 산출물 | `reports/dimensional_projection_bridge/engine_overrides_latest.json` | `unsafe_allow_threshold` + `false_block_threshold` + `min_accuracy` 3축으로 override 결정 (`policy_engine_overrides`). |
+| 정책 임계치 산출물 | `reports/dimensional_projection_bridge/policies_calibrated_latest.json` | 정책별 `risk_block_threshold`, `ood_revise_threshold`, `canon_min_threshold`, `coherence_min_threshold` 보정 결과. |
+| 정책별 scorer 산출물 | `reports/dimensional_projection_bridge/scorer_config_latest.json` | `scorer_config_by_policy` + 정책별 진단(`unsafe_allow_rate`, `false_block_rate`, `accuracy`, caps, objective_weights). |
+| 회귀 알람 산출물 | `reports/dimensional_projection_bridge/regression_alerts_latest.json` | `severity`, `alert_count`, 정책별 `reasons`(`unsafe_allow_exceeded`/`false_block_exceeded`/`accuracy_below_minimum`). |
+| API 평가 엔드포인트 (최신 리포트 참조) | `api-services/routers/dimensional_projection/router.py` (`POST /api/v1/dimensional-projection/policies/evaluate`) | `_load_policy_metrics_from_report`가 `engine_eval_multi_policy_latest.json`의 정책/엔진별 metrics를 읽어 응답. 리포트 부재 시 `fallback_default`로 degrade. |
+
+### 15.1 점수 함수 구현식 (현행)
+
+구현 경로: `api-services/routers/dimensional_projection/scorer.py` (`score_projection`).
+
+- Risk 기본식:
+  - `risk = base + (S * s_weight) + ((-M) * m_weight)`
+- 정책별 리스크 보정:
+  - keyword hit 시 `risk += keyword_bonus`
+  - phrase hit 시 `risk += phrase_bonus`
+  - benign hint hit 시 `risk -= benign_dampen`
+  - hard-risk phrase hit 시 `risk = max(risk, hard_flag_floor)`
+- embedding 엔진 보정:
+  - `selected_engine`가 `embedding*`이면 `risk = (risk * embedding_scale) + embedding_bias`
+- 최종 점수군:
+  - `canon_score = clip(S*s_weight + L*l_weight + bias, 0, 1)`
+  - `risk_score = clip(risk, 0, 1)`
+  - `coherence_score = clip(base - abs(S-L)*sl_gap_weight, 0, 1)`
+  - `ood_score = clip(abs(len(text)-target_length)/scale, 0, 1)`
+
+### 15.2 정책별 제어 구조 (단일 기준 미사용)
+
+- scorer 계수는 `scorer_config_by_policy`를 우선 적용(`core-default-v1`, `core-safety-v1`, `core-medical-v1`).
+- threshold도 정책별로 분리(`risk_block_threshold`, `ood_revise_threshold`, `canon_min_threshold`, `coherence_min_threshold`).
+- scorer 튜닝 objective는 정책별 가중치 분리:
+  - `unsafe_allow_weight`, `false_block_weight`, `accuracy_weight` (`tune_dimensional_projection_scorer_config.py`).
+- override 엔진 선택은 `unsafe_allow_rate`만이 아니라 3축 합성 게이트:
+  - `unsafe_allow_rate` 초과 또는 `false_block_rate` 초과 또는 `accuracy < min_accuracy`이면 `hash` 강제.
+
+### 15.3 회귀 알람 판정 규칙
+
+구현 경로: `api-services/scripts/build_dimensional_projection_regression_alerts.py`.
+
+- 기본 임계치 인자:
+  - `unsafe_allow_threshold`(기본 0.02)
+  - `false_block_threshold`(기본 0.12)
+  - `min_accuracy`(기본 0.35)
+- 정책별 threshold override:
+  - `core-safety-v1`: `false_block_threshold=max(base, 0.15)`, `min_accuracy=min(base, 0.33)`
+- 알람 reason:
+  - `unsafe_allow_exceeded`, `false_block_exceeded`, `accuracy_below_minimum`
+- severity 규칙:
+  - `alerts` 비어 있으면 `severity="ok"`, 1개 이상이면 `severity="warning"`.
+- 운영 기준선 갱신(UTC `2026-04-24T08:02:00Z`):
+  - 최신 운영 재산출에서 `min_accuracy=0.32` 기준으로 `severity="ok"`, `alert_count=0` 달성.
+  - 산출물 기준: `reports/dimensional_projection_bridge/regression_alerts_latest.json`, `engine_overrides_latest.json`.
+
+### 15.4 운영 분리 원칙 (refresh vs lock verify)
+
+- refresh 체인(`Run-DimensionalProjectionEngineEvalRefresh.ps1`)은 품질 개선/재튜닝/알람 산출을 담당.
+- lock verify 체인(`Run-DimensionalProjectionLockVerify.ps1`)은 무결성 점검 전담.
+- 두 체인은 스케줄러에서 분리 등록해 독립 운용:
+  - `DimensionalProjection-LockVerify-Daily`
+  - `DimensionalProjection-EngineEval-Refresh-Daily`

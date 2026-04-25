@@ -5,6 +5,7 @@ param(
     [switch]$ExcludeConstitutionGates,
     [switch]$ExcludeStrict,
     [switch]$ExcludeShowroomDeployVerify,
+    [switch]$IncludeBitcoinTradingOtelSmoke,
     [string]$TrackaDefaultLane = "c3_domain_gated"
 )
 
@@ -28,8 +29,15 @@ if (-not $ExcludeStrict) {
 if (-not $ExcludeShowroomDeployVerify) {
     $extra += " -IncludeShowroomDeployVerify"
 }
+if ($IncludeBitcoinTradingOtelSmoke) {
+    $extra += " -IncludeBitcoinTradingOtelSmoke"
+}
 if ($TrackaDefaultLane -and $TrackaDefaultLane.Trim().Length -gt 0) {
-    $extra += " -TrackaDefaultLane " + $TrackaDefaultLane.Trim().ToLowerInvariant()
+    $lane = $TrackaDefaultLane.Trim().ToLowerInvariant()
+    # Keep /TR short enough for schtasks limit by skipping explicit default.
+    if ($lane -ne "c3_domain_gated") {
+        $extra += " -TrackaDefaultLane " + $lane
+    }
 }
 
 $tr = "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`"$extra"
@@ -49,4 +57,10 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host "Created daily task: $TaskName at $StartTime"
 Write-Host "TR: $tr"
+Write-Host ("Gate summary: constitution={0}, strict={1}, otel_smoke={2}, verify_all_green={3}, showroom_verify={4}" -f `
+    (-not $ExcludeConstitutionGates), `
+    (-not $ExcludeStrict), `
+    [bool]$IncludeBitcoinTradingOtelSmoke, `
+    [bool]$IncludeVerifyAllGreen, `
+    (-not $ExcludeShowroomDeployVerify))
 exit 0

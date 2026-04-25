@@ -76,7 +76,13 @@ def main() -> int:
         "core-safety-v1": float(args.max_false_block_safety),
         "core-medical-v1": float(args.max_false_block_medical),
     }
-    policy_ids = report.get("policy_ids") or ["core-default-v1", "core-safety-v1", "core-medical-v1"]
+    policy_ids = report.get("policy_ids") or []
+    if not policy_ids:
+        single = str(report.get("policy_id", "")).strip()
+        if single:
+            policy_ids = [single]
+    if not policy_ids:
+        policy_ids = ["core-default-v1", "core-safety-v1", "core-medical-v1"]
 
     results: dict[str, dict] = {}
     all_pass = True

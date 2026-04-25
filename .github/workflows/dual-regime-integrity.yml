@@ -1,5 +1,13 @@
 name: Dual Regime Integrity (Fact-Lock)
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+
 on:
   push:
     # No paths filter: every push to these branches runs Fact-Lock so main tip cannot
@@ -361,6 +369,7 @@ jobs:
   dual-regime-integrity:
     if: ${{ vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Checkout
         uses: actions/checkout@v5

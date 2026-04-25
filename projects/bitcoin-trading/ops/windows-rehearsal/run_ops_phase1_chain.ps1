@@ -5,7 +5,8 @@ param(
     [switch]$IncludeConstitutionGates,
     [switch]$SkipOpsAlarm,
     [string]$TrackaDefaultLane = "c3_domain_gated",
-    [switch]$IncludeShowroomDeployVerify
+    [switch]$IncludeShowroomDeployVerify,
+    [switch]$IncludeBitcoinTradingOtelSmoke
 )
 
 $ErrorActionPreference = "Stop"
@@ -70,6 +71,7 @@ function Write-Phase1Report {
         [object]$ShowroomVerifyExit,
         [bool]$IncludeShowroomVerify,
         [bool]$IncludeAllGreen,
+        [bool]$IncludeBitcoinTradingOtelSmoke,
         [bool]$StrictMode,
         [string]$Outcome
     )
@@ -93,6 +95,7 @@ function Write-Phase1Report {
         include_showroom_deploy_verify = $IncludeShowroomVerify
         showroom_deploy_verify_exit_code = $ShowroomVerifyExit
         showroom_deploy_verify_ok = if (-not $IncludeShowroomVerify) { $null } else { ($ShowroomVerifyExit -eq 0) }
+        include_bitcoin_trading_otel_smoke = $IncludeBitcoinTradingOtelSmoke
         strict_mode = $StrictMode
         outcome = $Outcome
         overall_chain_ok = $overallOk
@@ -233,7 +236,7 @@ try {
     & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $ops "collect_ops_environment_snapshot.ps1")
     $snapshotExit = $LASTEXITCODE
     if ($snapshotExit -ne 0) {
-            Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $true -FusionExit $null -VerifyExit $null -ShowroomVerifyExit $null -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $false -StrictMode $Strict -Outcome "snapshot_failed"
+            Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $true -FusionExit $null -VerifyExit $null -ShowroomVerifyExit $null -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $false -IncludeBitcoinTradingOtelSmoke $IncludeBitcoinTradingOtelSmoke -StrictMode $Strict -Outcome "snapshot_failed"
         throw "collect_ops_environment_snapshot failed"
     }
 
@@ -246,7 +249,7 @@ try {
         if ($fusionExit -ne 0) {
             $msg = "[phase1] fusion status check failed — run run_ops_fusion_cycle.ps1 if stale, then re-check."
             if ($Strict) {
-                Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $false -FusionExit $fusionExit -VerifyExit $null -ShowroomVerifyExit $null -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $IncludeVerifyAllGreen -StrictMode $true -Outcome "fusion_failed_strict"
+                Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $false -FusionExit $fusionExit -VerifyExit $null -ShowroomVerifyExit $null -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $IncludeVerifyAllGreen -IncludeBitcoinTradingOtelSmoke $IncludeBitcoinTradingOtelSmoke -StrictMode $true -Outcome "fusion_failed_strict"
                 throw $msg
             }
             Write-Host "$msg" -ForegroundColor Yellow
@@ -261,7 +264,7 @@ try {
         & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $ops "verify_all_green.ps1")
         $verifyExit = $LASTEXITCODE
         if ($verifyExit -ne 0) {
-            Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $fusionSkipped -FusionExit $fusionExit -VerifyExit $verifyExit -ShowroomVerifyExit $null -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $true -StrictMode $Strict -Outcome "verify_all_green_failed"
+            Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $fusionSkipped -FusionExit $fusionExit -VerifyExit $verifyExit -ShowroomVerifyExit $null -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $true -IncludeBitcoinTradingOtelSmoke $IncludeBitcoinTradingOtelSmoke -StrictMode $Strict -Outcome "verify_all_green_failed"
             throw "verify_all_green failed"
         }
     }
@@ -274,7 +277,7 @@ try {
         if ($showroomVerifyExit -ne 0) {
             $msg = "[phase1] showroom deploy verify failed."
             if ($Strict) {
-                Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $fusionSkipped -FusionExit $fusionExit -VerifyExit $verifyExit -ShowroomVerifyExit $showroomVerifyExit -IncludeShowroomVerify $true -IncludeAllGreen $IncludeVerifyAllGreen -StrictMode $true -Outcome "showroom_verify_failed_strict"
+                Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $fusionSkipped -FusionExit $fusionExit -VerifyExit $verifyExit -ShowroomVerifyExit $showroomVerifyExit -IncludeShowroomVerify $true -IncludeAllGreen $IncludeVerifyAllGreen -IncludeBitcoinTradingOtelSmoke $IncludeBitcoinTradingOtelSmoke -StrictMode $true -Outcome "showroom_verify_failed_strict"
                 throw $msg
             }
             Write-Host $msg -ForegroundColor Yellow
@@ -288,7 +291,7 @@ try {
     if ($IncludeShowroomDeployVerify -and $showroomVerifyExit -ne 0) {
         $outcome = "showroom_verify_warn"
     }
-    Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $fusionSkipped -FusionExit $fusionExit -VerifyExit $verifyExit -ShowroomVerifyExit $showroomVerifyExit -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $IncludeVerifyAllGreen -StrictMode $Strict -Outcome $outcome
+    Write-Phase1Report -SnapshotExit $snapshotExit -FusionSkipped $fusionSkipped -FusionExit $fusionExit -VerifyExit $verifyExit -ShowroomVerifyExit $showroomVerifyExit -IncludeShowroomVerify $IncludeShowroomDeployVerify -IncludeAllGreen $IncludeVerifyAllGreen -IncludeBitcoinTradingOtelSmoke $IncludeBitcoinTradingOtelSmoke -StrictMode $Strict -Outcome $outcome
 
     if ($IncludeConstitutionGates) {
         Write-Host "=== Phase 1 chain: constitution gates (JSON + registry + risk allowlist) ==="
@@ -296,6 +299,16 @@ try {
         $constitutionExit = $LASTEXITCODE
         if ($constitutionExit -ne 0) {
             throw "verify_constitution_gates failed (exit $constitutionExit); see memory/v2/ops/constitution_gates_result_latest.json"
+        }
+    }
+
+    if ($IncludeBitcoinTradingOtelSmoke) {
+        Write-Host "=== Phase 1 chain: bitcoin-trading OTel smoke ==="
+        $health = Join-Path "C:\workspace" "scripts\run_workspace_automation_health.ps1"
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $health -WorkspaceRoot "C:\workspace" -BitcoinTradingOtelSmokeOnly
+        $otelSmokeExit = $LASTEXITCODE
+        if ($otelSmokeExit -ne 0) {
+            throw "run_workspace_automation_health (BitcoinTradingOtelSmokeOnly) failed (exit $otelSmokeExit)"
         }
     }
 

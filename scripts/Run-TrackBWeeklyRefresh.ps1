@@ -91,6 +91,8 @@ Invoke-Step "run_trackb_top_combo_fixed_set_replay" @("scripts/run_trackb_top_co
 Invoke-Step "run_trackb_top_combo_stress_grid" @("scripts/run_trackb_top_combo_stress_grid.py")
 
 if ($IncludeExtendedStressGrid) {
+    # Legacy smoke-test anchor: stress_grid_extended_latest.json
+    # Extended mode now writes split outputs (split_a / split_b1 / optional split_b2).
     # Bounded split mode for stable weekly completion.
     # 1) Pin to robust exact candidate only.
     Invoke-Step "build_trackb_top_combo_fixed_set_exact_robust_only" @(

@@ -25,16 +25,17 @@ import asyncio
 import logging
 import os
 import time
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Tuple
 from datetime import datetime
 import json
 from pathlib import Path
 import sys
+from collections import deque
 import pandas as pd
 import numpy as np
 
 from src.api.binance_realtime_connector import BinanceRealtimeConnector
-from src.api.binance_client import BinanceFuturesClient
+from src.api.binance_client import BinanceFuturesClient, get_last_binance_credential_meta
 from src.risk.risk_manager import RiskManager
 from src.risk.risk_guardian import RiskGuardian
 from src.integration.unified_trading_monitor import UnifiedTradingMonitor
@@ -46,7 +47,7 @@ except ModuleNotFoundError:
     workspace_root = Path(__file__).resolve().parents[4]
     if str(workspace_root) not in sys.path:
         sys.path.insert(0, str(workspace_root))
-    from core.mkm12_singular_core import CoreInput, compute_core_score
+    from scripts.core.mkm12_singular_core import CoreInput, compute_core_score
 
 logging.basicConfig(
     level=logging.INFO,
@@ -110,10 +111,14 @@ class RealtimeTradingWithMonitoring:
         self.initial_capital = initial_capital
         self.leverage = leverage
         self.enable_trading = enable_trading
+        self._maker_only = os.environ.get("MKM_MAKER_ONLY", "1").strip().lower() in ("1", "true", "yes")
+        self._strict_maker_enforcement = os.environ.get(
+            "MKM_STRICT_MAKER_ENFORCEMENT", "1"
+        ).strip().lower() in ("1", "true", "yes")
         
         # Binance API 클라이언트
         logger.info("🔐 Binance API 클라이언트 초기화 중...")
-        self.binance = BinanceFuturesClient(testnet=testnet)
+        self.binance = BinanceFuturesClient(testnet=testnet, maker_only=self._maker_only)
         
         # 통합 모니터링 시스템
         logger.info("🏛️ 통합 모니터링 시스템 초기화 중...")
@@ -185,10 +190,54 @@ class RealtimeTradingWithMonitoring:
         self._last_state_persist_ts = 0.0
         self.signal_total_count = 0
         self.singular_action_counts = {"BUY": 0, "SELL": 0, "LOCKED": 0}
+        self._recent_signal_events: deque[Tuple[float, str]] = deque(maxlen=5000)
         self.last_signal_summary: Dict[str, Any] = {}
+        self.last_execution_trace: Dict[str, Any] = {
+            "ts": None,
+            "decision": "idle",
+            "reason": "init",
+            "signal": None,
+            "confidence": None,
+            "details": {},
+        }
+        self.last_4ai_trace: Dict[str, Any] = {
+            "timestamp": None,
+            "ai1_signal": {},
+            "ai2_risk": {},
+            "ai3_execution": {},
+            "ai4_audit": {},
+        }
+        self._min_position_hold_seconds = int(
+            os.environ.get("POSITION_MIN_HOLD_SECONDS", "180") or "180"
+        )
+        self._reversal_cooldown_seconds = int(
+            os.environ.get("REVERSAL_COOLDOWN_SECONDS", "120") or "120"
+        )
+        self._last_position_open_ts: Optional[float] = None
+        self._last_position_side: Optional[str] = None
+        self._last_reversal_ts: float = 0.0
+        root = Path(__file__).resolve().parents[2]
+        self._risk_profile_candidates = [
+            root / "memory" / "v2" / "risk" / "risk_profile_fact_safe_latest.json",
+            root / "memory" / "v2" / "risk" / "risk_profile_latest.json",
+            root / "memory" / "risk_profile_latest.json",
+        ]
+        self._risk_limits_cache: Dict[str, Any] = {}
+        self._risk_limits_cache_ts: float = 0.0
+        self._exchange_runtime_state_cache: Dict[str, Any] = {
+            "ts": None,
+            "current_position": None,
+            "open_orders_count": None,
+            "recent_fills_count": None,
+            "exchange_error": None,
+            "credential_source": "unknown",
+            "credential_key_suffix": "****",
+        }
+        self._exchange_runtime_state_cache_ts = 0.0
         log_dir = Path(__file__).resolve().parents[2] / "logs"
         log_dir.mkdir(parents=True, exist_ok=True)
         self.state_file = log_dir / "trading_state.json"
+        self.signal_bias_snapshot_file = root / "memory" / "v2" / "ops" / "signal_bias_snapshot_latest.json"
         self.startup_reconcile_status: Dict[str, Any] = {
             "completed": False,
             "ts": None,
@@ -267,12 +316,36 @@ class RealtimeTradingWithMonitoring:
             logger.warning(f"⚠️ 포지션 조회 실패: {e}")
             return None
 
-    def _close_position(self, position_side: str) -> bool:
+    def _close_position(
+        self,
+        position_side: str,
+        *,
+        close_reason: str = "manual_close",
+        enforce_min_hold: bool = True,
+    ) -> bool:
         """포지션 청산 (LONG 또는 SHORT). 성공 여부 반환."""
         try:
+            if enforce_min_hold and self._last_position_open_ts is not None:
+                hold_elapsed = time.time() - float(self._last_position_open_ts)
+                if hold_elapsed < float(self._min_position_hold_seconds):
+                    details = {
+                        "position_side": position_side,
+                        "close_reason": close_reason,
+                        "hold_elapsed_sec": round(float(hold_elapsed), 3),
+                        "min_hold_sec": int(self._min_position_hold_seconds),
+                    }
+                    logger.info("🛑 청산 차단(min_hold): %s", details)
+                    self._set_execution_trace(
+                        decision="skipped",
+                        reason="close_blocked_min_hold",
+                        details=details,
+                    )
+                    return False
             result = self.binance.close_position(self.symbol, position_side)
             if result:
                 logger.info(f"✅ 포지션 청산 완료: {self.symbol} {position_side}")
+                self._last_position_open_ts = None
+                self._last_position_side = None
                 return True
             return False
         except Exception as e:
@@ -287,6 +360,30 @@ class RealtimeTradingWithMonitoring:
         pos = self._get_position()
         if not pos:
             return
+        if float(current_price or 0.0) <= 0.0:
+            self._set_execution_trace(
+                decision="skipped",
+                reason="sl_tp_invalid_current_price",
+                details={"current_price": current_price},
+            )
+            return
+        if self._last_position_open_ts is not None:
+            hold_elapsed = time.time() - float(self._last_position_open_ts)
+            if hold_elapsed < float(self._min_position_hold_seconds):
+                logger.info(
+                    "🕒 SL/TP 청산 대기: hold_elapsed=%.1fs < min_hold=%ss",
+                    float(hold_elapsed),
+                    int(self._min_position_hold_seconds),
+                )
+                self._set_execution_trace(
+                    decision="skipped",
+                    reason="sl_tp_blocked_min_hold",
+                    details={
+                        "hold_elapsed_sec": round(float(hold_elapsed), 3),
+                        "min_hold_sec": int(self._min_position_hold_seconds),
+                    },
+                )
+                return
         entry_price = float(pos.get("entry_price", 0))
         side = pos.get("side", "LONG")
         if entry_price <= 0:
@@ -296,20 +393,40 @@ class RealtimeTradingWithMonitoring:
         if side == "LONG":
             if current_price <= stop_loss:
                 logger.warning(f"⚠️ 롱 손절: 현재가 {current_price:.2f} <= 손절가 {stop_loss:.2f}")
-                self._close_position("LONG")
+                self._set_execution_trace(
+                    decision="attempted",
+                    reason="sl_tp_stop_loss_triggered",
+                    details={"position_side": "LONG", "current_price": current_price, "stop_loss": stop_loss},
+                )
+                self._close_position("LONG", close_reason="sl_tp_stop_loss")
                 return
             if current_price >= take_profit:
                 logger.info(f"✅ 롱 익절: 현재가 {current_price:.2f} >= 익절가 {take_profit:.2f}")
-                self._close_position("LONG")
+                self._set_execution_trace(
+                    decision="attempted",
+                    reason="sl_tp_take_profit_triggered",
+                    details={"position_side": "LONG", "current_price": current_price, "take_profit": take_profit},
+                )
+                self._close_position("LONG", close_reason="sl_tp_take_profit")
                 return
         else:
             if current_price >= stop_loss:
                 logger.warning(f"⚠️ 숏 손절: 현재가 {current_price:.2f} >= 손절가 {stop_loss:.2f}")
-                self._close_position("SHORT")
+                self._set_execution_trace(
+                    decision="attempted",
+                    reason="sl_tp_stop_loss_triggered",
+                    details={"position_side": "SHORT", "current_price": current_price, "stop_loss": stop_loss},
+                )
+                self._close_position("SHORT", close_reason="sl_tp_stop_loss")
                 return
             if current_price <= take_profit:
                 logger.info(f"✅ 숏 익절: 현재가 {current_price:.2f} <= 익절가 {take_profit:.2f}")
-                self._close_position("SHORT")
+                self._set_execution_trace(
+                    decision="attempted",
+                    reason="sl_tp_take_profit_triggered",
+                    details={"position_side": "SHORT", "current_price": current_price, "take_profit": take_profit},
+                )
+                self._close_position("SHORT", close_reason="sl_tp_take_profit")
                 return
 
     async def _on_websocket_data(self, data: Dict[str, Any]):
@@ -319,6 +436,9 @@ class RealtimeTradingWithMonitoring:
             # 가격 데이터 저장
             if 'price' in data or 'close' in data:
                 price = data.get('price') or data.get('close')
+                if float(price or 0.0) <= 0.0:
+                    logger.warning("⚠️ 비정상 실시간 가격 수신(<=0)으로 틱 무시: %s", price)
+                    return
                 timestamp = data.get('timestamp') or datetime.now()
                 vol = float(data.get('volume', 0.0) or 0.0)
                 self._ohlc_feed.push(timestamp, float(price), vol)
@@ -379,6 +499,14 @@ class RealtimeTradingWithMonitoring:
             current_price = float(self.price_history[-1]['price']) if self.price_history else float(
                 price_data["close"].iloc[-1]
             )
+            if current_price <= 0.0:
+                self._set_execution_trace(
+                    decision="skipped",
+                    reason="invalid_current_price",
+                    details={"current_price": current_price},
+                )
+                self._save_state()
+                return
 
             # ----- 🏛️ [Sensor & Logic] 레짐 감지 및 방어 모드 판단 (SSOT 230751) -----
             regime_id = "unknown"
@@ -451,7 +579,7 @@ class RealtimeTradingWithMonitoring:
                             if pos:
                                 side = pos.get("side", "LONG")
                                 logger.warning(f"🚨 방어 모드: 포지션 선제 청산 ({side})")
-                                self._close_position(side)
+                                self._close_position(side, close_reason="regime_defense")
                         elif getattr(self, "_regime_observation_only", True):
                             logger.info("🛡️ [Observation Only] 방어 모드 진입 알림만 발송, 청산/매매 미연동")
                     elif not defense_mode and self._regime_defense_mode:
@@ -546,6 +674,11 @@ class RealtimeTradingWithMonitoring:
                 integrated_signal = result.get("integrated_signal", "HOLD")
                 integrated_confidence = result.get("integrated_confidence", 0.0)
             warning_level = result.get("warning_level", "NORMAL")
+            self._set_4ai_signal_trace(
+                integrated_signal=integrated_signal,
+                integrated_confidence=integrated_confidence,
+                warning_level=warning_level,
+            )
             
             logger.info(
                 f"📊 통합 분석 결과: {integrated_signal} "
@@ -563,6 +696,21 @@ class RealtimeTradingWithMonitoring:
                     float(result["mkm_singular_core"].get("score", 0.0)),
                     str(result["mkm_singular_core"].get("reason") or "unknown"),
                 )
+            else:
+                singular_action = str(result["mkm_singular_core"].get("action") or "").upper()
+                # If monitor/strategy consensus is HOLD but singular core passes,
+                # promote to directional action for execution path continuity.
+                if integrated_signal == "HOLD" and singular_action in ("BUY", "SELL"):
+                    integrated_signal = singular_action
+                    integrated_confidence = max(integrated_confidence, MIN_CONFIDENCE)
+                    result["integrated_signal"] = integrated_signal
+                    result["integrated_confidence"] = integrated_confidence
+                    logger.info(
+                        "🟢 Singular core promotion: HOLD -> %s (score=%.2f, confidence=%.2f)",
+                        singular_action,
+                        float(result["mkm_singular_core"].get("score", 0.0)),
+                        float(integrated_confidence),
+                    )
             self._update_singular_core_state(
                 result=result,
                 integrated_signal=integrated_signal,
@@ -587,20 +735,25 @@ class RealtimeTradingWithMonitoring:
                     )
             
             # 거래 실행 (활성화된 경우)
+            self._set_4ai_signal_trace(
+                integrated_signal=integrated_signal,
+                integrated_confidence=integrated_confidence,
+                warning_level=warning_level,
+            )
             if self.enable_trading and integrated_signal in ["BUY", "SELL"]:
-                if _block_live_orders_for_prophecy_fusion(self._prophecy_stack, self.testnet):
-                    logger.warning(
-                        "Skipping live orders: ProphecyStack active with testnet=%s; "
-                        "set PROPHECY_FUSION_ALLOW_MAINNET=1 after operator review.",
-                        self.testnet,
+                risk_allowed, risk_reason = self._evaluate_4ai_risk_gate(
+                    integrated_signal=integrated_signal,
+                    integrated_confidence=integrated_confidence,
+                    warning_level=warning_level,
+                )
+                if not risk_allowed:
+                    self._set_execution_trace(
+                        decision="skipped",
+                        reason=risk_reason,
+                        signal=integrated_signal,
+                        confidence=integrated_confidence,
+                        details={"warning_level": warning_level, "min_confidence": MIN_CONFIDENCE},
                     )
-                    self._save_state()
-                    return
-                if integrated_confidence < MIN_CONFIDENCE:
-                    self._save_state()
-                    return
-                if warning_level == "CRITICAL":
-                    logger.warning("🚨 CRITICAL 경고: 거래 중단")
                     self._save_state()
                     return
                 # Phase 1 방어망: 반대 신호 시 선청산 후 진입
@@ -608,9 +761,38 @@ class RealtimeTradingWithMonitoring:
                 if pos:
                     side = pos.get("side", "")
                     if (integrated_signal == "BUY" and side == "SHORT") or (integrated_signal == "SELL" and side == "LONG"):
+                        reversal_allowed, reversal_reason, reversal_details = self._is_reversal_allowed(
+                            current_side=str(side).upper(),
+                            integrated_signal=integrated_signal,
+                        )
+                        if not reversal_allowed:
+                            logger.info(
+                                "🕒 반전 진입 지연: %s (%s)",
+                                reversal_reason,
+                                reversal_details,
+                            )
+                            self._set_execution_trace(
+                                decision="skipped",
+                                reason=reversal_reason,
+                                signal=integrated_signal,
+                                confidence=integrated_confidence,
+                                details=reversal_details,
+                            )
+                            self._save_state()
+                            return
                         logger.info(f"🔄 반대 신호 선청산: {side} → {integrated_signal} 진입 예정")
-                        self._close_position(side)
+                        self._close_position(side, close_reason="signal_reversal")
+                        self._last_reversal_ts = time.time()
                 await self._execute_trade(integrated_signal, integrated_confidence)
+            else:
+                reason = "trading_disabled" if not self.enable_trading else "signal_not_directional"
+                self._set_execution_trace(
+                    decision="skipped",
+                    reason=reason,
+                    signal=integrated_signal,
+                    confidence=integrated_confidence,
+                    details={"warning_level": warning_level},
+                )
             self._save_state()
         
         except Exception as e:
@@ -618,7 +800,17 @@ class RealtimeTradingWithMonitoring:
             self._save_state()
 
     def _derive_singular_core(self, result: Dict[str, Any]) -> Dict[str, Any]:
-        state = (result.get("predicted_state") or result.get("vector_4d") or {}) if isinstance(result, dict) else {}
+        state: Dict[str, Any] = {}
+        if isinstance(result, dict):
+            # Prefer top-level fields when present, but fall back to strategy_analysis
+            # because unified monitor stores vector outputs there.
+            state = (
+                result.get("predicted_state")
+                or result.get("vector_4d")
+                or ((result.get("strategy_analysis") or {}).get("predicted_state"))
+                or ((result.get("strategy_analysis") or {}).get("vector_4d"))
+                or {}
+            )
         core = compute_core_score(
             CoreInput(
                 s=float(state.get("S", 0.5)),
@@ -664,6 +856,7 @@ class RealtimeTradingWithMonitoring:
 
         self.signal_total_count += 1
         self.singular_action_counts[action] = self.singular_action_counts.get(action, 0) + 1
+        self._recent_signal_events.append((time.time(), action))
         self.last_signal_summary = {
             "timestamp": datetime.now().isoformat(timespec="seconds"),
             "symbol": self.symbol,
@@ -673,11 +866,281 @@ class RealtimeTradingWithMonitoring:
             "singular_action": action,
             "singular_decision": str((singular_core or {}).get("decision") or "HOLD"),
             "singular_score": float((singular_core or {}).get("score") or 0.0),
+            "singular_score_raw": float((singular_core or {}).get("score_raw") or 0.0),
             "singular_reason": str((singular_core or {}).get("reason") or "unknown"),
             "price": round(float(current_price), 2),
             "regime_defense_mode": bool(getattr(self, "_regime_defense_mode", False)),
             "regime_id": getattr(self, "_last_regime_id", "unknown"),
         }
+
+    def _build_signal_bias_snapshot(self, window_minutes: int = 60) -> Dict[str, Any]:
+        now_ts = time.time()
+        window_sec = max(60, int(window_minutes) * 60)
+        cutoff = now_ts - window_sec
+        while self._recent_signal_events and self._recent_signal_events[0][0] < cutoff:
+            self._recent_signal_events.popleft()
+
+        counts = {"BUY": 0, "SELL": 0, "LOCKED": 0}
+        for _, action in self._recent_signal_events:
+            if action in counts:
+                counts[action] += 1
+        total = int(sum(counts.values()))
+        ratios = {
+            "buy_ratio": (counts["BUY"] / total) if total > 0 else 0.0,
+            "sell_ratio": (counts["SELL"] / total) if total > 0 else 0.0,
+            "locked_ratio": (counts["LOCKED"] / total) if total > 0 else 0.0,
+        }
+        return {
+            "schema": "signal_bias_snapshot_v1",
+            "ts_utc": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+            "window_minutes": int(window_minutes),
+            "signal_count_window": total,
+            "counts": counts,
+            "ratios": ratios,
+            "dominant_action": (
+                max(counts, key=counts.get) if total > 0 else "NONE"
+            ),
+            "last_signal_summary": self.last_signal_summary or None,
+        }
+
+    def _set_execution_trace(
+        self,
+        *,
+        decision: str,
+        reason: str,
+        signal: Optional[str] = None,
+        confidence: Optional[float] = None,
+        details: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        self.last_execution_trace = {
+            "ts": datetime.now().isoformat(timespec="seconds"),
+            "decision": decision,
+            "reason": reason,
+            "signal": signal,
+            "confidence": None if confidence is None else round(float(confidence), 6),
+            "details": details or {},
+        }
+        self.last_4ai_trace["ai3_execution"] = {
+            "decision": decision,
+            "reason": reason,
+            "signal": signal,
+            "confidence": None if confidence is None else round(float(confidence), 6),
+        }
+        self.last_4ai_trace["timestamp"] = self.last_execution_trace["ts"]
+        # SL/TP·리스크 등이 주기적으로 실행 추적만 갱신할 때 ai4가 옛날 주문 거절에 묶이지 않게 동기화한다.
+        if reason != "execute_trade_called":
+            self._set_4ai_audit_trace(final_decision=decision, final_reason=reason)
+
+    def _set_4ai_signal_trace(
+        self,
+        *,
+        integrated_signal: str,
+        integrated_confidence: float,
+        warning_level: str,
+    ) -> None:
+        self.last_4ai_trace["ai1_signal"] = {
+            "signal": integrated_signal,
+            "confidence": round(float(integrated_confidence), 6),
+            "warning_level": str(warning_level),
+        }
+        self.last_4ai_trace["timestamp"] = datetime.now().isoformat(timespec="seconds")
+
+    def _evaluate_4ai_risk_gate(
+        self,
+        *,
+        integrated_signal: str,
+        integrated_confidence: float,
+        warning_level: str,
+    ) -> Tuple[bool, str]:
+        reason = "pass"
+        allowed = True
+        if _block_live_orders_for_prophecy_fusion(self._prophecy_stack, self.testnet):
+            allowed = False
+            reason = "prophecy_mainnet_guard"
+            logger.warning(
+                "Skipping live orders: ProphecyStack active with testnet=%s; "
+                "set PROPHECY_FUSION_ALLOW_MAINNET=1 after operator review.",
+                self.testnet,
+            )
+        elif integrated_confidence < MIN_CONFIDENCE:
+            allowed = False
+            reason = "confidence_below_min"
+        elif str(warning_level).upper() == "CRITICAL":
+            allowed = False
+            reason = "critical_warning_level"
+            logger.warning("🚨 CRITICAL 경고: 거래 중단")
+
+        self.last_4ai_trace["ai2_risk"] = {
+            "allowed": allowed,
+            "reason": reason,
+            "signal": integrated_signal,
+            "confidence": round(float(integrated_confidence), 6),
+            "warning_level": str(warning_level),
+        }
+        self.last_4ai_trace["timestamp"] = datetime.now().isoformat(timespec="seconds")
+        return allowed, reason
+
+    def _set_4ai_audit_trace(self, *, final_decision: str, final_reason: str) -> None:
+        self.last_4ai_trace["ai4_audit"] = {
+            "final_decision": final_decision,
+            "final_reason": final_reason,
+            "execution_trace_reason": self.last_execution_trace.get("reason"),
+            "execution_trace_decision": self.last_execution_trace.get("decision"),
+        }
+        self.last_4ai_trace["timestamp"] = datetime.now().isoformat(timespec="seconds")
+
+    def _track_position_open(self, signal: str) -> None:
+        side = "LONG" if signal == "BUY" else "SHORT" if signal == "SELL" else None
+        if side is None:
+            return
+        self._last_position_side = side
+        self._last_position_open_ts = time.time()
+
+    def _is_reversal_allowed(
+        self,
+        *,
+        current_side: str,
+        integrated_signal: str,
+    ) -> Tuple[bool, str, Dict[str, Any]]:
+        desired_side = (
+            "LONG" if integrated_signal == "BUY" else "SHORT" if integrated_signal == "SELL" else None
+        )
+        if desired_side is None or current_side == desired_side:
+            return True, "not_reversal", {}
+
+        now_ts = time.time()
+        hold_elapsed = (
+            (now_ts - self._last_position_open_ts)
+            if self._last_position_open_ts is not None
+            else None
+        )
+        if (
+            hold_elapsed is not None
+            and hold_elapsed < float(self._min_position_hold_seconds)
+        ):
+            return False, "reversal_blocked_min_hold", {
+                "current_side": current_side,
+                "desired_side": desired_side,
+                "hold_elapsed_sec": round(float(hold_elapsed), 3),
+                "min_hold_sec": int(self._min_position_hold_seconds),
+            }
+
+        cooldown_elapsed = now_ts - float(self._last_reversal_ts or 0.0)
+        if cooldown_elapsed < float(self._reversal_cooldown_seconds):
+            return False, "reversal_blocked_cooldown", {
+                "current_side": current_side,
+                "desired_side": desired_side,
+                "cooldown_elapsed_sec": round(float(cooldown_elapsed), 3),
+                "cooldown_required_sec": int(self._reversal_cooldown_seconds),
+            }
+
+        return True, "reversal_allowed", {
+            "current_side": current_side,
+            "desired_side": desired_side,
+            "hold_elapsed_sec": (
+                round(float(hold_elapsed), 3) if hold_elapsed is not None else None
+            ),
+            "min_hold_sec": int(self._min_position_hold_seconds),
+            "cooldown_elapsed_sec": round(float(cooldown_elapsed), 3),
+            "cooldown_required_sec": int(self._reversal_cooldown_seconds),
+        }
+
+    def _load_runtime_risk_limits(self) -> Dict[str, Any]:
+        now = time.time()
+        if now - self._risk_limits_cache_ts < 60 and self._risk_limits_cache:
+            return dict(self._risk_limits_cache)
+
+        default = {
+            "max_position_size": None,
+            "position_scale_cap": None,
+            "daily_loss_cap_ratio": None,
+            "source_path": None,
+        }
+        for p in self._risk_profile_candidates:
+            if not p.exists():
+                continue
+            try:
+                profile = json.loads(p.read_text(encoding="utf-8"))
+                max_position_size = profile.get("max_position_size")
+                if max_position_size is not None:
+                    max_position_size = float(max_position_size)
+                    if not (0.0 < max_position_size <= 1.0):
+                        max_position_size = None
+
+                trinity = profile.get("trinity_governor")
+                position_scale_cap = None
+                daily_loss_cap_ratio = None
+                if isinstance(trinity, dict):
+                    psc = trinity.get("position_scale_cap")
+                    if psc is not None:
+                        psc = float(psc)
+                        if 0.0 < psc <= 1.0:
+                            position_scale_cap = psc
+                    dl_pct = trinity.get("daily_loss_cap_pct")
+                    if dl_pct is not None:
+                        dl_pct = float(dl_pct)
+                        if dl_pct > 0.0:
+                            daily_loss_cap_ratio = dl_pct / 100.0
+
+                out = {
+                    "max_position_size": max_position_size,
+                    "position_scale_cap": position_scale_cap,
+                    "daily_loss_cap_ratio": daily_loss_cap_ratio,
+                    "source_path": str(p),
+                }
+                self._risk_limits_cache = out
+                self._risk_limits_cache_ts = now
+                return dict(out)
+            except Exception:
+                continue
+
+        self._risk_limits_cache = default
+        self._risk_limits_cache_ts = now
+        return dict(default)
+
+    def _collect_order_fill_quality(self, order_id: Optional[Any]) -> Dict[str, Any]:
+        result = {
+            "order_id": order_id,
+            "fill_count": 0,
+            "maker_true_count": 0,
+            "maker_false_count": 0,
+        }
+        try:
+            if order_id is None:
+                return result
+            if not hasattr(self.binance, "get_recent_fills"):
+                return result
+            oid = str(order_id)
+            seen_keys: set[str] = set()
+            # Fills can lag the order response; poll briefly and dedupe legs.
+            for delay_s in (0.0, 0.2, 0.55, 1.1):
+                if delay_s > 0:
+                    time.sleep(delay_s)
+                recent = self.binance.get_recent_fills(symbol=self.symbol, limit=100)
+                if not isinstance(recent, list):
+                    continue
+                for f in recent:
+                    if str(f.get("orderId")) != oid:
+                        continue
+                    tid = f.get("id") or f.get("tradeId")
+                    if tid is not None:
+                        key = f"id:{tid}"
+                    else:
+                        key = "leg:" + "|".join(
+                            str(f.get(k, ""))
+                            for k in ("price", "qty", "time", "maker", "realizedPnl")
+                        )
+                    if key in seen_keys:
+                        continue
+                    seen_keys.add(key)
+                    result["fill_count"] += 1
+                    if bool(f.get("maker")):
+                        result["maker_true_count"] += 1
+                    else:
+                        result["maker_false_count"] += 1
+        except Exception:
+            pass
+        return result
 
     def _save_state(self) -> None:
         try:
@@ -691,15 +1154,31 @@ class RealtimeTradingWithMonitoring:
                 "symbol": self.symbol,
                 "running": self.running,
                 "enable_trading": self.enable_trading,
+                "runtime_config": {
+                    "maker_only": bool(self._maker_only),
+                    "strict_maker_enforcement": bool(self._strict_maker_enforcement),
+                    "min_position_hold_seconds": int(self._min_position_hold_seconds),
+                    "reversal_cooldown_seconds": int(self._reversal_cooldown_seconds),
+                    "risk_limits": self._load_runtime_risk_limits(),
+                },
                 "ws_tick_count": int(self.ws_tick_count),
                 "connector_metrics": connector_metrics,
                 "startup_reconcile": self.startup_reconcile_status,
                 "signal_total_count": self.signal_total_count,
                 "singular_action_counts": self.singular_action_counts,
                 "last_signal_summary": self.last_signal_summary,
+                "last_execution_trace": self.last_execution_trace,
+                "last_4ai_trace": self.last_4ai_trace,
+                "exchange_runtime_state": self._collect_exchange_runtime_state(),
             }
             self.state_file.write_text(
                 json.dumps(state, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+            bias_snapshot = self._build_signal_bias_snapshot(window_minutes=60)
+            self.signal_bias_snapshot_file.parent.mkdir(parents=True, exist_ok=True)
+            self.signal_bias_snapshot_file.write_text(
+                json.dumps(bias_snapshot, ensure_ascii=False, indent=2),
                 encoding="utf-8",
             )
         except Exception as e:
@@ -713,6 +1192,41 @@ class RealtimeTradingWithMonitoring:
             except Exception:
                 pass
             await asyncio.sleep(15)
+
+    def _collect_exchange_runtime_state(self) -> Dict[str, Any]:
+        now = time.time()
+        if now - self._exchange_runtime_state_cache_ts < 15 and self._exchange_runtime_state_cache:
+            return self._exchange_runtime_state_cache
+
+        state: Dict[str, Any] = {
+            "ts": datetime.now().isoformat(timespec="seconds"),
+            "current_position": None,
+            "open_orders_count": None,
+            "recent_fills_count": None,
+            "exchange_error": None,
+            "credential_source": "unknown",
+            "credential_key_suffix": "****",
+        }
+        try:
+            position = self.binance.get_position(self.symbol) if hasattr(self.binance, "get_position") else None
+            open_orders = self.binance.get_open_orders(self.symbol) if hasattr(self.binance, "get_open_orders") else []
+            recent_fills = self.binance.get_recent_fills(symbol=self.symbol, limit=20) if hasattr(self.binance, "get_recent_fills") else []
+            cred = get_last_binance_credential_meta()
+            state.update(
+                {
+                    "current_position": position if isinstance(position, dict) else None,
+                    "open_orders_count": len(open_orders) if isinstance(open_orders, list) else None,
+                    "recent_fills_count": len(recent_fills) if isinstance(recent_fills, list) else None,
+                    "credential_source": str(cred.get("credential_source") or "unknown"),
+                    "credential_key_suffix": str(cred.get("credential_key_suffix") or "****"),
+                }
+            )
+        except Exception as e:
+            state["exchange_error"] = str(e)
+
+        self._exchange_runtime_state_cache = state
+        self._exchange_runtime_state_cache_ts = now
+        return state
 
     def _startup_reconcile(self) -> None:
         """
@@ -740,6 +1254,9 @@ class RealtimeTradingWithMonitoring:
                 "recent_fills_count": len(recent_fills) if isinstance(recent_fills, list) else None,
                 "error": None,
             }
+            if isinstance(position, dict) and float(position.get("quantity") or 0.0) > 0.0:
+                self._last_position_side = str(position.get("side") or "").upper() or None
+                self._last_position_open_ts = time.time()
             logger.info(
                 "🔁 Startup reconcile 완료: open_orders=%s, has_position=%s, recent_fills=%s",
                 self.startup_reconcile_status["open_orders_count"],
@@ -760,8 +1277,32 @@ class RealtimeTradingWithMonitoring:
             logger.warning(f"⚠️ Startup reconcile 실패: {e}")
     
     async def _execute_trade(self, signal: str, confidence: float):
-        """거래 실행"""
+        """거래 실행 (OTel: execute_trade 스팬)."""
+        from src.monitoring import trading_otel as _otel
+
+        with _otel.span(
+            "execute_trade",
+            attributes={
+                "signal": str(signal),
+                "symbol": self.symbol,
+                "confidence": str(confidence),
+                "testnet": str(self.testnet),
+                "enable_trading": str(self.enable_trading),
+            },
+        ):
+            await self._execute_trade_impl(signal, confidence)
+
+    async def _execute_trade_impl(self, signal: str, confidence: float):
+        """거래 실행 구현."""
+        from src.monitoring import trading_otel as _otel
+
         try:
+            self._set_execution_trace(
+                decision="attempted",
+                reason="execute_trade_called",
+                signal=signal,
+                confidence=confidence,
+            )
             logger.info(
                 f"📈 거래 신호 수신: {signal} "
                 f"(신뢰도: {confidence:.2%})"
@@ -785,6 +1326,13 @@ class RealtimeTradingWithMonitoring:
                 allowed, reason = self.risk_guardian.check_trading_allowed(current_time)
                 if not allowed:
                     logger.warning(f"⚠️ 리스크 가디언이 거래를 차단했습니다: {reason}")
+                    self._set_execution_trace(
+                        decision="skipped",
+                        reason="risk_guardian_blocked",
+                        signal=signal,
+                        confidence=confidence,
+                        details={"risk_guardian_reason": reason},
+                    )
                     return
                 
                 # Drawdown 계산
@@ -813,47 +1361,310 @@ class RealtimeTradingWithMonitoring:
                 )
             else:
                 dynamic_position_size = 0.30  # 기본값
+
+            risk_limits = self._load_runtime_risk_limits()
+            cap_candidates = []
+            if risk_limits.get("max_position_size") is not None:
+                cap_candidates.append(float(risk_limits["max_position_size"]))
+            if risk_limits.get("position_scale_cap") is not None:
+                cap_candidates.append(float(risk_limits["position_scale_cap"]))
+            if cap_candidates:
+                hard_cap_ratio = min(cap_candidates)
+                if dynamic_position_size > hard_cap_ratio:
+                    logger.warning(
+                        "🧷 포지션 비중 하드캡 적용: %.2f%% -> %.2f%% (source=%s)",
+                        dynamic_position_size * 100.0,
+                        hard_cap_ratio * 100.0,
+                        risk_limits.get("source_path"),
+                    )
+                dynamic_position_size = min(dynamic_position_size, hard_cap_ratio)
+            dynamic_position_size = max(0.001, float(dynamic_position_size))
+
+            if (
+                self.risk_guardian
+                and risk_limits.get("daily_loss_cap_ratio") is not None
+            ):
+                cap_ratio = float(risk_limits["daily_loss_cap_ratio"])
+                if 0.0 < cap_ratio < float(self.risk_guardian.daily_loss_limit):
+                    self.risk_guardian.daily_loss_limit = cap_ratio
             
             # 기존 리스크 관리 검증
             if not self.risk_manager.can_trade():
                 logger.warning("⚠️ 리스크 관리 시스템이 거래를 차단했습니다.")
+                self._set_execution_trace(
+                    decision="skipped",
+                    reason="risk_manager_blocked",
+                    signal=signal,
+                    confidence=confidence,
+                )
                 return
+
+            # 기존 포지션 과대/동일방향 누적 진입 차단
+            existing_pos = self._get_position()
+            if isinstance(existing_pos, dict):
+                existing_side = str(existing_pos.get("side") or "").upper()
+                existing_qty = float(existing_pos.get("quantity") or 0.0)
+                desired_side = "LONG" if signal == "BUY" else "SHORT"
+                if existing_qty > 0.0 and existing_side == desired_side:
+                    details = {
+                        "existing_side": existing_side,
+                        "existing_qty": existing_qty,
+                        "desired_side": desired_side,
+                    }
+                    self._set_execution_trace(
+                        decision="skipped",
+                        reason="same_side_pyramiding_blocked",
+                        signal=signal,
+                        confidence=confidence,
+                        details=details,
+                    )
+                    return
+
+            # 주문 수량 계산 (USDT 선물 기준)
+            try:
+                mark_price = float(self.binance.get_current_price(self.symbol) or 0.0)
+            except Exception:
+                mark_price = 0.0
+            if mark_price <= 0:
+                self._set_execution_trace(
+                    decision="skipped",
+                    reason="invalid_mark_price",
+                    signal=signal,
+                    confidence=confidence,
+                )
+                return
+
+            if (
+                isinstance(existing_pos, dict)
+                and existing_pos.get("quantity") is not None
+                and risk_limits.get("max_position_size") is not None
+            ):
+                existing_qty = float(existing_pos.get("quantity") or 0.0)
+                if existing_qty > 0.0:
+                    existing_notional = existing_qty * mark_price
+                    cap_ratio = float(risk_limits["max_position_size"])
+                    cap_notional = float(current_capital) * cap_ratio * float(self.leverage)
+                    if cap_notional > 0 and existing_notional > (cap_notional * 1.05):
+                        details = {
+                            "existing_notional": round(existing_notional, 6),
+                            "cap_notional": round(cap_notional, 6),
+                            "cap_ratio": cap_ratio,
+                            "leverage": float(self.leverage),
+                            "existing_qty": existing_qty,
+                        }
+                        self._set_execution_trace(
+                            decision="skipped",
+                            reason="existing_position_exceeds_cap",
+                            signal=signal,
+                            confidence=confidence,
+                            details=details,
+                        )
+                        return
+            margin_usdt = max(0.0, float(current_capital) * float(dynamic_position_size))
+            raw_quantity = (margin_usdt * float(self.leverage)) / mark_price
+            order_quantity = round(max(0.001, raw_quantity), 3)
             
+            # 주문 실행 전 체결/포지션 스냅샷 (빈 응답 대비 사후 검증용)
+            fills_before = None
+            try:
+                if hasattr(self.binance, "get_recent_fills"):
+                    recent_before = self.binance.get_recent_fills(symbol=self.symbol, limit=20)
+                    if isinstance(recent_before, list):
+                        fills_before = len(recent_before)
+            except Exception:
+                fills_before = None
+
             # 주문 실행 (동적 포지션 크기 적용)
-            if signal == "BUY":
-                order = self.binance.open_long_position(
-                    symbol=self.symbol,
-                    leverage=self.leverage,
-                    confidence=confidence,
-                    position_size=dynamic_position_size if self.risk_guardian else None
-                )
-            elif signal == "SELL":
-                order = self.binance.open_short_position(
-                    symbol=self.symbol,
-                    leverage=self.leverage,
-                    confidence=confidence,
-                    position_size=dynamic_position_size if self.risk_guardian else None
-                )
-            else:
-                return
+            with _otel.span(
+                "execute_trade.submit_order",
+                attributes={
+                    "symbol": self.symbol,
+                    "signal": signal,
+                    "qty": order_quantity,
+                    "mark_price": mark_price,
+                    "leverage": self.leverage,
+                },
+            ):
+                if signal == "BUY":
+                    order = self.binance.open_long_position(
+                        symbol=self.symbol,
+                        quantity=order_quantity,
+                        leverage=self.leverage,
+                    )
+                elif signal == "SELL":
+                    order = self.binance.open_short_position(
+                        symbol=self.symbol,
+                        quantity=order_quantity,
+                        leverage=self.leverage,
+                    )
+                else:
+                    self._set_execution_trace(
+                        decision="skipped",
+                        reason="non_directional_signal",
+                        signal=signal,
+                        confidence=confidence,
+                    )
+                    return
             
-            if order:
+            if order is not None:
                 position_size_str = f"{dynamic_position_size:.2%}" if self.risk_guardian else "기본"
                 logger.info(
                     f"✅ 주문 실행 완료: {signal} "
                     f"(포지션 크기: {position_size_str})"
                 )
+                order_id = order.get("orderId") if isinstance(order, dict) else None
+                with _otel.span(
+                    "execute_trade.fill_quality",
+                    attributes={"symbol": self.symbol, "order_id": order_id},
+                ):
+                    fill_quality = self._collect_order_fill_quality(order_id)
+                if (
+                    self._maker_only
+                    and fill_quality.get("maker_false_count", 0) > 0
+                    and self._strict_maker_enforcement
+                ):
+                    details = {
+                        "has_order_payload": True,
+                        "quantity": order_quantity,
+                        "mark_price": mark_price,
+                        "margin_usdt": round(float(margin_usdt), 6),
+                        "maker_only": True,
+                        "strict_maker_enforcement": True,
+                        "fill_quality": fill_quality,
+                    }
+                    self.enable_trading = False
+                    logger.error(
+                        "🛑 Maker 위반 체결 감지로 거래 중단: order_id=%s quality=%s",
+                        order_id,
+                        fill_quality,
+                    )
+                    self._set_execution_trace(
+                        decision="skipped",
+                        reason="maker_violation_trading_paused",
+                        signal=signal,
+                        confidence=confidence,
+                        details=details,
+                    )
+                    self._save_state()
+                    return
                 
                 # 리스크 관리 업데이트
-                self.risk_manager.record_trade(order)
+                if hasattr(self.risk_manager, "record_trade"):
+                    self.risk_manager.record_trade(order)
+                else:
+                    logger.debug("risk_manager.record_trade 미구현: 업데이트 스킵")
+                self._set_execution_trace(
+                    decision="executed",
+                    reason="order_submitted",
+                    signal=signal,
+                    confidence=confidence,
+                    details={
+                        "has_order_payload": True,
+                        "quantity": order_quantity,
+                        "mark_price": mark_price,
+                        "margin_usdt": round(float(margin_usdt), 6),
+                        "maker_only": bool(self._maker_only),
+                        "strict_maker_enforcement": bool(self._strict_maker_enforcement),
+                        "fill_quality": fill_quality,
+                    },
+                )
+                self._track_position_open(signal)
                 
                 # 리스크 가디언 업데이트 (거래 결과는 주문 체결 후 별도로 업데이트 필요)
                 # 실제 PnL은 주문 체결 후 업데이트
             else:
+                # 일부 거래소/클라이언트 경로는 주문 응답 바디가 비어도 실제 체결이 발생할 수 있어
+                # 포지션/체결 변화를 2차 확인해 오탐 실패를 줄인다.
+                with _otel.span(
+                    "execute_trade.empty_response_reconcile",
+                    attributes={"symbol": self.symbol, "signal": signal},
+                ):
+                    await asyncio.sleep(0.7)
+                    pos_after = None
+                    fills_after = None
+                    try:
+                        pos_after = self._get_position()
+                    except Exception:
+                        pos_after = None
+                    try:
+                        if hasattr(self.binance, "get_recent_fills"):
+                            recent_after = self.binance.get_recent_fills(symbol=self.symbol, limit=20)
+                            if isinstance(recent_after, list):
+                                fills_after = len(recent_after)
+                    except Exception:
+                        fills_after = None
+
+                expected_side = "LONG" if signal == "BUY" else "SHORT"
+                position_matches = (
+                    isinstance(pos_after, dict)
+                    and str(pos_after.get("side", "")).upper() == expected_side
+                    and float(pos_after.get("quantity") or 0.0) > 0.0
+                )
+                fills_increased = (
+                    fills_before is not None
+                    and fills_after is not None
+                    and fills_after > fills_before
+                )
+
+                if position_matches or fills_increased:
+                    logger.warning("⚠️ 주문 응답은 비었지만 사후 상태 기준 체결 반영 확인")
+                    self._set_execution_trace(
+                        decision="executed",
+                        reason="order_reconciled_after_empty_response",
+                        signal=signal,
+                        confidence=confidence,
+                        details={
+                            "quantity": order_quantity,
+                            "mark_price": mark_price,
+                            "margin_usdt": round(float(margin_usdt), 6),
+                            "fills_before": fills_before,
+                            "fills_after": fills_after,
+                            "position_side_after": (pos_after or {}).get("side") if isinstance(pos_after, dict) else None,
+                        },
+                    )
+                    self._track_position_open(signal)
+                    return
+
+                order_error = None
+                if hasattr(self.binance, "get_last_order_error"):
+                    try:
+                        order_error = self.binance.get_last_order_error()
+                    except Exception:
+                        order_error = None
                 logger.error(f"❌ 주문 실행 실패: {signal}")
+                self._set_execution_trace(
+                    decision="failed",
+                    reason="order_empty_response",
+                    signal=signal,
+                    confidence=confidence,
+                    details={
+                        "quantity": order_quantity,
+                        "mark_price": mark_price,
+                        "margin_usdt": round(float(margin_usdt), 6),
+                        "fills_before": fills_before,
+                        "fills_after": fills_after,
+                        "position_side_after": (pos_after or {}).get("side") if isinstance(pos_after, dict) else None,
+                        "order_error": order_error,
+                    },
+                )
         
         except Exception as e:
+            try:
+                from opentelemetry import trace as _otel_trace
+
+                _sp = _otel_trace.get_current_span()
+                if _sp is not None and getattr(_sp, "is_recording", lambda: False)():
+                    _sp.record_exception(e)
+            except Exception:
+                pass
             logger.error(f"❌ 거래 실행 오류: {e}")
+            self._set_execution_trace(
+                decision="failed",
+                reason="execute_trade_exception",
+                signal=signal,
+                confidence=confidence,
+                details={"error": str(e)},
+            )
     
     async def run(self):
         """메인 실행 루프"""
@@ -864,6 +1675,7 @@ class RealtimeTradingWithMonitoring:
         logger.info(f"   레버리지: {self.leverage}배")
         logger.info(f"   모니터링: {'활성화' if self.monitor.enable_monitoring else '비활성화'}")
         logger.info(f"   거래: {'활성화' if self.enable_trading else '비활성화 (모니터링만)'}")
+        logger.info(f"   Maker-only: {'ON' if self._maker_only else 'OFF'} (env MKM_MAKER_ONLY)")
         if self.risk_guardian:
             logger.info(f"   🛡️ 리스크 가디언: 활성화 (MDD <15% 목표)")
             logger.info(f"      기본 포지션 크기: {self.risk_guardian.base_position_size:.2%}")
@@ -913,6 +1725,13 @@ class RealtimeTradingWithMonitoring:
             "price_history_size": len(self.price_history),
             "monitoring_enabled": self.monitor.enable_monitoring,
             "trading_enabled": self.enable_trading,
+            "runtime_config": {
+                "maker_only": bool(self._maker_only),
+                "strict_maker_enforcement": bool(self._strict_maker_enforcement),
+                "min_position_hold_seconds": int(self._min_position_hold_seconds),
+                "reversal_cooldown_seconds": int(self._reversal_cooldown_seconds),
+                "risk_limits": self._load_runtime_risk_limits(),
+            },
             "startup_reconcile": self.startup_reconcile_status,
             "mkm_singular_core": {
                 "total_signals": total,
@@ -924,6 +1743,9 @@ class RealtimeTradingWithMonitoring:
                 "sell_ratio": (sell / total) if total > 0 else None,
                 "last_signal_summary": self.last_signal_summary or None,
             },
+            "last_execution_trace": self.last_execution_trace or None,
+            "last_4ai_trace": self.last_4ai_trace or None,
+            "exchange_runtime_state": self._collect_exchange_runtime_state(),
             "risk_manager": {
                 "daily_pnl": self.risk_manager.daily_pnl,
                 "can_trade": self.risk_manager.can_trade(),

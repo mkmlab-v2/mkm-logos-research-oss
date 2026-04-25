@@ -33,7 +33,12 @@ param(
     [string]$WeatherFullGateRunLabel = "external_real_week_health_gate_v1",
     [string]$WeatherFullGateBaselineProfile = "synthetic_hypo_120d",
     [switch]$WeatherFullGateAutoColumnsCsv,
-    [switch]$WeatherFullGateStrictSchemaCsv
+    [switch]$WeatherFullGateStrictSchemaCsv,
+
+    # Optional: bitcoin-trading OpenTelemetry smoke (console or OTLP; few seconds if packages installed).
+    [switch]$IncludeBitcoinTradingOtelSmoke,
+    # Shortcut profile: run only bitcoin-trading OTel smoke (skip broader health checks).
+    [switch]$BitcoinTradingOtelSmokeOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -41,6 +46,13 @@ $root = $WorkspaceRoot
 
 if ($BioSnpOnly) {
     $IncludeBioPaperSnpJoinSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+}
+
+if ($BitcoinTradingOtelSmokeOnly) {
+    $IncludeBitcoinTradingOtelSmoke = $true
     $SkipVaultMirror = $true
     $SkipMkmMemoryInventory = $true
     $SkipPhase1Readiness = $true
@@ -84,8 +96,10 @@ try {
         }
     }
 
-    Step "P0 / CONSTITUTION paths" {
-        & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\verify_p0_constitution_gate_paths.ps1") -WorkspaceRoot $root
+    if (-not $BitcoinTradingOtelSmokeOnly) {
+        Step "P0 / CONSTITUTION paths" {
+            & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\verify_p0_constitution_gate_paths.ps1") -WorkspaceRoot $root
+        }
     }
 
     if (-not $SkipMkmMemoryInventory) {
@@ -148,15 +162,17 @@ try {
         }
     }
 
-    Write-Host ""
-    Write-Host "=== Automation registry reconcile ===" -ForegroundColor Cyan
-    $rec = Join-Path $root "projects\bitcoin-trading\ops\windows-rehearsal\reconcile_automation_registry.ps1"
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $rec
-    $re = $LASTEXITCODE
-    if ($re -ne 0) {
-        $msg = "reconcile_automation_registry exit $re (scheduler drift?)"
-        if ($StrictReconcile) { throw $msg }
-        Write-Host "WARN: $msg" -ForegroundColor Yellow
+    if (-not $BitcoinTradingOtelSmokeOnly) {
+        Write-Host ""
+        Write-Host "=== Automation registry reconcile ===" -ForegroundColor Cyan
+        $rec = Join-Path $root "projects\bitcoin-trading\ops\windows-rehearsal\reconcile_automation_registry.ps1"
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $rec
+        $re = $LASTEXITCODE
+        if ($re -ne 0) {
+            $msg = "reconcile_automation_registry exit $re (scheduler drift?)"
+            if ($StrictReconcile) { throw $msg }
+            Write-Host "WARN: $msg" -ForegroundColor Yellow
+        }
     }
 
     if ($IncludeCompressionKpi) {
@@ -283,6 +299,20 @@ try {
             Write-Host ""
             Write-Host "=== Weather full gate ===" -ForegroundColor Yellow
             Write-Host "SKIP: run_weather_btrack_external_real_week_full_gate_v1.ps1 not found"
+        }
+    }
+
+    if ($IncludeBitcoinTradingOtelSmoke) {
+        $otelSmoke = Join-Path $root "projects\bitcoin-trading\ops\metrics\smoke_otel.ps1"
+        if (Test-Path -LiteralPath $otelSmoke) {
+            Step "Bitcoin trading OTel smoke (ops/metrics/smoke_otel.ps1)" {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $otelSmoke
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Bitcoin trading OTel smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: smoke_otel.ps1 not found at $otelSmoke"
         }
     }
 

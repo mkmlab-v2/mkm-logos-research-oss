@@ -1,5 +1,13 @@
 name: Backend Fact Engine Quantization Guard
 
+# Private repo + free tier: keep least privilege and cancel superseded runs to save minutes.
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -12,6 +20,7 @@ on:
 jobs:
   quantization-guard:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,7 +32,8 @@ jobs:
 
       - name: Enforce backend fact-engine quantization guard
         run: |
-          python scripts/enforce_backend_fact_engine_quantization_guard.py \
+          set -euo pipefail
+          python3 scripts/enforce_backend_fact_engine_quantization_guard.py \
             --scan-dir projects/bitcoin-trading/src \
             --scan-dir scripts \
             --skip-regex "/scripts/run_rag_turboquant_poc_template.py" \

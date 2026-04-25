@@ -1,0 +1,50 @@
+# Example Prometheus alerting rules (Prometheus 2.x).
+# Include from prometheus.yml:
+#   rule_files:
+#     - "prometheus.alerts.example.yml"
+#
+# Tune `for` and thresholds for your account; many signals are informational.
+
+groups:
+  - name: mkm_bitcoin_trading
+    rules:
+      - alert: MkmTradingDaemonMetricsStale
+        expr: |
+          rate(mkm_trading_prometheus_refresh_total[5m]) == 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "MKM trading daemon metrics not refreshing"
+          description: "No prometheus refresh counter increase for 10m (daemon stuck or /metrics down)."
+
+      - alert: MkmTradingEngineDownButDaemonUp
+        expr: |
+          mkm_trading_daemon_running == 1
+          and mkm_trading_engine_running == 0
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "MKM engine not running while daemon reports up"
+          description: "Check start_24h_daemon logs and engine crash loop."
+
+      - alert: MkmTradingUnexpectedDisable
+        expr: |
+          mkm_trading_daemon_enable_trading == 1
+          and mkm_trading_engine_trading_enabled == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "MKM engine trading disabled while daemon allows trading"
+          description: "Risk guardian, maker violation, or manual pause — inspect trading_state.json and logs."
+
+      - alert: MkmTradingErrorBurst
+        expr: |
+          delta(mkm_trading_daemon_error_count[1h]) > 5
+        labels:
+          severity: warning
+        annotations:
+          summary: "MKM trading daemon errors increasing"
+          description: "error_count jumped more than 5 in an hour."

@@ -1,0 +1,156 @@
+{
+  "title": "MKM Bitcoin Trading (example)",
+  "uid": "mkm-btc-trading-ex",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": ["mkm", "bitcoin-trading"],
+  "timezone": "browser",
+  "refresh": "15s",
+  "time": { "from": "now-6h", "to": "now" },
+  "templating": { "list": [] },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Daemon running",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "mkm_trading_daemon_running",
+          "legendFormat": "{{symbol}}"
+        }
+      ],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Engine trading enabled",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "mkm_trading_engine_trading_enabled",
+          "legendFormat": "{{symbol}}"
+        }
+      ],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } }
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "WS ticks",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "mkm_trading_engine_ws_tick_count",
+          "legendFormat": "{{symbol}}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Prometheus refresh / min",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "rate(mkm_trading_prometheus_refresh_total[5m]) * 60",
+          "legendFormat": "{{symbol}}"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "24h fills snapshot",
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "mkm_trading_exchange_fills_24h",
+          "legendFormat": "{{symbol}}"
+        }
+      ],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } }
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Daemon errors",
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "mkm_trading_daemon_error_count",
+          "legendFormat": "{{symbol}}"
+        }
+      ],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } }
+    },
+    {
+      "id": 7,
+      "type": "stat",
+      "title": "Strict maker enforcement",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "mkm_trading_engine_strict_maker_enforcement",
+          "legendFormat": "{{symbol}}"
+        }
+      ],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } }
+    },
+    {
+      "id": 8,
+      "type": "stat",
+      "title": "Last execution skipped (engine)",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "mkm_trading_last_execution_was_skipped",
+          "legendFormat": "{{symbol}}"
+        }
+      ],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } }
+    },
+    {
+      "id": 9,
+      "type": "stat",
+      "title": "Risk guardian paused",
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "mkm_trading_risk_guardian_trading_paused",
+          "legendFormat": "{{symbol}}"
+        }
+      ],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } }
+    },
+    {
+      "id": 10,
+      "type": "text",
+      "title": "OpenTelemetry (traces)",
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 16 },
+      "options": {
+        "mode": "markdown",
+        "content": "## OTel (데몬/엔진)\n- 활성화: `MKM_OTEL_ENABLED=1`\n- OTLP HTTP: `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` (또는 `OTEL_EXPORTER_OTLP_ENDPOINT`)\n- 콘솔만: OTLP 미설정 시 기본 콘솔 exporter (`MKM_OTEL_CONSOLE=0` 으로 끔)\n- 스팬: `engine.run`, `daemon.health_tick`, `execute_trade`\n- 패키지: `requirements-optional-otel.txt` + 선택적으로 `MKM_ENSURE_OTEL_CLIENT=1` (워치독 pip)\n\nGrafana Tempo/Jaeger와 Prometheus를 같은 보드에서 쓰려면 Traces 데이터소스를 추가로 연결하세요."
+      }
+    }
+  ]
+}

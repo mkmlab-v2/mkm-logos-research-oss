@@ -33,6 +33,11 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from src.integration.realtime_trading_with_monitoring import RealtimeTradingWithMonitoring
 from src.monitoring.alert_manager import AlertManager
+from src.monitoring.trading_prometheus import (
+    refresh_prometheus_from_daemon,
+    start_prometheus_exporter_if_enabled,
+)
+from src.monitoring.trading_otel import init_otel_if_enabled, span as otel_span
 from src.config.config_loader import load_config
 
 # 로깅 설정
@@ -125,6 +130,11 @@ class BitcoinTradingDaemon:
         # 시그널 핸들러 등록
         signal.signal(signal.SIGINT, self._signal_handler)
         signal.signal(signal.SIGTERM, self._signal_handler)
+
+        try:
+            start_prometheus_exporter_if_enabled(self.symbol)
+        except Exception as e:
+            logger.warning("⚠️ Prometheus /metrics 시작 생략: %s", e)
         
         logger.info("✅ 비트코인 자동매매 데몬 초기화 완료")
 
@@ -177,6 +187,11 @@ class BitcoinTradingDaemon:
             for status_path in (self.status_file, self.status_file_v2):
                 with open(status_path, 'w', encoding='utf-8') as f:
                     json.dump(status, f, indent=2, ensure_ascii=False)
+
+            try:
+                refresh_prometheus_from_daemon(self, exchange_snapshot=exchange_snapshot)
+            except Exception as prom_e:
+                logger.debug("prometheus refresh skipped: %s", prom_e)
         except Exception as e:
             logger.error(f"❌ 상태 저장 실패: {e}")
 
@@ -441,7 +456,11 @@ class BitcoinTradingDaemon:
             if getattr(self, "alert_manager", None) is not None:
                 self.engine.alert_manager = self.alert_manager
                 logger.info("✅ AlertManager 엔진 주입 완료 (방어 모드 알림용)")
-            await self.engine.run()
+            with otel_span(
+                "engine.run",
+                attributes={"symbol": self.symbol, "testnet": str(self.testnet)},
+            ):
+                await self.engine.run()
         except KeyboardInterrupt:
             logger.info("⏹️ 사용자에 의해 중단됨")
             raise
@@ -456,40 +475,44 @@ class BitcoinTradingDaemon:
         while self.running:
             try:
                 await asyncio.sleep(60)  # 60초마다 체크 (헬스체크 간격 동기화)
-                
-                if self.engine:
-                    status = self.engine.get_status()
-                    
-                    # 상태 로깅
-                    logger.info(
-                        f"📊 헬스 체크: "
-                        f"실행 중={status.get('running', False)}, "
-                        f"가격 히스토리={status.get('price_history_size', 0)}, "
-                        f"거래 활성화={status.get('trading_enabled', False)}"
-                    )
-                    
-                    # 리스크 가디언 상태 확인
-                    if 'risk_guardian' in status:
-                        rg_status = status['risk_guardian']
-                        if rg_status.get('trading_paused', False):
-                            logger.warning(
-                                f"⚠️ 리스크 가디언: 거래 중단됨 "
-                                f"(재개: {rg_status.get('pause_until', 'N/A')})"
-                            )
-                    
-                    # 압축 브릿지 상태 확인
-                    if 'compression_bridge' in status:
-                        cb_status = status['compression_bridge']
+
+                with otel_span(
+                    "daemon.health_tick",
+                    attributes={"symbol": self.symbol},
+                ):
+                    if self.engine:
+                        status = self.engine.get_status()
+
+                        # 상태 로깅
                         logger.info(
-                            f"📊 압축 브릿지: "
-                            f"압축 횟수={cb_status.get('compression_count', 0)}, "
-                            f"평균 노이즈 필터링={cb_status.get('avg_noise_filtered', 0):.1%}"
+                            f"📊 헬스 체크: "
+                            f"실행 중={status.get('running', False)}, "
+                            f"가격 히스토리={status.get('price_history_size', 0)}, "
+                            f"거래 활성화={status.get('trading_enabled', False)}"
                         )
-                
-                # 상태 저장
-                self._save_status()
-                self._touch_heartbeat()
-                
+
+                        # 리스크 가디언 상태 확인
+                        if 'risk_guardian' in status:
+                            rg_status = status['risk_guardian']
+                            if rg_status.get('trading_paused', False):
+                                logger.warning(
+                                    f"⚠️ 리스크 가디언: 거래 중단됨 "
+                                    f"(재개: {rg_status.get('pause_until', 'N/A')})"
+                                )
+
+                        # 압축 브릿지 상태 확인
+                        if 'compression_bridge' in status:
+                            cb_status = status['compression_bridge']
+                            logger.info(
+                                f"📊 압축 브릿지: "
+                                f"압축 횟수={cb_status.get('compression_count', 0)}, "
+                                f"평균 노이즈 필터링={cb_status.get('avg_noise_filtered', 0):.1%}"
+                            )
+
+                    # 상태 저장
+                    self._save_status()
+                    self._touch_heartbeat()
+
             except Exception as e:
                 logger.error(f"❌ 헬스 체크 오류: {e}")
     
@@ -509,6 +532,11 @@ class BitcoinTradingDaemon:
         self.running = True
         self.start_time = datetime.now()
         self._touch_heartbeat()
+
+        try:
+            init_otel_if_enabled(service_name="mkm-bitcoin-trading-daemon")
+        except Exception as e:
+            logger.warning("⚠️ OpenTelemetry init skipped: %s", e)
 
         if self._is_kill_switch_on():
             logger.warning(f"🛑 Kill Switch 감지됨: {self.stop_file}")
@@ -542,6 +570,9 @@ class BitcoinTradingDaemon:
         prev_status = self._load_status()
         if prev_status:
             logger.info(f"📋 이전 상태: 재시작 {prev_status.get('restart_count', 0)}회")
+
+        # 초기 상태·Prometheus 갱신 (엔진 기동 전 한 번)
+        self._save_status()
         
         # 헬스 체크 태스크 시작
         health_task = asyncio.create_task(self._monitor_health())

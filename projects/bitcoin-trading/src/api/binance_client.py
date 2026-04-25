@@ -314,6 +314,8 @@ class BinanceFuturesClient:
             except Exception as e:
                 logger.warning(f"⚠️ 포지션 모드 설정 실패 (이미 설정되었을 수 있음): {e}")
 
+        _publish_binance_credential_meta(credential_source="binance_client_init", api_key=self.api_key)
+
     def _sync_server_time_offset(self, force: bool = False) -> None:
         """
         Sync local timestamp offset for signed futures endpoints.
@@ -865,6 +867,31 @@ class BinanceFuturesClient:
         except Exception as e:
             logger.error(f"❌ 최근 체결 조회 실패: {e}")
             return []
+
+
+def get_last_binance_credential_meta() -> Dict[str, Any]:
+    """
+    Non-secret metadata for runtime dashboards (exchange_runtime_state).
+    Populated when BinanceFuturesClient last constructed successfully; otherwise defaults.
+    """
+    return dict(_LAST_BINANCE_CREDENTIAL_META)
+
+
+_LAST_BINANCE_CREDENTIAL_META: Dict[str, Any] = {
+    "credential_source": "unknown",
+    "credential_key_suffix": "****",
+}
+
+
+def _publish_binance_credential_meta(*, credential_source: str, api_key: Optional[str]) -> None:
+    global _LAST_BINANCE_CREDENTIAL_META
+    suf = "****"
+    if api_key and isinstance(api_key, str) and len(api_key) >= 4:
+        suf = api_key[-4:]
+    _LAST_BINANCE_CREDENTIAL_META = {
+        "credential_source": str(credential_source or "unknown"),
+        "credential_key_suffix": suf,
+    }
 
 
 # Backward compatibility for legacy imports.

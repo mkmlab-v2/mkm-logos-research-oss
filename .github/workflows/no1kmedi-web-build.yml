@@ -9,11 +9,14 @@ on:
       - ".github/workflows/no1kmedi-web-build.yml"
       - "scripts/verify_12ai_orchestration_gate.ps1"
   pull_request:
-    paths:
-      - "projects/no1kmedi/**"
-      - ".github/workflows/no1kmedi-web-build.yml"
-      - "scripts/verify_12ai_orchestration_gate.ps1"
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   orchestration-gate:
@@ -27,9 +30,9 @@ jobs:
       action: change_strategy
 
   build:
-    needs: orchestration-gate
-    if: ${{ vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'pull_request' || vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     defaults:
       run:
         working-directory: projects/no1kmedi
