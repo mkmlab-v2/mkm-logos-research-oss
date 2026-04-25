@@ -406,6 +406,7 @@ class FinancialSovereignBacktester:
         Returns:
             가격 데이터 DataFrame
         """
+        explicit_data_file = data_file is not None
         if data_file is None:
             data_file = self.data_file
         
@@ -455,7 +456,7 @@ class FinancialSovereignBacktester:
             if self.end_date:
                 df = df[df.index <= self.end_date]
 
-            if self.start_date and self.end_date and not df.empty:
+            if (not explicit_data_file) and self.start_date and self.end_date and not df.empty:
                 requested_days = max(1, (self.end_date - self.start_date).days)
                 covered_days = max(1, (df.index.max() - df.index.min()).days)
                 if covered_days < int(requested_days * 0.9):
