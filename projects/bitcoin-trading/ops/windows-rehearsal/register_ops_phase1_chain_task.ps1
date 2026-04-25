@@ -57,4 +57,10 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host "Created daily task: $TaskName at $StartTime"
 Write-Host "TR: $tr"
+Write-Host ("Gate summary: constitution={0}, strict={1}, otel_smoke={2}, verify_all_green={3}, showroom_verify={4}" -f `
+    (-not $ExcludeConstitutionGates), `
+    (-not $ExcludeStrict), `
+    [bool]$IncludeBitcoinTradingOtelSmoke, `
+    [bool]$IncludeVerifyAllGreen, `
+    (-not $ExcludeShowroomDeployVerify))
 exit 0
