@@ -1,5 +1,13 @@
 name: Dimensional Projection Release Gate
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
@@ -29,6 +37,7 @@ on:
 jobs:
   holdout-and-promote:
     runs-on: windows-latest
+    timeout-minutes: 180
     steps:
       - name: Enable git long paths
         shell: pwsh

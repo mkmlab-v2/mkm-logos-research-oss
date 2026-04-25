@@ -6,9 +6,17 @@ on:
   schedule:
     - cron: "0 6 * * 1"
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   smoke:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     env:
       NO1KMEDI_API_KEY: ${{ secrets.NO1KMEDI_API_KEY }}
     steps:

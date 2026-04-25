@@ -41,6 +41,13 @@ on:
       - "CLAUDE.md"
       - ".github/workflows/trackb-research-smoke.yml"
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   pytest:
     runs-on: ubuntu-latest

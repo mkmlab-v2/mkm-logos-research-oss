@@ -1,5 +1,13 @@
 name: no1kmedi Guardian Contract Gate
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+
 on:
   pull_request:
     paths:
@@ -25,6 +33,7 @@ jobs:
   guardian-contract-gate:
     needs: orchestration-gate
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
