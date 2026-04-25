@@ -1,4 +1,5 @@
 name: Dimensional Projection Release Gate
+# Required-check trigger guard: keep path-filter workflow visible to PR checks.
 
 permissions:
   contents: read

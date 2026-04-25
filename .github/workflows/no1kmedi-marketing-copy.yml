@@ -1,5 +1,6 @@
 # Blocks internal codenames / competitor-brand phrasing on the static marketing site.
 name: no1kmedi-marketing-copy
+# Required-check trigger guard: keep path-filter workflow visible to PR checks.
 
 on:
   push:

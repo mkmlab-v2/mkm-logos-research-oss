@@ -1,5 +1,6 @@
 # Validates projects/no1kmedi Next.js app (App Router + API routes compile).
 name: no1kmedi-web-build
+# Required-check trigger guard: keep path-filter workflow visible to PR checks.
 
 on:
   push:
