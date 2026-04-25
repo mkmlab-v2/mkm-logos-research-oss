@@ -24,10 +24,10 @@ if (-not $SkipTaskRegister) {
     $reg = Join-Path $ops "register_ops_phase1_chain_task.ps1"
     Write-Host "=== OPS: register daily Phase 1 task (constitution gates on by default) ==="
     if ($ExcludeConstitutionGates) {
-        & powershell -NoProfile -ExecutionPolicy Bypass -File $reg -ExcludeConstitutionGates -TrackaDefaultLane $TrackaDefaultLane
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $reg -ExcludeConstitutionGates -TrackaDefaultLane $TrackaDefaultLane -IncludeBitcoinTradingOtelSmoke:$IncludeBitcoinTradingOtelSmoke
     }
     else {
-        & powershell -NoProfile -ExecutionPolicy Bypass -File $reg -TrackaDefaultLane $TrackaDefaultLane
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $reg -TrackaDefaultLane $TrackaDefaultLane -IncludeBitcoinTradingOtelSmoke:$IncludeBitcoinTradingOtelSmoke
     }
     if ($LASTEXITCODE -ne 0) {
         throw "register_ops_phase1_chain_task failed"

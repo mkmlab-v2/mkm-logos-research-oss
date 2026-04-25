@@ -5,7 +5,8 @@ param(
     [switch]$IncludeConstitutionGates,
     [switch]$SkipOpsAlarm,
     [string]$TrackaDefaultLane = "c3_domain_gated",
-    [switch]$IncludeShowroomDeployVerify
+    [switch]$IncludeShowroomDeployVerify,
+    [switch]$IncludeBitcoinTradingOtelSmoke
 )
 
 $ErrorActionPreference = "Stop"
@@ -296,6 +297,16 @@ try {
         $constitutionExit = $LASTEXITCODE
         if ($constitutionExit -ne 0) {
             throw "verify_constitution_gates failed (exit $constitutionExit); see memory/v2/ops/constitution_gates_result_latest.json"
+        }
+    }
+
+    if ($IncludeBitcoinTradingOtelSmoke) {
+        Write-Host "=== Phase 1 chain: bitcoin-trading OTel smoke ==="
+        $health = Join-Path "C:\workspace" "scripts\run_workspace_automation_health.ps1"
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $health -WorkspaceRoot "C:\workspace" -BitcoinTradingOtelSmokeOnly
+        $otelSmokeExit = $LASTEXITCODE
+        if ($otelSmokeExit -ne 0) {
+            throw "run_workspace_automation_health (BitcoinTradingOtelSmokeOnly) failed (exit $otelSmokeExit)"
         }
     }
 

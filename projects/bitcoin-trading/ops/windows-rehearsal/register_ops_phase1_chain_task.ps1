@@ -5,6 +5,7 @@ param(
     [switch]$ExcludeConstitutionGates,
     [switch]$ExcludeStrict,
     [switch]$ExcludeShowroomDeployVerify,
+    [switch]$IncludeBitcoinTradingOtelSmoke,
     [string]$TrackaDefaultLane = "c3_domain_gated"
 )
 
@@ -27,6 +28,9 @@ if (-not $ExcludeStrict) {
 }
 if (-not $ExcludeShowroomDeployVerify) {
     $extra += " -IncludeShowroomDeployVerify"
+}
+if ($IncludeBitcoinTradingOtelSmoke) {
+    $extra += " -IncludeBitcoinTradingOtelSmoke"
 }
 if ($TrackaDefaultLane -and $TrackaDefaultLane.Trim().Length -gt 0) {
     $extra += " -TrackaDefaultLane " + $TrackaDefaultLane.Trim().ToLowerInvariant()
