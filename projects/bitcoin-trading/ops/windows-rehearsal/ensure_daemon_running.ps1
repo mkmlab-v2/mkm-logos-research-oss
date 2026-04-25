@@ -41,6 +41,21 @@ if (-not (Test-Path $memoryDir)) {
     New-Item -ItemType Directory -Path $memoryDir | Out-Null
 }
 
+# Single-instance guard:
+# prevent overlapping scheduled/manual runs from starting daemon twice.
+$scriptLockPath = Join-Path $memoryDir "ensure_daemon_running.lock"
+try {
+    $script:WatchdogLockStream = [System.IO.File]::Open(
+        $scriptLockPath,
+        [System.IO.FileMode]::OpenOrCreate,
+        [System.IO.FileAccess]::ReadWrite,
+        [System.IO.FileShare]::None
+    )
+} catch {
+    Write-Host "[ensure-daemon] another watchdog instance is active; exiting."
+    exit 0
+}
+
 function Write-Log([string]$message) {
     $line = "[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $message
     Add-Content -Path $logPath -Value $line
@@ -55,6 +70,85 @@ function Get-EnvAnyScope([string]$Name) {
     $m = [Environment]::GetEnvironmentVariable($Name, "Machine")
     if (-not [string]::IsNullOrWhiteSpace($m)) { return [string]$m }
     return ""
+}
+
+function Set-UserEnv([string]$Name, [string]$Value) {
+    [Environment]::SetEnvironmentVariable($Name, $Value, "User")
+    setx $Name $Value | Out-Null
+}
+
+function Get-DotenvValue([string]$path, [string]$key) {
+    if (-not (Test-Path $path)) { return $null }
+    try {
+        foreach ($line in Get-Content -Path $path -Encoding UTF8) {
+            if ($line -match '^\s*#') { continue }
+            if ($line -match '^\s*$') { continue }
+            $m = [regex]::Match($line, "^\s*{0}\s*=\s*(.*)\s*$" -f [regex]::Escape($key))
+            if ($m.Success) {
+                $v = $m.Groups[1].Value.Trim()
+                if (($v.StartsWith('"') -and $v.EndsWith('"')) -or ($v.StartsWith("'") -and $v.EndsWith("'"))) {
+                    $v = $v.Substring(1, $v.Length - 2)
+                }
+                return $v
+            }
+        }
+    } catch {
+        return $null
+    }
+    return $null
+}
+
+function Get-DaemonStatusObject {
+    $paths = @($daemonStatusV2Path, $daemonStatusLegacyPath)
+    foreach ($p in $paths) {
+        if (-not (Test-Path $p)) { continue }
+        try {
+            return (Get-Content $p -Raw | ConvertFrom-Json)
+        } catch {
+            continue
+        }
+    }
+    return $null
+}
+
+function Test-ExchangeCredentialError([object]$statusObj) {
+    if ($null -eq $statusObj) { return $false }
+    try {
+        $err = [string]$statusObj.exchange_snapshot_24h.error
+        if ([string]::IsNullOrWhiteSpace($err)) { return $false }
+        return $err -match "-2015"
+    } catch {
+        return $false
+    }
+}
+
+function Get-CredentialErrorDiag([object]$statusObj) {
+    if ($null -eq $statusObj) { return "status=missing" }
+    try {
+        $snap = $statusObj.exchange_snapshot_24h
+        $err = [string]$snap.error
+        $src = [string]$snap.credential_source
+        $suffix = [string]$snap.credential_key_suffix
+        if ([string]::IsNullOrWhiteSpace($src)) { $src = "unknown" }
+        if ([string]::IsNullOrWhiteSpace($suffix)) { $suffix = "unknown" }
+        if ([string]::IsNullOrWhiteSpace($err)) { $err = "none" }
+        return ("source={0},key_suffix={1},error={2}" -f $src, $suffix, $err)
+    } catch {
+        return "status=parse_error"
+    }
+}
+
+function Demote-ToHoldShadow {
+    Write-Log "Demoting local mode to HOLD_SHADOW due to exchange credential error (-2015)."
+    Set-UserEnv -Name "ALLOW_LIVE_TRADING_ON_LOCAL" -Value "0"
+    Set-UserEnv -Name "LOCAL_DAEMON_HOLD_SHADOW" -Value "1"
+    Set-UserEnv -Name "TESTNET" -Value "false"
+    Set-UserEnv -Name "ENABLE_TRADING" -Value "false"
+    # Ensure current watchdog process sees demotion immediately before restart.
+    [Environment]::SetEnvironmentVariable("ALLOW_LIVE_TRADING_ON_LOCAL", "0", "Process")
+    [Environment]::SetEnvironmentVariable("LOCAL_DAEMON_HOLD_SHADOW", "1", "Process")
+    [Environment]::SetEnvironmentVariable("TESTNET", "false", "Process")
+    [Environment]::SetEnvironmentVariable("ENABLE_TRADING", "false", "Process")
 }
 
 function Get-DaemonProcesses {
@@ -76,6 +170,16 @@ function Start-Daemon {
         return
     }
 
+    # Propagate risk-profile override flags to this process before sync.
+    $riskAllowOverride = Get-EnvAnyScope -Name "RISK_PROFILE_ALLOW_CORE_HOLD_OVERRIDE"
+    if (-not [string]::IsNullOrWhiteSpace($riskAllowOverride)) {
+        [Environment]::SetEnvironmentVariable("RISK_PROFILE_ALLOW_CORE_HOLD_OVERRIDE", $riskAllowOverride, "Process")
+    }
+    $singularThreshold = Get-EnvAnyScope -Name "MKM_SINGULAR_CORE_THRESHOLD"
+    if (-not [string]::IsNullOrWhiteSpace($singularThreshold)) {
+        [Environment]::SetEnvironmentVariable("MKM_SINGULAR_CORE_THRESHOLD", $singularThreshold, "Process")
+    }
+
     if ((Test-Path $factSafeSyncScript) -and (Test-Path $factSafeProphecyPath)) {
         Write-Log "Syncing Fact-Safe risk profile before daemon start"
         $syncArgs = @($factSafeSyncScript, "--prophecy", $factSafeProphecyPath, "--output", $riskProfilePath)
@@ -93,6 +197,29 @@ function Start-Daemon {
         Write-Log "Fact-Safe risk sync skipped (prophecy/script missing)"
     }
 
+    # Stabilize Binance key source for watchdog restarts:
+    # prefer workspace .env and inject into current process scope before daemon spawn.
+    $envFile = "C:\workspace\.env"
+    $apiKey = Get-DotenvValue -path $envFile -key "BINANCE_API_KEY"
+    $apiSecret = Get-DotenvValue -path $envFile -key "BINANCE_API_SECRET"
+    if (-not [string]::IsNullOrWhiteSpace($apiKey) -and -not [string]::IsNullOrWhiteSpace($apiSecret)) {
+        [Environment]::SetEnvironmentVariable("BINANCE_API_KEY", $apiKey, "Process")
+        [Environment]::SetEnvironmentVariable("BINANCE_API_SECRET", $apiSecret, "Process")
+    } else {
+        Write-Log "WARN: .env Binance credentials missing/empty; daemon will use fallback key source."
+    }
+
+    # Runtime guard env propagation: preserve execution behavior across watchdog restarts.
+    $makerOnly = Get-EnvAnyScope -Name "MKM_MAKER_ONLY"
+    if ([string]::IsNullOrWhiteSpace($makerOnly)) { $makerOnly = "1" }
+    $minHoldSec = Get-EnvAnyScope -Name "POSITION_MIN_HOLD_SECONDS"
+    if ([string]::IsNullOrWhiteSpace($minHoldSec)) { $minHoldSec = "600" }
+    $reversalCooldownSec = Get-EnvAnyScope -Name "REVERSAL_COOLDOWN_SECONDS"
+    if ([string]::IsNullOrWhiteSpace($reversalCooldownSec)) { $reversalCooldownSec = "600" }
+    $strictMaker = Get-EnvAnyScope -Name "MKM_STRICT_MAKER_ENFORCEMENT"
+    if ([string]::IsNullOrWhiteSpace($strictMaker)) { $strictMaker = "1" }
+    $runtimeGuardPrefix = "set MKM_MAKER_ONLY=$makerOnly&& set POSITION_MIN_HOLD_SECONDS=$minHoldSec&& set REVERSAL_COOLDOWN_SECONDS=$reversalCooldownSec&& set MKM_STRICT_MAKER_ENFORCEMENT=$strictMaker&& "
+
     # Local default guardrail:
     # - Keep daemon in testnet + non-trading mode unless user explicitly allows live mode.
     # - This prevents accidental live orders after reboot/logon auto-recovery.
@@ -101,19 +228,19 @@ function Start-Daemon {
     $holdShadow = Get-EnvAnyScope -Name "LOCAL_DAEMON_HOLD_SHADOW"
     if ($allowLive -eq "1") {
         Write-Log "Starting daemon process (LOCAL LIVE MODE ALLOWED)"
-        $liveCommand = "set TESTNET=false&& set ENABLE_TRADING=true&& py $daemonArg"
+        $liveCommand = "${runtimeGuardPrefix}set TESTNET=false&& set ENABLE_TRADING=true&& py $daemonArg"
         Start-Process -FilePath "cmd.exe" -ArgumentList @("/c", $liveCommand) -WorkingDirectory $projectRoot -WindowStyle Hidden
         return
     }
 
     if ($holdShadow -eq "1") {
         Write-Log "Starting daemon process (HOLD_SHADOW: TESTNET=false, ENABLE_TRADING=false)"
-        $holdShadowCommand = "set TESTNET=false&& set ENABLE_TRADING=false&& py $daemonArg"
+        $holdShadowCommand = "${runtimeGuardPrefix}set TESTNET=false&& set ENABLE_TRADING=false&& py $daemonArg"
         Start-Process -FilePath "cmd.exe" -ArgumentList @("/c", $holdShadowCommand) -WorkingDirectory $projectRoot -WindowStyle Hidden
         return
     }
 
-    $safeCommand = "set TESTNET=true&& set ENABLE_TRADING=false&& py $daemonArg"
+    $safeCommand = "${runtimeGuardPrefix}set TESTNET=true&& set ENABLE_TRADING=false&& py $daemonArg"
     Write-Log "Starting daemon process in SAFE MODE (TESTNET=true, ENABLE_TRADING=false)"
     Start-Process -FilePath "cmd.exe" -ArgumentList @("/c", $safeCommand) -WorkingDirectory $projectRoot -WindowStyle Hidden
 }
@@ -293,6 +420,23 @@ if (-not $isRunning) {
     }
     if ($hbYoung) {
         if ($lockOwnerAlive) {
+            $allowLiveEarly = Get-EnvAnyScope -Name "ALLOW_LIVE_TRADING_ON_LOCAL"
+            if ($allowLiveEarly -eq "1") {
+                $statusEarly = Get-DaemonStatusObject
+                if (Test-ExchangeCredentialError -statusObj $statusEarly) {
+                    $diag = Get-CredentialErrorDiag -statusObj $statusEarly
+                    Write-Log ("Detected -2015 while lock owner alive in live mode; forcing HOLD_SHADOW demotion + restart. [{0}]" -f $diag)
+                    foreach ($p in $daemonProcs) {
+                        Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
+                        Write-Log "Stopped live daemon PID=$($p.ProcessId) for safe demotion"
+                    }
+                    Demote-ToHoldShadow
+                    Start-Daemon
+                    Sync-DaemonStatusMirror
+                    Update-RuntimeProbe -isRunning $false -heartbeatStale $heartbeatStale -lockOwnerAlive $lockOwnerAlive -daemonCount $daemonProcs.Count
+                    exit 0
+                }
+            }
             Write-Log "Daemon not listed by process query but heartbeat is fresh and lock owner alive - not starting another daemon."
             Sync-DaemonStatusMirror
             Update-RuntimeProbe -isRunning $isRunning -heartbeatStale $heartbeatStale -lockOwnerAlive $lockOwnerAlive -daemonCount $daemonProcs.Count
@@ -318,6 +462,26 @@ if ($heartbeatStale) {
     Start-Daemon
     Sync-DaemonStatusMirror
     exit 0
+}
+
+# Safety fallback: if daemon is running in local live mode and exchange returns -2015,
+# demote to HOLD_SHADOW and restart to avoid repeated live-mode churn with broken credentials.
+$allowLiveNow = Get-EnvAnyScope -Name "ALLOW_LIVE_TRADING_ON_LOCAL"
+if ($allowLiveNow -eq "1") {
+    $statusObj = Get-DaemonStatusObject
+    if (Test-ExchangeCredentialError -statusObj $statusObj) {
+        $diag = Get-CredentialErrorDiag -statusObj $statusObj
+        Write-Log ("Detected exchange_snapshot_24h credential error (-2015) while local live mode is enabled. [{0}]" -f $diag)
+        foreach ($p in $daemonProcs) {
+            Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
+            Write-Log "Stopped live daemon PID=$($p.ProcessId) for safe demotion"
+        }
+        Demote-ToHoldShadow
+        Start-Daemon
+        Sync-DaemonStatusMirror
+        Update-RuntimeProbe -isRunning $true -heartbeatStale $heartbeatStale -lockOwnerAlive $lockOwnerAlive -daemonCount $daemonProcs.Count
+        exit 0
+    }
 }
 
 Write-Log "Daemon healthy"
