@@ -1,0 +1,3 @@
+# Optional: Prometheus /metrics for bitcoin_trading_daemon
+# pip install -r requirements-optional-prometheus.txt
+prometheus_client>=0.20,<1

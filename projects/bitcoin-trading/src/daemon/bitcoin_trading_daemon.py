@@ -33,6 +33,10 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from src.integration.realtime_trading_with_monitoring import RealtimeTradingWithMonitoring
 from src.monitoring.alert_manager import AlertManager
+from src.monitoring.trading_prometheus import (
+    refresh_prometheus_from_daemon,
+    start_prometheus_exporter_if_enabled,
+)
 from src.config.config_loader import load_config
 
 # 로깅 설정
@@ -125,6 +129,11 @@ class BitcoinTradingDaemon:
         # 시그널 핸들러 등록
         signal.signal(signal.SIGINT, self._signal_handler)
         signal.signal(signal.SIGTERM, self._signal_handler)
+
+        try:
+            start_prometheus_exporter_if_enabled(self.symbol)
+        except Exception as e:
+            logger.warning("⚠️ Prometheus /metrics 시작 생략: %s", e)
         
         logger.info("✅ 비트코인 자동매매 데몬 초기화 완료")
 
@@ -177,6 +186,11 @@ class BitcoinTradingDaemon:
             for status_path in (self.status_file, self.status_file_v2):
                 with open(status_path, 'w', encoding='utf-8') as f:
                     json.dump(status, f, indent=2, ensure_ascii=False)
+
+            try:
+                refresh_prometheus_from_daemon(self, exchange_snapshot=exchange_snapshot)
+            except Exception as prom_e:
+                logger.debug("prometheus refresh skipped: %s", prom_e)
         except Exception as e:
             logger.error(f"❌ 상태 저장 실패: {e}")
 
@@ -542,6 +556,9 @@ class BitcoinTradingDaemon:
         prev_status = self._load_status()
         if prev_status:
             logger.info(f"📋 이전 상태: 재시작 {prev_status.get('restart_count', 0)}회")
+
+        # 초기 상태·Prometheus 갱신 (엔진 기동 전 한 번)
+        self._save_status()
         
         # 헬스 체크 태스크 시작
         health_task = asyncio.create_task(self._monitor_health())
