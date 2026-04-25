@@ -962,10 +962,16 @@ class UnifiedTradingMonitor:
                     # 변화 없음
         
         # 🏛️ Canvas 아키텍처 Divine Distance 기반 최종 신호 조정
+        # NOTE:
+        # 기존 로직은 divine_distance >= 0.4면 기존 BUY/HOLD를 모두 SELL로 강제해
+        # 숏 편향을 만들 수 있었다. 운영 기본값은 HOLD일 때만 방향 보정한다.
+        # (필요 시 DD_FORCE_OVERRIDE_BUYSELL=1로 구 강제 모드 복원)
+        dd_force_override = os.environ.get("DD_FORCE_OVERRIDE_BUYSELL", "0").strip().lower() in ("1", "true", "yes")
         if divine_distance is not None:
             if divine_distance >= 0.4:
                 # 위기 상황: 매도 신호 강화
-                if integrated_signal != "SELL":
+                # 기본: HOLD일 때만 SELL로 보정 (강제 모드면 기존처럼 BUY도 뒤집음)
+                if integrated_signal == "HOLD" or (dd_force_override and integrated_signal != "SELL"):
                     integrated_signal = "SELL"
                     integrated_confidence = min(1.0, integrated_confidence + 0.05)
                     logger.warning(
@@ -973,7 +979,8 @@ class UnifiedTradingMonitor:
                     )
             elif divine_distance < 0.25:
                 # 안정 상황: 매수 신호 강화
-                if integrated_signal != "BUY":
+                # 기본: HOLD일 때만 BUY로 보정 (강제 모드면 기존처럼 SELL도 뒤집음)
+                if integrated_signal == "HOLD" or (dd_force_override and integrated_signal != "BUY"):
                     integrated_signal = "BUY"
                     integrated_confidence = min(1.0, integrated_confidence + 0.03)
                     logger.info(
