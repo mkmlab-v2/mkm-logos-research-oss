@@ -1254,6 +1254,8 @@ class RealtimeTradingWithMonitoring:
 
     async def _execute_trade_impl(self, signal: str, confidence: float):
         """거래 실행 구현."""
+        from src.monitoring import trading_otel as _otel
+
         try:
             self._set_execution_trace(
                 decision="attempted",
@@ -1433,26 +1435,36 @@ class RealtimeTradingWithMonitoring:
                 fills_before = None
 
             # 주문 실행 (동적 포지션 크기 적용)
-            if signal == "BUY":
-                order = self.binance.open_long_position(
-                    symbol=self.symbol,
-                    quantity=order_quantity,
-                    leverage=self.leverage,
-                )
-            elif signal == "SELL":
-                order = self.binance.open_short_position(
-                    symbol=self.symbol,
-                    quantity=order_quantity,
-                    leverage=self.leverage,
-                )
-            else:
-                self._set_execution_trace(
-                    decision="skipped",
-                    reason="non_directional_signal",
-                    signal=signal,
-                    confidence=confidence,
-                )
-                return
+            with _otel.span(
+                "execute_trade.submit_order",
+                attributes={
+                    "symbol": self.symbol,
+                    "signal": signal,
+                    "qty": order_quantity,
+                    "mark_price": mark_price,
+                    "leverage": self.leverage,
+                },
+            ):
+                if signal == "BUY":
+                    order = self.binance.open_long_position(
+                        symbol=self.symbol,
+                        quantity=order_quantity,
+                        leverage=self.leverage,
+                    )
+                elif signal == "SELL":
+                    order = self.binance.open_short_position(
+                        symbol=self.symbol,
+                        quantity=order_quantity,
+                        leverage=self.leverage,
+                    )
+                else:
+                    self._set_execution_trace(
+                        decision="skipped",
+                        reason="non_directional_signal",
+                        signal=signal,
+                        confidence=confidence,
+                    )
+                    return
             
             if order is not None:
                 position_size_str = f"{dynamic_position_size:.2%}" if self.risk_guardian else "기본"
@@ -1461,7 +1473,11 @@ class RealtimeTradingWithMonitoring:
                     f"(포지션 크기: {position_size_str})"
                 )
                 order_id = order.get("orderId") if isinstance(order, dict) else None
-                fill_quality = self._collect_order_fill_quality(order_id)
+                with _otel.span(
+                    "execute_trade.fill_quality",
+                    attributes={"symbol": self.symbol, "order_id": order_id},
+                ):
+                    fill_quality = self._collect_order_fill_quality(order_id)
                 if (
                     self._maker_only
                     and fill_quality.get("maker_false_count", 0) > 0
@@ -1519,20 +1535,24 @@ class RealtimeTradingWithMonitoring:
             else:
                 # 일부 거래소/클라이언트 경로는 주문 응답 바디가 비어도 실제 체결이 발생할 수 있어
                 # 포지션/체결 변화를 2차 확인해 오탐 실패를 줄인다.
-                await asyncio.sleep(0.7)
-                pos_after = None
-                fills_after = None
-                try:
-                    pos_after = self._get_position()
-                except Exception:
+                with _otel.span(
+                    "execute_trade.empty_response_reconcile",
+                    attributes={"symbol": self.symbol, "signal": signal},
+                ):
+                    await asyncio.sleep(0.7)
                     pos_after = None
-                try:
-                    if hasattr(self.binance, "get_recent_fills"):
-                        recent_after = self.binance.get_recent_fills(symbol=self.symbol, limit=20)
-                        if isinstance(recent_after, list):
-                            fills_after = len(recent_after)
-                except Exception:
                     fills_after = None
+                    try:
+                        pos_after = self._get_position()
+                    except Exception:
+                        pos_after = None
+                    try:
+                        if hasattr(self.binance, "get_recent_fills"):
+                            recent_after = self.binance.get_recent_fills(symbol=self.symbol, limit=20)
+                            if isinstance(recent_after, list):
+                                fills_after = len(recent_after)
+                    except Exception:
+                        fills_after = None
 
                 expected_side = "LONG" if signal == "BUY" else "SHORT"
                 position_matches = (

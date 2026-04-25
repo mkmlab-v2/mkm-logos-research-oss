@@ -250,7 +250,11 @@ function Start-Daemon {
     if ([string]::IsNullOrWhiteSpace($reversalCooldownSec)) { $reversalCooldownSec = "600" }
     $strictMaker = Get-EnvAnyScope -Name "MKM_STRICT_MAKER_ENFORCEMENT"
     if ([string]::IsNullOrWhiteSpace($strictMaker)) { $strictMaker = "1" }
-    $runtimeGuardPrefix = "set MKM_MAKER_ONLY=$makerOnly&& set POSITION_MIN_HOLD_SECONDS=$minHoldSec&& set REVERSAL_COOLDOWN_SECONDS=$reversalCooldownSec&& set MKM_STRICT_MAKER_ENFORCEMENT=$strictMaker&& "
+    $otelEnabled = Get-EnvAnyScope -Name "MKM_OTEL_ENABLED"
+    if ([string]::IsNullOrWhiteSpace($otelEnabled)) { $otelEnabled = "0" }
+    $otelConsole = Get-EnvAnyScope -Name "MKM_OTEL_CONSOLE"
+    if ([string]::IsNullOrWhiteSpace($otelConsole)) { $otelConsole = "1" }
+    $runtimeGuardPrefix = "set MKM_MAKER_ONLY=$makerOnly&& set POSITION_MIN_HOLD_SECONDS=$minHoldSec&& set REVERSAL_COOLDOWN_SECONDS=$reversalCooldownSec&& set MKM_STRICT_MAKER_ENFORCEMENT=$strictMaker&& set MKM_OTEL_ENABLED=$otelEnabled&& set MKM_OTEL_CONSOLE=$otelConsole&& "
 
     # Local default guardrail:
     # - Keep daemon in testnet + non-trading mode unless user explicitly allows live mode.
