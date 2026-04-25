@@ -19,6 +19,7 @@ on:
 jobs:
   weekly-holdout-and-promote:
     runs-on: windows-latest
+    timeout-minutes: 180
     steps:
       - name: Enable git long paths
         shell: pwsh

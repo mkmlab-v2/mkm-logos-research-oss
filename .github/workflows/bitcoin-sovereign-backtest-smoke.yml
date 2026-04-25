@@ -37,6 +37,7 @@ concurrency:
 jobs:
   smoke:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     env:
       MKM_SOVEREIGN_SMOKE_REQUIRE_DATA: ${{ github.event_name == 'workflow_dispatch' && inputs.require_data && '1' || '0' }}
     defaults:

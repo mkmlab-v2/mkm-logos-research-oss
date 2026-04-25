@@ -73,6 +73,7 @@ concurrency:
 jobs:
   pytest-saju:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6

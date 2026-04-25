@@ -38,6 +38,7 @@ jobs:
   canary:
     if: ${{ vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
