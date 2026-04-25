@@ -37,6 +37,7 @@ from src.monitoring.trading_prometheus import (
     refresh_prometheus_from_daemon,
     start_prometheus_exporter_if_enabled,
 )
+from src.monitoring.trading_otel import init_otel_if_enabled, span as otel_span
 from src.config.config_loader import load_config
 
 # 로깅 설정
@@ -455,7 +456,11 @@ class BitcoinTradingDaemon:
             if getattr(self, "alert_manager", None) is not None:
                 self.engine.alert_manager = self.alert_manager
                 logger.info("✅ AlertManager 엔진 주입 완료 (방어 모드 알림용)")
-            await self.engine.run()
+            with otel_span(
+                "engine.run",
+                attributes={"symbol": self.symbol, "testnet": str(self.testnet)},
+            ):
+                await self.engine.run()
         except KeyboardInterrupt:
             logger.info("⏹️ 사용자에 의해 중단됨")
             raise
@@ -523,6 +528,11 @@ class BitcoinTradingDaemon:
         self.running = True
         self.start_time = datetime.now()
         self._touch_heartbeat()
+
+        try:
+            init_otel_if_enabled(service_name="mkm-bitcoin-trading-daemon")
+        except Exception as e:
+            logger.warning("⚠️ OpenTelemetry init skipped: %s", e)
 
         if self._is_kill_switch_on():
             logger.warning(f"🛑 Kill Switch 감지됨: {self.stop_file}")
