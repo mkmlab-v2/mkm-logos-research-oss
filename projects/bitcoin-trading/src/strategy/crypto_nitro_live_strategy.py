@@ -543,6 +543,10 @@ class CryptoNitroLiveStrategy:
         
         # 🔴 다중 확인 로직: 연속 신호 추적 (설정에서 min_consecutive_signals 로드됨)
         self.signal_history = []  # 최근 신호 히스토리 (최대 5개)
+        # Crypto-Nitro 엔진 미탑재 시 fallback MA 규칙 파라미터
+        # (기본값은 기존 동작과 동일하게 유지)
+        self.fallback_min_diff_ratio = 0.002
+        self.fallback_leverage_multiplier = 0.6
         
         # 🎯 시장 국면 탐지 시스템 초기화
         self.regime_detector = None
@@ -1620,7 +1624,8 @@ class CryptoNitroLiveStrategy:
                 ma_long = float(close_series.iloc[-80:].mean()) if n_prices >= 80 else float(close_series.iloc[0])
                 diff_ratio = (ma_short / ma_long - 1.0) if ma_long != 0 else 0.0
 
-                if abs(diff_ratio) < 0.002:
+                min_diff_ratio = float(getattr(self, "fallback_min_diff_ratio", 0.002) or 0.002)
+                if abs(diff_ratio) < min_diff_ratio:
                     fallback_signal = "HOLD"
                     fallback_confidence = 0.0
                 else:
@@ -1631,7 +1636,7 @@ class CryptoNitroLiveStrategy:
                 signal_data = {
                     "signal": fallback_signal,
                     "confidence": fallback_confidence,
-                    "leverage_multiplier": 0.6,
+                    "leverage_multiplier": float(getattr(self, "fallback_leverage_multiplier", 0.6) or 0.6),
                     "lambda": 0.5,
                     "reason": "fallback: crypto_nitro_unavailable_ma_trend"
                 }
