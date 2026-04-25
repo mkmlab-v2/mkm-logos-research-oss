@@ -69,6 +69,11 @@ else {
         ok     = ($tr -match "IncludeConstitutionGates")
         detail = if ($tr.Length -gt 220) { $tr.Substring(0, 220) + "..." } else { $tr }
     }
+    $checks += [ordered]@{
+        id     = "task_to_run_full"
+        ok     = $true
+        detail = $tr
+    }
     if (-not ($tr -match "IncludeConstitutionGates")) { $fail = $true }
     $strictInTask = ($tr -match "(^|\s)-Strict(\s|$)")
     $checks += [ordered]@{
