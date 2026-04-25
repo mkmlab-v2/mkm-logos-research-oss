@@ -4,7 +4,8 @@ param(
     [string]$OutputPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\ops_phase1_readiness_latest.json",
     [int]$MaxReportAgeHours = 30,
     [switch]$Strict,
-    [switch]$AllowNonZeroLastResult
+    [switch]$AllowNonZeroLastResult,
+    [switch]$RequireBitcoinTradingOtelSmoke
 )
 
 $ErrorActionPreference = "Stop"
@@ -58,6 +59,13 @@ else {
         detail = if ($strictInTask) { "strict_flag_present" } else { "strict_flag_missing" }
     }
     if (-not $strictInTask) { $fail = $true }
+    $otelSmokeInTask = ($tr -match "(^|\s)-IncludeBitcoinTradingOtelSmoke(\s|$)")
+    $checks += [ordered]@{
+        id = "task_otel_smoke_enabled"
+        ok = if ($RequireBitcoinTradingOtelSmoke) { $otelSmokeInTask } else { $true }
+        detail = if ($otelSmokeInTask) { "otel_smoke_flag_present" } elseif ($RequireBitcoinTradingOtelSmoke) { "otel_smoke_flag_missing_required" } else { "otel_smoke_flag_missing_optional" }
+    }
+    if ($RequireBitcoinTradingOtelSmoke -and -not $otelSmokeInTask) { $fail = $true }
     $checks += [ordered]@{ id = "logon_mode"; ok = $true; detail = $logon; note = "Interactive only = may not run when logged off; set Run whether user is logged on if unattended required." }
     $checks += [ordered]@{
         id     = "last_run_time"

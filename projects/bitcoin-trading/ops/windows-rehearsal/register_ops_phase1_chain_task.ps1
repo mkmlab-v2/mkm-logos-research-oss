@@ -33,7 +33,11 @@ if ($IncludeBitcoinTradingOtelSmoke) {
     $extra += " -IncludeBitcoinTradingOtelSmoke"
 }
 if ($TrackaDefaultLane -and $TrackaDefaultLane.Trim().Length -gt 0) {
-    $extra += " -TrackaDefaultLane " + $TrackaDefaultLane.Trim().ToLowerInvariant()
+    $lane = $TrackaDefaultLane.Trim().ToLowerInvariant()
+    # Keep /TR short enough for schtasks limit by skipping explicit default.
+    if ($lane -ne "c3_domain_gated") {
+        $extra += " -TrackaDefaultLane " + $lane
+    }
 }
 
 $tr = "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`"$extra"

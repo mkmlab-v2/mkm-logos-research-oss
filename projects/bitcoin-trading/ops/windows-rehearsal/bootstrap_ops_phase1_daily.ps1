@@ -37,7 +37,7 @@ if (-not $SkipTaskRegister) {
 if ($IncludeReadiness) {
     $vr = Join-Path $ops "verify_ops_phase1_operational_readiness.ps1"
     Write-Host "=== OPS: operational readiness (task TR, report age, alarm URL) ==="
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $vr
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $vr -RequireBitcoinTradingOtelSmoke:$IncludeBitcoinTradingOtelSmoke
     if ($LASTEXITCODE -ne 0) {
         throw "verify_ops_phase1_operational_readiness failed"
     }
