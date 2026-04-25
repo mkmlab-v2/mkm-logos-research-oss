@@ -211,6 +211,9 @@ reports/aistudio_mcp_env_diagnosis.json
 # Root accidental probe output (one-line JSON); keep local only
 /utf8
 /tmp_verify_report.json
+# Accidental installer / one-off sync scratch at repo root (do not track)
+/GoogleDriveSetup.exe
+/tmp_sync_report.txt
 .aider*
 
 # Local Windows Task Scheduler audit exports (regenerable; keep status clean)
