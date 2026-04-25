@@ -2,6 +2,8 @@ param(
     [switch]$SkipEnvSync,
     [switch]$SkipTaskRegister,
     [switch]$ExcludeConstitutionGates,
+    [switch]$ExcludeReadinessConstitutionRequirement,
+    [switch]$ExcludeReadinessStrictRequirement,
     [switch]$IncludeReadiness,
     [switch]$IncludeWebhookSmoke,
     [switch]$IncludeBitcoinTradingOtelSmoke,
@@ -36,8 +38,11 @@ if (-not $SkipTaskRegister) {
 
 if ($IncludeReadiness) {
     $vr = Join-Path $ops "verify_ops_phase1_operational_readiness.ps1"
+    $requireConstitution = (-not $ExcludeConstitutionGates)
+    if ($ExcludeReadinessConstitutionRequirement) { $requireConstitution = $false }
+    $requireStrict = (-not $ExcludeReadinessStrictRequirement)
     Write-Host "=== OPS: operational readiness (task TR, report age, alarm URL) ==="
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $vr -RequireBitcoinTradingOtelSmoke:$IncludeBitcoinTradingOtelSmoke
+    & $vr -RequireConstitutionGates:$requireConstitution -RequireStrictMode:$requireStrict -RequireBitcoinTradingOtelSmoke:$IncludeBitcoinTradingOtelSmoke
     if ($LASTEXITCODE -ne 0) {
         throw "verify_ops_phase1_operational_readiness failed"
     }
