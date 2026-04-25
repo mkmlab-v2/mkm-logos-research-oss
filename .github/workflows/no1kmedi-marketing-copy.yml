@@ -10,11 +10,6 @@ on:
       - "scripts/verify_12ai_orchestration_gate.ps1"
       - ".github/workflows/no1kmedi-marketing-copy.yml"
   pull_request:
-    paths:
-      - "projects/no1kmedi/marketing-site/**"
-      - "projects/no1kmedi/src/**"
-      - "scripts/verify_12ai_orchestration_gate.ps1"
-      - ".github/workflows/no1kmedi-marketing-copy.yml"
   workflow_dispatch:
 
 permissions:

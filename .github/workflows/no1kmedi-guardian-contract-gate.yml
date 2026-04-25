@@ -11,14 +11,6 @@ concurrency:
 
 on:
   pull_request:
-    paths:
-      - "projects/no1kmedi/src/app/api/guardian/**"
-      - "projects/no1kmedi/src/lib/ai-provider.ts"
-      - "projects/no1kmedi/src/lib/vertex-gemini.ts"
-      - "projects/no1kmedi/src/lib/local-llm.ts"
-      - "scripts/validate_no1kmedi_guardian_contracts.py"
-      - "scripts/verify_12ai_orchestration_gate.ps1"
-      - ".github/workflows/no1kmedi-guardian-contract-gate.yml"
   workflow_dispatch:
 
 jobs:
