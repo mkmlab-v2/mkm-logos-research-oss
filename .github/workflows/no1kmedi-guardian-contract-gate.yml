@@ -1,4 +1,5 @@
 name: no1kmedi Guardian Contract Gate
+# Required-check trigger guard: keep path-filter workflow visible to PR checks.
 
 on:
   pull_request:

@@ -1,0 +1,39 @@
+name: pixel-universe-admin-smoke
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "api-services/routers/pixel_universe/**"
+      - "api-services/tests/test_pixel_universe_router.py"
+      - "scripts/generate_pixel_universe_admin_auth.py"
+      - "scripts/run_pixel_universe_admin_ops.py"
+      - "tests/test_pixel_universe_admin_scripts.py"
+  pull_request:
+    paths:
+      - "api-services/routers/pixel_universe/**"
+      - "api-services/tests/test_pixel_universe_router.py"
+      - "scripts/generate_pixel_universe_admin_auth.py"
+      - "scripts/run_pixel_universe_admin_ops.py"
+      - "tests/test_pixel_universe_admin_scripts.py"
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependencies
+        run: python -m pip install --upgrade pip pytest fastapi httpx
+
+      - name: Run Pixel Universe admin smoke tests
+        run: |
+          python -m pytest tests/test_pixel_universe_admin_scripts.py api-services/tests/test_pixel_universe_router.py -q --tb=short
