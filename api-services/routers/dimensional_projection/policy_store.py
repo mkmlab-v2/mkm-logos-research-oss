@@ -19,6 +19,7 @@ from routers.dimensional_projection.runtime_lock import enforce_runtime_lock
 
 DEFAULT_POLICY = {
     "risk_block_threshold": 0.8,
+    "risk_revise_threshold": 0.65,
     "ood_revise_threshold": 0.7,
     "canon_min_threshold": 0.45,
     "coherence_min_threshold": 0.5,
@@ -117,6 +118,7 @@ def get_policy_thresholds(policy_id: str) -> dict[str, float]:
 
     env_map = {
         "risk_block_threshold": "DIMENSIONAL_PROJECTION_RISK_BLOCK_THRESHOLD",
+        "risk_revise_threshold": "DIMENSIONAL_PROJECTION_RISK_REVISE_THRESHOLD",
         "ood_revise_threshold": "DIMENSIONAL_PROJECTION_OOD_REVISE_THRESHOLD",
         "canon_min_threshold": "DIMENSIONAL_PROJECTION_CANON_MIN_THRESHOLD",
         "coherence_min_threshold": "DIMENSIONAL_PROJECTION_COHERENCE_MIN_THRESHOLD",
