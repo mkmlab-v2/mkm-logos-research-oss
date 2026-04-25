@@ -85,7 +85,8 @@ else {
         detail = if ($strictInTask) { "strict_flag_present" } elseif ($RequireStrictMode) { "strict_flag_missing_required" } else { "strict_flag_missing_optional" }
     }
     if ($RequireStrictMode -and -not $strictInTask) { $fail = $true }
-    $otelSmokeInTask = ($tr -match "(^|\s)-IncludeBitcoinTradingOtelSmoke(\s|$)")
+    # schtasks /V output can truncate long "Task To Run" strings, so allow prefix match.
+    $otelSmokeInTask = ($tr -match "IncludeBitcoinTradingOtelSmo")
     $checks += [ordered]@{
         id = "task_otel_smoke_enabled"
         ok = if ($RequireBitcoinTradingOtelSmoke) { $otelSmokeInTask } else { $true }
