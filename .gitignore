@@ -118,6 +118,8 @@ reports/shard_evolve/
 reports/fused_quant_pixel_sop_runner.lock
 # Track A daily commercialization chain append-only log (local/scheduler)
 reports/track_a_commercialization_daily_log.jsonl
+# Dimensional projection bridge local outputs (regenerable; refresh/eval scripts)
+reports/dimensional_projection_bridge/
 # mkm-life: local funnel pipeline outputs (regenerable; keep scripts + SSOT pair tracked)
 projects/mkm-life/reports/one_question_funnel_*
 !projects/mkm-life/reports/one_question_funnel_daily_targets_latest.json
