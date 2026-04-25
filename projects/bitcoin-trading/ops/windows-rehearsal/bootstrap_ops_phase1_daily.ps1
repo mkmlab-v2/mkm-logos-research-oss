@@ -4,6 +4,7 @@ param(
     [switch]$ExcludeConstitutionGates,
     [switch]$IncludeReadiness,
     [switch]$IncludeWebhookSmoke,
+    [switch]$IncludeBitcoinTradingOtelSmoke,
     [string]$TrackaDefaultLane = "c3_domain_gated"
 )
 
@@ -48,6 +49,15 @@ if ($IncludeWebhookSmoke) {
     & powershell -NoProfile -ExecutionPolicy Bypass -File $sm
     if ($LASTEXITCODE -ne 0) {
         throw "smoke_ops_phase1_webhook failed"
+    }
+}
+
+if ($IncludeBitcoinTradingOtelSmoke) {
+    $health = "C:\workspace\scripts\run_workspace_automation_health.ps1"
+    Write-Host "=== OPS: bitcoin-trading OTel smoke (health shortcut profile) ==="
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $health -WorkspaceRoot "C:\workspace" -BitcoinTradingOtelSmokeOnly
+    if ($LASTEXITCODE -ne 0) {
+        throw "run_workspace_automation_health (BitcoinTradingOtelSmokeOnly) failed"
     }
 }
 
