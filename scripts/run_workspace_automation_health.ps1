@@ -36,7 +36,9 @@ param(
     [switch]$WeatherFullGateStrictSchemaCsv,
 
     # Optional: bitcoin-trading OpenTelemetry smoke (console or OTLP; few seconds if packages installed).
-    [switch]$IncludeBitcoinTradingOtelSmoke
+    [switch]$IncludeBitcoinTradingOtelSmoke,
+    # Shortcut profile: run only bitcoin-trading OTel smoke (skip broader health checks).
+    [switch]$BitcoinTradingOtelSmokeOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -44,6 +46,13 @@ $root = $WorkspaceRoot
 
 if ($BioSnpOnly) {
     $IncludeBioPaperSnpJoinSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+}
+
+if ($BitcoinTradingOtelSmokeOnly) {
+    $IncludeBitcoinTradingOtelSmoke = $true
     $SkipVaultMirror = $true
     $SkipMkmMemoryInventory = $true
     $SkipPhase1Readiness = $true
@@ -87,8 +96,10 @@ try {
         }
     }
 
-    Step "P0 / CONSTITUTION paths" {
-        & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\verify_p0_constitution_gate_paths.ps1") -WorkspaceRoot $root
+    if (-not $BitcoinTradingOtelSmokeOnly) {
+        Step "P0 / CONSTITUTION paths" {
+            & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\verify_p0_constitution_gate_paths.ps1") -WorkspaceRoot $root
+        }
     }
 
     if (-not $SkipMkmMemoryInventory) {
@@ -151,15 +162,17 @@ try {
         }
     }
 
-    Write-Host ""
-    Write-Host "=== Automation registry reconcile ===" -ForegroundColor Cyan
-    $rec = Join-Path $root "projects\bitcoin-trading\ops\windows-rehearsal\reconcile_automation_registry.ps1"
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $rec
-    $re = $LASTEXITCODE
-    if ($re -ne 0) {
-        $msg = "reconcile_automation_registry exit $re (scheduler drift?)"
-        if ($StrictReconcile) { throw $msg }
-        Write-Host "WARN: $msg" -ForegroundColor Yellow
+    if (-not $BitcoinTradingOtelSmokeOnly) {
+        Write-Host ""
+        Write-Host "=== Automation registry reconcile ===" -ForegroundColor Cyan
+        $rec = Join-Path $root "projects\bitcoin-trading\ops\windows-rehearsal\reconcile_automation_registry.ps1"
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $rec
+        $re = $LASTEXITCODE
+        if ($re -ne 0) {
+            $msg = "reconcile_automation_registry exit $re (scheduler drift?)"
+            if ($StrictReconcile) { throw $msg }
+            Write-Host "WARN: $msg" -ForegroundColor Yellow
+        }
     }
 
     if ($IncludeCompressionKpi) {
