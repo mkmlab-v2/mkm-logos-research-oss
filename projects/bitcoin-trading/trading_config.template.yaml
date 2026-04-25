@@ -1,29 +1,23 @@
 strategy:
-  # Default stability profile (recommended live baseline)
   min_confidence: 0.64
   min_consecutive_signals: 2
   min_signal_bars: 14
   use_short_horizon_profile: false
-
-  # Optional short-horizon profile (only for tactical short-window use)
   short_horizon_profile:
-    min_confidence: 0.60
+    min_confidence: 0.58
     min_consecutive_signals: 1
-    min_signal_bars: 8
-    max_position_size: 0.24
+    min_signal_bars: 5
+    max_position_size: 0.22
     fallback_min_diff_ratio: 0.0005
-    fallback_leverage_multiplier: 0.40
-
-  # Optional auto switch (default off)
+    fallback_leverage_multiplier: 0.4
   auto_profile_switch:
-    enabled: false
-    short_window_bars: 14
+    enabled: true
+    short_window_bars: 6
     long_window_bars: 180
-    on_short_return_threshold: -0.03
-    off_long_drawdown_threshold: 0.10
+    on_short_return_threshold: 0.0
+    off_long_drawdown_threshold: 0.1
     off_long_return_threshold: -0.01
-    switch_cooldown_bars: 10
-
+    switch_cooldown_bars: 1
 risk_management:
   max_position_size: 0.24
   max_drawdown: 0.22
