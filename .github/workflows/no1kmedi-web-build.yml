@@ -30,8 +30,7 @@ jobs:
       action: change_strategy
 
   build:
-    needs: orchestration-gate
-    if: ${{ vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'pull_request' || vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     defaults:

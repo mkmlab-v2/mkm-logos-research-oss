@@ -24,7 +24,6 @@ jobs:
       action: change_strategy
 
   guardian-contract-gate:
-    needs: orchestration-gate
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
