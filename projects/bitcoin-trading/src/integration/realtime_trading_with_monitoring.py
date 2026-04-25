@@ -337,10 +337,6 @@ class RealtimeTradingWithMonitoring:
                         reason="close_blocked_min_hold",
                         details=details,
                     )
-                    self._set_4ai_audit_trace(
-                        final_decision="skipped",
-                        final_reason="close_blocked_min_hold",
-                    )
                     return False
             result = self.binance.close_position(self.symbol, position_side)
             if result:
@@ -505,10 +501,6 @@ class RealtimeTradingWithMonitoring:
                     decision="skipped",
                     reason="invalid_current_price",
                     details={"current_price": current_price},
-                )
-                self._set_4ai_audit_trace(
-                    final_decision="skipped",
-                    final_reason="invalid_current_price",
                 )
                 self._save_state()
                 return
@@ -759,7 +751,6 @@ class RealtimeTradingWithMonitoring:
                         confidence=integrated_confidence,
                         details={"warning_level": warning_level, "min_confidence": MIN_CONFIDENCE},
                     )
-                    self._set_4ai_audit_trace(final_decision="skipped", final_reason=risk_reason)
                     self._save_state()
                     return
                 # Phase 1 방어망: 반대 신호 시 선청산 후 진입
@@ -784,10 +775,6 @@ class RealtimeTradingWithMonitoring:
                                 confidence=integrated_confidence,
                                 details=reversal_details,
                             )
-                            self._set_4ai_audit_trace(
-                                final_decision="skipped",
-                                final_reason=reversal_reason,
-                            )
                             self._save_state()
                             return
                         logger.info(f"🔄 반대 신호 선청산: {side} → {integrated_signal} 진입 예정")
@@ -803,7 +790,6 @@ class RealtimeTradingWithMonitoring:
                     confidence=integrated_confidence,
                     details={"warning_level": warning_level},
                 )
-                self._set_4ai_audit_trace(final_decision="skipped", final_reason=reason)
             self._save_state()
         
         except Exception as e:
@@ -907,6 +893,9 @@ class RealtimeTradingWithMonitoring:
             "confidence": None if confidence is None else round(float(confidence), 6),
         }
         self.last_4ai_trace["timestamp"] = self.last_execution_trace["ts"]
+        # SL/TP·리스크 등이 주기적으로 실행 추적만 갱신할 때 ai4가 옛날 주문 거절에 묶이지 않게 동기화한다.
+        if reason != "execute_trade_called":
+            self._set_4ai_audit_trace(final_decision=decision, final_reason=reason)
 
     def _set_4ai_signal_trace(
         self,
@@ -1371,10 +1360,6 @@ class RealtimeTradingWithMonitoring:
                         confidence=confidence,
                         details=details,
                     )
-                    self._set_4ai_audit_trace(
-                        final_decision="skipped",
-                        final_reason="same_side_pyramiding_blocked",
-                    )
                     return
 
             # 주문 수량 계산 (USDT 선물 기준)
@@ -1415,10 +1400,6 @@ class RealtimeTradingWithMonitoring:
                             signal=signal,
                             confidence=confidence,
                             details=details,
-                        )
-                        self._set_4ai_audit_trace(
-                            final_decision="skipped",
-                            final_reason="existing_position_exceeds_cap",
                         )
                         return
             margin_usdt = max(0.0, float(current_capital) * float(dynamic_position_size))
@@ -1492,10 +1473,6 @@ class RealtimeTradingWithMonitoring:
                         confidence=confidence,
                         details=details,
                     )
-                    self._set_4ai_audit_trace(
-                        final_decision="skipped",
-                        final_reason="maker_violation_trading_paused",
-                    )
                     self._save_state()
                     return
                 
@@ -1520,7 +1497,6 @@ class RealtimeTradingWithMonitoring:
                     },
                 )
                 self._track_position_open(signal)
-                self._set_4ai_audit_trace(final_decision="executed", final_reason="order_submitted")
                 
                 # 리스크 가디언 업데이트 (거래 결과는 주문 체결 후 별도로 업데이트 필요)
                 # 실제 PnL은 주문 체결 후 업데이트
@@ -1571,10 +1547,6 @@ class RealtimeTradingWithMonitoring:
                         },
                     )
                     self._track_position_open(signal)
-                    self._set_4ai_audit_trace(
-                        final_decision="executed",
-                        final_reason="order_reconciled_after_empty_response",
-                    )
                     return
 
                 order_error = None
@@ -1599,7 +1571,6 @@ class RealtimeTradingWithMonitoring:
                         "order_error": order_error,
                     },
                 )
-                self._set_4ai_audit_trace(final_decision="failed", final_reason="order_empty_response")
         
         except Exception as e:
             logger.error(f"❌ 거래 실행 오류: {e}")
@@ -1610,7 +1581,6 @@ class RealtimeTradingWithMonitoring:
                 confidence=confidence,
                 details={"error": str(e)},
             )
-            self._set_4ai_audit_trace(final_decision="failed", final_reason="execute_trade_exception")
     
     async def run(self):
         """메인 실행 루프"""
