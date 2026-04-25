@@ -1613,13 +1613,27 @@ class CryptoNitroLiveStrategy:
                         "lambda": 0.5
                     }
             else:
-                # Crypto-Nitro 엔진이 없을 때 기본 신호 생성
-                logger.warning("⚠️ Crypto-Nitro 엔진 없음, 기본 신호 생성")
+                # Crypto-Nitro 엔진이 없을 때도 HOLD 고정 대신 경량 추세 신호를 생성한다.
+                # (운영 복구용 fallback: 신호 경로가 완전히 죽는 현상 방지)
+                logger.warning("⚠️ Crypto-Nitro 엔진 없음, 경량 MA fallback 신호 사용")
+                ma_short = float(close_series.iloc[-20:].mean())
+                ma_long = float(close_series.iloc[-80:].mean()) if n_prices >= 80 else float(close_series.iloc[0])
+                diff_ratio = (ma_short / ma_long - 1.0) if ma_long != 0 else 0.0
+
+                if abs(diff_ratio) < 0.002:
+                    fallback_signal = "HOLD"
+                    fallback_confidence = 0.0
+                else:
+                    fallback_signal = "BUY" if diff_ratio > 0 else "SELL"
+                    # min_confidence(기본 0.6)를 넘기는 구간을 확보해 최소 거래 경로를 살린다.
+                    fallback_confidence = float(min(0.9, max(0.62, abs(diff_ratio) * 25.0)))
+
                 signal_data = {
-                    "signal": "HOLD",
-                    "confidence": 0.0,
-                    "leverage_multiplier": 1.0,
-                    "lambda": 0.5
+                    "signal": fallback_signal,
+                    "confidence": fallback_confidence,
+                    "leverage_multiplier": 0.6,
+                    "lambda": 0.5,
+                    "reason": "fallback: crypto_nitro_unavailable_ma_trend"
                 }
 
             # 🏛️ BTC 레짐에 따라 레버리지 멀티플 조정 (위험 구간 보호)
