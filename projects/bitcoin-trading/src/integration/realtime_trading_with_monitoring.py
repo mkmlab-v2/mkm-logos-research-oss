@@ -30,6 +30,7 @@ from datetime import datetime
 import json
 from pathlib import Path
 import sys
+from collections import deque
 import pandas as pd
 import numpy as np
 
@@ -189,6 +190,7 @@ class RealtimeTradingWithMonitoring:
         self._last_state_persist_ts = 0.0
         self.signal_total_count = 0
         self.singular_action_counts = {"BUY": 0, "SELL": 0, "LOCKED": 0}
+        self._recent_signal_events: deque[Tuple[float, str]] = deque(maxlen=5000)
         self.last_signal_summary: Dict[str, Any] = {}
         self.last_execution_trace: Dict[str, Any] = {
             "ts": None,
@@ -235,6 +237,7 @@ class RealtimeTradingWithMonitoring:
         log_dir = Path(__file__).resolve().parents[2] / "logs"
         log_dir.mkdir(parents=True, exist_ok=True)
         self.state_file = log_dir / "trading_state.json"
+        self.signal_bias_snapshot_file = root / "memory" / "v2" / "ops" / "signal_bias_snapshot_latest.json"
         self.startup_reconcile_status: Dict[str, Any] = {
             "completed": False,
             "ts": None,
@@ -853,6 +856,7 @@ class RealtimeTradingWithMonitoring:
 
         self.signal_total_count += 1
         self.singular_action_counts[action] = self.singular_action_counts.get(action, 0) + 1
+        self._recent_signal_events.append((time.time(), action))
         self.last_signal_summary = {
             "timestamp": datetime.now().isoformat(timespec="seconds"),
             "symbol": self.symbol,
@@ -867,6 +871,36 @@ class RealtimeTradingWithMonitoring:
             "price": round(float(current_price), 2),
             "regime_defense_mode": bool(getattr(self, "_regime_defense_mode", False)),
             "regime_id": getattr(self, "_last_regime_id", "unknown"),
+        }
+
+    def _build_signal_bias_snapshot(self, window_minutes: int = 60) -> Dict[str, Any]:
+        now_ts = time.time()
+        window_sec = max(60, int(window_minutes) * 60)
+        cutoff = now_ts - window_sec
+        while self._recent_signal_events and self._recent_signal_events[0][0] < cutoff:
+            self._recent_signal_events.popleft()
+
+        counts = {"BUY": 0, "SELL": 0, "LOCKED": 0}
+        for _, action in self._recent_signal_events:
+            if action in counts:
+                counts[action] += 1
+        total = int(sum(counts.values()))
+        ratios = {
+            "buy_ratio": (counts["BUY"] / total) if total > 0 else 0.0,
+            "sell_ratio": (counts["SELL"] / total) if total > 0 else 0.0,
+            "locked_ratio": (counts["LOCKED"] / total) if total > 0 else 0.0,
+        }
+        return {
+            "schema": "signal_bias_snapshot_v1",
+            "ts_utc": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+            "window_minutes": int(window_minutes),
+            "signal_count_window": total,
+            "counts": counts,
+            "ratios": ratios,
+            "dominant_action": (
+                max(counts, key=counts.get) if total > 0 else "NONE"
+            ),
+            "last_signal_summary": self.last_signal_summary or None,
         }
 
     def _set_execution_trace(
@@ -1139,6 +1173,12 @@ class RealtimeTradingWithMonitoring:
             }
             self.state_file.write_text(
                 json.dumps(state, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+            bias_snapshot = self._build_signal_bias_snapshot(window_minutes=60)
+            self.signal_bias_snapshot_file.parent.mkdir(parents=True, exist_ok=True)
+            self.signal_bias_snapshot_file.write_text(
+                json.dumps(bias_snapshot, ensure_ascii=False, indent=2),
                 encoding="utf-8",
             )
         except Exception as e:
