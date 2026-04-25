@@ -3,6 +3,8 @@ param(
     [string]$ReportPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\ops_phase1_chain_report_latest.json",
     [string]$OutputPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\ops_phase1_readiness_latest.json",
     [int]$MaxReportAgeHours = 30,
+    [switch]$RequireConstitutionGates = $true,
+    [switch]$RequireStrictMode = $true,
     [switch]$Strict,
     [switch]$AllowNonZeroLastResult,
     [switch]$RequireBitcoinTradingOtelSmoke
@@ -66,7 +68,7 @@ else {
     $lastResultValue = Get-SchtasksFieldValue -Lines $raw -Labels @("Last Result", "마지막 결과")
     $checks += [ordered]@{
         id     = "task_to_run"
-        ok     = ($tr -match "IncludeConstitutionGates")
+        ok     = if ($RequireConstitutionGates) { ($tr -match "IncludeConstitutionGates") } else { $true }
         detail = if ($tr.Length -gt 220) { $tr.Substring(0, 220) + "..." } else { $tr }
     }
     $checks += [ordered]@{
@@ -74,14 +76,14 @@ else {
         ok     = $true
         detail = $tr
     }
-    if (-not ($tr -match "IncludeConstitutionGates")) { $fail = $true }
+    if ($RequireConstitutionGates -and -not ($tr -match "IncludeConstitutionGates")) { $fail = $true }
     $strictInTask = ($tr -match "(^|\s)-Strict(\s|$)")
     $checks += [ordered]@{
         id = "task_strict_mode_enabled"
-        ok = $strictInTask
-        detail = if ($strictInTask) { "strict_flag_present" } else { "strict_flag_missing" }
+        ok = if ($RequireStrictMode) { $strictInTask } else { $true }
+        detail = if ($strictInTask) { "strict_flag_present" } elseif ($RequireStrictMode) { "strict_flag_missing_required" } else { "strict_flag_missing_optional" }
     }
-    if (-not $strictInTask) { $fail = $true }
+    if ($RequireStrictMode -and -not $strictInTask) { $fail = $true }
     $otelSmokeInTask = ($tr -match "(^|\s)-IncludeBitcoinTradingOtelSmoke(\s|$)")
     $checks += [ordered]@{
         id = "task_otel_smoke_enabled"
