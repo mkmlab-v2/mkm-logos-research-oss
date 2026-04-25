@@ -27,11 +27,31 @@ function Is-LastResultSuccess([string]$value) {
     return $false
 }
 
+function Get-SchtasksFieldValue {
+    param(
+        [string[]]$Lines,
+        [string[]]$Labels
+    )
+    foreach ($line in $Lines) {
+        foreach ($label in $Labels) {
+            $pattern = "^\s*" + [regex]::Escape($label) + "\s*:\s*(.+)$"
+            $m = [regex]::Match($line, $pattern)
+            if ($m.Success) {
+                return $m.Groups[1].Value.Trim()
+            }
+        }
+    }
+    return ""
+}
+
 $checks = @()
 $fail = $false
 $lastResultGateOk = $true
 
+$oldEap = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
 schtasks /Query /TN $TaskName > $null 2>&1
+$ErrorActionPreference = $oldEap
 $taskExists = ($LASTEXITCODE -eq 0)
 if (-not $taskExists) {
     $checks += [ordered]@{ id = "task_exists"; ok = $false; detail = "schtasks_query_failed" }
@@ -39,13 +59,11 @@ if (-not $taskExists) {
 }
 else {
     $checks += [ordered]@{ id = "task_exists"; ok = $true; detail = $TaskName }
-    $raw = schtasks /Query /TN $TaskName /V /FO LIST 2>$null
-    $trLine = ($raw | Select-String "^Task To Run:\s+" | Select-Object -First 1)
-    $logonLine = ($raw | Select-String "^Logon Mode:\s+" | Select-Object -First 1)
-    $lastRun = ($raw | Select-String "^Last Run Time:\s+" | Select-Object -First 1)
-    $lastRes = ($raw | Select-String "^Last Result:\s+" | Select-Object -First 1)
-    $tr = if ($trLine) { ($trLine.ToString() -replace "^Task To Run:\s+", "").Trim() } else { "" }
-    $logon = if ($logonLine) { ($logonLine.ToString() -replace "^Logon Mode:\s+", "").Trim() } else { "" }
+    $raw = @(schtasks /Query /TN $TaskName /V /FO LIST 2>$null)
+    $tr = Get-SchtasksFieldValue -Lines $raw -Labels @("Task To Run", "작업 실행")
+    $logon = Get-SchtasksFieldValue -Lines $raw -Labels @("Logon Mode", "로그온 모드")
+    $lastRunValue = Get-SchtasksFieldValue -Lines $raw -Labels @("Last Run Time", "마지막 실행 시간")
+    $lastResultValue = Get-SchtasksFieldValue -Lines $raw -Labels @("Last Result", "마지막 결과")
     $checks += [ordered]@{
         id     = "task_to_run"
         ok     = ($tr -match "IncludeConstitutionGates")
@@ -70,14 +88,13 @@ else {
     $checks += [ordered]@{
         id     = "last_run_time"
         ok     = $true
-        detail = if ($lastRun) { ($lastRun.ToString() -replace "^Last Run Time:\s+", "").Trim() } else { "" }
+        detail = $lastRunValue
     }
     $checks += [ordered]@{
         id     = "last_result"
         ok     = $true
-        detail = if ($lastRes) { ($lastRes.ToString() -replace "^Last Result:\s+", "").Trim() } else { "" }
+        detail = $lastResultValue
     }
-    $lastResultValue = if ($lastRes) { ($lastRes.ToString() -replace "^Last Result:\s+", "").Trim() } else { "" }
     $lastResultOk = (Is-LastResultSuccess -value $lastResultValue) -or [bool]$AllowNonZeroLastResult
     $lastResultGateOk = $lastResultOk
     $checks += [ordered]@{
