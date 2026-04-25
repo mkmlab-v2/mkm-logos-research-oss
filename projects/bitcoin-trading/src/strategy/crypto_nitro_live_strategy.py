@@ -410,17 +410,62 @@ class CryptoNitroLiveStrategy:
         strategy_config = self.config.get("strategy", {})
         risk_config = self.config.get("risk_management", {})
         
-        self.min_confidence = strategy_config.get("min_confidence", 0.6)
+        self.min_confidence = strategy_config.get("min_confidence", 0.64)
         self.min_consecutive_signals = strategy_config.get("min_consecutive_signals", 2)
+        self.min_signal_bars = int(strategy_config.get("min_signal_bars", 14))
         # 운영 기본값 고정 옵션: True/False면 레짐 판단 대신 강제, None이면 기존 동적 로직 사용
         self.force_use_mean_reversion = strategy_config.get("force_use_mean_reversion", None)
-        self.max_position_size = risk_config.get("max_position_size", 0.3)
+        self.max_position_size = risk_config.get("max_position_size", 0.24)
         self.max_drawdown = risk_config.get("max_drawdown", 0.22)
         self.risk_multiplier_min = float(risk_config.get("risk_multiplier_min", 0.5))
         self.risk_multiplier_max = float(risk_config.get("risk_multiplier_max", 1.2))
         self.max_daily_loss = risk_config.get("max_daily_loss", 0.05)
         self.stop_loss_ratio = risk_config.get("stop_loss_ratio", 0.02)
         self.take_profit_ratio = risk_config.get("take_profit_ratio", 0.04)
+
+        # 프로파일 기본값 (fallback 파라미터는 신호 생성 경로에서 실제 사용됨)
+        default_fallback_min_diff_ratio = 0.001
+        default_fallback_leverage_multiplier = 0.45
+
+        # 프로파일 관리: default_stability + short_horizon(옵션)
+        self.profile_params: Dict[str, Dict[str, Any]] = {
+            "default_stability": {
+                "min_confidence": float(self.min_confidence),
+                "min_consecutive_signals": int(self.min_consecutive_signals),
+                "min_signal_bars": int(self.min_signal_bars),
+                "max_position_size": float(self.max_position_size),
+                "fallback_min_diff_ratio": float(default_fallback_min_diff_ratio),
+                "fallback_leverage_multiplier": float(default_fallback_leverage_multiplier),
+            }
+        }
+        short_cfg = strategy_config.get("short_horizon_profile") or {}
+        if isinstance(short_cfg, dict) and short_cfg:
+            self.profile_params["short_horizon"] = {
+                "min_confidence": float(short_cfg.get("min_confidence", self.min_confidence)),
+                "min_consecutive_signals": int(short_cfg.get("min_consecutive_signals", self.min_consecutive_signals)),
+                "min_signal_bars": int(short_cfg.get("min_signal_bars", self.min_signal_bars)),
+                "max_position_size": float(short_cfg.get("max_position_size", self.max_position_size)),
+                "fallback_min_diff_ratio": float(short_cfg.get("fallback_min_diff_ratio", default_fallback_min_diff_ratio)),
+                "fallback_leverage_multiplier": float(short_cfg.get("fallback_leverage_multiplier", default_fallback_leverage_multiplier)),
+            }
+
+        # 자동 전환 규칙(옵션): 14일 약세면 short_horizon ON, 180일 리스크 확대면 default_stability 복귀
+        auto_cfg = strategy_config.get("auto_profile_switch") or {}
+        self.auto_profile_switch_enabled = bool(auto_cfg.get("enabled", False))
+        self.auto_profile_short_window_bars = int(auto_cfg.get("short_window_bars", 14))
+        self.auto_profile_long_window_bars = int(auto_cfg.get("long_window_bars", 180))
+        self.auto_profile_on_short_return_threshold = float(auto_cfg.get("on_short_return_threshold", -0.03))
+        self.auto_profile_off_long_drawdown_threshold = float(auto_cfg.get("off_long_drawdown_threshold", 0.10))
+        self.auto_profile_off_long_return_threshold = float(auto_cfg.get("off_long_return_threshold", -0.01))
+        self.auto_profile_switch_cooldown_bars = int(auto_cfg.get("switch_cooldown_bars", 10))
+        self._profile_switch_last_index = -10_000
+
+        self.active_profile_mode = "default_stability"
+        use_short_profile = bool(strategy_config.get("use_short_horizon_profile", False))
+        if use_short_profile and "short_horizon" in self.profile_params:
+            self.active_profile_mode = "short_horizon"
+        self._apply_profile_params(self.active_profile_mode)
+
         # 무거운 분석 블록 샘플링 실행 간격.
         # 실시간(binance_client 사용) 기본은 1(매 봉), 백테스트/리플레이 기본은 3으로 호출 빈도 절감.
         _analysis_stride_default = 3 if self.binance_client is None else 1
@@ -482,6 +527,7 @@ class CryptoNitroLiveStrategy:
         logger.info(
             f"✅ 설정 파일 로드 완료: min_confidence={self.min_confidence:.2f}, "
             f"min_consecutive_signals={self.min_consecutive_signals}, max_position_size={self.max_position_size:.2%}, "
+            f"profile_mode={self.active_profile_mode}, "
             f"enforce_realworld_and_gate={self.enforce_realworld_and_gate}, "
             f"prophecy_search_quality_cap={self.prophecy_search_quality_cap:.2f}, "
             f"auxiliary_layers_risk_only={self.auxiliary_layers_risk_only}, "
@@ -546,8 +592,8 @@ class CryptoNitroLiveStrategy:
         # Crypto-Nitro 엔진 미탑재 시 fallback MA 규칙 파라미터
         # (기본값은 기존 동작과 동일하게 유지)
         # 안정화 기본 프로파일 (2026-04-25 로컬 스윕 기준, MDD 우선)
-        self.fallback_min_diff_ratio = 0.001
-        self.fallback_leverage_multiplier = 0.45
+        self.fallback_min_diff_ratio = float(getattr(self, "fallback_min_diff_ratio", 0.001) or 0.001)
+        self.fallback_leverage_multiplier = float(getattr(self, "fallback_leverage_multiplier", 0.45) or 0.45)
         
         # 🎯 시장 국면 탐지 시스템 초기화
         self.regime_detector = None
@@ -837,6 +883,66 @@ class CryptoNitroLiveStrategy:
         except Exception as e:
             logger.warning(f"⚠️ 설정 파일 로드 실패: {e}. 기본값 사용.")
             return {}
+
+    def _apply_profile_params(self, profile_name: str) -> None:
+        """프로파일 파라미터를 현재 전략 필드에 적용한다."""
+        params = self.profile_params.get(profile_name)
+        if not isinstance(params, dict):
+            return
+        self.min_confidence = float(params.get("min_confidence", self.min_confidence))
+        self.min_consecutive_signals = int(params.get("min_consecutive_signals", self.min_consecutive_signals))
+        self.min_signal_bars = int(params.get("min_signal_bars", self.min_signal_bars))
+        self.max_position_size = float(params.get("max_position_size", self.max_position_size))
+        self.fallback_min_diff_ratio = float(
+            params.get("fallback_min_diff_ratio", getattr(self, "fallback_min_diff_ratio", 0.001))
+        )
+        self.fallback_leverage_multiplier = float(
+            params.get("fallback_leverage_multiplier", getattr(self, "fallback_leverage_multiplier", 0.45))
+        )
+        self.active_profile_mode = profile_name
+
+    def _maybe_auto_switch_profile(self, close_series: pd.Series) -> None:
+        """시장 단기/장기 상태를 보고 default <-> short_horizon 자동 전환."""
+        if not self.auto_profile_switch_enabled or "short_horizon" not in self.profile_params:
+            return
+        n_prices = len(close_series)
+        if n_prices < 5:
+            return
+        if (n_prices - self._profile_switch_last_index) < max(1, self.auto_profile_switch_cooldown_bars):
+            return
+
+        short_bars = max(2, min(n_prices, self.auto_profile_short_window_bars))
+        long_bars = max(2, min(n_prices, self.auto_profile_long_window_bars))
+        short_slice = close_series.iloc[-short_bars:]
+        long_slice = close_series.iloc[-long_bars:]
+        short_return = float(short_slice.iloc[-1] / short_slice.iloc[0] - 1.0)
+        long_return = float(long_slice.iloc[-1] / long_slice.iloc[0] - 1.0)
+        rolling_max = long_slice.cummax()
+        long_drawdown = float(abs(min(0.0, (long_slice / rolling_max - 1.0).min())))
+
+        if self.active_profile_mode == "default_stability":
+            if short_return <= self.auto_profile_on_short_return_threshold:
+                self._apply_profile_params("short_horizon")
+                self._profile_switch_last_index = n_prices
+                logger.info(
+                    "🔀 profile auto-switch: default -> short_horizon "
+                    "(short_return=%.2f%% <= %.2f%%)",
+                    short_return * 100.0,
+                    self.auto_profile_on_short_return_threshold * 100.0,
+                )
+        elif self.active_profile_mode == "short_horizon":
+            if (
+                long_drawdown >= self.auto_profile_off_long_drawdown_threshold
+                or long_return <= self.auto_profile_off_long_return_threshold
+            ):
+                self._apply_profile_params("default_stability")
+                self._profile_switch_last_index = n_prices
+                logger.info(
+                    "🔀 profile auto-switch: short_horizon -> default "
+                    "(long_drawdown=%.2f%%, long_return=%.2f%%)",
+                    long_drawdown * 100.0,
+                    long_return * 100.0,
+                )
     
     def apply_jema12_trinity_validation(
         self,
@@ -1411,7 +1517,11 @@ class CryptoNitroLiveStrategy:
         try:
             # 가격 데이터가 충분하지 않으면 HOLD
             n_prices = len(self.price_data)
-            if n_prices < 20:
+            close_series = self.price_data["close"] if "close" in self.price_data.columns else pd.Series(dtype=float)
+            if len(close_series) > 0:
+                self._maybe_auto_switch_profile(close_series)
+            min_signal_bars = max(5, int(getattr(self, "min_signal_bars", 14) or 14))
+            if n_prices < min_signal_bars:
                 return {
                     "signal": "HOLD",
                     "confidence": 0.0,
@@ -1419,7 +1529,6 @@ class CryptoNitroLiveStrategy:
                     "reason": "가격 데이터 부족"
                 }
             
-            close_series = self.price_data["close"]
             returns_std = float(close_series.pct_change().std()) if n_prices > 1 else 0.0
 
             # 🧪 calibration_mode: 복잡 PMI/게이트/헌법 경로가 한쪽 신호로 쏠릴 때가 있어

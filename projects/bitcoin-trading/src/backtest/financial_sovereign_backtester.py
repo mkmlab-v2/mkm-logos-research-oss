@@ -414,15 +414,15 @@ class FinancialSovereignBacktester:
             data_file = bitcoin_trading_root / "data" / "historical_btc_data.csv"
         
         data_path = Path(data_file)
+        requested_months = 6
+        if self.start_date and self.end_date and self.end_date > self.start_date:
+            days = max(30, (self.end_date - self.start_date).days)
+            requested_months = max(1, int(np.ceil(days / 30)))
         
         # 파일이 없으면 자동 다운로드 (요청 기간 기반)
         if not data_path.exists():
             logger.info(f"📥 데이터 파일이 없습니다. 자동 다운로드를 시작합니다...")
-            months = 6
-            if self.start_date and self.end_date and self.end_date > self.start_date:
-                days = max(30, (self.end_date - self.start_date).days)
-                months = max(1, int(np.ceil(days / 30)))
-            return self.download_historical_data(months=months, interval="1d")
+            return self.download_historical_data(months=requested_months, interval="1d")
         
         try:
             # CSV 파일 로드
@@ -438,7 +438,7 @@ class FinancialSovereignBacktester:
                 df['date'] = pd.to_datetime(df['datetime'])
             else:
                 logger.error("❌ 날짜 컬럼을 찾을 수 없습니다. 자동 다운로드를 시도합니다...")
-                return self.download_historical_data(months=6, interval="1d")
+                return self.download_historical_data(months=requested_months, interval="1d")
             
             df.set_index('date', inplace=True)
             
@@ -447,13 +447,23 @@ class FinancialSovereignBacktester:
             missing_columns = [col for col in required_columns if col not in df.columns]
             if missing_columns:
                 logger.error(f"❌ 필수 컬럼이 없습니다: {missing_columns}. 자동 다운로드를 시도합니다...")
-                return self.download_historical_data(months=6, interval="1d")
+                return self.download_historical_data(months=requested_months, interval="1d")
             
             # 날짜 필터링
             if self.start_date:
                 df = df[df.index >= self.start_date]
             if self.end_date:
                 df = df[df.index <= self.end_date]
+
+            if self.start_date and self.end_date and not df.empty:
+                requested_days = max(1, (self.end_date - self.start_date).days)
+                covered_days = max(1, (df.index.max() - df.index.min()).days)
+                if covered_days < int(requested_days * 0.9):
+                    logger.warning(
+                        f"⚠️ 로컬 CSV 기간 부족(요청 {requested_days}d / 보유 {covered_days}d), "
+                        "요청 기간 기준으로 재다운로드합니다."
+                    )
+                    return self.download_historical_data(months=requested_months, interval="1d")
             
             logger.info(f"✅ 과거 데이터 로드 완료: {len(df)}개 캔들")
             logger.info(f"   기간: {df.index[0]} ~ {df.index[-1]}")
@@ -462,11 +472,7 @@ class FinancialSovereignBacktester:
             
         except Exception as e:
             logger.error(f"❌ 데이터 로드 실패: {e}. 자동 다운로드를 시도합니다...")
-            months = 6
-            if self.start_date and self.end_date and self.end_date > self.start_date:
-                days = max(30, (self.end_date - self.start_date).days)
-                months = max(1, int(np.ceil(days / 30)))
-            return self.download_historical_data(months=months, interval="1d")
+            return self.download_historical_data(months=requested_months, interval="1d")
     
     def run_backtest(self, historical_data: pd.DataFrame) -> Dict[str, Any]:
         """
@@ -680,12 +686,13 @@ class FinancialSovereignBacktester:
             timestamp: 타임스탬프
             signal_data: 신호 데이터
         """
-        # 포지션 크기: 자본 30% × BTC-6 레짐 multiplier (0.2~1.5 구간 반영)
+        # 포지션 크기: 전략 max_position_size × BTC-6 레짐 multiplier
         leverage_mult = float(signal_data.get("leverage_multiplier", 1.0))
         min_mul = float(getattr(self.strategy, "risk_multiplier_min", 0.5) or 0.5)
         max_mul = float(getattr(self.strategy, "risk_multiplier_max", 1.2) or 1.2)
         leverage_mult = max(min_mul, min(max_mul, leverage_mult))
-        position_size_usdt = self.capital * 0.3 * leverage_mult
+        base_position_size = float(getattr(self.strategy, "max_position_size", 0.3) or 0.3)
+        position_size_usdt = self.capital * base_position_size * leverage_mult
         position_size_btc = position_size_usdt / price
         
         # 수수료 계산
