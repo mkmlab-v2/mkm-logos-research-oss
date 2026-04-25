@@ -26,6 +26,15 @@ DEFAULT_SCAN_DIRS = [
 
 ALLOWED_FILE_EXTS = {".py", ".ts", ".tsx", ".js", ".jsx", ".json", ".yaml", ".yml", ".toml"}
 
+# B-track / isolated training entrypoints (explicitly not backend fact-engine).
+# Basename skip avoids CI drift when path-based --skip-regex does not match every runner layout.
+REVIEWED_ISOLATED_LLM_TRAIN_SCRIPTS = frozenset(
+    {
+        "train_mkm_prophecy_lora_unsloth.py",
+        "run_rag_turboquant_poc_template.py",
+    }
+)
+
 
 def _iter_files(root: Path, scan_dirs: list[str]) -> list[Path]:
     files: list[Path] = []
@@ -42,6 +51,16 @@ def _iter_files(root: Path, scan_dirs: list[str]) -> list[Path]:
 def _should_skip(path: Path, skip_patterns: list[re.Pattern[str]]) -> bool:
     normalized = path.as_posix()
     return any(p.search(normalized) for p in skip_patterns)
+
+
+def _is_reviewer_skip_script(root: Path, path: Path) -> bool:
+    try:
+        rel = path.relative_to(root)
+    except ValueError:
+        return False
+    if len(rel.parts) < 2 or rel.parts[0] != "scripts":
+        return False
+    return rel.name in REVIEWED_ISOLATED_LLM_TRAIN_SCRIPTS
 
 
 def main() -> int:
@@ -89,6 +108,8 @@ def main() -> int:
 
     violations: list[tuple[Path, int, str, str]] = []
     for path in _iter_files(root, scan_dirs):
+        if _is_reviewer_skip_script(root, path):
+            continue
         if _should_skip(path, skip_patterns):
             continue
         try:
