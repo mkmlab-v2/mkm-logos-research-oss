@@ -33,7 +33,10 @@ param(
     [string]$WeatherFullGateRunLabel = "external_real_week_health_gate_v1",
     [string]$WeatherFullGateBaselineProfile = "synthetic_hypo_120d",
     [switch]$WeatherFullGateAutoColumnsCsv,
-    [switch]$WeatherFullGateStrictSchemaCsv
+    [switch]$WeatherFullGateStrictSchemaCsv,
+
+    # Optional: bitcoin-trading OpenTelemetry smoke (console or OTLP; few seconds if packages installed).
+    [switch]$IncludeBitcoinTradingOtelSmoke
 )
 
 $ErrorActionPreference = "Stop"
@@ -283,6 +286,20 @@ try {
             Write-Host ""
             Write-Host "=== Weather full gate ===" -ForegroundColor Yellow
             Write-Host "SKIP: run_weather_btrack_external_real_week_full_gate_v1.ps1 not found"
+        }
+    }
+
+    if ($IncludeBitcoinTradingOtelSmoke) {
+        $otelSmoke = Join-Path $root "projects\bitcoin-trading\ops\metrics\smoke_otel.ps1"
+        if (Test-Path -LiteralPath $otelSmoke) {
+            Step "Bitcoin trading OTel smoke (ops/metrics/smoke_otel.ps1)" {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $otelSmoke
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Bitcoin trading OTel smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: smoke_otel.ps1 not found at $otelSmoke"
         }
     }
 
