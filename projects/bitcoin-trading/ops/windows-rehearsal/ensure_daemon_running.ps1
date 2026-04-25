@@ -37,6 +37,22 @@ if (([string]::IsNullOrWhiteSpace($riskProfileSourceName) -or [string]::IsNullOr
     }
 }
 
+# Optional: install prometheus_client before daemon spawn (User env MKM_ENSURE_PROMETHEUS_CLIENT=1).
+$ensureProm = [Environment]::GetEnvironmentVariable("MKM_ENSURE_PROMETHEUS_CLIENT", "Process")
+if ([string]::IsNullOrWhiteSpace($ensureProm)) {
+    $ensureProm = [Environment]::GetEnvironmentVariable("MKM_ENSURE_PROMETHEUS_CLIENT", "User")
+}
+if ($ensureProm -eq "1") {
+    $reqProm = Join-Path $projectRoot "requirements-optional-prometheus.txt"
+    if (Test-Path $reqProm) {
+        try {
+            py -m pip install -q -r $reqProm 2>&1 | Out-Null
+        } catch {
+            # non-fatal: daemon still runs without /metrics
+        }
+    }
+}
+
 if (-not (Test-Path $memoryDir)) {
     New-Item -ItemType Directory -Path $memoryDir | Out-Null
 }
