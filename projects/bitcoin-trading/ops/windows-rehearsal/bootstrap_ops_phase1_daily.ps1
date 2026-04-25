@@ -41,6 +41,12 @@ if ($IncludeReadiness) {
     $requireConstitution = (-not $ExcludeConstitutionGates)
     if ($ExcludeReadinessConstitutionRequirement) { $requireConstitution = $false }
     $requireStrict = (-not $ExcludeReadinessStrictRequirement)
+    Write-Host ("=== OPS policy summary: register(constitution={0}, otel_smoke={1}) readiness(require_constitution={2}, require_strict={3}, require_otel_smoke={4}) ===" -f `
+        (-not $ExcludeConstitutionGates), `
+        [bool]$IncludeBitcoinTradingOtelSmoke, `
+        $requireConstitution, `
+        $requireStrict, `
+        [bool]$IncludeBitcoinTradingOtelSmoke)
     Write-Host "=== OPS: operational readiness (task TR, report age, alarm URL) ==="
     & $vr -RequireConstitutionGates:$requireConstitution -RequireStrictMode:$requireStrict -RequireBitcoinTradingOtelSmoke:$IncludeBitcoinTradingOtelSmoke
     if ($LASTEXITCODE -ne 0) {
