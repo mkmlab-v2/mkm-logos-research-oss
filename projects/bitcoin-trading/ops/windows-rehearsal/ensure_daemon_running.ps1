@@ -254,7 +254,15 @@ function Start-Daemon {
     if ([string]::IsNullOrWhiteSpace($otelEnabled)) { $otelEnabled = "0" }
     $otelConsole = Get-EnvAnyScope -Name "MKM_OTEL_CONSOLE"
     if ([string]::IsNullOrWhiteSpace($otelConsole)) { $otelConsole = "1" }
+    $otlpTracesEndpoint = Get-EnvAnyScope -Name "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT"
+    $otlpEndpoint = Get-EnvAnyScope -Name "OTEL_EXPORTER_OTLP_ENDPOINT"
     $runtimeGuardPrefix = "set MKM_MAKER_ONLY=$makerOnly&& set POSITION_MIN_HOLD_SECONDS=$minHoldSec&& set REVERSAL_COOLDOWN_SECONDS=$reversalCooldownSec&& set MKM_STRICT_MAKER_ENFORCEMENT=$strictMaker&& set MKM_OTEL_ENABLED=$otelEnabled&& set MKM_OTEL_CONSOLE=$otelConsole&& "
+    if (-not [string]::IsNullOrWhiteSpace($otlpTracesEndpoint)) {
+        $runtimeGuardPrefix += "set OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=$otlpTracesEndpoint&& "
+    }
+    if (-not [string]::IsNullOrWhiteSpace($otlpEndpoint)) {
+        $runtimeGuardPrefix += "set OTEL_EXPORTER_OTLP_ENDPOINT=$otlpEndpoint&& "
+    }
 
     # Local default guardrail:
     # - Keep daemon in testnet + non-trading mode unless user explicitly allows live mode.
