@@ -1,67 +1,64 @@
 {
-  "schema": "dual_promotion_prep_pack_v1",
-  "generated_at_utc": "2026-04-21T14:14:30Z",
+  "schema": "dual_promotion_prep_pack_v2",
+  "generated_at_utc": "2026-04-27T09:33:40Z",
   "research_only": true,
   "scope": {
-    "prophecy_lane": "B->A promotion readiness",
-    "compression_lane": "B->A promotion readiness"
+    "a_track_lane": "A-track operational readiness",
+    "b_track_lane": "B-track promotion readiness (research-only)"
   },
   "preflight": {
     "p0_constitution_gate_paths": {
       "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_p0_constitution_gate_paths.ps1",
       "status": "pass",
-      "note": "OK: P0/CONSTITUTION gate paths present (216 checked)."
+      "note": "OK: P0/CONSTITUTION gate paths present (179 checked)."
+    },
+    "btrack_promotion_preflight": {
+      "artifact": "docs/final/artifacts/promotion_preflight_v1_latest.json",
+      "result": "PASS",
+      "reason": "all preflight checks passed"
     }
   },
-  "prophecy": {
-    "status": "manual_review_candidate",
+  "a_track": {
+    "status": "go_s2_paper_strict",
     "go": true,
-    "summary": "Legacy strict gates now pass; human sign-off still required for promotion.",
+    "summary": "A-track gate is GO with recommended stage S2_PAPER_STRICT.",
     "evidence": {
-      "promotion_gate": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json",
-      "hit_rate_eval": "docs/final/artifacts/prophecy_hit_rate_eval_latest.json"
+      "go_nogo_status": "docs/final/artifacts/a_track_go_nogo_status_latest.json",
+      "p1_final_selection": "docs/final/artifacts/MULTILENS_P1_AB_FINAL_SELECTION_V1.json"
     },
     "metrics": {
-      "combined_all_passed": true,
-      "strict_passed": true,
-      "soft_passed": true,
-      "auto_promote_ready": false,
-      "promotion_recommendation": "manual_review_candidate",
-      "price_directional_hit_rate": 0.0,
-      "n_evaluated": 60,
-      "price_hits": 0
+      "overall_go_no_go": "GO",
+      "recommended_stage": "S2_PAPER_STRICT",
+      "p1_winner_profile": "balanced",
+      "p1_global_token_saving_rate": 0.5218002812939522,
+      "p1_avg_reconstruction_fidelity_jaccard": 0.9086301077448524
     },
     "blocking_items": [],
     "next_actions": [
-      "Run commander sign-off review for B->A promotion decision",
-      "Maintain observation-only routing until sign-off explicitly approves promotion"
+      "Run S2 paper-strict checklist execution and evidence capture",
+      "Keep any production promotion behind explicit human sign-off"
     ]
   },
-  "compression": {
-    "status": "s1_shadow_only",
-    "go": false,
-    "summary": "Compression lane is operationally limited to S1 shadow by A-track go/no-go gating.",
+  "b_track": {
+    "status": "go_research",
+    "go": true,
+    "summary": "Weekly Track B gate is GO_RESEARCH and signoff packet is READY_FOR_HUMAN_SIGNOFF per separated coupling mode.",
     "evidence": {
-      "active_report": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
-      "bench_l1_api_load": "docs/final/artifacts/bench_l1_api_load_latest.json",
-      "l1_inverse_decoder_spike_summary": "docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json",
-      "a_track_go_nogo_status": "docs/final/artifacts/a_track_go_nogo_status_latest.json"
+      "weekly_gate_recheck": "docs/final/artifacts/trackb_weekly_gate_recheck_latest.json",
+      "promotion_signoff_packet": "docs/final/artifacts/btrack_promotion_signoff_packet_v1_latest.json",
+      "promotion_gate_result": "reports/constitution/btrack_pilot/btrack_promotion_gate_latest.json"
     },
     "metrics": {
-      "compression_avg_reconstruction_fidelity_jaccard": 0.8488363572487027,
-      "bench_error_rate": 0.0,
-      "bench_latency_p95_ms": 166.893,
-      "bench_latency_p99_ms": 178.56,
-      "a_track_overall_go_no_go": "HOLD",
-      "a_track_recommended_stage": "S1_SHADOW"
+      "weekly_decision": "GO_RESEARCH",
+      "promotion_gate_decision": "pass",
+      "all_tracks_ready_for_human_signoff": true,
+      "gate_coupling_mode": "separated"
     },
-    "blocking_items": [
-      "A-track go/no-go is HOLD with recommended stage S1_SHADOW",
-      "Price output remains locked by high-reliability policy gates"
-    ],
+    "blocking_items": [],
     "next_actions": [
-      "Keep compression output in shadow-only route until go/no-go advances beyond S1",
-      "Lock scope and threshold approvals per COMPRESSION playbook section 9 before any Track A claim"
+      "Keep promotion_preflight PASS state pinned while collecting next cycle evidence",
+      "Maintain research_only and no auto-bind to A-track/live trading until final human sign-off",
+      "If policy changes from no-config-change to config-adjust cycle, re-run control_tower with a stricter readiness-min-success-rate"
     ]
   },
   "approval_conditions": [
