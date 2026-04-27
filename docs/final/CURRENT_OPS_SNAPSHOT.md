@@ -1,5 +1,60 @@
 # Current ops snapshot (ephemeral handoff)
 
+## Ultra-Light Execution Contract (v1)
+
+**목적:** 이 파일을 열면 즉시 현재 상태를 3줄로 파악하고, 승인 불필요 범위의 다음 1개 실행으로 바로 진입한다.
+
+### 0) Start Self-Check (고정 1줄)
+
+- `CENTRAL_AGENT_MEMORY_V1 + CONSTITUTION_FACTS 참조 완료, Fact-Lock 우선.`
+
+### 1) 3-Line Status (항상 이 포맷 유지)
+
+- `현재 단계:` B-track promotion atomic apply 실행 완료, `apply_result=success`
+- `최근 증거:` `reports/constitution/btrack_pilot/auto_scientist/promotion_apply_receipt_latest.json` (`applied_at_utc=2026-04-27T16:00:57Z`)
+- `최대 리스크:` human sign-off 전 승격 확정 문구/자동 반영
+
+### 2) Single Next Action (항상 1개만)
+
+- `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-BtrackControlTowerOps.ps1 -Mode brief`
+
+### 3) Definition of Done (빠른 판정)
+
+- `PASS`: preflight exit code 0 + 최신 아티팩트 timestamp 갱신
+- `HOLD`: 실행 성공이나 `promotion_readiness` 미충족
+- `STOP`: 실행 실패(exit code non-zero) 또는 필수 증거 경로 누락
+
+### 4) Post-Approval Guardrail (3-Line)
+
+- `승인 경계:` `research_only` 유지 + human sign-off 전/후 자동 승격·자동 합선 금지
+- `D+7 모니터링:` `signal_light`, `latest_failure_reason`, `promotion_readiness` 3개를 `-Mode brief`로 일일 점검
+- `롤백 트리거:` 셋 중 1개라도 이탈 시 즉시 `HOLD` 전환 후 `-Mode preflight` 재검증
+
+### 5) D+7 Daily One-Liner
+
+- `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-BtrackControlTowerOps.ps1 -Mode brief`
+
+---
+
+## SSOT 고정 포인터 (운영 표준)
+
+- 정책 단일 SSOT: `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`
+- 실행 절차 부록: `docs/final/FINANCIAL_PROPHECY_VPS_LIVE_TRADING_DIRECTIVE_V1.md`
+- 원칙 고정: **코드/전략 동기화는 상시**, **실전 주문 활성화(ON/OFF)는 별도 승인 게이트**
+
+## 2026-04-26 Bio wellness ops note
+
+- `run_bio_wellness_beta_feedback_chain_v1.ps1` 기본 경로에서 이메일 발송 단계를 제외함(`-IncludeEmail`일 때만 실행).
+- 이메일 발송은 지휘관 수동 승인/설정 이후 후속 작업으로 보류.
+- 현재 기본 운영 경로: 멀티렌즈 생성 + delivery pack(md/html/pdf) + fastlane 상태 갱신.
+
+## [Historical] 2026-04-25 상태 기록 (B-track Control Tower Ops)
+
+- 운영 체인 고정 완료: weekly/autopush -> control tower -> preflight -> atomic apply 게이트, severity 알림, strategy auto-tune/guard, rehearsal receipt 자동 생성.
+- 원클릭 진입점: `scripts/Run-BtrackControlTowerOps.ps1` (`weekly|autopush|brief|preflight`).
+- 스케줄러 상태: `MKM_BTrack_ControlTower_Weekly`(LastResult=0), `MKM_BTrack_ControlTower_Autopush_Daily`(bounded 종료 코드 3, wrapper에서 0으로 표준화).
+- 당시 운영 판정(기록): `control_tower_latest.json` 기준 `promotion_readiness=HOLD` (signal red / consecutive pass 미충족 / adjustment success rate 미달).
+
 ## 지휘부 미니 프로토콜 v1 (Command Deck)
 
 **목적:** 지휘관이 짧은 명령만 내려도, 에이전트가 동일 포맷으로 현황 파악·지휘 보조를 수행한다.

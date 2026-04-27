@@ -1,0 +1,18 @@
+{
+  "schema": "btrack_promotion_preflight_v1",
+  "generated_at_utc": "2026-04-26T13:19:00Z",
+  "proposal_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\promotion_proposal_v1_latest.json",
+  "control_tower_path": "C:\\workspace\\docs\\final\\artifacts\\control_tower_latest.json",
+  "checks": {
+    "proposal_status": "PENDING_APPROVAL",
+    "proposal_decision_recommendation": "PROPOSE_PROMOTION",
+    "promotion_readiness": "GO_READY",
+    "strategy_threshold_health": "healthy",
+    "event_outcome_human_verified_ratio": 0.59375,
+    "event_outcome_synthetic_ratio": 0.40625,
+    "selected_candidate_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\sweep_reports\\btrack_quality_recalibrated_v1_latest.json",
+    "selected_candidate_sha256": "31ba3719a00a638924c8417f1ead9d1d0c4233c82b63132309045baa443c0a76"
+  },
+  "result": "PASS",
+  "reasons": []
+}

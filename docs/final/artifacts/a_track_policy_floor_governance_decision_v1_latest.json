@@ -1,0 +1,13 @@
+{
+  "schema": "a_track_policy_floor_governance_decision_v1",
+  "generated_at_utc": "2026-04-26T13:51:03+00:00",
+  "status": "APPROVED",
+  "decision": "KEEP_POLICY_FLOOR_0_49",
+  "effective_policy_floor": 0.49,
+  "change_requested": false,
+  "rationale": "Commercialization floor remains unchanged until runtime saving evidence exceeds policy floor.",
+  "notes_ko": [
+    "정책 바닥선 0.49 유지 결정을 명시적으로 확정한다.",
+    "변경 요청은 별도 거버넌스 승인 아티팩트로만 허용한다."
+  ]
+}

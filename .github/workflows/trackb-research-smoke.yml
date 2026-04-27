@@ -53,11 +53,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Install pytest
         run: pip install pytest
       - name: Run Track B unit smoke tests
         run: pytest tests/test_track_b_semantic_eval_metrics.py tests/test_run_trackb_weekly_refresh_ps1.py tests/test_btrack_bench_paths.py -q
+

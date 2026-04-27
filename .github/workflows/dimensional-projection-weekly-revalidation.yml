@@ -18,13 +18,9 @@ on:
 
 jobs:
   weekly-holdout-and-promote:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
-      - name: Enable git long paths
-        shell: pwsh
-        run: git config --system core.longpaths true
-
       - name: Checkout
         uses: actions/checkout@v5
 
@@ -62,13 +58,13 @@ jobs:
         if: steps.preflight.outputs.skip != 'true'
         shell: pwsh
         run: |
-          py -m pip install --upgrade pip pytest fastapi httpx
+          python -m pip install --upgrade pip pytest fastapi httpx
 
       - name: Run holdout validation chain
         if: steps.preflight.outputs.skip != 'true'
         shell: pwsh
         run: |
-          powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Run-DimensionalProjectionHoldoutValidation.ps1" `
+          pwsh -NoProfile -ExecutionPolicy Bypass -File "scripts/Run-DimensionalProjectionHoldoutValidation.ps1" `
             -WorkspaceRoot "$env:GITHUB_WORKSPACE" `
             -EvalsetSize 900 `
             -SkipScorerTuning
@@ -78,7 +74,7 @@ jobs:
         shell: pwsh
         run: |
           $root = "$env:GITHUB_WORKSPACE"
-          powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Promote-DimensionalProjectionFreeze.ps1" `
+          pwsh -NoProfile -ExecutionPolicy Bypass -File "scripts/Promote-DimensionalProjectionFreeze.ps1" `
             -WorkspaceRoot $root `
             -HoldoutGateJson (Join-Path $root "reports/dimensional_projection_bridge/holdout_gate_latest.json") `
             -FreezeDir (Join-Path $root "reports/dimensional_projection_bridge/freeze") `
@@ -86,9 +82,10 @@ jobs:
 
       - name: Upload weekly artifacts
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: dimensional-projection-weekly-${{ github.run_id }}
+          retention-days: 7
           path: |
             reports/dimensional_projection_bridge/engine_eval_multi_policy_holdout_latest.json
             reports/dimensional_projection_bridge/holdout_gate_latest.json
@@ -104,4 +101,5 @@ jobs:
         shell: pwsh
         run: |
           Write-Host "Skipped: dimensional projection files are not present in this repository layout."
+
 

@@ -1,0 +1,17 @@
+{
+  "schema": "strategy_thresholds_v1",
+  "generated_at_utc": "2026-04-25T16:10:03Z",
+  "source": "auto_tuned",
+  "switch_on_hold_streak": 3,
+  "explore_rollback_window": 1,
+  "explore_improvement_epsilon": 0.0001,
+  "signals": {
+    "delta_acc_explore_minus_focused": 0.0,
+    "delta_no_change_explore_minus_focused": 0.966667,
+    "recent_hold_density": 0.75
+  },
+  "rationale": [
+    "neutral_mode_delta",
+    "explore_no_change_worse_than_focused"
+  ]
+}

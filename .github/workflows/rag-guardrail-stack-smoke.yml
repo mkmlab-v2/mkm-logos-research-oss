@@ -17,10 +17,10 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -29,9 +29,10 @@ jobs:
 
       - name: Upload smoke artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: rag-guardrail-stack-smoke-${{ github.run_id }}
+          retention-days: 7
           path: |
             reports/constitution/btrack_pilot/rag_guardrail_stack_smoke_latest.json
             reports/constitution/btrack_pilot/rag_turboquant_guarded_sweep_latest.json
@@ -40,3 +41,5 @@ jobs:
             reports/constitution/btrack_pilot/vllm_ab_canary_repeat_latest.json
             reports/constitution/btrack_pilot/vllm_ab_canary_run_*.json
           if-no-files-found: ignore
+
+

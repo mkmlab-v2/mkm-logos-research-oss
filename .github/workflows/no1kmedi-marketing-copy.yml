@@ -10,6 +10,11 @@ on:
       - "scripts/verify_12ai_orchestration_gate.ps1"
       - ".github/workflows/no1kmedi-marketing-copy.yml"
   pull_request:
+    paths:
+      - "projects/no1kmedi/marketing-site/**"
+      - "projects/no1kmedi/src/**"
+      - "scripts/verify_12ai_orchestration_gate.ps1"
+      - ".github/workflows/no1kmedi-marketing-copy.yml"
   workflow_dispatch:
 
 permissions:
@@ -21,6 +26,7 @@ concurrency:
 
 jobs:
   orchestration-gate:
+    if: ${{ vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' }}
     uses: ./.github/workflows/12ai-orchestration-gate.yml
     with:
       role: Architect
@@ -30,10 +36,10 @@ jobs:
       action: change_strategy
 
   check:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Banned public phrases
         shell: pwsh
         run: ./projects/no1kmedi/marketing-site/check-public-copy.ps1

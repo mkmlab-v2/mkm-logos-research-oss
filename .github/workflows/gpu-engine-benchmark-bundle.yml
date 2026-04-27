@@ -10,8 +10,8 @@ env:
 
 on:
   schedule:
-    # Every day at 02:30 UTC
-    - cron: "30 2 * * *"
+    # Weekly at 02:30 UTC on Sunday (cost-optimized)
+    - cron: "30 2 * * 0"
   workflow_dispatch:
     inputs:
       btc_start:
@@ -82,9 +82,10 @@ jobs:
           --prophecy-top-k "${{ inputs.prophecy_top_k }}"
       - name: Upload benchmark artifact
         if: ${{ github.event_name == 'schedule' || inputs.upload_artifacts == true }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: gpu-engine-benchmark-bundle-hosted
+          retention-days: 7
           path: docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json
       - name: Annotate engine fallback on hosted runner
         run: |
@@ -151,9 +152,11 @@ jobs:
           python scripts/check_gpu_engine_benchmark_regression.py @bundleArgs --baseline docs/final/artifacts/gpu_engine_benchmark_baseline_v1.json --max-regression-pct "${{ github.event_name == 'schedule' && '10' || inputs.max_regression_pct }}"
       - name: Upload benchmark artifact
         if: ${{ always() && (github.event_name == 'schedule' || inputs.upload_artifacts == true) }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: gpu-engine-benchmark-bundle-gpu
+          retention-days: 7
           path: |
             docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json
             tmp/gpu-regression-samples/sample_*.json
+

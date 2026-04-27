@@ -6,8 +6,23 @@ import { ContactActionLinks } from "@/components/ContactActionLinks";
 
 export const dynamic = "force-dynamic";
 
-export default function HomePage() {
+type HomePageProps = {
+  searchParams?: {
+    preset?: string;
+  };
+};
+
+const homepagePresetMap = {
+  "stripe-linear": "preset-stripe-linear",
+  "apple-notion": "preset-apple-notion",
+} as const;
+
+export default function HomePage({ searchParams }: HomePageProps) {
   const c = siteCopy;
+  const presetKey = searchParams?.preset?.toLowerCase();
+  const homepagePresetClass =
+    (presetKey && homepagePresetMap[presetKey as keyof typeof homepagePresetMap]) ??
+    "preset-apple-notion";
   const heroCtaLinks = {
     primary: c.links.consumer,
     secondary: c.links.clinician,
@@ -20,7 +35,7 @@ export default function HomePage() {
   } as const;
 
   return (
-    <>
+    <div className={homepagePresetClass}>
       <a className="skip" href="#main">
         본문으로 건너뛰기
       </a>
@@ -226,6 +241,6 @@ export default function HomePage() {
           <div className="footer-legal">{c.footer.rights}</div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }

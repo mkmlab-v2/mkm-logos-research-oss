@@ -1,0 +1,24 @@
+{
+  "schema": "a_track_multiweek_stability_tracker_v1",
+  "generated_at_utc": "2026-04-26T13:55:11+00:00",
+  "status": "COLLECTING",
+  "requirements": {
+    "required_weeks": 4,
+    "minimum_stage": "S2_PAPER_STRICT",
+    "required_metrics": [
+      "weekly_mdd",
+      "weekly_net_pnl",
+      "cost_adjusted_return",
+      "anomaly_count"
+    ]
+  },
+  "summary": {
+    "weeks_collected": 1,
+    "weeks_remaining": 3,
+    "ready_for_s3_gate": false
+  },
+  "notes_ko": [
+    "S3는 다주간 안정성 증거가 필요하므로 즉시 완료 처리하지 않는다.",
+    "주차 데이터가 누적되면 ready_for_s3_gate가 true로 전환된다."
+  ]
+}

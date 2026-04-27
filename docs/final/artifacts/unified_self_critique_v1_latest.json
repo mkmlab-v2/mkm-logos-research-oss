@@ -1,0 +1,40 @@
+{
+  "schema": "unified_self_critique_v1",
+  "schema_version": 1,
+  "generated_at_utc": "2026-04-26T14:09:03+00:00",
+  "mode": "advisory_only",
+  "auto_apply": false,
+  "input_snapshot": "docs/final/artifacts/unified_state_snapshot_v1_latest.json",
+  "assessment": {
+    "decision": "HOLD_STAGE",
+    "current_stage": "S1_SHADOW",
+    "readiness": "PARTIAL_READY",
+    "status": "OK"
+  },
+  "counterfactual_review": {
+    "best_alternative": "PROMOTE_TO_S2_NOW",
+    "why_not_chosen": "필수 체크리스트 미완료 항목 존재",
+    "expected_risk_delta": "HIGHER_DRAWDOWN_AND_POLICY_BREACH_RISK"
+  },
+  "recommendations": [
+    "주간 S3 증거 누적(weeks_collected) 자동 러너 지속 실행",
+    "price_output_unlock 조건 충족 전 잠금 해제 금지",
+    "high_reliability HOLD 해제 연속성(2사이클) 확인"
+  ],
+  "evidence": {
+    "checklist_pending": [
+      "s3-01"
+    ],
+    "go_nogo_failed_reasons": [
+      "high_reliability_decision_is_hold",
+      "price_output_locked_true",
+      "s3_requires_multiweek_stability_evidence",
+      "s4_requires_operator_explicit_approval"
+    ],
+    "automation_health_reasons": []
+  },
+  "notes_ko": [
+    "본 루프는 권고 전용이며 자동 승급/자동 반영을 수행하지 않는다.",
+    "반사실 평가는 게이트 우회가 아니라 리스크 비교 목적이다."
+  ]
+}

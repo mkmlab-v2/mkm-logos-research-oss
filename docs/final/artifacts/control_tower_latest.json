@@ -1,0 +1,299 @@
+{
+  "schema": "auto_scientist_control_tower_v1",
+  "generated_at_utc": "2026-04-26T13:18:52Z",
+  "run_id": "20260426131842",
+  "status_panel": {
+    "signal_light": "green",
+    "gate_decision": "PROPOSE_PROMOTION",
+    "latest_failure_reason": "none",
+    "next_action": "Go: candidate is promotion-ready for human sign-off."
+  },
+  "report": {
+    "schema": "auto_scientist_report_v1",
+    "generated_at_utc": "2026-04-26T13:18:52Z",
+    "run_id": "20260426131842",
+    "proposal_status": "PENDING_APPROVAL",
+    "gate_decision": "PROPOSE_PROMOTION",
+    "selected_candidate": "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\sweep_reports\\btrack_quality_recalibrated_v1_latest.json",
+    "failures": [],
+    "metrics_delta": {
+      "safety_violation_change": -0.14021312499999994,
+      "accuracy_delta": 0.16331435416666662,
+      "reproducibility_delta": 0.0
+    },
+    "top_hypothesis_changes": {
+      "mode": "no_config_change",
+      "note": "hypothesis-only validation cycle"
+    },
+    "event_outcome_gate_snapshot": {
+      "rows": 64,
+      "split_counts": {
+        "train": 45,
+        "val": 7,
+        "test": 6,
+        "holdout": 6
+      },
+      "outcome_counts": {
+        "collapse": 10,
+        "captivity": 14,
+        "stagnation": 4,
+        "deescalation": 12,
+        "escalation": 12,
+        "restoration": 12
+      },
+      "synthetic_rows": 26,
+      "synthetic_ratio": 0.40625,
+      "human_verified_rows": 38,
+      "human_verified_ratio": 0.59375,
+      "outcome_transition_profile": [
+        {
+          "outcome_tag": "captivity",
+          "mean_transition_l1": 1.352857,
+          "sample_size": 14
+        },
+        {
+          "outcome_tag": "collapse",
+          "mean_transition_l1": 1.294,
+          "sample_size": 10
+        },
+        {
+          "outcome_tag": "restoration",
+          "mean_transition_l1": 0.935833,
+          "sample_size": 12
+        },
+        {
+          "outcome_tag": "escalation",
+          "mean_transition_l1": 0.79,
+          "sample_size": 12
+        },
+        {
+          "outcome_tag": "deescalation",
+          "mean_transition_l1": 0.755,
+          "sample_size": 12
+        },
+        {
+          "outcome_tag": "stagnation",
+          "mean_transition_l1": 0.595,
+          "sample_size": 4
+        }
+      ]
+    },
+    "experiment_outcome": {
+      "commands_total": 11,
+      "commands_succeeded": 10,
+      "failed_commands": [
+        {
+          "command": [
+            "C:\\Python311\\python.exe",
+            "scripts/collect_btrack_quality_metrics.py",
+            "--a",
+            "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\a_track_eval_candidate_subset.jsonl",
+            "--b",
+            "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\b_track_eval_candidate_subset.jsonl",
+            "--out",
+            "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\sweep_reports\\btrack_quality_candidate_subset_latest.json",
+            "--details-out",
+            "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\sweep_reports\\btrack_pair_details_candidate_subset_latest.jsonl"
+          ],
+          "return_code": 3,
+          "stderr_tail": ""
+        }
+      ]
+    },
+    "candidate_grid_summary": {
+      "grid_size": 5,
+      "failure_frequency": {},
+      "best_accuracy_delta_seen": 0.16331435416666662
+    },
+    "rejection_registry_snapshot": {
+      "run_specific_rejections": 0,
+      "total_rejections_logged": 58,
+      "latest_reason": "accuracy_non_inferiority_failed"
+    },
+    "autopush_latest_snapshot": {
+      "status": "PENDING_APPROVAL",
+      "decision_recommendation": "PROPOSE_PROMOTION",
+      "roe_top_lane": "myeongni",
+      "roe_top_estimated_24h": 0.01479602,
+      "event_outcome_synthetic_ratio": 0.40625,
+      "event_outcome_human_verified_ratio": 0.59375
+    },
+    "notes": [
+      "This report is for research observability; not a direct auto-promotion trigger.",
+      "Gate-first principle remains: safety/reproducibility/non-inferiority checks dominate selection."
+    ]
+  },
+  "route": {
+    "schema": "auto_scientist_signal_action_route_v1",
+    "generated_at_utc": "2026-04-26T13:18:42Z",
+    "signal_light": "green",
+    "latest_failure_reason": "none",
+    "apply_overrides": false,
+    "overrides": {
+      "enqueue_human_signoff": true
+    },
+    "next_action": "Green route: keep defaults and prioritize human sign-off queue."
+  },
+  "failure_breakdown": {
+    "schema": "auto_scientist_failure_breakdown_v1",
+    "generated_at_utc": "2026-04-26T13:18:52Z",
+    "run_id": "20260426131842",
+    "primary_failure": "accuracy_non_inferiority_failed",
+    "recent_failure_frequency": {
+      "accuracy_non_inferiority_failed": 12
+    },
+    "candidate_diagnostics": {
+      "grid_size": 5,
+      "worst_accuracy_candidate": "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\sweep_reports\\btrack_quality_canonical_latest.json",
+      "worst_accuracy_delta": 0.125751,
+      "selected_candidate": "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\sweep_reports\\btrack_quality_recalibrated_v1_latest.json"
+    },
+    "hypothesis_diagnostics": {
+      "mode": "no_config_change",
+      "no_config_change_detected_in_recent_reasons": 0,
+      "hypothesis_changed_flag": false
+    },
+    "experiment_failures_for_run": [
+      {
+        "command": [
+          "C:\\Python311\\python.exe",
+          "scripts/collect_btrack_quality_metrics.py",
+          "--a",
+          "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\a_track_eval_candidate_subset.jsonl",
+          "--b",
+          "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\b_track_eval_candidate_subset.jsonl",
+          "--out",
+          "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\sweep_reports\\btrack_quality_candidate_subset_latest.json",
+          "--details-out",
+          "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\sweep_reports\\btrack_pair_details_candidate_subset_latest.jsonl"
+        ],
+        "return_code": 3,
+        "phase": "sweep_collect",
+        "stderr_tail": ""
+      }
+    ],
+    "recommended_action": "Narrow grid to anchor-verified baseline pair, disable sweep, and require targeted hypothesis changes (no_config_change forbidden for next cycle).",
+    "notes": [
+      "This breakdown prioritizes actionable root-cause reduction.",
+      "Use with signal-light router for next-cycle strategy override."
+    ]
+  },
+  "config_adjustment_effectiveness": {
+    "schema": "config_adjustment_effectiveness_v1",
+    "generated_at_utc": "2026-04-26T13:18:52Z",
+    "run_id": "20260426131842",
+    "hypothesis_mode": "no_config_change",
+    "has_adjustment": false,
+    "adjustment_key": null,
+    "latest_metrics": {
+      "accuracy_delta": 0.16331435416666662,
+      "safety_violation_change": -0.14021312499999994,
+      "delta_from_previous_run": 0.0
+    },
+    "recent_window_summary": {
+      "window_size": 12,
+      "avg_accuracy_delta": 0.04082859,
+      "avg_safety_violation_change": -0.03505328
+    },
+    "verdict": "unknown",
+    "ineffective_streak_for_key": 0,
+    "blocked_now": false,
+    "blocked_registry_size": 3,
+    "effective_registry_size": 0,
+    "attempts_registry_size": 31,
+    "recent_config_adjustment_scoreboard": {
+      "window_size": 10,
+      "effective_count": 0,
+      "success_rate": 0.0,
+      "avg_accuracy_delta": 0.0,
+      "avg_safety_violation_change": 0.0
+    }
+  },
+  "strategy_effectiveness": {
+    "schema": "strategy_effectiveness_v1",
+    "generated_at_utc": "2026-04-26T13:18:52Z",
+    "window_cycles": 29,
+    "by_mode": {
+      "focused": {
+        "mode": "focused",
+        "cycles": 17,
+        "success_rate": 0.176471,
+        "avg_accuracy_delta": 0.02882018,
+        "avg_safety_violation_change": -0.02474349,
+        "avg_no_change_streak": 0.588235
+      },
+      "explore": {
+        "mode": "explore",
+        "cycles": 3,
+        "success_rate": 0.0,
+        "avg_accuracy_delta": 0.0,
+        "avg_safety_violation_change": 0.0,
+        "avg_no_change_streak": 1.666667
+      }
+    },
+    "mode_delta": {
+      "success_rate_explore_minus_focused": -0.176471,
+      "avg_accuracy_delta_explore_minus_focused": -0.02882018,
+      "avg_no_change_streak_explore_minus_focused": 1.078432
+    },
+    "latest_switch": {
+      "ts_utc": "2026-04-25T16:12:49Z",
+      "cycle": 3,
+      "strategy_change_reason": "explore_no_improvement_rollback",
+      "strategy_mode": "focused"
+    }
+  },
+  "strategy_thresholds": {
+    "schema": "strategy_thresholds_v1",
+    "generated_at_utc": "2026-04-26T13:18:41Z",
+    "source": "auto_tuned",
+    "switch_on_hold_streak": 3,
+    "explore_rollback_window": 1,
+    "explore_improvement_epsilon": 0.0002,
+    "signals": {
+      "delta_acc_explore_minus_focused": -0.02041429,
+      "delta_no_change_explore_minus_focused": 1.041667,
+      "recent_hold_density": 0.85
+    },
+    "rationale": [
+      "explore_underperforming_detected",
+      "high_hold_density_bias_to_faster_switch",
+      "explore_no_change_worse_than_focused"
+    ]
+  },
+  "strategy_runtime": {
+    "explore_improvement_epsilon": 0.0002,
+    "ts_utc": "2026-04-26T13:18:41Z",
+    "threshold_source": "auto_tuned_guarded",
+    "threshold_health": "healthy",
+    "explore_rollback_window": 1,
+    "switch_on_hold_streak": 3
+  },
+  "promotion_readiness": {
+    "status": "GO_READY",
+    "reasons": [],
+    "checks": {
+      "signal_light": "green",
+      "required_consecutive_passes": 0,
+      "observed_consecutive_passes": 3,
+      "required_min_human_verified_ratio": 0.3,
+      "observed_human_verified_ratio": 0.59375,
+      "blocked_now": false,
+      "required_min_adjustment_success_rate": 0.0,
+      "observed_adjustment_success_rate": 0.0
+    }
+  },
+  "ops_summary": {
+    "human_verified_ratio": 0.59375,
+    "synthetic_ratio": 0.40625,
+    "hypothesis_mode": "no_config_change",
+    "adjustment_verdict": "unknown",
+    "blocked_now": false,
+    "seed_source": null,
+    "selected_adjustment_key": null,
+    "promotion_readiness": "GO_READY",
+    "strategy_mode_latest_switch_reason": "explore_no_improvement_rollback",
+    "strategy_threshold_source": "auto_tuned_guarded",
+    "strategy_threshold_health": "healthy"
+  }
+}

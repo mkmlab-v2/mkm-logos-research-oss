@@ -113,8 +113,18 @@
 | 2026-04-20 (NotebookLM insight action sync) | 노트북 `dna와사상`에 `Action Plan: Sasang x DNA next experiments`를 저장하고, 실행 우선순위를 `SNP x constitution` 상호작용 AB → 12상 외부 강건성 → multimodal 강건성으로 고정. 분자 비유 레이어(토토머/금속매개 안정화)는 운영 주장으로 승격하지 않고 `research_only`를 유지. |
 | 2026-04-22 (Multitarget strict HOLD + trainability gate) | scaffold/target-holdout 재벤치 및 runtime policy 리허설 이후 `generalization_gate_decision_strict_hold_latest.json`이 `HOLD` 고정; 추가로 target-conditioned PoC와 `target_conditioned_trainability_gate_latest.json` 실행 결과, `stage2_trained_target_count=0`·`topology_trainable_target_count=0`으로 연구 게이트도 `HOLD` 확정. |
 | 2026-04-22 (B-track dual-lane autogate v4 pass) | `evaluate_b_track_staged_go_nogo_v4.py`로 AUROC 단일클래스 미정의를 `WARN-DATA-003`로 분리하고, `run_ab_track_autogate_pipeline_v3.py --rebuild-unseen-split --unseen-heldout-target EGFR --rebuild-seen-label-split --b-gate-evaluator v4 --allow-auroc-missing-single-class-test` 재실행 결과 `artifacts/weekly_status_v3.json`에서 `a_pass=true`, `b_unseen_pass=true`, `b_seen_label_pass=true`, `all_pass=true` 달성. |
-| 2026-04-23 (Logos 파이프라인 혼동 방지 + canon 레인) | 마스터 아톰 집계 vs 레짐 특이점 리포트는 **서로 다른 입력·목적** — Fact-Lock으로 구분해 `CENTRAL_AGENT_MEMORY`에 고정. 특이점 스크립트에 **`--canon-jsonl`**·레인 `canon` 추가; Vault 미러 스크립트에 **`MKM_OBSIDIAN_VAULT_ROOT`**·기본 `memory/obsidian_vault` 스텁; 글로스 v4 보수 접두 체인은 코드북·HYPO 보조 유지. |
-| | |
+| 2026-04-26 (P1 Multi-PRS 첫 성과) | `scripts/evaluate_bio_multiprs_ensemble_v1.py` 추가 후 historical BTC answer-key 스윕(`reports/bio_multiprs_ensemble_sweep_v1_latest.json`)에서 최고 holdout uplift **+0.1579**(cfg2_w45_h10_s5_seed43, baseline 0.3158→ensemble 0.4737, n=19) 확인; 단, CI 하한 음수 가능으로 **연구 전용·비승격** 유지. |
+| 2026-04-26 (P1 Multi-PRS 안정성 2차) | `evaluate_bio_multiprs_ensemble_v1.py`에 `split_mode=random`·`split_seed`를 추가하고 `run_bio_multiprs_stability_sweep_v1.py` 실행(`reports/bio_multiprs_stability_sweep_v1_latest.json`): 60개 랜덤 split에서 uplift 양수 비율 0.5333, `ci_low_positive_rate=0.0`으로 **약한 양성 신호+고분산** 상태 확인(승격 금지). |
+| 2026-04-26 (P1 캘리브레이션 스윕) | `evaluate_bio_multiprs_ensemble_v1.py`에 `weight_power`·`weight_min/max`·`confidence_power` 캘리브레이션 추가 후 `run_bio_multiprs_calibration_sweep_v1.py` 실행(`reports/bio_multiprs_calibration_sweep_v1_latest.json`): best=`weight_power 0.7`, `weight_max 0.8`, `confidence_power 1.0`, `uplift_mean 0.0422`, `ci_low_positive_rate 0.0333`로 미세 개선만 확인(여전히 연구 전용). |
+| 2026-04-26 (P1 승격 게이트 HOLD) | 라벨 적응형 집계(`aggregation_mode=label_adaptive`)와 historical answer-key 30개 pooled 평가(`scripts/evaluate_bio_multiprs_multi_key_v1.py`)까지 확장했지만 `reports/bio_multiprs_multi_key_eval_v1_latest.json`에서 holdout uplift **-0.0689**(CI 하한 음수)로 악화; `reports/bio_multiprs_promotion_gate_v1_latest.json` 기준 passing 0/4, 상태 `HOLD`. |
+| 2026-04-26 (P1 pooled bias 스윕 실패) | `scripts/run_bio_multiprs_pooled_label_bias_sweep_v1.py`로 pooled 30-key 기준 bias 54조합(global+label_adaptive) 전수 점검(`reports/bio_multiprs_pooled_label_bias_sweep_v1_latest.json`)했으나 best uplift가 **-0.0689**로 고정되어 튜닝만으로는 회복 불가 확인. |
+| 2026-04-26 (P2 Pathway-XPRS 착수) | `scripts/build_bio_pathway_xprs_gap_report_v1.py` 추가·실행(`reports/bio_pathway_xprs_gap_report_v1_latest.json`): directional 30행 기준 장기 기능 gap 지표를 생성(태음 `liver-lung` gap 양수, 소양 `spleen-kidney` gap 음수)하여 P1 성능축 한계 보완용 설명 레일을 시작. |
+| 2026-04-26 (P2 하이브리드 결합 평가) | `scripts/evaluate_bio_multiprs_pathway_hybrid_v1.py`로 P1+P2 결합 분류를 실행해 단일 split uplift `+0.0417`(CI 하한 음수)까지는 회복했지만, 40 split 안정성(`reports/bio_multiprs_pathway_hybrid_stability_v1_latest.json`)에서 uplift_mean 음수·`ci_low_positive_rate=0.0`으로 승격 미달. |
+| 2026-04-26 (P1+P2 하이브리드 게이트 재검증) | `evaluate_bio_multiprs_ensemble_v1.py`에 label bias 훅(UP/NEUTRAL/DOWN)과 pooled 키 지원을 추가하고 `run_bio_multiprs_hybrid_gate_sweep_v1.py`로 30-key pooled 하이브리드 스윕 수행(`reports/bio_multiprs_hybrid_gate_sweep_v1_latest.json`); 최적 bias에서도 `uplift_mean=-0.0129`, `ci_low_positive_rate=0.0`으로 **승격 실패(HOLD)**. |
+| 2026-04-25 (AI Universe 픽셀 뼈대 + 플랫폼 진입점) | `docs/final/AI_UNIVERSE_GENESIS_CODE_V1.md`와 `scripts/run_pixel_ai_universe_skeleton.py`로 Vision→Engineering 최소 구현체를 고정(텍스트→4D seed→거버너→픽셀 렌더); 산출 `docs/final/artifacts/pixel_ai_universe_skeleton_latest.json` 생성 확인. 전략 우선순위는 **피치보다 표준 계약**으로 확정: 다음 본선 작업은 `agent_profile_v1` JSON 스키마 → `agent_register`/`agent_message` API 스텁 순. |
+| 2026-04-25 (B-track Control Tower 운영 완결) | Auto-Scientist HITL 파이프라인을 운영형으로 고정: `control_tower_latest.json` + `promotion_readiness` + preflight 강제(`run_btrack_promotion_preflight_v1.py`) + atomic apply 게이트 + severity 알림 + strategy auto-tune/guard + rehearsal receipt 자동 생성(`build_btrack_rehearsal_receipt_v1.py`) + 스케줄러 작업 등록/수동 실행 검증 완료. |
+| 2026-04-26 (금산 계약 기준본 고정) | 기준 파일을 `docs/final/금산_본농장_1000평_위탁재배_AI스마트팜_실증계약서_공증제출용.md`로 확정하고, NotebookLM `90_ARCHIVE_2026Q2_기억보관소`에 기준 요약 노트(`fdf5c2cc-cf04-44cd-9db2-92c0ae01d5ad`) 저장; 혼동 방지를 위해 `..._최종수정안.md` 삭제. |
+| 2026-04-26 (A-track HOLD 해제 로드맵 고정) | B-track은 `GO_READY/PASS/ops_ready=true`로 유지, A-track은 체크리스트 기반 해제로 전환: `a_track_hold_release_checklist_v1_latest.json` 4/5 완료(`lock-01`,`s4-01`,`hrm-01`,`policy-01`), 잔여 `s3-01`은 `run_a_track_s3_weekly_evidence_rollup_v1.py` + `MKM_ATrack_S3_Weekly_Evidence` 주간 태스크로 자동 누적. |
 
 ---
 
@@ -174,9 +184,9 @@
 
 ## 다음에 할 일 (최대 3개)
 
-1. Multitarget 데이터 계약 결정: `target-conditioned` Stage-2 학습 가능성 확보(타깃 내 다중 라벨) 또는 과업 축소(target ID + OOD reject) 중 하나를 운영 규격으로 확정.
-2. 멀티타깃 파이프라인 사전 게이트로 `build_multitarget_label_topology_report_v1.py`·`eval_target_conditioned_trainability_gate_v1.py`를 연결해 학습 불가 구조에서 즉시 `HOLD` 차단.
-3. NotebookLM 지휘부 동기화 루틴 유지: `sync_notebooklm_sources_to_mkm_data_vault.ps1` 실행 후 `CURRENT_OPS_SNAPSHOT.md`와 최신 multitarget 아티팩트 경로 정합 점검.
+1. **P1 고정 실행**: Multi-PRS Ensemble baseline부터 수행(외부 GWAS summary 기반 proxy PRS 4~5개 + 경량 분류기), B-track 전용 `research_only`·`a_track_autobind_forbidden=true` 유지.
+2. **P2 순차 확장**: P1 재현 지표 확보 후 Pathway-based XPRS를 추가해 장부 대소 구조(예: 간/폐, 비/신) gap metric을 설명가능 지표로 검증.
+3. **P3 제한 문샷**: GNN/epistasis는 표본 확충 전까지 from-scratch 학습 금지, 사전지식 그래프 + 얕은 헤드의 [HYPO] 실험으로만 관리.
 
 ## 동기화 루틴
 

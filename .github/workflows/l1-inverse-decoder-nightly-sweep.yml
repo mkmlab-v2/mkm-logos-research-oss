@@ -34,5 +34,6 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: l1-inverse-decoder-spike-summary-${{ github.run_id }}
+          retention-days: 7
           path: docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json
           if-no-files-found: error

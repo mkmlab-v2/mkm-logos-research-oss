@@ -1,0 +1,10 @@
+{
+  "schema": "btrack_automation_health_alert_v1",
+  "generated_at_utc": "2026-04-25T21:19:43Z",
+  "status": "ok",
+  "ops_ready": true,
+  "all_tasks_ok": true,
+  "all_artifacts_ok": true,
+  "snapshot_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_automation_health_snapshot_latest.json",
+  "alert_sent": false
+}

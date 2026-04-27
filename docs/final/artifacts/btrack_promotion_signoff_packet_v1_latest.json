@@ -1,6 +1,6 @@
 {
   "schema": "btrack_promotion_signoff_packet_v1",
-  "generated_at_utc": "2026-04-21T18:00:59Z",
+  "generated_at_utc": "2026-04-26T13:19:01Z",
   "research_only": true,
   "inputs": {
     "prophecy_gate": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json",
@@ -22,25 +22,25 @@
       "promotion_recommendation": "auto_promote_ready",
       "live_ab_summary": {
         "schema": "prophecy_live_ab_summary_v1",
-        "generated_at_utc": "2026-04-18T17:34:01Z",
+        "generated_at_utc": "2026-04-25T05:47:33Z",
         "research_only": true,
-        "status": "INSUFFICIENT_DATA",
+        "status": "READY",
         "inputs": {
           "kpi_json": "projects/bitcoin-trading/memory/kpi/latest_kpi.json",
           "prophecy_gate_json": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json"
         },
         "environment": {
           "status_symbol": "BTCUSDT",
-          "status_testnet": true,
-          "status_enable_trading": false
+          "status_testnet": false,
+          "status_enable_trading": true
         },
         "exchange_snapshot_24h": {
-          "available": false,
-          "fills_count": null,
-          "realized_pnl": null,
-          "commission": null,
-          "funding_fee": null,
-          "net": null
+          "available": true,
+          "fills_count": 40,
+          "realized_pnl": -15.74000002,
+          "commission": 59.77452112,
+          "funding_fee": -0.00987703,
+          "net": 44.02464407
         },
         "prophecy_gate_snapshot": {
           "auto_promote_ready": true,
@@ -64,7 +64,6 @@
       },
       "blockers": [],
       "next_actions_ko": [
-        "prophecy: live A/B 요약은 존재하나 status!=READY → KPI 24h 체결/손익 필드 채운 뒤 요약 재생성",
         "prophecy: human sign-off (운영) 확정"
       ]
     },
@@ -82,7 +81,7 @@
   "global": {
     "all_tracks_ready_for_human_signoff": true,
     "blockers": [],
-    "gate_coupling_mode": "combined",
+    "gate_coupling_mode": "separated",
     "any_track_ready_for_human_signoff": true,
     "ready_tracks": [
       "prophecy",
@@ -99,7 +98,6 @@
     "estimation_readiness는 실측 존재 시 MEASUREMENT_PRIMARY로 표시되며 measurement_gate가 우선이다"
   ],
   "next_actions_ko": [
-    "prophecy: live A/B 요약은 존재하나 status!=READY → KPI 24h 체결/손익 필드 채운 뒤 요약 재생성",
     "prophecy: human sign-off (운영) 확정",
     "lg_washer: 타깃 보드 실측 JSON으로 교체 후 measurement_gate 재실행(현재는 로컬 벤치 프록시 가능 시 GO)"
   ]

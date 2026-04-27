@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MKM SmartFarm Blueprint | 스마트팜 사업 청사진</title>
+    <meta
+      name="description"
+      content="소규모 노지 재배 농부도 이해하기 쉬운 MKM 스마트팜 사업 청사진: 작물 체질, DNA, 동아시아 재배 맥락, 차별점, 도입 로드맵."
+    />
+    <link rel="canonical" href="https://mkmlab.space/smartfarm-blueprint.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content="MKM SmartFarm Blueprint | 스마트팜 사업 청사진" />
+    <meta
+      property="og:description"
+      content="작물 체질·DNA·노지 재배 맥락을 반영한 MKM SmartFarm 운영 철학과 단계별 도입 가이드."
+    />
+    <meta property="og:url" content="https://mkmlab.space/smartfarm-blueprint.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/shared/css/main.css?v=20260422-2" />
+    <style>
+      .mode-tabs {
+        margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+
+      .mode-tab {
+        border: 1px solid rgba(169, 187, 207, 0.25);
+        background: rgba(255, 255, 255, 0.03);
+        color: #eef3f8;
+        border-radius: 0.65rem;
+        padding: 0.48rem 0.8rem;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .mode-tab[aria-selected="true"] {
+        border-color: rgba(45, 212, 191, 0.55);
+        background: rgba(45, 212, 191, 0.12);
+      }
+
+      .mode-panel {
+        margin-top: 0.9rem;
+      }
+
+      .quick-check {
+        margin-top: 1rem;
+        border: 1px solid rgba(169, 187, 207, 0.25);
+        border-radius: 0.85rem;
+        background: rgba(19, 34, 53, 0.9);
+        padding: 0.9rem;
+      }
+
+      .quick-check-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.7rem;
+      }
+
+      .quick-check select {
+        width: 100%;
+        border: 1px solid rgba(169, 187, 207, 0.25);
+        background: rgba(11, 19, 32, 0.9);
+        color: #eef3f8;
+        border-radius: 0.55rem;
+        padding: 0.42rem 0.5rem;
+      }
+
+      .quick-check-result {
+        margin-top: 0.8rem;
+        border: 1px solid rgba(45, 212, 191, 0.32);
+        border-radius: 0.75rem;
+        background: rgba(45, 212, 191, 0.08);
+        padding: 0.72rem;
+      }
+
+      .quick-check-result h3 {
+        font-size: 1rem;
+        margin-bottom: 0.32rem;
+      }
+
+      .quick-check-result p {
+        margin: 0;
+        color: #d2dfec;
+      }
+
+      @media (max-width: 760px) {
+        .quick-check-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+    <header class="site-header">
+      <div class="shell">
+        <a class="brand" href="/">
+          <img
+            class="brand-mark"
+            src="/shared/images/mkmlab-icon-clean.png"
+            alt="MKM LAB 분자한의학연구소 로고"
+            loading="eager"
+            decoding="async"
+          />
+          <span class="brand-text">
+            <strong>MKM LAB</strong>
+            <small>SmartFarm Blueprint</small>
+          </span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기" aria-expanded="false">메뉴</button>
+        <nav class="site-nav" id="siteNav" aria-label="주요 메뉴">
+          <a href="/">메인</a>
+          <a href="#vision">비전</a>
+          <a href="#roadmap">도입 단계</a>
+          <a href="#crop-dna">작물 체질·DNA</a>
+          <a href="#difference">차별점</a>
+          <a href="#farmer-faq">농부 FAQ</a>
+          <a href="#contact">문의</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero simple-hero" id="top">
+        <div class="shell">
+          <p class="eyebrow">MKM SmartFarm Blueprint</p>
+          <h1>소규모 노지 농부도 바로 이해하는 스마트팜 청사진</h1>
+          <p class="lead">
+            MKM SmartFarm은 "기계를 늘리는 농업"이 아니라, 농가의 실제 운영 리듬과 작물의 체질 데이터를 함께 보는
+            "현장형 의사결정 시스템"을 목표로 합니다.
+          </p>
+          <p class="hero-context">
+            핵심은 단순합니다. 기존 재배 경험을 버리지 않고, 물·비료·노동·리스크를 데이터로 정리해 "덜 힘들고 더 예측 가능한
+            농장"으로 바꾸는 것입니다.
+          </p>
+          <p class="product-note">
+            * DNA/체질 분석은 품종·재배 전략 고도화를 위한 농업 데이터 관점이며, 인간 대상 의료 진단·치료 목적이 아닙니다.
+          </p>
+          <p class="product-note">
+            * 본 페이지(<code>mkmlab.space</code>)는 연구/운영 해설 허브이며, 실제 도입 상담·계약은
+            <code>jema-ai.com</code>에서 진행됩니다.
+          </p>
+        </div>
+      </section>
+
+      <section class="section" id="audience-mode">
+        <div class="shell">
+          <p class="section-label">Audience Mode</p>
+          <h2>원하는 모드로 바로 보기</h2>
+          <div class="mode-tabs" role="tablist" aria-label="스마트팜 콘텐츠 모드">
+            <button class="mode-tab" type="button" role="tab" id="tab-farmer" aria-selected="true" aria-controls="panel-farmer">
+              농부형 빠른 이해
+            </button>
+            <button class="mode-tab" type="button" role="tab" id="tab-partner" aria-selected="false" aria-controls="panel-partner">
+              파트너형 사업 관점
+            </button>
+          </div>
+          <div class="mode-panel" id="panel-farmer" role="tabpanel" aria-labelledby="tab-farmer">
+            <div class="info-grid">
+              <article class="info-card">
+                <h3>지금 바로 할 일 3가지</h3>
+                <p>물·비료·작업시간 로그를 2주만 쌓고, 병목 1개(예: 관수 과투입)부터 줄입니다.</p>
+              </article>
+              <article class="info-card">
+                <h3>어려운 용어 없이</h3>
+                <p>결과는 "오늘 물 얼마나?", "이번 주 방제 우선순위"처럼 실행 문장으로 제공합니다.</p>
+              </article>
+              <article class="info-card">
+                <h3>소규모 농장 기준</h3>
+                <p>비싼 설비 일괄 도입이 아니라, 기존 노지 운영을 유지하며 단계적으로 올립니다.</p>
+              </article>
+              <article class="info-card">
+                <h3>기대 효과</h3>
+              <p>수익 보장 대신 관수 효율, 작업시간, 리스크 대응시간 3개 KPI 개선을 먼저 확인합니다.</p>
+              </article>
+            </div>
+          </div>
+          <div class="mode-panel" id="panel-partner" role="tabpanel" aria-labelledby="tab-partner" hidden>
+            <div class="info-grid">
+              <article class="info-card">
+                <h3>사업 구조</h3>
+                <p>Lite/Standard/Pro 단계형 상품으로 진입 장벽을 낮추고, 업셀 경로를 명확히 설계합니다.</p>
+              </article>
+              <article class="info-card">
+                <h3>데이터 자산화</h3>
+                <p>품종 체질·기상·작업 로그를 축적해 지역/작형별 운영 모델을 지속 업데이트합니다.</p>
+              </article>
+              <article class="info-card">
+                <h3>차별화 포인트</h3>
+                <p>장비 판매형이 아닌 운영 코칭형으로, 도입 후 실사용률과 재구매율을 핵심 KPI로 둡니다.</p>
+              </article>
+              <article class="info-card">
+                <h3>확장 동선</h3>
+                <p><code>mkmlab.space</code> 연구 허브 → <code>jema-ai.com</code> 사업 문의 → <code>a-codeai.com</code> API 연동으로 확장합니다.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="vision">
+        <div class="shell">
+          <p class="section-label">Vision</p>
+          <h2>우리 철학: 기술은 농부를 대체하지 않고, 판단 부담을 줄인다</h2>
+          <div class="info-grid">
+            <article class="info-card">
+              <h3>현장 우선</h3>
+              <p>센서값보다 먼저 농부의 체감(토양 상태, 잎색 변화, 병해충 징후)을 기록하고, 데이터를 보조 판단으로 씁니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>작은 농장 최적화</h3>
+              <p>대규모 유리온실 기준이 아니라 동아시아 소규모 노지 재배의 현실(기상 변동, 인력 제약)에 맞춰 설계합니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>리스크 절감 중심</h3>
+              <p>수익 "보장"이 아니라 물 사용량, 병해 리스크, 작업 시간, 폐기율 같은 운영 KPI를 먼저 개선합니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>연구-사업 분리</h3>
+              <p>연구 가설과 상용 운영 지표를 분리해 과장 없이 재현 가능한 결과만 현장 운영에 반영합니다.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="roadmap">
+        <div class="shell">
+          <p class="section-label">Roadmap</p>
+          <h2>도입은 3단계로, 농장 상황에 맞게</h2>
+          <div class="stat-grid">
+            <article class="stat-card">
+              <strong>1단계 · Lite</strong>
+              <span>관수 자동화 + 기본 환경 기록부터 시작. "기록 습관"을 만드는 단계입니다.</span>
+            </article>
+            <article class="stat-card">
+              <strong>2단계 · Standard</strong>
+              <span>작형별 기준값(수분/EC/온습도)과 작업 로그를 연결해 주간 운영 리포트를 자동화합니다.</span>
+            </article>
+            <article class="stat-card">
+              <strong>3단계 · Pro</strong>
+              <span>품종별 체질·DNA 힌트, 병해충 패턴, 기상 데이터까지 결합해 의사결정 추천을 제공합니다.</span>
+            </article>
+          </div>
+          <p class="product-note">
+            "처음부터 모든 장비"가 아니라, 현재 농장 운영에서 병목인 1~2개 문제부터 푸는 방식으로 진행합니다.
+          </p>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="crop-dna">
+        <div class="shell">
+          <p class="section-label">Crop Constitution & DNA</p>
+          <h2>농작물 체질·DNA를 어떻게 현장 운영에 쓰나</h2>
+          <div class="info-grid">
+            <article class="info-card">
+              <h3>작물 체질 맵</h3>
+              <p>같은 작물이어도 품종마다 수분 스트레스 민감도, 고온 반응, 병해 취약 구간이 다릅니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>DNA/품종 정보의 역할</h3>
+              <p>DNA는 "좋고 나쁨" 판단이 아니라, 품종별 관리 전략(관수 템포, 영양 밸런스) 분기 기준으로 사용합니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>동아시아 노지 재배 반영</h3>
+              <p>장마-폭염-일교차가 큰 패턴, 소규모 인력 운영, 혼작/연작 관행까지 포함해 모델을 조정합니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>농부 언어로 번역</h3>
+              <p>"지금 물 12% 줄이기", "이번 주 방제 우선순위"처럼 실행 가능한 문장으로 결과를 제공합니다.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="difference">
+        <div class="shell">
+          <p class="section-label">Difference</p>
+          <h2>기존 스마트팜과 MKM 접근의 차이</h2>
+          <div class="info-grid">
+            <article class="info-card">
+              <h3>장비 중심 vs 운영 중심</h3>
+              <p>많은 솔루션이 장비 설치로 끝나지만, MKM은 설치 이후 "작업 루틴 변화"까지 운영 코칭을 포함합니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>평균값 vs 품종 체질</h3>
+              <p>평균 데이터가 아닌 품종 체질·재배 맥락 기반으로 기준값을 다르게 적용합니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>대형 온실 기준 vs 소규모 노지 기준</h3>
+              <p>소농이 바로 적용 가능한 저비용-점진 도입 구조를 기본값으로 설계합니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>성과 문구 vs 검증 지표</h3>
+              <p>"무조건 수익" 대신 손실률, 작업시간, 관수 효율, 리스크 대응시간 같은 KPI를 공개 관리합니다.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="farmer-faq">
+        <div class="shell">
+          <p class="section-label">Farmer FAQ</p>
+          <h2>스마트팜이 처음인 농부를 위한 빠른 답변</h2>
+          <div class="info-grid">
+            <article class="info-card">
+              <h3>Q. 컴퓨터를 잘 못해도 가능한가요?</h3>
+              <p>A. 가능합니다. 모바일 체크리스트와 주간 리포트 중심으로 시작하며, 복잡한 대시보드는 단계별로 열어줍니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>Q. 비용이 너무 크지 않나요?</h3>
+              <p>A. Lite 단계는 기존 설비를 최대 활용해 초기비용을 낮추고, 효과가 확인된 항목만 순차 확장합니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>Q. 당장 무엇이 좋아지나요?</h3>
+              <p>A. 우선 물/비료 과투입과 작업 우선순위 혼선을 줄여, 일일 운영 피로와 불확실성을 낮추는 데 집중합니다.</p>
+            </article>
+            <article class="info-card">
+              <h3>Q. 결과를 보장하나요?</h3>
+              <p>A. 보장은 하지 않습니다. 대신 매주 KPI를 공개해 "무엇이 실제로 개선됐는지"를 함께 확인합니다.</p>
+            </article>
+          </div>
+          <div class="cta-row">
+            <a class="btn btn-ghost" id="faqConsultLink" href="https://jema-ai.com/smartfarm?stage=lite&source=mkmlab_blueprint" target="_blank" rel="noopener noreferrer">스마트팜 상담 신청</a>
+            <a class="btn btn-ghost" href="https://jemaai.cloud" target="_blank" rel="noopener noreferrer">공개 쇼룸 보기</a>
+            <a class="btn btn-ghost" href="/">MKM LAB 메인으로</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="self-check">
+        <div class="shell">
+          <p class="section-label">3-minute Self Check</p>
+          <h2>3분 셀프진단: 내 농장에 맞는 시작 단계 찾기</h2>
+          <div class="quick-check">
+            <div class="quick-check-grid">
+              <label>
+                <span>관수 자동화 수준</span>
+                <select id="checkIrrigation">
+                  <option value="0">수동 관수 중심</option>
+                  <option value="1">일부 타이머/자동화</option>
+                  <option value="2">구역별 자동화 운영</option>
+                </select>
+              </label>
+              <label>
+                <span>데이터 기록 습관</span>
+                <select id="checkLogging">
+                  <option value="0">거의 기록 안 함</option>
+                  <option value="1">주 1~2회 기록</option>
+                  <option value="2">거의 매일 기록</option>
+                </select>
+              </label>
+              <label>
+                <span>병해/기상 리스크 대응</span>
+                <select id="checkRisk">
+                  <option value="0">경험에 의존</option>
+                  <option value="1">체크리스트 일부 사용</option>
+                  <option value="2">데이터 기반 의사결정</option>
+                </select>
+              </label>
+              <label>
+                <span>도입 가능 예산/인력</span>
+                <select id="checkBudget">
+                  <option value="0">최소 비용으로 시작 필요</option>
+                  <option value="1">핵심 항목 단계 투자 가능</option>
+                  <option value="2">통합 도입/확장 가능</option>
+                </select>
+              </label>
+            </div>
+            <div class="quick-check-result" id="quickCheckResult" aria-live="polite">
+              <h3>추천 단계: Lite</h3>
+              <p>현재는 Lite로 시작해 관수/기록 루틴부터 안정화하는 것이 가장 효율적입니다.</p>
+            </div>
+          </div>
+          <div class="cta-row">
+            <a class="btn btn-ghost" id="consultLink" href="https://jema-ai.com/smartfarm?stage=lite&source=mkmlab_blueprint" target="_blank" rel="noopener noreferrer">진단 결과로 상담 신청</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact" class="site-footer">
+      <div class="shell footer-grid">
+        <div>
+          <h2>MKM SmartFarm 문의</h2>
+          <p>이메일: <a href="mailto:jema12@mkmlife.com">jema12@mkmlife.com</a></p>
+          <p>대표번호: 010-3677-0676</p>
+        </div>
+        <div>
+          <p>협력 범위: 소규모 노지 재배 스마트화, 데이터 운영 체계, 현장형 리포트 자동화</p>
+          <p>© 2026 MKM LAB. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var tabFarmer = document.getElementById("tab-farmer");
+        var tabPartner = document.getElementById("tab-partner");
+        var panelFarmer = document.getElementById("panel-farmer");
+        var panelPartner = document.getElementById("panel-partner");
+        if (!tabFarmer || !tabPartner || !panelFarmer || !panelPartner) return;
+
+        function activate(mode) {
+          var farmerActive = mode === "farmer";
+          tabFarmer.setAttribute("aria-selected", farmerActive ? "true" : "false");
+          tabPartner.setAttribute("aria-selected", farmerActive ? "false" : "true");
+          panelFarmer.hidden = !farmerActive;
+          panelPartner.hidden = farmerActive;
+        }
+
+        tabFarmer.addEventListener("click", function () {
+          activate("farmer");
+        });
+        tabPartner.addEventListener("click", function () {
+          activate("partner");
+        });
+
+        var fields = [
+          document.getElementById("checkIrrigation"),
+          document.getElementById("checkLogging"),
+          document.getElementById("checkRisk"),
+          document.getElementById("checkBudget"),
+        ];
+        var resultBox = document.getElementById("quickCheckResult");
+        var consultLink = document.getElementById("consultLink");
+        var faqConsultLink = document.getElementById("faqConsultLink");
+        var currentStage = "lite";
+        var currentScore = 0;
+        var currentDetail = {
+          irrigation: "0",
+          logging: "0",
+          risk: "0",
+          budget: "0",
+        };
+
+        function updateConsultLink() {
+          if (!consultLink) return;
+          var targetHref =
+            "https://jema-ai.com/smartfarm?stage=" +
+            currentStage +
+            "&score=" +
+            String(currentScore) +
+            "&irrigation=" +
+            encodeURIComponent(currentDetail.irrigation) +
+            "&logging=" +
+            encodeURIComponent(currentDetail.logging) +
+            "&risk=" +
+            encodeURIComponent(currentDetail.risk) +
+            "&budget=" +
+            encodeURIComponent(currentDetail.budget) +
+            "&source=mkmlab_blueprint";
+          consultLink.href = targetHref;
+          if (faqConsultLink) {
+            faqConsultLink.href = targetHref;
+          }
+        }
+
+        function renderQuickCheck() {
+          if (!resultBox || fields.some(function (x) { return !x; })) return;
+          var score = fields.reduce(function (sum, field) {
+            return sum + Number(field.value || 0);
+          }, 0);
+          currentScore = score;
+          currentDetail.irrigation = fields[0] ? String(fields[0].value || "0") : "0";
+          currentDetail.logging = fields[1] ? String(fields[1].value || "0") : "0";
+          currentDetail.risk = fields[2] ? String(fields[2].value || "0") : "0";
+          currentDetail.budget = fields[3] ? String(fields[3].value || "0") : "0";
+          var stage = "Lite";
+          var message = "현재는 Lite로 시작해 관수/기록 루틴부터 안정화하는 것이 가장 효율적입니다.";
+          if (score >= 6 && score <= 7) {
+            stage = "Standard";
+            currentStage = "standard";
+            message = "Standard 단계가 적합합니다. 주간 리포트 자동화와 리스크 체크 체계를 붙이기 좋습니다.";
+          } else if (score >= 8) {
+            stage = "Pro";
+            currentStage = "pro";
+            message = "Pro 단계 후보입니다. 품종 체질·기상·병해 패턴 결합 모델까지 확장할 준비가 되어 있습니다.";
+          } else {
+            currentStage = "lite";
+          }
+          updateConsultLink();
+          resultBox.innerHTML = "<h3>추천 단계: " + stage + "</h3><p>" + message + "</p>";
+        }
+
+        fields.forEach(function (field) {
+          if (!field) return;
+          field.addEventListener("change", renderQuickCheck);
+        });
+        renderQuickCheck();
+      })();
+    </script>
+    <script src="/shared/js/main.js?v=20260422-2"></script>
+  </body>
+</html>
