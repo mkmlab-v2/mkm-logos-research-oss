@@ -1,12 +1,13 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-04-22T23:40:03Z",
+  "generated_at_utc": "2026-04-27T04:28:08Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
     "lens_walkforward_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_per_date_combo_walkforward_v1_latest.json",
     "instrument_walkforward_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_instrument_combo_walkforward_v1_latest.json",
     "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "hypothesis_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_hypothesis_prophecy_latest.json",
     "promotion_track_mode": "btc_only_crossassist",
     "thresholds": {
       "min_mean_test_accuracy": 0.55,
@@ -14,6 +15,7 @@
       "min_fraction_test_beats_always_bull": 0.5,
       "min_min_test_accuracy_across_folds": 0.4
     },
+    "neutral_ratio_cap": 0.7,
     "soft_thresholds": {
       "min_mean_test_accuracy": 0.45,
       "max_stdev_test_accuracy": 0.22,
@@ -80,14 +82,33 @@
       "gates": []
     },
     "shared": {
-      "all_gates_passed": true,
+      "all_gates_passed": false,
       "gates": [
         {
           "gate_id": "score_btc_csv_input_present",
+          "passed": false,
+          "reason": "rebuild_score_with_btc_csv_hypothesis_multi",
+          "detail": {
+            "btc_csv": null
+          }
+        },
+        {
+          "gate_id": "hypothesis_non_stub_model",
           "passed": true,
           "reason": null,
           "detail": {
-            "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
+            "llm_model": "rule_based_ensemble_v1"
+          }
+        },
+        {
+          "gate_id": "score_neutral_ratio_cap",
+          "passed": true,
+          "reason": null,
+          "detail": {
+            "neutral_ratio": 0.0,
+            "neutral_count": 0,
+            "row_count": 30,
+            "max_neutral_ratio": 0.7
           }
         }
       ]
@@ -141,22 +162,41 @@
     },
     {
       "gate_id": "score_btc_csv_input_present",
+      "passed": false,
+      "reason": "rebuild_score_with_btc_csv_hypothesis_multi",
+      "detail": {
+        "btc_csv": null
+      }
+    },
+    {
+      "gate_id": "hypothesis_non_stub_model",
       "passed": true,
       "reason": null,
       "detail": {
-        "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
+        "llm_model": "rule_based_ensemble_v1"
+      }
+    },
+    {
+      "gate_id": "score_neutral_ratio_cap",
+      "passed": true,
+      "reason": null,
+      "detail": {
+        "neutral_ratio": 0.0,
+        "neutral_count": 0,
+        "row_count": 30,
+        "max_neutral_ratio": 0.7
       }
     }
   ],
   "lens_all_gates_passed": true,
   "instrument_combo_all_gates_passed": null,
-  "shared_all_gates_passed": true,
-  "combined_all_passed": true,
-  "all_gates_passed": true,
-  "strict_passed": true,
-  "soft_passed": true,
-  "strict_pass_streak": 3,
+  "shared_all_gates_passed": false,
+  "combined_all_passed": false,
+  "all_gates_passed": false,
+  "strict_passed": false,
+  "soft_passed": false,
+  "strict_pass_streak": 0,
   "auto_promote_ready": false,
-  "promotion_recommendation": "manual_review_candidate",
+  "promotion_recommendation": "defer",
   "note": "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. Human sign-off still required before A-track or live routing."
 }

@@ -22,6 +22,7 @@ param(
     [string]$BtcCsvPath = $env:MKM_BTC_DAILY_CSV,
     [double]$LowHitRateWarningThreshold = 0.5,
     [switch]$FailOnLowHitRate,
+    [switch]$FailOnRuntimeHealthRed,
     [switch]$IncludeDatedArchive,
     [switch]$IncludeProxyEval,
     [string]$ProxyRegistryGlob = $env:MKM_PROPHECY_PROXY_REGISTRY_GLOB,
@@ -42,7 +43,8 @@ param(
     [int]$TrinitySafetyWindowKospi = 0,
     [int]$TrinitySafetyConsecutiveThresholdKospi = 0,
     [int]$TrinitySafetyWindowBtc = 0,
-    [int]$TrinitySafetyConsecutiveThresholdBtc = 0
+    [int]$TrinitySafetyConsecutiveThresholdBtc = 0,
+    [switch]$SkipRuntimeHealthGuard
 )
 
 $ErrorActionPreference = "Stop"
@@ -53,6 +55,7 @@ $shadowPanelScript = Join-Path $WorkspaceRoot "scripts\eval_prophecy_shadow_pane
 $walkforwardScript = Join-Path $WorkspaceRoot "scripts\run_prophecy_per_date_combo_walkforward_v1.py"
 $instrumentWalkforwardScript = Join-Path $WorkspaceRoot "scripts\run_prophecy_instrument_combo_walkforward_v1.py"
 $hypoScript = Join-Path $WorkspaceRoot "scripts\generate_btrack_hypothesis_prophecy_v1.py"
+$runtimeHealthScript = Join-Path $WorkspaceRoot "scripts\evaluate_prophecy_runtime_health_v1.py"
 $trinityBuildScript = Join-Path $WorkspaceRoot "scripts\core\trinity_build_prediction.py"
 $trinityDailyScoreScript = Join-Path $WorkspaceRoot "scripts\core\trinity_daily_scorer.py"
 $trinityWeightTunerScript = Join-Path $WorkspaceRoot "scripts\core\trinity_weight_tuner.py"
@@ -80,6 +83,7 @@ $artifactsDir = Join-Path $WorkspaceRoot "docs\final\artifacts"
 $scoreOut = Join-Path $artifactsDir "btrack_prophecy_score_latest.json"
 $evalOut = Join-Path $artifactsDir "prophecy_hit_rate_eval_latest.json"
 $shadowPanelOut = Join-Path $artifactsDir "prophecy_shadow_panel_eval_v1_latest.json"
+$runtimeHealthOut = Join-Path $artifactsDir "prophecy_runtime_health_guard_latest.json"
 $walkforwardOut = Join-Path $artifactsDir "prophecy_per_date_combo_walkforward_v1_latest.json"
 $instrumentWalkforwardOut = Join-Path $artifactsDir "prophecy_instrument_combo_walkforward_v1_latest.json"
 $reportsDir = Join-Path $WorkspaceRoot "reports"
@@ -126,6 +130,24 @@ Write-Host "==> eval_prophecy_hit_rate_v1.py (price)"
 & py scripts\eval_prophecy_hit_rate_v1.py --run-mode price --score-json $scoreOut
 if ($LASTEXITCODE -ne 0) {
     throw "eval_prophecy_hit_rate_v1.py (price) exit $LASTEXITCODE"
+}
+
+$runtimeHealthStatus = $null
+$runtimeHealthShouldPauseTrading = $null
+if (-not $SkipRuntimeHealthGuard -and (Test-Path -LiteralPath $runtimeHealthScript)) {
+    Write-Host "==> evaluate_prophecy_runtime_health_v1.py"
+    & py $runtimeHealthScript --output $runtimeHealthOut
+    if ($LASTEXITCODE -ne 0) {
+        throw "evaluate_prophecy_runtime_health_v1.py exit $LASTEXITCODE"
+    }
+    if (Test-Path -LiteralPath $runtimeHealthOut) {
+        $rh = Get-Content -LiteralPath $runtimeHealthOut -Raw -Encoding UTF8 | ConvertFrom-Json
+        $runtimeHealthStatus = [string]$rh.status
+        $runtimeHealthShouldPauseTrading = [bool]$rh.should_pause_trading
+        if ($runtimeHealthStatus -eq "red") {
+            Write-Warning "Runtime health guard RED: prophecy/live boundary is unsafe. Keep trading paused until fixed."
+        }
+    }
 }
 
 $shadowModeLogged = $null
@@ -665,6 +687,9 @@ $logObj = [ordered]@{
     trinity_btc_promotion_recommendation_path = $trinityBtcPromotionRecommendationOut
     trinity_btc_promotion_execution_path = $trinityBtcPromotionExecutionOut
     risk_profile_sync_path     = $riskProfilePath
+    runtime_health_guard_path  = $runtimeHealthOut
+    runtime_health_status      = $runtimeHealthStatus
+    runtime_health_should_pause_trading = $runtimeHealthShouldPauseTrading
 }
 ($logObj | ConvertTo-Json -Compress) | Add-Content -LiteralPath $logPath -Encoding UTF8
 
@@ -676,6 +701,9 @@ if (($null -ne $hit) -and ($n -gt 0) -and ([double]$hit -lt $LowHitRateWarningTh
 
 if ($FailOnLowHitRate -and $warnLow) {
     exit 2
+}
+if ($FailOnRuntimeHealthRed -and $runtimeHealthStatus -eq "red") {
+    exit 3
 }
 
 Write-Host "OK: Daily prophecy eval finished. Latest: $evalOut Log: $logPath"

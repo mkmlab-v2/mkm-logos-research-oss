@@ -1,0 +1,28 @@
+{
+  "schema": "btrack_lens_ensemble_v1",
+  "version": "1.0.0",
+  "ts_utc": "2026-04-27T04:30:00Z",
+  "research_only": true,
+  "a_track_autobind_forbidden": true,
+  "weights": {
+    "price": 0.55,
+    "macro": 0.25,
+    "news": 0.15,
+    "myeongni_sasang": 0.05
+  },
+  "rules": {
+    "neutral_penalty": -0.1,
+    "max_neutral_streak_before_recalibration": 3,
+    "tie_breaker_order": ["price", "macro", "news", "myeongni_sasang"],
+    "tie_break_min_margin": 0.03,
+    "price_lookback_days": 5,
+    "retune_window_days": 7,
+    "weight_step_cap": 0.05
+  },
+  "guardrails": {
+    "stub_detected_hard_fail": true,
+    "neutral_streak_recalibration_required": true,
+    "keep_trading_disabled_until_btrack_recovers": true
+  },
+  "note": "Baseline ensemble profile for B-track recovery. Price-first weighting, strict neutral anti-lock, and live trading separation."
+}
