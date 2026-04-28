@@ -156,6 +156,12 @@ def _parser() -> argparse.ArgumentParser:
         help="Ablation: after natural route, use this shard's must_keep/hangul flags (requires --use-domain-router). "
         "Per-case route includes route_natural vs applied shard_id.",
     )
+    p.add_argument(
+        "--emit-semantic-pointer",
+        action="store_true",
+        help="Add per-case semantic_pointer (schema semantic_pointer_v1): route/codebook/gematria handles; "
+        "does not change Jaccard or global_token_saving_rate (additive channel).",
+    )
     return p
 
 
@@ -333,6 +339,45 @@ def _is_guard_token(word: str) -> bool:
     }:
         return True
     return w in {"아님", "금지", "필수", "수동", "증거", "추적", "직접", "체질", "사상의학", "명리", "성경"}
+
+
+def _semantic_pointer_v1(
+    *,
+    case_id: Any,
+    route_info: dict[str, Any] | None,
+    bridge_meta: dict[str, Any] | None,
+    token_saving_rate: float,
+    raw_tokens: int,
+    compressed_tokens: int,
+) -> dict[str, Any]:
+    """Minimal routing/codebook/gematria handles for semantic channel experiments."""
+    sp: dict[str, Any] = {
+        "schema": "semantic_pointer_v1",
+        "case_id": case_id,
+        "token_saving_rate": float(token_saving_rate),
+        "raw_tokens": int(raw_tokens),
+        "compressed_tokens": int(compressed_tokens),
+    }
+    if isinstance(route_info, dict):
+        sid = route_info.get("shard_id")
+        dom = route_info.get("domain")
+        if sid is not None:
+            sp["shard_id"] = sid
+        if dom is not None:
+            sp["route_domain"] = dom
+        mcb = route_info.get("master_codebook_lexicon_v1")
+        if isinstance(mcb, dict):
+            slim = {k: mcb[k] for k in ("status", "hit_count", "path") if k in mcb}
+            if slim:
+                sp["master_codebook_lexicon_v1"] = slim
+    if isinstance(bridge_meta, dict):
+        if bridge_meta.get("state16") is not None:
+            sp["gematria_state16"] = bridge_meta.get("state16")
+        dst = bridge_meta.get("distance_to_state16")
+        if dst is not None:
+            sp["gematria_distance_to_state16"] = dst
+    sp["note"] = "Additive semantic routing metadata; does not replace literal reconstruction metrics."
+    return sp
 
 
 def _jaccard(a: str, b: str) -> float:
@@ -922,6 +967,7 @@ def evaluate_report(
     candidate_pool_selection_mode: str = "weighted_score",
     candidate_pool_min_jaccard_for_greedy: float = 0.88,
     candidate_pool_min_integrity_for_greedy: float = 1.0,
+    emit_semantic_pointer: bool = False,
 ) -> dict[str, Any]:
     if force_shard_id and not use_domain_router:
         raise ValueError("force_shard_id requires use_domain_router=True (DomainSpecificRouter).")
@@ -1249,6 +1295,15 @@ def evaluate_report(
             "route": route_info,
             "state16": state16_row,
         }
+        if emit_semantic_pointer:
+            row["semantic_pointer"] = _semantic_pointer_v1(
+                case_id=c.get("id"),
+                route_info=route_info if isinstance(route_info, dict) else None,
+                bridge_meta=bridge_meta,
+                token_saving_rate=saving,
+                raw_tokens=raw_t,
+                compressed_tokens=comp_t,
+            )
         if enc_o200k is not None:
             o200k_r = len(enc_o200k.encode(raw))
             o200k_c = len(enc_o200k.encode(comp))
@@ -1384,9 +1439,19 @@ def evaluate_report(
             "tiktoken_o200k_encoding": TIKTOKEN_O200K_ENCODING,
             "tiktoken_o200k_available": enc_o200k is not None,
             "tiktoken_o200k_unavailable_reason": o200k_err,
+            "emit_semantic_pointer": emit_semantic_pointer,
         },
         "compression_metrics": {
             "case_count": len(comp_rows),
+            "semantic_pointer_channel": (
+                {
+                    "schema": "semantic_pointer_v1",
+                    "enabled": True,
+                    "note": "Per-case semantic_pointer rows; KPI fields unchanged.",
+                }
+                if emit_semantic_pointer
+                else {"schema": "semantic_pointer_v1", "enabled": False}
+            ),
             "global_token_saving_rate": global_saving,
             "avg_reconstruction_fidelity_jaccard": avg_fidelity,
             "avg_sensitive_integrity": avg_sensitive_integrity,
@@ -1476,6 +1541,7 @@ def main() -> int:
         use_domain_router=bool(args.use_domain_router),
         use_master_codebook_lexicon_v1=bool(args.use_master_codebook_lexicon),
         force_shard_id=force_sid,
+        emit_semantic_pointer=bool(args.emit_semantic_pointer),
     )
 
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

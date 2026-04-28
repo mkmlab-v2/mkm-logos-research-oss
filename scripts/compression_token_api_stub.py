@@ -78,6 +78,7 @@ class EvalContext(BaseModel):
     hydrate_live_eval: bool | None = None
     hydrate_shadow_compare: bool | None = None
     meter_log: bool | None = None
+    emit_semantic_pointer: bool | None = None
 
 
 class HydrationHints(BaseModel):
@@ -110,6 +111,7 @@ class CompressResponse(BaseModel):
     client_request_id: str | None = None
     eval_context_echo: EvalContext | None = None
     compression_metrics: CompressionMetrics | None = None
+    semantic_pointer: dict[str, Any] | None = None
     integrity_flags: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -315,8 +317,12 @@ def _estimate_hydrated_metrics(text: str) -> CompressionMetrics | None:
 
 
 def _live_eval_metrics(
-    text: str, *, bytes_in: int | None = None, token_in: int | None = None
-) -> tuple[CompressionMetrics | None, float, str | None]:
+    text: str,
+    *,
+    bytes_in: int | None = None,
+    token_in: int | None = None,
+    emit_semantic_pointer: bool = False,
+) -> tuple[CompressionMetrics | None, float, str | None, dict[str, Any] | None]:
     selected = _decision_selected_profile()
     strategy = str(selected.get("strategy", "A"))
     intensity = str(selected.get("intensity", "extreme"))
@@ -350,6 +356,7 @@ def _live_eval_metrics(
             include_gematria_4d_bridge=_bp,
             include_cee_core=_bp,
             apply_gematria_4d_bridge_policy=_bp,
+            emit_semantic_pointer=emit_semantic_pointer,
         )
         comp_block = report.get("compression_metrics", {})
         ratio = float(comp_block.get("global_token_saving_rate", 0.0))
@@ -380,9 +387,16 @@ def _live_eval_metrics(
             token_out=token_out,
             savings_ratio=max(0.0, min(1.0, ratio)),
         )
-        return metrics, round((perf_counter() - t0) * 1000.0, 3), None
+        sp0: dict[str, Any] | None = None
+        if emit_semantic_pointer and isinstance(cases, list) and cases:
+            first_row = cases[0]
+            if isinstance(first_row, dict):
+                cand = first_row.get("semantic_pointer")
+                if isinstance(cand, dict):
+                    sp0 = cand
+        return metrics, round((perf_counter() - t0) * 1000.0, 3), None, sp0
     except Exception as exc:
-        return None, round((perf_counter() - t0) * 1000.0, 3), type(exc).__name__
+        return None, round((perf_counter() - t0) * 1000.0, 3), type(exc).__name__, None
 
 
 def _try_append_meter_from_compress(
@@ -492,7 +506,9 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
             flags["hybrid_codec_v0_enabled"] = True
             flags["hybrid_codec_v0_failed"] = True
             flags["hybrid_codec_v0_error_class"] = type(exc).__name__
-    live_metrics_cache: tuple[CompressionMetrics | None, float, str | None] | None = None
+    live_metrics_cache: (
+        tuple[CompressionMetrics | None, float, str | None, dict[str, Any] | None] | None
+    ) = None
     bytes_in, token_in = _text_size_tokens(body.text)
     if body.hydration_hints is not None and body.hydration_hints.atom_ids:
         flags["hydration_atom_id_count"] = len(body.hydration_hints.atom_ids)
@@ -529,18 +545,26 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
             client_request_id=body.client_request_id,
             eval_context_echo=body.eval_context,
             compression_metrics=metrics,
+            semantic_pointer=None,
             integrity_flags=flags,
         )
 
     # --- Enterprise: Track A (existing hydration + default active KPI when no hydration) ---
     metrics: CompressionMetrics | None = None
     metrics_mode = "none"
+    semantic_pointer_out: dict[str, Any] | None = None
+    emit_sp = bool(body.eval_context is not None and bool(body.eval_context.emit_semantic_pointer))
     if body.eval_context is not None and bool(body.eval_context.hydrate_metrics):
         if bool(body.eval_context.hydrate_live_eval):
             min_tok = _live_eval_min_tokens()
             if token_in >= min_tok:
-                metrics, latency_ms, live_err = _live_eval_metrics(body.text, bytes_in=bytes_in, token_in=token_in)
-                live_metrics_cache = (metrics, latency_ms, live_err)
+                metrics, latency_ms, live_err, sp_live = _live_eval_metrics(
+                    body.text,
+                    bytes_in=bytes_in,
+                    token_in=token_in,
+                    emit_semantic_pointer=emit_sp,
+                )
+                live_metrics_cache = (metrics, latency_ms, live_err, sp_live)
                 flags["hydration_live_eval_elapsed_ms"] = latency_ms
                 if live_err:
                     flags["hydration_live_eval_failed"] = True
@@ -548,6 +572,8 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
                 if metrics is not None:
                     flags["hydration_metrics_source"] = "live_evaluate_report"
                     metrics_mode = "live"
+                if sp_live is not None:
+                    semantic_pointer_out = sp_live
             else:
                 flags["hydration_live_eval_skipped"] = True
                 flags["hydration_live_eval_skip_reason"] = "short_input"
@@ -567,12 +593,19 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
     if body.eval_context is not None and bool(body.eval_context.hydrate_shadow_compare):
         if live_metrics_cache is not None:
             # Avoid duplicate evaluate_report call in the same request when live hydration already ran.
-            shadow_metrics, shadow_latency_ms, shadow_err = live_metrics_cache
+            shadow_metrics, shadow_latency_ms, shadow_err, shadow_sp = live_metrics_cache
             flags["shadow_live_eval_reused_from_hydration"] = True
+            if semantic_pointer_out is None and shadow_sp is not None:
+                semantic_pointer_out = shadow_sp
         else:
-            shadow_metrics, shadow_latency_ms, shadow_err = _live_eval_metrics(
-                body.text, bytes_in=bytes_in, token_in=token_in
+            shadow_metrics, shadow_latency_ms, shadow_err, shadow_sp = _live_eval_metrics(
+                body.text,
+                bytes_in=bytes_in,
+                token_in=token_in,
+                emit_semantic_pointer=emit_sp,
             )
+            if semantic_pointer_out is None and shadow_sp is not None:
+                semantic_pointer_out = shadow_sp
         flags["shadow_mode"] = "enabled"
         flags["shadow_elapsed_ms"] = shadow_latency_ms
         if shadow_err:
@@ -602,6 +635,7 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
         client_request_id=body.client_request_id,
         eval_context_echo=body.eval_context,
         compression_metrics=metrics,
+        semantic_pointer=semantic_pointer_out,
         integrity_flags=flags,
     )
 

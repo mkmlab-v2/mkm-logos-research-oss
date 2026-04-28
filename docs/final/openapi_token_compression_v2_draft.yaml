@@ -38,6 +38,7 @@ paths:
               text: "Example document body for compression."
               loss_profile: semantic_general
               client_request_id: "req-v2-001"
+              emit_semantic_pointer: true
       responses:
         "200":
           description: OK (draft schema)
@@ -100,6 +101,8 @@ components:
       description: |
         Opaque-to-contract structure for reassembly (token maps, immutable fragments, hashes). Exact keys are
         engine-specific; clients must store the whole object and return it to expand unchanged.
+        Current stub may include `mk_stub_v2.semantic_pointer` (`schema: semantic_pointer_v1`) when
+        compress request sets `emit_semantic_pointer=true`.
       additionalProperties: true
     RouterMeta:
       type: object
@@ -155,6 +158,12 @@ components:
         notes:
           type: string
           description: Optional correlation string; not used for compression logic in v2 draft.
+        emit_semantic_pointer:
+          type: boolean
+          default: false
+          description: |
+            If true, evaluate_report runs with semantic pointer emission and the first case pointer
+            is attached at `compression_packet.residual_meta.mk_stub_v2.semantic_pointer`.
     CompressResponseV2:
       type: object
       required: [compression_packet, integrity_flags]
