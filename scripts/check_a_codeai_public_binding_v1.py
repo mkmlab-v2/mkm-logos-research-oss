@@ -32,6 +32,44 @@ def _contains_all(text: str, needles: list[str]) -> tuple[bool, list[str]]:
     return len(missing) == 0, missing
 
 
+def _check_payload_contract(payload_body: str) -> tuple[bool, dict[str, Any]]:
+    details: dict[str, Any] = {
+        "json_parse_ok": False,
+        "schema_ok": False,
+        "contract_ok": False,
+        "contract_variant": None,
+        "reason": "invalid_json",
+    }
+    try:
+        doc = json.loads(payload_body)
+    except Exception:
+        return False, details
+    details["json_parse_ok"] = True
+    schema_ok = str(doc.get("schema")) == "a_codeai_public_copy_web_payload_v1"
+    details["schema_ok"] = schema_ok
+    if not schema_ok:
+        details["reason"] = "schema_mismatch"
+        return False, details
+
+    # Accept either legacy top-level format or newer sectioned format.
+    has_legacy = isinstance(doc.get("commercial_readiness"), dict)
+    sections = doc.get("sections", {})
+    hero = sections.get("hero", {}) if isinstance(sections, dict) else {}
+    has_sectioned = isinstance(sections, dict) and isinstance(hero, dict) and bool(hero.get("title"))
+    if has_legacy:
+        details["contract_ok"] = True
+        details["contract_variant"] = "legacy_top_level"
+        details["reason"] = "ok"
+        return True, details
+    if has_sectioned:
+        details["contract_ok"] = True
+        details["contract_variant"] = "sectioned_v1"
+        details["reason"] = "ok"
+        return True, details
+    details["reason"] = "payload_contract_missing_required_fields"
+    return False, details
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--base-url", default="https://a-codeai.com")
@@ -49,10 +87,6 @@ def main() -> int:
         "pg-hero-title",
         "pg-status-line",
     ]
-    payload_markers = [
-        '"schema": "a_codeai_public_copy_web_payload_v1"',
-        '"commercial_readiness"',
-    ]
 
     home_ok, home_body = _fetch_text(home_url, timeout=args.timeout_sec)
     ko_ok, ko_body = _fetch_text(ko_url, timeout=args.timeout_sec)
@@ -60,9 +94,9 @@ def main() -> int:
 
     home_markers_ok, home_missing = _contains_all(home_body, page_markers)
     ko_markers_ok, ko_missing = _contains_all(ko_body, page_markers)
-    payload_markers_ok, payload_missing = _contains_all(payload_body, payload_markers)
+    payload_contract_ok, payload_contract_details = _check_payload_contract(payload_body) if payload_ok else (False, {"reason": "payload_unreachable"})
 
-    all_ok = bool(home_ok and ko_ok and payload_ok and home_markers_ok and ko_markers_ok and payload_markers_ok)
+    all_ok = bool(home_ok and ko_ok and payload_ok and home_markers_ok and ko_markers_ok and payload_contract_ok)
     decision = "PASS" if all_ok else "FAIL"
 
     out_doc: dict[str, Any] = {
@@ -89,8 +123,8 @@ def main() -> int:
             },
             "payload": {
                 "reachable": payload_ok,
-                "markers_ok": payload_markers_ok,
-                "missing_markers": payload_missing,
+                "contract_ok": payload_contract_ok,
+                "contract_details": payload_contract_details,
             },
         },
         "notes": [

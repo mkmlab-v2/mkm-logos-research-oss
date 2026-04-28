@@ -1,11 +1,11 @@
 {
   "schema": "a_codeai_public_benchmark_launch_checklist_v1",
-  "generated_at_utc": "2026-04-28T11:55:15+00:00",
+  "generated_at_utc": "2026-04-28T12:48:57+00:00",
   "research_only": true,
   "summary": {
-    "pass_count": 7,
+    "pass_count": 8,
     "total": 8,
-    "decision": "READY_FOR_SHADOW_PUBLIC_BENCH",
+    "decision": "READY_FOR_PUBLIC_OPEN_BENCH",
     "readiness_all_ok": true
   },
   "checks": [
@@ -54,9 +54,9 @@
     {
       "id": "C8_public_payload_runtime_binding",
       "description": "Published '/' and '/ko/' pages must actively bind the public payload JSON at runtime.",
-      "status": "TODO",
+      "status": "PASS",
       "evidence_path": "C:\\workspace\\docs\\final\\artifacts\\a_codeai_public_binding_check_latest.json",
-      "reason": "binding_check_failed"
+      "reason": "ok"
     }
   ],
   "notes": [

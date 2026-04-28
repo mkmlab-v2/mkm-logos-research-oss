@@ -1,7 +1,7 @@
 {
   "schema": "pointerguard_ops_readiness_v1",
-  "generated_at_utc": "2026-04-28T11:55:15+00:00",
-  "all_ok": false,
+  "generated_at_utc": "2026-04-28T12:48:48+00:00",
+  "all_ok": true,
   "checks": [
     {
       "ok": true,
@@ -30,9 +30,9 @@
       "decision": "READY_FOR_SHADOW_PUBLIC_BENCH"
     },
     {
-      "ok": false,
+      "ok": true,
       "path": "C:\\workspace\\docs\\final\\artifacts\\a_codeai_public_binding_check_latest.json",
-      "reason": "public_binding_not_active"
+      "reason": "ok"
     },
     {
       "ok": true,

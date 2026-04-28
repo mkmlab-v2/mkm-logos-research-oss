@@ -1,37 +1,35 @@
 {
   "schema": "a_codeai_public_binding_check_v1",
-  "generated_at_utc": "2026-04-28T11:55:17+00:00",
+  "generated_at_utc": "2026-04-28T12:48:29+00:00",
   "target": {
     "base_url": "https://a-codeai.com",
     "home_url": "https://a-codeai.com/",
     "ko_url": "https://a-codeai.com/ko/",
     "payload_url": "https://a-codeai.com/a_codeai_public_copy_web_payload_latest.json"
   },
-  "all_ok": false,
-  "decision": "FAIL",
+  "all_ok": true,
+  "decision": "PASS",
   "checks": {
     "home": {
       "reachable": true,
-      "markers_ok": false,
-      "missing_markers": [
-        "a_codeai_public_copy_web_payload_latest.json",
-        "pg-hero-title",
-        "pg-status-line"
-      ]
+      "markers_ok": true,
+      "missing_markers": []
     },
     "ko": {
       "reachable": true,
-      "markers_ok": false,
-      "missing_markers": [
-        "a_codeai_public_copy_web_payload_latest.json",
-        "pg-hero-title",
-        "pg-status-line"
-      ]
+      "markers_ok": true,
+      "missing_markers": []
     },
     "payload": {
       "reachable": true,
-      "markers_ok": true,
-      "missing_markers": []
+      "contract_ok": true,
+      "contract_details": {
+        "json_parse_ok": true,
+        "schema_ok": true,
+        "contract_ok": true,
+        "contract_variant": "sectioned_v1",
+        "reason": "ok"
+      }
     }
   },
   "notes": [
