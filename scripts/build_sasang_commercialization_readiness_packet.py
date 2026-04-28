@@ -20,6 +20,7 @@ ART = ROOT / "docs" / "final" / "artifacts"
 DEFAULT_LENS = ART / "sasang_independent_lens_latest.json"
 DEFAULT_HIGH_GATE = ART / "sasang_high_reliability_gate_latest.json"
 DEFAULT_HIGH_GATE_STRICT = ART / "sasang_high_reliability_gate_strict_latest.json"
+DEFAULT_HIGH_GATE_STRICT_SHADOW = ART / "sasang_high_reliability_gate_strict_synthetic_calibrated_latest.json"
 DEFAULT_PROMOTION_CHAIN = ART / "sasang12_promotion_candidate_chain_latest.json"
 
 DEFAULT_EVAL_CONTRACT = ART / "sasang_prophecy_eval_contract_latest.json"
@@ -65,6 +66,7 @@ def main() -> int:
     ap.add_argument("--lens", type=Path, default=DEFAULT_LENS)
     ap.add_argument("--high-gate", type=Path, default=DEFAULT_HIGH_GATE)
     ap.add_argument("--high-gate-strict", type=Path, default=DEFAULT_HIGH_GATE_STRICT)
+    ap.add_argument("--high-gate-strict-shadow", type=Path, default=DEFAULT_HIGH_GATE_STRICT_SHADOW)
     ap.add_argument("--promotion-chain", type=Path, default=DEFAULT_PROMOTION_CHAIN)
     ap.add_argument("--eval-contract-out", type=Path, default=DEFAULT_EVAL_CONTRACT)
     ap.add_argument("--promotion-gate-out", type=Path, default=DEFAULT_PROMOTION_GATE)
@@ -83,6 +85,7 @@ def main() -> int:
     lens = _jread(args.lens)
     gate_std = _jread(args.high_gate)
     gate_strict = _load_optional(args.high_gate_strict)
+    gate_strict_shadow = _load_optional(args.high_gate_strict_shadow)
 
     direction_score = _f((lens.get("scores") or {}).get("direction_score"))
     confidence = _f((lens.get("scores") or {}).get("confidence"))
@@ -92,6 +95,8 @@ def main() -> int:
     strict_available = gate_strict is not None
     std_pass = std_decision == "PASS"
     strict_pass = strict_decision == "PASS"
+    strict_shadow_decision = str((gate_strict_shadow or {}).get("decision") or "MISSING").upper()
+    strict_shadow_pass = strict_shadow_decision == "PASS"
 
     v1_to_v9_present = args.promotion_chain.is_file()
     promotion_status, promotion_reason = _classify_promotion_status(v1_to_v9_present, std_pass, strict_pass)
@@ -104,6 +109,9 @@ def main() -> int:
             "lens_artifact": str(args.lens.resolve()),
             "standard_gate_artifact": str(args.high_gate.resolve()),
             "strict_gate_artifact": str(args.high_gate_strict.resolve()) if strict_available else None,
+            "strict_shadow_gate_artifact": (
+                str(args.high_gate_strict_shadow.resolve()) if gate_strict_shadow is not None else None
+            ),
             "promotion_chain_artifact": str(args.promotion_chain.resolve()) if v1_to_v9_present else None,
             "evaluation_window": "latest_single_snapshot",
             "cost_buckets_basis_points": [20, 30, 40],
@@ -190,6 +198,15 @@ def main() -> int:
                 "evidence": "strict quality gate artifact missing",
             }
         )
+    if strict_shadow_pass:
+        failure_axes.append(
+            {
+                "axis": "strict_shadow_evidence_only",
+                "severity": "low",
+                "status": "WARN",
+                "evidence": "strict shadow gate PASS exists but is not promotion-authoritative",
+            }
+        )
 
     promotion_gate = {
         "schema": "sasang12_promotion_candidate_gate_unified_v1",
@@ -235,6 +252,7 @@ def main() -> int:
             "mapping_target": mapping_target,
             "standard_gate": std_decision,
             "strict_gate": strict_decision if strict_available else "MISSING",
+            "strict_shadow_gate": strict_shadow_decision if gate_strict_shadow is not None else "MISSING",
         },
         "next_experiments": [
             "Improve non-neutral signal rule in independent lens while preserving non-medical boundary",
@@ -255,6 +273,9 @@ def main() -> int:
             "failure_analysis": str(args.failure_analysis_out.resolve()),
             "standard_gate": str(args.high_gate.resolve()),
             "strict_gate": str(args.high_gate_strict.resolve()) if strict_available else None,
+            "strict_shadow_gate": (
+                str(args.high_gate_strict_shadow.resolve()) if gate_strict_shadow is not None else None
+            ),
         },
         "boundaries": {
             "track_b_to_a_autobind": "FORBIDDEN",

@@ -18,6 +18,8 @@ param(
     [string]$SymbolAtomMappingOutJson = "docs/final/artifacts/symbol_atom_mapping_latest.json",
     [string]$AtomResonanceOutJson = "docs/final/artifacts/atom_resonance_report_latest.json",
     [string]$ScholarlySymbolBridgeOutJson = "docs/final/artifacts/scholarly_symbol_bridge_latest.json",
+    [string]$Gematria4dCouplingOutJson = "docs/final/artifacts/gematria_4d_coupling_latest.json",
+    [string]$Gematria4dAblationOutJson = "docs/final/artifacts/gematria_4d_ablation_latest.json",
     [string]$SurvivorEvalOutJson = "docs/final/artifacts/insight_survivor_eval_latest.json",
     [string]$SurvivorCandidatesOutJson = "docs/final/artifacts/insight_survivor_candidates_latest.json",
     [string]$KnowledgeIpReportOutJson = "docs/final/artifacts/bible_meaning_knowledge_ip_report_latest.json",
@@ -117,6 +119,12 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[13d/15] Build scholarly symbol bridge" -ForegroundColor Cyan
 & py "scripts/build_scholarly_symbol_bridge_v1.py" "--mapping-json" $SymbolAtomMappingOutJson "--resonance-json" $AtomResonanceOutJson "--output-json" $ScholarlySymbolBridgeOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "[13e/15] Build 4D gematria coupling + ablation" -ForegroundColor Cyan
+& py "scripts/build_gematria_4d_coupling_v1.py" "--symbolic-json" $SymbolicTopologyInsightOutJson "--bridge-json" $ScholarlySymbolBridgeOutJson "--output-json" $Gematria4dCouplingOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/build_gematria_4d_ablation_v1.py" "--coupling-json" $Gematria4dCouplingOutJson "--resonance-json" $AtomResonanceOutJson "--output-json" $Gematria4dAblationOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[14/15] Re-score + shadow compare with insight signal" -ForegroundColor Cyan

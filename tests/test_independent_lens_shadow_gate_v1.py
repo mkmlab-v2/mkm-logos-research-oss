@@ -52,3 +52,28 @@ def test_shadow_gate_runner(tmp_path: Path) -> None:
     assert doc.get("decision") == "KEEP_OBSERVATION_ONLY"
     assert doc.get("allow_a_track_binding") is False
     assert isinstance(doc.get("blockers"), list)
+
+
+def test_shadow_gate_requires_explicit_override_flag(tmp_path: Path) -> None:
+    out = tmp_path / "shadow_gate_fail.json"
+    hist = tmp_path / "shadow_hist_fail.jsonl"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(_RUNNER),
+            "--fusion-input",
+            str(_FUSION),
+            "--history-jsonl",
+            str(hist),
+            "--output",
+            str(out),
+            "--ts-override-utc",
+            "2026-03-31T23:59:59Z",
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert cp.returncode != 0
+    assert "allow-ts-override" in cp.stderr or "allow-ts-override" in cp.stdout

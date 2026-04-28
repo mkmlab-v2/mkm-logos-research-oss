@@ -54,6 +54,31 @@ def _to_target(mt: Any) -> str:
     return v if v in {"bull", "bear", "sideways"} else "unknown"
 
 
+def _shadow_override_stats(shadow_gate: dict[str, Any]) -> dict[str, Any]:
+    history = shadow_gate.get("history") if isinstance(shadow_gate.get("history"), dict) else {}
+    history_path = Path(str(history.get("history_path") or ""))
+    if not history_path.is_file():
+        return {
+            "history_rows": 0,
+            "override_rows": 0,
+            "override_ratio": 0.0,
+            "latest_override_ts_utc": None,
+        }
+    rows = _read_jsonl(history_path)
+    override_rows = [r for r in rows if isinstance(r, dict) and r.get("override_label")]
+    latest_override_ts = None
+    if override_rows:
+        latest_override_ts = sorted(str(r.get("ts_utc") or "") for r in override_rows if r.get("ts_utc"))[-1]
+    total = len(rows)
+    ratio = (len(override_rows) / total) if total else 0.0
+    return {
+        "history_rows": total,
+        "override_rows": len(override_rows),
+        "override_ratio": round(ratio, 6),
+        "latest_override_ts_utc": latest_override_ts,
+    }
+
+
 def build_eval_contract(rows: list[dict[str, Any]], lens: dict[str, Any], fusion: dict[str, Any]) -> dict[str, Any]:
     ts_values = sorted(str(r.get("ts_utc") or "") for r in rows if r.get("ts_utc"))
     period_start = ts_values[0] if ts_values else ""
@@ -161,6 +186,7 @@ def build_readiness_packet(
     quality_ok = quality_report.get("status") == "PASS"
     contract_ok = bool(eval_contract.get("aligned_inputs"))
     signal_non_neutral = abs(float(lens_scores.get("direction_score", 0.0))) > 0.0
+    override_stats = _shadow_override_stats(shadow_gate)
 
     if contract_ok and quality_ok and signal_non_neutral and not blockers:
         readiness = "Ready"
@@ -179,6 +205,7 @@ def build_readiness_packet(
             "signal_non_neutral": signal_non_neutral,
             "fusion_agreement_rate": consensus.get("agreement_rate"),
             "shadow_blockers_count": len(blockers),
+            "shadow_override_ratio": override_stats.get("override_ratio"),
         },
         "inputs": {
             "myeongni_independent_lens": str((ART / "myeongni_independent_lens_latest.json").resolve()),
@@ -192,6 +219,7 @@ def build_readiness_packet(
             "live_trigger_auto_enabled": False,
             "decision": "manual_review_required",
         },
+        "shadow_history_integrity": override_stats,
         "next_gate_focus": [
             "reduce_neutral_bias_without_overfit",
             "increase_shadow_monthly_coverage",

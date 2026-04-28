@@ -1393,3 +1393,17 @@
   - survivor 근거(`ci_low_defense_contrib`, `fusion_candidate_score`)와 시퀀스 길이로 `atom_resonance_report_v1` 점수화.
   - 아톰별 motif 라벨(`covenantal_boundary`, `mimetic_desire`, `boundary_transgression` 등)을 연결하는 `scholarly_symbol_bridge_v1` 생성.
   - 모든 산출은 `research_only=true`, `promotion_required=true`, `source_track="K"`로 고정(실거래 트리거 금지).
+
+#### 30.2 4D Gematria Coupling + Ablation (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_gematria_4d_coupling_v1.py`
+  - `scripts/build_gematria_4d_ablation_v1.py`
+  - `scripts/run_aramaic_mvp_chain_v1.ps1` (`[13e/15]` 단계 추가)
+- 출력:
+  - `docs/final/artifacts/gematria_4d_coupling_latest.json`
+  - `docs/final/artifacts/gematria_4d_ablation_latest.json`
+- 구현 사실:
+  - `scholarly_symbol_bridge_v1`와 `symbolic_topology_insight_v1`를 결합해 아톰 단위 `vector_4d(S,L,K,M)` 투영 및 `coupling_strength`를 생성.
+  - ablation은 `with_4d` vs `without_4d`를 분리 계산해 `delta_with_minus_without`를 기록.
+  - 정책 필드 `allow_execution_trigger=false`, `require_fail_boundary_gate=true`, `require_research_only_lane=true`를 고정하여 실행 트리거 합선을 차단.
