@@ -19,6 +19,7 @@ $ErrorActionPreference = "Stop"
 $runner = Join-Path $WorkspaceRoot "scripts\run_genesis_pointer_routing_control_chain_v1.py"
 $alertRunner = Join-Path $WorkspaceRoot "scripts\send_pointerguard_ops_alert_v1.py"
 $securityRunner = Join-Path $WorkspaceRoot "scripts\harden_pointerguard_security_v1.py"
+$bindingRunner = Join-Path $WorkspaceRoot "scripts\check_a_codeai_public_binding_v1.py"
 $launchChecklistRunner = Join-Path $WorkspaceRoot "scripts\build_a_codeai_public_benchmark_launch_checklist_v1.py"
 $readinessRunner = Join-Path $WorkspaceRoot "scripts\check_pointerguard_ops_readiness_v1.py"
 $manualApprovalRunner = Join-Path $WorkspaceRoot "scripts\build_pointerguard_manual_approval_log_v1.py"
@@ -53,6 +54,15 @@ $exitCode = $LASTEXITCODE
 if (Test-Path -LiteralPath $securityRunner) {
     "[$((Get-Date).ToString('s'))] Running security hardening gate..." | Out-File -FilePath $logFile -Encoding utf8 -Append
     & py $securityRunner *>&1 | Tee-Object -FilePath $logFile -Append | Out-Host
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# Refresh public benchmark launch checklist from latest hardening artifact.
+if (Test-Path -LiteralPath $bindingRunner) {
+    "[$((Get-Date).ToString('s'))] Checking public payload runtime binding..." | Out-File -FilePath $logFile -Encoding utf8 -Append
+    & py $bindingRunner *>&1 | Tee-Object -FilePath $logFile -Append | Out-Host
     if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
         $exitCode = $LASTEXITCODE
     }

@@ -12,6 +12,7 @@ ART = ROOT / "docs" / "final" / "artifacts"
 OUT_DEFAULT = ART / "a_codeai_public_benchmark_launch_checklist_v1.json"
 HARDENING_DEFAULT = ART / "pointerguard_security_hardening_latest.json"
 READINESS_DEFAULT = ART / "pointerguard_ops_readiness_latest.json"
+BINDING_DEFAULT = ART / "a_codeai_public_binding_check_latest.json"
 
 
 def _now_utc() -> str:
@@ -20,6 +21,20 @@ def _now_utc() -> str:
 
 def _exists(path: Path) -> bool:
     return path.exists()
+
+
+def _binding_ready(path: Path) -> tuple[bool, str]:
+    if not path.exists():
+        return False, "missing_binding_check"
+    try:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return False, "invalid_binding_check_json"
+    if str(doc.get("schema")) != "a_codeai_public_binding_check_v1":
+        return False, "binding_check_schema_mismatch"
+    if not bool(doc.get("all_ok", False)):
+        return False, "binding_check_failed"
+    return True, "ok"
 
 
 def main() -> int:
@@ -43,6 +58,7 @@ def main() -> int:
             readiness_all_ok = bool(readiness.get("all_ok", False))
         except Exception:
             readiness_all_ok = False
+    binding_ok, binding_reason = _binding_ready(BINDING_DEFAULT)
 
     checks: list[dict[str, Any]] = [
         {
@@ -86,6 +102,13 @@ def main() -> int:
             "description": "No codebook internals, policy tuning internals, or customer prompts are exposed in public response.",
             "status": "PASS" if _exists(ROOT / "scripts" / "deploy" / "nginx" / "a-codeai.com.evidence.latest.json.example") else "TODO",
             "evidence_path": str(ROOT / "scripts" / "deploy" / "nginx" / "a-codeai.com.evidence.latest.json.example"),
+        },
+        {
+            "id": "C8_public_payload_runtime_binding",
+            "description": "Published '/' and '/ko/' pages must actively bind the public payload JSON at runtime.",
+            "status": "PASS" if binding_ok else "TODO",
+            "evidence_path": str(BINDING_DEFAULT),
+            "reason": binding_reason,
         },
     ]
 

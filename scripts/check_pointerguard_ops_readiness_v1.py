@@ -104,6 +104,16 @@ def _check_scheduler_arguments_evidence(path: Path) -> dict[str, Any]:
     return {"ok": True, "path": str(path), "reason": "ok"}
 
 
+def _check_public_binding(path: Path) -> dict[str, Any]:
+    base = _check_file(path, "a_codeai_public_binding_check_v1")
+    if not base.get("ok", False):
+        return base
+    doc = _read_json(path)
+    if not bool(doc.get("all_ok", False)):
+        return {"ok": False, "path": str(path), "reason": "public_binding_not_active"}
+    return {"ok": True, "path": str(path), "reason": "ok"}
+
+
 def _check_monthly_live_p0_drill(history_path: Path, max_age_days: int = 40) -> dict[str, Any]:
     if not history_path.exists():
         return {"ok": False, "path": str(history_path), "reason": "missing_p0_drill_history"}
@@ -163,6 +173,7 @@ def main() -> int:
     checks.append(_check_file(ART / "pointerguard_two_tier_perf_scorecard_latest.json", "pointerguard_two_tier_perf_scorecard_v1"))
     checks.append(_check_security_hardening(ART / "pointerguard_security_hardening_latest.json"))
     checks.append(_check_launch_checklist(ART / "a_codeai_public_benchmark_launch_checklist_v1.json"))
+    checks.append(_check_public_binding(ART / "a_codeai_public_binding_check_latest.json"))
     checks.append(_check_manual_approval_log(ART / "pointerguard_manual_approval_log_latest.json"))
     checks.append(_check_scheduler_arguments_evidence(ART / "pointerguard_scheduler_arguments_evidence_latest.json"))
     checks.append(_check_monthly_live_p0_drill(ART / "pointerguard_p0_alert_drill_history_v1.jsonl", max_age_days=40))
