@@ -1,0 +1,10 @@
+{
+  "schema": "pointerguard_scheduler_arguments_evidence_v1",
+  "generated_at_utc": "2026-04-28T10:34:00+00:00",
+  "source": "schtasks_query_xml",
+  "task_name": "MKM_PointerGuard_ControlChain_Daily",
+  "verified": true,
+  "command": "powershell.exe",
+  "arguments": "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File \"C:\\workspace\\scripts\\run_pointerguard_control_chain_daily.ps1\" -RouterTargetPath \"reports/demo_run.json\" -MemoryTuningTargetPath \"projects/bitcoin-trading/memory/v2/demo.json\" -WeeklyP0DrillDay \"Sunday\"",
+  "contains_weekly_p0_drill_day_flag": true
+}

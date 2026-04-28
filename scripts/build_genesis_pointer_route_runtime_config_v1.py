@@ -109,6 +109,10 @@ def main() -> int:
             "apply_go_enabled": apply_go_enabled,
             "apply_promotion_decision": str(apply_promotion.get("decision", "UNKNOWN")),
             "apply_promotion_reasons": apply_promotion.get("reasons", []),
+            "readiness_block_applied": bool(dec.get("readiness_block_applied", False)),
+            "readiness_block_checked_at_utc": dec.get("readiness_block_checked_at_utc"),
+            "guard_applied": bool(dec.get("guard_applied", False)),
+            "guard_reason": dec.get("guard_reason"),
         },
         "notes": [
             "Runtime config is generated from policy decision artifact; do not edit manually.",

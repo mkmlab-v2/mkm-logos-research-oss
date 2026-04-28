@@ -1,0 +1,36 @@
+{
+  "schema": "a_codeai_public_copy_web_payload_v1",
+  "generated_at_utc": "2026-04-28T10:16:41+00:00",
+  "source_copy_json": "C:\\workspace\\docs\\final\\artifacts\\a_codeai_fact_lock_public_copy_latest.json",
+  "sections": {
+    "hero": {
+      "title": "PointerGuard Router (Controlled Beta)",
+      "subtitle": "Condition-based token/input compression with automatic fallback and operational guardrails.",
+      "status_line": "Current status: readiness=green, controlled beta recommended."
+    },
+    "fact_lock_bullets": [
+      "This service is promoted with measured evidence only (Fact-Lock).",
+      "When guard conditions are unmet, traffic is downgraded to safe fallback mode automatically.",
+      "Public benchmark uses synthetic/anonymized input scope only.",
+      "No guarantee of universal uplift outside validated operating conditions."
+    ],
+    "claims": [
+      "Conditional cost and latency improvement in validated operating zones.",
+      "Automatic safety fallback (HOLD/track_a_primary) when readiness or health checks fail.",
+      "Operational transparency via timestamped benchmark and readiness artifacts."
+    ],
+    "non_claims": [
+      "No unconditional global performance guarantee.",
+      "No claim that all workloads receive equal benefit.",
+      "No exposure of private corpora, secrets, or internal codebook internals."
+    ],
+    "cta": {
+      "label": "Request Controlled Beta",
+      "note": "Pilot onboarding is limited to scoped B2B workloads with monitoring and guardrail acceptance."
+    }
+  },
+  "meta": {
+    "readiness_all_ok": true,
+    "executive_read_decision": "CONTROLLED_BETA_ONLY"
+  }
+}

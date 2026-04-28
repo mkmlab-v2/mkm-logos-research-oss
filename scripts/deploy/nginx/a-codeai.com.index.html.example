@@ -178,11 +178,12 @@
         <span class="badge">투자자문 아님</span>
         <span class="badge">90일 유료 파일럿</span>
       </div>
-      <h1>거시 충격을 더 빨리 보고,<br />의사결정은 더 빠르게.</h1>
-      <p class="subtitle">
+      <h1 id="pg-hero-title">거시 충격을 더 빨리 보고,<br />의사결정은 더 빠르게.</h1>
+      <p class="subtitle" id="pg-hero-subtitle">
         A-CODEAI는 환율·원자재·공급망 변동에 노출된 재무/리스크팀을 위해
         조기경보 신호를 제공하고, KPI·한계·미달 시 보상 조건을 파일럿 계약에 명시합니다.
       </p>
+      <p class="small" id="pg-status-line">상태: Controlled Beta (Fact-Lock 기준)</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="#contact">20분 미팅 신청</a>
         <a class="btn btn-ghost" href="/pilot">90일 파일럿 보기</a>
@@ -246,10 +247,10 @@
         <article class="card"><p class="label">한계 고지</p><p class="small">오탐/미탐 가능성을 선고지</p></article>
       </div>
       <div class="trust-list" style="margin-top:14px">
-        <div class="trust-item"><span class="pill pill-ok">상용화 판정</span> `l1_inverse_decoder_commercialization_checklist_v1.json` 기준 <strong>READY_FOR_BROAD_ROLLOUT</strong> 판정(3조건 PASS).</div>
-        <div class="trust-item"><span class="pill pill-ok">핵심 개선</span> `swap_typo` 극한 구간에서 objective v4 적용 시 exact/recovery가 각각 <strong>+0.0667</strong> 개선.</div>
-        <div class="trust-item"><span class="pill pill-ok">운영 안전장치</span> 기본은 개선 경로 ON, 필요 시 `--disable-swap-typo-objective-v4`로 즉시 롤백 가능.</div>
-        <div class="trust-item"><span class="pill pill-warn">적용 범위</span> 의미 전달 중심(요약/검색/로그) 도메인에 최적화. 100% 무결성이 필요한 결제/법무 원문은 별도 리터럴 라인 권장.</div>
+        <div class="trust-item" id="pg-claim-1"><span class="pill pill-ok">상용화 판정</span> `l1_inverse_decoder_commercialization_checklist_v1.json` 기준 <strong>READY_FOR_BROAD_ROLLOUT</strong> 판정(3조건 PASS).</div>
+        <div class="trust-item" id="pg-claim-2"><span class="pill pill-ok">핵심 개선</span> `swap_typo` 극한 구간에서 objective v4 적용 시 exact/recovery가 각각 <strong>+0.0667</strong> 개선.</div>
+        <div class="trust-item" id="pg-claim-3"><span class="pill pill-ok">운영 안전장치</span> 기본은 개선 경로 ON, 필요 시 `--disable-swap-typo-objective-v4`로 즉시 롤백 가능.</div>
+        <div class="trust-item" id="pg-non-claim-1"><span class="pill pill-warn">적용 범위</span> 의미 전달 중심(요약/검색/로그) 도메인에 최적화. 100% 무결성이 필요한 결제/법무 원문은 별도 리터럴 라인 권장.</div>
       </div>
     </div>
   </section>
@@ -293,8 +294,8 @@
     <div class="container">
       <div class="final-cta">
         <div>
-          <h2 style="margin-bottom:8px">20분 의사결정 미팅으로 시작</h2>
-          <p class="small">범위, KPI, 보상 조건, 시작일을 한 번에 맞춥니다.</p>
+          <h2 style="margin-bottom:8px" id="pg-cta-label">20분 의사결정 미팅으로 시작</h2>
+          <p class="small" id="pg-cta-note">범위, KPI, 보상 조건, 시작일을 한 번에 맞춥니다.</p>
         </div>
         <div class="cta-row" style="margin:0">
           <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%2090%EC%9D%BC%20%EA%B1%B0%EC%8B%9C%20%EB%A6%AC%EC%8A%A4%ED%81%AC%20%ED%8C%8C%EC%9D%BC%EB%9F%BF%20%EB%AC%B8%EC%9D%98">이메일 문의</a>
@@ -317,5 +318,37 @@
       <p>A-CODEAI · 엔터프라이즈 재무팀을 위한 공학 기반 리스크 모니터링.</p>
     </div>
   </footer>
+<script>
+  (async function () {
+    try {
+      const res = await fetch('/a_codeai_public_copy_web_payload_latest.json', { cache: 'no-store' });
+      if (!res.ok) return;
+      const data = await res.json();
+      const sections = data.sections || {};
+      const hero = sections.hero || {};
+      const setText = (id, v) => {
+        if (!v) return;
+        const el = document.getElementById(id);
+        if (el) el.textContent = v;
+      };
+      setText('pg-hero-title', hero.title);
+      setText('pg-hero-subtitle', hero.subtitle);
+      setText('pg-status-line', hero.status_line);
+
+      const claims = sections.claims || [];
+      const nonClaims = sections.non_claims || [];
+      setText('pg-claim-1', claims[0]);
+      setText('pg-claim-2', claims[1]);
+      setText('pg-claim-3', claims[2]);
+      setText('pg-non-claim-1', nonClaims[0]);
+
+      const cta = sections.cta || {};
+      setText('pg-cta-label', cta.label);
+      setText('pg-cta-note', cta.note);
+    } catch (_) {
+      // Keep static fallback copy.
+    }
+  })();
+</script>
 </body>
 </html>

@@ -1,0 +1,16 @@
+{
+  "schema": "pointerguard_ops_status_dashboard_v1",
+  "generated_at_utc": "2026-04-28T10:36:41+00:00",
+  "summary": {
+    "readiness_all_ok": true,
+    "failed_check_count": 0,
+    "latest_alert_should_send": true,
+    "latest_alert_severity": "P0",
+    "latest_alert_status": "http_200"
+  },
+  "failed_checks_preview": [],
+  "sources": {
+    "readiness_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_ops_readiness_latest.json",
+    "alert_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_ops_alert_delivery_latest.json"
+  }
+}

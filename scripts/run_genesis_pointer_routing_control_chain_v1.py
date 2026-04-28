@@ -63,9 +63,25 @@ def main() -> int:
         _run(
             [
                 py,
+                "scripts/pointer_hash_snapping_router_v1.py",
+                "--enable-snap",
+                "--target-path",
+                args.router_target_path,
+                "--out",
+                "docs/final/artifacts/pointer_hash_snapping_router_shadow_router_target_latest.json",
+            ]
+        )
+    )
+    steps.append(
+        _run(
+            [
+                py,
                 "scripts/decide_pointerguard_apply_go_promotion_v1.py",
                 "--folder-policy-json",
                 "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+                "--latest-snapshot-json",
+                "docs/final/artifacts/pointer_hash_snapping_router_shadow_router_target_latest.json",
+                "--prefer-latest-snapshot",
                 "--target-path",
                 args.router_target_path,
             ]
@@ -125,7 +141,22 @@ def main() -> int:
             ]
         )
     )
+    steps.append(
+        _run(
+            [
+                py,
+                "scripts/freeze_pointerguard_memory_v2_ramp_v1.py",
+                "--folder-policy-json",
+                "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+                "--memory-decision-json",
+                "docs/final/artifacts/pointerguard_apply_go_promotion_decision_memory_latest.json",
+            ]
+        )
+    )
     steps.append(_run([py, "scripts/apply_pointer_shadow_alert_guard_v1.py"]))
+    steps.append(_run([py, "scripts/build_pointerguard_manual_approval_log_v1.py"]))
+    steps.append(_run([py, "scripts/check_pointerguard_ops_readiness_v1.py"]))
+    steps.append(_run([py, "scripts/apply_pointerguard_readiness_block_v1.py"]))
     steps.append(
         _run(
             [
@@ -140,17 +171,7 @@ def main() -> int:
             ]
         )
     )
-    steps.append(
-        _run(
-            [
-                py,
-                "scripts/pointer_hash_snapping_router_v1.py",
-                "--enable-snap",
-                "--target-path",
-                args.router_target_path,
-            ]
-        )
-    )
+    steps.append(_run([py, "scripts/run_pointerguard_operational_smoke_v1.py"]))
 
     all_ok = all(s["exit_code"] == 0 for s in steps)
     out_doc = {

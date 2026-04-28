@@ -169,11 +169,12 @@
         <span class="badge">Not Investment Advice</span>
         <span class="badge">Paid 90-Day Pilot</span>
       </div>
-      <h1>See macro shocks earlier.<br />Decide faster with less noise.</h1>
-      <p class="subtitle">
+      <h1 id="pg-hero-title">See macro shocks earlier.<br />Decide faster with less noise.</h1>
+      <p class="subtitle" id="pg-hero-subtitle">
         A-CODEAI helps treasury and risk teams detect FX, commodity, and supply-chain stress earlier,
         with a KPI-defined 90-day pilot and explicit miss-handling terms.
       </p>
+      <p class="small" id="pg-status-line">Status: Controlled Beta (Fact-Lock)</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="#contact">Book a 20-min call</a>
         <a class="btn btn-secondary" href="/pilot">View 90-day pilot</a>
@@ -275,10 +276,10 @@
           </article>
         </div>
         <div class="trust-list" style="margin-top:14px">
-          <div class="trust-item"><span class="pill pill-ok">Commercial Readiness</span> `l1_inverse_decoder_commercialization_checklist_v1.json` reports <strong>READY_FOR_BROAD_ROLLOUT</strong> (3/3 criteria passed).</div>
-          <div class="trust-item"><span class="pill pill-ok">Hard-Case Gain</span> In `swap_typo` stress mode, objective v4 improves both exact and recovery by <strong>+0.0667</strong>.</div>
-          <div class="trust-item"><span class="pill pill-ok">Safety Control</span> Improved path is default-on, with immediate rollback via `--disable-swap-typo-objective-v4`.</div>
-          <div class="trust-item"><span class="pill pill-warn">Fit Boundary</span> Best for meaning-centric workloads (summarization, search, logs). For 100% fidelity workloads (payments/legal originals), use the literal-preserve lane.</div>
+          <div class="trust-item" id="pg-claim-1"><span class="pill pill-ok">Commercial Readiness</span> `l1_inverse_decoder_commercialization_checklist_v1.json` reports <strong>READY_FOR_BROAD_ROLLOUT</strong> (3/3 criteria passed).</div>
+          <div class="trust-item" id="pg-claim-2"><span class="pill pill-ok">Hard-Case Gain</span> In `swap_typo` stress mode, objective v4 improves both exact and recovery by <strong>+0.0667</strong>.</div>
+          <div class="trust-item" id="pg-claim-3"><span class="pill pill-ok">Safety Control</span> Improved path is default-on, with immediate rollback via `--disable-swap-typo-objective-v4`.</div>
+          <div class="trust-item" id="pg-non-claim-1"><span class="pill pill-warn">Fit Boundary</span> Best for meaning-centric workloads (summarization, search, logs). For 100% fidelity workloads (payments/legal originals), use the literal-preserve lane.</div>
         </div>
       </div>
     </section>
@@ -322,8 +323,8 @@
       <div class="container">
         <div class="final-cta">
           <div>
-            <h2 style="margin-bottom:8px">Start with one 20-minute decision call</h2>
-            <p class="small">We align scope, KPI, compensation terms, and the first pilot start date.</p>
+            <h2 style="margin-bottom:8px" id="pg-cta-label">Start with one 20-minute decision call</h2>
+            <p class="small" id="pg-cta-note">We align scope, KPI, compensation terms, and the first pilot start date.</p>
           </div>
           <div class="cta-row" style="margin:0">
             <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%2090-day%20macro%20risk%20pilot%20inquiry">Email us</a>
@@ -349,5 +350,37 @@
       <p>A-CODEAI · Engineering-grade risk monitoring for enterprise treasury teams.</p>
     </div>
   </footer>
+<script>
+  (async function () {
+    try {
+      const res = await fetch('/a_codeai_public_copy_web_payload_latest.json', { cache: 'no-store' });
+      if (!res.ok) return;
+      const data = await res.json();
+      const sections = data.sections || {};
+      const hero = sections.hero || {};
+      const setText = (id, v) => {
+        if (!v) return;
+        const el = document.getElementById(id);
+        if (el) el.textContent = v;
+      };
+      setText('pg-hero-title', hero.title);
+      setText('pg-hero-subtitle', hero.subtitle);
+      setText('pg-status-line', hero.status_line);
+
+      const claims = sections.claims || [];
+      const nonClaims = sections.non_claims || [];
+      setText('pg-claim-1', claims[0]);
+      setText('pg-claim-2', claims[1]);
+      setText('pg-claim-3', claims[2]);
+      setText('pg-non-claim-1', nonClaims[0]);
+
+      const cta = sections.cta || {};
+      setText('pg-cta-label', cta.label);
+      setText('pg-cta-note', cta.note);
+    } catch (_) {
+      // Keep static fallback copy.
+    }
+  })();
+</script>
 </body>
 </html>

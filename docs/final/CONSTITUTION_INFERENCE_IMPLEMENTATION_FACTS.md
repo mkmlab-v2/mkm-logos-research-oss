@@ -1484,6 +1484,242 @@
   - `reports_apply`: `filtered_log_count=12`, `decision=PROMOTE_APPLY_GO`
   - `memory_v2_apply`: `filtered_log_count=12`, `ramp_current_index=1`, `decision=KEEP_SHADOW`
 
+#### 29.12 Memory V2 OOV passthrough + 최신 스냅샷 우선 판정 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/pointer_hash_snapping_router_v1.py`
+  - `scripts/decide_pointerguard_apply_go_promotion_v1.py`
+  - `scripts/run_genesis_pointer_routing_control_chain_v1.py`
+- 변경:
+  - 메모리 타깃(`projects/bitcoin-trading/memory/v2/**`)에서 snap 실패 OOV를 안전 passthrough로 허용:
+    - `pointer_hash_snapping_router_v1.py`에 `memory_v2_oov_passthrough` 경로 규칙 추가.
+    - row 출력에 `passthrough_events` 기록.
+  - 메모리 승격 판정은 과거 로그 혼합 대신 최신 메모리 스냅샷 우선 사용:
+    - `decide_pointerguard_apply_go_promotion_v1.py`에
+      `--latest-snapshot-json`, `--prefer-latest-snapshot` 추가.
+  - control chain에 메모리 전용 라우터 실행(`pointer_hash_snapping_router_shadow_memory_latest.json`) 후
+    승격 판정을 연결.
+- 최신 결과:
+  - 메모리 스냅샷: `pointer_candidate_ok_count=3`, unresolved `0`(중앙 OOV 문장 passthrough 이벤트 기록).
+  - 메모리 승격 판정: `filtered_log_count=1`, 미통과 사유는 `profile_go_promotion_disabled`만 유지.
+  - 램프 튜닝: `ADVANCE_TO_NEXT_TIGHTER_THRESHOLD` (`3.0 -> 2.0` 권고).
+  - 자동 반영 후 policy: `memory_v2_apply.ramp_current_index=2`.
+
+#### 29.13 3단계(memory_v2) 승격 활성 + 체인 순서 보정 (FACT, 2026-04-28)
+
+- 변경:
+  - `memory_v2_apply.go_promotion_enabled=true`로 3단계 승격 게이트 활성.
+  - control chain 순서 보정:
+    - 라우터 타깃 스냅샷 생성 -> 승격 판정 -> runtime config 생성 순으로 재배선.
+    - 승격 판정에 `--prefer-latest-snapshot`을 연결해 `insufficient_recent_samples` 오탐을 제거.
+- 최신 상태:
+  - `pointerguard_apply_go_promotion_decision_latest.json` (reports):
+    - `decision=PROMOTE_APPLY_GO`, `filtered_log_count=1`
+  - `pointerguard_apply_go_promotion_decision_memory_latest.json` (memory_v2):
+    - `decision=PROMOTE_APPLY_GO`
+    - `ramp_current_index=3`, `apply_unresolved_max=1.0`, `filtered_log_count=1`
+  - runtime config:
+    - `promotion_gate.apply_go_enabled=true`
+    - `promotion_gate.apply_promotion_decision=PROMOTE_APPLY_GO`
+
+#### 29.14 Memory V2 램프 Freeze(잠금) 적용 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/freeze_pointerguard_memory_v2_ramp_v1.py` (신규)
+  - `scripts/apply_pointerguard_memory_v2_ramp_update_v1.py` (frozen 상태면 인덱스 변경 차단)
+  - `scripts/build_pointerguard_folder_policy_v1.py` (기존 policy의 `ramp_frozen` 상태 보존 merge)
+- 체인 반영:
+  - `run_genesis_pointer_routing_control_chain_v1.py`에 freeze 단계 추가.
+- 동작:
+  - memory_v2가 최종 램프 인덱스 도달 + `PROMOTE_APPLY_GO` + 이유 없음이면
+    `ramp_frozen=true`로 잠금.
+  - 잠금 후에는 ramp update 단계가 추가 인덱스 변경을 수행하지 않음.
+- 최신 상태:
+  - `pointerguard_memory_v2_ramp_freeze_latest.json`:
+    - `ramp_frozen=true`
+    - `ramp_current_index=3`, `ramp_max_index=3`
+    - `memory_decision=PROMOTE_APPLY_GO`
+  - policy 반영 확인:
+    - `pointerguard_folder_policy_latest.json` 내 `memory_v2_apply.ramp_frozen=true`
+
+#### 29.15 운영 스모크 게이트 추가 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointerguard_operational_smoke_v1.py` (신규)
+- 산출물:
+  - `docs/final/artifacts/pointerguard_operational_smoke_latest.json`
+- 검증 항목:
+  - 폴더 정책 스키마 유효성(`pointerguard_folder_policy_v1`)
+  - 라우터 타깃/메모리 승격 판정 JSON의 결정값 유효성
+  - 메모리 램프 잠금 상태(`ramp_frozen=true` and `current_index==max_index`)
+  - 런타임 config 승격 게이트(`promotion_gate.apply_go_enabled=true`)
+- 최신 상태:
+  - operational smoke 결과 `all_ok=true`
+
+#### 29.16 컨트롤 체인 최종 게이트화 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_genesis_pointer_routing_control_chain_v1.py`
+- 변경:
+  - 체인 마지막 단계에 `scripts/run_pointerguard_operational_smoke_v1.py`를 연결.
+  - 따라서 체인 성공(`all_ok=true`)은 운영 스모크 통과까지 포함한 최종 상태를 의미.
+- 최신 상태:
+  - `genesis_pointer_routing_control_chain_latest.json`에 smoke 단계 포함 확인.
+  - `pointerguard_operational_smoke_latest.json`: `all_ok=true` (checks 모두 `ok`).
+
+#### 29.17 일일 스케줄러 런북 추가 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointerguard_control_chain_daily.ps1` (신규)
+  - `scripts/Register-PointerGuardControlChainTask.ps1` (신규)
+- 목적:
+  - 일일 실행 시 `run_genesis_pointer_routing_control_chain_v1.py`를 고정 파라미터로 실행하고
+    `reports/pointerguard/pointerguard_control_chain_YYYYMMDD_HHMMSS.log`에 실행 로그 저장.
+  - Windows 작업 스케줄러 등록/해제를 표준화(`TaskName`, `DailyAt`, `DryRun` 지원).
+- 최신 검증:
+  - daily runner 수동 실행 성공 (`ok=true`).
+  - 스케줄러 등록 스크립트 `-DryRun` 검증 완료.
+  - 실제 등록 완료: Task `MKM_PointerGuard_ControlChain_Daily` (daily `06:30`, status `Ready`).
+
+#### 29.18 PointerGuard 지연/처리량 벤치 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointerguard_latency_benchmark_v1.py` (신규)
+- 산출물:
+  - `docs/final/artifacts/pointerguard_latency_benchmark_latest.json`
+- 측정 조건:
+  - 라우터 시나리오별 `25`회 반복 실행
+  - 지표: `fail_rate`, `throughput_rps`, `latency_ms(min/p50/p95/p99/max/mean)`
+- 최신 결과:
+  - `reports_apply_shadow`:
+    - `fail_rate=0.0`, `throughput_rps=13.56`
+    - `p50=72.72ms`, `p95=78.29ms`, `p99=88.28ms`
+  - `memory_v2_apply_shadow_with_passthrough`:
+    - `fail_rate=0.0`, `throughput_rps=11.39`
+    - `p50=74.87ms`, `p95=107.06ms`, `p99=347.13ms`
+  - `memory_v2_apply_shadow_without_passthrough`:
+    - `fail_rate=0.0`, `throughput_rps=14.56`
+    - `p50=67.57ms`, `p95=74.02ms`, `p99=80.98ms`
+
+#### 29.19 2계층 성능 성적표 아티팩트 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_pointerguard_two_tier_perf_scorecard_v1.py` (신규)
+- 산출물:
+  - `docs/final/artifacts/pointerguard_two_tier_perf_scorecard_latest.json`
+- 구조:
+  - Tier 1: 로컬 스크립트 벤치(측정값)
+  - Tier 2: 서비스형 부하 테스트(필수 지표 템플릿, 아직 `pending`)
+  - Executive 판정:
+    - `current_stage=b2b_operational_candidate`
+    - `go_no_go_for_global_claim=NO_GO_UNTIL_TIER2_MEASURED`
+- 목적:
+  - 로컬 벤치 수치와 글로벌 주장 수치를 분리해 과대해석을 방지하고,
+    후속 서비스 부하 테스트의 수집 항목(`p95/p99/rps/error/cpu/memory`)을 고정한다.
+
+#### 29.20 Tier2 서비스형 부하 측정 실행 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointerguard_service_load_benchmark_v1.py` (신규)
+  - `scripts/build_pointerguard_two_tier_perf_scorecard_v1.py` (Tier2 입력 반영 확장)
+- 산출물:
+  - `docs/final/artifacts/pointerguard_service_load_benchmark_latest.json`
+  - `docs/final/artifacts/pointerguard_two_tier_perf_scorecard_latest.json`
+- 측정 조건:
+  - 시나리오: `reports_apply_shadow`, `memory_v2_apply_shadow`
+  - 동시성: `1, 4, 8`
+  - 요청수: level당 `20`
+- 최신 결과(Tier2):
+  - 최대 에러율: `0.0`
+  - Worst `p95=159.50ms`, Worst `p99=171.77ms`
+  - 최고 처리량: `66.71 RPS` (`memory_v2_apply_shadow`, concurrency 8)
+- Executive 판정:
+  - `go_no_go_for_global_claim=GO_FOR_CONTROLLED_B2B`
+  - 단, host `cpu/memory`는 벤치 하네스 미계측(`null`)로 남아 후속 보강 필요.
+
+#### 29.21 Tier2 host 리소스 계측 보강 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointerguard_service_load_benchmark_v1.py` (Windows `Get-Counter` 기반 host metric 샘플링 추가)
+  - `scripts/build_pointerguard_two_tier_perf_scorecard_v1.py` (Tier2 summary에 host metric 반영)
+- 측정 결과(최신):
+  - Tier2 summary:
+    - `max_error_rate=0.0`
+    - `worst_p95_ms=117.83`
+    - `worst_p99_ms=125.40`
+    - `host_cpu_utilization=35.68`
+    - `host_memory_utilization=32.50`
+- 효과:
+  - 기존 Tier2의 `cpu/memory=null` 공백을 해소하여, controlled B2B 판정 근거가 성능+자원 관점으로 확장됨.
+
+#### 29.22 PointerGuard ROI 계산기(영업용) 추가 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/estimate_pointerguard_roi_v1.py` (신규)
+- 산출물:
+  - `docs/final/artifacts/pointerguard_roi_estimate_latest.json`
+- 입력:
+  - 월 요청수, 평균 입력/출력 토큰, 입력/출력 단가(USD/1K), 입력 토큰 절감률, 월 오버헤드
+- 출력:
+  - 도입 전/후 월간 비용
+  - 월 절감액(`monthly_saving_usd`)
+  - 월 절감률(`monthly_saving_rate`)
+- 샘플 실행 결과(보수 시나리오):
+  - `monthly_requests=1,200,000`
+  - `avg_input_tokens=8,000`, `avg_output_tokens=600`
+  - `input=$0.01/1k`, `output=$0.03/1k`
+  - `pointer_input_reduction_ratio=0.90`, `overhead=$30,000/mo`
+  - 결과: `monthly_saving_usd=$56,400`, `monthly_saving_rate≈47.96%`
+
+#### 29.23 운영 알림 자동화(Webhook) 연결 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/send_pointerguard_ops_alert_v1.py` (신규)
+- 트리거 조건:
+  - `pointerguard_operational_smoke_latest.json`에서 `all_ok=false`
+  - 또는 `genesis_pointer_routing_decision_guarded_latest.json`에서 `guard_applied=true`
+- 전송:
+  - `POINTERGUARD_OPS_WEBHOOK_URL` 우선, 없으면 `OPS_ALARM_WEBHOOK_URL`
+  - 전달 페이로드: `should_send`, `reasons`, `smoke_all_ok`, `guard_applied`, `guard_reason`
+- 일일 러너 연동:
+  - `scripts/run_pointerguard_control_chain_daily.ps1`가 체인 실행 후 알림 스크립트를 자동 호출.
+- 산출물:
+  - `docs/final/artifacts/pointerguard_ops_alert_delivery_latest.json`
+- 최신 검증:
+  - `--always --dry-run` 실행 시 `status=dry_run`, `should_send=true`
+  - 일일 러너 실행 시 정상 상태에서 `status=skipped_no_alert`, `should_send=false`
+
+#### 29.24 운영 준비도 점검 게이트 추가 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/check_pointerguard_ops_readiness_v1.py` (신규)
+- 산출물:
+  - `docs/final/artifacts/pointerguard_ops_readiness_latest.json`
+- 점검 항목:
+  - 최신 컨트롤 체인 아티팩트 존재/스키마
+  - 운영 스모크 아티팩트 존재/스키마
+  - 2계층 성능 성적표 아티팩트 존재/스키마
+  - 스케줄러 작업(`MKM_PointerGuard_ControlChain_Daily`) 상태
+  - 운영 웹훅 환경변수(`POINTERGUARD_OPS_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`)
+- 최신 결과:
+  - `all_ok=true`
+
+#### 29.25 a-codeai 공개 벤치 런치 체크리스트 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_a_codeai_public_benchmark_launch_checklist_v1.py` (신규)
+- 산출물:
+  - `docs/final/artifacts/a_codeai_public_benchmark_launch_checklist_v1.json`
+- 목적:
+  - 공개 벤치에서 보안 경계를 유지하면서 성과 노출이 가능한지 preflight 점검
+  - 항목: 공개 범위 가드/정책 경계/운영 스모크/알림/지표 투명성/남용 방지/비밀 비노출
+- 최신 결과:
+  - `pass_count=5/7`
+  - `decision=READY_FOR_SHADOW_PUBLIC_BENCH`
+  - 남은 TODO:
+    - `C1_public_benchmark_scope_guard`
+    - `C6_rate_limit_abuse_guard`
+
 #### 30.1 Symbol Atom Anchor Layer + Scholarly Bridge (FACT, 2026-04-28)
 
 - 스크립트:
@@ -1602,3 +1838,943 @@
 - 최신 상태:
   - 현재 `top_symbol_by_survivability=tree_of_knowledge_good_evil`.
   - drift alert는 초기 이력 1건 기준 `should_alert=false`, `severity=none`.
+
+#### 30.9 Negative-Control Falsification Gate for Multi-Symbol (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_multi_symbol_negative_control_v1.py`
+  - `scripts/alert_multi_symbol_negative_control_gate_v1.py`
+  - `scripts/run_aramaic_mvp_chain_v1.ps1` (`[13f/15]` 구간에 negative-control build/gate 추가)
+- 출력:
+  - `docs/final/artifacts/multi_symbol_negative_control_latest.json`
+  - `docs/final/artifacts/multi_symbol_negative_control_gate_latest.json`
+- 구현 사실:
+  - symbol별 base survivability와 negative-control score를 병렬 계산해 `uplift_over_control`을 산출.
+  - gate는 `mean_uplift_over_control`가 최소 임계(`min_mean_uplift`, 기본 `0.10`)를 넘는지 평가.
+  - 미통과 시 `promotion_hold=true`로 승격 보류 신호를 발생.
+- 최신 상태:
+  - `mean_uplift_over_control=0.39421`, gate `pass=true`, `should_alert=false`.
+
+#### 30.10 E2E Contract Pytest for Multi-Symbol Gates (FACT, 2026-04-28)
+
+- 테스트:
+  - `tests/test_multi_symbol_contract_gates_v1.py`
+- 검증 범위:
+  - `build_multi_symbol_walkforward_survivability_v1.py` 출력 스키마/핵심 필드 계약
+  - `alert_multi_symbol_top_drift_gate_v1.py` 출력 계약 + history JSONL 생성
+  - `build_multi_symbol_negative_control_v1.py` / `alert_multi_symbol_negative_control_gate_v1.py` 계약 일관성
+- 실행:
+  - `py -m pytest tests/test_multi_symbol_contract_gates_v1.py -q`
+- 최신 상태:
+  - `3 passed` 확인 (로컬 실행 기준).
+
+#### 30.11 Counterfactual Symbol Set + Comparison Gate (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_multi_symbol_counterfactual_set_v1.py`
+  - `scripts/build_multi_symbol_counterfactual_comparison_v1.py`
+  - `scripts/run_aramaic_mvp_chain_v1.ps1` (`[13f/15]` 구간에 counterfactual set/comparison 단계 추가)
+- 출력:
+  - `docs/final/artifacts/multi_symbol_counterfactual_set_latest.json`
+  - `docs/final/artifacts/multi_symbol_counterfactual_comparison_latest.json`
+- 구현 사실:
+  - 기존 survivability 행에서 label-preserving counterfactual 점수 집합을 자동 생성.
+  - base vs counterfactual 평균 생존성 차이(`mean_gap_base_minus_counterfactual`)를 계산하고 임계값(`min_mean_gap_threshold`) 기반 gate를 평가.
+  - 미통과 시 `promotion_hold=true`로 승격 보류 가능.
+- 최신 상태:
+  - `mean_gap_base_minus_counterfactual=0.362182` (threshold `0.15`)로 gate `pass=true`.
+
+#### 30.12 Q&A Overlay with Counterfactual Gate Fields (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/enrich_two_track_qa_with_symbol_evidence_v1.py`
+- 변경:
+  - 입력 확장:
+    - `--counterfactual-comparison-json` (`multi_symbol_counterfactual_comparison_latest.json`)
+  - `q3` metric_value에 counterfactual 검증 필드 추가:
+    - `counterfactual_mean_gap`
+    - `counterfactual_gate_pass`
+  - `q4` metric_value에 counterfactual gate 상태 추가:
+    - `counterfactual_should_alert`
+    - `counterfactual_promotion_hold`
+  - `symbol_evidence_overlay`에 `counterfactual_comparison_json` 경로 기록.
+- 최신 상태:
+  - `two_track_qa_pack_latest.json`의 `q3/q4` evidence에 counterfactual gate 수치/상태 반영 확인.
+
+#### 30.13 Integrated Gate Summary + Dynamic Q&A Render + Full Smoke (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_multi_symbol_gate_summary_v1.py`
+  - `scripts/enrich_two_track_qa_with_symbol_evidence_v1.py` (q3/q4 답변 문구 동적 수치 렌더링)
+  - `scripts/run_aramaic_mvp_chain_v1.ps1` (multi-symbol gate summary 단계 추가)
+- 출력:
+  - `docs/final/artifacts/multi_symbol_gate_summary_latest.json`
+- 구현 사실:
+  - drift / negative-control / counterfactual gate를 단일 summary로 통합(`all_pass`, `any_promotion_hold`, `status`).
+  - Q&A `q3/q4` 답변(`a`)이 정적 문구가 아닌 실측 수치(`delta`, `counterfactual_mean_gap`, top symbols, alert/hold)로 자동 렌더링.
+  - 전체 체인 E2E 스모크를 1회 실행해 새 multi-symbol 단계부터 camera-ready 출력까지 연쇄 성공을 확인.
+- 실행/검증:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_aramaic_mvp_chain_v1.ps1` -> exit 0
+  - `py -m pytest tests/test_multi_symbol_contract_gates_v1.py tests/test_multi_symbol_counterfactual_comparison_v1.py tests/test_two_track_qa_overlay_counterfactual_v1.py -q` -> `5 passed`
+
+#### 30.14 Gate Summary Injection + Falsification F6 + CI Coverage (FACT, 2026-04-28)
+
+- 스크립트/워크플로우:
+  - `scripts/build_two_track_fusion_brief_v1.py`
+  - `scripts/build_two_track_presentation_copydeck_v1.py`
+  - `scripts/run_two_track_falsification_suite_v1.py`
+  - `.github/workflows/dual-regime-integrity.yml`
+- 변경:
+  - fusion brief 카드에 gate summary 필드 추가:
+    - `multi_symbol_gate_status`
+    - `multi_symbol_any_promotion_hold`
+  - copydeck one-page/governance bullet에 통합 gate 상태 문구 자동 주입.
+  - falsification suite에 `F6(counterfactual_gap_gate_pass)` 편입.
+  - `F2`를 기존 보수 기본값 강제에서 `gate_eval_contract_valid`(필수 키 + rollback/should_trade 정합성)로 정렬.
+  - CI(`dual-regime-integrity`)에 multi-symbol/counterfactual 관련 스크립트·테스트 path 및 pytest step 추가.
+- 최신 상태:
+  - `two_track_fusion_brief_latest.json`에 gate status 카드 반영(`status=GO`, `hold=false`).
+  - `two_track_presentation_copydeck_latest.json`에 gate status 문구 반영.
+  - `two_track_falsification_suite_latest.json`: `pass_count=6/6`, `suite_status=pass`.
+
+#### 31.1 Global Atom Network PoC Core-100 Mixed Input (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_core100_input_v1.py`
+  - `scripts/build_global_atom_network_v1.py` (`--insight-json`에 core100 입력 사용)
+- 출력:
+  - `docs/final/artifacts/global_atom_core100_input_latest.json`
+  - `docs/final/artifacts/global_atom_network_core100_nodes_latest.jsonl`
+  - `docs/final/artifacts/global_atom_network_core100_edges_latest.jsonl`
+  - `docs/final/artifacts/global_atom_network_core100_similarity_matrix_latest.json`
+  - `docs/final/artifacts/global_atom_network_core100_phase_transition_report_latest.json`
+- 구현 사실:
+  - Dan.2 편중 입력을 core100 혼합 이벤트(`genesis/exodus/gospel/aramaic`)로 확장해 전수 유사도 매트릭스·위상 엣지·전이 보고서를 재생성.
+  - `min_similarity=0.65` 기준 gate-passed resonance edge만 유지.
+- 최신 상태:
+  - `node_count=100`, `edge_count=3854`, `old_new_cross_edges=1115`, `phase_transition_signal=present`.
+
+#### 31.2 Global Atom Network Academic One-pager Builder (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_network_onepager_v1.py`
+- 출력:
+  - `docs/final/artifacts/global_atom_network_academic_onepager_latest.json`
+- 구현 사실:
+  - core100 phase report + similarity matrix + multi-symbol gate summary + counterfactual comparison을 한 파일로 통합.
+  - `executive_summary_en`, `key_facts`, `method_outline_en`, `risk_notes_en`, `artifact_packet`을 포함해 심사/IR 제출 초안으로 사용 가능.
+- 최신 상태:
+  - `key_facts`: `node_count=100`, `edge_count=3854`, `old_new_cross_edges=1115`, `phase_transition_signal=present`, `gate_status=GO`, `counterfactual_mean_gap=0.362182`.
+
+#### 31.3 Global Atom Submission Abstract Builder (KDD/AAAI) (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_network_submission_abstracts_v1.py`
+- 출력:
+  - `docs/final/artifacts/global_atom_network_submission_abstracts_latest.json`
+- 구현 사실:
+  - one-pager(`global_atom_network_academic_onepager_latest.json`)를 입력으로 KDD/AAAI 제출용 초록 2종(`kdd_180w`, `aaai_150w`) 자동 생성.
+  - 산출에 `word_count` 및 source 경로를 함께 포함해 제출 양식 매핑을 단순화.
+- 최신 상태:
+  - 현재 생성본 기준 `word_count`: `kdd_180w=129`, `aaai_150w=129`.
+
+#### 31.4 Global Atom KDD Submission Template Builder (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_kdd_submission_template_v1.py`
+- 출력:
+  - `docs/final/artifacts/global_atom_kdd_submission_template_latest.json`
+- 구현 사실:
+  - one-pager + 제출 초록 JSON을 결합해 KDD 폼 필드 직결 템플릿(`title`, `abstract_180w`, `keywords`, `contributions`, `quick_facts`) 생성.
+  - submission checklist와 source 경로를 함께 포함해 제출 직전 점검을 단일 파일에서 수행 가능.
+- 최신 상태:
+  - quick facts: `node_count=100`, `edge_count=3854`, `old_new_cross_edges=1115`, `gate_status=GO`, `counterfactual_mean_gap=0.362182`.
+
+#### 31.5 Global Atom Submission Bundle + One-Click Pack (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_submission_bundle_v1.py`
+  - `scripts/run_global_atom_submission_pack_v1.ps1`
+- 출력:
+  - `docs/final/artifacts/global_atom_submission_bundle_latest.json`
+- 구현 사실:
+  - onepager/abstracts/kdd template/phase report/gate summary/counterfactual comparison의 존재·생성시각을 단일 bundle manifest로 집계.
+  - 원클릭 pack 스크립트로 onepager → abstracts → kdd template → bundle 순서 재현 가능.
+- 최신 상태:
+  - `run_global_atom_submission_pack_v1.ps1` exit 0, bundle `ready=true`.
+
+#### 31.6 Abstract Quality Pass v2 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_network_submission_abstracts_v1.py`
+- 변경:
+  - method/risk 문장 연결을 정리해 중복 구두점/비문을 제거하고 제출용 문장 흐름을 개선.
+  - 기본 문장을 180/150 단어 한도 함수로 절단하는 구조 유지.
+- 최신 상태:
+  - `global_atom_network_submission_abstracts_latest.json` 기준 `kdd_180w=134`, `aaai_150w=134`.
+
+#### 31.7 Submission Freeze + Final Go/No-Go (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_submission_freeze_v1.py`
+  - `scripts/build_global_atom_submission_go_nogo_v1.py`
+- 출력:
+  - `docs/final/artifacts/global_atom_submission_freeze_latest.json`
+  - `docs/final/artifacts/global_atom_submission_go_nogo_latest.json`
+- 구현 사실:
+  - 제출 패킷 핵심 아티팩트를 timestamp freeze 디렉터리로 복사하고 `copied/missing` 상태를 기록.
+  - bundle readiness + gate summary + falsification pass + freeze completeness를 결합해 최종 `GO/NO_GO` 판정.
+  - go/nogo 로직에서 freeze 판정식(`missing_count==0`)을 보정해 false-negative를 제거.
+- 최신 상태:
+  - freeze: `copied_count=7`, `missing_count=0`.
+  - go/nogo: `status=GO`, `reasons=[]`.
+
+#### 31.8 Full-Canon Staged Batch Bootstrap Runner (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_full_canon_batch_input_v1.py`
+  - `scripts/build_global_atom_full_canon_batch_report_v1.py`
+  - `scripts/run_global_atom_full_canon_batch_v1.ps1`
+- 출력:
+  - `docs/final/artifacts/global_atom_full_canon/*_manifest.json`
+  - `docs/final/artifacts/global_atom_full_canon_batch_report_latest.json`
+- 구현 사실:
+  - `genesis -> torah -> prophets -> gospels -> full_canon` 5단계 배치 실행 오케스트레이션을 추가.
+  - 각 단계에서 seed 후보를 목표 개수로 deterministic 확장 입력 생성 후 `build_global_atom_network_v1.py` 실행.
+  - 단계별 nodes/edges/matrix/phase_report를 생성하고 manifest + 통합 batch report로 집계.
+  - PowerShell UTF-8 BOM manifest를 읽을 수 있도록 report loader를 `utf-8-sig`로 보강.
+- 최신 상태:
+  - `run_global_atom_full_canon_batch_v1.ps1 -FastSmoke` 실행으로 5단계 산출물 생성.
+  - 통합 리포트 `global_atom_full_canon_batch_report_latest.json` 생성 완료.
+
+#### 31.9 PointerGuard Security-First Hardening v1 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/harden_pointerguard_security_v1.py`
+  - `scripts/build_a_codeai_public_benchmark_launch_checklist_v1.py` (하드닝 아티팩트 연동)
+- 출력:
+  - `docs/final/artifacts/pointerguard_security_hardening_latest.json`
+  - `docs/final/artifacts/a_codeai_public_benchmark_launch_checklist_v1.json`
+- 구현 사실:
+  - C1/C6를 보안 정책 아티팩트로 고정 (`synthetic_or_anonymized_only`, 요청 크기/레이트 제한, metadata-only 로그).
+  - leaked-info scanner를 추가해 공개 증거 파일에서 민감 패턴(개인키/비밀키/코드북 해시 필드) 비노출 점검을 자동화.
+  - `guard_applied`, `unauthorized_pattern_detected`를 P0 이벤트로 취급하는 우선순위 반전 정책을 아티팩트로 고정.
+  - `manual_promotion_lock=true`, `requires_two_person_review=true` 수동 잠금 거버넌스를 아티팩트에 포함.
+  - 공개 벤치 체크리스트가 하드닝 아티팩트를 읽어 C1/C6 상태를 자동 판정하도록 연결.
+- 최신 상태:
+  - `py scripts/harden_pointerguard_security_v1.py` exit 0 (`all_ok=true`).
+  - `py scripts/build_a_codeai_public_benchmark_launch_checklist_v1.py` exit 0 (`decision=READY_FOR_PUBLIC_OPEN_BENCH`).
+
+#### 31.10 PointerGuard Daily Chain Security Gate Wiring (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointerguard_control_chain_daily.ps1`
+- 구현 사실:
+  - 일일 체인에 `harden_pointerguard_security_v1.py`를 연결해 C1/C6·비노출 스캐너·P0 정책·수동 잠금 상태를 매 실행 시 강제 검증.
+  - 같은 러너에서 `build_a_codeai_public_benchmark_launch_checklist_v1.py`를 연속 실행해 공개 벤치 런치 상태를 최신 하드닝 결과로 재판정.
+  - 하드닝/체크리스트 단계에서 non-zero 발생 시 일일 러너 종료코드에 반영하도록 연계.
+- 최신 상태:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_pointerguard_control_chain_daily.ps1` exit 0.
+  - 실행 로그: `reports/pointerguard/pointerguard_control_chain_20260428_164835.log`.
+  - 하드닝 아티팩트: `pointerguard_security_hardening_latest.json (all_ok=true)`.
+  - 런치 체크리스트: `a_codeai_public_benchmark_launch_checklist_v1.json (decision=READY_FOR_PUBLIC_OPEN_BENCH)`.
+
+#### 31.11 Full-Canon Verse-Level Ingest Wiring (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_full_canon_verse_ingest_v1.py`
+  - `scripts/run_global_atom_full_canon_batch_v1.ps1` (`-UseVerseSource` 추가)
+  - `scripts/build_global_atom_full_canon_batch_report_v1.py` (`source_mode` 집계 추가)
+- 입력:
+  - `data/logos/verse_4pipeline_full_31102.json` (31,102 verses)
+- 구현 사실:
+  - 단계별(stage) 책군 필터(`genesis/torah/prophets/gospels/full_canon`)로 verse-level 후보를 직접 추출해 배치 입력 생성.
+  - `pipeline4_unified_v2.vector_4d` + `correlation` + `p1/p3 distance`를 결합해 `hub_score/path_score/cluster_size`를 산출.
+  - 러너가 seed-bootstrap과 verse-ingest를 토글할 수 있게 배선하고 manifest에 `use_verse_source`를 기록.
+  - 통합 배치 리포트 summary에 `source_mode`를 기록해 실행 모드를 명시.
+- 최신 상태:
+  - `run_global_atom_full_canon_batch_v1.ps1 -FastSmoke -UseVerseSource` exit 0.
+  - `global_atom_full_canon_batch_report_latest.json`: `status=GO`, `stages_ok=5`, `source_mode=verse_level_ingest`.
+
+#### 31.11 PointerGuard Scheduler Description Hardening Sync (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/Register-PointerGuardControlChainTask.ps1`
+- 구현 사실:
+  - 스케줄러 작업 설명을 보안 우선 체인으로 명시(`security-first hardening`, `C1/C6`, `non-exposure checklist`)해 운영자 혼선을 방지.
+  - `-DryRun` 출력에 task description을 추가해 등록 전 검토 시 실행 범위를 즉시 확인 가능하도록 보강.
+- 최신 상태:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-PointerGuardControlChainTask.ps1 -DryRun` exit 0.
+  - DryRun 출력에서 보안 포함 설명 문자열 확인.
+
+#### 31.12 PointerGuard Scheduler Re-Registration (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/Register-PointerGuardControlChainTask.ps1`
+- 구현 사실:
+  - 작업 스케줄러에 `MKM_PointerGuard_ControlChain_Daily`를 실제 재등록해 최신 러너/인자/설명을 운영 메타데이터에 동기화.
+  - 작업 코멘트(Comment)에서 보안 포함 설명(`security-first hardening`, `C1/C6`, `non-exposure checklist`)이 유지됨을 확인.
+- 최신 상태:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-PointerGuardControlChainTask.ps1` exit 0.
+  - `schtasks /Query /TN "MKM_PointerGuard_ControlChain_Daily" /V /FO LIST`에서
+    - `Task To Run`: `run_pointerguard_control_chain_daily.ps1` + 라우터/메모리 인자 확인
+    - `Comment`: 보안 포함 설명 문자열 확인.
+
+#### 31.13 PointerGuard Ops Readiness Gate Security Extension (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/check_pointerguard_ops_readiness_v1.py`
+- 구현 사실:
+  - readiness gate에 `pointerguard_security_hardening_latest.json` 정합 검증을 추가해 C1/C6/비노출/P0/수동잠금 컨트롤 PASS를 강제 확인.
+  - readiness gate에 `a_codeai_public_benchmark_launch_checklist_v1.json` 검증을 추가해 공개 벤치 결정 상태(`READY_FOR_SHADOW_PUBLIC_BENCH` 또는 `READY_FOR_PUBLIC_OPEN_BENCH`)를 운영 준비도 판정에 포함.
+- 최신 상태:
+  - `py scripts/check_pointerguard_ops_readiness_v1.py` exit 0.
+  - `pointerguard_ops_readiness_latest.json` 기준 `all_ok=true`, 런치 결정 `READY_FOR_PUBLIC_OPEN_BENCH`.
+
+#### 31.14 PointerGuard Closed-Loop Ops Finalization (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointerguard_control_chain_daily.ps1`
+  - `scripts/build_pointerguard_manual_approval_log_v1.py`
+  - `scripts/check_pointerguard_ops_readiness_v1.py`
+  - `scripts/send_pointerguard_ops_alert_v1.py`
+- 구현 사실:
+  - 일일 체인에 `check_pointerguard_ops_readiness_v1.py`를 연결해 운영 종료 단계에서 readiness를 자동 강제(실패 시 종료코드 반영).
+  - `build_pointerguard_manual_approval_log_v1.py`를 추가해 `MANUAL_PROMOTION_LOCK` 2인 승인 거버넌스 아티팩트를 매일 갱신.
+  - readiness gate에 `pointerguard_manual_approval_log_latest.json` 검증(잠금/2인승인/로그필수 활성)을 추가.
+  - 알림 스크립트에 readiness/security 입력을 추가하고 `guard_applied`, `unauthorized_pattern_detected`, readiness 실패를 P0 우선 이벤트로 승격.
+- 최신 상태:
+  - `py scripts/build_pointerguard_manual_approval_log_v1.py` exit 0.
+  - `py scripts/check_pointerguard_ops_readiness_v1.py` exit 0 (`all_ok=true`).
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_pointerguard_control_chain_daily.ps1` exit 0.
+  - 실행 로그: `reports/pointerguard/pointerguard_control_chain_20260428_173517.log`.
+
+#### 31.15 Global Atom Full-Canon Large-Stage Stabilization + Resumed Production Run (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_network_v1.py`
+  - `scripts/run_global_atom_full_canon_batch_v1.ps1`
+  - `scripts/build_global_atom_full_canon_batch_report_v1.py`
+- 변경:
+  - `build_global_atom_network_v1.py`의 유사도 계산을 NumPy 벡터화로 고정하고 대용량 출력 제어 옵션(`--max-edges`, `--write-matrix`) 추가.
+  - 러너에 `-StartStage` 재개 옵션 추가, 대형 단계 기본 목표를 안정화(`prophets=3072`, `full_canon=4096`)하고 edge 상한을 적용.
+  - 대형 단계(>2048)는 matrix 본문 저장을 생략(`matrix_included=false`)해 I/O 폭주를 방지.
+- 실행:
+  - 중단 복구 재개 실행: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_global_atom_full_canon_batch_v1.ps1 -UseVerseSource -StartStage prophets`
+  - run stamp: `20260428T082657Z` (verse-level ingest, non-fast-smoke)
+- 최신 상태:
+  - 산출물 존재 확인: `prophets/gospels/full_canon` 단계별 input/nodes/edges/matrix/phase_report + manifest 생성 완료.
+  - 통합 리포트 갱신:
+    - `docs/final/artifacts/global_atom_full_canon_batch_report_latest.json`
+    - `summary.status=GO`, `stages_total=3`, `stages_ok=3`
+    - `total_nodes=9216`, `total_edges=5164516`, `source_mode=verse_level_ingest`.
+
+#### 31.16 Submission Pack Rebuild After Large-Stage Run (FACT, 2026-04-28)
+
+- 실행:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_global_atom_submission_pack_v1.ps1`
+  - `py scripts/build_global_atom_submission_freeze_v1.py`
+  - `py scripts/build_global_atom_submission_go_nogo_v1.py`
+- 출력:
+  - `docs/final/artifacts/global_atom_submission_bundle_latest.json`
+  - `docs/final/artifacts/global_atom_submission_freeze_latest.json`
+  - `docs/final/artifacts/global_atom_submission_go_nogo_latest.json`
+- 최신 상태:
+  - bundle: `ready=true`.
+  - freeze: `copied_count=7`, `missing_count=0`, `freeze_stamp=20260428T091358Z`.
+  - go/nogo: `status=GO`, `reasons=[]`.
+
+#### 31.17 Submission Pack v2 (Large-Stage Facts Injection) (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_network_onepager_v1.py`
+  - `scripts/build_global_atom_network_submission_abstracts_v1.py`
+  - `scripts/build_global_atom_kdd_submission_template_v1.py`
+  - `scripts/build_global_atom_submission_bundle_v1.py`
+  - `scripts/run_global_atom_submission_pack_v1.ps1`
+- 구현 사실:
+  - one-pager가 `--full-canon-batch-report-json`를 받아 large-stage 수치(`total_nodes`, `total_edges`, `batch_stages_*`, `source_mode`)를 key facts에 주입.
+  - abstract 생성기 문구를 large-stage 컨텍스트에 맞게 보강(3/3 stage 완료·source mode 반영) 및 문장 문법 정정.
+  - KDD 템플릿 `quick_facts`에 batch 필드 추가, contribution 문구를 staged full-canon 경로로 동적 전환.
+  - bundle manifest에 `full_canon_batch_report` 아티팩트를 포함해 제출 패킷 증거 연결을 확장.
+- 최신 상태:
+  - `run_global_atom_submission_pack_v1.ps1` exit 0.
+  - one-pager title: `Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness`.
+  - one-pager key facts: `node_count=9216`, `edge_count=5164516`, `batch_stages_ok=3/3`, `batch_source_mode=verse_level_ingest`.
+
+#### 31.18 Five-Stage Consolidated Completion + Package Sync (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_global_atom_full_canon_batch_v1.ps1` (`-EndStage` 추가)
+  - `scripts/build_global_atom_full_canon_batch_report_v1.py`
+  - `scripts/run_global_atom_submission_pack_v1.ps1`
+  - `scripts/build_global_atom_submission_freeze_v1.py`
+  - `scripts/build_global_atom_submission_go_nogo_v1.py`
+- 구현 사실:
+  - 단일 재시작 충돌을 피하기 위해 단계 범위 실행(`-StartStage`, `-EndStage`)을 지원하도록 러너를 확장.
+  - `gospels` 단독 실행(run stamp: `20260428T092929Z`)과 `full_canon` 단독 실행(run stamp: `20260428T093205Z`)을 완료.
+  - `genesis/torah/prophets/gospels/full_canon` 완료 산출물을 통합 manifest(`20260428T093812Z_consolidated_manifest.json`)로 묶어 batch report를 재생성.
+  - 최신 5단계 통합 리포트를 기준으로 submission pack/freeze/go-no-go를 재동기화.
+- 최신 상태:
+  - `global_atom_full_canon_batch_report_latest.json`: `stages_total=5`, `stages_ok=5`, `status=GO`, `total_nodes=11776`, `total_edges=6401708`.
+  - one-pager key facts: `node_count=11776`, `edge_count=6401708`, `batch_stages_ok=5/5`, `batch_source_mode=verse_level_ingest`.
+  - `global_atom_submission_go_nogo_latest.json`: `status=GO`, `reasons=[]`.
+
+#### 31.16 PointerGuard Approval Event + Readiness Block + Alert Simulation (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/append_pointerguard_manual_approval_event_v1.py`
+  - `scripts/apply_pointerguard_readiness_block_v1.py`
+  - `scripts/send_pointerguard_ops_alert_v1.py` (`--simulate` 추가)
+  - `scripts/run_pointerguard_control_chain_daily.ps1` (readiness block 단계 연동)
+- 구현 사실:
+  - 수동 승인 로그에 2인 승인 이벤트를 append하는 경로를 구현해 고위험 액션(`unfreeze_ramp`, `public_scope_expand`) 감사 추적 가능 상태로 전환.
+  - readiness 실패 시 guarded decision을 강제로 `HOLD_POINTER_ROUTE` / `track_a_primary`로 전환하는 자동 차단 규칙을 추가.
+  - 알림 스크립트에 `--simulate` 옵션을 추가해 `guard_applied`, `unauthorized_pattern_detected`, `launch_checklist_not_ready` 등 P0 이벤트를 드라이런으로 재현 가능.
+  - 일일 체인에서 readiness 후 block 규칙을 자동 실행하도록 연동.
+- 최신 상태:
+  - `py scripts/append_pointerguard_manual_approval_event_v1.py --action unfreeze_ramp --approver-1 athena --approver-2 sentinel --ticket OPS-2026-04-28-001 ...` exit 0 (`entry_count=1`).
+  - `py scripts/apply_pointerguard_readiness_block_v1.py` exit 0 (`readiness_all_ok=true`, `block_applied=false`).
+  - `py scripts/send_pointerguard_ops_alert_v1.py --simulate unauthorized_pattern_detected --dry-run` exit 0 (`should_send=true`, `status=dry_run`).
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_pointerguard_control_chain_daily.ps1` exit 0, 로그 `reports/pointerguard/pointerguard_control_chain_20260428_174001.log`.
+
+#### 31.17 PointerGuard Direct Control-Chain Bypass Closure (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_genesis_pointer_routing_control_chain_v1.py`
+  - `scripts/build_genesis_pointer_route_runtime_config_v1.py`
+- 구현 사실:
+  - 직접 체인(`run_genesis_pointer_routing_control_chain_v1.py`) 실행 경로에도 수동승인 로그 생성 + readiness 검사 + readiness block 적용 단계를 내장해 일일 러너를 우회해도 동일한 차단 정책이 적용되도록 정합.
+  - runtime config의 `promotion_gate`에 `readiness_block_applied`, `readiness_block_checked_at_utc`, `guard_applied`, `guard_reason` 필드를 추가해 운영자가 런타임 JSON만으로도 차단/가드 상태를 즉시 확인 가능.
+- 최신 상태:
+  - `py scripts/run_genesis_pointer_routing_control_chain_v1.py` exit 0.
+  - `genesis_pointer_route_runtime_config_latest.json`에서 `promotion_gate.readiness_block_checked_at_utc` 타임스탬프 반영 및 `guard_reason=no_alert` 확인.
+
+#### 31.18 PointerGuard P0 Drill + Readiness-Red Block Enforcement (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointerguard_p0_alert_drill_v1.py`
+  - `scripts/build_pointerguard_manual_approval_log_v1.py` (entries 보존 보강)
+  - `scripts/append_pointerguard_manual_approval_event_v1.py` (ticket 형식 검증)
+  - `scripts/decide_pointerguard_apply_go_promotion_v1.py` (readiness red 차단)
+  - `scripts/build_a_codeai_public_benchmark_launch_checklist_v1.py` (readiness red 차단)
+- 구현 사실:
+  - P0 알림 드릴 스크립트를 추가해 simulate 조건으로 알림 경로를 실행하고 delivery 상태를 단일 증거 아티팩트로 기록.
+  - 수동 승인 로그 생성 시 기존 `entries`를 보존하도록 수정해 일일 갱신에서 승인 이력이 소실되지 않게 보강.
+  - 승인 이벤트 append 시 ticket 형식을 `PREFIX-YYYY-MM-DD-NNN`으로 강제해 운영 절차를 표준화.
+  - apply GO promotion 결정에 readiness 입력을 추가해 readiness red면 `blocked_by_ops_readiness` 사유로 강제 `KEEP_SHADOW`.
+  - 공개 벤치 런치 체크리스트도 readiness red면 `BLOCKED_BY_READINESS`로 강제해 우발적 공개/승격 경로를 차단.
+- 최신 상태:
+  - `py scripts/run_pointerguard_p0_alert_drill_v1.py --dry-run` exit 0 (`severity=P0`, `should_send=true`).
+  - `py scripts/run_pointerguard_p0_alert_drill_v1.py` exit 0 (`delivery_status=http_200`).
+  - readiness red 검증: `decide_pointerguard_apply_go_promotion_v1.py --readiness-json ..._missing...` 결과 `decision=KEEP_SHADOW`, `reasons=[blocked_by_ops_readiness]`.
+
+#### 31.19 PointerGuard Weekly P0 Drill Liveness Hook (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointerguard_control_chain_daily.ps1`
+- 구현 사실:
+  - 일일 체인에 주간 P0 알림 경로 생존성 점검(`run_pointerguard_p0_alert_drill_v1.py --dry-run`)을 조건부로 연동.
+  - 파라미터 추가:
+    - `-WeeklyP0DrillDay` (기본 `Sunday`)
+    - `-ForceP0Drill` (즉시 강제 실행)
+  - 드릴 실패 시 일일 체인 종료코드에 반영해 운영 게이트로 취급.
+- 최신 상태:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_pointerguard_control_chain_daily.ps1 -ForceP0Drill` exit 0.
+  - 실행 로그: `reports/pointerguard/pointerguard_control_chain_20260428_182113.log`.
+  - 로그 내 `pointerguard_p0_alert_drill_latest.json (delivery_status=dry_run)` 생성 확인.
+
+#### 31.20 PointerGuard Scheduler Sync + P0 Drill Failure Escalation (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/Register-PointerGuardControlChainTask.ps1`
+  - `scripts/run_pointerguard_p0_alert_drill_v1.py`
+  - `scripts/run_pointerguard_control_chain_daily.ps1`
+- 구현 사실:
+  - 스케줄러 등록 스크립트가 `-WeeklyP0DrillDay`를 일일 러너 인자로 전달하도록 동기화해 작업 스케줄러 경유 실행에서도 주간 드릴 요일 정책이 고정.
+  - P0 드릴 스크립트에 `--alert-on-failure`를 추가해 드릴 검증 실패(`ok=false`) 시 `p0_drill_failed` 실제 알림을 즉시 전송.
+  - 일일 러너의 주간 드릴 호출에 `--alert-on-failure`를 연결해 생존성 검사 실패가 로그에만 남지 않고 즉시 P0 경보로 승격되도록 보강.
+  - 운영 명령 고정(런북):
+    - 기본 일일 실행: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_pointerguard_control_chain_daily.ps1`
+    - 강제 주간 드릴 실행: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_pointerguard_control_chain_daily.ps1 -ForceP0Drill`
+- 최신 상태:
+  - `Register-PointerGuardControlChainTask.ps1 -DryRun` 출력에서 `-WeeklyP0DrillDay "Sunday"` 인자 전달 확인.
+  - 실패 시뮬레이션: `py scripts/run_pointerguard_p0_alert_drill_v1.py --simulate-reasons "" --dry-run --alert-on-failure` 실행 시 `ok=false` + `failure_alert_result.status=http_200` 확인.
+
+#### 31.21 PointerGuard Operational Finalization Runbook Check (FACT, 2026-04-28)
+
+- 실행:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-PointerGuardControlChainTask.ps1 -WeeklyP0DrillDay Sunday`
+  - `schtasks /Query /TN "MKM_PointerGuard_ControlChain_Daily" /V /FO LIST`
+  - `py scripts/run_pointerguard_p0_alert_drill_v1.py`
+  - `py scripts/build_pointerguard_manual_approval_log_v1.py`
+  - `py scripts/append_pointerguard_manual_approval_event_v1.py --action unfreeze_ramp --approver-1 athena --approver-2 sentinel --ticket OPS-2026-04-28-003 ...`
+- 구현 사실:
+  - 스케줄러 재등록을 통해 최신 일일 러너를 운영 메타데이터에 재동기화.
+  - 실전 모드 P0 드릴 1회 실행으로 webhook 전송 경로(`http_200`)를 재확인.
+  - 승인 로그 운영 규율 명령 체인을 실행해 ticket 포맷/2인 승인 규칙으로 감사 이력을 누적.
+- 최신 상태:
+  - P0 드릴: `delivery_status=http_200`.
+  - 승인 로그: `pointerguard_manual_approval_log_latest.json` 기준 `entry_count=2`.
+
+#### 31.23 PointerGuard Scheduler Evidence Automation + Readiness Integration (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_pointerguard_scheduler_arguments_evidence_v1.py`
+  - `scripts/run_pointerguard_control_chain_daily.ps1`
+  - `scripts/check_pointerguard_ops_readiness_v1.py`
+- 구현 사실:
+  - `schtasks /Query /XML` 결과에서 스케줄러 command/arguments를 자동 추출해 `pointerguard_scheduler_arguments_evidence_latest.json`을 생성.
+  - 일일 체인에 scheduler evidence 생성 단계를 추가해 수동 증거 작성 없이 매 실행마다 인자 증거를 갱신.
+  - readiness gate에 scheduler evidence 검증을 추가해 `contains_weekly_p0_drill_day_flag=true`를 운영 준비도 조건으로 강제.
+- 최신 상태:
+  - `py scripts/build_pointerguard_scheduler_arguments_evidence_v1.py` exit 0 (`contains_weekly_p0_drill_day_flag=true`).
+  - `py scripts/check_pointerguard_ops_readiness_v1.py` exit 0 (`all_ok=true`).
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_pointerguard_control_chain_daily.ps1 -ForceP0Drill` exit 0, 로그 `reports/pointerguard/pointerguard_control_chain_20260428_184104.log`.
+
+#### 31.24 PointerGuard Maintenance Ops Bundle (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/Register-PointerGuardMonthlyP0DrillTask.ps1`
+  - `scripts/build_pointerguard_manual_approval_audit_report_v1.py`
+  - `scripts/build_pointerguard_readiness_failure_topn_v1.py`
+- 구현 사실:
+  - 월 1회 실전 P0 드릴 태스크(`MKM_PointerGuard_Monthly_P0_Drill`)를 등록/제거할 수 있는 스케줄러 스크립트를 추가.
+  - 승인 로그에서 최근 30일 이벤트를 집계하는 감사 리포트(건수, ticket 누락, 2인 승인 위반, action top)를 자동 생성.
+  - readiness 결과에서 실패 사유 Top-N과 우선순위 복구 큐를 생성하는 요약 아티팩트를 추가.
+- 최신 상태:
+  - `Register-PointerGuardMonthlyP0DrillTask.ps1` 실행 후 `schtasks /Query /TN "MKM_PointerGuard_Monthly_P0_Drill" /V /FO LIST` 기준:
+    - `Schedule Type=Monthly`, `Days=01`, `Task To Run=...run_pointerguard_p0_alert_drill_v1.py`
+  - `py scripts/build_pointerguard_manual_approval_audit_report_v1.py` exit 0 (`events_in_window=2`).
+  - `py scripts/build_pointerguard_readiness_failure_topn_v1.py` exit 0 (`failed_check_count=0`).
+
+#### 31.22 PointerGuard Scheduler Argument Fact-Lock Evidence (FACT, 2026-04-28)
+
+- 실행:
+  - `schtasks /Query /TN "MKM_PointerGuard_ControlChain_Daily" /XML`
+- 출력:
+  - `docs/final/artifacts/pointerguard_scheduler_arguments_evidence_latest.json`
+- 구현 사실:
+  - Scheduler XML의 `<Actions><Exec><Arguments>` 원문에서 `-WeeklyP0DrillDay "Sunday"` 전달을 직접 확인.
+  - `schtasks /V /FO LIST` 출력에서 누락될 수 있는 인자 표시 문제를 XML 증거 아티팩트로 보완.
+- 최신 상태:
+  - 증거 아티팩트 `contains_weekly_p0_drill_day_flag=true`.
+
+#### 31.24 Global Atom Consolidated Manifest Automation (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_full_canon_consolidated_manifest_v1.py`
+  - `scripts/build_global_atom_full_canon_batch_report_v1.py`
+  - `scripts/run_global_atom_submission_pack_v1.ps1`
+  - `scripts/build_global_atom_submission_freeze_v1.py`
+  - `scripts/build_global_atom_submission_go_nogo_v1.py`
+- 구현 사실:
+  - 단계별(run stamp 분리) 완료 산출물에서 최신 `genesis/torah/prophets/gospels/full_canon` 파일을 자동 수집해 통합 manifest를 생성.
+  - 수동 경로 하드코딩 없이 통합 manifest → batch report → submission pack/freeze/go-no-go를 연속 재생성.
+  - 대형 단계 중단/재개 상황에서도 최신 완주 조각을 자동 취합해 최종 제출 수치를 일관되게 유지.
+- 출력:
+  - `docs/final/artifacts/global_atom_full_canon/global_atom_full_canon_consolidated_manifest_latest.json`
+  - `docs/final/artifacts/global_atom_full_canon_batch_report_latest.json`
+  - `docs/final/artifacts/global_atom_submission_go_nogo_latest.json`
+- 최신 상태:
+  - batch report: `stages_total=5`, `stages_ok=5`, `status=GO`, `total_nodes=11776`, `total_edges=6401708`.
+  - submission go/no-go: `status=GO`, `reasons=[]`.
+
+#### 31.25 Event-Level Ingest v1 (Pericope/Window Segmentation) (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_full_canon_event_ingest_v1.py`
+  - `scripts/run_global_atom_full_canon_batch_v1.ps1` (`-UseEventSource`, `-EventWindowSize` 추가)
+  - `scripts/build_global_atom_full_canon_batch_report_v1.py` (`source_mode=event_level_ingest` 지원)
+- 구현 사실:
+  - verse 단위를 고정 후보로 쓰던 흐름 대신, book/chapter 내부 연속 구간(window) 기반 사건 단위 후보를 생성.
+  - 이벤트 후보 스키마에 `event_span(start/end/verse_count)`과 `source_level=event`를 추가해 절-사건 매핑 근거를 명시.
+  - 러너에서 `-UseEventSource`를 켜면 event ingest 체인을 사용하도록 배선.
+  - 통합 리포트가 event ingest 실행을 별도 source mode로 표기.
+- 최신 상태:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_global_atom_full_canon_batch_v1.ps1 -FastSmoke -UseEventSource` exit 0.
+  - 샘플 입력(`20260428T094423Z_genesis_input.json`)에서 `source_node_id=Gen.1::Gen.1.1-Gen.1.5`, `source_level=event` 확인.
+  - 배치 리포트: `source_mode=event_level_ingest`, `stages_ok=5`, `status=GO`.
+
+#### 31.25 PointerGuard Closed-Loop Maintenance Automation (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointerguard_control_chain_daily.ps1`
+  - `scripts/check_pointerguard_ops_readiness_v1.py`
+  - `scripts/send_pointerguard_ops_alert_v1.py`
+  - `scripts/run_pointerguard_p0_alert_drill_v1.py`
+- 구현 사실:
+  - 일일 체인에 유지보수 리포트 2종(`build_pointerguard_manual_approval_audit_report_v1.py`, `build_pointerguard_readiness_failure_topn_v1.py`) 자동 실행 단계를 추가.
+  - readiness gate에 `pointerguard_p0_alert_drill_history_v1.jsonl` 기반 월간 실전 드릴 검증(최근 40일 내 `dry_run=false` && `ok=true`)을 추가.
+  - P0 알림 페이로드에 `pointerguard_readiness_failure_topn_latest.json`의 Top-1 복구 우선순위(`top_repair_priority`)를 자동 포함.
+  - P0 드릴 스크립트가 history JSONL을 누적 기록하도록 보강해 최신 스냅샷 덮어쓰기 문제를 제거.
+- 최신 상태:
+  - `py scripts/run_pointerguard_p0_alert_drill_v1.py` exit 0 (`delivery_status=http_200`), history에 live entry 기록.
+  - `py scripts/check_pointerguard_ops_readiness_v1.py` exit 0 (`all_ok=true`, 월간 live drill 조건 충족).
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_pointerguard_control_chain_daily.ps1 -ForceP0Drill` exit 0, 로그 `reports/pointerguard/pointerguard_control_chain_20260428_184921.log`.
+
+#### 31.26 PointerGuard Failure Rehearsal E2E + Recovery (FACT, 2026-04-28)
+
+- 실행:
+  - 강제 실패: scheduler evidence 아티팩트를 임시 제거 후
+    - `py scripts/check_pointerguard_ops_readiness_v1.py`
+    - `py scripts/build_pointerguard_readiness_failure_topn_v1.py`
+    - `py scripts/apply_pointerguard_readiness_block_v1.py`
+    - `py scripts/send_pointerguard_ops_alert_v1.py --dry-run`
+  - 복구:
+    - `py scripts/build_pointerguard_scheduler_arguments_evidence_v1.py`
+    - `py scripts/run_genesis_pointer_routing_control_chain_v1.py`
+    - `py scripts/build_genesis_pointer_route_runtime_config_v1.py`
+
+#### 31.27 Event-Ingest Production Run + Source-Mode Auto Detection Fix (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_global_atom_full_canon_batch_v1.ps1` (`-UseEventSource` 본 실행)
+  - `scripts/build_global_atom_full_canon_consolidated_manifest_v1.py`
+  - `scripts/build_global_atom_full_canon_batch_report_v1.py`
+  - `scripts/run_global_atom_submission_pack_v1.ps1`
+  - `scripts/build_global_atom_submission_go_nogo_v1.py`
+- 구현 사실:
+  - event ingest 비-FastSmoke 5단계 실행에서 `full_canon` 단계가 중단된 케이스를 `-StartStage full_canon -EndStage full_canon` 단독 재실행으로 복구.
+  - 통합 manifest 자동 생성기가 source mode를 고정(`use_verse_source=true`)하던 문제를 수정해 입력 profile(`event_ingest/verse_ingest`) 기반 자동 판별로 전환.
+  - 통합 manifest → batch report → submission pack/go-no-go 재동기화를 재실행.
+- 최신 상태:
+  - consolidated manifest: `use_verse_source=false`, `use_event_source=true`.
+  - batch report: `stages_total=5`, `stages_ok=5`, `status=GO`, `total_nodes=7477`, `total_edges=3051269`, `source_mode=event_level_ingest`.
+  - one-pager key facts: `batch_stages_ok=5/5`, `batch_source_mode=event_level_ingest`.
+  - submission go/no-go: `status=GO`, `reasons=[]`.
+
+#### 31.28 Submission Pack v3 (Stage Breakdown + Lineage) (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_network_onepager_v1.py`
+  - `scripts/build_global_atom_kdd_submission_template_v1.py`
+  - `scripts/build_global_atom_submission_bundle_v1.py`
+  - `scripts/build_global_atom_full_canon_batch_report_v1.py`
+- 구현 사실:
+  - one-pager에 `stage_breakdown`(stage별 target/node/edge/signal/path)과 `run_lineage`(run_stamp, start/end, source_mode) 필드를 추가.
+  - KDD 템플릿에 동일한 `stage_breakdown`, `run_lineage`를 포함해 제출 본문에서 stage 근거를 직접 제시 가능하도록 확장.
+  - bundle에 `full_canon_consolidated_manifest` 아티팩트를 포함해 lineage 증거 경로를 패킷에 고정.
+  - batch report가 `run_lineage`를 노출하도록 보강해 one-pager lineage null 문제를 제거.
+- 최신 상태:
+  - one-pager `run_lineage.run_stamp=20260428T100459Z`, `batch_source_mode=event_level_ingest`.
+  - batch report `run_lineage.use_event_source=true`.
+  - bundle `artifact_packet.full_canon_consolidated_manifest.exists=true`.
+
+#### 31.29 Camera-Ready Draft/Appendix Auto Generator (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_camera_ready_pack_v1.py`
+- 입력:
+  - `global_atom_network_academic_onepager_latest.json`
+  - `global_atom_kdd_submission_template_latest.json`
+  - `global_atom_submission_bundle_latest.json`
+- 출력:
+  - `docs/final/artifacts/global_atom_camera_ready_paper_draft_latest.md`
+  - `docs/final/artifacts/global_atom_camera_ready_appendix_latest.md`
+  - `docs/final/artifacts/global_atom_camera_ready_pack_latest.json`
+- 구현 사실:
+  - one-pager + kdd template + bundle을 결합해 camera-ready용 본문 초안(abstract/contribution/method/results/stage breakdown/risk/repro)과 부록(artifact packet + reproducibility commands)을 자동 생성.
+  - 생성 시점 manifest(`global_atom_camera_ready_pack_latest.json`)에 입력/출력 경로를 고정해 재생성 추적성을 보장.
+- 최신 상태:
+  - `py scripts/build_global_atom_camera_ready_pack_v1.py` exit 0.
+  - 본문 초안에 `node_count=7477`, `edge_count=3051269`, `stage completion=5/5`, `source_mode=event_level_ingest` 반영 확인.
+
+#### 31.30 Camera-Ready Format Normalization Pass (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_camera_ready_polish_v1.py`
+- 입력:
+  - `docs/final/artifacts/global_atom_camera_ready_paper_draft_latest.md`
+  - `docs/final/artifacts/global_atom_camera_ready_appendix_latest.md`
+- 출력:
+  - `docs/final/artifacts/global_atom_camera_ready_paper_polished_latest.md`
+  - `docs/final/artifacts/global_atom_camera_ready_appendix_polished_latest.md`
+  - `docs/final/artifacts/global_atom_camera_ready_polish_latest.json`
+- 구현 사실:
+  - abstract 단어수 상한(170), method/risk bullet 상한(4/3), 공백 라인 정규화를 적용해 제출 친화 포맷으로 재작성.
+  - polish manifest에 규칙/입출력 경로를 기록해 camera-ready 편집 이력을 재현 가능하게 고정.
+- 최신 상태:
+  - `py scripts/build_global_atom_camera_ready_polish_v1.py` exit 0.
+  - polished paper 기준 핵심 수치(`nodes=7477`, `edges=3051269`, `stage completion=5/5`) 유지 확인.
+
+#### 31.31 Final Submission ZIP Bundle Automation (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_submission_zip_bundle_v1.py`
+- 입력:
+  - `global_atom_submission_bundle_latest.json`
+  - `global_atom_camera_ready_pack_latest.json`
+  - `global_atom_camera_ready_polish_latest.json`
+- 출력:
+  - `docs/final/artifacts/global_atom_submission_bundle_<UTCSTAMP>.zip`
+  - `docs/final/artifacts/global_atom_submission_zip_bundle_latest.json`
+- 구현 사실:
+  - submission bundle + camera-ready(초안/정규화) + 핵심 근거 JSON들을 자동 수집해 ZIP으로 패키징.
+  - 중복 파일을 제거하고 워크스페이스 상대 경로로 archive entry를 고정해 재현성 확보.
+  - ZIP 생성 결과를 manifest(`file_count`, `files`, `inputs`)로 남겨 제출 직전 점검 가능.
+- 최신 상태:
+  - `py scripts/build_global_atom_submission_zip_bundle_v1.py` exit 0.
+  - ZIP 산출: `global_atom_submission_bundle_20260428T101318Z.zip` (`file_count=15`).
+
+#### 31.32 One-Click Finalization Chain (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_global_atom_finalization_chain_v1.ps1`
+- 구현 사실:
+  - 통합 manifest/배치 리포트 → submission pack → freeze/go-no-go → camera-ready pack → polish → final zip을 단일 명령으로 직렬 실행.
+  - 옵션:
+    - `-RebuildBatchFirst` (필요 시 full-canon batch부터 재실행)
+    - `-UseEventSource` (RebuildBatchFirst와 함께 event ingest 경로 지정)
+- 최신 상태:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_global_atom_finalization_chain_v1.ps1` exit 0.
+  - go/no-go: `status=GO`.
+  - 최신 zip: `global_atom_submission_bundle_20260428T101455Z.zip` (`file_count=15`).
+
+#### 31.33 Submission ZIP Integrity Audit (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_submission_release_audit_v1.py`
+- 입력:
+  - `docs/final/artifacts/global_atom_submission_zip_bundle_latest.json`
+- 출력:
+  - `docs/final/artifacts/global_atom_submission_release_audit_latest.json`
+- 구현 사실:
+  - 최신 제출 ZIP의 SHA-256, 파일 크기, 엔트리 수를 계산하고 필수 제출 파일 suffix 존재 여부를 자동 점검.
+  - 필수 파일 누락 시 `audit_status=FAIL`로 종료코드 비정상 반환, 정상 시 `PASS`.
+- 최신 상태:
+  - `py scripts/build_global_atom_submission_release_audit_v1.py` exit 0.
+  - `audit_status=PASS`, `missing_required_suffixes=[]`.
+  - ZIP 해시: `92c71b93d4cce0ca6a0fd63c0b5a95be23ff43ebd34cc2e92271c4dd031ca85f`.
+
+#### 31.34 External SOTA Benchmark Adapter Skeleton (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_sota_benchmark_adapter_v1.py`
+  - `scripts/build_global_atom_sota_table_v1.py`
+- 출력:
+  - `docs/final/artifacts/global_atom_sota_benchmark_adapter_latest.json`
+  - `docs/final/artifacts/global_atom_sota_table_latest.json`
+  - `docs/final/artifacts/global_atom_sota_table_latest.md`
+- 구현 사실:
+  - 우리 모델 산출물(onepager/batch report)과 외부 baseline 3종 결과(JSON)을 단일 어댑터 스키마로 통합.
+  - baseline 입력이 없을 때 placeholder 상태를 명시하고, `required_baseline_metrics`를 강제 정의해 과장 주장 방지.
+  - Table-1 초안(md/json)을 자동 생성해 심사 대응 포맷을 고정.
+- 최신 상태:
+  - baseline 3종은 placeholder 상태(`is_placeholder=true`), 따라서 현재 표는 draft-only.
+  - 비교 정책 문구에 “reproducible non-placeholder 전까지 SOTA 우위 주장 금지”를 명시.
+
+#### 31.35 SOTA Baseline Ingest Chain + Readiness Gate (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_global_atom_sota_baseline_ingest_v1.py`
+  - `scripts/check_global_atom_sota_baseline_readiness_v1.py`
+  - `scripts/run_global_atom_sota_baseline_ingest_chain_v1.ps1`
+- 출력:
+  - `docs/final/artifacts/global_atom_sota_baseline_readiness_latest.json`
+  - `docs/final/artifacts/global_atom_sota_benchmark_adapter_latest.json`
+  - `docs/final/artifacts/global_atom_sota_table_latest.{json,md}`
+- 구현 사실:
+  - baseline 결과를 CLI/원본 JSON에서 표준 스키마(`global_atom_sota_baseline_result_v1`)로 정규화하는 ingest 경로를 추가.
+  - baseline 3종 템플릿에 실제 주입 명령 예시를 내장해 운영자가 바로 실측값 반영 가능.
+  - 원클릭 체인에서 어댑터/테이블 생성 후 readiness gate를 계산해 placeholder/누락 metric 상태를 자동 보고.
+- 최신 상태:
+  - `run_global_atom_sota_baseline_ingest_chain_v1.ps1` exit 0.
+  - readiness: `all_ready=false` (현재 baseline 3종 모두 placeholder, 필수 metric 5종 누락).
+    - `py scripts/check_pointerguard_ops_readiness_v1.py`
+    - `py scripts/build_pointerguard_readiness_failure_topn_v1.py`
+    - `py scripts/send_pointerguard_ops_alert_v1.py --dry-run`
+- 구현 사실:
+  - readiness red에서 `all_ok=false`를 확인하고, Top-N 리포트에서 `failed_check_count=1` 생성.
+  - readiness block이 즉시 `decision=HOLD_POINTER_ROUTE`, `route_mode=track_a_primary`로 강등되는 E2E 동작을 확인.
+  - 알림 페이로드가 `should_send=true`로 전환되고 dry-run 전송 상태를 기록함을 확인.
+  - 복구 체인 실행 후 `route_mode=pointer_shadow`, `all_ok=true`, `should_send=false` 상태로 원복 확인.
+
+#### 31.27 a-codeai.com Fact-Lock Public Copy (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_a_codeai_fact_lock_public_copy_v1.py`
+- 출력:
+  - `docs/final/artifacts/a_codeai_fact_lock_public_copy_latest.json`
+- 구현 사실:
+  - 과장/보장형 문구 대신 조건형 주장(측정/가드/범위 제한) 중심의 공개 카피를 아티팩트로 생성.
+  - 공개 문구에 `what we claim / what we do not claim`를 분리해 상용 커뮤니케이션의 Fact-Lock 경계를 고정.
+  - readiness/scorecard 입력을 받아 현재 상태 문구(`readiness green/blocked`)를 자동 반영.
+- 최신 상태:
+  - `py scripts/build_a_codeai_fact_lock_public_copy_v1.py` exit 0.
+  - `a_codeai_fact_lock_public_copy_latest.json` 생성 완료.
+
+#### 31.28 a-codeai.com Public Copy Web Payload Mapping (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_a_codeai_public_copy_web_payload_v1.py`
+- 출력:
+  - `docs/final/artifacts/a_codeai_public_copy_web_payload_latest.json`
+- 구현 사실:
+  - Fact-Lock 공개 카피 JSON을 웹 섹션 키(`hero`, `fact_lock_bullets`, `claims`, `non_claims`, `cta`) 기준으로 정규화.
+  - 카피 원문을 그대로 노출하지 않고 사이트 렌더 단계에서 직접 소비 가능한 payload 스키마로 변환.
+  - 메타 필드로 `readiness_all_ok`, `executive_read_decision`를 포함해 배너/상태 라벨 연동 근거를 제공.
+- 최신 상태:
+  - `py scripts/build_a_codeai_public_copy_web_payload_v1.py` exit 0.
+  - `a_codeai_public_copy_web_payload_latest.json` 생성 완료.
+
+#### 31.29 a-codeai.com Landing Template Runtime Binding (FACT, 2026-04-28)
+
+- 파일:
+  - `scripts/deploy/nginx/a-codeai.com.index.html.example`
+  - `scripts/deploy/nginx/a-codeai.com.index.en.html.example`
+- 구현 사실:
+  - 랜딩 템플릿에 `a_codeai_public_copy_web_payload_latest.json` fetch 스크립트를 추가해 hero/상태문구/claims/non-claims/cta를 런타임 바인딩.
+  - 정적 기본 문구는 fallback으로 유지하고, payload 조회 성공 시 Fact-Lock 문구로 안전하게 덮어쓰기.
+  - payload 경로 미존재/네트워크 오류 시 기존 정적 카피를 유지하도록 예외 처리.
+- 최신 상태:
+  - `build_a_codeai_fact_lock_public_copy_v1.py` + `build_a_codeai_public_copy_web_payload_v1.py` 재실행 완료.
+  - 최신 payload 아티팩트 기준 템플릿 바인딩 준비 완료.
+
+#### 31.30 a-codeai Deploy Script Payload Sync (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/deploy/linux/deploy_a_codeai_landing_from_repo.sh`
+- 구현 사실:
+  - 배포 스크립트의 필수 파일 검사에 `docs/final/artifacts/a_codeai_public_copy_web_payload_latest.json`를 추가.
+  - 배포 단계에서 payload JSON을 웹 루트(`$WEB_ROOT/a_codeai_public_copy_web_payload_latest.json`)로 복사하도록 연동.
+  - 이를 통해 런타임 바인딩 랜딩 템플릿이 배포 직후 payload를 즉시 조회 가능.
+- 최신 상태:
+  - 로컬 Windows 환경에서는 `bash` 실행기가 없어 shell 문법검증은 미실행(배포 대상 Linux/VPS에서 검증 필요).
+  - 스크립트 변경 반영 완료.
+
+#### 31.36 Finalization Chain SOTA Readiness Gate Wiring (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_global_atom_finalization_chain_v1.ps1`
+- 구현 사실:
+  - 원클릭 최종화 체인 마지막 단계에 `run_global_atom_sota_baseline_ingest_chain_v1.ps1`를 연결해 baseline readiness를 자동 계산.
+  - `-RequireSotaReady` 옵션 추가:
+    - 미지정: readiness false일 때 경고만 출력(패키지 생성은 계속).
+    - 지정: readiness false면 종료코드 2로 실패 처리.
+- 최신 상태:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_global_atom_finalization_chain_v1.ps1` exit 0.
+  - 실행 로그에 `SOTA baseline readiness is FALSE ... draft-only` 경고 출력 확인.
+
+#### 31.37 Pre-News x Global Atom Holdout Replay v1 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_global_atom_news_network_holdout_replay_v1.py`
+- 출력:
+  - `docs/final/artifacts/global_atom_news_network_holdout_replay_latest.json`
+- 구현 사실:
+  - 2008 리먼/2020 코로나 1개월 시나리오 headline을 입력으로 받아 global atom stage topology에 공명 점수를 계산하는 holdout replay v1 아티팩트를 생성.
+  - case별 `top_resonance`, `top2_resonance`, `network_structural_insight`를 기록해 Pre-News 결합 시의 구조적 해석 경로를 고정.
+  - 산출물 note에 heuristic 한계를 명시하고, 출판/주장 전 locked external news dataset 업그레이드 필요성을 명확히 표기.
+- 최신 상태:
+  - `py scripts/run_global_atom_news_network_holdout_replay_v1.py` exit 0.
+  - replay 산출물 생성 완료(`holdout_2008_lehman`, `holdout_2020_covid_m1` 2건).
+
+#### 31.38 Pre-News Shadow Projection Chain v1 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_global_atom_pre_news_shadow_chain_v1.py`
+  - `scripts/run_global_atom_pre_news_shadow_chain_v1.ps1`
+- 입력:
+  - `docs/final/artifacts/pre_news_shadow_input_latest.json` (샘플/일일 입력)
+  - `docs/final/artifacts/global_atom_full_canon_batch_report_latest.json`
+- 출력:
+  - `docs/final/artifacts/pre_news_shadow_projection_latest.json`
+  - `reports/pre_news_shadow_projection_log.jsonl`
+- 구현 사실:
+  - Pre-News headline을 global atom stage topology에 투영해 `top_resonance/top2_resonance/insight`를 생성하는 shadow-only 체인 추가.
+  - 실행 이력을 JSONL 로그로 누적해 일일 관측 추적성을 확보.
+  - 출력 note에 `Not connected to live trading triggers`를 명시해 운영 격벽 유지.
+- 최신 상태:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_global_atom_pre_news_shadow_chain_v1.ps1` exit 0.
+  - projection 산출물 생성 및 log 1건 누적 확인.
+
+#### 31.39 Daily Wrapper Wiring + Weekly Shadow Report v1 (FACT, 2026-04-28)
+
+- 수정:
+  - `scripts/run_daily_prophecy_then_pre_news_v1.ps1`
+- 신규:
+  - `scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py`
+- 구현 사실:
+  - daily wrapper에 pre-news shadow 실행 스위치 추가:
+    - `-EnablePreNewsShadow`
+    - `-EnablePreNewsShadowWeeklyReport`
+    - `-PreNewsBatchReportJson`
+    - `-PreNewsInputJson`
+  - pre-news shadow 주간 리포트 생성 체인 추가:
+    - 입력: `reports/pre_news_shadow_projection_log.jsonl`
+    - 출력: `docs/final/artifacts/pre_news_shadow_weekly_report_latest.json`
+    - 핵심 집계: window 내 run 수, latest projection row 수, top resonance stage 빈도.
+- 최신 상태:
+  - `py -3 scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py ...` exit 0.
+  - weekly report 산출물 생성 확인.
+
+#### 31.40 Pre-News Shadow Daily Scheduler Registration v1 (FACT, 2026-04-28)
+
+- 신규:
+  - `scripts/Register-PreNewsShadowDailyTask.ps1`
+- 구현 사실:
+  - Windows Scheduled Task 등록 스크립트 추가.
+  - 기본 실행 타깃:
+    - `scripts/run_daily_prophecy_then_pre_news_v1.ps1`
+    - `-EnablePreNewsShadow`
+    - `-EnablePreNewsShadowWeeklyReport`
+  - 파라미터:
+    - `-WorkspaceRoot` (기본 `C:\workspace`)
+    - `-TaskName` (기본 `\MKM-PreNews-Shadow-Daily`)
+    - `-RunAt` (기본 `06:30`)
+    - `-Force` (기존 task 재등록)
+- 운영 의미:
+  - pre-news shadow projection + weekly summary를 일일 스케줄러에 고정해 무인 관측 루프를 구성.
+
+#### 31.37 a-codeai Public Deployment Live Verification (SSH Cursor Report, FACT, 2026-04-28)
+
+- 실행(SSH Cursor / VPS):
+  - `python3 scripts/build_a_codeai_public_evidence_json.py --repo-root .`
+  - `python3 scripts/build_a_codeai_fact_lock_public_copy_v1.py`
+  - `python3 scripts/build_a_codeai_public_copy_web_payload_v1.py`
+  - `WEB_ROOT=/var/www/a-codeai-next-preview bash scripts/deploy/linux/deploy_a_codeai_landing_from_repo.sh`
+  - `bash scripts/deploy/linux/check_a_codeai_public_routes.sh`
+  - `curl -sS https://a-codeai.com/a_codeai_public_copy_web_payload_latest.json | python3 -c "import sys; sys.stdout.write(sys.stdin.read(400))"`
+  - `curl -sSI https://a-codeai.com/`
+  - `curl -sSI https://a-codeai.com/ko/`
+  - `python3 scripts/build_pointerguard_scheduler_arguments_evidence_v1.py`
+  - `python3 scripts/check_pointerguard_ops_readiness_v1.py`
+  - `python3 scripts/build_pointerguard_readiness_failure_topn_v1.py`
+- 핵심 결과:
+  - deploy route check 4종 PASS (`/`, `/health`, `GET /v1/compress=405`, `POST /v1/compress=200 contract`).
+  - payload URL 실측에서 `schema=a_codeai_public_copy_web_payload_v1` 확인.
+  - 공개 라우트 헤더 `https://a-codeai.com/`, `https://a-codeai.com/ko/` 모두 `HTTP/2 200`.
+  - readiness 재생성 결과 `all_ok=true`, failure topn `failed_check_count=0`.
+- 최종 판정:
+  - `DEPLOY=PASS`, `PUBLIC_PAYLOAD=PASS`, `READINESS=PASS`.
+
+#### 31.38 PointerGuard Ops Dashboard + Monthly Maintenance Automation (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_pointerguard_ops_status_dashboard_v1.py`
+  - `scripts/build_pointerguard_monthly_maintenance_report_v1.py`
+  - `scripts/run_pointerguard_control_chain_daily.ps1`
+  - `scripts/Register-PointerGuardMonthlyP0DrillTask.ps1`
+- 구현 사실:
+  - 일일 체인에 운영 대시보드 생성(`pointerguard_ops_status_dashboard_latest.json`)을 연결해 readiness/alert 핵심 상태를 단일 JSON으로 집계.
+  - 월간 유지보수 리포트(`pointerguard_monthly_maintenance_report_latest.json`)를 추가해 live P0 drill 성공 건수, 승인 이벤트, readiness 실패 Top-1 복구 우선순위를 한 번에 요약.
+  - 월간 P0 드릴 스케줄러 명령 체인에 감사 리포트/Top-N/월간 리포트 생성을 연쇄 연결해 월간 실행 시 증빙 아티팩트가 자동 갱신되도록 고정.
+- 최신 상태:
+  - `py scripts/build_pointerguard_ops_status_dashboard_v1.py` exit 0 (`readiness_all_ok=true`).
+  - `py scripts/build_pointerguard_monthly_maintenance_report_v1.py` exit 0 (`live_p0_drill_ok_count=2`).
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-PointerGuardMonthlyP0DrillTask.ps1 -DryRun`에서 월간 커맨드 체인 반영 확인.
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_pointerguard_control_chain_daily.ps1 -ForceP0Drill` exit 0, 로그 `reports/pointerguard/pointerguard_control_chain_20260428_193358.log`.
+
+#### 31.39 Monthly Task Length-Limit Fix + Wrapper Chain (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointerguard_monthly_maintenance_chain_v1.ps1`
+  - `scripts/Register-PointerGuardMonthlyP0DrillTask.ps1`
+- 구현 사실:
+  - Windows `schtasks /TR` 261자 제한으로 월간 작업 등록이 실패하던 문제를 wrapper PowerShell 체인으로 해결.
+  - 월간 태스크가 단일 래퍼를 호출하도록 재구성해 P0 drill + 감사/Top-N/월간 리포트 연쇄 실행을 유지.
+- 최신 상태:
+  - `Register-PointerGuardMonthlyP0DrillTask.ps1` 재등록 성공.
+  - `schtasks /Query /TN "MKM_PointerGuard_Monthly_P0_Drill" /V /FO LIST`에서 `run_pointerguard_monthly_maintenance_chain_v1.ps1` 호출 확인.
+  - `Start-ScheduledTask -TaskName "MKM_PointerGuard_Monthly_P0_Drill"` 수동 트리거 후 `pointerguard_monthly_maintenance_report_latest.json` 기준 `live_p0_drill_ok_count=3` 확인.
