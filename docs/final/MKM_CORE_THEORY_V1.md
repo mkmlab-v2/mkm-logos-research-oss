@@ -30,8 +30,8 @@
 
 ## 3. 압축·토큰·품질 (멀티렌스 측 FACT)
 
-- **[FACT]** 글로벌 토큰 절감률(증거 조인): `docs/final/artifacts/cost_watch_monitor_latest.json`의 `compression.global_token_saving_rate` ≈ **0.490858** (약 **49.1%**). 원천은 `compression_report`가 가리키는 `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` (`run_config.mode`: **`experimental`**, `strategy`: **`A`**, `case_count` **40**).  
-- **[FACT]** 동일 리포트 `avg_reconstruction_fidelity_jaccard` ≈ **0.735** — 절감과 **의미/표면 복원 품질**은 별개이며 무손실과 혼동 금지.
+- **[FACT]** 글로벌 토큰 절감률(증거 조인): `docs/final/artifacts/cost_watch_monitor_latest.json`의 `compression.global_token_saving_rate` ≈ **0.468354** (약 **46.84%**). 원천은 `compression_report`가 가리키는 `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` (`compression_metrics.case_count` **40**, `run_config.mode`: **`experimental`**, `strategy`: **`A`**). 재실행 시 수치 변동 가능.  
+- **[FACT]** 동일 리포트 `avg_reconstruction_fidelity_jaccard` ≈ **0.848836** (약 **0.849**) — 절감과 **의미/표면 복원 품질**은 별개이며 무손실과 혼동 금지.
 - **[FACT]** 사이드 채널 스파이크(v3): 메타데이터가 완전할 때 모드별 `exact_restore_rate` **1.0**; `overhead_json_utf8_bytes_mean` 등은 노이즈 모드별로 상이(와이어 포맷을 한 줄로 고정해 말하지 말 것).  
   - 근거: `docs/final/artifacts/l1_permutation_channel_integrated_spike_latest.json`
 
