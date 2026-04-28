@@ -1,0 +1,112 @@
+{
+  "schema": "github_actions_usage_baseline_v1",
+  "generated_at_utc": "2026-04-28T01:34:33Z",
+  "input_run_count": 120,
+  "workflow_count": 19,
+  "top_by_runtime_minutes": [
+    {
+      "workflow_name": "no1kmedi-web-build",
+      "runs": 10,
+      "runtime_minutes_total": 5.65,
+      "runtime_minutes_avg": 0.56,
+      "success": 6,
+      "failed": 0,
+      "other": 4,
+      "events": {
+        "pull_request": 6,
+        "push": 4
+      }
+    },
+    {
+      "workflow_name": "Bitcoin sovereign backtest smoke",
+      "runs": 7,
+      "runtime_minutes_total": 3.98,
+      "runtime_minutes_avg": 0.57,
+      "success": 7,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 6,
+        "push": 1
+      }
+    },
+    {
+      "workflow_name": "Gemini Multimodal Batch CLI",
+      "runs": 7,
+      "runtime_minutes_total": 3.52,
+      "runtime_minutes_avg": 0.5,
+      "success": 7,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 6,
+        "push": 1
+      }
+    },
+    {
+      "workflow_name": "no1kmedi-marketing-copy",
+      "runs": 10,
+      "runtime_minutes_total": 3.48,
+      "runtime_minutes_avg": 0.35,
+      "success": 9,
+      "failed": 1,
+      "other": 0,
+      "events": {
+        "pull_request": 6,
+        "push": 4
+      }
+    },
+    {
+      "workflow_name": "Track B research smoke",
+      "runs": 8,
+      "runtime_minutes_total": 2.4,
+      "runtime_minutes_avg": 0.3,
+      "success": 8,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 6,
+        "push": 2
+      }
+    },
+    {
+      "workflow_name": "Swarm sentiment schema validate",
+      "runs": 7,
+      "runtime_minutes_total": 2.28,
+      "runtime_minutes_avg": 0.33,
+      "success": 7,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 6,
+        "push": 1
+      }
+    },
+    {
+      "workflow_name": "Multilens independent lens smoke",
+      "runs": 6,
+      "runtime_minutes_total": 1.97,
+      "runtime_minutes_avg": 0.33,
+      "success": 6,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 5,
+        "push": 1
+      }
+    },
+    {
+      "workflow_name": "Showroom bundle validate",
+      "runs": 6,
+      "runtime_minutes_total": 1.72,
+      "runtime_minutes_avg": 0.29,
+      "success": 6,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 5,
+        "push": 1
+      }
+    }
+  ]
+}
