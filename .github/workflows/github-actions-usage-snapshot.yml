@@ -1,0 +1,46 @@
+name: GitHub Actions Usage Snapshot
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Weekly Monday 01:20 UTC
+    - cron: "20 1 * * 1"
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Generate Actions usage snapshots and delta
+        shell: pwsh
+        run: |
+          pwsh -NoProfile -ExecutionPolicy Bypass -File "scripts/Run-GitHubActionsUsageSnapshot.ps1"
+
+      - name: Upload usage snapshot artifacts
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: github-actions-usage-snapshot-${{ github.run_id }}
+          retention-days: 14
+          path: |
+            reports/github_actions_runs_latest_300.json
+            reports/github_actions_usage_baseline_latest.json
+            reports/github_actions_runs_latest_120.json
+            reports/github_actions_usage_baseline_latest_120.json
+            reports/github_actions_usage_delta_latest.json
+          if-no-files-found: error

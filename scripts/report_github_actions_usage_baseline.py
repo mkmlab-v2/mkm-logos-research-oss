@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 from collections import Counter, defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -20,11 +20,7 @@ class WorkflowStats:
     success: int = 0
     failed: int = 0
     other: int = 0
-    event_counts: Counter[str] | None = None
-
-    def __post_init__(self) -> None:
-        if self.event_counts is None:
-            self.event_counts = Counter()
+    event_counts: Counter = field(default_factory=Counter)
 
 
 def _parse_ts(value: str | None) -> datetime | None:
@@ -106,7 +102,7 @@ def main() -> int:
     args = parser.parse_args()
 
     input_path = Path(args.input_json)
-    runs = json.loads(input_path.read_text(encoding="utf-8"))
+    runs = json.loads(input_path.read_text(encoding="utf-8-sig"))
     if not isinstance(runs, list):
         raise ValueError("Expected a JSON array from gh run list --json")
 
