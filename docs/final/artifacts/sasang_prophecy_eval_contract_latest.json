@@ -1,11 +1,12 @@
 {
   "schema": "sasang_prophecy_eval_contract_v1",
-  "generated_at_utc": "2026-04-28T04:49:50Z",
+  "generated_at_utc": "2026-04-28T05:03:46Z",
   "scope": "sasang_prophecy_b_track_commercialization_precheck",
   "inputs_contract": {
     "lens_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",
     "standard_gate_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_latest.json",
     "strict_gate_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_latest.json",
+    "promotion_chain_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang12_promotion_candidate_chain_latest.json",
     "evaluation_window": "latest_single_snapshot",
     "cost_buckets_basis_points": [
       20,

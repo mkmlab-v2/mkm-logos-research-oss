@@ -1,0 +1,86 @@
+{
+  "schema": "sasang_selector_sweep_v1",
+  "generated_at_utc": "2026-04-28T05:03:46Z",
+  "inputs": {
+    "lens": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",
+    "gate_standard": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_latest.json",
+    "gate_strict": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_latest.json"
+  },
+  "track_wall": {
+    "track_b_only": true,
+    "a_track_autobind_forbidden": true,
+    "promotion_to_a_track_allowed": false
+  },
+  "candidates": [
+    {
+      "candidate_id": "v1",
+      "selector_mode": "balanced_confidence_direction",
+      "score": 0.564675,
+      "strict_gate_dependency": 0.015,
+      "eligible_for_human_review": true
+    },
+    {
+      "candidate_id": "v2",
+      "selector_mode": "balanced_confidence_direction",
+      "score": 0.549675,
+      "strict_gate_dependency": 0.03,
+      "eligible_for_human_review": true
+    },
+    {
+      "candidate_id": "v3",
+      "selector_mode": "balanced_confidence_direction",
+      "score": 0.534675,
+      "strict_gate_dependency": 0.045,
+      "eligible_for_human_review": true
+    },
+    {
+      "candidate_id": "v4",
+      "selector_mode": "balanced_confidence_direction",
+      "score": 0.519675,
+      "strict_gate_dependency": 0.06,
+      "eligible_for_human_review": true
+    },
+    {
+      "candidate_id": "v5",
+      "selector_mode": "balanced_confidence_direction",
+      "score": 0.504675,
+      "strict_gate_dependency": 0.075,
+      "eligible_for_human_review": true
+    },
+    {
+      "candidate_id": "v6",
+      "selector_mode": "balanced_confidence_direction",
+      "score": 0.489675,
+      "strict_gate_dependency": 0.09,
+      "eligible_for_human_review": true
+    },
+    {
+      "candidate_id": "v7",
+      "selector_mode": "balanced_confidence_direction",
+      "score": 0.474675,
+      "strict_gate_dependency": 0.105,
+      "eligible_for_human_review": true
+    },
+    {
+      "candidate_id": "v8",
+      "selector_mode": "balanced_confidence_direction",
+      "score": 0.459675,
+      "strict_gate_dependency": 0.12,
+      "eligible_for_human_review": true
+    },
+    {
+      "candidate_id": "v9",
+      "selector_mode": "balanced_confidence_direction",
+      "score": 0.444675,
+      "strict_gate_dependency": 0.135,
+      "eligible_for_human_review": true
+    }
+  ],
+  "winner": {
+    "candidate_id": "v1",
+    "selector_mode": "balanced_confidence_direction",
+    "score": 0.564675,
+    "strict_gate_dependency": 0.015,
+    "eligible_for_human_review": true
+  }
+}

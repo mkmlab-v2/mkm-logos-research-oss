@@ -1,7 +1,7 @@
 {
   "schema": "sasang_commercialization_readiness_packet_v1",
-  "generated_at_utc": "2026-04-28T04:49:50Z",
-  "decision": "NOT_YET",
+  "generated_at_utc": "2026-04-28T05:03:46Z",
+  "decision": "ALMOST",
   "packet_scope": "human_signoff_material_only",
   "evidence": {
     "eval_contract": "C:\\workspace\\docs\\final\\artifacts\\sasang_prophecy_eval_contract_latest.json",
@@ -19,12 +19,8 @@
   },
   "go_no_go": {
     "go": false,
-    "blockers": [
-      "promotion_chain_coverage"
-    ],
+    "blockers": [],
     "warnings": [
-      "independent_lens_directionality",
-      "independent_lens_confidence",
       "strict_quality_gate"
     ]
   }

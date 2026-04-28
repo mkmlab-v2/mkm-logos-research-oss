@@ -1,6 +1,6 @@
 {
   "schema": "genesis_pointer_route_runtime_config_v1",
-  "generated_at_utc": "2026-04-28T04:51:16+00:00",
+  "generated_at_utc": "2026-04-28T05:03:13+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
@@ -8,11 +8,11 @@
     "folder_policy_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_folder_policy_latest.json"
   },
   "routing": {
-    "decision": "HOLD_POINTER_ROUTE",
-    "route_mode": "track_a_primary",
+    "decision": "SHADOW_POINTER_ROUTE",
+    "route_mode": "pointer_shadow",
     "pointer_enabled": false,
-    "pointer_shadow": false,
-    "track_a_primary": true,
+    "pointer_shadow": true,
+    "track_a_primary": false,
     "disable_switch_env": "GENESIS_POINTER_ROUTE_FORCE_DISABLE"
   },
   "folder_policy": {

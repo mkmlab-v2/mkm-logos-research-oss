@@ -1,12 +1,13 @@
 {
   "schema": "genesis_pointer_routing_control_chain_v1",
-  "generated_at_utc": "2026-04-28T04:07:09+00:00",
+  "generated_at_utc": "2026-04-28T05:03:13+00:00",
   "research_only": true,
   "promotion_required": true,
   "all_ok": true,
   "inputs": {
     "go_cut": 0.9,
-    "watch_cut": 0.5
+    "watch_cut": 0.5,
+    "router_target_path": "docs/final/artifacts/pointer_router_chain_probe.json"
   },
   "steps": [
     {
@@ -64,7 +65,7 @@
         "scripts/build_pointer_shadow_daily_report_v1.py"
       ],
       "exit_code": 0,
-      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_daily_report_latest.json\", \"sample_count\": 3}",
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_daily_report_latest.json\", \"sample_count\": 6}",
       "stderr": ""
     },
     {
@@ -88,9 +89,20 @@
     {
       "cmd": [
         "C:\\Python311\\python.exe",
+        "scripts/build_pointerguard_folder_policy_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_folder_policy_latest.json\", \"summary\": {\"apply_count\": 9, \"caution_count\": 4, \"forbid_count\": 8}}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
         "scripts/build_genesis_pointer_route_runtime_config_v1.py",
         "--decision-json",
-        "docs/final/artifacts/genesis_pointer_routing_decision_guarded_latest.json"
+        "docs/final/artifacts/genesis_pointer_routing_decision_guarded_latest.json",
+        "--folder-policy-json",
+        "docs/final/artifacts/pointerguard_folder_policy_latest.json"
       ],
       "exit_code": 0,
       "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_pointer_route_runtime_config_latest.json\", \"route_mode\": \"pointer_shadow\", \"pointer_enabled\": false, \"pointer_shadow\": true}",
@@ -100,7 +112,9 @@
       "cmd": [
         "C:\\Python311\\python.exe",
         "scripts/pointer_hash_snapping_router_v1.py",
-        "--enable-snap"
+        "--enable-snap",
+        "--target-path",
+        "docs/final/artifacts/pointer_router_chain_probe.json"
       ],
       "exit_code": 0,
       "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_latest.json\", \"summary\": {\"pointer_candidate_ok_count\": 2, \"selected_pointer_count\": 0, \"selected_track_a_count\": 3}}",

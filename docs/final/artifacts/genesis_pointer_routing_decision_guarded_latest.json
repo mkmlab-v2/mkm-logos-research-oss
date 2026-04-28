@@ -1,6 +1,6 @@
 {
   "schema": "genesis_pointer_routing_decision_guarded_v1",
-  "generated_at_utc": "2026-04-28T04:07:09+00:00",
+  "generated_at_utc": "2026-04-28T05:03:13+00:00",
   "research_only": true,
   "promotion_required": true,
   "source_track": "B",
@@ -17,17 +17,17 @@
     "total": 36,
     "go_ratio": 0.75
   },
-  "decision": "HOLD_POINTER_ROUTE",
-  "route_mode": "track_a_primary",
+  "decision": "SHADOW_POINTER_ROUTE",
+  "route_mode": "pointer_shadow",
   "safeguards": {
     "fallback_route_mode": "track_a_primary",
     "disable_switch_env": "GENESIS_POINTER_ROUTE_FORCE_DISABLE=1"
   },
-  "guard_generated_at_utc": "2026-04-28T04:08:24+00:00",
+  "guard_generated_at_utc": "2026-04-28T05:03:13+00:00",
   "guard_inputs": {
     "decision_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_pointer_routing_decision_latest.json",
     "alert_json": "C:\\workspace\\docs\\final\\artifacts\\pointer_hash_snapping_router_shadow_alert_latest.json"
   },
-  "guard_applied": true,
-  "guard_reason": "shadow_health_alert_triggered"
+  "guard_applied": false,
+  "guard_reason": "no_alert"
 }

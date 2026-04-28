@@ -1,0 +1,65 @@
+{
+  "schema": "symbolic_topology_insight_v1",
+  "generated_at_utc": "2026-04-28T04:58:14Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "seed_symbol": "tree_of_knowledge_good_evil",
+  "symbolic_topology_axes": {
+    "boundary_obedience_vs_autonomy": 0.86,
+    "desire_intensity": 0.81,
+    "epistemic_acceleration": 0.77,
+    "self_grounding_vs_transcendence": 0.84,
+    "shame_fragmentation": 0.72
+  },
+  "operational_coupling": {
+    "risk_bias": 0.825,
+    "discipline_bias": 0.4483515,
+    "expansion_pressure": 0.68713165,
+    "survivor_ci_low_defense_contrib": 0.616703,
+    "survivor_fusion_candidate_score": 0.6042633000000001,
+    "meaning_candidate_count": 20
+  },
+  "expansion_rules": [
+    {
+      "rule_id": "R1_boundary_violation_loop",
+      "if_symbolic_pattern": "desire exceeds covenant boundary",
+      "modern_mapping": "risk_limit_overwrite / policy bypass pressure",
+      "expected_signal": "short-term upside temptation, long-tail drawdown risk",
+      "governance_link": "activate fail-boundary gate before promotion"
+    },
+    {
+      "rule_id": "R2_epistemic_shortcut",
+      "if_symbolic_pattern": "knowledge seized without maturation path",
+      "modern_mapping": "model-overconfidence under sparse validation",
+      "expected_signal": "apparent precision with hidden fragility",
+      "governance_link": "require falsification + sensitivity breakpoint disclosure"
+    },
+    {
+      "rule_id": "R3_shame_fragmentation",
+      "if_symbolic_pattern": "post-transgression identity split",
+      "modern_mapping": "lens disagreement / conflict ratio jump",
+      "expected_signal": "regime instability and defensive posture shift",
+      "governance_link": "dynamic cap tightening + rollback semantics"
+    }
+  ],
+  "symbolic_bridges": [
+    {
+      "from_symbol": "tree_of_knowledge_good_evil",
+      "to_regime_tag": "empire_transition",
+      "bridge_type": "boundary_to_regime_instability",
+      "supporting_node": "aramaic::Dan.2.10",
+      "supporting_candidate_id": "cand_001",
+      "support_strength": 0.6104831500000001
+    }
+  ],
+  "narrative_interpretation_ko": {
+    "core": "선악과는 '지식' 자체보다 경계 위반을 통한 자기-근거화 충동의 상징으로 해석된다.",
+    "topology": "위상좌표상 경계/자율, 욕망강도, 자기근거화 축이 동시에 높은 상태는 시스템의 조기 승격 압력과 결합된다.",
+    "modern_extension": "현대 운영에서는 정책 우회·과신·렌즈 충돌로 나타나며, fail-boundary 게이트를 통과하지 못하면 승격을 보류해야 한다."
+  },
+  "sources": {
+    "survivor_json": "C:\\workspace\\docs\\final\\artifacts\\insight_survivor_candidates_latest.json",
+    "meaning_json": "C:\\workspace\\docs\\final\\artifacts\\bible_meaning_insight_candidates_latest.json"
+  }
+}
