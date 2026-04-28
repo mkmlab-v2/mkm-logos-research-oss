@@ -1,6 +1,6 @@
 {
-  "schema": "two_track_qa_pack_v1",
-  "generated_at_utc": "2026-04-28T04:58:15Z",
+  "schema": "two_track_qa_pack_v2",
+  "generated_at_utc": "2026-04-28T05:18:49Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -18,20 +18,107 @@
       "audience": "investor",
       "items": [
         {
+          "question_id": "q1",
           "q": "How do you avoid overfitting?",
-          "a": "Survivor + falsification + rollback.",
+          "a": "Survivor selection, falsification gate, and rollback policy bound downside before promotion.",
           "evidence": {
-            "source_artifact": "two_track_falsification_suite_latest.json",
-            "metric_value": "pending",
-            "as_of_utc": "2026-04-28T04:58:15Z",
-            "rollback_rule": "if gate fails then rollback",
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
-              "pass": false,
-              "should_trade": false,
-              "rollback": true,
-              "reasons": [
-                "missing_gate"
-              ]
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q2",
+          "q": "How do you prevent symbolic insights from becoming unsafe trading triggers?",
+          "a": "Signals remain research_only until fail-boundary and publication gates pass with evidence.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q3",
+          "q": "What proves this is not storytelling-only interpretation?",
+          "a": "We show with/without comparisons and disclose boundary breakpoints for risk context.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q4",
+          "q": "How can reviewers verify the claims quickly?",
+          "a": "Every claim ties to artifact snapshots and gate state, not narrative-only interpretation.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q5",
+          "q": "What happens operationally when confidence drops?",
+          "a": "When gate posture weakens, promotion is blocked and rollback semantics apply immediately.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
             }
           }
         }
@@ -41,20 +128,107 @@
       "audience": "policy",
       "items": [
         {
+          "question_id": "q1",
           "q": "How do you avoid overfitting?",
-          "a": "Survivor + falsification + rollback.",
+          "a": "We require explicit gates and rollback semantics before any claim leaves research lane.",
           "evidence": {
-            "source_artifact": "two_track_falsification_suite_latest.json",
-            "metric_value": "pending",
-            "as_of_utc": "2026-04-28T04:58:15Z",
-            "rollback_rule": "if gate fails then rollback",
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
-              "pass": false,
-              "should_trade": false,
-              "rollback": true,
-              "reasons": [
-                "missing_gate"
-              ]
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q2",
+          "q": "How do you prevent symbolic insights from becoming unsafe trading triggers?",
+          "a": "Evidence fields are mandatory per answer, enabling audit trails and repeatable review.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q3",
+          "q": "What proves this is not storytelling-only interpretation?",
+          "a": "Public-safe disclosure redacts proprietary formulas while preserving verifiable governance facts.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q4",
+          "q": "How can reviewers verify the claims quickly?",
+          "a": "Fail-boundary reports define where confidence degrades and when action must stop.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q5",
+          "q": "What happens operationally when confidence drops?",
+          "a": "Policy-facing outputs remain non-trigger and document reasons for every go/no-go call.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
             }
           }
         }
@@ -64,24 +238,116 @@
       "audience": "technical",
       "items": [
         {
+          "question_id": "q1",
           "q": "How do you avoid overfitting?",
-          "a": "Survivor + falsification + rollback.",
+          "a": "Overfitting is constrained by survivor filters plus falsification sensitivity and rollback gates.",
           "evidence": {
-            "source_artifact": "two_track_falsification_suite_latest.json",
-            "metric_value": "pending",
-            "as_of_utc": "2026-04-28T04:58:15Z",
-            "rollback_rule": "if gate fails then rollback",
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
-              "pass": false,
-              "should_trade": false,
-              "rollback": true,
-              "reasons": [
-                "missing_gate"
-              ]
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q2",
+          "q": "How do you prevent symbolic insights from becoming unsafe trading triggers?",
+          "a": "Ablation reports quantify incremental contribution from symbolic and 4D coupling layers.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q3",
+          "q": "What proves this is not storytelling-only interpretation?",
+          "a": "All outputs are reproducible JSON artifacts with deterministic scripts and tracked schema.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q4",
+          "q": "How can reviewers verify the claims quickly?",
+          "a": "Gate_eval fields provide machine-readable execution posture for downstream automation.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
+            }
+          }
+        },
+        {
+          "question_id": "q5",
+          "q": "What happens operationally when confidence drops?",
+          "a": "Track separation enforces K-lane insight generation without direct trading trigger coupling.",
+          "evidence": {
+            "source_artifact": "multi_symbol_candidate_selector_latest.json",
+            "metric_value": {
+              "top_symbol": "tree_of_knowledge_good_evil",
+              "top_coupling_strength": 0.777868,
+              "selected_count": 2
+            },
+            "as_of_utc": "2026-04-28T05:18:49Z",
+            "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
+            "gate_eval": {
+              "pass": true,
+              "should_trade": true,
+              "rollback": false,
+              "reasons": []
             }
           }
         }
       ]
     }
-  ]
+  ],
+  "symbol_evidence_overlay": {
+    "selector_json": "c:\\workspace\\docs\\final\\artifacts\\multi_symbol_candidate_selector_latest.json",
+    "top_symbol": "tree_of_knowledge_good_evil",
+    "top_coupling_strength": 0.777868
+  }
 }

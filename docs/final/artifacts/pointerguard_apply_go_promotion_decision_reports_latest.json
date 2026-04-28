@@ -1,0 +1,53 @@
+{
+  "schema": "pointerguard_apply_go_promotion_decision_v1",
+  "generated_at_utc": "2026-04-28T05:16:57+00:00",
+  "research_only": true,
+  "source_track": "B",
+  "inputs": {
+    "daily_report": "C:\\workspace\\docs\\final\\artifacts\\pointer_hash_snapping_router_shadow_daily_report_latest.json",
+    "alert_json": "C:\\workspace\\docs\\final\\artifacts\\pointer_hash_snapping_router_shadow_alert_latest.json",
+    "shadow_log_jsonl": "C:\\workspace\\reports\\pointer_hash_snapping_router_shadow_log_v1.jsonl",
+    "folder_policy_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_folder_policy_latest.json",
+    "target_path": "reports/demo_run.json",
+    "consecutive_samples": 3,
+    "apply_row_ratio_min": 0.3,
+    "apply_unresolved_max": 4.0,
+    "profile_id": "reports_apply",
+    "go_promotion_enabled": true,
+    "rollout_order": 1
+  },
+  "window_stats": {
+    "sample_count": 12,
+    "apply_row_ratio_avg": 0.6666666666666666,
+    "apply_unresolved_avg_per_run": 2.6666666666666665
+  },
+  "recent_checks": [
+    {
+      "sample_index_from_recent": 0,
+      "input_count": 3.0,
+      "apply_ratio": 1.0,
+      "apply_unresolved": 4.0,
+      "pass_apply_ratio": true,
+      "pass_apply_unresolved": true
+    },
+    {
+      "sample_index_from_recent": 1,
+      "input_count": 3.0,
+      "apply_ratio": 1.0,
+      "apply_unresolved": 4.0,
+      "pass_apply_ratio": true,
+      "pass_apply_unresolved": true
+    },
+    {
+      "sample_index_from_recent": 2,
+      "input_count": 3.0,
+      "apply_ratio": 1.0,
+      "apply_unresolved": 4.0,
+      "pass_apply_ratio": true,
+      "pass_apply_unresolved": true
+    }
+  ],
+  "promote_apply_path_to_go": true,
+  "decision": "PROMOTE_APPLY_GO",
+  "reasons": []
+}

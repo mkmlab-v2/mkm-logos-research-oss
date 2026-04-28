@@ -1,10 +1,10 @@
 {
   "schema": "sasang12_gate_failure_analysis_v1",
-  "generated_at_utc": "2026-04-28T05:07:15Z",
+  "generated_at_utc": "2026-04-28T05:17:27Z",
   "summary": {
-    "total_axes": 2,
+    "total_axes": 4,
     "fail_count": 0,
-    "warn_count": 2,
+    "warn_count": 4,
     "common_root_cause": "quality_gate_or_lens_signal_issue"
   },
   "failure_axes": [
@@ -19,6 +19,18 @@
       "severity": "low",
       "status": "WARN",
       "evidence": "strict shadow gate PASS exists but is not promotion-authoritative"
+    },
+    {
+      "axis": "strict_input_integrity",
+      "severity": "medium",
+      "status": "WARN",
+      "evidence": "strict input integrity root_cause=production_paired_rows_insufficient"
+    },
+    {
+      "axis": "production_data_readiness",
+      "severity": "medium",
+      "status": "WARN",
+      "evidence": "production data readiness failed: insufficient_authoritative_pairable_rows"
     }
   ],
   "current_snapshot": {

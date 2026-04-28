@@ -1,6 +1,6 @@
 {
   "schema": "sasang_prophecy_eval_contract_v1",
-  "generated_at_utc": "2026-04-28T05:07:15Z",
+  "generated_at_utc": "2026-04-28T05:17:27Z",
   "scope": "sasang_prophecy_b_track_commercialization_precheck",
   "inputs_contract": {
     "lens_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",

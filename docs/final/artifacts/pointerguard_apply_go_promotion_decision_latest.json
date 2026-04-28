@@ -1,20 +1,25 @@
 {
   "schema": "pointerguard_apply_go_promotion_decision_v1",
-  "generated_at_utc": "2026-04-28T05:05:17+00:00",
+  "generated_at_utc": "2026-04-28T05:16:56+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
     "daily_report": "C:\\workspace\\docs\\final\\artifacts\\pointer_hash_snapping_router_shadow_daily_report_latest.json",
     "alert_json": "C:\\workspace\\docs\\final\\artifacts\\pointer_hash_snapping_router_shadow_alert_latest.json",
     "shadow_log_jsonl": "C:\\workspace\\reports\\pointer_hash_snapping_router_shadow_log_v1.jsonl",
+    "folder_policy_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_folder_policy_latest.json",
+    "target_path": "docs/final/artifacts/demo.json",
     "consecutive_samples": 3,
-    "apply_row_ratio_min": 0.3,
-    "apply_unresolved_max": 2.0
+    "apply_row_ratio_min": 0.35,
+    "apply_unresolved_max": 4.0,
+    "profile_id": "artifacts_apply",
+    "go_promotion_enabled": true,
+    "rollout_order": 2
   },
   "window_stats": {
-    "sample_count": 7,
-    "apply_row_ratio_avg": 0.42857142857142855,
-    "apply_unresolved_avg_per_run": 1.7142857142857142
+    "sample_count": 12,
+    "apply_row_ratio_avg": 0.6666666666666666,
+    "apply_unresolved_avg_per_run": 2.6666666666666665
   },
   "recent_checks": [
     {
@@ -23,7 +28,7 @@
       "apply_ratio": 1.0,
       "apply_unresolved": 4.0,
       "pass_apply_ratio": true,
-      "pass_apply_unresolved": false
+      "pass_apply_unresolved": true
     },
     {
       "sample_index_from_recent": 1,
@@ -31,7 +36,7 @@
       "apply_ratio": 1.0,
       "apply_unresolved": 4.0,
       "pass_apply_ratio": true,
-      "pass_apply_unresolved": false
+      "pass_apply_unresolved": true
     },
     {
       "sample_index_from_recent": 2,
@@ -39,12 +44,10 @@
       "apply_ratio": 1.0,
       "apply_unresolved": 4.0,
       "pass_apply_ratio": true,
-      "pass_apply_unresolved": false
+      "pass_apply_unresolved": true
     }
   ],
-  "promote_apply_path_to_go": false,
-  "decision": "KEEP_SHADOW",
-  "reasons": [
-    "apply_unresolved_above_threshold"
-  ]
+  "promote_apply_path_to_go": true,
+  "decision": "PROMOTE_APPLY_GO",
+  "reasons": []
 }

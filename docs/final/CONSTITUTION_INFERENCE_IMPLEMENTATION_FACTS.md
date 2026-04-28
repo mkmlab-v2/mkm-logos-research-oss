@@ -1376,6 +1376,62 @@
   - 승격 판정: `decision=KEEP_SHADOW` (`reason=apply_unresolved_above_threshold`).
   - runtime config `promotion_gate.apply_go_enabled=false`로 shadow 유지.
 
+#### 29.6 경로군별 승격 프로파일 정책화 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_pointerguard_folder_policy_v1.py`
+  - `scripts/decide_pointerguard_apply_go_promotion_v1.py`
+- 변경:
+  - 폴더 정책 아티팩트에 `promotion_profiles` 추가:
+    - `artifacts_apply` (`docs/final/artifacts/**`)
+    - `reports_apply` (`reports/**`)
+    - `memory_v2_apply` (`projects/bitcoin-trading/memory/v2/**`)
+  - 각 프로파일별로 `consecutive_samples`, `apply_row_ratio_min`, `apply_unresolved_max`를 독립 설정.
+  - 승격 판정 스크립트가 `--target-path` 기준으로 가장 구체적인 매칭 프로파일을 자동 선택.
+- 체인 반영:
+  - `run_genesis_pointer_routing_control_chain_v1.py`가 승격 판정 단계에
+    `--folder-policy-json` + `--target-path`를 전달.
+- 최신 상태:
+  - `pointerguard_folder_policy_latest.json`에 `promotion_profile_count=3` 반영.
+  - 예시(`target_path=projects/bitcoin-trading/memory/v2/demo.json`):
+    - `profile_id=memory_v2_apply`
+    - 임계값 `consecutive_samples=5`, `apply_row_ratio_min=0.4`, `apply_unresolved_max=1.0`
+    - 현재 판정 `KEEP_SHADOW` (미통과 사유: `apply_unresolved_above_threshold`).
+
+#### 29.7 순차 승격(Phase rollout) 적용 (FACT, 2026-04-28)
+
+- 변경:
+  - `promotion_profiles`에 `go_promotion_enabled`, `rollout_order` 필드 추가.
+  - 초기 승격 단계:
+    - `reports_apply`: `go_promotion_enabled=true`, `rollout_order=1`
+    - `artifacts_apply`: `go_promotion_enabled=false`, `rollout_order=2`
+    - `memory_v2_apply`: `go_promotion_enabled=false`, `rollout_order=3`
+  - `decide_pointerguard_apply_go_promotion_v1.py`는 비활성 프로파일에 대해 `profile_go_promotion_disabled` reason을 추가해 승격을 차단.
+- 최신 검증:
+  - `target_path=reports/demo_run.json`:
+    - `profile_id=reports_apply`, `decision=PROMOTE_APPLY_GO`, `reasons=[]`
+  - `target_path=docs/final/artifacts/demo.json`:
+    - `decision=KEEP_SHADOW`, `reasons`에 `profile_go_promotion_disabled`
+  - `target_path=projects/bitcoin-trading/memory/v2/demo.json`:
+    - `decision=KEEP_SHADOW`, `reasons`에 `profile_go_promotion_disabled`
+
+#### 29.8 순차 승격 2단계 활성화 (FACT, 2026-04-28)
+
+- 변경:
+  - `artifacts_apply`를 2단계로 활성화:
+    - `go_promotion_enabled=true`
+    - `apply_unresolved_max=4.0` (초기 운영 완화값)
+  - `reports_apply`는 1단계 활성 유지.
+  - `memory_v2_apply`는 3단계 대기(`go_promotion_enabled=false`) 유지.
+- 최신 검증:
+  - `target_path=docs/final/artifacts/demo.json`:
+    - `profile_id=artifacts_apply`, `decision=PROMOTE_APPLY_GO`, `reasons=[]`
+  - `target_path=reports/demo_run.json`:
+    - `profile_id=reports_apply`, `decision=PROMOTE_APPLY_GO`, `reasons=[]`
+  - `target_path=projects/bitcoin-trading/memory/v2/demo.json`:
+    - `profile_id=memory_v2_apply`, `decision=KEEP_SHADOW`,
+    - `reasons=[apply_unresolved_above_threshold, profile_go_promotion_disabled]`
+
 #### 30.1 Symbol Atom Anchor Layer + Scholarly Bridge (FACT, 2026-04-28)
 
 - 스크립트:
@@ -1407,3 +1463,38 @@
   - `scholarly_symbol_bridge_v1`와 `symbolic_topology_insight_v1`를 결합해 아톰 단위 `vector_4d(S,L,K,M)` 투영 및 `coupling_strength`를 생성.
   - ablation은 `with_4d` vs `without_4d`를 분리 계산해 `delta_with_minus_without`를 기록.
   - 정책 필드 `allow_execution_trigger=false`, `require_fail_boundary_gate=true`, `require_research_only_lane=true`를 고정하여 실행 트리거 합선을 차단.
+
+#### 30.3 Multi-Symbol Resonance + 4D Ranking (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_multi_symbol_resonance_4d_v1.py`
+  - `scripts/run_aramaic_mvp_chain_v1.ps1` (`[13f/15]` 단계 추가)
+- 출력:
+  - `docs/final/artifacts/multi_symbol_resonance_4d_latest.json`
+- 구현 사실:
+  - `atom_anchor_registry_v1`의 `seed_symbol_sequences` 전체(`tree_of_knowledge_good_evil`, `babel_tower`, `exodus_return`)를 단일 리포트에서 동시 평가.
+  - 동일 survivor 스냅샷(`ci_low_defense_contrib`, `fusion_candidate_score`)을 기준으로 각 symbol의 `resonance_score`, `vector_4d(S,L,K,M)`, `coupling_strength`를 계산해 순위화.
+  - 결과는 `research_only=true`, `allow_execution_trigger=false` 정책으로 고정하여 K-track 분석 아티팩트로만 사용.
+
+#### 30.4 Multi-Symbol Candidate Selector + Q&A Evidence Overlay (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_multi_symbol_candidate_selector_v1.py`
+  - `scripts/enrich_two_track_qa_with_symbol_evidence_v1.py`
+  - `scripts/run_aramaic_mvp_chain_v1.ps1` (`[13f/15]` selector 호출, `[28b/37]` 이후 Q&A evidence overlay 호출)
+- 출력:
+  - `docs/final/artifacts/multi_symbol_candidate_selector_latest.json`
+  - `docs/final/artifacts/two_track_qa_pack_latest.json` (schema: `two_track_qa_pack_v2`)
+- 구현 사실:
+  - multi-symbol 4D 결과에서 `top_k` + `min_coupling` 기준으로 상징 후보를 자동 선별.
+  - fail-boundary gate 결과(`should_trade`, `rollback`, `reasons`)와 symbol selector 결과를 Q&A evidence에 주입.
+  - evidence 필드 계약(`source_artifact`, `metric_value`, `as_of_utc`, `rollback_rule`, `gate_eval`)을 강제 유지.
+
+#### 30.5 Audience Attack Q&A 5x3 Expansion (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_two_track_qa_pack_v1.py`
+- 변경:
+  - audience(`investor`, `policy`, `technical`)별로 5개 고정 공격 질문(`q1~q5`)을 생성하도록 확장.
+  - 질문 축: 과적합 방지, 트리거 안전성, 스토리텔링-분리 근거, 빠른 검증 가능성, 신뢰도 하락 시 운영 동작.
+  - 기존 evidence 자리(`source_artifact`, `metric_value`, `as_of_utc`, `rollback_rule`, `gate_eval`)는 유지해 후속 overlay 스크립트가 덮어쓸 수 있게 구성.

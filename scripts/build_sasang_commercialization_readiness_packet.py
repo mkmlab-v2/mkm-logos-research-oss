@@ -21,6 +21,8 @@ DEFAULT_LENS = ART / "sasang_independent_lens_latest.json"
 DEFAULT_HIGH_GATE = ART / "sasang_high_reliability_gate_latest.json"
 DEFAULT_HIGH_GATE_STRICT = ART / "sasang_high_reliability_gate_strict_latest.json"
 DEFAULT_HIGH_GATE_STRICT_SHADOW = ART / "sasang_high_reliability_gate_strict_synthetic_calibrated_latest.json"
+DEFAULT_STRICT_INPUT_INTEGRITY = ART / "sasang_strict_input_integrity_latest.json"
+DEFAULT_PROD_DATA_READINESS = ART / "sasang_production_data_readiness_latest.json"
 DEFAULT_PROMOTION_CHAIN = ART / "sasang12_promotion_candidate_chain_latest.json"
 
 DEFAULT_EVAL_CONTRACT = ART / "sasang_prophecy_eval_contract_latest.json"
@@ -67,6 +69,8 @@ def main() -> int:
     ap.add_argument("--high-gate", type=Path, default=DEFAULT_HIGH_GATE)
     ap.add_argument("--high-gate-strict", type=Path, default=DEFAULT_HIGH_GATE_STRICT)
     ap.add_argument("--high-gate-strict-shadow", type=Path, default=DEFAULT_HIGH_GATE_STRICT_SHADOW)
+    ap.add_argument("--strict-input-integrity", type=Path, default=DEFAULT_STRICT_INPUT_INTEGRITY)
+    ap.add_argument("--production-data-readiness", type=Path, default=DEFAULT_PROD_DATA_READINESS)
     ap.add_argument("--promotion-chain", type=Path, default=DEFAULT_PROMOTION_CHAIN)
     ap.add_argument("--eval-contract-out", type=Path, default=DEFAULT_EVAL_CONTRACT)
     ap.add_argument("--promotion-gate-out", type=Path, default=DEFAULT_PROMOTION_GATE)
@@ -86,6 +90,8 @@ def main() -> int:
     gate_std = _jread(args.high_gate)
     gate_strict = _load_optional(args.high_gate_strict)
     gate_strict_shadow = _load_optional(args.high_gate_strict_shadow)
+    strict_integrity = _load_optional(args.strict_input_integrity)
+    prod_data_readiness = _load_optional(args.production_data_readiness)
 
     direction_score = _f((lens.get("scores") or {}).get("direction_score"))
     confidence = _f((lens.get("scores") or {}).get("confidence"))
@@ -207,6 +213,29 @@ def main() -> int:
                 "evidence": "strict shadow gate PASS exists but is not promotion-authoritative",
             }
         )
+    if isinstance(strict_integrity, dict):
+        integ = strict_integrity.get("integrity") or {}
+        rc = str(integ.get("root_cause") or "").strip()
+        if rc and rc != "NONE":
+            failure_axes.append(
+                {
+                    "axis": "strict_input_integrity",
+                    "severity": "medium",
+                    "status": "WARN",
+                    "evidence": f"strict input integrity root_cause={rc}",
+                }
+            )
+    if isinstance(prod_data_readiness, dict):
+        if not bool(prod_data_readiness.get("ready_for_production_strict")):
+            rc = str(prod_data_readiness.get("root_cause") or "unknown")
+            failure_axes.append(
+                {
+                    "axis": "production_data_readiness",
+                    "severity": "medium",
+                    "status": "WARN",
+                    "evidence": f"production data readiness failed: {rc}",
+                }
+            )
 
     promotion_gate = {
         "schema": "sasang12_promotion_candidate_gate_unified_v1",
@@ -275,6 +304,12 @@ def main() -> int:
             "strict_gate": str(args.high_gate_strict.resolve()) if strict_available else None,
             "strict_shadow_gate": (
                 str(args.high_gate_strict_shadow.resolve()) if gate_strict_shadow is not None else None
+            ),
+            "strict_input_integrity": (
+                str(args.strict_input_integrity.resolve()) if strict_integrity is not None else None
+            ),
+            "production_data_readiness": (
+                str(args.production_data_readiness.resolve()) if prod_data_readiness is not None else None
             ),
         },
         "boundaries": {

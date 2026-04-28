@@ -1,6 +1,6 @@
 {
   "schema": "report_schema_v2_quality_alert_v1",
-  "generated_at_utc": "2026-04-28T04:16:13Z",
+  "generated_at_utc": "2026-04-28T05:16:10Z",
   "source_kpi_path": "C:\\workspace\\docs\\final\\artifacts\\report_schema_v2_label_kpi_latest.json",
   "source_log_path": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
   "thresholds": {

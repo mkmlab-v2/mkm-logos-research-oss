@@ -30,3 +30,23 @@ def test_runner_emits_readiness_packet_with_override_stats(tmp_path: Path) -> No
     integrity = packet.get("shadow_history_integrity") or {}
     assert isinstance(integrity.get("history_rows"), int)
     assert isinstance(integrity.get("override_rows"), int)
+    assert "shadow_override_ratio_limit" in summary
+    assert "shadow_override_ratio_exceeded" in summary
+
+
+def test_runner_downgrades_when_override_ratio_threshold_exceeded(tmp_path: Path) -> None:
+    cp = subprocess.run(
+        [sys.executable, str(_RUNNER), "--max-shadow-override-ratio", "0.0"],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=90,
+    )
+    assert cp.returncode == 0, cp.stderr
+    packet_path = _ROOT / "docs" / "final" / "artifacts" / "myeongni_commercialization_readiness_packet_latest.json"
+    packet = json.loads(packet_path.read_text(encoding="utf-8"))
+    summary = packet.get("summary") or {}
+    assert summary.get("shadow_override_ratio_exceeded") is True
+    assert packet.get("readiness") in {"Almost", "Not yet"}
+    warnings = packet.get("warnings") or []
+    assert any("shadow_override_ratio_exceeded" in str(x) for x in warnings)

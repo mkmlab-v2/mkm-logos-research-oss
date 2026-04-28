@@ -179,6 +179,8 @@ def build_readiness_packet(
     shadow_gate: dict[str, Any],
     eval_contract: dict[str, Any],
     quality_report: dict[str, Any],
+    *,
+    max_shadow_override_ratio: float,
 ) -> dict[str, Any]:
     lens_scores = lens.get("scores") if isinstance(lens.get("scores"), dict) else {}
     consensus = fusion.get("consensus") if isinstance(fusion.get("consensus"), dict) else {}
@@ -187,6 +189,8 @@ def build_readiness_packet(
     contract_ok = bool(eval_contract.get("aligned_inputs"))
     signal_non_neutral = abs(float(lens_scores.get("direction_score", 0.0))) > 0.0
     override_stats = _shadow_override_stats(shadow_gate)
+    override_ratio = float(override_stats.get("override_ratio") or 0.0)
+    override_ratio_exceeded = override_ratio > max_shadow_override_ratio
 
     if contract_ok and quality_ok and signal_non_neutral and not blockers:
         readiness = "Ready"
@@ -194,6 +198,8 @@ def build_readiness_packet(
         readiness = "Almost"
     else:
         readiness = "Not yet"
+    if readiness == "Ready" and override_ratio_exceeded:
+        readiness = "Almost"
 
     return {
         "schema": "myeongni_commercialization_readiness_packet_v1",
@@ -206,6 +212,8 @@ def build_readiness_packet(
             "fusion_agreement_rate": consensus.get("agreement_rate"),
             "shadow_blockers_count": len(blockers),
             "shadow_override_ratio": override_stats.get("override_ratio"),
+            "shadow_override_ratio_limit": max_shadow_override_ratio,
+            "shadow_override_ratio_exceeded": override_ratio_exceeded,
         },
         "inputs": {
             "myeongni_independent_lens": str((ART / "myeongni_independent_lens_latest.json").resolve()),
@@ -220,6 +228,11 @@ def build_readiness_packet(
             "decision": "manual_review_required",
         },
         "shadow_history_integrity": override_stats,
+        "warnings": [
+            f"shadow_override_ratio_exceeded:{override_ratio:.6f}>{max_shadow_override_ratio:.6f}"
+        ]
+        if override_ratio_exceeded
+        else [],
         "next_gate_focus": [
             "reduce_neutral_bias_without_overfit",
             "increase_shadow_monthly_coverage",
@@ -236,6 +249,12 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build myeongni commercialization readiness artifacts.")
     ap.add_argument("--experiment-jsonl", type=Path, default=DEFAULT_EXPERIMENT)
+    ap.add_argument(
+        "--max-shadow-override-ratio",
+        type=float,
+        default=0.01,
+        help="Maximum allowed override ratio in shadow history before readiness is downgraded.",
+    )
     args = ap.parse_args()
 
     rows = _read_jsonl(args.experiment_jsonl)
@@ -245,7 +264,14 @@ def main() -> int:
 
     eval_contract = build_eval_contract(rows, lens, fusion)
     quality_report = build_quality_report(rows)
-    readiness_packet = build_readiness_packet(lens, fusion, shadow_gate, eval_contract, quality_report)
+    readiness_packet = build_readiness_packet(
+        lens,
+        fusion,
+        shadow_gate,
+        eval_contract,
+        quality_report,
+        max_shadow_override_ratio=max(0.0, args.max_shadow_override_ratio),
+    )
 
     _write_json(ART / "myeongni_eval_contract_latest.json", eval_contract)
     _write_json(ART / "myeongni_16state_data_quality_report_latest.json", quality_report)

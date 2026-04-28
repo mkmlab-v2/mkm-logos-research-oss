@@ -1,6 +1,6 @@
 {
   "schema": "fused_paper_cycle_calibration_30_v1",
-  "generated_at_utc": "2026-04-28T04:16:12Z",
+  "generated_at_utc": "2026-04-28T05:16:08Z",
   "source_log_path": "C:\\workspace\\docs\\final\\artifacts\\waiting_queue_monthly_check_log.jsonl",
   "window_size": 30,
   "sample_size": 30,

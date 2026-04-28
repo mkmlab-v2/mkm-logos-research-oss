@@ -1,7 +1,7 @@
 {
   "schema_version": "risk_profile_v0.1",
-  "generated_at": "2026-04-28T04:16:09+00:00",
-  "expires_at": "2026-04-28T16:16:09+00:00",
+  "generated_at": "2026-04-28T05:16:06+00:00",
+  "expires_at": "2026-04-28T17:16:06+00:00",
   "source": "n8n.regime_watch.v5",
   "mode": "n8n_shadow",
   "max_trades_per_day": 5,

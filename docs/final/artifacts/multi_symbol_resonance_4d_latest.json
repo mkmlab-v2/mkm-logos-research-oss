@@ -1,0 +1,89 @@
+{
+  "schema": "multi_symbol_resonance_4d_v1",
+  "generated_at_utc": "2026-04-28T05:09:30Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "survivor_snapshot": {
+    "candidate_id": "cand_001",
+    "source_node_id": "aramaic::Dan.2.10",
+    "ci_low_defense_contrib": 0.616703,
+    "fusion_candidate_score": 0.604263
+  },
+  "symbols": [
+    {
+      "seed_symbol": "tree_of_knowledge_good_evil",
+      "sequence_length": 5,
+      "sequence": [
+        "BOUNDARY_COMMAND",
+        "DESIRE_TRIGGER",
+        "TRANSGRESSION_ACT",
+        "SHAME_AWARENESS",
+        "EXILE_PATTERN"
+      ],
+      "resonance_score": 0.699623,
+      "vector_4d": {
+        "S": 0.790868,
+        "L": 0.803868,
+        "K": 0.745368,
+        "M": 0.771368
+      },
+      "coupling_strength": 0.777868,
+      "policy": {
+        "research_only": true,
+        "allow_execution_trigger": false
+      }
+    },
+    {
+      "seed_symbol": "babel_tower",
+      "sequence_length": 4,
+      "sequence": [
+        "DESIRE_TRIGGER",
+        "TRANSGRESSION_ACT",
+        "SHAME_AWARENESS",
+        "EXILE_PATTERN"
+      ],
+      "resonance_score": 0.632957,
+      "vector_4d": {
+        "S": 0.735035,
+        "L": 0.696035,
+        "K": 0.709035,
+        "M": 0.676535
+      },
+      "coupling_strength": 0.70416,
+      "policy": {
+        "research_only": true,
+        "allow_execution_trigger": false
+      }
+    },
+    {
+      "seed_symbol": "exodus_return",
+      "sequence_length": 2,
+      "sequence": [
+        "EXILE_PATTERN",
+        "RESTORATION_ARC"
+      ],
+      "resonance_score": 0.499623,
+      "vector_4d": {
+        "S": 0.616868,
+        "L": 0.655868,
+        "K": 0.603868,
+        "M": 0.551868
+      },
+      "coupling_strength": 0.607118,
+      "policy": {
+        "research_only": true,
+        "allow_execution_trigger": false
+      }
+    }
+  ],
+  "summary": {
+    "symbol_count": 3,
+    "top_symbol_by_coupling": "tree_of_knowledge_good_evil",
+    "mean_coupling_strength": 0.696382
+  },
+  "sources": {
+    "registry_json": "c:\\workspace\\docs\\final\\artifacts\\atom_anchor_registry_v1.json",
+    "survivor_json": "c:\\workspace\\docs\\final\\artifacts\\insight_survivor_candidates_latest.json"
+  }
+}

@@ -20,6 +20,8 @@ param(
     [string]$ScholarlySymbolBridgeOutJson = "docs/final/artifacts/scholarly_symbol_bridge_latest.json",
     [string]$Gematria4dCouplingOutJson = "docs/final/artifacts/gematria_4d_coupling_latest.json",
     [string]$Gematria4dAblationOutJson = "docs/final/artifacts/gematria_4d_ablation_latest.json",
+    [string]$MultiSymbolResonance4dOutJson = "docs/final/artifacts/multi_symbol_resonance_4d_latest.json",
+    [string]$MultiSymbolCandidateSelectorOutJson = "docs/final/artifacts/multi_symbol_candidate_selector_latest.json",
     [string]$SurvivorEvalOutJson = "docs/final/artifacts/insight_survivor_eval_latest.json",
     [string]$SurvivorCandidatesOutJson = "docs/final/artifacts/insight_survivor_candidates_latest.json",
     [string]$KnowledgeIpReportOutJson = "docs/final/artifacts/bible_meaning_knowledge_ip_report_latest.json",
@@ -127,6 +129,12 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & py "scripts/build_gematria_4d_ablation_v1.py" "--coupling-json" $Gematria4dCouplingOutJson "--resonance-json" $AtomResonanceOutJson "--output-json" $Gematria4dAblationOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+Write-Host "[13f/15] Build multi-symbol resonance + 4D ranking" -ForegroundColor Cyan
+& py "scripts/build_multi_symbol_resonance_4d_v1.py" "--registry-json" "docs/final/artifacts/atom_anchor_registry_v1.json" "--survivor-json" $SurvivorCandidatesOutJson "--output-json" $MultiSymbolResonance4dOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/build_multi_symbol_candidate_selector_v1.py" "--multi-symbol-json" $MultiSymbolResonance4dOutJson "--output-json" $MultiSymbolCandidateSelectorOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
 Write-Host "[14/15] Re-score + shadow compare with insight signal" -ForegroundColor Cyan
 & py "scripts/sweep_aramaic_insight_cap_bucket_thresholds_v1.py" "--output-json" $InsightCapThresholdSweepJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -205,6 +213,8 @@ Write-Host "[28b/37] Build falsification fail-boundary report + gate" -Foregroun
 & py "scripts/build_two_track_falsification_boundary_report_v1.py" "--output-json" $TwoTrackFailBoundaryReportOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & py "scripts/alert_two_track_fail_boundary_gate_v1.py" "--boundary-json" $TwoTrackFailBoundaryReportOutJson "--survivor-json" $SurvivorCandidatesOutJson "--output-json" $TwoTrackFailBoundaryGateOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/enrich_two_track_qa_with_symbol_evidence_v1.py" "--qa-json" $TwoTrackQaPackOutJson "--selector-json" $MultiSymbolCandidateSelectorOutJson "--fail-boundary-gate-json" $TwoTrackFailBoundaryGateOutJson "--output-json" $TwoTrackQaPackOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[29/37] Build benchmark comparison" -ForegroundColor Cyan

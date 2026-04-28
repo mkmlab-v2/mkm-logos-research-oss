@@ -1,0 +1,71 @@
+{
+  "schema": "myeongni_readiness_freeze_and_sensitivity_v1",
+  "ts_utc": "2026-04-28T05:16:46Z",
+  "freeze_dir": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z",
+  "frozen_files": [
+    {
+      "file": "myeongni_independent_lens_latest.json",
+      "source_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\myeongni_independent_lens_latest.json",
+      "sha256": "13ca725ce3b8115123612f07881b961577743ec63ab7470e18bb68660f81d306"
+    },
+    {
+      "file": "independent_lens_fusion_stub_latest.json",
+      "source_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_stub_latest.json",
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\independent_lens_fusion_stub_latest.json",
+      "sha256": "b4d2b211a570ca25e90b436f0f57a1728a910d4e75e2b279d7584d3660190bde"
+    },
+    {
+      "file": "independent_lens_shadow_gate_latest.json",
+      "source_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_shadow_gate_latest.json",
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\independent_lens_shadow_gate_latest.json",
+      "sha256": "d58097420f0a2417be9bb3b9a2bca6df694c45843f8c86b2e14cafbd44cba4e1"
+    },
+    {
+      "file": "myeongni_eval_contract_latest.json",
+      "source_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_eval_contract_latest.json",
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\myeongni_eval_contract_latest.json",
+      "sha256": "33f29ae134f25bce10baa18fef7e2f5e1873e164ea4844cc34c7fdc9d00573ea"
+    },
+    {
+      "file": "myeongni_16state_data_quality_report_latest.json",
+      "source_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_16state_data_quality_report_latest.json",
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\myeongni_16state_data_quality_report_latest.json",
+      "sha256": "97952c0ffe5d850d1ba3207e80294abf5f352b0d53bda663a6707db0114a329b"
+    },
+    {
+      "file": "myeongni_commercialization_readiness_packet_latest.json",
+      "source_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_commercialization_readiness_packet_latest.json",
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\myeongni_commercialization_readiness_packet_latest.json",
+      "sha256": "b43f7df6e0d8c894c867d45705b5f55af09e3f17e1246b52c4bde6ace9bc91c7"
+    }
+  ],
+  "no_backfill_validation": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_myeongni_shadow_monthly_catchup_v1.ps1",
+    "exit_code": 0
+  },
+  "sensitivity_sweep": [
+    {
+      "threshold": 0.005,
+      "exit_code": 0,
+      "readiness": "Ready",
+      "shadow_override_ratio": 0.003419,
+      "shadow_override_ratio_exceeded": false
+    },
+    {
+      "threshold": 0.01,
+      "exit_code": 0,
+      "readiness": "Ready",
+      "shadow_override_ratio": 0.003419,
+      "shadow_override_ratio_exceeded": false
+    },
+    {
+      "threshold": 0.02,
+      "exit_code": 0,
+      "readiness": "Ready",
+      "shadow_override_ratio": 0.003419,
+      "shadow_override_ratio_exceeded": false
+    }
+  ],
+  "note": "Track B observation evidence freeze; no auto-promotion to Track A/live."
+}

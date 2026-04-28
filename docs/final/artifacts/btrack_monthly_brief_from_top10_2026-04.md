@@ -1,6 +1,6 @@
 # B-Track Monthly Brief (Top10-Based)
 
-- generated_at_utc: `2026-04-28T04:16:12Z`
+- generated_at_utc: `2026-04-28T05:16:09Z`
 - classification: `[HYPO]`, `research_only`, `a_track_autobind_forbidden`
 - source: `C:\workspace\reports\notebooklm\btrack_insight_recommendation_pack_latest.json`
 

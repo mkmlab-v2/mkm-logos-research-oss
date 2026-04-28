@@ -1,0 +1,31 @@
+{
+  "schema": "multi_symbol_candidate_selector_v1",
+  "generated_at_utc": "2026-04-28T05:14:57Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "thresholds": {
+    "top_k": 2,
+    "min_coupling": 0.65
+  },
+  "selected_count": 2,
+  "selected": [
+    {
+      "seed_symbol": "tree_of_knowledge_good_evil",
+      "coupling_strength": 0.777868,
+      "resonance_score": 0.699623,
+      "sequence_length": 5,
+      "source_artifact": "multi_symbol_resonance_4d_latest.json"
+    },
+    {
+      "seed_symbol": "babel_tower",
+      "coupling_strength": 0.70416,
+      "resonance_score": 0.632957,
+      "sequence_length": 4,
+      "source_artifact": "multi_symbol_resonance_4d_latest.json"
+    }
+  ],
+  "sources": {
+    "multi_symbol_json": "c:\\workspace\\docs\\final\\artifacts\\multi_symbol_resonance_4d_latest.json"
+  }
+}

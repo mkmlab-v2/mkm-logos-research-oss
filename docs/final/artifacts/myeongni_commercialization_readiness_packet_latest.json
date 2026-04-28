@@ -1,6 +1,6 @@
 {
   "schema": "myeongni_commercialization_readiness_packet_v1",
-  "ts_utc": "2026-04-28T05:06:39Z",
+  "ts_utc": "2026-04-28T05:17:15Z",
   "readiness": "Ready",
   "summary": {
     "contract_alignment_ok": true,
@@ -8,7 +8,9 @@
     "signal_non_neutral": true,
     "fusion_agreement_rate": 0.666667,
     "shadow_blockers_count": 0,
-    "shadow_override_ratio": 0.003442
+    "shadow_override_ratio": 0.003419,
+    "shadow_override_ratio_limit": 0.01,
+    "shadow_override_ratio_exceeded": false
   },
   "inputs": {
     "myeongni_independent_lens": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
@@ -23,11 +25,12 @@
     "decision": "manual_review_required"
   },
   "shadow_history_integrity": {
-    "history_rows": 581,
+    "history_rows": 585,
     "override_rows": 2,
-    "override_ratio": 0.003442,
+    "override_ratio": 0.003419,
     "latest_override_ts_utc": "2026-03-31T23:59:59Z"
   },
+  "warnings": [],
   "next_gate_focus": [
     "reduce_neutral_bias_without_overfit",
     "increase_shadow_monthly_coverage",

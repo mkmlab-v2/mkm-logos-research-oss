@@ -1,6 +1,6 @@
 {
   "schema": "pointerguard_folder_policy_v1",
-  "generated_at_utc": "2026-04-28T05:05:18+00:00",
+  "generated_at_utc": "2026-04-28T05:16:57+00:00",
   "policy_default": "deny_unless_allowlisted",
   "research_only": true,
   "source_track": "B",
@@ -153,9 +153,45 @@
       "reason": "Raw datasets/corpora require byte-level identity."
     }
   ],
+  "promotion_profiles": [
+    {
+      "profile_id": "artifacts_apply",
+      "match_patterns": [
+        "docs/final/artifacts/**"
+      ],
+      "go_promotion_enabled": true,
+      "rollout_order": 2,
+      "consecutive_samples": 3,
+      "apply_row_ratio_min": 0.35,
+      "apply_unresolved_max": 4.0
+    },
+    {
+      "profile_id": "reports_apply",
+      "match_patterns": [
+        "reports/**"
+      ],
+      "go_promotion_enabled": true,
+      "rollout_order": 1,
+      "consecutive_samples": 3,
+      "apply_row_ratio_min": 0.3,
+      "apply_unresolved_max": 4.0
+    },
+    {
+      "profile_id": "memory_v2_apply",
+      "match_patterns": [
+        "projects/bitcoin-trading/memory/v2/**"
+      ],
+      "go_promotion_enabled": false,
+      "rollout_order": 3,
+      "consecutive_samples": 5,
+      "apply_row_ratio_min": 0.4,
+      "apply_unresolved_max": 1.0
+    }
+  ],
   "summary": {
     "apply_count": 9,
     "caution_count": 4,
-    "forbid_count": 8
+    "forbid_count": 8,
+    "promotion_profile_count": 3
   }
 }

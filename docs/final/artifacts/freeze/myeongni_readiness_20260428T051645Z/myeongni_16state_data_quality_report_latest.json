@@ -1,0 +1,21 @@
+{
+  "schema": "myeongni_16state_data_quality_report_v1",
+  "ts_utc": "2026-04-28T05:09:00Z",
+  "input_jsonl": "C:\\workspace\\data\\myeongni\\myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl",
+  "rows_total": 120,
+  "contract_violations": 0,
+  "required_field_missing_count": 0,
+  "range_violations_count": 0,
+  "time_order_violations_count": 0,
+  "mapping_target_distribution": {
+    "bull": 40,
+    "bear": 40,
+    "sideways": 40,
+    "unknown": 0
+  },
+  "neutral_ratio": 0.333333,
+  "consistency_rate_mean": 0.655,
+  "self_contradiction_rate_mean": 0.074,
+  "status": "PASS",
+  "violations_preview": []
+}

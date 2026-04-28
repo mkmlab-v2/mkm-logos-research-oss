@@ -1,6 +1,6 @@
 {
   "schema": "genesis_pointer_route_runtime_config_v1",
-  "generated_at_utc": "2026-04-28T05:05:18+00:00",
+  "generated_at_utc": "2026-04-28T05:16:57+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
@@ -182,11 +182,9 @@
     "go_ratio": 0.75
   },
   "promotion_gate": {
-    "apply_go_enabled": false,
-    "apply_promotion_decision": "KEEP_SHADOW",
-    "apply_promotion_reasons": [
-      "apply_unresolved_above_threshold"
-    ]
+    "apply_go_enabled": true,
+    "apply_promotion_decision": "PROMOTE_APPLY_GO",
+    "apply_promotion_reasons": []
   },
   "notes": [
     "Runtime config is generated from policy decision artifact; do not edit manually.",

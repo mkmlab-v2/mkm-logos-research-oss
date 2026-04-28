@@ -1,6 +1,6 @@
 {
   "schema": "sasang_shadow_governance_v1",
-  "generated_at_utc": "2026-04-28T05:07:15Z",
+  "generated_at_utc": "2026-04-28T05:17:27Z",
   "mode": "shadow_only_observation",
   "decision": "KEEP_OBSERVATION_ONLY",
   "current_gate": {
@@ -18,7 +18,9 @@
   "blockers": [],
   "warnings": [
     "strict_quality_gate",
-    "strict_shadow_evidence_only"
+    "strict_shadow_evidence_only",
+    "strict_input_integrity",
+    "production_data_readiness"
   ],
   "rollback_conditions": [
     "strict gate remains HOLD/FAIL",

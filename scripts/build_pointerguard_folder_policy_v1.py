@@ -173,6 +173,38 @@ def main() -> int:
     args = ap.parse_args()
 
     rows = _rows()
+    promotion_profiles = [
+        {
+            "profile_id": "artifacts_apply",
+            "match_patterns": ["docs/final/artifacts/**"],
+            "go_promotion_enabled": True,
+            "rollout_order": 2,
+            "consecutive_samples": 3,
+            "apply_row_ratio_min": 0.35,
+            "apply_unresolved_max": 4.0,
+        },
+        {
+            "profile_id": "reports_apply",
+            "match_patterns": ["reports/**"],
+            "go_promotion_enabled": True,
+            "rollout_order": 1,
+            "consecutive_samples": 3,
+            "apply_row_ratio_min": 0.30,
+            "apply_unresolved_max": 4.0,
+        },
+        {
+            "profile_id": "memory_v2_apply",
+            "match_patterns": ["projects/bitcoin-trading/memory/v2/**"],
+            "go_promotion_enabled": False,
+            "rollout_order": 3,
+            "consecutive_samples": 5,
+            "apply_row_ratio_min": 0.40,
+            "apply_unresolved_max": 1.0,
+            "ramp_unresolved_thresholds": [4.0, 3.0, 2.0, 1.0],
+            "ramp_current_index": 0,
+            "ramp_required_consecutive_passes": 3,
+        },
+    ]
     out_doc = {
         "schema": "pointerguard_folder_policy_v1",
         "generated_at_utc": _now_utc(),
@@ -180,10 +212,12 @@ def main() -> int:
         "research_only": True,
         "source_track": "B",
         "rows": rows,
+        "promotion_profiles": promotion_profiles,
         "summary": {
             "apply_count": sum(1 for r in rows if r["policy"] == "apply"),
             "caution_count": sum(1 for r in rows if r["policy"] == "caution"),
             "forbid_count": sum(1 for r in rows if r["policy"] == "forbid"),
+            "promotion_profile_count": len(promotion_profiles),
         },
     }
 

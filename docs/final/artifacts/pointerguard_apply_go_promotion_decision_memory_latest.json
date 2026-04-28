@@ -1,0 +1,72 @@
+{
+  "schema": "pointerguard_apply_go_promotion_decision_v1",
+  "generated_at_utc": "2026-04-28T05:16:57+00:00",
+  "research_only": true,
+  "source_track": "B",
+  "inputs": {
+    "daily_report": "C:\\workspace\\docs\\final\\artifacts\\pointer_hash_snapping_router_shadow_daily_report_latest.json",
+    "alert_json": "C:\\workspace\\docs\\final\\artifacts\\pointer_hash_snapping_router_shadow_alert_latest.json",
+    "shadow_log_jsonl": "C:\\workspace\\reports\\pointer_hash_snapping_router_shadow_log_v1.jsonl",
+    "folder_policy_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_folder_policy_latest.json",
+    "target_path": "projects/bitcoin-trading/memory/v2/demo.json",
+    "consecutive_samples": 5,
+    "apply_row_ratio_min": 0.4,
+    "apply_unresolved_max": 1.0,
+    "profile_id": "memory_v2_apply",
+    "go_promotion_enabled": false,
+    "rollout_order": 3
+  },
+  "window_stats": {
+    "sample_count": 12,
+    "apply_row_ratio_avg": 0.6666666666666666,
+    "apply_unresolved_avg_per_run": 2.6666666666666665
+  },
+  "recent_checks": [
+    {
+      "sample_index_from_recent": 0,
+      "input_count": 3.0,
+      "apply_ratio": 1.0,
+      "apply_unresolved": 4.0,
+      "pass_apply_ratio": true,
+      "pass_apply_unresolved": false
+    },
+    {
+      "sample_index_from_recent": 1,
+      "input_count": 3.0,
+      "apply_ratio": 1.0,
+      "apply_unresolved": 4.0,
+      "pass_apply_ratio": true,
+      "pass_apply_unresolved": false
+    },
+    {
+      "sample_index_from_recent": 2,
+      "input_count": 3.0,
+      "apply_ratio": 1.0,
+      "apply_unresolved": 4.0,
+      "pass_apply_ratio": true,
+      "pass_apply_unresolved": false
+    },
+    {
+      "sample_index_from_recent": 3,
+      "input_count": 3.0,
+      "apply_ratio": 1.0,
+      "apply_unresolved": 4.0,
+      "pass_apply_ratio": true,
+      "pass_apply_unresolved": false
+    },
+    {
+      "sample_index_from_recent": 4,
+      "input_count": 3.0,
+      "apply_ratio": 1.0,
+      "apply_unresolved": 4.0,
+      "pass_apply_ratio": true,
+      "pass_apply_unresolved": false
+    }
+  ],
+  "promote_apply_path_to_go": false,
+  "decision": "KEEP_SHADOW",
+  "reasons": [
+    "apply_unresolved_above_threshold",
+    "profile_go_promotion_disabled"
+  ]
+}

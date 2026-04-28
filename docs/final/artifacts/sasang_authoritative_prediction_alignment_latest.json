@@ -1,0 +1,19 @@
+{
+  "schema": "sasang_authoritative_prediction_alignment_v1",
+  "gt_path": "C:\\workspace\\data\\constitution\\korean_cohort\\gt_cohort.real.latest.jsonl",
+  "pred_dir": "C:\\workspace\\reports\\constitution\\btrack_pilot",
+  "scanned_sources": 7,
+  "gt_valid_ids": 2,
+  "aligned_prediction_rows": 2,
+  "coverage_ratio": 1.0,
+  "source_hit_counts": {
+    "predictions.real.latest.jsonl": 2,
+    "sasang_encoder_smoke_predictions_jhgan__ko-sroberta-multitask.jsonl": 0,
+    "sasang_encoder_smoke_predictions_sentence-transformers__all-MiniLM-L6-v2.jsonl": 0,
+    "sasang_predictions_from_btrack_candidate_subset_latest.jsonl": 0,
+    "sasang_predictions_from_btrack_candidate_subset_mapped_latest.jsonl": 0,
+    "sasang_predictions_from_btrack_eval_full_latest.jsonl": 0,
+    "sasang_predictions_from_btrack_eval_full_mapped_latest.jsonl": 0
+  },
+  "output_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\predictions.real.aligned.latest.jsonl"
+}
