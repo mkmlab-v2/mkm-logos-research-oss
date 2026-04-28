@@ -17,14 +17,12 @@ $baseShort = Join-Path $reportsDir "github_actions_usage_baseline_latest_120.jso
 $deltaOut = Join-Path $reportsDir "github_actions_usage_delta_latest.json"
 
 Write-Host "[actions-usage] repo=$Repo long=$LongWindow short=$ShortWindow top=$TopN"
-
 gh run list -L $LongWindow --json workflowName,event,status,conclusion,createdAt,updatedAt -R $Repo | Out-File -FilePath $runsLong -Encoding utf8
-py scripts/report_github_actions_usage_baseline.py --input-json $runsLong --top-n $TopN --output-json $baseLong
-
+python scripts/report_github_actions_usage_baseline.py --input-json $runsLong --top-n $TopN --output-json $baseLong
 gh run list -L $ShortWindow --json workflowName,event,status,conclusion,createdAt,updatedAt -R $Repo | Out-File -FilePath $runsShort -Encoding utf8
-py scripts/report_github_actions_usage_baseline.py --input-json $runsShort --top-n $TopN --output-json $baseShort
+python scripts/report_github_actions_usage_baseline.py --input-json $runsShort --top-n $TopN --output-json $baseShort
 
-py scripts/compare_github_actions_usage_baselines.py --previous-json $baseLong --current-json $baseShort --output-json $deltaOut
+python scripts/compare_github_actions_usage_baselines.py --previous-json $baseLong --current-json $baseShort --output-json $deltaOut
 
 Write-Host "[actions-usage] wrote:"
 Write-Host " - $runsLong"
