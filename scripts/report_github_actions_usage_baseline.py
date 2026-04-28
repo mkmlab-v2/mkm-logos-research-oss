@@ -102,7 +102,7 @@ def main() -> int:
     args = parser.parse_args()
 
     input_path = Path(args.input_json)
-    runs = json.loads(input_path.read_text(encoding="utf-8"))
+    runs = json.loads(input_path.read_text(encoding="utf-8-sig"))
     if not isinstance(runs, list):
         raise ValueError("Expected a JSON array from gh run list --json")
 

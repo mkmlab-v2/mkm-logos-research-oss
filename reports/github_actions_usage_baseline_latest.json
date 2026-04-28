@@ -1,8 +1,8 @@
 {
   "schema": "github_actions_usage_baseline_v1",
-  "generated_at_utc": "2026-04-28T00:52:27Z",
+  "generated_at_utc": "2026-04-28T02:40:20Z",
   "input_run_count": 300,
-  "workflow_count": 23,
+  "workflow_count": 22,
   "top_by_runtime_minutes": [
     {
       "workflow_name": "no1kmedi-web-build",
@@ -20,16 +20,16 @@
     },
     {
       "workflow_name": "no1kmedi-marketing-copy",
-      "runs": 28,
-      "runtime_minutes_total": 165.88,
-      "runtime_minutes_avg": 5.92,
-      "success": 15,
-      "failed": 12,
-      "other": 1,
+      "runs": 31,
+      "runtime_minutes_total": 167.17,
+      "runtime_minutes_avg": 5.39,
+      "success": 16,
+      "failed": 13,
+      "other": 2,
       "events": {
         "pull_request": 19,
-        "push": 7,
-        "workflow_dispatch": 2
+        "push": 8,
+        "workflow_dispatch": 4
       }
     },
     {
@@ -47,15 +47,15 @@
     },
     {
       "workflow_name": "no1kmedi Guardian Contract Gate",
-      "runs": 21,
-      "runtime_minutes_total": 159.07,
-      "runtime_minutes_avg": 7.57,
-      "success": 12,
+      "runs": 22,
+      "runtime_minutes_total": 159.28,
+      "runtime_minutes_avg": 7.24,
+      "success": 13,
       "failed": 9,
       "other": 0,
       "events": {
         "pull_request": 19,
-        "workflow_dispatch": 2
+        "workflow_dispatch": 3
       }
     },
     {
@@ -86,14 +86,14 @@
     },
     {
       "workflow_name": "Backend Fact Engine Quantization Guard",
-      "runs": 18,
-      "runtime_minutes_total": 5.0,
+      "runs": 17,
+      "runtime_minutes_total": 4.75,
       "runtime_minutes_avg": 0.28,
-      "success": 17,
+      "success": 16,
       "failed": 1,
       "other": 0,
       "events": {
-        "pull_request": 18
+        "pull_request": 17
       }
     },
     {

@@ -10,7 +10,7 @@ from typing import Any
 
 
 def _load(path: Path) -> dict[str, Any]:
-    data = json.loads(path.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8-sig"))
     if not isinstance(data, dict):
         raise ValueError(f"Expected JSON object: {path}")
     return data
