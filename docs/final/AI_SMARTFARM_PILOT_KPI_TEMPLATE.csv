@@ -1,0 +1,11 @@
+kpi_id,kpi_name,definition,unit,baseline_period,target_period,baseline_value,target_value,actual_value,status,owner,source,notes
+KPI-01,Water use per week,Total irrigation volume per week,liter/week,pre_ai_week1_2,ai_week1_8,,,,"ai_team","flow_meter+control_log","Lower with stable soil target"
+KPI-02,Manual visit count,Number of non-essential farm visits,count/week,pre_ai_week1_2,ai_week1_8,,,,"farm_owner","visit_log","Focus on avoidable trips"
+KPI-03,Auto run success rate,Successful auto runs divided by total auto runs,percent,pre_ai_week1_2,ai_week1_8,,,,"ai_team","control_log","Exclude manual-only runs"
+KPI-04,Alarm rate,Critical and warning alarms per week,count/week,pre_ai_week1_2,ai_week1_8,,,,"ai_team","alarm_log","Should decrease after tuning"
+KPI-05,Soil moisture stability,Std dev of soil moisture in target band,percent,pre_ai_week1_2,ai_week1_8,,,,"ai_team","sensor_log","Lower variance is better"
+KPI-06,Rain-loss avoidance ratio,Runs postponed/skipped due to rain gate divided by potential rain-risk runs,percent,pre_ai_week1_2,ai_week1_8,,,,"ai_team","weather_log+control_log","Shows weather-aware control value"
+KPI-07,Filter-related failure count,Events linked to clogging or pressure anomaly,count,pre_ai_week1_2,ai_week1_8,,,,"farm_owner","maintenance_log+alarm_log","Operational hygiene metric"
+KPI-08,Override frequency,Manual override events per week,count/week,pre_ai_week1_2,ai_week1_8,,,,"ai_team","control_log","High count indicates low trust or policy mismatch"
+KPI-09,Data completeness,Sensor records received vs expected records,percent,pre_ai_week1_2,ai_week1_8,,,,"ai_team","ingestion_log","Minimum quality gate metric"
+KPI-10,Decision trace coverage,Control actions with complete reason codes and input snapshots,percent,pre_ai_week1_2,ai_week1_8,,,,"ai_team","decision_log","Audit and dispute readiness"
