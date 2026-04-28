@@ -1,9 +1,13 @@
 # Constitution / Inference — 구현 팩트 (SSOT)
 
 **작성일**: 2026-03-29  
-**최종 갱신**: 2026-04-19 — 기상 관측 라벨→`general_prophecy` 트리플(B-track 교정 측정용): 스키마 `docs/final/schemas/weather_ground_truth_row_v1.schema.json`·`scripts/csv_to_weather_ground_truth_jsonl_v1.py`·`scripts/weather_csv_sniff_v1.py`·`scripts/validate_weather_ground_truth_jsonl_v1.py`·`scripts/validate_weather_forecasts_jsonl_against_gt_v1.py`·`scripts/emit_weather_forecasts_jsonl_template_from_gt_v1.py`·`scripts/optimize_weather_lens_fusion_weights_v1.py`(융합 가중 그리드)·`scripts/build_weather_btrack_summary_comparison_v1.py`(요약 비교)·`scripts/build_weather_btrack_reliability_check_v1.py`(delta gate)·`scripts/append_weather_reliability_audit_to_go_nogo_v1.py`(`a_track_go_nogo_status_latest.json` 감사 로그 append)·`build_weather_triplet_registry_v1.py`(`--fusion-weight-myeongri`)·`scripts/run_weather_gt_to_prophecy_triplet_chain_v1.py`(`--fusion-search-json`)·`scripts/run_weather_synthetic_120d_chain_and_brier_v1.py`·`scripts/run_weather_synthetic_120d_optimize_fusion_then_chain_v1.ps1`·`scripts/run_weather_btrack_hypo_fusionopt_to_artifacts_v1.py`·`scripts/run_weather_btrack_external_forecasts_to_artifacts_v1.py`·`scripts/run_weather_btrack_external_real_week_chain_v1.ps1`·`scripts/run_weather_btrack_external_real_week_full_gate_v1.ps1`·산출 `docs/final/artifacts/weather_btrack_pipeline_hypo_fusionopt_summary_v1.json`(HYPO 고정)·`docs/final/artifacts/weather_btrack_pipeline_external_hypo_120d_v1_summary.json`(외부 입력 체인 스모크)·`docs/final/artifacts/weather_btrack_summary_comparison_hypo_vs_external_hypo_120d_v1.json`(비교)·`eval_general_prophecy_brier_score.py`(`--no-print-output-path`·`ece_binary`·`ece_binary_by_domain_tag`)·회귀 `tests/test_weather_gt_triplet_chain_smoke.py`·선택 스모크 `scripts/run_workspace_automation_health.ps1`(`-IncludeWeatherPipelineSmoke`)·P0 `verify_p0_constitution_gate_paths.ps1`·CI `dual-regime-integrity.yml` (본문 단락 동일). **이전 갱신**: 2026-04-18 — §1.1.1 `[VISION]` 예언 성능 우선·국방 서사 `research_only` 격리; OHLCV 30일 패널 **재빌드 후 스윕 재실행**(best_delta 동일 **-4.8%**·수정 최소 타이브레이크); `prophecy_overlay_prior_threshold_recommended_latest.json`·`prophecy_prior_threshold_sweep_summary_latest.json`; `eval_prophecy_hit_rate_v1.py --run-mode price`; 스파이크 기본 `-0.048`; CI `prophecy-restoration-spike-smoke.yml`; 이전 갱신: Prism §14 Prophecy 오버레이 단락·스키마 `prophecy_overlay_ablation_spike_v1`; 그 이전: 2026-04-14 — `google.genai` `HttpOptions.timeout` ms 정합(`gemini_multimodal_batch`·`staging_shard_inference_run`·`generate_btrack_hypothesis_prophecy_v1`); `fill_human_regime_audit_llm_spike` 루트 `.env` 로드; dual-regime-integrity에 `zstandard` 의존성 및 branch-optional 스파이크 pytest 파일 존재 가드(미추적 시 skip, 추적 시 엄격 실행).  
+**최종 갱신**: 2026-04-27 — SSOT 정합 복구(Drift pruning): 현행 운영 레일 중심으로 P0 경로 게이트를 재정렬하고, 비활성/미배포 체인은 필수 게이트에서 제외. **이전 갱신**: 2026-04-18 — §1.1.1 `[VISION]` 예언 성능 우선·국방 서사 `research_only` 격리; OHLCV 30일 패널 재실행(best_delta **-4.8%**)·`prophecy_overlay_prior_threshold_recommended_latest.json`·`prophecy_prior_threshold_sweep_summary_latest.json`; `eval_prophecy_hit_rate_v1.py --run-mode price`; CI `prophecy-restoration-spike-smoke.yml`.
 **이전 갱신**: 2026-04-14 §2 B-track `4d_to_ohaeng`·human regime audit 스파이크 행; §3.4.1 Postella; 2026-04-13 §1.2 AE-2 KOSPI.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
+
+> **정합성 메모 (2026-04-27):** 문서에 남아 있는 일부 historical/연구 레일 경로는 참고 이력일 수 있다. 운영 필수 여부 판정은 `scripts/verify_p0_constitution_gate_paths.ps1`의 current required 목록을 우선한다. 미존재 경로는 복구 승인 전까지 필수 게이트로 간주하지 않는다.
+
+**갱신 (2026-04-28):** §16 `scripts/run_aramaic_mvp_chain_v1.ps1` 후반 `[35/37]`–`[37/37]`(제출 증거 번들·제출 초안·카메라레디 JSON) 및 동 단계 스크립트·pytest 경로를 `verify_p0_constitution_gate_paths.ps1` 필수 목록에 포함. 추가로 `scripts/run_two_track_submission_pack_v1.ps1`로 동 세 단계만 단독 실행 가능(선행 산출 없으면 exit 2). CI: `.github/workflows/dual-regime-integrity.yml`에 제출 팩 빌더 회귀 pytest 3종 단계 포함(PR paths에 동 스크립트·테스트 경로 추가). **`scripts/extract_aramaic_core_corpus_v1.py`**는 `verse_decoded_v2.jsonl`에서 정경 아람어 구간을 추출하는 체인 1단계 구현이며 회귀는 `tests/test_extract_aramaic_core_corpus_v1.py`(동 워크플로 단계 및 P0 목록 포함).
 
 **갱신 (2026-04-21):** §8.1 Bio Sasang×논문 SNP **경계 팩트** 및 조인 게이트 `scripts/spec_bio_sample_paper_snp_join_gate_v1.py` 추가. 유전자명–체질 고정 매핑 표는 **본 문서 FACT 본문에 등재하지 않음** (`[HYPO]`·연구 노트 전용). 동 절 관련 스크립트·`bio_measured_labels_paper_snp_sidecar_v1.json`·매핑 템플릿 CSV는 `scripts/verify_p0_constitution_gate_paths.ps1` 필수 목록에 포함. CI 스모크: `.github/workflows/bio-paper-snp-sidecar-smoke.yml`·`tests/test_bio_paper_snp_join_chain_smoke_v1.py`·`tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py`·`tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py`; 동일 pytest는 `dual-regime-integrity.yml`에도 포함(PR paths에 Bio SNP 경로 추가). 매핑 선행 점검: `scripts/check_bio_paper_snp_mapping_coverage_v1.py`. 로컬 헬스 선택: `scripts/run_workspace_automation_health.ps1 -IncludeBioPaperSnpJoinSmoke`. Windows 래퍼: `scripts/Run-BioPaperSnpSidecarExportAndApply.ps1`.
 
@@ -23,9 +27,10 @@
 | Compression Interpretation Fact-Lock | `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` | 12AI(파일럿)·코드북 샤드·압축 엔진·다중렌즈 역할 분리, 16상 연동 상태(미완) 고정; HTTP v2 Trust Packet 초안은 §11; **파일럿 대외 톤** §10에 L1 연구 와이어 `POST /v1/research/l1_side_channel/wire` 경계(§2 표와 정합) |
 | B-track → Track A promotion (compression lane) | `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9 (§9.1.1 승격 범위·OpenAPI 경로 표·성능 잠금 절차) | 연구 산출물 승격 전 체크리스트·격벽(L1 하네스 vs 빔·Jaccard SSOT 등); `P0_COMMERCIALIZATION_TRACKER.md` 증거 표 교차 참조 |
 | Two-track compression SLA (Track A/B) | `docs/final/COMPRESSION_SLA_POLICY_V1.md` | 범용 vs 리터럴 프로필·산출 경로·헬스/손실 리포트·웹훅은 `active_kpi`(Track A)만; `run_ultra_compression_default.py --mode literal`, `literal_kpi`, CI 범용+리터럴 재생성 스텝 |
-| HTTP v2 Trust Packet (OpenAPI + stub) | `docs/final/openapi_token_compression_v2_draft.yaml` | FastAPI: `scripts/compression_token_api_v2_stub.py` — `POST /v2/compress`, `POST /v2/expand`; 압축 경로는 `evaluate_report` + 도메인 라우터(초안 명칭 `GlobalPivotCompressionPipeline` 대체). 상용 SLA 아님. §11 |
+| HTTP v2 Trust Packet (OpenAPI + stub) | `docs/final/openapi_token_compression_v2_draft.yaml` | FastAPI: `scripts/compression_token_api_v2_stub.py` — `POST /v2/compress`, `POST /v2/expand`; 압축 경로는 `evaluate_report` + 도메인 라우터(초안 명칭 `GlobalPivotCompressionPipeline` 대체). 본문 `emit_semantic_pointer: true` 시 `residual_meta.mk_stub_v2.semantic_pointer`(`schema: semantic_pointer_v1`, `evaluate_report` 가산). 계약 회귀: `tests/test_compression_token_api_v2_stub.py::test_openapi_v2_contract_has_emit_semantic_pointer`. 상용 SLA 아님. §11 |
 | Master codebook lexicon V1 export | `scripts/export_master_codebook_v1.py` | 아톰+Strong+MorphHB 시드 조인 산출; 루브릭은 동 COMPRESSION 문서 §9 |
 | Master codebook lexicon V1 → multilens route join (bridge) | `scripts/core/master_codebook_lexicon_v1_bridge.py` | `evaluate_report(..., use_master_codebook_lexicon_v1=True)` 시 원문 토큰과 `normalized_form` 교집합으로 must_keep 보강; 4D·샤드 정책 대체 아님. 호출부: `report_multilens_performance_eval.py`, ultra/P1 러너·벤치·압축 스텁 |
+| Multilens eval `semantic_pointer` (가산 채널) | `scripts/report_multilens_performance_eval.py` | CLI `--emit-semantic-pointer` / `evaluate_report(..., emit_semantic_pointer=True)` — 케이스별 `semantic_pointer`(`schema: semantic_pointer_v1`), `compression_metrics.semantic_pointer_channel`; `avg_reconstruction_fidelity_jaccard`·`global_token_saving_rate` 집계 경로 불변. 회귀: `tests/test_multilens_performance_eval_report.py` |
 | State16 Insertion Contract | `docs/final/STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md` | 16상 인터페이스 삽입 지점/입출력/오류/단계적 게이트 명세 (런타임 강제 아님) |
 | AE-2 KOSPI 구조 엔트로피 스파이크 v1 | `scripts/spike_kospi_structural_entropy_v1.py` → `docs/final/artifacts/spike_kospi_kld_v1.json` (합성 기본); `--mode csv`+`research/market_data/kospi_daily_external_yf.csv` → `spike_kospi_kld_v1_real.json` (JSON에 `csv_source_health`: 행 수·수익률 쌍·스킵 카운트·기간); `scripts/spike_kospi_structural_entropy_compare_v1.py` → `docs/final/artifacts/spike_kospi_kld_v1_compare.json` | **관측·연구 전용** — 멀티렌즈 토큰 압축·Track A 승격·`evaluate_report` 본선과 자동 합선 없음; blind replay 코스피 그리드와 별도 레일 (`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1.md` §2 2026-04-13). 회귀: `tests/test_spike_kospi_structural_entropy_v1.py`, `tests/test_spike_kospi_structural_entropy_compare_v1.py`. |
 
@@ -53,9 +58,9 @@
 | Track A/B JSONL (Sovereign iterator) | `scripts/core/sovereign_jsonl.py` | `iter_jsonl_dict_rows` — `track_context` A면 행마다 `assert_track_a_json_row_allowed`, B면 연구 입력용(가드 생략). 파일럿: `report_symbol_numeric_injection` B-context. 회귀: `tests/test_sovereign_jsonl.py`. |
 | 소버린 토큰 절감 스파이크 v1 | `scripts/spike_sovereign_token_saving.py` → `docs/final/artifacts/derived/spike_sovereign_token_saving_latest.json` | 코드북 용어(최대 16개)를 ``<S00>``..``<S15>``로 치환 후 tiktoken(o200k_base) 또는 바이트 프록시로 대비; B-track. 회귀: ``tests/test_spike_sovereign_token_saving_v1.py``. |
 | 샤드 어휘 소버린 효율 스파이크 | `scripts/spike_sovereign_vocab_efficiency.py` → `docs/final/artifacts/derived/spike_sovereign_vocab_efficiency_latest.json` | ``codebook/shards/zone_*.json``에서 수집한 용어로 **다어구**를 구성, 플레이스홀더 토큰 수보다 **baseline 토큰 수가 큰 구문만** 매핑 후 tiktoken 대비; B-track. 회귀: ``tests/test_sovereign_efficiency.py``. |
-| 토큰 압축 API (스텁 v1) | `scripts/compression_token_api_stub.py` | FastAPI: `POST /v1/compress`, `POST /v1/expand`, `GET /health`. **연구 레인(additive):** `POST /v1/research/l1_side_channel/wire` — L1 사이드 채널 최소 페이로드를 `scripts/l1_side_channel_wire_codec.py`(`encode_adaptive_msgpack` 등)로 적응형 와이어 인코딩·base64 반환; **HTTP 503**: (1) 런타임에 msgpack 미설치, (2) 내부 `msgpack_payload_bytes`가 `None`(pack 불가). 응답에 `api_contract_version`; `eval_context.hydrate_metrics` 없으면 `compression_metrics` null(라우터만). **enterprise 티어**에서 `hydrate_live_eval` 시 `evaluate_report` 시도·실패 시 `integrity_flags.hydration_live_eval_failed` 가능. **public 티어(Track B·literal KPI 추정)**는 동일 요청 시 `hydrate_live_eval_suppressed`로 라이브 경로 차단. **expand는 원문 에코**. 회귀: `tests/test_compression_token_api_stub.py`(OpenAPI 경로 포함·와이어 라운드트립·`test_public_tier_bulkhead_never_calls_live_eval_even_when_requested`). 대외 설명 SSOT: `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10 + `openapi_token_compression_stub_v1.yaml` description. |
+| 토큰 압축 API (스텁 v1) | `scripts/compression_token_api_stub.py` | FastAPI: `POST /v1/compress`, `POST /v1/expand`, `GET /health`. **연구 레인(additive):** `POST /v1/research/l1_side_channel/wire` — L1 사이드 채널 최소 페이로드를 `scripts/l1_side_channel_wire_codec.py`(`encode_adaptive_msgpack` 등)로 적응형 와이어 인코딩·base64 반환; **HTTP 503**: (1) 런타임에 msgpack 미설치, (2) 내부 `msgpack_payload_bytes`가 `None`(pack 불가). 응답에 `api_contract_version`; `eval_context.hydrate_metrics` 없으면 `compression_metrics` null(라우터만). **enterprise 티어**에서 `hydrate_live_eval` 시 `evaluate_report`(선택 `eval_context.emit_semantic_pointer` → 응답 `semantic_pointer` `semantic_pointer_v1`) 시도·실패 시 `integrity_flags.hydration_live_eval_failed` 가능. **public 티어(Track B·literal KPI 추정)**는 동일 요청 시 `hydrate_live_eval_suppressed`로 라이브 경로 차단. **expand는 원문 에코**. 회귀: `tests/test_compression_token_api_stub.py`(OpenAPI 경로 포함·와이어 라운드트립·`test_public_tier_bulkhead_never_calls_live_eval_even_when_requested`·`test_openapi_v1_semantic_pointer_contract_fields`). 대외 설명 SSOT: `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` §10 + `openapi_token_compression_stub_v1.yaml` description. |
 | 토큰 압축 스텁 부하 벤치 (§9.2 draft SLA) | `scripts/bench_l1_api_load.py` → `docs/final/artifacts/bench_l1_api_load_latest.json` | stdlib `urllib` 스레드 풀; **클라이언트 RTT** p50/p95/p99. 서버 RSS는 동일 호스트 `--server-pid`+`psutil` 선택. `research_only`/`draft_benchmark`; FACT 승격은 플레이북 9.2 절차. dry-run 회귀: `tests/test_bench_l1_api_load.py`. |
-| OpenAPI (압축 스텁) | `docs/final/openapi_token_compression_stub_v1.yaml` | HTTP 계약(SSOT); `info.version` **1.1.1+** (예시 문서만 PATCH). `mode_live` 요청 예시 텍스트는 기본 `COMPRESSION_API_LIVE_EVAL_MIN_TOKENS`(12, 스텁 `TOKEN_RE` 토큰 수) 이상. EvalContext·HydrationHints·CompressionMetrics 스키마 포함. **v1.1.0** 에 `POST /v1/research/l1_side_channel/wire` 추가; 스키마 `L1SideChannelWireRequest` / `L1SideChannelWireResponse`, 응답 `schema_version` 예시 `l1_side_channel_wire_stub_v1`. 상용 SLA·인증은 범위 외. |
+| OpenAPI (압축 스텁) | `docs/final/openapi_token_compression_stub_v1.yaml` | HTTP 계약(SSOT); `info.version` **1.1.1+** (예시 문서만 PATCH). `mode_live` 요청 예시 텍스트는 기본 `COMPRESSION_API_LIVE_EVAL_MIN_TOKENS`(12, 스텁 `TOKEN_RE` 토큰 수) 이상. EvalContext(`emit_semantic_pointer`)·HydrationHints·CompressionMetrics·CompressResponse(`semantic_pointer`) 스키마 포함. **v1.1.0** 에 `POST /v1/research/l1_side_channel/wire` 추가; 스키마 `L1SideChannelWireRequest` / `L1SideChannelWireResponse`, 응답 `schema_version` 예시 `l1_side_channel_wire_stub_v1`. 상용 SLA·인증은 범위 외. |
 | 정책 SSOT | `data/regimes/regime_fusion_policy.json` | 워크스페이스 상대 경로로 로드 |
 | 보조 정책 | `data/regimes/dual_regime_policy.json` | 존재 확인됨 |
 | 레짐 맵 | `data/regimes/regime_map.json` | 존재 확인됨 |
@@ -284,6 +289,48 @@
 
 격벽을 유지한 채 B-track 아티팩트·CI·문서 정합을 점검하는 **체크리스트**는 `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md`에 둔다. 단일 TOE 완성 선언이 아니라, **관측·벤치·인터페이스 스텁**의 재현 가능성을 올리는 절차다. `btrack_phase3_cross_ref_snapshot.md` 코드펜스는 SSOT JSON과 어긋날 경우 `scripts/sync_btrack_phase3_snapshot_json_fence.py --apply`로 맞춘 뒤 `tests/test_cross_ref_dss_schema.py`로 검증한다.
 
+### 4.7 Aramaic Cross-Reference Graph MVP (B-track, 관측 전용)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| Aramaic 코퍼스 추출 | `scripts/extract_aramaic_core_corpus_v1.py` → `reports/constitution/btrack_pilot/aramaic_core_corpus_v1.jsonl` | 다니엘/에스라 아람어 핵심 구간 추출(연구 레인) |
+| 토큰 정규화 | `scripts/normalize_aramaic_tokens_v1.py` | lemma-lite 규칙(접두 제거 보수형) |
+| 노드 스키마 | `docs/final/schemas/aramaic_graph_node_v1.schema.json` | `schema: aramaic_graph_node_v1`, `source_track=B` 고정 |
+| 엣지 스키마 | `docs/final/schemas/aramaic_graph_edge_v1.schema.json` | 6개 타입(`timeline_anchor`, `causal_precursor`, `fulfillment`, `recurrence`, `contrast_inversion`, `cross_lens_confirm`) |
+| 점수 스키마 | `docs/final/schemas/aramaic_regime_shift_score_v1.schema.json` | `schema: aramaic_regime_shift_score_v1`, signal label 포함 |
+| 노드 빌더 | `scripts/build_aramaic_graph_nodes_v1.py` → `docs/final/artifacts/aramaic_graph_nodes_v1.jsonl` | 아람어 노드 생성 |
+| 엣지 빌더 | `scripts/build_aramaic_graph_edges_v1.py` → `docs/final/artifacts/aramaic_graph_edges_v1.jsonl` | 관계 타입별 엣지 생성 |
+| 교차 코퍼스 브리지 빌더 | `scripts/build_aramaic_cross_corpus_bridge_v1.py` → `docs/final/artifacts/aramaic_cross_corpus_bridge_nodes_v1.jsonl`, `docs/final/artifacts/aramaic_cross_corpus_bridge_edges_v1.jsonl` | 아람어 노드와 히브리(BHS)/헬라(SBLGNT) 후보 구절의 4D 유사도 기반 브리지 엣지 생성 |
+| 의미 그래프 빌더 (구절-테마-레짐상태) | `scripts/build_bible_meaning_graph_v1.py` → `docs/final/artifacts/bible_meaning_graph_nodes_v1.jsonl`, `docs/final/artifacts/bible_meaning_graph_edges_v1.jsonl` | 교차참조 엣지와 태그를 융합해 `verse ↔ theme ↔ regime_state` 3자 네트워크 생성 |
+| 의미 통찰 후보 추출기 | `scripts/extract_bible_meaning_insight_candidates_v1.py` → `docs/final/artifacts/bible_meaning_insight_candidates_latest.json` | 허브 구절·레짐 반복 군집·top-k 추론 경로 후보를 자동 추출 |
+| 통찰 생존 평가 | `scripts/build_insight_survivor_eval_v1.py` → `docs/final/artifacts/insight_survivor_eval_latest.json` | raw 통찰 후보를 `drawdown_avoidance / false_positive_cost / walkforward_repro` 지표로 평가 |
+| 통찰 생존 선발 | `scripts/select_insight_survivor_candidates_v1.py` → `docs/final/artifacts/insight_survivor_candidates_latest.json` | 평가 결과 중 임계치 통과 후보만 survivor로 선발(상위 N 제한) |
+| 의미 연결 품질 리포트 | `scripts/report_aramaic_semantic_edge_quality_v1.py` → `docs/final/artifacts/aramaic_semantic_edge_quality_latest.json` | 토큰 겹침·공유 근거 비율·엣지 타입별 의미 밀도 요약 |
+| 레짐 쉬프트 점수 | `scripts/score_aramaic_regime_shift_v1.py` → `docs/final/artifacts/aramaic_regime_shift_score_latest.json` | 기본 가중치 + `cross_lens_single_trigger_blocked` 제약 |
+| 통찰 신호 보조 반영 | `score_aramaic_regime_shift_v1.py --include-insight-signal --insight-json docs/final/artifacts/bible_meaning_insight_candidates_latest.json` | `insight_candidates`(허브/군집/경로) 밀도를 보조 신호로 반영해 shadow 기준 점수 재계산(연구 레인) |
+| 통찰 캡 버킷 임계치 스윕 | `scripts/sweep_aramaic_insight_cap_bucket_thresholds_v1.py` → `docs/final/artifacts/aramaic_insight_cap_bucket_threshold_sweep_latest.json` | audit log 기반으로 `mid/high` 임계치와 low/mid/high cap 조합을 스윕해 추천 후보 산출 |
+| 통찰 캡 버킷 임계치 적용 | `scripts/apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py` → `docs/final/artifacts/aramaic_insight_cap_bucket_threshold_recommended_latest.json` | 스윕 best 후보를 점수/섀도우 실행 인자로 승격 |
+| 통찰 캡 임계치 히스토리 | `scripts/report_aramaic_insight_cap_threshold_history_v1.py` → `reports/ops/aramaic_insight_cap_bucket_threshold_history.jsonl` | 추천 임계치 스냅샷을 실행 이력으로 누적 |
+| 통찰 캡 임계치 드리프트 경보 | `scripts/alert_aramaic_insight_cap_threshold_drift_v1.py` → `docs/final/artifacts/aramaic_insight_cap_bucket_threshold_drift_alert_latest.json` | 최근 추천값 변화량이 임계치를 넘으면 경보 산출 |
+| 가중치 스윕 | `scripts/run_aramaic_regime_shift_weight_sweep_v1.py` → `docs/final/artifacts/aramaic_regime_shift_weight_sweep_latest.json` | B-track 튜닝; `cross_lens_confirm` helper cap 유지 |
+| 브리지 계수 추천 적용 | `scripts/apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py` → `docs/final/artifacts/aramaic_regime_shift_bridge_coef_recommended_latest.json` | 스윕 best 후보의 `bridge_lang_coef`를 일일 점수 반영용 추천 아티팩트로 승격 |
+| 브리지 계수 주간 스케줄 등록 | `scripts/register_aramaic_mvp_bridge_coef_weekly_task.ps1` | 계수 스윕+추천 적용 주간 자동화 등록(dry-run 기본) |
+| 브리지 계수 주간 스케줄 readiness | `scripts/verify_aramaic_mvp_bridge_coef_weekly_task_readiness.ps1` → `docs/final/artifacts/aramaic_mvp_bridge_coef_weekly_task_readiness_latest.json` | 스크립트 존재/Task action/LastTaskResult 점검 |
+| Shadow 비교 리포트 | `scripts/run_aramaic_regime_shift_shadow_compare_v1.py` → `docs/final/artifacts/aramaic_regime_shift_score_best_weight_latest.json`, `docs/final/artifacts/aramaic_regime_shift_shadow_compare_latest.json` | baseline vs best-weight 동시 산출(자동 승격 금지) |
+| 원클릭 체인 | `scripts/run_aramaic_mvp_chain_v1.ps1` | Aramaic·meaning graph·Two-Track·학술/반증·raw OOS·public-safe까지 직렬 실행; 후반 제출 스택 **`[28/37]`–`[37/37]`** 및 산출물 요약은 동 표 **「체인 통합 실행」** 행 참조. |
+| 일일 스케줄 등록 | `scripts/register_aramaic_mvp_daily_task.ps1` | 기본 dry-run; `-Apply` 시 `run_aramaic_mvp_now_with_audit.ps1` 기준 Task Scheduler 등록 (`-NoWebhook` 지원) |
+| 일일 스케줄 readiness 점검 | `scripts/verify_aramaic_mvp_daily_task_readiness.ps1` → `docs/final/artifacts/aramaic_mvp_task_readiness_latest.json` | 태스크 존재·Action 경로·최근 실행 결과 점검 (`-Strict` 시 실패 exit 1, `-ExpectNoWebhook` 옵션) |
+| 즉시 실행 + 감사 로그 | `scripts/run_aramaic_mvp_now_with_audit.ps1` → `reports/ops/aramaic_mvp_run_audit_log.jsonl` | 즉시 체인 실행 후 readiness 갱신·점수 델타 로그 append (`-NoWebhook`로 알림 전송 차단) |
+| Raw OOS 실측 누적 배치 러너 | `scripts/run_aramaic_raw_oos_audit_accumulator_v1.ps1` | `run_aramaic_mvp_now_with_audit.ps1`를 반복 실행해 audit run을 목표치(`TargetAuditRuns`)까지 누적하고, 각 반복마다 raw OOS ingest/readiness를 재계산한다. |
+| 감사 추세 리포트 | `scripts/report_aramaic_mvp_audit_trend_v1.py` → `docs/final/artifacts/aramaic_mvp_audit_trend_latest.json` | 최근 실행 창 평균/최대/최소/라벨 히스토그램 요약 |
+| 추세 경보 규칙 | `scripts/alert_aramaic_mvp_trend_v1.py` → `docs/final/artifacts/aramaic_mvp_trend_alert_latest.json` | 연속 `alert/critical` streak 평가 후 웹훅(`ARAMAIC_MVP_ALERT_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`) 전송 |
+| 경보 임계값 스윕 | `scripts/sweep_aramaic_mvp_alert_thresholds_v1.py` → `docs/final/artifacts/aramaic_mvp_alert_threshold_sweep_latest.json` | streak(예: 3/4/5)별 trigger rate 비교 |
+| 추천 임계값 적용 | `scripts/apply_aramaic_mvp_alert_threshold_recommendation_v1.py` → `docs/final/artifacts/aramaic_mvp_alert_threshold_recommended_latest.json` | 스윕 결과의 추천 streak를 활성 아티팩트로 승격 |
+| 임계값 주간 스케줄 등록 | `scripts/register_aramaic_mvp_threshold_weekly_task.ps1` | 기본 dry-run; `-Apply` 시 sweep→apply 주간 태스크 등록 |
+| 임계값 주간 readiness 점검 | `scripts/verify_aramaic_mvp_threshold_weekly_task_readiness.ps1` → `docs/final/artifacts/aramaic_mvp_threshold_weekly_task_readiness_latest.json` | 태스크 존재·Action 명령·최근 실행 결과 점검 |
+
+**격벽 규칙:** 본 절 산출물은 `research_only=true`, `promotion_required=true`, `source_track=B`를 유지하며 A-track·실매매 자동 트리거 경로로 합선하지 않는다.
+
 ---
 
 ## 5. 코드북 템플릿 (Dual-track)
@@ -311,6 +358,27 @@
 | 사상 벤치(SASANG ↔ 명리 앵커) | `tests/test_sasang_cross_ref_draft.py` |
 | §3.3 명리 통찰 관측 JSONL·융합 스텁 | `tests/test_myeongni_insight_observation_log.py` |
 | §3.3 명리 퓨전 스크립트 스모크 | `tests/test_myeongri_fusion_scripts_smoke.py` |
+| Aramaic 그래프 스키마 계약 | `tests/test_aramaic_graph_schema_v1.py` |
+| Aramaic 엣지 생성기 스모크 | `tests/test_aramaic_edge_builder_v1.py` |
+| Aramaic 레짐 점수 계약 | `tests/test_aramaic_regime_shift_score_v1.py` |
+| Aramaic 의미 연결 품질 리포트 계약 | `tests/test_aramaic_semantic_edge_quality_v1.py` |
+| Aramaic 교차 코퍼스 브리지 계약 | `tests/test_build_aramaic_cross_corpus_bridge_v1.py` |
+| Bible 의미 그래프 스키마 계약 | `tests/test_bible_meaning_graph_schema_v1.py` |
+| Bible 의미 그래프 빌더 계약 | `tests/test_build_bible_meaning_graph_v1.py` |
+| Bible 의미 통찰 후보 추출 계약 | `tests/test_extract_bible_meaning_insight_candidates_v1.py` |
+| 통찰 생존 평가 계약 | `tests/test_build_insight_survivor_eval_v1.py` |
+| 통찰 생존 선발 계약 | `tests/test_select_insight_survivor_candidates_v1.py` |
+| 통찰 캡 버킷 임계치 스윕 계약 | `tests/test_sweep_aramaic_insight_cap_bucket_thresholds_v1.py` |
+| 통찰 캡 버킷 임계치 적용 계약 | `tests/test_apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py` |
+| 통찰 캡 임계치 히스토리 계약 | `tests/test_report_aramaic_insight_cap_threshold_history_v1.py` |
+| 통찰 캡 임계치 드리프트 경보 계약 | `tests/test_alert_aramaic_insight_cap_threshold_drift_v1.py` |
+| Aramaic 가중치 스윕 계약 | `tests/test_aramaic_regime_shift_weight_sweep_v1.py` |
+| Aramaic shadow 비교 계약 | `tests/test_aramaic_regime_shift_shadow_compare_v1.py` |
+| Aramaic 감사 추세 리포트 계약 | `tests/test_report_aramaic_mvp_audit_trend_v1.py` |
+| Aramaic 추세 경보 계약 | `tests/test_alert_aramaic_mvp_trend_v1.py` |
+| Aramaic 즉시실행 no-webhook 패스스루 | `tests/test_run_aramaic_mvp_now_with_audit_passthrough_v1.py` |
+| Aramaic 경보 임계값 스윕 계약 | `tests/test_aramaic_mvp_alert_threshold_sweep_v1.py` |
+| Aramaic 브리지 계수 추천 적용 계약 | `tests/test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py` |
 | 다중 렌즈 중간 레이어 절차 | `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` |
 
 ---
@@ -500,6 +568,7 @@
 | Phase 1 일일 원클릭 | `projects/bitcoin-trading/ops/windows-rehearsal/bootstrap_ops_phase1_daily.ps1` | `sync_required_env_to_user.ps1` → `register_ops_phase1_chain_task.ps1` 순서; `-SkipEnvSync` / `-SkipTaskRegister` / `-ExcludeConstitutionGates` / `-IncludeReadiness` / `-IncludeWebhookSmoke`. 동기화: `.env`에 `OPS_ALARM_WEBHOOK_URL` 없으면 User `N8N_WEBHOOK_URL`로 **자동 미러** |
 | P0·헌법 경로 스모크 | `scripts/verify_p0_constitution_gate_paths.ps1` | `CONSTITUTION`·`P0`·`COMPRESSION_SLA_POLICY_V1`·`COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK`·`NotebookLM_sources_manifest`·`.cursorrules`·`AGENTS`·`CLAUDE`·정렬 pytest·Vault 동기화 등 **존재만** 검사(exit 0/1). 상세: `P0_COMMERCIALIZATION_TRACKER.md` §증거 경로 |
 | 압축 KPI 자동 체인 | `scripts/run_compression_automation_chain.ps1` | 범용 프로파일 재평가·KPI 요약(`literal_kpi`는 `-IncludeLiteralTrack`로 리터럴 산출물이 있을 때)·토큰 API hydration 믹스·범용 손실 패턴; `-IncludeLiteralTrack` 시 리터럴 프로파일·리터럴 손실 패턴 추가; `run_workspace_automation_health.ps1 -IncludeCompressionKpi`로 묶음 가능(투트랙까지: 동시에 `-IncludeLiteralTrack`; 알람은 여전히 `active_kpi` 기준); 종료 시 `send_compression_kpi_alarm_if_needed.ps1`(임계치 `docs/final/artifacts/compression_alarm_thresholds_v1.json`, 웹훅 `COMPRESSION_KPI_ALARM_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`, `-SkipCompressionAlarm` 생략) |
+| Track A go/nogo·HOLD 체인 (모노레포 루트) | `scripts/build_a_track_go_nogo_status.py` → `docs/final/artifacts/a_track_go_nogo_status_latest.json`; `scripts/build_a_track_multiweek_stability_tracker_v1.py` → `a_track_multiweek_stability_tracker_v1_latest.json`; `scripts/build_a_track_hold_release_checklist_v1.py` → `a_track_hold_release_checklist_v1_latest.json`; 거버넌스 JSON 부트스트랩 `scripts/emit_a_track_governance_artifacts_v1.py`(플레이스홀더—실전 서명 전 교체); 주간 롤업 `scripts/run_a_track_s3_weekly_evidence_rollup_v1.py`(`--emit-missing-governance` 선택, 트래커→체크리스트→go/nogo→체크리스트); 로컬 원클릭 갱신(주차 증가 없음) `scripts/Run-ATrackGovernanceRefresh.ps1`; 주간 작업 등록 `scripts/Register-ATrackS3WeeklyEvidenceTask.ps1`(기본 월요일·`--emit-missing-governance` 포함, `-SkipEmitGovernance`로 끔); 승인 영수증 선택 `reports/a_track_promotion_decision_latest.json` | **B-track·실매매 자동 합선 아님.** 가격 출력·고신뢰·다주간 증거·운영자 승인은 별도 게이트; 기본 산출물은 파이프라인 연결용이며 운영 주장의 근거로 삼으려면 서명·증거 경로를 갱신해야 한다. |
 | 에이전트 레인 분리 | 루트 `AGENTS.md` — **운영 자동화 vs 연구 레인** | MKM Study·본선 OOF·실매매 **자동 합선 금지** 방향; 브리핑 전용 필드는 레포 산출물 근거 없이 SSOT 삼지 않음 |
 
 ### 13.2 외부 법령 참조 API (Beopmang 등, 보조 레이어)
@@ -625,3 +694,263 @@
 - 두 체인은 스케줄러에서 분리 등록해 독립 운용:
   - `DimensionalProjection-LockVerify-Daily`
   - `DimensionalProjection-EngineEval-Refresh-Daily`
+
+---
+
+## 16. Bible Meaning Two-Track 산출물 (Track K 우선 + Track T 상태판)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| Track K 지식 IP 리포트 빌더 | `scripts/build_bible_meaning_knowledge_ip_report_v1.py` | `bible_meaning_insight_candidates_latest.json`(+선택 `insight_survivor_candidates_latest.json`)을 입력으로 `bible_meaning_knowledge_ip_report_latest.json` 생성. `purpose=knowledge_ip_only`, `not_for_trading_signal=true` 고정. |
+| Track K 시각화 JSON 포맷 | `docs/final/artifacts/bible_meaning_knowledge_ip_viz_latest.json` | 허브(`hubs`)·브리지(`bridges`)·경로(`paths`)를 고정 키로 제공해 리포트/UI 시각화에 재사용. |
+| Track T survivor 건강도 경보 | `scripts/alert_insight_survivor_health_v1.py` | `insight_survivor_candidates_latest.json` 기준 `survivor_count`/`survivor_mean_score`를 히스토리(`reports/ops/insight_survivor_health_history.jsonl`)와 비교해 `insight_survivor_health_alert_latest.json` 생성. |
+| Two-Track 통합 리포트 | `scripts/build_two_track_fusion_report_v1.py` | Track K(스토리/허브/군집) + Track T(shift_score/survivor_count/health_alert)를 `two_track_fusion_report_latest.json`으로 합성. |
+| 사람용 대시보드 브리프 | `scripts/build_two_track_fusion_brief_v1.py` | `two_track_fusion_report_latest.json` 기반으로 헤드라인/카드/스토리라인/가드레일을 담은 `two_track_fusion_brief_latest.json` 생성. |
+| 발표용 IP 브리프 | `scripts/build_two_track_fusion_presentation_brief_v1.py` | `two_track_fusion_brief_latest.json` 기반으로 톤(`executive/research/defense`)·카드 우선순위·신뢰도 배지를 적용한 `two_track_fusion_presentation_brief_latest.json` 생성. |
+| 슬라이드 copydeck 산출 | `scripts/build_two_track_presentation_copydeck_v1.py` | 발표용 브리프를 입력으로 1페이지 요약(`one_page`) + 3페이지 섹션(`three_page`) 문구를 `two_track_presentation_copydeck_latest.json`으로 생성. |
+| 청중별 발표 팩 | `scripts/build_two_track_presentation_audience_pack_v1.py` | copydeck를 입력으로 `investor/policy/technical` 3종 변형을 `two_track_presentation_audience_pack_latest.json`에 생성. |
+| 발표자 노트 산출 | `scripts/build_two_track_presenter_notes_v1.py` | audience pack을 입력으로 `60초/180초` 발표 스크립트를 `two_track_presenter_notes_latest.json`에 생성. |
+| 청중별 Q&A 팩 산출 | `scripts/build_two_track_qa_pack_v1.py` | presenter notes를 입력으로 `investor/policy/technical`별 5문항 Q&A를 `two_track_qa_pack_latest.json`에 생성. 각 답변은 `evidence(source_artifact/metric_value/as_of_utc/rollback_rule/gate_eval)` 필드를 강제하며, `min_ci_low`·`max_false_positive_cost` 임계치로 실행형 `should_trade/rollback` 판정을 포함한다. |
+| 학술 제출 패킷(최소) | `scripts/build_two_track_academic_submission_packet_v1.py` | `score/survivor/qa` 산출물을 입력으로 `abstract_scaffold` + `experiment_table` + `falsification_checklist`를 포함한 `two_track_academic_submission_packet_latest.json` 생성. |
+| 반증 스위트(최소) | `scripts/run_two_track_falsification_suite_v1.py` | 학술 패킷/방어 Q&A를 입력으로 `F1~F5` 정의/게이트 존재 여부와 rollback gate snapshot을 `two_track_falsification_suite_latest.json`에 기록. |
+| 벤치 비교 리포트 | `scripts/build_two_track_benchmark_comparison_v1.py` | 다중 baseline(`naive_midpoint`, `random_shuffle`, `simple_timeseries_rule`, `ablation_no_survivor_gate`) 대비 proposed(`meaning_graph_survivor_gate`)의 `shift_score/survivor_count` 델타를 `baseline_results[]`로 `two_track_benchmark_comparison_latest.json`에 생성. |
+| 유의성 리포트(bootstrap/permutation) | `scripts/build_two_track_statistical_significance_report_v1.py` | benchmark의 primary delta와 `baseline_results[]` 각각에 대해 `bootstrap CI(95%) + sign-flip permutation p-value`를 산출해 `two_track_statistical_significance_report_latest.json` 생성. baseline별 튜닝은 `docs/final/artifacts/two_track_significance_baseline_tuning_v1.json`(`default` + `overrides`)로 주입 가능. |
+| 제출 증거 번들 체크리스트 | `scripts/build_two_track_submission_evidence_bundle_v1.py` | 반증/벤치/유의성/raw OOS readiness/public-safe 아티팩트의 존재·생성시각·게이트 상태를 `two_track_submission_evidence_bundle_latest.json`으로 집계해 `bundle_ready` 판정을 제공. |
+| 제출용 abstract/목차 초안 생성 | `scripts/build_two_track_submission_draft_v1.py` | evidence bundle + readiness + significance + benchmark + public-safe를 결합해 public-safe 경계가 포함된 `recommended_title`, `abstract_scaffold_en`, `section_outline_en`를 `two_track_submission_draft_latest.json`으로 생성. |
+| 카메라레디 확장 초록·회차별 목차(JSON) | `scripts/build_two_track_submission_camera_ready_v1.py` | `two_track_submission_draft_latest.json`을 입력으로 KDD Applied Data Science·AAAI Industry 스타일 확장 초록 단락·세부 목차·포맷 노트를 `two_track_submission_camera_ready_latest.json`에 생성(public-safe 고정). |
+| 제출 팩 원클릭(증거번들→초안→카메라레디) | `scripts/run_two_track_submission_pack_v1.ps1` | 체인 `[35/37]`–`[37/37]`만 단독 실행. 시작 시 반증·벤치·유의성·raw OOS readiness·public-safe 등 선행 JSON 존재를 검사하고, 하나라도 없으면 누락 목록 출력 후 **exit 2**. |
+| Raw OOS 샘플 스캐폴드 | `scripts/build_two_track_raw_oos_samples_seed_v1.py` | `baseline_results[]`를 기반으로 `two_track_raw_oos_samples_latest.jsonl`를 생성해 유의성 리포트의 `--raw-oos-jsonl` 입력 계약을 충족(출판 전 실측 OOS로 교체 필수). |
+| Raw OOS 실측 병합(감사 로그) | `scripts/ingest_two_track_raw_oos_from_audit_v1.py` | 감사 로그의 `shift_score`/`delta_shift_score`를 모든 baseline(`baseline_results`) 기준 델타로 변환해 병합하고, baseline별 최소 샘플 미달 시 audit-derived bootstrap resample로 top-up(`is_seed_scaffold=false`, `is_bootstrap_resample=true`)한다. |
+| Raw OOS 준비도 리포트 | `scripts/report_two_track_raw_oos_readiness_v1.py` | baseline별 샘플 수·seed·bootstrap 사용·예상 baseline 누락을 점검해 readiness를 분리 기록하고(`ready_for_internal_significance`, `ready_for_publication_claim`), audit run 기준 잔여 필요 run/예상 완료 시각(`forecast`)까지 산출한다. |
+| 공개용 안전 리포트 | `scripts/build_two_track_public_safe_report_v1.py` | academic/benchmark/significance를 입력으로 핵심 이론·가중치·탐색 로직을 마스킹한 `two_track_public_safe_report_latest.json` 생성(`public_safe=true`, `proprietary_details_redacted=true`). |
+| 체인 통합 실행 | `scripts/run_aramaic_mvp_chain_v1.ps1` | 아람 추출→그래프→스코어→meaning graph→survivor→Track K/T 산출물→학술 패킷→반증→벤치→raw OOS 스캐폴드→감사 ingest→유의성→readiness→public-safe 이후 **`[35/37]` 제출 증거 번들(`build_two_track_submission_evidence_bundle_v1.py`) → `[36/37]` 제출 초안(`build_two_track_submission_draft_v1.py`) → `[37/37]` 카메라레디 JSON(`build_two_track_submission_camera_ready_v1.py`)**까지 직렬 실행. 앞단 스텝 라벨은 스크립트 내 표기와 동일(예: `[18/20]` 등 혼합), 후반 검증·제출 스택은 **`[28/37]`–`[37/37]`** 구간으로 고정. |
+
+---
+
+## 17. Nemotron Persona × Sasang/Myeongri B-Track Endgame Chain
+
+### 17.1 구현 경로 (실행 스크립트)
+
+- 데이터 fetch/정규화:
+  - `scripts/fetch_nemotron_personas_korea_to_btrack_v1.py`
+- 코칭 시뮬레이션:
+  - `scripts/run_btrack_persona_coaching_simulation_v1.py`
+  - 핵심 옵션:
+    - `--sasang-mapping-mode {heuristic,random}`
+    - `--policy-mode {off,soft,hard}`
+    - `--policy-selection-mode {uniform,weighted}`
+- 성과 집계:
+  - `scripts/build_btrack_persona_coaching_summary_v1.py`
+- 정책 생성:
+  - `scripts/build_btrack_coaching_policy_from_summary_v1.py`
+  - diversity 페널티 옵션:
+    - `--diversity-penalty-strength`
+- 단일 비교 + CI:
+  - `scripts/build_btrack_sasang_mapping_mode_report_v1.py`
+- 멀티시드 집계:
+  - `scripts/build_btrack_sasang_mapping_mode_multiseed_report_v1.py`
+- 원클릭 체인:
+  - `scripts/run_btrack_persona_endgame_chain_v1.ps1`
+- 스케줄 등록/점검:
+  - `scripts/Register-BtrackPersonaEndgameChainTask.ps1`
+  - `scripts/Check-BtrackPersonaEndgameTaskStatus.ps1`
+
+### 17.2 게이트 규칙 (운영 고정값)
+
+- 체인 게이트 인자:
+  - `-MinAcceptDeltaMean 0.006`
+  - `-MaxRejectDeltaMean -0.002`
+- 판정:
+  - `accept_rate_delta_mean >= 0.006` AND `reject_rate_delta_mean <= -0.002` → `PASS`
+  - 미달 시 `exit 2`로 실패 처리.
+- 게이트 산출물:
+  - `docs/final/artifacts/btrack_persona_endgame_gate_latest.json`
+
+### 17.3 최신 검증 산출물 (B-Track 전용)
+
+- 멀티시드(50k, seeds=41/42/43):
+  - `docs/final/artifacts/btrack_sasang_mapping_mode_multiseed_report_latest.json`
+- 최신 집계 기준:
+  - `accept_rate_delta_mean = +0.0069`
+  - `reject_rate_delta_mean = -0.0026`
+  - `winner = heuristic`
+- 게이트 상태:
+  - `docs/final/artifacts/btrack_persona_endgame_gate_latest.json` 기준 `gate_status=PASS`.
+
+### 17.4 스케줄 운영
+
+- 작업명:
+  - `MKM_BTrack_Persona_Endgame_Weekly`
+- 기본 스케줄:
+  - 매주 일요일 01:10 (로컬)
+- 등록/삭제:
+  - 등록: `powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Register-BtrackPersonaEndgameChainTask.ps1"`
+  - 삭제: `powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Register-BtrackPersonaEndgameChainTask.ps1" -Remove`
+
+## 18) MKM Study 프로필 계약 SSOT (멀티 사이트 공용)
+
+### 18.1 공통 계약 패키지
+
+- 경로:
+  - `packages/mkm-study-profile-contract/package.json`
+  - `packages/mkm-study-profile-contract/src/index.ts`
+  - `packages/mkm-study-profile-contract/schema/onboarding-request-v1.schema.json`
+- 계약 스키마 ID:
+  - `mkm_study_student_profile_v1`
+- 주요 타입:
+  - `StudyOnboardingRequestV1` (wire, snake_case)
+  - `StoredStudentProfileFieldsV1` (storage, camelCase)
+  - `ConstitutionSurveyV1`
+  - `OnboardingStage` (`minimal | birth_complete | extended_complete`)
+
+### 18.2 문서 스키마 미러
+
+- 경로:
+  - `docs/final/artifacts/schemas/mkm_study_onboarding_request_v1.schema.json`
+- 목적:
+  - 공용 HTTP 계약의 문서형 SSOT 미러(다른 사이트/앱 연동 시 참조).
+
+### 18.3 mkm-life 연동 경로
+
+- 패키지 의존성:
+  - `projects/mkm/mkm-life/package.json` (`mkm-study-profile-contract` file dependency)
+- 번들 트랜스파일:
+  - `projects/mkm/mkm-life/next.config.js` (`transpilePackages`)
+- 스토어/마이그레이션:
+  - `projects/mkm/mkm-life/lib/mkm-study-store.ts`
+  - `ensureProfileMigrated`, `profileToStoredContractFields`, `getStudentProfile`
+- 생시 파생:
+  - `projects/mkm/mkm-life/lib/mkm-study-birth-derive.ts`
+- 온보딩/프로필 API:
+  - `projects/mkm/mkm-life/app/api/v1/study/onboarding/route.ts`
+  - `projects/mkm/mkm-life/app/api/v1/study/profile/route.ts`
+- 고급 코치 입력 연결:
+  - `projects/mkm/mkm-life/lib/mkm-study-advanced-coach.ts`
+  - 하드코딩 출생시각 제거 후 프로필 기반 입력 사용.
+
+### 18.4 온보딩 필수/선택 계약 (v1)
+
+- 필수:
+  - `student_id`, `grade`, `sasang_type`
+- 선택(단계 입력):
+  - `timezone_iana`, `birth_time_known`, `birth_date`, `birth_datetime`, `birth_location`, `gender`, `constitution_survey`, `onboarding_stage`, `myeongri_profile`
+
+## 19) L1 swap_typo mode-router v3 longsample gate (2026-04-28)
+
+### 19.1 실행 경로 (FACT)
+
+- 게이트 실행:
+  - `scripts/run_l1_swap_typo_mode_router_decoder_v3_longsample_gate.py`
+- 하니스 베이스라인 생성:
+  - `scripts/run_l1_inverse_decoder_longsample_gate_harness_baseline_v1.py`
+- 게이트 산출물:
+  - `docs/final/artifacts/l1_inverse_decoder_swap_typo_mode_router_decoder_v3_longsample_gate_v1.json`
+- 하니스 베이스라인 산출물:
+  - `docs/final/artifacts/l1_inverse_decoder_longsample_gate_harness_baseline_v1.json`
+
+### 19.2 최신 결과 (FACT)
+
+- 실행 조건:
+  - seeds=`701,809,907,1009,1103`, samples=`240`, beam_size=`8`, noise_level=`0.1`, scoring_mode=`enhanced`
+  - `mixed_source=baseline`, `swap_typo_expand=true`, `swap_typo_watchdog_ms=null`
+- 판정:
+  - `gate.all_ok=true`
+  - `gate.decision=GO_CANDIDATE_FOR_CANARY`
+- 핵심 델타:
+  - `swap_typo_exact_delta=+0.0058333333`
+  - `swap_typo_recovery_delta=+0.0108333333`
+  - `swap_typo_p95_latency_delta_ms=-28.4801695834`
+- 체크:
+  - `swap_typo_exact_uplift_ok=true`
+  - `swap_typo_recovery_uplift_ok=true`
+  - `mixed_non_regression_ok=true`
+  - `mixed_latency_p95_ok=true`
+  - `swap_typo_latency_p95_ok=true`
+
+### 19.3 게이트 규칙 분기 (FACT)
+
+- `swap_typo_expand=true`:
+  - 품질 규칙 `swap_typo_quality_rule=uplift_vs_baseline` 적용(업리프트 검사).
+- `swap_typo_expand=false`:
+  - 품질 규칙 `swap_typo_quality_rule=non_regression_vs_baseline` 적용(비회귀 검사).
+- 목적:
+  - beam-only 비교에서 uplift 강제에 따른 오판정(거짓 HOLD)을 줄이고, 확장 경로와 비확장 경로를 분리 평가.
+
+### 19.4 Canary decision/status (FACT, 2026-04-28)
+
+- 결정 아티팩트:
+  - `docs/final/artifacts/l1_inverse_decoder_mode_router_v3_canary_decision_v1.json`
+  - `decision=GO_CANARY_MODE_ROUTER_V3_10PCT`
+- 상태 아티팩트:
+  - `docs/final/artifacts/l1_inverse_decoder_mode_router_v3_canary_status_latest.json`
+  - `action=KEEP_CANARY`, `phase=phase_1`, `traffic_pct=10`
+- 로그:
+  - `reports/l1_inverse_decoder_mode_router_v3_canary_log_v1.jsonl` 최신 라인 append 확인.
+- 상위 체크:
+  - `daily_gate_all_ok=true`
+  - `candidate_gate_all_ok=true`
+
+### 19.5 Canary phase progression (FACT, 2026-04-28)
+
+- 실행:
+  - `py scripts/run_l1_inverse_decoder_mode_router_v3_canary_monitor.py --phase phase_2 --traffic-pct 30`
+  - `py scripts/run_l1_inverse_decoder_mode_router_v3_canary_monitor.py --phase phase_3 --traffic-pct 100`
+- 최신 상태:
+  - `docs/final/artifacts/l1_inverse_decoder_mode_router_v3_canary_status_latest.json`
+  - `phase=phase_3`, `traffic_pct=100`, `action=KEEP_CANARY`, `canary_ok=true`
+- 로그 append:
+  - `reports/l1_inverse_decoder_mode_router_v3_canary_log_v1.jsonl`에 `phase_2(30%)`, `phase_3(100%)` 라인 추가.
+
+### 19.6 Gate policy lock (Hard/Promotion, FACT, 2026-04-28)
+
+- 적용 스크립트:
+  - `scripts/run_l1_swap_typo_mode_router_decoder_v3_longsample_gate.py`
+- 정책(고정):
+  - `mixed_non_regression_floor = -0.005`
+  - `hard_gate.swap_typo_exact_delta_min = 0.0`
+  - `hard_gate.swap_typo_recovery_delta_min = 0.0`
+  - `hard_gate.latency_p95_delta_max_ms = 25.0`
+  - `promotion_gate.swap_typo_exact_delta_min = 0.003`
+  - `promotion_gate.swap_typo_recovery_delta_min = 0.005`
+  - `promotion_gate.latency_p95_delta_max_ms = 15.0`
+- 판정 규칙:
+  - `promotion_all_ok=true` → `GO_CANDIDATE_FOR_CANARY`
+  - `hard_all_ok=true` & `promotion_all_ok=false` → `KEEP_CANARY_HARD_GATE_ONLY`
+  - 그 외 → `HOLD_LATENCY_OR_STABILITY`
+- 최신 풀런(5 seed x 240 sample, `swap_typo_expand=true`) 결과:
+  - `swap_typo_exact_delta=+0.0133333333`
+  - `swap_typo_recovery_delta=+0.0175000000`
+  - `swap_typo_p95_latency_delta_ms=-25.3901375000`
+  - `gate.decision=GO_CANDIDATE_FOR_CANARY`
+
+## 20) Track 용어 오해 방지 요약 (FACT, 2026-04-28)
+
+- 공식 운영 트랙:
+  - Track A = 범용/운영 벤치(효율 우선, 의미 보존 지표 기반)
+  - Track B = 리터럴/연구 격벽 레일(안전·재현성 우선, A와 자동 합선 금지)
+- 용어 주의:
+  - `Track Q`는 본 SSOT의 공식 메인 트랙 명칭으로 고정되어 있지 않다.
+- 4D/게마트리아 위치:
+  - 4D·게마트리아는 다수 경로에서 보조 특성/가산 채널/연구 스파이크로 사용된다.
+  - A/B 트랙의 공식 명칭·승격 규칙 자체를 대체하지 않는다.
+- 수치 해석 주의:
+  - “A는 고압축”, “B는 무손실 원문” 같은 문장은 경향 요약으로는 유효하나, 모든 러너/프로파일에 절대값으로 일반화하면 오판 가능.
+  - 실제 판정은 해당 시점의 아티팩트(`...ACTIVE_REPORT*.json`, gate JSON)의 필드값으로 확정한다.
+
+## 21) v3 코드북 확장 필요성 자동 판정 (FACT, 2026-04-28)
+
+- 실행 스크립트:
+  - `scripts/recommend_l1_mode_router_v3_codebook_expansion_v1.py`
+- 산출물:
+  - `docs/final/artifacts/l1_inverse_decoder_mode_router_v3_codebook_expansion_recommendation_latest.json`
+- 기본 입력:
+  - canary 로그 `reports/l1_inverse_decoder_mode_router_v3_canary_log_v1.jsonl`
+  - longsample 게이트 `docs/final/artifacts/l1_inverse_decoder_swap_typo_mode_router_decoder_v3_longsample_gate_v1.json`
+  - lookback 7일
+- 최신 판정:
+  - `recommendation=HOLD_RELIABILITY_VOLATILE`
+  - 근거: `recent_rollbacks_present` (window `rollback_count=2`)
+  - 스냅샷: `gate.decision=GO_CANDIDATE_FOR_CANARY`, `hard_all_ok=true`
+- 해석:
+  - 즉시 대규모 도메인 코드북 확장보다 안정화 관측 우선.
+  - 도메인별 타깃 확장은 domain signal JSON이 확보될 때 조건부로 트리거.
