@@ -8,8 +8,6 @@ typically scores at or near 1.0 when the engine returns full ``reconstructed_tex
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import pytest
 from fastapi.testclient import TestClient
 
@@ -29,21 +27,9 @@ from scripts.tracka_profile_client_utils import extract_tracka_profile_meta
 from scripts.report_multilens_performance_eval import _jaccard
 
 client = TestClient(app)
-ROOT = Path(__file__).resolve().parents[1]
-OPENAPI_V2 = ROOT / "docs" / "final" / "openapi_token_compression_v2_draft.yaml"
 
 # Track A-style floor for V2 API round-trip fidelity (original vs expand output, not v1 echo).
 V2_ROUNDTRIP_JACCARD_MIN = 0.73
-
-
-def test_openapi_v2_contract_has_emit_semantic_pointer() -> None:
-    yaml = pytest.importorskip("yaml")
-    spec = yaml.safe_load(OPENAPI_V2.read_text(encoding="utf-8"))
-    req = spec.get("components", {}).get("schemas", {}).get("CompressRequestV2", {})
-    props = req.get("properties", {})
-    assert "emit_semantic_pointer" in props
-    em = props["emit_semantic_pointer"]
-    assert em.get("type") == "boolean"
 
 
 def test_health_v2():
@@ -147,22 +133,6 @@ def test_compress_expand_roundtrip_semantic_general():
     recon = ej["text"]
     stub_res = pkt["residual_meta"][RESIDUAL_STUB_KEY]["reconstructed_text"]
     assert recon == stub_res
-
-
-def test_v2_compress_emit_semantic_pointer_in_residual():
-    sample = "사상의학 체질 분류 예시 텍스트입니다. sasang myeongri bible reference."
-    cr = client.post(
-        "/v2/compress",
-        json={
-            "text": sample,
-            "loss_profile": "semantic_general",
-            "emit_semantic_pointer": True,
-        },
-    )
-    assert cr.status_code == 200
-    stub = cr.json()["compression_packet"]["residual_meta"][RESIDUAL_STUB_KEY]
-    assert isinstance(stub.get("semantic_pointer"), dict)
-    assert stub["semantic_pointer"].get("schema") == "semantic_pointer_v1"
 
 
 def test_v2_expand_accepts_trust_packet_only():

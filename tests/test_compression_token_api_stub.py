@@ -200,32 +200,6 @@ def test_compress_hydrates_metrics_when_requested():
         assert d.get("integrity_flags", {}).get("hydration_metrics_unavailable") is True
 
 
-def test_compress_emit_semantic_pointer_with_live_eval(monkeypatch):
-    from scripts import compression_token_api_stub as stub
-
-    monkeypatch.setenv("COMPRESSION_API_LIVE_EVAL_MIN_TOKENS", "0")
-    stub._live_eval_min_tokens.cache_clear()
-    r = client.post(
-        "/v1/compress",
-        json={
-            "text": "emit semantic pointer live eval path " * 4,
-            "eval_context": {
-                "hydrate_metrics": True,
-                "hydrate_live_eval": True,
-                "emit_semantic_pointer": True,
-            },
-        },
-    )
-    assert r.status_code == 200
-    d = r.json()
-    sp = d.get("semantic_pointer")
-    if d.get("integrity_flags", {}).get("hydration_metrics_source") == "live_evaluate_report":
-        assert isinstance(sp, dict)
-        assert sp.get("schema") == "semantic_pointer_v1"
-    else:
-        assert sp is None
-
-
 def test_compress_prefers_live_eval_when_requested(monkeypatch):
     from scripts import compression_token_api_stub as stub
 
@@ -265,7 +239,7 @@ def test_compress_reuses_live_eval_for_shadow_compare(monkeypatch):
     stub._live_eval_min_tokens.cache_clear()
     calls = {"n": 0}
 
-    def _fake_live_eval(text: str, *, bytes_in=None, token_in=None, emit_semantic_pointer=False):
+    def _fake_live_eval(text: str, *, bytes_in=None, token_in=None):
         calls["n"] += 1
         return (
             stub.CompressionMetrics(
@@ -276,7 +250,6 @@ def test_compress_reuses_live_eval_for_shadow_compare(monkeypatch):
                 savings_ratio=0.33,
             ),
             1.23,
-            None,
             None,
         )
 
@@ -510,20 +483,6 @@ def test_openapi_includes_metering_log_path():
     yaml = __import__("pytest").importorskip("yaml")
     spec = yaml.safe_load(OPENAPI_STUB.read_text(encoding="utf-8"))
     assert "/v1/metering/log" in spec.get("paths", {})
-
-
-def test_openapi_v1_semantic_pointer_contract_fields() -> None:
-    yaml = __import__("pytest").importorskip("yaml")
-    spec = yaml.safe_load(OPENAPI_STUB.read_text(encoding="utf-8"))
-    schemas = spec.get("components", {}).get("schemas", {})
-    eval_ctx = schemas.get("EvalContext", {})
-    compress_resp = schemas.get("CompressResponse", {})
-    eval_props = eval_ctx.get("properties", {})
-    resp_props = compress_resp.get("properties", {})
-    assert "emit_semantic_pointer" in eval_props
-    assert eval_props["emit_semantic_pointer"].get("type") == "boolean"
-    assert "semantic_pointer" in resp_props
-    assert resp_props["semantic_pointer"].get("type") == "object"
 
 
 def test_metering_log_append(tmp_path, monkeypatch):

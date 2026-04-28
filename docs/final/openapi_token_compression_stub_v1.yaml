@@ -489,11 +489,6 @@ components:
           description: |
             If true, append one metering JSONL row (same shape as POST /v1/metering/log) when compression_metrics
             includes token_in and token_out. integrity_flags may set meter_log_appended or meter_log_skipped.
-        emit_semantic_pointer:
-          type: boolean
-          description: |
-            When true with hydrate_live_eval, live evaluate_report adds per-case semantic_pointer (schema semantic_pointer_v1);
-            echoed on CompressResponse.semantic_pointer when live path succeeds.
     CompressionMetrics:
       type: object
       description: |
@@ -574,12 +569,6 @@ components:
           $ref: "#/components/schemas/EvalContext"
         compression_metrics:
           $ref: "#/components/schemas/CompressionMetrics"
-        semantic_pointer:
-          type: object
-          nullable: true
-          additionalProperties: true
-          description: |
-            Present when eval_context.emit_semantic_pointer=true and live evaluate_report returned semantic_pointer_v1 for case api-live.
         integrity_flags:
           type: object
           additionalProperties: true
