@@ -1128,3 +1128,34 @@
   - `sample_count=1`
   - `avg_pointer_candidate_ok_rate=0.6667`
   - `avg_unresolved_token_per_run=4.0`
+
+### 27.4 Shadow 헬스 알림 게이트 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/check_pointer_shadow_health_alert_v1.py`
+- 산출물:
+  - `docs/final/artifacts/pointer_hash_snapping_router_shadow_alert_latest.json`
+- 기본 임계값:
+  - `min_sample_count=3`
+  - `candidate_ok_rate_min=0.4`
+  - `max_unresolved_per_run=8.0`
+- 체인 반영:
+  - `run_genesis_pointer_routing_control_chain_v1.py`에 alert check 단계 포함.
+- 최신 상태:
+  - `should_alert=false`, `severity=none` (현재 `sample_count=2`)
+
+### 27.5 Alert 기반 자동 강등 가드 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/apply_pointer_shadow_alert_guard_v1.py`
+- 산출물:
+  - `docs/final/artifacts/genesis_pointer_routing_decision_guarded_latest.json`
+- 규칙:
+  - alert(`should_alert=true`)이면 결정을 강제로 `HOLD_POINTER_ROUTE` + `track_a_primary`로 강등.
+  - alert가 없으면 원결정 유지(`guard_applied=false`).
+- 체인 반영:
+  - `run_genesis_pointer_routing_control_chain_v1.py`에서 alert check 이후 guard 적용.
+  - runtime config는 guarded decision JSON을 입력으로 생성.
+- 최신 상태:
+  - `guard_applied=false`, `guard_reason=no_alert`
+  - runtime `route_mode=pointer_shadow` 유지.

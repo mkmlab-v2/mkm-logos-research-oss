@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DECISION = ROOT / "docs" / "final" / "artifacts" / "prophecy_causal_active_guard_policy_decision_latest.json"
 DEFAULT_STATE = ROOT / "docs" / "final" / "artifacts" / "prophecy_causal_active_guard_profile_state_latest.json"
 DEFAULT_ALERT = ROOT / "docs" / "final" / "artifacts" / "prophecy_causal_active_guard_profile_transition_alert_latest.json"
+DEFAULT_TRANSITION_LOG = ROOT / "reports" / "prophecy_causal_active_guard_profile_transition_log.jsonl"
 
 
 def _now() -> str:
@@ -30,6 +31,12 @@ def _load(path: Path) -> dict[str, Any]:
 def _write(path: Path, obj: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def _append_jsonl(path: Path, obj: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(obj, ensure_ascii=False) + "\n")
 
 
 def _post_webhook(url: str, payload: dict[str, Any]) -> tuple[bool, str]:
@@ -48,11 +55,17 @@ def main() -> int:
     ap.add_argument("--decision-json", type=Path, default=DEFAULT_DECISION)
     ap.add_argument("--state-json", type=Path, default=DEFAULT_STATE)
     ap.add_argument("--out-alert-json", type=Path, default=DEFAULT_ALERT)
+    ap.add_argument("--append-transition-log-jsonl", type=Path, default=DEFAULT_TRANSITION_LOG)
     args = ap.parse_args()
 
     decision_path = args.decision_json if args.decision_json.is_absolute() else ROOT / args.decision_json
     state_path = args.state_json if args.state_json.is_absolute() else ROOT / args.state_json
     out_alert_path = args.out_alert_json if args.out_alert_json.is_absolute() else ROOT / args.out_alert_json
+    transition_log_path = (
+        args.append_transition_log_jsonl
+        if args.append_transition_log_jsonl.is_absolute()
+        else ROOT / args.append_transition_log_jsonl
+    )
 
     decision = _load(decision_path)
     state = _load(state_path)
@@ -99,9 +112,23 @@ def main() -> int:
         "state_json": str(state_path),
         "decision_json": str(decision_path),
     }
+
+    # Backfill transition metadata into the latest decision artifact
+    # so downstream readers can inspect profile switching without joining files.
+    if isinstance(decision, dict):
+        decision["transition_checked_at_utc"] = _now()
+        decision["previous_profile"] = prev_profile or None
+        decision["transitioned"] = transitioned
+        decision["notification_status"] = notify_status
+        decision["notification_sent"] = notified
+        _write(decision_path, decision)
+
     _write(out_alert_path, out)
+    _append_jsonl(transition_log_path, out)
     print(f"WROTE: {state_path.resolve()}")
+    print(f"WROTE: {decision_path.resolve()}")
     print(f"WROTE: {out_alert_path.resolve()}")
+    print(f"APPEND: {transition_log_path.resolve()}")
     print(f"transitioned={transitioned} notified={notified} status={notify_status}")
     return 0
 
