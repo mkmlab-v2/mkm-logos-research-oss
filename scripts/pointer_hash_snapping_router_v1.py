@@ -56,6 +56,10 @@ def _policy_for_path(runtime_cfg: dict[str, Any], target_path: str | None) -> st
     normalized = target_path.replace("\\", "/").lstrip("./")
     rows = fp.get("rows", [])
     if isinstance(rows, list) and rows:
+        rank = {"forbid": 3, "apply": 2, "caution": 1}
+        best_policy = "unknown"
+        best_rank = 0
+        best_specificity = -1
         for row in rows:
             if not isinstance(row, dict):
                 continue
@@ -64,7 +68,14 @@ def _policy_for_path(runtime_cfg: dict[str, Any], target_path: str | None) -> st
             if not patt:
                 continue
             if fnmatch.fnmatch(normalized, patt):
-                return pol
+                r = rank.get(pol, 0)
+                s = len(patt)
+                if r > best_rank or (r == best_rank and s > best_specificity):
+                    best_policy = pol
+                    best_rank = r
+                    best_specificity = s
+        if best_policy != "unknown":
+            return best_policy
     for patt in fp.get("forbid_patterns", []):
         if fnmatch.fnmatch(normalized, str(patt)):
             return "forbid"

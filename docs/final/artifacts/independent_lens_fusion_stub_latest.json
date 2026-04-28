@@ -1,7 +1,7 @@
 {
   "schema": "independent_lens_fusion_stub_v0",
   "version": "0.1.0",
-  "ts_utc": "2026-04-28T04:50:45Z",
+  "ts_utc": "2026-04-28T04:51:05Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "mode": "observation_only",
@@ -13,7 +13,7 @@
       "confidence": 0.68552,
       "direction_sign": "bull",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-04-28T04:50:45Z",
+      "artifact_ts_utc": "2026-04-28T04:51:05Z",
       "schema": "myeongni_independent_lens_v0"
     },
     {

@@ -1,0 +1,77 @@
+{
+  "schema": "pointer_hash_snapping_router_v1",
+  "generated_at_utc": "2026-04-28T04:51:16+00:00",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "inputs": {
+    "runtime_config": "C:\\workspace\\docs\\final\\artifacts\\genesis_pointer_route_runtime_config_latest.json",
+    "codebook_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_gematria_4d_codebook_v1_latest.json",
+    "input_count": 3,
+    "enable_snap": true,
+    "snap_min_ratio": 0.74,
+    "target_path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+  },
+  "rows": [
+    {
+      "input_text": "폭락 변동성 리스크 방어",
+      "route_mode": "track_a_primary",
+      "effective_route_mode": "track_a_primary",
+      "selected_path": "track_a_primary",
+      "pointer_shadow": false,
+      "target_path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+      "path_policy": "forbid",
+      "pointer_candidate_ok": true,
+      "pointer_payload": {
+        "address_hash64_hex": "0d0af372df1a7bd4",
+        "token_count": 4,
+        "snapped_count": 0
+      },
+      "fallback_to_track_a": false,
+      "unresolved_tokens": [],
+      "snap_events": []
+    },
+    {
+      "input_text": "비트코인 시장 공포 확산",
+      "route_mode": "track_a_primary",
+      "effective_route_mode": "track_a_primary",
+      "selected_path": "track_a_primary",
+      "pointer_shadow": false,
+      "target_path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+      "path_policy": "forbid",
+      "pointer_candidate_ok": false,
+      "pointer_payload": null,
+      "fallback_to_track_a": false,
+      "unresolved_tokens": [
+        "비트코인",
+        "시장",
+        "공포",
+        "확산"
+      ],
+      "snap_events": []
+    },
+    {
+      "input_text": "금화교역 태양인 회복",
+      "route_mode": "track_a_primary",
+      "effective_route_mode": "track_a_primary",
+      "selected_path": "track_a_primary",
+      "pointer_shadow": false,
+      "target_path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+      "path_policy": "forbid",
+      "pointer_candidate_ok": true,
+      "pointer_payload": {
+        "address_hash64_hex": "56dd04b4ccc1b58e",
+        "token_count": 3,
+        "snapped_count": 0
+      },
+      "fallback_to_track_a": false,
+      "unresolved_tokens": [],
+      "snap_events": []
+    }
+  ],
+  "summary": {
+    "pointer_candidate_ok_count": 2,
+    "selected_pointer_count": 0,
+    "selected_track_a_count": 3
+  }
+}

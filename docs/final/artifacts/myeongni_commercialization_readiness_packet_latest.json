@@ -1,0 +1,29 @@
+{
+  "schema": "myeongni_commercialization_readiness_packet_v1",
+  "ts_utc": "2026-04-28T04:51:06Z",
+  "readiness": "Almost",
+  "summary": {
+    "contract_alignment_ok": true,
+    "data_quality_ok": true,
+    "signal_non_neutral": true,
+    "fusion_agreement_rate": 0.333333,
+    "shadow_blockers_count": 1
+  },
+  "inputs": {
+    "myeongni_independent_lens": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
+    "independent_lens_fusion_stub": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_stub_latest.json",
+    "independent_lens_shadow_gate": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_shadow_gate_latest.json",
+    "myeongni_eval_contract": "C:\\workspace\\docs\\final\\artifacts\\myeongni_eval_contract_latest.json",
+    "myeongni_16state_data_quality_report": "C:\\workspace\\docs\\final\\artifacts\\myeongni_16state_data_quality_report_latest.json"
+  },
+  "guardrail": {
+    "track_b_to_a_auto_bridge": false,
+    "live_trigger_auto_enabled": false,
+    "decision": "manual_review_required"
+  },
+  "next_gate_focus": [
+    "reduce_neutral_bias_without_overfit",
+    "increase_shadow_monthly_coverage",
+    "maintain contract-0 conflict under same input window"
+  ]
+}

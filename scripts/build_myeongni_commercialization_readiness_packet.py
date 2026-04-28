@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from scripts.myeongni_16_state_experiment_ledger import validate_experiment_record
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+from myeongni_16_state_experiment_ledger import validate_experiment_record
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
