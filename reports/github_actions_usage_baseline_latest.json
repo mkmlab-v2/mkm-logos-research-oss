@@ -1,34 +1,34 @@
 {
   "schema": "github_actions_usage_baseline_v1",
-  "generated_at_utc": "2026-04-28T00:10:45Z",
+  "generated_at_utc": "2026-04-28T00:52:27Z",
   "input_run_count": 300,
-  "workflow_count": 22,
+  "workflow_count": 23,
   "top_by_runtime_minutes": [
     {
       "workflow_name": "no1kmedi-web-build",
-      "runs": 28,
-      "runtime_minutes_total": 174.43,
-      "runtime_minutes_avg": 6.23,
+      "runs": 29,
+      "runtime_minutes_total": 174.45,
+      "runtime_minutes_avg": 6.02,
       "success": 20,
       "failed": 1,
-      "other": 7,
+      "other": 8,
       "events": {
         "pull_request": 19,
-        "push": 7,
+        "push": 8,
         "workflow_dispatch": 2
       }
     },
     {
       "workflow_name": "no1kmedi-marketing-copy",
-      "runs": 27,
-      "runtime_minutes_total": 165.12,
-      "runtime_minutes_avg": 6.12,
+      "runs": 28,
+      "runtime_minutes_total": 165.88,
+      "runtime_minutes_avg": 5.92,
       "success": 15,
-      "failed": 11,
+      "failed": 12,
       "other": 1,
       "events": {
         "pull_request": 19,
-        "push": 6,
+        "push": 7,
         "workflow_dispatch": 2
       }
     },
@@ -60,15 +60,15 @@
     },
     {
       "workflow_name": "Track B research smoke",
-      "runs": 21,
-      "runtime_minutes_total": 6.5,
+      "runs": 22,
+      "runtime_minutes_total": 6.82,
       "runtime_minutes_avg": 0.31,
-      "success": 21,
+      "success": 22,
       "failed": 0,
       "other": 0,
       "events": {
         "pull_request": 16,
-        "push": 5
+        "push": 6
       }
     },
     {
