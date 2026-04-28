@@ -27,6 +27,10 @@ def main() -> int:
     ap.add_argument("--min-sample-count", type=int, default=3)
     ap.add_argument("--candidate-ok-rate-min", type=float, default=0.4)
     ap.add_argument("--max-unresolved-per-run", type=float, default=8.0)
+    ap.add_argument("--apply-row-ratio-min", type=float, default=0.15)
+    ap.add_argument("--apply-max-unresolved-per-run", type=float, default=6.0)
+    ap.add_argument("--caution-row-ratio-max", type=float, default=0.35)
+    ap.add_argument("--caution-max-unresolved-per-run", type=float, default=2.0)
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)
     args = ap.parse_args()
 
@@ -36,12 +40,26 @@ def main() -> int:
     sample_count = int(ws.get("sample_count", 0))
     ok_rate = float(ws.get("avg_pointer_candidate_ok_rate", 0.0))
     unresolved = float(ws.get("avg_unresolved_token_per_run", 0.0))
+    policy_ratio = ws.get("path_policy_avg_row_ratio", {})
+    policy_unresolved = ws.get("path_policy_avg_unresolved_per_run", {})
+    apply_ratio = float(policy_ratio.get("apply", 0.0))
+    caution_ratio = float(policy_ratio.get("caution", 0.0))
+    apply_unresolved = float(policy_unresolved.get("apply", 0.0))
+    caution_unresolved = float(policy_unresolved.get("caution", 0.0))
 
     reasons: list[str] = []
     if sample_count >= args.min_sample_count and ok_rate < args.candidate_ok_rate_min:
         reasons.append("low_candidate_ok_rate")
     if sample_count >= args.min_sample_count and unresolved > args.max_unresolved_per_run:
         reasons.append("high_unresolved_tokens")
+    if sample_count >= args.min_sample_count and apply_ratio < args.apply_row_ratio_min:
+        reasons.append("low_apply_coverage")
+    if sample_count >= args.min_sample_count and apply_unresolved > args.apply_max_unresolved_per_run:
+        reasons.append("high_apply_unresolved_tokens")
+    if sample_count >= args.min_sample_count and caution_ratio > args.caution_row_ratio_max:
+        reasons.append("high_caution_coverage")
+    if sample_count >= args.min_sample_count and caution_unresolved > args.caution_max_unresolved_per_run:
+        reasons.append("high_caution_unresolved_tokens")
 
     should_alert = len(reasons) > 0
     severity = "none"
@@ -60,11 +78,23 @@ def main() -> int:
             "min_sample_count": args.min_sample_count,
             "candidate_ok_rate_min": args.candidate_ok_rate_min,
             "max_unresolved_per_run": args.max_unresolved_per_run,
+            "apply_row_ratio_min": args.apply_row_ratio_min,
+            "apply_max_unresolved_per_run": args.apply_max_unresolved_per_run,
+            "caution_row_ratio_max": args.caution_row_ratio_max,
+            "caution_max_unresolved_per_run": args.caution_max_unresolved_per_run,
         },
         "window_stats": {
             "sample_count": sample_count,
             "avg_pointer_candidate_ok_rate": ok_rate,
             "avg_unresolved_token_per_run": unresolved,
+            "path_policy_avg_row_ratio": {
+                "apply": apply_ratio,
+                "caution": caution_ratio,
+            },
+            "path_policy_avg_unresolved_per_run": {
+                "apply": apply_unresolved,
+                "caution": caution_unresolved,
+            },
         },
         "should_alert": should_alert,
         "severity": severity,

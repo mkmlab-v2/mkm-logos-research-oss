@@ -30,6 +30,30 @@ def _append_jsonl(path: Path, row: dict[str, Any]) -> None:
         f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
+def _path_policy_counts(rows: list[dict[str, Any]]) -> dict[str, int]:
+    out: dict[str, int] = {"apply": 0, "caution": 0, "forbid": 0, "unknown": 0}
+    for r in rows:
+        if not isinstance(r, dict):
+            continue
+        p = str(r.get("path_policy", "unknown"))
+        if p not in out:
+            p = "unknown"
+        out[p] += 1
+    return out
+
+
+def _path_policy_unresolved(rows: list[dict[str, Any]]) -> dict[str, int]:
+    out: dict[str, int] = {"apply": 0, "caution": 0, "forbid": 0, "unknown": 0}
+    for r in rows:
+        if not isinstance(r, dict):
+            continue
+        p = str(r.get("path_policy", "unknown"))
+        if p not in out:
+            p = "unknown"
+        out[p] += int(len(r.get("unresolved_tokens", [])))
+    return out
+
+
 def _read_recent(path: Path, since: datetime) -> list[dict[str, Any]]:
     if not path.exists():
         return []
@@ -69,6 +93,8 @@ def main() -> int:
     snap = _read_json(snap_path)
     rows = snap.get("rows", [])
     summary = snap.get("summary", {})
+    policy_counts = _path_policy_counts(rows if isinstance(rows, list) else [])
+    policy_unresolved = _path_policy_unresolved(rows if isinstance(rows, list) else [])
 
     # Log one snapshot summary point
     point = {
@@ -82,6 +108,8 @@ def main() -> int:
         "oov_unresolved_token_count": int(
             sum(len(r.get("unresolved_tokens", [])) for r in rows if isinstance(r, dict))
         ),
+        "path_policy_counts": policy_counts,
+        "path_policy_unresolved_token_counts": policy_unresolved,
     }
     _append_jsonl(log_path, point)
 
@@ -93,16 +121,39 @@ def main() -> int:
         "avg_pointer_candidate_ok_rate": 0.0,
         "avg_snap_event_rate": 0.0,
         "avg_unresolved_token_per_run": 0.0,
+        "path_policy_avg_row_ratio": {
+            "apply": 0.0,
+            "caution": 0.0,
+            "forbid": 0.0,
+            "unknown": 0.0,
+        },
+        "path_policy_avg_unresolved_per_run": {
+            "apply": 0.0,
+            "caution": 0.0,
+            "forbid": 0.0,
+            "unknown": 0.0,
+        },
     }
     if n > 0:
         total_inputs = sum(float(r.get("input_count", 0)) for r in recent)
         total_ok = sum(float(r.get("pointer_candidate_ok_count", 0)) for r in recent)
         total_snap = sum(float(r.get("snap_event_count", 0)) for r in recent)
         total_unresolved = sum(float(r.get("oov_unresolved_token_count", 0)) for r in recent)
+        by_policy_rows = {"apply": 0.0, "caution": 0.0, "forbid": 0.0, "unknown": 0.0}
+        by_policy_unresolved = {"apply": 0.0, "caution": 0.0, "forbid": 0.0, "unknown": 0.0}
+        for r in recent:
+            pc = r.get("path_policy_counts", {})
+            pu = r.get("path_policy_unresolved_token_counts", {})
+            for key in by_policy_rows.keys():
+                by_policy_rows[key] += float(pc.get(key, 0))
+                by_policy_unresolved[key] += float(pu.get(key, 0))
         agg["avg_input_count"] = total_inputs / float(n)
         agg["avg_pointer_candidate_ok_rate"] = total_ok / float(max(1.0, total_inputs))
         agg["avg_snap_event_rate"] = total_snap / float(max(1.0, total_inputs))
         agg["avg_unresolved_token_per_run"] = total_unresolved / float(n)
+        for key in by_policy_rows.keys():
+            agg["path_policy_avg_row_ratio"][key] = by_policy_rows[key] / float(max(1.0, total_inputs))
+            agg["path_policy_avg_unresolved_per_run"][key] = by_policy_unresolved[key] / float(n)
 
     out_doc = {
         "schema": "pointer_hash_snapping_router_shadow_daily_report_v1",

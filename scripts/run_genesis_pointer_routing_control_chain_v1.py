@@ -32,6 +32,12 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--go-cut", type=float, default=0.9)
     ap.add_argument("--watch-cut", type=float, default=0.5)
+    ap.add_argument(
+        "--router-target-path",
+        type=str,
+        default="docs/final/artifacts/pointer_router_chain_probe.json",
+        help="Workspace-relative path used for folder policy matching in router shadow run.",
+    )
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)
     args = ap.parse_args()
 
@@ -60,7 +66,17 @@ def main() -> int:
             ]
         )
     )
-    steps.append(_run([py, "scripts/pointer_hash_snapping_router_v1.py", "--enable-snap"]))
+    steps.append(
+        _run(
+            [
+                py,
+                "scripts/pointer_hash_snapping_router_v1.py",
+                "--enable-snap",
+                "--target-path",
+                args.router_target_path,
+            ]
+        )
+    )
 
     all_ok = all(s["exit_code"] == 0 for s in steps)
     out_doc = {
@@ -69,7 +85,11 @@ def main() -> int:
         "research_only": True,
         "promotion_required": True,
         "all_ok": all_ok,
-        "inputs": {"go_cut": args.go_cut, "watch_cut": args.watch_cut},
+        "inputs": {
+            "go_cut": args.go_cut,
+            "watch_cut": args.watch_cut,
+            "router_target_path": args.router_target_path,
+        },
         "steps": steps,
     }
     out_path = args.out if args.out.is_absolute() else ROOT / args.out

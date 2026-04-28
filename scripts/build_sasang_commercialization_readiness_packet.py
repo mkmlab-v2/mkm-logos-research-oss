@@ -25,6 +25,7 @@ DEFAULT_EVAL_CONTRACT = ART / "sasang_prophecy_eval_contract_latest.json"
 DEFAULT_PROMOTION_GATE = ART / "sasang12_promotion_candidate_gate_latest.json"
 DEFAULT_FAILURE_ANALYSIS = ART / "sasang12_gate_failure_analysis_latest.json"
 DEFAULT_READINESS_PACKET = ART / "sasang_commercialization_readiness_packet_latest.json"
+DEFAULT_SHADOW_GOV = ART / "sasang_shadow_governance_latest.json"
 
 
 def _jread(path: Path) -> dict[str, Any]:
@@ -67,6 +68,7 @@ def main() -> int:
     ap.add_argument("--promotion-gate-out", type=Path, default=DEFAULT_PROMOTION_GATE)
     ap.add_argument("--failure-analysis-out", type=Path, default=DEFAULT_FAILURE_ANALYSIS)
     ap.add_argument("--readiness-packet-out", type=Path, default=DEFAULT_READINESS_PACKET)
+    ap.add_argument("--shadow-governance-out", type=Path, default=DEFAULT_SHADOW_GOV)
     args = ap.parse_args()
 
     if not args.lens.is_file():
@@ -266,15 +268,48 @@ def main() -> int:
         },
     }
 
+    shadow_governance = {
+        "schema": "sasang_shadow_governance_v1",
+        "generated_at_utc": _now(),
+        "mode": "shadow_only_observation",
+        "decision": "KEEP_OBSERVATION_ONLY" if promotion_status != "PASS" else "HUMAN_REVIEW_REQUIRED_FOR_PROMOTION",
+        "current_gate": {
+            "promotion_status": promotion_status,
+            "standard_quality_gate": std_decision,
+            "strict_quality_gate": strict_decision if strict_available else "MISSING",
+        },
+        "boundaries": {
+            "track_b_only": True,
+            "a_track_autobind_forbidden": True,
+            "promotion_to_a_track_allowed": False,
+            "non_medical_claim_only": True,
+            "no_live_trading_trigger": True,
+        },
+        "blockers": [x["axis"] for x in failure_axes if x["status"] == "FAIL"],
+        "warnings": [x["axis"] for x in failure_axes if x["status"] == "WARN"],
+        "rollback_conditions": [
+            "strict gate remains HOLD/FAIL",
+            "direction_score regresses to 0 for 2 consecutive refreshes",
+            "confidence falls below 0.55",
+        ],
+        "release_conditions": [
+            "v1~v9 promotion chain implemented and reproducibly PASS",
+            "strict gate PASS on refreshed inputs",
+            "human sign-off recorded",
+        ],
+    }
+
     _write(args.eval_contract_out, eval_contract)
     _write(args.promotion_gate_out, promotion_gate)
     _write(args.failure_analysis_out, failure_analysis)
     _write(args.readiness_packet_out, readiness)
+    _write(args.shadow_governance_out, shadow_governance)
 
     print(f"WROTE: {args.eval_contract_out}")
     print(f"WROTE: {args.promotion_gate_out}")
     print(f"WROTE: {args.failure_analysis_out}")
     print(f"WROTE: {args.readiness_packet_out}")
+    print(f"WROTE: {args.shadow_governance_out}")
     print(f"promotion_status={promotion_status}")
     return 0
 

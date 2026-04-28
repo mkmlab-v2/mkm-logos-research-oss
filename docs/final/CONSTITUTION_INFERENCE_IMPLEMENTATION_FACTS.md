@@ -1308,3 +1308,33 @@
   - folder policy summary: `apply=3`, `caution=3`, `forbid=8`
   - runtime config 생성 성공(`ok=true`)
   - router `--target-path docs/final/artifacts/demo.json` 실행 시 정책 기준으로 Track A 경로 유지(현재 guarded decision 기준)
+
+#### 29.2 정책 2차 튜닝 (FACT, 2026-04-28)
+
+- 변경:
+  - 폴더 정책을 확장해 정형 산출물 패턴(`**/*.json`, `**/*.jsonl`)을 `apply`로 세분화.
+  - narrative 패턴(`reports/**/*.md`)은 `caution`으로 분리.
+  - 라우터 정책 매칭 충돌 시 우선순위를 `forbid > apply > caution`으로 고정(동률은 더 구체적인 패턴 우선).
+- 검증:
+  - `--target-path docs/final/artifacts/demo.json` -> `path_policy=apply`
+  - `--target-path docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` -> `path_policy=forbid`
+  - `--target-path scripts/run_genesis_pointer_routing_control_chain_v1.py` -> `path_policy=forbid`
+- 최신 정책 요약:
+  - `pointerguard_folder_policy_latest.json`: `apply=9`, `caution=4`, `forbid=8`
+
+#### 29.3 경로군별 Shadow 리포트 지표 추가 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_pointer_shadow_daily_report_v1.py`
+  - `scripts/run_genesis_pointer_routing_control_chain_v1.py` (`--router-target-path` 입력 추가)
+- 변경:
+  - shadow log point에 `path_policy_counts`, `path_policy_unresolved_token_counts` 필드 추가.
+  - daily report `window_stats`에
+    - `path_policy_avg_row_ratio`
+    - `path_policy_avg_unresolved_per_run`
+    를 추가해 `apply/caution/forbid/unknown` 경로군별 상태를 분리 관측.
+  - control chain에 `--router-target-path`(기본 `docs/final/artifacts/pointer_router_chain_probe.json`)를 추가해
+    경로 정책 매칭이 명시적으로 기록되도록 보강.
+- 최신 상태:
+  - `pointer_hash_snapping_router_shadow_daily_report_latest.json`에 경로군별 집계 필드 반영 확인.
+  - `check_pointer_shadow_health_alert_v1.py` 결과: `should_alert=false`, `severity=none`.
