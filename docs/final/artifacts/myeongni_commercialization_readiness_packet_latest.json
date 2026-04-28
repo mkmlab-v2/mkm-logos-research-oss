@@ -1,13 +1,14 @@
 {
   "schema": "myeongni_commercialization_readiness_packet_v1",
-  "ts_utc": "2026-04-28T05:03:22Z",
+  "ts_utc": "2026-04-28T05:06:39Z",
   "readiness": "Ready",
   "summary": {
     "contract_alignment_ok": true,
     "data_quality_ok": true,
     "signal_non_neutral": true,
     "fusion_agreement_rate": 0.666667,
-    "shadow_blockers_count": 0
+    "shadow_blockers_count": 0,
+    "shadow_override_ratio": 0.003442
   },
   "inputs": {
     "myeongni_independent_lens": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
@@ -20,6 +21,12 @@
     "track_b_to_a_auto_bridge": false,
     "live_trigger_auto_enabled": false,
     "decision": "manual_review_required"
+  },
+  "shadow_history_integrity": {
+    "history_rows": 581,
+    "override_rows": 2,
+    "override_ratio": 0.003442,
+    "latest_override_ts_utc": "2026-03-31T23:59:59Z"
   },
   "next_gate_focus": [
     "reduce_neutral_bias_without_overfit",

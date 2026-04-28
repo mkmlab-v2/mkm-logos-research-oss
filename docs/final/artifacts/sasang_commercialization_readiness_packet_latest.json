@@ -1,6 +1,6 @@
 {
   "schema": "sasang_commercialization_readiness_packet_v1",
-  "generated_at_utc": "2026-04-28T05:03:46Z",
+  "generated_at_utc": "2026-04-28T05:07:15Z",
   "decision": "ALMOST",
   "packet_scope": "human_signoff_material_only",
   "evidence": {
@@ -9,7 +9,8 @@
     "promotion_gate": "C:\\workspace\\docs\\final\\artifacts\\sasang12_promotion_candidate_gate_latest.json",
     "failure_analysis": "C:\\workspace\\docs\\final\\artifacts\\sasang12_gate_failure_analysis_latest.json",
     "standard_gate": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_latest.json",
-    "strict_gate": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_latest.json"
+    "strict_gate": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_latest.json",
+    "strict_shadow_gate": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_synthetic_calibrated_latest.json"
   },
   "boundaries": {
     "track_b_to_a_autobind": "FORBIDDEN",
@@ -21,7 +22,8 @@
     "go": false,
     "blockers": [],
     "warnings": [
-      "strict_quality_gate"
+      "strict_quality_gate",
+      "strict_shadow_evidence_only"
     ]
   }
 }

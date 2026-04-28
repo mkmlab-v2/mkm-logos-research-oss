@@ -1,11 +1,12 @@
 {
   "schema": "genesis_pointer_route_runtime_config_v1",
-  "generated_at_utc": "2026-04-28T05:03:13+00:00",
+  "generated_at_utc": "2026-04-28T05:05:18+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
     "decision_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_pointer_routing_decision_guarded_latest.json",
-    "folder_policy_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_folder_policy_latest.json"
+    "folder_policy_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_folder_policy_latest.json",
+    "apply_promotion_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_apply_go_promotion_decision_latest.json"
   },
   "routing": {
     "decision": "SHADOW_POINTER_ROUTE",
@@ -179,6 +180,13 @@
     "watch_count": 8,
     "hold_count": 1,
     "go_ratio": 0.75
+  },
+  "promotion_gate": {
+    "apply_go_enabled": false,
+    "apply_promotion_decision": "KEEP_SHADOW",
+    "apply_promotion_reasons": [
+      "apply_unresolved_above_threshold"
+    ]
   },
   "notes": [
     "Runtime config is generated from policy decision artifact; do not edit manually.",

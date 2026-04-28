@@ -1,6 +1,6 @@
 {
   "schema": "genesis_pointer_routing_control_chain_v1",
-  "generated_at_utc": "2026-04-28T05:03:13+00:00",
+  "generated_at_utc": "2026-04-28T05:05:18+00:00",
   "research_only": true,
   "promotion_required": true,
   "all_ok": true,
@@ -65,7 +65,7 @@
         "scripts/build_pointer_shadow_daily_report_v1.py"
       ],
       "exit_code": 0,
-      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_daily_report_latest.json\", \"sample_count\": 6}",
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_daily_report_latest.json\", \"sample_count\": 7}",
       "stderr": ""
     },
     {
@@ -75,6 +75,15 @@
       ],
       "exit_code": 0,
       "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_alert_latest.json\", \"should_alert\": false, \"severity\": \"none\"}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/decide_pointerguard_apply_go_promotion_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_apply_go_promotion_decision_latest.json\", \"promote_apply_path_to_go\": false, \"decision\": \"KEEP_SHADOW\"}",
       "stderr": ""
     },
     {
@@ -102,7 +111,9 @@
         "--decision-json",
         "docs/final/artifacts/genesis_pointer_routing_decision_guarded_latest.json",
         "--folder-policy-json",
-        "docs/final/artifacts/pointerguard_folder_policy_latest.json"
+        "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+        "--apply-promotion-json",
+        "docs/final/artifacts/pointerguard_apply_go_promotion_decision_latest.json"
       ],
       "exit_code": 0,
       "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_pointer_route_runtime_config_latest.json\", \"route_mode\": \"pointer_shadow\", \"pointer_enabled\": false, \"pointer_shadow\": true}",

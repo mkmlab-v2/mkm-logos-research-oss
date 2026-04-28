@@ -1,6 +1,6 @@
 {
   "schema": "symbol_atom_mapping_v1",
-  "generated_at_utc": "2026-04-28T05:03:06Z",
+  "generated_at_utc": "2026-04-28T05:04:33Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -38,7 +38,7 @@
     }
   ],
   "sources": {
-    "registry_json": "C:\\workspace\\docs\\final\\artifacts\\atom_anchor_registry_v1.json",
-    "symbolic_json": "C:\\workspace\\docs\\final\\artifacts\\symbolic_topology_insight_latest.json"
+    "registry_json": "c:\\workspace\\docs\\final\\artifacts\\atom_anchor_registry_v1.json",
+    "symbolic_json": "c:\\workspace\\docs\\final\\artifacts\\symbolic_topology_insight_latest.json"
   }
 }

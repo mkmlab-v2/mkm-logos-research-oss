@@ -1,10 +1,10 @@
 {
   "schema": "sasang12_gate_failure_analysis_v1",
-  "generated_at_utc": "2026-04-28T05:03:46Z",
+  "generated_at_utc": "2026-04-28T05:07:15Z",
   "summary": {
-    "total_axes": 1,
+    "total_axes": 2,
     "fail_count": 0,
-    "warn_count": 1,
+    "warn_count": 2,
     "common_root_cause": "quality_gate_or_lens_signal_issue"
   },
   "failure_axes": [
@@ -13,6 +13,12 @@
       "severity": "medium",
       "status": "WARN",
       "evidence": "strict quality gate decision=HOLD"
+    },
+    {
+      "axis": "strict_shadow_evidence_only",
+      "severity": "low",
+      "status": "WARN",
+      "evidence": "strict shadow gate PASS exists but is not promotion-authoritative"
     }
   ],
   "current_snapshot": {
@@ -20,7 +26,8 @@
     "confidence": 0.7115,
     "mapping_target": "sideways",
     "standard_gate": "PASS",
-    "strict_gate": "HOLD"
+    "strict_gate": "HOLD",
+    "strict_shadow_gate": "PASS"
   },
   "next_experiments": [
     "Improve non-neutral signal rule in independent lens while preserving non-medical boundary",
