@@ -2727,6 +2727,27 @@
 - 운영 의미:
   - pre-news shadow projection + weekly summary를 일일 스케줄러에 고정해 무인 관측 루프를 구성.
 
+#### 31.41 Pre-News Shadow Scheduler Health Check v1 (FACT, 2026-04-28)
+
+- 신규:
+  - `scripts/check_pre_news_shadow_task_health.ps1`
+  - `scripts/Register-PreNewsShadowHealthTask.ps1`
+- 구현 사실:
+  - `MKM-PreNews-Shadow-Daily` task 상태 스냅샷(JSON) 생성:
+    - state / last_run_time / next_run_time
+    - last_task_result / result hex / category / healthy
+  - Scheduler informational code(`0x41300~0x4130F`)를 non-error(`SchedulerInfo`)로 분류해 false alarm 방지.
+  - 일일 health task(`MKM-PreNews-Shadow-Health-Daily`) 등록 스크립트 추가.
+- 산출물:
+  - `docs/final/artifacts/pre_news_shadow_task_health_latest.json`
+- 최신 상태:
+  - daily task 등록:
+    - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-PreNewsShadowDailyTask.ps1 -Force` exit 0
+  - health task 등록:
+    - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-PreNewsShadowHealthTask.ps1` exit 0
+  - health snapshot 생성:
+    - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check_pre_news_shadow_task_health.ps1 ...` exit 0
+
 #### 31.37 a-codeai Public Deployment Live Verification (SSH Cursor Report, FACT, 2026-04-28)
 
 - 실행(SSH Cursor / VPS):
