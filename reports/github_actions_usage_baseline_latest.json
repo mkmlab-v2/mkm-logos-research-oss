@@ -1,0 +1,165 @@
+{
+  "schema": "github_actions_usage_baseline_v1",
+  "generated_at_utc": "2026-04-28T00:10:45Z",
+  "input_run_count": 300,
+  "workflow_count": 22,
+  "top_by_runtime_minutes": [
+    {
+      "workflow_name": "no1kmedi-web-build",
+      "runs": 28,
+      "runtime_minutes_total": 174.43,
+      "runtime_minutes_avg": 6.23,
+      "success": 20,
+      "failed": 1,
+      "other": 7,
+      "events": {
+        "pull_request": 19,
+        "push": 7,
+        "workflow_dispatch": 2
+      }
+    },
+    {
+      "workflow_name": "no1kmedi-marketing-copy",
+      "runs": 27,
+      "runtime_minutes_total": 165.12,
+      "runtime_minutes_avg": 6.12,
+      "success": 15,
+      "failed": 11,
+      "other": 1,
+      "events": {
+        "pull_request": 19,
+        "push": 6,
+        "workflow_dispatch": 2
+      }
+    },
+    {
+      "workflow_name": "Dimensional Projection Release Gate",
+      "runs": 21,
+      "runtime_minutes_total": 163.43,
+      "runtime_minutes_avg": 7.78,
+      "success": 21,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 19,
+        "workflow_dispatch": 2
+      }
+    },
+    {
+      "workflow_name": "no1kmedi Guardian Contract Gate",
+      "runs": 21,
+      "runtime_minutes_total": 159.07,
+      "runtime_minutes_avg": 7.57,
+      "success": 12,
+      "failed": 9,
+      "other": 0,
+      "events": {
+        "pull_request": 19,
+        "workflow_dispatch": 2
+      }
+    },
+    {
+      "workflow_name": "Track B research smoke",
+      "runs": 21,
+      "runtime_minutes_total": 6.5,
+      "runtime_minutes_avg": 0.31,
+      "success": 21,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 16,
+        "push": 5
+      }
+    },
+    {
+      "workflow_name": "Bitcoin sovereign backtest smoke",
+      "runs": 9,
+      "runtime_minutes_total": 5.15,
+      "runtime_minutes_avg": 0.57,
+      "success": 9,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 8,
+        "push": 1
+      }
+    },
+    {
+      "workflow_name": "Backend Fact Engine Quantization Guard",
+      "runs": 18,
+      "runtime_minutes_total": 5.0,
+      "runtime_minutes_avg": 0.28,
+      "success": 17,
+      "failed": 1,
+      "other": 0,
+      "events": {
+        "pull_request": 18
+      }
+    },
+    {
+      "workflow_name": "Gemini Multimodal Batch CLI",
+      "runs": 9,
+      "runtime_minutes_total": 4.42,
+      "runtime_minutes_avg": 0.49,
+      "success": 9,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 8,
+        "push": 1
+      }
+    },
+    {
+      "workflow_name": "Multilens independent lens smoke",
+      "runs": 10,
+      "runtime_minutes_total": 3.2,
+      "runtime_minutes_avg": 0.32,
+      "success": 10,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 8,
+        "push": 2
+      }
+    },
+    {
+      "workflow_name": "Swarm sentiment schema validate",
+      "runs": 9,
+      "runtime_minutes_total": 2.9,
+      "runtime_minutes_avg": 0.32,
+      "success": 9,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 8,
+        "push": 1
+      }
+    },
+    {
+      "workflow_name": "Showroom bundle validate",
+      "runs": 9,
+      "runtime_minutes_total": 2.6,
+      "runtime_minutes_avg": 0.29,
+      "success": 9,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 8,
+        "push": 1
+      }
+    },
+    {
+      "workflow_name": "Adoption evidence naming check",
+      "runs": 9,
+      "runtime_minutes_total": 2.12,
+      "runtime_minutes_avg": 0.24,
+      "success": 9,
+      "failed": 0,
+      "other": 0,
+      "events": {
+        "pull_request": 8,
+        "push": 1
+      }
+    }
+  ]
+}
