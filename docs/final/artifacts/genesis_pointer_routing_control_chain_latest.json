@@ -1,0 +1,99 @@
+{
+  "schema": "genesis_pointer_routing_control_chain_v1",
+  "generated_at_utc": "2026-04-28T04:05:34+00:00",
+  "research_only": true,
+  "promotion_required": true,
+  "all_ok": true,
+  "inputs": {
+    "go_cut": 0.9,
+    "watch_cut": 0.5
+  },
+  "steps": [
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/run_genesis_sequence_compression_sweep_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_sequence_compression_sweep_latest.json\", \"summary\": {\"pointer_break_even_length_chars\": 10, \"vector4_break_even_length_chars\": 10, \"note\": \"Closed-dictionary lookup simulation; not open-vocabulary production claim.\"}}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/run_genesis_sequence_net_efficiency_model_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_sequence_net_efficiency_model_latest.json\", \"summary\": {\"pointer_net_break_even_length_chars\": 10, \"vector4_net_break_even_length_chars\": 10}}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/run_genesis_sequence_net_efficiency_sensitivity_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_sequence_net_efficiency_sensitivity_latest.json\", \"scenario_count\": 36, \"pointer_99pct_zone_count\": 13}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/label_genesis_net_efficiency_operating_zone_v1.py",
+        "--go-cut",
+        "0.9",
+        "--watch-cut",
+        "0.5"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_sequence_net_efficiency_operating_zone_latest.json\", \"counts\": {\"GO\": 27, \"WATCH\": 8, \"HOLD\": 1}}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/decide_genesis_pointer_routing_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_pointer_routing_decision_latest.json\", \"decision\": \"SHADOW_POINTER_ROUTE\", \"route_mode\": \"pointer_shadow\"}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/build_genesis_pointer_route_runtime_config_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_pointer_route_runtime_config_latest.json\", \"route_mode\": \"pointer_shadow\", \"pointer_enabled\": false, \"pointer_shadow\": true}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/pointer_hash_snapping_router_v1.py",
+        "--enable-snap"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_latest.json\", \"summary\": {\"pointer_candidate_ok_count\": 2, \"selected_pointer_count\": 0, \"selected_track_a_count\": 3}}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/build_pointer_shadow_daily_report_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_daily_report_latest.json\", \"sample_count\": 2}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/check_pointer_shadow_health_alert_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_alert_latest.json\", \"should_alert\": false, \"severity\": \"none\"}",
+      "stderr": ""
+    }
+  ]
+}

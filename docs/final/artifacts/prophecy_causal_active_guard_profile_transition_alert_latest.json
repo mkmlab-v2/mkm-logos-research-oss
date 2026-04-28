@@ -1,0 +1,11 @@
+{
+  "schema": "prophecy_causal_active_guard_profile_transition_alert_v1",
+  "generated_at_utc": "2026-04-28T04:06:33Z",
+  "previous_profile": "conservative",
+  "current_profile": "conservative",
+  "transitioned": false,
+  "notified": false,
+  "notify_status": "skipped_no_transition",
+  "state_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_causal_active_guard_profile_state_latest.json",
+  "decision_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_causal_active_guard_policy_decision_latest.json"
+}

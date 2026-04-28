@@ -1,10 +1,10 @@
 {
   "schema": "btrack_prophecy_score_v1",
-  "generated_at_utc": "2026-04-28T03:13:48Z",
+  "generated_at_utc": "2026-04-28T04:06:27Z",
   "eval_date": "2026-04-21",
   "neutral_bps": 5.0,
   "hypothesis_path": "docs\\final\\artifacts\\btrack_hypothesis_prophecy_latest.json",
-  "hypothesis_ts_utc": "2026-04-28T03:13:47Z",
+  "hypothesis_ts_utc": "2026-04-28T04:06:26Z",
   "inputs": {
     "kospi_csv": "research\\market_data\\kospi_daily_external_yf.csv",
     "btc_csv": "c:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
@@ -99,7 +99,7 @@
     "causal_active_applied": true,
     "causal_active_threshold_low": -0.06,
     "causal_active_threshold_high": -0.05,
-    "causal_active_applied_at_utc": "2026-04-28T03:13:54Z"
+    "causal_active_applied_at_utc": "2026-04-28T04:06:33Z"
   },
   "rows": [
     {

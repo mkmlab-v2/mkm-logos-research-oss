@@ -1,0 +1,27 @@
+{
+  "schema": "genesis_pointer_route_runtime_config_v1",
+  "generated_at_utc": "2026-04-28T04:05:34+00:00",
+  "research_only": true,
+  "source_track": "B",
+  "inputs": {
+    "decision_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_pointer_routing_decision_latest.json"
+  },
+  "routing": {
+    "decision": "SHADOW_POINTER_ROUTE",
+    "route_mode": "pointer_shadow",
+    "pointer_enabled": false,
+    "pointer_shadow": true,
+    "track_a_primary": false,
+    "disable_switch_env": "GENESIS_POINTER_ROUTE_FORCE_DISABLE"
+  },
+  "observability": {
+    "go_count": 27,
+    "watch_count": 8,
+    "hold_count": 1,
+    "go_ratio": 0.75
+  },
+  "notes": [
+    "Runtime config is generated from policy decision artifact; do not edit manually.",
+    "If disable env is set to 1, force fallback to track_a_primary at runtime."
+  ]
+}

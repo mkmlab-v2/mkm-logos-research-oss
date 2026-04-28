@@ -1,6 +1,6 @@
 {
   "schema": "two_track_submission_draft_v1",
-  "generated_at_utc": "2026-04-28T03:14:03Z",
+  "generated_at_utc": "2026-04-28T04:06:44Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -13,7 +13,7 @@
   "abstract_scaffold_en": {
     "problem": "Meaning-rich cross-reference signals are expressive but prone to overfitting and false discovery when promoted directly to trading decisions.",
     "method": "We separate K-track (knowledge/IP narrative layer) from T-track (survivor filter and rollback gates), and evaluate claims with falsification suite, multi-baseline comparison, and bootstrap/permutation significance.",
-    "result": "Current evidence bundle reports bundle_ready=False, publication_ready=False, primary_delta_shift_score=0.3034, interpretation='positive_delta_supported'.",
+    "result": "Current evidence bundle reports bundle_ready=False, publication_ready=False, primary_delta_shift_score=0.3034, interpretation='positive_delta_supported', falsification=5/5 (pass), sensitivity='first non-pass at min_survivor_count=7, min_ci_low_defense_contrib=0.0'.",
     "claim_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted."
   },
   "section_outline_en": [
@@ -21,8 +21,9 @@
     "2) Two-Track Architecture: K-track narrative layer vs T-track survivorship layer",
     "3) Experimental Protocol: raw OOS policy, falsification checks, multi-baseline setup",
     "4) Results: benchmark deltas, significance interpretation, readiness status",
-    "5) Governance & Disclosure: rollback contract, public-safe redaction policy",
-    "6) Limitations & Next Steps: drift horizon extension and external replication plan"
+    "5) Falsification Robustness: 5-check pass status and threshold sensitivity breakpoint",
+    "6) Governance & Disclosure: rollback contract, public-safe redaction policy",
+    "7) Limitations & Next Steps: drift horizon extension and external replication plan"
   ],
   "submission_gate_snapshot": {
     "bundle_ready": false,
@@ -35,7 +36,21 @@
     "readiness_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_raw_oos_readiness_latest.json",
     "significance_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_statistical_significance_report_latest.json",
     "benchmark_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_benchmark_comparison_latest.json",
-    "public_safe_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_public_safe_report_latest.json"
+    "public_safe_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_public_safe_report_latest.json",
+    "falsification_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_suite_latest.json",
+    "falsification_sensitivity_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_sensitivity_latest.json"
+  },
+  "falsification_snapshot": {
+    "pass_count": 5,
+    "total_checks": 5,
+    "suite_status": "pass",
+    "sensitivity_breakpoint": {
+      "min_survivor_count": 7,
+      "min_ci_low_defense_contrib": 0.0,
+      "pass_count": 4,
+      "total_checks": 5,
+      "suite_status": "warning"
+    }
   },
   "degraded_mode": {
     "enabled": false,

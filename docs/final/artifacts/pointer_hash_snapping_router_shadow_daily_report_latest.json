@@ -1,0 +1,28 @@
+{
+  "schema": "pointer_hash_snapping_router_shadow_daily_report_v1",
+  "generated_at_utc": "2026-04-28T04:05:34+00:00",
+  "research_only": true,
+  "source_track": "B",
+  "inputs": {
+    "shadow_snapshot": "C:\\workspace\\docs\\final\\artifacts\\pointer_hash_snapping_router_shadow_latest.json",
+    "log_jsonl": "C:\\workspace\\reports\\pointer_hash_snapping_router_shadow_log_v1.jsonl",
+    "window_hours": 24
+  },
+  "latest_point": {
+    "ts_utc": "2026-04-28T04:05:34+00:00",
+    "schema": "pointer_hash_snapping_router_shadow_log_v1",
+    "input_count": 3,
+    "pointer_candidate_ok_count": 2,
+    "selected_pointer_count": 0,
+    "selected_track_a_count": 3,
+    "snap_event_count": 0,
+    "oov_unresolved_token_count": 4
+  },
+  "window_stats": {
+    "sample_count": 2,
+    "avg_input_count": 3.0,
+    "avg_pointer_candidate_ok_rate": 0.6666666666666666,
+    "avg_snap_event_rate": 0.0,
+    "avg_unresolved_token_per_run": 4.0
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "btrack_symbol_source_split_v1",
-  "generated_at_utc": "2026-04-28T02:16:02Z",
+  "generated_at_utc": "2026-04-28T03:16:03Z",
   "input_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\symbol_candidates_curated_stable_latest.jsonl",
   "summary": {
     "total_curated_symbols": 200,
