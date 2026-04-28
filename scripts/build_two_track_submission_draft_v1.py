@@ -51,6 +51,14 @@ def main() -> int:
         "--public-safe-json",
         default="docs/final/artifacts/two_track_public_safe_report_latest.json",
     )
+    ap.add_argument(
+        "--falsification-json",
+        default="docs/final/artifacts/two_track_falsification_suite_latest.json",
+    )
+    ap.add_argument(
+        "--falsification-sensitivity-json",
+        default="docs/final/artifacts/two_track_falsification_sensitivity_latest.json",
+    )
     ap.add_argument("--output-json", default="docs/final/artifacts/two_track_submission_draft_latest.json")
     args = ap.parse_args()
 
@@ -63,6 +71,8 @@ def main() -> int:
     significance_path = _resolve(repo_root, args.significance_json)
     benchmark_path = _resolve(repo_root, args.benchmark_json)
     public_safe_path = _resolve(repo_root, args.public_safe_json)
+    falsification_path = _resolve(repo_root, args.falsification_json)
+    falsification_sensitivity_path = _resolve(repo_root, args.falsification_sensitivity_json)
     if not evidence_path.is_file():
         raise SystemExit(f"missing required input json: {evidence_path}")
 
@@ -70,6 +80,10 @@ def main() -> int:
     readiness = _load(readiness_path) if readiness_path.is_file() else {}
     significance = _load(significance_path) if significance_path.is_file() else {}
     benchmark = _load(benchmark_path) if benchmark_path.is_file() else {}
+    falsification = _load(falsification_path) if falsification_path.is_file() else {}
+    falsification_sensitivity = (
+        _load(falsification_sensitivity_path) if falsification_sensitivity_path.is_file() else {}
+    )
 
     gates = evidence.get("gates") if isinstance(evidence.get("gates"), dict) else {}
     readiness_summary = readiness.get("summary") if isinstance(readiness.get("summary"), dict) else {}
@@ -81,6 +95,29 @@ def main() -> int:
         primary_delta_num = float(primary_delta)
     except Exception:
         primary_delta_num = 0.0
+
+    falsification_pass = int(falsification.get("pass_count", 0) or 0)
+    falsification_total = int(falsification.get("total_checks", 0) or 0)
+    falsification_status = str(falsification.get("suite_status", "unknown"))
+    sensitivity_grid = (
+        falsification_sensitivity.get("grid")
+        if isinstance(falsification_sensitivity.get("grid"), list)
+        else []
+    )
+    sensitivity_breakpoint = next(
+        (
+            row
+            for row in sensitivity_grid
+            if isinstance(row, dict) and str(row.get("suite_status")) != "pass"
+        ),
+        None,
+    )
+    sensitivity_note = (
+        f"first non-pass at min_survivor_count={sensitivity_breakpoint.get('min_survivor_count')}, "
+        f"min_ci_low_defense_contrib={sensitivity_breakpoint.get('min_ci_low_defense_contrib')}"
+        if isinstance(sensitivity_breakpoint, dict)
+        else "all tested sensitivity points pass"
+    )
 
     publication_ready = bool(readiness_summary.get("ready_for_publication_claim", False))
     if not readiness_path.is_file():
@@ -108,7 +145,9 @@ def main() -> int:
         ),
         "result": (
             f"Current evidence bundle reports bundle_ready={bundle_ready}, publication_ready={publication_ready}, "
-            f"primary_delta_shift_score={primary_delta_num:.4f}, interpretation='{sig_interp_str}'."
+            f"primary_delta_shift_score={primary_delta_num:.4f}, interpretation='{sig_interp_str}', "
+            f"falsification={falsification_pass}/{falsification_total} ({falsification_status}), "
+            f"sensitivity='{sensitivity_note}'."
         ),
         "claim_boundary": boundary,
     }
@@ -118,8 +157,9 @@ def main() -> int:
         "2) Two-Track Architecture: K-track narrative layer vs T-track survivorship layer",
         "3) Experimental Protocol: raw OOS policy, falsification checks, multi-baseline setup",
         "4) Results: benchmark deltas, significance interpretation, readiness status",
-        "5) Governance & Disclosure: rollback contract, public-safe redaction policy",
-        "6) Limitations & Next Steps: drift horizon extension and external replication plan",
+        "5) Falsification Robustness: 5-check pass status and threshold sensitivity breakpoint",
+        "6) Governance & Disclosure: rollback contract, public-safe redaction policy",
+        "7) Limitations & Next Steps: drift horizon extension and external replication plan",
     ]
 
     draft = {
@@ -144,15 +184,36 @@ def main() -> int:
             "significance_json": str(significance_path) if significance_path.is_file() else None,
             "benchmark_json": str(benchmark_path) if benchmark_path.is_file() else None,
             "public_safe_json": str(public_safe_path) if public_safe_path.is_file() else None,
+            "falsification_json": str(falsification_path) if falsification_path.is_file() else None,
+            "falsification_sensitivity_json": (
+                str(falsification_sensitivity_path)
+                if falsification_sensitivity_path.is_file()
+                else None
+            ),
+        },
+        "falsification_snapshot": {
+            "pass_count": falsification_pass,
+            "total_checks": falsification_total,
+            "suite_status": falsification_status,
+            "sensitivity_breakpoint": sensitivity_breakpoint,
         },
         "degraded_mode": {
             "enabled": (not readiness_path.is_file())
             or (not significance_path.is_file())
             or (not benchmark_path.is_file())
-            or (not public_safe_path.is_file()),
+            or (not public_safe_path.is_file())
+            or (not falsification_path.is_file())
+            or (not falsification_sensitivity_path.is_file()),
             "missing_inputs": [
                 str(p)
-                for p in (readiness_path, significance_path, benchmark_path, public_safe_path)
+                for p in (
+                    readiness_path,
+                    significance_path,
+                    benchmark_path,
+                    public_safe_path,
+                    falsification_path,
+                    falsification_sensitivity_path,
+                )
                 if not p.is_file()
             ],
         },
