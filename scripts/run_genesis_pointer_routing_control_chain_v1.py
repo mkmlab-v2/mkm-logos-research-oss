@@ -75,9 +75,25 @@ def main() -> int:
         _run(
             [
                 py,
+                "scripts/pointer_hash_snapping_router_v1.py",
+                "--enable-snap",
+                "--target-path",
+                args.memory_tuning_target_path,
+                "--out",
+                "docs/final/artifacts/pointer_hash_snapping_router_shadow_memory_latest.json",
+            ]
+        )
+    )
+    steps.append(
+        _run(
+            [
+                py,
                 "scripts/decide_pointerguard_apply_go_promotion_v1.py",
                 "--folder-policy-json",
                 "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+                "--latest-snapshot-json",
+                "docs/final/artifacts/pointer_hash_snapping_router_shadow_memory_latest.json",
+                "--prefer-latest-snapshot",
                 "--target-path",
                 args.memory_tuning_target_path,
                 "--out",

@@ -1,0 +1,9 @@
+{
+  "schema": "a_track_promotion_decision_v1",
+  "generated_at": "2026-04-28T05:33:50+00:00",
+  "action": "approve",
+  "status": "accepted",
+  "requested_stage": "S4_LIMITED_LIVE",
+  "approver": "PRO",
+  "note": "Myeongni promotion manual signoff receipt for S4 limited-live stage; track bridge/live automation remains disabled."
+}

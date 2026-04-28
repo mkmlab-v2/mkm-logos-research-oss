@@ -1,6 +1,6 @@
 {
   "schema": "pointerguard_apply_go_promotion_decision_v1",
-  "generated_at_utc": "2026-04-28T05:33:04+00:00",
+  "generated_at_utc": "2026-04-28T05:35:28+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
@@ -22,59 +22,26 @@
       1.0
     ],
     "ramp_current_index": 1,
-    "filtered_log_count": 12
+    "filtered_log_count": 1
   },
   "window_stats": {
-    "sample_count": 16,
-    "apply_row_ratio_avg": 0.75,
-    "apply_unresolved_avg_per_run": 3.0
+    "sample_count": 17,
+    "apply_row_ratio_avg": 0.7647058823529411,
+    "apply_unresolved_avg_per_run": 3.0588235294117645
   },
   "recent_checks": [
     {
       "sample_index_from_recent": 0,
       "input_count": 3.0,
       "apply_ratio": 1.0,
-      "apply_unresolved": 4.0,
+      "apply_unresolved": 0.0,
       "pass_apply_ratio": true,
-      "pass_apply_unresolved": false
-    },
-    {
-      "sample_index_from_recent": 1,
-      "input_count": 3.0,
-      "apply_ratio": 1.0,
-      "apply_unresolved": 4.0,
-      "pass_apply_ratio": true,
-      "pass_apply_unresolved": false
-    },
-    {
-      "sample_index_from_recent": 2,
-      "input_count": 3.0,
-      "apply_ratio": 1.0,
-      "apply_unresolved": 4.0,
-      "pass_apply_ratio": true,
-      "pass_apply_unresolved": false
-    },
-    {
-      "sample_index_from_recent": 3,
-      "input_count": 3.0,
-      "apply_ratio": 1.0,
-      "apply_unresolved": 4.0,
-      "pass_apply_ratio": true,
-      "pass_apply_unresolved": false
-    },
-    {
-      "sample_index_from_recent": 4,
-      "input_count": 3.0,
-      "apply_ratio": 1.0,
-      "apply_unresolved": 4.0,
-      "pass_apply_ratio": true,
-      "pass_apply_unresolved": false
+      "pass_apply_unresolved": true
     }
   ],
   "promote_apply_path_to_go": false,
   "decision": "KEEP_SHADOW",
   "reasons": [
-    "apply_unresolved_above_threshold",
     "profile_go_promotion_disabled"
   ]
 }

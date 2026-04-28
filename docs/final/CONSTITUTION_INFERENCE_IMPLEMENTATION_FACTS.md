@@ -1471,6 +1471,19 @@
   - 최신 튜닝 결과: `HOLD_INDEX` (현 단계 `3.0`에서 추가 수렴 필요)
   - 최신 update 결과: `updated=false` (추가 인덱스 전진 없음)
 
+#### 29.11 프로파일별 로그 필터링 강화 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/decide_pointerguard_apply_go_promotion_v1.py`
+- 변경:
+  - 승격 판정 시 전체 shadow 로그를 그대로 쓰지 않고, 선택된 프로파일 `match_patterns`에 맞는 로그만 필터링해 사용.
+  - 판정 입력에 `filtered_log_count`를 기록해 실제 표본 수를 추적.
+- 효과:
+  - `reports_apply` / `memory_v2_apply` 판정이 서로의 로그에 덜 오염되고, 경로군별 품질 신호 분리가 개선.
+- 최신 상태:
+  - `reports_apply`: `filtered_log_count=12`, `decision=PROMOTE_APPLY_GO`
+  - `memory_v2_apply`: `filtered_log_count=12`, `ramp_current_index=1`, `decision=KEEP_SHADOW`
+
 #### 30.1 Symbol Atom Anchor Layer + Scholarly Bridge (FACT, 2026-04-28)
 
 - 스크립트:
@@ -1571,3 +1584,21 @@
   - 공통으로 `as_of_utc`, `rollback_rule`, `gate_eval` 필드는 유지.
 - 최신 상태:
   - `two_track_qa_pack_latest.json`에서 `q1~q5`별 source_artifact/metric_value가 서로 다르게 주입됨을 확인.
+
+#### 30.8 Symbol Walk-Forward Survivability + Drift Gate (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_multi_symbol_walkforward_survivability_v1.py`
+  - `scripts/alert_multi_symbol_top_drift_gate_v1.py`
+  - `scripts/run_aramaic_mvp_chain_v1.ps1` (`[13f/15]` 구간에 survivability/drift 단계 연속 호출 추가)
+- 출력:
+  - `docs/final/artifacts/multi_symbol_walkforward_survivability_latest.json`
+  - `docs/final/artifacts/multi_symbol_top_drift_history_latest.jsonl`
+  - `docs/final/artifacts/multi_symbol_top_drift_alert_latest.json`
+- 구현 사실:
+  - symbol별 `oos_survival_rate_proxy`, `false_positive_cost_proxy`, `survivability_score`를 계산하여 생존성 순위화.
+  - top symbol 이력(JSONL)을 누적 기록하고 window 내 switch 횟수로 drift 경보 여부를 판정.
+  - drift gate 출력에 `promotion_hold`를 포함해 top-symbol 변동 과다 시 승격 보류 정책을 연결.
+- 최신 상태:
+  - 현재 `top_symbol_by_survivability=tree_of_knowledge_good_evil`.
+  - drift alert는 초기 이력 1건 기준 `should_alert=false`, `severity=none`.

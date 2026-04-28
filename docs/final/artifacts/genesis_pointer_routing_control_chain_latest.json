@@ -1,6 +1,6 @@
 {
   "schema": "genesis_pointer_routing_control_chain_v1",
-  "generated_at_utc": "2026-04-28T05:33:04+00:00",
+  "generated_at_utc": "2026-04-28T05:35:29+00:00",
   "research_only": true,
   "promotion_required": true,
   "all_ok": true,
@@ -75,7 +75,7 @@
         "scripts/build_pointer_shadow_daily_report_v1.py"
       ],
       "exit_code": 0,
-      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_daily_report_latest.json\", \"sample_count\": 16}",
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_daily_report_latest.json\", \"sample_count\": 17}",
       "stderr": ""
     },
     {
@@ -97,7 +97,21 @@
         "reports/demo_run.json"
       ],
       "exit_code": 0,
-      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_apply_go_promotion_decision_latest.json\", \"promote_apply_path_to_go\": true, \"decision\": \"PROMOTE_APPLY_GO\"}",
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_apply_go_promotion_decision_latest.json\", \"promote_apply_path_to_go\": false, \"decision\": \"KEEP_SHADOW\"}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/pointer_hash_snapping_router_v1.py",
+        "--enable-snap",
+        "--target-path",
+        "projects/bitcoin-trading/memory/v2/demo.json",
+        "--out",
+        "docs/final/artifacts/pointer_hash_snapping_router_shadow_memory_latest.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_memory_latest.json\", \"summary\": {\"pointer_candidate_ok_count\": 3, \"selected_pointer_count\": 0, \"selected_track_a_count\": 3}}",
       "stderr": ""
     },
     {
@@ -106,6 +120,9 @@
         "scripts/decide_pointerguard_apply_go_promotion_v1.py",
         "--folder-policy-json",
         "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+        "--latest-snapshot-json",
+        "docs/final/artifacts/pointer_hash_snapping_router_shadow_memory_latest.json",
+        "--prefer-latest-snapshot",
         "--target-path",
         "projects/bitcoin-trading/memory/v2/demo.json",
         "--out",
@@ -125,7 +142,7 @@
         "docs/final/artifacts/pointerguard_folder_policy_latest.json"
       ],
       "exit_code": 0,
-      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_memory_v2_ramp_tuning_latest.json\", \"recommendation\": \"HOLD_INDEX\", \"recommended_index\": 1}",
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_memory_v2_ramp_tuning_latest.json\", \"recommendation\": \"ADVANCE_TO_NEXT_TIGHTER_THRESHOLD\", \"recommended_index\": 2}",
       "stderr": ""
     },
     {
@@ -138,7 +155,7 @@
         "docs/final/artifacts/pointerguard_memory_v2_ramp_tuning_latest.json"
       ],
       "exit_code": 0,
-      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_memory_v2_ramp_update_latest.json\", \"updated\": false, \"applied_index\": null}",
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_memory_v2_ramp_update_latest.json\", \"updated\": true, \"applied_index\": 2}",
       "stderr": ""
     },
     {

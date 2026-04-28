@@ -26,6 +26,7 @@ DEFAULT_PROD_DATA_READINESS = ART / "sasang_production_data_readiness_latest.jso
 DEFAULT_GT_EXPANSION_QUEUE_REPORT = ART / "sasang_gt_expansion_queue_report_latest.json"
 DEFAULT_GT_EXPANSION_PRIORITY_REPORT = ART / "sasang_gt_expansion_priority_report_latest.json"
 DEFAULT_GT_MERGE_REPORT = ART / "sasang_gt_merge_report_latest.json"
+DEFAULT_GT_LABELING_SHEET_REPORT = ART / "sasang_gt_labeling_sheet_report_latest.json"
 DEFAULT_PROMOTION_CHAIN = ART / "sasang12_promotion_candidate_chain_latest.json"
 
 DEFAULT_EVAL_CONTRACT = ART / "sasang_prophecy_eval_contract_latest.json"
@@ -77,6 +78,7 @@ def main() -> int:
     ap.add_argument("--gt-expansion-queue-report", type=Path, default=DEFAULT_GT_EXPANSION_QUEUE_REPORT)
     ap.add_argument("--gt-expansion-priority-report", type=Path, default=DEFAULT_GT_EXPANSION_PRIORITY_REPORT)
     ap.add_argument("--gt-merge-report", type=Path, default=DEFAULT_GT_MERGE_REPORT)
+    ap.add_argument("--gt-labeling-sheet-report", type=Path, default=DEFAULT_GT_LABELING_SHEET_REPORT)
     ap.add_argument("--promotion-chain", type=Path, default=DEFAULT_PROMOTION_CHAIN)
     ap.add_argument("--eval-contract-out", type=Path, default=DEFAULT_EVAL_CONTRACT)
     ap.add_argument("--promotion-gate-out", type=Path, default=DEFAULT_PROMOTION_GATE)
@@ -101,6 +103,7 @@ def main() -> int:
     gt_expansion_queue_report = _load_optional(args.gt_expansion_queue_report)
     gt_expansion_priority_report = _load_optional(args.gt_expansion_priority_report)
     gt_merge_report = _load_optional(args.gt_merge_report)
+    gt_labeling_sheet_report = _load_optional(args.gt_labeling_sheet_report)
 
     direction_score = _f((lens.get("scores") or {}).get("direction_score"))
     confidence = _f((lens.get("scores") or {}).get("confidence"))
@@ -279,6 +282,17 @@ def main() -> int:
                     "evidence": "No approved GT queue rows merged yet",
                 }
             )
+    if isinstance(gt_labeling_sheet_report, dict):
+        row_count = int(gt_labeling_sheet_report.get("row_count") or 0)
+        if row_count <= 0:
+            failure_axes.append(
+                {
+                    "axis": "gt_labeling_sheet_missing",
+                    "severity": "medium",
+                    "status": "WARN",
+                    "evidence": "GT labeling sheet has no rows",
+                }
+            )
 
     promotion_gate = {
         "schema": "sasang12_promotion_candidate_gate_unified_v1",
@@ -361,6 +375,9 @@ def main() -> int:
                 str(args.gt_expansion_priority_report.resolve()) if gt_expansion_priority_report is not None else None
             ),
             "gt_merge_report": str(args.gt_merge_report.resolve()) if gt_merge_report is not None else None,
+            "gt_labeling_sheet_report": (
+                str(args.gt_labeling_sheet_report.resolve()) if gt_labeling_sheet_report is not None else None
+            ),
         },
         "boundaries": {
             "track_b_to_a_autobind": "FORBIDDEN",

@@ -16,6 +16,7 @@ DAILY_REPORT_DEFAULT = ART / "pointer_hash_snapping_router_shadow_daily_report_l
 ALERT_DEFAULT = ART / "pointer_hash_snapping_router_shadow_alert_latest.json"
 LOG_DEFAULT = REPORTS / "pointer_hash_snapping_router_shadow_log_v1.jsonl"
 FOLDER_POLICY_DEFAULT = ART / "pointerguard_folder_policy_latest.json"
+SNAPSHOT_DEFAULT = ART / "pointer_hash_snapping_router_shadow_latest.json"
 OUT_DEFAULT = ART / "pointerguard_apply_go_promotion_decision_latest.json"
 
 
@@ -72,17 +73,69 @@ def _filter_logs_for_profile(logs: list[dict[str, Any]], profile: dict[str, Any]
     patterns = profile.get("match_patterns", []) if isinstance(profile, dict) else []
     if not isinstance(patterns, list) or not patterns:
         return logs
-    fallback = target_path.replace("\\", "/").lstrip("./")
     out: list[dict[str, Any]] = []
     for row in logs:
         if not isinstance(row, dict):
             continue
         tp = str(row.get("target_path", "")).replace("\\", "/").lstrip("./")
         if not tp:
-            tp = fallback
+            continue
         if any(fnmatch.fnmatch(tp, str(p)) for p in patterns):
             out.append(row)
     return out
+
+
+def _point_from_snapshot(snapshot: dict[str, Any]) -> dict[str, Any]:
+    rows = snapshot.get("rows", [])
+    summary = snapshot.get("summary", {})
+    if not isinstance(rows, list):
+        rows = []
+    target_path = str(snapshot.get("inputs", {}).get("target_path", ""))
+    return {
+        "input_count": int(snapshot.get("inputs", {}).get("input_count", len(rows))),
+        "pointer_candidate_ok_count": int(summary.get("pointer_candidate_ok_count", 0)),
+        "selected_pointer_count": int(summary.get("selected_pointer_count", 0)),
+        "selected_track_a_count": int(summary.get("selected_track_a_count", 0)),
+        "snap_event_count": int(sum(len(r.get("snap_events", [])) for r in rows if isinstance(r, dict))),
+        "oov_unresolved_token_count": int(sum(len(r.get("unresolved_tokens", [])) for r in rows if isinstance(r, dict))),
+        "path_policy_counts": {
+            "apply": int(sum(1 for r in rows if isinstance(r, dict) and str(r.get("path_policy")) == "apply")),
+            "caution": int(sum(1 for r in rows if isinstance(r, dict) and str(r.get("path_policy")) == "caution")),
+            "forbid": int(sum(1 for r in rows if isinstance(r, dict) and str(r.get("path_policy")) == "forbid")),
+            "unknown": int(sum(1 for r in rows if isinstance(r, dict) and str(r.get("path_policy")) not in {"apply", "caution", "forbid"})),
+        },
+        "path_policy_unresolved_token_counts": {
+            "apply": int(
+                sum(
+                    len(r.get("unresolved_tokens", []))
+                    for r in rows
+                    if isinstance(r, dict) and str(r.get("path_policy")) == "apply"
+                )
+            ),
+            "caution": int(
+                sum(
+                    len(r.get("unresolved_tokens", []))
+                    for r in rows
+                    if isinstance(r, dict) and str(r.get("path_policy")) == "caution"
+                )
+            ),
+            "forbid": int(
+                sum(
+                    len(r.get("unresolved_tokens", []))
+                    for r in rows
+                    if isinstance(r, dict) and str(r.get("path_policy")) == "forbid"
+                )
+            ),
+            "unknown": int(
+                sum(
+                    len(r.get("unresolved_tokens", []))
+                    for r in rows
+                    if isinstance(r, dict) and str(r.get("path_policy")) not in {"apply", "caution", "forbid"}
+                )
+            ),
+        },
+        "target_path": target_path,
+    }
 
 
 def main() -> int:
@@ -91,6 +144,8 @@ def main() -> int:
     ap.add_argument("--alert-json", type=Path, default=ALERT_DEFAULT)
     ap.add_argument("--shadow-log-jsonl", type=Path, default=LOG_DEFAULT)
     ap.add_argument("--folder-policy-json", type=Path, default=FOLDER_POLICY_DEFAULT)
+    ap.add_argument("--latest-snapshot-json", type=Path, default=SNAPSHOT_DEFAULT)
+    ap.add_argument("--prefer-latest-snapshot", action="store_true")
     ap.add_argument("--target-path", type=str, default="docs/final/artifacts/pointer_router_chain_probe.json")
     ap.add_argument("--consecutive-samples", type=int, default=3)
     ap.add_argument("--apply-row-ratio-min", type=float, default=0.30)
@@ -102,6 +157,7 @@ def main() -> int:
     alert_path = args.alert_json if args.alert_json.is_absolute() else ROOT / args.alert_json
     log_path = args.shadow_log_jsonl if args.shadow_log_jsonl.is_absolute() else ROOT / args.shadow_log_jsonl
     policy_path = args.folder_policy_json if args.folder_policy_json.is_absolute() else ROOT / args.folder_policy_json
+    snapshot_path = args.latest_snapshot_json if args.latest_snapshot_json.is_absolute() else ROOT / args.latest_snapshot_json
     out_path = args.out if args.out.is_absolute() else ROOT / args.out
 
     rep = _read_json(report_path)
@@ -111,6 +167,9 @@ def main() -> int:
 
     profile = _select_profile(policy_doc, args.target_path)
     logs = _filter_logs_for_profile(logs, profile, args.target_path)
+    if args.prefer_latest_snapshot and snapshot_path.exists():
+        snap = _read_json(snapshot_path)
+        logs = [_point_from_snapshot(snap)]
     k = int(profile.get("consecutive_samples", args.consecutive_samples)) if profile else int(args.consecutive_samples)
     apply_row_ratio_min = (
         float(profile.get("apply_row_ratio_min", args.apply_row_ratio_min)) if profile else float(args.apply_row_ratio_min)
@@ -137,7 +196,7 @@ def main() -> int:
     if profile and not bool(profile.get("go_promotion_enabled", False)):
         reasons.append("profile_go_promotion_disabled")
 
-    if len(recent) < k:
+    if len(recent) < k and not args.prefer_latest_snapshot:
         reasons.append("insufficient_recent_samples")
 
     per_sample_checks: list[dict[str, Any]] = []

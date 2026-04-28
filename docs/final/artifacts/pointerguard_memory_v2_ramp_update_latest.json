@@ -1,15 +1,15 @@
 {
   "schema": "pointerguard_memory_v2_ramp_update_v1",
-  "generated_at_utc": "2026-04-28T05:33:03+00:00",
+  "generated_at_utc": "2026-04-28T05:35:28+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
     "folder_policy_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_folder_policy_latest.json",
     "tuning_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_memory_v2_ramp_tuning_latest.json",
     "profile_id": "memory_v2_apply",
-    "recommendation": "HOLD_INDEX"
+    "recommendation": "ADVANCE_TO_NEXT_TIGHTER_THRESHOLD"
   },
-  "updated": false,
-  "previous_index": null,
-  "applied_index": null
+  "updated": true,
+  "previous_index": 1,
+  "applied_index": 2
 }

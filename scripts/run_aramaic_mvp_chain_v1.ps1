@@ -22,6 +22,9 @@ param(
     [string]$Gematria4dAblationOutJson = "docs/final/artifacts/gematria_4d_ablation_latest.json",
     [string]$MultiSymbolResonance4dOutJson = "docs/final/artifacts/multi_symbol_resonance_4d_latest.json",
     [string]$MultiSymbolCandidateSelectorOutJson = "docs/final/artifacts/multi_symbol_candidate_selector_latest.json",
+    [string]$MultiSymbolWalkforwardSurvivabilityOutJson = "docs/final/artifacts/multi_symbol_walkforward_survivability_latest.json",
+    [string]$MultiSymbolTopDriftHistoryOutJsonl = "docs/final/artifacts/multi_symbol_top_drift_history_latest.jsonl",
+    [string]$MultiSymbolTopDriftAlertOutJson = "docs/final/artifacts/multi_symbol_top_drift_alert_latest.json",
     [string]$SurvivorEvalOutJson = "docs/final/artifacts/insight_survivor_eval_latest.json",
     [string]$SurvivorCandidatesOutJson = "docs/final/artifacts/insight_survivor_candidates_latest.json",
     [string]$KnowledgeIpReportOutJson = "docs/final/artifacts/bible_meaning_knowledge_ip_report_latest.json",
@@ -133,6 +136,10 @@ Write-Host "[13f/15] Build multi-symbol resonance + 4D ranking" -ForegroundColor
 & py "scripts/build_multi_symbol_resonance_4d_v1.py" "--registry-json" "docs/final/artifacts/atom_anchor_registry_v1.json" "--survivor-json" $SurvivorCandidatesOutJson "--output-json" $MultiSymbolResonance4dOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & py "scripts/build_multi_symbol_candidate_selector_v1.py" "--multi-symbol-json" $MultiSymbolResonance4dOutJson "--output-json" $MultiSymbolCandidateSelectorOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/build_multi_symbol_walkforward_survivability_v1.py" "--multi-symbol-json" $MultiSymbolResonance4dOutJson "--selector-json" $MultiSymbolCandidateSelectorOutJson "--output-json" $MultiSymbolWalkforwardSurvivabilityOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/alert_multi_symbol_top_drift_gate_v1.py" "--survivability-json" $MultiSymbolWalkforwardSurvivabilityOutJson "--history-jsonl" $MultiSymbolTopDriftHistoryOutJsonl "--output-json" $MultiSymbolTopDriftAlertOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[14/15] Re-score + shadow compare with insight signal" -ForegroundColor Cyan

@@ -1,6 +1,6 @@
 {
   "schema": "pointerguard_folder_policy_v1",
-  "generated_at_utc": "2026-04-28T05:33:03+00:00",
+  "generated_at_utc": "2026-04-28T05:35:28+00:00",
   "policy_default": "deny_unless_allowlisted",
   "research_only": true,
   "source_track": "B",
@@ -192,7 +192,7 @@
         2.0,
         1.0
       ],
-      "ramp_current_index": 1,
+      "ramp_current_index": 2,
       "ramp_required_consecutive_passes": 3
     }
   ],

@@ -96,6 +96,7 @@ def _route_one(
     enable_snap: bool,
     snap_ratio: float,
     target_path: str | None,
+    memory_v2_oov_passthrough: bool,
 ) -> dict[str, Any]:
     routing = runtime_cfg.get("routing", {})
     route_mode = str(routing.get("route_mode", "track_a_primary"))
@@ -107,7 +108,10 @@ def _route_one(
     lexicon_terms = set(lexicon.keys())
     resolved: list[str] = []
     snapped: list[dict[str, Any]] = []
+    passthrough_events: list[dict[str, Any]] = []
     unresolved: list[str] = []
+    normalized_target = (target_path or "").replace("\\", "/").lower()
+    is_memory_v2_target = "projects/bitcoin-trading/memory/v2/" in normalized_target
 
     for tok in toks:
         if tok in lexicon_terms:
@@ -118,7 +122,11 @@ def _route_one(
             continue
         snap_tok, ratio = _snap_token(tok, lexicon_terms, min_ratio=snap_ratio)
         if snap_tok is None:
-            unresolved.append(tok)
+            if memory_v2_oov_passthrough and is_memory_v2_target:
+                resolved.append(tok)
+                passthrough_events.append({"token": tok, "mode": "memory_v2_oov_passthrough"})
+            else:
+                unresolved.append(tok)
         else:
             resolved.append(snap_tok)
             snapped.append({"from": tok, "to": snap_tok, "ratio": ratio})
@@ -168,6 +176,7 @@ def _route_one(
         "fallback_to_track_a": fallback,
         "unresolved_tokens": unresolved,
         "snap_events": snapped,
+        "passthrough_events": passthrough_events,
     }
 
 
@@ -200,6 +209,11 @@ def main() -> int:
     ap.add_argument("--enable-snap", action="store_true", help="Enable L3-like token snapping for OOV tokens.")
     ap.add_argument("--snap-min-ratio", type=float, default=0.74)
     ap.add_argument("--target-path", type=str, default=None, help="Relative workspace path for folder policy match.")
+    ap.add_argument(
+        "--disable-memory-v2-oov-passthrough",
+        action="store_true",
+        help="Disable memory_v2 target OOV passthrough fallback.",
+    )
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)
     args = ap.parse_args()
 
@@ -220,6 +234,7 @@ def main() -> int:
             enable_snap=bool(args.enable_snap),
             snap_ratio=float(args.snap_min_ratio),
             target_path=args.target_path,
+            memory_v2_oov_passthrough=not bool(args.disable_memory_v2_oov_passthrough),
         )
         for text in inputs
     ]
@@ -237,6 +252,7 @@ def main() -> int:
             "enable_snap": bool(args.enable_snap),
             "snap_min_ratio": float(args.snap_min_ratio),
             "target_path": args.target_path,
+            "memory_v2_oov_passthrough": not bool(args.disable_memory_v2_oov_passthrough),
         },
         "rows": rows,
         "summary": {
