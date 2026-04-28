@@ -34,13 +34,25 @@ def _resolve(root: Path, path_str: str) -> Path:
     return p
 
 
-def _expanded_paragraphs(a: dict[str, Any], title: str, gates: dict[str, Any]) -> list[str]:
+def _expanded_paragraphs(
+    a: dict[str, Any], title: str, gates: dict[str, Any], falsification_snapshot: dict[str, Any]
+) -> list[str]:
     problem = str(a.get("problem", ""))
     method = str(a.get("method", ""))
     result = str(a.get("result", ""))
     boundary = str(a.get("claim_boundary", ""))
     br = gates.get("bundle_ready")
     pub = gates.get("ready_for_publication_claim")
+    f_pass = int(falsification_snapshot.get("pass_count", 0) or 0)
+    f_total = int(falsification_snapshot.get("total_checks", 0) or 0)
+    f_status = str(falsification_snapshot.get("suite_status", "unknown"))
+    bp = (
+        falsification_snapshot.get("sensitivity_breakpoint")
+        if isinstance(falsification_snapshot.get("sensitivity_breakpoint"), dict)
+        else {}
+    )
+    bp_survivor = bp.get("min_survivor_count")
+    bp_ci = bp.get("min_ci_low_defense_contrib")
     return [
         (
             f"This work addresses a governance problem in systems that derive dense, meaning-rich signals "
@@ -57,6 +69,8 @@ def _expanded_paragraphs(a: dict[str, Any], title: str, gates: dict[str, Any]) -
             f"Empirically, we report pipeline outputs consistent with the current evidence bundle and readiness gate. "
             f"{result} "
             f"Evidence-bundle status: bundle_ready={br}, ready_for_publication_claim={pub}. "
+            f"Falsification status: {f_pass}/{f_total} ({f_status}); "
+            f"first sensitivity breakpoint at min_survivor_count={bp_survivor}, min_ci_low_defense_contrib={bp_ci}. "
             f"We emphasize interpretability of the evaluation protocol over headline alpha claims."
         ),
         (
@@ -187,8 +201,11 @@ def main() -> int:
     abs_scaffold = draft.get("abstract_scaffold_en") if isinstance(draft.get("abstract_scaffold_en"), dict) else {}
     title = str(draft.get("recommended_title", "Two-track safety-gated inference"))
     gates = draft.get("submission_gate_snapshot") if isinstance(draft.get("submission_gate_snapshot"), dict) else {}
+    falsification_snapshot = (
+        draft.get("falsification_snapshot") if isinstance(draft.get("falsification_snapshot"), dict) else {}
+    )
 
-    paragraphs = _expanded_paragraphs(abs_scaffold, title, gates)
+    paragraphs = _expanded_paragraphs(abs_scaffold, title, gates, falsification_snapshot)
     word_count_hint = sum(len(p.split()) for p in paragraphs)
 
     keywords = [
@@ -225,6 +242,7 @@ def main() -> int:
                 "formatting_notes_en": [
                     "Lead with problem + evaluation protocol, not proprietary formulas.",
                     "Use tables pointing to artifact schema names, not internal weight vectors.",
+                    "Include falsification sensitivity breakpoint as a robustness boundary condition.",
                 ],
             },
             "aaai_industry_track": {
@@ -237,12 +255,14 @@ def main() -> int:
                 "formatting_notes_en": [
                     "Stress governance, rollback, and stakeholder-facing disclosure.",
                     "Keep replication story at artifact + script path level.",
+                    "State falsification pass count and sensitivity breakpoint in deployment risk narrative.",
                 ],
             },
         },
         "keywords_en": keywords,
         "public_safe_boundary": str(draft.get("public_safe_boundary", "")),
         "submission_gate_snapshot": gates,
+        "falsification_snapshot": falsification_snapshot,
     }
 
     out_path = _resolve(repo_root, args.output_json)

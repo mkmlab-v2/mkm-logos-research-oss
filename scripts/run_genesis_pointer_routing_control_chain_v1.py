@@ -44,6 +44,9 @@ def main() -> int:
         _run([py, "scripts/label_genesis_net_efficiency_operating_zone_v1.py", "--go-cut", str(args.go_cut), "--watch-cut", str(args.watch_cut)])
     )
     steps.append(_run([py, "scripts/decide_genesis_pointer_routing_v1.py"]))
+    steps.append(_run([py, "scripts/build_genesis_pointer_route_runtime_config_v1.py"]))
+    steps.append(_run([py, "scripts/pointer_hash_snapping_router_v1.py", "--enable-snap"]))
+    steps.append(_run([py, "scripts/build_pointer_shadow_daily_report_v1.py"]))
 
     all_ok = all(s["exit_code"] == 0 for s in steps)
     out_doc = {

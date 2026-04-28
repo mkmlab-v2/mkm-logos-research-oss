@@ -827,6 +827,17 @@
 - 고급 코치 입력 연결:
   - `projects/mkm/mkm-life/lib/mkm-study-advanced-coach.ts`
   - 하드코딩 출생시각 제거 후 프로필 기반 입력 사용.
+- E2E 스모크:
+  - `projects/mkm/mkm-life/scripts/smoke-mkm-study-e2e.mjs`
+  - npm: `smoke:mkm-study`
+  - 스케줄 등록: `projects/mkm/mkm-life/scripts/Register-MkmStudyE2ESmokeTask.ps1`
+  - 스케줄 실행 래퍼: `projects/mkm/mkm-life/scripts/run-mkm-study-e2e-smoke-task.cmd`
+  - 스케줄 로그: `projects/mkm/mkm-life/reports/mkm_study_e2e_smoke_scheduler_latest.log`
+  - 안정화 메모: `MKMLIFE_BASE_URL`/`SMOKE_STUDENT_ID` 환경값은 trim 처리 후 사용(스케줄러 공백 오염 방지).
+  - 운영 URL 전환 스크립트: `projects/mkm/mkm-life/scripts/Switch-MkmStudySmokeBaseUrl.ps1`
+  - npm: `ops:study-smoke:switch-baseurl` (예: `npm run ops:study-smoke:switch-baseurl -- -BaseUrl "https://<prod-domain>" -RunNow`)
+  - 통합 3종 등록(체질승격+고급게이트+스모크): `projects/mkm/mkm-life/scripts/Register-MkmStudyWeeklyOpsTasks.ps1`
+  - npm: `ops:study-weekly-tasks:register`
 
 ### 18.4 온보딩 필수/선택 계약 (v1)
 
@@ -954,3 +965,166 @@
 - 해석:
   - 즉시 대규모 도메인 코드북 확장보다 안정화 관측 우선.
   - 도메인별 타깃 확장은 domain signal JSON이 확보될 때 조건부로 트리거.
+
+## 22) Genesis Gematria-4D Codebook 파일럿 (FACT, 2026-04-28)
+
+- 실행 스크립트:
+  - `scripts/build_genesis_gematria_4d_codebook_v1.py`
+- 산출물:
+  - `docs/final/artifacts/genesis_gematria_4d_codebook_v1_latest.json`
+- 범위:
+  - 기본 10단어(폭락/금화교역/태양인/변동성 등) 대상 `address_hash64_hex` + `vector_4d` 생성.
+  - `research_only=true`, `promotion_required=true`, `source_track=B`.
+- 복원 프로브:
+  - `exact_match_rate=1.0` (해시 주소 exact lookup 기준).
+- 압축 추정(동일 파일럿):
+  - `raw_utf8_bytes_total=78`
+  - `pointer_payload_bytes_total=80` → `pointer_saving_rate=-0.0256`
+  - `vector4_payload_bytes_total=160` → `vector4_saving_rate=-1.0513`
+- 해석:
+  - 10단어 toy 파일럿에서는 “주소/좌표 페이로드 오버헤드” 때문에 순압축 이득이 아직 없다.
+  - 따라서 “99% 압축·100% 복원”은 현 단계 FACT가 아니며, 대규모 코드북·시퀀스 경로에서 별도 벤치가 필요.
+
+## 23) Genesis 시퀀스 길이별 압축 스윕 (FACT, 2026-04-28)
+
+- 실행 스크립트:
+  - `scripts/run_genesis_sequence_compression_sweep_v1.py`
+- 산출물:
+  - `docs/final/artifacts/genesis_sequence_compression_sweep_latest.json`
+- 기본 실험:
+  - lengths=`10,20,40,80,120,200,400,800,1200`, samples_per_length=`64`
+- 결과 요약:
+  - closed-dictionary lookup 시뮬레이션에서 `pointer_break_even_length_chars=10`, `vector4_break_even_length_chars=10`
+  - 길이가 길수록 pointer 기준 saving rate가 상승(예: 400 chars 버킷에서 `~0.9917`)
+- 해석 제한(중요):
+  - 본 스윕은 **페이로드 바이트 비교 실험**이며, 코드북 구축/동기화/버전 관리 오버헤드는 포함하지 않는다.
+  - `exact_lookup_rate=1.0`은 “닫힌 사전 exact lookup” 조건의 결과로, open-vocabulary 운영 복원을 직접 보증하지 않는다.
+
+## 24) Genesis 순효율(Net) 모델 — 동기화 오버헤드 반영 (FACT, 2026-04-28)
+
+- 실행 스크립트:
+  - `scripts/run_genesis_sequence_net_efficiency_model_v1.py`
+- 산출물:
+  - `docs/final/artifacts/genesis_sequence_net_efficiency_model_latest.json`
+- 기본 모델 파라미터:
+  - `nodes=20`
+  - `daily_sync_bytes=10,485,760` (10 MiB/day)
+  - `daily_message_count=200,000`
+  - `amortized_sync_bytes_per_message=2.62144`
+- 요약:
+  - `pointer_net_break_even_length_chars=10`
+  - `vector4_net_break_even_length_chars=10`
+  - 400 chars 버킷 기준 `pointer_net_saving_rate≈0.9890`
+- 해석 제한:
+  - 균등 분할(메시지/노드) 가정의 모델 값이며, 실제 운영 효율은 churn/cache hit/retry 트래픽에 따라 달라진다.
+
+## 25) Genesis 순효율 민감도 스윕 (FACT, 2026-04-28)
+
+- 실행 스크립트:
+  - `scripts/run_genesis_sequence_net_efficiency_sensitivity_v1.py`
+- 산출물:
+  - `docs/final/artifacts/genesis_sequence_net_efficiency_sensitivity_latest.json`
+- 기본 그리드:
+  - nodes=`[1,5,20,50]`
+  - daily_sync_bytes=`[1MiB,10MiB,50MiB]`
+  - daily_message_count=`[50k,200k,1M]`
+  - 총 `scenario_count=36`
+- 요약:
+  - 400 chars 기준 pointer 순절감률 `>= 0.99` 구간 수: `13`
+  - 고오버헤드 시나리오(예: nodes=1, sync=50MiB/day, msg=50k/day)는 400 chars에서도 음수/저효율 가능.
+  - 반대로 분산/고트래픽 조건에서는 400 chars에서 `~0.99` 구간 다수 관측.
+- 해석:
+  - “99% 구간”은 존재하지만 운영 조건(노드 수·메시지량·사전 동기화 비용)에 민감.
+  - 따라서 본선 주장 시 단일 숫자보다 운영 파라미터와 함께 제시해야 Fact-Lock 정합.
+
+## 26) Genesis 운영 권장영역(Go/Watch/Hold) 라벨링 (FACT, 2026-04-28)
+
+- 실행 스크립트:
+  - `scripts/label_genesis_net_efficiency_operating_zone_v1.py`
+- 산출물:
+  - `docs/final/artifacts/genesis_sequence_net_efficiency_operating_zone_latest.json`
+- 기본 컷:
+  - `GO`: pointer_net_saving_rate_at_400_chars `>= 0.99` AND pointer_break_even `<= 20`
+  - `WATCH`: pointer_net_saving_rate_at_400_chars `>= 0.95` AND pointer_break_even `<= 120`
+  - 그 외 `HOLD`
+- 최신 집계:
+  - `GO=13`, `WATCH=14`, `HOLD=9` (총 36 시나리오)
+- 해석:
+  - 고오버헤드·저트래픽 조합은 `HOLD`가 명확하며, 분산/고트래픽 조건에서 `GO` 비중이 증가.
+
+### 26.1 지휘관 기준 임계값 재적용 (FACT, 2026-04-28)
+
+- 재실행:
+  - `py scripts/label_genesis_net_efficiency_operating_zone_v1.py --go-cut 0.9 --watch-cut 0.5`
+- 최신 컷:
+  - `GO`: 순효율 `>= 0.9`
+  - `WATCH`: `0.5 <= 순효율 < 0.9`
+  - `HOLD`: `< 0.5`
+- 최신 집계:
+  - `GO=27`, `WATCH=8`, `HOLD=1`
+- HOLD 대표 시나리오:
+  - `nodes=1`, `daily_sync_bytes=50MiB`, `daily_message_count=50k`
+  - `pointer_net_saving_rate_at_400_chars=-0.0932` (음수)
+
+## 27) Genesis 판정기 → 라우팅 스위치 연결 (FACT, 2026-04-28)
+
+- 결정 스크립트:
+  - `scripts/decide_genesis_pointer_routing_v1.py`
+- 체인 스크립트(원클릭):
+  - `scripts/run_genesis_pointer_routing_control_chain_v1.py`
+  - sweep → net model → sensitivity → zone label → routing decision 순서로 직렬 실행.
+- 결정 아티팩트:
+  - `docs/final/artifacts/genesis_pointer_routing_decision_latest.json`
+  - 최신값: `decision=SHADOW_POINTER_ROUTE`, `route_mode=pointer_shadow`
+  - 근거: `go_ratio=0.75`, `hold_count=1` (enable 조건 `hold_count<=0` 미충족)
+- 체인 아티팩트:
+  - `docs/final/artifacts/genesis_pointer_routing_control_chain_latest.json`
+  - 최신값: `all_ok=true`
+- 안전장치:
+  - fallback 모드: `track_a_primary`
+  - 강제 비활성 환경변수: `GENESIS_POINTER_ROUTE_FORCE_DISABLE=1`
+
+### 27.1 런타임 설정 브리지 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_genesis_pointer_route_runtime_config_v1.py`
+- 산출물:
+  - `docs/final/artifacts/genesis_pointer_route_runtime_config_latest.json`
+- 역할:
+  - 정책 결정 JSON(`genesis_pointer_routing_decision_latest.json`)을 런타임 소비용 단일 설정으로 변환.
+  - 주요 필드: `pointer_enabled`, `pointer_shadow`, `track_a_primary`, `disable_switch_env`.
+- 체인 반영:
+  - `scripts/run_genesis_pointer_routing_control_chain_v1.py` 마지막 단계에 runtime config 생성 포함.
+  - 최신 기준 `route_mode=pointer_shadow`, `pointer_enabled=false`, `pointer_shadow=true`.
+
+### 27.2 Pointer Hash Snapping Router (Shadow) (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/pointer_hash_snapping_router_v1.py`
+- 산출물:
+  - `docs/final/artifacts/pointer_hash_snapping_router_shadow_latest.json`
+- 동작:
+  - 런타임 설정(`genesis_pointer_route_runtime_config_latest.json`)과 Genesis 코드북을 읽어 입력 텍스트를 pointer 후보로 평가.
+  - `--enable-snap` 시 OOV 토큰에 대해 근접 문자열 스냅(L3 유사 가드)을 시도.
+  - Shadow 모드에서는 pointer 후보가 유효해도 실선택 경로는 `track_a_primary` 유지(관측 전용).
+- 최신 스모크:
+  - `pointer_candidate_ok_count=2`, `selected_pointer_count=0`, `selected_track_a_count=3`
+  - 체인(`run_genesis_pointer_routing_control_chain_v1.py`)에 shadow router 단계 포함 후 `all_ok=true`.
+
+### 27.3 Shadow 일일 통계 리포터 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_pointer_shadow_daily_report_v1.py`
+- 산출물:
+  - `docs/final/artifacts/pointer_hash_snapping_router_shadow_daily_report_latest.json`
+  - `reports/pointer_hash_snapping_router_shadow_log_v1.jsonl`
+- 집계 항목:
+  - `avg_pointer_candidate_ok_rate`
+  - `avg_snap_event_rate`
+  - `avg_unresolved_token_per_run`
+- 체인 반영:
+  - `run_genesis_pointer_routing_control_chain_v1.py`에 daily reporter 단계 포함.
+- 최신 24h 샘플:
+  - `sample_count=1`
+  - `avg_pointer_candidate_ok_rate=0.6667`
+  - `avg_unresolved_token_per_run=4.0`

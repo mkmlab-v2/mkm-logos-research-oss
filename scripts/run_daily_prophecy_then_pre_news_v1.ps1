@@ -189,6 +189,14 @@ if ($EnableCausalThresholdSweep) {
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }
+
+    & py -3 "scripts\alert_prophecy_guard_profile_transition_v1.py" `
+        --decision-json "docs/final/artifacts/prophecy_causal_active_guard_policy_decision_latest.json" `
+        --state-json "docs/final/artifacts/prophecy_causal_active_guard_profile_state_latest.json" `
+        --out-alert-json "docs/final/artifacts/prophecy_causal_active_guard_profile_transition_alert_latest.json"
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
 }
 
 exit 0

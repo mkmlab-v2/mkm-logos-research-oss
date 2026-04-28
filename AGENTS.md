@@ -64,6 +64,9 @@
 ## 압축 파이프라인 투트랙 (Fact-Lock 요약)
 
 - **정책**: `docs/final/COMPRESSION_SLA_POLICY_V1.md` — Track A(범용)·Track B(리터럴), 산출 JSON, 손실 패턴 리포트, 웹훅은 `active_kpi`(Track A) 기준.
+- **용어 고정**: 공식 운영 트랙은 **Track A/Track B**. `Track Q`는 본 레포 SSOT의 공식 메인 트랙명으로 고정하지 않는다(세부: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §20).
+- **4D/게마트리아 위치**: 보조 특성/가산 채널/연구 스파이크로 사용 가능하되, A/B 승격 규칙·명칭을 대체하지 않는다.
+- **수치 판정 원칙**: “A 고압축, B 무손실”은 경향 설명이며, 최종 판정은 해당 시점 아티팩트 JSON 필드값으로 확정한다.
 - **실행**: `scripts/run_ultra_compression_default.py` / `--mode literal` / `--mode ultra-literal`(연구·극정밀); `scripts/run_compression_automation_chain.ps1 -IncludeLiteralTrack` / `-IncludeUltraLiteralTrack`; 헬스: `scripts/run_workspace_automation_health.ps1 -IncludeCompressionKpi [-IncludeLiteralTrack]`(체인은 in-process 호출).
 - **주간 거버넌스(갱신 일자 리포트)**: `scripts/run_compression_weekly_governance_chain.ps1` → SSOT `docs/final/artifacts/compression_weekly_governance_report_latest.json`, 동일 페이로드의 일자 파일 `compression_weekly_governance_report_YYYY-MM-DD.json`(UTC·로컬/스케줄러; `.gitignore`로 날짜별 파일은 저장소 비추적), 로그 `reports/compression_weekly_governance_log.jsonl`. Windows 작업 스케줄 등록: `scripts/Register-CompressionWeeklyGovernanceTask.ps1` (기본 일요일 07:00; `-Remove`로 해제).
 - **Track A 상용화 하네스(시뮬·섀도우·계량·SLA 초안):** `run_track_a_conversational_cost_simulation.py` · `run_track_a_shadow_corpus_eval.py` / `Run-TrackAShadowJsonlSample.ps1` · `compression_token_api_stub.py`의 `POST /v1/metering/log`·`eval_context.meter_log`·`run_track_a_metering_summary.py` (`Run-TrackAMeteringSummary.ps1`)·`run_track_a_metering_weekly_report.py` (`Run-TrackAMeteringWeeklyReport.ps1`)·`check_track_a_metering_band_gate.py`·`build_track_a_signal_light_report.py`·`run_track_a_commercialization_daily_chain.ps1` (`Register-TrackACommercializationDailyTask.ps1`, 기본 `GateMode=warning`) · `docs/final/TRACK_A_SLA_DRAFT.md` — 상세·경로는 `docs/final/P0_COMMERCIALIZATION_TRACKER.md` 압축·L2 절.
