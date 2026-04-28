@@ -1,0 +1,41 @@
+{
+  "schema": "two_track_presenter_notes_v1",
+  "generated_at_utc": "2026-04-28T03:14:02Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "notes_60s": [
+    {
+      "audience": "investor",
+      "seconds": 60,
+      "script": "investor: two-track safety-gated summary"
+    },
+    {
+      "audience": "policy",
+      "seconds": 60,
+      "script": "policy: two-track safety-gated summary"
+    },
+    {
+      "audience": "technical",
+      "seconds": 60,
+      "script": "technical: two-track safety-gated summary"
+    }
+  ],
+  "notes_180s": [
+    {
+      "audience": "investor",
+      "seconds": 180,
+      "script": "investor: expanded two-track method, evidence, and boundary"
+    },
+    {
+      "audience": "policy",
+      "seconds": 180,
+      "script": "policy: expanded two-track method, evidence, and boundary"
+    },
+    {
+      "audience": "technical",
+      "seconds": 180,
+      "script": "technical: expanded two-track method, evidence, and boundary"
+    }
+  ]
+}

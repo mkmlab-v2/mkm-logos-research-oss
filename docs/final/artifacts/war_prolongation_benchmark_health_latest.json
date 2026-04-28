@@ -1,17 +1,17 @@
 ﻿{
     "schema":  "war_prolongation_benchmark_health_v1",
-    "generated_at_utc":  "2026-04-23T00:56:02Z",
+    "generated_at_utc":  "2026-04-28T00:56:03Z",
     "task":  {
                  "name":  "MKM-War-Prolongation-Autopilot-Daily",
                  "exists":  true,
                  "state":  "Ready",
                  "last_task_result":  0,
-                 "last_run_time":  "\/Date(1776905401000)\/",
-                 "next_run_time":  "\/Date(1776991800000)\/"
+                 "last_run_time":  "\/Date(1777337401000)\/",
+                 "next_run_time":  "\/Date(1777423800000)\/"
              },
     "latest_run_log":  {
                            "schema":  "war_prolongation_resilient_run_log_v1",
-                           "generated_at_utc":  "2026-04-23T00:53:07Z",
+                           "generated_at_utc":  "2026-04-28T00:53:10Z",
                            "attempt":  1,
                            "status":  "ok",
                            "message":  "Chain completed successfully.",
@@ -22,19 +22,19 @@
     "latest_bundle_snapshot":  {
                                    "spot_hit_rate":  0.5,
                                    "window_hit_rate_h1":  0.5,
-                                   "window_hit_rate_h5":  0.75,
-                                   "window_hit_rate_h20":  0.25,
+                                   "window_hit_rate_h5":  0.5,
+                                   "window_hit_rate_h20":  0.0,
                                    "significance_n":  1440,
                                    "significance_p_value":  0.0,
                                    "significance_pass":  true,
-                                   "perf_per_w_uplift_pct":  6.984345,
-                                   "gate_decision":  "GO",
+                                   "perf_per_w_uplift_pct":  -68.959461,
+                                   "gate_decision":  "NO_GO",
                                    "gate_reasons":  [
-
+                                                        "performance_per_watt_no_uplift"
                                                     ]
                                },
-    "status":  "ok",
+    "status":  "attention",
     "issues":  [
-
+                   "gate_not_go"
                ]
 }

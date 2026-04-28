@@ -1,0 +1,66 @@
+{
+  "schema": "two_track_academic_submission_packet_v1",
+  "generated_at_utc": "2026-04-28T03:14:02Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "sources": {
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\aramaic_regime_shift_score_latest.json",
+    "survivor_json": "C:\\workspace\\docs\\final\\artifacts\\insight_survivor_candidates_latest.json",
+    "qa_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_qa_pack_latest.json"
+  },
+  "abstract_scaffold": {
+    "problem": "Overfitting risk in meaning-rich signals",
+    "method": "Two-track + survivor + rollback",
+    "result": "shift_score=0.8034, survivor_count=5",
+    "claim_boundary": "research only / public-safe boundary"
+  },
+  "experiment_table": [
+    {
+      "metric": "shift_score",
+      "value": 0.803353,
+      "source": "C:\\workspace\\docs\\final\\artifacts\\aramaic_regime_shift_score_latest.json"
+    },
+    {
+      "metric": "survivor_count",
+      "value": 5,
+      "source": "C:\\workspace\\docs\\final\\artifacts\\insight_survivor_candidates_latest.json"
+    },
+    {
+      "metric": "ci_low_defense_contrib",
+      "value": 0.616703,
+      "source": "C:\\workspace\\docs\\final\\artifacts\\insight_survivor_candidates_latest.json"
+    }
+  ],
+  "falsification_checklist": [
+    {
+      "id": "F1",
+      "status": "pending"
+    },
+    {
+      "id": "F2",
+      "status": "pending"
+    },
+    {
+      "id": "F3",
+      "status": "pending"
+    },
+    {
+      "id": "F4",
+      "status": "pending"
+    },
+    {
+      "id": "F5",
+      "status": "in_progress"
+    }
+  ],
+  "defense_evidence_contract": {
+    "require_evidence_fields": [
+      "source_artifact",
+      "metric_value",
+      "as_of_utc",
+      "rollback_rule",
+      "gate_eval"
+    ]
+  }
+}

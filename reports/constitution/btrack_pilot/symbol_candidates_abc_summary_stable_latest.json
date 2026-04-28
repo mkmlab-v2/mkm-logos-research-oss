@@ -1,6 +1,6 @@
 {
   "schema": "btrack_symbol_abc_label_v1",
-  "generated_at_utc": "2026-04-23T01:15:57Z",
+  "generated_at_utc": "2026-04-28T02:16:02Z",
   "mode": "single",
   "profile_tag": "stable",
   "inputs": {
@@ -30,7 +30,7 @@
         "dss": 0,
         "apocrypha": 26
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "ישראל",
@@ -43,7 +43,7 @@
         "dss": 2,
         "apocrypha": 10
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "רוח",
@@ -56,7 +56,7 @@
         "dss": 0,
         "apocrypha": 10
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "אלהים",
@@ -69,7 +69,7 @@
         "dss": 2,
         "apocrypha": 5
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "חסד",
@@ -82,7 +82,7 @@
         "dss": 0,
         "apocrypha": 7
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "ירושלים",
@@ -95,7 +95,7 @@
         "dss": 0,
         "apocrypha": 7
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "מלחמה",
@@ -108,7 +108,7 @@
         "dss": 0,
         "apocrypha": 6
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "מלך",
@@ -121,7 +121,7 @@
         "dss": 0,
         "apocrypha": 6
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "חכמה",
@@ -134,7 +134,7 @@
         "dss": 0,
         "apocrypha": 4
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "משפט",
@@ -147,7 +147,7 @@
         "dss": 0,
         "apocrypha": 4
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "צדק",
@@ -160,7 +160,7 @@
         "dss": 0,
         "apocrypha": 3
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "ברית",
@@ -173,7 +173,7 @@
         "dss": 0,
         "apocrypha": 3
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "בני ישראל",
@@ -186,7 +186,7 @@
         "dss": 2,
         "apocrypha": 1
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "שמים",
@@ -199,7 +199,7 @@
         "dss": 0,
         "apocrypha": 2
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "עליון",
@@ -212,7 +212,7 @@
         "dss": 2,
         "apocrypha": 6
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "גבול",
@@ -225,7 +225,7 @@
         "dss": 2,
         "apocrypha": 1
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "בני אלהים",
@@ -238,7 +238,7 @@
         "dss": 2,
         "apocrypha": 0
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "עמים",
@@ -251,7 +251,7 @@
         "dss": 2,
         "apocrypha": 0
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "עליון עמים",
@@ -264,7 +264,7 @@
         "dss": 2,
         "apocrypha": 0
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     },
     {
       "symbol": "נחלה",
@@ -277,7 +277,7 @@
         "dss": 1,
         "apocrypha": 1
       },
-      "generated_at_utc": "2026-04-23T01:15:57Z"
+      "generated_at_utc": "2026-04-28T02:16:02Z"
     }
   ],
   "note": "A/B/C are heuristic operational labels, not doctrinal certainty."

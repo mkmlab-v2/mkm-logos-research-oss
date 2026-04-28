@@ -1,0 +1,13 @@
+{
+  "schema": "prophecy_causal_active_apply_v1",
+  "generated_at_utc": "2026-04-28T03:13:54Z",
+  "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+  "backup_score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_pre_causal_active_latest.json",
+  "sweep_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_causal_threshold_sweep_v1_latest.json",
+  "applied_low_thr": -0.06,
+  "applied_high_thr": -0.05,
+  "changed_rows": 58,
+  "missing_prior_rows": 0,
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]"
+}

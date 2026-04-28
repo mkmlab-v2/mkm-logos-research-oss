@@ -1,6 +1,6 @@
 {
   "schema": "l1_inverse_decoder_mode_router_v3_canary_decision_v1",
-  "generated_at_utc": "2026-04-15T03:26:59+00:00",
+  "generated_at_utc": "2026-04-28T02:25:06+00:00",
   "research_only": true,
   "inputs": {
     "daily_gate_artifact": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_daily_gate_v1_latest.json",

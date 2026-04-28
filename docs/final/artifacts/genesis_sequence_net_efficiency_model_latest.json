@@ -1,0 +1,126 @@
+{
+  "schema": "genesis_sequence_net_efficiency_model_v1",
+  "generated_at_utc": "2026-04-28T03:07:36+00:00",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "inputs": {
+    "sweep_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_sequence_compression_sweep_latest.json",
+    "nodes": 20,
+    "daily_sync_bytes": 10485760,
+    "daily_message_count": 200000
+  },
+  "model": {
+    "amortized_sync_bytes_per_message": 2.62144,
+    "assumption": "sync cost is evenly amortized across all daily messages and nodes"
+  },
+  "rows": [
+    {
+      "target_length_chars": 10,
+      "avg_raw_utf8_bytes": 24.96875,
+      "pointer_payload_bytes": 8.0,
+      "vector4_payload_bytes": 16.0,
+      "amortized_sync_bytes_per_message": 2.62144,
+      "pointer_net_payload_bytes": 10.62144,
+      "vector4_net_payload_bytes": 18.62144,
+      "pointer_net_saving_rate": 0.5746106633291614,
+      "vector4_net_saving_rate": 0.25421016270337926
+    },
+    {
+      "target_length_chars": 20,
+      "avg_raw_utf8_bytes": 49.0,
+      "pointer_payload_bytes": 8.0,
+      "vector4_payload_bytes": 16.0,
+      "amortized_sync_bytes_per_message": 2.62144,
+      "pointer_net_payload_bytes": 10.62144,
+      "vector4_net_payload_bytes": 18.62144,
+      "pointer_net_saving_rate": 0.783235918367347,
+      "vector4_net_saving_rate": 0.619970612244898
+    },
+    {
+      "target_length_chars": 40,
+      "avg_raw_utf8_bytes": 98.0,
+      "pointer_payload_bytes": 8.0,
+      "vector4_payload_bytes": 16.0,
+      "amortized_sync_bytes_per_message": 2.62144,
+      "pointer_net_payload_bytes": 10.62144,
+      "vector4_net_payload_bytes": 18.62144,
+      "pointer_net_saving_rate": 0.8916179591836735,
+      "vector4_net_saving_rate": 0.809985306122449
+    },
+    {
+      "target_length_chars": 80,
+      "avg_raw_utf8_bytes": 194.0,
+      "pointer_payload_bytes": 8.0,
+      "vector4_payload_bytes": 16.0,
+      "amortized_sync_bytes_per_message": 2.62144,
+      "pointer_net_payload_bytes": 10.62144,
+      "vector4_net_payload_bytes": 18.62144,
+      "pointer_net_saving_rate": 0.9452503092783505,
+      "vector4_net_saving_rate": 0.9040131958762887
+    },
+    {
+      "target_length_chars": 120,
+      "avg_raw_utf8_bytes": 290.0,
+      "pointer_payload_bytes": 8.0,
+      "vector4_payload_bytes": 16.0,
+      "amortized_sync_bytes_per_message": 2.62144,
+      "pointer_net_payload_bytes": 10.62144,
+      "vector4_net_payload_bytes": 18.62144,
+      "pointer_net_saving_rate": 0.9633743448275862,
+      "vector4_net_saving_rate": 0.9357881379310344
+    },
+    {
+      "target_length_chars": 200,
+      "avg_raw_utf8_bytes": 483.8125,
+      "pointer_payload_bytes": 8.0,
+      "vector4_payload_bytes": 16.0,
+      "amortized_sync_bytes_per_message": 2.62144,
+      "pointer_net_payload_bytes": 10.62144,
+      "vector4_net_payload_bytes": 18.62144,
+      "pointer_net_saving_rate": 0.9780463712698618,
+      "vector4_net_saving_rate": 0.9615110399173233
+    },
+    {
+      "target_length_chars": 400,
+      "avg_raw_utf8_bytes": 966.5,
+      "pointer_payload_bytes": 8.0,
+      "vector4_payload_bytes": 16.0,
+      "amortized_sync_bytes_per_message": 2.62144,
+      "pointer_net_payload_bytes": 10.62144,
+      "vector4_net_payload_bytes": 18.62144,
+      "pointer_net_saving_rate": 0.9890104086911536,
+      "vector4_net_saving_rate": 0.9807331195033626
+    },
+    {
+      "target_length_chars": 800,
+      "avg_raw_utf8_bytes": 1932.0,
+      "pointer_payload_bytes": 8.0,
+      "vector4_payload_bytes": 16.0,
+      "amortized_sync_bytes_per_message": 2.62144,
+      "pointer_net_payload_bytes": 10.62144,
+      "vector4_net_payload_bytes": 18.62144,
+      "pointer_net_saving_rate": 0.9945023602484472,
+      "vector4_net_saving_rate": 0.9903615734989648
+    },
+    {
+      "target_length_chars": 1200,
+      "avg_raw_utf8_bytes": 2898.0,
+      "pointer_payload_bytes": 8.0,
+      "vector4_payload_bytes": 16.0,
+      "amortized_sync_bytes_per_message": 2.62144,
+      "pointer_net_payload_bytes": 10.62144,
+      "vector4_net_payload_bytes": 18.62144,
+      "pointer_net_saving_rate": 0.9963349068322981,
+      "vector4_net_saving_rate": 0.9935743823326432
+    }
+  ],
+  "summary": {
+    "pointer_net_break_even_length_chars": 10,
+    "vector4_net_break_even_length_chars": 10
+  },
+  "notes": [
+    "Model-based estimate only; real ops depends on churn rate, cache hit, and rollout cadence.",
+    "This includes sync overhead amortization but excludes operational retries and failure traffic."
+  ]
+}

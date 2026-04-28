@@ -1,0 +1,173 @@
+{
+  "schema": "two_track_submission_prereq_check_v1",
+  "generated_at_utc": "2026-04-28T02:30:53Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "required_artifacts": [
+    {
+      "name": "falsification_suite",
+      "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_suite_latest.json",
+      "exists": false,
+      "generated_at_utc": null
+    },
+    {
+      "name": "benchmark_comparison",
+      "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_benchmark_comparison_latest.json",
+      "exists": false,
+      "generated_at_utc": null
+    },
+    {
+      "name": "statistical_significance",
+      "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_statistical_significance_report_latest.json",
+      "exists": false,
+      "generated_at_utc": null
+    },
+    {
+      "name": "raw_oos_readiness",
+      "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_raw_oos_readiness_latest.json",
+      "exists": false,
+      "generated_at_utc": null
+    },
+    {
+      "name": "public_safe_report",
+      "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_public_safe_report_latest.json",
+      "exists": false,
+      "generated_at_utc": null
+    }
+  ],
+  "chain_scan": {
+    "chain_script": "C:\\workspace\\scripts\\run_aramaic_mvp_chain_v1.ps1",
+    "python_script_refs_count": 38,
+    "missing_python_refs_count": 29,
+    "missing_python_refs": [
+      {
+        "script": "scripts/score_aramaic_regime_shift_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/run_aramaic_regime_shift_weight_sweep_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/run_aramaic_regime_shift_shadow_compare_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_bible_meaning_graph_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/extract_bible_meaning_insight_candidates_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_insight_survivor_eval_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/select_insight_survivor_candidates_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/sweep_aramaic_insight_cap_bucket_thresholds_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/report_aramaic_insight_cap_threshold_history_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/alert_aramaic_insight_cap_threshold_drift_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_bible_meaning_knowledge_ip_report_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/alert_insight_survivor_health_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_fusion_report_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_fusion_brief_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_fusion_presentation_brief_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_presentation_copydeck_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_presentation_audience_pack_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_presenter_notes_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_qa_pack_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_academic_submission_packet_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/run_two_track_falsification_suite_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_benchmark_comparison_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_raw_oos_samples_seed_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/ingest_two_track_raw_oos_from_audit_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_statistical_significance_report_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/report_two_track_raw_oos_readiness_v1.py",
+        "exists": false
+      },
+      {
+        "script": "scripts/build_two_track_public_safe_report_v1.py",
+        "exists": false
+      }
+    ]
+  },
+  "gates": {
+    "required_artifacts_ready": false,
+    "chain_python_refs_ready": false,
+    "missing_required_artifacts": [
+      "falsification_suite",
+      "benchmark_comparison",
+      "statistical_significance",
+      "raw_oos_readiness",
+      "public_safe_report"
+    ]
+  }
+}

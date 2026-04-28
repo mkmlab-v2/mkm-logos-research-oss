@@ -1,0 +1,19 @@
+{
+  "schema": "aramaic_regime_shift_shadow_compare_v1",
+  "generated_at_utc": "2026-04-28T03:14:01Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "baseline": {
+    "shift_score": 0.803353
+  },
+  "best_weight": {
+    "shift_score": 0.833353
+  },
+  "delta": {
+    "shift_score": 0.03
+  },
+  "insight_impact": {
+    "insight_delta_applied": 0.015
+  }
+}

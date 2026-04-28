@@ -1,0 +1,37 @@
+{
+  "schema": "l1_mode_router_v3_codebook_expansion_recommendation_v1",
+  "generated_at_utc": "2026-04-28T02:47:51+00:00",
+  "research_only": true,
+  "inputs": {
+    "canary_log": "C:\\workspace\\reports\\l1_inverse_decoder_mode_router_v3_canary_log_v1.jsonl",
+    "longsample_gate": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_swap_typo_mode_router_decoder_v3_longsample_gate_v1.json",
+    "lookback_days": 7,
+    "min_samples": 5,
+    "latency_warning_delta_ms": -5.0,
+    "uplift_warning_delta": 0.003,
+    "domain_signal_json": null
+  },
+  "window_stats": {
+    "sample_count": 102,
+    "keep_count": 100,
+    "rollback_count": 2,
+    "keep_rate": 0.9803921568627451,
+    "avg_swap_typo_exact_delta": 0.2838071895424833,
+    "avg_swap_typo_recovery_delta": 0.2719934640522878,
+    "avg_swap_typo_p95_latency_delta_ms": -6.590609648083048
+  },
+  "gate_snapshot": {
+    "decision": "GO_CANDIDATE_FOR_CANARY",
+    "all_ok": true,
+    "hard_all_ok": true
+  },
+  "domain_signal": null,
+  "recommendation": "HOLD_RELIABILITY_VOLATILE",
+  "why": [
+    "recent_rollbacks_present"
+  ],
+  "next_actions": [
+    "continue_7day_burnin_monitoring",
+    "trigger_domain_codebook_expansion_only_if_recommendation_starts_with_HOLD_and_domain_signal_identifies_hotspots"
+  ]
+}

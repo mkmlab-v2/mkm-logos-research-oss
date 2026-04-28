@@ -1,0 +1,13 @@
+{
+  "schema": "insight_survivor_health_alert_v1",
+  "generated_at_utc": "2026-04-28T03:14:01Z",
+  "source_track": "T",
+  "research_only": true,
+  "promotion_required": true,
+  "should_alert": false,
+  "reason": "stable_or_insufficient_history",
+  "latest": {
+    "survivor_count": 5,
+    "survivor_mean_score": 0.52252
+  }
+}

@@ -1,0 +1,11 @@
+﻿{
+    "schema":  "l1_inverse_decoder_mode_router_v3_canary_rollback_event_v1",
+    "generated_at_utc":  "2026-04-28T01:13:36.2381804Z",
+    "action":  "ROLLBACK_TO_V4",
+    "applied":  true,
+    "applied_target":  "UserEnvironmentVariable",
+    "env_key":  "L1_INVERSE_DECODER_MODE_ROUTER_V3_FORCE_DISABLE",
+    "env_value":  "1",
+    "rollback_switch":  "L1_INVERSE_DECODER_MODE_ROUTER_V3_FORCE_DISABLE=1",
+    "source_status":  "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_mode_router_v3_canary_status_latest.json"
+}

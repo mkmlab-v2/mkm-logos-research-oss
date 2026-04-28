@@ -1,10 +1,10 @@
 {
   "schema": "prophecy_overlay_ablation_spike_v1",
-  "generated_at_utc": "2026-04-18T07:32:10Z",
+  "generated_at_utc": "2026-04-28T03:13:54Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
-    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "score_json": "c:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
     "year_map_json": "C:\\workspace\\docs\\final\\artifacts\\4d_to_ohaeng_regime_year_map_sample_v1.json",
     "overlay": "prior_day_shock_bear_abstain_v0",
     "stress_years_resolved": [
@@ -19,21 +19,21 @@
       2020,
       2021
     ],
-    "kospi_csv": "C:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
-    "prior_return_threshold": -0.048
+    "kospi_csv": "c:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
+    "prior_return_threshold": -0.06
   },
   "baseline": {
-    "price_directional_hit_rate": 0.416667,
-    "n_evaluated": 60,
-    "hits": 25
+    "price_directional_hit_rate": 0.0,
+    "n_evaluated": 59,
+    "hits": 0
   },
   "after_overlay": {
-    "price_directional_hit_rate": 0.383333,
-    "n_evaluated": 60,
-    "hits": 23,
-    "overlay_rows_modified": 6
+    "price_directional_hit_rate": 0.0,
+    "n_evaluated": 59,
+    "hits": 0,
+    "overlay_rows_modified": 0
   },
-  "delta_hit_rate": -0.033334,
+  "delta_hit_rate": 0.0,
   "notes": [
     "Same scoring rules as eval_prophecy_hit_rate_v1 price mode over rows[].",
     "Overlay is a measurement placeholder — not admission to Track A / live routing.",

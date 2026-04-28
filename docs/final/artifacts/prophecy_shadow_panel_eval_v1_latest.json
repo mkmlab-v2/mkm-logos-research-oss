@@ -1,28 +1,28 @@
 {
   "schema": "prophecy_shadow_panel_eval_v1",
-  "generated_at_utc": "2026-04-18T13:12:54Z",
+  "generated_at_utc": "2026-04-28T03:13:51Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
-    "score_json": "docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
-    "kospi_csv": "C:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
-    "btc_csv": "research\\market_data\\btc_daily_external_yf.csv",
+    "score_json": "c:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "kospi_csv": "c:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
+    "btc_csv": "c:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
     "shadow_mode": "all",
     "combo_sweep_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_instrument_combo_sweep_v1_latest.json",
     "holdout_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_per_date_combo_holdout_v1_latest.json",
-    "walkforward_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_per_date_combo_walkforward_v1_latest.json"
+    "walkforward_json": "c:\\workspace\\docs\\final\\artifacts\\prophecy_per_date_combo_walkforward_v1_latest.json"
   },
   "baseline": {
     "lane_id": "current_panel_prediction",
     "metrics": {
-      "price_directional_hit_rate": 0.416667,
-      "n_evaluated": 60,
-      "price_hits": 25
+      "price_directional_hit_rate": 0.0,
+      "n_evaluated": 59,
+      "price_hits": 0
     }
   },
   "control": {
     "lane_id": "always_bull_control",
-    "price_directional_hit_rate": 0.566667
+    "price_directional_hit_rate": 0.610169
   },
   "lanes": [
     {
@@ -31,27 +31,27 @@
       "params": {
         "kospi_mode": "bull",
         "btc": {
-          "low_thr": -0.03,
-          "high_thr": -0.02
+          "low_thr": -0.06,
+          "high_thr": -0.05
         }
       },
       "metrics_all": {
-        "price_directional_hit_rate": 0.583333,
-        "n_evaluated": 60,
-        "price_hits": 35
+        "price_directional_hit_rate": 0.610169,
+        "n_evaluated": 59,
+        "price_hits": 36
       },
       "metrics_kospi_leg": {
-        "price_directional_hit_rate": 0.566667,
-        "n_evaluated": 30,
-        "price_hits": 17
-      },
-      "metrics_btc_leg": {
         "price_directional_hit_rate": 0.6,
         "n_evaluated": 30,
         "price_hits": 18
       },
-      "delta_vs_baseline": 0.166666,
-      "delta_vs_always_bull_control": 0.016666
+      "metrics_btc_leg": {
+        "price_directional_hit_rate": 0.62069,
+        "n_evaluated": 29,
+        "price_hits": 18
+      },
+      "delta_vs_baseline": 0.610169,
+      "delta_vs_always_bull_control": -0.0
     },
     {
       "lane_id": "per_date_lens_holdout_best_v1",
@@ -66,8 +66,8 @@
         "down_thr": -0.5
       },
       "metrics_all": {
-        "price_directional_hit_rate": 0.616667,
-        "n_evaluated": 60,
+        "price_directional_hit_rate": 0.627119,
+        "n_evaluated": 59,
         "price_hits": 37
       },
       "metrics_kospi_leg": {
@@ -76,12 +76,12 @@
         "price_hits": 21
       },
       "metrics_btc_leg": {
-        "price_directional_hit_rate": 0.533333,
-        "n_evaluated": 30,
+        "price_directional_hit_rate": 0.551724,
+        "n_evaluated": 29,
         "price_hits": 16
       },
-      "delta_vs_baseline": 0.2,
-      "delta_vs_always_bull_control": 0.05,
+      "delta_vs_baseline": 0.627119,
+      "delta_vs_always_bull_control": 0.01695,
       "holdout_test_summary": {
         "accuracy": 0.633333,
         "hits": 19,
@@ -92,26 +92,29 @@
     {
       "lane_id": "per_date_combo_walkforward_aggregate_v1",
       "lane_kind": "fold_aggregate",
-      "source_artifact": "C:\\workspace\\docs\\final\\artifacts\\prophecy_per_date_combo_walkforward_v1_latest.json",
+      "source_artifact": "c:\\workspace\\docs\\final\\artifacts\\prophecy_per_date_combo_walkforward_v1_latest.json",
       "metrics_all": null,
       "walkforward_aggregate": {
-        "mean_test_accuracy": 0.479167,
-        "stdev_test_accuracy": 0.223413,
-        "min_test_accuracy": 0.25,
-        "max_test_accuracy": 0.833333,
-        "fraction_test_beats_always_bull": 0.25
+        "mean_test_accuracy": 0.32,
+        "stdev_test_accuracy": 0.203961,
+        "min_test_accuracy": 0.0,
+        "max_test_accuracy": 0.6,
+        "fraction_test_beats_always_bull": 0.2
       },
-      "walkforward_fold_count": 4,
+      "walkforward_fold_count": 5,
       "walkforward_inputs": {
-        "score_json": "docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
-        "kospi_csv": "C:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
-        "btc_csv": "research\\market_data\\btc_daily_external_yf.csv",
-        "n_folds": 5,
-        "n_folds_requested": 5,
-        "n_folds_effective": 5,
+        "score_json": "c:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+        "kospi_csv": "c:\\workspace\\research\\market_data\\kospi_daily_external_yf.csv",
+        "btc_csv": "c:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+        "target_instrument": "btc",
+        "train_objective": "margin_vs_bull",
+        "n_rows_after_target_filter": 29,
+        "n_folds": 6,
+        "n_folds_requested": 6,
+        "n_folds_effective": 6,
         "n_folds_clamped": false,
-        "n_distinct_eval_dates": 30,
-        "n_walkforward_folds": 4,
+        "n_distinct_eval_dates": 29,
+        "n_walkforward_folds": 5,
         "note": "Blocked chronological walk-forward: test block f uses only params fit on dates strictly before that block."
       }
     }

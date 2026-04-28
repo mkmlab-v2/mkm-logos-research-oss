@@ -1,0 +1,9 @@
+{
+  "schema": "a_track_promotion_decision_v1",
+  "generated_at": "2026-04-28T01:25:53+00:00",
+  "action": "approve",
+  "status": "accepted",
+  "requested_stage": "S2_PAPER_STRICT",
+  "approver": "PRO",
+  "note": "Manual operator receipt for A-track stage gate."
+}

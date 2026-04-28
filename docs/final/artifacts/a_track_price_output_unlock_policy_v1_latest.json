@@ -1,0 +1,12 @@
+{
+  "schema": "a_track_price_output_unlock_policy_v1",
+  "generated_at_utc": "2026-04-28T01:15:27+00:00",
+  "status": "READY_FOR_SIGNOFF",
+  "notes_ko": [
+    "기본 산출물입니다. 실전 전 수치 기준과 서명 프로세스를 확정하세요."
+  ],
+  "criteria": {
+    "chronos_holdout_direction_match_rate_min_pct": 50.0,
+    "relock_on_regression_signals_max": 2
+  }
+}

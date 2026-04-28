@@ -1,0 +1,80 @@
+{
+  "schema": "a_track_hold_release_checklist_v1",
+  "generated_at_utc": "2026-04-28T01:26:25+00:00",
+  "inputs": {
+    "go_nogo_status": "C:\\workspace\\docs\\final\\artifacts\\a_track_go_nogo_status_latest.json",
+    "policy_floor_decision": "C:\\workspace\\docs\\final\\artifacts\\track_a_policy_floor_decision_v1.json",
+    "price_output_unlock_policy": "C:\\workspace\\docs\\final\\artifacts\\a_track_price_output_unlock_policy_v1_latest.json",
+    "operator_approval_protocol": "C:\\workspace\\docs\\final\\artifacts\\a_track_operator_approval_protocol_v1_latest.json",
+    "high_reliability_release_plan": "C:\\workspace\\docs\\final\\artifacts\\a_track_high_reliability_release_plan_v1_latest.json",
+    "policy_floor_governance_decision": "C:\\workspace\\docs\\final\\artifacts\\a_track_policy_floor_governance_decision_v1_latest.json",
+    "multiweek_stability_tracker": "C:\\workspace\\docs\\final\\artifacts\\a_track_multiweek_stability_tracker_v1_latest.json"
+  },
+  "current_status": {
+    "overall_go_no_go": "GO",
+    "recommended_stage": "S2_PAPER_STRICT",
+    "failed_reasons": [
+      "s3_requires_multiweek_stability_evidence"
+    ],
+    "policy_floor_decision": "DECISION_KEEP_POLICY_FLOOR_049_HOLD_BASELINE",
+    "price_output_unlock_policy_status": "READY_FOR_SIGNOFF",
+    "operator_approval_protocol_status": "READY_FOR_SIGNOFF",
+    "high_reliability_release_plan_status": "READY_FOR_SIGNOFF",
+    "policy_floor_governance_status": "APPROVED",
+    "multiweek_stability_ready_for_s3_gate": false
+  },
+  "checklist": [
+    {
+      "id": "lock-01",
+      "title": "가격 출력 잠금 해제 조건 확정",
+      "gate": "price_output_locked_true",
+      "required": true,
+      "done": true,
+      "action": "price output unlock policy를 수치 기준(최소 기간/최대 DD/재잠금 트리거)으로 확정하고 아티팩트로 기록"
+    },
+    {
+      "id": "s3-01",
+      "title": "다주간 안정성 증거 누적",
+      "gate": "s3_requires_multiweek_stability_evidence",
+      "required": true,
+      "done": false,
+      "action": "주간 시계열 증거(수익분포, 변동성, 최악구간, 비용 반영 성과)를 연속 주차 기준으로 누적"
+    },
+    {
+      "id": "s4-01",
+      "title": "운영자 명시 승인 프로토콜 실행",
+      "gate": "s4_requires_operator_explicit_approval",
+      "required": true,
+      "done": true,
+      "action": "S2->S3, S3->S4 승급 승인자/근거 파일/롤백 트리거를 확정하고 승인 이벤트를 남김"
+    },
+    {
+      "id": "hrm-01",
+      "title": "고신뢰 모드 HOLD 해제 조건 충족",
+      "gate": "high_reliability_decision_is_hold",
+      "required": true,
+      "done": true,
+      "action": "high reliability decision을 HOLD에서 해제할 수 있도록 입력 품질과 보수적 임계치를 재검증"
+    },
+    {
+      "id": "policy-01",
+      "title": "정책 바닥선(0.49) 거버넌스 결정 유지/변경",
+      "gate": "policy_floor_governance",
+      "required": true,
+      "done": true,
+      "action": "현재 policy floor 유지 또는 변경을 거버넌스 아티팩트로 명시하고 Track A 주장과 일치시킴"
+    }
+  ],
+  "summary": {
+    "required_total": 5,
+    "completed_total": 4,
+    "all_required_completed": false,
+    "next_stage_when_completed": "S2_PAPER_STRICT",
+    "current_next_stage": "S2_PAPER_STRICT",
+    "next_action": "HOLD 유지. 체크리스트 미완료 항목부터 순차 해제"
+  },
+  "notes_ko": [
+    "B-track 승격 완료와 A-track 승격은 분리된 게이트로 관리한다.",
+    "강제 우회 대신 증거 기반 해제를 기본 원칙으로 유지한다."
+  ]
+}

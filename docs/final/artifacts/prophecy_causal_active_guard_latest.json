@@ -1,0 +1,18 @@
+{
+  "schema": "prophecy_causal_active_guard_v1",
+  "generated_at_utc": "2026-04-28T03:13:55Z",
+  "input_eval_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_hit_rate_eval_latest.json",
+  "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+  "backup_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_pre_causal_active_latest.json",
+  "policy_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_causal_active_guard_policy_v1_latest.json",
+  "min_hit_rate": 0.55,
+  "min_n_evaluated_for_enforcement": 30,
+  "observed_hit_rate": 0.576271,
+  "observed_n_evaluated": 59,
+  "enforcement_enabled": true,
+  "should_rollback": false,
+  "rolled_back": false,
+  "reason": "ok",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]"
+}

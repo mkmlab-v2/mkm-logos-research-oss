@@ -1,0 +1,23 @@
+{
+  "schema": "prophecy_causal_active_guard_policy_profiles_v1",
+  "updated_at_utc": "2026-04-28T03:11:00Z",
+  "default_profile": "conservative",
+  "auto_selection": {
+    "enable": true,
+    "promote_to_aggressive_when": {
+      "min_hit_rate": 0.6,
+      "min_walkforward_mean_test_accuracy": 0.55
+    }
+  },
+  "profiles": {
+    "conservative": {
+      "min_hit_rate": 0.55,
+      "min_n_evaluated_for_enforcement": 30
+    },
+    "aggressive": {
+      "min_hit_rate": 0.5,
+      "min_n_evaluated_for_enforcement": 20
+    }
+  },
+  "note": "Auto selector chooses aggressive only when both hit-rate and walkforward stability are strong; otherwise conservative."
+}

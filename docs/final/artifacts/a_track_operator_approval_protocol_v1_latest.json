@@ -1,0 +1,13 @@
+{
+  "schema": "a_track_operator_approval_protocol_v1",
+  "generated_at_utc": "2026-04-28T01:15:27+00:00",
+  "status": "READY_FOR_SIGNOFF",
+  "notes_ko": [
+    "승인자·근거 파일·롤백 트리거를 확정한 뒤 서명하세요."
+  ],
+  "stages": [
+    "S2_PAPER_STRICT",
+    "S3_PAPER_SCALED",
+    "S4_LIMITED_LIVE"
+  ]
+}

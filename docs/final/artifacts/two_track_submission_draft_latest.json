@@ -1,0 +1,44 @@
+{
+  "schema": "two_track_submission_draft_v1",
+  "generated_at_utc": "2026-04-28T03:14:03Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "title_candidates": [
+    "Two-Track Safety-Gated Inference: A Public-Safe Falsification Architecture for Meaning-Driven Signals",
+    "From Meaning Graph to Survivorship Gate: A Reproducible Two-Track Validation Stack",
+    "Public-Safe Alpha Governance: Two-Track Evidence Design with Raw OOS Readiness"
+  ],
+  "recommended_title": "From Meaning Graph to Survivorship Gate: A Reproducible Two-Track Validation Stack",
+  "abstract_scaffold_en": {
+    "problem": "Meaning-rich cross-reference signals are expressive but prone to overfitting and false discovery when promoted directly to trading decisions.",
+    "method": "We separate K-track (knowledge/IP narrative layer) from T-track (survivor filter and rollback gates), and evaluate claims with falsification suite, multi-baseline comparison, and bootstrap/permutation significance.",
+    "result": "Current evidence bundle reports bundle_ready=False, publication_ready=False, primary_delta_shift_score=0.3034, interpretation='positive_delta_supported'.",
+    "claim_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted."
+  },
+  "section_outline_en": [
+    "1) Introduction: Why meaning-network signals require safety-first promotion gates",
+    "2) Two-Track Architecture: K-track narrative layer vs T-track survivorship layer",
+    "3) Experimental Protocol: raw OOS policy, falsification checks, multi-baseline setup",
+    "4) Results: benchmark deltas, significance interpretation, readiness status",
+    "5) Governance & Disclosure: rollback contract, public-safe redaction policy",
+    "6) Limitations & Next Steps: drift horizon extension and external replication plan"
+  ],
+  "submission_gate_snapshot": {
+    "bundle_ready": false,
+    "ready_for_publication_claim": false,
+    "missing_artifacts": []
+  },
+  "public_safe_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted.",
+  "sources": {
+    "evidence_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_evidence_bundle_latest.json",
+    "readiness_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_raw_oos_readiness_latest.json",
+    "significance_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_statistical_significance_report_latest.json",
+    "benchmark_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_benchmark_comparison_latest.json",
+    "public_safe_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_public_safe_report_latest.json"
+  },
+  "degraded_mode": {
+    "enabled": false,
+    "missing_inputs": []
+  }
+}

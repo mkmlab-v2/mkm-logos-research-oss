@@ -1,0 +1,31 @@
+{
+  "schema": "two_track_fusion_presentation_brief_v1",
+  "generated_at_utc": "2026-04-28T03:14:01Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "tone": "executive",
+  "headline": "Two-track fusion status",
+  "priority_cards": [
+    {
+      "id": "k_summary",
+      "value": {
+        "candidate_count": 20,
+        "survivor_count": 5
+      }
+    },
+    {
+      "id": "shift_score",
+      "value": 0.803353
+    },
+    {
+      "id": "survivor_count",
+      "value": 5
+    }
+  ],
+  "storylines": [
+    "K-track narrative is isolated from trade trigger",
+    "T-track applies survivor filter and rollback gates"
+  ],
+  "guardrail": "not_for_direct_trading_signal"
+}

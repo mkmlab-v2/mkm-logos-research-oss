@@ -1,0 +1,14 @@
+{
+  "schema": "aramaic_insight_cap_bucket_threshold_recommendation_v1",
+  "generated_at_utc": "2026-04-28T03:14:01Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "recommended": {
+    "mid_vol_threshold": 0.2,
+    "high_vol_threshold": 0.4,
+    "insight_max_delta_low_vol": 0.06,
+    "insight_max_delta_mid_vol": 0.045,
+    "insight_max_delta_high_vol": 0.03
+  }
+}

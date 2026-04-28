@@ -1,0 +1,12 @@
+{
+  "schema": "a_track_high_reliability_release_plan_v1",
+  "generated_at_utc": "2026-04-28T01:15:27+00:00",
+  "status": "READY_FOR_SIGNOFF",
+  "notes_ko": [
+    "기본 산출물입니다. HOLD 해제 조건을 운영자와 정합하세요."
+  ],
+  "requirements": {
+    "required_consecutive_cycles_non_hold": 3,
+    "max_allowed_regression_signals": 1
+  }
+}

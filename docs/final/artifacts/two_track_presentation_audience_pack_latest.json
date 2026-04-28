@@ -1,0 +1,117 @@
+{
+  "schema": "two_track_presentation_audience_pack_v1",
+  "generated_at_utc": "2026-04-28T03:14:02Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "variants": [
+    {
+      "audience": "investor",
+      "one_page": {
+        "title": "Two-track fusion status",
+        "key_points": [
+          "K-track for knowledge IP",
+          "T-track for survivorship gating",
+          "Public-safe disclosure boundary"
+        ]
+      },
+      "three_page": [
+        {
+          "section": "Problem",
+          "bullets": [
+            "Narrative-rich signals can overfit when directly promoted"
+          ]
+        },
+        {
+          "section": "Method",
+          "bullets": [
+            "Two-track split",
+            "Falsification + benchmark + significance"
+          ]
+        },
+        {
+          "section": "Governance",
+          "bullets": [
+            "Rollback contract",
+            "Public-safe redaction"
+          ]
+        }
+      ],
+      "storylines": [
+        "investor emphasis"
+      ]
+    },
+    {
+      "audience": "policy",
+      "one_page": {
+        "title": "Two-track fusion status",
+        "key_points": [
+          "K-track for knowledge IP",
+          "T-track for survivorship gating",
+          "Public-safe disclosure boundary"
+        ]
+      },
+      "three_page": [
+        {
+          "section": "Problem",
+          "bullets": [
+            "Narrative-rich signals can overfit when directly promoted"
+          ]
+        },
+        {
+          "section": "Method",
+          "bullets": [
+            "Two-track split",
+            "Falsification + benchmark + significance"
+          ]
+        },
+        {
+          "section": "Governance",
+          "bullets": [
+            "Rollback contract",
+            "Public-safe redaction"
+          ]
+        }
+      ],
+      "storylines": [
+        "policy emphasis"
+      ]
+    },
+    {
+      "audience": "technical",
+      "one_page": {
+        "title": "Two-track fusion status",
+        "key_points": [
+          "K-track for knowledge IP",
+          "T-track for survivorship gating",
+          "Public-safe disclosure boundary"
+        ]
+      },
+      "three_page": [
+        {
+          "section": "Problem",
+          "bullets": [
+            "Narrative-rich signals can overfit when directly promoted"
+          ]
+        },
+        {
+          "section": "Method",
+          "bullets": [
+            "Two-track split",
+            "Falsification + benchmark + significance"
+          ]
+        },
+        {
+          "section": "Governance",
+          "bullets": [
+            "Rollback contract",
+            "Public-safe redaction"
+          ]
+        }
+      ],
+      "storylines": [
+        "technical emphasis"
+      ]
+    }
+  ]
+}

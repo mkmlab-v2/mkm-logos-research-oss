@@ -1,0 +1,169 @@
+{
+  "schema": "bible_meaning_insight_candidates_v1",
+  "generated_at_utc": "2026-04-28T03:14:00Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "candidates": [
+    {
+      "candidate_id": "cand_001",
+      "source_node_id": "aramaic::Dan.2.10",
+      "hub_score": 0.9,
+      "path_score": 0.55,
+      "cluster_size": 9,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_002",
+      "source_node_id": "aramaic::Dan.2.11",
+      "hub_score": 0.7,
+      "path_score": 0.55,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_003",
+      "source_node_id": "aramaic::Dan.2.12",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_004",
+      "source_node_id": "aramaic::Dan.2.13",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_005",
+      "source_node_id": "aramaic::Dan.2.14",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_006",
+      "source_node_id": "aramaic::Dan.2.15",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_007",
+      "source_node_id": "aramaic::Dan.2.16",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_008",
+      "source_node_id": "aramaic::Dan.2.17",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_009",
+      "source_node_id": "aramaic::Dan.2.18",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_010",
+      "source_node_id": "aramaic::Dan.2.19",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_011",
+      "source_node_id": "aramaic::Dan.2.20",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_012",
+      "source_node_id": "aramaic::Dan.2.21",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_013",
+      "source_node_id": "aramaic::Dan.2.22",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_014",
+      "source_node_id": "aramaic::Dan.2.23",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_015",
+      "source_node_id": "aramaic::Dan.2.24",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_016",
+      "source_node_id": "aramaic::Dan.2.25",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_017",
+      "source_node_id": "aramaic::Dan.2.26",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_018",
+      "source_node_id": "aramaic::Dan.2.27",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_019",
+      "source_node_id": "aramaic::Dan.2.28",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "cand_020",
+      "source_node_id": "aramaic::Dan.2.29",
+      "hub_score": 0.6,
+      "path_score": 0.55,
+      "cluster_size": 6,
+      "regime_tag": "empire_transition"
+    }
+  ]
+}
