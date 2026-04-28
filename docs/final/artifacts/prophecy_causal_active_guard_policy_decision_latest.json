@@ -1,14 +1,14 @@
 {
   "schema": "prophecy_causal_active_guard_policy_decision_v1",
-  "generated_at_utc": "2026-04-28T04:06:33Z",
+  "generated_at_utc": "2026-04-28T04:08:50Z",
   "profiles_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_causal_active_guard_policy_profiles_v1_latest.json",
-  "selected_profile": "conservative",
+  "selected_profile": "aggressive",
   "observed_hit_rate": 0.576271,
   "observed_walkforward_mean_test_accuracy": 0.57,
   "out_policy_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_causal_active_guard_policy_v1_latest.json",
-  "transition_checked_at_utc": "2026-04-28T04:06:33Z",
+  "transition_checked_at_utc": "2026-04-28T04:08:51Z",
   "previous_profile": "conservative",
-  "transitioned": false,
-  "notification_status": "skipped_no_transition",
-  "notification_sent": false
+  "transitioned": true,
+  "notification_status": "http_status=200",
+  "notification_sent": true
 }

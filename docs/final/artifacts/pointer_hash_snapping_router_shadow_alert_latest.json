@@ -1,6 +1,6 @@
 {
   "schema": "pointer_hash_snapping_router_shadow_alert_v1",
-  "generated_at_utc": "2026-04-28T04:05:34+00:00",
+  "generated_at_utc": "2026-04-28T04:08:24+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
@@ -10,7 +10,7 @@
     "max_unresolved_per_run": 8.0
   },
   "window_stats": {
-    "sample_count": 2,
+    "sample_count": 3,
     "avg_pointer_candidate_ok_rate": 0.6666666666666666,
     "avg_unresolved_token_per_run": 4.0
   },

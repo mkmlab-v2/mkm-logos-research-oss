@@ -1,9 +1,9 @@
 {
   "schema": "prophecy_causal_active_guard_policy_v1",
-  "updated_at_utc": "2026-04-28T04:06:33Z",
-  "min_hit_rate": 0.55,
-  "min_n_evaluated_for_enforcement": 30,
-  "selected_profile": "conservative",
+  "updated_at_utc": "2026-04-28T04:08:50Z",
+  "min_hit_rate": 0.5,
+  "min_n_evaluated_for_enforcement": 20,
+  "selected_profile": "aggressive",
   "source_profiles_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_causal_active_guard_policy_profiles_v1_latest.json",
   "note": "Resolved from profile presets by resolver script."
 }

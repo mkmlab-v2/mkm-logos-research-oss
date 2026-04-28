@@ -1159,3 +1159,18 @@
 - 최신 상태:
   - `guard_applied=false`, `guard_reason=no_alert`
   - runtime `route_mode=pointer_shadow` 유지.
+
+### 27.6 Guard 강등 드릴(Chaos Test) (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pointer_shadow_guard_drill_v1.py`
+- 산출물:
+  - `docs/final/artifacts/pointer_shadow_guard_drill_latest.json`
+- 검증 시나리오:
+  1) alert 임계값을 강제로 타이트하게 적용해 `should_alert=true` 유도
+  2) guard 적용 후 `decision=HOLD_POINTER_ROUTE`, `route_mode=track_a_primary` 강등 확인
+  3) 기본 alert 임계값으로 복원
+- 최신 결과:
+  - `drill_passed=true`
+  - forced alert `severity=high`
+  - guard snapshot `guard_applied=true`, `guard_reason=shadow_health_alert_triggered`
