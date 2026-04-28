@@ -11,10 +11,16 @@ concurrency:
 
 on:
   pull_request:
+    paths:
+      - "projects/no1kmedi/**"
+      - "scripts/validate_no1kmedi_guardian_contracts.py"
+      - ".github/workflows/no1kmedi-guardian-contract-gate.yml"
+      - "scripts/verify_12ai_orchestration_gate.ps1"
   workflow_dispatch:
 
 jobs:
   orchestration-gate:
+    if: ${{ vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' }}
     uses: ./.github/workflows/12ai-orchestration-gate.yml
     with:
       role: Architect
@@ -28,10 +34,10 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
