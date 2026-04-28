@@ -28,6 +28,15 @@ def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _read_json_or_default(path: Path, default: dict[str, Any]) -> dict[str, Any]:
+    if not path.exists():
+        return dict(default)
+    try:
+        return _read_json(path)
+    except Exception:
+        return dict(default)
+
+
 def _should_alert(
     smoke: dict[str, Any],
     guard: dict[str, Any],
@@ -108,11 +117,11 @@ def main() -> int:
     failure_topn_path = args.failure_topn_json if args.failure_topn_json.is_absolute() else ROOT / args.failure_topn_json
     out_path = args.out if args.out.is_absolute() else ROOT / args.out
 
-    smoke = _read_json(smoke_path)
-    guard = _read_json(guard_path)
-    readiness = _read_json(readiness_path) if readiness_path.exists() else {"all_ok": False, "checks": [{"reason": "readiness_missing"}]}
-    security = _read_json(security_path) if security_path.exists() else {"all_ok": False}
-    failure_topn = _read_json(failure_topn_path) if failure_topn_path.exists() else {}
+    smoke = _read_json_or_default(smoke_path, {"all_ok": False, "checks": [{"reason": "operational_smoke_missing"}]})
+    guard = _read_json_or_default(guard_path, {"guard_applied": False, "guard_reason": "guard_artifact_missing"})
+    readiness = _read_json_or_default(readiness_path, {"all_ok": False, "checks": [{"reason": "readiness_missing"}]})
+    security = _read_json_or_default(security_path, {"all_ok": False, "controls": {}})
+    failure_topn = _read_json_or_default(failure_topn_path, {})
     should_send, reasons, severity = _should_alert(smoke, guard, readiness, security, bool(args.always))
     sim = [s.strip() for s in str(args.simulate).split(",") if s.strip()]
     if sim:

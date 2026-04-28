@@ -19,6 +19,8 @@ $ErrorActionPreference = "Stop"
 $runner = Join-Path $WorkspaceRoot "scripts\run_genesis_pointer_routing_control_chain_v1.py"
 $alertRunner = Join-Path $WorkspaceRoot "scripts\send_pointerguard_ops_alert_v1.py"
 $securityRunner = Join-Path $WorkspaceRoot "scripts\harden_pointerguard_security_v1.py"
+$operationalSmokeRunner = Join-Path $WorkspaceRoot "scripts\run_pointerguard_operational_smoke_v1.py"
+$scorecardRunner = Join-Path $WorkspaceRoot "scripts\build_pointerguard_two_tier_perf_scorecard_v1.py"
 $bindingRunner = Join-Path $WorkspaceRoot "scripts\check_a_codeai_public_binding_v1.py"
 $launchChecklistRunner = Join-Path $WorkspaceRoot "scripts\build_a_codeai_public_benchmark_launch_checklist_v1.py"
 $readinessRunner = Join-Path $WorkspaceRoot "scripts\check_pointerguard_ops_readiness_v1.py"
@@ -59,10 +61,37 @@ if (Test-Path -LiteralPath $securityRunner) {
     }
 }
 
+# Build operational smoke artifact for C3 launch checklist gate.
+if (Test-Path -LiteralPath $operationalSmokeRunner) {
+    "[$((Get-Date).ToString('s'))] Building pointerguard operational smoke artifact..." | Out-File -FilePath $logFile -Encoding utf8 -Append
+    & py $operationalSmokeRunner *>&1 | Tee-Object -FilePath $logFile -Append | Out-Host
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# Build two-tier scorecard artifact for C5 transparency checklist gate.
+if (Test-Path -LiteralPath $scorecardRunner) {
+    "[$((Get-Date).ToString('s'))] Building pointerguard two-tier performance scorecard..." | Out-File -FilePath $logFile -Encoding utf8 -Append
+    & py $scorecardRunner *>&1 | Tee-Object -FilePath $logFile -Append | Out-Host
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
 # Refresh public benchmark launch checklist from latest hardening artifact.
 if (Test-Path -LiteralPath $bindingRunner) {
     "[$((Get-Date).ToString('s'))] Checking public payload runtime binding..." | Out-File -FilePath $logFile -Encoding utf8 -Append
     & py $bindingRunner *>&1 | Tee-Object -FilePath $logFile -Append | Out-Host
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# Emit/refresh alert delivery artifact before checklist (C4 evidence).
+if (Test-Path -LiteralPath $alertRunner) {
+    "[$((Get-Date).ToString('s'))] Refreshing pointerguard alert delivery artifact (dry-run)..." | Out-File -FilePath $logFile -Encoding utf8 -Append
+    & py $alertRunner --dry-run *>&1 | Tee-Object -FilePath $logFile -Append | Out-Host
     if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
         $exitCode = $LASTEXITCODE
     }

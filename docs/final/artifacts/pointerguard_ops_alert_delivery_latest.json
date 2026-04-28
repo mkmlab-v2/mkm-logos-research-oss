@@ -1,0 +1,32 @@
+{
+  "schema": "pointerguard_ops_alert_delivery_v1",
+  "generated_at_utc": "2026-04-28T13:35:42+00:00",
+  "inputs": {
+    "smoke_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_operational_smoke_latest.json",
+    "guard_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_pointer_routing_decision_guarded_latest.json",
+    "readiness_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_ops_readiness_latest.json",
+    "security_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_security_hardening_latest.json",
+    "failure_topn_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_readiness_failure_topn_latest.json",
+    "always": false,
+    "simulate": [],
+    "dry_run": true
+  },
+  "alert": {
+    "source": "pointerguard_ops_alert_v1",
+    "generated_at_utc": "2026-04-28T13:35:42+00:00",
+    "should_send": false,
+    "severity": "INFO",
+    "reasons": [],
+    "smoke_all_ok": true,
+    "guard_applied": false,
+    "guard_reason": "no_alert",
+    "readiness_all_ok": true,
+    "security_all_ok": true,
+    "top_repair_priority": null
+  },
+  "delivery": {
+    "webhook_configured": true,
+    "sent": false,
+    "status": "skipped_no_alert"
+  }
+}
