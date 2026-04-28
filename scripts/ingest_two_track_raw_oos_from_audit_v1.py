@@ -33,10 +33,13 @@ def main():
     out=[]
     for i,row in enumerate(audits):
         run_at=str(row.get('run_at_utc') or row.get('generated_at_utc') or now())
-        shift=float(row.get('shift_score',0.0)); d_ab=float(row.get('delta_shift_score',0.0))
+        shift=float(row.get('oos_shift_score', row.get('shift_score',0.0)))
+        d_ab=float(row.get('oos_delta_shift_score', row.get('delta_shift_score',0.0)))
+        scenario=str(row.get('oos_scenario','neutral')).strip() or 'neutral'
+        adjusted=bool(row.get('oos_scenario_adjusted', False))
         for bname,bscore in baseline_map.items():
             d=d_ab if bname=='ablation_no_survivor_gate' else (shift-bscore)
-            out.append({'schema':'two_track_raw_oos_sample_v1','generated_at_utc':now(),'baseline_name':bname,'delta_shift_score':float(d),'sample_index':i,'is_seed_scaffold':False,'is_bootstrap_resample':False,'source':'reports/ops/aramaic_mvp_run_audit_log.jsonl','source_run_at_utc':run_at})
+            out.append({'schema':'two_track_raw_oos_sample_v1','generated_at_utc':now(),'baseline_name':bname,'delta_shift_score':float(d),'sample_index':i,'is_seed_scaffold':False,'is_bootstrap_resample':False,'source':'reports/ops/aramaic_mvp_run_audit_log.jsonl','source_run_at_utc':run_at,'oos_scenario':scenario,'oos_scenario_adjusted':adjusted})
     # keep existing non-seed rows if any
     for r in seed:
         if not bool(r.get('is_seed_scaffold', False)):

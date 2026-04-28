@@ -35,7 +35,7 @@ def _resolve(root: Path, path_str: str) -> Path:
 
 
 def _expanded_paragraphs(
-    a: dict[str, Any], title: str, gates: dict[str, Any], falsification_snapshot: dict[str, Any]
+    a: dict[str, Any], title: str, gates: dict[str, Any], falsification_snapshot: dict[str, Any], falsification_boundary_snapshot: dict[str, Any]
 ) -> list[str]:
     problem = str(a.get("problem", ""))
     method = str(a.get("method", ""))
@@ -53,6 +53,8 @@ def _expanded_paragraphs(
     )
     bp_survivor = bp.get("min_survivor_count")
     bp_ci = bp.get("min_ci_low_defense_contrib")
+    safe_survivor = falsification_boundary_snapshot.get("max_safe_min_survivor_count")
+    break_survivor = falsification_boundary_snapshot.get("min_break_min_survivor_count")
     return [
         (
             f"This work addresses a governance problem in systems that derive dense, meaning-rich signals "
@@ -76,6 +78,11 @@ def _expanded_paragraphs(
         (
             f"Disclosure posture: {boundary} "
             f"The paper narrative therefore focuses on safety gates, rollback contracts, and reproducible artifacts."
+        ),
+        (
+            f"Fail-boundary disclosure: maximum safe survivor-floor observed in sensitivity grid is {safe_survivor}, "
+            f"and first break condition appears at survivor-floor {break_survivor}. "
+            f"We use this boundary as an explicit reviewer-facing risk condition."
         ),
         (
             f"Title for submission packaging: \"{title}\". "
@@ -178,6 +185,50 @@ def _outline_aaai() -> list[dict[str, Any]]:
     ]
 
 
+def _compressed_abstracts(
+    title: str,
+    gates: dict[str, Any],
+    falsification_snapshot: dict[str, Any],
+    falsification_boundary_snapshot: dict[str, Any],
+) -> dict[str, str]:
+    br = gates.get("bundle_ready")
+    pub = gates.get("ready_for_publication_claim")
+    f_pass = int(falsification_snapshot.get("pass_count", 0) or 0)
+    f_total = int(falsification_snapshot.get("total_checks", 0) or 0)
+    bp = (
+        falsification_snapshot.get("sensitivity_breakpoint")
+        if isinstance(falsification_snapshot.get("sensitivity_breakpoint"), dict)
+        else {}
+    )
+    bp_survivor = bp.get("min_survivor_count")
+    bp_ci = bp.get("min_ci_low_defense_contrib")
+    safe_survivor = falsification_boundary_snapshot.get("max_safe_min_survivor_count")
+    break_survivor = falsification_boundary_snapshot.get("min_break_min_survivor_count")
+
+    kdd_180 = (
+        f"{title} proposes a safety-gated evaluation architecture for meaning-rich cross-reference signals that are "
+        f"expressive but vulnerable to overfitting when promoted directly to trading actions. We separate K-track "
+        f"(knowledge/IP narrative generation) from T-track (survivor filtering, rollback contracts, and operational gates), "
+        f"and validate claims with multi-baseline comparison, raw OOS readiness checks, and bootstrap/permutation significance. "
+        f"Current gate status is bundle_ready={br}, ready_for_publication_claim={pub}, with falsification pass {f_pass}/{f_total}. "
+        f"Robustness sensitivity reports first non-pass at min_survivor_count={bp_survivor} and "
+        f"min_ci_low_defense_contrib={bp_ci}. A fail-boundary layer defines max-safe survivor floor={safe_survivor} and first-break "
+        f"threshold={break_survivor}, which is wired to an explicit no-go gate. Public disclosure remains redacted at formula/weight "
+        f"level, while reproducibility is preserved through artifact-chain checkpoints."
+    )
+    aaai_150 = (
+        f"We present a deployment-oriented governance stack for narrative-heavy inference systems. The design separates "
+        f"K-track insight generation from T-track execution gating, then enforces falsification, baseline comparison, and "
+        f"raw OOS readiness before any promotion claim. Current status: bundle_ready={br}, "
+        f"ready_for_publication_claim={pub}, falsification={f_pass}/{f_total}. Sensitivity analysis shows the first "
+        f"non-pass at survivor threshold {bp_survivor} (ci-low threshold {bp_ci}); fail-boundary control sets "
+        f"max-safe survivor floor={safe_survivor} and first-break={break_survivor}, wired to rollback/no-go semantics. "
+        f"Significance is computed with bootstrap mean CI and sign-flip permutation testing. The paper reports safety, "
+        f"auditability, and reproducibility via artifact paths while keeping proprietary formulas redacted."
+    )
+    return {"kdd_180w": kdd_180, "aaai_150w": aaai_150}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build camera-ready submission JSON from draft.")
     ap.add_argument("--repo-root", default=str(ROOT))
@@ -204,8 +255,15 @@ def main() -> int:
     falsification_snapshot = (
         draft.get("falsification_snapshot") if isinstance(draft.get("falsification_snapshot"), dict) else {}
     )
+    falsification_boundary_snapshot = (
+        draft.get("falsification_boundary_snapshot")
+        if isinstance(draft.get("falsification_boundary_snapshot"), dict)
+        else {}
+    )
 
-    paragraphs = _expanded_paragraphs(abs_scaffold, title, gates, falsification_snapshot)
+    paragraphs = _expanded_paragraphs(
+        abs_scaffold, title, gates, falsification_snapshot, falsification_boundary_snapshot
+    )
     word_count_hint = sum(len(p.split()) for p in paragraphs)
 
     keywords = [
@@ -231,6 +289,9 @@ def main() -> int:
             "approx_word_count": word_count_hint,
             "note": "Expand or trim to venue word limit; content stays public-safe by design.",
         },
+        "compressed_abstracts_en": _compressed_abstracts(
+            title, gates, falsification_snapshot, falsification_boundary_snapshot
+        ),
         "venues": {
             "kdd_applied_data_science": {
                 "venue_label": "KDD Applied Data Science / similar applied ML track",
@@ -243,6 +304,7 @@ def main() -> int:
                     "Lead with problem + evaluation protocol, not proprietary formulas.",
                     "Use tables pointing to artifact schema names, not internal weight vectors.",
                     "Include falsification sensitivity breakpoint as a robustness boundary condition.",
+                    "Add fail-boundary row (max-safe threshold / first-break threshold) in rebuttal appendix.",
                 ],
             },
             "aaai_industry_track": {
@@ -256,6 +318,7 @@ def main() -> int:
                     "Stress governance, rollback, and stakeholder-facing disclosure.",
                     "Keep replication story at artifact + script path level.",
                     "State falsification pass count and sensitivity breakpoint in deployment risk narrative.",
+                    "Include fail-boundary condition as explicit no-go threshold for operations.",
                 ],
             },
         },
@@ -263,6 +326,7 @@ def main() -> int:
         "public_safe_boundary": str(draft.get("public_safe_boundary", "")),
         "submission_gate_snapshot": gates,
         "falsification_snapshot": falsification_snapshot,
+        "falsification_boundary_snapshot": falsification_boundary_snapshot,
     }
 
     out_path = _resolve(repo_root, args.output_json)

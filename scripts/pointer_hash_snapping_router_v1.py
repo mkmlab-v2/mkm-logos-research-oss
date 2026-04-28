@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import difflib
+import fnmatch
 import hashlib
 import json
 from datetime import datetime, timezone
@@ -48,6 +49,34 @@ def _build_lexicon(codebook_doc: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {str(e.get("term")): e for e in entries if isinstance(e, dict) and e.get("term")}
 
 
+def _policy_for_path(runtime_cfg: dict[str, Any], target_path: str | None) -> str:
+    if not target_path:
+        return "unknown"
+    fp = runtime_cfg.get("folder_policy", {})
+    normalized = target_path.replace("\\", "/").lstrip("./")
+    rows = fp.get("rows", [])
+    if isinstance(rows, list) and rows:
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            patt = str(row.get("path_pattern", "")).strip()
+            pol = str(row.get("policy", "unknown")).strip()
+            if not patt:
+                continue
+            if fnmatch.fnmatch(normalized, patt):
+                return pol
+    for patt in fp.get("forbid_patterns", []):
+        if fnmatch.fnmatch(normalized, str(patt)):
+            return "forbid"
+    for patt in fp.get("caution_patterns", []):
+        if fnmatch.fnmatch(normalized, str(patt)):
+            return "caution"
+    for patt in fp.get("apply_patterns", []):
+        if fnmatch.fnmatch(normalized, str(patt)):
+            return "apply"
+    return "unknown"
+
+
 def _route_one(
     text: str,
     *,
@@ -55,11 +84,13 @@ def _route_one(
     lexicon: dict[str, dict[str, Any]],
     enable_snap: bool,
     snap_ratio: float,
+    target_path: str | None,
 ) -> dict[str, Any]:
     routing = runtime_cfg.get("routing", {})
     route_mode = str(routing.get("route_mode", "track_a_primary"))
     pointer_enabled = bool(routing.get("pointer_enabled", False))
     pointer_shadow = bool(routing.get("pointer_shadow", False))
+    path_policy = _policy_for_path(runtime_cfg, target_path)
 
     toks = _tokenize(text)
     lexicon_terms = set(lexicon.keys())
@@ -95,18 +126,32 @@ def _route_one(
     # - pointer_primary: use pointer iff candidate_ok, else fallback
     # - pointer_shadow: always keep Track A path, but emit pointer candidate metadata
     # - track_a_primary: always Track A
-    if pointer_enabled and route_mode == "pointer_primary" and pointer_candidate_ok:
+    if path_policy == "forbid":
+        selected_path = "track_a_primary"
+        fallback = False
+        effective_route_mode = "track_a_primary"
+    elif path_policy == "caution":
+        # Caution zone is shadow-only unless separately approved.
+        selected_path = "track_a_primary"
+        fallback = False
+        effective_route_mode = "pointer_shadow"
+    elif pointer_enabled and route_mode == "pointer_primary" and pointer_candidate_ok:
         selected_path = "pointer_lookup"
         fallback = False
+        effective_route_mode = route_mode
     else:
         selected_path = "track_a_primary"
         fallback = pointer_enabled and route_mode == "pointer_primary" and not pointer_candidate_ok
+        effective_route_mode = route_mode
 
     return {
         "input_text": text,
         "route_mode": route_mode,
+        "effective_route_mode": effective_route_mode,
         "selected_path": selected_path,
         "pointer_shadow": pointer_shadow,
+        "target_path": target_path,
+        "path_policy": path_policy,
         "pointer_candidate_ok": pointer_candidate_ok,
         "pointer_payload": pointer_payload,
         "fallback_to_track_a": fallback,
@@ -143,6 +188,7 @@ def main() -> int:
     ap.add_argument("--inputs-csv", type=str, default=None)
     ap.add_argument("--enable-snap", action="store_true", help="Enable L3-like token snapping for OOV tokens.")
     ap.add_argument("--snap-min-ratio", type=float, default=0.74)
+    ap.add_argument("--target-path", type=str, default=None, help="Relative workspace path for folder policy match.")
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)
     args = ap.parse_args()
 
@@ -162,6 +208,7 @@ def main() -> int:
             lexicon=lexicon,
             enable_snap=bool(args.enable_snap),
             snap_ratio=float(args.snap_min_ratio),
+            target_path=args.target_path,
         )
         for text in inputs
     ]
@@ -178,6 +225,7 @@ def main() -> int:
             "input_count": len(inputs),
             "enable_snap": bool(args.enable_snap),
             "snap_min_ratio": float(args.snap_min_ratio),
+            "target_path": args.target_path,
         },
         "rows": rows,
         "summary": {

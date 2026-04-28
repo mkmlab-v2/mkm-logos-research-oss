@@ -1,0 +1,31 @@
+{
+  "schema": "two_track_raw_oos_readiness_v1",
+  "generated_at_utc": "2026-04-28T04:12:52Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "source": {
+    "raw_oos_jsonl": "c:\\workspace\\docs\\final\\artifacts\\two_track_raw_oos_samples_latest.jsonl",
+    "benchmark_json": "c:\\workspace\\docs\\final\\artifacts\\two_track_benchmark_comparison_latest.json",
+    "audit_log_jsonl": "c:\\workspace\\reports\\ops\\aramaic_mvp_run_audit_log.jsonl"
+  },
+  "summary": {
+    "total_rows": 200,
+    "baseline_count": 4,
+    "seed_rows": 0,
+    "bootstrap_rows": 0,
+    "uses_seed_scaffold": false,
+    "min_samples_per_baseline": 50,
+    "low_sample_baselines": [],
+    "missing_expected_baselines": [],
+    "ready_for_internal_significance": true,
+    "ready_for_publication_claim": true
+  },
+  "forecast": {
+    "observed_audit_runs": 50,
+    "expected_runs_for_min_sample": 50,
+    "additional_audit_runs_required": 0,
+    "expected_cadence_minutes": 60,
+    "estimated_ready_utc_if_cadence_kept": null
+  }
+}

@@ -24,11 +24,26 @@ _MAPPING_TO_SCORE: dict[str, float] = {
     "sideways": 0.0,
 }
 
+# 16상 state_id 약한 prior (중립 고착 완화용, 과최적화 방지 위해 절대값 낮게 유지)
+_STATE_PRIOR_SCORE: dict[int, float] = {
+    6: -0.12,
+    7: -0.22,
+    8: -0.08,
+    9: 0.18,
+    10: -0.16,
+    11: -0.06,
+    12: 0.20,
+    13: -0.10,
+    14: 0.14,
+    15: 0.24,
+    16: -0.18,
+}
 
-def _tail_jsonl_row(path: Path) -> dict[str, Any] | None:
+
+def _read_jsonl_rows(path: Path) -> list[dict[str, Any]]:
     if not path.is_file():
-        return None
-    last: dict[str, Any] | None = None
+        return []
+    rows: list[dict[str, Any]] = []
     for line in path.read_text(encoding="utf-8", errors="ignore").splitlines():
         line = line.strip()
         if not line:
@@ -38,30 +53,74 @@ def _tail_jsonl_row(path: Path) -> dict[str, Any] | None:
         except json.JSONDecodeError:
             continue
         if isinstance(obj, dict):
-            last = obj
-    return last
+            rows.append(obj)
+    return rows
 
 
-def _build_payload(row: dict[str, Any], *, source: str, input_path: str) -> dict[str, Any]:
+def _state_id_from_row(row: dict[str, Any]) -> int | None:
+    raw_sid = row.get("state_id")
+    if isinstance(raw_sid, int):
+        return raw_sid
+    if isinstance(raw_sid, float) and raw_sid == int(raw_sid):
+        return int(raw_sid)
+    if isinstance(raw_sid, str) and raw_sid.strip().isdigit():
+        return int(raw_sid.strip())
+    return None
+
+
+def _mapping_score_from_row(row: dict[str, Any]) -> float:
+    mt = str(row.get("mapping_target") or "").strip().lower()
+    return _MAPPING_TO_SCORE.get(mt, 0.0)
+
+
+def _recent_momentum(rows: list[dict[str, Any]], window: int) -> float:
+    if not rows:
+        return 0.0
+    tail = rows[-window:]
+    vals = [_mapping_score_from_row(r) for r in tail]
+    if not vals:
+        return 0.0
+    return sum(vals) / float(len(vals))
+
+
+def _calibrate_confidence(*, consistency: float, contradiction: float, rows_seen: int) -> float:
+    # 과신 방지: consistency를 contradiction으로 할인 후 표본 부족 시 0.5로 수축.
+    reliability = min(1.0, max(0.2, rows_seen / 30.0))
+    raw = consistency * max(0.0, 1.0 - contradiction)
+    calibrated = 0.5 + (raw - 0.5) * reliability
+    return max(0.05, min(0.95, calibrated))
+
+
+def _build_payload(
+    row: dict[str, Any],
+    *,
+    source: str,
+    input_path: str,
+    rows_seen: int,
+    recent_momentum: float,
+) -> dict[str, Any]:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     mt = str(row.get("mapping_target") or "").strip().lower()
-    direction = _MAPPING_TO_SCORE.get(mt, 0.0)
-    cr = row.get("consistency_rate")
-    conf = float(cr) if isinstance(cr, (int, float)) else 0.5
-    conf = max(0.0, min(1.0, conf))
+    direct_score = _MAPPING_TO_SCORE.get(mt, 0.0)
+    sid = _state_id_from_row(row)
+    prior = _STATE_PRIOR_SCORE.get(sid or -1, 0.0)
+    # 단일 행 중립값 고착 완화: 직접 신호 + 최근 모멘텀 + 약한 state prior 혼합
+    direction = (0.55 * direct_score) + (0.35 * recent_momentum) + (0.10 * prior)
+    if abs(direction) < 0.04:
+        direction = 0.0 if abs(prior) < 0.12 else 0.08 * (1.0 if prior > 0 else -1.0)
+    direction = max(-1.0, min(1.0, direction))
 
-    raw_sid = row.get("state_id")
-    sid: int | None = None
-    if isinstance(raw_sid, int):
-        sid = raw_sid
-    elif isinstance(raw_sid, float) and raw_sid == int(raw_sid):
-        sid = int(raw_sid)
-    elif isinstance(raw_sid, str) and raw_sid.strip().isdigit():
-        sid = int(raw_sid.strip())
+    cr = row.get("consistency_rate")
+    sr = row.get("self_contradiction_rate")
+    consistency = float(cr) if isinstance(cr, (int, float)) else 0.5
+    contradiction = float(sr) if isinstance(sr, (int, float)) else 0.0
+    conf = _calibrate_confidence(consistency=consistency, contradiction=contradiction, rows_seen=rows_seen)
 
     rationale = (
         f"B-track state_id={sid}, mapping_target={mt or 'unknown'}; "
-        f"direction_score from curated mapping_target heuristic (v0)."
+        f"direction_score = 0.55*direct + 0.35*momentum + 0.10*state_prior, "
+        f"direct={direct_score:.3f}, momentum={recent_momentum:.3f}, prior={prior:.3f}. "
+        f"confidence calibrated by consistency/contradiction with sample-size shrinkage."
     )
     row_ts = str(row.get("ts_utc") or "")
 
@@ -103,13 +162,21 @@ def main() -> int:
         action="store_true",
         help="Allow embedded fallback payload when source JSONL is unavailable.",
     )
+    ap.add_argument(
+        "--momentum-window",
+        type=int,
+        default=7,
+        help="Rows for recent mapping_target momentum averaging (default: 7).",
+    )
     args = ap.parse_args()
 
-    row = _tail_jsonl_row(args.experiment_jsonl)
+    rows = _read_jsonl_rows(args.experiment_jsonl)
+    row = rows[-1] if rows else None
     src = "16_state_experiment_tail"
     in_path = str(args.experiment_jsonl.resolve())
     if row is None:
-        row = _tail_jsonl_row(args.fallback_sample)
+        rows = _read_jsonl_rows(args.fallback_sample)
+        row = rows[-1] if rows else None
         src = "sample_jsonl_fallback"
         in_path = str(args.fallback_sample.resolve())
     if row is None:
@@ -134,8 +201,15 @@ def main() -> int:
         }
         src = "embedded_minimal_fallback"
         in_path = ""
+        rows = [row]
 
-    payload = _build_payload(row, source=src, input_path=in_path)
+    payload = _build_payload(
+        row,
+        source=src,
+        input_path=in_path,
+        rows_seen=len(rows),
+        recent_momentum=_recent_momentum(rows, max(1, args.momentum_window)),
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {args.output.resolve()}")

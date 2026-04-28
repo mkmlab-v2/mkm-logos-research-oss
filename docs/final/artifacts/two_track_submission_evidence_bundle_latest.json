@@ -1,6 +1,6 @@
 {
   "schema": "two_track_submission_evidence_bundle_v1",
-  "generated_at_utc": "2026-04-28T04:06:44Z",
+  "generated_at_utc": "2026-04-28T04:50:09Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -9,37 +9,37 @@
       "name": "falsification_suite",
       "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_suite_latest.json",
       "exists": true,
-      "generated_at_utc": "2026-04-28T04:06:43Z"
+      "generated_at_utc": "2026-04-28T04:34:40Z"
     },
     {
       "name": "benchmark_comparison",
       "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_benchmark_comparison_latest.json",
       "exists": true,
-      "generated_at_utc": "2026-04-28T04:06:43Z"
+      "generated_at_utc": "2026-04-28T04:34:41Z"
     },
     {
       "name": "statistical_significance",
       "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_statistical_significance_report_latest.json",
       "exists": true,
-      "generated_at_utc": "2026-04-28T04:06:44Z"
+      "generated_at_utc": "2026-04-28T04:34:42Z"
     },
     {
       "name": "raw_oos_readiness",
       "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_raw_oos_readiness_latest.json",
       "exists": true,
-      "generated_at_utc": "2026-04-28T04:06:44Z"
+      "generated_at_utc": "2026-04-28T04:34:43Z"
     },
     {
       "name": "public_safe_report",
       "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_public_safe_report_latest.json",
       "exists": true,
-      "generated_at_utc": "2026-04-28T04:06:44Z"
+      "generated_at_utc": "2026-04-28T04:34:42Z"
     }
   ],
   "gates": {
     "all_required_present": true,
-    "ready_for_publication_claim": false,
-    "bundle_ready": false,
+    "ready_for_publication_claim": true,
+    "bundle_ready": true,
     "missing_artifacts": []
   }
 }

@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ART = ROOT / "docs" / "final" / "artifacts"
 IN_DEFAULT = ART / "genesis_pointer_routing_decision_latest.json"
 OUT_DEFAULT = ART / "genesis_pointer_route_runtime_config_latest.json"
+FOLDER_POLICY_DEFAULT = ART / "pointerguard_folder_policy_latest.json"
 
 
 def _now_utc() -> str:
@@ -24,11 +25,16 @@ def _read_json(path: Path) -> dict[str, Any]:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--decision-json", type=Path, default=IN_DEFAULT)
+    ap.add_argument("--folder-policy-json", type=Path, default=FOLDER_POLICY_DEFAULT)
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)
     args = ap.parse_args()
 
     decision_path = args.decision_json if args.decision_json.is_absolute() else ROOT / args.decision_json
+    folder_policy_path = (
+        args.folder_policy_json if args.folder_policy_json.is_absolute() else ROOT / args.folder_policy_json
+    )
     dec = _read_json(decision_path)
+    folder_policy = _read_json(folder_policy_path)
     decision = str(dec.get("decision", "HOLD_POINTER_ROUTE"))
     route_mode = str(dec.get("route_mode", "track_a_primary"))
     stats = dec.get("stats", {})
@@ -41,7 +47,7 @@ def main() -> int:
         "generated_at_utc": _now_utc(),
         "research_only": True,
         "source_track": "B",
-        "inputs": {"decision_json": str(decision_path)},
+        "inputs": {"decision_json": str(decision_path), "folder_policy_json": str(folder_policy_path)},
         "routing": {
             "decision": decision,
             "route_mode": route_mode,
@@ -49,6 +55,35 @@ def main() -> int:
             "pointer_shadow": pointer_shadow,
             "track_a_primary": route_mode == "track_a_primary",
             "disable_switch_env": "GENESIS_POINTER_ROUTE_FORCE_DISABLE",
+        },
+        "folder_policy": {
+            "schema": str(folder_policy.get("schema", "unknown")),
+            "policy_default": str(folder_policy.get("policy_default", "deny_unless_allowlisted")),
+            "rows": [
+                {
+                    "path_pattern": str(r.get("path_pattern", "")),
+                    "policy": str(r.get("policy", "unknown")),
+                    "default_route_mode": r.get("default_route_mode"),
+                    "go_route_mode": r.get("go_route_mode"),
+                }
+                for r in folder_policy.get("rows", [])
+                if isinstance(r, dict) and r.get("path_pattern")
+            ],
+            "apply_patterns": [
+                str(r.get("path_pattern"))
+                for r in folder_policy.get("rows", [])
+                if isinstance(r, dict) and str(r.get("policy")) == "apply"
+            ],
+            "caution_patterns": [
+                str(r.get("path_pattern"))
+                for r in folder_policy.get("rows", [])
+                if isinstance(r, dict) and str(r.get("policy")) == "caution"
+            ],
+            "forbid_patterns": [
+                str(r.get("path_pattern"))
+                for r in folder_policy.get("rows", [])
+                if isinstance(r, dict) and str(r.get("policy")) == "forbid"
+            ],
         },
         "observability": {
             "go_count": stats.get("go_count"),

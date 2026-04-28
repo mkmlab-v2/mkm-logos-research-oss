@@ -59,6 +59,10 @@ def main() -> int:
         "--falsification-sensitivity-json",
         default="docs/final/artifacts/two_track_falsification_sensitivity_latest.json",
     )
+    ap.add_argument(
+        "--falsification-boundary-json",
+        default="docs/final/artifacts/two_track_falsification_boundary_report_latest.json",
+    )
     ap.add_argument("--output-json", default="docs/final/artifacts/two_track_submission_draft_latest.json")
     args = ap.parse_args()
 
@@ -73,6 +77,7 @@ def main() -> int:
     public_safe_path = _resolve(repo_root, args.public_safe_json)
     falsification_path = _resolve(repo_root, args.falsification_json)
     falsification_sensitivity_path = _resolve(repo_root, args.falsification_sensitivity_json)
+    falsification_boundary_path = _resolve(repo_root, args.falsification_boundary_json)
     if not evidence_path.is_file():
         raise SystemExit(f"missing required input json: {evidence_path}")
 
@@ -84,6 +89,7 @@ def main() -> int:
     falsification_sensitivity = (
         _load(falsification_sensitivity_path) if falsification_sensitivity_path.is_file() else {}
     )
+    falsification_boundary = _load(falsification_boundary_path) if falsification_boundary_path.is_file() else {}
 
     gates = evidence.get("gates") if isinstance(evidence.get("gates"), dict) else {}
     readiness_summary = readiness.get("summary") if isinstance(readiness.get("summary"), dict) else {}
@@ -118,6 +124,18 @@ def main() -> int:
         if isinstance(sensitivity_breakpoint, dict)
         else "all tested sensitivity points pass"
     )
+    boundary_summary = (
+        falsification_boundary.get("boundary_summary")
+        if isinstance(falsification_boundary.get("boundary_summary"), dict)
+        else {}
+    )
+    max_safe_survivor = boundary_summary.get("max_safe_min_survivor_count")
+    min_break_survivor = boundary_summary.get("min_break_min_survivor_count")
+    boundary_note = (
+        f"safe survivor-floor up to {max_safe_survivor}, first break at {min_break_survivor}"
+        if (max_safe_survivor is not None and min_break_survivor is not None)
+        else "fail-boundary summary unavailable"
+    )
 
     publication_ready = bool(readiness_summary.get("ready_for_publication_claim", False))
     if not readiness_path.is_file():
@@ -147,7 +165,7 @@ def main() -> int:
             f"Current evidence bundle reports bundle_ready={bundle_ready}, publication_ready={publication_ready}, "
             f"primary_delta_shift_score={primary_delta_num:.4f}, interpretation='{sig_interp_str}', "
             f"falsification={falsification_pass}/{falsification_total} ({falsification_status}), "
-            f"sensitivity='{sensitivity_note}'."
+            f"sensitivity='{sensitivity_note}', fail_boundary='{boundary_note}'."
         ),
         "claim_boundary": boundary,
     }
@@ -158,8 +176,9 @@ def main() -> int:
         "3) Experimental Protocol: raw OOS policy, falsification checks, multi-baseline setup",
         "4) Results: benchmark deltas, significance interpretation, readiness status",
         "5) Falsification Robustness: 5-check pass status and threshold sensitivity breakpoint",
-        "6) Governance & Disclosure: rollback contract, public-safe redaction policy",
-        "7) Limitations & Next Steps: drift horizon extension and external replication plan",
+        "6) Fail Boundary: max-safe threshold and first-break condition",
+        "7) Governance & Disclosure: rollback contract, public-safe redaction policy",
+        "8) Limitations & Next Steps: drift horizon extension and external replication plan",
     ]
 
     draft = {
@@ -190,6 +209,9 @@ def main() -> int:
                 if falsification_sensitivity_path.is_file()
                 else None
             ),
+            "falsification_boundary_json": (
+                str(falsification_boundary_path) if falsification_boundary_path.is_file() else None
+            ),
         },
         "falsification_snapshot": {
             "pass_count": falsification_pass,
@@ -197,13 +219,20 @@ def main() -> int:
             "suite_status": falsification_status,
             "sensitivity_breakpoint": sensitivity_breakpoint,
         },
+        "falsification_boundary_snapshot": {
+            "max_safe_min_survivor_count": max_safe_survivor,
+            "min_break_min_survivor_count": min_break_survivor,
+            "first_non_pass_row": boundary_summary.get("first_non_pass_row"),
+            "boundary_note": boundary_note,
+        },
         "degraded_mode": {
             "enabled": (not readiness_path.is_file())
             or (not significance_path.is_file())
             or (not benchmark_path.is_file())
             or (not public_safe_path.is_file())
             or (not falsification_path.is_file())
-            or (not falsification_sensitivity_path.is_file()),
+            or (not falsification_sensitivity_path.is_file())
+            or (not falsification_boundary_path.is_file()),
             "missing_inputs": [
                 str(p)
                 for p in (
@@ -213,6 +242,7 @@ def main() -> int:
                     public_safe_path,
                     falsification_path,
                     falsification_sensitivity_path,
+                    falsification_boundary_path,
                 )
                 if not p.is_file()
             ],

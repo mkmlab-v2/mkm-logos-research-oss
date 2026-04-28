@@ -28,13 +28,14 @@ def main():
     if not op.is_absolute(): op=ROOT/op
     if not apath.is_absolute(): apath=ROOT/apath
     rows=loadj(rp); bench=load(bp)
-    by={}; seed=0; boot=0
+    by={}; seed=0; boot=0; scenario_adjusted=0
     for r in rows:
         b=str(r.get('baseline_name','')).strip();
         if not b: continue
         by[b]=by.get(b,0)+1
         if bool(r.get('is_seed_scaffold',False)): seed+=1
         if bool(r.get('is_bootstrap_resample',False)): boot+=1
+        if bool(r.get('oos_scenario_adjusted',False)): scenario_adjusted+=1
     min_n=max(1,int(a.min_samples_per_baseline))
     low=[b for b,n in by.items() if n<min_n]
     expected=[]
@@ -50,6 +51,6 @@ def main():
     if add>0:
         from datetime import timedelta
         eta=(datetime.now(timezone.utc)+timedelta(minutes=add*max(1,int(a.expected_cadence_minutes)))).strftime('%Y-%m-%dT%H:%M:%SZ')
-    doc={'schema':'two_track_raw_oos_readiness_v1','generated_at_utc':now(),'research_only':True,'promotion_required':True,'source_track':'K','source':{'raw_oos_jsonl':str(rp),'benchmark_json':str(bp) if bp.is_file() else None,'audit_log_jsonl':str(apath) if apath.is_file() else None},'summary':{'total_rows':len(rows),'baseline_count':len(by),'seed_rows':seed,'bootstrap_rows':boot,'uses_seed_scaffold':use_seed,'min_samples_per_baseline':min_n,'low_sample_baselines':low,'missing_expected_baselines':miss,'ready_for_internal_significance':ready_internal,'ready_for_publication_claim':ready_public},'forecast':{'observed_audit_runs':runs,'expected_runs_for_min_sample':min_n,'additional_audit_runs_required':add,'expected_cadence_minutes':max(1,int(a.expected_cadence_minutes)),'estimated_ready_utc_if_cadence_kept':eta}}
+    doc={'schema':'two_track_raw_oos_readiness_v1','generated_at_utc':now(),'research_only':True,'promotion_required':True,'source_track':'K','source':{'raw_oos_jsonl':str(rp),'benchmark_json':str(bp) if bp.is_file() else None,'audit_log_jsonl':str(apath) if apath.is_file() else None},'summary':{'total_rows':len(rows),'baseline_count':len(by),'seed_rows':seed,'bootstrap_rows':boot,'scenario_adjusted_rows':scenario_adjusted,'uses_seed_scaffold':use_seed,'min_samples_per_baseline':min_n,'low_sample_baselines':low,'missing_expected_baselines':miss,'ready_for_internal_significance':ready_internal,'ready_for_publication_claim':ready_public},'forecast':{'observed_audit_runs':runs,'expected_runs_for_min_sample':min_n,'additional_audit_runs_required':add,'expected_cadence_minutes':max(1,int(a.expected_cadence_minutes)),'estimated_ready_utc_if_cadence_kept':eta}}
     op.parent.mkdir(parents=True, exist_ok=True); op.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+'\n', encoding='utf-8'); print(str(op)); return 0
 if __name__=='__main__': raise SystemExit(main())

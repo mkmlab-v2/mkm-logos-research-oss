@@ -1,0 +1,39 @@
+{
+  "schema": "sasang_prophecy_eval_contract_v1",
+  "generated_at_utc": "2026-04-28T04:49:50Z",
+  "scope": "sasang_prophecy_b_track_commercialization_precheck",
+  "inputs_contract": {
+    "lens_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",
+    "standard_gate_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_latest.json",
+    "strict_gate_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_latest.json",
+    "evaluation_window": "latest_single_snapshot",
+    "cost_buckets_basis_points": [
+      20,
+      30,
+      40
+    ],
+    "neutral_policy": {
+      "mapping_target_sideways_allows_zero_direction": true,
+      "must_flag_if_direction_zero_persists": true
+    }
+  },
+  "reproducibility_contract": {
+    "determinism": "same_inputs_same_outputs",
+    "required_fields": [
+      "scores.direction_score",
+      "scores.confidence",
+      "checks",
+      "decision"
+    ],
+    "track_wall": {
+      "track_b_only": true,
+      "a_track_autobind_forbidden": true,
+      "promotion_to_a_track_allowed": false
+    }
+  },
+  "policy_boundary": {
+    "non_medical_claim_only": true,
+    "no_live_trading_trigger": true,
+    "human_signoff_required": true
+  }
+}

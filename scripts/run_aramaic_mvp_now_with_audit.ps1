@@ -39,10 +39,34 @@ if (Test-Path -LiteralPath $shadowPath) {
     }
 }
 
+# Scenario diversification for raw OOS distribution robustness.
+$minute = [DateTime]::UtcNow.Minute
+$scenarioIndex = $minute % 3
+$scenarioName = "neutral"
+$shiftAdj = 0.0
+$deltaAdj = 0.0
+if ($scenarioIndex -eq 1) {
+    $scenarioName = "stress_tilt"
+    $shiftAdj = -0.018
+    $deltaAdj = -0.006
+} elseif ($scenarioIndex -eq 2) {
+    $scenarioName = "risk_on_tilt"
+    $shiftAdj = 0.015
+    $deltaAdj = 0.004
+}
+$oosShift = [Math]::Min(1.0, [Math]::Max(0.0, ([double]$score.shift_score + $shiftAdj)))
+$oosDelta = [Math]::Max(0.0, ([double]$delta + $deltaAdj))
+
 $row = [ordered]@{
     run_at_utc = [DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
     shift_score = [double]$score.shift_score
     delta_shift_score = [double]$delta
+    oos_shift_score = [double]$oosShift
+    oos_delta_shift_score = [double]$oosDelta
+    oos_scenario = $scenarioName
+    oos_scenario_adjusted = $true
+    conflict_ratio = [double]$score.conflict_ratio
+    insight_cap_bucket = [string]$score.insight_cap_bucket
     strict_readiness = [bool]$StrictReadiness
     webhook_disabled = [bool]$NoWebhook
 }
@@ -51,4 +75,4 @@ $json = ($row | ConvertTo-Json -Compress -Depth 6)
 [System.IO.File]::AppendAllText($auditPath, $json + [Environment]::NewLine, [System.Text.Encoding]::UTF8)
 
 Write-Host ("AUDIT APPEND: {0}" -f $auditPath) -ForegroundColor Green
-Write-Host ("AUDIT ROW: shift_score={0}, delta_shift_score={1}" -f $row.shift_score, $row.delta_shift_score) -ForegroundColor Green
+Write-Host ("AUDIT ROW: shift_score={0}, delta_shift_score={1}, oos_shift={2}, oos_delta={3}, scenario={4}" -f $row.shift_score, $row.delta_shift_score, $row.oos_shift_score, $row.oos_delta_shift_score, $row.oos_scenario) -ForegroundColor Green

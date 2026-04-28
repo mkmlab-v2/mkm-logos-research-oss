@@ -13,6 +13,8 @@
 
 **갱신 (2026-04-22 — Pre-News 레일):** `scripts/build_pre_news_snapshot_v1.py` → `docs/final/artifacts/pre_news_snapshot_latest.json`; 스키마 `docs/final/schemas/pre_news_snapshot_v1.schema.json`; `scripts/pre_news_dual_regime_adapter_v1.py`·`scripts/dry_run_pre_news_dual_regime_v1.py` → `docs/final/artifacts/pre_news_dual_regime_bridge_latest.json`; 벤치 입력 `docs/final/artifacts/pre_news_bench_inputs_latest.json`(선택); `scripts/send_pre_news_bridge_stub_telegram_v1.py`(루트 `.env` 병합·`TELEGRAM_*` 없으면 skip); `scripts/evolve_pre_news_bench_inputs_v1.py`(자동 제안·자동 적용 금지)·`scripts/run_ssh_shadow_pre_news_chain_v1.ps1`(원격 shadow 실행/회수); `scripts/run_pre_news_morning_chain_v1.ps1`·`scripts/register_pre_news_morning_chain_task.ps1`; `scripts/run_daily_prophecy_then_pre_news_v1.ps1`; **로컬 단일 24h 운영 래퍼** `scripts/run_local_24h_ops_chain_v1.ps1`·`scripts/register_local_24h_ops_chain_task.ps1`·`scripts/run_local_min_verification_5lines_v1.ps1`; **모드 전환 가드** `scripts/alert_local_trading_mode_transition_v1.py` (`reports/local_trading_mode_guard_state.json`); **주간 후보 검토 패킷** `scripts/run_pre_news_weekly_candidate_review_v1.py`·`scripts/register_pre_news_weekly_candidate_review_task.ps1` (`docs/final/artifacts/pre_news_weekly_candidate_review_latest.json`); 감사 `reports/pre_news_morning_chain_log.jsonl`·`reports/local_trading_min_verification_latest.json`. **실매매·본선 주문 자동 합선 없음.**
 
+**갱신 (2026-04-28 — Hybrid Pointer Router 상용 PoC 체인):** §19~§27에 `GO/WATCH/HOLD` 라벨·순효율 민감도·운영 권장영역·routing decision/runtime config/shadow daily report/alert/guard/guard drill 및 B2B SLA·카피덱·PoC 체크리스트 추가. 기본 정책은 조건부 주장(artifact-bound)과 자동 강등(`HOLD_POINTER_ROUTE` → `track_a_primary`) 고정.
+
 ---
 
 ## 1. 검증 범위
@@ -1174,3 +1176,135 @@
   - `drill_passed=true`
   - forced alert `severity=high`
   - guard snapshot `guard_applied=true`, `guard_reason=shadow_health_alert_triggered`
+
+### 28. Two-Track 통계/게이트/제출 동결 고도화 (FACT, 2026-04-28)
+
+#### 28.1 통계 유의성 엔진 실계산화 (FACT)
+
+- 스크립트:
+  - `scripts/build_two_track_statistical_significance_report_v1.py`
+- 변경:
+  - 기존 stub 방식(`bootstrap+signflip_stub`)에서 실제 계산 방식으로 전환.
+  - 현재 메서드: `bootstrap_mean_ci+signflip_permutation`
+  - 출력 필드 확장: `std_dev`, `alpha`, `bootstrap_iterations`, `permutation_iterations`.
+- 최신 산출물:
+  - `docs/final/artifacts/two_track_statistical_significance_report_latest.json`
+  - 대표값: `p_value=0.0002499...`, `significance_interpretation=positive_delta_supported`.
+
+#### 28.2 Raw OOS 다양성(분산) 강화 (FACT)
+
+- 스크립트:
+  - `scripts/run_aramaic_mvp_now_with_audit.ps1`
+  - `scripts/ingest_two_track_raw_oos_from_audit_v1.py`
+  - `scripts/report_two_track_raw_oos_readiness_v1.py`
+- 변경:
+  - audit row에 OOS 시나리오 필드 추가:
+    - `oos_shift_score`, `oos_delta_shift_score`
+    - `oos_scenario` (`neutral` / `stress_tilt` / `risk_on_tilt`)
+    - `oos_scenario_adjusted`, `conflict_ratio`, `insight_cap_bucket`
+  - ingest는 `oos_*` 필드를 우선 사용해 baseline delta를 생성.
+  - readiness에 `scenario_adjusted_rows` 지표 추가.
+- 최신 상태:
+  - `docs/final/artifacts/two_track_raw_oos_readiness_latest.json`
+  - `observed_audit_runs=70`, `scenario_adjusted_rows=156`
+  - `seed_rows=0`, `bootstrap_rows=0`, `ready_for_publication_claim=true`.
+
+#### 28.3 Fail-Boundary 운영 게이트 연결 (FACT)
+
+- 스크립트:
+  - `scripts/alert_two_track_fail_boundary_gate_v1.py`
+- 산출물:
+  - `docs/final/artifacts/two_track_fail_boundary_gate_latest.json`
+- 규칙:
+  - `survivor_count >= max_safe_min_survivor_count` 이면 `should_trade=true`, 아니면 `rollback=true`.
+- 체인 반영:
+  - `scripts/run_aramaic_mvp_chain_v1.ps1`에 `[28b/37]` 단계 추가.
+  - 순서: falsification suite -> boundary report -> fail-boundary gate.
+- 최신 상태:
+  - `survivor_count=5`, `max_safe_min_survivor_count=5`
+  - `gate_eval.should_trade=true`, `gate_eval.rollback=false`.
+
+#### 28.4 제출 동결 체크리스트 자동화 (FACT)
+
+- 스크립트:
+  - `scripts/build_two_track_submission_freeze_v1.py`
+  - `scripts/build_two_track_submission_checklist_v1.py`
+- 산출물:
+  - `docs/final/artifacts/two_track_submission_freeze_latest.json`
+  - `docs/final/artifacts/two_track_submission_checklist_latest.json`
+- 역할:
+  - 제출 핵심 8개 아티팩트를 timestamp freeze 디렉터리로 복사/동결.
+  - 체크리스트에서 존재 여부, `generated_at_utc`, 재현 명령(`repro_commands`)을 단일 JSON로 제공.
+- 최신 상태:
+  - `submission_ready=true`
+  - `freeze_missing_count=0`
+  - 동결 경로 예: `docs/final/artifacts/freeze/two_track_submission_20260428T043821Z`.
+
+#### 28.5 제출 트랙 권장/템플릿 고정 (FACT)
+
+- 스크립트:
+  - `scripts/build_two_track_kdd_submission_template_v1.py`
+- 산출물:
+  - `docs/final/artifacts/two_track_submission_recommended_track_latest.json`
+  - `docs/final/artifacts/two_track_kdd_submission_template_latest.json`
+- 역할:
+  - 권장 트랙(`kdd_applied_data_science`)과 제출 후보 라벨을 고정.
+  - KDD 폼 입력용 `title/abstract_180w/keywords/contributions`를 단일 JSON으로 제공.
+- 최신 상태:
+  - 추천 트랙: `kdd_applied_data_science`
+  - 제출 템플릿 JSON 생성 완료.
+
+#### 28.6 제출 실행 Go/No-Go 아티팩트 (FACT)
+
+- 스크립트:
+  - `scripts/build_two_track_submission_go_nogo_v1.py`
+- 산출물:
+  - `docs/final/artifacts/two_track_submission_go_nogo_latest.json`
+- 규칙:
+  - `submission_ready` AND `bundle_ready` AND `ready_for_publication_claim`
+  - AND fail-boundary gate(`should_trade=true`, `rollback=false`)
+  - 위 조건 모두 충족 시 `status=GO`, 아니면 `NO_GO` + reason 목록.
+- 최신 상태:
+  - `status=GO` (체크리스트/증거번들/fail-boundary gate 기준 충족).
+
+### 29. PointerGuard Router 워크스페이스 폴더별 적용 정책표 (DRAFT, 2026-04-28)
+
+- 정책 원칙(고정):
+  - 기본값은 `비적용`이며, **명시적 allowlist**에 포함된 경로만 Pointer 경로를 사용한다.
+  - 신규 경로는 `Shadow` 관측(최소 7일 또는 운영자가 정한 윈도우) 통과 전 `GO` 승격 금지.
+  - `금지` 구역은 Track B 무손실 원문 보호를 우선하며 Pointer 경로를 상시 차단한다.
+  - Alert guard(`check_pointer_shadow_health_alert_v1.py` + `apply_pointer_shadow_alert_guard_v1.py`)는 전 구간 공통 적용한다.
+
+| 워크스페이스 경로(패턴) | 정책 | 기본 Route Mode | 근거/사유 | 적용 조건 |
+| --- | --- | --- | --- | --- |
+| `docs/final/artifacts/` | 적용 | `pointer_shadow` -> `pointer_go` | 정형 JSON/리포트가 반복 생성되어 순이익 구간 진입 가능성이 높음 | Shadow 지표(`candidate_ok_rate`, `unresolved`) 안정 후 GO |
+| `reports/` | 적용 | `pointer_shadow` -> `pointer_go` | 일별/주별 반복 로그·요약 산출물이 많아 포인터 압축 효율이 큼 | 동기화 오버헤드 포함 순절감률이 GO 임계 이상 |
+| `projects/bitcoin-trading/memory/v2/` | 적용 | `pointer_shadow` -> `pointer_go` | 운영 관측 산출물의 반복 패턴이 강함 | 운영 가드릴·복구 리허설 통과 |
+| `memory/obsidian_vault/llm_wiki/wiki/` | 주의 | `pointer_shadow` 유지 | 지식 합성 산출물은 반복성이 있으나 문맥 보존 요구가 큼 | Shadow-only, 수동 승인 전 GO 금지 |
+| `docs/final/`(아티팩트 제외) | 주의 | `track_a_primary` | SSOT 본문/서술 문서는 변경 민감도가 높음 | 파일 단위 allowlist + diff 검증 시 제한적 Shadow |
+| `data/logos/**/bench/` | 주의 | `track_a_primary` | 벤치 입력/정답셋은 재현성 핵심 자산 | 복제본에서만 Shadow 테스트, 원본 경로 GO 금지 |
+| `scripts/` | 금지 | `track_a_primary` 고정 | `.py/.ps1` 실행 코드 경로는 토큰 단위 변형 리스크 치명적 | Pointer 라우팅 비활성(하드 블록) |
+| `api-services/` | 금지 | `track_a_primary` 고정 | API/런타임 코드는 버전·의미 보존이 절대 조건 | Pointer 라우팅 비활성(하드 블록) |
+| `.github/workflows/` | 금지 | `track_a_primary` 고정 | CI 계약 YAML은 공백/문자 단위 오류에 취약 | Pointer 라우팅 비활성(하드 블록) |
+| `.cursor/`, `AGENTS.md`, `CLAUDE.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | 금지 | `track_a_primary` 고정 | 규칙/헌법/지휘 SSOT는 무손실 원문 보전이 최우선 | Pointer 라우팅 비활성(하드 블록) |
+| `data/**` 원천 코퍼스/라벨셋 | 금지 | `track_a_primary` 고정 | 학습·평가 원천 데이터의 바이트 동일성 필요 | Pointer 라우팅 비활성(하드 블록) |
+
+- 운영 메모:
+  - `적용` 구간도 최초에는 `pointer_shadow`로 시작하고, zone 판정이 `GO`인 경우에만 `pointer_go` 승격한다.
+  - `주의` 구간은 기본적으로 `Shadow 전용`이며, 운영자 수동 승인 없는 자동 승격을 금지한다.
+  - `금지` 구간은 정책 위반 시 즉시 `HOLD_POINTER_ROUTE`로 강등한다.
+
+#### 29.1 실행 연결 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_pointerguard_folder_policy_v1.py`
+  - `scripts/build_genesis_pointer_route_runtime_config_v1.py` (`--folder-policy-json` 입력 지원)
+  - `scripts/pointer_hash_snapping_router_v1.py` (`--target-path` 기준 폴더 정책 적용)
+  - `scripts/run_genesis_pointer_routing_control_chain_v1.py` (폴더 정책 빌드 단계 포함)
+- 산출물:
+  - `docs/final/artifacts/pointerguard_folder_policy_latest.json`
+  - `docs/final/artifacts/genesis_pointer_route_runtime_config_latest.json`
+- 최신 스모크:
+  - folder policy summary: `apply=3`, `caution=3`, `forbid=8`
+  - runtime config 생성 성공(`ok=true`)
+  - router `--target-path docs/final/artifacts/demo.json` 실행 시 정책 기준으로 Track A 경로 유지(현재 guarded decision 기준)

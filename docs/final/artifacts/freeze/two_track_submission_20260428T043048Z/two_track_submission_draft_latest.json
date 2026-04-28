@@ -1,0 +1,73 @@
+{
+  "schema": "two_track_submission_draft_v1",
+  "generated_at_utc": "2026-04-28T04:30:48Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "title_candidates": [
+    "Two-Track Safety-Gated Inference: A Public-Safe Falsification Architecture for Meaning-Driven Signals",
+    "From Meaning Graph to Survivorship Gate: A Reproducible Two-Track Validation Stack",
+    "Public-Safe Alpha Governance: Two-Track Evidence Design with Raw OOS Readiness"
+  ],
+  "recommended_title": "Two-Track Safety-Gated Inference: A Public-Safe Falsification Architecture for Meaning-Driven Signals",
+  "abstract_scaffold_en": {
+    "problem": "Meaning-rich cross-reference signals are expressive but prone to overfitting and false discovery when promoted directly to trading decisions.",
+    "method": "We separate K-track (knowledge/IP narrative layer) from T-track (survivor filter and rollback gates), and evaluate claims with falsification suite, multi-baseline comparison, and bootstrap/permutation significance.",
+    "result": "Current evidence bundle reports bundle_ready=True, publication_ready=True, primary_delta_shift_score=0.3034, interpretation='positive_delta_supported', falsification=5/5 (pass), sensitivity='first non-pass at min_survivor_count=7, min_ci_low_defense_contrib=0.0', fail_boundary='safe survivor-floor up to 5, first break at 7'.",
+    "claim_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted."
+  },
+  "section_outline_en": [
+    "1) Introduction: Why meaning-network signals require safety-first promotion gates",
+    "2) Two-Track Architecture: K-track narrative layer vs T-track survivorship layer",
+    "3) Experimental Protocol: raw OOS policy, falsification checks, multi-baseline setup",
+    "4) Results: benchmark deltas, significance interpretation, readiness status",
+    "5) Falsification Robustness: 5-check pass status and threshold sensitivity breakpoint",
+    "6) Fail Boundary: max-safe threshold and first-break condition",
+    "7) Governance & Disclosure: rollback contract, public-safe redaction policy",
+    "8) Limitations & Next Steps: drift horizon extension and external replication plan"
+  ],
+  "submission_gate_snapshot": {
+    "bundle_ready": true,
+    "ready_for_publication_claim": true,
+    "missing_artifacts": []
+  },
+  "public_safe_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted.",
+  "sources": {
+    "evidence_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_evidence_bundle_latest.json",
+    "readiness_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_raw_oos_readiness_latest.json",
+    "significance_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_statistical_significance_report_latest.json",
+    "benchmark_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_benchmark_comparison_latest.json",
+    "public_safe_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_public_safe_report_latest.json",
+    "falsification_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_suite_latest.json",
+    "falsification_sensitivity_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_sensitivity_latest.json",
+    "falsification_boundary_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_boundary_report_latest.json"
+  },
+  "falsification_snapshot": {
+    "pass_count": 5,
+    "total_checks": 5,
+    "suite_status": "pass",
+    "sensitivity_breakpoint": {
+      "min_survivor_count": 7,
+      "min_ci_low_defense_contrib": 0.0,
+      "pass_count": 4,
+      "total_checks": 5,
+      "suite_status": "warning"
+    }
+  },
+  "falsification_boundary_snapshot": {
+    "max_safe_min_survivor_count": 5,
+    "min_break_min_survivor_count": 7,
+    "first_non_pass_row": {
+      "min_survivor_count": 7,
+      "min_ci_low_defense_contrib": 0.0,
+      "pass_count": 4,
+      "total_checks": 5,
+      "suite_status": "warning"
+    },
+    "boundary_note": "safe survivor-floor up to 5, first break at 7"
+  },
+  "degraded_mode": {
+    "enabled": false,
+    "missing_inputs": []
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "two_track_qa_pack_v1",
-  "generated_at_utc": "2026-04-28T04:06:43Z",
+  "generated_at_utc": "2026-04-28T04:34:40Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -23,7 +23,7 @@
           "evidence": {
             "source_artifact": "two_track_falsification_suite_latest.json",
             "metric_value": "pending",
-            "as_of_utc": "2026-04-28T04:06:43Z",
+            "as_of_utc": "2026-04-28T04:34:40Z",
             "rollback_rule": "if gate fails then rollback",
             "gate_eval": {
               "pass": false,
@@ -46,7 +46,7 @@
           "evidence": {
             "source_artifact": "two_track_falsification_suite_latest.json",
             "metric_value": "pending",
-            "as_of_utc": "2026-04-28T04:06:43Z",
+            "as_of_utc": "2026-04-28T04:34:40Z",
             "rollback_rule": "if gate fails then rollback",
             "gate_eval": {
               "pass": false,
@@ -69,7 +69,7 @@
           "evidence": {
             "source_artifact": "two_track_falsification_suite_latest.json",
             "metric_value": "pending",
-            "as_of_utc": "2026-04-28T04:06:43Z",
+            "as_of_utc": "2026-04-28T04:34:40Z",
             "rollback_rule": "if gate fails then rollback",
             "gate_eval": {
               "pass": false,

@@ -1,6 +1,6 @@
 {
     "schema":  "showroom_public_bundle_v1",
-    "generated_at_utc":  "2026-04-28T03:57:00.7229255+00:00",
+    "generated_at_utc":  "2026-04-28T04:26:12.9025173+00:00",
     "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1",
     "sources":  {
                     "trade_window_24h":  "C:\\workspace\\projects\\bitcoin-trading\\exports\\cursor_trade_history\\all_trades_latest_24h.json",
@@ -12,7 +12,7 @@
                 },
     "observability":  {
                           "context_stale":  false,
-                          "context_age_seconds":  2446,
+                          "context_age_seconds":  600,
                           "direction_abstract":  "flat",
                           "c2_signal_lamp":  "GREEN",
                           "runtime_overall_ok":  true,
@@ -21,7 +21,7 @@
                           "public_pnl_pct_mode":  "unavailable_no_metrics",
                           "direction_source":  "c2",
                           "context_ttl_seconds":  14400,
-                          "snapshot_as_of_utc":  "2026-04-28T03:16:15Z",
+                          "snapshot_as_of_utc":  "2026-04-28T04:16:13Z",
                           "c2_status":  "GREEN_HOLD"
                       },
     "public_ui":  {
@@ -38,23 +38,23 @@
                       "unified_score_balanced":  0.40342
                   },
     "public_event_v1":  {
-                            "timestamp":  "2026-04-28T03:57:00.7229255+00:00",
+                            "timestamp":  "2026-04-28T04:26:12.9025173+00:00",
                             "active_character_id":  "dragon_quant",
                             "risk_level":  "INFO",
                             "public_signal_direction":  "HOLD",
                             "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice. | signal=HOLD/LOCKED | regime=unknown",
                             "schema_version":  "public-event.v1",
-                            "event_id":  "showroom-20260428T035700-d248ebf5",
+                            "event_id":  "showroom-20260428T042612-56433365",
                             "source":  "ops_showroom_bundle_v1",
                             "system_status":  "online",
                             "active_strategies_count":  1,
                             "delayed_metrics":  {
                                                     "delay_seconds":  180,
-                                                    "as_of_utc":  "2026-04-28T03:16:15Z"
+                                                    "as_of_utc":  "2026-04-28T04:16:13Z"
                                                 },
                             "direction_abstract":  "flat",
                             "disclaimer_ref":  "jemaai_showroom_v1",
-                            "last_ok_utc":  "2026-04-28T03:57:00.7229255+00:00",
+                            "last_ok_utc":  "2026-04-28T04:26:12.9025173+00:00",
                             "order_summary_public":  {
                                                          "trades_24h_count":  34,
                                                          "latest_trade_utc":  "2026-04-23T00:11:25.0850000+00:00",

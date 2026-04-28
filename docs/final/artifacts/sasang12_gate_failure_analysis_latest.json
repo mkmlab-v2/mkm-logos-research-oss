@@ -1,0 +1,55 @@
+{
+  "schema": "sasang12_gate_failure_analysis_v1",
+  "generated_at_utc": "2026-04-28T04:49:50Z",
+  "summary": {
+    "total_axes": 4,
+    "fail_count": 1,
+    "warn_count": 3,
+    "common_root_cause": "promotion_chain_missing_v1_to_v9"
+  },
+  "failure_axes": [
+    {
+      "axis": "promotion_chain_coverage",
+      "severity": "high",
+      "status": "FAIL",
+      "evidence": "v1~v9 executable/artifact chain is missing on-disk in current workspace snapshot"
+    },
+    {
+      "axis": "independent_lens_directionality",
+      "severity": "medium",
+      "status": "WARN",
+      "evidence": "direction_score is exactly 0.0 (neutral fixation risk)",
+      "metrics": {
+        "direction_score": 0.0,
+        "mapping_target": "sideways"
+      }
+    },
+    {
+      "axis": "independent_lens_confidence",
+      "severity": "medium",
+      "status": "WARN",
+      "evidence": "confidence below 0.55 threshold",
+      "metrics": {
+        "confidence": 0.493333
+      }
+    },
+    {
+      "axis": "strict_quality_gate",
+      "severity": "medium",
+      "status": "WARN",
+      "evidence": "strict quality gate decision=HOLD"
+    }
+  ],
+  "current_snapshot": {
+    "direction_score": 0.0,
+    "confidence": 0.493333,
+    "mapping_target": "sideways",
+    "standard_gate": "PASS",
+    "strict_gate": "HOLD"
+  },
+  "next_experiments": [
+    "Improve non-neutral signal rule in independent lens while preserving non-medical boundary",
+    "Raise confidence by calibrated proxy weighting and re-run strict gate",
+    "Implement/restore v1~v9 promotion chain scripts with reproducible artifacts"
+  ]
+}

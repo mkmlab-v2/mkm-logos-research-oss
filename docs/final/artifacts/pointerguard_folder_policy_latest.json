@@ -1,0 +1,161 @@
+{
+  "schema": "pointerguard_folder_policy_v1",
+  "generated_at_utc": "2026-04-28T04:50:38+00:00",
+  "policy_default": "deny_unless_allowlisted",
+  "research_only": true,
+  "source_track": "B",
+  "rows": [
+    {
+      "path_pattern": "docs/final/artifacts/**",
+      "policy": "apply",
+      "default_route_mode": "pointer_shadow",
+      "go_route_mode": "pointer_primary",
+      "reason": "Repeated structured artifacts with high pointer compression potential."
+    },
+    {
+      "path_pattern": "docs/final/artifacts/**/*.json",
+      "policy": "apply",
+      "default_route_mode": "pointer_shadow",
+      "go_route_mode": "pointer_primary",
+      "reason": "High-frequency structured artifact payloads."
+    },
+    {
+      "path_pattern": "docs/final/artifacts/**/*.jsonl",
+      "policy": "apply",
+      "default_route_mode": "pointer_shadow",
+      "go_route_mode": "pointer_primary",
+      "reason": "Append-only structured logs suitable for pointer path."
+    },
+    {
+      "path_pattern": "reports/**",
+      "policy": "apply",
+      "default_route_mode": "pointer_shadow",
+      "go_route_mode": "pointer_primary",
+      "reason": "High-volume repetitive operational reports/log summaries."
+    },
+    {
+      "path_pattern": "reports/**/*.json",
+      "policy": "apply",
+      "default_route_mode": "pointer_shadow",
+      "go_route_mode": "pointer_primary",
+      "reason": "Structured operational snapshots with repeated schema."
+    },
+    {
+      "path_pattern": "reports/**/*.jsonl",
+      "policy": "apply",
+      "default_route_mode": "pointer_shadow",
+      "go_route_mode": "pointer_primary",
+      "reason": "Event logs with recurring patterns and high volume."
+    },
+    {
+      "path_pattern": "projects/bitcoin-trading/memory/v2/**",
+      "policy": "apply",
+      "default_route_mode": "pointer_shadow",
+      "go_route_mode": "pointer_primary",
+      "reason": "Operational telemetry payloads with recurring schemas."
+    },
+    {
+      "path_pattern": "projects/bitcoin-trading/memory/v2/**/*.json",
+      "policy": "apply",
+      "default_route_mode": "pointer_shadow",
+      "go_route_mode": "pointer_primary",
+      "reason": "Structured ops memory snapshots with recurring fields."
+    },
+    {
+      "path_pattern": "projects/bitcoin-trading/memory/v2/**/*.jsonl",
+      "policy": "apply",
+      "default_route_mode": "pointer_shadow",
+      "go_route_mode": "pointer_primary",
+      "reason": "Time-series records with high redundancy."
+    },
+    {
+      "path_pattern": "reports/**/*.md",
+      "policy": "caution",
+      "default_route_mode": "track_a_primary",
+      "go_route_mode": null,
+      "reason": "Narrative reports need conservative handling despite repetition."
+    },
+    {
+      "path_pattern": "memory/obsidian_vault/llm_wiki/wiki/**",
+      "policy": "caution",
+      "default_route_mode": "pointer_shadow",
+      "go_route_mode": null,
+      "reason": "Context-sensitive synthesis content; keep shadow-only unless approved."
+    },
+    {
+      "path_pattern": "docs/final/**",
+      "policy": "caution",
+      "default_route_mode": "track_a_primary",
+      "go_route_mode": null,
+      "reason": "Narrative/SSOT docs require conservative handling."
+    },
+    {
+      "path_pattern": "data/logos/**/bench/**",
+      "policy": "caution",
+      "default_route_mode": "track_a_primary",
+      "go_route_mode": null,
+      "reason": "Benchmark inputs/labels are reproducibility-sensitive."
+    },
+    {
+      "path_pattern": "scripts/**",
+      "policy": "forbid",
+      "default_route_mode": "track_a_primary",
+      "go_route_mode": null,
+      "reason": "Executable code path; token-level drift risk is unacceptable."
+    },
+    {
+      "path_pattern": "api-services/**",
+      "policy": "forbid",
+      "default_route_mode": "track_a_primary",
+      "go_route_mode": null,
+      "reason": "API/runtime behavior must preserve exact semantics."
+    },
+    {
+      "path_pattern": ".github/workflows/**",
+      "policy": "forbid",
+      "default_route_mode": "track_a_primary",
+      "go_route_mode": null,
+      "reason": "CI contract files are sensitive to tiny syntax diffs."
+    },
+    {
+      "path_pattern": ".cursor/**",
+      "policy": "forbid",
+      "default_route_mode": "track_a_primary",
+      "go_route_mode": null,
+      "reason": "Rule/governance files are immutable control-plane assets."
+    },
+    {
+      "path_pattern": "AGENTS.md",
+      "policy": "forbid",
+      "default_route_mode": "track_a_primary",
+      "go_route_mode": null,
+      "reason": "Agent operation SSOT must remain lossless."
+    },
+    {
+      "path_pattern": "CLAUDE.md",
+      "policy": "forbid",
+      "default_route_mode": "track_a_primary",
+      "go_route_mode": null,
+      "reason": "Master policy context must remain lossless."
+    },
+    {
+      "path_pattern": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+      "policy": "forbid",
+      "default_route_mode": "track_a_primary",
+      "go_route_mode": null,
+      "reason": "Constitution SSOT is protected from pointer path."
+    },
+    {
+      "path_pattern": "data/**",
+      "policy": "forbid",
+      "default_route_mode": "track_a_primary",
+      "go_route_mode": null,
+      "reason": "Raw datasets/corpora require byte-level identity."
+    }
+  ],
+  "summary": {
+    "apply_count": 9,
+    "caution_count": 4,
+    "forbid_count": 8
+  }
+}

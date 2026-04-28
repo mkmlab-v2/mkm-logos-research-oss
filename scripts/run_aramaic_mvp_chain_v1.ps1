@@ -28,6 +28,8 @@ param(
     [string]$TwoTrackQaPackOutJson = "docs/final/artifacts/two_track_qa_pack_latest.json",
     [string]$TwoTrackAcademicPacketOutJson = "docs/final/artifacts/two_track_academic_submission_packet_latest.json",
     [string]$TwoTrackFalsificationSuiteOutJson = "docs/final/artifacts/two_track_falsification_suite_latest.json",
+    [string]$TwoTrackFailBoundaryReportOutJson = "docs/final/artifacts/two_track_falsification_boundary_report_latest.json",
+    [string]$TwoTrackFailBoundaryGateOutJson = "docs/final/artifacts/two_track_fail_boundary_gate_latest.json",
     [string]$TwoTrackBenchmarkComparisonOutJson = "docs/final/artifacts/two_track_benchmark_comparison_latest.json",
     [string]$TwoTrackSignificanceReportOutJson = "docs/final/artifacts/two_track_statistical_significance_report_latest.json",
     [string]$TwoTrackSignificanceBaselineTuningJson = "docs/final/artifacts/two_track_significance_baseline_tuning_v1.json",
@@ -171,6 +173,12 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[28/37] Run falsification suite (minimal)" -ForegroundColor Cyan
 & py "scripts/run_two_track_falsification_suite_v1.py" "--academic-packet-json" $TwoTrackAcademicPacketOutJson "--qa-json" $TwoTrackQaPackOutJson "--output-json" $TwoTrackFalsificationSuiteOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "[28b/37] Build falsification fail-boundary report + gate" -ForegroundColor Cyan
+& py "scripts/build_two_track_falsification_boundary_report_v1.py" "--output-json" $TwoTrackFailBoundaryReportOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/alert_two_track_fail_boundary_gate_v1.py" "--boundary-json" $TwoTrackFailBoundaryReportOutJson "--survivor-json" $SurvivorCandidatesOutJson "--output-json" $TwoTrackFailBoundaryGateOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[29/37] Build benchmark comparison" -ForegroundColor Cyan
