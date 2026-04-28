@@ -12,6 +12,7 @@ ART = ROOT / "docs" / "final" / "artifacts"
 IN_DEFAULT = ART / "genesis_pointer_routing_decision_latest.json"
 OUT_DEFAULT = ART / "genesis_pointer_route_runtime_config_latest.json"
 FOLDER_POLICY_DEFAULT = ART / "pointerguard_folder_policy_latest.json"
+APPLY_PROMOTION_DEFAULT = ART / "pointerguard_apply_go_promotion_decision_latest.json"
 
 
 def _now_utc() -> str:
@@ -26,6 +27,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--decision-json", type=Path, default=IN_DEFAULT)
     ap.add_argument("--folder-policy-json", type=Path, default=FOLDER_POLICY_DEFAULT)
+    ap.add_argument("--apply-promotion-json", type=Path, default=APPLY_PROMOTION_DEFAULT)
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)
     args = ap.parse_args()
 
@@ -33,10 +35,18 @@ def main() -> int:
     folder_policy_path = (
         args.folder_policy_json if args.folder_policy_json.is_absolute() else ROOT / args.folder_policy_json
     )
+    apply_promotion_path = (
+        args.apply_promotion_json if args.apply_promotion_json.is_absolute() else ROOT / args.apply_promotion_json
+    )
     dec = _read_json(decision_path)
     folder_policy = _read_json(folder_policy_path)
+    apply_promotion = _read_json(apply_promotion_path)
     decision = str(dec.get("decision", "HOLD_POINTER_ROUTE"))
     route_mode = str(dec.get("route_mode", "track_a_primary"))
+    apply_go_enabled = bool(apply_promotion.get("promote_apply_path_to_go", False))
+    if decision == "ENABLE_POINTER_ROUTE" and not apply_go_enabled:
+        decision = "SHADOW_POINTER_ROUTE"
+        route_mode = "pointer_shadow"
     stats = dec.get("stats", {})
 
     pointer_enabled = decision == "ENABLE_POINTER_ROUTE"
@@ -47,7 +57,11 @@ def main() -> int:
         "generated_at_utc": _now_utc(),
         "research_only": True,
         "source_track": "B",
-        "inputs": {"decision_json": str(decision_path), "folder_policy_json": str(folder_policy_path)},
+        "inputs": {
+            "decision_json": str(decision_path),
+            "folder_policy_json": str(folder_policy_path),
+            "apply_promotion_json": str(apply_promotion_path),
+        },
         "routing": {
             "decision": decision,
             "route_mode": route_mode,
@@ -90,6 +104,11 @@ def main() -> int:
             "watch_count": stats.get("watch_count"),
             "hold_count": stats.get("hold_count"),
             "go_ratio": stats.get("go_ratio"),
+        },
+        "promotion_gate": {
+            "apply_go_enabled": apply_go_enabled,
+            "apply_promotion_decision": str(apply_promotion.get("decision", "UNKNOWN")),
+            "apply_promotion_reasons": apply_promotion.get("reasons", []),
         },
         "notes": [
             "Runtime config is generated from policy decision artifact; do not edit manually.",

@@ -52,6 +52,7 @@ def main() -> int:
     steps.append(_run([py, "scripts/decide_genesis_pointer_routing_v1.py"]))
     steps.append(_run([py, "scripts/build_pointer_shadow_daily_report_v1.py"]))
     steps.append(_run([py, "scripts/check_pointer_shadow_health_alert_v1.py"]))
+    steps.append(_run([py, "scripts/decide_pointerguard_apply_go_promotion_v1.py"]))
     steps.append(_run([py, "scripts/apply_pointer_shadow_alert_guard_v1.py"]))
     steps.append(_run([py, "scripts/build_pointerguard_folder_policy_v1.py"]))
     steps.append(
@@ -63,6 +64,8 @@ def main() -> int:
                 "docs/final/artifacts/genesis_pointer_routing_decision_guarded_latest.json",
                 "--folder-policy-json",
                 "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+                "--apply-promotion-json",
+                "docs/final/artifacts/pointerguard_apply_go_promotion_decision_latest.json",
             ]
         )
     )

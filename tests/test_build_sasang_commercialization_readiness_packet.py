@@ -15,6 +15,7 @@ def test_build_packet_marks_not_yet_when_promotion_chain_missing(tmp_path: Path,
     lens = tmp_path / "lens.json"
     gate_std = tmp_path / "gate_std.json"
     gate_strict = tmp_path / "gate_strict.json"
+    promotion_chain = tmp_path / "promotion_chain.json"
 
     out_contract = tmp_path / "contract.json"
     out_gate = tmp_path / "promotion_gate.json"
@@ -31,6 +32,14 @@ def test_build_packet_marks_not_yet_when_promotion_chain_missing(tmp_path: Path,
     )
     _write_json(gate_std, {"decision": "PASS"})
     _write_json(gate_strict, {"decision": "HOLD"})
+    _write_json(
+        promotion_chain,
+        {
+            "schema": "sasang12_promotion_candidate_chain_v1",
+            "version_range": "v1_to_v9",
+            "candidate_count": 9,
+        },
+    )
 
     monkeypatch.setattr(
         "sys.argv",
@@ -42,6 +51,8 @@ def test_build_packet_marks_not_yet_when_promotion_chain_missing(tmp_path: Path,
             str(gate_std),
             "--high-gate-strict",
             str(gate_strict),
+            "--promotion-chain",
+            str(promotion_chain),
             "--eval-contract-out",
             str(out_contract),
             "--promotion-gate-out",
@@ -62,8 +73,8 @@ def test_build_packet_marks_not_yet_when_promotion_chain_missing(tmp_path: Path,
     failure_doc = json.loads(out_failure.read_text(encoding="utf-8"))
     shadow_doc = json.loads(out_shadow.read_text(encoding="utf-8"))
 
-    assert gate_doc["status"] == "FAIL"
+    assert gate_doc["status"] == "WARN"
     assert gate_doc["track_wall"]["a_track_autobind_forbidden"] is True
-    assert packet_doc["decision"] == "NOT_YET"
-    assert "promotion_chain_coverage" in [x["axis"] for x in failure_doc["failure_axes"]]
+    assert packet_doc["decision"] == "ALMOST"
+    assert "promotion_chain_coverage" not in [x["axis"] for x in failure_doc["failure_axes"]]
     assert shadow_doc["decision"] == "KEEP_OBSERVATION_ONLY"

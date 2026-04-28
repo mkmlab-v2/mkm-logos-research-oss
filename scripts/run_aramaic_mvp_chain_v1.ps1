@@ -14,6 +14,10 @@ param(
     [string]$MeaningGraphNodesOutJsonl = "docs/final/artifacts/bible_meaning_graph_nodes_v1.jsonl",
     [string]$MeaningGraphEdgesOutJsonl = "docs/final/artifacts/bible_meaning_graph_edges_v1.jsonl",
     [string]$MeaningInsightOutJson = "docs/final/artifacts/bible_meaning_insight_candidates_latest.json",
+    [string]$SymbolicTopologyInsightOutJson = "docs/final/artifacts/symbolic_topology_insight_latest.json",
+    [string]$SymbolAtomMappingOutJson = "docs/final/artifacts/symbol_atom_mapping_latest.json",
+    [string]$AtomResonanceOutJson = "docs/final/artifacts/atom_resonance_report_latest.json",
+    [string]$ScholarlySymbolBridgeOutJson = "docs/final/artifacts/scholarly_symbol_bridge_latest.json",
     [string]$SurvivorEvalOutJson = "docs/final/artifacts/insight_survivor_eval_latest.json",
     [string]$SurvivorCandidatesOutJson = "docs/final/artifacts/insight_survivor_candidates_latest.json",
     [string]$KnowledgeIpReportOutJson = "docs/final/artifacts/bible_meaning_knowledge_ip_report_latest.json",
@@ -99,6 +103,20 @@ Write-Host "[13/15] Build survivor eval + select survivors" -ForegroundColor Cya
 & py "scripts/build_insight_survivor_eval_v1.py" "--insight-json" $MeaningInsightOutJson "--output-json" $SurvivorEvalOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & py "scripts/select_insight_survivor_candidates_v1.py" "--eval-json" $SurvivorEvalOutJson "--output-json" $SurvivorCandidatesOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "[13b/15] Build symbolic topology insight (Tree of Knowledge)" -ForegroundColor Cyan
+& py "scripts/build_symbolic_topology_insight_v1.py" "--seed-symbol" "tree_of_knowledge_good_evil" "--meaning-json" $MeaningInsightOutJson "--survivor-json" $SurvivorCandidatesOutJson "--output-json" $SymbolicTopologyInsightOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "[13c/15] Build symbol-atom mapping + atom resonance" -ForegroundColor Cyan
+& py "scripts/build_symbol_atom_mapping_v1.py" "--registry-json" "docs/final/artifacts/atom_anchor_registry_v1.json" "--symbolic-json" $SymbolicTopologyInsightOutJson "--output-json" $SymbolAtomMappingOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/build_atom_resonance_report_v1.py" "--mapping-json" $SymbolAtomMappingOutJson "--survivor-json" $SurvivorCandidatesOutJson "--output-json" $AtomResonanceOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "[13d/15] Build scholarly symbol bridge" -ForegroundColor Cyan
+& py "scripts/build_scholarly_symbol_bridge_v1.py" "--mapping-json" $SymbolAtomMappingOutJson "--resonance-json" $AtomResonanceOutJson "--output-json" $ScholarlySymbolBridgeOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[14/15] Re-score + shadow compare with insight signal" -ForegroundColor Cyan

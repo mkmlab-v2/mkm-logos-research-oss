@@ -1338,3 +1338,58 @@
 - 최신 상태:
   - `pointer_hash_snapping_router_shadow_daily_report_latest.json`에 경로군별 집계 필드 반영 확인.
   - `check_pointer_shadow_health_alert_v1.py` 결과: `should_alert=false`, `severity=none`.
+
+#### 29.4 경로군별 Alert 분리 게이트 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/check_pointer_shadow_health_alert_v1.py`
+- 변경:
+  - 기존 전역 임계값(`candidate_ok_rate`, `unresolved`)은 유지.
+  - 경로군별 임계값 추가:
+    - `apply_row_ratio_min` (기본 `0.15`)
+    - `apply_max_unresolved_per_run` (기본 `6.0`)
+    - `caution_row_ratio_max` (기본 `0.35`)
+    - `caution_max_unresolved_per_run` (기본 `2.0`)
+  - reasons 확장:
+    - `low_apply_coverage`
+    - `high_apply_unresolved_tokens`
+    - `high_caution_coverage`
+    - `high_caution_unresolved_tokens`
+- 최신 상태:
+  - `pointer_hash_snapping_router_shadow_alert_latest.json`에 경로군별 입력/윈도우 통계 필드 반영.
+  - 현재 상태 `should_alert=false`, `severity=none`, `reasons=[]`.
+
+#### 29.5 Apply 경로 GO 승격 자동 판정 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/decide_pointerguard_apply_go_promotion_v1.py`
+- 산출물:
+  - `docs/final/artifacts/pointerguard_apply_go_promotion_decision_latest.json`
+- 판정 로직:
+  - 최근 N개 샘플(기본 `3`)에 대해 `apply_ratio >= 0.30` AND `apply_unresolved <= 2.0`을 모두 만족해야 `PROMOTE_APPLY_GO`.
+  - shadow alert가 active이면 즉시 `KEEP_SHADOW`.
+- 체인 반영:
+  - `run_genesis_pointer_routing_control_chain_v1.py`에 승격 판정 단계 추가.
+  - `build_genesis_pointer_route_runtime_config_v1.py`가 `--apply-promotion-json`을 읽어
+    `ENABLE_POINTER_ROUTE`라도 승격 미통과 시 `SHADOW_POINTER_ROUTE`로 보수 강등.
+- 최신 상태:
+  - 승격 판정: `decision=KEEP_SHADOW` (`reason=apply_unresolved_above_threshold`).
+  - runtime config `promotion_gate.apply_go_enabled=false`로 shadow 유지.
+
+#### 30.1 Symbol Atom Anchor Layer + Scholarly Bridge (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_symbol_atom_mapping_v1.py`
+  - `scripts/build_atom_resonance_report_v1.py`
+  - `scripts/build_scholarly_symbol_bridge_v1.py`
+  - `scripts/run_aramaic_mvp_chain_v1.ps1` (`[13c/15]`, `[13d/15]` 단계 추가)
+- 입력/출력:
+  - 입력 레지스트리: `docs/final/artifacts/atom_anchor_registry_v1.json`
+  - 출력 매핑: `docs/final/artifacts/symbol_atom_mapping_latest.json`
+  - 출력 공진: `docs/final/artifacts/atom_resonance_report_latest.json`
+  - 출력 브릿지: `docs/final/artifacts/scholarly_symbol_bridge_latest.json`
+- 구현 사실:
+  - seed symbol(기본 `tree_of_knowledge_good_evil`)을 아톰 시퀀스로 펼쳐 `symbol_atom_mapping_v1` 생성.
+  - survivor 근거(`ci_low_defense_contrib`, `fusion_candidate_score`)와 시퀀스 길이로 `atom_resonance_report_v1` 점수화.
+  - 아톰별 motif 라벨(`covenantal_boundary`, `mimetic_desire`, `boundary_transgression` 등)을 연결하는 `scholarly_symbol_bridge_v1` 생성.
+  - 모든 산출은 `research_only=true`, `promotion_required=true`, `source_track="K"`로 고정(실거래 트리거 금지).

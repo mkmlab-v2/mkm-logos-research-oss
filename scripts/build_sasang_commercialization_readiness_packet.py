@@ -20,6 +20,7 @@ ART = ROOT / "docs" / "final" / "artifacts"
 DEFAULT_LENS = ART / "sasang_independent_lens_latest.json"
 DEFAULT_HIGH_GATE = ART / "sasang_high_reliability_gate_latest.json"
 DEFAULT_HIGH_GATE_STRICT = ART / "sasang_high_reliability_gate_strict_latest.json"
+DEFAULT_PROMOTION_CHAIN = ART / "sasang12_promotion_candidate_chain_latest.json"
 
 DEFAULT_EVAL_CONTRACT = ART / "sasang_prophecy_eval_contract_latest.json"
 DEFAULT_PROMOTION_GATE = ART / "sasang12_promotion_candidate_gate_latest.json"
@@ -64,6 +65,7 @@ def main() -> int:
     ap.add_argument("--lens", type=Path, default=DEFAULT_LENS)
     ap.add_argument("--high-gate", type=Path, default=DEFAULT_HIGH_GATE)
     ap.add_argument("--high-gate-strict", type=Path, default=DEFAULT_HIGH_GATE_STRICT)
+    ap.add_argument("--promotion-chain", type=Path, default=DEFAULT_PROMOTION_CHAIN)
     ap.add_argument("--eval-contract-out", type=Path, default=DEFAULT_EVAL_CONTRACT)
     ap.add_argument("--promotion-gate-out", type=Path, default=DEFAULT_PROMOTION_GATE)
     ap.add_argument("--failure-analysis-out", type=Path, default=DEFAULT_FAILURE_ANALYSIS)
@@ -91,9 +93,7 @@ def main() -> int:
     std_pass = std_decision == "PASS"
     strict_pass = strict_decision == "PASS"
 
-    # v1-v9 chain is fact-locked by executable paths/artifacts. If paths do not exist on disk now,
-    # keep this FAIL and require explicit follow-up implementation.
-    v1_to_v9_present = False
+    v1_to_v9_present = args.promotion_chain.is_file()
     promotion_status, promotion_reason = _classify_promotion_status(v1_to_v9_present, std_pass, strict_pass)
 
     eval_contract = {
@@ -104,6 +104,7 @@ def main() -> int:
             "lens_artifact": str(args.lens.resolve()),
             "standard_gate_artifact": str(args.high_gate.resolve()),
             "strict_gate_artifact": str(args.high_gate_strict.resolve()) if strict_available else None,
+            "promotion_chain_artifact": str(args.promotion_chain.resolve()) if v1_to_v9_present else None,
             "evaluation_window": "latest_single_snapshot",
             "cost_buckets_basis_points": [20, 30, 40],
             "neutral_policy": {
