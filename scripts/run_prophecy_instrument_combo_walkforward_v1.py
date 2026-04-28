@@ -168,7 +168,7 @@ def _blocked_walkforward_folds(dates_sorted: list[str], n_folds: int) -> list[tu
     return folds
 
 
-def _dual_leg_dates(rows: list[dict[str, Any]]) -> tuple[bool, list[str]]:
+def _dual_leg_dates(rows: list[dict[str, Any]]) -> tuple[list[str], int]:
     by_date: dict[str, set[str]] = {}
     for r in rows:
         ed = str(r.get("eval_date") or "")[:10]
@@ -177,9 +177,9 @@ def _dual_leg_dates(rows: list[dict[str, Any]]) -> tuple[bool, list[str]]:
         if not ed or inst not in ("kospi", "btc") or act not in VALID:
             continue
         by_date.setdefault(ed, set()).add(inst)
-    dates = sorted(by_date.keys())
-    ok = bool(dates) and all(by_date[d] >= {"kospi", "btc"} for d in dates)
-    return ok, dates
+    all_dates = sorted(by_date.keys())
+    dual_dates = [d for d in all_dates if by_date[d] >= {"kospi", "btc"}]
+    return dual_dates, len(all_dates)
 
 
 def main() -> int:
@@ -208,14 +208,9 @@ def main() -> int:
         [r for r in doc["rows"] if isinstance(r, dict)],
         key=lambda r: (str(r.get("eval_date")), str(r.get("instrument"))),
     )
-    dual_ok, dates = _dual_leg_dates(rows)
-    if not dual_ok:
-        raise SystemExit(
-            "score panel must include both kospi and btc rows for every eval_date with valid actual_direction; "
-            "rebuild score with --btc-csv."
-        )
+    dates, all_dates_count = _dual_leg_dates(rows)
     if len(dates) < 2:
-        raise SystemExit("need at least 2 distinct eval_dates")
+        raise SystemExit("need at least 2 distinct eval_dates with both kospi+btc legs")
 
     n_folds_requested = int(args.n_folds)
     n_folds_effective = max(2, min(n_folds_requested, len(dates)))
@@ -291,8 +286,10 @@ def main() -> int:
             "n_folds_effective": n_folds_effective,
             "n_folds_clamped": n_folds_clamped,
             "n_distinct_eval_dates": len(dates),
+            "n_distinct_eval_dates_in_score": all_dates_count,
+            "n_dropped_non_dual_leg_dates": max(0, all_dates_count - len(dates)),
             "n_walkforward_folds": len(fold_specs),
-            "note": "Instrument-combo walk-forward; fit (kospi_mode, btc thresholds) on train blocks only.",
+            "note": "Instrument-combo walk-forward; fit (kospi_mode, btc thresholds) on train blocks only. Non-dual-leg dates are dropped.",
         },
         "folds": fold_rows_out,
         "aggregate": {
