@@ -1,6 +1,6 @@
 {
   "schema": "pointerguard_apply_go_promotion_decision_v1",
-  "generated_at_utc": "2026-04-28T05:16:57+00:00",
+  "generated_at_utc": "2026-04-28T05:33:04+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
@@ -11,15 +11,23 @@
     "target_path": "projects/bitcoin-trading/memory/v2/demo.json",
     "consecutive_samples": 5,
     "apply_row_ratio_min": 0.4,
-    "apply_unresolved_max": 1.0,
+    "apply_unresolved_max": 3.0,
     "profile_id": "memory_v2_apply",
     "go_promotion_enabled": false,
-    "rollout_order": 3
+    "rollout_order": 3,
+    "ramp_unresolved_thresholds": [
+      4.0,
+      3.0,
+      2.0,
+      1.0
+    ],
+    "ramp_current_index": 1,
+    "filtered_log_count": 12
   },
   "window_stats": {
-    "sample_count": 12,
-    "apply_row_ratio_avg": 0.6666666666666666,
-    "apply_unresolved_avg_per_run": 2.6666666666666665
+    "sample_count": 16,
+    "apply_row_ratio_avg": 0.75,
+    "apply_unresolved_avg_per_run": 3.0
   },
   "recent_checks": [
     {

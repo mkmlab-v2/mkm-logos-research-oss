@@ -1,6 +1,6 @@
 {
   "schema": "sasang_commercialization_readiness_packet_v1",
-  "generated_at_utc": "2026-04-28T05:17:27Z",
+  "generated_at_utc": "2026-04-28T05:31:14Z",
   "decision": "ALMOST",
   "packet_scope": "human_signoff_material_only",
   "evidence": {
@@ -12,7 +12,10 @@
     "strict_gate": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_latest.json",
     "strict_shadow_gate": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_synthetic_calibrated_latest.json",
     "strict_input_integrity": "C:\\workspace\\docs\\final\\artifacts\\sasang_strict_input_integrity_latest.json",
-    "production_data_readiness": "C:\\workspace\\docs\\final\\artifacts\\sasang_production_data_readiness_latest.json"
+    "production_data_readiness": "C:\\workspace\\docs\\final\\artifacts\\sasang_production_data_readiness_latest.json",
+    "gt_expansion_queue_report": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_expansion_queue_report_latest.json",
+    "gt_expansion_priority_report": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_expansion_priority_report_latest.json",
+    "gt_merge_report": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_merge_report_latest.json"
   },
   "boundaries": {
     "track_b_to_a_autobind": "FORBIDDEN",
@@ -27,7 +30,9 @@
       "strict_quality_gate",
       "strict_shadow_evidence_only",
       "strict_input_integrity",
-      "production_data_readiness"
+      "production_data_readiness",
+      "gt_expansion_pending",
+      "gt_human_approval_pending"
     ]
   }
 }

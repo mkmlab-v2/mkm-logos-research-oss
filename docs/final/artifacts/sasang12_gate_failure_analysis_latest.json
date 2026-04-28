@@ -1,10 +1,10 @@
 {
   "schema": "sasang12_gate_failure_analysis_v1",
-  "generated_at_utc": "2026-04-28T05:17:27Z",
+  "generated_at_utc": "2026-04-28T05:31:14Z",
   "summary": {
-    "total_axes": 4,
+    "total_axes": 6,
     "fail_count": 0,
-    "warn_count": 4,
+    "warn_count": 6,
     "common_root_cause": "quality_gate_or_lens_signal_issue"
   },
   "failure_axes": [
@@ -31,6 +31,18 @@
       "severity": "medium",
       "status": "WARN",
       "evidence": "production data readiness failed: insufficient_authoritative_pairable_rows"
+    },
+    {
+      "axis": "gt_expansion_pending",
+      "severity": "medium",
+      "status": "WARN",
+      "evidence": "GT expansion pending: gap_rows=126, queue_rows=324"
+    },
+    {
+      "axis": "gt_human_approval_pending",
+      "severity": "medium",
+      "status": "WARN",
+      "evidence": "No approved GT queue rows merged yet"
     }
   ],
   "current_snapshot": {

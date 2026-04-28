@@ -1432,6 +1432,45 @@
     - `profile_id=memory_v2_apply`, `decision=KEEP_SHADOW`,
     - `reasons=[apply_unresolved_above_threshold, profile_go_promotion_disabled]`
 
+#### 29.9 Memory V2 램프 튜닝 루프 연결 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/tune_pointerguard_memory_v2_ramp_v1.py` (신규)
+  - `scripts/decide_pointerguard_apply_go_promotion_v1.py` (ramp threshold 인식 확장)
+  - `scripts/run_genesis_pointer_routing_control_chain_v1.py` (메모리 전용 판정 + 튜닝 단계 추가)
+- 변경:
+  - `memory_v2_apply` 프로파일에 램프 필드 추가:
+    - `ramp_unresolved_thresholds=[4.0, 3.0, 2.0, 1.0]`
+    - `ramp_current_index=0`
+    - `ramp_required_consecutive_passes=3`
+  - 승격 판정은 ramp가 있으면 `apply_unresolved_max`를 램프 현재 인덱스 값으로 사용.
+  - control chain 순서 보정: 폴더 정책 빌드를 승격 판정 단계보다 먼저 실행.
+  - shadow daily log에 `target_path` 기록 필드 추가(추후 경로별 로그 분리 분석용).
+- 산출물:
+  - `docs/final/artifacts/pointerguard_apply_go_promotion_decision_memory_latest.json`
+  - `docs/final/artifacts/pointerguard_memory_v2_ramp_tuning_latest.json`
+- 최신 상태:
+  - memory 판정 입력에 ramp 반영 확인:
+    - `apply_unresolved_max=4.0`
+    - `ramp_current_index=0`
+  - memory 판정 결과: `KEEP_SHADOW` (`profile_go_promotion_disabled`만 유지).
+  - 튜닝 제안: `ADVANCE_TO_NEXT_TIGHTER_THRESHOLD` (`recommended_index=1`, `3.0`).
+
+#### 29.10 Memory V2 램프 인덱스 자동 반영 (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/apply_pointerguard_memory_v2_ramp_update_v1.py` (신규)
+- 체인 반영:
+  - `run_genesis_pointer_routing_control_chain_v1.py`에 튜닝 직후 자동 반영 단계 추가.
+- 동작:
+  - 튜닝 결과가 `ADVANCE_TO_NEXT_TIGHTER_THRESHOLD`이면
+    `pointerguard_folder_policy_latest.json`의 `memory_v2_apply.ramp_current_index`를 자동 갱신.
+  - 이후 빌드에서도 기존 policy 파일 상태를 merge해 램프 인덱스를 보존.
+- 최신 상태:
+  - 현재 policy: `memory_v2_apply.ramp_current_index=1` (4.0 -> 3.0 단계 진입 완료)
+  - 최신 튜닝 결과: `HOLD_INDEX` (현 단계 `3.0`에서 추가 수렴 필요)
+  - 최신 update 결과: `updated=false` (추가 인덱스 전진 없음)
+
 #### 30.1 Symbol Atom Anchor Layer + Scholarly Bridge (FACT, 2026-04-28)
 
 - 스크립트:
@@ -1498,3 +1537,37 @@
   - audience(`investor`, `policy`, `technical`)별로 5개 고정 공격 질문(`q1~q5`)을 생성하도록 확장.
   - 질문 축: 과적합 방지, 트리거 안전성, 스토리텔링-분리 근거, 빠른 검증 가능성, 신뢰도 하락 시 운영 동작.
   - 기존 evidence 자리(`source_artifact`, `metric_value`, `as_of_utc`, `rollback_rule`, `gate_eval`)는 유지해 후속 overlay 스크립트가 덮어쓸 수 있게 구성.
+
+#### 30.6 Fusion Brief/Copydeck Multi-Symbol Injection (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_two_track_fusion_brief_v1.py`
+  - `scripts/build_two_track_presentation_copydeck_v1.py`
+- 변경:
+  - fusion brief가 기본 카드 외에 다음 지표를 자동 포함:
+    - `top_symbol_by_coupling`
+    - `top2_symbols`
+    - `gematria_4d_delta_with_minus_without`
+  - brief sources에 `multi_symbol_resonance_4d`, `multi_symbol_candidate_selector`, `gematria_4d_ablation` 경로를 기록.
+  - copydeck의 one-page/three-page에 multi-symbol top2와 4D ablation delta를 문장으로 자동 삽입.
+- 최신 상태:
+  - `two_track_fusion_brief_latest.json`에서 상징/ablation 카드 반영 확인.
+  - `two_track_presentation_copydeck_latest.json`에서 key points와 method bullet 반영 확인.
+
+#### 30.7 Q&A Evidence Question-Specific Metric Routing (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/enrich_two_track_qa_with_symbol_evidence_v1.py`
+- 변경:
+  - 입력 확장:
+    - `--falsification-json` (`two_track_falsification_suite_latest.json`)
+    - `--gematria-ablation-json` (`gematria_4d_ablation_latest.json`)
+  - `question_id` 기준 evidence source/metric 분기:
+    - `q1`(overfitting): falsification `F3/F4` 지표 (`survivor_count`, `shift_score`, `ci_low_defense_contrib`)
+    - `q2`(trigger safety): fail-boundary gate (`should_trade`, `rollback`, `reasons_count`)
+    - `q3`(storytelling 분리): gematria ablation (`score_with_4d`, `score_without_4d`, `delta`)
+    - `q4`(reviewer verify): multi-symbol selector (`top_symbol`, `top2_symbol`, `selected_count`)
+    - `q5`(confidence drop action): fail-boundary gate rollback snapshot
+  - 공통으로 `as_of_utc`, `rollback_rule`, `gate_eval` 필드는 유지.
+- 최신 상태:
+  - `two_track_qa_pack_latest.json`에서 `q1~q5`별 source_artifact/metric_value가 서로 다르게 주입됨을 확인.

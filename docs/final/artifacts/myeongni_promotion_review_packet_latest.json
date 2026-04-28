@@ -1,0 +1,15 @@
+{
+  "schema": "myeongni_promotion_review_packet_v1",
+  "ts_utc": "2026-04-28T05:30:08Z",
+  "promotion_gate": "C:\\workspace\\docs\\final\\artifacts\\myeongni_promotion_gate_latest.json",
+  "failure_analysis": "C:\\workspace\\docs\\final\\artifacts\\myeongni_promotion_failure_analysis_latest.json",
+  "shadow_governance": "C:\\workspace\\docs\\final\\artifacts\\myeongni_shadow_governance_latest.json",
+  "inputs": {
+    "readiness_packet": "C:\\workspace\\docs\\final\\artifacts\\myeongni_commercialization_readiness_packet_latest.json",
+    "eval_contract": "C:\\workspace\\docs\\final\\artifacts\\myeongni_eval_contract_latest.json",
+    "data_quality_report": "C:\\workspace\\docs\\final\\artifacts\\myeongni_16state_data_quality_report_latest.json",
+    "fusion_stub": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_stub_latest.json",
+    "shadow_gate": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_shadow_gate_latest.json",
+    "sensitivity_report": "C:\\workspace\\docs\\final\\artifacts\\myeongni_readiness_sensitivity_report_latest.json"
+  }
+}

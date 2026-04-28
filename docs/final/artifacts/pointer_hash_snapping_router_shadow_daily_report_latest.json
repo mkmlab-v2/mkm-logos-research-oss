@@ -1,6 +1,6 @@
 {
   "schema": "pointer_hash_snapping_router_shadow_daily_report_v1",
-  "generated_at_utc": "2026-04-28T05:16:56+00:00",
+  "generated_at_utc": "2026-04-28T05:33:03+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
@@ -9,7 +9,7 @@
     "window_hours": 24
   },
   "latest_point": {
-    "ts_utc": "2026-04-28T05:16:56+00:00",
+    "ts_utc": "2026-04-28T05:33:03+00:00",
     "schema": "pointer_hash_snapping_router_shadow_log_v1",
     "input_count": 3,
     "pointer_candidate_ok_count": 2,
@@ -28,23 +28,24 @@
       "caution": 0,
       "forbid": 0,
       "unknown": 0
-    }
+    },
+    "target_path": "docs/final/artifacts/pointer_router_chain_probe.json"
   },
   "window_stats": {
-    "sample_count": 12,
+    "sample_count": 16,
     "avg_input_count": 3.0,
     "avg_pointer_candidate_ok_rate": 0.6666666666666666,
     "avg_snap_event_rate": 0.0,
     "avg_unresolved_token_per_run": 4.0,
     "path_policy_avg_row_ratio": {
-      "apply": 0.6666666666666666,
-      "caution": 0.08333333333333333,
+      "apply": 0.75,
+      "caution": 0.0625,
       "forbid": 0.0,
       "unknown": 0.0
     },
     "path_policy_avg_unresolved_per_run": {
-      "apply": 2.6666666666666665,
-      "caution": 0.3333333333333333,
+      "apply": 3.0,
+      "caution": 0.25,
       "forbid": 0.0,
       "unknown": 0.0
     }

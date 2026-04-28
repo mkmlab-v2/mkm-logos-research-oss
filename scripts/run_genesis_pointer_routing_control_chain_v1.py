@@ -38,6 +38,12 @@ def main() -> int:
         default="docs/final/artifacts/pointer_router_chain_probe.json",
         help="Workspace-relative path used for folder policy matching in router shadow run.",
     )
+    ap.add_argument(
+        "--memory-tuning-target-path",
+        type=str,
+        default="projects/bitcoin-trading/memory/v2/demo.json",
+        help="Workspace-relative path used for memory_v2 promotion tuning decision.",
+    )
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)
     args = ap.parse_args()
 
@@ -50,6 +56,7 @@ def main() -> int:
         _run([py, "scripts/label_genesis_net_efficiency_operating_zone_v1.py", "--go-cut", str(args.go_cut), "--watch-cut", str(args.watch_cut)])
     )
     steps.append(_run([py, "scripts/decide_genesis_pointer_routing_v1.py"]))
+    steps.append(_run([py, "scripts/build_pointerguard_folder_policy_v1.py"]))
     steps.append(_run([py, "scripts/build_pointer_shadow_daily_report_v1.py"]))
     steps.append(_run([py, "scripts/check_pointer_shadow_health_alert_v1.py"]))
     steps.append(
@@ -64,8 +71,45 @@ def main() -> int:
             ]
         )
     )
+    steps.append(
+        _run(
+            [
+                py,
+                "scripts/decide_pointerguard_apply_go_promotion_v1.py",
+                "--folder-policy-json",
+                "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+                "--target-path",
+                args.memory_tuning_target_path,
+                "--out",
+                "docs/final/artifacts/pointerguard_apply_go_promotion_decision_memory_latest.json",
+            ]
+        )
+    )
+    steps.append(
+        _run(
+            [
+                py,
+                "scripts/tune_pointerguard_memory_v2_ramp_v1.py",
+                "--decision-json",
+                "docs/final/artifacts/pointerguard_apply_go_promotion_decision_memory_latest.json",
+                "--folder-policy-json",
+                "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+            ]
+        )
+    )
+    steps.append(
+        _run(
+            [
+                py,
+                "scripts/apply_pointerguard_memory_v2_ramp_update_v1.py",
+                "--folder-policy-json",
+                "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+                "--tuning-json",
+                "docs/final/artifacts/pointerguard_memory_v2_ramp_tuning_latest.json",
+            ]
+        )
+    )
     steps.append(_run([py, "scripts/apply_pointer_shadow_alert_guard_v1.py"]))
-    steps.append(_run([py, "scripts/build_pointerguard_folder_policy_v1.py"]))
     steps.append(
         _run(
             [
@@ -103,6 +147,7 @@ def main() -> int:
             "go_cut": args.go_cut,
             "watch_cut": args.watch_cut,
             "router_target_path": args.router_target_path,
+            "memory_tuning_target_path": args.memory_tuning_target_path,
         },
         "steps": steps,
     }

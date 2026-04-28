@@ -1,6 +1,6 @@
 {
   "schema": "pointer_hash_snapping_router_shadow_alert_v1",
-  "generated_at_utc": "2026-04-28T05:16:56+00:00",
+  "generated_at_utc": "2026-04-28T05:33:03+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
@@ -14,16 +14,16 @@
     "caution_max_unresolved_per_run": 2.0
   },
   "window_stats": {
-    "sample_count": 12,
+    "sample_count": 16,
     "avg_pointer_candidate_ok_rate": 0.6666666666666666,
     "avg_unresolved_token_per_run": 4.0,
     "path_policy_avg_row_ratio": {
-      "apply": 0.6666666666666666,
-      "caution": 0.08333333333333333
+      "apply": 0.75,
+      "caution": 0.0625
     },
     "path_policy_avg_unresolved_per_run": {
-      "apply": 2.6666666666666665,
-      "caution": 0.3333333333333333
+      "apply": 3.0,
+      "caution": 0.25
     }
   },
   "should_alert": false,

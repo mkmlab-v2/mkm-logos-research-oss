@@ -167,11 +167,41 @@ def _rows() -> list[dict[str, Any]]:
     ]
 
 
+def _read_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _merge_previous_profile_state(out_path: Path, profiles: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    if not out_path.exists():
+        return profiles
+    try:
+        prev = _read_json(out_path)
+    except Exception:
+        return profiles
+    prev_profiles = prev.get("promotion_profiles", [])
+    if not isinstance(prev_profiles, list):
+        return profiles
+    by_id: dict[str, dict[str, Any]] = {}
+    for p in prev_profiles:
+        if isinstance(p, dict) and p.get("profile_id"):
+            by_id[str(p["profile_id"])] = p
+    merged: list[dict[str, Any]] = []
+    for p in profiles:
+        cur = dict(p)
+        pid = str(cur.get("profile_id", ""))
+        old = by_id.get(pid)
+        if old and "ramp_current_index" in old:
+            cur["ramp_current_index"] = int(old.get("ramp_current_index", cur.get("ramp_current_index", 0)))
+        merged.append(cur)
+    return merged
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)
     args = ap.parse_args()
 
+    out_path = args.out if args.out.is_absolute() else ROOT / args.out
     rows = _rows()
     promotion_profiles = [
         {
@@ -205,6 +235,7 @@ def main() -> int:
             "ramp_required_consecutive_passes": 3,
         },
     ]
+    promotion_profiles = _merge_previous_profile_state(out_path, promotion_profiles)
     out_doc = {
         "schema": "pointerguard_folder_policy_v1",
         "generated_at_utc": _now_utc(),
@@ -221,7 +252,6 @@ def main() -> int:
         },
     }
 
-    out_path = args.out if args.out.is_absolute() else ROOT / args.out
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(out_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"ok": True, "out": str(out_path), "summary": out_doc["summary"]}, ensure_ascii=False))

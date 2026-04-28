@@ -1,0 +1,9 @@
+{
+  "schema": "myeongni_shadow_governance_v1",
+  "ts_utc": "2026-04-28T05:30:08Z",
+  "decision": "HUMAN_REVIEW_REQUIRED_FOR_PROMOTION",
+  "allow_a_track_binding": false,
+  "allow_live_trigger": false,
+  "blockers": [],
+  "warnings": []
+}

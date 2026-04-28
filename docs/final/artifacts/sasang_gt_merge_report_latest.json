@@ -1,0 +1,17 @@
+{
+  "schema": "sasang_gt_merge_report_v1",
+  "gt_path": "C:\\workspace\\data\\constitution\\korean_cohort\\gt_cohort.real.latest.jsonl",
+  "labeled_queue_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_expansion_priority_top126_latest.jsonl",
+  "out_gt_path": "C:\\workspace\\data\\constitution\\korean_cohort\\gt_cohort.real.latest.jsonl",
+  "write_mode": false,
+  "gt_initial_rows": 2,
+  "approved_queue_rows": 0,
+  "inserted_rows": 0,
+  "updated_rows": 0,
+  "gt_final_rows": 2,
+  "policy": {
+    "only_approved_human_labels_merged": true,
+    "auto_label_forbidden": true,
+    "track_b_to_a_autobind_forbidden": true
+  }
+}

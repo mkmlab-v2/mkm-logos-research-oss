@@ -23,6 +23,9 @@ DEFAULT_HIGH_GATE_STRICT = ART / "sasang_high_reliability_gate_strict_latest.jso
 DEFAULT_HIGH_GATE_STRICT_SHADOW = ART / "sasang_high_reliability_gate_strict_synthetic_calibrated_latest.json"
 DEFAULT_STRICT_INPUT_INTEGRITY = ART / "sasang_strict_input_integrity_latest.json"
 DEFAULT_PROD_DATA_READINESS = ART / "sasang_production_data_readiness_latest.json"
+DEFAULT_GT_EXPANSION_QUEUE_REPORT = ART / "sasang_gt_expansion_queue_report_latest.json"
+DEFAULT_GT_EXPANSION_PRIORITY_REPORT = ART / "sasang_gt_expansion_priority_report_latest.json"
+DEFAULT_GT_MERGE_REPORT = ART / "sasang_gt_merge_report_latest.json"
 DEFAULT_PROMOTION_CHAIN = ART / "sasang12_promotion_candidate_chain_latest.json"
 
 DEFAULT_EVAL_CONTRACT = ART / "sasang_prophecy_eval_contract_latest.json"
@@ -71,6 +74,9 @@ def main() -> int:
     ap.add_argument("--high-gate-strict-shadow", type=Path, default=DEFAULT_HIGH_GATE_STRICT_SHADOW)
     ap.add_argument("--strict-input-integrity", type=Path, default=DEFAULT_STRICT_INPUT_INTEGRITY)
     ap.add_argument("--production-data-readiness", type=Path, default=DEFAULT_PROD_DATA_READINESS)
+    ap.add_argument("--gt-expansion-queue-report", type=Path, default=DEFAULT_GT_EXPANSION_QUEUE_REPORT)
+    ap.add_argument("--gt-expansion-priority-report", type=Path, default=DEFAULT_GT_EXPANSION_PRIORITY_REPORT)
+    ap.add_argument("--gt-merge-report", type=Path, default=DEFAULT_GT_MERGE_REPORT)
     ap.add_argument("--promotion-chain", type=Path, default=DEFAULT_PROMOTION_CHAIN)
     ap.add_argument("--eval-contract-out", type=Path, default=DEFAULT_EVAL_CONTRACT)
     ap.add_argument("--promotion-gate-out", type=Path, default=DEFAULT_PROMOTION_GATE)
@@ -92,6 +98,9 @@ def main() -> int:
     gate_strict_shadow = _load_optional(args.high_gate_strict_shadow)
     strict_integrity = _load_optional(args.strict_input_integrity)
     prod_data_readiness = _load_optional(args.production_data_readiness)
+    gt_expansion_queue_report = _load_optional(args.gt_expansion_queue_report)
+    gt_expansion_priority_report = _load_optional(args.gt_expansion_priority_report)
+    gt_merge_report = _load_optional(args.gt_merge_report)
 
     direction_score = _f((lens.get("scores") or {}).get("direction_score"))
     confidence = _f((lens.get("scores") or {}).get("confidence"))
@@ -236,6 +245,40 @@ def main() -> int:
                     "evidence": f"production data readiness failed: {rc}",
                 }
             )
+    if isinstance(gt_expansion_queue_report, dict):
+        gap_rows = int(gt_expansion_queue_report.get("gap_rows") or 0)
+        queue_rows = int(gt_expansion_queue_report.get("queue_rows") or 0)
+        if gap_rows > 0:
+            failure_axes.append(
+                {
+                    "axis": "gt_expansion_pending",
+                    "severity": "medium",
+                    "status": "WARN",
+                    "evidence": f"GT expansion pending: gap_rows={gap_rows}, queue_rows={queue_rows}",
+                }
+            )
+    if isinstance(gt_expansion_priority_report, dict):
+        selected_rows = int(gt_expansion_priority_report.get("selected_rows") or 0)
+        if selected_rows <= 0:
+            failure_axes.append(
+                {
+                    "axis": "gt_priority_missing",
+                    "severity": "medium",
+                    "status": "WARN",
+                    "evidence": "GT priority queue has no selected rows",
+                }
+            )
+    if isinstance(gt_merge_report, dict):
+        approved_rows = int(gt_merge_report.get("approved_queue_rows") or 0)
+        if approved_rows <= 0:
+            failure_axes.append(
+                {
+                    "axis": "gt_human_approval_pending",
+                    "severity": "medium",
+                    "status": "WARN",
+                    "evidence": "No approved GT queue rows merged yet",
+                }
+            )
 
     promotion_gate = {
         "schema": "sasang12_promotion_candidate_gate_unified_v1",
@@ -311,6 +354,13 @@ def main() -> int:
             "production_data_readiness": (
                 str(args.production_data_readiness.resolve()) if prod_data_readiness is not None else None
             ),
+            "gt_expansion_queue_report": (
+                str(args.gt_expansion_queue_report.resolve()) if gt_expansion_queue_report is not None else None
+            ),
+            "gt_expansion_priority_report": (
+                str(args.gt_expansion_priority_report.resolve()) if gt_expansion_priority_report is not None else None
+            ),
+            "gt_merge_report": str(args.gt_merge_report.resolve()) if gt_merge_report is not None else None,
         },
         "boundaries": {
             "track_b_to_a_autobind": "FORBIDDEN",

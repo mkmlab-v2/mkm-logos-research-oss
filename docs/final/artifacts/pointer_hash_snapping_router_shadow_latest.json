@@ -1,6 +1,6 @@
 {
   "schema": "pointer_hash_snapping_router_v1",
-  "generated_at_utc": "2026-04-28T05:16:57+00:00",
+  "generated_at_utc": "2026-04-28T05:33:04+00:00",
   "research_only": true,
   "promotion_required": true,
   "source_track": "B",
@@ -10,7 +10,7 @@
     "input_count": 3,
     "enable_snap": true,
     "snap_min_ratio": 0.74,
-    "target_path": "docs/final/artifacts/demo.json"
+    "target_path": "reports/demo_run.json"
   },
   "rows": [
     {
@@ -19,7 +19,7 @@
       "effective_route_mode": "pointer_shadow",
       "selected_path": "track_a_primary",
       "pointer_shadow": true,
-      "target_path": "docs/final/artifacts/demo.json",
+      "target_path": "reports/demo_run.json",
       "path_policy": "apply",
       "pointer_candidate_ok": true,
       "pointer_payload": {
@@ -37,7 +37,7 @@
       "effective_route_mode": "pointer_shadow",
       "selected_path": "track_a_primary",
       "pointer_shadow": true,
-      "target_path": "docs/final/artifacts/demo.json",
+      "target_path": "reports/demo_run.json",
       "path_policy": "apply",
       "pointer_candidate_ok": false,
       "pointer_payload": null,
@@ -56,7 +56,7 @@
       "effective_route_mode": "pointer_shadow",
       "selected_path": "track_a_primary",
       "pointer_shadow": true,
-      "target_path": "docs/final/artifacts/demo.json",
+      "target_path": "reports/demo_run.json",
       "path_policy": "apply",
       "pointer_candidate_ok": true,
       "pointer_payload": {

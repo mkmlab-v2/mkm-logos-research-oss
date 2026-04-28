@@ -68,6 +68,23 @@ def _select_profile(policy_doc: dict[str, Any], target_path: str) -> dict[str, A
     return best
 
 
+def _filter_logs_for_profile(logs: list[dict[str, Any]], profile: dict[str, Any], target_path: str) -> list[dict[str, Any]]:
+    patterns = profile.get("match_patterns", []) if isinstance(profile, dict) else []
+    if not isinstance(patterns, list) or not patterns:
+        return logs
+    fallback = target_path.replace("\\", "/").lstrip("./")
+    out: list[dict[str, Any]] = []
+    for row in logs:
+        if not isinstance(row, dict):
+            continue
+        tp = str(row.get("target_path", "")).replace("\\", "/").lstrip("./")
+        if not tp:
+            tp = fallback
+        if any(fnmatch.fnmatch(tp, str(p)) for p in patterns):
+            out.append(row)
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--daily-report", type=Path, default=DAILY_REPORT_DEFAULT)
@@ -93,6 +110,7 @@ def main() -> int:
     policy_doc = _read_json(policy_path)
 
     profile = _select_profile(policy_doc, args.target_path)
+    logs = _filter_logs_for_profile(logs, profile, args.target_path)
     k = int(profile.get("consecutive_samples", args.consecutive_samples)) if profile else int(args.consecutive_samples)
     apply_row_ratio_min = (
         float(profile.get("apply_row_ratio_min", args.apply_row_ratio_min)) if profile else float(args.apply_row_ratio_min)
@@ -171,6 +189,7 @@ def main() -> int:
             "rollout_order": profile.get("rollout_order") if profile else None,
             "ramp_unresolved_thresholds": ramp_thresholds,
             "ramp_current_index": ramp_index if ramp_thresholds else None,
+            "filtered_log_count": len(logs),
         },
         "window_stats": {
             "sample_count": int(ws.get("sample_count", 0)),

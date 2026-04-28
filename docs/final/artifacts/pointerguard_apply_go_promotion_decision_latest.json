@@ -1,6 +1,6 @@
 {
   "schema": "pointerguard_apply_go_promotion_decision_v1",
-  "generated_at_utc": "2026-04-28T05:16:56+00:00",
+  "generated_at_utc": "2026-04-28T05:33:03+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
@@ -8,18 +8,21 @@
     "alert_json": "C:\\workspace\\docs\\final\\artifacts\\pointer_hash_snapping_router_shadow_alert_latest.json",
     "shadow_log_jsonl": "C:\\workspace\\reports\\pointer_hash_snapping_router_shadow_log_v1.jsonl",
     "folder_policy_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_folder_policy_latest.json",
-    "target_path": "docs/final/artifacts/demo.json",
+    "target_path": "reports/demo_run.json",
     "consecutive_samples": 3,
-    "apply_row_ratio_min": 0.35,
+    "apply_row_ratio_min": 0.3,
     "apply_unresolved_max": 4.0,
-    "profile_id": "artifacts_apply",
+    "profile_id": "reports_apply",
     "go_promotion_enabled": true,
-    "rollout_order": 2
+    "rollout_order": 1,
+    "ramp_unresolved_thresholds": [],
+    "ramp_current_index": null,
+    "filtered_log_count": 12
   },
   "window_stats": {
-    "sample_count": 12,
-    "apply_row_ratio_avg": 0.6666666666666666,
-    "apply_unresolved_avg_per_run": 2.6666666666666665
+    "sample_count": 16,
+    "apply_row_ratio_avg": 0.75,
+    "apply_unresolved_avg_per_run": 3.0
   },
   "recent_checks": [
     {

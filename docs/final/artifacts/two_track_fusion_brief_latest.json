@@ -1,6 +1,6 @@
 {
   "schema": "two_track_fusion_brief_v1",
-  "generated_at_utc": "2026-04-28T04:58:14Z",
+  "generated_at_utc": "2026-04-28T05:25:59Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -20,11 +20,33 @@
     {
       "id": "survivor_count",
       "value": 5
+    },
+    {
+      "id": "top_symbol_by_coupling",
+      "value": "tree_of_knowledge_good_evil"
+    },
+    {
+      "id": "top2_symbols",
+      "value": [
+        "tree_of_knowledge_good_evil",
+        "babel_tower"
+      ]
+    },
+    {
+      "id": "gematria_4d_delta_with_minus_without",
+      "value": 0.048087
     }
   ],
   "storylines": [
     "K-track narrative is isolated from trade trigger",
-    "T-track applies survivor filter and rollback gates"
+    "T-track applies survivor filter and rollback gates",
+    "Multi-symbol ranking highlights top symbolic hubs for explanation quality",
+    "4D gematria ablation delta quantifies incremental structure, non-trigger only"
   ],
-  "guardrail": "not_for_direct_trading_signal"
+  "guardrail": "not_for_direct_trading_signal",
+  "sources": {
+    "multi_symbol_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_resonance_4d_latest.json",
+    "multi_symbol_selector_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_candidate_selector_latest.json",
+    "gematria_ablation_json": "C:\\workspace\\docs\\final\\artifacts\\gematria_4d_ablation_latest.json"
+  }
 }

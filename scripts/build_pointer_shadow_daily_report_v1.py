@@ -110,6 +110,7 @@ def main() -> int:
         ),
         "path_policy_counts": policy_counts,
         "path_policy_unresolved_token_counts": policy_unresolved,
+        "target_path": str(snap.get("inputs", {}).get("target_path", "")),
     }
     _append_jsonl(log_path, point)
 

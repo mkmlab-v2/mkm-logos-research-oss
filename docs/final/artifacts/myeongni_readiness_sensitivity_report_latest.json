@@ -1,43 +1,43 @@
 {
   "schema": "myeongni_readiness_freeze_and_sensitivity_v1",
-  "ts_utc": "2026-04-28T05:16:46Z",
-  "freeze_dir": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z",
+  "ts_utc": "2026-04-28T05:26:08Z",
+  "freeze_dir": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T052607Z",
   "frozen_files": [
     {
       "file": "myeongni_independent_lens_latest.json",
       "source_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
-      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\myeongni_independent_lens_latest.json",
-      "sha256": "13ca725ce3b8115123612f07881b961577743ec63ab7470e18bb68660f81d306"
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T052607Z\\myeongni_independent_lens_latest.json",
+      "sha256": "ff9d9292aac4a384526d48556200e19198fdb4577a83b6b2b90201eaeac0609d"
     },
     {
       "file": "independent_lens_fusion_stub_latest.json",
       "source_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_stub_latest.json",
-      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\independent_lens_fusion_stub_latest.json",
-      "sha256": "b4d2b211a570ca25e90b436f0f57a1728a910d4e75e2b279d7584d3660190bde"
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T052607Z\\independent_lens_fusion_stub_latest.json",
+      "sha256": "21c3e9475b40bf957e864dbd6f6d06b65f4b80de7a1ee66f36ac9ef0fada5298"
     },
     {
       "file": "independent_lens_shadow_gate_latest.json",
       "source_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_shadow_gate_latest.json",
-      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\independent_lens_shadow_gate_latest.json",
-      "sha256": "d58097420f0a2417be9bb3b9a2bca6df694c45843f8c86b2e14cafbd44cba4e1"
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T052607Z\\independent_lens_shadow_gate_latest.json",
+      "sha256": "29aea42a76c18acd762b245745c75bfedff5b93b7b7a4340ea9843e59c047c8e"
     },
     {
       "file": "myeongni_eval_contract_latest.json",
       "source_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_eval_contract_latest.json",
-      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\myeongni_eval_contract_latest.json",
-      "sha256": "33f29ae134f25bce10baa18fef7e2f5e1873e164ea4844cc34c7fdc9d00573ea"
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T052607Z\\myeongni_eval_contract_latest.json",
+      "sha256": "4153aaa3f3b93747ad07155c5e3d9571a26723146374f1305321e4393739e4d6"
     },
     {
       "file": "myeongni_16state_data_quality_report_latest.json",
       "source_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_16state_data_quality_report_latest.json",
-      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\myeongni_16state_data_quality_report_latest.json",
-      "sha256": "97952c0ffe5d850d1ba3207e80294abf5f352b0d53bda663a6707db0114a329b"
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T052607Z\\myeongni_16state_data_quality_report_latest.json",
+      "sha256": "74050b55c11581725bebc01a587a8f8a0d5af264c050aead00ada14d3f1795d2"
     },
     {
       "file": "myeongni_commercialization_readiness_packet_latest.json",
       "source_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_commercialization_readiness_packet_latest.json",
-      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T051645Z\\myeongni_commercialization_readiness_packet_latest.json",
-      "sha256": "b43f7df6e0d8c894c867d45705b5f55af09e3f17e1246b52c4bde6ace9bc91c7"
+      "freeze_path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\myeongni_readiness_20260428T052607Z\\myeongni_commercialization_readiness_packet_latest.json",
+      "sha256": "003f9c14ddd31b8697ff000416ffde787c2c1ef63d7c5cd89dddb1cc61e693b3"
     }
   ],
   "no_backfill_validation": {
@@ -49,21 +49,21 @@
       "threshold": 0.005,
       "exit_code": 0,
       "readiness": "Ready",
-      "shadow_override_ratio": 0.003419,
+      "shadow_override_ratio": 0.003396,
       "shadow_override_ratio_exceeded": false
     },
     {
       "threshold": 0.01,
       "exit_code": 0,
       "readiness": "Ready",
-      "shadow_override_ratio": 0.003419,
+      "shadow_override_ratio": 0.003396,
       "shadow_override_ratio_exceeded": false
     },
     {
       "threshold": 0.02,
       "exit_code": 0,
       "readiness": "Ready",
-      "shadow_override_ratio": 0.003419,
+      "shadow_override_ratio": 0.003396,
       "shadow_override_ratio_exceeded": false
     }
   ],
