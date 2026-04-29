@@ -23,7 +23,14 @@ export type GenerateClinicalResult = {
   fallbackUsed: boolean;
 };
 
-export type LlmPriority = "auto" | "openrouter_first" | "local_first" | "openrouter_only" | "local_only";
+export type LlmPriority =
+  | "auto"
+  | "gemini_first"
+  | "openrouter_first"
+  | "local_first"
+  | "gemini_only"
+  | "openrouter_only"
+  | "local_only";
 
 /** Call site for priority resolution (dual lane: guardian Q&A vs everything else). */
 export type GenerateClinicalCaller = "default" | "guardian_public_chat";
@@ -39,6 +46,19 @@ type OpenAiCompatResponse = {
 function getOpenRouterApiKey(): string | null {
   const key = process.env.OPENROUTER_API_KEY?.trim();
   return key || null;
+}
+
+function getGeminiApiKey(): string | null {
+  const key = process.env.GEMINI_API_KEY?.trim() || process.env.GOOGLE_API_KEY?.trim();
+  return key || null;
+}
+
+function geminiModel(defaultModel?: string): string {
+  const fromEnv = process.env.JEMA_AI_GEMINI_MODEL?.trim() || process.env.GEMINI_MODEL?.trim();
+  if (fromEnv) return fromEnv;
+  const requested = (defaultModel || "").trim();
+  if (requested.startsWith("gemini-")) return requested;
+  return "gemini-2.5-flash";
 }
 
 /** Ollama: OLLAMA_HOST + /v1/chat/completions — 또는 전체 URL을 LOCAL_LLM_URL에 지정 */
@@ -85,7 +105,16 @@ function parseLlmPriorityValue(raw: string | undefined): LlmPriority | null {
   const p = (raw || "").trim().toLowerCase();
   if (!p) return null;
   if (p === "auto") return "auto";
-  if (p === "local_first" || p === "openrouter_first" || p === "openrouter_only" || p === "local_only") return p;
+  if (
+    p === "gemini_first" ||
+    p === "local_first" ||
+    p === "openrouter_first" ||
+    p === "gemini_only" ||
+    p === "openrouter_only" ||
+    p === "local_only"
+  ) {
+    return p;
+  }
   return null;
 }
 
@@ -98,8 +127,10 @@ export function resolveLlmPriorityForCaller(caller: GenerateClinicalCaller): Llm
   if (caller === "default") return llmPriority();
   const explicit = parseLlmPriorityValue(process.env.GUARDIAN_CHAT_LLM_PRIORITY);
   if (explicit) return explicit;
+  const geminiKey = getGeminiApiKey();
   const localUrl = deriveLocalLlmUrl();
   const key = getOpenRouterApiKey();
+  if (geminiKey) return "gemini_first";
   if (localUrl && key) return "local_first";
   if (localUrl) return "local_only";
   return llmPriority();
@@ -154,6 +185,43 @@ async function fetchOpenRouter(opts: GenerateClinicalOptions): Promise<GenerateC
       return buildFallback();
     }
     return { text, provider: `openrouter:${model}`, fallbackUsed: false };
+  } catch {
+    return buildFallback();
+  }
+}
+
+async function fetchGeminiOpenAiCompatible(opts: GenerateClinicalOptions): Promise<GenerateClinicalResult> {
+  const apiKey = getGeminiApiKey();
+  if (!apiKey) return buildFallback();
+  const endpoint = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+  const model = geminiModel(opts.model);
+  const body = {
+    model,
+    messages: [
+      { role: "system", content: opts.systemInstruction },
+      { role: "user", content: opts.prompt },
+    ],
+    temperature: opts.temperature ?? 0.7,
+    top_p: opts.topP ?? 0.95,
+    max_tokens: opts.maxOutputTokens ?? 1024,
+  };
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(body),
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      return buildFallback(`Gemini 응답 준비 중입니다. (${res.status}) 기본 상담 안내를 먼저 진행해드릴게요.`);
+    }
+    const data = (await res.json()) as OpenAiCompatResponse;
+    const text = data.choices?.[0]?.message?.content?.trim();
+    if (!text) return buildFallback();
+    return { text, provider: `gemini:${model}`, fallbackUsed: false };
   } catch {
     return buildFallback();
   }
@@ -219,10 +287,22 @@ async function generateClinicalTextWithPriority(
   p: LlmPriority,
 ): Promise<GenerateClinicalResult> {
   const key = getOpenRouterApiKey();
+  const geminiKey = getGeminiApiKey();
   const localUrl = deriveLocalLlmUrl();
 
   if (p === "local_only") {
     return fetchLocalOpenAiCompatible(opts);
+  }
+
+  if (p === "gemini_only") {
+    if (!geminiKey) {
+      return {
+        text: "GEMINI_API_KEY(또는 GOOGLE_API_KEY)가 없습니다. 키를 설정하거나 다른 우선순위를 선택해 주세요.",
+        provider: "stub",
+        fallbackUsed: true,
+      };
+    }
+    return fetchGeminiOpenAiCompatible(opts);
   }
 
   if (p === "openrouter_only") {
@@ -234,6 +314,24 @@ async function generateClinicalTextWithPriority(
       };
     }
     return fetchOpenRouter(opts);
+  }
+
+  if (p === "gemini_first") {
+    if (geminiKey) {
+      const g = await fetchGeminiOpenAiCompatible(opts);
+      if (!g.fallbackUsed) return g;
+    }
+    if (key) {
+      const or = await fetchOpenRouter(opts);
+      if (!or.fallbackUsed) return or;
+    }
+    if (localUrl) {
+      const loc = await fetchLocalOpenAiCompatible(opts);
+      if (!loc.fallbackUsed) return loc;
+    }
+    if (geminiKey) return fetchGeminiOpenAiCompatible(opts);
+    if (key) return fetchOpenRouter(opts);
+    return fetchLocalOpenAiCompatible(opts);
   }
 
   if (p === "local_first") {
@@ -260,7 +358,11 @@ async function generateClinicalTextWithPriority(
     return key ? fetchOpenRouter(opts) : fetchLocalOpenAiCompatible(opts);
   }
 
-  // auto: OpenRouter 우선, 실패·미설정 시 로컬
+  // auto: Gemini 우선, 다음 OpenRouter, 이후 로컬
+  if (geminiKey) {
+    const g = await fetchGeminiOpenAiCompatible(opts);
+    if (!g.fallbackUsed) return g;
+  }
   if (key) {
     const or = await fetchOpenRouter(opts);
     if (!or.fallbackUsed) return or;
@@ -271,7 +373,8 @@ async function generateClinicalTextWithPriority(
   }
   if (!key && !localUrl) {
     return {
-      text: "생성형 AI가 연결되어 있지 않습니다. OPENROUTER_API_KEY 또는 OLLAMA_HOST(+ OLLAMA_MODEL 예: gemma4:e2b)를 설정해 주세요.",
+      text:
+        "생성형 AI가 연결되어 있지 않습니다. GEMINI_API_KEY(또는 GOOGLE_API_KEY), OPENROUTER_API_KEY, OLLAMA_HOST 중 하나를 설정해 주세요.",
       provider: "stub",
       fallbackUsed: true,
     };

@@ -100,6 +100,32 @@ class StrategicNewsEvent(BaseModel):
         le=1.0,
         description="시장 심리의 잠복 점수 (-1.0=극단적 공포, 0=중립, 1.0=극단적 탐욕)",
     )
+    valence: Optional[float] = Field(
+        None,
+        ge=-1.0,
+        le=1.0,
+        description="감정 극성 (-1.0=위축/공포, 1.0=과열/탐욕)",
+    )
+    arousal: Optional[float] = Field(
+        None,
+        ge=0.0,
+        le=1.0,
+        description="감정 각성도 (0.0=저각성, 1.0=고각성)",
+    )
+    uncertainty: Optional[float] = Field(
+        None,
+        ge=0.0,
+        le=1.0,
+        description="감정 해석 불확실도 (0.0=확실, 1.0=불확실)",
+    )
+    emotion_weight_source: Optional[str] = Field(
+        None,
+        description="감정 가중치 출처 (예: quant_only, hybrid_quant_text)",
+    )
+    sasang_emotion_axes: Optional[dict] = Field(
+        None,
+        description="애/노/희/락 4축 점수 (0.0~1.0)",
+    )
     actor_intent_latent: Optional[str] = Field(
         None,
         description="주요 행위자 의도의 잠복 해석 (예: 'whale_accumulation', 'retail_exit')",

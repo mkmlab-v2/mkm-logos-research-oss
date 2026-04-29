@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
       {
         prompt: context,
         systemInstruction: `You are a clinical front-desk chatbot for ${clinic.name}. Do not provide diagnosis or treatment decisions. Answer in Korean when possible.`,
-        model: 'gemini-1.5-flash',
+        model: 'gemini-2.5-flash',
         temperature: 0.7,
         maxOutputTokens: 1024,
         topP: 0.95,

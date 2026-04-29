@@ -15,6 +15,8 @@ WATCHDOG_LOG="${WATCHDOG_LOG:-$LOG_DIR/role_router_24h_watchdog.log}"
 JSONL_LOG="${JSONL_LOG:-$LOG_DIR/role_router_24h_watchdog_log.jsonl}"
 PID_FILE="${PID_FILE:-$LOG_DIR/role_router_24h_watchdog.pid}"
 TMUX_SESSION="${TMUX_SESSION:-role-router-watchdog}"
+OBSERVER_ENABLED="${OBSERVER_ENABLED:-1}"
+OBSERVER_LOG="${OBSERVER_LOG:-$LOG_DIR/role_router_first30m_observer.log}"
 
 CMD=(
   py "scripts/run_role_router_24h_watchdog_v1.py"
@@ -27,11 +29,25 @@ CMD=(
 
 mkdir -p "$LOG_DIR"
 
+run_first30m_observer() {
+  if [[ "$OBSERVER_ENABLED" != "1" ]]; then
+    echo "first30m observer skipped (OBSERVER_ENABLED=$OBSERVER_ENABLED)"
+    return 0
+  fi
+  echo "running first30m observer smoke (--no-wait)..."
+  if py "scripts/run_role_router_first30m_observer_v1.py" --no-wait >"$OBSERVER_LOG" 2>&1; then
+    echo "first30m observer done (log=$OBSERVER_LOG)"
+  else
+    echo "first30m observer failed; continuing watchdog start (log=$OBSERVER_LOG)"
+  fi
+}
+
 run_nohup() {
   if [[ -f "$PID_FILE" ]] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
     echo "watchdog already running (pid=$(cat "$PID_FILE"))"
     return 0
   fi
+  run_first30m_observer
   nohup "${CMD[@]}" >"$WATCHDOG_LOG" 2>&1 &
   echo "$!" >"$PID_FILE"
   echo "watchdog started via nohup (pid=$!)"
@@ -49,6 +65,7 @@ run_tmux() {
     echo "attach: tmux attach -t $TMUX_SESSION"
     return 0
   fi
+  run_first30m_observer
   tmux new-session -d -s "$TMUX_SESSION" "cd \"$ROOT_DIR\" && ${CMD[*]} | tee \"$WATCHDOG_LOG\""
   echo "watchdog started in tmux session: $TMUX_SESSION"
   echo "attach: tmux attach -t $TMUX_SESSION"

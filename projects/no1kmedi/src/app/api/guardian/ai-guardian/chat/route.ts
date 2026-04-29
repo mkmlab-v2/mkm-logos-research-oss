@@ -42,7 +42,7 @@ Output: 2-3 sentences, pre-consultation clinical-support advice.`
         prompt: context,
         systemInstruction:
           'You are the no1kmedi clinical support assistant for Korean medicine workflows. Do not diagnose. Answer in Korean when possible, with concise pre-consultation guidance based on S-L-K-M vectors.',
-        model: 'gemini-1.5-flash',
+        model: 'gemini-2.5-flash',
         temperature: 0.7,
         maxOutputTokens: 2048,
         topP: 0.95,

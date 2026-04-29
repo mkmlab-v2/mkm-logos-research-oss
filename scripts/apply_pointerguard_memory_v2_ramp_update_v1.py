@@ -52,6 +52,10 @@ def main() -> int:
                     continue
                 if str(p.get("profile_id", "")) != profile_id:
                     continue
+                if bool(p.get("ramp_frozen", False)):
+                    previous_index = int(p.get("ramp_current_index", 0))
+                    updated = False
+                    break
                 previous_index = int(p.get("ramp_current_index", 0))
                 p["ramp_current_index"] = int(recommended_index)
                 applied_index = int(recommended_index)

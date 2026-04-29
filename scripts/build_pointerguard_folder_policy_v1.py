@@ -192,6 +192,8 @@ def _merge_previous_profile_state(out_path: Path, profiles: list[dict[str, Any]]
         old = by_id.get(pid)
         if old and "ramp_current_index" in old:
             cur["ramp_current_index"] = int(old.get("ramp_current_index", cur.get("ramp_current_index", 0)))
+        if old and "ramp_frozen" in old:
+            cur["ramp_frozen"] = bool(old.get("ramp_frozen", False))
         merged.append(cur)
     return merged
 
@@ -225,7 +227,7 @@ def main() -> int:
         {
             "profile_id": "memory_v2_apply",
             "match_patterns": ["projects/bitcoin-trading/memory/v2/**"],
-            "go_promotion_enabled": False,
+            "go_promotion_enabled": True,
             "rollout_order": 3,
             "consecutive_samples": 5,
             "apply_row_ratio_min": 0.40,

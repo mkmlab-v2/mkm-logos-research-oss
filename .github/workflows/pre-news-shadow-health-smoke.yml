@@ -1,0 +1,188 @@
+name: pre-news-shadow-health-smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - "scripts/alert_pre_news_shadow_task_health_v1.py"
+      - "scripts/run_pre_news_shadow_alert_drill_v1.py"
+      - "scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py"
+      - "scripts/build_global_atom_news_holdout_dataset_lock_manifest_v1.py"
+      - "scripts/alert_pre_news_shadow_policy_governance_v1.py"
+      - "scripts/build_pre_news_shadow_policy_change_audit_summary_v1.py"
+      - "scripts/build_pre_news_shadow_weekly_audit_bundle_v1.py"
+      - "scripts/run_global_atom_news_network_holdout_replay_v1.py"
+      - "docs/final/artifacts/global_atom_news_holdout_dataset_v1.jsonl"
+      - "docs/final/artifacts/global_atom_news_holdout_dataset_lock_manifest_v1.json"
+      - "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_v1.json"
+      - "docs/final/artifacts/pre_news_shadow_task_health_latest.json"
+      - ".github/workflows/pre-news-shadow-health-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    if: ${{ vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Run pre-news alert drill (forced unhealthy, webhook disabled)
+        run: python scripts/run_pre_news_shadow_alert_drill_v1.py
+
+      - name: Validate drill report contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("docs/final/artifacts/pre_news_shadow_alert_drill_latest.json")
+          if not p.exists():
+              raise SystemExit("missing drill report")
+          obj = json.loads(p.read_text(encoding="utf-8"))
+          if obj.get("ok") is not True:
+              raise SystemExit("drill report ok=false")
+          snap = obj.get("alert_snapshot") or {}
+          if snap.get("has_alert") is not True:
+              raise SystemExit("expected has_alert=true in drill snapshot")
+          if snap.get("notify_status") != "skipped_no_webhook":
+              raise SystemExit(f"unexpected notify_status: {snap.get('notify_status')}")
+          print("drill contract: OK")
+          PY
+
+      - name: Build weekly report smoke
+        run: |
+          python scripts/run_global_atom_news_network_holdout_replay_v1.py \
+            --holdout-news-jsonl docs/final/artifacts/global_atom_news_holdout_dataset_v1.jsonl \
+            --output-json docs/final/artifacts/global_atom_news_network_holdout_replay_latest.json
+          python scripts/build_global_atom_news_holdout_dataset_lock_manifest_v1.py \
+            --dataset-jsonl docs/final/artifacts/global_atom_news_holdout_dataset_v1.jsonl \
+            --out-json docs/final/artifacts/global_atom_news_holdout_dataset_lock_manifest_v1.json
+          python scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py \
+            --log-jsonl reports/pre_news_shadow_task_health_alert_drill_log.jsonl \
+            --holdout-replay-json docs/final/artifacts/global_atom_news_network_holdout_replay_latest.json \
+            --holdout-dataset-lock-json docs/final/artifacts/global_atom_news_holdout_dataset_lock_manifest_v1.json \
+            --enforce-holdout-dataset-lock \
+            --stage-threshold-policy-json docs/final/artifacts/pre_news_shadow_stage_threshold_policy_v1.json \
+            --enforce-policy-effective-from \
+            --window-days 7 \
+            --out-json docs/final/artifacts/pre_news_shadow_health_drill_weekly_report_ci_latest.json
+          python scripts/build_pre_news_shadow_policy_change_audit_summary_v1.py \
+            --window-days 30 \
+            --out-json docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_ci_latest.json
+          python scripts/alert_pre_news_shadow_policy_governance_v1.py \
+            --audit-summary-json docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_ci_latest.json \
+            --out-alert-json docs/final/artifacts/pre_news_shadow_policy_governance_alert_ci_latest.json \
+            --append-alert-log-jsonl reports/pre_news_shadow_policy_governance_alert_ci_log.jsonl \
+            --change-count-threshold 2
+          python scripts/build_pre_news_shadow_weekly_audit_bundle_v1.py \
+            --weekly-report-json docs/final/artifacts/pre_news_shadow_health_drill_weekly_report_ci_latest.json \
+            --policy-audit-summary-json docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_ci_latest.json \
+            --policy-governance-alert-json docs/final/artifacts/pre_news_shadow_policy_governance_alert_ci_latest.json \
+            --policy-state-json docs/final/artifacts/pre_news_shadow_stage_threshold_policy_state_latest.json \
+            --policy-change-log-jsonl reports/pre_news_shadow_stage_threshold_policy_change_log.jsonl \
+            --holdout-replay-json docs/final/artifacts/global_atom_news_network_holdout_replay_latest.json \
+            --holdout-lock-json docs/final/artifacts/global_atom_news_holdout_dataset_lock_manifest_v1.json \
+            --tail-policy-change-rows 20 \
+            --out-json docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_ci_latest.json
+
+      - name: Validate weekly promotion gate contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("docs/final/artifacts/pre_news_shadow_health_drill_weekly_report_ci_latest.json")
+          if not p.exists():
+              raise SystemExit("missing weekly report")
+          obj = json.loads(p.read_text(encoding="utf-8"))
+          gate = obj.get("promotion_gate") or {}
+          if gate.get("enabled") is not True:
+              raise SystemExit("promotion_gate must be enabled")
+          if gate.get("holdout_dataset_lock_enforced") is not True:
+              raise SystemExit("holdout dataset lock must be enforced")
+          if gate.get("holdout_dataset_lock_ok") is not True:
+              raise SystemExit("holdout dataset lock must be valid")
+          stage_map = gate.get("stage_min_holdout_cases") or {}
+          if not isinstance(stage_map, dict):
+              raise SystemExit("stage_min_holdout_cases must be a dict")
+          meta = obj.get("stage_threshold_policy_meta") or {}
+          if not isinstance(meta, dict):
+              raise SystemExit("stage_threshold_policy_meta must be a dict")
+          if not meta.get("effective_from_utc"):
+              raise SystemExit("policy metadata missing effective_from_utc")
+          top = obj.get("top_resonance_stage_counts") or []
+          promoted = obj.get("promoted_stage_counts") or []
+          rejected = obj.get("rejected_stage_counts") or []
+          if len(promoted) > len(top):
+              raise SystemExit("promoted list cannot exceed top stage list")
+          if len(rejected) > len(top):
+              raise SystemExit("rejected list cannot exceed top stage list")
+          for row in rejected:
+              if row.get("reject_reason") not in {"not_in_holdout_verified_stages", "below_min_holdout_cases_per_stage", "holdout_dataset_hash_mismatch"}:
+                  raise SystemExit("unexpected reject_reason in rejected stages")
+          metrics = obj.get("metrics") or {}
+          gate = obj.get("promotion_gate") or {}
+          min_cases = int(gate.get("min_holdout_cases_per_stage", 1))
+          if min_cases < 1:
+              raise SystemExit("min_holdout_cases_per_stage must be >= 1")
+          for k,v in stage_map.items():
+              if int(v) < 1:
+                  raise SystemExit(f"invalid per-stage threshold for {k}")
+          if int(metrics.get("promoted_stage_count", 0)) != len(promoted):
+              raise SystemExit("promoted_stage_count mismatch")
+          if int(metrics.get("rejected_stage_count", 0)) != len(rejected):
+              raise SystemExit("rejected_stage_count mismatch")
+          print("weekly promotion gate contract: OK")
+          PY
+
+      - name: Validate policy governance alert contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("docs/final/artifacts/pre_news_shadow_policy_governance_alert_ci_latest.json")
+          if not p.exists():
+              raise SystemExit("missing policy governance alert artifact")
+          obj = json.loads(p.read_text(encoding="utf-8"))
+          if "has_alert" not in obj:
+              raise SystemExit("policy governance alert missing has_alert")
+          if "notify_status" not in obj:
+              raise SystemExit("policy governance alert missing notify_status")
+          if "has_two_person_approval" not in obj:
+              raise SystemExit("policy governance alert missing has_two_person_approval")
+          if obj.get("change_count_threshold") != 2:
+              raise SystemExit("unexpected governance alert threshold")
+          print("policy governance alert contract: OK")
+          PY
+
+      - name: Validate weekly audit bundle contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_ci_latest.json")
+          if not p.exists():
+              raise SystemExit("missing weekly audit bundle")
+          obj = json.loads(p.read_text(encoding="utf-8"))
+          if not obj.get("weekly_report"):
+              raise SystemExit("bundle missing weekly_report")
+          if not obj.get("policy_audit_summary"):
+              raise SystemExit("bundle missing policy_audit_summary")
+          if not obj.get("holdout_lock_manifest"):
+              raise SystemExit("bundle missing holdout_lock_manifest")
+          tail = obj.get("policy_change_log_tail")
+          if not isinstance(tail, list):
+              raise SystemExit("bundle policy_change_log_tail must be list")
+          print("weekly audit bundle contract: OK")
+          PY
+

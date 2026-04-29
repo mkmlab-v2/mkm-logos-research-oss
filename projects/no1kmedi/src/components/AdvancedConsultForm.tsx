@@ -27,9 +27,9 @@ function cdssTemplateHint(reason?: CdssGenerationReason): string {
     case "disabled":
       return "서버에서 CDSS 생성형 추론이 꺼져 있습니다. 활성화하려면 CDSS_LLM_ENABLED=true.";
     case "no_credentials":
-      return "API 베이스 URL·키가 없습니다. CDSS_LLM_API_* 를 설정하거나 CDSS_LLM_USE_OPENROUTER=true 와 OPENROUTER_API_KEY 를 설정하세요.";
+      return "API 베이스 URL·키가 없습니다. CDSS_LLM_API_* 또는 GEMINI_API_KEY(권장), 혹은 CDSS_LLM_USE_OPENROUTER=true + OPENROUTER_API_KEY 를 설정하세요.";
     case "no_models":
-      return "모델명이 비어 있습니다. CDSS_LLM_PRIMARY_MODEL 또는 OPENROUTER_MODEL 을 지정하세요.";
+      return "모델명이 비어 있습니다. CDSS_LLM_PRIMARY_MODEL 또는 CDSS_GEMINI_MODEL/GEMINI_MODEL/OPENROUTER_MODEL 을 지정하세요.";
     case "llm_error":
       return "모델 호출은 시도했으나 응답이 없거나 JSON 형식이 맞지 않았습니다. 타임아웃·모델 호환(response_format)·네트워크를 확인하세요.";
     default:

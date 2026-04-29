@@ -43,6 +43,10 @@ def main() -> int:
         "--gematria-ablation-json",
         default="docs/final/artifacts/gematria_4d_ablation_latest.json",
     )
+    ap.add_argument(
+        "--counterfactual-comparison-json",
+        default="docs/final/artifacts/multi_symbol_counterfactual_comparison_latest.json",
+    )
     ap.add_argument("--output-json", default="docs/final/artifacts/two_track_qa_pack_latest.json")
     args = ap.parse_args()
 
@@ -51,8 +55,9 @@ def main() -> int:
     gp = resolve(args.fail_boundary_gate_json)
     fp = resolve(args.falsification_json)
     apath = resolve(args.gematria_ablation_json)
+    cpath = resolve(args.counterfactual_comparison_json)
     op = resolve(args.output_json)
-    for p in (qp, sp, gp, fp, apath):
+    for p in (qp, sp, gp, fp, apath, cpath):
         if not p.is_file():
             raise SystemExit(f"missing required input: {p}")
 
@@ -61,6 +66,7 @@ def main() -> int:
     gate = load(gp)
     falsification = load(fp)
     ablation = load(apath)
+    counterfactual = load(cpath)
     selected = sel.get("selected") if isinstance(sel.get("selected"), list) else []
     top_symbol = selected[0] if selected else {}
     second_symbol = selected[1] if len(selected) > 1 else {}
@@ -69,6 +75,8 @@ def main() -> int:
     rollback = bool(gate_eval.get("rollback", True))
     reasons = gate_eval.get("reasons") if isinstance(gate_eval.get("reasons"), list) else []
     ab_snapshot = ablation.get("snapshot") if isinstance(ablation.get("snapshot"), dict) else {}
+    cf_metrics = counterfactual.get("metrics") if isinstance(counterfactual.get("metrics"), dict) else {}
+    cf_gate = counterfactual.get("gate_eval") if isinstance(counterfactual.get("gate_eval"), dict) else {}
     checks = falsification.get("checks") if isinstance(falsification.get("checks"), list) else []
     checks_by_id = {str(c.get("id")): c for c in checks if isinstance(c, dict)}
 
@@ -104,14 +112,32 @@ def main() -> int:
                     "score_with_4d": ab_snapshot.get("score_with_4d"),
                     "score_without_4d": ab_snapshot.get("score_without_4d"),
                     "delta_with_minus_without": ab_snapshot.get("delta_with_minus_without"),
+                    "counterfactual_mean_gap": cf_metrics.get("mean_gap_base_minus_counterfactual"),
+                    "counterfactual_gate_pass": cf_gate.get("pass"),
                 }
+                item["a"] = (
+                    "Ablation keeps measurable gap "
+                    f"(delta={ab_snapshot.get('delta_with_minus_without')}); "
+                    "counterfactual mean gap="
+                    f"{cf_metrics.get('mean_gap_base_minus_counterfactual')} "
+                    f"(pass={cf_gate.get('pass')})."
+                )
             elif qid == "q4":
                 evidence["source_artifact"] = "multi_symbol_candidate_selector_latest.json"
                 evidence["metric_value"] = {
                     "top_symbol": top_symbol.get("seed_symbol"),
                     "top2_symbol": second_symbol.get("seed_symbol"),
                     "selected_count": sel.get("selected_count"),
+                    "counterfactual_should_alert": cf_gate.get("should_alert"),
+                    "counterfactual_promotion_hold": cf_gate.get("promotion_hold"),
                 }
+                item["a"] = (
+                    "Top symbols are "
+                    f"{top_symbol.get('seed_symbol')} / {second_symbol.get('seed_symbol')} "
+                    f"with selected_count={sel.get('selected_count')}; "
+                    "counterfactual gate "
+                    f"alert={cf_gate.get('should_alert')}, hold={cf_gate.get('promotion_hold')}."
+                )
             else:  # q5 and fallback
                 evidence["source_artifact"] = "two_track_fail_boundary_gate_latest.json"
                 evidence["metric_value"] = {
@@ -146,6 +172,7 @@ def main() -> int:
         "top_coupling_strength": top_symbol.get("coupling_strength"),
         "falsification_json": str(fp),
         "gematria_ablation_json": str(apath),
+        "counterfactual_comparison_json": str(cpath),
     }
     qa["audience_qna"] = qna
 

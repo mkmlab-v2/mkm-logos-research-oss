@@ -14,6 +14,8 @@ import { resolveLlmPriorityForCaller } from "../src/lib/ai-provider.ts";
 const ISOLATED_ENV_KEYS = [
   "GUARDIAN_CHAT_LLM_PRIORITY",
   "JEMA_AI_LLM_PRIORITY",
+  "GEMINI_API_KEY",
+  "GOOGLE_API_KEY",
   "OPENROUTER_API_KEY",
   "OLLAMA_HOST",
   "LOCAL_LLM_URL",
@@ -59,7 +61,7 @@ const cases: Case[] = [
     want: "openrouter_first",
   },
   {
-    name: "both backends no guardian env -> local_first",
+    name: "both backends no guardian env -> local_first (no gemini key)",
     env: {
       JEMA_AI_LLM_PRIORITY: "auto",
       OPENROUTER_API_KEY: "sk-test",
@@ -68,14 +70,14 @@ const cases: Case[] = [
     want: "local_first",
   },
   {
-    name: "local only no key -> local_only",
+    name: "local only no key -> local_only (no gemini key)",
     env: {
       OLLAMA_HOST: "http://127.0.0.1:11434",
     },
     want: "local_only",
   },
   {
-    name: "no local inherits JEMA local_first",
+    name: "no local inherits JEMA local_first (no gemini key)",
     env: {
       OPENROUTER_API_KEY: "k",
       JEMA_AI_LLM_PRIORITY: "local_first",
@@ -83,12 +85,22 @@ const cases: Case[] = [
     want: "local_first",
   },
   {
-    name: "no local inherits JEMA auto",
+    name: "no local inherits JEMA auto (no gemini key)",
     env: {
       OPENROUTER_API_KEY: "k",
       JEMA_AI_LLM_PRIORITY: "auto",
     },
     want: "auto",
+  },
+  {
+    name: "gemini key present no explicit guardian -> gemini_first",
+    env: {
+      GEMINI_API_KEY: "gk-test",
+      JEMA_AI_LLM_PRIORITY: "auto",
+      OPENROUTER_API_KEY: "sk-test",
+      OLLAMA_HOST: "http://127.0.0.1:11434",
+    },
+    want: "gemini_first",
   },
 ];
 

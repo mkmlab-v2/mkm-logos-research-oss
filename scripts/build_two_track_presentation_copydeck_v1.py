@@ -24,15 +24,19 @@ def main():
     top_symbol=card_value(cards,'top_symbol_by_coupling','n/a')
     top2=card_value(cards,'top2_symbols',[])
     ab_delta=card_value(cards,'gematria_4d_delta_with_minus_without','n/a')
+    gate_status=card_value(cards,'multi_symbol_gate_status','n/a')
+    gate_hold=card_value(cards,'multi_symbol_any_promotion_hold','n/a')
     out={'schema':'two_track_presentation_copydeck_v1','generated_at_utc':now(),'research_only':True,'promotion_required':True,'source_track':'K',
          'one_page':{'title':b.get('headline','Two-track'),
                      'key_points':['K-track for knowledge IP','T-track for survivorship gating','Public-safe disclosure boundary',
                                    f'Top symbol by coupling: {top_symbol}',
-                                   f'4D ablation delta (with-without): {ab_delta}']},
+                                   f'4D ablation delta (with-without): {ab_delta}',
+                                   f'Multi-symbol gate status: {gate_status} (hold={gate_hold})']},
          'three_page':[{'section':'Problem','bullets':['Narrative-rich signals can overfit when directly promoted']},
                        {'section':'Method','bullets':['Two-track split','Falsification + benchmark + significance',
                                                      f'Multi-symbol top2: {top2}']},
                        {'section':'Governance','bullets':['Rollback contract','Public-safe redaction',
-                                                         'Symbolic layer is analysis-only (non-trigger)']}]}
+                                                         'Symbolic layer is analysis-only (non-trigger)',
+                                                         f'Integrated gate summary: status={gate_status}, hold={gate_hold}']}]}
     op.parent.mkdir(parents=True, exist_ok=True); op.write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n', encoding='utf-8'); print(str(op)); return 0
 if __name__=='__main__': raise SystemExit(main())

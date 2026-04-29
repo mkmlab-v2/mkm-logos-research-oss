@@ -18,6 +18,7 @@ LOG_DEFAULT = REPORTS / "pointer_hash_snapping_router_shadow_log_v1.jsonl"
 FOLDER_POLICY_DEFAULT = ART / "pointerguard_folder_policy_latest.json"
 SNAPSHOT_DEFAULT = ART / "pointer_hash_snapping_router_shadow_latest.json"
 OUT_DEFAULT = ART / "pointerguard_apply_go_promotion_decision_latest.json"
+READINESS_DEFAULT = ART / "pointerguard_ops_readiness_latest.json"
 
 
 def _now_utc() -> str:
@@ -151,6 +152,7 @@ def main() -> int:
     ap.add_argument("--apply-row-ratio-min", type=float, default=0.30)
     ap.add_argument("--apply-unresolved-max", type=float, default=2.0)
     ap.add_argument("--out", type=Path, default=OUT_DEFAULT)
+    ap.add_argument("--readiness-json", type=Path, default=READINESS_DEFAULT)
     args = ap.parse_args()
 
     report_path = args.daily_report if args.daily_report.is_absolute() else ROOT / args.daily_report
@@ -158,12 +160,19 @@ def main() -> int:
     log_path = args.shadow_log_jsonl if args.shadow_log_jsonl.is_absolute() else ROOT / args.shadow_log_jsonl
     policy_path = args.folder_policy_json if args.folder_policy_json.is_absolute() else ROOT / args.folder_policy_json
     snapshot_path = args.latest_snapshot_json if args.latest_snapshot_json.is_absolute() else ROOT / args.latest_snapshot_json
+    readiness_path = args.readiness_json if args.readiness_json.is_absolute() else ROOT / args.readiness_json
     out_path = args.out if args.out.is_absolute() else ROOT / args.out
 
     rep = _read_json(report_path)
     alert = _read_json(alert_path)
     logs = _read_jsonl(log_path)
     policy_doc = _read_json(policy_path)
+    readiness_all_ok = False
+    if readiness_path.exists():
+        try:
+            readiness_all_ok = bool(_read_json(readiness_path).get("all_ok", False))
+        except Exception:
+            readiness_all_ok = False
 
     profile = _select_profile(policy_doc, args.target_path)
     logs = _filter_logs_for_profile(logs, profile, args.target_path)
@@ -193,6 +202,8 @@ def main() -> int:
     reasons: list[str] = []
     if bool(alert.get("should_alert", False)):
         reasons.append("active_shadow_alert")
+    if not readiness_all_ok:
+        reasons.append("blocked_by_ops_readiness")
     if profile and not bool(profile.get("go_promotion_enabled", False)):
         reasons.append("profile_go_promotion_disabled")
 
@@ -240,6 +251,8 @@ def main() -> int:
             "shadow_log_jsonl": str(log_path),
             "folder_policy_json": str(policy_path),
             "target_path": args.target_path,
+            "readiness_json": str(readiness_path),
+            "readiness_all_ok": readiness_all_ok,
             "consecutive_samples": k,
             "apply_row_ratio_min": apply_row_ratio_min,
             "apply_unresolved_max": apply_unresolved_max,

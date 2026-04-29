@@ -25,6 +25,11 @@ param(
     [string]$MultiSymbolWalkforwardSurvivabilityOutJson = "docs/final/artifacts/multi_symbol_walkforward_survivability_latest.json",
     [string]$MultiSymbolTopDriftHistoryOutJsonl = "docs/final/artifacts/multi_symbol_top_drift_history_latest.jsonl",
     [string]$MultiSymbolTopDriftAlertOutJson = "docs/final/artifacts/multi_symbol_top_drift_alert_latest.json",
+    [string]$MultiSymbolNegativeControlOutJson = "docs/final/artifacts/multi_symbol_negative_control_latest.json",
+    [string]$MultiSymbolNegativeControlGateOutJson = "docs/final/artifacts/multi_symbol_negative_control_gate_latest.json",
+    [string]$MultiSymbolCounterfactualSetOutJson = "docs/final/artifacts/multi_symbol_counterfactual_set_latest.json",
+    [string]$MultiSymbolCounterfactualComparisonOutJson = "docs/final/artifacts/multi_symbol_counterfactual_comparison_latest.json",
+    [string]$MultiSymbolGateSummaryOutJson = "docs/final/artifacts/multi_symbol_gate_summary_latest.json",
     [string]$SurvivorEvalOutJson = "docs/final/artifacts/insight_survivor_eval_latest.json",
     [string]$SurvivorCandidatesOutJson = "docs/final/artifacts/insight_survivor_candidates_latest.json",
     [string]$KnowledgeIpReportOutJson = "docs/final/artifacts/bible_meaning_knowledge_ip_report_latest.json",
@@ -140,6 +145,16 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & py "scripts/build_multi_symbol_walkforward_survivability_v1.py" "--multi-symbol-json" $MultiSymbolResonance4dOutJson "--selector-json" $MultiSymbolCandidateSelectorOutJson "--output-json" $MultiSymbolWalkforwardSurvivabilityOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & py "scripts/alert_multi_symbol_top_drift_gate_v1.py" "--survivability-json" $MultiSymbolWalkforwardSurvivabilityOutJson "--history-jsonl" $MultiSymbolTopDriftHistoryOutJsonl "--output-json" $MultiSymbolTopDriftAlertOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/build_multi_symbol_negative_control_v1.py" "--survivability-json" $MultiSymbolWalkforwardSurvivabilityOutJson "--output-json" $MultiSymbolNegativeControlOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/alert_multi_symbol_negative_control_gate_v1.py" "--negative-control-json" $MultiSymbolNegativeControlOutJson "--output-json" $MultiSymbolNegativeControlGateOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/build_multi_symbol_counterfactual_set_v1.py" "--survivability-json" $MultiSymbolWalkforwardSurvivabilityOutJson "--output-json" $MultiSymbolCounterfactualSetOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/build_multi_symbol_counterfactual_comparison_v1.py" "--survivability-json" $MultiSymbolWalkforwardSurvivabilityOutJson "--counterfactual-json" $MultiSymbolCounterfactualSetOutJson "--output-json" $MultiSymbolCounterfactualComparisonOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& py "scripts/build_multi_symbol_gate_summary_v1.py" "--drift-gate-json" $MultiSymbolTopDriftAlertOutJson "--negative-control-gate-json" $MultiSymbolNegativeControlGateOutJson "--counterfactual-comparison-json" $MultiSymbolCounterfactualComparisonOutJson "--output-json" $MultiSymbolGateSummaryOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[14/15] Re-score + shadow compare with insight signal" -ForegroundColor Cyan

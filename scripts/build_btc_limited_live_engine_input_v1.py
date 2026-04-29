@@ -81,6 +81,9 @@ def main() -> int:
         },
         "action": "submit_to_engine_queue" if approved_to_submit else "wait_for_human_approval",
     }
+    tbp = candidate.get("tie_break_policy")
+    if isinstance(tbp, dict):
+        payload["tie_break_policy"] = tbp
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

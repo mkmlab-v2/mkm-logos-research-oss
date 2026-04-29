@@ -31,6 +31,25 @@ LENS_SASANG = "sasang"
 LENSES = (LENS_LOGOS, LENS_MYEONGNI, LENS_SASANG)
 VALID_DIR = {"bull", "bear", "neutral"}
 
+# Ranking tie-break when primary metrics tie (see _rank_strategies).
+TIE_BREAK_POLICY_ID = "non_logos_multi_lens_then_lens_count_v1"
+
+
+def _tie_break_policy_doc() -> dict[str, Any]:
+    return {
+        "policy_id": TIE_BREAK_POLICY_ID,
+        "primary_sort_keys_desc": [
+            "metrics.cagr (higher wins)",
+            "metrics.sharpe (higher wins)",
+            "metrics.mdd (less negative wins)",
+        ],
+        "tie_break_keys_desc": [
+            "prefer strategies with >=2 lenses where logos is NOT included (captures myeongni+sasang vs single-lens ties)",
+            "prefer higher lens count when still tied",
+        ],
+        "implementation_ref": "scripts/run_prophecy_lens_combo_backtest_v1.py:_rank_strategies",
+    }
+
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -263,12 +282,27 @@ def _simulate_variant(
 
 
 def _rank_strategies(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def _is_non_logos_multi_lens(strategy: dict[str, Any]) -> int:
+        lenses = strategy.get("lenses") or []
+        if not isinstance(lenses, list):
+            return 0
+        lens_set = {str(x).strip().lower() for x in lenses}
+        # Tie-break preference: preserve "cross-lens blend" intent without
+        # forcing weaker logos paths when core performance is tied.
+        return 1 if len(lens_set) >= 2 and LENS_LOGOS not in lens_set else 0
+
+    def _lens_count(strategy: dict[str, Any]) -> int:
+        lenses = strategy.get("lenses") or []
+        return len(lenses) if isinstance(lenses, list) else 0
+
     return sorted(
         items,
         key=lambda x: (
             float((x.get("metrics") or {}).get("cagr") or -999.0),
             float((x.get("metrics") or {}).get("sharpe") or -999.0),
             float((x.get("metrics") or {}).get("mdd") or -999.0),
+            _is_non_logos_multi_lens(x),
+            _lens_count(x),
         ),
         reverse=True,
     )
@@ -475,6 +509,7 @@ def main() -> int:
                 "three_lens_plus_coordinator_1",
             ],
         },
+        "tie_break_policy": _tie_break_policy_doc(),
         "best_strategy": ranked[0] if ranked else None,
         "ranked_strategies": ranked,
         "fee_sensitivity": fee_sensitivity,
@@ -499,6 +534,7 @@ def main() -> int:
             "generated_at_utc": _utc_now(),
             "research_only": True,
             "non_execution": True,
+            "tie_break_policy": _tie_break_policy_doc(),
             "source_backtest": str(args.output),
             "candidate": {
                 "strategy_id": top.get("strategy_id") if isinstance(top, dict) else None,

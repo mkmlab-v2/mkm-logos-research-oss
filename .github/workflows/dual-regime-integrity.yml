@@ -153,10 +153,22 @@ on:
       - "scripts/build_two_track_submission_evidence_bundle_v1.py"
       - "scripts/build_two_track_submission_draft_v1.py"
       - "scripts/build_two_track_submission_camera_ready_v1.py"
+      - "scripts/build_multi_symbol_gate_summary_v1.py"
+      - "scripts/build_multi_symbol_counterfactual_set_v1.py"
+      - "scripts/build_multi_symbol_counterfactual_comparison_v1.py"
+      - "scripts/build_multi_symbol_walkforward_survivability_v1.py"
+      - "scripts/alert_multi_symbol_top_drift_gate_v1.py"
+      - "scripts/build_multi_symbol_negative_control_v1.py"
+      - "scripts/alert_multi_symbol_negative_control_gate_v1.py"
+      - "scripts/enrich_two_track_qa_with_symbol_evidence_v1.py"
+      - "scripts/run_two_track_falsification_suite_v1.py"
       - "scripts/run_two_track_submission_pack_v1.ps1"
       - "tests/test_build_two_track_submission_evidence_bundle_v1.py"
       - "tests/test_build_two_track_submission_draft_v1.py"
       - "tests/test_build_two_track_submission_camera_ready_v1.py"
+      - "tests/test_multi_symbol_contract_gates_v1.py"
+      - "tests/test_multi_symbol_counterfactual_comparison_v1.py"
+      - "tests/test_two_track_qa_overlay_counterfactual_v1.py"
       - "scripts/extract_aramaic_core_corpus_v1.py"
       - "tests/test_extract_aramaic_core_corpus_v1.py"
       - "tests/fixtures/track_a_metering_log_smoke_v1.jsonl"
@@ -623,6 +635,14 @@ jobs:
             tests/test_build_two_track_submission_evidence_bundle_v1.py \
             tests/test_build_two_track_submission_draft_v1.py \
             tests/test_build_two_track_submission_camera_ready_v1.py \
+            -q --tb=short
+
+      - name: Multi-symbol gates and counterfactual QA contracts
+        run: |
+          python -m pytest \
+            tests/test_multi_symbol_contract_gates_v1.py \
+            tests/test_multi_symbol_counterfactual_comparison_v1.py \
+            tests/test_two_track_qa_overlay_counterfactual_v1.py \
             -q --tb=short
 
       - name: Aramaic core corpus extraction (BH Aramaic window filter from verse JSONL)

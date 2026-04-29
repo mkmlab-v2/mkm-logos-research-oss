@@ -17,6 +17,9 @@ DEFAULT_QUALITY = ART / "myeongni_16state_data_quality_report_latest.json"
 DEFAULT_FUSION = ART / "independent_lens_fusion_stub_latest.json"
 DEFAULT_SHADOW_GATE = ART / "independent_lens_shadow_gate_latest.json"
 DEFAULT_SENSITIVITY = ART / "myeongni_readiness_sensitivity_report_latest.json"
+DEFAULT_WEATHER_QUALITY = ART / "general_prophecy_explainability_quality_v1_latest.json"
+DEFAULT_GEMATRIA_BLEND = ART / "gematria_myeongri_spike_blend_latest.json"
+DEFAULT_GEMATRIA_ABLATION = ART / "gematria_4d_ablation_latest.json"
 
 DEFAULT_PROMOTION_GATE = ART / "myeongni_promotion_gate_latest.json"
 DEFAULT_FAILURE = ART / "myeongni_promotion_failure_analysis_latest.json"
@@ -55,6 +58,9 @@ def main() -> int:
     ap.add_argument("--fusion", type=Path, default=DEFAULT_FUSION)
     ap.add_argument("--shadow-gate", type=Path, default=DEFAULT_SHADOW_GATE)
     ap.add_argument("--sensitivity", type=Path, default=DEFAULT_SENSITIVITY)
+    ap.add_argument("--weather-quality", type=Path, default=DEFAULT_WEATHER_QUALITY)
+    ap.add_argument("--gematria-blend", type=Path, default=DEFAULT_GEMATRIA_BLEND)
+    ap.add_argument("--gematria-ablation", type=Path, default=DEFAULT_GEMATRIA_ABLATION)
     ap.add_argument("--promotion-gate-out", type=Path, default=DEFAULT_PROMOTION_GATE)
     ap.add_argument("--failure-out", type=Path, default=DEFAULT_FAILURE)
     ap.add_argument("--shadow-gov-out", type=Path, default=DEFAULT_SHADOW_GOV)
@@ -67,6 +73,9 @@ def main() -> int:
     fusion = _read_json(args.fusion)
     shadow_gate = _read_json(args.shadow_gate)
     sensitivity = _read_json(args.sensitivity)
+    weather_quality = _read_json(args.weather_quality)
+    gematria_blend = _read_json(args.gematria_blend)
+    gematria_ablation = _read_json(args.gematria_ablation)
 
     summary = readiness.get("summary") if isinstance(readiness.get("summary"), dict) else {}
     integrity = readiness.get("shadow_history_integrity") if isinstance(readiness.get("shadow_history_integrity"), dict) else {}
@@ -80,6 +89,16 @@ def main() -> int:
     consistency_ok = agreement >= 0.5
     sensitivity_rows = sensitivity.get("sensitivity_sweep") if isinstance(sensitivity.get("sensitivity_sweep"), list) else []
     sensitivity_all_ready = all(str((x or {}).get("readiness") or "").upper() == "READY" for x in sensitivity_rows) if sensitivity_rows else False
+    weather_rows = weather_quality.get("rows") if isinstance(weather_quality.get("rows"), list) else []
+    brier_rows = [r for r in weather_rows if str((r or {}).get("question_id") or "").startswith("ci.brier_")]
+    weather_linked = len(brier_rows) > 0 and all(bool((r or {}).get("coverage_ok")) for r in brier_rows)
+    blend_metrics = gematria_blend.get("metrics") if isinstance(gematria_blend.get("metrics"), dict) else {}
+    ablation_snapshot = gematria_ablation.get("snapshot") if isinstance(gematria_ablation.get("snapshot"), dict) else {}
+    cosine_hybrid = _f(blend_metrics.get("cosine_vanilla_hybrid"))
+    cosine_myeongri = _f(blend_metrics.get("cosine_vanilla_myeongri"))
+    ablation_delta = _f(ablation_snapshot.get("delta_with_minus_without"))
+    allow_exec = bool((gematria_ablation.get("policy_gate") or {}).get("allow_execution_trigger"))
+    gematria_linked = cosine_hybrid >= cosine_myeongri and ablation_delta > 0.0 and (not allow_exec)
 
     fail_axes: list[dict[str, Any]] = []
     if not go_ready:
@@ -98,6 +117,27 @@ def main() -> int:
         fail_axes.append({"axis": "fusion_consistency", "severity": "medium", "status": "WARN", "evidence": f"agreement_rate={agreement}"})
     if not sensitivity_all_ready:
         fail_axes.append({"axis": "sensitivity_sweep", "severity": "medium", "status": "WARN", "evidence": "not all thresholds yielded READY"})
+    if not weather_linked:
+        fail_axes.append(
+            {
+                "axis": "weather_signal_linkage",
+                "severity": "medium",
+                "status": "WARN",
+                "evidence": "weather-linked (ci.brier_*) quality rows missing or coverage not all true",
+            }
+        )
+    if not gematria_linked:
+        fail_axes.append(
+            {
+                "axis": "gematria_4d_linkage",
+                "severity": "medium",
+                "status": "WARN",
+                "evidence": (
+                    f"cosine_hybrid={cosine_hybrid}, cosine_myeongri={cosine_myeongri}, "
+                    f"ablation_delta={ablation_delta}, allow_execution_trigger={allow_exec}"
+                ),
+            }
+        )
 
     fail_count = sum(1 for x in fail_axes if x["status"] == "FAIL")
     warn_count = sum(1 for x in fail_axes if x["status"] == "WARN")
@@ -117,6 +157,8 @@ def main() -> int:
             "shadow_gate_blockers_zero": len(blockers) == 0,
             "shadow_override_under_limit": not override_exceeded,
             "sensitivity_sweep_all_ready": sensitivity_all_ready,
+            "weather_signal_linked": weather_linked,
+            "gematria_4d_linked": gematria_linked,
         },
         "policy": {
             "track_b_to_a_auto_bridge": False,
@@ -136,6 +178,10 @@ def main() -> int:
             "fusion_agreement_rate": agreement,
             "shadow_override_ratio": integrity.get("override_ratio"),
             "shadow_override_ratio_limit": summary.get("shadow_override_ratio_limit"),
+            "weather_brier_row_count": len(brier_rows),
+            "gematria_cosine_hybrid": cosine_hybrid,
+            "gematria_cosine_myeongri": cosine_myeongri,
+            "gematria_ablation_delta": ablation_delta,
         },
     }
 
@@ -147,6 +193,11 @@ def main() -> int:
         "allow_live_trigger": False,
         "blockers": [x["axis"] for x in fail_axes if x["status"] == "FAIL"],
         "warnings": [x["axis"] for x in fail_axes if x["status"] == "WARN"],
+        "linked_inputs": {
+            "weather_quality": str(args.weather_quality.resolve()),
+            "gematria_blend": str(args.gematria_blend.resolve()),
+            "gematria_ablation": str(args.gematria_ablation.resolve()),
+        },
     }
 
     review_packet = {
@@ -162,6 +213,9 @@ def main() -> int:
             "fusion_stub": str(args.fusion.resolve()),
             "shadow_gate": str(args.shadow_gate.resolve()),
             "sensitivity_report": str(args.sensitivity.resolve()),
+            "weather_quality": str(args.weather_quality.resolve()),
+            "gematria_blend": str(args.gematria_blend.resolve()),
+            "gematria_ablation": str(args.gematria_ablation.resolve()),
         },
     }
 

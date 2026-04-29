@@ -13,7 +13,17 @@ param(
     [switch]$SkipBuildScore,
     [switch]$EnableTrinityEvolution,
     [switch]$EnableRiskProfileSync,
-    [string]$BtcCsvPath = ""
+    [string]$BtcCsvPath = "",
+    [switch]$EnablePreNewsShadow,
+    [switch]$EnablePreNewsShadowWeeklyReport,
+    [string]$PreNewsBatchReportJson = "docs/final/artifacts/global_atom_full_canon_batch_report_latest.json",
+    [string]$PreNewsInputJson = "docs/final/artifacts/pre_news_shadow_input_latest.json",
+    [string]$PreNewsHoldoutReplayJson = "docs/final/artifacts/global_atom_news_network_holdout_replay_latest.json",
+    [string]$PreNewsHoldoutDatasetLockJson = "docs/final/artifacts/global_atom_news_holdout_dataset_lock_manifest_v1.json",
+    [string]$PreNewsStageThresholdPolicyJson = "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_v1.json",
+    [int]$PreNewsPolicyAuditWindowDays = 30,
+    [int]$PreNewsPolicyGovernanceAlertThreshold = 2,
+    [int]$PreNewsPolicyChangeLogTailRows = 20
 )
 
 $ErrorActionPreference = "Stop"
@@ -194,6 +204,80 @@ if ($EnableCausalThresholdSweep) {
         --decision-json "docs/final/artifacts/prophecy_causal_active_guard_policy_decision_latest.json" `
         --state-json "docs/final/artifacts/prophecy_causal_active_guard_profile_state_latest.json" `
         --out-alert-json "docs/final/artifacts/prophecy_causal_active_guard_profile_transition_alert_latest.json"
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($EnablePreNewsShadow) {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File "scripts\run_global_atom_pre_news_shadow_chain_v1.ps1" `
+        -BatchReportJson $PreNewsBatchReportJson `
+        -PreNewsInputJson $PreNewsInputJson
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($EnablePreNewsShadowWeeklyReport) {
+    & py -3 "scripts\build_global_atom_pre_news_shadow_weekly_report_v1.py" `
+        --log-jsonl "reports/pre_news_shadow_projection_log.jsonl" `
+        --holdout-replay-json $PreNewsHoldoutReplayJson `
+        --holdout-dataset-lock-json $PreNewsHoldoutDatasetLockJson `
+        --enforce-holdout-dataset-lock `
+        --stage-threshold-policy-json $PreNewsStageThresholdPolicyJson `
+        --enforce-policy-effective-from `
+        --window-days 7 `
+        --out-json "docs/final/artifacts/pre_news_shadow_weekly_report_latest.json"
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+
+    & py -3 "scripts\build_pre_news_shadow_policy_change_audit_summary_v1.py" `
+        --change-log-jsonl "reports/pre_news_shadow_stage_threshold_policy_change_log.jsonl" `
+        --state-json "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_state_latest.json" `
+        --window-days $PreNewsPolicyAuditWindowDays `
+        --out-json "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_latest.json"
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+
+    & py -3 "scripts\alert_pre_news_shadow_policy_governance_v1.py" `
+        --audit-summary-json "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_latest.json" `
+        --out-alert-json "docs/final/artifacts/pre_news_shadow_policy_governance_alert_latest.json" `
+        --append-alert-log-jsonl "reports/pre_news_shadow_policy_governance_alert_log.jsonl" `
+        --change-count-threshold $PreNewsPolicyGovernanceAlertThreshold
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+
+    & py -3 "scripts\build_pre_news_shadow_weekly_audit_bundle_v1.py" `
+        --weekly-report-json "docs/final/artifacts/pre_news_shadow_weekly_report_latest.json" `
+        --policy-audit-summary-json "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_latest.json" `
+        --policy-governance-alert-json "docs/final/artifacts/pre_news_shadow_policy_governance_alert_latest.json" `
+        --policy-state-json "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_state_latest.json" `
+        --policy-change-log-jsonl "reports/pre_news_shadow_stage_threshold_policy_change_log.jsonl" `
+        --holdout-replay-json $PreNewsHoldoutReplayJson `
+        --holdout-lock-json $PreNewsHoldoutDatasetLockJson `
+        --tail-policy-change-rows $PreNewsPolicyChangeLogTailRows `
+        --out-json "docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_latest.json"
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+
+    & py -3 "scripts\build_pre_news_shadow_ops_status_dashboard_v1.py" `
+        --weekly-report-json "docs/final/artifacts/pre_news_shadow_weekly_report_latest.json" `
+        --policy-governance-alert-json "docs/final/artifacts/pre_news_shadow_policy_governance_alert_latest.json" `
+        --task-health-alert-json "docs/final/artifacts/pre_news_shadow_task_health_alert_latest.json" `
+        --weekly-audit-bundle-json "docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_latest.json" `
+        --weekly-audit-hash-manifest-json "docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_hash_manifest_latest.json" `
+        --holdout-lock-drill-json "docs/final/artifacts/pre_news_shadow_holdout_lock_mismatch_drill_latest.json" `
+        --policy-governance-drill-json "docs/final/artifacts/pre_news_shadow_policy_governance_drill_latest.json" `
+        --health-alert-drill-json "docs/final/artifacts/pre_news_shadow_alert_drill_latest.json" `
+        --policy-alert-log-jsonl "reports/pre_news_shadow_policy_governance_alert_log.jsonl" `
+        --task-health-alert-log-jsonl "reports/pre_news_shadow_task_health_alert_log.jsonl" `
+        --projection-log-jsonl "reports/pre_news_shadow_projection_log.jsonl" `
+        --tail-rows 5 `
+        --out-json "docs/final/artifacts/pre_news_shadow_ops_status_latest.json"
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }

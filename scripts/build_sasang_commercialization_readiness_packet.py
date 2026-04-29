@@ -27,7 +27,23 @@ DEFAULT_GT_EXPANSION_QUEUE_REPORT = ART / "sasang_gt_expansion_queue_report_late
 DEFAULT_GT_EXPANSION_PRIORITY_REPORT = ART / "sasang_gt_expansion_priority_report_latest.json"
 DEFAULT_GT_MERGE_REPORT = ART / "sasang_gt_merge_report_latest.json"
 DEFAULT_GT_LABELING_SHEET_REPORT = ART / "sasang_gt_labeling_sheet_report_latest.json"
+DEFAULT_GT_LABELED_IMPORT_REPORT = ART / "sasang_gt_labeled_import_report_latest.json"
+DEFAULT_GT_APPROVAL_PROGRESS = ART / "sasang_gt_approval_progress_latest.json"
+DEFAULT_GT_LABELING_VALIDATION = ART / "sasang_gt_labeling_sheet_validation_latest.json"
+DEFAULT_GT_APPROVAL_WHATIF = ART / "sasang_gt_approval_whatif_latest.json"
+DEFAULT_GT_LABELING_ASSIGNMENT_REPORT = ART / "sasang_gt_labeling_assignment_report_latest.json"
+DEFAULT_HUMAN_SIGNOFF = ART / "sasang_human_signoff_latest.json"
+DEFAULT_READY_DRIFT = ART / "sasang_ready_drift_check_latest.json"
+DEFAULT_ROLLBACK_DRILL = ART / "sasang_ready_rollback_drill_latest.json"
+DEFAULT_PROMOTION_AUTH = ART / "sasang_promotion_authorization_latest.json"
+DEFAULT_PROMOTION_COMPLETION = ART / "sasang_promotion_completion_latest.json"
 DEFAULT_PROMOTION_CHAIN = ART / "sasang12_promotion_candidate_chain_latest.json"
+DEFAULT_DNA_READINESS = ROOT / "reports" / "bio_dna_constitution_final_approval_latest.json"
+DEFAULT_MARKET_SENTIMENT = ART / "fused_paper_cycle_weekly_latest.json"
+DEFAULT_GEMATRIA_4D = ART / "gematria_4d_coupling_latest.json"
+DEFAULT_SUPPLEMENTAL_SCORE = ART / "sasang_supplemental_insight_score_latest.json"
+DEFAULT_SUPPLEMENTAL_TREND = ART / "sasang_supplemental_insight_trend_latest.json"
+DEFAULT_SUPPLEMENTAL_TREND_ALERT = ART / "sasang_supplemental_trend_alert_latest.json"
 
 DEFAULT_EVAL_CONTRACT = ART / "sasang_prophecy_eval_contract_latest.json"
 DEFAULT_PROMOTION_GATE = ART / "sasang12_promotion_candidate_gate_latest.json"
@@ -79,7 +95,23 @@ def main() -> int:
     ap.add_argument("--gt-expansion-priority-report", type=Path, default=DEFAULT_GT_EXPANSION_PRIORITY_REPORT)
     ap.add_argument("--gt-merge-report", type=Path, default=DEFAULT_GT_MERGE_REPORT)
     ap.add_argument("--gt-labeling-sheet-report", type=Path, default=DEFAULT_GT_LABELING_SHEET_REPORT)
+    ap.add_argument("--gt-labeled-import-report", type=Path, default=DEFAULT_GT_LABELED_IMPORT_REPORT)
+    ap.add_argument("--gt-approval-progress", type=Path, default=DEFAULT_GT_APPROVAL_PROGRESS)
+    ap.add_argument("--gt-labeling-validation", type=Path, default=DEFAULT_GT_LABELING_VALIDATION)
+    ap.add_argument("--gt-approval-whatif", type=Path, default=DEFAULT_GT_APPROVAL_WHATIF)
+    ap.add_argument("--gt-labeling-assignment-report", type=Path, default=DEFAULT_GT_LABELING_ASSIGNMENT_REPORT)
+    ap.add_argument("--human-signoff", type=Path, default=DEFAULT_HUMAN_SIGNOFF)
+    ap.add_argument("--ready-drift-check", type=Path, default=DEFAULT_READY_DRIFT)
+    ap.add_argument("--rollback-drill", type=Path, default=DEFAULT_ROLLBACK_DRILL)
+    ap.add_argument("--promotion-authorization", type=Path, default=DEFAULT_PROMOTION_AUTH)
+    ap.add_argument("--promotion-completion", type=Path, default=DEFAULT_PROMOTION_COMPLETION)
     ap.add_argument("--promotion-chain", type=Path, default=DEFAULT_PROMOTION_CHAIN)
+    ap.add_argument("--dna-readiness", type=Path, default=DEFAULT_DNA_READINESS)
+    ap.add_argument("--market-sentiment", type=Path, default=DEFAULT_MARKET_SENTIMENT)
+    ap.add_argument("--gematria-4d", type=Path, default=DEFAULT_GEMATRIA_4D)
+    ap.add_argument("--supplemental-score", type=Path, default=DEFAULT_SUPPLEMENTAL_SCORE)
+    ap.add_argument("--supplemental-trend", type=Path, default=DEFAULT_SUPPLEMENTAL_TREND)
+    ap.add_argument("--supplemental-trend-alert", type=Path, default=DEFAULT_SUPPLEMENTAL_TREND_ALERT)
     ap.add_argument("--eval-contract-out", type=Path, default=DEFAULT_EVAL_CONTRACT)
     ap.add_argument("--promotion-gate-out", type=Path, default=DEFAULT_PROMOTION_GATE)
     ap.add_argument("--failure-analysis-out", type=Path, default=DEFAULT_FAILURE_ANALYSIS)
@@ -104,6 +136,26 @@ def main() -> int:
     gt_expansion_priority_report = _load_optional(args.gt_expansion_priority_report)
     gt_merge_report = _load_optional(args.gt_merge_report)
     gt_labeling_sheet_report = _load_optional(args.gt_labeling_sheet_report)
+    gt_labeled_import_report = _load_optional(args.gt_labeled_import_report)
+    gt_approval_progress = _load_optional(args.gt_approval_progress)
+    gt_labeling_validation = _load_optional(args.gt_labeling_validation)
+    gt_approval_whatif = _load_optional(args.gt_approval_whatif)
+    gt_labeling_assignment_report = _load_optional(args.gt_labeling_assignment_report)
+    human_signoff = _load_optional(args.human_signoff)
+    ready_drift_check = _load_optional(args.ready_drift_check)
+    rollback_drill = _load_optional(args.rollback_drill)
+    promotion_auth = _load_optional(args.promotion_authorization)
+    promotion_completion = _load_optional(args.promotion_completion)
+    dna_readiness = _load_optional(args.dna_readiness)
+    market_sentiment = _load_optional(args.market_sentiment)
+    gematria_4d = _load_optional(args.gematria_4d)
+    supplemental_score = _load_optional(args.supplemental_score)
+    supplemental_trend = _load_optional(args.supplemental_trend)
+    supplemental_trend_alert = _load_optional(args.supplemental_trend_alert)
+    gt_target_met = (
+        isinstance(gt_approval_progress, dict)
+        and int(gt_approval_progress.get("needed_rows_now") or 0) == 0
+    )
 
     direction_score = _f((lens.get("scores") or {}).get("direction_score"))
     confidence = _f((lens.get("scores") or {}).get("confidence"))
@@ -156,6 +208,17 @@ def main() -> int:
             "non_medical_claim_only": True,
             "no_live_trading_trigger": True,
             "human_signoff_required": True,
+        },
+        "supplemental_insights": {
+            "dna_readiness_artifact": str(args.dna_readiness.resolve()) if dna_readiness is not None else None,
+            "market_sentiment_artifact": (
+                str(args.market_sentiment.resolve()) if market_sentiment is not None else None
+            ),
+            "gematria_4d_artifact": str(args.gematria_4d.resolve()) if gematria_4d is not None else None,
+            "supplemental_score_artifact": (
+                str(args.supplemental_score.resolve()) if supplemental_score is not None else None
+            ),
+            "included_as": "supporting_evidence_non_gating",
         },
     }
 
@@ -273,7 +336,7 @@ def main() -> int:
             )
     if isinstance(gt_merge_report, dict):
         approved_rows = int(gt_merge_report.get("approved_queue_rows") or 0)
-        if approved_rows <= 0:
+        if approved_rows <= 0 and not gt_target_met:
             failure_axes.append(
                 {
                     "axis": "gt_human_approval_pending",
@@ -291,6 +354,100 @@ def main() -> int:
                     "severity": "medium",
                     "status": "WARN",
                     "evidence": "GT labeling sheet has no rows",
+                }
+            )
+    if isinstance(gt_labeled_import_report, dict):
+        approved_rows = int(gt_labeled_import_report.get("approved_rows") or 0)
+        if approved_rows <= 0 and not gt_target_met:
+            failure_axes.append(
+                {
+                    "axis": "gt_label_approval_zero",
+                    "severity": "medium",
+                    "status": "WARN",
+                    "evidence": "Labeled import has zero approved rows",
+                }
+            )
+    if isinstance(gt_approval_progress, dict):
+        remain = int(gt_approval_progress.get("needed_rows_after_current_approval") or 0)
+        if remain > 0:
+            failure_axes.append(
+                {
+                    "axis": "gt_approval_progress_gap",
+                    "severity": "medium",
+                    "status": "WARN",
+                    "evidence": f"Remaining approved rows needed after current queue approval: {remain}",
+                }
+            )
+    if isinstance(gt_labeling_validation, dict):
+        if not bool(gt_labeling_validation.get("valid_for_import")):
+            failure_axes.append(
+                {
+                    "axis": "gt_labeling_sheet_invalid",
+                    "severity": "high",
+                    "status": "WARN",
+                    "evidence": "Labeling sheet validation failed; import/merge should be blocked",
+                }
+            )
+    if isinstance(gt_approval_whatif, dict):
+        can_hit = bool(gt_approval_whatif.get("can_hit_target_if_full_priority_approved"))
+        if not can_hit:
+            failure_axes.append(
+                {
+                    "axis": "gt_approval_whatif_shortfall",
+                    "severity": "medium",
+                    "status": "WARN",
+                    "evidence": "Even full priority approval may not reach strict target",
+                }
+            )
+    if isinstance(gt_labeling_assignment_report, dict):
+        rc = int(gt_labeling_assignment_report.get("reviewer_count") or 0)
+        if rc <= 0:
+            failure_axes.append(
+                {
+                    "axis": "gt_assignment_missing",
+                    "severity": "medium",
+                    "status": "WARN",
+                    "evidence": "No reviewer assignment plan available",
+                }
+            )
+    if isinstance(human_signoff, dict):
+        if str(human_signoff.get("decision") or "").upper() != "APPROVED":
+            failure_axes.append(
+                {
+                    "axis": "human_signoff_missing_or_rejected",
+                    "severity": "high",
+                    "status": "WARN",
+                    "evidence": "Human sign-off is missing or not APPROVED",
+                }
+            )
+    if isinstance(ready_drift_check, dict):
+        if bool(ready_drift_check.get("drift_detected")):
+            failure_axes.append(
+                {
+                    "axis": "ready_drift_detected",
+                    "severity": "high",
+                    "status": "WARN",
+                    "evidence": "READY drift check detected regression",
+                }
+            )
+    if isinstance(promotion_auth, dict):
+        if not bool(promotion_auth.get("promotion_to_a_track_allowed")):
+            failure_axes.append(
+                {
+                    "axis": "promotion_authorization_missing",
+                    "severity": "high",
+                    "status": "WARN",
+                    "evidence": "Promotion authorization exists but promotion_to_a_track_allowed is false",
+                }
+            )
+    if isinstance(promotion_completion, dict):
+        if not bool(promotion_completion.get("promotion_completed")):
+            failure_axes.append(
+                {
+                    "axis": "promotion_completion_missing",
+                    "severity": "high",
+                    "status": "WARN",
+                    "evidence": "Promotion completion marker not finalized",
                 }
             )
 
@@ -378,6 +535,59 @@ def main() -> int:
             "gt_labeling_sheet_report": (
                 str(args.gt_labeling_sheet_report.resolve()) if gt_labeling_sheet_report is not None else None
             ),
+            "gt_labeled_import_report": (
+                str(args.gt_labeled_import_report.resolve()) if gt_labeled_import_report is not None else None
+            ),
+            "gt_approval_progress": (
+                str(args.gt_approval_progress.resolve()) if gt_approval_progress is not None else None
+            ),
+            "gt_labeling_validation": (
+                str(args.gt_labeling_validation.resolve()) if gt_labeling_validation is not None else None
+            ),
+            "gt_approval_whatif": (
+                str(args.gt_approval_whatif.resolve()) if gt_approval_whatif is not None else None
+            ),
+            "gt_labeling_assignment_report": (
+                str(args.gt_labeling_assignment_report.resolve()) if gt_labeling_assignment_report is not None else None
+            ),
+            "human_signoff": str(args.human_signoff.resolve()) if human_signoff is not None else None,
+            "ready_drift_check": str(args.ready_drift_check.resolve()) if ready_drift_check is not None else None,
+            "rollback_drill": str(args.rollback_drill.resolve()) if rollback_drill is not None else None,
+            "promotion_authorization": (
+                str(args.promotion_authorization.resolve()) if promotion_auth is not None else None
+            ),
+            "promotion_completion": (
+                str(args.promotion_completion.resolve()) if promotion_completion is not None else None
+            ),
+            "dna_readiness": str(args.dna_readiness.resolve()) if dna_readiness is not None else None,
+            "market_sentiment": str(args.market_sentiment.resolve()) if market_sentiment is not None else None,
+            "gematria_4d": str(args.gematria_4d.resolve()) if gematria_4d is not None else None,
+            "supplemental_score": str(args.supplemental_score.resolve()) if supplemental_score is not None else None,
+            "supplemental_trend": str(args.supplemental_trend.resolve()) if supplemental_trend is not None else None,
+            "supplemental_trend_alert": (
+                str(args.supplemental_trend_alert.resolve()) if supplemental_trend_alert is not None else None
+            ),
+        },
+        "supplemental_insights": {
+            "dna_readiness_included": dna_readiness is not None,
+            "market_sentiment_included": market_sentiment is not None,
+            "gematria_4d_included": gematria_4d is not None,
+            "supplemental_score_included": supplemental_score is not None,
+            "supplemental_trend_included": supplemental_trend is not None,
+            "supplemental_trend_alert_included": supplemental_trend_alert is not None,
+            "supplemental_score_band": (
+                str(((supplemental_score or {}).get("supplemental_score") or {}).get("band") or "MISSING")
+            ),
+            "supplemental_score_value": float(
+                (((supplemental_score or {}).get("supplemental_score") or {}).get("value") or 0.0
+            )
+            ),
+            "supplemental_trend_status": str((supplemental_trend or {}).get("trend_status") or "MISSING"),
+            "supplemental_trend_alert": bool((supplemental_trend or {}).get("alert", False)),
+            "supplemental_trend_notify_operator": bool(
+                (supplemental_trend_alert or {}).get("notify_operator", False)
+            ),
+            "impact_on_gate_decision": "none_non_gating",
         },
         "boundaries": {
             "track_b_to_a_autobind": "FORBIDDEN",

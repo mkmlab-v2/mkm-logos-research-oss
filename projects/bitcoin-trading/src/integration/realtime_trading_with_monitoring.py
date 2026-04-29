@@ -55,8 +55,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Phase 1 방어망: 최소 신뢰도 (손절/익절·반대신호 청산과 동일 기준)
-MIN_CONFIDENCE = 0.52
+def _env_min_confidence(default: float = 0.52) -> float:
+    raw = os.environ.get("MKM_MIN_CONFIDENCE", "").strip()
+    if not raw:
+        return max(0.0, min(1.0, default))
+    try:
+        return max(0.0, min(1.0, float(raw)))
+    except ValueError:
+        return max(0.0, min(1.0, default))
 
 
 def _env_flag_true(name: str) -> bool:
@@ -111,6 +117,8 @@ class RealtimeTradingWithMonitoring:
         self.initial_capital = initial_capital
         self.leverage = leverage
         self.enable_trading = enable_trading
+        self._min_confidence = _env_min_confidence(0.52)
+        logger.info("🎯 MKM_MIN_CONFIDENCE=%.3f (risk gate / singular promotion)", self._min_confidence)
         self._maker_only = os.environ.get("MKM_MAKER_ONLY", "1").strip().lower() in ("1", "true", "yes")
         self._strict_maker_enforcement = os.environ.get(
             "MKM_STRICT_MAKER_ENFORCEMENT", "1"
@@ -702,7 +710,7 @@ class RealtimeTradingWithMonitoring:
                 # promote to directional action for execution path continuity.
                 if integrated_signal == "HOLD" and singular_action in ("BUY", "SELL"):
                     integrated_signal = singular_action
-                    integrated_confidence = max(integrated_confidence, MIN_CONFIDENCE)
+                    integrated_confidence = max(integrated_confidence, self._min_confidence)
                     result["integrated_signal"] = integrated_signal
                     result["integrated_confidence"] = integrated_confidence
                     logger.info(
@@ -752,7 +760,7 @@ class RealtimeTradingWithMonitoring:
                         reason=risk_reason,
                         signal=integrated_signal,
                         confidence=integrated_confidence,
-                        details={"warning_level": warning_level, "min_confidence": MIN_CONFIDENCE},
+                        details={"warning_level": warning_level, "min_confidence": self._min_confidence},
                     )
                     self._save_state()
                     return
@@ -962,7 +970,7 @@ class RealtimeTradingWithMonitoring:
                 "set PROPHECY_FUSION_ALLOW_MAINNET=1 after operator review.",
                 self.testnet,
             )
-        elif integrated_confidence < MIN_CONFIDENCE:
+        elif integrated_confidence < self._min_confidence:
             allowed = False
             reason = "confidence_below_min"
         elif str(warning_level).upper() == "CRITICAL":
@@ -1405,6 +1413,57 @@ class RealtimeTradingWithMonitoring:
                 existing_side = str(existing_pos.get("side") or "").upper()
                 existing_qty = float(existing_pos.get("quantity") or 0.0)
                 desired_side = "LONG" if signal == "BUY" else "SHORT"
+                if (
+                    existing_qty > 0.0
+                    and desired_side in {"LONG", "SHORT"}
+                    and existing_side in {"LONG", "SHORT"}
+                    and existing_side != desired_side
+                ):
+                    reversal_allowed, reversal_reason, reversal_details = self._is_reversal_allowed(
+                        current_side=existing_side,
+                        integrated_signal=signal,
+                    )
+                    if not reversal_allowed:
+                        self._set_execution_trace(
+                            decision="skipped",
+                            reason=reversal_reason,
+                            signal=signal,
+                            confidence=confidence,
+                            details=reversal_details,
+                        )
+                        return
+                    closed = self._close_position(existing_side, close_reason="signal_reversal")
+                    if not closed:
+                        self._set_execution_trace(
+                            decision="skipped",
+                            reason="reversal_close_failed",
+                            signal=signal,
+                            confidence=confidence,
+                            details={
+                                "existing_side": existing_side,
+                                "existing_qty": existing_qty,
+                                "desired_side": desired_side,
+                            },
+                        )
+                        return
+                    self._last_reversal_ts = time.time()
+                    existing_pos = self._get_position()
+                    if isinstance(existing_pos, dict):
+                        remaining_qty = float(existing_pos.get("quantity") or 0.0)
+                        if remaining_qty > 0.0:
+                            self._set_execution_trace(
+                                decision="skipped",
+                                reason="reversal_position_still_open",
+                                signal=signal,
+                                confidence=confidence,
+                                details={
+                                    "existing_side": str(existing_pos.get("side") or "").upper(),
+                                    "existing_qty": remaining_qty,
+                                    "desired_side": desired_side,
+                                },
+                            )
+                            return
+                        existing_pos = None
                 if existing_qty > 0.0 and existing_side == desired_side:
                     details = {
                         "existing_side": existing_side,

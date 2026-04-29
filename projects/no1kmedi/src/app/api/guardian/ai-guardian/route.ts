@@ -154,7 +154,7 @@ Output JSON: {"message": "Direct, empathetic insight (2 sentences)", "recommenda
         prompt,
         systemInstruction:
           'You are the no1kmedi clinical support assistant for Korean medicine workflows. You do not diagnose. Provide concise, empathetic pre-consultation guidance in Korean, based on 4D vector analysis (S-L-K-M).',
-        model: 'gemini-1.5-flash',
+        model: 'gemini-2.5-flash',
         temperature: 0.7,
         maxOutputTokens: 2048,
         topP: 0.95,
