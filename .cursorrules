@@ -73,6 +73,13 @@
 - **격벽 (A/B · Logos-first)**: verse/Logos 파이프라인에 regime·KOSPI·명리·실거래 시그널을 **동일 실행·동일 프롬프트에서 합선 금지**(`.cursor/rules/logos-first-pipeline.mdc`). B-track·연구 레일은 **본선 OOF·실매매·올그린 게이트와 자동 합선 금지**(`AGENTS.md`, 한의 코퍼스 handoff).
 - **Automations / 이벤트 기동**: B-track·월간 브리프·Vault 미러·`experiments/` 등 **관측·연구** 범위에서만 무인 루프를 허용한다. **실거래·프로덕션 파괴적 쓰기·실키·유료 외부 부작용**은 **명시 승인** 없이 자동 트리거하지 않는다(`.cursor/rules/cursor-cloud-sandbox-boundary.mdc`와 동일 선상).
 
+### Git Hygiene 고정 (세션 종료 후에도 유지)
+
+- **기본 단위:** `1작업 = 1브랜치 = 1PR`를 고정하고, 장기 작업 브랜치에 연속 누적 커밋을 쌓지 않는다.
+- **기본 위치:** 더티 루트 대신 `origin/<base>`에서 시작한 **클린 `git worktree`**를 기본 작업 위치로 사용한다.
+- **푸시 정책:** 대형 push가 지연/행(hang)되면 즉시 **초소형 배치(권장 1커밋)** 로 전환해 `push -> PR -> merge`를 반복한다.
+- **정리 규칙:** PR merge 직후 원격 브랜치와 임시 worktree를 정리해 다음 작업의 분기 오염을 방지한다.
+
 ### 0.0.2) 통합 거버넌스 강제 규칙 (Core 3-Engine, 2026-04-17)
 
 - **Core 3-Engine only**: 운영 의사결정 엔진은 `biblical_core(정경 66)`, `myeongri_v4_1`, `sasang_strict`만 사용한다. **외경/DSS/위성 코퍼스는 항상 `reference_only`**로 고정하고 점수·가중치·최종 레짐 계산 입력으로 쓰지 않는다.
