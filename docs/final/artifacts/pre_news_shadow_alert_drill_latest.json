@@ -1,0 +1,29 @@
+{
+  "schema": "pre_news_shadow_alert_drill_v1",
+  "generated_at_utc": "2026-04-28T11:40:42Z",
+  "forced_health_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_task_health_forced_drill_latest.json",
+  "drill_alert_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_task_health_alert_drill_latest.json",
+  "drill_log_jsonl": "C:\\workspace\\reports\\pre_news_shadow_task_health_alert_drill_log.jsonl",
+  "command_result": {
+    "cmd": [
+      "C:\\Python311\\python.exe",
+      "scripts/alert_pre_news_shadow_task_health_v1.py",
+      "--health-json",
+      "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_task_health_forced_drill_latest.json",
+      "--out-alert-json",
+      "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_task_health_alert_drill_latest.json",
+      "--append-log-jsonl",
+      "C:\\workspace\\reports\\pre_news_shadow_task_health_alert_drill_log.jsonl"
+    ],
+    "exit_code": 0,
+    "stdout": "WROTE: C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_task_health_alert_drill_latest.json\nAPPEND: C:\\workspace\\reports\\pre_news_shadow_task_health_alert_drill_log.jsonl\nhas_alert=True",
+    "stderr": ""
+  },
+  "alert_snapshot": {
+    "has_alert": true,
+    "severity": "critical",
+    "notified": false,
+    "notify_status": "skipped_no_webhook"
+  },
+  "ok": true
+}

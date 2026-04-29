@@ -1,0 +1,12 @@
+{
+  "schema": "sasang_supplemental_trend_alert_v1",
+  "generated_at_utc": "2026-04-29T00:00:06Z",
+  "non_gating_policy": true,
+  "trend_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_supplemental_insight_trend_latest.json",
+  "trend_status": "STABLE",
+  "delta": 0.0,
+  "notify_operator": false,
+  "severity": "info",
+  "message": "Sasang supplemental trend stable: status=STABLE, delta=0.000000",
+  "impact_on_go_no_go": "none_non_gating"
+}

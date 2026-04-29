@@ -1,0 +1,38 @@
+{
+  "schema": "pointerguard_manual_approval_log_v1",
+  "generated_at_utc": "2026-04-28T21:30:08+00:00",
+  "policy": {
+    "manual_promotion_lock": true,
+    "requires_two_person_review": true,
+    "approval_log_required": true
+  },
+  "entries": [
+    {
+      "approved_at_utc": "2026-04-28T09:18:45+00:00",
+      "action": "public_scope_expand",
+      "ticket": "OPS-2026-04-28-002",
+      "approvers": [
+        "athena",
+        "sentinel"
+      ],
+      "justification": "approval workflow format lock"
+    },
+    {
+      "approved_at_utc": "2026-04-28T09:30:40+00:00",
+      "action": "unfreeze_ramp",
+      "ticket": "OPS-2026-04-28-003",
+      "approvers": [
+        "athena",
+        "sentinel"
+      ],
+      "justification": "operational readiness enforcement"
+    }
+  ],
+  "entry_count": 2,
+  "last_event_at_utc": "2026-04-28T09:30:40+00:00",
+  "last_event_action": "unfreeze_ramp",
+  "notes": [
+    "High-risk actions (e.g. unfreeze ramp, public scope expansion) must append an approval event with two approvers.",
+    "Approval entries are preserved across daily refreshes."
+  ]
+}

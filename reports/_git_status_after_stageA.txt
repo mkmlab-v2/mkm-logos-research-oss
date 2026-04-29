@@ -1,0 +1,520 @@
+M  .github/workflows/dual-regime-integrity.yml
+A  .github/workflows/pre-news-shadow-health-smoke.yml
+ M .vscode/settings.json
+ M data/constitution/korean_cohort/gt_cohort.real.latest.jsonl
+ M docs/final/CENTRAL_AGENT_MEMORY_V1.md
+ M docs/final/CURRENT_OPS_SNAPSHOT.md
+ M docs/final/YOUTUBE_PIPELINE_TASK_LOG.txt
+ M docs/final/artifacts/a_codeai_public_benchmark_launch_checklist_v1.json
+ M docs/final/artifacts/a_codeai_public_binding_check_latest.json
+ M docs/final/artifacts/aidc_kpi_gate_war_20260406.json
+ M docs/final/artifacts/aidc_perf_ab_summary_war_20260406.json
+ M docs/final/artifacts/aramaic_cross_corpus_bridge_edges_v1.jsonl
+ M docs/final/artifacts/aramaic_graph_edges_v1.jsonl
+ M docs/final/artifacts/aramaic_insight_cap_bucket_threshold_drift_alert_latest.json
+ M docs/final/artifacts/aramaic_insight_cap_bucket_threshold_recommended_latest.json
+ M docs/final/artifacts/aramaic_insight_cap_bucket_threshold_sweep_latest.json
+ M docs/final/artifacts/aramaic_regime_shift_bridge_coef_recommended_latest.json
+ M docs/final/artifacts/aramaic_regime_shift_score_best_weight_latest.json
+ M docs/final/artifacts/aramaic_regime_shift_score_latest.json
+ M docs/final/artifacts/aramaic_regime_shift_shadow_compare_latest.json
+ M docs/final/artifacts/aramaic_regime_shift_weight_sweep_latest.json
+ M docs/final/artifacts/aramaic_semantic_edge_quality_latest.json
+ M docs/final/artifacts/atom_resonance_report_latest.json
+ M docs/final/artifacts/bible_meaning_graph_edges_v1.jsonl
+ M docs/final/artifacts/bible_meaning_insight_candidates_latest.json
+ M docs/final/artifacts/bible_meaning_knowledge_ip_report_latest.json
+ M docs/final/artifacts/bible_meaning_knowledge_ip_viz_latest.json
+ M docs/final/artifacts/billing_evidence_latest.json
+ M docs/final/artifacts/btc_time_machine_fact_safe_backtest_latest.json
+ M docs/final/artifacts/btc_time_machine_regime_switch_backtest_latest.json
+ M docs/final/artifacts/btc_time_machine_sweep_latest.json
+ M docs/final/artifacts/btrack_insight_bridge_inventory_v1_latest.json
+ M docs/final/artifacts/btrack_insight_promotion_bridge_index_v1_latest.json
+ M docs/final/artifacts/btrack_llm_input_bundle_latest.json
+ M docs/final/artifacts/btrack_monthly_brief_from_top10_2026-04.json
+ M docs/final/artifacts/btrack_monthly_brief_from_top10_2026-04.md
+ M docs/final/artifacts/btrack_monthly_brief_from_top10_latest.json
+ M docs/final/artifacts/btrack_monthly_brief_from_top10_latest.md
+ M docs/final/artifacts/btrack_prophecy_score_latest.json
+ M docs/final/artifacts/btrack_prophecy_score_war_prolong_20260406_multileg.json
+ M docs/final/artifacts/c2_aegis_guardrail_history.jsonl
+ M docs/final/artifacts/c2_aegis_guardrail_status_latest.json
+ M docs/final/artifacts/codebook_codepack_drift_latest.json
+ M docs/final/artifacts/cost_watch_monitor_latest.json
+ M docs/final/artifacts/ephemeris_baseline_report_latest.json
+ M docs/final/artifacts/fact_safe_multilens_brief_latest.md
+ M docs/final/artifacts/fused_paper_cycle_calibration_30_latest.json
+ M docs/final/artifacts/fused_paper_cycle_decision_history.jsonl
+ M docs/final/artifacts/ganji_mapping_report_cohort_latest.json
+ M docs/final/artifacts/gematria_4d_ablation_latest.json
+ M docs/final/artifacts/gematria_4d_coupling_latest.json
+ M docs/final/artifacts/general_prophecy_explainability_quality_v1_latest.json
+ M docs/final/artifacts/general_prophecy_explainable_latest.json
+ M docs/final/artifacts/genesis_pointer_route_runtime_config_latest.json
+ M docs/final/artifacts/genesis_pointer_routing_control_chain_latest.json
+ M docs/final/artifacts/genesis_pointer_routing_decision_guarded_latest.json
+ M docs/final/artifacts/genesis_pointer_routing_decision_latest.json
+ M docs/final/artifacts/genesis_sequence_compression_sweep_latest.json
+ M docs/final/artifacts/genesis_sequence_net_efficiency_model_latest.json
+ M docs/final/artifacts/genesis_sequence_net_efficiency_operating_zone_latest.json
+ M docs/final/artifacts/genesis_sequence_net_efficiency_sensitivity_latest.json
+ M docs/final/artifacts/hallucination_grounding_eval_latest.json
+ M docs/final/artifacts/high_reliability_mode_gate_latest.json
+ M docs/final/artifacts/independent_lens_fusion_shadow_history.jsonl
+ M docs/final/artifacts/independent_lens_fusion_stub_latest.json
+ M docs/final/artifacts/independent_lens_shadow_gate_latest.json
+ M docs/final/artifacts/insight_effectiveness_scoreboard_latest.json
+ M docs/final/artifacts/insight_survivor_candidates_latest.json
+ M docs/final/artifacts/insight_survivor_eval_latest.json
+ M docs/final/artifacts/insight_survivor_health_alert_latest.json
+ M docs/final/artifacts/l1_inverse_decoder_daily_gate_v1_latest.json
+ M docs/final/artifacts/l1_inverse_decoder_mode_router_v3_canary_status_latest.json
+ M docs/final/artifacts/l1_inverse_decoder_spike_test_failures_latest.jsonl
+ M docs/final/artifacts/l1_inverse_decoder_spike_test_latest.json
+ M docs/final/artifacts/logos_independent_lens_latest.json
+ M docs/final/artifacts/multi_symbol_candidate_selector_latest.json
+ M docs/final/artifacts/multi_symbol_resonance_4d_latest.json
+ M docs/final/artifacts/multi_symbol_top_drift_alert_latest.json
+ M docs/final/artifacts/multi_symbol_top_drift_history_latest.jsonl
+ M docs/final/artifacts/multi_symbol_walkforward_survivability_latest.json
+ M docs/final/artifacts/myeongni_independent_lens_latest.json
+ M docs/final/artifacts/myeongni_promotion_failure_analysis_latest.json
+ M docs/final/artifacts/myeongni_promotion_gate_latest.json
+ M docs/final/artifacts/myeongni_promotion_review_packet_latest.json
+ M docs/final/artifacts/myeongni_shadow_governance_latest.json
+ M docs/final/artifacts/night_watchman_character_alert_latest.json
+ M docs/final/artifacts/original_corpus_regime_singularity_balanced_canon_only_v1.json
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_history_v1.jsonl
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_quality_gate_v1.json
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_insight_minimum_v1.json
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_lane_summary_v1.json
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_nextday_observation_history_v1.jsonl
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_nextday_observation_report_v1.json
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_nextday_observation_report_v1.md
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_observation_streak_report_v1.json
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_observation_streak_report_v1.md
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_only_v1.json
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_health_summary_v1.json
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_history_v1.jsonl
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_policy_eval_v1.json
+ M docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_v1.json
+ M docs/final/artifacts/pixel_battalion_cdn_verify_latest.json
+ M docs/final/artifacts/pointer_hash_snapping_router_shadow_alert_latest.json
+ M docs/final/artifacts/pointer_hash_snapping_router_shadow_daily_report_latest.json
+ M docs/final/artifacts/pointer_hash_snapping_router_shadow_latest.json
+ M docs/final/artifacts/pointer_hash_snapping_router_shadow_memory_latest.json
+ M docs/final/artifacts/pointerguard_apply_go_promotion_decision_latest.json
+ M docs/final/artifacts/pointerguard_apply_go_promotion_decision_memory_latest.json
+ M docs/final/artifacts/pointerguard_folder_policy_latest.json
+ M docs/final/artifacts/pointerguard_memory_v2_ramp_tuning_latest.json
+ M docs/final/artifacts/pointerguard_memory_v2_ramp_update_latest.json
+ M docs/final/artifacts/pointerguard_operational_smoke_latest.json
+ M docs/final/artifacts/pointerguard_ops_alert_delivery_latest.json
+ M docs/final/artifacts/pointerguard_ops_readiness_latest.json
+ M docs/final/artifacts/pointerguard_scheduler_arguments_evidence_latest.json
+ M docs/final/artifacts/pointerguard_two_tier_perf_scorecard_latest.json
+ M docs/final/artifacts/power_profile_war_20260406.csv
+ M docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json
+ M docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.md
+ M docs/final/artifacts/prophecy_hit_rate_eval_latest.json
+ M docs/final/artifacts/prophecy_hit_rate_eval_war_prolong_20260406_multileg.json
+ M docs/final/artifacts/prophecy_promotion_gates_v1_latest.json
+ M docs/final/artifacts/prophecy_promotion_strict_streak_legacy_v1.json
+ M docs/final/artifacts/report_schema_v2_quality_alert_latest.json
+ M docs/final/artifacts/sasang12_gate_failure_analysis_latest.json
+ M docs/final/artifacts/sasang12_promotion_candidate_gate_latest.json
+ M docs/final/artifacts/sasang_authoritative_prediction_alignment_latest.json
+ M docs/final/artifacts/sasang_commercialization_readiness_packet_latest.json
+ M docs/final/artifacts/sasang_gt_expansion_priority_report_latest.json
+ M docs/final/artifacts/sasang_gt_expansion_queue_report_latest.json
+ M docs/final/artifacts/sasang_gt_labeling_sheet_report_latest.json
+ M docs/final/artifacts/sasang_high_reliability_gate_latest.json
+ M docs/final/artifacts/sasang_high_reliability_gate_strict_latest.json
+ M docs/final/artifacts/sasang_independent_lens_latest.json
+ M docs/final/artifacts/sasang_production_data_readiness_latest.json
+ M docs/final/artifacts/sasang_prophecy_eval_contract_latest.json
+ M docs/final/artifacts/sasang_shadow_governance_latest.json
+ M docs/final/artifacts/sasang_strict_input_integrity_latest.json
+ M docs/final/artifacts/scholarly_symbol_bridge_latest.json
+ M docs/final/artifacts/showroom_public_bundle_v1.json
+ M docs/final/artifacts/symbol_atom_mapping_latest.json
+ M docs/final/artifacts/symbolic_topology_insight_latest.json
+ M docs/final/artifacts/trackb_quaternion_two_stage_gate_v2.json
+ M docs/final/artifacts/trinity_scoring_distribution_latest.json
+ M docs/final/artifacts/trinity_weekly_reliability_snapshot_latest.json
+ M docs/final/artifacts/two_track_academic_submission_packet_latest.json
+ M docs/final/artifacts/two_track_benchmark_comparison_latest.json
+ M docs/final/artifacts/two_track_fail_boundary_gate_latest.json
+ M docs/final/artifacts/two_track_falsification_boundary_report_latest.json
+ M docs/final/artifacts/two_track_falsification_sensitivity_latest.json
+ M docs/final/artifacts/two_track_falsification_suite_latest.json
+ M docs/final/artifacts/two_track_fusion_brief_latest.json
+ M docs/final/artifacts/two_track_fusion_presentation_brief_latest.json
+ M docs/final/artifacts/two_track_fusion_report_latest.json
+ M docs/final/artifacts/two_track_presentation_audience_pack_latest.json
+ M docs/final/artifacts/two_track_presentation_copydeck_latest.json
+ M docs/final/artifacts/two_track_presenter_notes_latest.json
+ M docs/final/artifacts/two_track_public_safe_report_latest.json
+ M docs/final/artifacts/two_track_qa_pack_latest.json
+ M docs/final/artifacts/two_track_raw_oos_readiness_latest.json
+ M docs/final/artifacts/two_track_raw_oos_samples_latest.jsonl
+ M docs/final/artifacts/two_track_statistical_significance_report_latest.json
+ M docs/final/artifacts/two_track_submission_camera_ready_latest.json
+ M docs/final/artifacts/two_track_submission_draft_latest.json
+ M docs/final/artifacts/two_track_submission_evidence_bundle_latest.json
+ M docs/final/artifacts/waiting_queue_daily_sitrep_latest.txt
+ M docs/final/artifacts/waiting_queue_monthly_check_log.jsonl
+ M docs/final/artifacts/war_prolongation_autopilot_status_latest.json
+ M docs/final/artifacts/war_prolongation_benchmark_bundle_20260406.json
+ M docs/final/artifacts/war_prolongation_benchmark_health_latest.json
+ M docs/final/artifacts/war_prolongation_promotion_ready_latest.json
+ M docs/final/artifacts/war_prolongation_resilient_run_latest.json
+ M docs/final/artifacts/war_prolongation_significance_eval_latest.json
+ M docs/final/artifacts/war_prolongation_window_eval_20260406.csv
+ M docs/final/artifacts/war_prolongation_window_eval_20260406.json
+ M projects/bitcoin-trading/memory/v2/risk/risk_profile_fact_safe_latest.json
+A  projects/bitcoin-trading/ops/windows-rehearsal/check_live_trading_health.ps1
+A  projects/bitcoin-trading/ops/windows-rehearsal/diagnose_live_trading_blockers.ps1
+ M projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/showroom_public_bundle_v1.json
+AM projects/bitcoin-trading/ops/windows-rehearsal/recover_live_trading_stack.ps1
+A  projects/bitcoin-trading/ops/windows-rehearsal/register_live_stack_autorecovery_tasks.ps1
+A  projects/bitcoin-trading/ops/windows-rehearsal/run_cursor_trade_history_latest_24h.ps1
+ M projects/bitcoin-trading/scripts/start_24h_daemon.py
+A  projects/bitcoin-trading/src/analysis/sasang_emotion_bridge.py
+M  projects/bitcoin-trading/src/analysis/strategic_news_event.py
+M  projects/bitcoin-trading/src/analysis/strategic_news_extractor.py
+M  projects/bitcoin-trading/src/integration/realtime_trading_with_monitoring.py
+M  projects/bitcoin-trading/src/integration/unified_trading_monitor.py
+ m projects/mkm/mkm-life
+ M projects/no1kmedi/.env.example
+M  projects/no1kmedi/package.json
+A  projects/no1kmedi/scripts/smoke-gemini-route.mjs
+M  projects/no1kmedi/scripts/smoke-guardian-llm-priority.mts
+M  projects/no1kmedi/src/app/api/guardian/ai-guardian/chat/route.ts
+M  projects/no1kmedi/src/app/api/guardian/ai-guardian/route.ts
+M  projects/no1kmedi/src/app/api/guardian/partner-clinics/chat/route.ts
+M  projects/no1kmedi/src/components/AdvancedConsultForm.tsx
+M  projects/no1kmedi/src/lib/ai-provider.ts
+M  projects/no1kmedi/src/lib/cdss-inference.ts
+ M reports/constitution/btrack_pilot/predictions.real.aligned.latest.jsonl
+ M reports/constitution/btrack_pilot/sasang_gt_expansion_priority_top126_latest.jsonl
+ M reports/constitution/btrack_pilot/sasang_gt_expansion_queue_latest.jsonl
+ M reports/constitution/btrack_pilot/sasang_gt_labeling_sheet_top126_latest.csv
+ M reports/github_gpu_runner_health_log.jsonl
+ M reports/hub_b_weekly_mirror_log.jsonl
+ M reports/l1_inverse_decoder_daily_gate_log_v1.jsonl
+ M reports/l1_inverse_decoder_mode_router_v3_canary_log_v1.jsonl
+ M reports/ops/aramaic_insight_cap_bucket_threshold_history.jsonl
+ M reports/pointer_hash_snapping_router_shadow_log_v1.jsonl
+ M reports/prophecy_daily_eval_log.jsonl
+A  scripts/Register-EmotionWeightMemoryWeeklyTask.ps1
+A  scripts/Register-PreNewsShadowDailyTask.ps1
+A  scripts/Register-PreNewsShadowHealthTask.ps1
+A  scripts/Register-PreNewsShadowMonthlyDrillTask.ps1
+A  scripts/Register-PreNewsShadowMonthlyGovernanceDrillTask.ps1
+A  scripts/Register-SasangCommercializationDailyTask.ps1
+A  scripts/Sync-UnifiedGeminiKey.ps1
+A  scripts/alert_multi_symbol_negative_control_gate_v1.py
+A  scripts/alert_pre_news_shadow_monthly_drill_summary_v1.py
+A  scripts/alert_pre_news_shadow_policy_governance_v1.py
+A  scripts/alert_pre_news_shadow_task_health_v1.py
+M  scripts/apply_pointerguard_memory_v2_ramp_update_v1.py
+A  scripts/audit_emotion_label_leakage_v1.py
+A  scripts/authorize_sasang_promotion_to_atrack.py
+A  scripts/build_bio_paper_snp_sidecar_from_pdf_jsonl_v1.py
+MM scripts/build_btc_limited_live_engine_input_v1.py
+A  scripts/build_btc_top1_limited_live_candidate_v1.py
+A  scripts/build_emotion_promotion_readiness_v1.py
+A  scripts/build_emotion_source_slice_report_v1.py
+A  scripts/build_emotion_weighted_memory_event_v1.py
+A  scripts/build_global_atom_camera_ready_pack_v1.py
+A  scripts/build_global_atom_camera_ready_polish_v1.py
+A  scripts/build_global_atom_core100_input_v1.py
+A  scripts/build_global_atom_full_canon_batch_input_v1.py
+A  scripts/build_global_atom_full_canon_batch_report_v1.py
+A  scripts/build_global_atom_full_canon_consolidated_manifest_v1.py
+A  scripts/build_global_atom_full_canon_event_ingest_v1.py
+A  scripts/build_global_atom_full_canon_verse_ingest_v1.py
+A  scripts/build_global_atom_kdd_submission_template_v1.py
+A  scripts/build_global_atom_network_onepager_v1.py
+A  scripts/build_global_atom_network_submission_abstracts_v1.py
+A  scripts/build_global_atom_network_v1.py
+A  scripts/build_global_atom_news_holdout_dataset_lock_manifest_v1.py
+A  scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py
+A  scripts/build_global_atom_sota_baseline_ingest_v1.py
+A  scripts/build_global_atom_sota_benchmark_adapter_v1.py
+A  scripts/build_global_atom_sota_table_v1.py
+A  scripts/build_global_atom_submission_bundle_v1.py
+A  scripts/build_global_atom_submission_freeze_v1.py
+A  scripts/build_global_atom_submission_go_nogo_v1.py
+A  scripts/build_global_atom_submission_release_audit_v1.py
+A  scripts/build_global_atom_submission_zip_bundle_v1.py
+ M scripts/build_lens_combo_engine_submit_preflight_v1.py
+A  scripts/build_multi_symbol_counterfactual_comparison_v1.py
+A  scripts/build_multi_symbol_counterfactual_set_v1.py
+A  scripts/build_multi_symbol_gate_summary_v1.py
+A  scripts/build_multi_symbol_negative_control_v1.py
+A  scripts/build_multisource_emotion_input_v1.py
+M  scripts/build_myeongni_promotion_go_nogo_v1.py
+A  scripts/build_operational_emotion_input_v1.py
+A  scripts/build_operational_emotion_labels_from_kpi_v1.py
+M  scripts/build_pointerguard_folder_policy_v1.py
+A  scripts/build_pre_news_shadow_ops_status_dashboard_v1.py
+A  scripts/build_pre_news_shadow_policy_change_audit_summary_v1.py
+A  scripts/build_pre_news_shadow_weekly_audit_bundle_v1.py
+M  scripts/build_sasang_commercialization_readiness_packet.py
+A  scripts/build_sasang_labeling_assignment_plan.py
+A  scripts/build_sasang_supplemental_insight_score.py
+A  scripts/build_sasang_supplemental_insight_trend.py
+A  scripts/build_sasang_weekly_ops_report.py
+M  scripts/build_two_track_fusion_brief_v1.py
+M  scripts/build_two_track_presentation_copydeck_v1.py
+A  scripts/check_global_atom_sota_baseline_readiness_v1.py
+A  scripts/check_pre_news_shadow_task_health.ps1
+A  scripts/check_sasang_ready_drift.py
+A  scripts/cleanup_pre_news_shadow_forced_test_artifacts.ps1
+M  scripts/core/mkm12_singular_core.py
+M  scripts/decide_pointerguard_apply_go_promotion_v1.py
+A  scripts/emit_sasang_supplemental_trend_alert.py
+M  scripts/enrich_two_track_qa_with_symbol_evidence_v1.py
+A  scripts/ensure_hidden_local_py_servers.ps1
+A  scripts/estimate_pointerguard_roi_v1.py
+A  scripts/evaluate_emotion_weight_memory_weekly_v1.py
+A  scripts/export_sasang_labeling_packets_by_reviewer.py
+A  scripts/finalize_sasang_promotion_completion.py
+A  scripts/freeze_pointerguard_memory_v2_ramp_v1.py
+A  scripts/import_sasang_labeled_sheet_to_queue.py
+A  scripts/kill_blank_py_console.ps1
+A  scripts/lock_myeongni_manual_promotion_decision_v1.py
+A  scripts/prevent_cursor_terminal_storm_once.ps1
+A  scripts/record_sasang_human_signoff.py
+A  scripts/repair_cursor_terminal_storm.ps1
+A  scripts/report_sasang_gt_approval_progress.py
+A  scripts/report_sasang_gt_approval_whatif.py
+M  scripts/run_aramaic_mvp_chain_v1.ps1
+A  scripts/run_bio_pdf_sidecar_chain_v1.py
+M  scripts/run_daily_prophecy_then_pre_news_v1.ps1
+A  scripts/run_emotion_label_tolerance_sweep_v1.py
+A  scripts/run_emotion_weight_memory_weekly_chain.ps1
+A  scripts/run_global_atom_finalization_chain_v1.ps1
+A  scripts/run_global_atom_full_canon_batch_v1.ps1
+A  scripts/run_global_atom_news_network_holdout_replay_v1.py
+A  scripts/run_global_atom_pre_news_shadow_chain_v1.ps1
+A  scripts/run_global_atom_pre_news_shadow_chain_v1.py
+A  scripts/run_global_atom_sota_baseline_ingest_chain_v1.ps1
+A  scripts/run_global_atom_submission_pack_v1.ps1
+ M scripts/run_lens_combo_limited_live_engine_handoff_v1.py
+A  scripts/run_manseryeok_bot_v1.py
+A  scripts/run_pdf_to_jsonl_spike_v1.ps1
+A  scripts/run_pdf_to_jsonl_spike_v1.py
+A  scripts/run_pointerguard_latency_benchmark_v1.py
+A  scripts/run_pointerguard_service_load_benchmark_v1.py
+A  scripts/run_pre_news_shadow_alert_drill_v1.py
+A  scripts/run_pre_news_shadow_health_chain.ps1
+A  scripts/run_pre_news_shadow_holdout_lock_mismatch_drill_v1.py
+A  scripts/run_pre_news_shadow_monthly_governance_drills_v1.ps1
+A  scripts/run_pre_news_shadow_ops_smoke_v1.py
+A  scripts/run_pre_news_shadow_policy_governance_drill_v1.py
+M  scripts/run_prophecy_lens_combo_backtest_v1.py
+M  scripts/run_role_router_24h_watchdog_daemon_v1.sh
+A  scripts/run_role_router_first30m_observer_v1.py
+A  scripts/run_sasang_commercialization_status_chain.py
+A  scripts/run_sasang_ready_rollback_drill.py
+M  scripts/run_two_track_falsification_suite_v1.py
+A  scripts/simulate_sasang_gt_merge_impact.py
+A  scripts/validate_sasang_gt_labeling_sheet.py
+A  tests/test_authorize_sasang_promotion_to_atrack.py
+A  tests/test_build_btc_limited_live_engine_input_v1.py
+A  tests/test_build_btc_top1_limited_live_candidate_v1.py
+M  tests/test_build_sasang_commercialization_readiness_packet.py
+A  tests/test_build_sasang_labeling_assignment_plan.py
+A  tests/test_build_sasang_supplemental_insight_score.py
+A  tests/test_build_sasang_supplemental_insight_trend.py
+A  tests/test_build_sasang_weekly_ops_report.py
+A  tests/test_emit_sasang_supplemental_trend_alert.py
+A  tests/test_export_sasang_labeling_packets_by_reviewer.py
+A  tests/test_finalize_sasang_promotion_completion.py
+A  tests/test_import_sasang_labeled_sheet_to_queue.py
+A  tests/test_multi_symbol_contract_gates_v1.py
+A  tests/test_multi_symbol_counterfactual_comparison_v1.py
+A  tests/test_report_sasang_gt_approval_progress.py
+A  tests/test_report_sasang_gt_approval_whatif.py
+A  tests/test_run_manseryeok_bot_v1.py
+A  tests/test_run_sasang_commercialization_status_chain.py
+A  tests/test_sasang_ready_ops_scripts.py
+A  tests/test_simulate_sasang_gt_merge_impact.py
+A  tests/test_two_track_qa_overlay_counterfactual_v1.py
+A  tests/test_validate_sasang_gt_labeling_sheet.py
+?? docs/final/artifacts/btc_limited_live_engine_input_from_lens_combo_latest.json
+?? docs/final/artifacts/btc_limited_live_engine_input_from_role_router_latest.json
+?? docs/final/artifacts/btc_limited_live_engine_input_latest.json
+?? docs/final/artifacts/btc_top1_limited_live_candidate_from_lens_combo_latest.json
+?? docs/final/artifacts/btc_top1_limited_live_candidate_from_role_router_latest.json
+?? docs/final/artifacts/btc_top1_limited_live_candidate_latest.json
+?? docs/final/artifacts/btrack_prophecy_score_monthly_2026-04-29.json
+?? docs/final/artifacts/emotion_label_leakage_audit_latest.json
+?? docs/final/artifacts/emotion_label_tolerance_sweep_latest.json
+?? docs/final/artifacts/emotion_source_slice_report_latest.json
+?? docs/final/artifacts/emotion_weight_forward_labels_latest.jsonl
+?? docs/final/artifacts/emotion_weight_memory_weekly_report_latest.json
+?? docs/final/artifacts/emotion_weight_promotion_criteria_v1.json
+?? docs/final/artifacts/emotion_weight_promotion_readiness_latest.json
+?? docs/final/artifacts/freeze/global_atom_submission_20260428T072700Z/
+?? docs/final/artifacts/freeze/global_atom_submission_20260428T091358Z/
+?? docs/final/artifacts/freeze/global_atom_submission_20260428T093849Z/
+?? docs/final/artifacts/freeze/global_atom_submission_20260428T094103Z/
+?? docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/
+?? docs/final/artifacts/freeze/global_atom_submission_20260428T100431Z/
+?? docs/final/artifacts/freeze/global_atom_submission_20260428T101454Z/
+?? docs/final/artifacts/freeze/global_atom_submission_20260428T102834Z/
+?? docs/final/artifacts/global_atom_camera_ready_appendix_latest.md
+?? docs/final/artifacts/global_atom_camera_ready_appendix_polished_latest.md
+?? docs/final/artifacts/global_atom_camera_ready_pack_latest.json
+?? docs/final/artifacts/global_atom_camera_ready_paper_draft_latest.md
+?? docs/final/artifacts/global_atom_camera_ready_paper_polished_latest.md
+?? docs/final/artifacts/global_atom_camera_ready_polish_latest.json
+?? docs/final/artifacts/global_atom_core100_input_latest.json
+?? docs/final/artifacts/global_atom_full_canon/
+?? docs/final/artifacts/global_atom_full_canon_batch_report_latest.json
+?? docs/final/artifacts/global_atom_kdd_submission_template_latest.json
+?? docs/final/artifacts/global_atom_network_academic_onepager_latest.json
+?? docs/final/artifacts/global_atom_network_core100_edges_latest.jsonl
+?? docs/final/artifacts/global_atom_network_core100_nodes_latest.jsonl
+?? docs/final/artifacts/global_atom_network_core100_phase_transition_report_latest.json
+?? docs/final/artifacts/global_atom_network_core100_similarity_matrix_latest.json
+?? docs/final/artifacts/global_atom_network_edges_latest.jsonl
+?? docs/final/artifacts/global_atom_network_nodes_latest.jsonl
+?? docs/final/artifacts/global_atom_network_phase_transition_report_latest.json
+?? docs/final/artifacts/global_atom_network_similarity_matrix_latest.json
+?? docs/final/artifacts/global_atom_network_submission_abstracts_latest.json
+?? docs/final/artifacts/global_atom_news_holdout_dataset_lock_manifest_mismatch_drill_latest.json
+?? docs/final/artifacts/global_atom_news_holdout_dataset_lock_manifest_v1.json
+?? docs/final/artifacts/global_atom_news_holdout_dataset_v1.jsonl
+?? docs/final/artifacts/global_atom_news_network_holdout_replay_latest.json
+?? docs/final/artifacts/global_atom_sota_baseline_readiness_latest.json
+?? docs/final/artifacts/global_atom_sota_benchmark_adapter_latest.json
+?? docs/final/artifacts/global_atom_sota_table_latest.json
+?? docs/final/artifacts/global_atom_sota_table_latest.md
+?? docs/final/artifacts/global_atom_submission_bundle_20260428T101318Z.zip
+?? docs/final/artifacts/global_atom_submission_bundle_20260428T101455Z.zip
+?? docs/final/artifacts/global_atom_submission_bundle_20260428T102835Z.zip
+?? docs/final/artifacts/global_atom_submission_bundle_latest.json
+?? docs/final/artifacts/global_atom_submission_freeze_latest.json
+?? docs/final/artifacts/global_atom_submission_go_nogo_latest.json
+?? docs/final/artifacts/global_atom_submission_release_audit_latest.json
+?? docs/final/artifacts/global_atom_submission_zip_bundle_latest.json
+?? docs/final/artifacts/ladakh_profile.json
+?? docs/final/artifacts/ladakh_profile_pro.json
+?? docs/final/artifacts/lens_combo_engine_submit_commands_v1_latest.txt
+?? docs/final/artifacts/lens_combo_engine_submit_preflight_v1_latest.json
+?? docs/final/artifacts/manseryeok_bot_latest.json
+?? docs/final/artifacts/multi_symbol_counterfactual_comparison_latest.json
+?? docs/final/artifacts/multi_symbol_counterfactual_set_latest.json
+?? docs/final/artifacts/multi_symbol_gate_summary_latest.json
+?? docs/final/artifacts/multi_symbol_negative_control_gate_latest.json
+?? docs/final/artifacts/multi_symbol_negative_control_latest.json
+?? docs/final/artifacts/myeongni_manual_promotion_decision_lock_latest.json
+?? docs/final/artifacts/original_corpus_regime_singularity_canon_rehearsal_status_history_v1.jsonl
+?? docs/final/artifacts/original_corpus_regime_singularity_canon_rehearsal_status_latest.json
+?? docs/final/artifacts/original_corpus_regime_singularity_canon_rehearsal_weekly_summary_v1.json
+?? docs/final/artifacts/original_corpus_regime_singularity_canon_rehearsal_weekly_summary_v1.md
+?? docs/final/artifacts/original_corpus_regime_singularity_canon_strict_freeze_drift_gate_history_v1.jsonl
+?? docs/final/artifacts/original_corpus_regime_singularity_canon_strict_freeze_drift_gate_v1.json
+?? docs/final/artifacts/original_corpus_regime_singularity_canon_strict_freeze_drift_gate_v1.md
+?? docs/final/artifacts/pointer_hash_snapping_router_shadow_router_target_latest.json
+?? docs/final/artifacts/pointerguard_apply_go_promotion_decision_block_test_latest.json
+?? docs/final/artifacts/pointerguard_latency_benchmark_latest.json
+?? docs/final/artifacts/pointerguard_manual_approval_event_latest.json
+?? docs/final/artifacts/pointerguard_manual_approval_log_latest.json
+?? docs/final/artifacts/pointerguard_memory_v2_ramp_freeze_latest.json
+?? docs/final/artifacts/pointerguard_roi_estimate_latest.json
+?? docs/final/artifacts/pointerguard_security_hardening_latest.json
+?? docs/final/artifacts/pointerguard_service_load_benchmark_latest.json
+?? docs/final/artifacts/pre_news_shadow_alert_drill_latest.json
+?? docs/final/artifacts/pre_news_shadow_health_drill_weekly_report_ci_latest.json
+?? docs/final/artifacts/pre_news_shadow_holdout_lock_mismatch_drill_latest.json
+?? docs/final/artifacts/pre_news_shadow_input_latest.json
+?? docs/final/artifacts/pre_news_shadow_monthly_drill_summary_alert_latest.json
+?? docs/final/artifacts/pre_news_shadow_ops_smoke_latest.json
+?? docs/final/artifacts/pre_news_shadow_ops_status_latest.json
+?? docs/final/artifacts/pre_news_shadow_policy_change_approval_workflow_v1.json
+?? docs/final/artifacts/pre_news_shadow_policy_governance_alert_forced_drill_latest.json
+?? docs/final/artifacts/pre_news_shadow_policy_governance_alert_latest.json
+?? docs/final/artifacts/pre_news_shadow_policy_governance_drill_latest.json
+?? docs/final/artifacts/pre_news_shadow_projection_latest.json
+?? docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_forced_drill_latest.json
+?? docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_latest.json
+?? docs/final/artifacts/pre_news_shadow_stage_threshold_policy_state_latest.json
+?? docs/final/artifacts/pre_news_shadow_stage_threshold_policy_v1.json
+?? docs/final/artifacts/pre_news_shadow_task_health_alert_drill_latest.json
+?? docs/final/artifacts/pre_news_shadow_task_health_alert_latest.json
+?? docs/final/artifacts/pre_news_shadow_task_health_forced_drill_latest.json
+?? docs/final/artifacts/pre_news_shadow_task_health_latest.json
+?? docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_2026-04-28.json
+?? docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_hash_manifest_latest.json
+?? docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_latest.json
+?? docs/final/artifacts/pre_news_shadow_weekly_report_latest.json
+?? docs/final/artifacts/pre_news_shadow_weekly_report_lock_mismatch_drill_latest.json
+?? docs/final/artifacts/prophecy_2050_two_track_v1_latest.json
+?? docs/final/artifacts/prophecy_hit_rate_eval_monthly_2026-04-29.json
+?? docs/final/artifacts/prophecy_lens_combo_backtest_v1_latest.json
+?? docs/final/artifacts/prophecy_lens_role_router_backtest_v1_latest.json
+?? docs/final/artifacts/prophecy_lens_role_router_oos_gate_v1_latest.json
+?? docs/final/artifacts/prophecy_role_router_multiscenario_opt_v1_latest.json
+?? docs/final/artifacts/prophecy_two_track_snapshot_v1_latest.json
+?? docs/final/artifacts/role_router_circuit_breaker_rehearsal_v1_latest.json
+?? docs/final/artifacts/role_router_engine_submit_commands_v1_latest.txt
+?? docs/final/artifacts/role_router_engine_submit_preflight_v1_latest.json
+?? docs/final/artifacts/role_router_first30m_observer_v1_latest.json
+?? docs/final/artifacts/role_router_intent_contract_check_v1_latest.json
+?? docs/final/artifacts/saju_dual_verify_latest.json
+?? docs/final/artifacts/saju_golden_replay_latest.json
+?? docs/final/artifacts/saju_golden_replay_log.jsonl
+?? docs/final/artifacts/sasang_commercialization_status_chain_latest.json
+?? docs/final/artifacts/sasang_gt_approval_progress_latest.json
+?? docs/final/artifacts/sasang_gt_approval_whatif_latest.json
+?? docs/final/artifacts/sasang_gt_labeled_import_report_latest.json
+?? docs/final/artifacts/sasang_gt_labeling_assignment_report_latest.json
+?? docs/final/artifacts/sasang_gt_labeling_sheet_validation_latest.json
+?? docs/final/artifacts/sasang_gt_merge_impact_simulation_latest.json
+?? docs/final/artifacts/sasang_gt_merge_report_from_sheet_latest.json
+?? docs/final/artifacts/sasang_human_signoff_latest.json
+?? docs/final/artifacts/sasang_labeling_packets_report_latest.json
+?? docs/final/artifacts/sasang_promotion_authorization_latest.json
+?? docs/final/artifacts/sasang_promotion_completion_latest.json
+?? docs/final/artifacts/sasang_ready_drift_check_latest.json
+?? docs/final/artifacts/sasang_ready_rollback_drill_latest.json
+?? docs/final/artifacts/sasang_repro_command_set_latest.txt
+?? docs/final/artifacts/sasang_supplemental_insight_score_latest.json
+?? docs/final/artifacts/sasang_supplemental_insight_trend_latest.json
+?? docs/final/artifacts/sasang_supplemental_trend_alert_latest.json
+?? docs/final/artifacts/sasang_weekly_ops_report_2026-04-28.json
+?? docs/final/artifacts/sasang_weekly_ops_report_2026-04-29.json
+?? docs/final/artifacts/sasang_weekly_ops_report_latest.json
+?? docs/final/artifacts/schemas/emotion_weighted_memory_event_v1.schema.json
+?? docs/final/artifacts/sota_baseline_a_result_template.json
+?? docs/final/artifacts/sota_baseline_b_result_template.json
+?? docs/final/artifacts/sota_baseline_c_result_template.json
+?? docs/final/artifacts/track_c_evidence_pack_latest.json
+?? projects/bitcoin-trading/exports/
+?? projects/bitcoin-trading/ops/windows-rehearsal/check_no_fill_stall_alert.ps1
+?? projects/bitcoin-trading/ops/windows-rehearsal/register_no_fill_stall_alert_task.ps1
+?? reports/_git_status_after_stageA.txt
+?? reports/constitution/btrack_pilot/reviewer_packets/
+?? reports/constitution/btrack_pilot/sasang_clinical_eval_authoritative_latest.json
+?? reports/constitution/btrack_pilot/sasang_gt_labeled_queue_top126_latest.jsonl
+?? reports/constitution/btrack_pilot/sasang_gt_labeling_assignment_plan_latest.json
+?? reports/emotion_weight_memory_weekly_history_log.jsonl
+?? reports/git_add_batches_pending.ps1
+?? reports/pdf_spike_benchmark_v1_arxiv_latest.json
+?? reports/pdf_spike_benchmark_v1_latest.json
+?? reports/pdf_spike_chain_benchmark_v1_latest.json
+?? reports/pre_news_shadow_monthly_drill_summary_alert_log.jsonl
+?? reports/pre_news_shadow_policy_governance_alert_forced_drill_log.jsonl
+?? reports/pre_news_shadow_policy_governance_alert_log.jsonl
+?? reports/pre_news_shadow_projection_log.jsonl
+?? reports/pre_news_shadow_stage_threshold_policy_change_log.jsonl
+?? reports/pre_news_shadow_task_health_alert_drill_log.jsonl
+?? reports/role_router_24h_watchdog_log.jsonl
+?? reports/terminal_storm_guard_log.jsonl

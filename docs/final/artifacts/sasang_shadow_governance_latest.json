@@ -1,12 +1,12 @@
 {
   "schema": "sasang_shadow_governance_v1",
-  "generated_at_utc": "2026-04-28T05:33:32Z",
+  "generated_at_utc": "2026-04-29T00:00:06Z",
   "mode": "shadow_only_observation",
-  "decision": "KEEP_OBSERVATION_ONLY",
+  "decision": "HUMAN_REVIEW_REQUIRED_FOR_PROMOTION",
   "current_gate": {
-    "promotion_status": "WARN",
+    "promotion_status": "PASS",
     "standard_quality_gate": "PASS",
-    "strict_quality_gate": "HOLD"
+    "strict_quality_gate": "PASS"
   },
   "boundaries": {
     "track_b_only": true,
@@ -17,12 +17,7 @@
   },
   "blockers": [],
   "warnings": [
-    "strict_quality_gate",
-    "strict_shadow_evidence_only",
-    "strict_input_integrity",
-    "production_data_readiness",
-    "gt_expansion_pending",
-    "gt_human_approval_pending"
+    "strict_shadow_evidence_only"
   ],
   "rollback_conditions": [
     "strict gate remains HOLD/FAIL",

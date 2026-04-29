@@ -1,6 +1,6 @@
 {
   "schema": "two_track_presentation_copydeck_v1",
-  "generated_at_utc": "2026-04-28T05:25:59Z",
+  "generated_at_utc": "2026-04-28T05:58:57Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -11,7 +11,8 @@
       "T-track for survivorship gating",
       "Public-safe disclosure boundary",
       "Top symbol by coupling: tree_of_knowledge_good_evil",
-      "4D ablation delta (with-without): 0.048087"
+      "4D ablation delta (with-without): 0.048087",
+      "Multi-symbol gate status: GO (hold=False)"
     ]
   },
   "three_page": [
@@ -34,7 +35,8 @@
       "bullets": [
         "Rollback contract",
         "Public-safe redaction",
-        "Symbolic layer is analysis-only (non-trigger)"
+        "Symbolic layer is analysis-only (non-trigger)",
+        "Integrated gate summary: status=GO, hold=False"
       ]
     }
   ]

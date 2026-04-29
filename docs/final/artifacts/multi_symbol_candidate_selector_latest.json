@@ -1,6 +1,6 @@
 {
   "schema": "multi_symbol_candidate_selector_v1",
-  "generated_at_utc": "2026-04-28T05:14:57Z",
+  "generated_at_utc": "2026-04-28T05:55:29Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -26,6 +26,6 @@
     }
   ],
   "sources": {
-    "multi_symbol_json": "c:\\workspace\\docs\\final\\artifacts\\multi_symbol_resonance_4d_latest.json"
+    "multi_symbol_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_resonance_4d_latest.json"
   }
 }

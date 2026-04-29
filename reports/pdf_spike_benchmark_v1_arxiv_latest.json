@@ -1,0 +1,46 @@
+{
+  "schema": "pdf_spike_benchmark_v1",
+  "mode": "fast_local",
+  "input_pdf_count": 2,
+  "input_pdfs": [
+    "C:\\workspace\\tmp\\pdf_samples_benchmark\\paper_1.pdf",
+    "C:\\workspace\\tmp\\pdf_samples_benchmark\\paper_2.pdf"
+  ],
+  "output_dir": "C:\\workspace\\tmp\\pdf_spike_v1_benchmark",
+  "json_output_count": 2,
+  "markdown_output_count": 2,
+  "jsonl_path": "C:\\workspace\\tmp\\pdf_spike_v1_benchmark\\pdf_spike_rows_latest.jsonl",
+  "jsonl_row_count": 1477,
+  "rows_by_pdf": {
+    "paper_1.pdf": 545,
+    "paper_2.pdf": 932
+  },
+  "chars_by_pdf": {
+    "paper_1.pdf": 38983,
+    "paper_2.pdf": 231448
+  },
+  "docs_summary": [
+    {
+      "source_pdf": "paper_1.pdf",
+      "row_count": 545,
+      "char_count": 38983,
+      "avg_chars_per_row": 71.52844036697248
+    },
+    {
+      "source_pdf": "paper_2.pdf",
+      "row_count": 932,
+      "char_count": 231448,
+      "avg_chars_per_row": 248.33476394849785
+    }
+  ],
+  "element_type_histogram": {
+    "heading": 188,
+    "paragraph": 1070,
+    "caption": 6,
+    "list item": 213
+  },
+  "convert_elapsed_s": 9.691353559494019,
+  "total_elapsed_s": 9.74935507774353,
+  "parse_error_count": 0,
+  "parse_errors": []
+}

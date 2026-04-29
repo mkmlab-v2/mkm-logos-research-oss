@@ -1,0 +1,54 @@
+{
+  "schema": "pre_news_shadow_ops_smoke_v1",
+  "generated_at_utc": "2026-04-28T19:09:22Z",
+  "all_ok": true,
+  "steps": [
+    {
+      "name": "build_ops_status_dashboard",
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/build_pre_news_shadow_ops_status_dashboard_v1.py"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pre_news_shadow_ops_status_latest.json\"}",
+      "stderr": ""
+    },
+    {
+      "name": "build_monthly_drill_summary_alert",
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/alert_pre_news_shadow_monthly_drill_summary_v1.py"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_monthly_drill_summary_alert_latest.json\nPre-News monthly drills: PASS (2/2).",
+      "stderr": ""
+    },
+    {
+      "name": "policy_change_workflow_checklist_exists",
+      "cmd": [
+        "exists",
+        "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_policy_change_approval_workflow_v1.json"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "stdout": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_policy_change_approval_workflow_v1.json",
+      "stderr": ""
+    }
+  ],
+  "snapshot": {
+    "ops_status_summary": {
+      "promotion_gate_enabled": true,
+      "holdout_dataset_lock_ok": true,
+      "policy_governance_has_alert": false,
+      "task_health_has_alert": false,
+      "weekly_sample_count": null,
+      "recent_projection_rows": 5,
+      "drill_status": "ok",
+      "drill_failed_count": 0
+    },
+    "monthly_drill_summary_line": "Pre-News monthly drills: PASS (2/2).",
+    "monthly_drill_all_ok": true
+  }
+}

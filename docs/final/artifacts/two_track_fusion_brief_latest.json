@@ -1,6 +1,6 @@
 {
   "schema": "two_track_fusion_brief_v1",
-  "generated_at_utc": "2026-04-28T05:25:59Z",
+  "generated_at_utc": "2026-04-28T05:58:57Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -35,6 +35,14 @@
     {
       "id": "gematria_4d_delta_with_minus_without",
       "value": 0.048087
+    },
+    {
+      "id": "multi_symbol_gate_status",
+      "value": "GO"
+    },
+    {
+      "id": "multi_symbol_any_promotion_hold",
+      "value": false
     }
   ],
   "storylines": [
@@ -47,6 +55,7 @@
   "sources": {
     "multi_symbol_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_resonance_4d_latest.json",
     "multi_symbol_selector_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_candidate_selector_latest.json",
-    "gematria_ablation_json": "C:\\workspace\\docs\\final\\artifacts\\gematria_4d_ablation_latest.json"
+    "gematria_ablation_json": "C:\\workspace\\docs\\final\\artifacts\\gematria_4d_ablation_latest.json",
+    "multi_symbol_gate_summary_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_gate_summary_latest.json"
   }
 }

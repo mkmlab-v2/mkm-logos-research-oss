@@ -1,7 +1,7 @@
 {
   "schema": "btrack_llm_input_bundle_v1",
   "version": "1.0.0",
-  "ts_utc": "2026-04-22T23:40:01Z",
+  "ts_utc": "2026-04-28T23:40:01Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "label": "[HYPO] LLM input bundle — not A-track; no live trigger.",
@@ -11,19 +11,19 @@
       "version": "0.1.0",
       "lens_id": "myeongni",
       "engine_id": "independent_lens_v0",
-      "ts_utc": "2026-04-22T23:40:00Z",
+      "ts_utc": "2026-04-28T23:40:01Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "scores": {
-        "direction_score": 0.0,
-        "confidence": 0.76
+        "direction_score": 0.08,
+        "confidence": 0.68552
       },
       "myeongri_stream_outputs": {
         "myeongri_gapja": null,
         "state_id": 15,
         "experiment_id": null,
         "run_id": "calendar_stub_through_202604",
-        "rationale": "B-track state_id=15, mapping_target=sideways; direction_score from curated mapping_target heuristic (v0)."
+        "rationale": "B-track state_id=15, mapping_target=sideways; direction_score = 0.55*direct + 0.35*momentum + 0.10*state_prior, direct=0.000, momentum=0.000, prior=0.240. confidence calibrated by consistency/contradiction with sample-size shrinkage."
       },
       "provenance": {
         "source": "16_state_experiment_tail",
@@ -37,13 +37,13 @@
       "version": "0.1.0",
       "lens_id": "sasang",
       "engine_id": "independent_lens_v0",
-      "ts_utc": "2026-04-22T23:40:00Z",
+      "ts_utc": "2026-04-28T23:40:01Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "a_track_autobind_forbidden": true,
       "scores": {
-        "direction_score": 0.0,
-        "confidence": 0.493333
+        "direction_score": 0.17,
+        "confidence": 0.7115
       },
       "sasang_stream_outputs": {
         "regime_hypothesis": "phase_transition",
@@ -67,7 +67,7 @@
       "version": "0.1.0",
       "lens_id": "logos",
       "engine_id": "independent_lens_v0",
-      "ts_utc": "2026-04-22T23:40:00Z",
+      "ts_utc": "2026-04-28T23:40:01Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "scores": {
@@ -89,7 +89,7 @@
     "independent_lens_fusion_stub": {
       "schema": "independent_lens_fusion_stub_v0",
       "version": "0.1.0",
-      "ts_utc": "2026-04-22T23:40:00Z",
+      "ts_utc": "2026-04-28T23:40:01Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "mode": "observation_only",
@@ -97,21 +97,21 @@
         {
           "lens_id": "myeongni",
           "available": true,
-          "direction_score": 0.0,
-          "confidence": 0.76,
-          "direction_sign": "neutral",
+          "direction_score": 0.08,
+          "confidence": 0.68552,
+          "direction_sign": "bull",
           "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
-          "artifact_ts_utc": "2026-04-22T23:40:00Z",
+          "artifact_ts_utc": "2026-04-28T23:40:01Z",
           "schema": "myeongni_independent_lens_v0"
         },
         {
           "lens_id": "sasang",
           "available": true,
-          "direction_score": 0.0,
-          "confidence": 0.493333,
-          "direction_sign": "neutral",
+          "direction_score": 0.17,
+          "confidence": 0.7115,
+          "direction_sign": "bull",
           "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",
-          "artifact_ts_utc": "2026-04-22T23:40:00Z",
+          "artifact_ts_utc": "2026-04-28T23:40:01Z",
           "schema": "sasang_independent_lens_v0"
         },
         {
@@ -121,7 +121,7 @@
           "confidence": 0.2,
           "direction_sign": "bear",
           "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\logos_independent_lens_latest.json",
-          "artifact_ts_utc": "2026-04-22T23:40:00Z",
+          "artifact_ts_utc": "2026-04-28T23:40:01Z",
           "schema": "logos_independent_lens_v0"
         }
       ],
@@ -129,9 +129,9 @@
         "available_count": 3,
         "agreement_rate": 0.666667,
         "conflict_count": 1,
-        "consensus_sign": "neutral",
-        "consensus_score": -0.044495,
-        "consensus_confidence": 0.484444
+        "consensus_sign": "bull",
+        "consensus_score": 0.069586,
+        "consensus_confidence": 0.53234
       },
       "note": "Read-only comparison of independent lens outputs; not A-track auto-fusion or live sizing trigger. No consistency_rate here — use consensus.agreement_rate for lens-direction alignment; optional consistency_rate is defined for myeongni 16-state experiment JSON (separate schema). Vector gematria+myeongri geometric spike: scripts/spike_gematria_myeongri_blend_v0.py."
     }

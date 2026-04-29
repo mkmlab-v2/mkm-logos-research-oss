@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_hit_rate_eval_report_v2",
-  "generated_at_utc": "2026-04-28T00:53:08Z",
+  "generated_at_utc": "2026-04-29T00:53:07Z",
   "run_mode": "price",
   "status": "ok",
   "zeroing_note": "price: directional match rate over provided rows.",
@@ -10,9 +10,9 @@
     "registry_glob": null
   },
   "metrics": {
-    "price_directional_hit_rate": 0.5,
+    "price_directional_hit_rate": 0.75,
     "n_evaluated": 4,
-    "price_hits": 2
+    "price_hits": 3
   },
   "sources": {
     "oracle_path": null,

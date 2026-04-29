@@ -1,0 +1,35 @@
+{
+  "schema": "original_corpus_regime_singularity_canon_strict_freeze_drift_gate_v1",
+  "generated_at_utc": "2026-04-28T22:10:03Z",
+  "inputs": {
+    "freeze_json": "",
+    "quality_gate_policy_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_quality_gate_policy_eval_v1.json",
+    "promotion_gate_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_promotion_gate_v1.json",
+    "explainability_benchmark_gate_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_insight_explainability_benchmark_gate_v1.json",
+    "delta_governance_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_delta_cutoff_governance_gate_v1.json",
+    "day7_checkpoint_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_day7_checkpoint_gate_v1.json",
+    "freeze_v2_stability_gate_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_strict_baseline_freeze_v2_stability_gate_v1.json",
+    "promotion_go_no_go_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_promotion_go_no_go_v1.json"
+  },
+  "status": "alert",
+  "metrics": {
+    "drift_count": 1
+  },
+  "baseline_gate_status": {},
+  "current_gate_status": {
+    "quality_gate_policy_status": "pass",
+    "promotion_gate_status": "missing",
+    "explainability_benchmark_status": "missing",
+    "delta_governance_status": "missing",
+    "day7_checkpoint_verdict": "missing",
+    "promotion_go_no_go_verdict": "missing",
+    "freeze_v2_stability_status": "missing"
+  },
+  "drifts": [
+    {
+      "field": "quality_gate_policy_status",
+      "baseline": "missing",
+      "current": "pass"
+    }
+  ]
+}

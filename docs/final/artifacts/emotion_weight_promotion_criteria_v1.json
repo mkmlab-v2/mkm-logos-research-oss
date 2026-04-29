@@ -1,0 +1,15 @@
+{
+  "schema_version": "emotion_weight_promotion_criteria_v1",
+  "track_scope": "btrack_shadow_only_to_candidate",
+  "criteria": {
+    "min_samples": 30,
+    "min_coverage_ratio": 0.8,
+    "min_corr_valence_vs_forward_pnl_1d": 0.05,
+    "required_recommendation": "candidate_for_btrack_promotion"
+  },
+  "notes": [
+    "forward_pnl_1d uses D+1 alignment from KPI snapshots.",
+    "Fail-safe default is shadow_only when any gate is not met.",
+    "Promotion remains human-reviewed and does not auto-wire to Track A."
+  ]
+}

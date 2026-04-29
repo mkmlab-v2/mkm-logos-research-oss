@@ -1,0 +1,48 @@
+{
+  "schema": "pre_news_shadow_projection_v1",
+  "generated_at_utc": "2026-04-28T21:30:04Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "input": {
+    "batch_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon_batch_report_latest.json",
+    "pre_news_input_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_input_latest.json"
+  },
+  "summary": {
+    "rows_total": 1,
+    "source_mode": "verse_level_ingest"
+  },
+  "projections": [
+    {
+      "row_id": "sample_001",
+      "headline": "Global policy coordination expands after crisis signals and market stabilization measures",
+      "source": "manual_sample",
+      "timestamp_utc": "2026-04-28T10:34:00Z",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 863.459924,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 863.459924,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "prophets",
+          "resonance_score": 359.735435,
+          "edge_count": 4658745,
+          "node_count": 4096,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "insight": "Pre-News shadow resonance points first to `full_canon` under current network topology."
+    }
+  ],
+  "note": "Shadow-only observation. Not connected to live trading triggers."
+}

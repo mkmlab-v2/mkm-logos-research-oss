@@ -1,6 +1,6 @@
 {
   "schema": "sasang_prophecy_eval_contract_v1",
-  "generated_at_utc": "2026-04-28T05:33:32Z",
+  "generated_at_utc": "2026-04-29T00:00:06Z",
   "scope": "sasang_prophecy_b_track_commercialization_precheck",
   "inputs_contract": {
     "lens_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",
@@ -37,5 +37,12 @@
     "non_medical_claim_only": true,
     "no_live_trading_trigger": true,
     "human_signoff_required": true
+  },
+  "supplemental_insights": {
+    "dna_readiness_artifact": "C:\\workspace\\reports\\bio_dna_constitution_final_approval_latest.json",
+    "market_sentiment_artifact": "C:\\workspace\\docs\\final\\artifacts\\fused_paper_cycle_weekly_latest.json",
+    "gematria_4d_artifact": "C:\\workspace\\docs\\final\\artifacts\\gematria_4d_coupling_latest.json",
+    "supplemental_score_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_supplemental_insight_score_latest.json",
+    "included_as": "supporting_evidence_non_gating"
   }
 }

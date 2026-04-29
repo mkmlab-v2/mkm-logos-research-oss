@@ -1,0 +1,22 @@
+{
+  "schema": "pdf_spike_benchmark_v1",
+  "mode": "fast_local",
+  "input_pdf_count": 2,
+  "input_pdfs": [
+    "C:\\workspace\\tmp\\pdf_samples\\sample_1.pdf",
+    "C:\\workspace\\tmp\\pdf_samples\\sample_2.pdf"
+  ],
+  "output_dir": "C:\\workspace\\tmp\\pdf_spike_v1",
+  "json_output_count": 2,
+  "markdown_output_count": 2,
+  "jsonl_path": "C:\\workspace\\tmp\\pdf_spike_v1\\pdf_spike_rows_latest.jsonl",
+  "jsonl_row_count": 2,
+  "rows_by_pdf": {
+    "sample_1.pdf": 1,
+    "sample_2.pdf": 1
+  },
+  "convert_elapsed_s": 1.1041696071624756,
+  "total_elapsed_s": 1.1171715259552002,
+  "parse_error_count": 0,
+  "parse_errors": []
+}

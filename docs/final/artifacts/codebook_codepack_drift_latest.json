@@ -1,6 +1,6 @@
 {
   "schema": "codebook_codepack_drift_v1",
-  "generated_at_utc": "2026-04-22T22:05:01Z",
+  "generated_at_utc": "2026-04-28T22:05:03Z",
   "drift_status": "STABLE",
   "drift_items": [],
   "missing_references": [],

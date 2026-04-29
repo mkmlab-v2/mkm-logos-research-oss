@@ -1,6 +1,6 @@
 {
   "schema": "gematria_4d_ablation_v1",
-  "generated_at_utc": "2026-04-28T05:06:29Z",
+  "generated_at_utc": "2026-04-28T05:55:29Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -17,7 +17,7 @@
     "require_research_only_lane": true
   },
   "sources": {
-    "coupling_json": "c:\\workspace\\docs\\final\\artifacts\\gematria_4d_coupling_latest.json",
-    "resonance_json": "c:\\workspace\\docs\\final\\artifacts\\atom_resonance_report_latest.json"
+    "coupling_json": "C:\\workspace\\docs\\final\\artifacts\\gematria_4d_coupling_latest.json",
+    "resonance_json": "C:\\workspace\\docs\\final\\artifacts\\atom_resonance_report_latest.json"
   }
 }

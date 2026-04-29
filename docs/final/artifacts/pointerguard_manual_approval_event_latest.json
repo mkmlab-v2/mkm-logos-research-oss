@@ -1,0 +1,16 @@
+{
+  "schema": "pointerguard_manual_approval_event_v1",
+  "generated_at_utc": "2026-04-28T09:30:40+00:00",
+  "log_path": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_manual_approval_log_latest.json",
+  "entry": {
+    "approved_at_utc": "2026-04-28T09:30:40+00:00",
+    "action": "unfreeze_ramp",
+    "ticket": "OPS-2026-04-28-003",
+    "approvers": [
+      "athena",
+      "sentinel"
+    ],
+    "justification": "operational readiness enforcement"
+  },
+  "entry_count": 2
+}

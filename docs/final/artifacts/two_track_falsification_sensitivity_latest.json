@@ -1,16 +1,18 @@
 {
   "schema": "two_track_falsification_sensitivity_v1",
-  "generated_at_utc": "2026-04-28T04:58:15Z",
+  "generated_at_utc": "2026-04-28T05:59:39Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
   "fixed_inputs": {
-    "qna_count": 3,
+    "qna_count": 15,
     "missing_fields": 0,
     "bad_gate_rows": 0,
     "shift_score": 0.803353,
     "ci_low_defense_contrib": 0.616703,
-    "claim_boundary": "research only / public-safe boundary"
+    "claim_boundary": "research only / public-safe boundary",
+    "counterfactual_gate_pass": true,
+    "counterfactual_mean_gap": 0.362182
   },
   "active_thresholds": {
     "min_survivor_count": 1,
@@ -21,113 +23,113 @@
     {
       "min_survivor_count": 1,
       "min_ci_low_defense_contrib": 0.0,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 1,
       "min_ci_low_defense_contrib": 0.2,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 1,
       "min_ci_low_defense_contrib": 0.4,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 1,
       "min_ci_low_defense_contrib": 0.6,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 3,
       "min_ci_low_defense_contrib": 0.0,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 3,
       "min_ci_low_defense_contrib": 0.2,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 3,
       "min_ci_low_defense_contrib": 0.4,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 3,
       "min_ci_low_defense_contrib": 0.6,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 5,
       "min_ci_low_defense_contrib": 0.0,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 5,
       "min_ci_low_defense_contrib": 0.2,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 5,
       "min_ci_low_defense_contrib": 0.4,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 5,
       "min_ci_low_defense_contrib": 0.6,
-      "pass_count": 5,
-      "total_checks": 5,
+      "pass_count": 6,
+      "total_checks": 6,
       "suite_status": "pass"
     },
     {
       "min_survivor_count": 7,
       "min_ci_low_defense_contrib": 0.0,
-      "pass_count": 4,
-      "total_checks": 5,
+      "pass_count": 5,
+      "total_checks": 6,
       "suite_status": "warning"
     },
     {
       "min_survivor_count": 7,
       "min_ci_low_defense_contrib": 0.2,
-      "pass_count": 4,
-      "total_checks": 5,
+      "pass_count": 5,
+      "total_checks": 6,
       "suite_status": "warning"
     },
     {
       "min_survivor_count": 7,
       "min_ci_low_defense_contrib": 0.4,
-      "pass_count": 4,
-      "total_checks": 5,
+      "pass_count": 5,
+      "total_checks": 6,
       "suite_status": "warning"
     },
     {
       "min_survivor_count": 7,
       "min_ci_low_defense_contrib": 0.6,
-      "pass_count": 4,
-      "total_checks": 5,
+      "pass_count": 5,
+      "total_checks": 6,
       "suite_status": "warning"
     }
   ]

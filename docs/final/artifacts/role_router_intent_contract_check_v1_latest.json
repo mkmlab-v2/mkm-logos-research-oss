@@ -1,0 +1,42 @@
+{
+  "schema": "role_router_intent_contract_check_v1",
+  "generated_at_utc": "2026-04-29T00:56:07Z",
+  "engine_input_json": "C:\\workspace\\docs\\final\\artifacts\\btc_limited_live_engine_input_from_lens_combo_latest.json",
+  "expected_dry_run": "false",
+  "observed_dry_run": false,
+  "result": "FAIL",
+  "failed_checks": [
+    "router_type_match",
+    "coord_policy_match"
+  ],
+  "checks": {
+    "status_ready_for_submit": true,
+    "action_submit_to_queue": true,
+    "symbol_match": true,
+    "dry_run_mode_ok": true,
+    "candidate_tradable_true": true,
+    "signoff_approve_true": true,
+    "signoff_mode_limited_live_true": true,
+    "approve_submit_flag_true": true,
+    "size_usd_match": true,
+    "max_losses_match": true,
+    "max_dd_match": true,
+    "auto_scale_up_false": true,
+    "auto_bridge_disabled": true,
+    "auto_live_trigger_disabled": true,
+    "router_type_match": false,
+    "coord_policy_match": false,
+    "min_n_days_guard": true
+  },
+  "snapshot": {
+    "symbol": "BTCUSDT",
+    "status": "READY_FOR_ENGINE_SUBMIT",
+    "action": "submit_to_engine_queue",
+    "candidate_params": {},
+    "candidate_metrics": {
+      "n_days": 29,
+      "n_active_days": 17,
+      "directional_hit_rate_active": 0.705882,
+      "win_rate_active": 0.705882,
+      "total_return": 0.218475,
+      "cagr": 4.56824

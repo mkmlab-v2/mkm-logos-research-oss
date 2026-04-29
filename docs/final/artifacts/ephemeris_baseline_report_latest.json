@@ -1,7 +1,7 @@
 {
   "schema": "ephemeris_baseline_report_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-18T04:56:02Z",
+  "generated_at_utc": "2026-04-28T22:20:03Z",
   "ephemeris_definition_id": "lichun_meeus_v1_vs_reference_b_file_sha256_ed5c8df3c79b2272",
   "reference_a": {
     "name": "meeus_sun_longitude_315deg_v1",

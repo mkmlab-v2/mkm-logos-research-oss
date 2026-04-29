@@ -1,6 +1,6 @@
 {
   "schema": "pointerguard_ops_alert_delivery_v1",
-  "generated_at_utc": "2026-04-28T13:35:42+00:00",
+  "generated_at_utc": "2026-04-28T21:30:07+00:00",
   "inputs": {
     "smoke_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_operational_smoke_latest.json",
     "guard_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_pointer_routing_decision_guarded_latest.json",
@@ -13,7 +13,7 @@
   },
   "alert": {
     "source": "pointerguard_ops_alert_v1",
-    "generated_at_utc": "2026-04-28T13:35:42+00:00",
+    "generated_at_utc": "2026-04-28T21:30:07+00:00",
     "should_send": false,
     "severity": "INFO",
     "reasons": [],

@@ -1,0 +1,53 @@
+{
+  "schema": "btc_limited_live_engine_input_v1",
+  "generated_at_utc": "2026-04-29T00:52:02Z",
+  "symbol": "BTCUSDT",
+  "status": "READY_FOR_ENGINE_SUBMIT",
+  "dry_run": false,
+  "source": {
+    "candidate_json": "C:\\workspace\\docs\\final\\artifacts\\btc_top1_limited_live_candidate_from_lens_combo_latest.json",
+    "signoff_json": "C:\\workspace\\docs\\final\\artifacts\\promotion_signoff_decision_latest.json"
+  },
+  "guards": {
+    "candidate_tradable": true,
+    "signoff_approve": true,
+    "signoff_mode_limited_live": true,
+    "approve_submit_flag": true
+  },
+  "engine_input": {
+    "signal_type": "fusion_prophecy_top1_limited_live",
+    "side_hint": "derived_by_engine",
+    "size_usd": 10.0,
+    "max_consecutive_losses": 3,
+    "max_drawdown_pct": 2.0,
+    "auto_scale_up": false,
+    "auto_bridge_enabled": false,
+    "auto_live_trigger_enabled": false,
+    "candidate_params": {},
+    "candidate_metrics": {
+      "n_days": 29,
+      "n_active_days": 17,
+      "directional_hit_rate_active": 0.705882,
+      "win_rate_active": 0.705882,
+      "total_return": 0.218475,
+      "cagr": 4.568246,
+      "mdd": -0.036296,
+      "sharpe": 5.838073,
+      "sortino": 10.70706
+    }
+  },
+  "action": "submit_to_engine_queue",
+  "tie_break_policy": {
+    "policy_id": "non_logos_multi_lens_then_lens_count_v1",
+    "primary_sort_keys_desc": [
+      "metrics.cagr (higher wins)",
+      "metrics.sharpe (higher wins)",
+      "metrics.mdd (less negative wins)"
+    ],
+    "tie_break_keys_desc": [
+      "prefer strategies with >=2 lenses where logos is NOT included (captures myeongni+sasang vs single-lens ties)",
+      "prefer higher lens count when still tied"
+    ],
+    "implementation_ref": "scripts/run_prophecy_lens_combo_backtest_v1.py:_rank_strategies"
+  }
+}

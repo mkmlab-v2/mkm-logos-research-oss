@@ -1,6 +1,6 @@
 {
   "schema": "pointerguard_ops_readiness_v1",
-  "generated_at_utc": "2026-04-28T12:48:48+00:00",
+  "generated_at_utc": "2026-04-28T12:57:47+00:00",
   "all_ok": true,
   "checks": [
     {
@@ -27,7 +27,7 @@
       "ok": true,
       "path": "C:\\workspace\\docs\\final\\artifacts\\a_codeai_public_benchmark_launch_checklist_v1.json",
       "reason": "ok",
-      "decision": "READY_FOR_SHADOW_PUBLIC_BENCH"
+      "decision": "READY_FOR_PUBLIC_OPEN_BENCH"
     },
     {
       "ok": true,

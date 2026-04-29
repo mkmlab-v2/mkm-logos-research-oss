@@ -1,0 +1,16 @@
+{
+  "schema": "sasang_gt_merge_impact_simulation_v1",
+  "generated_at_utc": "2026-04-29T00:00:05Z",
+  "gt_valid_rows_current": 128,
+  "approve_top_n": 126,
+  "unique_new_rows_from_selected": 126,
+  "gt_rows_after_simulated_merge": 254,
+  "strict_target_min_gt_rows": 128,
+  "needed_rows_after_simulation": 0,
+  "strict_pairable_ready_after_simulation": true,
+  "policy": {
+    "simulation_only_no_gt_writes": true,
+    "human_approval_required_for_real_merge": true,
+    "auto_label_forbidden": true
+  }
+}

@@ -1,23 +1,23 @@
 {
   "schema": "sasang_strict_input_integrity_v1",
-  "generated_at_utc": "2026-04-28T05:09:55Z",
+  "generated_at_utc": "2026-04-29T00:00:05Z",
   "strict_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_latest.json",
   "strict_shadow_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_synthetic_calibrated_latest.json",
   "production_snapshot": {
-    "decision": "HOLD",
-    "paired_rows": 64,
-    "recall_macro": 0.7,
-    "ece": 0.11618750000000003,
-    "brier_score": 0.15625050000000001
+    "decision": "PASS",
+    "paired_rows": 128,
+    "recall_macro": 1.0,
+    "ece": 0.07790128906249978,
+    "brier_score": 0.007379815517429681
   },
   "shadow_snapshot": {
     "decision": "PASS"
   },
   "integrity": {
-    "production_strict_pass": false,
+    "production_strict_pass": true,
     "shadow_strict_pass": true,
-    "root_cause": "production_paired_rows_insufficient",
-    "authoritative_for_promotion": false
+    "root_cause": "NONE",
+    "authoritative_for_promotion": true
   },
   "policy": {
     "shadow_only_not_authoritative": true,

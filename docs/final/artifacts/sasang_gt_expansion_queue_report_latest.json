@@ -1,19 +1,19 @@
 {
   "schema": "sasang_gt_expansion_queue_report_v1",
-  "generated_at_utc": "2026-04-28T05:25:04Z",
-  "gt_current_valid_rows": 2,
+  "generated_at_utc": "2026-04-29T00:00:04Z",
+  "gt_current_valid_rows": 128,
   "target_min_gt_rows": 128,
-  "gap_rows": 126,
-  "queue_rows": 324,
+  "gap_rows": 0,
+  "queue_rows": 198,
   "source_hit_counts": {
     "predictions.real.aligned.latest.jsonl": 0,
     "predictions.real.latest.jsonl": 0,
-    "sasang_encoder_smoke_predictions_jhgan__ko-sroberta-multitask.jsonl": 200,
-    "sasang_encoder_smoke_predictions_sentence-transformers__all-MiniLM-L6-v2.jsonl": 200,
+    "sasang_encoder_smoke_predictions_jhgan__ko-sroberta-multitask.jsonl": 108,
+    "sasang_encoder_smoke_predictions_sentence-transformers__all-MiniLM-L6-v2.jsonl": 108,
     "sasang_predictions_from_btrack_candidate_subset_latest.jsonl": 7,
-    "sasang_predictions_from_btrack_candidate_subset_mapped_latest.jsonl": 7,
+    "sasang_predictions_from_btrack_candidate_subset_mapped_latest.jsonl": 2,
     "sasang_predictions_from_btrack_eval_full_latest.jsonl": 64,
-    "sasang_predictions_from_btrack_eval_full_mapped_latest.jsonl": 64
+    "sasang_predictions_from_btrack_eval_full_mapped_latest.jsonl": 24
   },
   "queue_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_expansion_queue_latest.jsonl",
   "track_wall": {

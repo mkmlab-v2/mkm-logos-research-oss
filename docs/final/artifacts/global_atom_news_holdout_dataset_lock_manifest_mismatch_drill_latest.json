@@ -1,0 +1,7 @@
+{
+  "schema": "global_atom_news_holdout_dataset_lock_manifest_v1",
+  "generated_at_utc": "2026-04-28T13:17:14Z",
+  "dataset_path": "C:\\workspace\\docs\\final\\artifacts\\global_atom_news_holdout_dataset_v1.jsonl",
+  "dataset_sha256": "00ebdd1123f07ac8897aed6ba31fbba2e46e922a20b5100c7cb8482172ec15bb",
+  "note": "Intentional mismatch for lock drill."
+}

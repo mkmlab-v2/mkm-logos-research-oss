@@ -1,10 +1,10 @@
 {
   "schema": "aramaic_insight_cap_threshold_drift_alert_v1",
-  "generated_at_utc": "2026-04-28T04:58:14Z",
+  "generated_at_utc": "2026-04-28T05:55:30Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "B",
-  "history_rows": 78,
+  "history_rows": 79,
   "should_alert": false,
   "reason": "insufficient_drift_or_stable"
 }

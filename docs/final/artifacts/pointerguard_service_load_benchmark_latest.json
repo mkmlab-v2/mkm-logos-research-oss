@@ -1,0 +1,117 @@
+{
+  "schema": "pointerguard_service_load_benchmark_v1",
+  "generated_at_utc": "2026-04-28T07:06:09+00:00",
+  "research_only": true,
+  "source_track": "B",
+  "inputs": {
+    "requests_per_level": 20,
+    "concurrency_levels": [
+      1,
+      4,
+      8
+    ]
+  },
+  "host_metrics": {
+    "cpu_utilization": 35.6813864833829,
+    "memory_utilization": 32.496707288664,
+    "note": "Sampled after benchmark via PowerShell Get-Counter."
+  },
+  "runs": [
+    {
+      "scenario": "reports_apply_shadow",
+      "concurrency": 1,
+      "request_count": 20,
+      "ok_count": 20,
+      "fail_count": 0,
+      "error_rate": 0.0,
+      "rps": 12.145341602687004,
+      "latency_ms": {
+        "p50": 82.12529998854734,
+        "p95": 91.6581000055885,
+        "p99": 94.3760999944061,
+        "max": 94.3760999944061,
+        "mean": 82.14200000002165
+      }
+    },
+    {
+      "scenario": "reports_apply_shadow",
+      "concurrency": 4,
+      "request_count": 20,
+      "ok_count": 20,
+      "fail_count": 0,
+      "error_rate": 0.0,
+      "rps": 53.66462293968937,
+      "latency_ms": {
+        "p50": 74.5730999915395,
+        "p95": 75.97729998815339,
+        "p99": 76.42139999370556,
+        "max": 76.42139999370556,
+        "mean": 74.37636499817017
+      }
+    },
+    {
+      "scenario": "reports_apply_shadow",
+      "concurrency": 8,
+      "request_count": 20,
+      "ok_count": 20,
+      "fail_count": 0,
+      "error_rate": 0.0,
+      "rps": 67.10495147005145,
+      "latency_ms": {
+        "p50": 107.34709999815095,
+        "p95": 117.82719999609981,
+        "p99": 125.40400000580121,
+        "max": 125.40400000580121,
+        "mean": 104.07153499836568
+      }
+    },
+    {
+      "scenario": "memory_v2_apply_shadow",
+      "concurrency": 1,
+      "request_count": 20,
+      "ok_count": 20,
+      "fail_count": 0,
+      "error_rate": 0.0,
+      "rps": 13.547091994755679,
+      "latency_ms": {
+        "p50": 73.1482999981381,
+        "p95": 88.5539000009885,
+        "p99": 89.87110000452958,
+        "max": 89.87110000452958,
+        "mean": 73.77302999884705
+      }
+    },
+    {
+      "scenario": "memory_v2_apply_shadow",
+      "concurrency": 4,
+      "request_count": 20,
+      "ok_count": 20,
+      "fail_count": 0,
+      "error_rate": 0.0,
+      "rps": 51.28575963658856,
+      "latency_ms": {
+        "p50": 78.01639998797327,
+        "p95": 81.63129999593366,
+        "p99": 81.75050000136252,
+        "max": 81.75050000136252,
+        "mean": 77.70534999872325
+      }
+    },
+    {
+      "scenario": "memory_v2_apply_shadow",
+      "concurrency": 8,
+      "request_count": 20,
+      "ok_count": 20,
+      "fail_count": 0,
+      "error_rate": 0.0,
+      "rps": 74.36954150815991,
+      "latency_ms": {
+        "p50": 94.54259999620263,
+        "p95": 102.12630000023637,
+        "p99": 102.5548999896273,
+        "max": 102.5548999896273,
+        "mean": 92.00754499906907
+      }
+    }
+  ]
+}

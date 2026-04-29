@@ -1,0 +1,36 @@
+{
+  "schema": "track_c_evidence_pack_v1",
+  "generated_at_utc": "2026-04-28T19:35:45Z",
+  "governance": {
+    "final_regime": "ATTACK",
+    "final_action_allowed": true,
+    "is_fallback": false,
+    "final_score": 0.50023,
+    "veto_reason_codes": []
+  },
+  "engine_readiness": {
+    "biblical_core": {
+      "precommercial_ready": true,
+      "stage": "precommercial_ready",
+      "stability_go": false,
+      "current_ready_streak": 2,
+      "streak_required": 3
+    },
+    "myeongri_v4_1": {
+      "standalone_commercial_ready": true,
+      "stage": "상용 준비",
+      "accuracy": 0.477273,
+      "abs_train_test_acc_gap": 0.001801
+    },
+    "sasang_strict": {
+      "commercial_ready": true,
+      "stage": "상용",
+      "runtime_go_ratio": 1.0
+    }
+  },
+  "commercial_scope": {
+    "track_c_mode": "risk_warning_and_ip_licensing",
+    "advisory_restriction": "No direct buy/sell recommendation. Risk posture and warning products only.",
+    "required_disclaimer": "Not investment advice; final decisions remain with client operators."
+  }
+}

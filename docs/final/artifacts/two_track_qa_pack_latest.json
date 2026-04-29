@@ -1,6 +1,6 @@
 {
   "schema": "two_track_qa_pack_v2",
-  "generated_at_utc": "2026-04-28T05:29:27Z",
+  "generated_at_utc": "2026-04-28T05:55:32Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -28,7 +28,7 @@
               "f4_shift_score": 0.803353,
               "f4_ci_low_defense_contrib": 0.616703
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -49,7 +49,7 @@
               "rollback": false,
               "reasons_count": 0
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -62,15 +62,17 @@
         {
           "question_id": "q3",
           "q": "What proves this is not storytelling-only interpretation?",
-          "a": "We show with/without comparisons and disclose boundary breakpoints for risk context.",
+          "a": "Ablation keeps measurable gap (delta=0.048087); counterfactual mean gap=0.362182 (pass=True).",
           "evidence": {
             "source_artifact": "gematria_4d_ablation_latest.json",
             "metric_value": {
               "score_with_4d": 0.71273,
               "score_without_4d": 0.664642,
-              "delta_with_minus_without": 0.048087
+              "delta_with_minus_without": 0.048087,
+              "counterfactual_mean_gap": 0.362182,
+              "counterfactual_gate_pass": true
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -83,15 +85,17 @@
         {
           "question_id": "q4",
           "q": "How can reviewers verify the claims quickly?",
-          "a": "Every claim ties to artifact snapshots and gate state, not narrative-only interpretation.",
+          "a": "Top symbols are tree_of_knowledge_good_evil / babel_tower with selected_count=2; counterfactual gate alert=False, hold=False.",
           "evidence": {
             "source_artifact": "multi_symbol_candidate_selector_latest.json",
             "metric_value": {
               "top_symbol": "tree_of_knowledge_good_evil",
               "top2_symbol": "babel_tower",
-              "selected_count": 2
+              "selected_count": 2,
+              "counterfactual_should_alert": false,
+              "counterfactual_promotion_hold": false
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -112,7 +116,7 @@
               "should_trade": true,
               "reasons": []
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -138,7 +142,7 @@
               "f4_shift_score": 0.803353,
               "f4_ci_low_defense_contrib": 0.616703
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -159,7 +163,7 @@
               "rollback": false,
               "reasons_count": 0
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -172,15 +176,17 @@
         {
           "question_id": "q3",
           "q": "What proves this is not storytelling-only interpretation?",
-          "a": "Public-safe disclosure redacts proprietary formulas while preserving verifiable governance facts.",
+          "a": "Ablation keeps measurable gap (delta=0.048087); counterfactual mean gap=0.362182 (pass=True).",
           "evidence": {
             "source_artifact": "gematria_4d_ablation_latest.json",
             "metric_value": {
               "score_with_4d": 0.71273,
               "score_without_4d": 0.664642,
-              "delta_with_minus_without": 0.048087
+              "delta_with_minus_without": 0.048087,
+              "counterfactual_mean_gap": 0.362182,
+              "counterfactual_gate_pass": true
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -193,15 +199,17 @@
         {
           "question_id": "q4",
           "q": "How can reviewers verify the claims quickly?",
-          "a": "Fail-boundary reports define where confidence degrades and when action must stop.",
+          "a": "Top symbols are tree_of_knowledge_good_evil / babel_tower with selected_count=2; counterfactual gate alert=False, hold=False.",
           "evidence": {
             "source_artifact": "multi_symbol_candidate_selector_latest.json",
             "metric_value": {
               "top_symbol": "tree_of_knowledge_good_evil",
               "top2_symbol": "babel_tower",
-              "selected_count": 2
+              "selected_count": 2,
+              "counterfactual_should_alert": false,
+              "counterfactual_promotion_hold": false
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -222,7 +230,7 @@
               "should_trade": true,
               "reasons": []
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -248,7 +256,7 @@
               "f4_shift_score": 0.803353,
               "f4_ci_low_defense_contrib": 0.616703
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -269,7 +277,7 @@
               "rollback": false,
               "reasons_count": 0
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -282,15 +290,17 @@
         {
           "question_id": "q3",
           "q": "What proves this is not storytelling-only interpretation?",
-          "a": "All outputs are reproducible JSON artifacts with deterministic scripts and tracked schema.",
+          "a": "Ablation keeps measurable gap (delta=0.048087); counterfactual mean gap=0.362182 (pass=True).",
           "evidence": {
             "source_artifact": "gematria_4d_ablation_latest.json",
             "metric_value": {
               "score_with_4d": 0.71273,
               "score_without_4d": 0.664642,
-              "delta_with_minus_without": 0.048087
+              "delta_with_minus_without": 0.048087,
+              "counterfactual_mean_gap": 0.362182,
+              "counterfactual_gate_pass": true
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -303,15 +313,17 @@
         {
           "question_id": "q4",
           "q": "How can reviewers verify the claims quickly?",
-          "a": "Gate_eval fields provide machine-readable execution posture for downstream automation.",
+          "a": "Top symbols are tree_of_knowledge_good_evil / babel_tower with selected_count=2; counterfactual gate alert=False, hold=False.",
           "evidence": {
             "source_artifact": "multi_symbol_candidate_selector_latest.json",
             "metric_value": {
               "top_symbol": "tree_of_knowledge_good_evil",
               "top2_symbol": "babel_tower",
-              "selected_count": 2
+              "selected_count": 2,
+              "counterfactual_should_alert": false,
+              "counterfactual_promotion_hold": false
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -332,7 +344,7 @@
               "should_trade": true,
               "reasons": []
             },
-            "as_of_utc": "2026-04-28T05:29:27Z",
+            "as_of_utc": "2026-04-28T05:55:32Z",
             "rollback_rule": "if fail_boundary_gate rollback=true then keep research_only and block promotion",
             "gate_eval": {
               "pass": true,
@@ -346,10 +358,11 @@
     }
   ],
   "symbol_evidence_overlay": {
-    "selector_json": "c:\\workspace\\docs\\final\\artifacts\\multi_symbol_candidate_selector_latest.json",
+    "selector_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_candidate_selector_latest.json",
     "top_symbol": "tree_of_knowledge_good_evil",
     "top_coupling_strength": 0.777868,
-    "falsification_json": "c:\\workspace\\docs\\final\\artifacts\\two_track_falsification_suite_latest.json",
-    "gematria_ablation_json": "c:\\workspace\\docs\\final\\artifacts\\gematria_4d_ablation_latest.json"
+    "falsification_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_suite_latest.json",
+    "gematria_ablation_json": "C:\\workspace\\docs\\final\\artifacts\\gematria_4d_ablation_latest.json",
+    "counterfactual_comparison_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_counterfactual_comparison_latest.json"
   }
 }

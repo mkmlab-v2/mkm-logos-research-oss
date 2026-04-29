@@ -1,0 +1,74 @@
+{
+  "schema": "pre_news_shadow_weekly_report_v1",
+  "generated_at_utc": "2026-04-28T21:30:05Z",
+  "window_days": 7,
+  "log_jsonl": "C:\\workspace\\reports\\pre_news_shadow_projection_log.jsonl",
+  "alert_log_jsonl": "C:\\workspace\\reports\\pre_news_shadow_task_health_alert_log.jsonl",
+  "holdout_replay_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_news_network_holdout_replay_latest.json",
+  "holdout_dataset_lock_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_news_holdout_dataset_lock_manifest_v1.json",
+  "stage_threshold_policy_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_v1.json",
+  "stage_threshold_policy_change_log_jsonl": "C:\\workspace\\reports\\pre_news_shadow_stage_threshold_policy_change_log.jsonl",
+  "stage_threshold_policy_state_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_state_latest.json",
+  "stage_threshold_policy_meta": {
+    "schema": "pre_news_shadow_stage_threshold_policy_v1",
+    "policy_version": "v1.1",
+    "approved_by": "athena-core",
+    "approved_by_1": "athena-core",
+    "approved_by_2": "athena-sentinel",
+    "effective_from_utc": "2026-04-28T00:00:00Z",
+    "updated_at_utc": "2026-04-28T12:08:00Z"
+  },
+  "runs_in_window": 12,
+  "latest_projection_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
+  "latest_projection_rows": 1,
+  "top_resonance_stage_counts": [
+    {
+      "stage": "full_canon",
+      "count": 1
+    }
+  ],
+  "promoted_stage_counts": [
+    {
+      "stage": "full_canon",
+      "count": 1
+    }
+  ],
+  "rejected_stage_counts": [],
+  "metrics": {
+    "top_stage_change_rate": 0.0,
+    "top_stage_current_primary": "full_canon",
+    "top_stage_previous_primary": null,
+    "top_stage_drift": false,
+    "health_alert_count_7d": 0,
+    "holdout_verified_stage_count": 2,
+    "holdout_min_cases_per_stage": 2,
+    "promoted_stage_count": 1,
+    "rejected_stage_count": 0
+  },
+  "promotion_gate": {
+    "enabled": true,
+    "rule": "only stages with holdout top_resonance count >= required threshold (stage override or default) are promoted",
+    "holdout_dataset_lock_enforced": true,
+    "holdout_dataset_lock_ok": true,
+    "holdout_dataset_expected_sha256": "f0ebdd1123f07ac8897aed6ba31fbba2e46e922a20b5100c7cb8482172ec15bb",
+    "holdout_dataset_actual_sha256": "f0ebdd1123f07ac8897aed6ba31fbba2e46e922a20b5100c7cb8482172ec15bb",
+    "min_holdout_cases_per_stage": 2,
+    "stage_min_holdout_cases": {
+      "full_canon": 5,
+      "prophets": 3,
+      "gospels": 3
+    },
+    "holdout_top_stage_counts": {
+      "full_canon": 14,
+      "prophets": 2,
+      "gospels": 4
+    },
+    "holdout_verified_stages": [
+      "full_canon",
+      "gospels"
+    ]
+  },
+  "risk_summary": "LOW: resonance stage is stable and no health alerts detected.",
+  "research_only": true,
+  "note": "Weekly monitoring summary for shadow-only pre-news projection."
+}

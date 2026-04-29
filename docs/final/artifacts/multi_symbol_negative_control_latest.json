@@ -1,0 +1,36 @@
+{
+  "schema": "multi_symbol_negative_control_v1",
+  "generated_at_utc": "2026-04-28T05:55:30Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "rows": [
+    {
+      "seed_symbol": "tree_of_knowledge_good_evil",
+      "base_survivability_score": 0.786154,
+      "negative_control_score": 0.332385,
+      "uplift_over_control": 0.453769
+    },
+    {
+      "seed_symbol": "babel_tower",
+      "base_survivability_score": 0.741317,
+      "negative_control_score": 0.327724,
+      "uplift_over_control": 0.413593
+    },
+    {
+      "seed_symbol": "exodus_return",
+      "base_survivability_score": 0.611705,
+      "negative_control_score": 0.296438,
+      "uplift_over_control": 0.315267
+    }
+  ],
+  "summary": {
+    "symbol_count": 3,
+    "mean_base_survivability": 0.713059,
+    "mean_negative_control_score": 0.318849,
+    "mean_uplift_over_control": 0.39421
+  },
+  "sources": {
+    "survivability_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_walkforward_survivability_latest.json"
+  }
+}

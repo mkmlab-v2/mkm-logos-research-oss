@@ -1,13 +1,13 @@
 {
   "schema": "sasang12_promotion_candidate_gate_unified_v1",
-  "generated_at_utc": "2026-04-28T05:33:32Z",
-  "status": "WARN",
-  "reason_code": "strict_profile_not_passed",
+  "generated_at_utc": "2026-04-29T00:00:06Z",
+  "status": "PASS",
+  "reason_code": "all_required_signals_passed",
   "stages": {
     "stage_1_eval_contract": "PASS",
     "stage_2_independent_lens_quality": "PASS",
     "stage_3_standard_gate": "PASS",
-    "stage_4_strict_gate": "WARN",
+    "stage_4_strict_gate": "PASS",
     "stage_5_promotion_chain_v1_to_v9": "PASS"
   },
   "track_wall": {

@@ -1,13 +1,13 @@
 {
   "schema": "sasang_production_data_readiness_v1",
-  "generated_at_utc": "2026-04-28T05:17:27Z",
+  "generated_at_utc": "2026-04-29T00:00:05Z",
   "gt_path": "C:\\workspace\\data\\constitution\\korean_cohort\\gt_cohort.real.latest.jsonl",
-  "gt_valid_ids": 2,
+  "gt_valid_ids": 128,
   "prediction_candidates": [
     {
       "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\predictions.real.aligned.latest.jsonl",
-      "valid_pred_ids": 2,
-      "paired_ids_with_gt": 2,
+      "valid_pred_ids": 128,
+      "paired_ids_with_gt": 128,
       "shadow_or_synthetic": false
     },
     {
@@ -31,13 +31,13 @@
     {
       "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_encoder_smoke_predictions_jhgan__ko-sroberta-multitask.jsonl",
       "valid_pred_ids": 200,
-      "paired_ids_with_gt": 0,
+      "paired_ids_with_gt": 92,
       "shadow_or_synthetic": false
     },
     {
       "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_encoder_smoke_predictions_sentence-transformers__all-MiniLM-L6-v2.jsonl",
       "valid_pred_ids": 200,
-      "paired_ids_with_gt": 0,
+      "paired_ids_with_gt": 92,
       "shadow_or_synthetic": false
     },
     {
@@ -49,7 +49,7 @@
     {
       "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_predictions_from_btrack_candidate_subset_mapped_latest.jsonl",
       "valid_pred_ids": 7,
-      "paired_ids_with_gt": 0,
+      "paired_ids_with_gt": 5,
       "shadow_or_synthetic": false
     },
     {
@@ -61,35 +61,35 @@
     {
       "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_predictions_from_btrack_eval_full_mapped_latest.jsonl",
       "valid_pred_ids": 64,
-      "paired_ids_with_gt": 0,
+      "paired_ids_with_gt": 40,
       "shadow_or_synthetic": false
     },
     {
       "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_predictions_synthetic_dryrun_calibrated_latest.jsonl",
       "valid_pred_ids": 1000,
-      "paired_ids_with_gt": 0,
+      "paired_ids_with_gt": 126,
       "shadow_or_synthetic": true
     },
     {
       "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_predictions_synthetic_dryrun_latest.jsonl",
       "valid_pred_ids": 1000,
-      "paired_ids_with_gt": 0,
+      "paired_ids_with_gt": 126,
       "shadow_or_synthetic": true
     }
   ],
   "best_authoritative_candidate": {
     "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\predictions.real.aligned.latest.jsonl",
-    "valid_pred_ids": 2,
-    "paired_ids_with_gt": 2,
+    "valid_pred_ids": 128,
+    "paired_ids_with_gt": 128,
     "shadow_or_synthetic": false
   },
-  "max_pairable_rows_authoritative": 2,
+  "max_pairable_rows_authoritative": 128,
   "canonical_aligned_prediction_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\predictions.real.aligned.latest.jsonl",
-  "canonical_aligned_rows": 2,
-  "canonical_aligned_pairs_with_gt": 2,
+  "canonical_aligned_rows": 128,
+  "canonical_aligned_pairs_with_gt": 128,
   "strict_min_paired_rows_required": 128,
-  "ready_for_production_strict": false,
-  "root_cause": "insufficient_authoritative_pairable_rows",
+  "ready_for_production_strict": true,
+  "root_cause": "NONE",
   "policy": {
     "exclude_shadow_or_synthetic_for_authoritative_strict": true,
     "track_b_to_a_autobind_forbidden": true

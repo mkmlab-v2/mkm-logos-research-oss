@@ -1,6 +1,6 @@
 {
   "schema": "multi_symbol_resonance_4d_v1",
-  "generated_at_utc": "2026-04-28T05:09:30Z",
+  "generated_at_utc": "2026-04-28T05:55:29Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -83,7 +83,7 @@
     "mean_coupling_strength": 0.696382
   },
   "sources": {
-    "registry_json": "c:\\workspace\\docs\\final\\artifacts\\atom_anchor_registry_v1.json",
-    "survivor_json": "c:\\workspace\\docs\\final\\artifacts\\insight_survivor_candidates_latest.json"
+    "registry_json": "C:\\workspace\\docs\\final\\artifacts\\atom_anchor_registry_v1.json",
+    "survivor_json": "C:\\workspace\\docs\\final\\artifacts\\insight_survivor_candidates_latest.json"
   }
 }

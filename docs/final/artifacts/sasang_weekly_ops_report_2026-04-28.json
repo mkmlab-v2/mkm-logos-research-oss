@@ -1,0 +1,36 @@
+{
+  "schema": "sasang_weekly_ops_report_v1",
+  "generated_at_utc": "2026-04-28T07:24:13.796299Z",
+  "refresh_calendar_date_utc": "2026-04-28",
+  "iso_week_label": "2026-W18",
+  "sources": {
+    "readiness": "C:\\workspace\\docs\\final\\artifacts\\sasang_commercialization_readiness_packet_latest.json",
+    "drift_check": "C:\\workspace\\docs\\final\\artifacts\\sasang_ready_drift_check_latest.json",
+    "rollback_drill": "C:\\workspace\\docs\\final\\artifacts\\sasang_ready_rollback_drill_latest.json",
+    "status_chain": "C:\\workspace\\docs\\final\\artifacts\\sasang_commercialization_status_chain_latest.json",
+    "supplemental_score": "C:\\workspace\\docs\\final\\artifacts\\sasang_supplemental_insight_score_latest.json"
+  },
+  "headline": {
+    "decision": "READY",
+    "go": true,
+    "warning_count": 1,
+    "blocker_count": 0,
+    "warnings": [
+      "strict_shadow_evidence_only"
+    ],
+    "blockers": []
+  },
+  "stability": {
+    "drift_status": "STABLE_READY",
+    "drift_detected": false,
+    "rollback_mode": "dry_run_non_destructive",
+    "all_exit_zero": true
+  },
+  "supplemental_insights": {
+    "score_value": 0.96,
+    "score_band": "HIGH",
+    "non_gating_policy": true
+  },
+  "governance_note": "This weekly report is operational observability only; it does not auto-change gates or override human signoff requirements.",
+  "out_of_scope": "No automatic Track B -> Track A autobind; no live-trading trigger from this JSON."
+}

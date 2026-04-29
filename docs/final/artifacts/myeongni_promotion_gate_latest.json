@@ -1,6 +1,6 @@
 {
   "schema": "myeongni_promotion_gate_v1",
-  "ts_utc": "2026-04-28T05:30:08Z",
+  "ts_utc": "2026-04-28T05:46:37Z",
   "status": "PASS",
   "track": "B",
   "decision": "MANUAL_PROMOTION_REVIEW_GO",
@@ -11,7 +11,9 @@
     "data_quality_ok": true,
     "shadow_gate_blockers_zero": true,
     "shadow_override_under_limit": true,
-    "sensitivity_sweep_all_ready": true
+    "sensitivity_sweep_all_ready": true,
+    "weather_signal_linked": true,
+    "gematria_4d_linked": true
   },
   "policy": {
     "track_b_to_a_auto_bridge": false,

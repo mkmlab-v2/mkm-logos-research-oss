@@ -1,0 +1,12 @@
+{
+  "schema": "sasang_gt_labeling_assignment_report_v1",
+  "generated_at_utc": "2026-04-29T00:00:04Z",
+  "plan_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_labeling_assignment_plan_latest.json",
+  "reviewer_count": 3,
+  "total_rows": 126,
+  "rows_per_reviewer": {
+    "R1": 42,
+    "R2": 42,
+    "R3": 42
+  }
+}

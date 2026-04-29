@@ -1,6 +1,6 @@
 {
   "schema": "pointer_hash_snapping_router_shadow_daily_report_v1",
-  "generated_at_utc": "2026-04-28T05:35:28+00:00",
+  "generated_at_utc": "2026-04-28T21:30:04+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
@@ -9,14 +9,14 @@
     "window_hours": 24
   },
   "latest_point": {
-    "ts_utc": "2026-04-28T05:35:28+00:00",
+    "ts_utc": "2026-04-28T21:30:04+00:00",
     "schema": "pointer_hash_snapping_router_shadow_log_v1",
     "input_count": 3,
-    "pointer_candidate_ok_count": 2,
+    "pointer_candidate_ok_count": 3,
     "selected_pointer_count": 0,
     "selected_track_a_count": 3,
     "snap_event_count": 0,
-    "oov_unresolved_token_count": 4,
+    "oov_unresolved_token_count": 0,
     "path_policy_counts": {
       "apply": 3,
       "caution": 0,
@@ -24,28 +24,28 @@
       "unknown": 0
     },
     "path_policy_unresolved_token_counts": {
-      "apply": 4,
+      "apply": 0,
       "caution": 0,
       "forbid": 0,
       "unknown": 0
     },
-    "target_path": "reports/demo_run.json"
+    "target_path": "projects/bitcoin-trading/memory/v2/demo.json"
   },
   "window_stats": {
-    "sample_count": 17,
+    "sample_count": 34,
     "avg_input_count": 3.0,
-    "avg_pointer_candidate_ok_rate": 0.6666666666666666,
+    "avg_pointer_candidate_ok_rate": 0.7843137254901961,
     "avg_snap_event_rate": 0.0,
-    "avg_unresolved_token_per_run": 4.0,
+    "avg_unresolved_token_per_run": 2.588235294117647,
     "path_policy_avg_row_ratio": {
-      "apply": 0.7647058823529411,
-      "caution": 0.058823529411764705,
+      "apply": 0.8823529411764706,
+      "caution": 0.029411764705882353,
       "forbid": 0.0,
       "unknown": 0.0
     },
     "path_policy_avg_unresolved_per_run": {
-      "apply": 3.0588235294117645,
-      "caution": 0.23529411764705882,
+      "apply": 2.1176470588235294,
+      "caution": 0.11764705882352941,
       "forbid": 0.0,
       "unknown": 0.0
     }

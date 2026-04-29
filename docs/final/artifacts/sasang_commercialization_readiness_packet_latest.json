@@ -1,7 +1,7 @@
 {
   "schema": "sasang_commercialization_readiness_packet_v1",
-  "generated_at_utc": "2026-04-28T05:33:32Z",
-  "decision": "ALMOST",
+  "generated_at_utc": "2026-04-29T00:00:06Z",
+  "decision": "READY",
   "packet_scope": "human_signoff_material_only",
   "evidence": {
     "eval_contract": "C:\\workspace\\docs\\final\\artifacts\\sasang_prophecy_eval_contract_latest.json",
@@ -16,7 +16,37 @@
     "gt_expansion_queue_report": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_expansion_queue_report_latest.json",
     "gt_expansion_priority_report": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_expansion_priority_report_latest.json",
     "gt_merge_report": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_merge_report_latest.json",
-    "gt_labeling_sheet_report": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_labeling_sheet_report_latest.json"
+    "gt_labeling_sheet_report": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_labeling_sheet_report_latest.json",
+    "gt_labeled_import_report": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_labeled_import_report_latest.json",
+    "gt_approval_progress": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_approval_progress_latest.json",
+    "gt_labeling_validation": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_labeling_sheet_validation_latest.json",
+    "gt_approval_whatif": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_approval_whatif_latest.json",
+    "gt_labeling_assignment_report": "C:\\workspace\\docs\\final\\artifacts\\sasang_gt_labeling_assignment_report_latest.json",
+    "human_signoff": "C:\\workspace\\docs\\final\\artifacts\\sasang_human_signoff_latest.json",
+    "ready_drift_check": "C:\\workspace\\docs\\final\\artifacts\\sasang_ready_drift_check_latest.json",
+    "rollback_drill": "C:\\workspace\\docs\\final\\artifacts\\sasang_ready_rollback_drill_latest.json",
+    "promotion_authorization": "C:\\workspace\\docs\\final\\artifacts\\sasang_promotion_authorization_latest.json",
+    "promotion_completion": "C:\\workspace\\docs\\final\\artifacts\\sasang_promotion_completion_latest.json",
+    "dna_readiness": "C:\\workspace\\reports\\bio_dna_constitution_final_approval_latest.json",
+    "market_sentiment": "C:\\workspace\\docs\\final\\artifacts\\fused_paper_cycle_weekly_latest.json",
+    "gematria_4d": "C:\\workspace\\docs\\final\\artifacts\\gematria_4d_coupling_latest.json",
+    "supplemental_score": "C:\\workspace\\docs\\final\\artifacts\\sasang_supplemental_insight_score_latest.json",
+    "supplemental_trend": "C:\\workspace\\docs\\final\\artifacts\\sasang_supplemental_insight_trend_latest.json",
+    "supplemental_trend_alert": "C:\\workspace\\docs\\final\\artifacts\\sasang_supplemental_trend_alert_latest.json"
+  },
+  "supplemental_insights": {
+    "dna_readiness_included": true,
+    "market_sentiment_included": true,
+    "gematria_4d_included": true,
+    "supplemental_score_included": true,
+    "supplemental_trend_included": true,
+    "supplemental_trend_alert_included": true,
+    "supplemental_score_band": "HIGH",
+    "supplemental_score_value": 0.96,
+    "supplemental_trend_status": "STABLE",
+    "supplemental_trend_alert": false,
+    "supplemental_trend_notify_operator": false,
+    "impact_on_gate_decision": "none_non_gating"
   },
   "boundaries": {
     "track_b_to_a_autobind": "FORBIDDEN",
@@ -25,15 +55,10 @@
     "human_signoff_required": true
   },
   "go_no_go": {
-    "go": false,
+    "go": true,
     "blockers": [],
     "warnings": [
-      "strict_quality_gate",
-      "strict_shadow_evidence_only",
-      "strict_input_integrity",
-      "production_data_readiness",
-      "gt_expansion_pending",
-      "gt_human_approval_pending"
+      "strict_shadow_evidence_only"
     ]
   }
 }

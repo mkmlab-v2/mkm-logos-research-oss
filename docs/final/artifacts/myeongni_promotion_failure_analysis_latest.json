@@ -1,6 +1,6 @@
 {
   "schema": "myeongni_promotion_failure_analysis_v1",
-  "ts_utc": "2026-04-28T05:30:08Z",
+  "ts_utc": "2026-04-28T05:46:37Z",
   "summary": {
     "fail_count": 0,
     "warn_count": 0,
@@ -12,6 +12,10 @@
     "quality_status": "PASS",
     "fusion_agreement_rate": 0.666667,
     "shadow_override_ratio": 0.003396,
-    "shadow_override_ratio_limit": 0.01
+    "shadow_override_ratio_limit": 0.01,
+    "weather_brier_row_count": 3,
+    "gematria_cosine_hybrid": 0.98299487,
+    "gematria_cosine_myeongri": 0.93634181,
+    "gematria_ablation_delta": 0.048087
   }
 }

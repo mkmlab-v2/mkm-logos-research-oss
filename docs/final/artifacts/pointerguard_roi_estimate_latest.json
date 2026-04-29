@@ -1,0 +1,34 @@
+{
+  "schema": "pointerguard_roi_estimate_v1",
+  "generated_at_utc": "2026-04-28T07:12:54+00:00",
+  "research_only": true,
+  "source_track": "B",
+  "inputs": {
+    "monthly_requests": 1200000,
+    "avg_input_tokens": 8000.0,
+    "avg_output_tokens": 600.0,
+    "input_token_price_per_1k_usd": 0.01,
+    "output_token_price_per_1k_usd": 0.03,
+    "pointer_input_reduction_ratio": 0.9,
+    "pointer_overhead_usd_per_month": 30000.0
+  },
+  "baseline": {
+    "input_tokens_monthly": 9600000000.0,
+    "output_tokens_monthly": 720000000.0,
+    "input_cost_usd_monthly": 96000.0,
+    "output_cost_usd_monthly": 21600.0,
+    "total_cost_usd_monthly": 117600.0
+  },
+  "pointerguard": {
+    "input_tokens_monthly": 959999999.9999998,
+    "output_tokens_monthly": 720000000.0,
+    "input_cost_usd_monthly": 9599.999999999998,
+    "output_cost_usd_monthly": 21600.0,
+    "overhead_usd_monthly": 30000.0,
+    "total_cost_usd_monthly": 61200.0
+  },
+  "roi": {
+    "monthly_saving_usd": 56400.0,
+    "monthly_saving_rate": 0.47959183673469385
+  }
+}

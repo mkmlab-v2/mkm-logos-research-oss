@@ -1,6 +1,6 @@
 {
   "schema": "scholarly_symbol_bridge_v1",
-  "generated_at_utc": "2026-04-28T05:04:33Z",
+  "generated_at_utc": "2026-04-28T05:55:29Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -48,7 +48,7 @@
     "execution_policy": "report_only_non_trigger"
   },
   "sources": {
-    "mapping_json": "c:\\workspace\\docs\\final\\artifacts\\symbol_atom_mapping_latest.json",
-    "resonance_json": "c:\\workspace\\docs\\final\\artifacts\\atom_resonance_report_latest.json"
+    "mapping_json": "C:\\workspace\\docs\\final\\artifacts\\symbol_atom_mapping_latest.json",
+    "resonance_json": "C:\\workspace\\docs\\final\\artifacts\\atom_resonance_report_latest.json"
   }
 }

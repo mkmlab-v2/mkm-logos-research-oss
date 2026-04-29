@@ -1,6 +1,6 @@
 {
   "schema": "two_track_falsification_suite_v1",
-  "generated_at_utc": "2026-04-28T04:58:15Z",
+  "generated_at_utc": "2026-04-28T05:59:39Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -10,16 +10,16 @@
       "name": "defense_evidence_contract_complete",
       "pass": true,
       "detail": {
-        "qna_items": 3,
+        "qna_items": 15,
         "missing_fields": 0
       }
     },
     {
       "id": "F2",
-      "name": "gate_eval_conservative_default",
+      "name": "gate_eval_contract_valid",
       "pass": true,
       "detail": {
-        "qna_items": 3,
+        "qna_items": 15,
         "bad_gate_rows": 0
       }
     },
@@ -52,10 +52,19 @@
       "detail": {
         "claim_boundary": "research only / public-safe boundary"
       }
+    },
+    {
+      "id": "F6",
+      "name": "counterfactual_gap_gate_pass",
+      "pass": true,
+      "detail": {
+        "counterfactual_gate_pass": true,
+        "mean_gap_base_minus_counterfactual": 0.362182
+      }
     }
   ],
-  "pass_count": 5,
-  "total_checks": 5,
+  "pass_count": 6,
+  "total_checks": 6,
   "rollback_gate_snapshot": {
     "should_trade": false,
     "rollback": true

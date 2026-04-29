@@ -1,6 +1,6 @@
 {
   "schema": "pointerguard_apply_go_promotion_decision_v1",
-  "generated_at_utc": "2026-04-28T05:35:28+00:00",
+  "generated_at_utc": "2026-04-28T21:30:04+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
@@ -9,6 +9,8 @@
     "shadow_log_jsonl": "C:\\workspace\\reports\\pointer_hash_snapping_router_shadow_log_v1.jsonl",
     "folder_policy_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_folder_policy_latest.json",
     "target_path": "reports/demo_run.json",
+    "readiness_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_ops_readiness_latest.json",
+    "readiness_all_ok": true,
     "consecutive_samples": 3,
     "apply_row_ratio_min": 0.3,
     "apply_unresolved_max": 4.0,
@@ -20,9 +22,9 @@
     "filtered_log_count": 1
   },
   "window_stats": {
-    "sample_count": 17,
-    "apply_row_ratio_avg": 0.7647058823529411,
-    "apply_unresolved_avg_per_run": 3.0588235294117645
+    "sample_count": 34,
+    "apply_row_ratio_avg": 0.8823529411764706,
+    "apply_unresolved_avg_per_run": 2.1176470588235294
   },
   "recent_checks": [
     {
@@ -34,9 +36,7 @@
       "pass_apply_unresolved": true
     }
   ],
-  "promote_apply_path_to_go": false,
-  "decision": "KEEP_SHADOW",
-  "reasons": [
-    "insufficient_recent_samples"
-  ]
+  "promote_apply_path_to_go": true,
+  "decision": "PROMOTE_APPLY_GO",
+  "reasons": []
 }

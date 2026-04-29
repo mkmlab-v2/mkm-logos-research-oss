@@ -1,0 +1,26 @@
+# Sasang commercialization reproducible command set
+# generated_at_utc=2026-04-29T00:00:07Z
+C:\Python311\python.exe scripts/build_sasang_gt_expansion_queue.py
+C:\Python311\python.exe scripts/prioritize_sasang_gt_expansion_queue.py --top-k 126
+C:\Python311\python.exe scripts/export_sasang_gt_labeling_sheet.py
+C:\Python311\python.exe scripts/build_sasang_labeling_assignment_plan.py
+C:\Python311\python.exe scripts/export_sasang_labeling_packets_by_reviewer.py
+C:\Python311\python.exe scripts/validate_sasang_gt_labeling_sheet.py
+C:\Python311\python.exe scripts/import_sasang_labeled_sheet_to_queue.py
+C:\Python311\python.exe scripts/merge_sasang_labeled_queue_into_gt.py --labeled-queue reports/constitution/btrack_pilot/sasang_gt_labeled_queue_top126_latest.jsonl --report docs/final/artifacts/sasang_gt_merge_report_from_sheet_latest.json
+C:\Python311\python.exe scripts/build_sasang_authoritative_predictions.py
+C:\Python311\python.exe scripts/report_sasang_production_data_readiness.py
+C:\Python311\python.exe scripts/report_sasang_gt_approval_progress.py
+C:\Python311\python.exe scripts/report_sasang_gt_approval_whatif.py
+C:\Python311\python.exe scripts/simulate_sasang_gt_merge_impact.py --approve-top-n 126
+C:\Python311\python.exe scripts/report_sasang_strict_input_integrity.py
+C:\Python311\python.exe scripts/build_sasang_supplemental_insight_score.py
+C:\Python311\python.exe scripts/build_sasang_supplemental_insight_trend.py
+C:\Python311\python.exe scripts/emit_sasang_supplemental_trend_alert.py
+C:\Python311\python.exe scripts/build_sasang_commercialization_readiness_packet.py
+C:\Python311\python.exe scripts/record_sasang_human_signoff.py --approver user-approved --decision APPROVED
+C:\Python311\python.exe scripts/check_sasang_ready_drift.py
+C:\Python311\python.exe scripts/run_sasang_ready_rollback_drill.py
+C:\Python311\python.exe scripts/authorize_sasang_promotion_to_atrack.py --authorizer user-approved
+C:\Python311\python.exe scripts/finalize_sasang_promotion_completion.py --operator user-approved
+C:\Python311\python.exe scripts/build_sasang_weekly_ops_report.py

@@ -1,0 +1,74 @@
+{
+  "schema": "global_atom_sota_benchmark_adapter_v1",
+  "generated_at_utc": "2026-04-28T10:28:35Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "ours": {
+    "model_name": "global_atom_network",
+    "is_placeholder": false,
+    "metrics": {
+      "node_count": 11573,
+      "edge_count": 19690345,
+      "counterfactual_mean_gap": 0.362182,
+      "gate_status": "GO",
+      "batch_stages_ok": 5,
+      "batch_stages_total": 5
+    }
+  },
+  "baselines": {
+    "baseline_a": {
+      "model_name": "sota_baseline_a",
+      "is_placeholder": true,
+      "metrics": {
+        "oos_f1": null,
+        "oos_auc": null,
+        "ece": null,
+        "runtime_sec": null,
+        "cost_usd": null
+      },
+      "notes": "Example: py scripts/build_global_atom_sota_baseline_ingest_v1.py --model-name sota_baseline_a --oos-f1 0.412 --oos-auc 0.601 --ece 0.119 --runtime-sec 184.3 --cost-usd 2.17 --split-id locked_holdout_v1 --dataset-id global_atom_eval_v1 --output-json docs/final/artifacts/sota_baseline_a_result_template.json",
+      "source_json": "C:\\workspace\\docs\\final\\artifacts\\sota_baseline_a_result_template.json"
+    },
+    "baseline_b": {
+      "model_name": "sota_baseline_b",
+      "is_placeholder": true,
+      "metrics": {
+        "oos_f1": null,
+        "oos_auc": null,
+        "ece": null,
+        "runtime_sec": null,
+        "cost_usd": null
+      },
+      "notes": "Example: py scripts/build_global_atom_sota_baseline_ingest_v1.py --model-name sota_baseline_b --oos-f1 0.438 --oos-auc 0.627 --ece 0.106 --runtime-sec 231.0 --cost-usd 3.04 --split-id locked_holdout_v1 --dataset-id global_atom_eval_v1 --output-json docs/final/artifacts/sota_baseline_b_result_template.json",
+      "source_json": "C:\\workspace\\docs\\final\\artifacts\\sota_baseline_b_result_template.json"
+    },
+    "baseline_c": {
+      "model_name": "sota_baseline_c",
+      "is_placeholder": true,
+      "metrics": {
+        "oos_f1": null,
+        "oos_auc": null,
+        "ece": null,
+        "runtime_sec": null,
+        "cost_usd": null
+      },
+      "notes": "Example: py scripts/build_global_atom_sota_baseline_ingest_v1.py --model-name sota_baseline_c --oos-f1 0.401 --oos-auc 0.588 --ece 0.124 --runtime-sec 97.5 --cost-usd 1.61 --split-id locked_holdout_v1 --dataset-id global_atom_eval_v1 --output-json docs/final/artifacts/sota_baseline_c_result_template.json",
+      "source_json": "C:\\workspace\\docs\\final\\artifacts\\sota_baseline_c_result_template.json"
+    }
+  },
+  "comparison_policy": {
+    "strict_note": "Do not claim SOTA outperformance until baseline metrics are non-placeholder and reproducible.",
+    "required_baseline_metrics": [
+      "oos_f1",
+      "oos_auc",
+      "ece",
+      "runtime_sec",
+      "cost_usd"
+    ]
+  },
+  "sources": {
+    "full_canon_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon_batch_report_latest.json",
+    "onepager_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_academic_onepager_latest.json"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "pre_news_shadow_input_v1",
+  "generated_at_utc": "2026-04-28T10:34:00Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "rows": [
+    {
+      "row_id": "sample_001",
+      "timestamp_utc": "2026-04-28T10:34:00Z",
+      "source": "manual_sample",
+      "headline": "Global policy coordination expands after crisis signals and market stabilization measures"
+    }
+  ]
+}
+

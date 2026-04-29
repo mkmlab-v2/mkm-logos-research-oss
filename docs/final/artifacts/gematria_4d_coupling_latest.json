@@ -1,6 +1,6 @@
 {
   "schema": "gematria_4d_coupling_v1",
-  "generated_at_utc": "2026-04-28T05:06:29Z",
+  "generated_at_utc": "2026-04-28T05:55:29Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -73,7 +73,7 @@
     "execution_policy": "analysis_only_non_trigger"
   },
   "sources": {
-    "symbolic_json": "c:\\workspace\\docs\\final\\artifacts\\symbolic_topology_insight_latest.json",
-    "bridge_json": "c:\\workspace\\docs\\final\\artifacts\\scholarly_symbol_bridge_latest.json"
+    "symbolic_json": "C:\\workspace\\docs\\final\\artifacts\\symbolic_topology_insight_latest.json",
+    "bridge_json": "C:\\workspace\\docs\\final\\artifacts\\scholarly_symbol_bridge_latest.json"
   }
 }

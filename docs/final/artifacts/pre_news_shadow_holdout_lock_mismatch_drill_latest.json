@@ -1,0 +1,40 @@
+{
+  "schema": "pre_news_shadow_holdout_lock_mismatch_drill_v1",
+  "generated_at_utc": "2026-04-28T13:17:14Z",
+  "lock_manifest_src_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_news_holdout_dataset_lock_manifest_v1.json",
+  "lock_manifest_mismatch_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_news_holdout_dataset_lock_manifest_mismatch_drill_latest.json",
+  "weekly_report_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_report_lock_mismatch_drill_latest.json",
+  "command_result": {
+    "cmd": [
+      "C:\\Python311\\python.exe",
+      "scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py",
+      "--log-jsonl",
+      "C:\\workspace\\reports\\pre_news_shadow_projection_log.jsonl",
+      "--alert-log-jsonl",
+      "C:\\workspace\\reports\\pre_news_shadow_task_health_alert_log.jsonl",
+      "--holdout-replay-json",
+      "C:\\workspace\\docs\\final\\artifacts\\global_atom_news_network_holdout_replay_latest.json",
+      "--holdout-dataset-lock-json",
+      "C:\\workspace\\docs\\final\\artifacts\\global_atom_news_holdout_dataset_lock_manifest_mismatch_drill_latest.json",
+      "--enforce-holdout-dataset-lock",
+      "--stage-threshold-policy-json",
+      "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_v1.json",
+      "--enforce-policy-effective-from",
+      "--window-days",
+      "7",
+      "--out-json",
+      "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_report_lock_mismatch_drill_latest.json"
+    ],
+    "exit_code": 0,
+    "stdout": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_report_lock_mismatch_drill_latest.json",
+    "stderr": ""
+  },
+  "gate_snapshot": {
+    "enabled": false,
+    "holdout_dataset_lock_ok": false,
+    "expected_sha": "00ebdd1123f07ac8897aed6ba31fbba2e46e922a20b5100c7cb8482172ec15bb",
+    "actual_sha": "f0ebdd1123f07ac8897aed6ba31fbba2e46e922a20b5100c7cb8482172ec15bb",
+    "hash_mismatch_reject_present": true
+  },
+  "ok": true
+}

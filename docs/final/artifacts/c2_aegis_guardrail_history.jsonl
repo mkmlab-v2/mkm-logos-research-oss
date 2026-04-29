@@ -522,3 +522,5 @@
 {"generated_at_utc": "2026-04-28T05:15:15Z", "status": "GREEN_HOLD", "ace_profile": "D", "delta_vs_baseline": 0.0}
 {"generated_at_utc": "2026-04-28T05:15:30Z", "status": "GREEN_HOLD", "ace_profile": "D", "delta_vs_baseline": 0.0}
 {"generated_at_utc": "2026-04-28T05:16:10Z", "status": "GREEN_HOLD", "ace_profile": "D", "delta_vs_baseline": 0.0}
+{"generated_at_utc": "2026-04-29T00:05:33Z", "status": "GREEN_HOLD", "ace_profile": "D", "delta_vs_baseline": 0.0}
+{"generated_at_utc": "2026-04-29T00:15:19Z", "status": "GREEN_HOLD", "ace_profile": "D", "delta_vs_baseline": 0.0}

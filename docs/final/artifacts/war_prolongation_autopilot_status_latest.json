@@ -1,6 +1,6 @@
 ﻿{
     "schema":  "war_prolongation_autopilot_status_v1",
-    "generated_at_utc":  "2026-04-28T00:50:12Z",
+    "generated_at_utc":  "2026-04-29T00:50:13Z",
     "cycle_ok":  true,
     "monitored_task":  "MKM-War-Prolongation-Autopilot-Daily",
     "promotion_ready":  false,

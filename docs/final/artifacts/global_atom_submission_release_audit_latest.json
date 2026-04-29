@@ -1,0 +1,21 @@
+{
+  "schema": "global_atom_submission_release_audit_v1",
+  "generated_at_utc": "2026-04-28T10:17:34Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "zip_path": "C:\\workspace\\docs\\final\\artifacts\\global_atom_submission_bundle_20260428T101455Z.zip",
+  "zip_size_bytes": 13751,
+  "zip_sha256": "92c71b93d4cce0ca6a0fd63c0b5a95be23ff43ebd34cc2e92271c4dd031ca85f",
+  "zip_entry_count": 15,
+  "required_suffixes": [
+    "global_atom_network_academic_onepager_latest.json",
+    "global_atom_kdd_submission_template_latest.json",
+    "global_atom_submission_bundle_latest.json",
+    "global_atom_full_canon_batch_report_latest.json",
+    "global_atom_camera_ready_paper_polished_latest.md",
+    "global_atom_camera_ready_appendix_polished_latest.md"
+  ],
+  "missing_required_suffixes": [],
+  "audit_status": "PASS"
+}

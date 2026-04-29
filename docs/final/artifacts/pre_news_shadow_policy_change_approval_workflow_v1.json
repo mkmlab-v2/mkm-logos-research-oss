@@ -1,0 +1,83 @@
+{
+  "schema": "pre_news_shadow_policy_change_approval_workflow_v1",
+  "updated_at_utc": "2026-04-28T13:28:00Z",
+  "purpose": "Pre-news shadow threshold policy change checklist with explicit two-person approval and post-change verification chain.",
+  "scope": {
+    "policy_json": "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_v1.json",
+    "state_json": "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_state_latest.json",
+    "audit_summary_json": "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
+    "governance_alert_json": "docs/final/artifacts/pre_news_shadow_policy_governance_alert_latest.json",
+    "weekly_bundle_json": "docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_latest.json"
+  },
+  "required_sequence": [
+    {
+      "step": 1,
+      "name": "prepare_policy_change",
+      "required": true,
+      "checklist": [
+        "update policy_version",
+        "set updated_at_utc",
+        "set effective_from_utc",
+        "set approved_by",
+        "set approved_by_1",
+        "set approved_by_2"
+      ],
+      "pass_condition": "policy JSON contains all governance fields and updated stage thresholds."
+    },
+    {
+      "step": 2,
+      "name": "rebuild_weekly_chain",
+      "required": true,
+      "command_hint": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_daily_prophecy_then_pre_news_v1.ps1 -EnablePreNewsShadowWeeklyReport",
+      "checklist": [
+        "pre_news_shadow_weekly_report_latest.json refreshed",
+        "pre_news_shadow_stage_threshold_policy_audit_summary_latest.json refreshed",
+        "pre_news_shadow_policy_governance_alert_latest.json refreshed",
+        "pre_news_shadow_weekly_audit_bundle_latest.json refreshed",
+        "pre_news_shadow_ops_status_latest.json refreshed"
+      ],
+      "pass_condition": "all listed artifacts generated with newer generated_at_utc than pre-change run."
+    },
+    {
+      "step": 3,
+      "name": "verify_two_person_gate",
+      "required": true,
+      "evidence_source": "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
+      "checklist": [
+        "current_policy_state.has_two_person_approval == true",
+        "current_policy_state.policy_fingerprint_sha256 exists",
+        "metrics.change_count_window updated"
+      ],
+      "pass_condition": "audit summary confirms two-person approval and current fingerprint."
+    },
+    {
+      "step": 4,
+      "name": "verify_governance_alert_behavior",
+      "required": true,
+      "evidence_source": "docs/final/artifacts/pre_news_shadow_policy_governance_alert_latest.json",
+      "checklist": [
+        "has_alert evaluated for current threshold policy",
+        "notify_status recorded",
+        "reasons list populated when has_alert=true"
+      ],
+      "pass_condition": "alert artifact reflects expected state for current change_count_window and metadata."
+    },
+    {
+      "step": 5,
+      "name": "verify_bundle_traceability",
+      "required": true,
+      "evidence_source": "docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_latest.json",
+      "checklist": [
+        "bundle inputs include policy JSON and audit summary paths",
+        "policy_change_log_tail present",
+        "hash manifest exists for latest bundle"
+      ],
+      "pass_condition": "weekly audit bundle and hash manifest provide end-to-end traceability."
+    }
+  ],
+  "decision_rule": {
+    "go": "all required_sequence steps pass",
+    "hold": "any required_sequence step fails",
+    "rollback_hint": "restore prior policy JSON from git history and rerun weekly chain."
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "pointerguard_memory_v2_ramp_tuning_v1",
-  "generated_at_utc": "2026-04-28T05:35:28+00:00",
+  "generated_at_utc": "2026-04-28T21:30:05+00:00",
   "research_only": true,
   "source_track": "B",
   "inputs": {
@@ -15,18 +15,16 @@
       2.0,
       1.0
     ],
-    "current_index": 1,
-    "current_threshold": 3.0,
-    "recommended_index": 2,
-    "recommended_threshold": 2.0
+    "current_index": 3,
+    "current_threshold": 1.0,
+    "recommended_index": 3,
+    "recommended_threshold": 1.0
   },
   "decision_checks": {
     "recent_check_count": 1,
     "pass_all_recent_checks": true,
-    "original_decision": "KEEP_SHADOW",
-    "original_reasons": [
-      "profile_go_promotion_disabled"
-    ]
+    "original_decision": "PROMOTE_APPLY_GO",
+    "original_reasons": []
   },
-  "recommendation": "ADVANCE_TO_NEXT_TIGHTER_THRESHOLD"
+  "recommendation": "RAMP_COMPLETE_READY_FOR_PROFILE_ENABLE_REVIEW"
 }
