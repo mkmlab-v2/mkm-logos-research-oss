@@ -12,7 +12,7 @@
 
 새 채팅에서 직전 작전의 팩트만 이어 붙일 때 `@docs/final/CURRENT_OPS_SNAPSHOT.md`를 첨부한다. **불변 SSOT가 아니며** 필요 시 갱신·비운다. 압축 파이프라인(A/B Track)과 역할을 섞지 않는다.
 
-다단계 임무의 **종료 조건·로컬 체크리스트**만 디스크에 남길 때는 `MISSION_LOG.template.md` → **`MISSION_LOG.md`**(로컬 전용,`.gitignore`). **작전 요약·세션 핸드오프**는 `docs/final/CURRENT_OPS_SNAPSHOT.md`가 우선이며, 동일 SSOT를 스냅샷과 `MISSION_LOG`에 **이중 서술하지 않는다**. 순서·상용 게이트 SSOT는 `P0_COMMERCIALIZATION_TRACKER.md`이다.
+다단계 임무의 **종료 조건·로컬 체크리스트**만 디스크에 남길 때는 `MISSION_LOG.template.md` → **`MISSION_LOG.md`**(로컬 전용,`.gitignore`). **작전 요약·세션 핸드오프**는 `docs/final/CURRENT_OPS_SNAPSHOT.md`가 우선이며, 동일 SSOT를 스냅샷과 `MISSION_LOG`에 **이중 서술하지 않는다**. 순서·상용 게이트 SSOT는 `P0_COMMERCIALIZATION_TRACKER.md`이다. 자율 의사결정 감사 로그는 `reports/agent_decisions_log.jsonl`에 append-only로 남긴다.
 
 ## 병렬 작전 권장 (다중 채팅·서브에이전트)
 
@@ -27,6 +27,14 @@
 - **동시 편집을 피할 파일(직렬 대상 예시):** 루트 `AGENTS.md`·`CLAUDE.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`, 동일 `scripts/run_defense_*.py` / `run_prophecy_restoration_spike.py` 등 **한 스트림에서만** 바꾼다.
 - **코드 병렬이 필요하면:** 브랜치 분리 또는 `git worktree`(작업 트리 복제)로 나눈 뒤 → 머지 전 충돌 확인.
 - **서브에이전트/Task 병렬:** 조사·읽기 위주는 부담 적음; **쓰기**는 디렉터리·브랜치 범위를 명시해 겹치지 않게 한다.
+
+### Git Hygiene 기본 프로토콜 (재부팅/세션 종료 후에도 유지)
+
+- **원칙:** `1작업 = 1브랜치 = 1PR` 고정. 장기 브랜치에 연속 누적 커밋 금지.
+- **기본 작업 위치:** 더티 루트 대신 `origin/<base>`에서 시작한 **클린 worktree**를 기본으로 사용한다.
+- **푸시 전략:** 대형 푸시가 지연/행(hang)되면 즉시 **초소형 배치(권장: 1커밋)** 로 전환해 `push -> PR -> merge`를 반복한다.
+- **정리 규칙:** PR merge 후 원격 브랜치와 임시 worktree를 즉시 정리해 다음 작업의 분기 오염을 방지한다.
+- **우선순위 고정:** Git hygiene 규칙이 다른 문서와 상충하면 항상 루트 `.cursorrules`의 "Git Hygiene 고정 (세션 종료 후에도 유지)" 4줄을 우선 적용한다.
 
 ## 필수 우선순위
 
