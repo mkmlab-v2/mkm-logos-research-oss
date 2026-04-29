@@ -13,6 +13,14 @@
 - 성능 성적표: Tier1+Tier2 분리 산출(`pointerguard_two_tier_perf_scorecard_latest.json`), 현재 판정 `GO_FOR_CONTROLLED_B2B`.
 - 보류: 글로벌 초대형 주장 전 host CPU/memory 계측 포함 Tier2 보강 필요.
 
+## 2026-04-29 최신 상태 (Global Atom claim lock 복구)
+
+- 문제: 브리핑/대화 레이어의 `약 305만 의미망(엣지)` 수치가 SSOT latest 포인터와 분리되어 재확인 실패 발생.
+- 복구: `docs/final/artifacts/global_atom_claim_lock_registry_latest.json` 생성(`value=3051269`, definition/evidence_path/recompute_command 고정).
+- 근거 원본: `docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/global_atom_network_academic_onepager_latest.json`의 `key_facts.edge_count`.
+- 검증 스크립트: `py scripts/check_global_atom_claim_lock_v1.py --write-lock --strict` (claim value + source sha256 확인).
+- 운용 원칙: 대외 문구는 claim registry를 우선, mutable `*latest*` 산출만으로 고정 수치 단정 금지.
+
 ## 2026-04-22 최신 상태 (B-track dual-lane)
 
 - 실행 명령(핵심): `python scripts/run_ab_track_autogate_pipeline_v3.py --b-phase promotion --b-gate-evaluator v4 --allow-auroc-missing-single-class-test --rebuild-unseen-split --unseen-heldout-target EGFR --unseen-split-seed 20260424 --unseen-val-ratio 0.12 --rebuild-seen-label-split --seed 20260424`

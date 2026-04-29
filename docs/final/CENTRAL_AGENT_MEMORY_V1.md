@@ -117,6 +117,7 @@
 | 2026-04-23 (Logos 파이프라인 혼동 방지 + canon 레인) | 마스터 아톰 집계 vs 레짐 특이점 리포트는 **서로 다른 입력·목적** — Fact-Lock으로 구분해 `CENTRAL_AGENT_MEMORY`에 고정. 특이점 스크립트에 **`--canon-jsonl`**·레인 `canon` 추가; Vault 미러 스크립트에 **`MKM_OBSIDIAN_VAULT_ROOT`**·기본 `memory/obsidian_vault` 스텁; 글로스 v4 보수 접두 체인은 코드북·HYPO 보조 유지. |
 | 2026-04-28 (성경×우리이론 융합 게이트 완성) | Multi-symbol(선악과/바벨/출애굽) 공진·4D·survivability·drift·negative/counterfactual·통합 게이트(`multi_symbol_gate_summary_latest.json=GO`)와 Q&A 동적 근거 주입까지 E2E 체인+pytest로 잠금. |
 | 2026-04-28 (PointerGuard 상용 게이트 고정) | 폴더 정책 allow/caution/forbid + shadow alert/guard + memory_v2 ramp/freeze + 운영 스모크 + 일일 스케줄러 + Tier2 서비스형 부하(`max_error_rate=0`, worst `p95=159.50ms`, worst `p99=171.77ms`)까지 연결. 대외 판정은 **`GO_FOR_CONTROLLED_B2B`**, 글로벌 초대형 주장(`global-scale`)은 **Tier2 host 리소스 계측 보강 전 보류**. |
+| 2026-04-29 (Global Atom 수치 락 복구) | `3051269 edges`(약 305만) 근거를 freeze onepager(`.../freeze/global_atom_submission_20260428T095850Z/global_atom_network_academic_onepager_latest.json`)로 재매핑하고, `global_atom_claim_lock_registry_latest.json` + `check_global_atom_claim_lock_v1.py`로 주장-근거-해시 재검증 루프를 고정. |
 | | |
 
 ---
@@ -177,9 +178,9 @@
 
 ## 다음에 할 일 (최대 3개)
 
-1. Multitarget 데이터 계약 결정: `target-conditioned` Stage-2 학습 가능성 확보(타깃 내 다중 라벨) 또는 과업 축소(target ID + OOD reject) 중 하나를 운영 규격으로 확정.
-2. 멀티타깃 파이프라인 사전 게이트로 `build_multitarget_label_topology_report_v1.py`·`eval_target_conditioned_trainability_gate_v1.py`를 연결해 학습 불가 구조에서 즉시 `HOLD` 차단.
-3. NotebookLM 지휘부 동기화 루틴 유지: `sync_notebooklm_sources_to_mkm_data_vault.ps1` 실행 후 `CURRENT_OPS_SNAPSHOT.md`와 최신 multitarget 아티팩트 경로 정합 점검.
+1. Global Atom 핵심 주장 수치(약 305만 엣지)를 `global_atom_claim_lock_registry_latest.json`의 `value/definition/evidence_path/recompute_command` 형식으로만 대외/내부 문구에 사용하고, 브리핑 단독 수치는 금지.
+2. `py scripts/check_global_atom_claim_lock_v1.py --write-lock --strict`를 주간/배포 전 체인에 연결해 claim value·source hash 드리프트를 자동 감지.
+3. NotebookLM 지휘부 동기화 루틴 유지: `sync_notebooklm_sources_to_mkm_data_vault.ps1` 실행 후 `CURRENT_OPS_SNAPSHOT.md`와 claim registry 경로 정합 점검.
 
 ## 동기화 루틴
 
