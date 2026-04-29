@@ -18,6 +18,8 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
 DEFAULT_OUTPUT = ART / "survivor_resonance_operational_bundle_latest.json"
+DEFAULT_EXPLORATORY_MIN_ABS_CORR = 0.08
+VALIDATED_MAX_GO_MIN_ABS_CORR = 0.082
 
 
 def _now() -> str:
@@ -35,13 +37,19 @@ def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
+def _threshold_tag(value: float) -> str:
+    return f"{value:g}".replace(".", "p")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Run survivor resonance operational bundle.")
     ap.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    ap.add_argument("--exploratory-min-abs-corr", type=float, default=0.08)
+    ap.add_argument("--exploratory-min-abs-corr", type=float, default=DEFAULT_EXPLORATORY_MIN_ABS_CORR)
     ap.add_argument("--max-pvalue", type=float, default=0.05)
     ap.add_argument("--min-n", type=int, default=250)
     args = ap.parse_args()
+    gate_tag = _threshold_tag(float(args.exploratory_min_abs_corr))
+    gate_output_path = ART / f"btrack_survivor_crash_falsification_gate_real_thr{gate_tag}_latest.json"
 
     runs: dict[str, Any] = {}
     steps = [
@@ -58,7 +66,7 @@ def main() -> int:
                 "--backtest-json",
                 str(ART / "btrack_survivor_crash_correlation_backtest_real_latest.json"),
                 "--output",
-                str(ART / "btrack_survivor_crash_falsification_gate_real_thr0p08_latest.json"),
+                str(gate_output_path),
                 "--min-abs-corr",
                 str(args.exploratory_min_abs_corr),
                 "--max-pvalue",
@@ -74,13 +82,19 @@ def main() -> int:
 
     chain = _read_json(ART / "btrack_survivor_resonance_falsification_chain_latest.json")
     sweep = _read_json(ART / "btrack_survivor_crash_falsification_threshold_sweep_latest.json")
-    gate_008 = _read_json(ART / "btrack_survivor_crash_falsification_gate_real_thr0p08_latest.json")
+    gate_exploratory = _read_json(gate_output_path)
     tuning = _read_json(ART / "btrack_survivor_real_resonance_tuning_latest.json")
 
     out = {
         "schema": "survivor_resonance_operational_bundle_v1",
         "generated_at_utc": _now(),
         "research_only": True,
+        "policy": {
+            "default_exploratory_min_abs_corr": DEFAULT_EXPLORATORY_MIN_ABS_CORR,
+            "validated_max_go_min_abs_corr": VALIDATED_MAX_GO_MIN_ABS_CORR,
+            "current_exploratory_min_abs_corr": float(args.exploratory_min_abs_corr),
+            "recommended_default": "conservative_default_0p08",
+        },
         "inputs": {
             "exploratory_min_abs_corr": float(args.exploratory_min_abs_corr),
             "max_pvalue": float(args.max_pvalue),
@@ -89,7 +103,8 @@ def main() -> int:
         "runs": runs,
         "snapshots": {
             "chain_final_decision": ((chain.get("result") or {}).get("final_decision")),
-            "exploratory_gate_decision": ((gate_008.get("result") or {}).get("decision")),
+            "exploratory_gate_decision": ((gate_exploratory.get("result") or {}).get("decision")),
+            "exploratory_gate_output_path": str(gate_output_path),
             "tuning_best_weights": ((tuning.get("best") or {}).get("weights")),
             "sweep_rows": len(sweep.get("rows") or []),
         },
