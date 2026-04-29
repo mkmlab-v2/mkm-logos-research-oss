@@ -198,6 +198,24 @@ on:
       - "tests/test_human_regime_audit_and_agreement_spike.py"
       - "scripts/eval_prophecy_hit_rate_v1.py"
       - "scripts/build_btrack_prophecy_score_from_ohlcv.py"
+      - "scripts/run_prophecy_logos_revalidation_suite_v1.py"
+      - "scripts/check_promotion_directional_semantic_separation_v1.py"
+      - "tests/test_role_router_shadow_forward_fusion_regression.py"
+      - "tests/test_promotion_directional_semantic_separation_v1.py"
+      - "scripts/build_survivor_w3_direct_mapping_v1.py"
+      - "scripts/build_global_atom_survivor_resonance_daily_real_v1.py"
+      - "scripts/check_survivor_crash_falsification_gate_v1.py"
+      - "scripts/run_survivor_resonance_falsification_chain_v1.py"
+      - "scripts/sweep_survivor_crash_falsification_thresholds_v1.py"
+      - "scripts/tune_survivor_real_resonance_weights_v1.py"
+      - "scripts/run_survivor_resonance_operational_bundle_v1.py"
+      - "tests/test_build_survivor_w3_direct_mapping_v1.py"
+      - "tests/test_build_global_atom_survivor_resonance_daily_real_v1.py"
+      - "tests/test_check_survivor_crash_falsification_gate_v1.py"
+      - "tests/test_run_survivor_resonance_falsification_chain_v1.py"
+      - "tests/test_sweep_survivor_crash_falsification_thresholds_v1.py"
+      - "tests/test_tune_survivor_real_resonance_weights_v1.py"
+      - "tests/test_run_survivor_resonance_operational_bundle_v1.py"
       - "scripts/build_btrack_llm_input_bundle.py"
       - "scripts/run_btrack_daily_hypothesis_chain.ps1"
       - "scripts/append_btrack_insight_observation.py"
@@ -478,6 +496,26 @@ jobs:
 
       - name: B-Track hypothesis + dawn-score + prophecy hit-rate eval smoke
         run: python -m pytest tests/test_generate_btrack_hypothesis_prophecy_v1.py tests/test_build_btrack_prophecy_score_from_ohlcv.py tests/test_eval_prophecy_hit_rate_v1.py -q --tb=short
+
+      - name: Logos revalidation fusion + semantic separation regression
+        run: |
+          python -m pytest \
+            tests/test_role_router_shadow_forward_fusion_regression.py \
+            tests/test_promotion_directional_semantic_separation_v1.py \
+            -q --tb=short
+
+      - name: Survivor resonance direct-mapping + falsification chain regression
+        run: |
+          python -m pytest \
+            tests/test_build_survivor_w3_direct_mapping_v1.py \
+            tests/test_build_global_atom_survivor_resonance_daily_real_v1.py \
+            tests/test_check_survivor_crash_falsification_gate_v1.py \
+            tests/test_run_survivor_resonance_falsification_chain_v1.py \
+            tests/test_sweep_survivor_crash_falsification_thresholds_v1.py \
+            tests/test_tune_survivor_real_resonance_weights_v1.py \
+            -q --tb=short
+      - name: Survivor resonance operational bundle regression
+        run: python -m pytest tests/test_run_survivor_resonance_operational_bundle_v1.py -q --tb=short
       - name: pytest human regime audit spike (Gemini retry + proxy + agreement)
         run: |
           if [[ -f tests/test_fill_human_regime_audit_llm_heuristic_spike.py && -f tests/test_fill_human_regime_audit_gemini_retry_spike.py && -f tests/test_fill_human_regime_audit_proxy_spike.py && -f tests/test_human_regime_audit_and_agreement_spike.py ]]; then

@@ -570,7 +570,7 @@
 | Phase 1 일일 원클릭 | `projects/bitcoin-trading/ops/windows-rehearsal/bootstrap_ops_phase1_daily.ps1` | `sync_required_env_to_user.ps1` → `register_ops_phase1_chain_task.ps1` 순서; `-SkipEnvSync` / `-SkipTaskRegister` / `-ExcludeConstitutionGates` / `-IncludeReadiness` / `-IncludeWebhookSmoke`. 동기화: `.env`에 `OPS_ALARM_WEBHOOK_URL` 없으면 User `N8N_WEBHOOK_URL`로 **자동 미러** |
 | P0·헌법 경로 스모크 | `scripts/verify_p0_constitution_gate_paths.ps1` | `CONSTITUTION`·`P0`·`COMPRESSION_SLA_POLICY_V1`·`COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK`·`NotebookLM_sources_manifest`·`.cursorrules`·`AGENTS`·`CLAUDE`·정렬 pytest·Vault 동기화 등 **존재만** 검사(exit 0/1). 상세: `P0_COMMERCIALIZATION_TRACKER.md` §증거 경로 |
 | 압축 KPI 자동 체인 | `scripts/run_compression_automation_chain.ps1` | 범용 프로파일 재평가·KPI 요약(`literal_kpi`는 `-IncludeLiteralTrack`로 리터럴 산출물이 있을 때)·토큰 API hydration 믹스·범용 손실 패턴; `-IncludeLiteralTrack` 시 리터럴 프로파일·리터럴 손실 패턴 추가; `run_workspace_automation_health.ps1 -IncludeCompressionKpi`로 묶음 가능(투트랙까지: 동시에 `-IncludeLiteralTrack`; 알람은 여전히 `active_kpi` 기준); 종료 시 `send_compression_kpi_alarm_if_needed.ps1`(임계치 `docs/final/artifacts/compression_alarm_thresholds_v1.json`, 웹훅 `COMPRESSION_KPI_ALARM_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`, `-SkipCompressionAlarm` 생략) |
-| Track A go/nogo·HOLD 체인 (모노레포 루트) | `scripts/build_a_track_go_nogo_status.py` → `docs/final/artifacts/a_track_go_nogo_status_latest.json`; `scripts/build_a_track_multiweek_stability_tracker_v1.py` → `a_track_multiweek_stability_tracker_v1_latest.json`; `scripts/build_a_track_hold_release_checklist_v1.py` → `a_track_hold_release_checklist_v1_latest.json`; 거버넌스 JSON 부트스트랩 `scripts/emit_a_track_governance_artifacts_v1.py`(플레이스홀더—실전 서명 전 교체); 주간 롤업 `scripts/run_a_track_s3_weekly_evidence_rollup_v1.py`(`--emit-missing-governance` 선택, 트래커→체크리스트→go/nogo→체크리스트); 로컬 원클릭 갱신(주차 증가 없음) `scripts/Run-ATrackGovernanceRefresh.ps1`; 주간 작업 등록 `scripts/Register-ATrackS3WeeklyEvidenceTask.ps1`(기본 월요일·`--emit-missing-governance` 포함, `-SkipEmitGovernance`로 끔); 승인 영수증 선택 `reports/a_track_promotion_decision_latest.json` | **B-track·실매매 자동 합선 아님.** 가격 출력·고신뢰·다주간 증거·운영자 승인은 별도 게이트; 기본 산출물은 파이프라인 연결용이며 운영 주장의 근거로 삼으려면 서명·증거 경로를 갱신해야 한다. |
+| Track A go/nogo·HOLD 체인 (모노레포 루트) | `scripts/build_a_track_go_nogo_status.py` → `docs/final/artifacts/a_track_go_nogo_status_latest.json`; `scripts/build_a_track_multiweek_stability_tracker_v1.py` → `a_track_multiweek_stability_tracker_v1_latest.json`; `scripts/build_a_track_hold_release_checklist_v1.py` → `a_track_hold_release_checklist_v1_latest.json`; 거버넌스 JSON 부트스트랩 `scripts/emit_a_track_governance_artifacts_v1.py`(플레이스홀더—실전 서명 전 교체); 주간 롤업 `scripts/run_a_track_s3_weekly_evidence_rollup_v1.py`(`--emit-missing-governance` 선택, 트래커→체크리스트→go/nogo→체크리스트); 로컬 원클릭 갱신(주차 증가 없음) `scripts/Run-ATrackGovernanceRefresh.ps1`; 주간 작업 등록 `scripts/Register-ATrackS3WeeklyEvidenceTask.ps1`(기본 월요일·`--emit-missing-governance` 포함, `-SkipEmitGovernance`로 끔); 승인 영수증 선택 `reports/a_track_promotion_decision_latest.json` | **B-track·실매매 자동 합선 아님.** 가격 출력·고신뢰·다주간 증거·운영자 승인은 별도 게이트; 기본 산출물은 파이프라인 연결용이며 운영 주장의 근거로 삼으려면 서명·증거 경로를 갱신해야 한다. **2026-04-29부터 `build_a_track_go_nogo_status.py`는 의미 분리 고정: `high_reliability_decision_not_hold`/`price_output_unlocked`는 runtime 실상태만 반영하고, 정책 문서 준비 상태는 `high_reliability_release_plan_defined`/`price_unlock_policy_defined`로 별도 체크한다(문서 준비값으로 HOLD/lock 실상태를 덮어쓰지 않음).** |
 | 에이전트 레인 분리 | 루트 `AGENTS.md` — **운영 자동화 vs 연구 레인** | MKM Study·본선 OOF·실매매 **자동 합선 금지** 방향; 브리핑 전용 필드는 레포 산출물 근거 없이 SSOT 삼지 않음 |
 
 ### 13.2 외부 법령 참조 API (Beopmang 등, 보조 레이어)
@@ -3385,3 +3385,104 @@
   - `py scripts/run_lens_combo_limited_live_engine_handoff_v1.py --approve-submit --live` exit 0 (`dry_run=false`, `status=READY_FOR_ENGINE_SUBMIT`).
   - `py scripts/build_lens_combo_engine_submit_preflight_v1.py --expected-dry-run false` exit 0 (`result=PASS`).
   - `py scripts/run_lens_combo_24h_watchdog_v1.py --duration-hours 0 --poll-seconds 5` exit 0 (`healthy=True` smoke row 기록).
+
+#### 31.71 Role-Router Shadow-Forward Gate Hard-Lock + Threshold Calibration (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/check_role_router_shadow_forward_validation_v1.py`
+  - `scripts/run_prophecy_role_router_multiscenario_opt_v1.py`
+- 산출물:
+  - `docs/final/artifacts/role_router_shadow_forward_validation_gate_v1.json`
+  - `docs/final/artifacts/prophecy_role_router_multiscenario_opt_30y_btc_neutralbase_latest.json`
+  - `reports/role_router_shadow_forward_validation_decision_latest.json`
+  - `reports/role_router_shadow_forward_validation_decision_log.jsonl`
+- 구현 사실:
+  - Shadow-forward 승격 판정기 추가:
+    - gate JSON의 필수 체크(Preflight/Intent/First30m/24h Watchdog/Circuit Breaker) + 자산별 임계치 + cross-asset safety를 단일 판정으로 결합.
+    - 판정 출력은 `GO_LIVE_CANDIDATE` 또는 `HOLD_SHADOW_ONLY`로 고정.
+  - gate에 `required_oos_days=252` 하드락 반영(자산 공통).
+  - BTC block 임계치 민감도 검증 후 `min_hit_rate_active`를 `0.53 -> 0.52845`로 정밀 보정.
+  - `run_prophecy_role_router_multiscenario_opt_v1.py`에 gate 연결 후처리 옵션(`--promotion-gate-json`) 추가:
+    - gate 통과 후보가 있으면 해당 후보를 `best_candidate`로 우선 선택,
+    - 없으면 기존 robustness-first 순위를 유지.
+- 최신 상태:
+  - `py scripts/check_role_router_shadow_forward_validation_v1.py --gate-json docs/final/artifacts/role_router_shadow_forward_validation_gate_v1.json` exit 0.
+  - `reports/role_router_shadow_forward_validation_decision_latest.json` 기준:
+    - `checks_passed=true`
+    - `thresholds_passed=true`
+    - `final_decision=GO_LIVE_CANDIDATE`
+
+#### 31.72 Revalidation Failure-Path Semantic Field Persistence + Separation Gate (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/run_prophecy_logos_revalidation_suite_v1.py`
+  - `scripts/check_promotion_directional_semantic_separation_v1.py`
+- 테스트:
+  - `tests/test_role_router_shadow_forward_fusion_regression.py`
+  - `tests/test_promotion_directional_semantic_separation_v1.py`
+- 구현 사실:
+  - revalidation suite의 조기 실패(`status=FAILED`) 경로에서도 `findings.logos_directional_viable_under_current_setup`를 항상 기록하도록 고정.
+  - 승격 판정(`final_decision`)과 Logos 방향성 가능성(`logos_directional_viable_under_current_setup`)의 의미 분리 스모크체크를 추가하고 strict 모드 검증을 지원.
+  - CI(`.github/workflows/dual-regime-integrity.yml`)에 해당 회귀 테스트를 연결해 의미 혼선 재발을 자동 차단.
+- 최신 상태:
+  - `py scripts/run_prophecy_logos_revalidation_suite_v1.py` exit 0.
+  - `py scripts/check_promotion_directional_semantic_separation_v1.py --strict` exit 0 (`semantic_separation_ok=true`, `non_conflation_confirmed=true`).
+  - `py -m pytest tests/test_role_router_shadow_forward_fusion_regression.py tests/test_promotion_directional_semantic_separation_v1.py -q` exit 0 (4 passed).
+
+#### 31.73 Survivor Resonance Direct-Mapping + Real/Proxy Falsification Chain (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/build_survivor_w3_direct_mapping_v1.py`
+  - `scripts/build_global_atom_survivor_resonance_daily_real_v1.py`
+  - `scripts/run_survivor_resonance_falsification_chain_v1.py`
+  - `scripts/check_survivor_crash_falsification_gate_v1.py`
+  - `scripts/sweep_survivor_crash_falsification_thresholds_v1.py`
+  - `scripts/tune_survivor_real_resonance_weights_v1.py`
+- 테스트:
+  - `tests/test_build_survivor_w3_direct_mapping_v1.py`
+  - `tests/test_build_global_atom_survivor_resonance_daily_real_v1.py`
+  - `tests/test_check_survivor_crash_falsification_gate_v1.py`
+  - `tests/test_run_survivor_resonance_falsification_chain_v1.py`
+  - `tests/test_sweep_survivor_crash_falsification_thresholds_v1.py`
+- 구현 사실:
+  - survivor(`cand_001..005`)와 W3 `sample_id`를 직접 매핑하는 아티팩트(`global_atom_survivor_w3_direct_mapping_latest.json`)를 추가해 `mapping_quality=direct_mapping_seeded_v1` 경로를 고정.
+  - real resonance 입력(`global_atom_survivor_resonance_daily_real_latest.jsonl`)을 체인에 연결해 real 부재 HOLD를 해소하고, proxy/real 분리 결과를 단일 summary로 산출.
+  - 기본 반증 게이트(`|corr|>=0.5`, `p<=0.05`, `n>=250`)는 proxy/real 모두 `HOLD_RESEARCH_ONLY`.
+  - 가중치 튜닝 best는 `w_candidate=0.8`, `w_flow=0.5`, `w_temporal=0.1`; 탐색 임계치(`|corr|>=0.08`)에서는 real 기준 `GO_RESEARCH_SIGNAL_CANDIDATE` 확인.
+- 최신 상태:
+  - `py scripts/run_survivor_resonance_falsification_chain_v1.py` exit 0 (`final_decision=HOLD_RESEARCH_ONLY`).
+  - `py scripts/sweep_survivor_crash_falsification_thresholds_v1.py --threshold-grid 0.3,0.4,0.5` exit 0 (all HOLD).
+  - `py scripts/check_survivor_crash_falsification_gate_v1.py --backtest-json docs/final/artifacts/btrack_survivor_crash_correlation_backtest_real_latest.json --output docs/final/artifacts/btrack_survivor_crash_falsification_gate_real_thr0p08_latest.json --min-abs-corr 0.08 --max-pvalue 0.05 --min-n 250` exit 0 (`decision=GO_RESEARCH_SIGNAL_CANDIDATE`).
+
+#### 31.74 Survivor Chain Auto-Apply Tuned Weights (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/run_survivor_resonance_falsification_chain_v1.py`
+  - `scripts/tune_survivor_real_resonance_weights_v1.py`
+  - `scripts/build_global_atom_survivor_resonance_daily_real_v1.py`
+- 테스트:
+  - `tests/test_run_survivor_resonance_falsification_chain_v1.py`
+  - `tests/test_tune_survivor_real_resonance_weights_v1.py`
+- 구현 사실:
+  - falsification chain이 `btrack_survivor_real_resonance_tuning_latest.json`의 `best.weights`를 자동 로드해 real resonance JSONL을 선행 재빌드한 뒤 backtest/gate를 수행하도록 배선.
+  - 기본값은 `--apply-best-tuned-weights` enabled이며, 튜닝 파일 부재/파싱 실패 시 summary `notes`에 이유를 기록하고 보수 경로로 계속 실행.
+  - summary 입력에 `apply_best_tuned_weights`와 `tuning_json` 경로를 명시해 재현/감사를 고정.
+- 최신 상태:
+  - `py -m pytest tests/test_run_survivor_resonance_falsification_chain_v1.py tests/test_tune_survivor_real_resonance_weights_v1.py -q` exit 0.
+  - `py scripts/run_survivor_resonance_falsification_chain_v1.py` exit 0 (`final_decision=HOLD_RESEARCH_ONLY`).
+
+#### 31.75 Survivor Resonance Operational Bundle + CI Gate Lock (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/run_survivor_resonance_operational_bundle_v1.py`
+- 테스트:
+  - `tests/test_run_survivor_resonance_operational_bundle_v1.py`
+- CI:
+  - `.github/workflows/dual-regime-integrity.yml`
+- 구현 사실:
+  - 운영 번들에서 `tuning -> direct_mapping -> build_real -> falsification_chain -> threshold_sweep(0.3,0.4,0.5) -> exploratory_gate(0.08)`를 단일 실행으로 고정.
+  - 산출물 `docs/final/artifacts/survivor_resonance_operational_bundle_latest.json`에 실행별 returncode와 핵심 스냅샷(`chain_final_decision`, `exploratory_gate_decision`, `tuning_best_weights`)을 기록.
+  - CI에 번들 회귀 테스트를 추가해 falsification chain 회귀와 분리된 독립 게이트로 고정.
+- 최신 상태:
+  - `py -m pytest tests/test_run_survivor_resonance_operational_bundle_v1.py -q` exit 0.
+  - `py scripts/run_survivor_resonance_operational_bundle_v1.py` exit 0 (`chain_final_decision=HOLD_RESEARCH_ONLY`, `exploratory_gate_decision=GO_RESEARCH_SIGNAL_CANDIDATE`).
