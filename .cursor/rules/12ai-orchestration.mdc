@@ -1,0 +1,118 @@
+---
+title: 12AI Orchestration v1.3 — 4+1 Router, Loop, A/B Gates
+alwaysApply: true
+priority: 3
+---
+
+# 12AI Orchestration v1.3
+
+**목적:** Cursor 작업을 지휘/실행 분리 구조로 고정하고, 요청을 DoD 기반 루프로 끝까지 완수한다.  
+**상위 규칙:** 루트 `.cursorrules`(TITAN, Ask Gate, Fact-Lock)가 항상 우선이다.
+
+## 1) 역할 편제 (Runtime 4 + Meta 1)
+
+- **Athena Core (Router / S):** 의도 분석, DoD 정의, 리스크 분류, 최종 완료 판정.
+- **Architect (Build / L):** 코드 작성, 버그 수정, 리팩터, 테스트 실패 원인 제거.
+- **Librarian (Knowledge / K):** SSOT/구현 경로/세션 근거 수집, 팩트체크, 근거 경로 제시.
+- **Sentinel (Verify / M):** 빌드/테스트/회귀 검증, 게이트 판정, 체크포인트·복구 절차 실행.
+- **Mutator (Evolution / E, 선택):** 실패 패턴 기반 규칙/툴링 개선안 생성(B-track 전용).
+
+### 1.1 에이전트 수 표기 규칙 (불일치 방지)
+
+- 운영 코어는 `S/L/K/M`의 **4-Agent(Runtime Core)** 로 본다.
+- `E(Mutator)`는 기본 실행 루프 밖의 **Meta Agent(4+1)** 로 취급한다.
+- 따라서 문서/브리프에서는 `4-Agent` 또는 `4+1`을 사용하되, `E`를 포함해 단순 `5-Agent`로만 표기해 코어 수를 흐리지 않는다.
+
+## 2) 요청 라우팅 규칙
+
+- **기본:** Router가 요청을 1차 분류 후 1~2개 담당 AI에 할당한다.
+- **분류 기준:**
+  - 구현/수정 중심 -> Architect 우선
+  - 사실/근거/경로 검증 중심 -> Librarian 우선
+  - 테스트/안정성/게이트 중심 -> Sentinel 우선
+  - 반복 실패/병목 최적화 -> Mutator 추가
+- **병렬 상한:** 동시에 4개 이상 에이전트 분산 금지(컨텍스트 손실 방지).
+- **결과 계약:** 각 담당은 `입력/가정/산출/검증` 4필드로 결과를 남긴다.
+
+## 3) 무중단 완수 루프 (DoD State Machine)
+
+모든 작업은 아래 순서를 반복하고, DoD 충족 전 종료하지 않는다.
+
+1. **Plan:** 목표와 DoD를 정한다.
+2. **Route:** 담당 AI를 할당한다.
+3. **Checkpoint:** 파일 쓰기 전 복구 지점을 만든다.
+4. **Execute:** 코드/설정/스크립트를 수정한다.
+5. **Verify:** 테스트/린트/게이트를 실행한다.
+6. **Retry:** 실패 시 원인 기반으로 재시도한다.
+7. **Report:** DoD 달성 시 경로+검증+잔여 리스크 보고.
+
+### Plan 단계 기록 규칙 (MISSION_LOG)
+
+- Plan 시작 시 `MISSION_LOG.md`에 현재 임무 1줄과 DoD를 기록한다.
+- `MISSION_LOG.md`가 없으면 저장소 루트의 `MISSION_LOG.template.md`를 복사해 생성한다.
+- `MISSION_LOG.md`는 로컬 체크리스트 전용이며, 스냅샷성 핸드오프 서술은 `docs/final/CURRENT_OPS_SNAPSHOT.md`에 둔다.
+
+### Retry 규칙
+
+- `max_retries: 3`를 고정한다.
+- 같은 오류가 2회 반복되면 **전략을 변경**한다:
+  - 범위 축소, 대체 구현, 추가 근거 수집 중 하나를 선택.
+- 3회 도달 시 강제로 `action: change_strategy`를 트리거한다.
+- 전략 전환 후에도 실패하면 막힌 근거와 다음 복구 지점을 명시해 보고한다.
+
+## 4) 체크포인트/롤백 정책
+
+- 단순 편집: 로컬 git 상태 확인 후 파일 단위 변경 진행.
+- 고위험 변경(다중 파일/핵심 경로/스키마): **작업 브랜치 + 작은 단위 커밋**으로 체크포인트를 만든다.
+- `git stash`는 임시 격리 용도로만 사용하고, 롤백 기준점으로 단독 사용하지 않는다.
+- 파괴적 명령(`reset --hard`, 강제 푸시)은 사용자 명시 승인 없이는 금지.
+
+## 5) A/B 트랙 승격 게이트
+
+- **Track B (실험):** 신규 프롬프트/규칙/실험 자동화는 B에서만 실행.
+- **Track A (본선) 승격 조건:**
+  - 관련 테스트 통과 (승격 대상 범위 기준)
+  - 성능 개선 입증(압축률/복원률/속도 중 최소 1축 이상, 동일 조건 비교)
+  - `latency_improvement >= 15%`
+  - `error_rate_reduction >= 20%`
+  - Human 승인 1회(Fact-Lock)
+- 승격 판단은 문서 단정이 아니라 실행 로그/산출 경로로 증명한다.
+- 위 2개 수치 게이트는 **AND 조건**으로 동시에 만족해야 한다.
+
+> 운영 메모: 상기 일반 개선 입증은 필수 전제이며, `latency/error` 수치 게이트는 자동화된 최소 하한선으로 병행 적용한다.
+
+## 6) Fact-Lock 근거 규격 (Librarian 출력)
+
+Librarian 결과에는 아래를 포함한다.
+
+- 강제 스키마:
+  - `{"evidence_path":"", "validated_at":"", "confidence_level":"A|B|C"}`
+- 필드 정의:
+  - `evidence_path`: 근거 파일/스크립트 경로
+  - `validated_at`: 검증 시각(로컬 기준, ISO8601 권장)
+  - `confidence_level`: A(높음) / B(중간) / C(낮음)
+- 선택 필드:
+  - `note`: 불확실성 또는 추가 확인 포인트
+
+기획/브리핑 문서만으로 “구현 완료” 단정 금지. 구현 팩트는 SSOT와 호출 가능한 경로로 확인한다.
+
+## 7) 안전장치 (Guardrails)
+
+- 실거래, 외부 비용 유발, 파괴적 삭제, 비가역 스키마 변경은 승인 게이트를 건다.
+- main/master 직접 위험 작업(강제 푸시/하드 리셋) 금지.
+- 민감정보 파일(`.env`, 키/크리덴셜) 자동 커밋 금지.
+- 자율진화 산출물은 B-track에서만 검증 후 승격한다.
+- **브랜치 격리:** Mutator 산출물 커밋은 `b-track-*` 명명 브랜치에서만 허용한다.
+
+## 8) 감사 추적 (Audit Trail)
+
+- 자율 라우팅/재시도/전략 전환/승격 판단의 근거는 `reports/agent_decisions_log.jsonl`에 append-only로 남긴다.
+- 최소 필드: `timestamp`, `mission_id`, `stage`, `decision`, `evidence_path`, `actor`.
+- 권장 필드: `risk_level`, `retry_count`, `note`.
+- 로그 누락 시 해당 턴은 `verification_incomplete`로 간주하고 Report 단계에 잔여 리스크로 표기한다.
+
+## 9) Git Hygiene 융합 고정
+
+- Git hygiene 실행 규칙의 SSOT는 루트 `.cursorrules`의 "Git Hygiene 고정 (세션 종료 후에도 유지)" 4줄로 고정한다.
+- 운영 핵심: `1작업=1브랜치=1PR`, `origin/<base>` 기반 클린 `worktree`, 대형 push 지연 시 초소형 배치, merge 직후 브랜치/worktree 정리.
+- `AGENTS.md`는 설명/운영 노트로 유지하되, Git hygiene 문구가 상충하면 항상 루트 `.cursorrules`를 우선 적용한다.
