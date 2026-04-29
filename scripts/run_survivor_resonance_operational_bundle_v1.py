@@ -47,12 +47,14 @@ def main() -> int:
     ap.add_argument("--exploratory-min-abs-corr", type=float, default=DEFAULT_EXPLORATORY_MIN_ABS_CORR)
     ap.add_argument("--max-pvalue", type=float, default=0.05)
     ap.add_argument("--min-n", type=int, default=250)
+    ap.add_argument("--include-l0-early-warning", action="store_true")
+    ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
     gate_tag = _threshold_tag(float(args.exploratory_min_abs_corr))
     gate_output_path = ART / f"btrack_survivor_crash_falsification_gate_real_thr{gate_tag}_latest.json"
 
     runs: dict[str, Any] = {}
-    steps = [
+    steps: list[tuple[str, list[str]]] = [
         ("tuning", [sys.executable, str(ROOT / "scripts" / "tune_survivor_real_resonance_weights_v1.py")]),
         ("direct_mapping", [sys.executable, str(ROOT / "scripts" / "build_survivor_w3_direct_mapping_v1.py")]),
         ("build_real", [sys.executable, str(ROOT / "scripts" / "build_global_atom_survivor_resonance_daily_real_v1.py")]),
@@ -76,14 +78,25 @@ def main() -> int:
             ],
         ),
     ]
+    if args.include_l0_early_warning:
+        steps.append(
+            (
+                "l0_early_warning_backtest",
+                [sys.executable, str(ROOT / "scripts" / "run_btrack_survivor_l0_early_warning_backtest_v1.py")],
+            )
+        )
 
     for name, cmd in steps:
-        runs[name] = _run(cmd)
+        if args.dry_run:
+            runs[name] = {"cmd": cmd, "returncode": 0, "stdout": "DRY_RUN", "stderr": ""}
+        else:
+            runs[name] = _run(cmd)
 
     chain = _read_json(ART / "btrack_survivor_resonance_falsification_chain_latest.json")
     sweep = _read_json(ART / "btrack_survivor_crash_falsification_threshold_sweep_latest.json")
     gate_exploratory = _read_json(gate_output_path)
     tuning = _read_json(ART / "btrack_survivor_real_resonance_tuning_latest.json")
+    l0_early_warning = _read_json(ART / "btrack_survivor_l0_early_warning_backtest_latest.json")
 
     out = {
         "schema": "survivor_resonance_operational_bundle_v1",
@@ -99,6 +112,7 @@ def main() -> int:
             "exploratory_min_abs_corr": float(args.exploratory_min_abs_corr),
             "max_pvalue": float(args.max_pvalue),
             "min_n": int(args.min_n),
+            "include_l0_early_warning": bool(args.include_l0_early_warning),
         },
         "runs": runs,
         "snapshots": {
@@ -107,6 +121,8 @@ def main() -> int:
             "exploratory_gate_output_path": str(gate_output_path),
             "tuning_best_weights": ((tuning.get("best") or {}).get("weights")),
             "sweep_rows": len(sweep.get("rows") or []),
+            "l0_early_warning_schema": l0_early_warning.get("schema"),
+            "l0_early_warning_enabled": bool(args.include_l0_early_warning),
         },
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

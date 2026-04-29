@@ -18,7 +18,7 @@ SCRIPT = ROOT / "scripts" / "run_survivor_resonance_operational_bundle_v1.py"
 def test_operational_bundle_writes_summary(tmp_path: Path) -> None:
     out = tmp_path / "bundle.json"
     proc = subprocess.run(
-        ["py", str(SCRIPT), "--output", str(out)],
+        ["py", str(SCRIPT), "--dry-run", "--output", str(out)],
         cwd=str(ROOT),
         capture_output=True,
         text=True,
@@ -33,4 +33,22 @@ def test_operational_bundle_writes_summary(tmp_path: Path) -> None:
     assert "runs" in doc and isinstance(doc["runs"], dict)
     assert "snapshots" in doc and isinstance(doc["snapshots"], dict)
     assert "exploratory_gate_output_path" in doc["snapshots"]
+    assert doc["inputs"]["include_l0_early_warning"] is False
+    assert doc["snapshots"]["l0_early_warning_enabled"] is False
+
+
+def test_operational_bundle_can_include_l0_early_warning(tmp_path: Path) -> None:
+    out = tmp_path / "bundle_l0.json"
+    proc = subprocess.run(
+        ["py", str(SCRIPT), "--dry-run", "--include-l0-early-warning", "--output", str(out)],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    doc = json.loads(out.read_text(encoding="utf-8-sig"))
+    assert doc["inputs"]["include_l0_early_warning"] is True
+    assert doc["snapshots"]["l0_early_warning_enabled"] is True
+    assert "l0_early_warning_backtest" in (doc.get("runs") or {})
 
