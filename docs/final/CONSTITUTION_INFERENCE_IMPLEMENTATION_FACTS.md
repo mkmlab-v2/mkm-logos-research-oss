@@ -3502,3 +3502,28 @@
 - 최신 상태:
   - `py scripts/sweep_survivor_crash_falsification_thresholds_v1.py --threshold-grid 0.080,0.082,0.084,0.086,0.088,0.090,0.092,0.094,0.096,0.098,0.100` exit 0.
   - 스윕 결과: real gate는 `0.082`까지 `GO_RESEARCH_SIGNAL_CANDIDATE`, `0.084`부터 `HOLD_RESEARCH_ONLY`.
+
+#### 31.77 Survivor Boundary Push Experiments (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/build_survivor_w3_direct_mapping_v1.py`
+  - `scripts/build_global_atom_survivor_resonance_daily_real_v1.py`
+  - `scripts/check_survivor_crash_falsification_gate_v1.py`
+  - `scripts/sweep_survivor_crash_falsification_thresholds_v1.py`
+- 테스트:
+  - `tests/test_build_survivor_w3_direct_mapping_v1.py`
+  - `tests/test_build_global_atom_survivor_resonance_daily_real_v1.py`
+  - `tests/test_check_survivor_crash_falsification_gate_v1.py`
+- 구현 사실:
+  - direct mapping을 `rank_aligned_topk_window_v2`로 확장하고 `--samples-per-survivor` 옵션(다중 샘플 할당)을 추가.
+  - real resonance builder에
+    - `--regime-adaptive-weighting`
+    - `--w-market-shock`
+    를 추가해 변동성/시장 쇼크 보조 신호를 점수 합성에 반영 가능하게 확장(기본값은 보수적으로 기존 영향 최소).
+  - falsification gate/sweep에 목적함수 모드 옵션 추가:
+    - `objective_mode=return|crash|blended`
+    - `blend_alpha`(blended 모드 가중치)
+- 최신 상태(실측):
+  - 경계 스윕(`0.080~0.100`)에서 `return` objective 기준은 여전히 `0.082`까지 GO, `0.084`부터 HOLD.
+  - `crash`/`blended(alpha=0.3)` objective는 전 구간 HOLD.
+  - crash 라벨 임계치(`crash_dd_threshold=-0.25/-0.30/-0.35`) 재백테스트에서도 `return` objective 경계 상향은 확인되지 않음(최대 `0.082` 유지 또는 악화).
