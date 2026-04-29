@@ -3527,3 +3527,28 @@
   - 경계 스윕(`0.080~0.100`)에서 `return` objective 기준은 여전히 `0.082`까지 GO, `0.084`부터 HOLD.
   - `crash`/`blended(alpha=0.3)` objective는 전 구간 HOLD.
   - crash 라벨 임계치(`crash_dd_threshold=-0.25/-0.30/-0.35`) 재백테스트에서도 `return` objective 경계 상향은 확인되지 않음(최대 `0.082` 유지 또는 악화).
+
+#### 31.78 L0 Early-Warning Backtest Branch (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/run_btrack_survivor_l0_early_warning_backtest_v1.py`
+- 테스트:
+  - `tests/test_run_btrack_survivor_l0_early_warning_backtest_v1.py`
+- 구현 사실:
+  - survivor resonance와 시장 drawdown 기반 `crash_flag`를 사용하되, 기존 return/correlation 중심 백테스트와 분리해 **L0 조기경보 전용 라벨**(`crash_onset_within_horizon`)을 별도로 구성.
+  - `--onset-horizon-days` 윈도우 내 급락 진입 여부를 라벨링하고, lag sweep에서 `onset_corr`/`onset_n`을 계산해 선행 경보 가능성만 측정.
+  - 산출 스키마를 `btrack_survivor_l0_early_warning_backtest_v1`로 분기해 `l0_warning_only=true`를 고정(실거래 트리거와 격벽 유지).
+
+#### 31.79 Operational Bundle L0 Option Wiring + Test Stabilization (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/run_survivor_resonance_operational_bundle_v1.py`
+- 테스트:
+  - `tests/test_run_survivor_resonance_operational_bundle_v1.py`
+  - `tests/test_run_btrack_survivor_l0_early_warning_backtest_v1.py`
+- 구현 사실:
+  - operational bundle에 `--include-l0-early-warning` 옵션을 추가해, 필요 시 `l0_early_warning_backtest` 단계를 번들 체인에 조건부 포함하도록 배선.
+  - 번들 산출물 입력/스냅샷 필드에 `include_l0_early_warning`, `l0_early_warning_enabled`, `l0_early_warning_schema`를 추가해 실행 여부와 결과 스키마를 감사 가능하게 고정.
+  - 번들 테스트 안정화를 위해 `--dry-run` 옵션을 추가하고, 회귀 테스트는 dry-run 경로로 계약 검증을 수행하도록 보완(실운영 기본 경로는 기존과 동일한 실실행).
+- 최신 상태:
+  - `py -m pytest tests/test_run_survivor_resonance_operational_bundle_v1.py tests/test_run_btrack_survivor_l0_early_warning_backtest_v1.py -q` exit 0 (`3 passed`).
