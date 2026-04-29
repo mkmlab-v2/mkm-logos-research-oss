@@ -3486,3 +3486,19 @@
 - 최신 상태:
   - `py -m pytest tests/test_run_survivor_resonance_operational_bundle_v1.py -q` exit 0.
   - `py scripts/run_survivor_resonance_operational_bundle_v1.py` exit 0 (`chain_final_decision=HOLD_RESEARCH_ONLY`, `exploratory_gate_decision=GO_RESEARCH_SIGNAL_CANDIDATE`).
+
+#### 31.76 Survivor Exploratory Threshold Boundary Lock (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/run_survivor_resonance_operational_bundle_v1.py`
+- 테스트:
+  - `tests/test_run_survivor_resonance_operational_bundle_v1.py`
+- 구현 사실:
+  - 운영 번들 정책 필드를 고정:
+    - `default_exploratory_min_abs_corr=0.08` (보수 기본값)
+    - `validated_max_go_min_abs_corr=0.082` (촘촘 스윕 기준 GO 최대 경계)
+  - exploratory gate 산출 경로를 임계치 기반(`thr{tag}`)으로 동적 계산해, 임계치 변경 시에도 결과 경로/요약이 일관되게 동기화되도록 보완.
+  - 번들 산출물에 `policy` 블록과 `snapshots.exploratory_gate_output_path`를 추가해 운영 감사 시 임계치 정책과 실제 gate 파일을 동시에 추적 가능하도록 고정.
+- 최신 상태:
+  - `py scripts/sweep_survivor_crash_falsification_thresholds_v1.py --threshold-grid 0.080,0.082,0.084,0.086,0.088,0.090,0.092,0.094,0.096,0.098,0.100` exit 0.
+  - 스윕 결과: real gate는 `0.082`까지 `GO_RESEARCH_SIGNAL_CANDIDATE`, `0.084`부터 `HOLD_RESEARCH_ONLY`.

@@ -27,6 +27,10 @@ def test_operational_bundle_writes_summary(tmp_path: Path) -> None:
     assert proc.returncode == 0, proc.stdout + proc.stderr
     doc = json.loads(out.read_text(encoding="utf-8-sig"))
     assert doc["schema"] == "survivor_resonance_operational_bundle_v1"
+    assert "policy" in doc and isinstance(doc["policy"], dict)
+    assert doc["policy"]["default_exploratory_min_abs_corr"] == 0.08
+    assert doc["policy"]["validated_max_go_min_abs_corr"] == 0.082
     assert "runs" in doc and isinstance(doc["runs"], dict)
     assert "snapshots" in doc and isinstance(doc["snapshots"], dict)
+    assert "exploratory_gate_output_path" in doc["snapshots"]
 
