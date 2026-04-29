@@ -24,8 +24,9 @@ function Set-EnvUser([string]$Name, [string]$Value) {
 
 function Force-StartLiveDaemon {
     $daemonArg = "scripts/start_24h_daemon.py"
-    $liveCommand = "set TESTNET=false&& set ENABLE_TRADING=true&& py $daemonArg"
-    Start-Process -FilePath "cmd.exe" -ArgumentList @("/c", $liveCommand) -WorkingDirectory $projectRoot -WindowStyle Hidden
+    [Environment]::SetEnvironmentVariable("TESTNET", "false", "Process")
+    [Environment]::SetEnvironmentVariable("ENABLE_TRADING", "true", "Process")
+    Start-Process -FilePath "py.exe" -ArgumentList @($daemonArg) -WorkingDirectory $projectRoot -WindowStyle Hidden
 }
 
 function Get-JsonOrNull([string]$Path) {

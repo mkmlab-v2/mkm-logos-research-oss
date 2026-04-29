@@ -256,37 +256,43 @@ function Start-Daemon {
     if ([string]::IsNullOrWhiteSpace($otelConsole)) { $otelConsole = "1" }
     $otlpTracesEndpoint = Get-EnvAnyScope -Name "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT"
     $otlpEndpoint = Get-EnvAnyScope -Name "OTEL_EXPORTER_OTLP_ENDPOINT"
-    $runtimeGuardPrefix = "set MKM_MAKER_ONLY=$makerOnly&& set POSITION_MIN_HOLD_SECONDS=$minHoldSec&& set REVERSAL_COOLDOWN_SECONDS=$reversalCooldownSec&& set MKM_STRICT_MAKER_ENFORCEMENT=$strictMaker&& set MKM_OTEL_ENABLED=$otelEnabled&& set MKM_OTEL_CONSOLE=$otelConsole&& "
+    [Environment]::SetEnvironmentVariable("MKM_MAKER_ONLY", $makerOnly, "Process")
+    [Environment]::SetEnvironmentVariable("POSITION_MIN_HOLD_SECONDS", $minHoldSec, "Process")
+    [Environment]::SetEnvironmentVariable("REVERSAL_COOLDOWN_SECONDS", $reversalCooldownSec, "Process")
+    [Environment]::SetEnvironmentVariable("MKM_STRICT_MAKER_ENFORCEMENT", $strictMaker, "Process")
+    [Environment]::SetEnvironmentVariable("MKM_OTEL_ENABLED", $otelEnabled, "Process")
+    [Environment]::SetEnvironmentVariable("MKM_OTEL_CONSOLE", $otelConsole, "Process")
     if (-not [string]::IsNullOrWhiteSpace($otlpTracesEndpoint)) {
-        $runtimeGuardPrefix += "set OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=$otlpTracesEndpoint&& "
+        [Environment]::SetEnvironmentVariable("OTEL_EXPORTER_OTLP_TRACES_ENDPOINT", $otlpTracesEndpoint, "Process")
     }
     if (-not [string]::IsNullOrWhiteSpace($otlpEndpoint)) {
-        $runtimeGuardPrefix += "set OTEL_EXPORTER_OTLP_ENDPOINT=$otlpEndpoint&& "
+        [Environment]::SetEnvironmentVariable("OTEL_EXPORTER_OTLP_ENDPOINT", $otlpEndpoint, "Process")
     }
 
     # Local default guardrail:
     # - Keep daemon in testnet + non-trading mode unless user explicitly allows live mode.
     # - This prevents accidental live orders after reboot/logon auto-recovery.
     # - hold_shadow: mainnet observation only (matches promotion gate hold_shadow recommendation).
+    function Start-DaemonProcess([string]$testnetValue, [string]$enableTradingValue, [string]$modeLabel) {
+        [Environment]::SetEnvironmentVariable("TESTNET", $testnetValue, "Process")
+        [Environment]::SetEnvironmentVariable("ENABLE_TRADING", $enableTradingValue, "Process")
+        Write-Log "Starting daemon process ($modeLabel)"
+        Start-Process -FilePath "py.exe" -ArgumentList @($daemonArg) -WorkingDirectory $projectRoot -WindowStyle Hidden
+    }
+
     $allowLive = Get-EnvAnyScope -Name "ALLOW_LIVE_TRADING_ON_LOCAL"
     $holdShadow = Get-EnvAnyScope -Name "LOCAL_DAEMON_HOLD_SHADOW"
     if ($allowLive -eq "1") {
-        Write-Log "Starting daemon process (LOCAL LIVE MODE ALLOWED)"
-        $liveCommand = "${runtimeGuardPrefix}set TESTNET=false&& set ENABLE_TRADING=true&& py $daemonArg"
-        Start-Process -FilePath "cmd.exe" -ArgumentList @("/c", $liveCommand) -WorkingDirectory $projectRoot -WindowStyle Hidden
+        Start-DaemonProcess -testnetValue "false" -enableTradingValue "true" -modeLabel "LOCAL LIVE MODE ALLOWED"
         return
     }
 
     if ($holdShadow -eq "1") {
-        Write-Log "Starting daemon process (HOLD_SHADOW: TESTNET=false, ENABLE_TRADING=false)"
-        $holdShadowCommand = "${runtimeGuardPrefix}set TESTNET=false&& set ENABLE_TRADING=false&& py $daemonArg"
-        Start-Process -FilePath "cmd.exe" -ArgumentList @("/c", $holdShadowCommand) -WorkingDirectory $projectRoot -WindowStyle Hidden
+        Start-DaemonProcess -testnetValue "false" -enableTradingValue "false" -modeLabel "HOLD_SHADOW: TESTNET=false, ENABLE_TRADING=false"
         return
     }
 
-    $safeCommand = "${runtimeGuardPrefix}set TESTNET=true&& set ENABLE_TRADING=false&& py $daemonArg"
-    Write-Log "Starting daemon process in SAFE MODE (TESTNET=true, ENABLE_TRADING=false)"
-    Start-Process -FilePath "cmd.exe" -ArgumentList @("/c", $safeCommand) -WorkingDirectory $projectRoot -WindowStyle Hidden
+    Start-DaemonProcess -testnetValue "true" -enableTradingValue "false" -modeLabel "SAFE MODE (TESTNET=true, ENABLE_TRADING=false)"
 }
 
 function Sync-DaemonStatusMirror {

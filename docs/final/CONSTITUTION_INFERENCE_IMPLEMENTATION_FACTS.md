@@ -3364,3 +3364,24 @@
 - 최신 상태:
   - `py -3 scripts/run_pre_news_shadow_ops_smoke_v1.py` exit 0.
   - `pre_news_shadow_ops_smoke_latest.json` 기준 `all_ok=true`.
+
+#### 31.70 Lens-Combo Limited-Live Submit Path + Watchdog Wrapper (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/run_prophecy_lens_combo_backtest_v1.py`
+  - `scripts/run_lens_combo_limited_live_engine_handoff_v1.py`
+  - `scripts/build_lens_combo_engine_submit_preflight_v1.py`
+  - `scripts/run_lens_combo_24h_watchdog_v1.py`
+- 구현 사실:
+  - limited-live 제출 후보 경로를 lens-combo 아티팩트로 고정:
+    - `docs/final/artifacts/btc_limited_live_engine_input_from_lens_combo_latest.json`
+  - 동률 시 선택 정책을 구조화해 산출물에 명시:
+    - `tie_break_policy.policy_id = non_logos_multi_lens_then_lens_count_v1`
+    - 핵심 지표 동률이면 비-logos 다중렌즈(예: `myeongni+sasang`)를 우선.
+  - `run_lens_combo_24h_watchdog_v1.py` 추가:
+    - lens 엔진 입력을 기준으로 breaker 아티팩트를 먼저 갱신한 뒤,
+    - 24h watchdog(`run_role_router_24h_watchdog_v1.py`)을 lens 경로 인자로 실행.
+- 최신 상태:
+  - `py scripts/run_lens_combo_limited_live_engine_handoff_v1.py --approve-submit --live` exit 0 (`dry_run=false`, `status=READY_FOR_ENGINE_SUBMIT`).
+  - `py scripts/build_lens_combo_engine_submit_preflight_v1.py --expected-dry-run false` exit 0 (`result=PASS`).
+  - `py scripts/run_lens_combo_24h_watchdog_v1.py --duration-hours 0 --poll-seconds 5` exit 0 (`healthy=True` smoke row 기록).
