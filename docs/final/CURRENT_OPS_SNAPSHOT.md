@@ -6,6 +6,13 @@
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
 
+## 2026-04-28 최신 상태 (PointerGuard 운영 체인)
+
+- 체인: `scripts/run_genesis_pointer_routing_control_chain_v1.py`에 policy/ramp/freeze/runtime/smoke 최종 게이트 연결 완료.
+- 스케줄: `MKM_PointerGuard_ControlChain_Daily` (06:30, Ready) 등록 완료.
+- 성능 성적표: Tier1+Tier2 분리 산출(`pointerguard_two_tier_perf_scorecard_latest.json`), 현재 판정 `GO_FOR_CONTROLLED_B2B`.
+- 보류: 글로벌 초대형 주장 전 host CPU/memory 계측 포함 Tier2 보강 필요.
+
 ## 2026-04-22 최신 상태 (B-track dual-lane)
 
 - 실행 명령(핵심): `python scripts/run_ab_track_autogate_pipeline_v3.py --b-phase promotion --b-gate-evaluator v4 --allow-auroc-missing-single-class-test --rebuild-unseen-split --unseen-heldout-target EGFR --unseen-split-seed 20260424 --unseen-val-ratio 0.12 --rebuild-seen-label-split --seed 20260424`

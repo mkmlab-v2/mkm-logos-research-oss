@@ -6,9 +6,9 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-04-23T12:00:00Z
+- **last_updated_utc:** 2026-04-28T07:05:00Z
 - **owner:** (선택)
-- **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵)
+- **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
 - **external_briefing_ref_v2:** `athena_memory_bank_v2.md` (time-series partition + firewall)
 
@@ -115,6 +115,8 @@
 | 2026-04-22 (Multitarget strict HOLD + trainability gate) | scaffold/target-holdout 재벤치 및 runtime policy 리허설 이후 `generalization_gate_decision_strict_hold_latest.json`이 `HOLD` 고정; 추가로 target-conditioned PoC와 `target_conditioned_trainability_gate_latest.json` 실행 결과, `stage2_trained_target_count=0`·`topology_trainable_target_count=0`으로 연구 게이트도 `HOLD` 확정. |
 | 2026-04-22 (B-track dual-lane autogate v4 pass) | `evaluate_b_track_staged_go_nogo_v4.py`로 AUROC 단일클래스 미정의를 `WARN-DATA-003`로 분리하고, `run_ab_track_autogate_pipeline_v3.py --rebuild-unseen-split --unseen-heldout-target EGFR --rebuild-seen-label-split --b-gate-evaluator v4 --allow-auroc-missing-single-class-test` 재실행 결과 `artifacts/weekly_status_v3.json`에서 `a_pass=true`, `b_unseen_pass=true`, `b_seen_label_pass=true`, `all_pass=true` 달성. |
 | 2026-04-23 (Logos 파이프라인 혼동 방지 + canon 레인) | 마스터 아톰 집계 vs 레짐 특이점 리포트는 **서로 다른 입력·목적** — Fact-Lock으로 구분해 `CENTRAL_AGENT_MEMORY`에 고정. 특이점 스크립트에 **`--canon-jsonl`**·레인 `canon` 추가; Vault 미러 스크립트에 **`MKM_OBSIDIAN_VAULT_ROOT`**·기본 `memory/obsidian_vault` 스텁; 글로스 v4 보수 접두 체인은 코드북·HYPO 보조 유지. |
+| 2026-04-28 (성경×우리이론 융합 게이트 완성) | Multi-symbol(선악과/바벨/출애굽) 공진·4D·survivability·drift·negative/counterfactual·통합 게이트(`multi_symbol_gate_summary_latest.json=GO`)와 Q&A 동적 근거 주입까지 E2E 체인+pytest로 잠금. |
+| 2026-04-28 (PointerGuard 상용 게이트 고정) | 폴더 정책 allow/caution/forbid + shadow alert/guard + memory_v2 ramp/freeze + 운영 스모크 + 일일 스케줄러 + Tier2 서비스형 부하(`max_error_rate=0`, worst `p95=159.50ms`, worst `p99=171.77ms`)까지 연결. 대외 판정은 **`GO_FOR_CONTROLLED_B2B`**, 글로벌 초대형 주장(`global-scale`)은 **Tier2 host 리소스 계측 보강 전 보류**. |
 | | |
 
 ---
