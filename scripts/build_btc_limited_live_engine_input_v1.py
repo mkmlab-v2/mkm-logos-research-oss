@@ -33,9 +33,12 @@ def main() -> int:
     ap.add_argument("--signoff-json", type=Path, default=DEFAULT_SIGNOFF)
     ap.add_argument("--symbol", type=str, default="BTCUSDT")
     ap.add_argument("--dry-run", action="store_true", default=True)
+    ap.add_argument("--live", action="store_true", help="Emit non-dry-run payload (still non-executing).")
     ap.add_argument("--approve-submit", action="store_true", help="Require explicit human approval")
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
+    if args.live:
+        args.dry_run = False
 
     candidate = _read(args.candidate_json)
     signoff = _read(args.signoff_json) if args.signoff_json.is_file() else {}

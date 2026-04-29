@@ -31,6 +31,13 @@ def _bool(v: Any) -> bool:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--engine-input-json", type=Path, default=DEFAULT_ENGINE_INPUT)
+    ap.add_argument(
+        "--expected-dry-run",
+        type=str,
+        choices=("any", "true", "false"),
+        default="any",
+        help="Expected dry_run mode for the engine payload.",
+    )
     ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT_JSON)
     ap.add_argument("--out-commands", type=Path, default=DEFAULT_OUT_CMDS)
     args = ap.parse_args()
@@ -40,10 +47,18 @@ def main() -> int:
     engine_input = doc.get("engine_input") or {}
     metrics = engine_input.get("candidate_metrics") or {}
 
+    dry_run_value = _bool(doc.get("dry_run"))
+    if args.expected_dry_run == "true":
+        dry_run_mode_ok = dry_run_value is True
+    elif args.expected_dry_run == "false":
+        dry_run_mode_ok = dry_run_value is False
+    else:
+        dry_run_mode_ok = True
+
     checks = {
         "engine_status_ready_for_submit": str(doc.get("status") or "") == "READY_FOR_ENGINE_SUBMIT",
         "engine_action_submit_to_queue": str(doc.get("action") or "") == "submit_to_engine_queue",
-        "dry_run_true": _bool(doc.get("dry_run")),
+        "dry_run_mode_ok": dry_run_mode_ok,
         "candidate_tradable": _bool(guards.get("candidate_tradable")),
         "signoff_approve": _bool(guards.get("signoff_approve")),
         "limited_live_mode_ok": _bool(guards.get("signoff_mode_limited_live")),
@@ -59,6 +74,8 @@ def main() -> int:
         "schema": "lens_combo_engine_submit_preflight_v1",
         "generated_at_utc": _now(),
         "engine_input_json": str(args.engine_input_json.resolve()),
+        "expected_dry_run": args.expected_dry_run,
+        "observed_dry_run": dry_run_value,
         "result": "PASS" if all_pass else "FAIL",
         "checks": checks,
         "failed_checks": failed,
@@ -75,8 +92,11 @@ def main() -> int:
         "# 2) Build engine handoff (explicit approval, still dry-run payload)",
         'py "scripts/run_lens_combo_limited_live_engine_handoff_v1.py" --approve-submit',
         "",
+        "# 2b) Build engine handoff (explicit approval, live payload)",
+        'py "scripts/run_lens_combo_limited_live_engine_handoff_v1.py" --approve-submit --live',
+        "",
         "# 3) Pre-submit checklist",
-        'py "scripts/build_lens_combo_engine_submit_preflight_v1.py"',
+        'py "scripts/build_lens_combo_engine_submit_preflight_v1.py" --expected-dry-run any',
         "",
         "# 4) Rollback rehearsal (force HOLD payload)",
         'py "scripts/run_lens_combo_limited_live_engine_handoff_v1.py"',

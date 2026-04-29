@@ -49,20 +49,38 @@ def _watchdog_tail(path: Path, limit: int = 3) -> list[dict[str, Any]]:
     return out
 
 
-def _run_intent_check(engine_input: Path) -> tuple[int, dict[str, Any] | None]:
+def _run_intent_check(
+    engine_input: Path,
+    expected_dry_run: str,
+    expected_router_type: str,
+    expected_coord_policy: str,
+) -> tuple[int, dict[str, Any] | None]:
     cmd = [
         sys.executable,
         str(ROOT / "scripts" / "check_role_router_intent_contract_v1.py"),
         "--engine-input-json",
         str(engine_input),
+        "--expected-dry-run",
+        str(expected_dry_run),
+        "--expected-router-type",
+        str(expected_router_type),
+        "--expected-coord-policy",
+        str(expected_coord_policy),
     ]
     rc = subprocess.run(cmd, cwd=str(ROOT)).returncode
     return rc, _read_json(DEFAULT_INTENT)
 
 
-def _checkpoint_snapshot(name: str, engine_input: Path, watchdog_log: Path) -> dict[str, Any]:
+def _checkpoint_snapshot(
+    name: str,
+    engine_input: Path,
+    watchdog_log: Path,
+    expected_dry_run: str,
+    expected_router_type: str,
+    expected_coord_policy: str,
+) -> dict[str, Any]:
     engine = _read_json(engine_input) or {}
-    rc, intent = _run_intent_check(engine_input)
+    rc, intent = _run_intent_check(engine_input, expected_dry_run, expected_router_type, expected_coord_policy)
     tail = _watchdog_tail(watchdog_log)
     return {
         "checkpoint": name,
@@ -81,6 +99,9 @@ def main() -> int:
     ap.add_argument("--engine-input-json", type=Path, default=DEFAULT_ENGINE)
     ap.add_argument("--watchdog-log-jsonl", type=Path, default=DEFAULT_WATCHDOG)
     ap.add_argument("--checkpoint-minutes", type=str, default="5,15,30")
+    ap.add_argument("--expected-dry-run", type=str, choices=("any", "true", "false"), default="any")
+    ap.add_argument("--expected-router-type", type=str, default="role_mapping_optimized")
+    ap.add_argument("--expected-coord-policy", type=str, default="off")
     ap.add_argument("--no-wait", action="store_true", help="Take checkpoints immediately (smoke mode).")
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
@@ -95,16 +116,43 @@ def main() -> int:
     snapshots: list[dict[str, Any]] = []
 
     # T+0 snapshot
-    snapshots.append(_checkpoint_snapshot("T+0", args.engine_input_json, args.watchdog_log_jsonl))
+    snapshots.append(
+        _checkpoint_snapshot(
+            "T+0",
+            args.engine_input_json,
+            args.watchdog_log_jsonl,
+            args.expected_dry_run,
+            args.expected_router_type,
+            args.expected_coord_policy,
+        )
+    )
 
     for m in mins:
         if args.no_wait:
-            snapshots.append(_checkpoint_snapshot(f"T+{m}m", args.engine_input_json, args.watchdog_log_jsonl))
+            snapshots.append(
+                _checkpoint_snapshot(
+                    f"T+{m}m",
+                    args.engine_input_json,
+                    args.watchdog_log_jsonl,
+                    args.expected_dry_run,
+                    args.expected_router_type,
+                    args.expected_coord_policy,
+                )
+            )
             continue
         target = start_ts + (m * 60)
         while time.time() < target:
             time.sleep(1)
-        snapshots.append(_checkpoint_snapshot(f"T+{m}m", args.engine_input_json, args.watchdog_log_jsonl))
+        snapshots.append(
+            _checkpoint_snapshot(
+                f"T+{m}m",
+                args.engine_input_json,
+                args.watchdog_log_jsonl,
+                args.expected_dry_run,
+                args.expected_router_type,
+                args.expected_coord_policy,
+            )
+        )
 
     final = snapshots[-1] if snapshots else {}
     fail_conditions = []

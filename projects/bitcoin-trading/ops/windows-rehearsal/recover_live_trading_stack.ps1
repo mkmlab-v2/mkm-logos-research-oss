@@ -22,6 +22,12 @@ function Set-EnvUser([string]$Name, [string]$Value) {
     [Environment]::SetEnvironmentVariable($Name, $Value, "Process")
 }
 
+function Force-StartLiveDaemon {
+    $daemonArg = "scripts/start_24h_daemon.py"
+    $liveCommand = "set TESTNET=false&& set ENABLE_TRADING=true&& py $daemonArg"
+    Start-Process -FilePath "cmd.exe" -ArgumentList @("/c", $liveCommand) -WorkingDirectory $projectRoot -WindowStyle Hidden
+}
+
 function Get-JsonOrNull([string]$Path) {
     if (-not (Test-Path -LiteralPath $Path)) { return $null }
     try {
@@ -101,15 +107,15 @@ if ($null -ne $statusObj) {
 if (
     $EnableLiveMode -and
     ($statusRunning -eq $true) -and
-    ($statusTradingEnabled -ne $true) -and
+    (($statusTradingEnabled -ne $true) -or ($statusTestnet -eq $true)) -and
     ([string]::IsNullOrWhiteSpace([string]$statusExchangeError) -or -not ([string]$statusExchangeError -match "-2015"))
 ) {
-    Write-Step "Live mode requested but status_enable_trading=false without -2015. Forcing single recycle."
+    Write-Step "Live mode requested but daemon not in live profile without -2015. Forcing single recycle."
     Get-CimInstance Win32_Process |
         Where-Object { $_.CommandLine -and $_.CommandLine -match "start_24h_daemon\.py" } |
         ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
     Start-Sleep -Seconds 2
-    powershell -NoProfile -ExecutionPolicy Bypass -File $ensureScript | Out-Null
+    Force-StartLiveDaemon
     Start-Sleep -Seconds 8
     $statusObj = Get-JsonOrNull -Path $statusPath
     if ($null -ne $statusObj) {

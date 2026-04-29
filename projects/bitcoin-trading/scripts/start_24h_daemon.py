@@ -162,6 +162,16 @@ async def main():
 
     dotenv = _read_dotenv_map(PROJECT_ROOT.parent / ".env")
 
+    # Optional tuning keys (singular core / risk gate): apply from workspace `.env` when process env empty.
+    for optional_key in (
+        "MKM_SINGULAR_CORE_THRESHOLD",
+        "MKM_SINGULAR_CORE_GRID",
+        "MKM_MIN_CONFIDENCE",
+    ):
+        if optional_key in dotenv and str(dotenv.get(optional_key, "")).strip():
+            if not os.environ.get(optional_key, "").strip():
+                os.environ[optional_key] = str(dotenv[optional_key]).strip()
+
     symbol = os.getenv("SYMBOL", str(cfg_symbol))
     testnet_raw = os.getenv("TESTNET")
     if testnet_raw is None:

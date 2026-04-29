@@ -28,8 +28,11 @@ def main() -> int:
     ap.add_argument("--symbol", type=str, default="BTCUSDT")
     ap.add_argument("--approve-submit", action="store_true")
     ap.add_argument("--dry-run", action="store_true", default=True)
+    ap.add_argument("--live", action="store_true", help="Emit non-dry-run payload (still non-executing).")
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
+    if args.live:
+        args.dry_run = False
 
     adapter = ROOT / "scripts" / "build_btc_limited_live_engine_input_v1.py"
     cmd = [
@@ -48,6 +51,8 @@ def main() -> int:
         cmd.append("--approve-submit")
     if args.dry_run:
         cmd.append("--dry-run")
+    if args.live:
+        cmd.append("--live")
 
     res = subprocess.run(cmd, cwd=str(ROOT))
     return int(res.returncode)

@@ -26,6 +26,13 @@ def _read(path: Path) -> dict[str, Any]:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--engine-input-json", type=Path, default=DEFAULT_ENGINE_INPUT)
+    ap.add_argument(
+        "--expected-dry-run",
+        type=str,
+        choices=("any", "true", "false"),
+        default="true",
+        help="Expected dry_run mode. Use 'false' for live payload checks.",
+    )
     ap.add_argument("--expected-symbol", type=str, default="BTCUSDT")
     ap.add_argument("--expected-size-usd", type=float, default=10.0)
     ap.add_argument("--expected-max-losses", type=int, default=3)
@@ -42,11 +49,19 @@ def main() -> int:
     params = engine_input.get("candidate_params") or {}
     metrics = engine_input.get("candidate_metrics") or {}
 
+    dry_run_value = bool(doc.get("dry_run"))
+    if args.expected_dry_run == "true":
+        dry_run_mode_ok = dry_run_value is True
+    elif args.expected_dry_run == "false":
+        dry_run_mode_ok = dry_run_value is False
+    else:
+        dry_run_mode_ok = True
+
     checks = {
         "status_ready_for_submit": str(doc.get("status") or "") == "READY_FOR_ENGINE_SUBMIT",
         "action_submit_to_queue": str(doc.get("action") or "") == "submit_to_engine_queue",
         "symbol_match": str(doc.get("symbol") or "") == str(args.expected_symbol),
-        "dry_run_true": bool(doc.get("dry_run")),
+        "dry_run_mode_ok": dry_run_mode_ok,
         "candidate_tradable_true": bool(guards.get("candidate_tradable")),
         "signoff_approve_true": bool(guards.get("signoff_approve")),
         "signoff_mode_limited_live_true": bool(guards.get("signoff_mode_limited_live")),
@@ -69,6 +84,8 @@ def main() -> int:
         "schema": "role_router_intent_contract_check_v1",
         "generated_at_utc": _now(),
         "engine_input_json": str(args.engine_input_json.resolve()),
+        "expected_dry_run": args.expected_dry_run,
+        "observed_dry_run": dry_run_value,
         "result": result,
         "failed_checks": failed,
         "checks": checks,
