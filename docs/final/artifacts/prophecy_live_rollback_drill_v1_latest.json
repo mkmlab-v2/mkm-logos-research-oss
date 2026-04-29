@@ -1,0 +1,23 @@
+{
+  "schema": "prophecy_live_rollback_drill_v1",
+  "generated_at_utc": "2026-04-29T07:03:32Z",
+  "mode": "non_destructive_simulation",
+  "inputs": {
+    "rollback_policy": "C:/workspace/docs/final/artifacts/prophecy_live_rollback_policy_v1_latest.json",
+    "live_health": "C:/workspace/projects/bitcoin-trading/memory/v2/ops/live_trading_health_latest.json",
+    "live_blockers": "C:/workspace/projects/bitcoin-trading/memory/v2/ops/live_trading_blockers_latest.json"
+  },
+  "checks": {
+    "rollback_policy_present": true,
+    "health_pass": true,
+    "blockers_pass": true
+  },
+  "drill_result": "PASS",
+  "runbook": {
+    "trigger": "loss/gate/data gap threshold breach",
+    "step_1": "disable live trigger immediately",
+    "step_2": "revert to previous candidate-only mode",
+    "step_3": "run health+blocker checks and capture evidence",
+    "step_4": "require human re-approval before re-enable"
+  }
+}

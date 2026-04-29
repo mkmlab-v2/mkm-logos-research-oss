@@ -1,0 +1,69 @@
+{
+  "schema": "gpu_semantic_expansion_backlog_v1",
+  "generated_at_utc": "2026-04-29T06:59:00Z",
+  "research_only": true,
+  "fact_lock_mode": "numeric_scan_only",
+  "principles": {
+    "no_deterministic_narrative_generation": true,
+    "no_auto_live_binding": true,
+    "use_gpu_for_scan_and_measurement_only": true
+  },
+  "work_items": [
+    {
+      "id": "gpu-01",
+      "title": "3M+ edge full cosine scan benchmark",
+      "objective": "Measure end-to-end speedup and reproducibility on full edge set.",
+      "outputs": [
+        "docs/final/artifacts/gpu_full_edge_cosine_benchmark_v1_latest.json"
+      ],
+      "status": "completed"
+    },
+    {
+      "id": "gpu-02",
+      "title": "Expanded corpus embedding cache refresh",
+      "objective": "Rebuild canonical+manuscript embedding caches via GPU batch encoding.",
+      "outputs": [
+        "docs/final/artifacts/gpu_corpus_embedding_refresh_v1_latest.json"
+      ],
+      "status": "completed"
+    },
+    {
+      "id": "gpu-03",
+      "title": "Graph anomaly metric sweep",
+      "objective": "Compute structural drift metrics (bridge density / cluster stress) at scale.",
+      "outputs": [
+        "docs/final/artifacts/gpu_graph_anomaly_sweep_v1_latest.json"
+      ],
+      "status": "completed"
+    },
+    {
+      "id": "gpu-04",
+      "title": "Universal precursor gate resweep",
+      "objective": "Run broader threshold/coherence search with GPU-assisted scoring.",
+      "outputs": [
+        "docs/final/artifacts/gpu_universal_precursor_resweep_v1_latest.json"
+      ],
+      "status": "completed"
+    },
+    {
+      "id": "gpu-05",
+      "title": "Shadow-only runtime scorer",
+      "objective": "Produce live shadow scores for alerting without auto trade binding.",
+      "outputs": [
+        "docs/final/artifacts/gpu_shadow_runtime_score_v1_latest.json"
+      ],
+      "status": "completed"
+    }
+  ],
+  "execution_order": [
+    "gpu-01",
+    "gpu-02",
+    "gpu-03",
+    "gpu-04",
+    "gpu-05"
+  ],
+  "notes_ko": [
+    "본 백로그는 의미 생성/서사 단정이 아니라 수치 스캔 가속 작업만 포함한다.",
+    "모든 산출물은 B-track research_only로 유지하고 Track A 자동 합선 금지."
+  ]
+}
