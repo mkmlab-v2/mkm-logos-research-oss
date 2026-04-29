@@ -12,9 +12,9 @@
   },
   "intersection": {
     "relative_path": "backtest_results/sweep_kmin_refine/LOGOS_RESONANCE_BTC_EXT_INTERSECTION_TOP6866.json",
-    "sha256": "c3ad84f9ad69f98ae9983244b76e41c2bc1be170a3c6866807912c7b971d879d",
-    "count_all_four": 1574,
-    "intersection_list_length": 1574
+    "sha256": "fbbd206f67dbdf6f66a245df5edb8f2ce28dea5f11d779c60d82b0522012d02c",
+    "count_all_four": 1273,
+    "intersection_list_length": 1273
   },
   "master_probe": {
     "default_probe_relative_path": "data/myeongni/16_STATE_MASTER_PROBE_v1.json",

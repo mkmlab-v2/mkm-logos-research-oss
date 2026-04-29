@@ -92,6 +92,9 @@
 - **Phase 1 통합 리포트 SSOT**: `projects/bitcoin-trading/memory/v2/ops/ops_phase1_chain_report_latest.json` — **exit_code·타임스탬프·산출 경로** 중심. 브리핑 전용 필드(예: `go_no_go`)는 **레포 산출물에 없으면** 근거 없는 수치로 쓰지 않는다.
 - **헌법 게이트(옵션)**: `run_ops_phase1_chain.ps1 -IncludeConstitutionGates` → `verify_constitution_gates.ps1` → `projects/bitcoin-trading/memory/v2/ops/constitution_gates_result_latest.json`; allowlist `constitution_gates_v1.json`. 상세 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §13.1.
 - **Phase 1 일일 원클릭**: `projects/bitcoin-trading/ops/windows-rehearsal/bootstrap_ops_phase1_daily.ps1` — User 환경 동기화 후 `\Bitcoin-Ops-Phase1-Chain-Daily` 등록(헌법 게이트 기본 켬). 점검·웹훅 스모크: `-IncludeReadiness`, `-IncludeWebhookSmoke`.
+- **Pre-News Shadow 일일 체인(운영)**: `scripts/run_daily_prophecy_then_pre_news_v1.ps1 -EnablePreNewsShadow -EnablePreNewsShadowWeeklyReport` — projection/weekly/audit bundle을 한 체인으로 갱신.
+- **Pre-News Health/Alert 체인**: `scripts/run_pre_news_shadow_health_chain.ps1` + CI `.github/workflows/pre-news-shadow-health-smoke.yml` — task health/alert/drill 계약 회귀를 고정.
+- **Pre-News 월간 거버넌스 드릴**: `scripts/run_pre_news_shadow_monthly_governance_drills_v1.ps1` (lock mismatch + policy alert drill) — 결과는 `pre_news_shadow_monthly_drill_summary_alert_latest.json`으로 확인.
 - **MKM Study**(예: `projects/mkm/mkm-study`): **연구·프로토타입·학습** 레인. 실매매·본선 OOF·올그린 게이트와 **자동 합선하지 않는다** (NotebookLM·A/B 격벽과 동일 방향).
 
 ## B-track 실행 기본값 (탐색 우선)
