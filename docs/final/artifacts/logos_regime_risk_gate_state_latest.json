@@ -1,0 +1,112 @@
+{
+  "schema": "logos_regime_risk_gate_state_v1",
+  "generated_at_utc": "2026-04-29T03:07:38Z",
+  "template_ref": "C:\\workspace\\docs\\final\\artifacts\\logos_regime_risk_gate_insights_template_v1.json",
+  "observations_ref": "C:\\workspace\\docs\\final\\artifacts\\logos_regime_risk_gate_observations_latest.json",
+  "lock_state": {
+    "price_output_locked": false
+  },
+  "triggered_rule_count": 4,
+  "effective_action": "FORCE_HOLD",
+  "rows": [
+    {
+      "insight_id": "logos_precrash_zone_alert",
+      "role": "risk_gate",
+      "alert_level": "RED",
+      "trigger_metric": "precrash_zone_precision",
+      "trigger_condition": ">= 0.60",
+      "trigger_value": 0.0,
+      "triggered": false,
+      "effective_action_if_triggered": "FORCE_HOLD",
+      "validation_metric": "tail_loss_reduction_p95",
+      "validation_goal": ">= 15% reduction vs baseline"
+    },
+    {
+      "insight_id": "logos_calm_false_alert_suppress",
+      "role": "risk_gate",
+      "alert_level": "AMBER",
+      "trigger_metric": "false_alert_density",
+      "trigger_condition": ">= 3 alerts per month under low_vol regime",
+      "trigger_value": 0.0,
+      "triggered": true,
+      "effective_action_if_triggered": "NO_NEW_ALERTS_UNTIL_RESET",
+      "validation_metric": "false_alarm_burden_per_month",
+      "validation_goal": "<= 2"
+    },
+    {
+      "insight_id": "logos_multi_stress_confirmation",
+      "role": "regime_warning",
+      "alert_level": "RED",
+      "trigger_metric": "stress_event_count",
+      "trigger_condition": ">= 2 among [down_streak, vol_break, shock_event]",
+      "trigger_value": 0.0,
+      "triggered": true,
+      "effective_action_if_triggered": "REDUCE_EXPOSURE",
+      "validation_metric": "max_drawdown_reduction",
+      "validation_goal": ">= 10% reduction vs baseline"
+    },
+    {
+      "insight_id": "logos_regime_fingerprint_resonance",
+      "role": "regime_warning",
+      "alert_level": "RED",
+      "trigger_metric": "cosine_to_regime_fingerprint_4d",
+      "trigger_condition": ">= 0.80 for bear_trend or capitulation buckets",
+      "trigger_value": 0.0,
+      "triggered": true,
+      "effective_action_if_triggered": "FORCE_HOLD",
+      "validation_metric": "alert_precision",
+      "validation_goal": ">= 0.35"
+    },
+    {
+      "insight_id": "logos_ohlcv_shock_gate",
+      "role": "risk_gate",
+      "alert_level": "AMBER",
+      "trigger_metric": "ohlcv_shock_score",
+      "trigger_condition": ">= 0.70 AND logos_warning_score >= 0.60",
+      "trigger_value": 0.0,
+      "triggered": true,
+      "effective_action_if_triggered": "REDUCE_EXPOSURE",
+      "validation_metric": "mdd_delta",
+      "validation_goal": "improves vs no-coupling control"
+    },
+    {
+      "insight_id": "logos_confirm_only_veto",
+      "role": "risk_gate",
+      "alert_level": "AMBER",
+      "trigger_metric": "coord_policy_status",
+      "trigger_condition": "coord_policy=confirm_only AND coord_deadzone<=0.005 AND conflict_signal=1",
+      "trigger_value": 0.0,
+      "triggered": false,
+      "effective_action_if_triggered": "HOLD_POINTER_ROUTE",
+      "validation_metric": "win_rate_active_under_conflict",
+      "validation_goal": "no degradation vs control"
+    },
+    {
+      "insight_id": "logos_cross_corpus_anomaly_watch",
+      "role": "regime_warning",
+      "alert_level": "AMBER",
+      "trigger_metric": "cross_corpus_distance_z",
+      "trigger_condition": ">= 2.0",
+      "trigger_value": 0.0,
+      "triggered": false,
+      "effective_action_if_triggered": "OBSERVATION_ONLY_ALERT",
+      "validation_metric": "anomaly_lead_days",
+      "validation_goal": "positive lead over baseline"
+    }
+  ],
+  "decision_binding": {
+    "action_priority": [
+      "FORCE_HOLD",
+      "HOLD_POINTER_ROUTE",
+      "REDUCE_EXPOSURE",
+      "NO_NEW_ALERTS_UNTIL_RESET",
+      "OBSERVATION_ONLY_ALERT",
+      "NO_CHANGE"
+    ],
+    "conflict_resolution": "most_conservative_wins"
+  },
+  "notes": [
+    "Template-driven evaluation only (research mode).",
+    "Directional execution is prohibited while price_output_locked=true."
+  ]
+}
