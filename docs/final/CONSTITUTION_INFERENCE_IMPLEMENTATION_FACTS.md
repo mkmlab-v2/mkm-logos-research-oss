@@ -570,7 +570,7 @@
 | Phase 1 일일 원클릭 | `projects/bitcoin-trading/ops/windows-rehearsal/bootstrap_ops_phase1_daily.ps1` | `sync_required_env_to_user.ps1` → `register_ops_phase1_chain_task.ps1` 순서; `-SkipEnvSync` / `-SkipTaskRegister` / `-ExcludeConstitutionGates` / `-IncludeReadiness` / `-IncludeWebhookSmoke`. 동기화: `.env`에 `OPS_ALARM_WEBHOOK_URL` 없으면 User `N8N_WEBHOOK_URL`로 **자동 미러** |
 | P0·헌법 경로 스모크 | `scripts/verify_p0_constitution_gate_paths.ps1` | `CONSTITUTION`·`P0`·`COMPRESSION_SLA_POLICY_V1`·`COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK`·`NotebookLM_sources_manifest`·`.cursorrules`·`AGENTS`·`CLAUDE`·정렬 pytest·Vault 동기화 등 **존재만** 검사(exit 0/1). 상세: `P0_COMMERCIALIZATION_TRACKER.md` §증거 경로 |
 | 압축 KPI 자동 체인 | `scripts/run_compression_automation_chain.ps1` | 범용 프로파일 재평가·KPI 요약(`literal_kpi`는 `-IncludeLiteralTrack`로 리터럴 산출물이 있을 때)·토큰 API hydration 믹스·범용 손실 패턴; `-IncludeLiteralTrack` 시 리터럴 프로파일·리터럴 손실 패턴 추가; `run_workspace_automation_health.ps1 -IncludeCompressionKpi`로 묶음 가능(투트랙까지: 동시에 `-IncludeLiteralTrack`; 알람은 여전히 `active_kpi` 기준); 종료 시 `send_compression_kpi_alarm_if_needed.ps1`(임계치 `docs/final/artifacts/compression_alarm_thresholds_v1.json`, 웹훅 `COMPRESSION_KPI_ALARM_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`, `-SkipCompressionAlarm` 생략) |
-| Track A go/nogo·HOLD 체인 (모노레포 루트) | `scripts/build_a_track_go_nogo_status.py` → `docs/final/artifacts/a_track_go_nogo_status_latest.json`; `scripts/build_a_track_multiweek_stability_tracker_v1.py` → `a_track_multiweek_stability_tracker_v1_latest.json`; `scripts/build_a_track_hold_release_checklist_v1.py` → `a_track_hold_release_checklist_v1_latest.json`; 거버넌스 JSON 부트스트랩 `scripts/emit_a_track_governance_artifacts_v1.py`(플레이스홀더—실전 서명 전 교체); 주간 롤업 `scripts/run_a_track_s3_weekly_evidence_rollup_v1.py`(`--emit-missing-governance` 선택, 트래커→체크리스트→go/nogo→체크리스트); 로컬 원클릭 갱신(주차 증가 없음) `scripts/Run-ATrackGovernanceRefresh.ps1`; 주간 작업 등록 `scripts/Register-ATrackS3WeeklyEvidenceTask.ps1`(기본 월요일·`--emit-missing-governance` 포함, `-SkipEmitGovernance`로 끔); 승인 영수증 선택 `reports/a_track_promotion_decision_latest.json` | **B-track·실매매 자동 합선 아님.** 가격 출력·고신뢰·다주간 증거·운영자 승인은 별도 게이트; 기본 산출물은 파이프라인 연결용이며 운영 주장의 근거로 삼으려면 서명·증거 경로를 갱신해야 한다. |
+| Track A go/nogo·HOLD 체인 (모노레포 루트) | `scripts/build_a_track_go_nogo_status.py` → `docs/final/artifacts/a_track_go_nogo_status_latest.json`; `scripts/build_a_track_multiweek_stability_tracker_v1.py` → `a_track_multiweek_stability_tracker_v1_latest.json`; `scripts/build_a_track_hold_release_checklist_v1.py` → `a_track_hold_release_checklist_v1_latest.json`; 거버넌스 JSON 부트스트랩 `scripts/emit_a_track_governance_artifacts_v1.py`(플레이스홀더—실전 서명 전 교체); 주간 롤업 `scripts/run_a_track_s3_weekly_evidence_rollup_v1.py`(`--emit-missing-governance` 선택, 트래커→체크리스트→go/nogo→체크리스트); 로컬 원클릭 갱신(주차 증가 없음) `scripts/Run-ATrackGovernanceRefresh.ps1`; 주간 작업 등록 `scripts/Register-ATrackS3WeeklyEvidenceTask.ps1`(기본 월요일·`--emit-missing-governance` 포함, `-SkipEmitGovernance`로 끔); 승인 영수증 선택 `reports/a_track_promotion_decision_latest.json` | **B-track·실매매 자동 합선 아님.** 가격 출력·고신뢰·다주간 증거·운영자 승인은 별도 게이트; 기본 산출물은 파이프라인 연결용이며 운영 주장의 근거로 삼으려면 서명·증거 경로를 갱신해야 한다. **2026-04-29부터 `build_a_track_go_nogo_status.py`는 의미 분리 고정: `high_reliability_decision_not_hold`/`price_output_unlocked`는 runtime 실상태만 반영하고, 정책 문서 준비 상태는 `high_reliability_release_plan_defined`/`price_unlock_policy_defined`로 별도 체크한다(문서 준비값으로 HOLD/lock 실상태를 덮어쓰지 않음).** |
 | 에이전트 레인 분리 | 루트 `AGENTS.md` — **운영 자동화 vs 연구 레인** | MKM Study·본선 OOF·실매매 **자동 합선 금지** 방향; 브리핑 전용 필드는 레포 산출물 근거 없이 SSOT 삼지 않음 |
 
 ### 13.2 외부 법령 참조 API (Beopmang 등, 보조 레이어)
@@ -2748,6 +2748,503 @@
   - health snapshot 생성:
     - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check_pre_news_shadow_task_health.ps1 ...` exit 0
 
+#### 31.42 Pre-News Shadow Health Alert Gate v1 (FACT, 2026-04-28)
+
+- 신규:
+  - `scripts/alert_pre_news_shadow_task_health_v1.py`
+  - `scripts/run_pre_news_shadow_health_chain.ps1`
+- 수정:
+  - `scripts/Register-PreNewsShadowHealthTask.ps1` (헬스체크 단일 실행 -> health chain 실행)
+- 구현 사실:
+  - health snapshot JSON(`pre_news_shadow_task_health_latest.json`)을 입력으로 alert gate 추가.
+  - `healthy=false`일 때만:
+    - `has_alert=true`, `severity=critical`, reason 필드 생성
+    - `reports/pre_news_shadow_task_health_alert_log.jsonl`에 append
+  - `healthy=true`일 때:
+    - `has_alert=false`, `severity=none` 아티팩트만 갱신(로그 append 없음)
+- 산출물:
+  - `docs/final/artifacts/pre_news_shadow_task_health_alert_latest.json`
+- 최신 상태:
+  - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_pre_news_shadow_health_chain.ps1 ...` exit 0.
+  - `pre_news_shadow_task_health_alert_latest.json` 생성 확인(`has_alert=false`).
+
+#### 31.43 Pre-News Shadow Health Alert Webhook Hookup v1 (FACT, 2026-04-28)
+
+- 수정:
+  - `scripts/alert_pre_news_shadow_task_health_v1.py`
+- 구현 사실:
+  - alert gate에 webhook 전송 로직 추가.
+  - 전송 조건: `has_alert=true`일 때만 POST.
+  - 환경변수 우선순위:
+    - `MKM_PRE_NEWS_SHADOW_ALERT_WEBHOOK_URL`
+    - fallback: `OPS_ALARM_WEBHOOK_URL`
+  - alert 아티팩트 필드 확장:
+    - `notified` (bool)
+    - `notify_status` (`skipped_no_alert` / `skipped_no_webhook` / `http_status=*` / `failed:*`)
+- 최신 상태:
+  - `run_pre_news_shadow_health_chain.ps1` 재실행 exit 0.
+  - 현재 상태(`healthy=true`)에서 `notify_status=skipped_no_alert` 확인.
+
+#### 31.44 Pre-News Shadow Alert Gate Forced-Unhealthy E2E Verification (FACT, 2026-04-28)
+
+- 테스트 입력:
+  - `docs/final/artifacts/pre_news_shadow_task_health_forced_unhealthy.json`
+- 테스트 실행:
+  - `py -3 scripts/alert_pre_news_shadow_task_health_v1.py --health-json ...forced_unhealthy.json --out-alert-json ...forced_test.json --append-log-jsonl ...forced_test_log.jsonl`
+- 테스트 산출:
+  - `docs/final/artifacts/pre_news_shadow_task_health_alert_forced_test.json`
+  - `reports/pre_news_shadow_task_health_alert_forced_test_log.jsonl`
+- 검증 결과:
+  - `has_alert=true`, `severity=critical`
+  - `notified=true`, `notify_status=http_status=200`
+  - unhealthy 조건에서 alert 생성 + log append + webhook 전송 경로가 end-to-end로 동작함을 확인.
+
+#### 31.45 Pre-News Shadow Monthly Drill + Forced-Test Cleanup Policy (FACT, 2026-04-28)
+
+- 신규:
+  - `scripts/run_pre_news_shadow_alert_drill_v1.py`
+  - `scripts/Register-PreNewsShadowMonthlyDrillTask.ps1`
+  - `scripts/cleanup_pre_news_shadow_forced_test_artifacts.ps1`
+- 구현 사실:
+  - 월간 드릴 러너 추가:
+    - 강제 unhealthy payload 생성 후 alert gate 실행 경로를 점검.
+    - 드릴 실행 시 webhook env를 비워 실알림 없이 경로만 검증(`notify_status=skipped_no_webhook` 기대).
+    - 결과 리포트: `docs/final/artifacts/pre_news_shadow_alert_drill_latest.json`.
+  - 월간 스케줄 등록기 추가:
+    - 기본 Task: `MKM_PreNewsShadow_Monthly_Drill`
+    - 기본 스케줄: 매월 1일 07:20.
+  - forced-test 정리 정책 스크립트 추가:
+    - `pre_news_shadow_task_health_forced_unhealthy.json`
+    - `pre_news_shadow_task_health_alert_forced_test.json`
+    - `pre_news_shadow_task_health_alert_forced_test_log.jsonl`
+    - `-DryRun` 지원.
+- 최신 상태:
+  - `py -3 scripts/run_pre_news_shadow_alert_drill_v1.py` exit 0 (`ok=true`).
+  - `Register-PreNewsShadowMonthlyDrillTask.ps1` 실행으로 월간 task 등록 완료.
+  - cleanup 스크립트 dry-run으로 대상 파일 목록 검증 완료.
+
+#### 31.46 Pre-News Shadow Health CI Smoke Workflow v1 (FACT, 2026-04-28)
+
+- 신규:
+  - `.github/workflows/pre-news-shadow-health-smoke.yml`
+- 구현 사실:
+  - pre-news health/alert/drill 회귀 방지를 위한 GitHub Actions smoke 추가.
+  - Linux runner에서 스케줄러 의존 PowerShell은 제외하고 Python 기반 경로를 검증:
+    - `run_pre_news_shadow_alert_drill_v1.py` 실행
+    - drill 리포트 계약 점검(`ok=true`, `has_alert=true`, `notify_status=skipped_no_webhook`)
+    - 주간 요약 빌더 smoke 실행
+  - CI용 주간 요약에서 `output_json` 미존재 로그를 안전 처리하도록
+    `build_global_atom_pre_news_shadow_weekly_report_v1.py` 보완(`latest_projection_json=null`).
+- 최신 상태:
+  - 로컬 smoke 재현:
+    - `py -3 scripts/run_pre_news_shadow_alert_drill_v1.py` exit 0
+    - `py -3 scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py ...` exit 0
+  - 산출물:
+    - `docs/final/artifacts/pre_news_shadow_alert_drill_latest.json`
+    - `docs/final/artifacts/pre_news_shadow_health_drill_weekly_report_ci_latest.json`
+
+#### 31.47 Pre-News Weekly Decision Metrics Expansion v1 (FACT, 2026-04-28)
+
+- 수정:
+  - `scripts/run_global_atom_pre_news_shadow_chain_v1.py`
+  - `scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py`
+- 구현 사실:
+  - shadow projection log 누적 필드 확장:
+    - `primary_top_stage`
+    - `top_stage_counts`
+  - 주간 리포트 지표 확장:
+    - `metrics.top_stage_change_rate`
+    - `metrics.top_stage_current_primary`
+    - `metrics.top_stage_previous_primary`
+    - `metrics.top_stage_drift`
+    - `metrics.health_alert_count_7d`
+  - one-line 의사결정 필드 추가:
+    - `risk_summary` (`LOW/MEDIUM/HIGH`)
+  - alert 로그 입력 지원:
+    - `--alert-log-jsonl` (기본 `reports/pre_news_shadow_task_health_alert_log.jsonl`)
+- 최신 상태:
+  - `run_global_atom_pre_news_shadow_chain_v1.ps1` 재실행 후 신규 log 필드 누적 확인.
+  - `build_global_atom_pre_news_shadow_weekly_report_v1.py` 실행 결과:
+    - `risk_summary = LOW: resonance stage is stable and no health alerts detected.`
+
+#### 31.48 Shadow→Holdout Promotion Gate Wiring v1 (FACT, 2026-04-28)
+
+- 수정:
+  - `scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py`
+- 구현 사실:
+  - holdout replay 연동 입력 추가:
+    - `--holdout-replay-json` (기본 `docs/final/artifacts/global_atom_news_network_holdout_replay_latest.json`)
+  - gate 규칙:
+    - `holdout top_resonance`에 등장한 stage만 `promoted_stage_counts`로 승격.
+  - 주간 리포트 확장:
+    - `holdout_replay_json`
+    - `promoted_stage_counts`
+    - `promotion_gate.enabled/rule/holdout_verified_stages`
+    - `metrics.holdout_verified_stage_count`
+    - `metrics.promoted_stage_count`
+- 최신 상태:
+  - weekly report 재생성 완료.
+  - 현재 샘플에서 holdout verified stage는 `full_canon`, `gospels`; 주간 승격 stage는 `full_canon`으로 집계됨.
+
+#### 31.49 Pre-News Weekly Promotion Explainability + Holdout Dataset v2 + CI Contract Gate (FACT, 2026-04-28)
+
+- 수정:
+  - `scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py`
+  - `scripts/run_global_atom_news_network_holdout_replay_v1.py`
+  - `.github/workflows/pre-news-shadow-health-smoke.yml`
+- 신규:
+  - `docs/final/artifacts/global_atom_news_holdout_dataset_v1.jsonl`
+- 구현 사실:
+  - 주간 리포트 설명가능성 강화:
+    - `rejected_stage_counts[]` 추가 (`reject_reason=not_in_holdout_verified_stages`)
+    - `metrics.rejected_stage_count` 추가.
+  - holdout replay 입력형 업그레이드:
+    - `--holdout-news-jsonl` 지원.
+    - 입력 JSONL 존재 시 `input.dataset_source=jsonl`로 기록, 없으면 내장 default fallback.
+  - CI 계약 테스트 강화:
+    - smoke workflow가 holdout replay(JSONL 입력)까지 실행.
+    - weekly promotion gate 계약 강제 검증:
+      - `promotion_gate.enabled=true`
+      - `len(promoted)<=len(top)`, `len(rejected)<=len(top)`
+      - rejected reason 고정값 검증
+      - metrics 집계값 일치 검증.
+- 최신 상태:
+  - 로컬 실행:
+    - replay(v2) + weekly report 생성 + 계약 검증 모두 exit 0.
+  - 현재 `pre_news_shadow_weekly_report_latest.json`에 `promoted_stage_counts`와 `rejected_stage_counts` 동시 제공 확인.
+
+#### 31.50 Holdout Dataset Scale-Up (20 cases) + Min-Sample Promotion Gate v1 (FACT, 2026-04-28)
+
+- 수정:
+  - `docs/final/artifacts/global_atom_news_holdout_dataset_v1.jsonl`
+  - `scripts/run_global_atom_news_network_holdout_replay_v1.py`
+  - `scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py`
+  - `.github/workflows/pre-news-shadow-health-smoke.yml`
+- 구현 사실:
+  - holdout dataset를 2건 샘플에서 20건으로 확장(2008~2025 시나리오).
+  - holdout replay summary에 stage 분포 추가:
+    - `summary.cases_total`
+    - `summary.holdout_top_stage_counts`
+  - 주간 승격 게이트에 최소 표본 조건 추가:
+    - CLI: `--min-holdout-cases-per-stage` (기본 2)
+    - gate rule: holdout top_resonance count가 임계치 이상인 stage만 승격.
+    - `promotion_gate.min_holdout_cases_per_stage`
+    - `promotion_gate.holdout_top_stage_counts`
+    - `metrics.holdout_min_cases_per_stage`
+  - CI 계약 검증 강화:
+    - 최소 표본 게이트 필드(`min_holdout_cases_per_stage >= 1`) 확인.
+    - reject reason 허용값 확장(`not_in_holdout_verified_stages` 또는 `below_min_holdout_cases_per_stage`).
+- 최신 상태:
+  - replay(v2) 재생성 결과 `cases_total=20`.
+  - holdout top stage 분포: `full_canon=14`, `gospels=4`, `prophets=2`.
+  - weekly report 게이트 재생성/로컬 계약 검증 모두 exit 0.
+
+#### 31.51 Stage-Specific Min-Sample Promotion Gate v2 (FACT, 2026-04-28)
+
+- 수정:
+  - `scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py`
+  - `.github/workflows/pre-news-shadow-health-smoke.yml`
+- 구현 사실:
+  - stage별 최소 표본 임계치 override 지원:
+    - CLI `--stage-min-holdout-cases`
+    - 형식: `full_canon:5,prophets:3,gospels:3`
+  - 승격 규칙:
+    - stage별 override가 있으면 override 우선, 없으면 `--min-holdout-cases-per-stage` 기본값 사용.
+  - 리포트 확장:
+    - `promotion_gate.stage_min_holdout_cases`
+    - rejected 항목에 `holdout_count`, `required_count` 추가.
+  - CI smoke 계약 검증 강화:
+    - `stage_min_holdout_cases` dict 타입/값(>=1) 확인.
+    - weekly smoke 실행 시 stage별 threshold 인자 전달.
+- 최신 상태:
+  - 로컬 실행(`full_canon:5,prophets:3,gospels:3`) 결과:
+    - holdout counts: `full_canon=14`, `prophets=2`, `gospels=4`
+    - verified stages: `full_canon`, `gospels` (`prophets`는 임계치 미달로 제외)
+  - stage-specific threshold 계약 검증 exit 0.
+
+#### 31.52 Stage Threshold Policy JSON Externalization v1 (FACT, 2026-04-28)
+
+- 신규:
+  - `docs/final/artifacts/pre_news_shadow_stage_threshold_policy_v1.json`
+- 수정:
+  - `scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py`
+  - `.github/workflows/pre-news-shadow-health-smoke.yml`
+- 구현 사실:
+  - stage 임계치 정책을 CLI 문자열에서 JSON 정책 파일로 외부화.
+  - weekly report 빌더에 정책 입력 추가:
+    - `--stage-threshold-policy-json`
+  - 정책 우선순위:
+    1) policy JSON (`default_min_holdout_cases_per_stage`, `stage_min_holdout_cases`)
+    2) CLI `--stage-min-holdout-cases` (ad-hoc override)
+    3) CLI `--min-holdout-cases-per-stage` 기본값
+  - 리포트에 정책 경로 노출:
+    - `stage_threshold_policy_json`
+  - CI smoke를 정책 파일 기반 실행으로 전환.
+- 최신 상태:
+  - 정책 파일 기반 weekly report 재생성 exit 0.
+  - 리포트에서 `stage_threshold_policy_json` 및 stage별 임계치 반영 확인.
+
+#### 31.53 Stage Threshold Policy Governance Metadata + Effective-Date Enforcement v1 (FACT, 2026-04-28)
+
+- 수정:
+  - `docs/final/artifacts/pre_news_shadow_stage_threshold_policy_v1.json`
+  - `scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py`
+  - `.github/workflows/pre-news-shadow-health-smoke.yml`
+- 구현 사실:
+  - 정책 JSON에 거버넌스 메타 추가:
+    - `policy_version`
+    - `approved_by`
+    - `effective_from_utc`
+    - `updated_at_utc`
+  - weekly 빌더에 유효일 강제 옵션 추가:
+    - `--enforce-policy-effective-from`
+    - policy의 `effective_from_utc`가 미래거나 형식 오류면 실행 fail.
+  - weekly 리포트에 정책 메타 노출:
+    - `stage_threshold_policy_meta`
+  - CI smoke 강화:
+    - weekly 빌드에 `--enforce-policy-effective-from` 적용
+    - 리포트에서 `stage_threshold_policy_meta.effective_from_utc` 존재 검증.
+- 최신 상태:
+  - 정책 유효일 강제 옵션으로 weekly report 재생성 exit 0.
+  - 산출물에서 policy meta 필드 확인 완료.
+
+#### 31.54 Stage Threshold Policy Change Audit Trail v1 (FACT, 2026-04-28)
+
+- 수정:
+  - `scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py`
+- 구현 사실:
+  - policy 파일 fingerprint(SHA-256) 기반 변경 감지 추가.
+  - 변경 감지 시 JSONL 감사 로그 append:
+    - `reports/pre_news_shadow_stage_threshold_policy_change_log.jsonl`
+  - 최신 policy 상태 스냅샷 갱신:
+    - `docs/final/artifacts/pre_news_shadow_stage_threshold_policy_state_latest.json`
+  - weekly report에 감사 경로 노출:
+    - `stage_threshold_policy_change_log_jsonl`
+    - `stage_threshold_policy_state_json`
+- 최신 상태:
+  - 초기 실행에서 policy fingerprint 기록 및 change log 1건 생성 확인.
+  - state에 `policy_version/approved_by/effective_from_utc` 동기화 확인.
+
+#### 31.55 Stage Threshold Policy Audit Summary (30d) v1 (FACT, 2026-04-28)
+
+- 신규:
+  - `scripts/build_pre_news_shadow_policy_change_audit_summary_v1.py`
+- 산출물:
+  - `docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_latest.json`
+- 구현 사실:
+  - 정책 변경 감사 로그(`...policy_change_log.jsonl`)와 최신 상태(`...policy_state_latest.json`)를 결합해
+    최근 N일(기본 30일) 요약 리포트 생성.
+  - 핵심 지표:
+    - `metrics.change_count_window`
+    - `metrics.change_count_total`
+    - `metrics.latest_change_detected_at_utc`
+  - 최신 변경 레코드와 현재 정책 상태(`policy_version`, `approved_by`, `effective_from_utc`, fingerprint`)를 함께 노출.
+  - 운영 판독용 `risk_summary` 자동 생성.
+- 최신 상태:
+  - 30일 요약 리포트 생성 exit 0.
+  - 현재 값: `change_count_window=1`, `latest_change_detected_at_utc=2026-04-28T12:16:55Z`.
+
+#### 31.56 Weekly Chain Wiring: Policy Audit Summary Auto-Generation (FACT, 2026-04-28)
+
+- 수정:
+  - `scripts/run_daily_prophecy_then_pre_news_v1.ps1`
+- 구현 사실:
+  - `-EnablePreNewsShadowWeeklyReport` 실행 경로에 정책 감사 요약 단계를 자동 연결.
+  - weekly shadow report 단계에서 다음을 함께 강제:
+    - `--holdout-replay-json`
+    - `--stage-threshold-policy-json`
+    - `--enforce-policy-effective-from`
+  - 이어서 policy audit summary 자동 생성:
+    - `scripts/build_pre_news_shadow_policy_change_audit_summary_v1.py`
+    - 출력: `docs/final/artifacts/pre_news_shadow_stage_threshold_policy_audit_summary_latest.json`
+  - 신규 파라미터:
+    - `PreNewsHoldoutReplayJson`
+    - `PreNewsStageThresholdPolicyJson`
+    - `PreNewsPolicyAuditWindowDays`
+- 최신 상태:
+  - daily wrapper를 `-EnablePreNewsShadow -EnablePreNewsShadowWeeklyReport`로 실행했을 때
+    pre-news projection + weekly report + policy audit summary가 연속 생성됨을 확인.
+
+#### 31.57 Holdout Dataset Integrity Lock Gate v1 (FACT, 2026-04-28)
+
+- 신규:
+  - `scripts/build_global_atom_news_holdout_dataset_lock_manifest_v1.py`
+  - `docs/final/artifacts/global_atom_news_holdout_dataset_lock_manifest_v1.json`
+- 수정:
+  - `scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py`
+  - `scripts/run_daily_prophecy_then_pre_news_v1.ps1`
+  - `.github/workflows/pre-news-shadow-health-smoke.yml`
+- 구현 사실:
+  - holdout dataset JSONL에 대한 SHA-256 lock manifest 생성 체인 추가.
+  - weekly promotion gate에 dataset lock 검증 필드 추가:
+    - `promotion_gate.holdout_dataset_lock_enforced`
+    - `promotion_gate.holdout_dataset_lock_ok`
+    - `promotion_gate.holdout_dataset_expected_sha256`
+    - `promotion_gate.holdout_dataset_actual_sha256`
+  - `--enforce-holdout-dataset-lock` 활성 시:
+    - hash mismatch면 승격 차단(`promoted_stage_counts=[]`, reject reason=`holdout_dataset_hash_mismatch`)
+    - gate 상태는 `enabled=false`로 강등.
+  - daily wrapper의 pre-news weekly 경로에 lock enforcement를 기본 적용.
+  - CI smoke에서 lock manifest 생성 + lock enforced contract 검증 추가.
+- 최신 상태:
+  - lock manifest 생성/weekly gate 재생성 모두 exit 0.
+  - 현재 리포트에서 expected/actual SHA 일치 및 `holdout_dataset_lock_ok=true` 확인.
+
+#### 31.58 Policy Governance Alert Gate Wiring v1 (FACT, 2026-04-28)
+
+- 신규:
+  - `scripts/alert_pre_news_shadow_policy_governance_v1.py`
+- 수정:
+  - `scripts/run_daily_prophecy_then_pre_news_v1.ps1`
+  - `.github/workflows/pre-news-shadow-health-smoke.yml`
+- 구현 사실:
+  - policy audit summary 기반 governance alert gate 추가.
+  - alert 조건:
+    - `change_count_window >= threshold` (기본 2)
+    - 또는 policy governance meta 누락
+  - 알림 출력:
+    - `docs/final/artifacts/pre_news_shadow_policy_governance_alert_latest.json`
+    - `reports/pre_news_shadow_policy_governance_alert_log.jsonl` (has_alert=true 시 append)
+  - webhook 우선순위:
+    - `MKM_PRE_NEWS_POLICY_GOVERNANCE_ALERT_WEBHOOK_URL`
+    - fallback `OPS_ALARM_WEBHOOK_URL`
+  - daily weekly 경로에 audit summary 다음 단계로 자동 연결.
+  - CI smoke에서 governance alert artifact 계약 검증 추가.
+  - 신규 daily 파라미터:
+    - `PreNewsPolicyGovernanceAlertThreshold`
+- 최신 상태:
+  - daily wrapper 실행 시 governance alert artifact 자동 생성 확인.
+  - 현재 샘플은 `has_alert=false`, `notify_status=skipped_no_alert`.
+
+#### 31.59 Weekly Audit Bundle Aggregation v1 (FACT, 2026-04-28)
+
+- 신규:
+  - `scripts/build_pre_news_shadow_weekly_audit_bundle_v1.py`
+  - `docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_latest.json`
+- 수정:
+  - `scripts/run_daily_prophecy_then_pre_news_v1.ps1`
+  - `.github/workflows/pre-news-shadow-health-smoke.yml`
+- 구현 사실:
+  - 주간 운영 근거를 단일 JSON 번들로 묶는 집계 단계 추가:
+    - weekly report
+    - policy audit summary
+    - policy governance alert
+    - policy state
+    - policy change log tail(N행)
+    - holdout replay summary
+    - holdout lock manifest
+  - daily weekly 경로에 bundle 생성 자동 연결.
+  - CI smoke에 bundle 생성 + 계약 검증(`weekly_report/policy_audit_summary/holdout_lock_manifest` 존재) 추가.
+  - 신규 daily 파라미터:
+    - `PreNewsPolicyChangeLogTailRows` (기본 20)
+- 최신 상태:
+  - daily wrapper 실행으로 `pre_news_shadow_weekly_audit_bundle_latest.json` 자동 생성 확인.
+  - bundle 내 정책/승격/무결성 핵심 근거가 단일 패키지로 집계됨.
+
+#### 31.60 Two-Person Policy Approval Gate v1 (FACT, 2026-04-28)
+
+- 수정:
+  - `docs/final/artifacts/pre_news_shadow_stage_threshold_policy_v1.json`
+  - `scripts/build_global_atom_pre_news_shadow_weekly_report_v1.py`
+  - `scripts/build_pre_news_shadow_policy_change_audit_summary_v1.py`
+  - `scripts/alert_pre_news_shadow_policy_governance_v1.py`
+  - `.github/workflows/pre-news-shadow-health-smoke.yml`
+- 구현 사실:
+  - 정책 메타에 2인 승인 필드 추가:
+    - `approved_by_1`
+    - `approved_by_2`
+  - audit summary가 `has_two_person_approval`를 계산/노출.
+  - governance alert 게이트가 2인 승인 누락을 metadata gap으로 판정:
+    - `has_two_person_approval=false`면 alert 사유에 `two-person approval missing` 추가.
+  - CI smoke에 `has_two_person_approval` 필드 존재 계약 검증 추가.
+- 최신 상태:
+  - 정책에 2인 승인 필드 반영 후 daily chain 재실행 성공.
+  - audit summary에서 `has_two_person_approval=true` 확인.
+  - 현재 governance alert는 변경 횟수 임계치(2) 충족으로 `has_alert=true` 상태.
+
+#### 31.61 Policy Governance Alert Sensitivity Relaxation v1 (FACT, 2026-04-28)
+
+- 수정:
+  - `scripts/alert_pre_news_shadow_policy_governance_v1.py`
+- 구현 사실:
+  - 변경 횟수 기반 alert 조건 완화:
+    - 기존: `change_count_window >= threshold`
+    - 변경: `change_count_window > threshold`
+  - 임계치와 동일한 값은 경고를 올리지 않도록 조정해 과민 알림을 완화.
+- 최신 상태:
+  - daily chain 재실행 후 `change_count_window=2`, `threshold=2`에서
+    `has_alert=false`, `notify_status=skipped_no_alert` 확인.
+
+#### 31.62 Holdout Lock Mismatch Drill v1 (FACT, 2026-04-28)
+
+- 신규:
+  - `scripts/run_pre_news_shadow_holdout_lock_mismatch_drill_v1.py`
+  - `docs/final/artifacts/global_atom_news_holdout_dataset_lock_manifest_mismatch_drill_latest.json`
+  - `docs/final/artifacts/pre_news_shadow_weekly_report_lock_mismatch_drill_latest.json`
+  - `docs/final/artifacts/pre_news_shadow_holdout_lock_mismatch_drill_latest.json`
+- 구현 사실:
+  - lock manifest SHA를 의도적으로 변조한 mismatch 파일 생성 후,
+    weekly gate를 `--enforce-holdout-dataset-lock`로 실행하는 drill 추가.
+  - 기대 계약을 자동 검증:
+    - `promotion_gate.enabled=false`
+    - `promotion_gate.holdout_dataset_lock_ok=false`
+    - `reject_reason=holdout_dataset_hash_mismatch` 존재
+  - drill report의 `ok=true/false`로 결과를 단일 판정.
+- 최신 상태:
+  - drill 실행 exit 0 (`ok=true`) 확인.
+  - mismatch 시 승격 차단 및 hash mismatch reject reason 정상 동작 확인.
+
+#### 31.63 Weekly Audit Bundle Date Archive v1 (FACT, 2026-04-28)
+
+- 수정:
+  - `scripts/build_pre_news_shadow_weekly_audit_bundle_v1.py`
+- 구현 사실:
+  - weekly audit bundle 생성 시 `latest` 외에 UTC 날짜 버전 아카이브를 동시 저장:
+    - 기본 템플릿: `docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_{date}.json`
+    - 예시 산출: `..._2026-04-28.json`
+  - 신규 CLI:
+    - `--out-dated-json` (`{date}` placeholder 지원)
+- 최신 상태:
+  - daily weekly 체인 실행 시
+    - `pre_news_shadow_weekly_audit_bundle_latest.json`
+    - `pre_news_shadow_weekly_audit_bundle_2026-04-28.json`
+    동시 생성 확인.
+
+#### 31.64 Weekly Audit Bundle Integrity Hash Manifest v1 (FACT, 2026-04-28)
+
+- 수정:
+  - `scripts/build_pre_news_shadow_weekly_audit_bundle_v1.py`
+- 신규 산출물:
+  - `docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_hash_manifest_latest.json`
+- 구현 사실:
+  - weekly audit bundle 생성 직후 SHA-256 무결성 manifest를 자동 생성.
+  - manifest 필드:
+    - `latest_bundle_path`, `latest_bundle_sha256`
+    - `dated_bundle_path`, `dated_bundle_sha256`
+  - latest/dated 번들의 무결성을 동일 포맷으로 즉시 증명 가능.
+- 최신 상태:
+  - daily weekly 체인 재실행 시 hash manifest 자동 생성 확인.
+  - 현재 실행에서 latest/dated SHA-256 값 일치 확인.
+
+#### 31.65 Monthly Governance Drill Scheduler (Lock Mismatch + Policy Alert) v1 (FACT, 2026-04-28)
+
+- 신규:
+  - `scripts/run_pre_news_shadow_policy_governance_drill_v1.py`
+  - `scripts/run_pre_news_shadow_monthly_governance_drills_v1.ps1`
+  - `scripts/Register-PreNewsShadowMonthlyGovernanceDrillTask.ps1`
+- 구현 사실:
+  - 월간 거버넌스 드릴 체인 추가:
+    - holdout lock mismatch drill
+    - policy governance alert forced drill
+  - forced governance drill은 synthetic audit summary를 사용해 경보 경로(`has_alert=true`)를 검증.
+  - live webhook 부작용 방지를 위해 drill 실행에서는 webhook env를 비워 dry-alert 성격으로 검증.
+  - 월간 Task Scheduler 등록 스크립트 추가:
+    - 기본 task: `MKM_PreNewsShadow_Monthly_Governance_Drill`
+    - 기본 스케줄: 매월 1일 07:30
+- 최신 상태:
+  - monthly governance drills 수동 실행 결과 두 drill 모두 `ok=true`.
+  - 월간 스케줄 task 등록 성공 확인.
+
 #### 31.37 a-codeai Public Deployment Live Verification (SSH Cursor Report, FACT, 2026-04-28)
 
 - 실행(SSH Cursor / VPS):
@@ -2799,3 +3296,193 @@
   - `Register-PointerGuardMonthlyP0DrillTask.ps1` 재등록 성공.
   - `schtasks /Query /TN "MKM_PointerGuard_Monthly_P0_Drill" /V /FO LIST`에서 `run_pointerguard_monthly_maintenance_chain_v1.ps1` 호출 확인.
   - `Start-ScheduledTask -TaskName "MKM_PointerGuard_Monthly_P0_Drill"` 수동 트리거 후 `pointerguard_monthly_maintenance_report_latest.json` 기준 `live_p0_drill_ok_count=3` 확인.
+
+#### 31.66 Pre-News Shadow Ops Single-File Dashboard (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/build_pre_news_shadow_ops_status_dashboard_v1.py`
+  - `scripts/run_daily_prophecy_then_pre_news_v1.ps1`
+- 구현 사실:
+  - Pre-News Shadow 운영 상태를 단일 JSON(`docs/final/artifacts/pre_news_shadow_ops_status_latest.json`)로 집계하는 대시보드 빌더 추가.
+  - 대시보드에 다음을 포함:
+    - promotion gate/holdout lock 상태
+    - 최신 policy/task health alert 스냅샷
+    - alert/projection 로그 tail
+    - 월간 drill 3종 최신 결과(lock mismatch / policy governance / task health alert)
+    - weekly audit bundle 최신/dated 경로와 manifest 참조
+  - `run_daily_prophecy_then_pre_news_v1.ps1`의 pre-news weekly report 체인 말단에 대시보드 생성을 자동 연결.
+- 최신 상태:
+  - `py -3 scripts/build_pre_news_shadow_ops_status_dashboard_v1.py` exit 0.
+  - 생성 산출물에서 `schema=pre_news_shadow_ops_status_v1`, `summary.drill_status=ok`, `summary.holdout_dataset_lock_ok=true` 확인.
+
+#### 31.67 Pre-News Monthly Drill One-Line Summary Alert (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/alert_pre_news_shadow_monthly_drill_summary_v1.py`
+  - `scripts/run_pre_news_shadow_monthly_governance_drills_v1.ps1`
+- 구현 사실:
+  - 월간 governance drill 종료 시 2개 drill 결과를 집계해 1줄 요약(`PASS/FAIL`)을 생성하는 알림 스크립트 추가.
+  - 산출물:
+    - `docs/final/artifacts/pre_news_shadow_monthly_drill_summary_alert_latest.json`
+    - `reports/pre_news_shadow_monthly_drill_summary_alert_log.jsonl`
+  - 웹훅은 `MKM_PRE_NEWS_SHADOW_ALERT_WEBHOOK_URL` 우선, 없으면 `OPS_ALARM_WEBHOOK_URL` 사용.
+  - `run_pre_news_shadow_monthly_governance_drills_v1.ps1`를 즉시 종료 방식에서 결과 수집 방식으로 변경:
+    - holdout/policy drill 실행
+    - summary alert 생성
+    - drill 실패 시 최종 exit 1 유지(스케줄러 실패 감지 보존)
+- 최신 상태:
+  - `py -3 scripts/alert_pre_news_shadow_monthly_drill_summary_v1.py` exit 0.
+  - 출력 1줄: `Pre-News monthly drills: PASS (2/2).`
+
+#### 31.68 Pre-News Policy Change Approval Workflow Checklist JSON (FACT, 2026-04-28)
+
+- 산출물:
+  - `docs/final/artifacts/pre_news_shadow_policy_change_approval_workflow_v1.json`
+- 구현 사실:
+  - 정책 변경 승인 흐름을 단일 체크리스트 JSON으로 고정:
+    - 2인 승인 필드 포함 정책 수정
+    - 주간 체인 재실행
+    - audit summary 기반 2인 승인/지문 확인
+    - governance alert 동작 확인
+    - weekly bundle + hash manifest 추적성 확인
+  - GO/HOLD 결정 규칙을 명시해 운영자가 변경 승인 완료 조건을 즉시 판정 가능하게 구성.
+- 최신 상태:
+  - 체크리스트 JSON 생성 완료(스키마 `pre_news_shadow_policy_change_approval_workflow_v1`).
+
+#### 31.69 Pre-News Ops Unified Smoke Runner (FACT, 2026-04-28)
+
+- 스크립트:
+  - `scripts/run_pre_news_shadow_ops_smoke_v1.py`
+- 구현 사실:
+  - 운영 마감형 단일 smoke 러너 추가(한 번에 3종 점검):
+    - ops status dashboard 재생성
+    - monthly drill summary alert 재생성
+    - policy change approval workflow checklist JSON 존재 확인
+  - 결과 아티팩트:
+    - `docs/final/artifacts/pre_news_shadow_ops_smoke_latest.json`
+  - smoke 결과에 각 step의 exit code/stdout/stderr와 snapshot(ops summary + monthly drill summary)을 함께 기록.
+- 최신 상태:
+  - `py -3 scripts/run_pre_news_shadow_ops_smoke_v1.py` exit 0.
+  - `pre_news_shadow_ops_smoke_latest.json` 기준 `all_ok=true`.
+
+#### 31.70 Lens-Combo Limited-Live Submit Path + Watchdog Wrapper (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/run_prophecy_lens_combo_backtest_v1.py`
+  - `scripts/run_lens_combo_limited_live_engine_handoff_v1.py`
+  - `scripts/build_lens_combo_engine_submit_preflight_v1.py`
+  - `scripts/run_lens_combo_24h_watchdog_v1.py`
+- 구현 사실:
+  - limited-live 제출 후보 경로를 lens-combo 아티팩트로 고정:
+    - `docs/final/artifacts/btc_limited_live_engine_input_from_lens_combo_latest.json`
+  - 동률 시 선택 정책을 구조화해 산출물에 명시:
+    - `tie_break_policy.policy_id = non_logos_multi_lens_then_lens_count_v1`
+    - 핵심 지표 동률이면 비-logos 다중렌즈(예: `myeongni+sasang`)를 우선.
+  - `run_lens_combo_24h_watchdog_v1.py` 추가:
+    - lens 엔진 입력을 기준으로 breaker 아티팩트를 먼저 갱신한 뒤,
+    - 24h watchdog(`run_role_router_24h_watchdog_v1.py`)을 lens 경로 인자로 실행.
+- 최신 상태:
+  - `py scripts/run_lens_combo_limited_live_engine_handoff_v1.py --approve-submit --live` exit 0 (`dry_run=false`, `status=READY_FOR_ENGINE_SUBMIT`).
+  - `py scripts/build_lens_combo_engine_submit_preflight_v1.py --expected-dry-run false` exit 0 (`result=PASS`).
+  - `py scripts/run_lens_combo_24h_watchdog_v1.py --duration-hours 0 --poll-seconds 5` exit 0 (`healthy=True` smoke row 기록).
+
+#### 31.71 Role-Router Shadow-Forward Gate Hard-Lock + Threshold Calibration (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/check_role_router_shadow_forward_validation_v1.py`
+  - `scripts/run_prophecy_role_router_multiscenario_opt_v1.py`
+- 산출물:
+  - `docs/final/artifacts/role_router_shadow_forward_validation_gate_v1.json`
+  - `docs/final/artifacts/prophecy_role_router_multiscenario_opt_30y_btc_neutralbase_latest.json`
+  - `reports/role_router_shadow_forward_validation_decision_latest.json`
+  - `reports/role_router_shadow_forward_validation_decision_log.jsonl`
+- 구현 사실:
+  - Shadow-forward 승격 판정기 추가:
+    - gate JSON의 필수 체크(Preflight/Intent/First30m/24h Watchdog/Circuit Breaker) + 자산별 임계치 + cross-asset safety를 단일 판정으로 결합.
+    - 판정 출력은 `GO_LIVE_CANDIDATE` 또는 `HOLD_SHADOW_ONLY`로 고정.
+  - gate에 `required_oos_days=252` 하드락 반영(자산 공통).
+  - BTC block 임계치 민감도 검증 후 `min_hit_rate_active`를 `0.53 -> 0.52845`로 정밀 보정.
+  - `run_prophecy_role_router_multiscenario_opt_v1.py`에 gate 연결 후처리 옵션(`--promotion-gate-json`) 추가:
+    - gate 통과 후보가 있으면 해당 후보를 `best_candidate`로 우선 선택,
+    - 없으면 기존 robustness-first 순위를 유지.
+- 최신 상태:
+  - `py scripts/check_role_router_shadow_forward_validation_v1.py --gate-json docs/final/artifacts/role_router_shadow_forward_validation_gate_v1.json` exit 0.
+  - `reports/role_router_shadow_forward_validation_decision_latest.json` 기준:
+    - `checks_passed=true`
+    - `thresholds_passed=true`
+    - `final_decision=GO_LIVE_CANDIDATE`
+
+#### 31.72 Revalidation Failure-Path Semantic Field Persistence + Separation Gate (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/run_prophecy_logos_revalidation_suite_v1.py`
+  - `scripts/check_promotion_directional_semantic_separation_v1.py`
+- 테스트:
+  - `tests/test_role_router_shadow_forward_fusion_regression.py`
+  - `tests/test_promotion_directional_semantic_separation_v1.py`
+- 구현 사실:
+  - revalidation suite의 조기 실패(`status=FAILED`) 경로에서도 `findings.logos_directional_viable_under_current_setup`를 항상 기록하도록 고정.
+  - 승격 판정(`final_decision`)과 Logos 방향성 가능성(`logos_directional_viable_under_current_setup`)의 의미 분리 스모크체크를 추가하고 strict 모드 검증을 지원.
+  - CI(`.github/workflows/dual-regime-integrity.yml`)에 해당 회귀 테스트를 연결해 의미 혼선 재발을 자동 차단.
+- 최신 상태:
+  - `py scripts/run_prophecy_logos_revalidation_suite_v1.py` exit 0.
+  - `py scripts/check_promotion_directional_semantic_separation_v1.py --strict` exit 0 (`semantic_separation_ok=true`, `non_conflation_confirmed=true`).
+  - `py -m pytest tests/test_role_router_shadow_forward_fusion_regression.py tests/test_promotion_directional_semantic_separation_v1.py -q` exit 0 (4 passed).
+
+#### 31.73 Survivor Resonance Direct-Mapping + Real/Proxy Falsification Chain (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/build_survivor_w3_direct_mapping_v1.py`
+  - `scripts/build_global_atom_survivor_resonance_daily_real_v1.py`
+  - `scripts/run_survivor_resonance_falsification_chain_v1.py`
+  - `scripts/check_survivor_crash_falsification_gate_v1.py`
+  - `scripts/sweep_survivor_crash_falsification_thresholds_v1.py`
+  - `scripts/tune_survivor_real_resonance_weights_v1.py`
+- 테스트:
+  - `tests/test_build_survivor_w3_direct_mapping_v1.py`
+  - `tests/test_build_global_atom_survivor_resonance_daily_real_v1.py`
+  - `tests/test_check_survivor_crash_falsification_gate_v1.py`
+  - `tests/test_run_survivor_resonance_falsification_chain_v1.py`
+  - `tests/test_sweep_survivor_crash_falsification_thresholds_v1.py`
+- 구현 사실:
+  - survivor(`cand_001..005`)와 W3 `sample_id`를 직접 매핑하는 아티팩트(`global_atom_survivor_w3_direct_mapping_latest.json`)를 추가해 `mapping_quality=direct_mapping_seeded_v1` 경로를 고정.
+  - real resonance 입력(`global_atom_survivor_resonance_daily_real_latest.jsonl`)을 체인에 연결해 real 부재 HOLD를 해소하고, proxy/real 분리 결과를 단일 summary로 산출.
+  - 기본 반증 게이트(`|corr|>=0.5`, `p<=0.05`, `n>=250`)는 proxy/real 모두 `HOLD_RESEARCH_ONLY`.
+  - 가중치 튜닝 best는 `w_candidate=0.8`, `w_flow=0.5`, `w_temporal=0.1`; 탐색 임계치(`|corr|>=0.08`)에서는 real 기준 `GO_RESEARCH_SIGNAL_CANDIDATE` 확인.
+- 최신 상태:
+  - `py scripts/run_survivor_resonance_falsification_chain_v1.py` exit 0 (`final_decision=HOLD_RESEARCH_ONLY`).
+  - `py scripts/sweep_survivor_crash_falsification_thresholds_v1.py --threshold-grid 0.3,0.4,0.5` exit 0 (all HOLD).
+  - `py scripts/check_survivor_crash_falsification_gate_v1.py --backtest-json docs/final/artifacts/btrack_survivor_crash_correlation_backtest_real_latest.json --output docs/final/artifacts/btrack_survivor_crash_falsification_gate_real_thr0p08_latest.json --min-abs-corr 0.08 --max-pvalue 0.05 --min-n 250` exit 0 (`decision=GO_RESEARCH_SIGNAL_CANDIDATE`).
+
+#### 31.74 Survivor Chain Auto-Apply Tuned Weights (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/run_survivor_resonance_falsification_chain_v1.py`
+  - `scripts/tune_survivor_real_resonance_weights_v1.py`
+  - `scripts/build_global_atom_survivor_resonance_daily_real_v1.py`
+- 테스트:
+  - `tests/test_run_survivor_resonance_falsification_chain_v1.py`
+  - `tests/test_tune_survivor_real_resonance_weights_v1.py`
+- 구현 사실:
+  - falsification chain이 `btrack_survivor_real_resonance_tuning_latest.json`의 `best.weights`를 자동 로드해 real resonance JSONL을 선행 재빌드한 뒤 backtest/gate를 수행하도록 배선.
+  - 기본값은 `--apply-best-tuned-weights` enabled이며, 튜닝 파일 부재/파싱 실패 시 summary `notes`에 이유를 기록하고 보수 경로로 계속 실행.
+  - summary 입력에 `apply_best_tuned_weights`와 `tuning_json` 경로를 명시해 재현/감사를 고정.
+- 최신 상태:
+  - `py -m pytest tests/test_run_survivor_resonance_falsification_chain_v1.py tests/test_tune_survivor_real_resonance_weights_v1.py -q` exit 0.
+  - `py scripts/run_survivor_resonance_falsification_chain_v1.py` exit 0 (`final_decision=HOLD_RESEARCH_ONLY`).
+
+#### 31.75 Survivor Resonance Operational Bundle + CI Gate Lock (FACT, 2026-04-29)
+
+- 스크립트:
+  - `scripts/run_survivor_resonance_operational_bundle_v1.py`
+- 테스트:
+  - `tests/test_run_survivor_resonance_operational_bundle_v1.py`
+- CI:
+  - `.github/workflows/dual-regime-integrity.yml`
+- 구현 사실:
+  - 운영 번들에서 `tuning -> direct_mapping -> build_real -> falsification_chain -> threshold_sweep(0.3,0.4,0.5) -> exploratory_gate(0.08)`를 단일 실행으로 고정.
+  - 산출물 `docs/final/artifacts/survivor_resonance_operational_bundle_latest.json`에 실행별 returncode와 핵심 스냅샷(`chain_final_decision`, `exploratory_gate_decision`, `tuning_best_weights`)을 기록.
+  - CI에 번들 회귀 테스트를 추가해 falsification chain 회귀와 분리된 독립 게이트로 고정.
+- 최신 상태:
+  - `py -m pytest tests/test_run_survivor_resonance_operational_bundle_v1.py -q` exit 0.
+  - `py scripts/run_survivor_resonance_operational_bundle_v1.py` exit 0 (`chain_final_decision=HOLD_RESEARCH_ONLY`, `exploratory_gate_decision=GO_RESEARCH_SIGNAL_CANDIDATE`).
