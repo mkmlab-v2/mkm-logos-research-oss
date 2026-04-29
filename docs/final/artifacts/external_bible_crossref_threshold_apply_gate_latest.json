@@ -1,0 +1,22 @@
+{
+  "schema": "external_bible_crossref_threshold_apply_gate_v1",
+  "generated_at_utc": "2026-04-29T20:09:51Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "checks": {
+    "hint_active": true,
+    "resolution_completed": false,
+    "approval_granted": false,
+    "approval_schema_valid": true,
+    "approval_not_expired": true,
+    "proposal_exists": true
+  },
+  "can_apply_thresholds": false,
+  "refs": {
+    "hint": "C:\\workspace\\docs\\final\\artifacts\\external_bible_crossref_threshold_recalibration_hint_latest.json",
+    "resolution": "C:\\workspace\\docs\\final\\artifacts\\external_bible_crossref_human_review_resolution_latest.json",
+    "approval": "C:\\workspace\\docs\\final\\artifacts\\external_bible_crossref_threshold_apply_approval_latest.json",
+    "proposal": "C:\\workspace\\docs\\final\\artifacts\\btrack_external_baseline_threshold_tuning_proposal_latest.json"
+  }
+}

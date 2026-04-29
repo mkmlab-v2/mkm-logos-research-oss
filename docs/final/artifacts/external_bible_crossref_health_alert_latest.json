@@ -1,0 +1,11 @@
+{
+  "schema": "external_bible_crossref_health_alert_v1",
+  "generated_at_utc": "2026-04-29T20:09:51Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "active": false,
+  "health_check_ref": "C:\\workspace\\docs\\final\\artifacts\\external_bible_crossref_health_check_latest.json",
+  "unhealthy_count": 0,
+  "unhealthy_artifacts": []
+}

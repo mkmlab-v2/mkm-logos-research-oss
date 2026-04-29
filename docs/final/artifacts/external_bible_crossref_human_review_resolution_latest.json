@@ -1,0 +1,15 @@
+{
+  "schema": "external_bible_crossref_human_review_resolution_v1",
+  "generated_at_utc": "2026-04-29T20:10:38Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "queue_ref": "C:\\workspace\\docs\\final\\artifacts\\external_bible_crossref_human_review_queue_latest.json",
+  "queue_status": "closed",
+  "counts": {
+    "item_total": 0,
+    "open_count": 0,
+    "closed_count": 0
+  },
+  "resolution_state": "completed"
+}

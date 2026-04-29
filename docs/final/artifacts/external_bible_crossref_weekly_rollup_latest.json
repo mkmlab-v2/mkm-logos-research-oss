@@ -1,0 +1,19 @@
+{
+  "schema": "external_bible_crossref_weekly_rollup_v1",
+  "generated_at_utc": "2026-04-29T20:10:38Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "operator_signal": {
+    "status": "watch",
+    "rationale": "monitor_only_streak_high"
+  },
+  "summary": {
+    "hint_active": true,
+    "monitor_only_streak": 10,
+    "apply_count_total": 9,
+    "all_healthy": true,
+    "approval_expiring_soon": true,
+    "approval_renewal_due": false
+  }
+}

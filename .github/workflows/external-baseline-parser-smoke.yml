@@ -1,0 +1,77 @@
+name: external-baseline-parser-smoke
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "scripts/parse_external_baseline_v1.py"
+      - "tests/test_parse_external_baseline_v1_smoke.py"
+      - "scripts/run_external_baseline_benchmark_weekly_v1.ps1"
+      - "scripts/sweep_external_baseline_topk_v1.py"
+      - "scripts/build_external_baseline_dual_mode_report_v1.py"
+      - "scripts/build_external_baseline_exploration_signal_brief_v1.py"
+      - "scripts/build_external_baseline_overlap_comparison_v1.py"
+      - "scripts/build_external_baseline_range_mode_ab_decision_v1.py"
+      - "scripts/build_core100_node_ref_audit_sample_v1.py"
+      - "scripts/build_external_baseline_latest_index_v1.py"
+      - "scripts/run_external_baseline_extended_sweep_v1.py"
+      - "scripts/build_external_baseline_human_review_queue_v1.py"
+      - "scripts/build_external_baseline_human_review_resolution_v1.py"
+      - "scripts/build_external_baseline_extended_sweep_status_v1.py"
+      - "scripts/build_external_baseline_threshold_recalibration_hint_v1.py"
+      - "scripts/build_external_baseline_threshold_apply_gate_v1.py"
+      - "scripts/apply_external_baseline_thresholds_from_proposal_v1.py"
+      - "scripts/build_external_baseline_threshold_apply_approval_v1.py"
+      - "scripts/build_external_baseline_health_check_v1.py"
+      - "scripts/build_external_baseline_health_alert_v1.py"
+      - "scripts/build_external_baseline_approval_expiry_warning_v1.py"
+      - "scripts/build_external_baseline_weekly_rollup_v1.py"
+      - "scripts/build_external_baseline_threshold_effect_report_v1.py"
+      - "scripts/build_external_baseline_threshold_apply_log_summary_v1.py"
+      - "tests/test_external_baseline_chain_integration_smoke.py"
+  pull_request:
+    paths:
+      - "scripts/parse_external_baseline_v1.py"
+      - "tests/test_parse_external_baseline_v1_smoke.py"
+      - "scripts/run_external_baseline_benchmark_weekly_v1.ps1"
+      - "scripts/sweep_external_baseline_topk_v1.py"
+      - "scripts/build_external_baseline_dual_mode_report_v1.py"
+      - "scripts/build_external_baseline_exploration_signal_brief_v1.py"
+      - "scripts/build_external_baseline_overlap_comparison_v1.py"
+      - "scripts/build_external_baseline_range_mode_ab_decision_v1.py"
+      - "scripts/build_core100_node_ref_audit_sample_v1.py"
+      - "scripts/build_external_baseline_latest_index_v1.py"
+      - "scripts/run_external_baseline_extended_sweep_v1.py"
+      - "scripts/build_external_baseline_human_review_queue_v1.py"
+      - "scripts/build_external_baseline_human_review_resolution_v1.py"
+      - "scripts/build_external_baseline_extended_sweep_status_v1.py"
+      - "scripts/build_external_baseline_threshold_recalibration_hint_v1.py"
+      - "scripts/build_external_baseline_threshold_apply_gate_v1.py"
+      - "scripts/apply_external_baseline_thresholds_from_proposal_v1.py"
+      - "scripts/build_external_baseline_threshold_apply_approval_v1.py"
+      - "scripts/build_external_baseline_health_check_v1.py"
+      - "scripts/build_external_baseline_health_alert_v1.py"
+      - "scripts/build_external_baseline_approval_expiry_warning_v1.py"
+      - "scripts/build_external_baseline_weekly_rollup_v1.py"
+      - "scripts/build_external_baseline_threshold_effect_report_v1.py"
+      - "scripts/build_external_baseline_threshold_apply_log_summary_v1.py"
+      - "tests/test_external_baseline_chain_integration_smoke.py"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pytest
+        run: py -m pip install pytest
+
+      - name: Run parser and chain smoke tests
+        run: py -m pytest tests/test_parse_external_baseline_v1_smoke.py tests/test_external_baseline_chain_integration_smoke.py -q

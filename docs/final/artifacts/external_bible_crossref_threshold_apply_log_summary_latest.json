@@ -1,0 +1,15 @@
+{
+  "schema": "external_bible_crossref_threshold_apply_log_summary_v1",
+  "generated_at_utc": "2026-04-29T20:09:51Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "log_ref": "C:\\workspace\\docs\\final\\artifacts\\external_bible_crossref_threshold_apply_log.jsonl",
+  "apply_count_total": 9,
+  "last_applied_at_utc": "2026-04-29T20:05:50Z",
+  "approver_counts": {
+    "operator_manual_approval": 2,
+    "user_manual_approval": 1,
+    "user_PRO": 6
+  }
+}
