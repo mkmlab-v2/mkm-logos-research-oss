@@ -1,0 +1,1 @@
+{"schema":"a_track_promotion_cli_decision_v1","generated_at":"2026-04-29T02:03:54.8111474Z","target":"a_track","requested_stage":"S2_PAPER_STRICT","action":"approve","status":"accepted","approver":"athena-test","reason":"smoke","strict_mode":false,"source":{"workspace_root":"C:\\workspace","script":"scripts/approve_intervention_promotion.ps1"}}

@@ -1,8 +1,8 @@
 {
   "schema": "a_track_go_nogo_status_v1",
   "meta": {
-    "generated_at_utc": "2026-04-28T01:26:25.366006+00:00",
-    "system_error_policy": "no_go",
+    "generated_at_utc": "2026-04-29T02:03:54.981239+00:00",
+    "system_error_policy": "hold_s1",
     "input_paths": {
       "high_reliability_mode_gate": "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
       "trinity_track_quality": "C:\\workspace\\docs\\final\\artifacts\\trinity_track_quality_report_latest.json",
@@ -31,13 +31,13 @@
     "a_track_promotion_cli": {
       "present": true,
       "path": "C:\\workspace\\reports\\a_track_promotion_decision_latest.json",
-      "schema": "a_track_promotion_decision_v1",
+      "schema": "a_track_promotion_cli_decision_v1",
       "action": "approve",
       "status": "accepted",
       "requested_stage": "S2_PAPER_STRICT",
       "accepted_for_stage": "S2_PAPER_STRICT",
-      "generated_at": "2026-04-28T01:25:53+00:00",
-      "approver": "PRO"
+      "generated_at": "2026-04-29T02:03:54.8111474Z",
+      "approver": "athena-test"
     },
     "multiweek_stability_tracker_present": true,
     "multiweek_stability_ready_for_s3_gate": false,
