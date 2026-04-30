@@ -39,6 +39,8 @@ $daemonRunning = [bool]$health.daemon_running
 $tradingEnabled = [bool]$health.trading_enabled
 $tradeCount24h = 0
 try { $tradeCount24h = [int]$health.trade_history_count_24h } catch { $tradeCount24h = 0 }
+$exchangeFills24h = 0
+try { $exchangeFills24h = [int]$health.exchange_fills_24h } catch { $exchangeFills24h = 0 }
 
 $warn = $false
 $reason = "ok"
@@ -48,6 +50,11 @@ if (-not $daemonRunning) {
 } elseif (-not $tradingEnabled) {
     $warn = $true
     $reason = "trading_disabled"
+} elseif ($exchangeFills24h -gt 0) {
+    # Exchange-side fills are the source of truth for recent execution activity.
+    # Avoid false no-fill alerts when local trade history exports are stale.
+    $warn = $false
+    $reason = "exchange_fills_present"
 } elseif ($windowAgeMinutes -ne $null -and $windowAgeMinutes -gt 30) {
     $warn = $true
     $reason = "trade_window_stale"
@@ -65,6 +72,7 @@ $result = [ordered]@{
     daemon_running = $daemonRunning
     trading_enabled = $tradingEnabled
     trade_history_count_24h = $tradeCount24h
+    exchange_fills_24h = $exchangeFills24h
     trade_history_window_age_minutes = $windowAgeMinutes
     last_trade_age_minutes = $lastTradeAgeMinutes
     warn = $warn

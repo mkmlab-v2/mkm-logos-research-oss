@@ -32,6 +32,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from src.integration.realtime_trading_with_monitoring import RealtimeTradingWithMonitoring
+from src.api.binance_client import get_last_binance_credential_meta
 from src.monitoring.alert_manager import AlertManager
 from src.monitoring.trading_prometheus import (
     refresh_prometheus_from_daemon,
@@ -166,6 +167,7 @@ class BitcoinTradingDaemon:
             # Keep daemon counters aligned with live trader state when available.
             self._sync_trade_counters_from_trader_state()
             exchange_snapshot = self._build_exchange_trade_snapshot()
+            position_snapshot = self._build_position_snapshot()
             status = {
                 "running": self.running,
                 "restart_count": self.restart_count,
@@ -180,6 +182,7 @@ class BitcoinTradingDaemon:
                 "testnet": self.testnet,
                 "enable_trading": self.enable_trading,
                 "exchange_snapshot_24h": exchange_snapshot,
+                "current_position": position_snapshot,
                 "risk_profile": self._load_risk_profile_metadata(),
                 "mkm_singular_core": self._load_mkm_singular_core_status(),
             }
@@ -194,6 +197,51 @@ class BitcoinTradingDaemon:
                 logger.debug("prometheus refresh skipped: %s", prom_e)
         except Exception as e:
             logger.error(f"❌ 상태 저장 실패: {e}")
+
+    def _build_position_snapshot(self) -> Dict[str, Any]:
+        """
+        Always expose current open-position snapshot in daemon status JSON.
+        This keeps downstream ops scripts from relying on ad-hoc diagnostics.
+        """
+        snapshot: Dict[str, Any] = {
+            "has_position": False,
+            "position_side": None,
+            "position_qty": None,
+            "entry_price": None,
+            "mark_price": None,
+            "unrealized_pnl": None,
+            "error": None,
+        }
+        try:
+            if not self.engine or not getattr(self.engine, "binance", None):
+                return snapshot
+            position = self.engine.binance.get_position(self.symbol)
+            if not isinstance(position, dict):
+                return snapshot
+            qty_raw = position.get("quantity")
+            qty = None
+            if qty_raw is not None:
+                try:
+                    qty = float(qty_raw)
+                except (TypeError, ValueError):
+                    qty = None
+            side_raw = position.get("side")
+            side = str(side_raw).upper() if side_raw is not None else None
+            has_position = bool(side in {"LONG", "SHORT"} and qty is not None and qty > 0)
+            snapshot.update(
+                {
+                    "has_position": has_position,
+                    "position_side": side if has_position else None,
+                    "position_qty": qty if has_position else None,
+                    "entry_price": position.get("entry_price"),
+                    "mark_price": position.get("mark_price"),
+                    "unrealized_pnl": position.get("unrealized_pnl"),
+                }
+            )
+            return snapshot
+        except Exception as e:
+            snapshot["error"] = str(e)
+            return snapshot
 
     def _load_mkm_singular_core_status(self) -> Dict[str, Any]:
         """
@@ -278,6 +326,7 @@ class BitcoinTradingDaemon:
 
     def _build_exchange_trade_snapshot(self) -> Dict[str, Any]:
         """Build lightweight 24h fills snapshot from exchange API."""
+        credential_meta = get_last_binance_credential_meta()
         snapshot: Dict[str, Any] = {
             "available": False,
             "fills_count": None,
@@ -286,6 +335,8 @@ class BitcoinTradingDaemon:
             "funding_fee": None,
             "net": None,
             "error": None,
+            "credential_source": str(credential_meta.get("credential_source") or "unknown"),
+            "credential_key_suffix": str(credential_meta.get("credential_key_suffix") or "****"),
         }
         try:
             if not self.engine or not getattr(self.engine, "binance", None):
@@ -366,6 +417,8 @@ class BitcoinTradingDaemon:
                 "funding_fee": round(funding, 8),
                 "net": round(realized + commission + funding, 8),
                 "error": snapshot.get("error"),
+                "credential_source": str(credential_meta.get("credential_source") or "unknown"),
+                "credential_key_suffix": str(credential_meta.get("credential_key_suffix") or "****"),
             }
             return snapshot
         except Exception as e:

@@ -9,6 +9,33 @@ function Test-DriveLetter([string]$Letter) {
     return (Test-Path -LiteralPath $root)
 }
 
+function Resolve-GVaultProbePath {
+    if (-not (Test-DriveLetter "G")) {
+        return $null
+    }
+    $candidates = @()
+    # Discover path without relying on localized folder names.
+    try {
+        $gRootDirs = Get-ChildItem -LiteralPath "G:\" -Directory -ErrorAction Stop
+        foreach ($dir in $gRootDirs) {
+            $probe = Join-Path (Join-Path $dir.FullName "MKM_DATA_VAULT") "vault"
+            if (Test-Path -LiteralPath $probe) {
+                return $probe
+            }
+            $candidates += $probe
+        }
+    } catch {
+        # Ignore discovery errors and rely on static fallback.
+    }
+    $candidates += "G:\공유 드라이브\MKM_DATA_VAULT\vault"
+    foreach ($path in ($candidates | Select-Object -Unique)) {
+        if ($path -and (Test-Path -LiteralPath $path)) {
+            return $path
+        }
+    }
+    return ($candidates | Select-Object -First 1)
+}
+
 $tasksToProbe = @(
     "\Bitcoin-Ops-Fusion-Cycle-Auto",
     "\Bitcoin-Verify-All-Green-SelfHeal-30min",
@@ -40,7 +67,18 @@ foreach ($tn in $tasksToProbe) {
     $taskSnapshots += $entry
 }
 
-$gPathProbe = "G:\공유 드라이브\MKM_DATA_VAULT\vault"
+$gPathProbe = Resolve-GVaultProbePath
+$gProbeOk = $false
+if ($gPathProbe) {
+    # Retry a few times to avoid transient mapped-drive readiness races.
+    for ($i = 0; $i -lt 3; $i++) {
+        if (Test-Path -LiteralPath $gPathProbe) {
+            $gProbeOk = $true
+            break
+        }
+        Start-Sleep -Milliseconds 300
+    }
+}
 $payload = [ordered]@{
     schema         = "ops_environment_snapshot_v1"
     ts_utc         = [DateTimeOffset]::UtcNow.ToString("o")
@@ -48,7 +86,7 @@ $payload = [ordered]@{
     user_domain    = [Environment]::UserDomainName
     workspace_ok   = (Test-Path -LiteralPath "C:\workspace")
     g_drive_root   = (Test-DriveLetter "G")
-    g_vault_probe  = (Test-Path -LiteralPath $gPathProbe)
+    g_vault_probe  = $gProbeOk
     g_vault_path   = $gPathProbe
     tasks          = $taskSnapshots
     notes          = "Unattended tasks may lose G: if mapped per-user; verify with pilot before broad Run-whether-logged-on."

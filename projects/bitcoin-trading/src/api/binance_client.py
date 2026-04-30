@@ -103,6 +103,17 @@ def _read_key_from_dotenv(dotenv_path: Path, key: str) -> Optional[str]:
     return None
 
 
+def _credential_source_mode() -> str:
+    """
+    Credential source routing mode.
+    - auto (default): security_agent -> env -> dotenv -> file
+    - dotenv_only: only workspace/current .env
+    - env_only: only process env
+    """
+    raw = os.getenv("BINANCE_KEY_SOURCE_MODE", "auto")
+    return str(raw or "auto").strip().lower()
+
+
 def get_binance_api_keys() -> tuple[str, str]:
     """
     Binance API 키 가져오기 (우선순위: Security Agent > 환경 변수 > 파일)
@@ -120,9 +131,12 @@ def get_binance_api_keys() -> tuple[str, str]:
     """
     api_key = None
     api_secret = None
+    source_mode = _credential_source_mode()
+    dotenv_only = source_mode in ("dotenv_only", "dotenv")
+    env_only = source_mode in ("env_only", "env")
     
     # 1. Security Agent에서 가져오기 (최우선)
-    if SECURITY_AGENT_AVAILABLE:
+    if SECURITY_AGENT_AVAILABLE and not (dotenv_only or env_only):
         try:
             agent = get_security_agent()
             api_key = agent.get_env_var("BINANCE_API_KEY")
@@ -132,98 +146,105 @@ def get_binance_api_keys() -> tuple[str, str]:
                 if not (_is_invalid_credential_value(api_key) or _is_invalid_credential_value(api_secret)):
                     logger.info("✅ Security Agent에서 Binance API 키를 가져왔습니다.")
                     logger.info("   사용 중인 API 키 (끝 4자): ...%s (Binance 화면의 키와 동일한지 확인)", api_key[-4:] if len(api_key) >= 4 else "****")
+                    _publish_binance_credential_meta(credential_source="security_agent", api_key=api_key)
                     return api_key, api_secret
                 logger.warning("⚠️ Security Agent에서 가져온 Binance API 키 형식이 비정상입니다. 다음 소스로 폴백합니다.")
         except Exception as e:
             logger.warning(f"⚠️ Security Agent에서 API 키 가져오기 실패: {e}")
     
     # 2. 환경 변수에서 가져오기 (원래 작동하던 방식 우선)
-    api_key = os.getenv("BINANCE_API_KEY")
-    api_secret = os.getenv("BINANCE_API_SECRET")
-    if api_key is not None:
-        api_key = api_key.strip()
-    if api_secret is not None:
-        api_secret = api_secret.strip()
-    
-    if api_key and api_secret:
-        if not (_is_invalid_credential_value(api_key) or _is_invalid_credential_value(api_secret)):
-            logger.info("✅ 환경 변수에서 Binance API 키를 가져왔습니다.")
-            logger.info("   사용 중인 API 키 (끝 4자): ...%s (Binance 화면의 키와 동일한지 확인)", api_key[-4:] if len(api_key) >= 4 else "****")
-            return api_key, api_secret
-        logger.warning("⚠️ 환경 변수 BINANCE_API_KEY/BINANCE_API_SECRET 값이 비정상입니다. 파일 소스로 폴백합니다.")
+    if not dotenv_only:
+        api_key = os.getenv("BINANCE_API_KEY")
+        api_secret = os.getenv("BINANCE_API_SECRET")
+        if api_key is not None:
+            api_key = api_key.strip()
+        if api_secret is not None:
+            api_secret = api_secret.strip()
+        
+        if api_key and api_secret:
+            if not (_is_invalid_credential_value(api_key) or _is_invalid_credential_value(api_secret)):
+                logger.info("✅ 환경 변수에서 Binance API 키를 가져왔습니다.")
+                logger.info("   사용 중인 API 키 (끝 4자): ...%s (Binance 화면의 키와 동일한지 확인)", api_key[-4:] if len(api_key) >= 4 else "****")
+                _publish_binance_credential_meta(credential_source="env", api_key=api_key)
+                return api_key, api_secret
+            logger.warning("⚠️ 환경 변수 BINANCE_API_KEY/BINANCE_API_SECRET 값이 비정상입니다. 파일 소스로 폴백합니다.")
     
     # 3. .env 파일에서 가져오기 (데몬/스케줄러 환경 드리프트 방지)
-    try:
-        dotenv_candidates = [
-            Path(__file__).resolve().parents[4] / ".env",  # C:/workspace/.env
-            Path.cwd() / ".env",
-        ]
-        for dotenv in dotenv_candidates:
-            k = _read_key_from_dotenv(dotenv, "BINANCE_API_KEY")
-            s = _read_key_from_dotenv(dotenv, "BINANCE_API_SECRET")
-            if k and s and not (_is_invalid_credential_value(k) or _is_invalid_credential_value(s)):
-                logger.info("✅ .env 파일에서 Binance API 키를 가져왔습니다.")
-                logger.info("   .env 경로: %s", dotenv)
-                logger.info("   사용 중인 API 키 (끝 4자): ...%s (Binance 화면의 키와 동일한지 확인)", k[-4:] if len(k) >= 4 else "****")
-                return k, s
-    except Exception as e:
-        logger.warning("⚠️ .env에서 API 키 가져오기 실패: %s", e)
+    if not env_only:
+        try:
+            dotenv_candidates = [
+                Path(__file__).resolve().parents[4] / ".env",  # C:/workspace/.env
+                Path.cwd() / ".env",
+            ]
+            for dotenv in dotenv_candidates:
+                k = _read_key_from_dotenv(dotenv, "BINANCE_API_KEY")
+                s = _read_key_from_dotenv(dotenv, "BINANCE_API_SECRET")
+                if k and s and not (_is_invalid_credential_value(k) or _is_invalid_credential_value(s)):
+                    logger.info("✅ .env 파일에서 Binance API 키를 가져왔습니다.")
+                    logger.info("   .env 경로: %s", dotenv)
+                    logger.info("   사용 중인 API 키 (끝 4자): ...%s (Binance 화면의 키와 동일한지 확인)", k[-4:] if len(k) >= 4 else "****")
+                    _publish_binance_credential_meta(credential_source=f"dotenv:{dotenv}", api_key=k)
+                    return k, s
+        except Exception as e:
+            logger.warning("⚠️ .env에서 API 키 가져오기 실패: %s", e)
 
     # 4. 파일에서 가져오기 (보조 PC용 - 환경 변수/.env가 없을 때만)
-    try:
-        # 프로젝트 루트 디렉토리 찾기 (여러 경로 시도)
-        current_file = Path(__file__)
-        possible_roots = [
-            current_file.parent.parent.parent,  # src/api/binance_client.py -> projects/bitcoin-trading
-            current_file.parent.parent.parent.parent,  # workspace/projects/bitcoin-trading
-            Path.cwd(),  # 현재 작업 디렉토리
-            Path(__file__).parent.parent.parent if '__file__' in globals() else Path.cwd(),  # 스크립트 실행 위치
-        ]
-        
-        api_keys_file = None
-        for root in possible_roots:
-            test_file = root / "binance_api_keys.json"
-            if test_file.exists():
-                api_keys_file = test_file
-                logger.info(f"📁 API 키 파일 발견: {api_keys_file}")
-                break
-        
-        # 현재 스크립트 위치 기준으로도 시도
-        if not api_keys_file:
-            script_dir = Path.cwd()
-            test_file = script_dir / "binance_api_keys.json"
-            if test_file.exists():
-                api_keys_file = test_file
-                logger.info(f"📁 API 키 파일 발견 (현재 디렉토리): {api_keys_file}")
-        
-        if api_keys_file and api_keys_file.exists():
-            import json
-            with open(api_keys_file, 'r', encoding='utf-8') as f:
-                keys_data = json.load(f)
-                api_key = keys_data.get("api_key")
-                api_secret = keys_data.get("api_secret")
-                
-                if api_key and api_secret:
-                    api_key, api_secret = api_key.strip(), api_secret.strip()
-                    if not (_is_invalid_credential_value(api_key) or _is_invalid_credential_value(api_secret)):
-                        logger.info("✅ 파일에서 Binance API 키를 가져왔습니다.")
-                        logger.info("   파일 위치: %s", api_keys_file)
-                        logger.info("   사용 중인 API 키 (끝 4자): ...%s (Binance 화면의 키와 동일한지 확인)", api_key[-4:] if len(api_key) >= 4 else "****")
-                        return api_key, api_secret
-                    logger.warning(f"⚠️ API 키 파일 값 형식이 비정상입니다: {api_keys_file}")
-                else:
-                    logger.warning(f"⚠️ 파일에 API 키 또는 Secret이 없습니다: {api_keys_file}")
-        else:
-            logger.debug(f"🔍 API 키 파일을 찾지 못했습니다. 시도한 경로: {[str(r / 'binance_api_keys.json') for r in possible_roots]}")
-    except json.JSONDecodeError as e:
-        logger.warning(f"⚠️ JSON 형식 오류: {e}")
-    except Exception as e:
-        logger.warning(f"⚠️ 파일에서 API 키 가져오기 실패: {e}")
-        import traceback
-        logger.debug(traceback.format_exc())
+    if not (dotenv_only or env_only):
+        try:
+            # 프로젝트 루트 디렉토리 찾기 (여러 경로 시도)
+            current_file = Path(__file__)
+            possible_roots = [
+                current_file.parent.parent.parent,  # src/api/binance_client.py -> projects/bitcoin-trading
+                current_file.parent.parent.parent.parent,  # workspace/projects/bitcoin-trading
+                Path.cwd(),  # 현재 작업 디렉토리
+                Path(__file__).parent.parent.parent if '__file__' in globals() else Path.cwd(),  # 스크립트 실행 위치
+            ]
+
+            api_keys_file = None
+            for root in possible_roots:
+                test_file = root / "binance_api_keys.json"
+                if test_file.exists():
+                    api_keys_file = test_file
+                    logger.info(f"📁 API 키 파일 발견: {api_keys_file}")
+                    break
+
+            # 현재 스크립트 위치 기준으로도 시도
+            if not api_keys_file:
+                script_dir = Path.cwd()
+                test_file = script_dir / "binance_api_keys.json"
+                if test_file.exists():
+                    api_keys_file = test_file
+                    logger.info(f"📁 API 키 파일 발견 (현재 디렉토리): {api_keys_file}")
+
+            if api_keys_file and api_keys_file.exists():
+                import json
+                with open(api_keys_file, 'r', encoding='utf-8') as f:
+                    keys_data = json.load(f)
+                    api_key = keys_data.get("api_key")
+                    api_secret = keys_data.get("api_secret")
+
+                    if api_key and api_secret:
+                        api_key, api_secret = api_key.strip(), api_secret.strip()
+                        if not (_is_invalid_credential_value(api_key) or _is_invalid_credential_value(api_secret)):
+                            logger.info("✅ 파일에서 Binance API 키를 가져왔습니다.")
+                            logger.info("   파일 위치: %s", api_keys_file)
+                            logger.info("   사용 중인 API 키 (끝 4자): ...%s (Binance 화면의 키와 동일한지 확인)", api_key[-4:] if len(api_key) >= 4 else "****")
+                            _publish_binance_credential_meta(credential_source=f"file:{api_keys_file}", api_key=api_key)
+                            return api_key, api_secret
+                        logger.warning(f"⚠️ API 키 파일 값 형식이 비정상입니다: {api_keys_file}")
+                    else:
+                        logger.warning(f"⚠️ 파일에 API 키 또는 Secret이 없습니다: {api_keys_file}")
+            else:
+                logger.debug(f"🔍 API 키 파일을 찾지 못했습니다. 시도한 경로: {[str(r / 'binance_api_keys.json') for r in possible_roots]}")
+        except json.JSONDecodeError as e:
+            logger.warning(f"⚠️ JSON 형식 오류: {e}")
+        except Exception as e:
+            logger.warning(f"⚠️ 파일에서 API 키 가져오기 실패: {e}")
+            import traceback
+            logger.debug(traceback.format_exc())
     
     # 5. 키가 없으면 None 반환
-    logger.error("❌ Binance API 키를 찾을 수 없습니다.")
+    logger.error("❌ Binance API 키를 찾을 수 없습니다. (source_mode=%s)", source_mode)
     logger.error("   다음 중 하나를 설정하세요:")
     logger.error("   1. Security Agent에 저장")
     logger.error("   2. 환경 변수 설정 (BINANCE_API_KEY, BINANCE_API_SECRET)")
@@ -257,11 +278,13 @@ class BinanceFuturesClient:
         # 4대 정책(2026-03-12): Ed25519 요청 시 미구현 안내 (현재 HMAC 사용)
         if api_use_ed25519:
             logger.warning("⚠️ API Ed25519 서명은 아직 미구현입니다. HMAC 서명을 사용합니다.")
-        # API 키가 없으면 Security Agent에서 가져오기
+        # API 키가 없으면 configured source chain에서 가져오기
+        keys_loaded_from_source = False
         if not api_key or not api_secret:
             api_key, api_secret = get_binance_api_keys()
             if not api_key or not api_secret:
                 raise ValueError("Binance API 키를 찾을 수 없습니다. Security Agent 또는 환경 변수를 설정하세요.")
+            keys_loaded_from_source = True
         
         self.api_key = api_key
         self.api_secret = api_secret
@@ -314,7 +337,8 @@ class BinanceFuturesClient:
             except Exception as e:
                 logger.warning(f"⚠️ 포지션 모드 설정 실패 (이미 설정되었을 수 있음): {e}")
 
-        _publish_binance_credential_meta(credential_source="binance_client_init", api_key=self.api_key)
+        if not keys_loaded_from_source:
+            _publish_binance_credential_meta(credential_source="explicit_arg", api_key=self.api_key)
 
     def _sync_server_time_offset(self, force: bool = False) -> None:
         """

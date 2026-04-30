@@ -24,6 +24,7 @@ function Set-EnvUser([string]$Name, [string]$Value) {
 
 function Force-StartLiveDaemon {
     $daemonArg = "scripts/start_24h_daemon.py"
+    [Environment]::SetEnvironmentVariable("BINANCE_KEY_SOURCE_MODE", "dotenv_only", "Process")
     [Environment]::SetEnvironmentVariable("TESTNET", "false", "Process")
     [Environment]::SetEnvironmentVariable("ENABLE_TRADING", "true", "Process")
     Start-Process -FilePath "py.exe" -ArgumentList @($daemonArg) -WorkingDirectory $projectRoot -WindowStyle Hidden
@@ -68,10 +69,10 @@ if ($EnableLiveMode) {
 }
 
 Write-Step "Register direct watchdog scheduled task"
-powershell -NoProfile -ExecutionPolicy Bypass -File $registerTaskScript | Out-Null
+& $registerTaskScript | Out-Null
 
 Write-Step "Run watchdog once now"
-powershell -NoProfile -ExecutionPolicy Bypass -File $ensureScript | Out-Null
+& $ensureScript | Out-Null
 
 Write-Step "Wait $WaitSeconds seconds for daemon heartbeat/status update"
 Start-Sleep -Seconds $WaitSeconds
