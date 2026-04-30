@@ -1,0 +1,18 @@
+{
+  "schema": "sasang_4agent_force_hold_recovery_drill_v1",
+  "generated_at_utc": "2026-04-30T17:45:57Z",
+  "status": "PASS",
+  "checks": {
+    "force_hold_applied": true,
+    "gate_recovered_to_promoted": true,
+    "bridge_active_after_recovery": true,
+    "monitor_alert_false": true
+  },
+  "reasons": [],
+  "refs": {
+    "force_hold": "docs/final/artifacts/sasang_4agent_force_hold_latest.json",
+    "gate": "docs/final/artifacts/sasang_4agent_promotion_gate_latest.json",
+    "bridge": "docs/final/artifacts/sasang_4agent_tracka_bridge_latest.json",
+    "monitor": "docs/final/artifacts/sasang_4agent_monitor_snapshot_latest.json"
+  }
+}

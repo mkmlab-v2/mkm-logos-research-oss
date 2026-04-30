@@ -1,0 +1,34 @@
+{
+  "schema": "sasang_4agent_promotion_gate_v1",
+  "generated_at_utc": "2026-04-30T17:34:07Z",
+  "inputs": {
+    "protocol_artifact": "C:/workspace/docs/final/artifacts/sasang_4agent_collision_btrack_protocol_latest.json",
+    "patent_brief_artifact": "C:/workspace/docs/final/artifacts/sasang_4agent_patent_brief_latest.json",
+    "invention_disclosure_artifact": "C:/workspace/docs/final/artifacts/sasang_4agent_invention_disclosure_latest.json"
+  },
+  "checks": {
+    "ticks_gte_300": true,
+    "significance_pass": true,
+    "mdd_reduction_positive": true,
+    "btrack_candidate_go": true,
+    "patent_brief_present": true,
+    "invention_disclosure_present": true,
+    "policy_research_only": true,
+    "policy_non_gating": true
+  },
+  "summary": {
+    "ticks": 2966,
+    "mdd_reduction_abs": 0.13793747083385574,
+    "significance_pass": true,
+    "btrack_decision": "GO_CANDIDATE"
+  },
+  "decision": "A_TRACK_PROMOTED_WITH_HUMAN_APPROVAL",
+  "human_review_gate_required": false,
+  "auto_bridge_allowed": true,
+  "next_step": "Bridge is permitted by explicit human approval; execute controlled Track A rollout with monitoring.",
+  "human_approval_ref": "C:/workspace/docs/final/artifacts/sasang_4agent_human_approval_latest.json",
+  "approved_at_utc": "2026-04-30T17:45:31Z",
+  "approved_by": "user_approved_in_chat_2026-05-01",
+  "force_hold_at_utc": "2026-04-30T17:45:09Z",
+  "force_hold_reason": "drill_2026-05-01"
+}

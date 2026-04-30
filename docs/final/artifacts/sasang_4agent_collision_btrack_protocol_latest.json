@@ -1,0 +1,61 @@
+{
+  "schema": "sasang_4agent_collision_btrack_protocol_v1",
+  "generated_at_utc": "2026-04-30T17:17:28Z",
+  "mode": "research_only",
+  "policy_label": "NON_GATING",
+  "architecture": {
+    "absolute_balance_mode": true,
+    "is_fifth_constitution": false,
+    "agents": [
+      "taeyang_macro",
+      "soyang_momentum",
+      "taeeum_accumulation",
+      "soeum_defense_veto"
+    ]
+  },
+  "bias_injection": {
+    "macro_window": 0.18,
+    "mom_weight": 0.9,
+    "similarity_threshold": 0.95,
+    "defense_lambda": 4.0,
+    "soeum_veto_threshold": -0.58
+  },
+  "experiment": {
+    "seed": 42,
+    "ticks": 2966,
+    "bootstrap_trials": 2000,
+    "data_mode": "timeseries_file_adapter",
+    "real_backtest_json": null,
+    "timeseries_file": "reports/constitution/btrack_pilot/blind_replay/btcusdt_1d_2018_2026.csv",
+    "baseline": "single_momentum_policy",
+    "candidate": "4agent_collision_with_asymmetric_veto"
+  },
+  "results": {
+    "topological_variance_mean": 0.3742356879015752,
+    "topological_variance_p95": 0.9823862969944579,
+    "hold_ratio": 0.8304113283884019,
+    "mdd_baseline": 0.1622083333333335,
+    "mdd_model": 0.02427086249947777,
+    "mdd_reduction_abs": 0.13793747083385574,
+    "mdd_reduction_pct_of_baseline": 0.8503722835891431,
+    "regime_topological_variance_mean": {
+      "recovery": 0.642059343441677,
+      "pandemic_crash": 0.052595539086005304,
+      "rate_hike": 0.08935144059411335,
+      "pre_stress": 0.2748013824485593,
+      "sideways": 0.2542158701095757
+    },
+    "mdd_reduction_p_value_bootstrap": 0.46,
+    "mdd_reduction_p_value_permutation": 0.0005,
+    "statistical_significance_pass_p_lt_0_05": true,
+    "sample_size_warning_low_ticks": false
+  },
+  "promotion_gate_hint": {
+    "decision": "GO_CANDIDATE",
+    "notes": [
+      "B-track evidence only. Do not auto-bridge to Track A.",
+      "Use live/real historical slices before any commercialization claim.",
+      "If ticks < 300, treat result as directional probe only."
+    ]
+  }
+}

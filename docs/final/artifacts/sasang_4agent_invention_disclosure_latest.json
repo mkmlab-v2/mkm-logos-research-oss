@@ -1,0 +1,58 @@
+{
+  "schema": "sasang_4agent_invention_disclosure_v1",
+  "generated_at_utc": "2026-04-30T17:24:18Z",
+  "title": "Asymmetric Safety Arbitration Architecture with Intentional Bias Injection in Four-Agent Conflict System",
+  "technical_field": "AI decision systems, risk-aware ensemble arbitration, regime-aware policy control",
+  "problem_statement": "Conventional single-model or symmetric ensemble systems fail to preserve safety under regime shocks; majority voting can override defensive signals and amplify drawdown.",
+  "proposed_solution": {
+    "summary": "Inject intentional computational bias into four specialized agents, quantify inter-agent conflict via topological variance, and apply asymmetric defense veto through an Absolute Balance coordinator mode.",
+    "core_claims": [
+      "Intentional bias injection into four specialized agents (taeyang/soyang/taeeum/soeum).",
+      "Conflict quantified as topological variance for regime-disagreement sensing.",
+      "Asymmetric safety veto: defense agent can force HOLD against majority GO.",
+      "Coordinator mode (Absolute Balance) as stateful arbitration, not fifth constitution."
+    ],
+    "safety_bounds": [
+      "research_only boundary retained",
+      "NON_GATING policy retained",
+      "no auto-bridge to Track A"
+    ]
+  },
+  "claim_set_draft": [
+    {
+      "id": "claim_1_independent",
+      "type": "independent",
+      "text": "A method for machine decision arbitration comprising: generating four specialized agent outputs under intentionally distinct bias constraints; computing a conflict metric as variance over said outputs; and enforcing an asymmetric veto rule wherein a designated defense agent signal forces HOLD regardless of majority directional outputs."
+    },
+    {
+      "id": "claim_2_dependent_bias",
+      "type": "dependent",
+      "text": "The method of claim 1, wherein bias constraints include at least one of macro-horizon weighting, momentum weighting, similarity-threshold activation, and drawdown-penalty amplification."
+    },
+    {
+      "id": "claim_3_dependent_conflict",
+      "type": "dependent",
+      "text": "The method of claim 1, wherein the conflict metric is tracked per regime window and used as a chaos/disagreement indicator for policy gating."
+    },
+    {
+      "id": "claim_4_dependent_safety_mode",
+      "type": "dependent",
+      "text": "The method of claim 1, wherein the coordinator operates as a stateful arbitration mode and is explicitly not treated as an additional constitution class."
+    }
+  ],
+  "evidence_anchor": {
+    "ticks": 2966,
+    "mdd_baseline": 0.1622083333333335,
+    "mdd_model": 0.02427086249947777,
+    "mdd_reduction_abs": 0.13793747083385574,
+    "mdd_reduction_pct_of_baseline": 0.8503722835891431,
+    "p_permutation": 0.0005,
+    "significance_pass": true,
+    "decision": "GO_CANDIDATE"
+  },
+  "legal_note": "This draft is a technical invention-disclosure scaffold for internal review and does not constitute legal advice.",
+  "source_refs": [
+    "C:/workspace/docs/final/artifacts/sasang_4agent_patent_brief_latest.json",
+    "C:/workspace/docs/final/artifacts/sasang_4agent_collision_btrack_protocol_latest.json"
+  ]
+}
