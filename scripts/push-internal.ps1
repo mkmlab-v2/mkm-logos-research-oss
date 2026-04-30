@@ -4,6 +4,11 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+# In newer PowerShell, native stderr can be promoted to ErrorRecord.
+# Keep git stderr as output text so push banners don't look like failures.
+if (Get-Variable PSNativeCommandUseErrorActionPreference -ErrorAction SilentlyContinue) {
+    $PSNativeCommandUseErrorActionPreference = $false
+}
 
 $repoRoot = "C:\workspace"
 Set-Location $repoRoot
