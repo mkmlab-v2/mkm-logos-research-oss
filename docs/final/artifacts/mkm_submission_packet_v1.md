@@ -45,6 +45,24 @@ All reported values are tied to concrete artifact paths and timestamps. The subm
 - Current compression-router runtime is documented as 8 active shards.
 - "12AI" is treated as an architectural expansion roadmap label, not a claim of fully active 12-shard production runtime.
 
+## Evidence Promotion Matrix (Draft)
+
+| ID | Artifact | Current Status | Evidence Tier (Target) | Why It Matters | Promotion Conditions (Must Pass) | Manuscript Placement |
+|---|---|---|---|---|---|---|
+| P1 | `two_track_raw_oos_readiness_latest.json` | `research_only`, `promotion_required` | Tier A candidate | OOS sample sufficiency and baseline coverage for operational credibility | Fixed input window/params, reproducible command, as-of snapshot declaration | Main (Methods/Results) |
+| P2 | `two_track_statistical_significance_report_latest.json` | `research_only`, `promotion_required` | Tier A candidate | Statistical support via p-value, CI, bootstrap/permutation | Reproducible seed/iteration setup, stable effect-size/CI recomputation | Main (Results) |
+| P3 | `two_track_benchmark_comparison_latest.json` | `research_only`, `promotion_required` | Tier A candidate | Baseline-relative improvement evidence | Fixed baseline definitions, reproducible comparison chain, stable deltas | Main (Results/Table) |
+| P4 | `two_track_falsification_suite_latest.json` | `research_only`, `promotion_required` | Tier A candidate | Falsification-first trust argument instead of one-sided pass claims | Re-run checks with pass criteria, rollback behavior documentation | Main (Robustness) |
+| P5 | `two_track_falsification_boundary_report_latest.json` | `research_only`, `promotion_required` | Tier A candidate | First non-pass boundary disclosure for reviewer stress testing | Reproducible sensitivity grid, stable first-break threshold | Main + Appendix |
+
+### Evidence Tier Rule
+
+- **Tier A (Operational-Validated):** Reproducible evidence with fixed inputs, scripts, and interpretable operational linkage.
+- **Tier B (Exploratory):** Useful exploratory evidence still under `research_only`; not used as final operational claim.
+
+**Required footnote (table/figure level):**  
+All values are as-of artifact snapshots under fixed evaluation settings. Tier A and Tier B evidence are intentionally separated to preserve A-track/B-track boundary integrity. No guarantee of directional market outcome is implied.
+
 ## Limitations and Compliance
 
 ### Limitations
