@@ -37,7 +37,8 @@
       },
       "cursor": {
         "type": "string",
-        "description": "Opaque pagination cursor returned by previous response."
+        "description": "Opaque pagination cursor returned by previous response.",
+        "maxLength": 256
       }
     }
   },
@@ -45,7 +46,11 @@
     "status": 200,
     "content_type": "application/json",
     "schema_ref": "docs/final/artifacts/schemas/public_graph_response_v1.schema.json",
-    "example_ref": "docs/final/artifacts/schemas/public_graph_response_v1.example.json"
+    "example_ref": "docs/final/artifacts/schemas/public_graph_response_v1.example.json",
+    "pagination": {
+      "next_cursor_field": "pagination.next_cursor",
+      "done_when_null": true
+    }
   },
   "error_responses": [
     {

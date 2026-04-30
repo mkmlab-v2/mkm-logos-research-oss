@@ -5,6 +5,10 @@
   "research_only": true,
   "no_trading_advice": true,
   "as_of_date": "2026-04-30",
+  "pagination": {
+    "limit": 20,
+    "next_cursor": null
+  },
   "nodes": [
     {
       "node_id_public": "n.gen.1.1.reset",

@@ -41,6 +41,10 @@ type PublicGraphResponse = {
   research_only: true;
   no_trading_advice: true;
   as_of_date: string;
+  pagination: {
+    limit: number;
+    next_cursor: string | null;
+  };
   nodes: PublicNode[];
   edges: PublicEdge[];
   insights: PublicInsight[];
@@ -82,6 +86,22 @@ function parseLimit(raw: string | null): number {
   return Math.min(Math.max(n, 1), MAX_LIMIT);
 }
 
+function decodeCursor(raw: string | null): number {
+  if (!raw) return 0;
+  try {
+    const decoded = Buffer.from(raw, "base64").toString("utf-8");
+    const n = Number.parseInt(decoded, 10);
+    if (Number.isNaN(n) || n < 0) return 0;
+    return n;
+  } catch {
+    return 0;
+  }
+}
+
+function encodeCursor(offset: number): string {
+  return Buffer.from(String(offset), "utf-8").toString("base64");
+}
+
 export async function GET(req: NextRequest) {
   try {
     const root = await resolveWorkspaceRoot();
@@ -107,12 +127,15 @@ export async function GET(req: NextRequest) {
     const theme = req.nextUrl.searchParams.get("theme")?.trim() || "";
     const confidence = req.nextUrl.searchParams.get("confidence_band")?.trim() as ConfidenceBand | "";
     const limit = parseLimit(req.nextUrl.searchParams.get("limit"));
+    const offset = decodeCursor(req.nextUrl.searchParams.get("cursor"));
 
-    const filteredInsights = doc.insights
+    const allInsights = doc.insights
       .filter((x) => (anchor ? x.anchor_ref === anchor : true))
       .filter((x) => (theme ? x.theme_tag === theme : true))
-      .filter((x) => (confidence ? x.confidence_band === confidence : true))
-      .slice(0, limit);
+      .filter((x) => (confidence ? x.confidence_band === confidence : true));
+    const filteredInsights = allInsights.slice(offset, offset + limit);
+    const nextOffset = offset + filteredInsights.length;
+    const nextCursor = nextOffset < allInsights.length ? encodeCursor(nextOffset) : null;
 
     const linkedNodeIds = new Set<string>();
     for (const item of filteredInsights) {
@@ -130,6 +153,10 @@ export async function GET(req: NextRequest) {
 
     const response: PublicGraphResponse = {
       ...doc,
+      pagination: {
+        limit,
+        next_cursor: nextCursor
+      },
       nodes: filteredNodes,
       edges: filteredEdges,
       insights: filteredInsights
