@@ -111,6 +111,10 @@ docs/final/artifacts/general_prophecy_brier_eval_latest.json
 docs/final/artifacts/general_prophecy_latest.json
 docs/final/artifacts/l1_codebook_bypass_poc_latest.json
 docs/final/artifacts/prophecy_micro_codebook_poc_latest.json
+# External Bible cross-ref baseline: rolling chain outputs (weekly/regenerated); seeds SSOT remain tracked
+docs/final/artifacts/external_bible_crossref*_latest.json
+docs/final/artifacts/external_bible_crossref*_latest.jsonl
+docs/final/artifacts/external_bible_crossref_latest_index.json
 reports/constitution/master_codebook_training_smoke_bundle_*
 # Shard evolve sandbox runs (regenerable; objective + evolve_log under reports/shard_evolve/)
 reports/shard_evolve/
