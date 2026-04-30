@@ -1,7 +1,7 @@
 {
   "schema": "prophecy_two_track_snapshot_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-28T18:20:05.928174Z",
+  "generated_at_utc": "2026-04-29T18:20:03.376793Z",
   "fusion_policy": {
     "auto_merge_to_live_trading": false,
     "track_b_must_not_trigger_orders": true,
@@ -18,7 +18,7 @@
       "operator_brief": {
         "today_action": "candidate",
         "escalation": "none",
-        "next_check_utc": "2026-04-29T18:20:05.2152840+00:00"
+        "next_check_utc": "2026-04-30T18:20:02.6920940+00:00"
       },
       "gates_pass_snapshot": {
         "internal_gate_pass": true,

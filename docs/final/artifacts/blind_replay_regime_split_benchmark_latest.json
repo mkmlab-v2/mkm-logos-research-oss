@@ -1,11 +1,11 @@
 {
   "schema": "blind_replay_regime_split_benchmark_v1",
-  "generated_at_utc": "2026-04-02T12:14:23Z",
+  "generated_at_utc": "2026-04-29T04:23:52Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "inputs": {
-    "btc_grid": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_dataset_grid_btc_s80_latest.json",
-    "kospi_grid": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_dataset_grid_kospi_s80_latest.json"
+    "btc_grid": "C:\\workspace\\docs\\final\\artifacts\\blind_replay_dataset_grid_btc_latest.json",
+    "kospi_grid": "C:\\workspace\\docs\\final\\artifacts\\blind_replay_dataset_grid_kospi_latest.json"
   },
   "bucket_policy": "median(volatility_index): HIGH_VOL >= median else LOW_VOL",
   "profiles": [
@@ -15,96 +15,96 @@
   ],
   "assets": {
     "BTC": {
-      "config_tag": "cfg5_w45_h10_s2",
+      "config_tag": "cfg2_w45_h10_s5",
       "profiles": {
         "A": {
           "LOW_VOL": {
             "hit_rate": {
-              "mean": 0.4325,
-              "std": 0.064275
+              "mean": 0.466667,
+              "std": 0.066667
             },
             "balanced_accuracy": {
-              "mean": 0.365531,
-              "std": 0.07965
+              "mean": 0.331349,
+              "std": 0.081349
             },
-            "matched_mean": 40.0
+            "matched_mean": 15.0
           },
           "HIGH_VOL": {
             "hit_rate": {
-              "mean": 0.4625,
-              "std": 0.052738
+              "mean": 0.433333,
+              "std": 0.233333
             },
             "balanced_accuracy": {
-              "mean": 0.37649,
-              "std": 0.074464
+              "mean": 0.314484,
+              "std": 0.171627
             },
-            "matched_mean": 40.0
+            "matched_mean": 15.0
           }
         },
         "B": {
           "LOW_VOL": {
             "hit_rate": {
-              "mean": 0.43,
-              "std": 0.063048
+              "mean": 0.5,
+              "std": 0.033333
             },
             "balanced_accuracy": {
-              "mean": 0.359711,
-              "std": 0.075286
+              "mean": 0.348016,
+              "std": 0.064683
             },
-            "matched_mean": 40.0
+            "matched_mean": 15.0
           },
           "HIGH_VOL": {
             "hit_rate": {
-              "mean": 0.455,
-              "std": 0.052202
+              "mean": 0.5,
+              "std": 0.166667
             },
             "balanced_accuracy": {
-              "mean": 0.351715,
-              "std": 0.06386
+              "mean": 0.362103,
+              "std": 0.124008
             },
-            "matched_mean": 40.0
+            "matched_mean": 15.0
           }
         },
         "C": {
           "LOW_VOL": {
             "hit_rate": {
-              "mean": 0.4425,
-              "std": 0.057064
+              "mean": 0.5,
+              "std": 0.033333
             },
             "balanced_accuracy": {
-              "mean": 0.358906,
-              "std": 0.071395
+              "mean": 0.344048,
+              "std": 0.060714
             },
-            "matched_mean": 40.0
+            "matched_mean": 15.0
           },
           "HIGH_VOL": {
             "hit_rate": {
-              "mean": 0.455,
-              "std": 0.055678
+              "mean": 0.5,
+              "std": 0.166667
             },
             "balanced_accuracy": {
-              "mean": 0.342581,
-              "std": 0.048812
+              "mean": 0.362103,
+              "std": 0.124008
             },
-            "matched_mean": 40.0
+            "matched_mean": 15.0
           }
         }
       }
     },
     "KOSPI": {
-      "config_tag": "cfg4_w30_h5_s1",
+      "config_tag": "cfg1_w30_h5_s3",
       "profiles": {
         "A": {
           "LOW_VOL": {
             "hit_rate": {
-              "mean": 0.515152,
+              "mean": 0.363636,
               "std": 0.0
             },
             "balanced_accuracy": {
-              "mean": 0.361111,
+              "mean": 0.277778,
               "std": 0.0
             },
-            "matched_mean": 33.0
+            "matched_mean": 11.0
           },
           "HIGH_VOL": {
             "hit_rate": {
@@ -112,23 +112,23 @@
               "std": 0.0
             },
             "balanced_accuracy": {
-              "mean": 0.229532,
+              "mean": 0.3,
               "std": 0.0
             },
-            "matched_mean": 33.0
+            "matched_mean": 11.0
           }
         },
         "B": {
           "LOW_VOL": {
             "hit_rate": {
-              "mean": 0.515152,
+              "mean": 0.363636,
               "std": 0.0
             },
             "balanced_accuracy": {
-              "mean": 0.361111,
+              "mean": 0.277778,
               "std": 0.0
             },
-            "matched_mean": 33.0
+            "matched_mean": 11.0
           },
           "HIGH_VOL": {
             "hit_rate": {
@@ -136,23 +136,23 @@
               "std": 0.0
             },
             "balanced_accuracy": {
-              "mean": 0.229532,
+              "mean": 0.3,
               "std": 0.0
             },
-            "matched_mean": 33.0
+            "matched_mean": 11.0
           }
         },
         "C": {
           "LOW_VOL": {
             "hit_rate": {
-              "mean": 0.575758,
+              "mean": 0.454545,
               "std": 0.0
             },
             "balanced_accuracy": {
-              "mean": 0.394444,
+              "mean": 0.333333,
               "std": 0.0
             },
-            "matched_mean": 33.0
+            "matched_mean": 11.0
           },
           "HIGH_VOL": {
             "hit_rate": {
@@ -160,10 +160,10 @@
               "std": 0.0
             },
             "balanced_accuracy": {
-              "mean": 0.229532,
+              "mean": 0.3,
               "std": 0.0
             },
-            "matched_mean": 33.0
+            "matched_mean": 11.0
           }
         }
       }

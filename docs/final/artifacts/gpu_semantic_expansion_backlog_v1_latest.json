@@ -1,6 +1,6 @@
 {
   "schema": "gpu_semantic_expansion_backlog_v1",
-  "generated_at_utc": "2026-04-29T06:59:00Z",
+  "generated_at_utc": "2026-04-29T18:40:02Z",
   "research_only": true,
   "fact_lock_mode": "numeric_scan_only",
   "principles": {
@@ -16,7 +16,7 @@
       "outputs": [
         "docs/final/artifacts/gpu_full_edge_cosine_benchmark_v1_latest.json"
       ],
-      "status": "completed"
+      "status": "planned"
     },
     {
       "id": "gpu-02",
@@ -25,7 +25,7 @@
       "outputs": [
         "docs/final/artifacts/gpu_corpus_embedding_refresh_v1_latest.json"
       ],
-      "status": "completed"
+      "status": "planned"
     },
     {
       "id": "gpu-03",
@@ -34,7 +34,7 @@
       "outputs": [
         "docs/final/artifacts/gpu_graph_anomaly_sweep_v1_latest.json"
       ],
-      "status": "completed"
+      "status": "planned"
     },
     {
       "id": "gpu-04",
@@ -43,7 +43,7 @@
       "outputs": [
         "docs/final/artifacts/gpu_universal_precursor_resweep_v1_latest.json"
       ],
-      "status": "completed"
+      "status": "planned"
     },
     {
       "id": "gpu-05",
@@ -52,7 +52,7 @@
       "outputs": [
         "docs/final/artifacts/gpu_shadow_runtime_score_v1_latest.json"
       ],
-      "status": "completed"
+      "status": "planned"
     }
   ],
   "execution_order": [

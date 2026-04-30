@@ -1,6 +1,6 @@
 # Sasang 4-Agent Patent Brief
 
-- generated_at_utc: `2026-04-30T17:22:36Z`
+- generated_at_utc: `2026-04-30T18:33:04Z`
 - source_artifact: `C:/workspace/docs/final/artifacts/sasang_4agent_collision_btrack_protocol_latest.json`
 - mode: `research_only`
 - policy_label: `NON_GATING`
@@ -12,14 +12,14 @@
 - Coordinator mode (Absolute Balance) as stateful arbitration, not fifth constitution.
 
 ## Evidence Snapshot
-- ticks: `2966`
+- ticks: `7232`
 - data_mode: `timeseries_file_adapter`
-- mdd_baseline: `0.1622083333333335`
-- mdd_model: `0.02427086249947777`
-- mdd_reduction_abs: `0.13793747083385574`
-- mdd_reduction_pct_of_baseline: `0.8503722835891431`
-- p_bootstrap: `0.46`
-- p_permutation: `0.0005`
+- mdd_baseline: `0.09486774593055088`
+- mdd_model: `0.03033729425557928`
+- mdd_reduction_abs: `0.0645304516749716`
+- mdd_reduction_pct_of_baseline: `0.6802148722096962`
+- p_bootstrap: `0.4325`
+- p_permutation: `0.0225`
 - significance_pass: `True`
 - promotion_gate_decision: `GO_CANDIDATE`
 

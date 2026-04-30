@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-04-28T23:40:04Z",
+  "generated_at_utc": "2026-04-29T12:23:02Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -36,41 +36,41 @@
             "min_mean_test_accuracy": 0.55
           },
           "observed": {
-            "mean_test_accuracy": 0.32
+            "mean_test_accuracy": 0.504529
           }
         },
         {
           "gate_id": "lens_wf_stdev_test_accuracy",
-          "passed": false,
+          "passed": true,
           "threshold": {
             "op": "<=",
             "max_stdev_test_accuracy": 0.15
           },
           "observed": {
-            "stdev_test_accuracy": 0.203961
+            "stdev_test_accuracy": 0.079064
           }
         },
         {
           "gate_id": "lens_wf_fraction_folds_beat_always_bull",
-          "passed": false,
+          "passed": true,
           "threshold": {
             "op": ">=",
             "min_fraction_test_beats_always_bull": 0.5
           },
           "observed": {
-            "fraction_test_beats_always_bull": 0.2,
-            "n_folds": 5
+            "fraction_test_beats_always_bull": 0.5,
+            "n_folds": 4
           }
         },
         {
           "gate_id": "lens_wf_min_fold_test_accuracy",
-          "passed": false,
+          "passed": true,
           "threshold": {
             "op": ">=",
             "min_min_test_accuracy_across_folds": 0.4
           },
           "observed": {
-            "min_test_accuracy": 0.0
+            "min_test_accuracy": 0.416667
           }
         }
       ]
@@ -102,41 +102,41 @@
         "min_mean_test_accuracy": 0.55
       },
       "observed": {
-        "mean_test_accuracy": 0.32
+        "mean_test_accuracy": 0.504529
       }
     },
     {
       "gate_id": "lens_wf_stdev_test_accuracy",
-      "passed": false,
+      "passed": true,
       "threshold": {
         "op": "<=",
         "max_stdev_test_accuracy": 0.15
       },
       "observed": {
-        "stdev_test_accuracy": 0.203961
+        "stdev_test_accuracy": 0.079064
       }
     },
     {
       "gate_id": "lens_wf_fraction_folds_beat_always_bull",
-      "passed": false,
+      "passed": true,
       "threshold": {
         "op": ">=",
         "min_fraction_test_beats_always_bull": 0.5
       },
       "observed": {
-        "fraction_test_beats_always_bull": 0.2,
-        "n_folds": 5
+        "fraction_test_beats_always_bull": 0.5,
+        "n_folds": 4
       }
     },
     {
       "gate_id": "lens_wf_min_fold_test_accuracy",
-      "passed": false,
+      "passed": true,
       "threshold": {
         "op": ">=",
         "min_min_test_accuracy_across_folds": 0.4
       },
       "observed": {
-        "min_test_accuracy": 0.0
+        "min_test_accuracy": 0.416667
       }
     },
     {
@@ -154,7 +154,7 @@
   "combined_all_passed": false,
   "all_gates_passed": false,
   "strict_passed": false,
-  "soft_passed": false,
+  "soft_passed": true,
   "strict_pass_streak": 0,
   "auto_promote_ready": false,
   "promotion_recommendation": "defer",

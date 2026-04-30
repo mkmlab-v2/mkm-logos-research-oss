@@ -1,11 +1,11 @@
 # Sasang 4-Agent Promotion Gate
 
-- generated_at_utc: `2026-04-30T17:34:07Z`
+- generated_at_utc: `2026-04-30T18:48:48Z`
 - decision: `A_TRACK_PROMOTED_WITH_HUMAN_APPROVAL`
 - human_review_gate_required: `False`
 - auto_bridge_allowed: `True`
-- approved_at_utc: `2026-04-30T17:45:31Z`
-- approved_by: `user_approved_in_chat_2026-05-01`
+- approved_at_utc: `2026-04-30T18:48:48Z`
+- approved_by: `commander`
 - human_approval_ref: `C:/workspace/docs/final/artifacts/sasang_4agent_human_approval_latest.json`
 
 ## Checks
@@ -17,10 +17,11 @@
 - invention_disclosure_present: `True`
 - policy_research_only: `True`
 - policy_non_gating: `True`
+- fusion_gate_pass: `True`
 
 ## Summary
-- ticks: `2966`
-- mdd_reduction_abs: `0.13793747083385574`
+- ticks: `7232`
+- mdd_reduction_abs: `0.0645304516749716`
 - significance_pass: `True`
 - btrack_decision: `GO_CANDIDATE`
 

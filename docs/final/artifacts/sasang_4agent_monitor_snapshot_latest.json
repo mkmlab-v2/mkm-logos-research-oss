@@ -1,18 +1,24 @@
 {
   "schema": "sasang_4agent_monitor_snapshot_v1",
-  "generated_at_utc": "2026-04-30T17:45:31Z",
+  "generated_at_utc": "2026-04-30T18:50:52Z",
   "source_refs": {
     "protocol": "docs/final/artifacts/sasang_4agent_collision_btrack_protocol_latest.json",
+    "fusion_gate": "docs/final/artifacts/sasang_4agent_fusion_gate_latest.json",
+    "monitor_policy": "docs/final/artifacts/sasang_4agent_monitor_policy_v1.json",
     "bridge": "docs/final/artifacts/sasang_4agent_tracka_bridge_latest.json",
     "gate": "docs/final/artifacts/sasang_4agent_promotion_gate_latest.json"
   },
   "bridge_status": "ACTIVE",
   "gate_decision": "A_TRACK_PROMOTED_WITH_HUMAN_APPROVAL",
   "metrics": {
-    "mdd_reduction_abs": 0.13793747083385574,
-    "hold_ratio": 0.8304113283884019,
-    "topological_variance_p95": 0.9823862969944579,
-    "significance_pass": true
+    "mdd_reduction_abs": 0.0645304516749716,
+    "hold_ratio": 0.6798949115044248,
+    "topological_variance_p95": 0.889393198451268,
+    "significance_pass": true,
+    "geumhwa_transition_score": 0.5677599775441191,
+    "geumhwa_transition_state": false,
+    "geumhwa_transition_threshold": 0.58,
+    "geumhwa_threshold_breached": false
   },
   "alert": false,
   "alert_reasons": [],

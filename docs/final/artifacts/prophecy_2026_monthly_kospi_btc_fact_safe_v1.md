@@ -2,18 +2,18 @@
 
 ## 3문장 요약
 1) 본 문서는 확정 예언이 아닌 월별 확률 시나리오다.
-2) 현재 신뢰도 배지/게이트는 MID / HOLD다.
+2) 현재 신뢰도 배지/게이트는 HIGH / HOLD다.
 3) HOLD 모드에서는 방어 가중치가 자동 적용된다.
 
 ## 메타 고정
-- generated_at_utc: 2026-04-29T00:15:13Z
+- generated_at_utc: 2026-04-30T18:17:54Z
 - engine_id: V2_Precision_MCP
 - engine_scope: monthly_prophecy_generation_only
 - boundary_rule: observatory_ephemeris_v1
 - myeongri_verification_engine: project-0-workspace-athena-manseryeok.verify_saju_date
 - calendar_source_type: external_standard_required
 - calendar_source_name: standard_rabbinic_calendar
-- reliability_badge: MID
+- reliability_badge: HIGH
 - high_reliability_decision: HOLD
 - gate_reason: monthly_check_gate|core_forced_hold
 - price_output_locked: True
@@ -51,7 +51,7 @@
 - 4월 (압박/방어) | KOSPI: 방어하방 (상/중/하=27/40/33) | BTC: 방어하방 (상/중/하=29/40/31)
 - 5월 (압박/방어) | KOSPI: 방어하방 (상/중/하=20/40/40) | BTC: 방어하방 (상/중/하=22/40/38)
 - 6월 (압박/방어) | KOSPI: 방어하방 (상/중/하=13/40/47) | BTC: 방어하방 (상/중/하=15/40/45)
-- 7월 (재정비/경쟁) | KOSPI: 방어하방 (상/중/하=26/40/34) | BTC: 방어하방 (상/중/하=28/40/32)
+- 7월 (재정비/경쟁) | KOSPI: 방어하방 (상/중/하=25/40/35) | BTC: 방어하방 (상/중/하=27/40/33)
 - 8월 (재정비/경쟁) | KOSPI: 방어하방 (상/중/하=32/35/33) | BTC: 완만상방 (상/중/하=34/35/31)
 - 9월 (재정비/경쟁) | KOSPI: 방어하방 (상/중/하=32/35/33) | BTC: 완만상방 (상/중/하=34/35/31)
 - 10월 (성과 회수/정리) | KOSPI: 완만상방 (상/중/하=44/34/22) | BTC: 완만상방 (상/중/하=46/34/20)

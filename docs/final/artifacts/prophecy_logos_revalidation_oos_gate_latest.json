@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_lens_role_router_oos_gate_v1",
-  "generated_at_utc": "2026-04-29T04:18:56Z",
+  "generated_at_utc": "2026-04-29T10:10:58Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -10,7 +10,7 @@
     "target_instrument": "kospi",
     "fee_bps": 5.0,
     "annual_trading_days": 252,
-    "oos_tail_days": 120,
+    "oos_tail_days": 252,
     "month_lookback_grid": [
       21,
       63,
@@ -23,11 +23,11 @@
     ]
   },
   "split": {
-    "train_rows": 3880,
-    "oos_rows": 120,
+    "train_rows": 3748,
+    "oos_rows": 252,
     "train_start": "2010-01-21",
-    "train_end": "2025-10-31",
-    "oos_start": "2025-11-03",
+    "train_end": "2025-04-15",
+    "oos_start": "2025-04-16",
     "oos_end": "2026-04-28"
   },
   "best_train_candidate": {
@@ -36,7 +36,7 @@
       "neutral_size": 0.3
     },
     "train_metrics": {
-      "n_days": 3880,
+      "n_days": 3748,
       "n_active_days": 0,
       "directional_hit_rate_active": 0.0,
       "win_rate_active": 0.0,
@@ -48,15 +48,15 @@
     }
   },
   "oos_metrics": {
-    "n_days": 120,
+    "n_days": 252,
     "n_active_days": 43,
     "directional_hit_rate_active": 0.534884,
     "win_rate_active": 0.534884,
     "total_return": 0.001254,
-    "cagr": 0.002636,
+    "cagr": 0.001254,
     "mdd": -0.094775,
-    "sharpe": 0.113341,
-    "sortino": 0.11561
+    "sharpe": 0.078384,
+    "sortino": 0.055052
   },
   "gate": {
     "go": true,

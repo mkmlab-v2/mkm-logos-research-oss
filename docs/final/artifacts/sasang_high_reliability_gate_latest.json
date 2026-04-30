@@ -1,9 +1,9 @@
 {
   "schema": "sasang_high_reliability_gate_v1",
-  "generated_at_utc": "2026-04-28T05:59:50Z",
+  "generated_at_utc": "2026-04-30T18:17:44Z",
   "inputs": {
     "ops_gate": "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
-    "clinical_eval": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_clinical_eval_authoritative_latest.json"
+    "clinical_eval": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_clinical_eval_from_btrack_eval_full_mapped_latest.json"
   },
   "profile": "standard",
   "thresholds": {
@@ -13,10 +13,10 @@
     "max_brier": 0.25
   },
   "snapshot": {
-    "paired_rows": 128,
-    "recall_macro": 1.0,
-    "ece": 0.07790128906249978,
-    "brier_score": 0.007379815517429681
+    "paired_rows": 64,
+    "recall_macro": 0.7,
+    "ece": 0.11618750000000003,
+    "brier_score": 0.15625050000000001
   },
   "checks": {
     "ops_gate_pass": true,

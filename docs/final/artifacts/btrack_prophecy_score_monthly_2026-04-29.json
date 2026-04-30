@@ -1,10 +1,10 @@
 {
   "schema": "btrack_prophecy_score_v1",
-  "generated_at_utc": "2026-04-29T00:15:15Z",
-  "eval_date": "2026-04-21",
+  "generated_at_utc": "2026-04-29T13:16:23Z",
+  "eval_date": "2026-04-28",
   "neutral_bps": 5.0,
   "hypothesis_path": "docs\\final\\artifacts\\btrack_hypothesis_prophecy_latest.json",
-  "hypothesis_ts_utc": "2026-04-28T23:40:01Z",
+  "hypothesis_ts_utc": "2026-04-29T12:39:55Z",
   "inputs": {
     "kospi_csv": "research\\market_data\\kospi_daily_external_yf.csv",
     "btc_csv": null,
@@ -93,12 +93,6 @@
       "instrument multi: btc leg skipped (no btc csv)."
     ],
     "batch_eval_dates": [
-      "2026-03-10",
-      "2026-03-11",
-      "2026-03-12",
-      "2026-03-13",
-      "2026-03-16",
-      "2026-03-17",
       "2026-03-18",
       "2026-03-19",
       "2026-03-20",
@@ -122,77 +116,17 @@
       "2026-04-15",
       "2026-04-16",
       "2026-04-17",
-      "2026-04-21"
+      "2026-04-20",
+      "2026-04-21",
+      "2026-04-22",
+      "2026-04-23",
+      "2026-04-24",
+      "2026-04-27",
+      "2026-04-28"
     ],
     "frozen_prediction_note": "Same hypothesis predicted_direction applied to each eval_date vs that day's realized return (30 trading days)."
   },
   "rows": [
-    {
-      "instrument": "kospi",
-      "eval_date": "2026-03-10",
-      "predicted_direction": "bull",
-      "actual_direction": "bull",
-      "daily_return": 0.05345138,
-      "prev_close": 5251.8701171875,
-      "close": 5532.58984375,
-      "neutral_bps": 5.0,
-      "flow_score_for_reversal": 0.0
-    },
-    {
-      "instrument": "kospi",
-      "eval_date": "2026-03-11",
-      "predicted_direction": "bull",
-      "actual_direction": "bull",
-      "daily_return": 0.01398267,
-      "prev_close": 5532.58984375,
-      "close": 5609.9501953125,
-      "neutral_bps": 5.0,
-      "flow_score_for_reversal": 0.0
-    },
-    {
-      "instrument": "kospi",
-      "eval_date": "2026-03-12",
-      "predicted_direction": "bull",
-      "actual_direction": "bear",
-      "daily_return": -0.00475944,
-      "prev_close": 5609.9501953125,
-      "close": 5583.25,
-      "neutral_bps": 5.0,
-      "flow_score_for_reversal": 0.0
-    },
-    {
-      "instrument": "kospi",
-      "eval_date": "2026-03-13",
-      "predicted_direction": "bull",
-      "actual_direction": "bear",
-      "daily_return": -0.01719604,
-      "prev_close": 5583.25,
-      "close": 5487.240234375,
-      "neutral_bps": 5.0,
-      "flow_score_for_reversal": 0.0
-    },
-    {
-      "instrument": "kospi",
-      "eval_date": "2026-03-16",
-      "predicted_direction": "bull",
-      "actual_direction": "bull",
-      "daily_return": 0.01141008,
-      "prev_close": 5487.240234375,
-      "close": 5549.85009765625,
-      "neutral_bps": 5.0,
-      "flow_score_for_reversal": 0.0
-    },
-    {
-      "instrument": "kospi",
-      "eval_date": "2026-03-17",
-      "predicted_direction": "bull",
-      "actual_direction": "bull",
-      "daily_return": 0.01633015,
-      "prev_close": 5549.85009765625,
-      "close": 5640.47998046875,
-      "neutral_bps": 5.0,
-      "flow_score_for_reversal": 0.0
-    },
     {
       "instrument": "kospi",
       "eval_date": "2026-03-18",
@@ -448,12 +382,78 @@
     },
     {
       "instrument": "kospi",
+      "eval_date": "2026-04-20",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00438796,
+      "prev_close": 6191.919921875,
+      "close": 6219.08984375,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "kospi",
       "eval_date": "2026-04-21",
       "predicted_direction": "bull",
       "actual_direction": "bull",
-      "daily_return": 0.02370348,
-      "prev_close": 6191.919921875,
-      "close": 6338.68994140625,
+      "daily_return": 0.02723556,
+      "prev_close": 6219.08984375,
+      "close": 6388.47021484375,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "kospi",
+      "eval_date": "2026-04-22",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00461143,
+      "prev_close": 6388.47021484375,
+      "close": 6417.93017578125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "kospi",
+      "eval_date": "2026-04-23",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00901847,
+      "prev_close": 6417.93017578125,
+      "close": 6475.81005859375,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "kospi",
+      "eval_date": "2026-04-24",
+      "predicted_direction": "bull",
+      "actual_direction": "neutral",
+      "daily_return": -2.782e-05,
+      "prev_close": 6475.81005859375,
+      "close": 6475.6298828125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "kospi",
+      "eval_date": "2026-04-27",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.02152685,
+      "prev_close": 6475.6298828125,
+      "close": 6615.02978515625,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "kospi",
+      "eval_date": "2026-04-28",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00392897,
+      "prev_close": 6615.02978515625,
+      "close": 6641.02001953125,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 9951.6
     }

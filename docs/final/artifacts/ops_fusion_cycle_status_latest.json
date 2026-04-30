@@ -1,6 +1,6 @@
 ﻿{
     "schema":  "ops_fusion_cycle_status_v2",
-    "generated_at_utc":  "2026-04-28T05:16:10.9620647+00:00",
+    "generated_at_utc":  "2026-04-30T18:18:31.8751944+00:00",
     "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/run_ops_fusion_cycle.ps1",
     "phase1_mode":  "weekly_lite",
     "c2_guardrail_status_path":  "C:\\workspace\\docs\\final\\artifacts\\c2_aegis_guardrail_status_latest.json",

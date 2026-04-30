@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/news_observation_v1.schema.json",
+  "title": "B-track point-in-time news observation v1",
+  "description": "Single frozen text observation for research-only news→direction pipelines. as_of_utc is the earliest clock time at which this signal may enter a backtest feature row (point-in-time). Not for A-track or live triggers.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "observation_id",
+    "as_of_utc",
+    "published_utc",
+    "source_id",
+    "canonical_text",
+    "text_sha256",
+    "ingested_at_utc",
+    "dataset_partition",
+    "hypothesis_tag"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "news_observation_v1"
+    },
+    "observation_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Globally unique id for this observation row."
+    },
+    "as_of_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Earliest time this observation may be used in simulation (max of publish / embargo lift)."
+    },
+    "published_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "First public availability time from the source when known."
+    },
+    "embargo_lift_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional: when embargo lifts if later than published_utc."
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Catalog key for the feed (e.g. reuters_wire, internal_rss)."
+    },
+    "source_record_url": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable URL or internal doc id for audit/replay."
+    },
+    "canonical_text": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Normalized headline/body under fixed newline/whitespace rules."
+    },
+    "text_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 over canonical_text UTF-8 bytes."
+    },
+    "ingested_at_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Pipeline first-persist time (audit only; do not use as trading clock)."
+    },
+    "dataset_partition": {
+      "type": "string",
+      "enum": ["train_holdout", "calibration", "locked_eval"],
+      "description": "Fixed before peeking at eval outcomes; no post-hoc moves."
+    },
+    "hypothesis_tag": {
+      "type": "string",
+      "minLength": 1,
+      "description": "e.g. [HYPO] for B-track boundary."
+    },
+    "supersedes_observation_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "If this row replaces a corrected-withdrawn predecessor, link here."
+    }
+  }
+}

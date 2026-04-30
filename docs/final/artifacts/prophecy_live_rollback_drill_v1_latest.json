@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_live_rollback_drill_v1",
-  "generated_at_utc": "2026-04-29T07:03:32Z",
+  "generated_at_utc": "2026-04-29T08:33:07Z",
   "mode": "non_destructive_simulation",
   "inputs": {
     "rollback_policy": "C:/workspace/docs/final/artifacts/prophecy_live_rollback_policy_v1_latest.json",

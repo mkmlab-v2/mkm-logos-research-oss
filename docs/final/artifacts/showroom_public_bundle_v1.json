@@ -1,6 +1,6 @@
 {
     "schema":  "showroom_public_bundle_v1",
-    "generated_at_utc":  "2026-04-29T00:35:09.6472103+00:00",
+    "generated_at_utc":  "2026-04-30T18:18:32.2574502+00:00",
     "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1",
     "sources":  {
                     "trade_window_24h":  "C:\\workspace\\projects\\bitcoin-trading\\exports\\cursor_trade_history\\all_trades_latest_24h.json",
@@ -12,7 +12,7 @@
                 },
     "observability":  {
                           "context_stale":  false,
-                          "context_age_seconds":  1191,
+                          "context_age_seconds":  1,
                           "direction_abstract":  "flat",
                           "c2_signal_lamp":  "GREEN",
                           "runtime_overall_ok":  true,
@@ -21,7 +21,7 @@
                           "public_pnl_pct_mode":  "unavailable_no_metrics",
                           "direction_source":  "c2",
                           "context_ttl_seconds":  14400,
-                          "snapshot_as_of_utc":  "2026-04-29T00:15:19Z",
+                          "snapshot_as_of_utc":  "2026-04-30T18:18:31Z",
                           "c2_status":  "GREEN_HOLD"
                       },
     "public_ui":  {
@@ -38,33 +38,33 @@
                       "unified_score_balanced":  0.40342
                   },
     "public_event_v1":  {
-                            "timestamp":  "2026-04-29T00:35:09.6472103+00:00",
+                            "timestamp":  "2026-04-30T18:18:32.2574502+00:00",
                             "active_character_id":  "dragon_quant",
                             "risk_level":  "INFO",
                             "public_signal_direction":  "HOLD",
                             "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice. | signal=SELL/SELL | regime=unknown",
                             "schema_version":  "public-event.v1",
-                            "event_id":  "showroom-20260429T003509-9ea55d62",
+                            "event_id":  "showroom-20260430T181832-7e6933f6",
                             "source":  "ops_showroom_bundle_v1",
                             "system_status":  "online",
                             "active_strategies_count":  1,
                             "delayed_metrics":  {
                                                     "delay_seconds":  180,
-                                                    "as_of_utc":  "2026-04-29T00:15:19Z"
+                                                    "as_of_utc":  "2026-04-30T18:18:31Z"
                                                 },
                             "direction_abstract":  "flat",
                             "disclaimer_ref":  "jemaai_showroom_v1",
-                            "last_ok_utc":  "2026-04-29T00:35:09.6472103+00:00",
+                            "last_ok_utc":  "2026-04-30T18:18:32.2574502+00:00",
                             "order_summary_public":  {
-                                                         "trades_24h_count":  0,
+                                                         "trades_24h_count":  50,
                                                          "latest_trade_utc":  null,
-                                                         "latest_trade_side":  "unknown",
-                                                         "successful_trades_all":  0,
+                                                         "latest_trade_side":  "LONG",
+                                                         "successful_trades_all":  3,
                                                          "failed_trades_all":  0
                                                      },
                             "signal_gate_public":  {
-                                                       "signal_total_count":  2,
-                                                       "last_signal_utc":  "2026-04-29T09:35:09",
+                                                       "signal_total_count":  19963,
+                                                       "last_signal_utc":  "2026-05-01T03:18:31",
                                                        "integrated_signal":  "SELL",
                                                        "integrated_confidence":  0.62,
                                                        "singular_action":  "SELL",

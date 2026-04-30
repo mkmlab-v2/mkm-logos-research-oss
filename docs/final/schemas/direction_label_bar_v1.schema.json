@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/direction_label_bar_v1.schema.json",
+  "title": "Direction label bar v1 (price-derived)",
+  "description": "Supervised label row aligned to exchange calendar date and horizon. Join to news_observation_v1 only under explicit walk-forward rules (no lookahead). Research-only unless promoted elsewhere.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "instrument_id",
+    "label_date",
+    "horizon",
+    "direction",
+    "label_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "direction_label_bar_v1"
+    },
+    "instrument_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "e.g. KOSPI, BTC."
+    },
+    "label_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Trading calendar date for the label (tz rules documented by corpus)."
+    },
+    "horizon": {
+      "type": "string",
+      "pattern": "^\\d+[dw]$",
+      "description": "Examples: 1d, 5d."
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["up", "down", "flat"],
+      "description": "Class including neutral band policy hashed into label_sha256."
+    },
+    "label_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Hash over canonical label inputs (OHLCV slice version, neutral_bps, horizon, instrument)."
+    },
+    "neutral_bps": {
+      "type": "number",
+      "description": "Optional: neutral band width in basis points used when deriving direction."
+    }
+  }
+}

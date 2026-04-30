@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-04-21T17:53:13Z",
+  "generated_at_utc": "2026-04-29T12:23:02Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -26,17 +26,17 @@
   },
   "tracks": {
     "per_date_lens": {
-      "all_gates_passed": true,
+      "all_gates_passed": false,
       "gates": [
         {
           "gate_id": "lens_wf_mean_test_accuracy",
-          "passed": true,
+          "passed": false,
           "threshold": {
             "op": ">=",
             "min_mean_test_accuracy": 0.55
           },
           "observed": {
-            "mean_test_accuracy": 0.625
+            "mean_test_accuracy": 0.504529
           }
         },
         {
@@ -47,7 +47,7 @@
             "max_stdev_test_accuracy": 0.15
           },
           "observed": {
-            "stdev_test_accuracy": 0.125
+            "stdev_test_accuracy": 0.079064
           }
         },
         {
@@ -87,7 +87,7 @@
           "passed": true,
           "reason": null,
           "detail": {
-            "btc_csv": "research\\market_data\\btc_daily_external_yf.csv"
+            "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
           }
         }
       ]
@@ -96,13 +96,13 @@
   "gates": [
     {
       "gate_id": "lens_wf_mean_test_accuracy",
-      "passed": true,
+      "passed": false,
       "threshold": {
         "op": ">=",
         "min_mean_test_accuracy": 0.55
       },
       "observed": {
-        "mean_test_accuracy": 0.625
+        "mean_test_accuracy": 0.504529
       }
     },
     {
@@ -113,7 +113,7 @@
         "max_stdev_test_accuracy": 0.15
       },
       "observed": {
-        "stdev_test_accuracy": 0.125
+        "stdev_test_accuracy": 0.079064
       }
     },
     {
@@ -144,19 +144,19 @@
       "passed": true,
       "reason": null,
       "detail": {
-        "btc_csv": "research\\market_data\\btc_daily_external_yf.csv"
+        "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
       }
     }
   ],
-  "lens_all_gates_passed": true,
+  "lens_all_gates_passed": false,
   "instrument_combo_all_gates_passed": null,
   "shared_all_gates_passed": true,
-  "combined_all_passed": true,
-  "all_gates_passed": true,
-  "strict_passed": true,
+  "combined_all_passed": false,
+  "all_gates_passed": false,
+  "strict_passed": false,
   "soft_passed": true,
-  "strict_pass_streak": 1,
+  "strict_pass_streak": 0,
   "auto_promote_ready": false,
-  "promotion_recommendation": "manual_review_candidate",
+  "promotion_recommendation": "defer",
   "note": "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. Human sign-off still required before A-track or live routing."
 }

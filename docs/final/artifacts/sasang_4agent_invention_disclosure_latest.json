@@ -1,6 +1,6 @@
 {
   "schema": "sasang_4agent_invention_disclosure_v1",
-  "generated_at_utc": "2026-04-30T17:24:18Z",
+  "generated_at_utc": "2026-04-30T18:33:04Z",
   "title": "Asymmetric Safety Arbitration Architecture with Intentional Bias Injection in Four-Agent Conflict System",
   "technical_field": "AI decision systems, risk-aware ensemble arbitration, regime-aware policy control",
   "problem_statement": "Conventional single-model or symmetric ensemble systems fail to preserve safety under regime shocks; majority voting can override defensive signals and amplify drawdown.",
@@ -41,12 +41,12 @@
     }
   ],
   "evidence_anchor": {
-    "ticks": 2966,
-    "mdd_baseline": 0.1622083333333335,
-    "mdd_model": 0.02427086249947777,
-    "mdd_reduction_abs": 0.13793747083385574,
-    "mdd_reduction_pct_of_baseline": 0.8503722835891431,
-    "p_permutation": 0.0005,
+    "ticks": 7232,
+    "mdd_baseline": 0.09486774593055088,
+    "mdd_model": 0.03033729425557928,
+    "mdd_reduction_abs": 0.0645304516749716,
+    "mdd_reduction_pct_of_baseline": 0.6802148722096962,
+    "p_permutation": 0.0225,
     "significance_pass": true,
     "decision": "GO_CANDIDATE"
   },

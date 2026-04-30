@@ -1,6 +1,6 @@
 {
   "schema": "live_gpu_unified_status_dashboard_v1",
-  "generated_at_utc": "2026-04-29T07:03:32Z",
+  "generated_at_utc": "2026-04-29T12:15:44Z",
   "live": {
     "health_result": "PASS",
     "daemon_running": true,
@@ -9,10 +9,8 @@
     "blocker_count": 0
   },
   "release": {
-    "ready_count": 1,
-    "ready_tracks": [
-      "prophecy"
-    ]
+    "ready_count": 0,
+    "ready_tracks": []
   },
   "gpu": {
     "backlog_completed": 5,
@@ -22,7 +20,7 @@
     "graph_pairs_evaluated": 199999,
     "resweep_status": "go_research_robust",
     "shadow_runtime_decision": "SHADOW_GO",
-    "shadow_runtime_score_0_1": 0.998554
+    "shadow_runtime_score_0_1": 0.848554
   },
   "constraints": {
     "no_auto_live_binding_for_gpu_shadow": true,

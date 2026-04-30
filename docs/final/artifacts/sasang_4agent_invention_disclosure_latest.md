@@ -1,6 +1,6 @@
 # Sasang 4-Agent Invention Disclosure (Draft)
 
-- generated_at_utc: `2026-04-30T17:24:18Z`
+- generated_at_utc: `2026-04-30T18:33:04Z`
 - title: `Asymmetric Safety Arbitration Architecture with Intentional Bias Injection in Four-Agent Conflict System`
 - technical_field: `AI decision systems, risk-aware ensemble arbitration, regime-aware policy control`
 
@@ -17,12 +17,12 @@ Inject intentional computational bias into four specialized agents, quantify int
 - claim_4_dependent_safety_mode (dependent): The method of claim 1, wherein the coordinator operates as a stateful arbitration mode and is explicitly not treated as an additional constitution class.
 
 ## Evidence Anchor
-- ticks: `2966`
-- mdd_baseline: `0.1622083333333335`
-- mdd_model: `0.02427086249947777`
-- mdd_reduction_abs: `0.13793747083385574`
-- mdd_reduction_pct_of_baseline: `0.8503722835891431`
-- p_permutation: `0.0005`
+- ticks: `7232`
+- mdd_baseline: `0.09486774593055088`
+- mdd_model: `0.03033729425557928`
+- mdd_reduction_abs: `0.0645304516749716`
+- mdd_reduction_pct_of_baseline: `0.6802148722096962`
+- p_permutation: `0.0225`
 - significance_pass: `True`
 - decision: `GO_CANDIDATE`
 

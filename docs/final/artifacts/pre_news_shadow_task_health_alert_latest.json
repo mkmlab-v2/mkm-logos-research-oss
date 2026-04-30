@@ -1,6 +1,6 @@
 {
   "schema": "pre_news_shadow_task_health_alert_v1",
-  "generated_at_utc": "2026-04-28T21:50:04Z",
+  "generated_at_utc": "2026-04-30T04:06:23Z",
   "health_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_task_health_latest.json",
   "task_name": "MKM-PreNews-Shadow-Daily",
   "healthy": true,

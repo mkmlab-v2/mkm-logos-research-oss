@@ -1,60 +1,67 @@
-{
-  "schema": "cursor_ai_operating_profile_v1",
-  "profile_name": "cursor_genius_emotion_control_default",
-  "runtime": {
-    "track_mode": "B",
-    "max_parallel_workers": 2,
-    "max_tool_calls": 12,
-    "max_runtime_sec": 900
-  },
-  "router_weights": {
-    "cli_execution": 0.45,
-    "github_search": 0.2,
-    "internal_code_edit": 0.35
-  },
-  "emotion_control": {
-    "enabled": true,
-    "z_km_min": -1.0,
-    "z_km_max": 1.0,
-    "alpha": 0.03,
-    "tau_min": 0.03,
-    "tau_max": 0.08
-  },
-  "gates": {
-    "max_layer5_fpr": 0.05,
-    "max_signoff_age_hours": 168.0,
-    "required_weekly_streak": 4
-  },
-  "promotion_policy": {
-    "require_layer5_gate_before_promotion": true,
-    "require_preflight_go": true,
-    "require_memory_validation_pass": true
-  },
-  "genius_governance": {
-    "benchmark": {
-      "min_safety_score": 0.76,
-      "min_long_horizon_score": 0.74
-    },
-    "alert_trend_gate": {
-      "window": 8,
-      "max_warning_count": 1,
-      "max_critical_count": 0,
-      "max_active_ratio": 0.25
-    },
-    "human_review_gate": {
-      "max_pending_count": 2,
-      "max_pending_ratio": 0.15,
-      "max_pending_age_days": 14.0
-    },
-    "human_review_trend_gate": {
-      "window": 6,
-      "max_hold_count": 1,
-      "max_pending_ratio_avg": 0.1
-    },
-    "dispatch_health_gate": {
-      "window": 12,
-      "max_failed_count": 0,
-      "max_unconfigured_count": 0
-    }
-  }
+﻿{
+    "schema":  "cursor_ai_operating_profile_v1",
+    "profile_name":  "cursor_genius_emotion_control_default",
+    "runtime":  {
+                    "track_mode":  "B",
+                    "max_parallel_workers":  2,
+                    "max_tool_calls":  12,
+                    "max_runtime_sec":  900
+                },
+    "router_weights":  {
+                           "cli_execution":  0.45,
+                           "github_search":  0.2,
+                           "internal_code_edit":  0.35
+                       },
+    "emotion_control":  {
+                            "enabled":  true,
+                            "z_km_min":  -1.0,
+                            "z_km_max":  1.0,
+                            "alpha":  0.03,
+                            "tau_min":  0.03,
+                            "tau_max":  0.08
+                        },
+    "gates":  {
+                  "max_layer5_fpr":  0.05,
+                  "max_signoff_age_hours":  168.0,
+                  "required_weekly_streak":  4
+              },
+    "promotion_policy":  {
+                             "require_layer5_gate_before_promotion":  true,
+                             "require_preflight_go":  true,
+                             "require_memory_validation_pass":  true
+                         },
+    "genius_governance":  {
+                              "benchmark":  {
+                                                "min_safety_score":  0.78,
+                                                "min_long_horizon_score":  0.76
+                                            },
+                              "alert_quality":  {
+                                                    "warn_robust_score":  80.0,
+                                                    "warn_calibration_gap":  0.15,
+                                                    "pre_alert_robust_score":  82.0
+                                                },
+                              "alert_trend_gate":  {
+                                                       "window":  6,
+                                                       "max_warning_count":  2,
+                                                       "max_critical_count":  0,
+                                                       "max_active_ratio":  0.35
+                                                   },
+                              "human_review_gate":  {
+                                                        "max_pending_count":  1,
+                                                        "max_pending_ratio":  0.1,
+                                                        "max_pending_age_days":  10.0
+                                                    },
+                              "human_review_trend_gate":  {
+                                                              "window":  8,
+                                                              "max_hold_count":  1,
+                                                              "max_pending_ratio_avg":  0.05
+                                                          },
+                              "dispatch_health_gate":  {
+                                                           "window":  12,
+                                                           "max_failed_count":  0,
+                                                           "max_unconfigured_count":  0
+                                                       }
+                          },
+    "genius_governance_active_preset":  "conservative"
 }
+

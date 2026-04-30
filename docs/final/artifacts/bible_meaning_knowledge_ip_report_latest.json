@@ -1,6 +1,6 @@
 {
   "schema": "bible_meaning_knowledge_ip_report_v1",
-  "generated_at_utc": "2026-04-28T05:55:31Z",
+  "generated_at_utc": "2026-04-29T06:13:43Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -10,6 +10,45 @@
     "candidate_count": 20,
     "survivor_count": 5
   },
+  "survivor_ids": [
+    "cand_001",
+    "cand_002",
+    "cand_003",
+    "cand_004",
+    "cand_005"
+  ],
+  "survivors": [
+    {
+      "candidate_id": "cand_001",
+      "source_node_id": "aramaic::Dan.2.10",
+      "fusion_candidate_score": 0.6042633000000001,
+      "ci_low_defense_contrib": 0.616703
+    },
+    {
+      "candidate_id": "cand_002",
+      "source_node_id": "aramaic::Dan.2.11",
+      "fusion_candidate_score": 0.5299509000000001,
+      "ci_low_defense_contrib": 0.5336190000000001
+    },
+    {
+      "candidate_id": "cand_003",
+      "source_node_id": "aramaic::Dan.2.12",
+      "fusion_candidate_score": 0.49279470000000003,
+      "ci_low_defense_contrib": 0.492077
+    },
+    {
+      "candidate_id": "cand_004",
+      "source_node_id": "aramaic::Dan.2.13",
+      "fusion_candidate_score": 0.49279470000000003,
+      "ci_low_defense_contrib": 0.492077
+    },
+    {
+      "candidate_id": "cand_005",
+      "source_node_id": "aramaic::Dan.2.14",
+      "fusion_candidate_score": 0.49279470000000003,
+      "ci_low_defense_contrib": 0.492077
+    }
+  ],
   "storylines": [
     {
       "title": "Cross-reference cluster narrative",

@@ -1,10 +1,10 @@
 {
   "schema": "prophecy_lens_combo_backtest_v1",
-  "generated_at_utc": "2026-04-29T04:18:58Z",
+  "generated_at_utc": "2026-04-29T10:10:59Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
-    "score_json": "C:\\workspace\\logos_reval_fw197tzl\\score_kospi_bear.json",
+    "score_json": "C:\\workspace\\logos_reval_08pz1bf2\\score_kospi_bear.json",
     "sidecar_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_insight_sidecar_30y_latest.json",
     "target_instrument": "kospi",
     "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",

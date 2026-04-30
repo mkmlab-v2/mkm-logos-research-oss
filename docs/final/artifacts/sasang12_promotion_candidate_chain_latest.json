@@ -1,10 +1,10 @@
 {
   "schema": "sasang12_promotion_candidate_chain_v1",
-  "generated_at_utc": "2026-04-28T05:03:46Z",
+  "generated_at_utc": "2026-04-29T10:13:11Z",
   "version_range": "v1_to_v9",
   "status": "READY_FOR_GATE_EVAL",
   "winner_candidate_id": "v1",
-  "winner_score": 0.564675,
+  "winner_score": 0.579675,
   "candidate_count": 9,
   "track_wall": {
     "track_b_only": true,

@@ -230,8 +230,8 @@
 |------|---------------------------|-------------------------|
 | 성경 | | |
 | 명리 | | |
-| 사상 | | |
-| 퓨전 | | |
+| 사상 | 사상 4-Agent는 A-Track 승격 유지 상태이며 모니터 정책에서 `geumhwa_transition_threshold=0.58`로 상향해 과민 자동주입을 완화했다. | `docs/final/artifacts/sasang_4agent_monitor_policy_v1.json` |
+| 퓨전 | `보명지주/성정불변/병증약리/금화교역` 융합 게이트는 `FUSION_GATE_PASS`로 고정되어 승격 체인 체크에 결합됨. | `docs/final/artifacts/sasang_4agent_fusion_gate_latest.json` |
 
 ## 지금 막힌 것 (있을 때만)
 

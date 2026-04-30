@@ -1,6 +1,6 @@
 {
   "schema": "btc_time_machine_fact_safe_backtest_v1",
-  "generated_at_utc": "2026-04-29T00:15:10Z",
+  "generated_at_utc": "2026-04-30T18:17:51Z",
   "method": "causal_walk_forward_no_future_leak",
   "symbol": "BTCUSDT",
   "start": "2025-01-01",
@@ -30,8 +30,8 @@
     "skipped_daily_loss_cap": 0
   },
   "performance": {
-    "elapsed_ms": 2.61,
-    "bars_per_sec": 139463.601533,
+    "elapsed_ms": 3.303,
+    "bars_per_sec": 110202.845898,
     "benchmark_all_engines": null
   },
   "engine": {
