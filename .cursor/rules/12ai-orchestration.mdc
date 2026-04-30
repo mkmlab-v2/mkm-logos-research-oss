@@ -116,3 +116,10 @@ Librarian 결과에는 아래를 포함한다.
 - Git hygiene 실행 규칙의 SSOT는 루트 `.cursorrules`의 "Git Hygiene 고정 (세션 종료 후에도 유지)" 4줄로 고정한다.
 - 운영 핵심: `1작업=1브랜치=1PR`, `origin/<base>` 기반 클린 `worktree`, 대형 push 지연 시 초소형 배치, merge 직후 브랜치/worktree 정리.
 - `AGENTS.md`는 설명/운영 노트로 유지하되, Git hygiene 문구가 상충하면 항상 루트 `.cursorrules`를 우선 적용한다.
+
+## 10) Remote Publication Gate (최소 공개 원칙)
+
+- 기본 모드는 `local-first`로 둔다. 실험/탐색 산출물은 로컬 보존 후 승격 시점에만 선별 공개한다.
+- PR 생성은 "운영/계약/규칙에 영향 있는 변경"일 때만 수행한다.
+- 대량 아티팩트/로그/일회성 스냅샷은 원격 기본 제외 대상으로 취급한다.
+- Sentinel 보고에는 항상 `publish_scope`를 포함한다: `local_only | selected_files | full_pr`.

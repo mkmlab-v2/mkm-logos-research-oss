@@ -15,5 +15,6 @@
   "task.autoDetect": "off",
   "npm.autoDetect": "off",
   "typescript.tsc.autoDetect": "off",
-  "typescript.tsserver.experimental.enableProjectDiagnostics": false
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "jema12.autoStartServers": false
 }

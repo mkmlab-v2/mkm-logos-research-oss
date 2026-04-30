@@ -12,6 +12,7 @@
 - **중앙 지휘부 규칙**: `.cursor/rules/sovereign-central-command.mdc` (`alwaysApply`).
 - **코드/추론 “구현 여부”**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 를 호출 가능한 `.py`와 대조한다. **Multi-Lens·TOE 비단정**은 동 문서 §1.1; **예언 성능 우선·도메인 사례 격리 [VISION]**는 **§1.1.1**. **Windows OPS Phase 1 체인·리포트·운영/연구 레인**은 §13.1 (`verify_constitution_gates.ps1`, `constitution_gates_v1.json`, `bootstrap_ops_phase1_daily.ps1`, `verify_ops_phase1_operational_readiness.ps1`)·루트 `AGENTS.md`.
 - **12AI vs 코드북**: **12AI**는 Cursor 작업 라우팅용 오케스트레이션 라벨이며, 코드북 도메인·샤드 개수와 **1:1로 묶지 않는다.** (보통 복잡·고위험 작업만 2~4 전문 에이전트로 분산.) 상세: 루트 `AGENTS.md`, `.cursor/skills/auto-12ai-routing/SKILL.md`.
+- **MKM AI 명명 고정:** MKM은 **4AI core**(태양/소양/태음/소음) + **Absolute Balance Coordinator Mode**로 표기한다. 조율 모드는 상태(state)이며 **제5 AI/체질이 아니다**.
 - **LLM Wiki (개인 지식 누적):** 규약 `docs/final/LLM_WIKI_SCHEMA.md` — 작업 트리 `memory/obsidian_vault/llm_wiki/raw/`(불변)·`wiki/`(합성). 코드 구현 팩트와 혼동 금지; 구현 SSOT는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`.
 - **Prism 색인 (Grand Indexing 2.0):** 가독 `docs/final/MKM12_GRAND_INDEX_MAP.md`, 머신 레지스트리 `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` — 코드 4D 벡터 축과 혼동 금지; 상세 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §14.
 

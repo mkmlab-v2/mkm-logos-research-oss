@@ -16,6 +16,13 @@
 - **출력 고정 포맷:** `Field(레짐)` → `Lens(사상/명리/성경)` → `Conflict Resolver` → `Final Action(HOLD/REDUCE/WATCH)` 순서를 유지한다.
 - **금지:** "성경 렌즈가 하락을 예언했다"처럼 결정론적 가격 단정 문구 사용 금지. 성경은 `[NON_GATING]` 보조 해설로만 표기한다.
 
+## MKM AI 아키텍처 명명 계약 (4AI 고정)
+
+- **코어 정의:** MKM AI는 `사상 4AI 코어`(태양/소양/태음/소음 편향 에이전트)로 정의한다.
+- **조율 정의:** `Absolute Balance`는 **제5 AI/제5 체질이 아닌 조율 상태(Coordinator Mode)** 다.
+- **표준 표기:** 문서/대외 문구는 `MKM = 4AI core + Absolute Balance Coordinator Mode`를 기본으로 사용한다.
+- **금지:** `5AI`, `제5 체질`, `추가 체질` 같은 표현으로 구조를 재정의하지 않는다.
+
 ## 세션 핸드오프 (선택)
 
 새 채팅에서 직전 작전의 팩트만 이어 붙일 때 `@docs/final/CURRENT_OPS_SNAPSHOT.md`를 첨부한다. **불변 SSOT가 아니며** 필요 시 갱신·비운다. 압축 파이프라인(A/B Track)과 역할을 섞지 않는다.
