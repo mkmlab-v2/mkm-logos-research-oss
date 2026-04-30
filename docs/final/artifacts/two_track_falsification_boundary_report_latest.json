@@ -1,6 +1,6 @@
 {
   "schema": "two_track_falsification_boundary_report_v1",
-  "generated_at_utc": "2026-04-28T05:55:32Z",
+  "generated_at_utc": "2026-04-30T11:00:39Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -9,8 +9,8 @@
     "suite_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_suite_latest.json"
   },
   "current_suite_snapshot": {
-    "pass_count": 5,
-    "total_checks": 5,
+    "pass_count": 6,
+    "total_checks": 6,
     "suite_status": "pass"
   },
   "boundary_summary": {
@@ -22,8 +22,8 @@
     "first_non_pass_row": {
       "min_survivor_count": 7,
       "min_ci_low_defense_contrib": 0.0,
-      "pass_count": 4,
-      "total_checks": 5,
+      "pass_count": 5,
+      "total_checks": 6,
       "suite_status": "warning"
     },
     "min_break_min_survivor_count": 7

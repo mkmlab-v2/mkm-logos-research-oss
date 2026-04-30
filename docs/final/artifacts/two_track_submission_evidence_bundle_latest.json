@@ -1,6 +1,6 @@
 {
   "schema": "two_track_submission_evidence_bundle_v1",
-  "generated_at_utc": "2026-04-28T05:55:33Z",
+  "generated_at_utc": "2026-04-30T11:00:40Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -9,25 +9,25 @@
       "name": "falsification_suite",
       "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_suite_latest.json",
       "exists": true,
-      "generated_at_utc": "2026-04-28T05:55:32Z"
+      "generated_at_utc": "2026-04-30T11:00:39Z"
     },
     {
       "name": "benchmark_comparison",
       "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_benchmark_comparison_latest.json",
       "exists": true,
-      "generated_at_utc": "2026-04-28T05:55:32Z"
+      "generated_at_utc": "2026-04-30T11:00:39Z"
     },
     {
       "name": "statistical_significance",
       "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_statistical_significance_report_latest.json",
       "exists": true,
-      "generated_at_utc": "2026-04-28T05:55:32Z"
+      "generated_at_utc": "2026-04-30T11:00:39Z"
     },
     {
       "name": "raw_oos_readiness",
       "path": "C:\\workspace\\docs\\final\\artifacts\\two_track_raw_oos_readiness_latest.json",
       "exists": true,
-      "generated_at_utc": "2026-04-28T05:55:33Z"
+      "generated_at_utc": "2026-04-30T11:00:39Z"
     },
     {
       "name": "public_safe_report",

@@ -40,6 +40,7 @@ ALLOW_CONTEXT_PATTERNS: tuple[re.Pattern[str], ...] = (
     re.compile(r"\bno doctrinal or guarantee-style claim\b", re.IGNORECASE),
     re.compile(r"\bnot as doctrinal proof\b", re.IGNORECASE),
     re.compile(r"\bnot doctrinal proof\b", re.IGNORECASE),
+    re.compile(r"\brather than doctrinal proof\b", re.IGNORECASE),
     re.compile(r"\bperfect calculator\b", re.IGNORECASE),
 )
 
