@@ -10,10 +10,10 @@
   "recommended_title_en": "Two-Track Safety-Gated Inference: A Public-Safe Falsification Architecture for Meaning-Driven Signals",
   "expanded_abstract_en": {
     "paragraphs": [
-      "This work addresses a governance problem in systems that derive dense, meaning-rich signals from cross-reference style knowledge networks. Meaning-rich cross-reference signals are expressive but prone to overfitting and false discovery when promoted directly to trading decisions. We frame this as a promotion problem: narrative insight must be separated from operational claims.",
+      "This work addresses a governance problem in systems that derive dense, meaning-rich signals from cross-reference style knowledge networks. Meaning-rich cross-reference signals are expressive but prone to overfitting and false discovery when promoted directly to operational decisions. We frame this as a promotion problem: narrative insight must be separated from operational claims.",
       "Our contribution is an engineering architecture and evaluation stack rather than a closed-form market oracle. We separate K-track (knowledge/IP narrative layer) from T-track (survivor filter and rollback gates), and evaluate claims with falsification suite, multi-baseline comparison, and bootstrap/permutation significance. The stack is designed to be auditable: falsification checks, multi-baseline comparisons, and bootstrap/permutation significance sit alongside explicit disclosure boundaries.",
       "Empirically, we report pipeline outputs consistent with the current evidence bundle and readiness gate. Current evidence bundle reports bundle_ready=True, publication_ready=True, primary_delta_shift_score=0.3034, interpretation='positive_delta_supported', falsification=5/5 (pass), sensitivity='first non-pass at min_survivor_count=7, min_ci_low_defense_contrib=0.0', fail_boundary='safe survivor-floor up to 5, first break at 7'. Evidence-bundle status: bundle_ready=True, ready_for_publication_claim=True. Falsification status: 5/5 (pass); first sensitivity breakpoint at min_survivor_count=7, min_ci_low_defense_contrib=0.0. We emphasize interpretability of the evaluation protocol over headline alpha claims.",
-      "Disclosure posture: Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted. The paper narrative therefore focuses on safety gates, rollback contracts, and reproducible artifacts.",
+      "Disclosure posture: Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted. High-complexity historical corpora are treated as stress-test beds for context filtering robustness, not doctrinal proof. The paper narrative therefore focuses on safety gates, rollback contracts, and reproducible artifacts.",
       "Fail-boundary disclosure: maximum safe survivor-floor observed in sensitivity grid is 5, and first break condition appears at survivor-floor 7. We use this boundary as an explicit reviewer-facing risk condition.",
       "Title for submission packaging: \"Two-Track Safety-Gated Inference: A Public-Safe Falsification Architecture for Meaning-Driven Signals\". Limitations include domain-specific semantics and the need for extended drift windows; we outline replication steps via referenced JSON artifacts rather than proprietary tuning tables."
     ],
@@ -144,7 +144,7 @@
     "survivor filter",
     "meaning graph"
   ],
-  "public_safe_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted.",
+  "public_safe_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted; no doctrinal or guarantee-style claim is allowed.",
   "submission_gate_snapshot": {
     "bundle_ready": true,
     "ready_for_publication_claim": true,

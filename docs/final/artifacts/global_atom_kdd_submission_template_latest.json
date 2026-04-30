@@ -6,7 +6,7 @@
   "source_track": "K",
   "track": "kdd_applied_data_science",
   "title_en": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness",
-  "abstract_en_180w": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform event narratives into atom-level structures and compute topological similarity beyond lexical overlap. The resulting network contains 11573 nodes and 19690345 gate-passed edges, with 1115 old-new cross edges and a detected phase-transition signal. Our robustness stack combines drift, negative-control, and counterfactual gates; integrated status is GO, and the mean base-minus-counterfactual gap is 0.362182.  A staged full-canon run completed 5/5 stages under source mode event_level_ingest. Methodologically, we follow three stages: Atomize event-level candidates and assign symbolic sequence priors. Build pairwise similarity matrix and gate-passed topological edges. Run drift + negative-control + counterfactual gate stack before external reporting. Key limitations remain operational: N^2 similarity scaling requires staged expansion and compute budgeting. 4D mapping can accumulate synchronization noise; ablation and counterfactual checks remain mandatory. These constraints motivate staged canon expansion with reproducible gate checkpoints.",
+  "abstract_en_180w": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting network contains 11573 nodes and 19690345 gate-passed edges, with 1115 old-new cross edges and a detected phase-transition signal. Our robustness stack combines drift, negative-control, and counterfactual gates; integrated status is GO, and the mean base-minus-counterfactual gap is 0.362182. A staged full-canon run completed 5/5 stages under source mode event_level_ingest. Methodologically, we follow three stages: atomize event-level candidates and assign symbolic sequence priors; build pairwise similarity matrix and gate-passed topological edges; run drift + negative-control + counterfactual gate stack before external reporting. Key limitations remain operational: N^2 similarity scaling requires staged expansion and compute budgeting, and 4D mapping can accumulate synchronization noise. High-complexity historical corpora are used as stress-test beds for context filtering robustness, not as doctrinal proof.",
   "keywords_en": [
     "topological knowledge graph",
     "digital humanities",
@@ -92,7 +92,8 @@
   "submission_checklist_en": [
     "Paste title/abstract/keywords directly into KDD form fields.",
     "Attach artifact packet paths in supplementary material.",
-    "Keep proprietary weights/formulas redacted; disclose only gated metrics."
+    "Keep proprietary weights/formulas redacted; disclose only gated metrics.",
+    "Avoid doctrinal, guarantee-style, or absolute wording in external claims."
   ],
   "sources": {
     "onepager_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_academic_onepager_latest.json",

@@ -181,6 +181,11 @@ $SourceFiles = @(
     "docs\final\NOTEBOOKLM_MKMLIFE_NEWS_QUESTION_STARTER_BUNDLE_2026-04-12.md",
     "docs\final\NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md",
     "docs\final\TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
+    "docs\final\artifacts\two_track_submission_draft_latest.json",
+    "docs\final\artifacts\two_track_submission_evidence_bundle_latest.json",
+    "docs\final\artifacts\two_track_submission_go_nogo_latest.json",
+    "docs\final\artifacts\truthfulqa_ab_gate_latest.json",
+    "docs\final\artifacts\global_atom_sota_baseline_readiness_latest.json",
     "docs\final\artifacts\news_question_starter_sample_v1.json",
     "docs\final\artifacts\gematria_myeongri_corpus_delta_apocrypha_v1.json",
     "docs\final\artifacts\gematria_myeongri_corpus_delta_dss_v1.json",
@@ -288,6 +293,25 @@ $OptionalMissingRel = [string[]]@(
     "backtest_results\LOGOS_RESONANCE_BTC_SIDEWAYS_FULL.json"
 )
 
+# Prefix groups frequently absent in minimal clones / optional mirrors.
+$OptionalMissingPrefixes = [string[]]@(
+    "data\logos\",
+    "data\corpus\ijeoma\",
+    "reports\research\logos_shadow_v1\",
+    "docs\final\artifacts\original_corpus_regime_singularity_",
+    "docs\final\artifacts\gematria_myeongri_corpus_delta_",
+    "docs\final\artifacts\btrack_balanced_regime_eval_",
+    "docs\final\artifacts\regime_map_calibration_round",
+    "docs\final\artifacts\original_singularity_gloss_report_",
+    "docs\final\artifacts\hebrew_singularity_gloss_overrides_",
+    "docs\final\artifacts\master_codebook_lexicon_v1_export_pointer_",
+    ".cursor\rules\logos-first-pipeline.mdc"
+)
+
+$OptionalMissingDirs = [string[]]@(
+    "data\logos\aruljohn_kjv"
+)
+
 $copied = 0
 $skipped = 0
 $obsidianCopied = 0
@@ -301,7 +325,16 @@ foreach ($rel in $SourceFiles) {
         if ($Strict) {
             throw "Missing source (Strict): $src"
         }
-        if ($OptionalMissingRel -contains $rel) {
+        $isOptionalMissing = ($OptionalMissingRel -contains $rel)
+        if (-not $isOptionalMissing) {
+            foreach ($prefix in $OptionalMissingPrefixes) {
+                if ($rel.StartsWith($prefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                    $isOptionalMissing = $true
+                    break
+                }
+            }
+        }
+        if ($isOptionalMissing) {
             Write-Host "Skip optional (not in workspace): $rel" -ForegroundColor DarkGray
         } else {
             Write-Warning "Skip missing: $rel"
@@ -331,7 +364,11 @@ foreach ($rel in $SourceDirs) {
         if ($Strict) {
             throw "Missing source dir (Strict): $src"
         }
-        Write-Warning "Skip missing dir: $rel"
+        if ($OptionalMissingDirs -contains $rel) {
+            Write-Host "Skip optional dir (not in workspace): $rel" -ForegroundColor DarkGray
+        } else {
+            Write-Warning "Skip missing dir: $rel"
+        }
         $skipped++
         continue
     }

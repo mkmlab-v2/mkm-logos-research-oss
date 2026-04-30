@@ -6,9 +6,9 @@
   "source_track": "K",
   "title_en": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness",
   "executive_summary_en": [
-    "We encode events into atom-level structure and compute global topological similarity beyond lexical overlap.",
+    "We encode high-complexity narrative corpora into atom-level structure and compute global topological similarity beyond lexical overlap.",
     "Core-100 mixed-event PoC yields dense but gated topology with measurable old-new transition links.",
-    "Integrated drift/negative-control/counterfactual gates remain GO, supporting robustness claims."
+    "Integrated drift/negative-control/counterfactual gates remain GO, supporting bounded robustness claims."
   ],
   "key_facts": {
     "node_count": 100,
@@ -25,7 +25,8 @@
   ],
   "risk_notes_en": [
     "N^2 similarity scaling requires staged expansion and compute budgeting.",
-    "4D mapping can accumulate synchronization noise; ablation and counterfactual checks remain mandatory."
+    "4D mapping can accumulate synchronization noise; ablation and counterfactual checks remain mandatory.",
+    "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
   ],
   "artifact_packet": {
     "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_core100_phase_transition_report_latest.json",

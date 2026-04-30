@@ -6,9 +6,9 @@
   "source_track": "K",
   "title_en": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness",
   "executive_summary_en": [
-    "We encode events into atom-level structure and compute global topological similarity beyond lexical overlap.",
+    "We encode high-complexity narrative corpora into atom-level structure and compute global topological similarity beyond lexical overlap.",
     "Staged full-canon run yields large-scale gated topology with verse-level ingest and stage-complete coverage.",
-    "Integrated drift/negative-control/counterfactual gates remain GO, supporting robustness claims."
+    "Integrated drift/negative-control/counterfactual gates remain GO, supporting bounded robustness claims."
   ],
   "key_facts": {
     "node_count": 7477,
@@ -28,7 +28,8 @@
   ],
   "risk_notes_en": [
     "N^2 similarity scaling requires staged expansion and compute budgeting.",
-    "4D mapping can accumulate synchronization noise; ablation and counterfactual checks remain mandatory."
+    "4D mapping can accumulate synchronization noise; ablation and counterfactual checks remain mandatory.",
+    "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
   ],
   "stage_breakdown": [
     {

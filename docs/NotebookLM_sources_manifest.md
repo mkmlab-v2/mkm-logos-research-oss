@@ -84,6 +84,22 @@
 | P1 | `data/myeongni/myeongni_16_state_experiment_20260329.jsonl` | 명리 16-State 실험 **정본** JSONL (2026-03-29; `state_id` 1–16) |
 | P1 | `data/myeongni/16_STATE_MASTER_PROBE_v1.json` | **Master Probe v1** 집계 SSOT (16/16 coverage; NotebookLM/RAG·격벽) |
 
+### Gemini 개발 순서 앵커 (A, 2026-04-30)
+
+Gemini/NotebookLM이 "지금 개발이 어디까지 왔는지"를 빠르게 파악하도록, 아래 6개를 **순서대로** 우선 인용한다.
+
+| 순서 | 경로 | 역할 |
+|------|------|------|
+| 1 | `docs/final/CURRENT_OPS_SNAPSHOT.md` | 최신 작업 흐름·핸드오프 요약 |
+| 2 | `docs/final/P0_COMMERCIALIZATION_TRACKER.md` | 상용화 단계/게이트 SSOT |
+| 3 | `docs/final/artifacts/two_track_submission_draft_latest.json` | 논문 초안 스캐폴드(제목·초록·섹션) |
+| 4 | `docs/final/artifacts/two_track_submission_evidence_bundle_latest.json` | 필수 증거 번들 충족 여부 |
+| 5 | `docs/final/artifacts/two_track_submission_go_nogo_latest.json` | 제출 GO/NO_GO 스냅샷 |
+| 6 | `docs/final/artifacts/truthfulqa_ab_gate_latest.json` | 외부형 벤치 게이트 상태(최근 NO_GO 여부 확인) |
+
+보조 점검(선택): `docs/final/artifacts/global_atom_sota_baseline_readiness_latest.json`  
+(placeholder baseline 여부를 확인해 과장 주장 방지)
+
 **확인**: Vault·로컬 경로 정합은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §7 참조.
 
 ### 명리 16-State Master Probe (2026-03-29 정본)

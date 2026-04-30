@@ -11,8 +11,8 @@
   ],
   "recommended_title": "Two-Track Safety-Gated Inference: A Public-Safe Falsification Architecture for Meaning-Driven Signals",
   "abstract_scaffold_en": {
-    "problem": "Meaning-rich cross-reference signals are expressive but prone to overfitting and false discovery when promoted directly to trading decisions.",
-    "method": "We separate K-track (knowledge/IP narrative layer) from T-track (survivor filter and rollback gates), and evaluate claims with falsification suite, multi-baseline comparison, and bootstrap/permutation significance.",
+    "problem": "Meaning-rich cross-reference signals are expressive but prone to overfitting and false discovery when promoted directly to operational decisions.",
+    "method": "We separate K-track (knowledge/IP narrative layer) from T-track (survivor filter and rollback gates), and evaluate claims with falsification suite, multi-baseline comparison, and bootstrap/permutation significance. High-complexity historical corpora are used only as a stress-test bed for context filtering robustness.",
     "result": "Current evidence bundle reports bundle_ready=True, publication_ready=True, primary_delta_shift_score=0.3034, interpretation='positive_delta_supported', falsification=5/5 (pass), sensitivity='first non-pass at min_survivor_count=7, min_ci_low_defense_contrib=0.0', fail_boundary='safe survivor-floor up to 5, first break at 7'.",
     "claim_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted."
   },
@@ -31,7 +31,7 @@
     "ready_for_publication_claim": true,
     "missing_artifacts": []
   },
-  "public_safe_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted.",
+  "public_safe_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted; no doctrinal or guarantee-style claim is allowed.",
   "sources": {
     "evidence_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_evidence_bundle_latest.json",
     "readiness_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_raw_oos_readiness_latest.json",
