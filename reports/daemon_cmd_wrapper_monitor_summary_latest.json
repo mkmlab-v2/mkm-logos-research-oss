@@ -1,0 +1,9 @@
+{
+  "started_at": "2026-04-29T10:42:14.9623428+09:00",
+  "ended_at": "2026-04-29T10:48:01.7462902+09:00",
+  "sample_interval_seconds": 5,
+  "samples": 69,
+  "total_cmd_wrapper_hits": 0.0,
+  "max_cmd_wrapper_hits_per_sample": 0.0,
+  "log_path": "C:\\workspace\\reports\\daemon_cmd_wrapper_monitor_latest.jsonl"
+}

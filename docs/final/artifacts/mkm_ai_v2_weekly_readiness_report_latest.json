@@ -1,0 +1,13 @@
+{
+  "schema": "mkm_ai_v2_weekly_readiness_report_v1",
+  "generated_at_utc": "2026-04-30T19:44:07.487794Z",
+  "window_days": 7,
+  "window_start_utc": "2026-04-23T19:44:07.487794Z",
+  "window_end_utc": "2026-04-30T19:44:07.487794Z",
+  "log_path": "C:\\workspace\\reports\\mkm_ai_v2_readiness_log.jsonl",
+  "sample_count": 34,
+  "pass_count": 34,
+  "fail_count": 0,
+  "pass_rate_percent": 100.0,
+  "latest_run_utc": "2026-04-30T19:44:07.400374Z"
+}

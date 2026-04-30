@@ -1,0 +1,40 @@
+{
+  "schema": "trackc_b2b_brief_webhook_dispatch_v1",
+  "generated_at_utc": "2026-04-30T19:40:03Z",
+  "inputs": {
+    "dashboard_json": "C:/workspace/docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json",
+    "acceptance_json": "C:/workspace/docs/final/artifacts/mkm_trackc_operational_acceptance_latest.json",
+    "webhook_env": "TRACKC_B2B_BRIEF_WEBHOOK_URL",
+    "webhook_env_candidates": [
+      "TRACKC_B2B_BRIEF_WEBHOOK_URL"
+    ]
+  },
+  "decision": {
+    "has_core_inputs": false,
+    "webhook_configured": false,
+    "should_dispatch": false
+  },
+  "brief_payload_preview": {
+    "source": "trackc_b2b_brief_dispatch_v1",
+    "generated_at_utc": "2026-04-30T19:40:03Z",
+    "track": "C",
+    "scope": "risk_warning_and_exposure_control",
+    "compliance_note": "No deterministic prediction claim. No return-assurance claim.",
+    "executive_summary": {
+      "status": null,
+      "promotion_decision": null,
+      "acceptance_status": null
+    },
+    "evidence": {
+      "dashboard_ref": "C:/workspace/docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json",
+      "acceptance_ref": "C:/workspace/docs/final/artifacts/mkm_trackc_operational_acceptance_latest.json"
+    },
+    "action": "KEEP_GOVERNED_TRACKC_DISTRIBUTION",
+    "risks": [],
+    "next_checkpoint": "Next daily Track C ops dashboard refresh."
+  },
+  "dispatch": {
+    "status": "skipped",
+    "reason": "missing_core_inputs"
+  }
+}

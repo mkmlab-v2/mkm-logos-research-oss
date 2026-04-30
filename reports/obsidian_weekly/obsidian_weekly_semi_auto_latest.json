@@ -1,0 +1,51 @@
+﻿{
+    "schema":  "obsidian_weekly_semi_auto_v1",
+    "generated_at_utc":  "2026-04-29T11:01:52.7336675+00:00",
+    "context_root":  "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context",
+    "total_md_count":  41,
+    "raw_research_count":  23,
+    "duplicate_candidate_count":  2,
+    "duplicate_candidates":  [
+                                 {
+                                     "normalized_title":  "readme",
+                                     "count":  8,
+                                     "files":  [
+                                                   "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\TRADING\\README.md",
+                                                   "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\raw_research\\README.md",
+                                                   "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\SPIRIT\\README.md",
+                                                   "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\OPS\\README.md",
+                                                   "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\LOGIC\\README.md",
+                                                   "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\KNOWLEDGE\\README.md",
+                                                   "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\CODING\\README.md",
+                                                   "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\RESEARCH\\README.md"
+                                               ]
+                                 },
+                                 {
+                                     "normalized_title":  "ty-1_λ00-원어요약-헬스-체크-한-줄로만-답해줘",
+                                     "count":  2,
+                                     "files":  [
+                                                   "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\SPIRIT\\04_Daily_Log\\20260312_1531_TY-1_λ00-원어요약-헬스-체크-한-줄로만-답해줘.md",
+                                                   "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\SPIRIT\\04_Daily_Log\\20260312_1528_TY-1_λ00-원어요약-헬스-체크-한-줄로만-답해줘.md"
+                                               ]
+                                 }
+                             ],
+    "top3_raw_research":  [
+                              {
+                                  "file":  "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\raw_research\\20260322_1830_AGI-Kaggle-이번주-1페이지-전략.md",
+                                  "updated_at":  "2026-04-01T22:30:03.1320000+09:00"
+                              },
+                              {
+                                  "file":  "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\raw_research\\20260322_1845_AGI-Kaggle-Day1-Day3-실험티켓.md",
+                                  "updated_at":  "2026-04-01T22:30:03.1320000+09:00"
+                              },
+                              {
+                                  "file":  "G:\\공유 드라이브\\MKM_DATA_VAULT\\vault\\obsidian_context\\raw_research\\20260322_1810_AGI-Kaggle-NotebookLM-작전세트.md",
+                                  "updated_at":  "2026-04-01T22:30:03.1320000+09:00"
+                              }
+                          ],
+    "recommended_actions":  [
+                                "Keep only this week\u0027s top 3 in active NotebookLM source set.",
+                                "Mark non-SSOT conclusions with [HYPO] in Obsidian notes.",
+                                "Merge duplicate-title notes and keep the newest file as canonical."
+                            ]
+}

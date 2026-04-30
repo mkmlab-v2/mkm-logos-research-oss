@@ -1,0 +1,312 @@
+﻿[
+    {
+        "TaskName":  "Bitcoin-CursorTradeHistory-Latest24h-15min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Daemon-Continuity-Monitor-5min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Direct-Watchdog-5min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-GateOutputContractCheck-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Guardrails-Fast-Verify-30min",
+        "TaskPath":  "\\",
+        "State":  3
+    },
+    {
+        "TaskName":  "Bitcoin-KPI-Snapshot-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-KPI-Snapshot-5min",
+        "TaskPath":  "\\",
+        "State":  4
+    },
+    {
+        "TaskName":  "Bitcoin-Live-Preflight-15min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-LiveStack-Recover-5min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Local-Live-Health-5min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-NoFill-Stall-Alert-15min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Ops-Fusion-Cycle-Auto",
+        "TaskPath":  "\\",
+        "State":  3
+    },
+    {
+        "TaskName":  "Bitcoin-OpsKPI-AlertEval-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-OpsKPI-Baseline-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-OpsKPI-Response-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Phase1-Healthcheck-5min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Public-Event-Recovery-10min",
+        "TaskPath":  "\\",
+        "State":  4
+    },
+    {
+        "TaskName":  "Bitcoin-Public-Metrics-Snapshot-1min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-RegimeWatch-Runtime-Health-5min-User",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-RiskProfilePromotionGate-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-RollingEdgeReport-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-S2-PaperStrict-Monitor-15min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-ShadowRiskTuning-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Showroom-Publish-5min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Singular-Threshold-Monitor-5min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Trinity-AutoMode-Cycle-15min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Trinity-AutoMode-Cycle-5min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Trinity-Combo-Pipeline-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Trinity-ModeTransition-Summary-60min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Trinity-Prediction-Snapshot-1min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-V2-Execute-Guarded-15min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-V2-OpsDigest-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-V2-Orchestrator-15min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-V2-Shadow-15min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-V2-Shadow-Observatory-15min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Verify-All-Green-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "Bitcoin-Verify-All-Green-SelfHeal-30min",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM-KOSPI-Biblical-SingleLane-Stability-Watchdog-Hourly",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM-Prophecy-Release-Signoff-Chain-Hourly",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_4D_Gematria_Audit_Cycle",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Battlefront_Sync_Report",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_CI_Healthcheck_Cycle",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Completion_Next_Action",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Constitution_Fast_Lane",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Constitution_Ops_Tick",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Constitution_T2_When_Ready",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Fusion_Automation_Health",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Fusion_Intake_Cycle",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Fusion_Trigger_Check",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_GeniusGovernance_SchedulerHealthCheck",
+        "TaskPath":  "\\",
+        "State":  4
+    },
+    {
+        "TaskName":  "MKM_GitHubGpuRunner_Healthcheck",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_HybridCodec_ExternalRepro_Intake",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_HybridCodec_ExternalRepro_OpsSummary",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_HybridCodec_PartnerBundle_Export",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_InternalCompressionMaxLane_Auto",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_L1InverseDecoder_ModeRouterV3_CanaryGuard",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Local_Live_Recheck_30m",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Local_Parallel_Autonomy_Cycle",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Local_Parallel_Autonomy_Watchdog",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Smartfarm_Top3_AutoCycle",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_State_Execution_Packet_Cycle",
+        "TaskPath":  "\\",
+        "State":  1
+    },
+    {
+        "TaskName":  "MKM_Supervised_Autonomy_Cycle",
+        "TaskPath":  "\\",
+        "State":  1
+    }
+]

@@ -1,0 +1,5 @@
+{"schema_version":"direction_label_bar_v1","instrument_id":"KOSPI","label_date":"2024-06-03","horizon":"1d","direction":"up","label_sha256":"dd67e6b98524ec95cad3957c5ea37853bb45f043704a6d636b87d4027e25be50","neutral_bps":8.0}
+{"schema_version":"direction_label_bar_v1","instrument_id":"KOSPI","label_date":"2024-06-04","horizon":"1d","direction":"down","label_sha256":"e7d06cfbc0646d9a6e9629ca9ce1e2e69ed1dd35e56e3b589793a3a05fe18486","neutral_bps":8.0}
+{"schema_version":"direction_label_bar_v1","instrument_id":"BTC","label_date":"2024-06-03","horizon":"1d","direction":"flat","label_sha256":"937e57c506d8c6f2209bea2783b7212f9ea71759064548795d0bd3c938e51331","neutral_bps":8.0}
+{"schema_version":"direction_label_bar_v1","instrument_id":"BTC","label_date":"2024-06-04","horizon":"1d","direction":"up","label_sha256":"2cac5300a7a2ba68eb612f55eba0e39243b966bbb0e313196da16cb557917061","neutral_bps":8.0}
+{"schema_version":"direction_label_bar_v1","instrument_id":"KOSPI","label_date":"2024-06-05","horizon":"5d","direction":"down","label_sha256":"0a678d29749c5cadcea762593c684a09e15f0a6684fd259fd9f6e4c649244a59","neutral_bps":8.0}

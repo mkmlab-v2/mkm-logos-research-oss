@@ -1,0 +1,44 @@
+{
+  "schema": "mkm_trackc_external_onepager_v1",
+  "generated_at_utc": "2026-04-30T19:44:08.061411Z",
+  "title": "MKM AI Track C: Macro Risk Warning API + Public Showroom",
+  "elevator_pitch": "운영형 MKM AI의 거시 리스크 경보 API와 공개 쇼룸 레인을 결합한 고객 전달 패키지.",
+  "current_state": {
+    "system_label": "MKM AI v2.0 (Final)",
+    "status": "APPROVED_FINAL_V2",
+    "is_final": true
+  },
+  "core_value": [
+    "거시 리스크 신호를 구조화된 API 계약으로 제공",
+    "결정 상태(WATCH/HOLD 등)와 운영자 포지셔닝 권고를 분리 표출",
+    "공개 쇼룸과 비공개 운영 레인의 격벽 유지"
+  ],
+  "api_snapshot": {
+    "decision_state": null,
+    "risk_warning_level": null,
+    "confidence_band": null,
+    "recommended_operator_posture": null,
+    "ttl_seconds": null,
+    "policy_binding_action": null
+  },
+  "showroom_snapshot": {
+    "overall_ready": true,
+    "go_no_go": "GO"
+  },
+  "delivery_readiness": {
+    "macro_risk_api_smoke_present": false,
+    "macro_risk_policy_present": false,
+    "showroom_readiness_present": true
+  },
+  "guardrails": [
+    "투자 자문 아님(운영 보조 신호)",
+    "최종 의사결정은 운영자 책임",
+    "Track A/B 자동 합선 금지"
+  ],
+  "evidence_refs": {
+    "status_pointer": "docs/final/artifacts/mkm_ai_status_pointer_latest.json",
+    "macro_risk_api_smoke": "docs/final/artifacts/macro_risk_warning_api_smoke_latest.json",
+    "macro_risk_policy_binding": "docs/final/artifacts/macro_risk_warning_policy_binding_latest.json",
+    "showroom_readiness": "docs/final/artifacts/vps_24h_daemon_showroom_readiness_latest.json"
+  }
+}

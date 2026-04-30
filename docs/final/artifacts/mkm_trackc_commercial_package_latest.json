@@ -1,0 +1,69 @@
+{
+  "schema": "mkm_trackc_commercial_package_v1",
+  "generated_at_utc": "2026-04-30T19:44:07.985776Z",
+  "system_status": {
+    "label": "MKM AI v2.0 (Final)",
+    "status": "APPROVED_FINAL_V2",
+    "is_final": true
+  },
+  "package_readiness": {
+    "macro_risk_api_smoke_present": false,
+    "macro_risk_policy_present": false,
+    "showroom_readiness_present": true
+  },
+  "macro_risk_api": {
+    "note": "missing artifact"
+  },
+  "macro_risk_policy": {
+    "note": "missing artifact"
+  },
+  "showroom": {
+    "schema": "vps_24h_daemon_showroom_readiness_v1",
+    "generated_at_utc": "2026-04-02T15:20:09.657510+00:00",
+    "paths": {
+      "daemon_main": "C:\\workspace\\projects\\bitcoin-trading\\src\\daemon\\bitcoin_trading_daemon.py",
+      "daemon_start_24h": "C:\\workspace\\projects\\bitcoin-trading\\scripts\\start_24h_daemon.py",
+      "daemon_ensure": "C:\\workspace\\projects\\bitcoin-trading\\ops\\windows-rehearsal\\ensure_daemon_running.ps1",
+      "gateway_py": "C:\\workspace\\projects\\bitcoin-trading\\ops\\windows-rehearsal\\jemaai-cloud-mvp\\public_event_gateway.py",
+      "gateway_nginx_example": "C:\\workspace\\projects\\bitcoin-trading\\ops\\windows-rehearsal\\jemaai-cloud-mvp\\nginx_public_event_gateway.conf.example",
+      "showroom_poll_html": "C:\\workspace\\projects\\bitcoin-trading\\ops\\windows-rehearsal\\jemaai-cloud-mvp\\public_showroom_poll.html",
+      "n8n_whitelist_function": "C:\\workspace\\projects\\bitcoin-trading\\ops\\windows-rehearsal\\jemaai-cloud-mvp\\examples\\n8n_public_event_whitelist_function.js",
+      "e2e_smoke_script": "C:\\workspace\\projects\\bitcoin-trading\\ops\\windows-rehearsal\\run_jemaai_public_event_e2e_smoke.ps1",
+      "ingest_minimal_example": "C:\\workspace\\projects\\bitcoin-trading\\ops\\windows-rehearsal\\jemaai-cloud-mvp\\examples\\public_event_ingest_minimal.v1.json"
+    },
+    "checks": {
+      "daemon_main": true,
+      "daemon_start_24h": true,
+      "daemon_ensure": true,
+      "gateway_py": true,
+      "gateway_nginx_example": true,
+      "showroom_poll_html": true,
+      "n8n_whitelist_function": true,
+      "e2e_smoke_script": true,
+      "ingest_minimal_example": true,
+      "trading_state_exists": true,
+      "daemon_running_flag": true,
+      "enable_trading_flag": true
+    },
+    "lane_status": {
+      "private_trading_lane_ready": true,
+      "public_showroom_lane_ready": true
+    },
+    "runtime_snapshot": {
+      "trading_state_path": "C:\\workspace\\projects\\bitcoin-trading\\memory\\trading_daemon_status.json",
+      "trading_state_running": true,
+      "trading_state_enable_trading": true
+    },
+    "result": {
+      "overall_ready": true,
+      "go_no_go": "GO",
+      "failed_reasons": []
+    }
+  },
+  "evidence": {
+    "status_pointer": "docs/final/artifacts/mkm_ai_status_pointer_latest.json",
+    "macro_risk_api_smoke": "docs/final/artifacts/macro_risk_warning_api_smoke_latest.json",
+    "macro_risk_policy_binding": "docs/final/artifacts/macro_risk_warning_policy_binding_latest.json",
+    "showroom_readiness": "docs/final/artifacts/vps_24h_daemon_showroom_readiness_latest.json"
+  }
+}
