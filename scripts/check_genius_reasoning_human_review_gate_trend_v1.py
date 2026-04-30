@@ -43,10 +43,25 @@ def main() -> int:
     ap.add_argument("--window", type=int, default=6)
     ap.add_argument("--max-hold-count", type=int, default=1)
     ap.add_argument("--max-pending-ratio-avg", type=float, default=0.10)
+    ap.add_argument("--exclude-source", action="append", default=None)
+    ap.add_argument(
+        "--include-drill",
+        action="store_true",
+        help="Include drill-tagged rows in trend calculation (for rehearsal/drill checks).",
+    )
     args = ap.parse_args()
 
     rows = _read_jsonl(args.history_jsonl)
-    hist = rows[-max(1, int(args.window)) :]
+    raw_exclude = args.exclude_source if args.exclude_source is not None else ["drill"]
+    exclude = {str(x).strip().lower() for x in raw_exclude if str(x).strip()}
+    if args.include_drill:
+        exclude.discard("drill")
+    filtered = [
+        row
+        for row in rows
+        if str(row.get("source") or "operational").strip().lower() not in exclude
+    ]
+    hist = filtered[-max(1, int(args.window)) :]
     hold_count = 0
     ratio_sum = 0.0
     for row in hist:
@@ -72,6 +87,7 @@ def main() -> int:
         "schema": "genius_reasoning_human_review_gate_trend_v1",
         "generated_at_utc": _iso_now(),
         "inputs": {"history_jsonl": str(args.history_jsonl).replace("\\", "/")},
+        "filter": {"exclude_source": sorted(exclude)},
         "thresholds": {
             "window": int(args.window),
             "max_hold_count": int(args.max_hold_count),

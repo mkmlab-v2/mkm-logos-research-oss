@@ -20,6 +20,9 @@ if (Test-Path -LiteralPath $profileOut) {
 }
 $minSafetyScore = 0.76
 $minLongHorizonScore = 0.74
+$warnRobustScore = 90.0
+$warnCalibrationGap = 0.15
+$preAlertRobustScore = 82.0
 $alertTrendWindow = 8
 $alertTrendMaxWarning = 1
 $alertTrendMaxCritical = 0
@@ -39,6 +42,9 @@ if (Test-Path -LiteralPath $profileOut) {
     if ($null -ne $gg) {
         if ($null -ne $gg.benchmark.min_safety_score) { $minSafetyScore = [double]$gg.benchmark.min_safety_score }
         if ($null -ne $gg.benchmark.min_long_horizon_score) { $minLongHorizonScore = [double]$gg.benchmark.min_long_horizon_score }
+        if ($null -ne $gg.alert_quality.warn_robust_score) { $warnRobustScore = [double]$gg.alert_quality.warn_robust_score }
+        if ($null -ne $gg.alert_quality.warn_calibration_gap) { $warnCalibrationGap = [double]$gg.alert_quality.warn_calibration_gap }
+        if ($null -ne $gg.alert_quality.pre_alert_robust_score) { $preAlertRobustScore = [double]$gg.alert_quality.pre_alert_robust_score }
         if ($null -ne $gg.alert_trend_gate.window) { $alertTrendWindow = [int]$gg.alert_trend_gate.window }
         if ($null -ne $gg.alert_trend_gate.max_warning_count) { $alertTrendMaxWarning = [int]$gg.alert_trend_gate.max_warning_count }
         if ($null -ne $gg.alert_trend_gate.max_critical_count) { $alertTrendMaxCritical = [int]$gg.alert_trend_gate.max_critical_count }
@@ -266,6 +272,9 @@ if ($LASTEXITCODE -ne 0) { throw "Genius reasoning benchmark build failed ($LAST
 
 & py (Join-Path $WorkspaceRoot "scripts\check_genius_reasoning_benchmark_alert_v1.py") `
     --benchmark-json (Join-Path $WorkspaceRoot "docs\final\artifacts\genius_reasoning_benchmark_report_latest.json") `
+    --warn-robust-score $warnRobustScore `
+    --warn-calibration-gap $warnCalibrationGap `
+    --pre-alert-robust-score $preAlertRobustScore `
     --output-json (Join-Path $WorkspaceRoot "docs\final\artifacts\genius_reasoning_benchmark_alert_latest.json")
 if ($LASTEXITCODE -ne 0) { throw "Genius reasoning benchmark alert build failed ($LASTEXITCODE)" }
 
@@ -295,7 +304,8 @@ if ($LASTEXITCODE -ne 0) { throw "Genius human review gate dispatch failed ($LAS
 
 & py (Join-Path $WorkspaceRoot "scripts\append_genius_reasoning_human_review_gate_history_v1.py") `
     --gate-json (Join-Path $WorkspaceRoot "docs\final\artifacts\genius_reasoning_human_review_gate_latest.json") `
-    --history-jsonl (Join-Path $WorkspaceRoot "docs\final\artifacts\genius_reasoning_human_review_gate_history_log.jsonl")
+    --history-jsonl (Join-Path $WorkspaceRoot "docs\final\artifacts\genius_reasoning_human_review_gate_history_log.jsonl") `
+    --source operational
 if ($LASTEXITCODE -ne 0) { throw "Genius human review gate history append failed ($LASTEXITCODE)" }
 
 & py (Join-Path $WorkspaceRoot "scripts\check_genius_reasoning_human_review_gate_trend_v1.py") `

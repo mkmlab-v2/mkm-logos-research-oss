@@ -151,6 +151,21 @@ def _best_nonlogos_strategy(lens_doc: dict[str, Any]) -> dict[str, Any]:
     return {}
 
 
+def _compute_directional_viability_from_lens_output(lens_output_path: Path) -> bool | None:
+    lens_doc = _read_json(lens_output_path)
+    if not lens_doc:
+        return None
+    compare = _find_best_logos_vs_nonlogos(lens_doc)
+    logos_metrics = ((compare.get("best_logos_including") or {}).get("metrics")) or {}
+    if not logos_metrics:
+        return None
+    return (
+        _safe_float(logos_metrics.get("sharpe")) > 0.0
+        and _safe_float(logos_metrics.get("total_return")) > 0.0
+        and _safe_float(logos_metrics.get("mdd")) >= -0.25
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--score-json", type=Path, default=DEFAULT_SCORE_JSON)
@@ -165,6 +180,12 @@ def main() -> int:
     ap.add_argument("--summary-output", type=Path, default=DEFAULT_SUMMARY_OUT)
     ap.add_argument("--promotion-gate-json", type=Path, default=DEFAULT_PROMOTION_GATE)
     ap.add_argument(
+        "--strict-shadow-forward-mode",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="When enabled, align optimizer/OOS windows with 31.71 hard-lock intent (required_oos_days=252).",
+    )
+    ap.add_argument(
         "--quick-mode",
         action="store_true",
         default=True,
@@ -172,7 +193,14 @@ def main() -> int:
     )
     args = ap.parse_args()
 
-    if args.quick_mode:
+    if args.strict_shadow_forward_mode:
+        router_oos_grid = "252"
+        router_lookback_grid = "63"
+        router_neutral_grid = "0.5"
+        router_conflict_grid = "0.1,0.2"
+        router_dz_grid = "0.005"
+        oos_tail_days = "252"
+    elif args.quick_mode:
         router_oos_grid = "60"
         router_lookback_grid = "21"
         router_neutral_grid = "0.7"
@@ -239,7 +267,7 @@ def main() -> int:
         "--strength-conflict-grid",
         router_conflict_grid,
         "--coord-policies",
-        "off,confirm_only",
+        "off,confirm_only,regime_transition_only",
         "--coord-deadzone-grid",
         router_dz_grid,
         "--neutral-base-sources",
@@ -295,6 +323,15 @@ def main() -> int:
     bull_lens_cmd[bull_lens_cmd.index("--output") + 1] = str(bull_lens_out)
     bear_lens_cmd[bear_lens_cmd.index("--score-json") + 1] = str(bear_score_json)
     bear_lens_cmd[bear_lens_cmd.index("--output") + 1] = str(bear_lens_out)
+    # Prevent bull/bear sub-runs from overwriting the main limited-live top1 candidate.
+    bull_candidate_out = args.lens_output.with_name(
+        args.lens_output.name.replace("_latest.json", "_bull_only_top1_candidate_latest.json")
+    )
+    bear_candidate_out = args.lens_output.with_name(
+        args.lens_output.name.replace("_latest.json", "_bear_only_top1_candidate_latest.json")
+    )
+    bull_lens_cmd.extend(["--emit-top1-candidate", str(bull_candidate_out)])
+    bear_lens_cmd.extend(["--emit-top1-candidate", str(bear_candidate_out)])
 
     runs = {
         "lens_combo_backtest": _run(lens_cmd),
@@ -312,12 +349,25 @@ def main() -> int:
         "bear_only_lens_combo_backtest",
     ):
         if runs[k]["returncode"] != 0:
+            directional_viable_partial = _compute_directional_viability_from_lens_output(args.lens_output)
+            router_doc_partial = _read_json(args.router_output)
+            decision_doc_partial = _read_json(ROOT / "reports" / "role_router_shadow_forward_validation_decision_latest.json")
             out = {
                 "schema": "prophecy_logos_revalidation_summary_v1",
                 "generated_at_utc": _now(),
                 "status": "FAILED",
                 "failed_step": k,
                 "runs": runs,
+                "findings": {
+                    "router_selection_policy": router_doc_partial.get("selection_policy"),
+                    "shadow_forward_validation_decision": {
+                        "final_decision": decision_doc_partial.get("final_decision"),
+                        "checks_passed": decision_doc_partial.get("checks_passed"),
+                        "thresholds_passed": decision_doc_partial.get("thresholds_passed"),
+                        "failed_reasons": decision_doc_partial.get("failed_reasons"),
+                    },
+                    "logos_directional_viable_under_current_setup": directional_viable_partial,
+                },
             }
             args.summary_output.parent.mkdir(parents=True, exist_ok=True)
             args.summary_output.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

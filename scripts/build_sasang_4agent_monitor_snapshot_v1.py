@@ -27,6 +27,8 @@ def main() -> int:
     root = Path(__file__).resolve().parents[1]
     art = root / "docs" / "final" / "artifacts"
     protocol = _safe_json(art / "sasang_4agent_collision_btrack_protocol_latest.json")
+    fusion_gate = _safe_json(art / "sasang_4agent_fusion_gate_latest.json")
+    monitor_policy = _safe_json(art / "sasang_4agent_monitor_policy_v1.json")
     bridge = _safe_json(art / "sasang_4agent_tracka_bridge_latest.json")
     gate = _safe_json(art / "sasang_4agent_promotion_gate_latest.json")
     out_json = art / "sasang_4agent_monitor_snapshot_latest.json"
@@ -44,6 +46,12 @@ def main() -> int:
     hold_ratio = float(res.get("hold_ratio") or 0.0)
     topo_p95 = float(res.get("topological_variance_p95") or 0.0)
     sig = bool(res.get("statistical_significance_pass_p_lt_0_05"))
+    fusion = fusion_gate.get("fusion") if isinstance(fusion_gate.get("fusion"), dict) else {}
+    geumhwa = fusion.get("geumhwa_transition") if isinstance(fusion.get("geumhwa_transition"), dict) else {}
+    geumhwa_score = float(geumhwa.get("score") or 0.0)
+    geumhwa_state = bool(geumhwa.get("state"))
+    geumhwa_cut = float(monitor_policy.get("geumhwa_transition_threshold") or 0.55)
+    geumhwa_breach = bool(geumhwa_score >= geumhwa_cut)
 
     if mdd_reduction <= 0:
         alert = True
@@ -57,12 +65,17 @@ def main() -> int:
     if not sig:
         alert = True
         reasons.append("significance_gate_failed")
+    if geumhwa_breach:
+        alert = True
+        reasons.append("geumhwa_transition_threshold_breached")
 
     payload = {
         "schema": "sasang_4agent_monitor_snapshot_v1",
         "generated_at_utc": ts,
         "source_refs": {
             "protocol": "docs/final/artifacts/sasang_4agent_collision_btrack_protocol_latest.json",
+            "fusion_gate": "docs/final/artifacts/sasang_4agent_fusion_gate_latest.json",
+            "monitor_policy": "docs/final/artifacts/sasang_4agent_monitor_policy_v1.json",
             "bridge": "docs/final/artifacts/sasang_4agent_tracka_bridge_latest.json",
             "gate": "docs/final/artifacts/sasang_4agent_promotion_gate_latest.json",
         },
@@ -73,10 +86,18 @@ def main() -> int:
             "hold_ratio": hold_ratio,
             "topological_variance_p95": topo_p95,
             "significance_pass": sig,
+            "geumhwa_transition_score": geumhwa_score,
+            "geumhwa_transition_state": geumhwa_state,
+            "geumhwa_transition_threshold": geumhwa_cut,
+            "geumhwa_threshold_breached": geumhwa_breach,
         },
         "alert": alert,
         "alert_reasons": reasons,
-        "recommended_action": "FORCE_HOLD" if alert else "KEEP_CONTROLLED_BRIDGE",
+        "recommended_action": (
+            "FORCE_HOLD_AND_REDUCE_EXPOSURE"
+            if geumhwa_breach
+            else ("FORCE_HOLD" if alert else "KEEP_CONTROLLED_BRIDGE")
+        ),
     }
     out_json.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -94,6 +115,9 @@ def main() -> int:
         f"- hold_ratio: `{hold_ratio}`",
         f"- topological_variance_p95: `{topo_p95}`",
         f"- significance_pass: `{sig}`",
+        f"- geumhwa_transition_score: `{geumhwa_score}`",
+        f"- geumhwa_transition_threshold: `{geumhwa_cut}`",
+        f"- geumhwa_threshold_breached: `{geumhwa_breach}`",
         "",
     ]
     if reasons:

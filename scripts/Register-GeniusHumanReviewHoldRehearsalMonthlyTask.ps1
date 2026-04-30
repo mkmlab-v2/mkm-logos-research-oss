@@ -41,5 +41,9 @@ $createArgs = @(
 & schtasks.exe @createArgs | Out-Null
 if ($LASTEXITCODE -ne 0) { throw "Failed to register monthly task via schtasks.exe" }
 
+# Prevent overlap when a previous run is still active.
+$settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew
+Set-ScheduledTask -TaskName $TaskName -Settings $settings | Out-Null
+
 Write-Host "Registered scheduled task: $TaskName (monthly day=$DayOfMonth $MonthlyAt, user=$env:USERNAME)"
 Write-Host "Runner: $runner"

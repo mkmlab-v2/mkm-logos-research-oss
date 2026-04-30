@@ -54,7 +54,10 @@ param(
     [string]$TwoTrackPublicSafeReportOutJson = "docs/final/artifacts/two_track_public_safe_report_latest.json",
     [string]$TwoTrackSubmissionEvidenceBundleOutJson = "docs/final/artifacts/two_track_submission_evidence_bundle_latest.json",
     [string]$TwoTrackSubmissionDraftOutJson = "docs/final/artifacts/two_track_submission_draft_latest.json",
-    [string]$TwoTrackSubmissionCameraReadyOutJson = "docs/final/artifacts/two_track_submission_camera_ready_latest.json"
+    [string]$TwoTrackSubmissionCameraReadyOutJson = "docs/final/artifacts/two_track_submission_camera_ready_latest.json",
+    [switch]$IncludeExternalBaselineBenchmark,
+    [string]$ExternalBaselineInput = "docs/final/artifacts/external_cross_references_openbible/cross_references.txt",
+    [string]$Core100NodeRefMapJson = "docs/final/artifacts/core100_node_ref_map_template_v1.json"
 )
 
 $ErrorActionPreference = "Stop"
@@ -155,6 +158,10 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & py "scripts/build_multi_symbol_counterfactual_comparison_v1.py" "--survivability-json" $MultiSymbolWalkforwardSurvivabilityOutJson "--counterfactual-json" $MultiSymbolCounterfactualSetOutJson "--output-json" $MultiSymbolCounterfactualComparisonOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & py "scripts/build_multi_symbol_gate_summary_v1.py" "--drift-gate-json" $MultiSymbolTopDriftAlertOutJson "--negative-control-gate-json" $MultiSymbolNegativeControlGateOutJson "--counterfactual-comparison-json" $MultiSymbolCounterfactualComparisonOutJson "--output-json" $MultiSymbolGateSummaryOutJson
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "[13g/15] Inject external 63,779 FACT into anchor-news tagging latest" -ForegroundColor Cyan
+& py "scripts/build_btrack_genesis_anchor_news_tagging_v1.py"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[14/15] Re-score + shadow compare with insight signal" -ForegroundColor Cyan
@@ -274,5 +281,21 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Write-Host "[37/37] Build camera-ready submission JSON" -ForegroundColor Cyan
 & py "scripts/build_two_track_submission_camera_ready_v1.py" "--draft-json" $TwoTrackSubmissionDraftOutJson "--output-json" $TwoTrackSubmissionCameraReadyOutJson
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+if ($IncludeExternalBaselineBenchmark) {
+    Write-Host "[38/40] External baseline overlap (global latest edges)" -ForegroundColor Cyan
+    & py "scripts/parse_external_baseline_v1.py" "--external-input" $ExternalBaselineInput "--internal-edges-jsonl" "docs/final/artifacts/global_atom_network_edges_latest.jsonl" "--report-out-json" "docs/final/artifacts/external_bible_crossref_openbible_overlap_report_latest.json"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+    Write-Host "[39/40] External baseline overlap (core100 mapped + fullcanon)" -ForegroundColor Cyan
+    & py "scripts/parse_external_baseline_v1.py" "--external-input" $ExternalBaselineInput "--internal-edges-jsonl" "docs/final/artifacts/global_atom_network_core100_edges_latest.jsonl" "--node-ref-map-json" $Core100NodeRefMapJson "--report-out-json" "docs/final/artifacts/external_bible_crossref_openbible_overlap_report_core100_mapped_latest.json"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    & py "scripts/parse_external_baseline_v1.py" "--external-input" $ExternalBaselineInput "--internal-edges-jsonl" "docs/final/artifacts/global_atom_full_canon/20260428T095207Z_full_canon_edges.jsonl" "--report-out-json" "docs/final/artifacts/external_bible_crossref_openbible_overlap_report_fullcanon_latest.json"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+    Write-Host "[40/40] Build external baseline overlap comparison summary" -ForegroundColor Cyan
+    & py "scripts/build_external_baseline_overlap_comparison_v1.py"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
 
 Write-Host "DONE: Aramaic MVP chain completed." -ForegroundColor Green

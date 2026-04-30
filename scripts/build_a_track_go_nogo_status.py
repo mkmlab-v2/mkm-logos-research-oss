@@ -252,12 +252,10 @@ def evaluate(
     hr_release_status = str(hr_release_plan.get("status") or "").upper()
     unlock_policy_defined = unlock_policy_status in {"READY_FOR_SIGNOFF", "APPROVED", "ACTIVE"}
     hr_release_defined = hr_release_status in {"READY_FOR_SIGNOFF", "APPROVED", "ACTIVE"}
-    effective_high_rel_not_hold = (
-        (high_rel_decision != "HOLD") or hr_release_defined or bool(done_by_id.get("hrm-01"))
-    )
-    effective_price_unlocked = (price_output_locked is False) or unlock_policy_defined or bool(
-        done_by_id.get("lock-01")
-    )
+    # Keep semantic checks literal to avoid contradictory snapshots/checks.
+    # Policy/readiness documents are tracked separately and do not override runtime lock state.
+    effective_high_rel_not_hold = high_rel_decision != "HOLD"
+    effective_price_unlocked = price_output_locked is False
     holdout_direction = float(holdout.get("direction_match_rate") or 0.0)
 
     _add_check(
@@ -280,6 +278,20 @@ def evaluate(
         "chronos_holdout_direction_match_gte_50",
         holdout_direction >= 50.0,
         f"chronos_holdout_direction_match_below_threshold:{holdout_direction:.4f}",
+    )
+    _add_check(
+        checks,
+        failed_reasons,
+        "high_reliability_release_plan_defined",
+        hr_release_defined or bool(done_by_id.get("hrm-01")),
+        "high_reliability_release_plan_not_defined",
+    )
+    _add_check(
+        checks,
+        failed_reasons,
+        "price_unlock_policy_defined",
+        unlock_policy_defined or bool(done_by_id.get("lock-01")),
+        "price_unlock_policy_not_defined",
     )
 
     policy_gate_ok = policy_gov_defined or bool(done_by_id.get("policy-01", False))
@@ -328,6 +340,8 @@ def evaluate(
             "high_reliability_decision_not_hold": checks["high_reliability_decision_not_hold"],
             "price_output_unlocked": checks["price_output_unlocked"],
             "chronos_holdout_direction_match_gte_50": checks["chronos_holdout_direction_match_gte_50"],
+            "high_reliability_release_plan_defined": checks["high_reliability_release_plan_defined"],
+            "price_unlock_policy_defined": checks["price_unlock_policy_defined"],
             "policy_floor_governance_ok": checks["policy_floor_governance_ok"],
         }
     )

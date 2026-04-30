@@ -39,7 +39,24 @@ from starlette.middleware.cors import CORSMiddleware  # noqa: E402
 from scripts.core.billing_meter import append_meter_event  # noqa: E402
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
 from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy  # noqa: E402
+from scripts.core.secure_payload_keyring import (  # noqa: E402
+    EnvTrackKeyResolver,
+    ExternalKmsTrackKeyResolver,
+    TrackKeyResolver,
+)
+from scripts.core.secure_payload_envelope_v1 import (  # noqa: E402
+    AesGcmProvider,
+    SCHEMA_NAME as SECURE_ENVELOPE_SCHEMA_NAME,
+    SecurePayloadEnvelope,
+    decrypt_envelope,
+    encrypt_envelope,
+)
 from scripts.report_multilens_performance_eval import evaluate_report  # noqa: E402
+from scripts.l1_side_channel_wire_codec import (  # noqa: E402
+    decode_adaptive_msgpack,
+    encode_adaptive_msgpack,
+    minimal_payload,
+)
 from scripts.run_hybrid_codec_v0_spike import (  # noqa: E402
     decode_packet_dict as hybrid_decode_packet_dict,
 )
@@ -144,6 +161,88 @@ class MeteringLogResponse(BaseModel):
     api_contract_version: str = API_CONTRACT_VERSION
     meter_schema: str = "track_a_metering_log_v1"
     log_path_relative: str | None = None
+
+
+class L1SideChannelWireRequest(BaseModel):
+    side_channel: dict[str, Any]
+    track: str = Field(default="b_track")
+    key_id: str | None = None
+    zstd_min_raw_bytes: int = Field(default=64, ge=0)
+    zstd_level: int = Field(default=3, ge=1, le=22)
+
+
+class L1SideChannelWireResponse(BaseModel):
+    envelope_schema: str = Field(default="l1_side_channel_secure_wire_v1", alias="schema")
+    envelope: dict[str, Any]
+    integrity_flags: dict[str, Any] = Field(default_factory=dict)
+
+
+class _AesGcmCryptographyProvider(AesGcmProvider):
+    """AES-256-GCM provider using cryptography package.
+
+    Key injection policy:
+    - A track: MKM_ENVELOPE_A_TRACK_KEY_B64
+    - B track: MKM_ENVELOPE_B_TRACK_KEY_B64
+    """
+
+    def __init__(self, resolver: TrackKeyResolver | None = None) -> None:
+        self._resolver = resolver or _select_track_key_resolver()
+
+    def encrypt(
+        self,
+        *,
+        key_id: str,
+        plaintext: bytes,
+        aad: bytes,
+        track: str,
+    ) -> tuple[bytes, bytes, bytes]:
+        _ = key_id
+        try:
+            from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        except Exception as exc:
+            raise RuntimeError("cryptography package is required for secure envelope AES-GCM") from exc
+        key = self._resolver.resolve_key(track=track)
+        nonce = os.urandom(12)
+        ct_plus_tag = AESGCM(key).encrypt(nonce, plaintext, aad)
+        ciphertext, tag = ct_plus_tag[:-16], ct_plus_tag[-16:]
+        return nonce, ciphertext, tag
+
+    def decrypt(
+        self,
+        *,
+        key_id: str,
+        nonce: bytes,
+        ciphertext: bytes,
+        tag: bytes,
+        aad: bytes,
+        track: str,
+    ) -> bytes:
+        _ = key_id
+        try:
+            from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        except Exception as exc:
+            raise RuntimeError("cryptography package is required for secure envelope AES-GCM") from exc
+        key = self._resolver.resolve_key(track=track)
+        return AESGCM(key).decrypt(nonce, ciphertext + tag, aad)
+
+
+def _default_key_id(track: str) -> str:
+    if track == "a_track":
+        return os.environ.get("MKM_ENVELOPE_A_TRACK_KEY_ID", "kms/a-track/primary")
+    return os.environ.get("MKM_ENVELOPE_B_TRACK_KEY_ID", "kms/b-track/primary")
+
+
+def _select_track_key_resolver() -> TrackKeyResolver:
+    provider = os.environ.get("MKM_ENVELOPE_KEY_PROVIDER", "env").strip().lower()
+    if provider in {"", "env"}:
+        return EnvTrackKeyResolver()
+    if provider in {"external_kms", "vault", "kms"}:
+        return ExternalKmsTrackKeyResolver()
+    raise RuntimeError(f"unsupported MKM_ENVELOPE_KEY_PROVIDER={provider!r}")
+
+
+def _secure_key_provider_mode() -> str:
+    return os.environ.get("MKM_ENVELOPE_KEY_PROVIDER", "env").strip().lower() or "env"
 
 
 @lru_cache(maxsize=1)
@@ -468,6 +567,15 @@ def health() -> dict[str, Any]:
             "active_global_token_saving_rate": act_r,
             "ultra_literal_global_token_saving_rate": ultra_r,
         },
+        "secure_envelope": {
+            "schema": SECURE_ENVELOPE_SCHEMA_NAME,
+            "tracks": ["a_track", "b_track"],
+            "key_provider_mode": _secure_key_provider_mode(),
+            "key_env": {
+                "a_track": "MKM_ENVELOPE_A_TRACK_KEY_B64",
+                "b_track": "MKM_ENVELOPE_B_TRACK_KEY_B64",
+            },
+        },
     }
 
 
@@ -663,4 +771,101 @@ def expand(body: ExpandRequest) -> ExpandResponse:
     return ExpandResponse(
         text=text,
         integrity_flags={"stub_expand": True, "lossless_echo": True},
+    )
+
+
+@app.post("/v1/research/l1_side_channel/wire/secure", response_model=L1SideChannelWireResponse)
+def encode_l1_side_channel_secure_wire(body: L1SideChannelWireRequest) -> L1SideChannelWireResponse:
+    """Research lane: side-channel -> adaptive msgpack wire -> AES-256-GCM envelope."""
+    if body.track not in {"a_track", "b_track"}:
+        return L1SideChannelWireResponse(
+            envelope={},
+            integrity_flags={
+                "research_lane": True,
+                "secure_envelope": True,
+                "error": "invalid_track",
+            },
+        )
+    try:
+        minimal = minimal_payload(body.side_channel)
+    except Exception as exc:
+        return L1SideChannelWireResponse(
+            envelope={},
+            integrity_flags={
+                "research_lane": True,
+                "secure_envelope": True,
+                "error": "invalid_side_channel_payload",
+                "error_class": type(exc).__name__,
+            },
+        )
+    try:
+        wire_bytes, variant = encode_adaptive_msgpack(
+            minimal,
+            zstd_min_raw_bytes=body.zstd_min_raw_bytes,
+            zstd_level=body.zstd_level,
+        )
+        # decode sanity check to detect malformed wire implementation regressions
+        _decoded = decode_adaptive_msgpack(wire_bytes)
+    except Exception as exc:
+        return L1SideChannelWireResponse(
+            envelope={},
+            integrity_flags={
+                "research_lane": True,
+                "secure_envelope": True,
+                "error": "wire_encode_failed",
+                "error_class": type(exc).__name__,
+            },
+        )
+    try:
+        provider = _AesGcmCryptographyProvider()
+    except Exception as exc:
+        return L1SideChannelWireResponse(
+            envelope={},
+            integrity_flags={
+                "research_lane": True,
+                "secure_envelope": True,
+                "error": "secure_envelope_encrypt_failed",
+                "error_class": type(exc).__name__,
+            },
+        )
+    key_id = body.key_id or _default_key_id(body.track)
+    codec_variant = "zstd_msgpack" if variant == "zstd" else "raw_msgpack"
+    try:
+        envelope = encrypt_envelope(
+            provider=provider,
+            key_id=key_id,
+            track=body.track,
+            codec_variant=codec_variant,
+            payload_bytes=wire_bytes,
+        )
+        # runtime tamper/auth contract smoke: decrypt must succeed immediately
+        _payload = decrypt_envelope(provider=provider, envelope=envelope)
+        assert _payload == wire_bytes
+    except Exception as exc:
+        return L1SideChannelWireResponse(
+            envelope={},
+            integrity_flags={
+                "research_lane": True,
+                "secure_envelope": True,
+                "error": "secure_envelope_encrypt_failed",
+                "error_class": type(exc).__name__,
+            },
+        )
+    return L1SideChannelWireResponse(
+        envelope=SecurePayloadEnvelope(
+            schema=envelope.schema,
+            header=envelope.header,
+            aad_b64=envelope.aad_b64,
+            nonce_b64=envelope.nonce_b64,
+            ciphertext_b64=envelope.ciphertext_b64,
+            tag_b64=envelope.tag_b64,
+        ).to_dict(),
+        integrity_flags={
+            "research_lane": True,
+            "secure_envelope": True,
+            "aes_gcm_256": True,
+            "track": body.track,
+            "codec_variant": codec_variant,
+            "wire_payload_bytes": len(wire_bytes),
+        },
     )

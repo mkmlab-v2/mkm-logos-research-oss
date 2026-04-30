@@ -40,6 +40,7 @@ def main() -> int:
 
     refs = {
         "protocol": art / "sasang_4agent_collision_btrack_protocol_latest.json",
+        "fusion_gate": art / "sasang_4agent_fusion_gate_latest.json",
         "patent_brief": art / "sasang_4agent_patent_brief_latest.json",
         "invention_disclosure": art / "sasang_4agent_invention_disclosure_latest.json",
         "promotion_gate": art / "sasang_4agent_promotion_gate_latest.json",
@@ -54,6 +55,7 @@ def main() -> int:
     docs: dict[str, dict[str, Any]] = {k: _safe_json(v) for k, v in refs.items()}
 
     gate = docs["promotion_gate"]
+    fusion_gate = docs["fusion_gate"]
     bridge = docs["tracka_bridge"]
     monitor = docs["monitor_snapshot"]
     drill = docs["force_hold_recovery_drill"]
@@ -62,6 +64,7 @@ def main() -> int:
     final_line = "PROMOTED_WITH_HUMAN_APPROVAL + MONITORING_ACTIVE + DRILL_PASS"
     checks = {
         "gate_promoted_with_human_approval": str(gate.get("decision")) == "A_TRACK_PROMOTED_WITH_HUMAN_APPROVAL",
+        "fusion_gate_pass": str(fusion_gate.get("decision")) == "FUSION_GATE_PASS",
         "bridge_active": str(bridge.get("status")) == "ACTIVE",
         "monitor_alert_false": not bool(monitor.get("alert")),
         "recovery_drill_pass": str(drill.get("status")) == "PASS",
@@ -94,6 +97,7 @@ def main() -> int:
             "mdd_reduction_abs": docs["protocol"].get("results", {}).get("mdd_reduction_abs"),
             "p_permutation": docs["protocol"].get("results", {}).get("mdd_reduction_p_value_permutation"),
             "promotion_decision": gate.get("decision"),
+            "fusion_gate_decision": fusion_gate.get("decision"),
             "bridge_status": bridge.get("status"),
             "monitor_alert": monitor.get("alert"),
             "drill_status": drill.get("status"),

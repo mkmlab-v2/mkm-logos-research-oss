@@ -29,12 +29,14 @@ def main() -> int:
     protocol_path = art / "sasang_4agent_collision_btrack_protocol_latest.json"
     brief_path = art / "sasang_4agent_patent_brief_latest.json"
     disclosure_path = art / "sasang_4agent_invention_disclosure_latest.json"
+    fusion_gate_path = art / "sasang_4agent_fusion_gate_latest.json"
     out_json = art / "sasang_4agent_promotion_gate_latest.json"
     out_md = art / "sasang_4agent_promotion_gate_latest.md"
 
     protocol = _safe_json(protocol_path)
     brief = _safe_json(brief_path)
     disclosure = _safe_json(disclosure_path)
+    fusion_gate = _safe_json(fusion_gate_path)
     if not protocol:
         raise SystemExit(f"missing protocol artifact: {protocol_path}")
 
@@ -58,6 +60,7 @@ def main() -> int:
         "invention_disclosure_present": bool(disclosure),
         "policy_research_only": research_only,
         "policy_non_gating": non_gating,
+        "fusion_gate_pass": str(fusion_gate.get("decision") or "") == "FUSION_GATE_PASS",
     }
 
     # Promotion to A-track requires explicit human gate even if all checks pass.
@@ -72,6 +75,7 @@ def main() -> int:
             "invention_disclosure_present",
             "policy_research_only",
             "policy_non_gating",
+            "fusion_gate_pass",
         ]
     )
     decision = "A_TRACK_PROMOTION_CANDIDATE_READY" if all_core_pass else "HOLD"
@@ -85,6 +89,7 @@ def main() -> int:
             "protocol_artifact": str(protocol_path).replace("\\", "/"),
             "patent_brief_artifact": str(brief_path).replace("\\", "/"),
             "invention_disclosure_artifact": str(disclosure_path).replace("\\", "/"),
+            "fusion_gate_artifact": str(fusion_gate_path).replace("\\", "/"),
         },
         "checks": checks,
         "summary": {

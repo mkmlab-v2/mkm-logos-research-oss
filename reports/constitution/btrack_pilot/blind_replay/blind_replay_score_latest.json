@@ -1,35 +1,35 @@
 {
   "schema": "blind_historical_replay_score_v1",
-  "generated_at_utc": "2026-04-07T01:05:26Z",
+  "generated_at_utc": "2026-04-29T04:23:43Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "input": {
-    "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_historical_btcusdt_1d_cfg6_w60_h10_s2_seed45.jsonl",
+    "answer_key": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_answer_key_kospi_cfg3_w60_h10_s5_seed42.jsonl",
     "prediction_source": "C:\\workspace\\reports\\constitution\\btrack_pilot\\blind_replay\\blind_replay_predictions_12ai_proxy_C_latest.jsonl",
     "public_dataset": null
   },
   "counts": {
-    "answer_key_total": 60,
-    "predictions_total": 60,
-    "matched": 60,
-    "hit": 23,
-    "miss": 37,
+    "answer_key_total": 7,
+    "predictions_total": 7,
+    "matched": 7,
+    "hit": 5,
+    "miss": 2,
     "unresolved": 0
   },
   "metrics": {
-    "hit_rate": 0.383333,
+    "hit_rate": 0.714286,
     "coverage_rate": 1.0,
-    "balanced_accuracy": 0.312366
+    "balanced_accuracy": 0.65
   },
   "per_label": {
     "total": {
-      "DOWN_STRONG": 31,
-      "UP_STRONG": 20,
-      "NEUTRAL": 9
+      "DOWN_STRONG": 2,
+      "UP_STRONG": 5,
+      "NEUTRAL": 0
     },
     "hit": {
-      "DOWN_STRONG": 12,
-      "UP_STRONG": 11,
+      "DOWN_STRONG": 1,
+      "UP_STRONG": 4,
       "NEUTRAL": 0
     }
   },
@@ -37,22 +37,22 @@
     {
       "sample_id": "BR_00001",
       "truth": "DOWN_STRONG",
-      "pred": "DOWN_STRONG",
-      "is_hit": true,
-      "confidence_0_1": 0.95
+      "pred": "UP_STRONG",
+      "is_hit": false,
+      "confidence_0_1": 0.5333
     },
     {
       "sample_id": "BR_00002",
-      "truth": "DOWN_STRONG",
-      "pred": "DOWN_STRONG",
+      "truth": "UP_STRONG",
+      "pred": "UP_STRONG",
       "is_hit": true,
       "confidence_0_1": 0.95
     },
     {
       "sample_id": "BR_00003",
       "truth": "UP_STRONG",
-      "pred": "DOWN_STRONG",
-      "is_hit": false,
+      "pred": "UP_STRONG",
+      "is_hit": true,
       "confidence_0_1": 0.95
     },
     {
@@ -72,36 +72,15 @@
     {
       "sample_id": "BR_00006",
       "truth": "DOWN_STRONG",
-      "pred": "UP_STRONG",
-      "is_hit": false,
-      "confidence_0_1": 0.95
+      "pred": "DOWN_STRONG",
+      "is_hit": true,
+      "confidence_0_1": 0.5333
     },
     {
       "sample_id": "BR_00007",
-      "truth": "DOWN_STRONG",
-      "pred": "DOWN_STRONG",
-      "is_hit": true,
-      "confidence_0_1": 0.95
-    },
-    {
-      "sample_id": "BR_00008",
-      "truth": "UP_STRONG",
-      "pred": "DOWN_STRONG",
-      "is_hit": false,
-      "confidence_0_1": 0.95
-    },
-    {
-      "sample_id": "BR_00009",
       "truth": "UP_STRONG",
       "pred": "UP_STRONG",
       "is_hit": true,
-      "confidence_0_1": 0.8667
-    },
-    {
-      "sample_id": "BR_00010",
-      "truth": "NEUTRAL",
-      "pred": "DOWN_STRONG",
-      "is_hit": false,
       "confidence_0_1": 0.95
     }
   ],

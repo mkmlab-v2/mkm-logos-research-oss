@@ -1,24 +1,30 @@
 ﻿{
-    "generated_at_utc":  "2026-04-03T03:01:25Z",
+    "generated_at_utc":  "2026-04-29T12:48:09Z",
     "config_path":  "C:\\workspace\\scripts\\external_drives_governance_v1.json",
     "canonical_workspace":  "C:\\workspace",
-    "mode":  "full_folder_sizes",
-    "priority_names":  null,
+    "mode":  "priority_folder_sizes",
+    "priority_names":  [
+                           "workspace",
+                           "mkm-destiny-ai-41e38ec6",
+                           "workspace*",
+                           "huggingface*",
+                           "cache*"
+                       ],
     "volumes":  [
                     {
                         "letter":  "E",
                         "label":  "SAMSUNG",
                         "size_gb":  931.51,
-                        "free_gb":  605.35,
-                        "used_percent":  35,
+                        "free_gb":  604.86,
+                        "used_percent":  35.1,
                         "filesystem":  "NTFS"
                     },
                     {
                         "letter":  "F",
                         "label":  "WD_Passport",
                         "size_gb":  931.48,
-                        "free_gb":  0,
-                        "used_percent":  100,
+                        "free_gb":  237.21,
+                        "used_percent":  74.5,
                         "filesystem":  "NTFS"
                     }
                 ],
@@ -27,248 +33,248 @@
                                             {
                                                 "name":  "!$qFnl",
                                                 "path":  "E:\\!$qFnl",
-                                                "bytes":  1529990,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "$RECYCLE.BIN",
                                                 "path":  "E:\\$RECYCLE.BIN",
-                                                "bytes":  0,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  ".github",
                                                 "path":  "E:\\.github",
-                                                "bytes":  3449,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  ".npm-cache",
                                                 "path":  "E:\\.npm-cache",
-                                                "bytes":  1483068305,
-                                                "gb":  1.38
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  ".npm-global",
                                                 "path":  "E:\\.npm-global",
-                                                "bytes":  547772869,
-                                                "gb":  0.51
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  ".pip-cache",
                                                 "path":  "E:\\.pip-cache",
-                                                "bytes":  5096089041,
-                                                "gb":  4.75
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  ".pnpm-store",
                                                 "path":  "E:\\.pnpm-store",
-                                                "bytes":  3628968145,
-                                                "gb":  3.38
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "01_Development_Tools",
                                                 "path":  "E:\\01_Development_Tools",
-                                                "bytes":  12510183323,
-                                                "gb":  11.65
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "02_Projects",
                                                 "path":  "E:\\02_Projects",
-                                                "bytes":  2229326650,
-                                                "gb":  2.08
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "04_Software_Installers",
                                                 "path":  "E:\\04_Software_Installers",
-                                                "bytes":  925823086,
-                                                "gb":  0.86
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "05_User_Data",
                                                 "path":  "E:\\05_User_Data",
-                                                "bytes":  9645598510,
-                                                "gb":  8.98
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "06_System_Files",
                                                 "path":  "E:\\06_System_Files",
-                                                "bytes":  0,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "archive",
                                                 "path":  "E:\\archive",
-                                                "bytes":  51720473,
-                                                "gb":  0.05
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "Backup",
                                                 "path":  "E:\\Backup",
-                                                "bytes":  23716115719,
-                                                "gb":  22.09
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "config",
                                                 "path":  "E:\\config",
-                                                "bytes":  37589,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "cursor",
                                                 "path":  "E:\\cursor",
-                                                "bytes":  624971661,
-                                                "gb":  0.58
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "Cursor-Config",
                                                 "path":  "E:\\Cursor-Config",
-                                                "bytes":  0,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "cursor-data",
                                                 "path":  "E:\\cursor-data",
-                                                "bytes":  29531274,
-                                                "gb":  0.03
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "CursorWorkspace",
                                                 "path":  "E:\\CursorWorkspace",
-                                                "bytes":  6778,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "dev-environment",
                                                 "path":  "E:\\dev-environment",
-                                                "bytes":  109904081,
-                                                "gb":  0.1
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "Docker",
                                                 "path":  "E:\\Docker",
-                                                "bytes":  70847942064,
-                                                "gb":  65.98
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "Docker-Portable",
                                                 "path":  "E:\\Docker-Portable",
-                                                "bytes":  2984097246,
-                                                "gb":  2.78
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "docs",
                                                 "path":  "E:\\docs",
-                                                "bytes":  17066,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "Git",
                                                 "path":  "E:\\Git",
-                                                "bytes":  422670299,
-                                                "gb":  0.39
-                                            },
-                                            {
-                                                "name":  "googlecli",
-                                                "path":  "E:\\googlecli",
-                                                "bytes":  0,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "google-cloud-sdk",
                                                 "path":  "E:\\google-cloud-sdk",
-                                                "bytes":  735950827,
-                                                "gb":  0.69
+                                                "bytes":  null,
+                                                "gb":  null
+                                            },
+                                            {
+                                                "name":  "googlecli",
+                                                "path":  "E:\\googlecli",
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "mkm-data-workspace",
                                                 "path":  "E:\\mkm-data-workspace",
-                                                "bytes":  0,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "MKM-LAB-Backup",
                                                 "path":  "E:\\MKM-LAB-Backup",
-                                                "bytes":  0,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "NodeJS",
                                                 "path":  "E:\\NodeJS",
-                                                "bytes":  131515886,
-                                                "gb":  0.12
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "nodejs-final",
                                                 "path":  "E:\\nodejs-final",
-                                                "bytes":  114340502,
-                                                "gb":  0.11
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "nodejs-fresh",
                                                 "path":  "E:\\nodejs-fresh",
-                                                "bytes":  1569681930,
-                                                "gb":  1.46
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "nodejs-portable",
                                                 "path":  "E:\\nodejs-portable",
-                                                "bytes":  230508470,
-                                                "gb":  0.21
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "NPKI",
                                                 "path":  "E:\\NPKI",
-                                                "bytes":  28201,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "OneDrive",
                                                 "path":  "E:\\OneDrive",
-                                                "bytes":  1009198,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "PowerShell",
                                                 "path":  "E:\\PowerShell",
-                                                "bytes":  612,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "program files",
                                                 "path":  "E:\\program files",
-                                                "bytes":  380607673,
-                                                "gb":  0.35
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "Projects",
                                                 "path":  "E:\\Projects",
-                                                "bytes":  8511849,
-                                                "gb":  0.01
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "Python311",
                                                 "path":  "E:\\Python311",
-                                                "bytes":  4357362776,
-                                                "gb":  4.06
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "Samsung Software",
                                                 "path":  "E:\\Samsung Software",
-                                                "bytes":  639040,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "Scoop",
                                                 "path":  "E:\\Scoop",
-                                                "bytes":  0,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "System Volume Information",
                                                 "path":  "E:\\System Volume Information",
-                                                "bytes":  0,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "workspace",
@@ -285,110 +291,98 @@
                                             {
                                                 "name":  "다운로드",
                                                 "path":  "E:\\다운로드",
-                                                "bytes":  1088525841,
-                                                "gb":  1.01
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "한의사랑백업1",
                                                 "path":  "E:\\한의사랑백업1",
-                                                "bytes":  1790107397,
-                                                "gb":  1.67
+                                                "bytes":  null,
+                                                "gb":  null
                                             }
                                         ],
                                  "F:":  [
                                             {
                                                 "name":  "!$qFnl",
                                                 "path":  "F:\\!$qFnl",
-                                                "bytes":  1529990,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "$RECYCLE.BIN",
                                                 "path":  "F:\\$RECYCLE.BIN",
-                                                "bytes":  0,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "Antigravity",
                                                 "path":  "F:\\Antigravity",
-                                                "bytes":  739279468,
-                                                "gb":  0.69
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "BACKUP",
                                                 "path":  "F:\\BACKUP",
-                                                "bytes":  2825,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "cache",
                                                 "path":  "F:\\cache",
-                                                "bytes":  530629209,
-                                                "gb":  0.49
+                                                "bytes":  6208228451,
+                                                "gb":  5.78
                                             },
                                             {
                                                 "name":  "Git",
                                                 "path":  "F:\\Git",
-                                                "bytes":  384706713,
-                                                "gb":  0.36
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "mirror",
                                                 "path":  "F:\\mirror",
-                                                "bytes":  452516611,
-                                                "gb":  0.42
-                                            },
-                                            {
-                                                "name":  "MKM_C_DRIVE_ARCHIVE",
-                                                "path":  "F:\\MKM_C_DRIVE_ARCHIVE",
-                                                "bytes":  18104728676,
-                                                "gb":  16.86
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "mkm-lab-data-large",
                                                 "path":  "F:\\mkm-lab-data-large",
-                                                "bytes":  806205132,
-                                                "gb":  0.75
+                                                "bytes":  null,
+                                                "gb":  null
+                                            },
+                                            {
+                                                "name":  "MKM_C_DRIVE_ARCHIVE",
+                                                "path":  "F:\\MKM_C_DRIVE_ARCHIVE",
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "Program Files",
                                                 "path":  "F:\\Program Files",
-                                                "bytes":  53248,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "qdrant",
                                                 "path":  "F:\\qdrant",
-                                                "bytes":  37268,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "System Volume Information",
                                                 "path":  "F:\\System Volume Information",
-                                                "bytes":  0,
-                                                "gb":  0
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "tools",
                                                 "path":  "F:\\tools",
-                                                "bytes":  5395772854,
-                                                "gb":  5.03
+                                                "bytes":  null,
+                                                "gb":  null
                                             },
                                             {
                                                 "name":  "workspace",
                                                 "path":  "F:\\workspace",
-                                                "bytes":  0,
-                                                "gb":  0
-                                            },
-                                            {
-                                                "name":  "workspace_archive",
-                                                "path":  "F:\\workspace_archive",
-                                                "bytes":  312456157813,
-                                                "gb":  291
-                                            },
-                                            {
-                                                "name":  "workspace_backups",
-                                                "path":  "F:\\workspace_backups",
                                                 "bytes":  0,
                                                 "gb":  0
                                             },
@@ -399,19 +393,46 @@
                                                 "gb":  0
                                             },
                                             {
-                                                "name":  "workspace-backups",
-                                                "path":  "F:\\workspace-backups",
+                                                "name":  "workspace_archive",
+                                                "path":  "F:\\workspace_archive",
+                                                "bytes":  238745701552,
+                                                "gb":  222.35
+                                            },
+                                            {
+                                                "name":  "workspace_backups",
+                                                "path":  "F:\\workspace_backups",
                                                 "bytes":  0,
+                                                "gb":  0
+                                            },
+                                            {
+                                                "name":  "workspace_cold_storage",
+                                                "path":  "F:\\workspace_cold_storage",
+                                                "bytes":  136700885195,
+                                                "gb":  127.31
+                                            },
+                                            {
+                                                "name":  "workspace_offload",
+                                                "path":  "F:\\workspace_offload",
+                                                "bytes":  7134201474,
+                                                "gb":  6.64
+                                            },
+                                            {
+                                                "name":  "workspace_offload_probe",
+                                                "path":  "F:\\workspace_offload_probe",
+                                                "bytes":  4,
                                                 "gb":  0
                                             }
                                         ]
                              },
     "warnings":  [
-                     "F: CRITICAL free space 0 GB (below critical 2 GB).",
-                     "F: heavy/redundant pattern: workspace_archive (~291 GB) - consider one archive or E: + backup policy."
+                     "F: heavy/redundant pattern: cache (~5.78 GB) - consider one archive or E: + backup policy.",
+                     "F: heavy/redundant pattern: workspace_archive (~222.35 GB) - consider one archive or E: + backup policy.",
+                     "F: heavy/redundant pattern: workspace_cold_storage (~127.31 GB) - consider one archive or E: + backup policy.",
+                     "F: heavy/redundant pattern: workspace_offload (~6.64 GB) - consider one archive or E: + backup policy."
                  ],
     "suggestions":  [
                         "Repo SSOT: C:\\workspace. Use backup_workspace_mirror.ps1 to a single dated path on F:; avoid multiple full workspace copies.",
-                        "Prefer a single dated mirror on F:; avoid multiple full workspace clones (HF cache, node_modules)."
+                        "Prefer a single dated mirror on F:; avoid multiple full workspace clones (HF cache, node_modules).",
+                        "F:\\workspace_archive present: scripts/Migrate-FWorkspaceArchiveToE.ps1 (-WhatIfSizesOnly). Order: -DestinationRoot if set, then E: subfolders, E:\\ root, then C:\\workspace\\storage\\MKM_ARCHIVE_FROM_F if E: denies. Verify copy before -RemoveSourceAfterVerify."
                     ]
 }

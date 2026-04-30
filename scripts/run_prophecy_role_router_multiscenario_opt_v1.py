@@ -33,6 +33,32 @@ def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _thresholds_from_gate(gate: dict[str, Any], instrument: str) -> dict[str, Any]:
+    th = (gate.get("promotion_gate_thresholds") or {}) if isinstance(gate, dict) else {}
+    cfg = dict((th.get(instrument) or {})) if isinstance(th.get(instrument), dict) else {}
+    if "required_oos_days" in th:
+        cfg["required_oos_days"] = th.get("required_oos_days")
+    return cfg
+
+
+def _candidate_passes_thresholds(candidate: dict[str, Any], cfg: dict[str, Any]) -> bool:
+    if not cfg:
+        return False
+    oos = (candidate.get("oos_metrics") or {}) if isinstance(candidate, dict) else {}
+    oos_days = int(candidate.get("oos_days") or 0)
+    req_oos = cfg.get("required_oos_days")
+    if req_oos is not None and oos_days != int(req_oos):
+        return False
+    checks = [
+        int(oos.get("n_active_days") or 0) >= int(cfg.get("min_active_days") or 0),
+        float(oos.get("directional_hit_rate_active") or 0.0) >= float(cfg.get("min_hit_rate_active") or 0.0),
+        float(oos.get("total_return") or 0.0) >= float(cfg.get("min_total_return") or 0.0),
+        float(oos.get("mdd") or 0.0) >= float(cfg.get("max_mdd") or -1.0),
+        float(oos.get("sharpe") or 0.0) >= float(cfg.get("min_sharpe") or 0.0),
+    ]
+    return all(checks)
+
+
 def _safe_float(v: Any, d: float = 0.0) -> float:
     return float(v) if isinstance(v, (int, float)) else d
 
@@ -164,6 +190,7 @@ def _run_router(
     strength_conflict: float,
     coord_policy: str,
     coord_deadzone: float,
+    neutral_base_source: str,
     annual_days: int,
 ) -> dict[str, Any]:
     fee = fee_bps / 10000.0
@@ -183,6 +210,14 @@ def _run_router(
         over = int(s_map.get(ed, 0))
         prior = _safe_float(btc_prior.get(ed), 0.0)
         coord_sign = _sign(prior) if abs(prior) >= coord_deadzone else 0
+
+        if base == 0:
+            if neutral_base_source == "overlay" and over != 0:
+                base = over
+            elif neutral_base_source == "regime" and reg != 0:
+                base = reg
+            elif neutral_base_source == "coord" and coord_sign != 0:
+                base = coord_sign
 
         if base == 0:
             pos = 0.0
@@ -241,6 +276,18 @@ def main() -> int:
     ap.add_argument("--strength-conflict-grid", type=str, default="0.1,0.2,0.3")
     ap.add_argument("--coord-policies", type=str, default="off,tie_break,confirm_only,regime_transition_only")
     ap.add_argument("--coord-deadzone-grid", type=str, default="0.0,0.003,0.005")
+    ap.add_argument(
+        "--neutral-base-sources",
+        type=str,
+        default="off",
+        help="When myeongni base is neutral, fallback source: off|overlay|regime|coord (comma-separated).",
+    )
+    ap.add_argument(
+        "--promotion-gate-json",
+        type=Path,
+        default=None,
+        help="Optional gate JSON. If provided, best_candidate prefers threshold-pass candidate.",
+    )
     ap.add_argument("--top-k", type=int, default=20)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
@@ -268,6 +315,7 @@ def main() -> int:
     conflict_grid = [float(x.strip()) for x in str(args.strength_conflict_grid).split(",") if x.strip()]
     coord_policies = [x.strip() for x in str(args.coord_policies).split(",") if x.strip()]
     coord_dz_grid = [float(x.strip()) for x in str(args.coord_deadzone_grid).split(",") if x.strip()]
+    neutral_base_sources = [x.strip() for x in str(args.neutral_base_sources).split(",") if x.strip()]
 
     results: list[dict[str, Any]] = []
     for oos_days in oos_days_grid:
@@ -275,7 +323,7 @@ def main() -> int:
             continue
         train_rows = panel[:-oos_days]
         oos_rows = panel[-oos_days:]
-        for lb, nz, sa, sn, sc, cp, cdz in itertools.product(
+        for lb, nz, sa, sn, sc, cp, cdz, nbs in itertools.product(
             lookbacks,
             neutral_sizes,
             aligned_grid,
@@ -283,8 +331,11 @@ def main() -> int:
             conflict_grid,
             coord_policies,
             coord_dz_grid,
+            neutral_base_sources,
         ):
             if not (0.0 <= sc <= sn <= sa <= 1.0):
+                continue
+            if nbs not in {"off", "overlay", "regime", "coord"}:
                 continue
             train_m = _run_router(
                 train_rows,
@@ -300,6 +351,7 @@ def main() -> int:
                 strength_conflict=sc,
                 coord_policy=cp,
                 coord_deadzone=cdz,
+                neutral_base_source=nbs,
                 annual_days=annual,
             )
             oos_m = _run_router(
@@ -316,6 +368,7 @@ def main() -> int:
                 strength_conflict=sc,
                 coord_policy=cp,
                 coord_deadzone=cdz,
+                neutral_base_source=nbs,
                 annual_days=annual,
             )
             robust_score = (
@@ -335,6 +388,7 @@ def main() -> int:
                         "strength_conflict": sc,
                         "coord_policy": cp,
                         "coord_deadzone": cdz,
+                        "neutral_base_source": nbs,
                     },
                     "train_metrics": train_m,
                     "oos_metrics": oos_m,
@@ -353,6 +407,22 @@ def main() -> int:
         reverse=True,
     )
     top_k = max(1, int(args.top_k))
+    gate_pass_selected = False
+    gate_pass_count = 0
+    gate_ref = None
+    selection_mode = "robustness_first"
+    selected_best = ranked[0] if ranked else None
+    if args.promotion_gate_json:
+        gate_ref = str(args.promotion_gate_json)
+        gate = _read_json(args.promotion_gate_json)
+        cfg = _thresholds_from_gate(gate, inst)
+        if cfg:
+            passing = [c for c in ranked if _candidate_passes_thresholds(c, cfg)]
+            gate_pass_count = len(passing)
+            if passing:
+                selected_best = passing[0]
+                gate_pass_selected = True
+                selection_mode = "gate_pass_first_then_robustness"
 
     out = {
         "schema": "prophecy_role_router_multiscenario_opt_v1",
@@ -374,11 +444,19 @@ def main() -> int:
             "strength_conflict_grid": conflict_grid,
             "coord_policies": coord_policies,
             "coord_deadzone_grid": coord_dz_grid,
+            "neutral_base_sources": neutral_base_sources,
             "total_candidates": len(results),
         },
-        "best_candidate": ranked[0] if ranked else None,
+        "best_candidate": selected_best,
         "top_candidates": ranked[:top_k],
         "note": "Rank uses robustness-first objective: MDD defense > Sharpe > OOS return > train support.",
+        "selection_policy": {
+            "policy_id": "gate_pass_first_then_robustness_v1" if args.promotion_gate_json else "robustness_first_v1",
+            "promotion_gate_ref": gate_ref,
+            "gate_pass_selected": gate_pass_selected,
+            "gate_pass_count": gate_pass_count,
+            "selection_mode": selection_mode,
+        },
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

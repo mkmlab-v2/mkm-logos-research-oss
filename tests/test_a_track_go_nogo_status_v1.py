@@ -105,5 +105,9 @@ def test_s3_gate_passes_from_tracker_when_checklist_s3_false(monkeypatch: pytest
     out = g.evaluate(on_system_error="no_go")
     assert out["checks"]["s3_multiweek_evidence_ready"] is True
     assert out["checks"]["s4_operator_checklist_ready"] is True
-    assert out["result"]["overall_go_no_go"] == "GO"
-    assert "s3_requires_multiweek_stability_evidence" not in out["result"]["failed_reasons"]
+    assert out["checks"]["high_reliability_decision_not_hold"] is False
+    assert out["checks"]["price_output_unlocked"] is False
+    assert out["checks"]["high_reliability_release_plan_defined"] is True
+    assert out["checks"]["price_unlock_policy_defined"] is True
+    assert out["result"]["overall_go_no_go"] == "HOLD"
+    assert out["result"]["recommended_stage"] == "S1_SHADOW"

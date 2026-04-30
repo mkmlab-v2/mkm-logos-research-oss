@@ -39,6 +39,14 @@ DEFAULT_ANCHOR_DRILL = ART / "external_bible_anchor_downgrade_recovery_drill_lat
 DEFAULT_ANCHOR_WEEKLY_AB = ART / "external_bible_anchor_weekly_ab_report_latest.json"
 DEFAULT_ANCHOR_POLICY_STAGE_DRILL = ART / "external_bible_anchor_policy_stage_drill_latest.json"
 DEFAULT_ANCHOR_HANDOFF = ART / "external_bible_anchor_promotion_handoff_packet_latest.json"
+DEFAULT_SCHEDULER_HEALTH = ART / "genius_governance_scheduler_health_check_latest.json"
+DEFAULT_SCHEDULER_STABILITY_48H = ART / "genius_governance_scheduler_stability_48h_latest.json"
+DEFAULT_SCHEDULER_AUTO_RECOVERY = ART / "genius_governance_scheduler_auto_recovery_latest.json"
+DEFAULT_SCHEDULER_MODE_SIGNAL = ART / "genius_governance_scheduler_mode_signal_latest.json"
+DEFAULT_SCHEDULER_KPI = ART / "genius_governance_scheduler_kpi_latest.json"
+DEFAULT_COMPLETION_GATE = ART / "genius_governance_completion_gate_latest.json"
+DEFAULT_COMPLETION_ETA = ART / "genius_governance_completion_eta_latest.json"
+DEFAULT_WEEKLY_SCORECARD = ART / "genius_governance_weekly_scorecard_latest.json"
 DEFAULT_OUT = ART / "cursor_ai_unified_status_dashboard_latest.json"
 
 
@@ -85,6 +93,14 @@ def main() -> int:
     ap.add_argument("--anchor-weekly-ab-json", type=Path, default=DEFAULT_ANCHOR_WEEKLY_AB)
     ap.add_argument("--anchor-policy-stage-drill-json", type=Path, default=DEFAULT_ANCHOR_POLICY_STAGE_DRILL)
     ap.add_argument("--anchor-handoff-json", type=Path, default=DEFAULT_ANCHOR_HANDOFF)
+    ap.add_argument("--scheduler-health-json", type=Path, default=DEFAULT_SCHEDULER_HEALTH)
+    ap.add_argument("--scheduler-stability-48h-json", type=Path, default=DEFAULT_SCHEDULER_STABILITY_48H)
+    ap.add_argument("--scheduler-auto-recovery-json", type=Path, default=DEFAULT_SCHEDULER_AUTO_RECOVERY)
+    ap.add_argument("--scheduler-mode-signal-json", type=Path, default=DEFAULT_SCHEDULER_MODE_SIGNAL)
+    ap.add_argument("--scheduler-kpi-json", type=Path, default=DEFAULT_SCHEDULER_KPI)
+    ap.add_argument("--completion-gate-json", type=Path, default=DEFAULT_COMPLETION_GATE)
+    ap.add_argument("--completion-eta-json", type=Path, default=DEFAULT_COMPLETION_ETA)
+    ap.add_argument("--weekly-scorecard-json", type=Path, default=DEFAULT_WEEKLY_SCORECARD)
     ap.add_argument("--output-json", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
@@ -115,6 +131,14 @@ def main() -> int:
     anchor_weekly_ab = _read_json(args.anchor_weekly_ab_json)
     anchor_policy_stage_drill = _read_json(args.anchor_policy_stage_drill_json)
     anchor_handoff = _read_json(args.anchor_handoff_json)
+    scheduler_health = _read_json(args.scheduler_health_json)
+    scheduler_stability_48h = _read_json(args.scheduler_stability_48h_json)
+    scheduler_auto_recovery = _read_json(args.scheduler_auto_recovery_json)
+    scheduler_mode_signal = _read_json(args.scheduler_mode_signal_json)
+    scheduler_kpi = _read_json(args.scheduler_kpi_json)
+    completion_gate = _read_json(args.completion_gate_json)
+    completion_eta = _read_json(args.completion_eta_json)
+    weekly_scorecard = _read_json(args.weekly_scorecard_json)
 
     weekly_status = str(weekly.get("overall_status") or "UNKNOWN")
     preflight_decision = str(preflight.get("decision") or "UNKNOWN")
@@ -173,6 +197,14 @@ def main() -> int:
             "anchor_weekly_ab_json": str(args.anchor_weekly_ab_json).replace("\\", "/"),
             "anchor_policy_stage_drill_json": str(args.anchor_policy_stage_drill_json).replace("\\", "/"),
             "anchor_handoff_json": str(args.anchor_handoff_json).replace("\\", "/"),
+            "scheduler_health_json": str(args.scheduler_health_json).replace("\\", "/"),
+            "scheduler_stability_48h_json": str(args.scheduler_stability_48h_json).replace("\\", "/"),
+            "scheduler_auto_recovery_json": str(args.scheduler_auto_recovery_json).replace("\\", "/"),
+            "scheduler_mode_signal_json": str(args.scheduler_mode_signal_json).replace("\\", "/"),
+            "scheduler_kpi_json": str(args.scheduler_kpi_json).replace("\\", "/"),
+            "completion_gate_json": str(args.completion_gate_json).replace("\\", "/"),
+            "completion_eta_json": str(args.completion_eta_json).replace("\\", "/"),
+            "weekly_scorecard_json": str(args.weekly_scorecard_json).replace("\\", "/"),
         },
         "status": "GO" if go else "HOLD",
         "summary": {
@@ -248,6 +280,28 @@ def main() -> int:
             "anchor_handoff_recommendation": ((anchor_handoff.get("summary") or {}).get("recommendation")),
             "anchor_handoff_promotion_lane": ((anchor_handoff.get("summary") or {}).get("promotion_lane")),
             "anchor_handoff_already_promoted": ((anchor_handoff.get("summary") or {}).get("already_promoted")),
+            "scheduler_health_status": scheduler_health.get("status"),
+            "scheduler_tasks_ok": ((scheduler_health.get("summary") or {}).get("tasks_ok")),
+            "scheduler_hold_streak": ((scheduler_auto_recovery.get("current") or {}).get("hold_streak")),
+            "scheduler_last_auto_recovery_attempted": ((scheduler_auto_recovery.get("recovery") or {}).get("attempted")),
+            "scheduler_last_auto_recovery_note": ((scheduler_auto_recovery.get("recovery") or {}).get("note")),
+            "scheduler_stability_48h": ((scheduler_stability_48h.get("current") or {}).get("stable_48h")),
+            "scheduler_stability_48h_status": scheduler_stability_48h.get("status"),
+            "scheduler_mode_signal": ((scheduler_mode_signal.get("mode_signal") or {}).get("mode")),
+            "scheduler_mode_signal_reason": ((scheduler_mode_signal.get("mode_signal") or {}).get("reason")),
+            "scheduler_kpi_24h_pass_ratio": ((scheduler_kpi.get("kpi") or {}).get("last_24h") or {}).get("pass_ratio"),
+            "scheduler_kpi_24h_hold_recurrence_rate": ((scheduler_kpi.get("kpi") or {}).get("last_24h") or {}).get("hold_recurrence_rate"),
+            "scheduler_kpi_24h_recovery_attempts": ((scheduler_kpi.get("kpi") or {}).get("last_24h") or {}).get("recovery_attempts"),
+            "scheduler_kpi_24h_mttr_minutes": ((scheduler_kpi.get("kpi") or {}).get("last_24h") or {}).get("mttr_minutes"),
+            "scheduler_kpi_7d_pass_ratio": ((scheduler_kpi.get("kpi") or {}).get("last_7d") or {}).get("pass_ratio"),
+            "scheduler_kpi_7d_hold_recurrence_rate": ((scheduler_kpi.get("kpi") or {}).get("last_7d") or {}).get("hold_recurrence_rate"),
+            "completion_gate_status": completion_gate.get("status"),
+            "completion_ready": completion_gate.get("completion_ready"),
+            "completion_eta_status": completion_eta.get("status"),
+            "completion_pass_streak_hours": ((completion_eta.get("current") or {}).get("pass_streak_hours")),
+            "completion_remaining_hours_to_24h": ((completion_eta.get("current") or {}).get("remaining_hours_to_24h")),
+            "completion_estimated_24h_eta_utc": ((completion_eta.get("current") or {}).get("estimated_24h_eta_utc")),
+            "weekly_scorecard_generated_at": weekly_scorecard.get("generated_at_utc"),
         },
         "governance_drill": {
             "external_anchor_downgrade_recovery": {
