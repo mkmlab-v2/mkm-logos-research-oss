@@ -1,13 +1,13 @@
 # MKM AI Final Ops Bundle (Latest)
 
-- generated_at_utc: `2026-04-30T19:44:07.915022Z`
+- generated_at_utc: `2026-04-30T19:56:02.342715Z`
 - status: `APPROVED_FINAL_V2`
 - system_label: `MKM AI v2.0 (Final)`
 - is_final: `True`
 - promotion_decision: `GO_FINAL_V2`
 - promotion_ready: `True`
 - weekly_pass_rate_percent: `100.0`
-- weekly_sample_count: `34`
+- weekly_sample_count: `36`
 - readiness_overall_passed: `True`
 
 ## NotebookLM Sync Marker

@@ -1,6 +1,6 @@
 # MKM AI Track C External One-Pager
 
-- generated_at_utc: `2026-04-30T19:44:08.061411Z`
+- generated_at_utc: `2026-04-30T19:56:02.512305Z`
 - title: `MKM AI Track C: Macro Risk Warning API + Public Showroom`
 - status: `APPROVED_FINAL_V2`
 
@@ -13,19 +13,19 @@
 - 공개 쇼룸과 비공개 운영 레인의 격벽 유지
 
 ## API Snapshot
-- decision_state: `None`
-- risk_warning_level: `None`
-- confidence_band: `None`
-- posture: `None`
-- policy_binding_action: `None`
+- decision_state: `WATCH`
+- risk_warning_level: `elevated`
+- confidence_band: `medium`
+- posture: `watch_tighten`
+- policy_binding_action: `tighten_monitoring_and_reduce_leverage`
 
 ## Showroom Snapshot
 - overall_ready: `True`
 - go_no_go: `GO`
 
 ## Delivery Readiness
-- macro_risk_api_smoke_present: `False`
-- macro_risk_policy_present: `False`
+- macro_risk_api_smoke_present: `True`
+- macro_risk_policy_present: `True`
 - showroom_readiness_present: `True`
 
 ## Guardrails

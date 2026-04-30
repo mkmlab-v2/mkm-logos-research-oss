@@ -1,25 +1,74 @@
 {
   "schema": "mkm_trackc_commercial_package_v1",
-  "generated_at_utc": "2026-04-30T19:44:07.985776Z",
+  "generated_at_utc": "2026-04-30T19:56:02.423456Z",
   "system_status": {
     "label": "MKM AI v2.0 (Final)",
     "status": "APPROVED_FINAL_V2",
     "is_final": true
   },
   "package_readiness": {
-    "macro_risk_api_smoke_present": false,
-    "macro_risk_policy_present": false,
+    "macro_risk_api_smoke_present": true,
+    "macro_risk_policy_present": true,
     "showroom_readiness_present": true
   },
   "macro_risk_api": {
-    "note": "missing artifact"
+    "api_contract_version": "1.0.0",
+    "schema_version": "macro_risk_warning_api_response_contract_v1",
+    "request_id": "mrw_20260430_194802",
+    "timestamp_utc": "2026-04-30T19:48:02.188642Z",
+    "asset_scope": "BTC-USD",
+    "decision_state": "WATCH",
+    "risk_warning_level": "elevated",
+    "confidence_band": "medium",
+    "insight_7": {
+      "market_liquidity_stress": 0.5802299999999999,
+      "cross_asset_dislocation": 0.44022999999999995,
+      "crowd_positioning_fragility": 0.52023,
+      "volatility_regime_shift": 0.55023,
+      "funding_pressure_signal": 0.4702299999999999,
+      "macro_policy_shock_risk": 0.42022999999999994,
+      "tail_event_pressure": 0.54023
+    },
+    "regime_context": {
+      "primary_regime_id": "post_covid_normalization",
+      "similarity_score": 0.50023,
+      "secondary_regime_notes": []
+    },
+    "recommended_operator_posture": "watch_tighten",
+    "evidence_ref": {
+      "artifact_path": "docs/final/artifacts/integrated_governance_v1_latest.json",
+      "artifact_hash_sha256": "c95bd084286493fc1a1d051e9159be83631860e8952bb255350124616a1fe475"
+    },
+    "ttl_seconds": 900,
+    "disclaimer": {
+      "not_investment_advice": true,
+      "no_buy_sell_instruction": true,
+      "no_return_guarantee": true,
+      "final_decision_with_operator": true
+    }
   },
   "macro_risk_policy": {
-    "note": "missing artifact"
+    "schema": "macro_risk_warning_policy_binding_v1",
+    "ts_utc": "2026-04-30T19:48:02.332585Z",
+    "input_refs": {
+      "matrix": "C:\\workspace\\docs\\final\\artifacts\\macro_risk_warning_api_decision_action_matrix_v1.json",
+      "response": "C:\\workspace\\docs\\final\\artifacts\\macro_risk_warning_api_smoke_latest.json"
+    },
+    "result": {
+      "binding_status": "mapped",
+      "reason": "ok",
+      "decision_state": "WATCH",
+      "risk_warning_level": "elevated",
+      "recommended_operator_posture": "watch_tighten",
+      "client_action": "tighten_monitoring_and_reduce_leverage",
+      "new_entry_policy": "restricted",
+      "risk_notes": "Early warning regime.",
+      "operator_notification_required": false
+    }
   },
   "showroom": {
     "schema": "vps_24h_daemon_showroom_readiness_v1",
-    "generated_at_utc": "2026-04-02T15:20:09.657510+00:00",
+    "generated_at_utc": "2026-04-30T19:48:02.538836+00:00",
     "paths": {
       "daemon_main": "C:\\workspace\\projects\\bitcoin-trading\\src\\daemon\\bitcoin_trading_daemon.py",
       "daemon_start_24h": "C:\\workspace\\projects\\bitcoin-trading\\scripts\\start_24h_daemon.py",
@@ -50,7 +99,7 @@
       "public_showroom_lane_ready": true
     },
     "runtime_snapshot": {
-      "trading_state_path": "C:\\workspace\\projects\\bitcoin-trading\\memory\\trading_daemon_status.json",
+      "trading_state_path": "C:\\workspace\\projects\\bitcoin-trading\\logs\\trading_state.json",
       "trading_state_running": true,
       "trading_state_enable_trading": true
     },

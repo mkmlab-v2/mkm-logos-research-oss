@@ -1,17 +1,17 @@
 # MKM Track C Ops Dashboard
 
-- generated_at_utc: `2026-04-30T19:44:08.369482Z`
+- generated_at_utc: `2026-04-30T19:56:02.868738Z`
 - system_status: `APPROVED_FINAL_V2`
 - promotion_decision: `GO_FINAL_V2`
 - promotion_ready: `True`
 - weekly_pass_rate_percent: `100.0`
-- weekly_sample_count: `34`
+- weekly_sample_count: `36`
 
 ## Track C
-- packet_status: `None`
-- api_decision_state: `None`
-- showroom_go_no_go: `None`
-- guard_passed: `None`
+- packet_status: `READY`
+- api_decision_state: `WATCH`
+- showroom_go_no_go: `GO`
+- guard_passed: `True`
 - acceptance_status: `None`
 - freeze_status: `None`
 - recovery_drill_status: `None`

@@ -1,6 +1,6 @@
 ﻿{
     "schema":  "mkm_ai_v2_readiness_check_v1",
-    "generated_at_utc":  "2026-04-30T19:44:07.0498711Z",
+    "generated_at_utc":  "2026-04-30T19:56:01.5025488Z",
     "workspace_root":  "C:\\workspace",
     "overall_passed":  true,
     "checks":  [
@@ -32,7 +32,7 @@
                    {
                        "name":  "notebooklm_sync_fresh",
                        "passed":  true,
-                       "detail":  "age_hours=0.38 threshold_hours=168"
+                       "detail":  "age_hours=0.58 threshold_hours=168"
                    },
                    {
                        "name":  "central_memory_exists",

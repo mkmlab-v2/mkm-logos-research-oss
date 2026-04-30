@@ -1,0 +1,19 @@
+{
+  "schema": "macro_risk_warning_policy_binding_v1",
+  "ts_utc": "2026-04-30T19:48:02.332585Z",
+  "input_refs": {
+    "matrix": "C:\\workspace\\docs\\final\\artifacts\\macro_risk_warning_api_decision_action_matrix_v1.json",
+    "response": "C:\\workspace\\docs\\final\\artifacts\\macro_risk_warning_api_smoke_latest.json"
+  },
+  "result": {
+    "binding_status": "mapped",
+    "reason": "ok",
+    "decision_state": "WATCH",
+    "risk_warning_level": "elevated",
+    "recommended_operator_posture": "watch_tighten",
+    "client_action": "tighten_monitoring_and_reduce_leverage",
+    "new_entry_policy": "restricted",
+    "risk_notes": "Early warning regime.",
+    "operator_notification_required": false
+  }
+}

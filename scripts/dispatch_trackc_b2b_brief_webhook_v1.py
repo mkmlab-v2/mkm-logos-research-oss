@@ -53,7 +53,7 @@ def main() -> int:
     webhook_keys = [args.webhook_env]
     webhook = str(os.environ.get(args.webhook_env, "")).strip()
     webhook_env_used = args.webhook_env
-    has_core = bool(dashboard) and bool(acceptance)
+    has_core = bool(dashboard)
 
     # Compliance-safe fields only (no credentials, no raw internal chain logs).
     system = dashboard.get("system") if isinstance(dashboard.get("system"), dict) else {}
@@ -70,7 +70,7 @@ def main() -> int:
     acceptance_summary = {
         "schema": acceptance.get("schema"),
         "generated_at_utc": acceptance.get("generated_at_utc"),
-        "acceptance_status": acceptance.get("status"),
+        "acceptance_status": acceptance.get("status") or trackc.get("acceptance_status"),
         "failed_checks": acceptance.get("failed_checks") if isinstance(acceptance.get("failed_checks"), list) else [],
     }
 

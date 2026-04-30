@@ -1,6 +1,6 @@
 {
   "schema": "mkm_ai_v2_promotion_decision_v1",
-  "generated_at_utc": "2026-04-30T19:44:07.578169Z",
+  "generated_at_utc": "2026-04-30T19:56:01.964300Z",
   "inputs": {
     "readiness_path": "C:\\workspace\\docs\\final\\artifacts\\mkm_ai_v2_readiness_latest.json",
     "weekly_report_path": "C:\\workspace\\docs\\final\\artifacts\\mkm_ai_v2_weekly_readiness_report_latest.json",
@@ -10,7 +10,7 @@
   "metrics": {
     "readiness_overall_passed": true,
     "weekly_pass_rate_percent": 100.0,
-    "weekly_sample_count": 34
+    "weekly_sample_count": 36
   },
   "decision": "GO_FINAL_V2",
   "promotion_ready": true,

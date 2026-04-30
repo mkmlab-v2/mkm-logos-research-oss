@@ -1,0 +1,64 @@
+{
+  "schema": "mkm_trackc_client_handoff_package_v1",
+  "generated_at_utc": "2026-04-30T19:56:02.693049Z",
+  "packet_status": "READY",
+  "title": "MKM AI Track C Client Handoff Package",
+  "executive_summary": {
+    "status": "APPROVED_FINAL_V2",
+    "elevator_pitch": "운영형 MKM AI의 거시 리스크 경보 API와 공개 쇼룸 레인을 결합한 고객 전달 패키지.",
+    "api_decision_state": "WATCH",
+    "showroom_go_no_go": "GO"
+  },
+  "delivery_checklist": {
+    "commercial_package_ready": true,
+    "external_onepager_ready": true,
+    "api_spec_package_ready": true,
+    "macro_risk_api_smoke_present": true,
+    "macro_risk_policy_present": true,
+    "showroom_readiness_present": true
+  },
+  "api_contract_quickview": {
+    "endpoint": {
+      "method": "GET",
+      "path": "/v1/macro-risk-warning",
+      "query": {
+        "asset_scope": "string (example: BTC-USD)"
+      }
+    },
+    "request_contract": {
+      "required_query_params": [
+        "asset_scope"
+      ],
+      "optional_headers": [
+        "x-request-id"
+      ]
+    },
+    "live_snapshot": {
+      "decision_state": "WATCH",
+      "risk_warning_level": "elevated",
+      "confidence_band": "medium",
+      "recommended_operator_posture": "watch_tighten",
+      "ttl_seconds": 900
+    },
+    "policy_binding_snapshot": {
+      "binding_status": "mapped",
+      "client_action": "tighten_monitoring_and_reduce_leverage",
+      "new_entry_policy": "restricted",
+      "operator_notification_required": false
+    },
+    "sla_and_guardrails": {
+      "signal_ttl_seconds": 900,
+      "advisory_only": true,
+      "operator_final_decision": true,
+      "track_barrier": "Track A/B automatic bridge disabled"
+    }
+  },
+  "artifacts": {
+    "commercial_package_json": "docs/final/artifacts/mkm_trackc_commercial_package_latest.json",
+    "commercial_package_md": "docs/final/artifacts/mkm_trackc_commercial_package_latest.md",
+    "external_onepager_json": "docs/final/artifacts/mkm_trackc_external_onepager_latest.json",
+    "external_onepager_md": "docs/final/artifacts/mkm_trackc_external_onepager_latest.md",
+    "api_spec_package_json": "docs/final/artifacts/mkm_trackc_api_spec_package_latest.json",
+    "api_spec_package_md": "docs/final/artifacts/mkm_trackc_api_spec_package_latest.md"
+  }
+}

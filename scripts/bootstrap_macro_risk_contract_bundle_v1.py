@@ -4,9 +4,14 @@
 from __future__ import annotations
 
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from scripts.macro_risk_warning_api_stub import MacroRiskWarningRequest, build_macro_risk_warning_response
 
@@ -16,8 +21,7 @@ def _now_utc() -> str:
 
 
 def main() -> int:
-    root = Path(__file__).resolve().parents[1]
-    art = root / "docs" / "final" / "artifacts"
+    art = ROOT / "docs" / "final" / "artifacts"
     art.mkdir(parents=True, exist_ok=True)
 
     contract = {

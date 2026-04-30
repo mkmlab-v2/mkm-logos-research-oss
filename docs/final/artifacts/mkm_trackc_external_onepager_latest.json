@@ -1,6 +1,6 @@
 {
   "schema": "mkm_trackc_external_onepager_v1",
-  "generated_at_utc": "2026-04-30T19:44:08.061411Z",
+  "generated_at_utc": "2026-04-30T19:56:02.512305Z",
   "title": "MKM AI Track C: Macro Risk Warning API + Public Showroom",
   "elevator_pitch": "운영형 MKM AI의 거시 리스크 경보 API와 공개 쇼룸 레인을 결합한 고객 전달 패키지.",
   "current_state": {
@@ -14,20 +14,20 @@
     "공개 쇼룸과 비공개 운영 레인의 격벽 유지"
   ],
   "api_snapshot": {
-    "decision_state": null,
-    "risk_warning_level": null,
-    "confidence_band": null,
-    "recommended_operator_posture": null,
-    "ttl_seconds": null,
-    "policy_binding_action": null
+    "decision_state": "WATCH",
+    "risk_warning_level": "elevated",
+    "confidence_band": "medium",
+    "recommended_operator_posture": "watch_tighten",
+    "ttl_seconds": 900,
+    "policy_binding_action": "tighten_monitoring_and_reduce_leverage"
   },
   "showroom_snapshot": {
     "overall_ready": true,
     "go_no_go": "GO"
   },
   "delivery_readiness": {
-    "macro_risk_api_smoke_present": false,
-    "macro_risk_policy_present": false,
+    "macro_risk_api_smoke_present": true,
+    "macro_risk_policy_present": true,
     "showroom_readiness_present": true
   },
   "guardrails": [

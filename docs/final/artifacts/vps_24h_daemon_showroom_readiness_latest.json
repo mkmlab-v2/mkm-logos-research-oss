@@ -1,6 +1,6 @@
 {
   "schema": "vps_24h_daemon_showroom_readiness_v1",
-  "generated_at_utc": "2026-04-02T15:20:09.657510+00:00",
+  "generated_at_utc": "2026-04-30T19:48:02.538836+00:00",
   "paths": {
     "daemon_main": "C:\\workspace\\projects\\bitcoin-trading\\src\\daemon\\bitcoin_trading_daemon.py",
     "daemon_start_24h": "C:\\workspace\\projects\\bitcoin-trading\\scripts\\start_24h_daemon.py",
@@ -31,7 +31,7 @@
     "public_showroom_lane_ready": true
   },
   "runtime_snapshot": {
-    "trading_state_path": "C:\\workspace\\projects\\bitcoin-trading\\memory\\trading_daemon_status.json",
+    "trading_state_path": "C:\\workspace\\projects\\bitcoin-trading\\logs\\trading_state.json",
     "trading_state_running": true,
     "trading_state_enable_trading": true
   },

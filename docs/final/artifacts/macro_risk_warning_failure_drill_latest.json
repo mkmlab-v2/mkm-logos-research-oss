@@ -1,0 +1,37 @@
+{
+  "schema": "macro_risk_warning_failure_drill_v1",
+  "ts_utc": "2026-04-30T19:48:02.443537Z",
+  "matrix_ref": "C:\\workspace\\docs\\final\\artifacts\\macro_risk_warning_api_decision_action_matrix_v1.json",
+  "cases": [
+    {
+      "name": "http_503_service_unavailable",
+      "input": {
+        "api_status": 503,
+        "error": "service_unavailable"
+      },
+      "result": {
+        "binding_status": "fallback_applied",
+        "reason": "missing_decision_state",
+        "decision_state": "UNAVAILABLE",
+        "client_action": "use_internal_safe_defaults_and_escalate",
+        "new_entry_policy": "restricted",
+        "operator_notification_required": true
+      }
+    },
+    {
+      "name": "timeout_empty_payload",
+      "input": {},
+      "result": {
+        "binding_status": "fallback_applied",
+        "reason": "missing_decision_state",
+        "decision_state": "UNAVAILABLE",
+        "client_action": "use_internal_safe_defaults_and_escalate",
+        "new_entry_policy": "restricted",
+        "operator_notification_required": true
+      }
+    }
+  ],
+  "summary": {
+    "all_fallback_applied": true
+  }
+}
