@@ -20,6 +20,28 @@ $ErrorActionPreference = "Stop"
 $workspaceRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 Set-Location -LiteralPath $workspaceRoot
 
+function Resolve-WorkspacePath([string]$PathStr) {
+    if ([System.IO.Path]::IsPathRooted($PathStr)) { return $PathStr }
+    return (Join-Path $workspaceRoot $PathStr)
+}
+
+Write-Host "[0/24] Validate required inputs exist" -ForegroundColor Cyan
+$required = @(
+    @{ Label = "OpenBible cross_references (manual-editorial baseline)"; Path = (Resolve-WorkspacePath $ExternalInput) },
+    @{ Label = "core100 node-ref map JSON"; Path = (Resolve-WorkspacePath $Core100MapJson) },
+    @{ Label = "global_atom_network_edges_latest.jsonl"; Path = (Join-Path $workspaceRoot "docs/final/artifacts/global_atom_network_edges_latest.jsonl") },
+    @{ Label = "global_atom_network_core100_edges_latest.jsonl"; Path = (Join-Path $workspaceRoot "docs/final/artifacts/global_atom_network_core100_edges_latest.jsonl") },
+    @{ Label = "full_canon_edges.jsonl"; Path = (Join-Path $workspaceRoot "docs/final/artifacts/global_atom_full_canon/20260428T095207Z_full_canon_edges.jsonl") }
+)
+foreach ($item in $required) {
+    if (-not (Test-Path -LiteralPath $item.Path)) {
+        Write-Host "ERROR: Missing $($item.Label)" -ForegroundColor Red
+        Write-Host "  Expected path: $($item.Path)" -ForegroundColor Red
+        Write-Host "  OpenBible file is not in Git (large); copy cross_references.txt into docs/final/artifacts/external_cross_references_openbible/ or pass -ExternalInput." -ForegroundColor Yellow
+        exit 1
+    }
+}
+
 if (-not $SkipAutofill) {
     Write-Host "[1/24] Autofill core100 node map (provisional)" -ForegroundColor Cyan
     & py "scripts/autofill_core100_node_ref_map_from_openbible_v1.py" "--map-json" $Core100MapJson "--openbible-txt" $ExternalInput
@@ -171,8 +193,8 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & py "scripts/build_external_baseline_latest_index_v1.py"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "[20/24] Parser smoke test (pytest)" -ForegroundColor Cyan
-& py -m pytest "tests/test_parse_external_baseline_v1_smoke.py" -q
+Write-Host "[20/24] Smoke tests (pytest: parser + chain integration)" -ForegroundColor Cyan
+& py -m pytest "tests/test_parse_external_baseline_v1_smoke.py" "tests/test_external_baseline_chain_integration_smoke.py" -q
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[21/24] Chain complete." -ForegroundColor Green
