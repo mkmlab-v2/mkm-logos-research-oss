@@ -65,6 +65,8 @@
 ## Cursor IDE · 에이전트·MCP (Fact-Lock 융합, 2026-04)
 
 - **중앙 메모리 (크로스 채팅):** `docs/final/CENTRAL_AGENT_MEMORY_V1.md`가 정체성·격벽의 지속 SSOT. `.cursor/rules/central-agent-memory.mdc`에 **SSOT 핵심 5줄**이 `alwaysApply`로 매 턴 포함 — **세션 로그 자동 병합은 없음**; 맥락 누적은 해당 MD 갱신·Git. 상세는 `AGENTS.md` 「중앙 메모리」.
+- **맥락 복원 기본값:** 사용자가 별도 지시가 없어도 시작 시 이전 맥락을 잇는 기본 모드로 동작한다. 필요 시 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`·`docs/final/CURRENT_OPS_SNAPSHOT.md`·`docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`를 우선 확인한다.
+- **초단축 트리거:** 사용자가 `맥락이어`라고 입력하면 "이전 맥락 복원 + SSOT 우선 + Fact-Lock 기준" 지시로 해석해 즉시 적용한다.
 - **Cursor 3.0 (2026-04)**: **Agents Window** — 로컬·워크트리·클라우드·SSH에서 **에이전트 병렬** 실행(제품 UI; Cmd/Ctrl+Shift+P → “Agents Window”). **Design Mode** — 브라우저 UI에 주석·타겟 지정(⌘⇧D 등). **Agent Tabs** — 에디터에서 여러 에이전트 채팅 동시 표시. SSOT·승인·격벽은 여전히 `AGENTS.md`·`CONSTITUTION_*`·TITAN이 우선이며, 병렬 실행은 **작업 분할·가속**용이지 헌법 자동 완화가 아니다.
 - **런타임**: Agent/Composer는 **계획→실행→검증**을 수행하는 **로컬 실행기**다. **헌법·승인·경계**는 `AGENTS.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`, 위 **TITAN · 자율 기동** 절이 우선한다.
 - **교훈 인덱스 (비-SSOT)**: 반복 금지 행동 클래스 요약은 `docs/final/MKM_LESSONS_LEARNED_V1.md`. 구현 경로·게이트 수치의 단일 진실은 여전히 `CONSTITUTION`·`docs/final/artifacts`·호출 가능 스크립트만.
@@ -79,6 +81,20 @@
 - **기본 위치:** 더티 루트 대신 `origin/<base>`에서 시작한 **클린 `git worktree`**를 기본 작업 위치로 사용한다.
 - **푸시 정책:** 대형 push가 지연/행(hang)되면 즉시 **초소형 배치(권장 1커밋)** 로 전환해 `push -> PR -> merge`를 반복한다.
 - **정리 규칙:** PR merge 직후 원격 브랜치와 임시 worktree를 정리해 다음 작업의 분기 오염을 방지한다.
+
+### Remote Minimal Publishing (GitHub 노출 최소화)
+
+- **기본값:** 로컬 우선. 원격 push는 "재현 가능한 코드/스키마/핵심 규칙"에 한정한다.
+- **운영 기본 채널:** `internal`(Gitea/로컬 bare)을 본선으로 사용하고, `origin`/`hq`(GitHub)는 예외 공개 채널로만 사용한다.
+- **안전 기본값:** GitHub 원격 push URL은 기본적으로 `no_push`를 유지한다(`scripts/Git-DisableGitHubPushUrls.ps1`).
+- **기본 push 명령:** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/push-internal.ps1`
+- **예외 공개 명령:** `scripts/Push-GitHub-Explicit.ps1 -Acknowledge`처럼 명시 승인형 경로에서만 GitHub push를 허용한다.
+- **업로드 금지 기본군:** 대용량 실험 산출(`artifacts`/`reports` 일괄), 런타임 로그, 개인/민감 운영 흔적, 일회성 스냅샷.
+- **PR 트리거:** 아래 1개 이상 충족 시에만 PR 생성한다.
+  - 운영 규칙/정책 변경(예: `.cursorrules`, `AGENTS.md`, `.cursor/rules/*`)
+  - 프로덕션/CI 동작을 바꾸는 코드 변경
+  - 팀 합의가 필요한 인터페이스/계약 변경
+- **로컬 체크포인트 권장:** 탐색/실험 단계는 로컬 커밋으로 보존하고, 승격 결정 전 원격 게시를 지연한다.
 
 ### 0.0.2) 통합 거버넌스 강제 규칙 (Core 3-Engine, 2026-04-17)
 

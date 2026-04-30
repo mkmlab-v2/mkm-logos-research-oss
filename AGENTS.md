@@ -36,6 +36,13 @@
 - **정리 규칙:** PR merge 후 원격 브랜치와 임시 worktree를 즉시 정리해 다음 작업의 분기 오염을 방지한다.
 - **우선순위 고정:** Git hygiene 규칙이 다른 문서와 상충하면 항상 루트 `.cursorrules`의 "Git Hygiene 고정 (세션 종료 후에도 유지)" 4줄을 우선 적용한다.
 
+### Remote Publication 운영 기본값 (모든 채팅 공통)
+
+- **본선 push:** `internal` 원격(내부/Gitea/로컬 bare)만 기본 사용.
+- **GitHub push:** 기본 차단(`origin`/`hq` push URL=`no_push`)을 유지하고, 필요 시에만 명시적으로 해제/우회한다.
+- **권장 명령:** `scripts/Show-RemotePublicationMode.ps1`(상태 점검), `scripts/push-internal.ps1`(기본 push), `scripts/Push-GitHub-Explicit.ps1 -Acknowledge`(예외 공개).
+- **대용량/민감 산출물:** GitHub 기본 제외. 특히 `docs/final/artifacts/global_atom_full_canon/*`는 최신 consolidated manifest만 추적한다.
+
 ## 필수 우선순위
 
 1. **루트 `.cursorrules`** — 최상단 **TITAN · 자율 기동(Command-by-Negation)**. 예외가 아니면 권장 조치를 질문 없이 수행·사후 보고; 끝맺음은 [A]/[B] 선택 강요 없이 **완료 보고 + 잔여 리스크(있을 때만)**.
