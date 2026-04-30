@@ -105,6 +105,27 @@ on:
       - "scripts/report_compression_jaccard_loss_patterns.py"
       - "scripts/report_ultra_compression_kpi_summary.py"
       - "scripts/run_workspace_automation_health.ps1"
+      - "scripts/validate_news_observation_jsonl_v1.py"
+      - "scripts/build_direction_label_bar_jsonl_from_ohlcv_v1.py"
+      - "scripts/join_news_observation_direction_labels_walkforward_v1.py"
+      - "scripts/build_news_observation_jsonl_from_csv_v1.py"
+      - "scripts/check_news_label_join_temporal_v1.py"
+      - "scripts/Run-NewsObservationContractSmoke.ps1"
+      - "docs/final/schemas/news_observation_v1.schema.json"
+      - "docs/final/schemas/direction_label_bar_v1.schema.json"
+      - "tests/test_news_observation_v1_schema.py"
+      - "tests/test_validate_news_observation_jsonl_v1.py"
+      - "tests/test_check_news_label_join_temporal_v1.py"
+      - "tests/test_build_news_observation_jsonl_from_csv_v1.py"
+      - "tests/test_build_direction_label_bar_jsonl_from_ohlcv_v1.py"
+      - "tests/test_join_news_observation_direction_labels_walkforward_v1.py"
+      - "tests/test_build_direction_label_bar_kospi_csv_smoke_v1.py"
+      - "tests/fixtures/news_observation_v1.sample.jsonl"
+      - "tests/fixtures/direction_label_bar_v1.sample.jsonl"
+      - "tests/fixtures/join_walkforward_smoke_v1.news.jsonl"
+      - "tests/fixtures/join_walkforward_smoke_v1.labels.jsonl"
+      - "research/market_data/kospi_daily_external_yf.csv"
+      - "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
       - "scripts/run_compression_automation_chain.ps1"
       - "scripts/run_compression_weekly_governance_chain.ps1"
       - "scripts/Register-CompressionWeeklyGovernanceTask.ps1"
@@ -192,6 +213,13 @@ on:
       - "tests/test_generate_btrack_hypothesis_prophecy_v1.py"
       - "tests/test_eval_prophecy_hit_rate_v1.py"
       - "tests/test_build_btrack_prophecy_score_from_ohlcv.py"
+      - "scripts/run_truthfulqa_ab_benchmark_v1.py"
+      - "scripts/check_truthfulqa_ab_gate_v1.py"
+      - "scripts/Run-TruthfulQAReproBundleV1.ps1"
+      - "tests/test_run_truthfulqa_ab_benchmark_v1.py"
+      - "tests/test_check_truthfulqa_ab_gate_v1.py"
+      - "tests/test_run_truthfulqa_repro_bundle_v1.py"
+      - "tests/test_run_fact_lock_bundle_truthfulqa_gate.py"
       - "scripts/generate_btrack_hypothesis_prophecy_v1.py"
       - "scripts/fill_human_regime_audit_llm_spike.py"
       - "scripts/fill_human_regime_audit_proxy_spike.py"
@@ -471,6 +499,17 @@ jobs:
       - name: Run Dual Regime API smoke / Fact-Lock tests
         run: bash projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.sh
 
+      - name: TruthfulQA A/B repro bundle (DryRun) and pytest
+        run: |
+          set -euo pipefail
+          pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/Run-TruthfulQAReproBundleV1.ps1 -DryRun
+          python -m pytest \
+            tests/test_run_truthfulqa_ab_benchmark_v1.py \
+            tests/test_check_truthfulqa_ab_gate_v1.py \
+            tests/test_run_truthfulqa_repro_bundle_v1.py \
+            tests/test_run_fact_lock_bundle_truthfulqa_gate.py \
+            -q --tb=short
+
       - name: Track source guard (A/B JSONL tagging)
         run: python -m pytest tests/test_track_source_guard.py -q --tb=short
 
@@ -512,6 +551,9 @@ jobs:
             tests/test_validate_news_observation_jsonl_v1.py \
             tests/test_check_news_label_join_temporal_v1.py \
             tests/test_build_news_observation_jsonl_from_csv_v1.py \
+            tests/test_build_direction_label_bar_jsonl_from_ohlcv_v1.py \
+            tests/test_join_news_observation_direction_labels_walkforward_v1.py \
+            tests/test_build_direction_label_bar_kospi_csv_smoke_v1.py \
             -q --tb=short
 
       - name: Logos revalidation fusion + semantic separation regression

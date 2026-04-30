@@ -24,6 +24,24 @@
 .PARAMETER IncludeBtrackBalancedRegimeEval
   B-track 균형 레짐 평가 체인(`scripts/run_btrack_balanced_regime_eval_chain_v1.ps1`)을 후단에서 실행한다.
 
+.PARAMETER IncludeTruthfulQaBenchmarkGate
+  TruthfulQA A/B 벤치 산출물 존재 여부를 점검한다(빠른 파일 게이트).
+
+.PARAMETER StrictTruthfulQaBenchmarkGate
+  TruthfulQA A/B 벤치 산출물 미존재 시 경고 대신 실패(exit 1)로 처리한다.
+
+.PARAMETER IncludeTruthfulQaBenchmarkEvalGate
+  TruthfulQA MC/Generation 벤치 결과를 GO/NO_GO로 판정하는 게이트 스크립트를 실행한다.
+
+.PARAMETER StrictTruthfulQaBenchmarkEvalGate
+  TruthfulQA 판정 결과가 NO_GO면 실패(exit 1)로 처리한다.
+
+.PARAMETER TruthfulQaEvalMcOnly
+  Eval 게이트에 `--mc-only`를 넘겨 MC 비교만으로 판정한다(promotion-friendly). generation 산출물이 없어도 실행 가능.
+
+.PARAMETER TruthfulQaBenchmarkGateMcOnly
+  `-IncludeTruthfulQaBenchmarkGate` 사용 시 generation JSON 없어도 경고/실패 대상에서 제외(MC 파일만 필수).
+
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1
 
@@ -42,6 +60,18 @@
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -IncludeBtrackBalancedRegimeEval
 
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -IncludeTruthfulQaBenchmarkGate
+
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -IncludeTruthfulQaBenchmarkEvalGate -StrictTruthfulQaBenchmarkEvalGate
+
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -IncludeTruthfulQaBenchmarkGate -TruthfulQaBenchmarkGateMcOnly -IncludeTruthfulQaBenchmarkEvalGate -TruthfulQaEvalMcOnly -StrictTruthfulQaBenchmarkEvalGate
+
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipNewsObservationContractSmoke
+
 .NOTES
   SSOT 순서: `.github/workflows/dual-regime-integrity.yml`
   pytest·`py` 규칙: `docs/final/P0_COMMERCIALIZATION_TRACKER.md`
@@ -52,7 +82,16 @@ param(
     [switch]$SkipCompressionRestoreBridge,
     [switch]$IncludeCodebookFactSafe,
     [switch]$Include4dOhaengRegimeSnapshotGate,
-    [switch]$IncludeBtrackBalancedRegimeEval
+    [switch]$IncludeBtrackBalancedRegimeEval,
+    [switch]$IncludeTruthfulQaBenchmarkGate,
+    [switch]$StrictTruthfulQaBenchmarkGate,
+    [switch]$IncludeTruthfulQaBenchmarkEvalGate,
+    [switch]$StrictTruthfulQaBenchmarkEvalGate,
+    [switch]$TruthfulQaEvalMcOnly,
+    [switch]$TruthfulQaBenchmarkGateMcOnly,
+
+    # B-track news_observation JSONL contract smoke runs by default after prophecy alignment; use -Skip to omit.
+    [switch]$SkipNewsObservationContractSmoke
 )
 
 $ErrorActionPreference = 'Stop'
@@ -70,6 +109,11 @@ $trackCEvidenceScript = Join-Path $workspaceRoot 'scripts\build_track_c_evidence
 $trackCCopyGuardScript = Join-Path $workspaceRoot 'scripts\check_track_c_copy_guard_v1.py'
 $trackCClaimValidatorScript = Join-Path $workspaceRoot 'scripts\validate_track_c_landing_claims_v1.py'
 $sajuGoldenReplayScript = Join-Path $workspaceRoot 'scripts\run_saju_golden_replay.py'
+$truthfulQaBenchmarkScript = Join-Path $workspaceRoot 'scripts\run_truthfulqa_ab_benchmark_v1.py'
+$truthfulQaBenchmarkEvalGateScript = Join-Path $workspaceRoot 'scripts\check_truthfulqa_ab_gate_v1.py'
+$truthfulQaMcBenchmarkArtifact = Join-Path $workspaceRoot 'docs\final\artifacts\truthfulqa_ab_benchmark_latest.json'
+$truthfulQaGenerationBenchmarkArtifact = Join-Path $workspaceRoot 'docs\final\artifacts\truthfulqa_generation_ab_benchmark_latest.json'
+$truthfulQaGateArtifact = Join-Path $workspaceRoot 'docs\final\artifacts\truthfulqa_ab_gate_latest.json'
 
 if (-not (Test-Path -LiteralPath $prophecyBundle)) {
     throw "Bundle script not found: $prophecyBundle"
@@ -89,6 +133,18 @@ Write-Host '== Fact-Lock: run_prophecy_alignment_pytest.ps1 ==' -ForegroundColor
 & powershell -NoProfile -ExecutionPolicy Bypass -File $prophecyBundle
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
+}
+
+if (-not $SkipNewsObservationContractSmoke) {
+    $newsSmoke = Join-Path $workspaceRoot 'scripts\Run-NewsObservationContractSmoke.ps1'
+    if (-not (Test-Path -LiteralPath $newsSmoke)) {
+        throw "News observation contract smoke script not found: $newsSmoke"
+    }
+    Write-Host '== Fact-Lock: Run-NewsObservationContractSmoke.ps1 (default) ==' -ForegroundColor Cyan
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $newsSmoke
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
 }
 
 if ($IncludeP1AB) {
@@ -197,6 +253,65 @@ if ($IncludeBtrackBalancedRegimeEval) {
     & powershell -NoProfile -ExecutionPolicy Bypass -File $btrackBalancedRegimeEvalChain
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
+    }
+}
+
+if ($IncludeTruthfulQaBenchmarkGate) {
+    if (-not (Test-Path -LiteralPath $truthfulQaBenchmarkScript)) {
+        throw "TruthfulQA benchmark script not found: $truthfulQaBenchmarkScript"
+    }
+
+    Write-Host '== Fact-Lock (optional): TruthfulQA A/B benchmark artifact gate ==' -ForegroundColor Cyan
+    $missingTruthfulQaArtifacts = @()
+    if (-not (Test-Path -LiteralPath $truthfulQaMcBenchmarkArtifact)) {
+        $missingTruthfulQaArtifacts += $truthfulQaMcBenchmarkArtifact
+    }
+    if (-not $TruthfulQaBenchmarkGateMcOnly) {
+        if (-not (Test-Path -LiteralPath $truthfulQaGenerationBenchmarkArtifact)) {
+            $missingTruthfulQaArtifacts += $truthfulQaGenerationBenchmarkArtifact
+        }
+    }
+
+    if ($missingTruthfulQaArtifacts.Count -gt 0) {
+        if ($StrictTruthfulQaBenchmarkGate) {
+            Write-Host 'FAIL: TruthfulQA benchmark artifacts missing:' -ForegroundColor Red
+            $missingTruthfulQaArtifacts | ForEach-Object { Write-Host "  $_" }
+            exit 1
+        }
+        Write-Host 'WARN: TruthfulQA benchmark artifacts missing (run A/B benchmark script to generate):' -ForegroundColor Yellow
+        $missingTruthfulQaArtifacts | ForEach-Object { Write-Host "  $_" }
+    } else {
+        if ($TruthfulQaBenchmarkGateMcOnly) {
+            Write-Host 'OK: TruthfulQA MC benchmark artifact present (generation not required).' -ForegroundColor Green
+        } else {
+            Write-Host 'OK: TruthfulQA benchmark artifacts present (mc + generation).' -ForegroundColor Green
+        }
+    }
+}
+
+if ($IncludeTruthfulQaBenchmarkEvalGate) {
+    if (-not (Test-Path -LiteralPath $truthfulQaBenchmarkEvalGateScript)) {
+        throw "TruthfulQA eval gate script not found: $truthfulQaBenchmarkEvalGateScript"
+    }
+    Write-Host '== Fact-Lock (optional): TruthfulQA A/B eval gate ==' -ForegroundColor Cyan
+    $truthfulQaEvalArgs = @(
+        $truthfulQaBenchmarkEvalGateScript,
+        '--mc-json', $truthfulQaMcBenchmarkArtifact,
+        '--generation-json', $truthfulQaGenerationBenchmarkArtifact,
+        '--out-json', $truthfulQaGateArtifact
+    )
+    if ($StrictTruthfulQaBenchmarkEvalGate) {
+        $truthfulQaEvalArgs += '--strict'
+    }
+    if ($TruthfulQaEvalMcOnly) {
+        $truthfulQaEvalArgs += '--mc-only'
+    }
+    & py @truthfulQaEvalArgs
+    if ($LASTEXITCODE -ne 0) {
+        if ($StrictTruthfulQaBenchmarkEvalGate) {
+            exit $LASTEXITCODE
+        }
+        Write-Host "WARN: TruthfulQA eval gate returned NO_GO (strict disabled)." -ForegroundColor Yellow
     }
 }
 

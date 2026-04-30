@@ -5,6 +5,7 @@ param(
 # P0 path gate: every entry must exist in the workspace. Prune when files are not
 # in this clone; re-add from main when those scripts return. (Track A metering
 # multiline, kospi WF verify, etc. were removed 2026-04-18 for local pass.)
+# 2026-04-30: join walkforward + fixtures; dedupe news schema block.
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -82,6 +83,13 @@ $required = @(
     "scripts\generate_btrack_hypothesis_prophecy_v1.py",
     "scripts\build_logos_wide_restoration.py",
     "scripts\build_btrack_prophecy_score_from_ohlcv.py",
+    "scripts\build_direction_label_bar_jsonl_from_ohlcv_v1.py",
+    "scripts\join_news_observation_direction_labels_walkforward_v1.py",
+    "scripts\validate_news_observation_jsonl_v1.py",
+    "docs\final\schemas\news_observation_v1.schema.json",
+    "docs\final\schemas\direction_label_bar_v1.schema.json",
+    "tests\fixtures\join_walkforward_smoke_v1.news.jsonl",
+    "tests\fixtures\join_walkforward_smoke_v1.labels.jsonl",
     "scripts\run_daily_prophecy_eval_and_report.ps1",
     "scripts\report_btrack_notebooklm_jsonl_kpi.py",
     "projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1",
@@ -120,6 +128,9 @@ $required = @(
     "projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp\compression_v2_explorer.html",
     "docs\final\schemas\mkm_user_context_v1.schema.json",
     "docs\final\schemas\mkm_compressed_payload_v1.schema.json",
+    "scripts\check_news_label_join_temporal_v1.py",
+    "scripts\build_news_observation_jsonl_from_csv_v1.py",
+    "scripts\Run-NewsObservationContractSmoke.ps1",
     "scripts\dump_mcp_tool_inventory.py",
     "scripts\mkm_unified_mcp.py",
     "rag_server\mcp_server.py",
@@ -180,7 +191,13 @@ $required = @(
     "tests\test_build_two_track_submission_draft_v1.py",
     "tests\test_build_two_track_submission_camera_ready_v1.py",
     "scripts\extract_aramaic_core_corpus_v1.py",
-    "tests\test_extract_aramaic_core_corpus_v1.py"
+    "tests\test_extract_aramaic_core_corpus_v1.py",
+    "scripts\run_truthfulqa_ab_benchmark_v1.py",
+    "tests\test_run_truthfulqa_ab_benchmark_v1.py",
+    "scripts\check_truthfulqa_ab_gate_v1.py",
+    "tests\test_check_truthfulqa_ab_gate_v1.py",
+    "scripts\Run-TruthfulQAReproBundleV1.ps1",
+    "tests\test_run_truthfulqa_repro_bundle_v1.py"
 )
 
 $missing = @()
@@ -202,7 +219,10 @@ Write-Host "OK: P0/CONSTITUTION gate paths present ($($required.Count) checked).
 $optionalQualityArtifacts = @(
     "docs\final\artifacts\report_schema_v2_quality_alert_latest.json",
     "docs\final\artifacts\report_schema_v2_label_kpi_latest.json",
-    "docs\final\artifacts\report_schema_v2_latest.json"
+    "docs\final\artifacts\report_schema_v2_latest.json",
+    "docs\final\artifacts\truthfulqa_ab_benchmark_latest.json",
+    "docs\final\artifacts\truthfulqa_generation_ab_benchmark_latest.json",
+    "docs\final\artifacts\truthfulqa_ab_gate_latest.json"
 )
 $missingOptional = @()
 foreach ($rel in $optionalQualityArtifacts) {
@@ -212,7 +232,7 @@ foreach ($rel in $optionalQualityArtifacts) {
     }
 }
 if ($missingOptional.Count -gt 0) {
-    Write-Host "WARN: optional report_schema_v2 artifacts missing (run waiting_queue_monthly_check or build_report_schema_v2_* scripts):" -ForegroundColor Yellow
+    Write-Host "WARN: optional artifacts missing (report_schema_v2 or TruthfulQA benchmark outputs):" -ForegroundColor Yellow
     $missingOptional | ForEach-Object { Write-Host "  $_" }
 }
 

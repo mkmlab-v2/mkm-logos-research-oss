@@ -18,6 +18,7 @@
 
 - **구현 여부·경로 판정**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`와 호출 가능한 `.py`/pytest만 SSOT로 삼는다. 기획·NotebookLM·비전 문서만으로 “이미 구현”을 단정하지 않는다 (**Multi-Lens·격벽·TOE 비단정**: 동 문서 §1.1; **예언·델타·격리 우선순위 [VISION]**: §1.1.1).
 - **로컬 Fact-Lock 번들(CI에 가까운 순서)**: 저장소 루트에서 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_fact_lock_bundle.ps1`. 절차·맥락: `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 하단 “한 번에 돌리는 명령”.
+- **TruthfulQA A/B (B-track, `research_only`)**: 벤치 `scripts/run_truthfulqa_ab_benchmark_v1.py`, 게이트 `scripts/check_truthfulqa_ab_gate_v1.py`, 재현 `scripts/Run-TruthfulQAReproBundleV1.ps1`; 번들 옵션 `-IncludeTruthfulQaBenchmarkGate`·`-TruthfulQaEvalMcOnly` 등은 `run_fact_lock_bundle.ps1`. 상세 표·경로: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §3.6.
 - **보조 번들(Prophecy 정렬)**: `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`는 해당 디렉터리에서 실행. 워크스페이스 테스트 목록을 CI `dual-regime-integrity`와 맞출 때는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6 표를 확인한다.
 - **하이브리드 포인터 라우팅 체인(연구·PoC):** `py scripts/run_genesis_pointer_routing_control_chain_v1.py --go-cut 0.9 --watch-cut 0.5` → 결정/런타임/shadow/alert/guard/드릴 아티팩트 갱신. 외부 문구는 조건부·아티팩트 근거형만 허용.
 
