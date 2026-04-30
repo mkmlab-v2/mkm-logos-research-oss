@@ -178,6 +178,8 @@
 | 2026-05-01 (사상 4-Agent 일일 모니터 자동화 고정) | `Invoke-Sasang4AgentDailyMonitor.ps1` + `Register-Sasang4AgentDailyMonitorTask.ps1` 추가 및 태스크 `SASANG_4AGENT_DailyMonitor` 등록(07:40). 수동 러너+즉시 스케줄 실행 검증에서 `LastTaskResult=0`, 아티팩트 `sasang_4agent_daily_monitor_run_latest.json(status=PASS)`·`sasang_4agent_monitor_snapshot_latest.json(alert=false)` 확인. |
 | 2026-05-01 (사상 4-Agent FORCE_HOLD 복구 드릴 PASS) | `invoke_sasang_4agent_force_hold_v1.py --reason drill_2026-05-01`로 즉시 차단 후, 승인 재반영+브리지 재가동+모니터 갱신을 수행. 요약 드릴 `build_sasang_4agent_force_hold_recovery_drill_v1.py`에서 `status=PASS`(`force_hold_applied`, `gate_recovered_to_promoted`, `bridge_active_after_recovery`, `monitor_alert_false` 전부 true) 확인. |
 | 2026-05-01 (사상 4-Agent 제출 번들 단일화) | `build_sasang_4agent_promotion_submission_bundle_v1.py` 추가/실행으로 최종 제출 번들 `sasang_4agent_promotion_submission_bundle_latest.json/.md` 생성. 상태 문구 `PROMOTED_WITH_HUMAN_APPROVAL + MONITORING_ACTIVE + DRILL_PASS`와 핵심 9개 아티팩트 SHA256을 한 장으로 고정. |
+| 2026-05-01 (독립 재현 1회 반영) | `kospi_proxy_ohlcv_from_training_result.csv`로 독립 재현 아티팩트(`sasang_4agent_collision_btrack_protocol_repro_kospi_latest.json`) 생성 후 제출 번들에 `repro_check` 필드 추가. 유의성/개선은 통과했으나 표본 `ticks=99`로 `repro_sample_size_ok=false`, 번들 상태를 `HOLD_OR_INCOMPLETE_CHAIN`으로 보수 전환. |
+| 2026-05-01 (독립 재현 표본 300+ 충족 복구) | 재현 입력을 `research/market_data/kospi_daily_external_yf.csv`로 교체해 `sasang_4agent_collision_btrack_protocol_repro_kospi_latest.json` 재생성(`ticks=7232`, `p_permutation=0.017`, `sample_size_warning_low_ticks=false`). 제출 번들 재생성 후 `repro_check_pass=true`, 최종 상태 `PROMOTED_WITH_HUMAN_APPROVAL + MONITORING_ACTIVE + DRILL_PASS`로 복귀. |
 
 ---
 

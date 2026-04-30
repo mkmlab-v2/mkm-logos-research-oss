@@ -48,6 +48,7 @@ def main() -> int:
         "monitor_snapshot": art / "sasang_4agent_monitor_snapshot_latest.json",
         "daily_monitor_run": art / "sasang_4agent_daily_monitor_run_latest.json",
         "force_hold_recovery_drill": art / "sasang_4agent_force_hold_recovery_drill_latest.json",
+        "repro_protocol_kospi": art / "sasang_4agent_collision_btrack_protocol_repro_kospi_latest.json",
     }
 
     docs: dict[str, dict[str, Any]] = {k: _safe_json(v) for k, v in refs.items()}
@@ -56,6 +57,7 @@ def main() -> int:
     bridge = docs["tracka_bridge"]
     monitor = docs["monitor_snapshot"]
     drill = docs["force_hold_recovery_drill"]
+    repro = docs["repro_protocol_kospi"]
 
     final_line = "PROMOTED_WITH_HUMAN_APPROVAL + MONITORING_ACTIVE + DRILL_PASS"
     checks = {
@@ -64,6 +66,16 @@ def main() -> int:
         "monitor_alert_false": not bool(monitor.get("alert")),
         "recovery_drill_pass": str(drill.get("status")) == "PASS",
     }
+    repro_exp = repro.get("experiment") if isinstance(repro.get("experiment"), dict) else {}
+    repro_res = repro.get("results") if isinstance(repro.get("results"), dict) else {}
+    repro_ticks = int(repro_exp.get("ticks") or 0)
+    repro_significance = bool(repro_res.get("statistical_significance_pass_p_lt_0_05"))
+    repro_mdd_reduction_positive = float(repro_res.get("mdd_reduction_abs") or 0.0) > 0.0
+    repro_sample_ok = not bool(repro_res.get("sample_size_warning_low_ticks"))
+    checks["repro_significance_pass"] = repro_significance
+    checks["repro_mdd_reduction_positive"] = repro_mdd_reduction_positive
+    checks["repro_sample_size_ok"] = repro_sample_ok
+    checks["repro_check_pass"] = bool(repro_significance and repro_mdd_reduction_positive and repro_sample_ok)
     if not all(checks.values()):
         final_line = "HOLD_OR_INCOMPLETE_CHAIN"
 
@@ -85,6 +97,9 @@ def main() -> int:
             "bridge_status": bridge.get("status"),
             "monitor_alert": monitor.get("alert"),
             "drill_status": drill.get("status"),
+            "repro_ticks": repro_ticks,
+            "repro_p_permutation": repro_res.get("mdd_reduction_p_value_permutation"),
+            "repro_check_pass": checks["repro_check_pass"],
         },
     }
     out_json.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
