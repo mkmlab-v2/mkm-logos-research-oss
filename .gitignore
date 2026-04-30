@@ -57,6 +57,10 @@ rag_server/.test_rag_idx/
 
 # Large artifacts excluded for GitHub push
 models/**
+# Global atom full canon large snapshots (keep only consolidated latest manifest tracked)
+docs/final/artifacts/global_atom_full_canon/*
+!docs/final/artifacts/global_atom_full_canon/
+!docs/final/artifacts/global_atom_full_canon/global_atom_full_canon_consolidated_manifest_latest.json
 # Regenerate: py scripts/export_general_prophecy_to_jsonl.py
 data/training/*.jsonl
 **/*.gguf
