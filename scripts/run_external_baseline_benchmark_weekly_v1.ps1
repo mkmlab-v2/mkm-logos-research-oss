@@ -118,10 +118,30 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $gatePath = "docs/final/artifacts/external_bible_crossref_threshold_apply_gate_latest.json"
 if (Test-Path -LiteralPath $gatePath) {
     $gate = Get-Content -LiteralPath $gatePath -Raw | ConvertFrom-Json
+    $approvalWarningPath = "docs/final/artifacts/external_bible_crossref_approval_expiry_warning_latest.json"
+    $effectReportPath = "docs/final/artifacts/external_bible_crossref_threshold_effect_report_latest.json"
+    $renewalDue = $false
+    $effectChanged = $false
+    if (Test-Path -LiteralPath $approvalWarningPath) {
+        $approvalWarning = Get-Content -LiteralPath $approvalWarningPath -Raw | ConvertFrom-Json
+        $renewalDue = [bool]$approvalWarning.renewal_due
+    }
+    if (Test-Path -LiteralPath $effectReportPath) {
+        $effectReport = Get-Content -LiteralPath $effectReportPath -Raw | ConvertFrom-Json
+        if ($effectReport.label_distribution_delta_vs_previous) {
+            $d = $effectReport.label_distribution_delta_vs_previous
+            $effectChanged = (([int]$d.promising -ne 0) -or ([int]$d.watch -ne 0) -or ([int]$d.below_watch -ne 0))
+        }
+    }
+    $applyRecommended = ($renewalDue -or $effectChanged)
     if ($gate.can_apply_thresholds -eq $true) {
-        Write-Host "[16/24] Apply thresholds from approved proposal" -ForegroundColor Yellow
-        & py "scripts/apply_external_baseline_thresholds_from_proposal_v1.py"
-        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        if ($applyRecommended) {
+            Write-Host "[16/24] Apply thresholds from approved proposal (policy: recommended)" -ForegroundColor Yellow
+            & py "scripts/apply_external_baseline_thresholds_from_proposal_v1.py"
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        } else {
+            Write-Host "[16/24] Skip threshold apply (policy: not recommended this cycle)" -ForegroundColor DarkGray
+        }
     } else {
         Write-Host "[16/24] Skip threshold apply (gate blocked)" -ForegroundColor DarkGray
     }
