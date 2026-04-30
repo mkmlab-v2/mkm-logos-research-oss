@@ -225,6 +225,14 @@ reports/aistudio_mcp_env_diagnosis.json
 /GoogleDriveSetup.exe
 /tmp_sync_report.txt
 .aider*
+/status
+/no1kmedi_kakao_app_icon.png
+
+# Local temporary work folders (regenerable scratch trees)
+/.cursor-clean-profile/
+/_hotfix_deploy/
+/_hotfix_deploy_origin/
+/logos_reval_*/
 
 # Local Windows Task Scheduler audit exports (regenerable; keep status clean)
 reports/workspace_scheduled_tasks_audit_latest.csv
