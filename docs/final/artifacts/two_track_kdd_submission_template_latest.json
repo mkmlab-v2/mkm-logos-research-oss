@@ -2,26 +2,28 @@
   "schema": "two_track_kdd_submission_template_v1",
   "generated_at_utc": "2026-04-28T04:45:51Z",
   "track": "kdd_applied_data_science",
-  "title_en": "Two-Track Safety-Gated Inference: A Public-Safe Falsification Architecture for Meaning-Driven Signals",
-  "abstract_en_180w": "Two-Track Safety-Gated Inference: A Public-Safe Falsification Architecture for Meaning-Driven Signals proposes a safety-gated evaluation architecture for meaning-rich cross-reference signals that are expressive but vulnerable to overfitting when promoted directly to trading actions. We separate K-track (knowledge/IP narrative generation) from T-track (survivor filtering, rollback contracts, and operational gates), and validate claims with multi-baseline comparison, raw OOS readiness checks, and bootstrap/permutation significance. Current gate status is bundle_ready=True, ready_for_publication_claim=True, with falsification pass 5/5. Robustness sensitivity reports first non-pass at min_survivor_count=7 and min_ci_low_defense_contrib=0.0. A fail-boundary layer defines max-safe survivor floor=5 and first-break threshold=7, which is wired to an explicit no-go gate. Public disclosure remains redacted at formula/weight level, while reproducibility is preserved through artifact-chain checkpoints.",
+  "title_en": "Two-Track Safety-Gated Inference for Risk-Control Decision Support",
+  "abstract_en_180w": "We present a two-track safety-gated inference architecture for risk-control operations over meaning-rich cross-reference signals. The system separates K-track (knowledge/research lane) from T-track (operational survivorship and rollback lane) to prevent direct promotion of overfit signals into operations. Claims are artifact-anchored and reproducible through multi-baseline comparison, raw OOS readiness checks, bootstrap/permutation significance, and falsification boundary scans. Current as-of artifacts indicate bundle readiness and publication-claim readiness under tested conditions; significance supports positive delta, and falsification reports first non-pass at survivor threshold 7. A fail-boundary layer sets max-safe survivor floor at 5 and first-break at 7 for explicit no-go semantics. Historical corpora are treated as stress-test beds for context-filter robustness, not doctrinal proof. The system prioritizes risk-off governance, auditability, and reproducibility over directional market claims.",
   "keywords_en": [
     "safety-gated inference",
-    "two-track evaluation",
-    "falsification",
-    "bootstrap significance",
+    "two-track architecture",
+    "risk-control governance",
+    "falsification boundaries",
+    "bootstrap permutation significance",
     "public-safe disclosure",
-    "survivor filter",
-    "meaning graph"
+    "artifact reproducibility",
+    "survivor filter"
   ],
   "contributions_en": [
-    "Two-track architecture that separates narrative insight generation from execution gating.",
+    "Two-track architecture that separates K-track research insight generation from T-track operational gating.",
     "Falsification-first validation with explicit fail-boundary and rollback semantics.",
-    "Public-safe disclosure strategy with artifact-chain reproducibility for applied review."
+    "Public-safe disclosure strategy with as-of artifact reproducibility for applied review."
   ],
   "submission_notes_en": [
     "Use this payload for KDD Applied Data Science track form fields.",
     "Keep proprietary formulas/weights redacted; cite artifact paths instead.",
-    "Include fail-boundary row in supplementary/rebuttal appendix."
+    "Include fail-boundary row in supplementary/rebuttal appendix.",
+    "Avoid doctrinal, guarantee-style, directional certainty, or absolute wording in external claims."
   ],
   "source": {
     "recommended_track_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_recommended_track_latest.json",
