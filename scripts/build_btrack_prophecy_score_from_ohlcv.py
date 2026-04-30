@@ -98,6 +98,52 @@ def _predicted_direction(h: dict[str, Any]) -> str | None:
     return None
 
 
+def _normalize_direction(v: Any) -> str | None:
+    d = str(v or "").strip().lower()
+    if d in ("bull", "bear", "neutral"):
+        return d
+    return None
+
+
+def _load_per_date_direction_map(path: Path | None) -> dict[str, str]:
+    if path is None or not path.is_file():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return {}
+
+    out: dict[str, str] = {}
+    rows: list[Any] = []
+    if isinstance(payload, dict) and isinstance(payload.get("rows"), list):
+        rows = payload.get("rows") or []
+    elif isinstance(payload, list):
+        rows = payload
+    elif isinstance(payload, dict):
+        # support {"2026-01-01":"bull", ...} style mapping
+        for k, v in payload.items():
+            d = _normalize_direction(v)
+            if d and isinstance(k, str):
+                out[k] = d
+        return out
+
+    for r in rows:
+        if not isinstance(r, dict):
+            continue
+        ed = str(r.get("eval_date") or "").strip()
+        if not ed:
+            continue
+        d = _normalize_direction(
+            r.get("predicted_direction")
+            or r.get("prediction_direction")
+            or r.get("direction")
+            or r.get("predicted")
+        )
+        if d:
+            out[ed] = d
+    return out
+
+
 def _is_manual_override_hypothesis(h: dict[str, Any]) -> bool:
     prov = h.get("provenance")
     if not isinstance(prov, dict):
@@ -673,6 +719,12 @@ def _build_rows(
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build btrack_prophecy_score JSON from hypothesis + OHLCV.")
     ap.add_argument("--hypothesis-json", type=Path, default=DEFAULT_HYPOTHESIS)
+    ap.add_argument(
+        "--per-date-direction-json",
+        type=Path,
+        default=None,
+        help="Optional JSON/JSONL-style rows source containing eval_date + predicted_direction to override frozen hypothesis direction.",
+    )
     ap.add_argument("--kospi-csv", type=Path, default=DEFAULT_KOSPI_CSV)
     ap.add_argument("--btc-csv", type=Path, default=None, help="Optional YFinance-style daily CSV for BTC.")
     ap.add_argument(
@@ -763,7 +815,7 @@ def main() -> int:
         "--bull-reversal-bull-min-prev-ret-pct",
         type=float,
         default=0.8,
-        help="Two-stage: min previous-day return (%) required to promote neutral->bull.",
+        help="Two-stage: min previous-day return (%%) required to promote neutral->bull.",
     )
     ap.add_argument(
         "--bull-reversal-bull-min-flow-score",
@@ -780,7 +832,7 @@ def main() -> int:
         "--bull-reversal-bull-max-recent-abs-return-mean-pct",
         type=float,
         default=3.0,
-        help="Two-stage: max recent abs-return mean (%) for neutral->bull promotion.",
+        help="Two-stage: max recent abs-return mean (%%) for neutral->bull promotion.",
     )
     ap.add_argument(
         "--bull-reversal-bull-recent-vol-lookback",
@@ -815,19 +867,19 @@ def main() -> int:
         "--bull-reversal-down-guard-max-cum-down-pct",
         type=float,
         default=9.0,
-        help="Max cumulative down move (%) allowed before blocking bull_reversal.",
+        help="Max cumulative down move (%%) allowed before blocking bull_reversal.",
     )
     ap.add_argument(
         "--bull-reversal-down-guard-shock-cutoff-pct",
         type=float,
         default=6.0,
-        help="Shock cutoff for stress_only guard mode (abs previous-day return %).",
+        help="Shock cutoff for stress_only guard mode (abs previous-day return %%).",
     )
     ap.add_argument(
         "--bull-reversal-down-guard-high-vol-pct",
         type=float,
         default=2.5,
-        help="Recent abs-return mean % threshold for stress_only guard mode.",
+        help="Recent abs-return mean %% threshold for stress_only guard mode.",
     )
     ap.add_argument(
         "--bear-relax-enable",
@@ -855,7 +907,7 @@ def main() -> int:
         "--bear-relax-max-recent-abs-return-mean-pct",
         type=float,
         default=2.0,
-        help="Max mean abs return (%) over recent lookback to allow bear relaxation (low-vol regime filter).",
+        help="Max mean abs return (%%) over recent lookback to allow bear relaxation (low-vol regime filter).",
     )
     ap.add_argument(
         "--bear-relax-recent-vol-lookback",
@@ -873,7 +925,7 @@ def main() -> int:
         "--year-rebound-min-prev-ret-pct",
         type=float,
         default=0.4,
-        help="Minimum prev-day return (%) to activate year rebound override.",
+        help="Minimum prev-day return (%%) to activate year rebound override.",
     )
     ap.add_argument(
         "--year-rebound-min-flow-score",
@@ -890,7 +942,7 @@ def main() -> int:
         "--year-rebound-max-recent-abs-return-mean-pct",
         type=float,
         default=2.5,
-        help="Max mean abs return (%) over recent lookback for year rebound override.",
+        help="Max mean abs return (%%) over recent lookback for year rebound override.",
     )
     ap.add_argument(
         "--year-rebound-recent-vol-lookback",
@@ -902,7 +954,7 @@ def main() -> int:
         "--year-rebound-min-prev2-ret-pct",
         type=float,
         default=-0.2,
-        help="Minimum 2nd previous-day return (%) for year rebound override.",
+        help="Minimum 2nd previous-day return (%%) for year rebound override.",
     )
     ap.add_argument(
         "--year-rebound-down-stress-lookback",
@@ -920,7 +972,7 @@ def main() -> int:
         "--year-rebound-max-cum-down-pct",
         type=float,
         default=9.0,
-        help="Maximum cumulative down move (%) allowed in down-stress window.",
+        help="Maximum cumulative down move (%%) allowed in down-stress window.",
     )
     ap.add_argument(
         "--year-default-overrides",
@@ -949,7 +1001,7 @@ def main() -> int:
         "--downside-force-bear-min-cum-down-pct",
         type=float,
         default=6.0,
-        help="Minimum cumulative down move (%) in lookback to force bear.",
+        help="Minimum cumulative down move (%%) in lookback to force bear.",
     )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     ap.add_argument(
@@ -994,6 +1046,10 @@ def main() -> int:
 
     inst = _instrument(hyp)
     predicted = _predicted_direction(hyp)
+    per_date_dir_path = args.per_date_direction_json
+    if per_date_dir_path and not per_date_dir_path.is_absolute():
+        per_date_dir_path = ROOT / per_date_dir_path
+    per_date_direction_map = _load_per_date_direction_map(per_date_dir_path)
     year_rebound_overrides = _parse_year_rebound_overrides(str(args.year_rebound_overrides))
     year_default_overrides = _parse_year_default_overrides(str(args.year_default_overrides))
 
@@ -1006,6 +1062,9 @@ def main() -> int:
         rows_out: list[dict[str, Any]] = []
         wmeta: dict[str, Any] = {"warnings": []}
         for ed in dates_to_use:
+            predicted_for_date = per_date_direction_map.get(ed, predicted)
+            if per_date_direction_map and predicted_for_date is None:
+                wmeta["warnings"].append(f"missing per-date predicted_direction for eval_date={ed}; no rows for this date.")
             chunk, wm = _build_rows(
                 hypothesis=hyp,
                 eval_date=ed,
@@ -1013,7 +1072,7 @@ def main() -> int:
                 kospi_rows=kospi_rows,
                 btc_rows=btc_rows,
                 inst=inst,
-                predicted=predicted,
+                predicted=predicted_for_date,
                 bull_reversal_lookback=max(0, int(args.bull_reversal_lookback)),
                 bull_reversal_threshold_pct=float(args.bull_reversal_threshold_pct),
                 bull_reversal_target=str(args.bull_reversal_target),
@@ -1066,16 +1125,26 @@ def main() -> int:
             wmeta["warnings"].extend(wm.get("warnings", []))
         eval_date = dates_to_use[-1]
         wmeta["batch_eval_dates"] = dates_to_use
-        wmeta["frozen_prediction_note"] = (
-            "Same hypothesis predicted_direction applied to each eval_date vs that day's realized return "
-            f"({len(dates_to_use)} trading days)."
-        )
+        if per_date_direction_map:
+            wmeta["per_date_prediction_note"] = (
+                "Per-date predicted_direction override applied where eval_date keys are present; "
+                "hypothesis direction used as fallback."
+            )
+        else:
+            wmeta["frozen_prediction_note"] = (
+                "Same hypothesis predicted_direction applied to each eval_date vs that day's realized return "
+                f"({len(dates_to_use)} trading days)."
+            )
     else:
         eval_date = args.eval_date.strip()
         if eval_date == "auto":
             eval_date = _default_eval_date(kospi_rows) or ""
         if not eval_date:
             print("Could not resolve eval-date (empty CSV or no past dates).", file=sys.stderr)
+            return 2
+        predicted_for_date = per_date_direction_map.get(eval_date, predicted)
+        if per_date_direction_map and predicted_for_date is None:
+            print(f"Missing per-date predicted_direction for eval_date={eval_date}", file=sys.stderr)
             return 2
         rows_out, wmeta = _build_rows(
             hypothesis=hyp,
@@ -1084,7 +1153,7 @@ def main() -> int:
             kospi_rows=kospi_rows,
             btc_rows=btc_rows,
             inst=inst,
-            predicted=predicted,
+            predicted=predicted_for_date,
             bull_reversal_lookback=max(0, int(args.bull_reversal_lookback)),
             bull_reversal_threshold_pct=float(args.bull_reversal_threshold_pct),
             bull_reversal_target=str(args.bull_reversal_target),
@@ -1142,6 +1211,7 @@ def main() -> int:
         "inputs": {
             "kospi_csv": _rel_to_root(args.kospi_csv),
             "btc_csv": str(args.btc_csv) if args.btc_csv else None,
+            "per_date_direction_json": _rel_to_root(per_date_dir_path) if per_date_dir_path and per_date_dir_path.is_file() else None,
             "recent_trading_days": n_batch,
             "bull_reversal_lookback": max(0, int(args.bull_reversal_lookback)),
             "bull_reversal_threshold_pct": float(args.bull_reversal_threshold_pct),
