@@ -2531,3 +2531,15 @@ Set-Location c:\workspace
 - **fact_promotion_allowed:** `False`
 - **reason:** `synthetic_or_template_input_detected`
 - **sidecar_csv:** `C:\workspace\tmp\bio_multimodal_sidecar_from_paper_proxy_v1.csv`
+
+## 2026-04-30 최신 상태 (투고 패킷·운영 게이트 동기화)
+
+- **대외 문구 가드 고정:** `scripts/build_external_message_claim_guard_report_v1.py` + CI `.github/workflows/external-message-claim-guard.yml` + 주간 러너 `scripts/run_a_track_weekly_check.ps1` 선검사 연결.
+- **가드 상태:** `docs/final/artifacts/external_message_claim_guard_latest.json` 기준 `status=pass` 유지(파싱/BOM 이슈 보정 완료).
+- **스케줄 운영 분리:** `A-Track Weekly GoNoGo-Dev`(hold_s1 + claim guard off) / `A-Track Weekly GoNoGo-Prod`(no_go + claim guard on) 등록·수동 트리거·실행 결과 `Last Result=0` 확인.
+- **등록 스크립트 강화:** `scripts/register_a_track_weekly_gonogo_task.ps1`에 `OnSystemError`, `Enable/DisableClaimGuard`, `EnvironmentSuffix`, `DryRun` 및 운영 예시/검증 명령 반영.
+- **제출 패킷 완성:** `docs/final/artifacts/mkm_submission_packet_v1.md` + `mkm_submission_camera_ready_compact_v1.md` + `mkm_submission_table_figure_caption_templates_v1.md` + `mkm_submission_rebuttal_template_v1.md`.
+- **템플릿 동기화:** `two_track_submission_camera_ready_latest.json`, `two_track_kdd_submission_template_latest.json`를 `as-of artifact`, A/B 격벽, risk-control 문구로 정렬.
+- **승격 표 반영:** `mkm_submission_packet_v1.md`에 Evidence Promotion Matrix(P1~P5) + Tier 규칙(Tier A candidate / Tier B exploratory) 삽입.
+- **투고 직전 체크리스트:** `docs/final/artifacts/mkm_submission_preflight_10min_checklist_v1.md` 생성(문구/증거/운영 preflight 10분 루틴).
+- **다음 1스텝:** 제출 직전 T-1/T-0에 핵심 5개 artifact의 `generated_at_utc` 재확인 + claim guard 재실행 후 제출본 고정.
