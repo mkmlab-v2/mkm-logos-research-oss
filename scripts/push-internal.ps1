@@ -61,12 +61,18 @@ if ($remoteSha -and $remoteSha -eq $localSha) {
     exit 0
 }
 
-$pushOutput = if ($SetUpstream) {
-    git push -u $remoteName HEAD 2>&1
-} else {
-    git push $remoteName HEAD 2>&1
+function Invoke-GitPushText {
+    param(
+        [string]$RemoteName,
+        [bool]$UseUpstream
+    )
+    $args = if ($UseUpstream) { "push -u $RemoteName HEAD 2>&1" } else { "push $RemoteName HEAD 2>&1" }
+    # Run through cmd so stderr is captured as plain text and does not surface as PowerShell ErrorRecord noise.
+    $text = (& cmd /c "git $args" | Out-String)
+    return $text
 }
-$pushText = ($pushOutput | Out-String)
+
+$pushText = Invoke-GitPushText -RemoteName $remoteName -UseUpstream:$SetUpstream
 
 if ($LASTEXITCODE -ne 0) {
     if ($pushText -match "reference already exists") {
