@@ -176,6 +176,14 @@ on:
       - "tests/test_multilens_sensitive_integrity_gate.py"
       - "tests/test_ultra_compression_artifacts.py"
       - "tests/test_compression_weekly_governance_report.py"
+      - "tests/test_external_anchor_governance_scripts_smoke_v1.py"
+      - "scripts/build_external_anchor_promotion_handoff_packet_v1.py"
+      - "scripts/build_external_anchor_weekly_ab_report_v1.py"
+      - "scripts/sync_external_anchor_tier1_into_operating_policy_v1.py"
+      - "scripts/build_external_anchor_recovery_candidates_v1.py"
+      - "scripts/check_external_anchor_promotion_sustain_gate_v1.py"
+      - "scripts/append_external_anchor_promotion_history_v1.py"
+      - "scripts/run_layer1_layer5_weekly_maintenance_v1.ps1"
       - "tests/test_run_deut32_cee_pilot.py"
       - "tests/test_run_deut32_cee_stability_sweep.py"
       - "tests/test_run_btrack_fusion_gate.py"
@@ -497,6 +505,15 @@ jobs:
       - name: B-Track hypothesis + dawn-score + prophecy hit-rate eval smoke
         run: python -m pytest tests/test_generate_btrack_hypothesis_prophecy_v1.py tests/test_build_btrack_prophecy_score_from_ohlcv.py tests/test_eval_prophecy_hit_rate_v1.py -q --tb=short
 
+      - name: B-track news_observation JSONL schema + validator CLI smoke
+        run: |
+          python -m pytest \
+            tests/test_news_observation_v1_schema.py \
+            tests/test_validate_news_observation_jsonl_v1.py \
+            tests/test_check_news_label_join_temporal_v1.py \
+            tests/test_build_news_observation_jsonl_from_csv_v1.py \
+            -q --tb=short
+
       - name: Logos revalidation fusion + semantic separation regression
         run: |
           python -m pytest \
@@ -623,6 +640,9 @@ jobs:
 
       - name: Compression weekly governance report contract
         run: python -m pytest tests/test_compression_weekly_governance_report.py -q --tb=short
+
+      - name: External Bible anchor governance scripts smoke
+        run: python -m pytest tests/test_external_anchor_governance_scripts_smoke_v1.py -q --tb=short
 
       - name: Token API hydration trend contract
         run: python -m pytest tests/test_token_api_hydration_trend.py -q --tb=short
