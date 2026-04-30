@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-04-28T07:05:00Z
+- **last_updated_utc:** 2026-04-30T06:00:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -118,6 +118,10 @@
 | 2026-04-28 (성경×우리이론 융합 게이트 완성) | Multi-symbol(선악과/바벨/출애굽) 공진·4D·survivability·drift·negative/counterfactual·통합 게이트(`multi_symbol_gate_summary_latest.json=GO`)와 Q&A 동적 근거 주입까지 E2E 체인+pytest로 잠금. |
 | 2026-04-28 (PointerGuard 상용 게이트 고정) | 폴더 정책 allow/caution/forbid + shadow alert/guard + memory_v2 ramp/freeze + 운영 스모크 + 일일 스케줄러 + Tier2 서비스형 부하(`max_error_rate=0`, worst `p95=159.50ms`, worst `p99=171.77ms`)까지 연결. 대외 판정은 **`GO_FOR_CONTROLLED_B2B`**, 글로벌 초대형 주장(`global-scale`)은 **Tier2 host 리소스 계측 보강 전 보류**. |
 | 2026-04-29 (Global Atom 수치 락 복구) | `3051269 edges`(약 305만) 근거를 freeze onepager(`.../freeze/global_atom_submission_20260428T095850Z/global_atom_network_academic_onepager_latest.json`)로 재매핑하고, `global_atom_claim_lock_registry_latest.json` + `check_global_atom_claim_lock_v1.py`로 주장-근거-해시 재검증 루프를 고정. |
+| 2026-04-29 (A-track go/nogo 의미 분리 복구) | `build_a_track_go_nogo_status.py`의 의미 충돌(`snapshot: HOLD/lock` vs `checks: not_hold/unlocked=true`)을 수정해 runtime 상태 체크(`high_reliability_decision_not_hold`, `price_output_unlocked`)와 정책 준비 체크(`high_reliability_release_plan_defined`, `price_unlock_policy_defined`)를 분리; pytest 통과 후 재생성 결과를 `HOLD/S1_SHADOW`로 일치시킴. |
+| 2026-04-29 (31.71 융합·재검증 고정) | `check_role_router_shadow_forward_validation_v1.py`를 재검증 스위트에 융합하고 `required_oos_days=252`·`min_hit_rate_active=0.52845(BTC)`·`--promotion-gate-json`(gate-pass 우선)을 반영해 `GO_LIVE_CANDIDATE` 수신증명은 유지하되, `logos_directional_viable_under_current_setup=false`와 의미를 분리 고정. |
+| 2026-04-30 (외부 성경 앵커 governance + CI 스모크) | **브랜치:** `origin/fix/external-anchor-ci-smoke`(스모크 deps 커밋 `d5bc42c965` 포함)·Dual Regime 워크플로에 `tests/test_external_anchor_governance_scripts_smoke_v1.py` 등록. **혼동 방지:** PR/CI와 동일 트리 작업은 전용 **git worktree** `C:\workspace\tmp\wt-external-anchor-work`를 쓰고, 메인 `C:\workspace`는 `fix/open-bench-c3c5-gates`·대량 로컬 수정·`.git/info/exclude`의 `scripts/*` 영향으로 원격과 다를 수 있음 — 앵커 스크립트·주간 순서(sustain→sync→append→sustain→sync→overwrite)·`adopt_limited_strict` 스트릭은 스모크·`run_layer1_layer5_weekly_maintenance_v1.ps1`로 Fact-Lock. |
+| 2026-04-30 (투고 패킷·운영 게이트 잠금) | 대외 문구 가드(`build_external_message_claim_guard_report_v1.py`)를 CI·주간 러너에 고정하고 Dev/Prod 스케줄을 분리(Prod claim_guard ON); 제출 패킷(`mkm_submission_packet_v1` + camera-ready/caption/rebuttal + preflight) 완성 후 핵심 5개 evidence와 claim guard를 T-1/T-0 시점으로 재생성해 `status=pass`·최신 `generated_at_utc`를 잠금. |
 | | |
 
 ---
@@ -178,9 +182,9 @@
 
 ## 다음에 할 일 (최대 3개)
 
-1. Global Atom 핵심 주장 수치(약 305만 엣지)를 `global_atom_claim_lock_registry_latest.json`의 `value/definition/evidence_path/recompute_command` 형식으로만 대외/내부 문구에 사용하고, 브리핑 단독 수치는 금지.
-2. `py scripts/check_global_atom_claim_lock_v1.py --write-lock --strict`를 주간/배포 전 체인에 연결해 claim value·source hash 드리프트를 자동 감지.
-3. NotebookLM 지휘부 동기화 루틴 유지: `sync_notebooklm_sources_to_mkm_data_vault.ps1` 실행 후 `CURRENT_OPS_SNAPSHOT.md`와 claim registry 경로 정합 점검.
+1. GitHub에서 브랜치 **`fix/external-anchor-ci-smoke`** PR을 열었으면 **Dual Regime Integrity** 녹색 확인 후 목표 브랜치에 머지; 메인 워크스페이스는 머지 후 `git fetch`/`pull`로 정렬하거나 PR 작업만 **worktree**(`C:\workspace\tmp\wt-external-anchor-work`)에서 유지.
+2. (선택) 구현 경로 SSOT 보강: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`에 external Bible anchor 체인·아티팩트 경로를 한 절 추가(스크립트 목록은 레포의 해당 브랜치와 동일하게 유지).
+3. Global Atom claim registry·NotebookLM Vault 동기화 등 기존 운영 루틴은 병행 시 Fact-Lock 우선.
 
 ## 동기화 루틴
 

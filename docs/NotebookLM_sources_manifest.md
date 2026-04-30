@@ -92,10 +92,12 @@ Gemini/NotebookLM이 "지금 개발이 어디까지 왔는지"를 빠르게 파�
 |------|------|------|
 | 1 | `docs/final/CURRENT_OPS_SNAPSHOT.md` | 최신 작업 흐름·핸드오프 요약 |
 | 2 | `docs/final/P0_COMMERCIALIZATION_TRACKER.md` | 상용화 단계/게이트 SSOT |
-| 3 | `docs/final/artifacts/two_track_submission_draft_latest.json` | 논문 초안 스캐폴드(제목·초록·섹션) |
-| 4 | `docs/final/artifacts/two_track_submission_evidence_bundle_latest.json` | 필수 증거 번들 충족 여부 |
-| 5 | `docs/final/artifacts/two_track_submission_go_nogo_latest.json` | 제출 GO/NO_GO 스냅샷 |
-| 6 | `docs/final/artifacts/truthfulqa_ab_gate_latest.json` | 외부형 벤치 게이트 상태(최근 NO_GO 여부 확인) |
+| 3 | `docs/final/artifacts/mkm_submission_packet_v1.md` | 제출 패킷 메인(초록/방법/한계/FAQ + 승격 매트릭스) |
+| 4 | `docs/final/artifacts/mkm_submission_preflight_10min_checklist_v1.md` | 제출 직전 10분 점검 루틴 |
+| 5 | `docs/final/artifacts/two_track_submission_camera_ready_latest.json` | 카메라레디 제출 JSON(최종 문구 잠금) |
+| 6 | `docs/final/artifacts/two_track_kdd_submission_template_latest.json` | KDD 제출 템플릿(최종 문구 잠금) |
+| 7 | `docs/final/artifacts/two_track_submission_evidence_bundle_latest.json` | 필수 증거 번들 충족 여부 |
+| 8 | `docs/final/artifacts/external_message_claim_guard_latest.json` | 대외 문구 가드 상태(`status=pass` 확인) |
 
 보조 점검(선택): `docs/final/artifacts/global_atom_sota_baseline_readiness_latest.json`  
 (placeholder baseline 여부를 확인해 과장 주장 방지)
