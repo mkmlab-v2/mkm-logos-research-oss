@@ -7,6 +7,7 @@ type Nav = {
   service_consumer: string;
   service_clinician: string;
   service_reception: string;
+  service_developer?: string;
   about_group: string;
   about: string;
   safety: string;
@@ -60,6 +61,9 @@ export function SiteHeader({ nav, brand, links }: { nav: Nav; brand: Brand; link
           </a>
           <a href={links.reception} onClick={() => setOpen(false)}>
             {nav.service_reception}
+          </a>
+          <a href="/developer/graph-insights" onClick={() => setOpen(false)}>
+            {nav.service_developer ?? "개발자 그래프 인사이트"}
           </a>
           <span className="nav-group-label">{nav.about_group}</span>
           <a href="#about" onClick={() => setOpen(false)}>
