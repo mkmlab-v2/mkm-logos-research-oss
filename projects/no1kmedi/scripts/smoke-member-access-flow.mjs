@@ -19,7 +19,7 @@ async function request(path, init) {
 }
 
 async function main() {
-  const email = `smoke-flow+${Date.now()}@no1kmedi.com`;
+  const email = `smoke-flow+${Date.now()}@jema-ai.com`;
   const emailQuery = encodeURIComponent(email);
 
   const initial = await request(`/api/member/access-status?email=${emailQuery}`, { method: "GET" });

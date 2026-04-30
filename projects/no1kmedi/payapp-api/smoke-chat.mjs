@@ -2,13 +2,15 @@
  * Smoke tests for POST /api/ai/chat (guards + optional JSON mode).
  * Usage:
  *   node smoke-chat.mjs
- *   node smoke-chat.mjs --prod   → API https://api.no1kmedi.com (override with API_BASE)
- *   API_BASE=https://api.no1kmedi.com node smoke-chat.mjs
+ *   node smoke-chat.mjs --prod   → API_BASE is required for production endpoint
+ *   API_BASE=https://<your-prod-api-domain> node smoke-chat.mjs
  */
 const useProd = process.argv.includes("--prod");
-const base = (
-  process.env.API_BASE || (useProd ? "https://api.no1kmedi.com" : "http://127.0.0.1:3000")
-).replace(/\/$/, "");
+const apiBaseFromEnv = (process.env.API_BASE || "").trim();
+if (useProd && !apiBaseFromEnv) {
+  throw new Error("API_BASE is required when using --prod");
+}
+const base = (apiBaseFromEnv || "http://127.0.0.1:3000").replace(/\/$/, "");
 const smokeModel = process.env.SMOKE_MODEL || "athena-nucleus-v6:latest";
 const authToken = (process.env.NO1KMEDI_API_KEY || process.env.API_AUTH_BEARER || "").trim();
 const allowUnauthProtected =

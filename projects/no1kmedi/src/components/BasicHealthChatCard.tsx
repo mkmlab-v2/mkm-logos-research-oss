@@ -58,6 +58,7 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          audience: "consumer",
           message: userMessage,
           health_data: {
             survey: {
@@ -92,10 +93,10 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
       className={isWorkspace ? "workspace-chat-root" : undefined}
     >
       <h2 id="basic-health-chat-title" className={isWorkspace ? "sr-only" : undefined}>
-        AI 기본 건강상담 (사전 안내)
+        AI 기본 건강상담 안내
       </h2>
       {isWorkspace ? null : (
-        <p className="section-lead">간단한 건강 질문에 답하고, 필요 시 바로 문진/예약 단계로 연결됩니다.</p>
+        <p className="section-lead">간단한 건강 질문에 답하고, 필요 시 상세 문진과 한의원 상담 단계로 연결됩니다.</p>
       )}
 
       <div className={`chat-card${isWorkspace ? " chat-card--workspace" : ""}`}>
@@ -149,7 +150,7 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
           {isWorkspace ? (
             <>
               <Link className="btn btn-primary" href="/consumer?panel=survey#patient-intake">
-                사전문진·연결 단계
+                상세 문진 작성하기
               </Link>
               <Link className="btn btn-ghost" href="/#contact">
                 문의
@@ -158,7 +159,7 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
           ) : (
             <>
               <a className="btn btn-primary" href="#patient-intake">
-                사전문진으로 이어가기
+                상세 문진으로 이어가기
               </a>
               <a className="btn btn-ghost" href="#contact">
                 한의원 상담 연결 문의

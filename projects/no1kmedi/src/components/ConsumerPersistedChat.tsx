@@ -75,6 +75,7 @@ export function ConsumerPersistedChat({ thread, onCommit }: ConsumerPersistedCha
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          audience: "consumer",
           message: userMessage,
           health_data: { survey: healthPayload },
           chat_history: turnsWithUser.slice(-14),

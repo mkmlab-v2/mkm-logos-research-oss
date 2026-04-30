@@ -65,7 +65,7 @@ async function main() {
   const missingEmail = await request("/api/member/access-status", { method: "GET" });
   assert(missingEmail.res.status === 400, `member/access-status missing email expected 400, got ${missingEmail.res.status}`);
 
-  const email = encodeURIComponent(`smoke+${Date.now()}@no1kmedi.com`);
+  const email = encodeURIComponent(`smoke+${Date.now()}@jema-ai.com`);
   const locked = await request(`/api/member/access-status?email=${email}`, { method: "GET" });
   assert(locked.res.status === 200, `member/access-status expected 200, got ${locked.res.status}`);
   assert(locked.json?.can_use_pro_clinical_assist === false, "new user should be locked");

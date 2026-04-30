@@ -270,8 +270,8 @@ export function PatientPreSurveyForm() {
 
   return (
     <section id="patient-intake" aria-labelledby="patient-intake-title">
-      <h2 id="patient-intake-title">보조 설문 입력</h2>
-      <p className="section-lead">핵심 상담을 위한 보조 입력 단계입니다. 진단/처방 자동결정이 아니며 최종 판단은 의료진이 확정합니다.</p>
+      <h2 id="patient-intake-title">상세 문진 입력</h2>
+      <p className="section-lead">한의원 상담 전 필요한 정보를 정리하는 단계입니다. 최종 진단·처방은 한의사가 수행합니다.</p>
 
       {hasRedFlag ? (
         <p className="patient-survey-emergency">
@@ -466,15 +466,15 @@ export function PatientPreSurveyForm() {
         </button>
       </form>
       <div className="consult-notice">
-        <p>[HYPO] 본 설문 기반 체질 분류는 탐색적 가설(B-Track) 성격의 예비 분류입니다.</p>
-        <p>[NON-MEDICAL] 본 결과는 의학적 진단/처방을 대체하지 않으며 최종 확진은 한의사 임상 진단이 필요합니다.</p>
-        <p>[NON-DETERMINISTIC] 본 결과는 미래를 확정하는 결정론적 예측 지표가 아닙니다.</p>
+        <p>본 문진 결과는 상담 준비를 위한 참고 정보입니다.</p>
+        <p>의학적 진단·처방·의무기록 확정은 한의사가 직접 수행합니다.</p>
+        <p>응급 증상이 의심되면 즉시 119 또는 응급실을 이용해 주세요.</p>
       </div>
 
       {status ? <p className="lead-success">{status}</p> : null}
       {report ? (
         <article className="patient-report-card" aria-live="polite">
-          <h3>무료 개인 솔루션 리포트</h3>
+          <h3>상담 전 참고 리포트</h3>
           <p className="patient-report-pin">
             접수용 문진 코드: <strong>{report.intakePin}</strong>
           </p>

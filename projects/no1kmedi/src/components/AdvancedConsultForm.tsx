@@ -14,6 +14,12 @@ function triageBadgeClass(level: "routine" | "priority" | "emergency"): string {
   return `triage-badge triage-badge-${level}`;
 }
 
+function triageLabel(level: "routine" | "priority" | "emergency"): string {
+  if (level === "routine") return "일반";
+  if (level === "priority") return "우선";
+  return "응급";
+}
+
 function normalizePatientNameInput(value: string): string {
   return value.replace(/\s+/g, " ").trimStart();
 }
@@ -244,7 +250,7 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
   async function checkAccessStatus() {
     const email = accessEmail.trim().toLowerCase();
     if (!email) {
-      setAccessStatus({ success: false, error: "email is required" });
+      setAccessStatus({ success: false, error: "이메일을 입력해 주세요." });
       return;
     }
     setAccessBusy(true);
@@ -253,7 +259,7 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
       const json = (await res.json()) as MemberAccessStatusResponse;
       setAccessStatus(json);
     } catch {
-      setAccessStatus({ success: false, error: "access_status_fetch_failed" });
+      setAccessStatus({ success: false, error: "권한 정보를 가져오지 못했습니다." });
     } finally {
       setAccessBusy(false);
     }
@@ -262,7 +268,7 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!canUseAdvancedConsult) {
-      setResult({ success: false, error: "member_access_required" });
+      setResult({ success: false, error: "권한 확인 후 이용해 주세요." });
       return;
     }
     setBusy(true);
@@ -315,7 +321,7 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
       setResult(json);
       if (json?.draft?.citations?.length) setSelectedCitationId(json.draft.citations[0].citation_id);
     } catch {
-      setResult({ success: false, error: "advanced_consult_fetch_failed" });
+      setResult({ success: false, error: "진료 보조 초안 생성 중 오류가 발생했습니다." });
     } finally {
       setBusy(false);
     }
@@ -347,7 +353,7 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
           setLookupStatus(`조회 제한 중입니다. 약 ${retrySec}초 후 다시 시도해 주세요.`);
           return;
         }
-        setLookupStatus(`문진 조회 실패: ${json.error || "unknown_error"}`);
+        setLookupStatus(`문진 조회 실패: ${json.error || "확인되지 않은 오류"}`);
         return;
       }
 
@@ -367,7 +373,7 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
         triageLevel: json.survey.triage_level,
       });
       setLookupStatus(
-        `PIN ${json.survey.intake_pin} 조회 완료: ${json.survey.patient_name} (${json.survey.triage_level}) 문진을 진료 보조 폼에 반영했습니다.`,
+        `문진 조회 완료: ${json.survey.intake_pin} / ${json.survey.patient_name} (${triageLabel(json.survey.triage_level)}) 정보를 입력 폼에 반영했습니다.`,
       );
       saveRecentPin(json.survey.intake_pin, json.survey.patient_name, lookupPhoneLast4);
     } catch {
@@ -379,31 +385,32 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
 
   return (
     <section id="advanced-consult" aria-labelledby="advanced-consult-title">
-      <h2 id="advanced-consult-title">고급 진료 보조 리포트 (CDSS Draft)</h2>
-      <p className="section-lead">생년월일시·체질 설문·건강 설문을 분리 입력하면, 근거(citation) 기반 초안을 생성합니다.</p>
+      <h2 id="advanced-consult-title">진료 보조 초안 생성</h2>
+      <p className="section-lead">문진 정보와 환자 PIN 정보를 바탕으로 근거 기반 진료보조 초안을 생성합니다.</p>
 
       <div className="card consult-access-card">
         <h3>회원 권한 확인</h3>
         <div className="consult-access-row">
           <input value={accessEmail} onChange={(e) => setAccessEmail(e.target.value)} placeholder="회원 이메일" type="email" />
           <button type="button" className="btn btn-ghost" onClick={checkAccessStatus} disabled={accessBusy}>
-            {accessBusy ? "확인 중..." : "권한 확인"}
+            {accessBusy ? "확인 중..." : "사용 권한 확인"}
           </button>
         </div>
         {accessStatus?.success ? (
           <>
             <p className="consult-access-ok">
-              payment: {accessStatus.payment_status} / verification: {accessStatus.verification_status} / 사용가능: {canUseAdvancedConsult ? "YES" : "NO"}
+              결제 상태: {accessStatus.payment_status} / 인증 상태: {accessStatus.verification_status} / 사용 가능:{" "}
+              {canUseAdvancedConsult ? "예" : "아니오"}
             </p>
             {needsUpgradeCta ? (
               <div className="consult-access-cta">
                 <a className="btn btn-primary" href="/#contact">결제/심사 진행 문의</a>
-                <span>승인 완료 후 고급 CDSS 기능이 열립니다.</span>
+                <span>승인 완료 후 CDSS 초안 생성 기능을 사용할 수 있습니다.</span>
               </div>
             ) : null}
           </>
         ) : accessStatus ? (
-          <p className="consult-error">권한 확인 오류: {accessStatus.error || "unknown_error"}</p>
+          <p className="consult-error">권한 확인 오류: {accessStatus.error || "확인되지 않은 오류"}</p>
         ) : null}
       </div>
 
@@ -415,14 +422,14 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
             className={`btn ${copyMode === "pin_with_name" ? "btn-primary" : "btn-ghost"}`}
             onClick={() => setCopyMode("pin_with_name")}
           >
-            복사 포맷: PIN+이름
+            복사 형식: PIN+이름
           </button>
           <button
             type="button"
             className={`btn ${copyMode === "pin_only" ? "btn-primary" : "btn-ghost"}`}
             onClick={() => setCopyMode("pin_only")}
           >
-            복사 포맷: PIN만
+            복사 형식: PIN만
           </button>
         </div>
         <div className="consult-access-row">
@@ -453,7 +460,7 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
             inputMode="numeric"
           />
           <button type="button" className="btn btn-ghost" onClick={applyPatientPin} disabled={lookupBusy}>
-            {lookupBusy ? "불러오는 중..." : "문진 불러오기"}
+            {lookupBusy ? "조회 중..." : "문진 불러오기"}
           </button>
         </div>
         <p className="workspace-muted">
@@ -482,8 +489,8 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
         ) : null}
         {loadedSurveyContext ? (
           <div className="consult-source-chip">
-            linked: {loadedSurveyContext.intakePin} / {loadedSurveyContext.patientName}{" "}
-            <span className={triageBadgeClass(loadedSurveyContext.triageLevel)}>{loadedSurveyContext.triageLevel}</span>
+            연결됨: {loadedSurveyContext.intakePin} / {loadedSurveyContext.patientName}{" "}
+            <span className={triageBadgeClass(loadedSurveyContext.triageLevel)}>{triageLabel(loadedSurveyContext.triageLevel)}</span>
             <button type="button" className="btn btn-ghost" style={{ marginLeft: "0.5rem", padding: "0.2rem 0.45rem" }} onClick={copyLoadedContext}>
               PIN/이름 복사
             </button>
@@ -493,9 +500,9 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
 
       {activeView === "assist" ? (
       <form className="consult-form" onSubmit={onSubmit}>
-        <label>한의사 계정 ID<input value={actorId} onChange={(e) => setActorId(e.target.value)} required /></label>
+        <label>의료진 계정 ID<input value={actorId} onChange={(e) => setActorId(e.target.value)} required /></label>
         <label>
-          출생 시각 (UTC, ISO)
+          출생 시각 (UTC, ISO 형식)
           <input
             value={birthInstantUtc}
             onChange={(e) => setBirthInstantUtc(e.target.value)}
@@ -505,7 +512,7 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
           />
         </label>
         <label>
-          시간대 (IANA)
+          시간대 (IANA 표준)
           <input
             value={ianaTz}
             onChange={(e) => setIanaTz(e.target.value)}
@@ -517,26 +524,26 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
         <p className="section-lead" style={{ fontSize: "0.9rem", marginTop: "-0.5rem" }}>
           전 세계 출생은 절대시각(UTC)·Z 또는 ±오프셋과 IANA 구역을 함께 입력합니다. 레거시 로컬 문자열은 API에서 선택 지원합니다.
         </p>
-        <label>주증상 (임상 레인)<input value={chiefComplaint} onChange={(e) => setChiefComplaint(e.target.value)} required /></label>
-        <label>발현 시점<input value={onset} onChange={(e) => setOnset(e.target.value)} required /></label>
-        <label>중증도<input value={severity} onChange={(e) => setSeverity(e.target.value)} required /></label>
-        <label>복약 정보<input value={medication} onChange={(e) => setMedication(e.target.value)} /></label>
-        <label>체질 설문 (소화 패턴)<input value={digestionPattern} onChange={(e) => setDigestionPattern(e.target.value)} /></label>
-        <label>건강 설문 (수면 패턴)<input value={sleepPattern} onChange={(e) => setSleepPattern(e.target.value)} /></label>
+        <label>주호소<input value={chiefComplaint} onChange={(e) => setChiefComplaint(e.target.value)} required /></label>
+        <label>발현 시점/기간<input value={onset} onChange={(e) => setOnset(e.target.value)} required /></label>
+        <label>중증도(주관 척도)<input value={severity} onChange={(e) => setSeverity(e.target.value)} required /></label>
+        <label>현재 복약 정보<input value={medication} onChange={(e) => setMedication(e.target.value)} /></label>
+        <label>소화 패턴<input value={digestionPattern} onChange={(e) => setDigestionPattern(e.target.value)} /></label>
+        <label>수면 패턴<input value={sleepPattern} onChange={(e) => setSleepPattern(e.target.value)} /></label>
         <label>
-          렌즈 모드
+          분석 모드
           <select value={lensMode} onChange={(e) => setLensMode(e.target.value as "neutral" | "integrated" | "compare")}>
-            <option value="neutral">neutral (기본)</option>
-            <option value="integrated">integrated (사상+명리 통합)</option>
-            <option value="compare">compare (사상/명리 비교)</option>
+            <option value="neutral">기본(중립)</option>
+            <option value="integrated">통합(사상+명리)</option>
+            <option value="compare">비교(사상/명리)</option>
           </select>
         </label>
         <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <input type="checkbox" checked={includeScripture} onChange={(e) => setIncludeScripture(e.target.checked)} />
-          성경 맥락 포함 (선택)
+          Logos 보조 맥락 포함 (선택)
         </label>
         <button type="submit" className="btn btn-primary" disabled={busy || !canUseAdvancedConsult}>
-          {busy ? "추론 중..." : "고급 진료 보조 리포트 생성"}
+          {busy ? "생성 중..." : "진료 보조 초안 생성"}
         </button>
       </form>
       ) : null}
@@ -544,12 +551,12 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
       {activeView === "assist" && result ? (
         <div className="consult-result">
           {!result.success ? (
-            <p className="consult-error">오류: {result.error || "unknown_error"}</p>
+            <p className="consult-error">오류: {result.error || "확인되지 않은 오류"}</p>
           ) : (
             <>
               {result.draft?.generation?.llm_used === true ? (
                 <p className="consult-source-chip" role="status" style={{ marginBottom: "0.75rem" }}>
-                  생성형 CDSS 초안 적용됨 (이번 응답에 모델 추론 포함)
+                  생성형 CDSS 초안 적용 (이번 응답에 모델 추론 포함)
                 </p>
               ) : null}
               {result.draft?.generation?.llm_used === false ? (
@@ -565,28 +572,28 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
               ) : null}
               <p className="consult-summary">{result.draft?.clinical_summary}</p>
               <div className="grid-3">
-                <article className="card"><h3>체질 후보</h3><p>{result.draft?.profile_summary.sasang_candidate}</p></article>
+                <article className="card"><h3>체질 후보군</h3><p>{result.draft?.profile_summary.sasang_candidate}</p></article>
                 <article className="card">
-                  <h3>만세력 참조</h3>
+                  <h3>만세력 참고 정보</h3>
                   <p>{result.draft?.profile_summary.saju_reference}</p>
-                  <p className="consult-source-chip">source: {result.draft?.profile_summary.saju_source === "live" ? "LIVE API" : "FALLBACK"}</p>
+                  <p className="consult-source-chip">출처: {result.draft?.profile_summary.saju_source === "live" ? "실시간 API" : "대체 경로"}</p>
                 </article>
                 <article className="card">
-                  <h3>가드레일</h3>
-                  <p>분리해석: {result.guardrail?.lane_separation ? "ON" : "OFF"} / 근거강제: {result.guardrail?.citation_enforced ? "ON" : "OFF"}</p>
-                  <p>lens: {result.draft?.lens_mode || "neutral"} / scripture: {result.draft?.include_scripture ? "ON" : "OFF"}</p>
+                  <h3>안전 가드</h3>
+                  <p>분리 해석: {result.guardrail?.lane_separation ? "적용" : "미적용"} / 근거 강제: {result.guardrail?.citation_enforced ? "적용" : "미적용"}</p>
+                  <p>분석 모드: {result.draft?.lens_mode || "neutral"} / Logos 보조 맥락: {result.draft?.include_scripture ? "적용" : "미적용"}</p>
                 </article>
               </div>
 
               <div className="consult-reasoning">
-                <h3>추론 초안</h3>
+                <h3>진료보조 해석 초안</h3>
                 <p>{result.draft?.reasoning.syndrome_hypothesis}</p>
                 <p>{result.draft?.reasoning.care_direction}</p>
                 <p>{result.draft?.reasoning.caution}</p>
               </div>
 
               <div className="consult-citations">
-                <h3>근거 데이터 (Citation)</h3>
+                <h3>근거 데이터</h3>
                 <div className="steps" role="list">
                   {result.draft?.citations.map((citation) => (
                     <button
