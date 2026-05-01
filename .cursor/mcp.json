@@ -82,6 +82,16 @@
         "WORKSPACE_ROOT": "C:/workspace",
         "SSH_KEY_PATH": "${env:SSH_KEY_PATH}"
       }
+    },
+    "notebooklm": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "notebooklm-mcp@latest"
+      ],
+      "env": {
+        "NOTEBOOKLM_PROFILE": "standard"
+      }
     }
   }
 }
