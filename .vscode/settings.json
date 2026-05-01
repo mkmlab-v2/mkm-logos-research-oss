@@ -1,4 +1,16 @@
 {
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    "**/.pytest_cache/**": true,
+    "**/dist/**": true,
+    "docs/final/artifacts/**": true
+  },
+  "search.exclude": {
+    "docs/final/artifacts/**": true,
+    "**/node_modules": true,
+    "**/.pytest_cache": true
+  },
   "terminal.integrated.cwd": "${workspaceFolder}",
   "terminal.integrated.hideOnStartup": "always",
   "terminal.integrated.focusAfterRun": "never",

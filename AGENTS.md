@@ -50,6 +50,7 @@
 - **푸시 전략:** 대형 푸시가 지연/행(hang)되면 즉시 **초소형 배치(권장: 1커밋)** 로 전환해 `push -> PR -> merge`를 반복한다.
 - **정리 규칙:** PR merge 후 원격 브랜치와 임시 worktree를 즉시 정리해 다음 작업의 분기 오염을 방지한다.
 - **우선순위 고정:** Git hygiene 규칙이 다른 문서와 상충하면 항상 루트 `.cursorrules`의 "Git Hygiene 고정 (세션 종료 후에도 유지)" 4줄을 우선 적용한다.
+- **로컬 개발서버 정리(선택):** 수동은 `scripts/stop_local_dev_servers.ps1` (`-DryRun` / `-IncludeNpxMcp`); 로그오프 시 자동 실행 작업 등록은 `scripts/register_local_dev_server_stop_logoff_task.ps1` (`-IncludeNpxMcp`로 MCP 브리지까지).
 
 ### Remote Publication 운영 기본값 (모든 채팅 공통)
 

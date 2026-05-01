@@ -337,3 +337,11 @@ docs/final/artifacts/trackb_action_*
 docs/final/artifacts/internal_compression_*
 docs/final/artifacts/track_a_*
 docs/final/artifacts/log_metabolism_*
+
+# Regenerable local automation artifacts (reduce git/Cursor noise; promote with git add -f if needed)
+docs/final/artifacts/btrack_monthly_brief_from_top10_*
+docs/final/artifacts/btrack_ohlcv_task_health*_latest.json
+docs/final/artifacts/btrack_prophecy_score_monthly_*.json
+docs/final/artifacts/genius_*
+docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_*.json
+docs/final/artifacts/prophecy_hit_rate_eval_monthly_*.json
