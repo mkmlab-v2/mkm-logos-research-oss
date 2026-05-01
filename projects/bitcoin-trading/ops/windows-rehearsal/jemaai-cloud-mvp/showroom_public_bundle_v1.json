@@ -1,6 +1,6 @@
 {
     "schema":  "showroom_public_bundle_v1",
-    "generated_at_utc":  "2026-04-30T18:18:32.2574502+00:00",
+    "generated_at_utc":  "2026-05-01T00:35:08.8075885+00:00",
     "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1",
     "sources":  {
                     "trade_window_24h":  "C:\\workspace\\projects\\bitcoin-trading\\exports\\cursor_trade_history\\all_trades_latest_24h.json",
@@ -11,8 +11,8 @@
                     "ops_fusion_status":  "C:\\workspace\\docs\\final\\artifacts\\ops_fusion_cycle_status_latest.json"
                 },
     "observability":  {
-                          "context_stale":  false,
-                          "context_age_seconds":  1,
+                          "context_stale":  true,
+                          "context_age_seconds":  22598,
                           "direction_abstract":  "flat",
                           "c2_signal_lamp":  "GREEN",
                           "runtime_overall_ok":  true,
@@ -38,15 +38,15 @@
                       "unified_score_balanced":  0.40342
                   },
     "public_event_v1":  {
-                            "timestamp":  "2026-04-30T18:18:32.2574502+00:00",
+                            "timestamp":  "2026-05-01T00:35:08.8075885+00:00",
                             "active_character_id":  "dragon_quant",
-                            "risk_level":  "INFO",
+                            "risk_level":  "WARNING",
                             "public_signal_direction":  "HOLD",
-                            "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice. | signal=SELL/SELL | regime=unknown",
+                            "abstract_reason":  "context_stale_age=22598s | fallback_hold | no investment advice.",
                             "schema_version":  "public-event.v1",
-                            "event_id":  "showroom-20260430T181832-7e6933f6",
+                            "event_id":  "showroom-20260501T003508-34dadfe7",
                             "source":  "ops_showroom_bundle_v1",
-                            "system_status":  "online",
+                            "system_status":  "degraded",
                             "active_strategies_count":  1,
                             "delayed_metrics":  {
                                                     "delay_seconds":  180,
@@ -54,7 +54,7 @@
                                                 },
                             "direction_abstract":  "flat",
                             "disclaimer_ref":  "jemaai_showroom_v1",
-                            "last_ok_utc":  "2026-04-30T18:18:32.2574502+00:00",
+                            "last_ok_utc":  "2026-05-01T00:35:08.8075885+00:00",
                             "order_summary_public":  {
                                                          "trades_24h_count":  50,
                                                          "latest_trade_utc":  null,
@@ -63,8 +63,8 @@
                                                          "failed_trades_all":  0
                                                      },
                             "signal_gate_public":  {
-                                                       "signal_total_count":  19963,
-                                                       "last_signal_utc":  "2026-05-01T03:18:31",
+                                                       "signal_total_count":  10041,
+                                                       "last_signal_utc":  "2026-05-01T09:35:08",
                                                        "integrated_signal":  "SELL",
                                                        "integrated_confidence":  0.62,
                                                        "singular_action":  "SELL",
