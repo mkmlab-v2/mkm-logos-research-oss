@@ -57,6 +57,12 @@ export function PaddleCheckoutButton() {
       >
         {loading ? "Paddle 로딩 중..." : "Paddle Checkout 테스트"}
       </button>
+      {clientToken && priceId ? (
+        <p className="trust-note" style={{ fontSize: "0.85em", margin: 0 }}>
+          결제창이 뜨지 않거나 네트워크 400이면 Paddle 대시보드 Checkout {'>'} Checkout settings의 Default payment link를
+          설정했는지 확인하세요(토큰·가격 ID와 동일 sandbox/live 벤더).
+        </p>
+      ) : null}
       {message ? (
         <p className="trust-note" role="status">
           {message}
