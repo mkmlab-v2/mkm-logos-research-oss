@@ -74,7 +74,7 @@
 저장소 루트에서:
 
 ```powershell
-# CI와 유사 순서(Windows): integrity_guard → prophecy 번들 → … → 사상 통찰 번들 pytest (v1.1·dual-regime 정렬)
+# CI와 유사 순서(Windows): integrity_guard → prophecy 번들 → … → 사상 통찰 번들 pytest → 일일 실행 인사이트 브리프 pytest (dual-regime 정렬)
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fact_lock_bundle.ps1
 ```
 

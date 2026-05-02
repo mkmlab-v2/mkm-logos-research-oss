@@ -17,6 +17,15 @@ WORKSPACE_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_FUSION = WORKSPACE_ROOT / "docs" / "final" / "artifacts" / "independent_lens_fusion_stub_latest.json"
 DEFAULT_THIN = WORKSPACE_ROOT / "docs" / "final" / "artifacts" / "multilens_eval_v2_thin_report_latest.json"
 DEFAULT_OUT = WORKSPACE_ROOT / "reports" / "daily_execution_insight_brief_latest.md"
+_ART = WORKSPACE_ROOT / "docs" / "final" / "artifacts"
+DEFAULT_MYEONGNI_LENS = _ART / "myeongni_independent_lens_latest.json"
+DEFAULT_SASANG_LENS = _ART / "sasang_independent_lens_latest.json"
+DEFAULT_MARKET_SASANG_LENS = _ART / "market_sasang_lens_latest.json"
+DEFAULT_LOGOS_INDEPENDENT_LENS = _ART / "logos_independent_lens_latest.json"
+
+
+def _abs_under_root(root: Path, p: Path) -> Path:
+    return p.resolve() if p.is_absolute() else (root / p).resolve()
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -55,10 +64,144 @@ def _pick_thin_row(
     return None, None
 
 
+def _md_cell(val: Any) -> str:
+    s = "" if val is None else str(val)
+    return s.replace("|", "\\|").replace("\n", " ").strip()
+
+
+def _num_opt(x: Any, nd: int = 4) -> str:
+    if isinstance(x, bool):
+        return str(x)
+    try:
+        if x is None:
+            return "—"
+        f = float(x)
+        if f != f:
+            return "—"
+        return f"{f:.{nd}g}"
+    except (TypeError, ValueError):
+        return _md_cell(x)
+
+
 def _fmt_row_note(thin_path: Path, picked_date: str | None, ok: bool) -> str:
     if ok:
         return f"`{thin_path.as_posix()}` row `calendar_date={picked_date}`"
     return f"`{thin_path.as_posix()}` — no populated `logos_dual_regime` row (run thin harness with `--populate-default-samples`)"
+
+
+def _lines_myeongni(doc: dict[str, Any] | None, path: Path) -> tuple[list[str], bool]:
+    lines: list[str] = []
+    lines.append("#### Myeongni (`myeongni_independent_lens_latest`)")
+    lines.append("")
+    if not doc:
+        lines.append(f"*(missing — `{path.as_posix()}`)*")
+        lines.append("")
+        return lines, False
+    scores = doc.get("scores") if isinstance(doc.get("scores"), dict) else {}
+    mso = doc.get("myeongri_stream_outputs")
+    mso = mso if isinstance(mso, dict) else {}
+    lines.append("| field | value |")
+    lines.append("|-------|-------|")
+    lines.append(f"| `ts_utc` | {_md_cell(doc.get('ts_utc'))} |")
+    lines.append(f"| `schema` | {_md_cell(doc.get('schema'))} |")
+    lines.append(f"| `direction_score` | {_num_opt(scores.get('direction_score'))} |")
+    lines.append(f"| `confidence` | {_num_opt(scores.get('confidence'))} |")
+    lines.append(f"| `state_id` | {_md_cell(mso.get('state_id'))} |")
+    lines.append(f"| `run_id` | {_md_cell(mso.get('run_id'))} |")
+    lines.append("")
+    return lines, True
+
+
+def _lines_sasang(doc: dict[str, Any] | None, path: Path) -> tuple[list[str], bool]:
+    lines: list[str] = []
+    lines.append("#### Sasang (`sasang_independent_lens_latest`)")
+    lines.append("")
+    if not doc:
+        lines.append(f"*(missing — `{path.as_posix()}`)*")
+        lines.append("")
+        return lines, False
+    scores = doc.get("scores") if isinstance(doc.get("scores"), dict) else {}
+    sso = doc.get("sasang_stream_outputs")
+    sso = sso if isinstance(sso, dict) else {}
+    mr = sso.get("machine_readables")
+    mr = mr if isinstance(mr, dict) else {}
+    lines.append("| field | value |")
+    lines.append("|-------|-------|")
+    lines.append(f"| `ts_utc` | {_md_cell(doc.get('ts_utc'))} |")
+    lines.append(f"| `mapping_target` | {_md_cell(sso.get('mapping_target'))} |")
+    lines.append(f"| `regime_hypothesis` | {_md_cell(sso.get('regime_hypothesis'))} |")
+    lines.append(f"| `direction_score` | {_num_opt(scores.get('direction_score'))} |")
+    lines.append(f"| `confidence` | {_num_opt(scores.get('confidence'))} |")
+    lines.append(f"| `heat_proxy` | {_num_opt(mr.get('heat_proxy'))} |")
+    lines.append(f"| `cold_proxy` | {_num_opt(mr.get('cold_proxy'))} |")
+    lines.append("")
+    return lines, True
+
+
+def _lines_market_sasang(doc: dict[str, Any] | None, path: Path) -> tuple[list[str], bool]:
+    lines: list[str] = []
+    lines.append("#### Market Sasang (`market_sasang_lens_latest`)")
+    lines.append("")
+    if not doc:
+        lines.append(f"*(missing — `{path.as_posix()}`)*")
+        lines.append("")
+        return lines, False
+    hcg = doc.get("human_commander_gate_v1")
+    hcg = hcg if isinstance(hcg, dict) else {}
+    sv = doc.get("state_vector_sasang_softmax")
+    sv = sv if isinstance(sv, dict) else {}
+    unc = doc.get("uncertainty")
+    unc = unc if isinstance(unc, dict) else {}
+    veto = doc.get("veto")
+    veto = veto if isinstance(veto, dict) else {}
+    lines.append("| field | value |")
+    lines.append("|-------|-------|")
+    lines.append(f"| `ts_utc` | {_md_cell(doc.get('ts_utc'))} |")
+    lines.append("")
+    lines.append(f"- **human_commander banner:** {_md_cell(hcg.get('banner_ko'))}")
+    lines.append(
+        f"- **`veto.force_hold`:** `{_md_cell(veto.get('force_hold'))}` · "
+        f"`reason_codes` = `{json.dumps(veto.get('reason_codes'), ensure_ascii=False)}`"
+    )
+    lines.append(
+        f"- **`composite_uncertainty`:** {_num_opt(unc.get('composite_uncertainty'))} · "
+        f"`entropy_norm_4way` = {_num_opt(unc.get('entropy_norm_4way'))}"
+    )
+    lines.append("")
+    lines.append("| softmax key | p |")
+    lines.append("|-------------|---|")
+    for k in ("taeyang", "soyang", "taeeum", "soeum"):
+        lines.append(f"| `{k}` | {_num_opt(sv.get(k))} |")
+    lines.append("")
+    return lines, True
+
+
+def _lines_logos_independent(doc: dict[str, Any] | None, path: Path) -> tuple[list[str], bool]:
+    lines: list[str] = []
+    lines.append("#### Logos independent lens (`logos_independent_lens_latest`)")
+    lines.append("")
+    if not doc:
+        lines.append(f"*(missing — `{path.as_posix()}`)*")
+        lines.append("")
+        return lines, False
+    scores = doc.get("scores") if isinstance(doc.get("scores"), dict) else {}
+    ev = doc.get("evidence_refs")
+    n_ev = len(ev) if isinstance(ev, list) else 0
+    lines.append("| field | value |")
+    lines.append("|-------|-------|")
+    lines.append(f"| `ts_utc` | {_md_cell(doc.get('ts_utc'))} |")
+    lines.append(f"| `direction_score` | {_num_opt(scores.get('direction_score'))} |")
+    lines.append(f"| `confidence` | {_num_opt(scores.get('confidence'))} |")
+    lines.append(f"| `evidence_refs_count` | {n_ev} |")
+    lines.append("")
+    narr = str(doc.get("narrative_snippet_guarded") or "").strip()
+    lines.append("**`narrative_snippet_guarded` (hash-tagged only):**")
+    lines.append("")
+    lines.append("```")
+    lines.append(narr or "*(empty)*")
+    lines.append("```")
+    lines.append("")
+    return lines, True
 
 
 def build_markdown(
@@ -70,6 +213,14 @@ def build_markdown(
     thin_path: Path,
     fusion_path: Path,
     calendar_date: str | None,
+    myeongni: dict[str, Any] | None = None,
+    myeongni_path: Path | None = None,
+    sasang: dict[str, Any] | None = None,
+    sasang_path: Path | None = None,
+    market_sasang: dict[str, Any] | None = None,
+    market_sasang_path: Path | None = None,
+    logos_independent: dict[str, Any] | None = None,
+    logos_independent_path: Path | None = None,
 ) -> str:
     lines: list[str] = []
     lines.append("# Daily execution insight — 1-page brief (generated)")
@@ -155,6 +306,20 @@ def build_markdown(
     lines.append(narrative or "*(missing fusion artifact)*")
     lines.append("```")
     lines.append("")
+    lines.append("### 1c) Independent lens snapshots (latest JSON — numeric / structured facts only)")
+    lines.append("")
+    mp = myeongni_path or DEFAULT_MYEONGNI_LENS
+    sp = sasang_path or DEFAULT_SASANG_LENS
+    msp = market_sasang_path or DEFAULT_MARKET_SASANG_LENS
+    lp = logos_independent_path or DEFAULT_LOGOS_INDEPENDENT_LENS
+    lm, ok_m = _lines_myeongni(myeongni, mp)
+    ls, ok_s = _lines_sasang(sasang, sp)
+    lms, ok_ms = _lines_market_sasang(market_sasang, msp)
+    ll, ok_l = _lines_logos_independent(logos_independent, lp)
+    lines.extend(lm)
+    lines.extend(ls)
+    lines.extend(lms)
+    lines.extend(ll)
     lines.append("## 2) Hypothesis / insight ([HYPO] — not A-track trigger)")
     lines.append("")
     lines.append("| item | memo |")
@@ -167,16 +332,25 @@ def build_markdown(
     lines.append("| field | value |")
     lines.append("|-------|-------|")
     lines.append("| `final_action_label` | *(operator)* |")
-    lines.append(
-        "| `evidence_paths` | "
-        f"`{thin_path.as_posix()}`; `{fusion_path.as_posix()}` |"
+    ev_paths = (
+        f"`{thin_path.as_posix()}`; `{fusion_path.as_posix()}`; "
+        f"`{mp.as_posix()}`; `{sp.as_posix()}`; `{msp.as_posix()}`; `{lp.as_posix()}`"
     )
+    lines.append(f"| `evidence_paths` | {ev_paths} |")
     lines.append("")
     lines.append("---")
     lines.append("")
+    ind_flags = {
+        "myeongni": ok_m,
+        "sasang": ok_s,
+        "market_sasang": ok_ms,
+        "logos_independent": ok_l,
+    }
     lines.append(
-        f"_thin_ok={thin_ok} calendar_pick={picked_date or 'fallback-or-none'} "
-        f"fusion_ok={bool(narrative)}_"
+        "_Generator flags:_ "
+        f"`thin_ok={thin_ok}` `calendar_pick={picked_date or 'fallback-or-none'}` "
+        f"`fusion_ok={bool(narrative)}` "
+        f"`independent_lens_ok={json.dumps(ind_flags, ensure_ascii=False)}`"
     )
     lines.append("")
     return "\n".join(lines)
@@ -187,6 +361,10 @@ def main() -> None:
     p.add_argument("--workspace-root", type=Path, default=WORKSPACE_ROOT)
     p.add_argument("--fusion-json", type=Path, default=DEFAULT_FUSION)
     p.add_argument("--thin-json", type=Path, default=DEFAULT_THIN)
+    p.add_argument("--myeongni-json", type=Path, default=DEFAULT_MYEONGNI_LENS)
+    p.add_argument("--sasang-json", type=Path, default=DEFAULT_SASANG_LENS)
+    p.add_argument("--market-sasang-json", type=Path, default=DEFAULT_MARKET_SASANG_LENS)
+    p.add_argument("--logos-independent-json", type=Path, default=DEFAULT_LOGOS_INDEPENDENT_LENS)
     p.add_argument("--out", type=Path, default=DEFAULT_OUT)
     p.add_argument(
         "--brief-date-utc",
@@ -209,15 +387,19 @@ def main() -> None:
     brief_date = args.brief_date_utc.strip() or _utc_date_today()
     cal = args.calendar_date.strip() or brief_date
 
-    fusion_path = args.fusion_json
-    thin_path = args.thin_json
-    if not fusion_path.is_absolute():
-        fusion_path = (root / fusion_path).resolve()
-    if not thin_path.is_absolute():
-        thin_path = (root / thin_path).resolve()
+    fusion_path = _abs_under_root(root, args.fusion_json)
+    thin_path = _abs_under_root(root, args.thin_json)
+    myeongni_path = _abs_under_root(root, args.myeongni_json)
+    sasang_path = _abs_under_root(root, args.sasang_json)
+    market_sasang_path = _abs_under_root(root, args.market_sasang_json)
+    logos_independent_path = _abs_under_root(root, args.logos_independent_json)
 
     fusion = _read_json(fusion_path)
     thin = _read_json(thin_path)
+    myeongni = _read_json(myeongni_path)
+    sasang = _read_json(sasang_path)
+    market_sasang = _read_json(market_sasang_path)
+    logos_independent = _read_json(logos_independent_path)
 
     body = build_markdown(
         brief_date_utc=brief_date,
@@ -227,6 +409,14 @@ def main() -> None:
         thin_path=thin_path,
         fusion_path=fusion_path,
         calendar_date=cal,
+        myeongni=myeongni,
+        myeongni_path=myeongni_path,
+        sasang=sasang,
+        sasang_path=sasang_path,
+        market_sasang=market_sasang,
+        market_sasang_path=market_sasang_path,
+        logos_independent=logos_independent,
+        logos_independent_path=logos_independent_path,
     )
 
     out = args.out

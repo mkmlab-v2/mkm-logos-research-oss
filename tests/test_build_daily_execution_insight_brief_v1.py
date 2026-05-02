@@ -45,6 +45,39 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
             }
         ]
     }
+    myeongni = {
+        "schema": "myeongni_independent_lens_v0",
+        "ts_utc": "2099-01-01T00:00:00Z",
+        "scores": {"direction_score": 0.08, "confidence": 0.5},
+        "myeongri_stream_outputs": {"state_id": 15, "run_id": "t"},
+    }
+    sasang = {
+        "ts_utc": "2099-01-01T00:00:00Z",
+        "scores": {"direction_score": 0.17, "confidence": 0.71},
+        "sasang_stream_outputs": {
+            "mapping_target": "sideways",
+            "regime_hypothesis": "phase_transition",
+            "machine_readables": {"heat_proxy": 0.5, "cold_proxy": 0.4},
+        },
+    }
+    market_sasang = {
+        "ts_utc": "2099-01-01T00:00:00Z",
+        "human_commander_gate_v1": {"banner_ko": "[TRACK B]"},
+        "state_vector_sasang_softmax": {
+            "taeyang": 0.25,
+            "soyang": 0.25,
+            "taeeum": 0.25,
+            "soeum": 0.25,
+        },
+        "uncertainty": {"composite_uncertainty": 0.5, "entropy_norm_4way": 1.0},
+        "veto": {"force_hold": True, "reason_codes": ["TEST"]},
+    }
+    logos_ind = {
+        "ts_utc": "2099-01-01T00:00:00Z",
+        "scores": {"direction_score": -0.3, "confidence": 0.2},
+        "evidence_refs": [{}],
+        "narrative_snippet_guarded": "[#a]",
+    }
     md = mod.build_markdown(
         brief_date_utc="2099-01-01",
         workspace_anchor="test",
@@ -53,12 +86,50 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
         thin_path=Path("/x/thin.json"),
         fusion_path=Path("/x/fusion.json"),
         calendar_date="2099-01-01",
+        myeongni=myeongni,
+        myeongni_path=Path("/x/myeongni.json"),
+        sasang=sasang,
+        sasang_path=Path("/x/sasang.json"),
+        market_sasang=market_sasang,
+        market_sasang_path=Path("/x/market_sasang.json"),
+        logos_independent=logos_ind,
+        logos_independent_path=Path("/x/logos.json"),
     )
     assert "snippet line" in md
     assert "test narrative" in md
     assert "risk_multiplier_cap` = 0.5" in md or "= 0.5" in md
-    assert "_thin_ok=True" in md
-    assert "fusion_ok=True" in md
+    assert "`thin_ok=True`" in md
+    assert "`fusion_ok=True`" in md
+    assert "### 1c)" in md
+    assert "Myeongni" in md
+    assert "0.08" in md
+    assert "[TRACK B]" in md
+    assert "HIGH_ENTROPY" not in md or "TEST" in md
+    assert "[#a]" in md
+
+
+def test_build_markdown_section_1c_missing_lens_files(tmp_path):
+    mod = _load()
+    missing = tmp_path / "nope.json"
+    md = mod.build_markdown(
+        brief_date_utc="2099-01-02",
+        workspace_anchor="t",
+        fusion={},
+        thin=None,
+        thin_path=Path("/y/thin.json"),
+        fusion_path=Path("/y/fusion.json"),
+        calendar_date=None,
+        myeongni=None,
+        myeongni_path=missing,
+        sasang=None,
+        sasang_path=missing,
+        market_sasang=None,
+        market_sasang_path=missing,
+        logos_independent=None,
+        logos_independent_path=missing,
+    )
+    assert "*(missing — `" in md
+    assert '"myeongni": false' in md
 
 
 def test_pick_row_fallback_last_populated():
