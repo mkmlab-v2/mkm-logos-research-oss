@@ -52,7 +52,14 @@ if (-not [string]::IsNullOrWhiteSpace($ApprovalToken)) {
     $argList += @("-ApprovalToken", "`"$ApprovalToken`"")
 }
 
-$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument ($argList -join " ")
+$repoRoot = Split-Path -Parent $PSScriptRoot
+$argJoined = $argList -join " "
+try {
+    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $argJoined -WorkingDirectory $repoRoot
+}
+catch {
+    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $argJoined
+}
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) `
     -RepetitionInterval (New-TimeSpan -Minutes $IntervalMinutes)
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
