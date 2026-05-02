@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_track_b_commander_deep_report_v1.schema.json",
+  "title": "Logos Track B commander deep report v1",
+  "description": "Deterministic shell for commander-facing Logos deep research; no LLM; Track B only.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "ts_utc",
+    "hypothesis_tier",
+    "boundary_ack",
+    "a_track_autotrigger_forbidden",
+    "labels",
+    "human_commander_gate_v1",
+    "envelope",
+    "machine_role_ko",
+    "report_axes_v1",
+    "inputs_digest"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "logos_track_b_commander_deep_report_v1" },
+    "version": { "type": "string" },
+    "ts_utc": { "type": "string" },
+    "hypothesis_tier": { "type": "string", "const": "B" },
+    "boundary_ack": { "type": "boolean", "const": true },
+    "a_track_autotrigger_forbidden": { "type": "boolean", "const": true },
+    "labels": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "human_commander_gate_v1": { "type": "object" },
+    "envelope": { "type": "object" },
+    "machine_role_ko": { "type": "string", "minLength": 1 },
+    "report_axes_v1": { "type": "object" },
+    "inputs_digest": { "type": "object" }
+  }
+}

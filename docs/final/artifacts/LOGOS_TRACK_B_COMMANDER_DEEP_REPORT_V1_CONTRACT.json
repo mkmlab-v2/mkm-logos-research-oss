@@ -1,0 +1,30 @@
+{
+  "schema": "logos_track_b_commander_deep_report_v1_contract_meta_v1",
+  "artifact_schema": "logos_track_b_commander_deep_report_v1",
+  "artifact_json_schema": "docs/final/schemas/logos_track_b_commander_deep_report_v1.schema.json",
+  "runner_version": "1.1.0",
+  "purpose": "Commander-facing Track B Logos deep-report skeleton: five axis stubs + verse_id digest + optional fusion/market-sasang pointers; deterministic; no LLM; not A-track.",
+  "runner": "scripts/run_logos_track_b_commander_deep_report_v1.py",
+  "markdown_materializer": "scripts/materialize_logos_track_b_commander_deep_report_v1.py",
+  "envelope_file": "data/logos/logos_track_b_commander_deep_report_envelope_v1.json",
+  "default_output_path": "docs/final/artifacts/logos_track_b_commander_deep_report_latest.json",
+  "required_upstream": [
+    "docs/final/artifacts/logos_independent_lens_latest.json"
+  ],
+  "optional_upstream": [
+    "docs/final/artifacts/independent_lens_fusion_stub_latest.json",
+    "docs/final/artifacts/market_sasang_lens_latest.json"
+  ],
+  "report_axes_v1_keys": [
+    "axis_01_original_language_semantics",
+    "axis_02_genre_register",
+    "axis_03_cross_reference_echo",
+    "axis_04_history_redaction_hypo",
+    "axis_05_lens_conflict_map"
+  ],
+  "forbidden": {
+    "llm_in_runner_v1": true,
+    "a_track_auto_trigger": true,
+    "live_sizing": true
+  }
+}

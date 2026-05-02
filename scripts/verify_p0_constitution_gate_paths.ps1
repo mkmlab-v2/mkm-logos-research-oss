@@ -6,6 +6,14 @@ param(
 # in this clone; re-add from main when those scripts return. (Track A metering
 # multiline, kospi WF verify, etc. were removed 2026-04-18 for local pass.)
 # 2026-04-30: join walkforward + fixtures; dedupe news schema block.
+# 2026-05-02: Track B 명리 지휘관 리포트 봉투 (envelope JSON, build script, pytest).
+# 2026-05-02: macro stub eval + manseryeok bot fusion fields (eval script, stub pytest).
+# 2026-05-02: 起運 qiyun v1 (solar_term_jie_crossings, myeongri_qiyun_v1, pytest).
+# 2026-05-02: Logos Track B commander deep report v1 + shared track_b_commander_gate_v1.
+# 2026-05-02: Market Sasang lens v1 (policy, engine, runner, schema, contract, pytest).
+# 2026-05-02: M5 rule_school_mkm_4d_v1 (policy JSON, loader/blend, pytest).
+# 2026-05-02: M2–M4 myeongni (jijangan ohang weights, daewoon v1, jijangan ohang script, daewoon test).
+# 2026-05-02: +4 myeongni jijangan LUT M1 (lut, schema, script, test).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -18,6 +26,8 @@ $required = @(
     "docs\final\COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
     "docs\final\BENCH_L1_API_LOAD_VPS_RUNBOOK.md",
     "docs\NotebookLM_sources_manifest.md",
+    ".cursor\rules\notebooklm-mcp-session-bridge.mdc",
+    "scripts\check_notebooklm_mcp_prereqs.ps1",
     "docs\final\NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md",
     "scripts\build_btrack_insight_bridge_inventory_v1.py",
     "scripts\build_btrack_insight_promotion_bridge_index_v1.py",
@@ -56,6 +66,10 @@ $required = @(
     "scripts\sync_notebooklm_sources_to_mkm_data_vault.ps1",
     "scripts\run_multilens_v2_bridge_policy_snapshot.py",
     "scripts\run_waiting_queue_monthly_check.ps1",
+    "projects\bitcoin-trading\ops\windows-rehearsal\DAILY_EXECUTION_INSIGHT_BRIEF_TEMPLATE.md",
+    "scripts\build_daily_execution_insight_brief_v1.py",
+    "scripts\Run-DailyExecutionInsightBrief_v1.ps1",
+    "tests\test_build_daily_execution_insight_brief_v1.py",
     "projects\bitcoin-trading\ops\windows-rehearsal\GENERAL_PROPHECY_MONTHLY_SCHEDULER_RUNBOOK_V1.md",
     "projects\bitcoin-trading\ops\windows-rehearsal\register_fused_quant_pixel_sop_strict_check_task.ps1",
     "projects\bitcoin-trading\ops\windows-rehearsal\register_fused_quant_pixel_sop_strict_check_task_clean.ps1",
@@ -81,6 +95,9 @@ $required = @(
     "tests\test_apply_general_prophecy_registry_patches_v1.py",
     "tests\fixtures\general_prophecy_registry_patch_sample_v1.json",
     "scripts\generate_btrack_hypothesis_prophecy_v1.py",
+    "scripts\eval_prophecy_promotion_gates_v1.py",
+    "scripts\fast_promotion_gate_v1.py",
+    "tests\test_fast_promotion_gate_v1.py",
     "scripts\build_logos_wide_restoration.py",
     "scripts\build_btrack_prophecy_score_from_ohlcv.py",
     "scripts\build_direction_label_bar_jsonl_from_ohlcv_v1.py",
@@ -97,6 +114,40 @@ $required = @(
     "scripts\spike_4grid_myeongri_compression_v1.py",
     "scripts\Run-4GridMyeongriCompressionSpikeV1.ps1",
     "tests\test_spike_4grid_myeongri_compression_v1.py",
+    "data\myeongni\jijangan_lut_v1.json",
+    "docs\final\schemas\jijangan_lut_v1.schema.json",
+    "scripts\myeongri_jijangan_v1.py",
+    "tests\test_myeongri_jijangan_v1.py",
+    "data\myeongni\jijangan_ohang_weights_v1.json",
+    "scripts\myeongri_daewoon_v1.py",
+    "scripts\myeongri_jijangan_ohang_v1.py",
+    "tests\test_myeongri_daewoon_v1.py",
+    "data\myeongni\rule_school_mkm_4d_v1.json",
+    "scripts\myeongri_rule_school_mkm_4d_v1.py",
+    "tests\test_myeongri_rule_school_mkm_4d_v1.py",
+    "scripts\core\solar_term_jie_crossings_v1.py",
+    "scripts\myeongri_qiyun_v1.py",
+    "tests\test_myeongri_qiyun_v1.py",
+    "scripts\eval_myeongri_rule_school_macro_stub_v1.py",
+    "tests\test_eval_myeongri_rule_school_macro_stub_v1.py",
+    "data\market_sasang\market_sasang_lens_policy_v1.json",
+    "scripts\market_sasang_lens_engine_v1.py",
+    "scripts\run_market_sasang_lens_v1.py",
+    "docs\final\schemas\market_sasang_lens_output_v1.schema.json",
+    "docs\final\artifacts\MARKET_SASANG_LENS_V1_CONTRACT.json",
+    "tests\test_market_sasang_lens_v1.py",
+    "scripts\track_b_commander_gate_v1.py",
+    "data\logos\logos_track_b_commander_deep_report_envelope_v1.json",
+    "scripts\run_logos_track_b_commander_deep_report_v1.py",
+    "scripts\materialize_logos_track_b_commander_deep_report_v1.py",
+    "docs\final\schemas\logos_track_b_commander_deep_report_v1.schema.json",
+    "docs\final\artifacts\LOGOS_TRACK_B_COMMANDER_DEEP_REPORT_V1_CONTRACT.json",
+    "tests\test_logos_track_b_commander_deep_report_v1.py",
+    "scripts\run_manseryeok_bot_v1.py",
+    "tests\test_run_manseryeok_bot_v1.py",
+    "data\myeongni\myeongni_track_b_commander_report_envelope_v1.json",
+    "scripts\build_myeongni_track_b_commander_report_v1.py",
+    "tests\test_build_myeongni_track_b_commander_report_v1.py",
     "scripts\core\track_source_guard.py",
     "scripts\core\sovereign_jsonl.py",
     "scripts\spike_sovereign_token_saving.py",
@@ -152,6 +203,7 @@ $required = @(
     "docs\final\artifacts\trackb_quaternion_order_stress_v1.json",
     "docs\final\artifacts\trackb_quaternion_generalization_v1.json",
     "docs\final\artifacts\trackb_quaternion_two_stage_gate_v2.json",
+    "scripts\build_trackb_promotion_precheck_draft_v1.py",
     "scripts\experimental\codebook_runtime_pack\build_report_schema_v2_quality_alert.py",
     "scripts\experimental\codebook_runtime_pack\build_report_schema_v2_label_kpi.py",
     "scripts\spec_bio_sample_paper_snp_join_gate_v1.py",

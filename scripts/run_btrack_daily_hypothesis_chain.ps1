@@ -60,13 +60,41 @@ Write-Host "==> run_lens_sasang.py"
 py scripts/run_lens_sasang.py
 if ($LASTEXITCODE -ne 0) { throw "run_lens_sasang exit $LASTEXITCODE" }
 
+Write-Host "==> run_market_sasang_lens_v1.py"
+py scripts/run_market_sasang_lens_v1.py
+if ($LASTEXITCODE -ne 0) { throw "run_market_sasang_lens_v1 exit $LASTEXITCODE" }
+
 Write-Host "==> run_lens_logos.py"
-py scripts/run_lens_logos.py
+$logosBatch = Join-Path $WorkspaceRoot "data\logos\4lens_batch_sample.json"
+$logosFixture = Join-Path $WorkspaceRoot "tests\fixtures\logos_4lens_batch_minimal_v1.json"
+if (Test-Path -LiteralPath $logosBatch) {
+  py scripts/run_lens_logos.py --batch-json $logosBatch
+} elseif (Test-Path -LiteralPath $logosFixture) {
+  Write-Host "Logos: using tracked fixture (data/logos/4lens_batch_sample.json not present)" -ForegroundColor DarkYellow
+  py scripts/run_lens_logos.py --batch-json $logosFixture
+} else {
+  py scripts/run_lens_logos.py --allow-fallback
+}
 if ($LASTEXITCODE -ne 0) { throw "run_lens_logos exit $LASTEXITCODE" }
 
 Write-Host "==> report_independent_lens_fusion_stub_v0.py"
 py scripts/report_independent_lens_fusion_stub_v0.py
 if ($LASTEXITCODE -ne 0) { throw "fusion stub exit $LASTEXITCODE" }
+
+Write-Host "==> run_logos_track_b_commander_deep_report_v1.py"
+py scripts/run_logos_track_b_commander_deep_report_v1.py
+if ($LASTEXITCODE -ne 0) { throw "logos track b commander deep report exit $LASTEXITCODE" }
+
+Write-Host "==> materialize_logos_track_b_commander_deep_report_v1.py"
+py scripts/materialize_logos_track_b_commander_deep_report_v1.py
+if ($LASTEXITCODE -ne 0) { throw "materialize logos track b commander deep report exit $LASTEXITCODE" }
+
+$minorityMonthly = Join-Path $WorkspaceRoot "scripts\report_independent_lens_shadow_minority_monthly_v1.py"
+if (Test-Path -LiteralPath $minorityMonthly) {
+  Write-Host "==> report_independent_lens_shadow_minority_monthly_v1.py (shadow JSONL rollup)"
+  py $minorityMonthly
+  if ($LASTEXITCODE -ne 0) { throw "minority monthly rollup exit $LASTEXITCODE" }
+}
 
 Write-Host "==> build_btrack_llm_input_bundle.py"
 py scripts/build_btrack_llm_input_bundle.py
