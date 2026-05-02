@@ -1,0 +1,29 @@
+{
+  "schema": "logos_vector_index_manifest_v1",
+  "version": "1.0.0",
+  "ts_utc": "2026-05-02T05:23:39Z",
+  "hypothesis_tier": "B",
+  "non_gating_ack": true,
+  "policy_snapshot": {
+    "artifact_path": "docs/final/artifacts/LOGOS_VECTOR_INDEX_POLICY_V1.json",
+    "sha256_hex": "949894ae35c7c48b524338bb394f9c0b514f4fbaf6b250e068801e57dc788605",
+    "status": "stub",
+    "embedding_model_id": "TBD_LOCAL_OR_STUB",
+    "policy_version": "1.0.0"
+  },
+  "corpus_alignment": {
+    "corpus_manifest_path": "docs/final/artifacts/logos_corpus_manifest_v1_latest.json",
+    "corpus_manifest_sha256_hex": "60d8ce0dd5f7065dbf199965ecbc8e17291cc4f62ad86a8aecb2f2abfdd18da0",
+    "verse_count": 31102,
+    "bundle_path": "docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json",
+    "bundle_dedupe_key_sha256": "8429443bb3bc4402a398d55b296704261b964920b72eb52947927648dfcd7c8a",
+    "manifest_input_sha256": "204ed87c7da133c62ac54274ad3ca05c27ecd8d5ce40457c81ece77134aa0f4b"
+  },
+  "index_build": {
+    "embeddings_computed": false,
+    "vectors_written": 0,
+    "backend": "manifest_only_stub",
+    "notes": "Real ANN/index build only after policy.status=active and explicit builder."
+  },
+  "notes": "No embedding API calls; Track B observation manifest."
+}

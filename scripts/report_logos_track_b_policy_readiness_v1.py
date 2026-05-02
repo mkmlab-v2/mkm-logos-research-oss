@@ -2,7 +2,8 @@
 """Emit Track B policy chain readiness report (deterministic; no LLM).
 
 Validates MKM theology baseline JSON, optional JSON Schema validation,
-existence of provenance_slots paths, distill contract/schema.
+existence of provenance_slots paths, distill contract/schema,
+LOGOS_VECTOR_INDEX_POLICY_V1 and corpus_alignment required_preconditions.
 Exit 0 only when overall_ok.
 """
 from __future__ import annotations
@@ -21,9 +22,10 @@ DEFAULT_THEOLOGY_SCHEMA = ROOT / "docs/final/schemas/logos_mkm_theology_baseline
 DEFAULT_OUT = ROOT / "docs/final/artifacts/logos_track_b_policy_readiness_v1_latest.json"
 DISTILL_CONTRACT = ROOT / "docs/final/artifacts/LOGOS_DEEP_RESEARCH_DISTILL_CONTRACT_V1.json"
 DISTILL_SCHEMA = ROOT / "docs/final/schemas/logos_deep_research_distill_v1.schema.json"
+DEFAULT_VECTOR_POLICY = ROOT / "docs/final/artifacts/LOGOS_VECTOR_INDEX_POLICY_V1.json"
 
 ARTIFACT_SCHEMA = "logos_track_b_policy_readiness_v1"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 
 def _rel(p: Path) -> str:
@@ -106,6 +108,39 @@ def main() -> int:
         failures.append("distill_contract")
     if not distill_s_ok:
         failures.append("distill_schema")
+
+    if not DEFAULT_VECTOR_POLICY.is_file():
+        checks["vector_policy"] = {"exists": False, "path": _rel(DEFAULT_VECTOR_POLICY)}
+        failures.append("vector_policy_missing")
+    else:
+        try:
+            vp = json.loads(DEFAULT_VECTOR_POLICY.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            checks["vector_policy"] = {"exists": True, "parse_error": str(e)}
+            failures.append("vector_policy_json")
+            vp = {}
+        else:
+            if vp.get("schema") != "logos_vector_index_policy_v1":
+                failures.append("vector_policy_schema_field")
+            cal = vp.get("corpus_alignment") or {}
+            req_list = cal.get("required_preconditions")
+            preconds: list[dict[str, Any]] = []
+            if isinstance(req_list, list):
+                for rel in req_list:
+                    if not isinstance(rel, str) or not rel.strip():
+                        failures.append("vector_precondition_invalid")
+                        continue
+                    p = (ROOT / Path(rel)).resolve()
+                    ok = p.is_file()
+                    preconds.append({"path": rel, "exists": ok})
+                    if not ok:
+                        failures.append(f"vector_precondition_missing:{rel}")
+            checks["vector_policy"] = {
+                "exists": True,
+                "path": _rel(DEFAULT_VECTOR_POLICY),
+                "status": vp.get("status"),
+                "preconditions": preconds,
+            }
 
     schema_gate = checks.get("theology_jsonschema") in ("ok", "skipped_no_jsonschema")
     paths_ok = bool(path_checks) and all(

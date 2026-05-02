@@ -1,0 +1,14 @@
+{
+  "schema": "logos_vector_index_manifest_v1_contract_meta_v1",
+  "artifact_schema": "logos_vector_index_manifest_v1",
+  "artifact_json_schema": "docs/final/schemas/logos_vector_index_manifest_v1.schema.json",
+  "default_output_path": "docs/final/artifacts/logos_vector_index_manifest_v1_latest.json",
+  "runner_version": "1.0.0",
+  "purpose": "Track B slice 3 — deterministic manifest before embeddings: policy SHA, corpus/bundle pointers, zero vectors written.",
+  "runner": "scripts/build_logos_vector_index_manifest_v1.py",
+  "hypothesis_tier": "B",
+  "forbidden": {
+    "invoke_embedding_by_default": true,
+    "a_track_live_trigger": true
+  }
+}
