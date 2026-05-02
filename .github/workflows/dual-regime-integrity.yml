@@ -380,6 +380,9 @@ on:
       - "scripts/build_state_sasang_ops_bundle.py"
       - "docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json"
       - "docs/final/MYEONGRI_INSIGHT_SSOT.md"
+      - "docs/final/MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md"
+      - "docs/final/schemas/myeongri_ai_interpretation_envelope_v1.schema.json"
+      - "tests/test_myeongri_ai_interpretation_envelope_v1.py"
       - "scripts/check_bio_paper_snp_mapping_coverage_v1.py"
       - "scripts/spec_bio_sample_paper_snp_join_gate_v1.py"
       - "scripts/apply_bio_paper_snp_sidecar_to_samples_v1.py"
@@ -760,6 +763,9 @@ jobs:
 
       - name: Myeongni insight observation JSONL + fusion interface stub (§3.3)
         run: python -m pytest tests/test_myeongni_insight_observation_log.py -q --tb=short
+
+      - name: Myeongri AI interpretation envelope v1 (prompt SSOT + JSON Schema)
+        run: python -m pytest tests/test_myeongri_ai_interpretation_envelope_v1.py -q --tb=short
 
       - name: Log metabolism synthetic cohort + myeongri correlation spike (B-track)
         run: |
