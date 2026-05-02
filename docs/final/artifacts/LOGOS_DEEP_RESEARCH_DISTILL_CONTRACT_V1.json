@@ -19,6 +19,8 @@
     "Heavy LLM/RAG belongs in slice 4+; slices 0-2 are ingest/manifest/schema only.",
     "Slice 1 manifest SHA/count: docs/final/artifacts/logos_corpus_manifest_v1_latest.json via scripts/build_logos_corpus_manifest_v1.py — optional provenance.input_manifest_sha256 companion.",
     "Slice 2 bundle: docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json — dedupe_bundle_key_sha256 links manifest + meaning graph JSONL without copying graph bodies.",
-    "Slice 3 policy: LOGOS_VECTOR_INDEX_POLICY_V1.json + run_logos_vector_index_stub_v1.py; distill runner accepts --bundle-json to anchor provenance."
+    "Slice 3 policy: LOGOS_VECTOR_INDEX_POLICY_V1.json + run_logos_vector_index_stub_v1.py; distill runner accepts --bundle-json to anchor provenance.",
+    "Slice 4 readiness: logos_track_b_policy_readiness_v1_latest.json via report_logos_track_b_policy_readiness_v1.py — theology baseline + path gates before heavy fusion jobs.",
+    "Slice 5 job skeleton: logos_track_b_deep_fusion_job_v1_latest.json via run_logos_track_b_deep_fusion_job_v1.py — records plan; no LLM by default."
   ]
 }

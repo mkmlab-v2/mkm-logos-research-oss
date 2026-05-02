@@ -44,7 +44,8 @@
 2. **슬라이스 1 — 코어 구절 파이프라인 정렬:** `scripts/build_logos_corpus_manifest_v1.py` → `docs/final/artifacts/logos_corpus_manifest_v1_latest.json` (계약 `LOGOS_CORPUS_MANIFEST_V1_CONTRACT.json`, 스키마 `logos_corpus_manifest_v1.schema.json`, 회귀 `tests/test_logos_corpus_manifest_v1.py`). 기본 입력 `data/logos/verse_4pipeline_full_31102.json` — 행 수·SHA-256·중복·샘플 `verse_id`.
 3. **슬라이스 2 — 매니페스트·그래프 번들:** `scripts/build_logos_corpus_graph_bundle_v1.py` → `docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json` (계약 `LOGOS_CORPUS_GRAPH_BUNDLE_V1_CONTRACT.json`, 스키마 `logos_corpus_graph_bundle_v1.schema.json`, 회귀 `tests/test_logos_corpus_graph_bundle_v1.py`). 코퍼스 매니페스트 + `bible_meaning_graph_*` JSONL 해시·행 수·엣지 타입 분포·구절 ref 교집합; 그래프 원본은 읽기 전용.
 4. **슬라이스 3 — 벡터 인덱스 정책(스텁):** `docs/final/artifacts/LOGOS_VECTOR_INDEX_POLICY_V1.json` + 스키마 `logos_vector_index_policy_v1.schema.json` + 계약 `LOGOS_VECTOR_INDEX_POLICY_V1_CONTRACT.json`; 준비 게이트 `scripts/run_logos_vector_index_stub_v1.py` (`--dry-run`·선택 `--require-bundle`). 실제 임베딩·ANN 빌드는 정책의 `status`가 `active`로 승격된 뒤 별도 작업.
-5. **슬라이스 4 — 오프라인 딥 퓨전 러너:** LLM/RAG는 이 단계부터; 입력·출력은 스키마·`provenance.input_manifest_sha256` 필수.
+5. **슬라이스 4 — 정책 체인 준비도(결정론 게이트):** `scripts/report_logos_track_b_policy_readiness_v1.py` → `docs/final/artifacts/logos_track_b_policy_readiness_v1_latest.json` (계약 `LOGOS_TRACK_B_POLICY_READINESS_V1_CONTRACT.json`, 스키마 `logos_track_b_policy_readiness_v1.schema.json`, 회귀 `tests/test_logos_track_b_policy_readiness_v1.py`). 신학 베이스라인·provenance 경로·증류 계약/스키마 일괄 확인·exit code; LLM 없음.
+6. **슬라이스 5 — 오프라인 딥 퓨전 잡(스켈레톤):** `scripts/run_logos_track_b_deep_fusion_job_v1.py` → `docs/final/artifacts/logos_track_b_deep_fusion_job_v1_latest.json` (계약 `LOGOS_TRACK_B_DEEP_FUSION_JOB_V1_CONTRACT.json`, 스키마 `logos_track_b_deep_fusion_job_v1.schema.json`, 회귀 `tests/test_logos_track_b_deep_fusion_job_v1.py`). 기본 `logos_track_b_policy_readiness_v1_latest.json`의 `overall_ok` 게이트(`--skip-readiness-check`는 로컬만); **기본 LLM/RAG 미호출**·플래그 예약; 향후 증류·RAG는 별도 모듈.
 
 ## 산출 스키마 (증류)
 
@@ -69,4 +70,7 @@
 
 - 로고스 독립 렌즈 v0: `LOGOS_INDEPENDENT_LENS_V0_CONTRACT.json`, `scripts/run_lens_logos.py`
 - 융합 스텁 v0: `INDEPENDENT_LENS_FUSION_STUB_V0_CONTRACT.json`
+- MKM 신학 베이스라인(파라미터 해석 정책): `LOGOS_MKM_THEOLOGY_BASELINE_V1.json` · 계약 `LOGOS_MKM_THEOLOGY_BASELINE_V1_CONTRACT.json`
+- 정책 체인 준비도: `logos_track_b_policy_readiness_v1_latest.json` · `LOGOS_TRACK_B_POLICY_READINESS_V1_CONTRACT.json`
+- 딥 퓨전 잡(스켈레톤): `logos_track_b_deep_fusion_job_v1_latest.json` · `LOGOS_TRACK_B_DEEP_FUSION_JOB_V1_CONTRACT.json`
 - 중앙 메모리: `docs/final/CENTRAL_AGENT_MEMORY_V1.md` (Multi-Lens·Fact-Lock)

@@ -1,0 +1,15 @@
+{
+  "schema": "logos_track_b_deep_fusion_job_v1_contract_meta_v1",
+  "artifact_schema": "logos_track_b_deep_fusion_job_v1",
+  "artifact_json_schema": "docs/final/schemas/logos_track_b_deep_fusion_job_v1.schema.json",
+  "runner_version": "1.0.0",
+  "purpose": "Track B slice 5 skeleton: gate on policy readiness; record inputs for future LLM/RAG (not invoked by default).",
+  "default_readiness_path": "docs/final/artifacts/logos_track_b_policy_readiness_v1_latest.json",
+  "default_output_path": "docs/final/artifacts/logos_track_b_deep_fusion_job_v1_latest.json",
+  "runner": "scripts/run_logos_track_b_deep_fusion_job_v1.py",
+  "hypothesis_tier": "B",
+  "forbidden": {
+    "invoke_llm_by_default": true,
+    "a_track_live_trigger": true
+  }
+}
