@@ -102,6 +102,14 @@
 5. **정체성 (Multi-Lens):** 단일 TOE·통일장 “완성” 선언 금지 — §1.1. 레짐·로고스·명리·외경은 **격벽·교차 참고** (§2.1·§4).
 6. **Cursor Cloud Sandbox · 본선 분리:** Cloud Agent/Sandbox는 검증·병렬 가속 전용; 실매매·프로덕션 쓰기·실키 주입은 로컬/VPS 본선과 분리. 상세 `.cursor/rules/cursor-cloud-sandbox-boundary.mdc`.
 
+## 하네스 정밀 하드닝 (Agent Harness Engineering, 운영 규약)
+
+- **래칫 등급 운영:** 실패 재발 방지는 `임시(관찰)` → `반영 후보` → `영구 규칙(헌법/훅)` 3단계로 승격한다. 단발성 이슈를 즉시 영구 규칙화하지 않는다.
+- **생성/평가 독립성:** 장기 작업은 생성 루프와 평가 루프를 분리하고, 평가는 최소 1개 고정 홀드아웃(블라인드 샘플 포함)으로 수행한다.
+- **컨텍스트 SLO 고정:** 긴 로그·대형 산출물은 기본 오프로드하고, 요약 주기·토큰 상한·재주입 조건을 명시한 채 운영한다.
+- **침묵 성공 + 하트비트:** 성공 시 상세 로그는 루프에 재주입하지 않되, 통과 카운트·소요시간·최근 체크포인트는 경량 하트비트로 남긴다.
+- **HaaS 가드:** 프레임워크/HaaS를 사용해도 핵심 게이트는 로컬 재현 가능한 스크립트·아티팩트·exit code로 검증한다(Fact-Lock 우선).
+
 ## 로컬 검증 진입점 (개발·PR 전 권장)
 
 - **만세력 Phase B 스모크 (Meeus vs Swiss 立春 Reference B + 59-case ganji 코호트 + 충돌 사전 네이티브 검증):** `python scripts/run_manseryeok_validation_smoke_v1.py` (B-2만: `--skip-ephemeris`; 충돌 생략: `--skip-collision-dict`). 단독: `python scripts/validate_collision_dictionary_v1.py`. CI: **`main` 푸시마다** + 경로 맞는 PR + 수동 — `.github/workflows/manseryeok-validation-smoke.yml`. 대조 템플릿·채집 절차: `docs/final/artifacts/manseryeok_collision_dictionary_v1.json` (`collection_howto`, **`ssot_policy`**). **회귀·본선 기준은 `pillars_native`(엔진)**; `pillars_external`은 외부 UI 스냅샷. 엔진 변경 후 네이티브 동기화: `python scripts/collision_dict_refresh_native_v1.py --write`. 코호트 행 추가(네이티브만): `python scripts/sync_collision_dict_cohort_entries_v1.py --case-id <id> --write`.
@@ -112,6 +120,7 @@
 - **보조**: `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` (bitcoin-trading 디렉터리에서). CI 정합은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6.
 - **예언 오버레이 AB 스파이크(§1.1.1)**: `py -m pytest tests/test_prophecy_restoration_spike.py` — GitHub `.github/workflows/prophecy-restoration-spike-smoke.yml` (스크립트·테스트 변경 시). 임계값 스윕 산출(로컬 재생성): `docs/final/artifacts/prophecy_prior_threshold_sweep_v1_latest.json`.
 - **LLM 검증 티어:** 기본은 **로컬·자체 호스팅 모델**로 게이트·벤치; 상용·대외 품질 확정 전에만 **고급 클라우드 모델 소표본 섀도우**(드리프트 방지). 상세: `docs/final/P0_COMMERCIALIZATION_TRACKER.md` **「LLM 검증 티어」**.
+- **MKM-Orchestrator (bounded `todo_queue_v1`):** `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.4 · `docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json` · 로컬 스모크 `scripts/run_mkm_orchestrator_smoke_v1.ps1`(기본 `pip install -q jsonschema`) · 경로 점검 `scripts/verify_mkm_orchestrator_bundle_v1.py` · 큐 생성 `scripts/bootstrap_mkm_orchestrator_queue_v1.ps1`(`-Profile TrackCFromBridge` = 사업계획 브릿지 JSON 적용) · 상태 요약 `scripts/show_mkm_orchestrator_queue_status_v1.py` · 연속 루프(선택) `scripts/run_mkm_continuous_daemon.ps1`/`Register-MkmOrchestratorDaemonTask.ps1`. B→A·실매매 자동 합선 없음.
 
 ## Cursor 3.0 · 규칙 스택 (2026-04)
 
