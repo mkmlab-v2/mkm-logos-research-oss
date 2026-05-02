@@ -15,6 +15,13 @@
 - **자동 주입:** `.cursor/rules/central-agent-memory.mdc` (`alwaysApply`)에 **SSOT 핵심 5줄**이 매 에이전트 턴 컨텍스트에 포함된다. `@` 없이도 원칙 정렬은 가능하다.
 - **한계:** 채팅 로그는 세션 간 공유되지 않는다. “지난 작업” 맥락은 **본 파일·커밋**으로 누적한다. 표 전체·깊은 동기화가 필요하면 작업 시작 시 `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` 또는 에이전트 `Read`를 쓴다.
 
+### 채팅 간 동기화 (레포 SSOT vs Cursor User Rules)
+
+- **대화 내용은 복사되지 않는다.** 새 세션에서도 동일한 안내를 쓰려면, 일정·운영·Remote Publication 등 **반복 안내를 레포 파일에 적어 두고 커밋**한다. 같은 워크스페이스의 다른 채팅에서는 파일을 열거나 **`@AGENTS.md`**(필요 시 `@CLAUDE.md`·중앙 메모리)로 한 번 참조하면 갱신된 본문이 보인다.
+- **다른 PC/클론**에서는 그쪽에서 **`git pull`** 후 동일하다.
+- **중앙 규칙:** 루트 **`.cursorrules`**, **`.cursor/rules/*.mdc`** 도 레포에 있으면 **파일이 최신인 저장소**에서 Cursor가 적용한다.
+- **Cursor Settings → User Rules**만으로 팀·본선 기준을 두지 않는다 — 레포와 **자동 동기화되지 않는다**. 본선·팀 합의 문구는 **`AGENTS.md`·`CLAUDE.md`·`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 등 SSOT**에 둔다(요지는 아래 **「Cursor 3.0 · 규칙 스택」**의 User Rules 한 줄과 동일 선상).
+
 ## 렌즈 역할 계약 (모든 채팅 공통 · 혼동 금지)
 
 - **렌즈 명칭 고정:** `사상`, `명리`, `성경(Logos)` 3개만 사용한다. `Macro/Regime` 같은 운영 레이어명을 렌즈명처럼 혼용하지 않는다.
