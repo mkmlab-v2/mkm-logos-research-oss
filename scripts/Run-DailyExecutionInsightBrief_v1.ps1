@@ -6,6 +6,7 @@
   0) (optional) Independent lens runners — `myeongni` / `sasang` / `market_sasang` / `logos` → `docs/final/artifacts/*_latest.json` (fusion stub reads these; daily brief §1c embeds the same files)
   1) `report_independent_lens_fusion_stub_v0.py` — `independent_lens_fusion_stub_latest.json`
   2) (optional) Logos Track B commander deep report JSON + MD — separate from `run_lens_logos.py`
+  2b) (optional) `emit_myeongni_thin_bridge_line_v1.py --calendar-date auto` — one-line myeongni JSONL aligned to the nearest `curated_dates_v1` day, then Thin uses `--myeongni-jsonl` (default on; `-SkipMyeongniThinBridge` restores stock overlap file)
   3) `eval_multilens_harness_v2_thin.py --populate-default-samples` — `multilens_eval_v2_thin_report_latest.json`
   4) `build_daily_execution_insight_brief_v1.py` — `reports/daily_execution_insight_brief_latest.md`
 
@@ -17,6 +18,7 @@ param(
     [switch]$SkipFusionRefresh,
     [switch]$SkipLogosTrackBDeepReport,
     [switch]$SkipThinRefresh,
+    [switch]$SkipMyeongniThinBridge,
     [switch]$DatedCopy,
     [switch]$DryRun
 )
@@ -33,11 +35,7 @@ $fusion = @('scripts\report_independent_lens_fusion_stub_v0.py')
 $logosDeep = @('scripts\run_logos_track_b_commander_deep_report_v1.py')
 $logosMd = @('scripts\materialize_logos_track_b_commander_deep_report_v1.py')
 $thinOut = 'docs\final\artifacts\multilens_eval_v2_thin_report_latest.json'
-$thin = @(
-    'scripts\eval_multilens_harness_v2_thin.py',
-    '--populate-default-samples',
-    '--out', $thinOut
-)
+$myeongniBridgeOut = 'data\multilens_eval\myeongni_independent_lens_thin_bridge_latest.jsonl'
 $briefArgs = @('scripts\build_daily_execution_insight_brief_v1.py')
 if ($DatedCopy) { $briefArgs += '--also-dated-copy' }
 
@@ -53,7 +51,15 @@ if ($DryRun) {
         Write-Host ('py ' + ($logosDeep -join ' '))
         Write-Host ('py ' + ($logosMd -join ' '))
     }
-    if (-not $SkipThinRefresh) { Write-Host ('py ' + ($thin -join ' ')) }
+    if (-not $SkipThinRefresh) {
+        if (-not $SkipMyeongniThinBridge) {
+            Write-Host ('py scripts\emit_myeongni_thin_bridge_line_v1.py --calendar-date auto --out ' + $myeongniBridgeOut)
+        }
+        $t = @('scripts\eval_multilens_harness_v2_thin.py', '--populate-default-samples')
+        if (-not $SkipMyeongniThinBridge) { $t += @('--myeongni-jsonl', $myeongniBridgeOut) }
+        $t += @('--out', $thinOut)
+        Write-Host ('py ' + ($t -join ' '))
+    }
     Write-Host ('py ' + ($briefArgs -join ' '))
     exit 0
 }
@@ -85,8 +91,21 @@ if (-not $SkipLogosTrackBDeepReport) {
     }
 }
 if (-not $SkipThinRefresh) {
+    if (-not $SkipMyeongniThinBridge) {
+        Write-Host '== myeongni thin bridge JSONL (auto grid snap) ==' -ForegroundColor Cyan
+        & py (Join-Path $root 'scripts\emit_myeongni_thin_bridge_line_v1.py') @(
+            '--calendar-date', 'auto',
+            '--out', (Join-Path $root $myeongniBridgeOut)
+        )
+        if ($LASTEXITCODE -ne 0) { throw "emit_myeongni_thin_bridge_line_v1.py failed: $LASTEXITCODE" }
+    }
     Write-Host '== multilens thin report (populated) ==' -ForegroundColor Cyan
-    & py @thin
+    $thinArgs = @('scripts\eval_multilens_harness_v2_thin.py', '--populate-default-samples')
+    if (-not $SkipMyeongniThinBridge) {
+        $thinArgs += @('--myeongni-jsonl', (Join-Path $root $myeongniBridgeOut))
+    }
+    $thinArgs += @('--out', $thinOut)
+    & py @thinArgs
     if ($LASTEXITCODE -ne 0) { throw "eval_multilens_harness_v2_thin.py failed: $LASTEXITCODE" }
 }
 Write-Host '== daily execution insight brief ==' -ForegroundColor Cyan

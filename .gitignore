@@ -20,6 +20,9 @@ logs/
 # 로컬 일회성 산출 (예: weather 체인 `-o out/reg.json`)
 /out/
 
+# Thin daily chain: one-line myeongni JSONL (regenerable; Run-DailyExecutionInsightBrief_v1.ps1)
+data/multilens_eval/myeongni_independent_lens_thin_bridge_latest.jsonl
+
 # Kaggle 자동 다운로드 + 기상 체인 스크립트 산출 (scripts/fetch_kaggle_seattle_weather_sample_chain_v1.ps1)
 data/kaggle_auto_weather/
 
@@ -137,8 +140,9 @@ reports/linkedin_dm_*
 projects/mkm-life/reports/one_question_funnel_*
 !projects/mkm-life/reports/one_question_funnel_daily_targets_latest.json
 !projects/mkm-life/reports/one_question_funnel_daily_targets_latest.md
-# Weekly compression dated snapshots (scheduler/local); latest JSON remains tracked
+# Weekly compression governance reports (scheduler/local/CI; regenerable)
 docs/final/artifacts/compression_weekly_governance_report_20*.json
+docs/final/artifacts/compression_weekly_governance_report_latest.json
 projects/bitcoin-trading/.venv/
 projects/bitcoin-trading/.pm2-win/
 # Regenerable trade exports (scp from VPS or scripts/export_cursor_trade_history_v1.py)

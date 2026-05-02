@@ -366,6 +366,8 @@ on:
       - "tests/test_build_daily_execution_insight_brief_v1.py"
       - "scripts/build_daily_execution_insight_brief_v1.py"
       - "scripts/Run-DailyExecutionInsightBrief_v1.ps1"
+      - "scripts/emit_myeongni_thin_bridge_line_v1.py"
+      - "tests/test_emit_myeongni_thin_bridge_line_v1.py"
       - "scripts/build_sasang_interpretive_insight_bundle_v1.py"
       - "docs/final/schemas/sasang_interpretive_insight_bundle_v1.schema.json"
       - "docs/final/artifacts/SASANG_INTERPRETIVE_INSIGHT_BUNDLE_V1_CONTRACT.json"
@@ -746,6 +748,9 @@ jobs:
 
       - name: Daily execution insight brief v1 (materializer contract)
         run: python -m pytest tests/test_build_daily_execution_insight_brief_v1.py -q --tb=short
+
+      - name: Myeongni independent lens → Thin JSONL bridge v1
+        run: python -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py -q --tb=short
 
       - name: Two-track submission pack (evidence bundle + draft + camera-ready JSON builders)
         run: |

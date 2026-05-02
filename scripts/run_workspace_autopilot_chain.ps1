@@ -84,6 +84,7 @@ Write-Host "=== [4/4] pytest (sasang ledger + multilens thin + optional kospi dy
 $apTests = @(
     (Join-Path $workspaceRoot "tests\test_sasang_dynamics_regime_mapping_ledger.py"),
     (Join-Path $workspaceRoot "tests\test_multilens_eval_harness_v2_thin.py"),
+    (Join-Path $workspaceRoot "tests\test_emit_myeongni_thin_bridge_line_v1.py"),
     (Join-Path $workspaceRoot "tests\test_kospi_sasang_dynamics_bridge_v1.py"),
     (Join-Path $workspaceRoot "tests\test_verify_kospi_sasang_dynamics_holdout_smoke.py")
 )

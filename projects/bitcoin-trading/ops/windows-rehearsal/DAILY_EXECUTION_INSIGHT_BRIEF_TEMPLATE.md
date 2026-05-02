@@ -64,7 +64,7 @@
 | 시장 사상 | `docs/final/artifacts/market_sasang_lens_latest.json` |
 | 로고스(독립) | `docs/final/artifacts/logos_independent_lens_latest.json` |
 
-**갱신 체인(권장):** `scripts/Run-DailyExecutionInsightBrief_v1.ps1` — 독립 렌즈 러너 → 융합 스텁 → Thin → 브리프(기본 `-SkipIndependentLensRefresh` 없이 실행).
+**갱신 체인(권장):** `scripts/Run-DailyExecutionInsightBrief_v1.ps1` — 독립 렌즈 러너 → 융합 스텁 → (기본) `emit_myeongni_thin_bridge_line_v1.py --calendar-date auto` → Thin이 `data/multilens_eval/myeongni_independent_lens_thin_bridge_latest.jsonl`로 `--myeongni-jsonl` → 브리프. 격자 겹침만 쓰려면 `-SkipMyeongniThinBridge`. (기본 `-SkipIndependentLensRefresh` 없이 실행.)
 
 ---
 
