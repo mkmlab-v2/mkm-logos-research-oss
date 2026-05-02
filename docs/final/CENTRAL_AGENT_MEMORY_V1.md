@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-02T05:30:00Z
+- **last_updated_utc:** 2026-05-02T18:00:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -90,6 +90,18 @@
 
 ---
 
+## MKM AI 고도화 · 자체 LLM (의사결정 지문)
+
+> 지휘관 질의: “규칙 주입 vs 가중치에 이론 체화”, “로컬 젬마4 등을 MKM 사고로 내장할지”. **구현 완료 단정은 Fact 표·스크립트로만** — 여기는 **전략 지문**만.
+
+1. **층 분리:** Cursor 규칙·시스템 프롬프트 = **런타임 정렬(가중치 불변)**; 파인튜닝·어댑터 = **선험(prior) 변경**. 둘 다 “주입”이지만 **다른 레버**다.
+2. **기본안(대부분 충분):** 규칙 + RAG + **게이트·eval·스키마**로 행동 고정. Fact-Lock·투트랙·레짐 주·보는 **프로덕트에 새기기 전에** 여기서 먼저 고정.
+3. **자체 LLM/체화는 조건부:** 반복 출력 형식·금지 패턴·브랜드 톤이 **데이터·자동 채점**으로 정의되고, **규칙만으로 프롬프트가 비대**해 비용·일관성 문제가 **실측**될 때만 — 어댑터·좁은 파인튜닝을 **ROI 검토** (데이터 파이프라인·회귀 없으면 **오버엔지니어링**).
+4. **속도:** 느림의 주원인은 “규칙” 자체가 아니라 **토큰 길이·호출 구조**; 학습으로 프롬프트를 줄이면 이득 볼 수 있으나 **학습 성공·평가 전제** 필요.
+5. **재질의 시 응답:** 동일 주제 재질의 시 **본 절 + Fact 표**를 우선 인용해 답을 맞추고, NotebookLM·세션 감으로만 재정의하지 않음.
+
+---
+
 ## 분기별 한 줄 (최근 1년 · 수동 채움)
 
 > 팀이 실제로 한 **결정·이정표**만 적는다. 비우면 됨.
@@ -99,6 +111,7 @@
 | 2026-Q1 (NL 코퍼스) | NotebookLM MKM·Ops·Fusion 등 15노트 교차 질의 → 본 파일 **NL 이관 압축** 반영 (레포 SSOT와 병용). |
 | 2026-Q2 (AutoEvo) | 조사→큐→스캐폴드→실행→제안→승인→결정 적용 + 연구 레인 승격 실행계획(`autoevo_research_promotion_plan_latest.json`) 생성. |
 | 2026-Q2 (Hybrid Pointer Router) | `GO/WATCH/HOLD` 라벨링·runtime config·shadow 리포트·alert·guard·강등 드릴까지 연결해 “조건부 고효율 + 자동 하방보호”를 아티팩트 체인으로 고정(무조건 99/100 수사 금지). |
+| 2026-05 (MKM 렌즈·융합 점검 루프) | 명리·사상·로고스 독립 렌즈·통찰 번들·융합 스텁·Shadow·신학 연동을 **pytest + P0**로 스모크; 통합은 `gitea/main`·`SoloDev-MergeFeatureToGiteaMain.ps1` 절차로 정리(관측/ B-track, A-track·실전 자동 합선 없음). |
 | 2026-Q1 (레포 타임라인) | Mar~Apr `feat`/`docs`/`chore` 커밋이 다수 + `reports`·`docs`·`scripts` 경로 변경이 두드러짐 → **산출·스냅샷·자동화**를 한 사이클로 밀어붙인 분기 (`docs/final/artifacts/memory_revival_gap_scan_latest.json`와 대조). |
 | 2025-05~2026-02 (갭·NL 검증) | NotebookLM `압축` 노트(`c5f9aef1-6cd6-4c3b-9c57-d1f2a62e3201`) 교차질의가 인용한 source id는 **현재 `nlm source list` 제목**(예: 2026-04-09 H: 매니페스트·`top10_curated`)과 시점이 맞지 않음 → **날짜별 “결정 연대기”는 미승격**; 동 구간 본 레포 `git log` **0건** 재확인. |
 | 2026-04 (Cursor · 크로스 채팅) | `.cursor/rules/central-agent-memory.mdc`에 **SSOT 핵심 5줄**(Fact-Lock·투트랙·레짐 주·보·Multi-Lens·압축 서술)을 **매 턴 자동 포함**으로 고정; 압축 대외 서사는 **실행층=휴리스틱·게마/4D 브리지=계측·사원수=trackb 실험축**으로 Fact-Lock 정렬. 채팅 간 맥락 누적은 **본 파일·Git** — 세션 로그 자동 병합 아님. |
@@ -182,6 +195,7 @@
 | 2026-05-01 (독립 재현 표본 300+ 충족 복구) | 재현 입력을 `research/market_data/kospi_daily_external_yf.csv`로 교체해 `sasang_4agent_collision_btrack_protocol_repro_kospi_latest.json` 재생성(`ticks=7232`, `p_permutation=0.017`, `sample_size_warning_low_ticks=false`). 제출 번들 재생성 후 `repro_check_pass=true`, 최종 상태 `PROMOTED_WITH_HUMAN_APPROVAL + MONITORING_ACTIVE + DRILL_PASS`로 복귀. |
 | 2026-05-02 (MKM Lab · LinkedIn B2B 실행 번들) | 개인 프로필 영문 우선 About·스페셜 픽스·주간 운영 노트 톤 유지; 추적 `reports/linkedin_dm_outreach_tracker_v1.tsv`, 복붙 `reports/linkedin_dm_copypaste_bundle_v1.txt`(KR+EN 첫 DM A/B/C·7일 팔로업). DM/게시는 본인 LinkedIn 세션에서만 수행. |
 | 2026-05-02 (VPS · bitcoin-trading · 체결→cursor_trade_history) | 로컬 커밋만 있으면 VPS에 파일 MISSING — **`git@github.com:mkmlab-v2/mkm-destiny-ai-41e38ec6.git`의 `fix/btrack-ohlcv-cli-help-and-eval-wrapper-github`**에 반영 필요(비FF 시 worktree+체리픽 후 푸시). 체인: `export_binance_fills_to_cursor_trade_history_v1.py`→`sync_cursor_trade_history_latest_24h.py`; 등록 `ops/v2/ssh/register_export_then_sync_cursor_trade_history_cron.sh`, cron 태스크 `bitcoin-binance-export-then-cursor-trade-history`, 로그 `/var/log/bitcoin_export_then_cursor_trade_history.log`, **`WORKSPACE_ROOT=/opt/mkm-lab-workspace-v2/projects/bitcoin-trading`**. 브랜치 전환 전 **`projects/no1kmedi` 등 로컬 수정은 stash**. **재발 방지 SSOT:** `projects/bitcoin-trading/ops/v2/DEPLOY_GIT_POINTER_V1.json` + 스모크 `bash ops/v2/ssh/check_vps_deploy_files_vs_pointer.sh`. |
+| 2026-05-02 (MKM 자체 LLM·이론 체화 — 전략 지문 고정) | 규칙/프롬프트 정렬 vs 가중치 학습 **층 분리**; 고도화 기본은 **규칙+RAG+게이트**. 로컬 젬마 등 **체화형 파인튜닝**은 eval·데이터·프롬프트 비대가 **실측**될 때만 ROI 검토 — 미달이면 오버엔지니어링. 재질의 시 **`CENTRAL_AGENT_MEMORY_V1` 「MKM AI 고도화 · 자체 LLM」** 절 우선. |
 
 ---
 
@@ -241,9 +255,9 @@
 
 ## 다음에 할 일 (최대 3개)
 
-1. 원격 게시는 `internal` 우선으로 유지하고, GitHub(`origin`/`hq`)는 예외 공개가 필요할 때만 `scripts/Push-GitHub-Explicit.ps1 -Acknowledge` 경로로 제한한다. `fix/external-anchor-ci-smoke` 후속도 기본은 내부 PR/머지로 진행하고, 메인 워크스페이스 정렬은 `git fetch`/`pull` 또는 PR 전용 **worktree**(`C:\workspace\tmp\wt-external-anchor-work`)로 유지한다.
-2. (선택) 구현 경로 SSOT 보강: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`에 external Bible anchor 체인·아티팩트 경로를 한 절 추가(스크립트 목록은 레포의 해당 브랜치와 동일하게 유지).
-3. Global Atom claim registry·NotebookLM Vault 동기화 등 기존 운영 루틴은 병행 시 Fact-Lock 우선.
+1. **디스크 동기화가 장기기억의 본체:** 세션 끝마다 의미 있는 전환만 **본 파일·커밋**으로 남기고, NotebookLM·채팅 요약은 **검증 후 한 줄 이관**만(Fact-Lock·표 프로토콜 유지).
+2. **일인 개발 Git 고정:** 일상 저장은 `scripts/push-internal.ps1`; `gitea/main`에 합칠 때는 워킹 트리 clean 후 `scripts/SoloDev-MergeFeatureToGiteaMain.ps1`(먼저 `-DryRun`). GitHub는 예외 시만 `Push-GitHub-Explicit.ps1 -Acknowledge`.
+3. **게이트 리듬:** `scripts/verify_p0_constitution_gate_paths.ps1`를 주기 점검으로 두고, 시간 허용 시 `scripts/run_fact_lock_bundle.ps1` — B→A 자동 합선·실매매 자동 트리거 없음 전제 유지.
 
 ## 동기화 루틴
 

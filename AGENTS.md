@@ -13,7 +13,7 @@
 
 - **지속 SSOT:** `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — Athena 정체성·격벽·Fact-Lock·「분기별 한 줄」.
 - **자동 주입:** `.cursor/rules/central-agent-memory.mdc` (`alwaysApply`)에 **SSOT 핵심 5줄**이 매 에이전트 턴 컨텍스트에 포함된다. `@` 없이도 원칙 정렬은 가능하다.
-- **한계:** 채팅 로그는 세션 간 공유되지 않는다. “지난 작업” 맥락은 **본 파일·커밋**으로 누적한다. 표 전체·깊은 동기화가 필요하면 작업 시작 시 `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` 또는 에이전트 `Read`를 쓴다.
+- **한계:** 채팅 로그는 세션 간 공유되지 않는다. “지난 작업” 맥락은 **본 파일·커밋**으로 누적한다. 표 전체·깊은 동기화가 필요하면 작업 시작 시 **`@CENTRAL.md`**(루트 바로가기) 또는 `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` 또는 에이전트 `Read`를 쓴다.
 
 ### 채팅 간 동기화 (레포 SSOT vs Cursor User Rules)
 
@@ -84,6 +84,7 @@
 ### 일인 개발(solo)일 때만 단순화
 
 - **매일 쓰는 것 하나:** 작업 저장은 **`scripts/push-internal.ps1`** 만 기억하면 됨 → **`gitea`** 또는 **`internal`** 로만 올라감(GitHub 주소를 외울 필요 없음).
+- **피처 → 통합 브랜치:** 일상 머지 대상은 **`gitea/main`**(bare가 `E:\Git\repos\mkm-destiny-ai-41e38ec6.git`이면 `internal`과 동일). `main`이 `C:\workspace`가 아니라 **다른 워크트리**에만 열려 있어도 되고, 그때는 **`scripts/SoloDev-MergeFeatureToGiteaMain.ps1`** 로 현재 브랜치를 main에 합친 뒤 `gitea`로 push(먼저 `-DryRun`).
 - **GitHub:** 공개 미러·외부에 보여줄 필요가 있을 때만. 평소에 안 써도 레포 규칙과 충돌 없음. 의도적으로 올릴 때는 **`scripts/Push-GitHub-Explicit.ps1 -Acknowledge`** (실수 방지용 게이트).
 - **`origin`의 push가 `no_push`인 설정은 유지 권장:** 일반 `git push origin` 으로 GitHub에 안 가게 막는 안전장치.
 - **`hq` 등 다른 리모트:** 팀용 이름일 뿐이며, 일인이면 **주 저장소는 `gitea`/`internal` 하나로 통일**하고 나머지는 필요할 때만 의식하면 됨. 헷갈리면 **`scripts/Show-RemotePublicationMode.ps1`** 로 “어디로 열려 있는지”만 확인.
