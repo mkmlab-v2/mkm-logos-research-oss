@@ -6,8 +6,9 @@
   1. `py scripts/integrity_guard.py` (CI 첫 단계)
   2. `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`
      — dual-regime 스모크 + multilens marginal(V1) 후 워크스페이스 루트 Fact-Lock(Thin V2·시장 어댑터 등 명시 목록)
+  3. `py -m pytest tests/test_sasang_interpretive_insight_bundle_v1.py` — 사상 통찰 참조 번들 v1.1 스키마·`synthesis_v1`(dual-regime 동일 단계)
 
-  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다.
+  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3단계(사상 번들)는 본 스크립트에서 직접 실행합니다.
 
 .PARAMETER SkipIntegrityGuard
   `integrity_guard.py` 생략(빠른 확인용). CI와 완전 동치가 아님.
@@ -109,6 +110,7 @@ $trackCEvidenceScript = Join-Path $workspaceRoot 'scripts\build_track_c_evidence
 $trackCCopyGuardScript = Join-Path $workspaceRoot 'scripts\check_track_c_copy_guard_v1.py'
 $trackCClaimValidatorScript = Join-Path $workspaceRoot 'scripts\validate_track_c_landing_claims_v1.py'
 $sajuGoldenReplayScript = Join-Path $workspaceRoot 'scripts\run_saju_golden_replay.py'
+$sasangInterpretiveBundleTest = Join-Path $workspaceRoot 'tests\test_sasang_interpretive_insight_bundle_v1.py'
 $truthfulQaBenchmarkScript = Join-Path $workspaceRoot 'scripts\run_truthfulqa_ab_benchmark_v1.py'
 $truthfulQaBenchmarkEvalGateScript = Join-Path $workspaceRoot 'scripts\check_truthfulqa_ab_gate_v1.py'
 $truthfulQaMcBenchmarkArtifact = Join-Path $workspaceRoot 'docs\final\artifacts\truthfulqa_ab_benchmark_latest.json'
@@ -219,6 +221,15 @@ if (-not (Test-Path -LiteralPath $sajuGoldenReplayScript)) {
 }
 Write-Host '== Fact-Lock: run_saju_golden_replay.py ==' -ForegroundColor Cyan
 & py $sajuGoldenReplayScript
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+}
+
+if (-not (Test-Path -LiteralPath $sasangInterpretiveBundleTest)) {
+    throw "Sasang interpretive bundle pytest not found: $sasangInterpretiveBundleTest"
+}
+Write-Host '== Fact-Lock: test_sasang_interpretive_insight_bundle_v1.py ==' -ForegroundColor Cyan
+& py -m pytest $sasangInterpretiveBundleTest -q --tb=short
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
