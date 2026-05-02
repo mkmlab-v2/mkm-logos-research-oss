@@ -11,6 +11,7 @@ param(
 # 2026-05-02: 起運 qiyun v1 (solar_term_jie_crossings, myeongri_qiyun_v1, pytest).
 # 2026-05-02: Logos Track B commander deep report v1 + shared track_b_commander_gate_v1.
 # 2026-05-02: Market Sasang lens v1 (policy, engine, runner, schema, contract, pytest).
+# 2026-05-02: Sasang interpretive insight bundle v1 (multi-axis reference pointers, schema, contract, pytest).
 # 2026-05-02: M5 rule_school_mkm_4d_v1 (policy JSON, loader/blend, pytest).
 # 2026-05-02: M2–M4 myeongni (jijangan ohang weights, daewoon v1, jijangan ohang script, daewoon test).
 # 2026-05-02: +4 myeongni jijangan LUT M1 (lut, schema, script, test).
@@ -249,7 +250,12 @@ $required = @(
     "scripts\check_truthfulqa_ab_gate_v1.py",
     "tests\test_check_truthfulqa_ab_gate_v1.py",
     "scripts\Run-TruthfulQAReproBundleV1.ps1",
-    "tests\test_run_truthfulqa_repro_bundle_v1.py"
+    "tests\test_run_truthfulqa_repro_bundle_v1.py",
+    "docs\final\schemas\sasang_interpretive_insight_bundle_v1.schema.json",
+    "docs\final\artifacts\SASANG_INTERPRETIVE_INSIGHT_BUNDLE_V1_CONTRACT.json",
+    "scripts\build_sasang_interpretive_insight_bundle_v1.py",
+    "docs\final\artifacts\sasang_interpretive_insight_bundle_v1_latest.json",
+    "tests\test_sasang_interpretive_insight_bundle_v1.py"
 )
 
 $missing = @()

@@ -1,0 +1,23 @@
+{
+  "schema": "sasang_interpretive_insight_bundle_v1_contract_meta_v1",
+  "artifact_schema": "sasang_interpretive_insight_bundle_v1",
+  "artifact_json_schema": "docs/final/schemas/sasang_interpretive_insight_bundle_v1.schema.json",
+  "bundle_version": "1.0.0",
+  "purpose": "Aggregate observability pointers for Sasang-related axes (금화교역·보명지주·병증·약리·예측·렌즈 산출). Human decides; machine labels rail=B only.",
+  "builder_module": "scripts/build_sasang_interpretive_insight_bundle_v1.py",
+  "default_output_path": "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json",
+  "required_labels": {
+    "rail": "B_TRACK",
+    "decision_authority": "human_only",
+    "human_commander_gate_v1": "scripts/track_b_commander_gate_v1.py HUMAN_COMMANDER_GATE_V1"
+  },
+  "upstream_optional_artifacts": [
+    "docs/final/artifacts/sasang_independent_lens_latest.json",
+    "docs/final/artifacts/market_sasang_lens_latest.json"
+  ],
+  "forbidden": {
+    "final_clinical_diagnosis": true,
+    "a_track_auto_trigger_from_bundle": true,
+    "single_axis_poses_as_decision": true
+  }
+}
