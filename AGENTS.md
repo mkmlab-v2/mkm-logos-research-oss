@@ -66,6 +66,14 @@
 - **권장 명령:** `scripts/Show-RemotePublicationMode.ps1`(상태 점검), `scripts/push-internal.ps1`(기본 push), `scripts/Push-GitHub-Explicit.ps1 -Acknowledge`(예외 공개).
 - **대용량/민감 산출물:** GitHub 기본 제외. 특히 `docs/final/artifacts/global_atom_full_canon/*`는 최신 consolidated manifest만 추적한다.
 
+### 일인 개발(solo)일 때만 단순화
+
+- **매일 쓰는 것 하나:** 작업 저장은 **`scripts/push-internal.ps1`** 만 기억하면 됨 → **`gitea`** 또는 **`internal`** 로만 올라감(GitHub 주소를 외울 필요 없음).
+- **GitHub:** 공개 미러·외부에 보여줄 필요가 있을 때만. 평소에 안 써도 레포 규칙과 충돌 없음. 의도적으로 올릴 때는 **`scripts/Push-GitHub-Explicit.ps1 -Acknowledge`** (실수 방지용 게이트).
+- **`origin`의 push가 `no_push`인 설정은 유지 권장:** 일반 `git push origin` 으로 GitHub에 안 가게 막는 안전장치.
+- **`hq` 등 다른 리모트:** 팀용 이름일 뿐이며, 일인이면 **주 저장소는 `gitea`/`internal` 하나로 통일**하고 나머지는 필요할 때만 의식하면 됨. 헷갈리면 **`scripts/Show-RemotePublicationMode.ps1`** 로 “어디로 열려 있는지”만 확인.
+- **PR·worktree 병렬:** 문서의 Git hygiene은 팀 협업용 바람직함이다. **혼자면 브랜치 하나로 길게 가도 되고**, 나중에 정리할 여유가 있을 때만 `1작업=1브랜치`를 적용해도 된다.
+
 ## 필수 우선순위
 
 1. **루트 `.cursorrules`** — 최상단 **TITAN · 자율 기동(Command-by-Negation)**. 예외가 아니면 권장 조치를 질문 없이 수행·사후 보고; 끝맺음은 [A]/[B] 선택 강요 없이 **완료 보고 + 잔여 리스크(있을 때만)**.
