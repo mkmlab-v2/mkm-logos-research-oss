@@ -9,6 +9,7 @@ on:
       - "scripts/report_logos_track_b_policy_readiness_v1.py"
       - "scripts/build_logos_vector_index_manifest_v1.py"
       - "scripts/build_logos_vector_index_ann_lite_v1.py"
+      - "scripts/logos_ann_lite_embedding_v1.py"
       - "scripts/query_logos_vector_index_ann_lite_v1.py"
       - "scripts/logos_vector_hash_stub_v1.py"
       - "scripts/run_logos_track_b_deep_fusion_job_v1.py"
@@ -23,6 +24,9 @@ on:
       - "tests/test_logos_corpus_manifest_v1.py"
       - "tests/test_logos_corpus_graph_bundle_v1.py"
       - "tests/test_logos_mkm_theology_baseline_v1.py"
+      - "tests/test_track_b_theology_fusion_integration_v1.py"
+      - "docs/final/artifacts/LOGOS_MKM_THEOLOGY_BASELINE_V1.json"
+      - "docs/final/schemas/logos_mkm_theology_baseline_v1.schema.json"
       - "tests/test_logos_deep_research_distill_schema_v1.py"
       - "tests/test_run_logos_track_b_pipeline_chain_v1.py"
       - "docs/final/schemas/logos_vector_index_ann_lite_build_report_v1.schema.json"
@@ -39,6 +43,7 @@ on:
       - "scripts/report_logos_track_b_policy_readiness_v1.py"
       - "scripts/build_logos_vector_index_manifest_v1.py"
       - "scripts/build_logos_vector_index_ann_lite_v1.py"
+      - "scripts/logos_ann_lite_embedding_v1.py"
       - "scripts/query_logos_vector_index_ann_lite_v1.py"
       - "scripts/logos_vector_hash_stub_v1.py"
       - "scripts/run_logos_track_b_deep_fusion_job_v1.py"
@@ -53,6 +58,9 @@ on:
       - "tests/test_logos_corpus_manifest_v1.py"
       - "tests/test_logos_corpus_graph_bundle_v1.py"
       - "tests/test_logos_mkm_theology_baseline_v1.py"
+      - "tests/test_track_b_theology_fusion_integration_v1.py"
+      - "docs/final/artifacts/LOGOS_MKM_THEOLOGY_BASELINE_V1.json"
+      - "docs/final/schemas/logos_mkm_theology_baseline_v1.schema.json"
       - "tests/test_logos_deep_research_distill_schema_v1.py"
       - "tests/test_run_logos_track_b_pipeline_chain_v1.py"
       - "docs/final/schemas/logos_vector_index_ann_lite_build_report_v1.schema.json"
@@ -81,7 +89,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install test dependencies
-        run: pip install pytest jsonschema
+        run: pip install pytest jsonschema ijson
       - name: pytest Logos Track B pipeline bundle
         run: >
           python -m pytest
@@ -89,6 +97,7 @@ jobs:
           tests/test_logos_corpus_graph_bundle_v1.py
           tests/test_logos_vector_index_stub_v1.py
           tests/test_logos_mkm_theology_baseline_v1.py
+          tests/test_track_b_theology_fusion_integration_v1.py
           tests/test_logos_deep_research_distill_schema_v1.py
           tests/test_logos_track_b_policy_readiness_v1.py
           tests/test_logos_vector_index_manifest_v1.py

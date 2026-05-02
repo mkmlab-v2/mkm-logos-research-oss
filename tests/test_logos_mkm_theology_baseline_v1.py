@@ -30,3 +30,9 @@ def test_policy_validates_schema_and_governance_flags() -> None:
     jsonschema.Draft7Validator(schema).validate(doc)
     assert doc.get("governance_and_reporting", {}).get("not_a_deregulation_claim") is True
     assert doc.get("non_gating_ack") is True
+    assert doc.get("version") == "1.1.0"
+    dr = doc.get("track_b_deep_research_interpretation_policy") or {}
+    assert dr.get("boundary_ack_non_gating") is True
+    assert "report_independent_lens_fusion_stub_v0.py" in dr.get("fusion_stub_cross_reference", {}).get(
+        "runner", ""
+    )

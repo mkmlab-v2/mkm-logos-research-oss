@@ -3,7 +3,7 @@
   "artifact_schema": "logos_mkm_theology_baseline_v1",
   "artifact_json_path": "docs/final/artifacts/LOGOS_MKM_THEOLOGY_BASELINE_V1.json",
   "artifact_json_schema": "docs/final/schemas/logos_mkm_theology_baseline_v1.schema.json",
-  "runner_version": "1.0.0",
+  "runner_version": "1.1.0",
   "purpose": "MKM-internal parametric theology baseline; explicit governance: labeling does not abolish law/compliance review for external claims.",
   "hypothesis_tier": "B",
   "cross_refs": [
