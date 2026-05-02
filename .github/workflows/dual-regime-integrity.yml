@@ -383,6 +383,8 @@ on:
       - "docs/final/MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md"
       - "docs/final/schemas/myeongri_ai_interpretation_envelope_v1.schema.json"
       - "tests/test_myeongri_ai_interpretation_envelope_v1.py"
+      - "scripts/run_myeongri_ai_interpretation_pack_v1.py"
+      - "scripts/eval_myeongri_rule_school_macro_stub_v1.py"
       - "scripts/check_bio_paper_snp_mapping_coverage_v1.py"
       - "scripts/spec_bio_sample_paper_snp_join_gate_v1.py"
       - "scripts/apply_bio_paper_snp_sidecar_to_samples_v1.py"

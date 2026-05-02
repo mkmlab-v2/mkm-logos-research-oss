@@ -35,3 +35,18 @@ def test_minimal_envelope_validates() -> None:
         "prohibition_ack": "Not live trading, not medical, not doctrinal finality; B-track only.",
     }
     jsonschema.Draft7Validator(schema).validate(sample)
+
+
+def test_interpretation_pack_build_user_message() -> None:
+    from scripts.run_myeongri_ai_interpretation_pack_v1 import build_user_message
+
+    text = build_user_message(
+        sha256_or_empty="deadbeef",
+        artifact_paths=["docs/final/x.json"],
+        deterministic_json_text='{"ok": true}',
+        optional_timeline_md="",
+        lang="ko",
+    )
+    assert "myeongri_ai_interpretation_envelope_v1" in text
+    assert "deadbeef" in text
+    assert "docs/final/x.json" in text

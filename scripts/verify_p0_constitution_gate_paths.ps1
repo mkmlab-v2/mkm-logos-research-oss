@@ -137,6 +137,7 @@ $required = @(
     "docs\final\MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md",
     "docs\final\schemas\myeongri_ai_interpretation_envelope_v1.schema.json",
     "tests\test_myeongri_ai_interpretation_envelope_v1.py",
+    "scripts\run_myeongri_ai_interpretation_pack_v1.py",
     "scripts\eval_myeongri_rule_school_macro_stub_v1.py",
     "tests\test_eval_myeongri_rule_school_macro_stub_v1.py",
     "data\market_sasang\market_sasang_lens_policy_v1.json",
