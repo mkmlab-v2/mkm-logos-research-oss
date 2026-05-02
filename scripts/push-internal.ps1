@@ -49,7 +49,8 @@ function Set-UpstreamIfRequested {
 }
 
 $localSha = (git rev-parse HEAD).Trim()
-$remoteLine = (git ls-remote --heads $remoteName "refs/heads/$branch").Trim()
+$remoteOut = @(git ls-remote --heads $remoteName "refs/heads/$branch" 2>$null)
+$remoteLine = if ($remoteOut.Count -gt 0) { $remoteOut[0].ToString().Trim() } else { "" }
 $remoteSha = $null
 if ($remoteLine) {
     $remoteSha = ($remoteLine -split "\s+")[0]
@@ -76,7 +77,8 @@ $pushText = Invoke-GitPushText -RemoteName $remoteName -UseUpstream:$SetUpstream
 
 if ($LASTEXITCODE -ne 0) {
     if ($pushText -match "reference already exists") {
-        $remoteLineAfter = (git ls-remote --heads $remoteName "refs/heads/$branch").Trim()
+        $rlaOut = @(git ls-remote --heads $remoteName "refs/heads/$branch" 2>$null)
+        $remoteLineAfter = if ($rlaOut.Count -gt 0) { $rlaOut[0].ToString().Trim() } else { "" }
         $remoteShaAfter = if ($remoteLineAfter) { ($remoteLineAfter -split "\s+")[0] } else { $null }
         if ($remoteShaAfter -and $remoteShaAfter -eq $localSha) {
             Set-UpstreamIfRequested -BranchName $branch -RemoteName $remoteName
