@@ -1,7 +1,7 @@
 # Constitution / Inference — 구현 팩트 (SSOT)
 
 **작성일**: 2026-03-29  
-**최종 갱신**: 2026-04-30 — TruthfulQA A/B B-track 벤치·게이트·`Run-TruthfulQAReproBundleV1.ps1`·`run_fact_lock_bundle.ps1` TruthfulQA 스위치를 §3.6 표·`verify_p0_constitution_gate_paths.ps1`에 정렬; CI `dual-regime-integrity.yml`에 DryRun+pytest. 동일 일자 **§31.80** external Bible anchor governance 체인·스모크·worktree 혼동 방지 노트 추가. **이전 갱신**: 2026-04-27 — SSOT 정합 복구(Drift pruning): 현행 운영 레일 중심으로 P0 경로 게이트를 재정렬하고, 비활성/미배포 체인은 필수 게이트에서 제외. **이전 갱신**: 2026-04-18 — §1.1.1 `[VISION]` 예언 성능 우선·국방 서사 `research_only` 격리; OHLCV 30일 패널 재실행(best_delta **-4.8%**)·`prophecy_overlay_prior_threshold_recommended_latest.json`·`prophecy_prior_threshold_sweep_summary_latest.json`; `eval_prophecy_hit_rate_v1.py --run-mode price`; CI `prophecy-restoration-spike-smoke.yml`.
+**최종 갱신**: 2026-04-30 — TruthfulQA A/B B-track 벤치·게이트·`Run-TruthfulQAReproBundleV1.ps1`·`run_fact_lock_bundle.ps1` TruthfulQA 스위치를 §3.6 표·`verify_p0_constitution_gate_paths.ps1`에 정렬; CI `dual-regime-integrity.yml`에 DryRun+pytest. 동일 일자 **§31.80** external Bible anchor governance 체인·스모크·worktree 혼동 방지 노트 추가. **이전 갱신**: 2026-04-27 — SSOT 정합 복구(Drift pruning): 현행 운영 레일 중심으로 P0 경로 게이트를 재정렬하고, 비활성/미배포 체인은 필수 게이트에서 제외. **이전 갱신**: 2026-04-18 — §1.1.1 `[VISION]` 예언 성능 우선·국방 서사 `research_only` 격리; OHLCV 30일 패널 재실행(best_delta **-4.8%**)·`prophecy_overlay_prior_threshold_recommended_latest.json`·`prophecy_prior_threshold_sweep_summary_latest.json`; `eval_prophecy_hit_rate_v1.py --run-mode price`; CI `prophecy-restoration-spike-smoke.yml`. **보강 (2026-05-02):** §1.3 Track C Macro Risk n8n 메일 온보딩 PowerShell 스크립트 표.
 **이전 갱신**: 2026-04-14 §2 B-track `4d_to_ohaeng`·human regime audit 스파이크 행; §3.4.1 Postella; 2026-04-13 §1.2 AE-2 KOSPI.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
 
@@ -14,6 +14,8 @@
 **갱신 (2026-04-22 — Pre-News 레일):** `scripts/build_pre_news_snapshot_v1.py` → `docs/final/artifacts/pre_news_snapshot_latest.json`; 스키마 `docs/final/schemas/pre_news_snapshot_v1.schema.json`; `scripts/pre_news_dual_regime_adapter_v1.py`·`scripts/dry_run_pre_news_dual_regime_v1.py` → `docs/final/artifacts/pre_news_dual_regime_bridge_latest.json`; 벤치 입력 `docs/final/artifacts/pre_news_bench_inputs_latest.json`(선택); `scripts/send_pre_news_bridge_stub_telegram_v1.py`(루트 `.env` 병합·`TELEGRAM_*` 없으면 skip); `scripts/evolve_pre_news_bench_inputs_v1.py`(자동 제안·자동 적용 금지)·`scripts/run_ssh_shadow_pre_news_chain_v1.ps1`(원격 shadow 실행/회수); `scripts/run_pre_news_morning_chain_v1.ps1`·`scripts/register_pre_news_morning_chain_task.ps1`; `scripts/run_daily_prophecy_then_pre_news_v1.ps1`; **로컬 단일 24h 운영 래퍼** `scripts/run_local_24h_ops_chain_v1.ps1`·`scripts/register_local_24h_ops_chain_task.ps1`·`scripts/run_local_min_verification_5lines_v1.ps1`; **모드 전환 가드** `scripts/alert_local_trading_mode_transition_v1.py` (`reports/local_trading_mode_guard_state.json`); **주간 후보 검토 패킷** `scripts/run_pre_news_weekly_candidate_review_v1.py`·`scripts/register_pre_news_weekly_candidate_review_task.ps1` (`docs/final/artifacts/pre_news_weekly_candidate_review_latest.json`); 감사 `reports/pre_news_morning_chain_log.jsonl`·`reports/local_trading_min_verification_latest.json`. **실매매·본선 주문 자동 합선 없음.**
 
 **갱신 (2026-04-28 — Hybrid Pointer Router 상용 PoC 체인):** §19~§27에 `GO/WATCH/HOLD` 라벨·순효율 민감도·운영 권장영역·routing decision/runtime config/shadow daily report/alert/guard/guard drill 및 B2B SLA·카피덱·PoC 체크리스트 추가. 기본 정책은 조건부 주장(artifact-bound)과 자동 강등(`HOLD_POINTER_ROUTE` → `track_a_primary`) 고정.
+
+**갱신 (2026-05-02 — Track C Macro Risk / n8n 메일 온보딩):** §1.3 표 — 로컬 Windows에서 n8n 웹훅·SMTP 기반 온보딩 메일 승인 호출·일일 점검·작업 스케줄 등록용 PS 스크립트 경로. Track C OpenAPI·`macro_risk_warning_api_stub` 등 API 계약 표와 **역할 분리**(본 갱신은 운영 자동화 스크립트만 고정). 실매매·본선 주문 자동 합선 없음.
 
 ---
 
@@ -49,6 +51,19 @@
 ### 1.1.1 [VISION] 예언 성능 우선·대외 도메인 사례 격리 (2026-04-18)
 
 대외용 ‘국방 제안·지원사업’ 서사는 **`research_only` 도메인 연구 사례**로만 유지하고, 시스템 우선순위 서술은 **예언(Prophecy) 성능·재현 가능한 채점**으로 맞춘다. B-track 기반 개입의 **성패 판정**은 `prophecy_hit_rate_eval_report_v2` 및 동일 채점기 위의 **적중률 델타**(또는 `run_prophecy_restoration_spike.py` 등 **AB 오버레이 스파이크 산출**)로만 논한다; 델타가 음수인 것도 **유효한 관측**이며 정책·임계값 스윕 비교의 입력이 된다. 명리·로고스 등 B-track 산출물은 Prior·실험 입력으로만 쓰고, **§1.1 TOE 비단정·§8 Promotion Loop·격벽** 없이 A-track·실매매 파이프라인에 합선하지 않는다. 다축 브리지·라우팅 보조와 토큰 압축 경로의 **역할 분업**은 기존 표·§2 경로 팩트를 따르며, 본 절은 구현 행을 중복하지 않는다.
+
+### 1.3 Track C — Macro Risk 메일 온보딩 (Windows / n8n, 로컬 운영)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| 일일 점검 | `scripts/Run-MacroRiskN8nDailyCheck.ps1` | 산출 `reports/macro_risk_n8n_daily_check_latest.json`; 실패 시 `reports/macro_risk_n8n_daily_check_failures.jsonl` append·선택 웹훅 POST(`MKM_DAILY_CHECK_FAILURE_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`; 루트 `.env`에서 Process 보강 가능). 체크 실패 시 exit **1**. |
+| Quick ops | `scripts/Run-MacroRiskN8nOpsQuick.ps1` | `-Action health|approve|pending|reject|status|taillog`; 승인류는 선행 `health`. |
+| Approval webhook 호출 | `scripts/trigger_macro_risk_mail_approval_webhook.ps1` | 기본 URL `http://127.0.0.1:5678/webhook/macro-risk-mail-approval`; `MKM_MACRO_RISK_APPROVAL_TOKEN`(`.env`/User/Machine) → 헤더 `x-mkm-approval-token`; 감사 append `reports/macro_risk_approval_webhook_audit.jsonl`. |
+| 일일 스케줄 등록 | `scripts/Register-MacroRiskN8nDailyCheckTask.ps1` | 기본 작업명 `MKM-MacroRisk-N8n-DailyCheck`; 저장소 루트 `WorkingDirectory`(지원 시). |
+| Approval 스케줄 등록(선택) | `scripts/Register-MacroRiskApprovalWebhookTask.ps1` | 주기 호출이 필요할 때만. |
+| 주간 리허설 | `scripts/Rehearse-MacroRiskN8nWeekly.ps1` | `-IncludeApproval` 시 실제 승인 웹훅·메일 경로 실행. |
+
+OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_risk_warning_api_v1.yaml`·`scripts/macro_risk_warning_api_stub.py` 등 기존 Track C 산출물과 교차 참조; 본 표는 **메일 온보딩 운영 스크립트**만 Fact-Lock한다.
 
 ---
 
@@ -118,10 +133,11 @@
 | 융합 인터페이스 스텁 | `docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json` | `myeongni_fusion_interface_stub_v1` |
 | 독립 렌즈 v0 (정량 스코어) | `scripts/run_lens_myeongni.py` → `docs/final/artifacts/myeongni_independent_lens_latest.json` | 계약 `MYEONGNI_INDEPENDENT_LENS_V0_CONTRACT.json`; B-track·비트리거; A-track·캡 합선 금지 |
 | 사상 독립 렌즈 v0 | `scripts/run_lens_sasang.py` → `docs/final/artifacts/sasang_independent_lens_latest.json` | 계약 `SASANG_INDEPENDENT_LENS_V0_CONTRACT.json`; `sasang_dynamics_regime_mapping_v1*.jsonl` tail; 비의료·비트리거 |
-| 로고스 독립 렌즈 v0 | `scripts/run_lens_logos.py` → `docs/final/artifacts/logos_independent_lens_latest.json` | 계약 `LOGOS_INDEPENDENT_LENS_V0_CONTRACT.json`; `data/logos/4lens_batch_sample.json` 등 4D 배치; 금융·레짐 미혼합(Logos First) |
+| 로고스 독립 렌즈 v0 | `scripts/run_lens_logos.py` → `docs/final/artifacts/logos_independent_lens_latest.json` | 계약 `LOGOS_INDEPENDENT_LENS_V0_CONTRACT.json`; `data/logos/4lens_batch_sample.json` 등 4D 배치; 산출에 `evidence_refs`(행별 `verse_id`·`quote_hash`·`hash_tagged_snippet`)·`narrative_snippet_guarded`(배치 텍스트만 스니펫 가드); CI 픽스처 `tests/fixtures/logos_4lens_batch_minimal_v1.json`; 금융·레짐 미혼합(Logos First) |
 | 창1·요1 Wide 복원 산출 재생성 | `scripts/build_logos_wide_restoration.py` → `data/logos/reports/wide.json`, `data/logos/reports/wide_restored.json` | 입력 `data/logos/reports/logos_report_gen1_john1_wide_*.json` `verse_level`; `geumhwa_index=K×(1−M)×0.9`; `restoration_rate=min(0.9999,0.96+geumhwa_index×0.0001)`; 거리 0.156–0.20 → Wide20; 구조 복원 지표·[HYPO]·예측력 단정 금지 |
-| 독립 렌즈 융합 스텁 v0(비교 전용) | `scripts/report_independent_lens_fusion_stub_v0.py` → `docs/final/artifacts/independent_lens_fusion_stub_latest.json` | 계약 `INDEPENDENT_LENS_FUSION_STUB_V0_CONTRACT.json`; 일치/충돌 요약만 수행; A-track 자동융합·실거래 트리거 금지 |
-| 독립 렌즈 Shadow 게이트 v1 | `scripts/report_independent_lens_shadow_gate.py` → `docs/final/artifacts/independent_lens_shadow_gate_latest.json` | 계약 `INDEPENDENT_LENS_SHADOW_GATE_V1_CONTRACT.json`; 최소 관측 창(8주·2개월) 누적·`KEEP_OBSERVATION_ONLY` 고정 |
+| 독립 렌즈 융합 스텁 v0(비교 전용) | `scripts/report_independent_lens_fusion_stub_v0.py` → `docs/final/artifacts/independent_lens_fusion_stub_latest.json` | 계약 `INDEPENDENT_LENS_FUSION_STUB_V0_CONTRACT.json`; `consensus` + **`conflict_summary`**(다수결 방향·소수 렌즈·점수 나열 + Logos `evidence_refs`/스니펫 앵커, 템플릿 고정·LLM 없음); A-track 자동융합·실거래 트리거 금지 |
+| 독립 렌즈 Shadow 게이트 v1 | `scripts/report_independent_lens_shadow_gate.py` → `docs/final/artifacts/independent_lens_shadow_gate_latest.json` | 계약 `INDEPENDENT_LENS_SHADOW_GATE_V1_CONTRACT.json`; 최소 관측 창(8주·2개월) 누적·`KEEP_OBSERVATION_ONLY` 고정; 히스토리 JSONL·게이트 출력에 **`minority_lens_ids`·`logos_evidence_verse_ids`·`conflict_narrative_sha256`** 등 충돌 스냅샷 필드(`latest_conflict_snapshot`) |
+| Shadow 히스토리 소수 렌즈 월별 집계 v1 | `scripts/report_independent_lens_shadow_minority_monthly_v1.py` → `docs/final/artifacts/independent_lens_shadow_minority_monthly_latest.json` | `independent_lens_fusion_shadow_history.jsonl`의 `ts_utc`(UTC 월)·`minority_lens_ids`·내러티브 다이제스트 수 집계; 레거시 행은 `minority_lens_ids` 없음 → 소수 없음으로 처리; 회귀 `tests/test_independent_lens_shadow_minority_monthly_v1.py`; 월간 체인 `run_waiting_queue_monthly_check.ps1`·일일 B-track `run_btrack_daily_hypothesis_chain.ps1`·`run_myeongni_shadow_monthly_catchup_v1.ps1`에서 Shadow 게이트 직후(또는 동 체인 내) 자동 갱신 |
 | 계약 테스트 | `tests/test_myeongni_insight_observation_log.py` | sample·log JSONL + 스텁 JSON |
 | 만세력 기반 명리 4D 융합 | `scripts/myeongri_complete_fusion.py` | `MyeongriCompleteFusion`; `tools/core/myeongri_4d_correction.py`·`_ohang_data_to_4d`; `MyeongriController._get_base_vector_4d`와 연동; 본선·실거래 자동 합선 금지 |
 | λ 변환 훅 (스텁) | `scripts/myeongri_lambda_converter.py` | `MyeongriLambdaConverter` |
@@ -139,7 +155,7 @@
 | B-track NotebookLM JSONL 관측 KPI | `scripts/report_btrack_notebooklm_jsonl_kpi.py` → `docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json` | 출처·인용·답변 길이·가드레일 키워드 비율 등 **품질 관측**만; 예측력·A-track 승격 아님 |
 | Prism 논리 색인 레지스트리 | `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` | §14 Grand Indexing 2.0; 경로·역할; 코드 4D 축과 혼동 금지 |
 | 회귀 스모크 | `tests/test_myeongri_fusion_scripts_smoke.py`, `tests/test_gematria_myeongri_spike_smoke.py`, `tests/test_spike_log_myeongri_correlation_v1.py`, `tests/test_convert_log_metabolism_to_myeongri_correlation_input_v1.py`, `tests/test_generate_log_metabolism_synthetic_cohort_v1.py`, `tests/test_spike_4grid_myeongri_compression_v1.py`, `tests/test_spike_kospi_structural_entropy_v1.py`, `tests/test_spike_kospi_structural_entropy_compare_v1.py` | CI `dual-regime-integrity.yml`; `run_prophecy_alignment_pytest.ps1` / `.sh` 번들 |
-| 독립 렌즈 v0 회귀 | `tests/test_myeongni_independent_lens_v0.py`, `tests/test_independent_lenses_v0.py`, `tests/test_independent_lens_fusion_stub_v0.py`, `tests/test_independent_lens_shadow_gate_v1.py` | 명리 단독 + 3렌즈 파라미즈 + 융합 스텁 + Shadow 게이트 |
+| 독립 렌즈 v0 회귀 | `tests/test_myeongni_independent_lens_v0.py`, `tests/test_independent_lenses_v0.py`, `tests/test_independent_lens_fusion_stub_v0.py`, `tests/test_independent_lens_shadow_gate_v1.py`, `tests/test_independent_lens_shadow_minority_monthly_v1.py` | 명리 단독 + 3렌즈 파라미즈 + 융합 스텁 + Shadow 게이트 + 소수 렌즈 월별 집계 |
 
 ### 3.4 만세력 정밀 런타임 (제2계층, Pointer)
 
