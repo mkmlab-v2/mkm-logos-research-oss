@@ -22,6 +22,13 @@
 - **중앙 규칙:** 루트 **`.cursorrules`**, **`.cursor/rules/*.mdc`** 도 레포에 있으면 **파일이 최신인 저장소**에서 Cursor가 적용한다.
 - **Cursor Settings → User Rules**만으로 팀·본선 기준을 두지 않는다 — 레포와 **자동 동기화되지 않는다**. 본선·팀 합의 문구는 **`AGENTS.md`·`CLAUDE.md`·`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 등 SSOT**에 둔다(요지는 아래 **「Cursor 3.0 · 규칙 스택」**의 User Rules 한 줄과 동일 선상).
 
+| 반영되는 것 | 설명 |
+|-------------|------|
+| **AGENTS.md 수정·커밋** | 같은 워크스페이스의 다른 채팅에서 파일을 열거나 `@AGENTS.md`로 참조하면 갱신된 글이 보인다. 다른 PC/클론은 `git pull` 후 동일. |
+| **중앙 규칙** | 루트 `.cursorrules`, `.cursor/rules/*.mdc` — 레포 파일이 최신이면 Cursor가 적용한다. |
+| **Cursor Settings → User Rules만** | 레포와 **자동 동기화되지 않음**. 팀·본선 기준은 SSOT에 둔다. |
+| **정리** | 세션 간 **대화 내용이 복사되는 것은 아니다**. 반복 안내·운영 메모는 레포에 커밋해 두고, 새 세션에서는 `@AGENTS.md`(필요 시 `@CLAUDE.md`·중앙 메모리)로 동일하게 따라간다. |
+
 ## 렌즈 역할 계약 (모든 채팅 공통 · 혼동 금지)
 
 - **렌즈 명칭 고정:** `사상`, `명리`, `성경(Logos)` 3개만 사용한다. `Macro/Regime` 같은 운영 레이어명을 렌즈명처럼 혼용하지 않는다.
@@ -72,6 +79,7 @@
 - **GitHub push:** 기본 차단(`origin`/`hq` push URL=`no_push`)을 유지하고, 필요 시에만 명시적으로 해제/우회한다.
 - **권장 명령:** `scripts/Show-RemotePublicationMode.ps1`(상태 점검), `scripts/push-internal.ps1`(기본 push), `scripts/Push-GitHub-Explicit.ps1 -Acknowledge`(예외 공개).
 - **대용량/민감 산출물:** GitHub 기본 제외. 특히 `docs/final/artifacts/global_atom_full_canon/*`는 최신 consolidated manifest만 추적한다.
+- **GitHub 푸시 거절(GH001 등):** 브랜치 히스토리에 **100MB 초과** Git 객체(예: 위 `global_atom_full_canon` 대용량 JSON/JSONL)가 포함되면 원격이 받지 않는다. 이 경우 **GitHub PR 없이 `internal`/`gitea`에서 머지**하거나, LFS·히스토리 정리 후 예외 푸시(`Push-GitHub-Explicit.ps1`)를 별도 검토한다.
 
 ### 일인 개발(solo)일 때만 단순화
 
