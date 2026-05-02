@@ -32,10 +32,6 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 180
     steps:
-      - name: Enable git long paths
-        shell: pwsh
-        run: git config --system core.longpaths true
-
       - name: Checkout
         uses: actions/checkout@v5
 
@@ -75,13 +71,13 @@ jobs:
         if: steps.preflight.outputs.skip != 'true'
         shell: pwsh
         run: |
-          py -m pip install --upgrade pip pytest fastapi httpx
+          python -m pip install --upgrade pip pytest fastapi httpx
 
       - name: Run dimensional projection regressions
         if: steps.preflight.outputs.skip != 'true'
         shell: pwsh
         run: |
-          py -m pytest "api-services/tests/test_validate_dimensional_projection_holdout.py" "api-services/tests/test_dimensional_projection_router.py" -q
+          python -m pytest "api-services/tests/test_validate_dimensional_projection_holdout.py" "api-services/tests/test_dimensional_projection_router.py" -q
 
       - name: Holdout validation chain
         if: steps.preflight.outputs.skip != 'true'
@@ -91,9 +87,9 @@ jobs:
           $size = "${{ github.event.inputs.evalset_size }}"
           if ([string]::IsNullOrWhiteSpace($size)) { $size = "900" }
           if ($skipFlag -eq "false") {
-            powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Run-DimensionalProjectionHoldoutValidation.ps1" -WorkspaceRoot "$env:GITHUB_WORKSPACE" -EvalsetSize $size
+            pwsh -NoProfile -ExecutionPolicy Bypass -File "scripts/Run-DimensionalProjectionHoldoutValidation.ps1" -WorkspaceRoot "$env:GITHUB_WORKSPACE" -EvalsetSize $size
           } else {
-            powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Run-DimensionalProjectionHoldoutValidation.ps1" -WorkspaceRoot "$env:GITHUB_WORKSPACE" -EvalsetSize $size -SkipScorerTuning
+            pwsh -NoProfile -ExecutionPolicy Bypass -File "scripts/Run-DimensionalProjectionHoldoutValidation.ps1" -WorkspaceRoot "$env:GITHUB_WORKSPACE" -EvalsetSize $size -SkipScorerTuning
           }
 
       - name: Promote freeze artifacts when gate passes
@@ -101,7 +97,7 @@ jobs:
         shell: pwsh
         run: |
           $root = "$env:GITHUB_WORKSPACE"
-          powershell -NoProfile -ExecutionPolicy Bypass -File "scripts/Promote-DimensionalProjectionFreeze.ps1" `
+          pwsh -NoProfile -ExecutionPolicy Bypass -File "scripts/Promote-DimensionalProjectionFreeze.ps1" `
             -WorkspaceRoot $root `
             -HoldoutGateJson (Join-Path $root "reports/dimensional_projection_bridge/holdout_gate_latest.json") `
             -FreezeDir (Join-Path $root "reports/dimensional_projection_bridge/freeze") `
@@ -109,9 +105,10 @@ jobs:
 
       - name: Upload dimensional projection gate artifacts
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: dimensional-projection-release-gate-${{ github.run_id }}
+          retention-days: 7
           path: |
             reports/dimensional_projection_bridge/engine_eval_multi_policy_train_latest.json
             reports/dimensional_projection_bridge/engine_eval_multi_policy_holdout_latest.json
@@ -130,4 +127,5 @@ jobs:
         shell: pwsh
         run: |
           Write-Host "Skipped: dimensional projection files are not present in this repository layout."
+
 

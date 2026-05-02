@@ -1,14 +1,14 @@
 {
   "schema": "btrack_promotion_gate_result_v1",
-  "generated_at_utc": "2026-03-30T15:23:14Z",
+  "generated_at_utc": "2026-04-26T13:19:01Z",
   "inputs": {
     "report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_quality_latest.json",
     "gate_template": "C:\\workspace\\data\\logos\\btrack_pilot\\gates\\promotion_gate_template.json"
   },
   "metrics": {
     "reproducibility_match_rate": 1.0,
-    "resolution_confidence_delta_b_minus_a": -0.21168843750000002,
-    "contamination_snr_delta_b_minus_a": -0.14818187499999996
+    "resolution_confidence_delta_b_minus_a": 0.06162591666666663,
+    "contamination_snr_delta_b_minus_a": 0.06953125
   },
   "thresholds": {
     "reproducibility_match_rate_min": 0.8,
@@ -17,8 +17,8 @@
   },
   "checks": {
     "reproducibility_ok": true,
-    "resolution_ok": false,
-    "contamination_ok": false
+    "resolution_ok": true,
+    "contamination_ok": true
   },
-  "decision": "hold"
+  "decision": "pass"
 }

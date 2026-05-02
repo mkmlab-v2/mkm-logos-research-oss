@@ -32,7 +32,7 @@ on:
         default: "10"
         type: string
   schedule:
-    - cron: "15 * * * *"
+    - cron: "15 */4 * * *"
 
 jobs:
   canary:
@@ -41,10 +41,10 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -80,11 +80,14 @@ jobs:
 
       - name: Upload vLLM canary artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: vllm-canary-repeat-${{ github.run_id }}
+          retention-days: 7
           path: |
             reports/constitution/btrack_pilot/vllm_ab_canary_repeat_latest.json
             reports/constitution/btrack_pilot/vllm_ab_canary_run_*.json
             reports/constitution/btrack_pilot/rag_canary_rollback_flag_latest.json
           if-no-files-found: ignore
+
+

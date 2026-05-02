@@ -1,0 +1,59 @@
+{
+  "schema": "btrack_automation_health_snapshot_v1",
+  "generated_at_utc": "2026-04-26T13:19:11Z",
+  "tasks": {
+    "auto_scientist_weekly": {
+      "task_name": "\\MKM_BTrack_AutoScientist_Weekly",
+      "exists": true,
+      "return_code": 0,
+      "last_result": "0",
+      "last_run_time": "2026-04-26 오전 5:26:06",
+      "next_run_time": "2026-04-27 오전 12:05:00",
+      "status": "Ready",
+      "task_to_run": "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File \"C:\\workspace\\scripts\\Run-BtrackAutoScientistWeekly.ps1\" -MaxRetries 3 -MinAccuracyDelta 0 -SignalGreenConsecutivePasses 0 -ControlTowerReadinessMinSuccessRate 0 -DisableSignalL"
+    },
+    "control_tower_weekly": {
+      "task_name": "\\MKM_BTrack_ControlTower_Weekly",
+      "exists": true,
+      "return_code": 0,
+      "last_result": "0",
+      "last_run_time": "2026-04-25 오후 7:32:43",
+      "next_run_time": "2026-04-27 오전 12:05:00",
+      "status": "Ready",
+      "task_to_run": "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File \"C:\\workspace\\scripts\\Run-BtrackControlTowerOps.ps1\" -Mode weekly -DisableSignalLightRouting -AutoApplyOnGoReady"
+    },
+    "control_tower_autopush_daily": {
+      "task_name": "\\MKM_BTrack_ControlTower_Autopush_Daily",
+      "exists": true,
+      "return_code": 0,
+      "last_result": "0",
+      "last_run_time": "2026-04-26 오전 1:10:01",
+      "next_run_time": "2026-04-27 오전 1:10:00",
+      "status": "Ready",
+      "task_to_run": "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File \"C:\\workspace\\scripts\\Run-BtrackControlTowerOps.ps1\" -Mode autopush -MaxRuns 3 -CooldownSeconds 60 -AutopushMinAccuracyDelta 0 -AutoApplyOnGoReady"
+    }
+  },
+  "artifacts": {
+    "promotion_apply_receipt_latest": {
+      "exists": true,
+      "applied_at_utc": "2026-04-26T13:19:01Z",
+      "apply_result": "success",
+      "rollback_performed": false
+    },
+    "promotion_preflight_latest": {
+      "exists": true,
+      "generated_at_utc": "2026-04-26T13:19:00Z",
+      "result": "PASS"
+    },
+    "btrack_promotion_gate_latest": {
+      "exists": true,
+      "generated_at_utc": "2026-04-26T13:19:01Z",
+      "decision": "pass"
+    }
+  },
+  "summary": {
+    "all_tasks_ok": true,
+    "all_artifacts_ok": true,
+    "ops_ready": true
+  }
+}

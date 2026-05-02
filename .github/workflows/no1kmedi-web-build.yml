@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   orchestration-gate:
-    if: ${{ vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' }}
     uses: ./.github/workflows/12ai-orchestration-gate.yml
     with:
       role: Architect
@@ -37,8 +37,8 @@ jobs:
       run:
         working-directory: projects/no1kmedi
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: "20"
           cache: npm
@@ -47,3 +47,4 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+

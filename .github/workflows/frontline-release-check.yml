@@ -52,10 +52,10 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -113,8 +113,11 @@ jobs:
           } > artifacts/gate_snapshot/frontline_gate_snapshot.txt
 
       - name: Upload gate snapshot artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: frontline-gate-snapshot-${{ github.run_id }}
+          retention-days: 7
           path: artifacts/gate_snapshot
           if-no-files-found: error
+
+

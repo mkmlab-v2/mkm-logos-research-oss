@@ -39,6 +39,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LENS_WF = ROOT / "docs" / "final" / "artifacts" / "prophecy_per_date_combo_walkforward_v1_latest.json"
 DEFAULT_INSTRUMENT_WF = ROOT / "docs" / "final" / "artifacts" / "prophecy_instrument_combo_walkforward_v1_latest.json"
 DEFAULT_SCORE = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score_latest.json"
+DEFAULT_HYPO = ROOT / "docs" / "final" / "artifacts" / "btrack_hypothesis_prophecy_latest.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_gates_v1_latest.json"
 # Default streak file for ad-hoc eval runs; dual refresh uses *_legacy_v1 / *_panel_calibrated_v1.
 DEFAULT_STREAK_HISTORY = ROOT / "docs" / "final" / "artifacts" / "prophecy_promotion_strict_streak_legacy_v1.json"
@@ -106,6 +107,50 @@ def _score_btc_csv_input_gate(score_path: Path) -> dict[str, Any]:
         "passed": bool(has_path),
         "reason": None if has_path else "rebuild_score_with_btc_csv_hypothesis_multi",
         "detail": {"btc_csv": raw},
+    }
+
+
+def _hypothesis_non_stub_gate(hypo_path: Path) -> dict[str, Any]:
+    doc = _load_json(hypo_path) or {}
+    prov = doc.get("provenance") if isinstance(doc.get("provenance"), dict) else {}
+    llm_model = str(prov.get("llm_model") or "").strip()
+    is_stub = "stub" in llm_model.lower()
+    return {
+        "gate_id": "hypothesis_non_stub_model",
+        "passed": bool(llm_model) and not is_stub,
+        "reason": None if (llm_model and not is_stub) else "hypothesis_model_stub_or_missing",
+        "detail": {"llm_model": llm_model or None},
+    }
+
+
+def _score_neutral_bias_gate(score_path: Path, *, max_neutral_ratio: float) -> dict[str, Any]:
+    doc = _load_json(score_path) or {}
+    rows = doc.get("rows") if isinstance(doc.get("rows"), list) else []
+    valid_rows = [r for r in rows if isinstance(r, dict)]
+    if not valid_rows:
+        return {
+            "gate_id": "score_neutral_ratio_cap",
+            "passed": False,
+            "reason": "missing_or_invalid_score_rows",
+            "detail": {"neutral_ratio": None, "row_count": 0, "max_neutral_ratio": max_neutral_ratio},
+        }
+    neutral_count = sum(
+        1
+        for r in valid_rows
+        if str(r.get("predicted_direction") or "").strip().lower() == "neutral"
+    )
+    ratio = neutral_count / len(valid_rows)
+    passed = ratio <= max_neutral_ratio
+    return {
+        "gate_id": "score_neutral_ratio_cap",
+        "passed": passed,
+        "reason": None if passed else "neutral_bias_too_high",
+        "detail": {
+            "neutral_ratio": round(ratio, 6),
+            "neutral_count": neutral_count,
+            "row_count": len(valid_rows),
+            "max_neutral_ratio": max_neutral_ratio,
+        },
     }
 
 
@@ -206,6 +251,7 @@ def main() -> int:
         help="Instrument-combo walk-forward artifact (required for combined pass).",
     )
     ap.add_argument("--score-json", type=Path, default=DEFAULT_SCORE)
+    ap.add_argument("--hypothesis-json", type=Path, default=DEFAULT_HYPO)
     ap.add_argument(
         "--promotion-track-mode",
         choices=("btc_only_crossassist", "dual"),
@@ -217,6 +263,7 @@ def main() -> int:
     ap.add_argument("--max-stdev", type=float, default=0.15, dest="max_stdev")
     ap.add_argument("--min-beat-bull-frac", type=float, default=0.5, dest="min_beat_frac")
     ap.add_argument("--min-worst-fold", type=float, default=0.4, dest="min_worst_fold")
+    ap.add_argument("--max-neutral-ratio", type=float, default=0.70)
     ap.add_argument("--soft-min-mean", type=float, default=0.45)
     ap.add_argument("--soft-max-stdev", type=float, default=0.22)
     ap.add_argument("--soft-min-beat-bull-frac", type=float, default=0.25)
@@ -303,10 +350,16 @@ def main() -> int:
             shared_gates = [
                 _panel_dual_leg_gate(args.score_json),
                 _score_btc_csv_input_gate(args.score_json),
+                _hypothesis_non_stub_gate(args.hypothesis_json),
+                _score_neutral_bias_gate(args.score_json, max_neutral_ratio=float(args.max_neutral_ratio)),
             ]
         else:
             # BTC-only promotion mode: require BTC source path, but not dual-leg panel completeness.
-            shared_gates = [_score_btc_csv_input_gate(args.score_json)]
+            shared_gates = [
+                _score_btc_csv_input_gate(args.score_json),
+                _hypothesis_non_stub_gate(args.hypothesis_json),
+                _score_neutral_bias_gate(args.score_json, max_neutral_ratio=float(args.max_neutral_ratio)),
+            ]
         shared_passed = _all_true(shared_gates)
 
     legacy_gates = list(lens_gates) + (shared_gates if not args.skip_shared_gates else [])
@@ -359,8 +412,10 @@ def main() -> int:
             "lens_walkforward_json": str(lens_path),
             "instrument_walkforward_json": str(args.instrument_walkforward_json),
             "score_json": str(args.score_json),
+            "hypothesis_json": str(args.hypothesis_json),
             "promotion_track_mode": args.promotion_track_mode,
             "thresholds": thresholds,
+            "neutral_ratio_cap": float(args.max_neutral_ratio),
             "soft_thresholds": soft_thresholds,
             "skip_shared_gates": bool(args.skip_shared_gates),
             "strict_streak_required": int(args.strict_streak_required),

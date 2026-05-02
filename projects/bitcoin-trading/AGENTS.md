@@ -1,5 +1,7 @@
 # AGENTS — projects/bitcoin-trading (배포 트리)
 
+> 이 파일은 요약 포인터다. 운영 정책 SSOT는 `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` 단일 문서로 통일한다.
+
 **역할**: 모노레포 안의 **트레이딩·운영 코드 묶음**이다. VPS 본선에서는 `/opt/bitcoin-trading` 등으로 체크아웃되는 경우가 많다. 전역 에이전트 규칙은 **저장소 루트** `AGENTS.md`와 `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`가 우선한다.
 
 ## 로컬 vs VPS (본선 전용, 5줄)
@@ -9,6 +11,16 @@
 3. **`.env`**: 실행 cwd 기준 `.env`를 우선하고, 본선 루트가 `/opt/bitcoin-trading`이면 **`/opt/bitcoin-trading/.env`** 를 같은 방식으로 둔다. **Git에 커밋하지 않는다.**
 4. **Cursor SSH**: “실행만 하는 주방” — 레시피 수정은 로컬. 비유·공통 원칙: 루트 `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`.
 5. **`start_live_trading.py`**: 패키지 루트(`projects/bitcoin-trading/start_live_trading.py`) — **`scripts/start_24h_daemon.py`를 같은 Python으로 subprocess 위임**한다. PM2·런북에서 예전에 VPS 전용 경로만 쓰던 경우, **동일 파일을 Git SSOT로 맞춘다**.
+
+추가 고정 원칙:
+- **코드/전략 동기화는 상시 수행**
+- **실전 주문 활성화(ON/OFF)는 별도 승인 게이트**
+
+하드라인 게이트(요약):
+- `max_drawdown <= -3.0%` 또는 연속 손실 `>= 4회`면 즉시 cooldown
+- 주문 ACK `p95 > 1500ms`(10분), API 실패율 `> 5%`(5분)면 신규주문 차단
+- `state mismatch` 1건이라도 발생 시 즉시 차단
+- 자동 재개 금지(최소 30분 + health 15분 정상 + 승인 플래그)
 
 ## VPS 모노레포 경로 (Fact-Safe·배포 — 혼동 방지)
 

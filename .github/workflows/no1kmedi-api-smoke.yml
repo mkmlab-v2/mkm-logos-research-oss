@@ -20,9 +20,9 @@ jobs:
     env:
       NO1KMEDI_API_KEY: ${{ secrets.NO1KMEDI_API_KEY }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "20"
 
@@ -65,9 +65,10 @@ jobs:
 
       - name: Upload benchmark report artifacts
         if: ${{ always() && env.NO1KMEDI_API_KEY != '' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: no1kmedi-benchmark-reports-${{ github.ref_name }}-${{ github.run_number }}
+          retention-days: 7
           if-no-files-found: error
           path: |
             projects/no1kmedi/payapp-api/benchmarks/no1kmedi_clinical_eval_latest.json
@@ -75,3 +76,5 @@ jobs:
             projects/no1kmedi/payapp-api/benchmarks/mkmlife_eval_latest.json
             projects/no1kmedi/payapp-api/benchmarks/all_profiles_eval_latest.json
             projects/no1kmedi/payapp-api/benchmarks/gate_summary_latest.json
+
+

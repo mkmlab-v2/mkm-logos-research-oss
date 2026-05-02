@@ -17,6 +17,12 @@ const NAV = [
   { id: "safety", label: "안전·고지" },
 ] as const;
 
+function stageLabel(stage: string): string {
+  if (stage === "pro") return "Pro";
+  if (stage === "standard") return "Standard";
+  return "Lite";
+}
+
 function ConsumerSafetyPanel() {
   return (
     <div className="workspace-panel workspace-panel--prose">
@@ -51,6 +57,15 @@ export function ConsumerWorkspaceClient() {
   });
 
   const [paletteOpen, setPaletteOpen] = useState(false);
+
+  const smartfarmSource = searchParams.get("source") ?? "";
+  const showSmartfarmSummary = smartfarmSource === "mkmlab_blueprint";
+  const smartfarmStage = stageLabel((searchParams.get("stage") ?? "lite").toLowerCase());
+  const smartfarmScore = Number(searchParams.get("score") ?? "0");
+  const smartfarmIrrigation = searchParams.get("irrigation") ?? "0";
+  const smartfarmLogging = searchParams.get("logging") ?? "0";
+  const smartfarmRisk = searchParams.get("risk") ?? "0";
+  const smartfarmBudget = searchParams.get("budget") ?? "0";
 
   useEffect(() => {
     const p = searchParams.get("panel");
@@ -136,6 +151,20 @@ export function ConsumerWorkspaceClient() {
       >
         {activeId === "chat" ? (
           <div className="workspace-chat-column">
+            {showSmartfarmSummary ? (
+              <div className="workspace-panel workspace-panel--prose" aria-label="스마트팜 진단 요약">
+                <h2 className="workspace-panel-title">스마트팜 진단 결과 연동 완료</h2>
+                <p className="workspace-muted">
+                  추천 단계: {smartfarmStage} (점수: {smartfarmScore} / 8)
+                </p>
+                <p className="workspace-muted">
+                  세부 값: 관수 {smartfarmIrrigation} · 기록 {smartfarmLogging} · 리스크 {smartfarmRisk} · 예산/인력 {smartfarmBudget}
+                </p>
+                <p className="workspace-muted">
+                  상담 접수 시 이 진단값을 함께 전달해 맞춤형 도입안으로 이어집니다.
+                </p>
+              </div>
+            ) : null}
             <JemaDifferentiationStrip />
             <ConsumerPersistedChat thread={activeThread} onCommit={commitThread} />
           </div>

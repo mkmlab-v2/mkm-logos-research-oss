@@ -1,0 +1,17 @@
+﻿{
+    "promotion_readiness":  "GO_READY",
+    "selected_candidate_report":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\sweep_reports\\btrack_quality_recalibrated_v1_latest.json",
+    "promotion_readiness_reasons":  "",
+    "proposal_decision_recommendation":  "PROPOSE_PROMOTION",
+    "proposal_status":  "PENDING_APPROVAL",
+    "apply_result":  "success",
+    "schema":  "btrack_promotion_apply_receipt_v1",
+    "backup_dir":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\promotion_backups\\apply_20260426131900",
+    "rebuilt_signoff_latest":  "C:\\workspace\\docs\\final\\artifacts\\btrack_promotion_signoff_packet_v1_latest.json",
+    "applied_at_utc":  "2026-04-26T13:19:01Z",
+    "rollback_performed":  false,
+    "target_quality_latest":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_quality_latest.json",
+    "rebuilt_gate_latest":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_latest.json",
+    "proposal_path":  "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\promotion_proposal_v1_latest.json"
+}
+

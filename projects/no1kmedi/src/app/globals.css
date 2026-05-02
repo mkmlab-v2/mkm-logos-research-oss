@@ -151,6 +151,195 @@ main {
   padding: 0 1.5rem 4rem;
 }
 
+/* Homepage preset from DESIGN.md: Stripe + Linear (scoped) */
+.preset-stripe-linear {
+  --accent: #5b8cff;
+  --accent-dim: #3f6fdb;
+  --line: rgba(255, 255, 255, 0.12);
+}
+
+.preset-stripe-linear .hero {
+  padding-top: 4.4rem;
+  padding-bottom: 3.3rem;
+}
+
+.preset-stripe-linear .hero h1 {
+  max-width: 16.5em;
+  letter-spacing: -0.028em;
+}
+
+.preset-stripe-linear .hero-lead {
+  max-width: 40rem;
+}
+
+.preset-stripe-linear .hero-cta {
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.preset-stripe-linear .hero-cta .btn {
+  min-width: 10.2rem;
+}
+
+.preset-stripe-linear .hero::before {
+  background:
+    radial-gradient(ellipse 70% 55% at 18% 12%, rgba(91, 140, 255, 0.2), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 88% 8%, rgba(120, 90, 255, 0.14), transparent 50%),
+    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(18, 28, 25, 0.9), transparent 65%);
+}
+
+.preset-stripe-linear .hero-orb-a {
+  background: radial-gradient(circle at 30% 30%, rgba(120, 170, 255, 0.36), rgba(91, 140, 255, 0.02));
+}
+
+.preset-stripe-linear .hero-orb-b {
+  background: radial-gradient(circle at 30% 30%, rgba(141, 103, 255, 0.24), rgba(141, 103, 255, 0.01));
+}
+
+.preset-stripe-linear .hero-grid-overlay {
+  opacity: 0.18;
+}
+
+.preset-stripe-linear .btn {
+  border-radius: 10px;
+}
+
+.preset-stripe-linear .btn-primary {
+  color: #f7f9ff;
+  box-shadow: 0 12px 24px rgba(91, 140, 255, 0.24);
+}
+
+.preset-stripe-linear .btn-primary:hover {
+  background: #6a98ff;
+  box-shadow: 0 14px 28px rgba(91, 140, 255, 0.3);
+}
+
+.preset-stripe-linear .card,
+.preset-stripe-linear .trust-item,
+.preset-stripe-linear .premium-panel {
+  border-radius: 14px;
+}
+
+.preset-stripe-linear .card:hover {
+  border-color: rgba(91, 140, 255, 0.45);
+}
+
+.preset-stripe-linear .hero-proof span {
+  color: #cad8ff;
+  border-color: rgba(202, 216, 255, 0.32);
+  background: rgba(13, 20, 36, 0.68);
+}
+
+.preset-stripe-linear section h2 {
+  letter-spacing: -0.018em;
+}
+
+/* Homepage preset from DESIGN.md: Apple + Notion (scoped) */
+.preset-apple-notion {
+  --bg: #f7f5f1;
+  --surface: #ffffff;
+  --text: #171717;
+  --muted: #5f5b53;
+  --accent: #2d6cdf;
+  --accent-dim: #2151a8;
+  --line: rgba(23, 23, 23, 0.12);
+  --warn-bg: rgba(214, 170, 84, 0.18);
+}
+
+.preset-apple-notion .site-header {
+  background: rgba(247, 245, 241, 0.88);
+}
+
+.preset-apple-notion .hero {
+  padding-top: 4.6rem;
+  padding-bottom: 3.5rem;
+}
+
+.preset-apple-notion .hero h1 {
+  max-width: 15.2em;
+  line-height: 1.2;
+  letter-spacing: -0.032em;
+}
+
+.preset-apple-notion .hero-lead {
+  max-width: 36rem;
+  font-size: 1.02rem;
+}
+
+.preset-apple-notion .hero-cta {
+  gap: 0.6rem;
+}
+
+.preset-apple-notion .hero-cta .btn {
+  min-width: 9.8rem;
+  padding-block: 0.78rem;
+}
+
+.preset-apple-notion .hero::before {
+  background:
+    radial-gradient(ellipse 70% 55% at 18% 12%, rgba(45, 108, 223, 0.13), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 88% 8%, rgba(120, 120, 140, 0.1), transparent 50%),
+    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(247, 245, 241, 0.9), transparent 65%);
+}
+
+.preset-apple-notion .hero-grid-overlay {
+  opacity: 0.1;
+  background-image:
+    linear-gradient(rgba(23, 23, 23, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 23, 23, 0.08) 1px, transparent 1px);
+}
+
+.preset-apple-notion .hero-proof span {
+  color: #2f2f2f;
+  border-color: rgba(23, 23, 23, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.preset-apple-notion .btn {
+  border-radius: 999px;
+}
+
+.preset-apple-notion .btn-primary {
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(45, 108, 223, 0.2);
+}
+
+.preset-apple-notion .btn-ghost {
+  color: #2a2a2a;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.preset-apple-notion .card,
+.preset-apple-notion .trust-item,
+.preset-apple-notion .premium-panel,
+.preset-apple-notion .notice-box {
+  box-shadow: 0 1px 0 rgba(23, 23, 23, 0.04), 0 14px 32px rgba(23, 23, 23, 0.06);
+}
+
+.preset-apple-notion .premium-panel {
+  border-color: rgba(23, 23, 23, 0.14);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(248, 245, 239, 0.98) 45%);
+}
+
+.preset-apple-notion .premium-label {
+  color: #7b6f5e;
+}
+
+.preset-apple-notion section {
+  padding: 2.8rem 0;
+}
+
+.preset-apple-notion section h2 {
+  letter-spacing: -0.022em;
+}
+
+@media (max-width: 640px) {
+  .preset-stripe-linear .hero-cta .btn,
+  .preset-apple-notion .hero-cta .btn {
+    min-width: 0;
+  }
+}
+
 .subpage-main {
   padding-top: 0.75rem;
 }

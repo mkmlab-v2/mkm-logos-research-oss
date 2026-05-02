@@ -6,7 +6,7 @@
   "zeroing_note": "price: directional match rate over provided rows.",
   "inputs": {
     "run_mode": "price",
-    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "score_json": "docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
     "registry_glob": null
   },
   "metrics": {

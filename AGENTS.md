@@ -2,6 +2,13 @@
 
 **역할**: Cursor/Athena 에이전트가 먼저 읽는 **짧은 진입점**이다. 상세 규칙은 아래 파일이 주도한다.
 
+## 로컬↔VPS 운영 표준 (충돌 방지 SSOT)
+
+- **정책 단일 SSOT:** `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`
+- **실행 절차 부록:** `docs/final/FINANCIAL_PROPHECY_VPS_LIVE_TRADING_DIRECTIVE_V1.md`
+- **원칙 고정:** 코드/전략 동기화는 상시, 실전 주문 활성화(ON/OFF)는 별도 승인 게이트
+- **보수 하드라인(v1):** `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`의 `24h 보수 운영 하드라인 (Fact-Lock v1)`을 실전 기본값으로 적용
+
 ## 중앙 메모리 (크로스 채팅 정체성)
 
 - **지속 SSOT:** `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — Athena 정체성·격벽·Fact-Lock·「분기별 한 줄」.
@@ -102,7 +109,7 @@
 - **자동 강등 가드**: alert(`pointer_hash_snapping_router_shadow_alert_latest.json`)가 켜지면 guarded decision에서 `HOLD_POINTER_ROUTE` + `track_a_primary`로 강등한다.
 - **주장 톤 고정**: “무조건 99%/100%/지연 0” 금지. 외부/내부 보고는 조건부·아티팩트 근거형 문장만 사용한다.
 - **실행**: `scripts/run_ultra_compression_default.py` / `--mode literal` / `--mode ultra-literal`(연구·극정밀); `scripts/run_compression_automation_chain.ps1 -IncludeLiteralTrack` / `-IncludeUltraLiteralTrack`; 헬스: `scripts/run_workspace_automation_health.ps1 -IncludeCompressionKpi [-IncludeLiteralTrack]`(체인은 in-process 호출).
-- **주간 거버넌스(갱신 일자 리포트)**: `scripts/run_compression_weekly_governance_chain.ps1` → SSOT `docs/final/artifacts/compression_weekly_governance_report_latest.json`, 동일 페이로드의 일자 파일 `compression_weekly_governance_report_YYYY-MM-DD.json`(UTC·로컬/스케줄러; `.gitignore`로 날짜별 파일은 저장소 비추적), 로그 `reports/compression_weekly_governance_log.jsonl`. Windows 작업 스케줄 등록: `scripts/Register-CompressionWeeklyGovernanceTask.ps1` (기본 일요일 07:00; `-Remove`로 해제).
+- **압축 거버넌스(현행)**: `scripts/run_compression_automation_chain.ps1` + `scripts/run_workspace_automation_health.ps1 -IncludeCompressionKpi [-IncludeLiteralTrack]`를 기본 운영 진입점으로 사용한다. 판정 기준 산출물은 `docs/final/artifacts/a_track_go_nogo_status_latest.json`, `docs/final/artifacts/trackb_weekly_gate_recheck_latest.json`, `docs/final/artifacts/MULTILENS_P1_AB_FINAL_SELECTION_V1.json`.
 - **Track A 상용화 하네스(시뮬·섀도우·계량·SLA 초안):** `run_track_a_conversational_cost_simulation.py` · `run_track_a_shadow_corpus_eval.py` / `Run-TrackAShadowJsonlSample.ps1` · `compression_token_api_stub.py`의 `POST /v1/metering/log`·`eval_context.meter_log`·`run_track_a_metering_summary.py` (`Run-TrackAMeteringSummary.ps1`)·`run_track_a_metering_weekly_report.py` (`Run-TrackAMeteringWeeklyReport.ps1`)·`check_track_a_metering_band_gate.py`·`build_track_a_signal_light_report.py`·`run_track_a_commercialization_daily_chain.ps1` (`Register-TrackACommercializationDailyTask.ps1`, 기본 `GateMode=warning`) · `docs/final/TRACK_A_SLA_DRAFT.md` — 상세·경로는 `docs/final/P0_COMMERCIALIZATION_TRACKER.md` 압축·L2 절.
 - **해석 파이프라인**: `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` — NotebookLM·브리핑은 **참고**; 구현·KPI는 스크립트·산출물만 SSOT.
 - **Multilens P1 A/B**: 본선 갱신 `py scripts/run_multilens_p1_production_chain.py`(또는 `scripts/Run-MultilensP1ProductionChain.ps1`); B-track 샌드박스 `py scripts/run_multilens_p1_btrack_chain.py`(또는 `Run-MultilensP1BTrackSuite.ps1`, `-IncludeBalancedWeightsSweep` 선택). 명령만 확인: `--dry-run`; JSON 실행 계획만 출력: `--json-plan`(서브프로세스 미실행, schema `multilens_p1_chain_plan_v1`).
@@ -112,7 +119,7 @@
 - **jema12.com 본선(SSH Cursor)**: `docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md` — 원격 워크스페이스에서 `git pull` → `scripts/deploy/linux/apply_jema12_nginx_snippet.sh` · 검증 스크립트 경로. 도메인·스냅샷: `docs/final/JEMA12_PUBLIC_DOMAIN_AND_DEPLOY_HANDOFF_2026-04-07.md`.
 - **jema-ai.com (`projects/no1kmedi`)·mkmlife.com 경로·VPS PM2·Hostinger 수동 배포**: `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` — 파일명의 `NO1KMEDI`는 역사적 레이블(jema-ai.com 앱 경로 포함); 로컬 `C:\workspace` 트리와 분리된 `E:\workspace\mkm-life\deploy-to-hostinger.ps1` 등 **실측 경로** 정리; **UI 면책 배지·컴포넌트/폴백 초안**은 동 문서 **§10**(`§10.3` 부록). jema12 런북과 혼용 금지.
 - **다도메인 포트폴리오·미확정(jema-ai.com, personadiary.com 등):** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` — 표·NotebookLM 기준; 전용 포인터 `JEMA_AI_DOMAIN_POINTER_V1.md`, `PERSONADIARY_DOMAIN_POINTER_V1.md`.
-- **일반 예언(B 레일)**: 스키마·스크립트·월간 체인은 **저장소 루트**(`GENERAL_PROPHECY_SCHEMA_V1`, `scripts/generate_general_prophecy_v1.py` 등, `run_waiting_queue_monthly_check.ps1`) — **별도 서브트리에 복제본을 두지 않고** 루트 SSOT를 따른다. 기상 관측 라벨→트리플 레지스트리(교정 측정용)는 `scripts/run_weather_gt_to_prophecy_triplet_chain_v1.py`(기본 JSONL 검증 포함; `--auto-forecasts-sidecar` 또는 `--forecasts-jsonl`)·`build_weather_triplet_registry_v1.py`·`validate_weather_ground_truth_jsonl_v1.py`·`scripts/weather_gt_jsonl_to_forecasts_sidecar_v1.py`·합성 120일 벤치 `scripts/run_weather_synthetic_120d_chain_and_brier_v1.py`(`--forecasts-jsonl`·`--stub-only`·기본 auto 사이드카 배타; 기본 레지스트리 `*_v1.json` vs `*_stub_v1.json`; eval 기본 `--ece-bins 10`·`ece_binary_by_domain_tag`·`--ece-min-per-tag`)·`docs/final/schemas/weather_ground_truth_row_v1.schema.json`.
+- **일반 예언(B 레일)**: 스키마·스크립트·월간 체인은 **저장소 루트**(`GENERAL_PROPHECY_SCHEMA_V1`, `scripts/generate_general_prophecy_v1.py` 등, `run_waiting_queue_monthly_check.ps1`) — **별도 서브트리에 복제본을 두지 않고** 루트 SSOT를 따른다. 실시간 운영 경로는 `eval_prophecy_hit_rate_v1.py`와 `run_prophecy_restoration_spike.py` 중심으로 유지하며, 비활성/미배포 체인은 SSOT 필수 경로로 고정하지 않는다.
 - 한의 원전·코호트: `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` (라벨 A vs 원전 B 혼선 금지).
 - NotebookLM 소스: `docs/NotebookLM_sources_manifest.md`.
 - **NotebookLM MCP (재발방지)**: Settings에서 녹색·N tools여도 **현재 채팅에 도구가 주입되지 않으면** 에이전트는 호출 불가 — UI 연결 ≠ 세션 사용 가능. **내장 브라우저·Chrome 로그인 ≠ MCP 인증**(전용 Chrome 프로필). SSOT: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`(항상 적용), `docs/NotebookLM_sources_manifest.md`(MCP 인증 절), 점검 `scripts/check_notebooklm_mcp_prereqs.ps1`. 스킬 `.cursor/skills/notebooklm-refresh/SKILL.md` §세션 vs UI.

@@ -8,7 +8,18 @@ import { PaddleCheckoutButton } from "@/components/PaddleCheckoutButton";
 
 export const dynamic = "force-dynamic";
 
-export default function HomePage() {
+type HomePageProps = {
+  searchParams?: {
+    preset?: string;
+  };
+};
+
+const homepagePresetMap = {
+  "stripe-linear": "preset-stripe-linear",
+  "apple-notion": "preset-apple-notion",
+} as const;
+
+export default function HomePage({ searchParams }: HomePageProps) {
   const c = siteCopy;
   const clinicCardFlow = [
     {
@@ -44,7 +55,7 @@ export default function HomePage() {
   } as const;
 
   return (
-    <>
+    <div className={homepagePresetClass}>
       <a className="skip" href="#main">
         본문으로 건너뛰기
       </a>
@@ -338,6 +349,6 @@ export default function HomePage() {
           <div className="footer-legal">{c.footer.rights}</div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }

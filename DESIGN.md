@@ -3,6 +3,25 @@
 ## Purpose
 - This document is the single source of truth for homepage UI decisions.
 - It captures both visual rules and design intent so AI/tools generate consistent output.
+- It includes a lightweight reference preset flow inspired by getdesign.md.
+
+## Reference Preset (getdesign.md)
+- Source reference: https://getdesign.md/
+- Use this section as inspiration only; do not copy brand assets, logos, or proprietary visuals.
+- Keep product identity and trust/safety tone above style mimicry.
+
+### Preset Selection Rule (MVP)
+- If the page is data-heavy/trust-heavy, start with `Stripe + Linear`.
+- If the page is premium/editorial, start with `Apple + Notion`.
+- If the page is dashboard/ops-heavy, start with `Sentry + Supabase`.
+- Use at most 2 references in one page to avoid style collision.
+
+### Preset Translation Checklist
+- Typography: map only rhythm (size hierarchy and spacing), not exact font lock-in.
+- Color: preserve current token names; tune values only if contrast stays WCAG AA.
+- Components: keep existing IA and safety blocks, update only visual skin.
+- Motion: subtle only (150-250ms), never distract from primary CTA or safety notice.
+- Evidence labels: never remove baseline/low-sample hints for visual cleanliness.
 
 ## Scope
 - Page: Homepage
