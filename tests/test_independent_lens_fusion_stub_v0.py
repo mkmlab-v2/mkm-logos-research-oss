@@ -42,3 +42,10 @@ def test_runner_emits_fusion_summary(tmp_path: Path) -> None:
     cs = doc.get("consensus") or {}
     assert 0.0 <= float(cs.get("agreement_rate", 0.0)) <= 1.0
     assert -1.0 <= float(cs.get("consensus_score", 0.0)) <= 1.0
+    assert doc.get("version") == "0.2.0"
+    csum = doc.get("conflict_summary") or {}
+    assert isinstance(csum.get("conflict_narrative_guarded"), str)
+    assert len(csum.get("conflict_narrative_guarded", "")) >= 10
+    assert isinstance(csum.get("minority_lens_ids"), list)
+    assert isinstance(csum.get("logos_evidence_verse_ids"), list)
+    assert csum.get("narrative_policy")

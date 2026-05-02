@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -56,6 +57,22 @@ def _looks_like_iso_utc(ts: str) -> bool:
     return len(ts) >= 20 and ts.endswith("Z") and "T" in ts
 
 
+def _conflict_snapshot_from_fusion(fusion: dict[str, Any]) -> dict[str, Any]:
+    """Compact audit fields from fusion conflict_summary + narrative digest (no full prose in JSONL)."""
+    cs = fusion.get("conflict_summary") if isinstance(fusion.get("conflict_summary"), dict) else {}
+    nar = cs.get("conflict_narrative_guarded")
+    digest: str | None = None
+    if isinstance(nar, str) and nar.strip():
+        digest = hashlib.sha256(nar.strip().encode("utf-8")).hexdigest()
+    return {
+        "fusion_stub_version": fusion.get("version"),
+        "minority_lens_ids": list(cs.get("minority_lens_ids") or []),
+        "logos_evidence_verse_ids": list(cs.get("logos_evidence_verse_ids") or []),
+        "conflict_narrative_sha256": digest,
+        "majority_sign": cs.get("majority_sign"),
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Append independent lens fusion snapshot and build shadow gate.")
     ap.add_argument("--fusion-input", type=Path, default=FUSION_LATEST)
@@ -97,6 +114,7 @@ def main() -> int:
         history_ts_utc = args.ts_override_utc
 
     month_tag = now_utc[:7]
+    snap = _conflict_snapshot_from_fusion(fusion)
     history_row = {
         "ts_utc": history_ts_utc,
         "source_ts_utc": fusion.get("ts_utc"),
@@ -107,6 +125,7 @@ def main() -> int:
         "conflict_count": consensus.get("conflict_count"),
         "available_count": consensus.get("available_count"),
         "mode": fusion.get("mode"),
+        **snap,
     }
     if args.override_label:
         history_row["override_label"] = args.override_label
@@ -142,6 +161,7 @@ def main() -> int:
             "history_path": str(args.history_jsonl.resolve()),
         },
         "latest_consensus": consensus,
+        "latest_conflict_snapshot": snap,
         "decision": "KEEP_OBSERVATION_ONLY",
         "allow_a_track_binding": False,
         "blockers": blockers,

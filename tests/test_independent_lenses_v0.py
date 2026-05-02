@@ -46,3 +46,27 @@ def test_runner_emits_schema(tmp_path: Path, script_rel: str, schema: str, lens_
     scores = doc.get("scores") or {}
     assert -1.0 <= float(scores.get("direction_score", 0)) <= 1.0
     assert 0.0 <= float(scores.get("confidence", 0)) <= 1.0
+
+
+def test_logos_lens_evidence_refs_minimal_fixture(tmp_path: Path) -> None:
+    runner = _ROOT / "scripts/run_lens_logos.py"
+    fx = _ROOT / "tests/fixtures/logos_4lens_batch_minimal_v1.json"
+    out = tmp_path / "logos_evidence.json"
+    cp = subprocess.run(
+        [sys.executable, str(runner), "--batch-json", str(fx), "--output", str(out)],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert cp.returncode == 0, cp.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc.get("schema") == "logos_independent_lens_v0"
+    refs = doc.get("evidence_refs") or []
+    assert len(refs) == 2
+    assert refs[0].get("verse_id") == "JHN.3.16"
+    assert refs[0].get("quote_hash", "").startswith("sha256:")
+    assert "[#JHN.3.16]" in (refs[0].get("hash_tagged_snippet") or "")
+    nar = doc.get("narrative_snippet_guarded") or ""
+    assert "[#JHN.3.16]" in nar and "[#PSA.23.1]" in nar
+    assert doc.get("snippet_guard_policy")

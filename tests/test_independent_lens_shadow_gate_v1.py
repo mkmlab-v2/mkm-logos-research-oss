@@ -52,6 +52,18 @@ def test_shadow_gate_runner(tmp_path: Path) -> None:
     assert doc.get("decision") == "KEEP_OBSERVATION_ONLY"
     assert doc.get("allow_a_track_binding") is False
     assert isinstance(doc.get("blockers"), list)
+    snap = doc.get("latest_conflict_snapshot") or {}
+    assert isinstance(snap.get("minority_lens_ids"), list)
+    assert isinstance(snap.get("logos_evidence_verse_ids"), list)
+    assert snap.get("fusion_stub_version") == "0.2.0"
+    nar_sha = snap.get("conflict_narrative_sha256")
+    assert isinstance(nar_sha, str) and len(nar_sha) == 64
+
+    hist_lines = hist.read_text(encoding="utf-8").strip().splitlines()
+    assert len(hist_lines) >= 1
+    row = json.loads(hist_lines[-1])
+    assert isinstance(row.get("minority_lens_ids"), list)
+    assert row.get("conflict_narrative_sha256") == nar_sha
 
 
 def test_shadow_gate_requires_explicit_override_flag(tmp_path: Path) -> None:

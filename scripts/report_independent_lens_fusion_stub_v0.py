@@ -59,6 +59,72 @@ def _load_lens(path: Path, lens_name: str) -> dict[str, Any]:
     }
 
 
+def _build_conflict_summary(
+    lens_rows: list[dict[str, Any]],
+    cs: dict[str, Any],
+    logos_doc: dict[str, Any] | None,
+) -> dict[str, Any]:
+    """Deterministic narrative only: signs/scores + optional Logos batch fields; no LLM."""
+    active = [x for x in lens_rows if x.get("available")]
+    maj = str(cs.get("consensus_sign") or "neutral")
+    minority_ids: list[str] = []
+    for r in active:
+        if r.get("direction_sign") != maj:
+            minority_ids.append(str(r.get("lens_id", "?")))
+
+    parts: list[str] = []
+    parts.append(
+        f"Lens direction alignment: majority_sign={maj}, agreement_rate={cs.get('agreement_rate')}, "
+        f"conflict_count={cs.get('conflict_count')}."
+    )
+    if minority_ids:
+        parts.append(
+            "Minority vs majority: "
+            + ", ".join(minority_ids)
+            + f" differ from majority_sign={maj}."
+        )
+    else:
+        parts.append("No direction_sign conflict among active lenses.")
+
+    breakdown: list[str] = []
+    for r in active:
+        breakdown.append(
+            f"{r['lens_id']}: sign={r['direction_sign']}, "
+            f"score={float(r['direction_score']):.6f}, conf={float(r['confidence']):.6f}"
+        )
+    parts.append("Breakdown: " + "; ".join(breakdown) + ".")
+
+    verse_ids: list[str] = []
+    if logos_doc and isinstance(logos_doc.get("evidence_refs"), list):
+        for er in logos_doc["evidence_refs"]:
+            if isinstance(er, dict):
+                vid = er.get("verse_id")
+                if vid:
+                    verse_ids.append(str(vid))
+    if verse_ids:
+        parts.append(
+            "Logos evidence verse_id anchors (batch-bound): " + ", ".join(verse_ids) + "."
+        )
+    ns = logos_doc.get("narrative_snippet_guarded") if logos_doc else None
+    if isinstance(ns, str) and ns.strip():
+        clip = ns.strip()
+        if len(clip) > 320:
+            clip = clip[:319] + "…"
+        parts.append("Logos hash-tagged snippet (clipped): " + clip)
+
+    return {
+        "conflict_narrative_guarded": " ".join(parts),
+        "minority_lens_ids": minority_ids,
+        "majority_sign": maj,
+        "logos_evidence_verse_ids": verse_ids,
+        "narrative_policy": (
+            "Deterministic template from lens signs/scores and optional Logos "
+            "evidence_refs/narrative_snippet_guarded only; no LLM paraphrase; "
+            "observation_only; not an A-track action."
+        ),
+    }
+
+
 def _consensus(summary: list[dict[str, Any]]) -> dict[str, Any]:
     active = [x for x in summary if x["available"]]
     if not active:
@@ -106,19 +172,23 @@ def main() -> int:
         _load_lens(args.logos, "logos"),
     ]
     cs = _consensus(lens_rows)
+    logos_doc = _read_json(args.logos)
+    conflict_summary = _build_conflict_summary(lens_rows, cs, logos_doc)
     out = {
         "schema": "independent_lens_fusion_stub_v0",
-        "version": "0.1.0",
+        "version": "0.2.0",
         "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "hypothesis_tier": "B",
         "boundary_ack": True,
         "mode": "observation_only",
         "inputs": lens_rows,
         "consensus": cs,
+        "conflict_summary": conflict_summary,
         "note": (
             "Read-only comparison of independent lens outputs; not A-track auto-fusion or live sizing trigger. "
             "No consistency_rate here — use consensus.agreement_rate for lens-direction alignment; "
             "optional consistency_rate is defined for myeongni 16-state experiment JSON (separate schema). "
+            "conflict_summary.* is template-bound narrative + optional Logos batch anchors only. "
             "Vector gematria+myeongri geometric spike: scripts/spike_gematria_myeongri_blend_v0.py."
         ),
     }
