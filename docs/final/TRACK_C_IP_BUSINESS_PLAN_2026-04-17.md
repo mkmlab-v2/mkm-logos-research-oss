@@ -16,6 +16,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
   - `Not investment advice`
   - `No guarantee of returns`
   - `Final decisions remain with client operators`
+- **Evidence pack lock (검증 스크립트 정합):** `Not investment advice; final decisions remain with client operators.`
 
 ## 2) NotebookLM + 장기기억 연계 점검 결과
 
@@ -29,7 +30,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 
 - 즉시 매출화 후보는 `압축·토큰절감`을 1순위로 둔다.
 - `초고난도 비정형 텍스트(성경·사해사본 등)/명리/사상`은 Track C에서 **리스크 포지셔닝/서사/해설형 인텔리전스**로 패키징하되, 투자조언/자동매매 문구는 금지한다.
-- `신시장지표`는 관측/경보형 서비스로 제한하고, 예측 단정·수익 보장 문구는 금지한다.
+- `신시장지표`는 관측/경보형 서비스로 제한하고, 예측 단정·성과 보증이나 수익 약속을 암시하는 문구는 금지한다.
 
 ## 3) 통합 사업 포트폴리오 (요청 반영)
 
@@ -67,7 +68,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - 고객: 리스크팀, 운용지원팀, 리서치 조직.
 - 제품: 월간/주간 `regime pressure` 관측 지표 + 이벤트 경보.
 - 역할: 매수/매도가 아니라 위험도·노출관리 보조.
-- 금지: 수익 보장·확정 예측·실행 지시.
+- 금지: 성과 보증·확정 예측·실행 지시.
 
 ### 3.6 축 F — Topology Radar / Resonance Scanner (B2C 쇼룸)
 
@@ -82,7 +83,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - 역할: 리스크 경보 문해력 체험 + 엔터프라이즈 API 세일즈 리드 생성.
 - 금지:
   - "내일 오를까/내릴까" 류 결정론 답변.
-  - 매수/매도 지시, 수익 보장, 자동 매매 유도 카피.
+  - 매수·매도 실행 지시, 성과 보증 표현, 자동 매매 유도 카피.
 - 도메인 권고:
   - 공개 쇼룸 1순위: `jemaai.cloud` (공개 전광판/쇼룸 SSOT와 정합).
   - 엔터프라이즈 API CTA 2순위: `a-codeai.com` (`/v1` 분리형 B2B 엔드포인트 문맥).
