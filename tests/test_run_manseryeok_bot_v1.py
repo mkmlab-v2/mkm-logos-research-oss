@@ -46,6 +46,9 @@ def test_profile_json_local_input(tmp_path: Path, monkeypatch) -> None:
     assert "yeonun_text" in doc["analysis"]["details"]
     assert "luck" in doc
     assert "daewoon" in doc["luck"]
+    assert "daewoon_qiyun_v1" in doc["luck"]
+    assert "myeongri_fusion_v1" in doc["luck"]
+    assert doc["luck"]["myeongri_fusion_v1"]["vector_4d_rule_school_v1"]
     assert "alternative_hour_option" in doc
     assert doc["alternative_hour_option"]["enabled"] is True
     assert "review_interpretation" in doc

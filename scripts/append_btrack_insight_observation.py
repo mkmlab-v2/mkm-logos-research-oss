@@ -29,7 +29,11 @@ def main() -> int:
         "insight_one_liner": args.insight_one_liner.strip(),
         "falsification_hook": args.falsification_hook.strip(),
         "confidence": args.confidence,
-        "snapshot_refs": ["btrack_llm_input_bundle_latest.json", "independent_lens_fusion_stub_latest.json"],
+        "snapshot_refs": [
+            "btrack_llm_input_bundle_latest.json",
+            "independent_lens_fusion_stub_latest.json",
+            "independent_lens_shadow_minority_monthly_latest.json",
+        ],
         "note": args.note.strip(),
     }
     args.log.parent.mkdir(parents=True, exist_ok=True)

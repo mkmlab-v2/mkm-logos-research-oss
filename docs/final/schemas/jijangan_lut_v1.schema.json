@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://workspace.local/schemas/jijangan_lut_v1.schema.json",
+  "title": "jijangan_lut_v1",
+  "type": "object",
+  "required": ["schema", "version", "branches"],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "const": "jijangan_lut_v1" },
+    "version": { "type": "string" },
+    "notes": { "type": "string" },
+    "branches": {
+      "type": "object",
+      "minProperties": 12,
+      "maxProperties": 12,
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["gan", "tier"],
+          "additionalProperties": false,
+          "properties": {
+            "gan": {
+              "type": "string",
+              "enum": ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"]
+            },
+            "tier": {
+              "type": "string",
+              "enum": ["jeong_gi", "jung_gi", "yeo_gi"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -11,10 +11,11 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btrack_llm_input_bundle_latest.json"
 
-DEFAULT_MYEONGNI = ROOT / "docs" / "final" / "artifacts" / "myeongni_independent_lens_latest.json"
-DEFAULT_SASANG = ROOT / "docs" / "final" / "artifacts" / "sasang_independent_lens_latest.json"
-DEFAULT_LOGOS = ROOT / "docs" / "final" / "artifacts" / "logos_independent_lens_latest.json"
-DEFAULT_FUSION = ROOT / "docs" / "final" / "artifacts" / "independent_lens_fusion_stub_latest.json"
+DEFAULT_MYEONGNI = ROOT / "docs/final/artifacts/myeongni_independent_lens_latest.json"
+DEFAULT_SASANG = ROOT / "docs/final/artifacts/sasang_independent_lens_latest.json"
+DEFAULT_LOGOS = ROOT / "docs/final/artifacts/logos_independent_lens_latest.json"
+DEFAULT_FUSION = ROOT / "docs/final/artifacts/independent_lens_fusion_stub_latest.json"
+DEFAULT_MINORITY_MONTHLY = ROOT / "docs/final/artifacts/independent_lens_shadow_minority_monthly_latest.json"
 
 
 def _read(path: Path) -> dict[str, Any] | None:
@@ -33,12 +34,13 @@ def main() -> int:
     ap.add_argument("--sasang", type=Path, default=DEFAULT_SASANG)
     ap.add_argument("--logos", type=Path, default=DEFAULT_LOGOS)
     ap.add_argument("--fusion", type=Path, default=DEFAULT_FUSION)
+    ap.add_argument("--minority-monthly", type=Path, default=DEFAULT_MINORITY_MONTHLY)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
     bundle = {
         "schema": "btrack_llm_input_bundle_v1",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "hypothesis_tier": "B",
         "boundary_ack": True,
@@ -48,12 +50,14 @@ def main() -> int:
             "sasang_independent_lens": _read(args.sasang),
             "logos_independent_lens": _read(args.logos),
             "independent_lens_fusion_stub": _read(args.fusion),
+            "independent_lens_shadow_minority_monthly": _read(args.minority_monthly),
         },
         "artifact_paths": {
             "myeongni": str(args.myeongni.resolve()),
             "sasang": str(args.sasang.resolve()),
             "logos": str(args.logos.resolve()),
             "fusion": str(args.fusion.resolve()),
+            "independent_lens_shadow_minority_monthly": str(args.minority_monthly.resolve()),
         },
         "note": "Feed summarized fields to LLM; do not merge with live trading. Sasang: [NON-MEDICAL] if referenced.",
     }

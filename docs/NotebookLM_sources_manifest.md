@@ -1,6 +1,6 @@
 # NotebookLM 소스 매니페스트 (A/B 이원)
 
-**작성일**: 2026-03-29 · **갱신**: 2026-04-23 (Vault 미러: 원어 특이점 글로스 v3·히브리 오버라이드·`master_codebook_lexicon_v1` **포인터** JSON 추가; 동기화 스크립트 `$SourceFiles` 반영) · 이전 갱신 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · **LOG_METABOLISM 전용** `MKM_LOG_METABOLISM_REFINERY_V1` · **CORE↔Refinery 격벽 포인터** `NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
+**작성일**: 2026-03-29 · **갱신**: 2026-05-02 (MCP `notebooklm-mcp` 전용 Chrome 프로필 vs 내장 브라우저 로그인 **비동기** 문서화) · 2026-04-23 (Vault 미러: 원어 특이점 글로스 v3·히브리 오버라이드·`master_codebook_lexicon_v1` **포인터** JSON 추가; 동기화 스크립트 `$SourceFiles` 반영) · 이전 갱신 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · **LOG_METABOLISM 전용** `MKM_LOG_METABOLISM_REFINERY_V1` · **CORE↔Refinery 격벽 포인터** `NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
 **정의**: **A = Fact-Lock(팩트 고정)**, **B = Creative-Lock(통찰·가설)**. B는 본선 OOF·실매매 트리거와 A를 혼선 없이 적용.
 
 **Cursor 3.0 (2026-04)**: NotebookLM과 동일하게 **브리핑·질의·소스 아카이브** 레이어다. **에이전트 병렬(Agents Window)·Design Mode**는 제품 기능이며, **압축 엔진·헌법·실매매 SSOT는 여전히 레포의 `.py`/JSON**이다(`AGENTS.md`, `COMPRESSION_SLA_POLICY_V1.md`).
@@ -8,6 +8,13 @@
 **연구 서사 인덱스 (B, 비-SSOT):** `docs/final/RESEARCH_HISTORY_V1.md` — MCP `notebook_list`로 수집한 **노트북 제목·ID 스냅샷**(구현·게이트 팩트 아님). 갱신 시 이 파일을 먼저 고친 뒤 Vault 동기화.
 
 **Vault 동기화**: `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`가 이 표를 `notebooklm_sources/`로 복사(SSOT 반영). 공유 Vault 루트는 환경의 `MKM_VAULT_ROOT` 또는 스크립트 `-VaultRoot`로 지정.
+
+### MCP `notebooklm-mcp` 인증 — 웹 로그인과 자동 동기화되지 않음 (2026-05)
+
+- **원인:** Cursor 내장 브라우저·일반 Chrome에서 NotebookLM에 로그인한 것과, MCP 서버(`npx notebooklm-mcp@latest`)가 띄우는 자동화 브라우저는 **서로 다른 Chrome 프로필**이다. Windows에서는 통상 `%APPDATA%\notebooklm-mcp\chrome_profile\` 아래 **전용 프로필**에만 쿠키가 저장된다. 그래서 “이미 브라우저에서 로그인됨”이어도 **`get_health`의 `authenticated`는 false일 수 있다** — 오류가 아니라 **격리 설계**다.
+- **완화(레포):** `.cursor/mcp.json`의 `notebooklm` 항목에 **`HEADLESS`=`false`** 를 두어 로그인 창이 보이게 한다(패키지 기본은 headless). MCP 프로세스를 **Reload Window / Cursor 재시작** 후에만 환경 변수가 반영된다.
+- **1회 설정:** MCP 도구 **`setup_auth`** 로 위 전용 프로필에 한 번 로그인하면 이후 같은 프로필을 재사용한다. 계정 전환·세션 꼬임 시 패키지 README의 **`re_auth`** / **`cleanup_data`** 절차를 따른다(`NOTEBOOKLM_PROFILE=full`일 때 정리 도구가 노출되는 경우가 있음).
+- **Fact-Lock:** NotebookLM 웹 UI 브리핑은 **참고**이며, 구현·게이트 확정은 여전히 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·스크립트·아티팩트만 SSOT다.
 
 ### Vault 동기화 — 로컬 부재 Skip (정상, 2026-04)
 

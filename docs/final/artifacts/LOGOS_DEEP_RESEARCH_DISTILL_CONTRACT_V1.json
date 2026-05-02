@@ -1,0 +1,24 @@
+{
+  "schema": "logos_deep_research_distill_contract_meta_v1",
+  "artifact_schema": "logos_deep_research_distill_v1",
+  "artifact_json_schema": "docs/final/schemas/logos_deep_research_distill_v1.schema.json",
+  "runner_version": "1.0.0",
+  "purpose": "Track B offline deep research output distilled to a deterministic JSON artifact for light consumption; not a live trigger.",
+  "default_output_path": "docs/final/artifacts/logos_deep_research_distill_latest.json",
+  "runner_placeholder": "scripts/run_lens_logos_deep_fusion.py",
+  "backlog_ssot": "docs/final/LOGOS_DEEP_RESEARCH_TRACK_B_BACKLOG_V1.md",
+  "hypothesis_tier": "B",
+  "non_gating_ack_required": true,
+  "forbidden": {
+    "a_track_live_full_graph_query": true,
+    "live_sizing_trigger": true,
+    "replace_logos_v0_without_migration": true
+  },
+  "upstream_integration_notes": [
+    "Reuse corpus boundaries from verse_4pipeline / bible_meaning_graph where possible.",
+    "Heavy LLM/RAG belongs in slice 4+; slices 0-2 are ingest/manifest/schema only.",
+    "Slice 1 manifest SHA/count: docs/final/artifacts/logos_corpus_manifest_v1_latest.json via scripts/build_logos_corpus_manifest_v1.py — optional provenance.input_manifest_sha256 companion.",
+    "Slice 2 bundle: docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json — dedupe_bundle_key_sha256 links manifest + meaning graph JSONL without copying graph bodies.",
+    "Slice 3 policy: LOGOS_VECTOR_INDEX_POLICY_V1.json + run_logos_vector_index_stub_v1.py; distill runner accepts --bundle-json to anchor provenance."
+  ]
+}

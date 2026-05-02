@@ -14,6 +14,9 @@ DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "independent_lens_fusion_s
 DEFAULT_MYEONGNI = ROOT / "docs" / "final" / "artifacts" / "myeongni_independent_lens_latest.json"
 DEFAULT_SASANG = ROOT / "docs" / "final" / "artifacts" / "sasang_independent_lens_latest.json"
 DEFAULT_LOGOS = ROOT / "docs" / "final" / "artifacts" / "logos_independent_lens_latest.json"
+DEFAULT_MARKET_SASANG = ROOT / "docs" / "final" / "artifacts" / "market_sasang_lens_latest.json"
+
+STUB_VERSION = "0.3.0"
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -57,6 +60,42 @@ def _load_lens(path: Path, lens_name: str) -> dict[str, Any]:
         "artifact_ts_utc": doc.get("ts_utc"),
         "schema": doc.get("schema"),
     }
+
+
+def _load_market_sasang_lens(path: Path) -> dict[str, Any] | None:
+    """Map market_sasang_lens_v1 → fusion-stub row shape; None if skip/unusable."""
+    doc = _read_json(path)
+    if not doc or doc.get("schema") != "market_sasang_lens_v1":
+        return None
+    fb = doc.get("fusion_bridge") if isinstance(doc.get("fusion_bridge"), dict) else {}
+    ds = float(fb.get("score_hint") or 0.0)
+    ds = max(-1.0, min(1.0, ds))
+    unc = doc.get("uncertainty") if isinstance(doc.get("uncertainty"), dict) else {}
+    comp = float(unc.get("composite_uncertainty") or 0.5)
+    comp = max(0.0, min(1.0, comp))
+    cf = max(0.0, min(1.0, 1.0 - comp))
+    veto = doc.get("veto") if isinstance(doc.get("veto"), dict) else {}
+    if veto.get("force_hold"):
+        cf *= 0.25
+    row: dict[str, Any] = {
+        "lens_id": "market_sasang",
+        "available": True,
+        "direction_score": ds,
+        "confidence": max(0.0, min(1.0, cf)),
+        "direction_sign": _pick_sign(ds),
+        "artifact_path": str(path.resolve()),
+        "artifact_ts_utc": doc.get("ts_utc"),
+        "schema": doc.get("schema"),
+        "market_sasang_lens_v1": {
+            "state_vector_sasang_softmax": doc.get("state_vector_sasang_softmax"),
+            "composite_uncertainty": round(comp, 8),
+            "veto_force_hold": bool(veto.get("force_hold")),
+            "veto_reason_codes": list(veto.get("reason_codes") or []),
+            "direction_hint": fb.get("direction_hint"),
+            "human_commander_gate_v1": doc.get("human_commander_gate_v1"),
+        },
+    }
+    return row
 
 
 def _build_conflict_summary(
@@ -163,6 +202,12 @@ def main() -> int:
     ap.add_argument("--myeongni", type=Path, default=DEFAULT_MYEONGNI)
     ap.add_argument("--sasang", type=Path, default=DEFAULT_SASANG)
     ap.add_argument("--logos", type=Path, default=DEFAULT_LOGOS)
+    ap.add_argument("--market-sasang", type=Path, default=DEFAULT_MARKET_SASANG)
+    ap.add_argument(
+        "--no-market-sasang",
+        action="store_true",
+        help="Exclude market_sasang_lens_v1 (legacy 3-lens consensus only).",
+    )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
@@ -171,12 +216,16 @@ def main() -> int:
         _load_lens(args.sasang, "sasang"),
         _load_lens(args.logos, "logos"),
     ]
+    if not args.no_market_sasang:
+        ms = _load_market_sasang_lens(args.market_sasang)
+        if ms is not None:
+            lens_rows.append(ms)
     cs = _consensus(lens_rows)
     logos_doc = _read_json(args.logos)
     conflict_summary = _build_conflict_summary(lens_rows, cs, logos_doc)
     out = {
         "schema": "independent_lens_fusion_stub_v0",
-        "version": "0.2.0",
+        "version": STUB_VERSION,
         "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "hypothesis_tier": "B",
         "boundary_ack": True,
@@ -186,6 +235,7 @@ def main() -> int:
         "conflict_summary": conflict_summary,
         "note": (
             "Read-only comparison of independent lens outputs; not A-track auto-fusion or live sizing trigger. "
+            "v0.3.0: optional 4th input from market_sasang_lens_v1 when artifact exists (use --no-market-sasang for 3-lens only). "
             "No consistency_rate here — use consensus.agreement_rate for lens-direction alignment; "
             "optional consistency_rate is defined for myeongni 16-state experiment JSON (separate schema). "
             "conflict_summary.* is template-bound narrative + optional Logos batch anchors only. "

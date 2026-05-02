@@ -41,6 +41,9 @@ def test_stub_outputs_valid_schema(tmp_path: Path) -> None:
     assert doc.get("hypothesis_tier") == "B"
     assert "[HYPO]" in str(doc.get("label", ""))
     assert doc.get("prediction", {}).get("direction") in ("bull", "bear", "neutral", "abstain")
+    la = doc.get("lens_artifacts") or {}
+    assert "shadow_minority_monthly" in la
+    assert "independent_lens_shadow_minority_monthly" in str(la.get("shadow_minority_monthly", ""))
 
 
 def test_validate_only_accepts_good_doc(tmp_path: Path) -> None:

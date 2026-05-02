@@ -1,0 +1,13 @@
+{
+  "schema": "logos_vector_index_policy_v1_contract_meta_v1",
+  "artifact_schema": "logos_vector_index_policy_v1",
+  "artifact_json_path": "docs/final/artifacts/LOGOS_VECTOR_INDEX_POLICY_V1.json",
+  "artifact_json_schema": "docs/final/schemas/logos_vector_index_policy_v1.schema.json",
+  "runner_version": "1.0.0",
+  "purpose": "Track B slice 3 — embedding/ANN policy stub; readiness gate via run_logos_vector_index_stub_v1.py",
+  "runner": "scripts/run_logos_vector_index_stub_v1.py",
+  "hypothesis_tier": "B",
+  "forbidden": {
+    "claim_production_vector_db_without_build": true
+  }
+}

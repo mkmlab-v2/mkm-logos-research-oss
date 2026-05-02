@@ -1,6 +1,6 @@
 {
   "schema": "insight_effectiveness_scoreboard_v1",
-  "generated_at_utc": "2026-04-30T18:18:31Z",
+  "generated_at_utc": "2026-05-02T05:12:38Z",
   "sources": {
     "fused_history_path": "C:\\workspace\\docs\\final\\artifacts\\fused_paper_cycle_decision_history.jsonl",
     "scoring_distribution_path": "C:\\workspace\\docs\\final\\artifacts\\trinity_scoring_distribution_latest.json",
@@ -16,15 +16,15 @@
     "counts": {
       "HIT": 20,
       "FAIL": 0,
-      "NEUTRAL_DRAW": 1,
-      "PENDING_CLOSE": 9
+      "NEUTRAL_DRAW": 2,
+      "PENDING_CLOSE": 8
     },
-    "pending_close_rate_raw": 0.3,
-    "hit_rate_resolved_plus_neutral": 0.9523809523809523,
-    "resolved_plus_neutral_n": 21,
+    "pending_close_rate_raw": 0.26666666666666666,
+    "hit_rate_resolved_plus_neutral": 0.9090909090909091,
+    "resolved_plus_neutral_n": 22,
     "hit_rate_resolved_plus_neutral_wilson95": {
-      "lower": 0.7733018341376452,
-      "upper": 0.9915442305280766
+      "lower": 0.7218461934161421,
+      "upper": 0.9747051037171622
     }
   },
   "monthly_hit_rate_trace": [
@@ -32,23 +32,28 @@
       "month_tag": "2026-04",
       "hit_rate_resolved_plus_neutral": 0.9523809523809523,
       "sample_size": 30
+    },
+    {
+      "month_tag": "2026-05",
+      "hit_rate_resolved_plus_neutral": 0.9090909090909091,
+      "sample_size": 30
     }
   ],
   "state_signal_snapshot": {
-    "state_present_rate_all": 0.8319,
+    "state_present_rate_all": 0.9236,
     "advisory_decision": "state_clamp_stable"
   },
   "shadow_gate_snapshot": {
     "decision": "KEEP_OBSERVATION_ONLY",
-    "weekly_cycles_observed": 612,
-    "monthly_cycles_observed": 2
+    "weekly_cycles_observed": 616,
+    "monthly_cycles_observed": 3
   },
   "checks": {
     "pending_close_rate_ok": true,
-    "monthly_hit_rate_two_months_ok": false,
+    "monthly_hit_rate_two_months_ok": true,
     "state_signal_wired_ok": true
   },
-  "is_promotion_ready": false,
-  "promotion_status": "KEEP_OBSERVATION_ONLY",
+  "is_promotion_ready": true,
+  "promotion_status": "PROMOTION_APPROVED_6W_PILOT",
   "note": "Daily machine verdict for B-track to A-track promotion readiness."
 }

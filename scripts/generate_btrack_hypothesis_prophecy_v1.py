@@ -2,8 +2,9 @@
 """Generate B-Track hypothesis JSON (schema btrack_hypothesis_prophecy_v1) from LLM bundle.
 
 Modes:
-  --stub    Deterministic hypothesis from fusion_stub consensus (no API; CI-safe).
-  --gemini  Call Gemini (requires GEMINI_API_KEY); model outputs JSON only, then validate.
+  --stub    Deterministic hypothesis from fusion_stub consensus (no API; CI-safe; daily chain default).
+  --gemini  Optional; prefer org Gen AI / Google Cloud credit workflows. Keys in .env are error-prone and
+            burn quota quickly — use only for rare manual/batch runs when keys are intentionally set.
 
 Output: docs/final/artifacts/btrack_hypothesis_prophecy_latest.json
 """
@@ -110,6 +111,7 @@ def _build_stub_from_bundle(bundle: dict[str, Any]) -> dict[str, Any]:
             "myeongni": "docs/final/artifacts/myeongni_independent_lens_latest.json",
             "sasang": "docs/final/artifacts/sasang_independent_lens_latest.json",
             "fusion_stub": "docs/final/artifacts/independent_lens_fusion_stub_latest.json",
+            "shadow_minority_monthly": "docs/final/artifacts/independent_lens_shadow_minority_monthly_latest.json",
         },
         "prediction": {
             "instrument": "multi",

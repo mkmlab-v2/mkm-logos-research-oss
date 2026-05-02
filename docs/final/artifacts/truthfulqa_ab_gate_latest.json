@@ -1,0 +1,70 @@
+{
+  "schema": "truthfulqa_ab_gate_v1",
+  "schema_version": 2,
+  "generated_at_utc": "2026-05-02T04:10:49+00:00",
+  "research_only": true,
+  "promotion_required": true,
+  "inputs": {
+    "mc_json": "C:\\workspace\\docs\\final\\artifacts\\truthfulqa_ab_benchmark_latest.json",
+    "generation_json": "C:\\workspace\\docs\\final\\artifacts\\truthfulqa_generation_ab_benchmark_latest.json"
+  },
+  "strict": {
+    "thresholds": {
+      "evaluation_mode": "mc_only",
+      "min_mc_accuracy_delta": 0.0,
+      "max_mc_hallucination_delta": 0.0
+    },
+    "checks": [
+      {
+        "id": "mc_accuracy_delta",
+        "status": "FAIL",
+        "reason": "missing_metric",
+        "actual": null,
+        "operator": ">=",
+        "threshold": 0.0
+      },
+      {
+        "id": "mc_hallucination_delta",
+        "status": "FAIL",
+        "reason": "missing_metric",
+        "actual": null,
+        "operator": "<=",
+        "threshold": 0.0
+      }
+    ],
+    "summary": {
+      "pass_count": 0,
+      "total": 2,
+      "decision": "NO_GO"
+    }
+  },
+  "thresholds": {
+    "evaluation_mode": "mc_only",
+    "min_mc_accuracy_delta": 0.0,
+    "max_mc_hallucination_delta": 0.0
+  },
+  "checks": [
+    {
+      "id": "mc_accuracy_delta",
+      "status": "FAIL",
+      "reason": "missing_metric",
+      "actual": null,
+      "operator": ">=",
+      "threshold": 0.0
+    },
+    {
+      "id": "mc_hallucination_delta",
+      "status": "FAIL",
+      "reason": "missing_metric",
+      "actual": null,
+      "operator": "<=",
+      "threshold": 0.0
+    }
+  ],
+  "summary": {
+    "pass_count": 0,
+    "total": 2,
+    "decision": "NO_GO"
+  },
+  "evaluation_mode": "mc_only"
+}

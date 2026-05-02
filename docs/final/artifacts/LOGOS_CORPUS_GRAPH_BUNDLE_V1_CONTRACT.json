@@ -1,0 +1,17 @@
+{
+  "schema": "logos_corpus_graph_bundle_v1_contract_meta_v1",
+  "artifact_schema": "logos_corpus_graph_bundle_v1",
+  "artifact_json_schema": "docs/final/schemas/logos_corpus_graph_bundle_v1.schema.json",
+  "runner_version": "1.0.0",
+  "purpose": "Track B slice 2: combine corpus manifest + bible_meaning_graph JSONL hashes/counts + verse ref overlap; dedupe via bundle key.",
+  "default_manifest_path": "docs/final/artifacts/logos_corpus_manifest_v1_latest.json",
+  "default_nodes_jsonl": "docs/final/artifacts/bible_meaning_graph_nodes_v1.jsonl",
+  "default_edges_jsonl": "docs/final/artifacts/bible_meaning_graph_edges_v1.jsonl",
+  "default_output_path": "docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json",
+  "runner": "scripts/build_logos_corpus_graph_bundle_v1.py",
+  "hypothesis_tier": "B",
+  "forbidden": {
+    "a_track_live_trigger": true,
+    "rewrite_meaning_graph_files": true
+  }
+}

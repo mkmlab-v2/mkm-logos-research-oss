@@ -1,0 +1,116 @@
+{
+  "schema": "logos_deep_research_commander_report_axes_v1",
+  "version": "1.0.0",
+  "hypothesis_tier": "B",
+  "non_gating_ack": true,
+  "report_banner_required": [
+    "[TRACK B / HYPO]",
+    "[연구용: 최종 판단은 지휘관 대기]"
+  ],
+  "governance_note": "배너는 채택 게이트(Human-in-the-loop)와 산출물 구분을 명시한다. 대외 규제·상용 주장 적합성은 별도 법무·제품 기준으로 검토한다.",
+  "track_a_vs_track_b": {
+    "track_a_consumes": [
+      "docs/final/schemas/logos_deep_research_distill_v1.schema.json",
+      "docs/final/artifacts/logos_independent_lens_latest.json",
+      "docs/final/artifacts/independent_lens_fusion_stub_latest.json"
+    ],
+    "track_b_commander_report": "장문·서술·다단계 추론 허용; 아래 핵심 축으로 목차·근거를 고정한다."
+  },
+  "axes": [
+    {
+      "axis_id": "lexical_original_language",
+      "label_ko": "원어·형태·스트롱(또는 동등 정규화 키) 앵커",
+      "priority": 1,
+      "rationale": "최종 채택 여부를 가르는 1차 고정점; 추측 서술과 구분되는 검증 가능 표면 형태.",
+      "constitution_facts_pointers": [
+        "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §3.3 독립 렌즈·로고스",
+        "scripts/run_lens_logos.py",
+        "data/logos/verse_4pipeline_full_31102.json (코어 코퍼스 SSOT)"
+      ],
+      "commander_review_fields": [
+        "verse_id",
+        "quote_hash",
+        "원어/표기 출처",
+        "pipeline 4D 또는 동일 코퍼스에서 재현 가능한 수치"
+      ]
+    },
+    {
+      "axis_id": "cross_reference_graph",
+      "label_ko": "교차 참조·그래프 경로(주제·선행·대조·반복)",
+      "priority": 2,
+      "rationale": "단일 구절이 아니라 네트워크 상의 '왜 이 결론인가'를 지휘관이 따라갈 수 있게 한다.",
+      "constitution_facts_pointers": [
+        "scripts/build_bible_meaning_graph_v1.py",
+        "docs/final/artifacts/bible_meaning_graph_nodes_v1.jsonl",
+        "docs/final/artifacts/bible_meaning_graph_edges_v1.jsonl",
+        "scripts/build_aramaic_graph_edges_v1.py (엣지 타입: fulfillment, recurrence, contrast_inversion 등)"
+      ],
+      "commander_review_fields": [
+        "경로 상 verse_id 목록",
+        "엣지 타입·근거 스니펫",
+        "허브/다리 노드가 있는지"
+      ]
+    },
+    {
+      "axis_id": "numeric_secondary_layers",
+      "label_ko": "게마트리아·4D 브리지·내적 스코어(연구 티어)",
+      "priority": 3,
+      "rationale": "서술적 통찰과 수치 층을 분리해 과대해석을 방지하면서도 탐색 폭을 유지한다.",
+      "constitution_facts_pointers": [
+        "docs/final/CENTRAL_AGENT_MEMORY_V1.md (Logos 원어 스택 — 게마·특이점 리포트 구분)",
+        "scripts/spike_gematria_myeongri_blend_v0.py (기하 메트릭만·예측 단정 금지)"
+      ],
+      "commander_review_fields": [
+        "가설 등급 [HYPO]",
+        "입력 코퍼스 범위",
+        "수치가 '물리 에너지'가 아님을 한 줄 고지"
+      ]
+    },
+    {
+      "axis_id": "historical_textual_context",
+      "label_ko": "역사·문헌 맥락(평행 서술은 가설로 라벨)",
+      "priority": 4,
+      "rationale": "지휘관 판단용 내러티브 축; 단, 단일 코퍼스 팩트와 혼동하지 않는다.",
+      "constitution_facts_pointers": [
+        "tests/test_cross_ref_dss_schema.py",
+        "docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md (CROSS_REF 초안)"
+      ],
+      "commander_review_fields": [
+        "사료·출처",
+        "FACT vs HYPO 구분",
+        "상용·실거래 주장과 합선 금지 확인"
+      ]
+    },
+    {
+      "axis_id": "symbolic_path_survivors",
+      "label_ko": "상징 경로·통찰 후보·생존 평가(허브·군집·survivor)",
+      "priority": 5,
+      "rationale": "자동 추출된 후보 중 지휘관이 읽을 만한 소수 경로를 남긴다.",
+      "constitution_facts_pointers": [
+        "scripts/extract_bible_meaning_insight_candidates_v1.py",
+        "scripts/build_insight_survivor_eval_v1.py",
+        "scripts/select_insight_survivor_candidates_v1.py"
+      ],
+      "commander_review_fields": [
+        "후보 id·상위 랭크 이유",
+        "survivor 통과 여부·임계치",
+        "shadow/연구 지표와의 관계(자동 승격 아님)"
+      ]
+    },
+    {
+      "axis_id": "distill_handoff_to_track_a",
+      "label_ko": "Track A 증류 연결(선택)",
+      "priority": 6,
+      "rationale": "지휘관 채택 후에만 얇은 JSON으로 축약할 수 있음을 명시한다.",
+      "constitution_facts_pointers": [
+        "docs/final/schemas/logos_deep_research_distill_v1.schema.json",
+        "scripts/run_lens_logos_deep_fusion.py"
+      ],
+      "commander_review_fields": [
+        "provenance.input_manifest_sha256",
+        "veto_flags",
+        "evidence_refs 최소 세트"
+      ]
+    }
+  ]
+}

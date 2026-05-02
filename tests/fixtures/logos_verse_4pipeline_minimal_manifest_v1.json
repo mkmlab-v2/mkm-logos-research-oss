@@ -1,0 +1,20 @@
+[
+  {
+    "verse_id": "Gen.1.1",
+    "pipeline1_simple_4d": {
+      "vector_4d": {"S": 0.1, "L": 0.2, "K": 0.3, "M": 0.4}
+    }
+  },
+  {
+    "verse_id": "Gen.1.2",
+    "pipeline1_simple_4d": {
+      "vector_4d": {"S": 0.2, "L": 0.3, "K": 0.4, "M": 0.5}
+    }
+  },
+  {
+    "verse_id": "Gen.1.3",
+    "pipeline1_simple_4d": {
+      "vector_4d": {"S": 0.3, "L": 0.4, "K": 0.5, "M": 0.6}
+    }
+  }
+]

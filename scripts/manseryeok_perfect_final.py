@@ -8,9 +8,11 @@
 import json
 from pathlib import Path
 from datetime import datetime, timedelta
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Tuple
 
 from scripts.core.solar_term_ssot import calculate_month_pillar_ssot_fallback
+from scripts.myeongri_daewoon_v1 import build_daewoon_list_v1
+from scripts.myeongri_qiyun_v1 import compute_qiyun_meta_v1
 
 class PerfectManseryeok:
     """완벽한 만세력 계산기 (최종 정립)"""
@@ -231,37 +233,26 @@ class PerfectManseryeok:
         
         return self.CHEONGAN[hour_gan_idx] + self.JIJI[hour_ji_idx]
     
-    def calculate_daewoon_perfect(self, year: int, month: int, day: int,
-                                  is_male: bool = True) -> List[Dict[str, Any]]:
-        """대운 계산 (주인님 정보 기준)"""
-        # 주인님 제공 정보 기준
-        daewoon_list = [
-            {"age_start": 0, "age_end": 10, "saju": "임자"},  # 추정
-            {"age_start": 10, "age_end": 20, "saju": "계축"},  # 주인님 정보
-            {"age_start": 20, "age_end": 30, "saju": "갑자"},  # 주인님 정보
-            {"age_start": 30, "age_end": 40, "saju": "경자"},  # 주인님 정보
-        ]
-        
-        # 이후 대운 계산 (순행)
-        current_gan_idx = 6  # 경(庚)
-        current_ji_idx = 0   # 자(子)
-        direction = 1 if is_male else -1
-        
-        for age in range(40, 100, 10):
-            current_gan_idx = (current_gan_idx + direction) % 10
-            current_ji_idx = (current_ji_idx + direction) % 12
-            if current_ji_idx < 0:
-                current_ji_idx += 12
-            
-            daewoon_pillar = self.CHEONGAN[current_gan_idx] + self.JIJI[current_ji_idx]
-            
-            daewoon_list.append({
-                "age_start": age,
-                "age_end": age + 10,
-                "saju": daewoon_pillar
-            })
-        
-        return daewoon_list
+    def calculate_daewoon_perfect(
+        self,
+        year: int,
+        month: int,
+        day: int,
+        hour: int = 12,
+        is_male: bool = True,
+    ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+        """대운 + 起運 v1 (절기 간 일수/3, Asia/Seoul 생시)."""
+        year_pillar = self.calculate_year_pillar(year, month, day)
+        month_pillar = self.calculate_month_pillar(year, month, day)
+        qmeta = compute_qiyun_meta_v1(year, month, day, hour, year_pillar[0], is_male)
+        rows = build_daewoon_list_v1(
+            month_pillar=month_pillar,
+            year_gan=year_pillar[0],
+            is_male=is_male,
+            num_cycles=10,
+            qiyun_years_first_cycle=qmeta["qiyun_years_float"],
+        )
+        return rows, qmeta
     
     def calculate_full_saju_perfect(
         self,
@@ -296,8 +287,8 @@ class PerfectManseryeok:
         # 시주
         hour_pillar = self.calculate_hour_pillar(day_pillar, hour)
         
-        # 대운
-        daewoon = self.calculate_daewoon_perfect(year, month, day, is_male)
+        # 대운 + 起運
+        daewoon, daewoon_qiyun_v1 = self.calculate_daewoon_perfect(year, month, day, hour, is_male)
         
         # 표준 데이터베이스와 비교 검증
         verification = {}
@@ -360,6 +351,7 @@ class PerfectManseryeok:
             },
             "ilgan": day_pillar[0],
             "daewoon": daewoon,
+            "daewoon_qiyun_v1": daewoon_qiyun_v1,
             "verification": verification,
             "calculation_method": "standard_db_primary" if verification.get("standard_db_available") else "calculation_fallback",
             "calculated_at": datetime.now().isoformat(),

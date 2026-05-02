@@ -1,0 +1,30 @@
+{
+  "schema": "logos_dual_regime_interpretation_snippet_rules_v1",
+  "schema_version": "1.0.0",
+  "purpose": "Operational-brief-safe clipping and structural validation for evaluate_dual_regime_and_market_shock.interpretation; no LLM; deterministic audit.",
+  "snippet_max_chars": 480,
+  "dual_regime_prefix": "dual_regime: ",
+  "segment_split": "; ",
+  "allowed_segment_heads": [
+    "gate_profile=",
+    "PSI=",
+    "bible_risk=",
+    "stress=",
+    "cap=",
+    "logos_resonance=",
+    "logos_delta=",
+    "logos_skip=",
+    "state_clamp=",
+    "state_clamp_skip=",
+    "bulkhead="
+  ],
+  "implementation": "scripts/core/logos_dual_regime_interpretation_snippet_v1.py",
+  "consumers": [
+    "scripts/eval_multilens_harness_v2_thin.py → logos_dual_regime.interpretation_snippet"
+  ],
+  "forbidden_in_snippet": [
+    "free-form narrative not composed by dual_regime_api segment templates",
+    "investment_advice_phrasing"
+  ],
+  "fallback_on_validation_failure": "dual_regime: interpretation_snippet_fallback;reason=…;audit_sha256_prefix=…"
+}

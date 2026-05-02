@@ -1,0 +1,26 @@
+{
+  "schema": "market_sasang_lens_v1_contract_meta_v1",
+  "artifact_schema": "market_sasang_lens_v1",
+  "artifact_json_schema": "docs/final/schemas/market_sasang_lens_output_v1.schema.json",
+  "engine_version": "1.0.0",
+  "purpose": "Market-track Sasang: 4-quadrant softmax + entropy-based uncertainty + veto flags for coordinator / independent_lens_fusion_stub; deterministic; no LLM; not clinical.",
+  "policy_file": "data/market_sasang/market_sasang_lens_policy_v1.json",
+  "engine_module": "scripts/market_sasang_lens_engine_v1.py",
+  "runner": "scripts/run_market_sasang_lens_v1.py",
+  "default_output_path": "docs/final/artifacts/market_sasang_lens_latest.json",
+  "required_upstream_artifact": "docs/final/artifacts/sasang_independent_lens_latest.json",
+  "upstream_runner_hint": "scripts/run_lens_sasang.py",
+  "human_commander_gate_v1": "Every artifact includes human_commander_gate_v1: Track B banner, final_authority=human_commander, machine_output_role=decision_support_observation_only.",
+  "coordinator_fields": {
+    "state_vector_sasang_softmax": "MKM quadrant masses (taeyang,soyang,taeeum,soeum), sum≈1.",
+    "uncertainty.composite_uncertainty": "Blend of 4-way entropy norm and (1 - upstream sasang confidence); higher=worse.",
+    "veto.force_hold": "If true, fusion layer should treat lens as HOLD / down-weight per fusion_bridge.use_in_fusion_inputs.",
+    "veto.reason_codes": "HIGH_ENTROPY_SOFTMAX | LOW_UPSTREAM_CONFIDENCE | SOFTMAX_MASS_DRIFT",
+    "fusion_bridge.direction_hint": "Maps independent-lens direction_score to bull|bear|neutral for stub alignment."
+  },
+  "forbidden": {
+    "a_track_auto_trigger": true,
+    "live_sizing_from_lens_alone": true,
+    "clinical_diagnosis_bridge": true
+  }
+}

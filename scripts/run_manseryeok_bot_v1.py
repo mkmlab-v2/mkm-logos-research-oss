@@ -20,6 +20,7 @@ if str(ROOT) not in sys.path:
 
 from scripts.saju_birth_resolver_v1 import resolve_from_local_civil, resolve_from_utc_instant
 from scripts.manseryeok_perfect_final import PerfectManseryeok
+from scripts.myeongri_complete_fusion import MyeongriCompleteFusion
 from scripts.saju_dual_verify import VerifyInput, verify_dual_saju
 
 ART = ROOT / "docs" / "final" / "artifacts"
@@ -144,9 +145,9 @@ def _build_daewoon_text(daewoon: list[dict[str, Any]], birth_year: int) -> str:
     age = max(0, now_year - birth_year)
     current = None
     for row in daewoon:
-        a0 = int(row.get("age_start", -1))
-        a1 = int(row.get("age_end", -1))
-        if a0 <= age < a1:
+        a0 = float(row.get("age_start", -1.0))
+        a1 = float(row.get("age_end", -1.0))
+        if a0 <= float(age) < a1:
             current = row
             break
     next_row = None
@@ -262,10 +263,39 @@ def main() -> int:
         is_male=(args.sex == "male"),
     )
     daewoon = list(full_doc.get("daewoon") or [])
+    daewoon_qiyun_v1 = full_doc.get("daewoon_qiyun_v1")
     now_year = datetime.now(timezone.utc).year
     yeonun_years = [now_year, now_year + 1, now_year + 2]
     daewoon_text = _build_daewoon_text(daewoon, res.engine_year)
     yeonun_text = _build_yeonun_text(eng, yeonun_years)
+
+    myeongri_fusion_v1: dict[str, Any] | None = None
+    if args.analysis_depth == "pro":
+        fus = MyeongriCompleteFusion().calculate_complete_fusion(
+            res.engine_year,
+            res.engine_month,
+            res.engine_day,
+            res.engine_hour,
+            is_solar=True,
+            is_male=(args.sex == "male"),
+            precomputed_full_saju=full_doc,
+        )
+        rs_meta = fus.get("rule_school_mkm_4d_v1") or {}
+        qiy = fus.get("daewoon_qiyun_v1") or {}
+        myeongri_fusion_v1 = {
+            "vector_4d_rule_school_v1": fus.get("vector_4d_rule_school_v1"),
+            "vector_4d": fus.get("vector_4d"),
+            "vector_4d_jijangan_v1": fus.get("vector_4d_jijangan_v1"),
+            "rule_school_mkm_4d_v1": {
+                "version": rs_meta.get("version"),
+                "vector_4d_blend": rs_meta.get("vector_4d_blend"),
+            },
+            "daewoon_qiyun_v1": {
+                "qiyun_years_float": qiy.get("qiyun_years_float"),
+                "qiyun_days": qiy.get("qiyun_days"),
+                "forward": qiy.get("forward"),
+            },
+        }
 
     payload: dict[str, Any] = {
         "schema": "manseryeok_bot_v1",
@@ -303,12 +333,17 @@ def main() -> int:
     if args.analysis_depth == "pro":
         payload["analysis"]["details"]["daewoon_text"] = daewoon_text
         payload["analysis"]["details"]["yeonun_text"] = yeonun_text
+        if myeongri_fusion_v1 is not None:
+            payload["analysis"]["details"]["myeongri_fusion_v1"] = myeongri_fusion_v1
         payload["luck"] = {
             "daewoon": daewoon,
+            "daewoon_qiyun_v1": daewoon_qiyun_v1,
             "yeonun_years": yeonun_years,
             "daewoon_text": daewoon_text,
             "yeonun_text": yeonun_text,
         }
+        if myeongri_fusion_v1 is not None:
+            payload["luck"]["myeongri_fusion_v1"] = myeongri_fusion_v1
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(payload, ensure_ascii=False, indent=None if args.compact else 2)

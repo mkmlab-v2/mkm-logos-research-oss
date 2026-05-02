@@ -21,7 +21,11 @@
         "logos": { "type": "string" },
         "myeongni": { "type": "string" },
         "sasang": { "type": "string" },
-        "fusion_stub": { "type": "string" }
+        "fusion_stub": { "type": "string" },
+        "shadow_minority_monthly": {
+          "type": "string",
+          "description": "Optional pointer to independent_lens_shadow_minority_monthly_latest.json (B-track rollup)"
+        }
       }
     },
     "prediction": {

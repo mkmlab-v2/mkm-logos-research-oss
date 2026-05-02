@@ -55,7 +55,7 @@ def test_shadow_gate_runner(tmp_path: Path) -> None:
     snap = doc.get("latest_conflict_snapshot") or {}
     assert isinstance(snap.get("minority_lens_ids"), list)
     assert isinstance(snap.get("logos_evidence_verse_ids"), list)
-    assert snap.get("fusion_stub_version") == "0.2.0"
+    assert snap.get("fusion_stub_version") == "0.3.0"
     nar_sha = snap.get("conflict_narrative_sha256")
     assert isinstance(nar_sha, str) and len(nar_sha) == 64
 

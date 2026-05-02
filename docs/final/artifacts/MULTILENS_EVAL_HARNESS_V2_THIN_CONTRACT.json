@@ -18,7 +18,10 @@
   "lens_slots": {
     "logos_dual_regime": {
       "description": "Inputs to evaluate_dual_regime_and_market_shock or ablation rows; optional logos_manuscript_text.",
-      "record_fields": ["risk_multiplier_cap", "market_shock_confirmed", "veto_triggered", "interpretation_snippet"]
+      "record_fields": ["risk_multiplier_cap", "resonance_count", "market_shock_confirmed", "veto_triggered", "interpretation_snippet", "interpretation_snippet_meta", "interpretation"],
+      "brief_safe_for_operator": ["risk_multiplier_cap", "market_shock_confirmed", "veto_triggered", "interpretation_snippet"],
+      "audit_full_text": ["interpretation"],
+      "rules_ref": "docs/final/artifacts/LOGOS_DUAL_REGIME_INTERPRETATION_SNIPPET_RULES_V1.json"
     },
     "myeongni_b_track": {
       "description": "Optional state_id / JSONL line ref; does not drive cap without policy (CONSTITUTION §2.1).",

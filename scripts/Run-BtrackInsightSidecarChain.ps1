@@ -30,11 +30,19 @@ if (-not $SkipNotebooklmKpi) {
 }
 
 if ($IncludeMultilensRefresh) {
-    foreach ($script in @(
-            "scripts/run_lens_logos.py",
-            "scripts/run_lens_myeongni.py",
-            "scripts/run_lens_sasang.py"
-        )) {
+    $logosBatch = Join-Path $root "data\logos\4lens_batch_sample.json"
+    $logosFixture = Join-Path $root "tests\fixtures\logos_4lens_batch_minimal_v1.json"
+    Write-Host "Multilens refresh: run_lens_logos.py" -ForegroundColor DarkGray
+    if (Test-Path -LiteralPath $logosBatch) {
+        & py "scripts/run_lens_logos.py" --batch-json $logosBatch
+    } elseif (Test-Path -LiteralPath $logosFixture) {
+        Write-Host "Logos: using tracked fixture (no data/logos/4lens_batch_sample.json)" -ForegroundColor DarkYellow
+        & py "scripts/run_lens_logos.py" --batch-json $logosFixture
+    } else {
+        & py "scripts/run_lens_logos.py" --allow-fallback
+    }
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    foreach ($script in @("scripts/run_lens_myeongni.py", "scripts/run_lens_sasang.py")) {
         Write-Host "Multilens refresh: $script" -ForegroundColor DarkGray
         & py $script
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

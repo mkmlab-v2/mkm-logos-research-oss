@@ -103,6 +103,13 @@ def populate_dual_regime_from_inputs(
 
     from src.integration.dual_regime_api import evaluate_dual_regime_and_market_shock  # noqa: WPS433
 
+    root_s = str(workspace_root.resolve())
+    if root_s not in sys.path:
+        sys.path.insert(0, root_s)
+    from scripts.core.logos_dual_regime_interpretation_snippet_v1 import (  # noqa: WPS433
+        build_interpretation_snippet,
+    )
+
     payload = load_json(inputs_path)
     entries_list = payload.get("entries") or []
     by_date = {e["calendar_date"]: e for e in entries_list if isinstance(e, dict) and e.get("calendar_date")}
@@ -132,11 +139,22 @@ def populate_dual_regime_from_inputs(
         kwargs["state_id"] = int(sid) if sid is not None else None
 
         ctx = evaluate_dual_regime_and_market_shock(**kwargs)
+        snippet, snippet_meta = build_interpretation_snippet(
+            ctx.interpretation,
+            workspace_root=workspace_root,
+        )
         lo["logos_dual_regime"] = {
             "risk_multiplier_cap": ctx.risk_multiplier_cap,
             "resonance_count": ctx.resonance_count,
             "veto_triggered": ctx.veto_triggered,
             "market_shock_confirmed": ctx.market_shock_confirmed,
+            "interpretation_snippet": snippet,
+            "interpretation_snippet_meta": {
+                "validation_ok": snippet_meta.get("validation_ok"),
+                "snippet_max_chars": snippet_meta.get("snippet_max_chars"),
+                "snippet_source": snippet_meta.get("snippet_source"),
+                "rules_ref": snippet_meta.get("rules_ref"),
+            },
             "interpretation": ctx.interpretation,
             "inputs_ref": inputs_path.stem,
         }
@@ -311,10 +329,12 @@ def main() -> None:
         dual_regime_json=args.dual_regime_json,
     )
     text = json.dumps(report, ensure_ascii=False, indent=2)
-    print(text)
     if args.out is not None:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(text, encoding="utf-8")
+        print(f"WROTE: {args.out}")
+    else:
+        print(text)
 
 
 if __name__ == "__main__":
