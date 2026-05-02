@@ -5,6 +5,7 @@
 **보강 (2026-05-02 — 명리 대외 공학 어휘):** `docs/final/MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1.md` — 상용·논문·광고 등 **대외 서술**용 번역 테이블; 코드·스키마 명칭 불변.
 **보강 (2026-05-02 — 대운 연령 경계):** §3.3 표 `대운·起運 v1` — `scripts/myeongri_daewoon_v1.build_daewoon_list_v1`가 연속 구간 경계를 단일 리스트로 계산하고 `age_start`/`age_end`를 소수 6자리로 고정해 행 간 경계가 일치한다(起運 부동소수 JSON 표시 안정화).
 **보강 (2026-05-02 — 명리 AI 해석 봉투):** `docs/final/MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md` — B-track **보조 해석**용 시스템/유저 프롬프트·RAG 주입 순서; 산출 스키마 `docs/final/schemas/myeongri_ai_interpretation_envelope_v1.schema.json`; 회귀 `tests/test_myeongri_ai_interpretation_envelope_v1.py`.
+**보강 (2026-05-02 — MKM 렌즈 글로벌 프로파일링 프롬프트·RAG 초안):** `docs/final/MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md` — B-track NL 번역층·`[DRAFT]`; Fact-Lock·임상 격벽·`MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1` 정렬; 구현 강제 아님.
 **보강 (2026-05-02):** §1.3 Track C Macro Risk n8n 메일 온보딩 PowerShell 스크립트 표.
 **이전 갱신**: 2026-04-14 §2 B-track `4d_to_ohaeng`·human regime audit 스파이크 행; §3.4.1 Postella; 2026-04-13 §1.2 AE-2 KOSPI.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
@@ -133,6 +134,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 |------|------|------|
 | 작업 순서·용어·금지선 SSOT | `docs/final/MYEONGRI_INSIGHT_SSOT.md` | 0→7 단계; 융합 중간레이어와 역할 분리 |
 | 명리 AI 해석 프롬프트·RAG 지시문 v1 (B-track) | `docs/final/MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md` | 결정론 산출 위 **보조 해석**만; 시스템/유저 템플릿·RAG 주입 순서; 출력 봉투 스키마 `docs/final/schemas/myeongri_ai_interpretation_envelope_v1.schema.json`; **쟁점 최종 판정·실매매·의료 단정 금지**; LLM 어댑터는 선택 |
+| MKM 렌즈 글로벌 프로파일링 프롬프트·RAG 지시 초안 v1 (`[DRAFT]`, B-track) | `docs/final/MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md` | 성경·명리·사상 NL **번역·톤**만; **행동·리스크 프로파일링** 서술·허구 수치 금지·임상·규제 확약 금지; RAG는 산출 JSON·승인 어휘집 우선; 명리 전용 봉투 스키마와 별개; 승격 시 `DRAFT` 해제·계약 포인터 검토 |
 | 관측 로그 샘플 | `data/myeongni/insight_observation_log.sample.jsonl` | `myeongni_16_state_experiment` JSONL과 별도; 통찰 전용 |
 | 관측 로그(부트스트랩) | `data/myeongni/insight_observation_log.jsonl` | 주간 append; 회귀와 동일 계약 |
 | 융합 인터페이스 스텁 | `docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json` | `myeongni_fusion_interface_stub_v1` |

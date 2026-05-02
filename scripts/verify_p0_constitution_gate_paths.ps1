@@ -13,6 +13,7 @@ param(
 # 2026-05-02: Market Sasang lens v1 (policy, engine, runner, schema, contract, pytest).
 # 2026-05-02: Sasang interpretive insight bundle v1.1 (interpretive_depth_ko + synthesis_v1, schema, contract, pytest).
 # 2026-05-02: run_fact_lock_bundle.ps1 (Fact-Lock 번들; dual-regime 정렬 사상 통찰 pytest 포함).
+# 2026-05-02: MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md (B-track NL 번역층 초안).
 # 2026-05-02: Logos vector ANN lite v1 (hash_stub SQLite report; sqlite+json artifact gitignored).
 # 2026-05-02: M5 rule_school_mkm_4d_v1 (policy JSON, loader/blend, pytest).
 # 2026-05-02: M2–M4 myeongni (jijangan ohang weights, daewoon v1, jijangan ohang script, daewoon test).
@@ -133,6 +134,7 @@ $required = @(
     "scripts\myeongri_qiyun_v1.py",
     "tests\test_myeongri_qiyun_v1.py",
     "docs\final\MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md",
+    "docs\final\MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md",
     "docs\final\schemas\myeongri_ai_interpretation_envelope_v1.schema.json",
     "tests\test_myeongri_ai_interpretation_envelope_v1.py",
     "scripts\eval_myeongri_rule_school_macro_stub_v1.py",
