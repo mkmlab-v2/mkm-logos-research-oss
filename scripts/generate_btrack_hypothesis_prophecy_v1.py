@@ -255,6 +255,7 @@ def _build_ensemble_from_bundle(
             "myeongni": "docs/final/artifacts/myeongni_independent_lens_latest.json",
             "sasang": "docs/final/artifacts/sasang_independent_lens_latest.json",
             "fusion_stub": "docs/final/artifacts/independent_lens_fusion_stub_latest.json",
+            "shadow_minority_monthly": "docs/final/artifacts/independent_lens_shadow_minority_monthly_latest.json",
         },
         "prediction": {
             "instrument": "multi",
