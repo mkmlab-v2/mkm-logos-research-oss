@@ -75,5 +75,9 @@ if (-not $SkipSignoff) {
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
+Write-Host "build_sasang_interpretive_insight_bundle_v1.py (reference bundle; human-only decisions)" -ForegroundColor DarkGray
+& py "scripts/build_sasang_interpretive_insight_bundle_v1.py"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
 Write-Host "OK B-track insight sidecar chain." -ForegroundColor Green
 exit 0

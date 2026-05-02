@@ -64,6 +64,10 @@ Write-Host "==> run_market_sasang_lens_v1.py"
 py scripts/run_market_sasang_lens_v1.py
 if ($LASTEXITCODE -ne 0) { throw "run_market_sasang_lens_v1 exit $LASTEXITCODE" }
 
+Write-Host "==> build_sasang_interpretive_insight_bundle_v1.py (multi-axis reference pointers)"
+py scripts/build_sasang_interpretive_insight_bundle_v1.py
+if ($LASTEXITCODE -ne 0) { throw "sasang interpretive insight bundle exit $LASTEXITCODE" }
+
 Write-Host "==> run_lens_logos.py"
 $logosBatch = Join-Path $WorkspaceRoot "data\logos\4lens_batch_sample.json"
 $logosFixture = Join-Path $WorkspaceRoot "tests\fixtures\logos_4lens_batch_minimal_v1.json"
