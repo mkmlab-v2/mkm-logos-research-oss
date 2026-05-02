@@ -1,5 +1,5 @@
 # Smoke: independent lens runners (myeongni / sasang / logos) + shadow gate + fusion stub
-# + boming lexicon + B-track sidecar lens agreement eval (no GPU).
+# + daily execution insight brief materializer + boming lexicon + B-track sidecar lens agreement eval (no GPU).
 name: Multilens independent lens smoke
 
 on:
@@ -12,11 +12,13 @@ on:
       - "scripts/run_lens_logos.py"
       - "scripts/report_independent_lens_shadow_gate.py"
       - "scripts/report_independent_lens_fusion_stub_v0.py"
+      - "scripts/build_daily_execution_insight_brief_v1.py"
       - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
       - "tests/test_independent_lenses_v0.py"
       - "tests/test_myeongni_independent_lens_v0.py"
       - "tests/test_independent_lens_shadow_gate_v1.py"
       - "tests/test_independent_lens_fusion_stub_v0.py"
+      - "tests/test_build_daily_execution_insight_brief_v1.py"
       - "tests/test_scm_boming_jiju_lexicon_v1.py"
       - "tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
       - "data/myeongni/**"
@@ -32,11 +34,13 @@ on:
       - "scripts/run_lens_logos.py"
       - "scripts/report_independent_lens_shadow_gate.py"
       - "scripts/report_independent_lens_fusion_stub_v0.py"
+      - "scripts/build_daily_execution_insight_brief_v1.py"
       - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
       - "tests/test_independent_lenses_v0.py"
       - "tests/test_myeongni_independent_lens_v0.py"
       - "tests/test_independent_lens_shadow_gate_v1.py"
       - "tests/test_independent_lens_fusion_stub_v0.py"
+      - "tests/test_build_daily_execution_insight_brief_v1.py"
       - "tests/test_scm_boming_jiju_lexicon_v1.py"
       - "tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
       - "data/myeongni/**"
@@ -70,6 +74,7 @@ jobs:
           tests/test_myeongni_independent_lens_v0.py
           tests/test_independent_lens_shadow_gate_v1.py
           tests/test_independent_lens_fusion_stub_v0.py
+          tests/test_build_daily_execution_insight_brief_v1.py
           tests/test_scm_boming_jiju_lexicon_v1.py
           tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py
           -q --tb=short

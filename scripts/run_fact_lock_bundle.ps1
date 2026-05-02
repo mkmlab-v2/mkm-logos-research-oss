@@ -7,8 +7,9 @@
   2. `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`
      — dual-regime 스모크 + multilens marginal(V1) 후 워크스페이스 루트 Fact-Lock(Thin V2·시장 어댑터 등 명시 목록)
   3. `py -m pytest tests/test_sasang_interpretive_insight_bundle_v1.py` — 사상 통찰 참조 번들 v1.1 스키마·`synthesis_v1`(dual-regime 동일 단계)
+  4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
 
-  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3단계(사상 번들)는 본 스크립트에서 직접 실행합니다.
+  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·4단계(사상 번들·일일 브리프)는 본 스크립트에서 직접 실행합니다.
 
 .PARAMETER SkipIntegrityGuard
   `integrity_guard.py` 생략(빠른 확인용). CI와 완전 동치가 아님.
@@ -111,6 +112,7 @@ $trackCCopyGuardScript = Join-Path $workspaceRoot 'scripts\check_track_c_copy_gu
 $trackCClaimValidatorScript = Join-Path $workspaceRoot 'scripts\validate_track_c_landing_claims_v1.py'
 $sajuGoldenReplayScript = Join-Path $workspaceRoot 'scripts\run_saju_golden_replay.py'
 $sasangInterpretiveBundleTest = Join-Path $workspaceRoot 'tests\test_sasang_interpretive_insight_bundle_v1.py'
+$dailyExecutionInsightBriefTest = Join-Path $workspaceRoot 'tests\test_build_daily_execution_insight_brief_v1.py'
 $truthfulQaBenchmarkScript = Join-Path $workspaceRoot 'scripts\run_truthfulqa_ab_benchmark_v1.py'
 $truthfulQaBenchmarkEvalGateScript = Join-Path $workspaceRoot 'scripts\check_truthfulqa_ab_gate_v1.py'
 $truthfulQaMcBenchmarkArtifact = Join-Path $workspaceRoot 'docs\final\artifacts\truthfulqa_ab_benchmark_latest.json'
@@ -230,6 +232,15 @@ if (-not (Test-Path -LiteralPath $sasangInterpretiveBundleTest)) {
 }
 Write-Host '== Fact-Lock: test_sasang_interpretive_insight_bundle_v1.py ==' -ForegroundColor Cyan
 & py -m pytest $sasangInterpretiveBundleTest -q --tb=short
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+}
+
+if (-not (Test-Path -LiteralPath $dailyExecutionInsightBriefTest)) {
+    throw "Daily execution insight brief pytest not found: $dailyExecutionInsightBriefTest"
+}
+Write-Host '== Fact-Lock: test_build_daily_execution_insight_brief_v1.py ==' -ForegroundColor Cyan
+& py -m pytest $dailyExecutionInsightBriefTest -q --tb=short
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }

@@ -18,6 +18,7 @@ param(
 # 2026-05-02: M5 rule_school_mkm_4d_v1 (policy JSON, loader/blend, pytest).
 # 2026-05-02: M2–M4 myeongni (jijangan ohang weights, daewoon v1, jijangan ohang script, daewoon test).
 # 2026-05-02: +4 myeongni jijangan LUT M1 (lut, schema, script, test).
+# 2026-05-02: 일일 실행 인사이트 브리프 v1 (§1c 독립 렌즈·CONSTITUTION §3.3 행; 산출 JSON은 게이트 목록 미포함).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 

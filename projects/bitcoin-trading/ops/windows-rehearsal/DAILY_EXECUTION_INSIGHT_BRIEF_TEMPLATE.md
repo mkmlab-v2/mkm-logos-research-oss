@@ -53,6 +53,19 @@
 (paste conflict_narrative_guarded — 운영 브리프용으로 이미 가드됨)
 ```
 
+### 1c) 독립 렌즈 최신 JSON (정량·배너·veto — 붙여넣기 없음)
+
+자동 생성 브리프(`scripts/build_daily_execution_insight_brief_v1.py`)가 아래 네 파일을 읽어 §1c 표로 넣는다. 수동 채우기 없이 **경로만 확인**하면 된다.
+
+| 렌즈 | 소스 파일 |
+|------|-----------|
+| 명리 | `docs/final/artifacts/myeongni_independent_lens_latest.json` |
+| 사상 | `docs/final/artifacts/sasang_independent_lens_latest.json` |
+| 시장 사상 | `docs/final/artifacts/market_sasang_lens_latest.json` |
+| 로고스(독립) | `docs/final/artifacts/logos_independent_lens_latest.json` |
+
+**갱신 체인(권장):** `scripts/Run-DailyExecutionInsightBrief_v1.ps1` — 독립 렌즈 러너 → 융합 스텁 → Thin → 브리프(기본 `-SkipIndependentLensRefresh` 없이 실행).
+
 ---
 
 ## 2) 통찰 / 가설 ([HYPO] — 본선 트리거 아님)
