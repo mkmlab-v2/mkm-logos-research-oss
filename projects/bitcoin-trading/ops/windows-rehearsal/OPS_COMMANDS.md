@@ -124,6 +124,34 @@ Get-Content .\memory\watchdog_direct.log -Tail 20
 Get-Content .\memory\trading_daemon_heartbeat.txt
 ```
 
+## VPS — 24h live daemon smoke (PM2 + monorepo)
+
+실전 매매는 **`BitcoinTradingDaemon`** (`scripts/start_24h_daemon.py`)가 돌아가야 하며, 크론의 Binance export/sync는 **별도 보조 파이프라인**이다. 본선 프로세스 경로는 **`pm2 show`가 진실**이다 (`projects/bitcoin-trading/AGENTS.md`).
+
+```bash
+# 1) 어떤 앱이 살아 있는지 / 이름 확인
+pm2 list
+
+# 2) 본선 앱 하나를 지정해 cwd·스크립트 확인 (앱 이름은 실측)
+APP_NAME="your-pm2-app-name"
+pm2 show "$APP_NAME" | egrep "exec cwd|script path|status|restarts"
+
+# 3) 권장 배치: cwd = 모노레포 루트, script = projects/bitcoin-trading/start_live_trading.py
+#    cwd가 /opt/mkm-lab-workspace-v2/projects/bitcoin-trading 만 있으면 래퍼 경로와 어긋날 수 있음 → LOCAL_VS_VPS 런북대로 맞춘다.
+
+# 4) 킬 스위치·심장박동 (bitcoin-trading 루트 기준)
+BT_ROOT="/opt/mkm-lab-workspace-v2/projects/bitcoin-trading"
+test -f "$BT_ROOT/.env" && echo "[OK] .env present" || echo "[WARN] missing .env"
+test -f "$BT_ROOT/memory/STOP.txt" && echo "[STOP] STOP.txt exists — daemon must not trade" || echo "[OK] no STOP.txt"
+ls -la "$BT_ROOT/memory/trading_daemon_heartbeat.txt" 2>/dev/null || true
+tail -n 30 "$BT_ROOT/memory/trading_daemon_heartbeat.txt" 2>/dev/null || true
+
+# 5) 배포 파일 정렬 (선택)
+cd "$BT_ROOT" && bash ops/v2/ssh/check_vps_deploy_files_vs_pointer.sh
+```
+
+재시작은 런북에 적힌 앱 이름으로만: `pm2 restart "$APP_NAME"` — **`pm2 restart all` 금지**(예외는 런북 명시 시만).
+
 ## Emergency Stop
 
 ```powershell
