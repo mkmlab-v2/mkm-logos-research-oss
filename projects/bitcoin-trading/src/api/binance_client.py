@@ -892,6 +892,114 @@ class BinanceFuturesClient:
             logger.error(f"❌ 최근 체결 조회 실패: {e}")
             return []
 
+    @staticmethod
+    def _ccxt_linear_futures_symbol(symbol: str) -> str:
+        """Map BTCUSDT -> BTC/USDT:USDT for ccxt binance linear futures."""
+        u = (symbol or "").upper().replace(" ", "")
+        if u.endswith("USDT") and len(u) > 4:
+            base = u[:-4]
+            return f"{base}/USDT:USDT"
+        return symbol
+
+    def fetch_futures_trades_time_range(
+        self,
+        symbol: str = "BTCUSDT",
+        *,
+        start_ms: int,
+        end_ms: int,
+        max_trades: int = 20_000,
+    ) -> list[Dict[str, Any]]:
+        """
+        USDT-M futures account trades in [start_ms, end_ms] (inclusive by time).
+        Paginates (1000 / request). Returns raw-native rows (python-binance shape) or
+        ccxt rows normalized to the same keys the export script expects.
+        """
+        if end_ms < start_ms:
+            return []
+        out: list[Dict[str, Any]] = []
+        if USE_CCXT and self.exchange is not None:
+            market = self._ccxt_linear_futures_symbol(symbol)
+            since = int(start_ms)
+            while len(out) < max_trades:
+                batch = self.exchange.fetch_my_trades(
+                    market,
+                    since=since,
+                    limit=min(1000, max_trades - len(out)),
+                )
+                if not batch:
+                    break
+                for t in batch:
+                    if not isinstance(t, dict):
+                        continue
+                    ts = int(t.get("timestamp") or 0)
+                    if ts < start_ms:
+                        continue
+                    if ts > end_ms:
+                        continue
+                    out.append(t)
+                if len(batch) < 1000:
+                    break
+                since = int(batch[-1].get("timestamp") or 0) + 1
+                if since > end_ms:
+                    break
+            return out[:max_trades]
+
+        if self.client is None:
+            return []
+
+        from_id: Optional[int] = None
+        while len(out) < max_trades:
+            remaining = max_trades - len(out)
+            lim = min(1000, remaining)
+            if from_id is None:
+                trades = self._call_client(
+                    lambda: self.client.futures_account_trades(
+                        symbol=symbol,
+                        startTime=start_ms,
+                        endTime=end_ms,
+                        limit=lim,
+                    )
+                )
+            else:
+                trades = self._call_client(
+                    lambda fid=from_id, lm=lim: self.client.futures_account_trades(
+                        symbol=symbol,
+                        fromId=fid,
+                        limit=lm,
+                    )
+                )
+            if not trades:
+                break
+            if not isinstance(trades, list):
+                break
+            for row in trades:
+                if not isinstance(row, dict):
+                    continue
+                try:
+                    tt = int(row.get("time") or 0)
+                except (TypeError, ValueError):
+                    continue
+                if tt < start_ms:
+                    continue
+                if tt > end_ms:
+                    continue
+                out.append(row)
+            if len(trades) < lim:
+                break
+            try:
+                last_id = int(trades[-1].get("id"))
+            except (TypeError, ValueError):
+                break
+            from_id = last_id + 1
+            if len(trades) == 1000:
+                try:
+                    last_t = int(trades[-1].get("time") or 0)
+                except (TypeError, ValueError):
+                    last_t = 0
+                if last_t > end_ms:
+                    break
+        return out[:max_trades]
+
 
 def get_last_binance_credential_meta() -> Dict[str, Any]:
     """

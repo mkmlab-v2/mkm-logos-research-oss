@@ -41,6 +41,30 @@ powershell -ExecutionPolicy Bypass -File .\projects\bitcoin-trading\ops\windows-
 
 ## Cursor Trade History 24h Sync (Control/Treatment)
 
+### Binance fills → `trades_*.json` (run this first if sync window is empty)
+
+`sync_cursor_trade_history_latest_24h.py` needs `exports/cursor_trade_history/trades_control.json` and `trades_treatment.json`. Populate them from Binance USDT-M account trades, then build the 24h slim files:
+
+```powershell
+cd C:\workspace\projects\bitcoin-trading
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\run_export_then_sync_cursor_trade_history.ps1
+```
+
+Optional: longer lookback (hours) and promotion gate after sync:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\run_export_then_sync_cursor_trade_history.ps1 -ExportHours 336 -RunPromotionGate
+```
+
+Manual Python only:
+
+```powershell
+cd C:\workspace\projects\bitcoin-trading
+py .\scripts\export_binance_fills_to_cursor_trade_history_v1.py --hours 168 --run-sync
+```
+
+Requires valid Binance API credentials (same chain as live trading: env / `.env` / Security Agent). Testnet: add `--testnet` to the export script.
+
 ### Manual one-shot run
 
 ```powershell
@@ -57,12 +81,29 @@ powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\register_cursor
 powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\unregister_cursor_trade_history_latest_24h_task.ps1
 ```
 
+Optional (fills export + sync every 30 minutes; requires API keys on the host):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\register_export_then_sync_cursor_trade_history_task.ps1
+powershell -ExecutionPolicy Bypass -File .\ops\windows-rehearsal\unregister_export_then_sync_cursor_trade_history_task.ps1
+```
+
 ### Linux cron register/unregister (VPS)
+
+Sync-only (15-minute window rebuild; needs `trades_*.json` already populated):
 
 ```bash
 cd /root/projects/bitcoin-trading
 bash ./ops/v2/ssh/register_cursor_trade_history_latest_24h_cron.sh
 bash ./ops/v2/ssh/unregister_cursor_trade_history_latest_24h_cron.sh
+```
+
+Binance export then sync (30-minute default; set `WORKSPACE_ROOT`, `EXPORT_HOURS`, `RUN_PROMOTION_GATE=1`, etc.):
+
+```bash
+cd /root/projects/bitcoin-trading
+bash ./ops/v2/ssh/register_export_then_sync_cursor_trade_history_cron.sh
+bash ./ops/v2/ssh/unregister_export_then_sync_cursor_trade_history_cron.sh
 ```
 
 ## 30-Second Health Check
