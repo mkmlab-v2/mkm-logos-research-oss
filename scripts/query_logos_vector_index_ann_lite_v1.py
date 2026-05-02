@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Brute-force Top-K retrieval against logos_vec_stub SQLite (hash_stub_v1).
+"""Brute-force Top-K retrieval against logos_vec_stub SQLite.
 
-Scores are dot products (vectors are L2-normalized). Non-semantic stub space —
-use for plumbing verification only.
+Supports embedding_mode hash_stub_v1 (query seed) or sentence_transformers_v1 (--sentence-transformer-model).
 """
 from __future__ import annotations
 
@@ -19,16 +18,18 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.logos_vector_hash_stub_v1 import (
-    EMBEDDING_MODE,
-    hash_stub_v1_embedding_floats,
+from scripts.logos_ann_lite_embedding_v1 import (
+    EMBEDDING_SENTENCE_TRANSFORMERS,
+    load_sentence_transformer,
 )
+from scripts.logos_vector_hash_stub_v1 import EMBEDDING_MODE as HASH_STUB_MODE
+from scripts.logos_vector_hash_stub_v1 import hash_stub_v1_embedding_floats
 
 DEFAULT_SQLITE = ROOT / "docs/final/artifacts/logos_vector_index_ann_lite_v1.sqlite"
 QUERY_SEED_PREFIX = "query_v1|"
 
 ARTIFACT_SCHEMA = "logos_vector_ann_lite_query_result_v1"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 
 def main() -> int:
@@ -38,9 +39,16 @@ def main() -> int:
         "--query",
         type=str,
         required=True,
-        help=f"Ad-hoc text; embedded as seed {QUERY_SEED_PREFIX}<query>",
+        help="Query text (hash_stub: seed suffix; ST: natural language).",
     )
     ap.add_argument("--top-k", type=int, default=5)
+    ap.add_argument(
+        "--sentence-transformer-model",
+        type=str,
+        default=None,
+        metavar="MODEL_ID",
+        help="Required when index rows use sentence_transformers_v1.",
+    )
     ap.add_argument(
         "--output-json",
         type=Path,
@@ -75,13 +83,39 @@ def main() -> int:
     if len(dims) != 1:
         print("Mixed dimensions in index; rebuild required.", file=sys.stderr)
         return 2
-    dim = next(iter(dims))
-    if modes != {EMBEDDING_MODE}:
-        print("Unexpected embedding_mode in sqlite.", file=sys.stderr)
+    if len(modes) != 1:
+        print("Mixed embedding_mode in index; rebuild required.", file=sys.stderr)
         return 2
 
-    seed = QUERY_SEED_PREFIX + args.query
-    qvec = hash_stub_v1_embedding_floats(seed, dim)
+    dim = next(iter(dims))
+    mode = next(iter(modes))
+
+    notes = ""
+    if mode == HASH_STUB_MODE:
+        seed = QUERY_SEED_PREFIX + args.query
+        qvec = hash_stub_v1_embedding_floats(seed, dim)
+        notes = "hash_stub_v1 scores are not semantic relevance."
+    elif mode == EMBEDDING_SENTENCE_TRANSFORMERS:
+        if not args.sentence_transformer_model or not args.sentence_transformer_model.strip():
+            print(
+                "Index is sentence_transformers_v1; pass --sentence-transformer-model matching the index build.",
+                file=sys.stderr,
+            )
+            return 8
+        try:
+            model = load_sentence_transformer(args.sentence_transformer_model)
+        except RuntimeError as e:
+            print(str(e), file=sys.stderr)
+            return 6
+        import numpy as np
+
+        q = model.encode([args.query], normalize_embeddings=True)[0]
+        qvec = np.asarray(q, dtype=np.float32).tolist()
+        seed = f"st_query:{args.query}"
+        notes = "sentence_transformers_v1 cosine proxy via normalized dot product."
+    else:
+        print(f"Unsupported embedding_mode in sqlite: {mode}", file=sys.stderr)
+        return 2
 
     scored: list[tuple[str, float]] = []
     for verse_id, _d, _mode, blob in fetched:
@@ -99,12 +133,12 @@ def main() -> int:
         "ts_utc": ts,
         "hypothesis_tier": "B",
         "non_gating_ack": True,
-        "embedding_mode": EMBEDDING_MODE,
+        "embedding_mode": mode,
         "sqlite_path": str(args.sqlite.resolve()),
         "query_seed": seed,
         "dim": dim,
         "top_k": [{"verse_id": vid, "score": round(score, 9)} for vid, score in top],
-        "notes": "hash_stub_v1 scores are not semantic relevance.",
+        "notes": notes,
     }
 
     text = json.dumps(doc, ensure_ascii=False, indent=2) + "\n"

@@ -23,7 +23,7 @@
     },
     "version": {
       "type": "string",
-      "pattern": "^1\\.0\\.0$"
+      "pattern": "^1\\.\\d+\\.\\d+$"
     },
     "ts_utc": {
       "type": "string",

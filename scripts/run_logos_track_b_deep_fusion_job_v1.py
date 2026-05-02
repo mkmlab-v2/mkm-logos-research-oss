@@ -23,6 +23,10 @@ DEFAULT_BUNDLE = ROOT / "docs/final/artifacts/logos_corpus_graph_bundle_v1_lates
 DEFAULT_OUT = ROOT / "docs/final/artifacts/logos_track_b_deep_fusion_job_v1_latest.json"
 DISTILL_RUNNER = ROOT / "scripts" / "run_lens_logos_deep_fusion.py"
 
+DEFAULT_VECTOR_MANIFEST = ROOT / "docs/final/artifacts/logos_vector_index_manifest_v1_latest.json"
+DEFAULT_ANN_LITE_REPORT = ROOT / "docs/final/artifacts/logos_vector_index_ann_lite_v1_latest.json"
+DEFAULT_QUERY_SMOKE = ROOT / "docs/final/artifacts/logos_vector_ann_lite_query_smoke_latest.json"
+
 OPTIONAL_TRACK_B_VECTOR_ARTIFACTS: tuple[tuple[str, Path], ...] = (
     ("vector_manifest_json", ROOT / "docs/final/artifacts/logos_vector_index_manifest_v1_latest.json"),
     ("ann_lite_report_json", ROOT / "docs/final/artifacts/logos_vector_index_ann_lite_v1_latest.json"),
@@ -144,19 +148,36 @@ def main() -> int:
         and bundle_ok
         and DISTILL_RUNNER.is_file()
     ):
+        distill_cmd = [
+            sys.executable,
+            str(DISTILL_RUNNER),
+            "--bundle-json",
+            str(args.bundle_json.resolve()),
+            "--build-id",
+            job_id,
+            "--slice-id",
+            "slice5_track_b_chain",
+            "--write-template",
+            str(args.write_distill_template.resolve()),
+        ]
+        if DEFAULT_VECTOR_MANIFEST.is_file():
+            distill_cmd += [
+                "--vector-manifest-json",
+                str(DEFAULT_VECTOR_MANIFEST.resolve()),
+            ]
+        if DEFAULT_ANN_LITE_REPORT.is_file():
+            distill_cmd += [
+                "--ann-lite-report-json",
+                str(DEFAULT_ANN_LITE_REPORT.resolve()),
+            ]
+        if DEFAULT_QUERY_SMOKE.is_file():
+            distill_cmd += [
+                "--ann-lite-query-smoke-json",
+                str(DEFAULT_QUERY_SMOKE.resolve()),
+            ]
+
         cp = subprocess.run(
-            [
-                sys.executable,
-                str(DISTILL_RUNNER),
-                "--bundle-json",
-                str(args.bundle_json.resolve()),
-                "--build-id",
-                job_id,
-                "--slice-id",
-                "slice5_track_b_chain",
-                "--write-template",
-                str(args.write_distill_template.resolve()),
-            ],
+            distill_cmd,
             cwd=str(ROOT),
             capture_output=True,
             text=True,

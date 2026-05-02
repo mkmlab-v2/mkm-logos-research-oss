@@ -70,6 +70,30 @@ def _minimal_distill_template(
     return doc
 
 
+def _file_sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    h.update(path.read_bytes())
+    return h.hexdigest()
+
+
+def _provenance_track_b_optionals(
+    vector_manifest: Path | None,
+    ann_lite_report: Path | None,
+    ann_lite_query_smoke: Path | None,
+) -> dict[str, Any]:
+    out: dict[str, Any] = {}
+    if vector_manifest is not None and vector_manifest.is_file():
+        out["track_b_vector_manifest_path"] = str(vector_manifest.resolve())
+        out["track_b_vector_manifest_sha256"] = _file_sha256(vector_manifest)
+    if ann_lite_report is not None and ann_lite_report.is_file():
+        out["track_b_ann_lite_report_path"] = str(ann_lite_report.resolve())
+        out["track_b_ann_lite_report_sha256"] = _file_sha256(ann_lite_report)
+    if ann_lite_query_smoke is not None and ann_lite_query_smoke.is_file():
+        out["track_b_ann_lite_query_smoke_path"] = str(ann_lite_query_smoke.resolve())
+        out["track_b_ann_lite_query_smoke_sha256"] = _file_sha256(ann_lite_query_smoke)
+    return out
+
+
 def _provenance_from_bundle(bundle_path: Path) -> dict[str, Any]:
     """Fill provenance fields from logos_corpus_graph_bundle_v1 JSON."""
     raw = json.loads(bundle_path.read_text(encoding="utf-8"))
@@ -121,6 +145,27 @@ def main() -> int:
         metavar="PATH",
         help="Optional logos_corpus_graph_bundle_v1 JSON — anchors distill provenance (slice 2).",
     )
+    ap.add_argument(
+        "--vector-manifest-json",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="Optional logos_vector_index_manifest_v1 JSON (path + sha256 into provenance).",
+    )
+    ap.add_argument(
+        "--ann-lite-report-json",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="Optional ANN lite build report JSON.",
+    )
+    ap.add_argument(
+        "--ann-lite-query-smoke-json",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="Optional query smoke JSON from query_logos_vector_index_ann_lite_v1.py.",
+    )
     args = ap.parse_args()
 
     if not CONTRACT.is_file():
@@ -148,8 +193,16 @@ def main() -> int:
             print(str(e), file=sys.stderr)
             return 2
 
+    track_b_opt = _provenance_track_b_optionals(
+        args.vector_manifest_json,
+        args.ann_lite_report_json,
+        args.ann_lite_query_smoke_json,
+    )
+
     if args.emit_template or args.write_template is not None:
-        doc = _minimal_distill_template(args.build_id, args.slice_id, provenance_extra)
+        merged = dict(provenance_extra) if provenance_extra else {}
+        merged.update(track_b_opt)
+        doc = _minimal_distill_template(args.build_id, args.slice_id, merged if merged else None)
         if provenance_extra is None:
             doc["provenance"]["input_manifest_sha256"] = digest
         text = json.dumps(doc, ensure_ascii=False, indent=2) + "\n"

@@ -63,6 +63,44 @@ def test_commander_report_axes_v1_json() -> None:
 _BUNDLE_MIN = _ROOT / "tests" / "fixtures" / "logos_corpus_graph_bundle_minimal_distill_v1.json"
 
 
+def test_emitted_template_with_bundle_and_track_b_optionals_validates(tmp_path: Path) -> None:
+    jsonschema = pytest.importorskip("jsonschema")
+    schema = json.loads(_SCHEMA.read_text(encoding="utf-8"))
+    vm = tmp_path / "manifest.json"
+    vm.write_text('{"schema":"logos_vector_index_manifest_v1","x":1}', encoding="utf-8")
+    ar = tmp_path / "ann.json"
+    ar.write_text('{"schema":"logos_vector_index_ann_lite_build_report_v1"}', encoding="utf-8")
+    qs = tmp_path / "smoke.json"
+    qs.write_text('{"schema":"logos_vector_ann_lite_query_result_v1"}', encoding="utf-8")
+    out = tmp_path / "distill_track_b.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(_RUNNER),
+            "--bundle-json",
+            str(_BUNDLE_MIN),
+            "--vector-manifest-json",
+            str(vm),
+            "--ann-lite-report-json",
+            str(ar),
+            "--ann-lite-query-smoke-json",
+            str(qs),
+            "--write-template",
+            str(out),
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0, cp.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    jsonschema.Draft7Validator(schema).validate(doc)
+    prov = doc.get("provenance") or {}
+    assert "track_b_vector_manifest_sha256" in prov
+    assert "track_b_ann_lite_report_sha256" in prov
+
+
 def test_emitted_template_with_bundle_validates(tmp_path: Path) -> None:
     jsonschema = pytest.importorskip("jsonschema")
     schema = json.loads(_SCHEMA.read_text(encoding="utf-8"))

@@ -101,6 +101,88 @@ def test_runner_fixture(tmp_path: Path) -> None:
         con.close()
 
 
+def test_sentence_transformers_blocked_when_policy_stub(tmp_path: Path) -> None:
+    policy = tmp_path / "pol_st.json"
+    policy.write_text(
+        json.dumps(
+            {"schema": "logos_vector_index_policy_v1", "version": "1.0.0", "status": "stub"},
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    verses = tmp_path / "v_st.json"
+    verses.write_text(json.dumps([{"verse_id": "x"}], indent=2), encoding="utf-8")
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(_RUNNER),
+            "--policy",
+            str(policy),
+            "--verse-json",
+            str(verses),
+            "--embedding-backend",
+            "sentence_transformers",
+            "--sentence-transformer-model",
+            "dummy-model",
+            "--report-json",
+            str(tmp_path / "r.json"),
+            "--sqlite-out",
+            str(tmp_path / "s.sqlite"),
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 5
+
+
+def test_stream_parse_small_file(tmp_path: Path) -> None:
+    pytest.importorskip("ijson")
+    jsonschema = pytest.importorskip("jsonschema")
+    schema = json.loads(_SCHEMA.read_text(encoding="utf-8"))
+    policy = tmp_path / "pol_ij.json"
+    policy.write_text(
+        json.dumps(
+            {"schema": "logos_vector_index_policy_v1", "version": "1.0.0", "status": "stub"},
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    verses = tmp_path / "v_ij.json"
+    verses.write_text(
+        json.dumps([{"verse_id": "stream:1"}, {"verse_id": "stream:2"}], indent=2),
+        encoding="utf-8",
+    )
+    report = tmp_path / "rep_ij.json"
+    sqlite_out = tmp_path / "ij.sqlite"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(_RUNNER),
+            "--policy",
+            str(policy),
+            "--verse-json",
+            str(verses),
+            "--stream",
+            "--vector-dim",
+            "16",
+            "--report-json",
+            str(report),
+            "--sqlite-out",
+            str(sqlite_out),
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0, cp.stderr
+    doc = json.loads(report.read_text(encoding="utf-8"))
+    jsonschema.Draft7Validator(schema).validate(doc)
+    assert doc.get("verse_source", {}).get("stream_parsing_used") is True
+
+
 def test_query_cli_fixture(tmp_path: Path) -> None:
     jsonschema = pytest.importorskip("jsonschema")
     qschema = json.loads(_QUERY_SCHEMA.read_text(encoding="utf-8"))

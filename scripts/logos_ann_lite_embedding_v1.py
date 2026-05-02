@@ -1,0 +1,73 @@
+"""ANN lite embedding backends for Track B (policy-gated neural path)."""
+from __future__ import annotations
+
+import hashlib
+import time
+from typing import Any
+
+EMBEDDING_HASH_STUB = "hash_stub_v1"
+EMBEDDING_SENTENCE_TRANSFORMERS = "sentence_transformers_v1"
+
+
+def neural_embedding_allowed(policy_doc: dict[str, Any], allow_bypass: bool) -> tuple[bool, str]:
+    if allow_bypass:
+        return True, "allow_stub_policy_embedding"
+    if policy_doc.get("status") == "active":
+        return True, "policy_active"
+    return (
+        False,
+        "Neural embeddings require policy.status=active or --allow-stub-policy-embedding (dev only).",
+    )
+
+
+def verse_text_for_embedding(row: dict[str, Any], max_chars: int) -> str:
+    raw = row.get("verse_text") or row.get("text") or row.get("verse_id")
+    if raw is None:
+        return ""
+    s = str(raw).strip()
+    if len(s) > max_chars:
+        return s[:max_chars]
+    return s
+
+
+def load_sentence_transformer(model_id: str) -> Any:
+    try:
+        from sentence_transformers import SentenceTransformer
+    except ImportError as e:
+        raise RuntimeError(
+            "sentence-transformers is not installed. pip install sentence-transformers"
+        ) from e
+    return SentenceTransformer(model_id)
+
+
+def encode_sentence_transformer_batch(
+    model: Any,
+    rows: list[dict[str, Any]],
+    *,
+    max_chars: int,
+    normalize: bool,
+    start_monotonic: float,
+    max_wall_seconds: float,
+) -> list[tuple[str, bytes, int]]:
+    import numpy as np
+
+    if time.monotonic() - start_monotonic > max_wall_seconds:
+        raise TimeoutError("max_wall_seconds exceeded before encode")
+    texts = [verse_text_for_embedding(r, max_chars) or str(r["verse_id"]) for r in rows]
+    emb = model.encode(
+        texts,
+        batch_size=min(64, len(texts)),
+        normalize_embeddings=normalize,
+        show_progress_bar=False,
+    )
+    out: list[tuple[str, bytes, int]] = []
+    for i, row in enumerate(rows):
+        vid = str(row["verse_id"])
+        flat = np.asarray(emb[i], dtype=np.float32)
+        blob = flat.tobytes()
+        out.append((vid, blob, int(flat.shape[0])))
+    return out
+
+
+def sha256_blob(blob: bytes) -> str:
+    return hashlib.sha256(blob).hexdigest()
