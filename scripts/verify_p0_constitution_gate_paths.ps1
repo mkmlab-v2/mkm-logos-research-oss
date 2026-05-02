@@ -12,6 +12,7 @@ param(
 # 2026-05-02: Logos Track B commander deep report v1 + shared track_b_commander_gate_v1.
 # 2026-05-02: Market Sasang lens v1 (policy, engine, runner, schema, contract, pytest).
 # 2026-05-02: Sasang interpretive insight bundle v1 (multi-axis reference pointers, schema, contract, pytest).
+# 2026-05-02: Logos vector ANN lite v1 (hash_stub SQLite report; sqlite+json artifact gitignored).
 # 2026-05-02: M5 rule_school_mkm_4d_v1 (policy JSON, loader/blend, pytest).
 # 2026-05-02: M2–M4 myeongni (jijangan ohang weights, daewoon v1, jijangan ohang script, daewoon test).
 # 2026-05-02: +4 myeongni jijangan LUT M1 (lut, schema, script, test).
@@ -255,7 +256,11 @@ $required = @(
     "docs\final\artifacts\SASANG_INTERPRETIVE_INSIGHT_BUNDLE_V1_CONTRACT.json",
     "scripts\build_sasang_interpretive_insight_bundle_v1.py",
     "docs\final\artifacts\sasang_interpretive_insight_bundle_v1_latest.json",
-    "tests\test_sasang_interpretive_insight_bundle_v1.py"
+    "tests\test_sasang_interpretive_insight_bundle_v1.py",
+    "docs\final\artifacts\LOGOS_VECTOR_INDEX_ANN_LITE_BUILD_REPORT_V1_CONTRACT.json",
+    "docs\final\schemas\logos_vector_index_ann_lite_build_report_v1.schema.json",
+    "scripts\build_logos_vector_index_ann_lite_v1.py",
+    "tests\test_logos_vector_index_ann_lite_v1.py"
 )
 
 $missing = @()

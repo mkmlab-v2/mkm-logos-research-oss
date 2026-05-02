@@ -115,7 +115,8 @@ def main() -> int:
             "llm_placeholder_requested": bool(args.allow_llm_placeholder),
             "dry_run": bool(args.dry_run),
             "next_steps": [
-                "Implement retrieval/index builders under LOGOS_VECTOR_INDEX_POLICY_V1 when status=active.",
+                "SQLite hash_stub_v1 index: scripts/build_logos_vector_index_ann_lite_v1.py (non-semantic; cap --max-verses).",
+                "When policy.status=active: swap stub embedder for local model + retrieval smoke under budget caps.",
                 "Optional: wire explicit LLM/RAG module behind separate CLI flag and budget caps.",
             ],
         },

@@ -128,6 +128,9 @@ reports/fused_quant_pixel_sop_runner.lock
 reports/track_a_commercialization_daily_log.jsonl
 # Dimensional projection bridge local outputs (regenerable; refresh/eval scripts)
 reports/dimensional_projection_bridge/
+# Logos vector ANN lite local outputs (regenerable; builder defaults under docs/final/artifacts)
+docs/final/artifacts/logos_vector_index_ann_lite_v1.sqlite
+docs/final/artifacts/logos_vector_index_ann_lite_v1_latest.json
 # LinkedIn DM outreach scratch (local copy bank / tracker; regenerable)
 reports/linkedin_dm_*
 # mkm-life: local funnel pipeline outputs (regenerable; keep scripts + SSOT pair tracked)
