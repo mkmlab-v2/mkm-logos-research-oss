@@ -23,6 +23,13 @@ DEFAULT_BUNDLE = ROOT / "docs/final/artifacts/logos_corpus_graph_bundle_v1_lates
 DEFAULT_OUT = ROOT / "docs/final/artifacts/logos_track_b_deep_fusion_job_v1_latest.json"
 DISTILL_RUNNER = ROOT / "scripts" / "run_lens_logos_deep_fusion.py"
 
+OPTIONAL_TRACK_B_VECTOR_ARTIFACTS: tuple[tuple[str, Path], ...] = (
+    ("vector_manifest_json", ROOT / "docs/final/artifacts/logos_vector_index_manifest_v1_latest.json"),
+    ("ann_lite_report_json", ROOT / "docs/final/artifacts/logos_vector_index_ann_lite_v1_latest.json"),
+    ("ann_lite_sqlite", ROOT / "docs/final/artifacts/logos_vector_index_ann_lite_v1.sqlite"),
+    ("ann_lite_query_smoke_json", ROOT / "docs/final/artifacts/logos_vector_ann_lite_query_smoke_latest.json"),
+)
+
 ARTIFACT_SCHEMA = "logos_track_b_deep_fusion_job_v1"
 VERSION = "1.0.0"
 
@@ -90,6 +97,10 @@ def main() -> int:
     theology_ok = args.theology_baseline.is_file()
     bundle_ok = args.bundle_json.is_file()
 
+    optional_vec: dict[str, dict[str, Any]] = {}
+    for key, path in OPTIONAL_TRACK_B_VECTOR_ARTIFACTS:
+        optional_vec[key] = {"path": _rel(path), "exists": path.is_file()}
+
     doc = {
         "schema": ARTIFACT_SCHEMA,
         "version": VERSION,
@@ -108,6 +119,7 @@ def main() -> int:
             "theology_baseline_exists": theology_ok,
             "corpus_graph_bundle_path": _rel(args.bundle_json),
             "corpus_graph_bundle_exists": bundle_ok,
+            "optional_track_b_vector_artifacts": optional_vec,
         },
         "execution": {
             "status": exec_status,

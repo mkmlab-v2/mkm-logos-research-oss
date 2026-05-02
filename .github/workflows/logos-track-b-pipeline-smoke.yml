@@ -1,0 +1,98 @@
+# Smoke: Track B Logos corpus → vector manifest / ANN lite hash_stub → policy readiness → deep fusion distill shell (no GPU, no LLM API).
+name: Logos Track B pipeline smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop, "chore/**"]
+    paths:
+      - "scripts/report_logos_track_b_policy_readiness_v1.py"
+      - "scripts/build_logos_vector_index_manifest_v1.py"
+      - "scripts/build_logos_vector_index_ann_lite_v1.py"
+      - "scripts/query_logos_vector_index_ann_lite_v1.py"
+      - "scripts/logos_vector_hash_stub_v1.py"
+      - "scripts/run_logos_track_b_deep_fusion_job_v1.py"
+      - "scripts/run_lens_logos_deep_fusion.py"
+      - "scripts/Run-LogosTrackBChainV1.ps1"
+      - "scripts/run_logos_track_b_pipeline_chain_v1.py"
+      - "tests/test_logos_track_b_policy_readiness_v1.py"
+      - "tests/test_logos_track_b_deep_fusion_job_v1.py"
+      - "tests/test_logos_vector_index_manifest_v1.py"
+      - "tests/test_logos_vector_index_ann_lite_v1.py"
+      - "tests/test_logos_vector_index_stub_v1.py"
+      - "tests/test_logos_corpus_manifest_v1.py"
+      - "tests/test_logos_corpus_graph_bundle_v1.py"
+      - "tests/test_logos_mkm_theology_baseline_v1.py"
+      - "tests/test_logos_deep_research_distill_schema_v1.py"
+      - "tests/test_run_logos_track_b_pipeline_chain_v1.py"
+      - "docs/final/schemas/logos_vector_index_ann_lite_build_report_v1.schema.json"
+      - "docs/final/schemas/logos_vector_ann_lite_query_result_v1.schema.json"
+      - "docs/final/schemas/logos_vector_index_manifest_v1.schema.json"
+      - "docs/final/schemas/logos_track_b_deep_fusion_job_v1.schema.json"
+      - "docs/final/schemas/logos_track_b_policy_readiness_v1.schema.json"
+      - "docs/final/artifacts/LOGOS_VECTOR_INDEX_ANN_LITE_BUILD_REPORT_V1_CONTRACT.json"
+      - "docs/final/artifacts/LOGOS_VECTOR_INDEX_MANIFEST_V1_CONTRACT.json"
+      - ".github/workflows/logos-track-b-pipeline-smoke.yml"
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/report_logos_track_b_policy_readiness_v1.py"
+      - "scripts/build_logos_vector_index_manifest_v1.py"
+      - "scripts/build_logos_vector_index_ann_lite_v1.py"
+      - "scripts/query_logos_vector_index_ann_lite_v1.py"
+      - "scripts/logos_vector_hash_stub_v1.py"
+      - "scripts/run_logos_track_b_deep_fusion_job_v1.py"
+      - "scripts/run_lens_logos_deep_fusion.py"
+      - "scripts/Run-LogosTrackBChainV1.ps1"
+      - "scripts/run_logos_track_b_pipeline_chain_v1.py"
+      - "tests/test_logos_track_b_policy_readiness_v1.py"
+      - "tests/test_logos_track_b_deep_fusion_job_v1.py"
+      - "tests/test_logos_vector_index_manifest_v1.py"
+      - "tests/test_logos_vector_index_ann_lite_v1.py"
+      - "tests/test_logos_vector_index_stub_v1.py"
+      - "tests/test_logos_corpus_manifest_v1.py"
+      - "tests/test_logos_corpus_graph_bundle_v1.py"
+      - "tests/test_logos_mkm_theology_baseline_v1.py"
+      - "tests/test_logos_deep_research_distill_schema_v1.py"
+      - "tests/test_run_logos_track_b_pipeline_chain_v1.py"
+      - "docs/final/schemas/logos_vector_index_ann_lite_build_report_v1.schema.json"
+      - "docs/final/schemas/logos_vector_ann_lite_query_result_v1.schema.json"
+      - "docs/final/schemas/logos_vector_index_manifest_v1.schema.json"
+      - "docs/final/schemas/logos_track_b_deep_fusion_job_v1.schema.json"
+      - "docs/final/schemas/logos_track_b_policy_readiness_v1.schema.json"
+      - "docs/final/artifacts/LOGOS_VECTOR_INDEX_ANN_LITE_BUILD_REPORT_V1_CONTRACT.json"
+      - "docs/final/artifacts/LOGOS_VECTOR_INDEX_MANIFEST_V1_CONTRACT.json"
+      - ".github/workflows/logos-track-b-pipeline-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: logos-track-b-pipeline-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: pip install pytest jsonschema
+      - name: pytest Logos Track B pipeline bundle
+        run: >
+          python -m pytest
+          tests/test_logos_corpus_manifest_v1.py
+          tests/test_logos_corpus_graph_bundle_v1.py
+          tests/test_logos_vector_index_stub_v1.py
+          tests/test_logos_mkm_theology_baseline_v1.py
+          tests/test_logos_deep_research_distill_schema_v1.py
+          tests/test_logos_track_b_policy_readiness_v1.py
+          tests/test_logos_vector_index_manifest_v1.py
+          tests/test_logos_vector_index_ann_lite_v1.py
+          tests/test_logos_track_b_deep_fusion_job_v1.py
+          tests/test_run_logos_track_b_pipeline_chain_v1.py
+          -q --tb=short

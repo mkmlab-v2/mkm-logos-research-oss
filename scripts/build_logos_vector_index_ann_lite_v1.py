@@ -12,15 +12,17 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
 import sqlite3
-import struct
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.logos_vector_hash_stub_v1 import EMBEDDING_MODE, hash_stub_v1_embedding_blob
 
 DEFAULT_POLICY = ROOT / "docs/final/artifacts/LOGOS_VECTOR_INDEX_POLICY_V1.json"
 DEFAULT_CORPUS_MANIFEST = ROOT / "docs/final/artifacts/logos_corpus_manifest_v1_latest.json"
@@ -29,7 +31,6 @@ DEFAULT_SQLITE = ROOT / "docs/final/artifacts/logos_vector_index_ann_lite_v1.sql
 
 ARTIFACT_SCHEMA = "logos_vector_index_ann_lite_build_report_v1"
 VERSION = "1.0.0"
-EMBEDDING_MODE = "hash_stub_v1"
 
 
 def _rel(p: Path) -> str:
@@ -37,25 +38,6 @@ def _rel(p: Path) -> str:
         return str(p.resolve().relative_to(ROOT)).replace("\\", "/")
     except ValueError:
         return str(p.resolve())
-
-
-def _stub_embedding(verse_id: str, dim: int) -> tuple[bytes, list[float]]:
-    """L2-normalized float32 vector deterministic from verse_id."""
-    out_f: list[float] = []
-    counter = 0
-    while len(out_f) < dim:
-        block = hashlib.sha256(f"logos_stub_v1|{verse_id}|{counter}".encode()).digest()
-        for off in range(0, 32, 4):
-            if len(out_f) >= dim:
-                break
-            u = int.from_bytes(block[off : off + 4], "little") / 2**32
-            out_f.append(u * 2.0 - 1.0)
-        counter += 1
-    out_f = out_f[:dim]
-    s = math.sqrt(sum(x * x for x in out_f)) or 1.0
-    normed = [x / s for x in out_f]
-    blob = struct.pack(f"<{dim}f", *normed)
-    return blob, normed
 
 
 def _load_verse_rows(path: Path) -> list[dict[str, Any]]:
@@ -161,7 +143,7 @@ def main() -> int:
         )
         for row in rows:
             vid = str(row["verse_id"])
-            blob, _ = _stub_embedding(vid, dim)
+            blob = hash_stub_v1_embedding_blob(vid, dim)
             h = hashlib.sha256(blob).hexdigest()
             cur.execute(
                 "INSERT INTO logos_vec_stub VALUES (?,?,?,?,?)",

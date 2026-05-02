@@ -260,6 +260,9 @@ $required = @(
     "docs\final\artifacts\LOGOS_VECTOR_INDEX_ANN_LITE_BUILD_REPORT_V1_CONTRACT.json",
     "docs\final\schemas\logos_vector_index_ann_lite_build_report_v1.schema.json",
     "scripts\build_logos_vector_index_ann_lite_v1.py",
+    "scripts\logos_vector_hash_stub_v1.py",
+    "scripts\query_logos_vector_index_ann_lite_v1.py",
+    "docs\final\schemas\logos_vector_ann_lite_query_result_v1.schema.json",
     "tests\test_logos_vector_index_ann_lite_v1.py"
 )
 

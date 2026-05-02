@@ -40,6 +40,16 @@ def test_job_runs_with_readiness_ok(tmp_path: Path) -> None:
     assert doc.get("non_gating_ack") is True
     assert doc.get("execution", {}).get("llm_invoked") is False
     assert doc.get("readiness", {}).get("overall_ok") is True
+    ota = doc.get("inputs", {}).get("optional_track_b_vector_artifacts") or {}
+    assert set(ota.keys()) == {
+        "vector_manifest_json",
+        "ann_lite_report_json",
+        "ann_lite_sqlite",
+        "ann_lite_query_smoke_json",
+    }
+    for item in ota.values():
+        assert item.get("path")
+        assert isinstance(item.get("exists"), bool)
 
 
 def test_job_blocked_when_readiness_false(tmp_path: Path) -> None:

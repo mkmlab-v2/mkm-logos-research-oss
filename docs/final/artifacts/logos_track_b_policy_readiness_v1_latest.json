@@ -1,7 +1,7 @@
 {
   "schema": "logos_track_b_policy_readiness_v1",
-  "version": "1.0.0",
-  "ts_utc": "2026-05-02T05:18:54Z",
+  "version": "1.1.0",
+  "ts_utc": "2026-05-02T05:36:43Z",
   "hypothesis_tier": "B",
   "overall_ok": true,
   "checks": {
@@ -38,6 +38,21 @@
     "distill_schema": {
       "path": "docs/final/schemas/logos_deep_research_distill_v1.schema.json",
       "exists": true
+    },
+    "vector_policy": {
+      "exists": true,
+      "path": "docs/final/artifacts/LOGOS_VECTOR_INDEX_POLICY_V1.json",
+      "status": "stub",
+      "preconditions": [
+        {
+          "path": "docs/final/artifacts/logos_corpus_manifest_v1_latest.json",
+          "exists": true
+        },
+        {
+          "path": "docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json",
+          "exists": true
+        }
+      ]
     }
   },
   "failure_codes": [],
