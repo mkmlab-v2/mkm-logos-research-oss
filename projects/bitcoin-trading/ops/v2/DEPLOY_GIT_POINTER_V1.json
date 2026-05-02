@@ -13,7 +13,8 @@
     "verify_paths_relative_to": "projects/bitcoin-trading",
     "verify_paths_after_pull": [
       "ops/v2/ssh/register_export_then_sync_cursor_trade_history_cron.sh",
-      "scripts/export_binance_fills_to_cursor_trade_history_v1.py"
+      "scripts/export_binance_fills_to_cursor_trade_history_v1.py",
+      "ops/windows-rehearsal/OPS_COMMANDS.md"
     ]
   },
   "developer_actions_when_missing_on_vps": [
