@@ -11,7 +11,8 @@ param(
 # 2026-05-02: 起運 qiyun v1 (solar_term_jie_crossings, myeongri_qiyun_v1, pytest).
 # 2026-05-02: Logos Track B commander deep report v1 + shared track_b_commander_gate_v1.
 # 2026-05-02: Market Sasang lens v1 (policy, engine, runner, schema, contract, pytest).
-# 2026-05-02: Sasang interpretive insight bundle v1 (multi-axis reference pointers, schema, contract, pytest).
+# 2026-05-02: Sasang interpretive insight bundle v1.1 (interpretive_depth_ko + synthesis_v1, schema, contract, pytest).
+# 2026-05-02: run_fact_lock_bundle.ps1 (Fact-Lock 번들; dual-regime 정렬 사상 통찰 pytest 포함).
 # 2026-05-02: Logos vector ANN lite v1 (hash_stub SQLite report; sqlite+json artifact gitignored).
 # 2026-05-02: M5 rule_school_mkm_4d_v1 (policy JSON, loader/blend, pytest).
 # 2026-05-02: M2–M4 myeongni (jijangan ohang weights, daewoon v1, jijangan ohang script, daewoon test).
@@ -61,6 +62,7 @@ $required = @(
     "AGENTS.md",
     "README.md",
     "scripts\run_workspace_automation_health.ps1",
+    "scripts\run_fact_lock_bundle.ps1",
     "projects\bitcoin-trading\AGENTS.md",
     "CLAUDE.md",
     "docs\final\LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md",

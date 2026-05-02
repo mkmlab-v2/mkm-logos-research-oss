@@ -64,7 +64,7 @@ Write-Host "==> run_market_sasang_lens_v1.py"
 py scripts/run_market_sasang_lens_v1.py
 if ($LASTEXITCODE -ne 0) { throw "run_market_sasang_lens_v1 exit $LASTEXITCODE" }
 
-Write-Host "==> build_sasang_interpretive_insight_bundle_v1.py (multi-axis reference pointers)"
+Write-Host "==> build_sasang_interpretive_insight_bundle_v1.py (v1.1 interpretive_depth + synthesis_v1; multi-axis reference)"
 py scripts/build_sasang_interpretive_insight_bundle_v1.py
 if ($LASTEXITCODE -ne 0) { throw "sasang interpretive insight bundle exit $LASTEXITCODE" }
 
