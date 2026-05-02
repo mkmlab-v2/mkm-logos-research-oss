@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-01T02:25:00Z
+- **last_updated_utc:** 2026-05-02T05:30:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -180,6 +180,8 @@
 | 2026-05-01 (사상 4-Agent 제출 번들 단일화) | `build_sasang_4agent_promotion_submission_bundle_v1.py` 추가/실행으로 최종 제출 번들 `sasang_4agent_promotion_submission_bundle_latest.json/.md` 생성. 상태 문구 `PROMOTED_WITH_HUMAN_APPROVAL + MONITORING_ACTIVE + DRILL_PASS`와 핵심 9개 아티팩트 SHA256을 한 장으로 고정. |
 | 2026-05-01 (독립 재현 1회 반영) | `kospi_proxy_ohlcv_from_training_result.csv`로 독립 재현 아티팩트(`sasang_4agent_collision_btrack_protocol_repro_kospi_latest.json`) 생성 후 제출 번들에 `repro_check` 필드 추가. 유의성/개선은 통과했으나 표본 `ticks=99`로 `repro_sample_size_ok=false`, 번들 상태를 `HOLD_OR_INCOMPLETE_CHAIN`으로 보수 전환. |
 | 2026-05-01 (독립 재현 표본 300+ 충족 복구) | 재현 입력을 `research/market_data/kospi_daily_external_yf.csv`로 교체해 `sasang_4agent_collision_btrack_protocol_repro_kospi_latest.json` 재생성(`ticks=7232`, `p_permutation=0.017`, `sample_size_warning_low_ticks=false`). 제출 번들 재생성 후 `repro_check_pass=true`, 최종 상태 `PROMOTED_WITH_HUMAN_APPROVAL + MONITORING_ACTIVE + DRILL_PASS`로 복귀. |
+| 2026-05-02 (MKM Lab · LinkedIn B2B 실행 번들) | 개인 프로필 영문 우선 About·스페셜 픽스·주간 운영 노트 톤 유지; 추적 `reports/linkedin_dm_outreach_tracker_v1.tsv`, 복붙 `reports/linkedin_dm_copypaste_bundle_v1.txt`(KR+EN 첫 DM A/B/C·7일 팔로업). DM/게시는 본인 LinkedIn 세션에서만 수행. |
+| 2026-05-02 (VPS · bitcoin-trading · 체결→cursor_trade_history) | 로컬 커밋만 있으면 VPS에 파일 MISSING — **`git@github.com:mkmlab-v2/mkm-destiny-ai-41e38ec6.git`의 `fix/btrack-ohlcv-cli-help-and-eval-wrapper-github`**에 반영 필요(비FF 시 worktree+체리픽 후 푸시). 체인: `export_binance_fills_to_cursor_trade_history_v1.py`→`sync_cursor_trade_history_latest_24h.py`; 등록 `ops/v2/ssh/register_export_then_sync_cursor_trade_history_cron.sh`, cron 태스크 `bitcoin-binance-export-then-cursor-trade-history`, 로그 `/var/log/bitcoin_export_then_cursor_trade_history.log`, **`WORKSPACE_ROOT=/opt/mkm-lab-workspace-v2/projects/bitcoin-trading`**. 브랜치 전환 전 **`projects/no1kmedi` 등 로컬 수정은 stash**. |
 
 ---
 
@@ -204,7 +206,7 @@
 | 운영 가시성 | `docs`·`reports` 파일 터치량이 큼 | `CURRENT_OPS_SNAPSHOT`·`artifacts`를 **한 사이클의 산출 세트**로 취급 |
 | 자동화 | `scripts/` 변경이 많음 | 반복은 **스크립트 1개 + exit code**로 고정해 Fact-Lock과 맞춤 |
 | 연구 vs 상용 | `feat`·`chore` 병행 | B-track/실험은 **격벽·재현 seed** 유지, 본선·A-track과 **자동 합선 금지** |
-| 원격·VPS 혼선 | (동기화 이슈에서 확인) | `git fetch` 후 `origin/main` 정렬, 필요 시 `scripts/Run-GitOriginMainSyncLocalAndVps.ps1` |
+| 원격·VPS 혼선 | (동기화 이슈에서 확인) | `git fetch` 후 `origin/main` 정렬, 필요 시 `scripts/Run-GitOriginMainSyncLocalAndVps.ps1`; **bitcoin-trading 운영 스크립트는 HQ 모노레포와 destiny 레포 브랜치가 다를 수 있음** — VPS가 쓰는 브랜치에 커밋이 없으면 pull 후에도 파일 MISSING. |
 | 장기 공백 | 스캔상 2025-05~2026-02 무커밋 구간 | 그때의 결정은 **외부 증거**로만 채우고, 본 파일에 **추측 한 줄 금지** |
 | NotebookLM 교차질의 | 인용 id가 가리키는 **현재 소스 제목**과 NL 답의 **날짜 서술**이 어긋날 수 있음 (2026-04-15 대조) | “언제 무엇을 확정했다”는 **`nlm source list` 제목·원문 + git**으로 맞춘 뒤에만 승격 |
 
