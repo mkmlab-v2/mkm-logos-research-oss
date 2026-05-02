@@ -362,6 +362,10 @@ on:
       - "tests/test_v3_operational_measured_pipeline.py"
       - "tests/test_btrack_phase3_snapshot_sync.py"
       - "tests/test_sasang_cross_ref_draft.py"
+      - "tests/test_sasang_interpretive_insight_bundle_v1.py"
+      - "scripts/build_sasang_interpretive_insight_bundle_v1.py"
+      - "docs/final/schemas/sasang_interpretive_insight_bundle_v1.schema.json"
+      - "docs/final/artifacts/SASANG_INTERPRETIVE_INSIGHT_BUNDLE_V1_CONTRACT.json"
       - "tests/test_myeongni_insight_observation_log.py"
       - "tests/test_hypothesis_insight_batch_v1_sample.py"
       - "data/btrack/**"
@@ -728,6 +732,9 @@ jobs:
 
       - name: SASANG CROSS_REF draft (ijeoma chunk ↔ LOGOS bench Fact-Lock)
         run: python -m pytest tests/test_sasang_cross_ref_draft.py -q --tb=short
+
+      - name: Sasang interpretive insight bundle v1.1 (schema, synthesis_v1, interpretive_depth_ko)
+        run: python -m pytest tests/test_sasang_interpretive_insight_bundle_v1.py -q --tb=short
 
       - name: Two-track submission pack (evidence bundle + draft + camera-ready JSON builders)
         run: |

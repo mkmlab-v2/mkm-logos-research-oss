@@ -39,6 +39,11 @@ def test_bundle_matches_schema_and_labels():
     assert gate.get("track") == "B"
     ids = {s["axis_id"] for s in doc["sections"]}
     assert "geumhwagyoyeok" in ids and "bomyung_jiju" in ids and "prediction" in ids
+    assert doc["version"] == "1.1.0"
+    syn = doc.get("synthesis_v1") or {}
+    assert len(syn.get("how_to_synthesize_ko", "")) >= 80
+    for s in doc["sections"]:
+        assert len(s.get("interpretive_depth_ko", "")) >= 60
 
 
 def test_builder_cli_writes_json(tmp_path: Path) -> None:

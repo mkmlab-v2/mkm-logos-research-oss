@@ -2,8 +2,8 @@
   "schema": "sasang_interpretive_insight_bundle_v1_contract_meta_v1",
   "artifact_schema": "sasang_interpretive_insight_bundle_v1",
   "artifact_json_schema": "docs/final/schemas/sasang_interpretive_insight_bundle_v1.schema.json",
-  "bundle_version": "1.0.0",
-  "purpose": "Aggregate observability pointers for Sasang-related axes (금화교역·보명지주·병증·약리·예측·렌즈 산출). Human decides; machine labels rail=B only.",
+  "bundle_version": "1.1.0",
+  "purpose": "Aggregate observability pointers + interpretive_depth_ko + synthesis_v1 for human judgment. v1.1: substantive Korean guidance; no LLM. Human decides; machine labels rail=B only.",
   "builder_module": "scripts/build_sasang_interpretive_insight_bundle_v1.py",
   "default_output_path": "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json",
   "required_labels": {
