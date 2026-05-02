@@ -115,7 +115,7 @@
 - **일반 예언(B 레일)**: 스키마·스크립트·월간 체인은 **저장소 루트**(`GENERAL_PROPHECY_SCHEMA_V1`, `scripts/generate_general_prophecy_v1.py` 등, `run_waiting_queue_monthly_check.ps1`) — **별도 서브트리에 복제본을 두지 않고** 루트 SSOT를 따른다. 기상 관측 라벨→트리플 레지스트리(교정 측정용)는 `scripts/run_weather_gt_to_prophecy_triplet_chain_v1.py`(기본 JSONL 검증 포함; `--auto-forecasts-sidecar` 또는 `--forecasts-jsonl`)·`build_weather_triplet_registry_v1.py`·`validate_weather_ground_truth_jsonl_v1.py`·`scripts/weather_gt_jsonl_to_forecasts_sidecar_v1.py`·합성 120일 벤치 `scripts/run_weather_synthetic_120d_chain_and_brier_v1.py`(`--forecasts-jsonl`·`--stub-only`·기본 auto 사이드카 배타; 기본 레지스트리 `*_v1.json` vs `*_stub_v1.json`; eval 기본 `--ece-bins 10`·`ece_binary_by_domain_tag`·`--ece-min-per-tag`)·`docs/final/schemas/weather_ground_truth_row_v1.schema.json`.
 - 한의 원전·코호트: `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` (라벨 A vs 원전 B 혼선 금지).
 - NotebookLM 소스: `docs/NotebookLM_sources_manifest.md`.
-- **NotebookLM MCP (재발방지)**: Settings에서 녹색·N tools여도 **현재 채팅에 도구가 주입되지 않으면** 에이전트는 호출 불가 — UI 연결 ≠ 세션 사용 가능. SSOT: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`, 스킬 `.cursor/skills/notebooklm-refresh/SKILL.md` §세션 vs UI.
+- **NotebookLM MCP (재발방지)**: Settings에서 녹색·N tools여도 **현재 채팅에 도구가 주입되지 않으면** 에이전트는 호출 불가 — UI 연결 ≠ 세션 사용 가능. **내장 브라우저·Chrome 로그인 ≠ MCP 인증**(전용 Chrome 프로필). SSOT: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`(항상 적용), `docs/NotebookLM_sources_manifest.md`(MCP 인증 절), 점검 `scripts/check_notebooklm_mcp_prereqs.ps1`. 스킬 `.cursor/skills/notebooklm-refresh/SKILL.md` §세션 vs UI.
 
 ## 운영 자동화 vs 연구 레인
 

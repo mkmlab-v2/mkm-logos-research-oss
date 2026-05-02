@@ -28,6 +28,8 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 |------|-------------------------|
 | 헌법·에이전트 포인터 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`, 루트 `AGENTS.md`, `CLAUDE.md` |
 | B-track → Track A·대외 주장 승격 (압축·복원) | `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` **§9** (**§9.1.1** OpenAPI 경로·제외·성능 TBD) — 체크리스트 미완이면 연구 산출물을 상용·프로덕션 팩트로 승격하지 않음; L1 사이드채널 1.0과 빔 베이스라인 혼동 금지 |
+| **승격 게이트 (B → A/C)** | `docs/final/MKM_PROMOTION_GATE_CHECKLIST_B_TO_A_C_V1.md` (G0~G12 통과 및 아티팩트 증빙 필수) |
+| **P1 압축 API 파일럿 전환** | `docs/final/P1_COMPRESSION_API_PILOT_TRANSITION_CHECKLIST_V1.md` (§11 동결·토큰/P95/Jaccard·알람·로컬 스모크 S1–S4) |
 | 국방·합성 굴절 재현 레인 (`GO_RESEARCH`) | `docs/final/artifacts/defense_code_pack_v1.json`(또는 동 디렉터리 `defense_pitch_codepack_v1.json`), `scripts/run_defense_repro_bundle.py`(exit 0 권장), `tests/test_defense_*.py`, `.github/workflows/defense-repro-bundle-smoke.yml`, 상태 요약 `docs/final/artifacts/PROMOTION_DEFENSE_LANE_STATUS_V1.json` — **§9 RTT/L1 역추론 OpenAPI 승격과 동일하지 않음**; 한의 원전·proxy 코호트 **B**와 본선 합선 금지 (`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`) |
 | P0 순서 자체 | 본 파일(`P0_COMMERCIALIZATION_TRACKER.md`) + Step 표의 링크 파일 존재 |
 | 정렬 pytest 게이트 | `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` **exit 0** 로그 또는 CI 아티팩트 |
