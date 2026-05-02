@@ -27,7 +27,7 @@
     },
     "version": {
       "type": "string",
-      "pattern": "^1\\.0\\.0$"
+      "pattern": "^1\\.0\\.\\d+$"
     },
     "ts_utc": {
       "type": "string",
@@ -133,6 +133,34 @@
         "corpus_graph_bundle_path": { "type": "string" },
         "upstream_job_id": { "type": "string" },
         "runner": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "review_gate": {
+      "type": "object",
+      "description": "HITL gate for Track B distill; never gates A-track execution. Optional but recommended for audit.",
+      "additionalProperties": true,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "required",
+            "waived_internal",
+            "approved_snapshot",
+            "superseded"
+          ]
+        },
+        "reason_code": {
+          "type": "string",
+          "description": "Machine reason e.g. high_fan_out, cross_domain_metaphor, lexicon_drift."
+        },
+        "artifact_sha256": {
+          "type": "string",
+          "description": "Digest of the human-approved artifact snapshot when status is approved_snapshot."
+        },
+        "reviewer_role": { "type": "string" },
         "notes": { "type": "string" }
       }
     }

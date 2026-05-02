@@ -21,7 +21,7 @@ SCHEMA = ROOT / "docs" / "final" / "schemas" / "logos_deep_research_distill_v1.s
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "logos_deep_research_distill_latest.json"
 
 ARTIFACT_SCHEMA = "logos_deep_research_distill_v1"
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 
 def _manifest_digest(paths: list[Path]) -> str:
@@ -63,6 +63,10 @@ def _minimal_distill_template(
             "input_manifest_sha256": "placeholder_not_a_real_build",
             "runner": "scripts/run_lens_logos_deep_fusion.py",
             "notes": "Template only — replace with real ingest manifest hash after slice 1+.",
+        },
+        "review_gate": {
+            "status": "pending",
+            "reason_code": "template_placeholder",
         },
     }
     if provenance_extra:

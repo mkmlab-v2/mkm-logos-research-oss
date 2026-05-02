@@ -2,7 +2,7 @@
   "schema": "logos_deep_research_distill_contract_meta_v1",
   "artifact_schema": "logos_deep_research_distill_v1",
   "artifact_json_schema": "docs/final/schemas/logos_deep_research_distill_v1.schema.json",
-  "runner_version": "1.0.0",
+  "runner_version": "1.0.1",
   "purpose": "Track B offline deep research output distilled to a deterministic JSON artifact for light consumption; not a live trigger.",
   "default_output_path": "docs/final/artifacts/logos_deep_research_distill_latest.json",
   "runner_placeholder": "scripts/run_lens_logos_deep_fusion.py",

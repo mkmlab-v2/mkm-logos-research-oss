@@ -148,3 +148,48 @@ def test_emitted_template_validates_against_schema(tmp_path: Path) -> None:
     assert cp.returncode == 0
     instance = json.loads(out.read_text(encoding="utf-8"))
     jsonschema.Draft7Validator(schema).validate(instance)
+    assert instance.get("version") == "1.0.1"
+    assert (instance.get("review_gate") or {}).get("status") == "pending"
+
+
+def test_review_gate_invalid_status_fails_schema(tmp_path: Path) -> None:
+    jsonschema = pytest.importorskip("jsonschema")
+    from jsonschema import exceptions as jsonschema_exceptions
+
+    schema = json.loads(_SCHEMA.read_text(encoding="utf-8"))
+    out = tmp_path / "distill.json"
+    cp = subprocess.run(
+        [sys.executable, str(_RUNNER), "--write-template", str(out)],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0
+    instance = json.loads(out.read_text(encoding="utf-8"))
+    instance["review_gate"] = {"status": "not_a_valid_enum_value"}
+    v = jsonschema.Draft7Validator(schema)
+    with pytest.raises(jsonschema_exceptions.ValidationError):
+        v.validate(instance)
+
+
+def test_review_gate_approved_snapshot_with_sha256_validates(tmp_path: Path) -> None:
+    jsonschema = pytest.importorskip("jsonschema")
+    schema = json.loads(_SCHEMA.read_text(encoding="utf-8"))
+    out = tmp_path / "distill.json"
+    cp = subprocess.run(
+        [sys.executable, str(_RUNNER), "--write-template", str(out)],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0
+    instance = json.loads(out.read_text(encoding="utf-8"))
+    instance["review_gate"] = {
+        "status": "approved_snapshot",
+        "artifact_sha256": "a" * 64,
+        "reason_code": "human_signoff",
+        "reviewer_role": "commander",
+    }
+    jsonschema.Draft7Validator(schema).validate(instance)
