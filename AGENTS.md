@@ -88,6 +88,7 @@
 - **`origin`의 push가 `no_push`인 설정은 유지 권장:** 일반 `git push origin` 으로 GitHub에 안 가게 막는 안전장치.
 - **`hq` 등 다른 리모트:** 팀용 이름일 뿐이며, 일인이면 **주 저장소는 `gitea`/`internal` 하나로 통일**하고 나머지는 필요할 때만 의식하면 됨. 헷갈리면 **`scripts/Show-RemotePublicationMode.ps1`** 로 “어디로 열려 있는지”만 확인.
 - **PR·worktree 병렬:** 문서의 Git hygiene은 팀 협업용 바람직함이다. **혼자면 브랜치 하나로 길게 가도 되고**, 나중에 정리할 여유가 있을 때만 `1작업=1브랜치`를 적용해도 된다.
+- **런타임 JSON 잡음:** 데몬·스케줄이 `projects/bitcoin-trading/memory/v2/risk/risk_profile_fact_safe_latest.json` 등만 갱신하면 `git status`에만 뜰 수 있다. **타임스탬프만 바뀐 로컬 굴레**면 커밋에 넣지 말고 `git restore projects/bitcoin-trading/memory/v2/risk/risk_profile_fact_safe_latest.json` 로 되돌린다(운영 반영을 의도해 고친 경우만 커밋).
 
 ## 필수 우선순위
 
