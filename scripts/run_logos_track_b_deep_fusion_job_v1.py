@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 import uuid
 from datetime import datetime, timezone
@@ -20,6 +21,7 @@ DEFAULT_READINESS = ROOT / "docs/final/artifacts/logos_track_b_policy_readiness_
 DEFAULT_THEOLOGY = ROOT / "docs/final/artifacts/LOGOS_MKM_THEOLOGY_BASELINE_V1.json"
 DEFAULT_BUNDLE = ROOT / "docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/logos_track_b_deep_fusion_job_v1_latest.json"
+DISTILL_RUNNER = ROOT / "scripts" / "run_lens_logos_deep_fusion.py"
 
 ARTIFACT_SCHEMA = "logos_track_b_deep_fusion_job_v1"
 VERSION = "1.0.0"
@@ -52,6 +54,13 @@ def main() -> int:
         "--allow-llm-placeholder",
         action="store_true",
         help="Reserved: future hook for explicit LLM enablement (currently ignored; never calls LLM).",
+    )
+    ap.add_argument(
+        "--write-distill-template",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="After successful gate, run run_lens_logos_deep_fusion.py --bundle-json --write-template (no LLM).",
     )
     args = ap.parse_args()
 
@@ -113,13 +122,58 @@ def main() -> int:
         "notes": "No external API calls in this runner; Track B observation only.",
     }
 
+    distill_out: dict[str, Any] = {"skipped": True, "reason": None}
+    final_exit = exit_code
+
+    if (
+        args.write_distill_template is not None
+        and exit_code == 0
+        and bundle_ok
+        and DISTILL_RUNNER.is_file()
+    ):
+        cp = subprocess.run(
+            [
+                sys.executable,
+                str(DISTILL_RUNNER),
+                "--bundle-json",
+                str(args.bundle_json.resolve()),
+                "--build-id",
+                job_id,
+                "--slice-id",
+                "slice5_track_b_chain",
+                "--write-template",
+                str(args.write_distill_template.resolve()),
+            ],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        distill_out = {
+            "skipped": False,
+            "distill_runner": _rel(DISTILL_RUNNER),
+            "template_path": _rel(args.write_distill_template),
+            "subprocess_exit_code": cp.returncode,
+            "stderr_tail": (cp.stderr or "")[-500:],
+        }
+        doc["outputs"] = {"distill_template": distill_out}
+        if cp.returncode != 0:
+            doc["execution"]["distill_template_failed"] = True
+            final_exit = 4
+        else:
+            doc["execution"]["distill_template_written"] = True
+    elif args.write_distill_template is not None:
+        reason = "blocked_readiness_or_bad_gate" if exit_code != 0 else "bundle_missing_or_runner_missing"
+        distill_out = {"skipped": True, "reason": reason}
+        doc["outputs"] = {"distill_template": distill_out}
+
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     if args.dry_run:
         print(f"job_id={job_id} status={exec_status} write={_rel(args.output)}")
 
-    return exit_code
+    return final_exit
 
 
 if __name__ == "__main__":

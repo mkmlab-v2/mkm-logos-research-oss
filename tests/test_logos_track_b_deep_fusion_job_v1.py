@@ -77,3 +77,75 @@ def test_job_blocked_when_readiness_false(tmp_path: Path) -> None:
     assert cp.returncode == 3
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc["execution"]["status"] == "blocked_readiness"
+
+
+def test_write_distill_template_chain_skip_readiness(tmp_path: Path) -> None:
+    jsonschema = pytest.importorskip("jsonschema")
+    schema = json.loads(_SCHEMA.read_text(encoding="utf-8"))
+    distill_out = tmp_path / "distill_chain.json"
+    job_out = tmp_path / "job_chain.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(_RUNNER),
+            "--skip-readiness-check",
+            "--output",
+            str(job_out),
+            "--write-distill-template",
+            str(distill_out),
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0, cp.stderr
+    assert distill_out.is_file()
+    doc = json.loads(job_out.read_text(encoding="utf-8"))
+    jsonschema.Draft7Validator(schema).validate(doc)
+    dt = doc.get("outputs", {}).get("distill_template") or {}
+    assert dt.get("skipped") is False
+    assert doc.get("execution", {}).get("distill_template_written") is True
+
+
+def test_distill_skipped_when_readiness_blocked(tmp_path: Path) -> None:
+    bad = tmp_path / "bad_readiness2.json"
+    bad.write_text(
+        json.dumps(
+            {
+                "schema": "logos_track_b_policy_readiness_v1",
+                "version": "1.0.0",
+                "ts_utc": "2026-01-01T00:00:00Z",
+                "hypothesis_tier": "B",
+                "overall_ok": False,
+                "checks": {},
+                "failure_codes": ["test"],
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    distill_out = tmp_path / "skipped_distill.json"
+    job_out = tmp_path / "job_blocked.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(_RUNNER),
+            "--readiness",
+            str(bad),
+            "--output",
+            str(job_out),
+            "--write-distill-template",
+            str(distill_out),
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 3
+    assert not distill_out.is_file()
+    doc = json.loads(job_out.read_text(encoding="utf-8"))
+    skip = doc.get("outputs", {}).get("distill_template") or {}
+    assert skip.get("skipped") is True
+    assert skip.get("reason") == "blocked_readiness_or_bad_gate"

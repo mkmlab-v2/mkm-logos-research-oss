@@ -40,6 +40,7 @@
     "readiness": { "type": "object", "additionalProperties": true },
     "inputs": { "type": "object", "additionalProperties": true },
     "execution": { "type": "object", "additionalProperties": true },
+    "outputs": { "type": "object", "additionalProperties": true },
     "notes": { "type": "string" }
   }
 }
