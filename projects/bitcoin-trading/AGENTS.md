@@ -16,6 +16,14 @@
 - **반드시** `pm2 show <앱이름>`으로 `exec cwd`·`script path`를 확인한 뒤, 그 모노레포 루트에서만 `git pull`·`scripts/sync_fact_safe_risk_profile.py`·`memory/v2/risk/` 갱신을 한다. 다른 클론에서만 sync 하면 **본선 프로세스가 그 JSON을 읽지 않을 수 있다.**
 - 금융 예언 → 리스크 JSON 반영 절차: **`docs/final/FINANCIAL_PROPHECY_VPS_LIVE_TRADING_DIRECTIVE_V1.md`**.
 
+## Git 배포 정렬 (원격·브랜치 혼동 방지)
+
+- **전역 정책**: GitHub 최소·**internal/gitea 우선**은 루트 `AGENTS.md`와 동일. 아래는 **그 VPS가 실제로 fetch하는 원격이 GitHub일 때**만 예외적으로 맞춘다.
+- **단일 포인터**: `ops/v2/DEPLOY_GIT_POINTER_V1.json` — 배포 대상이 따라야 할 **remote 이름·브랜치·풀 후 존재해야 할 파일**(bitcoin-trading 기준 상대경로)을 적어 둔다. 호스트마다 다르면 **그 호스트에 맞게 이 JSON만 수정**한다.
+- **배포 후 스모크 (VPS, bitcoin-trading이 cwd)**:  
+  `bash ops/v2/ssh/check_vps_deploy_files_vs_pointer.sh`  
+  exit 0이면 필수 파일이 있다. MISSING이면 커밋이 **다른 원격/브랜치**에만 있는 것이니, 포인터의 `deploy_alignment`에 맞춰 pull 하거나 로컬에서 그 브랜치로 반영 후 다시 pull 한다.
+
 ## 더 읽기
 
 - 루트: `../../AGENTS.md` · `../../docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`

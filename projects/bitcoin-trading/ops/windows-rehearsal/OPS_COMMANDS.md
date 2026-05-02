@@ -65,6 +65,8 @@ py .\scripts\export_binance_fills_to_cursor_trade_history_v1.py --hours 168 --ru
 
 Requires valid Binance API credentials (same chain as live trading: env / `.env` / Security Agent). Testnet: add `--testnet` to the export script.
 
+**원격·브랜치 혼동 방지**: 배포 정렬 SSOT는 `projects/bitcoin-trading/ops/v2/DEPLOY_GIT_POINTER_V1.json`. VPS(bitcoin-trading을 cwd로)에서 필수 파일 존재 확인: `bash ops/v2/ssh/check_vps_deploy_files_vs_pointer.sh`
+
 ### Manual one-shot run
 
 ```powershell
