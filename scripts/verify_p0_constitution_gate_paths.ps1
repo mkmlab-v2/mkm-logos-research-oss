@@ -19,6 +19,8 @@ param(
 # 2026-05-02: M2–M4 myeongni (jijangan ohang weights, daewoon v1, jijangan ohang script, daewoon test).
 # 2026-05-02: +4 myeongni jijangan LUT M1 (lut, schema, script, test).
 # 2026-05-02: 일일 실행 인사이트 브리프 v1 (§1c 독립 렌즈·CONSTITUTION §3.3 행; 산출 JSON은 게이트 목록 미포함).
+# 2026-05-02: 압축 주간 거버넌스 체인 러너 복구 (run_compression_weekly_governance_chain.ps1 + P0 경로).
+# 2026-05-02: 명리 독립 렌즈 → Thin JSONL 브리지 v1 (emit 스크립트·pytest; §3.6).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -76,6 +78,8 @@ $required = @(
     "scripts\build_daily_execution_insight_brief_v1.py",
     "scripts\Run-DailyExecutionInsightBrief_v1.ps1",
     "tests\test_build_daily_execution_insight_brief_v1.py",
+    "scripts\emit_myeongni_thin_bridge_line_v1.py",
+    "tests\test_emit_myeongni_thin_bridge_line_v1.py",
     "projects\bitcoin-trading\ops\windows-rehearsal\GENERAL_PROPHECY_MONTHLY_SCHEDULER_RUNBOOK_V1.md",
     "projects\bitcoin-trading\ops\windows-rehearsal\register_fused_quant_pixel_sop_strict_check_task.ps1",
     "projects\bitcoin-trading\ops\windows-rehearsal\register_fused_quant_pixel_sop_strict_check_task_clean.ps1",
@@ -202,6 +206,9 @@ $required = @(
     "docs\final\artifacts\MKM_MCP_STDIO_POINTER_V1.json",
     "data\personalization\mkm_user_context_v1.sample.json",
     "docs\final\COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md",
+    "scripts\run_compression_weekly_governance_chain.ps1",
+    "scripts\build_compression_weekly_governance_report.py",
+    "scripts\Register-CompressionWeeklyGovernanceTask.ps1",
     "scripts\bench_l1_api_load.py",
     "docs\final\artifacts\bench_l1_api_load_latest.json",
     "scripts\run_l1_inverse_decoder_spike_test.py",
