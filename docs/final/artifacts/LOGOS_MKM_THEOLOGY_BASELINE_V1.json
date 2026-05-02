@@ -1,0 +1,54 @@
+{
+  "schema": "logos_mkm_theology_baseline_v1",
+  "version": "1.0.0",
+  "hypothesis_tier": "B",
+  "non_gating_ack": true,
+  "purpose": "Parametric in-engine theology baseline: deterministic precedence among disputed readings without claiming external scholarly or doctrinal finality.",
+  "governance_and_reporting": {
+    "intent": "모든 자원을 활용해 산출을 투명히 보고하고, 적용 범위·한계·가설 단계를 명시하여 지휘관 채택/HITL·감사 추적을 가능하게 한다.",
+    "not_a_deregulation_claim": true,
+    "regulatory_disclaimer_text": "본 파일·배너·Track B 라벨만으로 법무·규제·제품 적합성이 자동 소멸하거나 면제된다고 해석하지 않는다. 대외 주장·상용·교리 단정은 별도 검증·승인 경로 대상이다.",
+    "required_report_banners": [
+      "[TRACK B / HYPO]",
+      "[연구용: 최종 판단은 지휘관 대기]"
+    ]
+  },
+  "textual_precedence": {
+    "description": "내부 일관성용 우선순위. 역사·고고학 최종 판정을 대체하지 않음.",
+    "primary_canon_surface": "MT-oriented_pipeline_inputs_where_applicable",
+    "chronology_conflict_resolver": "prefer_mt_adjacent_timeline_weights_then_root_gematria_bridge",
+    "tie_break_order": [
+      "explicit_verse_id_and_quote_hash_anchor",
+      "cross_reference_graph_path_evidence",
+      "gematria_4d_bridge_hypothesis_layer"
+    ]
+  },
+  "forbidden_outputs": {
+    "single_absolute_year_maps_to_modern_calendar_date_as_fact": true,
+    "headline_text_only_prophecy_trigger": true,
+    "a_track_live_order_without_external_gates": true,
+    "external_truth_claim_without_corpus_manifest_and_bundle_provenance": true
+  },
+  "modern_join_hypothesis": {
+    "description": "날짜 억지 매칭 금지. 패턴·레짐·구조 정렬만 허용.",
+    "allowed_news_metadata_keys_for_hypothesis_join": [
+      "published_utc",
+      "language",
+      "region_bucket",
+      "topic_tags",
+      "macro_regime_label_hypothesis_only"
+    ],
+    "join_method": "pattern_and_embedding_hypothesis_only_not_date_equivalence",
+    "spurious_correlation_guard": "require_explicit_counterfactual_window_and_null_model_when_claiming_overlay_strength"
+  },
+  "provenance_slots": {
+    "corpus_manifest_path": "docs/final/artifacts/logos_corpus_manifest_v1_latest.json",
+    "corpus_graph_bundle_path": "docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json",
+    "vector_policy_path": "docs/final/artifacts/LOGOS_VECTOR_INDEX_POLICY_V1.json",
+    "commander_axes_path": "docs/final/artifacts/LOGOS_DEEP_RESEARCH_COMMANDER_REPORT_AXES_V1.json"
+  },
+  "rule_pack_placeholder": {
+    "note": "세부 수치 가중치는 별도 버전드 rule_school_mkm_logos_v1.* 파일로 확장 가능.",
+    "weights_are_internal_consistency_only": true
+  }
+}

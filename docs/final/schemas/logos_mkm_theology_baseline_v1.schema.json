@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_mkm_theology_baseline_v1.schema.json",
+  "title": "MKM Logos theology baseline v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "hypothesis_tier",
+    "purpose",
+    "governance_and_reporting",
+    "forbidden_outputs",
+    "non_gating_ack"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "logos_mkm_theology_baseline_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "const": "B"
+    },
+    "non_gating_ack": {
+      "type": "boolean",
+      "const": true
+    },
+    "purpose": { "type": "string", "minLength": 1 },
+    "governance_and_reporting": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["intent", "not_a_deregulation_claim"],
+      "properties": {
+        "intent": { "type": "string" },
+        "not_a_deregulation_claim": { "type": "boolean", "const": true }
+      }
+    },
+    "forbidden_outputs": { "type": "object", "additionalProperties": true }
+  }
+}
