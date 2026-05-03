@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trackc_macro_risk_morning_briefing_v1.schema.json",
+  "title": "Track C Macro Risk Morning Briefing v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "briefing_date_utc",
+    "status",
+    "market_snapshot",
+    "top_risk_signals",
+    "action_frame",
+    "fact_lock_evidence",
+    "disclaimer"
+  ],
+  "properties": {
+    "schema": {
+      "const": "trackc_macro_risk_morning_briefing_v1"
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "briefing_date_utc": {
+      "type": "string"
+    },
+    "status": {
+      "type": "object",
+      "required": [
+        "system_status",
+        "packet_status",
+        "guard_passed",
+        "showroom_go_no_go"
+      ],
+      "properties": {
+        "system_status": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "packet_status": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "guard_passed": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "showroom_go_no_go": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "market_snapshot": {
+      "type": "object",
+      "required": [
+        "asset_scope",
+        "decision_state",
+        "risk_warning_level",
+        "confidence_band",
+        "primary_regime_id",
+        "recommended_operator_posture",
+        "ttl_seconds"
+      ],
+      "properties": {
+        "asset_scope": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decision_state": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "risk_warning_level": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence_band": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "primary_regime_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "recommended_operator_posture": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ttl_seconds": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "top_risk_signals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "score"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "action_frame": {
+      "type": "object",
+      "required": [
+        "label",
+        "operator_action",
+        "veto_or_guard",
+        "next_check_hint"
+      ],
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "operator_action": {
+          "type": "string"
+        },
+        "veto_or_guard": {
+          "type": "string"
+        },
+        "next_check_hint": {
+          "type": "string"
+        }
+      }
+    },
+    "fact_lock_evidence": {
+      "type": "object",
+      "required": [
+        "smoke_artifact",
+        "dashboard_artifact",
+        "handoff_artifact",
+        "delivery_ready"
+      ],
+      "properties": {
+        "smoke_artifact": {
+          "type": "string"
+        },
+        "dashboard_artifact": {
+          "type": "string"
+        },
+        "handoff_artifact": {
+          "type": "string"
+        },
+        "delivery_ready": {
+          "type": "object",
+          "required": [
+            "commercial_package_ready",
+            "external_onepager_ready",
+            "api_spec_package_ready"
+          ],
+          "properties": {
+            "commercial_package_ready": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "external_onepager_ready": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "api_spec_package_ready": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "disclaimer": {
+      "type": "object",
+      "required": [
+        "advisory_only",
+        "no_buy_sell_instruction",
+        "operator_final_decision"
+      ],
+      "properties": {
+        "advisory_only": {
+          "type": "boolean"
+        },
+        "no_buy_sell_instruction": {
+          "type": "boolean"
+        },
+        "operator_final_decision": {
+          "type": "boolean"
+        }
+      }
+    },
+    "context": {
+      "type": "object"
+    }
+  }
+}

@@ -178,6 +178,12 @@ def _b2b_onepager_md(*, generated_at: str) -> str:
 - 재현 가능한 **JSON·로그 경로**를 납기물에 병기 (Fact-Lock)
 - 월간 **투명성** 리포트(계약 범위 내): 경보 적시성·정시 납기 등 `TRACK_C` §7과 정합 가능 영역만
 
+## 대외 비교 포지셔닝 (Fact-Lock)
+
+- WRING류는 기초모델 내부 표현공간 편향 교정(기초 과학), MKM12 Track C는 운영 파이프라인·정책 바인딩·감사 추적(응용 거버넌스) 전장
+- 기술 우열 단정 금지; 상용 문구는 "운영 통제 가능성·감사 가능성" 중심으로 고정
+- 모델 내부 개조 없이 API 계약·HITL·로그 증거로 리스크 경보 운영을 검증 가능하게 제공
+
 ## 대외 고정 문구 (§9 English default)
 
 > MKM provides a governance-driven risk warning and scenario posture service that integrates multi-lens analytics. The service supports exposure-control decisions with reproducible artifacts and verification logs. It is not investment advice, does not provide buy/sell instructions, and does not guarantee returns.

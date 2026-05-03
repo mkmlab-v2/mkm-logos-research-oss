@@ -51,8 +51,18 @@ if ($LASTEXITCODE -ne 0) { $failed = $true; throw "copy guard failed: MVP" }
 & py (Join-Path $PSScriptRoot "check_track_c_copy_guard_v1.py") $b2b
 if ($LASTEXITCODE -ne 0) { $failed = $true; throw "copy guard failed: B2B" }
 
+Write-Step "4) Track C morning briefing (json + ko/en markdown)"
+$morningBrief = Join-Path $PSScriptRoot "build_trackc_macro_risk_morning_briefing_v1.py"
+if (Test-Path -LiteralPath $morningBrief) {
+    & py $morningBrief
+    if ($LASTEXITCODE -ne 0) { $failed = $true; throw "morning briefing build failed with exit $LASTEXITCODE" }
+}
+else {
+    Write-Warning "Missing: $morningBrief"
+}
+
 if (-not $SkipOrchestrator) {
-    Write-Step "4) verify_mkm_orchestrator_bundle_v1"
+    Write-Step "5) verify_mkm_orchestrator_bundle_v1"
     $v = Join-Path $PSScriptRoot "verify_mkm_orchestrator_bundle_v1.py"
     if (Test-Path -LiteralPath $v) {
         & py $v
@@ -62,7 +72,7 @@ if (-not $SkipOrchestrator) {
         Write-Warning "Missing: $v"
     }
 
-    Write-Step "5) mkm_orchestrator_noop_smoke_v1"
+    Write-Step "6) mkm_orchestrator_noop_smoke_v1"
     $n = Join-Path $PSScriptRoot "mkm_orchestrator_noop_smoke_v1.py"
     if (Test-Path -LiteralPath $n) {
         & py $n

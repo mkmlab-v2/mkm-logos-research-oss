@@ -134,6 +134,15 @@ if (-not $dualLegChainRan -and (Test-Path -LiteralPath $trackCOpsDashboardExec))
     & py $trackCOpsDashboardExec
 }
 
+# Refresh Track C morning briefing artifact set (json + ko/en markdown).
+$trackCMorningBriefing = Join-Path $WorkspaceRoot "scripts\build_trackc_macro_risk_morning_briefing_v1.py"
+if (Test-Path -LiteralPath $trackCMorningBriefing) {
+    & py $trackCMorningBriefing
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
 # Dispatch compliance-safe Track C B2B brief webhook payload (if webhook env is configured).
 $trackCB2BDispatch = Join-Path $WorkspaceRoot "scripts\dispatch_trackc_b2b_brief_webhook_v1.py"
 if (Test-Path -LiteralPath $trackCB2BDispatch) {
