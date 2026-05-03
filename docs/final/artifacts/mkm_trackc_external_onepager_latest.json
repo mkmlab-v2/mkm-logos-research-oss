@@ -1,12 +1,12 @@
 {
   "schema": "mkm_trackc_external_onepager_v1",
-  "generated_at_utc": "2026-05-03T10:32:15.567800Z",
+  "generated_at_utc": "2026-05-03T16:37:02.634127Z",
   "title": "MKM AI Track C: Macro Risk Warning API + Public Showroom",
   "elevator_pitch": "운영형 MKM AI의 거시 리스크 경보 API와 공개 쇼룸 레인을 결합한 고객 전달 패키지.",
   "current_state": {
-    "system_label": "MKM AI Cursor operational profile",
-    "status": "HOLD_OPERATIONAL_V1",
-    "is_final": false
+    "system_label": "MKM AI v2.0 (Final)",
+    "status": "APPROVED_FINAL_V2",
+    "is_final": true
   },
   "core_value": [
     "거시 리스크 신호를 구조화된 API 계약으로 제공",

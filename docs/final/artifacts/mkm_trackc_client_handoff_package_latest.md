@@ -1,8 +1,8 @@
 # MKM AI Track C Client Handoff Package
 
-- generated_at_utc: `2026-05-02T22:10:03.358117Z`
+- generated_at_utc: `2026-05-03T16:37:02.800677Z`
 - packet_status: `READY`
-- status: `HOLD_OPERATIONAL_V1`
+- status: `APPROVED_FINAL_V2`
 - api_decision_state: `WATCH`
 - showroom_go_no_go: `GO`
 

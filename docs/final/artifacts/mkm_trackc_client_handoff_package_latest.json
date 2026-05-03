@@ -1,10 +1,10 @@
 {
   "schema": "mkm_trackc_client_handoff_package_v1",
-  "generated_at_utc": "2026-05-02T22:10:03.358117Z",
+  "generated_at_utc": "2026-05-03T16:37:02.800677Z",
   "packet_status": "READY",
   "title": "MKM AI Track C Client Handoff Package",
   "executive_summary": {
-    "status": "HOLD_OPERATIONAL_V1",
+    "status": "APPROVED_FINAL_V2",
     "elevator_pitch": "운영형 MKM AI의 거시 리스크 경보 API와 공개 쇼룸 레인을 결합한 고객 전달 패키지.",
     "api_decision_state": "WATCH",
     "showroom_go_no_go": "GO"
