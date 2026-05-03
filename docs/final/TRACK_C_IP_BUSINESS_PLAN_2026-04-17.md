@@ -243,7 +243,7 @@ Short copy:
 ## 10) Immediate Next Actions
 
 1. **§3.8 MVP:** `2026 H2 매크로 리스크 경보 리포트` — **목차·Executive Summary 1p·근거 아티팩트 경로 표**는 `docs/final/artifacts/track_c_2026_h2_macro_risk_alert_report_mvp_v1.md`에 동결; 본문 수치는 해당 경로의 JSON·로그로 채운다.
-2. **B2B 오퍼:** 구독 범위(주기·대시보드·이메일)·면책·신뢰 KPI를 넣은 **1페이지 세일즈 시트** 초안을 Track C 공통 문구(§9)와 함께 고정한다.
+2. **B2B 오퍼:** 구독 범위(주기·대시보드·이메일)·면책·신뢰 KPI를 넣은 **1페이지 세일즈 시트** 초안을 Track C 공통 문구(§9)와 함께 고정한다. **자동 생성 초안:** `docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_latest.md` (`py scripts/build_track_c_macro_risk_mvp_filled_v1.py` 실행 시 MVP와 함께 갱신).
 3. 이 문서를 기준으로 `P1(압축)` 세일즈 원페이지와 파일럿 제안서 버전을 동결한다.
 4. `P2(신시장지표)` 관측형 주간 리포트 템플릿을 추가하고, 경보 KPI를 명시한다(B2B 브리프와 중복 시 하나의 납기 템플릿으로 통합 검토).
 5. `P4/P5/P6(명리/초고난도 비정형 텍스트/사상의학)`은 비자문·비의료·비결정론 고정 문구를 포함한 실험형 패키지로만 운영한다.
