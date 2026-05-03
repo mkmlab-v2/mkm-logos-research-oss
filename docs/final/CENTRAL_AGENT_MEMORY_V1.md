@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-03T11:29:55Z
+- **last_updated_utc:** 2026-05-03T11:38:51Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -15,7 +15,7 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-03T11:29:55Z** — 권장 스코프 커밋 3e5b94: MKM 프로토콜·athena_checkpoint·cursorrules_slim·fact_lock optional; internal push OK
+- **2026-05-03T11:38:51Z** — P0 254 green; run_fact_lock_bundle (P1AB+Codebook+TruthfulQA MC) exit 0; next: theme-based small commits for remaining dirty tree if desired.
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
