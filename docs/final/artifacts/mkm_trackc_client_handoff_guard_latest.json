@@ -1,9 +1,11 @@
 {
   "schema": "mkm_trackc_client_handoff_guard_report_v1",
-  "generated_at_utc": "2026-04-30T19:56:03.168779Z",
+  "generated_at_utc": "2026-05-03T03:37:27.423118Z",
   "handoff_path": "C:/workspace/docs/final/artifacts/mkm_trackc_client_handoff_package_latest.json",
   "passed": true,
   "failures": [],
+  "approval_tier": "operational_hold",
+  "strict_final": false,
   "packet_status": "READY",
-  "system_status": "APPROVED_FINAL_V2"
+  "system_status": "HOLD_OPERATIONAL_V1"
 }

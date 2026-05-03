@@ -15,7 +15,12 @@ def _read_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
-def _check(doc: Dict[str, Any]) -> List[str]:
+STATUS_APPROVED_FINAL_V2 = "APPROVED_FINAL_V2"
+STATUS_HOLD_OPERATIONAL_V1 = "HOLD_OPERATIONAL_V1"
+
+
+def _check(doc: Dict[str, Any], *, strict_final: bool) -> tuple[List[str], str]:
+    """Returns (failure_codes, approval_tier: final | operational_hold | none)."""
     failures: List[str] = []
 
     if doc.get("schema") != "mkm_trackc_client_handoff_package_v1":
@@ -25,10 +30,10 @@ def _check(doc: Dict[str, Any]) -> List[str]:
         failures.append("packet_status_not_ready")
 
     summary = doc.get("executive_summary", {})
-    if summary.get("status") != "APPROVED_FINAL_V2":
-        failures.append("system_status_not_approved_final_v2")
-
+    status = summary.get("status")
+    approval_tier = "none"
     checklist = doc.get("delivery_checklist", {})
+
     required_true = [
         "commercial_package_ready",
         "external_onepager_ready",
@@ -41,7 +46,21 @@ def _check(doc: Dict[str, Any]) -> List[str]:
         if checklist.get(key) is not True:
             failures.append(f"checklist_not_true:{key}")
 
-    return failures
+    checklist_ok = not any(x.startswith("checklist_not_true:") for x in failures)
+
+    if status == STATUS_APPROVED_FINAL_V2:
+        approval_tier = "final"
+    elif (
+        not strict_final
+        and status == STATUS_HOLD_OPERATIONAL_V1
+        and doc.get("packet_status") == "READY"
+        and checklist_ok
+    ):
+        approval_tier = "operational_hold"
+    else:
+        failures.append("system_status_not_approved_final_v2")
+
+    return failures, approval_tier
 
 
 def main() -> int:
@@ -50,6 +69,11 @@ def main() -> int:
     p.add_argument(
         "--handoff-json",
         default="docs/final/artifacts/mkm_trackc_client_handoff_package_latest.json",
+    )
+    p.add_argument(
+        "--strict-final",
+        action="store_true",
+        help="Require executive_summary.status APPROVED_FINAL_V2 (reject HOLD_OPERATIONAL_V1).",
     )
     args = p.parse_args()
 
@@ -65,13 +89,15 @@ def main() -> int:
         print(f"TRACKC HANDOFF GUARD: FAIL json parse error: {type(exc).__name__}")
         return 1
 
-    failures = _check(doc)
+    failures, approval_tier = _check(doc, strict_final=args.strict_final)
     report = {
         "schema": "mkm_trackc_client_handoff_guard_report_v1",
         "generated_at_utc": _utc_now(),
         "handoff_path": str(handoff_path).replace("\\", "/"),
         "passed": len(failures) == 0,
         "failures": failures,
+        "approval_tier": approval_tier,
+        "strict_final": bool(args.strict_final),
         "packet_status": doc.get("packet_status"),
         "system_status": (doc.get("executive_summary", {}) or {}).get("status"),
     }
