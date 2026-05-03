@@ -8,6 +8,8 @@
 **보강 (2026-05-02 — 매크로 스텁 라벨 상관·해석 메시지 조립):** `scripts/eval_myeongri_rule_school_macro_stub_v1.py`에 선택 숫자 `label`·`--label-axis`(S/L/K/M/norm) 상관; `scripts/run_myeongri_ai_interpretation_pack_v1.py`로 §3 유저 메시지 치환(LLM 미호출).
 **보강 (2026-05-02 — MKM 렌즈 글로벌 프로파일링 프롬프트·RAG 초안):** `docs/final/MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md` — B-track NL 번역층·`[DRAFT]`; Fact-Lock·임상 격벽·`MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1` 정렬; 구현 강제 아님.
 **보강 (2026-05-02):** §1.3 Track C Macro Risk n8n 메일 온보딩 PowerShell 스크립트 표.
+**보강 (2026-05-02 — MKM-Orchestrator):** §1.4 `todo_queue_v1` 폴링·`reports/mkm_orchestrator_audit.jsonl`·텔레그램 notify/ingest(`.env`); **CENTRAL MD 자동 파싱·B→A·실매매 자동 합선 없음** — 경로·스크립트 `docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json`·`verify_mkm_orchestrator_bundle_v1.py`.
+**보강 (2026-05-03 — Security Agent / API 키 Fact-Lock):** §1.1.2 — `projects/bitcoin-trading/src/api/binance_client.py`가 `scripts.security_agent_manager.get_security_agent`를 최우선 시도하나 **현행 저장소에 `scripts/security_agent_manager.py` 없음** → import 실패 시 **환경 변수 → 루트 `.env` → JSON 파일** 폴백만 사실상 동작. **별도** `scripts/Invoke-EncryptedSecretStore.ps1`(DPAPI, `%APPDATA%\MKM\secret_store_v1.json`)은 범용 로컬 스토어이며 **binance_client와 자동 배선 없음**. **압축(Track A/B) 파이프라인은 API 키 암·복호화 계약 아님** — 혼동 금지.
 **이전 갱신**: 2026-04-14 §2 B-track `4d_to_ohaeng`·human regime audit 스파이크 행; §3.4.1 Postella; 2026-04-13 §1.2 AE-2 KOSPI.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
 
@@ -58,6 +60,19 @@
 
 대외용 ‘국방 제안·지원사업’ 서사는 **`research_only` 도메인 연구 사례**로만 유지하고, 시스템 우선순위 서술은 **예언(Prophecy) 성능·재현 가능한 채점**으로 맞춘다. B-track 기반 개입의 **성패 판정**은 `prophecy_hit_rate_eval_report_v2` 및 동일 채점기 위의 **적중률 델타**(또는 `run_prophecy_restoration_spike.py` 등 **AB 오버레이 스파이크 산출**)로만 논한다; 델타가 음수인 것도 **유효한 관측**이며 정책·임계값 스윕 비교의 입력이 된다. 명리·로고스 등 B-track 산출물은 Prior·실험 입력으로만 쓰고, **§1.1 TOE 비단정·§8 Promotion Loop·격벽** 없이 A-track·실매매 파이프라인에 합선하지 않는다. 다축 브리지·라우팅 보조와 토큰 압축 경로의 **역할 분업**은 기존 표·§2 경로 팩트를 따르며, 본 절은 구현 행을 중복하지 않는다.
 
+### 1.1.2 Security Agent 설계 의도 vs 현행 팩트 (API 키, 2026-05-03)
+
+| 항목 | 경로 / 팩트 | 비고 |
+|------|-------------|------|
+| 설계(Intent) | `projects/bitcoin-trading/src/api/binance_client.py` | docstring·우선순위에 **Security Agent** 경로 명시; `from scripts.security_agent_manager import get_security_agent` 시도 후 `agent.get_env_var("BINANCE_API_KEY")` 등 |
+| 현행 구현 모듈 | `scripts/security_agent_manager.py` | **본 저장소 트리에 파일 없음** → import 실패 시 `SECURITY_AGENT_AVAILABLE=False`, 곧바로 폴백 |
+| 폴백 체인(실동작) | 동 파일 `get_binance_api_keys()` | `BINANCE_KEY_SOURCE_MODE` 기본 `auto`: **env → 루트 `C:\workspace\.env`의 BINANCE_* → `binance_api_keys.json` 등**(코드 주석·구현 순서 따름) |
+| 로컬 암호 저장(별도) | `scripts/Invoke-EncryptedSecretStore.ps1` | Windows DPAPI 기반 `%APPDATA%\MKM\secret_store_v1.json`; **set/get/list/remove** CLI. **binance_client와 자동 연결·호출 없음**(별도 수동 운용). |
+| 동기화(운영) | `projects/bitcoin-trading/ops/windows-rehearsal/sync_required_env_to_user.ps1` | 루트 `.env`의 비어 있지 않은 키를 Windows User 환경 변수로 복사; `GEMINI_API_KEY` 등 목록은 해당 스크립트 내 배열 |
+| 명시적 부정 | §1.2 압축·토큰 절감 파이프라인 | **텍스트/토큰 압축 이론은 API 키·비밀 관리 계약이 아님** — “압축으로 키 관리” 서술과 합선 금지 |
+
+**에이전트·자동화 주의:** Cursor/Cloud Agent는 **실키를 레포에 쓰거나 채팅으로 회수하지 않는다** — 루트 `.cursor/rules/cursor-cloud-sandbox-boundary.mdc`·루트 `AGENTS.md`와 정합.
+
 ### 1.3 Track C — Macro Risk 메일 온보딩 (Windows / n8n, 로컬 운영)
 
 | 항목 | 경로 | 비고 |
@@ -70,6 +85,31 @@
 | 주간 리허설 | `scripts/Rehearse-MacroRiskN8nWeekly.ps1` | `-IncludeApproval` 시 실제 승인 웹훅·메일 경로 실행. |
 
 OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_risk_warning_api_v1.yaml`·`scripts/macro_risk_warning_api_stub.py` 등 기존 Track C 산출물과 교차 참조; 본 표는 **메일 온보딩 운영 스크립트**만 Fact-Lock한다.
+
+### 1.4 MKM-Orchestrator (bounded automation, `todo_queue_v1`)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| 큐 스키마 | `docs/final/schemas/todo_queue_v1.schema.json` | 실행 SSOT는 정형 JSON; `CENTRAL_AGENT_MEMORY_V1.md`를 **작업 큐로 자동 파싱하지 않음**. |
+| 연결·포인터 | `docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json` | 스크립트·환경키·아티팩트 요약; **일일 압축 루틴** `operator_daily_routine_v1`(폴 상시·브릿지 수동). |
+| 경로 일괄 확인 | `scripts/verify_mkm_orchestrator_bundle_v1.py` | exit 0/1; 네트워크 없음. |
+| 폴링 | `scripts/mkm_orchestrator_poll_v1.py` · `scripts/mkm_orchestrator_poll.ps1` | 감사 `reports/mkm_orchestrator_audit.jsonl` · 락 `reports/mkm_orchestrator_poll.lock`. |
+| 승인 CLI | `scripts/approve_mkm_orchestrator_task_v1.py` | `--task-id` 단건 또는 `--batch-approve`로 `awaiting_approval` + 승인 필요 `pending` 일괄. HITL이 큐에 `approval.resolution=approved` 반영. |
+| 큐·HITL 요약 | `scripts/show_mkm_orchestrator_queue_status_v1.py` | `todo_queue_latest` + `approval_backlog_latest` 요약; `--batch-approve` 대상 개수 힌트. |
+| 텔레그램 | `scripts/mkm_orchestrator_telegram_v1.py` | `notify` / `ingest` / `send-test`; `MKM_ORCHESTRATOR_TELEGRAM_NOTIFY=1` 등(`.env.example` 참고). |
+| Noop 첫 실행 | `scripts/mkm_orchestrator_noop_smoke_v1.ps1` · `scripts/mkm_orchestrator_noop_smoke_v1.py` | 초단기 스모크; 산출 `reports/mkm_orchestrator_noop_smoke_latest.json`(동일 파일명 덮어쓰기 가능). |
+| 큐 부트스트랩 | `scripts/bootstrap_mkm_orchestrator_queue_v1.ps1` | `-Profile Example|SmokeFirst|SmokeFirstPython|TrackCFromBridge` (마지막은 브릿지→`todo_queue_latest.json`). |
+| 로컬 스모크 번들 | `scripts/run_mkm_orchestrator_smoke_v1.ps1` | pytest + 폴링 dry-run. |
+| CI | `.github/workflows/mkm-orchestrator-smoke.yml` | pytest 회귀. |
+| Track C 사업계획 → 큐 | `docs/final/artifacts/mkm_trackc_plan_orchestrator_bridge_v1.json` → `scripts/apply_trackc_plan_bridge_to_queue_v1.py` | MD 자동 파싱 없음; 브릿지 JSON이 `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`와 **인적 정합**. |
+| 상태 보존 주입 | `apply_trackc_plan_bridge_to_queue_v1.py --merge-existing` | `task_id` 기준으로 기존 `state/approval/last_run` 보존, 비브릿지 태스크 유지. |
+| 계획 정렬 스모크 | `scripts/run_trackc_plan_gates_smoke_v1.py` | 번들 verify + 오케스트레이터 pytest. |
+| 주간 로컬 게이트(선택) | `scripts/Invoke-TrackCPlanGatesSmoke.ps1` / `Register-TrackCPlanGatesSmokeTask.ps1` | 일요일 등 주기 실행; 로그 `reports/trackc_plan_gates_smoke_run_log.jsonl`. |
+| 사업계획 브릿지 + 폴 1회 | `scripts/Invoke-TrackCPlanOrchestratorCycle.ps1` | `-RefreshQueue`는 브릿지 변경 시에만(큐 덮어쓰기); 기본은 폴링만. |
+| 연속 데몬(선택) | `scripts/run_mkm_continuous_daemon.ps1` / `Register-MkmOrchestratorDaemonTask.ps1` | 브릿지 상태보존 주입(`--merge-existing`) + 폴 루프. |
+| Cursor CLI 자동 분기(선택) | `runner.use_cursor_cli_auto=true` + `runner.cursor_cli_args[]` | heavy 태스크에서 Cursor CLI 사용 가능(미설정 시 기존 runner 유지). Cursor 실패 시 원래 `python/powershell` runner로 1회 폴백 재시도. |
+| 브릿지→큐 스키마 회귀 | `tests/test_apply_trackc_plan_bridge_v1.py` | dry-run 산출이 `todo_queue_v1` JSON Schema와 정합; `jsonschema` 필요. |
+| HITL 일괄 점검 | `reports/mkm_orchestrator_approval_backlog_latest.json` | 폴 종료 시 갱신; `awaiting_approval` + 아직 승인 전 `pending`(승인 필요) 모음. 승인 대기는 `--max-tasks` 실행 쿼터를 소비하지 않아 같은 폴에서 승인 불필요 작업이 이어짐. |
 
 ---
 
@@ -141,6 +181,8 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 관측 로그(부트스트랩) | `data/myeongni/insight_observation_log.jsonl` | 주간 append; 회귀와 동일 계약 |
 | 융합 인터페이스 스텁 | `docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json` | `myeongni_fusion_interface_stub_v1` |
 | 독립 렌즈 v0 (정량 스코어) | `scripts/run_lens_myeongni.py` → `docs/final/artifacts/myeongni_independent_lens_latest.json` | 계약 `MYEONGNI_INDEPENDENT_LENS_V0_CONTRACT.json`; B-track·비트리거; A-track·캡 합선 금지 |
+| 봇→융합→명리 렌즈 원클릭 체인 v1 | `scripts/run_myeongni_lens_chain_from_bot_v1.py` (`--profile-json` \| `--fusion-json` \| `--demo-smoke`); 래퍼 `scripts/Run-MyeongniLensChainFromBot_v1.ps1` | 봇 `--write-complete-fusion-json` + 렌즈 `--advanced-from-fusion-json` 순서 고정; 산출 기본 `docs/final/artifacts/manseryeok_bot_chain_latest.json`·`myeongri_complete_fusion_from_bot_chain_latest.json`·**`myeongni_independent_lens_from_chain_latest.json`**(전용; `myeongni_independent_lens_latest.json` v0 체크인과 분리); 회귀 `tests/test_myeongni_lens_chain_from_bot_v1.py`; CI `.github/workflows/multilens-independent-lens-smoke.yml` 번들 포함 |
+| 독립 렌즈 v1 (학파·대운·지장간·신살 슬롯 + 재현성) | `scripts/run_lens_myeongni.py --emit-schema v1` (`--advanced-input` 또는 **`--advanced-from-fusion-json`** 또는 **`--recommended`**); 패키지 `scripts/myeongni_lens_v1/` | 계약 `MYEONGNI_INDEPENDENT_LENS_V1_CONTRACT.json`; 스키마 `docs/final/artifacts/schemas/myeongni_independent_lens_v1.schema.json`·입력 `myeongni_lens_advanced_input_v1.schema.json`; v0 스트림과 학파 스텁 블렌드(기본 0.65/0.35); `MyeongriCompleteFusion`·commander `full_fusion_payload` → `myeongni_lens_advanced_input_v1`는 `scripts/emit_myeongni_lens_advanced_from_fusion_v1.py` 또는 동일 브리지(`--compute-birth`); **`--recommended`** = v1+allow-fallback+advanced 자동(`MYEONGNI_FUSION_JSON`/`MYEONGNI_RECOMMENDED_BIRTH`, `.env.example`); 회귀 `tests/test_myeongni_lens_v1_contract.py`·`tests/test_myeongni_fusion_bridge_v1.py` |
 | 사상 독립 렌즈 v0 | `scripts/run_lens_sasang.py` → `docs/final/artifacts/sasang_independent_lens_latest.json` | 계약 `SASANG_INDEPENDENT_LENS_V0_CONTRACT.json`; `sasang_dynamics_regime_mapping_v1*.jsonl` tail; 비의료·비트리거 |
 | 시장 사상 렌즈 v1 (B-track) | `scripts/run_market_sasang_lens_v1.py` → `docs/final/artifacts/market_sasang_lens_latest.json`; `data/market_sasang/market_sasang_lens_policy_v1.json`; `scripts/market_sasang_lens_engine_v1.py` | 상류 `sasang_independent_lens_latest.json` 필수; 산출 **`human_commander_gate_v1`**(지휘관 최종권·기계는 관측 보조); 계약 `MARKET_SASANG_LENS_V1_CONTRACT.json`; 회귀 `tests/test_market_sasang_lens_v1.py`; 임상 합선 금지 |
 | 사상 통찰 참조 번들 v1.1 (B-track) | `scripts/build_sasang_interpretive_insight_bundle_v1.py` → `docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json` | **포인터 + `interpretive_depth_ko` + `synthesis_v1`**(합성 순서·금지 합성 한국어); 금화교역·보명지주·병증·약리·예측·사상/시장 사상 축; `rail=B_TRACK`, `decision_authority=human_only`, `opinion_kind=multi_axis_reference_bundle_v1`, `human_commander_gate_v1`; 계약 `SASANG_INTERPRETIVE_INSIGHT_BUNDLE_V1_CONTRACT.json`; 스키마 `docs/final/schemas/sasang_interpretive_insight_bundle_v1.schema.json`; 회귀 `tests/test_sasang_interpretive_insight_bundle_v1.py`; 최종 판단은 지휘관만(LLM 없음·결정론); 갱신: `run_btrack_daily_hypothesis_chain.ps1`(시장 사상 렌즈 직후), `Run-BtrackInsightSidecarChain.ps1`(체인 종료 시) |
@@ -168,7 +210,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | rule_school_mkm_4d_v1 블렌드 | `data/myeongni/rule_school_mkm_4d_v1.json`; `scripts/myeongri_rule_school_mkm_4d_v1.py` | 표면 vs 지장간 4D 가중합; `tests/test_myeongri_rule_school_mkm_4d_v1.py` |
 | 매크로 백테스트 스텁 v1 (B-track) | `scripts/eval_myeongri_rule_school_macro_stub_v1.py` → `docs/final/artifacts/myeongri_rule_school_macro_stub_v1_latest.json` (실행 시 생성) | JSONL 출생 행 → `vector_4d_rule_school_v1` 평균·`gate`; 행에 선택 숫자 `label`이 있으면 `label_correlation`(Pearson/Spearman·선택 SciPy p-value, 축 `--label-axis` S/L/K/M/norm); 산출 `version` 1.1.0; `tests/test_eval_myeongri_rule_school_macro_stub_v1.py` |
 | Track B 지휘관 검토용 명리 리포트 봉투 | `data/myeongni/myeongni_track_b_commander_report_envelope_v1.json`; `scripts/build_myeongni_track_b_commander_report_v1.py` → `docs/final/artifacts/myeongni_track_b_commander_report_latest.json` (실행 시 생성) | 스키마 v1.1.0: `commander_notes`(선택)·`handoff`(NotebookLM 매니페스트·Vault 푸시 **포인터만**); `[TRACK_B|HYPO|검토대기]`·`full_fusion_payload`; LLM 없음; `tests/test_build_myeongni_track_b_commander_report_v1.py` |
-| Manseryeok 봇 Pro | `scripts/run_manseryeok_bot_v1.py` | `analysis_depth=pro` 시 `luck.myeongri_fusion_v1`·`daewoon_qiyun_v1`·`vector_4d_rule_school_v1` 요약; 기본 `basic`는 비포함 |
+| Manseryeok 봇 Pro | `scripts/run_manseryeok_bot_v1.py` | `analysis_depth=pro` 시 `luck.myeongri_fusion_v1`·`daewoon_qiyun_v1`·`vector_4d_rule_school_v1` 요약; 기본 `basic`는 비포함; **`--write-complete-fusion-json PATH`** 시 `MyeongriCompleteFusion` 전체 dict 별도 저장(pro 여부 무관, 명리 렌즈 `run_lens_myeongni.py --advanced-from-fusion-json` 연결용); 회귀 `tests/test_run_manseryeok_bot_v1.py` |
 | λ 변환 훅 (스텁) | `scripts/myeongri_lambda_converter.py` | `MyeongriLambdaConverter` |
 | 게마트리아+명리 4D 블렌드 스파이크 v0 | `scripts/spike_gematria_myeongri_blend_v0.py` → `docs/final/artifacts/gematria_myeongri_spike_blend_latest.json` | 기하 메트릭(L2·cosine)만; 예측·교리 정확도 아님; `independent_lens_fusion_stub`의 `consistency_rate`와 무관 |
 | 로그 윈도우 vs 명리 4D 상관 스파이크 v1 | `scripts/spike_log_myeongri_correlation_v1.py` → `docs/final/artifacts/log_myeongri_correlation_latest.json` | 입력 JSONL `log_myeongri_correlation_input_row_v1`; 출력 `log_myeongri_correlation_output_v0`; 축 `L` vs `error_rate`, `M`(토+수 응축) vs `diversity_ratio`, `‖V‖₂` vs `total_requests`; `p_value_pearson` / `p_value_spearman`(SciPy 없으면 null); 기본 최소 창 30; 라우팅·프로덕션 게이트 자동 합선 금지 |
@@ -184,7 +226,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | B-track NotebookLM JSONL 관측 KPI | `scripts/report_btrack_notebooklm_jsonl_kpi.py` → `docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json` | 출처·인용·답변 길이·가드레일 키워드 비율 등 **품질 관측**만; 예측력·A-track 승격 아님 |
 | Prism 논리 색인 레지스트리 | `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` | §14 Grand Indexing 2.0; 경로·역할; 코드 4D 축과 혼동 금지 |
 | 회귀 스모크 | `tests/test_myeongri_fusion_scripts_smoke.py`, `tests/test_myeongri_jijangan_v1.py`, `tests/test_myeongri_jijangan_ohang_v1.py`, `tests/test_myeongri_daewoon_v1.py`, `tests/test_myeongri_qiyun_v1.py`, `tests/test_myeongri_ai_interpretation_envelope_v1.py`, `tests/test_myeongri_rule_school_mkm_4d_v1.py`, `tests/test_eval_myeongri_rule_school_macro_stub_v1.py`, `tests/test_build_myeongni_track_b_commander_report_v1.py`, `tests/test_run_manseryeok_bot_v1.py`, `tests/test_gematria_myeongri_spike_smoke.py`, `tests/test_spike_log_myeongri_correlation_v1.py`, `tests/test_convert_log_metabolism_to_myeongri_correlation_input_v1.py`, `tests/test_generate_log_metabolism_synthetic_cohort_v1.py`, `tests/test_spike_4grid_myeongri_compression_v1.py`, `tests/test_spike_kospi_structural_entropy_v1.py`, `tests/test_spike_kospi_structural_entropy_compare_v1.py` | CI `dual-regime-integrity.yml`; `run_prophecy_alignment_pytest.ps1` / `.sh` 번들 |
-| 독립 렌즈 v0 회귀 | `tests/test_myeongni_independent_lens_v0.py`, `tests/test_independent_lenses_v0.py`, `tests/test_independent_lens_fusion_stub_v0.py`, `tests/test_independent_lens_shadow_gate_v1.py`, `tests/test_independent_lens_shadow_minority_monthly_v1.py`, `tests/test_build_daily_execution_insight_brief_v1.py` | 명리 단독 + 3렌즈 파라미즈 + 융합 스텁 + Shadow 게이트 + 소수 렌즈 월별 집계 + 일일 실행 브리프 머티리얼라이저 |
+| 독립 렌즈 v0·v1·융합브리지 회귀 | `tests/test_myeongni_independent_lens_v0.py`, `tests/test_myeongni_lens_v1_contract.py`, `tests/test_myeongni_fusion_bridge_v1.py`, `tests/test_independent_lenses_v0.py`, `tests/test_independent_lens_fusion_stub_v0.py`, `tests/test_independent_lens_shadow_gate_v1.py`, `tests/test_independent_lens_shadow_minority_monthly_v1.py`, `tests/test_build_daily_execution_insight_brief_v1.py` | 명리 단독(v0 기본·v1 확장·융합→advanced) + 3렌즈 파라미즈 + 융합 스텁 + Shadow 게이트 + 소수 렌즈 월별 집계 + 일일 실행 브리프 머티리얼라이저 |
 
 ### 3.4 만세력 정밀 런타임 (제2계층, Pointer)
 
