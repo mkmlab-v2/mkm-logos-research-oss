@@ -1,7 +1,0 @@
-{
-  "schema": "mkm_orchestrator_noop_smoke_v1",
-  "ts_utc": "2026-05-03T15:52:50Z",
-  "ok": true,
-  "note": "orchestrator noop smoke (python)",
-  "runner": "python"
-}
