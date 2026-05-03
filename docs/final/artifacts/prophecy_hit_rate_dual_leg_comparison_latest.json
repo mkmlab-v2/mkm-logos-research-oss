@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_hit_rate_dual_leg_comparison_v1",
-  "generated_at_utc": "2026-05-03T15:45:55Z",
+  "generated_at_utc": "2026-05-03T15:51:06Z",
   "research_only": true,
   "zeroing_note": "Same frozen hypothesis direction vs each leg OHLCV; not live trading.",
   "source": {

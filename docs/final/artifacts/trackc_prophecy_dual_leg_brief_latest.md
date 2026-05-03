@@ -1,6 +1,6 @@
 # Track C Prophecy Dual-Leg Brief
 
-- generated_at_utc: `2026-05-03T15:45:55Z`
+- generated_at_utc: `2026-05-03T15:51:07Z`
 - recent_trading_days: `30`
 - overall_hit_rate: `58.33%` (35/60)
 - kospi_hit_rate: `60.00%` (18/30)
