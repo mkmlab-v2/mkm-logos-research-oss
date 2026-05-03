@@ -1,7 +1,7 @@
 # 2026 H2 매크로 리스크 경보 리포트 — MVP 뼈대 (Track C)
 
 - **schema:** `track_c_2026_h2_macro_risk_alert_report_mvp_v1`
-- **status:** `DRAFT_AUTO_FILLED` — 마지막 자동 갱신 UTC `2026-05-03T03:53:17Z`. 목차·근거 경로 동결; §2 본문은 스크립트가 아티팩트에서 채움.
+- **status:** `DRAFT_AUTO_FILLED` — 마지막 자동 갱신 UTC `2026-05-03T03:54:44Z`. 목차·근거 경로 동결; §2 본문은 스크립트가 아티팩트에서 채움.
 - **generated_for:** `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.8 MVP
 - **disclaimer (fixed):** 본 문서는 투자 자문·매매 지시가 아니며, 결과에 대한 약속을 하지 않습니다. 최종 의사결정은 고객 운영자에게 있습니다 (`TRACK_C` §9·`Not investment advice`).
 
@@ -26,7 +26,7 @@
 ## 2. Executive Summary (1p 템플릿)
 
 <!-- track_c_mvp_section_2_auto_v1 -->
-_본 절은 `build_track_c_macro_risk_mvp_filled_v1.py`가 디스크 아티팩트에서 생성했습니다. 생성 시각(UTC): `2026-05-03T03:53:17Z`._
+_본 절은 `build_track_c_macro_risk_mvp_filled_v1.py`가 디스크 아티팩트에서 생성했습니다. 생성 시각(UTC): `2026-05-03T03:54:44Z`._
 
 **보고 기간:** 2026-07-01 ~ 2026-12-31 — Track C §3.8 MVP 범위(시나리오·경보 브리프). 특정 시점 스냅샷 수치는 인용한 JSON 기준.
 
