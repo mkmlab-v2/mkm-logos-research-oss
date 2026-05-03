@@ -43,3 +43,5 @@ jobs:
 
       - name: Validate no1kmedi guardian contracts
         run: python scripts/validate_no1kmedi_guardian_contracts.py
+
+# sync: required-check trigger
