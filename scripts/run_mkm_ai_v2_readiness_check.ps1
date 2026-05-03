@@ -70,12 +70,17 @@ $expectedCore = @(
     "hostinger-website-manager",
     "devops-mcp"
 )
+$optionalServers = @(
+    # NotebookLM MCP can be present depending on local auth/session workflow.
+    "notebooklm"
+)
 $actualServers = @($mcp.mcpServers.PSObject.Properties.Name | Sort-Object)
 $expectedSorted = @($expectedCore | Sort-Object)
 $missing = @($expectedSorted | Where-Object { $_ -notin $actualServers })
-$extra = @($actualServers | Where-Object { $_ -notin $expectedSorted })
+$allowed = @($expectedCore + $optionalServers | Sort-Object -Unique)
+$extra = @($actualServers | Where-Object { $_ -notin $allowed })
 $corePassed = ($missing.Count -eq 0 -and $extra.Count -eq 0)
-$coreDetail = "actual=$($actualServers -join ', '); missing=$($missing -join ', '); extra=$($extra -join ', ')"
+$coreDetail = "actual=$($actualServers -join ', '); missing=$($missing -join ', '); extra=$($extra -join ', '); optional_present=$(@($optionalServers | Where-Object { $_ -in $actualServers }) -join ', ')"
 $results += New-CheckResult -Name "core_mcp_set_exact" -Passed $corePassed -Detail $coreDetail
 
 $forbidden = @("playwright", "manseryeok-mcp")

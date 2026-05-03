@@ -8,7 +8,9 @@
 param(
     [switch]$Remove,
     [string]$TaskName = "MKM_AIV2_DailyReadiness",
-    [string]$DailyAt = "07:10"
+    [string]$DailyAt = "07:10",
+    [switch]$IncludeDualLegDashboardChain,
+    [int]$DualLegRecentTradingDays = 30
 )
 
 $ErrorActionPreference = "Stop"
@@ -34,8 +36,20 @@ $minute = [int]$parts[1]
 $base = Get-Date
 $atToday = Get-Date -Year $base.Year -Month $base.Month -Day $base.Day -Hour $hour -Minute $minute -Second 0
 
+$runnerArgs = @(
+    "-NoProfile",
+    "-WindowStyle", "Hidden",
+    "-ExecutionPolicy", "Bypass",
+    "-File", "`"$runner`""
+)
+if ($IncludeDualLegDashboardChain) {
+    $runnerArgs += "-IncludeDualLegDashboardChain"
+    $runnerArgs += @("-DualLegRecentTradingDays", "$DualLegRecentTradingDays")
+}
+$argLine = $runnerArgs -join " "
+
 $action = New-ScheduledTaskAction -Execute "powershell.exe" `
-    -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`"" `
+    -Argument $argLine `
     -WorkingDirectory $workspaceRoot
 
 $trigger = New-ScheduledTaskTrigger -Daily -At $atToday
@@ -48,10 +62,11 @@ $settings = New-ScheduledTaskSettingsSet `
 
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
 
-$description = "Daily MKM AI v2 readiness gate; writes docs/final/artifacts/mkm_ai_v2_readiness_latest.json and reports/mkm_ai_v2_readiness_log.jsonl."
+$description = "Daily MKM AI v2 readiness gate; writes readiness artifacts/log. Optional dual-leg chain can refresh Track C dashboard evidence."
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
     -Settings $settings -Principal $principal -Description $description -Force | Out-Null
 
 Write-Host "Registered scheduled task: $TaskName (daily at $DailyAt, user=$env:USERNAME)"
 Write-Host "Runner: $runner"
+Write-Host "Argument: $argLine"

@@ -1,5 +1,7 @@
 param(
-    [string]$WorkspaceRoot = "C:\workspace"
+    [string]$WorkspaceRoot = "C:\workspace",
+    [switch]$IncludeDualLegDashboardChain,
+    [int]$DualLegRecentTradingDays = 30
 )
 
 $ErrorActionPreference = "Stop"
@@ -109,14 +111,26 @@ if (Test-Path -LiteralPath $paddleStatus) {
     & py $paddleStatus --workspace-root $WorkspaceRoot
 }
 
+# Optional: one-click dual-leg (KOSPI/BTC) -> Track C dashboard chain.
+$dualLegChainRan = $false
+$dualLegChain = Join-Path $WorkspaceRoot "scripts\Run-TrackCDualLegDashboardChain.ps1"
+if ($IncludeDualLegDashboardChain -and (Test-Path -LiteralPath $dualLegChain)) {
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $dualLegChain -WorkspaceRoot $WorkspaceRoot -RecentTradingDays $DualLegRecentTradingDays
+    if ($LASTEXITCODE -eq 0) {
+        $dualLegChainRan = $true
+    } elseif ($exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
 # Refresh one-file Track C operations dashboard.
 $trackCOpsDashboard = Join-Path $WorkspaceRoot "scripts\build_mkm_trackc_ops_dashboard_v1.py"
-if (Test-Path -LiteralPath $trackCOpsDashboard) {
+if (-not $dualLegChainRan -and (Test-Path -LiteralPath $trackCOpsDashboard)) {
     & py $trackCOpsDashboard
 }
 
 $trackCOpsDashboardExec = Join-Path $WorkspaceRoot "scripts\build_mkm_trackc_ops_dashboard_exec_v1.py"
-if (Test-Path -LiteralPath $trackCOpsDashboardExec) {
+if (-not $dualLegChainRan -and (Test-Path -LiteralPath $trackCOpsDashboardExec)) {
     & py $trackCOpsDashboardExec
 }
 
