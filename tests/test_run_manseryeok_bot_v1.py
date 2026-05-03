@@ -1,9 +1,19 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
+_ROOT = Path(__file__).resolve().parents[1]
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+_SCRIPTS = _ROOT / "scripts"
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
+
 from scripts import run_manseryeok_bot_v1 as mod
+
+from myeongni_lens_v1.fusion_bridge import unwrap_fusion_payload
 
 
 def _write(path: Path, payload: dict) -> None:
@@ -86,3 +96,40 @@ def test_basic_depth_hides_luck_block(tmp_path: Path, monkeypatch) -> None:
     assert "luck" not in doc
     assert "alternative_hour_option" in doc
     assert "review_interpretation" in doc
+
+
+def test_basic_depth_writes_complete_fusion_sidecar(tmp_path: Path, monkeypatch) -> None:
+    profile = tmp_path / "profile_basic_fusion.json"
+    out = tmp_path / "out_basic_fusion.json"
+    fusion_out = tmp_path / "complete_fusion.json"
+    _write(
+        profile,
+        {
+            "name": "fusion_dump_case",
+            "sex": "female",
+            "analysis_depth": "basic",
+            "place": "ladakh",
+            "local": {"year": 2021, "month": 1, "day": 5, "hour": 19, "minute": 0},
+        },
+    )
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "run_manseryeok_bot_v1.py",
+            "--profile-json",
+            str(profile),
+            "--out",
+            str(out),
+            "--write-complete-fusion-json",
+            str(fusion_out),
+        ],
+    )
+    assert mod.main() == 0
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc["profile"]["analysis_depth"] == "basic"
+    assert "luck" not in doc
+    fus_doc = json.loads(fusion_out.read_text(encoding="utf-8"))
+    assert isinstance(fus_doc.get("saju"), dict)
+    assert isinstance(fus_doc.get("daewoon_v1"), list)
+    assert fus_doc.get("jijangan_v1", {}).get("schema") == "jijangan_overlay_v1"
+    assert unwrap_fusion_payload(fus_doc) is not None

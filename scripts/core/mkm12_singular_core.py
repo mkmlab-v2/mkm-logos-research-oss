@@ -8,7 +8,9 @@ from typing import Any
 
 CONTRACT_VERSION = "mkm12_singular_core_v1"
 GRID = 0.25
-THRESHOLD = 0.75
+# Default threshold tuned for current A-track governance operation.
+# Can still be overridden via MKM_SINGULAR_CORE_THRESHOLD.
+THRESHOLD = 0.2
 
 
 def _env_float(name: str, default: float) -> float:

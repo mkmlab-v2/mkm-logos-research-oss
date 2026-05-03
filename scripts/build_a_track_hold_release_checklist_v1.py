@@ -19,6 +19,12 @@ POLICY_GOV_DECISION_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "a_track_p
 MULTIWEEK_TRACKER_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "a_track_multiweek_stability_tracker_v1_latest.json"
 OUT_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "a_track_hold_release_checklist_v1_latest.json"
 
+_STAGE_NEXT_ACTION_KO = {
+    "S2_PAPER_STRICT": "S2 paper-strict 진입 및 동일 게이트 재검증",
+    "S3_PAPER_SCALED": "S3 paper-scaled 진입 및 동일 게이트 재검증",
+    "S4_LIMITED_LIVE": "S4 limited-live 진입 및 동일 게이트 재검증",
+}
+
 
 def _now_utc() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
@@ -112,8 +118,10 @@ def build_checklist(
 
     all_done = all(t.get("done") for t in tasks)
     if all_done:
-        next_stage = "S2_PAPER_STRICT"
-        next_action = "S2 paper-strict 진입 및 동일 게이트 재검증"
+        next_stage = stage or "S2_PAPER_STRICT"
+        next_action = _STAGE_NEXT_ACTION_KO.get(
+            next_stage, "Track A 권장 단계 게이트 재검증"
+        )
     else:
         next_stage = stage or "S1_SHADOW"
         next_action = "HOLD 유지. 체크리스트 미완료 항목부터 순차 해제"
@@ -146,7 +154,7 @@ def build_checklist(
             "required_total": len(tasks),
             "completed_total": sum(1 for t in tasks if t.get("done")),
             "all_required_completed": all_done,
-            "next_stage_when_completed": "S2_PAPER_STRICT",
+            "next_stage_when_completed": next_stage if all_done else (stage or "S2_PAPER_STRICT"),
             "current_next_stage": next_stage,
             "next_action": next_action,
         },

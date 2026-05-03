@@ -22,6 +22,9 @@ MULTIWEEK_TRACKER_PATH = ROOT / "docs" / "final" / "artifacts" / "a_track_multiw
 OPERATOR_APPROVAL_PROTOCOL_PATH = ROOT / "docs" / "final" / "artifacts" / "a_track_operator_approval_protocol_v1_latest.json"
 POLICY_FLOOR_GOV_PATH = ROOT / "docs" / "final" / "artifacts" / "a_track_policy_floor_governance_decision_v1_latest.json"
 
+# Human CLI receipt stores a single requested_stage; higher-stage approval implies lower gates.
+_CLI_STAGE_LADDER = ("S2_PAPER_STRICT", "S3_PAPER_SCALED", "S4_LIMITED_LIVE")
+
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -103,7 +106,15 @@ def _read_atrack_cli_decision(path: Path) -> Dict[str, Any]:
 
 
 def _cli_ok(cli: Dict[str, Any], stage: str) -> bool:
-    return cli.get("accepted_for_stage") == stage
+    accepted = cli.get("accepted_for_stage")
+    if not accepted:
+        return False
+    try:
+        need = _CLI_STAGE_LADDER.index(stage)
+        have = _CLI_STAGE_LADDER.index(str(accepted))
+    except ValueError:
+        return False
+    return have >= need
 
 
 def evaluate(
@@ -349,8 +360,17 @@ def evaluate(
     s2_ready = s2_tech_ready and cli_s2
     s3_ready = s3_evidence_ready and cli_s3
     s4_ready = s4_operator_ready and cli_s4
+    # Highest stage recommendation includes cumulative tech gates (do not promote on CLI/evidence alone).
+    s3_promote_ready = s2_tech_ready and s3_evidence_ready and cli_s3
+    s4_promote_ready = s2_tech_ready and s3_evidence_ready and s4_operator_ready and cli_s4
 
-    if s2_ready:
+    if s4_promote_ready:
+        overall = "GO"
+        recommended_stage = "S4_LIMITED_LIVE"
+    elif s3_promote_ready:
+        overall = "GO"
+        recommended_stage = "S3_PAPER_SCALED"
+    elif s2_ready:
         overall = "GO"
         recommended_stage = "S2_PAPER_STRICT"
     elif s1_ready:

@@ -1,14 +1,36 @@
 #!/usr/bin/env python3
-"""명리 독립 렌즈 v0: B-track 16상 JSONL 마지막 행 → 정량 스코어 JSON (융합 대비, 비트리거)."""
+"""명리 독립 렌즈 v0/v1: B-track 16상 JSONL 마지막 행 → 정량 스코어 JSON (융합 대비, 비트리거).
+
+v1: 학파·대운·지장간·신살 슬롯 + 조율 가중 + 재현성 해시(확장 가능 규격).
+"""
 from __future__ import annotations
 
 import argparse
 import json
+import os
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+_SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from myeongni_lens_v1.advanced_payload import (
+    build_input_digest_object,
+    build_v1_payload,
+    parse_advanced_input,
+)
+from myeongni_lens_v1.fusion_bridge import (
+    build_advanced_input_from_fusion,
+    unwrap_fusion_payload,
+)
+from myeongni_lens_v1.repro import canonical_json_sha256
 DEFAULT_EXPERIMENT = ROOT / "data" / "myeongni" / "myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl"
 DEFAULT_SAMPLE = ROOT / "data" / "myeongni" / "myeongni_16_state_experiment_v1.sample.jsonl"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "myeongni_independent_lens_latest.json"
@@ -152,8 +174,80 @@ def _build_payload(
     }
 
 
+def _recommended_advanced_and_provenance_path() -> tuple[dict[str, Any], str]:
+    """MYEONGNI_FUSION_JSON 우선; 없으면 MYEONGNI_RECOMMENDED_BIRTH로 융합 즉시 계산."""
+    env_fusion = os.environ.get("MYEONGNI_FUSION_JSON", "").strip()
+    if env_fusion:
+        p = Path(env_fusion)
+        if p.is_file():
+            try:
+                fusion_wrap = json.loads(p.read_text(encoding="utf-8"))
+                fus = unwrap_fusion_payload(fusion_wrap)
+                if fus is not None:
+                    adv = build_advanced_input_from_fusion(fus)
+                    prov = adv.setdefault("provenance", {})
+                    prov["recommended_mode"] = "env_MYEONGNI_FUSION_JSON"
+                    return adv, str(p.resolve())
+            except (OSError, json.JSONDecodeError, ValueError):
+                pass
+
+    from scripts.myeongri_complete_fusion import MyeongriCompleteFusion
+
+    birth_s = os.environ.get("MYEONGNI_RECOMMENDED_BIRTH", "2000,6,15,12").strip()
+    parts = [x.strip() for x in birth_s.split(",") if x.strip()]
+    if len(parts) != 4:
+        parts = ["2000", "6", "15", "12"]
+    y, mo, d, h = int(parts[0]), int(parts[1]), int(parts[2]), int(parts[3])
+    sol = os.environ.get("MYEONGNI_RECOMMENDED_IS_SOLAR", "1").strip().lower()
+    is_solar = sol in ("1", "true", "yes", "y")
+    male = os.environ.get("MYEONGNI_RECOMMENDED_IS_MALE", "1").strip().lower()
+    is_male = male in ("1", "true", "yes", "y")
+    fus = MyeongriCompleteFusion().calculate_complete_fusion(
+        y, mo, d, h, is_solar=is_solar, is_male=is_male
+    )
+    adv = build_advanced_input_from_fusion(fus)
+    prov = adv.setdefault("provenance", {})
+    prov["recommended_mode"] = "computed_from_MYEONGNI_RECOMMENDED_BIRTH"
+    prov["recommended_birth_applied"] = {
+        "year": y,
+        "month": mo,
+        "day": d,
+        "hour": h,
+        "is_solar": is_solar,
+        "is_male": is_male,
+    }
+    return adv, ""
+
+
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Emit myeongni independent lens v0 JSON from B-track experiment JSONL tail.")
+    ap = argparse.ArgumentParser(
+        description="Emit myeongni independent lens v0/v1 JSON from B-track experiment JSONL tail.",
+    )
+    ap.add_argument(
+        "--emit-schema",
+        choices=("v0", "v1"),
+        default="v0",
+        help="v0: legacy contract; v1: extended slots + reproducibility (default v0 for CI).",
+    )
+    ap.add_argument(
+        "--advanced-input",
+        type=Path,
+        default=None,
+        help="Optional JSON file myeongni_lens_advanced_input_v1 (pillars/dayun/sinsal/schools).",
+    )
+    ap.add_argument(
+        "--advanced-from-fusion-json",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="Wrap-or-fusion JSON → 내장 브리지로 advanced 입력 생성 (--advanced-input 과 동시 사용 불가).",
+    )
+    ap.add_argument(
+        "--ruleset-id",
+        type=str,
+        default="",
+        help="Override ruleset_id recorded under reproducibility.ruleset_id",
+    )
     ap.add_argument("--experiment-jsonl", type=Path, default=DEFAULT_EXPERIMENT)
     ap.add_argument("--fallback-sample", type=Path, default=DEFAULT_SAMPLE)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
@@ -168,7 +262,62 @@ def main() -> int:
         default=7,
         help="Rows for recent mapping_target momentum averaging (default: 7).",
     )
+    ap.add_argument(
+        "--recommended",
+        action="store_true",
+        help="권장: --emit-schema v1 --allow-fallback; advanced는 MYEONGNI_FUSION_JSON 또는 생시 융합(환경변수, 기본 데모 생시).",
+    )
     args = ap.parse_args()
+
+    if args.recommended:
+        args.emit_schema = "v1"
+        args.allow_fallback = True
+
+    advanced_doc: dict[str, Any] | None = None
+    advanced_path_str = ""
+    if args.advanced_input is not None and args.advanced_from_fusion_json is not None:
+        print(
+            "myeongni lens: use only one of --advanced-input or --advanced-from-fusion-json",
+            file=sys.stderr,
+        )
+        return 2
+    if args.advanced_from_fusion_json is not None:
+        fusion_path = args.advanced_from_fusion_json
+        if not fusion_path.is_file():
+            print(f"myeongni lens: fusion file not found: {fusion_path}", file=sys.stderr)
+            return 2
+        try:
+            fusion_wrap = json.loads(fusion_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as e:
+            print(f"myeongni lens: failed to read fusion JSON: {e}", file=sys.stderr)
+            return 2
+        fus = unwrap_fusion_payload(fusion_wrap)
+        if fus is None:
+            print(
+                "myeongni lens: could not unwrap fusion (need saju top-level or full_fusion_payload).",
+                file=sys.stderr,
+            )
+            return 2
+        advanced_doc = build_advanced_input_from_fusion(fus)
+        advanced_path_str = str(fusion_path.resolve())
+    elif args.advanced_input is not None:
+        if args.advanced_input.is_file():
+            try:
+                advanced_doc = json.loads(args.advanced_input.read_text(encoding="utf-8"))
+                advanced_path_str = str(args.advanced_input.resolve())
+            except (OSError, json.JSONDecodeError):
+                advanced_doc = None
+    elif args.recommended:
+        adv_r, path_r = _recommended_advanced_and_provenance_path()
+        advanced_doc = adv_r
+        advanced_path_str = path_r
+
+    if advanced_doc is not None and args.emit_schema != "v1":
+        print(
+            "myeongni lens: --advanced-input / --advanced-from-fusion-json require --emit-schema v1",
+            file=sys.stderr,
+        )
+        return 2
 
     rows = _read_jsonl_rows(args.experiment_jsonl)
     row = rows[-1] if rows else None
@@ -210,6 +359,29 @@ def main() -> int:
         rows_seen=len(rows),
         recent_momentum=_recent_momentum(rows, max(1, args.momentum_window)),
     )
+
+    if args.emit_schema == "v1":
+        adv = parse_advanced_input(advanced_doc)
+        digest_src = build_input_digest_object(
+            row_snapshot=dict(row),
+            advanced_path=advanced_path_str or None,
+            advanced_doc=advanced_doc if isinstance(advanced_doc, dict) else {},
+            momentum_window=max(1, args.momentum_window),
+        )
+        ruleset = (args.ruleset_id or "").strip()
+        payload = build_v1_payload(
+            payload,
+            advanced_block=adv,
+            ruleset_id=ruleset,
+            input_digest_src=digest_src,
+        )
+        payload["reproducibility"]["payload_content_digest_sha256"] = (
+            "sha256:"
+            + canonical_json_sha256(
+                {k: payload[k] for k in ("scores", "advanced", "rules") if k in payload},
+            )
+        )
+
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {args.output.resolve()}")

@@ -1,0 +1,31 @@
+{
+  "schema": "myeongni_lens_advanced_input_v1",
+  "schools_active": ["zi_ping", "zi_wei"],
+  "coordinator_weights": {
+    "zi_ping": 0.5,
+    "zi_wei": 0.5
+  },
+  "pillars": {
+    "year": "甲子",
+    "month": "丙寅",
+    "day": "戊午",
+    "hour": "壬子"
+  },
+  "dayun": [
+    {
+      "pillar": "丁卯",
+      "start_age": 8,
+      "end_age": 17
+    }
+  ],
+  "sajeong_interpolation": {
+    "寅": ["甲", "丙", "戊"]
+  },
+  "sinsal": [
+    {
+      "id": "yangren",
+      "active": true
+    }
+  ],
+  "reference_ts_utc": "2026-05-02T00:00:00Z"
+}

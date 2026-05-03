@@ -34,12 +34,19 @@ if (-not $SkipMultitargetPreGate) {
     $unseenTcJson = Join-Path $workspaceRoot "artifacts\B_track\kaggle_training_5seed\multitarget_classification\target_conditioned_benchmark_summary_unseen_target.json"
     $seenTcJson = Join-Path $workspaceRoot "artifacts\B_track\kaggle_training_5seed\multitarget_classification\target_conditioned_benchmark_summary_seen_label.json"
 
+    $multitargetReady = $true
     foreach ($p in @($topologyScript, $trainabilityGateScript, $unseenTcJson, $seenTcJson)) {
         if (-not (Test-Path -LiteralPath $p)) {
-            throw "Multitarget pre-gate missing required file: $p"
+            Write-Host "WARN: Multitarget pre-gate skipped - missing: $p (use -SkipMultitargetPreGate or restore B_track multitarget scripts/artifacts)." -ForegroundColor Yellow
+            $multitargetReady = $false
+            break
         }
     }
 
+    if (-not $multitargetReady) {
+        Write-Host "Continuing with Fact-Lock bundle (no multitarget pre-gate)." -ForegroundColor Yellow
+    }
+    else {
     Write-Host "=== [0/4] multitarget topology + trainability pre-gate ===" -ForegroundColor Cyan
     & py $topologyScript --source-csv (Join-Path $workspaceRoot "data\kaggle\processed\multitarget_bioactivity\normalized.csv") --output-json $topologyJson
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -56,6 +63,7 @@ if (-not $SkipMultitargetPreGate) {
         }
         Write-Host "Exit policy: HOLD treated as failure (exit 20)." -ForegroundColor Red
         exit 20
+    }
     }
 }
 

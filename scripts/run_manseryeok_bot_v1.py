@@ -60,6 +60,13 @@ def _parse_args() -> argparse.Namespace:
     ap.add_argument("--analysis-depth", choices=("basic", "pro"), default="basic")
     ap.add_argument("--dst-fold", type=int, choices=(0, 1), default=0)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--write-complete-fusion-json",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="MyeongriCompleteFusion 전체 dict를 JSON으로 저장(pro와 무관; 렌즈 --advanced-from-fusion-json 연결용).",
+    )
     ap.add_argument("--compact", action="store_true")
     return ap.parse_args()
 
@@ -269,9 +276,10 @@ def main() -> int:
     daewoon_text = _build_daewoon_text(daewoon, res.engine_year)
     yeonun_text = _build_yeonun_text(eng, yeonun_years)
 
-    myeongri_fusion_v1: dict[str, Any] | None = None
-    if args.analysis_depth == "pro":
-        fus = MyeongriCompleteFusion().calculate_complete_fusion(
+    need_complete_fusion = args.analysis_depth == "pro" or args.write_complete_fusion_json is not None
+    fus_full: dict[str, Any] | None = None
+    if need_complete_fusion:
+        fus_full = MyeongriCompleteFusion().calculate_complete_fusion(
             res.engine_year,
             res.engine_month,
             res.engine_day,
@@ -280,12 +288,15 @@ def main() -> int:
             is_male=(args.sex == "male"),
             precomputed_full_saju=full_doc,
         )
-        rs_meta = fus.get("rule_school_mkm_4d_v1") or {}
-        qiy = fus.get("daewoon_qiyun_v1") or {}
+
+    myeongri_fusion_v1: dict[str, Any] | None = None
+    if args.analysis_depth == "pro" and fus_full is not None:
+        rs_meta = fus_full.get("rule_school_mkm_4d_v1") or {}
+        qiy = fus_full.get("daewoon_qiyun_v1") or {}
         myeongri_fusion_v1 = {
-            "vector_4d_rule_school_v1": fus.get("vector_4d_rule_school_v1"),
-            "vector_4d": fus.get("vector_4d"),
-            "vector_4d_jijangan_v1": fus.get("vector_4d_jijangan_v1"),
+            "vector_4d_rule_school_v1": fus_full.get("vector_4d_rule_school_v1"),
+            "vector_4d": fus_full.get("vector_4d"),
+            "vector_4d_jijangan_v1": fus_full.get("vector_4d_jijangan_v1"),
             "rule_school_mkm_4d_v1": {
                 "version": rs_meta.get("version"),
                 "vector_4d_blend": rs_meta.get("vector_4d_blend"),
@@ -296,6 +307,21 @@ def main() -> int:
                 "forward": qiy.get("forward"),
             },
         }
+
+    if args.write_complete_fusion_json is not None:
+        if fus_full is None:
+            print(
+                "manseryeok_bot: internal error (fusion missing despite --write-complete-fusion-json)",
+                file=sys.stderr,
+            )
+            return 2
+        fusion_out = args.write_complete_fusion_json
+        fusion_out.parent.mkdir(parents=True, exist_ok=True)
+        fusion_out.write_text(
+            json.dumps(fus_full, ensure_ascii=False, indent=None if args.compact else 2) + "\n",
+            encoding="utf-8",
+        )
+        print(f"WROTE_COMPLETE_FUSION: {fusion_out.resolve()}", file=sys.stderr)
 
     payload: dict[str, Any] = {
         "schema": "manseryeok_bot_v1",

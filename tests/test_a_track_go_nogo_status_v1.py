@@ -44,6 +44,10 @@ def _minimal_workspace(root: Path) -> None:
         root / "docs/final/artifacts/a_track_policy_floor_governance_decision_v1_latest.json",
         {"status": "APPROVED"},
     )
+    _write(
+        root / "docs/final/artifacts/a_track_operator_approval_protocol_v1_latest.json",
+        {"status": "READY_FOR_SIGNOFF"},
+    )
 
 
 def test_s3_gate_passes_from_tracker_when_checklist_s3_false(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
@@ -111,3 +115,67 @@ def test_s3_gate_passes_from_tracker_when_checklist_s3_false(monkeypatch: pytest
     assert out["checks"]["price_unlock_policy_defined"] is True
     assert out["result"]["overall_go_no_go"] == "HOLD"
     assert out["result"]["recommended_stage"] == "S1_SHADOW"
+
+
+def test_s3_cli_receipt_still_satisfies_s2_gate(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    """Single receipt lists highest approved stage; S3 approval must still clear S2 CLI check."""
+    _minimal_workspace(tmp_path)
+    _write(
+        tmp_path / "docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+        {"meta": {"high_reliability_decision": "PASS", "price_output_locked": False}},
+    )
+    _write(
+        tmp_path / "docs/final/artifacts/a_track_hold_release_checklist_v1_latest.json",
+        {
+            "checklist": [
+                {"id": "lock-01", "done": True},
+                {"id": "s3-01", "done": True},
+                {"id": "s4-01", "done": True},
+                {"id": "hrm-01", "done": True},
+                {"id": "policy-01", "done": True},
+            ]
+        },
+    )
+    _write(
+        tmp_path / "docs/final/artifacts/a_track_multiweek_stability_tracker_v1_latest.json",
+        {"summary": {"ready_for_s3_gate": True}},
+    )
+    _write(
+        tmp_path / "reports/a_track_promotion_decision_latest.json",
+        {
+            "schema": "a_track_promotion_cli_decision_v1",
+            "action": "approve",
+            "status": "accepted",
+            "requested_stage": "S3_PAPER_SCALED",
+            "generated_at": "2026-01-01T00:00:00Z",
+            "approver": "test",
+        },
+    )
+
+    monkeypatch.setattr(g, "ROOT", tmp_path)
+    monkeypatch.setattr(
+        g,
+        "MULTIWEEK_TRACKER_PATH",
+        tmp_path / "docs/final/artifacts/a_track_multiweek_stability_tracker_v1_latest.json",
+    )
+    monkeypatch.setattr(
+        g,
+        "OPERATOR_APPROVAL_PROTOCOL_PATH",
+        tmp_path / "docs/final/artifacts/a_track_operator_approval_protocol_v1_latest.json",
+    )
+    monkeypatch.setattr(
+        g,
+        "POLICY_FLOOR_GOV_PATH",
+        tmp_path / "docs/final/artifacts/a_track_policy_floor_governance_decision_v1_latest.json",
+    )
+    monkeypatch.setattr(
+        g,
+        "ATRACK_CLI_DECISION_PATH",
+        tmp_path / "reports/a_track_promotion_decision_latest.json",
+    )
+
+    out = g.evaluate(on_system_error="no_go")
+    assert out["checks"]["a_track_human_cli_s2_accepted"] is True
+    assert out["checks"]["a_track_human_cli_s3_accepted"] is True
+    assert out["result"]["overall_go_no_go"] == "GO"
+    assert out["result"]["recommended_stage"] == "S3_PAPER_SCALED"
