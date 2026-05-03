@@ -48,6 +48,12 @@ def _sorted_lens_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return sorted(rows, key=key)
 
 
+def _eligible_for_fusion_spread(r: dict[str, Any]) -> bool:
+    """Fusion-stub legs only (not ensemble, not runtime_meta price/macro/news snapshots)."""
+    src = str(r.get("prediction_source") or "")
+    return "independent_lens_fusion_stub" in src
+
+
 def _build_proposals_for_leg(
     *,
     instrument: str,
@@ -57,7 +63,7 @@ def _build_proposals_for_leg(
     ensemble_weak_threshold: float,
 ) -> list[dict[str, Any]]:
     proposals: list[dict[str, Any]] = []
-    ranked = _sorted_lens_rows(lenses)
+    ranked = _sorted_lens_rows([r for r in lenses if _eligible_for_fusion_spread(r)])
     strong = [r for r in ranked if isinstance(r.get("n_evaluated"), int) and r["n_evaluated"] >= min_n]
     if len(strong) >= 2:
         best, worst = strong[0], strong[-1]
