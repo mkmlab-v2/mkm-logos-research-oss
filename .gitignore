@@ -361,3 +361,7 @@ docs/final/artifacts/btrack_prophecy_score_monthly_*.json
 docs/final/artifacts/genius_*
 docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_*.json
 docs/final/artifacts/prophecy_hit_rate_eval_monthly_*.json
+# B-track evolution lightweight loop (regenerable; run_evolution_lightweight_loop_v1.py)
+docs/final/artifacts/evolution_lightweight_loop_latest.json
+docs/final/artifacts/lens_evolution_proposal_latest.json
+docs/final/artifacts/prophecy_hit_rate_per_lens_latest.json
