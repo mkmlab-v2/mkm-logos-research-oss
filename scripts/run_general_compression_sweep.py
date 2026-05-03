@@ -30,7 +30,10 @@ def main() -> int:
     ap.add_argument("--input", type=Path, default=DEFAULT_INPUT)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--fidelity-floor", type=float, default=0.60)
+    ap.add_argument("--per-case-fidelity-floor", type=float, default=0.50)
     ap.add_argument("--integrity-floor", type=float, default=0.99)
+    ap.add_argument("--min-sensitive-integrity-floor", type=float, default=0.999)
+    ap.add_argument("--max-sensitive-violations", type=int, default=0)
     args = ap.parse_args()
 
     doc = _load(args.input)
@@ -69,14 +72,24 @@ def main() -> int:
                             hangul_max_saving_rate=hc,
                         )
                         cmp = report.get("compression_metrics") or {}
+                        q = report.get("quality_gate") or {}
                         saving = float(cmp.get("global_token_saving_rate", 0.0))
                         fidelity = float(cmp.get("avg_reconstruction_fidelity_jaccard", 0.0))
+                        min_fidelity = float(cmp.get("min_reconstruction_fidelity_jaccard", 0.0))
                         integrity = float(cmp.get("avg_sensitive_integrity", 0.0))
+                        min_sensitive_integrity = float(cmp.get("min_sensitive_integrity", 0.0))
+                        sensitive_violation_count = int(cmp.get("sensitive_violation_count", 0))
                         gate = {
                             "saving_improved_vs_baseline": saving > baseline_saving,
                             "fidelity_floor_ok": fidelity >= args.fidelity_floor,
+                            "per_case_fidelity_floor_ok": min_fidelity >= args.per_case_fidelity_floor,
                             "sensitive_integrity_ok": integrity >= args.integrity_floor,
+                            "min_sensitive_integrity_ok": min_sensitive_integrity >= args.min_sensitive_integrity_floor,
+                            "sensitive_violation_count_ok": sensitive_violation_count <= args.max_sensitive_violations,
+                            # Reuse evaluator's strict leak/avg/min guard as a contract check.
+                            "evaluator_sensitive_gate_ok": bool(q.get("sensitive_integrity_ok", False)),
                         }
+                        failure_reasons = [k for k, ok in gate.items() if not ok]
                         row = {
                             "strategy": st,
                             "intensity": it,
@@ -85,9 +98,13 @@ def main() -> int:
                             "hangul_max_saving_rate": hc,
                             "global_token_saving_rate": saving,
                             "avg_reconstruction_fidelity_jaccard": fidelity,
+                            "min_reconstruction_fidelity_jaccard": min_fidelity,
                             "avg_sensitive_integrity": integrity,
+                            "min_sensitive_integrity": min_sensitive_integrity,
+                            "sensitive_violation_count": sensitive_violation_count,
                             "score": _score(saving, fidelity, integrity),
                             "gate": gate,
+                            "failure_reasons": failure_reasons,
                             "go": all(gate.values()),
                         }
                         candidates.append(row)
@@ -104,7 +121,10 @@ def main() -> int:
         },
         "thresholds": {
             "fidelity_floor": args.fidelity_floor,
+            "per_case_fidelity_floor": args.per_case_fidelity_floor,
             "integrity_floor": args.integrity_floor,
+            "min_sensitive_integrity_floor": args.min_sensitive_integrity_floor,
+            "max_sensitive_violations": args.max_sensitive_violations,
             "saving_must_improve_vs_baseline": True,
         },
         "candidate_count": len(candidates),

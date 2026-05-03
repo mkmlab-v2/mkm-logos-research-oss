@@ -56,6 +56,12 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--baseline", default=str(BASELINE_V2), help="Baseline report")
     p.add_argument("--jaccard-drop-threshold-pp", type=float, default=1.5, help="Allowed drop")
     p.add_argument(
+        "--per-case-fidelity-floor",
+        type=float,
+        default=0.50,
+        help="Minimum allowed per-case reconstruction fidelity (jaccard) for canary pass.",
+    )
+    p.add_argument(
         "--no-bound-prune",
         action="store_true",
         help="Disable bound-based pruning in round2 and run closer to full grid.",
@@ -70,6 +76,17 @@ def _load_json(path: Path) -> dict[str, Any]:
 def _score(row: dict[str, Any]) -> tuple[float, float]:
     # Prefer high saving, then low jaccard drop.
     return (float(row["global_token_saving_rate"]), -float(row["jaccard_drop_pp"]))
+
+
+def _min_case_fidelity(report: dict[str, Any]) -> float:
+    comp = report.get("compression_metrics") or {}
+    explicit = comp.get("min_reconstruction_fidelity_jaccard")
+    if explicit is not None:
+        return float(explicit)
+    rows = comp.get("cases") or []
+    if not rows:
+        return 0.0
+    return min(float(r.get("reconstruction_fidelity_jaccard", 0.0)) for r in rows)
 
 
 def _pareto_top_two(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -257,9 +274,13 @@ def main() -> int:
                     )
                     q = rep["quality_gate"]
                     c = rep["compression_metrics"]
+                    min_case_fidelity = _min_case_fidelity(rep)
                     # Canary proxy: all three gates pass.
                     canary_ok = bool(
-                        q["ultra_saving_50_ok"] and q["jaccard_guardrail_ok"] and q["sensitive_integrity_ok"]
+                        q["ultra_saving_50_ok"]
+                        and q["jaccard_guardrail_ok"]
+                        and q["sensitive_integrity_ok"]
+                        and (min_case_fidelity >= args.per_case_fidelity_floor)
                     )
                     if canary_ok:
                         best_canary_saving = max(best_canary_saving, float(c["global_token_saving_rate"]))
@@ -273,6 +294,7 @@ def main() -> int:
                             "hangul_max_saving_rate": hangul_cap,
                             "global_token_saving_rate": c["global_token_saving_rate"],
                             "avg_reconstruction_fidelity_jaccard": c["avg_reconstruction_fidelity_jaccard"],
+                            "min_reconstruction_fidelity_jaccard": min_case_fidelity,
                             "avg_sensitive_integrity": c["avg_sensitive_integrity"],
                             "jaccard_drop_pp": q["jaccard_drop_pp"],
                             "canary_gate_ok": canary_ok,
@@ -338,6 +360,7 @@ def main() -> int:
             "round2_candidate_count": len(round2_rows),
         },
         "target": {"saving_rate": 0.50, "jaccard_drop_threshold_pp": args.jaccard_drop_threshold_pp},
+        "per_case_fidelity_floor": args.per_case_fidelity_floor,
         "baseline": {
             "global_token_saving_rate": baseline_saving,
             "avg_reconstruction_fidelity_jaccard": baseline_avg_jaccard,

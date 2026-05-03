@@ -1367,6 +1367,14 @@ def evaluate_report(
         pers_sum += pers_cov
 
     avg_fidelity = (total_fidelity / len(comp_rows)) if comp_rows else 0.0
+    min_fidelity = (
+        min(float(r.get("reconstruction_fidelity_jaccard", 0.0)) for r in comp_rows)
+        if comp_rows
+        else 0.0
+    )
+    low_fidelity_case_count = sum(
+        1 for r in comp_rows if float(r.get("reconstruction_fidelity_jaccard", 0.0)) < 0.5
+    )
     avg_axis = (axis_sum / len(fus_rows)) if fus_rows else 0.0
     avg_pers = (pers_sum / len(fus_rows)) if fus_rows else 0.0
     global_saving = (1.0 - (total_comp / total_raw)) if total_raw else 0.0
@@ -1454,6 +1462,8 @@ def evaluate_report(
             ),
             "global_token_saving_rate": global_saving,
             "avg_reconstruction_fidelity_jaccard": avg_fidelity,
+            "min_reconstruction_fidelity_jaccard": min_fidelity,
+            "low_fidelity_case_count_lt_0_5": low_fidelity_case_count,
             "avg_sensitive_integrity": avg_sensitive_integrity,
             "min_sensitive_integrity": min_sensitive_integrity,
             "sensitive_violation_count": sensitive_violation_count,
