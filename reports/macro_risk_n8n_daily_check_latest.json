@@ -1,6 +1,6 @@
 ﻿{
     "schema":  "macro_risk_n8n_daily_check_v1",
-    "ts_utc":  "2026-05-03T04:02:10.2985271Z",
+    "ts_utc":  "2026-05-03T04:13:59.8877284Z",
     "checks":  {
                    "n8n_health":  "fail",
                    "n8n_service_task":  "pass",
