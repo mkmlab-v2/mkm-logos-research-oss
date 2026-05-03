@@ -6,12 +6,17 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-02T18:00:00Z
+- **last_updated_utc:** 2026-05-03T11:25:50Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
 - **external_briefing_ref_v2:** `athena_memory_bank_v2.md` (time-series partition + firewall)
 
+## 운영 체크포인트 (자동, 1줄)
+
+<!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-05-03T11:25:50Z** — 진행: verify_p0 PASS(254); 워크스펙 main·미커밋 대량·푸시는 커밋된 HEAD 기준만
+<!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
 ## NotebookLM → 장기기억 체화 (한 파일 SSOT)
@@ -27,6 +32,24 @@
 | 5. 답변 | 에이전트는 **이 파일의 지문·표**를 우선하고, NotebookLM 내용은 **이미 이관·검증된 것**으로만 취급. |
 
 **금지:** NotebookLM 출력만 보고 “구현됨/통과”라고 **이 파일에 적지 않는다.**
+
+---
+
+## VPS · 비트코인 본선 (혼동 방지 — 크로스 채팅 고정)
+
+> **목적:** 런북·예시 파일의 **플레이스홀더 이름**과, 특정 호스트에서 **실측으로 확인된 PM2 앱 이름**이 다르다. 에이전트는 **아래 표 + 대상 호스트의 `pm2 list`** 를 우선한다. 구현 경로·게이트는 여전히 `CONSTITUTION_*`·스크립트가 우선(Fact-Lock).
+
+| 항목 | 고정 (읽는 순서) |
+|------|------------------|
+| **원칙** | 문서의 `bitcoin-live` / 예시 ecosystem의 `mkm-btc-live` 는 **이름 후보·플레이스홀더**다. **재시작·배포 전에 대상 SSH 호스트에서 `pm2 list` / `pm2 show <name>` 으로 cwd·스크립트를 확인**한다. |
+| **SSH 호스트 (로컬 ship 스크립트 기본)** | `vps-mkmlife` — `scripts/deploy/ship_to_vps.ps1` 의 `-VpsHost` 기본값. |
+| **모노레포 경로 (동 스크립트 기본)** | `/opt/mkm-lab-workspace-v2` — `-VpsRepoPath` 기본값. 실제 본선 클론이 다르면 **그 경로가 SSOT**. |
+| **PM2 앱 이름 (2026-05 `pm2 list` 실측, 본 호스트)** | **온라인 24h:** `bitcoin-live-small-24h` — 동일 호스트에서 **`bitcoin-live` 라는 앱은 없었음** (`pm2 show bitcoin-live` → 없음). 이름이 바뀌었으면 **표보다 실측이 이김**. |
+| **배포 스크립트** | `scripts/deploy/linux/verify_and_reload.sh` — 기본 **`git pull --ff-only origin main`** (main 고정). |
+| **`verify_and_reload` / FF 실패 시** | VPS가 **`main`이 아닌 브랜치**에 checkout 되어 있거나(예: `fix/btrack-...`), 워킹트리 수정·미추적으로 깨끗하지 않으면 **FF 불가**. 본선을 `origin/main`에 맞출 계획이면: **정리(stash 등) → `git checkout main` → `git pull --ff-only origin main`** 후 `pm2 restart …`. feature 브랜치만 쓰는 호스트면 **`--branch`를 그 브랜치로 맞추거나** 별도 절차로 분리한다. |
+| **표 「분기별 한 줄」와의 관계** | **2026-05-02** 행의 **destiny 브랜치·cron·WORKSPACE_ROOT** 는 **해당 파이프라인 배포 맥락**이다. **HQ `main` 모노레포 배포**(`verify_and_reload --branch main`)와 **브랜치·의도가 다를 수 있음** — 한 줄에 몰아 넣어 해석하지 말 것. |
+
+**한 줄 요약:** 배포는 **`main` + FF** 가 기본이고, PM2 이름은 **호스트마다 `pm2 list`가 최종**이다.
 
 ---
 
@@ -194,7 +217,8 @@
 | 2026-05-01 (독립 재현 1회 반영) | `kospi_proxy_ohlcv_from_training_result.csv`로 독립 재현 아티팩트(`sasang_4agent_collision_btrack_protocol_repro_kospi_latest.json`) 생성 후 제출 번들에 `repro_check` 필드 추가. 유의성/개선은 통과했으나 표본 `ticks=99`로 `repro_sample_size_ok=false`, 번들 상태를 `HOLD_OR_INCOMPLETE_CHAIN`으로 보수 전환. |
 | 2026-05-01 (독립 재현 표본 300+ 충족 복구) | 재현 입력을 `research/market_data/kospi_daily_external_yf.csv`로 교체해 `sasang_4agent_collision_btrack_protocol_repro_kospi_latest.json` 재생성(`ticks=7232`, `p_permutation=0.017`, `sample_size_warning_low_ticks=false`). 제출 번들 재생성 후 `repro_check_pass=true`, 최종 상태 `PROMOTED_WITH_HUMAN_APPROVAL + MONITORING_ACTIVE + DRILL_PASS`로 복귀. |
 | 2026-05-02 (MKM Lab · LinkedIn B2B 실행 번들) | 개인 프로필 영문 우선 About·스페셜 픽스·주간 운영 노트 톤 유지; 추적 `reports/linkedin_dm_outreach_tracker_v1.tsv`, 복붙 `reports/linkedin_dm_copypaste_bundle_v1.txt`(KR+EN 첫 DM A/B/C·7일 팔로업). DM/게시는 본인 LinkedIn 세션에서만 수행. |
-| 2026-05-02 (VPS · bitcoin-trading · 체결→cursor_trade_history) | 로컬 커밋만 있으면 VPS에 파일 MISSING — **`git@github.com:mkmlab-v2/mkm-destiny-ai-41e38ec6.git`의 `fix/btrack-ohlcv-cli-help-and-eval-wrapper-github`**에 반영 필요(비FF 시 worktree+체리픽 후 푸시). 체인: `export_binance_fills_to_cursor_trade_history_v1.py`→`sync_cursor_trade_history_latest_24h.py`; 등록 `ops/v2/ssh/register_export_then_sync_cursor_trade_history_cron.sh`, cron 태스크 `bitcoin-binance-export-then-cursor-trade-history`, 로그 `/var/log/bitcoin_export_then_cursor_trade_history.log`, **`WORKSPACE_ROOT=/opt/mkm-lab-workspace-v2/projects/bitcoin-trading`**. 브랜치 전환 전 **`projects/no1kmedi` 등 로컬 수정은 stash**. **재발 방지 SSOT:** `projects/bitcoin-trading/ops/v2/DEPLOY_GIT_POINTER_V1.json` + 스모크 `bash ops/v2/ssh/check_vps_deploy_files_vs_pointer.sh`. |
+| 2026-05-02 (VPS · bitcoin-trading · 체결→cursor_trade_history) | 로컬 커밋만 있으면 VPS에 파일 MISSING — **`git@github.com:mkmlab-v2/mkm-destiny-ai-41e38ec6.git`의 `fix/btrack-ohlcv-cli-help-and-eval-wrapper-github`**에 반영 필요(비FF 시 worktree+체리픽 후 푸시). 체인: `export_binance_fills_to_cursor_trade_history_v1.py`→`sync_cursor_trade_history_latest_24h.py`; 등록 `ops/v2/ssh/register_export_then_sync_cursor_trade_history_cron.sh`, cron 태스크 `bitcoin-binance-export-then-cursor-trade-history`, 로그 `/var/log/bitcoin_export_then_cursor_trade_history.log`, **`WORKSPACE_ROOT=/opt/mkm-lab-workspace-v2/projects/bitcoin-trading`**. 브랜치 전환 전 **`projects/no1kmedi` 등 로컬 수정은 stash**. **재발 방지 SSOT:** `projects/bitcoin-trading/ops/v2/DEPLOY_GIT_POINTER_V1.json` + 스모크 `bash ops/v2/ssh/check_vps_deploy_files_vs_pointer.sh`. **▶ PM2/본선 혼동 방지는 본 파일 「VPS · 비트코인 본선」절(크로스 채팅 고정).** |
+| 2026-05-03 (VPS `vps-mkmlife` · PM2 이름 실측) | 동 호스트 `pm2 list` 기준 **24h 온라인 앱명 `bitcoin-live-small-24h`** — 런북 예시 `bitcoin-live` 와 불일치할 수 있음. **`verify_and_reload` FF 실패**는 다수 **VPS가 `main`이 아닌 브랜치에 checkout** 된 경우와 합치됨 → 본선을 main에 맞출지·feature를 유지할지 **정책 분리** 후 조치. |
 | 2026-05-02 (MKM 자체 LLM·이론 체화 — 전략 지문 고정) | 규칙/프롬프트 정렬 vs 가중치 학습 **층 분리**; 고도화 기본은 **규칙+RAG+게이트**. 로컬 젬마 등 **체화형 파인튜닝**은 eval·데이터·프롬프트 비대가 **실측**될 때만 ROI 검토 — 미달이면 오버엔지니어링. 재질의 시 **`CENTRAL_AGENT_MEMORY_V1` 「MKM AI 고도화 · 자체 LLM」** 절 우선. |
 
 ---
@@ -245,7 +269,7 @@
 | 레인 | 상용/게이트 상태 (한 줄) | 마지막으로 본 산출/경로 |
 |------|---------------------------|-------------------------|
 | 성경 | | |
-| 명리 | | |
+| 명리 | 체인 자동: `run_myeongni_lens_chain_from_bot_v1.py`/`Run-MyeongniLensChainFromBot_v1.ps1`(봇→융합덤프→렌즈); 단일 렌즈는 `--recommended` 또는 브리지 스크립트. | §3.3·`tests/test_myeongni_lens_chain_from_bot_v1.py` |
 | 사상 | 사상 4-Agent는 A-Track 승격 유지 상태이며 모니터 정책에서 `geumhwa_transition_threshold=0.58`로 상향해 과민 자동주입을 완화했다. | `docs/final/artifacts/sasang_4agent_monitor_policy_v1.json` |
 | 퓨전 | `보명지주/성정불변/병증약리/금화교역` 융합 게이트는 `FUSION_GATE_PASS`로 고정되어 승격 체인 체크에 결합됨. | `docs/final/artifacts/sasang_4agent_fusion_gate_latest.json` |
 

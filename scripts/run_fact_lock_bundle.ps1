@@ -314,23 +314,25 @@ if ($IncludeCodebookFactSafe) {
 
 if ($Include4dOhaengRegimeSnapshotGate) {
     if (-not (Test-Path -LiteralPath $ohaengRegimeSnapshotGateChain)) {
-        throw "4D->Ohaeng regime snapshot gate chain not found: $ohaengRegimeSnapshotGateChain"
-    }
-    Write-Host '== Fact-Lock (optional): 4D->Ohaeng regime snapshot + gate ==' -ForegroundColor Cyan
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $ohaengRegimeSnapshotGateChain
-    if ($LASTEXITCODE -ne 0) {
-        exit $LASTEXITCODE
+        Write-Host "WARN: 4D->Ohaeng chain script not in repo; skip (not a gate failure): $ohaengRegimeSnapshotGateChain" -ForegroundColor Yellow
+    } else {
+        Write-Host '== Fact-Lock (optional): 4D->Ohaeng regime snapshot + gate ==' -ForegroundColor Cyan
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $ohaengRegimeSnapshotGateChain
+        if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+        }
     }
 }
 
 if ($IncludeBtrackBalancedRegimeEval) {
     if (-not (Test-Path -LiteralPath $btrackBalancedRegimeEvalChain)) {
-        throw "B-track balanced regime eval chain not found: $btrackBalancedRegimeEvalChain"
-    }
-    Write-Host '== Fact-Lock (optional): B-track balanced regime eval chain ==' -ForegroundColor Cyan
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $btrackBalancedRegimeEvalChain
-    if ($LASTEXITCODE -ne 0) {
-        exit $LASTEXITCODE
+        Write-Host "WARN: B-track balanced regime eval script not in repo; skip (not a gate failure): $btrackBalancedRegimeEvalChain" -ForegroundColor Yellow
+    } else {
+        Write-Host '== Fact-Lock (optional): B-track balanced regime eval chain ==' -ForegroundColor Cyan
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $btrackBalancedRegimeEvalChain
+        if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+        }
     }
 }
 

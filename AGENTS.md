@@ -15,6 +15,14 @@
 - **자동 주입:** `.cursor/rules/central-agent-memory.mdc` (`alwaysApply`)에 **SSOT 핵심 5줄**이 매 에이전트 턴 컨텍스트에 포함된다. `@` 없이도 원칙 정렬은 가능하다.
 - **한계:** 채팅 로그는 세션 간 공유되지 않는다. “지난 작업” 맥락은 **본 파일·커밋**으로 누적한다. 표 전체·깊은 동기화가 필요하면 작업 시작 시 **`@CENTRAL.md`**(루트 바로가기) 또는 `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` 또는 에이전트 `Read`를 쓴다.
 
+### MKM 초간결 운영 프로토콜 (크로스 채팅 최소 부하)
+
+1. **Cursor User Rules (지휘관 PC, 선택):** Settings → Rules for AI에 예: `새 세션에서는 docs/final/CENTRAL_AGENT_MEMORY_V1.md를 읽고 현재 진행 단계·Fact-Lock을 파악한 뒤 짧게 브리핑한다.` — 레포와 자동 동기화되지 않으므로 본 절은 **복붙용 안내**다.
+2. **시작:** 말 한 줄만으로도 됨 — 「장기기억 토대로」「MKM 장기기억」「이어서」「CENTRAL 기준」 등. 레포 `.cursorrules` **[MKM AI Operating Protocol]** 에 따라 에이전트가 `CENTRAL`·`AGENTS`·(필요 시)`CONSTITUTION_*` 를 연다. 또는 `@CENTRAL.md` / `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` + 질문.
+3. **종료 1초 체크포인트:** `py scripts/athena_checkpoint.py "완료/다음 한 줄"` — `CENTRAL`의 **운영 체크포인트** 마커와 `last_updated_utc` 갱신. **저위험 MD 편집**이므로 `athena_run_v1.py`로 감쌀 필요 없음(ECC·실거래 경로와 무관). 말로 **「장기기억 저장해」「체크포인트」**만 해도 레포 `.cursorrules`에 따라 에이전트가 같은 명령을 실행하도록 고정됨(요약 한 줄은 채팅에 같이 주면 확실).
+4. **재개 팩(선택):** `py scripts/build_mkm_chat_resume_pack_v1.py` → `docs/final/artifacts/mkm_chat_resume_pack_latest.md` 등 기존 산출과 병용 가능.
+5. **`.cursorrules` 이중 관리:** 일일 `scripts/enforce_cursorrules_slim_ssot.py`는 `docs/final/artifacts/cursorrules_slim_ssot_v1.txt`를 `.cursorrules`에 복사한다. 루트 `.cursorrules`를 손대면 **템플릿도 같이** 맞춘다.
+
 ### 채팅 간 동기화 (레포 SSOT vs Cursor User Rules)
 
 - **대화 내용은 복사되지 않는다.** 새 세션에서도 동일한 안내를 쓰려면, 일정·운영·Remote Publication 등 **반복 안내를 레포 파일에 적어 두고 커밋**한다. 같은 워크스페이스의 다른 채팅에서는 파일을 열거나 **`@AGENTS.md`**(필요 시 `@CLAUDE.md`·중앙 메모리)로 한 번 참조하면 갱신된 본문이 보인다.
@@ -43,6 +51,14 @@
 - **조율 정의:** `Absolute Balance`는 **제5 AI/제5 체질이 아닌 조율 상태(Coordinator Mode)** 다.
 - **표준 표기:** 문서/대외 문구는 `MKM = 4AI core + Absolute Balance Coordinator Mode`를 기본으로 사용한다.
 - **금지:** `5AI`, `제5 체질`, `추가 체질` 같은 표현으로 구조를 재정의하지 않는다.
+
+## Athena 실행 거버넌스 (§28 · 선택 일상 점검)
+
+- **헌법:** `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §28 — `scripts/athena_run_v1.py`(ECC·`--target`/DPAPI·감사 JSONL·선택 `ATHENA_ECC_AUDIT_WEBHOOK_URL`).
+- **원클릭 스모크:** `py scripts/check_athena_execution_governance_smoke_v1.py` — 스크립트 존재·doctor·HOLD 차단 경로(exit 2) 확인 (실매매·웹훅 전송 없음).
+- **상태 요약:** `py scripts/athena_doctor_v1.py`
+- **규칙:** Cursor·에이전트는 `.cursorrules` 「Execution Governance」; 실키·웹훅 URL은 레포가 아니라 `.env`/스토어.
+- **CI:** GitHub `dual-regime-integrity` 워크플로가 §28 관련 pytest(`test_athena_run_v1`·`test_athena_doctor_v1`·`test_check_athena_execution_governance_smoke_v1`)를 실행 — 레포 시크릿 `ATHENA_ECC_AUDIT_WEBHOOK_URL`은 선택(현재 스텝은 웹훅 불필요).
 
 ## 세션 핸드오프 (선택)
 
