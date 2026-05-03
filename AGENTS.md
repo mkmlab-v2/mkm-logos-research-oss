@@ -92,7 +92,8 @@
 ### Remote Publication 운영 기본값 (모든 채팅 공통)
 
 - **본선 push:** `internal` 원격(내부/Gitea/로컬 bare)만 기본 사용.
-- **GitHub push:** 기본 차단(`origin`/`hq` push URL=`no_push`)을 유지하고, 필요 시에만 명시적으로 해제/우회한다.
+- **GitHub 비사용 기본:** 일반 작업에서는 GitHub를 쓰지 않는다(기본은 internal/gitea only).
+- **GitHub push:** 기본 차단(`origin`/`hq` push URL=`no_push`)을 유지하고, 사용자 명시 승인 없이는 해제/우회하지 않는다.
 - **권장 명령:** `scripts/Show-RemotePublicationMode.ps1`(상태 점검), `scripts/push-internal.ps1`(기본 push), `scripts/Push-GitHub-Explicit.ps1 -Acknowledge`(예외 공개).
 - **대용량/민감 산출물:** GitHub 기본 제외. 특히 `docs/final/artifacts/global_atom_full_canon/*`는 최신 consolidated manifest만 추적한다.
 - **GitHub 푸시 거절(GH001 등):** 브랜치 히스토리에 **100MB 초과** Git 객체(예: 위 `global_atom_full_canon` 대용량 JSON/JSONL)가 포함되면 원격이 받지 않는다. 이 경우 **GitHub PR 없이 `internal`/`gitea`에서 머지**하거나, LFS·히스토리 정리 후 예외 푸시(`Push-GitHub-Explicit.ps1`)를 별도 검토한다.
@@ -100,6 +101,9 @@
 ### 일인 개발(solo)일 때만 단순화
 
 - **매일 쓰는 것 하나:** 작업 저장은 **`scripts/push-internal.ps1`** 만 기억하면 됨 → **`gitea`** 또는 **`internal`** 로만 올라감(GitHub 주소를 외울 필요 없음).
+- **런타임 산출물:** 스케줄/체인이 갱신하는 `*_latest`류는 **로컬 디스크 SSOT**로 두고 Git에는 올리지 않는다(`.gitignore`로 워킹트리 clean 유지). 다른 PC는 `git pull` 후 필요한 체인을 한 번 돌리면 동일 경로에 재생성된다.
+- **stash:** 평소 루틴에 끼우지 말고, **정말 섞일 위험이 있을 때만** 임시 격리용으로 사용한다.
+- **브랜치:** 급하면 `main`에서 바로 커밋해도 된다. 여유가 생기면 그때 `1작업=1브랜치`로 정리해도 된다(강제 아님).
 - **피처 → 통합 브랜치:** 일상 머지 대상은 **`gitea/main`**(bare가 `E:\Git\repos\mkm-destiny-ai-41e38ec6.git`이면 `internal`과 동일). `main`이 `C:\workspace`가 아니라 **다른 워크트리**에만 열려 있어도 되고, 그때는 **`scripts/SoloDev-MergeFeatureToGiteaMain.ps1`** 로 현재 브랜치를 main에 합친 뒤 `gitea`로 push(먼저 `-DryRun`).
 - **GitHub:** 공개 미러·외부에 보여줄 필요가 있을 때만. 평소에 안 써도 레포 규칙과 충돌 없음. 의도적으로 올릴 때는 **`scripts/Push-GitHub-Explicit.ps1 -Acknowledge`** (실수 방지용 게이트).
 - **`origin`의 push가 `no_push`인 설정은 유지 권장:** 일반 `git push origin` 으로 GitHub에 안 가게 막는 안전장치.
