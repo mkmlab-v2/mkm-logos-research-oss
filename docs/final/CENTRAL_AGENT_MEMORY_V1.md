@@ -43,11 +43,12 @@
 |------|------------------|
 | **원칙** | 문서의 `bitcoin-live` / 예시 ecosystem의 `mkm-btc-live` 는 **이름 후보·플레이스홀더**다. **재시작·배포 전에 대상 SSH 호스트에서 `pm2 list` / `pm2 show <name>` 으로 cwd·스크립트를 확인**한다. |
 | **SSH 호스트 (로컬 ship 스크립트 기본)** | `vps-mkmlife` — `scripts/deploy/ship_to_vps.ps1` 의 `-VpsHost` 기본값. |
-| **모노레포 경로 (동 스크립트 기본)** | `/opt/mkm-lab-workspace-v2` — `-VpsRepoPath` 기본값. 실제 본선 클론이 다르면 **그 경로가 SSOT**. |
-| **PM2 앱 이름 (2026-05 `pm2 list` 실측, 본 호스트)** | **온라인 24h:** `bitcoin-live-small-24h` — 동일 호스트에서 **`bitcoin-live` 라는 앱은 없었음** (`pm2 show bitcoin-live` → 없음). 이름이 바뀌었으면 **표보다 실측이 이김**. |
-| **배포 스크립트** | `scripts/deploy/linux/verify_and_reload.sh` — 기본 **`git pull --ff-only origin main`** (main 고정). |
-| **`verify_and_reload` / FF 실패 시** | VPS가 **`main`이 아닌 브랜치**에 checkout 되어 있거나(예: `fix/btrack-...`), 워킹트리 수정·미추적으로 깨끗하지 않으면 **FF 불가**. 본선을 `origin/main`에 맞출 계획이면: **정리(stash 등) → `git checkout main` → `git pull --ff-only origin main`** 후 `pm2 restart …`. feature 브랜치만 쓰는 호스트면 **`--branch`를 그 브랜치로 맞추거나** 별도 절차로 분리한다. |
-| **표 「분기별 한 줄」와의 관계** | **2026-05-02** 행의 **destiny 브랜치·cron·WORKSPACE_ROOT** 는 **해당 파이프라인 배포 맥락**이다. **HQ `main` 모노레포 배포**(`verify_and_reload --branch main`)와 **브랜치·의도가 다를 수 있음** — 한 줄에 몰아 넣어 해석하지 말 것. |
+| **실전 런타임 경로 (2026-05-04 실측)** | PM2 `bitcoin-live-small-24h`의 `exec cwd`는 **`/opt/bitcoin-trading-live`**, `script path`는 **`/opt/bitcoin-trading-live/start_live_trading.py`**. 실전 반영 판단은 이 경로를 1순위로 본다. |
+| **보조 모노레포 경로(자동화/준비)** | `/opt/mkm-lab-workspace-v2` — `ship_to_vps.ps1` 기본값(`-VpsRepoPath`)이지만, 현재 `bitcoin-live-small-24h`의 직접 실행 경로는 아님. |
+| **PM2 앱 이름 (실측)** | **온라인 24h:** `bitcoin-live-small-24h` — 동일 호스트에서 `bitcoin-live` 앱은 없음. 이름 변경 가능성이 있으므로 항상 `pm2 list`/`pm2 show` 실측이 우선. |
+| **트리 정합 (2026-05-04 실측)** | `/opt/bitcoin-trading-live`: `origin=git@github.com:mkmlab-hq/bitcoin-trading.git`, `branch=main`, `HEAD=a97f44e9`, 워킹트리 수정(`AGENTS.md`, `config/trading_config.yaml`) 존재. `/opt/mkm-lab-workspace-v2`: `hq/destiny` 리모트 공존, `branch=main`, `HEAD=8167fdbd`, `origin/main` 대비 ahead 상태. |
+| **배포 스크립트 적용 범위** | `scripts/deploy/linux/verify_and_reload.sh`는 **호출한 repo-path**에만 적용된다. `mkm-lab-workspace-v2`에서 성공해도 실전 PM2가 `bitcoin-trading-live`를 보면 실전 코드에는 즉시 반영되지 않을 수 있다. |
+| **표 「분기별 한 줄」와의 관계** | 2026-05-02 `destiny` 브랜치 맥락과 2026-05-04 실전 PM2 경로(`/opt/bitcoin-trading-live`)는 다른 트리다. 한 줄로 합쳐 해석하지 않는다. |
 
 **한 줄 요약:** 배포는 **`main` + FF** 가 기본이고, PM2 이름은 **호스트마다 `pm2 list`가 최종**이다.
 
