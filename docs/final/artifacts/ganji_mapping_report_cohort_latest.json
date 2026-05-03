@@ -1,12 +1,12 @@
 {
   "schema": "ganji_mapping_report_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-04-28T22:20:04Z",
+  "generated_at_utc": "2026-05-03T03:30:19Z",
   "rule_set_id": "perfect_manseryeok_v1_midnight_rollover_default",
   "normalization_profile_id": "hangul_two_chars_strip_ws_v1",
   "engine": {
     "implementation": "PerfectManseryeok",
-    "git_sha": "5bcd7f4d7728b6ffce50b77e5d6315848481a7ec"
+    "git_sha": "0aa5b776102ed1900bea1b59091110a75944d517"
   },
   "rows": [
     {

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/lens_minute_shadow_eval_v1.schema.json",
+  "title": "Lens minute shadow eval report v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "schema_version",
+    "generated_at_utc",
+    "shadow_only",
+    "no_trading_action",
+    "bar_interval_minutes",
+    "rows"
+  ],
+  "properties": {
+    "schema": { "const": "lens_minute_shadow_eval_v1" },
+    "schema_version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "shadow_only": { "const": true },
+    "no_trading_action": { "const": true },
+    "bar_interval_minutes": { "type": "integer", "minimum": 1 },
+    "dataset_note": { "type": "string" },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["bar_ts_utc", "bar_index", "lens_minute_snapshot"],
+        "properties": {
+          "bar_ts_utc": { "type": "string" },
+          "bar_index": { "type": "integer", "minimum": 0 },
+          "asset_id": { "type": "string" },
+          "lens_minute_snapshot": { "type": "object" }
+        }
+      }
+    }
+  }
+}

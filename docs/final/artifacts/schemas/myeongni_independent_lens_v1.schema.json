@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/myeongni_independent_lens_v1.schema.json",
+  "title": "MKM 명리 독립 렌즈 v1 산출물",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "lens_id",
+    "engine_id",
+    "ts_utc",
+    "hypothesis_tier",
+    "boundary_ack",
+    "scores",
+    "rules",
+    "reproducibility",
+    "advanced"
+  ],
+  "properties": {
+    "schema": { "const": "myeongni_independent_lens_v1" },
+    "version": { "type": "string" },
+    "lens_id": { "const": "myeongni" },
+    "engine_id": { "const": "independent_lens_v1" },
+    "scores": {
+      "type": "object",
+      "required": ["direction_score", "confidence"],
+      "properties": {
+        "direction_score": { "type": "number", "minimum": -1, "maximum": 1 },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "advanced": {
+      "type": "object",
+      "description": "대운·지장간·신살·학파 조율 슬롯; 스텁 연결 가능",
+      "required": ["input_summary", "slots", "coordinator"],
+      "properties": {
+        "input_summary": { "type": "object" },
+        "slots": {
+          "type": "object",
+          "properties": {
+            "pillars": {},
+            "dayun": { "type": "array" },
+            "sajeong_interpolation": { "type": "object" },
+            "sinsal": { "type": "array" }
+          }
+        },
+        "coordinator": { "type": "object" }
+      }
+    },
+    "rules": {
+      "type": "object",
+      "required": ["ruleset_id", "hypothesis_tier", "boundary_ack"],
+      "properties": {
+        "ruleset_id": { "type": "string" },
+        "hypothesis_tier": { "const": "B" },
+        "boundary_ack": { "const": true }
+      }
+    },
+    "reproducibility": {
+      "type": "object",
+      "required": ["input_digest_sha256", "ruleset_id"],
+      "properties": {
+        "input_digest_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "ruleset_id": { "type": "string" },
+        "engine_mix": { "type": "object" },
+        "payload_content_digest_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

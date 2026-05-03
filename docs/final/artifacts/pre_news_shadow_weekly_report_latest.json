@@ -1,6 +1,6 @@
 {
   "schema": "pre_news_shadow_weekly_report_v1",
-  "generated_at_utc": "2026-04-30T04:06:23Z",
+  "generated_at_utc": "2026-05-02T21:30:05Z",
   "window_days": 7,
   "log_jsonl": "C:\\workspace\\reports\\pre_news_shadow_projection_log.jsonl",
   "alert_log_jsonl": "C:\\workspace\\reports\\pre_news_shadow_task_health_alert_log.jsonl",
@@ -18,7 +18,7 @@
     "effective_from_utc": "2026-04-28T00:00:00Z",
     "updated_at_utc": "2026-04-28T12:08:00Z"
   },
-  "runs_in_window": 13,
+  "runs_in_window": 14,
   "latest_projection_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
   "latest_projection_rows": 1,
   "top_resonance_stage_counts": [

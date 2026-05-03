@@ -1,6 +1,6 @@
 {
   "schema": "token_api_hydration_mix_v1",
-  "ts_utc": "2026-04-21T14:02:31.722572+00:00",
+  "ts_utc": "2026-05-02T22:00:04.832788+00:00",
   "source_openapi": "docs/final/openapi_token_compression_stub_v1.yaml",
   "total_examples": 5,
   "metrics_mode_counts": {

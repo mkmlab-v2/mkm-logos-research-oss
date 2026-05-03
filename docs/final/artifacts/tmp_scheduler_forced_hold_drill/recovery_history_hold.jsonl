@@ -1,0 +1,1 @@
+{"schema": "genius_governance_scheduler_auto_recovery_history_row_v1", "ts_utc": "2026-05-03T00:30:07Z", "hold_streak": 2, "should_recover": true, "in_cooldown": false, "attempted": true, "recovery_note": "triggered", "recovery_exit_code": 0}

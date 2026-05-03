@@ -1,6 +1,6 @@
 {
   "schema": "pre_news_shadow_ops_status_v1",
-  "generated_at_utc": "2026-04-30T04:06:24Z",
+  "generated_at_utc": "2026-05-02T21:30:05Z",
   "summary": {
     "promotion_gate_enabled": true,
     "holdout_dataset_lock_ok": true,
@@ -51,7 +51,7 @@
   "latest_alerts": {
     "policy_governance_alert": {
       "schema": "pre_news_shadow_policy_governance_alert_v1",
-      "generated_at_utc": "2026-04-30T04:06:24Z",
+      "generated_at_utc": "2026-05-02T21:30:05Z",
       "audit_summary_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
       "has_alert": false,
       "severity": "none",
@@ -99,15 +99,6 @@
   },
   "recent_projection_log_tail": [
     {
-      "generated_at_utc": "2026-04-28T13:05:15Z",
-      "output_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
-      "rows": 1,
-      "primary_top_stage": "full_canon",
-      "top_stage_counts": {
-        "full_canon": 1
-      }
-    },
-    {
       "generated_at_utc": "2026-04-28T13:10:54Z",
       "output_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
       "rows": 1,
@@ -142,6 +133,15 @@
       "top_stage_counts": {
         "full_canon": 1
       }
+    },
+    {
+      "generated_at_utc": "2026-05-02T21:30:05Z",
+      "output_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
+      "rows": 1,
+      "primary_top_stage": "full_canon",
+      "top_stage_counts": {
+        "full_canon": 1
+      }
     }
   ],
   "recent_drills": [
@@ -165,8 +165,8 @@
     "weekly_audit_bundle_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_latest.json",
     "weekly_audit_bundle_hash_manifest_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_hash_manifest_latest.json",
     "latest_bundle_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_latest.json",
-    "dated_bundle_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_2026-04-30.json",
-    "weekly_audit_bundle_generated_at_utc": "2026-04-30T04:06:24Z"
+    "dated_bundle_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_2026-05-02.json",
+    "weekly_audit_bundle_generated_at_utc": "2026-05-02T21:30:05Z"
   },
   "sources": {
     "weekly_report_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_report_latest.json",

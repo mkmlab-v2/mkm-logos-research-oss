@@ -1,0 +1,45 @@
+{
+  "schema": "vibe_evolution_suggestions_v1",
+  "generated_at_utc": "2026-05-03T00:28:57Z",
+  "scope": "research_only",
+  "guardrail": "no_auto_apply_changes_without_human_approval",
+  "source_report": "C:/workspace/docs/final/artifacts/vibe_prompt_consistency_report_latest.json",
+  "suggestions": [
+    {
+      "prompt_id": "prompt_01",
+      "current_ratio": 0.6,
+      "dominant_decision": "WATCH",
+      "recommended_action": "rewrite_prompt_and_add_constraints",
+      "priority": "high",
+      "note": "Low stability. Rewrite prompt with deterministic fields and conservative fallback.",
+      "requires_human_approval": true
+    },
+    {
+      "prompt_id": "prompt_02",
+      "current_ratio": 1.0,
+      "dominant_decision": "HOLD",
+      "recommended_action": "keep",
+      "priority": "low",
+      "note": "Stable prompt. Keep current wording.",
+      "requires_human_approval": true
+    },
+    {
+      "prompt_id": "prompt_03",
+      "current_ratio": 1.0,
+      "dominant_decision": "HOLD",
+      "recommended_action": "keep",
+      "priority": "low",
+      "note": "Stable prompt. Keep current wording.",
+      "requires_human_approval": true
+    },
+    {
+      "prompt_id": "prompt_04",
+      "current_ratio": 0.5,
+      "dominant_decision": "HOLD",
+      "recommended_action": "rewrite_prompt_and_add_constraints",
+      "priority": "high",
+      "note": "Low stability. Rewrite prompt with deterministic fields and conservative fallback.",
+      "requires_human_approval": true
+    }
+  ]
+}

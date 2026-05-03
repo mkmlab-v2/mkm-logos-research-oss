@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/lens_minute_shadow_eval_metrics_v1.schema.json",
+  "title": "Lens minute shadow eval metrics v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "schema_version",
+    "generated_at_utc",
+    "shadow_only",
+    "n_bars",
+    "aggregates",
+    "label_gate"
+  ],
+  "properties": {
+    "schema": { "const": "lens_minute_shadow_eval_metrics_v1" },
+    "schema_version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "shadow_only": { "type": "boolean" },
+    "n_bars": { "type": "integer", "minimum": 0 },
+    "aggregates": { "type": "object" },
+    "label_gate": { "type": "object" }
+  }
+}

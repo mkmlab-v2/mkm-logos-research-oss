@@ -1,6 +1,6 @@
 {
   "schema": "recovered_codepack_validation_v1",
-  "generated_at_utc": "2026-04-09T14:19:05Z",
+  "generated_at_utc": "2026-05-03T11:56:11Z",
   "base_path": "C:\\workspace\\scripts\\experimental\\codepack_recovery",
   "ok": true,
   "counts": {
@@ -50,14 +50,14 @@
     {
       "path": "scripts/build_standard_codebook.py",
       "exists": true,
-      "bytes": 15323,
-      "sha256": "0f55f4f9163613a05851275e674097cf7d32e75475c613faef0970259272903e"
+      "bytes": 15447,
+      "sha256": "508ebe917c2e3fa36b344af18c0dc01268f8a9be8f7979afcd36eb60be13c67b"
     },
     {
       "path": "scripts/step2_build_all_domain_codebooks.py",
       "exists": true,
-      "bytes": 8792,
-      "sha256": "13aa0187d5e8809e0a5e943129985c0e0fa7bd6019138df0d592fcd086230787"
+      "bytes": 8807,
+      "sha256": "27b6e979ce8869eb38fd6d90c72c58c0e84ebf534fe202a4b78c90402ab672f9"
     },
     {
       "path": "scripts/build_spirit_domain_codebook.py",

@@ -1,0 +1,187 @@
+{
+  "schema": "lens_minute_shadow_eval_v1",
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-05-03T03:37:35Z",
+  "shadow_only": true,
+  "no_trading_action": true,
+  "bar_interval_minutes": 1,
+  "dataset_note": "synthetic_timeline_for_contract_smoke — replace with OHLCV-aligned feeds when wiring adapters",
+  "rows": [
+    {
+      "bar_ts_utc": "2020-01-01T00:00:00Z",
+      "bar_index": 0,
+      "asset_id": "BTC_SHADOW_SMOKE",
+      "lens_minute_snapshot": {
+        "myeongni": {
+          "direction_score": -1.0,
+          "confidence": 0.5,
+          "note": "shadow_smoke_stub"
+        },
+        "sasang": {
+          "intensity_0_1": 0.0,
+          "ledger_ref": null,
+          "note": "shadow_smoke_stub"
+        },
+        "logos": {
+          "interpretation_snippet": "[NON_GATING] shadow smoke — no gating",
+          "risk_multiplier_cap_hint": null,
+          "note": "shadow_smoke_stub"
+        }
+      }
+    },
+    {
+      "bar_ts_utc": "2020-01-01T00:01:00Z",
+      "bar_index": 1,
+      "asset_id": "BTC_SHADOW_SMOKE",
+      "lens_minute_snapshot": {
+        "myeongni": {
+          "direction_score": -0.714286,
+          "confidence": 0.663333,
+          "note": "shadow_smoke_stub"
+        },
+        "sasang": {
+          "intensity_0_1": 0.142857,
+          "ledger_ref": null,
+          "note": "shadow_smoke_stub"
+        },
+        "logos": {
+          "interpretation_snippet": "[NON_GATING] shadow smoke — no gating",
+          "risk_multiplier_cap_hint": null,
+          "note": "shadow_smoke_stub"
+        }
+      }
+    },
+    {
+      "bar_ts_utc": "2020-01-01T00:02:00Z",
+      "bar_index": 2,
+      "asset_id": "BTC_SHADOW_SMOKE",
+      "lens_minute_snapshot": {
+        "myeongni": {
+          "direction_score": -0.428571,
+          "confidence": 0.826667,
+          "note": "shadow_smoke_stub"
+        },
+        "sasang": {
+          "intensity_0_1": 0.285714,
+          "ledger_ref": null,
+          "note": "shadow_smoke_stub"
+        },
+        "logos": {
+          "interpretation_snippet": "[NON_GATING] shadow smoke — no gating",
+          "risk_multiplier_cap_hint": null,
+          "note": "shadow_smoke_stub"
+        }
+      }
+    },
+    {
+      "bar_ts_utc": "2020-01-01T00:03:00Z",
+      "bar_index": 3,
+      "asset_id": "BTC_SHADOW_SMOKE",
+      "lens_minute_snapshot": {
+        "myeongni": {
+          "direction_score": -0.142857,
+          "confidence": 0.5,
+          "note": "shadow_smoke_stub"
+        },
+        "sasang": {
+          "intensity_0_1": 0.428571,
+          "ledger_ref": null,
+          "note": "shadow_smoke_stub"
+        },
+        "logos": {
+          "interpretation_snippet": "[NON_GATING] shadow smoke — no gating",
+          "risk_multiplier_cap_hint": null,
+          "note": "shadow_smoke_stub"
+        }
+      }
+    },
+    {
+      "bar_ts_utc": "2020-01-01T00:04:00Z",
+      "bar_index": 4,
+      "asset_id": "BTC_SHADOW_SMOKE",
+      "lens_minute_snapshot": {
+        "myeongni": {
+          "direction_score": 0.142857,
+          "confidence": 0.663333,
+          "note": "shadow_smoke_stub"
+        },
+        "sasang": {
+          "intensity_0_1": 0.571429,
+          "ledger_ref": null,
+          "note": "shadow_smoke_stub"
+        },
+        "logos": {
+          "interpretation_snippet": "[NON_GATING] shadow smoke — no gating",
+          "risk_multiplier_cap_hint": null,
+          "note": "shadow_smoke_stub"
+        }
+      }
+    },
+    {
+      "bar_ts_utc": "2020-01-01T00:05:00Z",
+      "bar_index": 5,
+      "asset_id": "BTC_SHADOW_SMOKE",
+      "lens_minute_snapshot": {
+        "myeongni": {
+          "direction_score": 0.428571,
+          "confidence": 0.826667,
+          "note": "shadow_smoke_stub"
+        },
+        "sasang": {
+          "intensity_0_1": 0.714286,
+          "ledger_ref": null,
+          "note": "shadow_smoke_stub"
+        },
+        "logos": {
+          "interpretation_snippet": "[NON_GATING] shadow smoke — no gating",
+          "risk_multiplier_cap_hint": null,
+          "note": "shadow_smoke_stub"
+        }
+      }
+    },
+    {
+      "bar_ts_utc": "2020-01-01T00:06:00Z",
+      "bar_index": 6,
+      "asset_id": "BTC_SHADOW_SMOKE",
+      "lens_minute_snapshot": {
+        "myeongni": {
+          "direction_score": 0.714286,
+          "confidence": 0.5,
+          "note": "shadow_smoke_stub"
+        },
+        "sasang": {
+          "intensity_0_1": 0.857143,
+          "ledger_ref": null,
+          "note": "shadow_smoke_stub"
+        },
+        "logos": {
+          "interpretation_snippet": "[NON_GATING] shadow smoke — no gating",
+          "risk_multiplier_cap_hint": null,
+          "note": "shadow_smoke_stub"
+        }
+      }
+    },
+    {
+      "bar_ts_utc": "2020-01-01T00:07:00Z",
+      "bar_index": 7,
+      "asset_id": "BTC_SHADOW_SMOKE",
+      "lens_minute_snapshot": {
+        "myeongni": {
+          "direction_score": -1.0,
+          "confidence": 0.663333,
+          "note": "shadow_smoke_stub"
+        },
+        "sasang": {
+          "intensity_0_1": 0.0,
+          "ledger_ref": null,
+          "note": "shadow_smoke_stub"
+        },
+        "logos": {
+          "interpretation_snippet": "[NON_GATING] shadow smoke — no gating",
+          "risk_multiplier_cap_hint": null,
+          "note": "shadow_smoke_stub"
+        }
+      }
+    }
+  ]
+}

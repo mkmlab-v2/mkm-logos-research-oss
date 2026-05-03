@@ -1,0 +1,56 @@
+{
+  "schema": "vibe_prompt_consistency_report_v1",
+  "generated_at_utc": "2026-05-03T00:28:57Z",
+  "scope": "research_only",
+  "runs_file": "C:/workspace/docs/final/artifacts/vibe_runs_raw/vibe_prompt_runs_latest.jsonl",
+  "prompt_reports": [
+    {
+      "prompt_id": "prompt_01",
+      "total_rows": 10,
+      "valid_decision_rows": 10,
+      "dominant_decision": "WATCH",
+      "decision_counts": {
+        "WATCH": 6,
+        "REDUCE": 4
+      },
+      "decision_consistency_ratio": 0.6
+    },
+    {
+      "prompt_id": "prompt_02",
+      "total_rows": 10,
+      "valid_decision_rows": 10,
+      "dominant_decision": "HOLD",
+      "decision_counts": {
+        "HOLD": 10
+      },
+      "decision_consistency_ratio": 1.0
+    },
+    {
+      "prompt_id": "prompt_03",
+      "total_rows": 10,
+      "valid_decision_rows": 10,
+      "dominant_decision": "HOLD",
+      "decision_counts": {
+        "HOLD": 10
+      },
+      "decision_consistency_ratio": 1.0
+    },
+    {
+      "prompt_id": "prompt_04",
+      "total_rows": 10,
+      "valid_decision_rows": 10,
+      "dominant_decision": "HOLD",
+      "decision_counts": {
+        "HOLD": 5,
+        "WATCH": 4,
+        "REDUCE": 1
+      },
+      "decision_consistency_ratio": 0.5
+    }
+  ],
+  "overall": {
+    "prompt_count": 4,
+    "valid_decision_rows": 40,
+    "overall_weighted_consistency_ratio": 0.775
+  }
+}

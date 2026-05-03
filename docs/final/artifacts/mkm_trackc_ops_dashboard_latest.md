@@ -1,11 +1,11 @@
 # MKM Track C Ops Dashboard
 
-- generated_at_utc: `2026-04-30T19:56:02.868738Z`
-- system_status: `APPROVED_FINAL_V2`
-- promotion_decision: `GO_FINAL_V2`
-- promotion_ready: `True`
-- weekly_pass_rate_percent: `100.0`
-- weekly_sample_count: `36`
+- generated_at_utc: `2026-05-03T15:42:33.975465Z`
+- system_status: `HOLD_OPERATIONAL_V1`
+- promotion_decision: `HOLD_OPERATIONAL_V1`
+- promotion_ready: `False`
+- weekly_pass_rate_percent: `97.3`
+- weekly_sample_count: `37`
 
 ## Track C
 - packet_status: `READY`

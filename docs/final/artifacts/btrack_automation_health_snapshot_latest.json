@@ -1,36 +1,36 @@
 {
   "schema": "btrack_automation_health_snapshot_v1",
-  "generated_at_utc": "2026-04-26T13:19:11Z",
+  "generated_at_utc": "2026-05-03T15:05:01Z",
   "tasks": {
     "auto_scientist_weekly": {
       "task_name": "\\MKM_BTrack_AutoScientist_Weekly",
       "exists": true,
       "return_code": 0,
-      "last_result": "0",
-      "last_run_time": "2026-04-26 오전 5:26:06",
-      "next_run_time": "2026-04-27 오전 12:05:00",
-      "status": "Ready",
-      "task_to_run": "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File \"C:\\workspace\\scripts\\Run-BtrackAutoScientistWeekly.ps1\" -MaxRetries 3 -MinAccuracyDelta 0 -SignalGreenConsecutivePasses 0 -ControlTowerReadinessMinSuccessRate 0 -DisableSignalL"
+      "last_result": null,
+      "last_run_time": null,
+      "next_run_time": null,
+      "status": null,
+      "task_to_run": null
     },
     "control_tower_weekly": {
       "task_name": "\\MKM_BTrack_ControlTower_Weekly",
       "exists": true,
       "return_code": 0,
-      "last_result": "0",
-      "last_run_time": "2026-04-25 오후 7:32:43",
-      "next_run_time": "2026-04-27 오전 12:05:00",
-      "status": "Ready",
-      "task_to_run": "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File \"C:\\workspace\\scripts\\Run-BtrackControlTowerOps.ps1\" -Mode weekly -DisableSignalLightRouting -AutoApplyOnGoReady"
+      "last_result": null,
+      "last_run_time": null,
+      "next_run_time": null,
+      "status": null,
+      "task_to_run": null
     },
     "control_tower_autopush_daily": {
       "task_name": "\\MKM_BTrack_ControlTower_Autopush_Daily",
       "exists": true,
       "return_code": 0,
-      "last_result": "0",
-      "last_run_time": "2026-04-26 오전 1:10:01",
-      "next_run_time": "2026-04-27 오전 1:10:00",
-      "status": "Ready",
-      "task_to_run": "powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File \"C:\\workspace\\scripts\\Run-BtrackControlTowerOps.ps1\" -Mode autopush -MaxRuns 3 -CooldownSeconds 60 -AutopushMinAccuracyDelta 0 -AutoApplyOnGoReady"
+      "last_result": null,
+      "last_run_time": null,
+      "next_run_time": null,
+      "status": null,
+      "task_to_run": null
     }
   },
   "artifacts": {
@@ -42,7 +42,7 @@
     },
     "promotion_preflight_latest": {
       "exists": true,
-      "generated_at_utc": "2026-04-26T13:19:00Z",
+      "generated_at_utc": "2026-05-03T15:05:01Z",
       "result": "PASS"
     },
     "btrack_promotion_gate_latest": {
@@ -52,8 +52,8 @@
     }
   },
   "summary": {
-    "all_tasks_ok": true,
+    "all_tasks_ok": false,
     "all_artifacts_ok": true,
-    "ops_ready": true
+    "ops_ready": false
   }
 }

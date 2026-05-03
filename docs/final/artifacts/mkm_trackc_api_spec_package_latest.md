@@ -1,6 +1,6 @@
 # MKM Macro Risk Warning API Spec Package (v1)
 
-- generated_at_utc: `2026-04-30T19:56:02.605580Z`
+- generated_at_utc: `2026-05-03T10:29:12.818163Z`
 - endpoint: `GET /v1/macro-risk-warning`
 
 ## Request Contract

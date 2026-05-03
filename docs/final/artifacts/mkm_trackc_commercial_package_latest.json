@@ -1,10 +1,10 @@
 {
   "schema": "mkm_trackc_commercial_package_v1",
-  "generated_at_utc": "2026-04-30T19:56:02.423456Z",
+  "generated_at_utc": "2026-05-03T10:29:12.712806Z",
   "system_status": {
-    "label": "MKM AI v2.0 (Final)",
-    "status": "APPROVED_FINAL_V2",
-    "is_final": true
+    "label": "MKM AI Cursor operational profile",
+    "status": "HOLD_OPERATIONAL_V1",
+    "is_final": false
   },
   "package_readiness": {
     "macro_risk_api_smoke_present": true,

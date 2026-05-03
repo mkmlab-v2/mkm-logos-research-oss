@@ -1,8 +1,8 @@
 {
   "schema": "a_track_go_nogo_status_v1",
   "meta": {
-    "generated_at_utc": "2026-04-30T09:28:13.602205+00:00",
-    "system_error_policy": "hold_s1",
+    "generated_at_utc": "2026-05-02T20:22:35.151167+00:00",
+    "system_error_policy": "no_go",
     "input_paths": {
       "high_reliability_mode_gate": "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
       "trinity_track_quality": "C:\\workspace\\docs\\final\\artifacts\\trinity_track_quality_report_latest.json",
@@ -23,31 +23,31 @@
   "snapshot": {
     "high_reliability_mode_gate_decision": "PASS",
     "trinity_overall_decision": "PASS",
-    "high_reliability_decision": "HOLD",
-    "price_output_locked": true,
+    "high_reliability_decision": "PASS",
+    "price_output_locked": false,
     "high_reliability_release_plan_status": "READY_FOR_SIGNOFF",
     "price_unlock_policy_status": "READY_FOR_SIGNOFF",
-    "chronos_holdout_direction_match_rate": 56.996587030716725,
+    "chronos_holdout_direction_match_rate": 50.857142857142854,
     "a_track_promotion_cli": {
       "present": true,
       "path": "C:\\workspace\\reports\\a_track_promotion_decision_latest.json",
       "schema": "a_track_promotion_cli_decision_v1",
       "action": "approve",
       "status": "accepted",
-      "requested_stage": "S2_PAPER_STRICT",
-      "accepted_for_stage": "S2_PAPER_STRICT",
-      "generated_at": "2026-04-29T02:03:54.8111474Z",
+      "requested_stage": "S4_LIMITED_LIVE",
+      "accepted_for_stage": "S4_LIMITED_LIVE",
+      "generated_at": "2026-05-02T20:22:26.3521139Z",
       "approver": "athena-test"
     },
     "multiweek_stability_tracker_present": true,
-    "multiweek_stability_ready_for_s3_gate": false,
+    "multiweek_stability_ready_for_s3_gate": true,
     "operator_approval_protocol_present": true,
     "operator_approval_protocol_status": "READY_FOR_SIGNOFF",
     "policy_floor_governance_present": true,
     "policy_floor_governance_status": "APPROVED",
     "hold_release_checklist_derived": {
       "done_lock_01": true,
-      "done_s3_01": false,
+      "done_s3_01": true,
       "done_s4_01": true,
       "done_hrm_01": true,
       "done_policy_01": true
@@ -56,31 +56,27 @@
   "checks": {
     "high_reliability_mode_gate_pass": true,
     "trinity_overall_pass": true,
-    "high_reliability_decision_not_hold": false,
-    "price_output_unlocked": false,
+    "high_reliability_decision_not_hold": true,
+    "price_output_unlocked": true,
     "chronos_holdout_direction_match_gte_50": true,
     "high_reliability_release_plan_defined": true,
     "price_unlock_policy_defined": true,
     "policy_floor_governance_ok": true,
     "a_track_human_cli_s2_accepted": true,
-    "a_track_human_cli_s3_accepted": false,
-    "a_track_human_cli_s4_accepted": false,
-    "s3_multiweek_evidence_ready": false,
+    "a_track_human_cli_s3_accepted": true,
+    "a_track_human_cli_s4_accepted": true,
+    "s3_multiweek_evidence_ready": true,
     "s4_operator_checklist_ready": true
   },
   "stage_readiness": {
     "s1_shadow_ready": true,
-    "s2_paper_strict_ready": false,
-    "s3_paper_scaled_ready": false,
-    "s4_limited_live_ready": false
+    "s2_paper_strict_ready": true,
+    "s3_paper_scaled_ready": true,
+    "s4_limited_live_ready": true
   },
   "result": {
-    "overall_go_no_go": "HOLD",
-    "recommended_stage": "S1_SHADOW",
-    "failed_reasons": [
-      "high_reliability_decision_is_hold",
-      "price_output_locked_true",
-      "s3_requires_multiweek_stability_evidence"
-    ]
+    "overall_go_no_go": "GO",
+    "recommended_stage": "S4_LIMITED_LIVE",
+    "failed_reasons": []
   }
 }

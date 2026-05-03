@@ -1,8 +1,8 @@
 # MKM Track C Executive Snapshot
 
-- generated_at_utc: `2026-04-30T19:56:02.958726Z`
-- system: `APPROVED_FINAL_V2` / decision `GO_FINAL_V2`
-- readiness: `100.0%` (36 samples)
+- generated_at_utc: `2026-05-02T22:10:03.682649Z`
+- system: `HOLD_OPERATIONAL_V1` / decision `HOLD_OPERATIONAL_V1`
+- readiness: `97.3%` (37 samples)
 - packet: `READY` / guard `True`
 - acceptance: `None` / freeze `None`
 - recovery drill: `None`

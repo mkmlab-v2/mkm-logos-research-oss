@@ -1,8 +1,8 @@
 # MKM AI Track C External One-Pager
 
-- generated_at_utc: `2026-04-30T19:56:02.512305Z`
+- generated_at_utc: `2026-05-03T10:32:15.567800Z`
 - title: `MKM AI Track C: Macro Risk Warning API + Public Showroom`
-- status: `APPROVED_FINAL_V2`
+- status: `HOLD_OPERATIONAL_V1`
 
 ## Elevator Pitch
 운영형 MKM AI의 거시 리스크 경보 API와 공개 쇼룸 레인을 결합한 고객 전달 패키지.

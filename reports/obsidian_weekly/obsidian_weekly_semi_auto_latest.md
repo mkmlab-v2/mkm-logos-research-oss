@@ -1,6 +1,6 @@
 ﻿# Obsidian Weekly Semi-Auto Report
 
-- Generated (UTC): 2026-04-29T11:01:52.7336675+00:00
+- Generated (UTC): 2026-05-03T00:00:01.4720914+00:00
 - Context root: G:\공유 드라이브\MKM_DATA_VAULT\vault\obsidian_context
 - Markdown files: 41
 - raw_research files: 23

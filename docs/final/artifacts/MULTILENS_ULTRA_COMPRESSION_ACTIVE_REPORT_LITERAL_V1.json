@@ -29,14 +29,20 @@
     "use_contextual_generator_v4": false,
     "use_contextual_generator_v5_codec": false,
     "require_tiktoken_o200k": false,
+    "force_shard_id": null,
     "tiktoken_o200k_encoding": "o200k_base",
     "tiktoken_o200k_available": true,
-    "tiktoken_o200k_unavailable_reason": null
+    "tiktoken_o200k_unavailable_reason": null,
+    "emit_semantic_pointer": false
   },
   "compression_metrics": {
     "case_count": 40,
-    "global_token_saving_rate": 0.24613220815752457,
-    "avg_reconstruction_fidelity_jaccard": 0.9189203211649032,
+    "semantic_pointer_channel": {
+      "schema": "semantic_pointer_v1",
+      "enabled": false
+    },
+    "global_token_saving_rate": 0.23628691983122363,
+    "avg_reconstruction_fidelity_jaccard": 0.9753949175824175,
     "avg_sensitive_integrity": 1.0,
     "min_sensitive_integrity": 1.0,
     "sensitive_violation_count": 0,
@@ -57,8 +63,8 @@
           "domain": "timing",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 13,
             "hits_sample": [
               "and",
@@ -161,8 +167,8 @@
               "domain": "timing",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 13,
                 "hits_sample": [
                   "and",
@@ -203,8 +209,8 @@
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 12,
             "hits_sample": [
               "direct",
@@ -306,8 +312,8 @@
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 12,
                 "hits_sample": [
                   "direct",
@@ -347,8 +353,8 @@
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 6,
             "hits_sample": [
               "boundary",
@@ -444,8 +450,8 @@
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 6,
                 "hits_sample": [
                   "boundary",
@@ -479,8 +485,8 @@
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 11,
             "hits_sample": [
               "artifacts",
@@ -581,8 +587,8 @@
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 11,
                 "hits_sample": [
                   "artifacts",
@@ -621,8 +627,8 @@
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 9,
             "hits_sample": [
               "are",
@@ -721,8 +727,8 @@
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 9,
                 "hits_sample": [
                   "are",
@@ -746,21 +752,21 @@
       {
         "id": "cmp2_006",
         "raw_tokens": 18,
-        "compressed_tokens": 14,
-        "token_saving_rate": 0.2222222222222222,
-        "compression_ratio": 0.7777777777777778,
-        "reconstruction_fidelity_jaccard": 0.875,
+        "compressed_tokens": 15,
+        "token_saving_rate": 0.16666666666666663,
+        "compression_ratio": 0.8333333333333334,
+        "reconstruction_fidelity_jaccard": 0.9375,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "Proxy anchors can support manual but they must never be as direct witness evidence",
-        "reconstructed_text_effective": "Proxy anchors can support manual but they must never be as direct witness evidence",
+        "compressed_text_effective": "Proxy anchors can support manual review but they must never be as direct witness evidence",
+        "reconstructed_text_effective": "Proxy anchors can support manual review but they must never be as direct witness evidence",
         "route": {
           "shard_id": "zone_d_ssot",
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 13,
             "hits_sample": [
               "as",
@@ -786,11 +792,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 19,
-        "o200k_compressed_tokens": 14,
-        "o200k_token_saving_rate": 0.26315789473684215,
+        "o200k_compressed_tokens": 15,
+        "o200k_token_saving_rate": 0.21052631578947367,
         "o200k_tokens_before": 19,
-        "o200k_tokens_after": 14,
-        "o200k_saving_rate": 0.26315789473684215,
+        "o200k_tokens_after": 15,
+        "o200k_saving_rate": 0.21052631578947367,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -863,8 +869,8 @@
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 13,
                 "hits_sample": [
                   "as",
@@ -905,8 +911,8 @@
           "domain": "timing",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 6,
             "hits_sample": [
               "as",
@@ -1002,8 +1008,8 @@
               "domain": "timing",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 6,
                 "hits_sample": [
                   "as",
@@ -1037,8 +1043,8 @@
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 5,
             "hits_sample": [
               "alignment",
@@ -1133,8 +1139,8 @@
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 5,
                 "hits_sample": [
                   "alignment",
@@ -1167,8 +1173,8 @@
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 14,
             "hits_sample": [
               "aligned",
@@ -1272,8 +1278,8 @@
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 14,
                 "hits_sample": [
                   "aligned",
@@ -1315,8 +1321,8 @@
           "domain": "ssot",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 5,
             "hits_sample": [
               "confidence",
@@ -1411,8 +1417,8 @@
               "domain": "ssot",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 5,
                 "hits_sample": [
                   "confidence",
@@ -1445,8 +1451,8 @@
           "domain": "health",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -1535,8 +1541,8 @@
               "domain": "health",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -1550,21 +1556,21 @@
       {
         "id": "cmp2_012",
         "raw_tokens": 17,
-        "compressed_tokens": 12,
-        "token_saving_rate": 0.2941176470588235,
-        "compression_ratio": 0.7058823529411765,
-        "reconstruction_fidelity_jaccard": 0.75,
+        "compressed_tokens": 13,
+        "token_saving_rate": 0.23529411764705888,
+        "compression_ratio": 0.7647058823529411,
+        "reconstruction_fidelity_jaccard": 1.0,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "소음인의 피로는 겉으로 보여도 동반되는 많아서 식사와 수면을 지켜야 한다 약해 속한이",
-        "reconstructed_text_effective": "소음인의 피로는 겉으로 약해 보여도 속한이 동반되는 많아서 식사와 수면을 지켜야 한다",
+        "compressed_text_effective": "소음인의 피로는 겉으로 보여도 속한이 동반되는 경우가 많아서 식사와 수면을 함께 지켜야 한다",
+        "reconstructed_text_effective": "소음인의 피로는 겉으로 약해 보여도 속한이 동반되는 경우가 많아서 따뜻한 식사와 규칙 수면을 함께 지켜야 한다",
         "route": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot",
+          "shard_id": "zone_c_hangul",
+          "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -1576,11 +1582,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 40,
-        "o200k_compressed_tokens": 31,
-        "o200k_token_saving_rate": 0.22499999999999998,
+        "o200k_compressed_tokens": 32,
+        "o200k_token_saving_rate": 0.19999999999999996,
         "o200k_tokens_before": 40,
-        "o200k_tokens_after": 31,
-        "o200k_saving_rate": 0.22499999999999998,
+        "o200k_tokens_after": 32,
+        "o200k_saving_rate": 0.19999999999999996,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1649,12 +1655,12 @@
           },
           "metadata": {
             "route": {
-              "shard_id": "zone_d_ssot",
-              "domain": "ssot",
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -1671,18 +1677,18 @@
         "compressed_tokens": 13,
         "token_saving_rate": 0.2777777777777778,
         "compression_ratio": 0.7222222222222222,
-        "reconstruction_fidelity_jaccard": 0.7647058823529411,
+        "reconstruction_fidelity_jaccard": 1.0,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "태음인은 체중 변동이 부종이 나타날 있으니 섭취를 아침 꾸준히 유지해야 한다 작아도 먼저",
-        "reconstructed_text_effective": "태음인은 체중 변동이 작아도 부종이 먼저 나타날 있으니 섭취를 아침 꾸준히 유지해야 한다",
+        "compressed_text_effective": "태음인은 체중 변동이 작아도 부종이 나타날 있으니 섭취를 아침 걷기를 꾸준히 유지해야 한다",
+        "reconstructed_text_effective": "태음인은 체중 변동이 작아도 부종이 먼저 나타날 수 있으니 염분 섭취를 낮추고 아침 걷기를 꾸준히 유지해야 한다",
         "route": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot",
+          "shard_id": "zone_c_hangul",
+          "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -1694,11 +1700,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 42,
-        "o200k_compressed_tokens": 31,
-        "o200k_token_saving_rate": 0.26190476190476186,
+        "o200k_compressed_tokens": 33,
+        "o200k_token_saving_rate": 0.2142857142857143,
         "o200k_tokens_before": 42,
-        "o200k_tokens_after": 31,
-        "o200k_saving_rate": 0.26190476190476186,
+        "o200k_tokens_after": 33,
+        "o200k_saving_rate": 0.2142857142857143,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -1767,12 +1773,12 @@
           },
           "metadata": {
             "route": {
-              "shard_id": "zone_d_ssot",
-              "domain": "ssot",
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -1799,8 +1805,8 @@
           "domain": "health",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -1889,8 +1895,8 @@
               "domain": "health",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -1917,8 +1923,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -2007,8 +2013,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -2035,8 +2041,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -2125,8 +2131,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -2153,8 +2159,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -2243,8 +2249,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -2271,8 +2277,8 @@
           "domain": "health",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -2361,8 +2367,8 @@
               "domain": "health",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -2379,18 +2385,18 @@
         "compressed_tokens": 13,
         "token_saving_rate": 0.2777777777777778,
         "compression_ratio": 0.7222222222222222,
-        "reconstruction_fidelity_jaccard": 0.7647058823529411,
+        "reconstruction_fidelity_jaccard": 1.0,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "소음인의 위장 불편은 일정과 음식이 올 악화되기 일정 온식 유지가 핵심이다 급한 찬",
-        "reconstructed_text_effective": "소음인의 위장 불편은 급한 일정과 찬 음식이 올 악화되기 일정 온식 유지가 핵심이다",
+        "compressed_text_effective": "소음인의 위장 불편은 일정과 음식이 함께 올 악화되기 일정 완충과 온식 유지가 핵심이다",
+        "reconstructed_text_effective": "소음인의 위장 불편은 급한 일정과 찬 음식이 함께 올 때 악화되기 쉬워서 일정 완충과 온식 유지가 핵심이다",
         "route": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot",
+          "shard_id": "zone_c_hangul",
+          "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -2475,12 +2481,12 @@
           },
           "metadata": {
             "route": {
-              "shard_id": "zone_d_ssot",
-              "domain": "ssot",
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -2507,8 +2513,8 @@
           "domain": "health",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -2597,8 +2603,8 @@
               "domain": "health",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -2612,21 +2618,21 @@
       {
         "id": "cmp2_021",
         "raw_tokens": 20,
-        "compressed_tokens": 14,
-        "token_saving_rate": 0.30000000000000004,
-        "compression_ratio": 0.7,
-        "reconstruction_fidelity_jaccard": 0.7368421052631579,
+        "compressed_tokens": 16,
+        "token_saving_rate": 0.19999999999999996,
+        "compression_ratio": 0.8,
+        "reconstruction_fidelity_jaccard": 1.0,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "태양인의 집중 저하는 부족과 화면 동반될 때 두드러지므로 블록 눈 반드시 넣어야 한다 수분",
-        "reconstructed_text_effective": "태양인의 집중 저하는 수분 부족과 화면 동반될 때 두드러지므로 블록 눈 반드시 넣어야 한다",
+        "compressed_text_effective": "태양인의 집중 저하는 부족과 화면 노출이 동반될 때 두드러지므로 블록 사이에 눈 휴식을 반드시 넣어야 한다",
+        "reconstructed_text_effective": "태양인의 집중 저하는 수분 부족과 과도한 화면 노출이 동반될 때 두드러지므로 작업 블록 사이에 눈 휴식을 반드시 넣어야 한다",
         "route": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot",
+          "shard_id": "zone_c_hangul",
+          "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -2638,11 +2644,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 40,
-        "o200k_compressed_tokens": 28,
-        "o200k_token_saving_rate": 0.30000000000000004,
+        "o200k_compressed_tokens": 33,
+        "o200k_token_saving_rate": 0.17500000000000004,
         "o200k_tokens_before": 40,
-        "o200k_tokens_after": 28,
-        "o200k_saving_rate": 0.30000000000000004,
+        "o200k_tokens_after": 33,
+        "o200k_saving_rate": 0.17500000000000004,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2711,12 +2717,12 @@
           },
           "metadata": {
             "route": {
-              "shard_id": "zone_d_ssot",
-              "domain": "ssot",
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -2743,8 +2749,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -2833,8 +2839,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -2861,8 +2867,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -2951,8 +2957,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -2969,18 +2975,18 @@
         "compressed_tokens": 12,
         "token_saving_rate": 0.33333333333333337,
         "compression_ratio": 0.6666666666666666,
-        "reconstruction_fidelity_jaccard": 0.75,
+        "reconstruction_fidelity_jaccard": 1.0,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "고유명사와 체질명은 오탈자 해석이 수 복원 원문 검사를 수행해야 한다 하나로도 바뀔",
-        "reconstructed_text_effective": "고유명사와 체질명은 오탈자 하나로도 해석이 바뀔 수 복원 원문 검사를 수행해야 한다",
+        "compressed_text_effective": "고유명사와 체질명은 오탈자 하나로도 해석이 수 복원 단계에서 원문 검사를 수행해야 한다",
+        "reconstructed_text_effective": "고유명사와 체질명은 오탈자 하나로도 해석이 바뀔 수 있어 복원 단계에서 원문 대조 검사를 반드시 수행해야 한다",
         "route": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot",
+          "shard_id": "zone_c_hangul",
+          "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -2992,11 +2998,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 39,
-        "o200k_compressed_tokens": 31,
-        "o200k_token_saving_rate": 0.20512820512820518,
+        "o200k_compressed_tokens": 30,
+        "o200k_token_saving_rate": 0.23076923076923073,
         "o200k_tokens_before": 39,
-        "o200k_tokens_after": 31,
-        "o200k_saving_rate": 0.20512820512820518,
+        "o200k_tokens_after": 30,
+        "o200k_saving_rate": 0.23076923076923073,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3065,12 +3071,12 @@
           },
           "metadata": {
             "route": {
-              "shard_id": "zone_d_ssot",
-              "domain": "ssot",
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -3084,21 +3090,21 @@
       {
         "id": "cmp2_025",
         "raw_tokens": 18,
-        "compressed_tokens": 12,
-        "token_saving_rate": 0.33333333333333337,
-        "compression_ratio": 0.6666666666666666,
-        "reconstruction_fidelity_jaccard": 0.75,
+        "compressed_tokens": 13,
+        "token_saving_rate": 0.2777777777777778,
+        "compression_ratio": 0.7222222222222222,
+        "reconstruction_fidelity_jaccard": 1.0,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "민감 도메인에서는 토큰 복원 우선해야 임계치 시 롤백 적용해야 한다 절약률보다 안정성을",
-        "reconstructed_text_effective": "민감 도메인에서는 토큰 절약률보다 복원 안정성을 우선해야 임계치 시 롤백 적용해야 한다",
+        "compressed_text_effective": "민감 도메인에서는 토큰 절약률보다 복원 안정성을 우선해야 임계치 시 롤백 정책을 적용해야 한다",
+        "reconstructed_text_effective": "민감 도메인에서는 토큰 절약률보다 복원 안정성을 우선해야 하며 임계치 위반 시 즉시 롤백 정책을 적용해야 한다",
         "route": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot",
+          "shard_id": "zone_c_hangul",
+          "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -3110,11 +3116,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 39,
-        "o200k_compressed_tokens": 29,
-        "o200k_token_saving_rate": 0.2564102564102564,
+        "o200k_compressed_tokens": 31,
+        "o200k_token_saving_rate": 0.20512820512820518,
         "o200k_tokens_before": 39,
-        "o200k_tokens_after": 29,
-        "o200k_saving_rate": 0.2564102564102564,
+        "o200k_tokens_after": 31,
+        "o200k_saving_rate": 0.20512820512820518,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3183,12 +3189,12 @@
           },
           "metadata": {
             "route": {
-              "shard_id": "zone_d_ssot",
-              "domain": "ssot",
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -3202,21 +3208,21 @@
       {
         "id": "cmp2_026",
         "raw_tokens": 18,
-        "compressed_tokens": 13,
-        "token_saving_rate": 0.2777777777777778,
-        "compression_ratio": 0.7222222222222222,
-        "reconstruction_fidelity_jaccard": 0.7647058823529411,
+        "compressed_tokens": 14,
+        "token_saving_rate": 0.2222222222222222,
+        "compression_ratio": 0.7777777777777778,
+        "reconstruction_fidelity_jaccard": 1.0,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "체질별 금칙 변환 비어 압축 일시적으로 보여도 복원 누적될 수 있다 사전이 있으면",
-        "reconstructed_text_effective": "체질별 금칙 변환 사전이 비어 있으면 압축 일시적으로 보여도 복원 누적될 수 있다",
+        "compressed_text_effective": "체질별 금칙 변환 사전이 비어 압축 결과가 일시적으로 보여도 복원 실패가 누적될 수 있다",
+        "reconstructed_text_effective": "체질별 금칙 변환 사전이 비어 있으면 압축 결과가 일시적으로 좋아 보여도 실제 복원 실패가 누적될 수 있다",
         "route": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot",
+          "shard_id": "zone_c_hangul",
+          "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -3228,11 +3234,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 35,
-        "o200k_compressed_tokens": 28,
-        "o200k_token_saving_rate": 0.19999999999999996,
+        "o200k_compressed_tokens": 30,
+        "o200k_token_saving_rate": 0.1428571428571429,
         "o200k_tokens_before": 35,
-        "o200k_tokens_after": 28,
-        "o200k_saving_rate": 0.19999999999999996,
+        "o200k_tokens_after": 30,
+        "o200k_saving_rate": 0.1428571428571429,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3301,12 +3307,12 @@
           },
           "metadata": {
             "route": {
-              "shard_id": "zone_d_ssot",
-              "domain": "ssot",
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -3333,8 +3339,8 @@
           "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -3423,8 +3429,8 @@
               "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -3451,8 +3457,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -3541,8 +3547,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -3556,21 +3562,21 @@
       {
         "id": "cmp2_029",
         "raw_tokens": 15,
-        "compressed_tokens": 11,
-        "token_saving_rate": 0.2666666666666667,
-        "compression_ratio": 0.7333333333333333,
-        "reconstruction_fidelity_jaccard": 0.7857142857142857,
+        "compressed_tokens": 10,
+        "token_saving_rate": 0.33333333333333337,
+        "compression_ratio": 0.6666666666666666,
+        "reconstruction_fidelity_jaccard": 1.0,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "명리와 사상의학을 함께 때는 신호와 체질축 제약을 기록해야 감사가 가능해진다 해석할",
-        "reconstructed_text_effective": "명리와 사상의학을 함께 해석할 때는 신호와 체질축 제약을 기록해야 감사가 가능해진다",
+        "compressed_text_effective": "명리와 사상의학을 함께 때는 신호와 체질축 제약을 기록해야 감사가 가능해진다",
+        "reconstructed_text_effective": "명리와 사상의학을 함께 해석할 때는 시간축 신호와 체질축 제약을 분리 기록해야 추후 감사가 가능해진다",
         "route": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot",
+          "shard_id": "zone_c_hangul",
+          "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -3582,11 +3588,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 37,
-        "o200k_compressed_tokens": 30,
-        "o200k_token_saving_rate": 0.18918918918918914,
+        "o200k_compressed_tokens": 27,
+        "o200k_token_saving_rate": 0.2702702702702703,
         "o200k_tokens_before": 37,
-        "o200k_tokens_after": 30,
-        "o200k_saving_rate": 0.18918918918918914,
+        "o200k_tokens_after": 27,
+        "o200k_saving_rate": 0.2702702702702703,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -3655,12 +3661,12 @@
           },
           "metadata": {
             "route": {
-              "shard_id": "zone_d_ssot",
-              "domain": "ssot",
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -3687,8 +3693,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -3777,8 +3783,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -3805,8 +3811,8 @@
           "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -3895,8 +3901,8 @@
               "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -3923,8 +3929,8 @@
           "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -4013,8 +4019,8 @@
               "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -4041,8 +4047,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -4131,8 +4137,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -4159,8 +4165,8 @@
           "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -4249,8 +4255,8 @@
               "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -4277,8 +4283,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -4367,8 +4373,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -4395,8 +4401,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -4485,8 +4491,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -4513,8 +4519,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -4603,8 +4609,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -4631,8 +4637,8 @@
           "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -4721,8 +4727,8 @@
               "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -4736,21 +4742,21 @@
       {
         "id": "cmp2_039",
         "raw_tokens": 20,
-        "compressed_tokens": 14,
-        "token_saving_rate": 0.30000000000000004,
-        "compression_ratio": 0.7,
-        "reconstruction_fidelity_jaccard": 0.7368421052631579,
+        "compressed_tokens": 16,
+        "token_saving_rate": 0.19999999999999996,
+        "compression_ratio": 0.8,
+        "reconstruction_fidelity_jaccard": 1.0,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "복원 파이프라인 감사 원문 누락 목록을 남겨야 재학습 규칙 지점을 찾을 수 있다 로그에는",
-        "reconstructed_text_effective": "복원 파이프라인 감사 로그에는 원문 누락 목록을 남겨야 재학습 규칙 지점을 찾을 수 있다",
+        "compressed_text_effective": "복원 파이프라인 감사 로그에는 원문 대비 누락 목록을 남겨야 재학습 없이도 규칙 지점을 찾을 수 있다",
+        "reconstructed_text_effective": "복원 파이프라인 감사 로그에는 원문 대비 누락 토큰 목록을 남겨야 재학습 없이도 규칙 수정 지점을 빠르게 찾을 수 있다",
         "route": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot",
+          "shard_id": "zone_c_hangul",
+          "domain": "hangul",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -4762,11 +4768,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 38,
-        "o200k_compressed_tokens": 29,
-        "o200k_token_saving_rate": 0.23684210526315785,
+        "o200k_compressed_tokens": 32,
+        "o200k_token_saving_rate": 0.1578947368421053,
         "o200k_tokens_before": 38,
-        "o200k_tokens_after": 29,
-        "o200k_saving_rate": 0.23684210526315785,
+        "o200k_tokens_after": 32,
+        "o200k_saving_rate": 0.1578947368421053,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4835,12 +4841,12 @@
           },
           "metadata": {
             "route": {
-              "shard_id": "zone_d_ssot",
-              "domain": "ssot",
+              "shard_id": "zone_c_hangul",
+              "domain": "hangul",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -4867,8 +4873,8 @@
           "domain": "scm",
           "master_codebook_lexicon_v1": {
             "status": "ok",
-            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-            "lexicon_term_count": 41769,
+            "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+            "lexicon_term_count": 41775,
             "hit_count": 0,
             "hits_sample": []
           }
@@ -4957,8 +4963,8 @@
               "domain": "scm",
               "master_codebook_lexicon_v1": {
                 "status": "ok",
-                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41769_rows_latest.json",
-                "lexicon_term_count": 41769,
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41775_rows_latest.json",
+                "lexicon_term_count": 41775,
                 "hit_count": 0,
                 "hits_sample": []
               }
@@ -4975,13 +4981,13 @@
       "available": true,
       "reason_unavailable": null,
       "tokens_raw_total": 1343,
-      "tokens_compressed_total": 1082,
-      "global_token_saving_rate": 0.19434102755026061
+      "tokens_compressed_total": 1094,
+      "global_token_saving_rate": 0.18540580789277739
     },
-    "o200k_token_saving_rate": 0.19434102755026061,
-    "o200k_saving_rate": 0.19434102755026061,
+    "o200k_token_saving_rate": 0.18540580789277739,
+    "o200k_saving_rate": 0.18540580789277739,
     "o200k_tokens_before": 1343,
-    "o200k_tokens_after": 1082
+    "o200k_tokens_after": 1094
   },
   "fusion_metrics": {
     "case_count": 10,
@@ -5087,6 +5093,8 @@
     "intensity": "high",
     "general_max_saving_rate": 0.28,
     "sensitive_max_saving_rate": 0.26,
-    "hangul_max_saving_rate": 0.3
+    "hangul_max_saving_rate": 0.3,
+    "apply_gematria_4d_bridge_policy": false,
+    "apply_gematria_4d_bridge_policy_env": false
   }
 }

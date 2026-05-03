@@ -1,13 +1,13 @@
 {
   "schema": "mkm_ai_v2_weekly_readiness_report_v1",
-  "generated_at_utc": "2026-04-30T19:56:01.859542Z",
+  "generated_at_utc": "2026-05-02T22:10:02.451777Z",
   "window_days": 7,
-  "window_start_utc": "2026-04-23T19:56:01.859542Z",
-  "window_end_utc": "2026-04-30T19:56:01.859542Z",
+  "window_start_utc": "2026-04-25T22:10:02.451777Z",
+  "window_end_utc": "2026-05-02T22:10:02.451777Z",
   "log_path": "C:\\workspace\\reports\\mkm_ai_v2_readiness_log.jsonl",
-  "sample_count": 36,
+  "sample_count": 37,
   "pass_count": 36,
-  "fail_count": 0,
-  "pass_rate_percent": 100.0,
-  "latest_run_utc": "2026-04-30T19:56:01.770639Z"
+  "fail_count": 1,
+  "pass_rate_percent": 97.3,
+  "latest_run_utc": "2026-05-02T22:10:02.347505Z"
 }

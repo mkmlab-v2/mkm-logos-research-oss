@@ -35,3 +35,4 @@
 {"schema":"mkm_ai_v2_readiness_daily_log_v1","ts_utc":"2026-04-30T19:44:07.4003742Z","workspace_root":"C:\\workspace","exit_code":0,"overall_passed":true,"artifact_path":"C:\\workspace\\docs\\final\\artifacts\\mkm_ai_v2_readiness_latest.json"}
 {"schema":"mkm_ai_v2_readiness_daily_log_v1","ts_utc":"2026-04-30T19:48:15.9774324Z","workspace_root":"C:\\workspace","exit_code":0,"overall_passed":true,"artifact_path":"C:\\workspace\\docs\\final\\artifacts\\mkm_ai_v2_readiness_latest.json"}
 {"schema":"mkm_ai_v2_readiness_daily_log_v1","ts_utc":"2026-04-30T19:56:01.7706397Z","workspace_root":"C:\\workspace","exit_code":0,"overall_passed":true,"artifact_path":"C:\\workspace\\docs\\final\\artifacts\\mkm_ai_v2_readiness_latest.json"}
+{"schema":"mkm_ai_v2_readiness_daily_log_v1","ts_utc":"2026-05-02T22:10:02.3475056Z","workspace_root":"C:\\workspace","exit_code":1,"overall_passed":false,"artifact_path":"C:\\workspace\\docs\\final\\artifacts\\mkm_ai_v2_readiness_latest.json"}

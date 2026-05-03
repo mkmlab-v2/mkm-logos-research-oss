@@ -1,5 +1,10 @@
 ﻿[
     {
+        "TaskName":  "Bitcoin-BinanceExport-ThenCursorTradeHistory-30min",
+        "TaskPath":  "\\",
+        "State":  3
+    },
+    {
         "TaskName":  "Bitcoin-CursorTradeHistory-Latest24h-15min",
         "TaskPath":  "\\",
         "State":  1
@@ -22,7 +27,7 @@
     {
         "TaskName":  "Bitcoin-Guardrails-Fast-Verify-30min",
         "TaskPath":  "\\",
-        "State":  3
+        "State":  1
     },
     {
         "TaskName":  "Bitcoin-KPI-Snapshot-30min",
@@ -32,7 +37,7 @@
     {
         "TaskName":  "Bitcoin-KPI-Snapshot-5min",
         "TaskPath":  "\\",
-        "State":  4
+        "State":  1
     },
     {
         "TaskName":  "Bitcoin-Live-Preflight-15min",
@@ -57,7 +62,7 @@
     {
         "TaskName":  "Bitcoin-Ops-Fusion-Cycle-Auto",
         "TaskPath":  "\\",
-        "State":  3
+        "State":  1
     },
     {
         "TaskName":  "Bitcoin-OpsKPI-AlertEval-30min",
@@ -82,7 +87,7 @@
     {
         "TaskName":  "Bitcoin-Public-Event-Recovery-10min",
         "TaskPath":  "\\",
-        "State":  4
+        "State":  1
     },
     {
         "TaskName":  "Bitcoin-Public-Metrics-Snapshot-1min",
@@ -247,7 +252,7 @@
     {
         "TaskName":  "MKM_GeniusGovernance_SchedulerHealthCheck",
         "TaskPath":  "\\",
-        "State":  4
+        "State":  1
     },
     {
         "TaskName":  "MKM_GitHubGpuRunner_Healthcheck",

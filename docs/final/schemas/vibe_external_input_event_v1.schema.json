@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/vibe_external_input_event_v1.schema.json",
+  "title": "vibe_external_input_event_v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "as_of_utc",
+    "bucket",
+    "series",
+    "value",
+    "source",
+    "confidence"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "vibe_external_input_event_v1"
+    },
+    "as_of_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "bucket": {
+      "type": "string",
+      "enum": [
+        "macro_rates_liquidity",
+        "risk_sentiment_volatility",
+        "crypto_microstructure",
+        "geopolitical_event"
+      ]
+    },
+    "series": {
+      "type": "string",
+      "minLength": 1
+    },
+    "value": {
+      "type": "number"
+    },
+    "unit": {
+      "type": "string"
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["up", "down", "flat", "unknown"]
+    },
+    "window": {
+      "type": "string",
+      "enum": ["intraday", "1d", "1w", "1m", "event"]
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_ref": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

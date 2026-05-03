@@ -1,0 +1,32 @@
+{
+  "schema": "vibe_daily_status_dashboard_v1",
+  "generated_at_utc": "2026-05-03T00:28:58Z",
+  "scope": "research_only",
+  "overall_health": "green",
+  "summary": {
+    "gate_status": "ok",
+    "gate_stage": "raw_output_coverage_check",
+    "gate_message": "Coverage gate passed.",
+    "filled_coverage_ratio": 1.0,
+    "consistency_ratio": 0.775,
+    "ingested_rows": 40,
+    "evolution_suggestion_count": 4,
+    "external_input_rows": 7,
+    "external_input_parse_errors": 0,
+    "external_input_latest_as_of_utc": "2026-05-02T17:50:00Z"
+  },
+  "external_input_bucket_counts": {
+    "macro_rates_liquidity": 2,
+    "risk_sentiment_volatility": 2,
+    "crypto_microstructure": 2,
+    "geopolitical_event": 1
+  },
+  "paths": {
+    "alert": "C:/workspace/docs/final/artifacts/vibe_gate_alert_latest.json",
+    "coverage": "C:/workspace/docs/final/artifacts/vibe_runs_raw/vibe_raw_coverage_latest.json",
+    "consistency": "C:/workspace/docs/final/artifacts/vibe_prompt_consistency_report_latest.json",
+    "evolution": "C:/workspace/docs/final/artifacts/vibe_evolution_suggestions_latest.json",
+    "ingest_log": "C:/workspace/docs/final/artifacts/vibe_runs_raw/vibe_ingest_log_latest.json",
+    "external_input_jsonl": "C:/workspace/docs/final/artifacts/vibe_external_inputs_latest.jsonl"
+  }
+}

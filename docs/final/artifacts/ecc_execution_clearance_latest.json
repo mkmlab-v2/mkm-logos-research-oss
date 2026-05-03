@@ -1,0 +1,18 @@
+{
+  "schema": "execution_clearance_certificate_v1",
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-05-03T03:53:39Z",
+  "status": "APPROVED",
+  "reason": "governance_attack_integrity_ok",
+  "governance_artifact": "docs\\final\\artifacts\\integrated_governance_v1_latest.json",
+  "final_regime": "ATTACK",
+  "final_action_allowed": true,
+  "action": "TRADE_EXECUTE",
+  "action_payload_hash": "a091e2141a52e8975a42e29fc73a2798137de4cfde4b81d63be054c7c4a9cd9f",
+  "child_command": [
+    "py",
+    "scripts/trade_dummy.py"
+  ],
+  "child_exit_code": 0,
+  "audit_ref": "ecc_approved_trade_dummy_key_in_child_only"
+}

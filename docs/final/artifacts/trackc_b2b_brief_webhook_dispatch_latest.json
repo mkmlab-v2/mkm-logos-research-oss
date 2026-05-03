@@ -1,6 +1,6 @@
 {
   "schema": "trackc_b2b_brief_webhook_dispatch_v1",
-  "generated_at_utc": "2026-04-30T19:58:21Z",
+  "generated_at_utc": "2026-05-02T22:10:04Z",
   "inputs": {
     "dashboard_json": "C:/workspace/docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json",
     "acceptance_json": "C:/workspace/docs/final/artifacts/mkm_trackc_operational_acceptance_latest.json",
@@ -16,13 +16,13 @@
   },
   "brief_payload_preview": {
     "source": "trackc_b2b_brief_dispatch_v1",
-    "generated_at_utc": "2026-04-30T19:58:21Z",
+    "generated_at_utc": "2026-05-02T22:10:04Z",
     "track": "C",
     "scope": "risk_warning_and_exposure_control",
     "compliance_note": "No deterministic prediction claim. No return-assurance claim.",
     "executive_summary": {
-      "status": "APPROVED_FINAL_V2",
-      "promotion_decision": "GO_FINAL_V2",
+      "status": "HOLD_OPERATIONAL_V1",
+      "promotion_decision": "HOLD_OPERATIONAL_V1",
       "acceptance_status": null
     },
     "evidence": {

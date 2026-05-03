@@ -1,0 +1,214 @@
+{
+  "vector_4d": {
+    "S": 0.0,
+    "L": 0.0,
+    "K": 0.375,
+    "M": 0.625
+  },
+  "ohang_strength": {
+    "wood_strength": 0.0,
+    "fire_strength": 0.0,
+    "earth_strength": 0.375,
+    "metal_strength": 0.375,
+    "water_strength": 0.25
+  },
+  "ohang_strength_jijangan_v1": {
+    "wood_strength": 0.0,
+    "fire_strength": 0.0,
+    "earth_strength": 0.36231884057971014,
+    "metal_strength": 0.3333333333333333,
+    "water_strength": 0.30434782608695654
+  },
+  "vector_4d_jijangan_v1": {
+    "S": 0.0,
+    "L": 0.0,
+    "K": 0.3333333333333333,
+    "M": 0.6666666666666667
+  },
+  "vector_4d_rule_school_v1": {
+    "S": 0.0,
+    "L": 0.0,
+    "K": 0.36041666666666666,
+    "M": 0.6395833333333334
+  },
+  "rule_school_mkm_4d_v1": {
+    "version": "1.0.0",
+    "policy_path": "C:\\workspace\\data\\myeongni\\rule_school_mkm_4d_v1.json",
+    "vector_4d_blend": {
+      "w_surface": 0.65,
+      "w_jijangan": 0.35
+    }
+  },
+  "saju": {
+    "year": "경자",
+    "month": "기축",
+    "day": "계축",
+    "hour": "신유"
+  },
+  "jijangan_v1": {
+    "schema": "jijangan_overlay_v1",
+    "lut_schema": "jijangan_lut_v1",
+    "lut_version": "1.0.0",
+    "pillars": {
+      "year": {
+        "pillar": "경자",
+        "ji": "자",
+        "hidden_stems": [
+          {
+            "gan": "계",
+            "tier": "jeong_gi"
+          }
+        ]
+      },
+      "month": {
+        "pillar": "기축",
+        "ji": "축",
+        "hidden_stems": [
+          {
+            "gan": "기",
+            "tier": "jeong_gi"
+          },
+          {
+            "gan": "계",
+            "tier": "jung_gi"
+          },
+          {
+            "gan": "신",
+            "tier": "yeo_gi"
+          }
+        ]
+      },
+      "day": {
+        "pillar": "계축",
+        "ji": "축",
+        "hidden_stems": [
+          {
+            "gan": "기",
+            "tier": "jeong_gi"
+          },
+          {
+            "gan": "계",
+            "tier": "jung_gi"
+          },
+          {
+            "gan": "신",
+            "tier": "yeo_gi"
+          }
+        ]
+      },
+      "hour": {
+        "pillar": "신유",
+        "ji": "유",
+        "hidden_stems": [
+          {
+            "gan": "신",
+            "tier": "jeong_gi"
+          }
+        ]
+      }
+    }
+  },
+  "daewoon_v1": [
+    {
+      "age_start": 0.0,
+      "age_end": 10.0,
+      "saju": "기축",
+      "cycle": 1,
+      "direction": "backward",
+      "schema": "daewoon_v1",
+      "qiyun_applied": true
+    },
+    {
+      "age_start": 10.0,
+      "age_end": 20.0,
+      "saju": "무자",
+      "cycle": 2,
+      "direction": "backward",
+      "schema": "daewoon_v1",
+      "qiyun_applied": true
+    },
+    {
+      "age_start": 20.0,
+      "age_end": 30.0,
+      "saju": "정해",
+      "cycle": 3,
+      "direction": "backward",
+      "schema": "daewoon_v1",
+      "qiyun_applied": true
+    },
+    {
+      "age_start": 30.0,
+      "age_end": 40.0,
+      "saju": "병술",
+      "cycle": 4,
+      "direction": "backward",
+      "schema": "daewoon_v1",
+      "qiyun_applied": true
+    },
+    {
+      "age_start": 40.0,
+      "age_end": 50.0,
+      "saju": "을유",
+      "cycle": 5,
+      "direction": "backward",
+      "schema": "daewoon_v1",
+      "qiyun_applied": true
+    },
+    {
+      "age_start": 50.0,
+      "age_end": 60.0,
+      "saju": "갑신",
+      "cycle": 6,
+      "direction": "backward",
+      "schema": "daewoon_v1",
+      "qiyun_applied": true
+    },
+    {
+      "age_start": 60.0,
+      "age_end": 70.0,
+      "saju": "계미",
+      "cycle": 7,
+      "direction": "backward",
+      "schema": "daewoon_v1",
+      "qiyun_applied": true
+    },
+    {
+      "age_start": 70.0,
+      "age_end": 80.0,
+      "saju": "임오",
+      "cycle": 8,
+      "direction": "backward",
+      "schema": "daewoon_v1",
+      "qiyun_applied": true
+    },
+    {
+      "age_start": 80.0,
+      "age_end": 90.0,
+      "saju": "신사",
+      "cycle": 9,
+      "direction": "backward",
+      "schema": "daewoon_v1",
+      "qiyun_applied": true
+    },
+    {
+      "age_start": 90.0,
+      "age_end": 100.0,
+      "saju": "경진",
+      "cycle": 10,
+      "direction": "backward",
+      "schema": "daewoon_v1",
+      "qiyun_applied": true
+    }
+  ],
+  "daewoon_qiyun_v1": {
+    "schema": "qiyun_v1",
+    "forward": false,
+    "qiyun_days": 1.3969838619232178e-09,
+    "qiyun_years_float": 0.0,
+    "birth_jd_ut": 2459219.9166666665,
+    "jie_boundary_jd_ut": 2459219.916666665,
+    "timezone": "Asia/Seoul",
+    "method": "meeus_sun_lon_jie_v1"
+  },
+  "lambda": 0.25
+}

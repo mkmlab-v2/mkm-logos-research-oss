@@ -1,11 +1,11 @@
 {
   "schema": "independent_lens_shadow_minority_monthly_v1",
   "version": "1.0.0",
-  "ts_utc": "2026-05-02T02:48:50Z",
+  "ts_utc": "2026-05-03T00:15:16Z",
   "hypothesis_tier": "B",
   "source_history_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_shadow_history.jsonl",
-  "history_rows_total": 616,
-  "rows_with_minority_lens_total": 0,
+  "history_rows_total": 620,
+  "rows_with_minority_lens_total": 4,
   "months_observed": [
     "2026-03",
     "2026-04",
@@ -25,10 +25,12 @@
       "distinct_narrative_digest_count": 0
     },
     "2026-05": {
-      "total_rows": 4,
-      "rows_with_minority_lens": 0,
-      "minority_lens_counts": {},
-      "distinct_narrative_digest_count": 1
+      "total_rows": 8,
+      "rows_with_minority_lens": 4,
+      "minority_lens_counts": {
+        "logos": 4
+      },
+      "distinct_narrative_digest_count": 2
     }
   },
   "note": "UTC month from ts_utc; minority_lens_ids absent in legacy rows counts as no minority; not an A-track trigger."

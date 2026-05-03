@@ -1,0 +1,27 @@
+{
+  "schema_version": "todo_queue_v1",
+  "generated_at_utc": "2026-05-02T14:00:00Z",
+  "workspace_root_hint": "C:\\workspace",
+  "notes": "Single noop task for first non-dry-run poll. Bootstrap: -Profile SmokeFirst",
+  "tasks": [
+    {
+      "task_id": "ex-000-noop-smoke",
+      "title": "Orchestrator noop smoke (seconds)",
+      "track_tag": "ops",
+      "sensitivity_level": "low",
+      "state": "pending",
+      "runner": {
+        "kind": "powershell",
+        "path_rel": "scripts/mkm_orchestrator_noop_smoke_v1.ps1",
+        "args": [],
+        "timeout_seconds": 120
+      },
+      "approval": {
+        "required": false,
+        "idempotency_key": "ex-000-noop-smoke-v1"
+      },
+      "created_at_utc": "2026-05-02T14:00:00Z",
+      "updated_at_utc": "2026-05-02T14:00:00Z"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 ﻿{
     "schema":  "mkm_ai_v2_readiness_check_v1",
-    "generated_at_utc":  "2026-04-30T19:56:01.5025488Z",
+    "generated_at_utc":  "2026-05-02T22:10:01.9302995Z",
     "workspace_root":  "C:\\workspace",
-    "overall_passed":  true,
+    "overall_passed":  false,
     "checks":  [
                    {
                        "name":  "mcp_profile_json",
@@ -11,8 +11,8 @@
                    },
                    {
                        "name":  "core_mcp_set_exact",
-                       "passed":  true,
-                       "detail":  "actual=athena-core, athena-manseryeok, compression-server, devops-mcp, filesystem, hostinger-website-manager, openchrome, sequential-thinking; missing=; extra="
+                       "passed":  false,
+                       "detail":  "actual=athena-core, athena-manseryeok, compression-server, devops-mcp, filesystem, hostinger-website-manager, notebooklm, openchrome, sequential-thinking; missing=; extra=notebooklm"
                    },
                    {
                        "name":  "forbidden_mcp_absent",
@@ -32,7 +32,7 @@
                    {
                        "name":  "notebooklm_sync_fresh",
                        "passed":  true,
-                       "detail":  "age_hours=0.58 threshold_hours=168"
+                       "detail":  "age_hours=17.76 threshold_hours=168"
                    },
                    {
                        "name":  "central_memory_exists",
