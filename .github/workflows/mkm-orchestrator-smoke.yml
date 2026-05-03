@@ -1,0 +1,94 @@
+# MKM-Orchestrator (todo_queue_v1 + Telegram helpers) — pytest only, no secrets.
+name: MKM Orchestrator Smoke
+
+on:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/mkm_orchestrator_poll_v1.py"
+      - "scripts/mkm_orchestrator_poll.ps1"
+      - "scripts/mkm_orchestrator_telegram_v1.py"
+      - "scripts/approve_mkm_orchestrator_task_v1.py"
+      - "scripts/show_mkm_orchestrator_queue_status_v1.py"
+      - "scripts/bootstrap_mkm_orchestrator_queue_v1.ps1"
+      - "scripts/verify_mkm_orchestrator_bundle_v1.py"
+      - "scripts/Invoke-MkmOrchestrator*.ps1"
+      - "scripts/Register-MkmOrchestrator*.ps1"
+      - "tests/test_mkm_orchestrator_*.py"
+      - "tests/test_mkm_orchestrator_bundle_verify_v1.py"
+      - "tests/test_apply_trackc_plan_bridge_v1.py"
+      - "docs/final/schemas/todo_queue_v1.schema.json"
+      - "docs/final/artifacts/todo_queue_example_v1.json"
+      - "docs/final/artifacts/todo_queue_smoke_first_v1.json"
+      - "docs/final/artifacts/todo_queue_smoke_first_python_v1.json"
+      - "scripts/mkm_orchestrator_noop_smoke_v1.py"
+      - "scripts/mkm_orchestrator_noop_smoke_v1.ps1"
+      - "scripts/run_mkm_continuous_daemon.ps1"
+      - "docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json"
+      - "docs/final/artifacts/mkm_trackc_plan_orchestrator_bridge_v1.json"
+      - "scripts/apply_trackc_plan_bridge_to_queue_v1.py"
+      - "scripts/run_trackc_plan_gates_smoke_v1.py"
+      - "scripts/Invoke-TrackCPlanQueueRefresh.ps1"
+      - "scripts/Invoke-TrackCPlanOrchestratorCycle.ps1"
+      - "scripts/Invoke-TrackCPlanGatesSmoke.ps1"
+      - "scripts/Register-TrackCPlanGatesSmokeTask.ps1"
+      - ".github/workflows/mkm-orchestrator-smoke.yml"
+  pull_request:
+    paths:
+      - "scripts/mkm_orchestrator_poll_v1.py"
+      - "scripts/mkm_orchestrator_poll.ps1"
+      - "scripts/mkm_orchestrator_telegram_v1.py"
+      - "scripts/approve_mkm_orchestrator_task_v1.py"
+      - "scripts/show_mkm_orchestrator_queue_status_v1.py"
+      - "scripts/bootstrap_mkm_orchestrator_queue_v1.ps1"
+      - "scripts/verify_mkm_orchestrator_bundle_v1.py"
+      - "scripts/Invoke-MkmOrchestrator*.ps1"
+      - "scripts/Register-MkmOrchestrator*.ps1"
+      - "tests/test_mkm_orchestrator_*.py"
+      - "tests/test_mkm_orchestrator_bundle_verify_v1.py"
+      - "tests/test_apply_trackc_plan_bridge_v1.py"
+      - "docs/final/schemas/todo_queue_v1.schema.json"
+      - "docs/final/artifacts/todo_queue_example_v1.json"
+      - "docs/final/artifacts/todo_queue_smoke_first_v1.json"
+      - "docs/final/artifacts/todo_queue_smoke_first_python_v1.json"
+      - "scripts/mkm_orchestrator_noop_smoke_v1.py"
+      - "scripts/mkm_orchestrator_noop_smoke_v1.ps1"
+      - "scripts/run_mkm_continuous_daemon.ps1"
+      - "docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json"
+      - "docs/final/artifacts/mkm_trackc_plan_orchestrator_bridge_v1.json"
+      - "scripts/apply_trackc_plan_bridge_to_queue_v1.py"
+      - "scripts/run_trackc_plan_gates_smoke_v1.py"
+      - "scripts/Invoke-TrackCPlanQueueRefresh.ps1"
+      - "scripts/Invoke-TrackCPlanOrchestratorCycle.ps1"
+      - "scripts/Invoke-TrackCPlanGatesSmoke.ps1"
+      - "scripts/Register-TrackCPlanGatesSmokeTask.ps1"
+      - ".github/workflows/mkm-orchestrator-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install pytest
+        run: pip install pytest jsonschema
+
+      - name: Bundle path verify
+        run: python scripts/verify_mkm_orchestrator_bundle_v1.py
+
+      - name: Orchestrator tests
+        run: pytest tests/test_mkm_orchestrator_queue_v1.py tests/test_mkm_orchestrator_telegram_v1.py tests/test_mkm_orchestrator_poll_smoke_v1.py tests/test_mkm_orchestrator_bundle_verify_v1.py tests/test_apply_trackc_plan_bridge_v1.py -q

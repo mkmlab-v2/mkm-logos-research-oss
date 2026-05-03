@@ -8,6 +8,11 @@ on:
     branches: [main, master, develop, "chore/**"]
     paths:
       - "scripts/run_lens_myeongni.py"
+      - "scripts/myeongni_lens_v1/**"
+      - "scripts/emit_myeongni_lens_advanced_from_fusion_v1.py"
+      - "scripts/run_myeongni_lens_chain_from_bot_v1.py"
+      - "scripts/run_manseryeok_bot_v1.py"
+      - "scripts/Run-MyeongniLensChainFromBot_v1.ps1"
       - "scripts/run_lens_sasang.py"
       - "scripts/run_lens_logos.py"
       - "scripts/report_independent_lens_shadow_gate.py"
@@ -17,6 +22,10 @@ on:
       - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
       - "tests/test_independent_lenses_v0.py"
       - "tests/test_myeongni_independent_lens_v0.py"
+      - "tests/test_myeongni_lens_v1_contract.py"
+      - "tests/test_myeongni_fusion_bridge_v1.py"
+      - "tests/test_myeongni_lens_chain_from_bot_v1.py"
+      - "tests/fixtures/myeongni_advanced_input_minimal_v1.json"
       - "tests/test_independent_lens_shadow_gate_v1.py"
       - "tests/test_independent_lens_fusion_stub_v0.py"
       - "tests/test_build_daily_execution_insight_brief_v1.py"
@@ -32,6 +41,11 @@ on:
     branches: [main, master, develop]
     paths:
       - "scripts/run_lens_myeongni.py"
+      - "scripts/myeongni_lens_v1/**"
+      - "scripts/emit_myeongni_lens_advanced_from_fusion_v1.py"
+      - "scripts/run_myeongni_lens_chain_from_bot_v1.py"
+      - "scripts/run_manseryeok_bot_v1.py"
+      - "scripts/Run-MyeongniLensChainFromBot_v1.ps1"
       - "scripts/run_lens_sasang.py"
       - "scripts/run_lens_logos.py"
       - "scripts/report_independent_lens_shadow_gate.py"
@@ -41,6 +55,10 @@ on:
       - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
       - "tests/test_independent_lenses_v0.py"
       - "tests/test_myeongni_independent_lens_v0.py"
+      - "tests/test_myeongni_lens_v1_contract.py"
+      - "tests/test_myeongni_fusion_bridge_v1.py"
+      - "tests/test_myeongni_lens_chain_from_bot_v1.py"
+      - "tests/fixtures/myeongni_advanced_input_minimal_v1.json"
       - "tests/test_independent_lens_shadow_gate_v1.py"
       - "tests/test_independent_lens_fusion_stub_v0.py"
       - "tests/test_build_daily_execution_insight_brief_v1.py"
@@ -76,6 +94,9 @@ jobs:
           python -m pytest
           tests/test_independent_lenses_v0.py
           tests/test_myeongni_independent_lens_v0.py
+          tests/test_myeongni_lens_v1_contract.py
+          tests/test_myeongni_fusion_bridge_v1.py
+          tests/test_myeongni_lens_chain_from_bot_v1.py
           tests/test_independent_lens_shadow_gate_v1.py
           tests/test_independent_lens_fusion_stub_v0.py
           tests/test_build_daily_execution_insight_brief_v1.py

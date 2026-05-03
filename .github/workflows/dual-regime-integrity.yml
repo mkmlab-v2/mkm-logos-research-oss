@@ -126,6 +126,15 @@ on:
       - "tests/fixtures/join_walkforward_smoke_v1.labels.jsonl"
       - "research/market_data/kospi_daily_external_yf.csv"
       - "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+      - "scripts/athena_run_v1.py"
+      - "scripts/athena_doctor_v1.py"
+      - "scripts/athena_ecc_logs_v1.py"
+      - "scripts/check_athena_execution_governance_smoke_v1.py"
+      - "scripts/trade_dummy.py"
+      - "scripts/fixtures/integrated_governance_v1_hold.json"
+      - "tests/test_athena_run_v1.py"
+      - "tests/test_athena_doctor_v1.py"
+      - "tests/test_check_athena_execution_governance_smoke_v1.py"
       - "scripts/run_compression_automation_chain.ps1"
       - "scripts/run_compression_weekly_governance_chain.ps1"
       - "scripts/Register-CompressionWeeklyGovernanceTask.ps1"
@@ -701,6 +710,16 @@ jobs:
 
       - name: External Bible anchor governance scripts smoke
         run: python -m pytest tests/test_external_anchor_governance_scripts_smoke_v1.py -q --tb=short
+
+      # Athena §28: ECC launcher, doctor, JSONL audit helpers, HOLD deny path (smoke script).
+      # Optional repo secret ATHENA_ECC_AUDIT_WEBHOOK_URL — not required here (tests/mocks + smoke use --no-audit-webhook).
+      - name: Athena execution governance (§28) pytest
+        run: |
+          python -m pytest \
+            tests/test_athena_run_v1.py \
+            tests/test_athena_doctor_v1.py \
+            tests/test_check_athena_execution_governance_smoke_v1.py \
+            -q --tb=short
 
       - name: Token API hydration trend contract
         run: python -m pytest tests/test_token_api_hydration_trend.py -q --tb=short
