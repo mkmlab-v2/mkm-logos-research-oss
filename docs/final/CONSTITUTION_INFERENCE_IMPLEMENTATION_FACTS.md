@@ -9,7 +9,7 @@
 **보강 (2026-05-02 — MKM 렌즈 글로벌 프로파일링 프롬프트·RAG 초안):** `docs/final/MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md` — B-track NL 번역층·`[DRAFT]`; Fact-Lock·임상 격벽·`MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1` 정렬; 구현 강제 아님.
 **보강 (2026-05-02):** §1.3 Track C Macro Risk n8n 메일 온보딩 PowerShell 스크립트 표.
 **보강 (2026-05-02 — MKM-Orchestrator):** §1.4 `todo_queue_v1` 폴링·`reports/mkm_orchestrator_audit.jsonl`·텔레그램 notify/ingest(`.env`); **CENTRAL MD 자동 파싱·B→A·실매매 자동 합선 없음** — 경로·스크립트 `docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json`·`verify_mkm_orchestrator_bundle_v1.py`.
-**보강 (2026-05-03 — Security Agent / API 키 Fact-Lock):** §1.1.2 — `projects/bitcoin-trading/src/api/binance_client.py`가 `scripts.security_agent_manager.get_security_agent`를 최우선 시도하나 **현행 저장소에 `scripts/security_agent_manager.py` 없음** → import 실패 시 **환경 변수 → 루트 `.env` → JSON 파일** 폴백만 사실상 동작. **별도** `scripts/Invoke-EncryptedSecretStore.ps1`(DPAPI, `%APPDATA%\MKM\secret_store_v1.json`)은 범용 로컬 스토어이며 **binance_client와 자동 배선 없음**. **압축(Track A/B) 파이프라인은 API 키 암·복호화 계약 아님** — 혼동 금지.
+**보강 (2026-05-03 — Security Agent / API 키 Fact-Lock):** §1.1.2 — `scripts/security_agent_manager.py`(PoC)가 `Invoke-EncryptedSecretStore.ps1`로 DPAPI 스토어 조회; `binance_client`는 모노레포 **workspace 루트**를 `sys.path`에 넣어 import(·`parents[4]`). 스토어에 해당 키가 없으면·`MKM_SKIP_DPAPI_SECRET_STORE`·비 Windows면 **환경 변수 → 루트 `.env` → JSON** 폴백. **압축(Track A/B) 파이프라인은 API 키 암·복호화 계약 아님** — 혼동 금지.
 **이전 갱신**: 2026-04-14 §2 B-track `4d_to_ohaeng`·human regime audit 스파이크 행; §3.4.1 Postella; 2026-04-13 §1.2 AE-2 KOSPI.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
 
@@ -65,9 +65,9 @@
 | 항목 | 경로 / 팩트 | 비고 |
 |------|-------------|------|
 | 설계(Intent) | `projects/bitcoin-trading/src/api/binance_client.py` | docstring·우선순위에 **Security Agent** 경로 명시; `from scripts.security_agent_manager import get_security_agent` 시도 후 `agent.get_env_var("BINANCE_API_KEY")` 등 |
-| 현행 구현 모듈 | `scripts/security_agent_manager.py` | **본 저장소 트리에 파일 없음** → import 실패 시 `SECURITY_AGENT_AVAILABLE=False`, 곧바로 폴백 |
-| 폴백 체인(실동작) | 동 파일 `get_binance_api_keys()` | `BINANCE_KEY_SOURCE_MODE` 기본 `auto`: **env → 루트 `C:\workspace\.env`의 BINANCE_* → `binance_api_keys.json` 등**(코드 주석·구현 순서 따름) |
-| 로컬 암호 저장(별도) | `scripts/Invoke-EncryptedSecretStore.ps1` | Windows DPAPI 기반 `%APPDATA%\MKM\secret_store_v1.json`; **set/get/list/remove** CLI. **binance_client와 자동 연결·호출 없음**(별도 수동 운용). |
+| 현행 구현 모듈 | `scripts/security_agent_manager.py` | PoC: `get_security_agent().get_env_var(name)` → PowerShell **get** `-AsPlainText`(동일 키 이름 권장). 비활성: `MKM_SKIP_DPAPI_SECRET_STORE=1`. 회귀 `tests/test_security_agent_manager_v1.py` |
+| 폴백 체인(실동작) | `get_binance_api_keys()` | DPAPI에서 못 찾거나 건너뛰면 `BINANCE_KEY_SOURCE_MODE` 기본 `auto`: **env → 루트 `.env`의 BINANCE_* → `binance_api_keys.json` 등** |
+| 로컬 암호 저장 | `scripts/Invoke-EncryptedSecretStore.ps1` | DPAPI `%APPDATA%\MKM\secret_store_v1.json`; **security_agent_manager**가 조회 시 호출(저장은 여전히 CLI **set** 등 수동). |
 | 동기화(운영) | `projects/bitcoin-trading/ops/windows-rehearsal/sync_required_env_to_user.ps1` | 루트 `.env`의 비어 있지 않은 키를 Windows User 환경 변수로 복사; `GEMINI_API_KEY` 등 목록은 해당 스크립트 내 배열 |
 | 명시적 부정 | §1.2 압축·토큰 절감 파이프라인 | **텍스트/토큰 압축 이론은 API 키·비밀 관리 계약이 아님** — “압축으로 키 관리” 서술과 합선 금지 |
 

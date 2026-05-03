@@ -12,9 +12,9 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Union
 import logging
 
-# Security Agent 통합
+# Security Agent 통합 (모노레포 루트 = workspace; scripts/는 루트에 있음)
 try:
-    workspace_root = Path(__file__).parent.parent.parent.parent
+    workspace_root = Path(__file__).resolve().parents[4]
     sys.path.insert(0, str(workspace_root))
     from scripts.security_agent_manager import get_security_agent
     SECURITY_AGENT_AVAILABLE = True
