@@ -28,6 +28,7 @@ def main() -> int:
     guard = _read_json(art / "mkm_trackc_client_handoff_guard_latest.json")
     drill = _read_json(art / "mkm_trackc_guard_recovery_drill_latest.json")
     paddle = _read_json(art / "paddle_onboarding_status_latest.json")
+    dual_leg_brief = _read_json(art / "trackc_prophecy_dual_leg_brief_latest.json")
 
     dashboard = {
         "schema": "mkm_trackc_ops_dashboard_v1",
@@ -51,6 +52,10 @@ def main() -> int:
             "recovery_drill_status": drill.get("status"),
             "paddle_runbook_present": (art / "PADDLE_ONBOARDING_SECURE_RUNBOOK_V1.md").exists(),
             "paddle_onboarding_status": paddle.get("status", "RUNBOOK_READY"),
+            "dual_leg_recent_trading_days": (dual_leg_brief.get("window") or {}).get("recent_trading_days"),
+            "dual_leg_kospi_hit_rate": ((dual_leg_brief.get("legs") or {}).get("kospi") or {}).get("price_directional_hit_rate"),
+            "dual_leg_btc_hit_rate": ((dual_leg_brief.get("legs") or {}).get("btc") or {}).get("price_directional_hit_rate"),
+            "dual_leg_btc_minus_kospi_hit_rate": (dual_leg_brief.get("delta") or {}).get("btc_minus_kospi_hit_rate"),
         },
         "evidence": {
             "status_pointer": "docs/final/artifacts/mkm_ai_status_pointer_latest.json",
@@ -62,6 +67,8 @@ def main() -> int:
             "recovery_drill": "docs/final/artifacts/mkm_trackc_guard_recovery_drill_latest.json",
             "paddle_onboarding_runbook": "docs/final/artifacts/PADDLE_ONBOARDING_SECURE_RUNBOOK_V1.md",
             "paddle_onboarding_status": "docs/final/artifacts/paddle_onboarding_status_latest.json",
+            "dual_leg_brief_json": "docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.json",
+            "dual_leg_brief_md": "docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.md",
         },
     }
 
@@ -89,6 +96,10 @@ def main() -> int:
         f"- recovery_drill_status: `{dashboard['trackc']['recovery_drill_status']}`",
         f"- paddle_runbook_present: `{dashboard['trackc']['paddle_runbook_present']}`",
         f"- paddle_onboarding_status: `{dashboard['trackc']['paddle_onboarding_status']}`",
+        f"- dual_leg_recent_trading_days: `{dashboard['trackc']['dual_leg_recent_trading_days']}`",
+        f"- dual_leg_kospi_hit_rate: `{dashboard['trackc']['dual_leg_kospi_hit_rate']}`",
+        f"- dual_leg_btc_hit_rate: `{dashboard['trackc']['dual_leg_btc_hit_rate']}`",
+        f"- dual_leg_btc_minus_kospi_hit_rate: `{dashboard['trackc']['dual_leg_btc_minus_kospi_hit_rate']}`",
         "",
         "## Evidence",
         "- `docs/final/artifacts/mkm_ai_status_pointer_latest.json`",
@@ -100,6 +111,8 @@ def main() -> int:
         "- `docs/final/artifacts/mkm_trackc_guard_recovery_drill_latest.json`",
         "- `docs/final/artifacts/PADDLE_ONBOARDING_SECURE_RUNBOOK_V1.md`",
         "- `docs/final/artifacts/paddle_onboarding_status_latest.json`",
+        "- `docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.json`",
+        "- `docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.md`",
     ]
     out_md.write_text("\n".join(md) + "\n", encoding="utf-8")
 

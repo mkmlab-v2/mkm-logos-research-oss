@@ -9,6 +9,7 @@
 **보강 (2026-05-02 — MKM 렌즈 글로벌 프로파일링 프롬프트·RAG 초안):** `docs/final/MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md` — B-track NL 번역층·`[DRAFT]`; Fact-Lock·임상 격벽·`MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1` 정렬; 구현 강제 아님.
 **보강 (2026-05-02):** §1.3 Track C Macro Risk n8n 메일 온보딩 PowerShell 스크립트 표.
 **보강 (2026-05-02 — MKM-Orchestrator):** §1.4 `todo_queue_v1` 폴링·`reports/mkm_orchestrator_audit.jsonl`·텔레그램 notify/ingest(`.env`); **CENTRAL MD 자동 파싱·B→A·실매매 자동 합선 없음** — 경로·스크립트 `docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json`·`verify_mkm_orchestrator_bundle_v1.py`.
+**보강 (2026-05-03 — 실행 거버넌스 / ECC):** §28 `scripts/athena_run_v1.py` — `integrated_governance_v1`·`TRADE_EXECUTE`·HOLD면 ECC **DENIED**·exit **2**·자식 미기동·**DPAPI 미조회**; 승인 시 `--target`이면 `security_agent_manager`로 자식 env만 주입, 없으면 exit **1**; `--target` 생략 시 PoC 더미 키. 산출 `docs/final/artifacts/ecc_execution_clearance_latest.json`(`action_payload_hash`·감사 필드); append-only `reports/athena_ecc_audit.jsonl`·`scripts/athena_ecc_logs_v1.py`; 선택 **`ATHENA_ECC_AUDIT_WEBHOOK_URL`** 요약 POST. **호스트·프로세스 직접 실행 우회는 차단 아님** — Fact-Lock 경로·운영 규율과 병행. 회귀 `tests/test_athena_run_v1.py`. **프리플라이트 요약:** `scripts/athena_doctor_v1.py`(레짐·ECC 요약). 회귀 `tests/test_athena_doctor_v1.py`. **일괄 스모크:** `scripts/check_athena_execution_governance_smoke_v1.py`; 회귀 `tests/test_check_athena_execution_governance_smoke_v1.py`.
 **보강 (2026-05-03 — Security Agent / API 키 Fact-Lock):** §1.1.2 — `scripts/security_agent_manager.py`(PoC)가 `Invoke-EncryptedSecretStore.ps1`로 DPAPI 스토어 조회; `binance_client`는 모노레포 **workspace 루트**를 `sys.path`에 넣어 import(·`parents[4]`). 스토어에 해당 키가 없으면·`MKM_SKIP_DPAPI_SECRET_STORE`·비 Windows면 **환경 변수 → 루트 `.env` → JSON** 폴백. **압축(Track A/B) 파이프라인은 API 키 암·복호화 계약 아님** — 혼동 금지.
 **이전 갱신**: 2026-04-14 §2 B-track `4d_to_ohaeng`·human regime audit 스파이크 행; §3.4.1 Postella; 2026-04-13 §1.2 AE-2 KOSPI.  
 **목적**: “기획·NotebookLM·헌법 문서만 보고 구현됨”이라고 단정하지 않도록, **호출 가능한 경로**와 **검증 상태**를 한곳에 고정한다.
@@ -3651,3 +3652,34 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 - **산출(예시 파일명):** `docs/final/artifacts/external_bible_anchor_*_latest.json`·`external_bible_anchor_promotion_history_log.jsonl`·`symbolic_reality_blend_runtime_latest.json` — 단일 근거는 해당 JSON 필드·exit code.
 - **회귀:** `tests/test_external_anchor_governance_scripts_smoke_v1.py`; CI: `.github/workflows/dual-regime-integrity.yml`에 스모크 스텝 및 PR paths 등록.
 - **혼동 방지:** 로컬 `.git/info/exclude` 등으로 `scripts/` 일부가 인덱스에서 빠질 수 있음 — **원격에 커밋된 경로**만 “구현 팩트”로 단정. PR 전용 작업은 별도 **git worktree**(`C:\workspace\tmp\wt-external-anchor-work` 등)로 원격 브랜치(`fix/external-anchor-ci-smoke`)와 맞추는 것이 안전.
+
+## 28) 실행 거버넌스 (Athena Run · Execution Clearance Certificate) — FACT, 2026-05-03
+
+**목적(헌법적 근거):** 고위험 실행(특히 자본·주문·거래소 API에 연결될 수 있는 경로)은 **맥락적 정당성**이 있을 때만 진행한다. `integrated_governance_v1`의 `final_regime`·`final_action_allowed`와 **선언된 액션 유형**(`TRADE_EXECUTE` / `OBSERVE_ONLY`)을 조합해, **승인·거부·감사 가능한 산출물(ECC)**을 남긴다. 본 절은 **Fact-Lock 경로**만 기술하며, “우회 불가능”을 단정하지 않는다.
+
+| 항목 | 경로 / 팩트 | 비고 |
+|------|-------------|------|
+| 런처 (PoC) | `scripts/athena_run_v1.py` | 인자: `--governance-json`(기본 `docs/final/artifacts/integrated_governance_v1_latest.json`), `--action`(`TRADE_EXECUTE`\|`OBSERVE_ONLY`), `--target KEY`(DPAPI 스토어 키명 = 자식 env 키; 생략 시 PoC용 가짜 `BINANCE_API_KEY`), `--ecc-out`, 자식 명령은 `--` 뒤. **HOLD 시 DPAPI 미조회.** |
+| 거버넌스 입력 | `docs/final/artifacts/integrated_governance_v1_latest.json` | `schema: integrated_governance_v1`. 빌더: `scripts/build_integrated_governance_v1.py`. **HOLD**(`final_regime`·`final_action_allowed`)는 `_is_hold()`로 판정. |
+| ECC 산출 | `docs/final/artifacts/ecc_execution_clearance_latest.json` (기본) | `schema: execution_clearance_certificate_v1`; **DENIED** / **APPROVED**, `action_payload_hash`(자식 argv SHA-256), `audit_ref`, `child_exit_code`. |
+| ECC 감사(append-only) | `reports/athena_ecc_audit.jsonl` (기본, `--audit-jsonl`) | 매 실행마다 JSONL 한 줄 추가; `ecc_payload_sha256`(ECC 페이로드 정규화 SHA-256), 전체 `ecc` 복사. **로컬 파일 변조 가능** — 원격 증거는 별도 파이프라인. `--no-audit-append`로 끔. |
+| 원격 감사 요약 POST | 환경 변수 `ATHENA_ECC_AUDIT_WEBHOOK_URL` | 감사 행 기록 직후 `schema: athena_ecc_audit_webhook_v1` JSON POST(비밀 미포함). 실패 시 stderr만, exit 코드 불변. `--no-audit-webhook`으로 끔. `.env.example` 참고. |
+| 감사 로그 조회 | `scripts/athena_ecc_logs_v1.py` | `--last N` · `--audit-jsonl`. |
+| 일괄 스모크 (네트워크 없음) | `scripts/check_athena_execution_governance_smoke_v1.py` | doctor + HOLD·`TRADE_EXECUTE` → exit 2 경로 확인. |
+| 회귀 (스모크 래퍼) | `tests/test_check_athena_execution_governance_smoke_v1.py` | 위 스크립트를 subprocess로 호출, exit 0. |
+| CI (Fact-Lock) | `.github/workflows/dual-regime-integrity.yml` | 위 세 pytest + `test_check_*`를 한 스텝에서 실행; PR `paths`에 §28 스크립트·테스트 포함. |
+| 모의 진입점 | `scripts/trade_dummy.py` | PoC용; 실매매 아님. |
+| HOLD 픽스처 (테스트·데모) | `scripts/fixtures/integrated_governance_v1_hold.json` | 저장소 내 최소 HOLD 스냅샷. |
+| 프리플라이트 요약 | `scripts/athena_doctor_v1.py` | `--governance-json`·`--ecc-json` — 콘솔에 `final_regime`·최신 ECC `status`/`reason` 요약(전체 헬스 번들 대체 아님). |
+| 회귀 | `tests/test_athena_run_v1.py` | HOLD + `TRADE_EXECUTE` → exit **2**·DENIED; HOLD + `OBSERVE_ONLY` → 자식 실행·비밀 미주입. |
+| 회귀 | `tests/test_athena_doctor_v1.py` | 최소 stdout·exit 코드. |
+
+**정책(Fact-Lock):**
+
+- **`TRADE_EXECUTE` + HOLD(또는 `final_action_allowed: false`)** → ECC **DENIED**, stderr에 `ECC DENIED: Governance is in HOLD mode.`(동일 의미), **exit code 2**. 자식 프로세스는 시작하지 않음. 상위 오케스트레이터는 **exit 2**를 “코드 예외”와 구분해 정책 차단으로 처리할 수 있음.
+- **`OBSERVE_ONLY`** → HOLD여도 **승인** 가능; 비밀 주입 없이 자식만 실행(가시성 유지).
+- **승인 + `TRADE_EXECUTE`** → `--target NAME`이면 `security_agent_manager`/DPAPI에서 `NAME` 조회 후 자식 `env[NAME]`만 설정; 없으면 exit **1** 및 안내 메시지. `--target` 생략 시 PoC로 자식에만 `BINANCE_API_KEY=FAKE_BINANCE_KEY_1234` 주입.
+
+**명시적 한계(우회):** 운영자·프로세스가 동일 스크립트를 **`athena_run_v1` 없이** 직접 실행하면 본 ECC·거버넌스 게이트를 **경유하지 않는다**. 호스트·컨테이너·키 저장소 수준의 강제는 별도 설계(운영 런북·Phase 2+)다.
+
+**Athena Broker 표기:** 본 레포에서 **“Athena Broker”**는 위 런처·ECC 산출·거버넌스 입력을 묶은 **운영 명칭**으로만 쓴다. 별도 바이너리 서비스를 단정하지 않는다.

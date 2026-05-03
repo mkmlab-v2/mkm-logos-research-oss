@@ -1,6 +1,6 @@
 {
   "schema": "mkm_trackc_ops_dashboard_v1",
-  "generated_at_utc": "2026-05-03T15:42:33.975465Z",
+  "generated_at_utc": "2026-05-03T15:51:07.229177Z",
   "system": {
     "label": "MKM AI Cursor operational profile",
     "status": "HOLD_OPERATIONAL_V1",
@@ -19,7 +19,11 @@
     "freeze_status": null,
     "recovery_drill_status": null,
     "paddle_runbook_present": false,
-    "paddle_onboarding_status": "RUNBOOK_READY"
+    "paddle_onboarding_status": "RUNBOOK_READY",
+    "dual_leg_recent_trading_days": 30,
+    "dual_leg_kospi_hit_rate": 0.6,
+    "dual_leg_btc_hit_rate": 0.566667,
+    "dual_leg_btc_minus_kospi_hit_rate": -0.033333
   },
   "evidence": {
     "status_pointer": "docs/final/artifacts/mkm_ai_status_pointer_latest.json",
@@ -30,6 +34,8 @@
     "freeze_log": "docs/final/artifacts/mkm_trackc_delivery_freeze_log_latest.json",
     "recovery_drill": "docs/final/artifacts/mkm_trackc_guard_recovery_drill_latest.json",
     "paddle_onboarding_runbook": "docs/final/artifacts/PADDLE_ONBOARDING_SECURE_RUNBOOK_V1.md",
-    "paddle_onboarding_status": "docs/final/artifacts/paddle_onboarding_status_latest.json"
+    "paddle_onboarding_status": "docs/final/artifacts/paddle_onboarding_status_latest.json",
+    "dual_leg_brief_json": "docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.json",
+    "dual_leg_brief_md": "docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.md"
   }
 }

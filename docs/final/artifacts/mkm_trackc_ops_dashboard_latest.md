@@ -1,6 +1,6 @@
 # MKM Track C Ops Dashboard
 
-- generated_at_utc: `2026-05-03T15:42:33.975465Z`
+- generated_at_utc: `2026-05-03T15:51:07.229177Z`
 - system_status: `HOLD_OPERATIONAL_V1`
 - promotion_decision: `HOLD_OPERATIONAL_V1`
 - promotion_ready: `False`
@@ -17,6 +17,10 @@
 - recovery_drill_status: `None`
 - paddle_runbook_present: `False`
 - paddle_onboarding_status: `RUNBOOK_READY`
+- dual_leg_recent_trading_days: `30`
+- dual_leg_kospi_hit_rate: `0.6`
+- dual_leg_btc_hit_rate: `0.566667`
+- dual_leg_btc_minus_kospi_hit_rate: `-0.033333`
 
 ## Evidence
 - `docs/final/artifacts/mkm_ai_status_pointer_latest.json`
@@ -28,3 +32,5 @@
 - `docs/final/artifacts/mkm_trackc_guard_recovery_drill_latest.json`
 - `docs/final/artifacts/PADDLE_ONBOARDING_SECURE_RUNBOOK_V1.md`
 - `docs/final/artifacts/paddle_onboarding_status_latest.json`
+- `docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.json`
+- `docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.md`

@@ -1,6 +1,6 @@
 {
   "schema": "mkm_trackc_client_handoff_guard_report_v1",
-  "generated_at_utc": "2026-05-03T14:47:55.763315Z",
+  "generated_at_utc": "2026-05-03T15:48:47.682500Z",
   "handoff_path": "C:/workspace/docs/final/artifacts/mkm_trackc_client_handoff_package_latest.json",
   "passed": true,
   "failures": [],

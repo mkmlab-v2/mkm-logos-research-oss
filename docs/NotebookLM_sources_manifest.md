@@ -9,6 +9,35 @@
 
 **Vault 동기화**: `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`가 이 표를 `notebooklm_sources/`로 복사(SSOT 반영). 공유 Vault 루트는 환경의 `MKM_VAULT_ROOT` 또는 스크립트 `-VaultRoot`로 지정.
 
+## Solo 운영 Quickstart (2026-05-03)
+
+복잡한 폴더 탐색 없이, 아래만 따르면 현재 운영 컨텍스트를 안정적으로 재현할 수 있다.
+
+1. **업로드 1파일(권장)**  
+   - `docs/final/artifacts/ATHENA_UPLOAD_ONEFILE_LATEST.md`  
+   - 원본 JSON을 이동/복사하지 않고 핵심 `path/key/value` 실값만 단일 파일로 제공한다.
+   - BTC 우선 섀도우 루프 지시문: `docs/final/artifacts/ATHENA_SHADOW_LOOP_BTC_FIRST_COMMAND_V1.md`
+   - 신뢰성/SPOF/복구 드릴: `docs/final/artifacts/ATHENA_RELIABILITY_SPOF_DRILL_V1.md`
+   - 자동 재생성: `scripts/build_athena_upload_onefile_latest.py`
+   - 일일 갱신 작업: `AthenaUploadOnefileRefreshDaily` (`scripts/Register-AthenaUploadOnefileRefreshTask.ps1`)
+   - NotebookLM 자동 업로드 작업: `AthenaUploadOnefileNotebooklmPushDaily` (`scripts/Register-AthenaUploadOnefileNotebooklmPushTask.ps1`)
+
+2. **아테나 최종 점검 기준 파일(원본 SSOT, 이동 금지)**  
+   - `docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json`  
+   - `docs/final/artifacts/integrated_governance_v1_latest.json`  
+   - `docs/final/artifacts/a_track_go_nogo_status_latest.json`  
+   - `docs/final/artifacts/kospi_myeongri_standalone_commercial_gate_v1_latest.json`  
+   - `docs/final/artifacts/kospi_sasang_single_lane_commercial_gate_v1_latest.json`  
+   - `docs/final/artifacts/kospi_biblical_single_lane_commercial_gate_v1_latest.json`
+
+3. **운영 고정 규칙(아테나 출력)**  
+   - `Path/Key/Value` 형식만 사용 (`[cite:숫자]` 단독 인용 금지)  
+   - `meta.high_reliability_decision=="HOLD"` 또는 `meta.price_output_locked==true`면 Final Action은 HOLD  
+   - 충돌 시 `most_conservative_wins`
+
+4. **값 충돌 처리**  
+   - NotebookLM 과거 맥락 vs 최신 실값 충돌 시, `ATHENA_UPLOAD_ONEFILE_LATEST.md`와 원본 JSON 실값을 우선한다.
+
 ### MCP `notebooklm-mcp` 인증 — 웹 로그인과 자동 동기화되지 않음 (2026-05)
 
 - **원인:** Cursor 내장 브라우저·일반 Chrome에서 NotebookLM에 로그인한 것과, MCP 서버(`npx notebooklm-mcp@latest`)가 띄우는 자동화 브라우저는 **서로 다른 Chrome 프로필**이다. Windows에서는 통상 `%APPDATA%\notebooklm-mcp\chrome_profile\` 아래 **전용 프로필**에만 쿠키가 저장된다. 그래서 “이미 브라우저에서 로그인됨”이어도 **`get_health`의 `authenticated`는 false일 수 있다** — 오류가 아니라 **격리 설계**다.

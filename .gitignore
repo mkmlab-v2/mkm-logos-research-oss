@@ -9,6 +9,8 @@
 .env
 .env.backup*
 .env.local
+# Accidental full-env snapshots at repo root (e.g. copy-paste dumps — never commit keys)
+/20*-env.txt
 scripts/.env.jema12_alert
 
 # Pre-pull backup folders (local untracked file backup)
@@ -19,6 +21,11 @@ logs/
 
 # 로컬 일회성 산출 (예: weather 체인 `-o out/reg.json`)
 /out/
+
+# MKM-Orchestrator — machine-local mutable queue & ephemeral locks (templates stay tracked)
+docs/final/artifacts/todo_queue_latest.json
+reports/mkm_orchestrator_poll.lock
+reports/mkm_orchestrator_telegram_offset.txt
 
 # Thin daily chain: one-line myeongni JSONL (regenerable; Run-DailyExecutionInsightBrief_v1.ps1)
 data/multilens_eval/myeongni_independent_lens_thin_bridge_latest.jsonl

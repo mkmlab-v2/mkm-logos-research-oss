@@ -16154,3 +16154,33 @@
 {"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:47:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-api-spec-package-build"}
 {"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:47:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-external-onepager-build"}
 {"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:47:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-client-handoff-guard-check"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "poll_start", "workspace_root": "C:\\workspace"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-gates-smoke"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-bundle-verify"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-gates-smoke-ps1"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-commercial-package-build"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-api-spec-package-build"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-external-onepager-build"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-client-handoff-guard-check"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "no_eligible_task", "workspace_root": "C:\\workspace"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "poll_start", "workspace_root": "C:\\workspace"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "task_run_start", "workspace_root": "C:\\workspace", "task_id": "tc-plan-client-handoff-guard-check", "path_rel": "scripts/check_mkm_trackc_client_handoff_guard.py", "runner": "python"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:48:47Z", "event": "task_run_end", "workspace_root": "C:\\workspace", "task_id": "tc-plan-client-handoff-guard-check", "exit_code": 0, "runner": "python"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:49:47Z", "event": "poll_start", "workspace_root": "C:\\workspace"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:49:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-gates-smoke"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:49:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-bundle-verify"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:49:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-gates-smoke-ps1"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:49:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-commercial-package-build"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:49:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-api-spec-package-build"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:49:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-external-onepager-build"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:49:47Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-client-handoff-guard-check"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:49:47Z", "event": "no_eligible_task", "workspace_root": "C:\\workspace"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:50:48Z", "event": "poll_start", "workspace_root": "C:\\workspace"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:50:48Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-gates-smoke"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:50:48Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-bundle-verify"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:50:48Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-gates-smoke-ps1"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:50:48Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-commercial-package-build"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:50:48Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-api-spec-package-build"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:50:48Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-external-onepager-build"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:50:48Z", "event": "heavy_task_skipped", "workspace_root": "C:\\workspace", "task_id": "tc-plan-client-handoff-guard-check"}
+{"schema": "mkm_orchestrator_audit_v1", "ts_utc": "2026-05-03T15:50:48Z", "event": "no_eligible_task", "workspace_root": "C:\\workspace"}
