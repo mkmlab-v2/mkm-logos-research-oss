@@ -9,8 +9,10 @@
   3. `py -m pytest tests/test_sasang_interpretive_insight_bundle_v1.py` — 사상 통찰 참조 번들 v1.1 스키마·`synthesis_v1`(dual-regime 동일 단계)
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
   5. `py -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py` — 명리 독립 렌즈 → Thin JSONL 브리지(§3.6)
+  5b. `py -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py` — 개인 인사이트 브리핑 Fact-Lock 휴리스틱(운영 단계 라벨·시장↔부채 합선)
+  6. (기본) 명리·멀티렌즈 **권장 스택** — CI `multilens-independent-lens-smoke`와 동일 9개 pytest(일일 브리프·Thin 브리지와 중복 제외). `-SkipMyeongniLensRecommendedStack` 로 생략.
 
-  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·5단계는 본 스크립트에서 직접 실행합니다.
+  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·5·6단계는 본 스크립트에서 직접 실행합니다.
 
 .PARAMETER SkipIntegrityGuard
   `integrity_guard.py` 생략(빠른 확인용). CI와 완전 동치가 아님.
@@ -75,6 +77,12 @@
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipNewsObservationContractSmoke
 
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipMyeongniLensRecommendedStack
+
+.PARAMETER SkipMyeongniLensRecommendedStack
+  명리 독립 렌즈 v0/v1·융합 브리지·봇 체인·융합 스텁 등 9종 멀티렌즈 pytest(권장 CI 패리티)를 생략한다.
+
 .NOTES
   SSOT 순서: `.github/workflows/dual-regime-integrity.yml`
   pytest·`py` 규칙: `docs/final/P0_COMMERCIALIZATION_TRACKER.md`
@@ -94,7 +102,10 @@ param(
     [switch]$TruthfulQaBenchmarkGateMcOnly,
 
     # B-track news_observation JSONL contract smoke runs by default after prophecy alignment; use -Skip to omit.
-    [switch]$SkipNewsObservationContractSmoke
+    [switch]$SkipNewsObservationContractSmoke,
+
+    # Myeongni / multilens recommended CI parity (9 pytests, excluding daily brief + thin bridge already run above)
+    [switch]$SkipMyeongniLensRecommendedStack
 )
 
 $ErrorActionPreference = 'Stop'
@@ -115,6 +126,18 @@ $sajuGoldenReplayScript = Join-Path $workspaceRoot 'scripts\run_saju_golden_repl
 $sasangInterpretiveBundleTest = Join-Path $workspaceRoot 'tests\test_sasang_interpretive_insight_bundle_v1.py'
 $dailyExecutionInsightBriefTest = Join-Path $workspaceRoot 'tests\test_build_daily_execution_insight_brief_v1.py'
 $myeongniThinBridgeTest = Join-Path $workspaceRoot 'tests\test_emit_myeongni_thin_bridge_line_v1.py'
+$mkmBriefingGuardrailsTest = Join-Path $workspaceRoot 'tests\test_validate_mkm_personal_briefing_guardrails_v1.py'
+$myeongniLensRecommendedPytests = @(
+    (Join-Path $workspaceRoot 'tests\test_independent_lenses_v0.py'),
+    (Join-Path $workspaceRoot 'tests\test_myeongni_independent_lens_v0.py'),
+    (Join-Path $workspaceRoot 'tests\test_myeongni_lens_v1_contract.py'),
+    (Join-Path $workspaceRoot 'tests\test_myeongni_fusion_bridge_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_myeongni_lens_chain_from_bot_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_independent_lens_shadow_gate_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_independent_lens_fusion_stub_v0.py'),
+    (Join-Path $workspaceRoot 'tests\test_scm_boming_jiju_lexicon_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py')
+)
 $truthfulQaBenchmarkScript = Join-Path $workspaceRoot 'scripts\run_truthfulqa_ab_benchmark_v1.py'
 $truthfulQaBenchmarkEvalGateScript = Join-Path $workspaceRoot 'scripts\check_truthfulqa_ab_gate_v1.py'
 $truthfulQaMcBenchmarkArtifact = Join-Path $workspaceRoot 'docs\final\artifacts\truthfulqa_ab_benchmark_latest.json'
@@ -254,6 +277,28 @@ Write-Host '== Fact-Lock: test_emit_myeongni_thin_bridge_line_v1.py ==' -Foregro
 & py -m pytest $myeongniThinBridgeTest -q --tb=short
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
+}
+
+if (-not (Test-Path -LiteralPath $mkmBriefingGuardrailsTest)) {
+    throw "MKM personal briefing guardrails pytest not found: $mkmBriefingGuardrailsTest"
+}
+Write-Host '== Fact-Lock: test_validate_mkm_personal_briefing_guardrails_v1.py ==' -ForegroundColor Cyan
+& py -m pytest $mkmBriefingGuardrailsTest -q --tb=short
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+}
+
+if (-not $SkipMyeongniLensRecommendedStack) {
+    foreach ($t in $myeongniLensRecommendedPytests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "Myeongni lens recommended pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock: Myeongni lens recommended stack (multilens CI parity, 9 tests) ==' -ForegroundColor Cyan
+    & py -m pytest @myeongniLensRecommendedPytests -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
 }
 
 if ($IncludeCodebookFactSafe) {
