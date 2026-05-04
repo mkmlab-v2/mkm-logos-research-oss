@@ -3,6 +3,8 @@
 **전제:** 이 경로는 모노레포에 포함됩니다. 브랜치 `chore/orchestration-gate-runbook-lock`에서 PM2 점검 스크립트·본 런북을 받습니다(스크립트 커밋 `e942d4d7` 이상, 런북 문서는 `96e992ab` 이상 권장).  
 **답:** 네, **VPS 셸(SSH Cursor 터미널)에서 아래만 실행**하면 됩니다. 로컬 Windows만으로는 완료할 수 없습니다.
 
+**두 트리 혼동 방지(로컬에서 한 방):** 모노레포 루트에서 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-VpsBitcoinLabAndLiveStatus.ps1` — SSH 대상은 `$env:VPS_SSH_HOST` 없으면 `vps-mkmlife`. 랩 트리의 export/sync cursor cron 스크립트 미커밋 diff만 PC로 받으려면 `-PullLabCronDiff` (`reports/vps-mkm-lab-cron-export-sync.patch`).
+
 ---
 
 ## 0) 완료 정의 (DoD)

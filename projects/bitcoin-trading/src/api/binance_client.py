@@ -252,6 +252,53 @@ def get_binance_api_keys() -> tuple[str, str]:
     return None, None
 
 
+def compute_offset_stop_prices(
+    *,
+    entry: float,
+    position_side: str,
+    sl_pct: Optional[float],
+    tp_pct: Optional[float],
+) -> tuple[Optional[float], Optional[float]]:
+    """Derive raw SL/TP trigger prices from %-of-entry offsets (LONG/SHORT)."""
+    ps = str(position_side).upper()
+    sl_px: Optional[float] = None
+    tp_px: Optional[float] = None
+    if sl_pct is not None and sl_pct > 0:
+        if ps == "LONG":
+            sl_px = float(entry) * (1.0 - float(sl_pct) / 100.0)
+        elif ps == "SHORT":
+            sl_px = float(entry) * (1.0 + float(sl_pct) / 100.0)
+    if tp_pct is not None and tp_pct > 0:
+        if ps == "LONG":
+            tp_px = float(entry) * (1.0 + float(tp_pct) / 100.0)
+        elif ps == "SHORT":
+            tp_px = float(entry) * (1.0 - float(tp_pct) / 100.0)
+    return sl_px, tp_px
+
+
+def validate_protective_triggers(
+    *,
+    position_side: str,
+    mark: float,
+    sl_px: Optional[float],
+    tp_px: Optional[float],
+) -> Optional[str]:
+    """Return error message if triggers are inconsistent with mark (exchange will reject)."""
+    ps = str(position_side).upper()
+    eps = max(float(mark) * 1e-9, 1e-8)
+    if ps == "LONG":
+        if sl_px is not None and float(sl_px) >= float(mark) - eps:
+            return f"LONG stop-loss stopPrice ({sl_px}) must be below mark ({mark})"
+        if tp_px is not None and float(tp_px) <= float(mark) + eps:
+            return f"LONG take-profit stopPrice ({tp_px}) must be above mark ({mark})"
+    elif ps == "SHORT":
+        if sl_px is not None and float(sl_px) <= float(mark) + eps:
+            return f"SHORT stop-loss stopPrice ({sl_px}) must be above mark ({mark})"
+        if tp_px is not None and float(tp_px) >= float(mark) - eps:
+            return f"SHORT take-profit stopPrice ({tp_px}) must be below mark ({mark})"
+    return None
+
+
 class BinanceFuturesClient:
     """
     Binance Futures API 클라이언트 (2배 레버리지, 롱/숏 지원)
@@ -538,6 +585,67 @@ class BinanceFuturesClient:
         except Exception:
             return 0.1
 
+    def _get_lot_size_filter(self, symbol: str) -> tuple[float, float, float]:
+        """USD-M LOT_SIZE: (min_qty, max_qty, step_size). Used to avoid API -1111 precision errors."""
+        defaults = (0.001, 9000.0, 0.001)
+        try:
+            self._check_rate_limit(weight=1)
+            if not USE_CCXT and self.client:
+                info = self._call_client(lambda: self.client.futures_exchange_info())
+                for s in info.get("symbols", []):
+                    if s.get("symbol") != symbol:
+                        continue
+                    for f in s.get("filters", []):
+                        if f.get("filterType") == "LOT_SIZE":
+                            return (float(f["minQty"]), float(f["maxQty"]), float(f["stepSize"]))
+                    return defaults
+            if USE_CCXT and self.exchange:
+                self.exchange.load_markets()
+                m = self.exchange.market(symbol)
+                lo = (m.get("limits") or {}).get("amount") or {}
+                min_q = float(lo.get("min") or defaults[0])
+                max_q = float(lo.get("max") or defaults[1])
+                prec_amt = (m.get("precision") or {}).get("amount")
+                if isinstance(prec_amt, int) and prec_amt >= 0:
+                    step = float(10 ** (-prec_amt))
+                else:
+                    step = defaults[2]
+                return (min_q, max_q, step)
+        except Exception as e:
+            logger.warning("LOT_SIZE lookup failed for %s: %s — using defaults", symbol, e)
+        return defaults
+
+    @staticmethod
+    def _floor_quantity_to_lot(quantity: float, min_qty: float, max_qty: float, step: float) -> float:
+        """Floor quantity to LOT_SIZE step (never round up — avoids exceeding intended max size)."""
+        from decimal import Decimal, ROUND_DOWN
+
+        if quantity is None or quantity <= 0 or step <= 0:
+            return 0.0
+        q = (Decimal(str(quantity)) / Decimal(str(step))).quantize(Decimal("1"), rounding=ROUND_DOWN) * Decimal(str(step))
+        out = float(q)
+        if out < min_qty:
+            return 0.0
+        if out > max_qty:
+            cap = (Decimal(str(max_qty)) / Decimal(str(step))).quantize(Decimal("1"), rounding=ROUND_DOWN) * Decimal(str(step))
+            out = float(cap)
+        return out
+
+    def _quantize_open_quantity(self, symbol: str, quantity: float) -> Optional[float]:
+        min_q, max_q, step = self._get_lot_size_filter(symbol)
+        adj = self._floor_quantity_to_lot(quantity, min_q, max_q, step)
+        if adj <= 0:
+            logger.error(
+                "❌ 수량 LOT_SIZE 불가: 원본=%s step=%s min=%s (step 배수로 내림 시 최소 미만 — 수량을 올리세요)",
+                quantity,
+                step,
+                min_q,
+            )
+            return None
+        if abs(adj - quantity) > 1e-12:
+            logger.info("수량 LOT_SIZE 내림: %s -> %s (step=%s, min=%s)", quantity, adj, step, min_q)
+        return adj
+
     @staticmethod
     def _round_to_tick(price: float, tick_size: float, down: bool = False) -> float:
         """가격을 틱 크기로 반올림. down=True면 내림(롱 매수용)."""
@@ -576,6 +684,11 @@ class BinanceFuturesClient:
         try:
             self._check_rate_limit(weight=1, is_order=True)
             self.set_leverage(symbol, leverage)
+
+            q_adj = self._quantize_open_quantity(symbol, float(quantity))
+            if q_adj is None:
+                return None
+            quantity = q_adj
 
             if self.maker_only and not USE_CCXT:
                 best_bid, _ = self._get_order_book(symbol)
@@ -638,6 +751,11 @@ class BinanceFuturesClient:
         try:
             self._check_rate_limit(weight=1, is_order=True)
             self.set_leverage(symbol, leverage)
+
+            q_adj = self._quantize_open_quantity(symbol, float(quantity))
+            if q_adj is None:
+                return None
+            quantity = q_adj
 
             if self.maker_only and not USE_CCXT:
                 _, best_ask = self._get_order_book(symbol)
@@ -879,6 +997,113 @@ class BinanceFuturesClient:
         except Exception as e:
             logger.error(f"❌ 미체결 주문 조회 실패: {e}")
             return []
+
+    def round_protective_stop_price(
+        self,
+        symbol: str,
+        position_side: str,
+        *,
+        kind: str,
+        price: float,
+    ) -> float:
+        """
+        Round stop/trigger price to PRICE_FILTER tick (conservative vs adverse fill).
+        kind: \"sl\" | \"tp\"
+        """
+        tick = self._get_tick_size(symbol)
+        ps = str(position_side).upper()
+        kd = str(kind).lower()
+        if ps == "LONG":
+            return self._round_to_tick(price, tick, down=(kd == "sl"))
+        if ps == "SHORT":
+            return self._round_to_tick(price, tick, down=(kd == "tp"))
+        return self._round_to_tick(price, tick, down=True)
+
+    def place_stop_market_reduce_only(
+        self,
+        symbol: str,
+        position_side: str,
+        quantity: float,
+        stop_price: float,
+        *,
+        working_type: str = "MARK_PRICE",
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Hedge mode: STOP_MARKET reduce-only (e.g. LONG stop-loss below market).
+        python-binance 전용 (CCXT는 미구현).
+        """
+        if USE_CCXT:
+            logger.error("place_stop_market_reduce_only: CCXT 미구현 — python-binance 사용.")
+            return None
+        ps = str(position_side).upper()
+        close_side = "SELL" if ps == "LONG" else "BUY"
+        q_adj = self._quantize_open_quantity(symbol, float(quantity))
+        if q_adj is None:
+            return None
+        sp = self.round_protective_stop_price(symbol, ps, kind="sl", price=float(stop_price))
+        try:
+            self._check_rate_limit(weight=1, is_order=True)
+            order = self._call_client(
+                lambda: self.client.futures_create_order(
+                    symbol=symbol,
+                    side=close_side,
+                    positionSide=ps,
+                    type="STOP_MARKET",
+                    stopPrice=sp,
+                    quantity=q_adj,
+                    reduceOnly=True,
+                    workingType=working_type,
+                    newClientOrderId=self._build_client_order_id("stopsl"),
+                )
+            )
+            logger.info("✅ STOP_MARKET reduce-only: %s %s stopPrice=%s qty=%s", symbol, ps, sp, q_adj)
+            return order
+        except Exception as e:
+            logger.error("❌ STOP_MARKET 실패: %s", e)
+            return None
+
+    def place_take_profit_market_reduce_only(
+        self,
+        symbol: str,
+        position_side: str,
+        quantity: float,
+        stop_price: float,
+        *,
+        working_type: str = "MARK_PRICE",
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Hedge mode: TAKE_PROFIT_MARKET reduce-only (e.g. LONG take-profit above market).
+        python-binance 전용 (CCXT는 미구현).
+        """
+        if USE_CCXT:
+            logger.error("place_take_profit_market_reduce_only: CCXT 미구현 — python-binance 사용.")
+            return None
+        ps = str(position_side).upper()
+        close_side = "SELL" if ps == "LONG" else "BUY"
+        q_adj = self._quantize_open_quantity(symbol, float(quantity))
+        if q_adj is None:
+            return None
+        sp = self.round_protective_stop_price(symbol, ps, kind="tp", price=float(stop_price))
+        try:
+            self._check_rate_limit(weight=1, is_order=True)
+            order = self._call_client(
+                lambda: self.client.futures_create_order(
+                    symbol=symbol,
+                    side=close_side,
+                    positionSide=ps,
+                    type="TAKE_PROFIT_MARKET",
+                    stopPrice=sp,
+                    quantity=q_adj,
+                    reduceOnly=True,
+                    workingType=working_type,
+                    newClientOrderId=self._build_client_order_id("stoptp"),
+                )
+            )
+            logger.info("✅ TAKE_PROFIT_MARKET reduce-only: %s %s stopPrice=%s qty=%s", symbol, ps, sp, q_adj)
+            return order
+        except Exception as e:
+            logger.error("❌ TAKE_PROFIT_MARKET 실패: %s", e)
+            return None
 
     def get_recent_fills(self, symbol: str = "BTCUSDT", limit: int = 50) -> list[Dict[str, Any]]:
         """최근 체결(거래) 내역 조회."""
