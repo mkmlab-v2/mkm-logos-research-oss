@@ -34,6 +34,13 @@ def main() -> int:
     ap.add_argument("--integrity-floor", type=float, default=0.99)
     ap.add_argument("--min-sensitive-integrity-floor", type=float, default=0.999)
     ap.add_argument("--max-sensitive-violations", type=int, default=0)
+    ap.add_argument(
+        "--profile",
+        choices=("full", "quick"),
+        default="full",
+        help="full: 3 strategies × 3 intensities × full cap grid (slow). "
+        "quick: strategy A only + smaller cap grid for limit probing after fidelity alignment.",
+    )
     args = ap.parse_args()
 
     doc = _load(args.input)
@@ -43,15 +50,23 @@ def main() -> int:
         mode="baseline",
         use_domain_router=True,
         use_master_codebook_lexicon_v1=True,
+        experimental_decoder_fidelity_for_baseline=True,
     )
     bcmp = baseline_report.get("compression_metrics") or {}
     baseline_saving = float(bcmp.get("global_token_saving_rate", 0.0))
 
-    strategies = ("A", "B", "C")
-    intensities = ("high", "ultra", "extreme")
-    general_caps = (0.55, 0.65, 0.75, 0.85, 0.90)
-    sensitive_caps = (0.60, 0.70, 0.80, 0.90)
-    hangul_caps = (0.60, 0.70, 0.80)
+    if args.profile == "quick":
+        strategies = ("A",)
+        intensities = ("high", "ultra", "extreme")
+        general_caps = (0.55, 0.65)
+        sensitive_caps = (0.60, 0.70)
+        hangul_caps = (0.60, 0.70)
+    else:
+        strategies = ("A", "B", "C")
+        intensities = ("high", "ultra", "extreme")
+        general_caps = (0.55, 0.65, 0.75, 0.85, 0.90)
+        sensitive_caps = (0.60, 0.70, 0.80, 0.90)
+        hangul_caps = (0.60, 0.70, 0.80)
 
     candidates: list[dict[str, Any]] = []
     for st in strategies:
@@ -113,6 +128,7 @@ def main() -> int:
     go_candidates = [c for c in candidates if c["go"]]
     out = {
         "schema": "general_compression_sweep_result_v1",
+        "profile": str(args.profile),
         "source_input": str(args.input.resolve()),
         "baseline": {
             "global_token_saving_rate": baseline_saving,

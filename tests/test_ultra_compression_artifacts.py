@@ -6,10 +6,14 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
-
 _ROOT = Path(__file__).resolve().parents[1]
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
+from scripts.report_multilens_performance_eval import ULTRA_TOKEN_SAVING_POLICY_MIN
 _BASELINE_LOCK = _ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_BASELINE_LOCK_V1.json"
 _ROUND1 = _ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ROUND1_V1.json"
 _ROUND2 = _ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json"
@@ -26,7 +30,7 @@ def test_ultra_baseline_lock_contract() -> None:
     d = _load(_BASELINE_LOCK)
     assert d.get("schema") == "multilens_ultra_compression_baseline_lock_v1"
     assert 0.0 <= float(d.get("baseline_global_token_saving_rate", -1.0)) <= 1.0
-    assert float(d.get("targets", {}).get("saving_target", -1.0)) == 0.50
+    assert float(d.get("targets", {}).get("saving_target", -1.0)) == ULTRA_TOKEN_SAVING_POLICY_MIN
 
 
 def test_ultra_round_contracts() -> None:

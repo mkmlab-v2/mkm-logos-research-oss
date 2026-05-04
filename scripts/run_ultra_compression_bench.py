@@ -27,7 +27,10 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.report_multilens_performance_eval import evaluate_report
+from scripts.report_multilens_performance_eval import (
+    ULTRA_TOKEN_SAVING_POLICY_MIN,
+    evaluate_report,
+)
 
 
 INPUT_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json"
@@ -105,10 +108,10 @@ def _top_per_hangul_flag(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def _cap_grid() -> list[tuple[float, float, float]]:
-    # Include near-target caps so token-level rounding can still hit >=50%.
-    general_caps = (0.54, 0.53, 0.52, 0.50, 0.48, 0.46, 0.44)
-    sensitive_caps = (0.50, 0.49, 0.47, 0.46, 0.44, 0.42, 0.40)
-    hangul_caps = (0.48, 0.46, 0.44, 0.42, 0.40, 0.38)
+    # Include caps above legacy 0.54 so policy floor (0.49) can be met without breaking guardrails.
+    general_caps = (0.60, 0.58, 0.56, 0.54, 0.53, 0.52, 0.50, 0.48, 0.46, 0.44)
+    sensitive_caps = (0.56, 0.54, 0.52, 0.50, 0.49, 0.47, 0.46, 0.44, 0.42, 0.40)
+    hangul_caps = (0.52, 0.50, 0.48, 0.46, 0.44, 0.42, 0.40, 0.38)
     grid: list[tuple[float, float, float]] = []
     for gc in general_caps:
         for sc in sensitive_caps:
@@ -120,9 +123,9 @@ def _cap_grid() -> list[tuple[float, float, float]]:
 
 def _cap_axes() -> tuple[tuple[float, ...], tuple[float, ...], tuple[float, ...]]:
     # Keep these aligned with _cap_grid for pruning-aware iteration.
-    general_caps = (0.54, 0.53, 0.52, 0.50, 0.48, 0.46, 0.44)
-    sensitive_caps = (0.50, 0.49, 0.47, 0.46, 0.44, 0.42, 0.40)
-    hangul_caps = (0.48, 0.46, 0.44, 0.42, 0.40, 0.38)
+    general_caps = (0.60, 0.58, 0.56, 0.54, 0.53, 0.52, 0.50, 0.48, 0.46, 0.44)
+    sensitive_caps = (0.56, 0.54, 0.52, 0.50, 0.49, 0.47, 0.46, 0.44, 0.42, 0.40)
+    hangul_caps = (0.52, 0.50, 0.48, 0.46, 0.44, 0.42, 0.40, 0.38)
     return general_caps, sensitive_caps, hangul_caps
 
 
@@ -163,7 +166,7 @@ def main() -> int:
         "baseline_global_token_saving_rate": baseline_saving,
         "baseline_avg_reconstruction_fidelity_jaccard": baseline_avg_jaccard,
         "targets": {
-            "saving_target": 0.50,
+            "saving_target": ULTRA_TOKEN_SAVING_POLICY_MIN,
             "jaccard_drop_threshold_pp": args.jaccard_drop_threshold_pp,
         },
     }
@@ -275,9 +278,9 @@ def main() -> int:
                     q = rep["quality_gate"]
                     c = rep["compression_metrics"]
                     min_case_fidelity = _min_case_fidelity(rep)
-                    # Canary proxy: all three gates pass.
+                    # Canary proxy: SLA policy floor (0.49) + quality gates (aligns quality_gate.ultra_saving_policy_ok).
                     canary_ok = bool(
-                        q["ultra_saving_50_ok"]
+                        q["ultra_saving_policy_ok"]
                         and q["jaccard_guardrail_ok"]
                         and q["sensitive_integrity_ok"]
                         and (min_case_fidelity >= args.per_case_fidelity_floor)
@@ -302,7 +305,7 @@ def main() -> int:
                     )
                     # Prune trailing hangul caps for this (general, sensitive) pair.
                     # Lower hangul cap is more conservative, so it will not recover saving>=0.50.
-                    if not q["ultra_saving_50_ok"]:
+                    if not q["ultra_saving_policy_ok"]:
                         round2_pruned_by_saving += max(0, len(hangul_caps) - (idx + 1))
                         break
     passing_rows = [r for r in round2_rows if r["canary_gate_ok"]]
@@ -337,7 +340,7 @@ def main() -> int:
             "p95_latency_delta_pct",
         ],
         "thresholds": {
-            "saving_rate_min": 0.50,
+            "saving_rate_min": ULTRA_TOKEN_SAVING_POLICY_MIN,
             "jaccard_drop_pp_max": args.jaccard_drop_threshold_pp,
             "sensitive_integrity_min": 0.999,
             "failure_rate_delta_pp_max": 0.3,
@@ -359,7 +362,10 @@ def main() -> int:
             "round1_candidate_count": len(round1_rows),
             "round2_candidate_count": len(round2_rows),
         },
-        "target": {"saving_rate": 0.50, "jaccard_drop_threshold_pp": args.jaccard_drop_threshold_pp},
+        "target": {
+            "saving_rate": ULTRA_TOKEN_SAVING_POLICY_MIN,
+            "jaccard_drop_threshold_pp": args.jaccard_drop_threshold_pp,
+        },
         "per_case_fidelity_floor": args.per_case_fidelity_floor,
         "baseline": {
             "global_token_saving_rate": baseline_saving,

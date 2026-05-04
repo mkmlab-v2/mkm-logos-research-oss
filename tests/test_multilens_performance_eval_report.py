@@ -73,6 +73,37 @@ def test_evaluate_report_emit_semantic_pointer_smoke() -> None:
     assert sp.get("case_id") == "sp1"
 
 
+def test_experimental_decoder_fidelity_for_baseline_aligns_with_treatment_decoder() -> None:
+    """Baseline fixture recon != experimental decoder; AB uses unified decoder when flag set."""
+    doc = {
+        "compression_cases": [
+            {
+                "id": "hangul_fixture",
+                "raw_text": "회의 결론으로 릴리스 일정은 유지하되, 장애 대응 플레이북 업데이트와 롤백 리허설을 배포 전 체크리스트에 추가하기로 합의했다.",
+                "compressed_text": "회의 결론으로 릴리스 일정은 유지하되, 장애 대응 플레이북 릴리스 롤백 체크리스트",
+                "reconstructed_text": "회의 결론으로 릴리스 일정은 유지하되, 장애 대응 플레이북 릴리스 롤백 체크리스트",
+                "domain": "meeting",
+            }
+        ],
+        "fusion_answer_cases": [],
+    }
+    off = evaluate_report(doc, source_input="fixture.json", mode="baseline", use_domain_router=True)
+    on = evaluate_report(
+        doc,
+        source_input="fixture.json",
+        mode="baseline",
+        use_domain_router=True,
+        experimental_decoder_fidelity_for_baseline=True,
+    )
+    j_off = float(off["compression_metrics"]["cases"][0]["reconstruction_fidelity_jaccard"])
+    j_on = float(on["compression_metrics"]["cases"][0]["reconstruction_fidelity_jaccard"])
+    assert on["run_config"].get("experimental_decoder_fidelity_for_baseline") is True
+    assert off["run_config"].get("experimental_decoder_fidelity_for_baseline") is False
+    # Fixture recon vs heuristic decoder must not silently agree for this row (AB pitfall guard).
+    assert abs(j_on - j_off) > 0.05
+    assert 0.0 <= j_off <= 1.0 and 0.0 <= j_on <= 1.0
+
+
 def test_evaluate_report_default_has_no_semantic_pointer_per_case() -> None:
     doc = {
         "compression_cases": [

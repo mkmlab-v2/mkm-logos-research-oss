@@ -968,6 +968,7 @@ def evaluate_report(
     candidate_pool_min_jaccard_for_greedy: float = 0.88,
     candidate_pool_min_integrity_for_greedy: float = 1.0,
     emit_semantic_pointer: bool = False,
+    experimental_decoder_fidelity_for_baseline: bool = False,
 ) -> dict[str, Any]:
     if force_shard_id and not use_domain_router:
         raise ValueError("force_shard_id requires use_domain_router=True (DomainSpecificRouter).")
@@ -1253,6 +1254,17 @@ def evaluate_report(
                     compressed_candidate=comp,
                     use_hangul_principle=effective_hangul_principle,
                 )
+        elif experimental_decoder_fidelity_for_baseline and mode == "baseline":
+            # General-rail A/B: baseline rows otherwise score fidelity vs fixture
+            # `reconstructed_text` while experimental scores vs the same heuristic
+            # decoder, which inflates treatment Jaccard on Hangul routes. Use the
+            # experimental decoder on the fixture `compressed_text` so both arms
+            # share one fidelity definition (token saving still uses fixture sizes).
+            rec_for_eval = _reconstruct_experimental_from_raw(
+                raw=raw,
+                compressed_candidate=comp,
+                use_hangul_principle=effective_hangul_principle,
+            )
         raw_t = _tokens(raw)
         comp_t = _tokens(comp)
         ratio = (comp_t / raw_t) if raw_t else 1.0
@@ -1448,6 +1460,7 @@ def evaluate_report(
             "tiktoken_o200k_available": enc_o200k is not None,
             "tiktoken_o200k_unavailable_reason": o200k_err,
             "emit_semantic_pointer": emit_semantic_pointer,
+            "experimental_decoder_fidelity_for_baseline": bool(experimental_decoder_fidelity_for_baseline),
         },
         "compression_metrics": {
             "case_count": len(comp_rows),

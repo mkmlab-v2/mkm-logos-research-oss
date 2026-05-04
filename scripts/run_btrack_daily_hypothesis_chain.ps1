@@ -8,25 +8,63 @@
 #   Working directory: C:\workspace
 # Recommended registrar:
 #   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:40"
+# Market bootstrap (default ON): runs fetch_kospi_yfinance_csv.py + fetch_btc_yfinance_csv.py first
+# so stale/missing CSV does not silently force proxy hit-rate mode. Use -SkipMarketDataRefresh for offline/CI.
+# News/macro lens JSON: use -SkipNewsMacroAdapter to skip build_btrack_news_macro_lens_adapters_v1.py (reuse prior lens files).
 # Hit-rate: when research/market_data/kospi_daily_external_yf.csv exists, the chain runs
 #   build_btrack_prophecy_score_from_ohlcv.py -> eval_prophecy_hit_rate_v1 --run-mode price
+# BTC dual-leg: --btc-csv when resolved path exists. Resolution order (same idea as Run-BTrackOhlcvScoreAndEval.ps1):
+#   1) -BtcCsv parameter  2) env MKM_BTC_DAILY_CSV  3) research/market_data/btc_daily_external_yf.csv
 # (B-track [HYPO] only; not live trading). Without CSV, hit-rate eval is skipped with a note.
 # Longer window: -IncludeDawnScore (30 trading days for score rows).
 # Manual one-offs:
 #   py scripts/build_btrack_prophecy_score_from_ohlcv.py
 #   py scripts/eval_prophecy_hit_rate_v1.py --run-mode price --score-json docs/final/artifacts/btrack_prophecy_score_latest.json
+# Promotion gates: use -PromotionTrackMode dual to evaluate instrument-combo WF + panel-style shared gates (match eval_prophecy_promotion_gates_v1.py).
+# Hypothesis LLM: default local ensemble (no API). Use -UseCloudGemini or env MKM_BTRACK_USE_CLOUD_GEMINI=1 for Gemini (--use-cloud-gemini).
+# Optional model: -GeminiModel or env MKM_BTRACK_GEMINI_MODEL.
 param(
   [string]$WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path,
+  [string]$BtcCsv = "",
+  [ValidateSet("btc_only_crossassist", "dual")]
+  [string]$PromotionTrackMode = "btc_only_crossassist",
   [switch]$SkipInsightAppend,
   [switch]$SkipHitRate,
   [switch]$IncludeDawnScore,
   [switch]$SkipExternalFeedValidation,
   [switch]$StrictExternalFeedValidation,
   [switch]$SkipFastPromotionGate,
-  [switch]$StrictFastPromotionGate
+  [switch]$StrictFastPromotionGate,
+  [switch]$SkipMarketDataRefresh,
+  [switch]$StrictMarketDataRefresh,
+  [switch]$StrictProphecyProxyStreakGate,
+  [switch]$UseCloudGemini,
+  [string]$GeminiModel = "",
+  [switch]$SkipNewsMacroAdapter
 )
 $ErrorActionPreference = "Stop"
 Set-Location $WorkspaceRoot
+
+if (-not $SkipMarketDataRefresh) {
+  Write-Host "==> fetch_kospi_yfinance_csv.py (market data bootstrap; B-track research-only)"
+  py scripts/fetch_kospi_yfinance_csv.py
+  if ($LASTEXITCODE -ne 0) {
+    if ($StrictMarketDataRefresh) {
+      throw "fetch_kospi_yfinance_csv exit $LASTEXITCODE (StrictMarketDataRefresh)"
+    }
+    Write-Host "WARN: KOSPI CSV fetch failed; chain may fall back to proxy hit-rate if file missing." -ForegroundColor Yellow
+  }
+  Write-Host "==> fetch_btc_yfinance_csv.py (market data bootstrap; B-track research-only)"
+  py scripts/fetch_btc_yfinance_csv.py
+  if ($LASTEXITCODE -ne 0) {
+    if ($StrictMarketDataRefresh) {
+      throw "fetch_btc_yfinance_csv exit $LASTEXITCODE (StrictMarketDataRefresh)"
+    }
+    Write-Host "WARN: BTC CSV fetch failed; dual-leg score may be KOSPI-only." -ForegroundColor Yellow
+  }
+} else {
+  Write-Host "Skip market data bootstrap (-SkipMarketDataRefresh)." -ForegroundColor DarkYellow
+}
 
 if (-not $SkipExternalFeedValidation) {
   $externalLatestRel = "docs\final\artifacts\external_feed_drop_latest.json"
@@ -100,12 +138,39 @@ if (Test-Path -LiteralPath $minorityMonthly) {
   if ($LASTEXITCODE -ne 0) { throw "minority monthly rollup exit $LASTEXITCODE" }
 }
 
+if (-not $SkipNewsMacroAdapter) {
+  Write-Host "==> build_btrack_news_macro_lens_adapters_v1.py (news/macro lens JSON for bundle)"
+  py scripts/build_btrack_news_macro_lens_adapters_v1.py
+  if ($LASTEXITCODE -ne 0) { throw "build_btrack_news_macro_lens_adapters_v1 exit $LASTEXITCODE" }
+} else {
+  Write-Host "Skip news/macro lens adapter (-SkipNewsMacroAdapter); bundle uses existing lens JSON paths." -ForegroundColor DarkYellow
+}
+
 Write-Host "==> build_btrack_llm_input_bundle.py"
 py scripts/build_btrack_llm_input_bundle.py
 if ($LASTEXITCODE -ne 0) { throw "bundle exit $LASTEXITCODE" }
 
-Write-Host "==> generate_btrack_hypothesis_prophecy_v1.py (stub; use --gemini for API)"
-py scripts/generate_btrack_hypothesis_prophecy_v1.py
+$useGemini = [bool]$UseCloudGemini
+if (-not $useGemini -and ($env:MKM_BTRACK_USE_CLOUD_GEMINI -eq "1")) {
+  $useGemini = $true
+}
+if ($useGemini) {
+  Write-Host "==> generate_btrack_hypothesis_prophecy_v1.py (--use-cloud-gemini; quota/API spend)" -ForegroundColor Cyan
+} else {
+  Write-Host "==> generate_btrack_hypothesis_prophecy_v1.py (local ensemble default; no Gemini API)"
+}
+$hypGenArgs = @("scripts/generate_btrack_hypothesis_prophecy_v1.py")
+if ($useGemini) {
+  $hypGenArgs += "--use-cloud-gemini"
+  $gm = [string]$GeminiModel
+  if ([string]::IsNullOrWhiteSpace($gm)) {
+    $gm = [string]$env:MKM_BTRACK_GEMINI_MODEL
+  }
+  if (-not [string]::IsNullOrWhiteSpace($gm)) {
+    $hypGenArgs += @("--model", $gm.Trim())
+  }
+}
+py @hypGenArgs
 if ($LASTEXITCODE -ne 0) { throw "hypothesis gen exit $LASTEXITCODE" }
 
 if (-not $SkipInsightAppend) {
@@ -124,7 +189,25 @@ if (-not $SkipHitRate) {
   $kospiCsv = Join-Path $WorkspaceRoot "research\market_data\kospi_daily_external_yf.csv"
   $scoreJsonRel = "docs\final\artifacts\btrack_prophecy_score_latest.json"
   if (Test-Path -LiteralPath $kospiCsv) {
-    $btcCsv = Join-Path $WorkspaceRoot "research\market_data\btc_daily_external_yf.csv"
+    $btcDefault = Join-Path $WorkspaceRoot "research\market_data\btc_daily_external_yf.csv"
+    $btcResolved = ""
+    if (-not [string]::IsNullOrWhiteSpace($BtcCsv)) {
+      if (-not (Test-Path -LiteralPath $BtcCsv)) {
+        throw "BtcCsv not found: $BtcCsv"
+      }
+      $btcResolved = $BtcCsv
+    }
+    elseif (-not [string]::IsNullOrWhiteSpace($env:MKM_BTC_DAILY_CSV)) {
+      $p = [string]$env:MKM_BTC_DAILY_CSV
+      if (Test-Path -LiteralPath $p) {
+        $btcResolved = $p
+      } else {
+        Write-Host "WARN: MKM_BTC_DAILY_CSV set but file missing: $p" -ForegroundColor Yellow
+      }
+    }
+    if ([string]::IsNullOrWhiteSpace($btcResolved) -and (Test-Path -LiteralPath $btcDefault)) {
+      $btcResolved = $btcDefault
+    }
     $buildArgs = @("scripts/build_btrack_prophecy_score_from_ohlcv.py")
     if ($IncludeDawnScore) {
       Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (--recent-trading-days 30) + eval_prophecy_hit_rate_v1 price"
@@ -132,10 +215,10 @@ if (-not $SkipHitRate) {
     } else {
       Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (default 1d) + eval_prophecy_hit_rate_v1 price"
     }
-    if (Test-Path -LiteralPath $btcCsv) {
-      $buildArgs += @("--btc-csv", $btcCsv)
+    if (-not [string]::IsNullOrWhiteSpace($btcResolved)) {
+      $buildArgs += @("--btc-csv", $btcResolved)
     } else {
-      Write-Host "WARN: BTC CSV missing; score will be KOSPI-only." -ForegroundColor Yellow
+      Write-Host "WARN: BTC CSV missing; score will be KOSPI-only. Set -BtcCsv, MKM_BTC_DAILY_CSV, or add $btcDefault" -ForegroundColor Yellow
     }
     py @buildArgs
     if ($LASTEXITCODE -ne 0) { throw "build_btrack_prophecy_score exit $LASTEXITCODE" }
@@ -155,8 +238,8 @@ if (-not $SkipHitRate) {
 }
 
 if (-not $SkipFastPromotionGate) {
-  Write-Host "==> eval_prophecy_promotion_gates_v1.py (numeric promotion gates)"
-  py scripts/eval_prophecy_promotion_gates_v1.py
+  Write-Host "==> eval_prophecy_promotion_gates_v1.py (numeric promotion gates, mode=$PromotionTrackMode)"
+  py scripts/eval_prophecy_promotion_gates_v1.py --promotion-track-mode $PromotionTrackMode
   if ($LASTEXITCODE -ne 0) {
     if ($StrictFastPromotionGate) {
       throw "eval_prophecy_promotion_gates_v1 exit $LASTEXITCODE"
@@ -172,6 +255,26 @@ if (-not $SkipFastPromotionGate) {
     }
     Write-Host "WARN: fast promotion gate failed; continue (degraded)." -ForegroundColor Yellow
   }
+}
+
+Write-Host "==> build_prophecy_health_status_v1.py (prophecy_health_status_latest.json)"
+py scripts/build_prophecy_health_status_v1.py
+if ($LASTEXITCODE -ne 0) { throw "build_prophecy_health_status_v1 exit $LASTEXITCODE" }
+
+Write-Host "==> check_prophecy_proxy_streak_gate_v1.py (streak + optional webhook; threshold env MKM_PROPHECY_PROXY_STREAK_THRESHOLD default 3)"
+$streakArgs = @("scripts/check_prophecy_proxy_streak_gate_v1.py")
+if ($StrictProphecyProxyStreakGate) {
+  $streakArgs += "--strict-exit"
+}
+py @streakArgs
+if ($LASTEXITCODE -eq 2) {
+  if ($StrictProphecyProxyStreakGate) {
+    throw "check_prophecy_proxy_streak_gate_v1: streak breach under strict exit (code 2)"
+  }
+  Write-Host "WARN: prophecy proxy streak gate reports breach (exit 2). Enable -StrictProphecyProxyStreakGate or MKM_PROPHECY_PROXY_STREAK_STRICT_EXIT=1 to fail the chain." -ForegroundColor Yellow
+}
+elseif ($LASTEXITCODE -ne 0) {
+  throw "check_prophecy_proxy_streak_gate_v1 exit $LASTEXITCODE"
 }
 
 Write-Host "OK: B-Track daily hypothesis chain finished. Bundle: docs/final/artifacts/btrack_llm_input_bundle_latest.json"
