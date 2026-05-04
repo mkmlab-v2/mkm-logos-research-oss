@@ -90,7 +90,8 @@
         "notebooklm-mcp@latest"
       ],
       "env": {
-        "NOTEBOOKLM_PROFILE": "standard"
+        "NOTEBOOKLM_PROFILE": "standard",
+        "HEADLESS": "false"
       }
     }
   }
