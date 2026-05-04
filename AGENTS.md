@@ -15,6 +15,11 @@
 - **실제 파일(비추적):** `docs/final/LOCAL_MACHINE_POINTER_V1.md` — 템플릿을 복사해 채움. `.gitignore`로 **원격에 푸시되지 않음**. `CONSTITUTION`에 절대 경로를 박지 않을 때의 대안.
 - **MKM Trinity 인덱스(목차·포인터만):** `docs/final/MKM_TRINITY_INDEX_V1.json` — 렌즈 키 `sasang` / `logos` / `myeongni`(표시 `label_ko`). `_meta.truth_source`는 헌법; FACT 판정은 인덱스가 아니라 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 각 스크립트·테스트.
 
+## 로컬 재생성 산출물 (`*_latest` 등) — Git 정책
+
+- **이미 추적되는 파일**은 `scripts/verify_p0_constitution_gate_paths.ps1` 등에 경로가 박혀 있을 수 있다. `.gitignore`만으로 **수정 diff가 사라지지는 않는다** (추적 유지). 타임스탬프만 바뀐 로컬 굴레면 `git restore …`로 되돌리고, **의도한 갱신만** 커밋한다 (`AGENTS.md` 런타임 JSON 절과 같음).
+- **아직 추적되지 않은** `docs/final/artifacts/*_latest.json` / `*_latest.md` 및 `reports/bio_sasang_nstates_*.json`은 루트 `.gitignore`로 **기본 비표시**(신규 클론·로컬 실행 잡음 감소). 레포에 **새로** 올릴 때만 `git add -f`(승격·증거 패키지 등)로 예외 처리한다.
+
 ## 중앙 메모리 (크로스 채팅 정체성)
 
 - **지속 SSOT:** `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — Athena 정체성·격벽·Fact-Lock·「분기별 한 줄」.
