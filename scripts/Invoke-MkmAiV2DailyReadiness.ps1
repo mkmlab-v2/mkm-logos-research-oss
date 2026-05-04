@@ -141,6 +141,29 @@ if (Test-Path -LiteralPath $trackCMorningBriefing) {
     if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
         $exitCode = $LASTEXITCODE
     }
+    $briefingJson = Join-Path $WorkspaceRoot "docs\final\artifacts\trackc_macro_risk_morning_briefing_latest.json"
+    if (Test-Path -LiteralPath $briefingJson) {
+        try {
+            $briefObj = Get-Content -LiteralPath $briefingJson -Raw -Encoding UTF8 | ConvertFrom-Json
+            $shadowSection = $briefObj.shadow_pnl
+            $shadowStatus = $null
+            if ($null -ne $shadowSection) {
+                $shadowStatus = [string]$shadowSection.shadow_pnl_status
+            }
+            if ([string]::IsNullOrWhiteSpace($shadowStatus)) {
+                throw "missing shadow_pnl.shadow_pnl_status"
+            }
+            Write-Host "Shadow PnL briefing section check: PASS ($shadowStatus)"
+        }
+        catch {
+            Write-Host "Shadow PnL briefing section check: FAIL ($($_.Exception.Message))" -ForegroundColor Yellow
+            if ($exitCode -eq 0) { $exitCode = 1 }
+        }
+    }
+    else {
+        Write-Host "Shadow PnL briefing section check: FAIL (missing briefing json)" -ForegroundColor Yellow
+        if ($exitCode -eq 0) { $exitCode = 1 }
+    }
 }
 
 # Dispatch compliance-safe Track C B2B brief webhook payload (if webhook env is configured).
@@ -149,10 +172,73 @@ if (Test-Path -LiteralPath $trackCB2BDispatch) {
     & py $trackCB2BDispatch
 }
 
+# External channel guard: ensure onepager does not leak Shadow PnL fields.
+$externalOnepagerJson = Join-Path $WorkspaceRoot "docs\final\artifacts\mkm_trackc_external_onepager_latest.json"
+if (Test-Path -LiteralPath $externalOnepagerJson) {
+    try {
+        $onepagerObj = Get-Content -LiteralPath $externalOnepagerJson -Raw -Encoding UTF8 | ConvertFrom-Json
+        $onepagerRaw = Get-Content -LiteralPath $externalOnepagerJson -Raw -Encoding UTF8
+        $rawLower = $onepagerRaw.ToLowerInvariant()
+        if ($rawLower.Contains("shadow_pnl") -and -not $rawLower.Contains('"shadow_pnl_disclosure": "disabled"')) {
+            throw "external onepager contains unexpected shadow_pnl field"
+        }
+        Write-Host "External onepager shadow leakage check: PASS"
+    }
+    catch {
+        Write-Host "External onepager shadow leakage check: FAIL ($($_.Exception.Message))" -ForegroundColor Yellow
+        if ($exitCode -eq 0) { $exitCode = 1 }
+    }
+}
+
 # Hard guard: fail daily runner if Track C handoff package degrades.
 $trackCGuard = Join-Path $WorkspaceRoot "scripts\check_mkm_trackc_client_handoff_guard.py"
 if (Test-Path -LiteralPath $trackCGuard) {
     & py $trackCGuard --workspace-root $WorkspaceRoot
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# BL-004 hard gate: fail when A-track decision inputs are contaminated by B-track paths.
+$abContaminationGate = Join-Path $WorkspaceRoot "scripts\check_mkm_atrack_btrack_contamination_gate_v1.py"
+if (Test-Path -LiteralPath $abContaminationGate) {
+    & py $abContaminationGate --a-track-json (Join-Path $WorkspaceRoot "docs\final\artifacts\a_track_go_nogo_status_latest.json") --output-json (Join-Path $WorkspaceRoot "docs\final\artifacts\mkm_atrack_btrack_contamination_gate_latest.json")
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# BL-005 monitor: append WATCH streak log and refresh prolonged alert artifact.
+$watchProlongedAlert = Join-Path $WorkspaceRoot "scripts\alert_mkm_trackc_watch_prolonged_v1.py"
+if (Test-Path -LiteralPath $watchProlongedAlert) {
+    & py $watchProlongedAlert --dashboard-json (Join-Path $WorkspaceRoot "docs\final\artifacts\mkm_trackc_ops_dashboard_latest.json") --kpi-contract-json (Join-Path $WorkspaceRoot "docs\final\artifacts\mkm_trackc_watch_exit_kpi_contract_latest.json") --state-log-jsonl (Join-Path $WorkspaceRoot "reports\mkm_trackc_watch_state_log.jsonl") --output-json (Join-Path $WorkspaceRoot "docs\final\artifacts\mkm_trackc_watch_prolonged_alert_latest.json")
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# BL-006: build model-mix cost/latency tracking artifact.
+$modelMixCostLatency = Join-Path $WorkspaceRoot "scripts\build_mkm_model_mix_cost_latency_report_v1.py"
+if (Test-Path -LiteralPath $modelMixCostLatency) {
+    & py $modelMixCostLatency --workspace-root $WorkspaceRoot
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# BL-007: append unified decision ledger row.
+$decisionLedger = Join-Path $WorkspaceRoot "scripts\append_mkm_decision_ledger_v1.py"
+if (Test-Path -LiteralPath $decisionLedger) {
+    & py $decisionLedger --workspace-root $WorkspaceRoot --actor "daily-readiness-runner" --decision "GO_WITH_CONSERVATIVE_GUARD" --reason "Automated daily snapshot with WATCH guard policy."
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# BL-008: regenerate filled fact-lock templates from latest artifacts.
+$filledTemplates = Join-Path $WorkspaceRoot "scripts\build_mkm_fact_lock_templates_filled_v1.py"
+if (Test-Path -LiteralPath $filledTemplates) {
+    & py $filledTemplates --workspace-root $WorkspaceRoot
     if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
         $exitCode = $LASTEXITCODE
     }

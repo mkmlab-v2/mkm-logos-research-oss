@@ -38,6 +38,36 @@ def _fallback(value: Any, default: Any = None) -> Any:
     return value if value is not None else default
 
 
+def _build_shadow_pnl_summary(artifacts: Path) -> Dict[str, Any]:
+    shadow = _read_json(artifacts / "shadow_pnl_guardrail_latest.json")
+    if not shadow:
+        return {
+            "shadow_pnl_status": "NOT_AVAILABLE",
+            "virtual_pnl_usd": None,
+            "avoided_risk_usd": None,
+            "commentary": "Shadow PnL artifact missing; continue with macro risk briefing only.",
+        }
+
+    impact = shadow.get("impact") or {}
+    latest = impact.get("latest_cycle_impact") or {}
+    decision_state = (shadow.get("state") or {}).get("decision_state")
+    operator_action = (shadow.get("state") or {}).get("operator_action")
+
+    virtual_pnl = _fallback(impact.get("delta_usd_vs_prev_cycle"), 0.0)
+    avoided_risk = _fallback(latest.get("avoided_loss_usd"), 0.0)
+    missed = _fallback(latest.get("missed_opportunity_usd"), 0.0)
+    commentary = (
+        f"decision_state={decision_state}, operator_action={operator_action}, "
+        f"avoided_risk_usd={avoided_risk}, missed_opportunity_usd={missed}"
+    )
+    return {
+        "shadow_pnl_status": "OK",
+        "virtual_pnl_usd": virtual_pnl,
+        "avoided_risk_usd": avoided_risk,
+        "commentary": commentary,
+    }
+
+
 def _build_payload() -> Dict[str, Any]:
     root = _root()
     artifacts = root / "docs" / "final" / "artifacts"
@@ -45,6 +75,7 @@ def _build_payload() -> Dict[str, Any]:
     smoke = _read_json(artifacts / "macro_risk_warning_api_smoke_latest.json")
     dashboard = _read_json(artifacts / "mkm_trackc_ops_dashboard_latest.json")
     handoff = _read_json(artifacts / "mkm_trackc_client_handoff_package_latest.json")
+    shadow_pnl = _build_shadow_pnl_summary(artifacts)
 
     trackc = dashboard.get("trackc", {})
     system = dashboard.get("system", {})
@@ -77,6 +108,7 @@ def _build_payload() -> Dict[str, Any]:
             "ttl_seconds": smoke.get("ttl_seconds"),
         },
         "top_risk_signals": top_risks,
+        "shadow_pnl": shadow_pnl,
         "action_frame": {
             "label": _fallback(smoke.get("decision_state"), "WATCH"),
             "operator_action": _fallback(recommended_posture, "watch_tighten"),
@@ -87,6 +119,7 @@ def _build_payload() -> Dict[str, Any]:
             "smoke_artifact": "docs/final/artifacts/macro_risk_warning_api_smoke_latest.json",
             "dashboard_artifact": "docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json",
             "handoff_artifact": "docs/final/artifacts/mkm_trackc_client_handoff_package_latest.json",
+            "shadow_pnl_artifact": "docs/final/artifacts/shadow_pnl_guardrail_latest.json",
             "delivery_ready": {
                 "commercial_package_ready": delivery.get("commercial_package_ready"),
                 "external_onepager_ready": delivery.get("external_onepager_ready"),
@@ -111,6 +144,7 @@ def _render_ko(payload: Dict[str, Any]) -> str:
     mkt = payload["market_snapshot"]
     status = payload["status"]
     action = payload["action_frame"]
+    shadow = payload["shadow_pnl"]
     top = payload["top_risk_signals"]
     risk_lines = "\n".join(
         f"- {item['name']}: `{item['score']}`" for item in top
@@ -135,6 +169,11 @@ def _render_ko(payload: Dict[str, Any]) -> str:
         f"- ttl_seconds: `{mkt.get('ttl_seconds')}`\n\n"
         "## Top Risk Signals\n"
         f"{risk_lines}\n\n"
+        "## Shadow PnL Summary\n"
+        f"- shadow_pnl_status: `{shadow.get('shadow_pnl_status')}`\n"
+        f"- virtual_pnl_usd: `{shadow.get('virtual_pnl_usd')}`\n"
+        f"- avoided_risk_usd: `{shadow.get('avoided_risk_usd')}`\n"
+        f"- commentary: {shadow.get('commentary')}\n\n"
         "## Action Frame\n"
         f"- label: `{action.get('label')}`\n"
         f"- operator_action: `{action.get('operator_action')}`\n"
@@ -144,6 +183,7 @@ def _render_ko(payload: Dict[str, Any]) -> str:
         f"- `{payload['fact_lock_evidence']['smoke_artifact']}`\n"
         f"- `{payload['fact_lock_evidence']['dashboard_artifact']}`\n"
         f"- `{payload['fact_lock_evidence']['handoff_artifact']}`\n\n"
+        f"- `{payload['fact_lock_evidence']['shadow_pnl_artifact']}`\n\n"
         "## Disclaimer\n"
         "- Advisory only. Not investment advice.\n"
         "- No buy/sell instruction.\n"
@@ -155,6 +195,7 @@ def _render_en(payload: Dict[str, Any]) -> str:
     mkt = payload["market_snapshot"]
     status = payload["status"]
     action = payload["action_frame"]
+    shadow = payload["shadow_pnl"]
     top = payload["top_risk_signals"]
     risk_lines = "\n".join(
         f"- {item['name']}: `{item['score']}`" for item in top
@@ -179,6 +220,11 @@ def _render_en(payload: Dict[str, Any]) -> str:
         f"- ttl_seconds: `{mkt.get('ttl_seconds')}`\n\n"
         "## Top Risk Signals\n"
         f"{risk_lines}\n\n"
+        "## Shadow PnL Summary\n"
+        f"- shadow_pnl_status: `{shadow.get('shadow_pnl_status')}`\n"
+        f"- virtual_pnl_usd: `{shadow.get('virtual_pnl_usd')}`\n"
+        f"- avoided_risk_usd: `{shadow.get('avoided_risk_usd')}`\n"
+        f"- commentary: {shadow.get('commentary')}\n\n"
         "## Action Frame\n"
         f"- label: `{action.get('label')}`\n"
         f"- operator_action: `{action.get('operator_action')}`\n"
@@ -188,6 +234,7 @@ def _render_en(payload: Dict[str, Any]) -> str:
         f"- `{payload['fact_lock_evidence']['smoke_artifact']}`\n"
         f"- `{payload['fact_lock_evidence']['dashboard_artifact']}`\n"
         f"- `{payload['fact_lock_evidence']['handoff_artifact']}`\n\n"
+        f"- `{payload['fact_lock_evidence']['shadow_pnl_artifact']}`\n\n"
         "## Disclaimer\n"
         "- Advisory only. Not investment advice.\n"
         "- No buy/sell instruction.\n"

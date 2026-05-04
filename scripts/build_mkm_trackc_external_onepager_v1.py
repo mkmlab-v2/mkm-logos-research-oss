@@ -19,9 +19,29 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def _validate_contract(onepager: Dict[str, Any], schema_path: Path) -> None:
+    # Hard contract: external onepager must explicitly disable shadow PnL disclosure.
+    cp = onepager.get("channel_policy") or {}
+    if cp.get("shadow_pnl_disclosure") != "DISABLED":
+        raise ValueError("channel_policy.shadow_pnl_disclosure must be DISABLED")
+    if "shadow_pnl" in onepager:
+        raise ValueError("external onepager must not contain shadow_pnl section")
+
+    # Optional JSON Schema validation (graceful if dependency not installed).
+    try:
+        import jsonschema  # type: ignore
+    except Exception:
+        return
+
+    schema = json.loads(schema_path.read_text(encoding="utf-8-sig"))
+    jsonschema.Draft202012Validator(schema).validate(onepager)
+
+
 def main() -> int:
     root = Path("C:/workspace")
     artifacts = root / "docs" / "final" / "artifacts"
+    schemas = root / "docs" / "final" / "schemas"
+    schema_path = schemas / "mkm_trackc_external_onepager_v1.schema.json"
 
     package_path = artifacts / "mkm_trackc_commercial_package_latest.json"
     package = _read_json(package_path)
@@ -39,6 +59,11 @@ def main() -> int:
         "generated_at_utc": _utc_now(),
         "title": "MKM AI Track C: Macro Risk Warning API + Public Showroom",
         "elevator_pitch": "운영형 MKM AI의 거시 리스크 경보 API와 공개 쇼룸 레인을 결합한 고객 전달 패키지.",
+        "channel_policy": {
+            "audience": "external",
+            "shadow_pnl_disclosure": "DISABLED",
+            "shadow_pnl_reason": "Shadow PnL is internal governance telemetry and not an external disclosure field.",
+        },
         "current_state": {
             "system_label": system_status.get("label"),
             "status": system_status.get("status"),
@@ -70,9 +95,12 @@ def main() -> int:
             "투자 자문 아님(운영 보조 신호)",
             "최종 의사결정은 운영자 책임",
             "Track A/B 자동 합선 금지",
+            "Shadow PnL(내부 복기 지표) 외부 비노출",
         ],
         "evidence_refs": package.get("evidence", {}),
     }
+
+    _validate_contract(onepager, schema_path)
 
     out_json = artifacts / "mkm_trackc_external_onepager_latest.json"
     out_md = artifacts / "mkm_trackc_external_onepager_latest.md"
@@ -84,6 +112,11 @@ def main() -> int:
         f"- generated_at_utc: `{onepager['generated_at_utc']}`",
         f"- title: `{onepager['title']}`",
         f"- status: `{onepager['current_state'].get('status')}`",
+        "",
+        "## Channel Policy",
+        f"- audience: `{onepager['channel_policy'].get('audience')}`",
+        f"- shadow_pnl_disclosure: `{onepager['channel_policy'].get('shadow_pnl_disclosure')}`",
+        f"- note: {onepager['channel_policy'].get('shadow_pnl_reason')}",
         "",
         "## Elevator Pitch",
         onepager["elevator_pitch"],
