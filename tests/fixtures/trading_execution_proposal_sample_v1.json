@@ -1,0 +1,12 @@
+{
+  "schema": "trading_execution_proposal_v1",
+  "proposal_id": "demo-proposal-001",
+  "intent_summary": "Reduce spot test exposure (fixture only)",
+  "proposed_actions": [
+    {
+      "kind": "observation_note",
+      "symbol": "BTCUSDT",
+      "note": "No live order in validator smoke"
+    }
+  ]
+}
