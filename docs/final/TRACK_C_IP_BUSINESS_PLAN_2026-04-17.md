@@ -1,11 +1,11 @@
 # Track C IP Business Plan (v2)
 
-Date: 2026-05-03  
-Revised: 2026-05-03 — **§3.8** 기업용 매크로 조기 경보 **B2B 구독**을 대외 매출 1차 파도로 명시, **MVP(`2026 H2` 리포트 뼈대)**·§4·§10 정렬. (이전: 2026-05-02 `§3.7` MKM AI 검증·가속 인프라.)  
+Date: 2026-05-05  
+Revised: 2026-05-05 — **핵심이론 보호 상용화 가드(§9A)** 신설: `Model-as-a-Service` 분리, 공개/비공개 필드 경계, 계약/접근통제/워터마킹, 90일 실행 체크리스트를 Track C GTM에 편입. (이전: 2026-05-03 `§3.8` B2B 구독 파도 고정.)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
-**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-05-03 재동결(FROZEN)** 처리한다. 이전 동결(2026-05-02) 대비 **§3.8 신설**(B2B 매크로 경보 구독·MVP), **§4·§10**에 GTM 파도 반영. 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시한다. `§3.7`은 영업·마케팅·개발 파이프라인의 **공통 지침**으로 적용한다.
+**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-05-05 재동결(FROZEN)** 처리한다. 이전 동결(2026-05-03) 대비 **§9A 신설**(핵심이론 보호·비공개 운영·계약/기술 통제), **§10** 실행항목에 보안 우선 액션 반영. 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시한다. `§3.7`은 영업·마케팅·개발 파이프라인의 **공통 지침**으로 적용한다.
 
 ## 1) Fact-Locked Baseline
 
@@ -89,6 +89,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
   - 공개 쇼룸 1순위: `jemaai.cloud` (공개 전광판/쇼룸 SSOT와 정합).
   - 엔터프라이즈 API CTA 2순위: `a-codeai.com` (`/v1` 분리형 B2B 엔드포인트 문맥).
   - 브랜드 허브/설명 페이지는 `jema-ai.com`에서 연결하되, 실시간성/쇼룸 UI는 `jemaai.cloud`로 집중.
+  - `a-codeai.com` 배포는 **정적 랜딩(`/`)과 API(`/v1`, `/health`)를 nginx에서 분리**한다. 운영 예시는 `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example`를 기준으로 한다.
 
 ### 3.7 MKM AI — 고신뢰 R&D 검증·가속 인프라 (Value Proposition 전환, 2026-05)
 
@@ -234,11 +235,57 @@ Enterprise API framing sentence (add-on):
 
 `The engine has been stress-tested on high-complexity, high-ambiguity historical text corpora to validate context filtering and noise suppression under extreme semantic load; production claims remain bounded to measured risk and reliability metrics.`
 
+Neuro-inspired framing policy (communication-only):
+
+`Neuroscience-inspired principles (framing, attention steering, cognitive load reduction) are used strictly as communication design guidance. They are not presented as scientific proof of product outcomes, and all external claims remain artifact-backed, bounded, and non-guaranteed.`
+
 Short copy:
 
 - Risk Warning First, Not Trade Advice.
 - Token Efficiency + Risk Posture, with Reproducible Evidence.
 - Governance-driven, Artifact-backed, Operator-in-the-loop.
+
+## 9A) Core Theory Protection (Commercial Security Gate, 2026-05)
+
+**원칙:** Track C는 고객에게 "원시 이론/내부 파라미터"를 판매하지 않는다.  
+판매물은 **의사결정 보조 산출물(점수/사분면/경보/해설)**이며, 핵심이론은 `core-engine` 내부에서만 실행한다.
+
+### 9A.1 공개/비공개 경계 (Hard Boundary)
+
+| 구분 | 외부 제공 | 외부 비공개(금고) |
+|------|-----------|-------------------|
+| 계산 로직 | 최종 상태값·요약 라벨 | X/Y 산식 상세, 내부 가중치, 튜닝 규칙, 중간 피처 기여도 |
+| 모델 운영 | 응답 스키마, 상태코드, 감사용 최소 근거 | 룰트리·threshold 실값·실험 히스토리·승격 실험 파라미터 |
+| 문서/영업 | 리스크 내비게이션/비자문 문구 | 내부 alpha 생성 논리, 사내 운용 디테일 |
+
+### 9A.2 제품 아키텍처 (Model-as-a-Service)
+
+1. `core-engine`(비공개): 내부망/VPC에서만 실행, 외부 직접 접근 금지.
+2. `presentation-api`(공개): 결과값·요약 상태만 반환, 중간 계산값 미노출.
+3. `client dashboard`: 시각화·리포트 전용, 브라우저 번들에 계산식 포함 금지.
+
+### 9A.3 기술·운영 통제
+
+- **필수:** tenant별 API key, rate limit, IP allowlist(enterprise), RBAC.
+- **응답 최소화:** "왜 이 점수인가"는 설명 가능한 범위로만 제공하고, 파라미터/룰 ID 원문은 숨김.
+- **추적성:** 고객별 워터마킹(리포트/내보내기 식별자) + append-only 접근 로그.
+- **비밀관리:** 키/자격증명은 secret manager 또는 로컬 비밀 저장소만 사용, 저장소 커밋 금지.
+- **탐지:** 비정상 호출 패턴(대량 추출·역공학 시도) 경보를 운영 KPI에 포함.
+
+### 9A.4 계약·법무 가드 (B2B 기본조항)
+
+- 역공학 금지, 재배포 금지, 파생모델 학습 금지.
+- 내부 의사결정 보조 목적 한정(자동매매/자문 대체 금지).
+- 산출물 책임 한계, 손실·성과 비보장, 최종 의사결정은 고객 운영자 책임.
+
+### 9A.5 상용화 90일 보안 실행(Track C 연동)
+
+- **Day 0-30:** 공개 API 스키마 민감필드 제거, core/presentation 분리 배포, 감사로그 최소계약 고정.
+- **Day 31-60:** tenant 분리·권한모델·워터마크 적용, 엔터프라이즈 키 발급/폐기 runbook 고정.
+- **Day 61-90:** 유출대응 드릴(키회전/클라이언트 차단/법무 통지) 월 1회, 역공학 탐지 리포트 정례화.
+
+**Track C 판매 문구 고정(보안 버전):**  
+`We commercialize decision-support outputs, not proprietary core formulas. The engine remains server-side and access-controlled; clients receive reproducible risk posture artifacts under a non-reverse-engineering license.`
 
 ## 10) Immediate Next Actions
 
@@ -248,6 +295,7 @@ Short copy:
 4. `P2(신시장지표)` 관측형 주간 리포트 템플릿을 추가하고, 경보 KPI를 명시한다(B2B 브리프와 중복 시 하나의 납기 템플릿으로 통합 검토).
 5. `P4/P5/P6(명리/초고난도 비정형 텍스트/사상의학)`은 비자문·비의료·비결정론 고정 문구를 포함한 실험형 패키지로만 운영한다.
 6. Topology Radar 쇼룸은 **JSON 계약(허용 필드/금지 필드) -> 와이어프레임 -> 카피라이팅** 순서로 고정해 환각·컴플라이언스 리스크를 선제 차단한다.
+7. `§9A` 보안 게이트에 따라 API/대시보드 응답에서 내부 산식·가중치·중간 피처를 제거하고, 계약서(NDA+역공학 금지)와 기술 설정(키·워터마크·감사로그)을 동시 적용한다.
 
 ## 11) MKM AI Sales Kit Reference (External-Ready)
 

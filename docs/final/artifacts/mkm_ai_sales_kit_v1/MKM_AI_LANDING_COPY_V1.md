@@ -36,3 +36,11 @@ MKM provides a governance-driven risk warning and scenario posture service that 
 ## Enterprise API framing (선택 삽입)
 
 The engine has been stress-tested on high-complexity, high-ambiguity historical text corpora to validate context filtering and noise suppression under extreme semantic load; production claims remain bounded to measured risk and reliability metrics.
+
+API boundary note:
+
+On `a-codeai.com`, public landing content stays on `/`, while API traffic is limited to `/v1` (and `/health`) through a separated proxy path policy.
+
+## Neuro-inspired communication note (고정)
+
+Neuroscience-inspired principles (framing, attention steering, cognitive load reduction) are used only as communication design guidance. They are not presented as scientific proof of product outcomes; external claims remain artifact-backed, bounded, and non-guaranteed.

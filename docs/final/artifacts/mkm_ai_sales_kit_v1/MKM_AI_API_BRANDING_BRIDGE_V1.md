@@ -23,3 +23,4 @@
 
 - Enterprise API add-on 문장은 `TRACK_C` §9 Enterprise API framing 과 동일 선상에서만 확장한다.
 - 압축 제품: 무손실·무조건 복원 단정 금지 — `TRACK_C` §3.1.
+- 뇌과학 영감(프레이밍/주의 전환/인지 부하 관리)은 커뮤니케이션 설계 원칙으로만 사용한다. 과학적 성과 증명 문구로 확장하지 않으며, 대외 주장은 artifact-backed·bounded·non-guaranteed를 유지한다.
