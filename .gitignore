@@ -27,6 +27,9 @@ docs/final/artifacts/todo_queue_latest.json
 reports/mkm_orchestrator_poll.lock
 reports/mkm_orchestrator_telegram_offset.txt
 
+# PoC: Binance Signal Bot webhook run summaries (local only; may contain response snippets)
+reports/poc_binance_signal_webhook/
+
 # Thin daily chain: one-line myeongni JSONL (regenerable; Run-DailyExecutionInsightBrief_v1.ps1)
 data/multilens_eval/myeongni_independent_lens_thin_bridge_latest.jsonl
 
