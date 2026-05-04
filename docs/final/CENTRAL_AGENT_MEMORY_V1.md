@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-03T11:56:21Z
+- **last_updated_utc:** 2026-05-04T14:30:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -15,7 +15,9 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-03T11:56:21Z** — P0 254 green; run_fact_lock_bundle (P1AB+Codebook+TruthfulQA MC) exit 0; routine 2026-05-03.
+- **2026-05-04T05:20:28Z** — Binance pilot: LiveMainnetSmall path + qty cap + fixture ban (SSOT updated)
+- **2026-05-04T06:30:00Z** — Track B weekly gate recheck timestamp aligned (`trackb_weekly_gate_recheck_latest.json` → `GO_RESEARCH`); B-Track post-mortem joiner + 4h health scripts on disk (`CONSTITUTION` Prophecy Hit Rate 절)
+- **2026-05-04T12:00:00Z** — MKM Trinity 렌즈 목차 고정: `MKM_TRINITY_INDEX_V1.json` + `schemas/mkm_trinity_index_v1.schema.json` + `test_mkm_trinity_index_v1.py` + P0/CI/번들 연동 (`authority: index_only`)
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -50,7 +52,41 @@
 | **배포 스크립트 적용 범위** | `scripts/deploy/linux/verify_and_reload.sh`는 **호출한 repo-path**에만 적용된다. `mkm-lab-workspace-v2`에서 성공해도 실전 PM2가 `bitcoin-trading-live`를 보면 실전 코드에는 즉시 반영되지 않을 수 있다. |
 | **표 「분기별 한 줄」와의 관계** | 2026-05-02 `destiny` 브랜치 맥락과 2026-05-04 실전 PM2 경로(`/opt/bitcoin-trading-live`)는 다른 트리다. 한 줄로 합쳐 해석하지 않는다. |
 
+**에이전트 고정 (재발 방지 · SSH 호스트 재질문 금지):** 위 표에 **SSH 기본 호스트(`vps-mkmlife`)·PM2 후보(`bitcoin-live-small-24h` 등)**가 있는 한, 답변에서 사용자에게 **“SSH 호스트 이름을 알려주세요”**, **“다음 턴에 호스트만 주세요”**처럼 **기본 대상을 재요청하지 않는다.** 사용자가 **명시적으로 다른 호스트**를 쓴 요청이면 그때만 전환한다. 생존·주문 모드는 **로컬 Cursor가 추측하지 않고**, Fact-Lock 확인용 명령은 **기본 호스트 `vps-mkmlife` 기준**으로 초안을 제시한다(실행·출력은 SSH 측). 예: `ssh vps-mkmlife "pm2 list && pm2 show bitcoin-live-small-24h"` → `script path`·`exec cwd` 확인 후, 해당 `cwd`에서 `config/trading_config.yaml`(또는 런북이 지정한 설정 파일)의 **live / observe / dry** 류 플래그를 **파일 근거**로만 서술.
+
 **한 줄 요약:** 배포는 **`main` + FF** 가 기본이고, PM2 이름은 **호스트마다 `pm2 list`가 최종**이다.
+
+---
+
+## 조건부 시그널 게이트 · Binance USDM (경로 SSOT)
+
+| 목적 | 진입점 |
+|------|--------|
+| 웹훅 전용(레거시 호환) | `projects/bitcoin-trading/scripts/run_conditional_signal_webhook_v1.py` → 내부에서 `run_conditional_action_gate_v1.py --backend webhook` 선행 |
+| 백엔드 선택 | 동 디렉터리 `run_conditional_action_gate_v1.py --backend webhook` 또는 **`--backend api`** |
+| 실주문 | 게이트에서 실거래 허용 조건 충족 후 **`--backend api`**; 주문 실행 단계는 스크립트 도움말·런북대로 **`--live`**·(의도 시) **`--mainnet`** |
+| 파일럿 스모크 | **`scripts/Run-BinanceUsdmPilotSmoke.ps1`** — 기본 dry-only. 테스트넷 실체결: **`-LiveTestnet -AcknowledgeLiveTestnet -RiskJson <fact_safe>`**. **소액 메인넷 실전:** **`-LiveMainnetSmall -AcknowledgeLiveMainnetSmall -AcknowledgeIrreversibleLoss -RiskJson <실제 fact_safe>`** + `-Qty`가 **`-MaxMainnetQty`(기본 0.002)** 및 선택 **`MKM_PILOT_MAINNET_MAX_QTY`** 상한 이하; **테스트 픽스처 risk 금지** |
+
+상세 한 페이지: `docs/binance_usdm_signal_webhook_setup_checklist_v1.html`.
+
+---
+
+## B-track LLM 번들 · macro / news (관측 한 줄)
+
+**Fact-Lock:** 일일 체인은 선행 `scripts/build_btrack_news_macro_lens_adapters_v1.py` → `news_independent_lens_latest.json` / `macro_independent_lens_latest.json` → `build_btrack_llm_input_bundle.py`가 `artifacts`에 탑재; `generate_btrack_hypothesis_prophecy_v1.py`는 번들에 비어 있지 않은 `news_independent_lens` / `macro_independent_lens`가 있으면 **`macro_available`/`news_available` true**. 오프라인·직전 산출 재사용: **`run_btrack_daily_hypothesis_chain.ps1 -SkipNewsMacroAdapter`**. 상세·회귀 경로·**일일 체인 전 스위치 표**는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 「일일 B-Track 번들」절 및 **바로 아래 `run_btrack_daily_hypothesis_chain.ps1` 스위치 표**. **복기 조립(가설+채점+선택 eval):** `scripts/eval_btrack_prophecy_post_mortem_v1.py` → `docs/final/artifacts/btrack_post_mortem_latest.json`; 주간 게이트 재점검 산출은 `docs/final/artifacts/trackb_weekly_gate_recheck_latest.json`.
+
+---
+
+## 로컬 워크스페이스 · 새 클론 SOP (표준)
+
+> **맥락:** 매일 갱신되는 운영 산출물은 Git에 두지 않을 수 있어, **새 클론만으로는 로컬 “중간 재료”가 비어 있을 수 있다.** 후단 빌더만 단독 실행하면 입력 부족으로 중단될 수 있음(Fact-Lock).
+
+**표준 순서 (중복 스크립트 추가 없음):**
+
+1. **근본 재료:** `.env`(및 `.env.example` 대조)·외부 연동 키·Vault/네트워크 등 **스크립트 바깥 전제**를 먼저 갖춘다.
+2. **최초 1회 풀 체인:** 별도 “부팅 전용” 래퍼를 만들지 않고, 이미 검증된 일일 러너 **`scripts/Invoke-MkmAiV2DailyReadiness.ps1`** 를 한 번 실행해 readiness·승격 포인터·Track C 패키지 연쇄·대시보드·가드까지 **순서대로** 로컬 산출물을 채운다.
+
+**금지(운영 비대화):** 동일 목적의 두 번째 원클릭 부팅 스크립트를 레포에 추가해 관리 부담만 늘리지 않는다.
 
 ---
 
@@ -136,6 +172,7 @@
 | 2026-Q2 (AutoEvo) | 조사→큐→스캐폴드→실행→제안→승인→결정 적용 + 연구 레인 승격 실행계획(`autoevo_research_promotion_plan_latest.json`) 생성. |
 | 2026-Q2 (Hybrid Pointer Router) | `GO/WATCH/HOLD` 라벨링·runtime config·shadow 리포트·alert·guard·강등 드릴까지 연결해 “조건부 고효율 + 자동 하방보호”를 아티팩트 체인으로 고정(무조건 99/100 수사 금지). |
 | 2026-05 (MKM 렌즈·융합 점검 루프) | 명리·사상·로고스 독립 렌즈·통찰 번들·융합 스텁·Shadow·신학 연동을 **pytest + P0**로 스모크; 통합은 `gitea/main`·`SoloDev-MergeFeatureToGiteaMain.ps1` 절차로 정리(관측/ B-track, A-track·실전 자동 합선 없음). |
+| 2026-05-04 (MKM Trinity index v1) | 렌즈 키 `sasang`/`logos`/`myeongni` + `constitution_anchor` + `validation_pointers[]` + `_meta.schema/version`를 `MKM_TRINITY_INDEX_V1.json`에 박제; jsonschema·`dual-regime-integrity`·`run_fact_lock_bundle`·`verify_p0`에 연결(목차만, FACT는 헌법·스크립트). |
 | 2026-Q1 (레포 타임라인) | Mar~Apr `feat`/`docs`/`chore` 커밋이 다수 + `reports`·`docs`·`scripts` 경로 변경이 두드러짐 → **산출·스냅샷·자동화**를 한 사이클로 밀어붙인 분기 (`docs/final/artifacts/memory_revival_gap_scan_latest.json`와 대조). |
 | 2025-05~2026-02 (갭·NL 검증) | NotebookLM `압축` 노트(`c5f9aef1-6cd6-4c3b-9c57-d1f2a62e3201`) 교차질의가 인용한 source id는 **현재 `nlm source list` 제목**(예: 2026-04-09 H: 매니페스트·`top10_curated`)과 시점이 맞지 않음 → **날짜별 “결정 연대기”는 미승격**; 동 구간 본 레포 `git log` **0건** 재확인. |
 | 2026-04 (Cursor · 크로스 채팅) | `.cursor/rules/central-agent-memory.mdc`에 **SSOT 핵심 5줄**(Fact-Lock·투트랙·레짐 주·보·Multi-Lens·압축 서술)을 **매 턴 자동 포함**으로 고정; 압축 대외 서사는 **실행층=휴리스틱·게마/4D 브리지=계측·사원수=trackb 실험축**으로 Fact-Lock 정렬. 채팅 간 맥락 누적은 **본 파일·Git** — 세션 로그 자동 병합 아님. |
@@ -220,6 +257,8 @@
 | 2026-05-02 (MKM Lab · LinkedIn B2B 실행 번들) | 개인 프로필 영문 우선 About·스페셜 픽스·주간 운영 노트 톤 유지; 추적 `reports/linkedin_dm_outreach_tracker_v1.tsv`, 복붙 `reports/linkedin_dm_copypaste_bundle_v1.txt`(KR+EN 첫 DM A/B/C·7일 팔로업). DM/게시는 본인 LinkedIn 세션에서만 수행. |
 | 2026-05-02 (VPS · bitcoin-trading · 체결→cursor_trade_history) | 로컬 커밋만 있으면 VPS에 파일 MISSING — **`git@github.com:mkmlab-v2/mkm-destiny-ai-41e38ec6.git`의 `fix/btrack-ohlcv-cli-help-and-eval-wrapper-github`**에 반영 필요(비FF 시 worktree+체리픽 후 푸시). 체인: `export_binance_fills_to_cursor_trade_history_v1.py`→`sync_cursor_trade_history_latest_24h.py`; 등록 `ops/v2/ssh/register_export_then_sync_cursor_trade_history_cron.sh`, cron 태스크 `bitcoin-binance-export-then-cursor-trade-history`, 로그 `/var/log/bitcoin_export_then_cursor_trade_history.log`, **`WORKSPACE_ROOT=/opt/mkm-lab-workspace-v2/projects/bitcoin-trading`**. 브랜치 전환 전 **`projects/no1kmedi` 등 로컬 수정은 stash**. **재발 방지 SSOT:** `projects/bitcoin-trading/ops/v2/DEPLOY_GIT_POINTER_V1.json` + 스모크 `bash ops/v2/ssh/check_vps_deploy_files_vs_pointer.sh`. **▶ PM2/본선 혼동 방지는 본 파일 「VPS · 비트코인 본선」절(크로스 채팅 고정).** |
 | 2026-05-03 (VPS `vps-mkmlife` · PM2 이름 실측) | 동 호스트 `pm2 list` 기준 **24h 온라인 앱명 `bitcoin-live-small-24h`** — 런북 예시 `bitcoin-live` 와 불일치할 수 있음. **`verify_and_reload` FF 실패**는 다수 **VPS가 `main`이 아닌 브랜치에 checkout** 된 경우와 합치됨 → 본선을 main에 맞출지·feature를 유지할지 **정책 분리** 후 조치. |
+| 2026-05-04 (Track B 시계 정렬 + 예언 복기 레이어) | `docs/final/artifacts/trackb_weekly_gate_recheck_latest.json` `generated_at_utc=2026-05-04T06:07:21Z`, `decision=GO_RESEARCH`, `out_of_scope` 유지(연구·본선 합선 없음). 예언 조립: `scripts/eval_btrack_prophecy_post_mortem_v1.py`→`btrack_post_mortem_latest.json`; 얇은 헬스 `scripts/check_btrack_4h_health_v1.py`·`scripts/Register-Btrack4hHealthTask.ps1`. **히트레이트 60%대는 목표** — 달성·회귀 주장은 `eval_prophecy_hit_rate_v1`·고정 eval 세트로만(Fact-Lock). |
+| 2026-05-04 (압축↔B-track 번들 연결 SSOT) | `scripts/build_compression_prophecy_bridge_status_v1.py`→`compression_prophecy_bridge_status_v1_latest.json`에 **`bridge_status=not_wired_v1`** 고정: `build_btrack_llm_input_bundle.py`는 Ultra/Multilens 압축 산출물을 읽지 않으며 번들 `artifact_paths`에도 압축 경로 없음; 회귀 `tests/test_compression_prophecy_bridge_status_v1.py`. 실제 결선은 번들 스키마+빌더 확장 선행. |
 | 2026-05-02 (MKM 자체 LLM·이론 체화 — 전략 지문 고정) | 규칙/프롬프트 정렬 vs 가중치 학습 **층 분리**; 고도화 기본은 **규칙+RAG+게이트**. 로컬 젬마 등 **체화형 파인튜닝**은 eval·데이터·프롬프트 비대가 **실측**될 때만 ROI 검토 — 미달이면 오버엔지니어링. 재질의 시 **`CENTRAL_AGENT_MEMORY_V1` 「MKM AI 고도화 · 자체 LLM」** 절 우선. |
 
 ---

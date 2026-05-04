@@ -9,6 +9,12 @@
 - **원칙 고정:** 코드/전략 동기화는 상시, 실전 주문 활성화(ON/OFF)는 별도 승인 게이트
 - **보수 하드라인(v1):** `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`의 `24h 보수 운영 하드라인 (Fact-Lock v1)`을 실전 기본값으로 적용
 
+## 로컬 PC 전용 경로 (Git에 올리지 않음)
+
+- **템플릿(추적):** `docs/final/LOCAL_MACHINE_POINTER_V1.template.md` — bare·클론·Vault 마운트 등 **한 대 PC만** 쓰는 경로를 적는 절차.
+- **실제 파일(비추적):** `docs/final/LOCAL_MACHINE_POINTER_V1.md` — 템플릿을 복사해 채움. `.gitignore`로 **원격에 푸시되지 않음**. `CONSTITUTION`에 절대 경로를 박지 않을 때의 대안.
+- **MKM Trinity 인덱스(목차·포인터만):** `docs/final/MKM_TRINITY_INDEX_V1.json` — 렌즈 키 `sasang` / `logos` / `myeongni`(표시 `label_ko`). `_meta.truth_source`는 헌법; FACT 판정은 인덱스가 아니라 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 각 스크립트·테스트.
+
 ## 중앙 메모리 (크로스 채팅 정체성)
 
 - **지속 SSOT:** `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — Athena 정체성·격벽·Fact-Lock·「분기별 한 줄」.

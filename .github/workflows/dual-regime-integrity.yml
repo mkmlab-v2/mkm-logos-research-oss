@@ -372,6 +372,11 @@ on:
       - "tests/test_btrack_phase3_snapshot_sync.py"
       - "tests/test_sasang_cross_ref_draft.py"
       - "tests/test_sasang_interpretive_insight_bundle_v1.py"
+      - "tests/test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py"
+      - "docs/final/MKM_TRINITY_INDEX_V1.json"
+      - "docs/final/schemas/mkm_trinity_index_v1.schema.json"
+      - "tests/test_mkm_trinity_index_v1.py"
+      - "scripts/build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py"
       - "tests/test_build_daily_execution_insight_brief_v1.py"
       - "scripts/build_daily_execution_insight_brief_v1.py"
       - "scripts/Run-DailyExecutionInsightBrief_v1.ps1"
@@ -766,6 +771,12 @@ jobs:
 
       - name: Sasang interpretive insight bundle v1.1 (schema, synthesis_v1, interpretive_depth_ko)
         run: python -m pytest tests/test_sasang_interpretive_insight_bundle_v1.py -q --tb=short
+
+      - name: Bio Sasang n-states strict comparison rehydrate v1 (P0 contract)
+        run: python -m pytest tests/test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py -q --tb=short
+
+      - name: MKM Trinity index v1 (JSON + schema contract)
+        run: python -m pytest tests/test_mkm_trinity_index_v1.py -q --tb=short
 
       - name: Daily execution insight brief v1 (materializer contract)
         run: python -m pytest tests/test_build_daily_execution_insight_brief_v1.py -q --tb=short
