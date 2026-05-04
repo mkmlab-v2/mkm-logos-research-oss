@@ -3,11 +3,11 @@
 <!-- AUTO_OPS_V1_START -->
 ## Auto Ops Handoff (v1)
 
-- `updated_at_utc:` 2026-05-04T09:44:17Z
-- `mission_id:` ops-memory-autorun-v1
-- `mission:` 장기기억 기반 자동 루틴 고정
+- `updated_at_utc:` 2026-05-05T18:30:00Z
+- `mission_id:` longrun-memory-ops-24h
+- `mission:` 장기기억 운영 24h 안전 자동 루틴 (best_loop: block_quality_gate->keep_current_schedule)
 - `status:` in_progress
-- `next_action:` `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_workspace_automation_health.ps1 -SkipVaultMirror -SkipMkmMemoryInventory -SkipPhase1Readiness -IncludeOperationalReadinessChecklist -IncludeCentralMemoryReadCheck`
+- `next_action:` `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_workspace_automation_health.ps1 -SkipVaultMirror -SkipMkmMemoryInventory -SkipPhase1Readiness -IncludeOperationalReadinessChecklist -IncludeCentralMemoryReadCheck -IncludeSecretExposureSurvey -SkipNewsObservationContractSmoke`
 <!-- AUTO_OPS_V1_END -->
 
 ## Ultra-Light Execution Contract (v1)
