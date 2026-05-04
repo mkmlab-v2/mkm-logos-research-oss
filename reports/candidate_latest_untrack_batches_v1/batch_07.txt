@@ -1,0 +1,1 @@
+docs/final/artifacts/visual_command_center_health_latest.json

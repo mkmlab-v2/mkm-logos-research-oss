@@ -1,0 +1,44 @@
+[
+  {
+    "batch": "batch_01.txt",
+    "item_count": 10,
+    "dry_run_ok": true,
+    "preview": "rm 'docs/final/artifacts/aegis_unified_scoreboard_abcd_latest.json'\nrm 'docs/final/artifacts/apocrypha_dss_path_role_map_v1_latest.json'\nrm 'docs/final/artifacts/brand_engine_boundary_check_latest.json'\nrm 'docs/final/artifacts/btc_k_m_loss_attribution_2025_latest.json'\nrm 'docs/final/artifacts/btc_mtf_h4_h1_forward_replay_dynamic_fold12_tuned_latest.json'\nrm 'docs/final/artifacts/btc_time_machine_fact_safe_backtest_2024_latest.json'\nrm 'docs/final/artifacts/btc_time_machine_fact_safe_backtest_2025_latest.json'\nrm 'docs/final/artifacts/btc_time_machine_fact_safe_backtest_2026_latest.json'"
+  },
+  {
+    "batch": "batch_02.txt",
+    "item_count": 10,
+    "dry_run_ok": true,
+    "preview": "rm 'docs/final/artifacts/emotion_label_leakage_audit_latest.json'\nrm 'docs/final/artifacts/emotion_source_slice_report_latest.json'\nrm 'docs/final/artifacts/entry16_manual_promotion_review_latest.json'\nrm 'docs/final/artifacts/ephemeris_baseline_report_swiss_ref_b_latest.json'\nrm 'docs/final/artifacts/factsafe_backup_cleanup_latest.json'\nrm 'docs/final/artifacts/fast_promotion_live_candidate_latest.json'\nrm 'docs/final/artifacts/fused_paper_cycle_4w_latest.json'\nrm 'docs/final/artifacts/l1_agb_decoder_noise_breakdown_latest.json'"
+  },
+  {
+    "batch": "batch_03.txt",
+    "item_count": 10,
+    "dry_run_ok": true,
+    "preview": "rm 'docs/final/artifacts/l1_inverse_decoder_spike_test_enhanced_latest.json'\nrm 'docs/final/artifacts/l1_inverse_decoder_spike_test_oov_literal_latest.json'\nrm 'docs/final/artifacts/l1_inverse_decoder_spike_test_summary_enhanced_latest.json'\nrm 'docs/final/artifacts/l1_inverse_decoder_spike_test_summary_swapv2_latest.json'\nrm 'docs/final/artifacts/l1_inverse_decoder_spike_test_swapv2_latest.json'\nrm 'docs/final/artifacts/lens_combo_first30m_observer_v1_latest.json'\nrm 'docs/final/artifacts/lens_combo_submit_freeze_latest.json'\nrm 'docs/final/artifacts/logos_quality_gap_latest.json'"
+  },
+  {
+    "batch": "batch_04.txt",
+    "item_count": 10,
+    "dry_run_ok": true,
+    "preview": "rm 'docs/final/artifacts/mkm_toe_paper_trading_gate_latest.json'\nrm 'docs/final/artifacts/mkm_toe_paper_trading_gate_latest.md'\nrm 'docs/final/artifacts/mkm_toe_stage1_v2_validation_latest.json'\nrm 'docs/final/artifacts/mkm_toe_stage1_v3_validation_latest.json'\nrm 'docs/final/artifacts/mkm_toe_stage1_validation_latest.json'\nrm 'docs/final/artifacts/mkm_toe_stage2_leakage_audit_latest.json'\nrm 'docs/final/artifacts/mkm_toe_stage2_model_compare_latest.json'\nrm 'docs/final/artifacts/mkm_toe_stage2_model_compare_latest.md'"
+  },
+  {
+    "batch": "batch_05.txt",
+    "item_count": 10,
+    "dry_run_ok": true,
+    "preview": "rm 'docs/final/artifacts/night_watchman_harness_drill_latest.json'\nrm 'docs/final/artifacts/night_watchman_harness_task_health_latest.json'\nrm 'docs/final/artifacts/pointerguard_apply_go_promotion_decision_artifacts_latest.json'\nrm 'docs/final/artifacts/pointerguard_apply_go_promotion_decision_block_test_latest.json'\nrm 'docs/final/artifacts/pointerguard_apply_go_promotion_decision_reports_latest.json'\nrm 'docs/final/artifacts/promotion_signoff_brief_latest.md'\nrm 'docs/final/artifacts/prophecy_btc_promotion_search_v1_relaxed_latest.json'\nrm 'docs/final/artifacts/prophecy_logos_revalidation_lens_combo_bear_only_latest.json'"
+  },
+  {
+    "batch": "batch_06.txt",
+    "item_count": 10,
+    "dry_run_ok": true,
+    "preview": "rm 'docs/final/artifacts/prophecy_logos_revalidation_oos_gate_252d_latest.json'\nrm 'docs/final/artifacts/prophecy_logos_revalidation_oos_gate_60d_latest.json'\nrm 'docs/final/artifacts/regime_watch_profile_calibration_latest.json'\nrm 'docs/final/artifacts/regime_watch_runtime_health_latest.json'\nrm 'docs/final/artifacts/ssh_cursor_command_sheet_limited_live_latest.md'\nrm 'docs/final/artifacts/strategy_effectiveness_v1_latest.json'\nrm 'docs/final/artifacts/strategy_thresholds_guard_v1_latest.json'\nrm 'docs/final/artifacts/strategy_thresholds_v1_latest.json'"
+  },
+  {
+    "batch": "batch_07.txt",
+    "item_count": 1,
+    "dry_run_ok": true,
+    "preview": "rm 'docs/final/artifacts/visual_command_center_health_latest.json'"
+  }
+]

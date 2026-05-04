@@ -1,0 +1,10 @@
+docs/final/artifacts/prophecy_logos_revalidation_oos_gate_252d_latest.json
+docs/final/artifacts/prophecy_logos_revalidation_oos_gate_60d_latest.json
+docs/final/artifacts/regime_watch_profile_calibration_latest.json
+docs/final/artifacts/regime_watch_runtime_health_latest.json
+docs/final/artifacts/ssh_cursor_command_sheet_limited_live_latest.md
+docs/final/artifacts/strategy_effectiveness_v1_latest.json
+docs/final/artifacts/strategy_thresholds_guard_v1_latest.json
+docs/final/artifacts/strategy_thresholds_v1_latest.json
+docs/final/artifacts/tls_hostname_diagnostic_latest.json
+docs/final/artifacts/virtual_acceleration_gate_latest.json
