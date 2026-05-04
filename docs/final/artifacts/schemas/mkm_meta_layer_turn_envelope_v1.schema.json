@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/mkm_meta_layer_turn_envelope_v1.schema.json",
+  "title": "MKM Meta-Layer Turn Envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "turn_id",
+    "utc_timestamp",
+    "risk_tier",
+    "premise_audit",
+    "objective_inversion",
+    "stakeholder_remap",
+    "contradiction_check",
+    "rival_hypotheses",
+    "minimal_experiment",
+    "reentry_conditions",
+    "self_refutation",
+    "execution_barrier_labels"
+  ],
+  "properties": {
+    "schema": { "const": "mkm_meta_layer_turn_envelope_v1" },
+    "turn_id": { "type": "string", "minLength": 8, "maxLength": 128 },
+    "utc_timestamp": { "type": "string", "minLength": 10, "maxLength": 40 },
+    "risk_tier": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "ZERO_TOLERANCE"]
+    },
+    "premise_audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question_bakes_in_answer", "hidden_premises", "fix_one_line"],
+      "properties": {
+        "question_bakes_in_answer": { "type": "boolean" },
+        "hidden_premises": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 400 },
+          "maxItems": 8
+        },
+        "fix_one_line": { "type": "string", "minLength": 1, "maxLength": 500 }
+      }
+    },
+    "objective_inversion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["flip_sign_hypothesis", "if_flipped_what_changes"],
+      "properties": {
+        "flip_sign_hypothesis": { "type": "string", "minLength": 1, "maxLength": 400 },
+        "if_flipped_what_changes": { "type": "string", "minLength": 1, "maxLength": 800 }
+      }
+    },
+    "stakeholder_remap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary_auditor", "success_criteria_for_auditor", "failure_modes"],
+      "properties": {
+        "primary_auditor": {
+          "type": "string",
+          "enum": [
+            "FACT_LOCK",
+            "HITL",
+            "OPS_GATE",
+            "REGULATOR",
+            "USER_SAFETY",
+            "DATA_INTEGRITY"
+          ]
+        },
+        "success_criteria_for_auditor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        },
+        "failure_modes": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 400 },
+          "minItems": 1,
+          "maxItems": 6
+        }
+      }
+    },
+    "contradiction_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["violates_constitution_or_gates", "hold_recommendation", "evidence_paths"],
+      "properties": {
+        "violates_constitution_or_gates": { "type": "boolean" },
+        "hold_recommendation": {
+          "type": "string",
+          "enum": ["GO", "HOLD", "ABORT"]
+        },
+        "evidence_paths": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 512 },
+          "maxItems": 12
+        }
+      }
+    },
+    "rival_hypotheses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["H1", "H2", "discriminating_observation"],
+      "properties": {
+        "H1": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "H2": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "discriminating_observation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        }
+      }
+    },
+    "minimal_experiment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["smallest_test", "time_budget", "pass_signal", "fail_signal"],
+      "properties": {
+        "smallest_test": { "type": "string", "minLength": 1, "maxLength": 600 },
+        "time_budget": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "pass_signal": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "fail_signal": { "type": "string", "minLength": 1, "maxLength": 300 }
+      }
+    },
+    "reentry_conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["to_execution_requires", "blocked_until"],
+      "properties": {
+        "to_execution_requires": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 400 },
+          "minItems": 1,
+          "maxItems": 8
+        },
+        "blocked_until": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 400 },
+          "maxItems": 8
+        }
+      }
+    },
+    "self_refutation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "what_would_falsify_my_plan",
+        "strongest_counterargument",
+        "mitigation_or_accept"
+      ],
+      "properties": {
+        "what_would_falsify_my_plan": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        },
+        "strongest_counterargument": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "mitigation_or_accept": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        }
+      }
+    },
+    "execution_barrier_labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["content_labels", "execution_allowed"],
+      "properties": {
+        "content_labels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "[FACT]",
+              "[HYPOTHESIS]",
+              "[REFRAME]",
+              "[NOT_EXEC]",
+              "[RESEARCH_ONLY]",
+              "[NON_GATING]"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 8
+        },
+        "execution_allowed": { "type": "boolean" }
+      }
+    }
+  }
+}

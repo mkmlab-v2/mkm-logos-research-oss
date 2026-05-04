@@ -6,18 +6,16 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-04T16:45:00Z
+- **last_updated_utc:** 2026-05-05T12:30:00Z
 - **owner:** (선택)
-- **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함)
+- **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK**; 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
 - **external_briefing_ref_v2:** `athena_memory_bank_v2.md` (time-series partition + firewall)
 
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-04T05:20:28Z** — Binance pilot: LiveMainnetSmall path + qty cap + fixture ban (SSOT updated)
-- **2026-05-04T06:30:00Z** — Track B weekly gate recheck timestamp aligned (`trackb_weekly_gate_recheck_latest.json` → `GO_RESEARCH`); B-Track post-mortem joiner + 4h health scripts on disk (`CONSTITUTION` Prophecy Hit Rate 절)
-- **2026-05-04T12:00:00Z** — MKM Trinity 렌즈 목차 고정: `MKM_TRINITY_INDEX_V1.json` + `schemas/mkm_trinity_index_v1.schema.json` + `test_mkm_trinity_index_v1.py` + P0/CI/번들 연동 (`authority: index_only`)
+- **2026-05-05T12:30:00Z** — CENTRAL: 명리 렌즈 고도화 v1 절 삽입·분기 한 줄·레인 표 갱신
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -45,6 +43,7 @@
 |------|------------------|
 | **원칙** | 문서의 `bitcoin-live` / 예시 ecosystem의 `mkm-btc-live` 는 **이름 후보·플레이스홀더**다. **재시작·배포 전에 대상 SSH 호스트에서 `pm2 list` / `pm2 show <name>` 으로 cwd·스크립트를 확인**한다. |
 | **SSH 호스트 (로컬 ship 스크립트 기본)** | `vps-mkmlife` — `scripts/deploy/ship_to_vps.ps1` 의 `-VpsHost` 기본값. |
+| **devops-mcp 실측 호스트(2026-05-04)** | `148.230.97.246` (`root`) — `project-0-workspace-devops-mcp`의 `check_vps_health`·`execute_vps_command` 성공. `pm2 list/show`는 기본 timeout(60초)에서 지연될 수 있어 `timeout=180`로 호출. |
 | **실전 런타임 경로 (2026-05-04 실측)** | PM2 `bitcoin-live-small-24h`의 `exec cwd`는 **`/opt/bitcoin-trading-live`**, `script path`는 **`/opt/bitcoin-trading-live/start_live_trading.py`**. 실전 반영 판단은 이 경로를 1순위로 본다. |
 | **보조 모노레포 경로(자동화/준비)** | `/opt/mkm-lab-workspace-v2` — `ship_to_vps.ps1` 기본값(`-VpsRepoPath`)이지만, 현재 `bitcoin-live-small-24h`의 직접 실행 경로는 아님. |
 | **PM2 앱 이름 (실측)** | **온라인 24h:** `bitcoin-live-small-24h` — 동일 호스트에서 `bitcoin-live` 앱은 없음. 이름 변경 가능성이 있으므로 항상 `pm2 list`/`pm2 show` 실측이 우선. |
@@ -66,6 +65,7 @@
 | 백엔드 선택 | 동 디렉터리 `run_conditional_action_gate_v1.py --backend webhook` 또는 **`--backend api`** |
 | 실주문 | 게이트에서 실거래 허용 조건 충족 후 **`--backend api`**; 주문 실행 단계는 스크립트 도움말·런북대로 **`--live`**·(의도 시) **`--mainnet`**; **선행(선택):** `run_conditional_action_gate_v1.py`에 **`--human-approval-json`**(또는 env `MKM_TRADING_HUMAN_APPROVAL_JSON`)이면 `validate_trading_human_execution_approval_v1.py` 선호출(exit 7); 파일럿 메인넷 소액은 `Run-BinanceUsdmPilotSmoke.ps1`가 기본으로 `reports/trading_human_execution_approval_latest.json` 요구 |
 | 파일럿 스모크 | **`scripts/Run-BinanceUsdmPilotSmoke.ps1`** — 기본 dry-only. 테스트넷 실체결: **`-LiveTestnet -AcknowledgeLiveTestnet -RiskJson <fact_safe>`**. **소액 메인넷 실전:** **`-LiveMainnetSmall -AcknowledgeLiveMainnetSmall -AcknowledgeIrreversibleLoss -RiskJson <실제 fact_safe>`** + `-Qty`가 **`-MaxMainnetQty`(기본 0.002)** 및 선택 **`MKM_PILOT_MAINNET_MAX_QTY`** 상한 이하; **테스트 픽스처 risk 금지** |
+| 일일 단일 판정 | `scripts/build_trading_go_nogo_status_v1.py` → `docs/final/artifacts/trading_go_no_go_latest.json` (gate + human approval + risk를 한 파일 `GO/NO_GO`로 고정; 주문 호출 없음) |
 
 상세 한 페이지: `docs/binance_usdm_signal_webhook_setup_checklist_v1.html`.
 
@@ -73,7 +73,7 @@
 
 ## B-track LLM 번들 · macro / news (관측 한 줄)
 
-**Fact-Lock:** 일일 체인은 선행 `scripts/build_btrack_news_macro_lens_adapters_v1.py` → `news_independent_lens_latest.json` / `macro_independent_lens_latest.json` → `build_btrack_llm_input_bundle.py`가 `artifacts`에 탑재; `generate_btrack_hypothesis_prophecy_v1.py`는 번들에 비어 있지 않은 `news_independent_lens` / `macro_independent_lens`가 있으면 **`macro_available`/`news_available` true**. 오프라인·직전 산출 재사용: **`run_btrack_daily_hypothesis_chain.ps1 -SkipNewsMacroAdapter`**. 상세·회귀 경로·**일일 체인 전 스위치 표**는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 「일일 B-Track 번들」절 및 **바로 아래 `run_btrack_daily_hypothesis_chain.ps1` 스위치 표**. **복기 조립(가설+채점+선택 eval):** `scripts/eval_btrack_prophecy_post_mortem_v1.py` → `docs/final/artifacts/btrack_post_mortem_latest.json`; 주간 게이트 재점검 산출은 `docs/final/artifacts/trackb_weekly_gate_recheck_latest.json`.
+**Fact-Lock:** 일일 체인은 선행 `scripts/build_btrack_news_macro_lens_adapters_v1.py` → `news_independent_lens_latest.json` / `macro_independent_lens_latest.json` → `build_btrack_llm_input_bundle.py`가 `artifacts`에 탑재; `generate_btrack_hypothesis_prophecy_v1.py`는 번들에 비어 있지 않은 `news_independent_lens` / `macro_independent_lens`가 있으면 **`macro_available`/`news_available` true**. 오프라인·직전 산출 재사용: **`run_btrack_daily_hypothesis_chain.ps1 -SkipNewsMacroAdapter`**. **Naver OpenAPI(`fetch_naver_openapi_signals_v1.py`)는 체인 기본 생략**; 네트워크 호출은 **`-IncludeNaverOpenApiRefresh`**(`.env`의 `NAVER_CLIENT_ID`/`NAVER_CLIENT_SECRET`·개발자센터 API 활성 전제). 루트 `.env`는 체인 시작 시 Process로 로드(UTF-8 BOM·UTF-16 LE·`export ` 접두사 허용). 상세·회귀 경로·**일일 체인 전 스위치 표**는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 「일일 B-Track 번들」절 및 **바로 아래 `run_btrack_daily_hypothesis_chain.ps1` 스위치 표**. **복기 조립(가설+채점+선택 eval):** `scripts/eval_btrack_prophecy_post_mortem_v1.py` → `docs/final/artifacts/btrack_post_mortem_latest.json`; 주간 게이트 재점검 산출은 `docs/final/artifacts/trackb_weekly_gate_recheck_latest.json`.
 
 ---
 
@@ -159,6 +159,46 @@
 3. **자체 LLM/체화는 조건부:** 반복 출력 형식·금지 패턴·브랜드 톤이 **데이터·자동 채점**으로 정의되고, **규칙만으로 프롬프트가 비대**해 비용·일관성 문제가 **실측**될 때만 — 어댑터·좁은 파인튜닝을 **ROI 검토** (데이터 파이프라인·회귀 없으면 **오버엔지니어링**).
 4. **속도:** 느림의 주원인은 “규칙” 자체가 아니라 **토큰 길이·호출 구조**; 학습으로 프롬프트를 줄이면 이득 볼 수 있으나 **학습 성공·평가 전제** 필요.
 5. **재질의 시 응답:** 동일 주제 재질의 시 **본 절 + Fact 표**를 우선 인용해 답을 맞추고, NotebookLM·세션 감으로만 재정의하지 않음.
+
+---
+
+## 명리 렌즈 고도화 v1 (MKM 표준 · 삼고 · 만세력)
+
+> **목적:** 명리를 **중기 방향 코어**로 두되, 만세력·수학화·MKM AI는 **재현 가능한 산출물·스키마**로만 말한다. 날씨·일반예언 체인에서 온 통찰은 **캘리브레이션·홀드아웃·게이트·FACT/HYPO 분리** 같은 **운영 원리만** 차용하고, **명리 결정론 엔진과 데이터 자동 합선 금지** (§1.1 격벽·B→A 금지와 동일 방향).
+
+### 답변·산출 규약
+
+- **순서:** `Field(레짐)` → `Lens(사상/명리/성경)` → `Conflict` → `Final Action`; 성경은 `[NON_GATING]`, 최종 액션은 **1차 실물 레짐 + 운영 게이트**.
+- **명리가 말하는 것:** 대운·월령·지장간·4D 블렌드 등 **구조·타이밍·중기 방향** 서사. **말하지 않는 것:** 실매매·임상·단일 운명 단정·TOE/통일장 완성 주장.
+
+### 만세력 정확도 (Fact-Lock)
+
+- **입력 1순위:** `birth_instant_utc`(ISO Z) + **IANA TZ** — `AGENTS.md` 만세력 절·`docs/final/artifacts/schemas/saju_global_birth_request_v1.schema.json` 계약과 정렬.
+- **엔진 검증:** `scripts/run_manseryeok_validation_smoke_v1.py`(코호트·충돌 사전 등); 회귀 기준은 **`pillars_native`**; 외부 UI 스냅샷은 **`pillars_external`**로 분리 표기.
+- **MCP 기본 경로:** 만세력 MCP는 **`athena-manseryeok`** 단일 기본(2026-04-30 CENTRAL 잠금과 정합); 상세 표는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§3.3·§3.4** 및 만세력 관련 행.
+
+### MKM 명리 표준 스택 (구현 SSOT)
+
+- **4D 융합 결정론:** `scripts/myeongri_complete_fusion.py` (`MyeongriCompleteFusion`), `scripts/run_manseryeok_bot_v1.py` (`analysis_depth=pro` 시 fusion·대운·起運·`vector_4d_rule_school_v1` 등); 지장간 LUT/가중·대운·`rule_school_mkm_4d_v1`·회귀 경로는 **`CONSTITUTION` §3.3 표**가 단일 색인.
+- **독립 렌즈 v0/v1:** `scripts/run_lens_myeongni.py` + 계약 JSON·스키마; 봇→융합→렌즈 원클릭 `scripts/run_myeongni_lens_chain_from_bot_v1.py` / `scripts/Run-MyeongniLensChainFromBot_v1.ps1`.
+- **LLM은 보조 해석만:** `docs/final/MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md` + `docs/final/schemas/myeongri_ai_interpretation_envelope_v1.schema.json` + `scripts/run_myeongri_ai_interpretation_pack_v1.py` — **결정론 JSON 위 NL 봉투**; 쟁점·실전 최종 판정 금지.
+- **대외 서술 어휘:** `docs/final/MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1.md` (코드 식별자·스키마 키는 변경하지 않음).
+
+### 삼고 수학화 (입력·엔진·출력 삼중 고정)
+
+1. **고입력(考入力):** 요청 본문을 **스키마·타임존**으로 정규화; `scripts/saju_birth_resolver_v1.py` / `scripts/run_saju_global_birth_v1.py`와 동일 계약 유지; DST 모호 구간은 **추측 보간 금지**·에러 또는 명시 확인.
+2. **고엔진(考引擎):** 만세력 스모크·`tests/test_myeongri_*`·지장간·대운·起運 회귀; dual-regime·트레이딩 그래프 쪽은 **`source_track: B`**·ledger 접두 등 **명리 네임스페이스 격벽** (`CONSTITUTION` §3.1·§3 전반).
+3. **고출력(考出力):** `myeongni_independent_lens_v1` 등 **스키마 검증된 JSON**만 SSOT; 재현 해시가 있는 CLI는 §3.3의 `--deterministic-json` / `--hash-deterministic-json` 경로를 우선.
+
+### 날씨·일반예언 레일에서 빌린 통찰 (원리만)
+
+- **차용:** 라벨→`general_prophecy` 트리플·Brier·ECE·홀드아웃 — 루트 **`GENERAL_PROPHECY_SCHEMA_V1`** 및 `AGENTS.md` 「일반 예언(B 레일)」절의 스크립트 체인 (`scripts/run_weather_gt_to_prophecy_triplet_chain_v1.py` 등).
+- **금지:** 날씨·가격 예언 JSON을 만세력/명리 4D **결정론 파이프라인에 자동 병합**; uplift·적중 주장은 **해당 eval 산출물** 없이 명리 해석에 끌어오지 않음.
+
+### MKM AI (4AI 코어 + Absolute Balance Coordinator Mode)
+
+- **층 분리:** 상위 절 「MKM AI 고도화 · 자체 LLM」과 동일 — 규칙·게이트·스키마가 **행동 고정**; 파인튜닝·어댑터는 **별 ROI·eval 전제**.
+- **혼동 방지:** `mkm_ai_status_pointer_latest.json` 등 **운영 승격 스택**은 인프라·게이트 준비도이며, **명리 예측력·만세력 정확도 증명으로 읽지 않음**.
 
 ---
 
@@ -258,7 +298,21 @@
 | 2026-05-02 (VPS · bitcoin-trading · 체결→cursor_trade_history) | 로컬 커밋만 있으면 VPS에 파일 MISSING — **`git@github.com:mkmlab-v2/mkm-destiny-ai-41e38ec6.git`의 `fix/btrack-ohlcv-cli-help-and-eval-wrapper-github`**에 반영 필요(비FF 시 worktree+체리픽 후 푸시). 체인: `export_binance_fills_to_cursor_trade_history_v1.py`→`sync_cursor_trade_history_latest_24h.py`; 등록 `ops/v2/ssh/register_export_then_sync_cursor_trade_history_cron.sh`, cron 태스크 `bitcoin-binance-export-then-cursor-trade-history`, 로그 `/var/log/bitcoin_export_then_cursor_trade_history.log`, **`WORKSPACE_ROOT=/opt/mkm-lab-workspace-v2/projects/bitcoin-trading`**. 브랜치 전환 전 **`projects/no1kmedi` 등 로컬 수정은 stash**. **재발 방지 SSOT:** `projects/bitcoin-trading/ops/v2/DEPLOY_GIT_POINTER_V1.json` + 스모크 `bash ops/v2/ssh/check_vps_deploy_files_vs_pointer.sh`. **▶ PM2/본선 혼동 방지는 본 파일 「VPS · 비트코인 본선」절(크로스 채팅 고정).** |
 | 2026-05-03 (VPS `vps-mkmlife` · PM2 이름 실측) | 동 호스트 `pm2 list` 기준 **24h 온라인 앱명 `bitcoin-live-small-24h`** — 런북 예시 `bitcoin-live` 와 불일치할 수 있음. **`verify_and_reload` FF 실패**는 다수 **VPS가 `main`이 아닌 브랜치에 checkout** 된 경우와 합치됨 → 본선을 main에 맞출지·feature를 유지할지 **정책 분리** 후 조치. |
 | 2026-05-04 (Track B 시계 정렬 + 예언 복기 레이어) | `docs/final/artifacts/trackb_weekly_gate_recheck_latest.json` `generated_at_utc=2026-05-04T06:07:21Z`, `decision=GO_RESEARCH`, `out_of_scope` 유지(연구·본선 합선 없음). 예언 조립: `scripts/eval_btrack_prophecy_post_mortem_v1.py`→`btrack_post_mortem_latest.json`; 얇은 헬스 `scripts/check_btrack_4h_health_v1.py`·`scripts/Register-Btrack4hHealthTask.ps1`. **히트레이트 60%대는 목표** — 달성·회귀 주장은 `eval_prophecy_hit_rate_v1`·고정 eval 세트로만(Fact-Lock). |
-| 2026-05-04 (압축↔B-track 번들 연결 SSOT) | `scripts/build_compression_prophecy_bridge_status_v1.py`→`compression_prophecy_bridge_status_v1_latest.json`에 **`bridge_status=not_wired_v1`** 고정: `build_btrack_llm_input_bundle.py`는 Ultra/Multilens 압축 산출물을 읽지 않으며 번들 `artifact_paths`에도 압축 경로 없음; 회귀 `tests/test_compression_prophecy_bridge_status_v1.py`. 실제 결선은 번들 스키마+빌더 확장 선행. |
+| 2026-05-04 (압축↔B-track 번들 연결 SSOT) | `build_btrack_llm_input_bundle.py` v1.2.0에 `compression_bridge_context` 슬롯(`ultra_compression_kpi_summary`·`MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1`·`MULTILENS_ULTRA_COMPRESSION_DECISION_V1`)을 추가하고 `build_compression_prophecy_bridge_status_v1.py` 재실행 결과 **`bridge_status=wired_partial_v1`** 전환. 회귀 `tests/test_compression_prophecy_bridge_status_v1.py` 고정; 영향 평가는 별도(문자열/경로 결선 ≠ 적중률 인과 증명). |
+| 2026-05-04 (압축 브리지 ON/OFF 인과 프로브) | `build_compression_bridge_impact_probe_v1.py`로 번들 ON/OFF(압축 컨텍스트 제거) 비교를 자동화: `recent_trading_days=30`에서 `prediction_changed=false`, `delta_weighted_score=0.0`, `delta_price_directional_hit_rate=0.0`, `decision=NO_OBSERVED_DIFF`. 현재 결선은 관측 메타 중심이며 예측 가중치 영향은 미발현(Fact-Lock). |
+| 2026-05-04 (압축 브리지 가중치 반영 + 재프로브) | `generate_btrack_hypothesis_prophecy_v1.py`에 `compression_bridge_context` 기반 조정(`compression_bridge_adjustment`)을 추가해 `weighted_score_raw`와 분리 기록. 재프로브(`recent_trading_days=30`) 결과 `prediction_changed=true`, `delta_weighted_score=-0.008658`, `delta_price_directional_hit_rate=0.0`, `decision=OBSERVED_DIFF` — 방향/신뢰도·가중치에는 영향이 생겼지만 hit-rate 개선 인과는 미증명. |
+| 2026-05-04 (브리지 조정 민감도 스윕) | `run_compression_bridge_adjustment_sweep_v1.py` 추가로 `signal_scale x positive_signal_cap` 그리드(5x3) 평가. `signal_scale=0`은 `NO_OBSERVED_DIFF`, `signal_scale>=0.5`는 `delta_weighted_score`/confidence 변화(`OBSERVED_DIFF`)가 재현되지만 `delta_price_directional_hit_rate`는 전 구간 `0.0`(30일) — 현재 조정은 예측 민감도만 바꾸고 가격 적중률 uplift는 미확인. |
+| 2026-05-04 (브리지 방향 전환 스윕) | `run_compression_bridge_directional_impact_sweep_v1.py`로 `signal_scale x negative_signal_cap x tie_break_min_margin`(5x4x3=60) 탐색: `direction_changed_rows=6`까지 확보했지만, 해당 행은 `on_prediction_direction=neutral` 전환과 함께 `delta_price_directional_hit_rate=-0.566667`로 악화. best hit 후보는 `signal_scale=20, negative_cap=0.1, margin=0.03`에서 `delta_hit_rate=0.0`(confidence만 하락). 결론: 현재 브리지 조정은 방향 전환 가능하나 hit-rate uplift 근거는 없음. |
+| 2026-05-04 (고변동 neutral 전환 가드 재검증) | `generate_btrack_hypothesis_prophecy_v1.py`에 `compression_bridge_block_neutral_flip_on_high_vol`(기본 on) + `recent_abs_return_mean` 기반 가드를 추가했으나, 동일 60-grid 재실행 결과 `direction_changed_rows=6`·`delta_price_directional_hit_rate=-0.566667` 패턴이 유지. 가드 단독으로는 악화 구간 제거 실패; 다음 단계는 bridge 신호를 direction 결정이 아닌 confidence/size-only 레인으로 격리 검토. |
+| 2026-05-04 (브리지 direction 분리 적용) | `generate_btrack_hypothesis_prophecy_v1.py`를 direction-isolation 모드로 전환: bridge는 `weighted/margin/neutral_penalty`를 건드리지 않고 `prediction.confidence`만 조정(`compression_bridge_confidence_adjustment`). 재실행 결과 `compression_bridge_directional_impact_sweep_latest.json`에서 `direction_changed_rows=0`, `delta_price_directional_hit_rate` 악화 행 제거; `prediction_changed=true`는 confidence 차이만 의미. |
+| 2026-05-04 (confidence→size 계량 추가) | `build_compression_bridge_impact_probe_v1.py`에 `size_policy`(`confidence_only_scalar_v1`)를 추가해 ON/OFF의 `size_scalar`·`payoff_mean_size_weighted`를 비교. 현재 스냅샷은 `delta_size_scalar=-0.0086`, `delta_size_weighted_payoff_mean=-3.604e-05`, `delta_hit_rate=0.0` — 브리지 영향은 size/confidence 레인에서만 관측되고 방향·적중률 인과는 없음. |
+| 2026-05-04 (size 룰 고정 + 고정 윈도우 홀드아웃 체인) | `btrack_lens_ensemble_v1.json`에 `compression_bridge_size_mode=confidence_only_scalar_v1`, `size_floor=0.1`, `size_cap=1.0`, `neutral_size_scalar=0.0`를 고정하고, `run_compression_bridge_size_holdout_eval_v1.py`를 추가해 30/60/120일 고정 윈도우 ON/OFF 평가를 자동화. 최신 `compression_bridge_size_holdout_eval_latest.json` 기준 `direction_changed_rows=0`, `hit_rate_uplift_rows=0`, `size_weighted_payoff_uplift_rows=0`로 아직 승격 근거는 미충족(HOLD). |
+| 2026-05-04 (size 브리지 튜닝 스윕 + 승격 가드 GO 후보) | `generate_btrack_hypothesis_prophecy_v1.py` 신호식을 `quality_bonus - policy_gap_penalty`로 확장하고, `run_compression_bridge_size_tuning_sweep_v1.py`/`check_compression_bridge_size_promotion_gate_v1.py`를 추가. 베스트(`signal_scale=2.0`, `negative_cap=0.0`, `quality_bonus_scale=0.4`, `policy_gap_penalty_scale=0.1`)를 `btrack_lens_ensemble_v1.json`에 반영 후 30/60/120일 재검증에서 `direction_changed_rows=0`, `mean_delta_size_weighted_payoff=+0.00013029`, 게이트 `GO_SIZE_LANE_PROMOTION_CANDIDATE` 확보. |
+| 2026-05-04 (size 브리지 walk-forward 확정) | `run_compression_bridge_size_walkforward_eval_v1.py`(30→210일, 30일 스텝) 추가 후 `check_compression_bridge_size_promotion_gate_v1.py`를 holdout+walk-forward 이중게이트로 강화. 최신 결과 `direction_changed_rows=0`, `min_delta_hit_rate=0.0`, `min_delta_size_weighted_payoff=+0.00012027`, 최종 `GO_SIZE_LANE_PROMOTION_CONFIRMED` 달성(여전히 size-only 레인, 방향 개입 없음). |
+| 2026-05-04 (size 브리지 일일 자동 게이트 엔트리) | `run_compression_bridge_size_daily_gate_v1.ps1`를 추가해 holdout→walk-forward→promotion gate를 일괄 실행하고 `compression_bridge_size_daily_gate_summary_latest.json`를 생성. 등록 스크립트 `Register-CompressionBridgeSizeDailyGateTask.ps1` 추가(기본 07:20). 수동 1회 실행 결과 `status=PASS`, `decision=GO_SIZE_LANE_PROMOTION_CONFIRMED`. |
+| 2026-05-05 (메타 인지 봉투 v1 + NotebookLM Vault 미러) | 스키마 `mkm_meta_layer_turn_envelope_v1`·`scripts/mkm_meta_layer_envelope_v1.py`(validate/append/audit-markdown)·fixture·`pytest tests/test_mkm_meta_layer_envelope_v1.py` **8 passed**·CI `dual-regime-integrity`+`run_fact_lock_bundle` 3d·Track C `Invoke-TrackCMacroDailyFusion_v1.ps1` **`-MetaLayerEnvelopePath` 선택**(비면 미실행)·`reports/agent_decisions_log.jsonl` 일반 vs `meta_layer_envelope_v1` 분기 **AGENTS** 명시; Fact-Lock 본문 **`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.3.1**. **`sync_notebooklm_sources_to_mkm_data_vault.ps1` exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` OK. |
+| 2026-05-05 (명리 렌즈 고도화 v1 — CENTRAL 잠금) | 만세력(`birth_instant_utc`+IANA·native 스모크·`athena-manseryeok`) + §3.3 결정론 스택 + AI 봉투(B-track) + **삼고**(입력·엔진·출력) 수학화 + 날씨/일반예언은 **원리만 차용·데이터 합선 금지**를 본 파일 전용 절로 고정; 구현 확장은 여전히 `CONSTITUTION` 표·pytest만 SSOT. |
+| 2026-05-04 (RDA 스마트팜 공공 데이터) | 농진청 제공 ZIP 로컬 전개·컬럼 실측: 기상 시간자료(`지점명`·`일시`·온도·습도·일사량·강수량`, 다중 시트), 토양검정 화학성 연도별 xlsx(2025는 `skiprows=1`); 매핑·4주 로드맵·계약 갭(토양수분 미제공→텔레메트리 필수)을 `docs/final/SMARTFARM_RDA_SOIL_WEATHER_MAPPING_AND_ROADMAP_V1.md` + `SMARTFARM_RDA_COLUMN_MAP_V1.json`에 고정; 대용량 전개 경로 `data/smartfarm_rda_extract_v1/`는 `.gitignore`. Week2는 `scripts/build_smartfarm_zone_weather_features_v1.py`로 station→zone 매핑 + `rain_mm_12h` 리플레이 입력(`zone_weather_replay_inputs_v1.csv`)까지 검증, Week3는 `scripts/evaluate_smartfarm_rain_gate_kpi_v1.py`로 임계값 스윕(`rain_gate_threshold_sweep_v1.csv`)·요약(`rain_gate_threshold_sweep_summary_v1.json`) 생성, Week4는 `scripts/check_smartfarm_week4_data_guard_v1.py`·`scripts/build_smartfarm_week4_ops_dashboard_v1.py`로 가드/대시보드 산출(`smartfarm_week4_ops_dashboard_v1.json`)까지 연결, 후속으로 `scripts/build_smartfarm_gap_incident_report_v1.py`로 gap incident 24건(`gap_incident_report_v1.csv`) 자동 추출 + `scripts/simulate_smartfarm_gap_recovery_policy_v1.py`로 FFILL/SKIP/FLAG 보정정책 비교(`gap_recovery_policy_simulation_v1.csv`) + `scripts/evaluate_smartfarm_gap_policy_impact_v1.py`로 hybrid(skip+small ffill) 전/후 KPI 영향(`gap_policy_kpi_impact_v1.csv`) + `scripts/build_smartfarm_recommended_gap_policy_v1.py`로 운영 권장안(`recommended_policy_v1.json`) 자동 결정 + `scripts/run_smartfarm_gap_policy_daily_gate_v1.py`로 일일 GO/WATCH/HOLD 판정·알림(`smartfarm_gap_policy_daily_gate_v1.json`) + 프로파일(`daily_gate_policy_profile_v1.json`: conservative/standard/aggressive) 기반 임계치 분기 및 aggressive 이중조건 override(max_gap + incident_count)까지 연결. |
 | 2026-05-02 (MKM 자체 LLM·이론 체화 — 전략 지문 고정) | 규칙/프롬프트 정렬 vs 가중치 학습 **층 분리**; 고도화 기본은 **규칙+RAG+게이트**. 로컬 젬마 등 **체화형 파인튜닝**은 eval·데이터·프롬프트 비대가 **실측**될 때만 ROI 검토 — 미달이면 오버엔지니어링. 재질의 시 **`CENTRAL_AGENT_MEMORY_V1` 「MKM AI 고도화 · 자체 LLM」** 절 우선. |
 
 ---
@@ -309,7 +363,7 @@
 | 레인 | 상용/게이트 상태 (한 줄) | 마지막으로 본 산출/경로 |
 |------|---------------------------|-------------------------|
 | 성경 | | |
-| 명리 | 체인 자동: `run_myeongni_lens_chain_from_bot_v1.py`/`Run-MyeongniLensChainFromBot_v1.ps1`(봇→융합덤프→렌즈); 단일 렌즈는 `--recommended` 또는 브리지 스크립트. | §3.3·`tests/test_myeongni_lens_chain_from_bot_v1.py` |
+| 명리 | **고도화 v1:** 본 파일 「명리 렌즈 고도화 v1」— 삼고·만세력·§3.3 스택·날씨 원리 격리. 체인: `run_myeongni_lens_chain_from_bot_v1.py`/`Run-MyeongniLensChainFromBot_v1.ps1`; 단일 렌즈 `--recommended` 또는 브리지. | §3.3·`tests/test_myeongni_lens_chain_from_bot_v1.py` |
 | 사상 | 사상 4-Agent는 A-Track 승격 유지 상태이며 모니터 정책에서 `geumhwa_transition_threshold=0.58`로 상향해 과민 자동주입을 완화했다. | `docs/final/artifacts/sasang_4agent_monitor_policy_v1.json` |
 | 퓨전 | `보명지주/성정불변/병증약리/금화교역` 융합 게이트는 `FUSION_GATE_PASS`로 고정되어 승격 체인 체크에 결합됨. | `docs/final/artifacts/sasang_4agent_fusion_gate_latest.json` |
 

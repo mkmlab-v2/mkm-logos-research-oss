@@ -54,6 +54,7 @@
 - **역할 고정:** 성경=`거시/레짐 게이트(허용·감쇠)`, 명리=`중기 방향 코어`, 사상=`단기 심리·강도 조절`.
 - **A-track 규칙:** 실전 트리거는 1차 실물 `regime_map`과 운영 게이트가 주도한다. 3렌즈는 보조이며 직접 주문 트리거로 승격하지 않는다.
 - **출력 고정 포맷:** `Field(레짐)` → `Lens(사상/명리/성경)` → `Conflict Resolver` → `Final Action(HOLD/REDUCE/WATCH)` 순서를 유지한다.
+- **명리 고도화(장기기억):** `docs/final/CENTRAL_AGENT_MEMORY_V1.md` 「명리 렌즈 고도화 v1」— 만세력 Fact-Lock·§3.3 결정론 스택·삼고(입력·엔진·출력); 날씨·일반예언(B 레일)은 **캘리브레이션·게이트 원리만** 차용하고 명리 결정론과 **데이터 자동 합선 금지**.
 - **금지:** "성경 렌즈가 하락을 예언했다"처럼 결정론적 가격 단정 문구 사용 금지. 성경은 `[NON_GATING]` 보조 해설로만 표기한다.
 
 ## MKM AI 아키텍처 명명 계약 (4AI 고정)
@@ -75,7 +76,7 @@
 
 새 채팅에서 직전 작전의 팩트만 이어 붙일 때 `@docs/final/CURRENT_OPS_SNAPSHOT.md`를 첨부한다. **불변 SSOT가 아니며** 필요 시 갱신·비운다. 압축 파이프라인(A/B Track)과 역할을 섞지 않는다.
 
-다단계 임무의 **종료 조건·로컬 체크리스트**만 디스크에 남길 때는 `MISSION_LOG.template.md` → **`MISSION_LOG.md`**(로컬 전용,`.gitignore`). **작전 요약·세션 핸드오프**는 `docs/final/CURRENT_OPS_SNAPSHOT.md`가 우선이며, 동일 SSOT를 스냅샷과 `MISSION_LOG`에 **이중 서술하지 않는다**. 순서·상용 게이트 SSOT는 `P0_COMMERCIALIZATION_TRACKER.md`이다. 자율 의사결정 감사 로그는 `reports/agent_decisions_log.jsonl`에 append-only로 남긴다.
+다단계 임무의 **종료 조건·로컬 체크리스트**만 디스크에 남길 때는 `MISSION_LOG.template.md` → **`MISSION_LOG.md`**(로컬 전용,`.gitignore`). **작전 요약·세션 핸드오프**는 `docs/final/CURRENT_OPS_SNAPSHOT.md`가 우선이며, 동일 SSOT를 스냅샷과 `MISSION_LOG`에 **이중 서술하지 않는다**. 순서·상용 게이트 SSOT는 `P0_COMMERCIALIZATION_TRACKER.md`이다. 자율 의사결정 감사 로그는 `reports/agent_decisions_log.jsonl`에 append-only로 남긴다. **한 파일에 두 형식이 공존할 수 있다:** (1) `scripts/log_agent_decision.py`가 쓰는 일반 결정 한 줄(`timestamp`·`mission_id`·`stage`·`decision`·`evidence_path`·`actor` 등). (2) 메타 인지 봉투 적재 시 `decision=meta_layer_envelope_v1`와 `meta_layer_envelope` 객체(CONSTITUTION §1.3.1). 집계·파서는 `decision`(및 존재 시 `meta_layer_envelope`)으로 분기한다.
 
 ## 병렬 작전 권장 (다중 채팅·서브에이전트)
 
@@ -152,6 +153,7 @@
 - **예언 오버레이 AB 스파이크(§1.1.1)**: `py -m pytest tests/test_prophecy_restoration_spike.py` — GitHub `.github/workflows/prophecy-restoration-spike-smoke.yml` (스크립트·테스트 변경 시). 임계값 스윕 산출(로컬 재생성): `docs/final/artifacts/prophecy_prior_threshold_sweep_v1_latest.json`.
 - **LLM 검증 티어:** 기본은 **로컬·자체 호스팅 모델**로 게이트·벤치; 상용·대외 품질 확정 전에만 **고급 클라우드 모델 소표본 섀도우**(드리프트 방지). 상세: `docs/final/P0_COMMERCIALIZATION_TRACKER.md` **「LLM 검증 티어」**.
 - **MKM-Orchestrator (bounded `todo_queue_v1`):** `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.4 · `docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json` · 로컬 스모크 `scripts/run_mkm_orchestrator_smoke_v1.ps1`(기본 `pip install -q jsonschema`) · 경로 점검 `scripts/verify_mkm_orchestrator_bundle_v1.py` · 큐 생성 `scripts/bootstrap_mkm_orchestrator_queue_v1.ps1`(`-Profile TrackCFromBridge` = 사업계획 브릿지 JSON 적용) · 상태 요약 `scripts/show_mkm_orchestrator_queue_status_v1.py` · 연속 루프(선택) `scripts/run_mkm_continuous_daemon.ps1`/`Register-MkmOrchestratorDaemonTask.ps1`. B→A·실매매 자동 합선 없음.
+- **Track C 매크로·Logos 일일(융합 단일 진입점):** `scripts/Invoke-TrackCMacroDailyFusion_v1.ps1` — `Invoke-FragilityMacroRiskDaily` 한 번 후 `run_macro_risk_forward_daily_chain_v1.ps1 -SkipFragilityChain` · `run_logos_4d_state_chain_v1.ps1 -SkipFragilityChain` · `build_mkm_trackc_ops_dashboard_v1.py`. 스케줄 등록: `scripts/Register-TrackCMacroDailyFusionTask.ps1` (**`-DryRun`**으로 변경 없이 점검; **`-UnregisterLegacyTasks`**로 기본 레거시 작업명 2개 제거 후 등록 권장). 무인 안정화 예: **`-SkipGateAlert -SkipExodusSourceFetch`**. 등록 후 인자 확인: `scripts/Verify-TrackCMacroDailyFusionScheduledTask_v1.ps1`. 헬스: `scripts/run_workspace_automation_health.ps1 -IncludeTrackCMacroFusionSmoke`(전체 헬스 안에서 느림) 또는 **`-TrackCMacroFusionSmokeOnly`**(P0+퓨전만). (기존 Fragility/Forward 각각 등록 태스크와 **동시에 돌리면 Fragility 이중 실행**.) 로컬 웹훅 끄기: `-SkipGateAlert`; Exodus 공개 수집 생략: `-SkipExodusSourceFetch`. **선택 메타 인지 게이트:** `-MetaLayerEnvelopePath`(비면 미실행) — `scripts/mkm_meta_layer_envelope_v1.py`·스키마 `docs/final/artifacts/schemas/mkm_meta_layer_turn_envelope_v1.schema.json`·복붙 예시 `docs/final/artifacts/fixtures/mkm_meta_layer_turn_envelope_v1.example.json`·회귀 `tests/test_mkm_meta_layer_envelope_v1.py`; 상세 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.3.1.
 
 ## Cursor 3.0 · 규칙 스택 (2026-04)
 
@@ -188,6 +190,8 @@
 - 한의 원전·코호트: `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` (라벨 A vs 원전 B 혼선 금지).
 - NotebookLM 소스: `docs/NotebookLM_sources_manifest.md`.
 - **NotebookLM MCP (재발방지)**: Settings에서 녹색·N tools여도 **현재 채팅에 도구가 주입되지 않으면** 에이전트는 호출 불가 — UI 연결 ≠ 세션 사용 가능. **내장 브라우저·Chrome 로그인 ≠ MCP 인증**(전용 Chrome 프로필). SSOT: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`(항상 적용), `docs/NotebookLM_sources_manifest.md`(MCP 인증 절), 점검 `scripts/check_notebooklm_mcp_prereqs.ps1`. 스킬 `.cursor/skills/notebooklm-refresh/SKILL.md` §세션 vs UI.
+- **NotebookLM 인증 복구 표준 3단계**: 문제가 나면 `scripts/repair_notebooklm_mcp_auth_stuck.ps1` -> MCP `setup_auth` -> MCP `get_health`(`authenticated=true` 확인) 순으로 고정.
+- **NotebookLM 세션 시작 게이트**: NotebookLM을 쓰는 턴의 첫 호출은 항상 MCP `get_health`; `authenticated=false`면 질의 전에 복구 3단계를 먼저 수행한다.
 
 ## 운영 자동화 vs 연구 레인
 
@@ -260,6 +264,7 @@
 - **하이브리드 대시보드 스펙(SSOT):** `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` — 공개(전광판) vs 비공개(조종실), `public-event.v1` 필드·경계선.
 - **MVP 게이트웨이:** `public_event_gateway.py` — `GET/POST` 경로·토큰은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 동 디렉터리 nginx 예시 참고.
 - **로컬 융합 점검 (비배포):** `scripts/run_jemaai_cloud_completion_chain.ps1` — Fact-Lock·Thin·BTC 앵커·P1(기본)·MVP 파일 존재 확인; `-SkipP1AB`로 P1 생략. VPS/nginx 반영은 본선 일정에서 수동.
+- **쇼룸 정적 → VPS (워크스페이스 루트에서):** `pwsh .\scripts\sync_showroom_to_vps.ps1 -RefreshStaging` — 래퍼가 `projects/bitcoin-trading/ops/windows-rehearsal/sync_showroom_to_vps.ps1`로 위임. `sync_showroom_to_vps.ps1`만 입력하면 PATH에 없어 실패할 수 있음. scp 비밀번호 반복 완화: User 환경에 `MKM_VPS_SCP_EXTRA_ARGS`(예: `-i` 키경로); 업로드 후 nginx 자동 reload는 `JEMAAI_VPS_RELOAD_NGINX=1`일 때만(의도 확인 후). 상세 표: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`(Showroom VPS 전송 행).
 
 ## SSH Cursor · VPS 실매매 (전제)
 

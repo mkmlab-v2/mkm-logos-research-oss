@@ -9,12 +9,13 @@
   3. `py -m pytest tests/test_sasang_interpretive_insight_bundle_v1.py` — 사상 통찰 참조 번들 v1.1 스키마·`synthesis_v1`(dual-regime 동일 단계)
   3b. `py -m pytest tests/test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` — Bio n-state strict JSON 재수화 계약(CONSTITUTION §3.5)
   3c. `py -m pytest tests/test_mkm_trinity_index_v1.py` — MKM Trinity 인덱스 JSON·스키마 계약(CONSTITUTION §1 렌즈 인덱스 bullet)
+  3d. `py -m pytest tests/test_mkm_meta_layer_envelope_v1.py` — 메타 인지 봉투 v1·킬 스위치 정규화·`AthenaValidator`(CONSTITUTION §1.3.1 보강 2026-05-05)
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
   5. `py -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py` — 명리 독립 렌즈 → Thin JSONL 브리지(§3.6)
   5b. `py -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py` — 개인 인사이트 브리핑 Fact-Lock 휴리스틱(운영 단계 라벨·시장↔부채 합선)
   6. (기본) 명리·멀티렌즈 **권장 스택** — CI `multilens-independent-lens-smoke`와 동일 9개 pytest(일일 브리프·Thin 브리지와 중복 제외). `-SkipMyeongniLensRecommendedStack` 로 생략.
 
-  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·3b·3c·5·6단계는 본 스크립트에서 직접 실행합니다.
+  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·3b·3c·3d·5·6단계는 본 스크립트에서 직접 실행합니다.
 
 .PARAMETER SkipIntegrityGuard
   `integrity_guard.py` 생략(빠른 확인용). CI와 완전 동치가 아님.
@@ -128,6 +129,7 @@ $sajuGoldenReplayScript = Join-Path $workspaceRoot 'scripts\run_saju_golden_repl
 $sasangInterpretiveBundleTest = Join-Path $workspaceRoot 'tests\test_sasang_interpretive_insight_bundle_v1.py'
 $bioSasangNstatesRehydrateTest = Join-Path $workspaceRoot 'tests\test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py'
 $mkmTrinityIndexTest = Join-Path $workspaceRoot 'tests\test_mkm_trinity_index_v1.py'
+$mkmMetaLayerEnvelopeTest = Join-Path $workspaceRoot 'tests\test_mkm_meta_layer_envelope_v1.py'
 $dailyExecutionInsightBriefTest = Join-Path $workspaceRoot 'tests\test_build_daily_execution_insight_brief_v1.py'
 $myeongniThinBridgeTest = Join-Path $workspaceRoot 'tests\test_emit_myeongni_thin_bridge_line_v1.py'
 $mkmBriefingGuardrailsTest = Join-Path $workspaceRoot 'tests\test_validate_mkm_personal_briefing_guardrails_v1.py'
@@ -279,6 +281,15 @@ if (-not (Test-Path -LiteralPath $mkmTrinityIndexTest)) {
 }
 Write-Host '== Fact-Lock: test_mkm_trinity_index_v1.py ==' -ForegroundColor Cyan
 & py -m pytest $mkmTrinityIndexTest -q --tb=short
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+}
+
+if (-not (Test-Path -LiteralPath $mkmMetaLayerEnvelopeTest)) {
+    throw "MKM meta-layer envelope pytest not found: $mkmMetaLayerEnvelopeTest"
+}
+Write-Host '== Fact-Lock: test_mkm_meta_layer_envelope_v1.py ==' -ForegroundColor Cyan
+& py -m pytest $mkmMetaLayerEnvelopeTest -q --tb=short
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
