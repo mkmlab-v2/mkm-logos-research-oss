@@ -29,7 +29,7 @@
 ### MKM 초간결 운영 프로토콜 (크로스 채팅 최소 부하)
 
 1. **Cursor User Rules (지휘관 PC, 선택):** Settings → Rules for AI에 예: `새 세션에서는 docs/final/CENTRAL_AGENT_MEMORY_V1.md를 읽고 현재 진행 단계·Fact-Lock을 파악한 뒤 짧게 브리핑한다.` — 레포와 자동 동기화되지 않으므로 본 절은 **복붙용 안내**다.
-2. **시작:** 말 한 줄만으로도 됨 — 「장기기억 토대로」「MKM 장기기억」「이어서」「CENTRAL 기준」 등. 레포 `.cursorrules` **[MKM AI Operating Protocol]** 에 따라 에이전트가 `CENTRAL`·`AGENTS`·(필요 시)`CONSTITUTION_*` 를 연다. 또는 `@CENTRAL.md` / `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` + 질문.
+2. **시작:** 말 한 줄만으로도 됨 — **고정 트리거:** 「장기기억 토대로 진행해」「CENTRAL 기준으로 진행해」「팩트락 기준으로 자동 처리해」(동의어: 「MKM 장기기억」「이어서」「CENTRAL 기준」). 에이전트는 이 트리거를 받으면 레포 `.cursorrules` **[MKM AI Operating Protocol]** 에 따라 `CENTRAL`·`AGENTS`·(필요 시)`CONSTITUTION_*`를 먼저 읽고, 관련 아티팩트/체크리스트를 최신화한 뒤 HOLD/GO를 보고한다. 또는 `@CENTRAL.md` / `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` + 질문.
 3. **종료 1초 체크포인트:** `py scripts/athena_checkpoint.py "완료/다음 한 줄"` — `CENTRAL`의 **운영 체크포인트** 마커와 `last_updated_utc` 갱신. **저위험 MD 편집**이므로 `athena_run_v1.py`로 감쌀 필요 없음(ECC·실거래 경로와 무관). 말로 **「장기기억 저장해」「체크포인트」**만 해도 레포 `.cursorrules`에 따라 에이전트가 같은 명령을 실행하도록 고정됨(요약 한 줄은 채팅에 같이 주면 확실).
 4. **재개 팩(선택):** `py scripts/build_mkm_chat_resume_pack_v1.py` → `docs/final/artifacts/mkm_chat_resume_pack_latest.md` 등 기존 산출과 병용 가능.
 5. **`.cursorrules` 이중 관리:** 일일 `scripts/enforce_cursorrules_slim_ssot.py`는 `docs/final/artifacts/cursorrules_slim_ssot_v1.txt`를 `.cursorrules`에 복사한다. 루트 `.cursorrules`를 손대면 **템플릿도 같이** 맞춘다.
