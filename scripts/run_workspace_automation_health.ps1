@@ -54,7 +54,10 @@ param(
     [switch]$IncludeMkmAiFinalOpsGuard,
 
     # Optional: MKM Track C client handoff guard (hard fail if delivery packet degrades).
-    [switch]$IncludeMkmAiTrackCHandoffGuard
+    [switch]$IncludeMkmAiTrackCHandoffGuard,
+
+    # Optional: Operational readiness checklist builder (Judge-ready done-condition snapshot).
+    [switch]$IncludeOperationalReadinessChecklist
 )
 
 $ErrorActionPreference = "Stop"
@@ -404,6 +407,20 @@ try {
             Write-Host ""
             Write-Host "=== MKM AI Track C client handoff guard ===" -ForegroundColor Yellow
             Write-Host "SKIP: check_mkm_trackc_client_handoff_guard.py not found"
+        }
+    }
+
+    if ($IncludeOperationalReadinessChecklist) {
+        $opsChecklist = Join-Path $root "scripts\build_operational_readiness_checklist_v1.py"
+        if (Test-Path -LiteralPath $opsChecklist) {
+            Step "Operational readiness checklist build" {
+                & py $opsChecklist --workspace-root $root
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Operational readiness checklist build ===" -ForegroundColor Yellow
+            Write-Host "SKIP: build_operational_readiness_checklist_v1.py not found"
         }
     }
 

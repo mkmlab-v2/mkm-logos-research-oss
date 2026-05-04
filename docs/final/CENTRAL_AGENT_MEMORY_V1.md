@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-04T14:30:00Z
+- **last_updated_utc:** 2026-05-04T16:45:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -64,7 +64,7 @@
 |------|--------|
 | 웹훅 전용(레거시 호환) | `projects/bitcoin-trading/scripts/run_conditional_signal_webhook_v1.py` → 내부에서 `run_conditional_action_gate_v1.py --backend webhook` 선행 |
 | 백엔드 선택 | 동 디렉터리 `run_conditional_action_gate_v1.py --backend webhook` 또는 **`--backend api`** |
-| 실주문 | 게이트에서 실거래 허용 조건 충족 후 **`--backend api`**; 주문 실행 단계는 스크립트 도움말·런북대로 **`--live`**·(의도 시) **`--mainnet`** |
+| 실주문 | 게이트에서 실거래 허용 조건 충족 후 **`--backend api`**; 주문 실행 단계는 스크립트 도움말·런북대로 **`--live`**·(의도 시) **`--mainnet`**; **선행(선택):** `run_conditional_action_gate_v1.py`에 **`--human-approval-json`**(또는 env `MKM_TRADING_HUMAN_APPROVAL_JSON`)이면 `validate_trading_human_execution_approval_v1.py` 선호출(exit 7); 파일럿 메인넷 소액은 `Run-BinanceUsdmPilotSmoke.ps1`가 기본으로 `reports/trading_human_execution_approval_latest.json` 요구 |
 | 파일럿 스모크 | **`scripts/Run-BinanceUsdmPilotSmoke.ps1`** — 기본 dry-only. 테스트넷 실체결: **`-LiveTestnet -AcknowledgeLiveTestnet -RiskJson <fact_safe>`**. **소액 메인넷 실전:** **`-LiveMainnetSmall -AcknowledgeLiveMainnetSmall -AcknowledgeIrreversibleLoss -RiskJson <실제 fact_safe>`** + `-Qty`가 **`-MaxMainnetQty`(기본 0.002)** 및 선택 **`MKM_PILOT_MAINNET_MAX_QTY`** 상한 이하; **테스트 픽스처 risk 금지** |
 
 상세 한 페이지: `docs/binance_usdm_signal_webhook_setup_checklist_v1.html`.
@@ -323,9 +323,12 @@
 2. **일인 개발 Git 고정:** 일상 저장은 `scripts/push-internal.ps1`; `gitea/main`에 합칠 때는 워킹 트리 clean 후 `scripts/SoloDev-MergeFeatureToGiteaMain.ps1`(먼저 `-DryRun`). GitHub는 예외 시만 `Push-GitHub-Explicit.ps1 -Acknowledge`.
 3. **게이트 리듬:** `scripts/verify_p0_constitution_gate_paths.ps1`를 주기 점검으로 두고, 시간 허용 시 `scripts/run_fact_lock_bundle.ps1` — B→A 자동 합선·실매매 자동 트리거 없음 전제 유지.
 
+- `reports/bio_sasang_nstates_strict_comparison_v2.json` 재생성: `py scripts/build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py`
+
 ## 동기화 루틴
 
 - **자기점검(시작 1줄):** "CENTRAL_AGENT_MEMORY_V1 + athena_memory_bank 참조 완료, Fact-Lock 우선."
+- **트리거 자동기동:** 사용자가 「장기기억 토대로 진행해」「CENTRAL 기준으로 진행해」「팩트락 기준으로 자동 처리해」라고 말하면, 에이전트는 먼저 `CENTRAL`·`AGENTS`·`CONSTITUTION_*`를 읽고 관련 `_latest` 아티팩트/체크리스트를 갱신한 뒤 판정(HOLD/GO)까지 진행한다.
 - **시작:** 이 파일 **전체** 훑고(특히 **이론 압축 표**) 오늘 작업과 충돌 여부 확인.
 - **끝:** 분기 한 줄 / 레인 표 / 막힘만 갱신. 이론 표는 **헌법 변경 시에만** 수정.
 - **MCP `memory_*`:** 선택. 단일 SSOT는 본 파일 + `CONSTITUTION_*`.

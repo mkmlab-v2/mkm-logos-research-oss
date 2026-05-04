@@ -13,11 +13,13 @@ Exit codes:
   1 — gate passed but backend failed
   2 — invalid arguments / missing files
   3 — gate blocked
+  7 — human execution approval validation failed (--human-approval-json or env)
 """
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -25,6 +27,7 @@ from pathlib import Path
 from typing import Any, Optional, Tuple
 
 SCHEMA_GATE = "conditional_action_gate_v1"
+VALIDATOR_REL = Path("scripts/validate_trading_human_execution_approval_v1.py")
 
 
 def _workspace_root() -> Path:
@@ -97,6 +100,106 @@ def evaluate_gate(
     return False, "gate_unknown_or_insufficient_signal"
 
 
+def _to_float(v: Any) -> Optional[float]:
+    try:
+        if v is None:
+            return None
+        return float(v)
+    except (TypeError, ValueError):
+        return None
+
+
+def evaluate_tactical_long_override(
+    doc: dict[str, Any],
+    *,
+    backend: str,
+    side: Optional[str],
+    qty: Optional[float],
+    max_qty: float,
+    min_breadth_ratio: float,
+    min_net_buy_krw_eok: float,
+    min_theme_score: float,
+) -> Tuple[bool, str, dict[str, Any]]:
+    evidence: dict[str, Any] = {"eligible": False}
+    if backend != "api":
+        return False, "tactical_backend_not_api", evidence
+    if side != "BUY":
+        return False, "tactical_side_not_buy", evidence
+    if qty is None:
+        return False, "tactical_qty_missing", evidence
+    if qty > max_qty:
+        evidence["qty"] = qty
+        evidence["max_qty"] = max_qty
+        return False, "tactical_qty_exceeds_cap", evidence
+
+    pulse = doc.get("market_pulse")
+    if not isinstance(pulse, dict):
+        return False, "tactical_market_pulse_missing", evidence
+
+    breadth_ratio = _to_float(pulse.get("advance_decline_ratio"))
+    foreign_buy = _to_float(pulse.get("foreign_net_buy_krw_eok"))
+    institution_buy = _to_float(pulse.get("institution_net_buy_krw_eok"))
+    theme_score = _to_float(pulse.get("theme_leadership_score"))
+    if None in (breadth_ratio, foreign_buy, institution_buy, theme_score):
+        return False, "tactical_market_pulse_incomplete", evidence
+
+    net_buy_sum = float(foreign_buy) + float(institution_buy)
+    evidence.update(
+        {
+            "advance_decline_ratio": float(breadth_ratio),
+            "net_buy_krw_eok_sum": net_buy_sum,
+            "theme_leadership_score": float(theme_score),
+        }
+    )
+
+    if float(breadth_ratio) < min_breadth_ratio:
+        return False, "tactical_breadth_below_threshold", evidence
+    if net_buy_sum < min_net_buy_krw_eok:
+        return False, "tactical_net_buy_below_threshold", evidence
+    if float(theme_score) < min_theme_score:
+        return False, "tactical_theme_score_below_threshold", evidence
+
+    evidence["eligible"] = True
+    evidence["qty"] = qty
+    evidence["max_qty"] = max_qty
+    return True, "go_tactical_long_override", evidence
+
+
+def _resolve_human_approval_path(
+    root: Path,
+    cli: Optional[Path],
+    *,
+    skip: bool,
+) -> Optional[Path]:
+    if skip:
+        return None
+    if cli is not None:
+        p = cli if cli.is_absolute() else (root / cli)
+        return p.resolve()
+    env = os.environ.get("MKM_TRADING_HUMAN_APPROVAL_JSON", "").strip()
+    if not env:
+        return None
+    ep = Path(env)
+    return ep.resolve() if ep.is_absolute() else (root / ep).resolve()
+
+
+def _run_human_approval_validator(root: Path, approval_path: Path) -> int:
+    val = root / VALIDATOR_REL
+    if not val.is_file():
+        print(f"Missing human approval validator: {val}", file=sys.stderr)
+        return 2
+    proc = subprocess.run(
+        [sys.executable, str(val), "--approval", str(approval_path)],
+        cwd=str(root),
+    )
+    return int(proc.returncode) if proc.returncode is not None else 1
+
+
+def _write_gate_summary(path: Path, summary: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def main(argv: list[str] | None = None) -> int:
     root = _workspace_root()
     ap = argparse.ArgumentParser(description="Fact-Safe gate → webhook PoC or single-shot API order.")
@@ -133,6 +236,46 @@ def main(argv: list[str] | None = None) -> int:
         help="Forward --live to execute_binance_usdm_single_order (actually submit order).",
     )
     ap.add_argument("--executor-out", type=Path, default=None)
+    ap.add_argument(
+        "--human-approval-json",
+        type=Path,
+        default=None,
+        help="Optional trading_human_execution_approval_v1 JSON; runs repo validator before backend.",
+    )
+    ap.add_argument(
+        "--skip-human-approval",
+        action="store_true",
+        help="Ignore MKM_TRADING_HUMAN_APPROVAL_JSON and --human-approval-json.",
+    )
+    ap.add_argument(
+        "--enable-tactical-long",
+        action="store_true",
+        help="Allow limited BUY override in blocked state when market_pulse thresholds pass.",
+    )
+    ap.add_argument(
+        "--tactical-max-qty",
+        type=float,
+        default=0.002,
+        help="Maximum qty allowed for tactical long override.",
+    )
+    ap.add_argument(
+        "--tactical-min-breadth-ratio",
+        type=float,
+        default=1.05,
+        help="Minimum market breadth (advance/decline ratio).",
+    )
+    ap.add_argument(
+        "--tactical-min-net-buy-krw-eok",
+        type=float,
+        default=30000.0,
+        help="Minimum combined foreign+institution net buy (KRW eok).",
+    )
+    ap.add_argument(
+        "--tactical-min-theme-score",
+        type=float,
+        default=0.70,
+        help="Minimum theme leadership score in market_pulse.",
+    )
 
     args = ap.parse_args(argv)
 
@@ -165,14 +308,60 @@ def main(argv: list[str] | None = None) -> int:
         "backend": args.backend,
     }
 
-    args.gate_summary.parent.mkdir(parents=True, exist_ok=True)
-    args.gate_summary.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if not ok and bool(args.enable_tactical_long):
+        tactical_ok, tactical_reason, tactical_evidence = evaluate_tactical_long_override(
+            doc,
+            backend=args.backend,
+            side=args.side,
+            qty=args.qty,
+            max_qty=float(args.tactical_max_qty),
+            min_breadth_ratio=float(args.tactical_min_breadth_ratio),
+            min_net_buy_krw_eok=float(args.tactical_min_net_buy_krw_eok),
+            min_theme_score=float(args.tactical_min_theme_score),
+        )
+        summary["tactical_long"] = {
+            "enabled": True,
+            "ok": tactical_ok,
+            "reason": tactical_reason,
+            "evidence": tactical_evidence,
+        }
+        if tactical_ok:
+            ok = True
+            reason = tactical_reason
+            summary["gate_ok"] = True
+            summary["gate_reason"] = tactical_reason
+            summary["gate_override"] = "tactical_long"
+    else:
+        summary["tactical_long"] = {"enabled": bool(args.enable_tactical_long)}
+
+    _write_gate_summary(args.gate_summary, summary)
 
     if not ok:
         print(f"[gate:block] {reason} summary={args.gate_summary}", file=sys.stderr)
         return 3
 
     print(f"[gate:pass] {reason} summary={args.gate_summary}")
+
+    hap = _resolve_human_approval_path(
+        root,
+        args.human_approval_json,
+        skip=bool(args.skip_human_approval),
+    )
+    if hap is not None:
+        if not hap.is_file():
+            print(f"Human approval file missing: {hap}", file=sys.stderr)
+            return 2
+        vrc = _run_human_approval_validator(root, hap)
+        summary["human_approval_path"] = str(hap)
+        summary["human_approval_validator_exit_code"] = vrc
+        summary["human_approval_ok"] = vrc == 0
+        _write_gate_summary(args.gate_summary, summary)
+        if vrc != 0:
+            print(
+                f"[gate:human-approval-fail] validator_exit={vrc} summary={args.gate_summary}",
+                file=sys.stderr,
+            )
+            return 7
 
     if args.dry_run:
         print("[gate:dry-run] backend not invoked.")

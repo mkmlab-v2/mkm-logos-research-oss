@@ -10,6 +10,7 @@
 #
 # Mainnet SMALL real (irreversible — run only on commander PC after manual review):
 #   Use -Qty that satisfies exchange LOT_SIZE (BTCUSDT is typically 0.001 step, min 0.001 — not 0.0005).
+#   Requires `reports/trading_human_execution_approval_latest.json` (trading_human_execution_approval_v1 GO) unless -SkipHumanApproval.
 #   pwsh -NoProfile -File scripts/Run-BinanceUsdmPilotSmoke.ps1 -LiveMainnetSmall -AcknowledgeLiveMainnetSmall -AcknowledgeIrreversibleLoss `
 #     -RiskJson "projects/bitcoin-trading/memory/v2/risk/risk_profile_fact_safe_latest.json" -Qty 0.001 -MaxMainnetQty 0.002
 #
@@ -27,8 +28,15 @@ param(
   [switch]$LiveMainnetSmall,
   [switch]$AcknowledgeLiveMainnetSmall,
   [switch]$AcknowledgeIrreversibleLoss,
+  [switch]$EnableTacticalLong,
+  [double]$TacticalMaxQty = 0.002,
+  [double]$TacticalMinBreadthRatio = 1.05,
+  [double]$TacticalMinNetBuyKrwEok = 30000.0,
+  [double]$TacticalMinThemeScore = 0.70,
   [switch]$SkipGateDryRun,
-  [switch]$SkipExecutorDryRun
+  [switch]$SkipExecutorDryRun,
+  [string]$HumanApprovalJson = "",
+  [switch]$SkipHumanApproval
 )
 $ErrorActionPreference = "Stop"
 Set-Location $WorkspaceRoot
@@ -86,10 +94,20 @@ if ($LiveMainnetSmall) {
 
 $gate = "projects/bitcoin-trading/scripts/run_conditional_action_gate_v1.py"
 $exec = "projects/bitcoin-trading/scripts/execute_binance_usdm_single_order_v1.py"
+$tacticalGateArgs = @()
+if ($EnableTacticalLong) {
+  $tacticalGateArgs = @(
+    "--enable-tactical-long",
+    "--tactical-max-qty", "$TacticalMaxQty",
+    "--tactical-min-breadth-ratio", "$TacticalMinBreadthRatio",
+    "--tactical-min-net-buy-krw-eok", "$TacticalMinNetBuyKrwEok",
+    "--tactical-min-theme-score", "$TacticalMinThemeScore"
+  )
+}
 
 if (-not $SkipGateDryRun) {
   Write-Host "==> Gate dry-run (--backend api)" -ForegroundColor Cyan
-  py $gate --backend api --dry-run --risk-json $RiskJson --symbol $Symbol --side $Side --qty $Qty --leverage $Leverage
+  py $gate --backend api --dry-run --risk-json $RiskJson --symbol $Symbol --side $Side --qty $Qty --leverage $Leverage @tacticalGateArgs
   if ($LASTEXITCODE -ne 0) { throw "gate dry-run exit $LASTEXITCODE" }
 }
 
@@ -115,7 +133,7 @@ if ($LiveTestnet) {
   }
   Write-Host "==> Gate pass + LIVE testnet order" -ForegroundColor Yellow
   $out = "reports/binance_usdm_single_order/pilot_smoke_live_testnet_latest.json"
-  py $gate --backend api --risk-json $RiskJson --symbol $Symbol --side $Side --qty $Qty --leverage $Leverage --pass-live --executor-out $out
+  py $gate --backend api --risk-json $RiskJson --symbol $Symbol --side $Side --qty $Qty --leverage $Leverage --pass-live @tacticalGateArgs --executor-out $out
   if ($LASTEXITCODE -ne 0) { throw "gate+live testnet exit $LASTEXITCODE" }
   Write-Host "Done. Summary: $out" -ForegroundColor Green
   exit 0
@@ -123,7 +141,19 @@ if ($LiveTestnet) {
 
 # LiveMainnetSmall
 Write-Host "==> MAINNET small live (irreversible). Gate + executor --live --mainnet" -ForegroundColor Red
+$hapArgs = @()
+if (-not $SkipHumanApproval) {
+  if ([string]::IsNullOrWhiteSpace($HumanApprovalJson)) {
+    $hap = Join-Path $WorkspaceRoot "reports/trading_human_execution_approval_latest.json"
+  } else {
+    $hap = if ([System.IO.Path]::IsPathRooted($HumanApprovalJson)) { $HumanApprovalJson } else { (Join-Path $WorkspaceRoot $HumanApprovalJson) }
+  }
+  if (-not (Test-Path -LiteralPath $hap)) {
+    throw "Mainnet small requires human approval JSON (default: reports/trading_human_execution_approval_latest.json). Create a GO receipt, or pass -HumanApprovalJson <path>, or -SkipHumanApproval (emergency only)."
+  }
+  $hapArgs = @("--human-approval-json", (Resolve-Path -LiteralPath $hap).Path)
+}
 $outM = "reports/binance_usdm_single_order/pilot_smoke_live_mainnet_small_latest.json"
-py $gate --backend api --risk-json $RiskJson --symbol $Symbol --side $Side --qty $Qty --leverage $Leverage --pass-live --mainnet --executor-out $outM
+py $gate --backend api --risk-json $RiskJson --symbol $Symbol --side $Side --qty $Qty --leverage $Leverage --pass-live --mainnet @tacticalGateArgs @hapArgs --executor-out $outM
 if ($LASTEXITCODE -ne 0) { throw "gate+live mainnet exit $LASTEXITCODE" }
 Write-Host "Done. Summary: $outM" -ForegroundColor Green

@@ -1,0 +1,16 @@
+{
+  "schema": "trading_human_execution_approval_v1",
+  "domain": "trading",
+  "track": "A",
+  "proposal_id": "demo-proposal-001",
+  "proposal_ref": {
+    "artifact_path": "tests/fixtures/trading_execution_proposal_sample_v1.json",
+    "source_rail": "B"
+  },
+  "proposal_body_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "decision": "GO",
+  "approved_at_utc": "2026-05-04T12:00:00Z",
+  "valid_until_utc": "2099-12-31T23:59:59Z",
+  "approver_label": "commander",
+  "approval_note": "Intentionally wrong hash for gate test."
+}
