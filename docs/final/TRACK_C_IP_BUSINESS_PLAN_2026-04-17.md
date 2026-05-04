@@ -237,7 +237,7 @@ Enterprise API framing sentence (add-on):
 
 Neuro-inspired framing policy (communication-only):
 
-`Neuroscience-inspired principles (framing, attention steering, cognitive load reduction) are used strictly as communication design guidance. They are not presented as scientific proof of product outcomes, and all external claims remain artifact-backed, bounded, and non-guaranteed.`
+`Neuroscience-inspired principles (framing, attention steering, cognitive load reduction) are used strictly as communication design guidance. They are not presented as scientific proof of product outcomes, and all external claims remain artifact-backed, bounded, and framed without implying assured outcomes.`
 
 Short copy:
 
@@ -256,7 +256,7 @@ Short copy:
 |------|-----------|-------------------|
 | 계산 로직 | 최종 상태값·요약 라벨 | X/Y 산식 상세, 내부 가중치, 튜닝 규칙, 중간 피처 기여도 |
 | 모델 운영 | 응답 스키마, 상태코드, 감사용 최소 근거 | 룰트리·threshold 실값·실험 히스토리·승격 실험 파라미터 |
-| 문서/영업 | 리스크 내비게이션/비자문 문구 | 내부 alpha 생성 논리, 사내 운용 디테일 |
+| 문서/영업 | 리스크 내비게이션/비자문 문구 | 내부 시그널·스코어 생성 논리, 사내 운용 디테일 |
 
 ### 9A.2 제품 아키텍처 (Model-as-a-Service)
 
