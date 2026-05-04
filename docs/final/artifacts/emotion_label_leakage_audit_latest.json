@@ -1,9 +1,0 @@
-{
-  "schema_version": "emotion_label_leakage_audit_v1",
-  "n_total_events": 701,
-  "n_checked_events": 6,
-  "n_leakage_suspects": 0,
-  "leakage_ratio": 0.0,
-  "status": "pass",
-  "samples": []
-}
