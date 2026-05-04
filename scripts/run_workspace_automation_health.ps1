@@ -57,7 +57,11 @@ param(
     [switch]$IncludeMkmAiTrackCHandoffGuard,
 
     # Optional: Operational readiness checklist builder (Judge-ready done-condition snapshot).
-    [switch]$IncludeOperationalReadinessChecklist
+    [switch]$IncludeOperationalReadinessChecklist,
+
+    # Optional: fail when central-memory read acknowledgement is missing/stale.
+    [switch]$IncludeCentralMemoryReadCheck,
+    [double]$CentralMemoryReadMaxAgeHours = 24.0
 )
 
 $ErrorActionPreference = "Stop"
@@ -421,6 +425,20 @@ try {
             Write-Host ""
             Write-Host "=== Operational readiness checklist build ===" -ForegroundColor Yellow
             Write-Host "SKIP: build_operational_readiness_checklist_v1.py not found"
+        }
+    }
+
+    if ($IncludeCentralMemoryReadCheck) {
+        $cmr = Join-Path $root "scripts\check_central_memory_read_ack_v1.py"
+        if (Test-Path -LiteralPath $cmr) {
+            Step "Central memory read acknowledgement check" {
+                & py $cmr --workspace-root $root --max-age-hours $CentralMemoryReadMaxAgeHours
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Central memory read acknowledgement check ===" -ForegroundColor Yellow
+            Write-Host "SKIP: check_central_memory_read_ack_v1.py not found"
         }
     }
 

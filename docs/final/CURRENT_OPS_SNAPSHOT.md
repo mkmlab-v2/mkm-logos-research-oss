@@ -1,5 +1,15 @@
 # Current ops snapshot (ephemeral handoff)
 
+<!-- AUTO_OPS_V1_START -->
+## Auto Ops Handoff (v1)
+
+- `updated_at_utc:` 2026-05-04T09:44:17Z
+- `mission_id:` ops-memory-autorun-v1
+- `mission:` 장기기억 기반 자동 루틴 고정
+- `status:` in_progress
+- `next_action:` `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_workspace_automation_health.ps1 -SkipVaultMirror -SkipMkmMemoryInventory -SkipPhase1Readiness -IncludeOperationalReadinessChecklist -IncludeCentralMemoryReadCheck`
+<!-- AUTO_OPS_V1_END -->
+
 ## Ultra-Light Execution Contract (v1)
 
 **목적:** 이 파일을 열면 즉시 현재 상태를 3줄로 파악하고, 승인 불필요 범위의 다음 1개 실행으로 바로 진입한다.

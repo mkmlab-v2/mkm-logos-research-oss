@@ -12,6 +12,8 @@ import json
 import re
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlparse
+from urllib.request import Request, urlopen
 
 
 def _strip_tags(raw: str) -> str:
@@ -79,14 +81,36 @@ def _build_snapshot_text(
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Extract normalized KR close snapshot text from raw input.")
-    ap.add_argument("--input", required=True, help="Raw html/text input file path.")
+    ap.add_argument("--input", default="", help="Raw html/text input file path.")
+    ap.add_argument("--input-url", default="", help="Raw html/text URL (http/https/file).")
+    ap.add_argument("--timeout-sec", type=float, default=10.0, help="URL fetch timeout seconds.")
     ap.add_argument("--out-text", required=True, help="Normalized output text file path.")
     ap.add_argument("--out-json", default="", help="Optional parse diagnostics JSON path.")
     ap.add_argument("--source", default="kr_close_snapshot_extractor_v1")
     args = ap.parse_args()
 
-    in_path = Path(args.input)
-    raw = in_path.read_text(encoding="utf-8")
+    in_file = str(args.input or "").strip()
+    in_url = str(args.input_url or "").strip()
+    if bool(in_file) == bool(in_url):
+        raise SystemExit("Provide exactly one of --input or --input-url.")
+
+    in_ref = ""
+    if in_file:
+        in_path = Path(in_file)
+        raw = in_path.read_text(encoding="utf-8")
+        in_ref = str(in_path)
+    else:
+        parsed = urlparse(in_url)
+        if parsed.scheme not in {"http", "https", "file"}:
+            raise SystemExit("input-url scheme must be http/https/file.")
+        req = Request(
+            in_url,
+            headers={"User-Agent": "MKM-MarketPulse-Extractor/1.0"},
+        )
+        with urlopen(req, timeout=float(args.timeout_sec)) as resp:  # nosec B310
+            raw = resp.read().decode("utf-8", errors="replace")
+        in_ref = in_url
+
     text = _strip_tags(raw)
 
     foreign = _first_present(text, [r"외국인\s*([+-]?[0-9,]+)\s*억원"])
@@ -125,7 +149,7 @@ def main() -> int:
             "schema": "kr_market_close_snapshot_extract_v1",
             "source": str(args.source or "kr_close_snapshot_extractor_v1"),
             "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "input": str(in_path),
+            "input": in_ref,
             "output_text": str(out_text_path),
             "foreign_net_buy_krw_eok": foreign,
             "institution_net_buy_krw_eok": institution,

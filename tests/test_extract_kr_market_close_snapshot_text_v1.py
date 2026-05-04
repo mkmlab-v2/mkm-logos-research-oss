@@ -32,3 +32,19 @@ def test_extract_close_snapshot_text_from_raw_html(tmp_path: Path) -> None:
     assert "하락종목수 476" in txt
     assert "전선 +17.03%" in txt
 
+
+def test_extract_close_snapshot_text_from_file_url(tmp_path: Path) -> None:
+    out_text = tmp_path / "snapshot_url.txt"
+    cmd = [
+        sys.executable,
+        str(_SCRIPT),
+        "--input-url",
+        _RAW.resolve().as_uri(),
+        "--out-text",
+        str(out_text),
+    ]
+    proc = subprocess.run(cmd, cwd=str(_ROOT), capture_output=True, text=True, check=False)
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    txt = out_text.read_text(encoding="utf-8")
+    assert "외국인 +29,308 억원" in txt
+

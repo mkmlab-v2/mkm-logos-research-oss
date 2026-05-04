@@ -62,7 +62,11 @@ def build_payload(root: Path, mission_id: str) -> Dict[str, Any]:
     a_track_result = a_track_status.get("result", {})
     a_track_overall = str(a_track_result.get("overall_go_no_go", ""))
     b_track_decision = str(b_track_gate.get("decision", ""))
-    human_approved = bool(human_approval.get("approved", False))
+    # Backward compatibility:
+    # - legacy: {"approved": true}
+    # - current schema: {"decision": "GO"} with trading_human_execution_approval_v1
+    decision = str(human_approval.get("decision", "")).upper()
+    human_approved = bool(human_approval.get("approved", False)) or decision == "GO"
 
     done_conditions: List[Dict[str, Any]] = []
     done_conditions.append(
