@@ -44,6 +44,9 @@ data/multilens_eval/myeongni_independent_lens_thin_bridge_latest.jsonl
 # Kaggle 자동 다운로드 + 기상 체인 스크립트 산출 (scripts/fetch_kaggle_seattle_weather_sample_chain_v1.ps1)
 data/kaggle_auto_weather/
 
+# RDA public soil/weather ZIP unpack (large local-only; mapping SSOT is docs/final/SMARTFARM_RDA_*)
+data/smartfarm_rda_extract_v1/
+
 # MCP server local PID locks (restored tree may contain; do not commit)
 mcp-servers/.athena-*.pid
 mcp-servers/.*.pid
@@ -125,6 +128,10 @@ docs/final/artifacts/mkm_toe_training_dataset_v*.csv
 /artifacts/
 docs/final/artifacts/prophecy_hit_rate_eval_latest.json
 docs/final/artifacts/btrack_hypothesis_prophecy_latest.json
+# Myeongni celebrity benchmark + Yang(2015) sidecar hit bundle (regenerate via run_myeongni_celebrity_benchmark_v1.py)
+docs/final/artifacts/myeongni_celebrity_hit_rate_v1.json
+# Yang(2015) surface eight-char metrics from commander lens (regenerate via btrack_yang_2015_style_metrics_v1.py)
+reports/btrack_yang_2015_style_metrics_latest.json
 # report_schema_v2 optional snapshots (regenerate via build_report_schema_v2_*; P0 optional warn OK if absent)
 docs/final/artifacts/report_schema_v2_label_kpi_latest.json
 docs/final/artifacts/report_schema_v2_latest.json

@@ -1,6 +1,8 @@
 # B-Track daily chain: independent lenses -> fusion stub -> LLM bundle (S1_SHADOW / observation only).
 # Does not call LLM; prepare artifacts for manual or batch LLM step.
+# Trading policy: BTC-only execution target. KOSPI inputs are observation/info-only.
 # Prerequisites: py on PATH, workspace = C:\workspace (or set $WorkspaceRoot).
+# Loads `$WorkspaceRoot\.env` into Process env (KEY=value; optional `export `; UTF-8/UTF-16/BOM) before any `py` calls.
 #
 # Task Scheduler (example, adjust time / user):
 #   Program: pwsh.exe
@@ -23,6 +25,8 @@
 # Promotion gates: use -PromotionTrackMode dual to evaluate instrument-combo WF + panel-style shared gates (match eval_prophecy_promotion_gates_v1.py).
 # Hypothesis LLM: default local ensemble (no API). Use -UseCloudGemini or env MKM_BTRACK_USE_CLOUD_GEMINI=1 for Gemini (--use-cloud-gemini).
 # Optional model: -GeminiModel or env MKM_BTRACK_GEMINI_MODEL.
+# Naver OpenAPI: default OFF (no network call). Use -IncludeNaverOpenApiRefresh when Client ID/Secret and app APIs are ready. -SkipNaverOpenApiRefresh is legacy no-op unless you need explicit "skip" in wrappers.
+# Yang(2015) B-track surface metrics + celebrity benchmark: use -IncludeYang2015SurfaceMetrics (off by default; needs commander JSON for first step).
 param(
   [string]$WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path,
   [string]$BtcCsv = "",
@@ -40,10 +44,58 @@ param(
   [switch]$StrictProphecyProxyStreakGate,
   [switch]$UseCloudGemini,
   [string]$GeminiModel = "",
-  [switch]$SkipNewsMacroAdapter
+  [switch]$IncludeNaverOpenApiRefresh,
+  [switch]$SkipNaverOpenApiRefresh,
+  [switch]$SkipNewsMacroAdapter,
+  [switch]$IncludeYang2015SurfaceMetrics
 )
 $ErrorActionPreference = "Stop"
 Set-Location $WorkspaceRoot
+
+# Load workspace .env into Process scope so child `py` invocations see API keys (Naver, etc.).
+# Line contract: KEY=value, optional "export ", optional quotes on value; UTF-8 / UTF-16 LE / BOM-safe; no value logging.
+$dotEnv = Join-Path $WorkspaceRoot ".env"
+if (Test-Path -LiteralPath $dotEnv) {
+    $bytes = [System.IO.File]::ReadAllBytes($dotEnv)
+    $text = $null
+    if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+        $utf8 = New-Object System.Text.UTF8Encoding $false
+        $text = $utf8.GetString($bytes, 3, $bytes.Length - 3)
+    }
+    elseif ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
+        $text = [System.Text.Encoding]::Unicode.GetString($bytes, 2, $bytes.Length - 2)
+    }
+    elseif ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFE -and $bytes[1] -eq 0xFF) {
+        $text = [System.Text.Encoding]::BigEndianUnicode.GetString($bytes, 2, $bytes.Length - 2)
+    }
+    else {
+        $utf8 = New-Object System.Text.UTF8Encoding $false
+        $text = $utf8.GetString($bytes)
+    }
+    foreach ($rawLine in $text -split "`r?`n") {
+        $line = $rawLine.Trim().TrimStart([char]0xFEFF)
+        if (-not $line -or $line.StartsWith("#")) { continue }
+        $eq = $line.IndexOf("=")
+        if ($eq -lt 1) { continue }
+        $key = $line.Substring(0, $eq).Trim().TrimStart([char]0xFEFF)
+        $val = $line.Substring($eq + 1).Trim()
+        if ($key.StartsWith("export ", [System.StringComparison]::OrdinalIgnoreCase)) {
+            $key = $key.Substring(7).Trim()
+        }
+        if ($val.Length -ge 2 -and (
+                ($val.StartsWith([char]34) -and $val.EndsWith([char]34)) -or
+                ($val.StartsWith([char]39) -and $val.EndsWith([char]39)))) {
+            $val = $val.Substring(1, $val.Length - 2)
+        }
+        if (-not $key) { continue }
+        [Environment]::SetEnvironmentVariable($key, $val, "Process")
+    }
+    if ($IncludeNaverOpenApiRefresh -and
+        -not [string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable("NAVER_CLIENT_ID", "Process")) -and
+        -not [string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable("NAVER_CLIENT_SECRET", "Process"))) {
+        Write-Host "Dotenv: NAVER_CLIENT_ID + NAVER_CLIENT_SECRET loaded into process (values not logged)." -ForegroundColor DarkGray
+    }
+}
 
 if (-not $SkipMarketDataRefresh) {
   Write-Host "==> fetch_kospi_yfinance_csv.py (market data bootstrap; B-track research-only)"
@@ -87,6 +139,68 @@ if (-not $SkipExternalFeedValidation) {
     }
   } else {
     Write-Host "Skip external feed validate (missing loader): scripts\load_external_feed_drop_with_fallback_v1.py" -ForegroundColor DarkYellow
+  }
+}
+
+$doNaverOpenApiRefresh = $false
+if ($IncludeNaverOpenApiRefresh -and -not $SkipNaverOpenApiRefresh) {
+  $doNaverOpenApiRefresh = $true
+}
+if (-not $doNaverOpenApiRefresh) {
+  Write-Host "Skip Naver OpenAPI refresh (default; use -IncludeNaverOpenApiRefresh when ready)." -ForegroundColor DarkYellow
+} else {
+  $naverScript = Join-Path $WorkspaceRoot "scripts\fetch_naver_openapi_signals_v1.py"
+  if (Test-Path -LiteralPath $naverScript) {
+    if ([string]::IsNullOrWhiteSpace($env:NAVER_CLIENT_ID) -or [string]::IsNullOrWhiteSpace($env:NAVER_CLIENT_SECRET)) {
+      Write-Host "Skip Naver OpenAPI refresh (NAVER_CLIENT_ID / NAVER_CLIENT_SECRET missing after .env load)." -ForegroundColor DarkYellow
+    } else {
+      Write-Host "==> fetch_naver_openapi_signals_v1.py (research-only Naver trend/news ingest)"
+      $naverArgs = @($naverScript, "--allow-cache-fallback")
+      if (-not [string]::IsNullOrWhiteSpace($env:MKM_NAVER_NEWS_QUERY)) {
+        $naverArgs += @("--news-query", [string]$env:MKM_NAVER_NEWS_QUERY)
+      }
+      if (-not [string]::IsNullOrWhiteSpace($env:MKM_NAVER_TREND_KEYWORDS)) {
+        $naverArgs += @("--trend-keywords", [string]$env:MKM_NAVER_TREND_KEYWORDS)
+      }
+      if (-not [string]::IsNullOrWhiteSpace($env:MKM_NAVER_TREND_WEIGHTS)) {
+        $naverArgs += @("--trend-weights", [string]$env:MKM_NAVER_TREND_WEIGHTS)
+      }
+      py @naverArgs
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "WARN: Naver OpenAPI refresh failed; continue with existing artifacts." -ForegroundColor Yellow
+      }
+    }
+  }
+}
+
+$externalSignalsScript = Join-Path $WorkspaceRoot "scripts\fetch_external_macro_news_signals_v1.py"
+if (Test-Path -LiteralPath $externalSignalsScript) {
+  if ([string]::IsNullOrWhiteSpace($env:FRED_API_KEY) -and [string]::IsNullOrWhiteSpace($env:NEWSAPI_API_KEY)) {
+    Write-Host "Skip external macro/news refresh (FRED_API_KEY and NEWSAPI_API_KEY missing)." -ForegroundColor DarkYellow
+  } else {
+    Write-Host "==> fetch_external_macro_news_signals_v1.py (research-only external macro/news ingest)"
+    py $externalSignalsScript --allow-cache-fallback
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: external macro/news refresh failed; continue with existing artifacts." -ForegroundColor Yellow
+    }
+  }
+}
+
+$btcSignalsScript = Join-Path $WorkspaceRoot "scripts\fetch_btc_market_signals_v1.py"
+if (Test-Path -LiteralPath $btcSignalsScript) {
+  Write-Host "==> fetch_btc_market_signals_v1.py (research-only BTC market micro ingest)"
+  py $btcSignalsScript
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARN: BTC market signal refresh failed; continue with existing artifacts." -ForegroundColor Yellow
+  }
+}
+
+$btcAltPublicScript = Join-Path $WorkspaceRoot "scripts\fetch_btc_alt_public_signals_v1.py"
+if (Test-Path -LiteralPath $btcAltPublicScript) {
+  Write-Host "==> fetch_btc_alt_public_signals_v1.py (research-only BTC alt public ingest)"
+  py $btcAltPublicScript
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARN: BTC alt public signal refresh failed; continue with existing artifacts." -ForegroundColor Yellow
   }
 }
 
@@ -275,6 +389,22 @@ if ($LASTEXITCODE -eq 2) {
 }
 elseif ($LASTEXITCODE -ne 0) {
   throw "check_prophecy_proxy_streak_gate_v1 exit $LASTEXITCODE"
+}
+
+if ($IncludeYang2015SurfaceMetrics) {
+  $cmdJson = Join-Path $WorkspaceRoot "reports\commander_myeongni_lens_latest.json"
+  $yangOut = Join-Path $WorkspaceRoot "reports\btrack_yang_2015_style_metrics_latest.json"
+  if (Test-Path -LiteralPath $cmdJson) {
+    Write-Host "==> btrack_yang_2015_style_metrics_v1.py (Yang 2015 surface metrics; B-track)" -ForegroundColor Cyan
+    py scripts/btrack_yang_2015_style_metrics_v1.py --input $cmdJson --out $yangOut
+    if ($LASTEXITCODE -ne 0) { throw "btrack_yang_2015_style_metrics_v1 exit $LASTEXITCODE" }
+  } else {
+    Write-Host "WARN: Skip Yang surface metrics step: missing commander JSON ($cmdJson)" -ForegroundColor Yellow
+  }
+  $benchOut = Join-Path $WorkspaceRoot "docs\final\artifacts\myeongni_celebrity_hit_rate_v1.json"
+  Write-Host "==> run_myeongni_celebrity_benchmark_v1.py (fixture bench + v2 + yang_2015_style_metrics)" -ForegroundColor Cyan
+  py scripts/run_myeongni_celebrity_benchmark_v1.py --out $benchOut
+  if ($LASTEXITCODE -ne 0) { throw "run_myeongni_celebrity_benchmark_v1 exit $LASTEXITCODE" }
 }
 
 Write-Host "OK: B-Track daily hypothesis chain finished. Bundle: docs/final/artifacts/btrack_llm_input_bundle_latest.json"

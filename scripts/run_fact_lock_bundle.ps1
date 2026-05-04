@@ -13,7 +13,7 @@
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
   5. `py -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py` — 명리 독립 렌즈 → Thin JSONL 브리지(§3.6)
   5b. `py -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py` — 개인 인사이트 브리핑 Fact-Lock 휴리스틱(운영 단계 라벨·시장↔부채 합선)
-  6. (기본) 명리·멀티렌즈 **권장 스택** — CI `multilens-independent-lens-smoke`와 동일 9개 pytest(일일 브리프·Thin 브리지와 중복 제외). `-SkipMyeongniLensRecommendedStack` 로 생략.
+  6. (기본) 명리·멀티렌즈 **권장 스택** — CI `multilens-independent-lens-smoke`와 동일 **15**개 pytest 파일(선행: 일일 브리프 1 + Thin 브리지 1; 이어 배치 13에 Yang 2015 B-track 스키마·벤치 포함). `-SkipMyeongniLensRecommendedStack` 로 생략.
 
   테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·3b·3c·3d·5·6단계는 본 스크립트에서 직접 실행합니다.
 
@@ -142,7 +142,11 @@ $myeongniLensRecommendedPytests = @(
     (Join-Path $workspaceRoot 'tests\test_independent_lens_shadow_gate_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_independent_lens_fusion_stub_v0.py'),
     (Join-Path $workspaceRoot 'tests\test_scm_boming_jiju_lexicon_v1.py'),
-    (Join-Path $workspaceRoot 'tests\test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py')
+    (Join-Path $workspaceRoot 'tests\test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_btrack_yang_2015_style_metrics_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_myeongni_paper_contract_map_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_run_myeongni_celebrity_benchmark_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_yang_2015_btrack_json_schema_v1.py')
 )
 $truthfulQaBenchmarkScript = Join-Path $workspaceRoot 'scripts\run_truthfulqa_ab_benchmark_v1.py'
 $truthfulQaBenchmarkEvalGateScript = Join-Path $workspaceRoot 'scripts\check_truthfulqa_ab_gate_v1.py'
@@ -327,7 +331,7 @@ if (-not $SkipMyeongniLensRecommendedStack) {
             throw "Myeongni lens recommended pytest not found: $t"
         }
     }
-    Write-Host '== Fact-Lock: Myeongni lens recommended stack (multilens CI parity, 9 tests) ==' -ForegroundColor Cyan
+    Write-Host '== Fact-Lock: Myeongni lens recommended stack (multilens CI parity, 15 pytest files: brief+thin then batch 13) ==' -ForegroundColor Cyan
     & py -m pytest @myeongniLensRecommendedPytests -q --tb=short
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
