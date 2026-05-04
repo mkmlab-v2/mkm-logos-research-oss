@@ -31,6 +31,13 @@ param(
   [string]$LoopIntervals = "1,4,6,12,24",
   [int]$LoopBinanceLimit = 5000,
   [string]$LoopMatrixOut = "docs/final/artifacts/btc_loop_interval_matrix_latest.json",
+  [switch]$RecommendBestLoopTask,
+  [switch]$ApplyBestLoopTask,
+  [switch]$ApplyBestLoopTaskOnChangeOnly,
+  [int]$BestLoopSkipNoChangeAlertThreshold = 3,
+  [double]$BestLoopMinTestScore = 0.0,
+  [double]$BestLoopMinStability = 0.9,
+  [string]$BestLoopTaskName = "Bitcoin-V2-Execute-Guarded-Adaptive",
   [switch]$RunPilotSmoke,
   [switch]$SkipPilotSmoke
 )
@@ -52,6 +59,7 @@ $extract = "scripts/extract_kr_market_close_snapshot_text_v1.py"
 $buildPulse = "scripts/build_market_pulse_from_close_snapshot_v1.py"
 $syncRisk = "scripts/sync_fact_safe_risk_profile.py"
 $loopMatrix = "scripts/evaluate_btc_loop_interval_matrix_v1.py"
+$setBestLoopTask = "scripts/Set-BestLoopExecuteGuardedTask.ps1"
 $pilot = "scripts/Run-BinanceUsdmPilotSmoke.ps1"
 
 $extractArgs = @($extract, "--out-text", $OutSnapshotText, "--out-json", $OutSnapshotMeta)
@@ -82,6 +90,38 @@ if ($doLoopMatrix) {
   Write-Host "==> Evaluate BTC loop interval matrix" -ForegroundColor Cyan
   py $loopMatrix --symbol BTCUSDT --binance-limit $LoopBinanceLimit --intervals $LoopIntervals --out $LoopMatrixOut
   if ($LASTEXITCODE -ne 0) { throw "loop interval matrix failed: $LASTEXITCODE" }
+}
+
+$doRecommendTask = $RecommendBestLoopTask -or $ApplyBestLoopTask
+if ($doRecommendTask) {
+  Write-Host "==> Recommend/apply best-loop execute task cadence" -ForegroundColor Cyan
+  $taskArgs = @(
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    $setBestLoopTask,
+    "-WorkspaceRoot",
+    $WorkspaceRoot,
+    "-LoopMatrixPath",
+    $LoopMatrixOut,
+    "-TaskName",
+    $BestLoopTaskName,
+    "-SkipNoChangeAlertThreshold",
+    "$BestLoopSkipNoChangeAlertThreshold",
+    "-MinBestTestScore",
+    "$BestLoopMinTestScore",
+    "-MinBestStability",
+    "$BestLoopMinStability"
+  )
+  if ($ApplyBestLoopTask) {
+    $taskArgs += "-Apply"
+  }
+  if ($ApplyBestLoopTaskOnChangeOnly) {
+    $taskArgs += "-ApplyOnChangeOnly"
+  }
+  powershell @taskArgs
+  if ($LASTEXITCODE -ne 0) { throw "best-loop task cadence step failed: $LASTEXITCODE" }
 }
 
 $doPilot = $RunPilotSmoke -or (-not $SkipPilotSmoke)
