@@ -1,0 +1,181 @@
+{
+  "schema": "saju_hour_uncertainty_v1",
+  "version": "1.0.0",
+  "hour_mode": "candidate_set",
+  "iana_tz": "Asia/Seoul",
+  "local_calendar_date": "1992-03-12",
+  "is_male": false,
+  "day_rollover_policy": "midnight_00",
+  "fixed_saju": {
+    "year": "임신",
+    "month": "계묘",
+    "day": "정해"
+  },
+  "hour_distribution": [
+    {
+      "hour_pillar": "경자",
+      "hour_branch": "자",
+      "clock_window_local": "23:00–01:00 (자시; 대표 샘플 local hour=0)",
+      "representative_local_hour": 0,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "자시(子時)",
+        "자"
+      ],
+      "candidate_slot_index": 0
+    },
+    {
+      "hour_pillar": "신축",
+      "hour_branch": "축",
+      "clock_window_local": "01:00–03:00",
+      "representative_local_hour": 2,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "축시(丑時)",
+        "축"
+      ],
+      "candidate_slot_index": 1
+    },
+    {
+      "hour_pillar": "임인",
+      "hour_branch": "인",
+      "clock_window_local": "03:00–05:00",
+      "representative_local_hour": 4,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "인시(寅時)",
+        "인"
+      ],
+      "candidate_slot_index": 2
+    },
+    {
+      "hour_pillar": "계묘",
+      "hour_branch": "묘",
+      "clock_window_local": "05:00–07:00",
+      "representative_local_hour": 6,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "묘시(卯時)",
+        "묘"
+      ],
+      "candidate_slot_index": 3
+    },
+    {
+      "hour_pillar": "갑진",
+      "hour_branch": "진",
+      "clock_window_local": "07:00–09:00",
+      "representative_local_hour": 8,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "진시(辰時)",
+        "진"
+      ],
+      "candidate_slot_index": 4
+    },
+    {
+      "hour_pillar": "을사",
+      "hour_branch": "사",
+      "clock_window_local": "09:00–11:00",
+      "representative_local_hour": 10,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "사시(巳時)",
+        "사"
+      ],
+      "candidate_slot_index": 5
+    },
+    {
+      "hour_pillar": "병오",
+      "hour_branch": "오",
+      "clock_window_local": "11:00–13:00",
+      "representative_local_hour": 12,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "오시(午時)",
+        "오"
+      ],
+      "candidate_slot_index": 6
+    },
+    {
+      "hour_pillar": "정미",
+      "hour_branch": "미",
+      "clock_window_local": "13:00–15:00",
+      "representative_local_hour": 14,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "미시(未時)",
+        "미"
+      ],
+      "candidate_slot_index": 7
+    },
+    {
+      "hour_pillar": "무신",
+      "hour_branch": "신",
+      "clock_window_local": "15:00–17:00",
+      "representative_local_hour": 16,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "신시(申時)",
+        "신"
+      ],
+      "candidate_slot_index": 8
+    },
+    {
+      "hour_pillar": "기유",
+      "hour_branch": "유",
+      "clock_window_local": "17:00–19:00",
+      "representative_local_hour": 18,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "유시(酉時)",
+        "유"
+      ],
+      "candidate_slot_index": 9
+    },
+    {
+      "hour_pillar": "경술",
+      "hour_branch": "술",
+      "clock_window_local": "19:00–21:00",
+      "representative_local_hour": 20,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "술시(戌時)",
+        "술"
+      ],
+      "candidate_slot_index": 10
+    },
+    {
+      "hour_pillar": "신해",
+      "hour_branch": "해",
+      "clock_window_local": "21:00–23:00",
+      "representative_local_hour": 22,
+      "probability": 0.08333333333333333,
+      "source_prior": "uniform",
+      "labels": [
+        "해시(亥時)",
+        "해"
+      ],
+      "candidate_slot_index": 11
+    }
+  ],
+  "disclaimer_ref": "MKM-POL-003: Hour uncertainty prior applied; hour_pillar is conditional on representative sample times — not asserted as ground truth without recorded birth hour.",
+  "meta": {
+    "bundle_builder": "run_saju_hour_candidate_bundle_v1.py",
+    "anchor_resolution_sample_local": "1992-03-12T00:00:00+09:00",
+    "probabilities_sum": 1.0,
+    "filtered_branches": null,
+    "resolution_warnings": [],
+    "note": "대운·격국 등은 시 샘플별로 변동 가능; 본 번들은 시주 후보 분포용 최소 필드만 포함."
+  }
+}
