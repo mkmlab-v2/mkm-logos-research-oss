@@ -3,6 +3,8 @@ import { siteCopy } from "@/content/siteCopy";
 import { SiteHeader } from "@/components/SiteHeader";
 import { FreeValidationLeadForm } from "@/components/FreeValidationLeadForm";
 import { ContactActionLinks } from "@/components/ContactActionLinks";
+import { BasicHealthChatCard } from "@/components/BasicHealthChatCard";
+import { PaddleCheckoutButton } from "@/components/PaddleCheckoutButton";
 
 export const dynamic = "force-dynamic";
 
@@ -19,10 +21,28 @@ const homepagePresetMap = {
 
 export default function HomePage({ searchParams }: HomePageProps) {
   const c = siteCopy;
-  const presetKey = searchParams?.preset?.toLowerCase();
-  const homepagePresetClass =
-    (presetKey && homepagePresetMap[presetKey as keyof typeof homepagePresetMap]) ??
-    "preset-apple-notion";
+  const clinicCardFlow = [
+    {
+      step: "01",
+      title: "내원 후 기본 정보 입력",
+      body: "증상·생활패턴·문진 정보를 AI 보조 입력폼에 빠르게 정리합니다.",
+    },
+    {
+      step: "02",
+      title: "AI가 상담 포인트 정리",
+      body: "위험 신호와 확인 질문을 요약해 한의사 진찰 전 체크리스트를 만듭니다.",
+    },
+    {
+      step: "03",
+      title: "한의사 진찰·최종 판단",
+      body: "AI는 보조만 수행하고, 진단과 처방은 한의사가 최종 확정합니다.",
+    },
+    {
+      step: "04",
+      title: "설명·연결·기록 보조",
+      body: "환자 이해를 돕는 요약과 다음 내원/관리 포인트를 쉽게 안내합니다.",
+    },
+  ] as const;
   const heroCtaLinks = {
     primary: c.links.consumer,
     secondary: c.links.clinician,
@@ -33,6 +53,12 @@ export default function HomePage({ searchParams }: HomePageProps) {
     publicSolutionPrimary: c.links.consumer,
     publicSolutionSecondary: c.links.contact,
   } as const;
+
+  const presetKey = searchParams?.preset;
+  const homepagePresetClass =
+    presetKey && presetKey in homepagePresetMap
+      ? homepagePresetMap[presetKey as keyof typeof homepagePresetMap]
+      : "";
 
   return (
     <div className={homepagePresetClass}>
@@ -78,7 +104,49 @@ export default function HomePage({ searchParams }: HomePageProps) {
             <span role="listitem">의료진 최종판단 고정</span>
             <span role="listitem">일반인 무료 사전 리포트</span>
           </div>
+          <div className="section-cta" style={{ marginTop: "1rem" }}>
+            <a
+              className="btn btn-ghost"
+              href={c.hub_links.showroom_jemaai.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={c.hub_links.showroom_jemaai.sublabel}
+            >
+              {c.hub_links.showroom_jemaai.label}
+            </a>
+          </div>
         </section>
+
+        <section id="quick-start" aria-labelledby="quick-start-title">
+          <h2 id="quick-start-title">일반인 홍보·상담 안내와 한의사 진료보조를 분리 운영합니다</h2>
+          <p className="section-lead">
+            홈페이지에서는 일반인에게 간단 건강상담을 제공하고, 상세 문진은 카카오 설문으로 수집해 한의사 화면에 구조화 전달합니다.
+          </p>
+          <div className="grid-3">
+            <article className="card">
+              <h3>1차 상담 (홈페이지)</h3>
+              <p>주요 불편 부위·통증·수면/소화 상태를 짧게 입력해 사전 안내를 받습니다.</p>
+            </article>
+            <article className="card">
+              <h3>2차 문진 (카카오 설문)</h3>
+              <p>기본 환자 정보, 건강 정보, 체질 판단 최소 문항을 빠르게 완료합니다.</p>
+            </article>
+            <article className="card">
+              <h3>3차 진료 (한의사 최종 판단)</h3>
+              <p>SOAP 초안은 AI가 보조하고, 진단·처방·차트 확정은 한의사가 수행합니다.</p>
+            </article>
+          </div>
+          <div className="section-cta">
+            <a className="btn btn-primary" href="/consumer?panel=survey#patient-intake">
+              카카오 설문 시작하기
+            </a>
+            <a className="btn btn-ghost" href="/consumer">
+              간단 건강상담 먼저 해보기
+            </a>
+          </div>
+        </section>
+
+        <BasicHealthChatCard />
 
         <section id="brand-motion" aria-labelledby="brand-motion-title">
           <div className="brand-motion-grid">
@@ -100,6 +168,15 @@ export default function HomePage({ searchParams }: HomePageProps) {
               <div className="brand-motion-beam brand-motion-beam-b" />
               <div className="brand-motion-grain" />
               <div className="brand-motion-tint" />
+              <div className="brand-motion-card-news">
+                {clinicCardFlow.map((item) => (
+                  <article key={item.step} className="brand-flow-card">
+                    <p className="brand-flow-step">STEP {item.step}</p>
+                    <h3>{item.title}</h3>
+                    <p>{item.body}</p>
+                  </article>
+                ))}
+              </div>
               <div className="brand-motion-label">{c.concept_block.stage_label}</div>
             </div>
           </div>
@@ -116,6 +193,41 @@ export default function HomePage({ searchParams }: HomePageProps) {
           </div>
           <p className="trust-note" role="note">
             {c.trust.note}
+          </p>
+        </section>
+
+        <section id="why-mkm-ai" aria-labelledby="why-mkm-ai-title">
+          <h2 id="why-mkm-ai-title">Why MKM AI?</h2>
+          <p className="section-lead">
+            범용 AI의 구조적 과신 리스크를 그대로 트레이딩에 연결하지 않고, 교차검증과 방어 거버넌스를 통해
+            위험 노출을 통제합니다.
+          </p>
+          <div className="grid-3">
+            <article className="card">
+              <h3>구조적 과신 리스크</h3>
+              <p>
+                단일 모델은 불확실성이 큰 구간에서도 답을 강제 생성할 수 있습니다. MKM은 이 구간을 확정 신호가 아닌
+                경고/관망 구간으로 분리합니다.
+              </p>
+            </article>
+            <article className="card">
+              <h3>4AI 교차검증 + 보수 Veto</h3>
+              <p>
+                다중 엔진의 교차검증 신호를 정량화하고, 확신이 약한 국면에서는 보수 정책이 <code>HOLD_SAFE</code>를 우선
+                선언하도록 설계했습니다.
+              </p>
+            </article>
+            <article className="card">
+              <h3>Action+Alert 거버넌스</h3>
+              <p>
+                Regime transition risk signal은 임계치/히스테리시스/쿨다운 정책으로 제어하며, 조건 충족 시
+                <code>EXPOSURE_CONTROL</code>와 경보를 함께 실행합니다.
+              </p>
+            </article>
+          </div>
+          <p className="trust-note" role="note">
+            본 시스템은 수익 보장을 주장하지 않으며, Track C에서는 risk-warning 및 exposure control 목적의 운영 신호를
+            제공합니다.
           </p>
         </section>
 
@@ -226,6 +338,9 @@ export default function HomePage({ searchParams }: HomePageProps) {
         <section id="contact" aria-labelledby="contact-title">
           <h2 id="contact-title">{c.contact.title}</h2>
           <p className="section-lead">{c.contact.section_lead}</p>
+          <div className="section-cta" style={{ marginBottom: "0.75rem" }}>
+            <PaddleCheckoutButton />
+          </div>
           <ContactActionLinks email={c.footer.email} label={c.contact.email_label} />
           <FreeValidationLeadForm />
         </section>

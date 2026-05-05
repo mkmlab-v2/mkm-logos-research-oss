@@ -1,6 +1,9 @@
 import data from "../../marketing-site/public-copy.json";
 
 export type SiteCopy = {
+  hub_links: {
+    showroom_jemaai: { href: string; label: string; sublabel: string };
+  };
   header: { brand_name: string; brand_tagline: string };
   seo: { title: string; description: string };
   nav: {

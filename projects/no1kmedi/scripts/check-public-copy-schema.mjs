@@ -97,6 +97,16 @@ try {
     });
   }
 
+  const showroom = parsed.hub_links?.showroom_jemaai;
+  assert(showroom != null, "hub_links.showroom_jemaai is required", errors);
+  assert(
+    isNonEmptyString(showroom?.href) && /^https:\/\//.test(String(showroom.href)),
+    "hub_links.showroom_jemaai.href must be a non-empty https URL",
+    errors,
+  );
+  assert(isNonEmptyString(showroom?.label), "hub_links.showroom_jemaai.label is required", errors);
+  assert(isNonEmptyString(showroom?.sublabel), "hub_links.showroom_jemaai.sublabel is required", errors);
+
   ["consumer", "clinician", "reception", "contact"].forEach((key) => {
     assert(validateLinkTarget(parsed.links?.[key]), `links.${key} must start with '/' or '#'`, errors);
   });
