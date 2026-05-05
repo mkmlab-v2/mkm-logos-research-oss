@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-05T14:00:00Z
+- **last_updated_utc:** 2026-05-05T04:11:54Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK**; 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -15,7 +15,7 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-05T14:00:00Z** — 명리 결정론 회귀 11 passed (v0+v1+fusion+bot chain); P0 288 OK; PointerGuard ops dashboard 갱신 (일일 태스크 Disabled 시 readiness_all_ok=false 유지)
+- **2026-05-05T04:11:54Z** — 에이전트 런타임 3층(In-Turn, Ops, 무한 채팅루프 비판정) CENTRAL 정체성 표 고정; Fact-Lock 정정 반영
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -147,6 +147,7 @@
 | 압축 트랙 | Track A 범용 / Track B 리터럴 — 격벽·상용 게이트는 `P0`·SLA 정책 선. |
 | TITAN | Command-by-negation — 저위험은 합리적 기본값·사후 보고; 고위험만 승인. |
 | 정체성 답변 규칙 | 전략·답변·코드 모두 **위 지문과 충돌 시 지문·SSOT 우선** — “그럴듯한 확장” 금지. |
+| 에이전트 연속성 | **In-Turn:** 한 요청 안 다단계(토큰·시간·정책 상한). **Ops:** `scripts`·스케줄·exit code — 채팅 세션과 동일시 금지. **≠** 사람 새 입력 없는 무한 채팅 루프. 맥락 복구는 **이 파일·Git** + 「작업 맥락 레슨」(약 328-334행). |
 
 ---
 
@@ -318,6 +319,7 @@
 | 2026-05-05 (명리 Sprint-1 base vector lock) | `scripts/myeongri_jijangan_ohang_v1.py`에 `build_myeongni_core_vector_v1` 추가(지장간 tier 포함 element raw count + normalized strength + overlay), 스키마 `docs/final/artifacts/schemas/myeongni_core_vector_v1.schema.json` 신설, `tests/test_myeongri_jijangan_ohang_v1.py`에 결정론·스키마 검증 회귀 추가, `scripts/myeongri_complete_fusion.py`에 `myeongni_core_vector_v1` 출력 연결, P0 경로 게이트 266·관련 pytest 통과. |
 | 2026-05-05 (명리 Sprint-2 timeline lock) | `scripts/myeongri_daewoon_timeline_v1.py` 신설(起運 `qiyun_v1` + `daewoon_v1` 연동, `as_of_utc` 기준 활성 cycle 계산), 스키마 `docs/final/artifacts/schemas/myeongri_daewoon_timeline_v1.schema.json`·회귀 `tests/test_myeongri_daewoon_timeline_v1.py` 추가(경계 정책: `start<=age<end`, 말단 초과는 마지막 cycle), `verify_p0_constitution_gate_paths.ps1`에 경로 반영 후 P0 269·관련 pytest 통과. |
 | 2026-05-05 (사상12 통합 게이트 vs A-Track 승격) | `sasang12_promotion_candidate_gate_latest.json`(unified)에서 **`status=PASS`여도 `track_wall.promotion_to_a_track_allowed=false`** — 통합 PASS≠방향 A본선 승격. v2~v10 개별 `*_gate_vN_*` FAIL 기록과 **`track_wall`** 필드를 함께 볼 것. 헌법 **`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §3.5** 표에 해석 행 반영. |
+| 2026-05-05 (대외 보안·IP·카피 SSOT) | `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`·`TRACK_C_IP_BUSINESS_PLAN` → P0·**CLAUDE** 도메인 핸드오프·**JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC** 관련 정책 단락·헌법 **§1.1.3**·`AGENTS`·**NO1KMEDI** §10 양방향 고정. |
 | 2026-05-04 (RDA 스마트팜 공공 데이터) | 농진청 제공 ZIP 로컬 전개·컬럼 실측: 기상 시간자료(`지점명`·`일시`·온도·습도·일사량·강수량`, 다중 시트), 토양검정 화학성 연도별 xlsx(2025는 `skiprows=1`); 매핑·4주 로드맵·계약 갭(토양수분 미제공→텔레메트리 필수)을 `docs/final/SMARTFARM_RDA_SOIL_WEATHER_MAPPING_AND_ROADMAP_V1.md` + `SMARTFARM_RDA_COLUMN_MAP_V1.json`에 고정; 대용량 전개 경로 `data/smartfarm_rda_extract_v1/`는 `.gitignore`. Week2는 `scripts/build_smartfarm_zone_weather_features_v1.py`로 station→zone 매핑 + `rain_mm_12h` 리플레이 입력(`zone_weather_replay_inputs_v1.csv`)까지 검증, Week3는 `scripts/evaluate_smartfarm_rain_gate_kpi_v1.py`로 임계값 스윕(`rain_gate_threshold_sweep_v1.csv`)·요약(`rain_gate_threshold_sweep_summary_v1.json`) 생성, Week4는 `scripts/check_smartfarm_week4_data_guard_v1.py`·`scripts/build_smartfarm_week4_ops_dashboard_v1.py`로 가드/대시보드 산출(`smartfarm_week4_ops_dashboard_v1.json`)까지 연결, 후속으로 `scripts/build_smartfarm_gap_incident_report_v1.py`로 gap incident 24건(`gap_incident_report_v1.csv`) 자동 추출 + `scripts/simulate_smartfarm_gap_recovery_policy_v1.py`로 FFILL/SKIP/FLAG 보정정책 비교(`gap_recovery_policy_simulation_v1.csv`) + `scripts/evaluate_smartfarm_gap_policy_impact_v1.py`로 hybrid(skip+small ffill) 전/후 KPI 영향(`gap_policy_kpi_impact_v1.csv`) + `scripts/build_smartfarm_recommended_gap_policy_v1.py`로 운영 권장안(`recommended_policy_v1.json`) 자동 결정 + `scripts/run_smartfarm_gap_policy_daily_gate_v1.py`로 일일 GO/WATCH/HOLD 판정·알림(`smartfarm_gap_policy_daily_gate_v1.json`) + 프로파일(`daily_gate_policy_profile_v1.json`: conservative/standard/aggressive) 기반 임계치 분기 및 aggressive 이중조건 override(max_gap + incident_count)까지 연결. |
 | 2026-05-02 (MKM 자체 LLM·이론 체화 — 전략 지문 고정) | 규칙/프롬프트 정렬 vs 가중치 학습 **층 분리**; 고도화 기본은 **규칙+RAG+게이트**. 로컬 젬마 등 **체화형 파인튜닝**은 eval·데이터·프롬프트 비대가 **실측**될 때만 ROI 검토 — 미달이면 오버엔지니어링. 재질의 시 **`CENTRAL_AGENT_MEMORY_V1` 「MKM AI 고도화 · 자체 LLM」** 절 우선. |
 

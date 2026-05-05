@@ -18,6 +18,12 @@ param(
 # 2026-05-02: M5 rule_school_mkm_4d_v1 (policy JSON, loader/blend, pytest).
 # 2026-05-02: M2–M4 myeongni (jijangan ohang weights, daewoon v1, jijangan ohang script, daewoon test).
 # 2026-05-02: +4 myeongni jijangan LUT M1 (lut, schema, script, test).
+# 2026-05-05: TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md (Track C 상용·법무·IP 경계 SSOT; P0 존재 게이트).
+# 2026-05-05: PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md (대외 문서·홈·쇼룸 보안·IP 카피 체크리스트; P0 존재 게이트).
+# 2026-05-05: CENTRAL_AGENT_MEMORY_V1.md (명리 렌즈 고도화 v1 등 장기기억 지문; P0 존재 게이트).
+# 2026-05-05: 명리 core vector v1 schema/test (지장간 배율 엔진 Sprint-1 base vector lock).
+# 2026-05-05: 명리 daewoon timeline v1 schema/test (Sprint-2 time regime lock).
+# 2026-05-05: Yang(2015) 표면 8자 B-track 스키마·벤치·P0 경로 (btrack_yang / celebrity benchmark / saju birth / v2 upgrade).
 # 2026-05-02: 일일 실행 인사이트 브리프 v1 (§1c 독립 렌즈·CONSTITUTION §3.3 행; 산출 JSON은 게이트 목록 미포함).
 # 2026-05-02: 압축 주간 거버넌스 체인 러너 복구 (run_compression_weekly_governance_chain.ps1 + P0 경로).
 # 2026-05-02: 명리 독립 렌즈 → Thin JSONL 브리지 v1 (emit 스크립트·pytest; §3.6).
@@ -49,6 +55,7 @@ $required = @(
     "scripts\Run-BtrackInsightSidecarChain.ps1",
     "scripts\Run-BtrackCodebookCodepackPromotionChain.ps1",
     ".github\workflows\multilens-independent-lens-smoke.yml",
+    ".github\workflows\dual-regime-integrity.yml",
     ".github\workflows\bio-sasang-nstates-rehydrate-smoke.yml",
     "scripts\build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py",
     "scripts\Generate-BioSasangWeeklyReport_v1.ps1",
@@ -69,6 +76,9 @@ $required = @(
     "scripts\build_lg_washer_voice_golden_jsonl_v1.py",
     ".cursorrules",
     "AGENTS.md",
+    "docs\final\TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
+    "docs\final\PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
+    "docs\final\CENTRAL_AGENT_MEMORY_V1.md",
     "README.md",
     "scripts\run_workspace_automation_health.ps1",
     "scripts\run_fact_lock_bundle.ps1",
@@ -138,8 +148,10 @@ $required = @(
     "scripts\myeongri_jijangan_v1.py",
     "tests\test_myeongri_jijangan_v1.py",
     "data\myeongni\jijangan_ohang_weights_v1.json",
+    "docs\final\artifacts\schemas\myeongni_core_vector_v1.schema.json",
     "scripts\myeongri_daewoon_v1.py",
     "scripts\myeongri_jijangan_ohang_v1.py",
+    "tests\test_myeongri_jijangan_ohang_v1.py",
     "tests\test_myeongri_daewoon_v1.py",
     "data\myeongni\rule_school_mkm_4d_v1.json",
     "scripts\myeongri_rule_school_mkm_4d_v1.py",
@@ -147,6 +159,9 @@ $required = @(
     "scripts\core\solar_term_jie_crossings_v1.py",
     "scripts\myeongri_qiyun_v1.py",
     "tests\test_myeongri_qiyun_v1.py",
+    "scripts\myeongri_daewoon_timeline_v1.py",
+    "docs\final\artifacts\schemas\myeongri_daewoon_timeline_v1.schema.json",
+    "tests\test_myeongri_daewoon_timeline_v1.py",
     "docs\final\MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md",
     "docs\final\MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md",
     "docs\final\schemas\myeongri_ai_interpretation_envelope_v1.schema.json",
@@ -288,7 +303,28 @@ $required = @(
     "scripts\logos_vector_hash_stub_v1.py",
     "scripts\query_logos_vector_index_ann_lite_v1.py",
     "docs\final\schemas\logos_vector_ann_lite_query_result_v1.schema.json",
-    "tests\test_logos_vector_index_ann_lite_v1.py"
+    "tests\test_logos_vector_index_ann_lite_v1.py",
+    "docs\final\schemas\btrack_yang_2015_style_metrics_v1.schema.json",
+    "docs\final\schemas\myeongni_celebrity_hit_rate_v1.schema.json",
+    "scripts\btrack_yang_2015_style_metrics_v1.py",
+    "scripts\run_myeongni_celebrity_benchmark_v1.py",
+    "scripts\run_saju_global_birth_v1.py",
+    "scripts\myeongri_core_v2_upgrade.py",
+    "data\myeongni\celebrity_saju_benchmark_v1.jsonl",
+    "data\myeongni\paper_contract_maps\yang_2015_four_pillars_personality_map_v1.json",
+    "tests\test_btrack_yang_2015_style_metrics_v1.py",
+    "tests\test_myeongni_paper_contract_map_v1.py",
+    "tests\test_run_myeongni_celebrity_benchmark_v1.py",
+    "scripts\fetch_europepmc_sasang_saju_literature_catalog_v1.py",
+    "scripts\ingest_curated_saju_joint_v1.py",
+    "scripts\validate_sasang_saju_joint_benchmark_jsonl_v1.py",
+    "data\myeongni\curated_saju_joint_v1.jsonl",
+    "docs\final\schemas\curated_saju_joint_input_row_v1.schema.json",
+    "tests\test_ingest_curated_saju_joint_v1.py",
+    "data\myeongni\16_STATE_MASTER_PROBE_v1.json",
+    "scripts\check_curated_saju_joint_staleness_v1.py",
+    "tests\test_check_curated_saju_joint_staleness_v1.py",
+    "tests\test_yang_2015_btrack_json_schema_v1.py"
 )
 
 $missing = @()

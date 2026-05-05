@@ -3,6 +3,8 @@
 **목적**: “전광판(공개)”과 “조종실(비공개)”을 분리해 **마케팅·신뢰**와 **실매매·민감정보**를 동시에 지킨다.  
 **구현 팩트**: 공개 API는 `public_event_gateway.py` (`schema_version`: `public-event.v1`). nginx 예시·기동은 동일 디렉터리의 `nginx_public_event_gateway.conf.example`, `ensure_public_event_gateway.ps1`(상위 `ops`).
 
+**관련 정책(모노레포 루트):** 랜딩·호스트 키·과장 표현 등 **전 채널 공통** 점검은 `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` — 본 SPEC은 공개 이벤트 스키마·지연·면책 수치에 특화되어 있으며, Track C 상용 경계는 `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` 와 정합한다.
+
 ---
 
 ## 1. 역할 구분

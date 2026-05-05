@@ -10,6 +10,7 @@
 **보강 (2026-05-02):** §1.3 Track C Macro Risk n8n 메일 온보딩 PowerShell 스크립트 표.
 **보강 (2026-05-04):** §1.3.1 Track C 일일 융합 `Invoke-TrackCMacroDailyFusion_v1.ps1`·`Register-TrackCMacroDailyFusionTask.ps1`(`-DryRun`·`-UnregisterLegacyTasks`)·Fragility 중복 방지·`run_workspace_automation_health.ps1 -IncludeTrackCMacroFusionSmoke` / `-TrackCMacroFusionSmokeOnly`·선택 `MetaLayerEnvelopePath`.
 **보강 (2026-05-05 — 메타 인지 봉투 v1 · 선택 융합 게이트):** §1.3.1 표 — `docs/final/artifacts/schemas/mkm_meta_layer_turn_envelope_v1.schema.json`·`docs/final/artifacts/fixtures/mkm_meta_layer_turn_envelope_v1.example.json`·`scripts/mkm_meta_layer_envelope_v1.py`(`validate`·`append`·`audit-markdown`)·`AthenaValidator`·`tests/test_mkm_meta_layer_envelope_v1.py`. `Invoke-TrackCMacroDailyFusion_v1.ps1` **`-MetaLayerEnvelopePath`**는 비어 있으면 **미실행**(기본 융합 불변). 값이 있으면 융합 단계 후 `.json`→`append`, 그 외 확장자→마크다운에서 fenced JSON 추출·검증·`reports/agent_decisions_log.jsonl` 적재; 실패 시 fusion 전체 `throw`. **회귀:** `scripts/run_fact_lock_bundle.ps1` 3d 단계·CI `dual-regime-integrity.yml` 동명 pytest 단계.
+**보강 (2026-05-05 — 대외 문서·홈페이지·쇼룸 보안·IP 경계):** §1.1.3 — 정책 SSOT `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`(웹·제안서·정적 쇼룸 등 **카피·비노출** 체크리스트; 구현 팩트 대체 아님). 교차: Track C `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`, 쇼룸 `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`, 명리 대외 어휘 `docs/final/MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1.md`, §1.1.1 `research_only`·격벽.
 **보강 (2026-05-05 — Yang 2015 표면 8자 B-track):** §3.3 표 — `scripts/btrack_yang_2015_style_metrics_v1.py`·`scripts/run_myeongni_celebrity_benchmark_v1.py`·계약 맵 `data/myeongni/paper_contract_maps/yang_2015_four_pillars_personality_map_v1.json`·데이터 `data/myeongni/celebrity_saju_benchmark_v1.jsonl`·산출 `reports/btrack_yang_2015_style_metrics_latest.json`·`docs/final/artifacts/myeongni_celebrity_hit_rate_v1.json`; JSON Schema `docs/final/schemas/btrack_yang_2015_style_metrics_v1.schema.json`·`docs/final/schemas/myeongni_celebrity_hit_rate_v1.schema.json`; 회귀 `tests/test_yang_2015_btrack_json_schema_v1.py` 포함; P0 `scripts/verify_p0_constitution_gate_paths.ps1`·`.github/workflows/dual-regime-integrity.yml` 경로 고정; CI `dual-regime-integrity.yml`·`multilens-independent-lens-smoke.yml`. 임상·A-track 자동 트리거 금지.
 **보강 (2026-05-02 — MKM-Orchestrator):** §1.4 `todo_queue_v1` 폴링·`reports/mkm_orchestrator_audit.jsonl`·텔레그램 notify/ingest(`.env`); **CENTRAL MD 자동 파싱·B→A·실매매 자동 합선 없음** — 경로·스크립트 `docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json`·`verify_mkm_orchestrator_bundle_v1.py`.
 **보강 (2026-05-03 — 실행 거버넌스 / ECC):** §28 `scripts/athena_run_v1.py` — `integrated_governance_v1`·`TRADE_EXECUTE`·HOLD면 ECC **DENIED**·exit **2**·자식 미기동·**DPAPI 미조회**; 승인 시 `--target`이면 `security_agent_manager`로 자식 env만 주입, 없으면 exit **1**; `--target` 생략 시 PoC 더미 키. 산출 `docs/final/artifacts/ecc_execution_clearance_latest.json`(`action_payload_hash`·감사 필드); append-only `reports/athena_ecc_audit.jsonl`·`scripts/athena_ecc_logs_v1.py`; 선택 **`ATHENA_ECC_AUDIT_WEBHOOK_URL`** 요약 POST. **호스트·프로세스 직접 실행 우회는 차단 아님** — Fact-Lock 경로·운영 규율과 병행. 회귀 `tests/test_athena_run_v1.py`. **프리플라이트 요약:** `scripts/athena_doctor_v1.py`(레짐·ECC 요약). 회귀 `tests/test_athena_doctor_v1.py`. **일괄 스모크:** `scripts/check_athena_execution_governance_smoke_v1.py`; 회귀 `tests/test_check_athena_execution_governance_smoke_v1.py`.
@@ -78,6 +79,18 @@
 | 명시적 부정 | §1.2 압축·토큰 절감 파이프라인 | **텍스트/토큰 압축 이론은 API 키·비밀 관리 계약이 아님** — “압축으로 키 관리” 서술과 합선 금지 |
 
 **에이전트·자동화 주의:** Cursor/Cloud Agent는 **실키를 레포에 쓰거나 채팅으로 회수하지 않는다** — 루트 `.cursor/rules/cursor-cloud-sandbox-boundary.mdc`·루트 `AGENTS.md`와 정합.
+
+### 1.1.3 대외 문서·홈페이지·쇼룸 보안·IP 경계 (policy SSOT pointer, 2026-05-05)
+
+구현 행 추가가 아니라 **대외 채널 공통 원칙**의 단일 진입점이다. 상세 체크리스트·금지어·이론 비노출 요약은 **`docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`** — P0 경로 `scripts/verify_p0_constitution_gate_paths.ps1`에 포함.
+
+| 항목 | 경로 / 역할 |
+|------|-------------|
+| 대외 카피·비노출 체크리스트 | `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` |
+| Track C 상용·법무·핵심이론 보호 | `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` |
+| 공개 쇼룸 vs 조종실·`public-event.v1` | `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` |
+| 명리 대외 공학 어휘(코드 명칭 불변) | `docs/final/MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1.md` |
+| 예언·국방 등 대외 서사 격리 | §1.1.1 `[VISION]` |
 
 ### 1.3 Track C — Macro Risk 메일 온보딩 (Windows / n8n, 로컬 운영)
 

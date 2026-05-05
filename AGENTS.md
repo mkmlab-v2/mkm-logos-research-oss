@@ -64,6 +64,12 @@
 - **표준 표기:** 문서/대외 문구는 `MKM = 4AI core + Absolute Balance Coordinator Mode`를 기본으로 사용한다.
 - **금지:** `5AI`, `제5 체질`, `추가 체질` 같은 표현으로 구조를 재정의하지 않는다.
 
+## 홍보 프레이밍 계약 (뇌과학 영감 반영)
+
+- **원칙:** 뇌과학 기반 영감(프레이밍/주의 전환/인지 부하 관리)은 **대외 과학 단정 근거가 아니라 커뮤니케이션 설계 원칙**으로만 사용한다.
+- **표현:** 외부 카피는 `검증 가능한 아티팩트 + 면책 문구 + 경계(무엇을 하지 않는지)` 3요소를 기본으로 구성한다.
+- **금지:** `신경과학적으로 증명됐다`, `뇌 기반으로 성과 보장` 같은 단정 문구를 마케팅·제안서에 사용하지 않는다.
+
 ## Athena 실행 거버넌스 (§28 · 선택 일상 점검)
 
 - **헌법:** `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §28 — `scripts/athena_run_v1.py`(ECC·`--target`/DPAPI·감사 JSONL·선택 `ATHENA_ECC_AUDIT_WEBHOOK_URL`).
@@ -261,6 +267,7 @@
 
 ## jemaai.cloud · 공개 쇼룸 vs 실매매 관제
 
+- **대외 보안·IP·카피(웹·제안서·쇼룸 공통):** `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` — 비밀·내부 경로 비노출, 이론·파이프라인 비노출, 과장·규제 민감 표현 회피; 상용·법무 경계는 `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`와 정합. 구현 팩트는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`만 SSOT.
 - **하이브리드 대시보드 스펙(SSOT):** `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` — 공개(전광판) vs 비공개(조종실), `public-event.v1` 필드·경계선.
 - **MVP 게이트웨이:** `public_event_gateway.py` — `GET/POST` 경로·토큰은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 동 디렉터리 nginx 예시 참고.
 - **로컬 융합 점검 (비배포):** `scripts/run_jemaai_cloud_completion_chain.ps1` — Fact-Lock·Thin·BTC 앵커·P1(기본)·MVP 파일 존재 확인; `-SkipP1AB`로 P1 생략. VPS/nginx 반영은 본선 일정에서 수동.
