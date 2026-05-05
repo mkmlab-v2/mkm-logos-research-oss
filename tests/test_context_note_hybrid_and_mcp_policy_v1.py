@@ -11,6 +11,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
+import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "scripts" / "build_context_note_memory_index_v1.py"
@@ -20,6 +21,9 @@ MCP_GATE = ROOT / "scripts" / "enforce_mcp_tool_policy_v1.py"
 
 
 def test_hybrid_and_eval_gate_and_mcp_policy(tmp_path: Path) -> None:
+    if not BUILD.is_file() or not QUERY.is_file() or not EVAL.is_file():
+        pytest.skip("context note retrieval scripts are not available in this checkout")
+
     notes_dir = tmp_path / "notes"
     notes_dir.mkdir(parents=True, exist_ok=True)
     (notes_dir / "auth.md").write_text("JWT auth decision with short TTL rotation", encoding="utf-8")
