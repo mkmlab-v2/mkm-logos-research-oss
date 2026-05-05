@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA AI · 검증 공개 보드</title>
+  <style>
+    :root {
+      --bg: #0a0b0d;
+      --surface: #12151a;
+      --surface-soft: #151922;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #e8eaef;
+      --muted: #8b919d;
+      --accent: #c5a057;
+      --warn: #d4a574;
+      --danger: #c97a6d;
+      --ok: #8fbc8f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 520px at 12% -18%, rgba(197, 160, 87, 0.08), transparent 60%),
+        radial-gradient(900px 420px at 96% -24%, rgba(143, 188, 143, 0.06), transparent 62%),
+        var(--bg);
+    }
+    .wrap {
+      max-width: 42rem;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+    }
+    header {
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 {
+      font-size: 1.2rem;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+      margin: 0 0 0.35rem;
+    }
+    .lede {
+      margin: 0;
+      font-size: 0.8125rem;
+      color: var(--muted);
+      max-width: 36rem;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: flex-end;
+      margin-bottom: 1.25rem;
+    }
+    .toolbar label {
+      display: block;
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    .toolbar input[type="text"] {
+      width: min(100%, 22rem);
+      padding: 0.5rem 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.8125rem;
+    }
+    .toolbar button {
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: linear-gradient(180deg, #171c25 0%, #12151a 100%);
+      color: var(--text);
+      font-size: 0.8125rem;
+      cursor: pointer;
+    }
+    .toolbar button:hover {
+      border-color: rgba(197, 160, 87, 0.45);
+      box-shadow: 0 0 0 1px rgba(197, 160, 87, 0.18) inset;
+    }
+    #pollStatus {
+      font-size: 0.75rem;
+      color: var(--muted);
+      width: 100%;
+      margin: 0;
+    }
+    .board {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: linear-gradient(180deg, var(--surface-soft) 0%, var(--surface) 100%);
+      padding: 1.35rem 1.2rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    }
+    .board-grid {
+      display: grid;
+      gap: 1rem 1.25rem;
+      grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    }
+    .cell { min-width: 0; }
+    .cell-full { grid-column: 1 / -1; }
+    .k {
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      margin: 0 0 0.2rem;
+    }
+    .v {
+      margin: 0;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      word-break: break-word;
+    }
+    .v.sub { font-size: 0.8125rem; font-weight: 400; color: var(--muted); }
+    .pill {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .pill-warn { border-color: rgba(212, 165, 116, 0.45); color: var(--warn); }
+    .pill-ok { border-color: rgba(143, 188, 143, 0.4); color: var(--ok); }
+    .pill-danger { border-color: rgba(201, 122, 109, 0.45); color: var(--danger); }
+    .ticker-block {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .ticker-line {
+      margin: 0;
+      font-size: 0.875rem;
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .reactions {
+      margin: 0 0 1rem;
+      padding: 0;
+      list-style: none;
+    }
+    .reactions li {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .reactions li:last-child { border-bottom: none; }
+    details {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      margin-bottom: 1.5rem;
+    }
+    summary {
+      padding: 0.6rem 0.85rem;
+      cursor: pointer;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    details pre {
+      margin: 0;
+      padding: 0.75rem 0.85rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.7rem;
+      overflow: auto;
+      max-height: 14rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .info {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem 1rem;
+      background: linear-gradient(180deg, var(--surface-soft) 0%, var(--surface) 100%);
+      font-size: 0.8125rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+    .info h2 {
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      margin: 0 0 0.65rem;
+      font-weight: 600;
+    }
+    .info p { margin: 0 0 0.55rem; color: var(--text); }
+    .info ol { margin: 0.5rem 0 0; padding-left: 1.2rem; }
+    .info li { margin-bottom: 0.35rem; }
+    .info .ref { font-size: 0.75rem; color: var(--muted); margin-top: 0.65rem; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.85em; }
+    .footer-links {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .footer-links a { color: var(--accent); text-decoration: none; }
+    .footer-links a:hover { text-decoration: underline; }
+    .err { color: var(--danger); }
+    .ok { color: var(--ok); }
+    @media (max-width: 680px) {
+      .wrap { padding: 1.4rem 0.95rem 2.1rem; }
+      .board { padding: 1.05rem 0.95rem; }
+      .board-grid { grid-template-columns: 1fr; gap: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>검증 가능한 방식으로, 일관된 우위를 확인했습니다</h1>
+      <p class="lede">
+        반복·분할·확장·독립 재현·운영 드릴 검증 기준의 공개 요약입니다. 본 화면은 <code>research_only</code> 설명용이며, 실시간·무지연·성과 확약을 의미하지 않습니다.
+      </p>
+      <p class="lede" style="margin-top:0.5rem;">
+        <a href="#showroom-information" style="color: var(--accent); text-decoration: underline;">검증 리포트 보기</a>
+        ·
+        <a href="#showroom-information" style="color: var(--accent); text-decoration: underline;">1,000원 질문 시작하기</a>
+        ·
+        <a href="#showroom-information" style="color: var(--accent); text-decoration: underline;">FAQ 보기</a>
+      </p>
+    </header>
+
+    <div class="toolbar">
+      <div>
+        <label for="base">API 베이스 (슬래시 없음)</label>
+        <input id="base" type="text" autocomplete="off" />
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <button type="button" id="btnRefresh">지금 새로고침</button>
+      </div>
+    </div>
+    <p id="pollStatus"></p>
+
+    <div class="board" aria-live="polite">
+      <div class="board-grid" id="boardGrid"></div>
+      <div class="ticker-block">
+        <p class="k">요약 라인 (티커 키 매핑)</p>
+        <p class="ticker-line" id="tickerLine">—</p>
+      </div>
+    </div>
+
+    <p class="k" style="margin-bottom:0.35rem;">가상 반응 (ID 매핑, 최대 3)</p>
+    <ul class="reactions" id="reactionList"></ul>
+
+    <details>
+      <summary>원본 JSON (디버그)</summary>
+      <pre id="rawJson">—</pre>
+    </details>
+
+    <section class="info" id="showroom-information" data-disclaimer-ref="jemaai_showroom_v1" aria-label="Information and disclaimer">
+      <h2>Information (MKM AI)</h2>
+      <p>
+        이 페이지는 <span class="mono">GET /api/public-events/latest</span>로 수신한
+        <strong>화이트리스트 필드만</strong> 표시합니다. 폴링 주기는 약 30초이며, SPEC 권장(15–60초) 범위 안입니다.
+      </p>
+      <ol>
+        <li><strong>투자 권유 없음:</strong> 투자 자문·매매 권유·성과 보장을 제공하지 않습니다.</li>
+        <li><strong>데이터 성격:</strong> 관측·시각화 목적이며 지연·스냅샷일 수 있습니다.</li>
+        <li><strong>운영 분리:</strong> 실매매·집행 로직과 동일하다고 보지 않습니다.</li>
+        <li><strong>면책:</strong> 본 정보를 바탕으로 한 판단과 그 결과에 대한 책임은 이용자에게 있습니다.</li>
+      </ol>
+      <p class="ref"><span class="mono">disclaimer_ref=jemaai_showroom_v1</span></p>
+      <p class="footer-links">
+        <a href="public_showroom_poll.html">전체 데모 UI (스테이지·예능 레이어)</a>
+        ·
+        <a href="public_showroom_probabilistic_saju_v1.html">시주 확률 샘플 (무관 데모)</a>
+      </p>
+    </section>
+  </div>
+
+  <script>
+(function () {
+  "use strict";
+
+  const POLL_MS = 30000;
+  const params = new URLSearchParams(location.search);
+  const defaultBase = params.get("api") || "https://api.jemaai.cloud";
+  document.getElementById("base").value = defaultBase;
+
+  let cachedBundleEvent = null;
+
+  const SHOWROOM_TICKER_KO = {
+    "S_ONLINE_R_INFO_PSD_HOLD_DA_FLAT": "알고 예능장 ON · 관망 모드 · 방향 중립(추상) · 연출만",
+    "S_ONLINE_R_WARNING_PSD_HOLD_DA_FLAT": "경계등 ON · 방패 모드 · 리스크 우선 · 실매매 아님",
+    "S_ONLINE_R_WARNING_PSD_CAUTION_DA_FLAT": "주의 신호 · 방어 연출 · 과대 해석 금지",
+    "S_ONLINE_R_CRITICAL_PSD_HOLD_DA_FLAT": "고위험 스테이지 · 손절은 조종실에서만 · 공개는 요약만",
+    "S_DEGRADED_R_INFO_PSD_HOLD_DA_FLAT": "신호 지연 구간 · 스냅샷만 신뢰 · 체감 지연 주의",
+    "S_DEGRADED_R_WARNING_PSD_HOLD_DA_FLAT": "지연 + 경계 · 방패 연출 강화 · 실거래 트리거 아님",
+    "S_MAINTENANCE_R_WARNING_PSD_HOLD_DA_FLAT": "점검 중 · 전광판 유지 모드 · 알림만 참고",
+    "S_ONLINE_R_INFO_PSD_HOLD_DA_LONG": "관망 속 상방 테마(추상) · 공격 연출 · 비매매 시그널",
+    "S_ONLINE_R_INFO_PSD_HOLD_DA_SHORT": "관망 속 하방 테마(추상) · 숏 연출 · 비매매 시그널",
+    "S_ONLINE_R_WARNING_PSD_CAUTION_DA_LONG": "경계 + 상방 연출 · 카메라 가까이 · 과열 금지",
+    "S_ONLINE_R_WARNING_PSD_CAUTION_DA_SHORT": "경계 + 하방 연출 · 방패 유지 · 과매도 단정 금지",
+  };
+  const TICKER_SYS_KO = { ONLINE: "운영 양호", DEGRADED: "일부 지연", MAINTENANCE: "점검" };
+  const TICKER_RISK_KO = { INFO: "관측", WARNING: "경계", CRITICAL: "고위험", SAFE: "안정" };
+  const TICKER_PSD_KO = {
+    HOLD: "관망", CAUTION: "주의", BUY: "매수 연출", LONG: "롱 연출", SELL: "매도 연출", SHORT: "숏 연출",
+  };
+  const TICKER_DA_KO = { FLAT: "방향 중립(추상)", LONG: "상방 쏠림(추상)", SHORT: "하방 쏠림(추상)" };
+  const SHOWROOM_REACTION_KO = {
+    R_MODE_IDLE_01: "관망 중 — 알고리즘이 호흡을 맞춥니다. (연출)",
+    R_MODE_DEF_01: "방어 태세 — 리스크·지연을 우선합니다.",
+    R_RISK_HIGH_01: "경계 구간 — 과대 해석·실매매 혼동 금지.",
+    R_MODE_ATK_01: "공세 연출 — 시그널 방향 강조 (비실매매 트리거 아님).",
+    R_SYS_MAINT_01: "점검 모드 — 전광판 스냅샷만 유지됩니다.",
+  };
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function decodeStructuredTickerKey(key) {
+    const m = String(key || "").match(/^S_([A-Z0-9]+)_R_([A-Z0-9]+)_PSD_([A-Z0-9]+)_DA_([A-Z0-9]+)$/);
+    if (!m) return null;
+    const sys = TICKER_SYS_KO[m[1]] || m[1];
+    const risk = TICKER_RISK_KO[m[2]] || m[2];
+    const psd = TICKER_PSD_KO[m[3]] || m[3];
+    const da = TICKER_DA_KO[m[4]] || m[4];
+    return "알고 관측 · " + sys + " · 리스크 " + risk + " · 신호 " + psd + " · " + da + " · 비실매매 연출";
+  }
+
+  function tickerLine(obj) {
+    const key = obj.showroom_ticker_key;
+    if (key && SHOWROOM_TICKER_KO[key]) return SHOWROOM_TICKER_KO[key];
+    if (key && typeof key === "string") {
+      const decoded = decodeStructuredTickerKey(key);
+      if (decoded) return decoded;
+      return String(key).replace(/_/g, " ");
+    }
+    const sys = obj.system_status || "online";
+    const risk = obj.risk_level || "—";
+    const dir = obj.public_signal_direction || "—";
+    let delay = "";
+    try {
+      if (obj.delayed_metrics && typeof obj.delayed_metrics.delay_seconds === "number") {
+        delay = " · 지연 약 " + obj.delayed_metrics.delay_seconds + "s";
+      }
+    } catch (e) {}
+    return "상태 " + sys + " · 리스크 " + risk + " · 방향 " + dir + delay;
+  }
+
+  function riskPillClass(risk) {
+    const u = String(risk || "").toUpperCase();
+    if (u === "INFO" || u === "SAFE") return "pill pill-ok";
+    if (u === "WARNING") return "pill pill-warn";
+    if (u === "CRITICAL") return "pill pill-danger";
+    return "pill";
+  }
+
+  function renderReactions(obj) {
+    const ul = document.getElementById("reactionList");
+    const ids = obj.showroom_reaction_line_ids;
+    ul.innerHTML = "";
+    if (!Array.isArray(ids) || ids.length === 0) {
+      const li = document.createElement("li");
+      li.textContent = "—";
+      ul.appendChild(li);
+      return;
+    }
+    ids.slice(0, 3).forEach(function (id) {
+      const li = document.createElement("li");
+      li.textContent = SHOWROOM_REACTION_KO[id] || String(id);
+      ul.appendChild(li);
+    });
+  }
+
+  function renderBoard(obj) {
+    const grid = document.getElementById("boardGrid");
+    const dm = obj.delayed_metrics || {};
+    const delaySec = dm.delay_seconds != null ? dm.delay_seconds : "—";
+    const asOf = dm.as_of_utc || obj.timestamp || "—";
+    const pnl = dm.pnl_pct_vs_start;
+    const pnlStr = typeof pnl === "number" ? pnl.toFixed(2) + "% (기준 대비, 공개)" : "—";
+    const mode = obj.showroom_display_mode || "—";
+    const disc = obj.disclaimer_ref || "—";
+    const lastOk = obj.last_ok_utc || "—";
+
+    const risk = obj.risk_level || "—";
+    const sys = obj.system_status || "—";
+    const dir = obj.public_signal_direction || "—";
+    const dirAbs = obj.direction_abstract || "—";
+    const reason = obj.abstract_reason || "—";
+    const eid = obj.event_id || "—";
+
+    grid.innerHTML =
+      '<div class="cell"><p class="k">시스템</p><p class="v">' + escapeHtml(String(sys)) + '</p></div>' +
+      '<div class="cell"><p class="k">리스크</p><p class="v"><span class="' + riskPillClass(risk) + '">' + escapeHtml(String(risk)) + '</span></p></div>' +
+      '<div class="cell"><p class="k">공개 방향</p><p class="v">' + escapeHtml(String(dir)) + '</p></div>' +
+      '<div class="cell"><p class="k">추상 방향</p><p class="v">' + escapeHtml(String(dirAbs)) + '</p></div>' +
+      '<div class="cell"><p class="k">의도 지연</p><p class="v">' + escapeHtml(String(delaySec)) + ' s</p></div>' +
+      '<div class="cell"><p class="k">스냅샷 기준 (UTC)</p><p class="v sub">' + escapeHtml(String(asOf)) + '</p></div>' +
+      '<div class="cell"><p class="k">기준 대비 수익률</p><p class="v">' + escapeHtml(pnlStr) + '</p></div>' +
+      '<div class="cell"><p class="k">연출 모드</p><p class="v sub">' + escapeHtml(String(mode)) + '</p></div>' +
+      '<div class="cell"><p class="k">마지막 정상 수신</p><p class="v sub">' + escapeHtml(String(lastOk)) + '</p></div>' +
+      '<div class="cell"><p class="k">이벤트 ID</p><p class="v sub mono">' + escapeHtml(String(eid)) + '</p></div>' +
+      '<div class="cell"><p class="k">면책 참조</p><p class="v sub mono">' + escapeHtml(String(disc)) + '</p></div>' +
+      '<div class="cell cell-full"><p class="k">추상 사유</p><p class="v sub">' + escapeHtml(String(reason)) + '</p></div>';
+
+    document.getElementById("tickerLine").textContent = tickerLine(obj);
+    renderReactions(obj);
+  }
+
+  async function loadBundleFallback() {
+    const bases = [];
+    try { bases.push(new URL("showroom_public_bundle_v1.json", window.location.href).href); } catch (e) {}
+    bases.push("https://jemaai.cloud/showroom_public_bundle_v1.json");
+    for (const u of bases) {
+      try {
+        const r = await fetch(u, { cache: "no-store" });
+        if (!r.ok) continue;
+        const bundle = await r.json();
+        const pe = bundle.public_event_v1;
+        if (pe && typeof pe === "object") {
+          cachedBundleEvent = pe;
+          return;
+        }
+      } catch (e) { /* next */ }
+    }
+  }
+
+  async function tick() {
+    const baseEl = document.getElementById("base");
+    const st = document.getElementById("pollStatus");
+    const raw = document.getElementById("rawJson");
+    const base = baseEl.value.replace(/\/$/, "");
+    const url = base + "/api/public-events/latest";
+    st.textContent = "GET " + url + " …";
+
+    try {
+      const r = await fetch(url, { cache: "no-store" });
+      const text = await r.text();
+      if (!r.ok) {
+        throw new Error("HTTP " + r.status);
+      }
+      let obj;
+      try { obj = JSON.parse(text); } catch (e) {
+        raw.textContent = text;
+        st.innerHTML = '<span class="err">JSON 파싱 실패</span>';
+        return;
+      }
+      st.innerHTML = '<span class="ok">연결됨</span> · ' + new Date().toISOString();
+      raw.textContent = JSON.stringify(obj, null, 2);
+      renderBoard(obj);
+    } catch (e) {
+      if (cachedBundleEvent && typeof cachedBundleEvent === "object") {
+        st.innerHTML = '<span class="err">API 실패</span> · 정적 번들 이벤트로 대체 · ' + String(e.message || e);
+        raw.textContent = JSON.stringify(cachedBundleEvent, null, 2);
+        renderBoard(cachedBundleEvent);
+      } else {
+        st.innerHTML = '<span class="err">오류</span> · ' + String(e.message || e);
+        raw.textContent = String(e);
+        document.getElementById("boardGrid").innerHTML = '<div class="cell cell-full"><p class="v err">데이터 없음 · API와 showroom_public_bundle_v1.json 배포를 확인하세요.</p></div>';
+        document.getElementById("tickerLine").textContent = "—";
+        document.getElementById("reactionList").innerHTML = "<li>—</li>";
+      }
+    }
+  }
+
+  document.getElementById("btnRefresh").addEventListener("click", tick);
+  document.getElementById("base").addEventListener("change", tick);
+
+  loadBundleFallback().then(function () { return tick(); });
+  setInterval(tick, POLL_MS);
+})();
+  </script>
+</body>
+</html>

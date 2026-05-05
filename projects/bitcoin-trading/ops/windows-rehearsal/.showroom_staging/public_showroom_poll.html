@@ -1,0 +1,3028 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA AI · 검증 공개 쇼룸</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    :root {
+      --bg:#0f131f;
+      --bg2:#171b28;
+      --fg:#dfe2f3;
+      --muted:#99907c;
+      --accent:#f2ca50;
+      --neon:#7fc0ff;
+      --danger:#ff6a6a;
+      --panel-glow:rgba(127, 192, 255, 0.18);
+      --stage-accent: rgba(127, 192, 255, 0.45);
+      --tile-a:#171b28;
+      --tile-b:#0f131f;
+      --bubble-bg:rgba(236, 242, 248, 0.96);
+      --bubble-fg:#112338;
+      --bubble-border:#28425e;
+    }
+    body {
+      font-family: system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(56, 62, 85, 0.35), transparent 42%),
+        radial-gradient(circle at 85% 15%, rgba(212, 175, 55, 0.18), transparent 38%),
+        linear-gradient(180deg, var(--bg) 0%, #0a0e1a 100%);
+      color: var(--fg);
+      margin: 0;
+      padding: 1.25rem;
+    }
+    h1 { font-size: 1.45rem; margin: 0 0 0.35rem; letter-spacing: 0.2px; }
+    .sub { color: var(--muted); font-size: 0.9rem; margin: 0; }
+    .shell { max-width: 1160px; margin: 0 auto; }
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid rgba(122, 154, 193, 0.45);
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(27, 31, 44, 0.95), rgba(15, 19, 31, 0.92));
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(127, 192, 255, 0.12) inset;
+      margin-bottom: 0.9rem;
+    }
+    .hero .brand { display:flex; flex-direction:column; gap:0.3rem; }
+    .hero .stamp { font-size: 0.72rem; color: #d0c5af; letter-spacing: 1px; }
+    .eq-hud {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      min-width: 86px;
+      height: 24px;
+      margin-left: 8px;
+      padding: 3px 6px;
+      border: 1px solid rgba(127, 192, 255, 0.38);
+      border-radius: 6px;
+      background: rgba(10, 14, 24, 0.86);
+    }
+    .eq-bar {
+      width: 6px;
+      height: 6px;
+      border-radius: 2px;
+      background: linear-gradient(180deg, rgba(127, 192, 255, 0.95), rgba(127, 192, 255, 0.35));
+      box-shadow: 0 0 8px rgba(127, 192, 255, 0.38);
+      transition: height 140ms ease, background 140ms ease;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(290px, 0.9fr);
+      gap: 0.9rem;
+      align-items: start;
+    }
+    .panel {
+      border: 1px solid rgba(122, 154, 193, 0.38);
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(27, 31, 44, 0.95), rgba(15, 19, 31, 0.92));
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22), 0 0 22px var(--panel-glow);
+      padding: 0.9rem;
+    }
+    .panel-title { font-size: 0.82rem; color: #d0c5af; margin: 0 0 0.5rem; letter-spacing: 0.4px; text-transform: uppercase; }
+    .row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.27rem 0.56rem;
+      border-radius: 6px;
+      background: linear-gradient(180deg, rgba(27,31,44,0.98), rgba(14,18,29,0.96));
+      border: 1px solid rgba(127, 192, 255, 0.45);
+      color: var(--fg);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset;
+    }
+    .badge.warn { border-color: rgba(233, 168, 0, 0.55); }
+    .badge.ok { border-color: rgba(108, 191, 108, 0.55); }
+    .badge.err { border-color: rgba(232, 93, 76, 0.6); }
+    .badge.info { border-color: rgba(126, 165, 208, 0.65); color: #bed4ea; }
+    .ticker {
+      position: relative;
+      overflow: hidden;
+      background:#0a0e1a;
+      border: 1px solid rgba(242, 202, 80, 0.55);
+      border-radius: 8px;
+      padding: 0.8rem;
+      margin: 0.55rem 0 0.8rem;
+    }
+    .ticker::before {
+      content: "";
+      position: absolute;
+      left: -30%;
+      top: 0;
+      width: 25%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(127, 192, 255, 0.16), transparent);
+      animation: tickerSweep 4.6s linear infinite;
+      pointer-events: none;
+    }
+    .ticker .tline { font-size: 0.9rem; color: var(--fg); margin: 0; white-space: pre-wrap; word-break: break-word; }
+    .stage { background:#0a0e1a; border: 1px solid #4d4635; border-radius: 0; padding: 0.75rem; margin: 0 0 0.75rem; }
+    .stage-wrap { position: relative; width: 100%; aspect-ratio: 256 / 144; max-height: min(62vh, 820px); }
+    .stage canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      background: #0a0e1a;
+      border-radius: 8px;
+      border: 1px solid rgba(122, 154, 193, 0.55);
+      box-shadow: inset 0 0 0 1px rgba(164, 182, 206, 0.08), 0 10px 20px rgba(0, 0, 0, 0.35), 0 0 18px rgba(127, 192, 255, 0.15);
+    }
+    .bubble-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .bubble {
+      position: absolute;
+      background: var(--bubble-bg);
+      color: var(--bubble-fg);
+      border: 1px solid var(--bubble-border);
+      border-radius: 7px;
+      padding: 2px 6px;
+      font-size: 10px;
+      line-height: 1.2;
+      white-space: nowrap;
+      transform: translate(-50%, -100%);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+      font-family: "Press Start 2P", monospace;
+      letter-spacing: -0.3px;
+    }
+    .bubble::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -5px;
+      width: 8px;
+      height: 8px;
+      background: var(--bubble-bg);
+      border-right: 1px solid var(--bubble-border);
+      border-bottom: 1px solid var(--bubble-border);
+      transform: translateX(-50%) rotate(45deg);
+    }
+    .stage-meta { margin-top: 0.45rem; font-size: 0.78rem; color: var(--muted); }
+    .control-hint { margin-top: 0.4rem; font-size: 0.72rem; color: #9eb0c1; }
+    .king-status { margin-top: 0.25rem; font-size: 0.74rem; color: #c9d6e2; }
+    .obs-box { margin-top: 0.55rem; border: 1px dashed #735c00; border-radius: 0; padding: 0.5rem; background: #0a0e1a; }
+    .obs-text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.74rem; color: #ffe088; line-height: 1.35; word-break: break-word; }
+    .broadcast-mode .hero { border-color: #4a6a90; box-shadow: 0 12px 34px rgba(0, 0, 0, 0.38); }
+    .broadcast-mode .badge { font-size: 0.82rem; padding: 0.32rem 0.62rem; border-width: 2px; }
+    .broadcast-mode .panel-title { color: #bed4ea; }
+    .broadcast-mode .tline { font-size: 1rem; }
+    .broadcast-mode .obs-box { border-color: #5e85b0; background: #122033; }
+    .overlay-only {
+      background: transparent !important;
+      color: #ffffff;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .overlay-only .shell { max-width: none; margin: 0; }
+    .overlay-only .hero,
+    .overlay-only .snapshot-strip,
+    .overlay-only .layout > .panel,
+    .overlay-only .layout > .right-stack > .panel:not(.overlay-panel),
+    .overlay-only .info-disclaimer { display: none !important; }
+    .overlay-only .layout { grid-template-columns: 1fr; gap: 0; }
+    .overlay-only .overlay-panel {
+      display: block !important;
+      margin: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      padding: 0.4rem 0.55rem;
+    }
+    .overlay-only .obs-box {
+      margin: 0;
+      border: 1px solid rgba(126, 165, 208, 0.45);
+      border-radius: 6px;
+      background: rgba(10, 18, 30, 0.58);
+    }
+    .overlay-only .obs-text {
+      font-size: 0.84rem;
+      color: #e8f2ff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+    }
+    .chat { background:#0a0e1a; border: 1px solid #4d4635; border-radius: 0; padding: 0.75rem; margin-top: 0.8rem; }
+    .chat pre { background: transparent; padding: 0; margin: 0; white-space: pre-wrap; }
+    .stage {
+      margin: 0.75rem 0 1rem;
+      padding: 0.75rem;
+      border: 1px solid #4d4635;
+      border-radius: 0;
+      background:
+        radial-gradient(circle at 50% 10%, #1a222d, #0b1117),
+        repeating-linear-gradient(0deg, transparent 0 15px, rgba(129,153,183,0.05) 15px 16px),
+        repeating-linear-gradient(90deg, transparent 0 15px, rgba(129,153,183,0.05) 15px 16px);
+    }
+    .sprite-wrap { display:flex; align-items:center; gap:0.75rem; }
+    .sprite { width: 96px; height: 96px; image-rendering: pixelated; object-fit: contain; border: 1px solid #4d4635; border-radius: 0; background: #0a0e1a; }
+    .sprite-meta { font-size: 0.8rem; color: var(--muted); }
+    .sprite-anim-idle { animation: bob 1.8s ease-in-out infinite; }
+    .sprite-anim-defend { animation: shake 0.5s ease-in-out infinite; }
+    .sprite-anim-attack { animation: pulse 0.45s ease-in-out infinite; }
+    @keyframes bob { 0%{transform:translateY(0)} 50%{transform:translateY(-3px)} 100%{transform:translateY(0)} }
+    @keyframes shake { 0%{transform:translateX(0)} 25%{transform:translateX(-1px)} 50%{transform:translateX(1px)} 75%{transform:translateX(-1px)} 100%{transform:translateX(0)} }
+    @keyframes pulse { 0%{transform:scale(1)} 50%{transform:scale(1.06)} 100%{transform:scale(1)} }
+    .anim { transition: transform 250ms ease, filter 250ms ease; }
+    .mode-idle { filter: saturate(1); }
+    .mode-defend { filter: saturate(1.25); transform: translateY(-1px); }
+    .mode-attack { filter: saturate(1.6); transform: translateY(-2px); }
+    pre { background: #0a0e1a; padding: 0.75rem; border-radius: 0; overflow: auto; font-size: 0.8rem; white-space: pre-wrap; word-break: break-all; border: 1px solid #4d4635; }
+    .err { color: #e85d4c; }
+    .ok { color: #6cbf6c; }
+    .warn-txt { color: #e9c15e; }
+    label { font-size: 0.75rem; color: var(--muted); }
+    input, select { width: 100%; padding: 0.4rem; margin: 0.25rem 0 0.75rem; background: #0a0e1a; border: 1px solid #4d4635; color: var(--fg); border-radius: 0; box-sizing: border-box; }
+    .lang-wrap { min-width: 132px; flex: 1; }
+    .compact { margin: 0; }
+    .right-stack { display: grid; gap: 0.9rem; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    @media (max-width: 920px) {
+      .layout { grid-template-columns: 1fr; }
+      .hero { flex-direction: column; align-items: flex-start; }
+    }
+    .info-disclaimer {
+      margin-top: 0.9rem;
+      border-color: #2f4a66;
+      background: linear-gradient(180deg, rgba(11, 18, 30, 0.98), rgba(8, 14, 24, 0.95));
+    }
+    .info-disclaimer .info-body { font-size: 0.86rem; line-height: 1.55; color: var(--fg); }
+    .info-disclaimer .info-body p { margin: 0 0 0.55rem; }
+    .info-disclaimer .info-list {
+      margin: 0.35rem 0 0 1.15rem;
+      padding: 0;
+      list-style: decimal;
+    }
+    .info-disclaimer .info-list li { margin-bottom: 0.5rem; padding-left: 0.25rem; }
+    .info-disclaimer .info-muted {
+      margin: 0.65rem 0 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .info-disclaimer .info-ref { font-family: ui-monospace, monospace; font-size: 0.72rem; }
+    .snapshot-strip { margin-bottom: 0.9rem; }
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin-top: 0.45rem;
+    }
+    @media (max-width: 720px) {
+      .snapshot-grid { grid-template-columns: 1fr; }
+    }
+    .snap-cell {
+      border: 1px solid rgba(122, 154, 193, 0.4);
+      border-radius: 8px;
+      padding: 0.55rem 0.65rem;
+      background: linear-gradient(180deg, rgba(27, 31, 44, 0.98), rgba(15, 19, 31, 0.92));
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+    .snap-cell:hover {
+      transform: translateY(-1px);
+      border-color: rgba(127, 192, 255, 0.72);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35), 0 0 16px rgba(127,192,255,0.2);
+    }
+    .snap-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+    .snap-val { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1.05rem; color: var(--accent); }
+    .snap-val.lamp-green { color: #6cbf6c; }
+    .snap-val.lamp-yellow { color: #e9a800; }
+    .snap-val.lamp-red { color: #e85d4c; }
+    .payload-collapsed { display: none; }
+    .snap-footnote { margin-top: 0.55rem; line-height: 1.45; max-width: 72ch; }
+    .snap-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+    .snap-val.small { font-size: 0.88rem; color: var(--fg); line-height: 1.35; font-family: system-ui, sans-serif; }
+    .snap-val.snap-em { font-size: 1.12rem; color: #f0f4f8; font-weight: 600; }
+    .snap-return-pos { color: #7dcea0; }
+    .snap-return-neg { color: #f1948a; }
+    .snap-cell.snap-span { grid-column: 1 / -1; }
+    .fortress-banner {
+      margin: 0 0 0.9rem;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid #841f00;
+      border-radius: 0;
+      background: linear-gradient(180deg, rgba(147, 0, 10, 0.72), rgba(96, 20, 0, 0.8));
+      color: #ffdad6;
+      font-family: "Press Start 2P", monospace;
+      font-size: 10px;
+      line-height: 1.35;
+      display: none;
+    }
+    .fortress-banner.active { display: block; }
+    body.risk-warning .stage canvas {
+      border-color: rgba(255, 132, 109, 0.9);
+      box-shadow: inset 0 0 0 1px rgba(255, 188, 158, 0.12), 0 10px 20px rgba(0, 0, 0, 0.35), 0 0 26px rgba(255, 110, 94, 0.28);
+    }
+    body.risk-info .stage canvas {
+      border-color: rgba(127, 192, 255, 0.82);
+      box-shadow: inset 0 0 0 1px rgba(164, 182, 206, 0.10), 0 10px 20px rgba(0, 0, 0, 0.35), 0 0 24px rgba(127, 192, 255, 0.22);
+    }
+    body.mode-attack .stage canvas {
+      box-shadow: inset 0 0 0 1px rgba(255, 210, 160, 0.14), 0 10px 20px rgba(0, 0, 0, 0.35), 0 0 30px rgba(255, 180, 90, 0.24);
+    }
+    body.low-fx .stage canvas {
+      box-shadow: inset 0 0 0 1px rgba(164, 182, 206, 0.06), 0 8px 14px rgba(0, 0, 0, 0.28);
+    }
+    body.low-fx .eq-hud { opacity: 0.68; }
+    body.low-fx .eq-bar { transition: none; box-shadow: none; }
+    .signal-overlay {
+      position: fixed;
+      left: 50%;
+      top: 14%;
+      transform: translate(-50%, -50%);
+      min-width: 320px;
+      max-width: 80vw;
+      border: 1px solid rgba(127, 192, 255, 0.8);
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(9, 16, 28, 0.92), rgba(6, 10, 18, 0.9));
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 26px rgba(127, 192, 255, 0.3);
+      color: #e8f2ff;
+      font-family: "Press Start 2P", monospace;
+      font-size: 10px;
+      line-height: 1.45;
+      padding: 10px 14px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 90;
+      transition: opacity 160ms ease, transform 180ms ease;
+    }
+    .signal-overlay.active {
+      opacity: 1;
+      transform: translate(-50%, -48%);
+    }
+    .signal-overlay .t { color: #ffd67a; margin-bottom: 4px; display: block; }
+    .signal-overlay.warn { border-color: rgba(255, 132, 109, 0.95); box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 28px rgba(255, 110, 94, 0.35); }
+    .lock-detail-pop {
+      position: fixed;
+      right: 18px;
+      top: 74px;
+      width: min(460px, calc(100vw - 28px));
+      max-height: 42vh;
+      overflow: auto;
+      z-index: 95;
+      border: 1px solid rgba(127, 192, 255, 0.7);
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(7, 14, 24, 0.95), rgba(4, 9, 16, 0.93));
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45), 0 0 22px rgba(127, 192, 255, 0.25);
+      padding: 10px 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      display: none;
+    }
+    .lock-detail-pop.active { display: block; }
+    .lock-detail-pop .ttl { color: #ffd67a; font-weight: 700; margin-bottom: 6px; font-family: "Press Start 2P", monospace; font-size: 10px; }
+    .lock-detail-pop .line { color: #d5e7fa; margin: 2px 0; word-break: break-word; }
+    .lock-detail-pop .muted { color: #8fb1d4; }
+    #lockBadge { cursor: pointer; }
+    @keyframes tickerSweep { 0% { transform: translateX(0); } 100% { transform: translateX(520%); } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="hero">
+      <div class="brand">
+        <div class="stamp">MKM AI LIVE ENGINE</div>
+        <h1>검증 가능한 방식으로, 일관된 우위를 확인했습니다</h1>
+        <p class="sub">반복·분할·확장·독립 재현·운영 드릴 검증에서 일관 우위를 확인했습니다. 본 화면은 <code>research_only</code> 공개 설명용이며 성과를 확정적으로 약속하지 않습니다.</p>
+        <p class="sub" style="margin-top:0.4rem;">미니멀 보드: <a href="public_showroom_board_minimal.html" style="color: var(--neon); text-decoration: underline;">public_showroom_board_minimal.html</a> · 정적 별도 데모: <a href="public_showroom_probabilistic_saju_v1.html" style="color: var(--neon); text-decoration: underline;">시주 확률(샘플 번들)</a> (동일 루트, 투자 시그널과 무관)</p>
+        <p class="sub" style="margin-top:0.45rem;">
+          <a href="#showroom-information" style="color: var(--neon); text-decoration: underline;">검증 리포트 보기</a>
+          ·
+          <a href="#showroom-information" style="color: var(--neon); text-decoration: underline;">1,000원 질문 시작하기</a>
+          ·
+          <a href="#showroom-information" style="color: var(--neon); text-decoration: underline;">FAQ 보기</a>
+        </p>
+      </div>
+      <div class="row">
+        <div class="badge ok" id="modeBadge">MODE: Idle</div>
+        <div class="badge warn" id="riskBadge">RISK: WARNING</div>
+        <div class="badge" id="dirBadge">DIR: HOLD</div>
+        <div class="badge info" id="sourceBadge">SRC: INIT</div>
+        <div class="badge" id="staleBadge">DATA: LIVE</div>
+        <div class="badge info" id="trustBadge">TRUST: INIT</div>
+        <div class="badge warn" id="lockBadge">LOCK: INIT</div>
+        <div class="eq-hud" id="eqHud" aria-label="live energy meter">
+          <span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span>
+        </div>
+      </div>
+    </div>
+    <div class="fortress-banner" id="noGoBanner">NO_GO GATE CLOSED · MKM AI risk warning is active</div>
+    <div class="signal-overlay" id="signalOverlay">
+      <span class="t">SIGNAL UPDATE</span>
+      <span id="signalOverlayText">Awaiting transition...</span>
+    </div>
+    <div class="lock-detail-pop" id="lockDetailPop">
+      <div class="ttl">LOCK DETAIL</div>
+      <div class="line muted">No signal gate payload yet.</div>
+    </div>
+
+    <div class="panel snapshot-strip" id="showroomSnapshotStrip">
+      <div class="panel-title" id="showroomSnapshotTitle">공개 투자 현황 요약</div>
+      <p class="sub compact" id="showroomSnapshotCaption">지연 스냅샷 · 투자 권유 아님 — 정적 번들 <code class="mono">showroom_public_bundle_v1.json</code></p>
+      <div class="snapshot-grid" id="showroomSnapshotGrid">loading…</div>
+      <p class="sub compact snap-footnote" id="showroomSnapshotFoot"></p>
+      <p class="sub compact mono" id="showroomSnapshotMeta"></p>
+    </div>
+
+    <div class="layout">
+      <div class="panel">
+        <div class="panel-title">Live Ticker</div>
+        <div class="ticker anim mode-idle" id="tickerBox">
+          <p class="tline" id="tickerText">loading ticker...</p>
+        </div>
+
+        <div class="stage">
+          <label for="pixelStage" style="display:block; margin-bottom:0.35rem;">픽셀 캐릭터 스테이지 (v1)</label>
+          <div class="stage-wrap">
+            <canvas id="pixelStage" width="256" height="144"></canvas>
+            <div class="bubble-layer" id="bubbleLayer"></div>
+          </div>
+          <div class="stage-meta mono" id="stageMeta">character=unknown_guard | mode=Idle</div>
+          <div class="king-status mono" id="kingStatus">KING: standby | action: none</div>
+          <div class="king-status mono" id="questCard">QUEST: waiting for signal...</div>
+          <div class="king-status mono" id="twinViewCard">TWIN: public/private sync standby</div>
+          <div class="control-hint">조작: ←↑↓→ 이동, Space 상호작용 (읽기 전용 데모)</div>
+        </div>
+
+        <div class="chat">
+          <label for="chatOut" style="display:block; margin-bottom:0.25rem;">가상 채팅 (예능 반응)</label>
+          <pre id="chatOut">loading chat...</pre>
+        </div>
+      </div>
+
+      <div class="right-stack">
+        <div class="panel">
+          <div class="panel-title">Controls</div>
+          <div class="lang-wrap">
+            <label for="langMode">Dialogue</label>
+            <select id="langMode">
+              <option value="HYBRID">HYBRID</option>
+              <option value="KR">KR</option>
+              <option value="EN">EN</option>
+            </select>
+          </div>
+          <div class="lang-wrap">
+            <label for="fxPreset">FX Preset</label>
+            <select id="fxPreset">
+              <option value="CALM" selected>CALM</option>
+              <option value="BROADCAST">BROADCAST</option>
+              <option value="HYPE">HYPE</option>
+            </select>
+          </div>
+          <div class="lang-wrap">
+            <label for="renderMode">Render Mode</label>
+            <select id="renderMode">
+              <option value="atlas_only" selected>ATLAS_ONLY</option>
+              <option value="debug_fallback">DEBUG_FALLBACK</option>
+            </select>
+          </div>
+          <label for="base">GET Base (no trailing slash)</label>
+          <input id="base" type="text" value="https://api.jemaai.cloud" autocomplete="off" />
+          <p id="status" class="sub compact"></p>
+          <button id="togglePayloadBtn" type="button" style="width:100%; padding:0.45rem; margin:0.2rem 0 0.65rem; background:#0a0e1a; border:1px solid #4d4635; color:#dfe2f3; cursor:pointer;">Debug Payload: OFF</button>
+          <button id="toggleGateLineBtn" type="button" style="width:100%; padding:0.45rem; margin:0 0 0.65rem; background:#0a0e1a; border:1px solid #4d4635; color:#dfe2f3; cursor:pointer;">Gate Line: OFF</button>
+          <button id="toggleReplayBtn" type="button" style="width:100%; padding:0.45rem; margin:0 0 0.4rem; background:#0a0e1a; border:1px solid #4d4635; color:#dfe2f3; cursor:pointer;">Replay: OFF</button>
+          <div class="lang-wrap">
+            <label for="replaySpeed">Replay Speed</label>
+            <select id="replaySpeed">
+              <option value="1">1x</option>
+              <option value="2">2x</option>
+              <option value="4">4x</option>
+            </select>
+          </div>
+          <label for="replaySeek">Replay Seek</label>
+          <input id="replaySeek" type="range" min="0" max="0" value="0" style="width:100%;" />
+          <button id="toggleTwinViewBtn" type="button" style="width:100%; padding:0.45rem; margin:0.45rem 0 0.65rem; background:#0a0e1a; border:1px solid #4d4635; color:#dfe2f3; cursor:pointer;">Twin View: OFF</button>
+          <div class="obs-box overlay-panel" id="obsOverlayPanel">
+            <label style="display:block; margin-bottom:0.25rem;">OBS Overlay Text (readonly)</label>
+            <div id="obsOverlayText" class="obs-text">loading…</div>
+          </div>
+        </div>
+
+        <div class="panel payload-collapsed" id="payloadPanel">
+          <div class="panel-title">Latest Payload (Whitelisted)</div>
+          <pre id="out">loading...</pre>
+        </div>
+      </div>
+    </div>
+
+    <section
+      class="panel info-disclaimer"
+      id="showroom-information"
+      data-disclaimer-ref="jemaai_showroom_v1"
+      aria-label="Information and disclaimer"
+    >
+      <div class="panel-title">Information (MKM AI)</div>
+      <div class="info-body">
+        <p>
+          이 페이지는 MKM AI 공개 쇼룸(폴링 데모)이며, <code class="mono">GET /api/public-events/latest</code>로 수신한
+          <strong>화이트리스트 필드만</strong> 표시합니다. 실시간·무지연을 의미하지 않습니다.
+          공개 지표 해석은 <strong>다기준 의사결정(MCDA)</strong> 관측 요약 기준입니다.
+        </p>
+        <ol class="info-list">
+          <li><strong>투자 권유 없음:</strong> 투자 자문·매매 권유·성과 보장을 제공하지 않습니다.</li>
+          <li>
+            <strong>데이터 성격:</strong> 관측·시각화·실험 목적이며, 지연·스냅샷일 수 있습니다.
+            과거·현재의 표시가 미래 수익이나 결과를 담보하지 않습니다.
+          </li>
+          <li>
+            <strong>운영 분리:</strong> 실매매·집행 로직과 동일하다고 보지 않습니다. 내부 운영 단계(예: 권장 스테이지
+            <code class="mono">S1_SHADOW</code>)와 공개 표시는 별도이며, 내부 모니터에서 쓰이는 지표명(예:
+            <code class="mono">unified_score_balanced</code>)이 이 화면에 직접 나타나지 않을 수 있습니다.
+          </li>
+          <li>
+            <strong>면책:</strong> 본 정보를 바탕으로 한 판단과 그 결과에 대한 책임은 이용자에게 있습니다.
+            법적 검토가 필요하면 전문가 자문을 받으십시오.
+          </li>
+        </ol>
+        <p class="info-muted">
+          <span class="info-ref">disclaimer_ref=jemaai_showroom_v1</span>
+          — <code class="mono">exploratory_only</code> 원칙에 맞춘 No Hype 고지입니다.
+        </p>
+        <p class="info-muted" style="margin-top:0.55rem;">
+          정적 시주 시각화(번들 <code class="mono">showroom_saju_hour_bundle_demo_v1.json</code>):
+          <a href="public_showroom_probabilistic_saju_v1.html">public_showroom_probabilistic_saju_v1.html</a>
+        </p>
+      </div>
+    </section>
+  </div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const defaultBase = params.get("api") || "https://api.jemaai.cloud";
+    document.getElementById("base").value = defaultBase;
+    const POLL_MS = 20000;
+    const BROADCAST_MODE = /^(1|true|on|yes|y)$/i.test(params.get("broadcast") || "");
+    const OVERLAY_ONLY = /^(1|true|on|yes|y)$/i.test(params.get("overlay") || "");
+    const OVERLAY_PRESET_RAW = String(params.get("preset") || "detailed").toLowerCase();
+    const OVERLAY_PRESET = (OVERLAY_PRESET_RAW === "short" || OVERLAY_PRESET_RAW === "compact" || OVERLAY_PRESET_RAW === "detailed")
+      ? OVERLAY_PRESET_RAW
+      : "detailed";
+
+    if (BROADCAST_MODE) {
+      document.body.classList.add("broadcast-mode");
+    }
+    if (OVERLAY_ONLY) {
+      document.body.classList.add("overlay-only");
+      const panel = document.getElementById("obsOverlayPanel");
+      if (panel && panel.parentElement) {
+        panel.parentElement.parentElement.appendChild(panel);
+      }
+    }
+
+    const chatLines = [];
+    const chatMax = 10;
+    let lastEventId = null;
+    let currentSource = "INIT";
+    const ROLE_BY_ACTOR = {
+      dragon_quant: "commander",
+      tiger_shield: "risk",
+      ox_guard: "liquidity",
+      rabbit_scalper: "micro",
+      rat_arbitrage: "spread",
+      snake_hedger: "hedge",
+      horse_trend: "trend",
+      sheep_yield: "carry"
+    };
+    const stageState = {
+      obj: {},
+      mode: "Idle",
+      frame: 0,
+      lastTs: 0,
+      charId: "unknown_guard",
+      actionStep: "-",
+      pulse: 0,
+      bubbles: [],
+      actors: [],
+      lang: "HYBRID",
+      quality: "high",
+      fpsEma: 60,
+      lastQualityAdjustTs: 0,
+      king: { x: 128, y: 102, speed: 36, actionUntilTs: 0, actionText: "none" },
+      keyState: { left: false, right: false, up: false, down: false },
+      noGoUntilTs: 0,
+      tavernIndex: 0,
+      deathUntilTs: 0,
+      respawnAtTs: 0,
+      respawnPoint: { x: 34, y: 118 },
+      lastLiquidationEventId: null,
+      lastRetargetTs: 0,
+      modeLockUntilTs: 0,
+      flashUntilTs: 0,
+      flashColor: "rgba(255,255,255,0.20)",
+      floatTexts: [],
+      comboCount: 0,
+      comboUntilTs: 0,
+      comboLabel: "",
+      backdropCache: {},
+      fxPreset: "CALM",
+      showGateLine: false,
+      renderMode: "atlas_only",
+      trustLevel: "INIT",
+      replay: {
+        enabled: false,
+        tape: [],
+        idx: 0,
+        speed: 1,
+        lastAdvanceTs: 0
+      },
+      twinViewOn: false,
+      crisisUntilTs: 0,
+      crisisCooldownUntilTs: 0,
+      overlayUntilTs: 0,
+      overlayText: "",
+      overlayWarn: false,
+      cameraPunchUntilTs: 0,
+      cameraPunchPower: 0,
+      lastModeFx: "Idle",
+      lockDetailOpen: false,
+      lockDetail: null
+    };
+
+    /** Logical stage coordinates (existing draw code uses 256×144 space). Backing bitmap follows DPR for sharp scaling. */
+    const STAGE_LOGICAL_W = 256;
+    const STAGE_LOGICAL_H = 144;
+
+    function syncPixelStageCanvas(canvas) {
+      if (!canvas) return false;
+      const dprCap = Math.min(window.devicePixelRatio || 1, 3);
+      const rect = canvas.getBoundingClientRect();
+      let cssW = rect.width;
+      let cssH = rect.height;
+      if (!cssW || cssW < 8) {
+        cssW = canvas.clientWidth || STAGE_LOGICAL_W;
+      }
+      if (!cssH || cssH < 8) {
+        cssH = Math.round((cssW * STAGE_LOGICAL_H) / STAGE_LOGICAL_W);
+      }
+      const bw = Math.max(STAGE_LOGICAL_W, Math.floor(cssW * dprCap));
+      const bh = Math.max(STAGE_LOGICAL_H, Math.floor(cssH * dprCap));
+      if (canvas.width !== bw || canvas.height !== bh) {
+        canvas.width = bw;
+        canvas.height = bh;
+        return true;
+      }
+      return false;
+    }
+
+    const MAIN_CHARACTER_ID = "dragon_quant";
+    const spriteByMode = {
+      Idle: {
+        name: "The Sovereign (Dragon)",
+        url: "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774951700015_1.png"
+      },
+      Defend: {
+        name: "Risk Guardian",
+        url: "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955383271_1.png"
+      },
+      Attack: {
+        name: "Signal Alchemist",
+        url: "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955517797_1.png"
+      }
+    };
+    const fallbackProfiles = {
+      demo_guard: { archetype: "guardian", accent: "#6ccf95", eye: "#f6fbff" },
+      unknown_guard: { archetype: "guardian", accent: "#77c6ff", eye: "#f6fbff" },
+      bull_alpha: { archetype: "attacker", accent: "#ff8f80", eye: "#fff2d9" },
+      bear_shield: { archetype: "defender", accent: "#ffc96c", eye: "#f4f8ff" }
+    };
+    let characterProfiles = { ...fallbackProfiles };
+    let actionBookSteps = [];
+    const spriteCache = {};
+    let activeSpriteUrl = "";
+    const atlasAnim = {
+      ready: false,
+      image: null,
+      frameMap: {},
+      error: "",
+      sequences: {
+        Idle: ["hero_idle_0", "hero_idle_1", "hero_idle_2"],
+        Attack: ["hero_attack_0", "hero_attack_1"],
+        Defend: ["hero_hit_0", "hero_idle_2"]
+      }
+    };
+    let cachedBundleEvent = null;
+    let lastNetworkErrAt = 0;
+
+    function setSourceBadge(src, detail) {
+      currentSource = src || "UNKNOWN";
+      const el = document.getElementById("sourceBadge");
+      if (!el) return;
+      el.textContent = "SRC: " + currentSource + (detail ? " · " + detail : "");
+      el.classList.remove("ok", "warn", "err", "info");
+      if (currentSource === "LOCAL" || currentSource === "LOCAL-FALLBACK") {
+        el.classList.add("warn");
+      } else if (currentSource === "CLOUD") {
+        el.classList.add("ok");
+      } else if (currentSource === "ERROR") {
+        el.classList.add("err");
+      } else {
+        el.classList.add("info");
+      }
+    }
+
+    function setStaleBadge(obj) {
+      const el = document.getElementById("staleBadge");
+      if (!el) return;
+      const tsRaw = String((obj && obj.timestamp) || "");
+      let staleSec = NaN;
+      try {
+        const t = Date.parse(tsRaw);
+        if (Number.isFinite(t)) staleSec = (Date.now() - t) / 1000;
+      } catch (e) {}
+      let label = "DATA: LIVE";
+      let cls = "ok";
+      if (!Number.isFinite(staleSec)) {
+        label = "DATA: UNKNOWN";
+        cls = "info";
+      } else if (staleSec >= 300) {
+        label = `DATA: STALE ${Math.round(staleSec)}s`;
+        cls = "err";
+      } else if (staleSec >= 180) {
+        label = `DATA: DELAY ${Math.round(staleSec)}s`;
+        cls = "warn";
+      } else if (staleSec >= 90) {
+        label = `DATA: LAG ${Math.round(staleSec)}s`;
+        cls = "info";
+      }
+      el.textContent = label;
+      el.classList.remove("ok", "warn", "err", "info");
+      el.classList.add(cls);
+    }
+
+    function computeTrustLevel(obj) {
+      const tsRaw = String((obj && obj.timestamp) || "");
+      let staleSec = NaN;
+      try {
+        const t = Date.parse(tsRaw);
+        if (Number.isFinite(t)) staleSec = (Date.now() - t) / 1000;
+      } catch (e) {}
+      if (currentSource === "ERROR") return "ERROR";
+      if (currentSource === "LOCAL-FALLBACK") return "FALLBACK";
+      if (!Number.isFinite(staleSec)) return "UNKNOWN";
+      if (staleSec >= 300) return "STALE";
+      if (staleSec >= 180) return "DELAY";
+      if (staleSec >= 90) return "LAG";
+      return "LIVE";
+    }
+
+    function setTrustBadge(obj) {
+      const el = document.getElementById("trustBadge");
+      if (!el) return;
+      const t = computeTrustLevel(obj);
+      stageState.trustLevel = t;
+      el.textContent = "TRUST: " + t;
+      el.classList.remove("ok", "warn", "err", "info");
+      if (t === "LIVE") el.classList.add("ok");
+      else if (t === "LAG" || t === "DELAY" || t === "FALLBACK") el.classList.add("warn");
+      else if (t === "STALE" || t === "ERROR") el.classList.add("err");
+      else el.classList.add("info");
+    }
+
+    function setSceneTone(obj, mode) {
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      document.body.classList.remove("risk-warning", "risk-info", "mode-attack");
+      if (risk === "WARNING") document.body.classList.add("risk-warning");
+      else document.body.classList.add("risk-info");
+      if (mode === "Attack") document.body.classList.add("mode-attack");
+    }
+
+    function setLockBadge(obj) {
+      const el = document.getElementById("lockBadge");
+      if (!el) return;
+      const sg = (obj && obj.signal_gate_public && typeof obj.signal_gate_public === "object") ? obj.signal_gate_public : {};
+      stageState.lockDetail = sg;
+      const raw = String(sg.lock_reason || "NONE");
+      const key = raw.toUpperCase();
+      el.textContent = "LOCK: " + raw;
+      el.classList.remove("ok", "warn", "err", "info");
+      if (key === "NONE") {
+        el.classList.add("ok");
+      } else if (key.startsWith("MIN_CONFIDENCE") || key.startsWith("SINGULAR_HOLD") || key === "WARMUP" || key === "INTEGRATED_HOLD") {
+        el.classList.add("warn");
+      } else if (key === "RISK_GUARD" || key === "REGIME_DEFENSE") {
+        el.classList.add("err");
+      } else {
+        el.classList.add("info");
+      }
+    }
+
+    function renderLockDetailPanel() {
+      const panel = document.getElementById("lockDetailPop");
+      if (!panel) return;
+      panel.classList.toggle("active", !!stageState.lockDetailOpen);
+      if (!stageState.lockDetailOpen) return;
+      const sg = (stageState.lockDetail && typeof stageState.lockDetail === "object") ? stageState.lockDetail : {};
+      const lines = [
+        `lock_reason=${String(sg.lock_reason || "NONE")}`,
+        `signal_total_count=${String(sg.signal_total_count ?? "—")}`,
+        `integrated_signal=${String(sg.integrated_signal || "HOLD")}`,
+        `integrated_confidence=${typeof sg.integrated_confidence === "number" ? Number(sg.integrated_confidence).toFixed(4) : "—"}`,
+        `singular_action=${String(sg.singular_action || "LOCKED")}`,
+        `singular_decision=${String(sg.singular_decision || "HOLD")}`,
+        `singular_reason=${String(sg.singular_reason || "unknown")}`,
+        `warning_level=${String(sg.warning_level || "NORMAL")}`,
+        `regime_defense_mode=${String(!!sg.regime_defense_mode)}`,
+        `regime_id=${String(sg.regime_id || "unknown")}`,
+        `last_signal_utc=${String(sg.last_signal_utc || "—")}`
+      ];
+      panel.innerHTML = `<div class="ttl">LOCK DETAIL</div>${lines.map((l) => `<div class="line">${escapeHtml(l)}</div>`).join("")}`;
+    }
+
+    function updateEqualizer(obj, mode, ts) {
+      const el = document.getElementById("eqHud");
+      if (!el) return;
+      const bars = el.querySelectorAll(".eq-bar");
+      if (!bars || !bars.length) return;
+      const dir = String((obj && obj.public_signal_direction) || "HOLD").toUpperCase();
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      const lowFx = stageState.quality === "low" || stageState.fpsEma < 34;
+      const base = mode === "Attack" ? (lowFx ? 10 : 14) : (risk === "WARNING" ? (lowFx ? 8 : 10) : (lowFx ? 6 : 7));
+      const pulse = mode === "Attack" ? (lowFx ? 0.018 : 0.024) : (lowFx ? 0.012 : 0.016);
+      document.body.classList.toggle("low-fx", lowFx);
+      for (let i = 0; i < bars.length; i += 1) {
+        if (lowFx && i % 2 === 1) {
+          bars[i].style.height = "5px";
+          bars[i].style.background = "linear-gradient(180deg, rgba(126,165,208,0.7), rgba(126,165,208,0.25))";
+          continue;
+        }
+        const wave = Math.abs(Math.sin((ts * pulse) + i * 0.55));
+        const h = Math.max(4, Math.round(base + wave * (mode === "Attack" ? (lowFx ? 8 : 14) : (lowFx ? 5 : 9))));
+        bars[i].style.height = `${h}px`;
+        if (risk === "WARNING") {
+          bars[i].style.background = "linear-gradient(180deg, rgba(255,132,109,0.98), rgba(255,132,109,0.36))";
+        } else if (dir === "SELL" || dir === "SHORT") {
+          bars[i].style.background = "linear-gradient(180deg, rgba(194,153,255,0.96), rgba(194,153,255,0.34))";
+        } else {
+          bars[i].style.background = "linear-gradient(180deg, rgba(127,192,255,0.95), rgba(127,192,255,0.35))";
+        }
+      }
+    }
+
+    function explainReasonLine(obj, mode) {
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      const dir = String((obj && obj.public_signal_direction) || "HOLD").toUpperCase();
+      const trust = stageState.trustLevel || "UNKNOWN";
+      if (risk === "WARNING") return `Explain: WARNING -> Defend, trust=${trust}`;
+      if (mode === "Attack" && (dir === "BUY" || dir === "LONG")) return `Explain: Long momentum detected, trust=${trust}`;
+      if (mode === "Attack" && (dir === "SELL" || dir === "SHORT")) return `Explain: Short momentum detected, trust=${trust}`;
+      return `Explain: Hold/observe mode, trust=${trust}`;
+    }
+
+    function questLineFromState(obj, mode) {
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      const dir = String((obj && obj.public_signal_direction) || "HOLD").toUpperCase();
+      if (risk === "WARNING") return "QUEST: Guard the gate · no aggressive action";
+      if (mode === "Attack" && (dir === "BUY" || dir === "LONG")) return "QUEST: Keep formation · long chain discipline";
+      if (mode === "Attack" && (dir === "SELL" || dir === "SHORT")) return "QUEST: Keep formation · short chain discipline";
+      return "QUEST: Scout and preserve optionality";
+    }
+
+    function setQuestCard(obj, mode) {
+      const el = document.getElementById("questCard");
+      if (!el) return;
+      el.textContent = questLineFromState(obj, mode);
+    }
+
+    function setTwinViewCard(obj) {
+      const el = document.getElementById("twinViewCard");
+      if (!el) return;
+      if (!stageState.twinViewOn) {
+        el.textContent = "TWIN: OFF";
+        return;
+      }
+      const pub = {
+        dir: String((obj && obj.public_signal_direction) || "HOLD").toUpperCase(),
+        risk: String((obj && obj.risk_level) || "INFO").toUpperCase(),
+        trust: stageState.trustLevel
+      };
+      const priv = {
+        step: String(stageState.actionStep || "-"),
+        quality: String(stageState.quality || "high"),
+        source: String(currentSource || "INIT")
+      };
+      el.textContent = `TWIN: PUB(${pub.dir}/${pub.risk}/${pub.trust}) · PRIV(${priv.step}/${priv.quality}/${priv.source})`;
+    }
+
+    function pushReplayEvent(obj) {
+      if (!obj || typeof obj !== "object") return;
+      const eid = String(obj.event_id || "");
+      if (!eid) return;
+      const tape = stageState.replay.tape;
+      if (tape.length && String(tape[tape.length - 1].event_id || "") === eid) return;
+      tape.push({
+        timestamp: obj.timestamp,
+        event_id: eid,
+        risk_level: obj.risk_level,
+        public_signal_direction: obj.public_signal_direction,
+        abstract_reason: obj.abstract_reason,
+        active_character_id: obj.active_character_id,
+        system_status: obj.system_status,
+        c2_signal_lamp: obj.c2_signal_lamp,
+        unified_score_balanced: obj.unified_score_balanced
+      });
+      if (tape.length > 240) tape.shift();
+      const seek = document.getElementById("replaySeek");
+      if (seek) {
+        seek.max = String(Math.max(0, tape.length - 1));
+        if (!stageState.replay.enabled) seek.value = seek.max;
+      }
+    }
+
+    function maybeAdvanceReplay(ts) {
+      if (!stageState.replay.enabled) return;
+      const tape = stageState.replay.tape;
+      if (!tape.length) return;
+      const stepMs = Math.max(160, 1200 / Math.max(1, Number(stageState.replay.speed || 1)));
+      if ((ts - stageState.replay.lastAdvanceTs) < stepMs) return;
+      stageState.replay.lastAdvanceTs = ts;
+      stageState.replay.idx = Math.min(tape.length - 1, stageState.replay.idx + 1);
+      const ev = tape[stageState.replay.idx];
+      if (ev) applyShowroomEvent(ev, true);
+      const seek = document.getElementById("replaySeek");
+      if (seek) seek.value = String(stageState.replay.idx);
+    }
+
+    function fxProfile() {
+      const p = String(stageState.fxPreset || "BROADCAST").toUpperCase();
+      if (p === "CALM") return { particle: 0.55, shake: 0.35, flash: 0.55, float: 0.65, combo: 0 };
+      if (p === "HYPE") return { particle: 1.35, shake: 1.25, flash: 1.25, float: 1.25, combo: 1 };
+      return { particle: 1.0, shake: 1.0, flash: 1.0, float: 1.0, combo: 1 };
+    }
+
+    function getSpriteImage(url) {
+      if (!url) return null;
+      if (!spriteCache[url]) {
+        const img = new Image();
+        // Do not set crossOrigin: assets.jemaai.cloud (hcdn) does not send CORS; anonymous mode blocks load.
+        // Display-only drawImage works without CORS when crossOrigin is omitted.
+        img.src = url;
+        spriteCache[url] = img;
+      }
+      return spriteCache[url];
+    }
+
+    function frameByName(name) {
+      if (!name) return null;
+      return atlasAnim.frameMap[String(name)] || null;
+    }
+
+    function atlasFrameForMode(mode, ts) {
+      if (!atlasAnim.ready) return null;
+      const seq = atlasAnim.sequences[mode] || atlasAnim.sequences.Idle;
+      if (!seq || !seq.length) return null;
+      const fps = mode === "Attack" ? 7 : 4;
+      const idx = Math.floor((ts / 1000) * fps) % seq.length;
+      return frameByName(seq[idx]) || null;
+    }
+
+    function atlasFrameForActor(actor, mode, ts) {
+      if (!atlasAnim.ready || !actor) return null;
+      const baseMode = mode || "Idle";
+      const major = !!actor.major;
+      if (!major) return null;
+      // Major NPCs get atlas animation; minors keep lightweight pixel sprites.
+      let seq = atlasAnim.sequences.Idle;
+      if (baseMode === "Attack") seq = ["hero_attack_0", "hero_attack_1"];
+      else if (baseMode === "Defend") seq = actor.id === "tiger_shield" ? ["hero_hit_0", "hero_idle_2"] : ["hero_idle_2", "hero_idle_1"];
+      const fps = baseMode === "Attack" ? 6 : 3;
+      const phase = Number(actor.phase || 0);
+      const idx = Math.floor(((ts / 1000) + phase) * fps) % seq.length;
+      return frameByName(seq[idx]) || null;
+    }
+
+    async function loadAtlasAnimation() {
+      try {
+        const resp = await fetch("./atlas_latest_browser.json", { cache: "no-store" });
+        if (!resp.ok) {
+          atlasAnim.error = "atlas pointer unavailable";
+          return;
+        }
+        const ptr = await resp.json();
+        if (!ptr || !ptr.metadata_json) {
+          atlasAnim.error = "atlas pointer missing metadata";
+          return;
+        }
+        const metaResp = await fetch("./" + String(ptr.metadata_json).replace(/^\.\//, ""), { cache: "no-store" });
+        if (!metaResp.ok) {
+          atlasAnim.error = "atlas metadata unavailable";
+          return;
+        }
+        const meta = await metaResp.json();
+        if (!meta || !Array.isArray(meta.frames)) {
+          atlasAnim.error = "atlas metadata invalid";
+          return;
+        }
+        const imgSrc = "./" + String(ptr.atlas_webp || ptr.atlas_png || "").replace(/^\.\//, "");
+        if (!imgSrc) {
+          atlasAnim.error = "atlas image path missing";
+          return;
+        }
+        const atlasImg = new Image();
+        atlasImg.src = imgSrc;
+        atlasImg.onload = () => {
+          const map = {};
+          for (const fr of meta.frames) {
+            if (fr && fr.name && fr.frame) map[String(fr.name)] = fr.frame;
+          }
+          atlasAnim.image = atlasImg;
+          atlasAnim.frameMap = map;
+          atlasAnim.error = "";
+          atlasAnim.ready = true;
+        };
+        atlasImg.onerror = () => {
+          atlasAnim.error = "atlas image load failed";
+        };
+      } catch (e) {
+        atlasAnim.error = "atlas load exception";
+      }
+    }
+
+    function colorFromCharacterId(rawId) {
+      const id = String(rawId || "unknown_guard");
+      let hash = 2166136261;
+      for (let i = 0; i < id.length; i += 1) {
+        hash ^= id.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+      }
+      const hue = Math.abs(hash) % 360;
+      return `hsl(${hue} 70% 58%)`;
+    }
+
+    async function loadCharacterProfiles() {
+      try {
+        const resp = await fetch("./character_profiles_v1_1.json", { cache: "no-store" });
+        if (!resp.ok) return;
+        const payload = await resp.json();
+        if (payload && payload.profiles && typeof payload.profiles === "object") {
+          characterProfiles = { ...fallbackProfiles, ...payload.profiles };
+        }
+      } catch (e) {
+        // Keep fallback profiles.
+      }
+    }
+
+    async function loadActionBook() {
+      const buildFallback = () => {
+        const axes = [
+          { p: "S", axis: "surge", kr: "상승 시나리오", en: "Surge scenario" },
+          { p: "C", axis: "crash", kr: "하락 시나리오", en: "Crash scenario" },
+          { p: "W", axis: "warning", kr: "경보 시나리오", en: "Warning scenario" },
+          { p: "R", axis: "recovery", kr: "회복 시나리오", en: "Recovery scenario" }
+        ];
+        const out = [];
+        for (const a of axes) {
+          for (let i = 1; i <= 10; i += 1) {
+            out.push({
+              id: `${a.p}${i}`,
+              axis: a.axis,
+              lines: {
+                KR: `${a.kr} ${i}단계`,
+                EN: `${a.en} step ${i}`
+              }
+            });
+          }
+        }
+        return out;
+      };
+      try {
+        const resp = await fetch("./action_book_v1.json", { cache: "no-store" });
+        if (!resp.ok) {
+          actionBookSteps = buildFallback();
+          return;
+        }
+        const payload = await resp.json();
+        if (payload && Array.isArray(payload.steps)) {
+          actionBookSteps = payload.steps.slice();
+          return;
+        }
+        actionBookSteps = buildFallback();
+      } catch (e) {
+        actionBookSteps = buildFallback();
+      }
+    }
+
+    function pickActionStep(obj, mode, actorId, eventId) {
+      if (!actionBookSteps.length) return null;
+      const risk = String(obj.risk_level || "").toUpperCase();
+      const dir = directionFromEvent(obj);
+      let prefix = "R";
+      if (risk === "WARNING") prefix = "W";
+      else if (dir === "bear") prefix = "C";
+      else if (mode === "Attack" || dir === "bull") prefix = "S";
+      const raw = String(eventId || actorId || "0");
+      let hash = 0;
+      for (let i = 0; i < raw.length; i += 1) hash = ((hash << 5) - hash + raw.charCodeAt(i)) | 0;
+      const idx = Math.abs(hash % 10) + 1;
+      const id = `${prefix}${idx}`;
+      return actionBookSteps.find((s) => String(s.id || "").toUpperCase() === id) || null;
+    }
+
+    function actionLine(step, langMode) {
+      if (!step || !step.lines) return "";
+      if (langMode === "KR") return String(step.lines.KR || step.lines.EN || "");
+      if (langMode === "EN") return String(step.lines.EN || step.lines.KR || "");
+      const both = [step.lines.EN, step.lines.KR].filter(Boolean);
+      return String(both[Math.floor(Math.random() * both.length)] || "");
+    }
+
+    function profileFromCharacterId(rawId) {
+      const id = String(rawId || "unknown_guard").toLowerCase();
+      if (characterProfiles[id]) return characterProfiles[id];
+      if (id.includes("bull") || id.includes("attack")) return characterProfiles.bull_alpha;
+      if (id.includes("bear") || id.includes("shield") || id.includes("guard")) return characterProfiles.bear_shield;
+      return characterProfiles.unknown_guard;
+    }
+
+    function drawPixelCharacter(ctx, x, y, scale, color, eyeShift, profile, mode = "Idle", pulse = 0, phase = 0, facing = "front", walk = 0, blink = false) {
+      const p = (dx, dy, w = 1, h = 1, c = color) => {
+        ctx.fillStyle = c;
+        ctx.fillRect(x + dx * scale, y + dy * scale, w * scale, h * scale);
+      };
+      const headBob = mode === "Attack" ? Math.round(Math.sin(pulse * 2.2 + phase) * 1) : Math.round(Math.sin(pulse * 1.2 + phase) * 0.6);
+      const attackLean = mode === "Attack" ? 1 : 0;
+      const defendGuard = mode === "Defend";
+      const side = facing === "left" ? -1 : (facing === "right" ? 1 : 0);
+      const step = Math.round(Math.sin(pulse * 6 + phase + walk * 0.08) * (mode === "Idle" ? 0.5 : 1.1));
+      const faceUp = facing === "up";
+      const faceDown = facing === "down";
+      // Ground shadow for depth.
+      ctx.fillStyle = "rgba(8, 12, 18, 0.35)";
+      ctx.fillRect(x + 1 * scale, y + 13 * scale, 8 * scale, 2 * scale);
+      p(3 + attackLean + side, 0 + headBob, 6, 1);
+      p(2 + attackLean + side, 1 + headBob, 8, 1);
+      p(1 + attackLean + side, 2 + headBob, 10, 1);
+      p(1 + attackLean + side, 3 + headBob, 10, faceUp ? 5 : 6);
+      p(2 + attackLean + side, 9 + headBob, 8, 1);
+      p(3 + attackLean + side, 10 + headBob, 6, 1);
+      p(0 + attackLean + side, 4 + headBob, 1, 3);
+      p(10 + attackLean + side, 4 + headBob, 1, 3);
+      if (faceUp) {
+        // Back-facing silhouette: no visible eyes, brighter shoulder accent.
+        p(3 + attackLean + side, 4 + headBob, 1, 2, profile.accent || "#d8e3ef");
+        p(8 + attackLean + side, 4 + headBob, 1, 2, profile.accent || "#d8e3ef");
+        p(4 + attackLean + side, 7 + headBob, 3, 1, "rgba(12,20,30,0.55)");
+      } else {
+        if (blink) {
+          p(4 + eyeShift + attackLean + side, 5 + headBob, 1, 1, "#0a0f14");
+          p(7 + eyeShift + attackLean + side, 5 + headBob, 1, 1, "#0a0f14");
+        } else {
+          p(4 + eyeShift + attackLean + side, 4 + headBob, 1, 1, profile.eye || "#f6fbff");
+          p(7 + eyeShift + attackLean + side, 4 + headBob, 1, 1, profile.eye || "#f6fbff");
+          p(4 + eyeShift + attackLean + side, 5 + headBob, 1, 1, "#0a0f14");
+          p(7 + eyeShift + attackLean + side, 5 + headBob, 1, 1, "#0a0f14");
+        }
+        p(5 + attackLean + side, 7 + headBob, 2, 1, faceDown ? "#111821" : "#0a0f14");
+      }
+      p(4, 11, 1, 2, color);
+      p(7, 11, 1, 2, color);
+      p(2, 11 + step, 1, 3, color);
+      p(8, 11 - step, 1, 3, color);
+      // Shoulder accent to differentiate character profiles.
+      p(1 + attackLean + side, 6 + headBob, 1, 2, profile.accent || color);
+      p(9 + attackLean + side, 6 + headBob, 1, 2, profile.accent || color);
+      // Directional arm/cape patterns for clearer 4-direction silhouette.
+      if (faceUp) {
+        p(2 + side, 9 + headBob, 1, 2, "rgba(96, 108, 124, 0.95)");
+        p(8 + side, 9 + headBob, 1, 2, "rgba(96, 108, 124, 0.95)");
+        p(4 + side, 10 + headBob, 3, 1, "rgba(72, 82, 96, 0.95)");
+      } else if (faceDown) {
+        p(1 + side, 8 + headBob, 1, 3, "rgba(176, 56, 48, 0.78)");
+        p(9 + side, 8 + headBob, 1, 3, "rgba(176, 56, 48, 0.78)");
+        p(4 + side, 9 + headBob, 3, 1, "rgba(202, 84, 74, 0.82)");
+      } else if (facing === "left") {
+        p(1 + side, 8 + headBob, 1, 3, "rgba(176, 56, 48, 0.72)");
+        p(8 + side, 7 + headBob, 2, 1, "rgba(82, 96, 116, 0.85)");
+      } else if (facing === "right") {
+        p(9 + side, 8 + headBob, 1, 3, "rgba(176, 56, 48, 0.72)");
+        p(1 + side, 7 + headBob, 2, 1, "rgba(82, 96, 116, 0.85)");
+      }
+      if (defendGuard) {
+        p(5 + attackLean + side, 3 + headBob, 1, 8, "rgba(239, 209, 128, 0.9)");
+      }
+    }
+
+    function ensureActors() {
+      if (stageState.actors.length) return;
+      stageState.actors = [
+        { id: MAIN_CHARACTER_ID, x: 128, y: 78, tx: 128, ty: 78, jitter: 0, major: true },
+        { id: "tiger_shield", x: 72, y: 88, tx: 72, ty: 88, jitter: 0, major: true },
+        { id: "ox_guard", x: 178, y: 92, tx: 178, ty: 92, jitter: 0, major: false },
+        { id: "rabbit_scalper", x: 44, y: 94, tx: 44, ty: 94, jitter: 0, major: false },
+        { id: "rat_arbitrage", x: 30, y: 78, tx: 30, ty: 78, jitter: 0, major: false },
+        { id: "snake_hedger", x: 206, y: 78, tx: 206, ty: 78, jitter: 0, major: false },
+        { id: "horse_trend", x: 94, y: 106, tx: 94, ty: 106, jitter: 0, major: false },
+        { id: "sheep_yield", x: 158, y: 108, tx: 158, ty: 108, jitter: 0, major: false }
+      ];
+      for (let i = 0; i < stageState.actors.length; i += 1) {
+        stageState.actors[i].phase = i * 0.37;
+        stageState.actors[i].role = ROLE_BY_ACTOR[stageState.actors[i].id] || "support";
+      }
+    }
+
+    function effectiveLamp(obj) {
+      const raw = String((obj && obj.c2_signal_lamp) || "").toUpperCase();
+      if (raw === "GREEN" || raw === "YELLOW" || raw === "RED") return raw;
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      if (risk === "WARNING") return "YELLOW";
+      if (risk === "INFO" || risk === "SAFE") return "GREEN";
+      return "UNKNOWN";
+    }
+
+    function directionFromEvent(obj) {
+      const dir = String(obj.public_signal_direction || "").toUpperCase();
+      const abs = String(obj.direction_abstract || "").toLowerCase();
+      if (dir === "BUY" || dir === "LONG" || abs === "long" || abs === "bull") return "bull";
+      if (dir === "SELL" || dir === "SHORT" || abs === "short" || abs === "bear") return "bear";
+      return "flat";
+    }
+
+    function themeFromEvent(obj, mode) {
+      const risk = String(obj.risk_level || "").toUpperCase();
+      const d = directionFromEvent(obj);
+      if (risk === "WARNING" || mode === "Defend") return "sanctuary";
+      if (d === "bear") return "storm";
+      if (d === "bull" || mode === "Attack") return "festival";
+      return "night";
+    }
+
+    function speak(kind, actorId) {
+      const mode = stageState.lang;
+      const actor = String(actorId || "").toLowerCase();
+      const table = {
+        bull: {
+          KR: ["가즈아!!", "상승 기류 포착!", "오늘 회식은 도토리다!"],
+          EN: ["TO THE MOON!", "Uptrend locked!", "Momentum online!"]
+        },
+        bear: {
+          KR: ["살려줘!", "일단 튀어!", "비명이 들린다.."],
+          EN: ["RUN!", "This is chaos!", "Fall back!"]
+        },
+        warning: {
+          KR: ["전원 방어!", "성소로 모여라!", "기도합시다.."],
+          EN: ["Hold the line!", "Gather center!", "Defensive posture!"]
+        },
+        attack: {
+          KR: ["풀매수 타격!", "돌격!", "기회를 놓치지 마라!"],
+          EN: ["Charge now!", "Strike window!", "Push formation!"]
+        },
+        defend: {
+          KR: ["요새를 사수하라", "버티면 승리한다", "단단히 무장해"],
+          EN: ["Fortify now.", "Shield up.", "Stay disciplined."]
+        },
+        idle: {
+          KR: ["정찰 중...", "관측 유지", "호흡 정리 중"],
+          EN: ["Scanning...", "Holding formation.", "Awaiting signal."]
+        }
+      };
+      const actorTone = {
+        dragon_quant: {
+          KR: ["지휘 유지. 대형을 정렬한다.", "작전 통제 중. 신호를 고정한다."],
+          EN: ["Command holds. Keep formation.", "Operational lock acquired."]
+        },
+        tiger_shield: {
+          KR: ["선봉 준비 완료!", "돌격 각이 보인다!"],
+          EN: ["Vanguard ready!", "I see the strike angle!"]
+        },
+        rat_arbitrage: {
+          KR: ["스프레드 틈새 발견!", "짧게 먹고 빠진다."],
+          EN: ["Spread gap found.", "Quick in, quick out."]
+        },
+        ox_guard: {
+          KR: ["하방은 내가 받는다.", "기초 체력으로 버틴다."],
+          EN: ["I anchor the downside.", "Hold with base strength."]
+        },
+        rabbit_scalper: {
+          KR: ["초단타 각!", "틱 단위로 춤춘다."],
+          EN: ["Micro scalp window.", "Dancing on ticks."]
+        },
+        snake_hedger: {
+          KR: ["리스크 독을 중화한다.", "헤지 포지션 장전."],
+          EN: ["Neutralizing risk venom.", "Hedge loaded."]
+        },
+        horse_trend: {
+          KR: ["추세를 탄다!", "속도 유지!"],
+          EN: ["Ride the trend!", "Keep the pace!"]
+        },
+        sheep_yield: {
+          KR: ["수익은 천천히 쌓는다.", "이자 농사 간다."],
+          EN: ["Yield stacks slowly.", "Farming carry."]
+        },
+        monkey_momentum: {
+          KR: ["모멘텀 폭주 간다!", "지금은 가속 구간!"],
+          EN: ["Momentum overload!", "Acceleration zone!"]
+        },
+        rooster_oracle: {
+          KR: ["시계열 조짐 확인.", "신호 해석 완료."],
+          EN: ["Pattern omen confirmed.", "Signal interpreted."]
+        },
+        dog_sentinel: {
+          KR: ["규율 유지, 이탈 금지.", "경계선 고정."],
+          EN: ["Maintain discipline.", "Boundary locked."]
+        },
+        pig_accumulator: {
+          KR: ["분할 축적 계속.", "크게 보고 모은다."],
+          EN: ["Accumulating in slices.", "Collect for the long run."]
+        }
+      };
+      const pack = table[kind] || table.idle;
+      let pool = mode === "KR" ? pack.KR : (mode === "EN" ? pack.EN : [...pack.EN, ...pack.KR]);
+      if (actorTone[actor]) {
+        const tones = mode === "KR" ? actorTone[actor].KR : (mode === "EN" ? actorTone[actor].EN : [...actorTone[actor].EN, ...actorTone[actor].KR]);
+        pool = [...tones, ...pool];
+      }
+      const base = pool[Math.floor(Math.random() * pool.length)];
+      return base;
+    }
+
+    function addBubble(actor, text) {
+      if (!actor || !text) return;
+      stageState.bubbles.push({
+        actorId: actor.id,
+        text,
+        ttlMs: actor.major ? 3600 : 2500
+      });
+      if (stageState.bubbles.length > 6) stageState.bubbles.shift();
+    }
+
+    function updateBubbles(dt) {
+      stageState.bubbles = stageState.bubbles
+        .map((b) => ({ ...b, ttlMs: b.ttlMs - dt }))
+        .filter((b) => b.ttlMs > 0);
+    }
+
+    function triggerFlash(nowTs, color, durationMs) {
+      const fx = fxProfile();
+      stageState.flashColor = color || "rgba(255,255,255,0.20)";
+      stageState.flashUntilTs = Math.max(stageState.flashUntilTs, nowTs + Math.max(100, (durationMs || 220) * fx.flash));
+    }
+
+    function addFloatText(x, y, text, color = "#ffe8a0", ttlMs = 900) {
+      if (!text) return;
+      const fx = fxProfile();
+      stageState.floatTexts.push({
+        x, y, text, color,
+        ttlMs: ttlMs * fx.float,
+        vy: -0.018 * (0.9 + fx.float * 0.2)
+      });
+      const maxFloats = fx.float < 0.8 ? 6 : (fx.float > 1.1 ? 14 : 10);
+      if (stageState.floatTexts.length > maxFloats) stageState.floatTexts.shift();
+    }
+
+    function updateFloatTexts(dt) {
+      stageState.floatTexts = stageState.floatTexts
+        .map((f) => ({
+          ...f,
+          y: f.y + f.vy * dt,
+          ttlMs: f.ttlMs - dt
+        }))
+        .filter((f) => f.ttlMs > 0);
+    }
+
+    function drawFloatTexts(ctx) {
+      if (!stageState.floatTexts.length) return;
+      ctx.font = "8px monospace";
+      ctx.textBaseline = "top";
+      for (const f of stageState.floatTexts) {
+        const alpha = Math.max(0.2, Math.min(1, f.ttlMs / 900));
+        ctx.globalAlpha = Math.min(0.65, alpha);
+        ctx.fillStyle = "rgba(8, 12, 18, 1)";
+        ctx.fillRect(Math.round(f.x) - 1, Math.round(f.y) - 1, Math.max(10, f.text.length * 6), 9);
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = f.color || "#ffe8a0";
+        ctx.fillText(String(f.text), Math.round(f.x), Math.round(f.y));
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function registerCombo(nowTs, mode, direction) {
+      if (mode === "Attack") {
+        if (nowTs <= stageState.comboUntilTs) stageState.comboCount += 1;
+        else stageState.comboCount = 1;
+        stageState.comboUntilTs = nowTs + 2400;
+        stageState.comboLabel = direction === "bear" ? "SHORT CHAIN" : "LONG CHAIN";
+        return;
+      }
+      if (mode === "Defend") {
+        if (nowTs <= stageState.comboUntilTs) stageState.comboCount += 1;
+        else stageState.comboCount = 1;
+        stageState.comboUntilTs = nowTs + 2800;
+        stageState.comboLabel = "NO_GO CHAIN";
+        return;
+      }
+      stageState.comboCount = 0;
+      stageState.comboUntilTs = 0;
+      stageState.comboLabel = "";
+    }
+
+    function drawComboHud(ctx, nowTs) {
+      const fx = fxProfile();
+      if (fx.combo < 1) return;
+      if (stageState.comboCount <= 1) return;
+      if (nowTs > stageState.comboUntilTs) return;
+      const remain = Math.max(0, stageState.comboUntilTs - nowTs);
+      const alpha = Math.min(1, 0.35 + (remain / 2800) * 0.65);
+      const txt = `${stageState.comboLabel} x${stageState.comboCount}`;
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = "rgba(8, 12, 18, 0.75)";
+      ctx.fillRect(74, 8, 108, 12);
+      ctx.strokeStyle = "rgba(246, 200, 120, 0.9)";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(74.5, 8.5, 107, 11);
+      ctx.fillStyle = "#ffe6a6";
+      ctx.font = "8px monospace";
+      ctx.textBaseline = "top";
+      ctx.fillText(txt, 78, 10);
+      ctx.globalAlpha = 1;
+    }
+
+    function triggerCameraPunch(nowTs, power = 1) {
+      stageState.cameraPunchPower = Math.max(stageState.cameraPunchPower || 0, Number(power) || 1);
+      stageState.cameraPunchUntilTs = Math.max(stageState.cameraPunchUntilTs || 0, nowTs + 340);
+    }
+
+    function setActorEmote(actor, text, nowTs, ttlMs = 1200) {
+      if (!actor) return;
+      actor.emote = String(text || "");
+      actor.emoteUntilTs = nowTs + Math.max(400, ttlMs);
+    }
+
+    function showSignalOverlay(text, warn, nowTs) {
+      stageState.overlayText = String(text || "Signal update");
+      stageState.overlayWarn = !!warn;
+      stageState.overlayUntilTs = Math.max(stageState.overlayUntilTs, nowTs + 1800);
+      const el = document.getElementById("signalOverlay");
+      const txt = document.getElementById("signalOverlayText");
+      if (!el || !txt) return;
+      txt.textContent = stageState.overlayText;
+      el.classList.toggle("warn", stageState.overlayWarn);
+      el.classList.add("active");
+    }
+
+    function updateSignalOverlay(ts) {
+      const el = document.getElementById("signalOverlay");
+      const txt = document.getElementById("signalOverlayText");
+      if (!el || !txt) return;
+      if (ts < stageState.overlayUntilTs) {
+        txt.textContent = stageState.overlayText || "Signal update";
+        el.classList.toggle("warn", stageState.overlayWarn);
+        el.classList.add("active");
+      } else {
+        el.classList.remove("active");
+      }
+    }
+
+    function updateRenderQuality(dt, ts) {
+      const safeDt = Math.max(1, dt);
+      const fps = 1000 / safeDt;
+      stageState.fpsEma = stageState.fpsEma * 0.9 + fps * 0.1;
+      // Avoid quality flapping by requiring a cool-down window.
+      if ((ts - stageState.lastQualityAdjustTs) < 3000) return;
+      const q = stageState.quality;
+      if (q === "high" && stageState.fpsEma < 38) {
+        stageState.quality = "medium";
+        stageState.lastQualityAdjustTs = ts;
+      } else if (q === "medium" && stageState.fpsEma < 28) {
+        stageState.quality = "low";
+        stageState.lastQualityAdjustTs = ts;
+      } else if (q === "low" && stageState.fpsEma > 44) {
+        stageState.quality = "medium";
+        stageState.lastQualityAdjustTs = ts;
+      } else if (q === "medium" && stageState.fpsEma > 54) {
+        stageState.quality = "high";
+        stageState.lastQualityAdjustTs = ts;
+      }
+    }
+
+    function drawThemeObjects(ctx, theme, pulse, quality) {
+      if (quality === "low") return;
+      if (theme === "festival") {
+        ctx.fillStyle = "rgba(255, 232, 128, 0.55)";
+        const n = quality === "high" ? 6 : 3;
+        for (let i = 0; i < n; i += 1) {
+          const x = 24 + i * 38 + Math.sin(pulse + i) * 2;
+          ctx.fillRect(x, 18, 3, 9);
+          ctx.fillRect(x - 3, 26, 9, 2);
+        }
+      } else if (theme === "storm") {
+        ctx.strokeStyle = "rgba(208, 186, 255, 0.75)";
+        ctx.lineWidth = 2;
+        const n = quality === "high" ? 3 : 2;
+        for (let i = 0; i < n; i += 1) {
+          const x = 36 + i * 78 + ((stageState.frame * 0.12 + i * 13) % 30);
+          ctx.beginPath();
+          ctx.moveTo(x, 12);
+          ctx.lineTo(x - 7, 26);
+          ctx.lineTo(x + 2, 26);
+          ctx.lineTo(x - 4, 40);
+          ctx.stroke();
+        }
+      } else if (theme === "sanctuary") {
+        ctx.strokeStyle = "rgba(255, 212, 134, 0.70)";
+        ctx.lineWidth = 2;
+        const n = quality === "high" ? 5 : 3;
+        for (let i = 0; i < n; i += 1) {
+          const x = 34 + i * 46;
+          const y = 22 + Math.sin(pulse * 0.9 + i) * 2;
+          ctx.beginPath();
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      } else {
+        ctx.fillStyle = "rgba(124, 170, 255, 0.50)";
+        const n = quality === "high" ? 12 : 6;
+        for (let i = 0; i < n; i += 1) {
+          const x = (i * 19 + stageState.frame * 0.03) % 256;
+          const y = 10 + (i * 7) % 30;
+          ctx.fillRect(x, y, 1, 1);
+        }
+      }
+    }
+
+    function drawAmbientParticles(ctx, theme, mode, pulse, quality) {
+      const fx = fxProfile();
+      const baseCount = quality === "high" ? 22 : (quality === "medium" ? 14 : 8);
+      const count = Math.max(4, Math.round(baseCount * fx.particle));
+      for (let i = 0; i < count; i += 1) {
+        const t = pulse * (theme === "storm" ? 1.8 : 1.0) + i * 0.61;
+        const x = ((i * 17 + Math.floor(t * 14)) % 260) - 2;
+        const yBase = 16 + ((i * 11) % 96);
+        const y = yBase + Math.sin(t * 0.9 + i) * (theme === "festival" ? 2.6 : 1.7);
+        if (theme === "festival") ctx.fillStyle = "rgba(255, 217, 120, 0.28)";
+        else if (theme === "storm") ctx.fillStyle = "rgba(178, 153, 255, 0.27)";
+        else if (theme === "sanctuary") ctx.fillStyle = "rgba(147, 227, 173, 0.26)";
+        else ctx.fillStyle = "rgba(124, 170, 255, 0.22)";
+        const s = Math.max(1, Math.round((mode === "Attack" ? 2 : 1) * (0.8 + fx.particle * 0.25)));
+        ctx.fillRect(x, y, s, s);
+      }
+    }
+
+    function getBackdropCanvas(theme, width, height) {
+      const key = `${theme}:${width}x${height}`;
+      if (stageState.backdropCache[key]) return stageState.backdropCache[key];
+      const c = document.createElement("canvas");
+      c.width = width;
+      c.height = height;
+      const bctx = c.getContext("2d");
+      if (!bctx) return null;
+      // Pre-render static tile background per theme.
+      for (let ty = 0; ty < height; ty += 16) {
+        for (let tx = 0; tx < width; tx += 16) {
+          const even = (((tx / 16) + (ty / 16)) % 2) === 0;
+          if (theme === "festival") bctx.fillStyle = even ? "#1c352a" : "#162d23";
+          else if (theme === "storm") bctx.fillStyle = even ? "#1f162a" : "#181223";
+          else if (theme === "sanctuary") bctx.fillStyle = even ? "#282212" : "#211b10";
+          else bctx.fillStyle = even ? "#0f1d34" : "#0c182b";
+          bctx.fillRect(tx, ty, 16, 16);
+        }
+      }
+      stageState.backdropCache[key] = c;
+      return c;
+    }
+
+    function drawRetroFrame(ctx, w, h) {
+      ctx.strokeStyle = "rgba(199, 178, 128, 0.55)";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(1.5, 1.5, w - 3, h - 3);
+      ctx.fillStyle = "rgba(250, 223, 145, 0.65)";
+      // Corner pixels for old-school UI frame feel.
+      ctx.fillRect(2, 2, 4, 2);
+      ctx.fillRect(w - 6, 2, 4, 2);
+      ctx.fillRect(2, h - 4, 4, 2);
+      ctx.fillRect(w - 6, h - 4, 4, 2);
+    }
+
+    function drawGateBack(ctx) {
+      // Back plate of the fortress gate.
+      ctx.fillStyle = "rgba(54, 64, 79, 0.92)";
+      ctx.fillRect(108, 86, 40, 42);
+      ctx.fillStyle = "rgba(84, 98, 116, 0.94)";
+      ctx.fillRect(110, 88, 36, 8);
+      ctx.fillStyle = "rgba(217, 178, 95, 0.90)";
+      ctx.fillRect(116, 80, 24, 4);
+      ctx.fillStyle = "#13243a";
+      ctx.font = "7px monospace";
+      ctx.fillText("YEORI", 117, 87);
+    }
+
+    function drawGateFront(ctx, alpha = 1) {
+      const a = Math.max(0.15, Math.min(1, alpha));
+      ctx.save();
+      ctx.globalAlpha = a;
+      // Front bars render above characters when they're "behind" the gate line.
+      ctx.fillStyle = "rgba(98, 112, 130, 0.96)";
+      for (let i = 0; i < 4; i += 1) ctx.fillRect(112 + i * 9, 90, 5, 34);
+      ctx.fillStyle = "rgba(34, 42, 56, 0.92)";
+      ctx.fillRect(108, 124, 40, 4); // threshold lip
+      ctx.restore();
+    }
+
+    function terrainFromEvent(obj) {
+      const risk = String(obj.risk_level || "").toUpperCase();
+      const direction = directionFromEvent(obj);
+      const score = Number(obj.unified_score_balanced || 0);
+      const volatility = Math.abs(score - 0.25);
+      return {
+        wallStrength: Math.max(0, Math.min(1, 1 - volatility * 2.4)),
+        lavaHot: direction === "bear" ? 1 : (direction === "bull" ? 0.45 : 0.2),
+        dungeonDensity: risk === "WARNING" ? 1 : (volatility > 0.2 ? 0.7 : 0.3)
+      };
+    }
+
+    function drawFortressTerrain(ctx, obj) {
+      const t = terrainFromEvent(obj);
+      // Support walls (left/right)
+      const wallHeight = Math.floor(32 + t.wallStrength * 34);
+      ctx.fillStyle = "#566274";
+      ctx.fillRect(0, 144 - wallHeight, 14, wallHeight);
+      ctx.fillRect(242, 144 - wallHeight, 14, wallHeight);
+      ctx.fillStyle = "#7b889b";
+      for (let y = 144 - wallHeight + 4; y < 140; y += 8) {
+        ctx.fillRect(2, y, 10, 2);
+        ctx.fillRect(244, y, 10, 2);
+      }
+
+      // Lava resistance river near top-right
+      const lavaAlpha = 0.25 + t.lavaHot * 0.45;
+      ctx.fillStyle = `rgba(236,92,58,${lavaAlpha.toFixed(2)})`;
+      ctx.fillRect(168, 18, 78, 20);
+      ctx.fillStyle = "rgba(255, 190, 104, 0.50)";
+      for (let i = 0; i < 6; i += 1) {
+        ctx.fillRect(172 + i * 12, 22 + ((stageState.frame / 90 + i) % 6), 8, 2);
+      }
+
+      // Volatility dungeon cells
+      const dungeonCells = Math.floor(4 + t.dungeonDensity * 8);
+      ctx.fillStyle = "rgba(34, 19, 46, 0.75)";
+      for (let i = 0; i < dungeonCells; i += 1) {
+        const x = 24 + (i % 6) * 24;
+        const y = 92 + Math.floor(i / 6) * 14;
+        ctx.fillRect(x, y, 14, 8);
+      }
+
+      // Tavern area near the fortress gate.
+      ctx.fillStyle = "rgba(88, 63, 39, 0.88)";
+      ctx.fillRect(8, 108, 42, 28);
+      ctx.fillStyle = "rgba(218, 177, 108, 0.92)";
+      ctx.fillRect(12, 112, 34, 4);
+      ctx.fillStyle = "#e8cf95";
+      ctx.font = "7px monospace";
+      ctx.fillText("TAVERN", 12, 124);
+    }
+
+    function updateKingByInput(dt, obj, nowTs) {
+      const k = stageState.king;
+      const speed = k.speed * Math.max(0.6, Math.min(1.5, dt / 16.7));
+      if (stageState.keyState.left) k.x -= speed;
+      if (stageState.keyState.right) k.x += speed;
+      if (stageState.keyState.up) k.y -= speed;
+      if (stageState.keyState.down) k.y += speed;
+      k.x = Math.max(14, Math.min(242, k.x));
+      k.y = Math.max(54, Math.min(132, k.y));
+
+      const lamp = effectiveLamp(obj);
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      if (lamp === "RED" || risk === "WARNING") {
+        stageState.noGoUntilTs = Math.max(stageState.noGoUntilTs, nowTs + 1200);
+      }
+    }
+
+    function drawKingAvatar(ctx, obj, nowTs) {
+      const k = stageState.king;
+      const lamp = effectiveLamp(obj);
+      const lockOn = nowTs < stageState.noGoUntilTs;
+      const body = lockOn ? "#95a1b2" : "#f0d274";
+      const cape = lockOn ? "#5f6a78" : "#b03c2f";
+      const dead = nowTs < stageState.deathUntilTs;
+      const x = Math.round(k.x);
+      const y = Math.round(k.y);
+
+      ctx.fillStyle = dead ? "#8892a1" : body;
+      ctx.fillRect(x - 4, y - 10, 8, 8);
+      ctx.fillStyle = "#1d2430";
+      ctx.fillRect(x - 2, y - 8, 1, 1);
+      ctx.fillRect(x + 1, y - 8, 1, 1);
+      ctx.fillStyle = dead ? "#677283" : cape;
+      ctx.fillRect(x - 5, y - 2, 10, 8);
+      ctx.fillStyle = "#e7edf4";
+      ctx.fillRect(x - 3, y + 6, 2, 5);
+      ctx.fillRect(x + 1, y + 6, 2, 5);
+      ctx.fillStyle = "#d9b44c";
+      ctx.fillRect(x - 2, y - 13, 4, 2); // crown
+
+      if (k.actionUntilTs > nowTs && !dead) {
+        ctx.fillStyle = "#fff1b2";
+        ctx.fillRect(x + 6, y - 8, 8, 2);
+      }
+
+      if (dead) {
+        ctx.fillStyle = "rgba(12, 16, 22, 0.45)";
+        ctx.fillRect(0, 0, 256, 144);
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "8px monospace";
+        ctx.fillText("으앙! respawn...", Math.max(6, x - 24), Math.max(12, y - 18));
+      }
+
+      if (lockOn) {
+        ctx.strokeStyle = "rgba(232, 93, 76, 0.85)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x - 9, y - 15, 18, 26);
+        if (lamp === "RED") {
+          ctx.fillStyle = "rgba(232, 93, 76, 0.85)";
+          ctx.fillRect(102, 8, 52, 10);
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "7px monospace";
+          ctx.fillText("NO_GO", 114, 15);
+        }
+      }
+    }
+
+    function tryLiquidationEffect(obj, nowTs) {
+      const eid = String(obj.event_id || "");
+      const raw = Number(obj.unrealized_pnl_pct_of_equity);
+      if (!Number.isFinite(raw)) return;
+      if (raw > -1.0) return;
+      if (eid && stageState.lastLiquidationEventId === eid) return;
+      stageState.lastLiquidationEventId = eid || String(nowTs);
+      stageState.deathUntilTs = nowTs + 1200;
+      stageState.respawnAtTs = nowTs + 1200;
+      stageState.king.actionText = "liquidated";
+      stageState.king.actionUntilTs = nowTs + 1200;
+      addBubble(stageState.actors[0], "으앙! 성황당으로 소환...");
+      addFloatText(118, 56, "LIQUIDATED", "#ff9e96", 1100);
+      triggerFlash(nowTs, "rgba(232, 93, 76, 0.36)", 320);
+    }
+
+    function handleRespawn(nowTs) {
+      if (stageState.respawnAtTs > 0 && nowTs >= stageState.respawnAtTs) {
+        stageState.king.x = stageState.respawnPoint.x;
+        stageState.king.y = stageState.respawnPoint.y;
+        stageState.respawnAtTs = 0;
+        stageState.king.actionText = "respawned";
+        stageState.king.actionUntilTs = nowTs + 700;
+      }
+    }
+
+    function inTavernZone(x, y) {
+      return x >= 8 && x <= 50 && y >= 104 && y <= 136;
+    }
+
+    function tavernLine() {
+      const lines = [
+        "주막 NPC: 오늘도 팩트락 먼저다.",
+        "주막 NPC: 성문은 NO_GO가 지킨다.",
+        "주막 NPC: 과열이면 검을 거둬라.",
+        "주막 NPC: 신호보다 규율이 먼저다."
+      ];
+      const idx = stageState.tavernIndex % lines.length;
+      stageState.tavernIndex += 1;
+      return lines[idx];
+    }
+
+    function updateObsOverlay(obj) {
+      const el = document.getElementById("obsOverlayText");
+      if (!el) return;
+      const dir = String(obj.public_signal_direction || "HOLD");
+      const risk = String(obj.risk_level || "INFO");
+      const lamp = effectiveLamp(obj);
+      const score = Number(obj.unified_score_balanced);
+      const scoreTxt = Number.isFinite(score) ? score.toFixed(5) : "-";
+      const eid = String(obj.event_id || "-");
+      const eidShort = eid.length > 20 ? (eid.slice(0, 20) + "...") : eid;
+      const k = stageState.king;
+      const lockOn = performance.now() < stageState.noGoUntilTs;
+      const dead = performance.now() < stageState.deathUntilTs;
+      const mode = BROADCAST_MODE ? "BCAST" : "DEFAULT";
+      const dm = (obj && obj.delayed_metrics) || {};
+      let logosSuf = "";
+      if (dm.logos_x_band || dm.logos_quadrant || typeof dm.logos_x_index_0_100 === "number") {
+        const xi = typeof dm.logos_x_index_0_100 === "number" ? String(dm.logos_x_index_0_100) : "-";
+        logosSuf = `|LOGOS_X=${dm.logos_x_band || "?"}|idx=${xi}|Q=${dm.logos_quadrant || "-"}`;
+      }
+      let graphSuf = "";
+      if (dm.logos_graph_bundle_present === true) graphSuf = "|LGRAPH=1";
+      else if (dm.logos_graph_bundle_present === false) graphSuf = "|LGRAPH=0";
+      if (OVERLAY_PRESET === "short") {
+        el.textContent = `YEORI ${dir} ${risk} L=${lamp} A=${k.actionText} ${dead ? "DEAD" : "LIVE"}${logosSuf}${graphSuf}`;
+        return;
+      }
+      if (OVERLAY_PRESET === "compact") {
+        el.textContent = `YEORI|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|EID=${eidShort}${logosSuf}${graphSuf}`;
+        return;
+      }
+      el.textContent = `YEORI|MODE=${mode}|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|SCORE=${scoreTxt}|KING=(${Math.round(k.x)},${Math.round(k.y)})|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|DEAD=${dead ? "Y" : "N"}|EID=${eidShort}${logosSuf}${graphSuf}`;
+    }
+
+    function updateNoGoBanner(obj) {
+      const el = document.getElementById("noGoBanner");
+      if (!el) return;
+      const lamp = effectiveLamp(obj);
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      const lockOn = performance.now() < stageState.noGoUntilTs;
+      const active = lamp === "RED" || risk === "WARNING" || lockOn;
+      if (!active) {
+        el.classList.remove("active");
+        return;
+      }
+      const reason = lamp === "RED" ? "LAMP=RED" : (risk === "WARNING" ? "RISK=WARNING" : "KING_LOCK=ON");
+      el.textContent = `NO_GO GATE CLOSED · ${reason}`;
+      el.classList.add("active");
+    }
+
+    function renderBubbles() {
+      const layer = document.getElementById("bubbleLayer");
+      if (!layer) return;
+      layer.innerHTML = "";
+      const byId = {};
+      stageState.actors.forEach((a) => { byId[a.id] = a; });
+      stageState.bubbles.forEach((b) => {
+        const actor = byId[b.actorId];
+        if (!actor) return;
+        const div = document.createElement("div");
+        div.className = "bubble";
+        div.textContent = b.text;
+        const px = (actor.x / 256) * 100;
+        const py = ((actor.y - 18) / 144) * 100;
+        div.style.left = `${Math.max(3, Math.min(97, px))}%`;
+        div.style.top = `${Math.max(10, Math.min(96, py))}%`;
+        layer.appendChild(div);
+      });
+    }
+
+    function applyCrowdBehavior(obj, mode, dt) {
+      const risk = String(obj.risk_level || "WARNING").toUpperCase();
+      const dirLabel = directionFromEvent(obj);
+      // Slow down crowd interpolation to avoid spasm-like motion.
+      const speed = Math.min(0.35, dt * 0.0022);
+      const now = performance.now();
+      const shouldRetarget = (now - stageState.lastRetargetTs) >= 900;
+      if (shouldRetarget) stageState.lastRetargetTs = now;
+      for (let idx = 0; idx < stageState.actors.length; idx += 1) {
+        const actor = stageState.actors[idx];
+        if (risk === "WARNING") {
+          if (actor.id === MAIN_CHARACTER_ID) {
+            actor.tx = 128;
+            actor.ty = 78;
+          } else if (!actor.major) {
+            // Crowd fallback line near the lower lane (prevents center pile-up).
+            const lineIndex = Math.max(0, idx - 2);
+            actor.tx = 28 + (lineIndex % 8) * 26;
+            actor.ty = 112 + ((lineIndex % 2) * 5);
+          } else {
+            // Ring formation around the gate to avoid center overlap.
+            const ringIndex = Math.max(0, idx - 1);
+            const angle = (ringIndex / Math.max(1, stageState.actors.length - 1)) * Math.PI * 2 + stageState.pulse * 0.28;
+            const radius = actor.major ? 50 : 66;
+            actor.tx = 128 + Math.cos(angle) * radius;
+            actor.ty = 86 + Math.sin(angle) * (radius * 0.72);
+          }
+        } else if (dirLabel === "bear") {
+          // Retarget periodically (not every frame) with deterministic lanes.
+          if (shouldRetarget) {
+            actor.tx = 24 + ((idx * 31) % 208);
+            actor.ty = 96 + ((idx % 3) * 9);
+          }
+        } else if (mode === "Attack") {
+          // Attack lane with mild oscillation instead of random jitter.
+          const side = (dirLabel === "bull") ? 206 : 50;
+          actor.tx = side + Math.sin(stageState.pulse + idx * 0.7) * (actor.major ? 3 : 6);
+          actor.ty = 78 + Math.cos(stageState.pulse * 0.8 + idx * 0.5) * (actor.major ? 2 : 5);
+        } else if (mode === "Defend") {
+          if (actor.major) {
+            actor.tx = 128;
+            actor.ty = 78;
+          } else if (shouldRetarget) {
+            const lineIndex = Math.max(0, idx - 2);
+            actor.tx = 34 + (lineIndex % 7) * 26;
+            actor.ty = 104 + ((lineIndex % 2) * 6);
+          }
+          actor.jitter = Math.sin(stageState.pulse * 1.4 + actor.x * 0.03) * 0.7;
+        } else {
+          actor.tx += Math.sin(stageState.pulse + idx * 0.3) * 0.25;
+          actor.ty += Math.cos(stageState.pulse * 0.6 + idx * 0.25) * 0.2;
+        }
+        actor.tx = Math.max(16, Math.min(236, actor.tx));
+        actor.ty = Math.max(62, Math.min(124, actor.ty));
+        actor.x += (actor.tx - actor.x) * speed;
+        actor.y += (actor.ty - actor.y) * speed;
+      }
+      // Simple crowd separation to reduce sprite overlap.
+      for (let i = 0; i < stageState.actors.length; i += 1) {
+        for (let j = i + 1; j < stageState.actors.length; j += 1) {
+          const a = stageState.actors[i];
+          const b = stageState.actors[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 > 0 && d2 < 13 * 13) {
+            const d = Math.sqrt(d2);
+            const push = (13 - d) * 0.45;
+            const ux = dx / d;
+            const uy = dy / d;
+            a.x += ux * push;
+            a.y += uy * push;
+            b.x -= ux * push;
+            b.y -= uy * push;
+          }
+        }
+      }
+    }
+
+    function drawStage(ts) {
+      const canvas = document.getElementById("pixelStage");
+      const meta = document.getElementById("stageMeta");
+      const kingStatus = document.getElementById("kingStatus");
+      if (!canvas) return;
+
+      if (!stageState.lastTs) stageState.lastTs = ts;
+      const dt = ts - stageState.lastTs;
+      stageState.lastTs = ts;
+      stageState.pulse += dt * 0.004;
+      stageState.frame += dt;
+      updateRenderQuality(dt, ts);
+      handleRespawn(ts);
+      maybeAdvanceReplay(ts);
+
+      ensureActors();
+      const obj = stageState.obj || {};
+      const mode = stageState.mode || "Idle";
+      const risk = String(obj.risk_level || "WARNING").toUpperCase();
+      const dir = String(obj.public_signal_direction || "HOLD").toUpperCase();
+      const charId = String(obj.active_character_id || "unknown_guard");
+      const charColor = colorFromCharacterId(charId);
+      const profile = profileFromCharacterId(charId);
+      const spriteInfo = spriteByMode[mode] || spriteByMode.Idle;
+      const spriteImg = getSpriteImage(spriteInfo.url);
+      const atlasFrame = atlasFrameForMode(mode, ts);
+      activeSpriteUrl = spriteInfo.url;
+
+      syncPixelStageCanvas(canvas);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.imageSmoothingEnabled = false;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const theme = themeFromEvent(obj, mode);
+      const fx = fxProfile();
+      const camShakeAmp = (mode === "Attack" ? 0.85 : (risk === "WARNING" ? 0.62 : 0.24)) * fx.shake;
+      const punchRemain = Math.max(0, (stageState.cameraPunchUntilTs || 0) - ts);
+      const punchRatio = punchRemain > 0 ? (punchRemain / 340) : 0;
+      const punchAmp = (stageState.cameraPunchPower || 0) * punchRatio * 2.2;
+      const camX = Math.sin(stageState.pulse * 2.3) * camShakeAmp + (Math.random() - 0.5) * punchAmp;
+      const camY = Math.cos(stageState.pulse * 1.7) * camShakeAmp * 0.6 + (Math.random() - 0.5) * punchAmp * 0.6;
+      ctx.save();
+      ctx.setTransform(canvas.width / STAGE_LOGICAL_W, 0, 0, canvas.height / STAGE_LOGICAL_H, 0, 0);
+      ctx.translate(camX, camY);
+      // Draw cached static tile backdrop at physical resolution, mapped into logical stage space.
+      const backdrop = getBackdropCanvas(theme, canvas.width, canvas.height);
+      if (backdrop) ctx.drawImage(backdrop, 0, 0, STAGE_LOGICAL_W, STAGE_LOGICAL_H);
+      drawRetroFrame(ctx, STAGE_LOGICAL_W, STAGE_LOGICAL_H);
+      drawThemeObjects(ctx, theme, stageState.pulse, stageState.quality);
+      drawAmbientParticles(ctx, theme, mode, stageState.pulse, stageState.quality);
+      drawFortressTerrain(ctx, obj);
+      drawGateBack(ctx);
+
+      const wave = Math.sin(stageState.pulse);
+      const bob = mode === "Attack" ? Math.sin(stageState.pulse * 1.9) * 4 : Math.sin(stageState.pulse * 1.2) * 2;
+      const eyeShift = mode === "Attack" && dir !== "HOLD" ? (wave > 0 ? 1 : 0) : 0;
+      const mainBlink = Math.floor((ts + 120) / 1900) !== Math.floor((ts + 220) / 1900);
+
+      if (theme === "festival") {
+        ctx.fillStyle = "rgba(122, 255, 174, 0.06)";
+      } else if (theme === "storm") {
+        ctx.fillStyle = "rgba(162, 128, 255, 0.06)";
+      } else if (theme === "sanctuary") {
+        ctx.fillStyle = "rgba(255, 219, 128, 0.05)";
+      } else {
+        ctx.fillStyle = "rgba(120,180,255,0.05)";
+      }
+      const lineCount = stageState.quality === "low" ? 2 : 4;
+      for (let i = 0; i < lineCount; i += 1) {
+        const y = 110 + i * 8 + Math.sin(stageState.pulse + i) * 2;
+        ctx.fillRect(0, y, STAGE_LOGICAL_W, 2);
+      }
+
+      applyCrowdBehavior(obj, mode, dt);
+      updateKingByInput(dt, obj, ts);
+      tryLiquidationEffect(obj, ts);
+
+      if (mode === "Defend") {
+        ctx.strokeStyle = risk === "WARNING" ? "rgba(255, 188, 79, 0.80)" : "rgba(135, 225, 165, 0.70)";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(128, 78 + bob, 38 + wave * 2, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      if (risk === "WARNING") {
+        // Sweat particles for elevated risk.
+        ctx.fillStyle = "rgba(119, 198, 255, 0.85)";
+        const sweatCount = stageState.quality === "low" ? 1 : 3;
+        for (let i = 0; i < sweatCount; i += 1) {
+          const sx = 98 + i * 12 + Math.sin(stageState.pulse + i) * 2;
+          const sy = 56 + (i % 2) * 6 + Math.abs(Math.sin(stageState.pulse * 1.6 + i)) * 5;
+          ctx.fillRect(sx, sy, 2, 3);
+        }
+      }
+
+      if (mode === "Attack") {
+        ctx.fillStyle = "rgba(255, 120, 120, 0.55)";
+        const dirSign = (dir === "BUY" || dir === "LONG") ? 1 : -1;
+        const trailCount = stageState.quality === "low" ? 2 : 4;
+        for (let i = 0; i < trailCount; i += 1) {
+          const sx = 128 + (i * 18 + (stageState.frame * 0.04) % 22) * dirSign;
+          const sy = 56 + i * 9;
+          ctx.fillRect(sx, sy, 10, 2);
+        }
+      }
+
+      const allowDebugFallback = stageState.renderMode !== "atlas_only";
+      if (atlasAnim.ready && atlasAnim.image && atlasFrame) {
+        const w = 56;
+        const h = 56;
+        const x = Math.floor((STAGE_LOGICAL_W - w) / 2);
+        const y = Math.floor(56 + bob);
+        ctx.imageSmoothingEnabled = false;
+        // Grounded contact shadow for stronger stage presence.
+        ctx.fillStyle = "rgba(5, 9, 15, 0.52)";
+        ctx.fillRect(x + 8, y + h - 4, w - 16, 5);
+        ctx.fillStyle = "rgba(4, 8, 14, 0.62)";
+        ctx.fillRect(x - 3, y - 3, w + 6, h + 6);
+        ctx.drawImage(
+          atlasAnim.image,
+          atlasFrame.x, atlasFrame.y, atlasFrame.w, atlasFrame.h,
+          x, y, w, h
+        );
+        ctx.strokeStyle = "rgba(5, 12, 22, 0.95)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x - 1, y - 1, w + 2, h + 2);
+      } else if (allowDebugFallback && spriteImg && spriteImg.complete && spriteImg.naturalWidth > 0) {
+        const w = 56;
+        const h = 56;
+        const x = Math.floor((STAGE_LOGICAL_W - w) / 2);
+        const y = Math.floor(56 + bob);
+        ctx.imageSmoothingEnabled = false;
+        ctx.fillStyle = "rgba(5, 9, 15, 0.52)";
+        ctx.fillRect(x + 8, y + h - 4, w - 16, 5);
+        ctx.fillStyle = "rgba(4, 8, 14, 0.62)";
+        ctx.fillRect(x - 3, y - 3, w + 6, h + 6);
+        ctx.drawImage(spriteImg, x, y, w, h);
+        ctx.strokeStyle = "rgba(5, 12, 22, 0.95)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x - 1, y - 1, w + 2, h + 2);
+      } else if (allowDebugFallback) {
+        // Fallback while image is loading
+        let mainFacing = "front";
+        if (dir === "BUY" || dir === "LONG") mainFacing = "right";
+        else if (dir === "SELL" || dir === "SHORT") mainFacing = "left";
+        else if (mode === "Defend") mainFacing = "up";
+        else if (mode === "Idle") mainFacing = "down";
+        drawPixelCharacter(ctx, 104, 56 + bob, 4.3, charColor, eyeShift, profile, mode, stageState.pulse, 0, mainFacing, stageState.frame, mainBlink);
+      } else {
+        // Atlas-only mode: show explicit quality warning and avoid mixed-style fallback renders.
+        ctx.fillStyle = "rgba(13, 20, 30, 0.72)";
+        ctx.fillRect(94, 60, 68, 28);
+        ctx.strokeStyle = "rgba(232, 151, 121, 0.92)";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(94.5, 60.5, 67, 27);
+        ctx.fillStyle = "#ffd4bf";
+        ctx.font = "7px monospace";
+        ctx.fillText("ATLAS REQUIRED", 101, 70);
+        const why = atlasAnim.error ? String(atlasAnim.error).slice(0, 18) : "switch debug mode";
+        ctx.fillText(why, 98, 80);
+      }
+
+      const actorLimit = stageState.quality === "low" ? 7 : (stageState.quality === "medium" ? 10 : stageState.actors.length);
+      const rolePriority = { risk: 0, commander: 1, hedge: 2, trend: 3, liquidity: 4, spread: 5, micro: 6, carry: 7, support: 8 };
+      const actorsToRender = stageState.actors
+        .filter((a) => a.id !== MAIN_CHARACTER_ID)
+        .sort((a, b) => {
+          const pa = rolePriority[a.role || "support"];
+          const pb = rolePriority[b.role || "support"];
+          if (pa !== pb) return pa - pb;
+          return a.y - b.y;
+        })
+        .slice(0, actorLimit);
+      for (const actor of actorsToRender) {
+        const p = profileFromCharacterId(actor.id);
+        const c = colorFromCharacterId(actor.id);
+        const shift = mode === "Attack" ? (wave > 0 ? 1 : 0) : 0;
+        const yBob = (directionFromEvent(obj) === "bull" ? Math.abs(Math.sin(stageState.pulse * 2.4 + actor.x * 0.1)) * 4 : 0);
+        const actorBlink = Math.floor((ts + actor.phase * 700) / 2100) !== Math.floor((ts + actor.phase * 700 + 180) / 2100);
+        const ax = Math.round(actor.x - 10);
+        const ay = Math.round(actor.y - 14 - yBob + actor.jitter);
+        const vx = actor.tx - actor.x;
+        const vy = actor.ty - actor.y;
+        let facing = "front";
+        if (Math.abs(vx) > Math.abs(vy) && Math.abs(vx) > 0.4) facing = vx > 0 ? "right" : "left";
+        else if (Math.abs(vy) > 0.4) facing = vy > 0 ? "down" : "up";
+        const afr = atlasFrameForActor(actor, mode, ts);
+        if (atlasAnim.ready && atlasAnim.image && afr) {
+          const aw = 20;
+          const ah = 20;
+          // Soft glow behind major atlas NPCs.
+          ctx.fillStyle = actor.id === "tiger_shield" ? "rgba(255, 202, 118, 0.18)" : "rgba(124, 192, 255, 0.15)";
+          ctx.fillRect(ax - 2, ay - 2, aw + 4, ah + 4);
+          ctx.drawImage(
+            atlasAnim.image,
+            afr.x, afr.y, afr.w, afr.h,
+            ax, ay, aw, ah
+          );
+          ctx.strokeStyle = "rgba(7, 14, 22, 0.70)";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(ax - 0.5, ay - 0.5, aw + 1, ah + 1);
+        } else if (stageState.renderMode !== "atlas_only") {
+          drawPixelCharacter(ctx, ax, ay, 1.8, c, shift, p, mode, stageState.pulse, Number(actor.phase || 0), facing, stageState.frame, actorBlink);
+        } else {
+          ctx.fillStyle = "rgba(255, 210, 160, 0.45)";
+          ctx.fillRect(Math.round(ax - 2), Math.round(ay - 2), 4, 4);
+        }
+        if (actor.emote && ts < (actor.emoteUntilTs || 0)) {
+          const alpha = Math.max(0.25, Math.min(1, ((actor.emoteUntilTs || 0) - ts) / 1200));
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = "rgba(8, 12, 18, 0.78)";
+          ctx.fillRect(ax - 1, ay - 10, 20, 7);
+          ctx.strokeStyle = "rgba(127, 192, 255, 0.85)";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(ax - 0.5, ay - 9.5, 19, 6);
+          ctx.fillStyle = "#e9f3ff";
+          ctx.font = "6px monospace";
+          ctx.textBaseline = "top";
+          ctx.fillText(String(actor.emote), ax + 1, ay - 8);
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      drawKingAvatar(ctx, obj, ts);
+      // Cinematic spotlight around active unit.
+      const spotX = Math.round(stageState.king.x);
+      const spotY = Math.round(stageState.king.y - 10);
+      const spot = ctx.createRadialGradient(spotX, spotY, 10, spotX, spotY, 54);
+      spot.addColorStop(0, "rgba(255, 236, 178, 0.18)");
+      spot.addColorStop(1, "rgba(255, 236, 178, 0.00)");
+      ctx.fillStyle = spot;
+      ctx.fillRect(spotX - 58, spotY - 58, 116, 116);
+      // Gate front overlay for depth using smooth y-based alpha curve.
+      const gateY = 104;
+      const dy = gateY - stageState.king.y;
+      const t = Math.max(0, Math.min(1, (dy + 20) / 46));
+      const gateFrontAlpha = 0.24 + t * 0.68;
+      drawGateFront(ctx, gateFrontAlpha);
+      if (stageState.showGateLine) {
+        ctx.strokeStyle = "rgba(255, 208, 122, 0.85)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(6, 104.5);
+        ctx.lineTo(STAGE_LOGICAL_W - 6, 104.5);
+        ctx.stroke();
+        ctx.fillStyle = "rgba(255, 208, 122, 0.95)";
+        ctx.font = "7px monospace";
+        ctx.fillText("GATE y=104", 8, 96);
+      }
+      updateFloatTexts(dt);
+      drawFloatTexts(ctx);
+      drawComboHud(ctx, ts);
+      ctx.restore();
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.imageSmoothingEnabled = false;
+
+      if (ts < stageState.flashUntilTs) {
+        const remain = Math.max(0, stageState.flashUntilTs - ts);
+        const alpha = Math.min(0.45, 0.08 + (remain / 320) * 0.30 * fx.flash);
+        const base = stageState.flashColor || "rgba(255,255,255,0.20)";
+        const rgba = base.replace(/rgba\(([^)]+),\s*[\d.]+\)/, "rgba($1," + alpha.toFixed(3) + ")");
+        ctx.fillStyle = rgba;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      if (ts < stageState.crisisUntilTs) {
+        const remain = Math.max(0, stageState.crisisUntilTs - ts);
+        const alpha = Math.min(0.22, 0.08 + (remain / 1200) * 0.12);
+        ctx.fillStyle = "rgba(255, 92, 78, " + alpha.toFixed(3) + ")";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      // Subtle vignette for broadcast-like depth.
+      const vg = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 42, canvas.width / 2, canvas.height / 2, 150);
+      vg.addColorStop(0, "rgba(0,0,0,0.00)");
+      vg.addColorStop(1, "rgba(0,0,0,0.30)");
+      ctx.fillStyle = vg;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      updateBubbles(dt);
+      if (stageState.quality === "low" && stageState.bubbles.length > 3) {
+        stageState.bubbles = stageState.bubbles.slice(-3);
+      }
+      renderBubbles();
+      const spriteLabel =
+        atlasAnim.ready && atlasFrame
+          ? `atlas:${mode}`
+          : (stageState.renderMode === "atlas_only" ? "atlas:missing" : spriteInfo.name);
+      const replayState = stageState.replay.enabled ? `replay=${stageState.replay.idx + 1}/${stageState.replay.tape.length}` : "replay=live";
+      meta.textContent = `character_id=${charId} (${profile.archetype}) | mode=${mode} | risk=${risk} | dir=${dir} | theme=${theme} | step=${stageState.actionStep} | sprite=${spriteLabel} | trust=${stageState.trustLevel} | ${replayState} | lang=${stageState.lang} | quality=${stageState.quality} | fps=${stageState.fpsEma.toFixed(1)}`;
+      if (kingStatus) {
+        const lamp = effectiveLamp(obj);
+        const lockOn = ts < stageState.noGoUntilTs;
+        const actionTxt = stageState.king.actionUntilTs > ts ? stageState.king.actionText : "none";
+        kingStatus.textContent = `KING: (${Math.round(stageState.king.x)},${Math.round(stageState.king.y)}) | action=${actionTxt} | gate=${lamp}${lockOn ? " LOCKED" : ""}`;
+      }
+      updateObsOverlay(obj);
+      updateNoGoBanner(obj);
+      updateEqualizer(obj, mode, ts);
+      updateSignalOverlay(ts);
+      requestAnimationFrame(drawStage);
+    }
+
+    /** Optional ingest/bundle field public-event.v1.showroom_display_mode (idle|defend|attack). */
+    function showroomModeFromPayload(obj) {
+      const raw = obj && obj.showroom_display_mode;
+      if (raw == null || raw === "") return null;
+      const s = String(raw).trim().toLowerCase();
+      if (s === "idle") return "Idle";
+      if (s === "defend") return "Defend";
+      if (s === "attack") return "Attack";
+      return null;
+    }
+
+    function modeFromEvent(obj) {
+      const forced = showroomModeFromPayload(obj);
+      if (forced) return forced;
+      const sys = (obj.system_status || "").toLowerCase();
+      const risk = (obj.risk_level || "").toLowerCase();
+      const dir = (obj.public_signal_direction || "").toUpperCase();
+      if (sys === "maintenance") return "Defend";
+      if (risk === "safe") return "Idle";
+      if (risk === "warning" || risk === "critical") return "Defend";
+      // Fallback: HOLD is idle (calm), directional signal drives attack.
+      if (dir === "BUY" || dir === "LONG" || dir === "SELL" || dir === "SHORT") return "Attack";
+      return "Idle";
+    }
+
+    function resolveModeWithLock(obj, candidateMode, nowTs) {
+      const risk = String((obj && obj.risk_level) || "").toUpperCase();
+      const current = stageState.mode || "Idle";
+      if (candidateMode === current) return current;
+      // Safety escalation should apply immediately.
+      if (risk === "WARNING" && candidateMode === "Defend") {
+        stageState.modeLockUntilTs = nowTs + 2800;
+        return candidateMode;
+      }
+      // Prevent fast mode flapping under noisy payloads.
+      if (nowTs < stageState.modeLockUntilTs) return current;
+      const lockMs = candidateMode === "Attack" ? 2200 : (candidateMode === "Defend" ? 2800 : 2500);
+      stageState.modeLockUntilTs = nowTs + lockMs;
+      return candidateMode;
+    }
+
+    /** Curated punchy lines (bundle builder keys). Unknown keys use decodeStructuredTickerKey(). */
+    const SHOWROOM_TICKER_KO = {
+      "S_ONLINE_R_INFO_PSD_HOLD_DA_FLAT": "알고 예능장 ON · 관망 모드 · 방향 중립(추상) · 연출만",
+      "S_ONLINE_R_WARNING_PSD_HOLD_DA_FLAT": "경계등 ON · 방패 모드 · 리스크 우선 · 실매매 아님",
+      "S_ONLINE_R_WARNING_PSD_CAUTION_DA_FLAT": "주의 신호 · 방어 연출 · 과대 해석 금지",
+      "S_ONLINE_R_CRITICAL_PSD_HOLD_DA_FLAT": "고위험 스테이지 · 손절은 조종실에서만 · 공개는 요약만",
+      "S_DEGRADED_R_INFO_PSD_HOLD_DA_FLAT": "신호 지연 구간 · 스냅샷만 신뢰 · 체감 지연 주의",
+      "S_DEGRADED_R_WARNING_PSD_HOLD_DA_FLAT": "지연 + 경계 · 방패 연출 강화 · 실거래 트리거 아님",
+      "S_MAINTENANCE_R_WARNING_PSD_HOLD_DA_FLAT": "점검 중 · 전광판 유지 모드 · 알림만 참고",
+      "S_ONLINE_R_INFO_PSD_HOLD_DA_LONG": "관망 속 상방 테마(추상) · 공격 연출 · 비매매 시그널",
+      "S_ONLINE_R_INFO_PSD_HOLD_DA_SHORT": "관망 속 하방 테마(추상) · 숏 연출 · 비매매 시그널",
+      "S_ONLINE_R_WARNING_PSD_CAUTION_DA_LONG": "경계 + 상방 연출 · 카메라 가까이 · 과열 금지",
+      "S_ONLINE_R_WARNING_PSD_CAUTION_DA_SHORT": "경계 + 하방 연출 · 방패 유지 · 과매도 단정 금지",
+    };
+
+    const TICKER_SYS_KO = {
+      ONLINE: "운영 양호",
+      DEGRADED: "일부 지연",
+      MAINTENANCE: "점검",
+    };
+    const TICKER_RISK_KO = {
+      INFO: "관측",
+      WARNING: "경계",
+      CRITICAL: "고위험",
+      SAFE: "안정",
+    };
+    const TICKER_PSD_KO = {
+      HOLD: "관망",
+      CAUTION: "주의",
+      BUY: "매수 연출",
+      LONG: "롱 연출",
+      SELL: "매도 연출",
+      SHORT: "숏 연출",
+    };
+    const TICKER_DA_KO = {
+      FLAT: "방향 중립(추상)",
+      LONG: "상방 쏠림(추상)",
+      SHORT: "하방 쏠림(추상)",
+    };
+
+    function decodeStructuredTickerKey(key) {
+      const m = String(key || "").match(/^S_([A-Z0-9]+)_R_([A-Z0-9]+)_PSD_([A-Z0-9]+)_DA_([A-Z0-9]+)$/);
+      if (!m) return null;
+      const sys = TICKER_SYS_KO[m[1]] || m[1];
+      const risk = TICKER_RISK_KO[m[2]] || m[2];
+      const psd = TICKER_PSD_KO[m[3]] || m[3];
+      const da = TICKER_DA_KO[m[4]] || m[4];
+      return `알고 관측 · ${sys} · 리스크 ${risk} · 신호 ${psd} · ${da} · 비실매매 연출`;
+    }
+
+    function tickerLine(obj) {
+      const key = obj.showroom_ticker_key;
+      if (key && SHOWROOM_TICKER_KO[key]) {
+        return SHOWROOM_TICKER_KO[key];
+      }
+      if (key && typeof key === "string") {
+        const decoded = decodeStructuredTickerKey(key);
+        if (decoded) return decoded;
+        return String(key).replace(/_/g, " ");
+      }
+      const sys = obj.system_status || "online";
+      const risk = obj.risk_level || "WARNING";
+      const dir = obj.public_signal_direction || "HOLD";
+      const eid = obj.event_id || "";
+      let delay = "";
+      try {
+        if (obj.delayed_metrics && typeof obj.delayed_metrics.delay_seconds === "number") {
+          delay = ` | delay=${obj.delayed_metrics.delay_seconds}s`;
+        }
+      } catch (e) {}
+      return `STATUS=${sys}  RISK=${risk}  DIR=${dir}  ${eid ? "eid="+eid : ""}${delay}`;
+    }
+
+    const SHOWROOM_REACTION_KO = {
+      R_MODE_IDLE_01: "관망 중 — 알고리즘이 호흡을 맞춥니다. (연출)",
+      R_MODE_DEF_01: "방어 태세 — 리스크·지연을 우선합니다.",
+      R_RISK_HIGH_01: "경계 구간 — 과대 해석·실매매 혼동 금지.",
+      R_MODE_ATK_01: "공세 연출 — 시그널 방향 강조 (비실매매 트리거 아님).",
+      R_SYS_MAINT_01: "점검 모드 — 전광판 스냅샷만 유지됩니다.",
+    };
+
+    function pushChat(obj) {
+      const ids = obj.showroom_reaction_line_ids;
+      if (Array.isArray(ids) && ids.length > 0) {
+        const lines = ids.slice(0, 3).map((id) => SHOWROOM_REACTION_KO[id] || String(id));
+        for (const l of lines) {
+          if (chatLines[chatLines.length - 1] !== l) chatLines.push(l);
+        }
+        while (chatLines.length > chatMax) chatLines.shift();
+        document.getElementById("chatOut").textContent = chatLines.join("\n");
+        return;
+      }
+      const mode = modeFromEvent(obj);
+      const risk = obj.risk_level || "WARNING";
+      const dir = obj.public_signal_direction || "HOLD";
+      const status = obj.system_status || "online";
+
+      const lines = [];
+      if (status === "maintenance") lines.push("점검 모드! 픽셀 대원들이 방패를 올립니다.");
+      if (risk === "SAFE") lines.push("안정 구간! 대원들이 숨을 고릅니다. (Idle)");
+      if (risk === "WARNING") lines.push("경계 신호! Defend 모드 전환!");
+      if (mode === "Attack") lines.push(`공세 모드! ${dir} 테마의 이펙트가 점화됩니다.`);
+      if (mode === "Defend" && dir === "HOLD") lines.push("관찰 유지. 방어막은 계속 켜둡니다.");
+      if (lines.length === 0) lines.push("상태 업데이트 감지! (예능 반응)");
+
+      for (const l of lines.slice(0, 2)) {
+        if (chatLines[chatLines.length - 1] !== l) chatLines.push(l);
+      }
+      while (chatLines.length > chatMax) chatLines.shift();
+      document.getElementById("chatOut").textContent = chatLines.join("\n");
+    }
+
+    function escapeHtml(s) {
+      if (s == null) return "";
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    /** Korean copy for public_ui tokens (the JSON bundle stays ASCII-only). */
+    const SHOWROOM_UI_KO = {
+      dir: { long: "상방 쏠림 (추상)", short: "하방 쏠림 (추상)", flat: "중립 · 관망" },
+      src: { account: "계좌 스냅샷(방향만)", c2: "리스크 가드 기준", auto_account: "자동: 계좌", auto_c2: "자동: 가드" },
+      lamp: { GREEN: "안전 구간", YELLOW: "주의", RED: "경고", UNKNOWN: "확인 필요" },
+      fusionOk: (ok) => (ok ? "융합 점검 통과" : "융합 점검 필요"),
+      returnLine: (pct, has, mode) => {
+        if (has && typeof pct === "number" && !Number.isNaN(pct)) {
+          const sign = pct > 0 ? "+" : "";
+          const tail = mode && String(mode).indexOf("auto") === 0
+            ? " (자동 기준선·지연)"
+            : " (지연 스냅샷)";
+          return sign + pct.toFixed(2) + "% 기준 대비" + tail;
+        }
+        return "계좌 스냅샷 없음 — 메트릭 갱신 후 다시 빌드";
+      },
+      unrealizedLine: (pct, has) => {
+        if (has && typeof pct === "number" && !Number.isNaN(pct)) {
+          const sign = pct > 0 ? "+" : "";
+          return sign + pct.toFixed(3) + "% 계좌 대비 (미실현, 금액 미표시)";
+        }
+        return "—";
+      },
+      scoreLine: (v) => (v != null && !Number.isNaN(Number(v)) ? "모델 관측 점수: " + Number(v).toFixed(5) : "모델 관측 점수: —"),
+      guardLine: (lamp) => "리스크 가드: " + (SHOWROOM_UI_KO.lamp[lamp] || SHOWROOM_UI_KO.lamp.UNKNOWN),
+      logosBand: { LOW: "낮음 (자본 이동 압력)", MID: "중간", HIGH: "높음 (해설·비게이팅)" },
+      logosQuad: {
+        Q1: "사분면 Q1 — 균열 가속 + 자본 이동 급증",
+        Q2: "사분면 Q2 — 균열 선행, 이동 지연",
+        Q3: "사분면 Q3 — 안정 구간",
+        Q4: "사분면 Q4 — 선제적 이동",
+      },
+      logosSummary: (dm, pui) => {
+        const xIdx =
+          typeof dm.logos_x_index_0_100 === "number"
+            ? dm.logos_x_index_0_100
+            : typeof pui.logos_x_index_0_100 === "number"
+              ? pui.logos_x_index_0_100
+              : null;
+        const bandRaw = dm.logos_x_band != null ? String(dm.logos_x_band) : (pui.logos_x_band != null ? String(pui.logos_x_band) : "");
+        const quadRaw = dm.logos_quadrant != null ? String(dm.logos_quadrant) : (pui.logos_quadrant != null ? String(pui.logos_quadrant) : "");
+        const yFrag =
+          typeof dm.logos_y_fragility_0_100 === "number"
+            ? dm.logos_y_fragility_0_100
+            : typeof pui.logos_y_fragility_0_100 === "number"
+              ? pui.logos_y_fragility_0_100
+              : null;
+        if (xIdx == null && !bandRaw && !quadRaw && yFrag == null) return null;
+        const bandKo = SHOWROOM_UI_KO.logosBand[bandRaw] || (bandRaw ? bandRaw : "—");
+        const quadKo = SHOWROOM_UI_KO.logosQuad[quadRaw] || (quadRaw ? quadRaw : "—");
+        const xPart = xIdx != null ? "X 지수(0–100): " + xIdx + " · " + bandKo : "X: " + (bandKo || "—");
+        const yPart = yFrag != null ? " · Y(바벨 취약): " + yFrag : "";
+        const genAt = dm.logos_4d_state_generated_at_utc ? String(dm.logos_4d_state_generated_at_utc) : "";
+        const tail = genAt ? " · 상태 시각: " + genAt : "";
+        return xPart + yPart + " · " + quadKo + tail + " · [NON_GATING]";
+      },
+      /** Track B meaning-graph bundle: sandboxed meta only (no nodes/edges payload). */
+      logosGraphBundleRow: (dm, obs) => {
+        const meta = obs && obs.logos_graph_meta;
+        const shaShort = (s) => {
+          if (!s || typeof s !== "string") return "—";
+          return s.length > 12 ? s.slice(0, 12) + "…" : s;
+        };
+        const staleSec =
+          typeof dm.logos_graph_staleness_seconds === "number"
+            ? dm.logos_graph_staleness_seconds
+            : obs && typeof obs.logos_freshness_staleness_seconds === "number"
+              ? obs.logos_freshness_staleness_seconds
+              : null;
+        const staleSuffix = (() => {
+          if (typeof staleSec !== "number" || !Number.isFinite(staleSec) || staleSec < 0) return "";
+          if (staleSec < 90) return " · 번들 경과(신선도) 약 " + staleSec + "초";
+          if (staleSec < 3600) return " · 번들 경과(신선도) 약 " + Math.round(staleSec / 60) + "분";
+          return " · 번들 경과(신선도) 약 " + (staleSec / 3600).toFixed(1) + "시간";
+        })();
+        const tail = staleSuffix + " · [NON_GATING]";
+        if (meta && typeof meta === "object") {
+          if (meta.present === true) {
+            const n = meta.nodes_line_count != null ? meta.nodes_line_count : "—";
+            const e = meta.edges_line_count != null ? meta.edges_line_count : "—";
+            const ts = meta.ts_utc ? String(meta.ts_utc) : "—";
+            const k = shaShort(meta.dedupe_bundle_key_sha256);
+            return {
+              online: true,
+              text: "노드 라인 " + n + " · 엣지 라인 " + e + " · 번들 키 " + k + " · 시각 " + ts + tail,
+            };
+          }
+          return { online: false, text: "연구 번들 미탑재 또는 경로 없음" + tail };
+        }
+        if (!dm || typeof dm.logos_graph_bundle_present !== "boolean") return null;
+        if (dm.logos_graph_bundle_present === true) {
+          const n = dm.logos_graph_nodes_line_count != null ? dm.logos_graph_nodes_line_count : "—";
+          const e = dm.logos_graph_edges_line_count != null ? dm.logos_graph_edges_line_count : "—";
+          const ts = dm.logos_graph_bundle_ts_utc ? String(dm.logos_graph_bundle_ts_utc) : "—";
+          const k = shaShort(dm.logos_graph_bundle_dedupe_sha256);
+          return {
+            online: true,
+            text: "노드 라인 " + n + " · 엣지 라인 " + e + " · 번들 키 " + k + " · 시각 " + ts + tail,
+          };
+        }
+        return { online: false, text: "번들 없음 (delayed_metrics)" + tail };
+      },
+    };
+
+    async function loadShowroomBundle() {
+      const grid = document.getElementById("showroomSnapshotGrid");
+      const meta = document.getElementById("showroomSnapshotMeta");
+      const foot = document.getElementById("showroomSnapshotFoot");
+      const cap = document.getElementById("showroomSnapshotCaption");
+      const titleEl = document.getElementById("showroomSnapshotTitle");
+      if (!grid || !meta) return;
+      const bases = [];
+      try {
+        bases.push(new URL("showroom_public_bundle_v1.json", window.location.href).href);
+      } catch (e) {}
+      bases.push("https://jemaai.cloud/showroom_public_bundle_v1.json");
+      let lastErr = "";
+      for (const u of bases) {
+        try {
+          const r = await fetch(u, { cache: "no-store" });
+          if (!r.ok) {
+            lastErr = "HTTP " + r.status;
+            continue;
+          }
+          const bundle = await r.json();
+          const o = bundle.observability || {};
+          const pe = bundle.public_event_v1 || {};
+          if (pe && typeof pe === "object") {
+            cachedBundleEvent = pe;
+          }
+          const dm = pe.delayed_metrics || {};
+          const os = pe.order_summary_public || {};
+          const sg = pe.signal_gate_public || {};
+          const delaySec = (dm.delay_seconds != null) ? dm.delay_seconds : "—";
+          const asOf = o.snapshot_as_of_utc || bundle.generated_at_utc || "";
+          const pui = bundle.public_ui;
+          if (pui && typeof pui === "object" && pui.schema === "showroom_public_ui_v1") {
+            if (titleEl) titleEl.textContent = "공개 투자 현황 요약";
+            if (cap) cap.textContent = "지연 스냅샷 · 투자 권유 아님 · 내부 코드명 비표시";
+            if (foot) foot.textContent = "방향은 추상 신호이며 실제 체결·레버리지·수량과 다를 수 있습니다.";
+            const dKey = String(pui.direction_abstract || "flat").toLowerCase();
+            const dirText = SHOWROOM_UI_KO.dir[dKey] || SHOWROOM_UI_KO.dir.flat;
+            const srcKey = String(pui.direction_source || "c2");
+            const srcText = SHOWROOM_UI_KO.src[srcKey] || srcKey;
+            const lamp = String(pui.c2_lamp || "UNKNOWN").toUpperCase();
+            const pnlNum = dm.pnl_pct_vs_start;
+            const hasRet = (typeof pnlNum === "number");
+            const bm = pui.baseline_mode || "";
+            const retText = SHOWROOM_UI_KO.returnLine(pnlNum, hasRet, bm);
+            let retTint = "";
+            if (typeof pnlNum === "number") {
+              retTint = pnlNum < 0 ? " snap-return-neg" : (pnlNum > 0 ? " snap-return-pos" : "");
+            }
+            const uPct = pui.unrealized_pnl_pct_of_equity;
+            const hasU = (typeof uPct === "number");
+            const uText = SHOWROOM_UI_KO.unrealizedLine(uPct, hasU);
+            const trades24h = (typeof os.trades_24h_count === "number") ? os.trades_24h_count : 0;
+            const latestTradeUtc = os.latest_trade_utc ? String(os.latest_trade_utc) : "—";
+            const latestTradeSide = os.latest_trade_side ? String(os.latest_trade_side).toUpperCase() : "UNKNOWN";
+            const succAll = (typeof os.successful_trades_all === "number") ? os.successful_trades_all : "—";
+            const failAll = (typeof os.failed_trades_all === "number") ? os.failed_trades_all : "—";
+            const signalCount = (typeof sg.signal_total_count === "number") ? sg.signal_total_count : 0;
+            const signalUtc = sg.last_signal_utc ? String(sg.last_signal_utc) : "—";
+            const integratedSignal = sg.integrated_signal ? String(sg.integrated_signal).toUpperCase() : "HOLD";
+            const singularAction = sg.singular_action ? String(sg.singular_action).toUpperCase() : "LOCKED";
+            const singularDecision = sg.singular_decision ? String(sg.singular_decision).toUpperCase() : "HOLD";
+            const regimeId = sg.regime_id ? String(sg.regime_id) : "unknown";
+            const lockReason = sg.lock_reason ? String(sg.lock_reason) : "NONE";
+            const integratedConf = (typeof sg.integrated_confidence === "number") ? Number(sg.integrated_confidence).toFixed(2) : "—";
+            const logosLine = SHOWROOM_UI_KO.logosSummary(dm, pui);
+            const graphRow = SHOWROOM_UI_KO.logosGraphBundleRow(dm, o);
+            let uTint = "";
+            if (typeof uPct === "number") {
+              uTint = uPct < 0 ? " snap-return-neg" : (uPct > 0 ? " snap-return-pos" : "");
+            }
+            grid.innerHTML = ""
+              + "<div class=\"snap-cell\">"
+              + "<span class=\"snap-label\">방향 (추상 · 수량·가격 없음)</span>"
+              + "<span class=\"snap-val snap-em\">" + escapeHtml(dirText) + "</span>"
+              + "<span class=\"snap-sub\">표시 기준: " + escapeHtml(srcText) + " · 의도 지연 약 " + escapeHtml(String(delaySec)) + "s</span>"
+              + "</div>"
+              + "<div class=\"snap-cell\">"
+              + "<span class=\"snap-label\">기준 대비 누적 수익률</span>"
+              + "<span class=\"snap-val snap-em" + retTint + "\">" + escapeHtml(retText) + "</span>"
+              + "</div>"
+              + "<div class=\"snap-cell\">"
+              + "<span class=\"snap-label\">미실현 손익률 (계좌 대비 %)</span>"
+              + "<span class=\"snap-val snap-em" + uTint + "\">" + escapeHtml(uText) + "</span>"
+              + "</div>"
+              + "<div class=\"snap-cell\">"
+              + "<span class=\"snap-label\">리스크 / 융합 점검</span>"
+              + "<span class=\"snap-val small\">" + escapeHtml(SHOWROOM_UI_KO.guardLine(lamp)) + "</span>"
+              + "<span class=\"snap-val small\">" + escapeHtml(SHOWROOM_UI_KO.fusionOk(pui.ops_fusion_ok === true)) + "</span>"
+              + "</div>"
+              + "<div class=\"snap-cell snap-span\">"
+              + "<span class=\"snap-label\">관측</span>"
+              + "<span class=\"snap-val small\">" + escapeHtml(SHOWROOM_UI_KO.scoreLine(pui.unified_score_balanced)) + "</span>"
+              + "</div>"
+              + "<div class=\"snap-cell snap-span\">"
+              + "<span class=\"snap-label\">주문 반영 (공개 요약)</span>"
+              + "<span class=\"snap-val small\">24h 체결 수: " + escapeHtml(String(trades24h)) + " · 최근 방향: " + escapeHtml(latestTradeSide) + "</span>"
+              + "<span class=\"snap-sub\">최근 체결 시각: " + escapeHtml(latestTradeUtc) + " · 누적 성공/실패: " + escapeHtml(String(succAll)) + "/" + escapeHtml(String(failAll)) + "</span>"
+              + "</div>"
+              + "<div class=\"snap-cell snap-span\">"
+              + "<span class=\"snap-label\">신호 게이트 (공개)</span>"
+              + "<span class=\"snap-val small\">누적 신호: " + escapeHtml(String(signalCount)) + " · 통합/코어: " + escapeHtml(integratedSignal) + "/" + escapeHtml(singularAction) + "</span>"
+              + "<span class=\"snap-sub\">최근 시각: " + escapeHtml(signalUtc) + " · confidence: " + escapeHtml(integratedConf) + " · decision: " + escapeHtml(singularDecision) + " · regime: " + escapeHtml(regimeId) + " · lock_reason: " + escapeHtml(lockReason) + "</span>"
+              + "</div>"
+              + (logosLine
+                ? ("<div class=\"snap-cell snap-span\">"
+                  + "<span class=\"snap-label\">Logos 4D — Exodus 압력 (X)</span>"
+                  + "<span class=\"snap-val small\">" + escapeHtml(logosLine) + "</span>"
+                  + "<span class=\"snap-sub\">성경·거시 해설 축; 주문·체결 트리거와 분리 ([NON_GATING])</span>"
+                  + "</div>")
+                : "")
+              + (graphRow
+                ? ("<div class=\"snap-cell snap-span\">"
+                  + "<span class=\"snap-label\">Logos 의미 그래프 (Track B 메타)</span>"
+                  + "<span class=\"badge " + (graphRow.online ? "ok" : "warn") + "\">" + (graphRow.online ? "Online" : "Offline") + "</span>"
+                  + "<span class=\"snap-val small\">" + escapeHtml(graphRow.text) + "</span>"
+                  + "<span class=\"snap-sub\">원문 노드/엣지 JSON 미포함 · 비매매 · 비게이팅</span>"
+                  + "</div>")
+                : "");
+          } else {
+            const score = o.unified_score_balanced;
+            const lamp = o.c2_signal_lamp || "—";
+            let fusion = "—";
+            if (o.ops_fusion_overall_ok === true) fusion = "OK";
+            if (o.ops_fusion_overall_ok === false) fusion = "NO";
+            const lampCls = "snap-val lamp-" + String(lamp).toLowerCase();
+            if (foot) foot.textContent = "";
+            grid.innerHTML = ""
+              + "<div class=\"snap-cell\"><span class=\"snap-label\">관측 점수</span>"
+              + "<span class=\"snap-val\">" + (score != null ? Number(score).toFixed(5) : "—") + "</span></div>"
+              + "<div class=\"snap-cell\"><span class=\"snap-label\">가드</span>"
+              + "<span class=\"" + lampCls + "\">" + String(lamp) + "</span></div>"
+              + "<div class=\"snap-cell\"><span class=\"snap-label\">융합</span>"
+              + "<span class=\"snap-val\">" + fusion + "</span></div>";
+          }
+          meta.textContent = "기준 시각: " + asOf + " · schema: " + (bundle.schema || "") + " · " + u;
+          return;
+        } catch (e) {
+          lastErr = String(e);
+        }
+      }
+      grid.innerHTML = "<span class=\"err\">static bundle unavailable — " + (lastErr || "unknown") + "</span>";
+      meta.textContent = "Deploy showroom_public_bundle_v1.json next to this HTML (see nginx snippet).";
+      if (foot) foot.textContent = "";
+    }
+
+    function applyShowroomEvent(obj, fromReplay = false) {
+      // 예능형 표시 계층: 민감값 금지(whitelist only) & 상태 매핑만 수행
+      ensureActors();
+      const prevRisk = String((stageState.obj && stageState.obj.risk_level) || "").toUpperCase();
+      const prevDir = String((stageState.obj && stageState.obj.public_signal_direction) || "HOLD").toUpperCase();
+      const prevMode = String(stageState.mode || "Idle");
+      const candidateMode = modeFromEvent(obj);
+      const mode = resolveModeWithLock(obj, candidateMode, performance.now());
+      const modeBadge = document.getElementById("modeBadge");
+      const riskBadge = document.getElementById("riskBadge");
+      const dirBadge = document.getElementById("dirBadge");
+      const tickerText = document.getElementById("tickerText");
+      const tickerBox = document.getElementById("tickerBox");
+
+      modeBadge.textContent = "MODE: " + mode;
+      riskBadge.textContent = "RISK: " + (obj.risk_level || "WARNING");
+      dirBadge.textContent = "DIR: " + (obj.public_signal_direction || "HOLD");
+      tickerText.textContent = tickerLine(obj);
+
+      tickerBox.classList.remove("mode-idle", "mode-defend", "mode-attack");
+      tickerBox.classList.add(mode === "Idle" ? "mode-idle" : (mode === "Defend" ? "mode-defend" : "mode-attack"));
+      stageState.obj = obj;
+      stageState.mode = mode;
+      stageState.charId = String(obj.active_character_id || "unknown_guard");
+      stageState.lang = document.getElementById("langMode").value || "HYBRID";
+      if (!fromReplay) pushReplayEvent(obj);
+      setTrustBadge(obj);
+      setLockBadge(obj);
+      renderLockDetailPanel();
+      setSceneTone(obj, mode);
+      setQuestCard(obj, mode);
+      setTwinViewCard(obj);
+
+      if (obj.event_id && obj.event_id !== lastEventId) {
+        lastEventId = obj.event_id;
+        pushChat(obj);
+        const eventActorId = String(obj.active_character_id || "").toLowerCase();
+        const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
+        const focusActor = stageState.actors.find((a) => a.id === eventActorId) || mainActor;
+        const tiger = stageState.actors.find((a) => a.id === "tiger_shield") || stageState.actors[1] || mainActor;
+        const d = directionFromEvent(obj);
+        const kind = mode === "Attack" ? "attack" : (mode === "Defend" ? "defend" : (d === "bull" ? "bull" : (d === "bear" ? "bear" : "idle")));
+        const step = pickActionStep(obj, mode, focusActor.id, obj.event_id);
+        stageState.actionStep = step ? String(step.id) : "-";
+        const stepLine = actionLine(step, stageState.lang);
+        if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
+          addBubble(focusActor, stepLine || speak("warning", focusActor.id));
+          addBubble(tiger, speak("defend", "tiger_shield"));
+        } else {
+          addBubble(focusActor, stepLine || speak(kind, focusActor.id));
+          if (Math.random() > 0.45) addBubble(tiger, speak(kind, "tiger_shield"));
+        }
+        addBubble(focusActor, explainReasonLine(obj, mode));
+        if (obj.abstract_reason) {
+          addBubble(focusActor, String(obj.abstract_reason).slice(0, 42));
+        }
+        const nowTs = performance.now();
+        const nextRisk = String((obj.risk_level || "")).toUpperCase();
+        const nextDir = String((obj.public_signal_direction || "HOLD")).toUpperCase();
+        if (prevMode !== mode) {
+          triggerCameraPunch(nowTs, mode === "Attack" ? 1.3 : (mode === "Defend" ? 1.0 : 0.7));
+        } else if (prevRisk !== nextRisk || prevDir !== nextDir) {
+          triggerCameraPunch(nowTs, 0.8);
+        }
+        if (prevRisk !== nextRisk || prevDir !== nextDir) {
+          const warn = nextRisk === "WARNING" || nextDir === "SELL" || nextDir === "SHORT";
+          showSignalOverlay(`RISK ${prevRisk || "INIT"} -> ${nextRisk || "INFO"} | DIR ${prevDir} -> ${nextDir}`, warn, nowTs);
+        }
+        if (mode === "Attack") {
+          setActorEmote(focusActor, "ATK", nowTs, 1400);
+          setActorEmote(tiger, "GO", nowTs, 900);
+        } else if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
+          setActorEmote(focusActor, "DEF", nowTs, 1400);
+          setActorEmote(tiger, "SHLD", nowTs, 1400);
+        } else {
+          setActorEmote(focusActor, "OBS", nowTs, 1100);
+        }
+        registerCombo(nowTs, mode, d);
+        const score = Number(obj.unified_score_balanced);
+        if (mode === "Attack") {
+          const label = directionFromEvent(obj) === "bear" ? "SHORT+" : "LONG+";
+          addFloatText(Math.round(focusActor.x + 6), Math.round(focusActor.y - 22), label, "#ffd27c", 780);
+          if (stageState.comboCount >= 3) {
+            addFloatText(98, 18, `COMBO x${stageState.comboCount}`, "#ffe2a3", 740);
+          }
+          triggerFlash(nowTs, "rgba(255, 182, 107, 0.20)", 160);
+        } else if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
+          addFloatText(Math.round(tiger.x + 4), Math.round(tiger.y - 22), "NO_GO", "#ffb08f", 900);
+          if (stageState.comboCount >= 3) {
+            addFloatText(86, 18, `GUARD x${stageState.comboCount}`, "#ffc3ad", 820);
+          }
+          triggerFlash(nowTs, "rgba(255, 133, 94, 0.18)", 180);
+        } else if (Number.isFinite(score)) {
+          const delta = Math.abs(score - 0.25);
+          const txt = `L=${delta.toFixed(3)}`;
+          addFloatText(Math.round(mainActor.x - 2), Math.round(mainActor.y - 24), txt, "#9fe0ff", 760);
+        }
+      }
+      const nowTs = performance.now();
+      if (String(obj.risk_level || "").toUpperCase() === "WARNING") {
+        if (nowTs >= stageState.crisisCooldownUntilTs) {
+          stageState.crisisUntilTs = nowTs + 1200;
+          stageState.crisisCooldownUntilTs = nowTs + 3800;
+        }
+      }
+    }
+
+    async function tick() {
+      const base = document.getElementById("base").value.replace(/\/$/, "");
+      const url = base + "/api/public-events/latest";
+      const st = document.getElementById("status");
+      const out = document.getElementById("out");
+      st.textContent = "GET " + url + " ...";
+      try {
+        const r = await fetch(url, { cache: "no-store" });
+        const text = await r.text();
+        if (!r.ok) {
+          out.innerHTML = '<span class="err">HTTP ' + r.status + "</span>\n" + text;
+          return;
+        }
+        let obj;
+        try { obj = JSON.parse(text); } catch (e) {
+          out.textContent = text;
+          return;
+        }
+        if (/^https:\/\/api\.jemaai\.cloud$/i.test(base)) {
+          setSourceBadge("CLOUD");
+        } else if (/^http:\/\/127\.0\.0\.1:8788$/i.test(base)) {
+          setSourceBadge("LOCAL");
+        } else {
+          setSourceBadge("LOCAL", "custom");
+        }
+        setStaleBadge(obj);
+        setTrustBadge(obj);
+        if (stageState.replay.enabled) {
+          pushReplayEvent(obj);
+          setTwinViewCard(stageState.obj || obj);
+        } else {
+          applyShowroomEvent(obj);
+        }
+
+        st.innerHTML = '<span class="ok">ok</span> - ' + new Date().toISOString();
+        out.textContent = JSON.stringify(obj, null, 2);
+      } catch (e) {
+        const isDefaultCloud = /^https:\/\/api\.jemaai\.cloud$/i.test(base);
+        if (isDefaultCloud) {
+          document.getElementById("base").value = "http://127.0.0.1:8788";
+          setSourceBadge("LOCAL-FALLBACK", "cors");
+        }
+        if (cachedBundleEvent && typeof cachedBundleEvent === "object") {
+          setStaleBadge(cachedBundleEvent);
+          setTrustBadge(cachedBundleEvent);
+          if (stageState.replay.enabled) {
+            pushReplayEvent(cachedBundleEvent);
+            setTwinViewCard(stageState.obj || cachedBundleEvent);
+          } else {
+            applyShowroomEvent(cachedBundleEvent);
+          }
+          st.innerHTML = '<span class="warn-txt">cloud unavailable</span> · using fallback bundle';
+          out.textContent = JSON.stringify(cachedBundleEvent, null, 2);
+          if (!isDefaultCloud) {
+            setSourceBadge("LOCAL-FALLBACK", "bundle");
+          }
+        } else {
+          setStaleBadge(null);
+          setTrustBadge(null);
+          st.innerHTML = '<span class="err">network error</span>';
+          out.textContent = String(e);
+          setSourceBadge("ERROR");
+        }
+        lastNetworkErrAt = Date.now();
+      }
+    }
+    requestAnimationFrame(drawStage);
+    loadCharacterProfiles();
+    loadActionBook();
+    loadAtlasAnimation();
+    loadShowroomBundle();
+    tick();
+    setInterval(() => {
+      tick();
+      loadShowroomBundle();
+    }, POLL_MS);
+    document.getElementById("base").addEventListener("change", tick);
+    const lockBadgeEl = document.getElementById("lockBadge");
+    if (lockBadgeEl) {
+      lockBadgeEl.title = "Click to toggle lock detail";
+      lockBadgeEl.addEventListener("click", () => {
+        stageState.lockDetailOpen = !stageState.lockDetailOpen;
+        renderLockDetailPanel();
+      });
+    }
+    document.getElementById("langMode").addEventListener("change", () => {
+      stageState.lang = document.getElementById("langMode").value || "HYBRID";
+      const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
+      addBubble(mainActor, speak("idle", "dragon_quant"));
+    });
+    const fxPresetStorageKey = "jemaai_showroom_fx_preset_v1";
+    try {
+      const savedFxPreset = window.localStorage.getItem(fxPresetStorageKey);
+      const initialFxPreset = savedFxPreset || "CALM";
+      document.getElementById("fxPreset").value = initialFxPreset;
+      stageState.fxPreset = initialFxPreset;
+    } catch (e) {
+      document.getElementById("fxPreset").value = "CALM";
+      stageState.fxPreset = "CALM";
+    }
+    document.getElementById("fxPreset").addEventListener("change", () => {
+      stageState.fxPreset = document.getElementById("fxPreset").value || "CALM";
+      try {
+        window.localStorage.setItem(fxPresetStorageKey, stageState.fxPreset);
+      } catch (e) {}
+      const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
+      addBubble(mainActor, "FX preset: " + stageState.fxPreset);
+    });
+    const renderModeStorageKey = "jemaai_showroom_render_mode_v1";
+    try {
+      const savedRenderMode = window.localStorage.getItem(renderModeStorageKey);
+      const initialRenderMode = savedRenderMode || "atlas_only";
+      document.getElementById("renderMode").value = initialRenderMode;
+      stageState.renderMode = initialRenderMode;
+    } catch (e) {
+      document.getElementById("renderMode").value = "atlas_only";
+      stageState.renderMode = "atlas_only";
+    }
+    document.getElementById("renderMode").addEventListener("change", () => {
+      stageState.renderMode = document.getElementById("renderMode").value || "atlas_only";
+      try {
+        window.localStorage.setItem(renderModeStorageKey, stageState.renderMode);
+      } catch (e) {}
+      const mainActor = stageState.actors.find((a) => a.id === MAIN_CHARACTER_ID) || stageState.actors[0];
+      addBubble(mainActor, stageState.renderMode === "atlas_only" ? "Atlas-only mode" : "Debug fallback mode");
+    });
+    const payloadToggleKey = "jemaai_showroom_debug_payload_open_v1";
+    function applyPayloadPanelState(isOpen) {
+      const panel = document.getElementById("payloadPanel");
+      const btn = document.getElementById("togglePayloadBtn");
+      if (!panel || !btn) return;
+      panel.classList.toggle("payload-collapsed", !isOpen);
+      btn.textContent = isOpen ? "Debug Payload: ON" : "Debug Payload: OFF";
+    }
+    try {
+      const saved = window.localStorage.getItem(payloadToggleKey);
+      applyPayloadPanelState(saved === "1");
+    } catch (e) {
+      applyPayloadPanelState(false);
+    }
+    document.getElementById("togglePayloadBtn").addEventListener("click", () => {
+      const panel = document.getElementById("payloadPanel");
+      const btn = document.getElementById("togglePayloadBtn");
+      if (!panel || !btn) return;
+      const hidden = panel.classList.toggle("payload-collapsed");
+      btn.textContent = hidden ? "Debug Payload: OFF" : "Debug Payload: ON";
+      try {
+        window.localStorage.setItem(payloadToggleKey, hidden ? "0" : "1");
+      } catch (e) {}
+    });
+    const gateLineToggleKey = "jemaai_showroom_gate_line_debug_v1";
+    function applyGateLineState(on) {
+      stageState.showGateLine = !!on;
+      const btn = document.getElementById("toggleGateLineBtn");
+      if (btn) btn.textContent = stageState.showGateLine ? "Gate Line: ON" : "Gate Line: OFF";
+    }
+    try {
+      const saved = window.localStorage.getItem(gateLineToggleKey);
+      applyGateLineState(saved === "1");
+    } catch (e) {
+      applyGateLineState(false);
+    }
+    document.getElementById("toggleGateLineBtn").addEventListener("click", () => {
+      applyGateLineState(!stageState.showGateLine);
+      try {
+        window.localStorage.setItem(gateLineToggleKey, stageState.showGateLine ? "1" : "0");
+      } catch (e) {}
+    });
+    const replayToggleKey = "jemaai_showroom_replay_enabled_v1";
+    function applyReplayState(on) {
+      stageState.replay.enabled = !!on;
+      const btn = document.getElementById("toggleReplayBtn");
+      if (btn) btn.textContent = stageState.replay.enabled ? "Replay: ON" : "Replay: OFF";
+      if (stageState.replay.enabled) {
+        stageState.replay.idx = Math.max(0, stageState.replay.tape.length - 1);
+      }
+      const seek = document.getElementById("replaySeek");
+      if (seek) {
+        seek.max = String(Math.max(0, stageState.replay.tape.length - 1));
+        seek.value = String(Math.max(0, stageState.replay.idx));
+      }
+    }
+    try {
+      applyReplayState(window.localStorage.getItem(replayToggleKey) === "1");
+    } catch (e) {
+      applyReplayState(false);
+    }
+    document.getElementById("toggleReplayBtn").addEventListener("click", () => {
+      applyReplayState(!stageState.replay.enabled);
+      try {
+        window.localStorage.setItem(replayToggleKey, stageState.replay.enabled ? "1" : "0");
+      } catch (e) {}
+    });
+    document.getElementById("replaySpeed").addEventListener("change", () => {
+      const raw = Number(document.getElementById("replaySpeed").value || 1);
+      stageState.replay.speed = raw === 2 || raw === 4 ? raw : 1;
+    });
+    document.getElementById("replaySeek").addEventListener("input", () => {
+      const idx = Number(document.getElementById("replaySeek").value || 0);
+      const tape = stageState.replay.tape;
+      stageState.replay.idx = Math.max(0, Math.min(tape.length - 1, idx));
+      const ev = tape[stageState.replay.idx];
+      if (ev) applyShowroomEvent(ev, true);
+    });
+    const twinToggleKey = "jemaai_showroom_twin_view_v1";
+    function applyTwinViewState(on) {
+      stageState.twinViewOn = !!on;
+      const btn = document.getElementById("toggleTwinViewBtn");
+      if (btn) btn.textContent = stageState.twinViewOn ? "Twin View: ON" : "Twin View: OFF";
+      setTwinViewCard(stageState.obj || {});
+    }
+    try {
+      applyTwinViewState(window.localStorage.getItem(twinToggleKey) === "1");
+    } catch (e) {
+      applyTwinViewState(false);
+    }
+    document.getElementById("toggleTwinViewBtn").addEventListener("click", () => {
+      applyTwinViewState(!stageState.twinViewOn);
+      try {
+        window.localStorage.setItem(twinToggleKey, stageState.twinViewOn ? "1" : "0");
+      } catch (e) {}
+    });
+
+    function handleKeyDown(ev) {
+      if (performance.now() < stageState.deathUntilTs) return;
+      if (ev.key === "ArrowLeft") stageState.keyState.left = true;
+      if (ev.key === "ArrowRight") stageState.keyState.right = true;
+      if (ev.key === "ArrowUp") stageState.keyState.up = true;
+      if (ev.key === "ArrowDown") stageState.keyState.down = true;
+      if (ev.key === " ") {
+        const now = performance.now();
+        const risk = String((stageState.obj && stageState.obj.risk_level) || "").toUpperCase();
+        const dir = String((stageState.obj && stageState.obj.public_signal_direction) || "HOLD").toUpperCase();
+        const lockOn = now < stageState.noGoUntilTs;
+        if (inTavernZone(stageState.king.x, stageState.king.y)) {
+          stageState.king.actionText = "tavern_talk";
+          addBubble(stageState.actors[0], tavernLine());
+        } else if (lockOn) {
+          stageState.king.actionText = "blocked_by_gate";
+          addBubble(stageState.actors[0], "AIDC Gate: NO_GO");
+        } else if (risk === "WARNING") {
+          stageState.king.actionText = "defend";
+          addBubble(stageState.actors[0], "성문 방어 태세!");
+        } else if (dir === "BUY" || dir === "LONG") {
+          stageState.king.actionText = "charge_long";
+          addBubble(stageState.actors[0], "롱 돌격!");
+        } else if (dir === "SELL" || dir === "SHORT") {
+          stageState.king.actionText = "arrow_short";
+          addBubble(stageState.actors[0], "숏 사격!");
+        } else {
+          stageState.king.actionText = "scout";
+          addBubble(stageState.actors[0], "정찰 유지");
+        }
+        stageState.king.actionUntilTs = now + 900;
+        ev.preventDefault();
+      }
+    }
+
+    function handleKeyUp(ev) {
+      if (ev.key === "ArrowLeft") stageState.keyState.left = false;
+      if (ev.key === "ArrowRight") stageState.keyState.right = false;
+      if (ev.key === "ArrowUp") stageState.keyState.up = false;
+      if (ev.key === "ArrowDown") stageState.keyState.down = false;
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+  </script>
+</body>
+</html>
+
+

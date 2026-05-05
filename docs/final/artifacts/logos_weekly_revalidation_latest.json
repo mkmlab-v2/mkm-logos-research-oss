@@ -1,0 +1,506 @@
+{
+  "schema": "logos_falsification_benchmark_v1",
+  "generated_at_utc": "2026-05-05T15:42:21Z",
+  "research_only": true,
+  "fact_lock_notice": "Do not claim cross-theory superiority unless all required adapters and OOS gates are present.",
+  "required_gates": [
+    "negative_control_uplift",
+    "counterfactual_gap",
+    "out_of_sample_holdout"
+  ],
+  "arms": [
+    {
+      "arm_id": "logos_primary",
+      "theory_family": "logos",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_news_smoke_v1.jsonl",
+        "--labels-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_labels_smoke_v1.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_logos_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_logos_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_logos_latest.json"
+    },
+    {
+      "arm_id": "counterfactual_variant_v1",
+      "theory_family": "counterfactual",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_news_smoke_v1.jsonl",
+        "--labels-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_labels_smoke_v1.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_counterfactual_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_counterfactual_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_counterfactual_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_counterfactual_latest.json"
+    },
+    {
+      "arm_id": "dummy_negative_control",
+      "theory_family": "dummy_control",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_news_smoke_v1.jsonl",
+        "--labels-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_labels_smoke_v1.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_dummy_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_dummy_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_dummy_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_dummy_latest.json"
+    },
+    {
+      "arm_id": "iching_adapter_v1",
+      "theory_family": "iching",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_news_smoke_v1.jsonl",
+        "--labels-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_labels_smoke_v1.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_iching_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_iching_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_iching_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_iching_latest.json"
+    },
+    {
+      "arm_id": "quantum_adapter_v1",
+      "theory_family": "quantum_inspired",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_news_smoke_v1.jsonl",
+        "--labels-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_labels_smoke_v1.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_quantum_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_quantum_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_quantum_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_quantum_latest.json"
+    },
+    {
+      "arm_id": "logos_primary_oos",
+      "theory_family": "logos",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_news_holdout_v1.jsonl",
+        "--labels-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_labels_holdout_v1.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_logos_oos_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_logos_oos_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_logos_oos_latest.json"
+    },
+    {
+      "arm_id": "counterfactual_variant_v1_oos",
+      "theory_family": "counterfactual",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_news_holdout_v1.jsonl",
+        "--labels-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_labels_holdout_v1.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_counterfactual_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_counterfactual_oos_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_counterfactual_oos_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_counterfactual_oos_latest.json"
+    },
+    {
+      "arm_id": "dummy_negative_control_oos",
+      "theory_family": "dummy_control",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_news_holdout_v1.jsonl",
+        "--labels-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_labels_holdout_v1.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_dummy_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_dummy_oos_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_dummy_oos_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_dummy_oos_latest.json"
+    },
+    {
+      "arm_id": "iching_adapter_v1_oos",
+      "theory_family": "iching",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_news_holdout_v1.jsonl",
+        "--labels-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_labels_holdout_v1.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_iching_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_iching_oos_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_iching_oos_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_iching_oos_latest.json"
+    },
+    {
+      "arm_id": "quantum_adapter_v1_oos",
+      "theory_family": "quantum_inspired",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_news_holdout_v1.jsonl",
+        "--labels-jsonl",
+        "tests/fixtures/logos_symbolic_event_backtest_labels_holdout_v1.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_quantum_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_quantum_oos_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_quantum_oos_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_quantum_oos_latest.json"
+    },
+    {
+      "arm_id": "logos_primary_real_oos",
+      "theory_family": "logos",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "docs/final/artifacts/news_observation_v1_blind_split_latest.jsonl",
+        "--labels-jsonl",
+        "docs/final/artifacts/direction_label_bar_v1_latest.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_logos_real_oos_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_logos_real_oos_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_logos_real_oos_latest.json"
+    },
+    {
+      "arm_id": "counterfactual_variant_v1_real_oos",
+      "theory_family": "counterfactual",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "docs/final/artifacts/news_observation_v1_blind_split_latest.jsonl",
+        "--labels-jsonl",
+        "docs/final/artifacts/direction_label_bar_v1_latest.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_counterfactual_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_counterfactual_real_oos_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_counterfactual_real_oos_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_counterfactual_real_oos_latest.json"
+    },
+    {
+      "arm_id": "dummy_negative_control_real_oos",
+      "theory_family": "dummy_control",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "docs/final/artifacts/news_observation_v1_blind_split_latest.jsonl",
+        "--labels-jsonl",
+        "docs/final/artifacts/direction_label_bar_v1_latest.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_dummy_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_dummy_real_oos_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_dummy_real_oos_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_dummy_real_oos_latest.json"
+    },
+    {
+      "arm_id": "iching_adapter_v1_real_oos",
+      "theory_family": "iching",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "docs/final/artifacts/news_observation_v1_blind_split_latest.jsonl",
+        "--labels-jsonl",
+        "docs/final/artifacts/direction_label_bar_v1_latest.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_iching_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_iching_real_oos_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_iching_real_oos_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_iching_real_oos_latest.json"
+    },
+    {
+      "arm_id": "quantum_adapter_v1_real_oos",
+      "theory_family": "quantum_inspired",
+      "status": "available",
+      "run_cmd": [
+        "py",
+        "scripts/run_logos_symbolic_event_backtest_v1.py",
+        "--news-jsonl",
+        "docs/final/artifacts/news_observation_v1_blind_split_latest.jsonl",
+        "--labels-jsonl",
+        "docs/final/artifacts/direction_label_bar_v1_latest.jsonl",
+        "--symbol-map-json",
+        "docs/final/artifacts/logos_symbolic_event_map_quantum_v1.json",
+        "--output-json",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_quantum_real_oos_latest.json",
+        "--output-csv",
+        "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_quantum_real_oos_rows_latest.csv"
+      ],
+      "result_json": "docs/final/artifacts/logos_symbolic_event_backtest_benchmark_quantum_real_oos_latest.json"
+    }
+  ],
+  "metrics": {
+    "logos_primary": {
+      "hit_rate": 1.0,
+      "n_evaluated": 4,
+      "hits": 4
+    },
+    "counterfactual_variant_v1": {
+      "hit_rate": 0.75,
+      "n_evaluated": 4,
+      "hits": 3
+    },
+    "dummy_negative_control": {
+      "hit_rate": 0.0,
+      "n_evaluated": 4,
+      "hits": 0
+    },
+    "iching_adapter_v1": {
+      "hit_rate": 0.75,
+      "n_evaluated": 4,
+      "hits": 3
+    },
+    "quantum_adapter_v1": {
+      "hit_rate": 0.0,
+      "n_evaluated": 4,
+      "hits": 0
+    },
+    "logos_primary_oos": {
+      "hit_rate": 1.0,
+      "n_evaluated": 8,
+      "hits": 8
+    },
+    "counterfactual_variant_v1_oos": {
+      "hit_rate": 0.875,
+      "n_evaluated": 8,
+      "hits": 7
+    },
+    "dummy_negative_control_oos": {
+      "hit_rate": 0.0,
+      "n_evaluated": 8,
+      "hits": 0
+    },
+    "iching_adapter_v1_oos": {
+      "hit_rate": 0.875,
+      "n_evaluated": 8,
+      "hits": 7
+    },
+    "quantum_adapter_v1_oos": {
+      "hit_rate": 0.0,
+      "n_evaluated": 8,
+      "hits": 0
+    },
+    "logos_primary_real_oos": {
+      "hit_rate": 0.989305,
+      "n_evaluated": 187,
+      "hits": 185
+    },
+    "counterfactual_variant_v1_real_oos": {
+      "hit_rate": 0.989305,
+      "n_evaluated": 187,
+      "hits": 185
+    },
+    "dummy_negative_control_real_oos": {
+      "hit_rate": 0.0,
+      "n_evaluated": 187,
+      "hits": 0
+    },
+    "iching_adapter_v1_real_oos": {
+      "hit_rate": 0.989305,
+      "n_evaluated": 187,
+      "hits": 185
+    },
+    "quantum_adapter_v1_real_oos": {
+      "hit_rate": 0.0,
+      "n_evaluated": 187,
+      "hits": 0
+    }
+  },
+  "uplift_over_dummy": 1.0,
+  "uplift_over_counterfactual": 0.25,
+  "uplift_over_iching": 0.25,
+  "uplift_over_quantum": 1.0,
+  "uplift_oos_over_dummy": 1.0,
+  "uplift_oos_over_counterfactual": 0.125,
+  "uplift_oos_over_iching": 0.125,
+  "uplift_oos_over_quantum": 1.0,
+  "uplift_real_oos_over_dummy": 0.989305,
+  "uplift_real_oos_over_counterfactual": 0.0,
+  "uplift_real_oos_over_iching": 0.0,
+  "uplift_real_oos_over_quantum": 0.989305,
+  "gate_status": {
+    "negative_control_uplift": "PASS",
+    "counterfactual_gap": "PASS",
+    "out_of_sample_holdout": "PASS",
+    "real_out_of_sample_holdout": "FAIL",
+    "three_gate_overall": "FAIL"
+  },
+  "execution_mode": "execute",
+  "run_log": [
+    {
+      "arm_id": "logos_primary",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 4, \"hit_rate\": 1.0}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "counterfactual_variant_v1",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 4, \"hit_rate\": 0.75}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "dummy_negative_control",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 4, \"hit_rate\": 0.0}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "iching_adapter_v1",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 4, \"hit_rate\": 0.75}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "quantum_adapter_v1",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 4, \"hit_rate\": 0.0}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "logos_primary_oos",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 8, \"hit_rate\": 1.0}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "counterfactual_variant_v1_oos",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 8, \"hit_rate\": 0.875}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "dummy_negative_control_oos",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 8, \"hit_rate\": 0.0}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "iching_adapter_v1_oos",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 8, \"hit_rate\": 0.875}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "quantum_adapter_v1_oos",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 8, \"hit_rate\": 0.0}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "logos_primary_real_oos",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 187, \"hit_rate\": 0.989305}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "counterfactual_variant_v1_real_oos",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 187, \"hit_rate\": 0.989305}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "dummy_negative_control_real_oos",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 187, \"hit_rate\": 0.0}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "iching_adapter_v1_real_oos",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 187, \"hit_rate\": 0.989305}\n",
+      "stderr_tail": ""
+    },
+    {
+      "arm_id": "quantum_adapter_v1_real_oos",
+      "return_code": 0,
+      "stdout_tail": "{\"ok\": true, \"n_evaluated\": 187, \"hit_rate\": 0.0}\n",
+      "stderr_tail": ""
+    }
+  ],
+  "next_actions": [
+    "Add OOS holdout and walk-forward gate for all arms.",
+    "Expand from smoke fixtures to production holdout dataset before any superiority claim."
+  ]
+}
