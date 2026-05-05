@@ -89,6 +89,7 @@
 | 항목 | 경로 / 역할 |
 |------|-------------|
 | 대외 카피·비노출 체크리스트 | `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` |
+| 온톨로지/XAI 체화 브리프(문제-근거-행동 출력 계약) | `docs/final/artifacts/logos_symbolic_paid_user_brief_latest.md` (`S2W 기사 기반 체화 팩`) |
 | KR 건강·웰빙·설문·체질 표현 가드레일 | `docs/final/MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md` |
 | 도메인×쇼룸·체험 표면 배치·디자인·CTA 초안 | `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1·**§1.1b** |
 | Track C 상용·법무·핵심이론 보호 | `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` |
@@ -2763,6 +2764,46 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
   - claim lock/anchor/atom-set 및 연결 onepager 산출물에 `corpus_profile_id` 필드를 강제하고, 모든 필드가 동일 profile id로 정합되는지 strict 검증한다.
   - profile id 누락/불일치/허용 목록 외 값은 즉시 FAIL 처리한다.
   - 일일 러너(`run_global_atom_claim_lock_daily.ps1`)와 CI(`global-atom-claim-lock-smoke.yml`)에 corpus profile lock 검사를 연결해 혼선 재발을 차단한다.
+
+#### 31.33D Chronicle-History-News Signal v1 (B-Track Observation Only) (FACT, 2026-05-05)
+
+- 스키마/룰:
+  - `docs/final/artifacts/schemas/chronicle_history_news_signal_v1.schema.json`
+  - `docs/final/artifacts/chronicle_history_news_decision_rules_v1.json`
+- 스크립트:
+  - `scripts/build_chronicle_history_news_signal_stub_v1.py`
+  - `scripts/evaluate_chronicle_history_news_signal_weekly_v1.py`
+  - `scripts/check_chronicle_history_news_weekly_alert_v1.py`
+  - `scripts/update_chronicle_human_gate_ledger_v1.py`
+  - `scripts/build_chronicle_human_gate_weekly_report_v1.py`
+  - `scripts/build_chronicle_threshold_switch_review_packet_v1.py`
+- 임계치:
+  - `docs/final/artifacts/chronicle_history_news_weekly_alert_thresholds_v1.json`
+- 산출물:
+  - `docs/final/artifacts/chronicle_history_news_signal_stub_latest.json`
+  - `docs/final/artifacts/chronicle_history_news_signal_history_latest.jsonl`
+  - `docs/final/artifacts/chronicle_history_news_signal_weekly_eval_latest.json`
+  - `docs/final/artifacts/chronicle_history_news_weekly_alert_latest.json`
+  - `docs/final/artifacts/chronicle_human_gate_ledger_latest.jsonl`
+  - `docs/final/artifacts/chronicle_human_gate_ledger_summary_latest.json`
+  - `docs/final/artifacts/chronicle_human_gate_weekly_report_latest.json`
+  - `docs/final/artifacts/chronicle_threshold_switch_review_packet_latest.json`
+  - `docs/final/artifacts/chronicle_human_gate_manual_review_template_v1.md`
+- 구현 사실:
+  - 연대기(chronicle)·역사 패턴(history)·뉴스 컨텍스트(news)를 `context_metrics` 주입형 구조로 정규화했다.
+  - `regime_map.json` + `news_observation_v1_latest.jsonl` 기반으로 daily score를 계산하고 history JSONL에 append-only로 누적한다.
+  - weekly eval 리포트는 최근 7일 history를 요약해 점수/결정 분포를 산출한다.
+  - weekly alert 체크는 `warning`/`critical` 이중 게이트(`min_row_count`, `avg_score`, `WATCH/REDUCE 비율`, `observation_only_guard_active`)를 계산한다.
+  - daily 체인은 `--strict --strict-on critical`로 실행해 `critical` 위반에서만 hard-stop 하며, `warning`은 리포트/알림으로 남긴다.
+  - weekly alert 실패 시 `OPS_ALARM_WEBHOOK_URL`(기본, `--webhook-env`로 변경 가능)이 설정되어 있으면 severity 포함 payload를 POST 전송한다(미설정 시 skip).
+  - human gate ledger는 weekly alert 결과를 append-only JSONL로 기록하고, 최신 요약 JSON을 별도 갱신한다.
+  - human gate weekly report는 최근 7일 기준 `review_required_count`, `warning_streak`, `critical_streak`를 산출하고, `threshold_switch_min_rows`(기본 14) 기준 `readiness_for_threshold_switch`/`threshold_switch_recommendation`를 자동 계산한다.
+  - 수동 검토 JSONL(`chronicle_human_gate_manual_reviews_latest.jsonl`)을 읽어 `manual_review_count`, `review_gap_count`, `review_gap_detected`를 계산해 미기록 검토 건을 자동 경고한다.
+  - threshold switch review packet은 weekly report readiness와 current/proposed thresholds 비교를 한 파일로 묶고, `readiness_for_threshold_switch=ready`일 때 `OPS_ALARM_WEBHOOK_URL`로 ready 이벤트를 전송한다.
+  - 리허설 고정 문구: 운영 리허설은 `py scripts/build_chronicle_threshold_switch_review_packet_v1.py --force-ready --dry-run-webhook --output-json docs/final/artifacts/chronicle_threshold_switch_review_packet_rehearsal_latest.json` 1회 실행으로 검증하고, 실운영 웹훅 전송은 이 명령에서 금지한다.
+  - 거버넌스 기본값은 `source_track=B`, `governance_state=S1_SHADOW`, `observation_mode=KEEP_OBSERVATION_ONLY`.
+  - 판정 레이어는 `HOLD/WATCH/REDUCE` 후보를 계산하되, 최종 결정은 `most_conservative_wins=true`를 상속해 보수적으로 고정한다.
+  - A-track 자동 합선은 `auto_bind_to_atrack_forbidden=true`로 차단한다.
 
 #### 31.33D Logos Falsification Benchmark Contract (FACT, 2026-05-05)
 
