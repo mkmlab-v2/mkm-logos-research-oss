@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-05T13:20:00+09:00
+- **last_updated_utc:** 2026-05-05T07:21:27Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK**; 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -15,7 +15,7 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-05T05:10:30Z** — 건강·웰빙 카피 가드레일 SSOT 연결 완료(PUBLIC_FACING/CONSTITUTION/TrackC/P0).
+- **2026-05-05T07:21:27Z** — 소배치 정리 추가 실행: freeze 50건 이동(session 20260505T072109Z), verify_p0 재통과(297/297)
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -339,6 +339,7 @@
 | 2026-05-05 (도메인×쇼룸 표 — 장기기억 루틴) | **`MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1** 신설: jemaai=전광판·관측 데모, mkmlife=원퀘스천 리포트, jema-ai.com=브랜드 허브·링크; **CENTRAL**에 «에이전트 반복 루틴» 표 추가·헌법 §1.1.3·P0 경로·CLAUDE/AGENTS 교차. |
 | 2026-05-05 (허브 CTA 초안) | **`MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1b** — jema-ai→jemaai/mkmlife/a-codeai **버튼 라벨 초안**표; `JEMA_AI_DOMAIN_POINTER_V1.md` §4.1 교차; P0에 `JEMA_AI_DOMAIN_POINTER` 경로 추가. |
 | 2026-05-05 (jema-ai.com 구현 연결) | `projects/no1kmedi/marketing-site/public-copy.json` **`hub_links.showroom_jemaai`** + `page.tsx` 바인딩; 스키마 `check-public-copy-schema.mjs` 갱신; `page.tsx` **`homepagePresetClass`** 누락 타입오류 수정·`npm run build` OK; Track C §3.6·`MKM_DOMAIN` 구현 원천 문장 동기. |
+| 2026-05-05 (BTC 선물 아론 엔진 본선 전환) | `bitcoin-live-small-24h` 런타임을 `aroon_v1`로 전환: `start_live_trading.py`(비대화형 위임)·`scripts/start_24h_daemon.py`(.env 우선순위 보정)·`src/futures_engine/*`·`src/api/binance_client.py`·`src/monitoring/trading_prometheus.py`/`trading_otel.py`를 VPS 동기화 후 `pm2 restart --update-env` + `pm2 save`; 본선 `.env`에 `SYMBOL=BTCUSDT`, `TESTNET=false`, `ENABLE_TRADING=true`, `BTC_FUTURES_ENGINE=aroon_v1`, `AROON_*` 고정. 상태 확인: PM2 online, `trading_state.json`=`schema trading_state_aroon_v1`·`engine aroon_v1`·`last_signal HOLD`·`trades_count 0` (실주문 체결은 아직 없음). |
 | 2026-05-04 (RDA 스마트팜 공공 데이터) | 농진청 제공 ZIP 로컬 전개·컬럼 실측: 기상 시간자료(`지점명`·`일시`·온도·습도·일사량·강수량`, 다중 시트), 토양검정 화학성 연도별 xlsx(2025는 `skiprows=1`); 매핑·4주 로드맵·계약 갭(토양수분 미제공→텔레메트리 필수)을 `docs/final/SMARTFARM_RDA_SOIL_WEATHER_MAPPING_AND_ROADMAP_V1.md` + `SMARTFARM_RDA_COLUMN_MAP_V1.json`에 고정; 대용량 전개 경로 `data/smartfarm_rda_extract_v1/`는 `.gitignore`. Week2는 `scripts/build_smartfarm_zone_weather_features_v1.py`로 station→zone 매핑 + `rain_mm_12h` 리플레이 입력(`zone_weather_replay_inputs_v1.csv`)까지 검증, Week3는 `scripts/evaluate_smartfarm_rain_gate_kpi_v1.py`로 임계값 스윕(`rain_gate_threshold_sweep_v1.csv`)·요약(`rain_gate_threshold_sweep_summary_v1.json`) 생성, Week4는 `scripts/check_smartfarm_week4_data_guard_v1.py`·`scripts/build_smartfarm_week4_ops_dashboard_v1.py`로 가드/대시보드 산출(`smartfarm_week4_ops_dashboard_v1.json`)까지 연결, 후속으로 `scripts/build_smartfarm_gap_incident_report_v1.py`로 gap incident 24건(`gap_incident_report_v1.csv`) 자동 추출 + `scripts/simulate_smartfarm_gap_recovery_policy_v1.py`로 FFILL/SKIP/FLAG 보정정책 비교(`gap_recovery_policy_simulation_v1.csv`) + `scripts/evaluate_smartfarm_gap_policy_impact_v1.py`로 hybrid(skip+small ffill) 전/후 KPI 영향(`gap_policy_kpi_impact_v1.csv`) + `scripts/build_smartfarm_recommended_gap_policy_v1.py`로 운영 권장안(`recommended_policy_v1.json`) 자동 결정 + `scripts/run_smartfarm_gap_policy_daily_gate_v1.py`로 일일 GO/WATCH/HOLD 판정·알림(`smartfarm_gap_policy_daily_gate_v1.json`) + 프로파일(`daily_gate_policy_profile_v1.json`: conservative/standard/aggressive) 기반 임계치 분기 및 aggressive 이중조건 override(max_gap + incident_count)까지 연결. |
 | 2026-05-02 (MKM 자체 LLM·이론 체화 — 전략 지문 고정) | 규칙/프롬프트 정렬 vs 가중치 학습 **층 분리**; 고도화 기본은 **규칙+RAG+게이트**. 로컬 젬마 등 **체화형 파인튜닝**은 eval·데이터·프롬프트 비대가 **실측**될 때만 ROI 검토 — 미달이면 오버엔지니어링. 재질의 시 **`CENTRAL_AGENT_MEMORY_V1` 「MKM AI 고도화 · 자체 LLM」** 절 우선. |
 
