@@ -109,6 +109,9 @@ def _merge_event_by_priority(current: Dict[str, Any], incoming: Dict[str, Any]) 
         "direction_abstract",
         "disclaimer_ref",
         "last_ok_utc",
+        "showroom_display_mode",
+        "showroom_ticker_key",
+        "showroom_reaction_line_ids",
     ):
         if key not in merged or merged.get(key) in (None, "", {}):
             merged[key] = incoming.get(key, merged.get(key))

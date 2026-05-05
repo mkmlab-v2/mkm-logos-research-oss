@@ -1,6 +1,7 @@
 # One-shot ops chain (local): Multitarget pre-gate -> P0 Fact-Lock bundle -> Sasang JSONL validate -> BTC Multilens smoke -> contract pytest subset.
 # Optional: -IncludeP1AB (Multilens P1 A/B + final selection after core Fact-Lock).
 # Optional: -IncludeJemaaiCloudChecks (verify jemaai.cloud MVP paths + nginx example; no VPS deploy).
+# Optional: -IncludeShowroomTrackCChain (run build_showroom_track_c_bundle_chain_v1.ps1 after main autopilot steps).
 # Optional: -SkipMultitargetPreGate (skip multitarget topology/trainability pre-gate).
 # No live trading. Network required for step 3 (Binance + FGI).
 #
@@ -11,6 +12,7 @@
 param(
     [switch]$IncludeP1AB,
     [switch]$IncludeJemaaiCloudChecks,
+    [switch]$IncludeShowroomTrackCChain,
     [switch]$IncludeJemaaiE2ESmoke,
     [switch]$SkipMultitargetPreGate,
     [bool]$TreatMultitargetHoldAsSuccess = $true
@@ -120,6 +122,8 @@ if ($IncludeJemaaiCloudChecks) {
         (Join-Path $mvp "nginx_public_event_gateway.conf.example"),
         (Join-Path $mvp "examples\public_event_ingest_minimal.v1.json"),
         (Join-Path $mvp "public_showroom_poll.html"),
+        (Join-Path $mvp "public_showroom_probabilistic_saju_v1.html"),
+        (Join-Path $mvp "showroom_saju_hour_bundle_demo_v1.json"),
         (Join-Path $mvp "compression_v2_explorer.html"),
         (Join-Path $workspaceRoot "scripts\Serve-CompressionV2Explorer.ps1"),
         (Join-Path $workspaceRoot "scripts\Start-CompressionV2ExplorerDemo.ps1"),
@@ -142,6 +146,17 @@ if ($IncludeJemaaiE2ESmoke) {
         throw "jemaai.cloud E2E smoke: missing $smokeScript"
     }
     & powershell -NoProfile -ExecutionPolicy Bypass -File $smokeScript -ApiBaseUrl "https://api.jemaai.cloud"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if ($IncludeShowroomTrackCChain) {
+    Write-Host "=== [showroom] Track C bundle chain (freshness + bundle + validate) ===" -ForegroundColor Cyan
+    $chainScript = Join-Path $workspaceRoot "scripts\build_showroom_track_c_bundle_chain_v1.ps1"
+    if (-not (Test-Path -LiteralPath $chainScript)) {
+        throw "Showroom Track C chain: missing $chainScript"
+    }
+    $psExe = if (Get-Command pwsh -ErrorAction SilentlyContinue) { "pwsh" } else { "powershell.exe" }
+    & $psExe -NoProfile -ExecutionPolicy Bypass -File $chainScript -WorkspaceRoot $workspaceRoot
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 

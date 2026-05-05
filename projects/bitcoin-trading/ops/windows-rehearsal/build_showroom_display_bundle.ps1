@@ -77,6 +77,56 @@ function Get-SystemStatus {
     return "degraded"
 }
 
+# Showroom UX tokens (public-event.v1 optional keys) — ASCII only; Korean copy lives in public_showroom_poll.html.
+function Get-ShowroomDisplayMode {
+    param([string]$SystemStatus, [string]$RiskLevel, [string]$PublicSignalDirection)
+    $sys = ([string]$SystemStatus).Trim().ToLowerInvariant()
+    if ($sys -eq "maintenance") { return "defend" }
+    $r = ([string]$RiskLevel).Trim().ToUpperInvariant()
+    if ($r -eq "SAFE") { return "idle" }
+    if ($r -eq "WARNING" -or $r -eq "CRITICAL") { return "defend" }
+    $d = ([string]$PublicSignalDirection).Trim().ToUpperInvariant()
+    if ($d -match "^(BUY|LONG|SELL|SHORT)$") { return "attack" }
+    return "idle"
+}
+
+function Get-ShowroomTickerKey {
+    param([string]$SystemStatus, [string]$RiskLevel, [string]$PublicSignalDirection, [string]$DirAbstract)
+    $sys = ([string]$SystemStatus).Trim().ToUpperInvariant() -replace "[^A-Z0-9]", ""
+    if ([string]::IsNullOrWhiteSpace($sys)) { $sys = "ONLINE" }
+    $r = ([string]$RiskLevel).Trim().ToUpperInvariant() -replace "[^A-Z0-9]", ""
+    if ([string]::IsNullOrWhiteSpace($r)) { $r = "INFO" }
+    $psd = ([string]$PublicSignalDirection).Trim().ToUpperInvariant() -replace "[^A-Z0-9]", ""
+    if ([string]::IsNullOrWhiteSpace($psd)) { $psd = "HOLD" }
+    $da = ([string]$DirAbstract).Trim().ToUpperInvariant() -replace "[^A-Z0-9]", ""
+    if ([string]::IsNullOrWhiteSpace($da)) { $da = "FLAT" }
+    "S_{0}_R_{1}_PSD_{2}_DA_{3}" -f $sys, $r, $psd, $da
+}
+
+function Get-ShowroomReactionLineIds {
+    param([string]$DisplayMode, [string]$SystemStatus, [string]$RiskLevel)
+    $out = [System.Collections.ArrayList]@()
+    if (([string]$SystemStatus).Trim().ToLowerInvariant() -eq "maintenance") {
+        [void]$out.Add("R_SYS_MAINT_01")
+    }
+    $m = ([string]$DisplayMode).Trim().ToLowerInvariant()
+    $rk = ([string]$RiskLevel).Trim().ToUpperInvariant()
+    if ($m -eq "defend") {
+        [void]$out.Add("R_MODE_DEF_01")
+        if ($rk -match "WARNING|CRITICAL") { [void]$out.Add("R_RISK_HIGH_01") }
+    }
+    elseif ($m -eq "attack") {
+        [void]$out.Add("R_MODE_ATK_01")
+    }
+    else {
+        [void]$out.Add("R_MODE_IDLE_01")
+    }
+    if ($out.Count -gt 3) {
+        return @($out[0], $out[1], $out[2])
+    }
+    return @($out)
+}
+
 $root = $WorkspaceRoot
 $c2Path = Join-Path $root "docs\final\artifacts\c2_aegis_guardrail_status_latest.json"
 $fusionPath = Join-Path $root "docs\final\artifacts\ops_fusion_cycle_status_latest.json"
@@ -87,6 +137,10 @@ $daemonStatusPath = Join-Path $root "projects\bitcoin-trading\memory\v2\status\t
 $tradingStatePath = Join-Path $root "projects\bitcoin-trading\logs\trading_state.json"
 $baselineCandidate = Join-Path $root "projects\bitcoin-trading\memory\v2\ops\showroom_equity_baseline_usdt.local.json"
 $autoBaselinePath = Join-Path $root "projects\bitcoin-trading\memory\v2\ops\showroom_equity_baseline_auto.json"
+$logos4dStatePath = Join-Path $root "docs\final\artifacts\logos_4d_state_v1_latest.json"
+$logosGraphBundlePath = Join-Path $root "docs\final\artifacts\logos_corpus_graph_bundle_v1_latest.json"
+$logosFreshnessSidecarPath = Join-Path $root "docs\final\artifacts\logos_track_c_freshness_sidecar_v1_latest.json"
+$exodusPressurePath = Join-Path $root "docs\final\artifacts\exodus_pressure_v1_latest.json"
 
 $c2 = Read-JsonFile -Path $c2Path
 $fusion = Read-JsonFile -Path $fusionPath
@@ -95,6 +149,76 @@ $priv = Read-JsonFile -Path $privateMetricsPath
 $tradeWindow = Read-JsonFile -Path $tradeWindowPath
 $daemonStatus = Read-JsonFile -Path $daemonStatusPath
 $tradingState = Read-JsonFile -Path $tradingStatePath
+$logos4d = Read-JsonFile -Path $logos4dStatePath
+$logosGraphDoc = Read-JsonFile -Path $logosGraphBundlePath
+$freshnessDoc = Read-JsonFile -Path $logosFreshnessSidecarPath
+
+$logosGraphBundlePresent = $false
+$logosGraphNlc = $null
+$logosGraphElc = $null
+$logosGraphDedupe = $null
+$logosGraphTs = $null
+$logosGraphMeta = [ordered]@{
+    present         = $false
+    schema          = "showroom_logos_graph_meta_v1"
+    hypothesis_tier = "B"
+}
+if ($logosGraphDoc -and [string]$logosGraphDoc.schema -eq "logos_corpus_graph_bundle_v1") {
+    $logosGraphBundlePresent = $true
+    if ($logosGraphDoc.dedupe_bundle_key_sha256) { $logosGraphDedupe = [string]$logosGraphDoc.dedupe_bundle_key_sha256 }
+    if ($logosGraphDoc.ts_utc) {
+        $rawTsG = $logosGraphDoc.ts_utc
+        if ($rawTsG -is [DateTime]) {
+            $dtG = [DateTime]$rawTsG
+            if ($dtG.Kind -eq [DateTimeKind]::Unspecified) {
+                $dtG = [DateTime]::SpecifyKind($dtG, [DateTimeKind]::Utc)
+            }
+            $logosGraphTs = $dtG.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+        } elseif ($rawTsG -is [DateTimeOffset]) {
+            $logosGraphTs = $rawTsG.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+        } else {
+            $logosGraphTs = [string]$rawTsG
+        }
+    }
+    if ($logosGraphDoc.graph_files) {
+        if ($logosGraphDoc.graph_files.nodes_line_count -ne $null) { $logosGraphNlc = [int]$logosGraphDoc.graph_files.nodes_line_count }
+        if ($logosGraphDoc.graph_files.edges_line_count -ne $null) { $logosGraphElc = [int]$logosGraphDoc.graph_files.edges_line_count }
+    }
+    $logosGraphMeta = [ordered]@{
+        present                  = $true
+        schema                   = "showroom_logos_graph_meta_v1"
+        hypothesis_tier          = "B"
+        source_schema            = "logos_corpus_graph_bundle_v1"
+        dedupe_bundle_key_sha256 = $logosGraphDedupe
+        ts_utc                   = $logosGraphTs
+        nodes_line_count         = $logosGraphNlc
+        edges_line_count         = $logosGraphElc
+    }
+}
+
+$freshnessSidecarPresent = $false
+$freshnessStalenessSec = $null
+$freshnessGeneratedAtUtc = $null
+if ($freshnessDoc -and [string]$freshnessDoc.schema -eq "logos_track_c_freshness_sidecar_v1") {
+    $freshnessSidecarPresent = $true
+    if ($freshnessDoc.freshness -and $freshnessDoc.freshness.staleness_seconds -ne $null) {
+        try { $freshnessStalenessSec = [int]$freshnessDoc.freshness.staleness_seconds } catch { $freshnessStalenessSec = $null }
+    }
+    if ($freshnessDoc.generated_at_utc) {
+        $rawFg = $freshnessDoc.generated_at_utc
+        if ($rawFg -is [DateTime]) {
+            $dtF = [DateTime]$rawFg
+            if ($dtF.Kind -eq [DateTimeKind]::Unspecified) {
+                $dtF = [DateTime]::SpecifyKind($dtF, [DateTimeKind]::Utc)
+            }
+            $freshnessGeneratedAtUtc = $dtF.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+        } elseif ($rawFg -is [DateTimeOffset]) {
+            $freshnessGeneratedAtUtc = $rawFg.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+        } else {
+            $freshnessGeneratedAtUtc = [string]$rawFg
+        }
+    }
+}
 
 $generatedUtc = ([DateTimeOffset]::UtcNow).ToString("o")
 $c2Status = if ($c2 -and $c2.status) { [string]$c2.status } else { "UNKNOWN" }
@@ -354,6 +478,36 @@ if ($signalTotalCount -le 0) {
 }
 
 # Machine-readable UI tokens only (Korean copy ships in public_showroom_poll.html — avoids PS1 encoding issues on Windows).
+$logosXIndex = $null
+$logosYFrag = $null
+$logosQuad = $null
+$logosXBand = $null
+$logos4dGenAt = $null
+if ($logos4d -and $logos4d.schema -eq "logos_4d_state_v1") {
+    if ($logos4d.generated_at_utc) {
+        $rawGa = $logos4d.generated_at_utc
+        if ($rawGa -is [DateTime]) { $logos4dGenAt = $rawGa.ToString("o") }
+        else { $logos4dGenAt = [string]$rawGa }
+    }
+    if ($logos4d.quadrant_info -and $logos4d.quadrant_info.current_quadrant) {
+        $logosQuad = [string]$logos4d.quadrant_info.current_quadrant
+    }
+    $cx = $logos4d.coordinates
+    if ($cx) {
+        if ($cx.x_exodus_pressure -ne $null) {
+            $xv = [double]$cx.x_exodus_pressure
+            $logosXIndex = [int][math]::Round([math]::Max(0.0, [math]::Min(100.0, $xv)), 0)
+            if ($logosXIndex -lt 40) { $logosXBand = "LOW" }
+            elseif ($logosXIndex -le 60) { $logosXBand = "MID" }
+            else { $logosXBand = "HIGH" }
+        }
+        if ($cx.y_babel_fragility -ne $null) {
+            $yv = [double]$cx.y_babel_fragility
+            $logosYFrag = [int][math]::Round([math]::Max(0.0, [math]::Min(100.0, $yv)), 0)
+        }
+    }
+}
+
 $publicUi = [ordered]@{
     schema                         = "showroom_public_ui_v1"
     direction_abstract             = $dirAbs
@@ -366,6 +520,10 @@ $publicUi = [ordered]@{
     has_unrealized_pct             = ($null -ne $unrealPct)
     baseline_mode                  = $baselineMode
     unified_score_balanced         = $score
+    logos_x_band                   = $logosXBand
+    logos_quadrant                 = $logosQuad
+    logos_x_index_0_100            = $logosXIndex
+    logos_y_fragility_0_100      = $logosYFrag
 }
 
 $delayed = [ordered]@{
@@ -375,6 +533,25 @@ $delayed = [ordered]@{
 if ($null -ne $pnlPct) {
     $delayed["pnl_pct_vs_start"] = $pnlPct
 }
+if ($null -ne $logosXIndex) { $delayed["logos_x_index_0_100"] = $logosXIndex }
+if ($null -ne $logosXBand) { $delayed["logos_x_band"] = $logosXBand }
+if (-not [string]::IsNullOrWhiteSpace($logosQuad)) { $delayed["logos_quadrant"] = $logosQuad }
+if ($null -ne $logosYFrag) { $delayed["logos_y_fragility_0_100"] = $logosYFrag }
+if (-not [string]::IsNullOrWhiteSpace($logos4dGenAt)) { $delayed["logos_4d_state_generated_at_utc"] = $logos4dGenAt }
+
+$delayed["logos_graph_bundle_present"] = $logosGraphBundlePresent
+if ($logosGraphBundlePresent) {
+    if ($null -ne $logosGraphNlc) { $delayed["logos_graph_nodes_line_count"] = $logosGraphNlc }
+    if ($null -ne $logosGraphElc) { $delayed["logos_graph_edges_line_count"] = $logosGraphElc }
+    if (-not [string]::IsNullOrWhiteSpace($logosGraphDedupe)) { $delayed["logos_graph_bundle_dedupe_sha256"] = $logosGraphDedupe }
+    if (-not [string]::IsNullOrWhiteSpace($logosGraphTs)) { $delayed["logos_graph_bundle_ts_utc"] = $logosGraphTs }
+}
+if ($null -ne $freshnessStalenessSec) {
+    $delayed["logos_graph_staleness_seconds"] = $freshnessStalenessSec
+}
+if ($freshnessSidecarPresent -and -not [string]::IsNullOrWhiteSpace($freshnessGeneratedAtUtc)) {
+    $delayed["logos_freshness_sidecar_generated_at_utc"] = $freshnessGeneratedAtUtc
+}
 
 # ASCII-only abstract_reason avoids mojibake when writing UTF-8 without BOM edge cases in legacy consoles.
 $abstract = "C2=$c2Status | exploratory monitor | no investment advice."
@@ -383,6 +560,14 @@ if ($null -ne $score) {
 }
 if ($signalTotalCount -gt 0) {
     $abstract = "$abstract | signal=$integratedSignal/$singularAction | regime=$regimeId"
+}
+if ($null -ne $logosXBand -and -not [string]::IsNullOrWhiteSpace($logosQuad)) {
+    $abstract = "$abstract | logos_x=$logosXBand quad=$logosQuad [NON_GATING]"
+} elseif ($null -ne $logosXBand) {
+    $abstract = "$abstract | logos_x=$logosXBand [NON_GATING]"
+}
+if ($logosGraphBundlePresent) {
+    $abstract = "$abstract | logos_graph_bundle=B [NON_GATING]"
 }
 
 $sys = Get-SystemStatus -RuntimeOk $runtimeOk -FusionOk $fusionOk
@@ -432,6 +617,12 @@ if ($contextStale) {
     $publicEvent.abstract_reason = "context_stale_age=${contextAgeSec}s | fallback_hold | no investment advice."
 }
 
+$sdm = Get-ShowroomDisplayMode -SystemStatus $sys -RiskLevel $publicEvent.risk_level -PublicSignalDirection $publicEvent.public_signal_direction
+if ($contextStale) { $sdm = "defend" }
+$publicEvent.showroom_display_mode = $sdm
+$publicEvent.showroom_ticker_key = Get-ShowroomTickerKey -SystemStatus $sys -RiskLevel $publicEvent.risk_level -PublicSignalDirection $publicEvent.public_signal_direction -DirAbstract $dirAbs
+$publicEvent.showroom_reaction_line_ids = @(Get-ShowroomReactionLineIds -DisplayMode $sdm -SystemStatus $sys -RiskLevel $publicEvent.risk_level)
+
 foreach ($k in $delayed.Keys) {
     $publicEvent.delayed_metrics[$k] = $delayed[$k]
 }
@@ -447,6 +638,10 @@ $bundle = [ordered]@{
         trade_window_24h      = $tradeWindowPath
         daemon_status         = $daemonStatusPath
         trading_state         = $tradingStatePath
+        logos_4d_state_v1          = $logos4dStatePath
+        logos_corpus_graph_bundle_v1 = $logosGraphBundlePath
+        logos_track_c_freshness_sidecar_v1 = $logosFreshnessSidecarPath
+        exodus_pressure_v1    = $exodusPressurePath
     }
     observability        = @{
         unified_score_balanced = $score
@@ -461,6 +656,15 @@ $bundle = [ordered]@{
         context_ttl_seconds     = $contextTtlSec
         context_stale           = $contextStale
         public_pnl_pct_mode     = $(if ($null -ne $pnlPct) { "equity_vs_baseline_" + $baselineMode } else { "unavailable_no_metrics" })
+        logos_x_index_0_100     = $logosXIndex
+        logos_x_band            = $logosXBand
+        logos_quadrant          = $logosQuad
+        logos_y_fragility_0_100 = $logosYFrag
+        logos_graph_meta        = $logosGraphMeta
+        track_b_non_gating      = $true
+        logos_freshness_sidecar_present   = $freshnessSidecarPresent
+        logos_freshness_staleness_seconds  = $freshnessStalenessSec
+        logos_freshness_generated_at_utc   = $freshnessGeneratedAtUtc
     }
     public_ui            = $publicUi
     public_event_v1      = $publicEvent

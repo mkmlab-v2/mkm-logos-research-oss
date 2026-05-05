@@ -42,6 +42,12 @@ const now = new Date().toISOString();
 const delaySec = Number(src.delay_seconds ?? src?.delayed_metrics?.delay_seconds ?? 180);
 const normalizedDelay = Number.isFinite(delaySec) ? Math.min(300, Math.max(120, Math.round(delaySec))) : 180;
 
+function safeShowroomDisplayMode(raw) {
+  const v = String(raw || "").trim().toLowerCase();
+  if (v === "idle" || v === "defend" || v === "attack") return v;
+  return "";
+}
+
 const out = {
   timestamp: String(src.timestamp || now),
   active_character_id: normalizeCharacterId(src.active_character_id),
@@ -62,5 +68,17 @@ const out = {
   disclaimer_ref: "jemaai_showroom_v1",
   last_ok_utc: String(src.last_ok_utc || now)
 };
+
+const sdm = safeShowroomDisplayMode(src.showroom_display_mode);
+if (sdm) out.showroom_display_mode = sdm;
+const stk = String(src.showroom_ticker_key || "").trim();
+if (stk && /^[A-Z0-9_]{1,64}$/.test(stk)) out.showroom_ticker_key = stk;
+if (Array.isArray(src.showroom_reaction_line_ids)) {
+  const ids = src.showroom_reaction_line_ids
+    .slice(0, 3)
+    .map((x) => String(x))
+    .filter((x) => /^R_[A-Z0-9_]{1,32}$/.test(x));
+  if (ids.length) out.showroom_reaction_line_ids = ids;
+}
 
 return [{ json: out }];

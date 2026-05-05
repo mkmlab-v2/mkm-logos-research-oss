@@ -8,12 +8,16 @@
 # Faster (skip P1 A/B bundle — long):
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_jemaai_cloud_completion_chain.ps1 -SkipP1AB
 #
+# Optional showroom regeneration (local artifacts only):
+#   powershell ... -IncludeShowroomTrackCChain
+#
 # Multitarget B_track pre-gate (Kaggle/bio) is optional for jemaai MVP file checks; default is -SkipMultitargetPreGate on the inner autopilot.
 # To require it: -RequireMultitargetPreGate (needs scripts/build_multitarget_label_topology_report_v1.py and related artifacts).
 
 param(
     [switch]$SkipP1AB,
     [switch]$IncludeE2ESmoke,
+    [switch]$IncludeShowroomTrackCChain,
     [switch]$RequireMultitargetPreGate
 )
 
@@ -31,7 +35,10 @@ if (-not $SkipP1AB) {
 if ($IncludeE2ESmoke) {
     $autoArgs += "-IncludeJemaaiE2ESmoke"
 }
+if ($IncludeShowroomTrackCChain) {
+    $autoArgs += "-IncludeShowroomTrackCChain"
+}
 
-Write-Host "=== jemaai.cloud completion chain (autopilot + jemaai checks$(if (-not $SkipP1AB) { ' + P1 A/B' })$(if ($IncludeE2ESmoke) { ' + E2E smoke' })) ===" -ForegroundColor Cyan
+Write-Host "=== jemaai.cloud completion chain (autopilot + jemaai checks$(if (-not $SkipP1AB) { ' + P1 A/B' })$(if ($IncludeE2ESmoke) { ' + E2E smoke' })$(if ($IncludeShowroomTrackCChain) { ' + Track C showroom' })) ===" -ForegroundColor Cyan
 & powershell -NoProfile -ExecutionPolicy Bypass @autoArgs
 exit $LASTEXITCODE

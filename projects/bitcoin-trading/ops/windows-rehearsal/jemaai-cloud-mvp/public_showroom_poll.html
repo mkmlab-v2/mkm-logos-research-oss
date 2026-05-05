@@ -387,6 +387,7 @@
         <div class="stamp">MKM AI LIVE ENGINE</div>
         <h1>MKM AI Public Showroom</h1>
         <p class="sub">Multi-lens Cross-validation Engine (policy-gated risk warning). Default base URL is pinned to HTTPS API endpoint. Local fallback: <code>http://127.0.0.1:8788</code></p>
+        <p class="sub" style="margin-top:0.4rem;">정적 별도 데모: <a href="public_showroom_probabilistic_saju_v1.html" style="color: var(--neon); text-decoration: underline;">시주 확률(샘플 번들)</a> (동일 루트, 투자 시그널과 무관)</p>
       </div>
       <div class="row">
         <div class="badge ok" id="modeBadge">MODE: Idle</div>
@@ -533,6 +534,10 @@
         <p class="info-muted">
           <span class="info-ref">disclaimer_ref=jemaai_showroom_v1</span>
           — <code class="mono">exploratory_only</code> 원칙에 맞춘 No Hype 고지입니다.
+        </p>
+        <p class="info-muted" style="margin-top:0.55rem;">
+          정적 시주 시각화(번들 <code class="mono">showroom_saju_hour_bundle_demo_v1.json</code>):
+          <a href="public_showroom_probabilistic_saju_v1.html">public_showroom_probabilistic_saju_v1.html</a>
         </p>
       </div>
     </section>
@@ -1783,15 +1788,24 @@
       const lockOn = performance.now() < stageState.noGoUntilTs;
       const dead = performance.now() < stageState.deathUntilTs;
       const mode = BROADCAST_MODE ? "BCAST" : "DEFAULT";
+      const dm = (obj && obj.delayed_metrics) || {};
+      let logosSuf = "";
+      if (dm.logos_x_band || dm.logos_quadrant || typeof dm.logos_x_index_0_100 === "number") {
+        const xi = typeof dm.logos_x_index_0_100 === "number" ? String(dm.logos_x_index_0_100) : "-";
+        logosSuf = `|LOGOS_X=${dm.logos_x_band || "?"}|idx=${xi}|Q=${dm.logos_quadrant || "-"}`;
+      }
+      let graphSuf = "";
+      if (dm.logos_graph_bundle_present === true) graphSuf = "|LGRAPH=1";
+      else if (dm.logos_graph_bundle_present === false) graphSuf = "|LGRAPH=0";
       if (OVERLAY_PRESET === "short") {
-        el.textContent = `YEORI ${dir} ${risk} L=${lamp} A=${k.actionText} ${dead ? "DEAD" : "LIVE"}`;
+        el.textContent = `YEORI ${dir} ${risk} L=${lamp} A=${k.actionText} ${dead ? "DEAD" : "LIVE"}${logosSuf}${graphSuf}`;
         return;
       }
       if (OVERLAY_PRESET === "compact") {
-        el.textContent = `YEORI|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|EID=${eidShort}`;
+        el.textContent = `YEORI|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|EID=${eidShort}${logosSuf}${graphSuf}`;
         return;
       }
-      el.textContent = `YEORI|MODE=${mode}|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|SCORE=${scoreTxt}|KING=(${Math.round(k.x)},${Math.round(k.y)})|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|DEAD=${dead ? "Y" : "N"}|EID=${eidShort}`;
+      el.textContent = `YEORI|MODE=${mode}|DIR=${dir}|RISK=${risk}|LAMP=${lamp}|SCORE=${scoreTxt}|KING=(${Math.round(k.x)},${Math.round(k.y)})|ACT=${k.actionText}|LOCK=${lockOn ? "ON" : "OFF"}|DEAD=${dead ? "Y" : "N"}|EID=${eidShort}${logosSuf}${graphSuf}`;
     }
 
     function updateNoGoBanner(obj) {
@@ -2214,13 +2228,26 @@
       requestAnimationFrame(drawStage);
     }
 
+    /** Optional ingest/bundle field public-event.v1.showroom_display_mode (idle|defend|attack). */
+    function showroomModeFromPayload(obj) {
+      const raw = obj && obj.showroom_display_mode;
+      if (raw == null || raw === "") return null;
+      const s = String(raw).trim().toLowerCase();
+      if (s === "idle") return "Idle";
+      if (s === "defend") return "Defend";
+      if (s === "attack") return "Attack";
+      return null;
+    }
+
     function modeFromEvent(obj) {
+      const forced = showroomModeFromPayload(obj);
+      if (forced) return forced;
       const sys = (obj.system_status || "").toLowerCase();
       const risk = (obj.risk_level || "").toLowerCase();
       const dir = (obj.public_signal_direction || "").toUpperCase();
       if (sys === "maintenance") return "Defend";
       if (risk === "safe") return "Idle";
-      if (risk === "warning") return "Defend";
+      if (risk === "warning" || risk === "critical") return "Defend";
       // Fallback: HOLD is idle (calm), directional signal drives attack.
       if (dir === "BUY" || dir === "LONG" || dir === "SELL" || dir === "SHORT") return "Attack";
       return "Idle";
@@ -2242,7 +2269,66 @@
       return candidateMode;
     }
 
+    /** Curated punchy lines (bundle builder keys). Unknown keys use decodeStructuredTickerKey(). */
+    const SHOWROOM_TICKER_KO = {
+      "S_ONLINE_R_INFO_PSD_HOLD_DA_FLAT": "알고 예능장 ON · 관망 모드 · 방향 중립(추상) · 연출만",
+      "S_ONLINE_R_WARNING_PSD_HOLD_DA_FLAT": "경계등 ON · 방패 모드 · 리스크 우선 · 실매매 아님",
+      "S_ONLINE_R_WARNING_PSD_CAUTION_DA_FLAT": "주의 신호 · 방어 연출 · 과대 해석 금지",
+      "S_ONLINE_R_CRITICAL_PSD_HOLD_DA_FLAT": "고위험 스테이지 · 손절은 조종실에서만 · 공개는 요약만",
+      "S_DEGRADED_R_INFO_PSD_HOLD_DA_FLAT": "신호 지연 구간 · 스냅샷만 신뢰 · 체감 지연 주의",
+      "S_DEGRADED_R_WARNING_PSD_HOLD_DA_FLAT": "지연 + 경계 · 방패 연출 강화 · 실거래 트리거 아님",
+      "S_MAINTENANCE_R_WARNING_PSD_HOLD_DA_FLAT": "점검 중 · 전광판 유지 모드 · 알림만 참고",
+      "S_ONLINE_R_INFO_PSD_HOLD_DA_LONG": "관망 속 상방 테마(추상) · 공격 연출 · 비매매 시그널",
+      "S_ONLINE_R_INFO_PSD_HOLD_DA_SHORT": "관망 속 하방 테마(추상) · 숏 연출 · 비매매 시그널",
+      "S_ONLINE_R_WARNING_PSD_CAUTION_DA_LONG": "경계 + 상방 연출 · 카메라 가까이 · 과열 금지",
+      "S_ONLINE_R_WARNING_PSD_CAUTION_DA_SHORT": "경계 + 하방 연출 · 방패 유지 · 과매도 단정 금지",
+    };
+
+    const TICKER_SYS_KO = {
+      ONLINE: "운영 양호",
+      DEGRADED: "일부 지연",
+      MAINTENANCE: "점검",
+    };
+    const TICKER_RISK_KO = {
+      INFO: "관측",
+      WARNING: "경계",
+      CRITICAL: "고위험",
+      SAFE: "안정",
+    };
+    const TICKER_PSD_KO = {
+      HOLD: "관망",
+      CAUTION: "주의",
+      BUY: "매수 연출",
+      LONG: "롱 연출",
+      SELL: "매도 연출",
+      SHORT: "숏 연출",
+    };
+    const TICKER_DA_KO = {
+      FLAT: "방향 중립(추상)",
+      LONG: "상방 쏠림(추상)",
+      SHORT: "하방 쏠림(추상)",
+    };
+
+    function decodeStructuredTickerKey(key) {
+      const m = String(key || "").match(/^S_([A-Z0-9]+)_R_([A-Z0-9]+)_PSD_([A-Z0-9]+)_DA_([A-Z0-9]+)$/);
+      if (!m) return null;
+      const sys = TICKER_SYS_KO[m[1]] || m[1];
+      const risk = TICKER_RISK_KO[m[2]] || m[2];
+      const psd = TICKER_PSD_KO[m[3]] || m[3];
+      const da = TICKER_DA_KO[m[4]] || m[4];
+      return `알고 관측 · ${sys} · 리스크 ${risk} · 신호 ${psd} · ${da} · 비실매매 연출`;
+    }
+
     function tickerLine(obj) {
+      const key = obj.showroom_ticker_key;
+      if (key && SHOWROOM_TICKER_KO[key]) {
+        return SHOWROOM_TICKER_KO[key];
+      }
+      if (key && typeof key === "string") {
+        const decoded = decodeStructuredTickerKey(key);
+        if (decoded) return decoded;
+        return String(key).replace(/_/g, " ");
+      }
       const sys = obj.system_status || "online";
       const risk = obj.risk_level || "WARNING";
       const dir = obj.public_signal_direction || "HOLD";
@@ -2256,7 +2342,25 @@
       return `STATUS=${sys}  RISK=${risk}  DIR=${dir}  ${eid ? "eid="+eid : ""}${delay}`;
     }
 
+    const SHOWROOM_REACTION_KO = {
+      R_MODE_IDLE_01: "관망 중 — 알고리즘이 호흡을 맞춥니다. (연출)",
+      R_MODE_DEF_01: "방어 태세 — 리스크·지연을 우선합니다.",
+      R_RISK_HIGH_01: "경계 구간 — 과대 해석·실매매 혼동 금지.",
+      R_MODE_ATK_01: "공세 연출 — 시그널 방향 강조 (비실매매 트리거 아님).",
+      R_SYS_MAINT_01: "점검 모드 — 전광판 스냅샷만 유지됩니다.",
+    };
+
     function pushChat(obj) {
+      const ids = obj.showroom_reaction_line_ids;
+      if (Array.isArray(ids) && ids.length > 0) {
+        const lines = ids.slice(0, 3).map((id) => SHOWROOM_REACTION_KO[id] || String(id));
+        for (const l of lines) {
+          if (chatLines[chatLines.length - 1] !== l) chatLines.push(l);
+        }
+        while (chatLines.length > chatMax) chatLines.shift();
+        document.getElementById("chatOut").textContent = chatLines.join("\n");
+        return;
+      }
       const mode = modeFromEvent(obj);
       const risk = obj.risk_level || "WARNING";
       const dir = obj.public_signal_direction || "HOLD";
@@ -2310,7 +2414,84 @@
         return "—";
       },
       scoreLine: (v) => (v != null && !Number.isNaN(Number(v)) ? "모델 관측 점수: " + Number(v).toFixed(5) : "모델 관측 점수: —"),
-      guardLine: (lamp) => "리스크 가드: " + (SHOWROOM_UI_KO.lamp[lamp] || SHOWROOM_UI_KO.lamp.UNKNOWN)
+      guardLine: (lamp) => "리스크 가드: " + (SHOWROOM_UI_KO.lamp[lamp] || SHOWROOM_UI_KO.lamp.UNKNOWN),
+      logosBand: { LOW: "낮음 (자본 이동 압력)", MID: "중간", HIGH: "높음 (해설·비게이팅)" },
+      logosQuad: {
+        Q1: "사분면 Q1 — 균열 가속 + 자본 이동 급증",
+        Q2: "사분면 Q2 — 균열 선행, 이동 지연",
+        Q3: "사분면 Q3 — 안정 구간",
+        Q4: "사분면 Q4 — 선제적 이동",
+      },
+      logosSummary: (dm, pui) => {
+        const xIdx =
+          typeof dm.logos_x_index_0_100 === "number"
+            ? dm.logos_x_index_0_100
+            : typeof pui.logos_x_index_0_100 === "number"
+              ? pui.logos_x_index_0_100
+              : null;
+        const bandRaw = dm.logos_x_band != null ? String(dm.logos_x_band) : (pui.logos_x_band != null ? String(pui.logos_x_band) : "");
+        const quadRaw = dm.logos_quadrant != null ? String(dm.logos_quadrant) : (pui.logos_quadrant != null ? String(pui.logos_quadrant) : "");
+        const yFrag =
+          typeof dm.logos_y_fragility_0_100 === "number"
+            ? dm.logos_y_fragility_0_100
+            : typeof pui.logos_y_fragility_0_100 === "number"
+              ? pui.logos_y_fragility_0_100
+              : null;
+        if (xIdx == null && !bandRaw && !quadRaw && yFrag == null) return null;
+        const bandKo = SHOWROOM_UI_KO.logosBand[bandRaw] || (bandRaw ? bandRaw : "—");
+        const quadKo = SHOWROOM_UI_KO.logosQuad[quadRaw] || (quadRaw ? quadRaw : "—");
+        const xPart = xIdx != null ? "X 지수(0–100): " + xIdx + " · " + bandKo : "X: " + (bandKo || "—");
+        const yPart = yFrag != null ? " · Y(바벨 취약): " + yFrag : "";
+        const genAt = dm.logos_4d_state_generated_at_utc ? String(dm.logos_4d_state_generated_at_utc) : "";
+        const tail = genAt ? " · 상태 시각: " + genAt : "";
+        return xPart + yPart + " · " + quadKo + tail + " · [NON_GATING]";
+      },
+      /** Track B meaning-graph bundle: sandboxed meta only (no nodes/edges payload). */
+      logosGraphBundleRow: (dm, obs) => {
+        const meta = obs && obs.logos_graph_meta;
+        const shaShort = (s) => {
+          if (!s || typeof s !== "string") return "—";
+          return s.length > 12 ? s.slice(0, 12) + "…" : s;
+        };
+        const staleSec =
+          typeof dm.logos_graph_staleness_seconds === "number"
+            ? dm.logos_graph_staleness_seconds
+            : obs && typeof obs.logos_freshness_staleness_seconds === "number"
+              ? obs.logos_freshness_staleness_seconds
+              : null;
+        const staleSuffix = (() => {
+          if (typeof staleSec !== "number" || !Number.isFinite(staleSec) || staleSec < 0) return "";
+          if (staleSec < 90) return " · 번들 경과(신선도) 약 " + staleSec + "초";
+          if (staleSec < 3600) return " · 번들 경과(신선도) 약 " + Math.round(staleSec / 60) + "분";
+          return " · 번들 경과(신선도) 약 " + (staleSec / 3600).toFixed(1) + "시간";
+        })();
+        const tail = staleSuffix + " · [NON_GATING]";
+        if (meta && typeof meta === "object") {
+          if (meta.present === true) {
+            const n = meta.nodes_line_count != null ? meta.nodes_line_count : "—";
+            const e = meta.edges_line_count != null ? meta.edges_line_count : "—";
+            const ts = meta.ts_utc ? String(meta.ts_utc) : "—";
+            const k = shaShort(meta.dedupe_bundle_key_sha256);
+            return {
+              online: true,
+              text: "노드 라인 " + n + " · 엣지 라인 " + e + " · 번들 키 " + k + " · 시각 " + ts + tail,
+            };
+          }
+          return { online: false, text: "연구 번들 미탑재 또는 경로 없음" + tail };
+        }
+        if (!dm || typeof dm.logos_graph_bundle_present !== "boolean") return null;
+        if (dm.logos_graph_bundle_present === true) {
+          const n = dm.logos_graph_nodes_line_count != null ? dm.logos_graph_nodes_line_count : "—";
+          const e = dm.logos_graph_edges_line_count != null ? dm.logos_graph_edges_line_count : "—";
+          const ts = dm.logos_graph_bundle_ts_utc ? String(dm.logos_graph_bundle_ts_utc) : "—";
+          const k = shaShort(dm.logos_graph_bundle_dedupe_sha256);
+          return {
+            online: true,
+            text: "노드 라인 " + n + " · 엣지 라인 " + e + " · 번들 키 " + k + " · 시각 " + ts + tail,
+          };
+        }
+        return { online: false, text: "번들 없음 (delayed_metrics)" + tail };
+      },
     };
 
     async function loadShowroomBundle() {
@@ -2378,6 +2559,8 @@
             const regimeId = sg.regime_id ? String(sg.regime_id) : "unknown";
             const lockReason = sg.lock_reason ? String(sg.lock_reason) : "NONE";
             const integratedConf = (typeof sg.integrated_confidence === "number") ? Number(sg.integrated_confidence).toFixed(2) : "—";
+            const logosLine = SHOWROOM_UI_KO.logosSummary(dm, pui);
+            const graphRow = SHOWROOM_UI_KO.logosGraphBundleRow(dm, o);
             let uTint = "";
             if (typeof uPct === "number") {
               uTint = uPct < 0 ? " snap-return-neg" : (uPct > 0 ? " snap-return-pos" : "");
@@ -2414,7 +2597,22 @@
               + "<span class=\"snap-label\">신호 게이트 (공개)</span>"
               + "<span class=\"snap-val small\">누적 신호: " + escapeHtml(String(signalCount)) + " · 통합/코어: " + escapeHtml(integratedSignal) + "/" + escapeHtml(singularAction) + "</span>"
               + "<span class=\"snap-sub\">최근 시각: " + escapeHtml(signalUtc) + " · confidence: " + escapeHtml(integratedConf) + " · decision: " + escapeHtml(singularDecision) + " · regime: " + escapeHtml(regimeId) + " · lock_reason: " + escapeHtml(lockReason) + "</span>"
-              + "</div>";
+              + "</div>"
+              + (logosLine
+                ? ("<div class=\"snap-cell snap-span\">"
+                  + "<span class=\"snap-label\">Logos 4D — Exodus 압력 (X)</span>"
+                  + "<span class=\"snap-val small\">" + escapeHtml(logosLine) + "</span>"
+                  + "<span class=\"snap-sub\">성경·거시 해설 축; 주문·체결 트리거와 분리 ([NON_GATING])</span>"
+                  + "</div>")
+                : "")
+              + (graphRow
+                ? ("<div class=\"snap-cell snap-span\">"
+                  + "<span class=\"snap-label\">Logos 의미 그래프 (Track B 메타)</span>"
+                  + "<span class=\"badge " + (graphRow.online ? "ok" : "warn") + "\">" + (graphRow.online ? "Online" : "Offline") + "</span>"
+                  + "<span class=\"snap-val small\">" + escapeHtml(graphRow.text) + "</span>"
+                  + "<span class=\"snap-sub\">원문 노드/엣지 JSON 미포함 · 비매매 · 비게이팅</span>"
+                  + "</div>")
+                : "");
           } else {
             const score = o.unified_score_balanced;
             const lamp = o.c2_signal_lamp || "—";

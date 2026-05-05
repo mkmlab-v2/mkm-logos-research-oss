@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "curated_saju_joint_input_row_v1",
+  "title": "curated_saju_joint_input_row_v1",
+  "description": "Input line contract for data/myeongni/curated_saju_joint_v1.jsonl (ingest_curated_saju_joint_v1.py). At least one of provenance_url, source_url, or source_citation must be non-empty.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "person_id": { "type": "string" },
+    "name": { "type": "string" },
+    "display_name": { "type": "string" },
+    "birth_instant_utc": { "type": "string", "description": "ISO8601 Z; alias dob_utc" },
+    "dob_utc": { "type": "string" },
+    "iana_tz": { "type": "string", "description": "Defaults to Etc/UTC if omitted" },
+    "is_male": { "type": "boolean" },
+    "sex": { "type": "string", "enum": ["m", "f", "male", "female", "M", "F"] },
+    "provenance_url": { "type": "string" },
+    "source_url": { "type": "string", "description": "Alias for provenance_url" },
+    "source_citation": { "type": "string" },
+    "provenance": { "type": "string", "description": "Tag e.g. verified_history_v1" },
+    "note": { "type": "string" },
+    "sasang_label_ko": { "type": "string" },
+    "sasang_label_en": { "type": "string" },
+    "literature_catalog_pmids": { "type": "array", "items": { "type": "string" } },
+    "expectations": {
+      "type": "object",
+      "description": "Forwarded to sasang_saju_joint_benchmark_row_v1.expectations. For celebrity/state probes: expectations.state_id (1–16) must match measured myeongni_16state_probe_nearest_v1.nearest_state_id from run_saju_global_birth_v1 + myeongri_core_v2_upgrade (L2 vs data/myeongni/16_STATE_MASTER_PROBE_v1); arbitrary IDs fail run_myeongni_celebrity_benchmark_v1.",
+      "additionalProperties": true,
+      "properties": {
+        "state_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16,
+          "description": "Nearest 16-state master probe id — must equal engine nearest_state_id, not hand-picked."
+        }
+      }
+    },
+    "ingest_at_utc": {
+      "type": "string",
+      "description": "Optional ISO-8601 Z — used by check_curated_saju_joint_staleness_v1 for freshness vs hit-rate artifact."
+    }
+  }
+}

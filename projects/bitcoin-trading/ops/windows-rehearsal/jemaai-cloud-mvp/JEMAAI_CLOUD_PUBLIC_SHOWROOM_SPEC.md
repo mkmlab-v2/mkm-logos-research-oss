@@ -24,6 +24,10 @@
 
 **권장(선택 키)** — 프론트가 쓰면 쇼룸만 풍성해지고, 관제 데이터와 분리 유지:
 
+- **쇼룸 UX (연출 계약, ASCII만)** — 번들 빌더가 기본 채움; ingest에서 덮어쓸 수 있음(화이트리스트 브릿지 경유).
+  - `showroom_display_mode`: `idle` \| `defend` \| `attack` — 픽셀/티커 모드의 **서버 기준** 표현(실매매 트리거 아님).
+  - `showroom_ticker_key`: 대문자·숫자·밑줄만 `^[A-Z0-9_]{1,64}$` — 짧은 기계 키; 한글 카피는 `public_showroom_poll.html` 매핑 또는 공백 치환 표시.
+  - `showroom_reaction_line_ids`: 문자열 배열 **최대 3개**, 각 원소 `^R_[A-Z0-9_]{1,32}$` — 가상 채팅용 **ID**(원문 자유 텍스트 금지 → 면책·스팸 방지); UI에서 한글 라인으로 매핑.
 - `system_status`: 예) `online` | `degraded` | `maintenance`
 - `active_strategies_count`: 숫자(추상)
 - `delayed_metrics`: 예) `{ "delay_seconds": 120, "pnl_pct_vs_start": 12.4, "as_of_utc": "..." }` — **금액 대신 %** 권장
@@ -72,12 +76,14 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 
 ### 4.2 Showroom bundle (레포 자동화, v1)
 
-- **빌더:** `projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1` — C2·퓨전·런타임 헬스에서 `public-event.v1` 페이로드 + `observability` 메타를 합성한다.
+- **Track C 원클릭 체인 (권장):** `scripts/build_showroom_track_c_bundle_chain_v1.ps1` — (1) `build_logos_track_c_freshness_sidecar_v1.py`로 신선도 사이드카 갱신 → (2) `build_showroom_display_bundle.ps1` → (3) `validate_showroom_public_bundle.py`. 선택: `-SkipFreshnessSidecar`, `-SkipValidate`.
+- **빌더 (단독):** `projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1` — C2·퓨전·런타임 헬스에서 `public-event.v1` 페이로드 + `observability` 메타를 합성한다(Logos 그래프 메타·신선도 필드는 디스크의 최신 아티팩트를 읽음).
 - **산출:** `docs/final/artifacts/showroom_public_bundle_v1.json` (SSOT), `jemaai-cloud-mvp/showroom_public_bundle_v1.json` (웹 루트 배포본과 동기화).
 - **검증:** `scripts/validate_showroom_public_bundle.py` — 필수 키·면책 ref·공개 레인 민감 토큰 차단.
 - **퓨전 사이클:** `run_ops_fusion_cycle.ps1` 종료 시 빌드·검증을 함께 수행한다.
 - **게이트웨이 반영(선택):** `publish_showroom_public_event.ps1`로 ingest POST. 퓨전 사이클과 함께 쓰려면 `SHOWROOM_PUBLISH_INGEST=1`(User/Process).
-- **정적 파일 복사(선택):** `deploy_showroom_static.ps1` — `-WebRoot` 또는 `JEMAAI_WEB_ROOT`에 HTML·JSON 복사 후 본선에서 nginx reload.
+- **정적 파일 복사(선택):** `deploy_showroom_static.ps1` — `-WebRoot` 또는 `JEMAAI_WEB_ROOT`에 HTML·JSON 복사 후 본선에서 nginx reload. 둘 다 비어 있으면 기본으로 `ops/windows-rehearsal/.showroom_staging/`(gitignore)에 복사해 로컬 확인·rsync 소스로 사용.
+- **VPS scp 원클릭:** 루트 `scripts/sync_showroom_to_vps.ps1` → `projects/bitcoin-trading/ops/windows-rehearsal/sync_showroom_to_vps.ps1`. `.showroom_staging`의 정적 2파일을 `MKM_VPS_HOST`/`MKM_VPS_USER` 및 `JEMAAI_VPS_SHOWROOM_ROOT`(기본 `/var/www/jemaai`)로 전송; **`-RefreshStaging`은 Track C 체인(`build_showroom_track_c_bundle_chain_v1.ps1`) + `deploy_showroom_static.ps1` 후 scp.**
 - **`public_ui` (`showroom_public_ui_v1`):** ASCII 기계값만(방향·램프·융합·수익률 유무). 한글 카피는 `public_showroom_poll.html`에서 매핑한다(PS 인코딩 이슈 회피).
 - **방향 소스:** 환경 `SHOWROOM_DIRECTION_SOURCE=c2|account` 미설정 시 **auto** — `public_trading_metrics_latest.json`에 `position_side`가 있으면 `account`(롱/숏 추상만), 없으면 `c2`.
 

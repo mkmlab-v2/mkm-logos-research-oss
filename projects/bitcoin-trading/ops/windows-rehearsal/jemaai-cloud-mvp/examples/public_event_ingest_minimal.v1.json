@@ -16,5 +16,8 @@
   },
   "direction_abstract": "flat",
   "disclaimer_ref": "jemaai_showroom_v1",
-  "last_ok_utc": "2026-04-02T11:57:30+00:00"
+  "last_ok_utc": "2026-04-02T11:57:30+00:00",
+  "showroom_display_mode": "idle",
+  "showroom_ticker_key": "S_ONLINE_R_INFO_PSD_HOLD_DA_FLAT",
+  "showroom_reaction_line_ids": ["R_MODE_IDLE_01"]
 }

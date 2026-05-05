@@ -5,6 +5,7 @@ param(
     [string]$BtcBinanceStartTime = "09:15",
     [string]$CompressionStubStartTime = "09:00",
     [string]$JemaaiE2EStartTime = "09:35",
+    [string]$ShowroomTrackCStartTime = "09:28",
     [string]$BlindReplayStartTime = "10:05",
     [string]$OpsHealthOverviewStartTime = "10:10",
     [string]$OpsWeeklyDigestStartTime = "10:20",
@@ -25,12 +26,13 @@ $registerBtc = Join-Path $opsDir "register_waiting_queue_btc_binance_daily_task.
 $registerHealth = Join-Path $opsDir "register_fatal_alert_healthcheck_task.ps1"
 $registerCompressionStub = Join-Path $opsDir "register_compression_stub_task.ps1"
 $registerJemaaiE2E = Join-Path $opsDir "register_jemaai_public_event_e2e_smoke_task.ps1"
+$registerShowroomTrackC = "C:\workspace\scripts\Register-ShowroomTrackCBundleTask.ps1"
 $registerBlindReplay = Join-Path $opsDir "register_blind_replay_multi_seed_task.ps1"
 $registerOpsOverview = Join-Path $opsDir "register_ops_health_overview_task.ps1"
 $registerOpsWeeklyDigest = Join-Path $opsDir "register_ops_weekly_digest_task.ps1"
 $checkAlertConfig = Join-Path $opsDir "check_fatal_alert_config.ps1"
 
-foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerCompressionStub, $registerJemaaiE2E, $registerBlindReplay, $registerOpsOverview, $registerOpsWeeklyDigest, $checkAlertConfig)) {
+foreach ($script in @($registerDual, $registerBtc, $registerHealth, $registerCompressionStub, $registerJemaaiE2E, $registerShowroomTrackC, $registerBlindReplay, $registerOpsOverview, $registerOpsWeeklyDigest, $checkAlertConfig)) {
     if (-not (Test-Path -LiteralPath $script)) {
         throw "Required register script missing: $script"
     }
@@ -88,6 +90,17 @@ if (-not [string]::IsNullOrWhiteSpace($JemaaiE2EStartTime)) {
 & powershell @jemaaiArgs
 if ($LASTEXITCODE -ne 0) {
     throw "Jemaai public-event e2e smoke task registration failed"
+}
+
+$showroomArgs = @(
+    "-NoProfile", "-WindowStyle", "Hidden", "-ExecutionPolicy", "Bypass", "-File", $registerShowroomTrackC
+)
+if (-not [string]::IsNullOrWhiteSpace($ShowroomTrackCStartTime)) {
+    $showroomArgs += @("-StartTime", $ShowroomTrackCStartTime)
+}
+& powershell @showroomArgs
+if ($LASTEXITCODE -ne 0) {
+    throw "Showroom Track C bundle daily task registration failed"
 }
 
 $blindArgs = @(
