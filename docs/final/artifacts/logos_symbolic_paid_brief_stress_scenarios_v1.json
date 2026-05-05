@@ -1,0 +1,28 @@
+{
+  "schema": "logos_symbolic_paid_brief_stress_scenarios_v1",
+  "generated_at_utc": "2026-05-05T12:32:00Z",
+  "scenarios": [
+    {
+      "scenario_id": "hormuz_oil_shock",
+      "label": "호르무즈 공급충격",
+      "shock_type": "geopolitical_oil",
+      "severity": "high",
+      "context_ko": "해협 봉쇄 리스크로 유가 급등, 물류/인플레 압력 확대"
+    },
+    {
+      "scenario_id": "fed_hawkish_surprise",
+      "label": "연준 매파 서프라이즈",
+      "shock_type": "policy_rate_path",
+      "severity": "high",
+      "context_ko": "완화 기대 후퇴, 금리 경로 상향 재가격"
+    },
+    {
+      "scenario_id": "etf_flow_reversal",
+      "label": "ETF 자금 유입 반전",
+      "shock_type": "crypto_flow",
+      "severity": "medium",
+      "context_ko": "기관 유입 둔화/역전으로 위험자산 심리 약화"
+    }
+  ]
+}
+

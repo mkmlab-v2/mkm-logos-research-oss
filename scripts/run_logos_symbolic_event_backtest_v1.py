@@ -196,6 +196,8 @@ def main() -> int:
     split_stats: dict[str, dict[str, int]] = {}
     non_synthetic_n = 0
     non_synthetic_hits = 0
+    skipped_counts = {"missing_future_label": 0, "bad_as_of_utc": 0}
+    skipped_non_synthetic_counts = {"missing_future_label": 0, "bad_as_of_utc": 0}
     synthetic_source_ids = {x.strip() for x in str(args.synthetic_source_ids).split(",") if x.strip()}
 
     for row in news_rows:
@@ -203,6 +205,10 @@ def main() -> int:
             as_of_date = _parse_as_of_date_utc(str(row.get("as_of_utc") or ""))
         except Exception:
             warnings.append(f"bad_as_of_utc:{row.get('observation_id')}")
+            skipped_counts["bad_as_of_utc"] += 1
+            source_id = str(row.get("source_id") or "")
+            if source_id not in synthetic_source_ids:
+                skipped_non_synthetic_counts["bad_as_of_utc"] += 1
             continue
         label = next(
             (lb for lb in filtered_labels if _parse_label_date(str(lb.get("label_date") or "")) > as_of_date),
@@ -210,6 +216,10 @@ def main() -> int:
         )
         if label is None:
             warnings.append(f"missing_future_label:{row.get('observation_id')}")
+            skipped_counts["missing_future_label"] += 1
+            source_id = str(row.get("source_id") or "")
+            if source_id not in synthetic_source_ids:
+                skipped_non_synthetic_counts["missing_future_label"] += 1
             continue
         canonical_text = str(row.get("canonical_text") or "")
         score, matched_symbols, bias_counts = _score_symbols(canonical_text, as_of_date, symbol_map)
@@ -260,6 +270,8 @@ def main() -> int:
         "neutral_score_band": float(args.neutral_score_band),
         "non_synthetic_n_evaluated": non_synthetic_n,
         "non_synthetic_hit_rate": round(non_synthetic_hits / non_synthetic_n, 6) if non_synthetic_n else None,
+        "skipped_counts": skipped_counts,
+        "skipped_non_synthetic_counts": skipped_non_synthetic_counts,
     }
     split_summary = {
         k: {
