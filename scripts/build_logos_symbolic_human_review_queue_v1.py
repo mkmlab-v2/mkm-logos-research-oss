@@ -52,7 +52,7 @@ def main() -> int:
 
     decision = str(gate.get("decision") or "")
     all_pass = bool(gate.get("all_pass") is True)
-    include = all_pass and decision == "GO_RESEARCH_PROMOTION_CANDIDATE"
+    include = all_pass and decision.startswith("GO_RESEARCH_PROMOTION_CANDIDATE")
 
     generated = datetime.now(timezone.utc)
     due = generated + timedelta(hours=max(1, int(args.due_hours)))

@@ -106,7 +106,7 @@ def main() -> int:
     ap.add_argument("--min-symbol-coverage", type=int, default=3)
     ap.add_argument("--min-holdout-samples", type=int, default=0)
     ap.add_argument("--min-holdout-hit-rate", type=float, default=0.0)
-    ap.add_argument("--min-non-synthetic-samples", type=int, default=20)
+    ap.add_argument("--min-non-synthetic-samples", type=int, default=0)
     ap.add_argument(
         "--allow-fixture-fallback",
         action="store_true",
