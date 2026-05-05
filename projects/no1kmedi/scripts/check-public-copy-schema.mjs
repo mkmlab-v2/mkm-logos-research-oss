@@ -97,6 +97,18 @@ try {
     });
   }
 
+  for (const hubKey of ["showroom_jemaai", "premium_mkmlife", "b2b_acodeai"]) {
+    const hub = parsed.hub_links?.[hubKey];
+    assert(hub != null, `hub_links.${hubKey} is required`, errors);
+    assert(
+      isNonEmptyString(hub?.href) && /^https:\/\//.test(String(hub.href)),
+      `hub_links.${hubKey}.href must be a non-empty https URL`,
+      errors,
+    );
+    assert(isNonEmptyString(hub?.label), `hub_links.${hubKey}.label is required`, errors);
+    assert(isNonEmptyString(hub?.sublabel), `hub_links.${hubKey}.sublabel is required`, errors);
+  }
+
   ["consumer", "clinician", "reception", "contact"].forEach((key) => {
     assert(validateLinkTarget(parsed.links?.[key]), `links.${key} must start with '/' or '#'`, errors);
   });

@@ -68,7 +68,8 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 
 (`jemaai-cloud-mvp` 디렉터리에서 상대 경로 기준.)
 
-- **정적 쇼룸 샘플**: `public_showroom_poll.html` — `GET .../latest` 폴링·표시. 하단 **Information** 섹션에 `data-disclaimer-ref="jemaai_showroom_v1"` 고지 고정(본 문서 §3 면책과 정합).
+- **정적 쇼룸 샘플**: `public_showroom_poll.html` — `GET .../latest` 폴링·표시(스테이지·예능 레이어 포함). 하단 **Information** 섹션에 `data-disclaimer-ref="jemaai_showroom_v1"` 고지 고정(본 문서 §3 면책과 정합).
+- **정적 쇼룸(미니멀 보드, 권장 공개면)**: `public_showroom_board_minimal.html` — 동일 API·동일 티커/반응 ID 매핑 계약; WebGL/픽셀 스테이지 없음. 배포·scp는 `deploy_showroom_static.ps1` / `sync_showroom_to_vps.ps1`에 포함.
 
 ### 4.2 Showroom bundle (레포 자동화, v1)
 

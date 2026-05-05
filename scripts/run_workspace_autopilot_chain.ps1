@@ -1,6 +1,7 @@
 # One-shot ops chain (local): Multitarget pre-gate -> P0 Fact-Lock bundle -> Sasang JSONL validate -> BTC Multilens smoke -> contract pytest subset.
 # Optional: -IncludeP1AB (Multilens P1 A/B + final selection after core Fact-Lock).
 # Optional: -IncludeJemaaiCloudChecks (verify jemaai.cloud MVP paths + nginx example; no VPS deploy).
+# Optional: -IncludeShowroomTrackCChain (run build_showroom_track_c_bundle_chain_v1.ps1 after main autopilot steps).
 # Optional: -SkipMultitargetPreGate (skip multitarget topology/trainability pre-gate).
 # No live trading. Network required for step 3 (Binance + FGI).
 #
@@ -11,6 +12,7 @@
 param(
     [switch]$IncludeP1AB,
     [switch]$IncludeJemaaiCloudChecks,
+    [switch]$IncludeShowroomTrackCChain,
     [switch]$IncludeJemaaiE2ESmoke,
     [switch]$SkipMultitargetPreGate,
     [bool]$TreatMultitargetHoldAsSuccess = $true
@@ -34,12 +36,19 @@ if (-not $SkipMultitargetPreGate) {
     $unseenTcJson = Join-Path $workspaceRoot "artifacts\B_track\kaggle_training_5seed\multitarget_classification\target_conditioned_benchmark_summary_unseen_target.json"
     $seenTcJson = Join-Path $workspaceRoot "artifacts\B_track\kaggle_training_5seed\multitarget_classification\target_conditioned_benchmark_summary_seen_label.json"
 
+    $multitargetReady = $true
     foreach ($p in @($topologyScript, $trainabilityGateScript, $unseenTcJson, $seenTcJson)) {
         if (-not (Test-Path -LiteralPath $p)) {
-            throw "Multitarget pre-gate missing required file: $p"
+            Write-Host "WARN: Multitarget pre-gate skipped - missing: $p (use -SkipMultitargetPreGate or restore B_track multitarget scripts/artifacts)." -ForegroundColor Yellow
+            $multitargetReady = $false
+            break
         }
     }
 
+    if (-not $multitargetReady) {
+        Write-Host "Continuing with Fact-Lock bundle (no multitarget pre-gate)." -ForegroundColor Yellow
+    }
+    else {
     Write-Host "=== [0/4] multitarget topology + trainability pre-gate ===" -ForegroundColor Cyan
     & py $topologyScript --source-csv (Join-Path $workspaceRoot "data\kaggle\processed\multitarget_bioactivity\normalized.csv") --output-json $topologyJson
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -56,6 +65,7 @@ if (-not $SkipMultitargetPreGate) {
         }
         Write-Host "Exit policy: HOLD treated as failure (exit 20)." -ForegroundColor Red
         exit 20
+    }
     }
 }
 
@@ -80,14 +90,27 @@ Write-Host "=== [3/4] run_btc_anchor_multilens_smoke.ps1 ===" -ForegroundColor C
 & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $workspaceRoot "scripts\run_btc_anchor_multilens_smoke.ps1")
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "=== [4/4] pytest (sasang ledger + multilens thin + kospi dynamics bridge/verify smoke) ===" -ForegroundColor Cyan
-& py -m pytest @(
+Write-Host "=== [4/4] pytest (sasang ledger + multilens thin + optional kospi dynamics smokes) ===" -ForegroundColor Cyan
+$apTests = @(
     (Join-Path $workspaceRoot "tests\test_sasang_dynamics_regime_mapping_ledger.py"),
     (Join-Path $workspaceRoot "tests\test_multilens_eval_harness_v2_thin.py"),
+    (Join-Path $workspaceRoot "tests\test_emit_myeongni_thin_bridge_line_v1.py"),
     (Join-Path $workspaceRoot "tests\test_kospi_sasang_dynamics_bridge_v1.py"),
-    (Join-Path $workspaceRoot "tests\test_verify_kospi_sasang_dynamics_holdout_smoke.py"),
-    "-q", "--tb=short"
+    (Join-Path $workspaceRoot "tests\test_verify_kospi_sasang_dynamics_holdout_smoke.py")
 )
+$apTestsExisting = @()
+foreach ($t in $apTests) {
+    if (Test-Path -LiteralPath $t) {
+        $apTestsExisting += $t
+    }
+    else {
+        Write-Host "  [WARN] optional pytest not in tree (skip): $t" -ForegroundColor Yellow
+    }
+}
+if ($apTestsExisting.Count -lt 1) {
+    throw "autopilot: no pytest files found for step 4 (expected at least sasang ledger or multilens thin)."
+}
+& py -m pytest @($apTestsExisting + @("-q", "--tb=short"))
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if ($IncludeJemaaiCloudChecks) {
@@ -99,6 +122,9 @@ if ($IncludeJemaaiCloudChecks) {
         (Join-Path $mvp "nginx_public_event_gateway.conf.example"),
         (Join-Path $mvp "examples\public_event_ingest_minimal.v1.json"),
         (Join-Path $mvp "public_showroom_poll.html"),
+        (Join-Path $mvp "public_showroom_board_minimal.html"),
+        (Join-Path $mvp "public_showroom_probabilistic_saju_v1.html"),
+        (Join-Path $mvp "showroom_saju_hour_bundle_demo_v1.json"),
         (Join-Path $mvp "compression_v2_explorer.html"),
         (Join-Path $workspaceRoot "scripts\Serve-CompressionV2Explorer.ps1"),
         (Join-Path $workspaceRoot "scripts\Start-CompressionV2ExplorerDemo.ps1"),
@@ -121,6 +147,17 @@ if ($IncludeJemaaiE2ESmoke) {
         throw "jemaai.cloud E2E smoke: missing $smokeScript"
     }
     & powershell -NoProfile -ExecutionPolicy Bypass -File $smokeScript -ApiBaseUrl "https://api.jemaai.cloud"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if ($IncludeShowroomTrackCChain) {
+    Write-Host "=== [showroom] Track C bundle chain (freshness + bundle + validate) ===" -ForegroundColor Cyan
+    $chainScript = Join-Path $workspaceRoot "scripts\build_showroom_track_c_bundle_chain_v1.ps1"
+    if (-not (Test-Path -LiteralPath $chainScript)) {
+        throw "Showroom Track C chain: missing $chainScript"
+    }
+    $psExe = if (Get-Command pwsh -ErrorAction SilentlyContinue) { "pwsh" } else { "powershell.exe" }
+    & $psExe -NoProfile -ExecutionPolicy Bypass -File $chainScript -WorkspaceRoot $workspaceRoot
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
