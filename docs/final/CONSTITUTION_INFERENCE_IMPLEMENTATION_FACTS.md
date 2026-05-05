@@ -2764,6 +2764,37 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
   - profile id 누락/불일치/허용 목록 외 값은 즉시 FAIL 처리한다.
   - 일일 러너(`run_global_atom_claim_lock_daily.ps1`)와 CI(`global-atom-claim-lock-smoke.yml`)에 corpus profile lock 검사를 연결해 혼선 재발을 차단한다.
 
+#### 31.33D Logos Falsification Benchmark Contract (FACT, 2026-05-05)
+
+- 스크립트:
+  - `scripts/run_logos_falsification_benchmark_v1.py`
+  - `scripts/build_logos_falsification_contrastive_challenge_set_v1.py`
+  - `scripts/check_logos_contrastive_challenge_lock_v1.py`
+- 대조군/입력:
+  - primary map: `docs/final/artifacts/logos_symbolic_event_map_v1.json`
+  - counterfactual map: `docs/final/artifacts/logos_symbolic_event_map_counterfactual_v1.json`
+  - dummy negative control map: `docs/final/artifacts/logos_symbolic_event_map_dummy_v1.json`
+  - iching adapter map: `docs/final/artifacts/logos_symbolic_event_map_iching_v1.json`
+  - quantum-inspired adapter map: `docs/final/artifacts/logos_symbolic_event_map_quantum_v1.json`
+  - smoke fixtures: `tests/fixtures/logos_symbolic_event_backtest_news_smoke_v1.jsonl`, `tests/fixtures/logos_symbolic_event_backtest_labels_smoke_v1.jsonl`
+  - OOS fixtures: `tests/fixtures/logos_symbolic_event_backtest_news_holdout_v1.jsonl`, `tests/fixtures/logos_symbolic_event_backtest_labels_holdout_v1.jsonl`
+- 산출물:
+  - `docs/final/artifacts/logos_falsification_benchmark_latest.json`
+  - `docs/final/artifacts/logos_falsification_walkforward_latest.json`
+  - `docs/final/artifacts/logos_falsification_contrastive_slice_latest.json`
+  - `docs/final/artifacts/logos_falsification_contrastive_challenge_summary_latest.json`
+- 구현 사실:
+  - Logos/Dummy/I-Ching/Quantum 4-arm을 동일 PIT/label contract로 실행해 in-sample uplift를 계산한다.
+  - Counterfactual arm을 추가해 `uplift_over_counterfactual` / `uplift_oos_over_counterfactual`를 계산한다.
+  - 동일 4-arm을 OOS holdout fixture에도 실행해 `uplift_oos_over_*`를 병기한다.
+  - 옵션 `--include-real-oos`로 `news_observation_v1_blind_split_latest.jsonl` + `direction_label_bar_v1_latest.jsonl` 실아티팩트 OOS를 병행 실행하고 `uplift_real_oos_over_*`를 추가 계산한다.
+  - 벤치 실행 후 walk-forward 요약(`build_logos_falsification_walkforward_v1.py`)을 생성해 fold별 hit_rate와 OOS 평균 차이를 추가 확인한다.
+  - 실아티팩트 OOS 실행 시 contrastive 슬라이스(`build_logos_falsification_contrastive_slice_v1.py`)를 생성해 이론 간 예측 불일치 구간의 분해능을 별도 측정한다.
+  - contrastive challenge set은 `profile_id=logos_contrastive_challenge_v2`와 content SHA256(`news_jsonl`, `labels_jsonl`)를 summary에 기록하고, `check_logos_contrastive_challenge_lock_v1.py --strict`로 재현성 잠금을 검증한다.
+  - `gate_status`에서 `negative_control_uplift`, `counterfactual_gap`, `out_of_sample_holdout`, `real_out_of_sample_holdout`, `three_gate_overall`를 PASS/FAIL로 고정 판정한다.
+  - `real_out_of_sample_holdout` PASS 조건은 `uplift_real_oos_over_dummy > 0`, `uplift_real_oos_over_counterfactual > 0`, `uplift_real_oos_over_quantum > 0` 동시 만족이다.
+  - challenge set은 연구용 판별력 점검 전용(`research_only`)이며, production direct trigger 근거로 사용하지 않는다.
+
 #### 31.34 External SOTA Benchmark Adapter Skeleton (FACT, 2026-04-28)
 
 - 스크립트:

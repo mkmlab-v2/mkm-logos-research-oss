@@ -1,0 +1,56 @@
+name: logos-falsification-contrastive-smoke
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "scripts/run_logos_falsification_benchmark_v1.py"
+      - "scripts/build_logos_falsification_contrastive_challenge_set_v1.py"
+      - "scripts/check_logos_contrastive_challenge_lock_v1.py"
+      - "docs/final/artifacts/logos_symbolic_event_map_v1.json"
+      - "docs/final/artifacts/logos_symbolic_event_map_counterfactual_v1.json"
+      - "docs/final/artifacts/logos_symbolic_event_map_dummy_v1.json"
+      - "docs/final/artifacts/logos_symbolic_event_map_iching_v1.json"
+      - "docs/final/artifacts/logos_symbolic_event_map_quantum_v1.json"
+  pull_request:
+    paths:
+      - "scripts/run_logos_falsification_benchmark_v1.py"
+      - "scripts/build_logos_falsification_contrastive_challenge_set_v1.py"
+      - "scripts/check_logos_contrastive_challenge_lock_v1.py"
+      - "docs/final/artifacts/logos_symbolic_event_map_v1.json"
+      - "docs/final/artifacts/logos_symbolic_event_map_counterfactual_v1.json"
+      - "docs/final/artifacts/logos_symbolic_event_map_dummy_v1.json"
+      - "docs/final/artifacts/logos_symbolic_event_map_iching_v1.json"
+      - "docs/final/artifacts/logos_symbolic_event_map_quantum_v1.json"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build contrastive challenge set
+        run: py scripts/build_logos_falsification_contrastive_challenge_set_v1.py
+      - name: Verify challenge lock
+        run: py scripts/check_logos_contrastive_challenge_lock_v1.py --strict
+      - name: Run benchmark with challenge set
+        run: >
+          py scripts/run_logos_falsification_benchmark_v1.py --execute --include-real-oos
+          --real-news-jsonl docs/final/artifacts/news_observation_v1_contrastive_challenge_latest.jsonl
+          --real-labels-jsonl docs/final/artifacts/direction_label_bar_v1_contrastive_challenge_latest.jsonl
+      - name: Assert gate and uplift contract
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          p = Path("docs/final/artifacts/logos_falsification_benchmark_latest.json")
+          doc = json.loads(p.read_text(encoding="utf-8"))
+          gate = doc["gate_status"]["three_gate_overall"]
+          assert gate == "PASS", f"three_gate_overall must be PASS, got {gate}"
+          assert float(doc["uplift_real_oos_over_dummy"]) > 0.0
+          assert float(doc["uplift_real_oos_over_counterfactual"]) > 0.0
+          assert float(doc["uplift_real_oos_over_quantum"]) > 0.0
+          print("logos falsification contrastive smoke: PASS")
