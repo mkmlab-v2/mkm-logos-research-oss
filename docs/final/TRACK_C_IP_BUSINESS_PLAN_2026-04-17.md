@@ -1,7 +1,7 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-05 — **핵심이론 보호 상용화 가드(§9A)** 신설: `Model-as-a-Service` 분리, 공개/비공개 필드 경계, 계약/접근통제/워터마킹, 90일 실행 체크리스트를 Track C GTM에 편입. (이전: 2026-05-03 `§3.8` B2B 구독 파도 고정.)  
+Revised: 2026-05-05 — **핵심이론 보호 상용화 가드(§9A)** 신설: `Model-as-a-Service` 분리, 공개/비공개 필드 경계, 계약/접근통제/워터마킹, 90일 실행 체크리스트를 Track C GTM에 편입. (이전: 2026-05-03 `§3.8` B2B 구독 파도 고정.) 동일 일자 **§3.4**에 `MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md` 대외 카피 포인터 추가.  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
@@ -63,6 +63,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - 제품: 체질 기반 설명형 콘텐츠/리포트/연구 패킷.
 - 역할: 의료 서비스가 아닌 비의료 인사이트 IP.
 - 금지: 진단/치료/처방으로 오해되는 운영.
+- **대외 카피 SSOT (건강·설문·체질 인접):** `docs/final/MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md` — 블랙/그레이/화이트·개인정보·정확도 표기; `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` §3과 병용. 법무 검토 전제.
 
 ### 3.5 축 E — 신시장지표 사업 (관측형 경보 서비스)
 
@@ -90,7 +91,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
   - 엔터프라이즈 API CTA 2순위: `a-codeai.com` (`/v1` 분리형 B2B 엔드포인트 문맥).
   - 브랜드 허브/설명 페이지는 `jema-ai.com`에서 연결하되, 실시간성/쇼룸 UI는 `jemaai.cloud`로 집중.
   - `a-codeai.com` 배포는 **정적 랜딩(`/`)과 API(`/v1`, `/health`)를 nginx에서 분리**한다. 운영 예시는 `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example`를 기준으로 한다.
-  - **허브→쇼룸 CTA 문구(초안)·분기 SSOT:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1b — `jema-ai.com` Next 공개 카피 원천은 `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`: `showroom_jemaai`, `premium_mkmlife`, `b2b_acodeai`).
+  - **허브→쇼룸 CTA 문구(초안)·분기 SSOT:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1b — `jema-ai.com` Next 공개 카피 원천은 `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`: `showroom_jemaai`, `premium_mkmlife`, `b2b_acodeai`). 공개 보드 **권장 진입**은 `hub_links.showroom_jemaai` → `api.jemaai.cloud` 경로의 `public_showroom_board_minimal.html`(미니멀 정적 보드; `CONSTITUTION`·`JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`).
 
 ### 3.7 MKM AI — 고신뢰 R&D 검증·가속 인프라 (Value Proposition 전환, 2026-05)
 
