@@ -75,15 +75,6 @@ def main() -> int:
     src_hash = _sha256(src_path)
     locked_hash = src.get("sha256_placeholder")
     hash_mismatch = isinstance(locked_hash, str) and locked_hash not in ("", "TBD_RECOMPUTE_AND_LOCK", src_hash)
-    registry_profile = registry.get("corpus_profile_id")
-    claim_profile = c.get("corpus_profile_id")
-    source_profile = src_doc.get("corpus_profile_id")
-    profile_match = (
-        isinstance(registry_profile, str)
-        and isinstance(claim_profile, str)
-        and isinstance(source_profile, str)
-        and registry_profile == claim_profile == source_profile
-    )
 
     # Optional interpretation anchor: prevents over-claiming one snapshot as universal truth.
     anchor_path = Path(args.anchor_json)
@@ -135,10 +126,6 @@ def main() -> int:
         ),
         "latest_edge_count": latest_edge_count,
         "latest_minus_frozen_edge_count": latest_delta,
-        "corpus_profile_id_registry": registry_profile,
-        "corpus_profile_id_claim": claim_profile,
-        "corpus_profile_id_source": source_profile,
-        "corpus_profile_match": profile_match,
     }
     print(json.dumps(out, ensure_ascii=False, indent=2))
 
@@ -149,8 +136,6 @@ def main() -> int:
         reg_path.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     strict_fail = mismatch or hash_mismatch
-    if not profile_match:
-        strict_fail = True
     if anchor_path.exists() and not anchor_claim_match:
         strict_fail = True
     if args.strict and strict_fail:

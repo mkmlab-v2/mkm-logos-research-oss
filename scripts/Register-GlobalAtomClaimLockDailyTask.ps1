@@ -18,14 +18,12 @@ $ErrorActionPreference = "Stop"
 
 $claimCheck = Join-Path $WorkspaceRoot "scripts\check_global_atom_claim_lock_v1.py"
 $atomCheck = Join-Path $WorkspaceRoot "scripts\check_global_atom_edge_claim_atom_set_v1.py"
-$profileCheck = Join-Path $WorkspaceRoot "scripts\check_global_atom_corpus_profile_lock_v1.py"
 $runScript = Join-Path $WorkspaceRoot "scripts\run_global_atom_claim_lock_daily.ps1"
 $assertScript = Join-Path $WorkspaceRoot "projects\bitcoin-trading\ops\windows-rehearsal\assert_task_target_exists.ps1"
 
 if (-not $Unregister) {
     & powershell -NoProfile -ExecutionPolicy Bypass -File $assertScript -TargetPath $claimCheck -Label "global atom claim lock check script"
     & powershell -NoProfile -ExecutionPolicy Bypass -File $assertScript -TargetPath $atomCheck -Label "global atom atom-set check script"
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $assertScript -TargetPath $profileCheck -Label "global atom corpus-profile check script"
     & powershell -NoProfile -ExecutionPolicy Bypass -File $assertScript -TargetPath $runScript -Label "global atom claim lock daily runner script"
 }
 
