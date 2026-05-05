@@ -26,7 +26,7 @@
 | 트리거 | 할 일 |
 |--------|--------|
 | 대외 카피·보안·IP | `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` + `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` |
-| **어느 도메인에 어떤 쇼룸·허브 CTA 문구** | `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` **§1.1**·**§1.1b** (표·CTA 초안); `docs/final/JEMA_AI_DOMAIN_POINTER_V1.md` §4.1 |
+| **어느 도메인에 어떤 쇼룸·허브 CTA 문구** | `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` **§1.1**·**§1.1b** (표·CTA 초안); `docs/final/JEMA_AI_DOMAIN_POINTER_V1.md` §4.1 — **jema-ai.com Next 카피 원천(코드):** `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`) |
 | 공개 이벤트 스키마·지연 | `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`(bitcoin-trading `jemaai-cloud-mvp`) |
 | 로컬 검증 번들 | `scripts/verify_p0_constitution_gate_paths.ps1` → exit 0; 필요 시 `scripts/run_jemaai_cloud_completion_chain.ps1 -SkipP1AB` |
 | 원격 반영 | 지휘관 네트워크·리모트만: `scripts/push-internal.ps1`, 쇼룸 VPS는 `scripts/sync_showroom_to_vps.ps1`(의도·SSH 확인 후) — 에이전트는 **명시 요청 시에만** 실행·실패 로그 보고 |
