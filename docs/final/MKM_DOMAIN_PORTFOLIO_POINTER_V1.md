@@ -47,7 +47,7 @@ Track C·공개 쇼룸 논의와 동일 선상: **실매매·조종실은 어디
 
 `jema-ai.com` 전용 상세·미확정 항목: `JEMA_AI_DOMAIN_POINTER_V1.md` — CTA는 **이 표(1.1b)와 `§1.1` 역할**에 맞출 것.
 
-**구현 원천(코드):** Next 브랜드 허브 공개 카피는 `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links.showroom_jemaai` 등) — 표(1.1b)와 불일치 시 **먼저 JSON을 고치고** 본 표를 개정한다.
+**구현 원천(코드):** Next 브랜드 허브 공개 카피는 `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`: `showroom_jemaai`, `premium_mkmlife`, `b2b_acodeai`) — 표(1.1b)와 불일치 시 **먼저 JSON을 고치고** 본 표를 개정한다.
 
 ---
 

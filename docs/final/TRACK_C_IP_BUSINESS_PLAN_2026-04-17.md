@@ -90,7 +90,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
   - 엔터프라이즈 API CTA 2순위: `a-codeai.com` (`/v1` 분리형 B2B 엔드포인트 문맥).
   - 브랜드 허브/설명 페이지는 `jema-ai.com`에서 연결하되, 실시간성/쇼룸 UI는 `jemaai.cloud`로 집중.
   - `a-codeai.com` 배포는 **정적 랜딩(`/`)과 API(`/v1`, `/health`)를 nginx에서 분리**한다. 운영 예시는 `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example`를 기준으로 한다.
-  - **허브→쇼룸 CTA 문구(초안)·분기 SSOT:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1b — `jema-ai.com` Next 공개 카피 원천은 `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links.showroom_jemaai` 등).
+  - **허브→쇼룸 CTA 문구(초안)·분기 SSOT:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1b — `jema-ai.com` Next 공개 카피 원천은 `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`: `showroom_jemaai`, `premium_mkmlife`, `b2b_acodeai`).
 
 ### 3.7 MKM AI — 고신뢰 R&D 검증·가속 인프라 (Value Proposition 전환, 2026-05)
 
