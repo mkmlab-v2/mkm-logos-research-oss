@@ -18,6 +18,7 @@ param(
 # 2026-05-02: M5 rule_school_mkm_4d_v1 (policy JSON, loader/blend, pytest).
 # 2026-05-02: M2–M4 myeongni (jijangan ohang weights, daewoon v1, jijangan ohang script, daewoon test).
 # 2026-05-02: +4 myeongni jijangan LUT M1 (lut, schema, script, test).
+# 2026-05-05: MKM_DOMAIN_PORTFOLIO_POINTER_V1.md (도메인×역할×쇼룸 배치 §1.1; P0 존재 게이트).
 # 2026-05-05: TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md (Track C 상용·법무·IP 경계 SSOT; P0 존재 게이트).
 # 2026-05-05: PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md (대외 문서·홈·쇼룸 보안·IP 카피 체크리스트; P0 존재 게이트).
 # 2026-05-05: CENTRAL_AGENT_MEMORY_V1.md (명리 렌즈 고도화 v1 등 장기기억 지문; P0 존재 게이트).
@@ -76,6 +77,7 @@ $required = @(
     "scripts\build_lg_washer_voice_golden_jsonl_v1.py",
     ".cursorrules",
     "AGENTS.md",
+    "docs\final\MKM_DOMAIN_PORTFOLIO_POINTER_V1.md",
     "docs\final\TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
     "docs\final\PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
     "docs\final\CENTRAL_AGENT_MEMORY_V1.md",
