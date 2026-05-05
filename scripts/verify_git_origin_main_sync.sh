@@ -7,6 +7,9 @@
 #              additionally verify internal remote safety:
 #              - internal URL should match REMOTE_NAME URL (alias mode)
 #              - HEAD and internal/main should share merge-base (no unrelated history)
+#   --warn-untracked-noise
+#              also warn when untracked files exist. By default, only tracked-file
+#              dirtiness blocks strict flow to reduce runtime artifact noise on VPS.
 # Env: REMOTE_NAME (default origin), MAIN_REF (default main)
 
 set -euo pipefail
@@ -14,6 +17,7 @@ set -euo pipefail
 STRICT=0
 NO_FETCH=0
 CHECK_INTERNAL_SAFETY=0
+WARN_UNTRACKED_NOISE=0
 REPO=""
 REMOTE_NAME="${REMOTE_NAME:-origin}"
 MAIN_REF="${MAIN_REF:-main}"
@@ -24,8 +28,9 @@ for a in "$@"; do
     --strict) STRICT=1 ;;
     --no-fetch) NO_FETCH=1 ;;
     --check-internal-safety) CHECK_INTERNAL_SAFETY=1 ;;
+    --warn-untracked-noise) WARN_UNTRACKED_NOISE=1 ;;
     -h|--help)
-      echo "Usage: $0 [--strict] [--no-fetch] [--check-internal-safety] [REPO_ROOT]"
+      echo "Usage: $0 [--strict] [--no-fetch] [--check-internal-safety] [--warn-untracked-noise] [REPO_ROOT]"
       exit 0
       ;;
     -*)
@@ -96,10 +101,11 @@ AHEAD="$(git rev-list --count "$UPSTREAM"..HEAD 2>/dev/null || echo 0)"
 H="$(git rev-parse --short HEAD 2>/dev/null)"
 R="$(git rev-parse --short "$UPSTREAM" 2>/dev/null)"
 
-DIRTY=""
-if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
-  DIRTY=1
+DIRTY_TRACKED=""
+if [[ -n "$(git status --porcelain --untracked-files=no 2>/dev/null)" ]]; then
+  DIRTY_TRACKED=1
 fi
+UNTRACKED_COUNT="$(git ls-files --others --exclude-standard 2>/dev/null | wc -l | tr -d ' ' || echo 0)"
 
 ok=1
 if [[ "${BEHIND:-0}" -gt 0 ]]; then
@@ -115,8 +121,11 @@ if [[ "${BEHIND:-0}" -gt 0 && "${AHEAD:-0}" -gt 0 ]]; then
   echo "verify_git_origin_main_sync: DIVERGED from $REMOTE_NAME/$MAIN_REF — do not blind pull; inspect git log / merge" >&2
   ok=0
 fi
-if [[ -n "$DIRTY" ]]; then
-  echo "verify_git_origin_main_sync: WARN: dirty working tree (stash/commit before pull)" >&2
+if [[ -n "$DIRTY_TRACKED" ]]; then
+  echo "verify_git_origin_main_sync: WARN: tracked-file changes detected (stash/commit before pull)" >&2
+fi
+if [[ "$WARN_UNTRACKED_NOISE" -eq 1 && "${UNTRACKED_COUNT:-0}" -gt 0 ]]; then
+  echo "verify_git_origin_main_sync: WARN: untracked files=${UNTRACKED_COUNT} (runtime artifact noise possible)" >&2
 fi
 
 if [[ "$ok" -eq 1 ]]; then

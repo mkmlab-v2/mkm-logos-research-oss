@@ -8,6 +8,7 @@
     :root {
       --bg: #0a0b0d;
       --surface: #12151a;
+      --surface-soft: #151922;
       --border: rgba(255, 255, 255, 0.09);
       --text: #e8eaef;
       --muted: #8b919d;
@@ -24,7 +25,10 @@
       font-size: 15px;
       line-height: 1.5;
       color: var(--text);
-      background: var(--bg);
+      background:
+        radial-gradient(1200px 520px at 12% -18%, rgba(197, 160, 87, 0.08), transparent 60%),
+        radial-gradient(900px 420px at 96% -24%, rgba(143, 188, 143, 0.06), transparent 62%),
+        var(--bg);
     }
     .wrap {
       max-width: 42rem;
@@ -37,9 +41,9 @@
       border-bottom: 1px solid var(--border);
     }
     h1 {
-      font-size: 1.125rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
+      font-size: 1.2rem;
+      font-weight: 650;
+      letter-spacing: -0.015em;
       margin: 0 0 0.35rem;
     }
     .lede {
@@ -67,7 +71,7 @@
       width: min(100%, 22rem);
       padding: 0.5rem 0.65rem;
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 6px;
       background: var(--surface);
       color: var(--text);
       font-size: 0.8125rem;
@@ -75,13 +79,16 @@
     .toolbar button {
       padding: 0.5rem 0.85rem;
       border: 1px solid var(--border);
-      border-radius: 4px;
-      background: var(--surface);
+      border-radius: 6px;
+      background: linear-gradient(180deg, #171c25 0%, #12151a 100%);
       color: var(--text);
       font-size: 0.8125rem;
       cursor: pointer;
     }
-    .toolbar button:hover { border-color: rgba(197, 160, 87, 0.35); }
+    .toolbar button:hover {
+      border-color: rgba(197, 160, 87, 0.45);
+      box-shadow: 0 0 0 1px rgba(197, 160, 87, 0.18) inset;
+    }
     #pollStatus {
       font-size: 0.75rem;
       color: var(--muted);
@@ -90,10 +97,11 @@
     }
     .board {
       border: 1px solid var(--border);
-      border-radius: 6px;
-      background: var(--surface);
-      padding: 1.25rem 1.1rem;
+      border-radius: 10px;
+      background: linear-gradient(180deg, var(--surface-soft) 0%, var(--surface) 100%);
+      padding: 1.35rem 1.2rem;
       margin-bottom: 1.25rem;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
     }
     .board-grid {
       display: grid;
@@ -152,7 +160,7 @@
     .reactions li:last-child { border-bottom: none; }
     details {
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 8px;
       background: var(--surface);
       margin-bottom: 1.5rem;
     }
@@ -174,9 +182,9 @@
     }
     .info {
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 10px;
       padding: 1.1rem 1rem;
-      background: var(--surface);
+      background: linear-gradient(180deg, var(--surface-soft) 0%, var(--surface) 100%);
       font-size: 0.8125rem;
       line-height: 1.55;
       color: var(--muted);
@@ -203,6 +211,11 @@
     .footer-links a:hover { text-decoration: underline; }
     .err { color: var(--danger); }
     .ok { color: var(--ok); }
+    @media (max-width: 680px) {
+      .wrap { padding: 1.4rem 0.95rem 2.1rem; }
+      .board { padding: 1.05rem 0.95rem; }
+      .board-grid { grid-template-columns: 1fr; gap: 0.85rem; }
+    }
   </style>
 </head>
 <body>
