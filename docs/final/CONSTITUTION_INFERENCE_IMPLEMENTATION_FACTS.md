@@ -2799,6 +2799,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
   - human gate ledger는 weekly alert 결과를 append-only JSONL로 기록하고, 최신 요약 JSON을 별도 갱신한다.
   - human gate weekly report는 최근 7일 기준 `review_required_count`, `warning_streak`, `critical_streak`를 산출하고, `threshold_switch_min_rows`(기본 14) 기준 `readiness_for_threshold_switch`/`threshold_switch_recommendation`를 자동 계산한다.
   - 수동 검토 JSONL(`chronicle_human_gate_manual_reviews_latest.jsonl`)을 읽어 `manual_review_count`, `review_gap_count`, `review_gap_detected`를 계산해 미기록 검토 건을 자동 경고한다.
+  - 운영 1줄 고정: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_global_atom_claim_lock_daily.ps1` 실행 후 마지막 `chronicle_ops_minicheck_v1`에서 `corpus_profile_id / review_gap_detected / readiness_for_threshold_switch` 3필드만 확인한다.
   - threshold switch review packet은 weekly report readiness와 current/proposed thresholds 비교를 한 파일로 묶고, `readiness_for_threshold_switch=ready`일 때 `OPS_ALARM_WEBHOOK_URL`로 ready 이벤트를 전송한다.
   - 리허설 고정 문구: 운영 리허설은 `py scripts/build_chronicle_threshold_switch_review_packet_v1.py --force-ready --dry-run-webhook --output-json docs/final/artifacts/chronicle_threshold_switch_review_packet_rehearsal_latest.json` 1회 실행으로 검증하고, 실운영 웹훅 전송은 이 명령에서 금지한다.
   - 거버넌스 기본값은 `source_track=B`, `governance_state=S1_SHADOW`, `observation_mode=KEEP_OBSERVATION_ONLY`.
