@@ -54,6 +54,12 @@ export default function HomePage({ searchParams }: HomePageProps) {
     publicSolutionSecondary: c.links.contact,
   } as const;
 
+  const presetKey = searchParams?.preset;
+  const homepagePresetClass =
+    presetKey && presetKey in homepagePresetMap
+      ? homepagePresetMap[presetKey as keyof typeof homepagePresetMap]
+      : "";
+
   return (
     <div className={homepagePresetClass}>
       <a className="skip" href="#main">
@@ -101,11 +107,12 @@ export default function HomePage({ searchParams }: HomePageProps) {
           <div className="section-cta" style={{ marginTop: "1rem" }}>
             <a
               className="btn btn-ghost"
-              href="https://jemaai.cloud"
+              href={c.hub_links.showroom_jemaai.href}
               target="_blank"
               rel="noopener noreferrer"
+              title={c.hub_links.showroom_jemaai.sublabel}
             >
-              MKM 4AI + Absolute Balance Showroom 보기
+              {c.hub_links.showroom_jemaai.label}
             </a>
           </div>
         </section>

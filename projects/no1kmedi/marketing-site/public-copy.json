@@ -4,7 +4,15 @@
     "brand": "JEMA AI",
     "public_domain": "jema-ai.com",
     "audience": "일반인(AI 한의학 이해·무료 사전 리포트) 및 한의원·한의사(도입·진료보조)",
-    "note": "사용자 노출 문구의 단일 원천. 공개 브랜드는 jema-ai.com이며, 내부 레포 식별자와 공개 브랜드 표기는 분리한다."
+    "note": "사용자 노출 문구의 단일 원천. 공개 브랜드는 jema-ai.com이며, 내부 레포 식별자와 공개 브랜드 표기는 분리한다.",
+    "ssot_cross_domain_cta": "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md §1.1·§1.1b (도메인 분기·허브 CTA 초안; 법무 확정 전 가이드)"
+  },
+  "hub_links": {
+    "showroom_jemaai": {
+      "href": "https://jemaai.cloud",
+      "label": "공개 관측 보드 보기",
+      "sublabel": "Topology·매크로 데모(관측·교육 목적; 투자 권유·주문 아님)"
+    }
   },
   "header": {
     "brand_name": "JEMA AI",
