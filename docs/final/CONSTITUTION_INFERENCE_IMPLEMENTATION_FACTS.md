@@ -2716,6 +2716,39 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
   - `audit_status=PASS`, `missing_required_suffixes=[]`.
   - ZIP 해시: `92c71b93d4cce0ca6a0fd63c0b5a95be23ff43ebd34cc2e92271c4dd031ca85f`.
 
+#### 31.33A Global Atom 305만 Edge Claim Anchor Lock (FACT, 2026-05-05)
+
+- 스크립트:
+  - `scripts/check_global_atom_claim_lock_v1.py`
+- 앵커 SSOT:
+  - `docs/final/artifacts/global_atom_claim_lock_registry_latest.json`
+  - `docs/final/artifacts/global_atom_edge_claim_anchor_v1.json`
+- 구현 사실:
+  - `3051269`는 **특정 freeze 스냅샷**(`global_atom_submission_20260428T095850Z`)의 `key_facts.edge_count` 잠금값이며, 전 조건 대표 단일 진실로 단정하지 않는다.
+  - claim lock 출력에 `anchor_representativeness=single_freeze_only`, `anchor_importance_tier=supporting_metric`를 포함해 과장 서술을 차단한다.
+  - 검증 결과에 latest onepager `edge_count`를 병기해 freeze 기준선 대비 변동을 노출한다.
+- 운영 규칙:
+  - 대외/내부 문구에서 `3051269`를 사용할 때는 “특정 freeze 스냅샷 기준” 수식어를 필수로 포함한다.
+  - 실전/프로덕션 성능 보장 근거로 단독 사용 금지(연구 기준선 anchor로만 사용).
+
+#### 31.33B Edge Claim Atom Set + Daily Guard Task (FACT, 2026-05-05)
+
+- 스크립트:
+  - `scripts/check_global_atom_edge_claim_atom_set_v1.py`
+  - `scripts/Register-GlobalAtomClaimLockDailyTask.ps1`
+- 앵커/아톰 SSOT:
+  - `docs/final/artifacts/global_atom_edge_claim_atom_set_latest.json` (`edge_claim_atom_set_v1`)
+- 구현 사실:
+  - edge 수치를 단일 숫자 대신 atom 세트(`anchor_baseline`, `current_reference`)로 분리해 freeze 기준과 최신 기준을 동시에 검증한다.
+  - atom 검증은 source artifact의 `key_facts.edge_count/node_count`와 atom 명시값의 일치 여부를 점검하며, claim lock의 anchor 값 일치까지 강제한다.
+  - 일일 태스크는 claim lock strict 검사 통과 후 atom set strict 검사를 연속 실행한다(앞 단계 실패 시 즉시 중단).
+- 보고 표준(재발방지):
+  - 모든 대내/대외 보고는 아래 3줄을 함께 표기한다.
+    - `anchor_baseline` (freeze id + edge_count)
+    - `current_reference` (latest edge_count)
+    - `latest_minus_anchor` (증분 delta)
+  - 단일 숫자(`3051269`)만 독립 표기하는 문구는 금지한다.
+
 #### 31.34 External SOTA Benchmark Adapter Skeleton (FACT, 2026-04-28)
 
 - 스크립트:
