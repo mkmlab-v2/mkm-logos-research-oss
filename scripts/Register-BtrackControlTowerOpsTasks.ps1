@@ -77,6 +77,10 @@ $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interac
 Register-ScheduledTask -TaskName $WeeklyTaskName -Action $weeklyAction -Trigger $weeklyTrigger -Settings $settings -Principal $principal -Description "B-track Control Tower weekly run (HITL-safe)." -Force | Out-Null
 Register-ScheduledTask -TaskName $AutopushTaskName -Action $autopushAction -Trigger $dailyTrigger -Settings $settings -Principal $principal -Description "B-track Control Tower bounded daily autopush." -Force | Out-Null
 
+# Health snapshot treats Disabled as ops_not_ready; (re-)register implies tasks should be runnable.
+Enable-ScheduledTask -TaskPath '\' -TaskName $WeeklyTaskName -ErrorAction SilentlyContinue | Out-Null
+Enable-ScheduledTask -TaskPath '\' -TaskName $AutopushTaskName -ErrorAction SilentlyContinue | Out-Null
+
 Write-Host "Registered: $WeeklyTaskName (Mon $WeeklyMondayAt)"
 Write-Host "Registered: $AutopushTaskName (Daily $DailyAt, MaxRuns=$AutopushMaxRuns)"
 Write-Host "Runner: $runner"

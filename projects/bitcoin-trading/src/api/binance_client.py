@@ -815,38 +815,44 @@ class BinanceFuturesClient:
         maker_only=True면 LIMIT + reduceOnly + GTX 시도 (실패 시 MARKET 청산은 호출부에서 처리 권장).
         """
         try:
+            requested_side = str(position_side or "LONG").upper()
+            if requested_side not in {"LONG", "SHORT"}:
+                logger.error(f"❌ 잘못된 position_side 요청: {position_side}")
+                return None
             if USE_CCXT:
                 positions = self.exchange.fetch_positions([symbol])
                 for pos in positions:
-                    if pos['side'] == position_side.lower() and pos['contracts'] > 0:
-                        close_side = 'sell' if position_side == 'LONG' else 'buy'
+                    if pos['side'] == requested_side.lower() and pos['contracts'] > 0:
+                        close_side = 'sell' if requested_side == 'LONG' else 'buy'
                         amt = abs(pos['contracts'])
                         if self.maker_only:
                             best_bid, best_ask = self._get_order_book(symbol)
-                            price = best_bid if position_side == 'LONG' else best_ask
+                            price = best_bid if requested_side == 'LONG' else best_ask
                             order = self.exchange.create_order(
                                 symbol=symbol, type='limit', side=close_side, amount=amt, price=price,
                                 params={
                                     'timeInForce': 'GTX',
-                                    'positionSide': position_side,
+                                    'positionSide': requested_side,
                                     'reduceOnly': True,
                                     'newClientOrderId': self._build_client_order_id("close"),
                                 }
                             )
-                            logger.info(f"✅ 포지션 청산 (Maker-only): {symbol} {position_side} LIMIT @ {price} GTX")
+                            logger.info(f"✅ 포지션 청산 (Maker-only): {symbol} {requested_side} LIMIT @ {price} GTX")
                         else:
                             order = self.exchange.create_market_order(
                                 symbol=symbol, side=close_side, amount=amt,
                                 params={
-                                    'positionSide': position_side,
+                                    'positionSide': requested_side,
                                     'newClientOrderId': self._build_client_order_id("close"),
                                 }
                             )
-                            logger.info(f"✅ 포지션 청산: {symbol} {position_side}")
+                            logger.info(f"✅ 포지션 청산: {symbol} {requested_side}")
                         return order
             else:
                 positions = self._call_client(lambda: self.client.futures_position_information(symbol=symbol))
                 for pos in positions:
+                    if str(pos.get('positionSide') or '').upper() != requested_side:
+                        continue
                     position_amt = float(pos['positionAmt'])
                     if position_amt != 0:
                         if position_amt > 0:
@@ -871,6 +877,13 @@ class BinanceFuturesClient:
                                 reduceOnly=True,
                                 newClientOrderId=self._build_client_order_id("close"),
                             ))
+                            if str(order.get('positionSide') or '').upper() != requested_side:
+                                logger.error(
+                                    "❌ 청산 주문 side 불일치: requested=%s order.positionSide=%s",
+                                    requested_side,
+                                    order.get('positionSide'),
+                                )
+                                return None
                             logger.info(f"✅ 포지션 청산 (Maker-only): {symbol} {close_position_side} LIMIT @ {price} GTX")
                         else:
                             order = self._call_client(lambda: self.client.futures_create_order(
@@ -881,9 +894,16 @@ class BinanceFuturesClient:
                                 positionSide=close_position_side,
                                 newClientOrderId=self._build_client_order_id("close"),
                             ))
+                            if str(order.get('positionSide') or '').upper() != requested_side:
+                                logger.error(
+                                    "❌ 청산 주문 side 불일치: requested=%s order.positionSide=%s",
+                                    requested_side,
+                                    order.get('positionSide'),
+                                )
+                                return None
                             logger.info(f"✅ 포지션 청산: {symbol} {close_position_side}")
                         return order
-            logger.warning(f"⚠️ 청산할 포지션이 없습니다: {symbol} {position_side}")
+            logger.warning(f"⚠️ 청산할 포지션이 없습니다: {symbol} {requested_side}")
             return None
         except Exception as e:
             logger.error(f"❌ 포지션 청산 실패: {e}")

@@ -24,6 +24,9 @@ BUNDLE_DEFAULT_INPUTS: tuple[tuple[str, Path], ...] = (
     ("independent_lens_shadow_minority_monthly", ROOT / "docs/final/artifacts/independent_lens_shadow_minority_monthly_latest.json"),
     ("news_independent_lens", ROOT / "docs/final/artifacts/news_independent_lens_latest.json"),
     ("macro_independent_lens", ROOT / "docs/final/artifacts/macro_independent_lens_latest.json"),
+    ("compression_kpi_summary", ROOT / "reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json"),
+    ("compression_active_report", ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"),
+    ("compression_decision", ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"),
 )
 
 # Known compression / multilens bench outputs that would count as a physical wire if referenced.

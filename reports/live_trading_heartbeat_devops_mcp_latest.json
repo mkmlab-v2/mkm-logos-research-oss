@@ -1,0 +1,30 @@
+{
+  "schema": "live_trading_heartbeat_devops_mcp_v1",
+  "generated_at_utc": "2026-05-04T13:01:10Z",
+  "vps_host": "148.230.97.246",
+  "pm2_app": "bitcoin-live-small-24h",
+  "checks": [
+    {
+      "name": "vps_pm2_show",
+      "ok": true,
+      "detail": "online, cwd=/opt/bitcoin-trading-live, script=/opt/bitcoin-trading-live/start_live_trading.py"
+    },
+    {
+      "name": "vps_pm2_logs",
+      "ok": true,
+      "detail": "pm2 logs command succeeded (tail requested)"
+    },
+    {
+      "name": "go_no_go",
+      "ok": true,
+      "detail": "GO / gate_reason=go_trinity_ACTIVE_MODE"
+    },
+    {
+      "name": "fills_export",
+      "ok": true,
+      "detail": "rows=4"
+    }
+  ],
+  "overall": "PASS",
+  "note": "devops-mcp remote checks passed and local GO/NO_GO gate is GO at snapshot time."
+}

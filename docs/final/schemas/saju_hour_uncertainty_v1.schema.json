@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "saju_hour_uncertainty_v1",
+  "title": "saju_hour_uncertainty_v1",
+  "description": "Probabilistic hour-pillar (시주) bundle when birth hour is unknown. Year/month/day pillars are treated as fixed (same civil date); hour pillar varies by 12 시진. No auto-merge with 사상/체질 설문 — prior weights are explicit metadata only (Fact-Lock).",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "hour_mode",
+    "iana_tz",
+    "local_calendar_date",
+    "fixed_saju",
+    "hour_distribution",
+    "disclaimer_ref"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "const": "saju_hour_uncertainty_v1" },
+    "version": { "type": "string" },
+    "hour_mode": {
+      "type": "string",
+      "enum": ["candidate_set", "known_hour"]
+    },
+    "iana_tz": { "type": "string" },
+    "local_calendar_date": {
+      "type": "string",
+      "description": "Civil YYYY-MM-DD in iana_tz (user intent; engine may differ on rare DST edge cases — see resolution warnings)."
+    },
+    "is_male": { "type": "boolean" },
+    "day_rollover_policy": {
+      "type": "string",
+      "description": "Forwarded to PerfectManseryeok.calculate_full_saju_perfect (e.g. midnight_00, zi_23).",
+      "enum": ["midnight_00", "zi_23"]
+    },
+    "fixed_saju": {
+      "type": "object",
+      "required": ["year", "month", "day"],
+      "properties": {
+        "year": { "type": "string", "description": "연주 간지" },
+        "month": { "type": "string", "description": "월주 간지" },
+        "day": { "type": "string", "description": "일주 간지" }
+      },
+      "additionalProperties": true
+    },
+    "hour_distribution": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["hour_pillar", "probability", "source_prior"],
+        "properties": {
+          "hour_pillar": {
+            "type": "string",
+            "description": "시주 간지 (두 글자). Draft examples must match scripts/run_saju_global_birth_v1.py / PerfectManseryeok for the sampled instant."
+          },
+          "hour_branch": {
+            "type": "string",
+            "description": "시지 한 글자 (자…해)."
+          },
+          "clock_window_local": {
+            "type": "string",
+            "description": "Representative civil-time window for this 시진 in local zone (display-only convention)."
+          },
+          "representative_local_hour": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 23,
+            "description": "Local civil hour used as midpoint sample for this 시진 (engine mapping)."
+          },
+          "probability": { "type": "number", "minimum": 0, "maximum": 1 },
+          "source_prior": {
+            "type": "string",
+            "enum": ["uniform", "window_filter", "survey_weights", "mixed"]
+          },
+          "labels": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "disclaimer_ref": { "type": "string" },
+    "meta": { "type": "object", "additionalProperties": true }
+  }
+}

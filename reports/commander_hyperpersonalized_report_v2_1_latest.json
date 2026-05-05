@@ -1,0 +1,71 @@
+{
+  "schema": "mkm_commander_hyperpersonalized_report_v2_1",
+  "version": "2.1.0",
+  "generated_at_utc": "2026-05-04T19:28:13.190653+00:00",
+  "template_schema": "mkm_myeongni_hyperpersonalized_template_v2_1",
+  "labels": {
+    "fact": "[FACT]",
+    "hypothesis": "[HYPOTHESIS]",
+    "governance_policy": "[GOVERNANCE_POLICY]",
+    "non_medical": "[NON_MEDICAL]"
+  },
+  "meta": {
+    "subject": "commander_personalization",
+    "mode": "fact_lock_split",
+    "source_paths": {
+      "a_track": "C:\\workspace\\docs\\final\\artifacts\\a_track_go_nogo_status_latest.json",
+      "backtest": "C:\\workspace\\docs\\final\\artifacts\\prophecy_lens_combo_backtest_v1_latest.json",
+      "commander_lens": "C:\\workspace\\reports\\commander_myeongni_lens_latest.json",
+      "sasang_veto": "C:\\workspace\\docs\\final\\artifacts\\sasang_veto_only_active_config_latest.json"
+    }
+  },
+  "fact_layer": {
+    "a_track": {
+      "overall_go_no_go": "GO",
+      "recommended_stage": "S4_LIMITED_LIVE",
+      "failed_reasons": [],
+      "price_output_locked": false,
+      "high_reliability_decision": "PASS"
+    },
+    "commander_lens": {
+      "confidence": 0.676665,
+      "direction_score": 0.105064,
+      "state_id": 15,
+      "run_id": "calendar_stub_through_202604",
+      "pillars": {
+        "year": "계축",
+        "month": "갑자",
+        "day": "경진",
+        "hour": "무인"
+      }
+    },
+    "backtest_best_strategy": {
+      "strategy_id": "myeongni+sasang",
+      "n_days": 29,
+      "mdd": -0.036296,
+      "sharpe": 5.838073
+    },
+    "governance": {
+      "most_conservative_wins": true,
+      "directional_entry_disabled": true
+    }
+  },
+  "hypothesis_layer": {
+    "disclaimer": "Hypothesis layer is non-trigger and non-medical.",
+    "narrative": {
+      "jijangan_hypothesis": "Water/earth-heavy structure favors risk-filtered execution over impulsive expansion.",
+      "lifestyle_hypothesis": "Decision quality improves when high-conviction actions are gated by recovery and pacing checks.",
+      "stress_guard_hypothesis": "When fatigue rises, reduce size cap and defer irreversible decisions."
+    }
+  },
+  "execution_policy": {
+    "size_only_overlay": true,
+    "direction_override_allowed": false,
+    "decision_contract": "GO/HOLD/WATCH must follow governance artifacts, not narrative hypothesis."
+  },
+  "final_action": {
+    "decision": "GO",
+    "stage": "S4_LIMITED_LIVE",
+    "reason": "Fact-layer governance result takes precedence over hypothesis layer."
+  }
+}

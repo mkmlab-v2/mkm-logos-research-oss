@@ -11,7 +11,8 @@ param(
     [string]$TaskName = "MKM_LongRunMemoryOps_24h",
     [int]$RepeatMinutes = 30,
     [int]$DurationHours = 24,
-    [switch]$SkipNewsObservationContractSmoke
+    [switch]$SkipNewsObservationContractSmoke,
+    [switch]$SkipSecretExposureSurvey
 )
 
 $ErrorActionPreference = "Stop"
@@ -44,6 +45,9 @@ $runnerArgs = @(
 )
 if ($SkipNewsObservationContractSmoke) {
     $runnerArgs += "-SkipNewsObservationContractSmoke"
+}
+if ($SkipSecretExposureSurvey) {
+    $runnerArgs += "-SkipSecretExposureSurvey"
 }
 $argLine = $runnerArgs -join " "
 

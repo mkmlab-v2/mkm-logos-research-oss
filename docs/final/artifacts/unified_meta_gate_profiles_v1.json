@@ -1,0 +1,30 @@
+{
+  "schema": "unified_meta_gate_profiles_v1",
+  "version": 1,
+  "profiles": {
+    "conservative": {
+      "min_holdout_n": 60,
+      "min_holdout_accuracy": 0.55,
+      "max_generalization_gap": 0.30,
+      "max_holdout_pvalue": 0.10,
+      "symbolic_max_mean_loss": 0.06,
+      "symbolic_max_drift": 0.02
+    },
+    "neutral": {
+      "min_holdout_n": 30,
+      "min_holdout_accuracy": 0.50,
+      "max_generalization_gap": 0.40,
+      "max_holdout_pvalue": 0.20,
+      "symbolic_max_mean_loss": 0.08,
+      "symbolic_max_drift": 0.03
+    },
+    "aggressive": {
+      "min_holdout_n": 20,
+      "min_holdout_accuracy": 0.45,
+      "max_generalization_gap": 0.50,
+      "max_holdout_pvalue": 0.30,
+      "symbolic_max_mean_loss": 0.10,
+      "symbolic_max_drift": 0.05
+    }
+  }
+}

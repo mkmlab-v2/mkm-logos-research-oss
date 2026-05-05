@@ -1,0 +1,5 @@
+sample_id,expected_parent,risk_score,paper_snp_ids_final_v3
+s1,TY,0.10,rs1|rs2
+s2,SY,0.90,rs3|rs4
+s3,TE,0.30,rs5|rs6
+s4,SE,0.70,rs7|rs8

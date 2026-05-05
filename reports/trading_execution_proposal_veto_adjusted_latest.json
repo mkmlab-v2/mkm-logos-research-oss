@@ -1,0 +1,23 @@
+{
+  "schema": "trading_execution_proposal_veto_adjusted_v1",
+  "generated_at_utc": "2026-05-04T15:45:02Z",
+  "base_proposal_ref": "C:/workspace/reports/trading_execution_proposal_latest.json",
+  "veto_config_ref": "C:/workspace/docs/final/artifacts/sasang_veto_only_active_config_latest.json",
+  "veto_applied": true,
+  "soft_exposure": 0.8,
+  "veto_branch_id": "BTCUSDT",
+  "order_adjustment": {
+    "symbol": "BTCUSDT",
+    "side": "BUY",
+    "raw_qty": 0.001,
+    "effective_qty": 0.0008
+  },
+  "guardrails": {
+    "directional_entry_disabled": true,
+    "auto_bridge_allowed": false
+  },
+  "track_wall": {
+    "track_b_only": true,
+    "a_track_autobind_forbidden": true
+  }
+}

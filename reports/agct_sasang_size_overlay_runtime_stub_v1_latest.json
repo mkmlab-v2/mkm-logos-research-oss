@@ -1,0 +1,64 @@
+{
+  "schema": "agct_sasang_size_overlay_runtime_stub_v1",
+  "generated_at_utc": "2026-05-05T08:29:32Z",
+  "source_overlay_candidate_json": "C:\\workspace\\reports\\agct_sasang_size_overlay_candidate_v1_latest.json",
+  "governance": {
+    "track": "B_TRACK",
+    "research_only": true,
+    "non_gating": true,
+    "human_review_required": true,
+    "auto_live_binding_forbidden": true
+  },
+  "runtime_stub": {
+    "feature_key": "agct_sasang_size_overlay_v1",
+    "enabled": false,
+    "status": "HOLD_BY_GENERALIZATION_GUARD",
+    "mode": "size_multiplier_only",
+    "multipliers": {
+      "low_risk": 0.9,
+      "neutral": 0.8,
+      "high_risk": 0.65
+    },
+    "guards": {
+      "require_candidate_ready": true,
+      "require_human_review_ticket": true,
+      "fallback_multiplier": 1.0
+    },
+    "evidence": {
+      "best_accuracy": 1.0,
+      "best_accuracy_permutation_p_value": 0.043912175648702596,
+      "risk_corr_pearson": 1.0
+    }
+  },
+  "holdout_runtime_guard_v1": {
+    "applied_at_utc": "2026-05-05T08:29:34Z",
+    "source_holdout_eval_json": "C:\\workspace\\reports\\agct_sasang_holdout_eval_v1_latest.json",
+    "thresholds": {
+      "min_holdout_n": 1,
+      "min_holdout_accuracy": 0.5,
+      "max_generalization_gap": 0.4,
+      "max_holdout_pvalue": 0.2
+    },
+    "checks": {
+      "holdout_sample_size_gate": true,
+      "holdout_accuracy_gate": true,
+      "generalization_gap_gate": true,
+      "holdout_pvalue_gate": false
+    },
+    "guard_pass": false,
+    "observations": {
+      "holdout_n": 1,
+      "holdout_accuracy_under_train_mapping": 1.0,
+      "generalization_gap": 0.0,
+      "holdout_accuracy_permutation_p_value": 1.0
+    },
+    "runtime_before": {
+      "enabled": true,
+      "status": "READY_FOR_SHADOW"
+    },
+    "runtime_after": {
+      "enabled": false,
+      "status": "HOLD_BY_GENERALIZATION_GUARD"
+    }
+  }
+}

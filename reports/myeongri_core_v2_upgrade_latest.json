@@ -1,0 +1,143 @@
+{
+  "schema": "myeongri_core_v2_upgrade_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-05-04T22:26:35.655978+00:00",
+  "labels": {
+    "fact": "[FACT]",
+    "hypothesis": "[HYPOTHESIS]",
+    "research_only": "[RESEARCH_ONLY]"
+  },
+  "b_track_notice": "[MKM-B-TRACK-NOTICE] These Myeongri metrics are [HYPOTHESIS] overlays derived from traditional structure heuristics; they are not market price, fill, or liquidity facts. They must not drive live kill-switches or direction; use only as operator-side observation and optional size-only advisory where explicitly gated.",
+  "input": {
+    "source_path": "C:\\workspace\\reports\\commander_myeongni_lens_latest.json",
+    "pillars": {
+      "year": "계축",
+      "month": "갑자",
+      "day": "경진",
+      "hour": "무인"
+    },
+    "commander_confidence": 0.676665,
+    "direction_score": 0.105064
+  },
+  "jijangan_weighted_vector": {
+    "method": "pillar_weight * hidden_order_weight normalized",
+    "pillar_weight": {
+      "year": 0.2,
+      "month": 0.3,
+      "day": 0.3,
+      "hour": 0.2
+    },
+    "hidden_order_weight": [
+      0.6,
+      0.3,
+      0.1
+    ],
+    "elements": {
+      "wood": 0.238636,
+      "fire": 0.068182,
+      "earth": 0.363636,
+      "metal": 0.022727,
+      "water": 0.306818
+    },
+    "hidden_gans": {
+      "year": [
+        "기",
+        "계",
+        "신"
+      ],
+      "month": [
+        "계"
+      ],
+      "day": [
+        "무",
+        "을",
+        "계"
+      ],
+      "hour": [
+        "갑",
+        "병",
+        "무"
+      ]
+    }
+  },
+  "neutral_structure_metrics_v1": {
+    "contract": "btrack_neutral_structure_v1",
+    "structural_tension_v1": 0.3,
+    "structural_tension_method": "branch_chong_liuhe_counts + stem_wuhe_counts on surface gan/ji from commander pillars; B-track neutral only.",
+    "latent_energy_vector_4d": [
+      0.238636,
+      0.068182,
+      0.363636,
+      0.329545
+    ],
+    "latent_energy_axes": [
+      "S_proxy",
+      "L_proxy",
+      "K_proxy",
+      "M_proxy"
+    ],
+    "latent_energy_note": "Projection of normalized five-element jijangan blend into four slots (metal+water merged); mnemonic S/L/K/M labels are not MKM commercial 4D seed semantics."
+  },
+  "shinsal_impact_overlay": {
+    "mode": "research_subset_only",
+    "detected": [
+      {
+        "id": "gwaegang_like",
+        "evidence_tag": "day_pillar_exact_match",
+        "confidence_multiplier": 1.08,
+        "size_cap_delta": 0.03,
+        "note": "Research-only candidate from exact day pillar match."
+      },
+      {
+        "id": "baekho_like",
+        "evidence_tag": "year_pillar_exact_match",
+        "confidence_multiplier": 0.97,
+        "size_cap_delta": -0.04,
+        "note": "Research-only candidate from exact year pillar match."
+      }
+    ],
+    "policy": "No direct trade trigger; overlay applies to size recommendation only."
+  },
+  "shinsal_detection_logs": {
+    "schema": "shinsal_detection_logs_v1",
+    "entries": [
+      {
+        "id": "gwaegang_like",
+        "pillar_key": "day",
+        "pillar_text": "경진",
+        "evidence_tag": "day_pillar_exact_match"
+      },
+      {
+        "id": "baekho_like",
+        "pillar_key": "year",
+        "pillar_text": "계축",
+        "evidence_tag": "year_pillar_exact_match"
+      }
+    ]
+  },
+  "execution_guardrail": {
+    "size_only_overlay": true,
+    "direction_override_allowed": false,
+    "auto_bridge_allowed": false,
+    "note": "A-track direction must remain external to myeongri module."
+  },
+  "output": {
+    "size_multiplier_recommended": 0.521656,
+    "commander_overlay_multiplier": 0.521656,
+    "direction_override_allowed": false,
+    "policy": "Apply as advisory risk-size cap only."
+  },
+  "myeongni_16state_probe_nearest_v1": {
+    "contract": "btrack_16state_master_probe_nearest_v1",
+    "probe_path": "data/myeongni/16_STATE_MASTER_PROBE_v1.json",
+    "nearest_state_id": 12,
+    "l2_distance": 0.207847,
+    "status": "ok",
+    "vector_layout": "[wood,fire,earth,metal+water]_normalized vs probe vector_4d S,L,K,M"
+  },
+  "schema_validation": {
+    "ok": true,
+    "message": "ok",
+    "schema_path": "C:\\workspace\\docs\\final\\artifacts\\schemas\\myeongri_core_v2_upgrade_v1.schema.json"
+  }
+}

@@ -20,12 +20,16 @@
 
 .PARAMETER SkipAnnLiteQuerySmoke
   If set with IncludeAnnLite, skip query_logos_vector_index_ann_lite_v1.py smoke (default: run Top-K query after build).
+
+.PARAMETER SkipFreshnessSidecar
+  If set, do not run build_logos_track_c_freshness_sidecar_v1.py after the deep fusion job (Track C timing metadata).
 #>
 param(
     [switch]$SkipDistill,
     [switch]$SkipReadinessReport,
     [switch]$IncludeAnnLite,
-    [switch]$SkipAnnLiteQuerySmoke
+    [switch]$SkipAnnLiteQuerySmoke,
+    [switch]$SkipFreshnessSidecar
 )
 
 $ErrorActionPreference = 'Stop'
@@ -70,4 +74,10 @@ if (-not $SkipDistill) {
 }
 
 & py @jobArgs
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+if (-not $SkipFreshnessSidecar) {
+    & py (Join-Path $RepoRoot 'scripts\build_logos_track_c_freshness_sidecar_v1.py')
+}
+
 exit $LASTEXITCODE

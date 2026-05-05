@@ -1,0 +1,27 @@
+{
+  "schema": "unified_symbolic_agct_meta_guard_v1",
+  "generated_at_utc": "2026-05-05T08:29:35Z",
+  "track": "B_TRACK",
+  "governance": {
+    "research_only": true,
+    "non_gating": true,
+    "human_review_required": true,
+    "rule": "If either AGCT guard or symbolic shadow gate is HOLD, final decision is HOLD."
+  },
+  "inputs": {
+    "agct_runtime_stub_json": "C:\\workspace\\reports\\agct_sasang_size_overlay_runtime_stub_v1_latest.json",
+    "symbolic_shadow_gate_json": "C:\\workspace\\reports\\symbolic_math_mapping_shadow_gate_v1_latest.json"
+  },
+  "components": {
+    "agct": {
+      "guard_pass": false,
+      "runtime_enabled": false,
+      "runtime_status": "HOLD_BY_GENERALIZATION_GUARD"
+    },
+    "symbolic": {
+      "shadow_pass": true,
+      "shadow_decision": "PASS_SHADOW_STABLE"
+    }
+  },
+  "decision": "HOLD_UNIFIED_META_GUARD"
+}

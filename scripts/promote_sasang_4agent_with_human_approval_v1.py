@@ -69,13 +69,26 @@ def main() -> int:
         encoding="utf-8",
     )
 
-    gate["human_review_gate_required"] = False
-    gate["auto_bridge_allowed"] = True
-    gate["decision"] = "A_TRACK_PROMOTED_WITH_HUMAN_APPROVAL"
+    current_decision = str(gate.get("decision") or "")
+    if current_decision == "A_TRACK_PROMOTION_CANDIDATE_READY":
+        gate["human_review_gate_required"] = False
+        gate["auto_bridge_allowed"] = True
+        gate["decision"] = "A_TRACK_PROMOTED_WITH_HUMAN_APPROVAL"
+        gate["gating_scope"] = "track_a_controlled_bridge"
+        gate["next_step"] = "Bridge is permitted by explicit human approval; execute controlled Track A rollout with monitoring."
+    elif current_decision == "GATING_VETO_ONLY_CANDIDATE":
+        gate["human_review_gate_required"] = False
+        gate["auto_bridge_allowed"] = False
+        gate["decision"] = "GATING_VETO_ONLY_ACTIVE_WITH_HUMAN_APPROVAL"
+        gate["gating_scope"] = "veto_only_non_directional"
+        gate["next_step"] = "Veto-only gating is active by human approval; directional auto-bridge remains forbidden."
+    else:
+        raise SystemExit(
+            f"gate decision '{current_decision}' is not eligible for human-approval promotion override"
+        )
     gate["human_approval_ref"] = str(approval_json_path).replace("\\", "/")
     gate["approved_at_utc"] = ts
     gate["approved_by"] = args.approver
-    gate["next_step"] = "Bridge is permitted by explicit human approval; execute controlled Track A rollout with monitoring."
     gate_path.write_text(json.dumps(gate, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     lines = [

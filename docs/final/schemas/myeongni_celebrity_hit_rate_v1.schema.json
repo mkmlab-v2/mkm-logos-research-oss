@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/myeongni_celebrity_hit_rate_v1.schema.json",
+  "title": "Myeongni celebrity benchmark hit-rate bundle v1",
+  "description": "Written by scripts/run_myeongni_celebrity_benchmark_v1.py. Rows are heterogeneous; B-track only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "generated_at_utc", "dataset_path", "summary", "rows"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "myeongni_celebrity_hit_rate_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "dataset_path": { "type": "string", "minLength": 1 },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rows_with_expectations", "expectations_passed", "hit_rate", "note"],
+      "properties": {
+        "rows_with_expectations": { "type": "integer", "minimum": 0 },
+        "expectations_passed": { "type": "integer", "minimum": 0 },
+        "hit_rate": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true }
+    }
+  }
+}

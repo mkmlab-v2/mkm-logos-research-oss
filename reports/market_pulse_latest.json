@@ -1,0 +1,9 @@
+{
+  "schema": "market_pulse_v1",
+  "source": "close_snapshot_parser_v1",
+  "updated_at_utc": "2026-05-04T09:50:58+00:00",
+  "advance_decline_ratio": 0.8235,
+  "foreign_net_buy_krw_eok": 29308.0,
+  "institution_net_buy_krw_eok": 20098.0,
+  "theme_leadership_score": 0.9156
+}

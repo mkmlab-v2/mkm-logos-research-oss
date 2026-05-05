@@ -1,28 +1,50 @@
 {
     "schema":  "showroom_public_bundle_v1",
-    "generated_at_utc":  "2026-05-01T00:35:08.8075885+00:00",
+    "generated_at_utc":  "2026-05-05T06:25:03.7972397+00:00",
     "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1",
     "sources":  {
-                    "trade_window_24h":  "C:\\workspace\\projects\\bitcoin-trading\\exports\\cursor_trade_history\\all_trades_latest_24h.json",
                     "runtime_health":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\ops\\runtime_health_latest.json",
+                    "trade_window_24h":  "C:\\workspace\\projects\\bitcoin-trading\\exports\\cursor_trade_history\\all_trades_latest_24h.json",
+                    "logos_corpus_graph_bundle_v1":  "C:\\workspace\\docs\\final\\artifacts\\logos_corpus_graph_bundle_v1_latest.json",
                     "c2_guardrail_status":  "C:\\workspace\\docs\\final\\artifacts\\c2_aegis_guardrail_status_latest.json",
+                    "exodus_pressure_v1":  "C:\\workspace\\docs\\final\\artifacts\\exodus_pressure_v1_latest.json",
+                    "ops_fusion_status":  "C:\\workspace\\docs\\final\\artifacts\\ops_fusion_cycle_status_latest.json",
+                    "logos_4d_state_v1":  "C:\\workspace\\docs\\final\\artifacts\\logos_4d_state_v1_latest.json",
                     "daemon_status":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\status\\trading_daemon_status.json",
                     "trading_state":  "C:\\workspace\\projects\\bitcoin-trading\\logs\\trading_state.json",
-                    "ops_fusion_status":  "C:\\workspace\\docs\\final\\artifacts\\ops_fusion_cycle_status_latest.json"
+                    "logos_track_c_freshness_sidecar_v1":  "C:\\workspace\\docs\\final\\artifacts\\logos_track_c_freshness_sidecar_v1_latest.json"
                 },
     "observability":  {
-                          "context_stale":  true,
-                          "context_age_seconds":  22598,
-                          "direction_abstract":  "flat",
-                          "c2_signal_lamp":  "GREEN",
-                          "runtime_overall_ok":  true,
-                          "ops_fusion_overall_ok":  true,
-                          "unified_score_balanced":  0.40342,
-                          "public_pnl_pct_mode":  "unavailable_no_metrics",
+                          "c2_status":  "GREEN_HOLD",
                           "direction_source":  "c2",
+                          "snapshot_as_of_utc":  "2026-05-05T00:15:16Z",
+                          "track_b_non_gating":  true,
+                          "logos_freshness_generated_at_utc":  "2026-05-05T05:32:24.823122Z",
+                          "ops_fusion_overall_ok":  true,
+                          "context_age_seconds":  22188,
+                          "c2_signal_lamp":  "GREEN",
+                          "direction_abstract":  "flat",
+                          "runtime_overall_ok":  true,
+                          "logos_graph_meta":  {
+                                                   "present":  true,
+                                                   "schema":  "showroom_logos_graph_meta_v1",
+                                                   "hypothesis_tier":  "B",
+                                                   "source_schema":  "logos_corpus_graph_bundle_v1",
+                                                   "dedupe_bundle_key_sha256":  "8429443bb3bc4402a398d55b296704261b964920b72eb52947927648dfcd7c8a",
+                                                   "ts_utc":  "2026-05-02T05:05:51Z",
+                                                   "nodes_line_count":  1192,
+                                                   "edges_line_count":  1196
+                                               },
+                          "logos_quadrant":  "Q1",
+                          "public_pnl_pct_mode":  "unavailable_no_metrics",
+                          "logos_x_index_0_100":  51,
+                          "logos_y_fragility_0_100":  59,
+                          "unified_score_balanced":  0.40342,
                           "context_ttl_seconds":  14400,
-                          "snapshot_as_of_utc":  "2026-04-30T18:18:31Z",
-                          "c2_status":  "GREEN_HOLD"
+                          "logos_x_band":  "MID",
+                          "logos_freshness_staleness_seconds":  260793,
+                          "context_stale":  true,
+                          "logos_freshness_sidecar_present":  true
                       },
     "public_ui":  {
                       "schema":  "showroom_public_ui_v1",
@@ -35,36 +57,52 @@
                       "unrealized_pnl_pct_of_equity":  null,
                       "has_unrealized_pct":  false,
                       "baseline_mode":  "none",
-                      "unified_score_balanced":  0.40342
+                      "unified_score_balanced":  0.40342,
+                      "logos_x_band":  "MID",
+                      "logos_quadrant":  "Q1",
+                      "logos_x_index_0_100":  51,
+                      "logos_y_fragility_0_100":  59
                   },
     "public_event_v1":  {
-                            "timestamp":  "2026-05-01T00:35:08.8075885+00:00",
+                            "timestamp":  "2026-05-05T06:25:03.7972397+00:00",
                             "active_character_id":  "dragon_quant",
                             "risk_level":  "WARNING",
                             "public_signal_direction":  "HOLD",
-                            "abstract_reason":  "context_stale_age=22598s | fallback_hold | no investment advice.",
+                            "abstract_reason":  "context_stale_age=22188s | fallback_hold | no investment advice.",
                             "schema_version":  "public-event.v1",
-                            "event_id":  "showroom-20260501T003508-34dadfe7",
+                            "event_id":  "showroom-20260505T062503-d59ebb2b",
                             "source":  "ops_showroom_bundle_v1",
                             "system_status":  "degraded",
                             "active_strategies_count":  1,
                             "delayed_metrics":  {
                                                     "delay_seconds":  180,
-                                                    "as_of_utc":  "2026-04-30T18:18:31Z"
+                                                    "as_of_utc":  "2026-05-05T00:15:16Z",
+                                                    "logos_x_index_0_100":  51,
+                                                    "logos_x_band":  "MID",
+                                                    "logos_quadrant":  "Q1",
+                                                    "logos_y_fragility_0_100":  59,
+                                                    "logos_4d_state_generated_at_utc":  "2026-05-04T22:28:07.427296Z",
+                                                    "logos_graph_bundle_present":  true,
+                                                    "logos_graph_nodes_line_count":  1192,
+                                                    "logos_graph_edges_line_count":  1196,
+                                                    "logos_graph_bundle_dedupe_sha256":  "8429443bb3bc4402a398d55b296704261b964920b72eb52947927648dfcd7c8a",
+                                                    "logos_graph_bundle_ts_utc":  "2026-05-02T05:05:51Z",
+                                                    "logos_graph_staleness_seconds":  260793,
+                                                    "logos_freshness_sidecar_generated_at_utc":  "2026-05-05T05:32:24.823122Z"
                                                 },
                             "direction_abstract":  "flat",
                             "disclaimer_ref":  "jemaai_showroom_v1",
-                            "last_ok_utc":  "2026-05-01T00:35:08.8075885+00:00",
+                            "last_ok_utc":  "2026-05-05T06:25:03.7972397+00:00",
                             "order_summary_public":  {
                                                          "trades_24h_count":  50,
                                                          "latest_trade_utc":  null,
                                                          "latest_trade_side":  "LONG",
-                                                         "successful_trades_all":  3,
+                                                         "successful_trades_all":  5,
                                                          "failed_trades_all":  0
                                                      },
                             "signal_gate_public":  {
-                                                       "signal_total_count":  10041,
-                                                       "last_signal_utc":  "2026-05-01T09:35:08",
+                                                       "signal_total_count":  21179,
+                                                       "last_signal_utc":  "2026-05-05T15:25:02",
                                                        "integrated_signal":  "SELL",
                                                        "integrated_confidence":  0.62,
                                                        "singular_action":  "SELL",
@@ -74,6 +112,12 @@
                                                        "regime_defense_mode":  false,
                                                        "regime_id":  "unknown",
                                                        "lock_reason":  "NONE"
-                                                   }
+                                                   },
+                            "showroom_display_mode":  "defend",
+                            "showroom_ticker_key":  "S_DEGRADED_R_WARNING_PSD_HOLD_DA_FLAT",
+                            "showroom_reaction_line_ids":  [
+                                                               "R_MODE_DEF_01",
+                                                               "R_RISK_HIGH_01"
+                                                           ]
                         }
 }

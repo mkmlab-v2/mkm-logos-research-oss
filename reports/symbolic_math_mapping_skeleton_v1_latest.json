@@ -1,0 +1,80 @@
+{
+  "schema": "symbolic_math_mapping_skeleton_v1",
+  "generated_at_utc": "2026-05-05T07:21:37Z",
+  "track": "B_TRACK",
+  "governance": {
+    "research_only": true,
+    "non_gating": true,
+    "human_review_required": true,
+    "note": "Mathematical skeleton only; no direct live promotion."
+  },
+  "space_contract": {
+    "vector4d_axes": [
+      "S",
+      "L",
+      "K",
+      "M"
+    ],
+    "domain_examples": [
+      "anchor",
+      "atom",
+      "symbol",
+      "event",
+      "news_term",
+      "economic_term"
+    ],
+    "normalization": "per_axis_minmax_or_zscore_before_fusion"
+  },
+  "quaternion_contract": {
+    "format": "wxyz",
+    "operation": "hamilton_product",
+    "rotation_note": "Use quaternion composition for symbolic transition modeling.",
+    "demo": {
+      "anchor_a_wxyz": [
+        1.0,
+        0.2,
+        0.3,
+        0.4
+      ],
+      "anchor_b_wxyz": [
+        0.9,
+        0.1,
+        0.1,
+        0.2
+      ],
+      "hamilton_product_wxyz": [
+        0.77,
+        0.3,
+        0.37,
+        0.55
+      ]
+    }
+  },
+  "loss_function_contract": {
+    "name": "mapping_loss_v1",
+    "formula": "L = w_dist * ||v_src - v_tgt||_2 + w_consistency * penalty_consistency",
+    "weights": {
+      "w_dist": 0.7,
+      "w_consistency": 0.3
+    },
+    "demo": {
+      "distance_l2": 0.316228,
+      "consistency_penalty": 0.15,
+      "mapping_loss": 0.266359
+    }
+  },
+  "validation_metric_contract": {
+    "primary": [
+      "holdout_accuracy",
+      "holdout_permutation_p_value",
+      "generalization_gap",
+      "mapping_collision_rate"
+    ],
+    "gate_defaults": {
+      "min_holdout_n": 30,
+      "min_holdout_accuracy": 0.5,
+      "max_generalization_gap": 0.4,
+      "max_holdout_p_value": 0.2
+    }
+  }
+}

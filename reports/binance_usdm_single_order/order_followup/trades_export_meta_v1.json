@@ -1,0 +1,11 @@
+{
+  "schema": "trades_export_meta_v1",
+  "generated_at_utc": "2026-05-04T12:55:18.827335+00:00",
+  "symbol": "BTCUSDT",
+  "hours": 1.0,
+  "start_ms": 1777895718827,
+  "end_ms": 1777899318827,
+  "row_count": 4,
+  "use_ccxt": false,
+  "testnet": false
+}

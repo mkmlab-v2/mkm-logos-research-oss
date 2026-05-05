@@ -1,0 +1,373 @@
+{
+  "schema": "deriv_factor_ev_report_v1",
+  "row_count": 5,
+  "symbol": "BTCUSDT",
+  "thresholds": {
+    "funding_q10": -5.847e-05,
+    "funding_q90": -5.496e-05,
+    "oi_delta_pct_q10": -0.002103884,
+    "oi_delta_pct_q90": 1.8053000000000005e-05
+  },
+  "roundtrip_cost_bps": 6.0,
+  "horizons_sec": [
+    2,
+    5,
+    10
+  ],
+  "events": {
+    "funding_low": {
+      "event_count": 3,
+      "horizon_eval": {
+        "2": {
+          "raw": {
+            "count": 1,
+            "mean": 0.0,
+            "median": 0.0,
+            "stdev": null,
+            "win_rate": 0.0
+          },
+          "net_after_cost": {
+            "count": 1,
+            "mean": -0.0006,
+            "median": -0.0006,
+            "stdev": null,
+            "win_rate": 0.0
+          },
+          "mean_bps_raw": 0.0,
+          "mean_bps_net": -5.999999999999999
+        },
+        "5": {
+          "raw": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "net_after_cost": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "mean_bps_raw": null,
+          "mean_bps_net": null
+        },
+        "10": {
+          "raw": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "net_after_cost": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "mean_bps_raw": null,
+          "mean_bps_net": null
+        }
+      }
+    },
+    "funding_high": {
+      "event_count": 2,
+      "horizon_eval": {
+        "2": {
+          "raw": {
+            "count": 2,
+            "mean": -0.0018644166794731798,
+            "median": -0.0018644166794731798,
+            "stdev": 0.0028895152693112383,
+            "win_rate": 0.5
+          },
+          "net_after_cost": {
+            "count": 2,
+            "mean": -0.0024644166794731796,
+            "median": -0.0024644166794731796,
+            "stdev": 0.0028895152693112383,
+            "win_rate": 0.0
+          },
+          "mean_bps_raw": -18.6441667947318,
+          "mean_bps_net": -24.644166794731795
+        },
+        "5": {
+          "raw": {
+            "count": 2,
+            "mean": -0.003818572239691398,
+            "median": -0.003818572239691398,
+            "stdev": 0.00012592197306384072,
+            "win_rate": 0.0
+          },
+          "net_after_cost": {
+            "count": 2,
+            "mean": -0.004418572239691398,
+            "median": -0.004418572239691398,
+            "stdev": 0.00012592197306384072,
+            "win_rate": 0.0
+          },
+          "mean_bps_raw": -38.18572239691398,
+          "mean_bps_net": -44.18572239691398
+        },
+        "10": {
+          "raw": {
+            "count": 2,
+            "mean": -0.003818572239691398,
+            "median": -0.003818572239691398,
+            "stdev": 0.00012592197306384072,
+            "win_rate": 0.0
+          },
+          "net_after_cost": {
+            "count": 2,
+            "mean": -0.004418572239691398,
+            "median": -0.004418572239691398,
+            "stdev": 0.00012592197306384072,
+            "win_rate": 0.0
+          },
+          "mean_bps_raw": -38.18572239691398,
+          "mean_bps_net": -44.18572239691398
+        }
+      }
+    },
+    "oi_spike_up": {
+      "event_count": 1,
+      "horizon_eval": {
+        "2": {
+          "raw": {
+            "count": 1,
+            "mean": -0.0039076125207452295,
+            "median": -0.0039076125207452295,
+            "stdev": null,
+            "win_rate": 0.0
+          },
+          "net_after_cost": {
+            "count": 1,
+            "mean": -0.004507612520745229,
+            "median": -0.004507612520745229,
+            "stdev": null,
+            "win_rate": 0.0
+          },
+          "mean_bps_raw": -39.07612520745229,
+          "mean_bps_net": -45.07612520745229
+        },
+        "5": {
+          "raw": {
+            "count": 1,
+            "mean": -0.0039076125207452295,
+            "median": -0.0039076125207452295,
+            "stdev": null,
+            "win_rate": 0.0
+          },
+          "net_after_cost": {
+            "count": 1,
+            "mean": -0.004507612520745229,
+            "median": -0.004507612520745229,
+            "stdev": null,
+            "win_rate": 0.0
+          },
+          "mean_bps_raw": -39.07612520745229,
+          "mean_bps_net": -45.07612520745229
+        },
+        "10": {
+          "raw": {
+            "count": 1,
+            "mean": -0.0039076125207452295,
+            "median": -0.0039076125207452295,
+            "stdev": null,
+            "win_rate": 0.0
+          },
+          "net_after_cost": {
+            "count": 1,
+            "mean": -0.004507612520745229,
+            "median": -0.004507612520745229,
+            "stdev": null,
+            "win_rate": 0.0
+          },
+          "mean_bps_raw": -39.07612520745229,
+          "mean_bps_net": -45.07612520745229
+        }
+      }
+    },
+    "oi_spike_down": {
+      "event_count": 1,
+      "horizon_eval": {
+        "2": {
+          "raw": {
+            "count": 1,
+            "mean": 0.0,
+            "median": 0.0,
+            "stdev": null,
+            "win_rate": 0.0
+          },
+          "net_after_cost": {
+            "count": 1,
+            "mean": -0.0006,
+            "median": -0.0006,
+            "stdev": null,
+            "win_rate": 0.0
+          },
+          "mean_bps_raw": 0.0,
+          "mean_bps_net": -5.999999999999999
+        },
+        "5": {
+          "raw": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "net_after_cost": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "mean_bps_raw": null,
+          "mean_bps_net": null
+        },
+        "10": {
+          "raw": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "net_after_cost": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "mean_bps_raw": null,
+          "mean_bps_net": null
+        }
+      }
+    },
+    "combo_short_squeeze_like": {
+      "event_count": 0,
+      "horizon_eval": {
+        "2": {
+          "raw": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "net_after_cost": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "mean_bps_raw": null,
+          "mean_bps_net": null
+        },
+        "5": {
+          "raw": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "net_after_cost": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "mean_bps_raw": null,
+          "mean_bps_net": null
+        },
+        "10": {
+          "raw": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "net_after_cost": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "mean_bps_raw": null,
+          "mean_bps_net": null
+        }
+      }
+    },
+    "combo_long_flush_like": {
+      "event_count": 0,
+      "horizon_eval": {
+        "2": {
+          "raw": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "net_after_cost": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "mean_bps_raw": null,
+          "mean_bps_net": null
+        },
+        "5": {
+          "raw": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "net_after_cost": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "mean_bps_raw": null,
+          "mean_bps_net": null
+        },
+        "10": {
+          "raw": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "net_after_cost": {
+            "count": 0,
+            "mean": null,
+            "median": null,
+            "stdev": null,
+            "win_rate": null
+          },
+          "mean_bps_raw": null,
+          "mean_bps_net": null
+        }
+      }
+    }
+  }
+}

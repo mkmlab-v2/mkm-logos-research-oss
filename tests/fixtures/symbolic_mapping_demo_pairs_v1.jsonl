@@ -1,0 +1,4 @@
+{"source_id":"anchor_genesis_light","target_id":"news_ai_semiconductor","source_vec4d":[0.92,0.28,0.33,0.41],"target_vec4d":[0.88,0.31,0.29,0.39]}
+{"source_id":"anchor_exodus_transition","target_id":"news_rate_cut_expectation","source_vec4d":[0.71,0.55,0.44,0.36],"target_vec4d":[0.69,0.52,0.47,0.34]}
+{"source_id":"atom_judgment_balance","target_id":"econ_cpi_disinflation","source_vec4d":[0.63,0.66,0.58,0.40],"target_vec4d":[0.60,0.62,0.56,0.43]}
+{"source_id":"symbol_rebuild_cycle","target_id":"news_supply_chain_restock","source_vec4d":[0.57,0.48,0.67,0.52],"target_vec4d":[0.59,0.45,0.64,0.50]}

@@ -1,0 +1,160 @@
+{
+  "schema_version": "v1",
+  "title": "RDA public soil + agri-meteo Excel column map to MKM smartfarm layers",
+  "source_zip_hint": "토양 환경 데이터  기상 및 환경 데이터제공.zip",
+  "extract_relative_path": "data/smartfarm_rda_extract_v1/데이터제공",
+  "notes": [
+    "Public soil rows are parcel-level soil test results (sparse in time), not in-situ soil moisture sensors.",
+    "Weather file is hourly per station (지점명); concat all sheets before use.",
+    "2025 soil workbook: first row is a duplicate Korean header under English column names — ETL must skiprows=1 then use Korean headers from row 2.",
+    "2024 soil column '산도 ' has a trailing space — normalize to '산도' on ingest.",
+    "전기전도도 units in source are not documented in-file; validate against RDA OpenAPI metadata before converting to soil_ec_us_cm (microsiemens per cm)."
+  ],
+  "weather_xlsx": {
+    "relative_path": "기상/농업기상 시간자료(2023년~2026년).xlsx",
+    "sheet_strategy": "concat_all_sheets",
+    "row_estimate_first_sheet_only": 918593,
+    "station_cardinality_first_sheet": 212,
+    "columns": [
+      {
+        "source_ko": "지점명",
+        "canonical": "agmet_station_name",
+        "maps_to": {
+          "smartfarm_contract": "external_context.agmet_station_name",
+          "join_role": "station_or_region_key"
+        }
+      },
+      {
+        "source_ko": "일시",
+        "canonical": "agmet_local_hour_id",
+        "parse_hint": "Format observed: 'YYYYMMDD  HH' (e.g. 20230101  00). Parse to Asia/Seoul hourly timestamp.",
+        "maps_to": {
+          "smartfarm_contract": "decision_log_event.payload.input_snapshot.forecast_rain_mm_12h (aggregate from hourly precip over prior 12h)",
+          "weather_pipeline": "scripts/csv_to_weather_ground_truth_jsonl_v1.py compatible row after station+date rollup (see CONSTITUTION weather GT row schema if used)"
+        }
+      },
+      {
+        "source_ko": "온도",
+        "canonical": "air_temp_c",
+        "maps_to": {
+          "smartfarm_contract": "external_context.agmet_air_temp_c",
+          "rain_gate": "optional_feature_for_evapotranspiration_proxy"
+        }
+      },
+      {
+        "source_ko": "습도",
+        "canonical": "relative_humidity_pct",
+        "maps_to": {
+          "smartfarm_contract": "external_context.agmet_rh_pct"
+        }
+      },
+      {
+        "source_ko": "일사량",
+        "canonical": "solar_radiation",
+        "maps_to": {
+          "smartfarm_contract": "external_context.agmet_solar_radiation",
+          "note": "Confirm unit (MJ/m2/h vs W/m2) from RDA API field definition before physics joins."
+        }
+      },
+      {
+        "source_ko": "강수량",
+        "canonical": "precip_mm_hourly",
+        "maps_to": {
+          "smartfarm_contract": "decision_log_event.payload.input_snapshot.forecast_rain_mm_12h",
+          "policy_yaml": "docs/final/AI_SMARTFARM_CONTROL_SAFETY_POLICY.yaml rain_gate.rain_mm_threshold",
+          "transform": "sum(precip_mm_hourly over t-12h..t) as forecast_rain_mm_12h when running historical replay; for live ops use forecast feed, not this archive alone."
+        }
+      }
+    ]
+  },
+  "soil_xlsx_per_year": {
+    "pattern": "토양/토양검정화학성상세정보(YYYY).xlsx",
+    "sheet": "Sheet1",
+    "ingest_2025": { "pandas_read_excel_skiprows": 1, "reason": "Row 0 contains Korean labels inside English-named columns" },
+    "columns": [
+      {
+        "source_ko": "시료채취년도",
+        "canonical": "sample_year",
+        "maps_to": { "smartfarm_contract": "external_context.soil_test.sample_year" }
+      },
+      {
+        "source_ko": "토양검정일",
+        "canonical": "soil_test_date",
+        "parse_hint": "May appear as int YYYYMMDD after cleaning; normalize to ISO date in Asia/Seoul.",
+        "maps_to": { "smartfarm_contract": "external_context.soil_test.exam_date" }
+      },
+      {
+        "source_ko": "경지구분코드",
+        "canonical": "land_use_code",
+        "maps_to": { "smartfarm_contract": "external_context.soil_test.land_use_code" }
+      },
+      {
+        "source_ko": "대상지 지번주소",
+        "canonical": "parcel_address",
+        "maps_to": { "smartfarm_contract": "external_context.soil_test.parcel_address" }
+      },
+      {
+        "source_ko": "지번코드",
+        "canonical": "pnu_code",
+        "maps_to": {
+          "smartfarm_contract": "external_context.soil_test.pnu_code",
+          "join_role": "primary_join_key_to_farm_zone_if_registered"
+        }
+      },
+      {
+        "source_ko": "유기물",
+        "canonical": "organic_matter",
+        "maps_to": { "smartfarm_contract": "external_context.soil_test.om" }
+      },
+      {
+        "source_ko": "유효인산",
+        "canonical": "available_phosphate",
+        "maps_to": { "smartfarm_contract": "external_context.soil_test.available_p" }
+      },
+      {
+        "source_ko": "유효규산",
+        "canonical": "available_potash",
+        "maps_to": { "smartfarm_contract": "external_context.soil_test.available_k2o_series" }
+      },
+      {
+        "source_ko": "마그네슘",
+        "canonical": "exchangeable_mg",
+        "maps_to": { "smartfarm_contract": "external_context.soil_test.mg" }
+      },
+      {
+        "source_ko": "칼륨",
+        "canonical": "exchangeable_k",
+        "maps_to": { "smartfarm_contract": "external_context.soil_test.k" }
+      },
+      {
+        "source_ko": "칼슘",
+        "canonical": "exchangeable_ca",
+        "maps_to": { "smartfarm_contract": "external_context.soil_test.ca" }
+      },
+      {
+        "source_ko": "산도",
+        "aliases": ["산도 "],
+        "canonical": "soil_ph",
+        "maps_to": { "smartfarm_contract": "external_context.soil_test.ph" }
+      },
+      {
+        "source_ko": "전기전도도",
+        "canonical": "soil_ec_raw",
+        "maps_to": {
+          "smartfarm_contract": "telemetry_ingest.payload.soil_ec_us_cm (ONLY after documented unit conversion + validation against field sensor)",
+          "caution": "Do not copy raw values into live telemetry without unit proof; prefer external_context until paired calibration exists."
+        }
+      }
+    ]
+  },
+  "smartfarm_contract_gaps": {
+    "telemetry_ingest_required_not_in_rda_public": [
+      "soil_moisture_pct",
+      "soil_temp_c",
+      "comm_ok"
+    ],
+    "policy_requires_for_rain_gate": [
+      "soil_condition_gate uses soil telemetry in AI_SMARTFARM_CONTROL_SAFETY_POLICY.yaml — public soil test cannot substitute minute-level moisture"
+    ]
+  }
+}

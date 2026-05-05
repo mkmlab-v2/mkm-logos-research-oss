@@ -1,0 +1,16 @@
+{
+  "schema": "kr_market_close_snapshot_extract_v1",
+  "source": "kr_close_snapshot_extractor_v1",
+  "generated_at_utc": "2026-05-04T09:50:58+00:00",
+  "input": "file:///C:/workspace/tests/fixtures/kr_market_close_snapshot_raw_20260504.html",
+  "output_text": "reports\\market_close_snapshot_latest.txt",
+  "foreign_net_buy_krw_eok": 29308.0,
+  "institution_net_buy_krw_eok": 20098.0,
+  "up_count": 392.0,
+  "down_count": 476.0,
+  "theme_top3_pct": [
+    17.03,
+    11.4,
+    10.53
+  ]
+}

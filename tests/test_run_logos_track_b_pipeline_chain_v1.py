@@ -23,3 +23,4 @@ def test_pipeline_chain_help_exits_zero() -> None:
     )
     assert cp.returncode == 0
     assert "skip-readiness-report" in cp.stdout
+    assert "skip-freshness-sidecar" in cp.stdout

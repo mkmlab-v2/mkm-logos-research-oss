@@ -1,0 +1,10 @@
+{
+  "schema": "central_memory_read_ack_v1",
+  "acknowledged_at_utc": "2026-05-04T18:26:03Z",
+  "reason": "longrun_cycle",
+  "sources": [
+    "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
+    "AGENTS.md",
+    "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+  ]
+}

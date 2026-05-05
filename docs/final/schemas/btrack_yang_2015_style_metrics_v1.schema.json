@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/btrack_yang_2015_style_metrics_v1.schema.json",
+  "title": "B-track Yang(2015)-style surface eight-char metrics v1",
+  "description": "Written by scripts/btrack_yang_2015_style_metrics_v1.py. B-track research only; not clinical or A-track.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "contract",
+    "pillars",
+    "day_stem",
+    "day_stem_yinyang",
+    "element_counts_surface_8",
+    "yinyang_counts_surface_8",
+    "six_god_buckets_yang2015_names",
+    "six_god_detail",
+    "branch_main_gan_note",
+    "day_branch_for_audit",
+    "generated_at_utc",
+    "input_path",
+    "b_track_notice"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "btrack_yang_2015_style_metrics_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "contract": {
+      "type": "string",
+      "const": "surface_eight_char_counts_plus_six_god_buckets_v1"
+    },
+    "pillars": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["year", "month", "day", "hour"],
+      "properties": {
+        "year": { "type": "string" },
+        "month": { "type": "string" },
+        "day": { "type": "string" },
+        "hour": { "type": "string" }
+      }
+    },
+    "day_stem": { "type": "string" },
+    "day_stem_yinyang": {
+      "type": "string",
+      "enum": ["", "yang", "yin"]
+    },
+    "element_counts_surface_8": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["wood", "fire", "earth", "metal", "water"],
+      "properties": {
+        "wood": { "type": "integer", "minimum": 0, "maximum": 8 },
+        "fire": { "type": "integer", "minimum": 0, "maximum": 8 },
+        "earth": { "type": "integer", "minimum": 0, "maximum": 8 },
+        "metal": { "type": "integer", "minimum": 0, "maximum": 8 },
+        "water": { "type": "integer", "minimum": 0, "maximum": 8 }
+      }
+    },
+    "yinyang_counts_surface_8": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["yang", "yin"],
+      "properties": {
+        "yang": { "type": "integer", "minimum": 0, "maximum": 8 },
+        "yin": { "type": "integer", "minimum": 0, "maximum": 8 }
+      }
+    },
+    "six_god_buckets_yang2015_names": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["officer", "resource", "parallel", "hurting_god", "wealth"],
+      "properties": {
+        "officer": { "type": "integer", "minimum": 0, "maximum": 7 },
+        "resource": { "type": "integer", "minimum": 0, "maximum": 7 },
+        "parallel": { "type": "integer", "minimum": 0, "maximum": 7 },
+        "hurting_god": { "type": "integer", "minimum": 0, "maximum": 7 },
+        "wealth": { "type": "integer", "minimum": 0, "maximum": 7 }
+      }
+    },
+    "six_god_detail": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["position", "surface", "target_stem_for_ten_god", "bucket"],
+        "properties": {
+          "position": { "type": "string", "minLength": 1 },
+          "surface": { "type": "string", "minLength": 1 },
+          "target_stem_for_ten_god": { "type": "string" },
+          "bucket": {
+            "type": "string",
+            "enum": [
+              "officer",
+              "resource",
+              "parallel",
+              "hurting_god",
+              "wealth",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+    "branch_main_gan_note": { "type": "string", "minLength": 1 },
+    "day_branch_for_audit": { "type": "string" },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "input_path": { "type": "string", "minLength": 1 },
+    "b_track_notice": { "type": "string", "minLength": 1 }
+  }
+}

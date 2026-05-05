@@ -1,7 +1,7 @@
 {
   "schema": "btrack_llm_input_bundle_v1",
   "version": "1.2.0",
-  "ts_utc": "2026-05-04T22:20:20Z",
+  "ts_utc": "2026-05-05T08:27:57Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "label": "[HYPO] LLM input bundle — not A-track; no live trigger.",
@@ -11,7 +11,7 @@
       "version": "0.1.0",
       "lens_id": "myeongni",
       "engine_id": "independent_lens_v0",
-      "ts_utc": "2026-05-04T22:20:19Z",
+      "ts_utc": "2026-05-05T08:27:56Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "scores": {
@@ -37,7 +37,7 @@
       "version": "0.1.0",
       "lens_id": "sasang",
       "engine_id": "independent_lens_v0",
-      "ts_utc": "2026-05-04T22:20:19Z",
+      "ts_utc": "2026-05-05T08:27:56Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "a_track_autobind_forbidden": true,
@@ -67,7 +67,7 @@
       "version": "0.2.0",
       "lens_id": "logos",
       "engine_id": "independent_lens_v0",
-      "ts_utc": "2026-05-04T22:20:20Z",
+      "ts_utc": "2026-05-05T08:27:57Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "scores": {
@@ -109,7 +109,7 @@
     "independent_lens_fusion_stub": {
       "schema": "independent_lens_fusion_stub_v0",
       "version": "0.3.0",
-      "ts_utc": "2026-05-04T22:20:20Z",
+      "ts_utc": "2026-05-05T08:27:57Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "mode": "observation_only",
@@ -121,7 +121,7 @@
           "confidence": 0.68552,
           "direction_sign": "bull",
           "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
-          "artifact_ts_utc": "2026-05-04T22:20:19Z",
+          "artifact_ts_utc": "2026-05-05T08:27:56Z",
           "schema": "myeongni_independent_lens_v0"
         },
         {
@@ -131,7 +131,7 @@
           "confidence": 0.7115,
           "direction_sign": "bull",
           "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",
-          "artifact_ts_utc": "2026-05-04T22:20:19Z",
+          "artifact_ts_utc": "2026-05-05T08:27:56Z",
           "schema": "sasang_independent_lens_v0"
         },
         {
@@ -141,7 +141,7 @@
           "confidence": 0.2,
           "direction_sign": "bear",
           "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\logos_independent_lens_latest.json",
-          "artifact_ts_utc": "2026-05-04T22:20:20Z",
+          "artifact_ts_utc": "2026-05-05T08:27:57Z",
           "schema": "logos_independent_lens_v0"
         },
         {
@@ -151,7 +151,7 @@
           "confidence": 0.081912195,
           "direction_sign": "bull",
           "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\market_sasang_lens_latest.json",
-          "artifact_ts_utc": "2026-05-04T22:20:20Z",
+          "artifact_ts_utc": "2026-05-05T08:27:56Z",
           "schema": "market_sasang_lens_v1",
           "market_sasang_lens_v1": {
             "state_vector_sasang_softmax": {
@@ -203,38 +203,13 @@
     "independent_lens_shadow_minority_monthly": {
       "schema": "independent_lens_shadow_minority_monthly_v1",
       "version": "1.0.0",
-      "ts_utc": "2026-05-04T22:20:20Z",
+      "ts_utc": "2026-05-05T08:27:57Z",
       "hypothesis_tier": "B",
       "source_history_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_shadow_history.jsonl",
-      "history_rows_total": 620,
-      "rows_with_minority_lens_total": 4,
-      "months_observed": [
-        "2026-03",
-        "2026-04",
-        "2026-05"
-      ],
-      "by_month": {
-        "2026-03": {
-          "total_rows": 2,
-          "rows_with_minority_lens": 0,
-          "minority_lens_counts": {},
-          "distinct_narrative_digest_count": 0
-        },
-        "2026-04": {
-          "total_rows": 610,
-          "rows_with_minority_lens": 0,
-          "minority_lens_counts": {},
-          "distinct_narrative_digest_count": 0
-        },
-        "2026-05": {
-          "total_rows": 8,
-          "rows_with_minority_lens": 4,
-          "minority_lens_counts": {
-            "logos": 4
-          },
-          "distinct_narrative_digest_count": 2
-        }
-      },
+      "history_rows_total": 0,
+      "rows_with_minority_lens_total": 0,
+      "months_observed": [],
+      "by_month": {},
       "note": "UTC month from ts_utc; minority_lens_ids absent in legacy rows counts as no minority; not an A-track trigger."
     },
     "news_independent_lens": {

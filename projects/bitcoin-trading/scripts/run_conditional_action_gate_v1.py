@@ -14,6 +14,7 @@ Exit codes:
   2 — invalid arguments / missing files
   3 — gate blocked
   7 — human execution approval validation failed (--human-approval-json or env)
+  8 — frame payload validation failed (--frame-payload-json or env)
 """
 from __future__ import annotations
 
@@ -28,6 +29,7 @@ from typing import Any, Optional, Tuple
 
 SCHEMA_GATE = "conditional_action_gate_v1"
 VALIDATOR_REL = Path("scripts/validate_trading_human_execution_approval_v1.py")
+FRAME_VALIDATOR_REL = Path("scripts/validate_btc_frame_governance_payload_v1.py")
 
 
 def _workspace_root() -> Path:
@@ -195,6 +197,47 @@ def _run_human_approval_validator(root: Path, approval_path: Path) -> int:
     return int(proc.returncode) if proc.returncode is not None else 1
 
 
+def _resolve_frame_payload_path(root: Path, cli: Optional[Path], *, skip: bool) -> Optional[Path]:
+    if skip:
+        return None
+    if cli is not None:
+        p = cli if cli.is_absolute() else (root / cli)
+        return p.resolve()
+    env = os.environ.get("MKM_BTC_FRAME_PAYLOAD_JSON", "").strip()
+    if not env:
+        return None
+    ep = Path(env)
+    return ep.resolve() if ep.is_absolute() else (root / ep).resolve()
+
+
+def _run_frame_payload_validator(
+    root: Path,
+    payload_path: Path,
+    *,
+    risk_json: Path,
+    approval_path: Optional[Path],
+    require_live_eligible: bool,
+) -> int:
+    val = root / FRAME_VALIDATOR_REL
+    if not val.is_file():
+        print(f"Missing frame payload validator: {val}", file=sys.stderr)
+        return 2
+    cmd = [
+        sys.executable,
+        str(val),
+        "--payload",
+        str(payload_path),
+        "--risk-json",
+        str(risk_json.resolve()),
+    ]
+    if approval_path is not None:
+        cmd.extend(["--approval-json", str(approval_path)])
+    if require_live_eligible:
+        cmd.append("--require-live-eligible")
+    proc = subprocess.run(cmd, cwd=str(root))
+    return int(proc.returncode) if proc.returncode is not None else 1
+
+
 def _write_gate_summary(path: Path, summary: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -246,6 +289,17 @@ def main(argv: list[str] | None = None) -> int:
         "--skip-human-approval",
         action="store_true",
         help="Ignore MKM_TRADING_HUMAN_APPROVAL_JSON and --human-approval-json.",
+    )
+    ap.add_argument(
+        "--frame-payload-json",
+        type=Path,
+        default=None,
+        help="Optional btc_frame_governance_stage_payload_v1 JSON; validates track/stage/risk/live contract.",
+    )
+    ap.add_argument(
+        "--skip-frame-payload",
+        action="store_true",
+        help="Ignore --frame-payload-json and MKM_BTC_FRAME_PAYLOAD_JSON.",
     )
     ap.add_argument(
         "--enable-tactical-long",
@@ -362,6 +416,33 @@ def main(argv: list[str] | None = None) -> int:
                 file=sys.stderr,
             )
             return 7
+
+    frame_payload = _resolve_frame_payload_path(
+        root,
+        args.frame_payload_json,
+        skip=bool(args.skip_frame_payload),
+    )
+    if frame_payload is not None:
+        if not frame_payload.is_file():
+            print(f"Frame payload file missing: {frame_payload}", file=sys.stderr)
+            return 2
+        frame_rc = _run_frame_payload_validator(
+            root,
+            frame_payload,
+            risk_json=risk_path,
+            approval_path=hap,
+            require_live_eligible=bool(args.backend == "api" and args.pass_live),
+        )
+        summary["frame_payload_path"] = str(frame_payload)
+        summary["frame_payload_validator_exit_code"] = frame_rc
+        summary["frame_payload_ok"] = frame_rc == 0
+        _write_gate_summary(args.gate_summary, summary)
+        if frame_rc != 0:
+            print(
+                f"[gate:frame-payload-fail] validator_exit={frame_rc} summary={args.gate_summary}",
+                file=sys.stderr,
+            )
+            return 8
 
     if args.dry_run:
         print("[gate:dry-run] backend not invoked.")

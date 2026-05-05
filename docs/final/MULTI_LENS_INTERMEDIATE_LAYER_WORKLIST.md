@@ -83,6 +83,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fac
 
 `dual-regime-integrity`와 동일한 워크스페이스 테스트를 포함하려면 위 스크립트가 **최신**인지 확인한다 (`CONSTITUTION` §6 표).
 
+사상–사주 조인트 문헌·큐레이트 파이프라인(Europe PMC 픽스처·오프라인 회귀 7 + **승인 출처** `data/myeongni/curated_saju_joint_v1.jsonl` 인제스트 1)은 `run_fact_lock_bundle.ps1` **기본**에 포함된다. 생략: **로컬 번들만** `-SkipSasangSajuJointLiteraturePipeline`(GitHub `dual-regime-integrity.yml` CI 단계에는 해당 스킵 플래그 없음·전체 회귀 고정). **끝단 staleness(선택 생략):** `-SkipCuratedJointStalenessCheck` — 큐레이트 시각(`ingest_at_utc`·행 없으면 파일 mtime) vs `docs/final/artifacts/myeongni_celebrity_hit_rate_v1.json` `generated_at_utc` 24h 초과 시 `STALE` 기록 · `scripts/check_curated_saju_joint_staleness_v1.py`·`reports/curated_saju_joint_staleness_v1_latest.json`. 스크립트·데이터·pytest는 `CONSTITUTION` 표 **「사상체질↔문헌↔사주 조인트」**·동 워크플로를 본다.
+
 ---
 
 **상태**: 내부 작업 완료 잠금 (2026-03-30, ENTRY_16 Proxy Manual 승인 반영). 재개 트리거는 `ENTRY_07/08/16` 외부 판본 업데이트 이벤트로 제한한다.

@@ -1,0 +1,39 @@
+{
+  "schema": "myeongni_service_response_v1",
+  "generated_at_utc": "2026-05-04T19:00:56.963364+00:00",
+  "track": "A",
+  "intent": "investment_decision",
+  "labels": [
+    "[FACT]",
+    "[NON_GUARANTEED]"
+  ],
+  "field": "decision_assist_runtime",
+  "lens": {
+    "myeongni_confidence": 0.676665,
+    "myeongni_direction_score_reference_only": 0.105064,
+    "logos_mode": "[NON_GATING]"
+  },
+  "conflict_resolver": {
+    "rule": "size_only_priority",
+    "direction_override_allowed": false
+  },
+  "final_action": {
+    "decision": "WATCH",
+    "size_guidance": {
+      "size_multiplier_commander": 0.676665,
+      "size_policy": "size_only",
+      "direction_override_allowed": false
+    },
+    "invalidate_conditions": [
+      "track wall violation",
+      "manual lock not approved",
+      "schema contract mismatch"
+    ]
+  },
+  "template_contract": [
+    "decision",
+    "size_guidance",
+    "risk_notes",
+    "invalidate_conditions"
+  ]
+}

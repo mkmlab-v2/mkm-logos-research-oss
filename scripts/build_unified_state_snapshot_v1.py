@@ -55,6 +55,7 @@ def build_snapshot(
     if not bool(hs_summary.get("all_artifacts_ok", False)):
         hs_reasons.append("artifacts_not_ok")
     hs_stage = "OPS_HEALTHY" if hs_ok else "OPS_DEGRADED"
+    hs_secret_ok = bool(hs_summary.get("secret_exposure_gate_ok", False))
 
     ck_summary = checklist.get("summary") or {}
     ck_ok = bool(ck_summary.get("all_required_completed"))
@@ -66,6 +67,16 @@ def build_snapshot(
     gn_overall = str(gn_result.get("overall_go_no_go") or "UNKNOWN")
     gn_ok = gn_overall == "GO"
     gn_reasons = _as_list(gn_result.get("failed_reasons"))
+
+    summary_reasons: list[str] = []
+    if gn_reasons:
+        summary_reasons.extend(gn_reasons)
+    if hs_reasons:
+        summary_reasons.extend(hs_reasons)
+    if not hs_secret_ok:
+        summary_reasons.append("secret_exposure_gate_not_ok")
+    # preserve order while deduplicating
+    summary_reasons = list(dict.fromkeys(summary_reasons))
 
     return {
         "schema": "unified_state_snapshot_v1",
@@ -123,7 +134,13 @@ def build_snapshot(
             "status": _status_from_bool(hs_ok and str(ct_readiness or "").upper() == "GO_READY"),
             "stage": str(gn_stage),
             "readiness": _status_from_bool(hs_ok and gn_overall in {"GO", "HOLD"}, "PARTIAL_READY", "NOT_READY"),
-            "reasons": gn_reasons if gn_reasons else hs_reasons,
+            "reasons": summary_reasons,
+            "meta": {
+                "secret_exposure_gate_ok": hs_secret_ok,
+                "automation_ops_ready": hs_ok,
+                "control_tower_readiness": str(ct_readiness or "UNKNOWN"),
+                "a_track_go_nogo": gn_overall,
+            },
         },
     }
 

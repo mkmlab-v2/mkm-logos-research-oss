@@ -13,7 +13,7 @@ if str(_PROJECT_ROOT) not in sys.path:
 
 from scripts.manseryeok_perfect_final import PerfectManseryeok
 from scripts.myeongri_jijangan_v1 import jijangan_overlay_for_saju
-from scripts.myeongri_jijangan_ohang_v1 import ohang_strength_jijangan_v1
+from scripts.myeongri_jijangan_ohang_v1 import build_myeongni_core_vector_v1
 from scripts.myeongri_rule_school_mkm_4d_v1 import (
     blend_vector_4d_rule_school,
     load_rule_school_mkm_4d_v1,
@@ -109,7 +109,8 @@ class MyeongriCompleteFusion:
         oh_surface = _four_pillars_to_ohang_strength(raw)
         vector_4d = _ohang_data_to_4d(oh_surface)
         saju = raw.get("saju") or {}
-        oh_jij = ohang_strength_jijangan_v1(saju)
+        core_vector = build_myeongni_core_vector_v1(saju)
+        oh_jij = core_vector["element_strength"]
         vector_jij = _ohang_data_to_4d(oh_jij)
         policy = load_rule_school_mkm_4d_v1(self._rule_school_policy_path)
         wb = policy["vector_4d_blend"]
@@ -123,6 +124,7 @@ class MyeongriCompleteFusion:
             "vector_4d": vector_4d,
             "ohang_strength": oh_surface,
             "ohang_strength_jijangan_v1": oh_jij,
+            "myeongni_core_vector_v1": core_vector,
             "vector_4d_jijangan_v1": vector_jij,
             "vector_4d_rule_school_v1": vector_rule,
             "rule_school_mkm_4d_v1": {

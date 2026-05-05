@@ -125,9 +125,11 @@ if (-not (Test-Path -LiteralPath $envFile)) {
   $m = Get-DotEnvKeys $envFile
   $et = $m["ENABLE_TRADING"]
   $tn = $m["TESTNET"]
+  $bfe = $m["BTC_FUTURES_ENGINE"]
   $k = $m["BINANCE_API_KEY"]
   Write-Host "    ENABLE_TRADING = $(if ($null -eq $et) { '(unset in .env -> YAML default)' } else { $et })"
   Write-Host "    TESTNET        = $(if ($null -eq $tn) { '(unset in .env -> YAML default)' } else { $tn })"
+  Write-Host "    BTC_FUTURES_ENGINE = $(if ($null -eq $bfe -or -not $bfe.Trim()) { '(unset -> legacy)' } else { $bfe })"
   Write-Host "    BINANCE_API_KEY= $(if ($k -and $k.Trim().Length -gt 0) { '<set>' } else { '<missing>' })"
 }
 
@@ -142,6 +144,8 @@ Write-Host ""
 Write-Host "Effective (matches start_24h_daemon.py: .env overrides YAML when set):" -ForegroundColor Cyan
 Write-Host ("  testnet         = {0} ({1})" -f $effectiveTestnet, $(if ($effectiveTestnet) { "TESTNET mode" } else { "MAINNET mode" }))
 Write-Host ("  enable_trading  = {0} ({1})" -f $effectiveEnable, $(if ($effectiveEnable) { "TRADING enabled" } else { "TRADING disabled (monitor-only)" }))
+$feMode = if ($m["BTC_FUTURES_ENGINE"] -and $m["BTC_FUTURES_ENGINE"].Trim().Length -gt 0) { $m["BTC_FUTURES_ENGINE"].Trim() } else { "legacy" }
+Write-Host ("  futures_engine  = {0} (aroon_v1 = Aroon-only path)" -f $feMode)
 
 if ($etRaw -and -not $etInfo.Parsed) {
   Write-Host "[!] ENABLE_TRADING is set but not a recognized boolean token; falling back to YAML default." -ForegroundColor Yellow
@@ -168,4 +172,37 @@ Write-Host '  1) pm2 describe <app> -> confirm exec cwd + script path (live tree
 Write-Host '  2) git pull in THAT cwd root only -> pm2 restart <that app> (never restart all unless runbook exception).'
 Write-Host '  3) Confirm daemon banner lines: "testnet: False (MAINNET)" and "trading: enabled".'
 Write-Host "See: docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md , projects/bitcoin-trading/AGENTS.md , ops/v2/ssh/VPS_PM2_HEALTH_SSH_CURSOR_RUNBOOK.md"
+
+Write-Host ""
+Write-Host "==> Refresh conditional gate summary (dry-run, no order)" -ForegroundColor Cyan
+$gateScript = Join-Path $btRoot "scripts\run_conditional_action_gate_v1.py"
+$riskPath = Join-Path $btRoot "memory\v2\risk\risk_profile_fact_safe_latest.json"
+if (Test-Path -LiteralPath $gateScript) {
+  if (Test-Path -LiteralPath $riskPath) {
+    py $gateScript --backend api --dry-run --risk-json $riskPath --symbol BTCUSDT --side BUY --qty 0.001 --skip-human-approval
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "[warn] conditional gate dry-run exited $LASTEXITCODE (status builder still runs)." -ForegroundColor Yellow
+    }
+  } else {
+    Write-Host "[warn] Missing risk profile for gate refresh: $riskPath" -ForegroundColor Yellow
+  }
+} else {
+  Write-Host "[warn] Missing gate script: $gateScript" -ForegroundColor Yellow
+}
+
+Write-Host ""
+Write-Host "==> Build single trading GO/NO_GO status (disk SSOT only)" -ForegroundColor Cyan
+$goNoGoScript = Join-Path $monoRoot "scripts\build_trading_go_nogo_status_v1.py"
+if (Test-Path -LiteralPath $goNoGoScript) {
+  py $goNoGoScript
+  if ($LASTEXITCODE -eq 0) {
+    Write-Host "[ok] trading_go_no_go_latest.json => GO" -ForegroundColor Green
+  } elseif ($LASTEXITCODE -eq 1) {
+    Write-Host "[warn] trading_go_no_go_latest.json => NO_GO (check reasons in artifact)." -ForegroundColor Yellow
+  } else {
+    Write-Host "[warn] GO/NO_GO builder exited with code $LASTEXITCODE" -ForegroundColor Yellow
+  }
+} else {
+  Write-Host "[warn] Missing builder: $goNoGoScript" -ForegroundColor Yellow
+}
 exit 0

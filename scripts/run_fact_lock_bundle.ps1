@@ -13,9 +13,10 @@
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
   5. `py -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py` — 명리 독립 렌즈 → Thin JSONL 브리지(§3.6)
   5b. `py -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py` — 개인 인사이트 브리핑 Fact-Lock 휴리스틱(운영 단계 라벨·시장↔부채 합선)
+  5c. 사상–사주 조인트 문헌·큐레이트 회귀 **9**개 파일(Europe PMC 픽스처·오프라인 **7** + 인제스트 **1** + staleness **1**; CONSTITUTION §3.3 표「사상체질↔문헌↔사주 조인트」). `-SkipSasangSajuJointLiteraturePipeline` 로 생략.
   6. (기본) 명리·멀티렌즈 **권장 스택** — CI `multilens-independent-lens-smoke`와 동일 **15**개 pytest 파일(선행: 일일 브리프 1 + Thin 브리지 1; 이어 배치 13에 Yang 2015 B-track 스키마·벤치 포함). `-SkipMyeongniLensRecommendedStack` 로 생략.
 
-  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·3b·3c·3d·5·6단계는 본 스크립트에서 직접 실행합니다.
+  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·3b·3c·3d·4·5·5b·5c·6단계는 본 스크립트에서 직접 실행합니다.
 
 .PARAMETER SkipIntegrityGuard
   `integrity_guard.py` 생략(빠른 확인용). CI와 완전 동치가 아님.
@@ -83,8 +84,17 @@
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipMyeongniLensRecommendedStack
 
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipSasangSajuJointLiteraturePipeline
+
 .PARAMETER SkipMyeongniLensRecommendedStack
   명리 독립 렌즈 v0/v1·융합 브리지·봇 체인·융합 스텁 등 9종 멀티렌즈 pytest(권장 CI 패리티)를 생략한다.
+
+.PARAMETER SkipSasangSajuJointLiteraturePipeline
+  사상–사주 조인트 문헌·큐레이트·staleness 회귀 9개 pytest(`dual-regime-integrity` 의 Sasang 단계와 동일 목록)를 생략한다.
+
+.PARAMETER SkipCuratedJointStalenessCheck
+  끝단: `data/myeongni/curated_saju_joint_v1.jsonl` 시각 신호 vs `myeongni_celebrity_hit_rate_v1` 산출 시각의 staleness 점검(`check_curated_saju_joint_staleness_v1.py`)을 생략한다.
 
 .NOTES
   SSOT 순서: `.github/workflows/dual-regime-integrity.yml`
@@ -108,7 +118,13 @@ param(
     [switch]$SkipNewsObservationContractSmoke,
 
     # Myeongni / multilens recommended CI parity (9 pytests, excluding daily brief + thin bridge already run above)
-    [switch]$SkipMyeongniLensRecommendedStack
+    [switch]$SkipMyeongniLensRecommendedStack,
+
+    # Sasang–saju joint literature harvest/enrich/resolve/export/dummy benchmark pytest bundle (offline)
+    [switch]$SkipSasangSajuJointLiteraturePipeline,
+
+    # Curated joint staleness (curated JSONL signal vs celebrity hit-rate artifact; writes reports/*.json; non-failing by default)
+    [switch]$SkipCuratedJointStalenessCheck
 )
 
 $ErrorActionPreference = 'Stop'
@@ -148,6 +164,18 @@ $myeongniLensRecommendedPytests = @(
     (Join-Path $workspaceRoot 'tests\test_run_myeongni_celebrity_benchmark_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_yang_2015_btrack_json_schema_v1.py')
 )
+$sasangSajuJointLiteraturePytests = @(
+    (Join-Path $workspaceRoot 'tests\test_fetch_europepmc_sasang_saju_literature_catalog_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_filter_sasang_saju_literature_catalog_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_sasang_saju_joint_review_queue_from_catalog_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_auto_enrich_sasang_from_literature_stub_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_resolve_literature_sasang_majority_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_export_sasang_literature_supervised_jsonl_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_validate_sasang_saju_joint_benchmark_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_ingest_curated_saju_joint_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_check_curated_saju_joint_staleness_v1.py')
+)
+$curatedJointStalenessScript = Join-Path $workspaceRoot 'scripts\check_curated_saju_joint_staleness_v1.py'
 $truthfulQaBenchmarkScript = Join-Path $workspaceRoot 'scripts\run_truthfulqa_ab_benchmark_v1.py'
 $truthfulQaBenchmarkEvalGateScript = Join-Path $workspaceRoot 'scripts\check_truthfulqa_ab_gate_v1.py'
 $truthfulQaMcBenchmarkArtifact = Join-Path $workspaceRoot 'docs\final\artifacts\truthfulqa_ab_benchmark_latest.json'
@@ -325,6 +353,21 @@ if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
+if (-not $SkipSasangSajuJointLiteraturePipeline) {
+    # 5c 조인트 7 pytest — Europe PMC·문헌 체인 회귀(CONSTITUTION §3.3 · dual-regime `Sasang–saju joint literature pipeline`)
+    #    + 인제스트·staleness(test_ingest_* , test_check_* ) → 배열 총 9 파일
+    foreach ($t in $sasangSajuJointLiteraturePytests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "Sasang-saju joint literature pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock: Sasang–saju joint pipeline (dual-regime parity: 7 literature + 1 ingest + 1 staleness pytest files) ==' -ForegroundColor Cyan
+    & py -m pytest @sasangSajuJointLiteraturePytests -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
 if (-not $SkipMyeongniLensRecommendedStack) {
     foreach ($t in $myeongniLensRecommendedPytests) {
         if (-not (Test-Path -LiteralPath $t)) {
@@ -429,6 +472,18 @@ if ($IncludeTruthfulQaBenchmarkEvalGate) {
             exit $LASTEXITCODE
         }
         Write-Host "WARN: TruthfulQA eval gate returned NO_GO (strict disabled)." -ForegroundColor Yellow
+    }
+}
+
+if (-not $SkipCuratedJointStalenessCheck) {
+    if (-not (Test-Path -LiteralPath $curatedJointStalenessScript)) {
+        Write-Host "WARN: curated joint staleness script missing; skip: $curatedJointStalenessScript" -ForegroundColor Yellow
+    } else {
+        Write-Host '== Fact-Lock: curated saju joint staleness (curated signal vs hit-rate artifact) ==' -ForegroundColor Cyan
+        & py $curatedJointStalenessScript
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host 'WARN: staleness check returned non-zero (use --strict on script only if you want CI fail).' -ForegroundColor Yellow
+        }
     }
 }
 

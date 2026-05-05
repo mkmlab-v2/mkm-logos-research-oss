@@ -69,6 +69,8 @@ def main() -> int:
         [sys.executable, "scripts/authorize_sasang_promotion_to_atrack.py", "--authorizer", "user-approved"],
         [sys.executable, "scripts/finalize_sasang_promotion_completion.py", "--operator", "user-approved"],
         [sys.executable, "scripts/build_sasang_weekly_ops_report.py"],
+        [sys.executable, "scripts/build_mkm_11axis_report_v1.py"],
+        [sys.executable, "scripts/validate_mkm_11axis_report_v1.py", "docs/final/artifacts/mkm_11axis_report_latest.md"],
     ]
 
     results = [_run(c) for c in commands]

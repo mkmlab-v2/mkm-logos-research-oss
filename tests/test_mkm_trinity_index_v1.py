@@ -20,3 +20,11 @@ def test_mkm_trinity_index_validates_against_schema() -> None:
     payload = json.loads(INDEX.read_text(encoding="utf-8"))
     schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
     jsonschema.validate(instance=payload, schema=schema)
+
+
+def test_mkm_trinity_index_validation_pointers_resolve() -> None:
+    payload = json.loads(INDEX.read_text(encoding="utf-8"))
+    for lens_id, entry in payload["lenses"].items():
+        for rel in entry["validation_pointers"]:
+            path = ROOT / rel.replace("\\", "/")
+            assert path.is_file(), f"{lens_id}: missing validation_pointer {rel}"

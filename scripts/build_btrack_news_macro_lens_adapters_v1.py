@@ -20,6 +20,12 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PRE_NEWS = ROOT / "docs/final/artifacts/pre_news_shadow_input_latest.json"
 DEFAULT_EXTERNAL_FEED = ROOT / "docs/final/artifacts/external_feed_drop_latest.validated.json"
 DEFAULT_EXTERNAL_FEED_FALLBACK = ROOT / "docs/final/artifacts/external_feed_drop_latest.json"
+DEFAULT_NAVER_SIGNALS = ROOT / "docs/final/artifacts/naver_openapi_signals_latest.json"
+DEFAULT_NAVER_NEWS_FEED = ROOT / "docs/final/artifacts/naver_news_feed_latest.json"
+DEFAULT_EXTERNAL_MACRO_SIGNALS = ROOT / "docs/final/artifacts/external_macro_signals_latest.json"
+DEFAULT_EXTERNAL_NEWS_FEED = ROOT / "docs/final/artifacts/external_news_feed_latest.json"
+DEFAULT_BTC_MARKET_SIGNALS = ROOT / "docs/final/artifacts/btc_market_signals_latest.json"
+DEFAULT_BTC_ALT_PUBLIC_SIGNALS = ROOT / "docs/final/artifacts/btc_alt_public_signals_latest.json"
 DEFAULT_NEWS_OUT = ROOT / "docs/final/artifacts/news_independent_lens_latest.json"
 DEFAULT_MACRO_OUT = ROOT / "docs/final/artifacts/macro_independent_lens_latest.json"
 
@@ -107,6 +113,92 @@ def _texts_from_external_feed(doc: dict[str, Any]) -> list[str]:
     return texts
 
 
+def _texts_from_naver_news_feed(doc: dict[str, Any]) -> list[str]:
+    data = doc.get("data")
+    if not isinstance(data, list):
+        return []
+    texts: list[str] = []
+    for row in data:
+        if not isinstance(row, dict):
+            continue
+        title = str(row.get("title") or "").strip()
+        desc = str(row.get("description") or "").strip()
+        if title:
+            texts.append(title)
+        if desc:
+            texts.append(desc)
+    return texts
+
+
+def _macro_seed_texts_from_naver_signals(doc: dict[str, Any]) -> list[str]:
+    trend = doc.get("datalab_search_trend_weighted") if isinstance(doc.get("datalab_search_trend_weighted"), dict) else {}
+    if not trend:
+        trend = doc.get("datalab_search_trend") if isinstance(doc.get("datalab_search_trend"), dict) else {}
+    if not isinstance(trend, dict):
+        return []
+    seeds: list[str] = []
+
+    def _add_seed(tr: str) -> None:
+        t = tr.strip().lower()
+        if t == "up":
+            seeds.append("growth momentum recovery")
+        elif t == "down":
+            seeds.append("risk-off decline stress")
+        elif t == "flat":
+            seeds.append("stabilization support")
+
+    _add_seed(str(trend.get("trend") or ""))
+    per_group = doc.get("datalab_search_trend_per_group")
+    if isinstance(per_group, list):
+        for row in per_group:
+            if not isinstance(row, dict):
+                continue
+            try:
+                w = float(row.get("weight") or 0.0)
+            except (TypeError, ValueError):
+                w = 0.0
+            if w <= 0.0:
+                continue
+            _add_seed(str(row.get("trend") or ""))
+    return seeds
+
+
+def _macro_seed_texts_from_external_macro(doc: dict[str, Any]) -> list[str]:
+    trend = doc.get("macro_trend") if isinstance(doc.get("macro_trend"), dict) else {}
+    t = str(trend.get("trend") or "").strip().lower()
+    if t == "up":
+        return ["growth expansion support"]
+    if t == "down":
+        return ["tightening risk-off stress"]
+    if t == "flat":
+        return ["stabilization"]
+    return []
+
+
+def _macro_seed_texts_from_btc_market(doc: dict[str, Any]) -> list[str]:
+    trend = doc.get("market_micro_trend") if isinstance(doc.get("market_micro_trend"), dict) else {}
+    t = str(trend.get("trend") or "").strip().lower()
+    if t == "up":
+        return ["btc momentum breakout support"]
+    if t == "down":
+        return ["btc crowding unwind risk-off"]
+    if t == "flat":
+        return ["btc consolidation stabilization"]
+    return []
+
+
+def _macro_seed_texts_from_btc_alt_public(doc: dict[str, Any]) -> list[str]:
+    trend = doc.get("alt_public_trend") if isinstance(doc.get("alt_public_trend"), dict) else {}
+    t = str(trend.get("trend") or "").strip().lower()
+    if t == "up":
+        return ["btc public momentum support"]
+    if t == "down":
+        return ["btc sentiment overheating unwind"]
+    if t == "flat":
+        return ["btc public sentiment neutral"]
+    return []
+
+
 def _rel(p: Path) -> str:
     try:
         return str(p.resolve().relative_to(ROOT))
@@ -114,8 +206,18 @@ def _rel(p: Path) -> str:
         return str(p.resolve())
 
 
-def _build_news_doc(pre_news_path: Path, pre_doc: dict[str, Any] | None) -> dict[str, Any]:
-    texts = _headlines_from_pre_news(pre_doc) if pre_doc else []
+def _build_news_doc(
+    pre_news_path: Path,
+    pre_doc: dict[str, Any] | None,
+    naver_news_path: Path,
+    naver_news_doc: dict[str, Any] | None,
+    external_news_path: Path,
+    external_news_doc: dict[str, Any] | None,
+) -> dict[str, Any]:
+    pre_texts = _headlines_from_pre_news(pre_doc) if pre_doc else []
+    naver_texts = _texts_from_naver_news_feed(naver_news_doc) if naver_news_doc else []
+    external_texts = _texts_from_naver_news_feed(external_news_doc) if external_news_doc else []
+    texts = pre_texts + naver_texts + external_texts
     ds, cf, meta = _score_from_texts(texts)
     return {
         "schema": "news_independent_lens_v0",
@@ -124,24 +226,49 @@ def _build_news_doc(pre_news_path: Path, pre_doc: dict[str, Any] | None) -> dict
         "engine_id": "independent_lens_v0",
         "ts_utc": _utc_now(),
         "hypothesis_tier": "B",
+        "policy_scope": {
+            "trading_primary_asset": "BTCUSDT",
+            "kospi_role": "observation_only",
+        },
         "boundary_ack": True,
         "scores": {"direction_score": round(ds, 6), "confidence": round(cf, 6)},
         "news_stream_outputs": {
             "adapter": "build_btrack_news_macro_lens_adapters_v1",
             "headline_count": len(texts),
+            "pre_news_headline_count": len(pre_texts),
+            "naver_news_text_count": len(naver_texts),
+            "external_news_text_count": len(external_texts),
             "digest": " | ".join(texts[:5])[:500],
             "tilt_meta": meta,
         },
         "provenance": {
             "source": "pre_news_shadow_input_adapter_v1",
             "input_path": _rel(pre_news_path) if pre_doc else "",
+            "naver_news_input_path": _rel(naver_news_path) if naver_news_doc else "",
+            "external_news_input_path": _rel(external_news_path) if external_news_doc else "",
         },
         "note": "B-track news lens from pre_news_shadow_input (keyword tilt); research_only; not live trading.",
     }
 
 
-def _build_macro_doc(feed_path: Path, feed_doc: dict[str, Any] | None) -> dict[str, Any]:
-    texts = _texts_from_external_feed(feed_doc) if feed_doc else []
+def _build_macro_doc(
+    feed_path: Path,
+    feed_doc: dict[str, Any] | None,
+    naver_signals_path: Path,
+    naver_signals_doc: dict[str, Any] | None,
+    external_macro_path: Path,
+    external_macro_doc: dict[str, Any] | None,
+    btc_market_path: Path,
+    btc_market_doc: dict[str, Any] | None,
+    btc_alt_public_path: Path,
+    btc_alt_public_doc: dict[str, Any] | None,
+) -> dict[str, Any]:
+    feed_texts = _texts_from_external_feed(feed_doc) if feed_doc else []
+    naver_seed_texts = _macro_seed_texts_from_naver_signals(naver_signals_doc) if naver_signals_doc else []
+    external_macro_seed_texts = _macro_seed_texts_from_external_macro(external_macro_doc) if external_macro_doc else []
+    btc_market_seed_texts = _macro_seed_texts_from_btc_market(btc_market_doc) if btc_market_doc else []
+    btc_alt_public_seed_texts = _macro_seed_texts_from_btc_alt_public(btc_alt_public_doc) if btc_alt_public_doc else []
+    texts = feed_texts + naver_seed_texts + external_macro_seed_texts + btc_market_seed_texts + btc_alt_public_seed_texts
     ds, cf, meta = _score_from_texts(texts)
     return {
         "schema": "macro_independent_lens_v0",
@@ -150,17 +277,30 @@ def _build_macro_doc(feed_path: Path, feed_doc: dict[str, Any] | None) -> dict[s
         "engine_id": "independent_lens_v0",
         "ts_utc": _utc_now(),
         "hypothesis_tier": "B",
+        "policy_scope": {
+            "trading_primary_asset": "BTCUSDT",
+            "kospi_role": "observation_only",
+        },
         "boundary_ack": True,
         "scores": {"direction_score": round(ds, 6), "confidence": round(cf, 6)},
         "macro_stream_outputs": {
             "adapter": "build_btrack_news_macro_lens_adapters_v1",
             "snippet_count": len(texts),
+            "external_feed_text_count": len(feed_texts),
+            "naver_signal_seed_count": len(naver_seed_texts),
+            "external_macro_seed_count": len(external_macro_seed_texts),
+            "btc_market_seed_count": len(btc_market_seed_texts),
+            "btc_alt_public_seed_count": len(btc_alt_public_seed_texts),
             "tilt_meta": meta,
         },
         "provenance": {
             "source": "external_feed_drop_adapter_v1",
             "input_path": _rel(feed_path) if feed_doc else "",
             "items_count": int(feed_doc.get("items_count") or 0) if feed_doc else 0,
+            "naver_signals_input_path": _rel(naver_signals_path) if naver_signals_doc else "",
+            "external_macro_input_path": _rel(external_macro_path) if external_macro_doc else "",
+            "btc_market_input_path": _rel(btc_market_path) if btc_market_doc else "",
+            "btc_alt_public_input_path": _rel(btc_alt_public_path) if btc_alt_public_doc else "",
         },
         "note": "B-track macro lens from external_feed_drop (keyword tilt); research_only; not live trading.",
     }
@@ -172,6 +312,12 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pre-news-input", type=Path, default=DEFAULT_PRE_NEWS)
     ap.add_argument("--external-feed", type=Path, default=DEFAULT_EXTERNAL_FEED)
+    ap.add_argument("--naver-signals", type=Path, default=DEFAULT_NAVER_SIGNALS)
+    ap.add_argument("--naver-news-feed", type=Path, default=DEFAULT_NAVER_NEWS_FEED)
+    ap.add_argument("--external-macro-signals", type=Path, default=DEFAULT_EXTERNAL_MACRO_SIGNALS)
+    ap.add_argument("--external-news-feed", type=Path, default=DEFAULT_EXTERNAL_NEWS_FEED)
+    ap.add_argument("--btc-market-signals", type=Path, default=DEFAULT_BTC_MARKET_SIGNALS)
+    ap.add_argument("--btc-alt-public-signals", type=Path, default=DEFAULT_BTC_ALT_PUBLIC_SIGNALS)
     ap.add_argument("--news-out", type=Path, default=DEFAULT_NEWS_OUT)
     ap.add_argument("--macro-out", type=Path, default=DEFAULT_MACRO_OUT)
     ap.add_argument("--dry-run", action="store_true")
@@ -181,9 +327,33 @@ def main(argv: list[str] | None = None) -> int:
     feed_doc = _read_json(args.external_feed)
     if feed_doc is None and args.external_feed == DEFAULT_EXTERNAL_FEED:
         feed_doc = _read_json(DEFAULT_EXTERNAL_FEED_FALLBACK)
+    naver_signals_doc = _read_json(args.naver_signals)
+    naver_news_doc = _read_json(args.naver_news_feed)
+    external_macro_doc = _read_json(args.external_macro_signals)
+    external_news_doc = _read_json(args.external_news_feed)
+    btc_market_doc = _read_json(args.btc_market_signals)
+    btc_alt_public_doc = _read_json(args.btc_alt_public_signals)
 
-    news_doc = _build_news_doc(args.pre_news_input, pre_doc)
-    macro_doc = _build_macro_doc(args.external_feed, feed_doc)
+    news_doc = _build_news_doc(
+        args.pre_news_input,
+        pre_doc,
+        args.naver_news_feed,
+        naver_news_doc,
+        args.external_news_feed,
+        external_news_doc,
+    )
+    macro_doc = _build_macro_doc(
+        args.external_feed,
+        feed_doc,
+        args.naver_signals,
+        naver_signals_doc,
+        args.external_macro_signals,
+        external_macro_doc,
+        args.btc_market_signals,
+        btc_market_doc,
+        args.btc_alt_public_signals,
+        btc_alt_public_doc,
+    )
 
     if args.dry_run:
         print(json.dumps({"news": news_doc["scores"], "macro": macro_doc["scores"]}, indent=2))
