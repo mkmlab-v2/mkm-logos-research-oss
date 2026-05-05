@@ -1,29 +1,29 @@
 {
   "schema": "trackc_prophecy_dual_leg_brief_v1",
-  "generated_at_utc": "2026-05-03T15:51:07Z",
+  "generated_at_utc": "2026-05-04T22:10:06Z",
   "research_only": true,
   "window": {
     "recent_trading_days": 30
   },
   "overall": {
-    "price_directional_hit_rate": 0.583333,
-    "n_evaluated": 60,
-    "price_hits": 35
+    "price_directional_hit_rate": 0.6,
+    "n_evaluated": 30,
+    "price_hits": 18
   },
   "legs": {
     "kospi": {
+      "price_directional_hit_rate": null,
+      "n_evaluated": 0,
+      "price_hits": null
+    },
+    "btc": {
       "price_directional_hit_rate": 0.6,
       "n_evaluated": 30,
       "price_hits": 18
-    },
-    "btc": {
-      "price_directional_hit_rate": 0.566667,
-      "n_evaluated": 30,
-      "price_hits": 17
     }
   },
   "delta": {
-    "btc_minus_kospi_hit_rate": -0.033333
+    "btc_minus_kospi_hit_rate": null
   },
   "sources": {
     "overall_eval": "docs/final/artifacts/prophecy_hit_rate_eval_latest.json",

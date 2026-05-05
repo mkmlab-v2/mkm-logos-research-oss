@@ -1,10 +1,10 @@
 {
   "schema": "btrack_prophecy_score_v1",
-  "generated_at_utc": "2026-05-03T15:51:06Z",
-  "eval_date": "2026-04-29",
+  "generated_at_utc": "2026-05-04T22:10:06Z",
+  "eval_date": "2026-04-30",
   "neutral_bps": 5.0,
   "hypothesis_path": "docs\\final\\artifacts\\btrack_hypothesis_prophecy_latest.json",
-  "hypothesis_ts_utc": "2026-05-02T21:30:02Z",
+  "hypothesis_ts_utc": "2026-05-04T21:30:02Z",
   "inputs": {
     "kospi_csv": "research\\market_data\\kospi_daily_external_yf.csv",
     "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
@@ -63,7 +63,6 @@
   "meta": {
     "warnings": [],
     "batch_eval_dates": [
-      "2026-03-19",
       "2026-03-20",
       "2026-03-23",
       "2026-03-24",
@@ -92,23 +91,13 @@
       "2026-04-24",
       "2026-04-27",
       "2026-04-28",
-      "2026-04-29"
+      "2026-04-29",
+      "2026-04-30"
     ],
     "frozen_prediction_note": "Same hypothesis predicted_direction applied to each eval_date vs that day's realized return (30 trading days).",
     "filter_note": "instrument==btc only"
   },
   "rows": [
-    {
-      "instrument": "btc",
-      "eval_date": "2026-03-19",
-      "predicted_direction": "bull",
-      "actual_direction": "bear",
-      "daily_return": -0.01870697,
-      "prev_close": 71245.578125,
-      "close": 69912.7890625,
-      "neutral_bps": 5.0,
-      "flow_score_for_reversal": 0.0
-    },
     {
       "instrument": "btc",
       "eval_date": "2026-03-20",
@@ -425,6 +414,17 @@
       "daily_return": -0.007525,
       "prev_close": 76350.671875,
       "close": 75776.1328125,
+      "neutral_bps": 5.0,
+      "flow_score_for_reversal": 9951.6
+    },
+    {
+      "instrument": "btc",
+      "eval_date": "2026-04-30",
+      "predicted_direction": "bull",
+      "actual_direction": "bull",
+      "daily_return": 0.00697037,
+      "prev_close": 75776.1328125,
+      "close": 76304.3203125,
       "neutral_bps": 5.0,
       "flow_score_for_reversal": 9951.6
     }

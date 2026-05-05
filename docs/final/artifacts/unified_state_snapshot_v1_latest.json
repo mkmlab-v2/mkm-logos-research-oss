@@ -1,14 +1,14 @@
 {
   "schema": "unified_state_snapshot_v1",
   "schema_version": 1,
-  "generated_at_utc": "2026-04-26T14:09:03+00:00",
+  "generated_at_utc": "2026-05-04T15:56:59+00:00",
   "state_nodes": {
     "control_tower": {
       "status": "GO_READY",
       "stage": "BTRACK_PROMOTION",
       "readiness": "GO_READY",
       "reasons": [],
-      "source_generated_at_utc": "2026-04-26T13:25:00Z",
+      "source_generated_at_utc": "2026-04-26T13:18:52Z",
       "meta": {
         "signal_light": "green",
         "gate_decision": "PROPOSE_PROMOTION"
@@ -19,7 +19,7 @@
       "stage": "OPS_HEALTHY",
       "readiness": "READY",
       "reasons": [],
-      "source_generated_at_utc": "2026-04-26T13:28:03Z",
+      "source_generated_at_utc": "2026-05-04T15:56:59Z",
       "meta": {
         "all_tasks_ok": true,
         "all_artifacts_ok": true,
@@ -27,45 +27,39 @@
       }
     },
     "a_track_checklist": {
-      "status": "IN_PROGRESS",
-      "stage": "S1_SHADOW",
-      "readiness": "NOT_READY",
-      "reasons": [
-        "s3-01"
-      ],
-      "source_generated_at_utc": "2026-04-26T13:55:11+00:00",
+      "status": "COMPLETE",
+      "stage": "S4_LIMITED_LIVE",
+      "readiness": "READY",
+      "reasons": [],
+      "source_generated_at_utc": "2026-05-02T20:23:12+00:00",
       "meta": {
-        "completed_total": 4,
+        "completed_total": 5,
         "required_total": 5,
-        "next_action": "HOLD 유지. 체크리스트 미완료 항목부터 순차 해제"
+        "next_action": "S4 limited-live 진입 및 동일 게이트 재검증"
       }
     },
     "a_track_go_nogo": {
-      "status": "HOLD",
-      "stage": "S1_SHADOW",
-      "readiness": "NOT_READY",
-      "reasons": [
-        "high_reliability_decision_is_hold",
-        "price_output_locked_true",
-        "s3_requires_multiweek_stability_evidence",
-        "s4_requires_operator_explicit_approval"
-      ],
-      "source_generated_at_utc": "2026-04-26T13:32:09.175406+00:00",
+      "status": "GO",
+      "stage": "S4_LIMITED_LIVE",
+      "readiness": "READY",
+      "reasons": [],
+      "source_generated_at_utc": "2026-05-02T20:22:35.151167+00:00",
       "meta": {
-        "overall_go_no_go": "HOLD",
-        "recommended_stage": "S1_SHADOW"
+        "overall_go_no_go": "GO",
+        "recommended_stage": "S4_LIMITED_LIVE"
       }
     }
   },
   "summary": {
     "status": "OK",
-    "stage": "S1_SHADOW",
+    "stage": "S4_LIMITED_LIVE",
     "readiness": "PARTIAL_READY",
-    "reasons": [
-      "high_reliability_decision_is_hold",
-      "price_output_locked_true",
-      "s3_requires_multiweek_stability_evidence",
-      "s4_requires_operator_explicit_approval"
-    ]
+    "reasons": [],
+    "meta": {
+      "secret_exposure_gate_ok": true,
+      "automation_ops_ready": true,
+      "control_tower_readiness": "GO_READY",
+      "a_track_go_nogo": "GO"
+    }
   }
 }

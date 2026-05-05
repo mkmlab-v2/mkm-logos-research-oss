@@ -1,11 +1,12 @@
 {
   "schema": "sasang_4agent_promotion_gate_v1",
-  "generated_at_utc": "2026-04-30T18:48:48Z",
+  "generated_at_utc": "2026-05-04T14:13:31Z",
   "inputs": {
     "protocol_artifact": "C:/workspace/docs/final/artifacts/sasang_4agent_collision_btrack_protocol_latest.json",
     "patent_brief_artifact": "C:/workspace/docs/final/artifacts/sasang_4agent_patent_brief_latest.json",
     "invention_disclosure_artifact": "C:/workspace/docs/final/artifacts/sasang_4agent_invention_disclosure_latest.json",
-    "fusion_gate_artifact": "C:/workspace/docs/final/artifacts/sasang_4agent_fusion_gate_latest.json"
+    "fusion_gate_artifact": "C:/workspace/docs/final/artifacts/sasang_4agent_fusion_gate_latest.json",
+    "human_approval_artifact": "C:/workspace/docs/final/artifacts/sasang_4agent_human_approval_latest.json"
   },
   "checks": {
     "ticks_gte_300": true,
@@ -16,7 +17,9 @@
     "invention_disclosure_present": true,
     "policy_research_only": true,
     "policy_non_gating": true,
-    "fusion_gate_pass": true
+    "fusion_gate_pass": false,
+    "human_approval_present": true,
+    "human_approval_approved": true
   },
   "summary": {
     "ticks": 7232,
@@ -24,11 +27,12 @@
     "significance_pass": true,
     "btrack_decision": "GO_CANDIDATE"
   },
-  "decision": "A_TRACK_PROMOTED_WITH_HUMAN_APPROVAL",
-  "human_review_gate_required": false,
-  "auto_bridge_allowed": true,
-  "next_step": "Bridge is permitted by explicit human approval; execute controlled Track A rollout with monitoring.",
-  "human_approval_ref": "C:/workspace/docs/final/artifacts/sasang_4agent_human_approval_latest.json",
-  "approved_at_utc": "2026-04-30T18:48:48Z",
-  "approved_by": "commander"
+  "decision": "HOLD",
+  "gating_scope": "hold_no_promotion",
+  "human_review_gate_required": true,
+  "auto_bridge_allowed": false,
+  "next_step": "Address failed checks and rerun B-track protocol.",
+  "approved_at_utc": "2026-05-04T14:12:57Z",
+  "approved_by": "commander",
+  "human_approval_ref": "C:/workspace/docs/final/artifacts/sasang_4agent_human_approval_latest.json"
 }

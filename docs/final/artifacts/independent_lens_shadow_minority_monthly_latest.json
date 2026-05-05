@@ -1,11 +1,11 @@
 {
   "schema": "independent_lens_shadow_minority_monthly_v1",
   "version": "1.0.0",
-  "ts_utc": "2026-05-03T00:15:16Z",
+  "ts_utc": "2026-05-05T00:15:15Z",
   "hypothesis_tier": "B",
   "source_history_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_shadow_history.jsonl",
-  "history_rows_total": 620,
-  "rows_with_minority_lens_total": 4,
+  "history_rows_total": 623,
+  "rows_with_minority_lens_total": 7,
   "months_observed": [
     "2026-03",
     "2026-04",
@@ -25,10 +25,10 @@
       "distinct_narrative_digest_count": 0
     },
     "2026-05": {
-      "total_rows": 8,
-      "rows_with_minority_lens": 4,
+      "total_rows": 11,
+      "rows_with_minority_lens": 7,
       "minority_lens_counts": {
-        "logos": 4
+        "logos": 7
       },
       "distinct_narrative_digest_count": 2
     }

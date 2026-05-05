@@ -1,3 +1,0 @@
-{"window_start_utc": "2026-04-12T00:00:00Z", "trace_scope": "api-a", "egress_pressure": 120.0, "throttle_events": 2.0}
-{"window_start_utc": "2026-04-12T00:01:00Z", "trace_scope": "api-a", "egress_pressure": 400.0, "throttle_events": 18.0}
-{"window_start_utc": "2026-04-12T00:02:00Z", "trace_scope": "api-a", "egress_pressure": 95.0, "throttle_events": 1.0}

@@ -1,0 +1,393 @@
+Task: Produce a structured MKM interpretation PROFILE from the following deterministic inputs only.
+
+Context paths (audit):
+- fusion_or_complete_json_sha256: e76212520b69c30f05eab45b7de8810722b7ad16ef5779e1d8098d01c7330633
+- artifact_paths: docs/final/artifacts/myeongri_external_reference_catalog_latest.json, external_ref::https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003221050
+
+Deterministic payload (paste JSON, truncated if needed):
+{
+  "schema": "myeongni_independent_lens_v1",
+  "version": "1.0.0",
+  "lens_id": "myeongni",
+  "engine_id": "independent_lens_v1",
+  "ts_utc": "2026-05-02T20:26:19Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "scores": {
+    "direction_score": 0.062693,
+    "confidence": 0.716889
+  },
+  "myeongri_stream_outputs": {
+    "myeongri_gapja": null,
+    "state_id": 15,
+    "experiment_id": null,
+    "run_id": "calendar_stub_through_202604",
+    "rationale": "B-track state_id=15, mapping_target=sideways; direction_score = 0.55*direct + 0.35*momentum + 0.10*state_prior, direct=0.000, momentum=0.000, prior=0.240. confidence calibrated by consistency/contradiction with sample-size shrinkage.",
+    "v1_blend_note": "merged v0(0.65)+schools(0.35)"
+  },
+  "provenance": {
+    "source": "16_state_experiment_tail",
+    "input_path": "C:\\workspace\\data\\myeongni\\myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl",
+    "row_ts_utc": "2026-04-30T13:00:00Z"
+  },
+  "note": "B-track independent lens v1: extensible school/dayun/sinsal slots; numeric stub until full manseryeok bridge; not A-track / not live trigger.",
+  "advanced": {
+    "input_summary": {
+      "schema": "myeongni_lens_advanced_input_v1",
+      "status": "ok",
+      "pillars": {
+        "year": "경자",
+        "month": "기축",
+        "day": "계축",
+        "hour": "신유"
+      },
+      "dayun": [
+        {
+          "pillar": "기축",
+          "start_age": 0.0,
+          "end_age": 10.0,
+          "cycle": 1,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "무자",
+          "start_age": 10.0,
+          "end_age": 20.0,
+          "cycle": 2,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "정해",
+          "start_age": 20.0,
+          "end_age": 30.0,
+          "cycle": 3,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "병술",
+          "start_age": 30.0,
+          "end_age": 40.0,
+          "cycle": 4,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "을유",
+          "start_age": 40.0,
+          "end_age": 50.0,
+          "cycle": 5,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "갑신",
+          "start_age": 50.0,
+          "end_age": 60.0,
+          "cycle": 6,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "계미",
+          "start_age": 60.0,
+          "end_age": 70.0,
+          "cycle": 7,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "임오",
+          "start_age": 70.0,
+          "end_age": 80.0,
+          "cycle": 8,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "신사",
+          "start_age": 80.0,
+          "end_age": 90.0,
+          "cycle": 9,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "경진",
+          "start_age": 90.0,
+          "end_age": 100.0,
+          "cycle": 10,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        }
+      ],
+      "sajeong_interpolation": {
+        "year": {
+          "ji": "자",
+          "hidden_gans": [
+            "계"
+          ]
+        },
+        "month": {
+          "ji": "축",
+          "hidden_gans": [
+            "기",
+            "계",
+            "신"
+          ]
+        },
+        "day": {
+          "ji": "축",
+          "hidden_gans": [
+            "기",
+            "계",
+            "신"
+          ]
+        },
+        "hour": {
+          "ji": "유",
+          "hidden_gans": [
+            "신"
+          ]
+        }
+      },
+      "sinsal": [],
+      "schools_active": [
+        "zi_ping",
+        "zi_wei",
+        "mkm_coordinator_default"
+      ],
+      "coordinator_weights": {
+        "zi_ping": 0.4117647058823529,
+        "zi_wei": 0.4117647058823529,
+        "mkm_coordinator_default": 0.17647058823529413
+      },
+      "school_signals": [
+        {
+          "school_id": "zi_ping",
+          "direction_hint": -0.039079,
+          "confidence_hint": 0.782414,
+          "method": "deterministic_stub_v1"
+        },
+        {
+          "school_id": "zi_wei",
+          "direction_hint": 0.045304,
+          "confidence_hint": 0.779613,
+          "method": "deterministic_stub_v1"
+        },
+        {
+          "school_id": "mkm_coordinator_default",
+          "direction_hint": 0.158595,
+          "confidence_hint": 0.728632,
+          "method": "deterministic_stub_v1"
+        }
+      ],
+      "school_blend": {
+        "direction_score": 0.030551,
+        "confidence": 0.77177
+      },
+      "reference_ts_utc": null,
+      "provenance": {
+        "bridge": "myeongni_lens_v1.fusion_bridge",
+        "jijangan_lut_version": "1.0.0",
+        "rule_school_policy_version": "1.0.0",
+        "sinsal_status": "not_computed_in_bridge_v1",
+        "qiyun_schema": "qiyun_v1",
+        "qiyun_years_float": 0.0
+      }
+    },
+    "slots": {
+      "pillars": {
+        "year": "경자",
+        "month": "기축",
+        "day": "계축",
+        "hour": "신유"
+      },
+      "dayun": [
+        {
+          "pillar": "기축",
+          "start_age": 0.0,
+          "end_age": 10.0,
+          "cycle": 1,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "무자",
+          "start_age": 10.0,
+          "end_age": 20.0,
+          "cycle": 2,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "정해",
+          "start_age": 20.0,
+          "end_age": 30.0,
+          "cycle": 3,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "병술",
+          "start_age": 30.0,
+          "end_age": 40.0,
+          "cycle": 4,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "을유",
+          "start_age": 40.0,
+          "end_age": 50.0,
+          "cycle": 5,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "갑신",
+          "start_age": 50.0,
+          "end_age": 60.0,
+          "cycle": 6,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "계미",
+          "start_age": 60.0,
+          "end_age": 70.0,
+          "cycle": 7,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "임오",
+          "start_age": 70.0,
+          "end_age": 80.0,
+          "cycle": 8,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "신사",
+          "start_age": 80.0,
+          "end_age": 90.0,
+          "cycle": 9,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "경진",
+          "start_age": 90.0,
+          "end_age": 100.0,
+          "cycle": 10,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        }
+      ],
+      "sajeong_interpolation": {
+        "year": {
+          "ji": "자",
+          "hidden_gans": [
+            "계"
+          ]
+        },
+        "month": {
+          "ji": "축",
+          "hidden_gans": [
+            "기",
+            "계",
+            "신"
+          ]
+        },
+        "day": {
+          "ji": "축",
+          "hidden_gans": [
+            "기",
+            "계",
+            "신"
+          ]
+        },
+        "hour": {
+          "ji": "유",
+          "hidden_gans": [
+            "신"
+          ]
+        }
+      },
+      "sinsal": []
+    },
+    "coordinator": {
+      "profile_id": "mkm_default_coordinator_v1",
+      "weights_effective": {
+        "zi_ping": 0.4117647058823529,
+        "zi_wei": 0.4117647058823529,
+        "mkm_coordinator_default": 0.17647058823529413
+      },
+      "school_signals": [
+        {
+          "school_id": "zi_ping",
+          "direction_hint": -0.039079,
+          "confidence_hint": 0.782414,
+          "method": "deterministic_stub_v1"
+        },
+        {
+          "school_id": "zi_wei",
+          "direction_hint": 0.045304,
+          "confidence_hint": 0.779613,
+          "method": "deterministic_stub_v1"
+        },
+        {
+          "school_id": "mkm_coordinator_default",
+          "direction_hint": 0.158595,
+          "confidence_hint": 0.728632,
+          "method": "deterministic_stub_v1"
+        }
+      ],
+      "blend_policy_note": "merged v0(0.65)+schools(0.35)"
+    }
+  },
+  "rules": {
+    "ruleset_id": "myeongni_lens_rules_v1.0.0",
+    "hypothesis_tier": "B",
+    "boundary_ack": true
+  },
+  "reproducibility": {
+    "input_digest_sha256": "sha256:20bb8a6ca29d66400a8a4fa99865c6782c3a3541fb30ff9e8ed96f56bff53558",
+    "ruleset_id": "myeongni_lens_rules_v1.0.0",
+    "engine_mix": {
+      "v0_weight": 0.65,
+      "school_blend_weight": 0.35
+    },
+    "payload_content_digest_sha256": "sha256:ed6bab0bd7fbfc0f2d8f852e56dc097afdce105792a8e4fe0d961f7b027e9449"
+  }
+}
+
+Optional macro timeline (Hypothesis only, may be empty):
+(empty)
+
+Required output language: ko
+
+Return a single JSON object conforming to schema id myeongri_ai_interpretation_envelope_v1 (see repo docs/final/schemas/myeongri_ai_interpretation_envelope_v1.schema.json).

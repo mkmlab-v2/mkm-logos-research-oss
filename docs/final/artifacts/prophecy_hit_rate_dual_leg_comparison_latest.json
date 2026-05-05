@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_hit_rate_dual_leg_comparison_v1",
-  "generated_at_utc": "2026-05-03T15:51:06Z",
+  "generated_at_utc": "2026-05-04T22:10:06Z",
   "research_only": true,
   "zeroing_note": "Same frozen hypothesis direction vs each leg OHLCV; not live trading.",
   "source": {
@@ -10,7 +10,6 @@
   "window": {
     "recent_trading_days": 30,
     "batch_eval_dates": [
-      "2026-03-19",
       "2026-03-20",
       "2026-03-23",
       "2026-03-24",
@@ -39,24 +38,25 @@
       "2026-04-24",
       "2026-04-27",
       "2026-04-28",
-      "2026-04-29"
+      "2026-04-29",
+      "2026-04-30"
     ]
   },
   "legs": {
     "kospi": {
       "instrument": "kospi",
-      "n_evaluated": 30,
-      "price_hits": 18,
-      "price_directional_hit_rate": 0.6
+      "n_evaluated": 0,
+      "price_hits": 0,
+      "price_directional_hit_rate": null
     },
     "btc": {
       "instrument": "btc",
       "n_evaluated": 30,
-      "price_hits": 17,
-      "price_directional_hit_rate": 0.566667
+      "price_hits": 18,
+      "price_directional_hit_rate": 0.6
     }
   },
   "delta": {
-    "btc_minus_kospi_hit_rate": -0.033333
+    "btc_minus_kospi_hit_rate": null
   }
 }

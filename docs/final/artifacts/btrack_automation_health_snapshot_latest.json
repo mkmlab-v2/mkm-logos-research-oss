@@ -1,6 +1,6 @@
 {
   "schema": "btrack_automation_health_snapshot_v1",
-  "generated_at_utc": "2026-05-03T15:05:01Z",
+  "generated_at_utc": "2026-05-04T16:12:03Z",
   "tasks": {
     "auto_scientist_weekly": {
       "task_name": "\\MKM_BTrack_AutoScientist_Weekly",
@@ -42,18 +42,27 @@
     },
     "promotion_preflight_latest": {
       "exists": true,
-      "generated_at_utc": "2026-05-03T15:05:01Z",
+      "generated_at_utc": "2026-05-04T16:12:03Z",
       "result": "PASS"
     },
     "btrack_promotion_gate_latest": {
       "exists": true,
       "generated_at_utc": "2026-04-26T13:19:01Z",
       "decision": "pass"
+    },
+    "security_secret_exposure_survey_latest": {
+      "exists": true,
+      "generated_at_utc": "2026-05-04T15:56:29Z",
+      "severity": "ok",
+      "exact_match_count": 0,
+      "pattern_match_count": 0,
+      "dispatch_status": "skipped"
     }
   },
   "summary": {
     "all_tasks_ok": false,
     "all_artifacts_ok": true,
+    "secret_exposure_gate_ok": true,
     "ops_ready": false
   }
 }

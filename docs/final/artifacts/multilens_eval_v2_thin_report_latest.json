@@ -105,22 +105,7 @@
           "interpretation": "dual_regime: gate_profile=balanced; PSI=0.52 (warn>0.60, crisis>0.80); bible_risk=0.30; stress=0.29; cap=0.95; state_clamp=on;state_id=4;state_cap=0.9500",
           "inputs_ref": "dual_regime_curated_overlap_v1"
         },
-        "myeongni_b_track": {
-          "experiment_id": "exp_multilens_curated_v1",
-          "hypothesis_tier": "B",
-          "boundary_ack": true,
-          "stub": true,
-          "ts_utc": "2022-01-01T12:00:00.000Z",
-          "state_id": 4,
-          "mapping_target": "sideways",
-          "vector_4d": {
-            "S": 0.24,
-            "L": 0.26,
-            "K": 0.25,
-            "M": 0.25
-          },
-          "note": "multilens_eval full grid"
-        },
+        "myeongni_b_track": null,
         "sasang_b_track": {
           "ts_utc": "2022-01-01T12:00:00+00:00",
           "hypothesis_tier": "B",
@@ -158,22 +143,7 @@
           "interpretation": "dual_regime: gate_profile=balanced; PSI=0.58 (warn>0.60, crisis>0.80); bible_risk=0.38; stress=0.45; cap=0.89; state_clamp=on;state_id=5;state_cap_noop=0.9000",
           "inputs_ref": "dual_regime_curated_overlap_v1"
         },
-        "myeongni_b_track": {
-          "experiment_id": "exp_multilens_curated_v1",
-          "hypothesis_tier": "B",
-          "boundary_ack": true,
-          "stub": true,
-          "ts_utc": "2022-03-01T12:00:00.000Z",
-          "state_id": 5,
-          "mapping_target": "bull",
-          "vector_4d": {
-            "S": 0.27,
-            "L": 0.23,
-            "K": 0.25,
-            "M": 0.25
-          },
-          "note": "multilens_eval full grid"
-        },
+        "myeongni_b_track": null,
         "sasang_b_track": {
           "ts_utc": "2022-03-01T12:00:00+00:00",
           "hypothesis_tier": "B",
@@ -211,22 +181,7 @@
           "interpretation": "dual_regime: gate_profile=balanced; PSI=0.72 (warn>0.60, crisis>0.80); bible_risk=0.45; stress=0.53; cap=0.83; state_clamp=on;state_id=7;state_cap_noop=0.8500",
           "inputs_ref": "dual_regime_curated_overlap_v1"
         },
-        "myeongni_b_track": {
-          "experiment_id": "exp_multilens_curated_v1",
-          "hypothesis_tier": "B",
-          "boundary_ack": true,
-          "stub": true,
-          "ts_utc": "2022-05-09T12:00:00.000Z",
-          "state_id": 9,
-          "mapping_target": "bear",
-          "vector_4d": {
-            "S": 0.2,
-            "L": 0.3,
-            "K": 0.25,
-            "M": 0.25
-          },
-          "note": "curated overlap; B-track only"
-        },
+        "myeongni_b_track": null,
         "sasang_b_track": {
           "ts_utc": "2022-05-09T12:00:00+00:00",
           "hypothesis_tier": "B",
@@ -264,22 +219,7 @@
           "interpretation": "dual_regime: gate_profile=balanced; PSI=0.68 (warn>0.60, crisis>0.80); bible_risk=0.50; stress=0.48; cap=0.75; state_clamp=on;state_id=12;state_cap=0.7500",
           "inputs_ref": "dual_regime_curated_overlap_v1"
         },
-        "myeongni_b_track": {
-          "experiment_id": "exp_multilens_curated_v1",
-          "hypothesis_tier": "B",
-          "boundary_ack": true,
-          "stub": true,
-          "ts_utc": "2022-06-13T12:00:00.000Z",
-          "state_id": 12,
-          "mapping_target": "bear",
-          "vector_4d": {
-            "S": 0.22,
-            "L": 0.28,
-            "K": 0.26,
-            "M": 0.24
-          },
-          "note": "curated overlap; B-track only"
-        },
+        "myeongni_b_track": null,
         "sasang_b_track": {
           "ts_utc": "2022-06-13T12:00:00+00:00",
           "hypothesis_tier": "B",
@@ -317,22 +257,7 @@
           "interpretation": "dual_regime: gate_profile=balanced; PSI=0.70 (warn>0.60, crisis>0.80); bible_risk=0.42; stress=0.49; cap=0.70; state_clamp=on;state_id=13;state_cap=0.7000",
           "inputs_ref": "dual_regime_curated_overlap_v1"
         },
-        "myeongni_b_track": {
-          "experiment_id": "exp_multilens_curated_v1",
-          "hypothesis_tier": "B",
-          "boundary_ack": true,
-          "stub": true,
-          "ts_utc": "2022-06-18T12:00:00.000Z",
-          "state_id": 13,
-          "mapping_target": "bear",
-          "vector_4d": {
-            "S": 0.21,
-            "L": 0.29,
-            "K": 0.25,
-            "M": 0.25
-          },
-          "note": "multilens_eval full grid"
-        },
+        "myeongni_b_track": null,
         "sasang_b_track": {
           "ts_utc": "2022-06-18T12:00:00+00:00",
           "hypothesis_tier": "B",
@@ -370,22 +295,7 @@
           "interpretation": "dual_regime: gate_profile=balanced; PSI=0.62 (warn>0.60, crisis>0.80); bible_risk=0.40; stress=0.42; cap=0.85; state_clamp=on;state_id=8;state_cap=0.8500",
           "inputs_ref": "dual_regime_curated_overlap_v1"
         },
-        "myeongni_b_track": {
-          "experiment_id": "exp_multilens_curated_v1",
-          "hypothesis_tier": "B",
-          "boundary_ack": true,
-          "stub": true,
-          "ts_utc": "2022-09-13T12:00:00.000Z",
-          "state_id": 8,
-          "mapping_target": "sideways",
-          "vector_4d": {
-            "S": 0.25,
-            "L": 0.25,
-            "K": 0.25,
-            "M": 0.25
-          },
-          "note": "multilens_eval full grid"
-        },
+        "myeongni_b_track": null,
         "sasang_b_track": {
           "ts_utc": "2022-09-13T12:00:00+00:00",
           "hypothesis_tier": "B",
@@ -423,22 +333,7 @@
           "interpretation": "dual_regime: gate_profile=balanced; PSI=0.78 (warn>0.60, crisis>0.80); bible_risk=0.55; stress=0.61; cap=0.65; state_clamp=on;state_id=15;state_cap=0.6500",
           "inputs_ref": "dual_regime_curated_overlap_v1"
         },
-        "myeongni_b_track": {
-          "experiment_id": "exp_multilens_curated_v1",
-          "hypothesis_tier": "B",
-          "boundary_ack": true,
-          "stub": true,
-          "ts_utc": "2022-11-09T12:00:00.000Z",
-          "state_id": 15,
-          "mapping_target": "bear",
-          "vector_4d": {
-            "S": 0.19,
-            "L": 0.31,
-            "K": 0.25,
-            "M": 0.25
-          },
-          "note": "multilens_eval full grid"
-        },
+        "myeongni_b_track": null,
         "sasang_b_track": {
           "ts_utc": "2022-11-09T12:00:00+00:00",
           "hypothesis_tier": "B",
@@ -476,22 +371,7 @@
           "interpretation": "dual_regime: gate_profile=balanced; PSI=0.50 (warn>0.60, crisis>0.80); bible_risk=0.28; stress=0.27; cap=0.90; state_clamp=on;state_id=6;state_cap=0.9000",
           "inputs_ref": "dual_regime_curated_overlap_v1"
         },
-        "myeongni_b_track": {
-          "experiment_id": "exp_multilens_curated_v1",
-          "hypothesis_tier": "B",
-          "boundary_ack": true,
-          "stub": true,
-          "ts_utc": "2022-12-30T12:00:00.000Z",
-          "state_id": 6,
-          "mapping_target": "sideways",
-          "vector_4d": {
-            "S": 0.23,
-            "L": 0.27,
-            "K": 0.25,
-            "M": 0.25
-          },
-          "note": "multilens_eval full grid"
-        },
+        "myeongni_b_track": null,
         "sasang_b_track": {
           "ts_utc": "2022-12-30T12:00:00+00:00",
           "hypothesis_tier": "B",
@@ -529,22 +409,7 @@
           "interpretation": "dual_regime: gate_profile=balanced; PSI=0.55 (warn>0.60, crisis>0.80); bible_risk=0.25; stress=0.34; cap=0.95; state_clamp=on;state_id=3;state_cap=0.9500",
           "inputs_ref": "dual_regime_curated_overlap_v1"
         },
-        "myeongni_b_track": {
-          "experiment_id": "exp_multilens_curated_v1",
-          "hypothesis_tier": "B",
-          "boundary_ack": true,
-          "stub": true,
-          "ts_utc": "2023-01-15T12:00:00.000Z",
-          "state_id": 3,
-          "mapping_target": "sideways",
-          "vector_4d": {
-            "S": 0.26,
-            "L": 0.24,
-            "K": 0.25,
-            "M": 0.25
-          },
-          "note": "multilens_eval full grid"
-        },
+        "myeongni_b_track": null,
         "sasang_b_track": {
           "ts_utc": "2023-01-15T12:00:00+00:00",
           "hypothesis_tier": "B",
@@ -583,20 +448,27 @@
           "inputs_ref": "dual_regime_curated_overlap_v1"
         },
         "myeongni_b_track": {
-          "experiment_id": "exp_multilens_curated_v1",
+          "experiment_id": "bridge_from_independent_lens_v1",
           "hypothesis_tier": "B",
           "boundary_ack": true,
-          "stub": true,
+          "stub": false,
+          "bridge_version": "myeongni_thin_bridge_v1",
           "ts_utc": "2023-03-10T12:00:00.000Z",
-          "state_id": 2,
-          "mapping_target": "bull",
+          "state_id": 15,
+          "mapping_target": "sideways",
           "vector_4d": {
-            "S": 0.28,
-            "L": 0.22,
+            "S": 0.25,
+            "L": 0.25,
             "K": 0.25,
             "M": 0.25
           },
-          "note": "multilens_eval full grid"
+          "note": "emit_myeongni_thin_bridge_line_v1: joins independent_lens_latest + experiment tail",
+          "independent_lens_snapshot": {
+            "direction_score": 0.08,
+            "confidence": 0.68552,
+            "lens_ts_utc": "2026-05-04T22:20:01Z",
+            "provenance_input_path": "C:\\workspace\\data\\myeongni\\myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl"
+          }
         },
         "sasang_b_track": {
           "ts_utc": "2023-03-10T12:00:00+00:00",
@@ -620,7 +492,7 @@
   ],
   "populate_meta": {
     "sasang_jsonl": "C:\\workspace\\data\\multilens_eval\\sasang_curated_overlap_v1.jsonl",
-    "myeongni_jsonl": "C:\\workspace\\data\\multilens_eval\\myeongni_curated_overlap_v1.jsonl",
+    "myeongni_jsonl": "C:\\workspace\\data\\multilens_eval\\myeongni_independent_lens_thin_bridge_latest.jsonl",
     "dual_regime_inputs_json": "C:\\workspace\\data\\multilens_eval\\dual_regime_curated_overlap_v1.json"
   },
   "summary": {
@@ -631,15 +503,15 @@
       "n": 10
     },
     "mapping_target_sasang_myeongni": {
-      "agreement_count": 10,
-      "rows_with_both": 10,
-      "agreement_rate": 1.0
+      "agreement_count": 0,
+      "rows_with_both": 1,
+      "agreement_rate": 0.0
     },
     "dual_regime_flags": {
       "market_shock_confirmed_count": 0,
       "veto_triggered_count": 0
     },
-    "fully_populated_rows": 10,
+    "fully_populated_rows": 1,
     "total_rows": 10
   }
 }

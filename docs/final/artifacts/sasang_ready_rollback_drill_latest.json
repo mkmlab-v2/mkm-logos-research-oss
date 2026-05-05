@@ -1,6 +1,6 @@
 {
   "schema": "sasang_ready_rollback_drill_v1",
-  "drill_at_utc": "2026-04-29T00:00:06Z",
+  "drill_at_utc": "2026-05-04T14:21:59Z",
   "mode": "dry_run_non_destructive",
   "rollback_conditions": [
     "strict gate decision degrades from PASS",

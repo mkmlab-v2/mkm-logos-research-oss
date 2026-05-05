@@ -3,7 +3,7 @@
 Use this single file for Gemini/NotebookLM upload.
 Do not move original artifacts. This file is a derived snapshot only.
 
-Generated At (UTC): 2026-05-03T15:40:01Z
+Generated At (UTC): 2026-05-04T15:40:01Z
 
 ## Source of truth (unchanged original paths)
 - `docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json`

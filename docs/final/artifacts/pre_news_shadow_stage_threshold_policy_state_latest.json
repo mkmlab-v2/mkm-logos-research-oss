@@ -1,6 +1,6 @@
 {
   "schema": "pre_news_shadow_stage_threshold_policy_state_v1",
-  "updated_at_utc": "2026-05-02T21:30:05Z",
+  "updated_at_utc": "2026-05-04T21:30:05Z",
   "policy_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_v1.json",
   "policy_fingerprint_sha256": "b5d02b32833d4f7e6c19e3cb514a7d70cccdf42ad569694f085eaf41d20518fe",
   "policy_version": "v1.1",

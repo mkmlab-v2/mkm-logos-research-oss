@@ -1,8 +1,8 @@
 {
   "schema": "sasang_weekly_ops_report_v1",
-  "generated_at_utc": "2026-04-29T00:00:07.125445Z",
-  "refresh_calendar_date_utc": "2026-04-29",
-  "iso_week_label": "2026-W18",
+  "generated_at_utc": "2026-05-04T14:22:00.239236Z",
+  "refresh_calendar_date_utc": "2026-05-04",
+  "iso_week_label": "2026-W19",
   "sources": {
     "readiness": "C:\\workspace\\docs\\final\\artifacts\\sasang_commercialization_readiness_packet_latest.json",
     "drift_check": "C:\\workspace\\docs\\final\\artifacts\\sasang_ready_drift_check_latest.json",

@@ -1,8 +1,0 @@
-{
-  "schema": "orchestration_gate_baseline_lock_v1",
-  "updated_at_utc": "2026-04-24T13:22:00Z",
-  "approved_by": "human_review_required",
-  "baseline_metrics_path": "docs/final/artifacts/bench_l1_api_load_summary_vps_latest.json",
-  "baseline_sha256": "e253c147958b7cb3bf14c7ea88619a1024b23eac065df35061623a3fd7c4f1b1",
-  "notes": "Update this lock file only after human-reviewed baseline refresh. Prevents silent baseline drift from inflating improvement metrics."
-}

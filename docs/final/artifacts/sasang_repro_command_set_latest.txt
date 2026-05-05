@@ -1,5 +1,5 @@
 # Sasang commercialization reproducible command set
-# generated_at_utc=2026-04-29T00:00:07Z
+# generated_at_utc=2026-05-04T14:22:00Z
 C:\Python311\python.exe scripts/build_sasang_gt_expansion_queue.py
 C:\Python311\python.exe scripts/prioritize_sasang_gt_expansion_queue.py --top-k 126
 C:\Python311\python.exe scripts/export_sasang_gt_labeling_sheet.py
@@ -24,3 +24,5 @@ C:\Python311\python.exe scripts/run_sasang_ready_rollback_drill.py
 C:\Python311\python.exe scripts/authorize_sasang_promotion_to_atrack.py --authorizer user-approved
 C:\Python311\python.exe scripts/finalize_sasang_promotion_completion.py --operator user-approved
 C:\Python311\python.exe scripts/build_sasang_weekly_ops_report.py
+C:\Python311\python.exe scripts/build_mkm_11axis_report_v1.py
+C:\Python311\python.exe scripts/validate_mkm_11axis_report_v1.py docs/final/artifacts/mkm_11axis_report_latest.md

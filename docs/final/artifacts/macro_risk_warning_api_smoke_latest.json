@@ -1,8 +1,8 @@
 {
   "api_contract_version": "1.0.0",
   "schema_version": "macro_risk_warning_api_response_contract_v1",
-  "request_id": "mrw_20260430_194802",
-  "timestamp_utc": "2026-04-30T19:48:02.188642Z",
+  "request_id": "mrw_20260504_222805",
+  "timestamp_utc": "2026-05-04T22:28:05.951814Z",
   "asset_scope": "BTC-USD",
   "decision_state": "WATCH",
   "risk_warning_level": "elevated",
@@ -18,13 +18,45 @@
   },
   "regime_context": {
     "primary_regime_id": "post_covid_normalization",
-    "similarity_score": 0.50023,
+    "similarity_score": 0.590813,
     "secondary_regime_notes": []
   },
   "recommended_operator_posture": "watch_tighten",
   "evidence_ref": {
     "artifact_path": "docs/final/artifacts/integrated_governance_v1_latest.json",
     "artifact_hash_sha256": "c95bd084286493fc1a1d051e9159be83631860e8952bb255350124616a1fe475"
+  },
+  "fragility_composite": {
+    "schema_version": "fragility_composite_v1",
+    "gate": "AMBER",
+    "score_0_100": 59.0813,
+    "z_move": 1.1803588290840417,
+    "z_vix": 0.3985627215088974,
+    "z_hy_oas": 0.3854232911294825,
+    "z_dxy_vol": 0.7869058860560276,
+    "hard_trigger": false,
+    "fragility_cluster": true,
+    "stress_persistence": false
+  },
+  "non_gating_narrative": {
+    "template_version": "macro_risk_non_gating_template_v1",
+    "policy_tag": "[NON_GATING]",
+    "stage": "wilderness_preheat",
+    "field": "구조적 균열 관측 구간",
+    "logos": "광야 진입 전 변동성 확대 단계",
+    "conflict": "추세 추종 vs 리스크 예열 관리",
+    "action": "WATCH / TIGHTEN",
+    "trigger_basis": [
+      "gate:AMBER",
+      "fragility_cluster:true"
+    ],
+    "state_4d": {
+      "stress": 0.393453,
+      "liquidity": 0.132854,
+      "credit": 0.128474,
+      "currency": 0.262302
+    },
+    "quaternion_signal": "phase_shift_low"
   },
   "ttl_seconds": 900,
   "disclaimer": {

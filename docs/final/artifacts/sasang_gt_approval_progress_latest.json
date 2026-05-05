@@ -1,6 +1,6 @@
 {
   "schema": "sasang_gt_approval_progress_v1",
-  "generated_at_utc": "2026-04-29T00:00:05Z",
+  "generated_at_utc": "2026-05-04T14:21:59Z",
   "gt_valid_rows_current": 128,
   "target_min_gt_rows": 128,
   "approved_rows_in_queue": 0,

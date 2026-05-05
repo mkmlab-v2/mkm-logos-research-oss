@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "myeongni_core_vector_v1.schema.json",
+  "title": "Myeongni Core Vector v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "pillar_keys",
+    "tier_weights",
+    "element_counts_raw",
+    "element_strength",
+    "total_raw_count",
+    "jijangan_overlay"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "myeongni_core_vector_v1" },
+    "version": { "type": "string", "minLength": 3 },
+    "pillar_keys": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "tier_weights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["jeong_gi", "jung_gi", "yeo_gi"],
+      "properties": {
+        "jeong_gi": { "type": "number" },
+        "jung_gi": { "type": "number" },
+        "yeo_gi": { "type": "number" }
+      }
+    },
+    "element_counts_raw": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "wood_count",
+        "fire_count",
+        "earth_count",
+        "metal_count",
+        "water_count"
+      ],
+      "properties": {
+        "wood_count": { "type": "number" },
+        "fire_count": { "type": "number" },
+        "earth_count": { "type": "number" },
+        "metal_count": { "type": "number" },
+        "water_count": { "type": "number" }
+      }
+    },
+    "element_strength": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "wood_strength",
+        "fire_strength",
+        "earth_strength",
+        "metal_strength",
+        "water_strength"
+      ],
+      "properties": {
+        "wood_strength": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "fire_strength": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "earth_strength": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "metal_strength": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "water_strength": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    },
+    "total_raw_count": { "type": "number", "minimum": 0.0 },
+    "jijangan_overlay": {
+      "type": "object",
+      "required": ["schema", "pillars"],
+      "properties": {
+        "schema": { "type": "string" },
+        "pillars": { "type": "object" }
+      }
+    }
+  }
+}

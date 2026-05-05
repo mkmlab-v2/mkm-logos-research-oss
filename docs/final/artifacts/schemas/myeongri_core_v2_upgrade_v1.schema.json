@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/myeongri_core_v2_upgrade_v1.schema.json",
+  "title": "Myeongri Core v2 Upgrade V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "labels",
+    "b_track_notice",
+    "input",
+    "jijangan_weighted_vector",
+    "neutral_structure_metrics_v1",
+    "shinsal_impact_overlay",
+    "shinsal_detection_logs",
+    "execution_guardrail",
+    "output"
+  ],
+  "properties": {
+    "schema": {
+      "const": "myeongri_core_v2_upgrade_v1"
+    },
+    "version": {
+      "type": "string"
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fact",
+        "hypothesis",
+        "research_only"
+      ],
+      "properties": {
+        "fact": {
+          "const": "[FACT]"
+        },
+        "hypothesis": {
+          "const": "[HYPOTHESIS]"
+        },
+        "research_only": {
+          "const": "[RESEARCH_ONLY]"
+        }
+      }
+    },
+    "b_track_notice": {
+      "type": "string",
+      "minLength": 32
+    },
+    "input": {
+      "type": "object"
+    },
+    "jijangan_weighted_vector": {
+      "type": "object"
+    },
+    "neutral_structure_metrics_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract",
+        "structural_tension_v1",
+        "latent_energy_vector_4d"
+      ],
+      "properties": {
+        "contract": {
+          "type": "string"
+        },
+        "structural_tension_v1": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "structural_tension_method": {
+          "type": "string"
+        },
+        "latent_energy_vector_4d": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          }
+        },
+        "latent_energy_axes": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "string"
+          }
+        },
+        "latent_energy_note": {
+          "type": "string"
+        }
+      }
+    },
+    "shinsal_impact_overlay": {
+      "type": "object"
+    },
+    "shinsal_detection_logs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "entries"
+      ],
+      "properties": {
+        "schema": {
+          "const": "shinsal_detection_logs_v1"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "pillar_key",
+              "pillar_text"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "pillar_key": {
+                "type": "string"
+              },
+              "pillar_text": {
+                "type": "string"
+              },
+              "evidence_tag": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "execution_guardrail": {
+      "type": "object"
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "size_multiplier_recommended",
+        "commander_overlay_multiplier",
+        "direction_override_allowed",
+        "policy"
+      ],
+      "properties": {
+        "size_multiplier_recommended": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 1.0
+        },
+        "commander_overlay_multiplier": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 1.0
+        },
+        "direction_override_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "policy": {
+          "type": "string"
+        }
+      }
+    },
+    "schema_validation": {
+      "type": "object"
+    },
+    "myeongni_16state_probe_nearest_v1": {
+      "type": "object",
+      "description": "L2 nearest state_id vs data/myeongni/16_STATE_MASTER_PROBE_v1.json (B-track alignment only).",
+      "additionalProperties": true,
+      "properties": {
+        "contract": {
+          "type": "string"
+        },
+        "probe_path": {
+          "type": "string"
+        },
+        "nearest_state_id": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 16
+        },
+        "l2_distance": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string"
+        },
+        "vector_layout": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

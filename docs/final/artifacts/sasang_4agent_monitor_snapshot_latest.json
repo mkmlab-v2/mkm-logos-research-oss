@@ -1,6 +1,6 @@
 {
   "schema": "sasang_4agent_monitor_snapshot_v1",
-  "generated_at_utc": "2026-04-30T18:50:52Z",
+  "generated_at_utc": "2026-05-04T14:12:57Z",
   "source_refs": {
     "protocol": "docs/final/artifacts/sasang_4agent_collision_btrack_protocol_latest.json",
     "fusion_gate": "docs/final/artifacts/sasang_4agent_fusion_gate_latest.json",
@@ -15,9 +15,9 @@
     "hold_ratio": 0.6798949115044248,
     "topological_variance_p95": 0.889393198451268,
     "significance_pass": true,
-    "geumhwa_transition_score": 0.5677599775441191,
+    "geumhwa_transition_score": 0.0,
     "geumhwa_transition_state": false,
-    "geumhwa_transition_threshold": 0.58,
+    "geumhwa_transition_threshold": 0.55,
     "geumhwa_threshold_breached": false
   },
   "alert": false,
