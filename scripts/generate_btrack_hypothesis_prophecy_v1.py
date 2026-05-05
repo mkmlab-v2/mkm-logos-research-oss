@@ -2,9 +2,12 @@
 """Generate B-Track hypothesis JSON (schema btrack_hypothesis_prophecy_v1).
 
 Modes:
-  default   Deterministic lens-ensemble hypothesis (no API; CI-safe).
-  --stub    Legacy deterministic hypothesis from fusion_stub consensus.
-  --gemini  Call Gemini (requires GEMINI_API_KEY); model outputs JSON only, then validate.
+  Default   Local rule-based ensemble (no Gemini API; deterministic-ish from bundle + score JSON).
+  --stub    Legacy fusion_stub heuristic (no API).
+  --gemini / --use-cloud-gemini   Paid API path — prefer org Gen AI / Cloud billing; local .env keys are
+            error-prone — use explicit flags (e.g. daily chain -UseCloudGemini) when quota spend is intended.
+
+  --llm-backend {ensemble|stub|gemini}  Explicit backend (overrides --gemini/--stub booleans when set).
 
 Output: docs/final/artifacts/btrack_hypothesis_prophecy_latest.json
 """
@@ -115,6 +118,7 @@ def _build_stub_from_bundle(bundle: dict[str, Any]) -> dict[str, Any]:
             "myeongni": "docs/final/artifacts/myeongni_independent_lens_latest.json",
             "sasang": "docs/final/artifacts/sasang_independent_lens_latest.json",
             "fusion_stub": "docs/final/artifacts/independent_lens_fusion_stub_latest.json",
+            "shadow_minority_monthly": "docs/final/artifacts/independent_lens_shadow_minority_monthly_latest.json",
         },
         "prediction": {
             "instrument": "multi",
@@ -254,6 +258,7 @@ def _build_ensemble_from_bundle(
             "myeongni": "docs/final/artifacts/myeongni_independent_lens_latest.json",
             "sasang": "docs/final/artifacts/sasang_independent_lens_latest.json",
             "fusion_stub": "docs/final/artifacts/independent_lens_fusion_stub_latest.json",
+            "shadow_minority_monthly": "docs/final/artifacts/independent_lens_shadow_minority_monthly_latest.json",
         },
         "prediction": {
             "instrument": "multi",
@@ -556,10 +561,18 @@ def main() -> int:
     ap.add_argument("--ensemble-config", type=Path, default=DEFAULT_ENSEMBLE_CONFIG)
     ap.add_argument(
         "--gemini",
+        "--use-cloud-gemini",
         action="store_true",
-        help="Call Gemini (needs GEMINI_API_KEY). Default: local rule-based ensemble.",
+        dest="gemini",
+        help="Call Gemini API (GEMINI_API_KEY or GOOGLE_API_KEY). Alias: --use-cloud-gemini. Default: ensemble.",
     )
     ap.add_argument("--stub", action="store_true", help="Use legacy stub heuristic instead of ensemble.")
+    ap.add_argument(
+        "--llm-backend",
+        choices=("ensemble", "stub", "gemini"),
+        default=None,
+        help="Set backend explicitly (overrides --gemini/--stub when provided).",
+    )
     ap.add_argument("--model", type=str, default="gemini-2.5-flash")
     ap.add_argument(
         "--timeout",
@@ -574,6 +587,17 @@ def main() -> int:
     ap.add_argument("--effective-seed-top-k", type=int, default=5)
     ap.add_argument("--effective-min-accuracy-delta", type=float, default=0.0001)
     args = ap.parse_args()
+
+    if args.llm_backend is not None:
+        if args.llm_backend == "gemini":
+            args.gemini, args.stub = True, False
+        elif args.llm_backend == "stub":
+            args.gemini, args.stub = False, True
+        else:
+            args.gemini, args.stub = False, False
+    if args.gemini and args.stub:
+        print("error: --gemini and --stub are mutually exclusive", file=sys.stderr)
+        return 2
 
     if args.validate_only:
         doc = _load_json(args.validate_only)

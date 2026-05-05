@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trading_human_execution_approval_v1",
+  "title": "Trading human execution approval (Human-in-the-Loop receipt)",
+  "description": "Separates AI/tool proposal from commander GO/NO_GO for Track A trading execution. Bulkhead: B-track artifacts are referenced only via proposal_ref + proposal_body_sha256.",
+  "type": "object",
+  "required": [
+    "schema",
+    "domain",
+    "track",
+    "proposal_id",
+    "proposal_body_sha256",
+    "decision",
+    "approved_at_utc",
+    "valid_until_utc"
+  ],
+  "properties": {
+    "schema": { "const": "trading_human_execution_approval_v1" },
+    "domain": { "const": "trading" },
+    "track": {
+      "type": "string",
+      "const": "A",
+      "description": "Execution rail: only Track A may consume this receipt for live order scripts."
+    },
+    "proposal_id": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 256,
+      "description": "Stable id of the proposal row or queue entry this approval binds to."
+    },
+    "proposal_ref": {
+      "type": "object",
+      "description": "Optional pointer to the proposal artifact on disk (hash must still match proposal_body_sha256).",
+      "required": ["artifact_path"],
+      "properties": {
+        "artifact_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "source_rail": {
+          "type": "string",
+          "enum": ["A", "B", "ops"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "proposal_body_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 (lowercase hex) of the proposal file bytes exactly as approved."
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["GO", "NO_GO"]
+    },
+    "approved_at_utc": { "type": "string", "format": "date-time" },
+    "valid_until_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "GO is invalid after this instant (replay guard). NO_GO receipts may reuse a short window; still required for uniform validation."
+    },
+    "approver_label": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "Non-secret handle (e.g. commander); omit or use hash if sensitive."
+    },
+    "approval_note": { "type": "string", "maxLength": 4000 },
+    "nonce": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "Optional single-use token; consumers may reject duplicate nonce in audit log."
+    }
+  },
+  "additionalProperties": false
+}

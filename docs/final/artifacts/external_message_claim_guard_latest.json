@@ -1,0 +1,534 @@
+{
+  "schema": "external_message_claim_guard_v1",
+  "generated_at_utc": "2026-04-30T11:01:09+00:00",
+  "scope": "docs/final/artifacts/**/*_latest.json",
+  "summary": {
+    "files_scanned": 1951,
+    "files_with_blocking_hits": 0,
+    "files_with_allowed_hits": 32,
+    "parse_errors": 0,
+    "excluded_files": 1,
+    "status": "pass"
+  },
+  "rules": [
+    {
+      "id": "trading_decisions",
+      "severity": "warn",
+      "pattern": "\\btrading decisions?\\b"
+    },
+    {
+      "id": "trading_actions",
+      "severity": "warn",
+      "pattern": "\\btrading actions?\\b"
+    },
+    {
+      "id": "doctrinal_proof",
+      "severity": "warn",
+      "pattern": "\\bdoctrinal proof\\b"
+    },
+    {
+      "id": "guaranteed_returns",
+      "severity": "warn",
+      "pattern": "\\bguaranteed returns?\\b"
+    },
+    {
+      "id": "perfect_claim",
+      "severity": "warn",
+      "pattern": "\\bperfect\\b"
+    },
+    {
+      "id": "zero_hallucination",
+      "severity": "warn",
+      "pattern": "\\bzero[- ]hallucination\\b"
+    }
+  ],
+  "allow_context_rules": [
+    "\\bwhat we do not claim\\b",
+    "\\bavoid doctrinal, guarantee-style\\b",
+    "\\bno doctrinal or guarantee-style claim\\b",
+    "\\bnot as doctrinal proof\\b",
+    "\\bnot doctrinal proof\\b",
+    "\\brather than doctrinal proof\\b",
+    "\\bperfect calculator\\b"
+  ],
+  "files_with_blocking_hits": [],
+  "files_with_allowed_hits": [
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T072700Z/global_atom_kdd_submission_template_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstract_en_180w",
+          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T072700Z/global_atom_network_academic_onepager_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.risk_notes_en[2]",
+          "snippet": "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T072700Z/global_atom_network_submission_abstracts_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.kdd_180w",
+          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
+        },
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.aaai_150w",
+          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T091358Z/global_atom_kdd_submission_template_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstract_en_180w",
+          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T091358Z/global_atom_network_academic_onepager_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.risk_notes_en[2]",
+          "snippet": "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T091358Z/global_atom_network_submission_abstracts_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.kdd_180w",
+          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
+        },
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.aaai_150w",
+          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T093849Z/global_atom_kdd_submission_template_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstract_en_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T093849Z/global_atom_network_academic_onepager_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.risk_notes_en[2]",
+          "snippet": "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T093849Z/global_atom_network_submission_abstracts_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.kdd_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        },
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.aaai_150w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T094103Z/global_atom_kdd_submission_template_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstract_en_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T094103Z/global_atom_network_academic_onepager_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.risk_notes_en[2]",
+          "snippet": "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T094103Z/global_atom_network_submission_abstracts_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.kdd_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        },
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.aaai_150w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/global_atom_kdd_submission_template_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstract_en_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/global_atom_network_academic_onepager_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.risk_notes_en[2]",
+          "snippet": "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/global_atom_network_submission_abstracts_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.kdd_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        },
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.aaai_150w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T100431Z/global_atom_kdd_submission_template_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstract_en_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T100431Z/global_atom_network_academic_onepager_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.risk_notes_en[2]",
+          "snippet": "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T100431Z/global_atom_network_submission_abstracts_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.kdd_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        },
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.aaai_150w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T101454Z/global_atom_kdd_submission_template_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstract_en_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T101454Z/global_atom_network_academic_onepager_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.risk_notes_en[2]",
+          "snippet": "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T101454Z/global_atom_network_submission_abstracts_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.kdd_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        },
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.aaai_150w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T102834Z/global_atom_kdd_submission_template_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstract_en_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T102834Z/global_atom_network_academic_onepager_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.risk_notes_en[2]",
+          "snippet": "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T102834Z/global_atom_network_submission_abstracts_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.kdd_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        },
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.aaai_150w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/two_track_submission_20260428T042145Z/two_track_submission_camera_ready_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.expanded_abstract_en.paragraphs[3]",
+          "snippet": "Disclosure posture: Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted. High-complexity historical corpora are treated as stress-test beds for context filtering robustness, not doct"
+        },
+        {
+          "rule_id": "guaranteed_returns",
+          "severity": "warn",
+          "json_path": "$.venues.kdd_applied_data_science.detailed_outline_en[5].subsections[0]",
+          "snippet": "What we do not claim (causal alpha, guaranteed returns)"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/two_track_submission_20260428T043048Z/two_track_submission_camera_ready_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.expanded_abstract_en.paragraphs[3]",
+          "snippet": "Disclosure posture: Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted. High-complexity historical corpora are treated as stress-test beds for context filtering robustness, not doct"
+        },
+        {
+          "rule_id": "guaranteed_returns",
+          "severity": "warn",
+          "json_path": "$.venues.kdd_applied_data_science.detailed_outline_en[5].subsections[0]",
+          "snippet": "What we do not claim (causal alpha, guaranteed returns)"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/freeze/two_track_submission_20260428T043821Z/two_track_submission_camera_ready_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.expanded_abstract_en.paragraphs[3]",
+          "snippet": "Disclosure posture: Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted. High-complexity historical corpora are treated as stress-test beds for context filtering robustness, not doct"
+        },
+        {
+          "rule_id": "guaranteed_returns",
+          "severity": "warn",
+          "json_path": "$.venues.kdd_applied_data_science.detailed_outline_en[5].subsections[0]",
+          "snippet": "What we do not claim (causal alpha, guaranteed returns)"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/global_atom_kdd_submission_template_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstract_en_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/global_atom_network_academic_onepager_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.risk_notes_en[2]",
+          "snippet": "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/global_atom_network_submission_abstracts_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.kdd_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        },
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.aaai_150w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/two_track_kdd_submission_template_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstract_en_180w",
+          "snippet": "We present a two-track safety-gated inference architecture for risk-control operations over meaning-rich cross-reference signals. The system separates K-track (knowledge/research lane) from T-track (operational survivors"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/two_track_submission_camera_ready_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.expanded_abstract_en.paragraphs[3]",
+          "snippet": "Disclosure posture: Public-safe disclosure only. Core formula/weight internals remain redacted, and high-complexity historical corpora are treated as stress-test beds for context-filter robustness rather than doctrinal p"
+        },
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.compressed_abstracts_en.kdd_180w",
+          "snippet": "We present a two-track safety-gated inference architecture for risk-control operations over meaning-rich cross-reference signals. The system separates K-track (knowledge/research lane) from T-track (operational survivors"
+        },
+        {
+          "rule_id": "guaranteed_returns",
+          "severity": "warn",
+          "json_path": "$.venues.kdd_applied_data_science.detailed_outline_en[5].subsections[0]",
+          "snippet": "What we do not claim (directional certainty, guaranteed returns)"
+        }
+      ]
+    }
+  ],
+  "excluded_files": [
+    {
+      "file": "docs/final/artifacts/manse_postella_rule_fix_candidates_latest.json",
+      "excluded": true,
+      "hits": [],
+      "allowed_hits": []
+    }
+  ],
+  "parse_errors": []
+}

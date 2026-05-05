@@ -1,0 +1,21 @@
+{
+  "schema": "atom_resonance_report_v1",
+  "generated_at_utc": "2026-04-28T05:55:29Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "seed_symbol": "tree_of_knowledge_good_evil",
+  "sequence_length": 5,
+  "resonance_score": 0.6996232233333334,
+  "supporting_survivor": {
+    "candidate_id": "cand_001",
+    "source_node_id": "aramaic::Dan.2.10",
+    "ci_low_defense_contrib": 0.616703,
+    "fusion_candidate_score": 0.6042633000000001
+  },
+  "interpretation": "High resonance implies symbol-level boundary/transgression sequence is structurally coherent with current survivor pattern.",
+  "sources": {
+    "mapping_json": "C:\\workspace\\docs\\final\\artifacts\\symbol_atom_mapping_latest.json",
+    "survivor_json": "C:\\workspace\\docs\\final\\artifacts\\insight_survivor_candidates_latest.json"
+  }
+}

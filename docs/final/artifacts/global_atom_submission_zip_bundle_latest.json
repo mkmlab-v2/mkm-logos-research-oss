@@ -1,0 +1,31 @@
+{
+  "schema": "global_atom_submission_zip_bundle_v1",
+  "generated_at_utc": "2026-04-28T10:28:35Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "zip_path": "C:\\workspace\\docs\\final\\artifacts\\global_atom_submission_bundle_20260428T102835Z.zip",
+  "file_count": 15,
+  "files": [
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_submission_bundle_latest.json",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_camera_ready_pack_latest.json",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_camera_ready_polish_latest.json",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_academic_onepager_latest.json",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_submission_abstracts_latest.json",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_kdd_submission_template_latest.json",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_core100_phase_transition_report_latest.json",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon_batch_report_latest.json",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon\\global_atom_full_canon_consolidated_manifest_latest.json",
+    "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_gate_summary_latest.json",
+    "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_counterfactual_comparison_latest.json",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_camera_ready_paper_draft_latest.md",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_camera_ready_appendix_latest.md",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_camera_ready_paper_polished_latest.md",
+    "C:\\workspace\\docs\\final\\artifacts\\global_atom_camera_ready_appendix_polished_latest.md"
+  ],
+  "inputs": {
+    "bundle_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_submission_bundle_latest.json",
+    "camera_ready_pack_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_camera_ready_pack_latest.json",
+    "camera_ready_polish_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_camera_ready_polish_latest.json"
+  }
+}

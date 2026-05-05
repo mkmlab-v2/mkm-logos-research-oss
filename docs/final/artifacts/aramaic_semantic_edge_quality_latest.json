@@ -1,0 +1,18 @@
+{
+  "schema": "aramaic_semantic_edge_quality_v1",
+  "generated_at_utc": "2026-04-28T05:55:28Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "edge_count": 796,
+  "semantic_overlap_mean": 0.552204,
+  "shared_token_mean": 3.957286,
+  "edge_type_histogram": {
+    "timeline_anchor": 263,
+    "causal_precursor": 1,
+    "fulfillment": 1,
+    "recurrence": 1,
+    "contrast_inversion": 1,
+    "cross_lens_confirm": 529
+  }
+}

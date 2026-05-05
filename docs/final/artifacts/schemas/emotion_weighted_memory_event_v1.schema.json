@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "emotion_weighted_memory_event_v1",
+  "type": "object",
+  "properties": {
+    "schema_version": { "type": "string", "const": "emotion_weighted_memory_event_v1" },
+    "event_id": { "type": "string" },
+    "timestamp_utc": { "type": "string", "format": "date-time" },
+    "source": { "type": "string" },
+    "emotion": {
+      "type": "object",
+      "properties": {
+        "valence": { "type": "number", "minimum": -1.0, "maximum": 1.0 },
+        "arousal": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "uncertainty": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "source_mode": { "type": "string" },
+        "sasang_axes": {
+          "type": "object",
+          "properties": {
+            "ae": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "no": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "hui": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+            "rak": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+          },
+          "required": ["ae", "no", "hui", "rak"]
+        }
+      },
+      "required": ["valence", "arousal", "uncertainty", "source_mode", "sasang_axes"]
+    },
+    "quant_inputs": { "type": "object" },
+    "text_inputs": { "type": "object" },
+    "labels": { "type": "object" }
+  },
+  "required": ["schema_version", "event_id", "timestamp_utc", "emotion"]
+}

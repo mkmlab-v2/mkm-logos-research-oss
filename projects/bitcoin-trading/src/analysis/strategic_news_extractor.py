@@ -19,6 +19,7 @@ from .strategic_news_event import (
     ImpactScope,
     TimeHorizon,
 )
+from .sasang_emotion_bridge import build_emotion_weight
 
 from tools.tools.core.file_based_memory import FileBasedMemory
 
@@ -156,6 +157,10 @@ def build_strategic_news_event_from_text(
     published_at: Optional[datetime] = None,
     raw_url: Optional[str] = None,
     raw_ref_id: Optional[str] = None,
+    panic_ratio: Optional[float] = None,
+    fomo_index: Optional[float] = None,
+    market_volatility: Optional[float] = None,
+    llm_sentiment_score: Optional[float] = None,
 ) -> StrategicNewsEvent:
     """
     뉴스/공시 원문 텍스트를 StrategicNewsEvent로 변환하는 최소 구현.
@@ -171,6 +176,13 @@ def build_strategic_news_event_from_text(
     headline, summary = _extract_headline_and_summary(raw_text)
     market_sentiment_latent = _infer_market_sentiment_latent(raw_text)
     actor_intent_latent = _infer_actor_intent_latent(raw_text)
+    emotion = build_emotion_weight(
+        panic_ratio=panic_ratio,
+        fomo_index=fomo_index,
+        market_volatility=market_volatility,
+        market_sentiment_latent=market_sentiment_latent,
+        llm_sentiment_score=llm_sentiment_score,
+    )
 
     created_at = published_at or datetime.now(timezone.utc)
 
@@ -188,6 +200,16 @@ def build_strategic_news_event_from_text(
         impact_scope=impact_scope,
         time_horizon=time_horizon,
         market_sentiment_latent=market_sentiment_latent,
+        valence=emotion.valence,
+        arousal=emotion.arousal,
+        uncertainty=emotion.uncertainty,
+        emotion_weight_source=emotion.source_mode,
+        sasang_emotion_axes={
+            "ae": emotion.ae,
+            "no": emotion.no,
+            "hui": emotion.hui,
+            "rak": emotion.rak,
+        },
         actor_intent_latent=actor_intent_latent,
         risk_tags=[],
         strategy_hint=None,
@@ -230,6 +252,11 @@ def store_strategic_news_event(
         "confidence": event.confidence,
         "impact_scope": event.impact_scope,
         "time_horizon": event.time_horizon,
+        "valence": event.valence,
+        "arousal": event.arousal,
+        "uncertainty": event.uncertainty,
+        "emotion_weight_source": event.emotion_weight_source,
+        "sasang_emotion_axes": event.sasang_emotion_axes,
         "risk_tags": event.risk_tags,
         "strategy_hint": event.strategy_hint,
         "published_at": event.published_at.isoformat(),

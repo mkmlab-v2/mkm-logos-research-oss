@@ -44,20 +44,40 @@ def _confidence_from_machine(row: dict[str, Any]) -> float:
     mr = row.get("machine_readables")
     if not isinstance(mr, dict):
         return 0.5
-    vals: list[float] = []
-    for k in ("heat_proxy", "cold_proxy", "volatility_rarefaction_proxy"):
-        v = mr.get(k)
-        if isinstance(v, (int, float)):
-            vals.append(float(v))
-    if not vals:
+    heat = float(mr.get("heat_proxy")) if isinstance(mr.get("heat_proxy"), (int, float)) else None
+    cold = float(mr.get("cold_proxy")) if isinstance(mr.get("cold_proxy"), (int, float)) else None
+    vol = float(mr.get("volatility_rarefaction_proxy")) if isinstance(mr.get("volatility_rarefaction_proxy"), (int, float)) else None
+    if heat is None or cold is None or vol is None:
         return 0.5
-    return max(0.0, min(1.0, sum(vals) / len(vals)))
+    # Confidence baseline + proxy separation bonus. This avoids chronic sub-0.55 scores
+    # when directional proxies are mildly imbalanced yet consistent.
+    imbalance = abs(heat - cold)
+    conf = 0.45 + (0.35 * vol) + (0.55 * imbalance)
+    return max(0.0, min(1.0, conf))
+
+
+def _direction_from_mapping(row: dict[str, Any], mapping_target: str) -> float:
+    base = _MAPPING_TO_SCORE.get(mapping_target, 0.0)
+    if mapping_target != "sideways":
+        return base
+    mr = row.get("machine_readables")
+    if not isinstance(mr, dict):
+        return 0.0
+    heat = float(mr.get("heat_proxy")) if isinstance(mr.get("heat_proxy"), (int, float)) else None
+    cold = float(mr.get("cold_proxy")) if isinstance(mr.get("cold_proxy"), (int, float)) else None
+    if heat is None or cold is None:
+        return 0.0
+    delta = heat - cold
+    # Neutral anchor with micro-tilt: keep small bounded signal and prevent hard 0 fixation.
+    if abs(delta) < 0.02:
+        return 0.0
+    return max(-0.18, min(0.18, delta))
 
 
 def _build_payload(row: dict[str, Any], *, source: str, input_path: str) -> dict[str, Any]:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     mt = str(row.get("mapping_target") or "").strip().lower()
-    direction = _MAPPING_TO_SCORE.get(mt, 0.0)
+    direction = _direction_from_mapping(row, mt)
     conf = _confidence_from_machine(row)
 
     rationale = (

@@ -1,0 +1,97 @@
+{
+  "schema": "pointer_hash_snapping_router_v1",
+  "generated_at_utc": "2026-04-28T21:30:04+00:00",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "inputs": {
+    "runtime_config": "C:\\workspace\\docs\\final\\artifacts\\genesis_pointer_route_runtime_config_latest.json",
+    "codebook_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_gematria_4d_codebook_v1_latest.json",
+    "input_count": 3,
+    "enable_snap": true,
+    "snap_min_ratio": 0.74,
+    "target_path": "projects/bitcoin-trading/memory/v2/demo.json",
+    "memory_v2_oov_passthrough": true
+  },
+  "rows": [
+    {
+      "input_text": "폭락 변동성 리스크 방어",
+      "route_mode": "pointer_shadow",
+      "effective_route_mode": "pointer_shadow",
+      "selected_path": "track_a_primary",
+      "pointer_shadow": true,
+      "target_path": "projects/bitcoin-trading/memory/v2/demo.json",
+      "path_policy": "apply",
+      "pointer_candidate_ok": true,
+      "pointer_payload": {
+        "address_hash64_hex": "0d0af372df1a7bd4",
+        "token_count": 4,
+        "snapped_count": 0
+      },
+      "fallback_to_track_a": false,
+      "unresolved_tokens": [],
+      "snap_events": [],
+      "passthrough_events": []
+    },
+    {
+      "input_text": "비트코인 시장 공포 확산",
+      "route_mode": "pointer_shadow",
+      "effective_route_mode": "pointer_shadow",
+      "selected_path": "track_a_primary",
+      "pointer_shadow": true,
+      "target_path": "projects/bitcoin-trading/memory/v2/demo.json",
+      "path_policy": "apply",
+      "pointer_candidate_ok": true,
+      "pointer_payload": {
+        "address_hash64_hex": "1d74c73b1f747771",
+        "token_count": 4,
+        "snapped_count": 0
+      },
+      "fallback_to_track_a": false,
+      "unresolved_tokens": [],
+      "snap_events": [],
+      "passthrough_events": [
+        {
+          "token": "비트코인",
+          "mode": "memory_v2_oov_passthrough"
+        },
+        {
+          "token": "시장",
+          "mode": "memory_v2_oov_passthrough"
+        },
+        {
+          "token": "공포",
+          "mode": "memory_v2_oov_passthrough"
+        },
+        {
+          "token": "확산",
+          "mode": "memory_v2_oov_passthrough"
+        }
+      ]
+    },
+    {
+      "input_text": "금화교역 태양인 회복",
+      "route_mode": "pointer_shadow",
+      "effective_route_mode": "pointer_shadow",
+      "selected_path": "track_a_primary",
+      "pointer_shadow": true,
+      "target_path": "projects/bitcoin-trading/memory/v2/demo.json",
+      "path_policy": "apply",
+      "pointer_candidate_ok": true,
+      "pointer_payload": {
+        "address_hash64_hex": "56dd04b4ccc1b58e",
+        "token_count": 3,
+        "snapped_count": 0
+      },
+      "fallback_to_track_a": false,
+      "unresolved_tokens": [],
+      "snap_events": [],
+      "passthrough_events": []
+    }
+  ],
+  "summary": {
+    "pointer_candidate_ok_count": 3,
+    "selected_pointer_count": 0,
+    "selected_track_a_count": 3
+  }
+}

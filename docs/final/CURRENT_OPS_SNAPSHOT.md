@@ -1,5 +1,15 @@
 # Current ops snapshot (ephemeral handoff)
 
+<!-- AUTO_OPS_V1_START -->
+## Auto Ops Handoff (v1)
+
+- `updated_at_utc:` 2026-05-05T18:30:00Z
+- `mission_id:` longrun-memory-ops-24h
+- `mission:` 장기기억 운영 24h 안전 자동 루틴 (best_loop: block_quality_gate->keep_current_schedule)
+- `status:` in_progress
+- `next_action:` `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_workspace_automation_health.ps1 -SkipVaultMirror -SkipMkmMemoryInventory -SkipPhase1Readiness -IncludeOperationalReadinessChecklist -IncludeCentralMemoryReadCheck -IncludeSecretExposureSurvey -SkipNewsObservationContractSmoke`
+<!-- AUTO_OPS_V1_END -->
+
 ## Ultra-Light Execution Contract (v1)
 
 **목적:** 이 파일을 열면 즉시 현재 상태를 3줄로 파악하고, 승인 불필요 범위의 다음 1개 실행으로 바로 진입한다.
@@ -60,6 +70,21 @@
 **목적:** 지휘관이 짧은 명령만 내려도, 에이전트가 동일 포맷으로 현황 파악·지휘 보조를 수행한다.
 **역할 분리:** 이 파일은 이번 작전의 임시 핸드오프/실행 상태만 담는다.
 **중앙 메모리 경계:** 장기 지문·정체성·누적 레슨은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에서만 관리하고 여기로 복제하지 않는다.
+
+## 2026-04-28 최신 상태 (PointerGuard 운영 체인)
+
+- 체인: `scripts/run_genesis_pointer_routing_control_chain_v1.py`에 policy/ramp/freeze/runtime/smoke 최종 게이트 연결 완료.
+- 스케줄: `MKM_PointerGuard_ControlChain_Daily` (06:30, Ready) 등록 완료.
+- 성능 성적표: Tier1+Tier2 분리 산출(`pointerguard_two_tier_perf_scorecard_latest.json`), 현재 판정 `GO_FOR_CONTROLLED_B2B`.
+- 보류: 글로벌 초대형 주장 전 host CPU/memory 계측 포함 Tier2 보강 필요.
+
+## 2026-04-29 최신 상태 (Global Atom claim lock 복구)
+
+- 문제: 브리핑/대화 레이어의 `약 305만 의미망(엣지)` 수치가 SSOT latest 포인터와 분리되어 재확인 실패 발생.
+- 복구: `docs/final/artifacts/global_atom_claim_lock_registry_latest.json` 생성(`value=3051269`, definition/evidence_path/recompute_command 고정).
+- 근거 원본: `docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/global_atom_network_academic_onepager_latest.json`의 `key_facts.edge_count`.
+- 검증 스크립트: `py scripts/check_global_atom_claim_lock_v1.py --write-lock --strict` (claim value + source sha256 확인).
+- 운용 원칙: 대외 문구는 claim registry를 우선, mutable `*latest*` 산출만으로 고정 수치 단정 금지.
 
 ## 2026-04-22 최신 상태 (B-track dual-lane)
 
@@ -2571,3 +2596,15 @@ Set-Location c:\workspace
 - **fact_promotion_allowed:** `False`
 - **reason:** `synthetic_or_template_input_detected`
 - **sidecar_csv:** `C:\workspace\tmp\bio_multimodal_sidecar_from_paper_proxy_v1.csv`
+
+## 2026-04-30 최신 상태 (투고 패킷·운영 게이트 동기화)
+
+- **대외 문구 가드 고정:** `scripts/build_external_message_claim_guard_report_v1.py` + CI `.github/workflows/external-message-claim-guard.yml` + 주간 러너 `scripts/run_a_track_weekly_check.ps1` 선검사 연결.
+- **가드 상태:** `docs/final/artifacts/external_message_claim_guard_latest.json` 기준 `status=pass` 유지(파싱/BOM 이슈 보정 완료).
+- **스케줄 운영 분리:** `A-Track Weekly GoNoGo-Dev`(hold_s1 + claim guard off) / `A-Track Weekly GoNoGo-Prod`(no_go + claim guard on) 등록·수동 트리거·실행 결과 `Last Result=0` 확인.
+- **등록 스크립트 강화:** `scripts/register_a_track_weekly_gonogo_task.ps1`에 `OnSystemError`, `Enable/DisableClaimGuard`, `EnvironmentSuffix`, `DryRun` 및 운영 예시/검증 명령 반영.
+- **제출 패킷 완성:** `docs/final/artifacts/mkm_submission_packet_v1.md` + `mkm_submission_camera_ready_compact_v1.md` + `mkm_submission_table_figure_caption_templates_v1.md` + `mkm_submission_rebuttal_template_v1.md`.
+- **템플릿 동기화:** `two_track_submission_camera_ready_latest.json`, `two_track_kdd_submission_template_latest.json`를 `as-of artifact`, A/B 격벽, risk-control 문구로 정렬.
+- **승격 표 반영:** `mkm_submission_packet_v1.md`에 Evidence Promotion Matrix(P1~P5) + Tier 규칙(Tier A candidate / Tier B exploratory) 삽입.
+- **투고 직전 체크리스트:** `docs/final/artifacts/mkm_submission_preflight_10min_checklist_v1.md` 생성(문구/증거/운영 preflight 10분 루틴).
+- **다음 1스텝:** 제출 직전 T-1/T-0에 핵심 5개 artifact의 `generated_at_utc` 재확인 + claim guard 재실행 후 제출본 고정.

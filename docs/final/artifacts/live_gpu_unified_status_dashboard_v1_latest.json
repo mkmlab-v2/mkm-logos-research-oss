@@ -1,0 +1,29 @@
+{
+  "schema": "live_gpu_unified_status_dashboard_v1",
+  "generated_at_utc": "2026-04-29T12:15:44Z",
+  "live": {
+    "health_result": "PASS",
+    "daemon_running": true,
+    "trading_enabled": true,
+    "blockers_result": "PASS",
+    "blocker_count": 0
+  },
+  "release": {
+    "ready_count": 0,
+    "ready_tracks": []
+  },
+  "gpu": {
+    "backlog_completed": 5,
+    "backlog_total": 5,
+    "benchmark_status": "ready_full_corpus",
+    "cache_rows": 83007,
+    "graph_pairs_evaluated": 199999,
+    "resweep_status": "go_research_robust",
+    "shadow_runtime_decision": "SHADOW_GO",
+    "shadow_runtime_score_0_1": 0.848554
+  },
+  "constraints": {
+    "no_auto_live_binding_for_gpu_shadow": true,
+    "human_review_required_for_live_switch": true
+  }
+}

@@ -21,6 +21,9 @@ param(
     # Optional: fast pytest subset for weather B-track triplet + fusion-search-json (not run by default; ~tens of seconds).
     [switch]$IncludeWeatherPipelineSmoke,
 
+    # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only profiles).
+    [switch]$SkipNewsObservationContractSmoke,
+
     # Optional: bio PMID paper SNP sidecar join smoke (no network; sub-second).
     [switch]$IncludeBioPaperSnpJoinSmoke,
     # Shortcut profile: run only P0 path gate + automation registry reconcile + Bio SNP smoke.
@@ -38,7 +41,27 @@ param(
     # Optional: bitcoin-trading OpenTelemetry smoke (console or OTLP; few seconds if packages installed).
     [switch]$IncludeBitcoinTradingOtelSmoke,
     # Shortcut profile: run only bitcoin-trading OTel smoke (skip broader health checks).
-    [switch]$BitcoinTradingOtelSmokeOnly
+    [switch]$BitcoinTradingOtelSmokeOnly,
+
+    # Optional: secure envelope external_kms readiness checks (env/command hook; optional HTTP smoke).
+    [switch]$IncludeSecureEnvelopeExternalKmsReadiness,
+    [string]$SecureEnvelopeExternalKmsBaseUrl = "",
+
+    # Optional: MKM AI v2 final promotion readiness gate.
+    [switch]$IncludeMkmAiV2Readiness,
+
+    # Optional: MKM AI final ops guard check (hard fail if final posture degraded).
+    [switch]$IncludeMkmAiFinalOpsGuard,
+
+    # Optional: MKM Track C client handoff guard (hard fail if delivery packet degrades).
+    [switch]$IncludeMkmAiTrackCHandoffGuard,
+
+    # Optional: Operational readiness checklist builder (Judge-ready done-condition snapshot).
+    [switch]$IncludeOperationalReadinessChecklist,
+
+    # Optional: fail when central-memory read acknowledgement is missing/stale.
+    [switch]$IncludeCentralMemoryReadCheck,
+    [double]$CentralMemoryReadMaxAgeHours = 24.0
 )
 
 $ErrorActionPreference = "Stop"
@@ -99,6 +122,20 @@ try {
     if (-not $BitcoinTradingOtelSmokeOnly) {
         Step "P0 / CONSTITUTION paths" {
             & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\verify_p0_constitution_gate_paths.ps1") -WorkspaceRoot $root
+        }
+    }
+
+    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly) {
+        $ns = Join-Path $root "scripts\Run-NewsObservationContractSmoke.ps1"
+        if (Test-Path -LiteralPath $ns) {
+            Step "B-track news_observation contract smoke (default)" {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $ns
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== News observation contract smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: Run-NewsObservationContractSmoke.ps1 not found"
         }
     }
 
@@ -313,6 +350,95 @@ try {
             Write-Host ""
             Write-Host "=== Bitcoin trading OTel smoke ===" -ForegroundColor Yellow
             Write-Host "SKIP: smoke_otel.ps1 not found at $otelSmoke"
+        }
+    }
+
+    if ($IncludeSecureEnvelopeExternalKmsReadiness) {
+        $sec = Join-Path $root "scripts\check_secure_envelope_external_kms_readiness_v1.py"
+        if (Test-Path -LiteralPath $sec) {
+            Step "Secure envelope external_kms readiness" {
+                $args = @($sec)
+                if (-not [string]::IsNullOrWhiteSpace($SecureEnvelopeExternalKmsBaseUrl)) {
+                    $args += "--base-url"
+                    $args += $SecureEnvelopeExternalKmsBaseUrl
+                }
+                & py @args
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Secure envelope external_kms readiness ===" -ForegroundColor Yellow
+            Write-Host "SKIP: check_secure_envelope_external_kms_readiness_v1.py not found"
+        }
+    }
+
+    if ($IncludeMkmAiV2Readiness) {
+        $mkmV2 = Join-Path $root "scripts\run_mkm_ai_v2_readiness_check.ps1"
+        if (Test-Path -LiteralPath $mkmV2) {
+            Step "MKM AI v2 readiness gate" {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $mkmV2 -WorkspaceRoot $root
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== MKM AI v2 readiness gate ===" -ForegroundColor Yellow
+            Write-Host "SKIP: run_mkm_ai_v2_readiness_check.ps1 not found"
+        }
+    }
+
+    if ($IncludeMkmAiFinalOpsGuard) {
+        $guard = Join-Path $root "scripts\check_mkm_ai_final_ops_guard.py"
+        if (Test-Path -LiteralPath $guard) {
+            Step "MKM AI final ops guard" {
+                & py $guard --workspace-root $root --min-pass-rate 95 --min-sample-count 3
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== MKM AI final ops guard ===" -ForegroundColor Yellow
+            Write-Host "SKIP: check_mkm_ai_final_ops_guard.py not found"
+        }
+    }
+
+    if ($IncludeMkmAiTrackCHandoffGuard) {
+        $trackcGuard = Join-Path $root "scripts\check_mkm_trackc_client_handoff_guard.py"
+        if (Test-Path -LiteralPath $trackcGuard) {
+            Step "MKM AI Track C client handoff guard" {
+                & py $trackcGuard --workspace-root $root
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== MKM AI Track C client handoff guard ===" -ForegroundColor Yellow
+            Write-Host "SKIP: check_mkm_trackc_client_handoff_guard.py not found"
+        }
+    }
+
+    if ($IncludeOperationalReadinessChecklist) {
+        $opsChecklist = Join-Path $root "scripts\build_operational_readiness_checklist_v1.py"
+        if (Test-Path -LiteralPath $opsChecklist) {
+            Step "Operational readiness checklist build" {
+                & py $opsChecklist --workspace-root $root
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Operational readiness checklist build ===" -ForegroundColor Yellow
+            Write-Host "SKIP: build_operational_readiness_checklist_v1.py not found"
+        }
+    }
+
+    if ($IncludeCentralMemoryReadCheck) {
+        $cmr = Join-Path $root "scripts\check_central_memory_read_ack_v1.py"
+        if (Test-Path -LiteralPath $cmr) {
+            Step "Central memory read acknowledgement check" {
+                & py $cmr --workspace-root $root --max-age-hours $CentralMemoryReadMaxAgeHours
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Central memory read acknowledgement check ===" -ForegroundColor Yellow
+            Write-Host "SKIP: check_central_memory_read_ack_v1.py not found"
         }
     }
 

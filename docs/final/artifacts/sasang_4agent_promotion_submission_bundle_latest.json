@@ -1,0 +1,55 @@
+{
+  "schema": "sasang_4agent_promotion_submission_bundle_v1",
+  "generated_at_utc": "2026-04-30T18:33:32Z",
+  "summary_status": "PROMOTED_WITH_HUMAN_APPROVAL + MONITORING_ACTIVE + DRILL_PASS",
+  "checks": {
+    "gate_promoted_with_human_approval": true,
+    "fusion_gate_pass": true,
+    "bridge_active": true,
+    "monitor_alert_false": true,
+    "recovery_drill_pass": true,
+    "repro_significance_pass": true,
+    "repro_mdd_reduction_positive": true,
+    "repro_sample_size_ok": true,
+    "repro_check_pass": true
+  },
+  "artifact_refs": {
+    "protocol": "C:/workspace/docs/final/artifacts/sasang_4agent_collision_btrack_protocol_latest.json",
+    "fusion_gate": "C:/workspace/docs/final/artifacts/sasang_4agent_fusion_gate_latest.json",
+    "patent_brief": "C:/workspace/docs/final/artifacts/sasang_4agent_patent_brief_latest.json",
+    "invention_disclosure": "C:/workspace/docs/final/artifacts/sasang_4agent_invention_disclosure_latest.json",
+    "promotion_gate": "C:/workspace/docs/final/artifacts/sasang_4agent_promotion_gate_latest.json",
+    "human_approval": "C:/workspace/docs/final/artifacts/sasang_4agent_human_approval_latest.json",
+    "tracka_bridge": "C:/workspace/docs/final/artifacts/sasang_4agent_tracka_bridge_latest.json",
+    "monitor_snapshot": "C:/workspace/docs/final/artifacts/sasang_4agent_monitor_snapshot_latest.json",
+    "daily_monitor_run": "C:/workspace/docs/final/artifacts/sasang_4agent_daily_monitor_run_latest.json",
+    "force_hold_recovery_drill": "C:/workspace/docs/final/artifacts/sasang_4agent_force_hold_recovery_drill_latest.json",
+    "repro_protocol_kospi": "C:/workspace/docs/final/artifacts/sasang_4agent_collision_btrack_protocol_repro_kospi_latest.json"
+  },
+  "artifact_sha256": {
+    "protocol": "d77551c9567b0c2ce43327571de5bcf14ec70f9b6839e8cbeefa248794e157bb",
+    "fusion_gate": "f7957b33f962bb64849921799172dd71b828678917f2c3e54643e289bd2e7350",
+    "patent_brief": "7c62492457a72ef2f11d1099409357567c00083f23fb31d9e6e84d205e03daa8",
+    "invention_disclosure": "9521ecf0cdba0233ea07c221ec5fcbf61bc70141e05e054ae583ed87dac5fbb5",
+    "promotion_gate": "ee22fdcaca9b901721c9140e45facf7b1b54dc7bf0049dfa789cbb21f993c665",
+    "human_approval": "0911ed5ebdb2f23222dafc13129bd1cb47c6e967ab6dacc0ba70c54989d926e4",
+    "tracka_bridge": "28699b9ef75800c302b9cc8ca5cd73989c653d1b0c52503b8343bc58e77d9b40",
+    "monitor_snapshot": "0246087f4837be61d6e005b30381c9f94114835c88bd4b6a19dd54685cb31ca3",
+    "daily_monitor_run": "655beb153ed0bcc981e0fe4e6c4abfdcb261e7c92599c57d1731522a8f6d99e1",
+    "force_hold_recovery_drill": "116028afc6616fce2eb87c1ac740d4db72c54d2890cdacb0a0356b70cc42d080",
+    "repro_protocol_kospi": "6d4a63562cd20e99e9e84f316a37ae3f210ce95fa1927fc1043b4c1f8afb80b2"
+  },
+  "key_metrics": {
+    "ticks": 7232,
+    "mdd_reduction_abs": 0.0645304516749716,
+    "p_permutation": 0.0225,
+    "promotion_decision": "A_TRACK_PROMOTED_WITH_HUMAN_APPROVAL",
+    "fusion_gate_decision": "FUSION_GATE_PASS",
+    "bridge_status": "ACTIVE",
+    "monitor_alert": false,
+    "drill_status": "PASS",
+    "repro_ticks": 7232,
+    "repro_p_permutation": 0.017,
+    "repro_check_pass": true
+  }
+}

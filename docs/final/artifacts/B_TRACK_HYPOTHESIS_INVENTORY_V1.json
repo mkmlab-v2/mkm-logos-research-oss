@@ -195,6 +195,33 @@
       ],
       "note": "CANDIDATE_FOR_PROMOTION (수동 승격 대기); §8 Promotion Loop; A-track auto-merge forbidden.",
       "promotion_status": "bench_only"
+    },
+    {
+      "hypothesis_id": "HYP_EXT_CROSSREF_0001",
+      "created_utc": "2026-04-29T16:56:00+00:00",
+      "hypothesis_tier": "B",
+      "boundary_ack": true,
+      "pillar": "external_crossref_baseline",
+      "ontology_layer": "human_lens_west",
+      "lens_family": "none",
+      "equivalence_claim": false,
+      "title": "[HYPO] External 63,779 cross-reference baseline can be used as a calibration anchor for internal semantic-topology comparisons",
+      "summary": "The external 2007 KJV cross-reference count (63,779) is treated as a fixed baseline reference and must remain distinct from internal expanded semantic-topology edge counts.",
+      "falsification_condition": "Comparison reports conflate explicit cross-reference edges with expanded semantic-topology edges without preserving scope labels and guardrails.",
+      "cross_links": [
+        {
+          "target_artifact": "BTRACK_EXTERNAL_REFERENCE_FACT_REGISTRY_V1",
+          "entry_ids": ["external_bible_crossref_edges_2007_kjv_v1"],
+          "join_note": "baseline: external FACT anchor for graph-scale comparison; not ontological identity with internal global-atom graph."
+        },
+        {
+          "target_artifact": "GLOBAL_ATOM_CLAIM_LOCK_REGISTRY",
+          "entry_ids": ["global_atom_edge_count_305m_v1"],
+          "join_note": "comparison: internal research graph scale lock used for side-by-side context with external baseline."
+        }
+      ],
+      "note": "External baseline linkage only; A-track auto-merge forbidden; trading trigger forbidden.",
+      "promotion_status": "bench_only"
     }
   ]
 }

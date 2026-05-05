@@ -1,0 +1,181 @@
+{
+  "schema": "two_track_submission_camera_ready_v1",
+  "generated_at_utc": "2026-04-28T05:55:33Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "source": {
+    "draft_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_draft_latest.json"
+  },
+  "recommended_title_en": "Two-Track Safety-Gated Inference for Risk-Control Decision Support",
+  "expanded_abstract_en": {
+    "paragraphs": [
+      "This work addresses a governance problem in systems that derive dense, meaning-rich signals from cross-reference knowledge networks. Such signals are expressive but prone to overfitting and false discovery when promoted directly into operational decisions. We therefore frame the task as a promotion-control problem where narrative insight and operational claims must be separated.",
+      "Our contribution is an engineering architecture and reproducibility stack rather than a market-direction oracle. We separate K-track (knowledge/research lane) from T-track (operational survivorship and rollback lane), and evaluate under artifact-anchored protocol: benchmark comparison, raw OOS readiness checks, bootstrap/permutation significance, and falsification suite scans.",
+      "Empirically, current as-of artifacts indicate bundle readiness and publication-claim readiness under defined test conditions. Statistical reports support positive delta interpretation, and falsification checks pass with reviewer-facing first-break disclosure at survivor threshold 7. We emphasize bounded interpretation and protocol transparency over headline directional claims.",
+      "Disclosure posture: Public-safe disclosure only. Core formula/weight internals remain redacted, and high-complexity historical corpora are treated as stress-test beds for context-filter robustness rather than doctrinal proof. The narrative focus is safety gates, rollback contracts, reproducible artifacts, and lane separation.",
+      "Fail-boundary disclosure: maximum safe survivor-floor observed in sensitivity grid is 5, and first break condition appears at survivor-floor 7. We use this boundary as an explicit reviewer-facing risk condition.",
+      "Title for submission packaging: \"Two-Track Safety-Gated Inference for Risk-Control Decision Support\". Limitations include domain-specific semantics, snapshot dependence, and the need for extended drift windows; we provide replication via referenced artifacts and scripts rather than proprietary tuning tables."
+    ],
+    "approx_word_count": 263,
+    "note": "Expand or trim to venue word limit; content stays public-safe by design."
+  },
+  "compressed_abstracts_en": {
+    "kdd_180w": "We present a two-track safety-gated inference architecture for risk-control operations over meaning-rich cross-reference signals. The system separates K-track (knowledge/research lane) from T-track (operational survivorship and rollback lane) to prevent direct promotion of overfit signals into operations. Claims are artifact-anchored and reproducible through multi-baseline comparison, raw OOS readiness checks, bootstrap/permutation significance, and falsification boundary scans. Current as-of artifacts indicate bundle readiness and publication-claim readiness under tested conditions; significance supports positive delta, and falsification reports first non-pass at survivor threshold 7. A fail-boundary layer sets max-safe survivor floor at 5 and first-break at 7 for explicit no-go semantics. Historical corpora are treated as stress-test beds for context-filter robustness, not doctrinal proof. The system prioritizes risk-off governance, auditability, and reproducibility over directional market claims.",
+    "aaai_150w": "We introduce a deployment-oriented safety-gated inference stack for narrative-heavy systems. K-track knowledge generation is isolated from T-track operational gating, and promotion claims require benchmark, raw OOS, significance, and falsification evidence. Under current as-of artifacts, bundle/readiness gates are satisfied under tested conditions, significance supports positive delta, and boundary analysis reports first non-pass at survivor threshold 7 with rollback/no-go semantics. The paper emphasizes auditable artifact trails and bounded interpretation while keeping proprietary formula internals redacted. Product mapping remains split by design: Macro Risk Warning API for operational governance and Logos Resonance Explorer API for research exploration. Outputs are intended for risk-control observability, not guaranteed directional return claims."
+  },
+  "venues": {
+    "kdd_applied_data_science": {
+      "venue_label": "KDD Applied Data Science / similar applied ML track",
+      "typical_constraints": {
+        "abstract_words": "150–200 (short paper) or per CFP",
+        "paper_pages": "4–9 including refs (varies by year)"
+      },
+      "detailed_outline_en": [
+        {
+          "section": "1. Introduction",
+          "pages_hint": "1.0–1.5",
+          "subsections": [
+            "Motivation: meaning-network signals vs operational promotion risk",
+            "Contributions: two-track split, falsification-first evaluation, public-safe disclosure"
+          ]
+        },
+        {
+          "section": "2. Problem Setting & Threat Model",
+          "pages_hint": "0.75–1.0",
+          "subsections": [
+            "Overfitting and false discovery when narrative insight meets execution",
+            "Rollback and survivorship as first-class requirements"
+          ]
+        },
+        {
+          "section": "3. Two-Track Architecture",
+          "pages_hint": "1.25–1.75",
+          "subsections": [
+            "K-track: knowledge / narrative layer (not an operational trigger)",
+            "T-track: survivor filter, dynamic caps, operational gates"
+          ]
+        },
+        {
+          "section": "4. Experimental Protocol",
+          "pages_hint": "1.0–1.5",
+          "subsections": [
+            "Raw OOS ingestion policy and audit linkage",
+            "Baselines and ablations",
+            "Bootstrap / permutation significance and baseline-specific tuning"
+          ]
+        },
+        {
+          "section": "5. Results & Evidence Bundle",
+          "pages_hint": "1.0–1.5",
+          "subsections": [
+            "Benchmark comparison summary",
+            "Significance and readiness gates",
+            "Public-safe report highlights"
+          ]
+        },
+        {
+          "section": "6. Governance, Ethics, Limitations",
+          "pages_hint": "0.5–1.0",
+          "subsections": [
+            "What we do not claim (directional certainty, guaranteed returns)",
+            "Replication contract via artifact paths"
+          ]
+        }
+      ],
+      "formatting_notes_en": [
+        "Lead with problem + evaluation protocol, not proprietary formulas.",
+        "Use tables pointing to artifact schema names, not internal weight vectors.",
+        "Include falsification sensitivity breakpoint as a robustness boundary condition.",
+        "Add fail-boundary row (max-safe threshold / first-break threshold) in rebuttal appendix."
+      ]
+    },
+    "aaai_industry_track": {
+      "venue_label": "AAAI Industry / deployment-oriented track (CFP-dependent)",
+      "typical_constraints": {
+        "abstract_words": "per CFP",
+        "paper_pages": "varies; often shorter industry format"
+      },
+      "detailed_outline_en": [
+        {
+          "section": "1. Industry context",
+          "pages_hint": "1",
+          "subsections": [
+            "Why LLM-era systems need promotion gates for narrative-heavy signals",
+            "Stakeholders: research, compliance, product"
+          ]
+        },
+        {
+          "section": "2. System architecture",
+          "pages_hint": "1.5–2",
+          "subsections": [
+            "Two-track separation (K vs T)",
+            "Artifact chain from graph signals to statistical gates"
+          ]
+        },
+        {
+          "section": "3. Evaluation & falsification",
+          "pages_hint": "1.5–2",
+          "subsections": [
+            "Multi-baseline benchmark",
+            "Raw OOS readiness",
+            "Falsification suite and rollback semantics"
+          ]
+        },
+        {
+          "section": "4. Deployment lessons",
+          "pages_hint": "0.5–1",
+          "subsections": [
+            "Public-safe vs proprietary boundary",
+            "Operational monitoring (drift, audit accumulation)"
+          ]
+        }
+      ],
+      "formatting_notes_en": [
+        "Stress governance, rollback, and stakeholder-facing disclosure.",
+        "Keep replication story at artifact + script path level.",
+        "State falsification pass count and sensitivity breakpoint in deployment risk narrative.",
+        "Include fail-boundary condition as explicit no-go threshold for operations."
+      ]
+    }
+  },
+  "keywords_en": [
+    "safety-gated inference",
+    "two-track architecture",
+    "risk-control governance",
+    "falsification boundaries",
+    "bootstrap permutation significance",
+    "public-safe disclosure",
+    "artifact reproducibility"
+  ],
+  "public_safe_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted; all metrics are as-of artifact snapshots; no doctrinal, guarantee-style, or directional market certainty claim is allowed.",
+  "submission_gate_snapshot": {
+    "bundle_ready": true,
+    "ready_for_publication_claim": true,
+    "missing_artifacts": []
+  },
+  "falsification_snapshot": {
+    "pass_count": 5,
+    "total_checks": 5,
+    "suite_status": "pass",
+    "sensitivity_breakpoint": {
+      "min_survivor_count": 7,
+      "min_ci_low_defense_contrib": 0.0,
+      "pass_count": 4,
+      "total_checks": 5,
+      "suite_status": "warning"
+    }
+  },
+  "falsification_boundary_snapshot": {
+    "max_safe_min_survivor_count": 5,
+    "min_break_min_survivor_count": 7,
+    "first_non_pass_row": {
+      "min_survivor_count": 7,
+      "min_ci_low_defense_contrib": 0.0,
+      "pass_count": 4,
+      "total_checks": 5,
+      "suite_status": "warning"
+    },
+    "boundary_note": "safe survivor-floor up to 5, first break at 7"
+  }
+}

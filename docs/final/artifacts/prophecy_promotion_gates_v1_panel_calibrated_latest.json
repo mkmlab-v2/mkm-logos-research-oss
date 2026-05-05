@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-04-21T17:53:13Z",
+  "generated_at_utc": "2026-04-29T12:23:02Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -37,7 +37,7 @@
             "min_mean_test_accuracy": 0.48
           },
           "observed": {
-            "mean_test_accuracy": 0.625
+            "mean_test_accuracy": 0.504529
           }
         },
         {
@@ -48,7 +48,7 @@
             "max_stdev_test_accuracy": 0.205
           },
           "observed": {
-            "stdev_test_accuracy": 0.125
+            "stdev_test_accuracy": 0.079064
           }
         },
         {
@@ -88,7 +88,7 @@
           "passed": true,
           "reason": null,
           "detail": {
-            "btc_csv": "research\\market_data\\btc_daily_external_yf.csv"
+            "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
           }
         }
       ]
@@ -103,7 +103,7 @@
         "min_mean_test_accuracy": 0.48
       },
       "observed": {
-        "mean_test_accuracy": 0.625
+        "mean_test_accuracy": 0.504529
       }
     },
     {
@@ -114,7 +114,7 @@
         "max_stdev_test_accuracy": 0.205
       },
       "observed": {
-        "stdev_test_accuracy": 0.125
+        "stdev_test_accuracy": 0.079064
       }
     },
     {
@@ -145,7 +145,7 @@
       "passed": true,
       "reason": null,
       "detail": {
-        "btc_csv": "research\\market_data\\btc_daily_external_yf.csv"
+        "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
       }
     }
   ],

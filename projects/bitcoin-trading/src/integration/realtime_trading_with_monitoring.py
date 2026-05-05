@@ -55,8 +55,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Phase 1 방어망: 최소 신뢰도 (손절/익절·반대신호 청산과 동일 기준)
-MIN_CONFIDENCE = 0.52
+def _env_min_confidence(default: float = 0.52) -> float:
+    raw = os.environ.get("MKM_MIN_CONFIDENCE", "").strip()
+    if not raw:
+        return max(0.0, min(1.0, default))
+    try:
+        return max(0.0, min(1.0, float(raw)))
+    except ValueError:
+        return max(0.0, min(1.0, default))
 
 
 def _env_flag_true(name: str) -> bool:
@@ -111,10 +117,30 @@ class RealtimeTradingWithMonitoring:
         self.initial_capital = initial_capital
         self.leverage = leverage
         self.enable_trading = enable_trading
+        self._min_confidence = _env_min_confidence(0.52)
+        logger.info("🎯 MKM_MIN_CONFIDENCE=%.3f (risk gate / singular promotion)", self._min_confidence)
         self._maker_only = os.environ.get("MKM_MAKER_ONLY", "1").strip().lower() in ("1", "true", "yes")
         self._strict_maker_enforcement = os.environ.get(
             "MKM_STRICT_MAKER_ENFORCEMENT", "1"
         ).strip().lower() in ("1", "true", "yes")
+        self._sell_bias_lock_window_minutes = int(
+            os.environ.get("MKM_SELL_BIAS_LOCK_WINDOW_MINUTES", "60") or "60"
+        )
+        self._sell_bias_lock_min_signals = int(
+            os.environ.get("MKM_SELL_BIAS_LOCK_MIN_SIGNALS", "180") or "180"
+        )
+        self._sell_bias_lock_threshold = float(
+            os.environ.get("MKM_SELL_BIAS_LOCK_THRESHOLD", "0.92") or "0.92"
+        )
+        self._position_signal_mismatch_guard_enabled = os.environ.get(
+            "MKM_POSITION_SIGNAL_MISMATCH_GUARD_ENABLED", "1"
+        ).strip().lower() in ("1", "true", "yes")
+        self._position_signal_mismatch_guard_threshold = float(
+            os.environ.get("MKM_POSITION_SIGNAL_MISMATCH_GUARD_THRESHOLD", "0.90") or "0.90"
+        )
+        self._position_signal_mismatch_guard_min_signals = int(
+            os.environ.get("MKM_POSITION_SIGNAL_MISMATCH_GUARD_MIN_SIGNALS", "120") or "120"
+        )
         
         # Binance API 클라이언트
         logger.info("🔐 Binance API 클라이언트 초기화 중...")
@@ -224,6 +250,8 @@ class RealtimeTradingWithMonitoring:
         ]
         self._risk_limits_cache: Dict[str, Any] = {}
         self._risk_limits_cache_ts: float = 0.0
+        self._prophecy_runtime_policy_cache: Dict[str, Any] = {}
+        self._prophecy_runtime_policy_cache_ts: float = 0.0
         self._exchange_runtime_state_cache: Dict[str, Any] = {
             "ts": None,
             "current_position": None,
@@ -307,6 +335,82 @@ class RealtimeTradingWithMonitoring:
             )
         except Exception as e:
             logger.warning(f"⚠️ OHLC warmup seed failed: {e}")
+
+    def _load_prophecy_runtime_policy(self) -> Dict[str, Any]:
+        """
+        Load latest limited-live policy artifacts and expose runtime hints.
+        Priority: lens_combo -> role_router -> legacy input.
+        """
+        now = time.time()
+        if (
+            now - self._prophecy_runtime_policy_cache_ts < 60
+            and self._prophecy_runtime_policy_cache
+        ):
+            return dict(self._prophecy_runtime_policy_cache)
+
+        out: Dict[str, Any] = {
+            "active": False,
+            "source_file": None,
+            "candidate_json": None,
+            "params": {},
+            "lenses": None,
+            "use_coordinator": None,
+            "strategy_id": None,
+            "coord_policy": None,
+            "router_type": None,
+            "error": None,
+        }
+
+        try:
+            root = Path(__file__).resolve().parents[2]  # projects/bitcoin-trading
+            workspace_root = root.parent.parent
+            artifact_dir = workspace_root / "docs" / "final" / "artifacts"
+            candidates = [
+                artifact_dir / "btc_limited_live_engine_input_from_lens_combo_latest.json",
+                artifact_dir / "btc_limited_live_engine_input_from_role_router_latest.json",
+                artifact_dir / "btc_limited_live_engine_input_latest.json",
+            ]
+
+            for f in candidates:
+                if not f.exists():
+                    continue
+                payload = json.loads(f.read_text(encoding="utf-8"))
+                if str(payload.get("status") or "").upper() != "READY_FOR_ENGINE_SUBMIT":
+                    continue
+                engine_input = payload.get("engine_input") or {}
+                params = engine_input.get("candidate_params") or {}
+                out.update(
+                    {
+                        "active": True,
+                        "source_file": str(f),
+                        "candidate_json": (payload.get("source") or {}).get("candidate_json"),
+                        "params": params if isinstance(params, dict) else {},
+                        "coord_policy": params.get("coord_policy") if isinstance(params, dict) else None,
+                        "router_type": params.get("router_type") if isinstance(params, dict) else None,
+                    }
+                )
+
+                candidate_json = out.get("candidate_json")
+                if candidate_json:
+                    try:
+                        cand_path = Path(str(candidate_json))
+                        if not cand_path.is_absolute():
+                            cand_path = workspace_root / str(candidate_json)
+                        if cand_path.exists():
+                            cand = json.loads(cand_path.read_text(encoding="utf-8"))
+                            cand_body = cand.get("candidate") or {}
+                            out["lenses"] = cand_body.get("lenses")
+                            out["use_coordinator"] = cand_body.get("use_coordinator")
+                            out["strategy_id"] = cand_body.get("strategy_id")
+                    except Exception:
+                        pass
+                break
+        except Exception as e:
+            out["error"] = str(e)
+
+        self._prophecy_runtime_policy_cache = out
+        self._prophecy_runtime_policy_cache_ts = now
+        return dict(out)
 
     def _get_position(self) -> Optional[Dict[str, Any]]:
         """현재 포지션 조회 (Binance API). 없으면 None."""
@@ -702,7 +806,7 @@ class RealtimeTradingWithMonitoring:
                 # promote to directional action for execution path continuity.
                 if integrated_signal == "HOLD" and singular_action in ("BUY", "SELL"):
                     integrated_signal = singular_action
-                    integrated_confidence = max(integrated_confidence, MIN_CONFIDENCE)
+                    integrated_confidence = max(integrated_confidence, self._min_confidence)
                     result["integrated_signal"] = integrated_signal
                     result["integrated_confidence"] = integrated_confidence
                     logger.info(
@@ -752,7 +856,7 @@ class RealtimeTradingWithMonitoring:
                         reason=risk_reason,
                         signal=integrated_signal,
                         confidence=integrated_confidence,
-                        details={"warning_level": warning_level, "min_confidence": MIN_CONFIDENCE},
+                        details={"warning_level": warning_level, "min_confidence": self._min_confidence},
                     )
                     self._save_state()
                     return
@@ -819,19 +923,101 @@ class RealtimeTradingWithMonitoring:
                 m=float(state.get("M", 0.5)),
             )
         )
+        runtime_policy = self._load_prophecy_runtime_policy()
         decision = str(core.get("decision") or "HOLD")
+        score_grid = float(core.get("score_grid", 0.0))
         action = "LOCKED"
         if decision == "PASS_LONG":
             action = "BUY"
         elif decision == "PASS_SHORT":
             action = "SELL"
+
+        # Runtime alignment: if limited-live candidate defines explicit thresholds,
+        # apply them to the singular core grid score.
+        params = runtime_policy.get("params") if isinstance(runtime_policy, dict) else {}
+        if isinstance(params, dict):
+            up_thr = params.get("up_thr")
+            down_thr = params.get("down_thr")
+            try:
+                up_thr_f = float(up_thr) if up_thr is not None else None
+                down_thr_f = float(down_thr) if down_thr is not None else None
+                if up_thr_f is not None and down_thr_f is not None and down_thr_f < up_thr_f:
+                    if score_grid >= up_thr_f:
+                        decision = "PASS_LONG"
+                        action = "BUY"
+                    elif score_grid <= down_thr_f:
+                        decision = "PASS_SHORT"
+                        action = "SELL"
+                    else:
+                        decision = "HOLD"
+                        action = "LOCKED"
+            except (TypeError, ValueError):
+                pass
+
+        # Fact-safe guard: if risk profile singular core is HOLD, lock action.
+        risk_limits = self._load_runtime_risk_limits()
+        risk_core_decision = str((risk_limits or {}).get("core_decision") or "").upper()
+        risk_hold_override = _env_flag_true("RISK_PROFILE_ALLOW_CORE_HOLD_OVERRIDE")
+        bias_lock_triggered = False
+        mismatch_guard_triggered = False
+        if risk_core_decision == "HOLD" and not risk_hold_override:
+            decision = "HOLD"
+            action = "LOCKED"
+        else:
+            # Circuit-breaker: sustained SELL-only bias is treated as degraded mode.
+            # When triggered, we lock directional entries until bias normalizes.
+            try:
+                bias_snapshot = self._build_signal_bias_snapshot(
+                    window_minutes=max(5, int(self._sell_bias_lock_window_minutes))
+                )
+                signal_count = int(bias_snapshot.get("signal_count_window") or 0)
+                ratios = bias_snapshot.get("ratios") or {}
+                sell_ratio = float(ratios.get("sell_ratio") or 0.0)
+                if (
+                    signal_count >= max(1, int(self._sell_bias_lock_min_signals))
+                    and sell_ratio >= float(self._sell_bias_lock_threshold)
+                    and not _env_flag_true("MKM_DISABLE_SELL_BIAS_LOCK")
+                ):
+                    decision = "HOLD"
+                    action = "LOCKED"
+                    bias_lock_triggered = True
+
+                # Position/signal mismatch guard:
+                # If we currently hold LONG and SELL is dominating for a sustained window,
+                # block new SELL entries to avoid repeated reversal churn in degraded flow.
+                if (
+                    action == "SELL"
+                    and self._position_signal_mismatch_guard_enabled
+                    and signal_count >= max(1, int(self._position_signal_mismatch_guard_min_signals))
+                    and sell_ratio >= float(self._position_signal_mismatch_guard_threshold)
+                ):
+                    exchange_state = self._collect_exchange_runtime_state()
+                    current_position = exchange_state.get("current_position") if isinstance(exchange_state, dict) else None
+                    current_side = ""
+                    if isinstance(current_position, dict):
+                        current_side = str(current_position.get("side") or "").upper()
+                    if current_side == "LONG":
+                        decision = "HOLD"
+                        action = "LOCKED"
+                        mismatch_guard_triggered = True
+            except Exception:
+                pass
+
         return {
             "decision": "HOLD" if decision == "HOLD" else "PASS",
-            "score": float(core.get("score_grid", 0.0)),
+            "score": score_grid,
             "score_raw": float(core.get("score_raw", 0.0)),
             "reason": str(core.get("reason") or "unknown"),
             "contract_version": str(core.get("contract_version") or "unknown"),
             "action": action,
+            "runtime_policy_source": runtime_policy.get("source_file"),
+            "runtime_coord_policy": runtime_policy.get("coord_policy"),
+            "runtime_router_type": runtime_policy.get("router_type"),
+            "runtime_lenses": runtime_policy.get("lenses"),
+            "runtime_use_coordinator": runtime_policy.get("use_coordinator"),
+            "risk_profile_hold_override": risk_hold_override,
+            "sell_bias_lock_triggered": bias_lock_triggered,
+            "position_signal_mismatch_guard_triggered": mismatch_guard_triggered,
         }
 
     def _update_singular_core_state(
@@ -868,6 +1054,11 @@ class RealtimeTradingWithMonitoring:
             "singular_score": float((singular_core or {}).get("score") or 0.0),
             "singular_score_raw": float((singular_core or {}).get("score_raw") or 0.0),
             "singular_reason": str((singular_core or {}).get("reason") or "unknown"),
+            "runtime_policy_source": (singular_core or {}).get("runtime_policy_source"),
+            "runtime_coord_policy": (singular_core or {}).get("runtime_coord_policy"),
+            "runtime_router_type": (singular_core or {}).get("runtime_router_type"),
+            "runtime_lenses": (singular_core or {}).get("runtime_lenses"),
+            "runtime_use_coordinator": (singular_core or {}).get("runtime_use_coordinator"),
             "price": round(float(current_price), 2),
             "regime_defense_mode": bool(getattr(self, "_regime_defense_mode", False)),
             "regime_id": getattr(self, "_last_regime_id", "unknown"),
@@ -962,7 +1153,7 @@ class RealtimeTradingWithMonitoring:
                 "set PROPHECY_FUSION_ALLOW_MAINNET=1 after operator review.",
                 self.testnet,
             )
-        elif integrated_confidence < MIN_CONFIDENCE:
+        elif integrated_confidence < self._min_confidence:
             allowed = False
             reason = "confidence_below_min"
         elif str(warning_level).upper() == "CRITICAL":
@@ -1054,6 +1245,8 @@ class RealtimeTradingWithMonitoring:
             "max_position_size": None,
             "position_scale_cap": None,
             "daily_loss_cap_ratio": None,
+            "core_decision": None,
+            "core_score": None,
             "source_path": None,
         }
         for p in self._risk_profile_candidates:
@@ -1070,6 +1263,8 @@ class RealtimeTradingWithMonitoring:
                 trinity = profile.get("trinity_governor")
                 position_scale_cap = None
                 daily_loss_cap_ratio = None
+                core_decision = None
+                core_score = None
                 if isinstance(trinity, dict):
                     psc = trinity.get("position_scale_cap")
                     if psc is not None:
@@ -1081,11 +1276,27 @@ class RealtimeTradingWithMonitoring:
                         dl_pct = float(dl_pct)
                         if dl_pct > 0.0:
                             daily_loss_cap_ratio = dl_pct / 100.0
+                    core_decision = trinity.get("core_decision")
+                    core_score = trinity.get("core_score")
+                # Backward/forward compatibility across profile shapes:
+                # - trinity_governor.core_decision
+                # - singular_core.core_decision
+                # - top-level singular_core_decision
+                if core_decision is None and isinstance(profile.get("singular_core"), dict):
+                    singular_core = profile.get("singular_core") or {}
+                    core_decision = singular_core.get("core_decision")
+                    core_score = singular_core.get("core_score")
+                if core_decision is None:
+                    core_decision = profile.get("singular_core_decision")
+                if core_score is None:
+                    core_score = profile.get("singular_core_score")
 
                 out = {
                     "max_position_size": max_position_size,
                     "position_scale_cap": position_scale_cap,
                     "daily_loss_cap_ratio": daily_loss_cap_ratio,
+                    "core_decision": (str(core_decision).upper() if core_decision is not None else None),
+                    "core_score": (float(core_score) if core_score is not None else None),
                     "source_path": str(p),
                 }
                 self._risk_limits_cache = out
@@ -1405,6 +1616,57 @@ class RealtimeTradingWithMonitoring:
                 existing_side = str(existing_pos.get("side") or "").upper()
                 existing_qty = float(existing_pos.get("quantity") or 0.0)
                 desired_side = "LONG" if signal == "BUY" else "SHORT"
+                if (
+                    existing_qty > 0.0
+                    and desired_side in {"LONG", "SHORT"}
+                    and existing_side in {"LONG", "SHORT"}
+                    and existing_side != desired_side
+                ):
+                    reversal_allowed, reversal_reason, reversal_details = self._is_reversal_allowed(
+                        current_side=existing_side,
+                        integrated_signal=signal,
+                    )
+                    if not reversal_allowed:
+                        self._set_execution_trace(
+                            decision="skipped",
+                            reason=reversal_reason,
+                            signal=signal,
+                            confidence=confidence,
+                            details=reversal_details,
+                        )
+                        return
+                    closed = self._close_position(existing_side, close_reason="signal_reversal")
+                    if not closed:
+                        self._set_execution_trace(
+                            decision="skipped",
+                            reason="reversal_close_failed",
+                            signal=signal,
+                            confidence=confidence,
+                            details={
+                                "existing_side": existing_side,
+                                "existing_qty": existing_qty,
+                                "desired_side": desired_side,
+                            },
+                        )
+                        return
+                    self._last_reversal_ts = time.time()
+                    existing_pos = self._get_position()
+                    if isinstance(existing_pos, dict):
+                        remaining_qty = float(existing_pos.get("quantity") or 0.0)
+                        if remaining_qty > 0.0:
+                            self._set_execution_trace(
+                                decision="skipped",
+                                reason="reversal_position_still_open",
+                                signal=signal,
+                                confidence=confidence,
+                                details={
+                                    "existing_side": str(existing_pos.get("side") or "").upper(),
+                                    "existing_qty": remaining_qty,
+                                    "desired_side": desired_side,
+                                },
+                            )
+                            return
+                        existing_pos = None
                 if existing_qty > 0.0 and existing_side == desired_side:
                     details = {
                         "existing_side": existing_side,

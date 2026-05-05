@@ -1,0 +1,15 @@
+{
+  "schema": "aramaic_regime_shift_score_v1",
+  "generated_at_utc": "2026-04-28T05:55:30Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "edge_count": 796,
+  "conflict_ratio": 0.447796,
+  "insight_signal": 0.5,
+  "insight_signal_applied": true,
+  "insight_delta_applied": 0.015,
+  "insight_cap_bucket": "high_vol",
+  "shift_score": 0.803353,
+  "signal_label": "alert"
+}

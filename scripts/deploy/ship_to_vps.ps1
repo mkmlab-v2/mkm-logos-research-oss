@@ -36,6 +36,9 @@
 
 .PARAMETER ReloadCmd
   Optional command executed on VPS after successful fast-forward pull.
+
+.PARAMETER PushRemote
+  Git remote name used for push/fetch verification. Default: origin
 #>
 param(
     [string]$LocalRepoPath = "C:\workspace",
@@ -47,7 +50,8 @@ param(
     [switch]$AllowDirty,
     [switch]$SkipPush,
     [switch]$DryRun,
-    [string]$ReloadCmd = ""
+    [string]$ReloadCmd = "",
+    [string]$PushRemote = "origin"
 )
 
 $ErrorActionPreference = "Stop"
@@ -65,20 +69,20 @@ try {
         throw "Local working tree is dirty. Commit/stash first or pass -AllowDirty."
     }
 
-    git fetch origin --prune | Out-Null
+    git fetch $PushRemote --prune | Out-Null
     $localHead = (git rev-parse HEAD).Trim()
 
     if (-not $SkipPush) {
-        Write-Host "[SHIP] Pushing local HEAD to origin/$Branch..." -ForegroundColor Cyan
-        git push origin "HEAD:$Branch"
+        Write-Host "[SHIP] Pushing local HEAD to $PushRemote/$Branch..." -ForegroundColor Cyan
+        git push $PushRemote "HEAD:$Branch"
     } else {
         Write-Host "[SHIP] SkipPush enabled. Push step skipped." -ForegroundColor Yellow
     }
 
-    git fetch origin --prune | Out-Null
-    $originHead = (git rev-parse "refs/remotes/origin/$Branch").Trim()
+    git fetch $PushRemote --prune | Out-Null
+    $originHead = (git rev-parse "refs/remotes/$PushRemote/$Branch").Trim()
     if ($localHead -ne $originHead -and -not $SkipPush) {
-        throw "Post-push verification failed: local HEAD != origin/$Branch"
+        throw "Post-push verification failed: local HEAD != $PushRemote/$Branch"
     }
 
     $target = if ($VpsUser) { "$VpsUser@$VpsHost" } else { $VpsHost }

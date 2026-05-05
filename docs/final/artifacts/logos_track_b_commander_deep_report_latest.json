@@ -1,0 +1,69 @@
+{
+  "schema": "logos_track_b_commander_deep_report_v1",
+  "version": "1.1.0",
+  "ts_utc": "2026-05-02T05:07:30Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "a_track_autotrigger_forbidden": true,
+  "labels": [
+    "TRACK_B",
+    "HYPO",
+    "HUMAN_REVIEW_PENDING"
+  ],
+  "human_commander_gate_v1": {
+    "schema": "human_commander_gate_v1",
+    "version": "1.0.0",
+    "track": "B",
+    "banner_ko": "[TRACK B / HYPO] 연구용·비자동 — 최종 채택은 지휘관 판단 대기",
+    "final_authority": "human_commander",
+    "machine_output_role": "decision_support_observation_only"
+  },
+  "envelope": {
+    "schema": "logos_track_b_commander_deep_report_envelope_v1",
+    "version": "1.0.0",
+    "source_track": "B",
+    "hypothesis_tier": "B",
+    "human_review_required": true,
+    "disclaimer_ko": "본 리포트는 연구·관측용 골격이다. 최종 해석·채택·대외 발언은 지휘관 검토 후에만 가능하다. A-track 자동 트리거·실매매 근거로 사용 금지.",
+    "manifest_pointer": "docs/NotebookLM_sources_manifest.md"
+  },
+  "machine_role_ko": "본 JSON은 골격·앵커·메타만 제공한다. 심층 서술·다단 검색·장문 생성은 지휘관 승인 하 Track B 후속 작업.",
+  "report_axes_v1": {
+    "axis_01_original_language_semantics": {
+      "title_ko": "원어·어휘층 (레마·의미역)",
+      "deterministic_stub_ko": "[HYPO] 본 축은 히브리/헬라 어근·의미역 후보를 원문 근거와 함께 정리하는 자리다. 현재 배치에서 evidence_refs 기준 앵커 수=3. 게마트리아·숫자 읽기는 동일 문단에 불확실성 라벨을 붙일 것.",
+      "evidence_verse_ids": [
+        "sample-001",
+        "sample-002",
+        "sample-003"
+      ]
+    },
+    "axis_02_genre_register": {
+      "title_ko": "문맥·문학 장르",
+      "deterministic_stub_ko": "[HYPO] 시·법·예언·편지 등 장르 약속에 따른 허용 해석 범위를 여기에 적는다. Logos 렌즈 direction_score=-0.323333, confidence=0.200000는 배치 요약일 뿐 교리 단정이 아님."
+    },
+    "axis_03_cross_reference_echo": {
+      "title_ko": "교차 참조·구조적 에코",
+      "deterministic_stub_ko": "동일 공동체·동일 문헌 군 내 반복 모티프와 verse_id 앵커를 표 형태로 확장한다. 샘플 verse_id: sample-001, sample-002, sample-003"
+    },
+    "axis_04_history_redaction_hypo": {
+      "title_ko": "역사·편집·수용층 [HYPO]",
+      "deterministic_stub_ko": "[HYPO] 연대·편집층·수용사 추정은 가설로 두고, 확인 가능한 고고·문헌 근거만 병기한다."
+    },
+    "axis_05_lens_conflict_map": {
+      "title_ko": "타 렌즈 충돌 지도",
+      "deterministic_stub_ko": "융합 스텁 consensus_sign=bull, agreement_rate=0.75. 시장 사상 렌즈 방향 힌트=bull, veto=True. 명리·사상·로고스는 합선 금지—방향 불일치는 ‘충돌 지도’로만 기록."
+    }
+  },
+  "inputs_digest": {
+    "logos_lens_schema": "logos_independent_lens_v0",
+    "logos_lens_version": "0.2.0",
+    "logos_input_path": "C:\\workspace\\docs\\final\\artifacts\\logos_independent_lens_latest.json",
+    "fusion_stub_schema": "independent_lens_fusion_stub_v0",
+    "fusion_stub_version": "0.3.0",
+    "fusion_input_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_stub_latest.json",
+    "market_sasang_schema": "market_sasang_lens_v1",
+    "market_sasang_input_path": "C:\\workspace\\docs\\final\\artifacts\\market_sasang_lens_latest.json"
+  },
+  "note": "logos_track_b_commander_deep_report_v1: deterministic shell; no LLM; not live trigger; commander adopts or discards."
+}

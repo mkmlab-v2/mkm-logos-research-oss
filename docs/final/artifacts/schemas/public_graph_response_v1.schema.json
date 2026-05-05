@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "public_graph_response_v1",
+  "title": "Public graph response (safe, non-gating)",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "policy_label",
+    "research_only",
+    "no_trading_advice",
+    "as_of_date",
+    "pagination",
+    "nodes",
+    "edges",
+    "insights"
+  ],
+  "properties": {
+    "schema": { "const": "public_graph_response_v1" },
+    "version": { "type": "string", "minLength": 1 },
+    "policy_label": {
+      "type": "string",
+      "enum": ["NON_GATING"]
+    },
+    "research_only": { "const": true },
+    "no_trading_advice": { "const": true },
+    "as_of_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "UTC date in YYYY-MM-DD."
+    },
+    "pagination": { "$ref": "#/$defs/pagination" },
+    "nodes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/node" },
+      "default": []
+    },
+    "edges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/edge" },
+      "default": []
+    },
+    "insights": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/insight" },
+      "default": []
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "pagination": {
+      "type": "object",
+      "required": ["limit", "next_cursor"],
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "next_cursor": {
+          "type": ["string", "null"],
+          "description": "Opaque cursor for the next page; null when no more results."
+        }
+      },
+      "additionalProperties": false
+    },
+    "node": {
+      "type": "object",
+      "required": [
+        "node_id_public",
+        "anchor_ref",
+        "theme_tag",
+        "confidence_band"
+      ],
+      "properties": {
+        "node_id_public": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]{3,128}$"
+        },
+        "anchor_ref": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Public anchor reference such as Gen.1.1."
+        },
+        "theme_tag": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confidence_band": {
+          "type": "string",
+          "enum": ["A", "B", "C"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "edge": {
+      "type": "object",
+      "required": [
+        "source_node_id_public",
+        "target_node_id_public",
+        "edge_type",
+        "weight_bucket"
+      ],
+      "properties": {
+        "source_node_id_public": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]{3,128}$"
+        },
+        "target_node_id_public": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]{3,128}$"
+        },
+        "edge_type": {
+          "type": "string",
+          "enum": [
+            "semantic",
+            "causal_hint",
+            "contrast",
+            "temporal",
+            "contextual"
+          ]
+        },
+        "weight_bucket": {
+          "type": "string",
+          "enum": ["low", "mid", "high"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "insight": {
+      "type": "object",
+      "required": [
+        "insight_id",
+        "anchor_ref",
+        "theme_tag",
+        "insight_summary",
+        "confidence_band"
+      ],
+      "properties": {
+        "insight_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]{3,128}$"
+        },
+        "anchor_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "theme_tag": {
+          "type": "string",
+          "minLength": 1
+        },
+        "insight_summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "confidence_band": {
+          "type": "string",
+          "enum": ["A", "B", "C"]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

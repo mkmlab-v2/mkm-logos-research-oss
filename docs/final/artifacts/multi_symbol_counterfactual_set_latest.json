@@ -1,0 +1,31 @@
+{
+  "schema": "multi_symbol_counterfactual_set_v1",
+  "generated_at_utc": "2026-04-28T05:55:30Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "counterfactual_rows": [
+    {
+      "seed_symbol": "counterfactual::tree_of_knowledge_good_evil",
+      "base_symbol": "tree_of_knowledge_good_evil",
+      "counterfactual_survivability_score": 0.383769
+    },
+    {
+      "seed_symbol": "counterfactual::babel_tower",
+      "base_symbol": "babel_tower",
+      "counterfactual_survivability_score": 0.393593
+    },
+    {
+      "seed_symbol": "counterfactual::exodus_return",
+      "base_symbol": "exodus_return",
+      "counterfactual_survivability_score": 0.275267
+    }
+  ],
+  "summary": {
+    "row_count": 3,
+    "mean_counterfactual_survivability": 0.350876
+  },
+  "sources": {
+    "survivability_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_walkforward_survivability_latest.json"
+  }
+}

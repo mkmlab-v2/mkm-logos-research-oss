@@ -1,47 +1,13 @@
 {
   "schema": "a_track_operator_approval_protocol_v1",
-  "generated_at_utc": "2026-04-26T13:48:03+00:00",
+  "generated_at_utc": "2026-04-28T01:15:27+00:00",
   "status": "READY_FOR_SIGNOFF",
-  "promotion_stages": [
-    {
-      "from_stage": "S1_SHADOW",
-      "to_stage": "S2_PAPER_STRICT",
-      "approval_required": true,
-      "required_artifacts": [
-        "docs/final/artifacts/a_track_go_nogo_status_latest.json",
-        "docs/final/artifacts/a_track_price_output_unlock_policy_v1_latest.json"
-      ]
-    },
-    {
-      "from_stage": "S2_PAPER_STRICT",
-      "to_stage": "S3_PAPER_SCALED",
-      "approval_required": true,
-      "required_artifacts": [
-        "docs/final/artifacts/a_track_go_nogo_status_latest.json",
-        "docs/final/artifacts/a_track_hold_release_checklist_v1_latest.json"
-      ]
-    },
-    {
-      "from_stage": "S3_PAPER_SCALED",
-      "to_stage": "S4_LIMITED_LIVE",
-      "approval_required": true,
-      "required_artifacts": [
-        "docs/final/artifacts/a_track_go_nogo_status_latest.json",
-        "docs/final/artifacts/track_a_policy_floor_decision_v1.json"
-      ]
-    }
-  ],
-  "rollback_policy": {
-    "auto_rollback_stage": "S1_SHADOW",
-    "triggers": [
-      "gate_fail",
-      "daily_loss_cap_breach",
-      "integrity_warning",
-      "operator_stop_command"
-    ]
-  },
   "notes_ko": [
-    "운영자 명시 승인 전에는 어떤 단계도 자동 승급하지 않는다.",
-    "S4는 승인 + 롤백 체인 점검 완료가 모두 필요하다."
+    "승인자·근거 파일·롤백 트리거를 확정한 뒤 서명하세요."
+  ],
+  "stages": [
+    "S2_PAPER_STRICT",
+    "S3_PAPER_SCALED",
+    "S4_LIMITED_LIVE"
   ]
 }

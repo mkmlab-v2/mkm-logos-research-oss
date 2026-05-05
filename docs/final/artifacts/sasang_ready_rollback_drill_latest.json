@@ -1,0 +1,17 @@
+{
+  "schema": "sasang_ready_rollback_drill_v1",
+  "drill_at_utc": "2026-04-29T00:00:06Z",
+  "mode": "dry_run_non_destructive",
+  "rollback_conditions": [
+    "strict gate decision degrades from PASS",
+    "readiness go flag turns false",
+    "production_data_readiness root_cause reappears"
+  ],
+  "steps": [
+    "Re-run status chain",
+    "Pinpoint first failing artifact",
+    "Switch operation mode to KEEP_OBSERVATION_ONLY",
+    "Require renewed human sign-off before re-enable"
+  ],
+  "result": "DRILL_RECORDED"
+}

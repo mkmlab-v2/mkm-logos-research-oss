@@ -1,0 +1,28 @@
+{
+  "schema": "multi_symbol_top_drift_alert_v1",
+  "generated_at_utc": "2026-04-28T05:55:29Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "inputs": {
+    "survivability_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_walkforward_survivability_latest.json",
+    "history_jsonl": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_top_drift_history_latest.jsonl",
+    "window_size": 7,
+    "max_switches": 3
+  },
+  "window_stats": {
+    "rows_in_window": 2,
+    "switch_count": 0,
+    "current_top_symbol": "tree_of_knowledge_good_evil",
+    "window_top_symbols": [
+      "tree_of_knowledge_good_evil",
+      "tree_of_knowledge_good_evil"
+    ]
+  },
+  "gate_eval": {
+    "should_alert": false,
+    "severity": "none",
+    "promotion_hold": false,
+    "reasons": []
+  }
+}

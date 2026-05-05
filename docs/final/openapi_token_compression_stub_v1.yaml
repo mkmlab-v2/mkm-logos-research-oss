@@ -1,9 +1,11 @@
 openapi: 3.0.3
 info:
   title: MKM Token Compression API (stub v1)
-  version: "1.1.1"
+  version: "1.2.0"
   description: |
     HTTP data contract for compress/expand. Implementation: scripts/compression_token_api_stub.py.
+    v1.2.0 adds optional research route POST /v1/research/l1_side_channel/wire/secure
+    for AES-256-GCM payload envelope over adaptive msgpack wire bytes (A/B track key split).
     v1.1.1: compress examples for mode_live use text long enough for default COMPRESSION_API_LIVE_EVAL_MIN_TOKENS (12 regex tokens).
     v1.1.0 adds optional research route POST /v1/research/l1_side_channel/wire (additive; requires msgpack).
     That route returns HTTP 503 if msgpack is not installed or if msgpack packing is unavailable on the server.
@@ -346,6 +348,67 @@ paths:
           description: Missing required keys in side_channel
         "503":
           description: msgpack not installed on server or msgpack pack unavailable (see compression_token_api_stub.py)
+  /v1/research/l1_side_channel/wire/secure:
+    post:
+      operationId: encodeL1SideChannelSecureWire
+      summary: Research — encode L1 side-channel wire then encapsulate with AES-256-GCM envelope
+      description: |
+        Extracts swap_log, typo_patches, oov_stack from side_channel, builds adaptive msgpack wire
+        (tag + raw msgpack or zstd-msgpack), then encrypts payload with AES-256-GCM.
+        Track/key split policy:
+        - a_track -> env MKM_ENVELOPE_A_TRACK_KEY_B64
+        - b_track -> env MKM_ENVELOPE_B_TRACK_KEY_B64
+        This is a research lane; not Track A commercial SLA surface.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/L1SideChannelSecureWireRequest"
+            example:
+              track: b_track
+              side_channel:
+                schema: l1_side_channel_v1
+                mode: swap_typo
+                swap_log: [[0, 1]]
+                typo_patches:
+                  - idx: 2
+                    char_pos: 0
+                    orig_char: "B"
+                oov_stack: []
+              key_id: kms/b-track/primary
+              zstd_min_raw_bytes: 64
+              zstd_level: 3
+      responses:
+        "200":
+          description: OK (or research-lane error shape in integrity_flags)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/L1SideChannelSecureWireResponse"
+              example:
+                schema: l1_side_channel_secure_wire_v1
+                envelope:
+                  schema: mkm_secure_payload_envelope_v1
+                  header:
+                    schema_version: "1.0.0"
+                    api_contract_version: "1.0.0"
+                    track: b_track
+                    key_id: kms/b-track/primary
+                    codec_variant: raw_msgpack
+                    content_type: application/vnd.mkm.l1-side-channel+msgpack
+                    created_at_utc: "2026-04-30T08:00:00+00:00"
+                  aad_b64: "ZXhhbXBsZQ=="
+                  nonce_b64: "bm9uY2UxMjM0NTY="
+                  ciphertext_b64: "Y2lwaGVydGV4dA=="
+                  tag_b64: "dGFnMTIzNDU2Nzg5MDEyMw=="
+                integrity_flags:
+                  research_lane: true
+                  secure_envelope: true
+                  aes_gcm_256: true
+                  track: b_track
+                  codec_variant: raw_msgpack
+                  wire_payload_bytes: 48
   /health:
     get:
       operationId: health
@@ -408,6 +471,104 @@ components:
           type: integer
           minimum: 0
           description: Length of msgpack payload before tagging/compression
+        integrity_flags:
+          type: object
+          additionalProperties: true
+    L1SideChannelSecureWireRequest:
+      type: object
+      required: [side_channel]
+      properties:
+        side_channel:
+          type: object
+          description: Full l1_side_channel_v1 object; server uses swap_log, typo_patches, oov_stack only
+        track:
+          type: string
+          enum: [a_track, b_track]
+          default: b_track
+          description: Key namespace selector (A/B bulkhead).
+        key_id:
+          type: string
+          description: Optional key identifier override; default per track policy.
+        zstd_min_raw_bytes:
+          type: integer
+          minimum: 0
+          maximum: 2000000
+          default: 64
+        zstd_level:
+          type: integer
+          minimum: 1
+          maximum: 22
+          default: 3
+    SecurePayloadEnvelopeHeader:
+      type: object
+      required:
+        - schema_version
+        - api_contract_version
+        - track
+        - key_id
+        - codec_variant
+        - content_type
+        - created_at_utc
+      properties:
+        schema_version:
+          type: string
+          example: "1.0.0"
+        api_contract_version:
+          type: string
+          example: "1.0.0"
+        track:
+          type: string
+          enum: [a_track, b_track]
+        key_id:
+          type: string
+        wrapped_dek_b64:
+          type: string
+          nullable: true
+        codec_variant:
+          type: string
+          enum: [raw_msgpack, zstd_msgpack]
+        content_type:
+          type: string
+          example: application/vnd.mkm.l1-side-channel+msgpack
+        created_at_utc:
+          type: string
+          format: date-time
+        meta_hash_sha256:
+          type: string
+          pattern: "^[a-f0-9]{64}$"
+          nullable: true
+    SecurePayloadEnvelope:
+      type: object
+      required:
+        - schema
+        - header
+        - aad_b64
+        - nonce_b64
+        - ciphertext_b64
+        - tag_b64
+      properties:
+        schema:
+          type: string
+          enum: [mkm_secure_payload_envelope_v1]
+        header:
+          $ref: "#/components/schemas/SecurePayloadEnvelopeHeader"
+        aad_b64:
+          type: string
+        nonce_b64:
+          type: string
+        ciphertext_b64:
+          type: string
+        tag_b64:
+          type: string
+    L1SideChannelSecureWireResponse:
+      type: object
+      required: [schema, envelope, integrity_flags]
+      properties:
+        schema:
+          type: string
+          enum: [l1_side_channel_secure_wire_v1]
+        envelope:
+          $ref: "#/components/schemas/SecurePayloadEnvelope"
         integrity_flags:
           type: object
           additionalProperties: true
@@ -489,6 +650,11 @@ components:
           description: |
             If true, append one metering JSONL row (same shape as POST /v1/metering/log) when compression_metrics
             includes token_in and token_out. integrity_flags may set meter_log_appended or meter_log_skipped.
+        emit_semantic_pointer:
+          type: boolean
+          description: |
+            When true with hydrate_live_eval, live evaluate_report adds per-case semantic_pointer (schema semantic_pointer_v1);
+            echoed on CompressResponse.semantic_pointer when live path succeeds.
     CompressionMetrics:
       type: object
       description: |
@@ -569,6 +735,12 @@ components:
           $ref: "#/components/schemas/EvalContext"
         compression_metrics:
           $ref: "#/components/schemas/CompressionMetrics"
+        semantic_pointer:
+          type: object
+          nullable: true
+          additionalProperties: true
+          description: |
+            Present when eval_context.emit_semantic_pointer=true and live evaluate_report returned semantic_pointer_v1 for case api-live.
         integrity_flags:
           type: object
           additionalProperties: true

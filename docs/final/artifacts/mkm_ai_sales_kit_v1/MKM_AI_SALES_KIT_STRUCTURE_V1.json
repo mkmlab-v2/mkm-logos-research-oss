@@ -1,0 +1,41 @@
+{
+  "schema": "mkm_ai_sales_kit_structure_v1",
+  "version": "1.0.0",
+  "frozen_pointer_utc": "2026-05-02",
+  "track_c_ssot": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
+  "p1_pilot_checklist": "docs/final/P1_COMPRESSION_API_PILOT_TRANSITION_CHECKLIST_V1.md",
+  "promotion_gate_checklist": "docs/final/MKM_PROMOTION_GATE_CHECKLIST_B_TO_A_C_V1.md",
+  "root": "docs/final/artifacts/mkm_ai_sales_kit_v1",
+  "files": [
+    {
+      "id": "factsafe_numbers",
+      "path": "docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_FACTSAFE_NUMBERS_V1.md",
+      "role": "대외 수치·벤치 인용 가드"
+    },
+    {
+      "id": "api_branding_bridge",
+      "path": "docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_API_BRANDING_BRIDGE_V1.md",
+      "role": "브랜드/도메인 vs OpenAPI SSOT 브리지"
+    },
+    {
+      "id": "landing_copy",
+      "path": "docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_LANDING_COPY_V1.md",
+      "role": "랜딩·제안서 카피 초안"
+    },
+    {
+      "id": "showroom_wireframe",
+      "path": "docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_SHOWROOM_WIREFRAME_V1.md",
+      "role": "쇼룸 와이어프레임 초안"
+    },
+    {
+      "id": "registry",
+      "path": "docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_SALES_KIT_STRUCTURE_V1.json",
+      "role": "세일즈킷 구조 레지스트리(본 파일)"
+    }
+  ],
+  "contract_pointers": [
+    "docs/final/openapi_token_compression_stub_v1.yaml",
+    "docs/final/openapi_macro_risk_warning_api_v1.yaml",
+    "docs/final/artifacts/macro_risk_warning_api_response_contract_v1.json"
+  ]
+}

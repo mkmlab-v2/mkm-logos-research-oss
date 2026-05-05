@@ -1,0 +1,20 @@
+{
+  "schema": "sasang_labeling_packets_report_v1",
+  "assignment_plan_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_labeling_assignment_plan_latest.json",
+  "packet_dir": "C:\\workspace\\reports\\constitution\\btrack_pilot\\reviewer_packets",
+  "reviewer_packet_files": {
+    "R1": "C:\\workspace\\reports\\constitution\\btrack_pilot\\reviewer_packets\\sasang_gt_labeling_packet_R1.csv",
+    "R2": "C:\\workspace\\reports\\constitution\\btrack_pilot\\reviewer_packets\\sasang_gt_labeling_packet_R2.csv",
+    "R3": "C:\\workspace\\reports\\constitution\\btrack_pilot\\reviewer_packets\\sasang_gt_labeling_packet_R3.csv"
+  },
+  "rows_per_reviewer": {
+    "R1": 42,
+    "R2": 42,
+    "R3": 42
+  },
+  "policy": {
+    "human_label_required": true,
+    "auto_label_forbidden": true,
+    "track_b_to_a_autobind_forbidden": true
+  }
+}

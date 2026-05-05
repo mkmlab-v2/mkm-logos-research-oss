@@ -1,0 +1,6 @@
+{
+  "schema": "trackb_artifact_alias_v1",
+  "canonical_relative": "docs/final/artifacts/trackb_action_layer_selective_state_sim_triggercase_latest.json",
+  "deprecated_filename": "trackb_selective_state_sim_triggercase_latest.json",
+  "note": "Prefer canonical artifact; alias retained for backward compatibility."
+}

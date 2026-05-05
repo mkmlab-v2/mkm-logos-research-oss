@@ -1,44 +1,12 @@
 {
   "schema": "a_track_price_output_unlock_policy_v1",
-  "generated_at_utc": "2026-04-26T13:40:56+00:00",
+  "generated_at_utc": "2026-04-28T01:15:27+00:00",
   "status": "READY_FOR_SIGNOFF",
-  "research_only": false,
-  "inputs": {
-    "a_track_go_nogo_status": "docs/final/artifacts/a_track_go_nogo_status_latest.json",
-    "track_a_policy_floor_decision": "docs/final/artifacts/track_a_policy_floor_decision_v1.json"
-  },
-  "current_snapshot": {
-    "overall_go_no_go": "HOLD",
-    "recommended_stage": "S1_SHADOW",
-    "high_reliability_decision": "HOLD",
-    "price_output_locked": true,
-    "policy_floor_decision": "DECISION_KEEP_POLICY_FLOOR_049_HOLD_BASELINE"
-  },
-  "unlock_policy": {
-    "mode": "evidence_based_no_bypass",
-    "conditions": {
-      "high_reliability_decision_non_hold_consecutive": 2,
-      "chronos_holdout_direction_match_rate_min_pct": 50.0,
-      "chronos_holdout_average_error_percentage_max": 5.0,
-      "paper_strict_min_weeks_before_scaled": 4,
-      "required_stage_before_unlock": "S2_PAPER_STRICT"
-    },
-    "decision_rule": "all_conditions_must_pass",
-    "operator_signoff_required": true
-  },
-  "relock_policy": {
-    "triggers": [
-      "high_reliability_decision_returns_hold",
-      "price_output_locked_true_reasserted",
-      "chronos_holdout_direction_match_rate_below_45_pct",
-      "daily_loss_cap_breach",
-      "operator_stop_command"
-    ],
-    "action_on_trigger": "immediate_hold_and_stage_rollback_to_S1_SHADOW",
-    "auto_alert_required": true
-  },
   "notes_ko": [
-    "단발 성능이 아닌 연속성(주차)과 재현성 기준으로 잠금 해제를 판단한다.",
-    "승인 전까지는 price output unlock을 실제 runtime에 반영하지 않는다."
-  ]
+    "기본 산출물입니다. 실전 전 수치 기준과 서명 프로세스를 확정하세요."
+  ],
+  "criteria": {
+    "chronos_holdout_direction_match_rate_min_pct": 50.0,
+    "relock_on_regression_signals_max": 2
+  }
 }

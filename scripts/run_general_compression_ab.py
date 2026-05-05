@@ -65,6 +65,7 @@ def main() -> int:
             mode="baseline",
             use_domain_router=True,
             use_master_codebook_lexicon_v1=True,
+            experimental_decoder_fidelity_for_baseline=True,
         )
     else:
         report = evaluate_report(

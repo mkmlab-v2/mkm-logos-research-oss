@@ -1,8 +1,9 @@
 {
   "schema": "independent_lens_fusion_stub_v0_contract_meta_v1",
   "artifact_schema": "independent_lens_fusion_stub_v0",
-  "version": "0.1.0",
-  "purpose": "Read-only comparison between independent lens outputs before any real fusion policy.",
+  "artifact_json_schema": "docs/final/schemas/independent_lens_fusion_stub_v0.schema.json",
+  "runner_version": "0.3.0",
+  "purpose": "Read-only comparison between independent lens outputs before any real fusion policy; adds deterministic conflict_summary (no LLM). v0.3.0 adds optional market_sasang_lens_v1 as 4th input.",
   "runner": "scripts/report_independent_lens_fusion_stub_v0.py",
   "default_output_path": "docs/final/artifacts/independent_lens_fusion_stub_latest.json",
   "required_input_artifacts": [
@@ -10,6 +11,16 @@
     "docs/final/artifacts/sasang_independent_lens_latest.json",
     "docs/final/artifacts/logos_independent_lens_latest.json"
   ],
+  "optional_input_artifacts": [
+    "docs/final/artifacts/market_sasang_lens_latest.json"
+  ],
+  "market_sasang_wiring_v0_3": "Runner loads market_sasang_lens_v1 when file exists and --no-market-sasang is not set. Maps fusion_bridge.score_hint→direction_score; confidence from 1−composite_uncertainty, ×0.25 on veto.force_hold. Extra fields under inputs[].market_sasang_lens_v1 for coordinator.",
+  "payload_conflict_summary_v0_2": {
+    "conflict_narrative_guarded": "Single string: majority/minority lens ids, per-lens scores, optional Logos verse_id list + clipped narrative_snippet_guarded from logos artifact.",
+    "minority_lens_ids": "Lens ids whose direction_sign differs from consensus majority_sign.",
+    "logos_evidence_verse_ids": "From logos artifact evidence_refs[].verse_id when present.",
+    "narrative_policy": "Explicit no-LLM / observation_only reminder."
+  },
   "forbidden": {
     "a_track_auto_fusion": true,
     "live_sizing_trigger": true

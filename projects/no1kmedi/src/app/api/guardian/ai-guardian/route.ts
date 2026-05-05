@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
     const vectorCoords = `${vector4d.S.toFixed(3)},${vector4d.L.toFixed(3)},${vector4d.K.toFixed(3)},${vector4d.M.toFixed(3)}`
     const trafficStatus = trafficLight.status === 'high_risk' ? 'R' : trafficLight.status === 'caution' ? 'Y' : 'G'
 
-    const prompt = `System: You are the no1kmedi clinical support assistant. Analyze the 4D vector [${vectorCoords}] and status ${trafficStatus}.
+    const prompt = `System: You are the jema-ai clinical support assistant. Analyze the 4D vector [${vectorCoords}] and status ${trafficStatus}.
 Context: S, L, K, M dimensions; target balance band 0.25.
 Task: Provide concise clinical-support advice for pre-consultation (not a diagnosis).
 Output JSON: {"message": "Direct, empathetic insight (2 sentences)", "recommendations": ["Actionable advice 1", "Actionable advice 2", "Actionable advice 3"]}`
@@ -153,8 +153,8 @@ Output JSON: {"message": "Direct, empathetic insight (2 sentences)", "recommenda
       {
         prompt,
         systemInstruction:
-          'You are the no1kmedi clinical support assistant for Korean medicine workflows. You do not diagnose. Provide concise, empathetic pre-consultation guidance in Korean, based on 4D vector analysis (S-L-K-M).',
-        model: 'gemini-1.5-flash',
+          'You are the jema-ai clinical support assistant for Korean medicine workflows. You do not diagnose. Provide concise, empathetic pre-consultation guidance in Korean, based on 4D vector analysis (S-L-K-M).',
+        model: 'gemini-2.5-flash',
         temperature: 0.7,
         maxOutputTokens: 2048,
         topP: 0.95,

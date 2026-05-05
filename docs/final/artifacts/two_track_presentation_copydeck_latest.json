@@ -1,0 +1,43 @@
+{
+  "schema": "two_track_presentation_copydeck_v1",
+  "generated_at_utc": "2026-04-28T05:58:57Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "one_page": {
+    "title": "Two-track fusion status",
+    "key_points": [
+      "K-track for knowledge IP",
+      "T-track for survivorship gating",
+      "Public-safe disclosure boundary",
+      "Top symbol by coupling: tree_of_knowledge_good_evil",
+      "4D ablation delta (with-without): 0.048087",
+      "Multi-symbol gate status: GO (hold=False)"
+    ]
+  },
+  "three_page": [
+    {
+      "section": "Problem",
+      "bullets": [
+        "Narrative-rich signals can overfit when directly promoted"
+      ]
+    },
+    {
+      "section": "Method",
+      "bullets": [
+        "Two-track split",
+        "Falsification + benchmark + significance",
+        "Multi-symbol top2: ['tree_of_knowledge_good_evil', 'babel_tower']"
+      ]
+    },
+    {
+      "section": "Governance",
+      "bullets": [
+        "Rollback contract",
+        "Public-safe redaction",
+        "Symbolic layer is analysis-only (non-trigger)",
+        "Integrated gate summary: status=GO, hold=False"
+      ]
+    }
+  ]
+}

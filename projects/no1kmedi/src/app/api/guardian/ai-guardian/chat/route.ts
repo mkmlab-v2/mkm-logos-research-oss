@@ -10,11 +10,16 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { generateClinicalText } from '@/lib/ai-provider'
+import {
+  buildGuardianPrompt,
+  buildGuardianSystemInstruction,
+  resolveGuardianChatLane,
+} from '@/lib/guardian-chat-lane-policy'
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { message, health_data, chat_history } = body
+    const { message, health_data, chat_history, audience } = body
 
     const extract4DVector = (healthData: any) => {
       if (healthData?.survey?.vector_4d) {
@@ -31,18 +36,18 @@ export async function POST(request: NextRequest) {
       `${chat.role === 'user' ? 'U' : 'A'}:${(chat.message || '').substring(0, 120)}`,
     ).join('|')
 
-    const context = `no1kmedi clinical support assistant. 4D: [${vectorCoords}].
-History: ${recentHistory || 'none'}
-Q: ${message}
-Theory: equilibrium reference, 0.25 target band.
-Output: 2-3 sentences, pre-consultation clinical-support advice.`
+    const lane = resolveGuardianChatLane(audience)
+    const context = buildGuardianPrompt(lane, {
+      vectorCoords,
+      recentHistory,
+      message,
+    })
 
     const result = await generateClinicalText(
       {
         prompt: context,
-        systemInstruction:
-          'You are the no1kmedi clinical support assistant for Korean medicine workflows. Do not diagnose. Answer in Korean when possible, with concise pre-consultation guidance based on S-L-K-M vectors.',
-        model: 'gemini-1.5-flash',
+        systemInstruction: buildGuardianSystemInstruction(lane),
+        model: 'gemini-2.5-flash',
         temperature: 0.7,
         maxOutputTokens: 2048,
         topP: 0.95,
@@ -55,6 +60,7 @@ Output: 2-3 sentences, pre-consultation clinical-support advice.`
       success: true,
       response: result.text.trim(),
       meta: {
+        lane,
         provider: result.provider,
         fallback_used: result.fallbackUsed,
       },

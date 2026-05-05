@@ -58,6 +58,15 @@ def _read_dotenv_map(path: Path) -> dict[str, str]:
     return env_map
 
 
+def _monorepo_dotenv_path() -> Path:
+    """Prefer workspace root .env (…/workspace/.env); else legacy projects/.env."""
+    workspace = Path(__file__).resolve().parent.parent.parent.parent
+    candidate = workspace / ".env"
+    if candidate.is_file():
+        return candidate
+    return PROJECT_ROOT.parent / ".env"
+
+
 def _pid_is_running(pid: int) -> bool:
     try:
         os.kill(pid, 0)
@@ -160,7 +169,17 @@ async def main():
         False,
     )
 
-    dotenv = _read_dotenv_map(PROJECT_ROOT.parent / ".env")
+    dotenv = _read_dotenv_map(_monorepo_dotenv_path())
+
+    # Optional tuning keys (singular core / risk gate): apply from workspace `.env` when process env empty.
+    for optional_key in (
+        "MKM_SINGULAR_CORE_THRESHOLD",
+        "MKM_SINGULAR_CORE_GRID",
+        "MKM_MIN_CONFIDENCE",
+    ):
+        if optional_key in dotenv and str(dotenv.get(optional_key, "")).strip():
+            if not os.environ.get(optional_key, "").strip():
+                os.environ[optional_key] = str(dotenv[optional_key]).strip()
 
     symbol = os.getenv("SYMBOL", str(cfg_symbol))
     testnet_raw = os.getenv("TESTNET")

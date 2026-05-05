@@ -1,0 +1,44 @@
+{
+  "schema": "symbol_atom_mapping_v1",
+  "generated_at_utc": "2026-04-28T05:55:29Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "seed_symbol": "tree_of_knowledge_good_evil",
+  "mapping": [
+    {
+      "position": 1,
+      "atom_id": "BOUNDARY_COMMAND",
+      "atom_description": "A command that defines existential boundary.",
+      "seed_symbol": "tree_of_knowledge_good_evil"
+    },
+    {
+      "position": 2,
+      "atom_id": "DESIRE_TRIGGER",
+      "atom_description": "A trigger where desire intensifies toward boundary object.",
+      "seed_symbol": "tree_of_knowledge_good_evil"
+    },
+    {
+      "position": 3,
+      "atom_id": "TRANSGRESSION_ACT",
+      "atom_description": "An act that crosses declared boundary.",
+      "seed_symbol": "tree_of_knowledge_good_evil"
+    },
+    {
+      "position": 4,
+      "atom_id": "SHAME_AWARENESS",
+      "atom_description": "Post-transgression fragmentation and self-exposure.",
+      "seed_symbol": "tree_of_knowledge_good_evil"
+    },
+    {
+      "position": 5,
+      "atom_id": "EXILE_PATTERN",
+      "atom_description": "Loss of protected domain and forced displacement.",
+      "seed_symbol": "tree_of_knowledge_good_evil"
+    }
+  ],
+  "sources": {
+    "registry_json": "C:\\workspace\\docs\\final\\artifacts\\atom_anchor_registry_v1.json",
+    "symbolic_json": "C:\\workspace\\docs\\final\\artifacts\\symbolic_topology_insight_latest.json"
+  }
+}

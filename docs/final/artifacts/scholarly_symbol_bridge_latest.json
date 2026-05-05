@@ -1,0 +1,54 @@
+{
+  "schema": "scholarly_symbol_bridge_v1",
+  "generated_at_utc": "2026-04-28T05:55:29Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "seed_symbol": "tree_of_knowledge_good_evil",
+  "bridge_rows": [
+    {
+      "position": 1,
+      "atom_id": "BOUNDARY_COMMAND",
+      "motif_label": "covenantal_boundary",
+      "source_confidence": 0.699623,
+      "research_only": true
+    },
+    {
+      "position": 2,
+      "atom_id": "DESIRE_TRIGGER",
+      "motif_label": "mimetic_desire",
+      "source_confidence": 0.699623,
+      "research_only": true
+    },
+    {
+      "position": 3,
+      "atom_id": "TRANSGRESSION_ACT",
+      "motif_label": "boundary_transgression",
+      "source_confidence": 0.699623,
+      "research_only": true
+    },
+    {
+      "position": 4,
+      "atom_id": "SHAME_AWARENESS",
+      "motif_label": "identity_fragmentation",
+      "source_confidence": 0.699623,
+      "research_only": true
+    },
+    {
+      "position": 5,
+      "atom_id": "EXILE_PATTERN",
+      "motif_label": "sacred_space_loss",
+      "source_confidence": 0.699623,
+      "research_only": true
+    }
+  ],
+  "bridge_summary": {
+    "row_count": 5,
+    "mean_source_confidence": 0.699623,
+    "execution_policy": "report_only_non_trigger"
+  },
+  "sources": {
+    "mapping_json": "C:\\workspace\\docs\\final\\artifacts\\symbol_atom_mapping_latest.json",
+    "resonance_json": "C:\\workspace\\docs\\final\\artifacts\\atom_resonance_report_latest.json"
+  }
+}

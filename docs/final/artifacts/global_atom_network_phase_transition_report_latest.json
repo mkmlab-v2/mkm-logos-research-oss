@@ -1,0 +1,16 @@
+{
+  "schema": "global_atom_network_phase_transition_report_v1",
+  "generated_at_utc": "2026-04-28T06:48:10Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "summary": {
+    "node_count": 20,
+    "edge_count": 106,
+    "old_symbol_nodes": 14,
+    "new_symbol_nodes": 6,
+    "old_new_cross_edges": 0,
+    "phase_transition_signal": "weak"
+  },
+  "note": "PoC topology report from selected core events; full canon scaling requires staged N^2 budget."
+}

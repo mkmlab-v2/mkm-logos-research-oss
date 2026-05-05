@@ -1,0 +1,523 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "docs/final/schemas/ai_smartfarm_api_contract_v1.schema.json",
+  "title": "AI Smartfarm API Contract V1",
+  "description": "Unified message contract for telemetry, control, fermentation batch gate, alerts, and decision logs.",
+  "type": "object",
+  "required": [
+    "message_type",
+    "schema_version",
+    "payload"
+  ],
+  "properties": {
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "telemetry_ingest",
+        "control_command",
+        "control_ack",
+        "fermentation_batch_register",
+        "decision_log_event",
+        "alarm_event"
+      ]
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "message_type": {
+            "const": "telemetry_ingest"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/TelemetryIngest"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "message_type": {
+            "const": "control_command"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/ControlCommand"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "message_type": {
+            "const": "control_ack"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/ControlAck"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "message_type": {
+            "const": "fermentation_batch_register"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/FermentationBatchRegister"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "message_type": {
+            "const": "decision_log_event"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/DecisionLogEvent"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "message_type": {
+            "const": "alarm_event"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/AlarmEvent"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "CommonContext": {
+      "type": "object",
+      "required": [
+        "farm_id",
+        "zone_id",
+        "ts_utc"
+      ],
+      "properties": {
+        "farm_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "zone_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ts_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "timezone": {
+          "type": "string",
+          "default": "Asia/Seoul"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TelemetryIngest": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/CommonContext"
+        },
+        {
+          "type": "object",
+          "required": [
+            "soil_moisture_pct",
+            "soil_temp_c",
+            "soil_ec_us_cm",
+            "comm_ok"
+          ],
+          "properties": {
+            "soil_moisture_pct": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "soil_temp_c": {
+              "type": "number",
+              "minimum": -30,
+              "maximum": 80
+            },
+            "soil_ec_us_cm": {
+              "type": "number",
+              "minimum": 0
+            },
+            "line_pressure_kpa": {
+              "type": "number",
+              "minimum": 0
+            },
+            "flow_lpm": {
+              "type": "number",
+              "minimum": 0
+            },
+            "device_battery_pct": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "comm_ok": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ControlCommand": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/CommonContext"
+        },
+        {
+          "type": "object",
+          "required": [
+            "command_id",
+            "mode",
+            "target",
+            "action",
+            "reason_code",
+            "max_runtime_sec"
+          ],
+          "properties": {
+            "command_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "onsite_manual",
+                "remote_manual",
+                "auto"
+              ]
+            },
+            "target": {
+              "type": "string",
+              "enum": [
+                "pump",
+                "valve"
+              ]
+            },
+            "action": {
+              "type": "string",
+              "enum": [
+                "on",
+                "off",
+                "open",
+                "close"
+              ]
+            },
+            "reason_code": {
+              "type": "string",
+              "enum": [
+                "soil_dryness_trigger",
+                "scheduled_irrigation",
+                "rain_gate_skip",
+                "manual_override",
+                "emergency_stop",
+                "safety_limit_reached",
+                "communication_loss",
+                "pressure_anomaly"
+              ]
+            },
+            "max_runtime_sec": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600
+            },
+            "requested_by": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ControlAck": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/CommonContext"
+        },
+        {
+          "type": "object",
+          "required": [
+            "command_id",
+            "target",
+            "action",
+            "ack_status"
+          ],
+          "properties": {
+            "command_id": {
+              "type": "string"
+            },
+            "target": {
+              "type": "string",
+              "enum": [
+                "pump",
+                "valve"
+              ]
+            },
+            "action": {
+              "type": "string",
+              "enum": [
+                "on",
+                "off",
+                "open",
+                "close"
+              ]
+            },
+            "ack_status": {
+              "type": "string",
+              "enum": [
+                "accepted",
+                "executed",
+                "failed",
+                "timeout"
+              ]
+            },
+            "ack_message": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "FermentationBatchRegister": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/CommonContext"
+        },
+        {
+          "type": "object",
+          "required": [
+            "batch_id",
+            "brew_start_ts_utc",
+            "brew_end_ts_utc",
+            "batch_ph",
+            "batch_ec_us_cm",
+            "operator_confirmed",
+            "anomaly_flag"
+          ],
+          "properties": {
+            "batch_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "brew_start_ts_utc": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "brew_end_ts_utc": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "batch_ph": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 14
+            },
+            "batch_ec_us_cm": {
+              "type": "number",
+              "minimum": 0
+            },
+            "operator_confirmed": {
+              "type": "boolean"
+            },
+            "anomaly_flag": {
+              "type": "boolean"
+            },
+            "notes": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "DecisionLogEvent": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/CommonContext"
+        },
+        {
+          "type": "object",
+          "required": [
+            "decision_id",
+            "decision",
+            "reason_code",
+            "input_snapshot",
+            "mode",
+            "command_id",
+            "command_ack_status"
+          ],
+          "properties": {
+            "decision_id": {
+              "type": "string"
+            },
+            "decision": {
+              "type": "string",
+              "enum": [
+                "execute",
+                "skip",
+                "delay",
+                "stop"
+              ]
+            },
+            "reason_code": {
+              "type": "string"
+            },
+            "input_snapshot": {
+              "type": "object",
+              "required": [
+                "soil_moisture_pct",
+                "soil_temp_c",
+                "soil_ec_us_cm",
+                "forecast_rain_mm_12h",
+                "comm_ok"
+              ],
+              "properties": {
+                "soil_moisture_pct": {
+                  "type": "number"
+                },
+                "soil_temp_c": {
+                  "type": "number"
+                },
+                "soil_ec_us_cm": {
+                  "type": "number"
+                },
+                "forecast_rain_mm_12h": {
+                  "type": "number"
+                },
+                "comm_ok": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "onsite_manual",
+                "remote_manual",
+                "auto"
+              ]
+            },
+            "command_id": {
+              "type": "string"
+            },
+            "command_ack_status": {
+              "type": "string",
+              "enum": [
+                "accepted",
+                "executed",
+                "failed",
+                "timeout",
+                "not_applicable"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "AlarmEvent": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/CommonContext"
+        },
+        {
+          "type": "object",
+          "required": [
+            "alarm_id",
+            "severity",
+            "alarm_code",
+            "message",
+            "requires_ack"
+          ],
+          "properties": {
+            "alarm_id": {
+              "type": "string"
+            },
+            "severity": {
+              "type": "string",
+              "enum": [
+                "info",
+                "warning",
+                "critical"
+              ]
+            },
+            "alarm_code": {
+              "type": "string",
+              "enum": [
+                "communication_loss",
+                "pressure_anomaly",
+                "flow_anomaly",
+                "actuator_no_ack",
+                "safety_limit_reached",
+                "batch_gate_blocked",
+                "manual_override_active"
+              ]
+            },
+            "message": {
+              "type": "string"
+            },
+            "requires_ack": {
+              "type": "boolean"
+            },
+            "acked_by": {
+              "type": "string"
+            },
+            "acked_ts_utc": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

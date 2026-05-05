@@ -1,0 +1,15 @@
+{
+  "schema": "sasang_gt_approval_progress_v1",
+  "generated_at_utc": "2026-04-29T00:00:05Z",
+  "gt_valid_rows_current": 128,
+  "target_min_gt_rows": 128,
+  "approved_rows_in_queue": 0,
+  "needed_rows_now": 0,
+  "needed_rows_after_current_approval": 0,
+  "can_reach_target_with_current_approval": true,
+  "policy": {
+    "approved_human_label_required": true,
+    "auto_label_forbidden": true,
+    "track_b_to_a_autobind_forbidden": true
+  }
+}

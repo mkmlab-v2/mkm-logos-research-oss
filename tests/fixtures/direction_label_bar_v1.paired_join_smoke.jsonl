@@ -1,0 +1,3 @@
+{"schema_version": "direction_label_bar_v1", "instrument_id": "KOSPI", "label_date": "2024-06-03", "horizon": "1d", "direction": "up", "label_sha256": "dd67e6b98524ec95cad3957c5ea37853bb45f043704a6d636b87d4027e25be50", "neutral_bps": 8.0}
+{"schema_version": "direction_label_bar_v1", "instrument_id": "KOSPI", "label_date": "2024-06-04", "horizon": "1d", "direction": "down", "label_sha256": "e7d06cfbc0646d9a6e9629ca9ce1e2e69ed1dd35e56e3b589793a3a05fe18486", "neutral_bps": 8.0}
+{"schema_version": "direction_label_bar_v1", "instrument_id": "BTC", "label_date": "2024-06-05", "horizon": "1d", "direction": "flat", "label_sha256": "2fe47a3c1b6a58aed418ade09377463ed756dee1cea2ab6e0b8243dcd0ab007f", "neutral_bps": 8.0}

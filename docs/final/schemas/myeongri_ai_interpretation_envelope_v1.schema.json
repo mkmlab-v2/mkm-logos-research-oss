@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/myeongri_ai_interpretation_envelope_v1.schema.json",
+  "title": "MKM Myeongri AI interpretation envelope v1 (B-track, human review)",
+  "description": "Structured LLM narrative wrapper around deterministic pipeline outputs. Not a trading or medical signal; not A-track.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "hypothesis_tier",
+    "boundary_ack",
+    "mkm_advanced_insight",
+    "confidence_score",
+    "human_review_required",
+    "prohibition_ack"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "myeongri_ai_interpretation_envelope_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "const": "B"
+    },
+    "boundary_ack": {
+      "type": "boolean",
+      "const": true
+    },
+    "mkm_advanced_insight": {
+      "type": "string",
+      "minLength": 8,
+      "description": "Hypothesis-only narrative; must remain consistent with [HYPO] tier."
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Self-rated coherence of interpretation vs inputs; not forecast probability."
+    },
+    "human_review_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "method_id": {
+      "type": "string",
+      "description": "Optional: similarity/window definition id for audit replay."
+    },
+    "rag_sources_used": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Repo-relative paths or URIs of chunks injected into context."
+    },
+    "deterministic_input_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Optional SHA256 of canonical JSON fed to the model."
+    },
+    "prohibition_ack": {
+      "type": "string",
+      "minLength": 16,
+      "description": "Fixed acknowledgement that output is not live trading, medical, or doctrinal finality."
+    },
+    "lexicon_version_pointer": {
+      "type": "string",
+      "description": "e.g. docs/final/MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1.md"
+    }
+  }
+}

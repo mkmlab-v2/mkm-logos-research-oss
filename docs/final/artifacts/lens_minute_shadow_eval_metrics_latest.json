@@ -1,0 +1,23 @@
+{
+  "schema": "lens_minute_shadow_eval_metrics_v1",
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-05-03T03:37:35Z",
+  "shadow_only": true,
+  "source_report_schema": "lens_minute_shadow_eval_v1",
+  "bar_interval_minutes": 1,
+  "n_bars": 8,
+  "aggregates": {
+    "myeongni_direction_mean": -0.25,
+    "myeongni_direction_stdev": 0.6050383695035382,
+    "sasang_intensity_mean": 0.375,
+    "sasang_intensity_stdev": 0.3025193028081018
+  },
+  "label_gate": {
+    "label_gate_ready": false,
+    "note": "Wire labeled_jsonl or dual-write labels to enable Brier/direction_hit; stub aggregates only."
+  },
+  "evolution_stub": {
+    "enabled": false,
+    "note": "Hook optimizer / bandit here after holdout labels exist (B-track only)."
+  }
+}

@@ -78,6 +78,7 @@ class CompressRequestV2(BaseModel):
     locale: str | None = None
     client_request_id: str | None = None
     notes: str | None = None
+    emit_semantic_pointer: bool = False
 
 
 class CompressionPacket(BaseModel):
@@ -135,7 +136,9 @@ def _apply_v2_trust_restoration(
     return raw, raw, ratio_out, jac_after, True
 
 
-def _run_evaluate_for_packet(text: str, loss_profile: LossProfile) -> dict[str, Any]:
+def _run_evaluate_for_packet(
+    text: str, loss_profile: LossProfile, *, emit_semantic_pointer: bool = False
+) -> dict[str, Any]:
     """Run evaluate_report and return payload for Trust Packet fields."""
     selected = _decision_selected_profile()
     strategy = str(selected.get("strategy", "A"))
@@ -174,6 +177,7 @@ def _run_evaluate_for_packet(text: str, loss_profile: LossProfile) -> dict[str, 
         include_gematria_4d_bridge=_bp,
         include_cee_core=_bp,
         apply_gematria_4d_bridge_policy=_bp,
+        emit_semantic_pointer=emit_semantic_pointer,
     )
     elapsed_ms = round((perf_counter() - t0) * 1000.0, 3)
     comp_block = report.get("compression_metrics", {})
@@ -193,6 +197,11 @@ def _run_evaluate_for_packet(text: str, loss_profile: LossProfile) -> dict[str, 
     rec = str(first.get("reconstructed_text_effective", "") or "")
     ratio = float(comp_block.get("global_token_saving_rate", 0.0))
     jac = first.get("reconstruction_fidelity_jaccard")
+    sp_first: dict[str, Any] | None = None
+    if emit_semantic_pointer:
+        cand = first.get("semantic_pointer")
+        if isinstance(cand, dict):
+            sp_first = cand
     # lossless_text: prefer reconstructed == raw for messaging (engine still experimental).
     out: dict[str, Any] = {
         "ok": True,
@@ -201,6 +210,7 @@ def _run_evaluate_for_packet(text: str, loss_profile: LossProfile) -> dict[str, 
         "reconstructed_text": rec if rec else text,
         "global_ratio": ratio,
         "jaccard": float(jac) if jac is not None else None,
+        "semantic_pointer": sp_first,
     }
     if loss_profile == "lossless_text":
         out["integrity_note"] = "lossless_text_profile_engine_may_still_be_semantic_stub"
@@ -347,7 +357,9 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
                 integrity_flags=flags,
             )
 
-        ev = _run_evaluate_for_packet(body.text, body.loss_profile)
+        ev = _run_evaluate_for_packet(
+            body.text, body.loss_profile, emit_semantic_pointer=bool(body.emit_semantic_pointer)
+        )
         flags["evaluate_report_ms"] = ev.get("elapsed_ms")
         if not ev.get("ok"):
             flags["evaluate_report_degraded"] = True
@@ -364,12 +376,16 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
             flags["jaccard_pre_restoration"] = ev.get("jaccard")
         if ev.get("integrity_note"):
             flags["integrity_note"] = ev.get("integrity_note")
+        stub_block: dict[str, Any] = {
+            "reconstructed_text": rec,
+            "global_token_saving_rate": ratio_final,
+            "reconstruction_fidelity_jaccard": jac_after,
+        }
+        sp_ev = ev.get("semantic_pointer")
+        if isinstance(sp_ev, dict):
+            stub_block["semantic_pointer"] = sp_ev
         residual_meta = {
-            RESIDUAL_STUB_KEY: {
-                "reconstructed_text": rec,
-                "global_token_saving_rate": ratio_final,
-                "reconstruction_fidelity_jaccard": jac_after,
-            },
+            RESIDUAL_STUB_KEY: stub_block,
             "placeholder_map": {},
         }
         packet = CompressionPacket(

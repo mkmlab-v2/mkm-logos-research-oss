@@ -1,0 +1,306 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "operational_readiness_checklist_v1.schema.json",
+  "title": "Operational Readiness Checklist v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "mission_id",
+    "scope",
+    "done_conditions",
+    "hard_gates",
+    "runtime_state",
+    "verification",
+    "artifacts",
+    "context_reset_contract",
+    "memory_drift_audit"
+  ],
+  "properties": {
+    "schema": {
+      "const": "operational_readiness_checklist_v1"
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "mission_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "track",
+        "environment",
+        "owner_mode"
+      ],
+      "properties": {
+        "track": {
+          "type": "string"
+        },
+        "environment": {
+          "type": "string"
+        },
+        "owner_mode": {
+          "type": "string"
+        }
+      }
+    },
+    "done_conditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "description",
+          "required",
+          "check_type",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "check_type": {
+            "type": "string",
+            "enum": [
+              "artifact_exists",
+              "artifact_value",
+              "script_exit_code",
+              "manual_approval"
+            ]
+          },
+          "evidence_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "expected": {
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "null"
+            ]
+          },
+          "actual": {
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "null"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "FAIL",
+              "PENDING",
+              "BLOCKED"
+            ]
+          },
+          "last_checked_utc": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "hard_gates": {
+      "type": "object",
+      "required": [
+        "fact_lock_pass",
+        "btrack_atrack_wall_pass",
+        "human_approval_required",
+        "human_approval_received",
+        "live_promotion_allowed"
+      ],
+      "properties": {
+        "fact_lock_pass": {
+          "type": "boolean"
+        },
+        "btrack_atrack_wall_pass": {
+          "type": "boolean"
+        },
+        "human_approval_required": {
+          "type": "boolean"
+        },
+        "human_approval_received": {
+          "type": "boolean"
+        },
+        "live_promotion_allowed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "runtime_state": {
+      "type": "object",
+      "required": [
+        "state",
+        "retry_count",
+        "max_retries"
+      ],
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "RUNNING",
+            "WAITING_APPROVAL",
+            "HOLD",
+            "GO",
+            "FAILED"
+          ]
+        },
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_retries": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "last_error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "required_total",
+        "passed_total",
+        "failed_ids",
+        "all_required_passed",
+        "judge_decision",
+        "next_action"
+      ],
+      "properties": {
+        "required_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passed_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failed_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "all_required_passed": {
+          "type": "boolean"
+        },
+        "judge_decision": {
+          "type": "string",
+          "enum": [
+            "HOLD",
+            "GO_RESEARCH",
+            "GO_CONTROLLED",
+            "GO_LIVE_CANDIDATE"
+          ]
+        },
+        "next_action": {
+          "type": "string"
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "required": [
+        "plan_path",
+        "session_log_path",
+        "progress_log_path",
+        "checklist_path"
+      ],
+      "properties": {
+        "plan_path": {
+          "type": "string"
+        },
+        "session_log_path": {
+          "type": "string"
+        },
+        "progress_log_path": {
+          "type": "string"
+        },
+        "checklist_path": {
+          "type": "string"
+        }
+      }
+    },
+    "context_reset_contract": {
+      "type": "object",
+      "required": [
+        "handoff_file_path",
+        "compaction_version",
+        "preserve_fields"
+      ],
+      "properties": {
+        "handoff_file_path": {
+          "type": "string"
+        },
+        "compaction_version": {
+          "type": "string"
+        },
+        "preserve_fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "memory_drift_audit": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "last_audit_utc",
+        "drift_flags",
+        "resolution_status"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "last_audit_utc": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "drift_flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "resolution_status": {
+          "type": "string",
+          "enum": [
+            "CLEAN",
+            "REVIEW_REQUIRED",
+            "BLOCKED"
+          ]
+        }
+      }
+    }
+  }
+}

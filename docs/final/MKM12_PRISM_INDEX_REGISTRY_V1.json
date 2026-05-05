@@ -1,6 +1,6 @@
 {
   "schema": "mkm12_prism_index_registry_v1",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "ts_utc": "2026-04-20T04:00:00Z",
   "description": "Grand Indexing 2.0 — logical path registry (not code 4D). Incremental entries only; see CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §14. Repo-root ROOT cleanup (prophecy/defense/bitcoin-trading) 2026-04-19.",
   "entries": [
@@ -10,6 +10,13 @@
       "prism_axis": "S",
       "agent_access": "read_only_strict",
       "summary_ko": "구현 팩트 SSOT — NotebookLM·기획만으로 구현 단정 금지"
+    },
+    {
+      "id": "prism_mkm_trinity_index_v1",
+      "path": "docs/final/MKM_TRINITY_INDEX_V1.json",
+      "prism_axis": "S",
+      "agent_access": "read_only_strict",
+      "summary_ko": "MKM Trinity 렌즈 목차(포인터만, authority index_only) — 스키마 docs/final/schemas/mkm_trinity_index_v1.schema.json"
     },
     {
       "id": "prism_central_agent_memory",
@@ -276,6 +283,13 @@
       "prism_axis": "L",
       "agent_access": "execute_observe",
       "summary_ko": "CI: 명리·사상·로고스 독립 렌즈+섀도 게이트+퓨전 스텁+보명 렉시콘+사이드카 렌즈일치 pytest 스모크"
+    },
+    {
+      "id": "prism_workflow_bio_sasang_nstates_rehydrate_smoke",
+      "path": ".github/workflows/bio-sasang-nstates-rehydrate-smoke.yml",
+      "prism_axis": "L",
+      "agent_access": "execute_observe",
+      "summary_ko": "CI: bio_sasang n-states strict JSON 재수화(rehydrate) 계약 pytest 스모크"
     },
     {
       "id": "prism_script_refresh_prophecy_promotion_gates_dual",

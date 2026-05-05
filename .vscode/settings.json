@@ -1,3 +1,32 @@
 {
-  "terminal.integrated.cwd": "${workspaceFolder}"
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    "**/.pytest_cache/**": true,
+    "**/dist/**": true,
+    "docs/final/artifacts/**": true
+  },
+  "search.exclude": {
+    "docs/final/artifacts/**": true,
+    "**/node_modules": true,
+    "**/.pytest_cache": true
+  },
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "terminal.integrated.hideOnStartup": "always",
+  "terminal.integrated.focusAfterRun": "never",
+  "terminal.integrated.tabs.enabled": false,
+  "terminal.integrated.hideOnLastClosed": true,
+  "terminal.integrated.enablePersistentSessions": false,
+  "terminal.integrated.persistentSessionReviveProcess": "never",
+  "terminal.integrated.gpuAcceleration": "off",
+  "terminal.integrated.cursorBlinking": false,
+  "terminal.integrated.smoothScrolling": false,
+  "terminal.integrated.enableVisualBell": false,
+  "terminal.integrated.shellIntegration.enabled": false,
+  "workbench.reduceMotion": "on",
+  "task.autoDetect": "off",
+  "npm.autoDetect": "off",
+  "typescript.tsc.autoDetect": "off",
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "jema12.autoStartServers": false
 }

@@ -1,0 +1,32 @@
+{
+  "schema": "two_track_kdd_submission_template_v1",
+  "generated_at_utc": "2026-04-28T04:45:51Z",
+  "track": "kdd_applied_data_science",
+  "title_en": "Two-Track Safety-Gated Inference for Risk-Control Decision Support",
+  "abstract_en_180w": "We present a two-track safety-gated inference architecture for risk-control operations over meaning-rich cross-reference signals. The system separates K-track (knowledge/research lane) from T-track (operational survivorship and rollback lane) to prevent direct promotion of overfit signals into operations. Claims are artifact-anchored and reproducible through multi-baseline comparison, raw OOS readiness checks, bootstrap/permutation significance, and falsification boundary scans. Current as-of artifacts indicate bundle readiness and publication-claim readiness under tested conditions; significance supports positive delta, and falsification reports first non-pass at survivor threshold 7. A fail-boundary layer sets max-safe survivor floor at 5 and first-break at 7 for explicit no-go semantics. Historical corpora are treated as stress-test beds for context-filter robustness, not doctrinal proof. The system prioritizes risk-off governance, auditability, and reproducibility over directional market claims.",
+  "keywords_en": [
+    "safety-gated inference",
+    "two-track architecture",
+    "risk-control governance",
+    "falsification boundaries",
+    "bootstrap permutation significance",
+    "public-safe disclosure",
+    "artifact reproducibility",
+    "survivor filter"
+  ],
+  "contributions_en": [
+    "Two-track architecture that separates K-track research insight generation from T-track operational gating.",
+    "Falsification-first validation with explicit fail-boundary and rollback semantics.",
+    "Public-safe disclosure strategy with as-of artifact reproducibility for applied review."
+  ],
+  "submission_notes_en": [
+    "Use this payload for KDD Applied Data Science track form fields.",
+    "Keep proprietary formulas/weights redacted; cite artifact paths instead.",
+    "Include fail-boundary row in supplementary/rebuttal appendix.",
+    "Avoid doctrinal, guarantee-style, directional certainty, or absolute wording in external claims."
+  ],
+  "source": {
+    "recommended_track_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_recommended_track_latest.json",
+    "camera_ready_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_camera_ready_latest.json"
+  }
+}

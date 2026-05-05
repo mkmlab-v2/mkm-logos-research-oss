@@ -1,0 +1,32 @@
+{
+  "schema": "sasang_shadow_governance_v1",
+  "generated_at_utc": "2026-04-29T00:00:06Z",
+  "mode": "shadow_only_observation",
+  "decision": "HUMAN_REVIEW_REQUIRED_FOR_PROMOTION",
+  "current_gate": {
+    "promotion_status": "PASS",
+    "standard_quality_gate": "PASS",
+    "strict_quality_gate": "PASS"
+  },
+  "boundaries": {
+    "track_b_only": true,
+    "a_track_autobind_forbidden": true,
+    "promotion_to_a_track_allowed": false,
+    "non_medical_claim_only": true,
+    "no_live_trading_trigger": true
+  },
+  "blockers": [],
+  "warnings": [
+    "strict_shadow_evidence_only"
+  ],
+  "rollback_conditions": [
+    "strict gate remains HOLD/FAIL",
+    "direction_score regresses to 0 for 2 consecutive refreshes",
+    "confidence falls below 0.55"
+  ],
+  "release_conditions": [
+    "v1~v9 promotion chain implemented and reproducibly PASS",
+    "strict gate PASS on refreshed inputs",
+    "human sign-off recorded"
+  ]
+}

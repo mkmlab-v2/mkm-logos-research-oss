@@ -1,0 +1,18 @@
+{
+  "schema": "execution_clearance_certificate_v1",
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-05-03T03:53:57Z",
+  "status": "DENIED",
+  "reason": "governance_hold_trade_execute",
+  "governance_artifact": "scripts\\fixtures\\integrated_governance_v1_hold.json",
+  "final_regime": "HOLD",
+  "final_action_allowed": false,
+  "action": "TRADE_EXECUTE",
+  "action_payload_hash": "f9f39e542c0b8d53ce3975f46312b245a31bf03ab5efe60a211844efec76678a",
+  "child_command": [
+    "C:\\Python311\\python.exe",
+    "C:\\workspace\\scripts\\trade_dummy.py"
+  ],
+  "child_exit_code": null,
+  "audit_ref": "ecc_denied_hold:integrated_governance_v1_hold.json"
+}

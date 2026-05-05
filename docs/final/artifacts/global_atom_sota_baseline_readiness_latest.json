@@ -1,0 +1,49 @@
+{
+  "schema": "global_atom_sota_baseline_readiness_v1",
+  "generated_at_utc": "2026-04-28T10:28:35Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "all_ready": false,
+  "rows": [
+    {
+      "baseline_key": "baseline_a",
+      "model_name": "sota_baseline_a",
+      "ready": false,
+      "missing_metrics": [
+        "oos_f1",
+        "oos_auc",
+        "ece",
+        "runtime_sec",
+        "cost_usd"
+      ],
+      "is_placeholder": true
+    },
+    {
+      "baseline_key": "baseline_b",
+      "model_name": "sota_baseline_b",
+      "ready": false,
+      "missing_metrics": [
+        "oos_f1",
+        "oos_auc",
+        "ece",
+        "runtime_sec",
+        "cost_usd"
+      ],
+      "is_placeholder": true
+    },
+    {
+      "baseline_key": "baseline_c",
+      "model_name": "sota_baseline_c",
+      "ready": false,
+      "missing_metrics": [
+        "oos_f1",
+        "oos_auc",
+        "ece",
+        "runtime_sec",
+        "cost_usd"
+      ],
+      "is_placeholder": true
+    }
+  ]
+}

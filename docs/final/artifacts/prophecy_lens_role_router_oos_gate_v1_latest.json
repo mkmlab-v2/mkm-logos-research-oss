@@ -1,0 +1,78 @@
+{
+  "schema": "prophecy_lens_role_router_oos_gate_v1",
+  "generated_at_utc": "2026-04-28T13:55:21Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "inputs": {
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_pre_causal_active_latest.json",
+    "sidecar_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_insight_sidecar_v1_latest.json",
+    "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+    "target_instrument": "btc",
+    "fee_bps": 5.0,
+    "annual_trading_days": 252,
+    "oos_tail_days": 7,
+    "month_lookback_grid": [
+      14,
+      21,
+      28
+    ],
+    "neutral_size_grid": [
+      0.3,
+      0.5,
+      0.7
+    ]
+  },
+  "split": {
+    "train_rows": 22,
+    "oos_rows": 7,
+    "train_start": "2026-03-10",
+    "train_end": "2026-04-08",
+    "oos_start": "2026-04-09",
+    "oos_end": "2026-04-17"
+  },
+  "best_train_candidate": {
+    "params": {
+      "month_lookback_days": 21,
+      "neutral_size": 0.5
+    },
+    "train_metrics": {
+      "n_days": 22,
+      "n_active_days": 11,
+      "directional_hit_rate_active": 0.727273,
+      "win_rate_active": 0.727273,
+      "total_return": 0.098237,
+      "cagr": 1.925208,
+      "mdd": -0.009305,
+      "sharpe": 6.752033,
+      "sortino": 25.665412
+    }
+  },
+  "oos_metrics": {
+    "n_days": 7,
+    "n_active_days": 3,
+    "directional_hit_rate_active": 1.0,
+    "win_rate_active": 1.0,
+    "total_return": 0.036101,
+    "cagr": 2.584847,
+    "mdd": -0.00025,
+    "sharpe": 8.25809,
+    "sortino": 0.0
+  },
+  "gate": {
+    "go": true,
+    "status": "GO_OOS_PASS",
+    "checks": {
+      "oos_hit_rate_pass": true,
+      "oos_mdd_pass": true,
+      "oos_sharpe_pass": true,
+      "oos_total_return_pass": true
+    },
+    "thresholds": {
+      "min_hit_rate": 0.55,
+      "max_mdd_floor": -0.12,
+      "min_sharpe": 0.0,
+      "min_total_return": 0.0
+    }
+  },
+  "note": "Strict OOS: parameters chosen on train only, then frozen for tail-window evaluation."
+}

@@ -1,0 +1,49 @@
+{
+  "_meta": {
+    "schema": "mkm_trinity_index_v1",
+    "version": 1,
+    "authority": "index_only",
+    "supersedes": "none",
+    "truth_source": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+    "notes": "FACT 판정·수치·승격 여부는 truth_source 표·스크립트 exit code만. 본 파일은 에이전트/사람용 목차."
+  },
+  "lenses": {
+    "myeongni": {
+      "label_ko": "명리",
+      "operating_mode": "B_track_research_non_gating",
+      "primary_runner": "scripts/run_lens_myeongni.py",
+      "validation_pointers": [
+        "tests/test_myeongni_lens_v1_contract.py",
+        "tests/test_myeongni_fusion_bridge_v1.py",
+        "tests/test_independent_lenses_v0.py"
+      ],
+      "constitution_ref": "§3.3",
+      "constitution_anchor": "Myeongni insight pipeline and independent lens v0/v1 (CONSTITUTION §3 표)"
+    },
+    "sasang": {
+      "label_ko": "사상",
+      "operating_mode": "B_track_research_non_gating_non_medical",
+      "primary_runner": "scripts/run_lens_sasang.py",
+      "validation_pointers": [
+        "tests/test_sasang_interpretive_insight_bundle_v1.py",
+        "tests/test_sasang_dynamics_regime_mapping_ledger.py",
+        "tests/test_market_sasang_lens_v1.py",
+        "tests/test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py"
+      ],
+      "constitution_ref": "§3.5",
+      "constitution_anchor": "Sasang dynamics regime mapping and independent lens (CONSTITUTION §3.5 및 §3 표)"
+    },
+    "logos": {
+      "label_ko": "성경(Logos)",
+      "operating_mode": "B_track_research_logos_first_non_gating",
+      "primary_runner": "scripts/run_lens_logos.py",
+      "validation_pointers": [
+        "tests/test_independent_lenses_v0.py",
+        "tests/test_logos_track_b_deep_fusion_job_v1.py",
+        "tests/test_logos_deep_research_distill_schema_v1.py"
+      ],
+      "constitution_ref": "§3",
+      "constitution_anchor": "Logos independent lens v0 and Track B Logos pipeline rows (CONSTITUTION §3 표·§3.2 이후)"
+    }
+  }
+}

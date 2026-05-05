@@ -105,6 +105,36 @@ on:
       - "scripts/report_compression_jaccard_loss_patterns.py"
       - "scripts/report_ultra_compression_kpi_summary.py"
       - "scripts/run_workspace_automation_health.ps1"
+      - "scripts/validate_news_observation_jsonl_v1.py"
+      - "scripts/build_direction_label_bar_jsonl_from_ohlcv_v1.py"
+      - "scripts/join_news_observation_direction_labels_walkforward_v1.py"
+      - "scripts/build_news_observation_jsonl_from_csv_v1.py"
+      - "scripts/check_news_label_join_temporal_v1.py"
+      - "scripts/Run-NewsObservationContractSmoke.ps1"
+      - "docs/final/schemas/news_observation_v1.schema.json"
+      - "docs/final/schemas/direction_label_bar_v1.schema.json"
+      - "tests/test_news_observation_v1_schema.py"
+      - "tests/test_validate_news_observation_jsonl_v1.py"
+      - "tests/test_check_news_label_join_temporal_v1.py"
+      - "tests/test_build_news_observation_jsonl_from_csv_v1.py"
+      - "tests/test_build_direction_label_bar_jsonl_from_ohlcv_v1.py"
+      - "tests/test_join_news_observation_direction_labels_walkforward_v1.py"
+      - "tests/test_build_direction_label_bar_kospi_csv_smoke_v1.py"
+      - "tests/fixtures/news_observation_v1.sample.jsonl"
+      - "tests/fixtures/direction_label_bar_v1.sample.jsonl"
+      - "tests/fixtures/join_walkforward_smoke_v1.news.jsonl"
+      - "tests/fixtures/join_walkforward_smoke_v1.labels.jsonl"
+      - "research/market_data/kospi_daily_external_yf.csv"
+      - "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+      - "scripts/athena_run_v1.py"
+      - "scripts/athena_doctor_v1.py"
+      - "scripts/athena_ecc_logs_v1.py"
+      - "scripts/check_athena_execution_governance_smoke_v1.py"
+      - "scripts/trade_dummy.py"
+      - "scripts/fixtures/integrated_governance_v1_hold.json"
+      - "tests/test_athena_run_v1.py"
+      - "tests/test_athena_doctor_v1.py"
+      - "tests/test_check_athena_execution_governance_smoke_v1.py"
       - "scripts/run_compression_automation_chain.ps1"
       - "scripts/run_compression_weekly_governance_chain.ps1"
       - "scripts/Register-CompressionWeeklyGovernanceTask.ps1"
@@ -150,11 +180,40 @@ on:
       - "tests/test_track_a_shadow_corpus_eval_smoke.py"
       - "tests/test_track_a_metering_chain_smoke.py"
       - "tests/test_autonomous_evolution_loop_draft_smoke.py"
+      - "scripts/build_two_track_submission_evidence_bundle_v1.py"
+      - "scripts/build_two_track_submission_draft_v1.py"
+      - "scripts/build_two_track_submission_camera_ready_v1.py"
+      - "scripts/build_multi_symbol_gate_summary_v1.py"
+      - "scripts/build_multi_symbol_counterfactual_set_v1.py"
+      - "scripts/build_multi_symbol_counterfactual_comparison_v1.py"
+      - "scripts/build_multi_symbol_walkforward_survivability_v1.py"
+      - "scripts/alert_multi_symbol_top_drift_gate_v1.py"
+      - "scripts/build_multi_symbol_negative_control_v1.py"
+      - "scripts/alert_multi_symbol_negative_control_gate_v1.py"
+      - "scripts/enrich_two_track_qa_with_symbol_evidence_v1.py"
+      - "scripts/run_two_track_falsification_suite_v1.py"
+      - "scripts/run_two_track_submission_pack_v1.ps1"
+      - "tests/test_build_two_track_submission_evidence_bundle_v1.py"
+      - "tests/test_build_two_track_submission_draft_v1.py"
+      - "tests/test_build_two_track_submission_camera_ready_v1.py"
+      - "tests/test_multi_symbol_contract_gates_v1.py"
+      - "tests/test_multi_symbol_counterfactual_comparison_v1.py"
+      - "tests/test_two_track_qa_overlay_counterfactual_v1.py"
+      - "scripts/extract_aramaic_core_corpus_v1.py"
+      - "tests/test_extract_aramaic_core_corpus_v1.py"
       - "tests/fixtures/track_a_metering_log_smoke_v1.jsonl"
       - "data/track_a_shadow/conversations_sample_v1.jsonl"
       - "tests/test_multilens_sensitive_integrity_gate.py"
       - "tests/test_ultra_compression_artifacts.py"
       - "tests/test_compression_weekly_governance_report.py"
+      - "tests/test_external_anchor_governance_scripts_smoke_v1.py"
+      - "scripts/build_external_anchor_promotion_handoff_packet_v1.py"
+      - "scripts/build_external_anchor_weekly_ab_report_v1.py"
+      - "scripts/sync_external_anchor_tier1_into_operating_policy_v1.py"
+      - "scripts/build_external_anchor_recovery_candidates_v1.py"
+      - "scripts/check_external_anchor_promotion_sustain_gate_v1.py"
+      - "scripts/append_external_anchor_promotion_history_v1.py"
+      - "scripts/run_layer1_layer5_weekly_maintenance_v1.ps1"
       - "tests/test_run_deut32_cee_pilot.py"
       - "tests/test_run_deut32_cee_stability_sweep.py"
       - "tests/test_run_btrack_fusion_gate.py"
@@ -163,6 +222,13 @@ on:
       - "tests/test_generate_btrack_hypothesis_prophecy_v1.py"
       - "tests/test_eval_prophecy_hit_rate_v1.py"
       - "tests/test_build_btrack_prophecy_score_from_ohlcv.py"
+      - "scripts/run_truthfulqa_ab_benchmark_v1.py"
+      - "scripts/check_truthfulqa_ab_gate_v1.py"
+      - "scripts/Run-TruthfulQAReproBundleV1.ps1"
+      - "tests/test_run_truthfulqa_ab_benchmark_v1.py"
+      - "tests/test_check_truthfulqa_ab_gate_v1.py"
+      - "tests/test_run_truthfulqa_repro_bundle_v1.py"
+      - "tests/test_run_fact_lock_bundle_truthfulqa_gate.py"
       - "scripts/generate_btrack_hypothesis_prophecy_v1.py"
       - "scripts/fill_human_regime_audit_llm_spike.py"
       - "scripts/fill_human_regime_audit_proxy_spike.py"
@@ -177,6 +243,24 @@ on:
       - "tests/test_human_regime_audit_and_agreement_spike.py"
       - "scripts/eval_prophecy_hit_rate_v1.py"
       - "scripts/build_btrack_prophecy_score_from_ohlcv.py"
+      - "scripts/run_prophecy_logos_revalidation_suite_v1.py"
+      - "scripts/check_promotion_directional_semantic_separation_v1.py"
+      - "tests/test_role_router_shadow_forward_fusion_regression.py"
+      - "tests/test_promotion_directional_semantic_separation_v1.py"
+      - "scripts/build_survivor_w3_direct_mapping_v1.py"
+      - "scripts/build_global_atom_survivor_resonance_daily_real_v1.py"
+      - "scripts/check_survivor_crash_falsification_gate_v1.py"
+      - "scripts/run_survivor_resonance_falsification_chain_v1.py"
+      - "scripts/sweep_survivor_crash_falsification_thresholds_v1.py"
+      - "scripts/tune_survivor_real_resonance_weights_v1.py"
+      - "scripts/run_survivor_resonance_operational_bundle_v1.py"
+      - "tests/test_build_survivor_w3_direct_mapping_v1.py"
+      - "tests/test_build_global_atom_survivor_resonance_daily_real_v1.py"
+      - "tests/test_check_survivor_crash_falsification_gate_v1.py"
+      - "tests/test_run_survivor_resonance_falsification_chain_v1.py"
+      - "tests/test_sweep_survivor_crash_falsification_thresholds_v1.py"
+      - "tests/test_tune_survivor_real_resonance_weights_v1.py"
+      - "tests/test_run_survivor_resonance_operational_bundle_v1.py"
       - "scripts/build_btrack_llm_input_bundle.py"
       - "scripts/run_btrack_daily_hypothesis_chain.ps1"
       - "scripts/append_btrack_insight_observation.py"
@@ -287,6 +371,28 @@ on:
       - "tests/test_v3_operational_measured_pipeline.py"
       - "tests/test_btrack_phase3_snapshot_sync.py"
       - "tests/test_sasang_cross_ref_draft.py"
+      - "tests/test_sasang_interpretive_insight_bundle_v1.py"
+      - "tests/test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py"
+      - "docs/final/MKM_TRINITY_INDEX_V1.json"
+      - "docs/final/schemas/mkm_trinity_index_v1.schema.json"
+      - "tests/test_mkm_trinity_index_v1.py"
+      - "scripts/mkm_meta_layer_envelope_v1.py"
+      - "tests/test_mkm_meta_layer_envelope_v1.py"
+      - "docs/final/artifacts/schemas/mkm_meta_layer_turn_envelope_v1.schema.json"
+      - "docs/final/artifacts/fixtures/mkm_meta_layer_turn_envelope_v1.example.json"
+      - "scripts/Invoke-TrackCMacroDailyFusion_v1.ps1"
+      - "scripts/Register-TrackCMacroDailyFusionTask.ps1"
+      - "scripts/build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py"
+      - "tests/test_build_daily_execution_insight_brief_v1.py"
+      - "scripts/build_daily_execution_insight_brief_v1.py"
+      - "scripts/Run-DailyExecutionInsightBrief_v1.ps1"
+      - "scripts/emit_myeongni_thin_bridge_line_v1.py"
+      - "tests/test_emit_myeongni_thin_bridge_line_v1.py"
+      - "scripts/validate_mkm_personal_briefing_guardrails_v1.py"
+      - "tests/test_validate_mkm_personal_briefing_guardrails_v1.py"
+      - "scripts/build_sasang_interpretive_insight_bundle_v1.py"
+      - "docs/final/schemas/sasang_interpretive_insight_bundle_v1.schema.json"
+      - "docs/final/artifacts/SASANG_INTERPRETIVE_INSIGHT_BUNDLE_V1_CONTRACT.json"
       - "tests/test_myeongni_insight_observation_log.py"
       - "tests/test_hypothesis_insight_batch_v1_sample.py"
       - "data/btrack/**"
@@ -301,6 +407,11 @@ on:
       - "scripts/build_state_sasang_ops_bundle.py"
       - "docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json"
       - "docs/final/MYEONGRI_INSIGHT_SSOT.md"
+      - "docs/final/MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md"
+      - "docs/final/schemas/myeongri_ai_interpretation_envelope_v1.schema.json"
+      - "tests/test_myeongri_ai_interpretation_envelope_v1.py"
+      - "scripts/run_myeongri_ai_interpretation_pack_v1.py"
+      - "scripts/eval_myeongri_rule_school_macro_stub_v1.py"
       - "scripts/check_bio_paper_snp_mapping_coverage_v1.py"
       - "scripts/spec_bio_sample_paper_snp_join_gate_v1.py"
       - "scripts/apply_bio_paper_snp_sidecar_to_samples_v1.py"
@@ -424,6 +535,17 @@ jobs:
       - name: Run Dual Regime API smoke / Fact-Lock tests
         run: bash projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.sh
 
+      - name: TruthfulQA A/B repro bundle (DryRun) and pytest
+        run: |
+          set -euo pipefail
+          pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/Run-TruthfulQAReproBundleV1.ps1 -DryRun
+          python -m pytest \
+            tests/test_run_truthfulqa_ab_benchmark_v1.py \
+            tests/test_check_truthfulqa_ab_gate_v1.py \
+            tests/test_run_truthfulqa_repro_bundle_v1.py \
+            tests/test_run_fact_lock_bundle_truthfulqa_gate.py \
+            -q --tb=short
+
       - name: Track source guard (A/B JSONL tagging)
         run: python -m pytest tests/test_track_source_guard.py -q --tb=short
 
@@ -457,6 +579,38 @@ jobs:
 
       - name: B-Track hypothesis + dawn-score + prophecy hit-rate eval smoke
         run: python -m pytest tests/test_generate_btrack_hypothesis_prophecy_v1.py tests/test_build_btrack_prophecy_score_from_ohlcv.py tests/test_eval_prophecy_hit_rate_v1.py -q --tb=short
+
+      - name: B-track news_observation JSONL schema + validator CLI smoke
+        run: |
+          python -m pytest \
+            tests/test_news_observation_v1_schema.py \
+            tests/test_validate_news_observation_jsonl_v1.py \
+            tests/test_check_news_label_join_temporal_v1.py \
+            tests/test_build_news_observation_jsonl_from_csv_v1.py \
+            tests/test_build_direction_label_bar_jsonl_from_ohlcv_v1.py \
+            tests/test_join_news_observation_direction_labels_walkforward_v1.py \
+            tests/test_build_direction_label_bar_kospi_csv_smoke_v1.py \
+            -q --tb=short
+
+      - name: Logos revalidation fusion + semantic separation regression
+        run: |
+          python -m pytest \
+            tests/test_role_router_shadow_forward_fusion_regression.py \
+            tests/test_promotion_directional_semantic_separation_v1.py \
+            -q --tb=short
+
+      - name: Survivor resonance direct-mapping + falsification chain regression
+        run: |
+          python -m pytest \
+            tests/test_build_survivor_w3_direct_mapping_v1.py \
+            tests/test_build_global_atom_survivor_resonance_daily_real_v1.py \
+            tests/test_check_survivor_crash_falsification_gate_v1.py \
+            tests/test_run_survivor_resonance_falsification_chain_v1.py \
+            tests/test_sweep_survivor_crash_falsification_thresholds_v1.py \
+            tests/test_tune_survivor_real_resonance_weights_v1.py \
+            -q --tb=short
+      - name: Survivor resonance operational bundle regression
+        run: python -m pytest tests/test_run_survivor_resonance_operational_bundle_v1.py -q --tb=short
       - name: pytest human regime audit spike (Gemini retry + proxy + agreement)
         run: |
           if [[ -f tests/test_fill_human_regime_audit_llm_heuristic_spike.py && -f tests/test_fill_human_regime_audit_gemini_retry_spike.py && -f tests/test_fill_human_regime_audit_proxy_spike.py && -f tests/test_human_regime_audit_and_agreement_spike.py ]]; then
@@ -565,6 +719,22 @@ jobs:
       - name: Compression weekly governance report contract
         run: python -m pytest tests/test_compression_weekly_governance_report.py -q --tb=short
 
+      - name: External Bible anchor governance scripts smoke
+        run: python -m pytest tests/test_external_anchor_governance_scripts_smoke_v1.py -q --tb=short
+
+      # Athena §28: ECC launcher, doctor, JSONL audit helpers, HOLD deny path (smoke script).
+      # Optional repo secret ATHENA_ECC_AUDIT_WEBHOOK_URL — not required here (tests/mocks + smoke use --no-audit-webhook).
+      - name: Athena execution governance (§28) pytest
+        run: |
+          python -m pytest \
+            tests/test_athena_run_v1.py \
+            tests/test_athena_doctor_v1.py \
+            tests/test_check_athena_execution_governance_smoke_v1.py \
+            -q --tb=short
+
+      - name: MKM meta-layer envelope v1 (schema + kill-switch coherence)
+        run: python -m pytest tests/test_mkm_meta_layer_envelope_v1.py -q --tb=short
+
       - name: Token API hydration trend contract
         run: python -m pytest tests/test_token_api_hydration_trend.py -q --tb=short
 
@@ -608,11 +778,51 @@ jobs:
       - name: SASANG CROSS_REF draft (ijeoma chunk ↔ LOGOS bench Fact-Lock)
         run: python -m pytest tests/test_sasang_cross_ref_draft.py -q --tb=short
 
+      - name: Sasang interpretive insight bundle v1.1 (schema, synthesis_v1, interpretive_depth_ko)
+        run: python -m pytest tests/test_sasang_interpretive_insight_bundle_v1.py -q --tb=short
+
+      - name: Bio Sasang n-states strict comparison rehydrate v1 (P0 contract)
+        run: python -m pytest tests/test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py -q --tb=short
+
+      - name: MKM Trinity index v1 (JSON + schema contract)
+        run: python -m pytest tests/test_mkm_trinity_index_v1.py -q --tb=short
+
+      - name: Daily execution insight brief v1 (materializer contract)
+        run: python -m pytest tests/test_build_daily_execution_insight_brief_v1.py -q --tb=short
+
+      - name: Myeongni independent lens → Thin JSONL bridge v1
+        run: python -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py -q --tb=short
+
+      - name: MKM personal briefing guardrails (Fact-Lock heuristic)
+        run: python -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py -q --tb=short
+
+      - name: Two-track submission pack (evidence bundle + draft + camera-ready JSON builders)
+        run: |
+          python -m pytest \
+            tests/test_build_two_track_submission_evidence_bundle_v1.py \
+            tests/test_build_two_track_submission_draft_v1.py \
+            tests/test_build_two_track_submission_camera_ready_v1.py \
+            -q --tb=short
+
+      - name: Multi-symbol gates and counterfactual QA contracts
+        run: |
+          python -m pytest \
+            tests/test_multi_symbol_contract_gates_v1.py \
+            tests/test_multi_symbol_counterfactual_comparison_v1.py \
+            tests/test_two_track_qa_overlay_counterfactual_v1.py \
+            -q --tb=short
+
+      - name: Aramaic core corpus extraction (BH Aramaic window filter from verse JSONL)
+        run: python -m pytest tests/test_extract_aramaic_core_corpus_v1.py -q --tb=short
+
       - name: Bio PMID paper SNP sidecar join smoke (§8.1, no network)
         run: python -m pytest tests/test_bio_paper_snp_join_chain_smoke_v1.py tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py tests/test_check_bio_genotype_paper_snp_overlap_v1.py -q --tb=short
 
       - name: Myeongni insight observation JSONL + fusion interface stub (§3.3)
         run: python -m pytest tests/test_myeongni_insight_observation_log.py -q --tb=short
+
+      - name: Myeongri AI interpretation envelope v1 (prompt SSOT + JSON Schema)
+        run: python -m pytest tests/test_myeongri_ai_interpretation_envelope_v1.py -q --tb=short
 
       - name: Log metabolism synthetic cohort + myeongri correlation spike (B-track)
         run: |

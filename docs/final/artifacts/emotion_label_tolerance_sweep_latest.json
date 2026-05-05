@@ -1,0 +1,33 @@
+{
+  "schema_version": "emotion_label_tolerance_sweep_v1",
+  "kpi_intraday_step_minutes": 60,
+  "rows": [
+    {
+      "tolerance_hours": 1,
+      "overall_recommended": "candidate_for_btrack_promotion",
+      "combined_recommended": "candidate_for_btrack_promotion",
+      "primary_source": "kpi_derived_sentiment_proxy_v1",
+      "primary_n_usable": 413,
+      "corr_valence_vs_forward_pnl_1d": 0.8864501565324391,
+      "coverage_ratio": 0.9700427960057061
+    },
+    {
+      "tolerance_hours": 3,
+      "overall_recommended": "candidate_for_btrack_promotion",
+      "combined_recommended": "candidate_for_btrack_promotion",
+      "primary_source": "kpi_derived_sentiment_proxy_v1",
+      "primary_n_usable": 413,
+      "corr_valence_vs_forward_pnl_1d": 0.8796930512665267,
+      "coverage_ratio": 0.9700427960057061
+    },
+    {
+      "tolerance_hours": 6,
+      "overall_recommended": "candidate_for_btrack_promotion",
+      "combined_recommended": "candidate_for_btrack_promotion",
+      "primary_source": "kpi_derived_sentiment_proxy_v1",
+      "primary_n_usable": 413,
+      "corr_valence_vs_forward_pnl_1d": 0.8718668933135013,
+      "coverage_ratio": 0.9700427960057061
+    }
+  ]
+}

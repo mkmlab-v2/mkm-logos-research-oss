@@ -1,0 +1,73 @@
+{
+  "schema": "two_track_falsification_suite_v1",
+  "generated_at_utc": "2026-04-30T11:00:39Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "checks": [
+    {
+      "id": "F1",
+      "name": "defense_evidence_contract_complete",
+      "pass": true,
+      "detail": {
+        "qna_items": 15,
+        "missing_fields": 0
+      }
+    },
+    {
+      "id": "F2",
+      "name": "gate_eval_contract_valid",
+      "pass": true,
+      "detail": {
+        "qna_items": 15,
+        "bad_gate_rows": 0
+      }
+    },
+    {
+      "id": "F3",
+      "name": "survivor_nonzero_floor",
+      "pass": true,
+      "detail": {
+        "survivor_count": 5,
+        "threshold": 1
+      }
+    },
+    {
+      "id": "F4",
+      "name": "score_and_defense_positive",
+      "pass": true,
+      "detail": {
+        "shift_score": 0.803353,
+        "ci_low_defense_contrib": 0.616703,
+        "threshold": {
+          "min_shift_score": 0.0,
+          "min_ci_low_defense_contrib": 0.0
+        }
+      }
+    },
+    {
+      "id": "F5",
+      "name": "public_safe_claim_boundary_declared",
+      "pass": true,
+      "detail": {
+        "claim_boundary": "research only / public-safe boundary"
+      }
+    },
+    {
+      "id": "F6",
+      "name": "counterfactual_gap_gate_pass",
+      "pass": true,
+      "detail": {
+        "counterfactual_gate_pass": true,
+        "mean_gap_base_minus_counterfactual": 0.362182
+      }
+    }
+  ],
+  "pass_count": 6,
+  "total_checks": 6,
+  "rollback_gate_snapshot": {
+    "should_trade": false,
+    "rollback": true
+  },
+  "suite_status": "pass"
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "integrated_governance_v1",
+  "generated_at_utc": "2026-04-28T19:35:03Z",
+  "input_artifacts": {
+    "config": "C:\\workspace\\docs\\final\\artifacts\\integrated_governance_config_v1.json",
+    "biblical_core_gate": "C:\\workspace\\docs\\final\\artifacts\\kospi_biblical_single_lane_commercial_gate_v1_latest.json",
+    "myeongri_gate": "C:\\workspace\\docs\\final\\artifacts\\kospi_myeongri_standalone_commercial_gate_v1_latest.json",
+    "sasang_gate": "C:\\workspace\\docs\\final\\artifacts\\kospi_sasang_single_lane_commercial_gate_v1_latest.json"
+  },
+  "weights": {
+    "biblical_core": 0.34,
+    "myeongri_v4_1": 0.33,
+    "sasang_strict": 0.33
+  },
+  "engine_status": {
+    "biblical_core": {
+      "gate_status": "PASS",
+      "score": 0.55
+    },
+    "myeongri_v4_1": {
+      "gate_status": "PASS",
+      "score": 0.477273
+    },
+    "sasang_strict": {
+      "gate_status": "PASS",
+      "score": 0.47191
+    }
+  },
+  "final_regime": "ATTACK",
+  "final_action_allowed": true,
+  "is_fallback": false,
+  "final_score": 0.50023,
+  "veto_reason_codes": []
+}

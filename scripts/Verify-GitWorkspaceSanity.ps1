@@ -165,7 +165,15 @@ try {
     }
 
     if ($CheckOriginMainSync) {
-        git fetch origin 2>&1 | Out-Null
+        # Avoid terminating parent sessions with ErrorActionPreference=Stop: git writes progress to stderr.
+        $prevEa = $ErrorActionPreference
+        try {
+            $ErrorActionPreference = 'Continue'
+            git fetch origin 2>$null
+        }
+        finally {
+            $ErrorActionPreference = $prevEa
+        }
         if ($LASTEXITCODE -ne 0) {
             Write-WarnLine "git fetch origin failed - cannot verify drift vs origin/main."
             if ($Strict) { $broken = $true }

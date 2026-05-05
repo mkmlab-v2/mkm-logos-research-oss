@@ -1,6 +1,6 @@
 {
   "schema": "btrack_quality_report_v1",
-  "generated_at_utc": "2026-04-23T01:15:52Z",
+  "generated_at_utc": "2026-05-02T17:59:42Z",
   "inputs": {
     "a_track": "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\a_track_eval_direct_v1.jsonl",
     "b_track": "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\b_track_eval_anchor_verified_only.jsonl"
@@ -16,8 +16,8 @@
   "alignment_mode": "primary_key",
   "metrics": {
     "reproducibility_match_rate": 1.0,
-    "resolution_confidence_delta_b_minus_a": 0.024062499999999997,
-    "contamination_snr_delta_b_minus_a": 0.029531249999999995
+    "resolution_confidence_delta_b_minus_a": 0.06162591666666663,
+    "contamination_snr_delta_b_minus_a": 0.06953125
   },
   "interpretation": {
     "reproducibility": "higher is better",

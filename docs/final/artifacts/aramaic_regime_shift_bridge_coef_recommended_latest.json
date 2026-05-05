@@ -1,0 +1,13 @@
+{
+  "schema": "aramaic_regime_shift_bridge_coef_recommendation_v1",
+  "generated_at_utc": "2026-04-28T05:55:28Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "recommended": {
+    "bridge_lang_coef": {
+      "aramaic_to_hebrew": 0.82,
+      "aramaic_to_greek": 0.78
+    }
+  }
+}

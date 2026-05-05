@@ -1,0 +1,140 @@
+{
+  "schema_version": "emotion_weight_memory_weekly_report_v1",
+  "n_total": 701,
+  "n_usable": 680,
+  "coverage_ratio": 0.9700427960057061,
+  "metrics": {
+    "corr_valence_vs_forward_pnl_1d": 0.8796930512665267,
+    "corr_arousal_vs_forward_pnl_1d": -0.4703166581736,
+    "corr_confidence_vs_abs_forward_pnl_1d": 0.0,
+    "mean_forward_pnl_1d": 81.14964000561764,
+    "mean_forward_pnl_1d_by_valence_bucket": {
+      "neg": 10.739282269019595,
+      "mid": 29.590372241561667,
+      "pos": 166.0362346209464
+    }
+  },
+  "metrics_by_source": {
+    "MiroFish": {
+      "n_total": 1,
+      "n_usable": 0,
+      "coverage_ratio": 0.0,
+      "metrics": {
+        "corr_valence_vs_forward_pnl_1d": 0.0,
+        "corr_arousal_vs_forward_pnl_1d": 0.0,
+        "corr_confidence_vs_abs_forward_pnl_1d": 0.0,
+        "mean_forward_pnl_1d": 0.0,
+        "mean_forward_pnl_1d_by_valence_bucket": {
+          "neg": 0.0,
+          "mid": 0.0,
+          "pos": 0.0
+        }
+      },
+      "recommended": "shadow_only"
+    },
+    "atproto_operational_heuristic_v1": {
+      "n_total": 3,
+      "n_usable": 3,
+      "coverage_ratio": 1.0,
+      "metrics": {
+        "corr_valence_vs_forward_pnl_1d": -0.8440633517502206,
+        "corr_arousal_vs_forward_pnl_1d": 0.5000674961187234,
+        "corr_confidence_vs_abs_forward_pnl_1d": 0.0,
+        "mean_forward_pnl_1d": 22.15582729333333,
+        "mean_forward_pnl_1d_by_valence_bucket": {
+          "neg": 0.0,
+          "mid": 22.15582729333333,
+          "pos": 0.0
+        }
+      },
+      "recommended": "shadow_only"
+    },
+    "kpi_derived_sentiment_proxy_v1": {
+      "n_total": 432,
+      "n_usable": 413,
+      "coverage_ratio": 0.9560185185185185,
+      "metrics": {
+        "corr_valence_vs_forward_pnl_1d": 0.3327421488329469,
+        "corr_arousal_vs_forward_pnl_1d": -0.332742148832947,
+        "corr_confidence_vs_abs_forward_pnl_1d": 0.0,
+        "mean_forward_pnl_1d": 27.316517631985498,
+        "mean_forward_pnl_1d_by_valence_bucket": {
+          "neg": 10.739282269019595,
+          "mid": 29.65198449251383,
+          "pos": 0.0
+        }
+      },
+      "recommended": "candidate_for_btrack_promotion"
+    },
+    "manual_hypothesis_v1": {
+      "n_total": 1,
+      "n_usable": 0,
+      "coverage_ratio": 0.0,
+      "metrics": {
+        "corr_valence_vs_forward_pnl_1d": 0.0,
+        "corr_arousal_vs_forward_pnl_1d": 0.0,
+        "corr_confidence_vs_abs_forward_pnl_1d": 0.0,
+        "mean_forward_pnl_1d": 0.0,
+        "mean_forward_pnl_1d_by_valence_bucket": {
+          "neg": 0.0,
+          "mid": 0.0,
+          "pos": 0.0
+        }
+      },
+      "recommended": "shadow_only"
+    },
+    "trinity_backfill_sentiment_proxy_v1": {
+      "n_total": 264,
+      "n_usable": 264,
+      "coverage_ratio": 1.0,
+      "metrics": {
+        "corr_valence_vs_forward_pnl_1d": 0.05173593812792656,
+        "corr_arousal_vs_forward_pnl_1d": -0.04167483727467352,
+        "corr_confidence_vs_abs_forward_pnl_1d": 0.0,
+        "mean_forward_pnl_1d": 166.0362346209464,
+        "mean_forward_pnl_1d_by_valence_bucket": {
+          "neg": 0.0,
+          "mid": 0.0,
+          "pos": 166.0362346209464
+        }
+      },
+      "recommended": "candidate_for_btrack_promotion"
+    }
+  },
+  "gate_hint": {
+    "recommended": "candidate_for_btrack_promotion",
+    "rule": "Need n_usable>=30, coverage_ratio>=0.80, corr_valence_vs_forward_pnl_1d>=0.05",
+    "thresholds": {
+      "min_samples": 30,
+      "min_coverage_ratio": 0.8,
+      "min_corr_valence_vs_forward_pnl_1d": 0.05
+    },
+    "components": {
+      "overall_recommended": "candidate_for_btrack_promotion",
+      "primary_source_recommended": "candidate_for_btrack_promotion",
+      "primary_source_recommended_raw": "candidate_for_btrack_promotion",
+      "primary_source": "kpi_derived_sentiment_proxy_v1",
+      "primary_n_usable": 413,
+      "min_primary_samples_gate": 30,
+      "primary_gap_to_gate": 0,
+      "allowed_primary_sources": [
+        "atproto_operational_heuristic_v1",
+        "kpi_derived_sentiment_proxy_v1"
+      ]
+    }
+  },
+  "source_gate": {
+    "primary_source": "kpi_derived_sentiment_proxy_v1",
+    "overall_recommended": "candidate_for_btrack_promotion",
+    "primary_source_recommended": "candidate_for_btrack_promotion",
+    "primary_source_recommended_raw": "candidate_for_btrack_promotion",
+    "primary_n_usable": 413,
+    "min_primary_samples_gate": 30,
+    "primary_gap_to_gate": 0,
+    "allowed_primary_sources": [
+      "atproto_operational_heuristic_v1",
+      "kpi_derived_sentiment_proxy_v1"
+    ],
+    "combined_recommended": "candidate_for_btrack_promotion"
+  }
+}

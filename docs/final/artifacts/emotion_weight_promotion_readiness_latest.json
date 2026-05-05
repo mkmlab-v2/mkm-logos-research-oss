@@ -1,0 +1,9 @@
+{
+  "schema_version": "emotion_promotion_readiness_v1",
+  "window_size": 4,
+  "n_history": 1,
+  "n_window": 1,
+  "n_passed_in_window": 1,
+  "required_consecutive_passes": 4,
+  "ready_for_human_gate": false
+}

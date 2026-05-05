@@ -1,0 +1,51 @@
+{
+  "schema": "global_atom_kdd_submission_template_v1",
+  "generated_at_utc": "2026-04-28T09:38:48Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "track": "kdd_applied_data_science",
+  "title_en": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness",
+  "abstract_en_180w": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting network contains 11776 nodes and 6401708 gate-passed edges, with 1115 old-new cross edges and a detected phase-transition signal. Our robustness stack combines drift, negative-control, and counterfactual gates; integrated status is GO, and the mean base-minus-counterfactual gap is 0.362182. A staged full-canon run completed 5/5 stages under source mode verse_level_ingest. Methodologically, we follow three stages: atomize event-level candidates and assign symbolic sequence priors; build pairwise similarity matrix and gate-passed topological edges; run drift + negative-control + counterfactual gate stack before external reporting. Key limitations remain operational: N^2 similarity scaling requires staged expansion and compute budgeting, and 4D mapping can accumulate synchronization noise. High-complexity historical corpora are used as stress-test beds for context filtering robustness, not as doctrinal proof.",
+  "keywords_en": [
+    "topological knowledge graph",
+    "digital humanities",
+    "symbolic atomization",
+    "counterfactual robustness",
+    "cross-domain event similarity"
+  ],
+  "contributions_en": [
+    "Introduces an atom-topology pipeline that maps event narratives to structure-level similarity beyond lexical overlap.",
+    "Demonstrates staged full-canon execution with measurable transition links and gated topology outputs.",
+    "Integrates drift, negative-control, and counterfactual gates into a reproducible robustness stack."
+  ],
+  "quick_facts": {
+    "node_count": 11776,
+    "edge_count": 6401708,
+    "old_new_cross_edges": 1115,
+    "gate_status": "GO",
+    "counterfactual_mean_gap": 0.362182,
+    "batch_stages_ok": 5,
+    "batch_stages_total": 5,
+    "batch_source_mode": "verse_level_ingest"
+  },
+  "method_outline_en": [
+    "Atomize event-level candidates and assign symbolic sequence priors.",
+    "Build pairwise similarity matrix and gate-passed topological edges.",
+    "Run drift + negative-control + counterfactual gate stack before external reporting."
+  ],
+  "risk_notes_en": [
+    "N^2 similarity scaling requires staged expansion and compute budgeting.",
+    "4D mapping can accumulate synchronization noise; ablation and counterfactual checks remain mandatory."
+  ],
+  "submission_checklist_en": [
+    "Paste title/abstract/keywords directly into KDD form fields.",
+    "Attach artifact packet paths in supplementary material.",
+    "Keep proprietary weights/formulas redacted; disclose only gated metrics.",
+    "Avoid doctrinal, guarantee-style, or absolute wording in external claims."
+  ],
+  "sources": {
+    "onepager_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_academic_onepager_latest.json",
+    "abstracts_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_submission_abstracts_latest.json"
+  }
+}

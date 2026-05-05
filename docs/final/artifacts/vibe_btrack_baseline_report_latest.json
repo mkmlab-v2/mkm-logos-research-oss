@@ -1,0 +1,37 @@
+{
+  "schema": "vibe_btrack_baseline_report_v1",
+  "generated_at_utc": "2026-05-02T16:55:22Z",
+  "scope": "research_only",
+  "btrack_guardrail": "no_auto_bridge_to_track_a",
+  "vibe_repo": {
+    "path": "C:/workspace/research/vibe_trading_btrack_sandbox/Vibe-Trading",
+    "exists": true,
+    "skills_count": 74,
+    "swarm_presets_count": 29,
+    "backtest_engines_count": 12,
+    "backtest_optimizers_count": 6,
+    "backtest_loaders_count": 9
+  },
+  "mkm_baseline": {
+    "prophecy_path": "docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json",
+    "integrated_governance_path": "docs/final/artifacts/integrated_governance_v1_latest.json",
+    "a_track_path": "docs/final/artifacts/a_track_go_nogo_status_latest.json",
+    "high_reliability_decision": "HOLD",
+    "price_output_locked": true,
+    "risk_profile_mode": "LOCKED_MODE",
+    "final_regime": "ATTACK",
+    "final_score": 0.50023,
+    "overall_go_no_go": "HOLD",
+    "recommended_stage": "S1_SHADOW",
+    "failed_reasons": [
+      "high_reliability_decision_is_hold",
+      "price_output_locked_true",
+      "s3_requires_multiweek_stability_evidence"
+    ]
+  },
+  "decision": {
+    "track": "B",
+    "action": "continue_shadow_research",
+    "note": "Use Vibe as research copilot only; reimplement candidates in MKM SSOT before any promotion."
+  }
+}

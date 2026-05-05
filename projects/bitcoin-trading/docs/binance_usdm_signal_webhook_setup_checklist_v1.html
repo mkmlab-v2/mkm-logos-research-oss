@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>USDⓈ-M Signal Bot · Webhook 연동 체크리스트 (MKM)</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --ok: #3fb950;
+      --warn: #d29922;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      margin: 0;
+      padding: 2rem 1.25rem 4rem;
+      max-width: 52rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 { font-size: 1.35rem; font-weight: 600; margin-top: 0; }
+    .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+    h2 {
+      font-size: 1rem;
+      margin: 0 0 0.75rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    ol { margin: 0; padding-left: 1.25rem; }
+    li { margin-bottom: 0.5rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code, pre {
+      font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+      font-size: 0.85rem;
+    }
+    pre {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .tag { display: inline-block; background: #21262d; color: var(--ok); padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.75rem; margin-left: 0.35rem; }
+    .warn { color: var(--warn); }
+    ul.flat { list-style: none; padding-left: 0; }
+    ul.flat li { padding-left: 0; margin-bottom: 0.35rem; }
+  </style>
+</head>
+<body>
+  <h1>Binance USDⓈ-M Futures · Signal Bot 웹훅 연동 체크리스트</h1>
+  <p class="meta">
+    PoC: <code>projects/bitcoin-trading/scripts/poc_binance_signal_webhook_spike_v1.py</code>
+    · 톨게이트: <code>projects/bitcoin-trading/scripts/run_conditional_signal_webhook_v1.py</code>
+    (<code>memory/v2/risk/risk_profile_fact_safe_latest.json</code> 기준)
+    · 비밀은 Git에 넣지 않음
+  </p>
+
+  <section>
+    <h2>바이낸스 웹 (로그인 필요)</h2>
+    <ul class="flat">
+      <li><a href="https://www.binance.com/en/my/dashboard" target="_blank" rel="noopener noreferrer">내 대시보드</a> — 계정·보안·API 관련 진입</li>
+      <li><a href="https://www.binance.com/en/futures/BTCUSDT" target="_blank" rel="noopener noreferrer">USDⓈ-M 선물 (예: BTCUSDT)</a> — 상단/메뉴에서 Trading Bots · Signal 관련 메뉴는 지역·계정에 따라 다를 수 있음</li>
+      <li><a href="https://developers.binance.com/docs/derivatives" target="_blank" rel="noopener noreferrer">Binance Developers — Derivatives</a> — API·계약 일반 참고 (Signal Bot UI 웹훅 페이로드는 앱/헬프가 우선)</li>
+    </ul>
+    <p class="warn">Signal Bot 전용 JSON 스키마는 반드시 <strong>바이낸스 앱·웹에서 표시되는 형식</strong> 또는 공식 헬프를 따르세요. 아래 예시 JSON은 플레이스홀더입니다.</p>
+  </section>
+
+  <section>
+    <h2>① Signal Bot · 웹훅 URL 받는 법</h2>
+    <p>웹훅 URL은 <strong>계정·지역·제품명</strong>에 따라 화면이 다릅니다. 아래를 순서대로 시도하세요.</p>
+    <ol>
+      <li><strong>로그인</strong> — 반드시 본인 계정(웹 또는 앱).</li>
+      <li><strong>Trading Bots 허브</strong> — <a href="https://www.binance.com/en/trading-bots" target="_blank" rel="noopener noreferrer">binance.com/…/trading-bots</a> → 상단 <strong>Futures</strong> 탭. 그리드·DCA 등만 보이면 <strong>“More bots” / 앱</strong>에서 Signal·외부 시그널 류를 찾습니다.</li>
+      <li><strong>선물 차트 쪽</strong> — <a href="https://www.binance.com/en/futures/BTCUSDT" target="_blank" rel="noopener noreferrer">USDⓈ-M 선물</a> 상단 메뉴의 <strong>Trading Bots</strong> 등으로 들어가, <strong>Webhook / Signal / External / TradingView</strong> 키워드가 있는 봇 생성 마법사를 연다.</li>
+      <li><strong>마법사 안에서</strong> 심볼(예: BTCUSDT)·선물(USDⓈ-M)·레버리지·주문 방식을 정한 뒤, <strong>“Webhook URL” / “Copy URL” / “웹훅 주소”</strong>가 나오는 화면까지 진행한다. (한 번에 안 보이면 단계를 끝까지 넘긴다.)</li>
+      <li><strong>앱</strong>에서만 노출되는 경우 — 웹과 메뉴가 다를 수 있으니 동일하게 Futures → 봇·시그널 메뉴를 찾는다.</li>
+      <li><strong>못 찾겠으면</strong> 바이낸스 <a href="https://www.binance.com/en/support" target="_blank" rel="noopener noreferrer">고객지원</a> 검색창에 <em>futures signal bot webhook</em> 등으로 검색하거나, 채팅 지원에 “USD-M Futures에서 외부 웹훅 URL을 주는 봇 메뉴”를 문의한다.</li>
+    </ol>
+    <p class="warn">URL은 <strong>비밀에 가깝게</strong> 취급합니다. 복사 후 채팅·이메일에 붙이지 말고, 아래 ②에서만 PC에 저장하세요.</p>
+  </section>
+
+  <section>
+    <h2>② Webhook URL 저장 <span class="tag">Security Agent 우선</span></h2>
+    <ol>
+      <li>UI에서 복사한 URL을 저장합니다. Git에는 넣지 않습니다.</li>
+      <li>변수명: <code>BINANCE_USDM_SIGNAL_WEBHOOK_URL</code> (선택 시크릿: <code>BINANCE_USDM_SIGNAL_WEBHOOK_SECRET</code>)</li>
+      <li><strong>Windows 본선 권장:</strong> DPAPI 스토어에 동일 키 이름으로 저장 — <code>scripts/Invoke-EncryptedSecretStore.ps1</code> · <code>scripts/security_agent_manager.py</code> (CONSTITUTION §1.1.2). PoC는 Security Agent → 환경 변수 → <code>.env</code> 순으로 읽습니다.</li>
+      <li><code>BINANCE_KEY_SOURCE_MODE</code> = <code>auto</code> | <code>dotenv_only</code> | <code>env_only</code> (API 키와 동일 라우팅)</li>
+    </ol>
+    <pre># 예: Linux VPS 프로세스 env
+export BINANCE_USDM_SIGNAL_WEBHOOK_URL="https://..."
+
+# 예: PowerShell DPAPI set (레포 루트에서)
+powershell -File scripts/Invoke-EncryptedSecretStore.ps1 -Action set `
+  -Key BINANCE_USDM_SIGNAL_WEBHOOK_URL -Value "https://…"</pre>
+  </section>
+
+  <section>
+    <h2>③ JSON payload 확정 · 예시 파일 교체</h2>
+    <ol>
+      <li>공식 UI/문서에 맞게 필드명·값(long/short/close 등)을 확정합니다.</li>
+      <li>워크스페이스의 예시를 교체합니다:<br />
+        <code>docs/final/artifacts/examples/poc_binance_signal_webhook_payload_v1.example.json</code></li>
+    </ol>
+    <pre>{
+  "_comment": "PLACEHOLDER — Binance UI/docs 기준으로 전체 교체",
+  "passphrase": "REPLACE_WITH_SECRET_IF_DOCUMENTED",
+  "action": "REPLACE_LONG_OR_SHORT_OR_CLOSE_PER_OFFICIAL_DOC",
+  "symbol": "BTCUSDT"
+}</pre>
+  </section>
+
+  <section>
+    <h2>④ Fact-Safe 신호등 (톨게이트) — 선택</h2>
+    <p>리스크 프로파일이 <strong>ACTIVE_MODE</strong>일 때만 웹훅 PoC를 호출합니다. 차단 시 exit <strong>3</strong>.</p>
+    <pre># 신호등만 확인 (PoC 호출 없음)
+py projects/bitcoin-trading/scripts/run_conditional_signal_webhook_v1.py --dry-run ^
+  --payload-file docs/final/artifacts/examples/poc_binance_signal_webhook_payload_v1.example.json
+
+# 신호등 통과 후 PoC만 dry-run (HTTP 없음 — 페이로드·URL 해석 검증)
+py projects/bitcoin-trading/scripts/run_conditional_signal_webhook_v1.py --poc-dry-run ^
+  --payload-file docs/final/artifacts/examples/poc_binance_signal_webhook_payload_v1.example.json
+
+# 게이트 통과 시에만 실제 POST (아래와 동일하게 URL·JSON 필요)
+py projects/bitcoin-trading/scripts/run_conditional_signal_webhook_v1.py ^
+  --payload-file docs/final/artifacts/examples/poc_binance_signal_webhook_payload_v1.example.json</pre>
+    <p class="meta">게이트 요약: <code>reports/poc_binance_signal_webhook/conditional_gate_latest.json</code></p>
+  </section>
+
+  <section>
+    <h2>⑤ PoC 단독 — dry-run → 실제 POST</h2>
+    <p>톨게이트 없이 바로 바이낸스 웹훅만 테스트할 때 (모노레포 루트):</p>
+    <pre>py projects/bitcoin-trading/scripts/poc_binance_signal_webhook_spike_v1.py --dry-run ^
+  --payload-file docs/final/artifacts/examples/poc_binance_signal_webhook_payload_v1.example.json
+
+py projects/bitcoin-trading/scripts/poc_binance_signal_webhook_spike_v1.py ^
+  --payload-file docs/final/artifacts/examples/poc_binance_signal_webhook_payload_v1.example.json</pre>
+    <p class="meta">요약 JSON: <code>reports/poc_binance_signal_webhook/run_summary_latest.json</code> (기본값)</p>
+  </section>
+
+  <section>
+    <h2>보안 메모</h2>
+    <ul>
+      <li>웹훅 URL은 비밀에 가깝게 취급합니다. 유출 시 타인이 신호를 보낼 수 있습니다.</li>
+      <li>이 페이지는 오프라인 HTML입니다. 바이낸스 로그인·봇 생성은 반드시 본인이 브라우저에서 수행합니다.</li>
+    </ul>
+  </section>
+</body>
+</html>

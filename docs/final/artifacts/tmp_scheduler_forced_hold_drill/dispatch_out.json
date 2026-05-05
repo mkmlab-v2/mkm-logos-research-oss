@@ -1,0 +1,24 @@
+{
+  "schema": "genius_governance_scheduler_health_alert_dispatch_v1",
+  "generated_at_utc": "2026-05-03T00:30:08Z",
+  "inputs": {
+    "health_json": "C:/workspace/docs/final/artifacts/tmp_scheduler_forced_hold_drill/health_hold.json",
+    "history_jsonl": "C:/workspace/docs/final/artifacts/tmp_scheduler_forced_hold_drill/health_history_dispatch_transition.jsonl",
+    "webhook_env": "OPS_ALARM_WEBHOOK_URL",
+    "mode_json": "C:/workspace/docs/final/artifacts/genius_governance_scheduler_mode_signal_latest.json",
+    "kpi_json": "C:/workspace/docs/final/artifacts/genius_governance_scheduler_kpi_latest.json",
+    "completion_json": "C:/workspace/docs/final/artifacts/genius_governance_completion_gate_latest.json"
+  },
+  "decision": {
+    "current_status": "HOLD",
+    "previous_status": "PASS",
+    "hold_streak": 1,
+    "min_hold_streak_to_dispatch": 1,
+    "should_dispatch": true,
+    "webhook_configured": true
+  },
+  "dispatch": {
+    "status": "sent",
+    "http_status": 200
+  }
+}

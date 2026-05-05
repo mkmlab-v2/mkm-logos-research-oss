@@ -1,0 +1,32 @@
+{
+  "schema": "pointerguard_p0_alert_drill_v1",
+  "generated_at_utc": "2026-04-28T10:36:34+00:00",
+  "input": {
+    "simulate_reasons": [
+      "guard_applied",
+      "unauthorized_pattern_detected"
+    ],
+    "dry_run": false
+  },
+  "command_result": {
+    "cmd": [
+      "C:\\Python311\\python.exe",
+      "scripts/send_pointerguard_ops_alert_v1.py",
+      "--simulate",
+      "guard_applied,unauthorized_pattern_detected"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_ops_alert_delivery_latest.json\", \"status\": \"http_200\", \"should_send\": true}",
+    "stderr": ""
+  },
+  "delivery_snapshot": {
+    "path": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_ops_alert_delivery_latest.json",
+    "status": "http_200",
+    "should_send": true,
+    "severity": "P0",
+    "webhook_configured": true,
+    "sent": true
+  },
+  "failure_alert_result": null,
+  "ok": true
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "vibe_ingest_log_v1",
+  "generated_at_utc": "2026-05-03T00:28:56Z",
+  "runs_file": "C:/workspace/docs/final/artifacts/vibe_runs_raw/vibe_prompt_runs_latest.jsonl",
+  "input_file": "C:/workspace/docs/final/artifacts/vibe_runs_raw/vibe_model_outputs_latest.jsonl",
+  "input_rows": 40,
+  "updated_rows": 40,
+  "rows_without_match": 0
+}

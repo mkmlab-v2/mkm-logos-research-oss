@@ -1,0 +1,9 @@
+{
+  "schema": "aramaic_regime_shift_score_v1",
+  "generated_at_utc": "2026-04-28T05:55:30Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "shift_score": 0.833353,
+  "signal_label": "alert"
+}

@@ -7,10 +7,14 @@
 #
 # Faster (skip P1 A/B bundle — long):
 #   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_jemaai_cloud_completion_chain.ps1 -SkipP1AB
+#
+# Multitarget B_track pre-gate (Kaggle/bio) is optional for jemaai MVP file checks; default is -SkipMultitargetPreGate on the inner autopilot.
+# To require it: -RequireMultitargetPreGate (needs scripts/build_multitarget_label_topology_report_v1.py and related artifacts).
 
 param(
     [switch]$SkipP1AB,
-    [switch]$IncludeE2ESmoke
+    [switch]$IncludeE2ESmoke,
+    [switch]$RequireMultitargetPreGate
 )
 
 $ErrorActionPreference = "Stop"
@@ -18,6 +22,9 @@ $workspaceRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 Set-Location -LiteralPath $workspaceRoot
 
 $autoArgs = @("-File", (Join-Path $workspaceRoot "scripts\run_workspace_autopilot_chain.ps1"), "-IncludeJemaaiCloudChecks")
+if (-not $RequireMultitargetPreGate) {
+    $autoArgs += "-SkipMultitargetPreGate"
+}
 if (-not $SkipP1AB) {
     $autoArgs += "-IncludeP1AB"
 }

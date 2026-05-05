@@ -1,0 +1,623 @@
+{
+  "schema": "global_atom_news_network_holdout_replay_v1",
+  "generated_at_utc": "2026-04-28T11:57:10Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "input": {
+    "batch_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon_batch_report_latest.json",
+    "holdout_news_jsonl": "C:\\workspace\\docs\\final\\artifacts\\global_atom_news_holdout_dataset_v1.jsonl",
+    "dataset_source": "jsonl"
+  },
+  "summary": {
+    "cases_total": 20,
+    "holdout_top_stage_counts": {
+      "full_canon": 14,
+      "prophets": 2,
+      "gospels": 4
+    }
+  },
+  "cases": [
+    {
+      "scenario_id": "holdout_2008_lehman",
+      "period": "2008-09",
+      "headline": "Lehman collapse triggers global credit crisis and emergency policy response",
+      "expected_regime_transition": "crisis_to_policy",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 863.459924,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 863.459924,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "prophets",
+          "resonance_score": 719.47087,
+          "edge_count": 4658745,
+          "node_count": 4096,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `prophets`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2008_liquidity",
+      "period": "2008-10",
+      "headline": "Systemic credit freeze pushes emergency global stabilization policy",
+      "expected_regime_transition": "crisis_to_policy",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 1726.919848,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 1726.919848,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "torah",
+          "resonance_score": 215.825485,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `torah`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2009_qe_start",
+      "period": "2009-03",
+      "headline": "Coordinated global policy and liquidity reallocation begin market stabilization",
+      "expected_regime_transition": "policy_to_stabilization",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 1726.919848,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 1726.919848,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "torah",
+          "resonance_score": 215.825485,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `torah`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2010_debt_wave",
+      "period": "2010-05",
+      "headline": "Sovereign debt crisis raises conflict pressure and policy discipline debate",
+      "expected_regime_transition": "crisis_to_policy",
+      "top_resonance": {
+        "stage": "prophets",
+        "resonance_score": 719.47087,
+        "edge_count": 4658745,
+        "node_count": 4096,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "prophets",
+          "resonance_score": 719.47087,
+          "edge_count": 4658745,
+          "node_count": 4096,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "torah",
+          "resonance_score": 431.65097,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `prophets` and then `torah`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2011_euro_stress",
+      "period": "2011-08",
+      "headline": "European crisis shock triggers global transition and emergency support",
+      "expected_regime_transition": "crisis_to_policy",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 1726.919848,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 1726.919848,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "prophets",
+          "resonance_score": 359.735435,
+          "edge_count": 4658745,
+          "node_count": 4096,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `prophets`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2013_taper",
+      "period": "2013-06",
+      "headline": "Policy transition and reallocation volatility follow taper signal",
+      "expected_regime_transition": "policy_transition",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 1726.919848,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 1726.919848,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "torah",
+          "resonance_score": 215.825485,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `torah`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2015_cny_shock",
+      "period": "2015-08",
+      "headline": "Currency shock drives systemic transition and risk reallocation",
+      "expected_regime_transition": "shock_to_transition",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 2590.379771,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 2590.379771,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "genesis",
+          "resonance_score": 0.0,
+          "edge_count": 72676,
+          "node_count": 512,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `genesis`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2016_brexit",
+      "period": "2016-06",
+      "headline": "Global referendum shock raises policy response and stabilization support",
+      "expected_regime_transition": "shock_to_stabilization",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 863.459924,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 863.459924,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "gospels",
+          "resonance_score": 431.65097,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `gospels`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2018_trade_war",
+      "period": "2018-10",
+      "headline": "Trade conflict escalation triggers crisis sentiment and policy uncertainty",
+      "expected_regime_transition": "conflict_to_policy",
+      "top_resonance": {
+        "stage": "prophets",
+        "resonance_score": 719.47087,
+        "edge_count": 4658745,
+        "node_count": 4096,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "prophets",
+          "resonance_score": 719.47087,
+          "edge_count": 4658745,
+          "node_count": 4096,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "torah",
+          "resonance_score": 215.825485,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `prophets` and then `torah`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2019_repo",
+      "period": "2019-09",
+      "headline": "Funding stress prompts emergency liquidity policy and recovery support",
+      "expected_regime_transition": "stress_to_stabilization",
+      "top_resonance": {
+        "stage": "gospels",
+        "resonance_score": 431.65097,
+        "edge_count": 1164516,
+        "node_count": 2048,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "gospels",
+          "resonance_score": 431.65097,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "torah",
+          "resonance_score": 215.825485,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `gospels` and then `torah`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2020_covid_m1",
+      "period": "2020-03",
+      "headline": "Pandemic shock drives lockdown panic then fiscal-monetary stabilization",
+      "expected_regime_transition": "shock_to_stabilization",
+      "top_resonance": {
+        "stage": "gospels",
+        "resonance_score": 215.825485,
+        "edge_count": 1164516,
+        "node_count": 2048,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "gospels",
+          "resonance_score": 215.825485,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "genesis",
+          "resonance_score": 0.0,
+          "edge_count": 72676,
+          "node_count": 512,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `gospels` and then `genesis`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2020_covid_m2",
+      "period": "2020-04",
+      "headline": "Global emergency support and relief policy accelerate recovery narrative",
+      "expected_regime_transition": "stabilization_to_recovery",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 863.459924,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 863.459924,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "gospels",
+          "resonance_score": 647.476455,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `gospels`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2021_reopen",
+      "period": "2021-04",
+      "headline": "Reopen cycle lifts recovery support but policy transition risk remains",
+      "expected_regime_transition": "recovery_to_transition",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 863.459924,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 863.459924,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "gospels",
+          "resonance_score": 431.65097,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `gospels`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2022_energy",
+      "period": "2022-03",
+      "headline": "War and energy crisis drive global policy discipline and stabilization efforts",
+      "expected_regime_transition": "conflict_to_policy",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 863.459924,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 863.459924,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "prophets",
+          "resonance_score": 719.47087,
+          "edge_count": 4658745,
+          "node_count": 4096,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `prophets`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2022_inflation",
+      "period": "2022-09",
+      "headline": "Inflation shock forces policy regulation discipline and systemic transition",
+      "expected_regime_transition": "inflation_to_policy",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 1726.919848,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 1726.919848,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "torah",
+          "resonance_score": 647.476455,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `torah`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2023_bank_stress",
+      "period": "2023-03",
+      "headline": "Bank stress event prompts emergency support and confidence stabilization",
+      "expected_regime_transition": "stress_to_stabilization",
+      "top_resonance": {
+        "stage": "gospels",
+        "resonance_score": 431.65097,
+        "edge_count": 1164516,
+        "node_count": 2048,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "gospels",
+          "resonance_score": 431.65097,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "genesis",
+          "resonance_score": 0.0,
+          "edge_count": 72676,
+          "node_count": 512,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `gospels` and then `genesis`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2023_disinflation",
+      "period": "2023-11",
+      "headline": "Global disinflation supports policy transition and risk reallocation",
+      "expected_regime_transition": "policy_to_transition",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 2590.379771,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 2590.379771,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "torah",
+          "resonance_score": 215.825485,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `torah`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2024_geo_risk",
+      "period": "2024-04",
+      "headline": "Geopolitical conflict pressure raises crisis risk and global regime transition",
+      "expected_regime_transition": "conflict_to_transition",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 2590.379771,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 2590.379771,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "prophets",
+          "resonance_score": 719.47087,
+          "edge_count": 4658745,
+          "node_count": 4096,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `prophets`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2024_soft_landing",
+      "period": "2024-09",
+      "headline": "Soft landing hopes improve recovery support and stabilization path",
+      "expected_regime_transition": "stabilization_to_recovery",
+      "top_resonance": {
+        "stage": "gospels",
+        "resonance_score": 647.476455,
+        "edge_count": 1164516,
+        "node_count": 2048,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "gospels",
+          "resonance_score": 647.476455,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "genesis",
+          "resonance_score": 0.0,
+          "edge_count": 72676,
+          "node_count": 512,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `gospels` and then `genesis`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    },
+    {
+      "scenario_id": "holdout_2025_policy_reset",
+      "period": "2025-02",
+      "headline": "Coordinated global policy reset guides systemic transition and reallocation",
+      "expected_regime_transition": "policy_reset_to_transition",
+      "top_resonance": {
+        "stage": "full_canon",
+        "resonance_score": 3453.839695,
+        "edge_count": 18639076,
+        "node_count": 8192,
+        "phase_transition_signal": "weak"
+      },
+      "top2_resonance": [
+        {
+          "stage": "full_canon",
+          "resonance_score": 3453.839695,
+          "edge_count": 18639076,
+          "node_count": 8192,
+          "phase_transition_signal": "weak"
+        },
+        {
+          "stage": "torah",
+          "resonance_score": 215.825485,
+          "edge_count": 1164516,
+          "node_count": 2048,
+          "phase_transition_signal": "weak"
+        }
+      ],
+      "network_structural_insight": "News topology resonates strongest with `full_canon` and then `torah`. This indicates a phase path from disruption pressure toward policy or stabilization nodes."
+    }
+  ],
+  "note": "Holdout replay with dataset input support. Prefer locked external JSONL dataset for publication claims."
+}

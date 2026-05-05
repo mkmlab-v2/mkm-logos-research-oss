@@ -1,0 +1,1 @@
+﻿{"ts_utc":"2026-04-30T19:48:41.7841218Z","token_header_set":true,"approval_flag":"APPROVED","approval_source":"ops_hardened","response":{"message":"Workflow was started"},"webhook_url":"http://127.0.0.1:5678/webhook/macro-risk-mail-approval","recipient":"admin@no1kmedi.com","event":"macro_risk_approval_webhook_call"}

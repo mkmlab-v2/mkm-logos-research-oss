@@ -1,0 +1,51 @@
+{
+  "schema": "two_track_submission_freeze_v1",
+  "generated_at_utc": "2026-04-28T04:38:21Z",
+  "freeze_stamp": "20260428T043821Z",
+  "freeze_dir": "C:\\workspace\\docs\\final\\artifacts\\freeze\\two_track_submission_20260428T043821Z",
+  "copied_count": 8,
+  "missing_count": 0,
+  "artifacts": [
+    {
+      "source": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_evidence_bundle_latest.json",
+      "frozen_copy": "C:\\workspace\\docs\\final\\artifacts\\freeze\\two_track_submission_20260428T043821Z\\two_track_submission_evidence_bundle_latest.json",
+      "generated_at_utc": "2026-04-28T04:38:20Z"
+    },
+    {
+      "source": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_draft_latest.json",
+      "frozen_copy": "C:\\workspace\\docs\\final\\artifacts\\freeze\\two_track_submission_20260428T043821Z\\two_track_submission_draft_latest.json",
+      "generated_at_utc": "2026-04-28T04:38:20Z"
+    },
+    {
+      "source": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_camera_ready_latest.json",
+      "frozen_copy": "C:\\workspace\\docs\\final\\artifacts\\freeze\\two_track_submission_20260428T043821Z\\two_track_submission_camera_ready_latest.json",
+      "generated_at_utc": "2026-04-28T04:38:21Z"
+    },
+    {
+      "source": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_suite_latest.json",
+      "frozen_copy": "C:\\workspace\\docs\\final\\artifacts\\freeze\\two_track_submission_20260428T043821Z\\two_track_falsification_suite_latest.json",
+      "generated_at_utc": "2026-04-28T04:34:40Z"
+    },
+    {
+      "source": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_sensitivity_latest.json",
+      "frozen_copy": "C:\\workspace\\docs\\final\\artifacts\\freeze\\two_track_submission_20260428T043821Z\\two_track_falsification_sensitivity_latest.json",
+      "generated_at_utc": "2026-04-28T04:34:40Z"
+    },
+    {
+      "source": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_boundary_report_latest.json",
+      "frozen_copy": "C:\\workspace\\docs\\final\\artifacts\\freeze\\two_track_submission_20260428T043821Z\\two_track_falsification_boundary_report_latest.json",
+      "generated_at_utc": "2026-04-28T04:34:40Z"
+    },
+    {
+      "source": "C:\\workspace\\docs\\final\\artifacts\\two_track_raw_oos_readiness_latest.json",
+      "frozen_copy": "C:\\workspace\\docs\\final\\artifacts\\freeze\\two_track_submission_20260428T043821Z\\two_track_raw_oos_readiness_latest.json",
+      "generated_at_utc": "2026-04-28T04:34:43Z"
+    },
+    {
+      "source": "C:\\workspace\\docs\\final\\artifacts\\two_track_statistical_significance_report_latest.json",
+      "frozen_copy": "C:\\workspace\\docs\\final\\artifacts\\freeze\\two_track_submission_20260428T043821Z\\two_track_statistical_significance_report_latest.json",
+      "generated_at_utc": "2026-04-28T04:34:42Z"
+    }
+  ],
+  "missing_artifacts": []
+}

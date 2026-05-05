@@ -1,6 +1,6 @@
 {
   "schema": "war_prolongation_significance_eval_v1",
-  "generated_at_utc": "2026-04-23T00:53:06Z",
+  "generated_at_utc": "2026-04-29T00:53:08Z",
   "inputs": {
     "score_json": "C:/workspace/docs/final/artifacts/btrack_prophecy_score_war_prolong_20260406_multileg.json",
     "market_data_dir": "C:/workspace/research/market_data",
@@ -14,16 +14,16 @@
   },
   "overall": {
     "n": 1440,
-    "hits": 844,
-    "hit_rate": 0.586111,
+    "hits": 831,
+    "hit_rate": 0.577083,
     "p_value_one_sided_vs_baseline": 0.0,
     "significant": true
   },
   "by_horizon": {
     "h1": {
       "n": 480,
-      "hits": 258,
-      "hit_rate": 0.5375,
+      "hits": 253,
+      "hit_rate": 0.527083,
       "p_value_one_sided_vs_baseline": 0.0,
       "significant": true
     },
@@ -36,8 +36,8 @@
     },
     "h20": {
       "n": 480,
-      "hits": 306,
-      "hit_rate": 0.6375,
+      "hits": 298,
+      "hit_rate": 0.620833,
       "p_value_one_sided_vs_baseline": 0.0,
       "significant": true
     }

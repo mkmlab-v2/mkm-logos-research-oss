@@ -1,0 +1,102 @@
+{
+  "schema": "saju_golden_replay_report_v1",
+  "generated_at_utc": "2026-05-03T11:55:56Z",
+  "fixture_path": "C:\\workspace\\tests\\fixtures\\saju_golden_cases_v1.json",
+  "summary": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0,
+    "pass_rate": 1.0,
+    "gate": "PASS"
+  },
+  "results": [
+    {
+      "id": "kr_confirmed_reference_1973_1210_0430",
+      "expected": {
+        "status": "CONFIRMED"
+      },
+      "actual": {
+        "status": "CONFIRMED",
+        "reasons": [],
+        "pillar_diffs": {}
+      },
+      "pass": true
+    },
+    {
+      "id": "kr_confirmed_non_boundary_1973_1209_0430",
+      "expected": {
+        "status": "CONFIRMED"
+      },
+      "actual": {
+        "status": "CONFIRMED",
+        "reasons": [],
+        "pillar_diffs": {}
+      },
+      "pass": true
+    },
+    {
+      "id": "kr_review_near_solar_term_anchor_1973_1207_0430",
+      "expected": {
+        "status": "REVIEW",
+        "reasons_contains": [
+          "near_solar_term_anchor_day"
+        ]
+      },
+      "actual": {
+        "status": "REVIEW",
+        "reasons": [
+          "near_solar_term_anchor_day"
+        ],
+        "pillar_diffs": {}
+      },
+      "pass": true
+    },
+    {
+      "id": "us_review_ambiguous_dst_2021_1107_0130",
+      "expected": {
+        "status": "REVIEW",
+        "reasons_contains": [
+          "ambiguous_local_time_due_to_dst"
+        ]
+      },
+      "actual": {
+        "status": "REVIEW",
+        "reasons": [
+          "ambiguous_local_time_due_to_dst",
+          "near_solar_term_anchor_day"
+        ],
+        "pillar_diffs": {}
+      },
+      "pass": true
+    },
+    {
+      "id": "kr_review_near_zi_boundary_1973_1210_2330",
+      "expected": {
+        "status": "REVIEW",
+        "reasons_contains": [
+          "near_zi_boundary_window"
+        ]
+      },
+      "actual": {
+        "status": "REVIEW",
+        "reasons": [
+          "near_zi_boundary_window"
+        ],
+        "pillar_diffs": {}
+      },
+      "pass": true
+    },
+    {
+      "id": "kr_confirmed_zi23_policy_1973_1210_2331",
+      "expected": {
+        "status": "CONFIRMED"
+      },
+      "actual": {
+        "status": "CONFIRMED",
+        "reasons": [],
+        "pillar_diffs": {}
+      },
+      "pass": true
+    }
+  ]
+}

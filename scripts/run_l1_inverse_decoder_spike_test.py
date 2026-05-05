@@ -298,9 +298,11 @@ def _beam_candidates(
     scoring_mode: str = "legacy",
     literal_channel: dict[int, str] | None = None,
     enforce_literal_lock: bool = True,
+    *,
+    position_vocab: dict[int, set[str]] | None = None,
 ) -> list[str]:
     toks = noisy.split()
-    pos_vocab = _build_position_vocab(corpus)
+    pos_vocab = position_vocab if position_vocab is not None else _build_position_vocab(corpus)
     repaired = _repair_tokens_with_vocab(toks, pos_vocab)
     multiset_dirty = Counter(toks) != Counter(repaired)
     typo_or_oov_obs = any("X" in t or t == "OOV_TOKEN" for t in toks)

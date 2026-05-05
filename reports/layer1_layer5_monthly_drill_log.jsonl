@@ -1,0 +1,1 @@
+{"ts_utc": "2026-04-29T17:17:21Z", "schema": "layer1_layer5_monthly_drill_log_row_v1", "source": "docs/final/artifacts/layer1_layer5_readiness_alert_live_test_latest.json", "readiness_status": "HOLD", "should_alert": true, "dispatched": false, "dispatch_result": "dry_run"}

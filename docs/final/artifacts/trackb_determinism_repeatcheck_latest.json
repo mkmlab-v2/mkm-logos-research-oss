@@ -1,0 +1,37 @@
+{
+  "schema": "trackb_determinism_repeatcheck_v1",
+  "generated_at_utc": "2026-05-02T02:55:25Z",
+  "repeat_count": 20,
+  "artifacts": {
+    "trackb_semantic_eval_medical_latest.json": {
+      "artifact_path": "C:/workspace/docs/final/artifacts/trackb_semantic_eval_medical_latest.json",
+      "base_fingerprint": "c6d7669c833033f3d5f0012a19d1541eb6265005f043904757cd0a15d95e6190",
+      "unique_fingerprints": [
+        "c6d7669c833033f3d5f0012a19d1541eb6265005f043904757cd0a15d95e6190"
+      ],
+      "repeat_count": 20,
+      "deterministic": true
+    },
+    "trackb_semantic_eval_finance_latest.json": {
+      "artifact_path": "C:/workspace/docs/final/artifacts/trackb_semantic_eval_finance_latest.json",
+      "base_fingerprint": "accb325d3ceac5bf76a2ae8ae42864aab1cbfa0831496f934bdad13fa4fce6e9",
+      "unique_fingerprints": [
+        "accb325d3ceac5bf76a2ae8ae42864aab1cbfa0831496f934bdad13fa4fce6e9"
+      ],
+      "repeat_count": 20,
+      "deterministic": true
+    },
+    "trackb_semantic_eval_policy_latest.json": {
+      "artifact_path": "C:/workspace/docs/final/artifacts/trackb_semantic_eval_policy_latest.json",
+      "base_fingerprint": "e7f19326fb3cffb0759bb5f3e6cd5c25e091d550598a1db7050d3eed3aba9f68",
+      "unique_fingerprints": [
+        "e7f19326fb3cffb0759bb5f3e6cd5c25e091d550598a1db7050d3eed3aba9f68"
+      ],
+      "repeat_count": 20,
+      "deterministic": true
+    }
+  },
+  "overall_deterministic": true,
+  "decision": "GO_RESEARCH",
+  "out_of_scope": "No production promotion, no trading trigger."
+}

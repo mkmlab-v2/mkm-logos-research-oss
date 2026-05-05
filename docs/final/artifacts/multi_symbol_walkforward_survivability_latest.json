@@ -1,0 +1,48 @@
+{
+  "schema": "multi_symbol_walkforward_survivability_v1",
+  "generated_at_utc": "2026-04-28T05:55:29Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "metrics": [
+    {
+      "seed_symbol": "tree_of_knowledge_good_evil",
+      "is_selected": true,
+      "sequence_length": 5,
+      "coupling_strength": 0.777868,
+      "resonance_score": 0.699623,
+      "oos_survival_rate_proxy": 0.772695,
+      "false_positive_cost_proxy": 0.188853,
+      "survivability_score": 0.786154
+    },
+    {
+      "seed_symbol": "babel_tower",
+      "is_selected": true,
+      "sequence_length": 4,
+      "coupling_strength": 0.70416,
+      "resonance_score": 0.632957,
+      "oos_survival_rate_proxy": 0.708823,
+      "false_positive_cost_proxy": 0.198336,
+      "survivability_score": 0.741317
+    },
+    {
+      "seed_symbol": "exodus_return",
+      "is_selected": false,
+      "sequence_length": 2,
+      "coupling_strength": 0.607118,
+      "resonance_score": 0.499623,
+      "oos_survival_rate_proxy": 0.508783,
+      "false_positive_cost_proxy": 0.197153,
+      "survivability_score": 0.611705
+    }
+  ],
+  "summary": {
+    "symbol_count": 3,
+    "top_symbol_by_survivability": "tree_of_knowledge_good_evil",
+    "mean_survivability_score": 0.713059
+  },
+  "sources": {
+    "multi_symbol_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_resonance_4d_latest.json",
+    "selector_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_candidate_selector_latest.json"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schema": "independent_lens_shadow_gate_v1",
-  "ts_utc": "2026-04-23T01:16:06Z",
-  "month_tag": "2026-04",
+  "ts_utc": "2026-05-03T00:15:16Z",
+  "month_tag": "2026-05",
   "policy": {
     "a_track_binding": "forbidden",
     "recommended_mode": "observation_only",
@@ -9,22 +9,59 @@
     "min_monthly_cycles": 2
   },
   "history": {
-    "weekly_cycles_observed": 560,
-    "monthly_cycles_observed": 1,
+    "weekly_cycles_observed": 620,
+    "monthly_cycles_observed": 3,
+    "observed_month_tags": [
+      "2026-03",
+      "2026-04",
+      "2026-05"
+    ],
     "history_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_shadow_history.jsonl"
   },
   "latest_consensus": {
-    "available_count": 3,
-    "agreement_rate": 0.666667,
+    "available_count": 4,
+    "agreement_rate": 0.75,
     "conflict_count": 1,
-    "consensus_sign": "neutral",
-    "consensus_score": -0.044495,
-    "consensus_confidence": 0.484444
+    "consensus_sign": "bull",
+    "consensus_score": 0.074485,
+    "consensus_confidence": 0.419733
+  },
+  "latest_conflict_snapshot": {
+    "fusion_stub_version": "0.3.0",
+    "minority_lens_ids": [
+      "logos"
+    ],
+    "logos_evidence_verse_ids": [
+      "sample-001",
+      "sample-002",
+      "sample-003"
+    ],
+    "conflict_narrative_sha256": "f59ce10766d49c72b50380c1bd5769629d3fbee11a5050b97d5e51aed3e5d115",
+    "majority_sign": "bull"
   },
   "decision": "KEEP_OBSERVATION_ONLY",
   "allow_a_track_binding": false,
-  "blockers": [
-    "monthly_cycles_lt_2"
-  ],
+  "blockers": [],
+  "blocker_resolution_plan": {
+    "monthly_cycles_lt_2": {
+      "action": "accumulate at least one additional month-tagged observation cycle",
+      "target": ">= 2 unique monthly tags in shadow history",
+      "verification": "monthly_cycles_observed >= min_monthly_cycles"
+    },
+    "weekly_cycles_lt_min": {
+      "action": "continue weekly observation until threshold is met",
+      "target": ">= 8 cycles",
+      "verification": "weekly_cycles_observed >= min_weekly_cycles"
+    }
+  },
+  "manual_review_requirements": {
+    "must_keep_observation_only": true,
+    "required_checks_before_any_promotion_discussion": [
+      "shadow blockers empty",
+      "contract alignment unchanged",
+      "data quality status PASS",
+      "no Track B to Track A auto bridge"
+    ]
+  },
   "note": "Shadow gate only; this file must not be used as direct live trading trigger."
 }

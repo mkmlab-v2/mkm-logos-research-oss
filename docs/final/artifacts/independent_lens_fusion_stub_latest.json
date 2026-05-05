@@ -1,7 +1,7 @@
 {
   "schema": "independent_lens_fusion_stub_v0",
-  "version": "0.1.0",
-  "ts_utc": "2026-04-23T01:16:06Z",
+  "version": "0.3.0",
+  "ts_utc": "2026-05-03T00:15:16Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "mode": "observation_only",
@@ -9,21 +9,21 @@
     {
       "lens_id": "myeongni",
       "available": true,
-      "direction_score": 0.0,
-      "confidence": 0.76,
-      "direction_sign": "neutral",
+      "direction_score": 0.08,
+      "confidence": 0.68552,
+      "direction_sign": "bull",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-04-23T01:16:05Z",
+      "artifact_ts_utc": "2026-05-03T00:15:15Z",
       "schema": "myeongni_independent_lens_v0"
     },
     {
       "lens_id": "sasang",
       "available": true,
-      "direction_score": 0.0,
-      "confidence": 0.493333,
-      "direction_sign": "neutral",
+      "direction_score": 0.17,
+      "confidence": 0.7115,
+      "direction_sign": "bull",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-04-23T01:16:06Z",
+      "artifact_ts_utc": "2026-05-03T00:15:16Z",
       "schema": "sasang_independent_lens_v0"
     },
     {
@@ -33,17 +33,62 @@
       "confidence": 0.2,
       "direction_sign": "bear",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\logos_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-04-23T01:16:06Z",
+      "artifact_ts_utc": "2026-05-03T00:15:16Z",
       "schema": "logos_independent_lens_v0"
+    },
+    {
+      "lens_id": "market_sasang",
+      "available": true,
+      "direction_score": 0.17,
+      "confidence": 0.081912195,
+      "direction_sign": "bull",
+      "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\market_sasang_lens_latest.json",
+      "artifact_ts_utc": "2026-05-02T05:02:30Z",
+      "schema": "market_sasang_lens_v1",
+      "market_sasang_lens_v1": {
+        "state_vector_sasang_softmax": {
+          "taeyang": 0.31447354,
+          "soyang": 0.27881458,
+          "taeeum": 0.19611475,
+          "soeum": 0.21059713
+        },
+        "composite_uncertainty": 0.67235122,
+        "veto_force_hold": true,
+        "veto_reason_codes": [
+          "HIGH_ENTROPY_SOFTMAX"
+        ],
+        "direction_hint": "bull",
+        "human_commander_gate_v1": {
+          "schema": "human_commander_gate_v1",
+          "version": "1.0.0",
+          "track": "B",
+          "banner_ko": "[TRACK B / HYPO] 연구용·비자동 — 최종 채택은 지휘관 판단 대기",
+          "final_authority": "human_commander",
+          "machine_output_role": "decision_support_observation_only"
+        }
+      }
     }
   ],
   "consensus": {
-    "available_count": 3,
-    "agreement_rate": 0.666667,
+    "available_count": 4,
+    "agreement_rate": 0.75,
     "conflict_count": 1,
-    "consensus_sign": "neutral",
-    "consensus_score": -0.044495,
-    "consensus_confidence": 0.484444
+    "consensus_sign": "bull",
+    "consensus_score": 0.074485,
+    "consensus_confidence": 0.419733
   },
-  "note": "Read-only comparison of independent lens outputs; not A-track auto-fusion or live sizing trigger. No consistency_rate here — use consensus.agreement_rate for lens-direction alignment; optional consistency_rate is defined for myeongni 16-state experiment JSON (separate schema). Vector gematria+myeongri geometric spike: scripts/spike_gematria_myeongri_blend_v0.py."
+  "conflict_summary": {
+    "conflict_narrative_guarded": "Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_count=1. Minority vs majority: logos differ from majority_sign=bull. Breakdown: myeongni: sign=bull, score=0.080000, conf=0.685520; sasang: sign=bull, score=0.170000, conf=0.711500; logos: sign=bear, score=-0.323333, conf=0.200000; market_sasang: sign=bull, score=0.170000, conf=0.081912. Logos evidence verse_id anchors (batch-bound): sample-001, sample-002, sample-003. Logos hash-tagged snippet (clipped): [#sample-001] [#sample-002] [#sample-003]",
+    "minority_lens_ids": [
+      "logos"
+    ],
+    "majority_sign": "bull",
+    "logos_evidence_verse_ids": [
+      "sample-001",
+      "sample-002",
+      "sample-003"
+    ],
+    "narrative_policy": "Deterministic template from lens signs/scores and optional Logos evidence_refs/narrative_snippet_guarded only; no LLM paraphrase; observation_only; not an A-track action."
+  },
+  "note": "Read-only comparison of independent lens outputs; not A-track auto-fusion or live sizing trigger. v0.3.0: optional 4th input from market_sasang_lens_v1 when artifact exists (use --no-market-sasang for 3-lens only). No consistency_rate here — use consensus.agreement_rate for lens-direction alignment; optional consistency_rate is defined for myeongni 16-state experiment JSON (separate schema). conflict_summary.* is template-bound narrative + optional Logos batch anchors only. Vector gematria+myeongri geometric spike: scripts/spike_gematria_myeongri_blend_v0.py."
 }

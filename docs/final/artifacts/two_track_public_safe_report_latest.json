@@ -1,0 +1,32 @@
+{
+  "schema": "two_track_public_safe_report_v1",
+  "generated_at_utc": "2026-04-28T05:55:33Z",
+  "public_safe": true,
+  "proprietary_details_redacted": true,
+  "disclosure_policy": {
+    "open": [
+      "methodology_shape",
+      "safety_gates",
+      "artifact_paths"
+    ],
+    "redacted": [
+      "core_formula",
+      "weight_tables",
+      "search_tuning"
+    ]
+  },
+  "executive_summary": {
+    "problem": "Overfitting risk in meaning-rich signals",
+    "method": "Two-track + survivor + rollback",
+    "result": "shift_score=0.8034, survivor_count=5"
+  },
+  "public_metrics": {
+    "primary_delta_shift_score": 0.303353,
+    "significance_interpretation": "positive_delta_supported"
+  },
+  "source_refs": {
+    "academic_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_academic_submission_packet_latest.json",
+    "benchmark_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_benchmark_comparison_latest.json",
+    "significance_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_statistical_significance_report_latest.json"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "sasang_supplemental_insight_score_v1",
+  "generated_at_utc": "2026-04-29T00:00:05Z",
+  "non_gating_policy": true,
+  "components": {
+    "dna": {
+      "score": 1.0,
+      "weight": 0.45,
+      "note": "approved_candidate_ready_with_human_review_constraint"
+    },
+    "market_sentiment": {
+      "score": 0.95,
+      "weight": 0.3,
+      "note": "sentiment=safe, decision=HOLD, quality=ok"
+    },
+    "gematria_4d": {
+      "score": 0.9,
+      "weight": 0.25,
+      "note": "point_count=5, mean_coupling=0.732, policy=analysis_only_non_trigger"
+    }
+  },
+  "supplemental_score": {
+    "value": 0.96,
+    "band": "HIGH",
+    "impact_on_go_no_go": "none_non_gating"
+  },
+  "evidence": {
+    "dna": "C:\\workspace\\reports\\bio_dna_constitution_final_approval_latest.json",
+    "market_sentiment": "C:\\workspace\\docs\\final\\artifacts\\fused_paper_cycle_weekly_latest.json",
+    "gematria_4d": "C:\\workspace\\docs\\final\\artifacts\\gematria_4d_coupling_latest.json"
+  }
+}

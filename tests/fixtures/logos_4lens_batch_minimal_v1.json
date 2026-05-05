@@ -1,0 +1,16 @@
+[
+  {
+    "verse_id": "JHN.3.16",
+    "verse_text": "For God so loved the world, that he gave his only begotten Son",
+    "pipeline1_simple_4d": {
+      "vector_4d": { "S": 0.62, "L": 0.55, "K": 0.48, "M": 0.51 }
+    }
+  },
+  {
+    "verse_id": "PSA.23.1",
+    "verse_text": "The LORD is my shepherd; I shall not want.",
+    "pipeline1_simple_4d": {
+      "vector_4d": { "S": 0.45, "L": 0.52, "K": 0.58, "M": 0.49 }
+    }
+  }
+]

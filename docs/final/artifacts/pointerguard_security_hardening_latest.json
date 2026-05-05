@@ -1,0 +1,69 @@
+{
+  "schema": "pointerguard_security_hardening_v1",
+  "generated_at_utc": "2026-04-28T21:30:06+00:00",
+  "research_only": true,
+  "source_track": "B",
+  "all_ok": true,
+  "controls": {
+    "C1_scope_guard": {
+      "status": "PASS",
+      "policy": {
+        "input_scope": "synthetic_or_anonymized_only",
+        "max_chars_per_request": 2000,
+        "forbidden_input_patterns": [
+          "email_like",
+          "phone_like",
+          "private_key_marker",
+          "api_key_like",
+          "raw_source_code_block"
+        ],
+        "on_forbidden_input": "FORBIDDEN_INPUT_REJECT_AND_METADATA_ONLY_LOG",
+        "log_mode": "metadata_only"
+      }
+    },
+    "C6_abuse_guard": {
+      "status": "PASS",
+      "policy": {
+        "rate_limit_rpm_per_ip": 30,
+        "burst_limit_per_10s": 8,
+        "payload_size_limit_chars": 2000,
+        "captcha_mode": "challenge_on_suspicious_pattern",
+        "throttle_mode": "token_bucket"
+      }
+    },
+    "leaked_info_scanner": {
+      "status": "PASS",
+      "target": "C:\\workspace\\scripts\\deploy\\nginx\\a-codeai.com.evidence.latest.json.example",
+      "forbidden_hits": [],
+      "policy": {
+        "scanner_mode": "allowlist_first_with_forbidden_pattern_check",
+        "on_detection": "P0_ALERT_AND_BLOCK_PUBLIC_RELEASE"
+      }
+    },
+    "p0_priority_inversion": {
+      "status": "PASS",
+      "policy": {
+        "p0_events": [
+          "guard_applied",
+          "unauthorized_pattern_detected"
+        ],
+        "notification_channel": "webhook"
+      }
+    },
+    "manual_promotion_lock": {
+      "status": "PASS",
+      "policy": {
+        "manual_promotion_lock": true,
+        "requires_two_person_review": true,
+        "approval_log_required": true
+      }
+    }
+  },
+  "metadata_only_log_example": {
+    "event_type": "FORBIDDEN_INPUT",
+    "input_sha256": "50d858e0985ecc7f60418aaf0cc5ab587f42c2570a884095a9e8ccacd0f6545c",
+    "input_len": 7,
+    "rule_id": "private_key_marker",
+    "stored_raw_input": false
+  }
+}

@@ -148,7 +148,7 @@ async function sendLookupAlertWebhook(payload: Record<string, unknown>) {
     const isSlackWebhook = LOOKUP_ALERT_WEBHOOK_URL.includes("hooks.slack.com/services/");
     const body = isSlackWebhook
       ? {
-          text: `[no1kmedi] PIN lookup alert - ${String(payload.event || "unknown_event")} (ip:${String(payload.ip || "unknown")}, count:${String(payload.count || 0)})`,
+          text: `[jema-ai] PIN lookup alert - ${String(payload.event || "unknown_event")} (ip:${String(payload.ip || "unknown")}, count:${String(payload.count || 0)})`,
           ...payload,
         }
       : payload;
@@ -181,9 +181,9 @@ async function recordIpFailureAndMaybeAlert(request: NextRequest): Promise<numbe
     lookupIpFailures.set(ip, next);
     const alertPayload = {
       event: "ip_lookup_fail_threshold_reached",
-      service: "no1kmedi",
+      service: "jema-ai",
       environment: process.env.NODE_ENV || "production",
-      domain: "no1kmedi.com",
+      domain: "jema-ai.com",
       ip,
       count: nextCount,
       threshold: LOOKUP_ALERT_FAIL_THRESHOLD,

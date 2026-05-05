@@ -85,12 +85,20 @@ function safeJsonParse(text: string): Record<string, unknown> | null {
   }
 }
 
-/** Dedicated CDSS endpoint, or OpenRouter when CDSS_LLM_USE_OPENROUTER=true and CDSS URL/key omitted. */
+/** Dedicated CDSS endpoint, OpenRouter, or Gemini(OpenAI-compatible) in that order. */
 function resolveCdssOpenAiCredentials(): { apiBase: string; apiKey: string } | null {
   const dedicatedBase = process.env.CDSS_LLM_API_BASE_URL?.trim();
   const dedicatedKey = process.env.CDSS_LLM_API_KEY?.trim();
   if (dedicatedBase && dedicatedKey) {
     return { apiBase: dedicatedBase.replace(/\/$/, ""), apiKey: dedicatedKey };
+  }
+  const geminiKey = process.env.GEMINI_API_KEY?.trim() || process.env.GOOGLE_API_KEY?.trim();
+  const useGemini = (process.env.CDSS_LLM_USE_GEMINI || "").toLowerCase() === "true";
+  if (geminiKey && (useGemini || (process.env.CDSS_LLM_USE_OPENROUTER || "").toLowerCase() !== "true")) {
+    return {
+      apiBase: "https://generativelanguage.googleapis.com/v1beta/openai",
+      apiKey: geminiKey,
+    };
   }
   const useOpenRouter = (process.env.CDSS_LLM_USE_OPENROUTER || "").toLowerCase() === "true";
   if (!useOpenRouter) return null;
@@ -200,6 +208,8 @@ type ReasoningRouterOutcome =
 async function generateReasoningWithRouter(input: PatientConsultInputV1): Promise<ReasoningRouterOutcome> {
   const primaryModel =
     process.env.CDSS_LLM_PRIMARY_MODEL?.trim() ||
+    process.env.CDSS_GEMINI_MODEL?.trim() ||
+    process.env.GEMINI_MODEL?.trim() ||
     process.env.OPENROUTER_MODEL?.trim() ||
     "";
   const fallbackModel = process.env.CDSS_LLM_FALLBACK_MODEL?.trim() || "";

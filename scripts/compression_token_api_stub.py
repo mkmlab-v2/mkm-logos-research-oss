@@ -39,7 +39,24 @@ from starlette.middleware.cors import CORSMiddleware  # noqa: E402
 from scripts.core.billing_meter import append_meter_event  # noqa: E402
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
 from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy  # noqa: E402
+from scripts.core.secure_payload_keyring import (  # noqa: E402
+    EnvTrackKeyResolver,
+    ExternalKmsTrackKeyResolver,
+    TrackKeyResolver,
+)
+from scripts.core.secure_payload_envelope_v1 import (  # noqa: E402
+    AesGcmProvider,
+    SCHEMA_NAME as SECURE_ENVELOPE_SCHEMA_NAME,
+    SecurePayloadEnvelope,
+    decrypt_envelope,
+    encrypt_envelope,
+)
 from scripts.report_multilens_performance_eval import evaluate_report  # noqa: E402
+from scripts.l1_side_channel_wire_codec import (  # noqa: E402
+    decode_adaptive_msgpack,
+    encode_adaptive_msgpack,
+    minimal_payload,
+)
 from scripts.run_hybrid_codec_v0_spike import (  # noqa: E402
     decode_packet_dict as hybrid_decode_packet_dict,
 )
@@ -78,6 +95,7 @@ class EvalContext(BaseModel):
     hydrate_live_eval: bool | None = None
     hydrate_shadow_compare: bool | None = None
     meter_log: bool | None = None
+    emit_semantic_pointer: bool | None = None
 
 
 class HydrationHints(BaseModel):
@@ -110,6 +128,7 @@ class CompressResponse(BaseModel):
     client_request_id: str | None = None
     eval_context_echo: EvalContext | None = None
     compression_metrics: CompressionMetrics | None = None
+    semantic_pointer: dict[str, Any] | None = None
     integrity_flags: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -142,6 +161,88 @@ class MeteringLogResponse(BaseModel):
     api_contract_version: str = API_CONTRACT_VERSION
     meter_schema: str = "track_a_metering_log_v1"
     log_path_relative: str | None = None
+
+
+class L1SideChannelWireRequest(BaseModel):
+    side_channel: dict[str, Any]
+    track: str = Field(default="b_track")
+    key_id: str | None = None
+    zstd_min_raw_bytes: int = Field(default=64, ge=0)
+    zstd_level: int = Field(default=3, ge=1, le=22)
+
+
+class L1SideChannelWireResponse(BaseModel):
+    envelope_schema: str = Field(default="l1_side_channel_secure_wire_v1", alias="schema")
+    envelope: dict[str, Any]
+    integrity_flags: dict[str, Any] = Field(default_factory=dict)
+
+
+class _AesGcmCryptographyProvider(AesGcmProvider):
+    """AES-256-GCM provider using cryptography package.
+
+    Key injection policy:
+    - A track: MKM_ENVELOPE_A_TRACK_KEY_B64
+    - B track: MKM_ENVELOPE_B_TRACK_KEY_B64
+    """
+
+    def __init__(self, resolver: TrackKeyResolver | None = None) -> None:
+        self._resolver = resolver or _select_track_key_resolver()
+
+    def encrypt(
+        self,
+        *,
+        key_id: str,
+        plaintext: bytes,
+        aad: bytes,
+        track: str,
+    ) -> tuple[bytes, bytes, bytes]:
+        _ = key_id
+        try:
+            from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        except Exception as exc:
+            raise RuntimeError("cryptography package is required for secure envelope AES-GCM") from exc
+        key = self._resolver.resolve_key(track=track)
+        nonce = os.urandom(12)
+        ct_plus_tag = AESGCM(key).encrypt(nonce, plaintext, aad)
+        ciphertext, tag = ct_plus_tag[:-16], ct_plus_tag[-16:]
+        return nonce, ciphertext, tag
+
+    def decrypt(
+        self,
+        *,
+        key_id: str,
+        nonce: bytes,
+        ciphertext: bytes,
+        tag: bytes,
+        aad: bytes,
+        track: str,
+    ) -> bytes:
+        _ = key_id
+        try:
+            from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        except Exception as exc:
+            raise RuntimeError("cryptography package is required for secure envelope AES-GCM") from exc
+        key = self._resolver.resolve_key(track=track)
+        return AESGCM(key).decrypt(nonce, ciphertext + tag, aad)
+
+
+def _default_key_id(track: str) -> str:
+    if track == "a_track":
+        return os.environ.get("MKM_ENVELOPE_A_TRACK_KEY_ID", "kms/a-track/primary")
+    return os.environ.get("MKM_ENVELOPE_B_TRACK_KEY_ID", "kms/b-track/primary")
+
+
+def _select_track_key_resolver() -> TrackKeyResolver:
+    provider = os.environ.get("MKM_ENVELOPE_KEY_PROVIDER", "env").strip().lower()
+    if provider in {"", "env"}:
+        return EnvTrackKeyResolver()
+    if provider in {"external_kms", "vault", "kms"}:
+        return ExternalKmsTrackKeyResolver()
+    raise RuntimeError(f"unsupported MKM_ENVELOPE_KEY_PROVIDER={provider!r}")
+
+
+def _secure_key_provider_mode() -> str:
+    return os.environ.get("MKM_ENVELOPE_KEY_PROVIDER", "env").strip().lower() or "env"
 
 
 @lru_cache(maxsize=1)
@@ -315,8 +416,12 @@ def _estimate_hydrated_metrics(text: str) -> CompressionMetrics | None:
 
 
 def _live_eval_metrics(
-    text: str, *, bytes_in: int | None = None, token_in: int | None = None
-) -> tuple[CompressionMetrics | None, float, str | None]:
+    text: str,
+    *,
+    bytes_in: int | None = None,
+    token_in: int | None = None,
+    emit_semantic_pointer: bool = False,
+) -> tuple[CompressionMetrics | None, float, str | None, dict[str, Any] | None]:
     selected = _decision_selected_profile()
     strategy = str(selected.get("strategy", "A"))
     intensity = str(selected.get("intensity", "extreme"))
@@ -350,6 +455,7 @@ def _live_eval_metrics(
             include_gematria_4d_bridge=_bp,
             include_cee_core=_bp,
             apply_gematria_4d_bridge_policy=_bp,
+            emit_semantic_pointer=emit_semantic_pointer,
         )
         comp_block = report.get("compression_metrics", {})
         ratio = float(comp_block.get("global_token_saving_rate", 0.0))
@@ -380,9 +486,16 @@ def _live_eval_metrics(
             token_out=token_out,
             savings_ratio=max(0.0, min(1.0, ratio)),
         )
-        return metrics, round((perf_counter() - t0) * 1000.0, 3), None
+        sp0: dict[str, Any] | None = None
+        if emit_semantic_pointer and isinstance(cases, list) and cases:
+            first_row = cases[0]
+            if isinstance(first_row, dict):
+                cand = first_row.get("semantic_pointer")
+                if isinstance(cand, dict):
+                    sp0 = cand
+        return metrics, round((perf_counter() - t0) * 1000.0, 3), None, sp0
     except Exception as exc:
-        return None, round((perf_counter() - t0) * 1000.0, 3), type(exc).__name__
+        return None, round((perf_counter() - t0) * 1000.0, 3), type(exc).__name__, None
 
 
 def _try_append_meter_from_compress(
@@ -454,6 +567,15 @@ def health() -> dict[str, Any]:
             "active_global_token_saving_rate": act_r,
             "ultra_literal_global_token_saving_rate": ultra_r,
         },
+        "secure_envelope": {
+            "schema": SECURE_ENVELOPE_SCHEMA_NAME,
+            "tracks": ["a_track", "b_track"],
+            "key_provider_mode": _secure_key_provider_mode(),
+            "key_env": {
+                "a_track": "MKM_ENVELOPE_A_TRACK_KEY_B64",
+                "b_track": "MKM_ENVELOPE_B_TRACK_KEY_B64",
+            },
+        },
     }
 
 
@@ -492,7 +614,9 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
             flags["hybrid_codec_v0_enabled"] = True
             flags["hybrid_codec_v0_failed"] = True
             flags["hybrid_codec_v0_error_class"] = type(exc).__name__
-    live_metrics_cache: tuple[CompressionMetrics | None, float, str | None] | None = None
+    live_metrics_cache: (
+        tuple[CompressionMetrics | None, float, str | None, dict[str, Any] | None] | None
+    ) = None
     bytes_in, token_in = _text_size_tokens(body.text)
     if body.hydration_hints is not None and body.hydration_hints.atom_ids:
         flags["hydration_atom_id_count"] = len(body.hydration_hints.atom_ids)
@@ -529,18 +653,26 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
             client_request_id=body.client_request_id,
             eval_context_echo=body.eval_context,
             compression_metrics=metrics,
+            semantic_pointer=None,
             integrity_flags=flags,
         )
 
     # --- Enterprise: Track A (existing hydration + default active KPI when no hydration) ---
     metrics: CompressionMetrics | None = None
     metrics_mode = "none"
+    semantic_pointer_out: dict[str, Any] | None = None
+    emit_sp = bool(body.eval_context is not None and bool(body.eval_context.emit_semantic_pointer))
     if body.eval_context is not None and bool(body.eval_context.hydrate_metrics):
         if bool(body.eval_context.hydrate_live_eval):
             min_tok = _live_eval_min_tokens()
             if token_in >= min_tok:
-                metrics, latency_ms, live_err = _live_eval_metrics(body.text, bytes_in=bytes_in, token_in=token_in)
-                live_metrics_cache = (metrics, latency_ms, live_err)
+                metrics, latency_ms, live_err, sp_live = _live_eval_metrics(
+                    body.text,
+                    bytes_in=bytes_in,
+                    token_in=token_in,
+                    emit_semantic_pointer=emit_sp,
+                )
+                live_metrics_cache = (metrics, latency_ms, live_err, sp_live)
                 flags["hydration_live_eval_elapsed_ms"] = latency_ms
                 if live_err:
                     flags["hydration_live_eval_failed"] = True
@@ -548,6 +680,8 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
                 if metrics is not None:
                     flags["hydration_metrics_source"] = "live_evaluate_report"
                     metrics_mode = "live"
+                if sp_live is not None:
+                    semantic_pointer_out = sp_live
             else:
                 flags["hydration_live_eval_skipped"] = True
                 flags["hydration_live_eval_skip_reason"] = "short_input"
@@ -567,12 +701,19 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
     if body.eval_context is not None and bool(body.eval_context.hydrate_shadow_compare):
         if live_metrics_cache is not None:
             # Avoid duplicate evaluate_report call in the same request when live hydration already ran.
-            shadow_metrics, shadow_latency_ms, shadow_err = live_metrics_cache
+            shadow_metrics, shadow_latency_ms, shadow_err, shadow_sp = live_metrics_cache
             flags["shadow_live_eval_reused_from_hydration"] = True
+            if semantic_pointer_out is None and shadow_sp is not None:
+                semantic_pointer_out = shadow_sp
         else:
-            shadow_metrics, shadow_latency_ms, shadow_err = _live_eval_metrics(
-                body.text, bytes_in=bytes_in, token_in=token_in
+            shadow_metrics, shadow_latency_ms, shadow_err, shadow_sp = _live_eval_metrics(
+                body.text,
+                bytes_in=bytes_in,
+                token_in=token_in,
+                emit_semantic_pointer=emit_sp,
             )
+            if semantic_pointer_out is None and shadow_sp is not None:
+                semantic_pointer_out = shadow_sp
         flags["shadow_mode"] = "enabled"
         flags["shadow_elapsed_ms"] = shadow_latency_ms
         if shadow_err:
@@ -602,6 +743,7 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
         client_request_id=body.client_request_id,
         eval_context_echo=body.eval_context,
         compression_metrics=metrics,
+        semantic_pointer=semantic_pointer_out,
         integrity_flags=flags,
     )
 
@@ -629,4 +771,101 @@ def expand(body: ExpandRequest) -> ExpandResponse:
     return ExpandResponse(
         text=text,
         integrity_flags={"stub_expand": True, "lossless_echo": True},
+    )
+
+
+@app.post("/v1/research/l1_side_channel/wire/secure", response_model=L1SideChannelWireResponse)
+def encode_l1_side_channel_secure_wire(body: L1SideChannelWireRequest) -> L1SideChannelWireResponse:
+    """Research lane: side-channel -> adaptive msgpack wire -> AES-256-GCM envelope."""
+    if body.track not in {"a_track", "b_track"}:
+        return L1SideChannelWireResponse(
+            envelope={},
+            integrity_flags={
+                "research_lane": True,
+                "secure_envelope": True,
+                "error": "invalid_track",
+            },
+        )
+    try:
+        minimal = minimal_payload(body.side_channel)
+    except Exception as exc:
+        return L1SideChannelWireResponse(
+            envelope={},
+            integrity_flags={
+                "research_lane": True,
+                "secure_envelope": True,
+                "error": "invalid_side_channel_payload",
+                "error_class": type(exc).__name__,
+            },
+        )
+    try:
+        wire_bytes, variant = encode_adaptive_msgpack(
+            minimal,
+            zstd_min_raw_bytes=body.zstd_min_raw_bytes,
+            zstd_level=body.zstd_level,
+        )
+        # decode sanity check to detect malformed wire implementation regressions
+        _decoded = decode_adaptive_msgpack(wire_bytes)
+    except Exception as exc:
+        return L1SideChannelWireResponse(
+            envelope={},
+            integrity_flags={
+                "research_lane": True,
+                "secure_envelope": True,
+                "error": "wire_encode_failed",
+                "error_class": type(exc).__name__,
+            },
+        )
+    try:
+        provider = _AesGcmCryptographyProvider()
+    except Exception as exc:
+        return L1SideChannelWireResponse(
+            envelope={},
+            integrity_flags={
+                "research_lane": True,
+                "secure_envelope": True,
+                "error": "secure_envelope_encrypt_failed",
+                "error_class": type(exc).__name__,
+            },
+        )
+    key_id = body.key_id or _default_key_id(body.track)
+    codec_variant = "zstd_msgpack" if variant == "zstd" else "raw_msgpack"
+    try:
+        envelope = encrypt_envelope(
+            provider=provider,
+            key_id=key_id,
+            track=body.track,
+            codec_variant=codec_variant,
+            payload_bytes=wire_bytes,
+        )
+        # runtime tamper/auth contract smoke: decrypt must succeed immediately
+        _payload = decrypt_envelope(provider=provider, envelope=envelope)
+        assert _payload == wire_bytes
+    except Exception as exc:
+        return L1SideChannelWireResponse(
+            envelope={},
+            integrity_flags={
+                "research_lane": True,
+                "secure_envelope": True,
+                "error": "secure_envelope_encrypt_failed",
+                "error_class": type(exc).__name__,
+            },
+        )
+    return L1SideChannelWireResponse(
+        envelope=SecurePayloadEnvelope(
+            schema=envelope.schema,
+            header=envelope.header,
+            aad_b64=envelope.aad_b64,
+            nonce_b64=envelope.nonce_b64,
+            ciphertext_b64=envelope.ciphertext_b64,
+            tag_b64=envelope.tag_b64,
+        ).to_dict(),
+        integrity_flags={
+            "research_lane": True,
+            "secure_envelope": True,
+            "aes_gcm_256": True,
+            "track": body.track,
+            "codec_variant": codec_variant,
+            "wire_payload_bytes": len(wire_bytes),
+        },
     )

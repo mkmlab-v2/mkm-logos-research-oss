@@ -1,0 +1,140 @@
+{
+  "schema": "genesis_gematria_4d_codebook_v1",
+  "generated_at_utc": "2026-04-28T03:00:34+00:00",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "inputs": {
+    "term_count": 10,
+    "terms_source": "default_terms"
+  },
+  "entries": [
+    {
+      "term": "폭락",
+      "address_hash64_hex": "84a8aab3e9e1bd49",
+      "vector_4d": {
+        "S": 0.518196,
+        "L": 0.666804,
+        "K": 0.913603,
+        "M": 0.739406
+      },
+      "hash_algo": "sha256"
+    },
+    {
+      "term": "금화교역",
+      "address_hash64_hex": "722fd4c0eea0cf61",
+      "vector_4d": {
+        "S": 0.446036,
+        "L": 0.831067,
+        "K": 0.932143,
+        "M": 0.810086
+      },
+      "hash_algo": "sha256"
+    },
+    {
+      "term": "태양인",
+      "address_hash64_hex": "738a4fdd7f114566",
+      "vector_4d": {
+        "S": 0.451331,
+        "L": 0.311971,
+        "K": 0.496361,
+        "M": 0.271092
+      },
+      "hash_algo": "sha256"
+    },
+    {
+      "term": "변동성",
+      "address_hash64_hex": "1838b5d2b6716a52",
+      "vector_4d": {
+        "S": 0.094606,
+        "L": 0.710246,
+        "K": 0.712673,
+        "M": 0.41532
+      },
+      "hash_algo": "sha256"
+    },
+    {
+      "term": "레짐",
+      "address_hash64_hex": "179e99d17531fc04",
+      "vector_4d": {
+        "S": 0.092256,
+        "L": 0.600855,
+        "K": 0.457786,
+        "M": 0.984451
+      },
+      "hash_algo": "sha256"
+    },
+    {
+      "term": "유동성",
+      "address_hash64_hex": "0b473eefd40e4eac",
+      "vector_4d": {
+        "S": 0.044053,
+        "L": 0.245838,
+        "K": 0.828351,
+        "M": 0.307317
+      },
+      "hash_algo": "sha256"
+    },
+    {
+      "term": "붕괴",
+      "address_hash64_hex": "a28cfc3e381319b2",
+      "vector_4d": {
+        "S": 0.634958,
+        "L": 0.985336,
+        "K": 0.219043,
+        "M": 0.100374
+      },
+      "hash_algo": "sha256"
+    },
+    {
+      "term": "회복",
+      "address_hash64_hex": "de755cc2f7308e14",
+      "vector_4d": {
+        "S": 0.868986,
+        "L": 0.362341,
+        "K": 0.965591,
+        "M": 0.555001
+      },
+      "hash_algo": "sha256"
+    },
+    {
+      "term": "리스크",
+      "address_hash64_hex": "a57a25f22679aa62",
+      "vector_4d": {
+        "S": 0.646403,
+        "L": 0.148226,
+        "K": 0.150286,
+        "M": 0.665568
+      },
+      "hash_algo": "sha256"
+    },
+    {
+      "term": "방어",
+      "address_hash64_hex": "1ca3cf82813fd6b9",
+      "vector_4d": {
+        "S": 0.111864,
+        "L": 0.81059,
+        "K": 0.504875,
+        "M": 0.838773
+      },
+      "hash_algo": "sha256"
+    }
+  ],
+  "reconstruction_probe": {
+    "exact_match_count": 10,
+    "exact_match_rate": 1.0,
+    "method": "address_hash64_exact_lookup"
+  },
+  "compression_estimate": {
+    "raw_utf8_bytes_total": 78,
+    "pointer_payload_bytes_total": 80,
+    "vector4_payload_bytes_total": 160,
+    "pointer_saving_rate": -0.02564102564102555,
+    "vector4_saving_rate": -1.051282051282051
+  },
+  "notes": [
+    "Genesis pilot only: 10-term toy codebook.",
+    "Exact reconstruction here means dictionary lookup equality, not open-vocabulary semantic restoration.",
+    "Do not promote to Track A without collision, sync, and adversarial robustness validation."
+  ]
+}

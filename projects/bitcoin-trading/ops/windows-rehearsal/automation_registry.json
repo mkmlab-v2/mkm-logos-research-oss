@@ -17,25 +17,25 @@
     },
     {
       "name": "\\Bitcoin-Public-Event-Recovery-10min",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "showroom",
       "criticality": "critical"
     },
     {
       "name": "\\Bitcoin-KPI-Snapshot-5min",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "runtime",
       "criticality": "high"
     },
     {
       "name": "\\Bitcoin-Guardrails-Fast-Verify-30min",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "runtime",
       "criticality": "high"
     },
     {
       "name": "\\Bitcoin-Ops-Fusion-Cycle-Auto",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "ops_fusion",
       "criticality": "high"
     },

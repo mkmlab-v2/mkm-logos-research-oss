@@ -1,0 +1,10 @@
+{
+  "schema": "vibe_prompt_runs_meta_v1",
+  "generated_at_utc": "2026-05-03T00:28:56Z",
+  "prompt_file": "C:/workspace/docs/final/artifacts/vibe_prompt_set_v1.md",
+  "runs_file": "C:/workspace/docs/final/artifacts/vibe_runs_raw/vibe_prompt_runs_latest.jsonl",
+  "runs_per_prompt": 10,
+  "prompt_count": 4,
+  "total_rows": 40,
+  "simulate_decision": null
+}

@@ -1,0 +1,38 @@
+# Smoke: Vibe Gemini slot integrity verifier CLI (self-contained fixtures; no committed raw outputs).
+name: Vibe Gemini slot integrity smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/verify_vibe_gemini_slot_integrity_v1.py"
+      - "tests/test_verify_vibe_gemini_slot_integrity_cli_v1.py"
+      - ".github/workflows/vibe-gemini-slot-integrity-smoke.yml"
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/verify_vibe_gemini_slot_integrity_v1.py"
+      - "tests/test_verify_vibe_gemini_slot_integrity_cli_v1.py"
+      - ".github/workflows/vibe-gemini-slot-integrity-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vibe-gemini-slot-integrity-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: pip install pytest
+      - name: pytest vibe gemini slot integrity CLI
+        run: python -m pytest tests/test_verify_vibe_gemini_slot_integrity_cli_v1.py -q --tb=short

@@ -1,0 +1,31 @@
+{
+  "schema": "lens_combo_engine_submit_preflight_v1",
+  "generated_at_utc": "2026-04-28T14:21:02Z",
+  "engine_input_json": "C:\\workspace\\docs\\final\\artifacts\\btc_limited_live_engine_input_from_role_router_latest.json",
+  "result": "PASS",
+  "checks": {
+    "engine_status_ready_for_submit": true,
+    "engine_action_submit_to_queue": true,
+    "dry_run_true": true,
+    "candidate_tradable": true,
+    "signoff_approve": true,
+    "limited_live_mode_ok": true,
+    "approve_submit_flag_true": true,
+    "max_drawdown_guard_present": true,
+    "max_consecutive_losses_present": true,
+    "candidate_hit_rate_gte_0p55": true
+  },
+  "failed_checks": [],
+  "candidate_metrics_snapshot": {
+    "n_days": 21,
+    "n_active_days": 10,
+    "directional_hit_rate_active": 0.9,
+    "win_rate_active": 0.9,
+    "total_return": 0.152664,
+    "cagr": 4.500874,
+    "mdd": -0.008314,
+    "sharpe": 8.53194,
+    "sortino": 35.312401
+  },
+  "operator_note": "non-execution preflight only; actual queue submit must follow runtime policy and human control."
+}

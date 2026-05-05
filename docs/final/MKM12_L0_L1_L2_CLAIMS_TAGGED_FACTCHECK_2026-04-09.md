@@ -30,8 +30,8 @@
    - `docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json`: `research_only: true`, `scoring_mode: legacy`, `aggregate.avg_exact_restore_rate` = **0.5787037037037037** (약 **57.87%**). 운영 서비스 전 구간의 보장 수치가 **아니다**.
 
 2. **[FACT] 글로벌 토큰 절감률 — 증거 조인 산출(실험 리포트 기반)**  
-   - `docs/final/artifacts/cost_watch_monitor_latest.json`의 `compression.global_token_saving_rate` ≈ **0.490858** (약 **49.1%**). 원천은 `compression_report`가 가리키는 `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`이며, 해당 파일 `run_config.mode`는 **`experimental`**, `strategy`는 **`A`**, `case_count` **40**.  
-   - 동일 리포트 `avg_reconstruction_fidelity_jaccard` ≈ **0.735** — 토큰 절감과 **의미/표면 복원 품질**은 별개이며 무손실과 혼동 금지.
+   - `docs/final/artifacts/cost_watch_monitor_latest.json`의 `compression.global_token_saving_rate` ≈ **0.468354** (약 **46.84%**). 원천은 `compression_report`가 가리키는 `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`이며, 해당 파일 `compression_metrics.case_count` **40**, `run_config.mode`는 **`experimental`**, `strategy`는 **`A`**. 재실행 시 변동 가능.  
+   - 동일 리포트 `avg_reconstruction_fidelity_jaccard` ≈ **0.848836** (약 **0.849**) — 토큰 절감과 **의미/표면 복원 품질**은 별개이며 무손실과 혼동 금지.
 
 3. **[FACT] 사이드 채널 결정론 복원 — 연구 스파이크(v3)**  
    - `docs/final/artifacts/l1_permutation_channel_integrated_spike_latest.json`: 메타데이터(스키마·클레임대로 패치)가 완전할 때 모드별 `exact_restore_rate` **1.0**. `claims`에 비프로덕션 와이어·계약 구분이 명시됨.  

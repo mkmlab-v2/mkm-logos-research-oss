@@ -34,6 +34,7 @@ $workspaceTests = @(
     'tests/test_multilens_performance_eval_report.py',
     'tests/test_multilens_performance_eval_report_v2.py',
     'tests/test_multilens_eval_harness_v2_thin.py',
+    'tests/test_emit_myeongni_thin_bridge_line_v1.py',
     'tests/test_multilens_dual_regime_market_adapter_v1.py',
     'tests/test_myeongni_insight_observation_log.py',
     'tests/test_spike_log_myeongri_correlation_v1.py',

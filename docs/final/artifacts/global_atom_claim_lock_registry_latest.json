@@ -1,0 +1,34 @@
+{
+  "schema": "global_atom_claim_lock_registry_v1",
+  "generated_at_utc": "2026-04-29T01:58:54Z",
+  "owner": "athena_core",
+  "status": "active",
+  "claims": [
+    {
+      "claim_id": "global_atom_edge_count_305m_v1",
+      "label": "Global Atom edge count (about 3.05M)",
+      "value": 3051269,
+      "unit": "edges",
+      "human_readable": "about 3.05 million edges",
+      "definition": "The edge_count value in key_facts from the staged full-canon academic onepager artifact.",
+      "scope": "research_only",
+      "source_of_truth": {
+        "path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\global_atom_submission_20260428T095850Z\\global_atom_network_academic_onepager_latest.json",
+        "json_pointer": "$.key_facts.edge_count",
+        "generated_at_utc": "2026-04-28T09:58:49Z",
+        "sha256_placeholder": "02157bed5269cef804cf6d6145b21ba12daca076f7b183b7b738d82e75ead796"
+      },
+      "paired_metrics": {
+        "node_count": 7477,
+        "old_new_cross_edges": 1115,
+        "phase_transition_signal": "present",
+        "gate_status": "GO"
+      },
+      "recompute_command": "py scripts/check_global_atom_claim_lock_v1.py --write-lock --strict",
+      "notes": [
+        "This claim is bound to a freeze snapshot artifact and not to a mutable *latest file.",
+        "Public-facing copy should state research_only and promotion_required boundaries."
+      ]
+    }
+  ]
+}

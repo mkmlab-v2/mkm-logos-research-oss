@@ -1,0 +1,942 @@
+{
+  "schema": "prophecy_lens_combo_backtest_v1",
+  "generated_at_utc": "2026-04-29T00:17:27Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "inputs": {
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_pre_causal_active_latest.json",
+    "sidecar_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_insight_sidecar_v1_latest.json",
+    "target_instrument": "btc",
+    "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+    "fee_bps": 5.0,
+    "fee_bps_grid": [
+      5.0
+    ],
+    "coordinator_deadzone": 0.001,
+    "walkforward_mode": "expanding",
+    "walkforward_folds_requested": 5,
+    "walkforward_folds_effective": 3,
+    "walkforward_test_window_rows": 5,
+    "walkforward_min_train_rows": 10,
+    "annual_trading_days": 252
+  },
+  "universe": {
+    "strategies_total": 8,
+    "includes": [
+      "single_lens_3",
+      "two_lens_3",
+      "three_lens_1",
+      "three_lens_plus_coordinator_1"
+    ]
+  },
+  "tie_break_policy": {
+    "policy_id": "non_logos_multi_lens_then_lens_count_v1",
+    "primary_sort_keys_desc": [
+      "metrics.cagr (higher wins)",
+      "metrics.sharpe (higher wins)",
+      "metrics.mdd (less negative wins)"
+    ],
+    "tie_break_keys_desc": [
+      "prefer strategies with >=2 lenses where logos is NOT included (captures myeongni+sasang vs single-lens ties)",
+      "prefer higher lens count when still tied"
+    ],
+    "implementation_ref": "scripts/run_prophecy_lens_combo_backtest_v1.py:_rank_strategies"
+  },
+  "best_strategy": {
+    "strategy_id": "myeongni+sasang",
+    "lenses": [
+      "myeongni",
+      "sasang"
+    ],
+    "use_coordinator": false,
+    "metrics": {
+      "n_days": 29,
+      "n_active_days": 17,
+      "directional_hit_rate_active": 0.705882,
+      "win_rate_active": 0.705882,
+      "total_return": 0.218475,
+      "cagr": 4.568246,
+      "mdd": -0.036296,
+      "sharpe": 5.838073,
+      "sortino": 10.70706
+    }
+  },
+  "ranked_strategies": [
+    {
+      "strategy_id": "myeongni+sasang",
+      "lenses": [
+        "myeongni",
+        "sasang"
+      ],
+      "use_coordinator": false,
+      "metrics": {
+        "n_days": 29,
+        "n_active_days": 17,
+        "directional_hit_rate_active": 0.705882,
+        "win_rate_active": 0.705882,
+        "total_return": 0.218475,
+        "cagr": 4.568246,
+        "mdd": -0.036296,
+        "sharpe": 5.838073,
+        "sortino": 10.70706
+      }
+    },
+    {
+      "strategy_id": "myeongni",
+      "lenses": [
+        "myeongni"
+      ],
+      "use_coordinator": false,
+      "metrics": {
+        "n_days": 29,
+        "n_active_days": 17,
+        "directional_hit_rate_active": 0.705882,
+        "win_rate_active": 0.705882,
+        "total_return": 0.218475,
+        "cagr": 4.568246,
+        "mdd": -0.036296,
+        "sharpe": 5.838073,
+        "sortino": 10.70706
+      }
+    },
+    {
+      "strategy_id": "sasang",
+      "lenses": [
+        "sasang"
+      ],
+      "use_coordinator": false,
+      "metrics": {
+        "n_days": 29,
+        "n_active_days": 17,
+        "directional_hit_rate_active": 0.705882,
+        "win_rate_active": 0.705882,
+        "total_return": 0.218475,
+        "cagr": 4.568246,
+        "mdd": -0.036296,
+        "sharpe": 5.838073,
+        "sortino": 10.70706
+      }
+    },
+    {
+      "strategy_id": "logos+myeongni+sasang",
+      "lenses": [
+        "logos",
+        "myeongni",
+        "sasang"
+      ],
+      "use_coordinator": false,
+      "metrics": {
+        "n_days": 29,
+        "n_active_days": 29,
+        "directional_hit_rate_active": 0.482759,
+        "win_rate_active": 0.482759,
+        "total_return": 0.077983,
+        "cagr": 0.920376,
+        "mdd": -0.071755,
+        "sharpe": 1.97586,
+        "sortino": 4.216197
+      }
+    },
+    {
+      "strategy_id": "logos+myeongni+sasang+coordinator",
+      "lenses": [
+        "logos",
+        "myeongni",
+        "sasang"
+      ],
+      "use_coordinator": true,
+      "metrics": {
+        "n_days": 29,
+        "n_active_days": 29,
+        "directional_hit_rate_active": 0.482759,
+        "win_rate_active": 0.482759,
+        "total_return": 0.077983,
+        "cagr": 0.920376,
+        "mdd": -0.071755,
+        "sharpe": 1.97586,
+        "sortino": 4.216197
+      }
+    },
+    {
+      "strategy_id": "logos+myeongni",
+      "lenses": [
+        "logos",
+        "myeongni"
+      ],
+      "use_coordinator": false,
+      "metrics": {
+        "n_days": 29,
+        "n_active_days": 20,
+        "directional_hit_rate_active": 0.4,
+        "win_rate_active": 0.4,
+        "total_return": -0.035297,
+        "cagr": -0.268209,
+        "mdd": -0.062274,
+        "sharpe": -1.193759,
+        "sortino": -1.851071
+      }
+    },
+    {
+      "strategy_id": "logos+sasang",
+      "lenses": [
+        "logos",
+        "sasang"
+      ],
+      "use_coordinator": false,
+      "metrics": {
+        "n_days": 29,
+        "n_active_days": 20,
+        "directional_hit_rate_active": 0.4,
+        "win_rate_active": 0.4,
+        "total_return": -0.035297,
+        "cagr": -0.268209,
+        "mdd": -0.062274,
+        "sharpe": -1.193759,
+        "sortino": -1.851071
+      }
+    },
+    {
+      "strategy_id": "logos",
+      "lenses": [
+        "logos"
+      ],
+      "use_coordinator": false,
+      "metrics": {
+        "n_days": 29,
+        "n_active_days": 29,
+        "directional_hit_rate_active": 0.37931,
+        "win_rate_active": 0.37931,
+        "total_return": -0.144072,
+        "cagr": -0.741237,
+        "mdd": -0.151538,
+        "sharpe": -3.58073,
+        "sortino": -5.129105
+      }
+    }
+  ],
+  "fee_sensitivity": [
+    {
+      "fee_bps": 5.0,
+      "best_strategy": {
+        "strategy_id": "myeongni+sasang",
+        "lenses": [
+          "myeongni",
+          "sasang"
+        ],
+        "use_coordinator": false,
+        "metrics": {
+          "n_days": 29,
+          "n_active_days": 17,
+          "directional_hit_rate_active": 0.705882,
+          "win_rate_active": 0.705882,
+          "total_return": 0.218475,
+          "cagr": 4.568246,
+          "mdd": -0.036296,
+          "sharpe": 5.838073,
+          "sortino": 10.70706
+        }
+      },
+      "ranked_strategies": [
+        {
+          "strategy_id": "myeongni+sasang",
+          "lenses": [
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 29,
+            "n_active_days": 17,
+            "directional_hit_rate_active": 0.705882,
+            "win_rate_active": 0.705882,
+            "total_return": 0.218475,
+            "cagr": 4.568246,
+            "mdd": -0.036296,
+            "sharpe": 5.838073,
+            "sortino": 10.70706
+          }
+        },
+        {
+          "strategy_id": "myeongni",
+          "lenses": [
+            "myeongni"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 29,
+            "n_active_days": 17,
+            "directional_hit_rate_active": 0.705882,
+            "win_rate_active": 0.705882,
+            "total_return": 0.218475,
+            "cagr": 4.568246,
+            "mdd": -0.036296,
+            "sharpe": 5.838073,
+            "sortino": 10.70706
+          }
+        },
+        {
+          "strategy_id": "sasang",
+          "lenses": [
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 29,
+            "n_active_days": 17,
+            "directional_hit_rate_active": 0.705882,
+            "win_rate_active": 0.705882,
+            "total_return": 0.218475,
+            "cagr": 4.568246,
+            "mdd": -0.036296,
+            "sharpe": 5.838073,
+            "sortino": 10.70706
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni+sasang",
+          "lenses": [
+            "logos",
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 29,
+            "n_active_days": 29,
+            "directional_hit_rate_active": 0.482759,
+            "win_rate_active": 0.482759,
+            "total_return": 0.077983,
+            "cagr": 0.920376,
+            "mdd": -0.071755,
+            "sharpe": 1.97586,
+            "sortino": 4.216197
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni+sasang+coordinator",
+          "lenses": [
+            "logos",
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": true,
+          "metrics": {
+            "n_days": 29,
+            "n_active_days": 29,
+            "directional_hit_rate_active": 0.482759,
+            "win_rate_active": 0.482759,
+            "total_return": 0.077983,
+            "cagr": 0.920376,
+            "mdd": -0.071755,
+            "sharpe": 1.97586,
+            "sortino": 4.216197
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni",
+          "lenses": [
+            "logos",
+            "myeongni"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 29,
+            "n_active_days": 20,
+            "directional_hit_rate_active": 0.4,
+            "win_rate_active": 0.4,
+            "total_return": -0.035297,
+            "cagr": -0.268209,
+            "mdd": -0.062274,
+            "sharpe": -1.193759,
+            "sortino": -1.851071
+          }
+        },
+        {
+          "strategy_id": "logos+sasang",
+          "lenses": [
+            "logos",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 29,
+            "n_active_days": 20,
+            "directional_hit_rate_active": 0.4,
+            "win_rate_active": 0.4,
+            "total_return": -0.035297,
+            "cagr": -0.268209,
+            "mdd": -0.062274,
+            "sharpe": -1.193759,
+            "sortino": -1.851071
+          }
+        },
+        {
+          "strategy_id": "logos",
+          "lenses": [
+            "logos"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 29,
+            "n_active_days": 29,
+            "directional_hit_rate_active": 0.37931,
+            "win_rate_active": 0.37931,
+            "total_return": -0.144072,
+            "cagr": -0.741237,
+            "mdd": -0.151538,
+            "sharpe": -3.58073,
+            "sortino": -5.129105
+          }
+        }
+      ]
+    }
+  ],
+  "walkforward": [
+    {
+      "fold_index": 0,
+      "mode": "expanding",
+      "n_train_rows": 10,
+      "n_test_rows": 5,
+      "train_date_start": "2026-03-10",
+      "train_date_end": "2026-03-23",
+      "test_date_start": "2026-03-24",
+      "test_date_end": "2026-03-30",
+      "best_strategy": {
+        "strategy_id": "logos",
+        "lenses": [
+          "logos"
+        ],
+        "use_coordinator": false,
+        "metrics": {
+          "n_days": 5,
+          "n_active_days": 5,
+          "directional_hit_rate_active": 0.6,
+          "win_rate_active": 0.6,
+          "total_return": 0.053698,
+          "cagr": 12.960547,
+          "mdd": -0.011232,
+          "sharpe": 7.234569,
+          "sortino": 3738.824036
+        }
+      },
+      "ranked_strategies": [
+        {
+          "strategy_id": "logos",
+          "lenses": [
+            "logos"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 5,
+            "directional_hit_rate_active": 0.6,
+            "win_rate_active": 0.6,
+            "total_return": 0.053698,
+            "cagr": 12.960547,
+            "mdd": -0.011232,
+            "sharpe": 7.234569,
+            "sortino": 3738.824036
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni",
+          "lenses": [
+            "logos",
+            "myeongni"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 4,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": 0.016757,
+            "cagr": 1.310714,
+            "mdd": -0.011726,
+            "sharpe": 2.891967,
+            "sortino": 8.923225
+          }
+        },
+        {
+          "strategy_id": "logos+sasang",
+          "lenses": [
+            "logos",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 4,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": 0.016757,
+            "cagr": 1.310714,
+            "mdd": -0.011726,
+            "sharpe": 2.891967,
+            "sortino": 8.923225
+          }
+        },
+        {
+          "strategy_id": "myeongni+sasang",
+          "lenses": [
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 4,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": -0.009,
+            "cagr": -0.365982,
+            "mdd": -0.036296,
+            "sharpe": -0.957252,
+            "sortino": -1.35341
+          }
+        },
+        {
+          "strategy_id": "myeongni",
+          "lenses": [
+            "myeongni"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 4,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": -0.009,
+            "cagr": -0.365982,
+            "mdd": -0.036296,
+            "sharpe": -0.957252,
+            "sortino": -1.35341
+          }
+        },
+        {
+          "strategy_id": "sasang",
+          "lenses": [
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 4,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": -0.009,
+            "cagr": -0.365982,
+            "mdd": -0.036296,
+            "sharpe": -0.957252,
+            "sortino": -1.35341
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni+sasang",
+          "lenses": [
+            "logos",
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 5,
+            "directional_hit_rate_active": 0.4,
+            "win_rate_active": 0.4,
+            "total_return": -0.020149,
+            "cagr": -0.641521,
+            "mdd": -0.047138,
+            "sharpe": -2.305317,
+            "sortino": -4.149783
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni+sasang+coordinator",
+          "lenses": [
+            "logos",
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": true,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 5,
+            "directional_hit_rate_active": 0.4,
+            "win_rate_active": 0.4,
+            "total_return": -0.020149,
+            "cagr": -0.641521,
+            "mdd": -0.047138,
+            "sharpe": -2.305317,
+            "sortino": -4.149783
+          }
+        }
+      ]
+    },
+    {
+      "fold_index": 1,
+      "mode": "expanding",
+      "n_train_rows": 15,
+      "n_test_rows": 5,
+      "train_date_start": "2026-03-10",
+      "train_date_end": "2026-03-30",
+      "test_date_start": "2026-03-31",
+      "test_date_end": "2026-04-06",
+      "best_strategy": {
+        "strategy_id": "myeongni+sasang",
+        "lenses": [
+          "myeongni",
+          "sasang"
+        ],
+        "use_coordinator": false,
+        "metrics": {
+          "n_days": 5,
+          "n_active_days": 2,
+          "directional_hit_rate_active": 0.5,
+          "win_rate_active": 0.5,
+          "total_return": 0.013159,
+          "cagr": 0.932648,
+          "mdd": -0.002768,
+          "sharpe": 5.364167,
+          "sortino": 26.15419
+        }
+      },
+      "ranked_strategies": [
+        {
+          "strategy_id": "myeongni+sasang",
+          "lenses": [
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 2,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": 0.013159,
+            "cagr": 0.932648,
+            "mdd": -0.002768,
+            "sharpe": 5.364167,
+            "sortino": 26.15419
+          }
+        },
+        {
+          "strategy_id": "myeongni",
+          "lenses": [
+            "myeongni"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 2,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": 0.013159,
+            "cagr": 0.932648,
+            "mdd": -0.002768,
+            "sharpe": 5.364167,
+            "sortino": 26.15419
+          }
+        },
+        {
+          "strategy_id": "sasang",
+          "lenses": [
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 2,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": 0.013159,
+            "cagr": 0.932648,
+            "mdd": -0.002768,
+            "sharpe": 5.364167,
+            "sortino": 26.15419
+          }
+        },
+        {
+          "strategy_id": "logos",
+          "lenses": [
+            "logos"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 5,
+            "directional_hit_rate_active": 0.6,
+            "win_rate_active": 0.6,
+            "total_return": -0.003172,
+            "cagr": -0.147949,
+            "mdd": -0.023619,
+            "sharpe": -0.589234,
+            "sortino": -0.534888
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni",
+          "lenses": [
+            "logos",
+            "myeongni"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 4,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": -0.006413,
+            "cagr": -0.276945,
+            "mdd": -0.024108,
+            "sharpe": -1.313715,
+            "sortino": -1.432773
+          }
+        },
+        {
+          "strategy_id": "logos+sasang",
+          "lenses": [
+            "logos",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 4,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": -0.006413,
+            "cagr": -0.276945,
+            "mdd": -0.024108,
+            "sharpe": -1.313715,
+            "sortino": -1.432773
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni+sasang",
+          "lenses": [
+            "logos",
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 5,
+            "directional_hit_rate_active": 0.4,
+            "win_rate_active": 0.4,
+            "total_return": -0.009652,
+            "cagr": -0.386656,
+            "mdd": -0.02681,
+            "sharpe": -2.048432,
+            "sortino": -2.340814
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni+sasang+coordinator",
+          "lenses": [
+            "logos",
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": true,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 5,
+            "directional_hit_rate_active": 0.4,
+            "win_rate_active": 0.4,
+            "total_return": -0.009652,
+            "cagr": -0.386656,
+            "mdd": -0.02681,
+            "sharpe": -2.048432,
+            "sortino": -2.340814
+          }
+        }
+      ]
+    },
+    {
+      "fold_index": 2,
+      "mode": "expanding",
+      "n_train_rows": 20,
+      "n_test_rows": 5,
+      "train_date_start": "2026-03-10",
+      "train_date_end": "2026-04-06",
+      "test_date_start": "2026-04-07",
+      "test_date_end": "2026-04-13",
+      "best_strategy": {
+        "strategy_id": "myeongni+sasang",
+        "lenses": [
+          "myeongni",
+          "sasang"
+        ],
+        "use_coordinator": false,
+        "metrics": {
+          "n_days": 5,
+          "n_active_days": 4,
+          "directional_hit_rate_active": 1.0,
+          "win_rate_active": 1.0,
+          "total_return": 0.128326,
+          "cagr": 438.238379,
+          "mdd": -0.0005,
+          "sharpe": 17.164343,
+          "sortino": 0.0
+        }
+      },
+      "ranked_strategies": [
+        {
+          "strategy_id": "myeongni+sasang",
+          "lenses": [
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 4,
+            "directional_hit_rate_active": 1.0,
+            "win_rate_active": 1.0,
+            "total_return": 0.128326,
+            "cagr": 438.238379,
+            "mdd": -0.0005,
+            "sharpe": 17.164343,
+            "sortino": 0.0
+          }
+        },
+        {
+          "strategy_id": "myeongni",
+          "lenses": [
+            "myeongni"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 4,
+            "directional_hit_rate_active": 1.0,
+            "win_rate_active": 1.0,
+            "total_return": 0.128326,
+            "cagr": 438.238379,
+            "mdd": -0.0005,
+            "sharpe": 17.164343,
+            "sortino": 0.0
+          }
+        },
+        {
+          "strategy_id": "sasang",
+          "lenses": [
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 4,
+            "directional_hit_rate_active": 1.0,
+            "win_rate_active": 1.0,
+            "total_return": 0.128326,
+            "cagr": 438.238379,
+            "mdd": -0.0005,
+            "sharpe": 17.164343,
+            "sortino": 0.0
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni+sasang",
+          "lenses": [
+            "logos",
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 5,
+            "directional_hit_rate_active": 0.8,
+            "win_rate_active": 0.8,
+            "total_return": 0.118111,
+            "cagr": 276.73803,
+            "mdd": -0.009061,
+            "sharpe": 14.288134,
+            "sortino": 0.0
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni+sasang+coordinator",
+          "lenses": [
+            "logos",
+            "myeongni",
+            "sasang"
+          ],
+          "use_coordinator": true,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 5,
+            "directional_hit_rate_active": 0.8,
+            "win_rate_active": 0.8,
+            "total_return": 0.118111,
+            "cagr": 276.73803,
+            "mdd": -0.009061,
+            "sharpe": 14.288134,
+            "sortino": 0.0
+          }
+        },
+        {
+          "strategy_id": "logos+myeongni",
+          "lenses": [
+            "logos",
+            "myeongni"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 2,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": 0.001201,
+            "cagr": 0.062351,
+            "mdd": -0.009557,
+            "sharpe": 0.583748,
+            "sortino": 0.681826
+          }
+        },
+        {
+          "strategy_id": "logos+sasang",
+          "lenses": [
+            "logos",
+            "sasang"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 2,
+            "directional_hit_rate_active": 0.5,
+            "win_rate_active": 0.5,
+            "total_return": 0.001201,
+            "cagr": 0.062351,
+            "mdd": -0.009557,
+            "sharpe": 0.583748,
+            "sortino": 0.681826
+          }
+        },
+        {
+          "strategy_id": "logos",
+          "lenses": [
+            "logos"
+          ],
+          "use_coordinator": false,
+          "metrics": {
+            "n_days": 5,
+            "n_active_days": 5,
+            "directional_hit_rate_active": 0.2,
+            "win_rate_active": 0.2,
+            "total_return": -0.108901,
+            "cagr": -0.997006,
+            "mdd": -0.108901,
+            "sharpe": -13.530221,
+            "sortino": -16.808057
+          }
+        }
+      ]
+    }
+  ],
+  "note": "Coordinator is a tie-break overlay for neutral votes only; it uses prior completed BTC return sign in this research harness."
+}

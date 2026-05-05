@@ -1,0 +1,29 @@
+{
+  "schema": "pre_news_shadow_policy_governance_drill_v1",
+  "generated_at_utc": "2026-04-28T13:17:15Z",
+  "forced_audit_summary_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_forced_drill_latest.json",
+  "forced_alert_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_policy_governance_alert_forced_drill_latest.json",
+  "command_result": {
+    "cmd": [
+      "C:\\Python311\\python.exe",
+      "scripts/alert_pre_news_shadow_policy_governance_v1.py",
+      "--audit-summary-json",
+      "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_forced_drill_latest.json",
+      "--out-alert-json",
+      "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_policy_governance_alert_forced_drill_latest.json",
+      "--append-alert-log-jsonl",
+      "C:\\workspace\\reports\\pre_news_shadow_policy_governance_alert_forced_drill_log.jsonl",
+      "--change-count-threshold",
+      "2"
+    ],
+    "exit_code": 0,
+    "stdout": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_policy_governance_alert_forced_drill_latest.json",
+    "stderr": ""
+  },
+  "alert_snapshot": {
+    "has_alert": true,
+    "severity": "warning",
+    "notify_status": "skipped_no_webhook"
+  },
+  "ok": true
+}

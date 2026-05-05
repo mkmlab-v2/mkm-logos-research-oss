@@ -1,6 +1,6 @@
 {
   "schema": "btrack_promotion_signoff_packet_v1",
-  "generated_at_utc": "2026-04-26T13:19:01Z",
+  "generated_at_utc": "2026-04-29T10:11:17Z",
   "research_only": true,
   "inputs": {
     "prophecy_gate": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json",
@@ -16,18 +16,18 @@
   },
   "track_status": {
     "prophecy": {
-      "decision": "READY_FOR_HUMAN_SIGNOFF",
-      "auto_promote_ready": true,
-      "strict_pass_streak": 1,
-      "promotion_recommendation": "auto_promote_ready",
+      "decision": "HOLD",
+      "auto_promote_ready": false,
+      "strict_pass_streak": 0,
+      "promotion_recommendation": "defer",
       "live_ab_summary": {
         "schema": "prophecy_live_ab_summary_v1",
-        "generated_at_utc": "2026-04-25T05:47:33Z",
+        "generated_at_utc": "2026-04-29T09:34:18Z",
         "research_only": true,
         "status": "READY",
         "inputs": {
           "kpi_json": "projects/bitcoin-trading/memory/kpi/latest_kpi.json",
-          "prophecy_gate_json": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json"
+          "prophecy_gate_json": "docs\\final\\artifacts\\prophecy_promotion_gates_v1_panel_calibrated_latest.json"
         },
         "environment": {
           "status_symbol": "BTCUSDT",
@@ -36,11 +36,11 @@
         },
         "exchange_snapshot_24h": {
           "available": true,
-          "fills_count": 40,
-          "realized_pnl": -15.74000002,
-          "commission": 59.77452112,
-          "funding_fee": -0.00987703,
-          "net": 44.02464407
+          "fills_count": 145,
+          "realized_pnl": 3.09990009,
+          "commission": 13.99581152,
+          "funding_fee": -0.18589648,
+          "net": 16.90981513
         },
         "prophecy_gate_snapshot": {
           "auto_promote_ready": true,
@@ -62,7 +62,9 @@
           "fills/손익이 비어 있으면 live A/B 요약은 INSUFFICIENT_DATA로 유지하고 human sign-off에 수동 첨부한다."
         ]
       },
-      "blockers": [],
+      "blockers": [
+        "prophecy_auto_promote_ready_false"
+      ],
       "next_actions_ko": [
         "prophecy: human sign-off (운영) 확정"
       ]
@@ -79,16 +81,19 @@
     }
   },
   "global": {
-    "all_tracks_ready_for_human_signoff": true,
-    "blockers": [],
-    "gate_coupling_mode": "separated",
+    "all_tracks_ready_for_human_signoff": false,
+    "blockers": [
+      "prophecy_auto_promote_ready_false"
+    ],
+    "gate_coupling_mode": "combined",
     "any_track_ready_for_human_signoff": true,
     "ready_tracks": [
-      "prophecy",
       "lg_washer"
     ],
     "blockers_by_track": {
-      "prophecy": [],
+      "prophecy": [
+        "prophecy_auto_promote_ready_false"
+      ],
       "lg_washer": []
     }
   },

@@ -1,0 +1,47 @@
+{
+  "schema": "btc_top1_limited_live_candidate_v1",
+  "generated_at_utc": "2026-04-28T13:23:56Z",
+  "research_only": true,
+  "non_execution": true,
+  "candidate": {
+    "source": "C:\\workspace\\docs\\final\\artifacts\\prophecy_per_date_lens_combo_sweep_v1_latest.json",
+    "params": {
+      "dz_self": 0.0,
+      "dz_cross": 0.02,
+      "w_self": -1.0,
+      "w_cross": 1.5,
+      "kospi_bull_bias": 0.0,
+      "up_thr": 0.5,
+      "down_thr": -0.5
+    },
+    "metrics": {
+      "price_directional_hit_rate": 0.65,
+      "n_evaluated": 60,
+      "price_hits": 39
+    },
+    "delta_vs_baseline": 0.233333
+  },
+  "guards": {
+    "promotion_gates_passed": true,
+    "causal_guard_passed": true,
+    "min_n_evaluated_30": true,
+    "min_hit_rate_0p55": true,
+    "min_delta_vs_baseline_pos": true
+  },
+  "limited_live_policy": {
+    "mode": "S4_LIMITED_LIVE",
+    "position_ratio": 0.1,
+    "base_position_usd": 100.0,
+    "limited_position_usd": 10.0,
+    "max_consecutive_losses": 3,
+    "max_drawdown_pct": 2.0,
+    "auto_scale_up": false,
+    "auto_bridge_enabled": false,
+    "auto_live_trigger_enabled": false
+  },
+  "decision": {
+    "status": "READY_LIMITED_LIVE",
+    "tradable_candidate": true,
+    "action": "human_review_then_submit_to_engine"
+  }
+}

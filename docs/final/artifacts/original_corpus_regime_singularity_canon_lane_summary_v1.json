@@ -1,6 +1,6 @@
 {
   "schema": "original_corpus_regime_singularity_canon_lane_summary_v1",
-  "generated_at_utc": "2026-04-23T04:59:30Z",
+  "generated_at_utc": "2026-04-28T21:40:22Z",
   "inputs": {
     "input_json": "docs/final/artifacts/original_corpus_regime_singularity_canon_only_v1.json",
     "top_n": 20

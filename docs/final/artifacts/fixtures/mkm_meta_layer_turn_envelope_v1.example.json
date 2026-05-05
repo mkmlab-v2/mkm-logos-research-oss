@@ -1,0 +1,49 @@
+{
+  "schema": "mkm_meta_layer_turn_envelope_v1",
+  "turn_id": "fixture-example-0001",
+  "utc_timestamp": "2026-05-05T12:00:00Z",
+  "risk_tier": "LOW",
+  "premise_audit": {
+    "question_bakes_in_answer": false,
+    "hidden_premises": [],
+    "fix_one_line": "State objective without presupposing solution."
+  },
+  "objective_inversion": {
+    "flip_sign_hypothesis": "Minimize regret instead of maximize profit.",
+    "if_flipped_what_changes": "Risk sizing and evaluation horizon shift."
+  },
+  "stakeholder_remap": {
+    "primary_auditor": "FACT_LOCK",
+    "success_criteria_for_auditor": "Cited script or artifact proves claim.",
+    "failure_modes": ["Missing evidence_path", "NotebookLM-only claim"]
+  },
+  "contradiction_check": {
+    "violates_constitution_or_gates": false,
+    "hold_recommendation": "GO",
+    "evidence_paths": ["scripts/verify_p0_constitution_gate_paths.ps1"]
+  },
+  "rival_hypotheses": {
+    "H1": "Signal is noise; no edge.",
+    "H2": "Signal is real but tiny; needs more data.",
+    "discriminating_observation": "Holdout bucket Brier delta after N rows."
+  },
+  "minimal_experiment": {
+    "smallest_test": "Run pytest on one module with -q",
+    "time_budget": "PT15M",
+    "pass_signal": "exit 0",
+    "fail_signal": "exit non-zero"
+  },
+  "reentry_conditions": {
+    "to_execution_requires": ["jsonschema validate OK", "coherence_rules OK"],
+    "blocked_until": []
+  },
+  "self_refutation": {
+    "what_would_falsify_my_plan": "If CI fails on main with same diff.",
+    "strongest_counterargument": "Envelope overhead slows every turn.",
+    "mitigation_or_accept": "Use only for HIGH+ or gated agent turns."
+  },
+  "execution_barrier_labels": {
+    "content_labels": ["[FACT]", "[HYPOTHESIS]"],
+    "execution_allowed": true
+  }
+}

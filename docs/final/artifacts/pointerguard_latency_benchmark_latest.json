@@ -1,0 +1,59 @@
+{
+  "schema": "pointerguard_latency_benchmark_v1",
+  "generated_at_utc": "2026-04-28T06:47:19+00:00",
+  "research_only": true,
+  "source_track": "B",
+  "inputs": {
+    "iterations": 25
+  },
+  "cases": [
+    {
+      "name": "reports_apply_shadow",
+      "iterations": 25,
+      "ok_count": 25,
+      "fail_count": 0,
+      "fail_rate": 0.0,
+      "throughput_rps": 13.559730940235239,
+      "latency_ms": {
+        "min": 67.52649998816196,
+        "p50": 72.71930000570137,
+        "p95": 78.29250000941101,
+        "p99": 88.27950000704732,
+        "max": 88.27950000704732,
+        "mean": 73.74513200018555
+      }
+    },
+    {
+      "name": "memory_v2_apply_shadow_with_passthrough",
+      "iterations": 25,
+      "ok_count": 25,
+      "fail_count": 0,
+      "fail_rate": 0.0,
+      "throughput_rps": 11.387738512172835,
+      "latency_ms": {
+        "min": 68.47139999445062,
+        "p50": 74.87119999132119,
+        "p95": 107.0552999881329,
+        "p99": 347.13100000226405,
+        "max": 347.13100000226405,
+        "mean": 87.8115599998273
+      }
+    },
+    {
+      "name": "memory_v2_apply_shadow_without_passthrough",
+      "iterations": 25,
+      "ok_count": 25,
+      "fail_count": 0,
+      "fail_rate": 0.0,
+      "throughput_rps": 14.558669370273442,
+      "latency_ms": {
+        "min": 63.5379000013927,
+        "p50": 67.56989999848884,
+        "p95": 74.02379999984987,
+        "p99": 80.98430000245571,
+        "max": 80.98430000245571,
+        "mean": 68.68551199964713
+      }
+    }
+  ]
+}

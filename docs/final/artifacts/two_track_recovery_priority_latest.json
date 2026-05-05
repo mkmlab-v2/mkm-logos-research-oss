@@ -1,0 +1,84 @@
+{
+  "schema": "two_track_recovery_priority_v1",
+  "generated_at_utc": "2026-04-28T02:22:30Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "source": {
+    "prereq_check_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_prereq_check_latest.json"
+  },
+  "summary": {
+    "missing_python_refs_count": 34,
+    "missing_required_artifacts_count": 5,
+    "top_n": 10
+  },
+  "top_priority_scripts": [
+    {
+      "priority_rank": 1,
+      "script": "scripts/normalize_aramaic_tokens_v1.py",
+      "reason": "earlier chain dependency blocks downstream stages",
+      "recommended_action": "restore from known-good snapshot/branch before rebuilding outputs"
+    },
+    {
+      "priority_rank": 2,
+      "script": "scripts/build_aramaic_graph_nodes_v1.py",
+      "reason": "earlier chain dependency blocks downstream stages",
+      "recommended_action": "restore from known-good snapshot/branch before rebuilding outputs"
+    },
+    {
+      "priority_rank": 3,
+      "script": "scripts/build_aramaic_graph_edges_v1.py",
+      "reason": "earlier chain dependency blocks downstream stages",
+      "recommended_action": "restore from known-good snapshot/branch before rebuilding outputs"
+    },
+    {
+      "priority_rank": 4,
+      "script": "scripts/build_aramaic_cross_corpus_bridge_v1.py",
+      "reason": "earlier chain dependency blocks downstream stages",
+      "recommended_action": "restore from known-good snapshot/branch before rebuilding outputs"
+    },
+    {
+      "priority_rank": 5,
+      "script": "scripts/report_aramaic_semantic_edge_quality_v1.py",
+      "reason": "earlier chain dependency blocks downstream stages",
+      "recommended_action": "restore from known-good snapshot/branch before rebuilding outputs"
+    },
+    {
+      "priority_rank": 6,
+      "script": "scripts/score_aramaic_regime_shift_v1.py",
+      "reason": "earlier chain dependency blocks downstream stages",
+      "recommended_action": "restore from known-good snapshot/branch before rebuilding outputs"
+    },
+    {
+      "priority_rank": 7,
+      "script": "scripts/run_aramaic_regime_shift_weight_sweep_v1.py",
+      "reason": "earlier chain dependency blocks downstream stages",
+      "recommended_action": "restore from known-good snapshot/branch before rebuilding outputs"
+    },
+    {
+      "priority_rank": 8,
+      "script": "scripts/apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py",
+      "reason": "earlier chain dependency blocks downstream stages",
+      "recommended_action": "restore from known-good snapshot/branch before rebuilding outputs"
+    },
+    {
+      "priority_rank": 9,
+      "script": "scripts/run_aramaic_regime_shift_shadow_compare_v1.py",
+      "reason": "earlier chain dependency blocks downstream stages",
+      "recommended_action": "restore from known-good snapshot/branch before rebuilding outputs"
+    },
+    {
+      "priority_rank": 10,
+      "script": "scripts/build_bible_meaning_graph_v1.py",
+      "reason": "earlier chain dependency blocks downstream stages",
+      "recommended_action": "restore from known-good snapshot/branch before rebuilding outputs"
+    }
+  ],
+  "missing_required_artifacts": [
+    "falsification_suite",
+    "benchmark_comparison",
+    "statistical_significance",
+    "raw_oos_readiness",
+    "public_safe_report"
+  ]
+}

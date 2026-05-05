@@ -13,7 +13,7 @@ import { siteCopy } from "@/content/siteCopy";
 
 const NAV = [
   { id: "chat", label: "대화" },
-  { id: "survey", label: "사전문진·연결" },
+  { id: "survey", label: "상세 문진" },
   { id: "safety", label: "안전·고지" },
 ] as const;
 
@@ -103,7 +103,7 @@ export function ConsumerWorkspaceClient() {
   const paletteActions: PaletteAction[] = useMemo(
     () => [
       { id: "chat", label: "대화 화면", hint: "panel", run: () => onSelect("chat") },
-      { id: "survey", label: "사전문진·연결", hint: "panel", run: () => onSelect("survey") },
+      { id: "survey", label: "상세 문진", hint: "panel", run: () => onSelect("survey") },
       { id: "safety", label: "안전·고지", hint: "panel", run: () => onSelect("safety") },
       { id: "new", label: "새 대화", hint: "스레드", run: () => startNewChat() },
       { id: "home", label: "랜딩으로", hint: "/", run: () => router.push("/") },

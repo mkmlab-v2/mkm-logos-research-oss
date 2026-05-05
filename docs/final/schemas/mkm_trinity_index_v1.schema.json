@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "mkm_trinity_index_v1.schema.json",
+  "title": "MKM Trinity Index v1 (pointer-only; not a fact authority)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["_meta", "lenses"],
+  "properties": {
+    "_meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "version",
+        "authority",
+        "supersedes",
+        "truth_source"
+      ],
+      "properties": {
+        "schema": {
+          "type": "string",
+          "const": "mkm_trinity_index_v1"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "authority": {
+          "type": "string",
+          "const": "index_only"
+        },
+        "supersedes": {
+          "type": "string",
+          "const": "none"
+        },
+        "truth_source": {
+          "type": "string",
+          "minLength": 8
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "lenses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["myeongni", "sasang", "logos"],
+      "properties": {
+        "myeongni": { "$ref": "#/definitions/lensEntry" },
+        "sasang": { "$ref": "#/definitions/lensEntry" },
+        "logos": { "$ref": "#/definitions/lensEntry" }
+      }
+    }
+  },
+  "definitions": {
+    "lensEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label_ko",
+        "operating_mode",
+        "primary_runner",
+        "validation_pointers",
+        "constitution_ref",
+        "constitution_anchor"
+      ],
+      "properties": {
+        "label_ko": { "type": "string", "minLength": 1 },
+        "operating_mode": {
+          "type": "string",
+          "description": "Rail / risk label; not a product promise."
+        },
+        "primary_runner": {
+          "type": "string",
+          "pattern": "^scripts/[^\\\\]+$"
+        },
+        "validation_pointers": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 2 },
+          "minItems": 1
+        },
+        "constitution_ref": { "type": "string", "minLength": 1 },
+        "constitution_anchor": { "type": "string", "minLength": 4 }
+      }
+    }
+  }
+}

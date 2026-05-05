@@ -1,0 +1,11 @@
+{
+  "schema": "logos_track_b_commander_deep_report_envelope_v1",
+  "version": "1.0.0",
+  "source_track": "B",
+  "hypothesis_tier": "B",
+  "human_review_required": true,
+  "disclaimer_ko": "본 리포트는 연구·관측용 골격이다. 최종 해석·채택·대외 발언은 지휘관 검토 후에만 가능하다. A-track 자동 트리거·실매매 근거로 사용 금지.",
+  "labels_default": ["TRACK_B", "HYPO", "HUMAN_REVIEW_PENDING"],
+  "manifest_pointer": "docs/NotebookLM_sources_manifest.md",
+  "note_ko": "NotebookLM MCP UI 녹색과 채팅 도구 주입은 별개; 소스 추가는 지휘관 정책 준수."
+}

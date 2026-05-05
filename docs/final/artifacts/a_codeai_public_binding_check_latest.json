@@ -1,0 +1,39 @@
+{
+  "schema": "a_codeai_public_binding_check_v1",
+  "generated_at_utc": "2026-04-28T21:30:07+00:00",
+  "target": {
+    "base_url": "https://a-codeai.com",
+    "home_url": "https://a-codeai.com/",
+    "ko_url": "https://a-codeai.com/ko/",
+    "payload_url": "https://a-codeai.com/a_codeai_public_copy_web_payload_latest.json"
+  },
+  "all_ok": true,
+  "decision": "PASS",
+  "checks": {
+    "home": {
+      "reachable": true,
+      "markers_ok": true,
+      "missing_markers": []
+    },
+    "ko": {
+      "reachable": true,
+      "markers_ok": true,
+      "missing_markers": []
+    },
+    "payload": {
+      "reachable": true,
+      "contract_ok": true,
+      "contract_details": {
+        "json_parse_ok": true,
+        "schema_ok": true,
+        "contract_ok": true,
+        "contract_variant": "sectioned_v1",
+        "reason": "ok"
+      }
+    }
+  },
+  "notes": [
+    "FAIL means payload is not fully wired into the published landing HTML yet.",
+    "Use this check after deploy to prove runtime binding is active on both '/' and '/ko/'."
+  ]
+}

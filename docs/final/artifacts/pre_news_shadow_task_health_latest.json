@@ -1,0 +1,13 @@
+﻿{
+    "schema":  "pre_news_shadow_task_health_v1",
+    "generated_at_utc":  "2026-05-02T21:50:03Z",
+    "task_name":  "MKM-PreNews-Shadow-Daily",
+    "state":  "Ready",
+    "last_run_time":  "2026-05-02T21:30:01Z",
+    "next_run_time":  "2026-05-03T21:30:00Z",
+    "last_task_result":  0,
+    "last_task_result_hex":  "0x00000000",
+    "healthy":  true,
+    "result_category":  "OK",
+    "note":  "Task Scheduler health snapshot for pre-news shadow daily runner."
+}

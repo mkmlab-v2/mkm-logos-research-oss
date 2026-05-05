@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_corpus_manifest_v1.schema.json",
+  "title": "Logos core corpus manifest v1 (Track B slice 1)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "ts_utc",
+    "hypothesis_tier",
+    "source_slice",
+    "input_path",
+    "input_bytes",
+    "input_sha256",
+    "verse_count",
+    "integrity"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "logos_corpus_manifest_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "ts_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "const": "B"
+    },
+    "source_slice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slice_id"],
+      "properties": {
+        "slice_id": {
+          "type": "string",
+          "const": "slice1_core_corpus_manifest"
+        },
+        "description": { "type": "string" }
+      }
+    },
+    "input_path": { "type": "string", "minLength": 1 },
+    "input_bytes": { "type": "integer", "minimum": 0 },
+    "input_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "verse_count": { "type": "integer", "minimum": 0 },
+    "verse_count_method": {
+      "type": "string",
+      "enum": ["json_load", "ijson_stream", "override"]
+    },
+    "sample_verse_ids_head": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 8
+    },
+    "sample_verse_ids_tail": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 8
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["null_verse_id_count", "duplicate_verse_id_detected"],
+      "properties": {
+        "null_verse_id_count": { "type": "integer", "minimum": 0 },
+        "duplicate_verse_id_detected": { "type": "boolean" },
+        "unique_verse_id_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}

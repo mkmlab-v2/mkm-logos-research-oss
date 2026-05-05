@@ -1,9 +1,0 @@
-{
-  "schema": "brand_engine_boundary_check_v1",
-  "checked_at_utc": "2026-04-02T15:17:32.4712544+00:00",
-  "cta_path": "docs/final/artifacts/jema12_live_portal_cta_snippet.html",
-  "cta_points_to_jemaai": true,
-  "cta_has_no_runtime_token_refs": true,
-  "engine_has_no_jema12_refs": true,
-  "boundary_ok": true
-}

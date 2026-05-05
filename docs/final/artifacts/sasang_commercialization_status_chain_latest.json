@@ -1,0 +1,155 @@
+{
+  "schema": "sasang_commercialization_status_chain_v1",
+  "generated_at_utc": "2026-04-29T00:00:07Z",
+  "all_exit_zero": true,
+  "steps": [
+    {
+      "command": "C:\\Python311\\python.exe scripts/build_sasang_gt_expansion_queue.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_expansion_queue_latest.jsonl\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_gt_expansion_queue_report_latest.json\nqueue_rows=198",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/prioritize_sasang_gt_expansion_queue.py --top-k 126",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_expansion_priority_top126_latest.jsonl\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_gt_expansion_priority_report_latest.json\nselected_rows=126",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/export_sasang_gt_labeling_sheet.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_labeling_sheet_top126_latest.csv\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_gt_labeling_sheet_report_latest.json\nrow_count=126",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/build_sasang_labeling_assignment_plan.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_labeling_assignment_plan_latest.json\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_gt_labeling_assignment_report_latest.json",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/export_sasang_labeling_packets_by_reviewer.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_labeling_packets_report_latest.json",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/validate_sasang_gt_labeling_sheet.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_gt_labeling_sheet_validation_latest.json\nvalid_for_import=True",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/import_sasang_labeled_sheet_to_queue.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_labeled_queue_top126_latest.jsonl\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_gt_labeled_import_report_latest.json\napproved_rows=0",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/merge_sasang_labeled_queue_into_gt.py --labeled-queue reports/constitution/btrack_pilot/sasang_gt_labeled_queue_top126_latest.jsonl --report docs/final/artifacts/sasang_gt_merge_report_from_sheet_latest.json",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: docs\\final\\artifacts\\sasang_gt_merge_report_from_sheet_latest.json\napproved_queue_rows=0, inserted=0, updated=0\nDRY-RUN: no GT file changes written. Re-run with --write to apply.",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/build_sasang_authoritative_predictions.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\reports\\constitution\\btrack_pilot\\predictions.real.aligned.latest.jsonl\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_authoritative_prediction_alignment_latest.json\naligned_prediction_rows=128",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/report_sasang_production_data_readiness.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_production_data_readiness_latest.json\nmax_pairable_rows_authoritative=128",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/report_sasang_gt_approval_progress.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_gt_approval_progress_latest.json\napproved_rows_in_queue=0",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/report_sasang_gt_approval_whatif.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_gt_approval_whatif_latest.json\ncan_hit_target_if_full_priority_approved=True",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/simulate_sasang_gt_merge_impact.py --approve-top-n 126",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_gt_merge_impact_simulation_latest.json\nstrict_pairable_ready_after_simulation=True",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/report_sasang_strict_input_integrity.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_strict_input_integrity_latest.json\nroot_cause=NONE",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/build_sasang_supplemental_insight_score.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_supplemental_insight_score_latest.json\nsupplemental_score=0.96",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/build_sasang_supplemental_insight_trend.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_supplemental_insight_trend_latest.json\ntrend_status=STABLE, alert=False",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/emit_sasang_supplemental_trend_alert.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_supplemental_trend_alert_latest.json\nnotify_operator=False",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/build_sasang_commercialization_readiness_packet.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_prophecy_eval_contract_latest.json\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang12_promotion_candidate_gate_latest.json\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang12_gate_failure_analysis_latest.json\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_commercialization_readiness_packet_latest.json\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_shadow_governance_latest.json\npromotion_status=PASS",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/record_sasang_human_signoff.py --approver user-approved --decision APPROVED",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_human_signoff_latest.json",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/check_sasang_ready_drift.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_ready_drift_check_latest.json",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/run_sasang_ready_rollback_drill.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_ready_rollback_drill_latest.json",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/authorize_sasang_promotion_to_atrack.py --authorizer user-approved",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_promotion_authorization_latest.json\npromotion_to_a_track_allowed=True",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/finalize_sasang_promotion_completion.py --operator user-approved",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_promotion_completion_latest.json\npromotion_completed=True",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/build_sasang_weekly_ops_report.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_weekly_ops_report_latest.json\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_weekly_ops_report_2026-04-29.json",
+      "stderr_tail": ""
+    }
+  ],
+  "notes": [
+    "This chain refreshes status and evidence artifacts only.",
+    "GT writes require explicit --write in merge script after human approval."
+  ]
+}

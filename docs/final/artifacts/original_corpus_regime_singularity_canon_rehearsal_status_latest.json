@@ -1,0 +1,77 @@
+{
+    "generated_at_utc":  "2026-04-28T21:50:04Z",
+    "task":  {
+                 "name":  "MKM_CanonSingularity_Chain",
+                 "exists":  true,
+                 "status":  "Ready",
+                 "last_result":  "2",
+                 "last_run_time":  "04/29/2026 06:40:01"
+             },
+    "promotion_gate":  {
+                           "path":  "C:\\workspace\\docs\\final\\artifacts\\original_corpus_regime_singularity_canon_promotion_gate_v1.json",
+                           "status":  "missing",
+                           "generated_at_utc":  null
+                       },
+    "delta_cutoff_autotune":  {
+                                  "path":  "C:\\workspace\\docs\\final\\artifacts\\original_corpus_regime_singularity_canon_delta_cutoff_autotune_v1.json",
+                                  "status":  "missing",
+                                  "generated_at_utc":  null,
+                                  "current_min_score_delta":  null,
+                                  "applied_min_score_delta":  null,
+                                  "apply_reason":  null
+                              },
+    "delta_governance_gate":  {
+                                  "path":  "C:\\workspace\\docs\\final\\artifacts\\original_corpus_regime_singularity_canon_delta_cutoff_governance_gate_v1.json",
+                                  "status":  "missing",
+                                  "generated_at_utc":  null,
+                                  "apply_rate":  null,
+                                  "hold_streak":  null,
+                                  "in_grace_window":  null
+                              },
+    "delta_autotune_history_latest":  {
+                                          "path":  "C:\\workspace\\docs\\final\\artifacts\\original_corpus_regime_singularity_canon_delta_cutoff_update_history_v1.jsonl",
+                                          "generated_at_utc":  null,
+                                          "status":  "missing",
+                                          "applied_min_score_delta":  null,
+                                          "apply_reason":  null
+                                      },
+    "drift_gate":  {
+                       "path":  "C:\\workspace\\docs\\final\\artifacts\\original_corpus_regime_singularity_canon_strict_freeze_drift_gate_v1.json",
+                       "status":  "missing",
+                       "drift_count":  null,
+                       "generated_at_utc":  null
+                   },
+    "freeze_v2_stability_gate":  {
+                                     "path":  "C:\\workspace\\docs\\final\\artifacts\\original_corpus_regime_singularity_canon_strict_baseline_freeze_v2_stability_gate_v1.json",
+                                     "status":  "missing",
+                                     "generated_at_utc":  null,
+                                     "window_size":  null,
+                                     "frozen_rate":  null
+                                 },
+    "promotion_go_no_go":  {
+                               "path":  "C:\\workspace\\docs\\final\\artifacts\\original_corpus_regime_singularity_canon_promotion_go_no_go_v1.json",
+                               "verdict":  "missing",
+                               "generated_at_utc":  null,
+                               "hold_reasons":  {
+
+                                                }
+                           },
+    "ops_alert_summary":  {
+                              "ops_alert":  false,
+                              "severity":  "none",
+                              "consecutive_alert_count":  0,
+                              "strict_rehearsal_recommended":  false
+                          },
+    "recommended_action":  {
+                               "kind":  "none",
+                               "command":  "",
+                               "reason":  "stable"
+                           },
+    "strict_auto_run":  {
+                            "enabled":  true,
+                            "triggered":  false,
+                            "exit_code":  null,
+                            "status":  "not_run",
+                            "summary_path":  "C:\\workspace\\docs\\final\\artifacts\\original_corpus_regime_singularity_canon_strict_rehearsal_run_v1.json"
+                        }
+}

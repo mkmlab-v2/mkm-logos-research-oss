@@ -1,0 +1,36 @@
+{
+  "api_contract_version": "1.0.0",
+  "schema_version": "macro_risk_warning_api_response_contract_v1",
+  "request_id": "mrw_20260430_194802",
+  "timestamp_utc": "2026-04-30T19:48:02.188642Z",
+  "asset_scope": "BTC-USD",
+  "decision_state": "WATCH",
+  "risk_warning_level": "elevated",
+  "confidence_band": "medium",
+  "insight_7": {
+    "market_liquidity_stress": 0.5802299999999999,
+    "cross_asset_dislocation": 0.44022999999999995,
+    "crowd_positioning_fragility": 0.52023,
+    "volatility_regime_shift": 0.55023,
+    "funding_pressure_signal": 0.4702299999999999,
+    "macro_policy_shock_risk": 0.42022999999999994,
+    "tail_event_pressure": 0.54023
+  },
+  "regime_context": {
+    "primary_regime_id": "post_covid_normalization",
+    "similarity_score": 0.50023,
+    "secondary_regime_notes": []
+  },
+  "recommended_operator_posture": "watch_tighten",
+  "evidence_ref": {
+    "artifact_path": "docs/final/artifacts/integrated_governance_v1_latest.json",
+    "artifact_hash_sha256": "c95bd084286493fc1a1d051e9159be83631860e8952bb255350124616a1fe475"
+  },
+  "ttl_seconds": 900,
+  "disclaimer": {
+    "not_investment_advice": true,
+    "no_buy_sell_instruction": true,
+    "no_return_guarantee": true,
+    "final_decision_with_operator": true
+  }
+}

@@ -128,6 +128,7 @@ $lensSasangScriptPath = "$workspace\scripts\run_lens_sasang.py"
 $lensLogosScriptPath = "$workspace\scripts\run_lens_logos.py"
 $lensFusionStubScriptPath = "$workspace\scripts\report_independent_lens_fusion_stub_v0.py"
 $lensShadowGateScriptPath = "$workspace\scripts\report_independent_lens_shadow_gate.py"
+$lensShadowMinorityMonthlyScriptPath = "$workspace\scripts\report_independent_lens_shadow_minority_monthly_v1.py"
 $insightScoreboardScriptPath = "$workspace\scripts\build_insight_effectiveness_scoreboard.py"
 $c2GuardrailScriptPath = "$workspace\scripts\check_c2_aegis_guardrail.py"
 $c2GuardrailPath = "$workspace\docs\final\artifacts\C2_AEGIS_BASELINE_GUARDRAIL_V1.json"
@@ -927,7 +928,20 @@ if (Test-Path -LiteralPath $lensSasangScriptPath) {
     Add-SoftFailNote "run_lens_sasang.py missing; skipped"
 }
 if (Test-Path -LiteralPath $lensLogosScriptPath) {
-    py scripts/run_lens_logos.py @lensFallbackArgs
+    $logosBatchPath = Join-Path $workspace "data\logos\4lens_batch_sample.json"
+    $logosFixturePath = Join-Path $workspace "tests\fixtures\logos_4lens_batch_minimal_v1.json"
+    if (Test-Path -LiteralPath $logosBatchPath) {
+        py scripts/run_lens_logos.py --batch-json $logosBatchPath @lensFallbackArgs
+    } elseif (Test-Path -LiteralPath $logosFixturePath) {
+        Write-Host "[waiting-queue-check] Logos: using tracked fixture (no data/logos/4lens_batch_sample.json)" -ForegroundColor DarkYellow
+        py scripts/run_lens_logos.py --batch-json $logosFixturePath @lensFallbackArgs
+    } else {
+        if ($lensFallbackArgs.Count -gt 0) {
+            py scripts/run_lens_logos.py @lensFallbackArgs
+        } else {
+            py scripts/run_lens_logos.py --allow-fallback
+        }
+    }
     if ($LASTEXITCODE -ne 0) {
         throw "run_lens_logos.py failed with exit code $LASTEXITCODE"
     }
@@ -949,6 +963,14 @@ if (Test-Path -LiteralPath $lensShadowGateScriptPath) {
     }
 } else {
     Add-SoftFailNote "report_independent_lens_shadow_gate.py missing; skipped"
+}
+if (Test-Path -LiteralPath $lensShadowMinorityMonthlyScriptPath) {
+    py scripts/report_independent_lens_shadow_minority_monthly_v1.py
+    if ($LASTEXITCODE -ne 0) {
+        throw "report_independent_lens_shadow_minority_monthly_v1.py failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Add-SoftFailNote "report_independent_lens_shadow_minority_monthly_v1.py missing; skipped"
 }
 
 Write-Host "[waiting-queue-check] Running BTC regime-switch comparison (read-only sensor)..."

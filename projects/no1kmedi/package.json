@@ -22,6 +22,7 @@
     "smoke:partner-clinic-chat": "node ./scripts/smoke-partner-clinic-chat.mjs",
     "smoke:guardian-ai-chat": "node ./scripts/smoke-guardian-ai-chat.mjs",
     "smoke:guardian-ai-post": "node ./scripts/smoke-guardian-ai-post.mjs",
+    "smoke:gemini-route": "node ./scripts/smoke-gemini-route.mjs",
     "smoke:commercialization-gate": "node ./scripts/smoke-commercialization-gate.mjs",
     "smoke:commercialization-gate:live": "node ./scripts/smoke-commercialization-gate.mjs --require-live",
     "youtube:copy": "node ./scripts/generate-youtube-marketing-copy.mjs",
@@ -48,9 +49,11 @@
     "verify:live": "npm run check:manseryeok-live-env && npm run smoke:commercialization-gate:live",
     "verify:auto": "node ./scripts/run-verify-auto.mjs",
     "verify:postgres": "node ./scripts/run-verify-postgres.mjs",
+    "ops:llm:sync-gemini-key": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:/workspace/scripts/Sync-UnifiedGeminiKey.ps1\"",
     "manseryeok:local-api": "node ./scripts/start-manseryeok-local-api.mjs"
   },
   "dependencies": {
+    "@paddle/paddle-js": "^1.2.7",
     "next": "^14.2.18",
     "pg": "^8.20.0",
     "react": "^18.3.1",

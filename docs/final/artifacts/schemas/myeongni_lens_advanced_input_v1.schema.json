@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/myeongni_lens_advanced_input_v1.schema.json",
+  "title": "MKM 명리 렌즈 고급 입력 v1 (만세력·대운·학파 브리지 전단)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema"],
+  "properties": {
+    "schema": { "const": "myeongni_lens_advanced_input_v1" },
+    "schools_active": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "등록 학파 ID (예: zi_ping, zi_wei, blindman_stub, mkm_coordinator_default)"
+    },
+    "coordinator_weights": {
+      "type": "object",
+      "additionalProperties": { "type": "number", "minimum": 0 }
+    },
+    "pillars": {
+      "type": "object",
+      "description": "연월일시 기둥 문자열 (도메인별 키 고정은 단계적 확장)"
+    },
+    "dayun": {
+      "type": "array",
+      "description": "대운 구간 목록",
+      "items": { "type": "object", "additionalProperties": true }
+    },
+    "sajeong_interpolation": {
+      "type": "object",
+      "description": "지장간 등 세운 내 삽입 간지"
+    },
+    "sinsal": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true }
+    },
+    "reference_ts_utc": { "type": ["string", "null"] }
+  }
+}

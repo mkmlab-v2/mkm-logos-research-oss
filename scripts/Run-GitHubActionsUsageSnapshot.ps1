@@ -17,6 +17,8 @@ $baseShort = Join-Path $reportsDir "github_actions_usage_baseline_latest_120.jso
 $deltaOut = Join-Path $reportsDir "github_actions_usage_delta_latest.json"
 
 Write-Host "[actions-usage] repo=$Repo long=$LongWindow short=$ShortWindow top=$TopN"
+
+# GitHub Actions (ubuntu): use `python` from setup-python. Local Windows: run via workflow or set PATH.
 gh run list -L $LongWindow --json workflowName,event,status,conclusion,createdAt,updatedAt -R $Repo | Out-File -FilePath $runsLong -Encoding utf8
 python scripts/report_github_actions_usage_baseline.py --input-json $runsLong --top-n $TopN --output-json $baseLong
 gh run list -L $ShortWindow --json workflowName,event,status,conclusion,createdAt,updatedAt -R $Repo | Out-File -FilePath $runsShort -Encoding utf8

@@ -1,0 +1,19 @@
+{
+  "schema": "two_track_fail_boundary_gate_v1",
+  "generated_at_utc": "2026-04-28T05:55:32Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "inputs": {
+    "boundary_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_boundary_report_latest.json",
+    "survivor_json": "C:\\workspace\\docs\\final\\artifacts\\insight_survivor_candidates_latest.json",
+    "survivor_count": 5,
+    "max_safe_min_survivor_count": 5,
+    "min_break_min_survivor_count": 7
+  },
+  "gate_eval": {
+    "should_trade": true,
+    "rollback": false,
+    "reasons": []
+  }
+}

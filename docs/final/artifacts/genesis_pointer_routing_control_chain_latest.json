@@ -1,0 +1,252 @@
+{
+  "schema": "genesis_pointer_routing_control_chain_v1",
+  "generated_at_utc": "2026-04-28T21:30:06+00:00",
+  "research_only": true,
+  "promotion_required": true,
+  "all_ok": false,
+  "inputs": {
+    "go_cut": 0.9,
+    "watch_cut": 0.5,
+    "router_target_path": "reports/demo_run.json",
+    "memory_tuning_target_path": "projects/bitcoin-trading/memory/v2/demo.json"
+  },
+  "steps": [
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/run_genesis_sequence_compression_sweep_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_sequence_compression_sweep_latest.json\", \"summary\": {\"pointer_break_even_length_chars\": 10, \"vector4_break_even_length_chars\": 10, \"note\": \"Closed-dictionary lookup simulation; not open-vocabulary production claim.\"}}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/run_genesis_sequence_net_efficiency_model_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_sequence_net_efficiency_model_latest.json\", \"summary\": {\"pointer_net_break_even_length_chars\": 10, \"vector4_net_break_even_length_chars\": 10}}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/run_genesis_sequence_net_efficiency_sensitivity_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_sequence_net_efficiency_sensitivity_latest.json\", \"scenario_count\": 36, \"pointer_99pct_zone_count\": 13}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/label_genesis_net_efficiency_operating_zone_v1.py",
+        "--go-cut",
+        "0.9",
+        "--watch-cut",
+        "0.5"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_sequence_net_efficiency_operating_zone_latest.json\", \"counts\": {\"GO\": 27, \"WATCH\": 8, \"HOLD\": 1}}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/decide_genesis_pointer_routing_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_pointer_routing_decision_latest.json\", \"decision\": \"SHADOW_POINTER_ROUTE\", \"route_mode\": \"pointer_shadow\"}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/build_pointerguard_folder_policy_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_folder_policy_latest.json\", \"summary\": {\"apply_count\": 9, \"caution_count\": 4, \"forbid_count\": 8, \"promotion_profile_count\": 3}}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/build_pointer_shadow_daily_report_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_daily_report_latest.json\", \"sample_count\": 34}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/check_pointer_shadow_health_alert_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_alert_latest.json\", \"should_alert\": false, \"severity\": \"none\"}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/pointer_hash_snapping_router_v1.py",
+        "--enable-snap",
+        "--target-path",
+        "reports/demo_run.json",
+        "--out",
+        "docs/final/artifacts/pointer_hash_snapping_router_shadow_router_target_latest.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_router_target_latest.json\", \"summary\": {\"pointer_candidate_ok_count\": 2, \"selected_pointer_count\": 0, \"selected_track_a_count\": 3}}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/decide_pointerguard_apply_go_promotion_v1.py",
+        "--folder-policy-json",
+        "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+        "--latest-snapshot-json",
+        "docs/final/artifacts/pointer_hash_snapping_router_shadow_router_target_latest.json",
+        "--prefer-latest-snapshot",
+        "--target-path",
+        "reports/demo_run.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_apply_go_promotion_decision_latest.json\", \"promote_apply_path_to_go\": true, \"decision\": \"PROMOTE_APPLY_GO\"}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/pointer_hash_snapping_router_v1.py",
+        "--enable-snap",
+        "--target-path",
+        "projects/bitcoin-trading/memory/v2/demo.json",
+        "--out",
+        "docs/final/artifacts/pointer_hash_snapping_router_shadow_memory_latest.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointer_hash_snapping_router_shadow_memory_latest.json\", \"summary\": {\"pointer_candidate_ok_count\": 3, \"selected_pointer_count\": 0, \"selected_track_a_count\": 3}}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/decide_pointerguard_apply_go_promotion_v1.py",
+        "--folder-policy-json",
+        "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+        "--latest-snapshot-json",
+        "docs/final/artifacts/pointer_hash_snapping_router_shadow_memory_latest.json",
+        "--prefer-latest-snapshot",
+        "--target-path",
+        "projects/bitcoin-trading/memory/v2/demo.json",
+        "--out",
+        "docs/final/artifacts/pointerguard_apply_go_promotion_decision_memory_latest.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_apply_go_promotion_decision_memory_latest.json\", \"promote_apply_path_to_go\": true, \"decision\": \"PROMOTE_APPLY_GO\"}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/tune_pointerguard_memory_v2_ramp_v1.py",
+        "--decision-json",
+        "docs/final/artifacts/pointerguard_apply_go_promotion_decision_memory_latest.json",
+        "--folder-policy-json",
+        "docs/final/artifacts/pointerguard_folder_policy_latest.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_memory_v2_ramp_tuning_latest.json\", \"recommendation\": \"RAMP_COMPLETE_READY_FOR_PROFILE_ENABLE_REVIEW\", \"recommended_index\": 3}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/apply_pointerguard_memory_v2_ramp_update_v1.py",
+        "--folder-policy-json",
+        "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+        "--tuning-json",
+        "docs/final/artifacts/pointerguard_memory_v2_ramp_tuning_latest.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_memory_v2_ramp_update_latest.json\", \"updated\": false, \"applied_index\": null}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/freeze_pointerguard_memory_v2_ramp_v1.py",
+        "--folder-policy-json",
+        "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+        "--memory-decision-json",
+        "docs/final/artifacts/pointerguard_apply_go_promotion_decision_memory_latest.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_memory_v2_ramp_freeze_latest.json\", \"updated\": false, \"ramp_frozen\": true}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/apply_pointer_shadow_alert_guard_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_pointer_routing_decision_guarded_latest.json\", \"guard_applied\": false, \"decision\": \"SHADOW_POINTER_ROUTE\", \"route_mode\": \"pointer_shadow\"}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/build_pointerguard_manual_approval_log_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_manual_approval_log_latest.json\", \"manual_promotion_lock\": true}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/check_pointerguard_ops_readiness_v1.py"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Exception in thread Thread-1 (_readerthread):\nTraceback (most recent call last):\n  File \"C:\\Python311\\Lib\\threading.py\", line 1045, in _bootstrap_inner\n    self.run()\n  File \"C:\\Python311\\Lib\\threading.py\", line 982, in run\n    self._target(*self._args, **self._kwargs)\n  File \"C:\\Python311\\Lib\\subprocess.py\", line 1599, in _readerthread\n    buffer.append(fh.read())\n                  ^^^^^^^^^\n  File \"<frozen codecs>\", line 322, in decode\nUnicodeDecodeError: 'utf-8' codec can't decode byte 0xc6 in position 2: invalid continuation byte\nTraceback (most recent call last):\n  File \"C:\\workspace\\scripts\\check_pointerguard_ops_readiness_v1.py\", line 204, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"C:\\workspace\\scripts\\check_pointerguard_ops_readiness_v1.py\", line 180, in main\n    task_check = _check_task()\n                 ^^^^^^^^^^^^^\n  File \"C:\\workspace\\scripts\\check_pointerguard_ops_readiness_v1.py\", line 161, in _check_task\n    for line in body.splitlines():\n                ^^^^^^^^^^^^^^^\nAttributeError: 'NoneType' object has no attribute 'splitlines'"
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/apply_pointerguard_readiness_block_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_pointer_routing_decision_guarded_latest.json\", \"readiness_all_ok\": true, \"block_applied\": false, \"decision\": \"SHADOW_POINTER_ROUTE\", \"route_mode\": \"pointer_shadow\"}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/build_genesis_pointer_route_runtime_config_v1.py",
+        "--decision-json",
+        "docs/final/artifacts/genesis_pointer_routing_decision_guarded_latest.json",
+        "--folder-policy-json",
+        "docs/final/artifacts/pointerguard_folder_policy_latest.json",
+        "--apply-promotion-json",
+        "docs/final/artifacts/pointerguard_apply_go_promotion_decision_latest.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\genesis_pointer_route_runtime_config_latest.json\", \"route_mode\": \"pointer_shadow\", \"pointer_enabled\": false, \"pointer_shadow\": true}",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/run_pointerguard_operational_smoke_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\pointerguard_operational_smoke_latest.json\"}",
+      "stderr": ""
+    }
+  ]
+}

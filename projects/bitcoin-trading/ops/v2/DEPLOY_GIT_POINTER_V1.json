@@ -1,0 +1,25 @@
+{
+  "schema": "deploy_git_pointer_v1",
+  "version": 1,
+  "policy_note": "전역 원칙은 루트 AGENTS.md — GitHub 최소·internal/gitea 우선. 아래는 특정 VPS가 실제로 fetch하는 원격이 GitHub일 때의 정렬용 포인터이다.",
+  "vps_monorepo_example": {
+    "path": "/opt/mkm-lab-workspace-v2",
+    "bitcoin_trading_relative": "projects/bitcoin-trading"
+  },
+  "deploy_alignment": {
+    "remote_name": "destiny",
+    "remote_url_pattern": "mkmlab-v2/mkm-destiny-ai",
+    "branch": "fix/btrack-ohlcv-cli-help-and-eval-wrapper-github",
+    "verify_paths_relative_to": "projects/bitcoin-trading",
+    "verify_paths_after_pull": [
+      "ops/v2/ssh/register_export_then_sync_cursor_trade_history_cron.sh",
+      "scripts/export_binance_fills_to_cursor_trade_history_v1.py",
+      "ops/windows-rehearsal/OPS_COMMANDS.md"
+    ]
+  },
+  "developer_actions_when_missing_on_vps": [
+    "로컬 커밋이 internal/gitea에만 있고 VPS가 GitHub destiny만 당기면 파일 MISSING이 된다.",
+    "동일 변경을 deploy_alignment.branch 가 가리키는 GitHub 원격에 반영한다(필요 시 worktree에서 체리픽 후 비파괴 푸시).",
+    "브랜치 전환 전 VPS 로컬 수정은 stash."
+  ]
+}

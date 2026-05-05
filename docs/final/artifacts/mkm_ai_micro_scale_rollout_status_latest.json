@@ -1,0 +1,51 @@
+{
+  "schema": "mkm_ai_micro_scale_rollout_status_v1",
+  "generated_at_utc": "2026-05-02T16:59:27.782883+00:00",
+  "inputs": {
+    "policy": "C:\\workspace\\docs\\final\\artifacts\\mkm_ai_micro_scale_rollout_policy_v1.json",
+    "strategy_gate": "C:\\workspace\\projects\\bitcoin-trading\\exports\\cursor_trade_history\\strategy_promotion_gate_latest.json",
+    "live_health": "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\ops\\live_trading_health_latest.json",
+    "blockers": "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\ops\\live_trading_blockers_latest.json",
+    "nofill": "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\ops\\live_trading_nofill_alert_latest.json",
+    "risk_profile": "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\risk\\risk_profile_fact_safe_latest.json",
+    "daemon_status": "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\status\\trading_daemon_status.json",
+    "engine_input": "C:\\workspace\\docs\\final\\artifacts\\btc_limited_live_engine_input_from_lens_combo_latest.json",
+    "previous_state": "C:\\workspace\\docs\\final\\artifacts\\mkm_ai_micro_scale_rollout_status_latest.json"
+  },
+  "current_stage": "micro_live",
+  "target_stage": "micro_live",
+  "decision": "HOLD_STAGE",
+  "decision_reasons": [
+    "promotion_checks_not_passed",
+    "min_cycles_not_reached"
+  ],
+  "cycle_count_in_stage": 1,
+  "min_cycles_before_promotion": 6,
+  "promotion_ready": false,
+  "checks": {
+    "strategy_promotion_ready": false,
+    "health_pass": true,
+    "blockers_pass": true,
+    "nofill_warn_allowed": true,
+    "risk_profile_fresh_required": true,
+    "exchange_fills_24h_min": false,
+    "max_daily_loss_cap_pct": true
+  },
+  "observability": {
+    "strategy_promotion_ready": false,
+    "health_pass": true,
+    "blockers_pass": true,
+    "nofill_warn": false,
+    "risk_profile_fresh": true,
+    "exchange_fills_24h": 0,
+    "daily_loss_cap_pct": 1.0416
+  },
+  "sizing": {
+    "current_engine_size_usd": 10.0,
+    "recommended_size_usd": 10.0,
+    "base_size_usd": 10.0,
+    "max_size_usd": 80.0,
+    "stage_size_multiplier": 1.0,
+    "apply_mode": "manual_confirm_required"
+  }
+}

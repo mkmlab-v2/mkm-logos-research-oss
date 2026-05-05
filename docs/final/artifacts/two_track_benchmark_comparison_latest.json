@@ -1,0 +1,104 @@
+{
+  "schema": "two_track_benchmark_comparison_v1",
+  "generated_at_utc": "2026-04-30T11:00:39Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "baselines": [
+    {
+      "name": "naive_midpoint_baseline",
+      "shift_score": 0.5,
+      "survivor_count": 0
+    },
+    {
+      "name": "random_shuffle_baseline",
+      "shift_score": 0.48,
+      "survivor_count": 0
+    },
+    {
+      "name": "simple_timeseries_rule_baseline",
+      "shift_score": 0.51,
+      "survivor_count": 0
+    },
+    {
+      "name": "ablation_no_survivor_gate",
+      "shift_score": 0.773353,
+      "survivor_count": 0
+    }
+  ],
+  "proposed": {
+    "name": "meaning_graph_survivor_gate",
+    "shift_score": 0.803353,
+    "survivor_count": 5
+  },
+  "baseline_results": [
+    {
+      "baseline": {
+        "name": "naive_midpoint_baseline",
+        "shift_score": 0.5,
+        "survivor_count": 0
+      },
+      "proposed": {
+        "name": "meaning_graph_survivor_gate",
+        "shift_score": 0.803353,
+        "survivor_count": 5
+      },
+      "delta": {
+        "shift_score": 0.303353
+      },
+      "improved": true
+    },
+    {
+      "baseline": {
+        "name": "random_shuffle_baseline",
+        "shift_score": 0.48,
+        "survivor_count": 0
+      },
+      "proposed": {
+        "name": "meaning_graph_survivor_gate",
+        "shift_score": 0.803353,
+        "survivor_count": 5
+      },
+      "delta": {
+        "shift_score": 0.323353
+      },
+      "improved": true
+    },
+    {
+      "baseline": {
+        "name": "simple_timeseries_rule_baseline",
+        "shift_score": 0.51,
+        "survivor_count": 0
+      },
+      "proposed": {
+        "name": "meaning_graph_survivor_gate",
+        "shift_score": 0.803353,
+        "survivor_count": 5
+      },
+      "delta": {
+        "shift_score": 0.293353
+      },
+      "improved": true
+    },
+    {
+      "baseline": {
+        "name": "ablation_no_survivor_gate",
+        "shift_score": 0.773353,
+        "survivor_count": 0
+      },
+      "proposed": {
+        "name": "meaning_graph_survivor_gate",
+        "shift_score": 0.803353,
+        "survivor_count": 5
+      },
+      "delta": {
+        "shift_score": 0.03
+      },
+      "improved": true
+    }
+  ],
+  "delta": {
+    "shift_score": 0.303353
+  },
+  "result": "improved"
+}

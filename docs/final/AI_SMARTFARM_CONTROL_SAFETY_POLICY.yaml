@@ -1,0 +1,88 @@
+policy_version: "v1.0"
+policy_name: "ai_smartfarm_control_safety_minimum"
+mode_priority:
+  - emergency_stop
+  - onsite_manual
+  - remote_manual
+  - auto
+
+site_contract:
+  timezone: "Asia/Seoul"
+  target_zone_id: "zone_01"
+  pilot_area_pyeong_range: [200, 300]
+
+sensor_contract:
+  required_fields:
+    - ts_utc
+    - zone_id
+    - soil_moisture_pct
+    - soil_temp_c
+    - soil_ec_us_cm
+    - comm_ok
+  max_data_gap_sec: 900
+  stale_data_action: "auto_stop"
+
+actuator_contract:
+  pump_command_ack_timeout_sec: 10
+  valve_command_ack_timeout_sec: 10
+  max_retry: 2
+  ack_failure_action: "auto_stop_and_alert"
+
+hard_limits:
+  daily_max_runtime_min: 120
+  daily_max_volume_liter: 12000
+  per_run_max_runtime_min: 20
+  per_run_cooldown_min: 30
+
+rain_gate:
+  enabled: true
+  forecast_window_hr: 12
+  rain_mm_threshold: 3.0
+  require_soil_condition_gate: true
+  on_trigger_action: "delay_or_skip_auto_run"
+
+fermentation_batch_gate:
+  enabled: true
+  required_batch_fields:
+    - batch_id
+    - brew_start_ts_utc
+    - brew_end_ts_utc
+    - batch_ph
+    - batch_ec_us_cm
+    - operator_confirmed
+  reject_on_missing_fields: true
+  reject_on_flagged_anomaly: true
+
+anomaly_rules:
+  pressure_anomaly_action: "auto_stop_and_alert"
+  flow_anomaly_action: "auto_stop_and_alert"
+  repeated_alarm_escalation_count: 3
+  escalation_action: "lock_auto_mode"
+
+manual_override:
+  enabled: true
+  auto_resume_requires_ack: true
+  auto_resume_min_delay_min: 30
+
+logging:
+  required_decision_fields:
+    - ts_utc
+    - zone_id
+    - mode
+    - decision
+    - reason_code
+    - input_snapshot
+    - command_ack
+    - operator_id
+  retention_days: 365
+  immutable_event_log: true
+
+notification:
+  channels:
+    - app_push
+    - sms
+  severity_levels:
+    - info
+    - warning
+    - critical
+  critical_requires_ack: true

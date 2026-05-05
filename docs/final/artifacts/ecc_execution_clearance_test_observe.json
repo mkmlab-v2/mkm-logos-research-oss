@@ -1,0 +1,19 @@
+{
+  "schema": "execution_clearance_certificate_v1",
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-05-03T03:53:57Z",
+  "status": "APPROVED",
+  "reason": "observe_only",
+  "governance_artifact": "scripts\\fixtures\\integrated_governance_v1_hold.json",
+  "final_regime": "HOLD",
+  "final_action_allowed": false,
+  "action": "OBSERVE_ONLY",
+  "action_payload_hash": "a0c34efc530c8ee8139cfe6e71d2a36858a86bb3cf85ad46307d5296783b11be",
+  "child_command": [
+    "C:\\Python311\\python.exe",
+    "-c",
+    "print('observe_ok')"
+  ],
+  "child_exit_code": 0,
+  "audit_ref": "ecc_approved_observe_no_secret_injection"
+}

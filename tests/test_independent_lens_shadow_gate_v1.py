@@ -52,3 +52,40 @@ def test_shadow_gate_runner(tmp_path: Path) -> None:
     assert doc.get("decision") == "KEEP_OBSERVATION_ONLY"
     assert doc.get("allow_a_track_binding") is False
     assert isinstance(doc.get("blockers"), list)
+    snap = doc.get("latest_conflict_snapshot") or {}
+    assert isinstance(snap.get("minority_lens_ids"), list)
+    assert isinstance(snap.get("logos_evidence_verse_ids"), list)
+    assert snap.get("fusion_stub_version") == "0.3.0"
+    nar_sha = snap.get("conflict_narrative_sha256")
+    assert isinstance(nar_sha, str) and len(nar_sha) == 64
+
+    hist_lines = hist.read_text(encoding="utf-8").strip().splitlines()
+    assert len(hist_lines) >= 1
+    row = json.loads(hist_lines[-1])
+    assert isinstance(row.get("minority_lens_ids"), list)
+    assert row.get("conflict_narrative_sha256") == nar_sha
+
+
+def test_shadow_gate_requires_explicit_override_flag(tmp_path: Path) -> None:
+    out = tmp_path / "shadow_gate_fail.json"
+    hist = tmp_path / "shadow_hist_fail.jsonl"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(_RUNNER),
+            "--fusion-input",
+            str(_FUSION),
+            "--history-jsonl",
+            str(hist),
+            "--output",
+            str(out),
+            "--ts-override-utc",
+            "2026-03-31T23:59:59Z",
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert cp.returncode != 0
+    assert "allow-ts-override" in cp.stderr or "allow-ts-override" in cp.stdout

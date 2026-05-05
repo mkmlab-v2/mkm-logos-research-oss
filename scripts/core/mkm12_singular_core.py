@@ -2,12 +2,25 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from typing import Any
 
 CONTRACT_VERSION = "mkm12_singular_core_v1"
 GRID = 0.25
-THRESHOLD = 0.75
+# Default threshold tuned for current A-track governance operation.
+# Can still be overridden via MKM_SINGULAR_CORE_THRESHOLD.
+THRESHOLD = 0.2
+
+
+def _env_float(name: str, default: float) -> float:
+    raw = os.environ.get(name, "").strip()
+    if not raw:
+        return default
+    try:
+        return float(raw)
+    except ValueError:
+        return default
 
 
 @dataclass(frozen=True)
@@ -33,18 +46,24 @@ def _normalize_01(v: float) -> float:
 
 
 def compute_core_score(core_input: CoreInput) -> dict[str, Any]:
+    grid = _env_float("MKM_SINGULAR_CORE_GRID", GRID)
+    if grid <= 0:
+        grid = GRID
+    threshold = _env_float("MKM_SINGULAR_CORE_THRESHOLD", THRESHOLD)
+    threshold = _clamp(threshold, 0.0, 1.0)
+
     s = _normalize_01(core_input.s)
     l = _normalize_01(core_input.l)
     k = _normalize_01(core_input.k)
     m = _normalize_01(core_input.m)
     weighted = (s * 0.25) + (l * 0.35) + (k * 0.20) + (m * 0.20)
     raw_score = _clamp((weighted - 0.5) / 0.5, -1.0, 1.0)
-    grid_score = _clamp(round_to_grid(raw_score), -1.0, 1.0)
+    grid_score = _clamp(round_to_grid(raw_score, grid), -1.0, 1.0)
 
-    if grid_score >= THRESHOLD:
+    if grid_score >= threshold:
         decision = "PASS_LONG"
         reason = "score_above_long_threshold"
-    elif grid_score <= -THRESHOLD:
+    elif grid_score <= -threshold:
         decision = "PASS_SHORT"
         reason = "score_below_short_threshold"
     else:
@@ -56,8 +75,8 @@ def compute_core_score(core_input: CoreInput) -> dict[str, Any]:
         "score_grid": round(grid_score, 6),
         "decision": decision,
         "reason": reason,
-        "grid": GRID,
-        "threshold": THRESHOLD,
+        "grid": grid,
+        "threshold": threshold,
         "contract_version": CONTRACT_VERSION,
         "inputs": {"S": s, "L": l, "K": k, "M": m},
     }

@@ -84,6 +84,24 @@ def _dynamic_top_k(noisy_tokens: list[str], repaired_tokens: list[str], base: in
     return 24 if diff <= 2 else base
 
 
+def _shortlist_candidates(
+    candidates: set[str],
+    *,
+    pos_vocab: dict[int, set[str]],
+    literal_channel: dict[int, str],
+    noisy_tokens: list[str],
+    repaired_tokens: list[str],
+    mode: str | None,
+) -> list[str]:
+    if not candidates:
+        return []
+    ranked = sorted(candidates, key=lambda c: _cheap_score(c, pos_vocab=pos_vocab, literal_channel=literal_channel))
+    if mode == "swap_typo":
+        k = max(10, _dynamic_top_k(noisy_tokens, repaired_tokens, base=20))
+        return ranked[:k]
+    return ranked[:48]
+
+
 def _build_mode_pool(
     noisy: str,
     noisy_tokens: list[str],
@@ -95,6 +113,8 @@ def _build_mode_pool(
     scoring_mode: str,
     literal_channel: dict[int, str],
     mode: str | None,
+    *,
+    swap_typo_expand: bool = True,
 ) -> set[str]:
     baseline = _beam_candidates(
         noisy,
@@ -104,8 +124,11 @@ def _build_mode_pool(
         scoring_mode=scoring_mode,
         literal_channel=literal_channel,
         enforce_literal_lock=False,
+        position_vocab=pos_vocab,
     )
     if mode != "swap_typo":
+        return set(baseline)
+    if not swap_typo_expand:
         return set(baseline)
 
     perms = _permutation_candidates(repaired_tokens, cap=96)

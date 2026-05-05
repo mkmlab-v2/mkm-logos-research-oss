@@ -1,0 +1,61 @@
+{
+  "schema": "two_track_fusion_brief_v1",
+  "generated_at_utc": "2026-04-28T05:58:57Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "headline": "Two-track fusion status",
+  "cards": [
+    {
+      "id": "k_summary",
+      "value": {
+        "candidate_count": 20,
+        "survivor_count": 5
+      }
+    },
+    {
+      "id": "shift_score",
+      "value": 0.803353
+    },
+    {
+      "id": "survivor_count",
+      "value": 5
+    },
+    {
+      "id": "top_symbol_by_coupling",
+      "value": "tree_of_knowledge_good_evil"
+    },
+    {
+      "id": "top2_symbols",
+      "value": [
+        "tree_of_knowledge_good_evil",
+        "babel_tower"
+      ]
+    },
+    {
+      "id": "gematria_4d_delta_with_minus_without",
+      "value": 0.048087
+    },
+    {
+      "id": "multi_symbol_gate_status",
+      "value": "GO"
+    },
+    {
+      "id": "multi_symbol_any_promotion_hold",
+      "value": false
+    }
+  ],
+  "storylines": [
+    "K-track narrative is isolated from trade trigger",
+    "T-track applies survivor filter and rollback gates",
+    "Multi-symbol ranking highlights top symbolic hubs for explanation quality",
+    "4D gematria ablation delta quantifies incremental structure, non-trigger only"
+  ],
+  "guardrail": "not_for_direct_trading_signal",
+  "sources": {
+    "multi_symbol_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_resonance_4d_latest.json",
+    "multi_symbol_selector_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_candidate_selector_latest.json",
+    "gematria_ablation_json": "C:\\workspace\\docs\\final\\artifacts\\gematria_4d_ablation_latest.json",
+    "multi_symbol_gate_summary_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_gate_summary_latest.json"
+  }
+}

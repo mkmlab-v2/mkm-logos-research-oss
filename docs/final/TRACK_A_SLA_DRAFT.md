@@ -13,8 +13,8 @@
 
 Reference snapshots are **artifact-bound**; re-run scripts to regenerate.
 
-- **Token economy (Track A bench):** `global_token_saving_rate` on `MULTILENS_PERFORMANCE_EVAL_INPUT_V2` has been on the order of ~0.49 in stored active reports — see `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`.
-- **Reconstruction proxy:** Bench `avg_reconstruction_fidelity_jaccard` for Track A has been on the order of ~0.73 on the same input; literal profiles target higher Jaccard at lower saving — see `COMPRESSION_SLA_POLICY_V1.md`.
+- **Token economy (Track A bench):** `global_token_saving_rate` on `MULTILENS_PERFORMANCE_EVAL_INPUT_V2` is on the order of ~0.47 in the latest stored active report — see `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` (`compression_metrics`).
+- **Reconstruction proxy:** Bench `avg_reconstruction_fidelity_jaccard` on the same input has been on the order of ~0.85 in that snapshot; literal profiles target higher Jaccard at lower saving — see `COMPRESSION_SLA_POLICY_V1.md`.
 
 Meaning: **semantic drift** (lost paraphrase, reordering) is expected at this Jaccard band; clients must not treat output as bitwise-identical to source without separate verification.
 

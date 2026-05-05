@@ -1,0 +1,14 @@
+{
+  "schema": "integrated_governance_config_v1",
+  "version": 1,
+  "policy": {
+    "require_biblical_stability": false,
+    "fallback_regime": "HOLD"
+  },
+  "weights": {
+    "biblical_core": 0.34,
+    "myeongri_v4_1": 0.33,
+    "sasang_strict": 0.33
+  },
+  "notes": "Local deterministic baseline config for integrated governance builder."
+}

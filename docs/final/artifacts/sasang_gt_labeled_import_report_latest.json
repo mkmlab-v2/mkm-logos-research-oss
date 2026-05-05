@@ -1,0 +1,14 @@
+{
+  "schema": "sasang_gt_labeled_import_report_v1",
+  "sheet_csv": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_labeling_sheet_top126_latest.csv",
+  "output_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_labeled_queue_top126_latest.jsonl",
+  "total_rows": 126,
+  "valid_rows": 126,
+  "approved_rows": 0,
+  "invalid_rows": 0,
+  "policy": {
+    "approved_requires_parent": true,
+    "auto_label_forbidden": true,
+    "human_signoff_required": true
+  }
+}

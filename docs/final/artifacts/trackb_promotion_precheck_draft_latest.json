@@ -1,6 +1,6 @@
 {
   "schema": "trackb_promotion_precheck_draft_v1",
-  "generated_at_utc": "2026-04-16T00:28:00Z",
+  "generated_at_utc": "2026-05-02T04:06:13Z",
   "candidate_artifact": "docs/final/artifacts/trackb_quaternion_generalization_v6_round3_exact_guarded_robust_latest.json",
   "artifact_inputs": {
     "robust": "docs/final/artifacts/trackb_quaternion_generalization_v6_round3_exact_guarded_robust_latest.json",
@@ -25,8 +25,8 @@
     "runtime_observation_ms": {
       "split_a_elapsed_ms": 232224,
       "split_b_elapsed_ms": 451858,
-      "weekly_refresh_wall_ms": 680126,
-      "split_b2_standalone_elapsed_ms": 193647
+      "weekly_refresh_wall_ms": 751331,
+      "split_b2_standalone_elapsed_ms": 206201
     },
     "runtime_budget_ok": false,
     "extended_chain_stability_ok": true,
@@ -38,16 +38,16 @@
         "SkipCosine"
       ],
       "exit_code": 0,
-      "elapsed_ms": 680126,
+      "elapsed_ms": 751331,
       "extended_b2_included": false,
-      "note": "Length-64 stress: optional in weekly script (-IncludeExtendedStressB2); standalone run completed 2026-04-16."
+      "note": "Timings optional: pass --weekly-refresh-ms etc. after measured runs. Length-64 B2 often run standalone via run_trackb_top_combo_stress_grid.py."
     }
   },
   "decision": "HOLD_PROMOTION_PRECHECK_DRAFT",
-  "decision_reason": "Research lane: exact/stress quality checks remain strong; weekly refresh completes exit 0 with bounded split A+B1; optional length-64 split B2 also measured (min_exact=1.0). Full wall time still exceeds the 300s reference budget; production promotion remains out of scope.",
+  "decision_reason": "Research lane quality OK; weekly refresh wall time exceeds operational_runtime_budget_ms; production promotion out of scope.",
   "next_actions": [
-    "If total runtime must drop: lower --samples-per-cell-cap on split steps or narrow oov grid.",
-    "Re-run full weekly with -IncludeExtendedStressB2 only when an all-in-one log is required."
+    "If total runtime must drop: lower --samples-per-cell-cap on split steps or narrow OOV grid.",
+    "Re-run build_trackb_promotion_precheck_draft_v1.py with measured --weekly-refresh-ms after weekly refresh."
   ],
   "out_of_scope": "No production promotion, no trading trigger."
 }

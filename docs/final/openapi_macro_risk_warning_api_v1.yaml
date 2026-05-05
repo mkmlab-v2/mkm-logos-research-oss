@@ -1,0 +1,257 @@
+openapi: 3.0.3
+info:
+  title: MKM Macro Risk Warning API (stub v1)
+  version: "1.0.0"
+  description: |
+    HTTP data contract for Track C Macro Risk Warning API.
+    This API provides risk posture states and governance diagnostics for enterprise exposure control.
+    It does not provide buy/sell instructions and does not guarantee returns.
+servers:
+  - url: http://127.0.0.1:8020
+    description: Local stub endpoint
+paths:
+  /v1/risk/warning:
+    post:
+      operationId: getMacroRiskWarning
+      summary: Return current macro risk warning state for a requested asset scope
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MacroRiskWarningRequest"
+            example:
+              client_request_id: "mrw-client-001"
+              asset_scope: "BTC-USD"
+              horizon: "24h"
+              include_evidence_ref: true
+      responses:
+        "200":
+          description: Risk warning state response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MacroRiskWarningResponse"
+              examples:
+                normal_state:
+                  summary: Normal posture
+                  value:
+                    api_contract_version: "1.0.0"
+                    schema_version: macro_risk_warning_api_response_contract_v1
+                    request_id: "mrw_20260430_000101"
+                    timestamp_utc: "2026-04-30T07:30:00Z"
+                    asset_scope: "BTC-USD"
+                    decision_state: "GO"
+                    risk_warning_level: "normal"
+                    confidence_band: "medium"
+                    insight_7:
+                      market_liquidity_stress: 0.22
+                      cross_asset_dislocation: 0.18
+                      crowd_positioning_fragility: 0.27
+                      volatility_regime_shift: 0.24
+                      funding_pressure_signal: 0.19
+                      macro_policy_shock_risk: 0.16
+                      tail_event_pressure: 0.21
+                    regime_context:
+                      primary_regime_id: "post_covid_normalization"
+                      similarity_score: 0.44
+                      secondary_regime_notes:
+                        - "normal volatility cluster"
+                    recommended_operator_posture: "maintain"
+                    ttl_seconds: 900
+                    disclaimer:
+                      not_investment_advice: true
+                      no_buy_sell_instruction: true
+                      no_return_guarantee: true
+                      final_decision_with_operator: true
+                precrash_state:
+                  summary: Elevated stress posture
+                  value:
+                    api_contract_version: "1.0.0"
+                    schema_version: macro_risk_warning_api_response_contract_v1
+                    request_id: "mrw_20260430_000187"
+                    timestamp_utc: "2026-04-30T07:25:00Z"
+                    asset_scope: "BTC-USD"
+                    decision_state: "FORCE_HOLD"
+                    risk_warning_level: "critical"
+                    confidence_band: "high"
+                    insight_7:
+                      market_liquidity_stress: 0.88
+                      cross_asset_dislocation: 0.74
+                      crowd_positioning_fragility: 0.81
+                      volatility_regime_shift: 0.86
+                      funding_pressure_signal: 0.79
+                      macro_policy_shock_risk: 0.68
+                      tail_event_pressure: 0.83
+                    regime_context:
+                      primary_regime_id: "lehman"
+                      similarity_score: 0.77
+                      secondary_regime_notes:
+                        - "high deleveraging pressure signature"
+                        - "crowded-risk unwind pattern"
+                    recommended_operator_posture: "halt_new_entries"
+                    evidence_ref:
+                      artifact_path: "docs/final/artifacts/integrated_governance_v1_latest.json"
+                      artifact_hash_sha256: "REPLACE_WITH_RUNTIME_HASH"
+                    ttl_seconds: 900
+                    disclaimer:
+                      not_investment_advice: true
+                      no_buy_sell_instruction: true
+                      no_return_guarantee: true
+                      final_decision_with_operator: true
+        "400":
+          description: Invalid request body
+        "503":
+          description: Risk engine unavailable
+components:
+  schemas:
+    MacroRiskWarningRequest:
+      type: object
+      required:
+        - client_request_id
+        - asset_scope
+      properties:
+        client_request_id:
+          type: string
+        asset_scope:
+          type: string
+          description: Market symbol or portfolio scope identifier
+        horizon:
+          type: string
+          enum: ["1h", "4h", "24h", "7d"]
+          default: "24h"
+        include_evidence_ref:
+          type: boolean
+          default: false
+    Insight7:
+      type: object
+      required:
+        - market_liquidity_stress
+        - cross_asset_dislocation
+        - crowd_positioning_fragility
+        - volatility_regime_shift
+        - funding_pressure_signal
+        - macro_policy_shock_risk
+        - tail_event_pressure
+      properties:
+        market_liquidity_stress:
+          type: number
+          minimum: 0
+          maximum: 1
+        cross_asset_dislocation:
+          type: number
+          minimum: 0
+          maximum: 1
+        crowd_positioning_fragility:
+          type: number
+          minimum: 0
+          maximum: 1
+        volatility_regime_shift:
+          type: number
+          minimum: 0
+          maximum: 1
+        funding_pressure_signal:
+          type: number
+          minimum: 0
+          maximum: 1
+        macro_policy_shock_risk:
+          type: number
+          minimum: 0
+          maximum: 1
+        tail_event_pressure:
+          type: number
+          minimum: 0
+          maximum: 1
+    RegimeContext:
+      type: object
+      required:
+        - primary_regime_id
+        - similarity_score
+      properties:
+        primary_regime_id:
+          type: string
+        similarity_score:
+          type: number
+          minimum: 0
+          maximum: 1
+        secondary_regime_notes:
+          type: array
+          items:
+            type: string
+    Disclaimer:
+      type: object
+      required:
+        - not_investment_advice
+        - no_buy_sell_instruction
+        - no_return_guarantee
+        - final_decision_with_operator
+      properties:
+        not_investment_advice:
+          type: boolean
+        no_buy_sell_instruction:
+          type: boolean
+        no_return_guarantee:
+          type: boolean
+        final_decision_with_operator:
+          type: boolean
+    EvidenceRef:
+      type: object
+      required:
+        - artifact_path
+        - artifact_hash_sha256
+      properties:
+        artifact_path:
+          type: string
+        artifact_hash_sha256:
+          type: string
+    MacroRiskWarningResponse:
+      type: object
+      required:
+        - api_contract_version
+        - schema_version
+        - request_id
+        - timestamp_utc
+        - asset_scope
+        - decision_state
+        - risk_warning_level
+        - confidence_band
+        - insight_7
+        - regime_context
+        - recommended_operator_posture
+        - ttl_seconds
+        - disclaimer
+      properties:
+        api_contract_version:
+          type: string
+        schema_version:
+          type: string
+        request_id:
+          type: string
+        timestamp_utc:
+          type: string
+          format: date-time
+        asset_scope:
+          type: string
+        decision_state:
+          type: string
+          enum: ["GO", "WATCH", "HOLD", "FORCE_HOLD", "REDUCE_EXPOSURE"]
+        risk_warning_level:
+          type: string
+          enum: ["normal", "elevated", "high", "critical"]
+        confidence_band:
+          type: string
+          enum: ["low", "medium", "high"]
+        insight_7:
+          $ref: "#/components/schemas/Insight7"
+        regime_context:
+          $ref: "#/components/schemas/RegimeContext"
+        recommended_operator_posture:
+          type: string
+          enum: ["maintain", "watch_tighten", "reduce_exposure", "halt_new_entries"]
+        evidence_ref:
+          $ref: "#/components/schemas/EvidenceRef"
+        ttl_seconds:
+          type: integer
+          minimum: 0
+        disclaimer:
+          $ref: "#/components/schemas/Disclaimer"

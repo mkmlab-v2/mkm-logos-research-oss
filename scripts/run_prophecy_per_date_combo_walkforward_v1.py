@@ -67,6 +67,61 @@ def _prior_map(csv_path: Path) -> dict[str, float]:
     return out
 
 
+def _feature_map(csv_path: Path) -> dict[str, dict[str, float]]:
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from scripts.logos_shadow_eval_lib import load_kospi_yf_rows
+
+    rows = load_kospi_yf_rows(csv_path)
+    out: dict[str, dict[str, float]] = {}
+    closes: list[float] = []
+    dates: list[str] = []
+    for r in rows:
+        try:
+            closes.append(float(r["close"]))
+            dates.append(str(r["date"])[:10])
+        except (TypeError, ValueError):
+            continue
+
+    for i in range(1, len(closes)):
+        d = dates[i]
+        c0 = closes[i - 1]
+        if c0 == 0:
+            continue
+        ret_1 = (closes[i] - c0) / c0
+        ret_3 = 0.0
+        ret_5 = 0.0
+        ret_10 = 0.0
+        if i >= 3 and closes[i - 3] != 0:
+            ret_3 = (closes[i - 1] - closes[i - 3]) / closes[i - 3]
+        if i >= 5 and closes[i - 5] != 0:
+            ret_5 = (closes[i - 1] - closes[i - 5]) / closes[i - 5]
+        if i >= 10 and closes[i - 10] != 0:
+            ret_10 = (closes[i - 1] - closes[i - 10]) / closes[i - 10]
+
+        def _mean_abs_ret(k: int) -> float:
+            if i < k:
+                return 0.0
+            vals: list[float] = []
+            for j in range(i - k + 1, i + 1):
+                pc = closes[j - 1]
+                cc = closes[j]
+                if pc == 0:
+                    continue
+                vals.append(abs((cc - pc) / pc))
+            return (sum(vals) / len(vals)) if vals else 0.0
+
+        out[d] = {
+            "ret_1": ret_1,
+            "ret_3": ret_3,
+            "ret_5": ret_5,
+            "ret_10": ret_10,
+            "vol_3": _mean_abs_ret(3),
+            "vol_10": _mean_abs_ret(10),
+        }
+    return out
+
+
 def _sign(x: float | None, dz: float) -> int:
     if x is None:
         return 0
@@ -77,15 +132,75 @@ def _sign(x: float | None, dz: float) -> int:
     return 0
 
 
-def _predict(row: dict[str, Any], params: tuple[float, ...], km: dict[str, float], bm: dict[str, float]) -> str:
-    dz_self, dz_cross, w_self, w_cross, k_bias, up_thr, down_thr = params
+def _dir_sign(v: Any) -> int:
+    d = str(v or "").strip().lower()
+    if d == "bull":
+        return 1
+    if d == "bear":
+        return -1
+    return 0
+
+
+def _predict(
+    row: dict[str, Any],
+    params: tuple[float, ...],
+    km: dict[str, float],
+    bm: dict[str, float],
+    kf: dict[str, dict[str, float]],
+    bf: dict[str, dict[str, float]],
+    *,
+    include_source_direction_signal: bool,
+    include_expanded_prior_features: bool,
+) -> str:
+    if include_source_direction_signal and include_expanded_prior_features:
+        (
+            dz_self,
+            dz_cross,
+            w_self,
+            w_cross,
+            w_source,
+            w_self_mom,
+            w_cross_mom,
+            w_vol_spread,
+            k_bias,
+            up_thr,
+            down_thr,
+        ) = params
+    elif include_source_direction_signal:
+        dz_self, dz_cross, w_self, w_cross, w_source, k_bias, up_thr, down_thr = params
+        w_self_mom = w_cross_mom = 0.0
+        w_vol_spread = 0.0
+    else:
+        dz_self, dz_cross, w_self, w_cross, k_bias, up_thr, down_thr = params
+        w_source = 0.0
+        w_self_mom = w_cross_mom = 0.0
+        w_vol_spread = 0.0
     inst = str(row.get("instrument") or "").strip().lower()
     ed = str(row.get("eval_date") or "").strip()[:10]
     if inst == "kospi":
         self_r, cross_r, bias = km.get(ed), bm.get(ed), k_bias
+        self_f = kf.get(ed) or {}
+        cross_f = bf.get(ed) or {}
     else:
         self_r, cross_r, bias = bm.get(ed), km.get(ed), 0.0
-    score = (w_self * _sign(self_r, dz_self)) + (w_cross * _sign(cross_r, dz_cross)) + bias
+        self_f = bf.get(ed) or {}
+        cross_f = kf.get(ed) or {}
+    src_sig = _dir_sign(row.get("predicted_direction")) if include_source_direction_signal else 0
+    score = (w_self * _sign(self_r, dz_self)) + (w_cross * _sign(cross_r, dz_cross)) + (w_source * src_sig) + bias
+    if include_expanded_prior_features:
+        self_mom_sig = (
+            _sign(self_f.get("ret_3"), dz_self)
+            + _sign(self_f.get("ret_5"), dz_self)
+            + _sign(self_f.get("ret_10"), dz_self)
+        )
+        cross_mom_sig = (
+            _sign(cross_f.get("ret_3"), dz_cross)
+            + _sign(cross_f.get("ret_5"), dz_cross)
+            + _sign(cross_f.get("ret_10"), dz_cross)
+        )
+        score += w_self_mom * self_mom_sig
+        score += w_cross_mom * cross_mom_sig
+        score += w_vol_spread * _sign((self_f.get("vol_3") or 0.0) - (cross_f.get("vol_3") or 0.0), 0.0)
     if score >= up_thr:
         return "bull"
     if score <= down_thr:
@@ -93,37 +208,104 @@ def _predict(row: dict[str, Any], params: tuple[float, ...], km: dict[str, float
     return "neutral"
 
 
-def _acc(rows: list[dict[str, Any]], params: tuple[float, ...], km: dict[str, float], bm: dict[str, float]) -> tuple[float, int]:
+def _acc(
+    rows: list[dict[str, Any]],
+    params: tuple[float, ...],
+    km: dict[str, float],
+    bm: dict[str, float],
+    kf: dict[str, dict[str, float]],
+    bf: dict[str, dict[str, float]],
+    *,
+    include_source_direction_signal: bool,
+    include_expanded_prior_features: bool,
+) -> tuple[float, int]:
     h = 0
     for r in rows:
-        if _predict(r, params, km, bm) == str(r.get("actual_direction") or "").strip().lower():
+        if _predict(
+            r,
+            params,
+            km,
+            bm,
+            kf,
+            bf,
+            include_source_direction_signal=include_source_direction_signal,
+            include_expanded_prior_features=include_expanded_prior_features,
+        ) == str(r.get("actual_direction") or "").strip().lower():
             h += 1
     return (h / len(rows)) if rows else 0.0, h
 
 
-def _param_grid() -> itertools.product:
+def _param_grid(*, include_source_direction_signal: bool, include_expanded_prior_features: bool) -> itertools.product:
     dz_vals = [0.0, 0.01, 0.02, 0.03]
     w_vals = [-1.0, -0.5, 0.0, 0.5, 1.0, 1.5]
+    src_w_vals = [-1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5]
     b_vals = [0.0, 0.5, 1.0]
     up_vals = [0.5, 1.0, 1.5]
     dn_vals = [-0.5, -1.0, -1.5]
-    for p in itertools.product(dz_vals, dz_vals, w_vals, w_vals, b_vals, up_vals, dn_vals):
-        if p[6] >= p[5]:
-            continue
-        yield p
+    ext_w_vals = [-0.5, 0.0, 0.5]
+    if include_source_direction_signal:
+        if include_expanded_prior_features:
+            dz_vals_exp = [0.0, 0.02]
+            w_vals_exp = [-1.0, 0.0, 1.0]
+            src_w_vals_exp = [-1.0, 0.0, 1.0]
+            b_vals_exp = [0.0, 0.5]
+            up_vals_exp = [0.5, 1.0]
+            dn_vals_exp = [-0.5, -1.0]
+            for p in itertools.product(
+                dz_vals_exp,
+                dz_vals_exp,
+                w_vals_exp,
+                w_vals_exp,
+                src_w_vals_exp,
+                ext_w_vals,
+                ext_w_vals,
+                ext_w_vals,
+                b_vals_exp,
+                up_vals_exp,
+                dn_vals_exp,
+            ):
+                if p[10] >= p[9]:
+                    continue
+                yield p
+        else:
+            for p in itertools.product(dz_vals, dz_vals, w_vals, w_vals, src_w_vals, b_vals, up_vals, dn_vals):
+                if p[7] >= p[6]:
+                    continue
+                yield p
+    else:
+        for p in itertools.product(dz_vals, dz_vals, w_vals, w_vals, b_vals, up_vals, dn_vals):
+            if p[6] >= p[5]:
+                continue
+            yield p
 
 
 def _best_params_on_train(
     train_rows: list[dict[str, Any]],
     km: dict[str, float],
     bm: dict[str, float],
+    kf: dict[str, dict[str, float]],
+    bf: dict[str, dict[str, float]],
     *,
     train_objective: str,
-) -> tuple[float, tuple[float, float, float, float, float, float, float]] | None:
-    best: tuple[float, float, tuple[float, float, float, float, float, float, float] | None] = (-1.0, -1.0, None)
+    include_source_direction_signal: bool,
+    include_expanded_prior_features: bool,
+) -> tuple[float, tuple[float, ...]] | None:
+    best: tuple[float, float, tuple[float, ...] | None] = (-1.0, -1.0, None)
     bull_train = sum(1 for r in train_rows if str(r.get("actual_direction") or "").strip().lower() == "bull") / len(train_rows) if train_rows else 0.0
-    for p in _param_grid():
-        a, _ = _acc(train_rows, p, km, bm)
+    for p in _param_grid(
+        include_source_direction_signal=include_source_direction_signal,
+        include_expanded_prior_features=include_expanded_prior_features,
+    ):
+        a, _ = _acc(
+            train_rows,
+            p,
+            km,
+            bm,
+            kf,
+            bf,
+            include_source_direction_signal=include_source_direction_signal,
+            include_expanded_prior_features=include_expanded_prior_features,
+        )
         if train_objective == "margin_vs_bull":
             primary = a - bull_train
             secondary = a
@@ -135,7 +317,37 @@ def _best_params_on_train(
     return (best[1], best[2]) if best[2] is not None else None
 
 
-def _params_to_dict(p: tuple[float, ...]) -> dict[str, float]:
+def _params_to_dict(
+    p: tuple[float, ...],
+    *,
+    include_source_direction_signal: bool,
+    include_expanded_prior_features: bool,
+) -> dict[str, float]:
+    if include_source_direction_signal and include_expanded_prior_features and len(p) >= 11:
+        return {
+            "dz_self": p[0],
+            "dz_cross": p[1],
+            "w_self": p[2],
+            "w_cross": p[3],
+            "w_source_direction": p[4],
+            "w_self_mom": p[5],
+            "w_cross_mom": p[6],
+            "w_vol_spread": p[7],
+            "kospi_bull_bias": p[8],
+            "up_thr": p[9],
+            "down_thr": p[10],
+        }
+    if include_source_direction_signal:
+        return {
+            "dz_self": p[0],
+            "dz_cross": p[1],
+            "w_self": p[2],
+            "w_cross": p[3],
+            "w_source_direction": p[4],
+            "kospi_bull_bias": p[5],
+            "up_thr": p[6],
+            "down_thr": p[7],
+        }
     return {
         "dz_self": p[0],
         "dz_cross": p[1],
@@ -189,6 +401,16 @@ def main() -> int:
         help="How to pick params on train block before scoring test block.",
     )
     ap.add_argument("--n-folds", type=int, default=5, help="Contiguous date blocks (oldest..newest); folds = n_folds-1.")
+    ap.add_argument(
+        "--include-source-direction-signal",
+        action="store_true",
+        help="Include row.predicted_direction as an additional signed feature in grid search.",
+    )
+    ap.add_argument(
+        "--include-expanded-prior-features",
+        action="store_true",
+        help="Include multi-horizon returns and vol spread features in grid search.",
+    )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
@@ -218,6 +440,8 @@ def main() -> int:
 
     km = _prior_map(args.kospi_csv) if args.kospi_csv.is_file() else {}
     bm = _prior_map(args.btc_csv) if args.btc_csv.is_file() else {}
+    kf = _feature_map(args.kospi_csv) if args.kospi_csv.is_file() else {}
+    bf = _feature_map(args.btc_csv) if args.btc_csv.is_file() else {}
 
     fold_specs = _blocked_walkforward_folds(dates, n_folds_effective)
     fold_rows_out: list[dict[str, Any]] = []
@@ -229,12 +453,39 @@ def main() -> int:
         test_set = set(test_dates)
         train = [r for r in rows if str(r.get("eval_date"))[:10] in train_set]
         test = [r for r in rows if str(r.get("eval_date"))[:10] in test_set]
-        fitted = _best_params_on_train(train, km, bm, train_objective=args.train_objective)
+        fitted = _best_params_on_train(
+            train,
+            km,
+            bm,
+            kf,
+            bf,
+            train_objective=args.train_objective,
+            include_source_direction_signal=bool(args.include_source_direction_signal),
+            include_expanded_prior_features=bool(args.include_expanded_prior_features),
+        )
         if fitted is None:
             raise SystemExit(f"fold {fi}: no candidate params")
         _, p = fitted
-        train_acc, train_hit = _acc(train, p, km, bm)
-        test_acc, test_hit = _acc(test, p, km, bm)
+        train_acc, train_hit = _acc(
+            train,
+            p,
+            km,
+            bm,
+            kf,
+            bf,
+            include_source_direction_signal=bool(args.include_source_direction_signal),
+            include_expanded_prior_features=bool(args.include_expanded_prior_features),
+        )
+        test_acc, test_hit = _acc(
+            test,
+            p,
+            km,
+            bm,
+            kf,
+            bf,
+            include_source_direction_signal=bool(args.include_source_direction_signal),
+            include_expanded_prior_features=bool(args.include_expanded_prior_features),
+        )
         bull_test = sum(1 for r in test if str(r.get("actual_direction") or "").strip().lower() == "bull") / len(test) if test else 0.0
         beats = test_acc > bull_test
         test_accs.append(test_acc)
@@ -246,7 +497,11 @@ def main() -> int:
                 "test_dates": test_dates,
                 "n_train_rows": len(train),
                 "n_test_rows": len(test),
-                "best_params_from_train": _params_to_dict(p),
+                "best_params_from_train": _params_to_dict(
+                    p,
+                    include_source_direction_signal=bool(args.include_source_direction_signal),
+                    include_expanded_prior_features=bool(args.include_expanded_prior_features),
+                ),
                 "train": {
                     "accuracy": round(train_acc, 6),
                     "hits": train_hit,
@@ -277,6 +532,8 @@ def main() -> int:
             "btc_csv": str(args.btc_csv),
             "target_instrument": args.target_instrument,
             "train_objective": args.train_objective,
+            "include_source_direction_signal": bool(args.include_source_direction_signal),
+            "include_expanded_prior_features": bool(args.include_expanded_prior_features),
             "n_rows_after_target_filter": len(rows),
             "n_folds": n_folds_effective,
             "n_folds_requested": n_folds_requested,

@@ -1,0 +1,76 @@
+{
+  "schema": "mkm_ai_micro_scale_rollout_policy_v1",
+  "updated_at_utc": "2026-05-02T17:00:00Z",
+  "symbol": "BTCUSDT",
+  "base_size_usd": 10.0,
+  "max_size_usd": 80.0,
+  "current_stage": "micro_live",
+  "stages": [
+    {
+      "id": "shadow",
+      "order": 1,
+      "size_multiplier": 0.0,
+      "min_cycles_before_promotion": 3,
+      "promotion_requires": {
+        "strategy_promotion_ready": true,
+        "health_pass": true,
+        "blockers_pass": true,
+        "nofill_warn_allowed": true,
+        "risk_profile_fresh_required": true,
+        "exchange_fills_24h_min": 0,
+        "max_daily_loss_cap_pct": 1.2
+      }
+    },
+    {
+      "id": "micro_live",
+      "order": 2,
+      "size_multiplier": 1.0,
+      "min_cycles_before_promotion": 6,
+      "promotion_requires": {
+        "strategy_promotion_ready": true,
+        "health_pass": true,
+        "blockers_pass": true,
+        "nofill_warn_allowed": false,
+        "risk_profile_fresh_required": true,
+        "exchange_fills_24h_min": 1,
+        "max_daily_loss_cap_pct": 1.1
+      }
+    },
+    {
+      "id": "scale_l1",
+      "order": 3,
+      "size_multiplier": 1.5,
+      "min_cycles_before_promotion": 8,
+      "promotion_requires": {
+        "strategy_promotion_ready": true,
+        "health_pass": true,
+        "blockers_pass": true,
+        "nofill_warn_allowed": false,
+        "risk_profile_fresh_required": true,
+        "exchange_fills_24h_min": 2,
+        "max_daily_loss_cap_pct": 1.05
+      }
+    },
+    {
+      "id": "scale_l2",
+      "order": 4,
+      "size_multiplier": 2.0,
+      "min_cycles_before_promotion": 10,
+      "promotion_requires": {
+        "strategy_promotion_ready": true,
+        "health_pass": true,
+        "blockers_pass": true,
+        "nofill_warn_allowed": false,
+        "risk_profile_fresh_required": true,
+        "exchange_fills_24h_min": 3,
+        "max_daily_loss_cap_pct": 1.0
+      }
+    }
+  ],
+  "hard_downgrade_rules": {
+    "health_fail": true,
+    "blockers_fail": true,
+    "risk_profile_not_fresh": true,
+    "daily_loss_cap_pct_gt": 1.2
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema_hint": "risk_profile_fact_safe_locked_tactical_fixture_v1",
+  "expires_at": "2030-12-31T23:59:59Z",
+  "trinity_governor": {
+    "mode": "LOCKED_MODE"
+  },
+  "governance_bridge": {
+    "final_action_allowed": false
+  },
+  "market_pulse": {
+    "advance_decline_ratio": 1.21,
+    "foreign_net_buy_krw_eok": 29308,
+    "institution_net_buy_krw_eok": 20098,
+    "theme_leadership_score": 0.86
+  },
+  "notes": "tests/fixtures only — tactical override pass fixture"
+}

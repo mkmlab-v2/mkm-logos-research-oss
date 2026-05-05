@@ -1,0 +1,79 @@
+{
+  "schema": "gematria_4d_coupling_v1",
+  "generated_at_utc": "2026-04-28T05:55:29Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "seed_symbol": "tree_of_knowledge_good_evil",
+  "projection_points": [
+    {
+      "position": 1,
+      "atom_id": "BOUNDARY_COMMAND",
+      "motif_label": "covenantal_boundary",
+      "vector_4d": {
+        "S": 0.790868,
+        "L": 0.616,
+        "K": 0.748887,
+        "M": 0.567
+      },
+      "coupling_strength": 0.680689
+    },
+    {
+      "position": 2,
+      "atom_id": "DESIRE_TRIGGER",
+      "motif_label": "mimetic_desire",
+      "vector_4d": {
+        "S": 0.790868,
+        "L": 0.716,
+        "K": 0.748887,
+        "M": 0.617
+      },
+      "coupling_strength": 0.718189
+    },
+    {
+      "position": 3,
+      "atom_id": "TRANSGRESSION_ACT",
+      "motif_label": "boundary_transgression",
+      "vector_4d": {
+        "S": 0.790868,
+        "L": 0.816,
+        "K": 0.748887,
+        "M": 0.567
+      },
+      "coupling_strength": 0.730689
+    },
+    {
+      "position": 4,
+      "atom_id": "SHAME_AWARENESS",
+      "motif_label": "identity_fragmentation",
+      "vector_4d": {
+        "S": 0.790868,
+        "L": 0.916,
+        "K": 0.748887,
+        "M": 0.567
+      },
+      "coupling_strength": 0.755689
+    },
+    {
+      "position": 5,
+      "atom_id": "EXILE_PATTERN",
+      "motif_label": "sacred_space_loss",
+      "vector_4d": {
+        "S": 0.790868,
+        "L": 1.0,
+        "K": 0.748887,
+        "M": 0.567
+      },
+      "coupling_strength": 0.776689
+    }
+  ],
+  "summary": {
+    "point_count": 5,
+    "mean_coupling_strength": 0.732389,
+    "execution_policy": "analysis_only_non_trigger"
+  },
+  "sources": {
+    "symbolic_json": "C:\\workspace\\docs\\final\\artifacts\\symbolic_topology_insight_latest.json",
+    "bridge_json": "C:\\workspace\\docs\\final\\artifacts\\scholarly_symbol_bridge_latest.json"
+  }
+}

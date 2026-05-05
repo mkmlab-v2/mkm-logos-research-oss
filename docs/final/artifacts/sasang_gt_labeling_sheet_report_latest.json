@@ -1,0 +1,22 @@
+{
+  "schema": "sasang_gt_labeling_sheet_report_v1",
+  "generated_at_utc": "2026-04-29T00:00:04Z",
+  "queue_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_expansion_priority_top126_latest.jsonl",
+  "sheet_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_labeling_sheet_top126_latest.csv",
+  "row_count": 126,
+  "required_columns_for_merge": [
+    "sample_id",
+    "approved_parent",
+    "label_status"
+  ],
+  "label_status_allowed": [
+    "PENDING_HUMAN_LABEL",
+    "APPROVED_HUMAN_LABEL",
+    "REJECTED_HUMAN_LABEL"
+  ],
+  "policy": {
+    "human_label_required": true,
+    "auto_label_forbidden": true,
+    "track_b_to_a_autobind_forbidden": true
+  }
+}

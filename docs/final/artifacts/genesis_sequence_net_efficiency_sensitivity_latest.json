@@ -1,0 +1,404 @@
+{
+  "schema": "genesis_sequence_net_efficiency_sensitivity_v1",
+  "generated_at_utc": "2026-04-28T21:30:04+00:00",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "inputs": {
+    "sweep_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_sequence_compression_sweep_latest.json",
+    "nodes_csv": [
+      1,
+      5,
+      20,
+      50
+    ],
+    "daily_sync_bytes_csv": [
+      1048576,
+      10485760,
+      52428800
+    ],
+    "daily_message_count_csv": [
+      50000,
+      200000,
+      1000000
+    ]
+  },
+  "scenario_count": 36,
+  "scenarios": [
+    {
+      "nodes": 1,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 20.97152,
+      "pointer_net_break_even_length_chars": 20,
+      "vector4_net_break_even_length_chars": 20,
+      "pointer_net_saving_rate_at_400_chars": 0.9700242938437662
+    },
+    {
+      "nodes": 1,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 5.24288,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9862981065700983
+    },
+    {
+      "nodes": 1,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 1.048576,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9906377899637868
+    },
+    {
+      "nodes": 1,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 209.7152,
+      "pointer_net_break_even_length_chars": 120,
+      "vector4_net_break_even_length_chars": 120,
+      "pointer_net_saving_rate_at_400_chars": 0.7747385411277806
+    },
+    {
+      "nodes": 1,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 52.4288,
+      "pointer_net_break_even_length_chars": 40,
+      "vector4_net_break_even_length_chars": 40,
+      "pointer_net_saving_rate_at_400_chars": 0.9374766683911019
+    },
+    {
+      "nodes": 1,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 10.48576,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 20,
+      "pointer_net_saving_rate_at_400_chars": 0.9808735023279875
+    },
+    {
+      "nodes": 1,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 1048.576,
+      "pointer_net_break_even_length_chars": 800,
+      "vector4_net_break_even_length_chars": 800,
+      "pointer_net_saving_rate_at_400_chars": -0.09319813760993267
+    },
+    {
+      "nodes": 1,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 262.144,
+      "pointer_net_break_even_length_chars": 120,
+      "vector4_net_break_even_length_chars": 120,
+      "pointer_net_saving_rate_at_400_chars": 0.7204924987066735
+    },
+    {
+      "nodes": 1,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 52.4288,
+      "pointer_net_break_even_length_chars": 40,
+      "vector4_net_break_even_length_chars": 40,
+      "pointer_net_saving_rate_at_400_chars": 0.9374766683911019
+    },
+    {
+      "nodes": 5,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 4.194304,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9873830274185205
+    },
+    {
+      "nodes": 5,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 1.048576,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9906377899637868
+    },
+    {
+      "nodes": 5,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 0.2097152,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9915057266425246
+    },
+    {
+      "nodes": 5,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 41.94304,
+      "pointer_net_break_even_length_chars": 40,
+      "vector4_net_break_even_length_chars": 40,
+      "pointer_net_saving_rate_at_400_chars": 0.9483258768753233
+    },
+    {
+      "nodes": 5,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 10.48576,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 20,
+      "pointer_net_saving_rate_at_400_chars": 0.9808735023279875
+    },
+    {
+      "nodes": 5,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 2.097152,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9895528691153648
+    },
+    {
+      "nodes": 5,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 209.7152,
+      "pointer_net_break_even_length_chars": 120,
+      "vector4_net_break_even_length_chars": 120,
+      "pointer_net_saving_rate_at_400_chars": 0.7747385411277806
+    },
+    {
+      "nodes": 5,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 52.4288,
+      "pointer_net_break_even_length_chars": 40,
+      "vector4_net_break_even_length_chars": 40,
+      "pointer_net_saving_rate_at_400_chars": 0.9374766683911019
+    },
+    {
+      "nodes": 5,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 10.48576,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 20,
+      "pointer_net_saving_rate_at_400_chars": 0.9808735023279875
+    },
+    {
+      "nodes": 20,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 1.048576,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9906377899637868
+    },
+    {
+      "nodes": 20,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 0.262144,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9914514806001035
+    },
+    {
+      "nodes": 20,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 0.0524288,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9916684647697879
+    },
+    {
+      "nodes": 20,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 10.48576,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 20,
+      "pointer_net_saving_rate_at_400_chars": 0.9808735023279875
+    },
+    {
+      "nodes": 20,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 2.62144,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9890104086911536
+    },
+    {
+      "nodes": 20,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 0.524288,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.991180250387998
+    },
+    {
+      "nodes": 20,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 52.4288,
+      "pointer_net_break_even_length_chars": 40,
+      "vector4_net_break_even_length_chars": 40,
+      "pointer_net_saving_rate_at_400_chars": 0.9374766683911019
+    },
+    {
+      "nodes": 20,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 13.1072,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 20,
+      "pointer_net_saving_rate_at_400_chars": 0.9781612002069322
+    },
+    {
+      "nodes": 20,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 2.62144,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9890104086911536
+    },
+    {
+      "nodes": 50,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 0.4194304,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9912887424728402
+    },
+    {
+      "nodes": 50,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 0.1048576,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9916142187273668
+    },
+    {
+      "nodes": 50,
+      "daily_sync_bytes": 1048576,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 0.02097152,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9917010123952406
+    },
+    {
+      "nodes": 50,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 4.194304,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9873830274185205
+    },
+    {
+      "nodes": 50,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 1.048576,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9906377899637868
+    },
+    {
+      "nodes": 50,
+      "daily_sync_bytes": 10485760,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 0.2097152,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9915057266425246
+    },
+    {
+      "nodes": 50,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 50000,
+      "amortized_sync_bytes_per_message": 20.97152,
+      "pointer_net_break_even_length_chars": 20,
+      "vector4_net_break_even_length_chars": 20,
+      "pointer_net_saving_rate_at_400_chars": 0.9700242938437662
+    },
+    {
+      "nodes": 50,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 200000,
+      "amortized_sync_bytes_per_message": 5.24288,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9862981065700983
+    },
+    {
+      "nodes": 50,
+      "daily_sync_bytes": 52428800,
+      "daily_message_count": 1000000,
+      "amortized_sync_bytes_per_message": 1.048576,
+      "pointer_net_break_even_length_chars": 10,
+      "vector4_net_break_even_length_chars": 10,
+      "pointer_net_saving_rate_at_400_chars": 0.9906377899637868
+    }
+  ],
+  "summary": {
+    "pointer_99pct_zone_count": 13,
+    "pointer_99pct_zone_sample": [
+      {
+        "nodes": 1,
+        "daily_sync_bytes": 1048576,
+        "daily_message_count": 1000000,
+        "amortized_sync_bytes_per_message": 1.048576,
+        "pointer_net_break_even_length_chars": 10,
+        "vector4_net_break_even_length_chars": 10,
+        "pointer_net_saving_rate_at_400_chars": 0.9906377899637868
+      },
+      {
+        "nodes": 5,
+        "daily_sync_bytes": 1048576,
+        "daily_message_count": 200000,
+        "amortized_sync_bytes_per_message": 1.048576,
+        "pointer_net_break_even_length_chars": 10,
+        "vector4_net_break_even_length_chars": 10,
+        "pointer_net_saving_rate_at_400_chars": 0.9906377899637868
+      },
+      {
+        "nodes": 5,
+        "daily_sync_bytes": 1048576,
+        "daily_message_count": 1000000,
+        "amortized_sync_bytes_per_message": 0.2097152,
+        "pointer_net_break_even_length_chars": 10,
+        "vector4_net_break_even_length_chars": 10,
+        "pointer_net_saving_rate_at_400_chars": 0.9915057266425246
+      },
+      {
+        "nodes": 20,
+        "daily_sync_bytes": 1048576,
+        "daily_message_count": 50000,
+        "amortized_sync_bytes_per_message": 1.048576,
+        "pointer_net_break_even_length_chars": 10,
+        "vector4_net_break_even_length_chars": 10,
+        "pointer_net_saving_rate_at_400_chars": 0.9906377899637868
+      },
+      {
+        "nodes": 20,
+        "daily_sync_bytes": 1048576,
+        "daily_message_count": 200000,
+        "amortized_sync_bytes_per_message": 0.262144,
+        "pointer_net_break_even_length_chars": 10,
+        "vector4_net_break_even_length_chars": 10,
+        "pointer_net_saving_rate_at_400_chars": 0.9914514806001035
+      }
+    ],
+    "note": "99% zone uses pointer_net_saving_rate_at_400_chars >= 0.99 criterion."
+  }
+}

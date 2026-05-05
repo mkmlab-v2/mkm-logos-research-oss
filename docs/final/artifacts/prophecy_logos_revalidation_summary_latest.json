@@ -1,0 +1,386 @@
+{
+  "schema": "prophecy_logos_revalidation_summary_v1",
+  "generated_at_utc": "2026-04-29T10:11:15Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "status": "OK",
+  "inputs": {
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_30y_dual_latest.json",
+    "sidecar_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_insight_sidecar_30y_latest.json",
+    "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+    "target_instrument": "kospi",
+    "fee_bps": 5.0,
+    "promotion_gate_json": "C:\\workspace\\docs\\final\\artifacts\\role_router_shadow_forward_validation_gate_v1.json"
+  },
+  "outputs": {
+    "lens_output": "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_lens_combo_latest.json",
+    "router_output": "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_role_router_opt_latest.json",
+    "oos_output": "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_oos_gate_latest.json",
+    "bull_lens_output": "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_lens_combo_bull_only_latest.json",
+    "bear_lens_output": "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_lens_combo_bear_only_latest.json"
+  },
+  "runs": {
+    "lens_combo_backtest": {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "C:\\workspace\\scripts\\run_prophecy_lens_combo_backtest_v1.py",
+        "--score-json",
+        "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_30y_dual_latest.json",
+        "--sidecar-json",
+        "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_insight_sidecar_30y_latest.json",
+        "--btc-csv",
+        "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+        "--target-instrument",
+        "kospi",
+        "--fee-bps",
+        "5.0",
+        "--annual-trading-days",
+        "252",
+        "--walkforward-mode",
+        "expanding",
+        "--walkforward-test-window-rows",
+        "10",
+        "--walkforward-min-train-rows",
+        "30",
+        "--output",
+        "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_lens_combo_latest.json"
+      ],
+      "returncode": 0,
+      "stdout": "WROTE: C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_lens_combo_latest.json\nTOP=myeongni+sasang cagr=0.012551 mdd=-0.16509",
+      "stderr": ""
+    },
+    "role_router_multiscenario_opt": {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "C:\\workspace\\scripts\\run_prophecy_role_router_multiscenario_opt_v1.py",
+        "--score-json",
+        "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_30y_dual_latest.json",
+        "--sidecar-json",
+        "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_insight_sidecar_30y_latest.json",
+        "--btc-csv",
+        "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+        "--target-instrument",
+        "kospi",
+        "--fee-bps",
+        "5.0",
+        "--annual-trading-days",
+        "252",
+        "--oos-days-grid",
+        "252",
+        "--month-lookback-grid",
+        "63",
+        "--neutral-size-grid",
+        "0.5",
+        "--strength-aligned-grid",
+        "1.0",
+        "--strength-neutral-grid",
+        "0.5,0.6",
+        "--strength-conflict-grid",
+        "0.1,0.2",
+        "--coord-policies",
+        "off,confirm_only,regime_transition_only",
+        "--coord-deadzone-grid",
+        "0.005",
+        "--neutral-base-sources",
+        "off,coord",
+        "--top-k",
+        "20",
+        "--promotion-gate-json",
+        "C:\\workspace\\docs\\final\\artifacts\\role_router_shadow_forward_validation_gate_v1.json",
+        "--output",
+        "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_role_router_opt_latest.json"
+      ],
+      "returncode": 0,
+      "stdout": "WROTE: C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_role_router_opt_latest.json\nBEST oos_days=252 robust_score=2.24919 oos_mdd=-0.060533",
+      "stderr": ""
+    },
+    "strict_oos_gate": {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "C:\\workspace\\scripts\\run_prophecy_lens_role_router_oos_gate_v1.py",
+        "--score-json",
+        "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_30y_dual_latest.json",
+        "--sidecar-json",
+        "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_insight_sidecar_30y_latest.json",
+        "--btc-csv",
+        "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+        "--target-instrument",
+        "kospi",
+        "--fee-bps",
+        "5.0",
+        "--annual-trading-days",
+        "252",
+        "--oos-tail-days",
+        "252",
+        "--month-lookback-grid",
+        "21,63,126",
+        "--neutral-size-grid",
+        "0.3,0.5,0.7",
+        "--gate-min-hit-rate",
+        "0.52",
+        "--gate-max-mdd",
+        "-0.25",
+        "--gate-min-sharpe",
+        "0.0",
+        "--gate-min-total-return",
+        "0.0",
+        "--output",
+        "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_oos_gate_latest.json"
+      ],
+      "returncode": 0,
+      "stdout": "WROTE: C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_oos_gate_latest.json\ngate_status=GO_OOS_PASS",
+      "stderr": ""
+    },
+    "bull_only_lens_combo_backtest": {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "C:\\workspace\\scripts\\run_prophecy_lens_combo_backtest_v1.py",
+        "--score-json",
+        "C:\\workspace\\logos_reval_xsl8w_15\\score_kospi_bull.json",
+        "--sidecar-json",
+        "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_insight_sidecar_30y_latest.json",
+        "--btc-csv",
+        "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+        "--target-instrument",
+        "kospi",
+        "--fee-bps",
+        "5.0",
+        "--annual-trading-days",
+        "252",
+        "--walkforward-mode",
+        "expanding",
+        "--walkforward-test-window-rows",
+        "10",
+        "--walkforward-min-train-rows",
+        "30",
+        "--output",
+        "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_lens_combo_bull_only_latest.json"
+      ],
+      "returncode": 0,
+      "stdout": "WROTE: C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_lens_combo_bull_only_latest.json\nTOP=myeongni+sasang cagr=0.013989 mdd=-0.084841",
+      "stderr": ""
+    },
+    "bear_only_lens_combo_backtest": {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "C:\\workspace\\scripts\\run_prophecy_lens_combo_backtest_v1.py",
+        "--score-json",
+        "C:\\workspace\\logos_reval_08pz1bf2\\score_kospi_bear.json",
+        "--sidecar-json",
+        "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_insight_sidecar_30y_latest.json",
+        "--btc-csv",
+        "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
+        "--target-instrument",
+        "kospi",
+        "--fee-bps",
+        "5.0",
+        "--annual-trading-days",
+        "252",
+        "--walkforward-mode",
+        "expanding",
+        "--walkforward-test-window-rows",
+        "10",
+        "--walkforward-min-train-rows",
+        "30",
+        "--output",
+        "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_lens_combo_bear_only_latest.json"
+      ],
+      "returncode": 0,
+      "stdout": "WROTE: C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_lens_combo_bear_only_latest.json\nTOP=logos cagr=7.552764 mdd=0.0",
+      "stderr": ""
+    },
+    "shadow_forward_validation_decision": {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "C:\\workspace\\scripts\\check_role_router_shadow_forward_validation_v1.py",
+        "--gate-json",
+        "C:\\workspace\\docs\\final\\artifacts\\role_router_shadow_forward_validation_gate_v1.json"
+      ],
+      "returncode": 0,
+      "stdout": "WROTE: C:\\workspace\\reports\\role_router_shadow_forward_validation_decision_latest.json\nAUDIT_APPEND: C:\\workspace\\reports\\role_router_shadow_forward_validation_decision_log.jsonl\nfinal_decision=GO_LIVE_CANDIDATE",
+      "stderr": ""
+    }
+  },
+  "findings": {
+    "logos_vs_nonlogos": {
+      "best_logos_including": {
+        "strategy_id": "logos+myeongni+sasang",
+        "lenses": [
+          "logos",
+          "myeongni",
+          "sasang"
+        ],
+        "use_coordinator": false,
+        "metrics": {
+          "total_return": -0.700948,
+          "cagr": -0.07323,
+          "mdd": -0.788042,
+          "sharpe": -0.318163,
+          "directional_hit_rate_active": 0.44075
+        }
+      },
+      "best_non_logos": {
+        "strategy_id": "myeongni+sasang",
+        "lenses": [
+          "myeongni",
+          "sasang"
+        ],
+        "use_coordinator": false,
+        "metrics": {
+          "total_return": 0.21895,
+          "cagr": 0.012551,
+          "mdd": -0.16509,
+          "sharpe": 0.239223,
+          "directional_hit_rate_active": 0.576923
+        }
+      },
+      "delta_nonlogos_minus_logos": {
+        "total_return": 0.919898,
+        "cagr": 0.085781,
+        "mdd": 0.6229520000000001,
+        "sharpe": 0.5573859999999999,
+        "hit_rate_active": 0.136173
+      }
+    },
+    "bull_only_best_nonlogos": {
+      "strategy_id": "myeongni+sasang",
+      "lenses": [
+        "myeongni",
+        "sasang"
+      ],
+      "metrics": {
+        "total_return": 0.117177,
+        "cagr": 0.013989,
+        "mdd": -0.084841,
+        "sharpe": 0.233584,
+        "directional_hit_rate_active": 0.571429
+      }
+    },
+    "bear_only_best_nonlogos": {
+      "strategy_id": "myeongni+sasang",
+      "lenses": [
+        "myeongni",
+        "sasang"
+      ],
+      "metrics": {
+        "total_return": 0.089949,
+        "cagr": 0.012494,
+        "mdd": -0.096,
+        "sharpe": 0.273205,
+        "directional_hit_rate_active": 0.666667
+      }
+    },
+    "best_router_candidate": {
+      "oos_days": 252,
+      "params": {
+        "month_lookback_days": 63,
+        "neutral_size": 0.5,
+        "strength_aligned": 1.0,
+        "strength_neutral": 0.6,
+        "strength_conflict": 0.1,
+        "coord_policy": "confirm_only",
+        "coord_deadzone": 0.005,
+        "neutral_base_source": "coord"
+      },
+      "train_metrics": {
+        "n_days": 3748,
+        "n_active_days": 1705,
+        "directional_hit_rate_active": 0.503812,
+        "win_rate_active": 0.504985,
+        "total_return": 0.200881,
+        "cagr": 0.012384,
+        "mdd": -0.252255,
+        "sharpe": 0.239945,
+        "sortino": 0.281089
+      },
+      "oos_metrics": {
+        "n_days": 252,
+        "n_active_days": 149,
+        "directional_hit_rate_active": 0.583893,
+        "win_rate_active": 0.583893,
+        "total_return": 0.376837,
+        "cagr": 0.376837,
+        "mdd": -0.060533,
+        "sharpe": 2.083889,
+        "sortino": 3.082682
+      },
+      "robust_score": 2.24919
+    },
+    "router_selection_policy": {
+      "policy_id": "gate_pass_first_then_robustness_v1",
+      "promotion_gate_ref": "C:\\workspace\\docs\\final\\artifacts\\role_router_shadow_forward_validation_gate_v1.json",
+      "gate_pass_selected": true,
+      "gate_pass_count": 12,
+      "selection_mode": "gate_pass_first_then_robustness"
+    },
+    "strict_oos_gate": {
+      "go": true,
+      "status": "GO_OOS_PASS",
+      "checks": {
+        "oos_hit_rate_pass": true,
+        "oos_mdd_pass": true,
+        "oos_sharpe_pass": true,
+        "oos_total_return_pass": true
+      },
+      "thresholds": {
+        "min_hit_rate": 0.52,
+        "max_mdd_floor": -0.25,
+        "min_sharpe": 0.0,
+        "min_total_return": 0.0
+      }
+    },
+    "oos_window_sensitivity": [
+      {
+        "oos_tail_days": 60,
+        "run_returncode": 0,
+        "gate_status": "HOLD_OOS_FAIL",
+        "go": false,
+        "checks": {
+          "oos_hit_rate_pass": false,
+          "oos_mdd_pass": true,
+          "oos_sharpe_pass": true,
+          "oos_total_return_pass": true
+        },
+        "output": "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_oos_gate_60d_latest.json"
+      },
+      {
+        "oos_tail_days": 120,
+        "run_returncode": 0,
+        "gate_status": "GO_OOS_PASS",
+        "go": true,
+        "checks": {
+          "oos_hit_rate_pass": true,
+          "oos_mdd_pass": true,
+          "oos_sharpe_pass": true,
+          "oos_total_return_pass": true
+        },
+        "output": "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_oos_gate_120d_latest.json"
+      },
+      {
+        "oos_tail_days": 252,
+        "run_returncode": 0,
+        "gate_status": "GO_OOS_PASS",
+        "go": true,
+        "checks": {
+          "oos_hit_rate_pass": true,
+          "oos_mdd_pass": true,
+          "oos_sharpe_pass": true,
+          "oos_total_return_pass": true
+        },
+        "output": "C:\\workspace\\docs\\final\\artifacts\\prophecy_logos_revalidation_oos_gate_252d_latest.json"
+      }
+    ],
+    "shadow_forward_validation_decision": {
+      "final_decision": "GO_LIVE_CANDIDATE",
+      "checks_passed": true,
+      "thresholds_passed": true,
+      "failed_reasons": []
+    },
+    "logos_directional_viable_under_current_setup": false
+  },
+  "next_checks": [
+    "Inspect edge-path attribution for triggered logos warnings.",
+    "Re-run with alternate label windows for directional target.",
+    "Stress-test with separate bull/bear subperiod slices."
+  ]
+}

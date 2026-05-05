@@ -1,0 +1,106 @@
+{
+  "schema": "global_atom_network_academic_onepager_v1",
+  "generated_at_utc": "2026-04-28T10:04:30Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "title_en": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness",
+  "executive_summary_en": [
+    "We encode high-complexity narrative corpora into atom-level structure and compute global topological similarity beyond lexical overlap.",
+    "Staged full-canon run yields large-scale gated topology with verse-level ingest and stage-complete coverage.",
+    "Integrated drift/negative-control/counterfactual gates remain GO, supporting bounded robustness claims."
+  ],
+  "key_facts": {
+    "node_count": 7477,
+    "edge_count": 3051269,
+    "old_new_cross_edges": 1115,
+    "phase_transition_signal": "present",
+    "gate_status": "GO",
+    "counterfactual_mean_gap": 0.362182,
+    "batch_stages_total": 5,
+    "batch_stages_ok": 5,
+    "batch_source_mode": "event_level_ingest"
+  },
+  "method_outline_en": [
+    "Atomize event-level candidates and assign symbolic sequence priors.",
+    "Build pairwise similarity matrix and gate-passed topological edges.",
+    "Run drift + negative-control + counterfactual gate stack before external reporting."
+  ],
+  "risk_notes_en": [
+    "N^2 similarity scaling requires staged expansion and compute budgeting.",
+    "4D mapping can accumulate synchronization noise; ablation and counterfactual checks remain mandatory.",
+    "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
+  ],
+  "stage_breakdown": [
+    {
+      "stage": "genesis",
+      "target_count": 512,
+      "node_count": 327,
+      "edge_count": 29539,
+      "phase_transition_signal": "weak",
+      "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon\\20260428T094734Z_genesis_phase_report.json"
+    },
+    {
+      "stage": "torah",
+      "target_count": 2048,
+      "node_count": 1245,
+      "edge_count": 472521,
+      "phase_transition_signal": "present",
+      "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon\\20260428T094734Z_torah_phase_report.json"
+    },
+    {
+      "stage": "prophets",
+      "target_count": 3072,
+      "node_count": 1203,
+      "edge_count": 406698,
+      "phase_transition_signal": "present",
+      "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon\\20260428T094734Z_prophets_phase_report.json"
+    },
+    {
+      "stage": "gospels",
+      "target_count": 2048,
+      "node_count": 606,
+      "edge_count": 142511,
+      "phase_transition_signal": "present",
+      "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon\\20260428T094734Z_gospels_phase_report.json"
+    },
+    {
+      "stage": "full_canon",
+      "target_count": 4096,
+      "node_count": 4096,
+      "edge_count": 2000000,
+      "phase_transition_signal": "weak",
+      "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon\\20260428T095207Z_full_canon_phase_report.json"
+    }
+  ],
+  "run_lineage": {
+    "run_stamp": null,
+    "start_stage": null,
+    "end_stage": null,
+    "source_mode": "event_level_ingest",
+    "stages_total": 5,
+    "stages_ok": 5
+  },
+  "reproducibility": {
+    "recommended_commands": [
+      "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_global_atom_full_canon_batch_v1.ps1 -UseEventSource",
+      "py scripts/build_global_atom_full_canon_consolidated_manifest_v1.py",
+      "py scripts/build_global_atom_full_canon_batch_report_v1.py --stages-json docs/final/artifacts/global_atom_full_canon/global_atom_full_canon_consolidated_manifest_latest.json --output-json docs/final/artifacts/global_atom_full_canon_batch_report_latest.json"
+    ]
+  },
+  "artifact_packet": {
+    "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_core100_phase_transition_report_latest.json",
+    "similarity_matrix_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_core100_similarity_matrix_latest.json",
+    "full_canon_batch_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon_batch_report_latest.json",
+    "gate_summary_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_gate_summary_latest.json",
+    "counterfactual_comparison_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_counterfactual_comparison_latest.json",
+    "sample_node_ids": [
+      "genesis::event.001",
+      "exodus::event.002",
+      "gospel::event.003",
+      "aramaic::event.004",
+      "genesis::event.005",
+      "exodus::event.006"
+    ]
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "examples": [
+    {
+      "message_type": "telemetry_ingest",
+      "schema_version": "v1",
+      "payload": {
+        "farm_id": "geumsan_farm_01",
+        "zone_id": "zone_01",
+        "ts_utc": "2026-04-28T05:45:00Z",
+        "timezone": "Asia/Seoul",
+        "soil_moisture_pct": 21.3,
+        "soil_temp_c": 18.4,
+        "soil_ec_us_cm": 1320,
+        "line_pressure_kpa": 185,
+        "flow_lpm": 42.5,
+        "device_battery_pct": 77,
+        "comm_ok": true
+      }
+    },
+    {
+      "message_type": "fermentation_batch_register",
+      "schema_version": "v1",
+      "payload": {
+        "farm_id": "geumsan_farm_01",
+        "zone_id": "zone_01",
+        "ts_utc": "2026-04-28T04:00:00Z",
+        "timezone": "Asia/Seoul",
+        "batch_id": "batch_20260428_A",
+        "brew_start_ts_utc": "2026-04-27T00:00:00Z",
+        "brew_end_ts_utc": "2026-04-28T00:00:00Z",
+        "batch_ph": 6.2,
+        "batch_ec_us_cm": 2100,
+        "operator_confirmed": true,
+        "anomaly_flag": false,
+        "notes": "normal smell, no foam overflow"
+      }
+    },
+    {
+      "message_type": "control_command",
+      "schema_version": "v1",
+      "payload": {
+        "farm_id": "geumsan_farm_01",
+        "zone_id": "zone_01",
+        "ts_utc": "2026-04-28T05:46:00Z",
+        "timezone": "Asia/Seoul",
+        "command_id": "cmd_20260428_001",
+        "mode": "auto",
+        "target": "pump",
+        "action": "on",
+        "reason_code": "soil_dryness_trigger",
+        "max_runtime_sec": 900,
+        "requested_by": "ai_scheduler"
+      }
+    },
+    {
+      "message_type": "control_ack",
+      "schema_version": "v1",
+      "payload": {
+        "farm_id": "geumsan_farm_01",
+        "zone_id": "zone_01",
+        "ts_utc": "2026-04-28T05:46:03Z",
+        "timezone": "Asia/Seoul",
+        "command_id": "cmd_20260428_001",
+        "target": "pump",
+        "action": "on",
+        "ack_status": "executed",
+        "ack_message": "relay_on_confirmed"
+      }
+    },
+    {
+      "message_type": "decision_log_event",
+      "schema_version": "v1",
+      "payload": {
+        "farm_id": "geumsan_farm_01",
+        "zone_id": "zone_01",
+        "ts_utc": "2026-04-28T05:46:00Z",
+        "timezone": "Asia/Seoul",
+        "decision_id": "dec_20260428_001",
+        "decision": "execute",
+        "reason_code": "soil_dryness_trigger",
+        "input_snapshot": {
+          "soil_moisture_pct": 21.3,
+          "soil_temp_c": 18.4,
+          "soil_ec_us_cm": 1320,
+          "forecast_rain_mm_12h": 0.6,
+          "comm_ok": true
+        },
+        "mode": "auto",
+        "command_id": "cmd_20260428_001",
+        "command_ack_status": "executed"
+      }
+    },
+    {
+      "message_type": "alarm_event",
+      "schema_version": "v1",
+      "payload": {
+        "farm_id": "geumsan_farm_01",
+        "zone_id": "zone_01",
+        "ts_utc": "2026-04-28T06:10:00Z",
+        "timezone": "Asia/Seoul",
+        "alarm_id": "alarm_20260428_014",
+        "severity": "critical",
+        "alarm_code": "pressure_anomaly",
+        "message": "Line pressure dropped below threshold during run",
+        "requires_ack": true,
+        "acked_by": "",
+        "acked_ts_utc": ""
+      }
+    }
+  ]
+}

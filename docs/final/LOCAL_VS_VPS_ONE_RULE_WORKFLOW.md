@@ -75,13 +75,15 @@
 VPS에 **비트코인만 잘린 폴더**만 두지 말고, **모노레포 전체를 한 번 클론**한 뒤 실행은 **`projects/bitcoin-trading`만** 쓴다. `git pull` 한 번에 **래퍼(`start_live_trading.py`)·데몬·`AGENTS.md`**가 같이 따라오고, 레포 밖 단독 나무(`/opt/bitcoin-trading`만)와 **파일 누락·경로 불일치**가 반복되지 않는다.
 
 1. VPS에 모노레포 클론 (이미 있으면 그 경로 사용). **여러 클론이 있으면** 로컬 `scripts/deploy/ship_to_vps.ps1` 기본 `VpsRepoPath`는 **`/opt/mkm-lab-workspace-v2`** 이다. 그래도 **최종 본선은 `pm2 show <앱이름>`의 `exec cwd`(모노레포 루트)** 로 확정한다 — destiny 등 **다른 경로**에서만 `git pull`/`sync` 하면 본선 프로세스와 파일이 어긋난다. Fact-Safe 리스크 JSON 반영 절차: `docs/final/FINANCIAL_PROPHECY_VPS_LIVE_TRADING_DIRECTIVE_V1.md`.
-2. 예전 **단독 `/opt/bitcoin-trading` 트리**에만 있던 것 중 레포에 없는 것만 이식: **`config/trading_config.yaml`** 커스텀, **`.env`**(비밀) — 클론 루트 또는 `projects/bitcoin-trading/` **한 곳**만 팀 규칙으로 고정.
+2. 예전 **단독 `/opt/bitcoin-trading` 트리**에만 있던 것 중 레포에 없는 것만 이식: **`config/trading_config.yaml`** 커스텀, **`.env`**(비밀). **모노레포 PM2(`cwd`=레포 루트)** 이면 `projects/bitcoin-trading/scripts/start_24h_daemon.py`가 **우선 `…/workspace/.env`** 를 읽는다(파일이 없을 때만 레거시 `projects/.env`). **단독 클론**으로 `cwd`가 `projects/bitcoin-trading`만이면 그 트리의 `.env`가 우선이다. 팀은 **“어느 `.env`가 진짜인지”**를 한 번 정해 두고, `pm2 show`의 cwd와 항상 같이 검증한다.
 3. **PM2:** **`cwd`** = **모노레포 루트**, **`script`** = **`projects/bitcoin-trading/start_live_trading.py`**.
 4. 기동 확인 후 옛 단독 트리는 **백업만 남기고 중지**(혼선 방지).
 
 **차선(비추천):** 레포 밖에 디렉터리만 만들고 래퍼 파일만 복사하는 **최소 패치**는 다음 `pull`과 금방 어긋난다.
 
 **한 줄:** 모노레포 클론 1개 + PM2가 **`projects/bitcoin-trading/start_live_trading.py`** 를 가리키게 맞춘다.
+
+**실매매(메인넷 주문)만 추가로:** 사람 승인 후, 루트 `.env`에 **`TESTNET=false`**, **`ENABLE_TRADING=true`** — 미설정이면 `projects/bitcoin-trading/config/trading_config.yaml`의 `testnet` / `enable_live_trading` 기본값을 따른다. 기동 로그는 `start_24h_daemon.py`가 최종 판정에 가깝다. 로컬/VPS에서 비밀 출력 없이 점검: `powershell -NoProfile -ExecutionPolicy Bypass -File projects/bitcoin-trading/scripts/preflight_live_trading_readiness.ps1` — PM2 cwd가 **라이브 전용 트리**(예: `/opt/bitcoin-trading-live`)인지 **실측**으로 고정한다(`projects/bitcoin-trading/ops/v2/ssh/VPS_PM2_HEALTH_SSH_CURSOR_RUNBOOK.md`).
 
 ---
 

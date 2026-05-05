@@ -1,0 +1,10 @@
+docs/final/artifacts/emotion_label_leakage_audit_latest.json
+docs/final/artifacts/emotion_source_slice_report_latest.json
+docs/final/artifacts/entry16_manual_promotion_review_latest.json
+docs/final/artifacts/ephemeris_baseline_report_swiss_ref_b_latest.json
+docs/final/artifacts/factsafe_backup_cleanup_latest.json
+docs/final/artifacts/fast_promotion_live_candidate_latest.json
+docs/final/artifacts/fused_paper_cycle_4w_latest.json
+docs/final/artifacts/l1_agb_decoder_noise_breakdown_latest.json
+docs/final/artifacts/l1_inverse_decoder_noise_mode_breakdown_enhanced_latest.json
+docs/final/artifacts/l1_inverse_decoder_noise_mode_breakdown_swapv2_latest.json

@@ -1,0 +1,14 @@
+{
+  "name": "mkm-study-profile-contract",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Shared onboarding / student profile contract for MKM Study (multi-site API alignment)",
+  "license": "UNLICENSED",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema/onboarding-request-v1.schema.json": "./schema/onboarding-request-v1.schema.json"
+  },
+  "files": ["src", "schema"]
+}

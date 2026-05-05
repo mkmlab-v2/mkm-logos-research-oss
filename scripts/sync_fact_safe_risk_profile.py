@@ -39,6 +39,15 @@ def _safe_json(path: Path) -> dict[str, Any]:
     return obj if isinstance(obj, dict) else {}
 
 
+def _optional_float(v: Any) -> float | None:
+    if v is None:
+        return None
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return None
+
+
 def _would_downgrade_n8n_metadata(existing: dict[str, Any], new_source: str) -> bool:
     """True if existing profile is n8n-tagged but new_source would drop the n8n.* prefix."""
     old_src = str(existing.get("source") or "").strip()
@@ -243,6 +252,52 @@ def _build_trinity_evolution_snapshot(
     return out
 
 
+def _build_market_pulse(
+    market_pulse_doc: dict[str, Any],
+    *,
+    breadth_override: float | None,
+    foreign_net_buy_override: float | None,
+    institution_net_buy_override: float | None,
+    theme_score_override: float | None,
+) -> dict[str, Any] | None:
+    if not isinstance(market_pulse_doc, dict):
+        market_pulse_doc = {}
+
+    breadth = breadth_override
+    if breadth is None:
+        breadth = _optional_float(market_pulse_doc.get("advance_decline_ratio"))
+
+    foreign_net_buy = foreign_net_buy_override
+    if foreign_net_buy is None:
+        foreign_net_buy = _optional_float(market_pulse_doc.get("foreign_net_buy_krw_eok"))
+
+    institution_net_buy = institution_net_buy_override
+    if institution_net_buy is None:
+        institution_net_buy = _optional_float(market_pulse_doc.get("institution_net_buy_krw_eok"))
+
+    theme_score = theme_score_override
+    if theme_score is None:
+        theme_score = _optional_float(market_pulse_doc.get("theme_leadership_score"))
+
+    if None in (breadth, foreign_net_buy, institution_net_buy, theme_score):
+        return None
+
+    source = str(market_pulse_doc.get("source") or "manual_or_external").strip() or "manual_or_external"
+    updated_at_utc = str(market_pulse_doc.get("updated_at_utc") or "").strip()
+    if not updated_at_utc:
+        updated_at_utc = datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+    return {
+        "schema": "market_pulse_v1",
+        "source": source,
+        "updated_at_utc": updated_at_utc,
+        "advance_decline_ratio": float(breadth),
+        "foreign_net_buy_krw_eok": float(foreign_net_buy),
+        "institution_net_buy_krw_eok": float(institution_net_buy),
+        "theme_leadership_score": float(theme_score),
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Sync Fact-Safe prophecy risk profile to trader risk profile.")
     ap.add_argument("--prophecy", default=str(DEFAULT_PROPHECY))
@@ -292,6 +347,35 @@ def main() -> int:
         "--trinity-daily-score-btc",
         default=str(DEFAULT_TRINITY_DAILY_SCORE_BTC),
         help="Trinity BTC daily score artifact path (optional for evolution snapshot).",
+    )
+    ap.add_argument(
+        "--market-pulse-json",
+        default="",
+        help="Optional JSON path with market_pulse fields for tactical-long gate.",
+    )
+    ap.add_argument(
+        "--market-breadth-ratio",
+        type=float,
+        default=None,
+        help="Override: advance_decline_ratio",
+    )
+    ap.add_argument(
+        "--market-foreign-net-buy-krw-eok",
+        type=float,
+        default=None,
+        help="Override: foreign_net_buy_krw_eok",
+    )
+    ap.add_argument(
+        "--market-institution-net-buy-krw-eok",
+        type=float,
+        default=None,
+        help="Override: institution_net_buy_krw_eok",
+    )
+    ap.add_argument(
+        "--market-theme-score",
+        type=float,
+        default=None,
+        help="Override: theme_leadership_score",
     )
     args = ap.parse_args()
 
@@ -353,6 +437,19 @@ def main() -> int:
         governance=governance_doc,
         trinity_evolution=trinity_snapshot,
     )
+    market_pulse_doc: dict[str, Any] = {}
+    market_pulse_arg = str(args.market_pulse_json or "").strip()
+    if market_pulse_arg:
+        market_pulse_doc = _safe_json(Path(market_pulse_arg))
+    market_pulse = _build_market_pulse(
+        market_pulse_doc,
+        breadth_override=args.market_breadth_ratio,
+        foreign_net_buy_override=args.market_foreign_net_buy_krw_eok,
+        institution_net_buy_override=args.market_institution_net_buy_krw_eok,
+        theme_score_override=args.market_theme_score,
+    )
+    if market_pulse is not None:
+        out_doc["market_pulse"] = market_pulse
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(out_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(str(out_path))

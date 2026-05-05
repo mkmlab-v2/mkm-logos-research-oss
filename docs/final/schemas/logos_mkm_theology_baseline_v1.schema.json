@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_mkm_theology_baseline_v1.schema.json",
+  "title": "MKM Logos theology baseline v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "hypothesis_tier",
+    "purpose",
+    "governance_and_reporting",
+    "forbidden_outputs",
+    "non_gating_ack",
+    "track_b_deep_research_interpretation_policy"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "logos_mkm_theology_baseline_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.\\d+\\.\\d+$"
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "const": "B"
+    },
+    "non_gating_ack": {
+      "type": "boolean",
+      "const": true
+    },
+    "purpose": { "type": "string", "minLength": 1 },
+    "governance_and_reporting": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["intent", "not_a_deregulation_claim"],
+      "properties": {
+        "intent": { "type": "string" },
+        "not_a_deregulation_claim": { "type": "boolean", "const": true }
+      }
+    },
+    "forbidden_outputs": { "type": "object", "additionalProperties": true },
+    "track_b_deep_research_interpretation_policy": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "scope",
+        "mkm_school_label",
+        "boundary_ack_non_gating",
+        "llm_overlay_rule",
+        "fusion_stub_cross_reference",
+        "policy_chain_anchor"
+      ],
+      "properties": {
+        "scope": { "type": "string", "minLength": 8 },
+        "mkm_school_label": { "type": "string", "minLength": 1 },
+        "boundary_ack_non_gating": { "type": "boolean", "const": true },
+        "llm_overlay_rule": { "type": "string", "minLength": 8 },
+        "evidence_binding": { "type": "object", "additionalProperties": true },
+        "fusion_stub_cross_reference": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["runner", "role"],
+          "properties": {
+            "runner": { "type": "string", "minLength": 4 },
+            "role": { "type": "string", "minLength": 8 },
+            "logos_evidence_wire": { "type": "string" }
+          }
+        },
+        "policy_chain_anchor": { "type": "string", "minLength": 4 }
+      }
+    }
+  }
+}

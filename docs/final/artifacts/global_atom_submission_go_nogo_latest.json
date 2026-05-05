@@ -1,0 +1,25 @@
+{
+  "schema": "global_atom_submission_go_nogo_v1",
+  "generated_at_utc": "2026-04-28T10:28:34Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "inputs": {
+    "bundle_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_submission_bundle_latest.json",
+    "gate_summary_json": "C:\\workspace\\docs\\final\\artifacts\\multi_symbol_gate_summary_latest.json",
+    "falsification_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_falsification_suite_latest.json",
+    "freeze_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_submission_freeze_latest.json"
+  },
+  "decision": {
+    "go": true,
+    "status": "GO",
+    "reasons": []
+  },
+  "snapshot": {
+    "bundle_ready": true,
+    "gate_status": "GO",
+    "falsification_suite_status": "pass",
+    "freeze_copied_count": 7,
+    "freeze_missing_count": 0
+  }
+}

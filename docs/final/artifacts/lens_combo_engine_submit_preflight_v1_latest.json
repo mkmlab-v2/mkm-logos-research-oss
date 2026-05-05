@@ -1,0 +1,33 @@
+{
+  "schema": "lens_combo_engine_submit_preflight_v1",
+  "generated_at_utc": "2026-04-29T00:52:42Z",
+  "engine_input_json": "C:\\workspace\\docs\\final\\artifacts\\btc_limited_live_engine_input_from_lens_combo_latest.json",
+  "expected_dry_run": "false",
+  "observed_dry_run": false,
+  "result": "PASS",
+  "checks": {
+    "engine_status_ready_for_submit": true,
+    "engine_action_submit_to_queue": true,
+    "dry_run_mode_ok": true,
+    "candidate_tradable": true,
+    "signoff_approve": true,
+    "limited_live_mode_ok": true,
+    "approve_submit_flag_true": true,
+    "max_drawdown_guard_present": true,
+    "max_consecutive_losses_present": true,
+    "candidate_hit_rate_gte_0p55": true
+  },
+  "failed_checks": [],
+  "candidate_metrics_snapshot": {
+    "n_days": 29,
+    "n_active_days": 17,
+    "directional_hit_rate_active": 0.705882,
+    "win_rate_active": 0.705882,
+    "total_return": 0.218475,
+    "cagr": 4.568246,
+    "mdd": -0.036296,
+    "sharpe": 5.838073,
+    "sortino": 10.70706
+  },
+  "operator_note": "non-execution preflight only; actual queue submit must follow runtime policy and human control."
+}

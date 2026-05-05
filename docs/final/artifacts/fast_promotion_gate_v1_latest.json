@@ -1,6 +1,6 @@
 {
   "schema": "fast_promotion_gate_v1",
-  "generated_at_utc": "2026-04-22T23:40:03Z",
+  "generated_at_utc": "2026-05-02T02:55:48Z",
   "research_only": true,
   "promotion_required": true,
   "inputs": {
@@ -15,7 +15,7 @@
   },
   "checks": {
     "shadow_has_score_rows": true,
-    "promotion_combined_all_passed": true,
+    "promotion_combined_all_passed": false,
     "hit_rate_ok": false,
     "hit_rate_observed": 0.0,
     "n_evaluated_observed": 1,

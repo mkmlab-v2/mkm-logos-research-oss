@@ -1,0 +1,127 @@
+{
+  "schema": "genesis_sequence_compression_sweep_v1",
+  "generated_at_utc": "2026-04-28T21:30:03+00:00",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "inputs": {
+    "lengths_chars": [
+      10,
+      20,
+      40,
+      80,
+      120,
+      200,
+      400,
+      800,
+      1200
+    ],
+    "samples_per_length": 64
+  },
+  "rows": [
+    {
+      "target_length_chars": 10,
+      "sample_count": 64,
+      "avg_raw_utf8_bytes": 24.96875,
+      "pointer_payload_bytes": 8,
+      "vector4_payload_bytes": 16,
+      "pointer_saving_rate": 0.6795994993742178,
+      "vector4_saving_rate": 0.3591989987484355,
+      "exact_lookup_rate": 1.0,
+      "hash64_collision_count": 0
+    },
+    {
+      "target_length_chars": 20,
+      "sample_count": 64,
+      "avg_raw_utf8_bytes": 49.0,
+      "pointer_payload_bytes": 8,
+      "vector4_payload_bytes": 16,
+      "pointer_saving_rate": 0.8367346938775511,
+      "vector4_saving_rate": 0.6734693877551021,
+      "exact_lookup_rate": 1.0,
+      "hash64_collision_count": 0
+    },
+    {
+      "target_length_chars": 40,
+      "sample_count": 64,
+      "avg_raw_utf8_bytes": 98.0,
+      "pointer_payload_bytes": 8,
+      "vector4_payload_bytes": 16,
+      "pointer_saving_rate": 0.9183673469387755,
+      "vector4_saving_rate": 0.8367346938775511,
+      "exact_lookup_rate": 1.0,
+      "hash64_collision_count": 0
+    },
+    {
+      "target_length_chars": 80,
+      "sample_count": 64,
+      "avg_raw_utf8_bytes": 194.0,
+      "pointer_payload_bytes": 8,
+      "vector4_payload_bytes": 16,
+      "pointer_saving_rate": 0.9587628865979382,
+      "vector4_saving_rate": 0.9175257731958762,
+      "exact_lookup_rate": 1.0,
+      "hash64_collision_count": 0
+    },
+    {
+      "target_length_chars": 120,
+      "sample_count": 64,
+      "avg_raw_utf8_bytes": 290.0,
+      "pointer_payload_bytes": 8,
+      "vector4_payload_bytes": 16,
+      "pointer_saving_rate": 0.9724137931034482,
+      "vector4_saving_rate": 0.9448275862068966,
+      "exact_lookup_rate": 1.0,
+      "hash64_collision_count": 0
+    },
+    {
+      "target_length_chars": 200,
+      "sample_count": 64,
+      "avg_raw_utf8_bytes": 483.8125,
+      "pointer_payload_bytes": 8,
+      "vector4_payload_bytes": 16,
+      "pointer_saving_rate": 0.9834646686474615,
+      "vector4_saving_rate": 0.9669293372949231,
+      "exact_lookup_rate": 1.0,
+      "hash64_collision_count": 0
+    },
+    {
+      "target_length_chars": 400,
+      "sample_count": 64,
+      "avg_raw_utf8_bytes": 966.5,
+      "pointer_payload_bytes": 8,
+      "vector4_payload_bytes": 16,
+      "pointer_saving_rate": 0.991722710812209,
+      "vector4_saving_rate": 0.983445421624418,
+      "exact_lookup_rate": 1.0,
+      "hash64_collision_count": 0
+    },
+    {
+      "target_length_chars": 800,
+      "sample_count": 64,
+      "avg_raw_utf8_bytes": 1932.0,
+      "pointer_payload_bytes": 8,
+      "vector4_payload_bytes": 16,
+      "pointer_saving_rate": 0.9958592132505176,
+      "vector4_saving_rate": 0.9917184265010351,
+      "exact_lookup_rate": 1.0,
+      "hash64_collision_count": 0
+    },
+    {
+      "target_length_chars": 1200,
+      "sample_count": 64,
+      "avg_raw_utf8_bytes": 2898.0,
+      "pointer_payload_bytes": 8,
+      "vector4_payload_bytes": 16,
+      "pointer_saving_rate": 0.9972394755003451,
+      "vector4_saving_rate": 0.9944789510006902,
+      "exact_lookup_rate": 1.0,
+      "hash64_collision_count": 0
+    }
+  ],
+  "summary": {
+    "pointer_break_even_length_chars": 10,
+    "vector4_break_even_length_chars": 10,
+    "note": "Closed-dictionary lookup simulation; not open-vocabulary production claim."
+  }
+}

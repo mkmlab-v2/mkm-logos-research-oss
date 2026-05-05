@@ -1,10 +1,6 @@
-# @MKM12-METADATA
-# Type: Logic
-# Vector: {S:0.9, L:0.9, K:0.3, M:0.6}
-# Balance: 94
-# Purpose: Build actionable checklist to release A-track HOLD safely.
-# Keywords: track_a, hold, checklist, gate, governance
 #!/usr/bin/env python3
+"""Build actionable checklist to release A-track HOLD safely."""
+
 from __future__ import annotations
 
 import argparse
@@ -22,6 +18,12 @@ HR_RELEASE_PLAN_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "a_track_high_
 POLICY_GOV_DECISION_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "a_track_policy_floor_governance_decision_v1_latest.json"
 MULTIWEEK_TRACKER_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "a_track_multiweek_stability_tracker_v1_latest.json"
 OUT_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "a_track_hold_release_checklist_v1_latest.json"
+
+_STAGE_NEXT_ACTION_KO = {
+    "S2_PAPER_STRICT": "S2 paper-strict 진입 및 동일 게이트 재검증",
+    "S3_PAPER_SCALED": "S3 paper-scaled 진입 및 동일 게이트 재검증",
+    "S4_LIMITED_LIVE": "S4 limited-live 진입 및 동일 게이트 재검증",
+}
 
 
 def _now_utc() -> str:
@@ -52,7 +54,7 @@ def build_checklist(
     policy_governance_decision: dict[str, Any],
     multiweek_tracker: dict[str, Any],
 ) -> dict[str, Any]:
-    result = (go_nogo.get("result") or {})
+    result = go_nogo.get("result") or {}
     stage = str(result.get("recommended_stage") or "")
     overall = str(result.get("overall_go_no_go") or "")
     failed = set(result.get("failed_reasons") or [])
@@ -116,8 +118,10 @@ def build_checklist(
 
     all_done = all(t.get("done") for t in tasks)
     if all_done:
-        next_stage = "S2_PAPER_STRICT"
-        next_action = "S2 paper-strict 진입 및 동일 게이트 재검증"
+        next_stage = stage or "S2_PAPER_STRICT"
+        next_action = _STAGE_NEXT_ACTION_KO.get(
+            next_stage, "Track A 권장 단계 게이트 재검증"
+        )
     else:
         next_stage = stage or "S1_SHADOW"
         next_action = "HOLD 유지. 체크리스트 미완료 항목부터 순차 해제"
@@ -150,7 +154,7 @@ def build_checklist(
             "required_total": len(tasks),
             "completed_total": sum(1 for t in tasks if t.get("done")),
             "all_required_completed": all_done,
-            "next_stage_when_completed": "S2_PAPER_STRICT",
+            "next_stage_when_completed": next_stage if all_done else (stage or "S2_PAPER_STRICT"),
             "current_next_stage": next_stage,
             "next_action": next_action,
         },
@@ -187,7 +191,7 @@ def main() -> int:
     out_path = args.out if args.out.is_absolute() else ROOT / args.out
 
     go_nogo = _load_json(go_nogo_path)
-    policy = _load_json(policy_path)
+    policy = _load_json(policy_path) if policy_path.is_file() else {}
     unlock_policy = _load_json(unlock_policy_path) if unlock_policy_path.is_file() else {}
     approval_protocol = _load_json(approval_protocol_path) if approval_protocol_path.is_file() else {}
     hr_release_plan = _load_json(hr_release_plan_path) if hr_release_plan_path.is_file() else {}
@@ -202,9 +206,8 @@ def main() -> int:
         policy_governance_decision=policy_gov_decision,
         multiweek_tracker=multiweek_tracker,
     )
-
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"WROTE: {out_path}")
     print(f"all_required_completed: {payload['summary']['all_required_completed']}")
     print(f"next_action: {payload['summary']['next_action']}")

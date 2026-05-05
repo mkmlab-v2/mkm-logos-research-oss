@@ -1,0 +1,13 @@
+{
+  "schema": "pre_news_shadow_task_health_v1",
+  "generated_at_utc": "2026-04-28T11:40:42Z",
+  "task_name": "MKM-PreNews-Shadow-Daily",
+  "state": "Ready",
+  "last_run_time": "2026-04-28T11:40:42Z",
+  "next_run_time": "2026-04-28T11:40:42Z",
+  "last_task_result": 1,
+  "last_task_result_hex": "0x00000001",
+  "healthy": false,
+  "result_category": "NonZero",
+  "note": "Monthly drill forced-unhealthy payload (webhook disabled)."
+}

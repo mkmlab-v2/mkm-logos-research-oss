@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_vector_index_policy_v1.schema.json",
+  "title": "Logos vector index policy v1 (Track B slice 3 stub)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "version", "hypothesis_tier", "purpose", "status"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "logos_vector_index_policy_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "const": "B"
+    },
+    "purpose": { "type": "string", "minLength": 1 },
+    "status": {
+      "type": "string",
+      "enum": ["stub", "active"]
+    }
+  }
+}

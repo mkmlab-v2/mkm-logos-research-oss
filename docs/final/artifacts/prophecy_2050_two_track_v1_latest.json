@@ -1,0 +1,126 @@
+{
+  "schema": "prophecy_2050_two_track_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-04-29T18:20:03.477998Z",
+  "scope": {
+    "start_year": 2026,
+    "end_year": 2050,
+    "method": "biblical_resource_guided_scenario",
+    "disclaimer": "Non-deterministic scenario document. Track A is measurable/operational; Track B is historical-omen interpretation and must not trigger live orders."
+  },
+  "fusion_policy": {
+    "auto_merge_to_live_trading": false,
+    "track_b_must_not_trigger_orders": true,
+    "track_b_for_live_execution": false
+  },
+  "track_a_trading_theory": {
+    "current_state": {
+      "market": "KOSPI",
+      "lane": "biblical_only",
+      "operator_brief": {
+        "today_action": "candidate",
+        "escalation": "none",
+        "next_check_utc": "2026-04-30T18:20:02.6920940+00:00"
+      },
+      "gates_pass_snapshot": {
+        "internal_gate_pass": true,
+        "external_reality_gate_pass": true,
+        "stability_go": true,
+        "ready_streak": 12,
+        "streak_required": 3
+      },
+      "live_trading_hook": {
+        "allowed": true,
+        "phase": "live_eligible"
+      },
+      "gate_stage": "commercial_candidate_stable",
+      "precommercial_ready": true,
+      "bitcoin_hook": {
+        "instrument": "BTCUSDT",
+        "live_trading_allowed": true
+      }
+    },
+    "operational_bands": [
+      {
+        "period": "2026-2030",
+        "thesis": "High-volatility expansion with frequent regime flips.",
+        "monitoring_focus": [
+          "external_reality_gate mode drift (recent vs equivalent_n)",
+          "dominant_share concentration risk",
+          "stability streak continuity"
+        ],
+        "action_default": "guarded / no auto escalation"
+      },
+      {
+        "period": "2031-2040",
+        "thesis": "Structural repricing cycles and trust-friction markets.",
+        "monitoring_focus": [
+          "persistent class-bias drift",
+          "cross-cycle equivalent-n reliability decay",
+          "execution safety gate strictness"
+        ],
+        "action_default": "risk-first with conservative sizing"
+      },
+      {
+        "period": "2041-2050",
+        "thesis": "Long-horizon uncertainty convergence; prioritize survivability.",
+        "monitoring_focus": [
+          "compound drawdown control",
+          "signal-to-noise degradation watch",
+          "gate contract integrity over alpha chasing"
+        ],
+        "action_default": "capital preservation priority"
+      }
+    ],
+    "hard_constraints": [
+      "No myeongri/sasang fusion in this lane.",
+      "No commercialization declaration under sample shortage.",
+      "No live-trading enable unless stability_go=true and blockers are empty."
+    ]
+  },
+  "track_b_historical_omen": {
+    "current_state": {
+      "registry_loaded": true,
+      "schema": "general_prophecy_registry_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "artifact": "C:/workspace/docs/final/artifacts/general_prophecy_latest.json",
+      "question_count": 14,
+      "pending_resolution_count": 11,
+      "omen_watch": {
+        "intent": "Historical framing & forward-omen / sign detection (narrative layer).",
+        "no_live_trigger": true,
+        "eval_rail": "B-rail Tetlock-style; separate from Track A order path."
+      }
+    },
+    "era_signs": [
+      {
+        "period": "2026-2030",
+        "sign_cluster": "Acceleration and meaning-friction",
+        "interpretation": "Technology speed increases while social trust lags; discernment pressure grows in institutions and communities.",
+        "response": "Build local trust networks and integrity-first decision culture."
+      },
+      {
+        "period": "2031-2040",
+        "sign_cluster": "System reconfiguration and narrative conflict",
+        "interpretation": "Governance, money, and information systems rewire repeatedly; truth-vs-manipulation conflict intensifies.",
+        "response": "Maintain epistemic discipline and scenario-based preparedness."
+      },
+      {
+        "period": "2041-2050",
+        "sign_cluster": "Convergence and ethical bifurcation",
+        "interpretation": "Efficiency and control capabilities rise, but value fractures deepen; human dignity and stewardship become central tests.",
+        "response": "Prioritize dignity, mercy, and long-term covenantal accountability."
+      }
+    ],
+    "evaluation_rail": "B / OBSERVATION_ONLY",
+    "forbidden_for_live_execution": true
+  },
+  "handoff": {
+    "next_artifact": "docs/final/artifacts/prophecy_two_track_snapshot_v1_latest.json",
+    "notes": [
+      "Use this as long-horizon narrative overlay, not a point forecast.",
+      "Rebuild when track_a summary or general prophecy registry materially changes."
+    ]
+  }
+}

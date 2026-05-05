@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import base64
 import json
 import os
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 
 from scripts.compression_token_api_stub import app
@@ -232,6 +234,32 @@ def test_compress_prefers_live_eval_when_requested(monkeypatch):
         assert d.get("integrity_flags", {}).get("hydration_metrics_unavailable") is True
 
 
+def test_compress_emit_semantic_pointer_with_live_eval(monkeypatch):
+    from scripts import compression_token_api_stub as stub
+
+    monkeypatch.setenv("COMPRESSION_API_LIVE_EVAL_MIN_TOKENS", "0")
+    stub._live_eval_min_tokens.cache_clear()
+    r = client.post(
+        "/v1/compress",
+        json={
+            "text": "emit semantic pointer live eval path " * 4,
+            "eval_context": {
+                "hydrate_metrics": True,
+                "hydrate_live_eval": True,
+                "emit_semantic_pointer": True,
+            },
+        },
+    )
+    assert r.status_code == 200
+    d = r.json()
+    sp = d.get("semantic_pointer")
+    if d.get("integrity_flags", {}).get("hydration_metrics_source") == "live_evaluate_report":
+        assert isinstance(sp, dict)
+        assert sp.get("schema") == "semantic_pointer_v1"
+    else:
+        assert sp is None
+
+
 def test_compress_reuses_live_eval_for_shadow_compare(monkeypatch):
     from scripts import compression_token_api_stub as stub
 
@@ -239,7 +267,7 @@ def test_compress_reuses_live_eval_for_shadow_compare(monkeypatch):
     stub._live_eval_min_tokens.cache_clear()
     calls = {"n": 0}
 
-    def _fake_live_eval(text: str, *, bytes_in=None, token_in=None):
+    def _fake_live_eval(text: str, *, bytes_in=None, token_in=None, emit_semantic_pointer=False):
         calls["n"] += 1
         return (
             stub.CompressionMetrics(
@@ -250,6 +278,7 @@ def test_compress_reuses_live_eval_for_shadow_compare(monkeypatch):
                 savings_ratio=0.33,
             ),
             1.23,
+            None,
             None,
         )
 
@@ -485,6 +514,20 @@ def test_openapi_includes_metering_log_path():
     assert "/v1/metering/log" in spec.get("paths", {})
 
 
+def test_openapi_v1_semantic_pointer_contract_fields() -> None:
+    yaml = __import__("pytest").importorskip("yaml")
+    spec = yaml.safe_load(OPENAPI_STUB.read_text(encoding="utf-8"))
+    schemas = spec.get("components", {}).get("schemas", {})
+    eval_ctx = schemas.get("EvalContext", {})
+    compress_resp = schemas.get("CompressResponse", {})
+    eval_props = eval_ctx.get("properties", {})
+    resp_props = compress_resp.get("properties", {})
+    assert "emit_semantic_pointer" in eval_props
+    assert eval_props["emit_semantic_pointer"].get("type") == "boolean"
+    assert "semantic_pointer" in resp_props
+    assert resp_props["semantic_pointer"].get("type") == "object"
+
+
 def test_metering_log_append(tmp_path, monkeypatch):
     log = tmp_path / "meter.jsonl"
     monkeypatch.setenv("TRACK_A_METERING_LOG_PATH", str(log))
@@ -538,3 +581,139 @@ def test_compress_meter_log_appends_jsonl(tmp_path, monkeypatch):
     row = json.loads(lines[0])
     assert row.get("client_request_id") == "req-meter-compress-1"
     assert row.get("notes") == "from_compress_eval_context_meter_log"
+
+
+def test_secure_l1_side_channel_wire_endpoint_success_with_fake_provider(monkeypatch):
+    from scripts import compression_token_api_stub as stub
+
+    class _FakeProvider:
+        def encrypt(self, *, key_id: str, plaintext: bytes, aad: bytes, track: str):
+            _ = (key_id, aad, track)
+            return (b"n" * 12, plaintext[::-1], b"t" * 16)
+
+        def decrypt(self, *, key_id: str, nonce: bytes, ciphertext: bytes, tag: bytes, aad: bytes, track: str):
+            _ = (key_id, aad, track)
+            assert nonce == b"n" * 12
+            assert tag == b"t" * 16
+            return ciphertext[::-1]
+
+    monkeypatch.setattr(stub, "_AesGcmCryptographyProvider", lambda: _FakeProvider())
+    r = client.post(
+        "/v1/research/l1_side_channel/wire/secure",
+        json={
+            "track": "b_track",
+            "side_channel": {
+                "swap_log": [[0, 1]],
+                "typo_patches": [],
+                "oov_stack": [],
+            },
+        },
+    )
+    assert r.status_code == 200
+    d = r.json()
+    assert d.get("schema") == "l1_side_channel_secure_wire_v1"
+    env = d.get("envelope") or {}
+    assert env.get("schema") == "mkm_secure_payload_envelope_v1"
+    assert d.get("integrity_flags", {}).get("secure_envelope") is True
+    assert d.get("integrity_flags", {}).get("track") == "b_track"
+
+
+def test_secure_l1_side_channel_wire_endpoint_invalid_track():
+    r = client.post(
+        "/v1/research/l1_side_channel/wire/secure",
+        json={
+            "track": "wrong",
+            "side_channel": {
+                "swap_log": [],
+                "typo_patches": [],
+                "oov_stack": [],
+            },
+        },
+    )
+    assert r.status_code == 200
+    d = r.json()
+    assert d.get("integrity_flags", {}).get("error") == "invalid_track"
+
+
+def test_secure_l1_side_channel_wire_endpoint_with_env_keys(monkeypatch):
+    pytest.importorskip("cryptography")
+
+    # 32-byte AES-256 keys (base64url) for A/B track split.
+    a_key = base64.urlsafe_b64encode(b"A" * 32).decode("ascii")
+    b_key = base64.urlsafe_b64encode(b"B" * 32).decode("ascii")
+    monkeypatch.setenv("MKM_ENVELOPE_A_TRACK_KEY_B64", a_key)
+    monkeypatch.setenv("MKM_ENVELOPE_B_TRACK_KEY_B64", b_key)
+    monkeypatch.setenv("MKM_ENVELOPE_A_TRACK_KEY_ID", "kms/a-track/test-v1")
+    monkeypatch.setenv("MKM_ENVELOPE_B_TRACK_KEY_ID", "kms/b-track/test-v1")
+
+    for track, key_id in (("a_track", "kms/a-track/test-v1"), ("b_track", "kms/b-track/test-v1")):
+        r = client.post(
+            "/v1/research/l1_side_channel/wire/secure",
+            json={
+                "track": track,
+                "side_channel": {
+                    "swap_log": [[0, 1]],
+                    "typo_patches": [],
+                    "oov_stack": [],
+                },
+            },
+        )
+        assert r.status_code == 200
+        d = r.json()
+        flags = d.get("integrity_flags", {})
+        assert flags.get("secure_envelope") is True
+        assert flags.get("track") == track
+        env = d.get("envelope", {})
+        assert env.get("schema") == "mkm_secure_payload_envelope_v1"
+        assert env.get("header", {}).get("track") == track
+        assert env.get("header", {}).get("key_id") == key_id
+
+
+def test_secure_l1_side_channel_wire_endpoint_rejects_unknown_key_provider(monkeypatch):
+    monkeypatch.setenv("MKM_ENVELOPE_KEY_PROVIDER", "unknown_provider")
+    r = client.post(
+        "/v1/research/l1_side_channel/wire/secure",
+        json={
+            "track": "b_track",
+            "side_channel": {
+                "swap_log": [[0, 1]],
+                "typo_patches": [],
+                "oov_stack": [],
+            },
+        },
+    )
+    assert r.status_code == 200
+    d = r.json()
+    assert d.get("integrity_flags", {}).get("error") == "secure_envelope_encrypt_failed"
+
+
+def test_secure_l1_side_channel_wire_endpoint_external_kms_adapter(monkeypatch):
+    pytest.importorskip("cryptography")
+    a_key = base64.urlsafe_b64encode(b"A" * 32).decode("ascii")
+    b_key = base64.urlsafe_b64encode(b"B" * 32).decode("ascii")
+
+    monkeypatch.setenv("MKM_ENVELOPE_KEY_PROVIDER", "external_kms")
+    monkeypatch.setenv("MKM_ENVELOPE_EXTERNAL_KEY_CMD", "py scripts/fetch_secure_envelope_key_adapter.py")
+    monkeypatch.setenv("MKM_ENVELOPE_EXTERNAL_KEY_B64_A_TRACK", a_key)
+    monkeypatch.setenv("MKM_ENVELOPE_EXTERNAL_KEY_B64_B_TRACK", b_key)
+    monkeypatch.setenv("MKM_ENVELOPE_A_TRACK_KEY_ID", "kms/a-track/ext-v1")
+    monkeypatch.setenv("MKM_ENVELOPE_B_TRACK_KEY_ID", "kms/b-track/ext-v1")
+
+    for track, key_id in (("a_track", "kms/a-track/ext-v1"), ("b_track", "kms/b-track/ext-v1")):
+        r = client.post(
+            "/v1/research/l1_side_channel/wire/secure",
+            json={
+                "track": track,
+                "side_channel": {
+                    "swap_log": [[0, 1]],
+                    "typo_patches": [],
+                    "oov_stack": [],
+                },
+            },
+        )
+        assert r.status_code == 200
+        d = r.json()
+        assert d.get("integrity_flags", {}).get("secure_envelope") is True
+        env = d.get("envelope") or {}
+        assert env.get("header", {}).get("track") == track
+        assert env.get("header", {}).get("key_id") == key_id

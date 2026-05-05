@@ -5,3 +5,4 @@
 3. .env: cwd .env + 본선이면 /opt/bitcoin-trading/.env — Git 금지.
 4. 공통 비유·원칙: docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md (저장소 루트)
 5. start_live_trading.py 등 VPS만 있으면 로컬과 diff 맞춰 레포 SSOT 확정.
+6. 실자동매매(실주문) 전: 루트 .env에 ENABLE_TRADING/TESTNET/BINANCE(수동) 확인 — scripts/preflight_live_trading_readiness.ps1 (read-only).

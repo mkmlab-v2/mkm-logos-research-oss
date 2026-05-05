@@ -1,0 +1,78 @@
+{
+  "contract": "public_graph_insights_endpoint_v1",
+  "version": "1.0.0",
+  "method": "GET",
+  "path": "/public/graph/insights",
+  "description": "Public read-only insights endpoint for graph exploration (non-gating).",
+  "policy": {
+    "policy_label": "NON_GATING",
+    "research_only": true,
+    "no_trading_advice": true
+  },
+  "query": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "anchor": {
+        "type": "string",
+        "description": "Anchor reference filter (example: Gen.1.1).",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "theme": {
+        "type": "string",
+        "description": "Theme tag filter.",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "confidence_band": {
+        "type": "string",
+        "enum": ["A", "B", "C"]
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100,
+        "default": 20
+      },
+      "cursor": {
+        "type": "string",
+        "description": "Opaque pagination cursor returned by previous response.",
+        "maxLength": 256
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "content_type": "application/json",
+    "schema_ref": "docs/final/artifacts/schemas/public_graph_response_v1.schema.json",
+    "example_ref": "docs/final/artifacts/schemas/public_graph_response_v1.example.json",
+    "pagination": {
+      "next_cursor_field": "pagination.next_cursor",
+      "done_when_null": true
+    }
+  },
+  "error_responses": [
+    {
+      "status": 400,
+      "code": "INVALID_QUERY",
+      "message": "Query parameters failed validation."
+    },
+    {
+      "status": 429,
+      "code": "RATE_LIMITED",
+      "message": "Too many requests. Retry later."
+    },
+    {
+      "status": 500,
+      "code": "INTERNAL_ERROR",
+      "message": "Unexpected server error."
+    }
+  ],
+  "security": {
+    "auth": "optional_public_key_or_none",
+    "rate_limit": "required",
+    "waf": "required",
+    "audit_log": "required"
+  }
+}

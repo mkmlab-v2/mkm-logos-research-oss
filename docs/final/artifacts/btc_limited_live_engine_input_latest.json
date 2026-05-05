@@ -1,0 +1,42 @@
+{
+  "schema": "btc_limited_live_engine_input_v1",
+  "generated_at_utc": "2026-04-28T13:25:48Z",
+  "symbol": "BTCUSDT",
+  "status": "READY_FOR_ENGINE_SUBMIT",
+  "dry_run": true,
+  "source": {
+    "candidate_json": "C:\\workspace\\docs\\final\\artifacts\\btc_top1_limited_live_candidate_latest.json",
+    "signoff_json": "C:\\workspace\\docs\\final\\artifacts\\promotion_signoff_decision_latest.json"
+  },
+  "guards": {
+    "candidate_tradable": true,
+    "signoff_approve": true,
+    "signoff_mode_limited_live": true,
+    "approve_submit_flag": true
+  },
+  "engine_input": {
+    "signal_type": "fusion_prophecy_top1_limited_live",
+    "side_hint": "derived_by_engine",
+    "size_usd": 10.0,
+    "max_consecutive_losses": 3,
+    "max_drawdown_pct": 2.0,
+    "auto_scale_up": false,
+    "auto_bridge_enabled": false,
+    "auto_live_trigger_enabled": false,
+    "candidate_params": {
+      "dz_self": 0.0,
+      "dz_cross": 0.02,
+      "w_self": -1.0,
+      "w_cross": 1.5,
+      "kospi_bull_bias": 0.0,
+      "up_thr": 0.5,
+      "down_thr": -0.5
+    },
+    "candidate_metrics": {
+      "price_directional_hit_rate": 0.65,
+      "n_evaluated": 60,
+      "price_hits": 39
+    }
+  },
+  "action": "submit_to_engine_queue"
+}

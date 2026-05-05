@@ -1,0 +1,43 @@
+# P0 Fact-Lock: bio_sasang n-states strict JSON rehydrate contract (no FireProt network).
+name: Bio Sasang n-states rehydrate smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop, "chore/**"]
+    paths:
+      - "scripts/build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py"
+      - "scripts/Generate-BioSasangWeeklyReport_v1.ps1"
+      - "scripts/Find-BioSasangArtifactsInBackupRoots.ps1"
+      - "tests/test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py"
+      - ".github/workflows/bio-sasang-nstates-rehydrate-smoke.yml"
+      - "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+  pull_request:
+    paths:
+      - "scripts/build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py"
+      - "scripts/Generate-BioSasangWeeklyReport_v1.ps1"
+      - "scripts/Find-BioSasangArtifactsInBackupRoots.ps1"
+      - "tests/test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py"
+      - ".github/workflows/bio-sasang-nstates-rehydrate-smoke.yml"
+      - "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bio-sasang-nstates-rehydrate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: pip install pytest
+      - name: Rehydrate contract tests
+        run: python -m pytest tests/test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py -q --tb=short

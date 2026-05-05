@@ -1,12 +1,12 @@
 {
   "schema": "original_corpus_regime_singularity_report_v1",
-  "generated_at_utc": "2026-04-23T04:59:22Z",
+  "generated_at_utc": "2026-04-28T21:40:13Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "inputs": {
     "dss_jsonl": "data/logos/manuscripts/dss_original_only_latest.jsonl",
     "apocrypha_jsonl": "data/logos/manuscripts/apocrypha_original_only_latest.jsonl",
-    "canon_jsonl": "c:/workspace/data/logos/verse_decoded_v2.jsonl",
+    "canon_jsonl": "data/logos/verse_decoded_v2.jsonl",
     "canon_only": true,
     "regime_map_json": "data/regimes/regime_map_btc_ext.json",
     "top_n": 50

@@ -1,0 +1,18 @@
+{
+  "schema": "pointerguard_monthly_maintenance_report_v1",
+  "generated_at_utc": "2026-04-28T10:36:41+00:00",
+  "window_days": 31,
+  "window_since_utc": "2026-03-28T10:36:41+00:00",
+  "summary": {
+    "live_p0_drill_ok_count": 3,
+    "live_p0_drill_fail_count": 0,
+    "approval_events_in_window": 2,
+    "readiness_failed_check_count": 0,
+    "top_repair_priority": null
+  },
+  "sources": {
+    "drill_history_jsonl": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_p0_alert_drill_history_v1.jsonl",
+    "approval_audit_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_manual_approval_audit_report_latest.json",
+    "failure_topn_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_readiness_failure_topn_latest.json"
+  }
+}

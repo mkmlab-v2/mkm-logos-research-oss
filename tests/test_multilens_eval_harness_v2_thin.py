@@ -48,6 +48,12 @@ def test_populate_default_samples_fills_matching_dates() -> None:
     assert "risk_multiplier_cap" in lg
     assert isinstance(lg["risk_multiplier_cap"], (int, float))
     assert lg.get("inputs_ref") == "dual_regime_curated_overlap_v1"
+    assert isinstance(lg.get("interpretation_snippet"), str)
+    assert lg["interpretation_snippet"]
+    meta = lg.get("interpretation_snippet_meta") or {}
+    assert meta.get("validation_ok") is True
+    assert isinstance(lg.get("interpretation"), str)
+    assert str(lg["interpretation"]).startswith("dual_regime:")
     assert "summary" in r
     s = r["summary"]
     assert s["total_rows"] == 10

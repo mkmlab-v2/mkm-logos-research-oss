@@ -1,0 +1,102 @@
+{
+  "schema": "global_atom_kdd_submission_template_v1",
+  "generated_at_utc": "2026-04-28T10:28:34Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "track": "kdd_applied_data_science",
+  "title_en": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness",
+  "abstract_en_180w": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting network contains 11573 nodes and 19690345 gate-passed edges, with 1115 old-new cross edges and a detected phase-transition signal. Our robustness stack combines drift, negative-control, and counterfactual gates; integrated status is GO, and the mean base-minus-counterfactual gap is 0.362182. A staged full-canon run completed 5/5 stages under source mode event_level_ingest. Methodologically, we follow three stages: atomize event-level candidates and assign symbolic sequence priors; build pairwise similarity matrix and gate-passed topological edges; run drift + negative-control + counterfactual gate stack before external reporting. Key limitations remain operational: N^2 similarity scaling requires staged expansion and compute budgeting, and 4D mapping can accumulate synchronization noise. High-complexity historical corpora are used as stress-test beds for context filtering robustness, not as doctrinal proof.",
+  "keywords_en": [
+    "topological knowledge graph",
+    "digital humanities",
+    "symbolic atomization",
+    "counterfactual robustness",
+    "cross-domain event similarity"
+  ],
+  "contributions_en": [
+    "Introduces an atom-topology pipeline that maps event narratives to structure-level similarity beyond lexical overlap.",
+    "Demonstrates staged full-canon execution with measurable transition links and gated topology outputs.",
+    "Integrates drift, negative-control, and counterfactual gates into a reproducible robustness stack."
+  ],
+  "quick_facts": {
+    "node_count": 11573,
+    "edge_count": 19690345,
+    "old_new_cross_edges": 1115,
+    "gate_status": "GO",
+    "counterfactual_mean_gap": 0.362182,
+    "batch_stages_ok": 5,
+    "batch_stages_total": 5,
+    "batch_source_mode": "event_level_ingest"
+  },
+  "method_outline_en": [
+    "Atomize event-level candidates and assign symbolic sequence priors.",
+    "Build pairwise similarity matrix and gate-passed topological edges.",
+    "Run drift + negative-control + counterfactual gate stack before external reporting."
+  ],
+  "risk_notes_en": [
+    "N^2 similarity scaling requires staged expansion and compute budgeting.",
+    "4D mapping can accumulate synchronization noise; ablation and counterfactual checks remain mandatory."
+  ],
+  "stage_breakdown": [
+    {
+      "stage": "genesis",
+      "target_count": 512,
+      "node_count": 327,
+      "edge_count": 29539,
+      "phase_transition_signal": "weak",
+      "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon\\20260428T094734Z_genesis_phase_report.json"
+    },
+    {
+      "stage": "torah",
+      "target_count": 2048,
+      "node_count": 1245,
+      "edge_count": 472521,
+      "phase_transition_signal": "present",
+      "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon\\20260428T094734Z_torah_phase_report.json"
+    },
+    {
+      "stage": "prophets",
+      "target_count": 3072,
+      "node_count": 1203,
+      "edge_count": 406698,
+      "phase_transition_signal": "present",
+      "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon\\20260428T094734Z_prophets_phase_report.json"
+    },
+    {
+      "stage": "gospels",
+      "target_count": 2048,
+      "node_count": 606,
+      "edge_count": 142511,
+      "phase_transition_signal": "present",
+      "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon\\20260428T094734Z_gospels_phase_report.json"
+    },
+    {
+      "stage": "full_canon",
+      "target_count": 4096,
+      "node_count": 8192,
+      "edge_count": 18639076,
+      "phase_transition_signal": "weak",
+      "phase_report_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_full_canon\\20260428T075715Z_full_canon_phase_report.json"
+    }
+  ],
+  "run_lineage": {
+    "run_stamp": "20260428T102833Z",
+    "start_stage": "genesis",
+    "end_stage": "full_canon",
+    "source_mode": "event_level_ingest",
+    "stages_total": 5,
+    "stages_ok": 5,
+    "event_window_size": null
+  },
+  "submission_checklist_en": [
+    "Paste title/abstract/keywords directly into KDD form fields.",
+    "Attach artifact packet paths in supplementary material.",
+    "Keep proprietary weights/formulas redacted; disclose only gated metrics.",
+    "Avoid doctrinal, guarantee-style, or absolute wording in external claims."
+  ],
+  "sources": {
+    "onepager_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_academic_onepager_latest.json",
+    "abstracts_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_submission_abstracts_latest.json"
+  }
+}

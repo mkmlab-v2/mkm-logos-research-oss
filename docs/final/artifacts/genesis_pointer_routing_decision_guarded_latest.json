@@ -1,0 +1,39 @@
+{
+  "schema": "genesis_pointer_routing_decision_guarded_v1",
+  "generated_at_utc": "2026-04-28T21:30:04+00:00",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "inputs": {
+    "zone_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_sequence_net_efficiency_operating_zone_latest.json",
+    "enable_go_ratio_min": 0.7,
+    "enable_hold_count_max": 0,
+    "shadow_go_ratio_min": 0.5
+  },
+  "stats": {
+    "go_count": 27,
+    "watch_count": 8,
+    "hold_count": 1,
+    "total": 36,
+    "go_ratio": 0.75
+  },
+  "decision": "SHADOW_POINTER_ROUTE",
+  "route_mode": "pointer_shadow",
+  "safeguards": {
+    "fallback_route_mode": "track_a_primary",
+    "disable_switch_env": "GENESIS_POINTER_ROUTE_FORCE_DISABLE=1"
+  },
+  "guard_generated_at_utc": "2026-04-28T21:30:05+00:00",
+  "guard_inputs": {
+    "decision_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_pointer_routing_decision_latest.json",
+    "alert_json": "C:\\workspace\\docs\\final\\artifacts\\pointer_hash_snapping_router_shadow_alert_latest.json"
+  },
+  "guard_applied": false,
+  "guard_reason": "no_alert",
+  "readiness_block_checked_at_utc": "2026-04-28T21:30:05+00:00",
+  "readiness_block_inputs": {
+    "readiness_json": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_ops_readiness_latest.json",
+    "guarded_decision_json": "C:\\workspace\\docs\\final\\artifacts\\genesis_pointer_routing_decision_guarded_latest.json"
+  },
+  "readiness_block_applied": false
+}

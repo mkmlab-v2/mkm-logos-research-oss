@@ -6,9 +6,13 @@
 # 워크스페이스 루트 - 민감 정보·로컬 설정
 # Ephemeral mission checklist (tracked template: MISSION_LOG.template.md)
 /MISSION_LOG.md
+# Local machine paths only (tracked template: LOCAL_MACHINE_POINTER_V1.template.md)
+docs/final/LOCAL_MACHINE_POINTER_V1.md
 .env
 .env.backup*
 .env.local
+# Accidental full-env snapshots at repo root (e.g. copy-paste dumps — never commit keys)
+/20*-env.txt
 scripts/.env.jema12_alert
 
 # Pre-pull backup folders (local untracked file backup)
@@ -20,8 +24,28 @@ logs/
 # 로컬 일회성 산출 (예: weather 체인 `-o out/reg.json`)
 /out/
 
+# MKM-Orchestrator — machine-local mutable queue & ephemeral locks (templates stay tracked)
+docs/final/artifacts/todo_queue_latest.json
+# Regenerable daily/B-track lens outputs: applies to **untracked** files only. Paths already tracked
+# (e.g. verify_p0-listed `*_latest.json`) stay in Git; `git status` still shows edits to those when they change.
+docs/final/artifacts/*_latest.json
+docs/final/artifacts/*_latest.md
+# Local bio sasang strict JSON from `build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` (default --out under reports/)
+reports/bio_sasang_nstates_*.json
+reports/mkm_orchestrator_poll.lock
+reports/mkm_orchestrator_telegram_offset.txt
+
+# PoC: Binance Signal Bot webhook run summaries (local only; may contain response snippets)
+reports/poc_binance_signal_webhook/
+
+# Thin daily chain: one-line myeongni JSONL (regenerable; Run-DailyExecutionInsightBrief_v1.ps1)
+data/multilens_eval/myeongni_independent_lens_thin_bridge_latest.jsonl
+
 # Kaggle 자동 다운로드 + 기상 체인 스크립트 산출 (scripts/fetch_kaggle_seattle_weather_sample_chain_v1.ps1)
 data/kaggle_auto_weather/
+
+# RDA public soil/weather ZIP unpack (large local-only; mapping SSOT is docs/final/SMARTFARM_RDA_*)
+data/smartfarm_rda_extract_v1/
 
 # MCP server local PID locks (restored tree may contain; do not commit)
 mcp-servers/.athena-*.pid
@@ -57,6 +81,10 @@ rag_server/.test_rag_idx/
 
 # Large artifacts excluded for GitHub push
 models/**
+# Global atom full canon large snapshots (keep only consolidated latest manifest tracked)
+docs/final/artifacts/global_atom_full_canon/*
+!docs/final/artifacts/global_atom_full_canon/
+!docs/final/artifacts/global_atom_full_canon/global_atom_full_canon_consolidated_manifest_latest.json
 # Regenerate: py scripts/export_general_prophecy_to_jsonl.py
 data/training/*.jsonl
 **/*.gguf
@@ -100,6 +128,10 @@ docs/final/artifacts/mkm_toe_training_dataset_v*.csv
 /artifacts/
 docs/final/artifacts/prophecy_hit_rate_eval_latest.json
 docs/final/artifacts/btrack_hypothesis_prophecy_latest.json
+# Myeongni celebrity benchmark + Yang(2015) sidecar hit bundle (regenerate via run_myeongni_celebrity_benchmark_v1.py)
+docs/final/artifacts/myeongni_celebrity_hit_rate_v1.json
+# Yang(2015) surface eight-char metrics from commander lens (regenerate via btrack_yang_2015_style_metrics_v1.py)
+reports/btrack_yang_2015_style_metrics_latest.json
 # report_schema_v2 optional snapshots (regenerate via build_report_schema_v2_*; P0 optional warn OK if absent)
 docs/final/artifacts/report_schema_v2_label_kpi_latest.json
 docs/final/artifacts/report_schema_v2_latest.json
@@ -111,6 +143,10 @@ docs/final/artifacts/general_prophecy_brier_eval_latest.json
 docs/final/artifacts/general_prophecy_latest.json
 docs/final/artifacts/l1_codebook_bypass_poc_latest.json
 docs/final/artifacts/prophecy_micro_codebook_poc_latest.json
+# External Bible cross-ref baseline: rolling chain outputs (weekly/regenerated); seeds SSOT remain tracked
+docs/final/artifacts/external_bible_crossref*_latest.json
+docs/final/artifacts/external_bible_crossref*_latest.jsonl
+docs/final/artifacts/external_bible_crossref_latest_index.json
 reports/constitution/master_codebook_training_smoke_bundle_*
 # Shard evolve sandbox runs (regenerable; objective + evolve_log under reports/shard_evolve/)
 reports/shard_evolve/
@@ -120,12 +156,18 @@ reports/fused_quant_pixel_sop_runner.lock
 reports/track_a_commercialization_daily_log.jsonl
 # Dimensional projection bridge local outputs (regenerable; refresh/eval scripts)
 reports/dimensional_projection_bridge/
+# Logos vector ANN lite local outputs (regenerable; builder defaults under docs/final/artifacts)
+docs/final/artifacts/logos_vector_index_ann_lite_v1.sqlite
+docs/final/artifacts/logos_vector_index_ann_lite_v1_latest.json
+# LinkedIn DM outreach scratch (local copy bank / tracker; regenerable)
+reports/linkedin_dm_*
 # mkm-life: local funnel pipeline outputs (regenerable; keep scripts + SSOT pair tracked)
 projects/mkm-life/reports/one_question_funnel_*
 !projects/mkm-life/reports/one_question_funnel_daily_targets_latest.json
 !projects/mkm-life/reports/one_question_funnel_daily_targets_latest.md
-# Weekly compression dated snapshots (scheduler/local); latest JSON remains tracked
+# Weekly compression governance reports (scheduler/local/CI; regenerable)
 docs/final/artifacts/compression_weekly_governance_report_20*.json
+docs/final/artifacts/compression_weekly_governance_report_latest.json
 projects/bitcoin-trading/.venv/
 projects/bitcoin-trading/.pm2-win/
 # Regenerable trade exports (scp from VPS or scripts/export_cursor_trade_history_v1.py)
@@ -217,6 +259,14 @@ reports/aistudio_mcp_env_diagnosis.json
 /GoogleDriveSetup.exe
 /tmp_sync_report.txt
 .aider*
+/status
+/no1kmedi_kakao_app_icon.png
+
+# Local temporary work folders (regenerable scratch trees)
+/.cursor-clean-profile/
+/_hotfix_deploy/
+/_hotfix_deploy_origin/
+/logos_reval_*/
 
 # Local Windows Task Scheduler audit exports (regenerable; keep status clean)
 reports/workspace_scheduled_tasks_audit_latest.csv
@@ -321,3 +371,51 @@ docs/final/artifacts/trackb_action_*
 docs/final/artifacts/internal_compression_*
 docs/final/artifacts/track_a_*
 docs/final/artifacts/log_metabolism_*
+
+# Regenerable local automation artifacts (reduce git/Cursor noise; promote with git add -f if needed)
+docs/final/artifacts/btrack_monthly_brief_from_top10_*
+docs/final/artifacts/btrack_ohlcv_task_health*_latest.json
+docs/final/artifacts/btrack_prophecy_score_monthly_*.json
+docs/final/artifacts/genius_*
+docs/final/artifacts/pre_news_shadow_weekly_audit_bundle_*.json
+docs/final/artifacts/prophecy_hit_rate_eval_monthly_*.json
+# B-track evolution lightweight loop (regenerable; run_evolution_lightweight_loop_v1.py)
+docs/final/artifacts/evolution_lightweight_loop_latest.json
+docs/final/artifacts/lens_evolution_proposal_latest.json
+docs/final/artifacts/prophecy_hit_rate_per_lens_latest.json
+
+# Track C / Daily readiness high-churn runtime outputs (regenerable; keep git clean)
+docs/final/artifacts/mkm_ai_final_ops_bundle_latest.json
+docs/final/artifacts/mkm_ai_final_ops_bundle_latest.md
+docs/final/artifacts/mkm_ai_status_brief_latest.md
+docs/final/artifacts/mkm_ai_status_pointer_latest.json
+docs/final/artifacts/mkm_ai_v2_final_promotion_lock_latest.json
+docs/final/artifacts/mkm_ai_v2_promotion_decision_latest.json
+docs/final/artifacts/mkm_ai_v2_readiness_latest.json
+docs/final/artifacts/mkm_ai_v2_weekly_readiness_report_latest.json
+docs/final/artifacts/mkm_trackc_api_spec_package_latest.json
+docs/final/artifacts/mkm_trackc_api_spec_package_latest.md
+docs/final/artifacts/mkm_trackc_client_handoff_guard_latest.json
+docs/final/artifacts/mkm_trackc_client_handoff_package_latest.json
+docs/final/artifacts/mkm_trackc_client_handoff_package_latest.md
+docs/final/artifacts/mkm_trackc_commercial_package_latest.json
+docs/final/artifacts/mkm_trackc_commercial_package_latest.md
+docs/final/artifacts/mkm_trackc_external_onepager_latest.json
+docs/final/artifacts/mkm_trackc_external_onepager_latest.md
+docs/final/artifacts/mkm_trackc_ops_dashboard_exec_latest.md
+docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json
+docs/final/artifacts/mkm_trackc_ops_dashboard_latest.md
+docs/final/artifacts/paddle_onboarding_status_latest.json
+docs/final/artifacts/paddle_onboarding_status_latest.md
+docs/final/artifacts/track_c_2026_h2_macro_risk_alert_report_mvp_v1.md
+docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_latest.md
+docs/final/artifacts/trackc_b2b_brief_webhook_dispatch_latest.json
+docs/final/artifacts/trackc_macro_risk_morning_briefing_latest.json
+docs/final/artifacts/trackc_macro_risk_morning_briefing_latest.ko.md
+docs/final/artifacts/trackc_macro_risk_morning_briefing_latest.en.md
+reports/macro_risk_n8n_daily_check_failures.jsonl
+reports/macro_risk_n8n_daily_check_latest.json
+reports/mkm_ai_v2_readiness_log.jsonl
+reports/mkm_orchestrator_approval_backlog_latest.json
+reports/mkm_orchestrator_audit.jsonl
+reports/mkm_orchestrator_noop_smoke_latest.json

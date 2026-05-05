@@ -1,0 +1,179 @@
+{
+  "schema": "vibe_gemini_slot_integrity_v1",
+  "generated_at_utc": "2026-05-03T00:28:56Z",
+  "scope": "research_only",
+  "runs_file": "C:/workspace/docs/final/artifacts/vibe_runs_raw/vibe_prompt_runs_latest.jsonl",
+  "raw_dir": "C:/workspace/docs/final/artifacts/vibe_runs_raw/athena_raw_outputs",
+  "require_runtime_header": true,
+  "fail_on_extra_files": true,
+  "expected_files": 40,
+  "status": "ok",
+  "issues": {
+    "missing_files": [],
+    "stub_like_files": [],
+    "missing_runtime_header": [],
+    "extra_files": [],
+    "per_file": {
+      "prompt_01_run_01.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_01_run_02.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_01_run_03.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_01_run_04.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_01_run_05.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_01_run_06.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_01_run_07.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_01_run_08.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_01_run_09.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_01_run_10.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_02_run_01.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_02_run_02.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_02_run_03.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_02_run_04.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_02_run_05.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_02_run_06.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_02_run_07.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_02_run_08.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_02_run_09.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_02_run_10.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_03_run_01.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_03_run_02.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_03_run_03.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_03_run_04.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_03_run_05.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_03_run_06.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_03_run_07.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_03_run_08.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_03_run_09.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_03_run_10.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_04_run_01.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_04_run_02.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_04_run_03.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_04_run_04.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_04_run_05.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_04_run_06.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_04_run_07.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_04_run_08.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_04_run_09.md": {
+        "stub_like": false,
+        "reasons": []
+      },
+      "prompt_04_run_10.md": {
+        "stub_like": false,
+        "reasons": []
+      }
+    }
+  }
+}

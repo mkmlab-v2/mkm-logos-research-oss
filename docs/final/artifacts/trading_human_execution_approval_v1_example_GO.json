@@ -1,0 +1,17 @@
+{
+  "schema": "trading_human_execution_approval_v1",
+  "domain": "trading",
+  "track": "A",
+  "proposal_id": "demo-proposal-001",
+  "proposal_ref": {
+    "artifact_path": "tests/fixtures/trading_execution_proposal_sample_v1.json",
+    "source_rail": "B"
+  },
+  "proposal_body_sha256": "c0694c97d094633886fc37f40644d0f49fca8e8db0fb4fc28bc3d6359941da28",
+  "decision": "GO",
+  "approved_at_utc": "2026-05-04T12:00:00Z",
+  "valid_until_utc": "2099-12-31T23:59:59Z",
+  "approver_label": "commander",
+  "approval_note": "Example only: schema + hash contract smoke.",
+  "nonce": "example-go-nonce-001"
+}

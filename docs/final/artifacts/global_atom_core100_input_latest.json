@@ -1,0 +1,814 @@
+{
+  "schema": "bible_meaning_insight_candidates_v1",
+  "generated_at_utc": "2026-04-28T06:58:49Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "candidates": [
+    {
+      "candidate_id": "core100_001",
+      "source_node_id": "genesis::event.001",
+      "hub_score": 0.78,
+      "path_score": 0.45,
+      "cluster_size": 7,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_002",
+      "source_node_id": "exodus::event.002",
+      "hub_score": 0.61,
+      "path_score": 0.47,
+      "cluster_size": 6,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_003",
+      "source_node_id": "gospel::event.003",
+      "hub_score": 0.54,
+      "path_score": 0.49,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_004",
+      "source_node_id": "aramaic::event.004",
+      "hub_score": 0.57,
+      "path_score": 0.51,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_005",
+      "source_node_id": "genesis::event.005",
+      "hub_score": 0.6,
+      "path_score": 0.53,
+      "cluster_size": 8,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_006",
+      "source_node_id": "exodus::event.006",
+      "hub_score": 0.63,
+      "path_score": 0.45,
+      "cluster_size": 9,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_007",
+      "source_node_id": "gospel::event.007",
+      "hub_score": 0.48,
+      "path_score": 0.47,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_008",
+      "source_node_id": "aramaic::event.008",
+      "hub_score": 0.51,
+      "path_score": 0.49,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_009",
+      "source_node_id": "genesis::event.009",
+      "hub_score": 0.54,
+      "path_score": 0.51,
+      "cluster_size": 4,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_010",
+      "source_node_id": "exodus::event.010",
+      "hub_score": 0.57,
+      "path_score": 0.53,
+      "cluster_size": 5,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_011",
+      "source_node_id": "gospel::event.011",
+      "hub_score": 0.6,
+      "path_score": 0.45,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_012",
+      "source_node_id": "aramaic::event.012",
+      "hub_score": 0.63,
+      "path_score": 0.47,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_013",
+      "source_node_id": "genesis::event.013",
+      "hub_score": 0.48,
+      "path_score": 0.49,
+      "cluster_size": 8,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_014",
+      "source_node_id": "exodus::event.014",
+      "hub_score": 0.51,
+      "path_score": 0.51,
+      "cluster_size": 9,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_015",
+      "source_node_id": "gospel::event.015",
+      "hub_score": 0.54,
+      "path_score": 0.53,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_016",
+      "source_node_id": "aramaic::event.016",
+      "hub_score": 0.57,
+      "path_score": 0.45,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_017",
+      "source_node_id": "genesis::event.017",
+      "hub_score": 0.6,
+      "path_score": 0.47,
+      "cluster_size": 4,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_018",
+      "source_node_id": "exodus::event.018",
+      "hub_score": 0.63,
+      "path_score": 0.49,
+      "cluster_size": 5,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_019",
+      "source_node_id": "gospel::event.019",
+      "hub_score": 0.48,
+      "path_score": 0.51,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_020",
+      "source_node_id": "aramaic::event.020",
+      "hub_score": 0.51,
+      "path_score": 0.53,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_021",
+      "source_node_id": "genesis::event.021",
+      "hub_score": 0.84,
+      "path_score": 0.45,
+      "cluster_size": 11,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_022",
+      "source_node_id": "exodus::event.022",
+      "hub_score": 0.67,
+      "path_score": 0.47,
+      "cluster_size": 10,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_023",
+      "source_node_id": "gospel::event.023",
+      "hub_score": 0.6,
+      "path_score": 0.49,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_024",
+      "source_node_id": "aramaic::event.024",
+      "hub_score": 0.63,
+      "path_score": 0.51,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_025",
+      "source_node_id": "genesis::event.025",
+      "hub_score": 0.48,
+      "path_score": 0.53,
+      "cluster_size": 4,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_026",
+      "source_node_id": "exodus::event.026",
+      "hub_score": 0.51,
+      "path_score": 0.45,
+      "cluster_size": 5,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_027",
+      "source_node_id": "gospel::event.027",
+      "hub_score": 0.54,
+      "path_score": 0.47,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_028",
+      "source_node_id": "aramaic::event.028",
+      "hub_score": 0.57,
+      "path_score": 0.49,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_029",
+      "source_node_id": "genesis::event.029",
+      "hub_score": 0.6,
+      "path_score": 0.51,
+      "cluster_size": 8,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_030",
+      "source_node_id": "exodus::event.030",
+      "hub_score": 0.63,
+      "path_score": 0.53,
+      "cluster_size": 9,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_031",
+      "source_node_id": "gospel::event.031",
+      "hub_score": 0.48,
+      "path_score": 0.45,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_032",
+      "source_node_id": "aramaic::event.032",
+      "hub_score": 0.51,
+      "path_score": 0.47,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_033",
+      "source_node_id": "genesis::event.033",
+      "hub_score": 0.54,
+      "path_score": 0.49,
+      "cluster_size": 4,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_034",
+      "source_node_id": "exodus::event.034",
+      "hub_score": 0.57,
+      "path_score": 0.51,
+      "cluster_size": 5,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_035",
+      "source_node_id": "gospel::event.035",
+      "hub_score": 0.6,
+      "path_score": 0.53,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_036",
+      "source_node_id": "aramaic::event.036",
+      "hub_score": 0.63,
+      "path_score": 0.45,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_037",
+      "source_node_id": "genesis::event.037",
+      "hub_score": 0.48,
+      "path_score": 0.47,
+      "cluster_size": 8,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_038",
+      "source_node_id": "exodus::event.038",
+      "hub_score": 0.51,
+      "path_score": 0.49,
+      "cluster_size": 9,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_039",
+      "source_node_id": "gospel::event.039",
+      "hub_score": 0.54,
+      "path_score": 0.51,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_040",
+      "source_node_id": "aramaic::event.040",
+      "hub_score": 0.57,
+      "path_score": 0.53,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_041",
+      "source_node_id": "genesis::event.041",
+      "hub_score": 0.9,
+      "path_score": 0.45,
+      "cluster_size": 7,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_042",
+      "source_node_id": "exodus::event.042",
+      "hub_score": 0.73,
+      "path_score": 0.47,
+      "cluster_size": 6,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_043",
+      "source_node_id": "gospel::event.043",
+      "hub_score": 0.48,
+      "path_score": 0.49,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_044",
+      "source_node_id": "aramaic::event.044",
+      "hub_score": 0.51,
+      "path_score": 0.51,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_045",
+      "source_node_id": "genesis::event.045",
+      "hub_score": 0.54,
+      "path_score": 0.53,
+      "cluster_size": 8,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_046",
+      "source_node_id": "exodus::event.046",
+      "hub_score": 0.57,
+      "path_score": 0.45,
+      "cluster_size": 9,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_047",
+      "source_node_id": "gospel::event.047",
+      "hub_score": 0.6,
+      "path_score": 0.47,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_048",
+      "source_node_id": "aramaic::event.048",
+      "hub_score": 0.63,
+      "path_score": 0.49,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_049",
+      "source_node_id": "genesis::event.049",
+      "hub_score": 0.48,
+      "path_score": 0.51,
+      "cluster_size": 4,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_050",
+      "source_node_id": "exodus::event.050",
+      "hub_score": 0.51,
+      "path_score": 0.53,
+      "cluster_size": 5,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_051",
+      "source_node_id": "gospel::event.051",
+      "hub_score": 0.54,
+      "path_score": 0.45,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_052",
+      "source_node_id": "aramaic::event.052",
+      "hub_score": 0.57,
+      "path_score": 0.47,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_053",
+      "source_node_id": "genesis::event.053",
+      "hub_score": 0.6,
+      "path_score": 0.49,
+      "cluster_size": 8,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_054",
+      "source_node_id": "exodus::event.054",
+      "hub_score": 0.63,
+      "path_score": 0.51,
+      "cluster_size": 9,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_055",
+      "source_node_id": "gospel::event.055",
+      "hub_score": 0.48,
+      "path_score": 0.53,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_056",
+      "source_node_id": "aramaic::event.056",
+      "hub_score": 0.51,
+      "path_score": 0.45,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_057",
+      "source_node_id": "genesis::event.057",
+      "hub_score": 0.54,
+      "path_score": 0.47,
+      "cluster_size": 4,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_058",
+      "source_node_id": "exodus::event.058",
+      "hub_score": 0.57,
+      "path_score": 0.49,
+      "cluster_size": 5,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_059",
+      "source_node_id": "gospel::event.059",
+      "hub_score": 0.6,
+      "path_score": 0.51,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_060",
+      "source_node_id": "aramaic::event.060",
+      "hub_score": 0.63,
+      "path_score": 0.53,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_061",
+      "source_node_id": "genesis::event.061",
+      "hub_score": 0.78,
+      "path_score": 0.45,
+      "cluster_size": 11,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_062",
+      "source_node_id": "exodus::event.062",
+      "hub_score": 0.61,
+      "path_score": 0.47,
+      "cluster_size": 10,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_063",
+      "source_node_id": "gospel::event.063",
+      "hub_score": 0.54,
+      "path_score": 0.49,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_064",
+      "source_node_id": "aramaic::event.064",
+      "hub_score": 0.57,
+      "path_score": 0.51,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_065",
+      "source_node_id": "genesis::event.065",
+      "hub_score": 0.6,
+      "path_score": 0.53,
+      "cluster_size": 4,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_066",
+      "source_node_id": "exodus::event.066",
+      "hub_score": 0.63,
+      "path_score": 0.45,
+      "cluster_size": 5,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_067",
+      "source_node_id": "gospel::event.067",
+      "hub_score": 0.48,
+      "path_score": 0.47,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_068",
+      "source_node_id": "aramaic::event.068",
+      "hub_score": 0.51,
+      "path_score": 0.49,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_069",
+      "source_node_id": "genesis::event.069",
+      "hub_score": 0.54,
+      "path_score": 0.51,
+      "cluster_size": 8,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_070",
+      "source_node_id": "exodus::event.070",
+      "hub_score": 0.57,
+      "path_score": 0.53,
+      "cluster_size": 9,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_071",
+      "source_node_id": "gospel::event.071",
+      "hub_score": 0.6,
+      "path_score": 0.45,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_072",
+      "source_node_id": "aramaic::event.072",
+      "hub_score": 0.63,
+      "path_score": 0.47,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_073",
+      "source_node_id": "genesis::event.073",
+      "hub_score": 0.48,
+      "path_score": 0.49,
+      "cluster_size": 4,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_074",
+      "source_node_id": "exodus::event.074",
+      "hub_score": 0.51,
+      "path_score": 0.51,
+      "cluster_size": 5,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_075",
+      "source_node_id": "gospel::event.075",
+      "hub_score": 0.54,
+      "path_score": 0.53,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_076",
+      "source_node_id": "aramaic::event.076",
+      "hub_score": 0.57,
+      "path_score": 0.45,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_077",
+      "source_node_id": "genesis::event.077",
+      "hub_score": 0.6,
+      "path_score": 0.47,
+      "cluster_size": 8,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_078",
+      "source_node_id": "exodus::event.078",
+      "hub_score": 0.63,
+      "path_score": 0.49,
+      "cluster_size": 9,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_079",
+      "source_node_id": "gospel::event.079",
+      "hub_score": 0.48,
+      "path_score": 0.51,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_080",
+      "source_node_id": "aramaic::event.080",
+      "hub_score": 0.51,
+      "path_score": 0.53,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_081",
+      "source_node_id": "genesis::event.081",
+      "hub_score": 0.84,
+      "path_score": 0.45,
+      "cluster_size": 7,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_082",
+      "source_node_id": "exodus::event.082",
+      "hub_score": 0.67,
+      "path_score": 0.47,
+      "cluster_size": 6,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_083",
+      "source_node_id": "gospel::event.083",
+      "hub_score": 0.6,
+      "path_score": 0.49,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_084",
+      "source_node_id": "aramaic::event.084",
+      "hub_score": 0.63,
+      "path_score": 0.51,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_085",
+      "source_node_id": "genesis::event.085",
+      "hub_score": 0.48,
+      "path_score": 0.53,
+      "cluster_size": 8,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_086",
+      "source_node_id": "exodus::event.086",
+      "hub_score": 0.51,
+      "path_score": 0.45,
+      "cluster_size": 9,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_087",
+      "source_node_id": "gospel::event.087",
+      "hub_score": 0.54,
+      "path_score": 0.47,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_088",
+      "source_node_id": "aramaic::event.088",
+      "hub_score": 0.57,
+      "path_score": 0.49,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_089",
+      "source_node_id": "genesis::event.089",
+      "hub_score": 0.6,
+      "path_score": 0.51,
+      "cluster_size": 4,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_090",
+      "source_node_id": "exodus::event.090",
+      "hub_score": 0.63,
+      "path_score": 0.53,
+      "cluster_size": 5,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_091",
+      "source_node_id": "gospel::event.091",
+      "hub_score": 0.48,
+      "path_score": 0.45,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_092",
+      "source_node_id": "aramaic::event.092",
+      "hub_score": 0.51,
+      "path_score": 0.47,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_093",
+      "source_node_id": "genesis::event.093",
+      "hub_score": 0.54,
+      "path_score": 0.49,
+      "cluster_size": 8,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_094",
+      "source_node_id": "exodus::event.094",
+      "hub_score": 0.57,
+      "path_score": 0.51,
+      "cluster_size": 9,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_095",
+      "source_node_id": "gospel::event.095",
+      "hub_score": 0.6,
+      "path_score": 0.53,
+      "cluster_size": 10,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_096",
+      "source_node_id": "aramaic::event.096",
+      "hub_score": 0.63,
+      "path_score": 0.45,
+      "cluster_size": 11,
+      "regime_tag": "empire_transition"
+    },
+    {
+      "candidate_id": "core100_097",
+      "source_node_id": "genesis::event.097",
+      "hub_score": 0.48,
+      "path_score": 0.47,
+      "cluster_size": 4,
+      "regime_tag": "creation_fall"
+    },
+    {
+      "candidate_id": "core100_098",
+      "source_node_id": "exodus::event.098",
+      "hub_score": 0.51,
+      "path_score": 0.49,
+      "cluster_size": 5,
+      "regime_tag": "exodus_transition"
+    },
+    {
+      "candidate_id": "core100_099",
+      "source_node_id": "gospel::event.099",
+      "hub_score": 0.54,
+      "path_score": 0.51,
+      "cluster_size": 6,
+      "regime_tag": "gospel_kingdom"
+    },
+    {
+      "candidate_id": "core100_100",
+      "source_node_id": "aramaic::event.100",
+      "hub_score": 0.57,
+      "path_score": 0.53,
+      "cluster_size": 7,
+      "regime_tag": "empire_transition"
+    }
+  ],
+  "meta": {
+    "profile": "core100_mixed_events_poc",
+    "target_count": 100,
+    "source_seed_json": "C:\\workspace\\docs\\final\\artifacts\\bible_meaning_insight_candidates_latest.json"
+  }
+}

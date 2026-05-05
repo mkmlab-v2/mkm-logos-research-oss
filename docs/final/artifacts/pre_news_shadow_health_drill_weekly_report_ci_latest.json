@@ -1,0 +1,12 @@
+{
+  "schema": "pre_news_shadow_weekly_report_v1",
+  "generated_at_utc": "2026-04-28T11:41:04Z",
+  "window_days": 7,
+  "log_jsonl": "C:\\workspace\\reports\\pre_news_shadow_task_health_alert_drill_log.jsonl",
+  "runs_in_window": 2,
+  "latest_projection_json": null,
+  "latest_projection_rows": 0,
+  "top_resonance_stage_counts": [],
+  "research_only": true,
+  "note": "Weekly monitoring summary for shadow-only pre-news projection."
+}

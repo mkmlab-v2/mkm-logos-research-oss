@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>Binance USDM · 조건부 시그널 게이트 체크리스트 v1</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 52rem; margin: 1rem auto; padding: 0 1rem; line-height: 1.45; }
+    h1 { font-size: 1.15rem; }
+    table { border-collapse: collapse; width: 100%; margin: 0.75rem 0; font-size: 0.95rem; }
+    th, td { border: 1px solid #ccc; padding: 0.35rem 0.5rem; text-align: left; vertical-align: top; }
+    th { background: #f5f5f5; }
+    code { font-size: 0.9em; }
+    .note { font-size: 0.9rem; color: #444; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Binance USDM · 조건부 시그널 게이트 체크리스트 v1</h1>
+  <p>SSOT 동결용 요약. 구현·플래그는 레포 스크립트·런북·실측 환경이 우선(Fact-Lock).</p>
+  <table>
+    <thead>
+      <tr><th>목적</th><th>명령 / 경로</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>예전처럼 웹훅만</td>
+        <td><code>projects/bitcoin-trading/scripts/run_conditional_signal_webhook_v1.py</code> (내부에서 <code>--backend webhook</code> 선행)</td>
+      </tr>
+      <tr>
+        <td>백엔드 선택</td>
+        <td><code>run_conditional_action_gate_v1.py --backend webhook</code> 또는 <strong><code>--backend api</code></strong></td>
+      </tr>
+      <tr>
+        <td>실주문(API 경로)</td>
+        <td>게이트에서 실거래 허용 조건 충족 후 <code>--backend api</code>; 실행기는 도움말·런북대로 테스트넷 기본·실전 시 <code>--live</code> 및 의도 시 <code>--mainnet</code></td>
+      </tr>
+      <tr>
+        <td>파일럿 원클릭 스모크</td>
+        <td><code>scripts/Run-BinanceUsdmPilotSmoke.ps1</code> — dry 기본; 테스트넷 실체결은 상단 주석(<code>-LiveTestnet</code> 등). <strong>소액 메인넷 실전</strong>은 <code>-LiveMainnetSmall</code> + 이중 확인 + 실제 <code>-RiskJson</code> + 수량 상한(스크립트 주석 참고).</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="note">장기 지문·교차 채팅: <code>docs/final/CENTRAL_AGENT_MEMORY_V1.md</code> 「조건부 시그널 게이트 · Binance USDM」.</p>
+</body>
+</html>

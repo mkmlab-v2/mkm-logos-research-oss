@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mkm_trackc_external_onepager_v1.schema.json",
+  "title": "MKM Track C External Onepager v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "title",
+    "elevator_pitch",
+    "channel_policy",
+    "current_state",
+    "core_value",
+    "api_snapshot",
+    "showroom_snapshot",
+    "delivery_readiness",
+    "guardrails",
+    "evidence_refs"
+  ],
+  "properties": {
+    "schema": {
+      "const": "mkm_trackc_external_onepager_v1"
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "elevator_pitch": {
+      "type": "string"
+    },
+    "channel_policy": {
+      "type": "object",
+      "required": [
+        "audience",
+        "shadow_pnl_disclosure",
+        "shadow_pnl_reason"
+      ],
+      "properties": {
+        "audience": {
+          "const": "external"
+        },
+        "shadow_pnl_disclosure": {
+          "const": "DISABLED"
+        },
+        "shadow_pnl_reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "current_state": {
+      "type": "object",
+      "required": [
+        "system_label",
+        "status",
+        "is_final"
+      ],
+      "additionalProperties": true
+    },
+    "core_value": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "api_snapshot": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "showroom_snapshot": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "delivery_readiness": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_refs": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "not": {
+    "required": [
+      "shadow_pnl"
+    ]
+  },
+  "additionalProperties": true
+}

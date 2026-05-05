@@ -1,0 +1,133 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/sasang_interpretive_insight_bundle_v1.schema.json",
+  "title": "Sasang interpretive insight bundle v1",
+  "description": "B-track multi-axis reference bundle: 금화교역·보명지주·병증·약리·예측·사상 렌즈 등 관측용 포인터 모음. 결정권은 사용자(human_only). LLM 없음.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "rail",
+    "decision_authority",
+    "opinion_kind",
+    "disclaimer_ko",
+    "human_commander_gate_v1",
+    "synthesis_v1",
+    "sections"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "sasang_interpretive_insight_bundle_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "rail": {
+      "type": "string",
+      "enum": ["B_TRACK"],
+      "description": "Always B-track observation bundle; not A-track product output."
+    },
+    "decision_authority": {
+      "type": "string",
+      "const": "human_only",
+      "description": "Machine supplies references only; no automated clinical or trading decision."
+    },
+    "opinion_kind": {
+      "type": "string",
+      "description": "What this artifact is (reference bundle vs single opinion)."
+    },
+    "disclaimer_ko": { "type": "string", "minLength": 10 },
+    "human_commander_gate_v1": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["schema", "version", "track", "banner_ko", "final_authority", "machine_output_role"]
+    },
+    "upstream_snapshot": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional minimal pointers to lens artifacts used when building (paths + existence flags)."
+    },
+    "synthesis_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["how_to_synthesize_ko", "axis_order_rationale_ko", "disagreement_protocol_ko", "forbidden_synthesis_ko"],
+      "properties": {
+        "how_to_synthesize_ko": {
+          "type": "string",
+          "minLength": 80,
+          "description": "Deterministic guide: how to read axes together without automated verdict."
+        },
+        "axis_order_rationale_ko": {
+          "type": "string",
+          "minLength": 40
+        },
+        "disagreement_protocol_ko": {
+          "type": "string",
+          "minLength": 40
+        },
+        "forbidden_synthesis_ko": {
+          "type": "string",
+          "minLength": 40,
+          "description": "What must not be inferred by stitching axes (clinical single-shot, live sizing, etc.)."
+        }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "axis_id",
+          "title_ko",
+          "availability",
+          "summary_ko",
+          "interpretive_depth_ko",
+          "evidence_refs",
+          "rail_note_ko"
+        ],
+        "properties": {
+          "axis_id": {
+            "type": "string",
+            "enum": [
+              "geumhwagyoyeok",
+              "bomyung_jiju",
+              "byeongjeung_yakri",
+              "prediction",
+              "sasang_lens_core",
+              "market_sasang_lens"
+            ]
+          },
+          "title_ko": { "type": "string" },
+          "availability": {
+            "type": "string",
+            "enum": ["linked", "partial", "stub", "unavailable"]
+          },
+          "summary_ko": { "type": "string" },
+          "interpretive_depth_ko": {
+            "type": "string",
+            "minLength": 60,
+            "description": "Substantive Korean: what this axis contributes to human judgment and what it does not."
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "ref"],
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": ["repo_path", "artifact_json", "schema", "contract", "handoff_doc"]
+                },
+                "ref": { "type": "string", "minLength": 1 },
+                "note_ko": { "type": "string" }
+              }
+            }
+          },
+          "rail_note_ko": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,14 +1,16 @@
 {
   "schema": "compression_jaccard_loss_patterns_v1",
-  "ts_utc": "2026-04-11T15:45:16.968254+00:00",
+  "ts_utc": "2026-05-02T22:00:05.265510+00:00",
   "sla_track": "literal",
   "sources": {
     "input": "docs\\final\\artifacts\\MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
-    "active_report": "docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json"
+    "active_report": "docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json",
+    "sla_track_cli": "literal",
+    "explicit_active_report": false
   },
   "summary": {
     "case_count": 40,
-    "avg_words_lost": 1.325
+    "avg_words_lost": 0.375
   },
   "cases": [
     {
@@ -89,15 +91,14 @@
       "id": "cmp2_006",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.875,
-      "token_saving_rate": 0.2222222222222222,
+      "reconstruction_fidelity_jaccard": 0.9375,
+      "token_saving_rate": 0.16666666666666663,
       "raw_word_count": 16,
-      "recon_word_count": 14,
-      "words_lost_count": 2,
+      "recon_word_count": 15,
+      "words_lost_count": 1,
       "words_extra_count": 0,
       "words_lost_sample": [
-        "mislabeled",
-        "review"
+        "mislabeled"
       ],
       "words_extra_sample": []
     },
@@ -180,38 +181,28 @@
     },
     {
       "id": "cmp2_012",
-      "domain": "ssot",
-      "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.75,
-      "token_saving_rate": 0.2941176470588235,
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "reconstruction_fidelity_jaccard": 1.0,
+      "token_saving_rate": 0.23529411764705888,
       "raw_word_count": 16,
-      "recon_word_count": 12,
-      "words_lost_count": 4,
+      "recon_word_count": 16,
+      "words_lost_count": 0,
       "words_extra_count": 0,
-      "words_lost_sample": [
-        "경우가",
-        "규칙",
-        "따뜻한",
-        "함께"
-      ],
+      "words_lost_sample": [],
       "words_extra_sample": []
     },
     {
       "id": "cmp2_013",
-      "domain": "ssot",
-      "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7647058823529411,
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "reconstruction_fidelity_jaccard": 1.0,
       "token_saving_rate": 0.2777777777777778,
       "raw_word_count": 17,
-      "recon_word_count": 13,
-      "words_lost_count": 4,
+      "recon_word_count": 17,
+      "words_lost_count": 0,
       "words_extra_count": 0,
-      "words_lost_sample": [
-        "걷기를",
-        "낮추고",
-        "수",
-        "염분"
-      ],
+      "words_lost_sample": [],
       "words_extra_sample": []
     },
     {
@@ -281,20 +272,15 @@
     },
     {
       "id": "cmp2_019",
-      "domain": "ssot",
-      "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7647058823529411,
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "reconstruction_fidelity_jaccard": 1.0,
       "token_saving_rate": 0.2777777777777778,
       "raw_word_count": 17,
-      "recon_word_count": 13,
-      "words_lost_count": 4,
+      "recon_word_count": 17,
+      "words_lost_count": 0,
       "words_extra_count": 0,
-      "words_lost_sample": [
-        "때",
-        "쉬워서",
-        "완충과",
-        "함께"
-      ],
+      "words_lost_sample": [],
       "words_extra_sample": []
     },
     {
@@ -312,21 +298,15 @@
     },
     {
       "id": "cmp2_021",
-      "domain": "ssot",
-      "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7368421052631579,
-      "token_saving_rate": 0.30000000000000004,
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "reconstruction_fidelity_jaccard": 1.0,
+      "token_saving_rate": 0.19999999999999996,
       "raw_word_count": 19,
-      "recon_word_count": 14,
-      "words_lost_count": 5,
+      "recon_word_count": 19,
+      "words_lost_count": 0,
       "words_extra_count": 0,
-      "words_lost_sample": [
-        "과도한",
-        "노출이",
-        "사이에",
-        "작업",
-        "휴식을"
-      ],
+      "words_lost_sample": [],
       "words_extra_sample": []
     },
     {
@@ -357,56 +337,41 @@
     },
     {
       "id": "cmp2_024",
-      "domain": "ssot",
-      "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.75,
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "reconstruction_fidelity_jaccard": 1.0,
       "token_saving_rate": 0.33333333333333337,
       "raw_word_count": 16,
-      "recon_word_count": 12,
-      "words_lost_count": 4,
+      "recon_word_count": 16,
+      "words_lost_count": 0,
       "words_extra_count": 0,
-      "words_lost_sample": [
-        "단계에서",
-        "대조",
-        "반드시",
-        "있어"
-      ],
+      "words_lost_sample": [],
       "words_extra_sample": []
     },
     {
       "id": "cmp2_025",
-      "domain": "ssot",
-      "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.75,
-      "token_saving_rate": 0.33333333333333337,
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "reconstruction_fidelity_jaccard": 1.0,
+      "token_saving_rate": 0.2777777777777778,
       "raw_word_count": 16,
-      "recon_word_count": 12,
-      "words_lost_count": 4,
+      "recon_word_count": 16,
+      "words_lost_count": 0,
       "words_extra_count": 0,
-      "words_lost_sample": [
-        "위반",
-        "정책을",
-        "즉시",
-        "하며"
-      ],
+      "words_lost_sample": [],
       "words_extra_sample": []
     },
     {
       "id": "cmp2_026",
-      "domain": "ssot",
-      "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7647058823529411,
-      "token_saving_rate": 0.2777777777777778,
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "reconstruction_fidelity_jaccard": 1.0,
+      "token_saving_rate": 0.2222222222222222,
       "raw_word_count": 17,
-      "recon_word_count": 13,
-      "words_lost_count": 4,
+      "recon_word_count": 17,
+      "words_lost_count": 0,
       "words_extra_count": 0,
-      "words_lost_sample": [
-        "결과가",
-        "실제",
-        "실패가",
-        "좋아"
-      ],
+      "words_lost_sample": [],
       "words_extra_sample": []
     },
     {
@@ -437,19 +402,15 @@
     },
     {
       "id": "cmp2_029",
-      "domain": "ssot",
-      "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7857142857142857,
-      "token_saving_rate": 0.2666666666666667,
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "reconstruction_fidelity_jaccard": 1.0,
+      "token_saving_rate": 0.33333333333333337,
       "raw_word_count": 14,
-      "recon_word_count": 11,
-      "words_lost_count": 3,
+      "recon_word_count": 14,
+      "words_lost_count": 0,
       "words_extra_count": 0,
-      "words_lost_sample": [
-        "분리",
-        "시간축",
-        "추후"
-      ],
+      "words_lost_sample": [],
       "words_extra_sample": []
     },
     {
@@ -571,21 +532,15 @@
     },
     {
       "id": "cmp2_039",
-      "domain": "ssot",
-      "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7368421052631579,
-      "token_saving_rate": 0.30000000000000004,
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "reconstruction_fidelity_jaccard": 1.0,
+      "token_saving_rate": 0.19999999999999996,
       "raw_word_count": 19,
-      "recon_word_count": 14,
-      "words_lost_count": 5,
+      "recon_word_count": 19,
+      "words_lost_count": 0,
       "words_extra_count": 0,
-      "words_lost_sample": [
-        "대비",
-        "빠르게",
-        "수정",
-        "없이도",
-        "토큰"
-      ],
+      "words_lost_sample": [],
       "words_extra_sample": []
     },
     {

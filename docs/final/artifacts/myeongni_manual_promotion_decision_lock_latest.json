@@ -1,0 +1,33 @@
+{
+  "schema": "myeongni_manual_promotion_decision_lock_v1",
+  "locked_at_utc": "2026-04-28T05:49:09Z",
+  "inputs": {
+    "promotion_gate": "C:\\workspace\\docs\\final\\artifacts\\myeongni_promotion_gate_latest.json",
+    "review_packet": "C:\\workspace\\docs\\final\\artifacts\\myeongni_promotion_review_packet_latest.json",
+    "receipt_s2": "C:\\workspace\\reports\\myeongni_a_track_promotion_decision_latest.json",
+    "receipt_s3": "C:\\workspace\\reports\\myeongni_a_track_promotion_decision_s3_latest.json",
+    "receipt_s4": "C:\\workspace\\reports\\myeongni_a_track_promotion_decision_s4_latest.json"
+  },
+  "review_snapshot": {
+    "promotion_gate_status": "PASS",
+    "promotion_decision": "MANUAL_PROMOTION_REVIEW_GO",
+    "review_packet_schema": "myeongni_promotion_review_packet_v1",
+    "checklist": {
+      "gate_status_pass": true,
+      "manual_signoff_go": true,
+      "receipt_s2_accepted": true,
+      "receipt_s3_accepted": true,
+      "receipt_s4_accepted": true,
+      "track_bridge_auto_disabled": true,
+      "live_trigger_auto_disabled": true
+    }
+  },
+  "final_decision": "approved",
+  "reviewer": "PRO",
+  "decision_note": "Manual promotion lock approved with S2/S3/S4 accepted receipts; auto-bridge and auto-live remain disabled.",
+  "constraints": {
+    "track_b_to_a_auto_bridge": false,
+    "live_trigger_auto_enabled": false,
+    "human_signoff_required": true
+  }
+}

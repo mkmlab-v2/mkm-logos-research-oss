@@ -1,6 +1,6 @@
 ﻿{
     "schema":  "codebook_factsafe_bundle_v1",
-    "generated_at_utc":  "2026-04-09T14:19:06Z",
+    "generated_at_utc":  "2026-05-03T11:56:12Z",
     "ok":  true,
     "options":  {
                     "smoke_count":  500,
@@ -12,31 +12,31 @@
                   {
                       "id":  "validate_schema",
                       "exit_code":  0,
-                      "elapsed_ms":  99,
+                      "elapsed_ms":  124,
                       "command":  "py scripts/validate_master_codebook_schema.py"
                   },
                   {
                       "id":  "validate_real_samples",
                       "exit_code":  0,
-                      "elapsed_ms":  86,
+                      "elapsed_ms":  102,
                       "command":  "py scripts/validate_master_codebook_real_samples.py"
                   },
                   {
                       "id":  "training_smoke",
                       "exit_code":  0,
-                      "elapsed_ms":  75,
+                      "elapsed_ms":  94,
                       "command":  "py scripts/run_master_codebook_training_smoke.py --count 500 --prefix bundle_probe"
                   },
                   {
                       "id":  "l1_bypass_poc",
                       "exit_code":  0,
-                      "elapsed_ms":  80,
+                      "elapsed_ms":  116,
                       "command":  "py scripts/l1_codebook_bypass.py"
                   },
                   {
                       "id":  "prophecy_micro_codebook_poc",
                       "exit_code":  0,
-                      "elapsed_ms":  95,
+                      "elapsed_ms":  87,
                       "command":  "py scripts/run_prophecy_micro_codebook_poc.py"
                   }
               ],
@@ -50,5 +50,5 @@
                                 "exit_code":  0,
                                 "artifact":  "docs/final/artifacts/recovered_codebook_operational_readiness_latest.json"
                             },
-    "elapsed_ms_total":  1488
+    "elapsed_ms_total":  1784
 }

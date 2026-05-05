@@ -1,20 +1,20 @@
 {
   "schema": "btrack_verified_baseline_lock_v1",
-  "locked_at_utc": "2026-04-23T01:15:53Z",
+  "locked_at_utc": "2026-05-02T17:59:43Z",
   "inputs": {
     "quality_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_quality_anchor_verified_only_latest.json",
     "gate_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
     "verified_slots": "C:\\workspace\\data\\logos\\btrack_pilot\\bench\\btrack_anchor_evidence_slots_verified.jsonl"
   },
   "input_hashes": {
-    "quality_report_sha256": "5dae23f520a719b9ec576f42f9c55511b676b978a6ebf3e0af77b112bbe46146",
-    "gate_report_sha256": "b3043a59691e92cd4c6c2d358a6a20c54ac90bad06356adea01ec48f305461da",
+    "quality_report_sha256": "15a5a451b08252c3f2a494504e770bc1228c906952d581776f0978c6c8c45f7e",
+    "gate_report_sha256": "cfcc0889c1df5b9081454f6c9832a7e88d2ced81f0a1210330e7b6d8c7bcfe05",
     "verified_slots_sha256": "0104fe1bcb2b7169ec6c670a2ca60e88bd3a26aae7bcea8aa2de2772692a35c6"
   },
   "baseline_metrics": {
     "reproducibility_match_rate": 1.0,
-    "resolution_confidence_delta_b_minus_a": 0.024062499999999997,
-    "contamination_snr_delta_b_minus_a": 0.029531249999999995
+    "resolution_confidence_delta_b_minus_a": 0.06162591666666663,
+    "contamination_snr_delta_b_minus_a": 0.06953125
   },
   "baseline_decision": "pass",
   "regression_policy": {

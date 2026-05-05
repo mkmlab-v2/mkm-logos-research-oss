@@ -1,0 +1,76 @@
+{
+  "mcpServers": {
+    "compression-server": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/compression_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "timeout": 60000
+    },
+    "athena-core": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/athena_core_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "timeout": 60000
+    },
+    "athena-metacognition": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/athena_metacognition_server_official.py"
+      ],
+      "cwd": "C:/workspace",
+      "timeout": 60000
+    },
+    "logos-code-pack-distribution": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/logos_code_pack_distribution_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "timeout": 60000
+    },
+    "logs-resource": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/logs_resource_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "timeout": 60000
+    },
+    "config-resource": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/config_resource_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "timeout": 60000
+    },
+    "athena-manseryeok": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/athena_manseryeok_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "timeout": 60000
+    },
+    "mkm-unified-hub": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/scripts/mkm_unified_mcp.py"
+      ],
+      "cwd": "C:/workspace",
+      "timeout": 60000
+    }
+  }
+}

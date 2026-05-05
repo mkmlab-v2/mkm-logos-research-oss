@@ -1,0 +1,21 @@
+{
+  "schema": "two_track_submission_go_nogo_v1",
+  "generated_at_utc": "2026-04-28T04:50:09Z",
+  "inputs": {
+    "checklist_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_checklist_latest.json",
+    "evidence_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_evidence_bundle_latest.json",
+    "fail_boundary_gate_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_fail_boundary_gate_latest.json"
+  },
+  "decision": {
+    "go": true,
+    "status": "GO",
+    "reasons": []
+  },
+  "snapshot": {
+    "submission_ready": true,
+    "bundle_ready": true,
+    "ready_for_publication_claim": true,
+    "fail_boundary_should_trade": true,
+    "fail_boundary_rollback": false
+  }
+}

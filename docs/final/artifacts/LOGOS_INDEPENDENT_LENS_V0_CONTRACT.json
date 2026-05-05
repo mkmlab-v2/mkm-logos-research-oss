@@ -1,10 +1,17 @@
 {
   "schema": "logos_independent_lens_v0_contract_meta_v1",
   "artifact_schema": "logos_independent_lens_v0",
-  "version": "0.1.0",
-  "purpose": "Verse 4D batch (Logos root) → numeric lens output; no regime/KOSPI in same runner per Logos First.",
+  "runner_version": "0.2.0",
+  "purpose": "Verse 4D batch (Logos root) → numeric lens output + evidence_refs + narrative_snippet_guarded; no regime/KOSPI in same runner per Logos First.",
   "default_output_path": "docs/final/artifacts/logos_independent_lens_latest.json",
   "default_batch_input": "data/logos/4lens_batch_sample.json",
   "runner": "scripts/run_lens_logos.py",
-  "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md (Logos 격벽)"
+  "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md (Logos 격벽)",
+  "payload_fields_v0_2": {
+    "evidence_refs": "Array of { verse_id, quote_hash, hash_tagged_snippet } per batch row that contributed pipeline1_simple_4d; verse_id/text from batch keys (verse_id, verse_text, …).",
+    "narrative_snippet_guarded": "Whitespace-joined hash_tagged_snippet lines only; clipped; no LLM prose.",
+    "snippet_guard_policy": "Human-readable rule string; downstream must not replace with free-form summaries.",
+    "quote_hash": "sha256:<hex> over UTF-8 verse_text when present; null when no text."
+  },
+  "ci_fixture_batch": "tests/fixtures/logos_4lens_batch_minimal_v1.json"
 }

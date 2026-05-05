@@ -1,0 +1,53 @@
+{
+  "schema": "atom_anchor_registry_v1",
+  "generated_at_utc": "2026-04-28T05:02:00Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "atoms": [
+    {
+      "atom_id": "BOUNDARY_COMMAND",
+      "description": "A command that defines existential boundary."
+    },
+    {
+      "atom_id": "DESIRE_TRIGGER",
+      "description": "A trigger where desire intensifies toward boundary object."
+    },
+    {
+      "atom_id": "TRANSGRESSION_ACT",
+      "description": "An act that crosses declared boundary."
+    },
+    {
+      "atom_id": "SHAME_AWARENESS",
+      "description": "Post-transgression fragmentation and self-exposure."
+    },
+    {
+      "atom_id": "EXILE_PATTERN",
+      "description": "Loss of protected domain and forced displacement."
+    },
+    {
+      "atom_id": "RESTORATION_ARC",
+      "description": "Partial or full recovery path after exile."
+    }
+  ],
+  "seed_symbol_sequences": {
+    "tree_of_knowledge_good_evil": [
+      "BOUNDARY_COMMAND",
+      "DESIRE_TRIGGER",
+      "TRANSGRESSION_ACT",
+      "SHAME_AWARENESS",
+      "EXILE_PATTERN"
+    ],
+    "babel_tower": [
+      "DESIRE_TRIGGER",
+      "TRANSGRESSION_ACT",
+      "SHAME_AWARENESS",
+      "EXILE_PATTERN"
+    ],
+    "exodus_return": [
+      "EXILE_PATTERN",
+      "RESTORATION_ARC"
+    ]
+  }
+}
+

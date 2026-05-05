@@ -1,0 +1,1 @@
+{"schema": "bible_meaning_graph_edge_v1", "src_node_id": "test::Gen.1.1", "dst_node_id": "test::Gen.1.2", "edge_type": "timeline_anchor", "weight": 0.5}

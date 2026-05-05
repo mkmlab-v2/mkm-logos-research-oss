@@ -1,0 +1,66 @@
+{
+  "schema": "a_codeai_public_benchmark_launch_checklist_v1",
+  "generated_at_utc": "2026-04-28T21:30:07+00:00",
+  "research_only": true,
+  "summary": {
+    "pass_count": 8,
+    "total": 8,
+    "decision": "READY_FOR_PUBLIC_OPEN_BENCH",
+    "readiness_all_ok": true
+  },
+  "checks": [
+    {
+      "id": "C1_public_benchmark_scope_guard",
+      "description": "Public benchmark accepts only synthetic/sample text, not customer private corpora.",
+      "status": "PASS",
+      "evidence_path": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_security_hardening_latest.json"
+    },
+    {
+      "id": "C2_policy_boundary",
+      "description": "PointerGuard allow/caution/forbid policy active and forbid zones blocked from public path.",
+      "status": "PASS",
+      "evidence_path": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_folder_policy_latest.json"
+    },
+    {
+      "id": "C3_operational_smoke",
+      "description": "Operational smoke gate passes for latest control chain run.",
+      "status": "PASS",
+      "evidence_path": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_operational_smoke_latest.json"
+    },
+    {
+      "id": "C4_alerting_hook",
+      "description": "Webhook alert automation is wired for failure/guard events.",
+      "status": "PASS",
+      "evidence_path": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_ops_alert_delivery_latest.json"
+    },
+    {
+      "id": "C5_public_metrics_transparency",
+      "description": "Expose only benchmark metrics (p50/p95/p99/RPS/error) with timestamp and environment note.",
+      "status": "PASS",
+      "evidence_path": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_two_tier_perf_scorecard_latest.json"
+    },
+    {
+      "id": "C6_rate_limit_abuse_guard",
+      "description": "Public endpoint enforces request-size limit, rate limit, and abuse control (captcha/throttle).",
+      "status": "PASS",
+      "evidence_path": "C:\\workspace\\docs\\final\\artifacts\\pointerguard_security_hardening_latest.json"
+    },
+    {
+      "id": "C7_secret_non_exposure",
+      "description": "No codebook internals, policy tuning internals, or customer prompts are exposed in public response.",
+      "status": "PASS",
+      "evidence_path": "C:\\workspace\\scripts\\deploy\\nginx\\a-codeai.com.evidence.latest.json.example"
+    },
+    {
+      "id": "C8_public_payload_runtime_binding",
+      "description": "Published '/' and '/ko/' pages must actively bind the public payload JSON at runtime.",
+      "status": "PASS",
+      "evidence_path": "C:\\workspace\\docs\\final\\artifacts\\a_codeai_public_binding_check_latest.json",
+      "reason": "ok"
+    }
+  ],
+  "notes": [
+    "Shadow launch is allowed before full public launch when scope/abuse guard checks are incomplete.",
+    "Global/public claims must remain conditional until service-load evidence keeps passing over time."
+  ]
+}

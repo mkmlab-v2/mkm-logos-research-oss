@@ -1,0 +1,68 @@
+{
+  "schema": "public_graph_response_v1",
+  "version": "1.0.0",
+  "policy_label": "NON_GATING",
+  "research_only": true,
+  "no_trading_advice": true,
+  "as_of_date": "2026-04-30",
+  "pagination": {
+    "limit": 20,
+    "next_cursor": null
+  },
+  "nodes": [
+    {
+      "node_id_public": "n.gen.1.1.reset",
+      "anchor_ref": "Gen.1.1",
+      "theme_tag": "creative_reset",
+      "confidence_band": "A"
+    },
+    {
+      "node_id_public": "n.jubilees.cycle",
+      "anchor_ref": "Jubilees.6",
+      "theme_tag": "cycle_order",
+      "confidence_band": "B"
+    },
+    {
+      "node_id_public": "n.isaiah.rebuild",
+      "anchor_ref": "Isa.58.12",
+      "theme_tag": "reconstruction",
+      "confidence_band": "B"
+    }
+  ],
+  "edges": [
+    {
+      "source_node_id_public": "n.gen.1.1.reset",
+      "target_node_id_public": "n.jubilees.cycle",
+      "edge_type": "temporal",
+      "weight_bucket": "high"
+    },
+    {
+      "source_node_id_public": "n.gen.1.1.reset",
+      "target_node_id_public": "n.isaiah.rebuild",
+      "edge_type": "semantic",
+      "weight_bucket": "mid"
+    },
+    {
+      "source_node_id_public": "n.jubilees.cycle",
+      "target_node_id_public": "n.isaiah.rebuild",
+      "edge_type": "contextual",
+      "weight_bucket": "low"
+    }
+  ],
+  "insights": [
+    {
+      "insight_id": "ins.2026.04.30.001",
+      "anchor_ref": "Gen.1.1",
+      "theme_tag": "creative_reset",
+      "insight_summary": "Current macro stress aligns with a reset narrative where disorder precedes rule reformation. Treat as a research-oriented framing signal, not an execution trigger.",
+      "confidence_band": "B"
+    },
+    {
+      "insight_id": "ins.2026.04.30.002",
+      "anchor_ref": "Jubilees.6",
+      "theme_tag": "cycle_order",
+      "insight_summary": "Cycle-oriented anchors suggest phase-transition interpretation; useful for scenario labeling and dashboard explanation layers.",
+      "confidence_band": "B"
+    }
+  ]
+}

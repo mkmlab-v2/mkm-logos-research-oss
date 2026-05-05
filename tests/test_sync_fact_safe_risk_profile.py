@@ -9,6 +9,7 @@ import pytest
 from scripts.sync_fact_safe_risk_profile import _derive_profile, _would_downgrade_n8n_metadata
 
 _SYNC_SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "sync_fact_safe_risk_profile.py"
+_MARKET_PULSE_FIXTURE = Path(__file__).resolve().parents[1] / "tests" / "fixtures" / "market_pulse_tactical_v1.json"
 
 
 def test_would_downgrade_n8n_metadata():
@@ -165,3 +166,41 @@ def test_cli_allows_downgrade_with_flag(minimal_prophecy_path: Path, tmp_path: P
     assert proc.returncode == 0
     written = json.loads(out_path.read_text(encoding="utf-8"))
     assert written["source"] == "fact_safe_prophecy.trinity_governor"
+
+
+def test_cli_injects_market_pulse_from_json(minimal_prophecy_path: Path, tmp_path: Path) -> None:
+    out_path = tmp_path / "risk_profile_market_pulse.json"
+    proc = _run_sync_cli(
+        [
+            "--prophecy",
+            str(minimal_prophecy_path),
+            "--output",
+            str(out_path),
+            "--market-pulse-json",
+            str(_MARKET_PULSE_FIXTURE),
+        ]
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    written = json.loads(out_path.read_text(encoding="utf-8"))
+    assert "market_pulse" in written
+    assert written["market_pulse"]["advance_decline_ratio"] == pytest.approx(1.18)
+    assert written["market_pulse"]["foreign_net_buy_krw_eok"] == pytest.approx(29308.0)
+
+
+def test_cli_market_pulse_overrides_are_applied(minimal_prophecy_path: Path, tmp_path: Path) -> None:
+    out_path = tmp_path / "risk_profile_market_pulse_override.json"
+    proc = _run_sync_cli(
+        [
+            "--prophecy",
+            str(minimal_prophecy_path),
+            "--output",
+            str(out_path),
+            "--market-pulse-json",
+            str(_MARKET_PULSE_FIXTURE),
+            "--market-theme-score",
+            "0.92",
+        ]
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    written = json.loads(out_path.read_text(encoding="utf-8"))
+    assert written["market_pulse"]["theme_leadership_score"] == pytest.approx(0.92)

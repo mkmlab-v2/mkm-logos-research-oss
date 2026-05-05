@@ -1,0 +1,203 @@
+{
+  "schema": "trackb_oov_collision_sweep_v1",
+  "generated_at_utc": "2026-05-02T02:55:23Z",
+  "options": {
+    "normalize_predicted": false,
+    "predicted_text_normalization": "none"
+  },
+  "domains": {
+    "medical": {
+      "pair_file": "C:/workspace/docs/final/artifacts/trackb_semantic_eval_pairs_medical_v1.jsonl",
+      "sweep": [
+        {
+          "oov_ratio": 0.0,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.82818182,
+            "oov_rate_avg": 0.085
+          }
+        },
+        {
+          "oov_ratio": 0.05,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.7519697,
+            "oov_rate_avg": 0.17717172
+          }
+        },
+        {
+          "oov_ratio": 0.1,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.7519697,
+            "oov_rate_avg": 0.17717172
+          }
+        },
+        {
+          "oov_ratio": 0.15,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.7519697,
+            "oov_rate_avg": 0.17717172
+          }
+        },
+        {
+          "oov_ratio": 0.2,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.74298951,
+            "oov_rate_avg": 0.18709596
+          }
+        },
+        {
+          "oov_ratio": 0.25,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.6943345,
+            "oov_rate_avg": 0.24564141
+          }
+        },
+        {
+          "oov_ratio": 0.3,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.68951865,
+            "oov_rate_avg": 0.25114413
+          }
+        }
+      ]
+    },
+    "finance": {
+      "pair_file": "C:/workspace/docs/final/artifacts/trackb_semantic_eval_pairs_finance_v1.jsonl",
+      "sweep": [
+        {
+          "oov_ratio": 0.0,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.83414918,
+            "oov_rate_avg": 0.09454545
+          }
+        },
+        {
+          "oov_ratio": 0.05,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.76714535,
+            "oov_rate_avg": 0.17272727
+          }
+        },
+        {
+          "oov_ratio": 0.1,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.76714535,
+            "oov_rate_avg": 0.17272727
+          }
+        },
+        {
+          "oov_ratio": 0.15,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.76714535,
+            "oov_rate_avg": 0.17272727
+          }
+        },
+        {
+          "oov_ratio": 0.2,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.71921362,
+            "oov_rate_avg": 0.22759907
+          }
+        },
+        {
+          "oov_ratio": 0.25,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.71921362,
+            "oov_rate_avg": 0.22759907
+          }
+        },
+        {
+          "oov_ratio": 0.3,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.67958288,
+            "oov_rate_avg": 0.27400183
+          }
+        }
+      ]
+    },
+    "policy": {
+      "pair_file": "C:/workspace/docs/final/artifacts/trackb_semantic_eval_pairs_policy_v1.jsonl",
+      "sweep": [
+        {
+          "oov_ratio": 0.0,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.85545455,
+            "oov_rate_avg": 0.08
+          }
+        },
+        {
+          "oov_ratio": 0.05,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.77818182,
+            "oov_rate_avg": 0.16863636
+          }
+        },
+        {
+          "oov_ratio": 0.1,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.77818182,
+            "oov_rate_avg": 0.16863636
+          }
+        },
+        {
+          "oov_ratio": 0.15,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.77818182,
+            "oov_rate_avg": 0.16863636
+          }
+        },
+        {
+          "oov_ratio": 0.2,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.75903263,
+            "oov_rate_avg": 0.19030303
+          }
+        },
+        {
+          "oov_ratio": 0.25,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.71814918,
+            "oov_rate_avg": 0.23657576
+          }
+        },
+        {
+          "oov_ratio": 0.3,
+          "metrics": {
+            "pair_count": 100,
+            "average_semantic_score": 0.70945554,
+            "oov_rate_avg": 0.24659907
+          }
+        }
+      ]
+    }
+  },
+  "oov_ratios": [
+    0.0,
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3
+  ],
+  "out_of_scope": "No production promotion, no trading trigger."
+}

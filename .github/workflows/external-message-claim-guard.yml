@@ -1,0 +1,33 @@
+name: external-message-claim-guard
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "scripts/build_external_message_claim_guard_report_v1.py"
+      - "docs/final/artifacts/**/*_latest.json"
+  pull_request:
+    paths:
+      - "scripts/build_external_message_claim_guard_report_v1.py"
+      - "docs/final/artifacts/**/*_latest.json"
+  workflow_dispatch:
+
+jobs:
+  guard:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build claim-guard report
+        run: py scripts/build_external_message_claim_guard_report_v1.py
+
+      - name: Enforce pass status
+        shell: pwsh
+        run: |
+          py -c "import json, pathlib, sys; p=pathlib.Path('docs/final/artifacts/external_message_claim_guard_latest.json'); d=json.loads(p.read_text(encoding='utf-8')); s=d['summary']['status']; print(f'claim_guard_status={s}'); sys.exit(0 if s=='pass' else 1)"

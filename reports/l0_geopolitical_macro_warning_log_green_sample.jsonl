@@ -1,0 +1,1 @@
+{"ts_utc": "2026-04-29T02:42:42Z", "schema": "l0_geopolitical_macro_warning_log_row_v1", "state": "GREEN", "composite_score": 0.1671, "amber_count": 0, "red_count": 0, "effective_action": "NO_CHANGE", "cooldown_until_utc": null, "no_data_fallback_applied": false}

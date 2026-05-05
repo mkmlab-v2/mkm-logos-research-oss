@@ -1,0 +1,95 @@
+{
+  "schema": "two_track_statistical_significance_report_v1",
+  "generated_at_utc": "2026-04-30T11:00:39Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "effect_size": 0.3015101428571429,
+  "confidence_interval_95": [
+    0.30001014285714295,
+    0.30283871428571435
+  ],
+  "significance_test": {
+    "method": "bootstrap_mean_ci+signflip_permutation",
+    "p_value": 0.00024993751562109475,
+    "alpha": 0.05,
+    "bootstrap_iterations": 2000,
+    "permutation_iterations": 4000
+  },
+  "significance_interpretation": "positive_delta_supported",
+  "baseline_significance": [
+    {
+      "baseline_name": "naive_midpoint_baseline",
+      "effect_size": 0.3015101428571429,
+      "std_dev": 0.006070151126115198,
+      "confidence_interval_95": [
+        0.30001014285714295,
+        0.30283871428571435
+      ],
+      "significance_test": {
+        "method": "bootstrap_mean_ci+signflip_permutation",
+        "p_value": 0.00024993751562109475,
+        "alpha": 0.05,
+        "bootstrap_iterations": 2000,
+        "permutation_iterations": 4000
+      },
+      "significance_interpretation": "positive_delta_supported",
+      "sample_size": 70
+    },
+    {
+      "baseline_name": "random_shuffle_baseline",
+      "effect_size": 0.32151014285714336,
+      "std_dev": 0.006070151126115199,
+      "confidence_interval_95": [
+        0.3200101428571433,
+        0.32283871428571487
+      ],
+      "significance_test": {
+        "method": "bootstrap_mean_ci+signflip_permutation",
+        "p_value": 0.00024993751562109475,
+        "alpha": 0.05,
+        "bootstrap_iterations": 2000,
+        "permutation_iterations": 4000
+      },
+      "significance_interpretation": "positive_delta_supported",
+      "sample_size": 70
+    },
+    {
+      "baseline_name": "simple_timeseries_rule_baseline",
+      "effect_size": 0.2915101428571426,
+      "std_dev": 0.0060701511261152,
+      "confidence_interval_95": [
+        0.2900101428571426,
+        0.29283871428571406
+      ],
+      "significance_test": {
+        "method": "bootstrap_mean_ci+signflip_permutation",
+        "p_value": 0.00024993751562109475,
+        "alpha": 0.05,
+        "bootstrap_iterations": 2000,
+        "permutation_iterations": 4000
+      },
+      "significance_interpretation": "positive_delta_supported",
+      "sample_size": 70
+    },
+    {
+      "baseline_name": "ablation_no_survivor_gate",
+      "effect_size": 0.02937142857142859,
+      "std_dev": 0.0019868958457958524,
+      "confidence_interval_95": [
+        0.02888571428571431,
+        0.029800000000000017
+      ],
+      "significance_test": {
+        "method": "bootstrap_mean_ci+signflip_permutation",
+        "p_value": 0.00024993751562109475,
+        "alpha": 0.05,
+        "bootstrap_iterations": 2000,
+        "permutation_iterations": 4000
+      },
+      "significance_interpretation": "positive_delta_supported",
+      "sample_size": 70
+    }
+  ],
+  "note": "Publication claims require non-seed raw OOS coverage across expected baselines."
+}

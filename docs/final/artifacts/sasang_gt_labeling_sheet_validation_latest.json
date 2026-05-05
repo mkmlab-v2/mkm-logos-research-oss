@@ -1,0 +1,17 @@
+{
+  "schema": "sasang_gt_labeling_sheet_validation_v1",
+  "sheet_csv": "C:\\workspace\\reports\\constitution\\btrack_pilot\\sasang_gt_labeling_sheet_top126_latest.csv",
+  "total_rows": 126,
+  "approved_rows": 0,
+  "pending_rows": 126,
+  "rejected_rows": 0,
+  "duplicate_sample_id_rows": 0,
+  "invalid_rows_count": 0,
+  "valid_for_import": true,
+  "invalid_rows": [],
+  "policy": {
+    "approved_requires_parent": true,
+    "auto_label_forbidden": true,
+    "human_signoff_required": true
+  }
+}

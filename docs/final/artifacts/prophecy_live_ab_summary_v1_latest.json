@@ -1,24 +1,24 @@
 {
   "schema": "prophecy_live_ab_summary_v1",
-  "generated_at_utc": "2026-04-18T17:34:01Z",
+  "generated_at_utc": "2026-04-29T09:34:18Z",
   "research_only": true,
-  "status": "INSUFFICIENT_DATA",
+  "status": "READY",
   "inputs": {
     "kpi_json": "projects/bitcoin-trading/memory/kpi/latest_kpi.json",
-    "prophecy_gate_json": "docs/final/artifacts/prophecy_promotion_gates_v1_panel_calibrated_latest.json"
+    "prophecy_gate_json": "docs\\final\\artifacts\\prophecy_promotion_gates_v1_panel_calibrated_latest.json"
   },
   "environment": {
     "status_symbol": "BTCUSDT",
-    "status_testnet": true,
-    "status_enable_trading": false
+    "status_testnet": false,
+    "status_enable_trading": true
   },
   "exchange_snapshot_24h": {
-    "available": false,
-    "fills_count": null,
-    "realized_pnl": null,
-    "commission": null,
-    "funding_fee": null,
-    "net": null
+    "available": true,
+    "fills_count": 145,
+    "realized_pnl": 3.09990009,
+    "commission": 13.99581152,
+    "funding_fee": -0.18589648,
+    "net": 16.90981513
   },
   "prophecy_gate_snapshot": {
     "auto_promote_ready": true,

@@ -1,0 +1,17 @@
+{
+  "schema": "pre_news_shadow_stage_threshold_policy_v1",
+  "policy_version": "v1.1",
+  "approved_by": "athena-core",
+  "approved_by_1": "athena-core",
+  "approved_by_2": "athena-sentinel",
+  "effective_from_utc": "2026-04-28T00:00:00Z",
+  "updated_at_utc": "2026-04-28T12:08:00Z",
+  "default_min_holdout_cases_per_stage": 2,
+  "stage_min_holdout_cases": {
+    "full_canon": 5,
+    "prophets": 3,
+    "gospels": 3
+  },
+  "note": "Weekly promotion gate thresholds. Stage override takes precedence over default."
+}
+

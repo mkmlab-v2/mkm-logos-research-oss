@@ -1,0 +1,177 @@
+{
+  "schema": "two_track_submission_camera_ready_v1",
+  "generated_at_utc": "2026-04-28T04:38:21Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "K",
+  "source": {
+    "draft_json": "C:\\workspace\\docs\\final\\artifacts\\two_track_submission_draft_latest.json"
+  },
+  "recommended_title_en": "Two-Track Safety-Gated Inference: A Public-Safe Falsification Architecture for Meaning-Driven Signals",
+  "expanded_abstract_en": {
+    "paragraphs": [
+      "This work addresses a governance problem in systems that derive dense, meaning-rich signals from cross-reference style knowledge networks. Meaning-rich cross-reference signals are expressive but prone to overfitting and false discovery when promoted directly to operational decisions. We frame this as a promotion problem: narrative insight must be separated from operational claims.",
+      "Our contribution is an engineering architecture and evaluation stack rather than a closed-form market oracle. We separate K-track (knowledge/IP narrative layer) from T-track (survivor filter and rollback gates), and evaluate claims with falsification suite, multi-baseline comparison, and bootstrap/permutation significance. The stack is designed to be auditable: falsification checks, multi-baseline comparisons, and bootstrap/permutation significance sit alongside explicit disclosure boundaries.",
+      "Empirically, we report pipeline outputs consistent with the current evidence bundle and readiness gate. Current evidence bundle reports bundle_ready=True, publication_ready=True, primary_delta_shift_score=0.3034, interpretation='positive_delta_supported', falsification=5/5 (pass), sensitivity='first non-pass at min_survivor_count=7, min_ci_low_defense_contrib=0.0', fail_boundary='safe survivor-floor up to 5, first break at 7'. Evidence-bundle status: bundle_ready=True, ready_for_publication_claim=True. Falsification status: 5/5 (pass); first sensitivity breakpoint at min_survivor_count=7, min_ci_low_defense_contrib=0.0. We emphasize interpretability of the evaluation protocol over headline alpha claims.",
+      "Disclosure posture: Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted. High-complexity historical corpora are treated as stress-test beds for context filtering robustness, not doctrinal proof. The paper narrative therefore focuses on safety gates, rollback contracts, and reproducible artifacts.",
+      "Fail-boundary disclosure: maximum safe survivor-floor observed in sensitivity grid is 5, and first break condition appears at survivor-floor 7. We use this boundary as an explicit reviewer-facing risk condition.",
+      "Title for submission packaging: \"Two-Track Safety-Gated Inference: A Public-Safe Falsification Architecture for Meaning-Driven Signals\". Limitations include domain-specific semantics and the need for extended drift windows; we outline replication steps via referenced JSON artifacts rather than proprietary tuning tables."
+    ],
+    "approx_word_count": 263,
+    "note": "Expand or trim to venue word limit; content stays public-safe by design."
+  },
+  "venues": {
+    "kdd_applied_data_science": {
+      "venue_label": "KDD Applied Data Science / similar applied ML track",
+      "typical_constraints": {
+        "abstract_words": "150–200 (short paper) or per CFP",
+        "paper_pages": "4–9 including refs (varies by year)"
+      },
+      "detailed_outline_en": [
+        {
+          "section": "1. Introduction",
+          "pages_hint": "1.0–1.5",
+          "subsections": [
+            "Motivation: meaning-network signals vs trading promotion risk",
+            "Contributions: two-track split, falsification-first evaluation, public-safe disclosure"
+          ]
+        },
+        {
+          "section": "2. Problem Setting & Threat Model",
+          "pages_hint": "0.75–1.0",
+          "subsections": [
+            "Overfitting and false discovery when narrative insight meets execution",
+            "Rollback and survivorship as first-class requirements"
+          ]
+        },
+        {
+          "section": "3. Two-Track Architecture",
+          "pages_hint": "1.25–1.75",
+          "subsections": [
+            "K-track: knowledge / narrative layer (not a trading trigger)",
+            "T-track: survivor filter, dynamic caps, operational gates"
+          ]
+        },
+        {
+          "section": "4. Experimental Protocol",
+          "pages_hint": "1.0–1.5",
+          "subsections": [
+            "Raw OOS ingestion policy and audit linkage",
+            "Baselines and ablations",
+            "Bootstrap / permutation significance and baseline-specific tuning"
+          ]
+        },
+        {
+          "section": "5. Results & Evidence Bundle",
+          "pages_hint": "1.0–1.5",
+          "subsections": [
+            "Benchmark comparison summary",
+            "Significance and readiness gates",
+            "Public-safe report highlights"
+          ]
+        },
+        {
+          "section": "6. Governance, Ethics, Limitations",
+          "pages_hint": "0.5–1.0",
+          "subsections": [
+            "What we do not claim (causal alpha, guaranteed returns)",
+            "Replication contract via artifact paths"
+          ]
+        }
+      ],
+      "formatting_notes_en": [
+        "Lead with problem + evaluation protocol, not proprietary formulas.",
+        "Use tables pointing to artifact schema names, not internal weight vectors.",
+        "Include falsification sensitivity breakpoint as a robustness boundary condition.",
+        "Add fail-boundary row (max-safe threshold / first-break threshold) in rebuttal appendix."
+      ]
+    },
+    "aaai_industry_track": {
+      "venue_label": "AAAI Industry / deployment-oriented track (CFP-dependent)",
+      "typical_constraints": {
+        "abstract_words": "per CFP",
+        "paper_pages": "varies; often shorter industry format"
+      },
+      "detailed_outline_en": [
+        {
+          "section": "1. Industry context",
+          "pages_hint": "1",
+          "subsections": [
+            "Why LLM-era systems need promotion gates for narrative-heavy signals",
+            "Stakeholders: research, compliance, product"
+          ]
+        },
+        {
+          "section": "2. System architecture",
+          "pages_hint": "1.5–2",
+          "subsections": [
+            "Two-track separation (K vs T)",
+            "Artifact chain from graph signals to statistical gates"
+          ]
+        },
+        {
+          "section": "3. Evaluation & falsification",
+          "pages_hint": "1.5–2",
+          "subsections": [
+            "Multi-baseline benchmark",
+            "Raw OOS readiness",
+            "Falsification suite and rollback semantics"
+          ]
+        },
+        {
+          "section": "4. Deployment lessons",
+          "pages_hint": "0.5–1",
+          "subsections": [
+            "Public-safe vs proprietary boundary",
+            "Operational monitoring (drift, audit accumulation)"
+          ]
+        }
+      ],
+      "formatting_notes_en": [
+        "Stress governance, rollback, and stakeholder-facing disclosure.",
+        "Keep replication story at artifact + script path level.",
+        "State falsification pass count and sensitivity breakpoint in deployment risk narrative.",
+        "Include fail-boundary condition as explicit no-go threshold for operations."
+      ]
+    }
+  },
+  "keywords_en": [
+    "safety-gated inference",
+    "two-track evaluation",
+    "falsification",
+    "bootstrap significance",
+    "public-safe disclosure",
+    "survivor filter",
+    "meaning graph"
+  ],
+  "public_safe_boundary": "Public-safe disclosure only: core theory formula/weights/tuning internals remain redacted; no doctrinal or guarantee-style claim is allowed.",
+  "submission_gate_snapshot": {
+    "bundle_ready": true,
+    "ready_for_publication_claim": true,
+    "missing_artifacts": []
+  },
+  "falsification_snapshot": {
+    "pass_count": 5,
+    "total_checks": 5,
+    "suite_status": "pass",
+    "sensitivity_breakpoint": {
+      "min_survivor_count": 7,
+      "min_ci_low_defense_contrib": 0.0,
+      "pass_count": 4,
+      "total_checks": 5,
+      "suite_status": "warning"
+    }
+  },
+  "falsification_boundary_snapshot": {
+    "max_safe_min_survivor_count": 5,
+    "min_break_min_survivor_count": 7,
+    "first_non_pass_row": {
+      "min_survivor_count": 7,
+      "min_ci_low_defense_contrib": 0.0,
+      "pass_count": 4,
+      "total_checks": 5,
+      "suite_status": "warning"
+    },
+    "boundary_note": "safe survivor-floor up to 5, first break at 7"
+  }
+}

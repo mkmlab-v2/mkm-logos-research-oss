@@ -1,0 +1,27 @@
+{
+  "schema": "logos_regime_risk_gate_alert_v1",
+  "generated_at_utc": "2026-04-29T03:07:38Z",
+  "state_ref": "C:\\workspace\\docs\\final\\artifacts\\logos_regime_risk_gate_state_latest.json",
+  "inputs": {
+    "min_triggered_rules": 2,
+    "always_alert_on_force_hold": true
+  },
+  "snapshot": {
+    "effective_action": "FORCE_HOLD",
+    "triggered_rule_count": 4,
+    "price_output_locked": false,
+    "triggered_insight_ids": [
+      "logos_calm_false_alert_suppress",
+      "logos_multi_stress_confirmation",
+      "logos_regime_fingerprint_resonance",
+      "logos_ohlcv_shock_gate"
+    ]
+  },
+  "should_alert": true,
+  "severity": "high",
+  "reasons": [
+    "multi_rule_trigger",
+    "force_hold_action"
+  ],
+  "operator_note": "Alert driven by multi-rule or force-hold conditions."
+}
