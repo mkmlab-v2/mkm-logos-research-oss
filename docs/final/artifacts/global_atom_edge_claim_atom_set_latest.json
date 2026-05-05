@@ -1,0 +1,59 @@
+{
+  "schema": "edge_claim_atom_set_v1",
+  "generated_at_utc": "2026-05-05T12:24:00Z",
+  "status": "active",
+  "claim_id": "global_atom_edge_count_305m_v1",
+  "corpus_profile_id": "canon_plus_dss_apocrypha_v1",
+  "atoms": [
+    {
+      "atom_id": "frozen_snapshot_20260428T095850Z",
+      "atom_role": "anchor_baseline",
+      "freeze_id": "global_atom_submission_20260428T095850Z",
+      "source_mode": "event_level_ingest",
+      "corpus_profile_id": "canon_plus_dss_apocrypha_v1",
+      "source_scope": "research_only",
+      "promotion_required": true,
+      "edge_count": 3051269,
+      "node_count": 7477,
+      "gate_status": "GO",
+      "phase_transition_signal": "present",
+      "source_of_truth": {
+        "path": "C:\\workspace\\docs\\final\\artifacts\\archive\\cataloged\\20260505T072109Z\\docs\\final\\artifacts\\freeze\\global_atom_submission_20260428T095850Z\\global_atom_network_academic_onepager_latest.json",
+        "json_pointer_edge_count": "$.key_facts.edge_count",
+        "json_pointer_node_count": "$.key_facts.node_count"
+      }
+    },
+    {
+      "atom_id": "latest_snapshot_reference",
+      "atom_role": "current_reference",
+      "freeze_id": "latest",
+      "source_mode": "event_level_ingest",
+      "corpus_profile_id": "canon_plus_dss_apocrypha_v1",
+      "source_scope": "research_only",
+      "promotion_required": true,
+      "edge_count": 19690345,
+      "node_count": 11573,
+      "gate_status": "GO",
+      "phase_transition_signal": "present",
+      "source_of_truth": {
+        "path": "C:\\workspace\\docs\\final\\artifacts\\global_atom_network_academic_onepager_latest.json",
+        "json_pointer_edge_count": "$.key_facts.edge_count",
+        "json_pointer_node_count": "$.key_facts.node_count"
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "comparison_id": "latest_vs_anchor",
+      "lhs_atom_id": "latest_snapshot_reference",
+      "rhs_atom_id": "frozen_snapshot_20260428T095850Z",
+      "edge_delta": 16639076,
+      "edge_ratio": 6.453651
+    }
+  ],
+  "interpretation_contract": {
+    "must_state_anchor_context": true,
+    "must_state_source_scope": true,
+    "forbidden_single_truth_claim": true
+  }
+}

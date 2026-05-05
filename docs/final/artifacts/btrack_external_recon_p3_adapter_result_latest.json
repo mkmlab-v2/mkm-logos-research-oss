@@ -1,0 +1,27 @@
+{
+  "schema": "btrack_external_recon_p3_adapter_result_v1",
+  "generated_at_utc": "2026-05-05T15:47:00Z",
+  "source_track": "B",
+  "observation_mode": "KEEP_OBSERVATION_ONLY",
+  "auto_bind_to_atrack_forbidden": true,
+  "artifacts": {
+    "adapter_contract": "docs/final/artifacts/btrack_local_eval_adapter_contract_v1.json",
+    "adapter_shadow_output": "docs/final/artifacts/btrack_local_eval_adapter_shadow_latest.json",
+    "runner_script": "scripts/run_btrack_local_eval_adapter_shadow_v1.py"
+  },
+  "sample_run": {
+    "executed": true,
+    "row_count": 24,
+    "status": "ok"
+  },
+  "consistency_check": {
+    "output_schema_present": true,
+    "score_range_constrained": true,
+    "decision_set_constrained": true
+  },
+  "conclusion": {
+    "status": "completed",
+    "runtime_change_applied": true,
+    "promotion_policy": "btrack_only"
+  }
+}

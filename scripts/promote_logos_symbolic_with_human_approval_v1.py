@@ -31,21 +31,36 @@ def main() -> int:
         "--note",
         default="Human approved Logos symbolic promotion candidate after B-track gate review.",
     )
+    ap.add_argument("--gate-json", type=Path, default=None)
+    ap.add_argument("--approval-json", type=Path, default=None)
+    ap.add_argument("--approval-md", type=Path, default=None)
+    ap.add_argument("--candidate-json", type=Path, default=None)
+    ap.add_argument("--candidate-md", type=Path, default=None)
+    ap.add_argument(
+        "--allow-reapprove",
+        action="store_true",
+        help="Allow overwriting existing human approval artifacts.",
+    )
     args = ap.parse_args()
 
     root = Path(__file__).resolve().parents[1]
     art = root / "docs" / "final" / "artifacts"
-    gate_path = art / "logos_symbolic_event_promotion_gate_latest.json"
-    approval_json_path = art / "logos_symbolic_event_human_approval_latest.json"
-    approval_md_path = art / "logos_symbolic_event_human_approval_latest.md"
-    candidate_json_path = art / "logos_symbolic_event_track_a_candidate_latest.json"
-    candidate_md_path = art / "logos_symbolic_event_track_a_candidate_latest.md"
+    gate_path = args.gate_json if args.gate_json is not None else (art / "logos_symbolic_event_promotion_gate_latest.json")
+    approval_json_path = args.approval_json if args.approval_json is not None else (art / "logos_symbolic_event_human_approval_latest.json")
+    approval_md_path = args.approval_md if args.approval_md is not None else (art / "logos_symbolic_event_human_approval_latest.md")
+    candidate_json_path = args.candidate_json if args.candidate_json is not None else (art / "logos_symbolic_event_track_a_candidate_latest.json")
+    candidate_md_path = args.candidate_md if args.candidate_md is not None else (art / "logos_symbolic_event_track_a_candidate_latest.md")
 
     gate = _safe_json(gate_path)
     if not gate:
         raise SystemExit(f"missing gate artifact: {gate_path}")
 
-    if str(gate.get("decision") or "") != "GO_RESEARCH_PROMOTION_CANDIDATE":
+    decision = str(gate.get("decision") or "")
+    if decision == "GO_RESEARCH_PROMOTION_CANDIDATE_WITH_HUMAN_APPROVAL":
+        if not args.allow_reapprove:
+            raise SystemExit("human approval already applied; use --allow-reapprove to overwrite")
+        decision = "GO_RESEARCH_PROMOTION_CANDIDATE"
+    if decision != "GO_RESEARCH_PROMOTION_CANDIDATE":
         raise SystemExit(
             f"gate decision '{gate.get('decision')}' is not eligible for human-approval promotion"
         )

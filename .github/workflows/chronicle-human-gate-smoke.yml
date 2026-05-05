@@ -1,0 +1,119 @@
+name: chronicle-human-gate-smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/build_chronicle_history_news_signal_stub_v1.py"
+      - "scripts/evaluate_chronicle_history_news_signal_weekly_v1.py"
+      - "scripts/check_chronicle_history_news_weekly_alert_v1.py"
+      - "scripts/update_chronicle_human_gate_ledger_v1.py"
+      - "scripts/build_chronicle_human_gate_weekly_report_v1.py"
+      - "scripts/build_domain_graph_ops_dashboard_summary_latest_v1.py"
+      - "docs/final/artifacts/chronicle_history_news_decision_rules_v1.json"
+      - "docs/final/artifacts/chronicle_history_news_weekly_alert_thresholds_v1.json"
+      - "docs/final/artifacts/news_observation_v1_latest.jsonl"
+      - "data/regimes/regime_map.json"
+      - ".github/workflows/chronicle-human-gate-smoke.yml"
+  pull_request:
+    paths:
+      - "scripts/build_chronicle_history_news_signal_stub_v1.py"
+      - "scripts/evaluate_chronicle_history_news_signal_weekly_v1.py"
+      - "scripts/check_chronicle_history_news_weekly_alert_v1.py"
+      - "scripts/update_chronicle_human_gate_ledger_v1.py"
+      - "scripts/build_chronicle_human_gate_weekly_report_v1.py"
+      - "scripts/build_domain_graph_ops_dashboard_summary_latest_v1.py"
+      - "docs/final/artifacts/chronicle_history_news_decision_rules_v1.json"
+      - "docs/final/artifacts/chronicle_history_news_weekly_alert_thresholds_v1.json"
+      - "docs/final/artifacts/news_observation_v1_latest.jsonl"
+      - "data/regimes/regime_map.json"
+      - ".github/workflows/chronicle-human-gate-smoke.yml"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build chronicle daily signal
+        run: python scripts/build_chronicle_history_news_signal_stub_v1.py
+
+      - name: Evaluate chronicle weekly snapshot
+        run: python scripts/evaluate_chronicle_history_news_signal_weekly_v1.py
+
+      - name: Check weekly alert gate (critical strict)
+        run: python scripts/check_chronicle_history_news_weekly_alert_v1.py --strict --strict-on critical
+
+      - name: Update human gate ledger
+        run: python scripts/update_chronicle_human_gate_ledger_v1.py
+
+      - name: Build human gate weekly report
+        run: python scripts/build_chronicle_human_gate_weekly_report_v1.py
+
+      - name: Build ops dashboard
+        run: python scripts/build_domain_graph_ops_dashboard_summary_latest_v1.py
+
+      - name: Assert ledger summary schema
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          p = Path("docs/final/artifacts/chronicle_human_gate_ledger_summary_latest.json")
+          doc = json.loads(p.read_text(encoding="utf-8"))
+          assert doc["schema"] == "chronicle_human_gate_ledger_summary_v1"
+          assert "latest_severity" in doc
+          assert "latest_human_review_required" in doc
+          assert "latest_dispatch_status" in doc
+          print("chronicle human gate smoke: PASS")
+
+      - name: Assert dashboard status-streak coupling
+        shell: python
+        run: |
+          import json
+          import re
+          from pathlib import Path
+          weekly = json.loads(Path("docs/final/artifacts/chronicle_human_gate_weekly_report_latest.json").read_text(encoding="utf-8"))
+          dashboard = Path("docs/final/artifacts/DOMAIN_GRAPH_OPS_DASHBOARD_SUMMARY_LATEST.md").read_text(encoding="utf-8")
+          m = re.search(r"- `status`: `([A-Z]+)`", dashboard)
+          assert m, "dashboard status line missing"
+          status = m.group(1)
+          warning_streak = int(weekly.get("warning_streak", 0))
+          critical_streak = int(weekly.get("critical_streak", 0))
+          if critical_streak > 0:
+            assert status == "RED", f"expected RED for critical_streak>0, got {status}"
+          elif warning_streak > 0:
+            assert status in {"YELLOW", "RED"}, f"expected YELLOW/RED for warning_streak>0, got {status}"
+          else:
+            assert status in {"GREEN", "YELLOW"}, f"unexpected status for no streaks: {status}"
+          print("dashboard status coupling smoke: PASS")
+
+      - name: Assert weekly readiness and review-gap fields
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          weekly = json.loads(
+            Path("docs/final/artifacts/chronicle_human_gate_weekly_report_latest.json").read_text(encoding="utf-8")
+          )
+
+          assert weekly.get("schema") == "chronicle_human_gate_weekly_report_v1"
+          assert isinstance(weekly.get("threshold_switch_min_rows"), int), "threshold_switch_min_rows must be int"
+          assert weekly.get("readiness_for_threshold_switch") in {"ready", "not_ready"}
+          assert weekly.get("threshold_switch_recommendation") in {
+            "consider_threshold_switch_review",
+            "keep_shadow_compare_until_more_data",
+          }
+
+          assert isinstance(weekly.get("manual_review_count"), int), "manual_review_count must be int"
+          assert isinstance(weekly.get("review_gap_count"), int), "review_gap_count must be int"
+          assert isinstance(weekly.get("review_gap_detected"), bool), "review_gap_detected must be bool"
+          assert weekly.get("review_gap_detected") == (weekly.get("review_gap_count", 0) > 0)
+
+          print("weekly readiness/review-gap smoke: PASS")
