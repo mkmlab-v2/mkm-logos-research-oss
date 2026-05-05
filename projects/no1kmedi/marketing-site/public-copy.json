@@ -12,6 +12,16 @@
       "href": "https://jemaai.cloud",
       "label": "공개 관측 보드 보기",
       "sublabel": "Topology·매크로 데모(관측·교육 목적; 투자 권유·주문 아님)"
+    },
+    "premium_mkmlife": {
+      "href": "https://mkmlife.com",
+      "label": "원퀘스천 프리미엄 리포트",
+      "sublabel": "소비자 제품·면책·퍼널은 mkmlife.com 정책(대체 진료·투자 조언 아님)"
+    },
+    "b2b_acodeai": {
+      "href": "https://a-codeai.com",
+      "label": "토큰·압축 API (B2B)",
+      "sublabel": "정적 랜딩과 API 경로 분리·도입 문의는 해당 도메인 정책 따름"
     }
   },
   "header": {

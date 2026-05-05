@@ -104,16 +104,34 @@ export default function HomePage({ searchParams }: HomePageProps) {
             <span role="listitem">의료진 최종판단 고정</span>
             <span role="listitem">일반인 무료 사전 리포트</span>
           </div>
-          <div className="section-cta" style={{ marginTop: "1rem" }}>
-            <a
-              className="btn btn-ghost"
-              href={c.hub_links.showroom_jemaai.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={c.hub_links.showroom_jemaai.sublabel}
-            >
-              {c.hub_links.showroom_jemaai.label}
-            </a>
+          <div
+            className="section-cta hub-cross-links"
+            style={{
+              marginTop: "1rem",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "0.5rem",
+              alignItems: "center",
+            }}
+            aria-label="MKM 관련 도메인 안내"
+          >
+            {(
+              ["showroom_jemaai", "premium_mkmlife", "b2b_acodeai"] as const
+            ).map((key) => {
+              const link = c.hub_links[key];
+              return (
+                <a
+                  key={key}
+                  className="btn btn-ghost"
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={link.sublabel}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </div>
         </section>
 
