@@ -122,6 +122,7 @@ if ($IncludeJemaaiCloudChecks) {
         (Join-Path $mvp "nginx_public_event_gateway.conf.example"),
         (Join-Path $mvp "examples\public_event_ingest_minimal.v1.json"),
         (Join-Path $mvp "public_showroom_poll.html"),
+        (Join-Path $mvp "public_showroom_board_minimal.html"),
         (Join-Path $mvp "public_showroom_probabilistic_saju_v1.html"),
         (Join-Path $mvp "showroom_saju_hour_bundle_demo_v1.json"),
         (Join-Path $mvp "compression_v2_explorer.html"),

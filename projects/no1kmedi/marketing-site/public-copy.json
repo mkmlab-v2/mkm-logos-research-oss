@@ -9,9 +9,9 @@
   },
   "hub_links": {
     "showroom_jemaai": {
-      "href": "https://jemaai.cloud",
+      "href": "https://api.jemaai.cloud/public_showroom_board_minimal.html",
       "label": "공개 관측 보드 보기",
-      "sublabel": "Topology·매크로 데모(관측·교육 목적; 투자 권유·주문 아님)"
+      "sublabel": "미니멀 정적 보드 · 지연 스냅샷(관측·교육; 투자 권유·주문 아님)"
     },
     "premium_mkmlife": {
       "href": "https://mkmlife.com",

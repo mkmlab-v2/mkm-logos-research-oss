@@ -22,6 +22,7 @@ param(
 # 2026-05-05: MKM_DOMAIN_PORTFOLIO_POINTER_V1.md (도메인×역할×쇼룸 배치 §1.1; P0 존재 게이트).
 # 2026-05-05: TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md (Track C 상용·법무·IP 경계 SSOT; P0 존재 게이트).
 # 2026-05-05: PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md (대외 문서·홈·쇼룸 보안·IP 카피 체크리스트; P0 존재 게이트).
+# 2026-05-05: MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md (KR 건강·웰빙 대외 카피 가드레일; P0 존재 게이트).
 # 2026-05-05: CENTRAL_AGENT_MEMORY_V1.md (명리 렌즈 고도화 v1 등 장기기억 지문; P0 존재 게이트).
 # 2026-05-05: 명리 core vector v1 schema/test (지장간 배율 엔진 Sprint-1 base vector lock).
 # 2026-05-05: 명리 daewoon timeline v1 schema/test (Sprint-2 time regime lock).
@@ -82,6 +83,7 @@ $required = @(
     "docs\final\MKM_DOMAIN_PORTFOLIO_POINTER_V1.md",
     "docs\final\TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
     "docs\final\PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
+    "docs\final\MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md",
     "docs\final\CENTRAL_AGENT_MEMORY_V1.md",
     "README.md",
     "scripts\run_workspace_automation_health.ps1",
@@ -220,6 +222,7 @@ $required = @(
     "scripts\Serve-CompressionV2Explorer.ps1",
     "scripts\Start-CompressionV2ExplorerDemo.ps1",
     "projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp\compression_v2_explorer.html",
+    "projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp\public_showroom_board_minimal.html",
     "docs\final\schemas\mkm_user_context_v1.schema.json",
     "docs\final\schemas\mkm_compressed_payload_v1.schema.json",
     "scripts\check_news_label_join_temporal_v1.py",
