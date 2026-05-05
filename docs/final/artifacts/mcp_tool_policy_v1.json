@@ -1,0 +1,94 @@
+{
+  "schema": "mcp_tool_policy_v1",
+  "version": "1.1.0",
+  "allowlist": [
+    {
+      "server": "project-0-workspace-athena-core",
+      "tool_name": "memory_search",
+      "required_keys": [
+        "query"
+      ]
+    },
+    {
+      "server": "project-0-workspace-athena-core",
+      "tool_name": "memory_store",
+      "required_keys": [
+        "content"
+      ]
+    },
+    {
+      "server": "project-0-workspace-notebooklm",
+      "tool_name": "ask_question",
+      "required_keys": [
+        "question"
+      ]
+    },
+    {
+      "server": "project-0-workspace-notebooklm",
+      "tool_name": "add_source",
+      "required_keys": [
+        "source"
+      ]
+    },
+    {
+      "server": "project-0-workspace-notebooklm",
+      "tool_name": "get_health",
+      "required_keys": []
+    },
+    {
+      "server": "plugin-datadog-datadog",
+      "tool_name": "search_logs",
+      "required_keys": [
+        "query"
+      ]
+    },
+    {
+      "server": "plugin-datadog-datadog",
+      "tool_name": "query_metrics",
+      "required_keys": [
+        "query"
+      ]
+    },
+    {
+      "server": "project-0-workspace-devops-mcp",
+      "tool_name": "check_vps_health",
+      "required_keys": []
+    },
+    {
+      "server": "project-0-workspace-devops-mcp",
+      "tool_name": "execute_vps_command",
+      "required_keys": [
+        "command"
+      ]
+    },
+    {
+      "server": "plugin-slack-slack",
+      "tool_name": "search_messages",
+      "required_keys": [
+        "query"
+      ]
+    }
+  ],
+  "required_arg_keys": [],
+  "server_tool_denylist": [
+    {
+      "server": "project-0-workspace-devops-mcp",
+      "tool_name": "execute_vps_command",
+      "deny_arg_patterns": [
+        "(?i)rm\\s+-rf",
+        "(?i)shutdown",
+        "(?i)reboot",
+        "(?i)mkfs",
+        "(?i)dd\\s+if="
+      ]
+    }
+  ],
+  "deny_arg_patterns": [
+    "(?i)api[_-]?key",
+    "(?i)secret",
+    "(?i)token\\s*[:=]",
+    "(?i)password\\s*[:=]",
+    "(?i)private[_-]?key"
+  ]
+}
+
