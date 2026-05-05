@@ -1,0 +1,21 @@
+{
+  "schema": "independent_lens_shadow_gate_v1_contract_meta_v1",
+  "artifact_schema": "independent_lens_shadow_gate_v1",
+  "contract_meta_version": "1.1.0",
+  "purpose": "Keep independent lens fusion in shadow mode with minimum observation windows before any policy discussion; shadow JSONL rows echo fusion conflict_summary digest.",
+  "runner": "scripts/report_independent_lens_shadow_gate.py",
+  "default_output_path": "docs/final/artifacts/independent_lens_shadow_gate_latest.json",
+  "default_history_path": "docs/final/artifacts/independent_lens_fusion_shadow_history.jsonl",
+  "history_row_conflict_fields_v1_1": [
+    "fusion_stub_version",
+    "minority_lens_ids",
+    "logos_evidence_verse_ids",
+    "conflict_narrative_sha256",
+    "majority_sign"
+  ],
+  "gate_payload_latest_conflict_snapshot": "Same compact dict as appended per history row — audit drift via conflict_narrative_sha256 without storing full narrative in JSONL.",
+  "hard_rules": {
+    "decision": "KEEP_OBSERVATION_ONLY",
+    "allow_a_track_binding": false
+  }
+}

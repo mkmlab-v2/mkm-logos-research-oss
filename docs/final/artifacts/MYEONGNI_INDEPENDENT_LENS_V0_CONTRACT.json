@@ -1,0 +1,35 @@
+{
+  "schema": "myeongni_independent_lens_v0_contract_meta_v1",
+  "artifact_schema": "myeongni_independent_lens_v0",
+  "version": "0.1.0",
+  "purpose": "Single-lens numeric output from B-track 명리 inputs for later fusion; not a live trading trigger.",
+  "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §3.3",
+  "fusion_stub_ref": "docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json",
+  "required_fields": [
+    "schema",
+    "version",
+    "lens_id",
+    "engine_id",
+    "ts_utc",
+    "hypothesis_tier",
+    "boundary_ack",
+    "scores",
+    "myeongri_stream_outputs",
+    "provenance"
+  ],
+  "scores": {
+    "direction_score": {
+      "type": "number",
+      "minimum": -1.0,
+      "maximum": 1.0,
+      "description": "Hypothesis directional lean; not PnL."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    }
+  },
+  "default_output_path": "docs/final/artifacts/myeongni_independent_lens_latest.json",
+  "runner": "scripts/run_lens_myeongni.py"
+}

@@ -1,0 +1,118 @@
+{
+  "schema": "scm_boming_jiju_lexicon_v1",
+  "version": "1.1.0",
+  "boundary_ack": true,
+  "description": "v1.1: 체질 라벨·도메인 고빈도어 + 보명지주 예시. B_staged; 임상 판정 아님. MULTILENS eval 코호트 단어 빈도 참고.",
+  "entries": [
+    {
+      "term": "호산지기",
+      "sasang_constitution": "taeeum_in",
+      "pillar_role": "boming_jiju",
+      "priority": 90,
+      "source": {
+        "tier": "B_staged",
+        "ref": "lexicon_v0_seed"
+      },
+      "notes": "태음인 보명지주(호흡·수렴) 축 — 예시"
+    },
+    {
+      "term": "흡취지기",
+      "sasang_constitution": "soeum_in",
+      "pillar_role": "boming_jiju",
+      "priority": 90,
+      "source": {
+        "tier": "B_staged",
+        "ref": "lexicon_v0_seed"
+      },
+      "notes": "소음인 보명지주(소화·흡수) 축 — 예시"
+    },
+    {
+      "term": "심기",
+      "sasang_constitution": "taeyang_in",
+      "pillar_role": "boming_jiju",
+      "priority": 85,
+      "source": {
+        "tier": "B_staged",
+        "ref": "lexicon_v0_seed"
+      },
+      "notes": "태양인 보명지주 축 — 예시"
+    },
+    {
+      "term": "담기",
+      "sasang_constitution": "soyang_in",
+      "pillar_role": "boming_jiju",
+      "priority": 85,
+      "source": {
+        "tier": "B_staged",
+        "ref": "lexicon_v0_seed"
+      },
+      "notes": "소양인 보명지주 축 — 예시"
+    },
+    {
+      "term": "태음인",
+      "sasang_constitution": "taeeum_in",
+      "pillar_role": "constitution_label",
+      "priority": 95,
+      "source": {
+        "tier": "B_staged",
+        "ref": "eval_cohort_surface_form"
+      },
+      "notes": "체질 라벨(표면형); 코호트 원문에 다수 등장"
+    },
+    {
+      "term": "소음인",
+      "sasang_constitution": "soeum_in",
+      "pillar_role": "constitution_label",
+      "priority": 95,
+      "source": {
+        "tier": "B_staged",
+        "ref": "eval_cohort_surface_form"
+      },
+      "notes": "체질 라벨"
+    },
+    {
+      "term": "태양인",
+      "sasang_constitution": "taeyang_in",
+      "pillar_role": "constitution_label",
+      "priority": 95,
+      "source": {
+        "tier": "B_staged",
+        "ref": "eval_cohort_surface_form"
+      },
+      "notes": "체질 라벨"
+    },
+    {
+      "term": "소양인",
+      "sasang_constitution": "soyang_in",
+      "pillar_role": "constitution_label",
+      "priority": 95,
+      "source": {
+        "tier": "B_staged",
+        "ref": "eval_cohort_surface_form"
+      },
+      "notes": "체질 라벨"
+    },
+    {
+      "term": "사상의학",
+      "sasang_constitution": "taeeum_in",
+      "pillar_role": "scm_domain_token",
+      "priority": 80,
+      "source": {
+        "tier": "B_staged",
+        "ref": "eval_cohort_token_freq"
+      },
+      "notes": "도메인 공통 고빈도어; sasang 메타는 임의 단일 태깅(교차 절단용 아님)"
+    },
+    {
+      "term": "체질",
+      "sasang_constitution": "soeum_in",
+      "pillar_role": "scm_domain_token",
+      "priority": 80,
+      "source": {
+        "tier": "B_staged",
+        "ref": "eval_cohort_token_freq"
+      },
+      "notes": "도메인 공통 고빈도어"
+    }
+  ]
+}
