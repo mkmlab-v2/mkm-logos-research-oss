@@ -13,6 +13,8 @@ _FIXTURE = _ROOT / "tests" / "fixtures" / "risk_profile_fact_safe_gate_pass_mini
 _TACTICAL_FIXTURE = _ROOT / "tests" / "fixtures" / "risk_profile_fact_safe_locked_tactical_pass_v1.json"
 _HUMAN_GO = _ROOT / "tests" / "fixtures" / "trading_human_execution_approval_gate_fixture_GO.json"
 _HUMAN_BAD = _ROOT / "tests" / "fixtures" / "trading_human_execution_approval_gate_fixture_BAD_HASH.json"
+_FRAME_GOOD = _ROOT / "tests" / "fixtures" / "btc_frame_governance_stage_payload_gate_valid_v1.json"
+_FRAME_NOT_LIVE = _ROOT / "tests" / "fixtures" / "btc_frame_governance_stage_payload_gate_not_live_v1.json"
 
 
 def test_gate_api_dry_run_fixture_exits_zero() -> None:
@@ -86,6 +88,57 @@ def test_gate_api_dry_run_human_approval_hash_fail_exit_7() -> None:
     ]
     proc = subprocess.run(cmd, cwd=str(_ROOT), capture_output=True, text=True, check=False)
     assert proc.returncode == 7, proc.stderr + proc.stdout
+
+
+def test_gate_api_dry_run_with_frame_payload_exits_zero() -> None:
+    assert _FRAME_GOOD.is_file()
+    cmd = [
+        sys.executable,
+        str(_GATE),
+        "--backend",
+        "api",
+        "--dry-run",
+        "--risk-json",
+        str(_FIXTURE),
+        "--human-approval-json",
+        str(_HUMAN_GO),
+        "--frame-payload-json",
+        str(_FRAME_GOOD),
+        "--symbol",
+        "BTCUSDT",
+        "--side",
+        "BUY",
+        "--qty",
+        "0.001",
+    ]
+    proc = subprocess.run(cmd, cwd=str(_ROOT), capture_output=True, text=True, check=False)
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+
+
+def test_gate_api_pass_live_with_not_live_frame_payload_exit_8() -> None:
+    assert _FRAME_NOT_LIVE.is_file()
+    cmd = [
+        sys.executable,
+        str(_GATE),
+        "--backend",
+        "api",
+        "--dry-run",
+        "--risk-json",
+        str(_FIXTURE),
+        "--human-approval-json",
+        str(_HUMAN_GO),
+        "--frame-payload-json",
+        str(_FRAME_NOT_LIVE),
+        "--pass-live",
+        "--symbol",
+        "BTCUSDT",
+        "--side",
+        "BUY",
+        "--qty",
+        "0.001",
+    ]
+    proc = subprocess.run(cmd, cwd=str(_ROOT), capture_output=True, text=True, check=False)
+    assert proc.returncode == 8, proc.stderr + proc.stdout
 
 
 def test_gate_api_dry_run_tactical_override_on_locked_mode_exits_zero() -> None:

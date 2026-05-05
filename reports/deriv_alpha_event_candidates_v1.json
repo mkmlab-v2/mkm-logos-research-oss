@@ -1,0 +1,14 @@
+{
+  "schema": "deriv_alpha_event_candidates_v1",
+  "source_ev_report": "C:\\workspace\\reports\\deriv_factor_ev_report_v1.json",
+  "symbol": "BTCUSDT",
+  "row_count": 5,
+  "selection_config": {
+    "top_k": 2,
+    "min_count": 1
+  },
+  "candidate_count": 0,
+  "status": "no_candidate",
+  "candidates": [],
+  "note": "research-only; final execution must pass existing governance gates."
+}

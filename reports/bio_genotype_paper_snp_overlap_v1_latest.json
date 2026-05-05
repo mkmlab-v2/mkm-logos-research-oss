@@ -1,0 +1,17 @@
+{
+  "schema": "bio_genotype_paper_snp_overlap_v1",
+  "generated_at_utc": "2026-05-05T08:29:32Z",
+  "inputs": {
+    "cohort_csv": "C:\\workspace\\tests\\fixtures\\agct_demo_cohort_pass_v1.csv",
+    "genotype_csv": "C:\\workspace\\tmp\\bio_genotype_long_v1.csv",
+    "sample_col": "sample_id",
+    "rsid_col": "rsid"
+  },
+  "summary": {
+    "rows": 4,
+    "samples_with_genotype_rows": 4,
+    "rows_with_paper_snp_targets": 4,
+    "rows_with_any_genotype_match": 4
+  },
+  "note": "Overlap score is an evidence signal only; no direct constitution reweighting here."
+}

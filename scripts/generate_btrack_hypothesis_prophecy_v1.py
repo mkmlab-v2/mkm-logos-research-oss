@@ -148,24 +148,220 @@ def _sgn_to_dir(v: float) -> str:
     return "neutral"
 
 
-def _extract_price_lens_from_score(score_doc: dict[str, Any], lookback: int) -> tuple[float, float, dict[str, Any]]:
+def _extract_price_lens_from_score(
+    score_doc: dict[str, Any], lookback: int, instrument: str
+) -> tuple[float, float, dict[str, Any]]:
     rows = score_doc.get("rows") if isinstance(score_doc.get("rows"), list) else []
-    k_rows = [r for r in rows if isinstance(r, dict) and r.get("instrument") == "kospi"]
-    if not k_rows:
-        return 0.0, 0.0, {"reason": "score_rows_missing"}
-    tail = k_rows[-max(1, int(lookback)) :]
+    t_rows = [r for r in rows if isinstance(r, dict) and str(r.get("instrument") or "").lower() == instrument]
+    if not t_rows:
+        return 0.0, 0.0, {"reason": "score_rows_missing", "instrument": instrument}
+    tail = t_rows[-max(1, int(lookback)) :]
     returns = [_safe_float(r.get("daily_return"), 0.0) for r in tail]
     avg_ret = sum(returns) / max(1, len(returns))
+    abs_returns = [abs(v) for v in returns]
+    abs_ret_mean = sum(abs_returns) / max(1, len(abs_returns))
     # Scale to bounded score domain with mild sensitivity.
     direction_score = max(-1.0, min(1.0, avg_ret / 0.02))
     confidence = max(0.0, min(1.0, abs(direction_score)))
-    return direction_score, confidence, {"lookback_rows": len(tail), "avg_daily_return": avg_ret}
+    return direction_score, confidence, {
+        "instrument": instrument,
+        "lookback_rows": len(tail),
+        "avg_daily_return": avg_ret,
+        "recent_abs_return_mean": abs_ret_mean,
+    }
+
+
+def _collect_btc_scope_violations(bundle: dict[str, Any]) -> list[str]:
+    arts = bundle.get("artifacts") if isinstance(bundle.get("artifacts"), dict) else {}
+    violations: list[str] = []
+    if not isinstance(arts, dict):
+        return violations
+
+    def _check(name: str, art: Any) -> None:
+        if not isinstance(art, dict):
+            return
+        ts = art.get("trading_scope") if isinstance(art.get("trading_scope"), dict) else {}
+        if isinstance(ts, dict):
+            pa = str(ts.get("primary_asset") or "").strip().upper()
+            if pa and pa != "BTCUSDT":
+                violations.append(f"{name}:trading_scope.primary_asset={pa}")
+        ps = art.get("policy_scope") if isinstance(art.get("policy_scope"), dict) else {}
+        if isinstance(ps, dict):
+            pa2 = str(ps.get("trading_primary_asset") or "").strip().upper()
+            if pa2 and pa2 != "BTCUSDT":
+                violations.append(f"{name}:policy_scope.trading_primary_asset={pa2}")
+            kospi_role = str(ps.get("kospi_role") or "").strip().lower()
+            if kospi_role and kospi_role != "observation_only":
+                violations.append(f"{name}:policy_scope.kospi_role={kospi_role}")
+
+    for k, v in arts.items():
+        _check(str(k), v)
+    return violations
+
+
+def _enforce_btc_only_trading_guard(doc: dict[str, Any], bundle: dict[str, Any], rules: dict[str, Any]) -> dict[str, Any]:
+    pred = doc.get("prediction") if isinstance(doc.get("prediction"), dict) else {}
+    if not isinstance(pred, dict):
+        return doc
+    runtime_meta = doc.get("runtime_meta") if isinstance(doc.get("runtime_meta"), dict) else {}
+    violations = _collect_btc_scope_violations(bundle)
+    guard_enabled = bool(rules.get("enforce_btc_only_guard", True))
+    # Always pin instrument to BTC for trading output contract.
+    pred["instrument"] = "btc"
+    guard_info: dict[str, Any] = {
+        "enabled": guard_enabled,
+        "violations": violations,
+        "blocked": False,
+    }
+    if guard_enabled and violations:
+        pred["direction"] = "abstain"
+        pred["confidence"] = min(0.5, _safe_float(pred.get("confidence"), 0.0))
+        guard_info["blocked"] = True
+        guard_info["reason"] = "btc_only_scope_violation"
+    runtime_meta["btc_only_guard"] = guard_info
+    doc["runtime_meta"] = runtime_meta
+    doc["prediction"] = pred
+    return doc
 
 
 def _extract_lens_score(bundle: dict[str, Any], artifact_key: str) -> tuple[float, float]:
     art = bundle.get("artifacts", {}).get(artifact_key) or {}
     scores = art.get("scores") if isinstance(art.get("scores"), dict) else {}
     return _safe_float(scores.get("direction_score"), 0.0), _safe_float(scores.get("confidence"), 0.0)
+
+
+def _extract_compression_bridge_meta(bundle: dict[str, Any]) -> dict[str, Any]:
+    art = bundle.get("artifacts", {}).get("compression_bridge_context") or {}
+    if not isinstance(art, dict) or not art:
+        return {"available": False}
+    has_core = isinstance(art.get("track_a_active_kpi"), dict) or isinstance(art.get("track_a_selected_candidate"), dict)
+    if not has_core:
+        return {"available": False}
+    track_a_kpi = art.get("track_a_active_kpi") if isinstance(art.get("track_a_active_kpi"), dict) else {}
+    selected = art.get("track_a_selected_candidate") if isinstance(art.get("track_a_selected_candidate"), dict) else {}
+    source_paths = art.get("source_paths") if isinstance(art.get("source_paths"), dict) else {}
+    return {
+        "available": True,
+        "schema": art.get("schema"),
+        "bridge_mode": art.get("bridge_mode"),
+        "track_a_active_kpi": {
+            "global_token_saving_rate": track_a_kpi.get("global_token_saving_rate"),
+            "avg_reconstruction_fidelity_jaccard": track_a_kpi.get("avg_reconstruction_fidelity_jaccard"),
+            "ultra_saving_policy_ok": track_a_kpi.get("ultra_saving_policy_ok"),
+            "sensitive_integrity_ok": track_a_kpi.get("sensitive_integrity_ok"),
+        },
+        "track_a_selected_candidate": {
+            "strategy": selected.get("strategy"),
+            "intensity": selected.get("intensity"),
+            "global_token_saving_rate": selected.get("global_token_saving_rate"),
+            "canary_gate_ok": selected.get("canary_gate_ok"),
+        },
+        "source_paths_present": bool(source_paths),
+    }
+
+
+def _apply_compression_bridge_adjustments(
+    *,
+    weighted: float,
+    margin: float,
+    neutral_penalty: float,
+    compression_bridge: dict[str, Any],
+    rules: dict[str, Any],
+    price_meta: dict[str, Any],
+) -> tuple[float, float, float, dict[str, Any]]:
+    """Apply read-only bridge adjustments to ensemble runtime knobs.
+
+    Direction isolation mode: do not touch weighted/margin/neutral_penalty.
+    Bridge can only affect confidence downstream.
+    """
+    if not compression_bridge.get("available"):
+        return weighted, margin, neutral_penalty, {"applied": False, "reason": "bridge_unavailable"}
+
+    kpi = compression_bridge.get("track_a_active_kpi") if isinstance(compression_bridge.get("track_a_active_kpi"), dict) else {}
+    saving = _safe_float(kpi.get("global_token_saving_rate"), 0.0)
+    jaccard = _safe_float(kpi.get("avg_reconstruction_fidelity_jaccard"), 0.0)
+    ultra_ok = bool(kpi.get("ultra_saving_policy_ok"))
+    integrity_ok = bool(kpi.get("sensitive_integrity_ok"))
+
+    signal_scale = max(0.0, _safe_float(rules.get("compression_bridge_signal_scale"), 1.0))
+    positive_signal_cap = max(0.0, _safe_float(rules.get("compression_bridge_positive_signal_cap"), 0.03))
+    negative_signal_cap = max(0.0, _safe_float(rules.get("compression_bridge_negative_signal_cap"), 0.02))
+
+    # Policy-aware bridge signal (confidence lane only):
+    # - quality bonus can be granted even when policy is slightly below target,
+    # - policy gap dampens confidence by configurable scale,
+    # - final signal is clipped by positive/negative caps.
+    signal = 0.0
+    target_saving = max(0.0, _safe_float(rules.get("compression_bridge_policy_target_saving"), 0.49))
+    quality_anchor = max(0.0, _safe_float(rules.get("compression_bridge_quality_anchor_jaccard"), 0.80))
+    quality_bonus_scale = max(0.0, _safe_float(rules.get("compression_bridge_quality_bonus_scale"), 0.20))
+    policy_gap_penalty_scale = max(0.0, _safe_float(rules.get("compression_bridge_policy_gap_penalty_scale"), 0.40))
+    integrity_gate = bool(rules.get("compression_bridge_integrity_required_for_bonus", True))
+    quality_bonus = max(0.0, jaccard - quality_anchor) * quality_bonus_scale
+    if integrity_gate and not integrity_ok:
+        quality_bonus = 0.0
+    policy_gap = max(0.0, target_saving - saving)
+    policy_penalty = policy_gap * policy_gap_penalty_scale
+    raw_signal = (quality_bonus - policy_penalty) * signal_scale
+    if raw_signal >= 0.0:
+        signal = min(positive_signal_cap, raw_signal)
+    else:
+        signal = -min(negative_signal_cap, abs(raw_signal))
+
+    weighted_adj = weighted
+    margin_adj = margin
+    neutral_penalty_adj = neutral_penalty
+    high_vol_th = max(0.0, _safe_float(rules.get("compression_bridge_high_vol_abs_return_mean_threshold"), 0.012))
+    lock_neutral_flip = bool(rules.get("compression_bridge_block_neutral_flip_on_high_vol", True))
+    recent_abs_ret_mean = _safe_float(price_meta.get("recent_abs_return_mean"), 0.0)
+    guard_applied = False
+    guard_reason = "direction_isolated_confidence_only"
+
+    meta = {
+        "applied": True,
+        "signal": round(signal, 6),
+        "weighted_before": round(weighted, 6),
+        "weighted_after": round(weighted_adj, 6),
+        "margin_before": round(margin, 6),
+        "margin_after": round(margin_adj, 6),
+        "neutral_penalty_before": round(neutral_penalty, 6),
+        "neutral_penalty_after": round(neutral_penalty_adj, 6),
+        "recent_abs_return_mean": round(recent_abs_ret_mean, 6),
+        "high_vol_threshold": high_vol_th,
+        "guard_applied": guard_applied,
+        "guard_reason": guard_reason,
+        "rule_params": {
+            "signal_scale": signal_scale,
+            "positive_signal_cap": positive_signal_cap,
+            "negative_signal_cap": negative_signal_cap,
+            "target_saving": target_saving,
+            "quality_anchor_jaccard": quality_anchor,
+            "quality_bonus_scale": quality_bonus_scale,
+            "policy_gap_penalty_scale": policy_gap_penalty_scale,
+            "integrity_required_for_bonus": integrity_gate,
+            "block_neutral_flip_on_high_vol": lock_neutral_flip,
+            "direction_isolated_confidence_only": True,
+        },
+    }
+    return weighted_adj, margin_adj, neutral_penalty_adj, meta
+
+
+def _apply_bridge_confidence_adjustment(
+    *,
+    base_confidence: float,
+    direction: str,
+    compression_adjustment_meta: dict[str, Any],
+) -> tuple[float, dict[str, Any]]:
+    if direction == "neutral":
+        return base_confidence, {"applied": False, "reason": "neutral_direction_no_conf_adjust"}
+    signal = _safe_float(compression_adjustment_meta.get("signal"), 0.0)
+    adjusted = max(0.0, min(1.0, base_confidence + signal))
+    return adjusted, {
+        "applied": True,
+        "base_confidence": round(base_confidence, 6),
+        "signal": round(signal, 6),
+        "adjusted_confidence": round(adjusted, 6),
+    }
 
 
 def _build_ensemble_from_bundle(
@@ -176,12 +372,15 @@ def _build_ensemble_from_bundle(
     previous_doc: dict[str, Any] | None,
 ) -> dict[str, Any]:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    compression_bridge = _extract_compression_bridge_meta(bundle)
     weights = ensemble_cfg.get("weights") if isinstance(ensemble_cfg.get("weights"), dict) else {}
     rules = ensemble_cfg.get("rules") if isinstance(ensemble_cfg.get("rules"), dict) else {}
 
+    price_instrument = str(rules.get("price_instrument") or "btc").strip().lower()
     price_score, price_conf, price_meta = _extract_price_lens_from_score(
         score_doc,
         lookback=int(rules.get("price_lookback_days", 5)),
+        instrument=price_instrument,
     )
 
     macro_art = bundle.get("artifacts", {}).get("macro_independent_lens") or {}
@@ -208,10 +407,18 @@ def _build_ensemble_from_bundle(
     def w(name: str) -> float:
         return _safe_float(weights.get(name), 0.0)
 
-    weighted = sum(w(k) * _safe_float(v["score"]) for k, v in lens_values.items())
-    margin = _safe_float(rules.get("tie_break_min_margin"), 0.03)
+    weighted_raw = sum(w(k) * _safe_float(v["score"]) for k, v in lens_values.items())
+    margin_raw = _safe_float(rules.get("tie_break_min_margin"), 0.03)
+    neutral_penalty_raw = _safe_float(rules.get("neutral_penalty"), -0.1)
+    weighted, margin, neutral_penalty, compression_adjustment_meta = _apply_compression_bridge_adjustments(
+        weighted=weighted_raw,
+        margin=margin_raw,
+        neutral_penalty=neutral_penalty_raw,
+        compression_bridge=compression_bridge,
+        rules=rules,
+        price_meta=price_meta,
+    )
     preliminary_direction = "neutral" if abs(weighted) < margin else _sgn_to_dir(weighted)
-    neutral_penalty = _safe_float(rules.get("neutral_penalty"), -0.1)
 
     prev_streak = 0
     if isinstance(previous_doc, dict):
@@ -239,8 +446,14 @@ def _build_ensemble_from_bundle(
     if direction == "neutral":
         # Reduce confidence for neutral to discourage persistent neutral lock-in.
         confidence = max(0.0, min(1.0, 0.5 + neutral_penalty))
+        confidence_adjustment_meta = {"applied": False, "reason": "neutral_confidence_rule"}
     else:
-        confidence = max(0.0, min(1.0, abs(weighted)))
+        base_confidence = max(0.0, min(1.0, abs(weighted)))
+        confidence, confidence_adjustment_meta = _apply_bridge_confidence_adjustment(
+            base_confidence=base_confidence,
+            direction=direction,
+            compression_adjustment_meta=compression_adjustment_meta,
+        )
 
     label = (
         "[HYPO] Rule-based lens ensemble v1 (price/macro/news/myeongni-sasang). "
@@ -261,7 +474,7 @@ def _build_ensemble_from_bundle(
             "shadow_minority_monthly": "docs/final/artifacts/independent_lens_shadow_minority_monthly_latest.json",
         },
         "prediction": {
-            "instrument": "multi",
+            "instrument": "btc",
             "horizon": "1d",
             "direction": direction,
             "confidence": round(confidence, 4),
@@ -281,14 +494,22 @@ def _build_ensemble_from_bundle(
             "tie_break_min_margin": margin,
             "lens_values": lens_values,
             "price_meta": price_meta,
+            "price_instrument": price_instrument,
             "weights": {
                 "price": w("price"),
                 "macro": w("macro"),
                 "news": w("news"),
                 "myeongni_sasang": w("myeongni_sasang"),
             },
+            "weighted_score_raw": round(weighted_raw, 6),
+            "tie_break_min_margin_raw": margin_raw,
+            "neutral_penalty_raw": neutral_penalty_raw,
             "macro_available": bool(macro_art),
             "news_available": bool(news_art),
+            "compression_bridge": compression_bridge,
+            "compression_bridge_available": bool(compression_bridge.get("available")),
+            "compression_bridge_adjustment": compression_adjustment_meta,
+            "compression_bridge_confidence_adjustment": confidence_adjustment_meta,
         },
     }
 
@@ -643,6 +864,12 @@ def main() -> int:
         effective_rows=effective_rows,
         effective_seed_top_k=args.effective_seed_top_k,
     )
+    # Hard guard: trading output is BTC-only; non-BTC scope can only be observation.
+    rules = {}
+    if not args.stub and not args.gemini and args.ensemble_config.is_file():
+        cfg = _load_json(args.ensemble_config)
+        rules = cfg.get("rules") if isinstance(cfg.get("rules"), dict) else {}
+    doc = _enforce_btc_only_trading_guard(doc, bundle, rules if isinstance(rules, dict) else {})
 
     errs = _validate_hypothesis(doc)
     js_errs = _try_jsonschema(doc, args.schema)

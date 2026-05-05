@@ -1,6 +1,6 @@
 {
   "schema": "myeongni_manual_promotion_decision_lock_v1",
-  "locked_at_utc": "2026-04-28T05:49:09Z",
+  "locked_at_utc": "2026-05-04T18:36:51Z",
   "inputs": {
     "promotion_gate": "C:\\workspace\\docs\\final\\artifacts\\myeongni_promotion_gate_latest.json",
     "review_packet": "C:\\workspace\\docs\\final\\artifacts\\myeongni_promotion_review_packet_latest.json",

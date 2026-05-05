@@ -1,6 +1,6 @@
 {
   "schema": "sasang_strict_input_integrity_v1",
-  "generated_at_utc": "2026-04-29T00:00:05Z",
+  "generated_at_utc": "2026-05-04T14:21:59Z",
   "strict_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_latest.json",
   "strict_shadow_artifact": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_synthetic_calibrated_latest.json",
   "production_snapshot": {

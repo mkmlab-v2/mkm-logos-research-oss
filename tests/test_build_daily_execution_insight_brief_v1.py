@@ -78,6 +78,41 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
         "evidence_refs": [{}],
         "narrative_snippet_guarded": "[#a]",
     }
+    v2 = {
+        "schema": "myeongri_core_v2_upgrade_v1",
+        "b_track_notice": "[MKM-B-TRACK-NOTICE] test disclaimer " + "x" * 32,
+        "output": {
+            "size_multiplier_recommended": 0.75,
+            "commander_overlay_multiplier": 0.75,
+            "direction_override_allowed": False,
+        },
+        "jijangan_weighted_vector": {
+            "elements": {
+                "wood": 0.1,
+                "fire": 0.2,
+                "earth": 0.2,
+                "metal": 0.25,
+                "water": 0.25,
+            }
+        },
+        "neutral_structure_metrics_v1": {
+            "contract": "btrack_neutral_structure_v1",
+            "structural_tension_v1": 0.42,
+            "latent_energy_vector_4d": [0.25, 0.25, 0.25, 0.25],
+        },
+        "shinsal_impact_overlay": {"detected": [{"id": "gwaegang_like"}]},
+        "shinsal_detection_logs": {
+            "schema": "shinsal_detection_logs_v1",
+            "entries": [
+                {
+                    "id": "gwaegang_like",
+                    "pillar_key": "day",
+                    "pillar_text": "경진",
+                    "evidence_tag": "day_pillar_exact_match",
+                }
+            ],
+        },
+    }
     md = mod.build_markdown(
         brief_date_utc="2099-01-01",
         workspace_anchor="test",
@@ -94,6 +129,8 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
         market_sasang_path=Path("/x/market_sasang.json"),
         logos_independent=logos_ind,
         logos_independent_path=Path("/x/logos.json"),
+        myeongri_v2_upgrade=v2,
+        myeongri_v2_upgrade_path=Path("/x/myeongri_v2.json"),
     )
     assert "snippet line" in md
     assert "test narrative" in md
@@ -106,6 +143,13 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
     assert "[TRACK B]" in md
     assert "HIGH_ENTROPY" not in md or "TEST" in md
     assert "[#a]" in md
+    assert "### 1e)" in md
+    assert "0.75" in md
+    assert "gwaegang_like" in md
+    assert '"myeongri_v2_upgrade": true' in md
+    assert "/x/myeongri_v2.json" in md
+    assert "neutral.structural_tension_v1" in md
+    assert "commander_overlay_multiplier" in md
 
 
 def test_build_markdown_section_1c_missing_lens_files(tmp_path):
@@ -130,6 +174,7 @@ def test_build_markdown_section_1c_missing_lens_files(tmp_path):
     )
     assert "*(missing — `" in md
     assert '"myeongni": false' in md
+    assert '"myeongri_v2_upgrade": false' in md
 
 
 def test_pick_row_fallback_last_populated():

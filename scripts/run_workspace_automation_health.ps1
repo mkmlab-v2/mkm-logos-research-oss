@@ -43,6 +43,9 @@ param(
     # Shortcut profile: run only bitcoin-trading OTel smoke (skip broader health checks).
     [switch]$BitcoinTradingOtelSmokeOnly,
 
+    # Shortcut profile: P0 paths + Track C fusion smoke only (skip vault/memory/phase1/news defaults).
+    [switch]$TrackCMacroFusionSmokeOnly,
+
     # Optional: secure envelope external_kms readiness checks (env/command hook; optional HTTP smoke).
     [switch]$IncludeSecureEnvelopeExternalKmsReadiness,
     [string]$SecureEnvelopeExternalKmsBaseUrl = "",
@@ -56,12 +59,27 @@ param(
     # Optional: MKM Track C client handoff guard (hard fail if delivery packet degrades).
     [switch]$IncludeMkmAiTrackCHandoffGuard,
 
+    # Optional: BL-004 gate - fail on A/B rail contamination in A-track decision inputs.
+    [switch]$IncludeMkmABContaminationGate,
+
+    # Optional: BL-005 alert - detect prolonged Track C WATCH streak.
+    [switch]$IncludeMkmTrackCWatchProlongedAlert,
+
+    # Optional: fail when Track C dashboard forward pipeline health is not PASS.
+    [switch]$IncludeMacroRiskForwardPipelineHealth,
+
+    # Optional: run full Track C macro fusion chain (network for Fragility/exodus proxy legs; ~1–3+ min). Uses -SkipGateAlert -SkipExodusSourceFetch.
+    [switch]$IncludeTrackCMacroFusionSmoke,
+
     # Optional: Operational readiness checklist builder (Judge-ready done-condition snapshot).
     [switch]$IncludeOperationalReadinessChecklist,
 
     # Optional: fail when central-memory read acknowledgement is missing/stale.
     [switch]$IncludeCentralMemoryReadCheck,
-    [double]$CentralMemoryReadMaxAgeHours = 24.0
+    [double]$CentralMemoryReadMaxAgeHours = 24.0,
+
+    # Optional: Day1 secret exposure survey gate (strict exit on findings).
+    [switch]$IncludeSecretExposureSurvey
 )
 
 $ErrorActionPreference = "Stop"
@@ -79,6 +97,14 @@ if ($BitcoinTradingOtelSmokeOnly) {
     $SkipVaultMirror = $true
     $SkipMkmMemoryInventory = $true
     $SkipPhase1Readiness = $true
+}
+
+if ($TrackCMacroFusionSmokeOnly) {
+    $IncludeTrackCMacroFusionSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
 }
 
 function Step([string]$Name, [scriptblock]$Block) {
@@ -125,7 +151,7 @@ try {
         }
     }
 
-    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly) {
+    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly) {
         $ns = Join-Path $root "scripts\Run-NewsObservationContractSmoke.ps1"
         if (Test-Path -LiteralPath $ns) {
             Step "B-track news_observation contract smoke (default)" {
@@ -199,7 +225,7 @@ try {
         }
     }
 
-    if (-not $BitcoinTradingOtelSmokeOnly) {
+    if (-not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly) {
         Write-Host ""
         Write-Host "=== Automation registry reconcile ===" -ForegroundColor Cyan
         $rec = Join-Path $root "projects\bitcoin-trading\ops\windows-rehearsal\reconcile_automation_registry.ps1"
@@ -414,6 +440,62 @@ try {
         }
     }
 
+    if ($IncludeMkmABContaminationGate) {
+        $abGate = Join-Path $root "scripts\check_mkm_atrack_btrack_contamination_gate_v1.py"
+        if (Test-Path -LiteralPath $abGate) {
+            Step "MKM A/B contamination gate (BL-004)" {
+                & py $abGate --a-track-json (Join-Path $root "docs\final\artifacts\a_track_go_nogo_status_latest.json") --output-json (Join-Path $root "docs\final\artifacts\mkm_atrack_btrack_contamination_gate_latest.json")
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== MKM A/B contamination gate (BL-004) ===" -ForegroundColor Yellow
+            Write-Host "SKIP: check_mkm_atrack_btrack_contamination_gate_v1.py not found"
+        }
+    }
+
+    if ($IncludeMkmTrackCWatchProlongedAlert) {
+        $watchAlert = Join-Path $root "scripts\alert_mkm_trackc_watch_prolonged_v1.py"
+        if (Test-Path -LiteralPath $watchAlert) {
+            Step "MKM Track C prolonged WATCH alert (BL-005)" {
+                & py $watchAlert --dashboard-json (Join-Path $root "docs\final\artifacts\mkm_trackc_ops_dashboard_latest.json") --kpi-contract-json (Join-Path $root "docs\final\artifacts\mkm_trackc_watch_exit_kpi_contract_latest.json") --state-log-jsonl (Join-Path $root "reports\mkm_trackc_watch_state_log.jsonl") --output-json (Join-Path $root "docs\final\artifacts\mkm_trackc_watch_prolonged_alert_latest.json")
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== MKM Track C prolonged WATCH alert (BL-005) ===" -ForegroundColor Yellow
+            Write-Host "SKIP: alert_mkm_trackc_watch_prolonged_v1.py not found"
+        }
+    }
+
+    if ($IncludeMacroRiskForwardPipelineHealth) {
+        $forwardGate = Join-Path $root "scripts\check_macro_risk_forward_pipeline_health_v1.py"
+        if (Test-Path -LiteralPath $forwardGate) {
+            Step "Macro risk forward pipeline health gate" {
+                & py $forwardGate --dashboard-json (Join-Path $root "docs\final\artifacts\mkm_trackc_ops_dashboard_latest.json") --output-json (Join-Path $root "docs\final\artifacts\macro_risk_forward_pipeline_health_gate_latest.json")
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Macro risk forward pipeline health gate ===" -ForegroundColor Yellow
+            Write-Host "SKIP: check_macro_risk_forward_pipeline_health_v1.py not found"
+        }
+    }
+
+    if ($IncludeTrackCMacroFusionSmoke) {
+        $fusionSmoke = Join-Path $root "scripts\Invoke-TrackCMacroDailyFusion_v1.ps1"
+        if (Test-Path -LiteralPath $fusionSmoke) {
+            Step "Track C macro daily fusion smoke (Invoke-TrackCMacroDailyFusion_v1 -SkipGateAlert -SkipExodusSourceFetch)" {
+                & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $fusionSmoke -SkipGateAlert -SkipExodusSourceFetch
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Track C macro daily fusion smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: Invoke-TrackCMacroDailyFusion_v1.ps1 not found"
+        }
+    }
+
     if ($IncludeOperationalReadinessChecklist) {
         $opsChecklist = Join-Path $root "scripts\build_operational_readiness_checklist_v1.py"
         if (Test-Path -LiteralPath $opsChecklist) {
@@ -440,6 +522,32 @@ try {
             Write-Host "=== Central memory read acknowledgement check ===" -ForegroundColor Yellow
             Write-Host "SKIP: check_central_memory_read_ack_v1.py not found"
         }
+    }
+
+    if ($IncludeSecretExposureSurvey) {
+        $secretSurvey = Join-Path $root "scripts\run_security_secret_exposure_survey_v1.py"
+        if (Test-Path -LiteralPath $secretSurvey) {
+            Step "Secret exposure survey gate (strict)" {
+                & py $secretSurvey --strict-exit --dispatch-on warning
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Secret exposure survey gate ===" -ForegroundColor Yellow
+            Write-Host "SKIP: run_security_secret_exposure_survey_v1.py not found"
+        }
+    }
+
+    $signalLight = Join-Path $root "scripts\build_security_signal_light_v1.py"
+    if (Test-Path -LiteralPath $signalLight) {
+        Step "Security signal light snapshot" {
+            & py $signalLight
+        }
+    }
+    else {
+        Write-Host ""
+        Write-Host "=== Security signal light snapshot ===" -ForegroundColor Yellow
+        Write-Host "SKIP: build_security_signal_light_v1.py not found"
     }
 
     Write-Host ""

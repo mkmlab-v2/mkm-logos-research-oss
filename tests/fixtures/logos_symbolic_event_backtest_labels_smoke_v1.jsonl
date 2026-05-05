@@ -1,0 +1,6 @@
+{"schema_version":"direction_label_bar_v1","instrument_id":"KOSPI","label_date":"2024-01-02","horizon":"1d","direction":"up","label_sha256":"1111111111111111111111111111111111111111111111111111111111111111","neutral_bps":8.0}
+{"schema_version":"direction_label_bar_v1","instrument_id":"KOSPI","label_date":"2024-01-03","horizon":"1d","direction":"down","label_sha256":"2222222222222222222222222222222222222222222222222222222222222222","neutral_bps":8.0}
+{"schema_version":"direction_label_bar_v1","instrument_id":"KOSPI","label_date":"2024-01-04","horizon":"1d","direction":"up","label_sha256":"3333333333333333333333333333333333333333333333333333333333333333","neutral_bps":8.0}
+{"schema_version":"direction_label_bar_v1","instrument_id":"KOSPI","label_date":"2024-01-05","horizon":"1d","direction":"down","label_sha256":"4444444444444444444444444444444444444444444444444444444444444444","neutral_bps":8.0}
+{"schema_version":"direction_label_bar_v1","instrument_id":"KOSPI","label_date":"2024-01-06","horizon":"1d","direction":"up","label_sha256":"5555555555555555555555555555555555555555555555555555555555555555","neutral_bps":8.0}
+

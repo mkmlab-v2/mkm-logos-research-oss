@@ -27,6 +27,11 @@
 # Optional model: -GeminiModel or env MKM_BTRACK_GEMINI_MODEL.
 # Naver OpenAPI: default OFF (no network call). Use -IncludeNaverOpenApiRefresh when Client ID/Secret and app APIs are ready. -SkipNaverOpenApiRefresh is legacy no-op unless you need explicit "skip" in wrappers.
 # Yang(2015) B-track surface metrics + celebrity benchmark: use -IncludeYang2015SurfaceMetrics (off by default; needs commander JSON for first step).
+# Logos symbolic event promotion chain: use -IncludeLogosSymbolicPromotionChain (research-only; fixture defaults unless explicit JSONL paths provided).
+# Logos symbolic fixture fallback: default OFF (operational-safe). Enable only for test/dev.
+# Logos blind split + holdout gate: optionally build blind-split news JSONL first, then pass holdout thresholds.
+# Logos external feed ingest: optionally convert external_feed_drop_latest.validated.json into non-synthetic
+# news_observation_v1 rows before blind split / promotion gate.
 param(
   [string]$WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path,
   [string]$BtcCsv = "",
@@ -47,7 +52,23 @@ param(
   [switch]$IncludeNaverOpenApiRefresh,
   [switch]$SkipNaverOpenApiRefresh,
   [switch]$SkipNewsMacroAdapter,
-  [switch]$IncludeYang2015SurfaceMetrics
+  [switch]$IncludeYang2015SurfaceMetrics,
+  [switch]$IncludeLogosSymbolicPromotionChain,
+  [string]$LogosSymbolicNewsJsonl = "",
+  [string]$LogosSymbolicLabelsJsonl = "",
+  [string]$LogosSymbolicInstrumentId = "KOSPI",
+  [string]$LogosSymbolicHorizon = "1d",
+  [switch]$AllowLogosSymbolicFixtureFallback,
+  [switch]$EnableLogosSymbolicBlindSplit,
+  [string]$LogosSymbolicBlindSplitOutJsonl = "docs\final\artifacts\news_observation_v1_blind_split_latest.jsonl",
+  [switch]$EnableLogosSymbolicExternalFeedIngest,
+  [string]$LogosExternalFeedJson = "docs\final\artifacts\external_feed_drop_latest.validated.json",
+  [string]$LogosExternalFeedIngestOutJsonl = "docs\final\artifacts\news_observation_v1_latest.jsonl",
+  [int]$LogosMinHoldoutSamples = 10,
+  [double]$LogosMinHoldoutHitRate = 0.5,
+  [int]$LogosMinNonSyntheticSamples = 10,
+  [switch]$EnableLogosSymbolicHumanReviewQueue,
+  [string]$LogosSymbolicHumanReviewQueueOutJson = "docs\final\artifacts\logos_symbolic_human_review_queue_latest.json"
 )
 $ErrorActionPreference = "Stop"
 Set-Location $WorkspaceRoot
@@ -405,6 +426,97 @@ if ($IncludeYang2015SurfaceMetrics) {
   Write-Host "==> run_myeongni_celebrity_benchmark_v1.py (fixture bench + v2 + yang_2015_style_metrics)" -ForegroundColor Cyan
   py scripts/run_myeongni_celebrity_benchmark_v1.py --out $benchOut
   if ($LASTEXITCODE -ne 0) { throw "run_myeongni_celebrity_benchmark_v1 exit $LASTEXITCODE" }
+}
+
+if ($IncludeLogosSymbolicPromotionChain) {
+  $logosChainScript = Join-Path $WorkspaceRoot "scripts\run_logos_symbolic_promotion_chain_v1.py"
+  if (-not (Test-Path -LiteralPath $logosChainScript)) {
+    throw "Missing logos symbolic promotion chain script: $logosChainScript"
+  }
+  if ($EnableLogosSymbolicExternalFeedIngest) {
+    $externalIngestScript = Join-Path $WorkspaceRoot "scripts\build_news_observation_from_external_feed_v1.py"
+    if (-not (Test-Path -LiteralPath $externalIngestScript)) {
+      throw "Missing external feed ingest script: $externalIngestScript"
+    }
+    Write-Host "==> build_news_observation_from_external_feed_v1.py (Logos non-synthetic ingest)"
+    py $externalIngestScript `
+      --external-feed-json $LogosExternalFeedJson `
+      --append-existing-jsonl $LogosExternalFeedIngestOutJsonl `
+      --output-jsonl $LogosExternalFeedIngestOutJsonl `
+      --validate
+    if ($LASTEXITCODE -ne 0) { throw "build_news_observation_from_external_feed_v1 exit $LASTEXITCODE" }
+    if ([string]::IsNullOrWhiteSpace($LogosSymbolicNewsJsonl)) {
+      $LogosSymbolicNewsJsonl = $LogosExternalFeedIngestOutJsonl
+    }
+  }
+
+  if ($EnableLogosSymbolicBlindSplit) {
+    $blindSplitScript = Join-Path $WorkspaceRoot "scripts\build_news_observation_blind_split_v1.py"
+    if (-not (Test-Path -LiteralPath $blindSplitScript)) {
+      throw "Missing blind split script: $blindSplitScript"
+    }
+    $blindIn = $null
+    if (-not [string]::IsNullOrWhiteSpace($LogosSymbolicNewsJsonl)) {
+      if (-not (Test-Path -LiteralPath $LogosSymbolicNewsJsonl)) {
+        throw "LogosSymbolicNewsJsonl not found for blind split: $LogosSymbolicNewsJsonl"
+      }
+      $blindIn = $LogosSymbolicNewsJsonl
+    } else {
+      $blindIn = "docs\final\artifacts\news_observation_v1_latest.jsonl"
+      $blindInAbs = Join-Path $WorkspaceRoot $blindIn
+      if (-not (Test-Path -LiteralPath $blindInAbs)) {
+        throw "Blind split source missing: $blindInAbs"
+      }
+    }
+    Write-Host "==> build_news_observation_blind_split_v1.py (Logos symbolic blind split)"
+    py $blindSplitScript --input-jsonl $blindIn --output-jsonl $LogosSymbolicBlindSplitOutJsonl --train-pct 70 --calibration-pct 15
+    if ($LASTEXITCODE -ne 0) { throw "build_news_observation_blind_split_v1 exit $LASTEXITCODE" }
+    $LogosSymbolicNewsJsonl = $LogosSymbolicBlindSplitOutJsonl
+  }
+  Write-Host "==> run_logos_symbolic_promotion_chain_v1.py (B-track symbolic backtest + promotion gate)"
+  $logosArgs = @(
+    $logosChainScript,
+    "--instrument-id",
+    $LogosSymbolicInstrumentId,
+    "--horizon",
+    $LogosSymbolicHorizon,
+    "--min-holdout-samples",
+    "$LogosMinHoldoutSamples",
+    "--min-holdout-hit-rate",
+    "$LogosMinHoldoutHitRate",
+    "--min-non-synthetic-samples",
+    "$LogosMinNonSyntheticSamples"
+  )
+  if ($AllowLogosSymbolicFixtureFallback) {
+    Write-Host "WARN: Allowing Logos symbolic fixture fallback (test/dev mode)." -ForegroundColor Yellow
+    $logosArgs += "--allow-fixture-fallback"
+  }
+  if (-not [string]::IsNullOrWhiteSpace($LogosSymbolicNewsJsonl)) {
+    if (-not (Test-Path -LiteralPath $LogosSymbolicNewsJsonl)) {
+      throw "LogosSymbolicNewsJsonl not found: $LogosSymbolicNewsJsonl"
+    }
+    $logosArgs += @("--news-jsonl", $LogosSymbolicNewsJsonl)
+  }
+  if (-not [string]::IsNullOrWhiteSpace($LogosSymbolicLabelsJsonl)) {
+    if (-not (Test-Path -LiteralPath $LogosSymbolicLabelsJsonl)) {
+      throw "LogosSymbolicLabelsJsonl not found: $LogosSymbolicLabelsJsonl"
+    }
+    $logosArgs += @("--labels-jsonl", $LogosSymbolicLabelsJsonl)
+  }
+  py @logosArgs
+  if ($LASTEXITCODE -ne 0) { throw "run_logos_symbolic_promotion_chain_v1 exit $LASTEXITCODE" }
+
+  if ($EnableLogosSymbolicHumanReviewQueue) {
+    $queueScript = Join-Path $WorkspaceRoot "scripts\build_logos_symbolic_human_review_queue_v1.py"
+    if (-not (Test-Path -LiteralPath $queueScript)) {
+      throw "Missing queue builder script: $queueScript"
+    }
+    Write-Host "==> build_logos_symbolic_human_review_queue_v1.py (queue only; no auto approval)"
+    py $queueScript `
+      --promotion-gate-json "docs\final\artifacts\logos_symbolic_event_promotion_gate_latest.json" `
+      --output-json $LogosSymbolicHumanReviewQueueOutJson
+    if ($LASTEXITCODE -ne 0) { throw "build_logos_symbolic_human_review_queue_v1 exit $LASTEXITCODE" }
+  }
 }
 
 Write-Host "OK: B-Track daily hypothesis chain finished. Bundle: docs/final/artifacts/btrack_llm_input_bundle_latest.json"

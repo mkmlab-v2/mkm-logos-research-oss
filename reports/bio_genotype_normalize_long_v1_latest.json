@@ -1,0 +1,17 @@
+{
+  "schema": "bio_genotype_normalize_long_v1",
+  "generated_at_utc": "2026-05-05T08:29:32Z",
+  "inputs": {
+    "input_csv": "C:\\workspace\\tests\\fixtures\\agct_demo_genotype_pass_v1.csv"
+  },
+  "summary": {
+    "input_rows": 8,
+    "output_rows": 8,
+    "distinct_sample_id": 4,
+    "distinct_rsid": 8,
+    "invalid_or_skipped_rows": 0
+  },
+  "outputs": {
+    "output_csv": "C:\\workspace\\tmp\\bio_genotype_long_v1.csv"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "insight_effectiveness_scoreboard_v1",
-  "generated_at_utc": "2026-05-03T11:55:55Z",
+  "generated_at_utc": "2026-05-05T05:10:15Z",
   "sources": {
     "fused_history_path": "C:\\workspace\\docs\\final\\artifacts\\fused_paper_cycle_decision_history.jsonl",
     "scoring_distribution_path": "C:\\workspace\\docs\\final\\artifacts\\trinity_scoring_distribution_latest.json",
@@ -16,15 +16,15 @@
     "counts": {
       "HIT": 20,
       "FAIL": 0,
-      "NEUTRAL_DRAW": 2,
-      "PENDING_CLOSE": 8
+      "NEUTRAL_DRAW": 3,
+      "PENDING_CLOSE": 7
     },
-    "pending_close_rate_raw": 0.26666666666666666,
-    "hit_rate_resolved_plus_neutral": 0.9090909090909091,
-    "resolved_plus_neutral_n": 22,
+    "pending_close_rate_raw": 0.23333333333333334,
+    "hit_rate_resolved_plus_neutral": 0.8695652173913043,
+    "resolved_plus_neutral_n": 23,
     "hit_rate_resolved_plus_neutral_wilson95": {
-      "lower": 0.7218461934161421,
-      "upper": 0.9747051037171622
+      "lower": 0.678721020269818,
+      "upper": 0.954624234856553
     }
   },
   "monthly_hit_rate_trace": [
@@ -35,17 +35,17 @@
     },
     {
       "month_tag": "2026-05",
-      "hit_rate_resolved_plus_neutral": 0.9090909090909091,
+      "hit_rate_resolved_plus_neutral": 0.8695652173913043,
       "sample_size": 30
     }
   ],
   "state_signal_snapshot": {
-    "state_present_rate_all": 0.9236,
+    "state_present_rate_all": 0.924,
     "advisory_decision": "state_clamp_stable"
   },
   "shadow_gate_snapshot": {
     "decision": "KEEP_OBSERVATION_ONLY",
-    "weekly_cycles_observed": 620,
+    "weekly_cycles_observed": 623,
     "monthly_cycles_observed": 3
   },
   "checks": {

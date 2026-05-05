@@ -68,6 +68,18 @@ def is_artifact_ok(preflight: dict[str, Any] | None, gate: dict[str, Any] | None
     return True
 
 
+def is_secret_exposure_survey_ok(survey: dict[str, Any] | None) -> bool:
+    if survey is None:
+        return False
+    summary = survey.get("summary") if isinstance(survey.get("summary"), dict) else {}
+    if not isinstance(summary, dict):
+        return False
+    exact = int(summary.get("exact_match_count") or 0)
+    pattern = int(summary.get("pattern_match_count") or 0)
+    severity = str(summary.get("severity") or "").lower()
+    return exact == 0 and pattern == 0 and severity == "ok"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build B-track automation health snapshot.")
     parser.add_argument(
@@ -84,6 +96,7 @@ def main() -> int:
     apply_receipt = read_json(root / "reports/constitution/btrack_pilot/auto_scientist/promotion_apply_receipt_latest.json")
     preflight = read_json(root / "docs/final/artifacts/promotion_preflight_v1_latest.json")
     gate = read_json(root / "reports/constitution/btrack_pilot/btrack_promotion_gate_latest.json")
+    secret_survey = read_json(root / "docs/final/artifacts/security_secret_exposure_survey_latest.json")
 
     payload = {
         "schema": "btrack_automation_health_snapshot_v1",
@@ -110,6 +123,14 @@ def main() -> int:
                 "generated_at_utc": (gate or {}).get("generated_at_utc"),
                 "decision": (gate or {}).get("decision"),
             },
+            "security_secret_exposure_survey_latest": {
+                "exists": secret_survey is not None,
+                "generated_at_utc": (secret_survey or {}).get("ts_utc"),
+                "severity": ((secret_survey or {}).get("summary") or {}).get("severity"),
+                "exact_match_count": ((secret_survey or {}).get("summary") or {}).get("exact_match_count"),
+                "pattern_match_count": ((secret_survey or {}).get("summary") or {}).get("pattern_match_count"),
+                "dispatch_status": ((secret_survey or {}).get("dispatch") or {}).get("status"),
+            },
         },
     }
 
@@ -124,10 +145,12 @@ def main() -> int:
         )
     )
     artifacts_ok = is_artifact_ok(preflight, gate, apply_receipt)
+    secret_survey_ok = is_secret_exposure_survey_ok(secret_survey)
     payload["summary"] = {
         "all_tasks_ok": tasks_ok,
         "all_artifacts_ok": artifacts_ok,
-        "ops_ready": tasks_ok and artifacts_ok,
+        "secret_exposure_gate_ok": secret_survey_ok,
+        "ops_ready": tasks_ok and artifacts_ok and secret_survey_ok,
     }
 
     out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

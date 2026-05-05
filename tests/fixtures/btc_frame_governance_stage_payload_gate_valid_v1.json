@@ -1,0 +1,41 @@
+{
+  "schema": "btc_frame_governance_stage_payload_v1",
+  "track": "A",
+  "stage": "gate",
+  "inputs": {
+    "gate_input": {
+      "bridge_ref": "docs/final/artifacts/btc_bridge_validation_latest.json",
+      "risk_profile_ref": "tests/fixtures/risk_profile_fact_safe_gate_pass_minimal_v1.json",
+      "execution_mode": "live"
+    }
+  },
+  "outputs": {
+    "action": "go",
+    "position_size_pct": 10.0,
+    "confidence_score": 0.9,
+    "veto_reason_codes": [],
+    "stage_output_ref": "docs/final/artifacts/btc_gate_decision_latest.json"
+  },
+  "risk_gate": {
+    "regime_gate_passed": true,
+    "prophecy_wired": false,
+    "human_approval_required": true,
+    "human_approval_ref": "tests/fixtures/trading_human_execution_approval_gate_fixture_GO.json",
+    "live_allowed": true,
+    "min_conf_threshold": 0.8
+  },
+  "evidence": [
+    {
+      "artifact_path": "tests/fixtures/risk_profile_fact_safe_gate_pass_minimal_v1.json",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "audit": [
+    {
+      "ts_utc": "2026-05-04T12:00:00Z",
+      "actor": "gate-engine",
+      "decision": "go",
+      "message": "fixture live-eligible payload"
+    }
+  ]
+}

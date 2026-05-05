@@ -1,7 +1,7 @@
 # Fact-Safe Multi-Lens Brief
 
 ## 메타 고정 헤더
-- generated_at_utc: 2026-05-03T00:15:15Z
+- generated_at_utc: 2026-05-05T00:15:14Z
 - engine_id: V2_Precision_MCP
 - boundary_rule: observatory_ephemeris_v1
 - reliability_badge: MID
@@ -16,15 +16,15 @@
 
 ## 제5장 사후 실행 성과 (Post-Execution Evidence)
 - exchange_snapshot_24h.available: True
-- fills_count: 0
-- realized_pnl: 0
-- commission: 0
-- funding_fee: 0.0
-- net: 0.0
+- fills_count: 5
+- realized_pnl: -1.2296
+- commission: 0.3556173
+- funding_fee: 0.00862528
+- net: -0.86535742
 - net_source: exchange_snapshot_24h
-- history samples: 1146
-- history net_delta: -0.88126157
-- history avg_net_per_fill_latest: None
+- history samples: 503
+- history net_delta: -0.88049556
+- history avg_net_per_fill_latest: -0.17307148
 - backtest_available: True
 - backtest_sample_count: 317
 - backtest_win_rate: 0.425868
@@ -32,9 +32,9 @@
 - backtest_profit_factor: 0.800345
 - backtest_sweep_available: True
 - backtest_sweep_best_period: 2026-01-01..2026-12-31
-- backtest_sweep_best_sample_count: 100
-- backtest_sweep_best_net_return_pct: 2.319866
-- backtest_sweep_best_profit_factor: 1.138449
+- backtest_sweep_best_sample_count: 102
+- backtest_sweep_best_net_return_pct: 2.620719
+- backtest_sweep_best_profit_factor: 1.156384
 
 ## 운영 게이트 결론
 - reliability_badge: MID

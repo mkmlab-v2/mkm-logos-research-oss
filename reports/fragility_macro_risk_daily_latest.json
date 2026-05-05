@@ -1,0 +1,26 @@
+﻿{
+    "schema":  "fragility_macro_risk_daily_run_v1",
+    "ts_utc":  "2026-05-04T22:28:02.9619117Z",
+    "status":  "pass",
+    "chain":  {
+                  "script":  "C:\\workspace\\scripts\\run_fragility_macro_risk_chain_v1.ps1",
+                  "prefer_fred":  false,
+                  "asset_scope":  "BTC-USD",
+                  "horizon":  "24h"
+              },
+    "artifacts":  {
+                      "inputs":  "docs/final/artifacts/macro_fragility_inputs_latest.json",
+                      "fragility":  "docs/final/artifacts/fragility_composite_v1_latest.json",
+                      "response":  "docs/final/artifacts/macro_risk_warning_api_smoke_latest.json",
+                      "policy_binding":  "docs/final/artifacts/macro_risk_warning_policy_binding_latest.json"
+                  },
+    "error":  null,
+    "runtime":  {
+                    "gate":  "AMBER",
+                    "decision_state":  "WATCH",
+                    "risk_warning_level":  "elevated",
+                    "source_mode":  "fallback_defaults",
+                    "quaternion_signal":  "phase_shift_low"
+                },
+    "chain_output_preview":  "[fragility-chain] build macro fragility inputs\nmacro_fragility_inputs_v1: PASS -\u003e C:\\workspace\\docs\\final\\artifacts\\macro_fragility_inputs_latest.json\nsource_mode=fallback_defaults\n[fragility-chain] bootstrap quaternion history\nbootstrap_fragility_quaternion_history_v1: SKIP (already 32 entries)\n[fragility-chain] build fragility composite v1\nfragility_composite_v1: PASS -\u003e C:\\workspace\\docs\\final\\artifacts\\fragility_composite_v1_latest.json\n[fragility-chain] build macro risk offline snapshot\nmacro_risk_warning_api_offline_snapshot_v1: PASS -\u003e C:\\workspace\\docs\\final\\artifacts\\macro_risk_warning_api_smoke_latest.json\n[fragility-chain] apply policy binding\npolicy_binding: PASS -\u003e C:\\workspace\\docs\\final\\artifacts\\macro_risk_warning_policy_binding_latest.json\n[fragility-chain] PASS\n[fragility-chain] fragility=C:\\workspace\\docs\\final\\artifacts\\fragility_composite_v1_latest.json\n[fragility-chain] response=C:\\workspace\\docs\\final\\artifacts\\macro_risk_warning_api_smoke_latest.json\n[fragility-chain] binding=C:\\workspace\\docs\\final\\artifacts\\macro_risk_warning_policy_binding_latest.json"
+}

@@ -16,9 +16,77 @@ def _read_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
+def _status_or_default(value: Any, default: str = "UNKNOWN") -> Any:
+    if value is None:
+        return default
+    if isinstance(value, str) and not value.strip():
+        return default
+    return value
+
+
+def _parse_iso_utc(value: Any) -> datetime | None:
+    if value is None:
+        return None
+    s = str(value).strip()
+    if not s:
+        return None
+    try:
+        if s.endswith("Z"):
+            return datetime.fromisoformat(s.replace("Z", "+00:00"))
+        return datetime.fromisoformat(s)
+    except ValueError:
+        return None
+
+
+def _forward_pipeline_health(
+    *,
+    prereg: Dict[str, Any],
+    latest: Dict[str, Any],
+    weekly: Dict[str, Any],
+    now: datetime,
+) -> Dict[str, Any]:
+    prereg_hash = str(prereg.get("preregister_hash_sha256") or "")
+    latest_row = latest.get("latest_row") or {}
+    latest_hash = str(latest_row.get("preregister_hash_sha256") or "")
+    hash_match = bool(prereg_hash and latest_hash and prereg_hash == latest_hash)
+
+    rows_total = int(latest.get("rows_total") or 0)
+    rows_in_window = int(weekly.get("rows_in_window") or 0)
+    state_counts = weekly.get("decision_state_counts") or {}
+    total_counted = sum(int(v or 0) for v in state_counts.values()) if isinstance(state_counts, dict) else 0
+
+    latest_ts = _parse_iso_utc(latest.get("generated_at_utc"))
+    is_fresh_72h = bool(latest_ts and (now - latest_ts).total_seconds() <= 72 * 3600)
+
+    passed = bool(hash_match and rows_total > 0 and rows_in_window > 0 and total_counted > 0 and is_fresh_72h)
+    reasons: list[str] = []
+    if not hash_match:
+        reasons.append("preregister_hash_mismatch")
+    if rows_total <= 0:
+        reasons.append("no_forward_rows")
+    if rows_in_window <= 0:
+        reasons.append("no_rows_in_window")
+    if total_counted <= 0:
+        reasons.append("no_decision_counts")
+    if not is_fresh_72h:
+        reasons.append("stale_latest_snapshot")
+
+    return {
+        "status": "PASS" if passed else "FAIL",
+        "passed": passed,
+        "reason_codes": reasons,
+        "preregister_hash_match": hash_match,
+        "rows_total": rows_total,
+        "rows_in_window_7d": rows_in_window,
+        "latest_snapshot_fresh_within_72h": is_fresh_72h,
+        "latest_generated_at_utc": latest.get("generated_at_utc"),
+    }
+
+
 def main() -> int:
     root = Path("C:/workspace")
     art = root / "docs" / "final" / "artifacts"
+    now = datetime.now(timezone.utc)
 
     status = _read_json(art / "mkm_ai_status_pointer_latest.json")
     decision = _read_json(art / "mkm_ai_v2_promotion_decision_latest.json")
@@ -29,6 +97,15 @@ def main() -> int:
     drill = _read_json(art / "mkm_trackc_guard_recovery_drill_latest.json")
     paddle = _read_json(art / "paddle_onboarding_status_latest.json")
     dual_leg_brief = _read_json(art / "trackc_prophecy_dual_leg_brief_latest.json")
+    forward_prereg = _read_json(art / "macro_risk_forward_preregister_lock_latest.json")
+    forward_latest = _read_json(art / "macro_risk_forward_log_latest.json")
+    forward_weekly = _read_json(art / "macro_risk_forward_weekly_report_latest.json")
+    forward_health = _forward_pipeline_health(
+        prereg=forward_prereg,
+        latest=forward_latest,
+        weekly=forward_weekly,
+        now=now,
+    )
 
     dashboard = {
         "schema": "mkm_trackc_ops_dashboard_v1",
@@ -43,19 +120,26 @@ def main() -> int:
             "weekly_sample_count": status.get("weekly_sample_count"),
         },
         "trackc": {
-            "packet_status": handoff.get("packet_status"),
-            "api_decision_state": (handoff.get("executive_summary") or {}).get("api_decision_state"),
-            "showroom_go_no_go": (handoff.get("executive_summary") or {}).get("showroom_go_no_go"),
+            "packet_status": _status_or_default(handoff.get("packet_status"), "UNKNOWN"),
+            "api_decision_state": _status_or_default(
+                (handoff.get("executive_summary") or {}).get("api_decision_state"),
+                "UNKNOWN",
+            ),
+            "showroom_go_no_go": _status_or_default(
+                (handoff.get("executive_summary") or {}).get("showroom_go_no_go"),
+                "UNKNOWN",
+            ),
             "guard_passed": guard.get("passed"),
-            "acceptance_status": acceptance.get("status"),
-            "freeze_status": freeze.get("status"),
-            "recovery_drill_status": drill.get("status"),
+            "acceptance_status": _status_or_default(acceptance.get("status"), "NOT_RUN"),
+            "freeze_status": _status_or_default(freeze.get("status"), "NOT_RUN"),
+            "recovery_drill_status": _status_or_default(drill.get("status"), "NOT_RUN"),
             "paddle_runbook_present": (art / "PADDLE_ONBOARDING_SECURE_RUNBOOK_V1.md").exists(),
             "paddle_onboarding_status": paddle.get("status", "RUNBOOK_READY"),
             "dual_leg_recent_trading_days": (dual_leg_brief.get("window") or {}).get("recent_trading_days"),
             "dual_leg_kospi_hit_rate": ((dual_leg_brief.get("legs") or {}).get("kospi") or {}).get("price_directional_hit_rate"),
             "dual_leg_btc_hit_rate": ((dual_leg_brief.get("legs") or {}).get("btc") or {}).get("price_directional_hit_rate"),
             "dual_leg_btc_minus_kospi_hit_rate": (dual_leg_brief.get("delta") or {}).get("btc_minus_kospi_hit_rate"),
+            "forward_pipeline_health": forward_health,
         },
         "evidence": {
             "status_pointer": "docs/final/artifacts/mkm_ai_status_pointer_latest.json",
@@ -69,6 +153,9 @@ def main() -> int:
             "paddle_onboarding_status": "docs/final/artifacts/paddle_onboarding_status_latest.json",
             "dual_leg_brief_json": "docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.json",
             "dual_leg_brief_md": "docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.md",
+            "forward_preregister_lock": "docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json",
+            "forward_log_latest": "docs/final/artifacts/macro_risk_forward_log_latest.json",
+            "forward_weekly_report": "docs/final/artifacts/macro_risk_forward_weekly_report_latest.json",
         },
     }
 
@@ -100,6 +187,10 @@ def main() -> int:
         f"- dual_leg_kospi_hit_rate: `{dashboard['trackc']['dual_leg_kospi_hit_rate']}`",
         f"- dual_leg_btc_hit_rate: `{dashboard['trackc']['dual_leg_btc_hit_rate']}`",
         f"- dual_leg_btc_minus_kospi_hit_rate: `{dashboard['trackc']['dual_leg_btc_minus_kospi_hit_rate']}`",
+        f"- forward_pipeline_health: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('status')}`",
+        f"- forward_pipeline_reason_codes: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('reason_codes')}`",
+        f"- forward_pipeline_rows_total: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_total')}`",
+        f"- forward_pipeline_rows_in_window_7d: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_in_window_7d')}`",
         "",
         "## Evidence",
         "- `docs/final/artifacts/mkm_ai_status_pointer_latest.json`",
@@ -113,6 +204,9 @@ def main() -> int:
         "- `docs/final/artifacts/paddle_onboarding_status_latest.json`",
         "- `docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.json`",
         "- `docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.md`",
+        "- `docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json`",
+        "- `docs/final/artifacts/macro_risk_forward_log_latest.json`",
+        "- `docs/final/artifacts/macro_risk_forward_weekly_report_latest.json`",
     ]
     out_md.write_text("\n".join(md) + "\n", encoding="utf-8")
 

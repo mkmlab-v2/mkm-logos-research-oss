@@ -15,7 +15,13 @@ module.exports = {
       autorestart: true,
       max_restarts: 20,
       min_uptime: "10s",
-      // env: { PYTHONUNBUFFERED: "1" },
+      // 권장: 로그 버퍼 플러시 + 아론 엔진 시 예시
+      // env: {
+      //   PYTHONUNBUFFERED: "1",
+      //   BTC_FUTURES_ENGINE: "aroon_v1",
+      //   AROON_KLINE_INTERVAL: "15m",
+      //   AROON_ORDER_QTY: "0.002",
+      // },
     },
   ],
 };

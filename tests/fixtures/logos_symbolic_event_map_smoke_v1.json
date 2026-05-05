@@ -1,0 +1,30 @@
+{
+  "schema": "logos_symbolic_event_map_v1",
+  "symbols": [
+    {
+      "symbol_id": "exodus_liberation",
+      "direction_bias": "up",
+      "weight": 1.0,
+      "keywords": ["breakthrough", "export orders accelerate"]
+    },
+    {
+      "symbol_id": "babel_confusion",
+      "direction_bias": "down",
+      "weight": 1.0,
+      "keywords": ["credit spreads widen", "volatility rises", "geopolitical"]
+    },
+    {
+      "symbol_id": "jubilee_relief",
+      "direction_bias": "up",
+      "weight": 1.0,
+      "keywords": ["slower tightening", "prices dip"]
+    },
+    {
+      "symbol_id": "joseph_famine_storage",
+      "direction_bias": "down",
+      "weight": 1.0,
+      "keywords": ["liquidity thin", "consumption soft", "housing starts cool"]
+    }
+  ]
+}
+

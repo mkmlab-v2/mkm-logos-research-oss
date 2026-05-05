@@ -1,0 +1,17 @@
+{
+  "resultList": {
+    "result": [
+      {
+        "id": "12345678",
+        "source": "MED",
+        "pmid": "12345678",
+        "title": "Fixture: Sasang constitutional types in a mock cohort (test only)",
+        "authorString": "Kim A, Lee B",
+        "journalTitle": "Integrative Medicine Research",
+        "pubYear": "2024",
+        "abstractText": "We assessed Sasang constitutional medicine types among participants with recorded age and sex. This abstract is synthetic for unit tests."
+      }
+    ],
+    "hitCount": 1
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "myeongri_external_reference_catalog_v1",
+  "title": "myeongri_external_reference_catalog_v1",
+  "description": "Normalized external reference catalog for MKM Myeongri advanced answer enrichment (B-track research support only).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "generated_at_utc", "entries"],
+  "properties": {
+    "schema": { "type": "string", "const": "myeongri_external_reference_catalog_v1" },
+    "version": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "generated_at_utc": { "type": "string" },
+    "policy_note": { "type": "string" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "source_type",
+          "source_locator",
+          "verification_level",
+          "track_scope",
+          "normalization_tags"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "year": { "type": "integer" },
+          "language": { "type": "string" },
+          "source_type": {
+            "type": "string",
+            "enum": ["kci", "journal", "arxiv", "web_article", "vault_doc", "archive_doc"]
+          },
+          "source_locator": { "type": "string" },
+          "verification_level": {
+            "type": "string",
+            "enum": ["A_verified_primary", "B_verified_metadata", "C_unverified_candidate"]
+          },
+          "track_scope": {
+            "type": "string",
+            "enum": ["B_research_only", "A_and_B_with_fact_lock"]
+          },
+          "normalization_tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "recommended_use": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}

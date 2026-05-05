@@ -1,0 +1,30 @@
+{
+  "schema": "unified_meta_chain_readiness_v1",
+  "generated_at_utc": "2026-05-05T08:29:32Z",
+  "inputs": {
+    "cohort_csv": "C:\\workspace\\tests\\fixtures\\agct_demo_cohort_pass_v1.csv",
+    "genotype_input_csv": "C:\\workspace\\tests\\fixtures\\agct_demo_genotype_pass_v1.csv",
+    "mapping_coverage_report": "C:\\workspace\\tests\\fixtures\\agct_demo_mapping_coverage.json",
+    "symbolic_pairs_jsonl": "C:\\workspace\\tests\\fixtures\\symbolic_mapping_demo_pairs_v1.jsonl",
+    "symbolic_stream_jsonl": "C:\\workspace\\tests\\fixtures\\symbolic_mapping_shadow_stream_v1.jsonl",
+    "holdout_ratio": 0.3,
+    "min_holdout_n": 1
+  },
+  "stats": {
+    "cohort_rows": 4,
+    "genotype_rows": 8,
+    "estimated_holdout_n": 1
+  },
+  "checks": {
+    "cohort_csv_exists": true,
+    "genotype_input_csv_exists": true,
+    "mapping_coverage_report_exists": true,
+    "symbolic_pairs_jsonl_exists": true,
+    "symbolic_stream_jsonl_exists": true,
+    "holdout_n_gate": true,
+    "required_columns_ok": true,
+    "all_files_exist": true
+  },
+  "issues": [],
+  "decision": "GO_PRECHECK"
+}

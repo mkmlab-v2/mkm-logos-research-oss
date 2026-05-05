@@ -1,0 +1,46 @@
+{
+  "schema": "agct_sasang_size_overlay_candidate_v1",
+  "generated_at_utc": "2026-05-05T08:29:32Z",
+  "track": "B_TRACK",
+  "governance": {
+    "research_only": true,
+    "non_gating": true,
+    "human_review_required": true,
+    "auto_live_binding_forbidden": true
+  },
+  "inputs": {
+    "readiness_json": "C:\\workspace\\reports\\bio_dna_promotion_readiness_v1_latest.json",
+    "sweep_json": "C:\\workspace\\reports\\agct_sasang_hypothesis_sweep_v1_latest.json"
+  },
+  "gates": {
+    "thresholds": {
+      "min_best_accuracy": 0.45,
+      "max_permutation_pvalue": 0.1
+    },
+    "checks": {
+      "readiness_gate": true,
+      "best_accuracy_gate": true,
+      "permutation_significance_gate": true
+    },
+    "candidate_ready_for_human_review": true
+  },
+  "evidence": {
+    "best_accuracy": 1.0,
+    "best_accuracy_permutation_p_value": 0.043912175648702596,
+    "top_hypothesis_mapping": {
+      "A": "TY",
+      "C": "SY",
+      "G": "TE",
+      "T": "SE"
+    },
+    "risk_corr_pearson": 1.0
+  },
+  "overlay_candidate": {
+    "mode": "size_multiplier_only",
+    "base_size_multiplier": 1.0,
+    "low_risk_multiplier": 0.9,
+    "neutral_multiplier": 0.8,
+    "high_risk_multiplier": 0.65,
+    "note": "Multiplier profile is advisory; runtime wiring requires separate human approval."
+  }
+}

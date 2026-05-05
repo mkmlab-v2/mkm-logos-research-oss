@@ -1,0 +1,119 @@
+{
+  "schema": "workspace_postit_search_presets_v1",
+  "version": "1.0.0",
+  "presets": [
+    {
+      "id": "btrack-myeongni-latest",
+      "name": "B-track Myeongni Latest",
+      "rule": {
+        "lane": "myeongni",
+        "status": [
+          "active_latest",
+          "cataloged"
+        ],
+        "path_keywords_all": [
+          "myeongni"
+        ]
+      }
+    },
+    {
+      "id": "btrack-logos-artifacts",
+      "name": "B-track Logos Artifacts",
+      "rule": {
+        "lane": "logos",
+        "type": [
+          "artifact",
+          "document"
+        ],
+        "path_keywords_all": [
+          "logos"
+        ]
+      }
+    },
+    {
+      "id": "gating-scripts-a-level",
+      "name": "Gating Scripts A-level",
+      "rule": {
+        "type": "automation",
+        "evidence_level": "A",
+        "topic_tags_all": [
+          "gate"
+        ]
+      }
+    },
+    {
+      "id": "compression-latest",
+      "name": "Compression Latest Files",
+      "rule": {
+        "status": "active_latest",
+        "topic_tags_all": [
+          "compression"
+        ]
+      }
+    },
+    {
+      "id": "prophecy-latest",
+      "name": "Prophecy Latest Files",
+      "rule": {
+        "status": "active_latest",
+        "topic_tags_all": [
+          "prophecy"
+        ]
+      }
+    },
+    {
+      "id": "notebooklm-docs",
+      "name": "NotebookLM Related Docs",
+      "rule": {
+        "type": "document",
+        "topic_tags_all": [
+          "notebooklm"
+        ]
+      }
+    },
+    {
+      "id": "dashboards-latest",
+      "name": "Dashboard Latest Artifacts",
+      "rule": {
+        "type": [
+          "artifact",
+          "document"
+        ],
+        "status": [
+          "active_latest",
+          "cataloged"
+        ],
+        "path_keywords_all": [
+          "dashboard"
+        ]
+      }
+    },
+    {
+      "id": "sasang-btrack",
+      "name": "Sasang B-track Files",
+      "rule": {
+        "track": "B",
+        "lane": "sasang"
+      }
+    },
+    {
+      "id": "a-track-ops",
+      "name": "A-track Ops Related",
+      "rule": {
+        "track": "A",
+        "path_keywords_all": [
+          "ops"
+        ]
+      }
+    },
+    {
+      "id": "schema-catalog",
+      "name": "Schema Catalog",
+      "rule": {
+        "topic_tags_all": [
+          "schema"
+        ]
+      }
+    }
+  ]
+}

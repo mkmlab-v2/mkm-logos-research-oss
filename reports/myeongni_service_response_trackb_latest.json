@@ -1,0 +1,35 @@
+{
+  "schema": "myeongni_service_response_v1",
+  "generated_at_utc": "2026-05-04T19:00:56.980009+00:00",
+  "track": "B",
+  "intent": "wellness_balance",
+  "labels": [
+    "[RESEARCH_ONLY]",
+    "[NON_MEDICAL]"
+  ],
+  "field": "wellness_research_runtime",
+  "lens": {
+    "myeongni_confidence_reference_only": 0.676665,
+    "medical_decision_allowed": false
+  },
+  "conflict_resolver": {
+    "rule": "non_medical_boundary",
+    "diagnosis_allowed": false,
+    "prescription_allowed": false
+  },
+  "final_action": {
+    "decision": "WATCH",
+    "medical_boundary_note": "This output is research-only and non-medical.",
+    "invalidate_conditions": [
+      "diagnosis claim appears",
+      "prescription claim appears",
+      "clinical guarantee appears"
+    ]
+  },
+  "template_contract": [
+    "observation",
+    "daily_rhythm_tip",
+    "stress_guard_tip",
+    "medical_boundary_note"
+  ]
+}

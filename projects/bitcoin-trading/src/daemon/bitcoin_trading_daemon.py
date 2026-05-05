@@ -21,7 +21,7 @@ import sys
 import time
 import os
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional, Union
 from datetime import datetime, timedelta
 import json
 import traceback
@@ -32,6 +32,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from src.integration.realtime_trading_with_monitoring import RealtimeTradingWithMonitoring
+from src.futures_engine import futures_engine_mode
 from src.api.binance_client import get_last_binance_credential_meta
 from src.monitoring.alert_manager import AlertManager
 from src.monitoring.trading_prometheus import (
@@ -487,18 +488,33 @@ class BitcoinTradingDaemon:
             logger.warning(f"⚠️ 상태 로드 실패: {e}")
         return {}
     
-    async def _create_engine(self) -> RealtimeTradingWithMonitoring:
-        """거래 엔진 생성"""
-        logger.info("🔧 거래 엔진 생성 중...")
+    async def _create_engine(self) -> Union[RealtimeTradingWithMonitoring, Any]:
+        """거래 엔진 생성 (``BTC_FUTURES_ENGINE`` 로 레거시 vs 아론 엔진 분기)."""
+        mode = futures_engine_mode()
+        logger.info("🔧 거래 엔진 생성 중... BTC_FUTURES_ENGINE=%s", mode)
+
+        if mode in {"aroon", "aroon_v1"}:
+            from src.futures_engine.aroon_futures_engine import AroonFuturesEngine
+
+            engine = AroonFuturesEngine(
+                symbol=self.symbol,
+                testnet=self.testnet,
+                initial_capital=self.initial_capital,
+                leverage=self.leverage,
+                enable_trading=self.enable_trading,
+            )
+            logger.info("✅ 아론(Aroon) USDT-M 엔진 생성 완료 (레거시 RealtimeTradingWithMonitoring 미사용)")
+            return engine
+
         engine = RealtimeTradingWithMonitoring(
             symbol=self.symbol,
             testnet=self.testnet,
             initial_capital=self.initial_capital,
             leverage=self.leverage,
             enable_monitoring=True,
-            enable_trading=self.enable_trading
+            enable_trading=self.enable_trading,
         )
-        logger.info("✅ 거래 엔진 생성 완료")
+        logger.info("✅ 레거시 통합 엔진(RealtimeTradingWithMonitoring) 생성 완료")
         return engine
     
     async def _run_engine(self):
@@ -579,6 +595,7 @@ class BitcoinTradingDaemon:
         logger.info(f"   초기 자본: {self.initial_capital} USDT")
         logger.info(f"   레버리지: {self.leverage}배")
         logger.info(f"   거래: {'활성화' if self.enable_trading else '비활성화 (모니터링만)'}")
+        logger.info(f"   BTC_FUTURES_ENGINE: {futures_engine_mode()}")
         logger.info(f"   최대 재시작 시도: {self.max_restart_attempts}회")
         logger.info("="*80)
         

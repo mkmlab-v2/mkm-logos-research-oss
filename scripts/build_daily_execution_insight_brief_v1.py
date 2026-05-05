@@ -22,6 +22,13 @@ DEFAULT_MYEONGNI_LENS = _ART / "myeongni_independent_lens_latest.json"
 DEFAULT_SASANG_LENS = _ART / "sasang_independent_lens_latest.json"
 DEFAULT_MARKET_SASANG_LENS = _ART / "market_sasang_lens_latest.json"
 DEFAULT_LOGOS_INDEPENDENT_LENS = _ART / "logos_independent_lens_latest.json"
+DEFAULT_A_TRACK_GONOGO = _ART / "a_track_go_nogo_status_latest.json"
+DEFAULT_PROPHECY_MONTHLY = _ART / "prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
+DEFAULT_LENS_BACKTEST = _ART / "prophecy_lens_combo_backtest_v1_latest.json"
+DEFAULT_MYEONGNI_16STATE = WORKSPACE_ROOT / "data" / "myeongni" / "16_STATE_MASTER_PROBE_v1.json"
+DEFAULT_COMMANDER_MYEONGNI = WORKSPACE_ROOT / "reports" / "commander_myeongni_lens_latest.json"
+DEFAULT_SASANG_VETO_CFG = _ART / "sasang_veto_only_active_config_latest.json"
+DEFAULT_MYEONGRI_V2_UPGRADE = WORKSPACE_ROOT / "reports" / "myeongri_core_v2_upgrade_latest.json"
 
 
 def _abs_under_root(root: Path, p: Path) -> Path:
@@ -204,6 +211,201 @@ def _lines_logos_independent(doc: dict[str, Any] | None, path: Path) -> tuple[li
     return lines, True
 
 
+def _lines_factlock_governance(
+    *,
+    a_track: dict[str, Any] | None,
+    a_track_path: Path,
+    prophecy_monthly: dict[str, Any] | None,
+    prophecy_monthly_path: Path,
+    lens_backtest: dict[str, Any] | None,
+    lens_backtest_path: Path,
+    myeongni_16state: dict[str, Any] | None,
+    myeongni_16state_path: Path,
+    commander_myeongni: dict[str, Any] | None,
+    commander_myeongni_path: Path,
+    sasang_veto_cfg: dict[str, Any] | None,
+    sasang_veto_cfg_path: Path,
+) -> tuple[list[str], bool]:
+    lines: list[str] = []
+    lines.append("### 1d) Fact-Lock governance snapshot (A-track / backtest / commander overlay)")
+    lines.append("")
+    lines.append("| field | value | source |")
+    lines.append("|-------|-------|--------|")
+
+    ok = False
+    if a_track:
+        result = a_track.get("result") if isinstance(a_track.get("result"), dict) else {}
+        snap = a_track.get("snapshot") if isinstance(a_track.get("snapshot"), dict) else {}
+        checks = a_track.get("checks") if isinstance(a_track.get("checks"), dict) else {}
+        lines.append(
+            f"| `overall_go_no_go` | `{_md_cell(result.get('overall_go_no_go'))}` | `{a_track_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `recommended_stage` | `{_md_cell(result.get('recommended_stage'))}` | `{a_track_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `failed_reasons` | `{_md_cell(json.dumps(result.get('failed_reasons'), ensure_ascii=False))}` | `{a_track_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `high_reliability_decision` | `{_md_cell(snap.get('high_reliability_decision'))}` | `{a_track_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `price_output_locked` | `{_md_cell(snap.get('price_output_locked'))}` | `{a_track_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `price_output_unlocked(check)` | `{_md_cell(checks.get('price_output_unlocked'))}` | `{a_track_path.as_posix()}` |"
+        )
+        ok = True
+    else:
+        lines.append(f"| `a_track_go_nogo_status` | `missing` | `{a_track_path.as_posix()}` |")
+
+    if prophecy_monthly:
+        meta = prophecy_monthly.get("meta") if isinstance(prophecy_monthly.get("meta"), dict) else {}
+        lines.append(
+            f"| `prophecy.meta.high_reliability_decision` | `{_md_cell(meta.get('high_reliability_decision'))}` | `{prophecy_monthly_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `prophecy.meta.price_output_locked` | `{_md_cell(meta.get('price_output_locked'))}` | `{prophecy_monthly_path.as_posix()}` |"
+        )
+        ok = True
+    else:
+        lines.append(f"| `prophecy_monthly` | `missing` | `{prophecy_monthly_path.as_posix()}` |")
+
+    if lens_backtest:
+        best = lens_backtest.get("best_strategy") if isinstance(lens_backtest.get("best_strategy"), dict) else {}
+        metrics = best.get("metrics") if isinstance(best.get("metrics"), dict) else {}
+        lines.append(
+            f"| `best_strategy.strategy_id` | `{_md_cell(best.get('strategy_id'))}` | `{lens_backtest_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `best_strategy.metrics.n_days` | `{_md_cell(metrics.get('n_days'))}` | `{lens_backtest_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `best_strategy.metrics.mdd` | `{_num_opt(metrics.get('mdd'))}` | `{lens_backtest_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `best_strategy.metrics.sharpe` | `{_num_opt(metrics.get('sharpe'))}` | `{lens_backtest_path.as_posix()}` |"
+        )
+        ok = True
+    else:
+        lines.append(f"| `lens_combo_backtest` | `missing` | `{lens_backtest_path.as_posix()}` |")
+
+    if myeongni_16state:
+        cov = myeongni_16state.get("coverage_summary") if isinstance(myeongni_16state.get("coverage_summary"), dict) else {}
+        lines.append(
+            f"| `16state.states_with_audit` | `{_md_cell(cov.get('states_with_audit'))}` | `{myeongni_16state_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `16state.states_total` | `{_md_cell(cov.get('states_total'))}` | `{myeongni_16state_path.as_posix()}` |"
+        )
+        ok = True
+    else:
+        lines.append(f"| `16_state_master_probe` | `missing` | `{myeongni_16state_path.as_posix()}` |")
+
+    if commander_myeongni:
+        scores = commander_myeongni.get("scores") if isinstance(commander_myeongni.get("scores"), dict) else {}
+        lines.append(
+            f"| `commander.scores.confidence` | `{_num_opt(scores.get('confidence'))}` | `{commander_myeongni_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `commander.scores.direction_score` | `{_num_opt(scores.get('direction_score'))}` | `{commander_myeongni_path.as_posix()}` |"
+        )
+        ok = True
+    else:
+        lines.append(f"| `commander_myeongni_lens` | `missing` | `{commander_myeongni_path.as_posix()}` |")
+
+    if sasang_veto_cfg:
+        hg = sasang_veto_cfg.get("hard_guardrails") if isinstance(sasang_veto_cfg.get("hard_guardrails"), dict) else {}
+        lines.append(
+            f"| `sasang.hard_guardrails.most_conservative_wins` | `{_md_cell(hg.get('most_conservative_wins'))}` | `{sasang_veto_cfg_path.as_posix()}` |"
+        )
+        lines.append(
+            f"| `sasang.hard_guardrails.directional_entry_disabled` | `{_md_cell(hg.get('directional_entry_disabled'))}` | `{sasang_veto_cfg_path.as_posix()}` |"
+        )
+        ok = True
+    else:
+        lines.append(f"| `sasang_veto_cfg` | `missing` | `{sasang_veto_cfg_path.as_posix()}` |")
+
+    lines.append("")
+    lines.append(
+        "- **Label discipline:** `GO`/`HOLD`는 운영 게이트(`overall_go_no_go`) 기준, "
+        "`PASS`/`FAIL`은 개별 체크(`high_reliability_decision` 등) 기준으로 분리 기록."
+    )
+    lines.append("")
+    return lines, ok
+
+
+def _lines_myeongri_v2_upgrade(
+    doc: dict[str, Any] | None, path: Path
+) -> tuple[list[str], bool]:
+    lines: list[str] = []
+    lines.append("### 1e) Myeongri core v2 upgrade (jijangan vector / research shinsal / size reco)")
+    lines.append("")
+    lines.append("| field | value | source |")
+    lines.append("|-------|-------|--------|")
+    if not doc or str(doc.get("schema") or "") != "myeongri_core_v2_upgrade_v1":
+        lines.append(f"| `myeongri_core_v2_upgrade` | `missing or invalid schema` | `{path.as_posix()}` |")
+        lines.append("")
+        lines.append(
+            "- **Refresh:** `py scripts/myeongri_core_v2_upgrade.py` (reads `commander_myeongni_lens_latest.json` by default)."
+        )
+        lines.append("")
+        return lines, False
+
+    out = doc.get("output") if isinstance(doc.get("output"), dict) else {}
+    jw = doc.get("jijangan_weighted_vector") if isinstance(doc.get("jijangan_weighted_vector"), dict) else {}
+    elems = jw.get("elements") if isinstance(jw.get("elements"), dict) else {}
+    sh = doc.get("shinsal_impact_overlay") if isinstance(doc.get("shinsal_impact_overlay"), dict) else {}
+    detected = sh.get("detected") if isinstance(sh.get("detected"), list) else []
+
+    lines.append(
+        f"| `output.size_multiplier_recommended` | `{_num_opt(out.get('size_multiplier_recommended'))}` | `{path.as_posix()}` |"
+    )
+    lines.append(
+        f"| `output.commander_overlay_multiplier` | `{_num_opt(out.get('commander_overlay_multiplier'))}` | `{path.as_posix()}` |"
+    )
+    lines.append(
+        f"| `output.direction_override_allowed` | `{_md_cell(out.get('direction_override_allowed'))}` | `{path.as_posix()}` |"
+    )
+    nsm = doc.get("neutral_structure_metrics_v1")
+    if isinstance(nsm, dict):
+        lines.append(
+            f"| `neutral.structural_tension_v1` | `{_num_opt(nsm.get('structural_tension_v1'))}` | `{path.as_posix()}` |"
+        )
+        lev = nsm.get("latent_energy_vector_4d")
+        if isinstance(lev, list):
+            lines.append(
+                f"| `neutral.latent_energy_vector_4d` | `{_md_cell(json.dumps(lev, ensure_ascii=False))}` | `{path.as_posix()}` |"
+            )
+    sdl = doc.get("shinsal_detection_logs")
+    if isinstance(sdl, dict):
+        ent = sdl.get("entries") if isinstance(sdl.get("entries"), list) else []
+        lines.append(f"| `shinsal_detection_logs.entries` | `{len(ent)}` | `{path.as_posix()}` |")
+    notice = doc.get("b_track_notice")
+    lines.append("")
+    lines.append(f"> { _md_cell(notice) if notice else '[MKM-B-TRACK-NOTICE] (missing in JSON — regenerate v2)' }")
+    lines.append("")
+    for k in ("wood", "fire", "earth", "metal", "water"):
+        lines.append(
+            f"| `jijangan.elements.{k}` | `{_num_opt(elems.get(k))}` | `{path.as_posix()}` |"
+        )
+    lines.append(
+        f"| `shinsal.detected_count` | `{len(detected)}` | `{path.as_posix()}` |"
+    )
+    if detected:
+        ids = [str(x.get("id", "")) for x in detected if isinstance(x, dict)]
+        lines.append(
+            f"| `shinsal.detected_ids` | `{_md_cell(', '.join(ids))}` | `{path.as_posix()}` |"
+        )
+    lines.append("")
+    lines.append(
+        "- **Labels:** `[RESEARCH_ONLY]` on `shinsal_impact_overlay`; `neutral_structure_metrics_v1` is "
+        "[HYPOTHESIS] geometry only (not price/vol); size output is advisory overlay only (no A-track direction)."
+    )
+    lines.append("")
+    return lines, True
+
+
 def build_markdown(
     *,
     brief_date_utc: str,
@@ -221,6 +423,20 @@ def build_markdown(
     market_sasang_path: Path | None = None,
     logos_independent: dict[str, Any] | None = None,
     logos_independent_path: Path | None = None,
+    a_track_gonogo: dict[str, Any] | None = None,
+    a_track_gonogo_path: Path | None = None,
+    prophecy_monthly: dict[str, Any] | None = None,
+    prophecy_monthly_path: Path | None = None,
+    lens_backtest: dict[str, Any] | None = None,
+    lens_backtest_path: Path | None = None,
+    myeongni_16state: dict[str, Any] | None = None,
+    myeongni_16state_path: Path | None = None,
+    commander_myeongni: dict[str, Any] | None = None,
+    commander_myeongni_path: Path | None = None,
+    sasang_veto_cfg: dict[str, Any] | None = None,
+    sasang_veto_cfg_path: Path | None = None,
+    myeongri_v2_upgrade: dict[str, Any] | None = None,
+    myeongri_v2_upgrade_path: Path | None = None,
 ) -> str:
     lines: list[str] = []
     lines.append("# Daily execution insight — 1-page brief (generated)")
@@ -320,6 +536,30 @@ def build_markdown(
     lines.extend(ls)
     lines.extend(lms)
     lines.extend(ll)
+    atp = a_track_gonogo_path or DEFAULT_A_TRACK_GONOGO
+    pmp = prophecy_monthly_path or DEFAULT_PROPHECY_MONTHLY
+    lbp = lens_backtest_path or DEFAULT_LENS_BACKTEST
+    m16p = myeongni_16state_path or DEFAULT_MYEONGNI_16STATE
+    cmp = commander_myeongni_path or DEFAULT_COMMANDER_MYEONGNI
+    svp = sasang_veto_cfg_path or DEFAULT_SASANG_VETO_CFG
+    lg, ok_g = _lines_factlock_governance(
+        a_track=a_track_gonogo,
+        a_track_path=atp,
+        prophecy_monthly=prophecy_monthly,
+        prophecy_monthly_path=pmp,
+        lens_backtest=lens_backtest,
+        lens_backtest_path=lbp,
+        myeongni_16state=myeongni_16state,
+        myeongni_16state_path=m16p,
+        commander_myeongni=commander_myeongni,
+        commander_myeongni_path=cmp,
+        sasang_veto_cfg=sasang_veto_cfg,
+        sasang_veto_cfg_path=svp,
+    )
+    lines.extend(lg)
+    v2p = myeongri_v2_upgrade_path or DEFAULT_MYEONGRI_V2_UPGRADE
+    lv2, ok_v2 = _lines_myeongri_v2_upgrade(myeongri_v2_upgrade, v2p)
+    lines.extend(lv2)
     lines.append("## 2) Hypothesis / insight ([HYPO] — not A-track trigger)")
     lines.append("")
     lines.append("| item | memo |")
@@ -334,7 +574,8 @@ def build_markdown(
     lines.append("| `final_action_label` | *(operator)* |")
     ev_paths = (
         f"`{thin_path.as_posix()}`; `{fusion_path.as_posix()}`; "
-        f"`{mp.as_posix()}`; `{sp.as_posix()}`; `{msp.as_posix()}`; `{lp.as_posix()}`"
+        f"`{mp.as_posix()}`; `{sp.as_posix()}`; `{msp.as_posix()}`; `{lp.as_posix()}`; "
+        f"`{atp.as_posix()}`; `{v2p.as_posix()}`"
     )
     lines.append(f"| `evidence_paths` | {ev_paths} |")
     lines.append("")
@@ -345,6 +586,8 @@ def build_markdown(
         "sasang": ok_s,
         "market_sasang": ok_ms,
         "logos_independent": ok_l,
+        "governance_factlock": ok_g,
+        "myeongri_v2_upgrade": ok_v2,
     }
     lines.append(
         "_Generator flags:_ "
@@ -365,6 +608,18 @@ def main() -> None:
     p.add_argument("--sasang-json", type=Path, default=DEFAULT_SASANG_LENS)
     p.add_argument("--market-sasang-json", type=Path, default=DEFAULT_MARKET_SASANG_LENS)
     p.add_argument("--logos-independent-json", type=Path, default=DEFAULT_LOGOS_INDEPENDENT_LENS)
+    p.add_argument("--a-track-gonogo-json", type=Path, default=DEFAULT_A_TRACK_GONOGO)
+    p.add_argument("--prophecy-monthly-json", type=Path, default=DEFAULT_PROPHECY_MONTHLY)
+    p.add_argument("--lens-backtest-json", type=Path, default=DEFAULT_LENS_BACKTEST)
+    p.add_argument("--myeongni-16state-json", type=Path, default=DEFAULT_MYEONGNI_16STATE)
+    p.add_argument("--commander-myeongni-json", type=Path, default=DEFAULT_COMMANDER_MYEONGNI)
+    p.add_argument("--sasang-veto-config-json", type=Path, default=DEFAULT_SASANG_VETO_CFG)
+    p.add_argument(
+        "--myeongri-v2-upgrade-json",
+        type=Path,
+        default=DEFAULT_MYEONGRI_V2_UPGRADE,
+        help="myeongri_core_v2_upgrade_latest.json (run myeongri_core_v2_upgrade.py first).",
+    )
     p.add_argument("--out", type=Path, default=DEFAULT_OUT)
     p.add_argument(
         "--brief-date-utc",
@@ -393,6 +648,13 @@ def main() -> None:
     sasang_path = _abs_under_root(root, args.sasang_json)
     market_sasang_path = _abs_under_root(root, args.market_sasang_json)
     logos_independent_path = _abs_under_root(root, args.logos_independent_json)
+    a_track_gonogo_path = _abs_under_root(root, args.a_track_gonogo_json)
+    prophecy_monthly_path = _abs_under_root(root, args.prophecy_monthly_json)
+    lens_backtest_path = _abs_under_root(root, args.lens_backtest_json)
+    myeongni_16state_path = _abs_under_root(root, args.myeongni_16state_json)
+    commander_myeongni_path = _abs_under_root(root, args.commander_myeongni_json)
+    sasang_veto_cfg_path = _abs_under_root(root, args.sasang_veto_config_json)
+    myeongri_v2_upgrade_path = _abs_under_root(root, args.myeongri_v2_upgrade_json)
 
     fusion = _read_json(fusion_path)
     thin = _read_json(thin_path)
@@ -400,6 +662,13 @@ def main() -> None:
     sasang = _read_json(sasang_path)
     market_sasang = _read_json(market_sasang_path)
     logos_independent = _read_json(logos_independent_path)
+    a_track_gonogo = _read_json(a_track_gonogo_path)
+    prophecy_monthly = _read_json(prophecy_monthly_path)
+    lens_backtest = _read_json(lens_backtest_path)
+    myeongni_16state = _read_json(myeongni_16state_path)
+    commander_myeongni = _read_json(commander_myeongni_path)
+    sasang_veto_cfg = _read_json(sasang_veto_cfg_path)
+    myeongri_v2_upgrade = _read_json(myeongri_v2_upgrade_path)
 
     body = build_markdown(
         brief_date_utc=brief_date,
@@ -417,6 +686,20 @@ def main() -> None:
         market_sasang_path=market_sasang_path,
         logos_independent=logos_independent,
         logos_independent_path=logos_independent_path,
+        a_track_gonogo=a_track_gonogo,
+        a_track_gonogo_path=a_track_gonogo_path,
+        prophecy_monthly=prophecy_monthly,
+        prophecy_monthly_path=prophecy_monthly_path,
+        lens_backtest=lens_backtest,
+        lens_backtest_path=lens_backtest_path,
+        myeongni_16state=myeongni_16state,
+        myeongni_16state_path=myeongni_16state_path,
+        commander_myeongni=commander_myeongni,
+        commander_myeongni_path=commander_myeongni_path,
+        sasang_veto_cfg=sasang_veto_cfg,
+        sasang_veto_cfg_path=sasang_veto_cfg_path,
+        myeongri_v2_upgrade=myeongri_v2_upgrade,
+        myeongri_v2_upgrade_path=myeongri_v2_upgrade_path,
     )
 
     out = args.out

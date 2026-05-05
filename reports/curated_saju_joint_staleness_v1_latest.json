@@ -1,0 +1,16 @@
+{
+  "schema": "curated_saju_joint_staleness_v1",
+  "status": "OK",
+  "stale_reason": "within threshold",
+  "threshold_hours": 24.0,
+  "gap_hours": 13.5687,
+  "curated_signal_utc": "2026-05-05T12:00:00Z",
+  "curated_signal_source": "max_ingest_at_utc",
+  "bench_generated_utc": "2026-05-04T22:25:52.852680Z",
+  "bench_source": "ok",
+  "paths": {
+    "curated_jsonl": "C:\\workspace\\data\\myeongni\\curated_saju_joint_v1.jsonl",
+    "hit_rate_json": "C:\\workspace\\docs\\final\\artifacts\\myeongni_celebrity_hit_rate_v1.json"
+  },
+  "notes": []
+}

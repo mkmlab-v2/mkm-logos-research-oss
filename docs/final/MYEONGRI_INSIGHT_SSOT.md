@@ -93,6 +93,46 @@
 
 ---
 
+## 8. 고급·대면 답변 규격 (MKM 명리 v1, 권장)
+
+**상위 정렬**: `docs/final/CENTRAL_AGENT_MEMORY_V1.md` 「명리 렌즈 고도화 v1」— **결정론 JSON·스키마가 사실 층**, NL은 번역·가설 층.
+
+| 단계 | 필수 내용 | 비고 |
+|------|-----------|------|
+| **A. 입력 고지** | `birth_instant_utc` + IANA TZ(또는 동일 계약), `as_of_utc` | DST·모호 시 **보간 금지**·누락 시 `missing_input` |
+| **B. 결정론 앵커** | `myeongri_complete_fusion` / `myeongni_independent_lens_v1` / `myeongni_core_vector_v1` / `daewoon_timeline_v1` 등 **레포 스크립트 산출 필드 인용**(경로·해시·발췌) | 숫자·간지·대운은 **파이프라인 밖 상식으로 보정 금지** |
+| **C. 렌즈 서술** | **중기 방향·구조·타이밍**만; 실매매·임상·단일 운명·교리 최종 판정 **금지** | `[HYPO]` 기본 |
+| **D. 멀티렌즈 순서** | `Field` → `Lens(사상/명리/성경)` → `Conflict` → `Final Action` 요약 한 블록 | 성경·로고스는 `[NON_GATING]` |
+| **E. LLM 봉투** | 고객·카피용 자연어는 `MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md` + `schemas/myeongri_ai_interpretation_envelope_v1.schema.json` 준수; `rag_sources_used`에 실제 주입 경로 기록 | `human_review_required=true` 유지 |
+
+**한 페이지 체크**: 호출 전 `MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md` §5 운영 체크리스트.
+
+---
+
+## 9. Vault / F: 참고 원천 색인 (B-track, RAG·NotebookLM 보강용)
+
+**Fact-Lock**: 아래 경로는 **브리핑·RAG 후보**이며, 구현·OOF·트리거 판정은 여전히 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·`exit code`·아티팩트만 SSOT다. 학술지 형태의 “명리 단행 논문”은 희소하고, 실측 스캔(2026-05) 기준 **대부분이 MKM·NotebookLM 미러 MD·내부 설계**다. 외부 업계 패턴 요약은 `docs/final/AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md`를 우선한다.
+
+| 구분 | 대표 경로 (로컬·Vault) | 용도 |
+|------|-------------------------|------|
+| **레포 SSOT** | `MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1.md`, `MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md`, `schemas/myeongri_ai_interpretation_envelope_v1.schema.json` | 규격·대외 어휘·봉투 |
+| **G: NotebookLM 미러** | `G:\공유 드라이브\MKM_DATA_VAULT\notebooklm_sources\일반예언\명리_오행_십성_4D_수학적_매핑_규칙_코드기준_2026-03-14.md` | 4D 매핑·코드 기준 서술 |
+| **G: NotebookLM 미러** | 동 폴더 `명리_대운_세운_4D_경로_설계안_2026-03-14.md`, `만세력_명리_우리이론_통합_업그레이드_분석_2026-01-06.md` | 대운·세운·통합 설계 맥락 |
+| **G: 제품/연구 묶음** | `...\notebooklm_sources\만세력_사주_AI_A_제품\`, `...\만세력_사주_AI_B_연구\` 내 `MYEONGNI_FUSION_DECISION_JSON_SCHEMA_2026-03-29.md`, `MYEONGNI_FUSION_MAPPING_PROXY_2026-03-29.md` | 융합 JSON·프록시 초안 |
+| **G: Vault 미러** | `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources\docs\final\AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md` | 외부 제품 패턴 (B-only) |
+| **F: 아카이브** | `F:\BACKUP\MKM_ARCHIVE_FROM_F\workspace_archive\mkm_vertex_ai_archive\...\MKM12_명리_브릿지_성경_검색_융합_완료_2026-01-07.txt` 등 | 역사적 브리지·통찰 원문 (검증 후 인용) |
+| **정규화 카탈로그** | `docs/final/artifacts/myeongri_external_reference_catalog_latest.json` + 스키마 `docs/final/schemas/myeongri_external_reference_catalog_v1.schema.json` | 외부 참고문헌 등급(A/B/C)·태그·권장용도 SSOT |
+
+**동기화**: Vault 상단은 `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`로 갱신 가능; RAG에 넣을 때는 `rag_sources_used`에 **실제 파일 경로**를 박는다.
+**추천 자동화**: `py scripts/recommend_myeongri_external_references_v1.py --profile daewoon --top-n 5` 로 질문 유형별 `rag_sources_used_suggested`를 생성해 봉투에 그대로 주입한다.
+**원클릭 조립**: `py scripts/build_myeongri_ai_prompt_with_refs_v1.py --profile daewoon --deterministic-json <path> --recommendation-out docs/final/artifacts/myeongri_external_reference_recommendation_latest.json` 으로 추천+프롬프트를 한 번에 생성한다.
+**종단 체인**: `py scripts/run_myeongri_ai_prompt_chain_v1.py --profile daewoon --prompt-out docs/final/artifacts/myeongri_ai_prompt_latest.txt --deterministic-json <path>` 후, 응답 파일이 생기면 `--response-file <llm_response.txt> --validated-envelope-out docs/final/artifacts/myeongri_ai_envelope_validated_latest.json`로 스키마 검증까지 연결한다.
+**일일 자동(옵셔널)**: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-MyeongriAiPromptChainDailyTask.ps1 -DailyAt 10:40` (충돌 완화 기본시각). 해제는 `-Remove`, 점검은 `-WhatIf`.
+**답변 템플릿 팩(ko/en)**: `py scripts/build_myeongri_answer_template_pack_v1.py` → `docs/final/artifacts/myeongri_answer_template_pack_latest.json` (profile별 표준 문안 뼈대).
+**답변 초안 자동생성**: `py scripts/build_myeongri_answer_draft_v1.py --profile daewoon --lang ko` → `docs/final/artifacts/myeongri_answer_draft_latest.json` + `.md` 생성. 일일 체인에서는 `Run-MyeongriAiPromptChainDaily_v1.ps1 -BuildAnswerDraft` 또는 등록 스크립트 `-BuildAnswerDraft`로 연결.
+
+---
+
 **상태**: 순서 0→2 부트스트랩·§6 스텁·JSONL 회귀 테스트 추가; §1.2 경로는 `myeongri_daewoon_sewoon_table_registry_v1.json`으로 고정(테이블 값은 레지스트리 상태값으로 관리). 2026-04-16 기준 상용 게이트 기본 입력은 `docs/final/artifacts/kospi_myeongri_wf_gates_v4_1_latest.json`(label rule `+1.0/-1.0`)로 운영 고정.
 
 ---

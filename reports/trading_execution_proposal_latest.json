@@ -1,0 +1,23 @@
+{
+  "schema": "trading_execution_proposal_v1",
+  "proposal_id": "trade-proposal-20260504T154502Z",
+  "generated_at_utc": "2026-05-04T15:45:02.273178+00:00",
+  "target": "mainnet_small",
+  "intent_summary": "mainnet_small BUY 0.001 BTCUSDT x2",
+  "order_intent": {
+    "symbol": "BTCUSDT",
+    "side": "BUY",
+    "qty": 0.001,
+    "leverage": 2,
+    "mainnet": true
+  },
+  "inputs": {
+    "risk_json_path": "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\risk\\risk_profile_fact_safe_latest.json",
+    "risk_mode": "ACTIVE_MODE",
+    "risk_final_action_allowed": true,
+    "gate_summary_path": "C:\\workspace\\reports\\poc_binance_signal_webhook\\conditional_gate_latest.json",
+    "gate_ok": true,
+    "gate_reason": "go_trinity_ACTIVE_MODE"
+  },
+  "operator_note": "Operator-reviewed execution proposal."
+}

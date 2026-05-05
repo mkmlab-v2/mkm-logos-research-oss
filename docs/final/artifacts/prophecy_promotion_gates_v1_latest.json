@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-04-29T12:23:02Z",
+  "generated_at_utc": "2026-05-04T17:23:27Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -82,14 +82,14 @@
       "gates": []
     },
     "shared": {
-      "all_gates_passed": false,
+      "all_gates_passed": true,
       "gates": [
         {
           "gate_id": "score_btc_csv_input_present",
-          "passed": false,
-          "reason": "rebuild_score_with_btc_csv_hypothesis_multi",
+          "passed": true,
+          "reason": null,
           "detail": {
-            "btc_csv": null
+            "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
           }
         },
         {
@@ -107,7 +107,7 @@
           "detail": {
             "neutral_ratio": 0.0,
             "neutral_count": 0,
-            "row_count": 30,
+            "row_count": 1,
             "max_neutral_ratio": 0.7
           }
         }
@@ -162,10 +162,10 @@
     },
     {
       "gate_id": "score_btc_csv_input_present",
-      "passed": false,
-      "reason": "rebuild_score_with_btc_csv_hypothesis_multi",
+      "passed": true,
+      "reason": null,
       "detail": {
-        "btc_csv": null
+        "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv"
       }
     },
     {
@@ -183,7 +183,7 @@
       "detail": {
         "neutral_ratio": 0.0,
         "neutral_count": 0,
-        "row_count": 30,
+        "row_count": 1,
         "max_neutral_ratio": 0.7
       }
     }

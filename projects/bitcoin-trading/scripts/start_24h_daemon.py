@@ -28,6 +28,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from src.daemon.bitcoin_trading_daemon import BitcoinTradingDaemon
 from src.config.config_loader import load_config
+from src.futures_engine import futures_engine_mode
 
 
 def _parse_bool(value: Any, default: bool) -> bool:
@@ -59,11 +60,14 @@ def _read_dotenv_map(path: Path) -> dict[str, str]:
 
 
 def _monorepo_dotenv_path() -> Path:
-    """Prefer workspace root .env (…/workspace/.env); else legacy projects/.env."""
+    """Prefer project root .env, then workspace root .env, then parent fallback."""
+    project_candidate = PROJECT_ROOT / ".env"
+    if project_candidate.is_file():
+        return project_candidate
     workspace = Path(__file__).resolve().parent.parent.parent.parent
-    candidate = workspace / ".env"
-    if candidate.is_file():
-        return candidate
+    workspace_candidate = workspace / ".env"
+    if workspace_candidate.is_file():
+        return workspace_candidate
     return PROJECT_ROOT.parent / ".env"
 
 
@@ -171,11 +175,17 @@ async def main():
 
     dotenv = _read_dotenv_map(_monorepo_dotenv_path())
 
-    # Optional tuning keys (singular core / risk gate): apply from workspace `.env` when process env empty.
+    # Optional tuning keys (singular core / risk gate / futures engine): workspace `.env` → process env when empty.
     for optional_key in (
         "MKM_SINGULAR_CORE_THRESHOLD",
         "MKM_SINGULAR_CORE_GRID",
         "MKM_MIN_CONFIDENCE",
+        "BTC_FUTURES_ENGINE",
+        "AROON_PERIOD",
+        "AROON_KLINE_INTERVAL",
+        "AROON_POLL_SEC",
+        "AROON_ORDER_QTY",
+        "AROON_MIN_CROSS_GAP",
     ):
         if optional_key in dotenv and str(dotenv.get(optional_key, "")).strip():
             if not os.environ.get(optional_key, "").strip():
@@ -203,6 +213,7 @@ async def main():
     print(f"   - 초기 자본: {initial_capital:.2f} USDT")
     print(f"   - 레버리지: {leverage}배")
     print(f"   - 거래: {'활성화' if enable_trading else '비활성화 (모니터링만)'}")
+    print(f"   - 선물 엔진: {futures_engine_mode()} (BTC_FUTURES_ENGINE; legacy=통합엔진 / aroon_v1=아론)")
     print("   - 자동 재시작: 활성화")
     print()
     if not testnet and enable_trading:

@@ -30,8 +30,8 @@ def test_bridge_script_emits_schema(tmp_path: Path) -> None:
     assert doc.get("bundle_builder_script") == "scripts/build_btrack_llm_input_bundle.py"
 
 
-def test_bundle_builder_not_yet_wired_to_ultra_compression() -> None:
-    """Fact-Lock anchor: until builder imports ultra artifacts, bridge stays not_wired."""
+def test_bundle_builder_wired_to_ultra_compression_tokens() -> None:
+    """Fact-Lock anchor: bundle builder now includes compression bridge context slots."""
     builder = (_ROOT / "scripts" / "build_btrack_llm_input_bundle.py").read_text(encoding="utf-8")
-    assert "MULTILENS_ULTRA_COMPRESSION" not in builder
-    assert "ultra_compression_kpi" not in builder
+    assert "MULTILENS_ULTRA_COMPRESSION" in builder
+    assert "ultra_compression_kpi_summary_latest.json" in builder

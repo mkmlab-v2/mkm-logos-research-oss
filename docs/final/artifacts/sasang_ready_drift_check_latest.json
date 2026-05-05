@@ -1,6 +1,6 @@
 {
   "schema": "sasang_ready_drift_check_v1",
-  "checked_at_utc": "2026-04-29T00:00:06Z",
+  "checked_at_utc": "2026-05-04T14:21:59Z",
   "ready_packet_path": "C:\\workspace\\docs\\final\\artifacts\\sasang_commercialization_readiness_packet_latest.json",
   "strict_gate_path": "C:\\workspace\\docs\\final\\artifacts\\sasang_high_reliability_gate_strict_latest.json",
   "snapshot": {

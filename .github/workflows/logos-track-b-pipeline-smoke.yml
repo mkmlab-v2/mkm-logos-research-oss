@@ -29,6 +29,8 @@ on:
       - "docs/final/schemas/logos_mkm_theology_baseline_v1.schema.json"
       - "tests/test_logos_deep_research_distill_schema_v1.py"
       - "tests/test_run_logos_track_b_pipeline_chain_v1.py"
+      - "scripts/build_logos_track_c_freshness_sidecar_v1.py"
+      - "tests/test_logos_track_c_freshness_sidecar_v1.py"
       - "docs/final/schemas/logos_vector_index_ann_lite_build_report_v1.schema.json"
       - "docs/final/schemas/logos_vector_ann_lite_query_result_v1.schema.json"
       - "docs/final/schemas/logos_vector_index_manifest_v1.schema.json"
@@ -63,6 +65,8 @@ on:
       - "docs/final/schemas/logos_mkm_theology_baseline_v1.schema.json"
       - "tests/test_logos_deep_research_distill_schema_v1.py"
       - "tests/test_run_logos_track_b_pipeline_chain_v1.py"
+      - "scripts/build_logos_track_c_freshness_sidecar_v1.py"
+      - "tests/test_logos_track_c_freshness_sidecar_v1.py"
       - "docs/final/schemas/logos_vector_index_ann_lite_build_report_v1.schema.json"
       - "docs/final/schemas/logos_vector_ann_lite_query_result_v1.schema.json"
       - "docs/final/schemas/logos_vector_index_manifest_v1.schema.json"
@@ -104,4 +108,5 @@ jobs:
           tests/test_logos_vector_index_ann_lite_v1.py
           tests/test_logos_track_b_deep_fusion_job_v1.py
           tests/test_run_logos_track_b_pipeline_chain_v1.py
+          tests/test_logos_track_c_freshness_sidecar_v1.py
           -q --tb=short

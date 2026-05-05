@@ -12,6 +12,7 @@
 - `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` — section 10–11: mkmlife.com / no1kmedi UI badges, disclaimer IDs, product UX locks; deployment paths Hostinger/VPS are in sections 1–9 of that file (do not mix with jema12 deploy runbooks).
 - `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` — section 1.1 (배치·톤), **1.1b** (jema-ai.com → jemaai/mkmlife/a-codeai **CTA 라벨 초안**).
 - `docs/final/JEMA_AI_DOMAIN_POINTER_V1.md` — jema-ai.com 배포·미확정 금지; **§4.1** CTA는 `MKM_DOMAIN_PORTFOLIO` 1.1b와 정합.
+- `docs/final/MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md` — 건강·웰빙·설문·체질 표현 블랙/그레이/화이트 초안 (KR 상용 카피; 법무 검토 전제).
 
 ## 1) Security (channels: web, PDF, decks, email)
 
@@ -29,11 +30,11 @@
 
 - Avoid absolute claims: “guaranteed returns,” “regulatory risk zero,” “clinical proof,” “always profitable.”
 - Investment-adjacent surfaces: retain baseline disclaimers consistent with `TRACK_C_IP_BUSINESS_PLAN` (e.g. not investment advice; no guarantee of returns; final decisions with operators).
-- Health-adjacent surfaces: avoid diagnostic/treatment/prescription language unless separately validated for that jurisdiction and product.
+- Health-adjacent surfaces: avoid diagnostic/treatment/prescription language unless separately validated for that jurisdiction and product; 용어 표는 `docs/final/MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md`.
 - **Lens/regime contract:** use fixed lens names (`사상`, `명리`, `성경/Logos`) and operational layers (`Macro`, `regime`) as in `AGENTS.md`; do not imply a single unified physical theory “completed” in marketing copy.
 
 ## 4) Repository hygiene
 
 - Large binaries and one-off exports belong out of Git default scope per `AGENTS.md` remote publication rules; promote intentionally (`git add -f`) only when intended.
 
-**Revision:** 2026-05-05 — v1 initial.
+**Revision:** 2026-05-05 — v1 initial; same-day health/wellness KR guardrails pointer added.

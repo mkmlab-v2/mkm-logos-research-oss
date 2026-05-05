@@ -1,6 +1,6 @@
 {
   "schema": "pre_news_shadow_weekly_audit_bundle_v1",
-  "generated_at_utc": "2026-05-02T21:30:05Z",
+  "generated_at_utc": "2026-05-04T21:30:05Z",
   "inputs": {
     "weekly_report_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_report_latest.json",
     "policy_audit_summary_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
@@ -11,7 +11,7 @@
     "holdout_lock_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_news_holdout_dataset_lock_manifest_v1.json"
   },
   "weekly_report": {
-    "generated_at_utc": "2026-05-02T21:30:05Z",
+    "generated_at_utc": "2026-05-04T21:30:05Z",
     "risk_summary": "LOW: resonance stage is stable and no health alerts detected.",
     "metrics": {
       "top_stage_change_rate": 0.0,
@@ -49,7 +49,7 @@
     }
   },
   "policy_audit_summary": {
-    "generated_at_utc": "2026-05-02T21:30:05Z",
+    "generated_at_utc": "2026-05-04T21:30:05Z",
     "metrics": {
       "change_count_window": 2,
       "change_count_total": 2,
@@ -59,7 +59,7 @@
   },
   "policy_governance_alert": {
     "schema": "pre_news_shadow_policy_governance_alert_v1",
-    "generated_at_utc": "2026-05-02T21:30:05Z",
+    "generated_at_utc": "2026-05-04T21:30:05Z",
     "audit_summary_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
     "has_alert": false,
     "severity": "none",
@@ -73,7 +73,7 @@
   },
   "policy_state": {
     "schema": "pre_news_shadow_stage_threshold_policy_state_v1",
-    "updated_at_utc": "2026-05-02T21:30:05Z",
+    "updated_at_utc": "2026-05-04T21:30:05Z",
     "policy_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_v1.json",
     "policy_fingerprint_sha256": "b5d02b32833d4f7e6c19e3cb514a7d70cccdf42ad569694f085eaf41d20518fe",
     "policy_version": "v1.1",

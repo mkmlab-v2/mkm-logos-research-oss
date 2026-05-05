@@ -13,12 +13,13 @@
       "operating_mode": "B_track_research_non_gating",
       "primary_runner": "scripts/run_lens_myeongni.py",
       "validation_pointers": [
+        "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
         "tests/test_myeongni_lens_v1_contract.py",
         "tests/test_myeongni_fusion_bridge_v1.py",
         "tests/test_independent_lenses_v0.py"
       ],
       "constitution_ref": "§3.3",
-      "constitution_anchor": "Myeongni insight pipeline and independent lens v0/v1 (CONSTITUTION §3 표)"
+      "constitution_anchor": "Myeongni insight pipeline and independent lens v0/v1 (CONSTITUTION §3 표); agent narrative standard CENTRAL 「명리 렌즈 고도화 v1」(Fact-Lock paths inside that section)"
     },
     "sasang": {
       "label_ko": "사상",

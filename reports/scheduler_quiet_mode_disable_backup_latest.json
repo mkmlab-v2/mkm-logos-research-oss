@@ -2,7 +2,7 @@
     {
         "TaskName":  "Bitcoin-BinanceExport-ThenCursorTradeHistory-30min",
         "TaskPath":  "\\",
-        "State":  3
+        "State":  1
     },
     {
         "TaskName":  "Bitcoin-CursorTradeHistory-Latest24h-15min",
@@ -298,6 +298,11 @@
         "TaskName":  "MKM_Local_Parallel_Autonomy_Watchdog",
         "TaskPath":  "\\",
         "State":  1
+    },
+    {
+        "TaskName":  "MKM_LongRunMemoryOps_24h",
+        "TaskPath":  "\\",
+        "State":  3
     },
     {
         "TaskName":  "MKM_Smartfarm_Top3_AutoCycle",

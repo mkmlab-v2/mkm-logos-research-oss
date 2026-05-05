@@ -1,0 +1,17 @@
+{
+  "schema": "deriv_best_event_strike_v1",
+  "symbol": "BTCUSDT",
+  "best_event": "funding_high",
+  "best_event_horizon_bars": 12,
+  "threshold_funding_q90": 3.812e-05,
+  "funding_now": -5.15e-05,
+  "signal": false,
+  "live": true,
+  "mainnet": true,
+  "qty": 0.001,
+  "leverage": 2,
+  "order_attempted": false,
+  "order_rc": null,
+  "order_stdout": null,
+  "order_stderr": null
+}

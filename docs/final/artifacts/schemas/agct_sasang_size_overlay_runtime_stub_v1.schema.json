@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/agct_sasang_size_overlay_runtime_stub_v1.schema.json",
+  "title": "agct_sasang_size_overlay_runtime_stub_v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "source_overlay_candidate_json",
+    "governance",
+    "runtime_stub"
+  ],
+  "properties": {
+    "schema": {
+      "const": "agct_sasang_size_overlay_runtime_stub_v1"
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "source_overlay_candidate_json": {
+      "type": "string"
+    },
+    "governance": {
+      "type": "object",
+      "required": [
+        "track",
+        "research_only",
+        "non_gating",
+        "human_review_required",
+        "auto_live_binding_forbidden"
+      ],
+      "properties": {
+        "track": {
+          "const": "B_TRACK"
+        },
+        "research_only": {
+          "type": "boolean"
+        },
+        "non_gating": {
+          "type": "boolean"
+        },
+        "human_review_required": {
+          "type": "boolean"
+        },
+        "auto_live_binding_forbidden": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "runtime_stub": {
+      "type": "object",
+      "required": [
+        "feature_key",
+        "enabled",
+        "status",
+        "mode",
+        "multipliers",
+        "guards",
+        "evidence"
+      ],
+      "properties": {
+        "feature_key": {
+          "const": "agct_sasang_size_overlay_v1"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string"
+        },
+        "mode": {
+          "const": "size_multiplier_only"
+        },
+        "multipliers": {
+          "type": "object",
+          "required": [
+            "low_risk",
+            "neutral",
+            "high_risk"
+          ],
+          "properties": {
+            "low_risk": { "type": "number" },
+            "neutral": { "type": "number" },
+            "high_risk": { "type": "number" }
+          },
+          "additionalProperties": true
+        },
+        "guards": {
+          "type": "object",
+          "required": [
+            "require_candidate_ready",
+            "require_human_review_ticket",
+            "fallback_multiplier"
+          ],
+          "properties": {
+            "require_candidate_ready": { "type": "boolean" },
+            "require_human_review_ticket": { "type": "boolean" },
+            "fallback_multiplier": { "type": "number" }
+          },
+          "additionalProperties": true
+        },
+        "evidence": {
+          "type": "object",
+          "required": [
+            "best_accuracy",
+            "best_accuracy_permutation_p_value",
+            "risk_corr_pearson"
+          ],
+          "properties": {
+            "best_accuracy": { "type": ["number", "null"] },
+            "best_accuracy_permutation_p_value": { "type": ["number", "null"] },
+            "risk_corr_pearson": { "type": ["number", "null"] }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

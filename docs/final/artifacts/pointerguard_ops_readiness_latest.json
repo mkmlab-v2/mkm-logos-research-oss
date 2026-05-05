@@ -1,7 +1,7 @@
 {
   "schema": "pointerguard_ops_readiness_v1",
-  "generated_at_utc": "2026-04-28T12:57:47+00:00",
-  "all_ok": true,
+  "generated_at_utc": "2026-05-04T22:27:53+00:00",
+  "all_ok": false,
   "checks": [
     {
       "ok": true,
@@ -51,14 +51,14 @@
       "latest_live_ok_at_utc": "2026-04-28T10:36:34+00:00"
     },
     {
-      "ok": true,
+      "ok": false,
       "path": "task://MKM_PointerGuard_ControlChain_Daily",
       "reason": "ok",
       "detail": {
-        "ok": true,
+        "ok": false,
         "reason": "ok",
-        "status": "Ready",
-        "next_run_time": "2026-04-29 오전 6:30:00"
+        "status": "Disabled",
+        "next_run_time": "N/A"
       }
     },
     {

@@ -1,0 +1,34 @@
+{
+  "schema": "symbolic_math_mapping_shadow_gate_v1",
+  "generated_at_utc": "2026-05-05T08:29:35Z",
+  "track": "B_TRACK",
+  "governance": {
+    "research_only": true,
+    "non_gating": true,
+    "human_review_required": true
+  },
+  "inputs": {
+    "fit_json": "C:\\workspace\\reports\\symbolic_math_mapping_fit_v1_latest.json",
+    "stream_jsonl": "C:\\workspace\\tests\\fixtures\\symbolic_mapping_shadow_stream_v1.jsonl",
+    "weights": {
+      "w_dist": 0.5,
+      "w_consistency": 0.2
+    }
+  },
+  "metrics": {
+    "sample_count": 6,
+    "mean_loss": 0.031898233673955056,
+    "first_half_mean_loss": 0.03278606241510188,
+    "second_half_mean_loss": 0.03101040493280823,
+    "drift_abs": 0.0017756574822936529
+  },
+  "thresholds": {
+    "max_mean_loss": 0.08,
+    "max_drift": 0.03
+  },
+  "checks": {
+    "mean_loss_gate": true,
+    "drift_gate": true
+  },
+  "decision": "PASS_SHADOW_STABLE"
+}

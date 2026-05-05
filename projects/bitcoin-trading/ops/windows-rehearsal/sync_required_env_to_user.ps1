@@ -91,6 +91,9 @@ $keys = @(
   # VPS SSH helpers
   "MKM_VPS_HOST",
   "MKM_VPS_USER",
+  "JEMAAI_VPS_SHOWROOM_ROOT",
+  "JEMAAI_VPS_RELOAD_NGINX",
+  "MKM_VPS_SCP_EXTRA_ARGS",
   # Pixel / CDN
   "PIXEL_BATTALION_BASE_URL",
   # Strategy / gates (optional)

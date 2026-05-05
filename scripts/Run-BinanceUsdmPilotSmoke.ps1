@@ -11,6 +11,9 @@
 # Mainnet SMALL real (irreversible — run only on commander PC after manual review):
 #   Use -Qty that satisfies exchange LOT_SIZE (BTCUSDT is typically 0.001 step, min 0.001 — not 0.0005).
 #   Requires `reports/trading_human_execution_approval_latest.json` (trading_human_execution_approval_v1 GO) unless -SkipHumanApproval.
+#   Frame payload defaults to auto-build at `reports/btc_frame_governance_stage_payload_latest.json`
+#   via `scripts/build_btc_frame_governance_payload_v1.py` unless -FramePayloadJson is provided.
+#   Requires -AcknowledgeStoplinePolicyV1 (hard stoplines from LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md).
 #   pwsh -NoProfile -File scripts/Run-BinanceUsdmPilotSmoke.ps1 -LiveMainnetSmall -AcknowledgeLiveMainnetSmall -AcknowledgeIrreversibleLoss `
 #     -RiskJson "projects/bitcoin-trading/memory/v2/risk/risk_profile_fact_safe_latest.json" -Qty 0.001 -MaxMainnetQty 0.002
 #
@@ -36,7 +39,10 @@ param(
   [switch]$SkipGateDryRun,
   [switch]$SkipExecutorDryRun,
   [string]$HumanApprovalJson = "",
-  [switch]$SkipHumanApproval
+  [string]$FramePayloadJson = "",
+  [switch]$SkipHumanApproval,
+  [switch]$SkipFramePayload,
+  [switch]$AcknowledgeStoplinePolicyV1
 )
 $ErrorActionPreference = "Stop"
 Set-Location $WorkspaceRoot
@@ -73,6 +79,9 @@ if ($LiveMainnetSmall) {
   }
   if (-not $AcknowledgeIrreversibleLoss) {
     throw "Mainnet live requires -AcknowledgeIrreversibleLoss (real funds at risk)."
+  }
+  if (-not $AcknowledgeStoplinePolicyV1) {
+    throw "Mainnet live requires -AcknowledgeStoplinePolicyV1 (hard stoplines: drawdown/loss-streak/slippage/ack-latency/api-fail/state-mismatch)."
   }
   if ($RiskJson -ieq $fixtureRisk) {
     throw "Mainnet live cannot use the test fixture risk JSON; pass your real risk_profile path."
@@ -141,6 +150,12 @@ if ($LiveTestnet) {
 
 # LiveMainnetSmall
 Write-Host "==> MAINNET small live (irreversible). Gate + executor --live --mainnet" -ForegroundColor Red
+Write-Host "Stopline policy v1 (must hold during operation):" -ForegroundColor Yellow
+Write-Host "  - max_drawdown <= -3.0%  => immediate cooldown"
+Write-Host "  - consecutive losses >= 4 => immediate cooldown"
+Write-Host "  - slippage > 2.0x expected for 5 fills => block new orders"
+Write-Host "  - order ACK p95 > 1500ms for 10m OR API fail-rate > 5% for 5m => block new orders"
+Write-Host "  - state mismatch >= 1 => immediate block (no auto-resume)"
 $hapArgs = @()
 if (-not $SkipHumanApproval) {
   if ([string]::IsNullOrWhiteSpace($HumanApprovalJson)) {
@@ -153,7 +168,29 @@ if (-not $SkipHumanApproval) {
   }
   $hapArgs = @("--human-approval-json", (Resolve-Path -LiteralPath $hap).Path)
 }
+$frameArgs = @()
+if (-not $SkipFramePayload) {
+  if ([string]::IsNullOrWhiteSpace($FramePayloadJson)) {
+    $frame = Join-Path $WorkspaceRoot "reports/btc_frame_governance_stage_payload_latest.json"
+    $frameBuilder = Join-Path $WorkspaceRoot "scripts/build_btc_frame_governance_payload_v1.py"
+    if (-not (Test-Path -LiteralPath $frameBuilder)) {
+      throw "Frame payload builder missing: $frameBuilder"
+    }
+    if (-not (Test-Path -LiteralPath $hap)) {
+      throw "Cannot auto-build frame payload: human approval JSON missing at $hap"
+    }
+    Write-Host "==> Build frame payload latest (gate runtime)" -ForegroundColor Cyan
+    py $frameBuilder --risk-json $RiskJson --approval-json $hap --action go --execution-mode live --out $frame
+    if ($LASTEXITCODE -ne 0) { throw "build_btc_frame_governance_payload_v1.py exit $LASTEXITCODE" }
+  } else {
+    $frame = if ([System.IO.Path]::IsPathRooted($FramePayloadJson)) { $FramePayloadJson } else { (Join-Path $WorkspaceRoot $FramePayloadJson) }
+  }
+  if (-not (Test-Path -LiteralPath $frame)) {
+    throw "Mainnet small requires frame payload JSON (default auto-build: reports/btc_frame_governance_stage_payload_latest.json). Pass -FramePayloadJson <path> or -SkipFramePayload (emergency only)."
+  }
+  $frameArgs = @("--frame-payload-json", (Resolve-Path -LiteralPath $frame).Path)
+}
 $outM = "reports/binance_usdm_single_order/pilot_smoke_live_mainnet_small_latest.json"
-py $gate --backend api --risk-json $RiskJson --symbol $Symbol --side $Side --qty $Qty --leverage $Leverage --pass-live --mainnet @tacticalGateArgs @hapArgs --executor-out $outM
+py $gate --backend api --risk-json $RiskJson --symbol $Symbol --side $Side --qty $Qty --leverage $Leverage --pass-live --mainnet @tacticalGateArgs @hapArgs @frameArgs --executor-out $outM
 if ($LASTEXITCODE -ne 0) { throw "gate+live mainnet exit $LASTEXITCODE" }
 Write-Host "Done. Summary: $outM" -ForegroundColor Green

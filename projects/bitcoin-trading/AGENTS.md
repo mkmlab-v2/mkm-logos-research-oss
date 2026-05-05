@@ -12,6 +12,13 @@
 4. **Cursor SSH**: “실행만 하는 주방” — 레시피 수정은 로컬. 비유·공통 원칙: 루트 `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`.
 5. **`start_live_trading.py`**: 패키지 루트(`projects/bitcoin-trading/start_live_trading.py`) — **`scripts/start_24h_daemon.py`를 같은 Python으로 subprocess 위임**한다. PM2·런북에서 예전에 VPS 전용 경로만 쓰던 경우, **동일 파일을 Git SSOT로 맞춘다**. 실전 ON 전 점검(비밀 미출력): `powershell -File projects/bitcoin-trading/scripts/preflight_live_trading_readiness.ps1` — PM2 예시: `projects/bitcoin-trading/ops/pm2.ecosystem.example.cjs`.
 
+## 선물 엔진 분기 (레거시 vs 아론 Aroon)
+
+- **스위치:** `BTC_FUTURES_ENGINE` — 비우거나 `legacy` → `RealtimeTradingWithMonitoring`(통합 엔진). **`aroon_v1`** → `src/futures_engine/aroon_futures_engine.py` 만 사용(예언·멀티렌스 스택과 **코드 경로 분리**).
+- **주입:** `scripts/start_24h_daemon.py`가 모노레포 루트 `.env`에서 `BTC_FUTURES_ENGINE`·`AROON_*` 를 읽어 `os.environ`에 올린 뒤 데몬이 동일 모드를 로그에 남긴다.
+- **VPS:** 배포 트리 `git pull` 후 **`pm2 restart <해당 앱만>`**. PM2 `env` 또는 호스트 `.env`에 `BTC_FUTURES_ENGINE=aroon_v1` 설정. 로그 버퍼 완화: `PYTHONUNBUFFERED=1` 권장(`ops/pm2.ecosystem.example.cjs` 주석 참고).
+- **상세 변수:** 루트 `.env.example` 의 `BTC_FUTURES_ENGINE` / `AROON_*` 절.
+
 ## 실매매(메인넷 주문) — 재발 방지 체크리스트 (Fact-Lock)
 
 자동으로 “다 된 상태”가 되게 두지 않는다. 아래는 **사람이 실매매로 켠다는 결정** 이후에만 수행한다.

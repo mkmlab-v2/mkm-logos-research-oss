@@ -3,12 +3,19 @@
 <!-- AUTO_OPS_V1_START -->
 ## Auto Ops Handoff (v1)
 
-- `updated_at_utc:` 2026-05-05T18:30:00Z
+- `updated_at_utc:` 2026-05-05T18:26:00Z
 - `mission_id:` longrun-memory-ops-24h
-- `mission:` 장기기억 운영 24h 안전 자동 루틴 (best_loop: block_quality_gate->keep_current_schedule)
+- `mission:` 장기기억 기반 24h 안전 자동 루프 (best_loop: block_quality_gate->keep_current_schedule)
 - `status:` in_progress
 - `next_action:` `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_workspace_automation_health.ps1 -SkipVaultMirror -SkipMkmMemoryInventory -SkipPhase1Readiness -IncludeOperationalReadinessChecklist -IncludeCentralMemoryReadCheck -IncludeSecretExposureSurvey -SkipNewsObservationContractSmoke`
 <!-- AUTO_OPS_V1_END -->
+
+## Control Tower Update (2026-05-05)
+
+- Worker B 완료: Track C §9, `MKM_AI_LANDING_COPY_V1.md` 기준으로 `MKM_AI_API_BRANDING_BRIDGE_V1.md` 메시지 프레임 정합(communication-only, artifact-backed / bounded / non-guaranteed).
+- Worker C 완료: `test_myeongri_*.py` + `test_mkm_trinity_index_v1.py` **35 passed**, `verify_p0_constitution_gate_paths.ps1` **269 checked**, `run_workspace_automation_health.ps1 -TrackCMacroFusionSmokeOnly` 실행 후 대시보드/시큐리티 신호등 최신화.
+- Worker A 완료: `watch_deriv_best_event_strike_v1.py` 및 감시 저널 업데이트 확인, 쇼룸 VPS 동기화 스크립트에 non-interactive guard 추가/검증(키 인증 미설정 시 fast-fail). 운영 주의: `signal=true` 발생 시 `--max-fills 1` 조건으로 소액 1회 실주문 후 자동 종료.
+- 관제 상태: 잠금 파일(`CURRENT_OPS_SNAPSHOT.md`, `CENTRAL_AGENT_MEMORY_V1.md`, `AGENTS.md`)은 관제탑 단일 반영 원칙 유지.
 
 ## Ultra-Light Execution Contract (v1)
 

@@ -1,6 +1,6 @@
 {
   "schema": "sasang12_promotion_candidate_gate_unified_v1",
-  "generated_at_utc": "2026-04-29T00:00:06Z",
+  "generated_at_utc": "2026-05-04T14:21:59Z",
   "status": "PASS",
   "reason_code": "all_required_signals_passed",
   "stages": {

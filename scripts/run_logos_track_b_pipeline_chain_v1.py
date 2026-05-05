@@ -43,6 +43,11 @@ def main() -> int:
         action="store_true",
         help="With --include-ann-lite, skip query_logos_vector_index_ann_lite_v1 smoke",
     )
+    ap.add_argument(
+        "--skip-freshness-sidecar",
+        action="store_true",
+        help="Skip build_logos_track_c_freshness_sidecar_v1.py after deep fusion job",
+    )
     args, job_extra = ap.parse_known_args()
 
     if not args.skip_readiness_report:
@@ -84,7 +89,12 @@ def main() -> int:
         distill_path.parent.mkdir(parents=True, exist_ok=True)
         job_argv += ["--write-distill-template", str(distill_path)]
 
-    return _run("scripts/run_logos_track_b_deep_fusion_job_v1.py", job_argv)
+    rc = _run("scripts/run_logos_track_b_deep_fusion_job_v1.py", job_argv)
+    if rc != 0:
+        return rc
+    if args.skip_freshness_sidecar:
+        return 0
+    return _run("scripts/build_logos_track_c_freshness_sidecar_v1.py", [])
 
 
 if __name__ == "__main__":

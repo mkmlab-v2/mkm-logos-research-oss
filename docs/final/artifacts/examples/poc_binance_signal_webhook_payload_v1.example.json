@@ -1,6 +1,0 @@
-{
-  "_comment": "PLACEHOLDER for Binance Global USDⓈ-M Futures Signal Bot webhook JSON. Replace entire object per official Binance UI/docs before any real POST. Do not put API keys here.",
-  "passphrase": "REPLACE_WITH_SECRET_IF_DOCUMENTED",
-  "action": "REPLACE_LONG_OR_SHORT_OR_CLOSE_PER_OFFICIAL_DOC",
-  "symbol": "BTCUSDT"
-}

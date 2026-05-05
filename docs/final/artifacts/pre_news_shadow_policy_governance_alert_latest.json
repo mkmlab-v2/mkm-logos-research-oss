@@ -1,6 +1,6 @@
 {
   "schema": "pre_news_shadow_policy_governance_alert_v1",
-  "generated_at_utc": "2026-05-02T21:30:05Z",
+  "generated_at_utc": "2026-05-04T21:30:05Z",
   "audit_summary_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
   "has_alert": false,
   "severity": "none",

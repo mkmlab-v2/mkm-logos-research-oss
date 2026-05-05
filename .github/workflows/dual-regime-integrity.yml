@@ -32,6 +32,42 @@ on:
       - "tests/snapshots/**"
       - "backtest_results/sweep_kmin_refine/**"
       - "data/myeongni/**"
+      - "scripts/btrack_yang_2015_style_metrics_v1.py"
+      - "scripts/run_myeongni_celebrity_benchmark_v1.py"
+      - "scripts/run_saju_global_birth_v1.py"
+      - "scripts/myeongri_core_v2_upgrade.py"
+      - "tests/test_btrack_yang_2015_style_metrics_v1.py"
+      - "tests/test_myeongni_paper_contract_map_v1.py"
+      - "tests/test_run_myeongni_celebrity_benchmark_v1.py"
+      - "tests/test_yang_2015_btrack_json_schema_v1.py"
+      - "scripts/fetch_europepmc_sasang_saju_literature_catalog_v1.py"
+      - "scripts/filter_sasang_saju_literature_catalog_v1.py"
+      - "scripts/build_sasang_saju_joint_review_queue_from_catalog_v1.py"
+      - "scripts/auto_enrich_sasang_from_literature_stub_v1.py"
+      - "scripts/resolve_literature_sasang_majority_v1.py"
+      - "scripts/export_sasang_literature_supervised_jsonl_v1.py"
+      - "scripts/promote_joint_curated_csv_v1.py"
+      - "scripts/ingest_curated_saju_joint_v1.py"
+      - "scripts/check_curated_saju_joint_staleness_v1.py"
+      - "scripts/validate_sasang_saju_joint_benchmark_jsonl_v1.py"
+      - "scripts/run_sasang_saju_joint_benchmark_smoke_v1.py"
+      - "scripts/run_sasang_saju_joint_autopilot_local_v1.ps1"
+      - "tests/test_fetch_europepmc_sasang_saju_literature_catalog_v1.py"
+      - "tests/test_filter_sasang_saju_literature_catalog_v1.py"
+      - "tests/test_build_sasang_saju_joint_review_queue_from_catalog_v1.py"
+      - "tests/test_auto_enrich_sasang_from_literature_stub_v1.py"
+      - "tests/test_resolve_literature_sasang_majority_v1.py"
+      - "tests/test_export_sasang_literature_supervised_jsonl_v1.py"
+      - "tests/test_validate_sasang_saju_joint_benchmark_v1.py"
+      - "tests/test_ingest_curated_saju_joint_v1.py"
+      - "tests/test_check_curated_saju_joint_staleness_v1.py"
+      - "tests/fixtures/europepmc_sasang_search_minimal_v1.json"
+      - "data/myeongni/literature_queries/**"
+      - "data/myeongni/auto_joint_machine_curator_seed_v1.csv"
+      - "data/myeongni/curated_saju_joint_v1.jsonl"
+      - "docs/final/schemas/curated_saju_joint_input_row_v1.schema.json"
+      - "docs/final/schemas/btrack_yang_2015_style_metrics_v1.schema.json"
+      - "docs/final/schemas/myeongni_celebrity_hit_rate_v1.schema.json"
       - "scripts/spike_log_myeongri_correlation_v1.py"
       - "scripts/convert_log_metabolism_to_myeongri_correlation_input_v1.py"
       - "scripts/generate_log_metabolism_synthetic_cohort_v1.py"
@@ -820,6 +856,29 @@ jobs:
 
       - name: Myeongni insight observation JSONL + fusion interface stub (§3.3)
         run: python -m pytest tests/test_myeongni_insight_observation_log.py -q --tb=short
+
+      - name: Yang(2015)-style surface metrics + celebrity benchmark + paper contract map
+        run: |
+          python -m pytest \
+            tests/test_btrack_yang_2015_style_metrics_v1.py \
+            tests/test_myeongni_paper_contract_map_v1.py \
+            tests/test_run_myeongni_celebrity_benchmark_v1.py \
+            tests/test_yang_2015_btrack_json_schema_v1.py \
+            -q --tb=short
+
+      - name: Sasang–saju joint literature pipeline (Europe PMC fixture + offline chain)
+        run: |
+          python -m pytest \
+            tests/test_fetch_europepmc_sasang_saju_literature_catalog_v1.py \
+            tests/test_filter_sasang_saju_literature_catalog_v1.py \
+            tests/test_build_sasang_saju_joint_review_queue_from_catalog_v1.py \
+            tests/test_auto_enrich_sasang_from_literature_stub_v1.py \
+            tests/test_resolve_literature_sasang_majority_v1.py \
+            tests/test_export_sasang_literature_supervised_jsonl_v1.py \
+            tests/test_validate_sasang_saju_joint_benchmark_v1.py \
+            tests/test_ingest_curated_saju_joint_v1.py \
+            tests/test_check_curated_saju_joint_staleness_v1.py \
+            -q --tb=short
 
       - name: Myeongri AI interpretation envelope v1 (prompt SSOT + JSON Schema)
         run: python -m pytest tests/test_myeongri_ai_interpretation_envelope_v1.py -q --tb=short

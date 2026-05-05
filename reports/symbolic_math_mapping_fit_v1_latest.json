@@ -1,0 +1,81 @@
+{
+  "schema": "symbolic_math_mapping_fit_v1",
+  "generated_at_utc": "2026-05-05T08:29:35Z",
+  "track": "B_TRACK",
+  "governance": {
+    "research_only": true,
+    "non_gating": true,
+    "human_review_required": true
+  },
+  "inputs": {
+    "pairs_jsonl": "C:\\workspace\\tests\\fixtures\\symbolic_mapping_demo_pairs_v1.jsonl",
+    "pair_count": 4,
+    "w_dist_grid": [
+      0.5,
+      0.6,
+      0.7,
+      0.8
+    ],
+    "w_consistency_grid": [
+      0.2,
+      0.3,
+      0.4,
+      0.5
+    ]
+  },
+  "summary": {
+    "candidate_count": 16,
+    "best_weights": {
+      "w_dist": 0.5,
+      "w_consistency": 0.2
+    },
+    "best_mean_mapping_loss": 0.03171332120331739
+  },
+  "top_candidates": [
+    {
+      "weights": {
+        "w_dist": 0.5,
+        "w_consistency": 0.2
+      },
+      "mean_mapping_loss": 0.03171332120331739,
+      "max_mapping_loss": 0.03704101966249686,
+      "min_mapping_loss": 0.027495097567963922
+    },
+    {
+      "weights": {
+        "w_dist": 0.5,
+        "w_consistency": 0.3
+      },
+      "mean_mapping_loss": 0.03315082120331739,
+      "max_mapping_loss": 0.03879101966249686,
+      "min_mapping_loss": 0.028495097567963923
+    },
+    {
+      "weights": {
+        "w_dist": 0.5,
+        "w_consistency": 0.4
+      },
+      "mean_mapping_loss": 0.03458832120331739,
+      "max_mapping_loss": 0.04054101966249686,
+      "min_mapping_loss": 0.029495097567963924
+    },
+    {
+      "weights": {
+        "w_dist": 0.5,
+        "w_consistency": 0.5
+      },
+      "mean_mapping_loss": 0.03602582120331739,
+      "max_mapping_loss": 0.04229101966249686,
+      "min_mapping_loss": 0.030495097567963925
+    },
+    {
+      "weights": {
+        "w_dist": 0.6,
+        "w_consistency": 0.2
+      },
+      "mean_mapping_loss": 0.037480985443980874,
+      "max_mapping_loss": 0.04374922359499623,
+      "min_mapping_loss": 0.032594117081556705
+    }
+  ]
+}

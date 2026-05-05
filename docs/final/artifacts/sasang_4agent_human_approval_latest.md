@@ -1,9 +1,9 @@
 # Sasang 4-Agent Human Approval
 
-- approved_at_utc: `2026-04-30T18:48:48Z`
+- approved_at_utc: `2026-05-04T14:13:31Z`
 - approver: `commander`
 - approved: `True`
-- input_gate_decision: `A_TRACK_PROMOTION_CANDIDATE_READY`
+- input_gate_decision: `HOLD`
 
 ## Note
-Re-approve bridge after cooldown-governed auto-injection verification.
+promote-script-consistency-fix-check

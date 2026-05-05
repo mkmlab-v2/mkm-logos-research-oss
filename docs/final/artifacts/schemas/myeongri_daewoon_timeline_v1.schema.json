@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "myeongri_daewoon_timeline_v1.schema.json",
+  "title": "Myeongri Daewoon Timeline v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "timezone_for_timeline_age",
+    "as_of_utc",
+    "age_years_at_as_of",
+    "qiyun_meta_v1",
+    "daewoon_rows",
+    "active_cycle"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "myeongri_daewoon_timeline_v1" },
+    "version": { "type": "string", "minLength": 3 },
+    "timezone_for_timeline_age": { "type": "string", "const": "UTC" },
+    "as_of_utc": { "type": "string", "minLength": 20 },
+    "age_years_at_as_of": { "type": "number" },
+    "qiyun_meta_v1": {
+      "type": "object",
+      "required": ["schema", "qiyun_days", "qiyun_years_float"]
+    },
+    "daewoon_rows": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["schema", "cycle", "age_start", "age_end", "saju", "direction"]
+      }
+    },
+    "active_cycle": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["schema", "cycle", "age_start", "age_end", "saju", "direction", "index_zero_based"]
+        }
+      ]
+    }
+  }
+}

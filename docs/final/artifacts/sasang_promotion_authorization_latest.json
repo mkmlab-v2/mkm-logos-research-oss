@@ -1,6 +1,6 @@
 {
   "schema": "sasang_promotion_authorization_v1",
-  "authorized_at_utc": "2026-04-29T00:00:06Z",
+  "authorized_at_utc": "2026-05-04T14:21:59Z",
   "authorizer": "user-approved",
   "checks": {
     "ready_ok": true,

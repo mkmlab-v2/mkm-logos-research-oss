@@ -1,6 +1,6 @@
 {
   "schema": "binance_usdm_single_order_v1",
-  "ts_utc": "2026-05-04T05:36:28.715366+00:00",
+  "ts_utc": "2026-05-04T12:13:20.732621+00:00",
   "symbol": "BTCUSDT",
   "side": "BUY",
   "qty": 0.001,
@@ -9,10 +9,10 @@
   "live": true,
   "ok": true,
   "order": {
-    "orderId": 1002885729659,
+    "orderId": 1003147398931,
     "symbol": "BTCUSDT",
     "status": "NEW",
-    "clientOrderId": "mkmopenlong2990390b98e75e444",
+    "clientOrderId": "mkmopenlong6802640d81accc6b0",
     "price": "0.00",
     "avgPrice": "0.00",
     "origQty": "0.001",
@@ -32,7 +32,7 @@
     "priceMatch": "NONE",
     "selfTradePreventionMode": "EXPIRE_MAKER",
     "goodTillDate": 0,
-    "updateTime": 1777872990453
+    "updateTime": 1777896802681
   },
   "error": null
 }

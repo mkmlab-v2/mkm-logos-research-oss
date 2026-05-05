@@ -1,6 +1,6 @@
 {
   "schema": "btrack_promotion_preflight_v1",
-  "generated_at_utc": "2026-05-03T15:05:01Z",
+  "generated_at_utc": "2026-05-04T16:12:03Z",
   "proposal_path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\promotion_proposal_v1_latest.json",
   "control_tower_path": "C:\\workspace\\docs\\final\\artifacts\\control_tower_latest.json",
   "checks": {
@@ -11,7 +11,7 @@
     "event_outcome_human_verified_ratio": 0.59375,
     "event_outcome_synthetic_ratio": 0.40625,
     "selected_candidate_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\auto_scientist\\sweep_reports\\btrack_quality_recalibrated_v1_latest.json",
-    "selected_candidate_sha256": "e85ebfce21b15c30ac2d60fcd55a3ff60212b646e456da906094f1f3eb7f7cf8"
+    "selected_candidate_sha256": "ff078919462c72a65d6dbeedf49695241904a39b1f69aad3b818faaeadc8b28e"
   },
   "result": "PASS",
   "reasons": []

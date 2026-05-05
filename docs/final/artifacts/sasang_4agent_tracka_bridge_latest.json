@@ -1,6 +1,6 @@
 {
   "schema": "sasang_4agent_tracka_bridge_v1",
-  "executed_at_utc": "2026-04-30T18:50:52Z",
+  "executed_at_utc": "2026-05-04T14:12:57Z",
   "bridge_mode": "controlled_shadow",
   "status": "ACTIVE",
   "source_refs": {

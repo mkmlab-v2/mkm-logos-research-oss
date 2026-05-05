@@ -20,6 +20,16 @@ on:
       - "scripts/build_daily_execution_insight_brief_v1.py"
       - "scripts/emit_myeongni_thin_bridge_line_v1.py"
       - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "scripts/btrack_yang_2015_style_metrics_v1.py"
+      - "scripts/run_myeongni_celebrity_benchmark_v1.py"
+      - "scripts/run_saju_global_birth_v1.py"
+      - "scripts/myeongri_core_v2_upgrade.py"
+      - "tests/test_btrack_yang_2015_style_metrics_v1.py"
+      - "tests/test_myeongni_paper_contract_map_v1.py"
+      - "tests/test_run_myeongni_celebrity_benchmark_v1.py"
+      - "tests/test_yang_2015_btrack_json_schema_v1.py"
+      - "docs/final/schemas/btrack_yang_2015_style_metrics_v1.schema.json"
+      - "docs/final/schemas/myeongni_celebrity_hit_rate_v1.schema.json"
       - "tests/test_independent_lenses_v0.py"
       - "tests/test_myeongni_independent_lens_v0.py"
       - "tests/test_myeongni_lens_v1_contract.py"
@@ -53,6 +63,16 @@ on:
       - "scripts/build_daily_execution_insight_brief_v1.py"
       - "scripts/emit_myeongni_thin_bridge_line_v1.py"
       - "scripts/eval_btrack_insight_sidecar_lens_hit_agreement_v1.py"
+      - "scripts/btrack_yang_2015_style_metrics_v1.py"
+      - "scripts/run_myeongni_celebrity_benchmark_v1.py"
+      - "scripts/run_saju_global_birth_v1.py"
+      - "scripts/myeongri_core_v2_upgrade.py"
+      - "tests/test_btrack_yang_2015_style_metrics_v1.py"
+      - "tests/test_myeongni_paper_contract_map_v1.py"
+      - "tests/test_run_myeongni_celebrity_benchmark_v1.py"
+      - "tests/test_yang_2015_btrack_json_schema_v1.py"
+      - "docs/final/schemas/btrack_yang_2015_style_metrics_v1.schema.json"
+      - "docs/final/schemas/myeongni_celebrity_hit_rate_v1.schema.json"
       - "tests/test_independent_lenses_v0.py"
       - "tests/test_myeongni_independent_lens_v0.py"
       - "tests/test_myeongni_lens_v1_contract.py"
@@ -87,8 +107,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - name: Install pytest
-        run: pip install pytest
+      - name: Install pytest and jsonschema
+        run: pip install pytest jsonschema
       - name: Multilens independent lens regression bundle
         run: >
           python -m pytest
@@ -103,5 +123,9 @@ jobs:
           tests/test_emit_myeongni_thin_bridge_line_v1.py
           tests/test_scm_boming_jiju_lexicon_v1.py
           tests/test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py
+          tests/test_btrack_yang_2015_style_metrics_v1.py
+          tests/test_myeongni_paper_contract_map_v1.py
+          tests/test_run_myeongni_celebrity_benchmark_v1.py
+          tests/test_yang_2015_btrack_json_schema_v1.py
           -q --tb=short
 

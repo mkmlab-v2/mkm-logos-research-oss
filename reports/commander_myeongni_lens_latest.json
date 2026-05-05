@@ -1,0 +1,383 @@
+{
+  "schema": "myeongni_independent_lens_v1",
+  "version": "1.0.0",
+  "lens_id": "myeongni",
+  "engine_id": "independent_lens_v1",
+  "ts_utc": "2026-05-04T18:51:38Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "scores": {
+    "direction_score": 0.105064,
+    "confidence": 0.676665
+  },
+  "myeongri_stream_outputs": {
+    "myeongri_gapja": null,
+    "state_id": 15,
+    "experiment_id": null,
+    "run_id": "calendar_stub_through_202604",
+    "rationale": "B-track state_id=15, mapping_target=sideways; direction_score = 0.55*direct + 0.35*momentum + 0.10*state_prior, direct=0.000, momentum=0.000, prior=0.240. confidence calibrated by consistency/contradiction with sample-size shrinkage.",
+    "v1_blend_note": "merged v0(0.65)+schools(0.35)"
+  },
+  "provenance": {
+    "source": "16_state_experiment_tail",
+    "input_path": "C:\\workspace\\data\\myeongni\\myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl",
+    "row_ts_utc": "2026-04-30T13:00:00Z"
+  },
+  "note": "B-track independent lens v1: extensible school/dayun/sinsal slots; numeric stub until full manseryeok bridge; not A-track / not live trigger.",
+  "advanced": {
+    "input_summary": {
+      "schema": "myeongni_lens_advanced_input_v1",
+      "status": "ok",
+      "pillars": {
+        "year": "계축",
+        "month": "갑자",
+        "day": "경진",
+        "hour": "무인"
+      },
+      "dayun": [
+        {
+          "pillar": "갑자",
+          "start_age": 0.0,
+          "end_age": 10.0,
+          "cycle": 1,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "계해",
+          "start_age": 10.0,
+          "end_age": 20.0,
+          "cycle": 2,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "임술",
+          "start_age": 20.0,
+          "end_age": 30.0,
+          "cycle": 3,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "신유",
+          "start_age": 30.0,
+          "end_age": 40.0,
+          "cycle": 4,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "경신",
+          "start_age": 40.0,
+          "end_age": 50.0,
+          "cycle": 5,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "기미",
+          "start_age": 50.0,
+          "end_age": 60.0,
+          "cycle": 6,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "무오",
+          "start_age": 60.0,
+          "end_age": 70.0,
+          "cycle": 7,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "정사",
+          "start_age": 70.0,
+          "end_age": 80.0,
+          "cycle": 8,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "병진",
+          "start_age": 80.0,
+          "end_age": 90.0,
+          "cycle": 9,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "을묘",
+          "start_age": 90.0,
+          "end_age": 100.0,
+          "cycle": 10,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        }
+      ],
+      "sajeong_interpolation": {
+        "year": {
+          "ji": "축",
+          "hidden_gans": [
+            "기",
+            "계",
+            "신"
+          ]
+        },
+        "month": {
+          "ji": "자",
+          "hidden_gans": [
+            "계"
+          ]
+        },
+        "day": {
+          "ji": "진",
+          "hidden_gans": [
+            "무",
+            "을",
+            "계"
+          ]
+        },
+        "hour": {
+          "ji": "인",
+          "hidden_gans": [
+            "갑",
+            "병",
+            "무"
+          ]
+        }
+      },
+      "sinsal": [],
+      "schools_active": [
+        "zi_ping",
+        "zi_wei",
+        "mkm_coordinator_default"
+      ],
+      "coordinator_weights": {
+        "zi_ping": 0.4117647058823529,
+        "zi_wei": 0.4117647058823529,
+        "mkm_coordinator_default": 0.17647058823529413
+      },
+      "school_signals": [
+        {
+          "school_id": "zi_ping",
+          "direction_hint": 0.474936,
+          "confidence_hint": 0.586279,
+          "method": "deterministic_stub_v1"
+        },
+        {
+          "school_id": "zi_wei",
+          "direction_hint": -0.193939,
+          "confidence_hint": 0.712727,
+          "method": "deterministic_stub_v1"
+        },
+        {
+          "school_id": "mkm_coordinator_default",
+          "direction_hint": 0.203466,
+          "confidence_hint": 0.70844,
+          "method": "deterministic_stub_v1"
+        }
+      ],
+      "school_blend": {
+        "direction_score": 0.15161,
+        "confidence": 0.659904
+      },
+      "reference_ts_utc": null,
+      "provenance": {
+        "bridge": "myeongni_lens_v1.fusion_bridge",
+        "jijangan_lut_version": "1.0.0",
+        "rule_school_policy_version": "1.0.0",
+        "sinsal_status": "not_computed_in_bridge_v1",
+        "qiyun_schema": "qiyun_v1",
+        "qiyun_years_float": 0.0
+      }
+    },
+    "slots": {
+      "pillars": {
+        "year": "계축",
+        "month": "갑자",
+        "day": "경진",
+        "hour": "무인"
+      },
+      "dayun": [
+        {
+          "pillar": "갑자",
+          "start_age": 0.0,
+          "end_age": 10.0,
+          "cycle": 1,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "계해",
+          "start_age": 10.0,
+          "end_age": 20.0,
+          "cycle": 2,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "임술",
+          "start_age": 20.0,
+          "end_age": 30.0,
+          "cycle": 3,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "신유",
+          "start_age": 30.0,
+          "end_age": 40.0,
+          "cycle": 4,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "경신",
+          "start_age": 40.0,
+          "end_age": 50.0,
+          "cycle": 5,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "기미",
+          "start_age": 50.0,
+          "end_age": 60.0,
+          "cycle": 6,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "무오",
+          "start_age": 60.0,
+          "end_age": 70.0,
+          "cycle": 7,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "정사",
+          "start_age": 70.0,
+          "end_age": 80.0,
+          "cycle": 8,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "병진",
+          "start_age": 80.0,
+          "end_age": 90.0,
+          "cycle": 9,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        },
+        {
+          "pillar": "을묘",
+          "start_age": 90.0,
+          "end_age": 100.0,
+          "cycle": 10,
+          "direction": "backward",
+          "schema": "daewoon_v1",
+          "qiyun_applied": true
+        }
+      ],
+      "sajeong_interpolation": {
+        "year": {
+          "ji": "축",
+          "hidden_gans": [
+            "기",
+            "계",
+            "신"
+          ]
+        },
+        "month": {
+          "ji": "자",
+          "hidden_gans": [
+            "계"
+          ]
+        },
+        "day": {
+          "ji": "진",
+          "hidden_gans": [
+            "무",
+            "을",
+            "계"
+          ]
+        },
+        "hour": {
+          "ji": "인",
+          "hidden_gans": [
+            "갑",
+            "병",
+            "무"
+          ]
+        }
+      },
+      "sinsal": []
+    },
+    "coordinator": {
+      "profile_id": "mkm_default_coordinator_v1",
+      "weights_effective": {
+        "zi_ping": 0.4117647058823529,
+        "zi_wei": 0.4117647058823529,
+        "mkm_coordinator_default": 0.17647058823529413
+      },
+      "school_signals": [
+        {
+          "school_id": "zi_ping",
+          "direction_hint": 0.474936,
+          "confidence_hint": 0.586279,
+          "method": "deterministic_stub_v1"
+        },
+        {
+          "school_id": "zi_wei",
+          "direction_hint": -0.193939,
+          "confidence_hint": 0.712727,
+          "method": "deterministic_stub_v1"
+        },
+        {
+          "school_id": "mkm_coordinator_default",
+          "direction_hint": 0.203466,
+          "confidence_hint": 0.70844,
+          "method": "deterministic_stub_v1"
+        }
+      ],
+      "blend_policy_note": "merged v0(0.65)+schools(0.35)"
+    }
+  },
+  "rules": {
+    "ruleset_id": "myeongni_lens_rules_v1.0.0",
+    "hypothesis_tier": "B",
+    "boundary_ack": true
+  },
+  "reproducibility": {
+    "input_digest_sha256": "sha256:8faed252f80213b6c13f36c45fe3fed1c4ca3bb0d1220db268d1317074d18efc",
+    "ruleset_id": "myeongni_lens_rules_v1.0.0",
+    "engine_mix": {
+      "v0_weight": 0.65,
+      "school_blend_weight": 0.35
+    },
+    "payload_content_digest_sha256": "sha256:fd72c0462b8bd61630b6405840f93831edc224c615600cf796bc65558960c88b"
+  }
+}

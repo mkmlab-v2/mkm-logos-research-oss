@@ -8,6 +8,7 @@
   2) (optional) Logos Track B commander deep report JSON + MD — separate from `run_lens_logos.py`
   2b) (optional) `emit_myeongni_thin_bridge_line_v1.py --calendar-date auto` — one-line myeongni JSONL aligned to the nearest `curated_dates_v1` day, then Thin uses `--myeongni-jsonl` (default on; `-SkipMyeongniThinBridge` restores stock overlap file)
   3) `eval_multilens_harness_v2_thin.py --populate-default-samples` — `multilens_eval_v2_thin_report_latest.json`
+  3b) `myeongri_core_v2_upgrade.py` — `reports/myeongri_core_v2_upgrade_latest.json` (브리프 §1e; `-SkipMyeongriV2Upgrade` 생략)
   4) `build_daily_execution_insight_brief_v1.py` — `reports/daily_execution_insight_brief_latest.md`
 
   Template (human): projects/bitcoin-trading/ops/windows-rehearsal/DAILY_EXECUTION_INSIGHT_BRIEF_TEMPLATE.md
@@ -19,6 +20,7 @@ param(
     [switch]$SkipLogosTrackBDeepReport,
     [switch]$SkipThinRefresh,
     [switch]$SkipMyeongniThinBridge,
+    [switch]$SkipMyeongriV2Upgrade,
     [switch]$DatedCopy,
     [switch]$DryRun
 )
@@ -36,6 +38,7 @@ $logosDeep = @('scripts\run_logos_track_b_commander_deep_report_v1.py')
 $logosMd = @('scripts\materialize_logos_track_b_commander_deep_report_v1.py')
 $thinOut = 'docs\final\artifacts\multilens_eval_v2_thin_report_latest.json'
 $myeongniBridgeOut = 'data\multilens_eval\myeongni_independent_lens_thin_bridge_latest.jsonl'
+$myeongriV2 = @('scripts\myeongri_core_v2_upgrade.py')
 $briefArgs = @('scripts\build_daily_execution_insight_brief_v1.py')
 if ($DatedCopy) { $briefArgs += '--also-dated-copy' }
 
@@ -60,7 +63,8 @@ if ($DryRun) {
         $t += @('--out', $thinOut)
         Write-Host ('py ' + ($t -join ' '))
     }
-    Write-Host ('py ' + ($briefArgs -join ' '))
+        if (-not $SkipMyeongriV2Upgrade) { Write-Host ('py ' + ($myeongriV2 -join ' ')) }
+        Write-Host ('py ' + ($briefArgs -join ' '))
     exit 0
 }
 
@@ -107,6 +111,13 @@ if (-not $SkipThinRefresh) {
     $thinArgs += @('--out', $thinOut)
     & py @thinArgs
     if ($LASTEXITCODE -ne 0) { throw "eval_multilens_harness_v2_thin.py failed: $LASTEXITCODE" }
+}
+if (-not $SkipMyeongriV2Upgrade) {
+    Write-Host '== myeongri core v2 upgrade (jijangan / research shinsal / size reco) ==' -ForegroundColor Cyan
+    & py @myeongriV2
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host 'WARN: myeongri_core_v2_upgrade.py failed; brief §1e may show missing v2 JSON.' -ForegroundColor Yellow
+    }
 }
 Write-Host '== daily execution insight brief ==' -ForegroundColor Cyan
 & py @briefArgs

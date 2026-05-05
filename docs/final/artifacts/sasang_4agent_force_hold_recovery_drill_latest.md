@@ -1,6 +1,6 @@
 # Sasang 4-Agent Force Hold Recovery Drill
 
-- generated_at_utc: `2026-04-30T17:45:57Z`
+- generated_at_utc: `2026-05-04T14:12:57Z`
 - status: `PASS`
 
 ## Checks

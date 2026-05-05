@@ -1,0 +1,9 @@
+sample_id,rsid,genotype
+s1,rs1,AA
+s1,rs2,AA
+s2,rs3,CC
+s2,rs4,CC
+s3,rs5,GG
+s3,rs6,GG
+s4,rs7,TT
+s4,rs8,TT

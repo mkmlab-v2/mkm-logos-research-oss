@@ -1,0 +1,66 @@
+{
+  "schema": "logos_symbolic_event_map_v1",
+  "version": "1.1.0",
+  "symbolic_inference": {
+    "conflict_dampen": 0.65
+  },
+  "chronology_windows": [
+    {
+      "window_id": "post_gfc_repair",
+      "start_date": "2009-01-01",
+      "end_date": "2014-12-31",
+      "score_multiplier": 1.05
+    },
+    {
+      "window_id": "pandemic_shock",
+      "start_date": "2020-01-01",
+      "end_date": "2021-12-31",
+      "score_multiplier": 0.9
+    },
+    {
+      "window_id": "rate_hike_cycle",
+      "start_date": "2022-01-01",
+      "end_date": "2024-12-31",
+      "score_multiplier": 0.95
+    }
+  ],
+  "corpus_lane_weights": {
+    "canon": 1.0,
+    "dss": 0.8,
+    "apocrypha": 0.75
+  },
+  "symbols": [
+    {
+      "symbol_id": "exodus_liberation",
+      "corpus_lane": "canon",
+      "direction_bias": "up",
+      "weight": 0.8,
+      "keywords": ["breakthrough", "recovery", "export orders accelerate", "orders improve"]
+    },
+    {
+      "symbol_id": "babel_confusion",
+      "corpus_lane": "canon",
+      "direction_bias": "down",
+      "weight": 0.9,
+      "keywords": ["volatility rises", "risk-off", "credit spreads widen", "geopolitical"]
+    },
+    {
+      "symbol_id": "joseph_famine_storage",
+      "corpus_lane": "apocrypha",
+      "direction_bias": "down",
+      "weight": 0.6,
+      "keywords": ["liquidity thin", "consumption soft", "housing starts cool"]
+    },
+    {
+      "symbol_id": "jubilee_relief",
+      "corpus_lane": "dss",
+      "direction_bias": "up",
+      "weight": 0.7,
+      "keywords": ["slower tightening", "inventory build", "prices dip"]
+    }
+  ],
+  "notes": [
+    "[B-TRACK][HYPO] Keyword mapping is a symbolic abstraction; not doctrinal certainty.",
+    "Use with walk-forward joins only; no same-day label joins."
+  ]
+}
