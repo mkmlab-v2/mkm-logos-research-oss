@@ -18,6 +18,13 @@
 .PARAMETER CheckOriginMainSync
     `git fetch origin` 후 `HEAD`와 `origin/main` 비교. 뒤처짐·앞섬·분기 시 WARN; `-Strict`이면 exit 1에 포함.
 
+.PARAMETER CheckInternalRemoteSafety
+    `internal` 원격이 있을 때 다음을 추가 점검:
+    - internal URL이 origin URL과 같은지(권장: internal은 origin alias)
+    - `internal/main`이 존재하면 현재 HEAD와 공통 조상(merge-base)이 있는지
+      (없으면 unrelated history 가능성 높음)
+    불일치/무관계 히스토리는 WARN; `-Strict`이면 exit 1에 포함.
+
 .PARAMETER RequireMkmLifeFunnelScripts
     projects/mkm-life 가 있을 때 퍼널 스크립트가 하나라도 없으면 `$broken` 처리( `-Strict` 와 함께 쓰면 exit 1 ). 기본은 WARN만.
 
@@ -28,16 +35,20 @@
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-GitWorkspaceSanity.ps1 -WorkspaceRoot C:\workspace -CheckOriginMainSync -Strict
 .EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-GitWorkspaceSanity.ps1 -CheckOriginMainSync -CheckInternalRemoteSafety -Strict
+.EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-GitWorkspaceSanity.ps1 -Strict -RequireMkmLifeFunnelScripts
 #>
 param(
     [string]$WorkspaceRoot = "C:\workspace",
     [switch]$Strict,
     [switch]$CheckOriginMainSync,
+    [switch]$CheckInternalRemoteSafety,
     [switch]$RequireMkmLifeFunnelScripts
 )
 
 $ErrorActionPreference = "Stop"
+$PSNativeCommandUseErrorActionPreference = $false
 $root = $WorkspaceRoot
 $excludePath = Join-Path $root ".git\info\exclude"
 $broken = $false
@@ -109,14 +120,59 @@ try {
         Write-OkLine "origin = $origin"
     }
 
+    if ($CheckInternalRemoteSafety) {
+        $internal = git remote get-url internal 2>$null
+        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($internal)) {
+            Write-WarnLine "Git remote 'internal' missing - skip internal safety checks."
+            if ($Strict) { $broken = $true }
+        }
+        else {
+            Write-OkLine "internal = $internal"
+            if ($origin -and ($internal -ne $origin)) {
+                Write-WarnLine "internal URL differs from origin URL. For VPS deploy safety, keep internal as origin-alias unless you intentionally mirror another repo."
+                if ($Strict) { $broken = $true }
+            }
+
+            $prevEa2 = $ErrorActionPreference
+            try {
+                $ErrorActionPreference = 'Continue'
+                git fetch internal 2>$null
+            }
+            finally {
+                $ErrorActionPreference = $prevEa2
+            }
+            if ($LASTEXITCODE -ne 0) {
+                Write-WarnLine "git fetch internal failed - cannot verify internal/main ancestry."
+                if ($Strict) { $broken = $true }
+            }
+            else {
+                git rev-parse -q --verify refs/remotes/internal/main 2>$null | Out-Null
+                if ($LASTEXITCODE -ne 0) {
+                    Write-WarnLine "No internal/main after fetch - check internal default branch."
+                    if ($Strict) { $broken = $true }
+                }
+                else {
+                    $mb = git merge-base HEAD internal/main 2>$null
+                    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($mb)) {
+                        Write-WarnLine "HEAD and internal/main have no merge-base (likely unrelated histories). Do NOT run blind pull/merge."
+                        $broken = $true
+                    }
+                    else {
+                        $mbShort = git rev-parse --short $mb 2>$null
+                        Write-OkLine "HEAD <-> internal/main share merge-base $mbShort"
+                    }
+                }
+            }
+        }
+    }
+
     $branch = git rev-parse --abbrev-ref HEAD 2>$null
     if ($branch) {
-        git rev-parse "@{upstream}" 2>$null | Out-Null
-        if ($LASTEXITCODE -ne 0) {
+        $up = git for-each-ref --format='%(upstream:short)' "refs/heads/$branch" 2>$null
+        if ([string]::IsNullOrWhiteSpace($up)) {
             Write-WarnLine "Branch '$branch' has no upstream - set with: git branch --set-upstream-to=origin/$branch"
         }
         else {
-            $up = git rev-parse --abbrev-ref "@{upstream}" 2>$null
             Write-OkLine "upstream = $up"
         }
     }
