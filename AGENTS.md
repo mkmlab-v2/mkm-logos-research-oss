@@ -268,7 +268,7 @@
 ## jemaai.cloud · 공개 쇼룸 vs 실매매 관제
 
 - **대외 보안·IP·카피(웹·제안서·쇼룸 공통):** `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` — 비밀·내부 경로 비노출, 이론·파이프라인 비노출, 과장·규제 민감 표현 회피; 상용·법무 경계는 `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`와 정합. 구현 팩트는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`만 SSOT.
-- **도메인별 쇼룸·체험 표면(어디에 무엇):** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1 — jemaai.cloud(공개 전광판)·mkmlife.com(원퀘스천 리포트)·jema-ai.com(브랜드 허브) 등 역할 분리; 표 개정 시 Track C·NO1KMEDI와 함께 맞출 것.
+- **도메인별 쇼룸·체험 표면(어디에 무엇):** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1 — jemaai.cloud(공개 전광판)·mkmlife.com(원퀘스천 리포트)·jema-ai.com(브랜드 허브) 등 역할 분리; **§1.1b** = jema-ai 랜딩→타 도메인 **CTA 라벨 초안**; 표 개정 시 Track C·NO1KMEDI·`JEMA_AI_DOMAIN_POINTER_V1`과 함께 맞출 것.
 - **하이브리드 대시보드 스펙(SSOT):** `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` — 공개(전광판) vs 비공개(조종실), `public-event.v1` 필드·경계선.
 - **MVP 게이트웨이:** `public_event_gateway.py` — `GET/POST` 경로·토큰은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 동 디렉터리 nginx 예시 참고.
 - **로컬 융합 점검 (비배포):** `scripts/run_jemaai_cloud_completion_chain.ps1` — Fact-Lock·Thin·BTC 앵커·P1(기본)·MVP 파일 존재 확인; `-SkipP1AB`로 P1 생략. VPS/nginx 반영은 본선 일정에서 수동.

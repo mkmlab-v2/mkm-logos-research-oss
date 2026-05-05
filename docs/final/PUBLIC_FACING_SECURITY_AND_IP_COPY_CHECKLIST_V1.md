@@ -10,7 +10,8 @@
 - `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` — public billboard vs private cockpit; `public-event.v1` semantics.
 - `docs/final/MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1.md` — outward-facing engineering vocabulary for Myeongri; **do not rename code identifiers**.
 - `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` — section 10–11: mkmlife.com / no1kmedi UI badges, disclaimer IDs, product UX locks; deployment paths Hostinger/VPS are in sections 1–9 of that file (do not mix with jema12 deploy runbooks).
-- `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` — section 1.1: which domain hosts which showroom/experience surface and design intent (jemaai vs mkmlife vs jema-ai.com).
+- `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` — section 1.1 (배치·톤), **1.1b** (jema-ai.com → jemaai/mkmlife/a-codeai **CTA 라벨 초안**).
+- `docs/final/JEMA_AI_DOMAIN_POINTER_V1.md` — jema-ai.com 배포·미확정 금지; **§4.1** CTA는 `MKM_DOMAIN_PORTFOLIO` 1.1b와 정합.
 
 ## 1) Security (channels: web, PDF, decks, email)
 

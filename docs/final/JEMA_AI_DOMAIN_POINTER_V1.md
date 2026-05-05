@@ -37,6 +37,10 @@
 
 ## 4) 교차 참조 (혼동 금지)
 
+### 4.1 랜딩 CTA 분기 (카피 초안 SSOT)
+
+브랜드 허브에서 **쇼룸·제품·B2B**로 보내는 버튼 문구·우선순위는 **`docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1·§1.1b** — jemaai(공개 보드)·mkmlife(원퀘스천)·a-codeai(B2B) 분리. 법적·면책 최종문은 `TRACK_C_IP_BUSINESS_PLAN`·`PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1` 우선.
+
 - `jema-ai.com` ≠ `jema12.com` — `docs/final/JEMA12_PUBLIC_DOMAIN_AND_DEPLOY_HANDOFF_2026-04-07.md` · `SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md` 는 **jema12·jemaai.cloud 축**.
 - `jema-ai.com` (이 앱의 **권장 공개 호칭·`metadataBase`**) — 소스는 `projects/no1kmedi`이나, **사용자/문서/에이전트 호칭에 `no1kmedi` 문자열을 쓰지 않는다**(레포 폴더·CI·기존 SSOT **파일명** 제외). `no1kmedi.com` / `mkmlife.com` 과는 **다른 도메인·배포 축** — 경로 SSOT는 `NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md`.
 

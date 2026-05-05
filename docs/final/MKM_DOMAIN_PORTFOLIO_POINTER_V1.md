@@ -33,6 +33,20 @@ Track C·공개 쇼룸 논의와 동일 선상: **실매매·조종실은 어디
 
 **와이어·카피 순서(Track C 고정):** JSON 계약(허용/금지 필드) → 와이어프레임 → 카피 (`TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.6·실행 항목 참조). 초안 자산: `docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_SHOWROOM_WIREFRAME_V1.md`(있을 때).
 
+#### 1.1b 진입·CTA (초안, 법적 확정문 아님)
+
+**jema-ai.com** 랜딩·푸터에서 **다른 도메인으로 보내는 기본 분기**다. 문구는 법무·스토어 심사 전 **가이드**이며, `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`·`TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` 면책과 충돌 시 **후자 우선**.
+
+| 출발 | 목적지 | CTA 라벨 (한국어 초안) | 한 줄 각주 |
+|------|--------|------------------------|------------|
+| jema-ai.com | **jemaai.cloud** | 「공개 관측 보드 보기」·「Topology·매크로 데모」 | 지연·추상 **관측**; 투자 권유·주문·수익 보장 **아님** (`JEMAAI` SPEC). |
+| jema-ai.com | **mkmlife.com** | 「원퀘스천 프리미엄 리포트」·「질문 한 개, 다중 렌즈 리포트」 | 제품·면책·퍼널은 **mkmlife** SSOT §10–§11. |
+| jema-ai.com | **a-codeai.com** (또는 정책상 API 랜딩) | 「토큰·압축 API (B2B)」 | API·정적 경로 분리; `P0` a-codeai 절. |
+| jemaai.cloud (푸터/보조) | **jema-ai.com** | 「JEMA AI 소개」 | 브랜드 허브; 전광판 **중복 임베드**는 기본 금지(이중 유지보수). |
+| **mkmlife.com** (필요 시) | jemaai.cloud | 「라이브 데모·공개 보드」(선택) | **소비자 본 퍼널**은 리포트 구매; 쇼룸은 **신뢰·채널** 보조. |
+
+`jema-ai.com` 전용 상세·미확정 항목: `JEMA_AI_DOMAIN_POINTER_V1.md` — CTA는 **이 표(1.1b)와 `§1.1` 역할**에 맞출 것.
+
 ---
 
 ## 2) 전역 규칙 (VPS 혼선 방지)
