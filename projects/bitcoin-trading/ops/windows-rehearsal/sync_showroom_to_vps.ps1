@@ -1,4 +1,4 @@
-# Push local showroom static pair to VPS web root via scp (OpenSSH).
+# Push local showroom static assets (poll + minimal board + bundle JSON) to VPS web root via scp (OpenSSH).
 #
 # Prereq: Windows OpenSSH Client (scp/ssh on PATH).
 #
