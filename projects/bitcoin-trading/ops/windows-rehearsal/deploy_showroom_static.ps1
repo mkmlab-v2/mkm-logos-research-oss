@@ -4,34 +4,54 @@
 # Usage:
 #   powershell -NoProfile -ExecutionPolicy Bypass -File deploy_showroom_static.ps1
 #   powershell ... -WebRoot "D:\staging\jemaai"
-# Env: JEMAAI_WEB_ROOT — used if -WebRoot omitted
+# Env: JEMAAI_WEB_ROOT — used if -WebRoot omitted (Process then User scope).
+#
+# If neither -WebRoot nor JEMAAI_WEB_ROOT is set, copies to this script's directory:
+#   .showroom_staging/  (gitignored; same layout as nginx static root — open HTML from disk or rsync to VPS)
 #
 # Copies:
 #   public_showroom_poll.html
-#   showroom_public_bundle_v1.json  (from jemaai-cloud-mvp; run build_showroom_display_bundle.ps1 first)
+#   public_showroom_board_minimal.html  (다크·미니멀 정적 보드; 동일 API 폴링)
+#   showroom_public_bundle_v1.json  (from jemaai-cloud-mvp; run scripts/build_showroom_track_c_bundle_chain_v1.ps1 or build_showroom_display_bundle.ps1 first)
+#   public_showroom_probabilistic_saju_v1.html + showroom_saju_hour_bundle_demo_v1.json  (see scripts/run_saju_hour_candidate_bundle_v1.py)
 
 param(
     [string]$WebRoot = "",
-    [switch]$WhatIf
+    [switch]$WhatIf,
+    [switch]$NoDefaultStaging
 )
 
 $ErrorActionPreference = "Stop"
 
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $mvp = Join-Path $here "jemaai-cloud-mvp"
+$defaultStaging = Join-Path $here ".showroom_staging"
 $files = @(
     @{ Name = "public_showroom_poll.html"; Src = Join-Path $mvp "public_showroom_poll.html" },
-    @{ Name = "showroom_public_bundle_v1.json"; Src = Join-Path $mvp "showroom_public_bundle_v1.json" }
+    @{ Name = "public_showroom_board_minimal.html"; Src = Join-Path $mvp "public_showroom_board_minimal.html" },
+    @{ Name = "showroom_public_bundle_v1.json"; Src = Join-Path $mvp "showroom_public_bundle_v1.json" },
+    @{ Name = "public_showroom_probabilistic_saju_v1.html"; Src = Join-Path $mvp "public_showroom_probabilistic_saju_v1.html" },
+    @{ Name = "showroom_saju_hour_bundle_demo_v1.json"; Src = Join-Path $mvp "showroom_saju_hour_bundle_demo_v1.json" }
 )
 
 $destRoot = $WebRoot
 if ([string]::IsNullOrWhiteSpace($destRoot)) {
     $destRoot = [Environment]::GetEnvironmentVariable("JEMAAI_WEB_ROOT", "Process")
 }
+if ([string]::IsNullOrWhiteSpace($destRoot)) {
+    $destRoot = [Environment]::GetEnvironmentVariable("JEMAAI_WEB_ROOT", "User")
+}
 
 if ([string]::IsNullOrWhiteSpace($destRoot)) {
-    Write-Host "[deploy-showroom] SKIP: set -WebRoot or JEMAAI_WEB_ROOT to a directory (e.g. \\server\share\jemaai or D:\www\jemaai)."
-    exit 0
+    if ($NoDefaultStaging) {
+        Write-Host "[deploy-showroom] SKIP: set -WebRoot, JEMAAI_WEB_ROOT, or omit -NoDefaultStaging to use .showroom_staging."
+        exit 0
+    }
+    $destRoot = $defaultStaging
+    if (-not (Test-Path -LiteralPath $destRoot)) {
+        New-Item -ItemType Directory -Path $destRoot -Force | Out-Null
+    }
+    Write-Host "[deploy-showroom] JEMAAI_WEB_ROOT unset; using default staging: $destRoot"
 }
 
 if (-not (Test-Path -LiteralPath $destRoot)) {
