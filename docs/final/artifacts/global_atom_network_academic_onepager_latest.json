@@ -4,6 +4,7 @@
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
+  "corpus_profile_id": "canon_plus_dss_apocrypha_v1",
   "title_en": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness",
   "executive_summary_en": [
     "We encode high-complexity narrative corpora into atom-level structure and compute global topological similarity beyond lexical overlap.",

@@ -1,0 +1,42 @@
+{
+  "schema": "global_atom_corpus_profiles_v1",
+  "generated_at_utc": "2026-05-05T12:45:00Z",
+  "status": "active",
+  "default_profile_id": "canon_plus_dss_apocrypha_v1",
+  "profiles": [
+    {
+      "corpus_profile_id": "canon_only_v1",
+      "label": "Canonical texts only",
+      "includes": [
+        "canon"
+      ],
+      "excludes": [
+        "deuterocanon",
+        "dss",
+        "apocrypha"
+      ]
+    },
+    {
+      "corpus_profile_id": "canon_plus_deuterocanon_v1",
+      "label": "Canonical + deuterocanonical texts",
+      "includes": [
+        "canon",
+        "deuterocanon"
+      ],
+      "excludes": [
+        "dss",
+        "apocrypha"
+      ]
+    },
+    {
+      "corpus_profile_id": "canon_plus_dss_apocrypha_v1",
+      "label": "Canonical + DSS + apocrypha parallel corpus",
+      "includes": [
+        "canon",
+        "dss",
+        "apocrypha"
+      ],
+      "excludes": []
+    }
+  ]
+}

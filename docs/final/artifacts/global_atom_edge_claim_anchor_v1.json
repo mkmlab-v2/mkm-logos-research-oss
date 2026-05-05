@@ -3,6 +3,7 @@
   "generated_at_utc": "2026-05-05T12:10:00Z",
   "status": "active",
   "claim_id": "global_atom_edge_count_305m_v1",
+  "corpus_profile_id": "canon_plus_dss_apocrypha_v1",
   "anchor_position": {
     "fact_type": "snapshot_fact",
     "representativeness": "single_freeze_only",

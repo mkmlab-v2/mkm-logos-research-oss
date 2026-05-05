@@ -2749,6 +2749,21 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
     - `latest_minus_anchor` (증분 delta)
   - 단일 숫자(`3051269`)만 독립 표기하는 문구는 금지한다.
 
+#### 31.33C Corpus Profile ID Lock + Multi-Corpus Isolation Gate (FACT, 2026-05-05)
+
+- 스키마/레지스트리:
+  - `docs/final/artifacts/global_atom_corpus_profiles_v1.json`
+  - 허용 profile id:
+    - `canon_only_v1`
+    - `canon_plus_deuterocanon_v1`
+    - `canon_plus_dss_apocrypha_v1`
+- 스크립트:
+  - `scripts/check_global_atom_corpus_profile_lock_v1.py`
+- 구현 사실:
+  - claim lock/anchor/atom-set 및 연결 onepager 산출물에 `corpus_profile_id` 필드를 강제하고, 모든 필드가 동일 profile id로 정합되는지 strict 검증한다.
+  - profile id 누락/불일치/허용 목록 외 값은 즉시 FAIL 처리한다.
+  - 일일 러너(`run_global_atom_claim_lock_daily.ps1`)와 CI(`global-atom-claim-lock-smoke.yml`)에 corpus profile lock 검사를 연결해 혼선 재발을 차단한다.
+
 #### 31.34 External SOTA Benchmark Adapter Skeleton (FACT, 2026-04-28)
 
 - 스크립트:

@@ -55,6 +55,8 @@ def main() -> int:
         raise SystemExit("invalid atom set: atoms must be non-empty list")
 
     claim_value = None
+    expected_profile = claim_doc.get("corpus_profile_id")
+    atom_set_profile = atom_doc.get("corpus_profile_id")
     claims = claim_doc.get("claims")
     if isinstance(claims, list):
         for c in claims:
@@ -81,11 +83,17 @@ def main() -> int:
         expected_node = a.get("node_count") if isinstance(a.get("node_count"), int) else None
         edge_match = expected_edge is not None and observed_edge is not None and expected_edge == observed_edge
         node_match = expected_node is not None and observed_node is not None and expected_node == observed_node
+        atom_profile = a.get("corpus_profile_id")
+        source_profile = _load_json(src_path).get("corpus_profile_id") if src_path.exists() else None
 
         if not edge_match:
             failures.append(f"{atom_id}: edge mismatch (expected={expected_edge}, observed={observed_edge})")
         if not node_match:
             failures.append(f"{atom_id}: node mismatch (expected={expected_node}, observed={observed_node})")
+        if atom_profile != expected_profile:
+            failures.append(f"{atom_id}: corpus_profile_id mismatch (atom={atom_profile}, expected={expected_profile})")
+        if source_profile != expected_profile:
+            failures.append(f"{atom_id}: source corpus_profile_id mismatch (source={source_profile}, expected={expected_profile})")
 
         if role == "anchor_baseline":
             anchor_edge = expected_edge
@@ -103,12 +111,18 @@ def main() -> int:
                 "node_expected": expected_node,
                 "node_observed": observed_node,
                 "node_match": node_match,
+                "corpus_profile_id_atom": atom_profile,
+                "corpus_profile_id_source": source_profile,
             }
         )
 
     claim_match = claim_value is not None and anchor_edge is not None and claim_value == anchor_edge
     if not claim_match:
         failures.append(f"claim lock value mismatch (claim={claim_value}, anchor={anchor_edge})")
+    if not isinstance(expected_profile, str) or not expected_profile:
+        failures.append("claim lock corpus_profile_id missing")
+    if atom_set_profile != expected_profile:
+        failures.append(f"atom set corpus_profile_id mismatch (atom_set={atom_set_profile}, claim={expected_profile})")
 
     out = {
         "schema": "edge_claim_atom_set_check_v1",
@@ -121,6 +135,8 @@ def main() -> int:
         "latest_edge_count": latest_edge,
         "latest_minus_anchor": (latest_edge - anchor_edge) if isinstance(latest_edge, int) and isinstance(anchor_edge, int) else None,
         "claim_anchor_match": claim_match,
+        "corpus_profile_id_claim_lock": expected_profile,
+        "corpus_profile_id_atom_set": atom_set_profile,
         "atom_checks": atom_checks,
         "failures": failures,
         "ok": len(failures) == 0,
