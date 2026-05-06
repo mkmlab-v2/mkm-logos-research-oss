@@ -26,6 +26,7 @@ from myeongni_lens_v1.advanced_payload import (
     build_v1_payload,
     parse_advanced_input,
 )
+from myeongni_lens_v1.mkm_myeongni_math import compute_mkm_myeongni_math
 from myeongni_lens_v1.fusion_bridge import (
     build_advanced_input_from_fusion,
     unwrap_fusion_payload,
@@ -219,6 +220,25 @@ def _recommended_advanced_and_provenance_path() -> tuple[dict[str, Any], str]:
     return adv, ""
 
 
+def _inject_coordinator_mkm_math_v0(payload: dict[str, Any]) -> None:
+    """v0 스키마에도 v2가 읽는 `advanced.coordinator.mkm_myeongni_math`를 넣는다 (가능 시 status=ok)."""
+    try:
+        adv_raw, _p = _recommended_advanced_and_provenance_path()
+    except Exception:
+        adv_raw = None
+    adv_parsed = parse_advanced_input(
+        adv_raw if isinstance(adv_raw, dict) else None
+    )
+    math_result = compute_mkm_myeongni_math(adv_parsed)
+    payload.setdefault("advanced", {})
+    payload["advanced"].setdefault("coordinator", {})
+    payload["advanced"]["coordinator"]["mkm_myeongni_math"] = math_result
+    if str(math_result.get("status") or "") == "ok":
+        payload["advanced"]["coordinator"]["mkm_myeongni_math_provenance"] = (
+            "inject_v0_from_recommended_fusion_birth"
+        )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(
         description="Emit myeongni independent lens v0/v1 JSON from B-track experiment JSONL tail.",
@@ -359,6 +379,8 @@ def main() -> int:
         rows_seen=len(rows),
         recent_momentum=_recent_momentum(rows, max(1, args.momentum_window)),
     )
+    if args.emit_schema == "v0":
+        _inject_coordinator_mkm_math_v0(payload)
 
     if args.emit_schema == "v1":
         adv = parse_advanced_input(advanced_doc)

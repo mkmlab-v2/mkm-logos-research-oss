@@ -11,6 +11,7 @@ from .school_registry import (
     normalize_weights,
     score_school_stub,
 )
+from .mkm_myeongni_math import compute_mkm_myeongni_math
 
 
 def parse_advanced_input(raw: dict[str, Any] | None) -> dict[str, Any]:
@@ -116,6 +117,7 @@ def build_v1_payload(
         "direction_score": round(d_m, 6),
         "confidence": round(c_m, 6),
     }
+    mkm_math = compute_mkm_myeongni_math(adv)
     out["advanced"] = {
         "input_summary": adv,
         "slots": {
@@ -129,6 +131,7 @@ def build_v1_payload(
             "weights_effective": adv.get("coordinator_weights") or {},
             "school_signals": adv.get("school_signals") or [],
             "blend_policy_note": blend_note,
+            "mkm_myeongni_math": mkm_math,
         },
     }
     out["rules"] = {

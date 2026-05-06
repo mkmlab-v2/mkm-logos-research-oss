@@ -1,14 +1,15 @@
 {
   "schema": "general_prophecy_explainability_quality_v1",
-  "generated_at_utc": "2026-05-05T00:15:12Z",
+  "generated_at_utc": "2026-05-06T02:03:10Z",
   "source_artifact": "C:\\workspace\\docs\\final\\artifacts\\general_prophecy_explainable_latest.json",
   "summary": {
     "n_questions": 14,
     "coverage_rate": 1.0,
+    "direct_match_rate": 1.0,
     "conflict_resolution_rate": 1.0,
-    "reproducible_evidence_rate": 0.357143,
-    "avg_biblical_keyword_coverage": 0.130952,
-    "avg_top_evidence_count": 4.357143
+    "reproducible_evidence_rate": 0.928571,
+    "avg_biblical_keyword_coverage": 0.416667,
+    "avg_top_evidence_count": 4.928571
   },
   "rows": [
     {
@@ -16,7 +17,7 @@
       "coverage_ok": true,
       "conflict_resolution_ok": true,
       "reproducible_evidence_ok": true,
-      "biblical_keyword_coverage": 0.333333,
+      "biblical_keyword_coverage": 0.666667,
       "top_evidence_count": 5
     },
     {
@@ -24,7 +25,7 @@
       "coverage_ok": true,
       "conflict_resolution_ok": true,
       "reproducible_evidence_ok": true,
-      "biblical_keyword_coverage": 0.333333,
+      "biblical_keyword_coverage": 0.666667,
       "top_evidence_count": 5
     },
     {
@@ -39,25 +40,25 @@
       "question_id": "seed.python_stable_314_before_20260601",
       "coverage_ok": true,
       "conflict_resolution_ok": true,
-      "reproducible_evidence_ok": false,
-      "biblical_keyword_coverage": 0.0,
-      "top_evidence_count": 4
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.333333,
+      "top_evidence_count": 5
     },
     {
       "question_id": "seed.ecb_mro_above_3_5_before_20261231",
       "coverage_ok": true,
       "conflict_resolution_ok": true,
       "reproducible_evidence_ok": true,
-      "biblical_keyword_coverage": 0.333333,
+      "biblical_keyword_coverage": 1.0,
       "top_evidence_count": 5
     },
     {
       "question_id": "seed.github_repo_default_branch_main_20261231",
       "coverage_ok": true,
       "conflict_resolution_ok": true,
-      "reproducible_evidence_ok": false,
-      "biblical_keyword_coverage": 0.0,
-      "top_evidence_count": 4
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.333333,
+      "top_evidence_count": 5
     },
     {
       "question_id": "ci.brier_tautology_calendar_order_v1",
@@ -79,49 +80,49 @@
       "question_id": "ci.brier_tautology_evenness_v1",
       "coverage_ok": true,
       "conflict_resolution_ok": true,
-      "reproducible_evidence_ok": false,
-      "biblical_keyword_coverage": 0.0,
-      "top_evidence_count": 4
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.166667,
+      "top_evidence_count": 5
     },
     {
       "question_id": "gp_2026_h2_kostat_cpi_yoy_below_2_any_month",
       "coverage_ok": true,
       "conflict_resolution_ok": true,
-      "reproducible_evidence_ok": false,
-      "biblical_keyword_coverage": 0.0,
-      "top_evidence_count": 4
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.333333,
+      "top_evidence_count": 5
     },
     {
       "question_id": "gp_2026_h2_fed_funds_upper_cut_ge_25bp_vs_2026q2",
       "coverage_ok": true,
       "conflict_resolution_ok": true,
-      "reproducible_evidence_ok": false,
-      "biblical_keyword_coverage": 0.0,
-      "top_evidence_count": 4
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.333333,
+      "top_evidence_count": 5
     },
     {
       "question_id": "gp_2026_h2_ecb_deposit_facility_below_2pct",
       "coverage_ok": true,
       "conflict_resolution_ok": true,
-      "reproducible_evidence_ok": false,
-      "biblical_keyword_coverage": 0.0,
-      "top_evidence_count": 4
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.333333,
+      "top_evidence_count": 5
     },
     {
       "question_id": "gp_2026_h2_boj_policy_rate_above_1pct",
       "coverage_ok": true,
       "conflict_resolution_ok": true,
-      "reproducible_evidence_ok": false,
-      "biblical_keyword_coverage": 0.0,
-      "top_evidence_count": 4
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.333333,
+      "top_evidence_count": 5
     },
     {
       "question_id": "gp_2026_h2_eia_brent_monthly_avg_ge_80_usd",
       "coverage_ok": true,
       "conflict_resolution_ok": true,
-      "reproducible_evidence_ok": false,
-      "biblical_keyword_coverage": 0.0,
-      "top_evidence_count": 4
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.5,
+      "top_evidence_count": 5
     }
   ]
 }

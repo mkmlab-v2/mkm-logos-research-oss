@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "lens_id": "myeongni",
   "engine_id": "independent_lens_v0",
-  "ts_utc": "2026-05-05T20:53:28Z",
+  "ts_utc": "2026-05-06T00:33:42Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "scores": {
@@ -22,5 +22,44 @@
     "input_path": "C:\\workspace\\data\\myeongni\\myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl",
     "row_ts_utc": "2026-04-30T13:00:00Z"
   },
-  "note": "B-track independent lens v0; not A-track / not dual_regime cap; fusion-ready numeric stub only."
+  "note": "B-track independent lens v0; not A-track / not dual_regime cap; fusion-ready numeric stub only.",
+  "advanced": {
+    "coordinator": {
+      "mkm_myeongni_math": {
+        "status": "ok",
+        "day_master_stem": "甲",
+        "surface_ten_god_counts": {
+          "bi_gyeon": 1,
+          "geop_jae": 0,
+          "sik_sin": 0,
+          "sang_gwan": 0,
+          "pyeon_jae": 0,
+          "jeong_jae": 0,
+          "pyeon_gwan": 2,
+          "jeong_gwan": 0,
+          "pyeon_in": 1,
+          "jeong_in": 0
+        },
+        "hidden_ten_god_counts": {
+          "bi_gyeon": 0,
+          "geop_jae": 2,
+          "sik_sin": 0,
+          "sang_gwan": 2,
+          "pyeon_jae": 2,
+          "jeong_jae": 2,
+          "pyeon_gwan": 0,
+          "jeong_gwan": 0,
+          "pyeon_in": 0,
+          "jeong_in": 2
+        },
+        "ten_god_balance": -0.25,
+        "jijangan_pressure": 0.4,
+        "school_disagreement_index": 0.476532,
+        "arbitrated_direction_score": 0.15663,
+        "arbitrated_confidence": 0.488836,
+        "formula": "d_out = clamp(d_school + 0.22*ten_god_balance - 0.18*jijangan_pressure), c_out = c_school*(1-0.35*disagreement)"
+      },
+      "mkm_myeongni_math_provenance": "inject_v0_from_recommended_fusion_birth"
+    }
+  }
 }
