@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mkm_logos_response_v2.schema.json",
+  "title": "MKM Logos Response V2",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "track",
+    "core_layer",
+    "coordinator_layer",
+    "response_layer",
+    "evidence_links",
+    "final_action",
+    "governance"
+  ],
+  "properties": {
+    "schema": { "const": "mkm_logos_response_v2" },
+    "generated_at_utc": { "type": "string" },
+    "track": { "type": "string", "enum": ["A", "B"] },
+    "core_layer": {
+      "type": "object",
+      "required": [
+        "direction_core",
+        "confidence_core",
+        "archetype_resonance",
+        "top_archetype_id",
+        "signal_core"
+      ],
+      "properties": {
+        "direction_core": { "type": "number", "minimum": -1.0, "maximum": 1.0 },
+        "confidence_core": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "archetype_resonance": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "top_archetype_id": { "type": "string" },
+        "signal_core": { "type": "string", "enum": ["HOLD", "WATCH", "REDUCE"] }
+      },
+      "additionalProperties": true
+    },
+    "coordinator_layer": {
+      "type": "object",
+      "required": [
+        "direction_override_allowed",
+        "delta_confidence_term",
+        "weekly_alert_active",
+        "confidence_adjusted",
+        "failed_check_keys"
+      ],
+      "properties": {
+        "direction_override_allowed": { "type": "boolean" },
+        "delta_confidence_term": { "type": "number", "minimum": -0.2, "maximum": 0.2 },
+        "weekly_alert_active": { "type": "boolean" },
+        "confidence_adjusted": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "failed_check_keys": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "final_action": {
+      "type": "object",
+      "required": ["decision", "reason"],
+      "properties": {
+        "decision": { "type": "string", "enum": ["WATCH", "REDUCE"] },
+        "reason": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "response_layer": {
+      "type": "object",
+      "required": ["template_key", "template_text", "failed_check_keys", "next_reread_hours"],
+      "properties": {
+        "template_key": { "type": "string", "minLength": 1 },
+        "template_text": { "type": "string", "minLength": 1 },
+        "failed_check_keys": { "type": "array", "items": { "type": "string" } },
+        "next_reread_hours": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": true
+    },
+    "evidence_links": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["source_type", "ref", "note"],
+        "properties": {
+          "source_type": { "type": "string", "minLength": 1 },
+          "ref": { "type": "string", "minLength": 1 },
+          "note": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "governance": {
+      "type": "object",
+      "required": ["research_only", "human_signoff_required", "action_policy_mode"],
+      "properties": {
+        "research_only": { "type": "boolean" },
+        "human_signoff_required": { "type": "boolean" },
+        "action_policy_mode": { "type": "string", "const": "WATCH_FIRST" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
+

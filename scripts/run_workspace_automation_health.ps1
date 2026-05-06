@@ -45,6 +45,8 @@ param(
 
     # Shortcut profile: P0 paths + Track C fusion smoke only (skip vault/memory/phase1/news defaults).
     [switch]$TrackCMacroFusionSmokeOnly,
+    # Shortcut profile: P0 paths + XAI contract daily gate only.
+    [switch]$XaiContractGateOnly,
 
     # Optional: secure envelope external_kms readiness checks (env/command hook; optional HTTP smoke).
     [switch]$IncludeSecureEnvelopeExternalKmsReadiness,
@@ -79,7 +81,16 @@ param(
     [double]$CentralMemoryReadMaxAgeHours = 24.0,
 
     # Optional: Day1 secret exposure survey gate (strict exit on findings).
-    [switch]$IncludeSecretExposureSurvey
+    [switch]$IncludeSecretExposureSurvey,
+
+    # Optional: XAI output-contract daily gate (pass-rate + failures artifact + HOLD alert path).
+    [switch]$IncludeXaiContractDailyGate,
+    [double]$XaiContractMinPassRate = 0.95,
+
+    # Optional: 1+3 threshold daily gate (7d/14d + warning/critical).
+    [switch]$IncludeOnePlusThreeDailyGate,
+    # Shortcut profile: P0 paths + 1+3 threshold daily gate only.
+    [switch]$OnePlusThreeGateOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -101,6 +112,22 @@ if ($BitcoinTradingOtelSmokeOnly) {
 
 if ($TrackCMacroFusionSmokeOnly) {
     $IncludeTrackCMacroFusionSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
+if ($XaiContractGateOnly) {
+    $IncludeXaiContractDailyGate = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
+if ($OnePlusThreeGateOnly) {
+    $IncludeOnePlusThreeDailyGate = $true
     $SkipVaultMirror = $true
     $SkipMkmMemoryInventory = $true
     $SkipPhase1Readiness = $true
@@ -535,6 +562,34 @@ try {
             Write-Host ""
             Write-Host "=== Secret exposure survey gate ===" -ForegroundColor Yellow
             Write-Host "SKIP: run_security_secret_exposure_survey_v1.py not found"
+        }
+    }
+
+    if ($IncludeXaiContractDailyGate) {
+        $xaiGate = Join-Path $root "scripts\run_xai_contract_daily_gate_v1.ps1"
+        if (Test-Path -LiteralPath $xaiGate) {
+            Step "XAI contract daily gate (min pass-rate=$XaiContractMinPassRate)" {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $xaiGate -WorkspaceRoot $root -MinPassRate $XaiContractMinPassRate -BootstrapIfMissing
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== XAI contract daily gate ===" -ForegroundColor Yellow
+            Write-Host "SKIP: run_xai_contract_daily_gate_v1.ps1 not found"
+        }
+    }
+
+    if ($IncludeOnePlusThreeDailyGate) {
+        $onePlusThreeGate = Join-Path $root "scripts\run_one_plus_three_daily_gate_v1.ps1"
+        if (Test-Path -LiteralPath $onePlusThreeGate) {
+            Step "1+3 threshold daily gate (7d/14d + warning/critical)" {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $onePlusThreeGate -WorkspaceRoot $root
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== 1+3 threshold daily gate ===" -ForegroundColor Yellow
+            Write-Host "SKIP: run_one_plus_three_daily_gate_v1.ps1 not found"
         }
     }
 

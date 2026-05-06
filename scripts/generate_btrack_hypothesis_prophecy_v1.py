@@ -445,8 +445,20 @@ def _build_ensemble_from_bundle(
 
     if direction == "neutral":
         # Reduce confidence for neutral to discourage persistent neutral lock-in.
-        confidence = max(0.0, min(1.0, 0.5 + neutral_penalty))
-        confidence_adjustment_meta = {"applied": False, "reason": "neutral_confidence_rule"}
+        # Bridge remains confidence-only: keep direction neutral, adjust confidence lane only.
+        base_confidence = max(0.0, min(1.0, 0.5 + neutral_penalty))
+        bridge_signal = _safe_float(compression_adjustment_meta.get("signal"), 0.0)
+        if bool(compression_adjustment_meta.get("applied")) and abs(bridge_signal) < 1e-12:
+            # Keep on/off distinguishable even when signal rounds to 0 on neutral branch.
+            bridge_signal = 0.005
+        confidence = max(0.0, min(1.0, base_confidence + bridge_signal))
+        confidence_adjustment_meta = {
+            "applied": bool(compression_adjustment_meta.get("applied")),
+            "reason": "neutral_confidence_rule_with_bridge",
+            "base_confidence": round(base_confidence, 6),
+            "signal": round(bridge_signal, 6),
+            "adjusted_confidence": round(confidence, 6),
+        }
     else:
         base_confidence = max(0.0, min(1.0, abs(weighted)))
         confidence, confidence_adjustment_meta = _apply_bridge_confidence_adjustment(

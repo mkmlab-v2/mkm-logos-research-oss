@@ -1,0 +1,18 @@
+{
+  "schema": "one_plus_three_window_metrics_v1",
+  "generated_at_utc": "2026-05-05T16:05:00Z",
+  "window_7d_metrics": {
+    "warning_signal_count": 2,
+    "degradation_ratio": 0.09,
+    "hold_event_count": 0
+  },
+  "window_14d_metrics": {
+    "critical_violation_count": 0,
+    "core_failure_count": 0,
+    "degradation_ratio": 0.10
+  },
+  "latest_gate_state": {
+    "gate_level": "ok"
+  },
+  "emergency_stop": false
+}

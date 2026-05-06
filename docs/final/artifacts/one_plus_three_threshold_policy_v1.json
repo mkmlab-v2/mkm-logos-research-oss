@@ -1,0 +1,39 @@
+{
+  "schema": "one_plus_three_threshold_policy_v1",
+  "version": "1.0.0",
+  "description": "7d/14d threshold policy for warning/critical dual-stage gate",
+  "thresholds": {
+    "warning": {
+      "min_warning_signal_count_7d": 2,
+      "min_degradation_ratio_7d": 0.08,
+      "min_hold_event_count_7d": 1
+    },
+    "critical": {
+      "min_critical_violation_count_14d": 1,
+      "min_core_failure_count_14d": 1,
+      "min_degradation_ratio_14d": 0.15,
+      "force_hold_on_emergency_stop": true
+    }
+  },
+  "review_intervals_hours": {
+    "ok": 24,
+    "warning": 6,
+    "critical": 1
+  },
+  "actions": {
+    "ok": [
+      "maintain_standard_observability"
+    ],
+    "warning": [
+      "tighten_observation_window",
+      "disable_auto_promotion",
+      "emit_warning_alert"
+    ],
+    "critical": [
+      "force_hold_fail_close",
+      "require_human_approval",
+      "emit_critical_alert",
+      "write_audit_bundle"
+    ]
+  }
+}
