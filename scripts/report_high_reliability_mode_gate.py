@@ -36,6 +36,15 @@ def _f(value: Any) -> float | None:
     return float(value) if isinstance(value, (int, float)) else None
 
 
+def entry16_ready_for_manual_review(entry16_gate: dict[str, Any]) -> bool:
+    """True when Entry16 is queued for human policy review (direct or proxy path)."""
+    d = str(entry16_gate.get("decision", ""))
+    s = str(entry16_gate.get("status", ""))
+    direct = d == "promote_candidate" and s == "candidate_ready_for_manual_review"
+    proxy = d == "promote_proxy_candidate_manual" and s == "proxy_candidate_ready_for_manual_review"
+    return direct or proxy
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Evaluate high-reliability operation gate")
     ap.add_argument("--quality", default=str(DEFAULT_QUALITY))
@@ -67,13 +76,19 @@ def main() -> int:
     resolution = _f(q_metrics.get("resolution_confidence_delta_b_minus_a"))
     contamination = _f(q_metrics.get("contamination_snr_delta_b_minus_a"))
 
+    entry16_ok = entry16_ready_for_manual_review(entry16_gate)
+    entry16_direct = str(entry16_gate.get("decision", "")) == "promote_candidate" and str(
+        entry16_gate.get("status", "")
+    ) == "candidate_ready_for_manual_review"
+    entry16_proxy = str(entry16_gate.get("decision", "")) == "promote_proxy_candidate_manual" and str(
+        entry16_gate.get("status", "")
+    ) == "proxy_candidate_ready_for_manual_review"
     checks = {
         "btrack_gate_pass": str(btrack_gate.get("decision", "")).lower() == "pass",
         "reproducibility_gte_threshold": reproducibility is not None and reproducibility >= args.repro_min,
         "resolution_non_negative": resolution is not None and resolution >= 0.0,
         "contamination_non_negative": contamination is not None and contamination >= 0.0,
-        "entry16_candidate_ready": str(entry16_gate.get("decision", "")) == "promote_candidate"
-        and str(entry16_gate.get("status", "")) == "candidate_ready_for_manual_review",
+        "entry16_candidate_ready": entry16_ok,
         "entry16_lock_approved": str(entry16_lock.get("final_decision", "")) == "approved",
         "entry16_dss_fact_lock_kept": bool(entry16_lock.get("constraints", {}).get("dss_missing_anchor_fact_lock", False)),
     }
@@ -99,6 +114,10 @@ def main() -> int:
             "contamination_snr_delta_b_minus_a": contamination,
         },
         "checks": checks,
+        "entry16_path_checks": {
+            "direct_candidate_ready": entry16_direct,
+            "proxy_candidate_ready": entry16_proxy,
+        },
         "decision": decision,
         "operational_mode": (
             "high_reliability_enabled_with_fact_lock"

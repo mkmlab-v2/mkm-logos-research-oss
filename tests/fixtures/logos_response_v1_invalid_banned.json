@@ -1,0 +1,31 @@
+{
+  "schema": "logos_response_v1",
+  "corpus_profile_id": "canon_only_v1",
+  "query_redefinition": "유효 구조지만 금지어가 포함된 실패 샘플.",
+  "symbolic_anchors": [
+    {
+      "motif": "invalid_case",
+      "core_meaning": "banned phrasing path"
+    }
+  ],
+  "gematria_layer": {
+    "pattern_label": "invalid-demo",
+    "components": {
+      "aggregation": 0.1,
+      "tension": 0.2,
+      "transition": 0.3
+    }
+  },
+  "vector_4d": {
+    "S_spirit": 0.5,
+    "L_logos": 0.5,
+    "K_kairos": 0.5,
+    "M_material": 0.5,
+    "phase_description": "중립"
+  },
+  "chronicle_mapping": [],
+  "risk_and_falsification": [
+    "반증 항목"
+  ],
+  "final_insight_non_gating": "이 결론은 무조건 맞다."
+}

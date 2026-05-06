@@ -1,0 +1,154 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "logos_response_schema_v2.json",
+  "title": "Logos Fact-Lock Response Schema v2",
+  "type": "object",
+  "description": "v1 + 교단별 해석/원문 비평/MKM 수학화 확장. NON_GATING 연구 해설 전용.",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "corpus_profile_id",
+    "query_redefinition",
+    "symbolic_anchors",
+    "gematria_layer",
+    "vector_4d",
+    "chronicle_mapping",
+    "risk_and_falsification",
+    "final_insight_non_gating",
+    "denominational_view",
+    "text_critical_notes",
+    "mkm_interpretation_math"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "logos_response_v2"
+    },
+    "corpus_profile_id": {
+      "type": "string",
+      "enum": ["canon_only_v1", "canon_plus_dss_apocrypha_v1"]
+    },
+    "query_redefinition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "symbolic_anchors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["motif", "core_meaning"],
+        "properties": {
+          "motif": { "type": "string", "minLength": 1 },
+          "core_meaning": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "gematria_layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pattern_label", "components"],
+      "properties": {
+        "pattern_label": { "type": "string", "minLength": 1 },
+        "components": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["aggregation", "tension", "transition"],
+          "properties": {
+            "aggregation": { "type": "number" },
+            "tension": { "type": "number" },
+            "transition": { "type": "number" }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "vector_4d": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "S_spirit",
+        "L_logos",
+        "K_kairos",
+        "M_material",
+        "phase_description"
+      ],
+      "properties": {
+        "S_spirit": { "type": "number", "minimum": 0, "maximum": 1 },
+        "L_logos": { "type": "number", "minimum": 0, "maximum": 1 },
+        "K_kairos": { "type": "number", "minimum": 0, "maximum": 1 },
+        "M_material": { "type": "number", "minimum": 0, "maximum": 1 },
+        "phase_description": { "type": "string", "minLength": 1 }
+      }
+    },
+    "chronicle_mapping": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["summary", "period_or_ref", "evidence_pointer"],
+        "properties": {
+          "summary": { "type": "string", "minLength": 1 },
+          "period_or_ref": { "type": "string", "minLength": 1 },
+          "evidence_pointer": { "type": "string", "minLength": 1 },
+          "confidence_band": {
+            "type": "string",
+            "enum": ["low", "mid", "high"]
+          }
+        }
+      }
+    },
+    "risk_and_falsification": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "final_insight_non_gating": {
+      "type": "string",
+      "minLength": 1
+    },
+    "denominational_view": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["tradition_label", "interpretation_summary", "confidence_band"],
+        "properties": {
+          "tradition_label": { "type": "string", "minLength": 1 },
+          "interpretation_summary": { "type": "string", "minLength": 1 },
+          "confidence_band": { "type": "string", "enum": ["low", "mid", "high"] }
+        }
+      }
+    },
+    "text_critical_notes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_scope", "variant_notes", "uncertainty_notes"],
+      "properties": {
+        "source_scope": { "type": "string", "minLength": 1 },
+        "variant_notes": { "type": "string", "minLength": 1 },
+        "uncertainty_notes": { "type": "string", "minLength": 1 }
+      }
+    },
+    "mkm_interpretation_math": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_version",
+        "symbolic_intensity",
+        "covenant_tension",
+        "restoration_momentum",
+        "commentary"
+      ],
+      "properties": {
+        "model_version": { "type": "string", "minLength": 1 },
+        "symbolic_intensity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "covenant_tension": { "type": "number", "minimum": 0, "maximum": 1 },
+        "restoration_momentum": { "type": "number", "minimum": 0, "maximum": 1 },
+        "commentary": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

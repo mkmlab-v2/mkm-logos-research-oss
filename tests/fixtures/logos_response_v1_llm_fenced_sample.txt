@@ -1,0 +1,26 @@
+Here is the structured response you asked for.
+
+```json
+{
+  "schema": "logos_response_v1",
+  "corpus_profile_id": "canon_only_v1",
+  "query_redefinition": "테스트: 펜스 안 JSON 추출.",
+  "symbolic_anchors": [{"motif": "test_motif", "core_meaning": "의미 슬롯"}],
+  "gematria_layer": {
+    "pattern_label": "t",
+    "components": {"aggregation": 0.1, "tension": 0.2, "transition": 0.3}
+  },
+  "vector_4d": {
+    "S_spirit": 0.5,
+    "L_logos": 0.5,
+    "K_kairos": 0.5,
+    "M_material": 0.5,
+    "phase_description": "균형 위상"
+  },
+  "chronicle_mapping": [],
+  "risk_and_falsification": ["반증 슬롯"],
+  "final_insight_non_gating": "NON_GATING 요약만."
+}
+```
+
+Hope this helps.

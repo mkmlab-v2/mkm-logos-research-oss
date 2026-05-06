@@ -8,13 +8,19 @@ param(
     [double]$MyeongniReduceDirectionCut = 0.45,
     [double]$MyeongniReduceConfidenceCut = 0.64,
     [ValidateSet("true", "false")]
-    [string]$IncludeLogosV2 = "true"
+    [string]$IncludeLogosV2 = "true",
+    [ValidateSet("true", "false")]
+    [string]$EnableLogosResponseV1Retry = "false",
+    [string]$LogosResponseV1PrimaryInput = "docs/final/artifacts/logos_response_v1_llm_raw_latest.txt",
+    [string]$LogosResponseV1RetryInput = "docs/final/artifacts/logos_response_v1_llm_retry_latest.txt",
+    [int]$LogosResponseV1MaxAttempts = 2
 )
 
 $ErrorActionPreference = "Stop"
 Set-Location -LiteralPath $WorkspaceRoot
 $failureOut = Join-Path $WorkspaceRoot "docs\final\artifacts\general_prophecy_daily_queue_failure_summary_latest.json"
 $includeLogosV2Flag = $IncludeLogosV2 -eq "true"
+$enableLogosResponseV1RetryFlag = $EnableLogosResponseV1Retry -eq "true"
 
 function Write-FailureSummary([string]$Step, [int]$ExitCode) {
     $doc = [ordered]@{
@@ -54,6 +60,7 @@ $mkmMyeongniV2 = Join-Path $WorkspaceRoot "scripts\build_mkm_myeongni_response_v
 $mkmMyeongniV2Validate = Join-Path $WorkspaceRoot "scripts\validate_mkm_myeongni_response_v2.py"
 $mkmLogosV2 = Join-Path $WorkspaceRoot "scripts\build_mkm_logos_response_v2.py"
 $mkmLogosV2Validate = Join-Path $WorkspaceRoot "scripts\validate_mkm_logos_response_v2.py"
+$logosResponseV1Retry = Join-Path $WorkspaceRoot "scripts\run_logos_response_retry_pipeline_v1.py"
 $logosBriefPath = "docs/final/artifacts/logos_symbolic_paid_user_brief_latest.md"
 $notebookManifestPath = "docs/NotebookLM_sources_manifest.md"
 
@@ -72,6 +79,10 @@ if (-not (Test-Path -LiteralPath $mkmMyeongniV2)) { throw "Missing script: $mkmM
 if (-not (Test-Path -LiteralPath $mkmMyeongniV2Validate)) { throw "Missing script: $mkmMyeongniV2Validate" }
 if ($includeLogosV2Flag -and (-not (Test-Path -LiteralPath $mkmLogosV2))) { throw "Missing script: $mkmLogosV2" }
 if ($includeLogosV2Flag -and (-not (Test-Path -LiteralPath $mkmLogosV2Validate))) { throw "Missing script: $mkmLogosV2Validate" }
+if ($enableLogosResponseV1RetryFlag -and (-not (Test-Path -LiteralPath $logosResponseV1Retry))) { throw "Missing script: $logosResponseV1Retry" }
+if ($enableLogosResponseV1RetryFlag -and (-not (Test-Path -LiteralPath (Join-Path $WorkspaceRoot $LogosResponseV1PrimaryInput)))) {
+    throw "Missing logos_response_v1 primary input: $(Join-Path $WorkspaceRoot $LogosResponseV1PrimaryInput)"
+}
 
 Invoke-Step "generate_general_prophecy" {
     & py -3 $gen --output "docs/final/artifacts/general_prophecy_latest.json" --stub-forecasts
@@ -142,6 +153,25 @@ if ($includeLogosV2Flag) {
 
     Invoke-Step "validate_mkm_logos_response_v2" {
         & py -3 $mkmLogosV2Validate --response-json "docs/final/artifacts/mkm_logos_response_v2_latest.json"
+    }
+}
+
+if ($enableLogosResponseV1RetryFlag) {
+    Invoke-Step "run_logos_response_retry_pipeline_v1" {
+        $retryArgs = @(
+            "-3",
+            $logosResponseV1Retry,
+            "--input", $LogosResponseV1PrimaryInput,
+            "--output-json", "docs/final/artifacts/logos_response_v1_retry_selected_latest.json",
+            "--output-md", "docs/final/artifacts/logos_response_v1_retry_brief_latest.md",
+            "--report-json", "docs/final/artifacts/logos_response_v1_retry_report_latest.json",
+            "--max-attempts", $LogosResponseV1MaxAttempts
+        )
+        $retryAbs = Join-Path $WorkspaceRoot $LogosResponseV1RetryInput
+        if (Test-Path -LiteralPath $retryAbs) {
+            $retryArgs += @("--retry-input", $LogosResponseV1RetryInput)
+        }
+        & py @retryArgs
     }
 }
 
