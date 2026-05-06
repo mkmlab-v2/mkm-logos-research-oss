@@ -31,6 +31,34 @@ def test_register_general_prophecy_task_whatif_includes_ops_profile():
     assert "-HoldoutGateProfile ops" in out
 
 
+def test_register_general_prophecy_task_whatif_includes_retry_flag_when_enabled():
+    root = Path(__file__).resolve().parents[1]
+    script = root / "scripts" / "Register-GeneralProphecyDailyQueueTask.ps1"
+    cmd = [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        str(script),
+        "-WorkspaceRoot",
+        str(root),
+        "-TaskName",
+        "GeneralProphecyDailyQueueV1",
+        "-DailyAt",
+        "09:00",
+        "-HoldoutGateProfile",
+        "ops",
+        "-EnableLogosResponseV1Retry",
+        "true",
+        "-WhatIf",
+    ]
+    cp = subprocess.run(cmd, check=False, cwd=root, capture_output=True, text=True)
+    assert cp.returncode == 0, cp.stderr + cp.stdout
+    out = cp.stdout
+    assert "-EnableLogosResponseV1Retry true" in out
+
+
 def test_general_prophecy_daily_queue_refresh_exposes_holdout_profile_param():
     root = Path(__file__).resolve().parents[1]
     script = root / "scripts" / "run_general_prophecy_daily_queue_refresh_v1.ps1"
