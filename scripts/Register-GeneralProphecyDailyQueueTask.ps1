@@ -8,6 +8,11 @@ param(
     [string]$IncludeLogosV2 = "true",
     [ValidateSet("true", "false")]
     [string]$EnableLogosResponseV1Retry = "false",
+    [ValidateSet("true", "false")]
+    [string]$EnableLogosResponseQualityScore = "true",
+    [ValidateSet("true", "false")]
+    [string]$EnableLogosResponseQualityAlert = "true",
+    [double]$LogosResponseQualityMinOverall = 8.0,
     [string]$LogosResponseV1PrimaryInput = "docs/final/artifacts/logos_response_v1_llm_raw_latest.txt",
     [string]$LogosResponseV1RetryInput = "docs/final/artifacts/logos_response_v1_llm_retry_latest.txt",
     [int]$LogosResponseV1MaxAttempts = 2,
@@ -30,6 +35,15 @@ if ($IncludeLogosV2 -ne "true") {
 }
 if ($EnableLogosResponseV1Retry -ne "false") {
     $taskRunParts += "-EnableLogosResponseV1Retry $EnableLogosResponseV1Retry"
+}
+if ($EnableLogosResponseQualityScore -ne "true") {
+    $taskRunParts += "-EnableLogosResponseQualityScore $EnableLogosResponseQualityScore"
+}
+if ($EnableLogosResponseQualityAlert -ne "true") {
+    $taskRunParts += "-EnableLogosResponseQualityAlert $EnableLogosResponseQualityAlert"
+}
+if ($LogosResponseQualityMinOverall -ne 8.0) {
+    $taskRunParts += "-LogosResponseQualityMinOverall $LogosResponseQualityMinOverall"
 }
 if ($LogosResponseV1PrimaryInput -ne "docs/final/artifacts/logos_response_v1_llm_raw_latest.txt") {
     $taskRunParts += "-LogosResponseV1PrimaryInput `"$LogosResponseV1PrimaryInput`""

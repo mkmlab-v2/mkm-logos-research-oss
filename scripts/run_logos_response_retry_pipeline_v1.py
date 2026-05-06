@@ -31,6 +31,7 @@ try:
         DEFAULT_SCHEMA,
         parse_llm_payload,
         render_to_markdown,
+        resolve_schema_path,
         validate_all,
     )
 except ModuleNotFoundError:
@@ -38,6 +39,7 @@ except ModuleNotFoundError:
         DEFAULT_SCHEMA,
         parse_llm_payload,
         render_to_markdown,
+        resolve_schema_path,
         validate_all,
     )
 DEFAULT_OUT_JSON = ROOT / "docs" / "final" / "artifacts" / "logos_response_v1_retry_selected_latest.json"
@@ -56,7 +58,7 @@ def _resolve_path(root: Path, p: str) -> Path:
 
 def run_retry(
     *,
-    schema_path: Path,
+    schema_arg: str,
     candidates: list[Path],
     strict_json: bool,
     max_attempts: int,
@@ -76,6 +78,8 @@ def run_retry(
             step["error"] = str(exc)
             history.append(step)
             continue
+        schema_path = resolve_schema_path(schema_arg, doc)
+        step["schema_path"] = str(schema_path)
         schema_errs, ban_errs = validate_all(doc, schema_path)
         if schema_errs:
             step["status"] = "schema_fail"
@@ -97,8 +101,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument(
         "--schema",
-        default=str(DEFAULT_SCHEMA),
-        help="Path to logos_response_schema_v1.json",
+        default="",
+        help="Optional schema path override. If omitted, auto-select by doc.schema.",
     )
     ap.add_argument(
         "--input",
@@ -140,16 +144,18 @@ def main() -> int:
     )
     args = ap.parse_args()
 
-    schema_path = _resolve_path(ROOT, args.schema).resolve()
-    if not schema_path.is_file():
-        print(f"ERROR: schema missing: {schema_path}")
-        return 2
+    schema_arg = str(args.schema or "")
+    if schema_arg:
+        schema_path = _resolve_path(ROOT, schema_arg).resolve()
+        if not schema_path.is_file():
+            print(f"ERROR: schema missing: {schema_path}")
+            return 2
 
     candidate_paths = [_resolve_path(ROOT, args.input).resolve()]
     candidate_paths.extend(_resolve_path(ROOT, p).resolve() for p in args.retry_input)
 
     chosen, history = run_retry(
-        schema_path=schema_path,
+        schema_arg=schema_arg,
         candidates=candidate_paths,
         strict_json=bool(args.strict_json),
         max_attempts=max(1, int(args.max_attempts)),

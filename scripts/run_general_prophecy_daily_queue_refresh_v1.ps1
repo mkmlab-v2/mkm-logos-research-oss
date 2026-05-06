@@ -11,6 +11,11 @@ param(
     [string]$IncludeLogosV2 = "true",
     [ValidateSet("true", "false")]
     [string]$EnableLogosResponseV1Retry = "false",
+    [ValidateSet("true", "false")]
+    [string]$EnableLogosResponseQualityScore = "true",
+    [ValidateSet("true", "false")]
+    [string]$EnableLogosResponseQualityAlert = "true",
+    [double]$LogosResponseQualityMinOverall = 8.0,
     [string]$LogosResponseV1PrimaryInput = "docs/final/artifacts/logos_response_v1_llm_raw_latest.txt",
     [string]$LogosResponseV1RetryInput = "docs/final/artifacts/logos_response_v1_llm_retry_latest.txt",
     [int]$LogosResponseV1MaxAttempts = 2
@@ -21,6 +26,8 @@ Set-Location -LiteralPath $WorkspaceRoot
 $failureOut = Join-Path $WorkspaceRoot "docs\final\artifacts\general_prophecy_daily_queue_failure_summary_latest.json"
 $includeLogosV2Flag = $IncludeLogosV2 -eq "true"
 $enableLogosResponseV1RetryFlag = $EnableLogosResponseV1Retry -eq "true"
+$enableLogosResponseQualityScoreFlag = $EnableLogosResponseQualityScore -eq "true"
+$enableLogosResponseQualityAlertFlag = $EnableLogosResponseQualityAlert -eq "true"
 
 function Write-FailureSummary([string]$Step, [int]$ExitCode) {
     $doc = [ordered]@{
@@ -60,7 +67,10 @@ $mkmMyeongniV2 = Join-Path $WorkspaceRoot "scripts\build_mkm_myeongni_response_v
 $mkmMyeongniV2Validate = Join-Path $WorkspaceRoot "scripts\validate_mkm_myeongni_response_v2.py"
 $mkmLogosV2 = Join-Path $WorkspaceRoot "scripts\build_mkm_logos_response_v2.py"
 $mkmLogosV2Validate = Join-Path $WorkspaceRoot "scripts\validate_mkm_logos_response_v2.py"
+$logosResponseV1InputBuilder = Join-Path $WorkspaceRoot "scripts\build_logos_response_retry_inputs_v1.py"
 $logosResponseV1Retry = Join-Path $WorkspaceRoot "scripts\run_logos_response_retry_pipeline_v1.py"
+$logosResponseQualityScore = Join-Path $WorkspaceRoot "scripts\build_logos_response_quality_score_v1.py"
+$logosResponseQualityAlert = Join-Path $WorkspaceRoot "scripts\alert_logos_response_quality_score_v1.py"
 $logosBriefPath = "docs/final/artifacts/logos_symbolic_paid_user_brief_latest.md"
 $notebookManifestPath = "docs/NotebookLM_sources_manifest.md"
 
@@ -79,10 +89,10 @@ if (-not (Test-Path -LiteralPath $mkmMyeongniV2)) { throw "Missing script: $mkmM
 if (-not (Test-Path -LiteralPath $mkmMyeongniV2Validate)) { throw "Missing script: $mkmMyeongniV2Validate" }
 if ($includeLogosV2Flag -and (-not (Test-Path -LiteralPath $mkmLogosV2))) { throw "Missing script: $mkmLogosV2" }
 if ($includeLogosV2Flag -and (-not (Test-Path -LiteralPath $mkmLogosV2Validate))) { throw "Missing script: $mkmLogosV2Validate" }
+if ($enableLogosResponseV1RetryFlag -and (-not (Test-Path -LiteralPath $logosResponseV1InputBuilder))) { throw "Missing script: $logosResponseV1InputBuilder" }
 if ($enableLogosResponseV1RetryFlag -and (-not (Test-Path -LiteralPath $logosResponseV1Retry))) { throw "Missing script: $logosResponseV1Retry" }
-if ($enableLogosResponseV1RetryFlag -and (-not (Test-Path -LiteralPath (Join-Path $WorkspaceRoot $LogosResponseV1PrimaryInput)))) {
-    throw "Missing logos_response_v1 primary input: $(Join-Path $WorkspaceRoot $LogosResponseV1PrimaryInput)"
-}
+if ($enableLogosResponseV1RetryFlag -and $enableLogosResponseQualityScoreFlag -and (-not (Test-Path -LiteralPath $logosResponseQualityScore))) { throw "Missing script: $logosResponseQualityScore" }
+if ($enableLogosResponseV1RetryFlag -and $enableLogosResponseQualityScoreFlag -and $enableLogosResponseQualityAlertFlag -and (-not (Test-Path -LiteralPath $logosResponseQualityAlert))) { throw "Missing script: $logosResponseQualityAlert" }
 
 Invoke-Step "generate_general_prophecy" {
     & py -3 $gen --output "docs/final/artifacts/general_prophecy_latest.json" --stub-forecasts
@@ -157,6 +167,14 @@ if ($includeLogosV2Flag) {
 }
 
 if ($enableLogosResponseV1RetryFlag) {
+    Invoke-Step "build_logos_response_retry_inputs_v1" {
+        & py -3 $logosResponseV1InputBuilder `
+            --mkm-json "docs/final/artifacts/mkm_logos_response_v2_latest.json" `
+            --output-raw $LogosResponseV1PrimaryInput `
+            --output-retry $LogosResponseV1RetryInput `
+            --raw-format "fenced"
+    }
+
     Invoke-Step "run_logos_response_retry_pipeline_v1" {
         $retryArgs = @(
             "-3",
@@ -172,6 +190,27 @@ if ($enableLogosResponseV1RetryFlag) {
             $retryArgs += @("--retry-input", $LogosResponseV1RetryInput)
         }
         & py @retryArgs
+    }
+
+    if ($enableLogosResponseQualityScoreFlag) {
+        Invoke-Step "build_logos_response_quality_score_v1" {
+            & py -3 $logosResponseQualityScore `
+                --selected-json "docs/final/artifacts/logos_response_v1_retry_selected_latest.json" `
+                --retry-report-json "docs/final/artifacts/logos_response_v1_retry_report_latest.json" `
+                --brief-md "docs/final/artifacts/logos_response_v1_retry_brief_latest.md" `
+                --output-json "docs/final/artifacts/logos_response_quality_score_v1_latest.json"
+        }
+
+        if ($enableLogosResponseQualityAlertFlag) {
+            # Alert is best-effort only; should not block daily refresh.
+            & py -3 $logosResponseQualityAlert `
+                --score-json "docs/final/artifacts/logos_response_quality_score_v1_latest.json" `
+                --output-json "docs/final/artifacts/logos_response_quality_score_alert_latest.json" `
+                --overall-min $LogosResponseQualityMinOverall
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host "WARN: logos quality alert dispatch step failed (non-blocking)." -ForegroundColor Yellow
+            }
+        }
     }
 }
 
