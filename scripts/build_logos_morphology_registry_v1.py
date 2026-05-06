@@ -15,6 +15,8 @@ DEFAULT_SUMMARY = PILOT / "master_atoms_morphhb_seed_summary_latest.json"
 DEFAULT_SEED = PILOT / "master_atoms_morphhb_seed_latest.jsonl"
 DEFAULT_INDEX = PILOT / "morphhb_norm_to_lemma_index_latest.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "logos_morphology_registry_v1_latest.json"
+DEFAULT_MAX_SCAN_LINES = 400000
+DEFAULT_TARGET_MATCHED_SAMPLES = 5000
 
 
 def _now() -> str:
@@ -25,7 +27,12 @@ def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
-def _scan_seed_stats(path: Path, *, max_scan_lines: int = 400000, target_matched_samples: int = 5000) -> dict[str, Any]:
+def _scan_seed_stats(
+    path: Path,
+    *,
+    max_scan_lines: int = DEFAULT_MAX_SCAN_LINES,
+    target_matched_samples: int = DEFAULT_TARGET_MATCHED_SAMPLES,
+) -> dict[str, Any]:
     lemma_counts: dict[str, int] = {}
     morph_counts: dict[str, int] = {}
     matched_rows = 0
@@ -106,6 +113,11 @@ def build_registry(summary: dict[str, Any], seed_stats: dict[str, Any], idx_meta
             "index_unique_norm_keys": unique_norm,
             "sampled_matched_rows": matched_rows,
             "sampled_scanned_lines": scanned_lines,
+            "sampling_policy": {
+                "max_scan_lines": DEFAULT_MAX_SCAN_LINES,
+                "target_matched_samples": DEFAULT_TARGET_MATCHED_SAMPLES,
+                "stop_condition": "matched_rows>=target or scanned_lines>=max",
+            },
             "top_lemmas": [{"lemma": k, "count": v} for k, v in top_lemmas],
             "top_morph_tags": [{"morph_tag": k, "count": v} for k, v in top_morphs],
             "interpretation_guard": "원어 형태소 레이어는 의미 해설 보조이며 가격/실행 트리거가 아니다.",
@@ -131,7 +143,11 @@ def main() -> int:
     if not summary_path.is_file():
         raise SystemExit(f"Missing --summary-json: {summary_path}")
     summary = _read_json(summary_path)
-    seed_stats = _scan_seed_stats(seed_path, max_scan_lines=400000, target_matched_samples=5000)
+    seed_stats = _scan_seed_stats(
+        seed_path,
+        max_scan_lines=DEFAULT_MAX_SCAN_LINES,
+        target_matched_samples=DEFAULT_TARGET_MATCHED_SAMPLES,
+    )
     idx_meta = _read_json(index_path) if index_path.is_file() else {}
     payload = build_registry(summary, seed_stats, idx_meta)
 

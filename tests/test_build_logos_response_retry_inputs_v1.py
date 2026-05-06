@@ -74,6 +74,9 @@ def test_build_retry_inputs_and_validate(tmp_path: Path) -> None:
     assert morph.get("registry_id") == "morphhb_hebrew_core_v1"
     assert morph.get("price_mapping_forbidden") is True
     assert isinstance(morph.get("top_lemmas"), list)
+    policy = morph.get("sampling_policy")
+    assert isinstance(policy, dict)
+    assert policy.get("target_matched_samples") == 5000
     chron = doc.get("chronicle_mapping")
     assert isinstance(chron, list)
     assert len(chron) >= 1

@@ -25,3 +25,6 @@ def test_build_morphology_registry_smoke(tmp_path: Path) -> None:
     assert 0.0 <= float(layer["coverage_ratio_0_1"]) <= 1.0
     assert layer["non_gating_only"] is True
     assert layer["price_mapping_forbidden"] is True
+    policy = layer["sampling_policy"]
+    assert policy["max_scan_lines"] == 400000
+    assert policy["target_matched_samples"] == 5000
