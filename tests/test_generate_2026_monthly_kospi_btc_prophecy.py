@@ -1,19 +1,53 @@
 from pathlib import Path
 
 from scripts import generate_2026_monthly_kospi_btc_prophecy as monthly_prophecy
-from scripts.generate_2026_monthly_kospi_btc_prophecy import _adjust_for_hold
+from scripts.generate_2026_monthly_kospi_btc_prophecy import _adjust_for_hold, _sasang_external_adjust, _sasang_external_profile
 
 
 def test_adjust_for_hold_shifts_to_defensive():
-    up, neutral, down = _adjust_for_hold(40, 30, 30, True)
+    up, neutral, down = _adjust_for_hold(40, 30, 30, True, momentum_score=0.5)
     assert up == 36
     assert neutral == 30
     assert down == 34
 
 
 def test_adjust_for_hold_keeps_values_when_not_hold():
-    up, neutral, down = _adjust_for_hold(40, 30, 30, False)
+    up, neutral, down = _adjust_for_hold(40, 30, 30, False, momentum_score=0.5)
     assert (up, neutral, down) == (40, 30, 30)
+
+
+def test_sasang_external_meltup_shock_follows_momentum_not_mean_reversion():
+    """Large positive prior month must not flip tilt negative solely due to shock threshold."""
+    profile = _sasang_external_profile()
+    up, neutral, down = (24, 34, 42)
+    _, _, _, meta = _sasang_external_adjust(
+        up,
+        neutral,
+        down,
+        phase="압박/방어",
+        prev_ret=20.5,
+        roll_abs_3m=19.5,
+        profile=profile,
+    )
+    assert meta["shock_mode"] is True
+    assert meta["prev_ret_pct"] > 0
+    assert float(meta["tilt"]) > 0.0
+
+
+def test_sasang_external_crash_shock_keeps_mean_reversion_sign():
+    profile = _sasang_external_profile()
+    up, neutral, down = (34, 36, 30)
+    _, _, _, meta = _sasang_external_adjust(
+        up,
+        neutral,
+        down,
+        phase="기준선/탐색",
+        prev_ret=-12.0,
+        roll_abs_3m=8.0,
+        profile=profile,
+    )
+    assert meta["shock_mode"] is True
+    assert meta["prev_ret_pct"] < 0
 
 
 def test_generate_sets_price_lock_in_hold_mode(tmp_path):
