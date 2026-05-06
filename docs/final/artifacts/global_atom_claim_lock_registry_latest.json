@@ -1,9 +1,8 @@
 {
   "schema": "global_atom_claim_lock_registry_v1",
-  "generated_at_utc": "2026-05-05T13:06:21Z",
+  "generated_at_utc": "2026-04-29T01:58:54Z",
   "owner": "athena_core",
   "status": "active",
-  "corpus_profile_id": "canon_plus_dss_apocrypha_v1",
   "claims": [
     {
       "claim_id": "global_atom_edge_count_305m_v1",
@@ -13,12 +12,11 @@
       "human_readable": "about 3.05 million edges",
       "definition": "The edge_count value in key_facts from the staged full-canon academic onepager artifact.",
       "scope": "research_only",
-      "corpus_profile_id": "canon_plus_dss_apocrypha_v1",
       "source_of_truth": {
-        "path": "C:\\workspace\\docs\\final\\artifacts\\archive\\cataloged\\20260505T072109Z\\docs\\final\\artifacts\\freeze\\global_atom_submission_20260428T095850Z\\global_atom_network_academic_onepager_latest.json",
+        "path": "C:\\workspace\\docs\\final\\artifacts\\freeze\\global_atom_submission_20260428T095850Z\\global_atom_network_academic_onepager_latest.json",
         "json_pointer": "$.key_facts.edge_count",
         "generated_at_utc": "2026-04-28T09:58:49Z",
-        "sha256_placeholder": "e4f400b52cf731b63ee535058f2e8f07524ce2f3fed50c9a8ecb5379759ac339"
+        "sha256_placeholder": "02157bed5269cef804cf6d6145b21ba12daca076f7b183b7b738d82e75ead796"
       },
       "paired_metrics": {
         "node_count": 7477,

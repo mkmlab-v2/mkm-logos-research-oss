@@ -1,5 +1,0 @@
-observation_id,as_of_utc,label_date,dataset_partition,source_id,is_synthetic_source,instrument_id,horizon,score,predicted_direction,actual_direction,hit,bias_up_hits,bias_down_hits,matched_symbols
-aaaa1111-1111-4111-8111-111111111111,2024-01-01T09:00:00Z,2024-01-02,train_holdout,fixture,False,KOSPI,1d,0.7275,up,up,1,1,0,qian_creative
-bbbb2222-2222-4222-8222-222222222222,2024-01-02T09:00:00Z,2024-01-03,train_holdout,fixture,False,KOSPI,1d,-0.582,down,down,1,0,1,kan_abyss
-cccc3333-3333-4333-8333-333333333333,2024-01-03T09:00:00Z,2024-01-04,train_holdout,fixture,False,KOSPI,1d,0.4268,up,up,1,1,0,"kun_receptive,li_clinging"
-dddd4444-4444-4444-8444-444444444444,2024-01-04T09:00:00Z,2024-01-05,train_holdout,fixture,False,KOSPI,1d,0.0,neutral,down,0,0,0,

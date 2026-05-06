@@ -1,9 +1,0 @@
-observation_id,as_of_utc,label_date,dataset_partition,source_id,is_synthetic_source,instrument_id,horizon,score,predicted_direction,actual_direction,hit,bias_up_hits,bias_down_hits,matched_symbols
-eeee5555-5555-4555-8555-555555555555,2024-02-01T09:00:00Z,2024-02-02,locked_eval,fixture_holdout,False,KOSPI,1d,0.0,neutral,up,0,0,0,coherence_recovery_phase
-ffff6666-6666-4666-8666-666666666666,2024-02-02T09:00:00Z,2024-02-03,locked_eval,fixture_holdout,False,KOSPI,1d,0.5096,up,down,0,1,0,amplitude_risk_decay
-11117777-7777-4777-8777-777777777777,2024-02-03T09:00:00Z,2024-02-04,locked_eval,fixture_holdout,False,KOSPI,1d,-0.3822,down,up,0,0,1,phase_lock_policy_pause
-22228888-8888-4888-8888-888888888888,2024-02-04T09:00:00Z,2024-02-05,locked_eval,fixture_holdout,False,KOSPI,1d,0.5096,up,down,0,1,0,amplitude_risk_decay
-33339999-9999-4999-8999-999999999999,2024-02-05T09:00:00Z,2024-02-06,locked_eval,fixture_holdout,False,KOSPI,1d,0.0,neutral,up,0,0,0,coherence_recovery_phase
-4444aaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa,2024-02-06T09:00:00Z,2024-02-07,locked_eval,fixture_holdout,False,KOSPI,1d,0.3234,up,down,0,1,0,decoherence_liquidity_gap
-5555bbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb,2024-02-07T09:00:00Z,2024-02-08,locked_eval,fixture_holdout,False,KOSPI,1d,-0.3822,down,up,0,0,1,phase_lock_policy_pause
-6666cccc-cccc-4ccc-8ccc-cccccccccccc,2024-02-08T09:00:00Z,2024-02-09,locked_eval,fixture_holdout,False,KOSPI,1d,0.5096,up,down,0,1,0,amplitude_risk_decay

@@ -1,9 +1,0 @@
-observation_id,as_of_utc,label_date,dataset_partition,source_id,is_synthetic_source,instrument_id,horizon,score,predicted_direction,actual_direction,hit,bias_up_hits,bias_down_hits,matched_symbols
-eeee5555-5555-4555-8555-555555555555,2024-02-01T09:00:00Z,2024-02-02,locked_eval,fixture_holdout,False,KOSPI,1d,0.76,up,up,1,1,0,exodus_liberation
-ffff6666-6666-4666-8666-666666666666,2024-02-02T09:00:00Z,2024-02-03,locked_eval,fixture_holdout,False,KOSPI,1d,-0.855,down,down,1,0,1,babel_confusion
-11117777-7777-4777-8777-777777777777,2024-02-03T09:00:00Z,2024-02-04,locked_eval,fixture_holdout,False,KOSPI,1d,0.532,up,up,1,1,0,jubilee_relief
-22228888-8888-4888-8888-888888888888,2024-02-04T09:00:00Z,2024-02-05,locked_eval,fixture_holdout,False,KOSPI,1d,-0.855,down,down,1,0,1,babel_confusion
-33339999-9999-4999-8999-999999999999,2024-02-05T09:00:00Z,2024-02-06,locked_eval,fixture_holdout,False,KOSPI,1d,0.76,up,up,1,1,0,exodus_liberation
-4444aaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa,2024-02-06T09:00:00Z,2024-02-07,locked_eval,fixture_holdout,False,KOSPI,1d,-0.4275,down,down,1,0,1,joseph_famine_storage
-5555bbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb,2024-02-07T09:00:00Z,2024-02-08,locked_eval,fixture_holdout,False,KOSPI,1d,0.532,up,up,1,1,0,jubilee_relief
-6666cccc-cccc-4ccc-8ccc-cccccccccccc,2024-02-08T09:00:00Z,2024-02-09,locked_eval,fixture_holdout,False,KOSPI,1d,-0.855,down,down,1,0,1,babel_confusion
