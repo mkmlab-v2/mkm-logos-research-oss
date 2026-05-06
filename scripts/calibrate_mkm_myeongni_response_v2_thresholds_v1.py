@@ -13,6 +13,27 @@ DEFAULT_LENS = ART / "myeongni_independent_lens_latest.json"
 DEFAULT_WEATHER = ART / "general_prophecy_explainability_quality_v1_latest.json"
 DEFAULT_OUT = ART / "mkm_myeongni_response_v2_calibration_latest.json"
 
+PROFILE_PRESETS: dict[str, dict[str, float]] = {
+    "conservative": {
+        "hold_confidence_cut": 0.46,
+        "reduce_direction_cut": 0.62,
+        "reduce_confidence_cut": 0.72,
+        "failed_check_penalty": 0.05,
+    },
+    "balanced": {
+        "hold_confidence_cut": 0.42,
+        "reduce_direction_cut": 0.55,
+        "reduce_confidence_cut": 0.66,
+        "failed_check_penalty": 0.03,
+    },
+    "attack": {
+        "hold_confidence_cut": 0.35,
+        "reduce_direction_cut": 0.35,
+        "reduce_confidence_cut": 0.50,
+        "failed_check_penalty": 0.01,
+    },
+}
+
 
 def _now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -115,6 +136,42 @@ def _build_replay(core: dict[str, Any], weather_term: float) -> list[dict[str, f
     return scenarios
 
 
+def _evaluate_profile(
+    replay: list[dict[str, float]],
+    profile_name: str,
+    *,
+    failed_count: int,
+) -> dict[str, Any]:
+    cfg = PROFILE_PRESETS[profile_name]
+    counts = {"HOLD": 0, "WATCH": 0, "REDUCE": 0}
+    for s in replay:
+        c_adj = _clip(
+            float(s["confidence_adjusted"]) - (float(cfg["failed_check_penalty"]) * float(failed_count)),
+            0.0,
+            1.0,
+        )
+        dec, _ = _decision(
+            float(s["direction"]),
+            c_adj,
+            [],
+            hold_confidence_cut=float(cfg["hold_confidence_cut"]),
+            reduce_direction_cut=float(cfg["reduce_direction_cut"]),
+            reduce_confidence_cut=float(cfg["reduce_confidence_cut"]),
+        )
+        counts[dec] += 1
+    n = max(1, len(replay))
+    return {
+        "profile": profile_name,
+        "hold_confidence_cut": float(cfg["hold_confidence_cut"]),
+        "reduce_direction_cut": float(cfg["reduce_direction_cut"]),
+        "reduce_confidence_cut": float(cfg["reduce_confidence_cut"]),
+        "failed_check_penalty": float(cfg["failed_check_penalty"]),
+        "hold_ratio": round(counts["HOLD"] / n, 6),
+        "watch_ratio": round(counts["WATCH"] / n, 6),
+        "reduce_ratio": round(counts["REDUCE"] / n, 6),
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Calibrate MKM myeongni v2 decision thresholds with replay grid.")
     ap.add_argument("--lens-json", type=Path, default=DEFAULT_LENS)
@@ -185,6 +242,11 @@ def main() -> int:
         },
         "replay": {"scenario_count": len(replay)},
         "recommended": best,
+        "preset_profiles": [
+            _evaluate_profile(replay, "conservative", failed_count=failed_count),
+            _evaluate_profile(replay, "balanced", failed_count=failed_count),
+            _evaluate_profile(replay, "attack", failed_count=failed_count),
+        ],
         "policy": {
             "direction_override_allowed": False,
             "research_only": True,

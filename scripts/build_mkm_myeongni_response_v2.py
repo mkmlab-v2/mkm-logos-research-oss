@@ -16,6 +16,27 @@ DEFAULT_LENS_STUB_FALLBACK = ART / "independent_lens_fusion_stub_latest.json"
 DEFAULT_WEATHER = ART / "general_prophecy_explainability_quality_v1_latest.json"
 DEFAULT_OUT = ART / "mkm_myeongni_response_v2_latest.json"
 
+PROFILE_PRESETS: dict[str, dict[str, float]] = {
+    "conservative": {
+        "hold_confidence_cut": 0.46,
+        "reduce_direction_cut": 0.62,
+        "reduce_confidence_cut": 0.72,
+        "failed_check_penalty": 0.05,
+    },
+    "balanced": {
+        "hold_confidence_cut": 0.42,
+        "reduce_direction_cut": 0.55,
+        "reduce_confidence_cut": 0.66,
+        "failed_check_penalty": 0.03,
+    },
+    "attack": {
+        "hold_confidence_cut": 0.35,
+        "reduce_direction_cut": 0.35,
+        "reduce_confidence_cut": 0.50,
+        "failed_check_penalty": 0.01,
+    },
+}
+
 
 def _now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -94,17 +115,33 @@ def _decision(
     return ("WATCH", "Moderate confidence; keep observation posture.")
 
 
+def _profile_thresholds(profile: str) -> dict[str, float]:
+    return dict(PROFILE_PRESETS.get(profile, PROFILE_PRESETS["balanced"]))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build MKM Myeongni response v2 (core + coordinator).")
     ap.add_argument("--lens-json", type=Path, default=DEFAULT_LENS)
     ap.add_argument("--weather-quality-json", type=Path, default=DEFAULT_WEATHER)
+    ap.add_argument("--profile", choices=("conservative", "balanced", "attack"), default="balanced")
     ap.add_argument("--track", choices=("A", "B"), default="B")
-    ap.add_argument("--hold-confidence-cut", type=float, default=0.42)
-    ap.add_argument("--reduce-direction-cut", type=float, default=0.55)
-    ap.add_argument("--reduce-confidence-cut", type=float, default=0.66)
-    ap.add_argument("--failed-check-penalty", type=float, default=0.03)
+    ap.add_argument("--hold-confidence-cut", type=float, default=None)
+    ap.add_argument("--reduce-direction-cut", type=float, default=None)
+    ap.add_argument("--reduce-confidence-cut", type=float, default=None)
+    ap.add_argument("--failed-check-penalty", type=float, default=None)
     ap.add_argument("--output-json", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
+    profile_cfg = _profile_thresholds(args.profile)
+    hold_cut = float(args.hold_confidence_cut) if args.hold_confidence_cut is not None else profile_cfg["hold_confidence_cut"]
+    reduce_d_cut = (
+        float(args.reduce_direction_cut) if args.reduce_direction_cut is not None else profile_cfg["reduce_direction_cut"]
+    )
+    reduce_c_cut = (
+        float(args.reduce_confidence_cut) if args.reduce_confidence_cut is not None else profile_cfg["reduce_confidence_cut"]
+    )
+    failed_penalty = (
+        float(args.failed_check_penalty) if args.failed_check_penalty is not None else profile_cfg["failed_check_penalty"]
+    )
 
     lens_path = args.lens_json if args.lens_json.is_absolute() else ROOT / args.lens_json
     if not lens_path.is_file() and lens_path == DEFAULT_LENS:
@@ -119,14 +156,14 @@ def main() -> int:
 
     core, failed = _extract_core(lens)
     w_term, failed = _weather_term(weather, failed)
-    c_adj = _clip(core["confidence_core"] + w_term - (float(args.failed_check_penalty) * len(failed)), 0.0, 1.0)
+    c_adj = _clip(core["confidence_core"] + w_term - (failed_penalty * len(failed)), 0.0, 1.0)
     dec, reason = _decision(
         core["direction_core"],
         c_adj,
         failed,
-        hold_confidence_cut=float(args.hold_confidence_cut),
-        reduce_direction_cut=float(args.reduce_direction_cut),
-        reduce_confidence_cut=float(args.reduce_confidence_cut),
+        hold_confidence_cut=hold_cut,
+        reduce_direction_cut=reduce_d_cut,
+        reduce_confidence_cut=reduce_c_cut,
     )
 
     out = {
@@ -146,10 +183,11 @@ def main() -> int:
             "human_signoff_required": True,
         },
         "calibration": {
-            "hold_confidence_cut": round(float(args.hold_confidence_cut), 6),
-            "reduce_direction_cut": round(float(args.reduce_direction_cut), 6),
-            "reduce_confidence_cut": round(float(args.reduce_confidence_cut), 6),
-            "failed_check_penalty": round(float(args.failed_check_penalty), 6),
+            "profile": args.profile,
+            "hold_confidence_cut": round(hold_cut, 6),
+            "reduce_direction_cut": round(reduce_d_cut, 6),
+            "reduce_confidence_cut": round(reduce_c_cut, 6),
+            "failed_check_penalty": round(failed_penalty, 6),
         },
     }
 
