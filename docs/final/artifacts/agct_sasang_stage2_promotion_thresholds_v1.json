@@ -1,0 +1,21 @@
+{
+  "schema": "agct_sasang_stage2_promotion_thresholds_v1",
+  "generated_at_utc": "2026-05-06T14:20:00Z",
+  "track": "B_TRACK",
+  "thresholds": {
+    "min_samples": 7,
+    "min_go_candidate_ratio": 0.7,
+    "max_hold_ratio": 0.0,
+    "require_latest_not_hold": true,
+    "d7_min_elapsed_days": 7.0,
+    "d7_required_decision": "GO_STAGE2_FINAL",
+    "fasttrack_min_samples": 7,
+    "fasttrack_min_go_ratio": 0.7,
+    "fasttrack_max_hold_ratio": 0.0,
+    "fasttrack_require_latest_not_hold": true
+  },
+  "notes": [
+    "Stage2 final promotion gate evaluates trend history generated from daily compare reports.",
+    "This is B-track governance only and does not imply automatic live promotion."
+  ]
+}

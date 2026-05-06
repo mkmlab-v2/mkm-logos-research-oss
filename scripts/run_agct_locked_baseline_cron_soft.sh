@@ -12,3 +12,7 @@ python3 scripts/run_agct_sigma_locked_baseline_chain_v1.py \
   --h2h-batches 1 \
   --daily-drift-runs 2 \
   --run-regression-check
+
+# Stage2 candidate comparison follows baseline chain output.
+python3 scripts/build_agct_sasang_stage2_candidate_compare_v1.py
+python3 scripts/append_agct_sasang_stage2_compare_history_v1.py

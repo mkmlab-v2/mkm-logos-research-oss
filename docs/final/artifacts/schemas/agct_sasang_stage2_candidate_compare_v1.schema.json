@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agct_sasang_stage2_candidate_compare_v1.schema.json",
+  "title": "AGCT Sasang Stage2 Candidate Compare v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "track",
+    "inputs",
+    "baseline",
+    "candidate",
+    "comparison",
+    "decision"
+  ],
+  "properties": {
+    "schema": { "const": "agct_sasang_stage2_candidate_compare_v1" },
+    "generated_at_utc": { "type": "string" },
+    "track": { "type": "string" },
+    "inputs": {
+      "type": "object",
+      "required": ["baseline_json", "candidate_json", "min_repro_trials"],
+      "properties": {
+        "baseline_json": { "type": "string" },
+        "candidate_json": { "type": "string" },
+        "min_repro_trials": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": true
+    },
+    "baseline": {
+      "type": "object",
+      "required": ["status", "repro_trials"],
+      "properties": {
+        "status": { "type": "string" },
+        "repro_trials": { "type": "integer", "minimum": 0 },
+        "go_rate": { "type": ["number", "null"] },
+        "transition_intensity": { "type": ["number", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "candidate": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string" },
+        "decision_label": { "type": ["string", "null"] },
+        "checks_pass_all": { "type": ["boolean", "null"] },
+        "go_rate": { "type": ["number", "null"] },
+        "transition_intensity": { "type": ["number", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "comparison": {
+      "type": "object",
+      "required": [
+        "baseline_repro_hard_gate_ok",
+        "candidate_gate_ok",
+        "delta_go_rate",
+        "delta_transition_intensity"
+      ],
+      "properties": {
+        "baseline_repro_hard_gate_ok": { "type": "boolean" },
+        "candidate_gate_ok": { "type": "boolean" },
+        "delta_go_rate": { "type": ["number", "null"] },
+        "delta_transition_intensity": { "type": ["number", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "decision": {
+      "type": "object",
+      "required": ["label", "reasons", "next_actions"],
+      "properties": {
+        "label": { "enum": ["GO_STAGE2_CANDIDATE", "WATCH_STAGE2", "HOLD_STAGE2"] },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "next_actions": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
