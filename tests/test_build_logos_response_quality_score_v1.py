@@ -83,3 +83,5 @@ def test_quality_score_generated_after_retry_selection(tmp_path: Path) -> None:
     q = json.loads(quality.read_text(encoding="utf-8"))
     assert q["schema"] == "logos_response_quality_score_v1"
     assert isinstance(q["scores"]["overall"], (int, float))
+    assert isinstance(q["scores"]["overall_100"], (int, float))
+    assert abs(float(q["scores"]["overall_100"]) - float(q["scores"]["overall"]) * 10.0) < 0.02

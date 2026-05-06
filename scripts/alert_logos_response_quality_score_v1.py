@@ -47,6 +47,11 @@ def main() -> int:
     score = load_json(score_path)
     scores = score.get("scores") if isinstance(score.get("scores"), dict) else {}
     overall = float(scores.get("overall") or 0.0)
+    overall_100 = scores.get("overall_100")
+    if overall_100 is None:
+        overall_100 = round(overall * 10.0, 2)
+    else:
+        overall_100 = float(overall_100)
     grade = str(score.get("grade") or "UNKNOWN")
     alert_needed = overall < float(args.overall_min)
 
@@ -84,6 +89,7 @@ def main() -> int:
         "webhook_dispatched": dispatched,
         "dispatch_result": dispatch_result,
         "overall": overall,
+        "overall_100": overall_100,
         "grade": grade,
         "overall_min": float(args.overall_min),
     }

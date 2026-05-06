@@ -58,7 +58,13 @@ def score(doc: dict[str, Any], retry_report: dict[str, Any], md_text: str) -> di
 
     # 2) Safety / non-gating
     non_gating = str(doc.get("final_insight_non_gating") or "")
-    ng_bonus = 2.0 if "트리거" in non_gating or "NON_GATING" in non_gating else 0.0
+    ng_low = non_gating.lower()
+    ng_bonus = 2.0 if (
+        "non_gating" in ng_low
+        or "non-gating" in ng_low
+        or "트리거" in non_gating
+        or ("실행" in non_gating and ("사용하지 않" in non_gating or "사용하지 않는다" in non_gating))
+    ) else 0.0
     banned_hits = 0
     for token in ("무조건", "100%", "보장", "반드시 상승", "반드시 하락"):
         if token in non_gating:
@@ -69,7 +75,7 @@ def score(doc: dict[str, Any], retry_report: dict[str, Any], md_text: str) -> di
     selected = bool(retry_report.get("selected"))
     attempts = retry_report.get("attempts") if isinstance(retry_report.get("attempts"), list) else []
     attempt_penalty = min(len(attempts) - 1, 3) * 0.5 if attempts else 1.0
-    repro_score = _clip((9.0 if selected else 4.5) - attempt_penalty)
+    repro_score = _clip((10.0 if selected else 4.5) - attempt_penalty)
 
     # 4) Denominational + text-critical structure
     den_ok = _has_content(doc.get("denominational_view"))
@@ -82,11 +88,21 @@ def score(doc: dict[str, Any], retry_report: dict[str, Any], md_text: str) -> di
     # 5) Interpretation depth proxy
     anchors = doc.get("symbolic_anchors") if isinstance(doc.get("symbolic_anchors"), list) else []
     risk = doc.get("risk_and_falsification") if isinstance(doc.get("risk_and_falsification"), list) else []
-    depth_score = _clip(4.5 + min(len(anchors), 3) * 1.0 + min(len(risk), 3) * 0.8 + (1.0 if len(md_text) > 700 else 0.0))
+    chronicle = doc.get("chronicle_mapping") if isinstance(doc.get("chronicle_mapping"), list) else []
+    chronicle_bonus = min(len(chronicle), 3) * 0.2
+    math_bonus = 0.35 if is_v2 and _has_content(doc.get("mkm_interpretation_math")) else 0.0
+    depth_score = _clip(
+        4.5
+        + min(len(anchors), 3) * 1.0
+        + min(len(risk), 3) * 0.8
+        + (1.0 if len(md_text) > 700 else 0.0)
+        + chronicle_bonus
+        + math_bonus
+    )
 
     # 6) Ops reliability proxy
     md_exists = bool(md_text.strip())
-    ops_score = _clip(7.5 + (1.0 if selected else 0.0) + (1.0 if md_exists else -2.0))
+    ops_score = _clip(7.5 + (1.5 if selected else 0.0) + (1.0 if md_exists else -2.0))
 
     overall = round(
         (
@@ -107,6 +123,7 @@ def score(doc: dict[str, Any], retry_report: dict[str, Any], md_text: str) -> di
         "interpretation_depth_proxy": round(depth_score, 3),
         "ops_reliability_proxy": round(ops_score, 3),
         "overall": overall,
+        "overall_100": round(overall * 10.0, 2),
     }
 
 
@@ -141,6 +158,7 @@ def main() -> int:
     payload = {
         "schema": "logos_response_quality_score_v1",
         "generated_at_utc": _now(),
+        "score_scale": {"primary": "overall_10", "display_100": "overall_100"},
         "inputs": {
             "selected_json": str(selected),
             "retry_report_json": str(report),
