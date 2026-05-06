@@ -199,6 +199,56 @@ def validate_banned(doc: dict[str, Any], patterns: list[re.Pattern[str]]) -> lis
             if pat.search(t):
                 errors.append(f"banned_phrase:mkm_interpretation_math.commentary:{pat.pattern}")
 
+    deep = doc.get("deep_logos_tension_gematria")
+    if isinstance(deep, dict):
+        for sub in ("pattern_id", "commentary"):
+            t = str(deep.get(sub) or "")
+            for pat in patterns:
+                if pat.search(t):
+                    errors.append(f"banned_phrase:deep_logos_tension_gematria.{sub}:{pat.pattern}")
+        fconds = deep.get("falsification_conditions") or []
+        for i, line in enumerate(fconds):
+            t = str(line or "")
+            for pat in patterns:
+                if pat.search(t):
+                    errors.append(f"banned_phrase:deep_logos_tension_gematria.falsification_conditions[{i}]:{pat.pattern}")
+
+    arch = doc.get("archetypal_chaos_order_phase")
+    if isinstance(arch, dict):
+        for sub in ("phase_label", "narrative_claim"):
+            t = str(arch.get(sub) or "")
+            for pat in patterns:
+                if pat.search(t):
+                    errors.append(f"banned_phrase:archetypal_chaos_order_phase.{sub}:{pat.pattern}")
+        fconds = arch.get("falsification_conditions") or []
+        for i, line in enumerate(fconds):
+            t = str(line or "")
+            for pat in patterns:
+                if pat.search(t):
+                    errors.append(f"banned_phrase:archetypal_chaos_order_phase.falsification_conditions[{i}]:{pat.pattern}")
+
+    morph = doc.get("morphology_layer")
+    if isinstance(morph, dict):
+        for sub in ("registry_id", "scope", "interpretation_guard"):
+            t = str(morph.get(sub) or "")
+            for pat in patterns:
+                if pat.search(t):
+                    errors.append(f"banned_phrase:morphology_layer.{sub}:{pat.pattern}")
+        for i, row in enumerate(morph.get("top_lemmas") or []):
+            if not isinstance(row, dict):
+                continue
+            t = str(row.get("lemma") or "")
+            for pat in patterns:
+                if pat.search(t):
+                    errors.append(f"banned_phrase:morphology_layer.top_lemmas[{i}].lemma:{pat.pattern}")
+        for i, row in enumerate(morph.get("top_morph_tags") or []):
+            if not isinstance(row, dict):
+                continue
+            t = str(row.get("morph_tag") or "")
+            for pat in patterns:
+                if pat.search(t):
+                    errors.append(f"banned_phrase:morphology_layer.top_morph_tags[{i}].morph_tag:{pat.pattern}")
+
     return errors
 
 

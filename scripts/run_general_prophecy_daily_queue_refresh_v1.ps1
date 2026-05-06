@@ -71,6 +71,8 @@ $logosResponseV1InputBuilder = Join-Path $WorkspaceRoot "scripts\build_logos_res
 $logosResponseV1Retry = Join-Path $WorkspaceRoot "scripts\run_logos_response_retry_pipeline_v1.py"
 $logosResponseQualityScore = Join-Path $WorkspaceRoot "scripts\build_logos_response_quality_score_v1.py"
 $logosResponseQualityAlert = Join-Path $WorkspaceRoot "scripts\alert_logos_response_quality_score_v1.py"
+$logos63779Registry = Join-Path $WorkspaceRoot "scripts\build_logos_63779_registry_v1.py"
+$logosMorphRegistry = Join-Path $WorkspaceRoot "scripts\build_logos_morphology_registry_v1.py"
 $logosBriefPath = "docs/final/artifacts/logos_symbolic_paid_user_brief_latest.md"
 $notebookManifestPath = "docs/NotebookLM_sources_manifest.md"
 
@@ -89,6 +91,8 @@ if (-not (Test-Path -LiteralPath $mkmMyeongniV2)) { throw "Missing script: $mkmM
 if (-not (Test-Path -LiteralPath $mkmMyeongniV2Validate)) { throw "Missing script: $mkmMyeongniV2Validate" }
 if ($includeLogosV2Flag -and (-not (Test-Path -LiteralPath $mkmLogosV2))) { throw "Missing script: $mkmLogosV2" }
 if ($includeLogosV2Flag -and (-not (Test-Path -LiteralPath $mkmLogosV2Validate))) { throw "Missing script: $mkmLogosV2Validate" }
+if ($enableLogosResponseV1RetryFlag -and (-not (Test-Path -LiteralPath $logos63779Registry))) { throw "Missing script: $logos63779Registry" }
+if ($enableLogosResponseV1RetryFlag -and (-not (Test-Path -LiteralPath $logosMorphRegistry))) { throw "Missing script: $logosMorphRegistry" }
 if ($enableLogosResponseV1RetryFlag -and (-not (Test-Path -LiteralPath $logosResponseV1InputBuilder))) { throw "Missing script: $logosResponseV1InputBuilder" }
 if ($enableLogosResponseV1RetryFlag -and (-not (Test-Path -LiteralPath $logosResponseV1Retry))) { throw "Missing script: $logosResponseV1Retry" }
 if ($enableLogosResponseV1RetryFlag -and $enableLogosResponseQualityScoreFlag -and (-not (Test-Path -LiteralPath $logosResponseQualityScore))) { throw "Missing script: $logosResponseQualityScore" }
@@ -167,6 +171,14 @@ if ($includeLogosV2Flag) {
 }
 
 if ($enableLogosResponseV1RetryFlag) {
+    Invoke-Step "build_logos_63779_registry_v1" {
+        & py -3 $logos63779Registry --output-json "docs/final/artifacts/logos_63779_registry_v1_latest.json"
+    }
+
+    Invoke-Step "build_logos_morphology_registry_v1" {
+        & py -3 $logosMorphRegistry --output-json "docs/final/artifacts/logos_morphology_registry_v1_latest.json"
+    }
+
     Invoke-Step "build_logos_response_retry_inputs_v1" {
         & py -3 $logosResponseV1InputBuilder `
             --mkm-json "docs/final/artifacts/mkm_logos_response_v2_latest.json" `

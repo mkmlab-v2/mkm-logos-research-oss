@@ -149,6 +149,120 @@
         "restoration_momentum": { "type": "number", "minimum": 0, "maximum": 1 },
         "commentary": { "type": "string", "minLength": 1 }
       }
+    },
+    "deep_logos_tension_gematria": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pattern_id",
+        "similarity_0_1",
+        "cohesion_ratio",
+        "cohesion_band",
+        "price_mapping_forbidden",
+        "non_gating_only",
+        "falsification_conditions",
+        "commentary"
+      ],
+      "properties": {
+        "pattern_id": { "type": "string", "minLength": 1 },
+        "similarity_0_1": { "type": "number", "minimum": 0, "maximum": 1 },
+        "cohesion_ratio": { "type": "number", "minimum": 0 },
+        "cohesion_band": { "type": "string", "enum": ["<1x", "1-3x", "3-10x", "10x+"] },
+        "signal_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "history_similarity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "history_similarity_tail": { "type": "number", "minimum": 0, "maximum": 1 },
+        "price_mapping_forbidden": { "type": "boolean" },
+        "non_gating_only": { "type": "boolean" },
+        "falsification_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "commentary": { "type": "string", "minLength": 1 }
+      }
+    },
+    "archetypal_chaos_order_phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "phase_label",
+        "chaos_score",
+        "order_score",
+        "tension_score",
+        "narrative_claim",
+        "falsification_conditions"
+      ],
+      "properties": {
+        "phase_label": { "type": "string", "minLength": 1 },
+        "chaos_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "order_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "tension_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "narrative_claim": { "type": "string", "minLength": 1 },
+        "falsification_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "morphology_layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registry_id",
+        "scope",
+        "hebrew_atoms_total",
+        "matched_hebrew_atoms",
+        "unmatched_hebrew_atoms",
+        "coverage_ratio_0_1",
+        "resolved_multi_rows",
+        "index_unique_norm_keys",
+        "sampled_matched_rows",
+        "top_lemmas",
+        "top_morph_tags",
+        "interpretation_guard",
+        "non_gating_only",
+        "price_mapping_forbidden"
+      ],
+      "properties": {
+        "registry_id": { "type": "string", "minLength": 1 },
+        "scope": { "type": "string", "minLength": 1 },
+        "hebrew_atoms_total": { "type": "integer", "minimum": 0 },
+        "matched_hebrew_atoms": { "type": "integer", "minimum": 0 },
+        "unmatched_hebrew_atoms": { "type": "integer", "minimum": 0 },
+        "coverage_ratio_0_1": { "type": "number", "minimum": 0, "maximum": 1 },
+        "resolved_multi_rows": { "type": "integer", "minimum": 0 },
+        "index_unique_norm_keys": { "type": "integer", "minimum": 0 },
+        "sampled_matched_rows": { "type": "integer", "minimum": 0 },
+        "sampled_scanned_lines": { "type": "integer", "minimum": 0 },
+        "top_lemmas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["lemma", "count"],
+            "properties": {
+              "lemma": { "type": "string", "minLength": 1 },
+              "count": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "top_morph_tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["morph_tag", "count"],
+            "properties": {
+              "morph_tag": { "type": "string", "minLength": 1 },
+              "count": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "interpretation_guard": { "type": "string", "minLength": 1 },
+        "non_gating_only": { "type": "boolean" },
+        "price_mapping_forbidden": { "type": "boolean" }
+      }
     }
   }
 }
