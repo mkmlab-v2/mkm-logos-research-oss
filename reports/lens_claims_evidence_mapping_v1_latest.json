@@ -1,0 +1,53 @@
+{
+  "schema": "lens_claims_evidence_mapping_v1",
+  "generated_at_utc": "2026-05-07T10:27:00Z",
+  "status": "FACT_LOCKED_SCAN",
+  "claims": [
+    {
+      "claim_id": "logos_mdd_minus99_30y",
+      "claim_text": "Logos 30-year backtest MDD is -99%.",
+      "result": "NOT_PROVEN",
+      "evidence": {
+        "thirty_year_guard_path": "C:\\workspace\\docs\\final\\artifacts\\prophecy_lens_combo_backtest_30y_latest.json",
+        "thirty_year_guard_status": "INSUFFICIENT_HISTORY_HOLD",
+        "actual_backtest_path": "C:\\workspace\\docs\\final\\artifacts\\prophecy_lens_combo_backtest_v1_latest.json",
+        "actual_logos_mdd": -0.151538
+      },
+      "notes": [
+        "30y guard artifact exists but indicates insufficient history for 30-year claim.",
+        "Current available combo backtest shows logos mdd -0.151538 on the listed horizon, not -0.99."
+      ]
+    },
+    {
+      "claim_id": "myeongni_sasang_rank1",
+      "claim_text": "Myeongni+Sasang is rank #1 strategy.",
+      "result": "PROVEN_WITH_SCOPE_NOTE",
+      "evidence": {
+        "backtest_path": "C:\\workspace\\docs\\final\\artifacts\\prophecy_lens_combo_backtest_v1_latest.json",
+        "best_strategy_id": "myeongni+sasang",
+        "best_strategy_mdd": -0.036296,
+        "best_strategy_cagr": 4.568246,
+        "best_strategy_sharpe": 5.838073
+      },
+      "notes": [
+        "Claim is true for the currently available v1 artifact scope.",
+        "This does not prove a 30-year result because the 30y guard status is INSUFFICIENT_HISTORY_HOLD."
+      ]
+    },
+    {
+      "claim_id": "most_conservative_wins_policy",
+      "claim_text": "Most conservative wins is the active conflict resolution policy.",
+      "result": "PARTIAL_CONTEXT_DEPENDENT",
+      "evidence": {
+        "veto_config_path": "C:\\workspace\\docs\\final\\artifacts\\sasang_veto_only_active_config_latest.json",
+        "veto_config_value": true,
+        "global_coordinator_path": "C:\\workspace\\reports\\mkm_global_coordinator_v1_latest.json",
+        "global_coordinator_policy": "primary lanes win; logos remains non-gating"
+      },
+      "notes": [
+        "most_conservative_wins is active in Sasang veto-only hard guardrails.",
+        "Global coordinator conflict policy currently states primary lanes win; logos non-gating."
+      ]
+    }
+  ]
+}

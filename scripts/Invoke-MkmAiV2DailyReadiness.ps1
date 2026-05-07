@@ -244,6 +244,51 @@ if (Test-Path -LiteralPath $filledTemplates) {
     }
 }
 
+# BL-008.5: regenerate 30y long-horizon claim guard artifact.
+$thirtyYearGuard = Join-Path $WorkspaceRoot "scripts\build_prophecy_lens_combo_backtest_30y_latest.py"
+if (Test-Path -LiteralPath $thirtyYearGuard) {
+    & py $thirtyYearGuard
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# BL-008.55: refresh Sasang holdout eval with full cohort defaults.
+$sasangHoldoutRefresh = Join-Path $WorkspaceRoot "scripts\run_agct_sasang_holdout_eval_refresh_v1.py"
+if (Test-Path -LiteralPath $sasangHoldoutRefresh) {
+    & py $sasangHoldoutRefresh
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# BL-008.6: refresh Sasang promotion blocker snapshot.
+$sasangBlockers = Join-Path $WorkspaceRoot "scripts\check_sasang_promotion_blockers_v1.py"
+if (Test-Path -LiteralPath $sasangBlockers) {
+    & py $sasangBlockers --allow-alt-long-horizon-waiver --alt-min-available-years 4.99
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# BL-008.7: rebuild threshold recalibration report for Sasang B-track stability.
+$sasangThresholdRecal = Join-Path $WorkspaceRoot "scripts\build_sasang_btrack_threshold_recalibration_v1.py"
+if (Test-Path -LiteralPath $sasangThresholdRecal) {
+    & py $sasangThresholdRecal
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
+# BL-009: regenerate external briefing markdown (EN/KO) from latest Fact-Lock artifacts.
+$externalBriefingGenerator = Join-Path $WorkspaceRoot "scripts\build_official_external_briefing_v1.py"
+if (Test-Path -LiteralPath $externalBriefingGenerator) {
+    & py $externalBriefingGenerator
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
 if ($exitCode -ne 0) {
     exit $exitCode
 }

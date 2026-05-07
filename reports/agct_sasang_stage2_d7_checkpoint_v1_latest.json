@@ -1,0 +1,25 @@
+{
+  "schema": "agct_sasang_stage2_d7_checkpoint_v1",
+  "generated_at_utc": "2026-05-07T13:09:18Z",
+  "track": "B_TRACK",
+  "status": "PASS",
+  "inputs": {
+    "thresholds_json": "C:\\workspace\\docs\\final\\artifacts\\agct_sasang_stage2_promotion_thresholds_v1.json",
+    "history_jsonl": "C:\\workspace\\reports\\agct_sasang_stage2_compare_history_v1.jsonl",
+    "promotion_gate_json": "C:\\workspace\\reports\\agct_sasang_stage2_promotion_gate_v1_latest.json"
+  },
+  "metrics": {
+    "history_rows": 10,
+    "first_observed_at_utc": "2026-04-28T15:13:02Z",
+    "elapsed_days": 8.914076,
+    "min_elapsed_days_required": 7.0,
+    "elapsed_days_ok": true,
+    "required_decision": "GO_STAGE2_FINAL",
+    "current_gate_decision": "GO_STAGE2_FINAL",
+    "decision_ok": true
+  },
+  "notes": [
+    "TRACKING until D+7 elapsed threshold is reached.",
+    "After elapsed threshold, status must be PASS or ALERT only."
+  ]
+}

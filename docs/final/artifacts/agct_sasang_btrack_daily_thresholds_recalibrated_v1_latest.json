@@ -1,0 +1,16 @@
+{
+  "schema": "agct_sasang_btrack_daily_thresholds_v1",
+  "track": "B_TRACK",
+  "decision_profile": "aggressive",
+  "thresholds": {
+    "external_accuracy_min": 0.31,
+    "external_risk_corr_min": 0.170232,
+    "stability_std_max": 0.059029,
+    "time_split_gap_max": 0.1,
+    "robustness_min": 0.13
+  },
+  "notes": [
+    "Recalibrated from recent go/watch pack to reduce avoidable REVIEW_REQUIRED noise.",
+    "Research-only; requires human review before promotion decisions."
+  ]
+}

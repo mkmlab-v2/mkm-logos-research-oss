@@ -1,6 +1,6 @@
 {
   "schema": "sasang_commercialization_status_chain_v1",
-  "generated_at_utc": "2026-04-29T00:00:07Z",
+  "generated_at_utc": "2026-05-07T13:06:32Z",
   "all_exit_zero": true,
   "steps": [
     {
@@ -144,7 +144,19 @@
     {
       "command": "C:\\Python311\\python.exe scripts/build_sasang_weekly_ops_report.py",
       "exit_code": 0,
-      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_weekly_ops_report_latest.json\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_weekly_ops_report_2026-04-29.json",
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_weekly_ops_report_latest.json\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_weekly_ops_report_2026-05-07.json",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/build_mkm_11axis_report_v1.py",
+      "exit_code": 0,
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\mkm_11axis_report_latest.md",
+      "stderr_tail": ""
+    },
+    {
+      "command": "C:\\Python311\\python.exe scripts/validate_mkm_11axis_report_v1.py docs/final/artifacts/mkm_11axis_report_latest.md",
+      "exit_code": 0,
+      "stdout_tail": "ok mkm_11axis_report_v1",
       "stderr_tail": ""
     }
   ],
