@@ -32,5 +32,10 @@
     "non_medical_claim_only": true,
     "no_live_trading_trigger": true,
     "track_b_non_gating": true
+  },
+  "operational_rule": {
+    "external_or_showroom_must_use": "prod",
+    "internal_rnd_may_use": "dev",
+    "policy_sentence_ko": "외부/쇼룸은 prod, 내부 R&D는 dev만 사용한다."
   }
 }

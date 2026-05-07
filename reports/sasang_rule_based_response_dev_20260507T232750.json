@@ -1,0 +1,140 @@
+{
+  "schema": "sasang_rule_based_response_v1",
+  "generated_at_utc": "2026-05-07T14:27:50Z",
+  "track": "B_TRACK",
+  "response_mode": "dev",
+  "policy_ref": "C:\\workspace\\docs\\final\\artifacts\\sasang_response_formatting_policy_v1.json",
+  "sections": {
+    "four_axis_relation": {
+      "latest_top_axis": "TY",
+      "latest_fused_axis": {
+        "TY": 0.28324576829516984,
+        "SY": 0.24590077082660075,
+        "TE": 0.27853044119300296,
+        "SE": 0.19232301968522653
+      },
+      "axis_relation_text": "TY=0.283, TE=0.279, SY=0.246, SE=0.192"
+    },
+    "byungjeungyakri_transition": {
+      "state": "calm",
+      "transition_hint": "stable_transition",
+      "next_state_probabilities": [
+        {
+          "state": "calm",
+          "probability": 1.0,
+          "tag": "HIGH"
+        },
+        {
+          "state": "watch",
+          "probability": 0.0,
+          "tag": "LOW"
+        },
+        {
+          "state": "stress",
+          "probability": 0.0,
+          "tag": "LOW"
+        },
+        {
+          "state": "crisis",
+          "probability": 0.0,
+          "tag": "LOW"
+        }
+      ]
+    },
+    "geumhwagyoyeok_decomposition": [
+      {
+        "factor": "panic_fomo_gap",
+        "raw_value": 0.23999999999999994,
+        "contribution_ratio": 0.4043450794352917,
+        "tag": "MID"
+      },
+      {
+        "factor": "sentiment_polarity_gap",
+        "raw_value": 0.22999999999999998,
+        "contribution_ratio": 0.3874973677921546,
+        "tag": "MID"
+      },
+      {
+        "factor": "axis_te_se_spread",
+        "raw_value": 0.08620742150777644,
+        "contribution_ratio": 0.14523977790613976,
+        "tag": "LOW"
+      },
+      {
+        "factor": "axis_ty_sy_spread",
+        "raw_value": 0.03734499746856909,
+        "contribution_ratio": 0.06291777486641391,
+        "tag": "LOW"
+      }
+    ],
+    "bomyeongjiju_decomposition": [
+      {
+        "factor": "axis_balance_spread_inverse",
+        "raw_value": 0.9090772513900567,
+        "contribution_ratio": 0.321333484599399,
+        "tag": "LOW"
+      },
+      {
+        "factor": "low_panic_support",
+        "raw_value": 0.6699999999999999,
+        "contribution_ratio": 0.23682633610333473,
+        "tag": "LOW"
+      },
+      {
+        "factor": "low_volatility_support",
+        "raw_value": 0.64,
+        "contribution_ratio": 0.22622217180020035,
+        "tag": "LOW"
+      },
+      {
+        "factor": "low_dispersion_support",
+        "raw_value": 0.61,
+        "contribution_ratio": 0.21561800749706597,
+        "tag": "LOW"
+      }
+    ],
+    "conclusion": [
+      "Baseline status=PASS, winner_sigma=0.0315",
+      "Top axis=TY with fused axis [TY=0.283, TE=0.279, SY=0.246, SE=0.192]",
+      "No baseline alerts."
+    ]
+  },
+  "mode_outputs": {
+    "dev": {
+      "input_evidence": {
+        "reasoning_json": "C:\\workspace\\reports\\sasang_dna_market_reasoning_v1_latest.json",
+        "baseline_json": "C:\\workspace\\reports\\agct_sigma_locked_baseline_chain_v1_latest.json",
+        "latest_top_axis": "TY",
+        "fused_axis": {
+          "TY": 0.28324576829516984,
+          "SY": 0.24590077082660075,
+          "TE": 0.27853044119300296,
+          "SE": 0.19232301968522653
+        }
+      },
+      "engine_summary": {
+        "geumhwagyoyeok_factors": 4,
+        "bomyeongjiju_factors": 4,
+        "byungjeung_state": "calm",
+        "byungjeung_top_next_state": "calm",
+        "byungjeung_top_next_probability": 1.0
+      },
+      "gate_decision": {
+        "baseline_status": "PASS",
+        "winner_sigma": 0.0315
+      },
+      "blockers": []
+    },
+    "prod": {
+      "market_state": "TY axis dominant with structured stress monitoring",
+      "confidence": {
+        "baseline_status": "PASS",
+        "winner_sigma": 0.0315,
+        "next_state_top": "calm",
+        "next_state_probability": 1.0
+      },
+      "action": "WATCH_CONFIRMATION",
+      "disclaimer": "This output is a non-medical, non-guaranteed probabilistic scenario summary."
+    }
+  }
+}
