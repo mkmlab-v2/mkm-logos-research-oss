@@ -2149,6 +2149,27 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 - 최신 상태:
   - `key_facts`: `node_count=100`, `edge_count=3854`, `old_new_cross_edges=1115`, `phase_transition_signal=present`, `gate_status=GO`, `counterfactual_mean_gap=0.362182`.
 
+#### 31.2a GraphRAG Pilot Query Router (Track B/K Observation) (FACT, 2026-05-07)
+
+- 스크립트:
+  - `scripts/run_graphrag_pilot_router_v1.py`
+- 스키마:
+  - `docs/final/schemas/graphrag_pilot_router_v1.schema.json`
+- 입력(기존 FACT 아티팩트만 사용):
+  - `docs/final/artifacts/global_atom_network_nodes_latest.jsonl`
+  - `docs/final/artifacts/global_atom_network_edges_latest.jsonl`
+  - `docs/final/artifacts/multi_symbol_gate_summary_latest.json`
+- 출력:
+  - `docs/final/artifacts/graphrag_pilot_router_latest.json`
+- 구현 사실:
+  - 자연어 질문을 seed keyword/alias로 변환한 뒤, `gate_passed=true` + `similarity` 임계치 기반 멀티홉 탐색(`--max-hops`)으로 후보 노드/경로를 조립.
+  - 실행 전 `multi_symbol_gate_summary`의 `summary.status`를 확인하며, `GO`가 아니면 즉시 중단(exit 3).
+  - 옵션 `--emit-answer-brief`는 관측용 요약만 생성하며 항상 `OBSERVATION_ONLY`/`[HYPO]` 경계를 유지.
+  - 데이터 크롤링/신규 수집은 하지 않고 기존 글로벌 아톰 네트워크 아티팩트만 사용.
+- 격벽:
+  - 출력 필드 `research_only=true`, `observation_only=true`, `hypothesis_tier=B`를 고정해 A-track/실매매 트리거와 자동 합선하지 않는다.
+  - 본 파일럿은 Q/A 관측 실험 레일이며, 운영 판단은 여전히 human commander gate와 별도 운영 게이트가 우선이다.
+
 #### 31.3 Global Atom Submission Abstract Builder (KDD/AAAI) (FACT, 2026-04-28)
 
 - 스크립트:

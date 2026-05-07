@@ -30,6 +30,7 @@ param(
 # 2026-05-02: 일일 실행 인사이트 브리프 v1 (§1c 독립 렌즈·CONSTITUTION §3.3 행; 산출 JSON은 게이트 목록 미포함).
 # 2026-05-02: 압축 주간 거버넌스 체인 러너 복구 (run_compression_weekly_governance_chain.ps1 + P0 경로).
 # 2026-05-02: 명리 독립 렌즈 → Thin JSONL 브리지 v1 (emit 스크립트·pytest; §3.6).
+# 2026-05-07: GraphRAG pilot query router v1 (Track B/K observation-only; script+schema+test).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -331,7 +332,10 @@ $required = @(
     "data\myeongni\16_STATE_MASTER_PROBE_v1.json",
     "scripts\check_curated_saju_joint_staleness_v1.py",
     "tests\test_check_curated_saju_joint_staleness_v1.py",
-    "tests\test_yang_2015_btrack_json_schema_v1.py"
+    "tests\test_yang_2015_btrack_json_schema_v1.py",
+    "scripts\run_graphrag_pilot_router_v1.py",
+    "docs\final\schemas\graphrag_pilot_router_v1.schema.json",
+    "tests\test_run_graphrag_pilot_router_v1.py"
 )
 
 $missing = @()

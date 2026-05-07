@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/graphrag_pilot_router_v1.schema.json",
+  "title": "GraphRAG Pilot Router v1 (Track B/K, observation-only)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "ts_utc",
+    "research_only",
+    "observation_only",
+    "source_track",
+    "hypothesis_tier",
+    "question",
+    "fact_lock",
+    "seed_keywords",
+    "seed_node_ids",
+    "selected_nodes",
+    "traversed_edges",
+    "answer_scaffold"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "graphrag_pilot_router_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "ts_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "research_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "observation_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "source_track": {
+      "type": "string",
+      "enum": ["K", "B"]
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "const": "B"
+    },
+    "question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "seed_keywords": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "seed_node_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "selected_nodes": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "traversed_edges": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "fact_lock": {
+      "type": "object",
+      "required": ["gate_status", "nodes_path", "edges_path"],
+      "properties": {
+        "gate_status": { "type": "string" },
+        "nodes_path": { "type": "string" },
+        "edges_path": { "type": "string" }
+      }
+    },
+    "answer_scaffold": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string" }
+      }
+    },
+    "answer_brief": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["mode", "text"],
+      "properties": {
+        "mode": { "type": "string" },
+        "text": { "type": "string" }
+      }
+    }
+  }
+}
