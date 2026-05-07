@@ -30,6 +30,9 @@ if ([string]::IsNullOrWhiteSpace($OutJson)) {
     $OutJson = "docs\final\artifacts\lens_penalty_daily_latest.json"
 }
 
+& py "scripts\build_daily_execution_falsification_input_v1.py" `
+    --out $InputJson
+
 & py "scripts\build_daily_execution_falsification_events_v1.py" `
     --input-json $InputJson `
     --events-jsonl $EventsJsonl `
