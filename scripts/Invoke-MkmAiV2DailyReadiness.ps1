@@ -244,6 +244,15 @@ if (Test-Path -LiteralPath $filledTemplates) {
     }
 }
 
+# BL-009: regenerate external briefing markdown (EN/KO) from latest Fact-Lock artifacts.
+$externalBriefingGenerator = Join-Path $WorkspaceRoot "scripts\build_official_external_briefing_v1.py"
+if (Test-Path -LiteralPath $externalBriefingGenerator) {
+    & py $externalBriefingGenerator
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
 if ($exitCode -ne 0) {
     exit $exitCode
 }
