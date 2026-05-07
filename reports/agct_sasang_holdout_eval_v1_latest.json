@@ -1,6 +1,6 @@
 {
   "schema": "agct_sasang_holdout_eval_v1",
-  "generated_at_utc": "2026-05-05T08:29:32Z",
+  "generated_at_utc": "2026-05-07T12:32:20Z",
   "track": "B_TRACK",
   "governance": {
     "research_only": true,
@@ -8,7 +8,7 @@
     "human_review_required": true
   },
   "inputs": {
-    "cohort_csv": "C:\\workspace\\tests\\fixtures\\agct_demo_cohort_pass_v1.csv",
+    "cohort_csv": "C:\\workspace\\tmp\\bio_real_cohort_merged_with_sidecar_v1.csv",
     "genotype_csv": "C:\\workspace\\tmp\\bio_genotype_long_v1.csv",
     "sample_col": "sample_id",
     "label_col": "expected_parent",
@@ -18,9 +18,9 @@
     "permutation_repeats": 500
   },
   "split": {
-    "paired_samples": 4,
-    "train_n": 3,
-    "holdout_n": 1
+    "paired_samples": 200,
+    "train_n": 140,
+    "holdout_n": 60
   },
   "results": {
     "best_train_mapping": {
@@ -39,7 +39,7 @@
       "T": "SE"
     },
     "holdout_oracle_best_accuracy": 1.0,
-    "holdout_accuracy_permutation_p_value": 1.0
+    "holdout_accuracy_permutation_p_value": 0.001996007984031936
   },
   "summary": {
     "status": "PASS_GENERALIZATION"

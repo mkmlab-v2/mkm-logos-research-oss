@@ -8,12 +8,13 @@
       "claim_text": "Logos 30-year backtest MDD is -99%.",
       "result": "NOT_PROVEN",
       "evidence": {
-        "missing_expected_path": "C:\\workspace\\docs\\final\\artifacts\\prophecy_lens_combo_backtest_30y_latest.json",
+        "thirty_year_guard_path": "C:\\workspace\\docs\\final\\artifacts\\prophecy_lens_combo_backtest_30y_latest.json",
+        "thirty_year_guard_status": "INSUFFICIENT_HISTORY_HOLD",
         "actual_backtest_path": "C:\\workspace\\docs\\final\\artifacts\\prophecy_lens_combo_backtest_v1_latest.json",
         "actual_logos_mdd": -0.151538
       },
       "notes": [
-        "No 30y latest artifact found at the expected path.",
+        "30y guard artifact exists but indicates insufficient history for 30-year claim.",
         "Current available combo backtest shows logos mdd -0.151538 on the listed horizon, not -0.99."
       ]
     },
@@ -30,7 +31,7 @@
       },
       "notes": [
         "Claim is true for the currently available v1 artifact scope.",
-        "This does not prove a 30-year result because the 30y artifact is missing."
+        "This does not prove a 30-year result because the 30y guard status is INSUFFICIENT_HISTORY_HOLD."
       ]
     },
     {

@@ -1,6 +1,6 @@
 {
   "schema": "sasang_commercialization_status_chain_v1",
-  "generated_at_utc": "2026-05-04T14:22:00Z",
+  "generated_at_utc": "2026-05-07T13:06:32Z",
   "all_exit_zero": true,
   "steps": [
     {
@@ -144,7 +144,7 @@
     {
       "command": "C:\\Python311\\python.exe scripts/build_sasang_weekly_ops_report.py",
       "exit_code": 0,
-      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_weekly_ops_report_latest.json\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_weekly_ops_report_2026-05-04.json",
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_weekly_ops_report_latest.json\nWROTE: C:\\workspace\\docs\\final\\artifacts\\sasang_weekly_ops_report_2026-05-07.json",
       "stderr_tail": ""
     },
     {

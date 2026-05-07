@@ -12,13 +12,14 @@ Externally safe summary grounded in current Fact-Lock artifacts, with explicit s
 ## As-Of Anchor
 - `as_of_utc`: `2026-05-06T23:16:25Z`
 - `artifact_scope`: `docs/final/artifacts/prophecy_lens_combo_backtest_v1_latest.json`
+- `long_horizon_gate`: `docs/final/artifacts/prophecy_lens_combo_backtest_30y_latest.json` (`status=INSUFFICIENT_HISTORY_HOLD`, `available_years=4.9993`)
 - `scope_note`: "Results are valid for the observed v1 horizon only; long-horizon generalization requires separate validation."
 
 ## External 5-Line Core Statement
 1. **[Strategy Strength]** In the latest validated artifact scope, `myeongni+sasang` is ranked top (`best_strategy_id`) with `cagr=4.568246`, `sharpe=5.838073`, and `mdd=-0.036296`.
 2. **[Risk Governance]** The Logos lens is operated as a risk/context layer, not a standalone execution trigger; within the same artifact horizon, standalone Logos shows `mdd=-0.151538`.
 3. **[Decision Policy]** Operationally, primary lanes are prioritized in global coordination, while Sasang veto guardrails can activate conservative protections in designated conditions.
-4. **[Validation Boundary]** These statements are tied to versioned artifacts and bounded evaluation windows; promotion to production follows the formal Promotion Loop (`B -> Commander approval -> A`).
+4. **[Validation Boundary]** These statements are tied to versioned artifacts and bounded evaluation windows (`30y_status=INSUFFICIENT_HISTORY_HOLD`, `available_years=4.9993`); promotion to production follows the formal Promotion Loop (`B -> Commander approval -> A`).
 5. **[Operating Posture]** The system remains under conservative guardrails until unresolved items are cleared with evidence-backed updates.
 
 ## Policy Clarifier (Avoid Misinterpretation)
@@ -30,6 +31,7 @@ Externally safe summary grounded in current Fact-Lock artifacts, with explicit s
 ## Evidence Block (1:1 Mapping)
 - Canonical claim mapping: `reports/lens_claims_evidence_mapping_v1_latest.json`
 - Strategy ranking/mdd source: `docs/final/artifacts/prophecy_lens_combo_backtest_v1_latest.json`
+- Long-horizon (30y) guard source: `docs/final/artifacts/prophecy_lens_combo_backtest_30y_latest.json`
 - Sasang promotion gates: `reports/agct_sasang_stage2_promotion_gate_v1_latest.json`
 - Sasang fasttrack gate: `reports/agct_sasang_stage2_fasttrack_gate_v1_latest.json`
 - Sasang D+7 checkpoint: `reports/agct_sasang_stage2_d7_checkpoint_v1_latest.json`

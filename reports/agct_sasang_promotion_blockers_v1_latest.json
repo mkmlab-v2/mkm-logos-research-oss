@@ -1,0 +1,29 @@
+{
+  "schema": "agct_sasang_promotion_blockers_v1",
+  "generated_at_utc": "2026-05-07T12:34:08Z",
+  "research_only": true,
+  "inputs": {
+    "holdout_json": "C:\\workspace\\reports\\agct_sasang_holdout_eval_v1_latest.json",
+    "gowatch_json": "C:\\workspace\\reports\\agct_sasang_go_watch_pack_v1_latest.json",
+    "thirty_year_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_lens_combo_backtest_30y_latest.json",
+    "min_holdout_n": 10,
+    "max_review_required": 0,
+    "allow_alt_long_horizon_waiver": true,
+    "alt_min_available_years": 4.99
+  },
+  "observations": {
+    "holdout_n": 60,
+    "review_required_runs": 0,
+    "thirty_year_status": "INSUFFICIENT_HISTORY_HOLD",
+    "available_years": 4.9993
+  },
+  "waivers": {
+    "long_horizon_substitute_used": true,
+    "policy": "allow substitute long-horizon pass when strict 30y is structurally unavailable and available_years >= 4.99"
+  },
+  "blockers": [],
+  "decision": {
+    "status": "READY_FOR_MANUAL_SIGNOFF",
+    "blocker_count": 0
+  }
+}
