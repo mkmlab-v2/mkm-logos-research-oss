@@ -1,0 +1,36 @@
+{
+  "schema": "sasang_response_formatting_policy_v1",
+  "generated_at_utc": "2026-05-07T13:55:00Z",
+  "default_mode": "prod",
+  "modes": {
+    "dev": {
+      "label": "Whitebox-Structured",
+      "allow_structured_reasoning_summary": true,
+      "allow_cot_raw": false,
+      "required_sections": [
+        "input_evidence",
+        "engine_summary",
+        "gate_decision",
+        "blockers"
+      ],
+      "ip_protection_level": "internal_only"
+    },
+    "prod": {
+      "label": "Blackbox-Business",
+      "allow_structured_reasoning_summary": false,
+      "allow_cot_raw": false,
+      "required_sections": [
+        "market_state",
+        "confidence",
+        "action",
+        "disclaimer"
+      ],
+      "ip_protection_level": "public_safe"
+    }
+  },
+  "guardrails": {
+    "non_medical_claim_only": true,
+    "no_live_trading_trigger": true,
+    "track_b_non_gating": true
+  }
+}
