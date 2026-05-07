@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "sentinel_realtime_alert_v1.schema.json",
+  "title": "Sentinel Realtime Alert v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "ts_utc",
+    "severity",
+    "category",
+    "trigger",
+    "fact_lock",
+    "recommended_response",
+    "evidence_paths",
+    "correlation_id"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "sentinel_realtime_alert_v1" },
+    "schema_version": { "type": "string", "minLength": 1 },
+    "ts_utc": { "type": "string", "minLength": 1 },
+    "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+    "category": { "type": "string", "enum": ["runtime", "cost", "security", "policy", "hardware"] },
+    "trigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signal_key", "observed_value", "threshold"],
+      "properties": {
+        "signal_key": { "type": "string", "minLength": 1 },
+        "observed_value": {},
+        "threshold": {}
+      }
+    },
+    "fact_lock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["track", "gating"],
+      "properties": {
+        "track": { "type": "string", "enum": ["A", "B", "ops"] },
+        "gating": { "type": "string", "enum": ["NON_GATING", "GATED"] }
+      }
+    },
+    "recommended_response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "owner", "requires_commander_approval"],
+      "properties": {
+        "level": { "type": "string", "enum": ["L1", "L2", "L3"] },
+        "owner": { "type": "string", "enum": ["Operator", "Guardian", "Commander"] },
+        "requires_commander_approval": { "type": "boolean" }
+      }
+    },
+    "evidence_paths": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "context_snapshot": { "type": "object" },
+    "correlation_id": { "type": "string", "minLength": 1 }
+  }
+}
+

@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "inspector_daily_report_v1.schema.json",
+  "title": "Inspector Daily Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "ts_utc",
+    "fact_lock",
+    "system_posture",
+    "affect_layer",
+    "human_feedback_slot",
+    "domains",
+    "source_evidence",
+    "actions_proposed",
+    "audit"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "inspector_daily_report_v1" },
+    "schema_version": { "type": "string", "minLength": 1 },
+    "ts_utc": { "type": "string", "minLength": 1 },
+    "fact_lock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["constitution_ref", "mode"],
+      "properties": {
+        "constitution_ref": { "type": "string", "minLength": 1 },
+        "mode": { "type": "string", "minLength": 1 }
+      }
+    },
+    "system_posture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overall", "score_0_100"],
+      "properties": {
+        "overall": { "type": "string", "enum": ["GREEN", "YELLOW", "RED"] },
+        "score_0_100": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "affect_layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["non_gating", "mood_vector", "tone_suggestion", "operator_experience", "recommendation_style"],
+      "properties": {
+        "non_gating": { "type": "boolean", "const": true },
+        "mood_vector": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["calm", "urgency", "fatigue", "confidence"],
+          "properties": {
+            "calm": { "type": "number", "minimum": 0, "maximum": 1 },
+            "urgency": { "type": "number", "minimum": 0, "maximum": 1 },
+            "fatigue": { "type": "number", "minimum": 0, "maximum": 1 },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "tone_suggestion": { "type": "string", "minLength": 1 },
+        "operator_experience": { "type": "string", "minLength": 1 },
+        "recommendation_style": { "type": "string", "enum": ["directive", "suggestive", "summary_first"] }
+      }
+    },
+    "human_feedback_slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "prompt", "response"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "prompt": { "type": "string", "minLength": 1 },
+        "response": { "type": "string" }
+      }
+    },
+    "domains": { "type": "object" },
+    "source_evidence": { "type": "object" },
+    "actions_proposed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "action_id",
+          "level",
+          "owner",
+          "description",
+          "requires_commander_approval"
+        ],
+        "properties": {
+          "action_id": { "type": "string", "minLength": 1 },
+          "level": { "type": "string", "enum": ["L0", "L1", "L2", "L3"] },
+          "owner": { "type": "string", "enum": ["Observer", "Operator", "Guardian", "Commander"] },
+          "description": { "type": "string", "minLength": 1 },
+          "requires_commander_approval": { "type": "boolean" }
+        }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "agent", "publish_scope"],
+      "properties": {
+        "run_id": { "type": "string", "minLength": 1 },
+        "agent": { "type": "string", "minLength": 1 },
+        "publish_scope": { "type": "string", "enum": ["local_only", "selected_files", "full_pr"] }
+      }
+    }
+  }
+}
+
