@@ -9,16 +9,41 @@ Example:  %(prog)s --skip-distill -- --output /tmp/job.json --dry-run
 from __future__ import annotations
 
 import argparse
+import json
 import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+POLICY_PATH = ROOT / "docs/final/artifacts/LOGOS_VECTOR_INDEX_POLICY_V1.json"
 
 
 def _run(script: str, argv: list[str]) -> int:
     cmd = [sys.executable, str(ROOT / script)] + argv
     return subprocess.run(cmd, cwd=str(ROOT)).returncode
+
+
+def _ann_lite_args_from_policy() -> list[str]:
+    if not POLICY_PATH.is_file():
+        return []
+    try:
+        policy = json.loads(POLICY_PATH.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return []
+    if policy.get("status") != "active":
+        return []
+    emb = policy.get("embedding")
+    if not isinstance(emb, dict):
+        return []
+    model_id = emb.get("model_id")
+    if not isinstance(model_id, str) or not model_id.strip():
+        return []
+    return [
+        "--embedding-backend",
+        "sentence_transformers",
+        "--sentence-transformer-model",
+        model_id.strip(),
+    ]
 
 
 def main() -> int:
@@ -60,25 +85,29 @@ def main() -> int:
         return rc
 
     if args.include_ann_lite:
-        rc = _run("scripts/build_logos_vector_index_ann_lite_v1.py", [])
+        ann_args = _ann_lite_args_from_policy()
+        rc = _run("scripts/build_logos_vector_index_ann_lite_v1.py", ann_args)
         if rc != 0:
             return rc
         if not args.skip_ann_lite_query_smoke:
             sqlite_ann = ROOT / "docs/final/artifacts/logos_vector_index_ann_lite_v1.sqlite"
             smoke_json = ROOT / "docs/final/artifacts/logos_vector_ann_lite_query_smoke_latest.json"
             smoke_json.parent.mkdir(parents=True, exist_ok=True)
+            smoke_args = [
+                "--sqlite",
+                str(sqlite_ann),
+                "--query",
+                "track_b_pipeline_smoke_v1",
+                "--top-k",
+                "3",
+                "--output-json",
+                str(smoke_json),
+            ]
+            if ann_args:
+                smoke_args += ["--sentence-transformer-model", ann_args[-1]]
             rc = _run(
                 "scripts/query_logos_vector_index_ann_lite_v1.py",
-                [
-                    "--sqlite",
-                    str(sqlite_ann),
-                    "--query",
-                    "track_b_pipeline_smoke_v1",
-                    "--top-k",
-                    "3",
-                    "--output-json",
-                    str(smoke_json),
-                ],
+                smoke_args,
             )
             if rc != 0:
                 return rc
