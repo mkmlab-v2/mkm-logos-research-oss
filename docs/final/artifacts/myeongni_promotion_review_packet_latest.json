@@ -1,6 +1,6 @@
 {
   "schema": "myeongni_promotion_review_packet_v1",
-  "ts_utc": "2026-05-06T02:03:10Z",
+  "ts_utc": "2026-05-07T10:29:06Z",
   "promotion_gate": "C:\\workspace\\docs\\final\\artifacts\\myeongni_promotion_gate_latest.json",
   "failure_analysis": "C:\\workspace\\docs\\final\\artifacts\\myeongni_promotion_failure_analysis_latest.json",
   "shadow_governance": "C:\\workspace\\docs\\final\\artifacts\\myeongni_shadow_governance_latest.json",

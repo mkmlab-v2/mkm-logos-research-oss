@@ -1,6 +1,6 @@
 {
   "schema": "myeongni_eval_contract_v1",
-  "ts_utc": "2026-04-28T05:26:10Z",
+  "ts_utc": "2026-05-07T10:29:06Z",
   "mode": "observation_only",
   "scope": "Track B lane only; no Track A/live binding.",
   "window": {
@@ -27,9 +27,9 @@
     "myeongni_16state_jsonl": "C:\\workspace\\data\\myeongni\\myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl"
   },
   "latest_snapshot": {
-    "lens_ts_utc": "2026-04-28T05:26:07Z",
-    "fusion_ts_utc": "2026-04-28T05:26:07Z",
-    "fusion_agreement_rate": 0.666667
+    "lens_ts_utc": "2026-05-06T00:33:42Z",
+    "fusion_ts_utc": "2026-05-05T08:27:57Z",
+    "fusion_agreement_rate": 0.75
   },
   "policy_guardrail": {
     "auto_promotion_track_b_to_a": false,
