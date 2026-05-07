@@ -1,6 +1,6 @@
 {
   "schema": "myeongni_eval_contract_v1",
-  "ts_utc": "2026-05-07T10:29:06Z",
+  "ts_utc": "2026-05-07T11:29:25Z",
   "mode": "observation_only",
   "scope": "Track B lane only; no Track A/live binding.",
   "window": {

@@ -1,6 +1,6 @@
 {
   "schema": "myeongni_promotion_gate_v1",
-  "ts_utc": "2026-05-07T10:29:06Z",
+  "ts_utc": "2026-05-07T11:29:25Z",
   "status": "PASS",
   "track": "B",
   "decision": "MANUAL_PROMOTION_REVIEW_GO",
