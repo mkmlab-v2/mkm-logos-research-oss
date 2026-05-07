@@ -289,6 +289,15 @@ if (Test-Path -LiteralPath $externalBriefingGenerator) {
     }
 }
 
+# BL-010: enforce Sasang dual-mode response formatting policy outputs.
+$sasangRuleResponseBuilder = Join-Path $WorkspaceRoot "scripts\build_sasang_rule_based_response_v1.py"
+if (Test-Path -LiteralPath $sasangRuleResponseBuilder) {
+    & py $sasangRuleResponseBuilder --response-mode prod
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+}
+
 if ($exitCode -ne 0) {
     exit $exitCode
 }
