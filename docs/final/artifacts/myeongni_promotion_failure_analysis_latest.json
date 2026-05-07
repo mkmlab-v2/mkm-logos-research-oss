@@ -1,6 +1,6 @@
 {
   "schema": "myeongni_promotion_failure_analysis_v1",
-  "ts_utc": "2026-05-07T11:29:25Z",
+  "ts_utc": "2026-05-07T11:40:51Z",
   "summary": {
     "fail_count": 0,
     "warn_count": 0,
