@@ -24,6 +24,15 @@ if ($LASTEXITCODE -ne 0) {
     throw "Failed to create scheduled task. ExitCode=$LASTEXITCODE"
 }
 
+try {
+    $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
+    $settings = $task.Settings
+    $settings.Hidden = $true
+    Set-ScheduledTask -TaskName $TaskName -Settings $settings | Out-Null
+} catch {
+    Write-Warning "Could not set hidden flag for task '$TaskName': $($_.Exception.Message)"
+}
+
 Write-Host "Created scheduled task: $TaskName"
 Write-Host "Start time: $StartTime"
 Write-Host "Command: $tr"

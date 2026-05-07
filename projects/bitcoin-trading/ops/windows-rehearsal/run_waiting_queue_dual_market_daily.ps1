@@ -10,6 +10,7 @@ $workspace = "C:\workspace"
 $runner = Join-Path $workspace "scripts\run_waiting_queue_monthly_check.ps1"
 $taskLog = Join-Path $workspace "docs\final\artifacts\waiting_queue_dual_market_daily_task.log"
 $lockPath = Join-Path $workspace "docs\final\artifacts\locks\waiting_queue_dual_market_daily.lock.json"
+$sharedRunnerLockPath = Join-Path $workspace "docs\final\artifacts\locks\waiting_queue_monthly_runner.lock.json"
 
 function Write-TaskLog([string]$message) {
     $line = "[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $message
@@ -230,6 +231,44 @@ function Release-TaskLock {
     }
 }
 
+function Acquire-SharedRunnerLock {
+    param(
+        [string]$Path,
+        [int]$MaxWaitSeconds = 900
+    )
+    $lockDir = Split-Path -Parent $Path
+    if (-not (Test-Path -LiteralPath $lockDir)) {
+        New-Item -ItemType Directory -Path $lockDir -Force | Out-Null
+    }
+    $deadline = (Get-Date).AddSeconds($MaxWaitSeconds)
+    while ($true) {
+        if (-not (Test-Path -LiteralPath $Path)) {
+            $payload = @{
+                schema = "shared_runner_lock_v1"
+                task = "waiting_queue_monthly_runner"
+                owner = "waiting_queue_dual_market_daily"
+                created_at_utc = (Get-Date).ToUniversalTime().ToString("o")
+                host = $env:COMPUTERNAME
+                pid = $PID
+            }
+            $payload | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $Path -Encoding UTF8
+            return $true
+        }
+        if ((Get-Date) -ge $deadline) {
+            Write-TaskLog "ERROR shared_runner_lock_wait_timeout path=$Path max_wait_seconds=$MaxWaitSeconds"
+            return $false
+        }
+        Start-Sleep -Seconds 5
+    }
+}
+
+function Release-SharedRunnerLock {
+    param([string]$Path)
+    if (Test-Path -LiteralPath $Path) {
+        Remove-Item -LiteralPath $Path -Force -ErrorAction SilentlyContinue
+    }
+}
+
 if (-not (Test-Path $runner)) {
     Write-TaskLog "ERROR runner missing: $runner"
     throw "Waiting queue runner not found: $runner"
@@ -241,6 +280,14 @@ try {
     }
     Set-Location $workspace
     $strictMode = Get-StrictModeEnabled -CliStrict:$StrictCloseReturn
+    $guardrailRecover = Join-Path $workspace "scripts\Ensure-WaitingQueueGuardrailArtifacts.ps1"
+    if (Test-Path -LiteralPath $guardrailRecover) {
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $guardrailRecover -WorkspaceRoot $workspace | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            throw "Guardrail artifact recovery failed with exit code $LASTEXITCODE"
+        }
+        Write-TaskLog "INFO guardrail_recovery=ok"
+    }
     Update-DailyCloseInputFromEnv
 
     $stdoutFile = Join-Path $workspace "docs\final\artifacts\waiting_queue_dual_market_daily_task.stdout.log"
@@ -317,22 +364,29 @@ try {
     $maxAttempts = 2
     $attempt = 0
     $lastExitCode = 0
-    do {
-        $attempt += 1
-        & $runner @invokeArgs 1>> $stdoutFile 2>> $stderrFile
-        $lastExitCode = $LASTEXITCODE
-        if ($lastExitCode -eq 0) {
-            break
-        }
-        $stderrTail = ""
-        if (Test-Path $stderrFile) {
-            $stderrTail = (Get-Content $stderrFile -Tail 20 -ErrorAction SilentlyContinue) -join " | "
-        }
-        Write-TaskLog "WARN attempt=$attempt/$maxAttempts exit_code=$lastExitCode; stderr_tail=$stderrTail"
-        if ($attempt -lt $maxAttempts) {
-            Start-Sleep -Seconds 10
-        }
-    } while ($attempt -lt $maxAttempts)
+    if (-not (Acquire-SharedRunnerLock -Path $sharedRunnerLockPath)) {
+        throw "Shared waiting_queue runner lock timeout"
+    }
+    try {
+        do {
+            $attempt += 1
+            & $runner @invokeArgs 1>> $stdoutFile 2>> $stderrFile
+            $lastExitCode = $LASTEXITCODE
+            if ($lastExitCode -eq 0) {
+                break
+            }
+            $stderrTail = ""
+            if (Test-Path $stderrFile) {
+                $stderrTail = (Get-Content $stderrFile -Tail 20 -ErrorAction SilentlyContinue) -join " | "
+            }
+            Write-TaskLog "WARN attempt=$attempt/$maxAttempts exit_code=$lastExitCode; stderr_tail=$stderrTail"
+            if ($attempt -lt $maxAttempts) {
+                Start-Sleep -Seconds 10
+            }
+        } while ($attempt -lt $maxAttempts)
+    } finally {
+        Release-SharedRunnerLock -Path $sharedRunnerLockPath
+    }
     if ($lastExitCode -ne 0) {
         throw "Dual market waiting queue failed after $maxAttempts attempts (last exit code: $lastExitCode)"
     }

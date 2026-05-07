@@ -40,7 +40,23 @@ $dir = Split-Path -Parent $OutPath
 if (-not (Test-Path -LiteralPath $dir)) {
     New-Item -ItemType Directory -Path $dir -Force | Out-Null
 }
-$obj | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $OutPath -Encoding utf8
+$json = $obj | ConvertTo-Json -Depth 6
+$maxAttempts = 3
+for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+    try {
+        [System.IO.File]::WriteAllText(
+            $OutPath,
+            $json,
+            [System.Text.UTF8Encoding]::new($false)
+        )
+        break
+    } catch {
+        if ($attempt -eq $maxAttempts) {
+            throw
+        }
+        Start-Sleep -Milliseconds 300
+    }
+}
 
 if ($ready) {
     Write-Host "OK fatal alert config ready"
