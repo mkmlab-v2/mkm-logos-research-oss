@@ -59,6 +59,7 @@
   - `docs/final/artifacts/logos_shadow_weekly_gate_latest.json` (strict decision)
   - `docs/final/artifacts/logos_shadow_weekly_gate_bootstrap_latest.json` (bootstrap decision)
   - `docs/final/artifacts/logos_shadow_weekly_trend_report_latest.json` (7-day trend)
+  - `docs/final/artifacts/logos_regime_resonance_shadow_signal_latest.json` (non-gating regime resonance shadow signal)
   - `docs/final/artifacts/logos_shadow_alert_decision_latest.json` (alert decision)
   - `docs/final/artifacts/logos_shadow_insight_latest.json` (shadow insight + deep fusion evidence)
 - Minimum review lines to copy into weekly approval notes:
@@ -67,6 +68,7 @@
   - `trend.summary.mean_top1_cosine_7d_avg`
   - `trend.summary.low_conf_rate_7d_avg`
   - `trend.summary.query_error_rate_7d_aggregate`
+  - `resonance.status`, `resonance.summary.best_regime`, `resonance.summary.best_top_hit_cosine`
   - `alert.should_alert`, `alert.reason`
 
 ## Track Wall (Fact-Lock)

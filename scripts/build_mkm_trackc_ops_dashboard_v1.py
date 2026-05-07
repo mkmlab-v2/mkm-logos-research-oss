@@ -100,9 +100,11 @@ def main() -> int:
     logos_shadow = _read_json(art / "logos_shadow_promotion_status_latest.json")
     logos_insight = _read_json(art / "logos_shadow_insight_latest.json")
     logos_drift = _read_json(art / "logos_semantic_drift_monitor_latest.json")
+    logos_regime_resonance_shadow = _read_json(art / "logos_regime_resonance_shadow_signal_latest.json")
     logos_weekly_gate = _read_json(art / "logos_shadow_weekly_gate_latest.json")
     logos_weekly_gate_bootstrap = _read_json(art / "logos_shadow_weekly_gate_bootstrap_latest.json")
     logos_weekly_trend = _read_json(art / "logos_shadow_weekly_trend_report_latest.json")
+    logos_kpi_progress = _read_json(art / "logos_shadow_promotion_kpi_progress_latest.json")
     logos_response_policy_check = _read_json(art / "logos_response_policy_check_latest.json")
     forward_prereg = _read_json(art / "macro_risk_forward_preregister_lock_latest.json")
     forward_latest = _read_json(art / "macro_risk_forward_log_latest.json")
@@ -157,6 +159,10 @@ def main() -> int:
                 "queries_ok": ((logos_insight.get("summary") or {}).get("queries_ok")),
                 "queries_error": ((logos_insight.get("summary") or {}).get("queries_error")),
                 "low_confidence": ((logos_drift.get("guard") or {}).get("low_confidence")),
+                "resonance_shadow_status": logos_regime_resonance_shadow.get("status"),
+                "resonance_shadow_scanned_regimes": ((logos_regime_resonance_shadow.get("summary") or {}).get("scanned_regimes")),
+                "resonance_shadow_best_regime": ((logos_regime_resonance_shadow.get("summary") or {}).get("best_regime")),
+                "resonance_shadow_best_top_hit_cosine": ((logos_regime_resonance_shadow.get("summary") or {}).get("best_top_hit_cosine")),
                 "weekly_gate_decision_strict": logos_weekly_gate.get("decision"),
                 "weekly_gate_decision_bootstrap": logos_weekly_gate_bootstrap.get("decision"),
                 "weekly_gate_samples_strict": ((logos_weekly_gate.get("metrics") or {}).get("samples")),
@@ -165,6 +171,10 @@ def main() -> int:
                 "weekly_trend_mean_top1_cosine_7d_avg": ((logos_weekly_trend.get("summary") or {}).get("mean_top1_cosine_7d_avg")),
                 "weekly_trend_low_conf_rate_7d_avg": ((logos_weekly_trend.get("summary") or {}).get("low_conf_rate_7d_avg")),
                 "weekly_trend_query_error_rate_7d_avg": ((logos_weekly_trend.get("summary") or {}).get("query_error_rate_7d_avg")),
+                "kpi_progress_status": logos_kpi_progress.get("status"),
+                "kpi_progress_passed": logos_kpi_progress.get("passed"),
+                "kpi_progress_consecutive_go": logos_kpi_progress.get("consecutive_strict_go_windows"),
+                "kpi_progress_required_consecutive_go": logos_kpi_progress.get("required_consecutive_strict_go_windows"),
                 "response_policy_check_status": logos_response_policy_check.get("status"),
                 "response_policy_check_passed": logos_response_policy_check.get("passed"),
             },
@@ -184,9 +194,11 @@ def main() -> int:
             "logos_shadow_promotion_status": "docs/final/artifacts/logos_shadow_promotion_status_latest.json",
             "logos_shadow_insight": "docs/final/artifacts/logos_shadow_insight_latest.json",
             "logos_semantic_drift_monitor": "docs/final/artifacts/logos_semantic_drift_monitor_latest.json",
+            "logos_regime_resonance_shadow": "docs/final/artifacts/logos_regime_resonance_shadow_signal_latest.json",
             "logos_shadow_weekly_gate": "docs/final/artifacts/logos_shadow_weekly_gate_latest.json",
             "logos_shadow_weekly_gate_bootstrap": "docs/final/artifacts/logos_shadow_weekly_gate_bootstrap_latest.json",
             "logos_shadow_weekly_trend": "docs/final/artifacts/logos_shadow_weekly_trend_report_latest.json",
+            "logos_shadow_kpi_progress": "docs/final/artifacts/logos_shadow_promotion_kpi_progress_latest.json",
             "logos_response_policy_check": "docs/final/artifacts/logos_response_policy_check_latest.json",
             "forward_preregister_lock": "docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json",
             "forward_log_latest": "docs/final/artifacts/macro_risk_forward_log_latest.json",
@@ -237,6 +249,10 @@ def main() -> int:
         f"- queries_ok: `{((dashboard['trackc']['logos_shadow'] or {}).get('queries_ok'))}`",
         f"- queries_error: `{((dashboard['trackc']['logos_shadow'] or {}).get('queries_error'))}`",
         f"- low_confidence: `{((dashboard['trackc']['logos_shadow'] or {}).get('low_confidence'))}`",
+        f"- resonance_shadow_status: `{((dashboard['trackc']['logos_shadow'] or {}).get('resonance_shadow_status'))}`",
+        f"- resonance_shadow_scanned_regimes: `{((dashboard['trackc']['logos_shadow'] or {}).get('resonance_shadow_scanned_regimes'))}`",
+        f"- resonance_shadow_best_regime: `{((dashboard['trackc']['logos_shadow'] or {}).get('resonance_shadow_best_regime'))}`",
+        f"- resonance_shadow_best_top_hit_cosine: `{((dashboard['trackc']['logos_shadow'] or {}).get('resonance_shadow_best_top_hit_cosine'))}`",
         f"- weekly_gate_decision_strict: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_gate_decision_strict'))}`",
         f"- weekly_gate_samples_strict: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_gate_samples_strict'))}`",
         f"- weekly_gate_decision_bootstrap: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_gate_decision_bootstrap'))}`",
@@ -245,6 +261,10 @@ def main() -> int:
         f"- weekly_trend_mean_top1_cosine_7d_avg: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_trend_mean_top1_cosine_7d_avg'))}`",
         f"- weekly_trend_low_conf_rate_7d_avg: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_trend_low_conf_rate_7d_avg'))}`",
         f"- weekly_trend_query_error_rate_7d_avg: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_trend_query_error_rate_7d_avg'))}`",
+        f"- kpi_progress_status: `{((dashboard['trackc']['logos_shadow'] or {}).get('kpi_progress_status'))}`",
+        f"- kpi_progress_passed: `{((dashboard['trackc']['logos_shadow'] or {}).get('kpi_progress_passed'))}`",
+        f"- kpi_progress_consecutive_go: `{((dashboard['trackc']['logos_shadow'] or {}).get('kpi_progress_consecutive_go'))}`",
+        f"- kpi_progress_required_consecutive_go: `{((dashboard['trackc']['logos_shadow'] or {}).get('kpi_progress_required_consecutive_go'))}`",
         f"- response_policy_check_status: `{((dashboard['trackc']['logos_shadow'] or {}).get('response_policy_check_status'))}`",
         f"- response_policy_check_passed: `{((dashboard['trackc']['logos_shadow'] or {}).get('response_policy_check_passed'))}`",
         "",
@@ -263,9 +283,11 @@ def main() -> int:
         "- `docs/final/artifacts/logos_shadow_promotion_status_latest.json`",
         "- `docs/final/artifacts/logos_shadow_insight_latest.json`",
         "- `docs/final/artifacts/logos_semantic_drift_monitor_latest.json`",
+        "- `docs/final/artifacts/logos_regime_resonance_shadow_signal_latest.json`",
         "- `docs/final/artifacts/logos_shadow_weekly_gate_latest.json`",
         "- `docs/final/artifacts/logos_shadow_weekly_gate_bootstrap_latest.json`",
         "- `docs/final/artifacts/logos_shadow_weekly_trend_report_latest.json`",
+        "- `docs/final/artifacts/logos_shadow_promotion_kpi_progress_latest.json`",
         "- `docs/final/artifacts/logos_response_policy_check_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_log_latest.json`",

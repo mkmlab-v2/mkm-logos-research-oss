@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
 
 DEFAULT_SQLITE = ART / "logos_vector_index_ann_lite_v1.sqlite"
-DEFAULT_QUERY_SET = ART / "logos_semantic_query_set_v2.json"
+DEFAULT_QUERY_SET = ART / "logos_semantic_query_set_v3.json"
 DEFAULT_OUT = ART / "logos_semantic_model_ab_sweep_latest.json"
 
 

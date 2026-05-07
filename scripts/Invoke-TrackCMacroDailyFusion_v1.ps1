@@ -55,6 +55,7 @@ function Invoke-FusionStep {
 $fragilityDaily = Join-Path $PSScriptRoot "Invoke-FragilityMacroRiskDaily.ps1"
 $forwardDaily = Join-Path $PSScriptRoot "run_macro_risk_forward_daily_chain_v1.ps1"
 $logosChain = Join-Path $PSScriptRoot "run_logos_4d_state_chain_v1.ps1"
+$logosRegimeResonanceShadow = Join-Path $PSScriptRoot "build_logos_regime_resonance_shadow_signal_v1.py"
 $logosQuerySuite = Join-Path $PSScriptRoot "run_logos_semantic_query_smoke_suite_v1.py"
 $logosShadowPromotion = Join-Path $PSScriptRoot "promote_logos_to_shadow_live_v1.py"
 $logosShadowInsight = Join-Path $PSScriptRoot "build_logos_shadow_insight_report_v1.py"
@@ -63,10 +64,11 @@ $logosShadowWeeklyGate = Join-Path $PSScriptRoot "build_logos_shadow_weekly_gate
 $logosShadowWeeklyGateBootstrap = Join-Path $PSScriptRoot "build_logos_shadow_weekly_gate_v1.py"
 $logosShadowWeeklyTrend = Join-Path $PSScriptRoot "build_logos_shadow_weekly_trend_report_v1.py"
 $logosShadowAlertDecision = Join-Path $PSScriptRoot "build_logos_shadow_alert_decision_v1.py"
+$logosShadowKpiProgress = Join-Path $PSScriptRoot "build_logos_shadow_promotion_kpi_progress_v1.py"
 $logosResponsePolicyCheck = Join-Path $PSScriptRoot "build_logos_response_policy_check_v1.py"
 $opsDashboard = Join-Path $PSScriptRoot "build_mkm_trackc_ops_dashboard_v1.py"
 
-$required = @($fragilityDaily, $forwardDaily, $logosChain, $logosQuerySuite, $logosShadowPromotion, $logosShadowInsight, $logosShadowDailyMetrics, $logosShadowWeeklyGate, $logosShadowWeeklyGateBootstrap, $logosShadowWeeklyTrend, $logosShadowAlertDecision, $logosResponsePolicyCheck)
+$required = @($fragilityDaily, $forwardDaily, $logosChain, $logosRegimeResonanceShadow, $logosQuerySuite, $logosShadowPromotion, $logosShadowInsight, $logosShadowDailyMetrics, $logosShadowWeeklyGate, $logosShadowWeeklyGateBootstrap, $logosShadowWeeklyTrend, $logosShadowAlertDecision, $logosShadowKpiProgress, $logosResponsePolicyCheck)
 if (-not $SkipOpsDashboard) {
     $required += $opsDashboard
 }
@@ -129,9 +131,13 @@ else {
 }
 
 # 4) Logos semantic query suite (daily)
+Invoke-FusionStep -Name "build_logos_regime_resonance_shadow_signal_v1.py" -Action {
+    Set-Location -LiteralPath $repoRoot
+    py $logosRegimeResonanceShadow
+}
 Invoke-FusionStep -Name "run_logos_semantic_query_smoke_suite_v1.py" -Action {
     Set-Location -LiteralPath $repoRoot
-    py $logosQuerySuite --query-set-json "docs/final/artifacts/logos_semantic_query_set_v2.json"
+    py $logosQuerySuite --query-set-json "docs/final/artifacts/logos_semantic_query_set_v3.json"
 }
 
 # 5) Logos shadow promotion artifacts (daily non-gating)
@@ -160,6 +166,10 @@ Invoke-FusionStep -Name "build_logos_shadow_weekly_trend_report_v1.py" -Action {
 Invoke-FusionStep -Name "build_logos_shadow_alert_decision_v1.py" -Action {
     Set-Location -LiteralPath $repoRoot
     py $logosShadowAlertDecision
+}
+Invoke-FusionStep -Name "build_logos_shadow_promotion_kpi_progress_v1.py" -Action {
+    Set-Location -LiteralPath $repoRoot
+    py $logosShadowKpiProgress
 }
 Invoke-FusionStep -Name "build_logos_shadow_insight_report_v1.py (refresh weekly decision)" -Action {
     Set-Location -LiteralPath $repoRoot
@@ -210,11 +220,13 @@ else {
 Write-Host "[trackc-macro-fusion] PASS"
 Write-Host "[trackc-macro-fusion] fragility_daily_json=$repoRoot/reports/fragility_macro_risk_daily_latest.json"
 Write-Host "[trackc-macro-fusion] logos4d=$repoRoot/docs/final/artifacts/logos_4d_state_v1_latest.json"
+Write-Host "[trackc-macro-fusion] logos_regime_resonance_shadow=$repoRoot/docs/final/artifacts/logos_regime_resonance_shadow_signal_latest.json"
 Write-Host "[trackc-macro-fusion] logos_shadow_promotion=$repoRoot/docs/final/artifacts/logos_shadow_promotion_status_latest.json"
 Write-Host "[trackc-macro-fusion] logos_shadow_insight=$repoRoot/docs/final/artifacts/logos_shadow_insight_latest.json"
 Write-Host "[trackc-macro-fusion] logos_shadow_weekly_gate=$repoRoot/docs/final/artifacts/logos_shadow_weekly_gate_latest.json"
 Write-Host "[trackc-macro-fusion] logos_shadow_weekly_gate_bootstrap=$repoRoot/docs/final/artifacts/logos_shadow_weekly_gate_bootstrap_latest.json"
 Write-Host "[trackc-macro-fusion] logos_shadow_weekly_trend=$repoRoot/docs/final/artifacts/logos_shadow_weekly_trend_report_latest.json"
 Write-Host "[trackc-macro-fusion] logos_shadow_alert_decision=$repoRoot/docs/final/artifacts/logos_shadow_alert_decision_latest.json"
+Write-Host "[trackc-macro-fusion] logos_shadow_kpi_progress=$repoRoot/docs/final/artifacts/logos_shadow_promotion_kpi_progress_latest.json"
 Write-Host "[trackc-macro-fusion] logos_response_policy_check=$repoRoot/docs/final/artifacts/logos_response_policy_check_latest.json"
 Write-Host "[trackc-macro-fusion] ops_dashboard=$repoRoot/docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json"
