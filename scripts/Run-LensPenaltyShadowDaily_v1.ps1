@@ -43,4 +43,35 @@ if ([string]::IsNullOrWhiteSpace($OutJson)) {
     --state-json $StateJson `
     --policy-json $PolicyJson `
     --out $OutJson
+$shadowExit = $LASTEXITCODE
+if ($shadowExit -ne 0) { exit $shadowExit }
+
+& py "scripts\build_lens_penalty_shadow_dashboard_v1.py" `
+    --daily-json $OutJson `
+    --state-json $StateJson `
+    --out "docs\final\artifacts\lens_penalty_shadow_dashboard_latest.json"
+$dashboardExit = $LASTEXITCODE
+if ($dashboardExit -ne 0) { exit $dashboardExit }
+
+$dailyJsonAbs = (Resolve-Path -LiteralPath $OutJson).Path
+$daily = Get-Content -LiteralPath $dailyJsonAbs -Raw | ConvertFrom-Json
+$summary = $daily.summary
+$noteObj = [ordered]@{
+    mode = $daily.mode
+    applied = $daily.applied
+    lenses_evaluated = $summary.lenses_evaluated
+    recommendations_with_penalty = $summary.recommendations_with_penalty
+    recommendations_with_recovery = $summary.recommendations_with_recovery
+}
+$noteJson = $noteObj | ConvertTo-Json -Compress
+
+& py "scripts\log_agent_decision.py" `
+    --mission-id "myeongni-penalty-shadow-daily" `
+    --stage "verify" `
+    --decision "penalty_shadow_daily_completed" `
+    --evidence-path $dailyJsonAbs `
+    --actor "Run-LensPenaltyShadowDaily_v1.ps1" `
+    --risk-level "L1" `
+    --retry-count 0 `
+    --note $noteJson
 exit $LASTEXITCODE
