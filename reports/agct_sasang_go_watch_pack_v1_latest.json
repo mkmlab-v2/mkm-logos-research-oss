@@ -1,0 +1,118 @@
+{
+  "schema": "agct_sasang_go_watch_pack_v1",
+  "generated_at_utc": "2026-05-07T12:28:11Z",
+  "thresholds_json": "c:\\workspace\\docs\\final\\artifacts\\agct_sasang_btrack_daily_thresholds_recalibrated_v1_latest.json",
+  "runs": [
+    {
+      "seed": 20260505,
+      "decision": "GO_BTRACK",
+      "checks": {
+        "external_accuracy_min_ok": true,
+        "external_risk_corr_min_ok": true,
+        "stability_std_ok": true,
+        "time_split_gap_ok": true,
+        "robustness_min_ok": true
+      },
+      "metrics": {
+        "decision_profile": "aggressive",
+        "external_accuracy_observed": 0.3575,
+        "external_risk_corr_observed": 0.19101138993583663,
+        "stability_std_observed": 0.03890247052058696,
+        "time_split_gap_observed": 0.043055801010729144,
+        "robustness_observed": 0.13225747398639573,
+        "robustness_threshold": 0.13,
+        "shadow_robustness_observed": 0.13011347598025233
+      }
+    },
+    {
+      "seed": 20260506,
+      "decision": "GO_BTRACK",
+      "checks": {
+        "external_accuracy_min_ok": true,
+        "external_risk_corr_min_ok": true,
+        "stability_std_ok": true,
+        "time_split_gap_ok": true,
+        "robustness_min_ok": true
+      },
+      "metrics": {
+        "decision_profile": "aggressive",
+        "external_accuracy_observed": 0.36583333333333334,
+        "external_risk_corr_observed": 0.20879858962638326,
+        "stability_std_observed": 0.054851551294235405,
+        "time_split_gap_observed": 0.043055801010729144,
+        "robustness_observed": 0.13783138098462086,
+        "robustness_threshold": 0.13,
+        "shadow_robustness_observed": 0.13447968505072783
+      }
+    },
+    {
+      "seed": 20260507,
+      "decision": "GO_BTRACK",
+      "checks": {
+        "external_accuracy_min_ok": true,
+        "external_risk_corr_min_ok": true,
+        "stability_std_ok": true,
+        "time_split_gap_ok": true,
+        "robustness_min_ok": true
+      },
+      "metrics": {
+        "decision_profile": "aggressive",
+        "external_accuracy_observed": 0.36,
+        "external_risk_corr_observed": 0.234424060733167,
+        "stability_std_observed": 0.049431232939140805,
+        "time_split_gap_observed": 0.043055801010729144,
+        "robustness_observed": 0.13593480130873273,
+        "robustness_threshold": 0.13,
+        "shadow_robustness_observed": 0.13536378163332943
+      }
+    },
+    {
+      "seed": 20260508,
+      "decision": "GO_BTRACK",
+      "checks": {
+        "external_accuracy_min_ok": true,
+        "external_risk_corr_min_ok": true,
+        "stability_std_ok": true,
+        "time_split_gap_ok": true,
+        "robustness_min_ok": true
+      },
+      "metrics": {
+        "decision_profile": "aggressive",
+        "external_accuracy_observed": 0.3625,
+        "external_risk_corr_observed": 0.19573020373639774,
+        "stability_std_observed": 0.03879607986570817,
+        "time_split_gap_observed": 0.043055801010729144,
+        "robustness_observed": 0.13021386312966715,
+        "robustness_threshold": 0.13,
+        "shadow_robustness_observed": 0.12801471738951184
+      }
+    },
+    {
+      "seed": 20260509,
+      "decision": "GO_BTRACK",
+      "checks": {
+        "external_accuracy_min_ok": true,
+        "external_risk_corr_min_ok": true,
+        "stability_std_ok": true,
+        "time_split_gap_ok": true,
+        "robustness_min_ok": true
+      },
+      "metrics": {
+        "decision_profile": "aggressive",
+        "external_accuracy_observed": 0.37166666666666665,
+        "external_risk_corr_observed": 0.22530692610614433,
+        "stability_std_observed": 0.038288657742290254,
+        "time_split_gap_observed": 0.043055801010729144,
+        "robustness_observed": 0.1326922633787049,
+        "robustness_threshold": 0.13,
+        "shadow_robustness_observed": 0.12436596024277313
+      }
+    }
+  ],
+  "summary": {
+    "n_runs": 5,
+    "go_count": 5,
+    "review_required_count": 0,
+    "all_go": true
+  }
+}
