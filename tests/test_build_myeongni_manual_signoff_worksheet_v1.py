@@ -23,6 +23,7 @@ def test_build_myeongni_manual_signoff_worksheet_ready(tmp_path: Path) -> None:
     readiness = tmp_path / "myeongni_commercialization_readiness_packet_latest.json"
     realset_gate = tmp_path / "myeongni_stage2_realset_gate_latest.json"
     shadow_gov = tmp_path / "myeongni_shadow_governance_latest.json"
+    penalty_daily = tmp_path / "lens_penalty_daily_latest.json"
     out = tmp_path / "myeongni_manual_signoff_worksheet_latest.json"
 
     _write(
@@ -42,6 +43,17 @@ def test_build_myeongni_manual_signoff_worksheet_ready(tmp_path: Path) -> None:
     _write(readiness, {"readiness": "Ready"})
     _write(realset_gate, {"pass": True, "real_count": 65})
     _write(shadow_gov, {"decision": "HUMAN_REVIEW_REQUIRED_FOR_PROMOTION", "blockers": [], "warnings": []})
+    _write(
+        penalty_daily,
+        {
+            "schema": "lens_penalty_daily_v1",
+            "mode": "shadow",
+            "summary": {
+                "lenses_evaluated": 2,
+                "recommendations_with_penalty": 1,
+            },
+        },
+    )
 
     subprocess.run(
         [
@@ -57,6 +69,8 @@ def test_build_myeongni_manual_signoff_worksheet_ready(tmp_path: Path) -> None:
             str(realset_gate),
             "--shadow-governance",
             str(shadow_gov),
+            "--penalty-daily",
+            str(penalty_daily),
             "--out",
             str(out),
         ],
@@ -71,3 +85,4 @@ def test_build_myeongni_manual_signoff_worksheet_ready(tmp_path: Path) -> None:
     assert payload["decision"] == "READY_FOR_COMMANDER_SIGNOFF"
     assert payload["all_green"] is True
     assert payload["failed_checks"] == []
+    assert payload["summary"]["penalty_mode"] == "shadow"

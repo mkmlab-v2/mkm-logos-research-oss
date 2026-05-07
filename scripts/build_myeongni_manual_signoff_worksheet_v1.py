@@ -16,6 +16,7 @@ DEFAULT_MANUAL_LOCK = ART / "myeongni_manual_promotion_decision_lock_latest.json
 DEFAULT_READINESS = ART / "myeongni_commercialization_readiness_packet_latest.json"
 DEFAULT_STAGE2_REALSET_GATE = ART / "myeongni_stage2_realset_gate_latest.json"
 DEFAULT_SHADOW_GOV = ART / "myeongni_shadow_governance_latest.json"
+DEFAULT_PENALTY_DAILY = ART / "lens_penalty_daily_latest.json"
 DEFAULT_OUT = ART / "myeongni_manual_signoff_worksheet_latest.json"
 
 
@@ -45,6 +46,7 @@ def main() -> int:
     ap.add_argument("--readiness", type=Path, default=DEFAULT_READINESS)
     ap.add_argument("--stage2-realset-gate", type=Path, default=DEFAULT_STAGE2_REALSET_GATE)
     ap.add_argument("--shadow-governance", type=Path, default=DEFAULT_SHADOW_GOV)
+    ap.add_argument("--penalty-daily", type=Path, default=DEFAULT_PENALTY_DAILY)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
@@ -53,6 +55,7 @@ def main() -> int:
     readiness = _read_json(args.readiness)
     realset_gate = _read_json(args.stage2_realset_gate)
     shadow_gov = _read_json(args.shadow_governance)
+    penalty_daily = _read_json(args.penalty_daily)
 
     gate_pass = str(gate.get("status") or "").upper() == "PASS"
     go_manual = bool(gate.get("go_for_manual_signoff"))
@@ -69,6 +72,10 @@ def main() -> int:
     shadow_decision = str(shadow_gov.get("decision") or "")
     shadow_blockers = shadow_gov.get("blockers") if isinstance(shadow_gov.get("blockers"), list) else []
     shadow_warnings = shadow_gov.get("warnings") if isinstance(shadow_gov.get("warnings"), list) else []
+    penalty_summary = penalty_daily.get("summary") if isinstance(penalty_daily.get("summary"), dict) else {}
+    penalty_mode = str(penalty_daily.get("mode") or "")
+    penalty_lenses = int(penalty_summary.get("lenses_evaluated") or 0)
+    penalty_penalty_count = int(penalty_summary.get("recommendations_with_penalty") or 0)
 
     checks = {
         "promotion_gate_pass": gate_pass,
@@ -101,6 +108,9 @@ def main() -> int:
             "shadow_decision": shadow_decision,
             "shadow_blockers": shadow_blockers,
             "shadow_warnings": shadow_warnings,
+            "penalty_mode": penalty_mode,
+            "penalty_lenses_evaluated": penalty_lenses,
+            "penalty_recommendations_with_penalty": penalty_penalty_count,
         },
         "constraints": {
             "track_b_to_a_auto_bridge": False,
@@ -113,6 +123,7 @@ def main() -> int:
             "readiness": str(args.readiness.resolve()),
             "stage2_realset_gate": str(args.stage2_realset_gate.resolve()),
             "shadow_governance": str(args.shadow_governance.resolve()),
+            "penalty_daily": str(args.penalty_daily.resolve()),
         },
         "operator_action": {
             "approve_if_all_green": all_green,
