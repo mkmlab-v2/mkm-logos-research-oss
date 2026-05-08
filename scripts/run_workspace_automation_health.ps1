@@ -6,6 +6,8 @@ param(
     [switch]$StrictPhase1Readiness,
     [switch]$StrictReconcile,
     [switch]$IncludeCompressionKpi,
+    # Optional: rebuild fallback trigger 24h summary (compression stub telemetry).
+    [switch]$IncludeFallbackTriggerTelemetry,
     [switch]$IncludeLiteralTrack,
     [switch]$SkipHydrationMix,
     [switch]$SkipCompressionAlarm,
@@ -274,6 +276,22 @@ try {
         Step "Compression KPI chain (default + KPI summary + hydration mix$literalNote)" {
             # Invoke in-process (avoid nested powershell.exe mangling switch types).
             & $cc -WorkspaceRoot $root -SkipHydrationMix:$SkipHydrationMix -SkipCompressionAlarm:$SkipCompressionAlarm -IncludeLiteralTrack:$IncludeLiteralTrack
+        }
+    }
+
+    if ($IncludeFallbackTriggerTelemetry -or $IncludeCompressionKpi) {
+        $fb = Join-Path $root "scripts\build_fallback_trigger_daily_summary_v1.py"
+        if (Test-Path -LiteralPath $fb) {
+            Step "Fallback trigger telemetry (24h summary)" {
+                & py $fb
+            }
+            $fbOut = Join-Path $root "docs\final\artifacts\fallback_trigger_daily_summary_latest.json"
+            if (-not (Test-Path -LiteralPath $fbOut)) {
+                throw "missing $fbOut after build_fallback_trigger_daily_summary_v1.py"
+            }
+        }
+        else {
+            Write-Host "SKIP: build_fallback_trigger_daily_summary_v1.py not found" -ForegroundColor Yellow
         }
     }
 

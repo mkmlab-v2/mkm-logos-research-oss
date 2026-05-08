@@ -37,9 +37,27 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Sweep thresholds for DNA readiness gates.")
     ap.add_argument("--mapping-coverage-report", type=Path, required=True)
     ap.add_argument("--overlap-report", type=Path, required=True)
-    ap.add_argument("--coverage-grid", type=str, default="0.10,0.20,0.30,0.40")
-    ap.add_argument("--target-grid", type=str, default="1,2,3")
-    ap.add_argument("--match-grid", type=str, default="1,2,3")
+    ap.add_argument(
+        "--coverage-grid",
+        "--coverage-threshold-grid",
+        type=str,
+        default="0.10,0.20,0.30,0.40",
+        help="Comma-separated min coverage ratios (--coverage-threshold-grid is an alias).",
+    )
+    ap.add_argument(
+        "--target-grid",
+        "--target-rows-threshold-grid",
+        type=str,
+        default="1,2,3",
+        help="Comma-separated min target rows (--target-rows-threshold-grid is an alias).",
+    )
+    ap.add_argument(
+        "--match-grid",
+        "--match-rows-threshold-grid",
+        type=str,
+        default="1,2,3",
+        help="Comma-separated min match rows (--match-rows-threshold-grid is an alias).",
+    )
     ap.add_argument(
         "--output-json",
         type=Path,
@@ -77,6 +95,14 @@ def main() -> int:
             reverse=True,
         )[0]
 
+    recommended_canonical = None
+    if recommended is not None:
+        recommended_canonical = {
+            "min_mapping_coverage_ratio": recommended["min_coverage_ratio"],
+            "min_overlap_target_rows": recommended["min_target_rows"],
+            "min_overlap_match_rows": recommended["min_match_rows"],
+        }
+
     payload = {
         "schema": "bio_dna_promotion_threshold_sweep_v1",
         "generated_at_utc": _utc_now(),
@@ -97,7 +123,9 @@ def main() -> int:
         "summary": {
             "total_policies": len(rows),
             "passing_policies": len(passing),
-            "recommended_policy": recommended,
+            "candidate_count": obs_target,
+            "passing_count": len(passing),
+            "recommended_policy": recommended_canonical,
         },
         "policies": rows,
     }
