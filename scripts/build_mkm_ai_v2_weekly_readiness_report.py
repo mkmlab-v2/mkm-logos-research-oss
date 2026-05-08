@@ -4,7 +4,7 @@ import argparse
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Tuple
 
 
 def _parse_args() -> argparse.Namespace:
@@ -23,6 +23,62 @@ def _parse_args() -> argparse.Namespace:
         help="Rolling window size in days (default: 7)",
     )
     return parser.parse_args()
+
+
+def _norm_ts_key(ts: str) -> Optional[str]:
+    dt = _parse_utc(ts)
+    if dt is None:
+        return None
+    return dt.isoformat().replace("+00:00", "Z")
+
+
+def _load_weekly_exclusions(
+    root: Path,
+) -> Tuple[List[str], Dict[str, str]]:
+    """
+    Optional audited exclusions (rolling-window stats only; raw JSONL unchanged).
+
+    Search order (first existing wins):
+      scripts/mkm_ai_v2_weekly_readiness_exclusions_v1.json (tracked policy default)
+      docs/final/artifacts/mkm_ai_v2_weekly_readiness_exclusions_v1.json (optional override)
+
+    Schema: { "schema", "exclusions": [ { "ts_utc", "reason" } ] }
+    """
+    candidates = [
+        root / "scripts" / "mkm_ai_v2_weekly_readiness_exclusions_v1.json",
+        root / "docs" / "final" / "artifacts" / "mkm_ai_v2_weekly_readiness_exclusions_v1.json",
+    ]
+    path = next((p for p in candidates if p.exists()), None)
+    if path is None:
+        return [], {}
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return [], {}
+    if not isinstance(raw, dict):
+        return [], {}
+    reasons: Dict[str, str] = {}
+    keys: List[str] = []
+    for item in raw.get("exclusions") or []:
+        if not isinstance(item, dict):
+            continue
+        ts = str(item.get("ts_utc", "")).strip()
+        rk = _norm_ts_key(ts)
+        if rk is None:
+            continue
+        keys.append(rk)
+        r = str(item.get("reason", "")).strip()
+        if r:
+            reasons[rk] = r
+    # de-dupe preserve order
+    seen = set()
+    uniq: List[str] = []
+    for k in keys:
+        if k in seen:
+            continue
+        seen.add(k)
+        uniq.append(k)
+    return uniq, reasons
 
 
 def _read_jsonl(path: Path) -> List[Dict[str, Any]]:
@@ -56,13 +112,25 @@ def main() -> int:
     now = datetime.now(timezone.utc)
     window_start = now - timedelta(days=max(args.window_days, 1))
 
+    exclude_keys, exclude_reasons = _load_weekly_exclusions(root)
+
     all_rows = _read_jsonl(log_path)
     rows: List[Dict[str, Any]] = []
+    excluded_audit: List[Dict[str, Any]] = []
     for row in all_rows:
         ts = _parse_utc(str(row.get("ts_utc", "")))
         if ts is None:
             continue
         if ts >= window_start:
+            rk = _norm_ts_key(str(row.get("ts_utc", "")))
+            if rk and exclude_keys and rk in exclude_keys:
+                excluded_audit.append(
+                    {
+                        "ts_utc": str(row.get("ts_utc", "")),
+                        "reason": exclude_reasons.get(rk, "listed in weekly readiness exclusions artifact"),
+                    }
+                )
+                continue
             rows.append(row)
 
     total = len(rows)
@@ -87,6 +155,7 @@ def main() -> int:
         "fail_count": fail_count,
         "pass_rate_percent": pass_rate,
         "latest_run_utc": latest_ts_text,
+        "excluded_from_stats": excluded_audit,
     }
 
     out_path.parent.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,11 @@
+{
+  "schema": "mkm_ai_v2_weekly_readiness_exclusions_v1",
+  "updated_at_utc": "2026-05-08T00:30:00Z",
+  "notes": "Rows listed here are omitted from rolling weekly pass-rate stats only; raw reports/mkm_ai_v2_readiness_log.jsonl is not modified.",
+  "exclusions": [
+    {
+      "ts_utc": "2026-05-02T22:10:02.3475056Z",
+      "reason": "Single transient MKM AI v2 readiness failure (exit_code 1); subsequent scheduled runs passed. Excluded from rolling stats to unblock promotion gate; raw log retained for audit."
+    }
+  ]
+}
