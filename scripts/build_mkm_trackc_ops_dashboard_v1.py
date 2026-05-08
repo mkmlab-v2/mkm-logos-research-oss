@@ -107,6 +107,8 @@ def main() -> int:
     logos_kpi_progress = _read_json(art / "logos_shadow_promotion_kpi_progress_latest.json")
     logos_response_policy_check = _read_json(art / "logos_response_policy_check_latest.json")
     logos_review_packet = _read_json(art / "logos_s1_shadow_promotion_review_packet_latest.json")
+    logos_human_approval = _read_json(art / "logos_s1_shadow_promotion_human_approval_latest.json")
+    role_router_s1_shadow = _read_json(art / "role_router_s1_shadow_advisory_latest.json")
     forward_prereg = _read_json(art / "macro_risk_forward_preregister_lock_latest.json")
     forward_latest = _read_json(art / "macro_risk_forward_log_latest.json")
     forward_weekly = _read_json(art / "macro_risk_forward_weekly_report_latest.json")
@@ -116,6 +118,9 @@ def main() -> int:
         weekly=forward_weekly,
         now=now,
     )
+
+    rr_row = role_router_s1_shadow.get("last_row") if isinstance(role_router_s1_shadow.get("last_row"), dict) else {}
+    rr_metrics = rr_row.get("metrics") if isinstance(rr_row.get("metrics"), dict) else {}
 
     dashboard = {
         "schema": "mkm_trackc_ops_dashboard_v1",
@@ -182,6 +187,19 @@ def main() -> int:
                 "promotion_review_packet_kpi_status": (
                     ((logos_review_packet.get("summary") or {}).get("kpi_contract") or {}).get("status")
                 ),
+                "promotion_human_approval_present": ((logos_human_approval.get("schema") == "logos_s1_shadow_promotion_human_approval_v1")),
+                "promotion_human_approval_decision": logos_human_approval.get("decision"),
+                "promotion_human_approval_at": logos_human_approval.get("generated_at_utc"),
+            },
+            "role_router_s1_shadow": {
+                "advisory_generated_at_utc": role_router_s1_shadow.get("generated_at_utc"),
+                "router_stance": rr_row.get("router_stance"),
+                "baseline_stance": rr_row.get("baseline_stance"),
+                "baseline_gate_decision": rr_row.get("baseline_gate_decision"),
+                "weekly_strict_gap": rr_row.get("weekly_strict_gap"),
+                "conflict_resolution_proxy": rr_metrics.get("conflict_resolution_proxy"),
+                "false_intervention_proxy": rr_metrics.get("false_intervention_proxy"),
+                "router_artifact": rr_row.get("router_artifact"),
             },
         },
         "evidence": {
@@ -206,6 +224,8 @@ def main() -> int:
             "logos_shadow_kpi_progress": "docs/final/artifacts/logos_shadow_promotion_kpi_progress_latest.json",
             "logos_response_policy_check": "docs/final/artifacts/logos_response_policy_check_latest.json",
             "logos_s1_shadow_promotion_review_packet": "docs/final/artifacts/logos_s1_shadow_promotion_review_packet_latest.json",
+            "logos_s1_shadow_promotion_human_approval": "docs/final/artifacts/logos_s1_shadow_promotion_human_approval_latest.json",
+            "role_router_s1_shadow_advisory": "docs/final/artifacts/role_router_s1_shadow_advisory_latest.json",
             "forward_preregister_lock": "docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json",
             "forward_log_latest": "docs/final/artifacts/macro_risk_forward_log_latest.json",
             "forward_weekly_report": "docs/final/artifacts/macro_risk_forward_weekly_report_latest.json",
@@ -275,6 +295,19 @@ def main() -> int:
         f"- response_policy_check_passed: `{((dashboard['trackc']['logos_shadow'] or {}).get('response_policy_check_passed'))}`",
         f"- promotion_review_packet_generated_at: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_review_packet_generated_at'))}`",
         f"- promotion_review_packet_kpi_status: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_review_packet_kpi_status'))}`",
+        f"- promotion_human_approval_present: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_human_approval_present'))}`",
+        f"- promotion_human_approval_decision: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_human_approval_decision'))}`",
+        f"- promotion_human_approval_at: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_human_approval_at'))}`",
+        "",
+        "## Role router S1 shadow (advisory, non-gating)",
+        f"- advisory_generated_at_utc: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('advisory_generated_at_utc')}`",
+        f"- router_stance: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('router_stance')}`",
+        f"- baseline_stance: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('baseline_stance')}`",
+        f"- baseline_gate_decision: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('baseline_gate_decision')}`",
+        f"- weekly_strict_gap: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('weekly_strict_gap')}`",
+        f"- conflict_resolution_proxy: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('conflict_resolution_proxy')}`",
+        f"- false_intervention_proxy: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('false_intervention_proxy')}`",
+        f"- router_artifact: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('router_artifact')}`",
         "",
         "## Evidence",
         "- `docs/final/artifacts/mkm_ai_status_pointer_latest.json`",
@@ -298,6 +331,8 @@ def main() -> int:
         "- `docs/final/artifacts/logos_shadow_promotion_kpi_progress_latest.json`",
         "- `docs/final/artifacts/logos_response_policy_check_latest.json`",
         "- `docs/final/artifacts/logos_s1_shadow_promotion_review_packet_latest.json`",
+        "- `docs/final/artifacts/logos_s1_shadow_promotion_human_approval_latest.json`",
+        "- `docs/final/artifacts/role_router_s1_shadow_advisory_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_log_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_weekly_report_latest.json`",

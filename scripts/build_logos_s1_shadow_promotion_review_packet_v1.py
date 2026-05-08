@@ -26,6 +26,7 @@ DEFAULT_OP_RULE = ART / "LOGOS_SHADOW_WEEKLY_GATE_OPERATION_RULE_V1.md"
 DEFAULT_RESPONSE_POLICY = ART / "LOGOS_RESPONSE_POLICY_INTERNAL_EXTERNAL_V1.md"
 DEFAULT_OUT_JSON = ART / "logos_s1_shadow_promotion_review_packet_latest.json"
 DEFAULT_OUT_MD = ART / "logos_s1_shadow_promotion_review_packet_latest.md"
+DEFAULT_HUMAN_APPROVAL = ART / "logos_s1_shadow_promotion_human_approval_latest.json"
 
 
 def _now() -> str:
@@ -98,6 +99,8 @@ def main() -> int:
     resonance = _read_json_optional(resonance_path)
     policy_check = _read_json_optional(policy_check_path)
 
+    human_approval_path = DEFAULT_HUMAN_APPROVAL
+    human_approval = _read_json_optional(human_approval_path)
     gm = gate.get("metrics") or {}
     tm = trend.get("summary") or {}
     summ = insight.get("summary") or {}
@@ -179,6 +182,7 @@ def main() -> int:
             "pytest_commands": [
                 "py -m pytest tests/test_promote_logos_to_shadow_live_v1.py tests/test_build_logos_shadow_alert_decision_v1.py -q --tb=short",
                 "py -m pytest tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py -q --tb=short",
+                "py -m pytest tests/test_record_logos_s1_shadow_promotion_human_approval_v1.py -q --tb=short",
             ],
         },
         "evidence_paths": {
@@ -195,6 +199,18 @@ def main() -> int:
         },
     }
 
+    if human_approval:
+        packet["human_approval_record"] = {
+            "present": True,
+            "generated_at_utc": human_approval.get("generated_at_utc"),
+            "decision": human_approval.get("decision"),
+            "reviewer_label": human_approval.get("reviewer_label"),
+            "schema": human_approval.get("schema"),
+        }
+        packet["evidence_paths"]["human_approval_json"] = str(human_approval_path.resolve())
+    else:
+        packet["human_approval_record"] = {"present": False}
+
     out_json.parent.mkdir(parents=True, exist_ok=True)
     out_json.write_text(json.dumps(packet, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -210,12 +226,32 @@ def main() -> int:
         f"- response_policy_check: `{summary['response_policy_check'].get('status')}`",
         f"- resonance_shadow: `{summary['regime_resonance_shadow'].get('status')}`",
         "",
-        "## Human review (fill in)",
-        "- reviewer: ",
-        "- review_timestamp_utc: ",
-        "- decision: HOLD_CONTINUE_SHADOW | ACK_READY_FOR_NEXT_STAGE_PLANNING",
-        "- notes: ",
-        "",
+    ]
+    if human_approval:
+        md_lines.extend(
+            [
+                "## Human approval (recorded)",
+                f"- generated_at_utc: `{human_approval.get('generated_at_utc')}`",
+                f"- decision: `{human_approval.get('decision')}`",
+                f"- reviewer_label: `{human_approval.get('reviewer_label')}`",
+                f"- artifact: `{human_approval_path.resolve()}`",
+                "",
+            ]
+        )
+    else:
+        md_lines.extend(
+            [
+                "## Human review (fill in)",
+                "- reviewer: ",
+                "- review_timestamp_utc: ",
+                "- decision: HOLD_CONTINUE_SHADOW | ACK_READY_FOR_NEXT_STAGE_PLANNING",
+                "- notes: ",
+                "",
+            ]
+        )
+
+    md_lines.extend(
+        [
         "## Evidence (JSON)",
         f"- `{packet['evidence_paths']['review_packet_json']}`",
         "",
@@ -223,7 +259,8 @@ def main() -> int:
         f"- `{packet['constitution_pointer']['path']}` — {packet['constitution_pointer']['section']}",
         "",
         "## Regression",
-    ]
+        ]
+    )
     for cmd in packet["regression_bundle"]["pytest_commands"]:
         md_lines.append(f"- `{cmd}`")
     out_md.write_text("\n".join(md_lines) + "\n", encoding="utf-8")

@@ -161,4 +161,6 @@ def test_review_packet_builds_json_md(tmp_path: Path) -> None:
     assert doc.get("schema") == "logos_s1_shadow_promotion_review_packet_v1"
     assert doc.get("summary", {}).get("kpi_contract", {}).get("status") == "READY_FOR_REVIEW"
     assert doc.get("track_wall", {}).get("human_review_required") is True
-    assert "tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py" in doc["regression_bundle"]["pytest_commands"][1]
+    cmds = doc["regression_bundle"]["pytest_commands"]
+    assert any("test_build_logos_s1_shadow_promotion_review_packet_v1.py" in c for c in cmds)
+    assert any("test_record_logos_s1_shadow_promotion_human_approval_v1.py" in c for c in cmds)
