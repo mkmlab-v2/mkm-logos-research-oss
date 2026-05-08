@@ -12,6 +12,7 @@
 **보강 (2026-05-05 — 메타 인지 봉투 v1 · 선택 융합 게이트):** §1.3.1 표 — `docs/final/artifacts/schemas/mkm_meta_layer_turn_envelope_v1.schema.json`·`docs/final/artifacts/fixtures/mkm_meta_layer_turn_envelope_v1.example.json`·`scripts/mkm_meta_layer_envelope_v1.py`(`validate`·`append`·`audit-markdown`)·`AthenaValidator`·`tests/test_mkm_meta_layer_envelope_v1.py`. `Invoke-TrackCMacroDailyFusion_v1.ps1` **`-MetaLayerEnvelopePath`**는 비어 있으면 **미실행**(기본 융합 불변). 값이 있으면 융합 단계 후 `.json`→`append`, 그 외 확장자→마크다운에서 fenced JSON 추출·검증·`reports/agent_decisions_log.jsonl` 적재; 실패 시 fusion 전체 `throw`. **회귀:** `scripts/run_fact_lock_bundle.ps1` 3d 단계·CI `dual-regime-integrity.yml` 동명 pytest 단계.
 **보강 (2026-05-05 — 도메인×쇼룸 배치):** §1.1.3 표 — `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` **§1.1**·**§1.1b**(쇼룸 배치 + **jema-ai 허브 CTA 라벨 초안**); `docs/final/JEMA_AI_DOMAIN_POINTER_V1.md` §4.1 교차; P0 `scripts/verify_p0_constitution_gate_paths.ps1`.
 **보강 (2026-05-05 — 대외 문서·홈페이지·쇼룸 보안·IP 경계):** §1.1.3 — 정책 SSOT `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`(웹·제안서·정적 쇼룸 등 **카피·비노출** 체크리스트; 구현 팩트 대체 아님). 교차: Track C `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`, 쇼룸 `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`, 명리 대외 어휘 `docs/final/MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1.md`, §1.1.1 `research_only`·격벽.
+**보강 (2026-05-08 — Logos S1_SHADOW Fact-Lock):** §8.2 표 — 일일 융합 내 Logos 그림자 관측 경로(`promote_logos_to_shadow_live_v1.py`, 주간 게이트·KPI·정책 MD·resonance shadow 등)·회귀 테스트·**NON_GATING·track_wall** 고정.
 **보강 (2026-05-05 — KR 건강·웰빙 대외 카피):** `docs/final/MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md` — 설문·체질·의료 인접 표현 블랙/그레이/화이트·개인정보·정확도 표기(법무 검토 전제). §1.1.3 표·`PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`와 교차.
 **보강 (2026-05-05 — Yang 2015 표면 8자 B-track):** §3.3 표 — `scripts/btrack_yang_2015_style_metrics_v1.py`·`scripts/run_myeongni_celebrity_benchmark_v1.py`·계약 맵 `data/myeongni/paper_contract_maps/yang_2015_four_pillars_personality_map_v1.json`·데이터 `data/myeongni/celebrity_saju_benchmark_v1.jsonl`·산출 `reports/btrack_yang_2015_style_metrics_latest.json`·`docs/final/artifacts/myeongni_celebrity_hit_rate_v1.json`; JSON Schema `docs/final/schemas/btrack_yang_2015_style_metrics_v1.schema.json`·`docs/final/schemas/myeongni_celebrity_hit_rate_v1.schema.json`; 회귀 `tests/test_yang_2015_btrack_json_schema_v1.py` 포함; P0 `scripts/verify_p0_constitution_gate_paths.ps1`·`.github/workflows/dual-regime-integrity.yml` 경로 고정; CI `dual-regime-integrity.yml`·`multilens-independent-lens-smoke.yml`. 임상·A-track 자동 트리거 금지.
 **보강 (2026-05-02 — MKM-Orchestrator):** §1.4 `todo_queue_v1` 폴링·`reports/mkm_orchestrator_audit.jsonl`·텔레그램 notify/ingest(`.env`); **CENTRAL MD 자동 파싱·B→A·실매매 자동 합선 없음** — 경로·스크립트 `docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json`·`verify_mkm_orchestrator_bundle_v1.py`.
@@ -583,6 +584,23 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 3. **신뢰 가중치 배수 (예: 설문 대비 DNA 2.5×):** 헌법 상수로 고정하지 않으며, **스윕·홀드아웃 리포트**가 있기 전에는 코드/설정 실험 분기로만 둔다.
 4. **합성 데이터 경계:** `generate_bio_synthetic_genotype_from_missing_template_v1.py` 산출은 **E2E 파이프라인 검증 전용**이다. `ready=True`/`passing`이 나오더라도 **실측·운영 승격 근거로 사용하지 않는다**.
 5. **지표 정의 고정:** `threshold_sweep`의 `passing/total`은 **정책 조합 통과 수**이며, SNP per-sample 매칭률(`dna_paper_snp_match_ratio` 등)과 동일 의미로 해석하지 않는다.
+
+### 8.2 Logos 렌즈 · S1_SHADOW (Semantic ANN-lite 관측, 비본선 트리거)
+
+**목적:** B-track Logos 벡터·쿼리 스모크를 **그림자 운영(S1_SHADOW)** 경로에 두되, **실매매·A-track 자동 합선**은 금지한다. 아래는 **호출 가능 스크립트·정책 MD·게이트 테스트**만 고정한다.
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| Shadow 일일 승격·관측 스텁 | `scripts/promote_logos_to_shadow_live_v1.py` → `docs/final/artifacts/logos_shadow_promotion_status_latest.json` 및 drift/insight 산출 | 산출 JSON의 **`track_wall`**(`shadow_only`, `auto_trade_enable=false`, `promotion_to_a_track_allowed=false`) 준수 |
+| 일일 융합 체인(Logos 섹션 포함) | `scripts/Invoke-TrackCMacroDailyFusion_v1.ps1` | Semantics 쿼리 스모크·주간 게이트(strict/bootstrap)·주간 트렌드·알림 판정·KPI 진행·res shadow·인사이트·정책 체크·Track C 대시보드 등 순서는 스크립트 본문 기준 |
+| 주간 게이트·트렌드·알림 | `scripts/build_logos_shadow_weekly_gate_v1.py`, `scripts/build_logos_shadow_weekly_trend_report_v1.py`, `scripts/build_logos_shadow_alert_decision_v1.py` | 기본 산출 `docs/final/artifacts/logos_shadow_*_latest.json` / `reports/logos_shadow_daily_metrics_log_v1.jsonl` |
+| 승격 KPI·내부/외부 응답 규칙 | `docs/final/artifacts/LOGOS_SHADOW_WEEKLY_GATE_OPERATION_RULE_V1.md`, `docs/final/artifacts/LOGOS_RESPONSE_POLICY_INTERNAL_EXTERNAL_V1.md`, `scripts/build_logos_shadow_promotion_kpi_progress_v1.py`, `scripts/build_logos_response_policy_check_v1.py` | **다음 단계 승격·대외 주장은 사람 리뷰**; 스크립트만으로 A-track/live 활성화 없음 |
+| 비게이팅 레짐 공명(섀도우 신호) | `scripts/build_logos_regime_resonance_shadow_signal_v1.py` → `docs/final/artifacts/logos_regime_resonance_shadow_signal_latest.json` | `data/regimes/regime_map.json` 입력; **non_gating_signal_only** 유지 |
+| 시맨틱 쿼리 집합(v3) | `docs/final/artifacts/logos_semantic_query_set_v3.json` | `scripts/run_logos_semantic_query_smoke_suite_v1.py` — 융합 체인 기본 `--query-set-json`과 정합 |
+| A/B(쿼리 집합·모델) | `scripts/run_logos_queryset_ab_compare_v1.py`, `scripts/run_logos_semantic_model_ab_sweep_v1.py` | 비교 산출 `docs/final/artifacts/logos_semantic_queryset_ab_compare_latest.json` 등(로컬) |
+| CI·회귀 | `.github/workflows/logos-track-b-pipeline-smoke.yml` | `tests/test_promote_logos_to_shadow_live_v1.py`, `tests/test_build_logos_shadow_alert_decision_v1.py` |
+
+**승격 기록 (Fact-Lock):** 2026-05-07 — Logos **ANN-lite 시맨틱 엔진**을 **S1_SHADOW** 관측 경로(일일 융합·주간 게이트·KPI 계약)에 연결. 렌즈 계약상 Logos는 **[NON_GATING]** 보조; 최종 액션은 1차 실물 레짐 및 운영 게이트가 확정한다.
 
 ---
 
