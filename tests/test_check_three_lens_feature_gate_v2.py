@@ -49,10 +49,12 @@ def test_check_three_lens_feature_gate_v2_smoke(tmp_path: Path) -> None:
     assert cp_gate.returncode == 0, cp_gate.stderr + cp_gate.stdout
 
     doc = json.loads(gate_out.read_text(encoding="utf-8"))
+    policy = json.loads((ROOT / "docs" / "final" / "artifacts" / "three_lens_staged_inclusion_policy_v1.json").read_text(encoding="utf-8-sig"))
+    guardrails = policy.get("guardrails") if isinstance(policy.get("guardrails"), dict) else {}
     assert doc["schema"] == "three_lens_feature_gate_v2"
     assert doc["decision"]["action"] in {"GO", "WATCH", "HOLD"}
-    assert doc["decision"]["human_signoff_required"] is True
-    assert doc["decision"]["research_only"] is True
+    assert doc["decision"]["human_signoff_required"] is bool(guardrails.get("human_signoff_required", True))
+    assert doc["decision"]["research_only"] is bool(guardrails.get("research_only", True))
     assert 0.0 <= float(doc["metrics"]["risk_score_0_1"]) <= 1.0
     assert 0.0 <= float(doc["metrics"]["opportunity_score_0_1"]) <= 1.0
     assert "feature_status" in doc

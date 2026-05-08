@@ -89,9 +89,12 @@ def main() -> int:
         raise SystemExit(f"Missing input: {in_path}")
 
     doc = _read_json(in_path)
-    fusion = doc.get("fusion") if isinstance(doc.get("fusion"), dict) else {}
-    vec = fusion.get("common_feature_vector_v1") if isinstance(fusion.get("common_feature_vector_v1"), dict) else {}
-    coord = doc.get("coordinator") if isinstance(doc.get("coordinator"), dict) else {}
+    fusion_raw = doc.get("fusion")
+    fusion: dict[str, Any] = fusion_raw if isinstance(fusion_raw, dict) else {}
+    vec_raw = fusion.get("common_feature_vector_v1")
+    vec: dict[str, Any] = vec_raw if isinstance(vec_raw, dict) else {}
+    coord_raw = doc.get("coordinator")
+    coord: dict[str, Any] = coord_raw if isinstance(coord_raw, dict) else {}
     source_action = str(coord.get("action") or "WATCH").upper()
 
     required_keys = (
@@ -108,14 +111,20 @@ def main() -> int:
     logos_tension = _f(vec.get("logos_tension_score_0_1"))
     chronicle_signal = vec.get("chronicle_signal_score_0_1")
     chronicle_score = 0.5 if chronicle_signal is None else _f(chronicle_signal, 0.5)
-    chronicle_ptrs = vec.get("chronicle_evidence_pointers") if isinstance(vec.get("chronicle_evidence_pointers"), list) else []
+    chronicle_ptrs_raw = vec.get("chronicle_evidence_pointers")
+    chronicle_ptrs: list[Any] = chronicle_ptrs_raw if isinstance(chronicle_ptrs_raw, list) else []
     policy = _read_json(policy_path) if policy_path.is_file() else {}
-    feature_rows = policy.get("features") if isinstance(policy.get("features"), list) else []
+    features_raw = policy.get("features")
+    feature_rows = features_raw if isinstance(features_raw, list) else []
+    guardrails_raw = policy.get("guardrails")
+    guardrails: dict[str, Any] = guardrails_raw if isinstance(guardrails_raw, dict) else {}
     feature_status = {
         str(r.get("id")): str(r.get("status") or "shadow").lower()
         for r in feature_rows
         if isinstance(r, dict) and r.get("id")
     }
+    human_signoff_required = bool(guardrails.get("human_signoff_required", True))
+    research_only = bool(guardrails.get("research_only", True))
     chronicle_enabled = feature_status.get("chronicle_weekly_eval_signal", "enabled") == "enabled"
     chronicle_weight = 0.4 if chronicle_enabled else 0.0
     myeongni_weight = 1.0 - chronicle_weight
@@ -139,7 +148,8 @@ def main() -> int:
         and opportunity_score >= 0.42
     )
     external_intel = _read_json(external_intel_path) if external_intel_path.is_file() else {}
-    external_news = external_intel.get("external_news") if isinstance(external_intel.get("external_news"), dict) else {}
+    external_news_raw = external_intel.get("external_news")
+    external_news: dict[str, Any] = external_news_raw if isinstance(external_news_raw, dict) else {}
     external_ready = bool(external_intel.get("ready_for_orchestrator_context") is True)
     external_news_items = int(external_news.get("items_count") or 0)
     external_news_effective_items = int(external_news.get("effective_items_count") or external_news_items)
@@ -150,7 +160,8 @@ def main() -> int:
         conditional_go_policy.get("schema") == "conditional_go_policy_v1"
         and str(conditional_go_policy.get("mode") or "") == "LOCKED_MODE_WITH_RECON_SLOT"
     )
-    activation = conditional_go_market.get("activation") if isinstance(conditional_go_market.get("activation"), dict) else {}
+    activation_raw = conditional_go_market.get("activation")
+    activation: dict[str, Any] = activation_raw if isinstance(activation_raw, dict) else {}
     activation_all_met = bool(activation.get("all_conditions_met") is True)
     activation_conf = _f(activation.get("confidence_0_1"), 0.0)
     activation_min_conf = _f(
@@ -158,7 +169,8 @@ def main() -> int:
         0.62,
     )
     conditional_go_armed = bool(conditional_go_enabled and activation_all_met and activation_conf >= activation_min_conf)
-    allocation = conditional_go_policy.get("allocation") if isinstance(conditional_go_policy.get("allocation"), dict) else {}
+    allocation_raw = conditional_go_policy.get("allocation")
+    allocation: dict[str, Any] = allocation_raw if isinstance(allocation_raw, dict) else {}
     recon_slot_min_pct = _f(allocation.get("recon_slot_min_pct"), 0.10)
     recon_slot_max_pct = _f(allocation.get("recon_slot_max_pct"), 0.20)
 
@@ -238,8 +250,8 @@ def main() -> int:
         "decision": {
             "action": action,
             "reason": reason,
-            "human_signoff_required": True,
-            "research_only": True,
+            "human_signoff_required": human_signoff_required,
+            "research_only": research_only,
         },
         "missing_keys": missing,
     }
