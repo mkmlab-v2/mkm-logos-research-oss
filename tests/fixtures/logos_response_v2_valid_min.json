@@ -1,0 +1,58 @@
+{
+  "schema": "logos_response_v2",
+  "corpus_profile_id": "canon_plus_dss_apocrypha_v1",
+  "query_redefinition": "정경+DSS 참고 범위에서 해석 질문을 B-track 비교 해설로 재정의한다.",
+  "symbolic_anchors": [
+    {
+      "motif": "restoration_arc",
+      "core_meaning": "회복 서사의 구조적 반복"
+    }
+  ],
+  "gematria_layer": {
+    "pattern_label": "v2_demo",
+    "components": {
+      "aggregation": 0.31,
+      "tension": 0.57,
+      "transition": 0.41
+    }
+  },
+  "vector_4d": {
+    "S_spirit": 0.61,
+    "L_logos": 0.63,
+    "K_kairos": 0.49,
+    "M_material": 0.39,
+    "phase_description": "해석 정합성이 높은 재배열 구간"
+  },
+  "chronicle_mapping": [
+    {
+      "summary": "역사 비교 슬롯",
+      "period_or_ref": "demo_period",
+      "evidence_pointer": "fixtures://v2-demo",
+      "confidence_band": "low"
+    }
+  ],
+  "risk_and_falsification": [
+    "사본 이견을 단일 결론으로 환원하면 과적합 위험.",
+    "외부 사건 단정 대응 금지."
+  ],
+  "final_insight_non_gating": "비교 해설 목적이며 운영 트리거로 사용하지 않는다.",
+  "denominational_view": [
+    {
+      "tradition_label": "historical_critical",
+      "interpretation_summary": "문헌층위와 편집사 관점에서 변이 가능성을 열어둔다.",
+      "confidence_band": "mid"
+    }
+  ],
+  "text_critical_notes": {
+    "source_scope": "MT/LXX/대표 번역 비교 요약",
+    "variant_notes": "의미 차이를 유발할 수 있는 표기·어휘 변이가 존재한다.",
+    "uncertainty_notes": "단일 전승으로 확정하기 어렵다."
+  },
+  "mkm_interpretation_math": {
+    "model_version": "mkm_logos_math_v2_demo",
+    "symbolic_intensity": 0.58,
+    "covenant_tension": 0.62,
+    "restoration_momentum": 0.54,
+    "commentary": "수학화 값은 해석 보조 지표이며 사건 결과를 단정하지 않는다."
+  }
+}

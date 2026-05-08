@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "logos_response_schema_v1.json",
+  "title": "Logos Fact-Lock Response Schema v1",
+  "type": "object",
+  "description": "성경 고도화 해석용 강제 출력 규격. NON_GATING 보조 레이어 전용. 단정적 예측·실매매 트리거 금지.",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "corpus_profile_id",
+    "query_redefinition",
+    "symbolic_anchors",
+    "gematria_layer",
+    "vector_4d",
+    "chronicle_mapping",
+    "risk_and_falsification",
+    "final_insight_non_gating"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "logos_response_v1"
+    },
+    "corpus_profile_id": {
+      "type": "string",
+      "enum": ["canon_only_v1", "canon_plus_dss_apocrypha_v1"],
+      "description": "참조 코퍼스 프로파일 ID"
+    },
+    "query_redefinition": {
+      "type": "string",
+      "minLength": 1,
+      "description": "질문 본질을 B-track 해석용으로 재정의"
+    },
+    "symbolic_anchors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["motif", "core_meaning"],
+        "properties": {
+          "motif": { "type": "string", "minLength": 1 },
+          "core_meaning": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "gematria_layer": {
+      "type": "object",
+      "description": "수리·패턴 성분 (해석층; 숫자 놀이 단정 금지)",
+      "additionalProperties": false,
+      "required": ["pattern_label", "components"],
+      "properties": {
+        "pattern_label": { "type": "string", "minLength": 1 },
+        "components": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["aggregation", "tension", "transition"],
+          "properties": {
+            "aggregation": { "type": "number" },
+            "tension": { "type": "number" },
+            "transition": { "type": "number" }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "vector_4d": {
+      "type": "object",
+      "description": "MKM 코드베이스 4D(S,L,K,M)와 동일 축: S_spirit,L_logos,K_kairos,M_material ∈ [0,1]",
+      "additionalProperties": false,
+      "required": [
+        "S_spirit",
+        "L_logos",
+        "K_kairos",
+        "M_material",
+        "phase_description"
+      ],
+      "properties": {
+        "S_spirit": { "type": "number", "minimum": 0, "maximum": 1 },
+        "L_logos": { "type": "number", "minimum": 0, "maximum": 1 },
+        "K_kairos": { "type": "number", "minimum": 0, "maximum": 1 },
+        "M_material": { "type": "number", "minimum": 0, "maximum": 1 },
+        "phase_description": { "type": "string", "minLength": 1 }
+      }
+    },
+    "chronicle_mapping": {
+      "type": "array",
+      "description": "역사·뉴스 등 외부 레퍼런스 포인터 (감사 가능한 얇은 구조)",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["summary", "period_or_ref", "evidence_pointer"],
+        "properties": {
+          "summary": { "type": "string", "minLength": 1 },
+          "period_or_ref": { "type": "string", "minLength": 1 },
+          "evidence_pointer": {
+            "type": "string",
+            "minLength": 1,
+            "description": "파일 경로·URI·출처 ID 등 기계 판독 가능 포인터"
+          },
+          "confidence_band": {
+            "type": "string",
+            "enum": ["low", "mid", "high"]
+          }
+        }
+      }
+    },
+    "risk_and_falsification": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "반증 조건·한계·불확실성"
+    },
+    "final_insight_non_gating": {
+      "type": "string",
+      "minLength": 1,
+      "description": "최종 통찰 요약. A-track·실거래 트리거 금지."
+    }
+  }
+}

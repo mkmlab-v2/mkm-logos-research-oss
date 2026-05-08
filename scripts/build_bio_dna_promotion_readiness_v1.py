@@ -48,7 +48,13 @@ def main() -> int:
     ap.add_argument("--mapping-coverage-report", type=Path, required=True)
     ap.add_argument("--overlap-report", type=Path, required=True)
     ap.add_argument("--min-coverage-ratio", type=float, default=0.30)
-    ap.add_argument("--min-target-rows", type=int, default=1)
+    ap.add_argument(
+        "--min-target-rows",
+        "--min-overlap-target-rows",
+        type=int,
+        default=1,
+        help="Minimum rows_with_paper_snp_targets (--min-overlap-target-rows is an alias).",
+    )
     ap.add_argument("--min-match-rows", type=int, default=1)
     ap.add_argument("--overlap-csv", type=Path, default=None)
     ap.add_argument("--focus-sample-id", type=str, default="")
@@ -89,6 +95,7 @@ def main() -> int:
     payload = {
         "schema": "bio_dna_promotion_readiness_v1",
         "generated_at_utc": _utc_now(),
+        "promotion_candidate_ready": ready,
         "inputs": {
             "mapping_coverage_report": str(ns.mapping_coverage_report.resolve()),
             "overlap_report": str(ns.overlap_report.resolve()),

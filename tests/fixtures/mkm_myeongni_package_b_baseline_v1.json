@@ -1,0 +1,58 @@
+{
+  "schema": "mkm_myeongni_package_b_baseline_v1",
+  "generated_at_utc": "2026-05-06T04:04:08Z",
+  "source_paths": {
+    "summary_json": "C:\\workspace\\docs\\final\\artifacts\\mkm_myeongni_package_b_chain_summary_latest.json",
+    "recommendation_json": "C:\\workspace\\docs\\final\\artifacts\\mkm_myeongni_profile_switch_recommendation_latest.json",
+    "policy_json": "C:\\workspace\\docs\\final\\artifacts\\mkm_myeongni_profile_switch_policy_v1.json"
+  },
+  "snapshot": {
+    "mode": "both",
+    "direction_core": 0.35663,
+    "decision_balanced": "WATCH",
+    "decision_attack": "REDUCE",
+    "recommended_profile": "attack",
+    "action": "PROMOTE_TO_ATTACK"
+  },
+  "margins": {
+    "balanced": {
+      "direction_minus_reduce_cut": -0.19337,
+      "confidence_minus_reduce_cut": -0.047739,
+      "confidence_minus_hold_cut": 0.192261
+    },
+    "attack": {
+      "direction_minus_reduce_cut": 0.00663,
+      "confidence_minus_reduce_cut": 0.112261,
+      "confidence_minus_hold_cut": 0.262261
+    }
+  },
+  "policy": {
+    "schema": "mkm_myeongni_profile_switch_policy_v1",
+    "version": "1.0.0",
+    "promote_to_attack_if": {
+      "attack_direction_margin_gte": 0.0,
+      "attack_confidence_margin_gte": 0.08,
+      "require_attack_decision": "REDUCE",
+      "require_balanced_not_reduce": true
+    },
+    "demote_to_balanced_if": {
+      "attack_direction_margin_lt": -0.03,
+      "attack_confidence_margin_lt": 0.0,
+      "or_attack_decision_not_reduce": true
+    },
+    "defaults": {
+      "current_profile": "balanced",
+      "target_profile_on_tie": "balanced"
+    },
+    "governance": {
+      "auto_apply": false,
+      "research_only": true,
+      "human_signoff_required": true
+    }
+  },
+  "governance": {
+    "research_only": true,
+    "human_signoff_required": true,
+    "note": "Versioned baseline fixture for reproducibility regression; do not use as live trigger."
+  }
+}

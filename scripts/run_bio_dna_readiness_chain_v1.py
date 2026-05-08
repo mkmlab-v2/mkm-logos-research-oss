@@ -59,7 +59,13 @@ def main() -> int:
         default=Path("reports/bio_dna_promotion_threshold_sweep_v1_latest.json"),
     )
     ap.add_argument("--min-coverage-ratio", type=float, default=0.30)
-    ap.add_argument("--min-target-rows", type=int, default=1)
+    ap.add_argument(
+        "--min-target-rows",
+        "--min-overlap-target-rows",
+        type=int,
+        default=1,
+        help="Readiness min paper-SNP target rows (--min-overlap-target-rows is an alias).",
+    )
     ap.add_argument("--min-match-rows", type=int, default=1)
     ap.add_argument("--focus-sample-id", type=str, default="")
     ap.add_argument("--min-focus-match-ratio", type=float, default=None)

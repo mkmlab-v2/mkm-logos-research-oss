@@ -1,6 +1,6 @@
 {
   "schema": "myeongni_16state_data_quality_report_v1",
-  "ts_utc": "2026-04-28T05:26:10Z",
+  "ts_utc": "2026-05-07T11:29:25Z",
   "input_jsonl": "C:\\workspace\\data\\myeongni\\myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl",
   "rows_total": 120,
   "contract_violations": 0,

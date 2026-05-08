@@ -97,6 +97,8 @@ def main() -> int:
         "summary": {
             "n_questions": n,
             "coverage_rate": round(coverage_hits / n, 6),
+            # Alias for `scripts/build_mkm_myeongni_response_v2.py` weather_term (NotebookLM manifest 기준 필드명).
+            "direct_match_rate": round(coverage_hits / n, 6),
             "conflict_resolution_rate": round(conflict_hits / n, 6),
             "reproducible_evidence_rate": round(reproducible_hits / n, 6),
             "avg_biblical_keyword_coverage": round(biblical_cov_sum / n, 6),

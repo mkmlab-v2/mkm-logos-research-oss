@@ -1,0 +1,24 @@
+{
+  "schema": "mkm_myeongni_profile_switch_policy_v1",
+  "version": "1.0.0",
+  "promote_to_attack_if": {
+    "attack_direction_margin_gte": -0.01,
+    "attack_confidence_margin_gte": 0.03,
+    "require_attack_decision": "REDUCE",
+    "require_balanced_not_reduce": true
+  },
+  "demote_to_balanced_if": {
+    "attack_direction_margin_lt": -0.05,
+    "attack_confidence_margin_lt": -0.02,
+    "or_attack_decision_not_reduce": false
+  },
+  "defaults": {
+    "current_profile": "balanced",
+    "target_profile_on_tie": "attack"
+  },
+  "governance": {
+    "auto_apply": false,
+    "research_only": true,
+    "human_signoff_required": true
+  }
+}

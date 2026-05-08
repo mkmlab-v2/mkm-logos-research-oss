@@ -21,13 +21,26 @@ DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "general_prophecy_explaina
 WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9_-]*")
 
 BIBLICAL_RULES: list[dict[str, Any]] = [
-    {"ref": "Matthew 24:32", "keywords": ["watch", "sign", "future", "timeline"], "theme": "watchfulness"},
-    {"ref": "Daniel 2:21", "keywords": ["kingdom", "change", "season", "policy"], "theme": "regime_shift"},
-    {"ref": "Ecclesiastes 3:1", "keywords": ["time", "season", "deadline", "window"], "theme": "timing_window"},
+    # Keywords doubled as domain_tags hooks (e.g. macro, rates) keep Korean-only gp_* fixtures reproducible.
+    {
+        "ref": "Matthew 24:32",
+        "keywords": ["watch", "sign", "future", "timeline", "main", "branch"],
+        "theme": "watchfulness",
+    },
+    {"ref": "Daniel 2:21", "keywords": ["kingdom", "change", "season", "policy", "macro"], "theme": "regime_shift"},
+    {
+        "ref": "Ecclesiastes 3:1",
+        "keywords": ["time", "season", "deadline", "window", "before", "release", "rates"],
+        "theme": "timing_window",
+    },
     {"ref": "Proverbs 21:5", "keywords": ["plan", "policy", "criteria", "discipline"], "theme": "disciplined_execution"},
     {"ref": "Isaiah 1:18", "keywords": ["judge", "reason", "evidence", "criteria"], "theme": "evidence_reasoning"},
     {"ref": "Habakkuk 2:2", "keywords": ["write", "vision", "plain", "record"], "theme": "traceable_record"},
-    {"ref": "Luke 14:28", "keywords": ["count", "cost", "budget", "risk"], "theme": "cost_accounting"},
+    {
+        "ref": "Luke 14:28",
+        "keywords": ["count", "cost", "budget", "risk", "inflation", "energy", "commodities"],
+        "theme": "cost_accounting",
+    },
     {"ref": "1 Thessalonians 5:21", "keywords": ["test", "prove", "hold", "good"], "theme": "test_then_hold"},
 ]
 

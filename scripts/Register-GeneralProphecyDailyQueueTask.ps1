@@ -6,6 +6,16 @@ param(
     [string]$HoldoutGateProfile = "ops",
     [ValidateSet("true", "false")]
     [string]$IncludeLogosV2 = "true",
+    [ValidateSet("true", "false")]
+    [string]$EnableLogosResponseV1Retry = "false",
+    [ValidateSet("true", "false")]
+    [string]$EnableLogosResponseQualityScore = "true",
+    [ValidateSet("true", "false")]
+    [string]$EnableLogosResponseQualityAlert = "true",
+    [double]$LogosResponseQualityMinOverall = 8.0,
+    [string]$LogosResponseV1PrimaryInput = "docs/final/artifacts/logos_response_v1_llm_raw_latest.txt",
+    [string]$LogosResponseV1RetryInput = "docs/final/artifacts/logos_response_v1_llm_retry_latest.txt",
+    [int]$LogosResponseV1MaxAttempts = 2,
     [switch]$WhatIf
 )
 
@@ -16,7 +26,35 @@ if (-not (Test-Path -LiteralPath $scriptPath)) {
     throw "Missing script: $scriptPath"
 }
 
-$taskRun = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`" -HoldoutGateProfile $HoldoutGateProfile -IncludeLogosV2 $IncludeLogosV2"
+$taskRunParts = @("powershell -NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"")
+if ($HoldoutGateProfile -ne "research") {
+    $taskRunParts += "-HoldoutGateProfile $HoldoutGateProfile"
+}
+if ($IncludeLogosV2 -ne "true") {
+    $taskRunParts += "-IncludeLogosV2 $IncludeLogosV2"
+}
+if ($EnableLogosResponseV1Retry -ne "false") {
+    $taskRunParts += "-EnableLogosResponseV1Retry $EnableLogosResponseV1Retry"
+}
+if ($EnableLogosResponseQualityScore -ne "true") {
+    $taskRunParts += "-EnableLogosResponseQualityScore $EnableLogosResponseQualityScore"
+}
+if ($EnableLogosResponseQualityAlert -ne "true") {
+    $taskRunParts += "-EnableLogosResponseQualityAlert $EnableLogosResponseQualityAlert"
+}
+if ($LogosResponseQualityMinOverall -ne 8.0) {
+    $taskRunParts += "-LogosResponseQualityMinOverall $LogosResponseQualityMinOverall"
+}
+if ($LogosResponseV1PrimaryInput -ne "docs/final/artifacts/logos_response_v1_llm_raw_latest.txt") {
+    $taskRunParts += "-LogosResponseV1PrimaryInput `"$LogosResponseV1PrimaryInput`""
+}
+if ($LogosResponseV1RetryInput -ne "docs/final/artifacts/logos_response_v1_llm_retry_latest.txt") {
+    $taskRunParts += "-LogosResponseV1RetryInput `"$LogosResponseV1RetryInput`""
+}
+if ($LogosResponseV1MaxAttempts -ne 2) {
+    $taskRunParts += "-LogosResponseV1MaxAttempts $LogosResponseV1MaxAttempts"
+}
+$taskRun = $taskRunParts -join " "
 $createArgs = @(
     "/Create",
     "/TN", $TaskName,

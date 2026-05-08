@@ -1,12 +1,12 @@
 {
   "schema": "general_prophecy_explainable_registry_v1",
-  "generated_at_utc": "2026-05-05T00:15:12Z",
+  "generated_at_utc": "2026-05-06T02:03:10Z",
   "source_registry_path": "C:\\workspace\\docs\\final\\artifacts\\general_prophecy_latest.json",
   "questions": [
     {
       "question_id": "demo.binary.sample_01",
       "fusion_decision": "neutral",
-      "fusion_confidence": 0.592002,
+      "fusion_confidence": 0.607247,
       "lane_weights": {
         "biblical": 0.38,
         "myeongri": 0.34,
@@ -15,20 +15,28 @@
       "fusion_calibration": {
         "probability_input": 0.42,
         "centered": -0.08,
-        "fused_signal": -0.066577
+        "fused_signal": -0.068902
       },
       "explanation": {
         "why_summary": "demo.binary.sample_01는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
         "biblical": {
-          "score": 0.5569,
-          "keyword_coverage": 0.333333,
-          "match_count": 2,
+          "score": 0.7269,
+          "keyword_coverage": 0.666667,
+          "match_count": 3,
           "verse_matches": [
             {
               "ref": "Daniel 2:21",
               "theme": "regime_shift",
               "matched_keywords": [
-                "policy"
+                "policy",
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "before"
               ]
             },
             {
@@ -94,8 +102,8 @@
         },
         "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
         "top_evidence": [
-          "biblical:Daniel 2:21:policy",
-          "biblical_keyword_coverage:0.333333",
+          "biblical:Daniel 2:21:policy,macro",
+          "biblical_keyword_coverage:0.666667",
           "gematria_resonance:71.125",
           "myeongri_phase:기준선/탐색:pillar_fit=0.4:cycle_alignment=0.56",
           "sasang_state:탄력회복:response_strength=0.763"
@@ -105,7 +113,7 @@
     {
       "question_id": "seed.oecd_foresight_pdf_headings_2027",
       "fusion_decision": "neutral",
-      "fusion_confidence": 0.567978,
+      "fusion_confidence": 0.582351,
       "lane_weights": {
         "biblical": 0.38,
         "myeongri": 0.34,
@@ -114,20 +122,28 @@
       "fusion_calibration": {
         "probability_input": 0.45,
         "centered": -0.05,
-        "fused_signal": -0.041706
+        "fused_signal": -0.043159
       },
       "explanation": {
         "why_summary": "seed.oecd_foresight_pdf_headings_2027는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
         "biblical": {
-          "score": 0.5571,
-          "keyword_coverage": 0.333333,
-          "match_count": 2,
+          "score": 0.7271,
+          "keyword_coverage": 0.666667,
+          "match_count": 3,
           "verse_matches": [
             {
               "ref": "Daniel 2:21",
               "theme": "regime_shift",
               "matched_keywords": [
-                "policy"
+                "policy",
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "before"
               ]
             },
             {
@@ -193,8 +209,8 @@
         },
         "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
         "top_evidence": [
-          "biblical:Daniel 2:21:policy",
-          "biblical_keyword_coverage:0.333333",
+          "biblical:Daniel 2:21:policy,macro",
+          "biblical_keyword_coverage:0.666667",
           "gematria_resonance:71.375",
           "myeongri_phase:기준선/탐색:pillar_fit=0.4:cycle_alignment=0.56",
           "sasang_state:탄력회복:response_strength=0.78775"
@@ -310,7 +326,7 @@
     {
       "question_id": "seed.python_stable_314_before_20260601",
       "fusion_decision": "lean_false",
-      "fusion_confidence": 0.711867,
+      "fusion_confidence": 0.732054,
       "lane_weights": {
         "biblical": 0.38,
         "myeongri": 0.34,
@@ -319,15 +335,24 @@
       "fusion_calibration": {
         "probability_input": 0.25,
         "centered": -0.25,
-        "fused_signal": -0.200272
+        "fused_signal": -0.20754
       },
       "explanation": {
         "why_summary": "seed.python_stable_314_before_20260601는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
         "biblical": {
-          "score": 0.258,
-          "keyword_coverage": 0.0,
-          "match_count": 0,
-          "verse_matches": [],
+          "score": 0.428,
+          "keyword_coverage": 0.333333,
+          "match_count": 1,
+          "verse_matches": [
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "before",
+                "release"
+              ]
+            }
+          ],
           "gematria": {
             "method": "a1z26",
             "tokens": [
@@ -383,7 +408,8 @@
         },
         "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
         "top_evidence": [
-          "biblical_keyword_coverage:0.0",
+          "biblical:Ecclesiastes 3:1:before,release",
+          "biblical_keyword_coverage:0.333333",
           "gematria_resonance:72.5",
           "myeongri_phase:압박/방어:pillar_fit=0.76:cycle_alignment=0.82",
           "sasang_state:중립조정:response_strength=0.54175"
@@ -393,7 +419,7 @@
     {
       "question_id": "seed.ecb_mro_above_3_5_before_20261231",
       "fusion_decision": "lean_false",
-      "fusion_confidence": 0.647325,
+      "fusion_confidence": 0.681886,
       "lane_weights": {
         "biblical": 0.38,
         "myeongri": 0.34,
@@ -402,20 +428,36 @@
       "fusion_calibration": {
         "probability_input": 0.35,
         "centered": -0.15,
-        "fused_signal": -0.124091
+        "fused_signal": -0.132812
       },
       "explanation": {
         "why_summary": "seed.ecb_mro_above_3_5_before_20261231는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
         "biblical": {
-          "score": 0.5536,
-          "keyword_coverage": 0.333333,
-          "match_count": 2,
+          "score": 0.8936,
+          "keyword_coverage": 1.0,
+          "match_count": 4,
           "verse_matches": [
+            {
+              "ref": "Matthew 24:32",
+              "theme": "watchfulness",
+              "matched_keywords": [
+                "main"
+              ]
+            },
             {
               "ref": "Daniel 2:21",
               "theme": "regime_shift",
               "matched_keywords": [
-                "policy"
+                "policy",
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "before",
+                "rates"
               ]
             },
             {
@@ -481,8 +523,8 @@
         },
         "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
         "top_evidence": [
-          "biblical:Daniel 2:21:policy",
-          "biblical_keyword_coverage:0.333333",
+          "biblical:Matthew 24:32:main",
+          "biblical_keyword_coverage:1.0",
           "gematria_resonance:67.0",
           "myeongri_phase:기준선/탐색:pillar_fit=0.4:cycle_alignment=0.56",
           "sasang_state:탄력회복:response_strength=0.70525"
@@ -492,7 +534,7 @@
     {
       "question_id": "seed.github_repo_default_branch_main_20261231",
       "fusion_decision": "lean_true",
-      "fusion_confidence": 0.815416,
+      "fusion_confidence": 0.840546,
       "lane_weights": {
         "biblical": 0.38,
         "myeongri": 0.34,
@@ -501,15 +543,24 @@
       "fusion_calibration": {
         "probability_input": 0.92,
         "centered": 0.42,
-        "fused_signal": 0.320601
+        "fused_signal": 0.33281
       },
       "explanation": {
         "why_summary": "seed.github_repo_default_branch_main_20261231는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_true로 판정되었다.",
         "biblical": {
-          "score": 0.2737,
-          "keyword_coverage": 0.0,
-          "match_count": 0,
-          "verse_matches": [],
+          "score": 0.4437,
+          "keyword_coverage": 0.333333,
+          "match_count": 1,
+          "verse_matches": [
+            {
+              "ref": "Matthew 24:32",
+              "theme": "watchfulness",
+              "matched_keywords": [
+                "main",
+                "branch"
+              ]
+            }
+          ],
           "gematria": {
             "method": "a1z26",
             "tokens": [
@@ -565,7 +616,8 @@
         },
         "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
         "top_evidence": [
-          "biblical_keyword_coverage:0.0",
+          "biblical:Matthew 24:32:main,branch",
+          "biblical_keyword_coverage:0.333333",
           "gematria_resonance:92.125",
           "myeongri_phase:기준선/탐색:pillar_fit=0.5:cycle_alignment=0.56",
           "sasang_state:중립조정:response_strength=0.4015"
@@ -745,7 +797,7 @@
     {
       "question_id": "ci.brier_tautology_evenness_v1",
       "fusion_decision": "lean_true",
-      "fusion_confidence": 0.669526,
+      "fusion_confidence": 0.686569,
       "lane_weights": {
         "biblical": 0.38,
         "myeongri": 0.34,
@@ -754,15 +806,23 @@
       "fusion_calibration": {
         "probability_input": 0.72,
         "centered": 0.22,
-        "fused_signal": 0.170178
+        "fused_signal": 0.175821
       },
       "explanation": {
         "why_summary": "ci.brier_tautology_evenness_v1는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_true로 판정되었다.",
         "biblical": {
-          "score": 0.2604,
-          "keyword_coverage": 0.0,
-          "match_count": 0,
-          "verse_matches": [],
+          "score": 0.4104,
+          "keyword_coverage": 0.166667,
+          "match_count": 1,
+          "verse_matches": [
+            {
+              "ref": "Matthew 24:32",
+              "theme": "watchfulness",
+              "matched_keywords": [
+                "main"
+              ]
+            }
+          ],
           "gematria": {
             "method": "a1z26",
             "tokens": [
@@ -802,7 +862,8 @@
         },
         "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
         "top_evidence": [
-          "biblical_keyword_coverage:0.0",
+          "biblical:Matthew 24:32:main",
+          "biblical_keyword_coverage:0.166667",
           "gematria_resonance:75.5",
           "myeongri_phase:기준선/탐색:pillar_fit=0.5:cycle_alignment=0.56",
           "sasang_state:중립조정:response_strength=0.5665"
@@ -812,7 +873,7 @@
     {
       "question_id": "gp_2026_h2_kostat_cpi_yoy_below_2_any_month",
       "fusion_decision": "neutral",
-      "fusion_confidence": 0.558791,
+      "fusion_confidence": 0.585695,
       "lane_weights": {
         "biblical": 0.38,
         "myeongri": 0.34,
@@ -821,15 +882,30 @@
       "fusion_calibration": {
         "probability_input": 0.42,
         "centered": -0.08,
-        "fused_signal": -0.061511
+        "fused_signal": -0.065615
       },
       "explanation": {
         "why_summary": "gp_2026_h2_kostat_cpi_yoy_below_2_any_month는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
         "biblical": {
-          "score": 0.2,
-          "keyword_coverage": 0.0,
-          "match_count": 0,
-          "verse_matches": [],
+          "score": 0.5,
+          "keyword_coverage": 0.333333,
+          "match_count": 2,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "macro"
+              ]
+            },
+            {
+              "ref": "Luke 14:28",
+              "theme": "cost_accounting",
+              "matched_keywords": [
+                "inflation"
+              ]
+            }
+          ],
           "gematria": {
             "method": "a1z26",
             "tokens": [],
@@ -852,7 +928,8 @@
         },
         "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
         "top_evidence": [
-          "biblical_keyword_coverage:0.0",
+          "biblical:Daniel 2:21:macro",
+          "biblical_keyword_coverage:0.333333",
           "gematria_resonance:0.0",
           "myeongri_phase:성과 회수/정리:pillar_fit=0.38:cycle_alignment=0.54",
           "sasang_state:탄력회복:response_strength=0.763"
@@ -862,7 +939,7 @@
     {
       "question_id": "gp_2026_h2_fed_funds_upper_cut_ge_25bp_vs_2026q2",
       "fusion_decision": "neutral",
-      "fusion_confidence": 0.548618,
+      "fusion_confidence": 0.573983,
       "lane_weights": {
         "biblical": 0.38,
         "myeongri": 0.34,
@@ -871,15 +948,30 @@
       "fusion_calibration": {
         "probability_input": 0.55,
         "centered": 0.05,
-        "fused_signal": 0.039748
+        "fused_signal": 0.042313
       },
       "explanation": {
         "why_summary": "gp_2026_h2_fed_funds_upper_cut_ge_25bp_vs_2026q2는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
         "biblical": {
-          "score": 0.2476,
-          "keyword_coverage": 0.0,
-          "match_count": 0,
-          "verse_matches": [],
+          "score": 0.5476,
+          "keyword_coverage": 0.333333,
+          "match_count": 2,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "rates"
+              ]
+            }
+          ],
           "gematria": {
             "method": "a1z26",
             "tokens": [
@@ -911,7 +1003,8 @@
         },
         "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
         "top_evidence": [
-          "biblical_keyword_coverage:0.0",
+          "biblical:Daniel 2:21:macro",
+          "biblical_keyword_coverage:0.333333",
           "gematria_resonance:59.5",
           "myeongri_phase:재정비/경쟁:pillar_fit=0.52:cycle_alignment=0.68",
           "sasang_state:탄력회복:response_strength=0.78775"
@@ -921,7 +1014,7 @@
     {
       "question_id": "gp_2026_h2_ecb_deposit_facility_below_2pct",
       "fusion_decision": "lean_false",
-      "fusion_confidence": 0.589434,
+      "fusion_confidence": 0.61839,
       "lane_weights": {
         "biblical": 0.38,
         "myeongri": 0.34,
@@ -930,15 +1023,30 @@
       "fusion_calibration": {
         "probability_input": 0.38,
         "centered": -0.12,
-        "fused_signal": -0.092242
+        "fused_signal": -0.098398
       },
       "explanation": {
         "why_summary": "gp_2026_h2_ecb_deposit_facility_below_2pct는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
         "biblical": {
-          "score": 0.2,
-          "keyword_coverage": 0.0,
-          "match_count": 0,
-          "verse_matches": [],
+          "score": 0.5,
+          "keyword_coverage": 0.333333,
+          "match_count": 2,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "rates"
+              ]
+            }
+          ],
           "gematria": {
             "method": "a1z26",
             "tokens": [],
@@ -961,7 +1069,8 @@
         },
         "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
         "top_evidence": [
-          "biblical_keyword_coverage:0.0",
+          "biblical:Daniel 2:21:macro",
+          "biblical_keyword_coverage:0.333333",
           "gematria_resonance:0.0",
           "myeongri_phase:기준선/탐색:pillar_fit=0.4:cycle_alignment=0.56",
           "sasang_state:탄력회복:response_strength=0.73"
@@ -971,7 +1080,7 @@
     {
       "question_id": "gp_2026_h2_boj_policy_rate_above_1pct",
       "fusion_decision": "neutral",
-      "fusion_confidence": 0.515462,
+      "fusion_confidence": 0.539288,
       "lane_weights": {
         "biblical": 0.38,
         "myeongri": 0.34,
@@ -980,15 +1089,30 @@
       "fusion_calibration": {
         "probability_input": 0.48,
         "centered": -0.02,
-        "fused_signal": -0.015498
+        "fused_signal": -0.016524
       },
       "explanation": {
         "why_summary": "gp_2026_h2_boj_policy_rate_above_1pct는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
         "biblical": {
-          "score": 0.2,
-          "keyword_coverage": 0.0,
-          "match_count": 0,
-          "verse_matches": [],
+          "score": 0.5,
+          "keyword_coverage": 0.333333,
+          "match_count": 2,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "rates"
+              ]
+            }
+          ],
           "gematria": {
             "method": "a1z26",
             "tokens": [],
@@ -1011,7 +1135,8 @@
         },
         "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
         "top_evidence": [
-          "biblical_keyword_coverage:0.0",
+          "biblical:Daniel 2:21:macro",
+          "biblical_keyword_coverage:0.333333",
           "gematria_resonance:0.0",
           "myeongri_phase:기준선/탐색:pillar_fit=0.4:cycle_alignment=0.56",
           "sasang_state:탄력회복:response_strength=0.8125"
@@ -1021,7 +1146,7 @@
     {
       "question_id": "gp_2026_h2_eia_brent_monthly_avg_ge_80_usd",
       "fusion_decision": "lean_false",
-      "fusion_confidence": 0.631415,
+      "fusion_confidence": 0.665038,
       "lane_weights": {
         "biblical": 0.38,
         "myeongri": 0.34,
@@ -1030,15 +1155,31 @@
       "fusion_calibration": {
         "probability_input": 0.33,
         "centered": -0.17,
-        "fused_signal": -0.131657
+        "fused_signal": -0.14096
       },
       "explanation": {
         "why_summary": "gp_2026_h2_eia_brent_monthly_avg_ge_80_usd는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
         "biblical": {
-          "score": 0.252,
-          "keyword_coverage": 0.0,
-          "match_count": 0,
-          "verse_matches": [],
+          "score": 0.572,
+          "keyword_coverage": 0.5,
+          "match_count": 2,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "macro"
+              ]
+            },
+            {
+              "ref": "Luke 14:28",
+              "theme": "cost_accounting",
+              "matched_keywords": [
+                "energy",
+                "commodities"
+              ]
+            }
+          ],
           "gematria": {
             "method": "a1z26",
             "tokens": [
@@ -1078,7 +1219,8 @@
         },
         "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
         "top_evidence": [
-          "biblical_keyword_coverage:0.0",
+          "biblical:Daniel 2:21:macro",
+          "biblical_keyword_coverage:0.5",
           "gematria_resonance:65.0",
           "myeongri_phase:기준선/탐색:pillar_fit=0.4:cycle_alignment=0.56",
           "sasang_state:탄력회복:response_strength=0.68875"

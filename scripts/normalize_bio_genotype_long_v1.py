@@ -91,6 +91,7 @@ def main() -> int:
         "summary": {
             "input_rows": len(rows),
             "output_rows": len(out),
+            "normalized_rows": len(out),
             "distinct_sample_id": len(uniq_samples),
             "distinct_rsid": len(uniq_rsids),
             "invalid_or_skipped_rows": invalid_rows,

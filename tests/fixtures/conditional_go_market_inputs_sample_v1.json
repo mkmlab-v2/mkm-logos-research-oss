@@ -1,0 +1,7 @@
+{
+  "checks": {
+    "kospi_structure_hold": true,
+    "semi_leader_recovery": true
+  },
+  "yfinance_ok": true
+}

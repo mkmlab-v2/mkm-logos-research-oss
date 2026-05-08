@@ -97,6 +97,18 @@ def main() -> int:
     drill = _read_json(art / "mkm_trackc_guard_recovery_drill_latest.json")
     paddle = _read_json(art / "paddle_onboarding_status_latest.json")
     dual_leg_brief = _read_json(art / "trackc_prophecy_dual_leg_brief_latest.json")
+    logos_shadow = _read_json(art / "logos_shadow_promotion_status_latest.json")
+    logos_insight = _read_json(art / "logos_shadow_insight_latest.json")
+    logos_drift = _read_json(art / "logos_semantic_drift_monitor_latest.json")
+    logos_regime_resonance_shadow = _read_json(art / "logos_regime_resonance_shadow_signal_latest.json")
+    logos_weekly_gate = _read_json(art / "logos_shadow_weekly_gate_latest.json")
+    logos_weekly_gate_bootstrap = _read_json(art / "logos_shadow_weekly_gate_bootstrap_latest.json")
+    logos_weekly_trend = _read_json(art / "logos_shadow_weekly_trend_report_latest.json")
+    logos_kpi_progress = _read_json(art / "logos_shadow_promotion_kpi_progress_latest.json")
+    logos_response_policy_check = _read_json(art / "logos_response_policy_check_latest.json")
+    logos_review_packet = _read_json(art / "logos_s1_shadow_promotion_review_packet_latest.json")
+    logos_human_approval = _read_json(art / "logos_s1_shadow_promotion_human_approval_latest.json")
+    role_router_s1_shadow = _read_json(art / "role_router_s1_shadow_advisory_latest.json")
     forward_prereg = _read_json(art / "macro_risk_forward_preregister_lock_latest.json")
     forward_latest = _read_json(art / "macro_risk_forward_log_latest.json")
     forward_weekly = _read_json(art / "macro_risk_forward_weekly_report_latest.json")
@@ -106,6 +118,9 @@ def main() -> int:
         weekly=forward_weekly,
         now=now,
     )
+
+    rr_row = role_router_s1_shadow.get("last_row") if isinstance(role_router_s1_shadow.get("last_row"), dict) else {}
+    rr_metrics = rr_row.get("metrics") if isinstance(rr_row.get("metrics"), dict) else {}
 
     dashboard = {
         "schema": "mkm_trackc_ops_dashboard_v1",
@@ -140,6 +155,52 @@ def main() -> int:
             "dual_leg_btc_hit_rate": ((dual_leg_brief.get("legs") or {}).get("btc") or {}).get("price_directional_hit_rate"),
             "dual_leg_btc_minus_kospi_hit_rate": (dual_leg_brief.get("delta") or {}).get("btc_minus_kospi_hit_rate"),
             "forward_pipeline_health": forward_health,
+            "logos_shadow": {
+                "grade": ((logos_shadow.get("promotion") or {}).get("to")),
+                "approved": ((logos_shadow.get("promotion") or {}).get("approved")),
+                "decision": ((logos_insight.get("summary") or {}).get("decision")),
+                "top_match_verse_id": ((logos_insight.get("summary") or {}).get("top_match_verse_id")),
+                "top_match_cosine": ((logos_insight.get("summary") or {}).get("top_match_cosine")),
+                "mean_top1_cosine": ((logos_insight.get("summary") or {}).get("mean_top1_cosine")),
+                "queries_ok": ((logos_insight.get("summary") or {}).get("queries_ok")),
+                "queries_error": ((logos_insight.get("summary") or {}).get("queries_error")),
+                "low_confidence": ((logos_drift.get("guard") or {}).get("low_confidence")),
+                "resonance_shadow_status": logos_regime_resonance_shadow.get("status"),
+                "resonance_shadow_scanned_regimes": ((logos_regime_resonance_shadow.get("summary") or {}).get("scanned_regimes")),
+                "resonance_shadow_best_regime": ((logos_regime_resonance_shadow.get("summary") or {}).get("best_regime")),
+                "resonance_shadow_best_top_hit_cosine": ((logos_regime_resonance_shadow.get("summary") or {}).get("best_top_hit_cosine")),
+                "weekly_gate_decision_strict": logos_weekly_gate.get("decision"),
+                "weekly_gate_decision_bootstrap": logos_weekly_gate_bootstrap.get("decision"),
+                "weekly_gate_samples_strict": ((logos_weekly_gate.get("metrics") or {}).get("samples")),
+                "weekly_gate_samples_bootstrap": ((logos_weekly_gate_bootstrap.get("metrics") or {}).get("samples")),
+                "weekly_trend_samples": logos_weekly_trend.get("samples"),
+                "weekly_trend_mean_top1_cosine_7d_avg": ((logos_weekly_trend.get("summary") or {}).get("mean_top1_cosine_7d_avg")),
+                "weekly_trend_low_conf_rate_7d_avg": ((logos_weekly_trend.get("summary") or {}).get("low_conf_rate_7d_avg")),
+                "weekly_trend_query_error_rate_7d_avg": ((logos_weekly_trend.get("summary") or {}).get("query_error_rate_7d_avg")),
+                "kpi_progress_status": logos_kpi_progress.get("status"),
+                "kpi_progress_passed": logos_kpi_progress.get("passed"),
+                "kpi_progress_consecutive_go": logos_kpi_progress.get("consecutive_strict_go_windows"),
+                "kpi_progress_required_consecutive_go": logos_kpi_progress.get("required_consecutive_strict_go_windows"),
+                "response_policy_check_status": logos_response_policy_check.get("status"),
+                "response_policy_check_passed": logos_response_policy_check.get("passed"),
+                "promotion_review_packet_generated_at": logos_review_packet.get("generated_at_utc"),
+                "promotion_review_packet_kpi_status": (
+                    ((logos_review_packet.get("summary") or {}).get("kpi_contract") or {}).get("status")
+                ),
+                "promotion_human_approval_present": ((logos_human_approval.get("schema") == "logos_s1_shadow_promotion_human_approval_v1")),
+                "promotion_human_approval_decision": logos_human_approval.get("decision"),
+                "promotion_human_approval_at": logos_human_approval.get("generated_at_utc"),
+            },
+            "role_router_s1_shadow": {
+                "advisory_generated_at_utc": role_router_s1_shadow.get("generated_at_utc"),
+                "router_stance": rr_row.get("router_stance"),
+                "baseline_stance": rr_row.get("baseline_stance"),
+                "baseline_gate_decision": rr_row.get("baseline_gate_decision"),
+                "weekly_strict_gap": rr_row.get("weekly_strict_gap"),
+                "conflict_resolution_proxy": rr_metrics.get("conflict_resolution_proxy"),
+                "false_intervention_proxy": rr_metrics.get("false_intervention_proxy"),
+                "router_artifact": rr_row.get("router_artifact"),
+            },
         },
         "evidence": {
             "status_pointer": "docs/final/artifacts/mkm_ai_status_pointer_latest.json",
@@ -153,6 +214,18 @@ def main() -> int:
             "paddle_onboarding_status": "docs/final/artifacts/paddle_onboarding_status_latest.json",
             "dual_leg_brief_json": "docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.json",
             "dual_leg_brief_md": "docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.md",
+            "logos_shadow_promotion_status": "docs/final/artifacts/logos_shadow_promotion_status_latest.json",
+            "logos_shadow_insight": "docs/final/artifacts/logos_shadow_insight_latest.json",
+            "logos_semantic_drift_monitor": "docs/final/artifacts/logos_semantic_drift_monitor_latest.json",
+            "logos_regime_resonance_shadow": "docs/final/artifacts/logos_regime_resonance_shadow_signal_latest.json",
+            "logos_shadow_weekly_gate": "docs/final/artifacts/logos_shadow_weekly_gate_latest.json",
+            "logos_shadow_weekly_gate_bootstrap": "docs/final/artifacts/logos_shadow_weekly_gate_bootstrap_latest.json",
+            "logos_shadow_weekly_trend": "docs/final/artifacts/logos_shadow_weekly_trend_report_latest.json",
+            "logos_shadow_kpi_progress": "docs/final/artifacts/logos_shadow_promotion_kpi_progress_latest.json",
+            "logos_response_policy_check": "docs/final/artifacts/logos_response_policy_check_latest.json",
+            "logos_s1_shadow_promotion_review_packet": "docs/final/artifacts/logos_s1_shadow_promotion_review_packet_latest.json",
+            "logos_s1_shadow_promotion_human_approval": "docs/final/artifacts/logos_s1_shadow_promotion_human_approval_latest.json",
+            "role_router_s1_shadow_advisory": "docs/final/artifacts/role_router_s1_shadow_advisory_latest.json",
             "forward_preregister_lock": "docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json",
             "forward_log_latest": "docs/final/artifacts/macro_risk_forward_log_latest.json",
             "forward_weekly_report": "docs/final/artifacts/macro_risk_forward_weekly_report_latest.json",
@@ -192,6 +265,50 @@ def main() -> int:
         f"- forward_pipeline_rows_total: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_total')}`",
         f"- forward_pipeline_rows_in_window_7d: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_in_window_7d')}`",
         "",
+        "## [SHADOW_INSIGHT]",
+        f"- shadow_grade: `{((dashboard['trackc']['logos_shadow'] or {}).get('grade'))}`",
+        f"- shadow_approved: `{((dashboard['trackc']['logos_shadow'] or {}).get('approved'))}`",
+        f"- decision: `{((dashboard['trackc']['logos_shadow'] or {}).get('decision'))}`",
+        f"- top_match_verse_id: `{((dashboard['trackc']['logos_shadow'] or {}).get('top_match_verse_id'))}`",
+        f"- top_match_cosine: `{((dashboard['trackc']['logos_shadow'] or {}).get('top_match_cosine'))}`",
+        f"- mean_top1_cosine: `{((dashboard['trackc']['logos_shadow'] or {}).get('mean_top1_cosine'))}`",
+        f"- queries_ok: `{((dashboard['trackc']['logos_shadow'] or {}).get('queries_ok'))}`",
+        f"- queries_error: `{((dashboard['trackc']['logos_shadow'] or {}).get('queries_error'))}`",
+        f"- low_confidence: `{((dashboard['trackc']['logos_shadow'] or {}).get('low_confidence'))}`",
+        f"- resonance_shadow_status: `{((dashboard['trackc']['logos_shadow'] or {}).get('resonance_shadow_status'))}`",
+        f"- resonance_shadow_scanned_regimes: `{((dashboard['trackc']['logos_shadow'] or {}).get('resonance_shadow_scanned_regimes'))}`",
+        f"- resonance_shadow_best_regime: `{((dashboard['trackc']['logos_shadow'] or {}).get('resonance_shadow_best_regime'))}`",
+        f"- resonance_shadow_best_top_hit_cosine: `{((dashboard['trackc']['logos_shadow'] or {}).get('resonance_shadow_best_top_hit_cosine'))}`",
+        f"- weekly_gate_decision_strict: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_gate_decision_strict'))}`",
+        f"- weekly_gate_samples_strict: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_gate_samples_strict'))}`",
+        f"- weekly_gate_decision_bootstrap: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_gate_decision_bootstrap'))}`",
+        f"- weekly_gate_samples_bootstrap: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_gate_samples_bootstrap'))}`",
+        f"- weekly_trend_samples: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_trend_samples'))}`",
+        f"- weekly_trend_mean_top1_cosine_7d_avg: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_trend_mean_top1_cosine_7d_avg'))}`",
+        f"- weekly_trend_low_conf_rate_7d_avg: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_trend_low_conf_rate_7d_avg'))}`",
+        f"- weekly_trend_query_error_rate_7d_avg: `{((dashboard['trackc']['logos_shadow'] or {}).get('weekly_trend_query_error_rate_7d_avg'))}`",
+        f"- kpi_progress_status: `{((dashboard['trackc']['logos_shadow'] or {}).get('kpi_progress_status'))}`",
+        f"- kpi_progress_passed: `{((dashboard['trackc']['logos_shadow'] or {}).get('kpi_progress_passed'))}`",
+        f"- kpi_progress_consecutive_go: `{((dashboard['trackc']['logos_shadow'] or {}).get('kpi_progress_consecutive_go'))}`",
+        f"- kpi_progress_required_consecutive_go: `{((dashboard['trackc']['logos_shadow'] or {}).get('kpi_progress_required_consecutive_go'))}`",
+        f"- response_policy_check_status: `{((dashboard['trackc']['logos_shadow'] or {}).get('response_policy_check_status'))}`",
+        f"- response_policy_check_passed: `{((dashboard['trackc']['logos_shadow'] or {}).get('response_policy_check_passed'))}`",
+        f"- promotion_review_packet_generated_at: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_review_packet_generated_at'))}`",
+        f"- promotion_review_packet_kpi_status: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_review_packet_kpi_status'))}`",
+        f"- promotion_human_approval_present: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_human_approval_present'))}`",
+        f"- promotion_human_approval_decision: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_human_approval_decision'))}`",
+        f"- promotion_human_approval_at: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_human_approval_at'))}`",
+        "",
+        "## Role router S1 shadow (advisory, non-gating)",
+        f"- advisory_generated_at_utc: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('advisory_generated_at_utc')}`",
+        f"- router_stance: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('router_stance')}`",
+        f"- baseline_stance: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('baseline_stance')}`",
+        f"- baseline_gate_decision: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('baseline_gate_decision')}`",
+        f"- weekly_strict_gap: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('weekly_strict_gap')}`",
+        f"- conflict_resolution_proxy: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('conflict_resolution_proxy')}`",
+        f"- false_intervention_proxy: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('false_intervention_proxy')}`",
+        f"- router_artifact: `{(dashboard['trackc'].get('role_router_s1_shadow') or {}).get('router_artifact')}`",
+        "",
         "## Evidence",
         "- `docs/final/artifacts/mkm_ai_status_pointer_latest.json`",
         "- `docs/final/artifacts/mkm_ai_v2_promotion_decision_latest.json`",
@@ -204,6 +321,18 @@ def main() -> int:
         "- `docs/final/artifacts/paddle_onboarding_status_latest.json`",
         "- `docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.json`",
         "- `docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.md`",
+        "- `docs/final/artifacts/logos_shadow_promotion_status_latest.json`",
+        "- `docs/final/artifacts/logos_shadow_insight_latest.json`",
+        "- `docs/final/artifacts/logos_semantic_drift_monitor_latest.json`",
+        "- `docs/final/artifacts/logos_regime_resonance_shadow_signal_latest.json`",
+        "- `docs/final/artifacts/logos_shadow_weekly_gate_latest.json`",
+        "- `docs/final/artifacts/logos_shadow_weekly_gate_bootstrap_latest.json`",
+        "- `docs/final/artifacts/logos_shadow_weekly_trend_report_latest.json`",
+        "- `docs/final/artifacts/logos_shadow_promotion_kpi_progress_latest.json`",
+        "- `docs/final/artifacts/logos_response_policy_check_latest.json`",
+        "- `docs/final/artifacts/logos_s1_shadow_promotion_review_packet_latest.json`",
+        "- `docs/final/artifacts/logos_s1_shadow_promotion_human_approval_latest.json`",
+        "- `docs/final/artifacts/role_router_s1_shadow_advisory_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_log_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_weekly_report_latest.json`",

@@ -1,0 +1,77 @@
+{
+  "schema": "sasang_integration_matrix_v1",
+  "generated_at_utc": "2026-05-07T10:22:00Z",
+  "track": "B_TRACK",
+  "summary": {
+    "status": "FACT_LOCKED",
+    "statement": "Sasang lens currently integrates DNA + market psychology in a research-only lane, with explicit isolation from news/history and A-track auto-binding."
+  },
+  "matrix": [
+    {
+      "domain": "data",
+      "fully_integrated": [
+        "DNA genotype projection input",
+        "Cohort CSV input",
+        "Market psychology metrics (fear, greed, panic, fomo, volatility, dispersion)"
+      ],
+      "experimental_btrack": [
+        "Weighted axis fusion (dna_weight + market_weight)",
+        "Byungjeungyakri transition model state sequence"
+      ],
+      "excluded_air_gapped": [
+        "News/history fields in Sasang reasoning lane",
+        "A-track direct auto-binding inputs"
+      ]
+    },
+    {
+      "domain": "theory",
+      "fully_integrated": [
+        "Geumhwagyoyeok exchange index",
+        "Bomyeongjiju balance index",
+        "Contribution decomposition tables for both indices"
+      ],
+      "experimental_btrack": [
+        "Axis-level stress transition hints (calm/watch/stress/crisis)"
+      ],
+      "excluded_air_gapped": [
+        "Direct live-trading trigger semantics from Sasang lane outputs"
+      ]
+    },
+    {
+      "domain": "governance",
+      "fully_integrated": [
+        "B-track Stage2 final promotion gate pass",
+        "D+7 checkpoint pass",
+        "Global coordinator action in WATCH mode"
+      ],
+      "experimental_btrack": [
+        "Stage2 fasttrack final candidate flag"
+      ],
+      "excluded_air_gapped": [
+        "A-track autobind",
+        "Automatic promotion to A-track without human sign-off"
+      ]
+    }
+  ],
+  "evidence": {
+    "sasang_reasoning": "C:\\workspace\\reports\\sasang_dna_market_reasoning_v1_latest.json",
+    "sasang_fusion_board": "C:\\workspace\\reports\\agct_sasang_fusion_final_board_v1_latest.json",
+    "sasang_stage2_promotion_gate": "C:\\workspace\\reports\\agct_sasang_stage2_promotion_gate_v1_latest.json",
+    "sasang_stage2_fasttrack_gate": "C:\\workspace\\reports\\agct_sasang_stage2_fasttrack_gate_v1_latest.json",
+    "sasang_stage2_d7_checkpoint": "C:\\workspace\\reports\\agct_sasang_stage2_d7_checkpoint_v1_latest.json",
+    "sasang12_track_wall": "C:\\workspace\\docs\\final\\artifacts\\sasang12_promotion_candidate_gate_latest.json",
+    "constitution_reference": "C:\\workspace\\docs\\final\\CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+  },
+  "guardrails": {
+    "research_only": true,
+    "non_gating": true,
+    "news_history_lane_excluded": true,
+    "a_track_autobind_forbidden": true,
+    "promotion_to_a_track_allowed": false,
+    "human_signoff_required": true
+  },
+  "sync": {
+    "mirrored_from": "C:\\workspace\\reports\\sasang_integration_matrix_v1_latest.json",
+    "mirror_policy": "docs-final-artifacts-reference-copy"
+  }
+}

@@ -470,7 +470,8 @@ def _sasang_external_adjust(
 ) -> tuple[int, int, int, dict[str, Any]]:
     """External-reality tilt tuned for sasang stage-like market behavior.
 
-    - Shock regime (|prev_ret| high): mean-reversion tilt
+    - Large negative month (crash shock): mean-reversion tilt
+    - Large positive month (melt-up shock): momentum-follow tilt (do not auto-fade rallies)
     - Normal regime: momentum-follow tilt
     - Phase bias acts as weak prior (defensive in 압박/방어)
     """
@@ -492,7 +493,16 @@ def _sasang_external_adjust(
     if momentum_window > 0:
         momentum_signal_pct = abs(prev_ret)
         momentum_mode = momentum_signal_pct >= momentum_warn_threshold_pct
-    trend_component = (-prev_sign if shock_mode else prev_sign) * _clip(abs(prev_ret) / 15.0, 0.0, 1.0)
+    mag = _clip(abs(prev_ret) / 15.0, 0.0, 1.0)
+    # Shock split: crash shocks keep mean-reversion tilt; melt-up shocks follow momentum.
+    # Otherwise large positive months were misclassified as "shock" and forced defensive buckets.
+    if shock_mode:
+        if prev_ret < 0:
+            trend_component = (-prev_sign) * mag
+        else:
+            trend_component = prev_sign * mag
+    else:
+        trend_component = prev_sign * mag
     vol_component = _clip((roll_abs_3m - 3.0) / 6.0, -1.0, 1.0) * 0.3
     # Seongjeong proxy (애/노/락/희): emotion-led market posture from observable market action.
     # 애(sadness): drawdown grief; 노(anger): high-vol shock response;

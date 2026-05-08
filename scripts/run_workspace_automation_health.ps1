@@ -6,6 +6,8 @@ param(
     [switch]$StrictPhase1Readiness,
     [switch]$StrictReconcile,
     [switch]$IncludeCompressionKpi,
+    # Optional: rebuild fallback trigger 24h summary (compression stub telemetry).
+    [switch]$IncludeFallbackTriggerTelemetry,
     [switch]$IncludeLiteralTrack,
     [switch]$SkipHydrationMix,
     [switch]$SkipCompressionAlarm,
@@ -20,6 +22,9 @@ param(
 
     # Optional: fast pytest subset for weather B-track triplet + fusion-search-json (not run by default; ~tens of seconds).
     [switch]$IncludeWeatherPipelineSmoke,
+
+    # Optional: package_b chain smoke (v1 lens + v2 balanced/attack + margins summary).
+    [switch]$IncludeMyeongniPackageBSmoke,
 
     # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only profiles).
     [switch]$SkipNewsObservationContractSmoke,
@@ -274,6 +279,22 @@ try {
         }
     }
 
+    if ($IncludeFallbackTriggerTelemetry -or $IncludeCompressionKpi) {
+        $fb = Join-Path $root "scripts\build_fallback_trigger_daily_summary_v1.py"
+        if (Test-Path -LiteralPath $fb) {
+            Step "Fallback trigger telemetry (24h summary)" {
+                & py $fb
+            }
+            $fbOut = Join-Path $root "docs\final\artifacts\fallback_trigger_daily_summary_latest.json"
+            if (-not (Test-Path -LiteralPath $fbOut)) {
+                throw "missing $fbOut after build_fallback_trigger_daily_summary_v1.py"
+            }
+        }
+        else {
+            Write-Host "SKIP: build_fallback_trigger_daily_summary_v1.py not found" -ForegroundColor Yellow
+        }
+    }
+
     if ($IncludeExternalDriveGovernance) {
         $gov = Join-Path $root "scripts\Invoke-ExternalDrivesGovernance.ps1"
         if (Test-Path -LiteralPath $gov) {
@@ -294,6 +315,20 @@ try {
             Write-Host ""
             Write-Host "=== Weather pipeline smoke ===" -ForegroundColor Yellow
             Write-Host "SKIP: test_weather_gt_triplet_chain_smoke.py not found"
+        }
+    }
+
+    if ($IncludeMyeongniPackageBSmoke) {
+        $pkgb = Join-Path $root "scripts\run_myeongni_package_b_smoke_v1.ps1"
+        if (Test-Path -LiteralPath $pkgb) {
+            Step "Myeongni package_b chain smoke" {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $pkgb -WorkspaceRoot $root
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Myeongni package_b chain smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: run_myeongni_package_b_smoke_v1.ps1 not found"
         }
     }
 

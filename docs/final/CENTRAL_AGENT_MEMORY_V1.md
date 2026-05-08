@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-05T08:23:29Z
+- **last_updated_utc:** 2026-05-08T05:34:28Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK**; 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -15,7 +15,7 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-05T08:23:29Z** — 정리 실행 리포트 추가: workspace cleanup move log 5440행 집계 리포트 생성, P0 게이트 297/297 유지
+- **2026-05-08T05:34:28Z** — Three-lens Stage3 PASS reproduced on live inputs; gate remains WATCH, conditional_go armed true, promotion decision NO_ELIGIBLE_SHADOW.
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -30,6 +30,7 @@
 | 공개 이벤트 스키마·지연 | `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`(bitcoin-trading `jemaai-cloud-mvp`) |
 | 로컬 검증 번들 | `scripts/verify_p0_constitution_gate_paths.ps1` → exit 0; 필요 시 `scripts/run_jemaai_cloud_completion_chain.ps1 -SkipP1AB` |
 | 원격 반영 | 지휘관 네트워크·리모트만: `scripts/push-internal.ps1`, 쇼룸 VPS는 `scripts/sync_showroom_to_vps.ps1`(의도·SSH 확인 후) — 에이전트는 **명시 요청 시에만** 실행·실패 로그 보고 |
+| **Google Gen AI · GCP 크레딧·벤치** | 과금 표면 **둘**: (A) Developer API 키 — (B) **Vertex AI** = `GOOGLE_CLOUD_PROJECT` + ADC → **프로젝트 Billing**(프로모션 SKU 범위는 콘솔 확인). 확인 `scripts/check_google_genai_readiness_v1.py check|smoke-vertex`; 채팅 스모크 `scripts/run_gemini_chat_smoke_v1.py --vertex`; 배치·멀티모달 `scripts/gemini_multimodal_batch.py [--vertex]`; **FACTS 벤치 완결(단일 플래그십·Vertex):** `scripts/run_facts_vertex_benchmark_v1.py`(기본 모델 `gemini-2.5-pro`) → 산출 `docs/final/artifacts/facts_vertex_benchmark_latest.json`·원클릭 `scripts/run_facts_vertex_benchmark_e2e_v1.ps1`. 키: `scripts/security_agent_manager.py`의 `resolve_gemini_developer_api_key` — env 우선·동명 DPAPI. **혼동 금지:** AI Studio 키만으로 “크레딧 자동 차감” 단정 금지. |
 
 ---
 
@@ -228,6 +229,7 @@
 | 2026-Q2 (AutoEvo) | 조사→큐→스캐폴드→실행→제안→승인→결정 적용 + 연구 레인 승격 실행계획(`autoevo_research_promotion_plan_latest.json`) 생성. |
 | 2026-Q2 (Hybrid Pointer Router) | `GO/WATCH/HOLD` 라벨링·runtime config·shadow 리포트·alert·guard·강등 드릴까지 연결해 “조건부 고효율 + 자동 하방보호”를 아티팩트 체인으로 고정(무조건 99/100 수사 금지). |
 | 2026-05 (MKM 렌즈·융합 점검 루프) | 명리·사상·로고스 독립 렌즈·통찰 번들·융합 스텁·Shadow·신학 연동을 **pytest + P0**로 스모크; 통합은 `gitea/main`·`SoloDev-MergeFeatureToGiteaMain.ps1` 절차로 정리(관측/ B-track, A-track·실전 자동 합선 없음). |
+| 2026-05-08 (압축 폴백·Bio SNP 헬스) | `build_fallback_trigger_threshold_profile_v1` **input_tokens_threshold=12000**(v2); 일일 `Invoke-MkmAiV2DailyReadiness` BL-011 + `run_workspace_automation_health -IncludeFallbackTriggerTelemetry -BioSnpOnly` **exit 0**; Bio DNA readiness/정규화/sweep CLI·JSON 스키마를 pytest와 재정합; 스케줄 **`MKM_AIV2_DailyReadiness` Ready·LastResult=0** 확인. |
 | 2026-05-05 (Yang 2015 표면 8자 B-track) | `btrack_yang_2015_style_metrics_v1`·`run_myeongni_celebrity_benchmark_v1`·JSON Schema·`verify_p0`·`dual-regime`/`multilens`/`run_fact_lock_bundle` 회귀; 일일 체인은 **`-IncludeYang2015SurfaceMetrics`** 옵션으로만 갱신(기본 생략); 산출은 `.gitignore`로 재생성물 분리·**임상·A-track 자동 트리거 없음**. |
 | 2026-05-05 (명리 결정론 코어 회귀) | `test_myeongni_independent_lens_v0`·`test_myeongni_lens_v1_contract`·`test_myeongni_fusion_bridge_v1`·`test_myeongni_lens_chain_from_bot_v1` **11 passed** + `verify_p0` 경로 정합; 모호한 자연어 단정보다 **스키마·pytest·P0**로 “선택 공리형” 지시를 배제하는 축 강화; PointerGuard **일일 태스크 Disabled**면 readiness `all_ok=false` 유지(운영 선택). |
 | 2026-05-05 (jema-ai.com 허브 CTA 3분기) | `projects/no1kmedi/marketing-site/public-copy.json`의 `hub_links`에 `showroom_jemaai`·`premium_mkmlife`·`b2b_acodeai`를 코드 SSOT로 고정하고 히어로에 순서 렌더; `MKM_DOMAIN_PORTFOLIO_POINTER_V1` §1.1b·`TRACK_C_IP_BUSINESS_PLAN` §3.6 문서 동기화; `npm run check:marketing-copy`·`npm run build` 통과 후 레포 커밋. |

@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import hashlib
+import os
 import time
+import warnings
 from typing import Any
 
 EMBEDDING_HASH_STUB = "hash_stub_v1"
@@ -31,6 +33,17 @@ def verse_text_for_embedding(row: dict[str, Any], max_chars: int) -> str:
 
 
 def load_sentence_transformer(model_id: str) -> Any:
+    # Keep Hugging Face stack on torch-only path to avoid optional TF/protobuf noise.
+    os.environ.setdefault("USE_TF", "0")
+    os.environ.setdefault("TRANSFORMERS_NO_TF", "1")
+    # If legacy TRANSFORMERS_CACHE is pre-set, mirror it to HF_HOME to avoid deprecation warning.
+    if os.environ.get("TRANSFORMERS_CACHE") and not os.environ.get("HF_HOME"):
+        os.environ["HF_HOME"] = os.environ["TRANSFORMERS_CACHE"]
+    warnings.filterwarnings(
+        "ignore",
+        message="Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.",
+        category=FutureWarning,
+    )
     try:
         from sentence_transformers import SentenceTransformer
     except ImportError as e:

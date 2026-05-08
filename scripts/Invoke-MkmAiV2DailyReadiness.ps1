@@ -298,6 +298,36 @@ if (Test-Path -LiteralPath $sasangRuleResponseBuilder) {
     }
 }
 
+# BL-011: refresh compression API fallback trigger telemetry (24h window summary).
+$fallbackSummary = Join-Path $WorkspaceRoot "scripts\build_fallback_trigger_daily_summary_v1.py"
+if (Test-Path -LiteralPath $fallbackSummary) {
+    & py $fallbackSummary
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+    $fbJson = Join-Path $WorkspaceRoot "docs\final\artifacts\fallback_trigger_daily_summary_latest.json"
+    if (Test-Path -LiteralPath $fbJson) {
+        try {
+            $fb = Get-Content -LiteralPath $fbJson -Raw -Encoding UTF8 | ConvertFrom-Json
+            $rate = [double]$fb.fallback_trigger_rate
+            if ($rate -gt 0.50) {
+                Write-Host "WARN: fallback_trigger_rate high ($rate) — review thresholds or traffic mix." -ForegroundColor Yellow
+            }
+            else {
+                Write-Host "Fallback telemetry summary: OK (fallback_trigger_rate=$rate)"
+            }
+        }
+        catch {
+            Write-Host "WARN: fallback summary parse check failed ($($_.Exception.Message))" -ForegroundColor Yellow
+            if ($exitCode -eq 0) { $exitCode = 1 }
+        }
+    }
+    else {
+        Write-Host "WARN: missing fallback_trigger_daily_summary_latest.json after builder" -ForegroundColor Yellow
+        if ($exitCode -eq 0) { $exitCode = 1 }
+    }
+}
+
 if ($exitCode -ne 0) {
     exit $exitCode
 }

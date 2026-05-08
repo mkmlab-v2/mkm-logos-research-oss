@@ -16,6 +16,8 @@ on:
       - "scripts/run_lens_logos_deep_fusion.py"
       - "scripts/Run-LogosTrackBChainV1.ps1"
       - "scripts/run_logos_track_b_pipeline_chain_v1.py"
+      - "scripts/promote_logos_to_shadow_live_v1.py"
+      - "scripts/build_logos_shadow_alert_decision_v1.py"
       - "tests/test_logos_track_b_policy_readiness_v1.py"
       - "tests/test_logos_track_b_deep_fusion_job_v1.py"
       - "tests/test_logos_vector_index_manifest_v1.py"
@@ -31,6 +33,20 @@ on:
       - "tests/test_run_logos_track_b_pipeline_chain_v1.py"
       - "scripts/build_logos_track_c_freshness_sidecar_v1.py"
       - "tests/test_logos_track_c_freshness_sidecar_v1.py"
+      - "tests/test_promote_logos_to_shadow_live_v1.py"
+      - "tests/test_build_logos_shadow_alert_decision_v1.py"
+      - "scripts/build_logos_s1_shadow_promotion_review_packet_v1.py"
+      - "tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py"
+      - "scripts/record_logos_s1_shadow_promotion_human_approval_v1.py"
+      - "scripts/validate_three_lens_kpi_contract_v1.py"
+      - "scripts/build_three_lens_stage3_completion_report_v1.py"
+      - "scripts/append_three_lens_shadow_history_v1.py"
+      - "tests/test_record_logos_s1_shadow_promotion_human_approval_v1.py"
+      - "tests/test_validate_three_lens_kpi_contract_v1.py"
+      - "tests/test_build_three_lens_stage3_completion_report_v1.py"
+      - "tests/test_logos_semantic_query_set_weekly_v1.py"
+      - "docs/final/artifacts/THREE_LENS_KPI_CONTRACT_V1.json"
+      - "docs/final/artifacts/logos_semantic_query_set_weekly_v1.json"
       - "docs/final/schemas/logos_vector_index_ann_lite_build_report_v1.schema.json"
       - "docs/final/schemas/logos_vector_ann_lite_query_result_v1.schema.json"
       - "docs/final/schemas/logos_vector_index_manifest_v1.schema.json"
@@ -52,6 +68,8 @@ on:
       - "scripts/run_lens_logos_deep_fusion.py"
       - "scripts/Run-LogosTrackBChainV1.ps1"
       - "scripts/run_logos_track_b_pipeline_chain_v1.py"
+      - "scripts/promote_logos_to_shadow_live_v1.py"
+      - "scripts/build_logos_shadow_alert_decision_v1.py"
       - "tests/test_logos_track_b_policy_readiness_v1.py"
       - "tests/test_logos_track_b_deep_fusion_job_v1.py"
       - "tests/test_logos_vector_index_manifest_v1.py"
@@ -67,6 +85,20 @@ on:
       - "tests/test_run_logos_track_b_pipeline_chain_v1.py"
       - "scripts/build_logos_track_c_freshness_sidecar_v1.py"
       - "tests/test_logos_track_c_freshness_sidecar_v1.py"
+      - "tests/test_promote_logos_to_shadow_live_v1.py"
+      - "tests/test_build_logos_shadow_alert_decision_v1.py"
+      - "scripts/build_logos_s1_shadow_promotion_review_packet_v1.py"
+      - "tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py"
+      - "scripts/record_logos_s1_shadow_promotion_human_approval_v1.py"
+      - "scripts/validate_three_lens_kpi_contract_v1.py"
+      - "scripts/build_three_lens_stage3_completion_report_v1.py"
+      - "scripts/append_three_lens_shadow_history_v1.py"
+      - "tests/test_record_logos_s1_shadow_promotion_human_approval_v1.py"
+      - "tests/test_validate_three_lens_kpi_contract_v1.py"
+      - "tests/test_build_three_lens_stage3_completion_report_v1.py"
+      - "tests/test_logos_semantic_query_set_weekly_v1.py"
+      - "docs/final/artifacts/THREE_LENS_KPI_CONTRACT_V1.json"
+      - "docs/final/artifacts/logos_semantic_query_set_weekly_v1.json"
       - "docs/final/schemas/logos_vector_index_ann_lite_build_report_v1.schema.json"
       - "docs/final/schemas/logos_vector_ann_lite_query_result_v1.schema.json"
       - "docs/final/schemas/logos_vector_index_manifest_v1.schema.json"
@@ -109,4 +141,11 @@ jobs:
           tests/test_logos_track_b_deep_fusion_job_v1.py
           tests/test_run_logos_track_b_pipeline_chain_v1.py
           tests/test_logos_track_c_freshness_sidecar_v1.py
+          tests/test_promote_logos_to_shadow_live_v1.py
+          tests/test_build_logos_shadow_alert_decision_v1.py
+          tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py
+          tests/test_record_logos_s1_shadow_promotion_human_approval_v1.py
+          tests/test_validate_three_lens_kpi_contract_v1.py
+          tests/test_build_three_lens_stage3_completion_report_v1.py
+          tests/test_logos_semantic_query_set_weekly_v1.py
           -q --tb=short

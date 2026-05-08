@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "hypothesis_tier": "B",
   "purpose": "Track B slice 3 — embedding/ANN knobs before real index build; no production defaults.",
-  "status": "stub",
+  "status": "active",
   "backend": {
     "preferred": "local_flatfile_or_sqlite_placeholder",
     "forbidden_for_track_a_live": ["remote_uncached_embedding_burst_without_budget"]
   },
   "embedding": {
-    "model_id": "TBD_LOCAL_OR_STUB",
+    "model_id": "sentence-transformers/all-MiniLM-L6-v2",
     "max_chars_per_chunk": 8192,
     "batch_size": 32,
     "normalize_vectors": true
