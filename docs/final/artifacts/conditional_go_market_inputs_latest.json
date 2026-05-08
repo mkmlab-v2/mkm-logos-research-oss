@@ -1,11 +1,16 @@
 {
   "schema": "conditional_go_market_inputs_v1",
-  "generated_at_utc": "2026-05-08T03:07:00Z",
-  "source_note": "Armed scenario rehearsal input.",
+  "generated_at_utc": "2026-05-08T03:23:45Z",
+  "source_note": "Auto refreshed from market signals; foreign flow may remain manual override.",
   "checks": {
     "foreign_flow_turn": true,
     "kospi_structure_hold": true,
-    "semi_leader_recovery": true
+    "semi_leader_recovery": false
   },
-  "confidence_0_1": 0.8
+  "confidence_0_1": 0.62,
+  "diagnostics": {
+    "yfinance_ok": true,
+    "checks_true_count": 2,
+    "confidence_mode": "inferred"
+  }
 }

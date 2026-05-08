@@ -49,13 +49,19 @@ if (-not $SkipMkmlifeGuardrailDaily) {
     Write-Host "[ThreeLensStagedDaily] step 4/9: mkmlife guardrail redteam daily gate skipped"
 }
 
-Write-Host "[ThreeLensStagedDaily] step 5/10: build conditional GO market check"
+Write-Host "[ThreeLensStagedDaily] step 5/11: build conditional GO market inputs"
+& $PythonExe "scripts/build_conditional_go_market_inputs_v1.py"
+if ($LASTEXITCODE -ne 0) {
+    throw "build_conditional_go_market_inputs_v1.py failed with exit code $LASTEXITCODE"
+}
+
+Write-Host "[ThreeLensStagedDaily] step 6/11: build conditional GO market check"
 & $PythonExe "scripts/build_conditional_go_market_check_v1.py"
 if ($LASTEXITCODE -ne 0) {
     throw "build_conditional_go_market_check_v1.py failed with exit code $LASTEXITCODE"
 }
 
-Write-Host "[ThreeLensStagedDaily] step 6/10: evaluate feature gate v2"
+Write-Host "[ThreeLensStagedDaily] step 7/11: evaluate feature gate v2"
 & $PythonExe "scripts/check_three_lens_feature_gate_v2.py" `
   "--input-json" $FusionOutJson `
   "--output-json" $GateOutJson `
@@ -68,25 +74,25 @@ if ($LASTEXITCODE -ne 0) {
     throw "check_three_lens_feature_gate_v2.py failed with exit code $LASTEXITCODE"
 }
 
-Write-Host "[ThreeLensStagedDaily] step 7/10: build coordinator decision pack"
+Write-Host "[ThreeLensStagedDaily] step 8/11: build coordinator decision pack"
 & $PythonExe "scripts/build_three_lens_coordinator_decision_pack_v1.py"
 if ($LASTEXITCODE -ne 0) {
     throw "build_three_lens_coordinator_decision_pack_v1.py failed with exit code $LASTEXITCODE"
 }
 
-Write-Host "[ThreeLensStagedDaily] step 8/10: build solution planner"
+Write-Host "[ThreeLensStagedDaily] step 9/11: build solution planner"
 & $PythonExe "scripts/build_three_lens_solution_planner_v1.py"
 if ($LASTEXITCODE -ne 0) {
     throw "build_three_lens_solution_planner_v1.py failed with exit code $LASTEXITCODE"
 }
 
-Write-Host "[ThreeLensStagedDaily] step 9/10: build evidence trace"
+Write-Host "[ThreeLensStagedDaily] step 10/11: build evidence trace"
 & $PythonExe "scripts/build_three_lens_evidence_trace_v1.py"
 if ($LASTEXITCODE -ne 0) {
     throw "build_three_lens_evidence_trace_v1.py failed with exit code $LASTEXITCODE"
 }
 
-Write-Host "[ThreeLensStagedDaily] step 10/10: append shadow history"
+Write-Host "[ThreeLensStagedDaily] step 11/11: append shadow history"
 & $PythonExe "scripts/append_three_lens_shadow_history_v1.py"
 if ($LASTEXITCODE -ne 0) {
     throw "append_three_lens_shadow_history_v1.py failed with exit code $LASTEXITCODE"

@@ -21,13 +21,19 @@ if ($LASTEXITCODE -ne 0) {
     throw "build_three_lens_fusion_coordinator_v1.py failed with exit code $LASTEXITCODE"
 }
 
-Write-Host "[ThreeLensV2] step 2/3: build conditional GO market check"
+Write-Host "[ThreeLensV2] step 2/4: build conditional GO market inputs"
+& $PythonExe "scripts/build_conditional_go_market_inputs_v1.py"
+if ($LASTEXITCODE -ne 0) {
+    throw "build_conditional_go_market_inputs_v1.py failed with exit code $LASTEXITCODE"
+}
+
+Write-Host "[ThreeLensV2] step 3/4: build conditional GO market check"
 & $PythonExe "scripts/build_conditional_go_market_check_v1.py"
 if ($LASTEXITCODE -ne 0) {
     throw "build_conditional_go_market_check_v1.py failed with exit code $LASTEXITCODE"
 }
 
-Write-Host "[ThreeLensV2] step 3/3: evaluate feature gate v2"
+Write-Host "[ThreeLensV2] step 4/4: evaluate feature gate v2"
 & $PythonExe "scripts/check_three_lens_feature_gate_v2.py" `
   "--input-json" $FusionOutputJson `
   "--output-json" $GateOutputJson `
