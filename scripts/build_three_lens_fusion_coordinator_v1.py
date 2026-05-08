@@ -121,6 +121,21 @@ def _extract_chronicle_signal(doc: dict[str, Any]) -> tuple[float | None, list[s
     return chronicle_signal, unique_pointers
 
 
+def _logos_non_gating_ok(doc: dict[str, Any]) -> bool:
+    marker_ok = str(doc.get("final_insight_non_gating") or "").upper().find("NON_GATING") >= 0
+    ontology = doc.get("ontology_trace") if isinstance(doc.get("ontology_trace"), dict) else {}
+    deep = doc.get("deep_logos_tension_gematria") if isinstance(doc.get("deep_logos_tension_gematria"), dict) else {}
+    morph = doc.get("morphology_layer") if isinstance(doc.get("morphology_layer"), dict) else {}
+    trace_non_gating = any(
+        [
+            ontology.get("non_gating_only") is True,
+            deep.get("non_gating_only") is True,
+            morph.get("non_gating_only") is True,
+        ]
+    )
+    return bool(marker_ok and trace_non_gating)
+
+
 def _read_json_optional(path: Path) -> dict[str, Any]:
     if not path.is_file():
         return {}
@@ -163,10 +178,7 @@ def main() -> int:
     d_sasang = _sasang_decision(sasang)
     d_myeongni = _myeongni_decision(myeongni)
     logos_ctx = _logos_context(logos)
-    logos_non_gating = bool(
-        str(logos.get("final_insight_non_gating") or "").lower().find("non_gating") >= 0
-        and (logos.get("ontology_trace") or {}).get("non_gating_only") is True
-    )
+    logos_non_gating = _logos_non_gating_ok(logos)
     sasang_stress = _extract_sasang_stress_score(sasang)
     myeongni_dir, myeongni_conf = _extract_myeongni_scores(myeongni)
     logos_tension = _extract_logos_tension(logos)

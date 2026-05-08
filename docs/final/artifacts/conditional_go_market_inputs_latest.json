@@ -1,0 +1,11 @@
+{
+  "schema": "conditional_go_market_inputs_v1",
+  "generated_at_utc": "2026-05-08T03:07:00Z",
+  "source_note": "Armed scenario rehearsal input.",
+  "checks": {
+    "foreign_flow_turn": true,
+    "kospi_structure_hold": true,
+    "semi_leader_recovery": true
+  },
+  "confidence_0_1": 0.8
+}

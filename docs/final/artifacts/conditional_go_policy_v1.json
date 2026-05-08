@@ -1,0 +1,24 @@
+{
+  "schema": "conditional_go_policy_v1",
+  "version": "1.0.0",
+  "track": "B_TRACK",
+  "mode": "LOCKED_MODE_WITH_RECON_SLOT",
+  "non_gating_ack": true,
+  "policy_principles": {
+    "capital_protection_first": true,
+    "most_conservative_wins": true,
+    "field_ops_precedence": true
+  },
+  "allocation": {
+    "recon_slot_min_pct": 0.1,
+    "recon_slot_max_pct": 0.2,
+    "max_new_entries_per_day": 1
+  },
+  "activation": {
+    "min_confidence_0_1": 0.62
+  },
+  "governance": {
+    "human_signoff_required": true,
+    "research_only": true
+  }
+}
