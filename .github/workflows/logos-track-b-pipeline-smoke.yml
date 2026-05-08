@@ -39,8 +39,11 @@ on:
       - "tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py"
       - "scripts/record_logos_s1_shadow_promotion_human_approval_v1.py"
       - "scripts/validate_three_lens_kpi_contract_v1.py"
+      - "scripts/build_three_lens_stage3_completion_report_v1.py"
+      - "scripts/append_three_lens_shadow_history_v1.py"
       - "tests/test_record_logos_s1_shadow_promotion_human_approval_v1.py"
       - "tests/test_validate_three_lens_kpi_contract_v1.py"
+      - "tests/test_build_three_lens_stage3_completion_report_v1.py"
       - "tests/test_logos_semantic_query_set_weekly_v1.py"
       - "docs/final/artifacts/THREE_LENS_KPI_CONTRACT_V1.json"
       - "docs/final/artifacts/logos_semantic_query_set_weekly_v1.json"
@@ -88,8 +91,11 @@ on:
       - "tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py"
       - "scripts/record_logos_s1_shadow_promotion_human_approval_v1.py"
       - "scripts/validate_three_lens_kpi_contract_v1.py"
+      - "scripts/build_three_lens_stage3_completion_report_v1.py"
+      - "scripts/append_three_lens_shadow_history_v1.py"
       - "tests/test_record_logos_s1_shadow_promotion_human_approval_v1.py"
       - "tests/test_validate_three_lens_kpi_contract_v1.py"
+      - "tests/test_build_three_lens_stage3_completion_report_v1.py"
       - "tests/test_logos_semantic_query_set_weekly_v1.py"
       - "docs/final/artifacts/THREE_LENS_KPI_CONTRACT_V1.json"
       - "docs/final/artifacts/logos_semantic_query_set_weekly_v1.json"
@@ -140,5 +146,6 @@ jobs:
           tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py
           tests/test_record_logos_s1_shadow_promotion_human_approval_v1.py
           tests/test_validate_three_lens_kpi_contract_v1.py
+          tests/test_build_three_lens_stage3_completion_report_v1.py
           tests/test_logos_semantic_query_set_weekly_v1.py
           -q --tb=short
