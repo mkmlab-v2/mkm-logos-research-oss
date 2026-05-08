@@ -106,6 +106,7 @@ def main() -> int:
     logos_weekly_trend = _read_json(art / "logos_shadow_weekly_trend_report_latest.json")
     logos_kpi_progress = _read_json(art / "logos_shadow_promotion_kpi_progress_latest.json")
     logos_response_policy_check = _read_json(art / "logos_response_policy_check_latest.json")
+    logos_review_packet = _read_json(art / "logos_s1_shadow_promotion_review_packet_latest.json")
     forward_prereg = _read_json(art / "macro_risk_forward_preregister_lock_latest.json")
     forward_latest = _read_json(art / "macro_risk_forward_log_latest.json")
     forward_weekly = _read_json(art / "macro_risk_forward_weekly_report_latest.json")
@@ -177,6 +178,10 @@ def main() -> int:
                 "kpi_progress_required_consecutive_go": logos_kpi_progress.get("required_consecutive_strict_go_windows"),
                 "response_policy_check_status": logos_response_policy_check.get("status"),
                 "response_policy_check_passed": logos_response_policy_check.get("passed"),
+                "promotion_review_packet_generated_at": logos_review_packet.get("generated_at_utc"),
+                "promotion_review_packet_kpi_status": (
+                    ((logos_review_packet.get("summary") or {}).get("kpi_contract") or {}).get("status")
+                ),
             },
         },
         "evidence": {
@@ -200,6 +205,7 @@ def main() -> int:
             "logos_shadow_weekly_trend": "docs/final/artifacts/logos_shadow_weekly_trend_report_latest.json",
             "logos_shadow_kpi_progress": "docs/final/artifacts/logos_shadow_promotion_kpi_progress_latest.json",
             "logos_response_policy_check": "docs/final/artifacts/logos_response_policy_check_latest.json",
+            "logos_s1_shadow_promotion_review_packet": "docs/final/artifacts/logos_s1_shadow_promotion_review_packet_latest.json",
             "forward_preregister_lock": "docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json",
             "forward_log_latest": "docs/final/artifacts/macro_risk_forward_log_latest.json",
             "forward_weekly_report": "docs/final/artifacts/macro_risk_forward_weekly_report_latest.json",
@@ -267,6 +273,8 @@ def main() -> int:
         f"- kpi_progress_required_consecutive_go: `{((dashboard['trackc']['logos_shadow'] or {}).get('kpi_progress_required_consecutive_go'))}`",
         f"- response_policy_check_status: `{((dashboard['trackc']['logos_shadow'] or {}).get('response_policy_check_status'))}`",
         f"- response_policy_check_passed: `{((dashboard['trackc']['logos_shadow'] or {}).get('response_policy_check_passed'))}`",
+        f"- promotion_review_packet_generated_at: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_review_packet_generated_at'))}`",
+        f"- promotion_review_packet_kpi_status: `{((dashboard['trackc']['logos_shadow'] or {}).get('promotion_review_packet_kpi_status'))}`",
         "",
         "## Evidence",
         "- `docs/final/artifacts/mkm_ai_status_pointer_latest.json`",
@@ -289,6 +297,7 @@ def main() -> int:
         "- `docs/final/artifacts/logos_shadow_weekly_trend_report_latest.json`",
         "- `docs/final/artifacts/logos_shadow_promotion_kpi_progress_latest.json`",
         "- `docs/final/artifacts/logos_response_policy_check_latest.json`",
+        "- `docs/final/artifacts/logos_s1_shadow_promotion_review_packet_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_log_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_weekly_report_latest.json`",

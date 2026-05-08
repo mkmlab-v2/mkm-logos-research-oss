@@ -8,6 +8,9 @@
   Typical local test (no webhooks, no public exodus fetch):
     powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-TrackCMacroDailyFusion_v1.ps1 -SkipGateAlert -SkipExodusSourceFetch
 
+  Optional: skip Role Router vs S1 shadow advisory append (non-gating):
+    ... -SkipRoleRouterShadowAdvisory
+
   Optional meta-layer audit (after fusion steps): pass a JSON file or a markdown file containing a ```json envelope block.
     -File ... -MetaLayerEnvelopePath C:\path\envelope.json
 
@@ -30,6 +33,9 @@ param(
     [switch]$SkipForwardChain,
     [switch]$SkipLogosChain,
     [switch]$SkipOpsDashboard,
+
+    # Role-router multiscenario opt vs lens S1 shadow gate (append-only log; non-gating).
+    [switch]$SkipRoleRouterShadowAdvisory,
 
     # Optional: run mkm_meta_layer_envelope_v1.py after fusion (JSON path or markdown with ```json envelope).
     [string]$MetaLayerEnvelopePath = ""
@@ -66,9 +72,14 @@ $logosShadowWeeklyTrend = Join-Path $PSScriptRoot "build_logos_shadow_weekly_tre
 $logosShadowAlertDecision = Join-Path $PSScriptRoot "build_logos_shadow_alert_decision_v1.py"
 $logosShadowKpiProgress = Join-Path $PSScriptRoot "build_logos_shadow_promotion_kpi_progress_v1.py"
 $logosResponsePolicyCheck = Join-Path $PSScriptRoot "build_logos_response_policy_check_v1.py"
+$logosS1ShadowReviewPacket = Join-Path $PSScriptRoot "build_logos_s1_shadow_promotion_review_packet_v1.py"
+$roleRouterS1ShadowAdvisory = Join-Path $PSScriptRoot "build_role_router_s1_shadow_advisory_v1.py"
 $opsDashboard = Join-Path $PSScriptRoot "build_mkm_trackc_ops_dashboard_v1.py"
 
-$required = @($fragilityDaily, $forwardDaily, $logosChain, $logosRegimeResonanceShadow, $logosQuerySuite, $logosShadowPromotion, $logosShadowInsight, $logosShadowDailyMetrics, $logosShadowWeeklyGate, $logosShadowWeeklyGateBootstrap, $logosShadowWeeklyTrend, $logosShadowAlertDecision, $logosShadowKpiProgress, $logosResponsePolicyCheck)
+$required = @($fragilityDaily, $forwardDaily, $logosChain, $logosRegimeResonanceShadow, $logosQuerySuite, $logosShadowPromotion, $logosShadowInsight, $logosShadowDailyMetrics, $logosShadowWeeklyGate, $logosShadowWeeklyGateBootstrap, $logosShadowWeeklyTrend, $logosShadowAlertDecision, $logosShadowKpiProgress, $logosResponsePolicyCheck, $logosS1ShadowReviewPacket)
+if (-not $SkipRoleRouterShadowAdvisory) {
+    $required += $roleRouterS1ShadowAdvisory
+}
 if (-not $SkipOpsDashboard) {
     $required += $opsDashboard
 }
@@ -179,6 +190,21 @@ Invoke-FusionStep -Name "build_logos_response_policy_check_v1.py" -Action {
     Set-Location -LiteralPath $repoRoot
     py $logosResponsePolicyCheck
 }
+Invoke-FusionStep -Name "build_logos_s1_shadow_promotion_review_packet_v1.py" -Action {
+    Set-Location -LiteralPath $repoRoot
+    py $logosS1ShadowReviewPacket
+}
+
+# 6b) Role router vs S1 shadow governance (advisory_only; append-only log)
+if (-not $SkipRoleRouterShadowAdvisory) {
+    Invoke-FusionStep -Name "build_role_router_s1_shadow_advisory_v1.py" -Action {
+        Set-Location -LiteralPath $repoRoot
+        py $roleRouterS1ShadowAdvisory
+    }
+}
+else {
+    Write-Host "[trackc-macro-fusion] skip role router S1 shadow advisory (SkipRoleRouterShadowAdvisory)"
+}
 
 # 7) Ops dashboard JSON (local artifacts)
 if (-not $SkipOpsDashboard) {
@@ -229,4 +255,6 @@ Write-Host "[trackc-macro-fusion] logos_shadow_weekly_trend=$repoRoot/docs/final
 Write-Host "[trackc-macro-fusion] logos_shadow_alert_decision=$repoRoot/docs/final/artifacts/logos_shadow_alert_decision_latest.json"
 Write-Host "[trackc-macro-fusion] logos_shadow_kpi_progress=$repoRoot/docs/final/artifacts/logos_shadow_promotion_kpi_progress_latest.json"
 Write-Host "[trackc-macro-fusion] logos_response_policy_check=$repoRoot/docs/final/artifacts/logos_response_policy_check_latest.json"
+Write-Host "[trackc-macro-fusion] logos_s1_shadow_promotion_review_packet=$repoRoot/docs/final/artifacts/logos_s1_shadow_promotion_review_packet_latest.json"
+Write-Host "[trackc-macro-fusion] role_router_s1_shadow_advisory=$repoRoot/docs/final/artifacts/role_router_s1_shadow_advisory_latest.json"
 Write-Host "[trackc-macro-fusion] ops_dashboard=$repoRoot/docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json"

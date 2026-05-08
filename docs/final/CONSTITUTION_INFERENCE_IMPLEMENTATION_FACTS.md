@@ -598,7 +598,8 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 비게이팅 레짐 공명(섀도우 신호) | `scripts/build_logos_regime_resonance_shadow_signal_v1.py` → `docs/final/artifacts/logos_regime_resonance_shadow_signal_latest.json` | `data/regimes/regime_map.json` 입력; **non_gating_signal_only** 유지 |
 | 시맨틱 쿼리 집합(v3) | `docs/final/artifacts/logos_semantic_query_set_v3.json` | `scripts/run_logos_semantic_query_smoke_suite_v1.py` — 융합 체인 기본 `--query-set-json`과 정합 |
 | A/B(쿼리 집합·모델) | `scripts/run_logos_queryset_ab_compare_v1.py`, `scripts/run_logos_semantic_model_ab_sweep_v1.py` | 비교 산출 `docs/final/artifacts/logos_semantic_queryset_ab_compare_latest.json` 등(로컬) |
-| CI·회귀 | `.github/workflows/logos-track-b-pipeline-smoke.yml` | `tests/test_promote_logos_to_shadow_live_v1.py`, `tests/test_build_logos_shadow_alert_decision_v1.py` |
+| 승격 리뷰 패킷 (지휘관 스냅샷) | `scripts/build_logos_s1_shadow_promotion_review_packet_v1.py` → `docs/final/artifacts/logos_s1_shadow_promotion_review_packet_latest.json` · `logos_s1_shadow_promotion_review_packet_latest.md` | 주간 게이트·트렌드·KPI·정책 체크 등을 한 파일에 요약·경로 고정; **승인·다음 단계 결정은 사람** |
+| CI·회귀 | `.github/workflows/logos-track-b-pipeline-smoke.yml` | `tests/test_promote_logos_to_shadow_live_v1.py`, `tests/test_build_logos_shadow_alert_decision_v1.py`, `tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py` |
 
 **승격 기록 (Fact-Lock):** 2026-05-07 — Logos **ANN-lite 시맨틱 엔진**을 **S1_SHADOW** 관측 경로(일일 융합·주간 게이트·KPI 계약)에 연결. 렌즈 계약상 Logos는 **[NON_GATING]** 보조; 최종 액션은 1차 실물 레짐 및 운영 게이트가 확정한다.
 
