@@ -38,7 +38,12 @@ on:
       - "scripts/build_logos_s1_shadow_promotion_review_packet_v1.py"
       - "tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py"
       - "scripts/record_logos_s1_shadow_promotion_human_approval_v1.py"
+      - "scripts/validate_three_lens_kpi_contract_v1.py"
       - "tests/test_record_logos_s1_shadow_promotion_human_approval_v1.py"
+      - "tests/test_validate_three_lens_kpi_contract_v1.py"
+      - "tests/test_logos_semantic_query_set_weekly_v1.py"
+      - "docs/final/artifacts/THREE_LENS_KPI_CONTRACT_V1.json"
+      - "docs/final/artifacts/logos_semantic_query_set_weekly_v1.json"
       - "docs/final/schemas/logos_vector_index_ann_lite_build_report_v1.schema.json"
       - "docs/final/schemas/logos_vector_ann_lite_query_result_v1.schema.json"
       - "docs/final/schemas/logos_vector_index_manifest_v1.schema.json"
@@ -82,7 +87,12 @@ on:
       - "scripts/build_logos_s1_shadow_promotion_review_packet_v1.py"
       - "tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py"
       - "scripts/record_logos_s1_shadow_promotion_human_approval_v1.py"
+      - "scripts/validate_three_lens_kpi_contract_v1.py"
       - "tests/test_record_logos_s1_shadow_promotion_human_approval_v1.py"
+      - "tests/test_validate_three_lens_kpi_contract_v1.py"
+      - "tests/test_logos_semantic_query_set_weekly_v1.py"
+      - "docs/final/artifacts/THREE_LENS_KPI_CONTRACT_V1.json"
+      - "docs/final/artifacts/logos_semantic_query_set_weekly_v1.json"
       - "docs/final/schemas/logos_vector_index_ann_lite_build_report_v1.schema.json"
       - "docs/final/schemas/logos_vector_ann_lite_query_result_v1.schema.json"
       - "docs/final/schemas/logos_vector_index_manifest_v1.schema.json"
@@ -129,4 +139,6 @@ jobs:
           tests/test_build_logos_shadow_alert_decision_v1.py
           tests/test_build_logos_s1_shadow_promotion_review_packet_v1.py
           tests/test_record_logos_s1_shadow_promotion_human_approval_v1.py
+          tests/test_validate_three_lens_kpi_contract_v1.py
+          tests/test_logos_semantic_query_set_weekly_v1.py
           -q --tb=short

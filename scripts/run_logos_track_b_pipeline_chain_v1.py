@@ -4,7 +4,7 @@
 Mirrors scripts/Run-LogosTrackBChainV1.ps1 for Linux/Mac/CI. No LLM calls.
 
 Unknown CLI tokens are forwarded to run_logos_track_b_deep_fusion_job_v1.py (parse_known_args).
-Example:  %(prog)s --skip-distill -- --output /tmp/job.json --dry-run
+Example:  %(prog)s --skip-distill --output /tmp/job.json --dry-run
 """
 from __future__ import annotations
 
@@ -21,6 +21,11 @@ POLICY_PATH = ROOT / "docs/final/artifacts/LOGOS_VECTOR_INDEX_POLICY_V1.json"
 def _run(script: str, argv: list[str]) -> int:
     cmd = [sys.executable, str(ROOT / script)] + argv
     return subprocess.run(cmd, cwd=str(ROOT)).returncode
+
+
+def _normalize_job_extra(argv: list[str]) -> list[str]:
+    """Drop optional `--` separator before forwarding extra args to child job."""
+    return [tok for tok in argv if tok != "--"]
 
 
 def _ann_lite_args_from_policy() -> list[str]:
@@ -74,6 +79,7 @@ def main() -> int:
         help="Skip build_logos_track_c_freshness_sidecar_v1.py after deep fusion job",
     )
     args, job_extra = ap.parse_known_args()
+    job_extra = _normalize_job_extra(job_extra)
 
     if not args.skip_readiness_report:
         rc = _run("scripts/report_logos_track_b_policy_readiness_v1.py", [])
