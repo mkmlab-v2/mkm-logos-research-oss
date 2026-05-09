@@ -31,6 +31,8 @@ param(
 # 2026-05-02: 압축 주간 거버넌스 체인 러너 복구 (run_compression_weekly_governance_chain.ps1 + P0 경로).
 # 2026-05-02: 명리 독립 렌즈 → Thin JSONL 브리지 v1 (emit 스크립트·pytest; §3.6).
 # 2026-05-07: GraphRAG pilot query router v1 (Track B/K observation-only; script+schema+test).
+# 2026-05-09: Global orchestrator + GO stability cycle + accelerated burn-in + conditional GO+ report v2
+#   (scripts only; companion / mkm_global_orchestrator *_latest.json are regenerable and often gitignored).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -103,6 +105,13 @@ $required = @(
     "projects\bitcoin-trading\ops\windows-rehearsal\DAILY_EXECUTION_INSIGHT_BRIEF_TEMPLATE.md",
     "scripts\build_daily_execution_insight_brief_v1.py",
     "scripts\Run-DailyExecutionInsightBrief_v1.ps1",
+    "scripts\Register-DailyExecutionInsightBriefTask.ps1",
+    "scripts\check_cross_lens_rag_notify_prereqs_v1.ps1",
+    "scripts\send_cross_lens_rag_alert_v1.py",
+    "scripts\run_market_myeongni_lens_v1.py",
+    "scripts\market_myeongni_overlay_engine_v1.py",
+    "data\market_myeongni\market_myeongni_overlay_policy_v1.json",
+    "docs\final\artifacts\schemas\market_myeongni_lens_v1.schema.json",
     "tests\test_build_daily_execution_insight_brief_v1.py",
     "scripts\emit_myeongni_thin_bridge_line_v1.py",
     "tests\test_emit_myeongni_thin_bridge_line_v1.py",
@@ -335,7 +344,15 @@ $required = @(
     "tests\test_yang_2015_btrack_json_schema_v1.py",
     "scripts\run_graphrag_pilot_router_v1.py",
     "docs\final\schemas\graphrag_pilot_router_v1.schema.json",
-    "tests\test_run_graphrag_pilot_router_v1.py"
+    "tests\test_run_graphrag_pilot_router_v1.py",
+    "scripts\mkm_global_orchestrator_v1.py",
+    "scripts\apply_mkm_global_orchestrator_policy_profile_v1.py",
+    "scripts\check_mkm_orchestrator_go_stability_v1.py",
+    "scripts\run_mkm_orchestrator_go_stability_cycle_v1.ps1",
+    "scripts\run_mkm_orchestrator_accelerated_burnin_v1.ps1",
+    "scripts\build_mkm_conditional_go_plus_report_v2.py",
+    "scripts\Run-TradingGuardianBundleTask.ps1",
+    "scripts\Run-MkmWeeklyOperationalEvidenceCadence.ps1"
 )
 
 $missing = @()
