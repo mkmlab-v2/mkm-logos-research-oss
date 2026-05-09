@@ -30,6 +30,9 @@ DEFAULT_MYEONGNI_16STATE = WORKSPACE_ROOT / "data" / "myeongni" / "16_STATE_MAST
 DEFAULT_COMMANDER_MYEONGNI = WORKSPACE_ROOT / "reports" / "commander_myeongni_lens_latest.json"
 DEFAULT_SASANG_VETO_CFG = _ART / "sasang_veto_only_active_config_latest.json"
 DEFAULT_MYEONGRI_V2_UPGRADE = WORKSPACE_ROOT / "reports" / "myeongri_core_v2_upgrade_latest.json"
+DEFAULT_MYEONGNI_CONFLICT_RUNTIME = (
+    WORKSPACE_ROOT / "reports" / "myeongni_conflict_arbitration_runtime_mode_latest.json"
+)
 
 
 def _abs_under_root(root: Path, p: Path) -> Path:
@@ -199,6 +202,47 @@ def _lines_market_myeongni(doc: dict[str, Any] | None, path: Path) -> tuple[list
     pol = str(ov.get("policy_path") or "")
     if pol:
         lines.append(f"| `policy_path` | `{pol}` |")
+    lines.append("")
+    return lines, True
+
+
+def _policy_hash_short(h: Any, n: int = 12) -> str:
+    s = "" if h is None else str(h).strip()
+    if len(s) <= n:
+        return s
+    return s[:n] + "…"
+
+
+def _lines_myeongni_conflict_runtime(
+    doc: dict[str, Any] | None, path: Path
+) -> tuple[list[str], bool]:
+    lines: list[str] = []
+    lines.append("#### Myeongni conflict arbitration runtime (B-track policy stamp)")
+    lines.append("")
+    lines.append(
+        "> Policy mode / verification only — not a price signal and not wired to live execution."
+    )
+    lines.append("")
+    if not doc:
+        lines.append(f"*(missing — `{path.as_posix()}`)*")
+        lines.append("")
+        return lines, False
+    if str(doc.get("schema")) != "myeongni_conflict_arbitration_runtime_mode_v1":
+        lines.append(
+            f"*(schema not `myeongni_conflict_arbitration_runtime_mode_v1` — "
+            f"got `{_md_cell(doc.get('schema'))}`)*"
+        )
+        lines.append("")
+        return lines, False
+    lines.append("| field | value |")
+    lines.append("|-------|-------|")
+    lines.append(f"| `mode` | {_md_cell(doc.get('mode'))} |")
+    lines.append(f"| `verification_pass` | {_md_cell(doc.get('verification_pass'))} |")
+    lines.append(f"| `policy_hash` | `{_policy_hash_short(doc.get('policy_hash'))}` |")
+    lines.append(f"| `generated_at_utc` | {_md_cell(doc.get('generated_at_utc'))} |")
+    pp = str(doc.get("policy_path") or "")
+    if pp:
+        lines.append(f"| `policy_path` | `{pp}` |")
     lines.append("")
     return lines, True
 
@@ -497,6 +541,8 @@ def build_markdown(
     sasang_veto_cfg_path: Path | None = None,
     myeongri_v2_upgrade: dict[str, Any] | None = None,
     myeongri_v2_upgrade_path: Path | None = None,
+    myeongni_conflict_runtime: dict[str, Any] | None = None,
+    myeongni_conflict_runtime_path: Path | None = None,
 ) -> str:
     lines: list[str] = []
     lines.append("# Daily execution insight — 1-page brief (generated)")
@@ -591,11 +637,14 @@ def build_markdown(
     lp = logos_independent_path or DEFAULT_LOGOS_INDEPENDENT_LENS
     lm, ok_m = _lines_myeongni(myeongni, mp)
     lmm, ok_mm = _lines_market_myeongni(market_myeongni, mmp)
+    crp = myeongni_conflict_runtime_path or DEFAULT_MYEONGNI_CONFLICT_RUNTIME
+    lcr, ok_cr = _lines_myeongni_conflict_runtime(myeongni_conflict_runtime, crp)
     ls, ok_s = _lines_sasang(sasang, sp)
     lms, ok_ms = _lines_market_sasang(market_sasang, msp)
     ll, ok_l = _lines_logos_independent(logos_independent, lp)
     lines.extend(lm)
     lines.extend(lmm)
+    lines.extend(lcr)
     lines.extend(ls)
     lines.extend(lms)
     lines.extend(ll)
@@ -637,8 +686,8 @@ def build_markdown(
     lines.append("| `final_action_label` | *(operator)* |")
     ev_paths = (
         f"`{thin_path.as_posix()}`; `{fusion_path.as_posix()}`; "
-        f"`{mp.as_posix()}`; `{mmp.as_posix()}`; `{sp.as_posix()}`; `{msp.as_posix()}`; `{lp.as_posix()}`; "
-        f"`{atp.as_posix()}`; `{v2p.as_posix()}`"
+        f"`{mp.as_posix()}`; `{mmp.as_posix()}`; `{crp.as_posix()}`; `{sp.as_posix()}`; `{msp.as_posix()}`; "
+        f"`{lp.as_posix()}`; `{atp.as_posix()}`; `{v2p.as_posix()}`"
     )
     lines.append(f"| `evidence_paths` | {ev_paths} |")
     lines.append("")
@@ -647,6 +696,7 @@ def build_markdown(
     ind_flags = {
         "myeongni": ok_m,
         "market_myeongni": ok_mm,
+        "myeongni_conflict_runtime": ok_cr,
         "sasang": ok_s,
         "market_sasang": ok_ms,
         "logos_independent": ok_l,
@@ -685,6 +735,12 @@ def main() -> None:
         default=DEFAULT_MYEONGRI_V2_UPGRADE,
         help="myeongri_core_v2_upgrade_latest.json (run myeongri_core_v2_upgrade.py first).",
     )
+    p.add_argument(
+        "--myeongni-conflict-runtime-json",
+        type=Path,
+        default=DEFAULT_MYEONGNI_CONFLICT_RUNTIME,
+        help="myeongni_conflict_arbitration_runtime_mode_latest.json (B-track policy stamp).",
+    )
     p.add_argument("--out", type=Path, default=DEFAULT_OUT)
     p.add_argument(
         "--brief-date-utc",
@@ -721,6 +777,7 @@ def main() -> None:
     commander_myeongni_path = _abs_under_root(root, args.commander_myeongni_json)
     sasang_veto_cfg_path = _abs_under_root(root, args.sasang_veto_config_json)
     myeongri_v2_upgrade_path = _abs_under_root(root, args.myeongri_v2_upgrade_json)
+    myeongni_conflict_runtime_path = _abs_under_root(root, args.myeongni_conflict_runtime_json)
 
     fusion = _read_json(fusion_path)
     thin = _read_json(thin_path)
@@ -736,6 +793,7 @@ def main() -> None:
     commander_myeongni = _read_json(commander_myeongni_path)
     sasang_veto_cfg = _read_json(sasang_veto_cfg_path)
     myeongri_v2_upgrade = _read_json(myeongri_v2_upgrade_path)
+    myeongni_conflict_runtime = _read_json(myeongni_conflict_runtime_path)
 
     body = build_markdown(
         brief_date_utc=brief_date,
@@ -769,6 +827,8 @@ def main() -> None:
         sasang_veto_cfg_path=sasang_veto_cfg_path,
         myeongri_v2_upgrade=myeongri_v2_upgrade,
         myeongri_v2_upgrade_path=myeongri_v2_upgrade_path,
+        myeongni_conflict_runtime=myeongni_conflict_runtime,
+        myeongni_conflict_runtime_path=myeongni_conflict_runtime_path,
     )
 
     out = args.out
