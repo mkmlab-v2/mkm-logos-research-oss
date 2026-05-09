@@ -1,0 +1,8 @@
+{
+  "schema": "general_compression_restore_stress_v1",
+  "source": "baseline_tracked",
+  "aggregate_gate": {
+    "decision": "GO"
+  },
+  "notes": "Tracked GO baseline for bundle validation. Replace with full restore-stress harness output when available; NO_GO_HIGH_COMPRESSION_LOCK blocks promotion via validate_general_compression_bundle.py."
+}

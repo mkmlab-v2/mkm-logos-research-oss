@@ -43,7 +43,9 @@
     "status": "planned",
     "method": "fixed_seed_deidentified_eval_split",
     "seed": 42,
-    "note": "Holdout split and scheduled re-runs when corpus changes; keep train metrics separate from reported eval."
+    "split_script": "scripts/split_general_compression_holdout_v1.py",
+    "split_report_path": "docs/final/artifacts/general_compression_holdout_split_report_v1.json",
+    "note": "Run split script after corpus changes; build eval input from train/* paths only for tuning; evaluate on holdout/* separately."
   },
   "experiment": {
     "splits": {
@@ -75,7 +77,8 @@
     "summary_json": "docs/final/artifacts/general_compression_ab_result_summary_v1.json",
     "timeseries_csv": "docs/final/artifacts/general_compression_ab_result_timeseries_v1.csv",
     "repro_command_txt": "docs/final/artifacts/general_compression_repro_command_v1.txt",
-    "kpi_gate_json": "docs/final/artifacts/general_compression_kpi_gate_v2.json"
+    "kpi_gate_json": "docs/final/artifacts/general_compression_kpi_gate_v2.json",
+    "restore_stress_json": "docs/final/artifacts/general_compression_restore_stress_v1.json"
   },
   "commit": {
     "workspace_commit_hash": "decf63190c"

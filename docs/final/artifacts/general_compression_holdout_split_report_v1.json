@@ -1,0 +1,41 @@
+{
+  "schema": "general_compression_holdout_split_report_v1",
+  "split_key": "r20_s42",
+  "seed": 42,
+  "holdout_ratio": 0.2,
+  "out_root": "data\\general_compression\\splits_v1\\r20_s42",
+  "manifest": "docs\\final\\artifacts\\general_compression_benchmark_manifest_v1.json",
+  "totals": {
+    "train": 35,
+    "holdout": 8
+  },
+  "datasets": [
+    {
+      "domain": "meeting",
+      "dataset_id": "meeting_v1",
+      "filename": "meeting_v1.jsonl",
+      "train_count": 13,
+      "holdout_count": 2,
+      "train_path": "data\\general_compression\\splits_v1\\r20_s42\\train\\meeting_v1.jsonl",
+      "holdout_path": "data\\general_compression\\splits_v1\\r20_s42\\holdout\\meeting_v1.jsonl"
+    },
+    {
+      "domain": "policy_legal_lite",
+      "dataset_id": "policy_legal_lite_v1",
+      "filename": "policy_legal_lite_v1.jsonl",
+      "train_count": 11,
+      "holdout_count": 3,
+      "train_path": "data\\general_compression\\splits_v1\\r20_s42\\train\\policy_legal_lite_v1.jsonl",
+      "holdout_path": "data\\general_compression\\splits_v1\\r20_s42\\holdout\\policy_legal_lite_v1.jsonl"
+    },
+    {
+      "domain": "support_faq",
+      "dataset_id": "support_faq_v1",
+      "filename": "support_faq_v1.jsonl",
+      "train_count": 11,
+      "holdout_count": 3,
+      "train_path": "data\\general_compression\\splits_v1\\r20_s42\\train\\support_faq_v1.jsonl",
+      "holdout_path": "data\\general_compression\\splits_v1\\r20_s42\\holdout\\support_faq_v1.jsonl"
+    }
+  ]
+}

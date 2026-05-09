@@ -38,6 +38,9 @@ docs/final/artifacts/**
 !docs/final/artifacts/schemas/*.schema.json
 # B-track ensemble baseline (not regenerable *_latest; scripts default to this path)
 !docs/final/artifacts/btrack_lens_ensemble_v1.json
+# General-rail: tracked bundle inputs (validate_general_compression_bundle / holdout report)
+!docs/final/artifacts/general_compression_restore_stress_v1.json
+!docs/final/artifacts/general_compression_holdout_split_report_v1.json
 # Local bio sasang strict JSON from `build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` (default --out under reports/)
 reports/bio_sasang_nstates_*.json
 reports/mkm_orchestrator_poll.lock
@@ -147,7 +150,6 @@ reports/btrack_yang_2015_style_metrics_latest.json
 # report_schema_v2 optional snapshots (regenerate via build_report_schema_v2_*; P0 optional warn OK if absent)
 docs/final/artifacts/report_schema_v2_label_kpi_latest.json
 docs/final/artifacts/report_schema_v2_latest.json
-docs/final/artifacts/general_compression_restore_stress_v1.json
 docs/final/NOTEBOOKLM_GENERAL_PROPHECY_VPS_GIT_FORESIGHT_BUNDLE_*.md
 # General prophecy v1 local outputs (regenerate via scripts/generate_general_prophecy_v1.py etc.; schema SSOT stays tracked)
 docs/final/artifacts/general_prophecy_brief_latest.md
