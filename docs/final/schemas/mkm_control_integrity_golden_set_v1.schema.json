@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/mkm_control_integrity_golden_set_v1.schema.json",
+  "title": "MKM Control-Integrity Golden Set v1 row",
+  "description": "Single JSONL row for MKM model-agnostic control-integrity training/eval.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "sample_id",
+    "split",
+    "language",
+    "domain",
+    "risk_level",
+    "prompt",
+    "expected_response",
+    "policy_tags",
+    "must_include",
+    "must_not_include",
+    "scoring_profile"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "mkm_control_integrity_golden_set_v1"
+    },
+    "sample_id": {
+      "type": "string",
+      "pattern": "^mkm-gs-v1-[0-9]{4}$"
+    },
+    "split": {
+      "type": "string",
+      "enum": ["train", "validation", "test", "locked_eval"]
+    },
+    "language": {
+      "type": "string",
+      "enum": ["ko", "en", "ko-en-mixed"]
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "finance",
+        "health",
+        "operations",
+        "policy",
+        "general"
+      ]
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    "prompt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "context": {
+      "type": "string"
+    },
+    "expected_response": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy_tags": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "fact_lock",
+          "non_deterministic_notice",
+          "no_medical_diagnosis",
+          "no_trade_execution",
+          "no_legal_advice",
+          "human_review_required",
+          "uncertainty_explicit",
+          "no_hype_language",
+          "safety_refusal"
+        ]
+      }
+    },
+    "must_include": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "must_not_include": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "scoring_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "faithfulness_weight",
+        "safety_weight",
+        "style_weight",
+        "pass_threshold"
+      ],
+      "properties": {
+        "faithfulness_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "safety_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "style_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "pass_threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "source_ref": {
+      "type": "string"
+    }
+  }
+}

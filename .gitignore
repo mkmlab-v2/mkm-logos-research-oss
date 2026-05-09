@@ -291,6 +291,11 @@ reports/aistudio_mcp_env_diagnosis.json
 /scorecard_FINAL.json
 /보조PC_스크립트_개선_완료.md
 
+# Local sample dataset for control-integrity schema validation (keep schema tracked)
+scripts/data/mkm_control_integrity_golden_set_v1_sample10.jsonl
+scripts/data/mkm_control_integrity_golden_set_v1_1000.jsonl
+scripts/data/mkm_control_integrity_golden_set_v1_lora_1000.jsonl
+
 # no1kmedi local generated artifacts
 projects/no1kmedi/marketing-site/public-copy.bundle.js
 projects/no1kmedi/reports/kpi/
