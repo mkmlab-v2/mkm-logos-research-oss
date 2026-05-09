@@ -3,12 +3,18 @@
 <!-- AUTO_OPS_V1_START -->
 ## Auto Ops Handoff (v1)
 
-- `updated_at_utc:` 2026-05-05T18:26:00Z
-- `mission_id:` longrun-memory-ops-24h
-- `mission:` 장기기억 기반 24h 안전 자동 루프 (best_loop: block_quality_gate->keep_current_schedule)
-- `status:` in_progress
-- `next_action:` `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_workspace_automation_health.ps1 -SkipVaultMirror -SkipMkmMemoryInventory -SkipPhase1Readiness -IncludeOperationalReadinessChecklist -IncludeCentralMemoryReadCheck -IncludeSecretExposureSurvey -SkipNewsObservationContractSmoke`
+- `updated_at_utc:` 2026-05-10T18:20:00Z
+- `mission_id:` fact-lock-control-integrity-central-v1
+- `mission:` Fact-Lock 번들 녹색 확인 · Control-Integrity 스모크 · CENTRAL(`nl_sync`/체크포인트) · NotebookLM→Vault 미러(`copied=62`)
+- `status:` slice_complete
+- `next_action:` `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_p0_constitution_gate_paths.ps1` — 변경 없으면 생략 가능; 헌법 경로 수정 후에는 `scripts\run_fact_lock_bundle.ps1`
 <!-- AUTO_OPS_V1_END -->
+
+## Ops slice (2026-05-10)
+
+- **증거:** `integrity_guard` 149/149 · `run_fact_lock_bundle.ps1` exit 0 · `-MkmControlIntegritySmokeOnly` 녹색 · Vault `notebooklm_sources` 미러 exit 0 (`copied=62`, `skipped=136`).
+- **장기기억:** `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에 `nl_sync`·분기별 한 줄·체크포인트 반영(`last_updated_utc` 2026-05-10).
+- **경계:** NotebookLM UI 업로드(`source_add`)는 미실행; 구현 판정은 레포·스크립트·exit code(Fact-Lock).
 
 ## Control Tower Update (2026-05-05)
 
@@ -27,13 +33,13 @@
 
 ### 1) 3-Line Status (항상 이 포맷 유지)
 
-- `현재 단계:` B-track promotion atomic apply 실행 완료, `apply_result=success`
-- `최근 증거:` `reports/constitution/btrack_pilot/auto_scientist/promotion_apply_receipt_latest.json` (`applied_at_utc=2026-04-27T16:00:57Z`)
-- `최대 리스크:` human sign-off 전 승격 확정 문구/자동 반영
+- `현재 단계:` Control-Integrity·Fact-Lock 검증 사이클 완료(slice_complete); CENTRAL·Vault 동기화 반영
+- `최근 증거:` `run_fact_lock_bundle.ps1` exit 0 · `integrity_guard` checks_total=149 all_pass=true · Vault mirror copied=62
+- `최대 리스크:` 헌법 경로·프로브 JSON 변경 시 CI/번들 재실행 누락
 
 ### 2) Single Next Action (항상 1개만)
 
-- `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-BtrackControlTowerOps.ps1 -Mode brief`
+- `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_p0_constitution_gate_paths.ps1` (통과 후 필요 시 `scripts\run_fact_lock_bundle.ps1`)
 
 ### 3) Definition of Done (빠른 판정)
 
