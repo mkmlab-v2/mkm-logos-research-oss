@@ -146,6 +146,92 @@ def test_public_tier_bulkhead_never_calls_live_eval_even_when_requested(monkeypa
     assert flags.get("metrics_mode") in {"literal_kpi_estimate", "ultra_literal_kpi_estimate"}
 
 
+def test_enterprise_fallback_trigger_suppresses_live_eval(monkeypatch, tmp_path):
+    profile = tmp_path / "fallback_profile.json"
+    profile.write_text(
+        json.dumps(
+            {
+                "schema": "fallback_trigger_threshold_profile_v1",
+                "signals": {
+                    "oov_ratio_threshold": 0.01,
+                    "typo_ratio_threshold": 0.01,
+                    "input_tokens_threshold": 10,
+                    "unknown_token_rate_threshold": 0.01,
+                    "detected_noise_mode_threshold": 0.01,
+                },
+                "trigger_logic": {"mode": "any_of"},
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("COMPRESSION_API_FALLBACK_PROFILE_PATH", str(profile))
+    monkeypatch.setenv("COMPRESSION_API_LIVE_EVAL_MIN_TOKENS", "0")
+    from scripts import compression_token_api_stub as stub
+
+    stub._live_eval_min_tokens.cache_clear()
+    stub._fallback_profile_doc.cache_clear()
+
+    def _live_eval_must_not_run(*_args, **_kwargs):
+        raise AssertionError("fallback-triggered request must suppress live eval")
+
+    monkeypatch.setattr(stub, "_live_eval_metrics", _live_eval_must_not_run)
+    r = client.post(
+        "/v1/compress",
+        json={
+            "text": "### noisy $$$ payload ??? with symbols !!!",
+            "eval_context": {
+                "hydrate_metrics": True,
+                "hydrate_live_eval": True,
+            },
+        },
+    )
+    assert r.status_code == 200
+    d = r.json()
+    flags = d.get("integrity_flags", {})
+    assert flags.get("tier") == "enterprise"
+    assert flags.get("fallback_safe_triggered") is True
+    assert flags.get("hydrate_live_eval_suppressed") is True
+    assert flags.get("hydrate_live_eval_suppressed_reason") == "fallback_safe_triggered"
+
+
+def test_fallback_event_log_appended(monkeypatch, tmp_path):
+    profile = tmp_path / "fallback_profile.json"
+    profile.write_text(
+        json.dumps(
+            {
+                "schema": "fallback_trigger_threshold_profile_v1",
+                "signals": {
+                    "oov_ratio_threshold": 0.01,
+                    "typo_ratio_threshold": 0.01,
+                    "input_tokens_threshold": 10,
+                    "unknown_token_rate_threshold": 0.01,
+                    "detected_noise_mode_threshold": 0.01,
+                },
+                "trigger_logic": {"mode": "any_of"},
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    event_log = tmp_path / "fallback_event_log.jsonl"
+    monkeypatch.setenv("COMPRESSION_API_FALLBACK_PROFILE_PATH", str(profile))
+    monkeypatch.setenv("FALLBACK_TRIGGER_EVENT_LOG_PATH", str(event_log))
+    from scripts import compression_token_api_stub as stub
+
+    stub._fallback_profile_doc.cache_clear()
+    r = client.post("/v1/compress", json={"text": "### noisy $$$ payload ??? with symbols !!!"})
+    assert r.status_code == 200
+    d = r.json()
+    flags = d.get("integrity_flags", {})
+    assert flags.get("fallback_event_logged") is True
+    lines = event_log.read_text(encoding="utf-8").strip().splitlines()
+    assert len(lines) >= 1
+    evt = json.loads(lines[-1])
+    assert evt.get("event_schema") == "fallback_trigger_event_v1"
+    assert evt.get("triggered") is True
+
+
 def test_compress_returns_shard():
     r = client.post("/v1/compress", json={"text": "bible test hangul 테스트"})
     assert r.status_code == 200

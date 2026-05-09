@@ -98,6 +98,33 @@ def _preview_python_cache_cleanup() -> tuple[bool, str]:
     return proc.returncode == 0, msg
 
 
+def _run_git_sanity_check() -> tuple[bool, str]:
+    cmd = [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        str(ROOT / "scripts" / "Verify-GitWorkspaceSanity.ps1"),
+    ]
+    proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", check=False)
+    msg = ((proc.stdout or "") + (proc.stderr or "")).strip()
+    return proc.returncode == 0, msg
+
+
+def _run_vertex_smoke_check() -> tuple[bool, str]:
+    cmd = [
+        sys.executable,
+        str(ROOT / "scripts" / "check_google_genai_readiness_v1.py"),
+        "smoke-vertex",
+        "--prompt",
+        "Reply with exactly: OK",
+    ]
+    proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", check=False)
+    msg = ((proc.stdout or "") + (proc.stderr or "")).strip()
+    return proc.returncode == 0, msg
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Run inspector action with L-level approval gate.")
     ap.add_argument(
@@ -107,6 +134,8 @@ def main() -> int:
             "retry_scheduled_task",
             "run_ip_fortress_scrubber",
             "preview_python_cache_cleanup",
+            "git_sanity_check",
+            "vertex_smoke_check",
         ],
     )
     ap.add_argument("--level", required=True, choices=["L1", "L2", "L3"])
@@ -209,6 +238,56 @@ def main() -> int:
                 "decision": "execute_preview_python_cache_cleanup",
                 "evidence_path": str(ART / "sentinel_realtime_alert_latest.json").replace("\\", "/"),
                 "actor": "Operator",
+                "risk_level": args.level,
+                "note": {"ok": ok, "detail": detail[:1000], "token_mark": token_mark_detail},
+            }
+        )
+        print("action_ok" if ok else "action_failed")
+        if detail:
+            print(detail)
+        return 0 if ok else 4
+    if args.action_id == "git_sanity_check":
+        ok, detail = _run_git_sanity_check()
+        token_mark_detail = ""
+        if ok and token_path is not None:
+            m_ok, m_msg = _mark_token_used(token_path, args.action_id)
+            token_mark_detail = m_msg
+            if not m_ok:
+                ok = False
+                detail = f"{detail}\n{m_msg}".strip()
+        _append_audit(
+            {
+                "timestamp": _now_iso(),
+                "mission_id": "mkm_internal_inspector_v1",
+                "stage": "action_gate",
+                "decision": "execute_git_sanity_check",
+                "evidence_path": str(ART / "sentinel_realtime_alert_latest.json").replace("\\", "/"),
+                "actor": "Operator",
+                "risk_level": args.level,
+                "note": {"ok": ok, "detail": detail[:1000], "token_mark": token_mark_detail},
+            }
+        )
+        print("action_ok" if ok else "action_failed")
+        if detail:
+            print(detail)
+        return 0 if ok else 4
+    if args.action_id == "vertex_smoke_check":
+        ok, detail = _run_vertex_smoke_check()
+        token_mark_detail = ""
+        if ok and token_path is not None:
+            m_ok, m_msg = _mark_token_used(token_path, args.action_id)
+            token_mark_detail = m_msg
+            if not m_ok:
+                ok = False
+                detail = f"{detail}\n{m_msg}".strip()
+        _append_audit(
+            {
+                "timestamp": _now_iso(),
+                "mission_id": "mkm_internal_inspector_v1",
+                "stage": "action_gate",
+                "decision": "execute_vertex_smoke_check",
+                "evidence_path": str(ART / "sentinel_realtime_alert_latest.json").replace("\\", "/"),
+                "actor": "Guardian",
                 "risk_level": args.level,
                 "note": {"ok": ok, "detail": detail[:1000], "token_mark": token_mark_detail},
             }

@@ -109,6 +109,7 @@ def main() -> int:
     logos_review_packet = _read_json(art / "logos_s1_shadow_promotion_review_packet_latest.json")
     logos_human_approval = _read_json(art / "logos_s1_shadow_promotion_human_approval_latest.json")
     role_router_s1_shadow = _read_json(art / "role_router_s1_shadow_advisory_latest.json")
+    fallback_watch = _read_json(art / "fallback_post_cutoff_watch_report_latest.json")
     forward_prereg = _read_json(art / "macro_risk_forward_preregister_lock_latest.json")
     forward_latest = _read_json(art / "macro_risk_forward_log_latest.json")
     forward_weekly = _read_json(art / "macro_risk_forward_weekly_report_latest.json")
@@ -154,6 +155,14 @@ def main() -> int:
             "dual_leg_kospi_hit_rate": ((dual_leg_brief.get("legs") or {}).get("kospi") or {}).get("price_directional_hit_rate"),
             "dual_leg_btc_hit_rate": ((dual_leg_brief.get("legs") or {}).get("btc") or {}).get("price_directional_hit_rate"),
             "dual_leg_btc_minus_kospi_hit_rate": (dual_leg_brief.get("delta") or {}).get("btc_minus_kospi_hit_rate"),
+            "fallback_post_cutoff_watch": {
+                "warn_count": ((fallback_watch.get("summary") or {}).get("warn_count")),
+                "warn_rate_7d": ((fallback_watch.get("summary") or {}).get("warn_rate_7d")),
+                "signal": ((fallback_watch.get("summary") or {}).get("signal")),
+                "signal_color": ((fallback_watch.get("summary") or {}).get("signal_color")),
+                "latest_warn_ts_utc": ((fallback_watch.get("summary") or {}).get("latest_warn_ts_utc")),
+                "days_with_warn": ((fallback_watch.get("summary") or {}).get("days_with_warn")),
+            },
             "forward_pipeline_health": forward_health,
             "logos_shadow": {
                 "grade": ((logos_shadow.get("promotion") or {}).get("to")),
@@ -214,6 +223,7 @@ def main() -> int:
             "paddle_onboarding_status": "docs/final/artifacts/paddle_onboarding_status_latest.json",
             "dual_leg_brief_json": "docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.json",
             "dual_leg_brief_md": "docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.md",
+            "fallback_post_cutoff_watch_report": "docs/final/artifacts/fallback_post_cutoff_watch_report_latest.json",
             "logos_shadow_promotion_status": "docs/final/artifacts/logos_shadow_promotion_status_latest.json",
             "logos_shadow_insight": "docs/final/artifacts/logos_shadow_insight_latest.json",
             "logos_semantic_drift_monitor": "docs/final/artifacts/logos_semantic_drift_monitor_latest.json",
@@ -260,6 +270,11 @@ def main() -> int:
         f"- dual_leg_kospi_hit_rate: `{dashboard['trackc']['dual_leg_kospi_hit_rate']}`",
         f"- dual_leg_btc_hit_rate: `{dashboard['trackc']['dual_leg_btc_hit_rate']}`",
         f"- dual_leg_btc_minus_kospi_hit_rate: `{dashboard['trackc']['dual_leg_btc_minus_kospi_hit_rate']}`",
+        f"- fallback_post_cutoff_warn_count: `{(dashboard['trackc']['fallback_post_cutoff_watch'] or {}).get('warn_count')}`",
+        f"- fallback_post_cutoff_warn_rate_7d: `{(dashboard['trackc']['fallback_post_cutoff_watch'] or {}).get('warn_rate_7d')}`",
+        f"- fallback_post_cutoff_signal: `{(dashboard['trackc']['fallback_post_cutoff_watch'] or {}).get('signal')}`",
+        f"- fallback_post_cutoff_signal_color: `{(dashboard['trackc']['fallback_post_cutoff_watch'] or {}).get('signal_color')}`",
+        f"- fallback_post_cutoff_latest_warn_ts_utc: `{(dashboard['trackc']['fallback_post_cutoff_watch'] or {}).get('latest_warn_ts_utc')}`",
         f"- forward_pipeline_health: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('status')}`",
         f"- forward_pipeline_reason_codes: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('reason_codes')}`",
         f"- forward_pipeline_rows_total: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_total')}`",
@@ -321,6 +336,7 @@ def main() -> int:
         "- `docs/final/artifacts/paddle_onboarding_status_latest.json`",
         "- `docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.json`",
         "- `docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.md`",
+        "- `docs/final/artifacts/fallback_post_cutoff_watch_report_latest.json`",
         "- `docs/final/artifacts/logos_shadow_promotion_status_latest.json`",
         "- `docs/final/artifacts/logos_shadow_insight_latest.json`",
         "- `docs/final/artifacts/logos_semantic_drift_monitor_latest.json`",
