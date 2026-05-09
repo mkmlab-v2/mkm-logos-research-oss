@@ -1,0 +1,16 @@
+{
+  "schema": "trading_guardian_policy_v1",
+  "updated_at_utc": "2026-05-09T00:00:00Z",
+  "protective_guard": {
+    "symbol": "BTCUSDT",
+    "tp_offset_pct": 0.8,
+    "sl_offset_pct": 1.0,
+    "position_switch_cooldown_minutes": 2
+  },
+  "guardian_bundle_alert": {
+    "cooldown_hours": 0.5
+  },
+  "policy_watch": {
+    "mode": "strict_drift_alert"
+  }
+}
