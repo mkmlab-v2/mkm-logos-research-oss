@@ -14,7 +14,17 @@ on:
       - "policies/audio_copyright_field.json"
       - "docs/final/schemas/audio_bgm_gate_report_v1.schema.json"
       - "docs/final/schemas/audio_bgm_gate_report_v1.example.json"
+      - "docs/final/schemas/sasang_music_mapping_v1.schema.json"
+      - "docs/final/schemas/sasang_music_mapping_v1.example.json"
+      - "docs/final/schemas/lens_music_internal_eval_session_v1.schema.json"
+      - "docs/final/schemas/lens_music_internal_eval_session_v1.example.json"
       - "tests/test_audio_bgm_gate_report_v1.py"
+      - "tests/test_sasang_music_mapping_schema_v1.py"
+      - "tests/test_lens_music_internal_eval_schema_v1.py"
+      - "scripts/run_lens_music_gematria.py"
+      - "scripts/run_lens_music_gematria_gate_chain_v1.py"
+      - "tests/test_run_lens_music_gematria_v1.py"
+      - "tests/test_lens_music_gate_chain_v1.py"
       - ".github/workflows/audio-bgm-gate-smoke.yml"
   pull_request:
     paths:
@@ -25,7 +35,17 @@ on:
       - "policies/audio_copyright_field.json"
       - "docs/final/schemas/audio_bgm_gate_report_v1.schema.json"
       - "docs/final/schemas/audio_bgm_gate_report_v1.example.json"
+      - "docs/final/schemas/sasang_music_mapping_v1.schema.json"
+      - "docs/final/schemas/sasang_music_mapping_v1.example.json"
+      - "docs/final/schemas/lens_music_internal_eval_session_v1.schema.json"
+      - "docs/final/schemas/lens_music_internal_eval_session_v1.example.json"
       - "tests/test_audio_bgm_gate_report_v1.py"
+      - "tests/test_sasang_music_mapping_schema_v1.py"
+      - "tests/test_lens_music_internal_eval_schema_v1.py"
+      - "scripts/run_lens_music_gematria.py"
+      - "scripts/run_lens_music_gematria_gate_chain_v1.py"
+      - "tests/test_run_lens_music_gematria_v1.py"
+      - "tests/test_lens_music_gate_chain_v1.py"
       - ".github/workflows/audio-bgm-gate-smoke.yml"
 
 jobs:
@@ -44,6 +64,14 @@ jobs:
         run: python scripts/audio/check_audio_gate_optional_deps_v1.py --require-all
       - name: Run audio BGM gate tests
         run: python -m pytest tests/test_audio_bgm_gate_report_v1.py -q --tb=short
+      - name: Sasang–music mapping schema ([HYPO] M0)
+        run: python -m pytest tests/test_sasang_music_mapping_schema_v1.py -q --tb=short
+      - name: Music/Gematria lens stub ([HYPO] M1)
+        run: python -m pytest tests/test_run_lens_music_gematria_v1.py -q --tb=short
+      - name: Lens music gate chain ([HYPO] M2)
+        run: python -m pytest tests/test_lens_music_gate_chain_v1.py -q --tb=short
+      - name: Lens music internal eval schema ([HYPO] M3)
+        run: python -m pytest tests/test_lens_music_internal_eval_schema_v1.py -q --tb=short
       - name: External emit dry-run batch + gate (Count 2, no Gemini API)
         env:
           MKM_AUDIO_EXTERNAL_SCRIPT: scripts/audio/gemini_placeholder_external_generator_v1.py

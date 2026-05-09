@@ -1,0 +1,27 @@
+{
+  "schema": "lens_music_internal_eval_session_v1",
+  "version": "1.0.0",
+  "session_id": "eval_sess_hypo_2026-05-10_example",
+  "started_at_utc": "2026-05-10T14:00:00Z",
+  "hypothesis_tier": "B",
+  "non_clinical_ack": true,
+  "listener_role": "internal_operator",
+  "artifact_refs": {
+    "lens_envelope_json": "reports/tmp_lens_taeeum.example.json",
+    "gate_chain_report_json": "reports/lens_music_gate_chain_v1_latest.json",
+    "audio_gate_report_json": "reports/audio_gate_lens_music_chain_latest.json",
+    "wav_path_optional": null,
+    "paths_relative_or_abs_note": "Paths are repo-relative examples; replace with local measured artifacts."
+  },
+  "listening_notes": {
+    "preference_scale_1_5": 3,
+    "arousal_scale_1_5_optional": 2,
+    "free_text_notes": "Placeholder row — replace after blind protocol if used."
+  },
+  "reproducibility": {
+    "repo_git_sha_optional": null,
+    "mapping_version_optional": "builtin_sasang_hypo_v1_2026-05-10",
+    "experiment_id_optional": "lens_music_internal_eval_fixture"
+  },
+  "disclaimer": "Internal non-clinical listening note only; not music therapy outcome; not efficacy."
+}

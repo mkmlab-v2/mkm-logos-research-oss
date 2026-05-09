@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-09T18:26:20Z
+- **last_updated_utc:** 2026-05-10T15:05:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -15,7 +15,7 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-09T18:26:20Z** — Track C §3.9 HYPO symbolic-audio roadmap in TRACK_C_IP_BUSINESS_PLAN; CENTRAL table row
+- **2026-05-10T15:05:00Z** — Symbolic audio M2+M3: gate chain·internal eval schema·P0 378·CI; commit `78f73b4`
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -233,6 +233,7 @@
 | 2026-05-08 (압축 폴백·Bio SNP 헬스) | `build_fallback_trigger_threshold_profile_v1` **input_tokens_threshold=12000**(v2); 일일 `Invoke-MkmAiV2DailyReadiness` BL-011 + `run_workspace_automation_health -IncludeFallbackTriggerTelemetry -BioSnpOnly` **exit 0**; Bio DNA readiness/정규화/sweep CLI·JSON 스키마를 pytest와 재정합; 스케줄 **`MKM_AIV2_DailyReadiness` Ready·LastResult=0** 확인. |
 | 2026-05-09 (NotebookLM MCP 도구 미주입 재발 방지 v1) | 좀비 4개(약 22h, PID 18820/20548/24744/26356) 정리; 글로벌 핀 `npm i -g notebooklm-mcp@2.0.0` 후 `.cursor/mcp.json`을 `npx -y …@latest` → `node <글로벌>/dist/index.js` + `MKM_NOTEBOOKLM_MCP_PINNED_VERSION=2.0.0`로 교체; `repair_notebooklm_mcp_auth_stuck.ps1`에 `-StaleNodeMaxHours`(기본 12h) 추가 + 로그오프 자동 정리 작업 `MKM_RepairNotebookLmMcpStale_OnLogoff` 등록; `notebooklm-mcp-session-bridge.mdc`에 **첫 턴 자가진단(`get_health` 시도→실패 시 그 턴 보고+로컬 폴백)** 규칙 1줄 + CENTRAL 「에이전트 반복 루틴」표에 행 1줄 추가. Cursor의 채팅-시간 도구 카탈로그 핸드셰이크 자체는 IDE 내부 동작이라 100% 제거 불가, 단 발생 즉시 감지·통보 보장. |
 | 2026-05-09 (NotebookLM MCP 빠른 복구 루틴 고정) | 자동 복구 실행: `check_notebooklm_mcp_prereqs.ps1`·`repair_notebooklm_mcp_auth_stuck.ps1 -StaleNodeMaxHours 12`·MCP `get_health`/`ask_question` 스모크 **연속 성공**. 운영자가 즉시 복구할 수 있게 3줄 카드 `docs/final/artifacts/notebooklm_mcp_quick_recovery_3lines_2026-05-09.txt` 추가. 목표는 100% 무고장이 아니라 **실패 즉시 1~2분 복구**로 고정. |
+| 2026-05-10 (상징→오디오 M0–M3 `[HYPO]`) | M0 스키마·M1 렌즈·M2 게이트 체인·M3 `lens_music_internal_eval_session_v1`·관련 pytest·P0·§6·CI; Track C §3.9.1 동기. |
 | 2026-05-10 (Track C §3.9 통제형 오디오·상징 라우팅 `[HYPO]`) | `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.9에 매핑 스키마·M0~M3 로드맵·AI BGM 게이트 연계·비임상·TOE 금지 고정; 실행은 B-track. 구현 판정은 `CONSTITUTION`·스크립트·pytest. |
 | 2026-05-10 (Control-Integrity · Fact-Lock · Vault) | `integrity_guard` **149/149**·`run_fact_lock_bundle.ps1` **exit 0**; LoRA 골든·홀드아웃·프로모션 게이트 정합; `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62` `skipped=136` → 공유 Vault `notebooklm_sources`에 **헌법·Track C·운영 스냅샷** 등 매니페스트 원본 미러(지휘부 브리핑은 NL·Vault **참고**, 구현 판정은 레포·스크립트). |
 | 2026-05-05 (Yang 2015 표면 8자 B-track) | `btrack_yang_2015_style_metrics_v1`·`run_myeongni_celebrity_benchmark_v1`·JSON Schema·`verify_p0`·`dual-regime`/`multilens`/`run_fact_lock_bundle` 회귀; 일일 체인은 **`-IncludeYang2015SurfaceMetrics`** 옵션으로만 갱신(기본 생략); 산출은 `.gitignore`로 재생성물 분리·**임상·A-track 자동 트리거 없음**. |

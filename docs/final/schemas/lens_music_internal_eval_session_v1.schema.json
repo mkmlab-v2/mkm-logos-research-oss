@@ -1,0 +1,121 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/lens_music_internal_eval_session_v1.schema.json",
+  "title": "Lens music internal listening / reproducibility log (B-track, non-clinical)",
+  "description": "Structured note-taking for optional human listening sessions against symbolic→audio pipeline artifacts. Not therapy efficacy; not external claims.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "session_id",
+    "started_at_utc",
+    "hypothesis_tier",
+    "non_clinical_ack",
+    "artifact_refs",
+    "disclaimer"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "lens_music_internal_eval_session_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.\\d+\\.\\d+$"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "started_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "enum": ["B"]
+    },
+    "non_clinical_ack": {
+      "type": "boolean",
+      "const": true
+    },
+    "listener_role": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "e.g. internal_operator — never clinical role labels."
+    },
+    "artifact_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["paths_relative_or_abs_note"],
+      "properties": {
+        "lens_envelope_json": {
+          "type": ["string", "null"],
+          "maxLength": 2048
+        },
+        "gate_chain_report_json": {
+          "type": ["string", "null"],
+          "maxLength": 2048
+        },
+        "audio_gate_report_json": {
+          "type": ["string", "null"],
+          "maxLength": 2048
+        },
+        "wav_path_optional": {
+          "type": ["string", "null"],
+          "maxLength": 2048
+        },
+        "paths_relative_or_abs_note": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "Human note if paths are host-local or redacted."
+        }
+      }
+    },
+    "listening_notes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "preference_scale_1_5": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 5
+        },
+        "arousal_scale_1_5_optional": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 5
+        },
+        "free_text_notes": {
+          "type": "string",
+          "maxLength": 8000
+        }
+      }
+    },
+    "reproducibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repo_git_sha_optional": {
+          "type": ["string", "null"],
+          "maxLength": 64
+        },
+        "mapping_version_optional": {
+          "type": ["string", "null"],
+          "maxLength": 128
+        },
+        "experiment_id_optional": {
+          "type": ["string", "null"],
+          "maxLength": 256
+        }
+      }
+    },
+    "disclaimer": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 2000
+    }
+  }
+}

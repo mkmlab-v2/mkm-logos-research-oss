@@ -1,7 +1,7 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-10 — **§3.9** 신설: 통제형 오디오·상징 라우팅(`[HYPO]` / B-track) — 사상·게마트리아 등 상징 입력을 **버전된 JSON 계약**으로 분해해 MIDI·화성·오디오 파라미터로 라우팅하고, 기존 **AI BGM 게이트**(`scripts/audio`·게이트 리포트 스키마)와 연결하는 실험 로드맵 및 대외 금지선(비임상·단일 TOE 금지) 명시. (이전: 2026-05-05 **§9A**·§3.4 포인터.)  
+Revised: 2026-05-10 — **§3.9** 통제형 오디오·상징 라우팅(`[HYPO]` / B-track) 신설; **§3.9.1 M1–M3:** 렌즈 스텁·게이트 체인·내부 비임상 청취 로그 스키마(`lens_music_internal_eval_session_v1`·`tests/test_lens_music_internal_eval_schema_v1.py`). 사상·게마트리아 등 상징 입력을 **버전된 JSON 계약**으로 분해해 MIDI·화성·오디오 파라미터로 라우팅하고, 기존 **AI BGM 게이트**(`scripts/audio`·게이트 리포트 스키마)와 연결하는 실험 로드맵 및 대외 금지선(비임상·단일 TOE 금지) 명시. (이전: 2026-05-05 **§9A**·§3.4 포인터.)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
@@ -183,9 +183,9 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 | 단계 | 기간(권장) | 산출 / 완료 조건 |
 |------|------------|------------------|
 | **M0 — 스키마 동결(초안)** | 2주 내 | `docs/final/schemas/sasang_music_mapping_v1.schema.json` + `sasang_music_mapping_v1.example.json`·회귀 `tests/test_sasang_music_mapping_schema_v1.py`·P0 경로·헌법 보강(2026-05-10). 코드 매핑 테이블은 JSON 외부 주입 전제. |
-| **M1 — 렌즈 배치 스텁** | M0+2주 | `run_lens_music_gematria.py`(또는 동등 명명) **스텁**: 입력 JSON → 중간 파라미터 JSON 결정론 출력; `run_lens_sasang.py`와 **합선 없이** 병렬 존재. 단위 pytest 스모크. |
-| **M2 — 안전 게이트 연결** | M1+2주 | 상징 치환 결과가 극단 주파수·레벨·불협화음 상한을 넘으면 **클리핑 또는 HOLD**; 기존 `evaluate_audio_gate` 및 저작권 필드 정책과 **한 체인**으로 호출 가능한 데모 스크립트·로그 아티팩트. |
-| **M3 — 내부 평가 프로토콜** | 지속 | 청취 선호·재현성 로그만으로도 가능한 **비임상** 평가 시트; 대외에는 “실험 중·아티팩트 기반”만. |
+| **M1 — 렌즈 배치 스텁** | M0+2주 | **완료(2026-05-10):** `scripts/run_lens_music_gematria.py`(`--mapping-json`·`--sasang-primary`/`--gematria-total`)·봉투 `lens_music_gematria_v1`·`tests/test_run_lens_music_gematria_v1.py`·P0·헌법 보강; `run_lens_sasang.py`와 합선 없음. |
+| **M2 — 안전 게이트 연결** | M1+2주 | **완료(2026-05-10):** `scripts/run_lens_music_gematria_gate_chain_v1.py` — 상징 `resolved_outputs`에 대한 velocity 대비 safety 상한 **HOLD/clip**, 통과 시 시드 BPM·`evaluate_audio_gate.py`·`policies/audio_copyright_field.json`·산출 `reports/lens_music_gate_chain_v1_latest.json`; 회귀 `tests/test_lens_music_gate_chain_v1.py`. WAV는 플레이스홀더로 기계 게이트만 연결(합성 렌더 없음). |
+| **M3 — 내부 평가 프로토콜** | 지속 | **초안 완료(2026-05-10):** `docs/final/schemas/lens_music_internal_eval_session_v1.schema.json`·example·`tests/test_lens_music_internal_eval_schema_v1.py` — 비임상 청취·재현성 메타만 구조화; 인간 라벨링 프로세스는 운영 정책으로 확장. 대외 “실험 중·아티팩트 기반”만. |
 
 **레포 연계 (Fact-Lock):** 구현 경로·판정은 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 호출 가능 스크립트·pytest로만 확정한다. 본 절은 사업·연구 방향 SSOT이며, 코드 존재 여부는 해당 문서와 동기화된다.
 
@@ -332,7 +332,7 @@ Short copy:
 5. `P4/P5/P6(명리/초고난도 비정형 텍스트/사상의학)`은 비자문·비의료·비결정론 고정 문구를 포함한 실험형 패키지로만 운영한다.
 6. Topology Radar 쇼룸은 **JSON 계약(허용 필드/금지 필드) -> 와이어프레임 -> 카피라이팅** 순서로 고정해 환각·컴플라이언스 리스크를 선제 차단한다.
 7. `§9A` 보안 게이트에 따라 API/대시보드 응답에서 내부 산식·가중치·중간 피처를 제거하고, 계약서(NDA+역공학 금지)와 기술 설정(키·워터마크·감사로그)을 동시 적용한다.
-8. **`§3.9` B-track:** 상징→오디오 매핑 스키마 초안(M0)과 렌즈 스텁(M1)을 **연구 브랜치·pytest**로만 진행; 상용 카피·제안서에는 **§3.9 대외 한 문단**과 게이트·아티팩트 한정 문구만 사용. 임상·치료 단정 금지(`§8`).
+8. **`§3.9` B-track:** 상징→오디오 매핑(M0)·렌즈 스텁(M1)·게이트 체인(M2)·내부 비임상 청취 세션 로그 스키마 초안(M3)은 **연구·pytest·아티팩트**로만 진행; 상용 카피·제안서에는 **§3.9 대외 한 문단**과 게이트·아티팩트 한정 문구만 사용. 임상·치료 단정 금지(`§8`).
 
 ### 10.1 운영 스냅샷 동기화 (2026-05-09 실측)
 

@@ -202,9 +202,14 @@ on:
       - "tests/test_audio_bgm_gate_report_v1.py"
       - "docs/final/schemas/sasang_music_mapping_v1.schema.json"
       - "docs/final/schemas/sasang_music_mapping_v1.example.json"
+      - "docs/final/schemas/lens_music_internal_eval_session_v1.schema.json"
+      - "docs/final/schemas/lens_music_internal_eval_session_v1.example.json"
       - "tests/test_sasang_music_mapping_schema_v1.py"
+      - "tests/test_lens_music_internal_eval_schema_v1.py"
       - "tests/test_run_lens_music_gematria_v1.py"
+      - "tests/test_lens_music_gate_chain_v1.py"
       - "scripts/run_lens_music_gematria.py"
+      - "scripts/run_lens_music_gematria_gate_chain_v1.py"
       - ".github/workflows/audio-bgm-gate-smoke.yml"
       - "scripts/run_compression_automation_chain.ps1"
       - "scripts/run_compression_weekly_governance_chain.ps1"
@@ -834,6 +839,12 @@ jobs:
 
       - name: Music/Gematria lens stub v1 ([HYPO] M1)
         run: python -m pytest tests/test_run_lens_music_gematria_v1.py -q --tb=short
+
+      - name: Lens music gate chain v1 ([HYPO] M2)
+        run: python -m pytest tests/test_lens_music_gate_chain_v1.py -q --tb=short
+
+      - name: Lens music internal eval session schema v1 ([HYPO] M3)
+        run: python -m pytest tests/test_lens_music_internal_eval_schema_v1.py -q --tb=short
 
       - name: MKM meta-layer envelope v1 (schema + kill-switch coherence)
         run: python -m pytest tests/test_mkm_meta_layer_envelope_v1.py -q --tb=short
