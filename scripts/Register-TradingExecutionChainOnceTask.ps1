@@ -19,12 +19,13 @@ $action = "pwsh -NoProfile -ExecutionPolicy Bypass -File `"$runner`""
 $user = "$env:USERDOMAIN\$env:USERNAME"
 
 if ($Force) {
-  try {
-    schtasks /Delete /TN $TaskName /F | Out-Null
-  } catch { }
+  schtasks /Delete /TN $TaskName /F 2>$null | Out-Null
 }
 
 schtasks /Create /TN $TaskName /SC ONCE /SD $futureDate /ST $RunTime /TR $action /RU $user /RL LIMITED /F | Out-Null
+if ($LASTEXITCODE -ne 0) {
+  throw "Failed to register task via schtasks (exit=$LASTEXITCODE): $TaskName"
+}
 
 Write-Host "REGISTERED: $TaskName"
 Write-Host "TRIGGER: ONCE $futureDate $RunTime (manual /Run intended)"

@@ -1,0 +1,26 @@
+{
+  "schema": "mkm_myeongni_response_v2",
+  "generated_at_utc": "2026-05-06T00:00:00Z",
+  "track": "B",
+  "core_layer": {
+    "direction_core": -0.43,
+    "confidence_core": 0.58,
+    "ten_god_balance": -0.25,
+    "jijangan_pressure": 0.333333,
+    "school_disagreement_index": 0.21
+  },
+  "coordinator_layer": {
+    "direction_override_allowed": false,
+    "weather_calibration_term": 0.04,
+    "confidence_adjusted": 0.56,
+    "failed_check_keys": []
+  },
+  "final_action": {
+    "decision": "WATCH",
+    "reason": "MKM coordinator keeps conservative posture."
+  },
+  "governance": {
+    "research_only": true,
+    "human_signoff_required": true
+  }
+}

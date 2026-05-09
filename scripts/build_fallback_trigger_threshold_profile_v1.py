@@ -60,8 +60,8 @@ def main() -> int:
         "signals": {
             "oov_ratio_threshold": 0.15 if collapse_detected else 0.20,
             "typo_ratio_threshold": 0.05,
-            # v2: raised from 8000 after daily summary showed dominant input_tokens_threshold triggers at ~24% fallback rate.
-            "input_tokens_threshold": 12000,
+            # v3: raised from 12000 after post-cutoff diagnosis showed p90~16200 and input-token threshold dominance.
+            "input_tokens_threshold": 14000,
             "unknown_token_rate_threshold": 0.15,
             "detected_noise_mode_threshold": 0.50,
         },
@@ -80,7 +80,7 @@ def main() -> int:
             "research_only_tuning": True,
         },
         "fact_safe_note": (
-            "Conservative defaults; input_tokens_threshold v2=12000 from stub telemetry review. "
+            "Conservative defaults; input_tokens_threshold v3=14000 from post-cutoff diagnosis. "
             "Re-run build_fallback_trigger_daily_summary_v1 after changes; track_wall research_only_tuning remains."
         ),
     }

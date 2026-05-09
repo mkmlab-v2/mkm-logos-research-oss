@@ -3,8 +3,11 @@
   Register (or remove) a daily task for execution insight brief generation.
 
 .DESCRIPTION
-  Schedules scripts/Run-DailyExecutionInsightBrief_v1.ps1 once per day.
+  Schedules scripts/Run-DailyExecutionInsightBrief_v1.ps1 once per day (cross-lens RAG fusion,
+  HTML dashboard, optional webhook/Telegram notify, then execution insight brief MD).
   Default runs in observation mode and writes reports/daily_execution_insight_brief_latest.md.
+
+  Env prereqs (optional): run scripts/check_cross_lens_rag_notify_prereqs_v1.ps1 after configuring .env.
 #>
 param(
     [switch]$Remove,
@@ -16,7 +19,11 @@ param(
     [switch]$SkipLogosTrackBDeepReport,
     [switch]$SkipThinRefresh,
     [switch]$SkipMyeongniThinBridge,
-    [switch]$SkipMyeongriV2Upgrade
+    [switch]$SkipMyeongriV2Upgrade,
+    [switch]$SkipCrossLensRagFusion,
+    [switch]$SkipCrossLensRagHtmlDashboard,
+    [switch]$SkipCrossLensRagAlertNotify,
+    [switch]$SkipMarketMyeongniLens
 )
 
 $ErrorActionPreference = "Stop"
@@ -55,6 +62,10 @@ if ($SkipLogosTrackBDeepReport) { $runnerArgs += "-SkipLogosTrackBDeepReport" }
 if ($SkipThinRefresh) { $runnerArgs += "-SkipThinRefresh" }
 if ($SkipMyeongniThinBridge) { $runnerArgs += "-SkipMyeongniThinBridge" }
 if ($SkipMyeongriV2Upgrade) { $runnerArgs += "-SkipMyeongriV2Upgrade" }
+if ($SkipCrossLensRagFusion) { $runnerArgs += "-SkipCrossLensRagFusion" }
+if ($SkipCrossLensRagHtmlDashboard) { $runnerArgs += "-SkipCrossLensRagHtmlDashboard" }
+if ($SkipCrossLensRagAlertNotify) { $runnerArgs += "-SkipCrossLensRagAlertNotify" }
+if ($SkipMarketMyeongniLens) { $runnerArgs += "-SkipMarketMyeongniLens" }
 $argLine = $runnerArgs -join " "
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" `
@@ -67,11 +78,11 @@ $settings = New-ScheduledTaskSettingsSet `
     -StartWhenAvailable `
     -AllowStartIfOnBatteries `
     -DontStopIfGoingOnBatteries `
-    -ExecutionTimeLimit (New-TimeSpan -Minutes 30)
+    -ExecutionTimeLimit (New-TimeSpan -Minutes 45)
 
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
 
-$description = "Daily Fact-Lock execution insight brief chain (Run-DailyExecutionInsightBrief_v1.ps1)."
+$description = "Daily Fact-Lock execution insight brief chain (Run-DailyExecutionInsightBrief_v1.ps1): lenses, fusion stub, thin, cross-lens RAG dashboard, optional notify, brief MD."
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
     -Settings $settings -Principal $principal -Description $description -Force | Out-Null

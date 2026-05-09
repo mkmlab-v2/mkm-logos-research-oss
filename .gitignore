@@ -30,6 +30,12 @@ docs/final/artifacts/todo_queue_latest.json
 # (e.g. verify_p0-listed `*_latest.json`) stay in Git; `git status` still shows edits to those when they change.
 docs/final/artifacts/*_latest.json
 docs/final/artifacts/*_latest.md
+# Keep `git status` readable: most artifacts are local/regenerable.
+# NOTE: This only affects untracked files; tracked SSOT artifacts stay tracked.
+docs/final/artifacts/**
+!docs/final/artifacts/schemas/**
+!docs/final/artifacts/schemas/*.json
+!docs/final/artifacts/schemas/*.schema.json
 # Local bio sasang strict JSON from `build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` (default --out under reports/)
 reports/bio_sasang_nstates_*.json
 reports/mkm_orchestrator_poll.lock
@@ -37,6 +43,10 @@ reports/mkm_orchestrator_telegram_offset.txt
 
 # PoC: Binance Signal Bot webhook run summaries (local only; may contain response snippets)
 reports/poc_binance_signal_webhook/
+
+# Keep git status readable: most reports are local/regenerable.
+# (Tracked report logs remain tracked and will still appear as M when edited.)
+reports/**
 
 # Thin daily chain: one-line myeongni JSONL (regenerable; Run-DailyExecutionInsightBrief_v1.ps1)
 data/multilens_eval/myeongni_independent_lens_thin_bridge_latest.jsonl
@@ -183,6 +193,9 @@ staging/
 # Local docs/code exports (large Cursor/chat-style trees; do not bulk-commit)
 docs/code/
 
+# Large local doc scratch / archive trees
+docs/archive/
+
 # Local bulk trees (currently no tracked files here; keeps git status readable)
 api-services/
 assets/
@@ -267,6 +280,25 @@ reports/aistudio_mcp_env_diagnosis.json
 /_hotfix_deploy/
 /_hotfix_deploy_origin/
 /logos_reval_*/
+/agent/
+/agent
+/_pr_sasang_promotion/
+/runs/
+
+# Local one-off scratch files and archives (regenerable)
+/.tmp_*.py
+/news_repro*_5runs.tar.gz
+/scorecard_FINAL.json
+/보조PC_스크립트_개선_완료.md
+
+# Local sample dataset for control-integrity schema validation (keep schema tracked)
+scripts/data/mkm_control_integrity_golden_set_v1_sample10.jsonl
+scripts/data/mkm_control_integrity_golden_set_v1_1000.jsonl
+scripts/data/mkm_control_integrity_golden_set_v1_lora_1000.jsonl
+
+# no1kmedi local generated artifacts
+projects/no1kmedi/marketing-site/public-copy.bundle.js
+projects/no1kmedi/reports/kpi/
 
 # Local Windows Task Scheduler audit exports (regenerable; keep status clean)
 reports/workspace_scheduled_tasks_audit_latest.csv

@@ -10,14 +10,16 @@
   3b. `py -m pytest tests/test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` — Bio n-state strict JSON 재수화 계약(CONSTITUTION §3.5)
   3c. `py -m pytest tests/test_mkm_trinity_index_v1.py` — MKM Trinity 인덱스 JSON·스키마 계약(CONSTITUTION §1 렌즈 인덱스 bullet)
   3d. `py -m pytest tests/test_mkm_meta_layer_envelope_v1.py` — 메타 인지 봉투 v1·킬 스위치 정규화·`AthenaValidator`(CONSTITUTION §1.3.1 보강 2026-05-05)
+  3e. `py -m pytest …` — 한의 의사 CDS 봉투 v1 스키마·빌더·JSONL 배치 + `tests/test_automation_registry_json_v1.py`(자동화 레지스트리 MKM 태스크명; dual-regime 동일 단계). `-SkipKmPhysicianCdsEnvelope` 로 생략.
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
   5. `py -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py` — 명리 독립 렌즈 → Thin JSONL 브리지(§3.6)
   5b. `py -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py` — 개인 인사이트 브리핑 Fact-Lock 휴리스틱(운영 단계 라벨·시장↔부채 합선)
   5c. `py -m pytest tests/test_run_graphrag_pilot_router_v1.py` — GraphRAG 파일럿 라우터(Track B/K 관측 전용, GO 게이트·한글 별칭·brief fallback) 회귀.
-  5d. 사상–사주 조인트 문헌·큐레이트 회귀 **9**개 파일(Europe PMC 픽스처·오프라인 **7** + 인제스트 **1** + staleness **1**; CONSTITUTION §3.3 표「사상체질↔문헌↔사주 조인트」). `-SkipSasangSajuJointLiteraturePipeline` 로 생략.
+  5d. `py -m pytest tests/test_mkm_control_integrity_pipeline_smoke_v1.py` — Control-Integrity Golden/LoRA 파이프라인 스모크(aggregate·프로모션 게이트·오라클 추론 타이밍; GPU 불필요). `-SkipMkmControlIntegritySmoke` 로 생략.
+  5e. 사상–사주 조인트 문헌·큐레이트 회귀 **9**개 파일(Europe PMC 픽스처·오프라인 **7** + 인제스트 **1** + staleness **1**; CONSTITUTION §3.3 표「사상체질↔문헌↔사주 조인트」). `-SkipSasangSajuJointLiteraturePipeline` 로 생략.
   6. (기본) 명리·멀티렌즈 **권장 스택** — CI `multilens-independent-lens-smoke`와 동일 **15**개 pytest 파일(선행: 일일 브리프 1 + Thin 브리지 1; 이어 배치 13에 Yang 2015 B-track 스키마·벤치 포함). `-SkipMyeongniLensRecommendedStack` 로 생략.
 
-  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·3b·3c·3d·4·5·5b·5c·5d·6단계는 본 스크립트에서 직접 실행합니다.
+  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·3b·3c·3d·4·5·5b·5c·5d·5e·6단계는 본 스크립트에서 직접 실행합니다.
 
 .PARAMETER SkipIntegrityGuard
   `integrity_guard.py` 생략(빠른 확인용). CI와 완전 동치가 아님.
@@ -88,6 +90,9 @@
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipSasangSajuJointLiteraturePipeline
 
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipKmPhysicianCdsEnvelope
+
 .PARAMETER SkipMyeongniLensRecommendedStack
   명리 독립 렌즈 v0/v1·융합 브리지·봇 체인·융합 스텁 등 9종 멀티렌즈 pytest(권장 CI 패리티)를 생략한다.
 
@@ -96,6 +101,12 @@
 
 .PARAMETER SkipCuratedJointStalenessCheck
   끝단: `data/myeongni/curated_saju_joint_v1.jsonl` 시각 신호 vs `myeongni_celebrity_hit_rate_v1` 산출 시각의 staleness 점검(`check_curated_saju_joint_staleness_v1.py`)을 생략한다.
+
+.PARAMETER SkipMkmControlIntegritySmoke
+  `tests/test_mkm_control_integrity_pipeline_smoke_v1.py`(Golden Set·홀드아웃 집계·게이트 CLI 회귀)를 생략한다.
+
+.PARAMETER SkipKmPhysicianCdsEnvelope
+  한의 의사 CDS assist envelope v1 회귀 3종 pytest + `tests/test_automation_registry_json_v1.py`(MKM 주간 태스크 SSOT; `dual-regime` 의「Myeongri AI interpretation + KM physician CDS」단계와 동일 목록)를 생략한다.
 
 .NOTES
   SSOT 순서: `.github/workflows/dual-regime-integrity.yml`
@@ -125,7 +136,13 @@ param(
     [switch]$SkipSasangSajuJointLiteraturePipeline,
 
     # Curated joint staleness (curated JSONL signal vs celebrity hit-rate artifact; writes reports/*.json; non-failing by default)
-    [switch]$SkipCuratedJointStalenessCheck
+    [switch]$SkipCuratedJointStalenessCheck,
+
+    # Control-Integrity LoRA / Golden pipeline CLI smoke (dual-regime parity step)
+    [switch]$SkipMkmControlIntegritySmoke,
+
+    # KM physician CDS envelope v1 schema + builder pytest (dual-regime parity)
+    [switch]$SkipKmPhysicianCdsEnvelope
 )
 
 $ErrorActionPreference = 'Stop'
@@ -151,6 +168,13 @@ $dailyExecutionInsightBriefTest = Join-Path $workspaceRoot 'tests\test_build_dai
 $myeongniThinBridgeTest = Join-Path $workspaceRoot 'tests\test_emit_myeongni_thin_bridge_line_v1.py'
 $mkmBriefingGuardrailsTest = Join-Path $workspaceRoot 'tests\test_validate_mkm_personal_briefing_guardrails_v1.py'
 $graphragPilotRouterTest = Join-Path $workspaceRoot 'tests\test_run_graphrag_pilot_router_v1.py'
+$mkmControlIntegrityPipelineSmokeTest = Join-Path $workspaceRoot 'tests\test_mkm_control_integrity_pipeline_smoke_v1.py'
+$kmPhysicianCdsEnvelopeTests = @(
+    (Join-Path $workspaceRoot 'tests\test_km_physician_cds_assist_envelope_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_km_physician_cds_assist_envelope_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_run_km_physician_cds_assist_envelope_batch_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_automation_registry_json_v1.py')
+)
 $myeongniLensRecommendedPytests = @(
     (Join-Path $workspaceRoot 'tests\test_independent_lenses_v0.py'),
     (Join-Path $workspaceRoot 'tests\test_myeongni_independent_lens_v0.py'),
@@ -328,6 +352,19 @@ if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
+if (-not $SkipKmPhysicianCdsEnvelope) {
+    foreach ($t in $kmPhysicianCdsEnvelopeTests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "KM physician CDS envelope pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock: KM physician CDS assist envelope v1 (schema + builder pytest; dual-regime parity) ==' -ForegroundColor Cyan
+    & py -m pytest @kmPhysicianCdsEnvelopeTests -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
 if (-not (Test-Path -LiteralPath $dailyExecutionInsightBriefTest)) {
     throw "Daily execution insight brief pytest not found: $dailyExecutionInsightBriefTest"
 }
@@ -362,6 +399,17 @@ Write-Host '== Fact-Lock: test_run_graphrag_pilot_router_v1.py ==' -ForegroundCo
 & py -m pytest $graphragPilotRouterTest -q --tb=short
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
+}
+
+if (-not $SkipMkmControlIntegritySmoke) {
+    if (-not (Test-Path -LiteralPath $mkmControlIntegrityPipelineSmokeTest)) {
+        throw "Control-Integrity pipeline smoke pytest not found: $mkmControlIntegrityPipelineSmokeTest"
+    }
+    Write-Host '== Fact-Lock: test_mkm_control_integrity_pipeline_smoke_v1.py ==' -ForegroundColor Cyan
+    & py -m pytest $mkmControlIntegrityPipelineSmokeTest -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
 }
 
 if (-not $SkipSasangSajuJointLiteraturePipeline) {

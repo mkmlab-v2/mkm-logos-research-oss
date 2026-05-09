@@ -13,9 +13,13 @@ on:
       - "scripts/run_trackb_top_combo_fixed_set_replay.py"
       - "scripts/run_trackb_top_combo_stress_grid.py"
       - "scripts/Run-TrackBWeeklyRefresh.ps1"
+      - "scripts/run_btc_weight_hit_rate_bundle_v1.py"
+      - "scripts/Run-BtcWeightWeeklyHitRateBundle_v1.ps1"
+      - "scripts/Register-BtcWeightHitRateBundleWeeklyTask.ps1"
       - "tests/test_track_b_semantic_eval_metrics.py"
       - "tests/test_run_trackb_weekly_refresh_ps1.py"
       - "tests/test_btrack_bench_paths.py"
+      - "tests/test_run_btc_weight_hit_rate_bundle_v1.py"
       - "tools/myeongni/btrack_bench_paths.py"
       - "tools/myeongni/__init__.py"
       - "data/logos/btrack_pilot/bench/**"
@@ -31,9 +35,13 @@ on:
       - "scripts/run_trackb_top_combo_fixed_set_replay.py"
       - "scripts/run_trackb_top_combo_stress_grid.py"
       - "scripts/Run-TrackBWeeklyRefresh.ps1"
+      - "scripts/run_btc_weight_hit_rate_bundle_v1.py"
+      - "scripts/Run-BtcWeightWeeklyHitRateBundle_v1.ps1"
+      - "scripts/Register-BtcWeightHitRateBundleWeeklyTask.ps1"
       - "tests/test_track_b_semantic_eval_metrics.py"
       - "tests/test_run_trackb_weekly_refresh_ps1.py"
       - "tests/test_btrack_bench_paths.py"
+      - "tests/test_run_btc_weight_hit_rate_bundle_v1.py"
       - "tools/myeongni/btrack_bench_paths.py"
       - "tools/myeongni/__init__.py"
       - "data/logos/btrack_pilot/bench/**"
@@ -60,5 +68,5 @@ jobs:
       - name: Install pytest
         run: pip install pytest
       - name: Run Track B unit smoke tests
-        run: pytest tests/test_track_b_semantic_eval_metrics.py tests/test_run_trackb_weekly_refresh_ps1.py tests/test_btrack_bench_paths.py -q
+        run: pytest tests/test_track_b_semantic_eval_metrics.py tests/test_run_trackb_weekly_refresh_ps1.py tests/test_btrack_bench_paths.py tests/test_run_btc_weight_hit_rate_bundle_v1.py -q
 

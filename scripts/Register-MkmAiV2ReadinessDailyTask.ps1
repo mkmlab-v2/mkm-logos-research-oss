@@ -10,7 +10,12 @@ param(
     [string]$TaskName = "MKM_AIV2_DailyReadiness",
     [string]$DailyAt = "07:10",
     [switch]$IncludeDualLegDashboardChain,
-    [int]$DualLegRecentTradingDays = 30
+    [int]$DualLegRecentTradingDays = 30,
+    [switch]$EnableFallbackPostCutoffCriticalFail,
+    [double]$FallbackPostCutoffWarnRate = 0.15,
+    [switch]$IncludeLgHSPersuasionBridge,
+    [ValidateSet("general", "performance", "safety", "schedule")]
+    [string]$LgHSPersuasionQuestionType = "safety"
 )
 
 $ErrorActionPreference = "Stop"
@@ -46,6 +51,14 @@ if ($IncludeDualLegDashboardChain) {
     $runnerArgs += "-IncludeDualLegDashboardChain"
     $runnerArgs += @("-DualLegRecentTradingDays", "$DualLegRecentTradingDays")
 }
+if ($EnableFallbackPostCutoffCriticalFail) {
+    $runnerArgs += "-EnableFallbackPostCutoffCriticalFail"
+}
+$runnerArgs += @("-FallbackPostCutoffWarnRate", "$FallbackPostCutoffWarnRate")
+if ($IncludeLgHSPersuasionBridge) {
+    $runnerArgs += "-IncludeLgHSPersuasionBridge"
+    $runnerArgs += @("-LgHSPersuasionQuestionType", "$LgHSPersuasionQuestionType")
+}
 $argLine = $runnerArgs -join " "
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" `
@@ -62,7 +75,7 @@ $settings = New-ScheduledTaskSettingsSet `
 
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
 
-$description = "Daily MKM AI v2 readiness gate; writes readiness artifacts/log. Optional dual-leg chain can refresh Track C dashboard evidence."
+$description = "Daily MKM AI v2 readiness gate; writes readiness artifacts/log. Optional dual-leg and LG HS persuasion bridge artifacts can be refreshed."
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
     -Settings $settings -Principal $principal -Description $description -Force | Out-Null

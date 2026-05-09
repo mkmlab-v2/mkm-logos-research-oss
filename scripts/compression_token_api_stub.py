@@ -37,6 +37,7 @@ from pydantic import BaseModel, Field  # noqa: E402
 from starlette.middleware.cors import CORSMiddleware  # noqa: E402
 
 from scripts.core.billing_meter import append_meter_event  # noqa: E402
+from scripts.core.fallback_event_meter import append_fallback_event  # noqa: E402
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
 from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy  # noqa: E402
 from scripts.core.secure_payload_keyring import (  # noqa: E402
@@ -72,6 +73,9 @@ BASELINE_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVA
 DECISION = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
 _router = DomainSpecificRouter(SHARDS)
 TOKEN_RE = re.compile(r"[A-Za-z0-9_]+|[가-힣]+|[^\s]")
+FALLBACK_PROFILE = (
+    ROOT / "docs" / "final" / "artifacts" / "fallback_trigger_threshold_profile_latest.json"
+)
 
 app = FastAPI(title="MKM Token Compression Stub", version="1.0.0")
 
@@ -390,6 +394,61 @@ def _text_size_tokens(text: str) -> tuple[int, int]:
     return len(text.encode("utf-8")), len(TOKEN_RE.findall(text))
 
 
+@lru_cache(maxsize=1)
+def _fallback_profile_doc() -> dict[str, Any]:
+    raw = os.environ.get("COMPRESSION_API_FALLBACK_PROFILE_PATH", "").strip()
+    path = Path(raw) if raw else FALLBACK_PROFILE
+    if not path.is_absolute():
+        path = ROOT / path
+    if not path.is_file():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return {}
+
+
+def _fallback_signals(text: str) -> dict[str, float]:
+    toks = TOKEN_RE.findall(text)
+    n = max(1, len(toks))
+    word_like = sum(1 for t in toks if re.fullmatch(r"[A-Za-z0-9_가-힣]+", t))
+    symbol_like = n - word_like
+    typo_like = sum(1 for t in toks if re.search(r"(.)\1\1", t))
+    unknown_rate = symbol_like / n
+    typo_ratio = typo_like / n
+    # For this stub, OOV proxy follows unknown/symbol-heavy token ratio.
+    oov_ratio = unknown_rate
+    noise_mode_score = max(unknown_rate, min(1.0, typo_ratio * 2.0))
+    return {
+        "oov_ratio": oov_ratio,
+        "typo_ratio": typo_ratio,
+        "unknown_token_rate": unknown_rate,
+        "detected_noise_mode": noise_mode_score,
+    }
+
+
+def _fallback_decision(text: str, token_in: int) -> tuple[bool, list[str], dict[str, float]]:
+    doc = _fallback_profile_doc()
+    sig = _fallback_signals(text)
+    signals_cfg = (doc.get("signals") or {}) if isinstance(doc, dict) else {}
+    reasons: list[str] = []
+    try:
+        if token_in > float(signals_cfg.get("input_tokens_threshold", 8000)):
+            reasons.append("input_tokens_threshold")
+        if sig["oov_ratio"] > float(signals_cfg.get("oov_ratio_threshold", 0.15)):
+            reasons.append("oov_ratio_threshold")
+        if sig["typo_ratio"] > float(signals_cfg.get("typo_ratio_threshold", 0.05)):
+            reasons.append("typo_ratio_threshold")
+        if sig["unknown_token_rate"] > float(signals_cfg.get("unknown_token_rate_threshold", 0.15)):
+            reasons.append("unknown_token_rate_threshold")
+        if sig["detected_noise_mode"] > float(signals_cfg.get("detected_noise_mode_threshold", 0.5)):
+            reasons.append("detected_noise_mode_threshold")
+    except Exception:
+        # Fail-open to conservative fallback when profile is malformed.
+        reasons.append("fallback_profile_parse_error")
+    return bool(reasons), reasons, sig
+
+
 def _estimate_metrics_from_text(
     text: str, savings_ratio: float, *, bytes_in: int | None = None, token_in: int | None = None
 ) -> CompressionMetrics:
@@ -618,8 +677,30 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
         tuple[CompressionMetrics | None, float, str | None, dict[str, Any] | None] | None
     ) = None
     bytes_in, token_in = _text_size_tokens(body.text)
+    fallback_on, fallback_reasons, fallback_sig = _fallback_decision(body.text, token_in)
+    flags["fallback_profile_active"] = bool(_fallback_profile_doc())
+    flags["fallback_safe_triggered"] = fallback_on
+    flags["fallback_trigger_reasons"] = fallback_reasons
+    flags["fallback_signal_snapshot"] = fallback_sig
     if body.hydration_hints is not None and body.hydration_hints.atom_ids:
         flags["hydration_atom_id_count"] = len(body.hydration_hints.atom_ids)
+    try:
+        evt = {
+            "triggered": fallback_on,
+            "tier": tier,
+            "reasons": fallback_reasons,
+            "signals": fallback_sig,
+            "input_tokens": token_in,
+            "input_bytes": bytes_in,
+            "client_request_id": body.client_request_id,
+            "domain": route.domain,
+            "shard_id": route.shard_id,
+        }
+        fres = append_fallback_event(evt)
+        flags["fallback_event_logged"] = bool(fres.get("accepted"))
+    except Exception as exc:
+        flags["fallback_event_log_failed"] = True
+        flags["fallback_event_log_error_class"] = type(exc).__name__
 
     # --- Public: Track B (literal KPI estimate only; no live evaluate_report ---
     if tier == "public":
@@ -663,7 +744,12 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
     semantic_pointer_out: dict[str, Any] | None = None
     emit_sp = bool(body.eval_context is not None and bool(body.eval_context.emit_semantic_pointer))
     if body.eval_context is not None and bool(body.eval_context.hydrate_metrics):
-        if bool(body.eval_context.hydrate_live_eval):
+        live_eval_requested = bool(body.eval_context.hydrate_live_eval)
+        if fallback_on and live_eval_requested:
+            flags["hydrate_live_eval_suppressed"] = True
+            flags["hydrate_live_eval_suppressed_reason"] = "fallback_safe_triggered"
+        allow_live_eval = live_eval_requested and (not fallback_on)
+        if allow_live_eval:
             min_tok = _live_eval_min_tokens()
             if token_in >= min_tok:
                 metrics, latency_ms, live_err, sp_live = _live_eval_metrics(

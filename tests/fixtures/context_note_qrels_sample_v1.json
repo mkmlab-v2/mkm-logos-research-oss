@@ -1,0 +1,133 @@
+{
+  "schema": "context_note_qrels_v1",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "query": "compression fidelity gate",
+      "expected_paths": [
+        "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md"
+      ]
+    },
+    {
+      "query": "promotion sign-off checklist",
+      "expected_paths": [
+        "docs/final/artifacts/promotion_signoff_brief_latest.md"
+      ]
+    },
+    {
+      "query": "implementation facts ssot",
+      "expected_paths": [
+        "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+      ]
+    },
+    {
+      "query": "central agent memory fact lock",
+      "expected_paths": [
+        "docs/final/CENTRAL_AGENT_MEMORY_V1.md"
+      ]
+    },
+    {
+      "query": "public facing security ip copy checklist",
+      "expected_paths": [
+        "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md"
+      ]
+    },
+    {
+      "query": "p0 commercialization tracker",
+      "expected_paths": [
+        "docs/final/P0_COMMERCIALIZATION_TRACKER.md"
+      ]
+    },
+    {
+      "query": "constitution implementation facts",
+      "expected_paths": [
+        "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+      ]
+    },
+    {
+      "query": "central memory checkpoint fact lock",
+      "expected_paths": [
+        "docs/final/CENTRAL_AGENT_MEMORY_V1.md"
+      ]
+    },
+    {
+      "query": "public ip security checklist",
+      "expected_paths": [
+        "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md"
+      ]
+    },
+    {
+      "query": "commercialization p0 tracker",
+      "expected_paths": [
+        "docs/final/P0_COMMERCIALIZATION_TRACKER.md"
+      ]
+    },
+    {
+      "query": "promotion signoff brief latest",
+      "expected_paths": [
+        "docs/final/artifacts/promotion_signoff_brief_latest.md"
+      ]
+    },
+    {
+      "query": "compression interpretation fact lock",
+      "expected_paths": [
+        "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md"
+      ]
+    },
+    {
+      "query": "constitution facts ssot",
+      "expected_paths": [
+        "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+      ]
+    },
+    {
+      "query": "central agent memory v1",
+      "expected_paths": [
+        "docs/final/CENTRAL_AGENT_MEMORY_V1.md"
+      ]
+    },
+    {
+      "query": "promotion checklist b to a",
+      "expected_paths": [
+        "docs/final/MKM_PROMOTION_GATE_CHECKLIST_B_TO_A_C_V1.md"
+      ]
+    },
+    {
+      "query": "b2b poc contract skeleton",
+      "expected_paths": [
+        "docs/final/B2B_POC_CONTRACT_SKELETON_V1.md"
+      ]
+    },
+    {
+      "query": "b2b execution checklist week 4",
+      "expected_paths": [
+        "docs/final/B2B_POC_4W_EXECUTION_CHECKLIST_V1.md"
+      ]
+    },
+    {
+      "query": "ops one rule workflow local vps",
+      "expected_paths": [
+        "docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md"
+      ]
+    },
+    {
+      "query": "mkm domain portfolio pointer",
+      "expected_paths": [
+        "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md"
+      ]
+    },
+    {
+      "query": "track c ip business plan",
+      "expected_paths": [
+        "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md"
+      ]
+    },
+    {
+      "query": "compression sla policy",
+      "expected_paths": [
+        "docs/final/COMPRESSION_SLA_POLICY_V1.md"
+      ]
+    }
+  ]
+}
+

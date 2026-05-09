@@ -3,7 +3,9 @@ param(
     [Parameter(Mandatory = $false)]
     [string]$StartupLabel = "MKM-n8n-start",
 
-    [switch]$Remove
+    [switch]$Remove,
+    [int]$StartupDelaySec = 45,
+    [int]$HealthTimeoutSec = 60
 )
 
 Set-StrictMode -Version Latest
@@ -27,21 +29,21 @@ if ($Remove) {
     exit 0
 }
 
-$n8nCmd = (Get-Command -Name "n8n.cmd" -ErrorAction Stop).Source
-if (-not (Test-Path -LiteralPath $n8nCmd)) {
-    throw "n8n.cmd not found on PATH."
+$guardScript = Join-Path $PSScriptRoot "Run-N8nServiceGuardV1.ps1"
+if (-not (Test-Path -LiteralPath $guardScript)) {
+    throw "Required script not found: $guardScript"
 }
 
-# VBScript: hidden window (0), do not wait for n8n (False). Quote path with Chr(34).
-$n8nForVbs = $n8nCmd.Replace('"', '""')
+# VBScript: hidden window (0), do not wait. Guard script prevents duplicate starts.
+$guardForVbs = $guardScript.Replace('"', '""')
 $vbs = @"
 Option Explicit
 Dim sh, p
 Set sh = CreateObject("WScript.Shell")
-p = Chr(34) & "$n8nForVbs" & Chr(34)
-sh.Run "cmd /c " & p & " start", 0, False
+p = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File " & Chr(34) & "$guardForVbs" & Chr(34) & " -StartupDelaySec $StartupDelaySec -HealthTimeoutSec $HealthTimeoutSec"
+sh.Run "cmd /c " & p, 0, False
 "@
 
 Set-Content -LiteralPath $vbsPath -Value $vbs -Encoding ASCII -Force
 Write-Output "user_startup: REGISTERED ($vbsPath)"
-Write-Output "n8n_cmd=$n8nCmd"
+Write-Output "guard_script=$guardScript"

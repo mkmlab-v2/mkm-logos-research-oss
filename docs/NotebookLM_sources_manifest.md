@@ -333,6 +333,12 @@ Gemini/NotebookLM이 "지금 개발이 어디까지 왔는지"를 빠르게 파�
 - **NotebookLM**: 노트북명 `작전지휘부 Ops20260318`, ID `347e5cbe-0ade-4615-9aac-8747d4fa644e`, 소스 **13**개 (`notebook_list` 2026-04-02 재확인). 과거 중복 제거 이력(230→151)은 보존하되, 운영 판단 시에는 **현재 MCP 조회값**을 우선한다.
 - **전체 wipe**: **기본 금지**. 소스 대량 삭제는 사용자가 **명시적으로 재구축·전체 재업로드**를 요청한 경우에만 수행.
 - **`OPS_ONEPAGE_STATUS_LATEST.md`**: 워크스페이스 `docs/final/OPS_ONEPAGE_STATUS_LATEST.md`는 **미존재**할 수 있음. NotebookLM에는 소스 **제목**으로만 존재할 수 있음. 새 MD 남발 대신 `docs/final/` 기존 SITREP·본 매니페스트에 **Gap 한 줄** 기록.
+
+## Internal 95+ briefing bridge (2026-05)
+
+- NotebookLM은 브리핑 근거 확장용으로 사용하되, 응답 생성은 항상 내부 표준화 계약(`intent/scope/constraints/output/evidence/uncertainty`)을 거친다.
+- 권장 출력 고정 순서: `Field(Regime) -> Lens(사상/명리/성경) -> Conflict Resolver -> Final Action -> Evidence Index`.
+- NotebookLM에서 가져온 내용은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 `docs/final/artifacts/*_latest.json`과 교차 검증 후만 승격한다.
 - **로컬 브리지 문서**: `docs/작전지휘부/` 등 경로는 **Vault·다른 머신에만** 있을 수 있음. `source_add` 전 **파일 존재 확인** 필수.
 
 ### 파일 기반 장기기억(.mkm-memory) — 멀티렌즈 압축·4D 동기화 (A, 2026-04)

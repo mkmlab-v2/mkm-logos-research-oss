@@ -1,0 +1,2 @@
+{"id":"ex-sufficient","clinical_question":"What guideline-backed considerations apply before modifying therapy?","evidence_assessment":"sufficient"}
+{"id":"ex-insufficient","clinical_question":"What evidence exists for rare interaction X in this institutional snapshot?","evidence_assessment":"insufficient","evidence_gap_notes":"No indexed chunks for interaction X in corpus snapshot v1; verify hospital formulary.","evidence_items":[]}

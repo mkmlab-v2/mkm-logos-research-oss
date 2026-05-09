@@ -44,6 +44,9 @@ export type SiteCopy = {
     cta_primary: string;
     cta_secondary: string;
   };
+  feature_triad: {
+    cards: { variant: "copilot" | "heritage" | "sovereign"; title: string; subtitle: string; body: string }[];
+  };
   concept_block: {
     label: string;
     title: string;

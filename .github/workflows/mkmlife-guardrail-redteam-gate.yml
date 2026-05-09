@@ -1,0 +1,38 @@
+name: mkmlife-guardrail-redteam-gate
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "scripts/run_mkmlife_guardrail_redteam_v1.py"
+      - "scripts/check_mkmlife_guardrail_redteam_gate_v1.py"
+      - "scripts/build_mkm_myeongni_response_v2.py"
+      - "docs/final/artifacts/mkmlife_final_output_guardrail_policy_v1.json"
+      - "docs/final/artifacts/*codebook*.json"
+  pull_request:
+    paths:
+      - "scripts/run_mkmlife_guardrail_redteam_v1.py"
+      - "scripts/check_mkmlife_guardrail_redteam_gate_v1.py"
+      - "scripts/build_mkm_myeongni_response_v2.py"
+      - "docs/final/artifacts/mkmlife_final_output_guardrail_policy_v1.json"
+      - "docs/final/artifacts/*codebook*.json"
+  workflow_dispatch:
+
+jobs:
+  redteam-gate:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run mkmlife redteam
+        run: py scripts/run_mkmlife_guardrail_redteam_v1.py
+
+      - name: Enforce gate (release blocker)
+        run: py scripts/check_mkmlife_guardrail_redteam_gate_v1.py --min-pass-rate 0.9999 --warn-pass-rate 1.0 --min-blocked-cases 4
+

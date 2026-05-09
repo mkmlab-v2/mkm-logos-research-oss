@@ -171,7 +171,7 @@ export function ConsumerWorkspaceClient() {
         ) : null}
         {activeId === "survey" ? (
           <div className="workspace-scroll-panel">
-            <PatientPreSurveyForm />
+            <PatientPreSurveyForm intakeMode="clinic_v1" />
           </div>
         ) : null}
         {activeId === "safety" ? <ConsumerSafetyPanel /> : null}

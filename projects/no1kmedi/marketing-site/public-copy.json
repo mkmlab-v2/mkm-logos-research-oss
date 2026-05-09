@@ -115,6 +115,28 @@
     "cta_primary": "참고 리포트 시작",
     "cta_secondary": "제휴·도입 문의"
   },
+  "feature_triad": {
+    "cards": [
+      {
+        "variant": "copilot",
+        "title": "COPILOT",
+        "subtitle": "Clinical Workflow",
+        "body": "문진-상담-기록 흐름을 한 화면에서 정리합니다."
+      },
+      {
+        "variant": "heritage",
+        "title": "CLINICAL HERITAGE",
+        "subtitle": "K-Medicine",
+        "body": "향약·동의보감으로 이어진 한의 임상 전통을, 오늘의 문진·상담 보조 워크플로에 반영합니다."
+      },
+      {
+        "variant": "sovereign",
+        "title": "SOVEREIGN",
+        "subtitle": "Data Security",
+        "body": "민감정보 보호를 우선한 소버린 설계입니다."
+      }
+    ]
+  },
   "concept_block": {
     "label": "Operational Concept",
     "title": "일반인과 한의사의 사용 목적을 분리해 안내합니다",

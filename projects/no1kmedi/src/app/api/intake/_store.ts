@@ -52,7 +52,7 @@ export type PatientPreSurveyRecord = {
       schema_version?: string;
       sleep_pattern: string;
       digestion_pattern: string;
-      questionnaire_answers?: Record<string, "a" | "b" | "">;
+      questionnaire_answers?: Record<string, string>;
     };
   };
   safety: {
@@ -66,6 +66,10 @@ export type PatientPreSurveyRecord = {
   consent: {
     privacy: boolean;
     medical: boolean;
+  };
+  meta?: {
+    source?: string;
+    kakao_summary?: Record<string, unknown>;
   };
 };
 

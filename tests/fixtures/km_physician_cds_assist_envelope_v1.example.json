@@ -1,0 +1,55 @@
+{
+  "schema": "km_physician_cds_assist_envelope_v1",
+  "version": "1.0.0",
+  "intent": "physician_clinical_decision_support",
+  "boundary_ack": true,
+  "role_contract": {
+    "cds_only_not_standalone_diagnosis": true,
+    "physician_final_authority": true,
+    "not_emergency_disposition_final": true
+  },
+  "patient_context_summary": "[REDACTED] Demo-only structured summary for schema validation.",
+  "clinical_question": "Given documented pattern X, what guideline-backed considerations apply before modifying therapy?",
+  "evidence_assessment": "partial",
+  "evidence_gap_notes": "Institutional protocol for edge case Z not indexed in this corpus snapshot; verify locally.",
+  "evidence_items": [
+    {
+      "claim": "Example claim tied to retrieved passage.",
+      "evidence_grade": "guideline",
+      "citation": {
+        "source_id": "demo-guideline-001",
+        "chunk_ref": "sec-3.2",
+        "document_version": "2025-01",
+        "retrieved_at_utc": "2026-05-10T12:00:00Z"
+      },
+      "relevance": "high"
+    }
+  ],
+  "differential_framework": [
+    {
+      "label": "Illustrative differential label",
+      "hypothesis_only": true,
+      "supporting_points": ["Point A"],
+      "mitigating_or_contraindicating_points": ["Point B"]
+    }
+  ],
+  "red_flags_and_escalation": ["Escalate if acute red flag set per hospital policy."],
+  "suggested_next_steps_for_physician": ["Confirm labs per protocol", "Specialist consult if criteria met"],
+  "confidence": {
+    "overall_0_1": 0.55,
+    "rationale": "Partial corpus coverage; physician must reconcile with bedside data."
+  },
+  "human_physician_review_required": true,
+  "rag_manifest": [
+    {
+      "corpus_id": "demo-corpus",
+      "snapshot_version": "v1",
+      "chunk_ids": ["chunk-a"]
+    }
+  ],
+  "audit": {
+    "pipeline_run_id": "demo-run",
+    "generator_model": "demo-model-tag"
+  },
+  "disclaimer_ack": "This CDS artifact assists licensed physicians only; not a standalone diagnosis or prescription."
+}

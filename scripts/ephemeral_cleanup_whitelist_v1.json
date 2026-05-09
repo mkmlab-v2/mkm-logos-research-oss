@@ -1,0 +1,9 @@
+{
+  "schema": "ephemeral_cleanup_whitelist_v1",
+  "exclude_path_prefixes": [
+    "out/keep",
+    "logs/keep",
+    "staging/keep",
+    "tmp/keep"
+  ]
+}

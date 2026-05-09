@@ -72,14 +72,23 @@ def _read_latest_kospi_return(csv_path: Path) -> tuple[str | None, float | None]
                 return str(row[k]).strip()
         return None
 
-    prev = rows[-2]
-    cur = rows[-1]
-    prev_close = _float_opt(pick(prev, ["Close", "close", "Adj Close", "adj_close", "종가"]))
-    cur_close = _float_opt(pick(cur, ["Close", "close", "Adj Close", "adj_close", "종가"]))
-    date_val = pick(cur, ["Date", "date", "날짜"])
-    if prev_close is None or cur_close is None:
-        return date_val, None
-    return date_val, cur_close - prev_close
+    valid: list[tuple[str | None, float]] = []
+    for row in reversed(rows):
+        close = _float_opt(pick(row, ["Close", "close", "Adj Close", "adj_close", "종가"]))
+        if close is None:
+            continue
+        date_val = pick(row, ["Date", "date", "날짜"])
+        valid.append((date_val, close))
+        if len(valid) >= 2:
+            break
+
+    if len(valid) < 2:
+        latest_date = valid[0][0] if valid else None
+        return latest_date, None
+
+    latest_date, latest_close = valid[0]
+    prev_close = valid[1][1]
+    return latest_date, latest_close - prev_close
 
 
 def _lens_score(doc: dict[str, Any]) -> float | None:
