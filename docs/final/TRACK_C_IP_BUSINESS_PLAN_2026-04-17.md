@@ -299,6 +299,13 @@ Short copy:
 6. Topology Radar 쇼룸은 **JSON 계약(허용 필드/금지 필드) -> 와이어프레임 -> 카피라이팅** 순서로 고정해 환각·컴플라이언스 리스크를 선제 차단한다.
 7. `§9A` 보안 게이트에 따라 API/대시보드 응답에서 내부 산식·가중치·중간 피처를 제거하고, 계약서(NDA+역공학 금지)와 기술 설정(키·워터마크·감사로그)을 동시 적용한다.
 
+### 10.1 운영 스냅샷 동기화 (2026-05-09 실측)
+
+- 도메인 라우팅 실측: `jema-ai.com`/`www.jema-ai.com`은 `app.jema-ai.com`으로 301, 앱 본체는 nginx `proxy_pass http://127.0.0.1:3010`.
+- 앱 런타임 실측: PM2 `no1kmedi-com`, `no1kmedi`; 둘 다 `exec cwd=/opt/mkm-lab-workspace-v2/projects/no1kmedi`.
+- 카피 실측 반영: 메인 카드의 `Since 1972` 제거(`Clinical Heritage`), 타임라인의 연도 라벨은 단계형(`전통기반/체계화/디지털화/임상 AI 실험/Clinical Copilot`)으로 교체.
+- 운영 원칙: 실서버 핫패치가 발생한 경우, 다음 턴에 같은 변경을 레포 기준 경로에 재반영해 문서·코드·배포 상태를 다시 일치시킨다(Fact-Lock).
+
 ## 11) MKM AI Sales Kit Reference (External-Ready)
 
 - 세일즈킷 루트: `docs/final/artifacts/mkm_ai_sales_kit_v1`

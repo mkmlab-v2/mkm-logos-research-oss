@@ -1,4 +1,4 @@
-# jema-ai.com — 도메인 포인터 v1 (미확정 항목 명시)
+# jema-ai.com — 도메인 포인터 v2 (운영 실측 반영)
 
 **명명(혼동 방지):** 공개 제품·배포·SEO·`metadataBase` 기준 도메인은 **`https://jema-ai.com`** 이다. 모노레포 소스 위치 **`projects/no1kmedi`** 및 npm 패키지명 `no1kmedi-web` 등은 **레거시 내부 식별자**로만 쓰이며, 사용자 대면 문구·도메인 표기에 **`no1kmedi`라는 문자열을 대체 표기로 쓰지 않는다**(폴더 경로·CI·기존 SSOT 파일명 제외).
 
@@ -11,9 +11,10 @@
 | 항목 | 값 |
 |------|-----|
 | **레포 내 전용 앱 경로 (워크스페이스 후보)** | **`jema-ai.com` 제품 소스:** 모노레포 `projects/no1kmedi` (Next.js; `metadataBase`·canonical 은 **`https://jema-ai.com`**). 폴더명 `no1kmedi` ≠ 공개 브랜드명. **배포·PM2·nginx 본선 경로는 별도 확정 문서로만 판정**(`NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` 등과 혼동 금지). |
-| **전용 런북·배포 스크립트** | **없음** — 별도 문서화 전까지 **타 도메인 런북 복붙 금지**. |
-| **PM2 앱 이름 / `exec cwd`** | **미확정** — 확정 후 `pm2 describe` 실측으로만 본선 판정. |
-| **VPS 호스트** | no1kmedi/mkmlife/jema12 와 **동일 물리일 수 있음** — 그래도 **nginx `server_name`·upstream·PM2 이름은 분리**. |
+| **전용 런북·배포 스크립트** | 전용 단독 런북은 아직 없음. 다만 실측 운영 경로는 아래 PM2/nginx 항목으로 고정한다(타 도메인 런북 복붙 금지). |
+| **PM2 앱 이름 / `exec cwd` (2026-05-09 실측)** | `no1kmedi-com`, `no1kmedi` / `exec cwd=/opt/mkm-lab-workspace-v2/projects/no1kmedi` |
+| **nginx 라우팅 (2026-05-09 실측)** | `app.jema-ai.com` → `proxy_pass http://127.0.0.1:3010`; `jema-ai.com`/`www.jema-ai.com` → `301 https://app.jema-ai.com$request_uri` |
+| **VPS 호스트 (2026-05-09 실측)** | `148.230.97.246` (`srv1101456`) |
 
 ---
 
@@ -25,13 +26,12 @@
 
 ---
 
-## 3) 확정 시 이 문서에 채울 항목 (체크리스트)
+## 3) 운영 체크리스트 (실측 반영)
 
-- [ ] Git 원격 저장소 URL (또는 모노레포 하위 경로)
-- [ ] 로컬 작업 디렉터리 (Cursor 기본 열 폴더)
-- [ ] PM2 프로세스 이름 · `pm2 describe` 로 확인한 `exec cwd`
-- [ ] nginx 설정 파일 경로(본선) 및 `server_name`
-- [ ] `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` 표 갱신
+- [x] 로컬/레포 작업 디렉터리: `projects/no1kmedi`
+- [x] PM2 프로세스 이름 · `pm2 describe` 실측: `no1kmedi-com`, `no1kmedi` / `exec cwd=/opt/mkm-lab-workspace-v2/projects/no1kmedi`
+- [x] nginx 설정 실측: `/etc/nginx/sites-enabled/app.jema-ai.com`, `/etc/nginx/sites-enabled/jema-ai.com`
+- [x] `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` 표 갱신 (v1 표의 jema-ai 열에 실측 메모 추가)
 
 ---
 

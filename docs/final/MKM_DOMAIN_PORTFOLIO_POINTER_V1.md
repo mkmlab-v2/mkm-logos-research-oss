@@ -16,7 +16,7 @@
 | **jemaai.cloud** | 공개 쇼룸·Public Event Gateway·**실매매와 격리**된 관측 UI. | `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`(프로젝트 경로는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 표), `run_jemaai_cloud_completion_chain.ps1` = 로컬 점검, **배포 아님** | 게이트웨이·nginx 예시는 bitcoin-trading `jemaai-cloud-mvp` 경로. **api.jemaai.cloud 권장** — `jema12.cloud`와 동일 가정 금지(핸드오프 표). |
 | **a-codeai.com** | L2·압축 API·B2B 대외면: **정적 랜딩과 API 포트 분리** (nginx). | `P0_COMMERCIALIZATION_TRACKER.md`(a-codeai nginx 체크리스트), `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example` | **apex가 스텁 JSON만 받아 404 나는 설정** 금지 — `/` vs `/v1/` 분리 우선. |
 | **mkmlab.space** | (레포 서술) 회사/랩 **랜딩·R&D 쇼케이스 이전 후보** — `no1kmedi`와 브랜드 분리 논의가 NotebookLM·실행보고에 있음. **단일 배포 SSOT는 호스트 실측 후 확정.** | `NO1KMEDI` SSOT 표(1.1), no1kmedi 실행보고 노트(참고) | no1kmedi 클리닉 전환 시 **랩 콘텐츠 이전** 등 — **한 nginx에 목적 섞지 말 것**. |
-| **jema-ai.com** | **공개 브랜드·Next `metadataBase`**. 소스 트리는 `projects/no1kmedi`(폴더명은 레거시; 문서·UI에서는 **jema-ai.com**으로만 호칭). 기획 노트의 B2B 등은 참고. | `JEMA_AI_DOMAIN_POINTER_V1.md` | **mkmlife / no1kmedi.com / jema12 와 동일 VPS라도** 서버블록·PM2 **이름으로 구분**. |
+| **jema-ai.com** | **공개 브랜드·Next `metadataBase`**. 소스 트리는 `projects/no1kmedi`(폴더명은 레거시; 문서·UI에서는 **jema-ai.com**으로만 호칭). 기획 노트의 B2B 등은 참고. | `JEMA_AI_DOMAIN_POINTER_V1.md` | **실측(2026-05-09):** `jema-ai.com`은 `app.jema-ai.com`으로 301, `app.jema-ai.com`은 `127.0.0.1:3010` upstream. PM2 `no1kmedi-com`/`no1kmedi`, `exec cwd=/opt/mkm-lab-workspace-v2/projects/no1kmedi`. |
 | **personadiary.com** | B2C 일기 등 기획은 노트 참고. 레포 **포인터만** — 데이터·본선 미확정. | `PERSONADIARY_DOMAIN_POINTER_V1.md` | **본선 연결 전** 도메인·repo·PM2 **한 줄 확정** 없이 VPS에 합선하지 말 것. |
 
 ### 1.1 쇼룸·체험 표면 배치 (도메인 × 디자인 의도, 2026-05-05)
