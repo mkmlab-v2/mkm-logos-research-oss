@@ -35,6 +35,8 @@ param(
 # 2026-05-09: Market Myeongni — CONTRACT 메타(MARKET_MYEONGNI_LENS_V1_CONTRACT.json) + contract path pytest (3중: 스키마·CONTRACT·회귀).
 # 2026-05-09: Global orchestrator + GO stability cycle + accelerated burn-in + conditional GO+ report v2
 #   (scripts only; companion / mkm_global_orchestrator *_latest.json are regenerable and often gitignored).
+# 2026-05-10: AI BGM gate v1 (schema, policy, scripts/audio, pytest, CI audio-bgm-gate-smoke.yml).
+# 2026-05-10: MKM Control-Integrity Golden/LoRA (schema, profile SSOT, aggregate/gate/inference/eval PS1/py, smoke pytest).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -126,6 +128,9 @@ $required = @(
     "projects\bitcoin-trading\ops\windows-rehearsal\GENERAL_PROPHECY_MONTHLY_SCHEDULER_RUNBOOK_V1.md",
     "projects\bitcoin-trading\ops\windows-rehearsal\register_fused_quant_pixel_sop_strict_check_task.ps1",
     "projects\bitcoin-trading\ops\windows-rehearsal\register_fused_quant_pixel_sop_strict_check_task_clean.ps1",
+    "projects\bitcoin-trading\ops\windows-rehearsal\automation_registry.json",
+    "projects\bitcoin-trading\ops\windows-rehearsal\reconcile_automation_registry.ps1",
+    "tests\test_automation_registry_json_v1.py",
     "scripts\eval_prophecy_hit_rate_v1.py",
     "scripts\fetch_kospi_yfinance_csv.py",
     "tests\test_load_kospi_yf_rows.py",
@@ -192,6 +197,16 @@ $required = @(
     "docs\final\MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md",
     "docs\final\schemas\myeongri_ai_interpretation_envelope_v1.schema.json",
     "tests\test_myeongri_ai_interpretation_envelope_v1.py",
+    "docs\final\schemas\km_physician_cds_assist_envelope_v1.schema.json",
+    "tests\fixtures\km_physician_cds_assist_envelope_v1.example.json",
+    "tests\test_km_physician_cds_assist_envelope_v1.py",
+    "scripts\build_km_physician_cds_assist_envelope_v1.py",
+    "scripts\run_km_physician_cds_assist_envelope_batch_v1.py",
+    "scripts\Run-KmPhysicianCdsEnvelopeBatchWeekly_v1.ps1",
+    "scripts\Register-KmPhysicianCdsEnvelopeBatchWeeklyTask.ps1",
+    "tests\fixtures\km_physician_cds_assist_payload_batch_v1.example.jsonl",
+    "tests\test_build_km_physician_cds_assist_envelope_v1.py",
+    "tests\test_run_km_physician_cds_assist_envelope_batch_v1.py",
     "scripts\run_myeongri_ai_interpretation_pack_v1.py",
     "scripts\eval_myeongri_rule_school_macro_stub_v1.py",
     "tests\test_eval_myeongri_rule_school_macro_stub_v1.py",
@@ -362,7 +377,35 @@ $required = @(
     "scripts\run_mkm_orchestrator_accelerated_burnin_v1.ps1",
     "scripts\build_mkm_conditional_go_plus_report_v2.py",
     "scripts\Run-TradingGuardianBundleTask.ps1",
-    "scripts\Run-MkmWeeklyOperationalEvidenceCadence.ps1"
+    "scripts\Run-MkmWeeklyOperationalEvidenceCadence.ps1",
+    ".github\workflows\audio-bgm-gate-smoke.yml",
+    "docs\final\schemas\audio_bgm_gate_report_v1.schema.json",
+    "docs\final\schemas\audio_bgm_gate_report_v1.example.json",
+    "policies\audio_copyright_field.json",
+    "scripts\audio\evaluate_audio_gate.py",
+    "scripts\audio\run_bgm_generation_batch.py",
+    "scripts\audio\generate_placeholder_wav.py",
+    "scripts\audio\external_generator_stub_v1.py",
+    "scripts\audio\external_generator_template_v1.py",
+    "scripts\audio\gemini_bgm_seed_expand_v1.py",
+    "scripts\audio\gemini_placeholder_external_generator_v1.py",
+    "scripts\audio\tone_external_generator_v1.py",
+    "scripts\Run-AudioBgmGeminiExternalChain_v1.ps1",
+    "scripts\Run-AudioBgmEconomyChain_v1.ps1",
+    "data\audio\seeds\tension_sasang_01.example.json",
+    "data\audio\seeds\calm_taeeum_01.example.json",
+    "tests\test_audio_bgm_gate_report_v1.py",
+    "docs\final\schemas\mkm_control_integrity_golden_set_v1.schema.json",
+    "docs\final\artifacts\mkm_control_integrity_lora_model_profiles_v1.json",
+    "scripts\aggregate_mkm_control_integrity_eval_holdout_v1.py",
+    "scripts\check_mkm_control_integrity_promotion_gate_v1.py",
+    "scripts\run_mkm_control_integrity_inference_batch_v1.py",
+    "scripts\evaluate_mkm_control_integrity_lora_predictions_v1.py",
+    "scripts\Run-MkmControlIntegrityTrainInferEval.ps1",
+    "scripts\Run-MkmControlIntegrityHoldoutEvalSuite.ps1",
+    "scripts\Run-MkmControlIntegrityModelProfileABC.ps1",
+    "scripts\build_mkm_control_integrity_model_profile_abc_comparison_v1.py",
+    "tests\test_mkm_control_integrity_pipeline_smoke_v1.py"
 )
 
 $missing = @()

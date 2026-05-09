@@ -174,6 +174,15 @@ on:
       - "tests/test_athena_run_v1.py"
       - "tests/test_athena_doctor_v1.py"
       - "tests/test_check_athena_execution_governance_smoke_v1.py"
+      - "scripts/audio/**"
+      - "scripts/Run-AudioBgmGeminiExternalChain_v1.ps1"
+      - "scripts/Run-AudioBgmEconomyChain_v1.ps1"
+      - "policies/audio_copyright_field.json"
+      - "docs/final/schemas/audio_bgm_gate_report_v1.schema.json"
+      - "docs/final/schemas/audio_bgm_gate_report_v1.example.json"
+      - "data/audio/seeds/**"
+      - "tests/test_audio_bgm_gate_report_v1.py"
+      - ".github/workflows/audio-bgm-gate-smoke.yml"
       - "scripts/run_compression_automation_chain.ps1"
       - "scripts/run_compression_weekly_governance_chain.ps1"
       - "scripts/Register-CompressionWeeklyGovernanceTask.ps1"
@@ -460,6 +469,15 @@ on:
       - "docs/final/MYEONGRI_AI_INTERPRETATION_PROMPT_TEMPLATE_V1.md"
       - "docs/final/schemas/myeongri_ai_interpretation_envelope_v1.schema.json"
       - "tests/test_myeongri_ai_interpretation_envelope_v1.py"
+      - "docs/final/schemas/km_physician_cds_assist_envelope_v1.schema.json"
+      - "tests/fixtures/km_physician_cds_assist_envelope_v1.example.json"
+      - "tests/test_km_physician_cds_assist_envelope_v1.py"
+      - "scripts/build_km_physician_cds_assist_envelope_v1.py"
+      - "scripts/run_km_physician_cds_assist_envelope_batch_v1.py"
+      - "tests/fixtures/km_physician_cds_assist_payload_batch_v1.example.jsonl"
+      - "tests/test_build_km_physician_cds_assist_envelope_v1.py"
+      - "tests/test_run_km_physician_cds_assist_envelope_batch_v1.py"
+      - "tests/test_automation_registry_json_v1.py"
       - "scripts/run_myeongri_ai_interpretation_pack_v1.py"
       - "scripts/eval_myeongri_rule_school_macro_stub_v1.py"
       - "scripts/check_bio_paper_snp_mapping_coverage_v1.py"
@@ -772,6 +790,9 @@ jobs:
       - name: External Bible anchor governance scripts smoke
         run: python -m pytest tests/test_external_anchor_governance_scripts_smoke_v1.py -q --tb=short
 
+      - name: MKM control-integrity pipeline smoke (aggregate, promotion gate, oracle inference timing)
+        run: python -m pytest tests/test_mkm_control_integrity_pipeline_smoke_v1.py -q --tb=short
+
       # Athena §28: ECC launcher, doctor, JSONL audit helpers, HOLD deny path (smoke script).
       # Optional repo secret ATHENA_ECC_AUDIT_WEBHOOK_URL — not required here (tests/mocks + smoke use --no-audit-webhook).
       - name: Athena execution governance (§28) pytest
@@ -781,6 +802,9 @@ jobs:
             tests/test_athena_doctor_v1.py \
             tests/test_check_athena_execution_governance_smoke_v1.py \
             -q --tb=short
+
+      - name: AI BGM gate v1 (schema, batch+gate wiring)
+        run: python -m pytest tests/test_audio_bgm_gate_report_v1.py -q --tb=short
 
       - name: MKM meta-layer envelope v1 (schema + kill-switch coherence)
         run: python -m pytest tests/test_mkm_meta_layer_envelope_v1.py -q --tb=short
@@ -906,8 +930,15 @@ jobs:
             tests/test_check_curated_saju_joint_staleness_v1.py \
             -q --tb=short
 
-      - name: Myeongri AI interpretation envelope v1 (prompt SSOT + JSON Schema)
-        run: python -m pytest tests/test_myeongri_ai_interpretation_envelope_v1.py -q --tb=short
+      - name: Myeongri AI interpretation + KM physician CDS assist envelope v1 (JSON Schema)
+        run: |
+          python -m pytest \
+            tests/test_myeongri_ai_interpretation_envelope_v1.py \
+            tests/test_km_physician_cds_assist_envelope_v1.py \
+            tests/test_build_km_physician_cds_assist_envelope_v1.py \
+            tests/test_run_km_physician_cds_assist_envelope_batch_v1.py \
+            tests/test_automation_registry_json_v1.py \
+            -q --tb=short
 
       - name: Log metabolism synthetic cohort + myeongri correlation spike (B-track)
         run: |

@@ -27,7 +27,7 @@ param(
     # Optional: package_b chain smoke (v1 lens + v2 balanced/attack + margins summary).
     [switch]$IncludeMyeongniPackageBSmoke,
 
-    # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only profiles).
+    # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only / TrackCMacroFusionSmokeOnly / MkmControlIntegritySmokeOnly / KmPhysicianCdsEnvelopeSmokeOnly profiles).
     [switch]$SkipNewsObservationContractSmoke,
 
     # Optional: bio PMID paper SNP sidecar join smoke (no network; sub-second).
@@ -96,7 +96,17 @@ param(
     # Optional: 1+3 threshold daily gate (7d/14d + warning/critical).
     [switch]$IncludeOnePlusThreeDailyGate,
     # Shortcut profile: P0 paths + 1+3 threshold daily gate only.
-    [switch]$OnePlusThreeGateOnly
+    [switch]$OnePlusThreeGateOnly,
+
+    # Optional: MKM Control-Integrity Golden/LoRA pipeline pytest (aggregate, promotion gate, oracle inference timing; no GPU).
+    [switch]$IncludeMkmControlIntegritySmoke,
+    # Shortcut profile: P0 paths + Control-Integrity smoke pytest only.
+    [switch]$MkmControlIntegritySmokeOnly,
+
+    # Optional: KM physician CDS assist envelope v1 pytest quartet (+ automation_registry MKM tasks; jsonschema; few seconds).
+    [switch]$IncludeKmPhysicianCdsEnvelopeSmoke,
+    # Shortcut profile: P0 paths + CDS envelope pytest pair only.
+    [switch]$KmPhysicianCdsEnvelopeSmokeOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -134,6 +144,22 @@ if ($XaiContractGateOnly) {
 
 if ($OnePlusThreeGateOnly) {
     $IncludeOnePlusThreeDailyGate = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
+if ($MkmControlIntegritySmokeOnly) {
+    $IncludeMkmControlIntegritySmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
+if ($KmPhysicianCdsEnvelopeSmokeOnly) {
+    $IncludeKmPhysicianCdsEnvelopeSmoke = $true
     $SkipVaultMirror = $true
     $SkipMkmMemoryInventory = $true
     $SkipPhase1Readiness = $true
@@ -216,7 +242,7 @@ try {
         }
     }
 
-    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly) {
+    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly) {
         $ns = Join-Path $root "scripts\Run-NewsObservationContractSmoke.ps1"
         if (Test-Path -LiteralPath $ns) {
             Step "B-track news_observation contract smoke (default)" {
@@ -471,6 +497,37 @@ try {
             Write-Host ""
             Write-Host "=== Weather pipeline smoke ===" -ForegroundColor Yellow
             Write-Host "SKIP: test_weather_gt_triplet_chain_smoke.py not found"
+        }
+    }
+
+    if ($IncludeMkmControlIntegritySmoke) {
+        $cit = Join-Path $root "tests\test_mkm_control_integrity_pipeline_smoke_v1.py"
+        if (Test-Path -LiteralPath $cit) {
+            Step "MKM Control-Integrity pipeline smoke (aggregate, promotion gate, oracle inference timing)" {
+                & py -m pytest $cit -q --tb=short
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== MKM Control-Integrity pipeline smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: test_mkm_control_integrity_pipeline_smoke_v1.py not found"
+        }
+    }
+
+    if ($IncludeKmPhysicianCdsEnvelopeSmoke) {
+        $cds1 = Join-Path $root "tests\test_km_physician_cds_assist_envelope_v1.py"
+        $cds2 = Join-Path $root "tests\test_build_km_physician_cds_assist_envelope_v1.py"
+        $cds3 = Join-Path $root "tests\test_run_km_physician_cds_assist_envelope_batch_v1.py"
+        $cds4 = Join-Path $root "tests\test_automation_registry_json_v1.py"
+        if ((Test-Path -LiteralPath $cds1) -and (Test-Path -LiteralPath $cds2) -and (Test-Path -LiteralPath $cds3) -and (Test-Path -LiteralPath $cds4)) {
+            Step "KM physician CDS assist envelope v1 (schema + builder + JSONL batch + automation registry pytest; dual-regime / fact-lock parity)" {
+                & py -m pytest $cds1 $cds2 $cds3 $cds4 -q --tb=short
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== KM physician CDS envelope smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: CDS envelope pytest file(s) missing"
         }
     }
 

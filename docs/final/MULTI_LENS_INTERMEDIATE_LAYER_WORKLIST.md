@@ -74,7 +74,7 @@
 저장소 루트에서:
 
 ```powershell
-# CI와 유사 순서(Windows): integrity_guard → prophecy 번들 → … → 사상 통찰 번들 pytest → Bio n-states 재수화 pytest → MKM Trinity 인덱스(jsonschema) pytest → 일일 실행 인사이트 브리프 pytest (dual-regime 정렬)
+# CI와 유사 순서(Windows): integrity_guard → prophecy 번들 → … → 메타 인지 봉투 pytest → **한의 의사 CDS 봉투 v1 pytest 2종(3e)** → … → 사상 통찰 번들 pytest → Bio n-states 재수화 pytest → MKM Trinity 인덱스(jsonschema) pytest → 일일 실행 인사이트 브리프 pytest (dual-regime 정렬)
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fact_lock_bundle.ps1
 ```
 
@@ -84,6 +84,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fac
 `dual-regime-integrity`와 동일한 워크스페이스 테스트를 포함하려면 위 스크립트가 **최신**인지 확인한다 (`CONSTITUTION` §6 표).
 
 사상–사주 조인트 문헌·큐레이트 파이프라인(Europe PMC 픽스처·오프라인 회귀 7 + **승인 출처** `data/myeongni/curated_saju_joint_v1.jsonl` 인제스트 1)은 `run_fact_lock_bundle.ps1` **기본**에 포함된다. 생략: **로컬 번들만** `-SkipSasangSajuJointLiteraturePipeline`(GitHub `dual-regime-integrity.yml` CI 단계에는 해당 스킵 플래그 없음·전체 회귀 고정). **끝단 staleness(선택 생략):** `-SkipCuratedJointStalenessCheck` — 큐레이트 시각(`ingest_at_utc`·행 없으면 파일 mtime) vs `docs/final/artifacts/myeongni_celebrity_hit_rate_v1.json` `generated_at_utc` 24h 초과 시 `STALE` 기록 · `scripts/check_curated_saju_joint_staleness_v1.py`·`reports/curated_saju_joint_staleness_v1_latest.json`. 스크립트·데이터·pytest는 `CONSTITUTION` 표 **「사상체질↔문헌↔사주 조인트」**·동 워크플로를 본다.
+
+MKM Control-Integrity Golden/LoRA 파이프라인 스모크(`tests/test_mkm_control_integrity_pipeline_smoke_v1.py`)는 `run_fact_lock_bundle.ps1` **기본**에 포함된다(번들 주석 5d). 로컬만 생략: `-SkipMkmControlIntegritySmoke`. SSOT: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.2.1.
+
+한의 의사 CDS assist envelope v1·자동화 레지스트리(회귀 4파일: CDS 3종 + `tests/test_automation_registry_json_v1.py`)은 `run_fact_lock_bundle.ps1` **기본** 단계 3e. 로컬만 생략: `-SkipKmPhysicianCdsEnvelope`. 빠른 점검: `scripts/run_workspace_automation_health.ps1 -IncludeKmPhysicianCdsEnvelopeSmoke` 또는 P0+해당 pytest만 `-KmPhysicianCdsEnvelopeSmokeOnly`. 배치 실행: `py scripts/run_km_physician_cds_assist_envelope_batch_v1.py --in tests/fixtures/km_physician_cds_assist_payload_batch_v1.example.jsonl --out reports/km_physician_cds_envelope_batch_latest.jsonl`.
+
+등록한 Windows 주간 작업(`MKM-KmPhysician-CdsEnvelopeBatch-Weekly`, `MKM-BTrack-BtcWeight-HitRateBundle-Weekly`)은 `projects/bitcoin-trading/ops/windows-rehearsal/automation_registry.json` 기대 목록과 맞추고, 워크스페이스 헬스의 `reconcile_automation_registry.ps1` 단계로 drift를 본다.
 
 ---
 
