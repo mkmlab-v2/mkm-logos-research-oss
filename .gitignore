@@ -36,6 +36,8 @@ docs/final/artifacts/**
 !docs/final/artifacts/schemas/**
 !docs/final/artifacts/schemas/*.json
 !docs/final/artifacts/schemas/*.schema.json
+# B-track ensemble baseline (not regenerable *_latest; scripts default to this path)
+!docs/final/artifacts/btrack_lens_ensemble_v1.json
 # Local bio sasang strict JSON from `build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` (default --out under reports/)
 reports/bio_sasang_nstates_*.json
 reports/mkm_orchestrator_poll.lock
@@ -209,6 +211,10 @@ docs/reports/
 # Root data corpus: ignore untracked bulk only; paths already tracked under data/ stay tracked.
 # To promote a new file: git add -f path
 /data/
+# Exception: KM physician CDS payload queue dir (tracked empty placeholder only)
+!/data/km_physician/
+!/data/km_physician/cds_payload_incoming/
+!/data/km_physician/cds_payload_incoming/.gitkeep
 
 # Local workspace mirrors / personal artifacts
 projects/mkm-lab-workspace-v2/

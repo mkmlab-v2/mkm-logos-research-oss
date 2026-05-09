@@ -179,7 +179,7 @@ Gemini/NotebookLM이 "지금 개발이 어디까지 왔는지"를 빠르게 파�
 | AI·명리·만세 외부 참조 | `docs/final/AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md` | 타 서비스·RAG·LLM 패턴 정리(참고만); 본선 OOF·A와 무단 합선 금지 |
 | AI-Logos 외부 연구 (arXiv·Kaggle) | `docs/external_research/AI-Logos_Research_Bibliography_2026.md` | B-only; **Confirmed URL** 서지·TBD 분리; 작전 **LeWorld-Enlightenment**; A·본선 자동 합선 금지 |
 | Logos 교집합 랭킹 SSOT | `docs/final/LOGOS_INTERSECTION_RANKING_SSOT_2026-03-29.md` | `mean`/`min` 지표·경로; λ(편향)와 기호 분리; 본선·실매매 자동 합선 금지 |
-| 한의 원전·프록시 | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` · `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §9 | 코퍼스 B 분리·승격 경계; 별도 handoff MD 미작성 시 본 문서가 SSOT |
+| 한의 원전·프록시 | `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` · `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS_Myeongni_Ext.md` · `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §9 | 코퍼스 B 분리·승격 경계; 정책 SSOT는 handoff MD |
 | 일반예언 — VPS Git + 미래학 딥리서치 융합 번들 | `docs/final/NOTEBOOKLM_GENERAL_PROPHECY_VPS_GIT_FORESIGHT_BUNDLE_2026-04-11.md` | B-only; Git·서지·§7.4 웹 딥리서치·격벽; 일반예언 노트북 `9de651e6-199d-4ea7-88d5-cbca2f177312` |
 | 일반 미래 예측 데이터 계약(초안) | `docs/final/GENERAL_PROPHECY_SCHEMA_V1.json` | B-only; `CONSTITUTION` Prophecy 절 포인터; Phase 2–4 스크립트 미구현 |
 | BTC 금융 Hub B — A/B 교차검증 브리프 | `docs/final/NOTEBOOKLM_HUB_B_BTC_AB_TRACK_CROSSCHECK_BRIEF_2026-04-04.md` | NotebookLM 소스 ID `bd996cd5-cb6e-444c-8110-eb2ce6a4c745` · 노트북 `b79929a2-8742-42a8-a4d7-06523e12935d` (2026-04-04 적재). OHLCV·온톨로지=B 연구 가설 vs A 본선 팩트 구분·Promotion Loop·Fact-Lock |

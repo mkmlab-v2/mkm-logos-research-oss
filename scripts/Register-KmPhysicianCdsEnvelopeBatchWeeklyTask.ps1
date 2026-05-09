@@ -4,7 +4,8 @@
   Register (or remove) weekly Scheduled Task: KM physician CDS envelope JSONL batch artifact refresh.
 
 .DESCRIPTION
-  Runs scripts/Run-KmPhysicianCdsEnvelopeBatchWeekly_v1.ps1 (demo fixture → reports/km_physician_cds_envelope_batch_latest.jsonl).
+  Runs scripts/Run-KmPhysicianCdsEnvelopeBatchWeekly_v1.ps1 → reports/km_physician_cds_envelope_batch_latest.jsonl.
+  입력은 래퍼 우선순위 따름: KM_PHYSICIAN_CDS_PAYLOAD_JSONL → data/km_physician/cds_payload_incoming/payload_batch.jsonl → 데모 fixture.
   Default: Sunday 09:45 local (after BTC hit-rate bundle default 09:15).
 
 .PARAMETER Remove
