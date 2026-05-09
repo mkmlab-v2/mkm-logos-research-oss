@@ -1,0 +1,47 @@
+{
+  "schema": "general_compression_ab_result_summary_v1",
+  "runs": [
+    {
+      "label": "baseline",
+      "profile": {
+        "strategy": "baseline",
+        "intensity": "baseline",
+        "general_max_saving_rate": null,
+        "sensitive_max_saving_rate": null,
+        "hangul_max_saving_rate": null
+      },
+      "case_count": 35,
+      "global_token_saving_rate": 0.34615384615384615,
+      "avg_reconstruction_fidelity_jaccard": 0.6780263783835214,
+      "avg_sensitive_integrity": 1.0,
+      "sensitive_violation_count": 0,
+      "regime_switch_metrics": {
+        "normal_count": 35,
+        "crisis_count": 0,
+        "switch_count": 0,
+        "avg_risk_score": 0.25627166975243043
+      }
+    },
+    {
+      "label": "treatment",
+      "profile": {
+        "strategy": "B",
+        "intensity": "extreme",
+        "general_max_saving_rate": 0.2,
+        "sensitive_max_saving_rate": 0.18,
+        "hangul_max_saving_rate": 0.5
+      },
+      "case_count": 35,
+      "global_token_saving_rate": 0.38866396761133604,
+      "avg_reconstruction_fidelity_jaccard": 0.9956043956043956,
+      "avg_sensitive_integrity": 1.0,
+      "sensitive_violation_count": 0,
+      "regime_switch_metrics": {
+        "normal_count": 35,
+        "crisis_count": 0,
+        "switch_count": 0,
+        "avg_risk_score": 0.3411886321207418
+      }
+    }
+  ]
+}

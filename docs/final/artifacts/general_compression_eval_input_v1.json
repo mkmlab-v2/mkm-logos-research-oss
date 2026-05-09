@@ -1,0 +1,254 @@
+{
+  "schema": "multilens_performance_eval_input_v1",
+  "description": "General-rail compression benchmark input derived from manifest datasets.",
+  "compression_cases": [
+    {
+      "id": "gen_0001",
+      "raw_text": "회의 안건: Q3 매출 리뷰, 차기 스프린트 목표 합의, 리스크 레지스터 갱신.",
+      "compressed_text": "회의 안건: Q3 매출 리뷰, 차기 Q3 스프린트 리스크",
+      "reconstructed_text": "회의 안건: Q3 매출 리뷰, 차기 Q3 스프린트 리스크",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0002",
+      "raw_text": "액션 아이템: 홍길동 — API 레이트 리밋 문서화 금요일까지; 김철수 — 대시보드 스모크 테스트 월요일.",
+      "compressed_text": "액션 아이템: 홍길동 — API 레이트 리밋 문서화 레이트 리밋 대시보드",
+      "reconstructed_text": "액션 아이템: 홍길동 — API 레이트 리밋 문서화 레이트 리밋 대시보드",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0003",
+      "raw_text": "차단 이슈 없음. 다음 체크인은 동일 시간대 화상으로 진행.",
+      "compressed_text": "차단 이슈 없음. 다음 체크인",
+      "reconstructed_text": "차단 이슈 없음. 다음 체크인",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0004",
+      "raw_text": "논의 요약: 고객 피드백 우선순위를 P1 두 건으로 축소하고 나머지는 백로그.",
+      "compressed_text": "논의 요약: 고객 피드백 우선순위를 P1 P1 백로그",
+      "reconstructed_text": "논의 요약: 고객 피드백 우선순위를 P1 P1 백로그",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0005",
+      "raw_text": "참석자 전원 동의: 릴리즈 노트에 브레이킹 체인지만 명시하고 세부는 위키 링크.",
+      "compressed_text": "참석자 전원 동의: 릴리즈 노트에 브레이킹 릴리즈 브레이킹",
+      "reconstructed_text": "참석자 전원 동의: 릴리즈 노트에 브레이킹 릴리즈 브레이킹",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0006",
+      "raw_text": "운영 공유: 피크 시간대 에러율 0.2% 미만 유지, 알람 스템프 규칙은 장표 참조.",
+      "compressed_text": "운영 공유: 피크 시간대 에러율 0.2% 미만 에러율 알람",
+      "reconstructed_text": "운영 공유: 피크 시간대 에러율 0.2% 미만 에러율 알람",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0007",
+      "raw_text": "부록: 회의록 원본은 내부 드라이브 폴더에 저장, 외부 공유 금지.",
+      "compressed_text": "부록: 회의록 원본은 내부 드라이브 내부 외부 공유",
+      "reconstructed_text": "부록: 회의록 원본은 내부 드라이브 내부 외부 공유",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0008",
+      "raw_text": "재무: 연간 예산 대비 QTD 소모율 62%, 미달 부서는 다음 분기 조정안 제출.",
+      "compressed_text": "재무: 연간 예산 대비 QTD 소모율 62%, 예산 QTD",
+      "reconstructed_text": "재무: 연간 예산 대비 QTD 소모율 62%, 예산 QTD",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0009",
+      "raw_text": "보안: MFA 미등록 계정은 읽기 전용으로 강등되며 예외는 CISO 승인 필요.",
+      "compressed_text": "보안: MFA 미등록 계정은 읽기 전용으로 MFA CISO",
+      "reconstructed_text": "보안: MFA 미등록 계정은 읽기 전용으로 MFA CISO",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0010",
+      "raw_text": "제품: 실험 플래그 `dark_mode_preview`는 내부 테스터만 활성화, 외부 릴리즈 일정 미정.",
+      "compressed_text": "제품: 실험 플래그 `dark_mode_preview`는 내부 테스터만 플래그 테스터",
+      "reconstructed_text": "제품: 실험 플래그 `dark_mode_preview`는 내부 테스터만 플래그 테스터",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0011",
+      "raw_text": "인력: 신규 온보딩 3명 — 장비 지급은 월요일, 계정은 HR 티켓 클로즈 후 생성.",
+      "compressed_text": "인력: 신규 온보딩 3명 — 장비 지급은 온보딩 HR",
+      "reconstructed_text": "인력: 신규 온보딩 3명 — 장비 지급은 온보딩 HR",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0012",
+      "raw_text": "법무 검토 대기: 공급 계약 초안 v3, 역 인보이스 조항은 다음 주 화요일까지 코멘트 요청.",
+      "compressed_text": "법무 검토 대기: 공급 계약 초안 v3, 역 계약 역 인보이스",
+      "reconstructed_text": "법무 검토 대기: 공급 계약 초안 v3, 역 계약 역 인보이스",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0013",
+      "raw_text": "고객사 A: SLA 위반 1건 — RCA는 금요일 18시까지, 고객 공유 문구는 법무와 협의.",
+      "compressed_text": "고객사 A: SLA 위반 1건 — RCA는 SLA RCA",
+      "reconstructed_text": "고객사 A: SLA 위반 1건 — RCA는 SLA RCA",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0014",
+      "raw_text": "개인정보 처리 목적: 서비스 제공, 고지 의무 이행, 분쟁 대응에 한정합니다.",
+      "compressed_text": "개인정보 처리 목적: 서비스 제공, 고지 개인정보 목적",
+      "reconstructed_text": "개인정보 처리 목적: 서비스 제공, 고지 개인정보 목적",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0015",
+      "raw_text": "보존 기간 종료 후 지체 없이 파기하며, 법령상 의무가 있는 경우 해당 기간까지 분리 보관합니다.",
+      "compressed_text": "보존 기간 종료 후 지체 없이 파기하며, 법령상 파기 보존",
+      "reconstructed_text": "보존 기간 종료 후 지체 없이 파기하며, 법령상 파기 보존",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0016",
+      "raw_text": "제3자 제공은 별도 동의 또는 법적 근거가 있을 때만 수행합니다.",
+      "compressed_text": "제3자 제공은 별도 동의 또는 제3자 동의",
+      "reconstructed_text": "제3자 제공은 별도 동의 또는 제3자 동의",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0017",
+      "raw_text": "아동 관련 데이터는 법정대리인 동의 없이 수집하지 않습니다.",
+      "compressed_text": "아동 관련 데이터는 법정대리인 아동 동의",
+      "reconstructed_text": "아동 관련 데이터는 법정대리인 아동 동의",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0018",
+      "raw_text": "해외 이전 시 표준계약조항 등 적법한 보호조치를 적용합니다.",
+      "compressed_text": "해외 이전 시 표준계약조항 해외 이전 보호조치",
+      "reconstructed_text": "해외 이전 시 표준계약조항 해외 이전 보호조치",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0019",
+      "raw_text": "쿠키·유사 기술 사용 목적은 트래픽 분석·기능 개선·보안에 한하며 동의 철회 시 비수집 처리합니다.",
+      "compressed_text": "쿠키·유사 기술 사용 목적은 트래픽 분석·기능 개선·보안에 쿠키 동의",
+      "reconstructed_text": "쿠키·유사 기술 사용 목적은 트래픽 분석·기능 개선·보안에 쿠키 동의",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0020",
+      "raw_text": "자동화 의사결정에 대해 이의가 있으면 사람의 검토를 요청할 수 있습니다.",
+      "compressed_text": "자동화 의사결정에 대해 이의가 있으면 자동화 이의",
+      "reconstructed_text": "자동화 의사결정에 대해 이의가 있으면 자동화 이의",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0021",
+      "raw_text": "침해 사고 발생 시 관련 규정에 따라 지체 없이 통지하며 내용은 사건 단계에 따라 달라질 수 있습니다.",
+      "compressed_text": "침해 사고 발생 시 관련 규정에 따라 지체 없이 침해 통지",
+      "reconstructed_text": "침해 사고 발생 시 관련 규정에 따라 지체 없이 침해 통지",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0022",
+      "raw_text": "마케팅 수신 동의는 별도이며 철회 시에도 필수 서비스 제공에는 영향이 없습니다.",
+      "compressed_text": "마케팅 수신 동의는 별도이며 철회 시에도 마케팅 철회",
+      "reconstructed_text": "마케팅 수신 동의는 별도이며 철회 시에도 마케팅 철회",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0023",
+      "raw_text": "계정 삭제 요청 시 법령 보존 예외를 제외하고 처리하며 남는 로그는 익명 통계만 유지합니다.",
+      "compressed_text": "계정 삭제 요청 시 법령 보존 예외를 삭제 보존",
+      "reconstructed_text": "계정 삭제 요청 시 법령 보존 예외를 삭제 보존",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0024",
+      "raw_text": "오류 로그에는 이메일 전체가 아닌 해시·마스킹된 식별자만 남기도록 설계합니다.",
+      "compressed_text": "오류 로그에는 이메일 전체가 로그 마스킹",
+      "reconstructed_text": "오류 로그에는 이메일 전체가 로그 마스킹",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0025",
+      "raw_text": "청구서는 매월 1일 생성되며 결제일은 등록 카드 기준 자동 승인됩니다.",
+      "compressed_text": "청구서는 매월 1일 생성되며 결제일은 청구서 결제",
+      "reconstructed_text": "청구서는 매월 1일 생성되며 결제일은 청구서 결제",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0026",
+      "raw_text": "API 키는 설정 화면에서 재발급 가능하며 이전 키는 즉시 무효화됩니다.",
+      "compressed_text": "API 키는 설정 화면에서 재발급 API 키 재발급",
+      "reconstructed_text": "API 키는 설정 화면에서 재발급 API 키 재발급",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0027",
+      "raw_text": "장애 발생 시 상태 페이지에서 구역별 영향과 예상 복구 시각을 확인하세요.",
+      "compressed_text": "장애 발생 시 상태 페이지에서 구역별 장애 상태 페이지",
+      "reconstructed_text": "장애 발생 시 상태 페이지에서 구역별 장애 상태 페이지",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0028",
+      "raw_text": "무료 체험 종료 전 이메일로 안내드리며 자동 유료 전환은 설정에서 끌 수 있습니다.",
+      "compressed_text": "무료 체험 종료 전 이메일로 안내드리며 자동 체험 유료",
+      "reconstructed_text": "무료 체험 종료 전 이메일로 안내드리며 자동 체험 유료",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0029",
+      "raw_text": "모바일 앱 알림이 오지 않으면 OS 설정에서 알림 권한과 배터리 최적화 예외를 확인하세요.",
+      "compressed_text": "모바일 앱 알림이 오지 않으면 OS 설정에서 알림 권한",
+      "reconstructed_text": "모바일 앱 알림이 오지 않으면 OS 설정에서 알림 권한",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0030",
+      "raw_text": "웹훅 재전송은 지수 백오프로 최대 24시간이며 실패 시 대시보드에 오류 코드가 남습니다.",
+      "compressed_text": "웹훅 재전송은 지수 백오프로 최대 24시간이며 웹훅 백오프",
+      "reconstructed_text": "웹훅 재전송은 지수 백오프로 최대 24시간이며 웹훅 백오프",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0031",
+      "raw_text": "팀 초대 링크는 7일 후 만료되며 재발급은 관리자만 가능합니다.",
+      "compressed_text": "팀 초대 링크는 7일 초대 만료",
+      "reconstructed_text": "팀 초대 링크는 7일 초대 만료",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0032",
+      "raw_text": "대용량 업로드는 100MB까지이며 분할 업로드 API를 권장합니다.",
+      "compressed_text": "대용량 업로드는 100MB까지이며 업로드 분할",
+      "reconstructed_text": "대용량 업로드는 100MB까지이며 업로드 분할",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0033",
+      "raw_text": "SSO 연동 후 로컬 비밀번호는 비활성화되며 복구는 IdP 정책을 따릅니다.",
+      "compressed_text": "SSO 연동 후 로컬 비밀번호는 SSO IdP",
+      "reconstructed_text": "SSO 연동 후 로컬 비밀번호는 SSO IdP",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0034",
+      "raw_text": "감사 로그 보존 기간은 플랜별로 30~365일이며 다운로드는 관리자만 가능합니다.",
+      "compressed_text": "감사 로그 보존 기간은",
+      "reconstructed_text": "감사 로그 보존 기간은",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0035",
+      "raw_text": "크레딧 환불은 미사용 분에 한해 영업일 14일 내 처리되며 PG사 정책이 우선합니다.",
+      "compressed_text": "크레딧 환불은 미사용 분에 한해 영업일 환불 크레딧",
+      "reconstructed_text": "크레딧 환불은 미사용 분에 한해 영업일 환불 크레딧",
+      "domain": "support_faq"
+    }
+  ],
+  "fusion_answer_cases": [],
+  "fallback_used": false,
+  "fallback_source": null
+}

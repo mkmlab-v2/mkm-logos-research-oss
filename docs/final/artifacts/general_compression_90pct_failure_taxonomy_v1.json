@@ -1,0 +1,94 @@
+{
+  "schema": "general_compression_90pct_failure_taxonomy_v1",
+  "source_input": "C:\\workspace\\docs\\final\\artifacts\\general_compression_eval_input_v1.json",
+  "profiles": {
+    "baseline": "mode=baseline",
+    "best_go_profile": {
+      "strategy": "A",
+      "intensity": "extreme",
+      "general_max_saving_rate": 0.35,
+      "sensitive_max_saving_rate": 0.3,
+      "hangul_max_saving_rate": 0.6
+    },
+    "strict_90_profile": {
+      "strategy": "A",
+      "intensity": "extreme",
+      "general_max_saving_rate": 0.9,
+      "sensitive_max_saving_rate": 0.9,
+      "hangul_max_saving_rate": 0.9
+    }
+  },
+  "domain_summary": {
+    "baseline": {
+      "meeting": {
+        "case_count": 13.0,
+        "avg_saving_rate": 0.330910727162811,
+        "avg_jaccard": 0.575926637465099,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_violations": 0.0
+      },
+      "policy_legal_lite": {
+        "case_count": 11.0,
+        "avg_saving_rate": 0.3301395277331106,
+        "avg_jaccard": 0.5150130989034731,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_violations": 0.0
+      },
+      "support_faq": {
+        "case_count": 11.0,
+        "avg_saving_rate": 0.38306693306693307,
+        "avg_jaccard": 0.5128038628038628,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_violations": 0.0
+      }
+    },
+    "best_go": {
+      "meeting": {
+        "case_count": 13.0,
+        "avg_saving_rate": 0.6169862241962741,
+        "avg_jaccard": 0.9168728707190245,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_violations": 0.0
+      },
+      "policy_legal_lite": {
+        "case_count": 11.0,
+        "avg_saving_rate": 0.5802188898445583,
+        "avg_jaccard": 0.8978256591892957,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_violations": 0.0
+      },
+      "support_faq": {
+        "case_count": 11.0,
+        "avg_saving_rate": 0.5674355947083218,
+        "avg_jaccard": 0.9136363636363637,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_violations": 0.0
+      }
+    },
+    "strict_90": {
+      "meeting": {
+        "case_count": 13.0,
+        "avg_saving_rate": 0.5881442014628486,
+        "avg_jaccard": 0.8991213914290838,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_violations": 0.0
+      },
+      "policy_legal_lite": {
+        "case_count": 11.0,
+        "avg_saving_rate": 0.5561844275748018,
+        "avg_jaccard": 0.9060901219992129,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_violations": 0.0
+      },
+      "support_faq": {
+        "case_count": 11.0,
+        "avg_saving_rate": 0.5590333908515724,
+        "avg_jaccard": 0.9035353535353536,
+        "avg_sensitive_integrity": 1.0,
+        "sensitive_violations": 0.0
+      }
+    }
+  },
+  "failure_taxonomy": [],
+  "decision_90pct_ready": "GO"
+}

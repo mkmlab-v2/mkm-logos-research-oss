@@ -1,0 +1,288 @@
+{
+  "schema": "general_compression_token_loss_aggregate_v1",
+  "source_input": "C:\\workspace\\docs\\final\\artifacts\\general_compression_eval_input_v1.json",
+  "profile": {
+    "strategy": "B",
+    "intensity": "extreme",
+    "general_max_saving_rate": 0.2,
+    "sensitive_max_saving_rate": 0.18,
+    "hangul_max_saving_rate": 0.5
+  },
+  "compression_metrics_summary": {
+    "global_token_saving_rate": 0.38866396761133604,
+    "avg_reconstruction_fidelity_jaccard": 0.9956043956043956
+  },
+  "global_top_lost_tokens": [
+    {
+      "token": "대시보드",
+      "count": 1
+    },
+    {
+      "token": "스모크",
+      "count": 1
+    }
+  ],
+  "by_domain_top_lost_tokens": {
+    "code": [
+      {
+        "token": "대시보드",
+        "count": 1
+      },
+      {
+        "token": "스모크",
+        "count": 1
+      }
+    ],
+    "hangul": []
+  },
+  "cases": [
+    {
+      "id": "gen_0001",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0002",
+      "domain": "code",
+      "shard_id": "zone_f_code",
+      "lost_token_occurrences": 2,
+      "lost_sorted_sample": [
+        "대시보드",
+        "스모크"
+      ]
+    },
+    {
+      "id": "gen_0003",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0004",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0005",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0006",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0007",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0008",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0009",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0010",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0011",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0012",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0013",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0014",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0015",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0016",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0017",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0018",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0019",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0020",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0021",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0022",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0023",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0024",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0025",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0026",
+      "domain": "code",
+      "shard_id": "zone_f_code",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0027",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0028",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0029",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0030",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0031",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0032",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0033",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0034",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    },
+    {
+      "id": "gen_0035",
+      "domain": "hangul",
+      "shard_id": "zone_c_hangul",
+      "lost_token_occurrences": 0,
+      "lost_sorted_sample": []
+    }
+  ]
+}
