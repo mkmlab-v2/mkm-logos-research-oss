@@ -132,6 +132,14 @@ on:
       - "scripts/report_multilens_performance_eval.py"
       - "scripts/run_ultra_compression_bench.py"
       - "scripts/run_ultra_compression_default.py"
+      - "scripts/build_general_compression_eval_input.py"
+      - "scripts/validate_general_compression_bundle.py"
+      - "data/general_compression/**"
+      - "docs/final/artifacts/general_compression_benchmark_manifest_v1.json"
+      - "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json"
+      - "tests/test_build_general_compression_eval_input_smoke_v1.py"
+      - "tests/test_validate_general_compression_bundle_v1.py"
+      - "tests/fixtures/general_compression_bundle_minimal_v1/**"
       - "scripts/run_track_a_shadow_corpus_eval.py"
       - "scripts/run_track_a_metering_summary.py"
       - "scripts/run_track_a_metering_weekly_report.py"
@@ -1014,6 +1022,11 @@ jobs:
         run: |
           python -m pytest tests/test_ultra_compression_artifacts.py -q --tb=short
           python -m pytest tests/test_master_codebook_lexicon_v1_bridge.py -q --tb=short
+
+      - name: General compression eval input + bundle hard-lock contract
+        run: |
+          python -m pytest tests/test_build_general_compression_eval_input_smoke_v1.py -q --tb=short
+          python -m pytest tests/test_validate_general_compression_bundle_v1.py -q --tb=short
 
       - name: P1 A/B profiles + final selection bundle
         run: |

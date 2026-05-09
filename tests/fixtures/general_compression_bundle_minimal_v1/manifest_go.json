@@ -1,0 +1,9 @@
+{
+  "evidence_bundle": {
+    "summary_json": "tests/fixtures/general_compression_bundle_minimal_v1/ab_summary.json",
+    "timeseries_csv": "tests/fixtures/general_compression_bundle_minimal_v1/timeseries.csv",
+    "repro_command_txt": "tests/fixtures/general_compression_bundle_minimal_v1/repro.txt",
+    "kpi_gate_json": "tests/fixtures/general_compression_bundle_minimal_v1/kpi_gate.json",
+    "restore_stress_json": "tests/fixtures/general_compression_bundle_minimal_v1/stress_go.json"
+  }
+}

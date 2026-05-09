@@ -1,0 +1,6 @@
+{
+  "schema": "general_compression_restore_stress_v1",
+  "aggregate_gate": {
+    "decision": "NO_GO_HIGH_COMPRESSION_LOCK"
+  }
+}

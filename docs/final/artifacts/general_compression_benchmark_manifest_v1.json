@@ -39,6 +39,12 @@
       "expected_key_terms"
     ]
   },
+  "holdout": {
+    "status": "planned",
+    "method": "fixed_seed_deidentified_eval_split",
+    "seed": 42,
+    "note": "Holdout split and scheduled re-runs when corpus changes; keep train metrics separate from reported eval."
+  },
   "experiment": {
     "splits": {
       "method": "walk_forward_or_fixed_split",
