@@ -16,6 +16,51 @@ from scripts.report_multilens_performance_eval import evaluate_report
 DEFAULT_INPUT = ROOT / "docs" / "final" / "artifacts" / "general_compression_eval_input_v1.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "general_compression_sweep_result_v1.json"
 
+# Full-profile cap grids: low general caps (0.20–0.52) let conservative fidelity floors find GO;
+# high band retained. Step sizes balance coverage vs evaluate_report call count (~10k combos × 9 st/it).
+FULL_GENERAL_CAPS = (
+    0.20,
+    0.22,
+    0.25,
+    0.28,
+    0.30,
+    0.35,
+    0.40,
+    0.45,
+    0.50,
+    0.52,
+    0.55,
+    0.65,
+    0.75,
+    0.85,
+    0.90,
+)
+FULL_SENSITIVE_CAPS = (
+    0.18,
+    0.22,
+    0.28,
+    0.32,
+    0.38,
+    0.45,
+    0.52,
+    0.60,
+    0.70,
+    0.80,
+    0.90,
+)
+FULL_HANGUL_CAPS = (
+    0.18,
+    0.22,
+    0.28,
+    0.35,
+    0.42,
+    0.50,
+    0.58,
+    0.65,
+    0.72,
+    0.80,
+)
+
 
 def _load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -41,6 +86,12 @@ def main() -> int:
         help="full: 3 strategies × 3 intensities × full cap grid (slow). "
         "quick: strategy A only + smaller cap grid for limit probing after fidelity alignment.",
     )
+    ap.add_argument(
+        "--coherent-caps",
+        action="store_true",
+        help="Only evaluate (gc, sc, hc) with sc<=gc and hc<=sc (hierarchical cap chain). "
+        "Default off: matches historical sweeps where sensitive cap may exceed general cap.",
+    )
     args = ap.parse_args()
 
     doc = _load(args.input)
@@ -58,15 +109,15 @@ def main() -> int:
     if args.profile == "quick":
         strategies = ("A",)
         intensities = ("high", "ultra", "extreme")
-        general_caps = (0.55, 0.65)
-        sensitive_caps = (0.60, 0.70)
-        hangul_caps = (0.60, 0.70)
+        general_caps = (0.35, 0.45, 0.55, 0.65)
+        sensitive_caps = (0.30, 0.40, 0.50, 0.60, 0.70)
+        hangul_caps = (0.30, 0.40, 0.50, 0.60, 0.70)
     else:
         strategies = ("A", "B", "C")
         intensities = ("high", "ultra", "extreme")
-        general_caps = (0.55, 0.65, 0.75, 0.85, 0.90)
-        sensitive_caps = (0.60, 0.70, 0.80, 0.90)
-        hangul_caps = (0.60, 0.70, 0.80)
+        general_caps = FULL_GENERAL_CAPS
+        sensitive_caps = FULL_SENSITIVE_CAPS
+        hangul_caps = FULL_HANGUL_CAPS
 
     candidates: list[dict[str, Any]] = []
     for st in strategies:
@@ -74,6 +125,8 @@ def main() -> int:
             for gc in general_caps:
                 for sc in sensitive_caps:
                     for hc in hangul_caps:
+                        if args.coherent_caps and (sc > gc or hc > sc):
+                            continue
                         report = evaluate_report(
                             doc,
                             source_input=str(args.input),
@@ -126,9 +179,16 @@ def main() -> int:
 
     candidates.sort(key=lambda x: x["score"], reverse=True)
     go_candidates = [c for c in candidates if c["go"]]
+    best_score_candidate = candidates[0] if candidates else None
+    best_go_candidate = go_candidates[0] if go_candidates else None
+    best_candidate = best_go_candidate if best_go_candidate is not None else best_score_candidate
+    non_go = [c for c in candidates if not c["go"]]
+    top10 = go_candidates[:10] + non_go[: max(0, 10 - len(go_candidates))]
+    top10 = top10[:10]
     out = {
         "schema": "general_compression_sweep_result_v1",
         "profile": str(args.profile),
+        "coherent_caps": bool(args.coherent_caps),
         "source_input": str(args.input.resolve()),
         "baseline": {
             "global_token_saving_rate": baseline_saving,
@@ -145,10 +205,11 @@ def main() -> int:
         },
         "candidate_count": len(candidates),
         "go_candidate_count": len(go_candidates),
-        "best_candidate": candidates[0] if candidates else None,
-        "best_go_candidate": go_candidates[0] if go_candidates else None,
+        "best_candidate": best_candidate,
+        "best_score_candidate": best_score_candidate,
+        "best_go_candidate": best_go_candidate,
         "decision": "GO" if go_candidates else "NO_GO",
-        "top10": candidates[:10],
+        "top10": top10,
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")

@@ -1,0 +1,14 @@
+{"raw_text": "로그인 실패 시: 비밀번호 재설정 링크를 사용하고, 동일 증상이면 브라우저 캐시 삭제 후 재시도하세요.", "sensitivity_level": "normal", "expected_key_terms": ["로그인", "재설정", "캐시"]}
+{"raw_text": "청구서는 매월 1일 생성되며 결제일은 등록 카드 기준 자동 승인됩니다.", "sensitivity_level": "normal", "expected_key_terms": ["청구서", "결제"]}
+{"raw_text": "API 키는 설정 화면에서 재발급 가능하며 이전 키는 즉시 무효화됩니다.", "sensitivity_level": "normal", "expected_key_terms": ["API 키", "재발급"]}
+{"raw_text": "데이터 내보내기는 관리자 권한에서 CSV 또는 JSON 형식을 선택할 수 있습니다.", "sensitivity_level": "normal", "expected_key_terms": ["내보내기", "CSV"]}
+{"raw_text": "장애 발생 시 상태 페이지에서 구역별 영향과 예상 복구 시각을 확인하세요.", "sensitivity_level": "normal", "expected_key_terms": ["장애", "상태 페이지"]}
+{"raw_text": "무료 체험 종료 전 이메일로 안내드리며 자동 유료 전환은 설정에서 끌 수 있습니다.", "sensitivity_level": "normal", "expected_key_terms": ["체험", "유료"]}
+{"raw_text": "모바일 앱 알림이 오지 않으면 OS 설정에서 알림 권한과 배터리 최적화 예외를 확인하세요.", "sensitivity_level": "low", "expected_key_terms": ["알림", "권한"]}
+{"raw_text": "웹훅 재전송은 지수 백오프로 최대 24시간이며 실패 시 대시보드에 오류 코드가 남습니다.", "sensitivity_level": "normal", "expected_key_terms": ["웹훅", "백오프"]}
+{"raw_text": "팀 초대 링크는 7일 후 만료되며 재발급은 관리자만 가능합니다.", "sensitivity_level": "normal", "expected_key_terms": ["초대", "만료"]}
+{"raw_text": "대용량 업로드는 100MB까지이며 분할 업로드 API를 권장합니다.", "sensitivity_level": "normal", "expected_key_terms": ["업로드", "분할"]}
+{"raw_text": "SSO 연동 후 로컬 비밀번호는 비활성화되며 복구는 IdP 정책을 따릅니다.", "sensitivity_level": "normal", "expected_key_terms": ["SSO", "IdP"]}
+{"raw_text": "감사 로그 보존 기간은 플랜별로 30~365일이며 다운로드는 관리자만 가능합니다.", "sensitivity_level": "normal", "expected_key_terms": ["감사 로그", "보존"]}
+{"raw_text": "오프라인 모드는 읽기 전용 캐시만 지원하며 동기화 충돌 시 최신 서버 버전이 우선입니다.", "sensitivity_level": "normal", "expected_key_terms": ["오프라인", "동기화"]}
+{"raw_text": "크레딧 환불은 미사용 분에 한해 영업일 14일 내 처리되며 PG사 정책이 우선합니다.", "sensitivity_level": "normal", "expected_key_terms": ["환불", "크레딧"]}

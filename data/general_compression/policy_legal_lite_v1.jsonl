@@ -1,0 +1,14 @@
+{"raw_text": "본 고지는 일반 정보 제공 목적이며 법률 자문을 대체하지 않습니다. 적용 법령은 관할에 따라 달라질 수 있습니다.", "sensitivity_level": "normal", "expected_key_terms": ["고지", "법률 자문", "관할"]}
+{"raw_text": "개인정보 처리 목적: 서비스 제공, 고지 의무 이행, 분쟁 대응에 한정합니다.", "sensitivity_level": "high", "expected_key_terms": ["개인정보", "목적"]}
+{"raw_text": "보존 기간 종료 후 지체 없이 파기하며, 법령상 의무가 있는 경우 해당 기간까지 분리 보관합니다.", "sensitivity_level": "high", "expected_key_terms": ["파기", "보존"]}
+{"raw_text": "제3자 제공은 별도 동의 또는 법적 근거가 있을 때만 수행합니다.", "sensitivity_level": "high", "expected_key_terms": ["제3자", "동의"]}
+{"raw_text": "이용자는 열람·정정·삭제·처리 정지를 요청할 수 있으며 합리적 기간 내에 조치합니다.", "sensitivity_level": "normal", "expected_key_terms": ["열람", "삭제"]}
+{"raw_text": "아동 관련 데이터는 법정대리인 동의 없이 수집하지 않습니다.", "sensitivity_level": "high", "expected_key_terms": ["아동", "동의"]}
+{"raw_text": "해외 이전 시 표준계약조항 등 적법한 보호조치를 적용합니다.", "sensitivity_level": "normal", "expected_key_terms": ["해외 이전", "보호조치"]}
+{"raw_text": "쿠키·유사 기술 사용 목적은 트래픽 분석·기능 개선·보안에 한하며 동의 철회 시 비수집 처리합니다.", "sensitivity_level": "normal", "expected_key_terms": ["쿠키", "동의"]}
+{"raw_text": "자동화 의사결정에 대해 이의가 있으면 사람의 검토를 요청할 수 있습니다.", "sensitivity_level": "normal", "expected_key_terms": ["자동화", "이의"]}
+{"raw_text": "침해 사고 발생 시 관련 규정에 따라 지체 없이 통지하며 내용은 사건 단계에 따라 달라질 수 있습니다.", "sensitivity_level": "high", "expected_key_terms": ["침해", "통지"]}
+{"raw_text": "마케팅 수신 동의는 별도이며 철회 시에도 필수 서비스 제공에는 영향이 없습니다.", "sensitivity_level": "normal", "expected_key_terms": ["마케팅", "철회"]}
+{"raw_text": "약관 개정 시 시행 7일 전 앱·이메일으로 고지하며 중대한 불리한 변경은 별도 동의를 요청할 수 있습니다.", "sensitivity_level": "normal", "expected_key_terms": ["약관", "고지"]}
+{"raw_text": "계정 삭제 요청 시 법령 보존 예외를 제외하고 처리하며 남는 로그는 익명 통계만 유지합니다.", "sensitivity_level": "high", "expected_key_terms": ["삭제", "보존"]}
+{"raw_text": "오류 로그에는 이메일 전체가 아닌 해시·마스킹된 식별자만 남기도록 설계합니다.", "sensitivity_level": "high", "expected_key_terms": ["로그", "마스킹"]}

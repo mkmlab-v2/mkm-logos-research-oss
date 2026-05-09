@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Aggregate token loss (raw vs reconstructed) on the general 9-case rail.
+"""Aggregate token loss (raw vs reconstructed) on the general-rail eval input.
 
-Uses the same evaluate_report profile as sweep best_go (A/high/0.55/0.6/0.6).
-Output: ranked lost-token counts for global + per-domain bottleneck analysis.
+Profile defaults align with general-rail A/B treatment (sweep best_go: B/extreme/low caps).
 """
 from __future__ import annotations
 
@@ -22,18 +21,18 @@ from scripts.report_multilens_performance_eval import evaluate_report, _norm_wor
 DEFAULT_INPUT = ROOT / "docs/final/artifacts/general_compression_eval_input_v1.json"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/general_compression_token_loss_aggregate_v1.json"
 
-# Matches realistic_quality_sweep_v1.json best_candidate / sweep GO profile on 9-case rail.
+# Align with Run-GeneralCompressionChain treatment / sweep balanced best_go.
 PROFILE = {
-    "strategy": "A",
-    "intensity": "high",
-    "general_max_saving_rate": 0.55,
-    "sensitive_max_saving_rate": 0.60,
-    "hangul_max_saving_rate": 0.60,
+    "strategy": "B",
+    "intensity": "extreme",
+    "general_max_saving_rate": 0.2,
+    "sensitive_max_saving_rate": 0.18,
+    "hangul_max_saving_rate": 0.5,
 }
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="General-rail token loss aggregate (9-case).")
+    ap = argparse.ArgumentParser(description="General-rail token loss aggregate (eval input cases).")
     ap.add_argument("--input", type=Path, default=DEFAULT_INPUT)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()

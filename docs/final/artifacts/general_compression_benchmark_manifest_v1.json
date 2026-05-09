@@ -15,21 +15,21 @@
         "dataset_id": "meeting_v1",
         "source_path": "data/general_compression/meeting_v1.jsonl",
         "license": "TBD",
-        "record_count": null
+        "record_count": 15
       },
       {
         "domain": "policy_legal_lite",
         "dataset_id": "policy_legal_lite_v1",
         "source_path": "data/general_compression/policy_legal_lite_v1.jsonl",
         "license": "TBD",
-        "record_count": null
+        "record_count": 14
       },
       {
         "domain": "support_faq",
         "dataset_id": "support_faq_v1",
         "source_path": "data/general_compression/support_faq_v1.jsonl",
         "license": "TBD",
-        "record_count": null
+        "record_count": 14
       }
     ],
     "common_schema_keys": [

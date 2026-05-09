@@ -1,16 +1,40 @@
-cd C:\workspace
+# General-rail A/B + KPI (Windows PowerShell, repo root C:\workspace)
+# Corpus: data/general_compression/*.jsonl -> docs/final/artifacts/general_compression_eval_input_v1.json
 
-# 1) Freeze source corpus and manifest metadata first.
-# 2) Run baseline/treatment with identical split, seed, and cost assumptions.
-# 3) Publish both success and failure cases.
+# Fast smoke (build + pytest; validate only if evidence files exist — omit validate: -SkipValidate)
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-GeneralCompressionBundleSmoke.ps1
 
-# Reproducible sequence:
-py scripts/build_general_compression_eval_input.py --manifest docs/final/artifacts/general_compression_benchmark_manifest_v1.json --out docs/final/artifacts/general_compression_eval_input_v1.json
+# One-shot chain (refreshes timeseries CSV, mirrors btrack; optional: -IncludeAnchor, -IncludeBtrackBundle)
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-GeneralCompressionChain.ps1
+
+# --- steps below match the chain (manual / debugging) ---
+
+py scripts/build_general_compression_eval_input.py
+
 py scripts/run_general_compression_ab.py --label baseline --input docs/final/artifacts/general_compression_eval_input_v1.json --out docs/final/artifacts/general_compression_ab_result_summary_v1.json
-py scripts/run_general_compression_ab.py --label treatment --input docs/final/artifacts/general_compression_eval_input_v1.json --out docs/final/artifacts/general_compression_ab_result_summary_v1.json --append --strategy A --intensity high --general-max-saving-rate 0.55 --sensitive-max-saving-rate 0.6 --hangul-max-saving-rate 0.6
-py scripts/report_general_compression_kpi_gate.py --summary docs/final/artifacts/general_compression_ab_result_summary_v1.json --out docs/final/artifacts/general_compression_kpi_gate_v2.json
-py scripts/report_general_compression_failure_taxonomy.py --input docs/final/artifacts/general_compression_eval_input_v1.json --sweep docs/final/artifacts/general_compression_sweep_result_v1.json --tolerance docs/final/artifacts/general_compression_domain_tolerance_v1.json --out docs/final/artifacts/general_compression_90pct_failure_taxonomy_v1.json
-py scripts/report_general_compression_domain_guard_gate.py --taxonomy docs/final/artifacts/general_compression_90pct_failure_taxonomy_v1.json --out docs/final/artifacts/general_compression_domain_guard_gate_v1.json
 
-# Optional integrity pass
-py scripts/validate_general_compression_bundle.py --manifest docs/final/artifacts/general_compression_benchmark_manifest_v1.json
+py scripts/run_general_compression_ab.py --label treatment --append --strategy B --intensity extreme --general-max-saving-rate 0.2 --sensitive-max-saving-rate 0.18 --hangul-max-saving-rate 0.5 --input docs/final/artifacts/general_compression_eval_input_v1.json --out docs/final/artifacts/general_compression_ab_result_summary_v1.json
+
+py scripts/report_general_compression_kpi_gate.py --summary docs/final/artifacts/general_compression_ab_result_summary_v1.json --out docs/final/artifacts/general_compression_kpi_gate_v2.json
+
+# Optional: full cap sweep (slow) then canonical filename for anchor
+# py scripts/run_general_compression_sweep.py --out docs/final/artifacts/general_compression_sweep_balanced_v1.json --fidelity-floor 0.84 --per-case-fidelity-floor 0.7 --integrity-floor 1.0 --min-sensitive-integrity-floor 1.0
+# Copy-Item docs/final/artifacts/general_compression_sweep_balanced_v1.json docs/final/artifacts/general_compression_sweep_result_v1.json
+
+# Wire general-rail best_go into Multilens ultra decision + active report
+py scripts/apply_general_compression_sweep_anchor_to_ultra_decision_v1.py
+
+# Post-hoc reports (general rail)
+py scripts/report_general_compression_failure_taxonomy.py
+py scripts/report_general_compression_domain_guard_gate.py
+py scripts/report_general_compression_token_loss_aggregate.py
+
+py scripts/validate_general_compression_bundle.py
+
+# Mirror AB summary for b-track experiments (run_btrack_codebook_4d_quaternion_experiment_v1.py default path)
+Copy-Item docs/final/artifacts/general_compression_ab_result_summary_v1.json reports/constitution/btrack_pilot/btrack_general_compression_ab_v1.json
+
+# Optional local-only: restore stress stub silences validate WARN (see .gitignore); replace with real stress output for production gates.
+
+# B-track bundle (--general-rail = manifest eval input + B/extreme/0.2/0.18/0.5; raise samples for full bench)
+py scripts/run_btrack_codebook_4d_quaternion_experiment_v1.py --general-rail --quat-samples-per-cell 12

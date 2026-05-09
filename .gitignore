@@ -210,11 +210,8 @@ docs/reports/
 
 # Root data corpus: ignore untracked bulk only; paths already tracked under data/ stay tracked.
 # To promote a new file: git add -f path
+# (Cannot un-ignore subdirs under /data/ — parent ignore wins; use git add -f for promoted paths.)
 /data/
-# Exception: KM physician CDS payload queue dir (tracked empty placeholder only)
-!/data/km_physician/
-!/data/km_physician/cds_payload_incoming/
-!/data/km_physician/cds_payload_incoming/.gitkeep
 
 # Local workspace mirrors / personal artifacts
 projects/mkm-lab-workspace-v2/
