@@ -280,6 +280,20 @@ reports/aistudio_mcp_env_diagnosis.json
 /_hotfix_deploy/
 /_hotfix_deploy_origin/
 /logos_reval_*/
+/agent/
+/agent
+/_pr_sasang_promotion/
+/runs/
+
+# Local one-off scratch files and archives (regenerable)
+/.tmp_*.py
+/news_repro*_5runs.tar.gz
+/scorecard_FINAL.json
+/보조PC_스크립트_개선_완료.md
+
+# no1kmedi local generated artifacts
+projects/no1kmedi/marketing-site/public-copy.bundle.js
+projects/no1kmedi/reports/kpi/
 
 # Local Windows Task Scheduler audit exports (regenerable; keep status clean)
 reports/workspace_scheduled_tasks_audit_latest.csv
