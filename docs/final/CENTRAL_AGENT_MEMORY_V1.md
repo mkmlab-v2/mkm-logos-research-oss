@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-08T05:34:28Z
+- **last_updated_utc:** 2026-05-09T13:39:13Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK**; 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -15,7 +15,7 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-08T05:34:28Z** — Three-lens Stage3 PASS reproduced on live inputs; gate remains WATCH, conditional_go armed true, promotion decision NO_ELIGIBLE_SHADOW.
+- **2026-05-09T13:39:13Z** — LG HS 발표자료/PDF/PPT/QA 최종 완료, NotebookLM MCP 복구루틴(3줄 카드) 고정, 다음 세션은 실행만 진행
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -31,6 +31,7 @@
 | 로컬 검증 번들 | `scripts/verify_p0_constitution_gate_paths.ps1` → exit 0; 필요 시 `scripts/run_jemaai_cloud_completion_chain.ps1 -SkipP1AB` |
 | 원격 반영 | 지휘관 네트워크·리모트만: `scripts/push-internal.ps1`, 쇼룸 VPS는 `scripts/sync_showroom_to_vps.ps1`(의도·SSH 확인 후) — 에이전트는 **명시 요청 시에만** 실행·실패 로그 보고 |
 | **Google Gen AI · GCP 크레딧·벤치** | 과금 표면 **둘**: (A) Developer API 키 — (B) **Vertex AI** = `GOOGLE_CLOUD_PROJECT` + ADC → **프로젝트 Billing**(프로모션 SKU 범위는 콘솔 확인). 확인 `scripts/check_google_genai_readiness_v1.py check|smoke-vertex`; 채팅 스모크 `scripts/run_gemini_chat_smoke_v1.py --vertex`; 배치·멀티모달 `scripts/gemini_multimodal_batch.py [--vertex]`; **FACTS 벤치 완결(단일 플래그십·Vertex):** `scripts/run_facts_vertex_benchmark_v1.py`(기본 모델 `gemini-2.5-pro`) → 산출 `docs/final/artifacts/facts_vertex_benchmark_latest.json`·원클릭 `scripts/run_facts_vertex_benchmark_e2e_v1.ps1`. 키: `scripts/security_agent_manager.py`의 `resolve_gemini_developer_api_key` — env 우선·동명 DPAPI. **혼동 금지:** AI Studio 키만으로 “크레딧 자동 차감” 단정 금지. |
+| **NotebookLM MCP 사용 턴** | (재발 방지 v1, 2026-05-09) **첫 호출 자가진단**: `notebooklm.get_health` 시도 → `tool_not_found`/timeout이면 **그 턴 안에 보고**하고 로컬 SSOT 폴백. 사용자에게 안내할 복구 순서: ① `scripts/check_notebooklm_mcp_prereqs.ps1` ② `scripts/repair_notebooklm_mcp_auth_stuck.ps1 -StaleNodeMaxHours 12` ③ Cursor Settings→MCP `notebooklm` toggle off/on ④ **새 채팅** 시작(도구 카탈로그는 채팅 시작 시 결정) ⑤ 그 채팅에서 `setup_auth`→`get_health`. `.cursor/mcp.json`은 **`npx -y …@latest` 금지**·**node + 핀버전 직접 실행** 고정(`MKM_NOTEBOOKLM_MCP_PINNED_VERSION` env). 로그오프 자동 정리: `MKM_RepairNotebookLmMcpStale_OnLogoff` (`scripts/register_notebooklm_mcp_repair_logoff_task.ps1`). |
 
 ---
 
@@ -230,6 +231,8 @@
 | 2026-Q2 (Hybrid Pointer Router) | `GO/WATCH/HOLD` 라벨링·runtime config·shadow 리포트·alert·guard·강등 드릴까지 연결해 “조건부 고효율 + 자동 하방보호”를 아티팩트 체인으로 고정(무조건 99/100 수사 금지). |
 | 2026-05 (MKM 렌즈·융합 점검 루프) | 명리·사상·로고스 독립 렌즈·통찰 번들·융합 스텁·Shadow·신학 연동을 **pytest + P0**로 스모크; 통합은 `gitea/main`·`SoloDev-MergeFeatureToGiteaMain.ps1` 절차로 정리(관측/ B-track, A-track·실전 자동 합선 없음). |
 | 2026-05-08 (압축 폴백·Bio SNP 헬스) | `build_fallback_trigger_threshold_profile_v1` **input_tokens_threshold=12000**(v2); 일일 `Invoke-MkmAiV2DailyReadiness` BL-011 + `run_workspace_automation_health -IncludeFallbackTriggerTelemetry -BioSnpOnly` **exit 0**; Bio DNA readiness/정규화/sweep CLI·JSON 스키마를 pytest와 재정합; 스케줄 **`MKM_AIV2_DailyReadiness` Ready·LastResult=0** 확인. |
+| 2026-05-09 (NotebookLM MCP 도구 미주입 재발 방지 v1) | 좀비 4개(약 22h, PID 18820/20548/24744/26356) 정리; 글로벌 핀 `npm i -g notebooklm-mcp@2.0.0` 후 `.cursor/mcp.json`을 `npx -y …@latest` → `node <글로벌>/dist/index.js` + `MKM_NOTEBOOKLM_MCP_PINNED_VERSION=2.0.0`로 교체; `repair_notebooklm_mcp_auth_stuck.ps1`에 `-StaleNodeMaxHours`(기본 12h) 추가 + 로그오프 자동 정리 작업 `MKM_RepairNotebookLmMcpStale_OnLogoff` 등록; `notebooklm-mcp-session-bridge.mdc`에 **첫 턴 자가진단(`get_health` 시도→실패 시 그 턴 보고+로컬 폴백)** 규칙 1줄 + CENTRAL 「에이전트 반복 루틴」표에 행 1줄 추가. Cursor의 채팅-시간 도구 카탈로그 핸드셰이크 자체는 IDE 내부 동작이라 100% 제거 불가, 단 발생 즉시 감지·통보 보장. |
+| 2026-05-09 (NotebookLM MCP 빠른 복구 루틴 고정) | 자동 복구 실행: `check_notebooklm_mcp_prereqs.ps1`·`repair_notebooklm_mcp_auth_stuck.ps1 -StaleNodeMaxHours 12`·MCP `get_health`/`ask_question` 스모크 **연속 성공**. 운영자가 즉시 복구할 수 있게 3줄 카드 `docs/final/artifacts/notebooklm_mcp_quick_recovery_3lines_2026-05-09.txt` 추가. 목표는 100% 무고장이 아니라 **실패 즉시 1~2분 복구**로 고정. |
 | 2026-05-05 (Yang 2015 표면 8자 B-track) | `btrack_yang_2015_style_metrics_v1`·`run_myeongni_celebrity_benchmark_v1`·JSON Schema·`verify_p0`·`dual-regime`/`multilens`/`run_fact_lock_bundle` 회귀; 일일 체인은 **`-IncludeYang2015SurfaceMetrics`** 옵션으로만 갱신(기본 생략); 산출은 `.gitignore`로 재생성물 분리·**임상·A-track 자동 트리거 없음**. |
 | 2026-05-05 (명리 결정론 코어 회귀) | `test_myeongni_independent_lens_v0`·`test_myeongni_lens_v1_contract`·`test_myeongni_fusion_bridge_v1`·`test_myeongni_lens_chain_from_bot_v1` **11 passed** + `verify_p0` 경로 정합; 모호한 자연어 단정보다 **스키마·pytest·P0**로 “선택 공리형” 지시를 배제하는 축 강화; PointerGuard **일일 태스크 Disabled**면 readiness `all_ok=false` 유지(운영 선택). |
 | 2026-05-05 (jema-ai.com 허브 CTA 3분기) | `projects/no1kmedi/marketing-site/public-copy.json`의 `hub_links`에 `showroom_jemaai`·`premium_mkmlife`·`b2b_acodeai`를 코드 SSOT로 고정하고 히어로에 순서 렌더; `MKM_DOMAIN_PORTFOLIO_POINTER_V1` §1.1b·`TRACK_C_IP_BUSINESS_PLAN` §3.6 문서 동기화; `npm run check:marketing-copy`·`npm run build` 통과 후 레포 커밋. |
@@ -387,6 +390,9 @@
 - **역할:** 지휘관 의도 + SSOT + 스크립트 — 환각으로 구현 단정 금지.
 - **톤:** 짧고 판정 가능한 문장; 선택지 강요 없이 완료 보고.
 - **홍보 프레이밍:** 뇌과학 기반 영감(프레이밍/주의/인지부하)은 대외 과학 주장 근거가 아니라 **설계 원칙**으로만 사용하고, 대외 문장은 항상 `아티팩트 근거 + 면책 + 비단정` 3요소를 포함한다.
+- **설득 프로토콜:** 발표/Q&A는 `결론 -> 근거(아티팩트) -> 제한사항(로컬 기준선/타깃 보드 실측 전환)` 순서로 고정하고, `docs/final/artifacts/lg_hs_persuasion_module_v1_2026-05-08.md`를 기본 템플릿으로 사용한다.
+- **설득 엔진 SSOT:** `docs/final/MKM_PERSUASION_FRAMING_ENGINE_V1.md`를 기본 규약으로 사용한다. 3원칙은 `손실 선점 -> 프레임 전환 -> 차가운 증거 닫기`이며, 형용사는 아티팩트/수치/제한사항으로 치환한다.
+- **레퍼런스 처리:** 외부 심리/뇌과학 레퍼런스(예: YouTube `6K-DhMTLCxA`)는 영감 원천으로만 취급하고, 대외 본문은 중립 언어 + Fact-Lock 근거로 번역해 사용한다.
 - **금지:** 2차 성경 레짐을 실전 트리거에 사용, 멀티렌스 단일화 주장.
 
 ## 레인별 진행 (한 줄씩)
@@ -407,6 +413,7 @@
 1. **디스크 동기화가 장기기억의 본체:** 세션 끝마다 의미 있는 전환만 **본 파일·커밋**으로 남기고, NotebookLM·채팅 요약은 **검증 후 한 줄 이관**만(Fact-Lock·표 프로토콜 유지).
 2. **일인 개발 Git 고정:** 일상 저장은 `scripts/push-internal.ps1`; `gitea/main`에 합칠 때는 워킹 트리 clean 후 `scripts/SoloDev-MergeFeatureToGiteaMain.ps1`(먼저 `-DryRun`). GitHub는 예외 시만 `Push-GitHub-Explicit.ps1 -Acknowledge`.
 3. **게이트 리듬:** `scripts/verify_p0_constitution_gate_paths.ps1`를 주기 점검으로 두고, 시간 허용 시 `scripts/run_fact_lock_bundle.ps1` — B→A 자동 합선·실매매 자동 트리거 없음 전제 유지.
+4. **내부 브리핑 95+ 모드:** 질의는 내부적으로 `intent/scope/constraints/output/evidence/uncertainty`로 표준화 후 응답하고, 결과는 `Field→Lens→Conflict→Final Action→Evidence` 순서를 고정한다.
 
 - `reports/bio_sasang_nstates_strict_comparison_v2.json` 재생성: `py scripts/build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py`
 
@@ -414,6 +421,7 @@
 
 - **자기점검(시작 1줄):** "CENTRAL_AGENT_MEMORY_V1 + athena_memory_bank 참조 완료, Fact-Lock 우선."
 - **트리거 자동기동:** 사용자가 「장기기억 토대로 진행해」「CENTRAL 기준으로 진행해」「팩트락 기준으로 자동 처리해」라고 말하면, 에이전트는 먼저 `CENTRAL`·`AGENTS`·`CONSTITUTION_*`를 읽고 관련 `_latest` 아티팩트/체크리스트를 갱신한 뒤 판정(HOLD/GO)까지 진행한다.
+- **대외 발표/피치 요청 시:** `lg_hs_persuasion_module_v1_2026-05-08` 기준 템플릿을 먼저 적용하고, 수치·상태는 최신 아티팩트(`*_latest.json`)로만 채운다.
 - **시작:** 이 파일 **전체** 훑고(특히 **이론 압축 표**) 오늘 작업과 충돌 여부 확인.
 - **끝:** 분기 한 줄 / 레인 표 / 막힘만 갱신. 이론 표는 **헌법 변경 시에만** 수정.
 - **MCP `memory_*`:** 선택. 단일 SSOT는 본 파일 + `CONSTITUTION_*`.
