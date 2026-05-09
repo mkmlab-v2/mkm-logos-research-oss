@@ -16,6 +16,11 @@ if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
 
 Set-Location -LiteralPath $WorkspaceRoot
 
+$ensurePolicy = Join-Path $WorkspaceRoot "scripts\Ensure-TradingGuardianPolicyFromTemplate.ps1"
+if (Test-Path -LiteralPath $ensurePolicy) {
+  & $ensurePolicy -WorkspaceRoot $WorkspaceRoot
+}
+
 $policyPath = Join-Path $WorkspaceRoot "reports\trading_guardian_policy_latest.json"
 $bundleAlertCooldownHours = 0.5
 if (Test-Path -LiteralPath $policyPath) {

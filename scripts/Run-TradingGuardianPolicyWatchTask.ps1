@@ -19,6 +19,11 @@ if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
 
 Set-Location -LiteralPath $WorkspaceRoot
 
+$ensurePolicy = Join-Path $WorkspaceRoot "scripts\Ensure-TradingGuardianPolicyFromTemplate.ps1"
+if (Test-Path -LiteralPath $ensurePolicy) {
+  & $ensurePolicy -WorkspaceRoot $WorkspaceRoot
+}
+
 $check = Join-Path $WorkspaceRoot "scripts\check_trading_guardian_policy_drift_v1.py"
 $alert = Join-Path $WorkspaceRoot "scripts\send_trading_guardian_policy_drift_alert_v1.py"
 $policyPath = Join-Path $WorkspaceRoot "reports\trading_guardian_policy_latest.json"
