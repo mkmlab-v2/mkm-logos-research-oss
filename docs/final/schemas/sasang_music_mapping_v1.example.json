@@ -1,0 +1,34 @@
+{
+  "schema": "sasang_music_mapping_v1",
+  "version": "1.0.0",
+  "mapping_version": "2026-05-10.hypo_seed_a",
+  "hypothesis_class": "HYPO",
+  "notes": "Illustrative weights only. Replace mapping_version for each sweep; do not treat as clinical or absolute correspondence.",
+  "inputs": {
+    "sasang_primary": "taeeum",
+    "gematria_total_optional": null
+  },
+  "outputs": {
+    "tempo_bpm": {
+      "target": 72,
+      "min": 60,
+      "max": 84
+    },
+    "harmony": {
+      "mode_hint": "minor",
+      "root_pc": 0
+    },
+    "dynamics": {
+      "velocity_0_1": 0.55
+    },
+    "safety": {
+      "min_hz": 80,
+      "max_hz": 12000,
+      "max_velocity_0_1": 0.92
+    }
+  },
+  "provenance": {
+    "source": "fixture",
+    "experiment_id": "sasang_music_mapping_v1_example"
+  }
+}

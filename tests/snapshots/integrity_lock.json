@@ -1,6 +1,6 @@
 {
   "schema": "integrity_lock_v1",
-  "description": "Golden lock for CI integrity_guard — anchor 45563d4bfd (k=6866, 1574 four-way intersection; master-probe checks aligned to SSOT 16_STATE_MASTER_PROBE_v1.json)",
+  "description": "Golden lock for CI integrity_guard — anchor 45563d4bfd (k=6866, 1574 four-way intersection, 149 master-probe checks)",
   "anchor_commit_short": "45563d4bfd",
   "anchor_commit_full": "45563d4bfdd19fc6830f51438b08fc17a8b6e89c",
   "k_top": 6866,
@@ -21,7 +21,7 @@
     "actual_relative_path": "data/myeongni/MASTER_PROBE_v1_ACTUAL.json",
     "golden_relative_path": "tests/snapshots/MASTER_PROBE_v1_ACTUAL.golden.json",
     "golden_sha256": "111671beac0e8aaf786c1b03170647bacb981ae9a9e500eaaadbb51d753ae1c6",
-    "checks_total_expected": 85,
-    "all_pass_expected": false
+    "checks_total_expected": 149,
+    "all_pass_expected": true
   }
 }

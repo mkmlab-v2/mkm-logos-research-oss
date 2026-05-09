@@ -194,6 +194,9 @@ on:
       - "docs/final/schemas/audio_bgm_gate_report_v1.example.json"
       - "data/audio/seeds/**"
       - "tests/test_audio_bgm_gate_report_v1.py"
+      - "docs/final/schemas/sasang_music_mapping_v1.schema.json"
+      - "docs/final/schemas/sasang_music_mapping_v1.example.json"
+      - "tests/test_sasang_music_mapping_schema_v1.py"
       - ".github/workflows/audio-bgm-gate-smoke.yml"
       - "scripts/run_compression_automation_chain.ps1"
       - "scripts/run_compression_weekly_governance_chain.ps1"
@@ -817,6 +820,9 @@ jobs:
 
       - name: AI BGM gate v1 (schema, batch+gate wiring)
         run: python -m pytest tests/test_audio_bgm_gate_report_v1.py -q --tb=short
+
+      - name: Sasang–music mapping schema v1 ([HYPO] M0 contract)
+        run: python -m pytest tests/test_sasang_music_mapping_schema_v1.py -q --tb=short
 
       - name: MKM meta-layer envelope v1 (schema + kill-switch coherence)
         run: python -m pytest tests/test_mkm_meta_layer_envelope_v1.py -q --tb=short

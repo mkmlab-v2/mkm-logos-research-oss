@@ -71,6 +71,9 @@ def main() -> int:
     ap.add_argument("--batch-size", type=int, default=1)
     ap.add_argument("--grad-accum", type=int, default=4)
     ap.add_argument("--learning-rate", type=float, default=2e-4)
+    ap.add_argument("--lora-r", type=int, default=16, dest="lora_r")
+    ap.add_argument("--lora-alpha", type=int, default=16, dest="lora_alpha")
+    ap.add_argument("--lora-dropout", type=float, default=0.05, dest="lora_dropout")
     ap.add_argument("--dry-run", action="store_true")
     ns = ap.parse_args()
 
@@ -82,6 +85,9 @@ def main() -> int:
 
     print(f"dataset_ok rows={len(rows)} path={ns.dataset_path}")
     print(f"cuda_available={torch.cuda.is_available()} device_count={torch.cuda.device_count()}")
+    print(
+        f"lora r={ns.lora_r} alpha={ns.lora_alpha} dropout={ns.lora_dropout} lr={ns.learning_rate}"
+    )
     if ns.dry_run:
         return 0
 
@@ -102,9 +108,9 @@ def main() -> int:
     )
     model = prepare_model_for_kbit_training(model)
     lora = LoraConfig(
-        r=16,
-        lora_alpha=16,
-        lora_dropout=0.05,
+        r=ns.lora_r,
+        lora_alpha=ns.lora_alpha,
+        lora_dropout=ns.lora_dropout,
         bias="none",
         target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
         task_type="CAUSAL_LM",

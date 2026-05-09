@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/sasang_music_mapping_v1.schema.json",
+  "title": "MKM Sasang–music translation mapping v1 (B-track / [HYPO])",
+  "description": "Versioned data contract from symbolic inputs (Sasang axis, optional gematria integer) to deterministic MIDI-like audio parameters. Not clinical; not a unique physical law. Experiment weights live in JSON, not hardcoded product logic.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "mapping_version",
+    "hypothesis_class",
+    "inputs",
+    "outputs",
+    "provenance"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "sasang_music_mapping_v1"
+    },
+    "version": {
+      "type": "string",
+      "description": "Contract semver for this file shape (not mapping weights).",
+      "pattern": "^1\\.\\d+\\.\\d+$"
+    },
+    "mapping_version": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 128,
+      "description": "Experiment lineage id (e.g. 2026-05-10.hypo_a)."
+    },
+    "hypothesis_class": {
+      "type": "string",
+      "enum": ["HYPO", "VISION"],
+      "description": "Fact-Lock tier; HYPO = heuristic experiment, VISION = long-range translation layer (still non-clinical unless separately validated)."
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 4000,
+      "description": "Non-binding commentary; not evaluated by gates."
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sasang_primary"],
+      "properties": {
+        "sasang_primary": {
+          "type": "string",
+          "enum": ["taeyang", "soyang", "taeeum", "soeumin"],
+          "description": "Stable English keys for four Sasang axes (literature mapping is out-of-band)."
+        },
+        "gematria_total_optional": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "maximum": 999999,
+          "description": "Optional integer seed for translation layer; null if unused."
+        }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tempo_bpm", "harmony", "dynamics", "safety"],
+      "properties": {
+        "tempo_bpm": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["target", "min", "max"],
+          "properties": {
+            "target": { "type": "number", "minimum": 20, "maximum": 300 },
+            "min": { "type": "number", "minimum": 20, "maximum": 300 },
+            "max": { "type": "number", "minimum": 20, "maximum": 300 }
+          }
+        },
+        "harmony": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode_hint", "root_pc"],
+          "properties": {
+            "mode_hint": {
+              "type": "string",
+              "enum": ["major", "minor", "dorian", "mixolydian", "phrygian", "neutral"]
+            },
+            "root_pc": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 11,
+              "description": "Pitch class 0=C ... 11=B"
+            }
+          }
+        },
+        "dynamics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["velocity_0_1"],
+          "properties": {
+            "velocity_0_1": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "safety": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min_hz", "max_hz", "max_velocity_0_1"],
+          "properties": {
+            "min_hz": { "type": "number", "minimum": 20, "maximum": 20000 },
+            "max_hz": { "type": "number", "minimum": 20, "maximum": 20000 },
+            "max_velocity_0_1": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "experiment_id"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["manual_seed", "batch_generate", "fixture"],
+          "description": "How this mapping row was produced."
+        },
+        "experiment_id": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 128
+        }
+      }
+    }
+  }
+}

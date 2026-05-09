@@ -110,7 +110,8 @@
         "secondary_day_rollover_policy": "zi_23"
       },
       "expected": {
-        "status": "CONFIRMED"
+        "status": "REVIEW",
+        "reasons_contains": ["pillar_mismatch_between_engines"]
       }
     }
   ]

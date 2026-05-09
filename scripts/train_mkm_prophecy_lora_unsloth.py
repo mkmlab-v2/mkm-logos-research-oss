@@ -40,6 +40,11 @@ def main() -> int:
     ap.add_argument("--max-steps", type=int, default=10, help="Short default for smoke; increase for real runs.")
     ap.add_argument("--learning-rate", type=float, default=2e-4)
     ap.add_argument("--batch-size", type=int, default=2)
+    ap.add_argument("--grad-accum", type=int, default=4, dest="grad_accum")
+    ap.add_argument("--lora-r", type=int, default=16, dest="lora_r")
+    ap.add_argument("--lora-alpha", type=int, default=16, dest="lora_alpha")
+    ap.add_argument("--lora-dropout", type=float, default=0.0, dest="lora_dropout")
+    ap.add_argument("--dataset-num-proc", type=int, default=1, dest="dataset_num_proc")
     ap.add_argument(
         "--dry-run",
         action="store_true",
@@ -77,6 +82,11 @@ def main() -> int:
     if ns.dry_run and not ns.smoke_load_model:
         print(f"dry-run: dataset OK lines={len(raw_lines)} path={ns.dataset_path.resolve()}")
         print(f"output dir (training): {ns.output_dir.resolve()}")
+        print(
+            f"resolved: model={ns.model_name} max_seq={ns.max_seq_length} "
+            f"lr={ns.learning_rate} batch={ns.batch_size} grad_accum={ns.grad_accum} "
+            f"lora r={ns.lora_r} alpha={ns.lora_alpha} dropout={ns.lora_dropout}"
+        )
         if ns.check_imports:
             try:
                 import unsloth  # noqa: F401
@@ -118,7 +128,10 @@ def main() -> int:
             )
         return {"text": texts}
 
-    ds = ds.map(to_text, batched=True)
+    map_kw: dict = {"batched": True}
+    if ns.dataset_num_proc and ns.dataset_num_proc > 1:
+        map_kw["num_proc"] = ns.dataset_num_proc
+    ds = ds.map(to_text, **map_kw)
 
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=ns.model_name,
@@ -128,7 +141,7 @@ def main() -> int:
     )
     model = FastLanguageModel.get_peft_model(
         model,
-        r=16,
+        r=ns.lora_r,
         target_modules=[
             "q_proj",
             "k_proj",
@@ -138,8 +151,8 @@ def main() -> int:
             "up_proj",
             "down_proj",
         ],
-        lora_alpha=16,
-        lora_dropout=0,
+        lora_alpha=ns.lora_alpha,
+        lora_dropout=ns.lora_dropout,
         bias="none",
         use_gradient_checkpointing="unsloth",
         random_state=42,
@@ -149,7 +162,7 @@ def main() -> int:
         output_dir=str(ns.output_dir),
         max_steps=ns.max_steps,
         per_device_train_batch_size=ns.batch_size,
-        gradient_accumulation_steps=4,
+        gradient_accumulation_steps=ns.grad_accum,
         learning_rate=ns.learning_rate,
         logging_steps=1,
         save_steps=max(1, ns.max_steps),
