@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/lens_music_symbolic_audio_promotion_gate_v1.schema.json",
+  "title": "Lens music symbolic audio — B-track research promotion gate v1",
+  "description": "Result of check_lens_music_symbolic_audio_promotion_gate_v1.py. GO means CI/pytest bundle passed — research-ready within §3.9 only; not Track A commercial audio.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "pytest_exit_code",
+    "pytest_pass",
+    "decision",
+    "track_wall",
+    "milestones_ack"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "lens_music_symbolic_audio_promotion_gate_v1"
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "pytest_modules": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "pytest_exit_code": {
+      "type": "integer"
+    },
+    "pytest_pass": {
+      "type": "boolean"
+    },
+    "pytest_log_tail": {
+      "type": "string",
+      "maxLength": 15000
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["B_TRACK_RESEARCH_PROMOTION_READY", "HOLD_PYTEST_FAILED"]
+    },
+    "track_wall": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "promotion_to_a_track_commercial_audio",
+        "promotion_to_track_c_primary_gtm",
+        "human_review_required_for_any_public_claim"
+      ],
+      "properties": {
+        "promotion_to_a_track_commercial_audio": { "type": "boolean", "const": false },
+        "promotion_to_track_c_primary_gtm": { "type": "boolean", "const": false },
+        "human_review_required_for_any_public_claim": { "type": "boolean", "const": true },
+        "note": { "type": "string", "maxLength": 4000 }
+      }
+    },
+    "milestones_ack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["M0", "M1", "M2", "M3_schema"],
+      "properties": {
+        "M0": { "type": "boolean" },
+        "M1": { "type": "boolean" },
+        "M2": { "type": "boolean" },
+        "M3_schema": { "type": "boolean" }
+      }
+    },
+    "references_ssot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "track_c_section": { "type": "string" },
+        "compression_playbook_cross_ref": { "type": "string" }
+      }
+    }
+  }
+}

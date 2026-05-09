@@ -25,6 +25,7 @@
 **보강 (2026-05-10 — 상징→오디오 매핑 계약 `[HYPO]` M0):** `docs/final/schemas/sasang_music_mapping_v1.schema.json`·`docs/final/schemas/sasang_music_mapping_v1.example.json`·회귀 `tests/test_sasang_music_mapping_schema_v1.py`; 사업 SSOT `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.9·§3.9.1. 사상·게마트리아→화성/MIDI 파라미터는 **버전된 실험값**; 임상·음악치료 효능·단일 TOE 단정 금지.
 **보강 (2026-05-10 — 상징→오디오 렌즈 스텁 `[HYPO]` M1):** `scripts/run_lens_music_gematria.py`(`--mapping-json` 완전 문서 검증 출력 또는 `--sasang-primary`/`--gematria-total` 내장 휴리스틱 표)·산출 봉투 `lens_music_gematria_v1`·회귀 `tests/test_run_lens_music_gematria_v1.py`; `run_lens_sasang.py`와 상태 공유 없음. 오디오 렌더·임상 주장 없음.
 **보강 (2026-05-10 — 상징 안전 선행 + 오디오 게이트 체인 `[HYPO]` M2):** `scripts/run_lens_music_gematria_gate_chain_v1.py` — `lens_music_gematria_v1`의 `resolved_outputs`에 대해 velocity 대비 `safety.max_velocity_0_1` 위반 시 **HOLD** 또는 **clip** 정책, 통과 시 시드 BPM 연계·`scripts/audio/evaluate_audio_gate.py`·`policies/audio_copyright_field.json`·산출 `reports/lens_music_gate_chain_v1_latest.json`; 회귀 `tests/test_lens_music_gate_chain_v1.py`. 심볼에서 WAV 합성 없음(플레이스홀더 WAV로 기계적 게이트만 연습).
+**보강 (2026-05-10 — 상징→오디오 B-track 연구 승격 게이트):** `scripts/check_lens_music_symbolic_audio_promotion_gate_v1.py`(M0–M3 pytest 번들·exit 0=연구 준비)·`docs/final/schemas/lens_music_symbolic_audio_promotion_gate_v1.schema.json`·example·회귀 `tests/test_lens_music_symbolic_audio_promotion_gate_v1.py`; 산출 `reports/lens_music_symbolic_audio_promotion_gate_latest.json`. `track_wall`로 Track A 상용·Track C 1차 GTM 자동 승격 **금지** 명시. 압축 §9와 레인 분리.
 **보강 (2026-05-10 — 내부 비임상 청취 로그 계약 `[HYPO]` M3 초안):** `docs/final/schemas/lens_music_internal_eval_session_v1.schema.json`·example·회귀 `tests/test_lens_music_internal_eval_schema_v1.py` — 청취 선호·재현성 메타만 구조화; 임상·치료 효능 단정 금지.
 **보강 (2026-05-10 — MKM Control-Integrity Golden / LoRA eval):** §1.2.1 표·스키마·`mkm_control_integrity_lora_model_profiles_v1.json`·prep·원클릭 추론/평가·ABC·홀드아웃 합산·프로모션 게이트·회귀 `tests/test_mkm_control_integrity_pipeline_smoke_v1.py`·`run_fact_lock_bundle.ps1`(`-SkipMkmControlIntegritySmoke`)·`scripts/verify_p0_constitution_gate_paths.ps1`·CI `dual-regime-integrity.yml`. B-track 벤치·실매매 자동 합선 없음.
 **이전 갱신**: 2026-04-14 §2 B-track `4d_to_ohaeng`·human regime audit 스파이크 행; §3.4.1 Postella; 2026-04-13 §1.2 AE-2 KOSPI.  
@@ -565,6 +566,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | Music/Gematria 렌즈 스텁 v1 ([HYPO] M1) | `tests/test_run_lens_music_gematria_v1.py` |
 | Lens music gate chain v1 ([HYPO] M2, 상징 선행·저작권 Field) | `tests/test_lens_music_gate_chain_v1.py` |
 | 내부 비임상 청취 세션 로그 v1 ([HYPO] M3 초안) | `tests/test_lens_music_internal_eval_schema_v1.py` |
+| 상징→오디오 B-track 연구 승격 게이트 v1 ([HYPO] §3.9.2) | `tests/test_lens_music_symbolic_audio_promotion_gate_v1.py` |
 
 ---
 

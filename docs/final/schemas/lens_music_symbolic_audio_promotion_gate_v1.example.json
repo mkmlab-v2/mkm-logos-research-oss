@@ -1,0 +1,29 @@
+{
+  "schema": "lens_music_symbolic_audio_promotion_gate_v1",
+  "generated_at_utc": "2026-05-10T16:00:00Z",
+  "pytest_modules": [
+    "tests/test_sasang_music_mapping_schema_v1.py",
+    "tests/test_run_lens_music_gematria_v1.py",
+    "tests/test_lens_music_gate_chain_v1.py",
+    "tests/test_lens_music_internal_eval_schema_v1.py"
+  ],
+  "pytest_exit_code": 0,
+  "pytest_pass": true,
+  "decision": "B_TRACK_RESEARCH_PROMOTION_READY",
+  "track_wall": {
+    "promotion_to_a_track_commercial_audio": false,
+    "promotion_to_track_c_primary_gtm": false,
+    "human_review_required_for_any_public_claim": true,
+    "note": "Fixture shape only. Regenerate via scripts/check_lens_music_symbolic_audio_promotion_gate_v1.py. Does not satisfy compression Track A §9 commercial gates."
+  },
+  "milestones_ack": {
+    "M0": true,
+    "M1": true,
+    "M2": true,
+    "M3_schema": true
+  },
+  "references_ssot": {
+    "track_c_section": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §3.9–3.9.2",
+    "compression_playbook_cross_ref": "docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md §9 (different lane)"
+  }
+}

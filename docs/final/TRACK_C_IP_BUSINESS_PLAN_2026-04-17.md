@@ -1,7 +1,7 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-10 — **§3.9** 통제형 오디오·상징 라우팅(`[HYPO]` / B-track) 신설; **§3.9.1 M1–M3:** 렌즈 스텁·게이트 체인·내부 비임상 청취 로그 스키마(`lens_music_internal_eval_session_v1`·`tests/test_lens_music_internal_eval_schema_v1.py`). 사상·게마트리아 등 상징 입력을 **버전된 JSON 계약**으로 분해해 MIDI·화성·오디오 파라미터로 라우팅하고, 기존 **AI BGM 게이트**(`scripts/audio`·게이트 리포트 스키마)와 연결하는 실험 로드맵 및 대외 금지선(비임상·단일 TOE 금지) 명시. (이전: 2026-05-05 **§9A**·§3.4 포인터.)  
+Revised: 2026-05-10 — **§3.9** 통제형 오디오·상징 라우팅(`[HYPO]` / B-track) 신설; **§3.9.1–3.9.2** M1–M3·**B-track 연구 승격 게이트**(번들 pytest·`check_lens_music_symbolic_audio_promotion_gate_v1.py`). 사상·게마트리아 등 상징 입력을 **버전된 JSON 계약**으로 분해해 MIDI·화성·오디오 파라미터로 라우팅하고, 기존 **AI BGM 게이트**(`scripts/audio`·게이트 리포트 스키마)와 연결하는 실험 로드맵 및 대외 금지선(비임상·단일 TOE 금지) 명시. (이전: 2026-05-05 **§9A**·§3.4 포인터.)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
@@ -189,7 +189,22 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 
 **레포 연계 (Fact-Lock):** 구현 경로·판정은 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 호출 가능 스크립트·pytest로만 확정한다. 본 절은 사업·연구 방향 SSOT이며, 코드 존재 여부는 해당 문서와 동기화된다.
 
+#### 3.9.2 B-track 연구 승격 게이트 (M0–M3 번들)
+
+**목적:** 상용·Track A 오디오와 **합선되지 않게**, 레포 내 회귀만으로 “§3.9 연구 파이프라인 준비 완료”를 한 줄로 판정한다.
+
+| 산출 | 경로 |
+|------|------|
+| 번들 실행 | `python scripts/check_lens_music_symbolic_audio_promotion_gate_v1.py` |
+| 로컬 리포트 | `reports/lens_music_symbolic_audio_promotion_gate_latest.json`(재생성 가능·기본 비추적) |
+| 계약 예시·스키마 | `docs/final/schemas/lens_music_symbolic_audio_promotion_gate_v1.example.json`, 동 디렉터리 `.schema.json` |
+
+**PASS 조건:** 스크립트 exit **0** → `decision=B_TRACK_RESEARCH_PROMOTION_READY`(연구 레인만). **항상** `track_wall.promotion_to_a_track_commercial_audio=false`, `promotion_to_track_c_primary_gtm=false`, 휴먼 리뷰 필요 플래그 유지.
+
+**압축(Track A) §9 승격과의 관계:** 동 일(`COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9)과 **다른 레인**이다. 상징→오디오 승격 게이트 통과가 압축 상용 KPI를 대체하지 않는다.
+
 ---
+
 
 ## 4) 우선순위 매트릭스 (2026-04)
 
