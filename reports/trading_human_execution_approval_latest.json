@@ -2,16 +2,16 @@
   "schema": "trading_human_execution_approval_v1",
   "domain": "trading",
   "track": "A",
-  "proposal_id": "trade-proposal-20260504T154502Z",
+  "proposal_id": "trade-proposal-20260509T133002Z",
   "proposal_ref": {
-    "artifact_path": "reports/trading_execution_proposal_latest.json",
-    "source_rail": "A"
+    "source_rail": "A",
+    "artifact_path": "reports/trading_execution_proposal_latest.json"
   },
-  "proposal_body_sha256": "dcdf011325a9946849691efb3b772d2b6e246bbc4572ec18a4c92d87d81eda9d",
+  "proposal_body_sha256": "1a66af96378044065d10bddfd04685b4416ea38b3d2038e37297bee7bacc1290",
   "decision": "GO",
-  "approved_at_utc": "2026-05-04T15:45:02.7451609+00:00",
-  "valid_until_utc": "2026-05-05T15:45:02.7451609+00:00",
+  "approved_at_utc": "2026-05-09T13:30:03.0792825+00:00",
+  "valid_until_utc": "2026-05-10T13:30:03.0792825+00:00",
   "approver_label": "commander",
   "approval_note": "Operator decision from approve_trading_execution_v1.ps1.",
-  "nonce": "trade-approval-20260504T154502Z"
+  "nonce": "trade-approval-20260509T133003Z"
 }

@@ -1,7 +1,7 @@
 {
   "schema": "trading_execution_proposal_v1",
-  "proposal_id": "trade-proposal-20260504T154502Z",
-  "generated_at_utc": "2026-05-04T15:45:02.273178+00:00",
+  "proposal_id": "trade-proposal-20260509T133002Z",
+  "generated_at_utc": "2026-05-09T13:30:02.604770+00:00",
   "target": "mainnet_small",
   "intent_summary": "mainnet_small BUY 0.001 BTCUSDT x2",
   "order_intent": {

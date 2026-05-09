@@ -1,6 +1,6 @@
 {
     "schema":  "showroom_public_bundle_v1",
-    "generated_at_utc":  "2026-05-05T06:25:03.7972397+00:00",
+    "generated_at_utc":  "2026-05-09T00:35:08.5808396+00:00",
     "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1",
     "sources":  {
                     "runtime_health":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\ops\\runtime_health_latest.json",
@@ -17,11 +17,11 @@
     "observability":  {
                           "c2_status":  "GREEN_HOLD",
                           "direction_source":  "c2",
-                          "snapshot_as_of_utc":  "2026-05-05T00:15:16Z",
+                          "snapshot_as_of_utc":  "2026-05-09T00:15:16Z",
                           "track_b_non_gating":  true,
-                          "logos_freshness_generated_at_utc":  "2026-05-05T05:32:24.823122Z",
+                          "logos_freshness_generated_at_utc":  "2026-05-09T00:28:02.232292Z",
                           "ops_fusion_overall_ok":  true,
-                          "context_age_seconds":  22188,
+                          "context_age_seconds":  1193,
                           "c2_signal_lamp":  "GREEN",
                           "direction_abstract":  "flat",
                           "runtime_overall_ok":  true,
@@ -42,8 +42,8 @@
                           "unified_score_balanced":  0.40342,
                           "context_ttl_seconds":  14400,
                           "logos_x_band":  "MID",
-                          "logos_freshness_staleness_seconds":  260793,
-                          "context_stale":  true,
+                          "logos_freshness_staleness_seconds":  588131,
+                          "context_stale":  false,
                           "logos_freshness_sidecar_present":  true
                       },
     "public_ui":  {
@@ -64,60 +64,59 @@
                       "logos_y_fragility_0_100":  59
                   },
     "public_event_v1":  {
-                            "timestamp":  "2026-05-05T06:25:03.7972397+00:00",
+                            "timestamp":  "2026-05-09T00:35:08.5808396+00:00",
                             "active_character_id":  "dragon_quant",
-                            "risk_level":  "WARNING",
+                            "risk_level":  "INFO",
                             "public_signal_direction":  "HOLD",
-                            "abstract_reason":  "context_stale_age=22188s | fallback_hold | no investment advice.",
+                            "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice. | logos_x=MID quad=Q1 [NON_GATING] | logos_graph_bundle=B [NON_GATING]",
                             "schema_version":  "public-event.v1",
-                            "event_id":  "showroom-20260505T062503-d59ebb2b",
+                            "event_id":  "showroom-20260509T003508-b903ce2f",
                             "source":  "ops_showroom_bundle_v1",
-                            "system_status":  "degraded",
+                            "system_status":  "online",
                             "active_strategies_count":  1,
                             "delayed_metrics":  {
                                                     "delay_seconds":  180,
-                                                    "as_of_utc":  "2026-05-05T00:15:16Z",
+                                                    "as_of_utc":  "2026-05-09T00:15:16Z",
                                                     "logos_x_index_0_100":  51,
                                                     "logos_x_band":  "MID",
                                                     "logos_quadrant":  "Q1",
                                                     "logos_y_fragility_0_100":  59,
-                                                    "logos_4d_state_generated_at_utc":  "2026-05-04T22:28:07.427296Z",
+                                                    "logos_4d_state_generated_at_utc":  "2026-05-08T22:28:06.257235Z",
                                                     "logos_graph_bundle_present":  true,
                                                     "logos_graph_nodes_line_count":  1192,
                                                     "logos_graph_edges_line_count":  1196,
                                                     "logos_graph_bundle_dedupe_sha256":  "8429443bb3bc4402a398d55b296704261b964920b72eb52947927648dfcd7c8a",
                                                     "logos_graph_bundle_ts_utc":  "2026-05-02T05:05:51Z",
-                                                    "logos_graph_staleness_seconds":  260793,
-                                                    "logos_freshness_sidecar_generated_at_utc":  "2026-05-05T05:32:24.823122Z"
+                                                    "logos_graph_staleness_seconds":  588131,
+                                                    "logos_freshness_sidecar_generated_at_utc":  "2026-05-09T00:28:02.232292Z"
                                                 },
                             "direction_abstract":  "flat",
                             "disclaimer_ref":  "jemaai_showroom_v1",
-                            "last_ok_utc":  "2026-05-05T06:25:03.7972397+00:00",
+                            "last_ok_utc":  "2026-05-09T00:35:08.5808396+00:00",
                             "order_summary_public":  {
-                                                         "trades_24h_count":  50,
+                                                         "trades_24h_count":  12,
                                                          "latest_trade_utc":  null,
-                                                         "latest_trade_side":  "LONG",
-                                                         "successful_trades_all":  5,
+                                                         "latest_trade_side":  "unknown",
+                                                         "successful_trades_all":  10,
                                                          "failed_trades_all":  0
                                                      },
                             "signal_gate_public":  {
-                                                       "signal_total_count":  21179,
-                                                       "last_signal_utc":  "2026-05-05T15:25:02",
-                                                       "integrated_signal":  "SELL",
-                                                       "integrated_confidence":  0.62,
-                                                       "singular_action":  "SELL",
-                                                       "singular_decision":  "PASS",
-                                                       "singular_reason":  "score_below_short_threshold",
+                                                       "signal_total_count":  0,
+                                                       "last_signal_utc":  null,
+                                                       "integrated_signal":  "HOLD",
+                                                       "integrated_confidence":  null,
+                                                       "singular_action":  "LOCKED",
+                                                       "singular_decision":  "HOLD",
+                                                       "singular_reason":  "unknown",
                                                        "warning_level":  "NORMAL",
                                                        "regime_defense_mode":  false,
                                                        "regime_id":  "unknown",
-                                                       "lock_reason":  "NONE"
+                                                       "lock_reason":  "WARMUP"
                                                    },
-                            "showroom_display_mode":  "defend",
-                            "showroom_ticker_key":  "S_DEGRADED_R_WARNING_PSD_HOLD_DA_FLAT",
+                            "showroom_display_mode":  "idle",
+                            "showroom_ticker_key":  "S_ONLINE_R_INFO_PSD_HOLD_DA_FLAT",
                             "showroom_reaction_line_ids":  [
-                                                               "R_MODE_DEF_01",
-                                                               "R_RISK_HIGH_01"
+                                                               "R_MODE_IDLE_01"
                                                            ]
                         }
 }

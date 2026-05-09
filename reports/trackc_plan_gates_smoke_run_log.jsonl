@@ -33,3 +33,5 @@
 {"ts_utc":"2026-05-04T16:00:12Z","schema":"trackc_plan_gates_smoke_run_v1","exit_code":0}
 {"ts_utc":"2026-05-04T17:00:56Z","schema":"trackc_plan_gates_smoke_run_v1","exit_code":0}
 {"ts_utc":"2026-05-04T18:01:39Z","schema":"trackc_plan_gates_smoke_run_v1","exit_code":0}
+{"ts_utc":"2026-05-08T19:46:52Z","exit_code":0,"schema":"trackc_plan_gates_smoke_run_v1"}
+{"ts_utc":"2026-05-08T19:50:05Z","schema":"trackc_plan_gates_smoke_run_v1","exit_code":0}
