@@ -5,7 +5,7 @@
 
 .DESCRIPTION
   scripts/run_km_physician_cds_assist_envelope_batch_v1.py 실행.
-  기본 입력: tests/fixtures/km_physician_cds_assist_payload_batch_v1.example.jsonl (데모 페이로드).
+  입력 우선순위 (-InputJsonl 미지정 시): 환경변수 KM_PHYSICIAN_CDS_PAYLOAD_JSONL (존재하면 해당 파일) → data/km_physician/cds_payload_incoming/payload_batch.jsonl (있으면) → tests/fixtures/...example.jsonl (데모).
   기본 출력: reports/km_physician_cds_envelope_batch_latest.jsonl
 
 .PARAMETER AllowPartial
@@ -34,7 +34,21 @@ if (-not (Test-Path -LiteralPath $batch)) {
 }
 
 if ([string]::IsNullOrWhiteSpace($InputJsonl)) {
-    $InputJsonl = Join-Path $WorkspaceRoot "tests\fixtures\km_physician_cds_assist_payload_batch_v1.example.jsonl"
+    $envPath = [Environment]::GetEnvironmentVariable("KM_PHYSICIAN_CDS_PAYLOAD_JSONL", "User")
+    if ([string]::IsNullOrWhiteSpace($envPath)) {
+        $envPath = [Environment]::GetEnvironmentVariable("KM_PHYSICIAN_CDS_PAYLOAD_JSONL", "Machine")
+    }
+    $candidateIncoming = Join-Path $WorkspaceRoot "data\km_physician\cds_payload_incoming\payload_batch.jsonl"
+    $fallbackDemo = Join-Path $WorkspaceRoot "tests\fixtures\km_physician_cds_assist_payload_batch_v1.example.jsonl"
+    if (-not [string]::IsNullOrWhiteSpace($envPath) -and (Test-Path -LiteralPath $envPath)) {
+        $InputJsonl = $envPath
+    }
+    elseif (Test-Path -LiteralPath $candidateIncoming) {
+        $InputJsonl = $candidateIncoming
+    }
+    else {
+        $InputJsonl = $fallbackDemo
+    }
 }
 if ([string]::IsNullOrWhiteSpace($OutputJsonl)) {
     $OutputJsonl = Join-Path $WorkspaceRoot "reports\km_physician_cds_envelope_batch_latest.jsonl"
