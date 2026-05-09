@@ -135,6 +135,60 @@ export default function HomePage({ searchParams }: HomePageProps) {
           </div>
         </section>
 
+        <section id="feature-triad" className="feature-triad" aria-labelledby="feature-triad-heading">
+          <h2 id="feature-triad-heading" className="sr-only">
+            핵심 역량
+          </h2>
+          <div className="feature-triad-grid">
+            {c.feature_triad.cards.map((card) => (
+              <article
+                key={card.variant}
+                className={`feature-triad-card feature-triad-card--${card.variant}`}
+              >
+                <div className="feature-triad-icon" aria-hidden="true">
+                  {card.variant === "copilot" ? (
+                    <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
+                      <path
+                        d="M24 6 38 12v14c0 10-8 18-14 20-6-2-14-10-14-20V12L24 6Z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinejoin="round"
+                      />
+                      <path d="M18 24 22 28 31 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  ) : null}
+                  {card.variant === "heritage" ? (
+                    <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
+                      <circle cx="24" cy="24" r="16" stroke="currentColor" strokeWidth="2" />
+                      <path d="M24 14v10l7 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      <path
+                        d="M34 34c-3-5-8-8-14-8"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  ) : null}
+                  {card.variant === "sovereign" ? (
+                    <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
+                      <path
+                        d="M14 22c2-8 8-12 10-12s8 4 10 12c1 6-2 14-10 18-8-4-11-12-10-18Z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinejoin="round"
+                      />
+                      <path d="M22 26h6M22 30h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  ) : null}
+                </div>
+                <h3 className="feature-triad-title">{card.title}</h3>
+                <p className="feature-triad-subtitle">{card.subtitle}</p>
+                <p className="feature-triad-body">{card.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section id="quick-start" aria-labelledby="quick-start-title">
           <h2 id="quick-start-title">일반인 홍보·상담 안내와 한의사 진료보조를 분리 운영합니다</h2>
           <p className="section-lead">

@@ -22,6 +22,7 @@
     "smoke:partner-clinic-chat": "node ./scripts/smoke-partner-clinic-chat.mjs",
     "smoke:guardian-ai-chat": "node ./scripts/smoke-guardian-ai-chat.mjs",
     "smoke:guardian-ai-post": "node ./scripts/smoke-guardian-ai-post.mjs",
+    "smoke:clinic-intake-v1": "node ./scripts/smoke-clinic-intake-v1.mjs",
     "smoke:gemini-route": "node ./scripts/smoke-gemini-route.mjs",
     "smoke:commercialization-gate": "node ./scripts/smoke-commercialization-gate.mjs",
     "smoke:commercialization-gate:live": "node ./scripts/smoke-commercialization-gate.mjs --require-live",
