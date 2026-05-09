@@ -100,6 +100,14 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
         "evidence_refs": [{}],
         "narrative_snippet_guarded": "[#a]",
     }
+    conflict_rt = {
+        "schema": "myeongni_conflict_arbitration_runtime_mode_v1",
+        "mode": "neutral",
+        "policy_hash": "a" * 64,
+        "verification_pass": True,
+        "generated_at_utc": "2099-01-01T00:00:00Z",
+        "policy_path": "/p/policy.json",
+    }
     v2 = {
         "schema": "myeongri_core_v2_upgrade_v1",
         "b_track_notice": "[MKM-B-TRACK-NOTICE] test disclaimer " + "x" * 32,
@@ -155,6 +163,8 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
         logos_independent_path=Path("/x/logos.json"),
         myeongri_v2_upgrade=v2,
         myeongri_v2_upgrade_path=Path("/x/myeongri_v2.json"),
+        myeongni_conflict_runtime=conflict_rt,
+        myeongni_conflict_runtime_path=Path("/x/conflict_runtime.json"),
     )
     assert "snippet line" in md
     assert "test narrative" in md
@@ -181,6 +191,10 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
     assert '"market_myeongni": true' in md
     assert "market_myeongni_overlay_policy_v1.json" in md
     assert "0.11" in md
+    assert "Myeongni conflict arbitration runtime" in md
+    assert '"myeongni_conflict_runtime": true' in md
+    assert "`aaaaaaaaaaaa…`" in md or "policy_hash" in md
+    assert "/x/conflict_runtime.json" in md
 
 
 def test_build_markdown_section_1c_missing_lens_files(tmp_path):
@@ -209,6 +223,7 @@ def test_build_markdown_section_1c_missing_lens_files(tmp_path):
     assert '"myeongni": false' in md
     assert '"market_myeongni": false' in md
     assert '"myeongri_v2_upgrade": false' in md
+    assert '"myeongni_conflict_runtime": false' in md
 
 
 def test_pick_row_fallback_last_populated():
