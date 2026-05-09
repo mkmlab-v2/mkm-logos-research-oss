@@ -135,14 +135,20 @@ on:
       - "scripts/build_general_compression_eval_input.py"
       - "scripts/validate_general_compression_bundle.py"
       - "scripts/split_general_compression_holdout_v1.py"
+      - "scripts/build_general_compression_split_manifests_v1.py"
+      - "scripts/Run-GeneralCompressionPromotionChain.ps1"
+      - "scripts/Run-GeneralCompressionChain.ps1"
       - "data/general_compression/**"
       - "docs/final/artifacts/general_compression_benchmark_manifest_v1.json"
       - "docs/final/artifacts/general_compression_restore_stress_v1.json"
+      - "docs/final/artifacts/general_compression_benchmark_manifest_train_v1.json"
+      - "docs/final/artifacts/general_compression_benchmark_manifest_holdout_v1.json"
       - "docs/final/artifacts/general_compression_holdout_split_report_v1.json"
       - "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json"
       - "tests/test_build_general_compression_eval_input_smoke_v1.py"
       - "tests/test_validate_general_compression_bundle_v1.py"
       - "tests/test_split_general_compression_holdout_smoke_v1.py"
+      - "tests/test_build_general_compression_split_manifests_smoke_v1.py"
       - "tests/fixtures/general_compression_bundle_minimal_v1/**"
       - "scripts/run_track_a_shadow_corpus_eval.py"
       - "scripts/run_track_a_metering_summary.py"
@@ -197,6 +203,8 @@ on:
       - "docs/final/schemas/sasang_music_mapping_v1.schema.json"
       - "docs/final/schemas/sasang_music_mapping_v1.example.json"
       - "tests/test_sasang_music_mapping_schema_v1.py"
+      - "tests/test_run_lens_music_gematria_v1.py"
+      - "scripts/run_lens_music_gematria.py"
       - ".github/workflows/audio-bgm-gate-smoke.yml"
       - "scripts/run_compression_automation_chain.ps1"
       - "scripts/run_compression_weekly_governance_chain.ps1"
@@ -824,6 +832,9 @@ jobs:
       - name: Sasang–music mapping schema v1 ([HYPO] M0 contract)
         run: python -m pytest tests/test_sasang_music_mapping_schema_v1.py -q --tb=short
 
+      - name: Music/Gematria lens stub v1 ([HYPO] M1)
+        run: python -m pytest tests/test_run_lens_music_gematria_v1.py -q --tb=short
+
       - name: MKM meta-layer envelope v1 (schema + kill-switch coherence)
         run: python -m pytest tests/test_mkm_meta_layer_envelope_v1.py -q --tb=short
 
@@ -1038,6 +1049,7 @@ jobs:
           python -m pytest tests/test_build_general_compression_eval_input_smoke_v1.py -q --tb=short
           python -m pytest tests/test_validate_general_compression_bundle_v1.py -q --tb=short
           python -m pytest tests/test_split_general_compression_holdout_smoke_v1.py -q --tb=short
+          python -m pytest tests/test_build_general_compression_split_manifests_smoke_v1.py -q --tb=short
 
       - name: P1 A/B profiles + final selection bundle
         run: |
