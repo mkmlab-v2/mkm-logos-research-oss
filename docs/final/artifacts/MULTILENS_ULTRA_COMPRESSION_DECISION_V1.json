@@ -1,6 +1,6 @@
 {
   "schema": "multilens_ultra_compression_decision_v1",
-  "ts_utc": "2026-05-09T18:42:05.663526+00:00",
+  "ts_utc": "2026-05-09T18:48:53.240056+00:00",
   "perf": {
     "total_elapsed_ms": 12044.72,
     "round1_candidate_count": 18,
@@ -54,7 +54,7 @@
       "p95_latency_delta_pct > p95_latency_delta_pct_max"
     ]
   },
-  "notes": "If NO_GO, keep baseline and apply domain-variable compression caps.\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (A/extreme caps 0.2/0.18/0.58).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (A/extreme caps 0.2/0.18/0.58).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (A/extreme caps 0.2/0.18/0.58).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (B/extreme caps 0.2/0.18/0.5).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (B/extreme caps 0.2/0.18/0.5).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (A/extreme caps 0.35/0.3/0.6).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (A/extreme caps 0.35/0.3/0.6).",
+  "notes": "If NO_GO, keep baseline and apply domain-variable compression caps.\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (A/extreme caps 0.2/0.18/0.58).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (A/extreme caps 0.2/0.18/0.58).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (A/extreme caps 0.2/0.18/0.58).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (B/extreme caps 0.2/0.18/0.5).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (B/extreme caps 0.2/0.18/0.5).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (A/extreme caps 0.35/0.3/0.6).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (A/extreme caps 0.35/0.3/0.6).\n\nOperational anchor: general-rail sweep best_go_candidate → ultra decision (A/extreme caps 0.35/0.3/0.6).",
   "operational_anchor": {
     "schema": "general_rail_to_ultra_decision_anchor_v1",
     "sweep_artifact": "C:/workspace/docs/final/artifacts/general_compression_sweep_result_v1.json",

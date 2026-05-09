@@ -51,6 +51,8 @@ docs/final/artifacts/**
 !docs/final/artifacts/general_compression_90pct_failure_taxonomy_v1.json
 !docs/final/artifacts/general_compression_domain_guard_gate_v1.json
 !docs/final/artifacts/general_compression_token_loss_aggregate_v1.json
+!docs/final/artifacts/general_compression_eval_input_holdout_v1.json
+!docs/final/artifacts/general_compression_ab_holdout_result_summary_v1.json
 # Local bio sasang strict JSON from `build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` (default --out under reports/)
 reports/bio_sasang_nstates_*.json
 reports/mkm_orchestrator_poll.lock

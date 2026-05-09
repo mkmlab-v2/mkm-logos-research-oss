@@ -147,6 +147,8 @@ on:
       - "docs/final/artifacts/general_compression_sweep_result_v1.json"
       - "docs/final/artifacts/general_compression_ab_result_summary_v1.json"
       - "docs/final/artifacts/general_compression_kpi_gate_v2.json"
+      - "docs/final/artifacts/general_compression_eval_input_holdout_v1.json"
+      - "docs/final/artifacts/general_compression_ab_holdout_result_summary_v1.json"
       - "docs/final/artifacts/general_compression_holdout_split_report_v1.json"
       - "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json"
       - "tests/test_build_general_compression_eval_input_smoke_v1.py"

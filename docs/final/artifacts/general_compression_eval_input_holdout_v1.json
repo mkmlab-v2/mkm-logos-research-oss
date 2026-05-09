@@ -1,0 +1,65 @@
+{
+  "schema": "multilens_performance_eval_input_v1",
+  "description": "General-rail compression benchmark input derived from manifest datasets.",
+  "compression_cases": [
+    {
+      "id": "gen_0001",
+      "raw_text": "결정 사항: 베타 채널은 스테이징 한정, 프로덕션 배포는 게이트 통과 후에만 승인.",
+      "compressed_text": "결정 사항: 베타 채널은 스테이징 한정, 베타 프로덕션 게이트",
+      "reconstructed_text": "결정 사항: 베타 채널은 스테이징 한정, 베타 프로덕션 게이트",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0002",
+      "raw_text": "데이터: 원천 테이블 PII 마스킹 규칙이 변경되어 ETL 스테이징 재실행 필요.",
+      "compressed_text": "데이터: 원천 테이블 PII 마스킹 규칙이 PII ETL",
+      "reconstructed_text": "데이터: 원천 테이블 PII 마스킹 규칙이 PII ETL",
+      "domain": "meeting"
+    },
+    {
+      "id": "gen_0003",
+      "raw_text": "본 고지는 일반 정보 제공 목적이며 법률 자문을 대체하지 않습니다. 적용 법령은 관할에 따라 달라질 수 있습니다.",
+      "compressed_text": "본 고지는 일반 정보 제공 목적이며 법률 자문을 대체하지 고지 법률 자문 관할",
+      "reconstructed_text": "본 고지는 일반 정보 제공 목적이며 법률 자문을 대체하지 고지 법률 자문 관할",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0004",
+      "raw_text": "이용자는 열람·정정·삭제·처리 정지를 요청할 수 있으며 합리적 기간 내에 조치합니다.",
+      "compressed_text": "이용자는 열람·정정·삭제·처리 정지를 요청할 수 열람 삭제",
+      "reconstructed_text": "이용자는 열람·정정·삭제·처리 정지를 요청할 수 열람 삭제",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0005",
+      "raw_text": "약관 개정 시 시행 7일 전 앱·이메일으로 고지하며 중대한 불리한 변경은 별도 동의를 요청할 수 있습니다.",
+      "compressed_text": "약관 개정 시 시행 7일 전 앱·이메일으로 고지하며 약관 고지",
+      "reconstructed_text": "약관 개정 시 시행 7일 전 앱·이메일으로 고지하며 약관 고지",
+      "domain": "policy_legal_lite"
+    },
+    {
+      "id": "gen_0006",
+      "raw_text": "로그인 실패 시: 비밀번호 재설정 링크를 사용하고, 동일 증상이면 브라우저 캐시 삭제 후 재시도하세요.",
+      "compressed_text": "로그인 실패 시: 비밀번호 재설정 링크를 사용하고, 로그인 재설정 캐시",
+      "reconstructed_text": "로그인 실패 시: 비밀번호 재설정 링크를 사용하고, 로그인 재설정 캐시",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0007",
+      "raw_text": "데이터 내보내기는 관리자 권한에서 CSV 또는 JSON 형식을 선택할 수 있습니다.",
+      "compressed_text": "데이터 내보내기는 관리자 권한에서 CSV 또는 내보내기 CSV",
+      "reconstructed_text": "데이터 내보내기는 관리자 권한에서 CSV 또는 내보내기 CSV",
+      "domain": "support_faq"
+    },
+    {
+      "id": "gen_0008",
+      "raw_text": "오프라인 모드는 읽기 전용 캐시만 지원하며 동기화 충돌 시 최신 서버 버전이 우선입니다.",
+      "compressed_text": "오프라인 모드는 읽기 전용 캐시만 지원하며 동기화 오프라인 동기화",
+      "reconstructed_text": "오프라인 모드는 읽기 전용 캐시만 지원하며 동기화 오프라인 동기화",
+      "domain": "support_faq"
+    }
+  ],
+  "fusion_answer_cases": [],
+  "fallback_used": false,
+  "fallback_source": null
+}
