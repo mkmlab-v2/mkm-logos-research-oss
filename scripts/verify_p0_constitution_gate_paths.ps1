@@ -177,6 +177,8 @@ $required = @(
     "data\myeongni\rule_school_mkm_4d_v1.json",
     "scripts\myeongri_rule_school_mkm_4d_v1.py",
     "tests\test_myeongri_rule_school_mkm_4d_v1.py",
+    "data\myeongni\myeongni_conflict_arbitration_v1.json",
+    "scripts\verify_myeongni_conflict_arbitration_edgecases_v1.py",
     "scripts\core\solar_term_jie_crossings_v1.py",
     "scripts\myeongri_qiyun_v1.py",
     "tests\test_myeongri_qiyun_v1.py",

@@ -424,6 +424,8 @@ on:
       - "scripts/Run-DailyExecutionInsightBrief_v1.ps1"
       - "scripts/send_cross_lens_rag_alert_v1.py"
       - "tests/test_send_cross_lens_rag_alert_v1.py"
+      - "scripts/build_cross_lens_rag_fusion_v1.py"
+      - "tests/test_build_cross_lens_rag_fusion_v1.py"
       - "scripts/run_market_myeongni_lens_v1.py"
       - "scripts/market_myeongni_overlay_engine_v1.py"
       - "data/market_myeongni/market_myeongni_overlay_policy_v1.json"
@@ -834,6 +836,9 @@ jobs:
 
       - name: Daily execution insight brief v1 (materializer contract)
         run: python -m pytest tests/test_build_daily_execution_insight_brief_v1.py -q --tb=short
+
+      - name: Cross-lens RAG fusion v1 (sasang axis block contract)
+        run: python -m pytest tests/test_build_cross_lens_rag_fusion_v1.py -q --tb=short
 
       - name: Cross-lens RAG alert notify v1 (stale guard, Telegram min severity)
         run: python -m pytest tests/test_send_cross_lens_rag_alert_v1.py -q --tb=short

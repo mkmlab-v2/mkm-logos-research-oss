@@ -14,7 +14,7 @@ DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "sasang_independent_lens_l
 
 ARTIFACT_SCHEMA = "sasang_independent_lens_v0"
 ENGINE_ID = "independent_lens_v0"
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 _MAPPING_TO_SCORE: dict[str, float] = {
     "bull": 0.55,
@@ -54,6 +54,42 @@ def _confidence_from_machine(row: dict[str, Any]) -> float:
     imbalance = abs(heat - cold)
     conf = 0.45 + (0.35 * vol) + (0.55 * imbalance)
     return max(0.0, min(1.0, conf))
+
+
+def _b_track_axis_scores_v1(row: dict[str, Any]) -> dict[str, Any]:
+    """0~1 dynamics proxies from `machine_readables` only (B-track).
+
+    Not ontology mapping to 한의 보명지조/금화교역; crosswalk to language layers is
+    `sasang_interpretive_insight_bundle_v1` (human-only synthesis).
+    """
+    mr = row.get("machine_readables")
+    if not isinstance(mr, dict):
+        return {
+            "schema": "sasang_b_track_axis_scores_v1",
+            "version": "0.1.0",
+            "heat_proxy": None,
+            "cold_proxy": None,
+            "volatility_rarefaction_proxy": None,
+            "thermal_imbalance_proxy": None,
+        }
+
+    def _f(key: str) -> float | None:
+        v = mr.get(key)
+        return float(v) if isinstance(v, (int, float)) else None
+
+    h, c, v = _f("heat_proxy"), _f("cold_proxy"), _f("volatility_rarefaction_proxy")
+    tim: float | None = None
+    if h is not None and c is not None:
+        tim = max(0.0, min(1.0, abs(h - c)))
+    return {
+        "schema": "sasang_b_track_axis_scores_v1",
+        "version": "0.1.0",
+        "heat_proxy": round(h, 6) if h is not None else None,
+        "cold_proxy": round(c, 6) if c is not None else None,
+        "volatility_rarefaction_proxy": round(v, 6) if v is not None else None,
+        "thermal_imbalance_proxy": round(tim, 6) if tim is not None else None,
+        "disclaimer_ko": "동역학 JSONL machine_readables 파생 프록시만; 보명지조·금화교역 본론 정량 아님.",
+    }
 
 
 def _direction_from_mapping(row: dict[str, Any], mapping_target: str) -> float:
@@ -103,6 +139,7 @@ def _build_payload(row: dict[str, Any], *, source: str, input_path: str) -> dict
             "mapping_target": mt or None,
             "rationale": rationale,
         },
+        "b_track_axis_scores_v1": _b_track_axis_scores_v1(row),
         "provenance": {
             "source": source,
             "input_path": input_path,
