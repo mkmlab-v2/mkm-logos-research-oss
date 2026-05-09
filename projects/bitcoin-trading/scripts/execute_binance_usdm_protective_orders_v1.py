@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -91,6 +92,48 @@ def _append_protective_audit(summary: dict[str, Any], summary_path: Path) -> Non
         f.write(json.dumps(agent_row, ensure_ascii=False) + "\n")
 
 
+def _run_execution_gate_or_fail(summary: dict[str, Any], out_path: Path) -> tuple[bool, str]:
+    workspace = _workspace_root()
+    gate_script = workspace / "scripts" / "run_execution_gate_v1.py"
+    if not gate_script.exists():
+        return False, f"execution_gate_script_missing:{gate_script.as_posix()}"
+
+    intent_path = out_path.parent / "protective_order_intent_latest.json"
+    intent_payload = {
+        "schema": "execution_intent_v1",
+        "ts_utc": datetime.now(timezone.utc).isoformat(),
+        "request_id": f"protective-{summary.get('symbol', 'unknown')}",
+        "symbol": summary.get("symbol"),
+        "side": "REDUCE_ONLY_PROTECTIVE",
+        "qty": (summary.get("planned") or {}).get("quantity"),
+        "intent_type": "protective_orders",
+        "testnet": summary.get("testnet"),
+    }
+    intent_path.parent.mkdir(parents=True, exist_ok=True)
+    intent_path.write_text(
+        json.dumps(intent_payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    decision_path = out_path.parent / "execution_gate_decision_latest.json"
+    cmd = [
+        sys.executable,
+        str(gate_script),
+        "--intent-path",
+        str(intent_path),
+        "--output-path",
+        str(decision_path),
+    ]
+    proc = subprocess.run(cmd, cwd=str(workspace), capture_output=True, text=True)
+    if proc.returncode == 0:
+        return True, ""
+
+    stderr = (proc.stderr or "").strip()
+    stdout = (proc.stdout or "").strip()
+    reason = stderr or stdout or f"execution_gate_blocked_exit:{proc.returncode}"
+    return False, reason
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="USD-M reduce-only TP/SL (STOP / TAKE_PROFIT MARKET).")
     p.add_argument("--symbol", required=True, help="e.g. BTCUSDT")
@@ -100,8 +143,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--working-type", default="MARK_PRICE", choices=("MARK_PRICE", "CONTRACT_PRICE"))
     p.add_argument("--stop-loss-price", type=float, default=None)
     p.add_argument("--take-profit-price", type=float, default=None)
-    p.add_argument("--sl-offset-pct", type=float, default=None, help="Stop distance from entry in % (e.g. 0.5).")
-    p.add_argument("--tp-offset-pct", type=float, default=None, help="TP distance from entry in % (e.g. 1.0).")
+    p.add_argument("--sl-offset-pct", type=float, default=None, help="Stop distance from entry in %% (e.g. 0.5).")
+    p.add_argument("--tp-offset-pct", type=float, default=None, help="TP distance from entry in %% (e.g. 1.0).")
     args = p.parse_args(argv)
 
     testnet = not args.mainnet
@@ -219,6 +262,17 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[dry-run] planned TP/SL written to {args.out}")
         return 0
 
+    gate_ok, gate_reason = _run_execution_gate_or_fail(summary, args.out)
+    summary["execution_gate"] = {
+        "ok": gate_ok,
+        "reason": gate_reason or "allow",
+    }
+    if not gate_ok:
+        summary["error"] = gate_reason
+        _write_summary(args.out, summary)
+        print(f"[blocked] execution gate: {gate_reason}", file=sys.stderr)
+        return 2
+
     sl_order = None
     tp_order = None
     if sl_rounded is not None:
@@ -247,8 +301,13 @@ def main(argv: list[str] | None = None) -> int:
 
     want_sl = sl_rounded is not None
     want_tp = tp_rounded is not None
-    ok_sl = not want_sl or (isinstance(sl_order, dict) and sl_order.get("orderId"))
-    ok_tp = not want_tp or (isinstance(tp_order, dict) and tp_order.get("orderId"))
+    def _accepted(order: Any) -> bool:
+        if not isinstance(order, dict):
+            return False
+        return bool(order.get("orderId") or order.get("algoId"))
+
+    ok_sl = (not want_sl) or _accepted(sl_order)
+    ok_tp = (not want_tp) or _accepted(tp_order)
     errs: list[str] = []
     if want_sl and not ok_sl:
         errs.append("stop_loss_rejected")
