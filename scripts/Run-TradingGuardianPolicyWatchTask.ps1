@@ -33,14 +33,18 @@ if (-not (Test-Path -LiteralPath $check)) { throw "Missing script: $check" }
 if (-not (Test-Path -LiteralPath $alert)) { throw "Missing script: $alert" }
 
 $policyWatchMode = "strict_drift_alert"
+$driftAlertCooldownHours = 0.5
 if (Test-Path -LiteralPath $policyPath) {
   try {
     $policy = Get-Content -LiteralPath $policyPath -Raw | ConvertFrom-Json
     if ($policy -and $policy.policy_watch -and $policy.policy_watch.mode) {
       $policyWatchMode = "$($policy.policy_watch.mode)"
     }
+    if ($policy -and $policy.policy_watch_alert -and $null -ne $policy.policy_watch_alert.cooldown_hours) {
+      $driftAlertCooldownHours = [double]$policy.policy_watch_alert.cooldown_hours
+    }
   } catch {
-    Write-Host "[warn] trading_guardian_policy parse failed, using strict_drift_alert mode"
+    Write-Host "[warn] trading_guardian_policy parse failed, using strict_drift_alert mode and default drift alert cooldown"
   }
 }
 
@@ -112,7 +116,7 @@ if (-not $SnapshotBaseline -and $checkExit -eq 1 -and $policyWatchMode -eq "auto
   $checkExit = $LASTEXITCODE
 }
 
-py $alert --workspace-root $WorkspaceRoot
+py $alert --workspace-root $WorkspaceRoot --cooldown-hours $driftAlertCooldownHours
 if ($LASTEXITCODE -ne 0) {
   throw "send_trading_guardian_policy_drift_alert_v1.py exit $LASTEXITCODE"
 }

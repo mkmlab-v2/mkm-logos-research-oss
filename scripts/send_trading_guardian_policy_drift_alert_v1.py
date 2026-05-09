@@ -14,6 +14,8 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Send webhook alert when trading guardian policy drift is detected.")
     p.add_argument("--workspace-root", default="C:/workspace")
     p.add_argument("--drift-json", default="reports/trading_guardian_policy_hash_state_latest.json")
+    p.add_argument("--state-json", default="reports/trading_guardian_policy_drift_alert_state_latest.json")
+    p.add_argument("--cooldown-hours", type=float, default=0.5)
     p.add_argument("--webhook-url", default="")
     return p.parse_args()
 
@@ -72,6 +74,37 @@ def _post_webhook(webhook_url: str, payload: dict[str, Any]) -> None:
         return
 
 
+def _build_dedup_key(drift: dict[str, Any]) -> str:
+    b = str(drift.get("baseline_sha256", "")).strip().lower()
+    c = str(drift.get("current_sha256", "")).strip().lower()
+    return f"{b}|{c}"
+
+
+def _is_in_cooldown(state: dict[str, Any], dedup_key: str, cooldown_hours: float) -> bool:
+    if not state or str(state.get("dedup_key", "")) != dedup_key:
+        return False
+    ts = str(state.get("last_sent_at_utc", "")).strip()
+    if not ts:
+        return False
+    try:
+        sent = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    elapsed_seconds = (datetime.now(timezone.utc) - sent).total_seconds()
+    return elapsed_seconds < max(0.0, float(cooldown_hours)) * 3600.0
+
+
+def _write_state(path: Path, dedup_key: str, drift_status: str | None) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    row = {
+        "schema": "trading_guardian_policy_drift_alert_state_v1",
+        "last_sent_at_utc": datetime.now(timezone.utc).isoformat(),
+        "dedup_key": dedup_key,
+        "drift_status": drift_status or "",
+    }
+    path.write_text(json.dumps(row, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def main() -> int:
     args = parse_args()
     root = Path(args.workspace_root)
@@ -82,6 +115,13 @@ def main() -> int:
 
     if not bool(drift.get("drift_detected", False)):
         print("trading_guardian_policy_alert_skipped=no_drift")
+        return 0
+
+    state_path = root / args.state_json
+    dedup_key = _build_dedup_key(drift)
+    state = _read_json(state_path)
+    if _is_in_cooldown(state, dedup_key, args.cooldown_hours):
+        print("trading_guardian_policy_alert_skipped=cooldown")
         return 0
 
     webhook = _resolve_webhook(args.webhook_url, root)
@@ -100,6 +140,7 @@ def main() -> int:
     }
     try:
         _post_webhook(webhook, payload)
+        _write_state(state_path, dedup_key, str(drift.get("status", "")))
         print("trading_guardian_policy_alert_sent=true")
     except (urllib.error.URLError, TimeoutError):
         print("trading_guardian_policy_alert_sent=false")
