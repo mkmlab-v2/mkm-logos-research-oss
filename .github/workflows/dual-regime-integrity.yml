@@ -25,11 +25,14 @@ on:
       - "scripts/integrity_guard.py"
       - "scripts/sync_btrack_phase3_snapshot_json_fence.py"
       - "scripts/run_fact_lock_bundle.ps1"
+      - "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"
+      - "scripts/build_trackc_evidence_rag_mvp_v1.py"
       - "scripts/run_p1_ab_bundle.ps1"
       - "scripts/run_p1_efficiency_ab.py"
       - "scripts/report_p1_final_selection.py"
       - "scripts/verify_master_probe_all_states.py"
       - "tests/snapshots/**"
+      - "tests/test_build_trackc_evidence_rag_mvp_v1.py"
       - "backtest_results/sweep_kmin_refine/**"
       - "data/myeongni/**"
       - "scripts/btrack_yang_2015_style_metrics_v1.py"
@@ -836,6 +839,9 @@ jobs:
 
       - name: Daily execution insight brief v1 (materializer contract)
         run: python -m pytest tests/test_build_daily_execution_insight_brief_v1.py -q --tb=short
+
+      - name: Track C evidence RAG MVP v1 (Amsaeng bundle advisory contract)
+        run: python -m pytest tests/test_build_trackc_evidence_rag_mvp_v1.py -q --tb=short
 
       - name: Cross-lens RAG fusion v1 (sasang axis block contract)
         run: python -m pytest tests/test_build_cross_lens_rag_fusion_v1.py -q --tb=short
